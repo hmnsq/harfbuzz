@@ -25,75 +25,75 @@
 #ifndef HB_SUBSET_INSTANCER_SOLVER_HH
 #define HB_SUBSET_INSTANCER_SOLVER_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 /* pre-normalized distances */
-struct TripleDistances
+ಸಂರಚನಾ TripleDistances
 {
   TripleDistances (): negative (1.f), positive (1.f) {}
-  TripleDistances (float neg_, float pos_): negative (neg_), positive (pos_) {}
-  TripleDistances (float min, float default_, float max)
+  TripleDistances (ಭಿನ್ನ neg_, ಭಿನ್ನ pos_): negative (neg_), positive (pos_) {}
+  TripleDistances (ಭಿನ್ನ min, ಭಿನ್ನ default_, ಭಿನ್ನ max)
   {
     negative = default_ - min;
     positive = max - default_;
   }
 
-  float negative;
-  float positive;
+  ಭಿನ್ನ negative;
+  ಭಿನ್ನ positive;
 };
 
-struct Triple
+ಸಂರಚನಾ Triple
 {
-  Triple () = default;
+  Triple () = ಸ್ವಭಾವ;
 
-  Triple (float minimum_, float middle_, float maximum_) :
-    minimum (minimum_), middle (middle_), maximum (maximum_) {}
+  Triple (ಭಿನ್ನ minimum_, ಭಿನ್ನ ಮಧ್ಯ_2, ಭಿನ್ನ maximum_) :
+    minimum (minimum_), ಮಧ್ಯ (ಮಧ್ಯ_2), maximum (maximum_) {}
 
-  bool operator == (const Triple &o) const
+  ತಾರ್ಕಿಕ operator == (ಧ್ರುವ Triple &o) ಧ್ರುವ
   {
-    return minimum == o.minimum &&
-	   middle  == o.middle  &&
+    ಪ್ರತ್ಯಾಗಮ minimum == o.minimum &&
+	   ಮಧ್ಯ  == o.ಮಧ್ಯ  &&
 	   maximum == o.maximum;
   }
 
-  bool operator != (const Triple o) const
-  { return !(*this == o); }
+  ತಾರ್ಕಿಕ operator != (ಧ್ರುವ Triple o) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ !(*ಏತತ್ == o); }
 
-  bool is_point () const
-  { return minimum == middle && middle == maximum; }
+  ತಾರ್ಕಿಕ is_point () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ minimum == ಮಧ್ಯ && ಮಧ್ಯ == maximum; }
 
-  bool contains (float point) const
-  { return minimum <= point && point <= maximum; }
+  ತಾರ್ಕಿಕ contains (ಭಿನ್ನ point) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ minimum <= point && point <= maximum; }
 
   /* from hb_array_t hash ()*/
-  uint32_t hash () const
+  uint32_t hash () ಧ್ರುವ
   {
     uint32_t current = /*cbf29ce4*/0x84222325;
     current = current ^ hb_hash (minimum);
     current = current * 16777619;
 
-    current = current ^ hb_hash (middle);
+    current = current ^ hb_hash (ಮಧ್ಯ);
     current = current * 16777619;
 
     current = current ^ hb_hash (maximum);
     current = current * 16777619;
-    return current;
+    ಪ್ರತ್ಯಾಗಮ current;
   }
 
-  float minimum = 0;
-  float middle = 0;
-  float maximum = 0;
+  ಭಿನ್ನ minimum = 0;
+  ಭಿನ್ನ ಮಧ್ಯ = 0;
+  ಭಿನ್ನ maximum = 0;
 };
 
-using rebase_tent_result_item_t = hb_pair_t<float, Triple>;
+using rebase_tent_result_item_t = hb_pair_t<ಭಿನ್ನ, Triple>;
 using rebase_tent_result_t = hb_vector_t<rebase_tent_result_item_t>;
 
 /* renormalize a normalized value v to the range of an axis,
  * considering the prenormalized distances as well as the new axis limits.
  * Ported from fonttools */
-HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
-                                    const TripleDistances &triple_distances,
-                                    bool extrapolate = true);
+HB_INTERNAL ಭಿನ್ನ renormalize_ಮೌಲ್ಯ (ಭಿನ್ನ v, ಧ್ರುವ Triple &triple,
+                                    ಧ್ರುವ TripleDistances &triple_distances,
+                                    ತಾರ್ಕಿಕ extrapolate = ಸತ್ಯ);
 /* Given a tuple (lower,peak,upper) "tent" and new axis limits
  * (axisMin,axisDefault,axisMax), solves how to represent the tent
  * under the new axis configuration.  All values are in normalized
@@ -105,7 +105,7 @@ HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
  * If tent value is Triple{}, that is a special deltaset that should
  * be always-enabled (called "gain").
  */
-HB_INTERNAL void rebase_tent (Triple tent,
+HB_INTERNAL ಶೂನ್ಯ rebase_tent (Triple tent,
 			      Triple axisLimit,
 			      TripleDistances axis_triple_distances,
 			      rebase_tent_result_t &out,

@@ -30,18 +30,18 @@
 #ifndef HB_CORETEXT_HH
 #define HB_CORETEXT_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
-#include "hb-coretext.h"
+#ಅನ್ತರ್ಭಾವ "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#ಅನ್ತರ್ಭಾವ "hb-aat-layout.hh"
 
-
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
 
 HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+create_cg_font (CFArrayRef ct_font_desc_array, unsigned ಪೂರ್ಣಾಙ್ಕ index);
+
+HB_INTERNAL CGFontRef
+create_cg_font (hb_blob_t *blob, unsigned ಪೂರ್ಣಾಙ್ಕ index);
 
 HB_INTERNAL CGFontRef
 create_cg_font (hb_face_t *face);
@@ -51,47 +51,47 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size);
 
 
 template <typename T>
-struct hb_cf_releaser_t
+ಸಂರಚನಾ hb_cf_releaser_t
 {
-  static void release (T obj)
+  ಸ್ಥಿರ ಶೂನ್ಯ release (T obj)
   {
-    if (obj)
+    ಯದಿ (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGFontRef>
+ಸಂರಚನಾ hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  ಸ್ಥಿರ ಶೂನ್ಯ release (CGFontRef obj)
   {
-    if (obj)
+    ಯದಿ (obj)
       CGFontRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+ಸಂರಚನಾ hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  ಸ್ಥಿರ ಶೂನ್ಯ release (CGDataProviderRef obj)
   {
-    if (obj)
+    ಯದಿ (obj)
       CGDataProviderRelease (obj);
   }
 };
 
 template <>
-struct hb_cf_releaser_t<CGPathRef>
+ಸಂರಚನಾ hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  ಸ್ಥಿರ ಶೂನ್ಯ release (CGPathRef obj)
   {
-    if (obj)
+    ಯದಿ (obj)
       CGPathRelease (obj);
   }
 };
 
 template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+ಸಂರಚನಾ hb_cf_ptr_t
 {
   using element_type = T;
 
@@ -99,20 +99,20 @@ struct hb_cf_ptr_t
   constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
   explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (ಧ್ರುವ hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t &operator = (ಧ್ರುವ hb_cf_ptr_t &) = delete;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
   hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    ಪ್ರತ್ಯಾಗಮ *ಏತತ್;
   }
 
   hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    ಪ್ರತ್ಯಾಗಮ *ಏತತ್;
   }
 
   ~hb_cf_ptr_t ()
@@ -121,9 +121,9 @@ struct hb_cf_ptr_t
     p = nullptr;
   }
 
-  void reset (T new_p = nullptr)
+  ಶೂನ್ಯ reset (T new_p = nullptr)
   {
-    if (p != new_p)
+    ಯದಿ (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -135,27 +135,27 @@ struct hb_cf_ptr_t
   {
     T old_p = p;
     p = nullptr;
-    return old_p;
+    ಪ್ರತ್ಯಾಗಮ old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () ಧ್ರುವ noexcept { ಪ್ರತ್ಯಾಗಮ p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  operator T () ಧ್ರುವ noexcept { ಪ್ರತ್ಯಾಗಮ p; }
+  explicit operator ತಾರ್ಕಿಕ () ಧ್ರುವ noexcept { ಪ್ರತ್ಯಾಗಮ p != nullptr; }
+  ತಾರ್ಕಿಕ operator ! () ಧ್ರುವ noexcept { ಪ್ರತ್ಯಾಗಮ !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  ಶೂನ್ಯ swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  friend ಶೂನ್ಯ swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  ಗುಪ್ತ:
   T p;
 };
 

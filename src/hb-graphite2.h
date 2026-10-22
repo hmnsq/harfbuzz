@@ -26,9 +26,9 @@
 #ifndef HB_GRAPHITE2_H
 #define HB_GRAPHITE2_H
 
-#include "hb.h"
+#ಅನ್ತರ್ಭಾವ "hb.h"
 
-#include <graphite2/Font.h>
+#ಅನ್ತರ್ಭಾವ <graphite2/Font.h>
 
 HB_BEGIN_DECLS
 

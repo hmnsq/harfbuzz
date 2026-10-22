@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+ಸಂರಚನಾ hb_intp_lazy_loader_t : hb_lazy_loader_t<ಪೂರ್ಣಾಙ್ಕ, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ* create () { ಪ್ರತ್ಯಾಗಮ nullptr; }
+  ಸ್ಥಿರ ಶೂನ್ಯ destroy (ಪೂರ್ಣಾಙ್ಕ* l) {}
+  ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ* get_null () { ಪ್ರತ್ಯಾಗಮ nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+ಸಂರಚನಾ hb_void_lazy_loader_t : hb_lazy_loader_t<ಶೂನ್ಯ, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  ಸ್ಥಿರ ಶೂನ್ಯ* create () { ಪ್ರತ್ಯಾಗಮ nullptr; }
+  ಸ್ಥಿರ ಶೂನ್ಯ destroy (ಶೂನ್ಯ* l) {}
+  ಸ್ಥಿರ ಶೂನ್ಯ* get_null () { ಪ್ರತ್ಯಾಗಮ nullptr; }
 };
 
-int
-main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

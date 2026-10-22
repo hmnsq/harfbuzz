@@ -27,8 +27,8 @@
 #ifndef HB_SET_DIGEST_HH
 #define HB_SET_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,110 +63,110 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+ಸ್ಥಿರ constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+ಸಂರಚನಾ hb_set_digest_t
 {
   // No science in these. Intuition and testing only.
   using mask_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  ಸ್ಥಿರ constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
+  ಸ್ಥಿರ constexpr unsigned mask_bytes = ಪರಿಮಾಣ (mask_t);
+  ಸ್ಥಿರ constexpr unsigned mask_bits = ಪರಿಮಾಣ (mask_t) * 8;
+  ಸ್ಥಿರ constexpr hb_codepoint_t mb1 = mask_bits - 1;
+  ಸ್ಥಿರ constexpr mask_t one = 1;
+  ಸ್ಥಿರ constexpr mask_t all = (mask_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  ಶೂನ್ಯ init ()
+  { ಪ್ರತಿ (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  ಶೂನ್ಯ clear () { init (); }
 
-  static hb_set_digest_t full ()
+  ಸ್ಥಿರ hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    ಪ್ರತ್ಯಾಗಮ d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  ಶೂನ್ಯ union_ (ಧ್ರುವ hb_set_digest_t &o)
+  { ಪ್ರತಿ (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  ತಾರ್ಕಿಕ add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    ತಾರ್ಕಿಕ ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = ಅಸತ್ಯ;
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++)
+      ಯದಿ (masks[i] != all)
+	ret = ಸತ್ಯ;
+    ಯದಿ (!ret) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = ಅಸತ್ಯ;
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      ಯದಿ ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      ಅನ್ಯಥಾ
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = ಸತ್ಯ;
       }
     }
-    return ret;
+    ಪ್ರತ್ಯಾಗಮ ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ಶೂನ್ಯ add_array (ಧ್ರುವ T *array, unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ, unsigned ಪೂರ್ಣಾಙ್ಕ stride=ಪರಿಮಾಣ(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
       add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      array = &StructAtOffsetUnaligned<T> ((ಧ್ರುವ ಶೂನ್ಯ *) array, stride);
     }
   }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ಶೂನ್ಯ add_array (ಧ್ರುವ hb_array_t<ಧ್ರುವ T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ತಾರ್ಕಿಕ add_sorted_array (ಧ್ರುವ T *array, unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ, unsigned ಪೂರ್ಣಾಙ್ಕ stride=ಪರಿಮಾಣ(T))
   {
-    add_array (array, count, stride);
-    return true;
+    add_array (array, ಎಣಿಕೆ, stride);
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  ತಾರ್ಕಿಕ add_sorted_array (ಧ್ರುವ hb_sorted_array_t<ಧ್ರುವ T>& arr) { ಪ್ರತ್ಯಾಗಮ add_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  ತಾರ್ಕಿಕ operator [] (hb_codepoint_t g) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  ಶೂನ್ಯ add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  ತಾರ್ಕಿಕ may_have (hb_codepoint_t g) ಧ್ರುವ
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++)
+      ಯದಿ (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  ತಾರ್ಕಿಕ may_intersect (ಧ್ರುವ hb_set_digest_t &o) ಧ್ರುವ
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    ಪ್ರತಿ (unsigned i = 0; i < n; i++)
+      ಯದಿ (!(masks[i] & o.masks[i]))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  private:
+  ಗುಪ್ತ:
 
   mask_t masks[n] = {};
 };

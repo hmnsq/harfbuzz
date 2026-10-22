@@ -1,13 +1,13 @@
 #ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 #define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+ಸಂರಚನಾ ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ PosLookupSubTable SubTable;
 };
 
 }

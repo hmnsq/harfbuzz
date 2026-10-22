@@ -27,15 +27,15 @@
 #ifndef HB_RASTER_IMAGE_HH
 #define HB_RASTER_IMAGE_HH
 
-#include "hb.hh"
-#include "hb-raster.hh"
-#include "hb-raster.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-raster.hh"
+#ಅನ್ತರ್ಭಾವ "hb-raster.h"
+#ಅನ್ತರ್ಭಾವ "hb-object.hh"
+#ಅನ್ತರ್ಭಾವ "hb-vector.hh"
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+ಸಂರಚನಾ hb_raster_image_t
 {
   hb_object_header_t  header;
 
@@ -43,20 +43,20 @@ struct hb_raster_image_t
   hb_raster_extents_t  extents     = {};
   hb_raster_format_t   format      = HB_RASTER_FORMAT_A8;
 
-  HB_INTERNAL static unsigned bytes_per_pixel (hb_raster_format_t format);
-  HB_INTERNAL bool configure (hb_raster_format_t format, hb_raster_extents_t extents);
-  HB_INTERNAL bool deserialize_from_png (hb_blob_t *png);
-  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () const;
-  HB_INTERNAL void clear ();
-  HB_INTERNAL const uint8_t *get_buffer () const;
-  HB_INTERNAL void composite_from (const hb_raster_image_t *src,
+  HB_INTERNAL ಸ್ಥಿರ unsigned bytes_per_pixel (hb_raster_format_t format);
+  HB_INTERNAL ತಾರ್ಕಿಕ configure (hb_raster_format_t format, hb_raster_extents_t extents);
+  HB_INTERNAL ತಾರ್ಕಿಕ deserialize_from_png (hb_blob_t *png);
+  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () ಧ್ರುವ;
+  HB_INTERNAL ಶೂನ್ಯ clear ();
+  HB_INTERNAL ಧ್ರುವ uint8_t *get_buffer () ಧ್ರುವ;
+  HB_INTERNAL ಶೂನ್ಯ composite_from (ಧ್ರುವ hb_raster_image_t *src,
 				   hb_paint_composite_mode_t mode);
 };
 
 /* Composite src image onto dst. */
-HB_INTERNAL void
+HB_INTERNAL ಶೂನ್ಯ
 hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
+			   ಧ್ರುವ hb_raster_image_t *src,
 			   hb_paint_composite_mode_t mode);
 
 

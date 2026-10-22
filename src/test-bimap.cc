@@ -24,26 +24,26 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-bimap.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-bimap.hh"
 
-int
-main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
   hb_bimap_t	bm;
 
-  hb_always_assert (bm.is_empty () == true);
+  hb_always_assert (bm.is_empty () == ಸತ್ಯ);
   bm.set (1, 4);
   bm.set (2, 5);
   bm.set (3, 6);
   hb_always_assert (bm.get_population () == 3);
-  hb_always_assert (bm.has (1) == true);
-  hb_always_assert (bm.has (4) == false);
+  hb_always_assert (bm.has (1) == ಸತ್ಯ);
+  hb_always_assert (bm.has (4) == ಅಸತ್ಯ);
   hb_always_assert (bm[2] == 5);
   hb_always_assert (bm.backward (6) == 3);
   bm.del (1);
-  hb_always_assert (bm.has (1) == false);
-  hb_always_assert (bm.has (3) == true);
+  hb_always_assert (bm.has (1) == ಅಸತ್ಯ);
+  hb_always_assert (bm.has (3) == ಸತ್ಯ);
   bm.clear ();
   hb_always_assert (bm.get_population () == 0);
 
@@ -70,7 +70,7 @@ main (int argc, char **argv)
   hb_always_assert (ibm.backward (0) == 0);
   hb_always_assert (ibm.backward (1) == 1);
   hb_always_assert (ibm.backward (2) == 2);
-  hb_always_assert (ibm.has (4) == false);
+  hb_always_assert (ibm.has (4) == ಅಸತ್ಯ);
 
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

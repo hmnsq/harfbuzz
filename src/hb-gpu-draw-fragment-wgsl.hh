@@ -1,4 +1,4 @@
-static const char *hb_gpu_draw_fragment_wgsl =
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ *hb_gpu_draw_fragment_wgsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

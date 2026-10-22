@@ -27,37 +27,37 @@
 #ifndef HB_VECTOR_PATH_HH
 #define HB_VECTOR_PATH_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-vector.h"
-#include "hb-draw.h"
-#include "hb-vector-buf.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-vector.hh"
+#ಅನ್ತರ್ಭಾವ "hb-vector.h"
+#ಅನ್ತರ್ಭಾವ "hb-draw.h"
+#ಅನ್ತರ್ಭಾವ "hb-vector-buf.hh"
 
 /* Lightweight path sink: serializes hb_draw_* calls into an
  * external char buffer as either SVG path-data or PDF path
  * operators, depending on format.  Used by the vector paint
  * backends to accumulate arbitrary clip paths (and by the
  * SVG backend to emit glyph outlines into defs). */
-struct hb_vector_path_sink_t
+ಸಂರಚನಾ hb_vector_path_sink_t
 {
   hb_vector_buf_t *path;
   unsigned precision;
-  float x_scale;
-  float y_scale;
+  ಭಿನ್ನ x_scale;
+  ಭಿನ್ನ y_scale;
   int64_t *budget;
 
-  bool begin_command ()
+  ತಾರ್ಕಿಕ begin_command ()
   {
-    return likely (!path->in_error () && !(budget && *budget < 0));
+    ಪ್ರತ್ಯಾಗಮ likely (!path->in_error () && !(budget && *budget < 0));
   }
 
-  void end_command ()
+  ಶೂನ್ಯ end_command ()
   {
     /* Serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (!budget) return;
-    if (unlikely (path->in_error ()))
+    ಯದಿ (!budget) ಪ್ರತ್ಯಾಗಮ;
+    ಯದಿ (unlikely (path->in_error ()))
       *budget = 0;
   }
 };

@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LTAG_TABLE_HH
 #define HB_AAT_LTAG_TABLE_HH
 
-#include "hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
@@ -34,58 +34,58 @@
 #define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
 
 
-namespace AAT {
+ನಾಮಾಕಾಶ AAT {
 
-using namespace OT;
+using ನಾಮಾಕಾಶ OT;
 
 
-struct FTStringRange
+ಸಂರಚನಾ FTStringRange
 {
-  friend struct ltag;
+  friend ಸಂರಚನಾ ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
 		  hb_barrier () &&
 		  (base+tag).sanitize (c, length));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		tag;		/* Offset from the start of the table to
 				 * the beginning of the string */
   HBUINT16	length;		/* String length (in bytes) */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct ltag
+ಸಂರಚನಾ ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
+    ಧ್ರುವ FTStringRange &range = tagRanges[i];
+    ಪ್ರತ್ಯಾಗಮ hb_language_from_string ((ಧ್ರುವ ವರ್ಣ *) (ಏತತ್+range.tag).arrayZ,
 				    range.length);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  hb_barrier () &&
 			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  tagRanges.sanitize (c, ಏತತ್)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT32	version;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
   Array32Of<FTStringRange>
 		tagRanges;	/* Range for each tag's string */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (12, tagRanges);
 };
 

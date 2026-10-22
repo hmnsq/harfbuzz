@@ -25,26 +25,26 @@
 #ifndef HB_SUBSET_CFF2_TO_CFF1_HH
 #define HB_SUBSET_CFF2_TO_CFF1_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff1-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff2-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-subset-cff-common.hh"
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
   // Forward declarations - these are defined in hb-subset-cff2.cc
-  struct cff2_subset_plan;
+  ಸಂರಚನಾ cff2_subset_plan;
 }
 
-namespace CFF {
+ನಾಮಾಕಾಶ CFF {
 
 // Forward declaration
-struct cff2_top_dict_values_t;
+ಸಂರಚನಾ cff2_ತುದಿ_dict_ಮೌಲ್ಯಗಳು_t;
 
 // Default font name for converted CFF1 fonts
-static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
+ಸ್ಥಿರ constexpr ಧ್ರುವ ವರ್ಣ CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
 
 /*
  * CFF2 to CFF1 Converter
@@ -83,60 +83,60 @@ static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
  * - Add endchar to CharStrings (required in CFF1, optional in CFF2)
  */
 
-struct cff1_subset_plan_from_cff2_t
+ಸಂರಚನಾ cff1_subset_plan_from_cff2_t
 {
   // Inherits most data from cff2_subset_plan
-  const OT::cff2_subset_plan *cff2_plan;
+  ಧ್ರುವ OT::cff2_subset_plan *cff2_plan;
 
   // CFF1-specific additions
-  hb_vector_t<unsigned char> fontName;  // Single font name for Name INDEX
+  hb_vector_t<unsigned ವರ್ಣ> fontName;  // Single font name for Name INDEX
 
-  bool create (const OT::cff2_subset_plan &cff2_plan_)
+  ತಾರ್ಕಿಕ create (ಧ್ರುವ OT::cff2_subset_plan &cff2_plan_)
   {
     cff2_plan = &cff2_plan_;
 
     // Create a simple font name (CFF1 requires a Name INDEX)
     fontName.resize (strlen (CFF1_DEFAULT_FONT_NAME));
-    if (fontName.in_error ()) return false;
+    ಯದಿ (fontName.in_error ()) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     memcpy (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, strlen (CFF1_DEFAULT_FONT_NAME));
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 };
 
 /* CFF1 Top DICT operator serializer that adds ROS and removes CFF2-specific ops */
-struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+ಸಂರಚನಾ cff1_from_cff2_ತುದಿ_dict_op_serializer_t : cff_ತುದಿ_dict_op_serializer_t<>
 {
-  bool serialize (hb_serialize_context_t *c,
-                  const op_str_t &opstr,
-                  const cff_sub_table_info_t &info) const
+  ತಾರ್ಕಿಕ serialize (hb_serialize_context_t *c,
+                  ಧ್ರುವ op_str_t &opstr,
+                  ಧ್ರುವ cff_sub_table_info_t &info) ಧ್ರುವ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ಏತತ್);
 
-    switch (opstr.op)
+    ವಿಕಲ್ಪ (opstr.op)
     {
-      case OpCode_vstore:
+      ಪಕ್ಷ OpCode_vstore:
         // CFF2-only operator, skip it
-        return_trace (true);
+        return_trace (ಸತ್ಯ);
 
-      case OpCode_CharStrings:
+      ಪಕ್ಷ OpCode_CharStrings:
         return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
-      case OpCode_FDSelect:
+      ಪಕ್ಷ OpCode_FDArray:
+      ಪಕ್ಷ OpCode_FDSelect:
         // These are explicitly serialized in the main function to ensure they're present
         // even if CFF2 doesn't have them. Skip them here to avoid duplication.
-        return_trace (true);
+        return_trace (ಸತ್ಯ);
 
-      default:
+      ಸ್ವಭಾವ:
         return_trace (copy_opstr (c, opstr));
     }
   }
 
   // Serialize ROS operator to make this a CID-keyed font
-  bool serialize_ros (hb_serialize_context_t *c) const
+  ತಾರ್ಕಿಕ serialize_ros (hb_serialize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ಏತತ್);
 
     // ROS = Registry-Ordering-Supplement
     // We use "Adobe", "Identity", 0 for maximum compatibility
@@ -155,8 +155,8 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     encoder.encode_int (0);    // Supplement
     encoder.encode_op (OpCode_ROS);
 
-    if (encoder.in_error ())
-      return_trace (false);
+    ಯದಿ (encoder.in_error ())
+      return_trace (ಅಸತ್ಯ);
 
     auto bytes = buff.as_bytes ();
     return_trace (c->embed (bytes.arrayZ, bytes.length));
@@ -164,11 +164,11 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 };
 
 /* Main serialization function */
-HB_INTERNAL bool
+HB_INTERNAL ತಾರ್ಕಿಕ
 serialize_cff2_to_cff1 (hb_serialize_context_t *c,
                         OT::cff2_subset_plan &plan,
-                        const cff2_top_dict_values_t &cff2_topDict,
-                        const OT::cff2::accelerator_subset_t &acc);
+                        ಧ್ರುವ cff2_ತುದಿ_dict_ಮೌಲ್ಯಗಳು_t &cff2_ತುದಿ_Dict,
+                        ಧ್ರುವ OT::cff2::accelerator_subset_t &acc);
 
 } /* namespace CFF */
 

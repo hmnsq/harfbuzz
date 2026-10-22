@@ -28,31 +28,31 @@
 #define HB_OT_CFF1_TABLE_CC
 #ifdef HB_OT_CFF1_TABLE_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_CFF
 
-#include "hb-draw.hh"
-#include "hb-algs.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-cff1-interp-cs.hh"
+#ಅನ್ತರ್ಭಾವ "hb-draw.hh"
+#ಅನ್ತರ್ಭಾವ "hb-algs.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff1-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-cff1-interp-cs.hh"
 
-using namespace CFF;
+using ನಾಮಾಕಾಶ CFF;
 
-struct sid_to_gid_t
+ಸಂರಚನಾ sid_to_gid_t
 {
   uint16_t  sid;
   uint8_t   gid;
 
-  int cmp (uint16_t a) const
+  ಪೂರ್ಣಾಙ್ಕ cmp (uint16_t a) ಧ್ರುವ
   {
-    if (a == sid) return 0;
-    return (a < sid) ? -1 : 1;
+    ಯದಿ (a == sid) ಪ್ರತ್ಯಾಗಮ 0;
+    ಪ್ರತ್ಯಾಗಮ (a < sid) ? -1 : 1;
   }
 };
 
 /* SID to code */
-static const uint8_t standard_encoding_to_code [] =
+ಸ್ಥಿರ ಧ್ರುವ uint8_t standard_encoding_to_code [] =
 {
     0,   32,   33,   34,   35,   36,   37,   38,  39,   40,   41,   42,   43,   44,   45,   46,
    47,   48,   49,   50,   51,   52,   53,   54,  55,   56,   57,   58,   59,   60,   61,   62,
@@ -67,7 +67,7 @@ static const uint8_t standard_encoding_to_code [] =
 };
 
 /* SID to code */
-static const uint8_t expert_encoding_to_code [] =
+ಸ್ಥಿರ ಧ್ರುವ uint8_t expert_encoding_to_code [] =
 {
     0,   32,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   44,   45,   46,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   58,   59,    0,    0,    0,
@@ -96,7 +96,7 @@ static const uint8_t expert_encoding_to_code [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_charset_to_sid [] =
+ಸ್ಥಿರ ಧ್ರುವ uint16_t expert_charset_to_sid [] =
 {
     0,    1,  229,  230,  231,  232,  233,  234,  235,  236,  237,  238,   13,   14,   15,   99,
   239,  240,  241,  242,  243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  252,
@@ -112,7 +112,7 @@ static const uint16_t expert_charset_to_sid [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_subset_charset_to_sid [] =
+ಸ್ಥಿರ ಧ್ರುವ uint16_t expert_subset_charset_to_sid [] =
 {
     0,    1,  231,  232,  235,  236,  237,  238,   13,   14,   15,   99,  239,  240,  241,  242,
   243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  253,  254,  255,  256,  257,
@@ -123,7 +123,7 @@ static const uint16_t expert_subset_charset_to_sid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_charset_sid_to_gid [] =
+ಸ್ಥಿರ ಧ್ರುವ sid_to_gid_t expert_charset_sid_to_gid [] =
 {
     { 1, 1 },     { 13, 12 },   { 14, 13 },   { 15, 14 },
     { 27, 26 },   { 28, 27 },   { 99, 15 },   { 109, 46 },
@@ -170,7 +170,7 @@ static const sid_to_gid_t expert_charset_sid_to_gid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
+ಸ್ಥಿರ ಧ್ರುವ sid_to_gid_t expert_subset_charset_sid_to_gid [] =
 {
   { 1, 1 },       { 13, 8 },      { 14, 9 },      { 15, 10 },
   { 27, 22 },     { 28, 23 },     { 99, 11 },     { 109, 41 },
@@ -197,7 +197,7 @@ static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
 };
 
 /* code to SID */
-static const uint8_t standard_encoding_to_sid [] =
+ಸ್ಥಿರ ಧ್ರುವ uint8_t standard_encoding_to_sid [] =
 {
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -219,128 +219,128 @@ static const uint8_t standard_encoding_to_sid [] =
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (standard_encoding_to_code))
-    return (hb_codepoint_t)standard_encoding_to_code[sid];
-  else
-    return 0;
+  ಯದಿ (sid < ARRAY_LENGTH (standard_encoding_to_code))
+    ಪ್ರತ್ಯಾಗಮ (hb_codepoint_t)standard_encoding_to_code[sid];
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (expert_encoding_to_code))
-    return (hb_codepoint_t)expert_encoding_to_code[sid];
-  else
-    return 0;
+  ಯದಿ (sid < ARRAY_LENGTH (expert_encoding_to_code))
+    ಪ್ರತ್ಯಾಗಮ (hb_codepoint_t)expert_encoding_to_code[sid];
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_charset_to_sid))
-    return (hb_codepoint_t)expert_charset_to_sid[glyph];
-  else
-    return 0;
+  ಯದಿ (glyph < ARRAY_LENGTH (expert_charset_to_sid))
+    ಪ್ರತ್ಯಾಗಮ (hb_codepoint_t)expert_charset_to_sid[glyph];
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
-    return (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
-  else
-    return 0;
+  ಯದಿ (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
+    ಪ್ರತ್ಯಾಗಮ (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ಧ್ರುವ auto *pair = hb_sorted_array (expert_charset_sid_to_gid).bsearch (sid);
+  ಪ್ರತ್ಯಾಗಮ pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ಧ್ರುವ auto *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).bsearch (sid);
+  ಪ್ರತ್ಯಾಗಮ pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_sid (hb_codepoint_t code)
 {
-  if (code < ARRAY_LENGTH (standard_encoding_to_sid))
-    return (hb_codepoint_t)standard_encoding_to_sid[code];
-  else
-    return CFF_UNDEF_SID;
+  ಯದಿ (code < ARRAY_LENGTH (standard_encoding_to_sid))
+    ಪ್ರತ್ಯಾಗಮ (hb_codepoint_t)standard_encoding_to_sid[code];
+  ಅನ್ಯಥಾ
+    ಪ್ರತ್ಯಾಗಮ CFF_UNDEF_SID;
 }
 
-struct bounds_t
+ಸಂರಚನಾ bounds_t
 {
-  void init ()
+  ಶೂನ್ಯ init ()
   {
     min.set_int (INT_MAX, INT_MAX);
     max.set_int (INT_MIN, INT_MIN);
   }
 
-  void update (const point_t &pt)
+  ಶೂನ್ಯ update (ಧ್ರುವ point_t &pt)
   {
-    if (pt.x < min.x) min.x = pt.x;
-    if (pt.x > max.x) max.x = pt.x;
-    if (pt.y < min.y) min.y = pt.y;
-    if (pt.y > max.y) max.y = pt.y;
+    ಯದಿ (pt.x < min.x) min.x = pt.x;
+    ಯದಿ (pt.x > max.x) max.x = pt.x;
+    ಯದಿ (pt.y < min.y) min.y = pt.y;
+    ಯದಿ (pt.y > max.y) max.y = pt.y;
   }
 
-  void merge (const bounds_t &b)
+  ಶೂನ್ಯ merge (ಧ್ರುವ bounds_t &b)
   {
-    if (empty ())
-      *this = b;
-    else if (!b.empty ())
+    ಯದಿ (empty ())
+      *ಏತತ್ = b;
+    ಅನ್ಯಥಾ ಯದಿ (!b.empty ())
     {
-      if (b.min.x < min.x) min.x = b.min.x;
-      if (b.max.x > max.x) max.x = b.max.x;
-      if (b.min.y < min.y) min.y = b.min.y;
-      if (b.max.y > max.y) max.y = b.max.y;
+      ಯದಿ (b.min.x < min.x) min.x = b.min.x;
+      ಯದಿ (b.max.x > max.x) max.x = b.max.x;
+      ಯದಿ (b.min.y < min.y) min.y = b.min.y;
+      ಯದಿ (b.max.y > max.y) max.y = b.max.y;
     }
   }
 
-  void offset (const point_t &delta)
+  ಶೂನ್ಯ offset (ಧ್ರುವ point_t &delta)
   {
-    if (!empty ())
+    ಯದಿ (!empty ())
     {
       min.move (delta);
       max.move (delta);
     }
   }
 
-  bool empty () const { return (min.x >= max.x) || (min.y >= max.y); }
+  ತಾರ್ಕಿಕ empty () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ (min.x >= max.x) || (min.y >= max.y); }
 
   point_t min;
   point_t max;
 };
 
-struct cff1_extents_param_t
+ಸಂರಚನಾ cff1_extents_param_t
 {
-  cff1_extents_param_t (const OT::cff1::accelerator_t *_cff) : cff (_cff)
+  cff1_extents_param_t (ಧ್ರುವ OT::cff1::accelerator_t *_cff) : cff (_cff)
   {
     bounds.init ();
   }
 
-  void start_path   ()       { path_open = true; }
-  void end_path     ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  ಶೂನ್ಯ start_path   ()       { path_open = ಸತ್ಯ; }
+  ಶೂನ್ಯ end_path     ()       { path_open = ಅಸತ್ಯ; }
+  ತಾರ್ಕಿಕ is_path_open () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ path_open; }
 
-  bool path_open = false;
+  ತಾರ್ಕಿಕ path_open = ಅಸತ್ಯ;
   bounds_t bounds;
 
-  const OT::cff1::accelerator_t *cff;
+  ಧ್ರುವ OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
+ಸಂರಚನಾ cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt)
+  ಸ್ಥಿರ ಶೂನ್ಯ moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ಧ್ರುವ point_t &pt)
   {
     param.end_path ();
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
+  ಸ್ಥಿರ ಶೂನ್ಯ ಸಾಲು (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ಧ್ರುವ point_t &pt1)
   {
-    if (!param.is_path_open ())
+    ಯದಿ (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -349,9 +349,9 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
     param.bounds.update (env.get_pt ());
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ಸ್ಥಿರ ಶೂನ್ಯ curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, ಧ್ರುವ point_t &pt1, ಧ್ರುವ point_t &pt2, ಧ್ರುವ point_t &pt3)
   {
-    if (!param.is_path_open ())
+    ಯದಿ (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -364,95 +364,95 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
   }
 };
 
-static bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac=false, int64_t *budget = nullptr);
+ಸ್ಥಿರ ತಾರ್ಕಿಕ _get_bounds (ಧ್ರುವ OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, ತಾರ್ಕಿಕ in_seac=ಅಸತ್ಯ, int64_t *budget = nullptr);
 
-struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
+ಸಂರಚನಾ cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
+  ಸ್ಥಿರ ಶೂನ್ಯ process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
+    unsigned ಪೂರ್ಣಾಙ್ಕ  n = env.arg_ರಾಶಿ.get_ಎಣಿಕೆ ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_ರಾಶಿ[n-4];
+    delta.y = env.arg_ರಾಶಿ[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_ರಾಶಿ[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_ರಾಶಿ[n-1].to_int ());
 
     bounds_t  base_bounds, accent_bounds;
-    if (likely (!env.in_seac && base && accent
-	       && _get_bounds (param.cff, base, base_bounds, true, env.get_budget ())
-	       && _get_bounds (param.cff, accent, accent_bounds, true, env.get_budget ())))
+    ಯದಿ (likely (!env.in_seac && base && accent
+	       && _get_bounds (param.cff, base, base_bounds, ಸತ್ಯ, env.get_budget ())
+	       && _get_bounds (param.cff, accent, accent_bounds, ಸತ್ಯ, env.get_budget ())))
     {
       param.bounds.merge (base_bounds);
       accent_bounds.offset (delta);
       param.bounds.merge (accent_bounds);
     }
-    else
+    ಅನ್ಯಥಾ
       env.set_error ();
   }
 };
 
-bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
+ತಾರ್ಕಿಕ _get_bounds (ಧ್ರುವ OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, ತಾರ್ಕಿಕ in_seac, int64_t *budget)
 {
   bounds.init ();
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  ಯದಿ (unlikely (!cff->is_valid () || (glyph >= cff->ಅಂಕೆ_glyphs))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  unsigned ಪೂರ್ಣಾಙ್ಕ fd = cff->fdSelect->get_fd (glyph);
+  ಧ್ರುವ hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_extents_t, cff1_extents_param_t> interp (env);
   cff1_extents_param_t param (cff);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ಯದಿ (unlikely (!interp.interpret (param, budget))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   bounds = param.bounds;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) const
+ತಾರ್ಕಿಕ OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) ಧ್ರುವ
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 #endif
 
   bounds_t bounds;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ರಾಶಿ_budget = HB_BUDGET_GLYPH;
+  ಯದಿ (!budget) budget = &ರಾಶಿ_budget;
 
-  if (!_get_bounds (this, glyph, bounds, false, budget))
-    return false;
+  ಯದಿ (!_get_bounds (ಏತತ್, glyph, bounds, ಅಸತ್ಯ, budget))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (bounds.min.x >= bounds.max.x)
+  ಯದಿ (bounds.min.x >= bounds.max.x)
   {
     extents->width = 0;
     extents->x_bearing = 0;
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    double x_bearing = roundf (bounds.min.x.to_real ());
+    ದ್ವಿಗುಣ x_bearing = roundf (bounds.min.x.to_real ());
     extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (bounds.max.x.to_real ()) - x_bearing);
+    extents->width = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) roundf (bounds.max.x.to_real ()) - x_bearing);
   }
-  if (bounds.min.y >= bounds.max.y)
+  ಯದಿ (bounds.min.y >= bounds.max.y)
   {
     extents->height = 0;
     extents->y_bearing = 0;
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    double y_bearing = roundf (bounds.max.y.to_real ());
+    ದ್ವಿಗುಣ y_bearing = roundf (bounds.max.y.to_real ());
     extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (bounds.min.y.to_real ()) - y_bearing);
+    extents->height = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) roundf (bounds.min.y.to_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-struct cff1_path_param_t
+ಸಂರಚನಾ cff1_path_param_t
 {
-  cff1_path_param_t (const OT::cff1::accelerator_t *cff_, hb_font_t *font_,
+  cff1_path_param_t (ಧ್ರುವ OT::cff1::accelerator_t *cff_, hb_font_t *font_,
 		     hb_draw_session_t &draw_session_, point_t *delta_)
   {
     draw_session = &draw_session_;
@@ -461,24 +461,24 @@ struct cff1_path_param_t
     delta = delta_;
   }
 
-  void move_to (const point_t &p)
+  ಶೂನ್ಯ move_to (ಧ್ರುವ point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
+    ಯದಿ (delta) point.move (*delta);
     draw_session->move_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
-  void line_to (const point_t &p)
+  ಶೂನ್ಯ ಸಾಲು_to (ಧ್ರುವ point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
-    draw_session->line_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
+    ಯದಿ (delta) point.move (*delta);
+    draw_session->ಸಾಲು_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  ಶೂನ್ಯ cubic_to (ಧ್ರುವ point_t &p1, ಧ್ರುವ point_t &p2, ಧ್ರುವ point_t &p3)
   {
     point_t point1 = p1, point2 = p2, point3 = p3;
-    if (delta)
+    ಯದಿ (delta)
     {
       point1.move (*delta);
       point2.move (*delta);
@@ -489,165 +489,165 @@ struct cff1_path_param_t
 			   font->em_fscalef_x (point3.x.to_real ()), font->em_fscalef_y (point3.y.to_real ()));
   }
 
-  void end_path () { draw_session->close_path (); }
+  ಶೂನ್ಯ end_path () { draw_session->close_path (); }
 
   hb_font_t *font;
   hb_draw_session_t *draw_session;
   point_t *delta;
 
-  const OT::cff1::accelerator_t *cff;
+  ಧ್ರುವ OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
+ಸಂರಚನಾ cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, const point_t &pt)
+  ಸ್ಥಿರ ಶೂನ್ಯ moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, ಧ್ರುವ point_t &pt)
   {
     param.move_to (pt);
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1)
+  ಸ್ಥಿರ ಶೂನ್ಯ ಸಾಲು (cff1_cs_interp_env_t &env, cff1_path_param_t &param, ಧ್ರುವ point_t &pt1)
   {
-    param.line_to (pt1);
+    param.ಸಾಲು_to (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ಸ್ಥಿರ ಶೂನ್ಯ curve (cff1_cs_interp_env_t &env, cff1_path_param_t &param, ಧ್ರುವ point_t &pt1, ಧ್ರುವ point_t &pt2, ಧ್ರುವ point_t &pt3)
   {
     param.cubic_to (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-static bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
-		       hb_draw_session_t &draw_session, bool in_seac = false, point_t *delta = nullptr,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ _get_path (ಧ್ರುವ OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+		       hb_draw_session_t &draw_session, ತಾರ್ಕಿಕ in_seac = ಅಸತ್ಯ, point_t *delta = nullptr,
 		       int64_t *budget = nullptr);
 
-struct cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
+ಸಂರಚನಾ cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
+  ಸ್ಥಿರ ಶೂನ್ಯ process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
   {
     /* End previous path */
     param.end_path ();
 
-    unsigned int n = env.argStack.get_count ();
+    unsigned ಪೂರ್ಣಾಙ್ಕ n = env.arg_ರಾಶಿ.get_ಎಣಿಕೆ ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_ರಾಶಿ[n-4];
+    delta.y = env.arg_ರಾಶಿ[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_ರಾಶಿ[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_ರಾಶಿ[n-1].to_int ());
 
-    if (unlikely (!(!env.in_seac && base && accent
-		    && _get_path (param.cff, param.font, base, *param.draw_session, true, nullptr, env.get_budget ())
-		    && _get_path (param.cff, param.font, accent, *param.draw_session, true, &delta, env.get_budget ()))))
+    ಯದಿ (unlikely (!(!env.in_seac && base && accent
+		    && _get_path (param.cff, param.font, base, *param.draw_session, ಸತ್ಯ, nullptr, env.get_budget ())
+		    && _get_path (param.cff, param.font, accent, *param.draw_session, ಸತ್ಯ, &delta, env.get_budget ()))))
       env.set_error ();
   }
 };
 
-bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
-		hb_draw_session_t &draw_session, bool in_seac, point_t *delta,
+ತಾರ್ಕಿಕ _get_path (ಧ್ರುವ OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+		hb_draw_session_t &draw_session, ತಾರ್ಕಿಕ in_seac, point_t *delta,
 		int64_t *budget)
 {
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  ಯದಿ (unlikely (!cff->is_valid () || (glyph >= cff->ಅಂಕೆ_glyphs))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  unsigned ಪೂರ್ಣಾಙ್ಕ fd = cff->fdSelect->get_fd (glyph);
+  ಧ್ರುವ hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_path_t, cff1_path_param_t> interp (env);
   cff1_path_param_t param (cff, font, draw_session, delta);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ಯದಿ (unlikely (!interp.interpret (param, budget))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   /* Let's end the path specially since it is called inside seac also */
   param.end_path ();
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) const
+ತಾರ್ಕಿಕ OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) ಧ್ರುವ
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 #endif
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ರಾಶಿ_budget = HB_BUDGET_GLYPH;
+  ಯದಿ (!budget) budget = &ರಾಶಿ_budget;
 
-  return _get_path (this, font, glyph, draw_session, false, nullptr, budget);
+  ಪ್ರತ್ಯಾಗಮ _get_path (ಏತತ್, font, glyph, draw_session, ಅಸತ್ಯ, nullptr, budget);
 }
 
-struct get_seac_param_t
+ಸಂರಚನಾ get_seac_param_t
 {
-  get_seac_param_t (const OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
+  get_seac_param_t (ಧ್ರುವ OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
 
-  bool has_seac () const { return base && accent; }
+  ತಾರ್ಕಿಕ has_seac () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ base && accent; }
 
-  const OT::cff1::accelerator_subset_t *cff;
+  ಧ್ರುವ OT::cff1::accelerator_subset_t *cff;
   hb_codepoint_t  base = 0;
   hb_codepoint_t  accent = 0;
 };
 
-struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
+ಸಂರಚನಾ cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
+  ಸ್ಥಿರ ಶೂನ್ಯ process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
-    hb_codepoint_t  base_char = (hb_codepoint_t)env.argStack[n-2].to_int ();
-    hb_codepoint_t  accent_char = (hb_codepoint_t)env.argStack[n-1].to_int ();
+    unsigned ಪೂರ್ಣಾಙ್ಕ  n = env.arg_ರಾಶಿ.get_ಎಣಿಕೆ ();
+    hb_codepoint_t  base_char = (hb_codepoint_t)env.arg_ರಾಶಿ[n-2].to_int ();
+    hb_codepoint_t  accent_char = (hb_codepoint_t)env.arg_ರಾಶಿ[n-1].to_int ();
 
     param.base = param.cff->std_code_to_glyph (base_char);
     param.accent = param.cff->std_code_to_glyph (accent_char);
   }
 };
 
-static bool
-_cff1_charstring_may_end_in_seac (const hb_ubytes_t &str)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+_cff1_charstring_may_end_in_seac (ಧ್ರುವ hb_ubytes_t &str)
 {
-  if (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
-    return false;
+  ಯದಿ (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  unsigned int end = str.length - 1;
-  if (!end) return false;
+  unsigned ಪೂರ್ಣಾಙ್ಕ end = str.length - 1;
+  ಯದಿ (!end) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  unsigned int last = str[end - 1];
+  unsigned ಪೂರ್ಣಾಙ್ಕ last = str[end - 1];
 
   /* Type 2 numbers are not self-synchronizing when read backwards.
    * Keep interpreting if any number encoding could end at endchar. */
-  if (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
-    return true;
-  if (end >= 2 &&
+  ಯದಿ (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+  ಯದಿ (end >= 2 &&
       OpCode_TwoBytePosInt0 <= str[end - 2] &&
       str[end - 2] <= OpCode_TwoByteNegInt3)
-    return true;
-  if (end >= 3 && str[end - 3] == OpCode_shortint)
-    return true;
-  if (end >= 5 && str[end - 5] == OpCode_fixedcs)
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+  ಯದಿ (end >= 3 && str[end - 3] == OpCode_shortint)
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+  ಯದಿ (end >= 5 && str[end - 5] == OpCode_fixedcs)
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
   /* A subroutine can leave the seac operands on the shared stack. */
-  return last == OpCode_callsubr || last == OpCode_callgsubr;
+  ಪ್ರತ್ಯಾಗಮ last == OpCode_callsubr || last == OpCode_callgsubr;
 }
 
-bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const
+ತಾರ್ಕಿಕ OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) ಧ್ರುವ
 {
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ಯದಿ (unlikely (!is_valid () || (glyph >= ಅಂಕೆ_glyphs))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  if (unlikely (!_cff1_charstring_may_end_in_seac (str))) return false;
-  cff1_cs_interp_env_t env (str, *this, fd);
+  unsigned ಪೂರ್ಣಾಙ್ಕ fd = fdSelect->get_fd (glyph);
+  ಧ್ರುವ hb_ubytes_t str = (*charStrings)[glyph];
+  ಯದಿ (unlikely (!_cff1_charstring_may_end_in_seac (str))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  cff1_cs_interp_env_t env (str, *ಏತತ್, fd);
   cff1_cs_interpreter_t<cff1_cs_opset_seac_t, get_seac_param_t> interp (env);
-  get_seac_param_t  param (this);
-  if (unlikely (!interp.interpret (param))) return false;
+  get_seac_param_t  param (ಏತತ್);
+  ಯದಿ (unlikely (!interp.interpret (param))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (param.has_seac ())
+  ಯದಿ (param.has_seac ())
   {
     *base = param.base;
     *accent = param.accent;
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 

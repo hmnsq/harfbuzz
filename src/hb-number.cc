@@ -23,124 +23,124 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ifndef HB_ಸಂಖ್ಯೆ_CC
+#define HB_ಸಂಖ್ಯೆ_CC
+#ifdef HB_ಸಂಖ್ಯೆ_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-number.hh"
+#ಅನ್ತರ್ಭಾವ "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+ತಾರ್ಕಿಕ
+hb_parse_double (ಧ್ರುವ ವರ್ಣ **pp, ಧ್ರುವ ವರ್ಣ *end, ದ್ವಿಗುಣ *pv, ತಾರ್ಕಿಕ whole_buffer)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  ಧ್ರುವ ವರ್ಣ *pend = end;
+  ದ್ವಿಗುಣ value = hb_strtod (*pp, &pend);
+  ಯದಿ (unlikely (*pp == pend)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (whole_buffer && end != pend)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   *pv = value;
   *pp = pend;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ
+hb_digit_ಮೌಲ್ಯ (ವರ್ಣ c, ಪೂರ್ಣಾಙ್ಕ base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  ಪೂರ್ಣಾಙ್ಕ d;
+  ಯದಿ ('0' <= c && c <= '9')      d = c - '0';
+  ಅನ್ಯಥಾ ಯದಿ ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  ಅನ್ಯಥಾ ಯದಿ ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  ಅನ್ಯಥಾ ಪ್ರತ್ಯಾಗಮ -1;
+  ಪ್ರತ್ಯಾಗಮ d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ *
+_hb_scan_digits (ಧ್ರುವ ವರ್ಣ *p, ಧ್ರುವ ವರ್ಣ *pe, ಪೂರ್ಣಾಙ್ಕ base,
+                 uint64_t *value, ತಾರ್ಕಿಕ *overflow, ತಾರ್ಕಿಕ *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  ಧ್ರುವ uint64_t cutoff = UINT64_MAX / (unsigned) base;
+  ಧ್ರುವ uint64_t cutlim = UINT64_MAX % (unsigned) base;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  ತಾರ್ಕಿಕ ov = ಅಸತ್ಯ, any = ಅಸತ್ಯ;
 
-  for (; p < pe; p++)
+  ಪ್ರತಿ (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
+    ಪೂರ್ಣಾಙ್ಕ d = hb_digit_ಮೌಲ್ಯ (*p, base);
+    ಯದಿ (d < 0) ಭಙ್ಗ;
+    any = ಸತ್ಯ;
+    ಯದಿ (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = ಸತ್ಯ;
+    ಅನ್ಯಥಾ
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  ಪ್ರತ್ಯಾಗಮ p;
 }
 
 template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+parse_ಸಂಖ್ಯೆ (ಧ್ರುವ ವರ್ಣ **pp, ಧ್ರುವ ವರ್ಣ *end, T *pv,
+               ತಾರ್ಕಿಕ whole_buffer, ಪೂರ್ಣಾಙ್ಕ base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  ಧ್ರುವ ವರ್ಣ *pend = end;
+  ಧ್ರುವ ವರ್ಣ *p = *pp;
+  ತಾರ್ಕಿಕ neg = ಅಸತ್ಯ, any = ಅಸತ್ಯ, overflow = ಅಸತ್ಯ;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  ಯಾವತ್ (p < pend && ISSPACE (*p)) p++;
+  ಯದಿ (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  ಯದಿ (base == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_ಮೌಲ್ಯ (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  ಯದಿ (unlikely (!any || overflow)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  ಯದಿ (unlikely (!post (v, neg, &out))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (whole_buffer && p != pend)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   *pv = out;
   *pp = p;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+ತಾರ್ಕಿಕ
+hb_parse_int (ಧ್ರುವ ವರ್ಣ **pp, ಧ್ರುವ ವರ್ಣ *end, ಪೂರ್ಣಾಙ್ಕ *pv, ತಾರ್ಕಿಕ whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  ಪ್ರತ್ಯಾಗಮ parse_ಸಂಖ್ಯೆ (pp, end, pv, whole_buffer, 10,
+                        [] (uint64_t v, ತಾರ್ಕಿಕ neg, ಪೂರ್ಣಾಙ್ಕ *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    ಯದಿ (unlikely (v > limit)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    *out = (ಪೂರ್ಣಾಙ್ಕ) (neg ? -(int64_t) v : (int64_t) v);
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+ತಾರ್ಕಿಕ
+hb_parse_uint (ಧ್ರುವ ವರ್ಣ **pp, ಧ್ರುವ ವರ್ಣ *end, unsigned *pv,
+               ತಾರ್ಕಿಕ whole_buffer, ಪೂರ್ಣಾಙ್ಕ base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  ಪ್ರತ್ಯಾಗಮ parse_ಸಂಖ್ಯೆ (pp, end, pv, whole_buffer, base,
+                        [] (uint64_t v, ತಾರ್ಕಿಕ neg, unsigned *out) {
+    ಯದಿ (unlikely (v > UINT_MAX)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   });
 }
 

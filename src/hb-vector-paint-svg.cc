@@ -24,36 +24,36 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-paint.hh"
-#include "hb-vector-path.hh"
+#ಅನ್ತರ್ಭಾವ "hb-vector-paint.hh"
+#ಅನ್ತರ್ಭಾವ "hb-paint.hh"
+#ಅನ್ತರ್ಭಾವ "hb-vector-path.hh"
 
-#include <math.h>
+#ಅನ್ತರ್ಭಾವ <math.h>
 
-static const char *
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ *
 hb_vector_svg_extend_mode_str (hb_paint_extend_t ext)
 {
-  switch (ext)
+  ವಿಕಲ್ಪ (ext)
   {
-    case HB_PAINT_EXTEND_PAD: return "pad";
-    case HB_PAINT_EXTEND_REPEAT: return "repeat";
-    case HB_PAINT_EXTEND_REFLECT: return "reflect";
-    default: return "pad";
+    ಪಕ್ಷ HB_PAINT_EXTEND_PAD: ಪ್ರತ್ಯಾಗಮ "pad";
+    ಪಕ್ಷ HB_PAINT_EXTEND_REPEAT: ಪ್ರತ್ಯಾಗಮ "repeat";
+    ಪಕ್ಷ HB_PAINT_EXTEND_REFLECT: ಪ್ರತ್ಯಾಗಮ "reflect";
+    ಸ್ವಭಾವ: ಪ್ರತ್ಯಾಗಮ "pad";
   }
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
 				hb_vector_buf_t *buf,
 				hb_vector_t<hb_color_stop_t> *stops)
 {
-  for (unsigned i = 0; i < stops->length; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < stops->length; i++)
   {
     hb_color_t c = stops->arrayZ[i].color;
     buf->append_str ("<stop offset=\"");
-    buf->append_num (stops->arrayZ[i].offset, 4);
+    buf->append_ಅಂಕೆ (stops->arrayZ[i].offset, 4);
     buf->append_str ("\" stop-color=\"rgb(");
     buf->append_unsigned (hb_color_get_red (c));
     buf->append_c (',');
@@ -61,134 +61,134 @@ hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
     buf->append_c (',');
     buf->append_unsigned (hb_color_get_blue (c));
     buf->append_str (")\"");
-    if (hb_color_get_alpha (c) != 255)
+    ಯದಿ (hb_color_get_alpha (c) != 255)
     {
       buf->append_str (" stop-opacity=\"");
-      buf->append_num (hb_color_get_alpha (c) / 255.f, 4);
+      buf->append_ಅಂಕೆ (hb_color_get_alpha (c) / 255.f, 4);
       buf->append_c ('"');
     }
     buf->append_str ("/>\n");
   }
 }
 
-static const char *
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ *
 hb_vector_svg_composite_mode_str (hb_paint_composite_mode_t mode)
 {
-  switch (mode)
+  ವಿಕಲ್ಪ (mode)
   {
     /* Porter-Duff modes have no SVG mix-blend-mode equivalent;
      * approximate the two that have a plausible color-blend analog,
      * and let the rest fall through to normal (SRC_OVER). */
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_XOR: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_CLEAR:
-    case HB_PAINT_COMPOSITE_MODE_SRC:
-    case HB_PAINT_COMPOSITE_MODE_DEST:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      return nullptr;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return "normal";
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return "overlay";
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return "darken";
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return "lighten";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return "color-dodge";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return "color-burn";
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return "hard-light";
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return "soft-light";
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return "exclusion";
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return "multiply";
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return "hue";
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "saturation";
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return "color";
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "luminosity";
-    default: return nullptr;
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_PLUS: ಪ್ರತ್ಯಾಗಮ "screen";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_XOR: ಪ್ರತ್ಯಾಗಮ "difference";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_CLEAR:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SRC:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DEST:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DEST_IN:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+      ಪ್ರತ್ಯಾಗಮ nullptr;
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SRC_OVER: ಪ್ರತ್ಯಾಗಮ "normal";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SCREEN: ಪ್ರತ್ಯಾಗಮ "screen";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_OVERLAY: ಪ್ರತ್ಯಾಗಮ "overlay";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DARKEN: ಪ್ರತ್ಯಾಗಮ "darken";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_LIGHTEN: ಪ್ರತ್ಯಾಗಮ "lighten";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: ಪ್ರತ್ಯಾಗಮ "color-dodge";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_COLOR_BURN: ಪ್ರತ್ಯಾಗಮ "color-burn";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: ಪ್ರತ್ಯಾಗಮ "hard-light";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: ಪ್ರತ್ಯಾಗಮ "soft-light";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_DIFFERENCE: ಪ್ರತ್ಯಾಗಮ "difference";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_EXCLUSION: ಪ್ರತ್ಯಾಗಮ "exclusion";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_MULTIPLY: ಪ್ರತ್ಯಾಗಮ "multiply";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_HSL_HUE: ಪ್ರತ್ಯಾಗಮ "hue";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: ಪ್ರತ್ಯಾಗಮ "saturation";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_HSL_COLOR: ಪ್ರತ್ಯಾಗಮ "color";
+    ಪಕ್ಷ HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: ಪ್ರತ್ಯಾಗಮ "luminosity";
+    ಸ್ವಭಾವ: ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 }
 
-struct hb_vector_svg_point_t { float x, y; };
-struct hb_vector_svg_rgba_t { float r, g, b, a; };
+ಸಂರಚನಾ hb_vector_svg_point_t { ಭಿನ್ನ x, y; };
+ಸಂರಚನಾ hb_vector_svg_rgba_t { ಭಿನ್ನ r, g, b, a; };
 
-static inline float
-hb_vector_svg_lerp (float a, float b, float t)
-{ return a + (b - a) * t; }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಭಿನ್ನ
+hb_vector_svg_lerp (ಭಿನ್ನ a, ಭಿನ್ನ b, ಭಿನ್ನ t)
+{ ಪ್ರತ್ಯಾಗಮ a + (b - a) * t; }
 
-static inline float
-hb_vector_svg_clamp01 (float v)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಭಿನ್ನ
+hb_vector_svg_clamp01 (ಭಿನ್ನ v)
 {
-  if (v < 0.f) return 0.f;
-  if (v > 1.f) return 1.f;
-  return v;
+  ಯದಿ (v < 0.f) ಪ್ರತ್ಯಾಗಮ 0.f;
+  ಯದಿ (v > 1.f) ಪ್ರತ್ಯಾಗಮ 1.f;
+  ಪ್ರತ್ಯಾಗಮ v;
 }
 
-static inline hb_vector_svg_rgba_t
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_rgba_t
 hb_vector_svg_rgba_from_hb_color (hb_color_t c)
 {
-  return {(float) hb_color_get_red (c) / 255.f,
-          (float) hb_color_get_green (c) / 255.f,
-          (float) hb_color_get_blue (c) / 255.f,
-          (float) hb_color_get_alpha (c) / 255.f};
+  ಪ್ರತ್ಯಾಗಮ {(ಭಿನ್ನ) hb_color_get_red (c) / 255.f,
+          (ಭಿನ್ನ) hb_color_get_green (c) / 255.f,
+          (ಭಿನ್ನ) hb_color_get_blue (c) / 255.f,
+          (ಭಿನ್ನ) hb_color_get_alpha (c) / 255.f};
 }
 
-static inline hb_color_t
-hb_vector_svg_hb_color_from_rgba (const hb_vector_svg_rgba_t &c)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_color_t
+hb_vector_svg_hb_color_from_rgba (ಧ್ರುವ hb_vector_svg_rgba_t &c)
 {
   unsigned r = (unsigned) roundf (hb_vector_svg_clamp01 (c.r) * 255.f);
   unsigned g = (unsigned) roundf (hb_vector_svg_clamp01 (c.g) * 255.f);
   unsigned b = (unsigned) roundf (hb_vector_svg_clamp01 (c.b) * 255.f);
   unsigned a = (unsigned) roundf (hb_vector_svg_clamp01 (c.a) * 255.f);
-  return HB_COLOR (b, g, r, a);
+  ಪ್ರತ್ಯಾಗಮ HB_COLOR (b, g, r, a);
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_lerp_rgba (const hb_vector_svg_rgba_t &c0,
-			 const hb_vector_svg_rgba_t &c1,
-			 float t)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_rgba_t
+hb_vector_svg_lerp_rgba (ಧ್ರುವ hb_vector_svg_rgba_t &c0,
+			 ಧ್ರುವ hb_vector_svg_rgba_t &c1,
+			 ಭಿನ್ನ t)
 {
-  return {hb_vector_svg_lerp (c0.r, c1.r, t),
+  ಪ್ರತ್ಯಾಗಮ {hb_vector_svg_lerp (c0.r, c1.r, t),
           hb_vector_svg_lerp (c0.g, c1.g, t),
           hb_vector_svg_lerp (c0.b, c1.b, t),
           hb_vector_svg_lerp (c0.a, c1.a, t)};
 }
 
-static inline float hb_vector_svg_dot (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return p.x * q.x + p.y * q.y; }
-static inline hb_vector_svg_point_t hb_vector_svg_add (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x + q.x, p.y + q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_sub (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x - q.x, p.y - q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_scale (const hb_vector_svg_point_t &p, float f) { return {p.x * f, p.y * f}; }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಭಿನ್ನ hb_vector_svg_dot (ಧ್ರುವ hb_vector_svg_point_t &p, ಧ್ರುವ hb_vector_svg_point_t &q) { ಪ್ರತ್ಯಾಗಮ p.x * q.x + p.y * q.y; }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_point_t hb_vector_svg_add (ಧ್ರುವ hb_vector_svg_point_t &p, ಧ್ರುವ hb_vector_svg_point_t &q) { ಪ್ರತ್ಯಾಗಮ {p.x + q.x, p.y + q.y}; }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_point_t hb_vector_svg_sub (ಧ್ರುವ hb_vector_svg_point_t &p, ಧ್ರುವ hb_vector_svg_point_t &q) { ಪ್ರತ್ಯಾಗಮ {p.x - q.x, p.y - q.y}; }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_point_t hb_vector_svg_scale (ಧ್ರುವ hb_vector_svg_point_t &p, ಭಿನ್ನ f) { ಪ್ರತ್ಯಾಗಮ {p.x * f, p.y * f}; }
 
-static inline hb_vector_svg_point_t
-hb_vector_svg_normalize (const hb_vector_svg_point_t &p)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_vector_svg_point_t
+hb_vector_svg_normalize (ಧ್ರುವ hb_vector_svg_point_t &p)
 {
-  float len = sqrtf (hb_vector_svg_dot (p, p));
-  if (len == 0.f) return {0.f, 0.f};
-  return hb_vector_svg_scale (p, 1.f / len);
+  ಭಿನ್ನ len = sqrtf (hb_vector_svg_dot (p, p));
+  ಯದಿ (len == 0.f) ಪ್ರತ್ಯಾಗಮ {0.f, 0.f};
+  ಪ್ರತ್ಯಾಗಮ hb_vector_svg_scale (p, 1.f / len);
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 			       unsigned precision,
-			       float cx, float cy, float radius,
-			       float a0, const hb_vector_svg_rgba_t &c0_in,
-			       float a1, const hb_vector_svg_rgba_t &c1_in)
+			       ಭಿನ್ನ cx, ಭಿನ್ನ cy, ಭಿನ್ನ radius,
+			       ಭಿನ್ನ a0, ಧ್ರುವ hb_vector_svg_rgba_t &c0_in,
+			       ಭಿನ್ನ a1, ಧ್ರುವ hb_vector_svg_rgba_t &c1_in)
 {
-  static const float max_angle = HB_PI / 16.f;
+  ಸ್ಥಿರ ಧ್ರುವ ಭಿನ್ನ max_angle = HB_PI / 16.f;
   hb_vector_svg_point_t center = {cx, cy};
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / max_angle);
-  if (num_splits < 1) num_splits = 1;
+  ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_splits = (ಪೂರ್ಣಾಙ್ಕ) ceilf (fabsf (a1 - a0) / max_angle);
+  ಯದಿ (ಅಂಕೆ_splits < 1) ಅಂಕೆ_splits = 1;
 
   hb_vector_svg_point_t p0 = {cosf (a0), sinf (a0)};
   hb_vector_svg_rgba_t color0 = c0_in;
 
-  for (int a = 0; a < num_splits; a++)
+  ಪ್ರತಿ (ಪೂರ್ಣಾಙ್ಕ a = 0; a < ಅಂಕೆ_splits; a++)
   {
-    float k = (a + 1.f) / num_splits;
-    float angle1 = hb_vector_svg_lerp (a0, a1, k);
+    ಭಿನ್ನ k = (a + 1.f) / ಅಂಕೆ_splits;
+    ಭಿನ್ನ angle1 = hb_vector_svg_lerp (a0, a1, k);
     hb_vector_svg_rgba_t color1 = hb_vector_svg_lerp_rgba (c0_in, c1_in, k);
 
     hb_vector_svg_point_t p1 = {cosf (angle1), sinf (angle1)};
@@ -197,13 +197,13 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 
     hb_vector_svg_point_t A = hb_vector_svg_normalize (hb_vector_svg_add (p0, p1));
     hb_vector_svg_point_t U = {-A.y, A.x};
-    float up0 = hb_vector_svg_dot (U, p0);
-    float up1 = hb_vector_svg_dot (U, p1);
-    if (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
+    ಭಿನ್ನ up0 = hb_vector_svg_dot (U, p0);
+    ಭಿನ್ನ up1 = hb_vector_svg_dot (U, p1);
+    ಯದಿ (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
     {
       p0 = p1;
       color0 = color1;
-      continue;
+      ಅನುವರ್ತ;
     }
     hb_vector_svg_point_t C0 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p0, A), p0) / up0));
     hb_vector_svg_point_t C1 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p1, A), p1) / up1));
@@ -215,27 +215,27 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
     hb_color_t mid = hb_vector_svg_hb_color_from_rgba (mid_color);
 
     body->append_str ("<path d=\"M");
-    body->append_num (center.x, precision);
+    body->append_ಅಂಕೆ (center.x, precision);
     body->append_c (',');
-    body->append_num (center.y, precision);
+    body->append_ಅಂಕೆ (center.y, precision);
     body->append_str ("L");
-    body->append_num (sp0.x, precision);
+    body->append_ಅಂಕೆ (sp0.x, precision);
     body->append_c (',');
-    body->append_num (sp0.y, precision);
+    body->append_ಅಂಕೆ (sp0.y, precision);
     body->append_str ("C");
-    body->append_num (sc0.x, precision);
+    body->append_ಅಂಕೆ (sc0.x, precision);
     body->append_c (',');
-    body->append_num (sc0.y, precision);
+    body->append_ಅಂಕೆ (sc0.y, precision);
     body->append_c (' ');
-    body->append_num (sc1.x, precision);
+    body->append_ಅಂಕೆ (sc1.x, precision);
     body->append_c (',');
-    body->append_num (sc1.y, precision);
+    body->append_ಅಂಕೆ (sc1.y, precision);
     body->append_c (' ');
-    body->append_num (sp1.x, precision);
+    body->append_ಅಂಕೆ (sp1.x, precision);
     body->append_c (',');
-    body->append_num (sp1.y, precision);
+    body->append_ಅಂಕೆ (sp1.y, precision);
     body->append_str ("Z\" fill=\"");
-    body->append_svg_color (mid, true);
+    body->append_svg_color (mid, ಸತ್ಯ);
     body->append_str ("\"/>\n");
 
     p0 = p1;
@@ -244,25 +244,25 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_vector_svg_sweep_ctx_t
+ಸಂರಚನಾ hb_vector_svg_sweep_ctx_t
 {
   hb_vector_buf_t *body;
   unsigned precision;
-  float cx, cy, radius;
+  ಭಿನ್ನ cx, cy, radius;
 };
 
-static void
-hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
-				float a1, hb_color_t c1,
-				void *user_data)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_svg_sweep_emit_patch (ಭಿನ್ನ a0, hb_color_t c0,
+				ಭಿನ್ನ a1, hb_color_t c1,
+				ಶೂನ್ಯ *user_data)
 {
   auto *ctx = (hb_vector_svg_sweep_ctx_t *) user_data;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once
    * the buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->body->in_error ()))
-    return;
+  ಯದಿ (unlikely (ctx->body->in_error ()))
+    ಪ್ರತ್ಯಾಗಮ;
   hb_vector_svg_add_sweep_patch (ctx->body, ctx->precision,
 				 ctx->cx, ctx->cy, ctx->radius,
 				 a0, hb_vector_svg_rgba_from_hb_color (c0),
@@ -270,64 +270,64 @@ hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
 }
 
 
-static void hb_vector_paint_push_transform (hb_paint_funcs_t *, void *,
-                                            float, float, float, float, float, float,
-                                            void *);
-static void hb_vector_paint_pop_transform (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_fill_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, void *);
-static void hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static void hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *, void *, float, float, float, float, void *);
-static hb_draw_funcs_t * hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *, void *, void **, void *);
-static void hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_clip (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_color (hb_paint_funcs_t *, void *, hb_bool_t, hb_color_t, void *);
-static hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, void *, hb_blob_t *, unsigned, unsigned, hb_tag_t, float, hb_glyph_extents_t *, void *);
-static void hb_vector_paint_linear_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_radial_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, void *);
-static void hb_vector_paint_push_group (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_group (hb_paint_funcs_t *, void *, hb_paint_composite_mode_t, void *);
-static hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static hb_bool_t
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತಳ್ಳು_transform (hb_paint_funcs_t *, ಶೂನ್ಯ *,
+                                            ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ,
+                                            ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತೆಗೆ_transform (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_fill_glyph (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತಳ್ಳು_clip_glyph (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_codepoint_t, hb_font_t *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತಳ್ಳು_clip_rectangle (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಶೂನ್ಯ *);
+ಸ್ಥಿರ hb_draw_funcs_t * hb_vector_paint_ತಳ್ಳು_clip_path_start (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಶೂನ್ಯ **, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತಳ್ಳು_clip_path_end (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತೆಗೆ_clip (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_color (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_bool_t, hb_color_t, ಶೂನ್ಯ *);
+ಸ್ಥಿರ hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_blob_t *, unsigned, unsigned, hb_tag_t, ಭಿನ್ನ, hb_glyph_extents_t *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_linear_gradient (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_color_ಸಾಲು_t *, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_radial_gradient (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_color_ಸಾಲು_t *, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_color_ಸಾಲು_t *, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಭಿನ್ನ, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತಳ್ಳು_group (hb_paint_funcs_t *, ಶೂನ್ಯ *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ ಶೂನ್ಯ hb_vector_paint_ತೆಗೆ_group (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_paint_composite_mode_t, ಶೂನ್ಯ *);
+ಸ್ಥಿರ hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, ಶೂನ್ಯ *, hb_codepoint_t, hb_font_t *, ಶೂನ್ಯ *);
+ಸ್ಥಿರ hb_bool_t
 hb_vector_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				      void *paint_data,
+				      ಶೂನ್ಯ *paint_data,
 				      unsigned color_index,
 				      hb_color_t *color,
-				      void *user_data HB_UNUSED)
+				      ಶೂನ್ಯ *user_data HB_UNUSED)
 {
   hb_vector_paint_t *paint = (hb_vector_paint_t *) paint_data;
-  if (!color)
-    return false;
+  ಯದಿ (!color)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   hb_color_t *value = nullptr;
-  if (!paint->custom_palette_colors.has (color_index, &value) || !value)
-    return false;
+  ಯದಿ (!paint->custom_palette_colors.has (color_index, &value) || !value)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   *color = *value;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-static inline void free_static_vector_paint_funcs ();
-static struct hb_vector_paint_funcs_lazy_loader_t
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ free_static_vector_paint_funcs ();
+ಸ್ಥಿರ ಸಂರಚನಾ hb_vector_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_vector_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ಸ್ಥಿರ hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_vector_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_vector_paint_pop_transform, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_transform_func (funcs, (hb_paint_ತಳ್ಳು_transform_func_t) hb_vector_paint_ತಳ್ಳು_transform, nullptr, nullptr);
+    hb_paint_funcs_set_ತೆಗೆ_transform_func (funcs, (hb_paint_ತೆಗೆ_transform_func_t) hb_vector_paint_ತೆಗೆ_transform, nullptr, nullptr);
     hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_vector_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_vector_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_vector_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_vector_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_vector_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_vector_paint_pop_clip, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_clip_glyph_func (funcs, (hb_paint_ತಳ್ಳು_clip_glyph_func_t) hb_vector_paint_ತಳ್ಳು_clip_glyph, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_clip_rectangle_func (funcs, (hb_paint_ತಳ್ಳು_clip_rectangle_func_t) hb_vector_paint_ತಳ್ಳು_clip_rectangle, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_clip_path_start_func (funcs, (hb_paint_ತಳ್ಳು_clip_path_start_func_t) hb_vector_paint_ತಳ್ಳು_clip_path_start, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_clip_path_end_func (funcs, (hb_paint_ತಳ್ಳು_clip_path_end_func_t) hb_vector_paint_ತಳ್ಳು_clip_path_end, nullptr, nullptr);
+    hb_paint_funcs_set_ತೆಗೆ_clip_func (funcs, (hb_paint_ತೆಗೆ_clip_func_t) hb_vector_paint_ತೆಗೆ_clip, nullptr, nullptr);
     hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_vector_paint_color, nullptr, nullptr);
     hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_vector_paint_image, nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_vector_paint_linear_gradient, nullptr, nullptr);
     hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_vector_paint_radial_gradient, nullptr, nullptr);
     hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_vector_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_vector_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_vector_paint_pop_group, nullptr, nullptr);
+    hb_paint_funcs_set_ತಳ್ಳು_group_func (funcs, (hb_paint_ತಳ್ಳು_group_func_t) hb_vector_paint_ತಳ್ಳು_group, nullptr, nullptr);
+    hb_paint_funcs_set_ತೆಗೆ_group_func (funcs, (hb_paint_ತೆಗೆ_group_func_t) hb_vector_paint_ತೆಗೆ_group, nullptr, nullptr);
     hb_paint_funcs_set_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_vector_paint_color_glyph, nullptr, nullptr);
     hb_paint_funcs_set_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_vector_paint_custom_palette_color, nullptr, nullptr);
     hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
@@ -335,11 +335,11 @@ static struct hb_vector_paint_funcs_lazy_loader_t
     hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
     hb_paint_funcs_make_immutable (funcs);
     hb_atexit (free_static_vector_paint_funcs);
-    return funcs;
+    ಪ್ರತ್ಯಾಗಮ funcs;
   }
 } static_vector_paint_funcs;
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 free_static_vector_paint_funcs ()
 {
   static_vector_paint_funcs.free_instance ();
@@ -348,31 +348,31 @@ free_static_vector_paint_funcs ()
 hb_paint_funcs_t *
 hb_vector_paint_svg_funcs_get ()
 {
-  return static_vector_paint_funcs.get_unconst ();
+  ಪ್ರತ್ಯಾಗಮ static_vector_paint_funcs.get_unconst ();
 }
 
 
-static void
-hb_vector_paint_push_transform (hb_paint_funcs_t *,
-                                void *paint_data,
-                                float xx, float yx,
-                                float xy, float yy,
-                                float dx, float dy,
-                                void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತಳ್ಳು_transform (hb_paint_funcs_t *,
+                                ಶೂನ್ಯ *paint_data,
+                                ಭಿನ್ನ xx, ಭಿನ್ನ yx,
+                                ಭಿನ್ನ xy, ಭಿನ್ನ yy,
+                                ಭಿನ್ನ dx, ಭಿನ್ನ dy,
+                                ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  if (unlikely (paint->transform_group_overflow_depth))
+  ಯದಿ (unlikely (paint->transform_group_overflow_depth))
   {
     paint->transform_group_overflow_depth++;
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
-  if (unlikely (paint->transform_group_depth >= 64))
+  ಯದಿ (unlikely (paint->transform_group_depth >= 64))
   {
     paint->transform_group_overflow_depth = 1;
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
   hb_bool_t opened =
@@ -382,65 +382,65 @@ hb_vector_paint_push_transform (hb_paint_funcs_t *,
   paint->transform_group_open_mask = (paint->transform_group_open_mask << 1) | (opened ? 1ull : 0ull);
   paint->transform_group_depth++;
 
-  if (!opened)
-    return;
+  ಯದಿ (!opened)
+    ಪ್ರತ್ಯಾಗಮ;
 
   auto &body = paint->current_body ();
   unsigned sprec = paint->defs.scale_precision ();
   body.append_str ("<g transform=\"matrix(");
-  body.append_num (xx, sprec);
+  body.append_ಅಂಕೆ (xx, sprec);
   body.append_c (',');
-  body.append_num (yx, sprec);
+  body.append_ಅಂಕೆ (yx, sprec);
   body.append_c (',');
-  body.append_num (xy, sprec);
+  body.append_ಅಂಕೆ (xy, sprec);
   body.append_c (',');
-  body.append_num (yy, sprec);
+  body.append_ಅಂಕೆ (yy, sprec);
   body.append_c (',');
-  body.append_num (paint->sx (dx));
+  body.append_ಅಂಕೆ (paint->sx (dx));
   body.append_c (',');
-  body.append_num (paint->sy (dy));
+  body.append_ಅಂಕೆ (paint->sy (dy));
   body.append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_transform (hb_paint_funcs_t *,
-                               void *paint_data,
-                               void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತೆಗೆ_transform (hb_paint_funcs_t *,
+                               ಶೂನ್ಯ *paint_data,
+                               ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (paint->transform_group_overflow_depth))
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
+  ಯದಿ (unlikely (paint->transform_group_overflow_depth))
   {
     paint->transform_group_overflow_depth--;
-    return;
+    ಪ್ರತ್ಯಾಗಮ;
   }
-  if (!paint->transform_group_depth)
-    return;
+  ಯದಿ (!paint->transform_group_depth)
+    ಪ್ರತ್ಯಾಗಮ;
   paint->transform_group_depth--;
   hb_bool_t opened = !!(paint->transform_group_open_mask & 1ull);
   paint->transform_group_open_mask >>= 1;
-  if (opened)
+  ಯದಿ (opened)
     paint->current_body ().append_str ("</g>\n");
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
-                            void *paint_data,
+                            ಶೂನ್ಯ *paint_data,
                             hb_codepoint_t glyph,
                             hb_font_t *font,
                             hb_bool_t,
                             hb_color_t color,
-                            void *)
+                            ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
   paint->path.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  ಯದಿ (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -452,28 +452,28 @@ hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
   body.append_str ("<path d=\"");
   body.append_len (paint->path.arrayZ, paint->path.length);
   body.append_str ("\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, ಸತ್ಯ);
   body.append_str ("\"/>\n");
 }
 
-static void
-hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
-                                 void *paint_data,
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತಳ್ಳು_clip_glyph (hb_paint_funcs_t *,
+                                 ಶೂನ್ಯ *paint_data,
                                  hb_codepoint_t glyph,
                                  hb_font_t *font,
-                                 void *)
+                                 ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  const char *pfx = paint->id_prefix;
+  ಧ್ರುವ ವರ್ಣ *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
 
   paint->path.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip path clips everything out. */
-  if (likely (paint->budget_remaining >= 0))
+  ಯದಿ (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -481,7 +481,7 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
     hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
   }
 
-  unsigned def_id = paint->path_def_count++;
+  unsigned def_id = paint->path_def_ಎಣಿಕೆ++;
   paint->defs.append_str ("<path id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('p');
@@ -506,18 +506,18 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
-                                     void *paint_data,
-                                     float xmin, float ymin,
-                                     float xmax, float ymax,
-                                     void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತಳ್ಳು_clip_rectangle (hb_paint_funcs_t *,
+                                     ಶೂನ್ಯ *paint_data,
+                                     ಭಿನ್ನ xmin, ಭಿನ್ನ ymin,
+                                     ಭಿನ್ನ xmax, ಭಿನ್ನ ymax,
+                                     ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  const char *pfx = paint->id_prefix;
+  ಧ್ರುವ ವರ್ಣ *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned clip_id = paint->clip_rect_counter++;
   paint->defs.append_str ("<clipPath id=\"");
@@ -525,13 +525,13 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->defs.append_c ('c');
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><rect x=\"");
-  paint->defs.append_num (paint->sx (xmin));
+  paint->defs.append_ಅಂಕೆ (paint->sx (xmin));
   paint->defs.append_str ("\" y=\"");
-  paint->defs.append_num (paint->sy (ymin));
+  paint->defs.append_ಅಂಕೆ (paint->sy (ymin));
   paint->defs.append_str ("\" width=\"");
-  paint->defs.append_num (paint->sx (xmax - xmin));
+  paint->defs.append_ಅಂಕೆ (paint->sx (xmax - xmin));
   paint->defs.append_str ("\" height=\"");
-  paint->defs.append_num (paint->sy (ymax - ymin));
+  paint->defs.append_ಅಂಕೆ (paint->sy (ymax - ymin));
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -541,17 +541,17 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static hb_draw_funcs_t *
-hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
-                                      void *paint_data,
-                                      void **draw_data,
-                                      void *)
+ಸ್ಥಿರ hb_draw_funcs_t *
+hb_vector_paint_ತಳ್ಳು_clip_path_start (hb_paint_funcs_t *,
+                                      ಶೂನ್ಯ *paint_data,
+                                      ಶೂನ್ಯ **draw_data,
+                                      ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
   {
     *draw_data = nullptr;
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
   paint->path.clear ();
@@ -560,19 +560,19 @@ hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
 			   paint->y_scale_factor,
 			   &paint->budget_remaining};
   *draw_data = &paint->clip_path_sink;
-  return hb_vector_svg_path_draw_funcs_get ();
+  ಪ್ರತ್ಯಾಗಮ hb_vector_svg_path_draw_funcs_get ();
 }
 
-static void
-hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
-                                    void *paint_data,
-                                    void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತಳ್ಳು_clip_path_end (hb_paint_funcs_t *,
+                                    ಶೂನ್ಯ *paint_data,
+                                    ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  const char *pfx = paint->id_prefix;
+  ಧ್ರುವ ವರ್ಣ *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned clip_id = paint->clip_path_counter++;
 
@@ -597,136 +597,136 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_clip (hb_paint_funcs_t *,
-                          void *paint_data,
-                          void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತೆಗೆ_clip (hb_paint_funcs_t *,
+                          ಶೂನ್ಯ *paint_data,
+                          ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
   paint->current_body ().append_str ("</g>\n");
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_paint_color (hb_paint_funcs_t *,
-                       void *paint_data,
+                       ಶೂನ್ಯ *paint_data,
                        hb_bool_t,
                        hb_color_t color,
-                       void *)
+                       ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
   auto &body = paint->current_body ();
   body.append_str ("<rect x=\"-32767\" y=\"-32767\" width=\"65534\" height=\"65534\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, ಸತ್ಯ);
   body.append_str ("\"/>\n");
 }
 
-static hb_bool_t
+ಸ್ಥಿರ hb_bool_t
 hb_vector_paint_image (hb_paint_funcs_t *,
-                       void *paint_data,
+                       ಶೂನ್ಯ *paint_data,
                        hb_blob_t *image,
                        unsigned width,
                        unsigned height,
                        hb_tag_t format,
-                       float slant HB_UNUSED,
+                       ಭಿನ್ನ slant HB_UNUSED,
                        hb_glyph_extents_t *extents,
-                       void *)
+                       ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   auto &body = paint->current_body ();
-  if (format == HB_TAG ('p','n','g',' '))
+  ಯದಿ (format == HB_TAG ('p','n','g',' '))
   {
-    if (!extents || !width || !height)
-      return false;
+    ಯದಿ (!extents || !width || !height)
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
     unsigned len = 0;
-    const char *png_data = hb_blob_get_data (image, &len);
-    if (!png_data || !len)
-      return false;
+    ಧ್ರುವ ವರ್ಣ *png_data = hb_blob_get_data (image, &len);
+    ಯದಿ (!png_data || !len)
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
     body.append_str ("<g transform=\"translate(");
-    body.append_num (paint->sx ((float) extents->x_bearing));
+    body.append_ಅಂಕೆ (paint->sx ((ಭಿನ್ನ) extents->x_bearing));
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->y_bearing));
+    body.append_ಅಂಕೆ (paint->sy ((ಭಿನ್ನ) extents->y_bearing));
     body.append_str (") scale(");
-    body.append_num (paint->sx ((float) extents->width) / width);
+    body.append_ಅಂಕೆ (paint->sx ((ಭಿನ್ನ) extents->width) / width);
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->height) / height);
+    body.append_ಅಂಕೆ (paint->sy ((ಭಿನ್ನ) extents->height) / height);
     body.append_str (")\">\n");
 
     body.append_str ("<image href=\"data:image/png;base64,");
-    body.append_base64 ((const uint8_t *) png_data, len);
+    body.append_base64 ((ಧ್ರುವ uint8_t *) png_data, len);
     body.append_str ("\" width=\"");
-    body.append_num ((float) width);
+    body.append_ಅಂಕೆ ((ಭಿನ್ನ) width);
     body.append_str ("\" height=\"");
-    body.append_num ((float) height);
+    body.append_ಅಂಕೆ ((ಭಿನ್ನ) height);
     body.append_str ("\"/>\n</g>\n");
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0,
-                                 float x1, float y1,
-                                 float x2, float y2,
-                                 void *)
+                                 ಶೂನ್ಯ *paint_data,
+                                 hb_color_ಸಾಲು_t *color_ಸಾಲು,
+                                 ಭಿನ್ನ x0, ಭಿನ್ನ y0,
+                                 ಭಿನ್ನ x1, ಭಿನ್ನ y1,
+                                 ಭಿನ್ನ x2, ಭಿನ್ನ y2,
+                                 ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  ಯದಿ (!paint->fetch_color_stops (color_ಸಾಲು))
+    ಪ್ರತ್ಯಾಗಮ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   /* Sort + rescale stops to [0, 1]; shift the gradient axis
    * by the original (mn, mx) so the visible gradient stays
    * put.  SVG <stop offset="..."> requires offsets in [0,1];
    * out-of-range stops would otherwise be silently clamped. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ಭಿನ್ನ mn, mx;
+  hb_paint_normalize_color_ಸಾಲು (stops.arrayZ, stops.length, &mn, &mx);
 
-  const char *pfx = paint->id_prefix;
+  ಧ್ರುವ ವರ್ಣ *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned grad_id = paint->gradient_counter++;
 
   /* Reduce COLR's 3-anchor (P0, P1, P2) to SVG's 2-point
    * (start, end) gradient. */
-  float lx0, ly0, lx1, ly1;
+  ಭಿನ್ನ lx0, ly0, lx1, ly1;
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2,
 				  &lx0, &ly0, &lx1, &ly1);
-  float gx0 = lx0 + mn * (lx1 - lx0);
-  float gy0 = ly0 + mn * (ly1 - ly0);
-  float gx1 = lx0 + mx * (lx1 - lx0);
-  float gy1 = ly0 + mx * (ly1 - ly0);
+  ಭಿನ್ನ gx0 = lx0 + mn * (lx1 - lx0);
+  ಭಿನ್ನ gy0 = ly0 + mn * (ly1 - ly0);
+  ಭಿನ್ನ gx1 = lx0 + mx * (lx1 - lx0);
+  ಭಿನ್ನ gy1 = ly0 + mx * (ly1 - ly0);
 
   paint->defs.append_str ("<linearGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" x1=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_ಅಂಕೆ (paint->sx (gx0));
   paint->defs.append_str ("\" y1=\"");
-  paint->defs.append_num (paint->sy (gy0));
+  paint->defs.append_ಅಂಕೆ (paint->sy (gy0));
   paint->defs.append_str ("\" x2=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_ಅಂಕೆ (paint->sx (gx1));
   paint->defs.append_str ("\" y2=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_ಅಂಕೆ (paint->sy (gy1));
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_ಸಾಲು_get_extend (color_ಸಾಲು)));
   paint->defs.append_str ("\">\n");
   hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</linearGradient>\n");
@@ -739,35 +739,35 @@ hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0, float r0,
-                                 float x1, float y1, float r1,
-                                 void *)
+                                 ಶೂನ್ಯ *paint_data,
+                                 hb_color_ಸಾಲು_t *color_ಸಾಲು,
+                                 ಭಿನ್ನ x0, ಭಿನ್ನ y0, ಭಿನ್ನ r0,
+                                 ಭಿನ್ನ x1, ಭಿನ್ನ y1, ಭಿನ್ನ r1,
+                                 ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  ಯದಿ (!paint->fetch_color_stops (color_ಸಾಲು))
+    ಪ್ರತ್ಯಾಗಮ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ಭಿನ್ನ mn, mx;
+  hb_paint_normalize_color_ಸಾಲು (stops.arrayZ, stops.length, &mn, &mx);
 
   /* Shift centers + radii by (mn, mx) along the gradient axis
    * to compensate for rescaling stops to [0, 1]. */
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  ಭಿನ್ನ gx0 = x0 + mn * (x1 - x0);
+  ಭಿನ್ನ gy0 = y0 + mn * (y1 - y0);
+  ಭಿನ್ನ gr0 = r0 + mn * (r1 - r0);
+  ಭಿನ್ನ gx1 = x0 + mx * (x1 - x0);
+  ಭಿನ್ನ gy1 = y0 + mx * (y1 - y0);
+  ಭಿನ್ನ gr1 = r0 + mx * (r1 - r0);
 
-  const char *pfx = paint->id_prefix;
+  ಧ್ರುವ ವರ್ಣ *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned grad_id = paint->gradient_counter++;
 
@@ -776,22 +776,22 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" cx=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_ಅಂಕೆ (paint->sx (gx1));
   paint->defs.append_str ("\" cy=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_ಅಂಕೆ (paint->sy (gy1));
   paint->defs.append_str ("\" r=\"");
-  paint->defs.append_num (paint->sx (gr1));
+  paint->defs.append_ಅಂಕೆ (paint->sx (gr1));
   paint->defs.append_str ("\" fx=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_ಅಂಕೆ (paint->sx (gx0));
   paint->defs.append_str ("\" fy=\"");
-  paint->defs.append_num (paint->sy (gy0));
-  if (gr0 > 0)
+  paint->defs.append_ಅಂಕೆ (paint->sy (gy0));
+  ಯದಿ (gr0 > 0)
   {
     paint->defs.append_str ("\" fr=\"");
-    paint->defs.append_num (paint->sx (gr0));
+    paint->defs.append_ಅಂಕೆ (paint->sx (gr0));
   }
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_ಸಾಲು_get_extend (color_ಸಾಲು)));
   paint->defs.append_str ("\">\n");
   hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</radialGradient>\n");
@@ -804,69 +804,69 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 hb_vector_paint_sweep_gradient (hb_paint_funcs_t *,
-                                void *paint_data,
-                                hb_color_line_t *color_line,
-                                float cx, float cy,
-                                float start_angle, float end_angle,
-                                void *)
+                                ಶೂನ್ಯ *paint_data,
+                                hb_color_ಸಾಲು_t *color_ಸಾಲು,
+                                ಭಿನ್ನ cx, ಭಿನ್ನ cy,
+                                ಭಿನ್ನ start_angle, ಭಿನ್ನ end_angle,
+                                ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  ಯದಿ (!paint->fetch_color_stops (color_ಸಾಲು))
+    ಪ್ರತ್ಯಾಗಮ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ಭಿನ್ನ mn, mx;
+  hb_paint_normalize_color_ಸಾಲು (stops.arrayZ, stops.length, &mn, &mx);
 
   /* Shift the angle range to compensate for rescaling stops
    * to [0, 1]. */
-  float ga0 = start_angle + mn * (end_angle - start_angle);
-  float ga1 = start_angle + mx * (end_angle - start_angle);
+  ಭಿನ್ನ ga0 = start_angle + mn * (end_angle - start_angle);
+  ಭಿನ್ನ ga1 = start_angle + mx * (end_angle - start_angle);
 
   hb_vector_svg_sweep_ctx_t ctx {
     &paint->current_body (), paint->get_precision (), paint->sx (cx), paint->sy (cy), 32767.f
   };
   hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length,
-				 hb_color_line_get_extend (color_line),
+				 hb_color_ಸಾಲು_get_extend (color_ಸಾಲು),
 				 ga0, ga1,
 				 hb_vector_svg_sweep_emit_patch,
 				 &ctx);
 }
 
-static void
-hb_vector_paint_push_group (hb_paint_funcs_t *,
-                            void *paint_data,
-                            void *)
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತಳ್ಳು_group (hb_paint_funcs_t *,
+                            ಶೂನ್ಯ *paint_data,
+                            ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (!paint->group_stack.push_or_fail (hb_vector_buf_t {})))
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
+  ಯದಿ (unlikely (!paint->group_ರಾಶಿ.ತಳ್ಳು_or_fail (hb_vector_buf_t {})))
+    ಪ್ರತ್ಯಾಗಮ;
 }
 
-static void
-hb_vector_paint_pop_group (hb_paint_funcs_t *,
-                           void *paint_data,
+ಸ್ಥಿರ ಶೂನ್ಯ
+hb_vector_paint_ತೆಗೆ_group (hb_paint_funcs_t *,
+                           ಶೂನ್ಯ *paint_data,
                            hb_paint_composite_mode_t mode,
-                           void *)
+                           ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (paint->group_stack.length < 2)
-    return;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ;
+  ಯದಿ (paint->group_ರಾಶಿ.length < 2)
+    ಪ್ರತ್ಯಾಗಮ;
 
-  hb_vector_buf_t group = paint->group_stack.pop ();
+  hb_vector_buf_t group = paint->group_ರಾಶಿ.ತೆಗೆ ();
   auto &body = paint->current_body ();
 
-  const char *blend = hb_vector_svg_composite_mode_str (mode);
-  if (blend)
+  ಧ್ರುವ ವರ್ಣ *blend = hb_vector_svg_composite_mode_str (mode);
+  ಯದಿ (blend)
   {
     body.append_str ("<g style=\"mix-blend-mode:");
     body.append_str (blend);
@@ -874,24 +874,24 @@ hb_vector_paint_pop_group (hb_paint_funcs_t *,
     body.append_len (group.arrayZ, group.length);
     body.append_str ("</g>\n");
   }
-  else
+  ಅನ್ಯಥಾ
     body.append_len (group.arrayZ, group.length);
 }
 
-static hb_bool_t
+ಸ್ಥಿರ hb_bool_t
 hb_vector_paint_color_glyph (hb_paint_funcs_t *,
-                             void *paint_data,
+                             ಶೂನ್ಯ *paint_data,
                              hb_codepoint_t glyph,
                              hb_font_t *font,
-                             void *)
+                             ಶೂನ್ಯ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  if (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
-    return false;
-  if (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
-    return false;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   paint->color_glyph_depth++;
   hb_set_add (paint->active_color_glyphs, glyph);
@@ -903,7 +903,7 @@ hb_vector_paint_color_glyph (hb_paint_funcs_t *,
 		       paint->foreground);
   hb_set_del (paint->active_color_glyphs, glyph);
   paint->color_glyph_depth--;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 
@@ -912,53 +912,53 @@ hb_vector_paint_color_glyph (hb_paint_funcs_t *,
 hb_blob_t *
 hb_vector_paint_render_svg (hb_vector_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
+  ಯದಿ (!paint->has_extents)
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  if (unlikely (!paint->ensure_initialized ()))
-    return nullptr;
+  ಯದಿ (unlikely (!paint->ensure_initialized ()))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   hb_vector_buf_t out;
   hb_buf_recover_recycled (paint->recycled_blob, &out);
   unsigned estimated = paint->defs.length +
-		       paint->group_stack.arrayZ[0].length +
+		       paint->group_ರಾಶಿ.arrayZ[0].length +
 		       320;
   out.alloc (estimated);
-  float vb_x = paint->extents.x;
-  float vb_y = -(paint->extents.y + paint->extents.height);
-  float vb_w = paint->extents.width;
-  float vb_h = paint->extents.height;
+  ಭಿನ್ನ vb_x = paint->extents.x;
+  ಭಿನ್ನ vb_y = -(paint->extents.y + paint->extents.height);
+  ಭಿನ್ನ vb_w = paint->extents.width;
+  ಭಿನ್ನ vb_h = paint->extents.height;
   out.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
-  out.append_num (vb_x);
+  out.append_ಅಂಕೆ (vb_x);
   out.append_c (' ');
-  out.append_num (vb_y);
+  out.append_ಅಂಕೆ (vb_y);
   out.append_c (' ');
-  out.append_num (vb_w);
+  out.append_ಅಂಕೆ (vb_w);
   out.append_c (' ');
-  out.append_num (vb_h);
+  out.append_ಅಂಕೆ (vb_h);
   out.append_str ("\" width=\"");
-  out.append_num (vb_w);
+  out.append_ಅಂಕೆ (vb_w);
   out.append_str ("\" height=\"");
-  out.append_num (vb_h);
+  out.append_ಅಂಕೆ (vb_h);
   out.append_str ("\">\n");
 
-  if (paint->defs.length)
+  ಯದಿ (paint->defs.length)
   {
     out.append_str ("<defs>\n");
     out.append_len (paint->defs.arrayZ, paint->defs.length);
     out.append_str ("</defs>\n");
   }
 
-  if (hb_color_get_alpha (paint->background))
+  ಯದಿ (hb_color_get_alpha (paint->background))
   {
     out.append_str ("<rect x=\"");
-    out.append_num (vb_x);
+    out.append_ಅಂಕೆ (vb_x);
     out.append_str ("\" y=\"");
-    out.append_num (vb_y);
+    out.append_ಅಂಕೆ (vb_y);
     out.append_str ("\" width=\"");
-    out.append_num (vb_w);
+    out.append_ಅಂಕೆ (vb_w);
     out.append_str ("\" height=\"");
-    out.append_num (vb_h);
+    out.append_ಅಂಕೆ (vb_h);
     out.append_str ("\" fill=\"rgb(");
     out.append_unsigned (hb_color_get_red (paint->background));
     out.append_c (',');
@@ -966,22 +966,22 @@ hb_vector_paint_render_svg (hb_vector_paint_t *paint)
     out.append_c (',');
     out.append_unsigned (hb_color_get_blue (paint->background));
     out.append_str (")\"");
-    if (hb_color_get_alpha (paint->background) < 255)
+    ಯದಿ (hb_color_get_alpha (paint->background) < 255)
     {
       out.append_str (" fill-opacity=\"");
-      out.append_num (hb_color_get_alpha (paint->background) / 255.f, 4);
+      out.append_ಅಂಕೆ (hb_color_get_alpha (paint->background) / 255.f, 4);
       out.append_c ('"');
     }
     out.append_str ("/>\n");
   }
 
   out.append_str ("<g transform=\"scale(1,-1)\">\n");
-  out.append_len (paint->group_stack.arrayZ[0].arrayZ, paint->group_stack.arrayZ[0].length);
+  out.append_len (paint->group_ರಾಶಿ.arrayZ[0].arrayZ, paint->group_ರಾಶಿ.arrayZ[0].length);
   out.append_str ("</g>\n");
 
   out.append_str ("</svg>\n");
 
   hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
 
-  return blob;
+  ಪ್ರತ್ಯಾಗಮ blob;
 }

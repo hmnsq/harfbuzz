@@ -27,11 +27,11 @@
 #ifndef GRAPH_GRAPH_RESULT_HH
 #define GRAPH_GRAPH_RESULT_HH
 
-#include "../hb-result.hh"
+#ಅನ್ತರ್ಭಾವ "../hb-result.hh"
 
-namespace graph {
+ನಾಮಾಕಾಶ graph {
 
-enum graph_error_t {
+ಗಣನಾ graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,19 +43,19 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ ವರ್ಣ* to_string(graph_error_t e) {
+  ವಿಕಲ್ಪ (e) {
+    ಪಕ್ಷ ALLOCATION_FAILURE: ಪ್ರತ್ಯಾಗಮ "Memory Allocation Failed";
+    ಪಕ್ಷ LIMIT_EXCEEDED: ಪ್ರತ್ಯಾಗಮ "Limit Exceeded";
+    ಪಕ್ಷ INVALID_ARGUMENT: ಪ್ರತ್ಯಾಗಮ "Invalid Argument";
+    ಪಕ್ಷ CYCLE_DETECTED: ಪ್ರತ್ಯಾಗಮ "Cycle in Graph";
+    ಪಕ್ಷ SANITIZE_FAILURE: ಪ್ರತ್ಯಾಗಮ "Failed Sanitization";
+    ಪಕ್ಷ OUT_OF_BOUNDS: ಪ್ರತ್ಯಾಗಮ "Out of Bounds";
+    ಪಕ್ಷ ORPHANED_NODES: ಪ್ರತ್ಯಾಗಮ "Graph is not fully connected";
+    ಪಕ್ಷ OVERFLOW_RESOLUTION_FAILED: ಪ್ರತ್ಯಾಗಮ "Overflows are not able to be resolved";
+    ಪಕ್ಷ UNKNOWN:
+    ಸ್ವಭಾವ:
+      ಪ್ರತ್ಯಾಗಮ "Unknown Error";
   }
 }
 

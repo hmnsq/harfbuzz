@@ -28,9 +28,9 @@
 #ifndef HB_AAT_LAYOUT_KERX_TABLE_HH
 #define HB_AAT_LAYOUT_KERX_TABLE_HH
 
-#include "hb-kern.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-set-digest.hh"
+#ಅನ್ತರ್ಭಾವ "hb-kern.hh"
+#ಅನ್ತರ್ಭಾವ "hb-aat-layout-ankr-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-set-digest.hh"
 
 /*
  * kerx -- Extended Kerning
@@ -39,167 +39,167 @@
 #define HB_AAT_TAG_kerx HB_TAG('k','e','r','x')
 
 
-namespace AAT {
+ನಾಮಾಕಾಶ AAT {
 
-using namespace OT;
+using ನಾಮಾಕಾಶ OT;
 
 
-static inline int
-kerxTupleKern (int value,
-	       unsigned int tupleCount,
-	       const void *base,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಪೂರ್ಣಾಙ್ಕ
+kerxTupleKern (ಪೂರ್ಣಾಙ್ಕ value,
+	       unsigned ಪೂರ್ಣಾಙ್ಕ tuple_ಎಣಿಕೆ,
+	       ಧ್ರುವ ಶೂನ್ಯ *base,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  ಯದಿ (likely (!tuple_ಎಣಿಕೆ || !c)) ಪ್ರತ್ಯಾಗಮ value;
 
-  unsigned int offset = value;
-  const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  unsigned ಪೂರ್ಣಾಙ್ಕ offset = value;
+  ಧ್ರುವ FWORD *pv = &StructAtOffset<FWORD> (base, offset);
+  ಯದಿ (unlikely (!c->sanitizer.check_array (pv, tuple_ಎಣಿಕೆ))) ಪ್ರತ್ಯಾಗಮ 0;
   hb_barrier ();
-  return *pv;
+  ಪ್ರತ್ಯಾಗಮ *pv;
 }
 
 
-struct hb_glyph_pair_t
+ಸಂರಚನಾ hb_glyph_pair_t
 {
   hb_codepoint_t left;
-  hb_codepoint_t right;
+  hb_codepoint_t ಬಲ;
 };
 
-struct KernPair
+ಸಂರಚನಾ KernPair
 {
-  int get_kerning () const { return value; }
+  ಪೂರ್ಣಾಙ್ಕ get_kerning () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ value; }
 
-  int cmp (const hb_glyph_pair_t &o) const
+  ಪೂರ್ಣಾಙ್ಕ cmp (ಧ್ರುವ hb_glyph_pair_t &o) ಧ್ರುವ
   {
-    int ret = left.cmp (o.left);
-    if (ret) return ret;
-    return right.cmp (o.right);
+    ಪೂರ್ಣಾಙ್ಕ ret = left.cmp (o.left);
+    ಯದಿ (ret) ಪ್ರತ್ಯಾಗಮ ret;
+    ಪ್ರತ್ಯಾಗಮ ಬಲ.cmp (o.ಬಲ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   HBGlyphID16	left;
-  HBGlyphID16	right;
+  HBGlyphID16	ಬಲ;
   FWORD		value;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat0
+ಸಂರಚನಾ KerxSubTableFormat0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c = nullptr) const
+  ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ,
+		   hb_aat_apply_context_t *c = nullptr) ಧ್ರುವ
   {
-    hb_glyph_pair_t pair = {left, right};
-    int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    hb_glyph_pair_t pair = {left, ಬಲ};
+    ಪೂರ್ಣಾಙ್ಕ v = pairs.bsearch (pair).get_kerning ();
+    ಪ್ರತ್ಯಾಗಮ kerxTupleKern (v, header.tuple_ಎಣಿಕೆ_2 (), ಏತತ್, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ಯದಿ (!c->plan->requested_kerning)
+      return_trace (ಅಸತ್ಯ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ಯದಿ (header.coverage & header.Backwards)
+      return_trace (ಅಸತ್ಯ);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ಏತತ್, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    for (const KernPair& pair : pairs)
+    ಪ್ರತಿ (ಧ್ರುವ KernPair& pair : pairs)
     {
       first_set.add (pair.left);
-      second_set.add (pair.right);
+      second_set.add (pair.ಬಲ);
     }
   }
 
-  struct accelerator_t
+  ಸಂರಚನಾ accelerator_t
   {
-    const KerxSubTableFormat0 &table;
+    ಧ್ರುವ KerxSubTableFormat0 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat0 &table_,
+    accelerator_t (ಧ್ರುವ KerxSubTableFormat0 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ) ಧ್ರುವ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ಯದಿ (!(*c->first_set)[left] || !(*c->second_set)[ಬಲ]) ಪ್ರತ್ಯಾಗಮ 0;
+      ಪ್ರತ್ಯಾಗಮ table.get_kerning (left, ಬಲ, c);
     }
   };
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     return_trace (likely (pairs.sanitize (c)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   KernSubTableHeader	header;
-  BinSearchArrayOf<KernPair, typename KernSubTableHeader::Types::HBUINT>
+  Bin_ಹುಡುಕು_Array_Of<KernPair, typename KernSubTableHeader::Types::HBUINT>
 			pairs;	/* Sorted kern records. */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 16, pairs);
 };
 
 
-template <bool extended>
-struct Format1Entry;
+template <ತಾರ್ಕಿಕ extended>
+ಸಂರಚನಾ Format1Entry;
 
 template <>
-struct Format1Entry<true>
+ಸಂರಚನಾ Format1Entry<ಸತ್ಯ>
 {
-  enum Flags
+  ಗಣನಾ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ತಳ್ಳು		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Reset		= 0x2000,	/* If set, reset the kerning data (clear the stack) */
     Reserved		= 0x1FFF,	/* Not used; set to 0. */
   };
 
-  struct EntryData
+  ಸಂರಚನಾ EntryData
   {
     HBUINT16	kernActionIndex;/* Index into the kerning value array. If
 				 * this index is 0xFFFF, then no kerning
 				 * is to be performed. */
-    public:
+    ಸಾರ್ವಜನಿಕ:
     DEFINE_SIZE_STATIC (2);
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ initiateAction (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.flags & ತಳ್ಳು; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex != 0xFFFF; }
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ performAction (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.data.kernActionIndex != 0xFFFF; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex; }
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ kernActionIndex (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.data.kernActionIndex; }
 };
 template <>
-struct Format1Entry<false>
+ಸಂರಚನಾ Format1Entry<ಅಸತ್ಯ>
 {
-  enum Flags
+  ಗಣನಾ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ತಳ್ಳು		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
@@ -208,46 +208,46 @@ struct Format1Entry<false>
     Reset		= 0x0000,	/* Not supported? */
   };
 
-  typedef void EntryData;
+  ಪ್ರಕಾರನಿರ್ದೇಶ ಶೂನ್ಯ EntryData;
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ initiateAction (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.flags & ತಳ್ಳು; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ performAction (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.flags & Offset; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ kernActionIndex (ಧ್ರುವ Entry<EntryData> &entry)
+  { ಪ್ರತ್ಯಾಗಮ entry.flags & Offset; }
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat1
+ಸಂರಚನಾ KerxSubTableFormat1
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename KernSubTableHeader::Types Types;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename Types::HBUINT HBUINT;
 
-  typedef Format1Entry<Types::extended> Format1EntryT;
-  typedef typename Format1EntryT::EntryData EntryData;
+  ಪ್ರಕಾರನಿರ್ದೇಶ Format1Entry<Types::extended> Format1EntryT;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename Format1EntryT::EntryData EntryData;
 
-  enum Flags
+  ಗಣನಾ Flags
   {
     DontAdvance	= Format1EntryT::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  ತಾರ್ಕಿಕ is_action_initiable (ಧ್ರುವ Entry<EntryData> &entry) ಧ್ರುವ
   {
-    return Format1EntryT::initiateAction (entry);
+    ಪ್ರತ್ಯಾಗಮ Format1EntryT::initiateAction (entry);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  ತಾರ್ಕಿಕ is_actionable (ಧ್ರುವ Entry<EntryData> &entry) ಧ್ರುವ
   {
-    return Format1EntryT::performAction (entry);
+    ಪ್ರತ್ಯಾಗಮ Format1EntryT::performAction (entry);
   }
 
-  struct driver_context_t
+  ಸಂರಚನಾ driver_context_t
   {
-    static constexpr bool in_place = true;
+    ಸ್ಥಿರ constexpr ತಾರ್ಕಿಕ in_place = ಸತ್ಯ;
 
-    driver_context_t (const KerxSubTableFormat1 *table_,
+    driver_context_t (ಧ್ರುವ KerxSubTableFormat1 *table_,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
 	table (table_),
@@ -259,34 +259,34 @@ struct KerxSubTableFormat1
 	crossStream (table->header.coverage & table->header.CrossStream) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    ಶೂನ್ಯ transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     ಧ್ರುವ Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned ಪೂರ್ಣಾಙ್ಕ flags = entry.flags;
 
-      if (flags & Format1EntryT::Reset)
+      ಯದಿ (flags & Format1EntryT::Reset)
 	depth = 0;
 
-      if (flags & Format1EntryT::Push)
+      ಯದಿ (flags & Format1EntryT::ತಳ್ಳು)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
-	  stack[depth++] = buffer->idx;
-	else
+	ಯದಿ (likely (depth < ARRAY_LENGTH (ರಾಶಿ)))
+	  ರಾಶಿ[depth++] = buffer->idx;
+	ಅನ್ಯಥಾ
 	  depth = 0; /* Probably not what CoreText does, but better? */
       }
 
-      if (Format1EntryT::performAction (entry) && depth)
+      ಯದಿ (Format1EntryT::performAction (entry) && depth)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	unsigned ಪೂರ್ಣಾಙ್ಕ tuple_ಎಣಿಕೆ_2 = hb_max (1u, table->header.tuple_ಎಣಿಕೆ_2 ());
 
-	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
+	unsigned ಪೂರ್ಣಾಙ್ಕ kern_idx = Format1EntryT::kernActionIndex (entry);
 	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
-	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	ಧ್ರುವ FWORD *actions = &kernAction[kern_idx];
+	ಯದಿ (!c->sanitizer.check_array (actions, depth, tuple_ಎಣಿಕೆ_2))
 	{
 	  depth = 0;
-	  return;
+	  ಪ್ರತ್ಯಾಗಮ;
 	}
 	hb_barrier ();
 
@@ -295,13 +295,13 @@ struct KerxSubTableFormat1
 	/* From Apple 'kern' spec:
 	 * "Each pops one glyph from the kerning stack and applies the kerning value to it.
 	 * The end of the list is marked by an odd value... */
-	bool last = false;
-	while (!last && depth)
+	ತಾರ್ಕಿಕ last = ಅಸತ್ಯ;
+	ಯಾವತ್ (!last && depth)
 	{
-	  unsigned int idx = stack[--depth];
-	  int v = *actions;
-	  actions += tuple_count;
-	  if (idx >= buffer->len) continue;
+	  unsigned ಪೂರ್ಣಾಙ್ಕ idx = ರಾಶಿ[--depth];
+	  ಪೂರ್ಣಾಙ್ಕ v = *actions;
+	  actions += tuple_ಎಣಿಕೆ_2;
+	  ಯದಿ (idx >= buffer->len) ಅನುವರ್ತ;
 
 	  /* "The end of the list is marked by an odd value..." */
 	  last = v & 1;
@@ -309,49 +309,49 @@ struct KerxSubTableFormat1
 
 	  hb_glyph_position_t &o = buffer->pos[idx];
 
-	  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	  ಯದಿ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	  {
-	    if (crossStream)
+	    ಯದಿ (crossStream)
 	    {
 	      /* The following flag is undocumented in the spec, but described
 	       * in the 'kern' table example. */
-	      if (v == -0x8000)
+	      ಯದಿ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.y_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      ಅನ್ಯಥಾ ಯದಿ (o.attach_type())
 	      {
 		o.y_offset = hb_saturate_add (o.y_offset, c->font->em_scale_y (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    ಅನ್ಯಥಾ ಯದಿ (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_x (v);
 	      o.x_advance = hb_saturate_add (o.x_advance, scaled);
 	      o.x_offset = hb_saturate_add (o.x_offset, scaled);
 	    }
 	  }
-	  else
+	  ಅನ್ಯಥಾ
 	  {
-	    if (crossStream)
+	    ಯದಿ (crossStream)
 	    {
 	      /* CoreText doesn't do crossStream kerning in vertical.  We do. */
-	      if (v == -0x8000)
+	      ಯದಿ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.x_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      ಅನ್ಯಥಾ ಯದಿ (o.attach_type())
 	      {
 		o.x_offset = hb_saturate_add (o.x_offset, c->font->em_scale_x (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    ಅನ್ಯಥಾ ಯದಿ (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_y (v);
 	      o.y_advance = hb_saturate_add (o.y_advance, scaled);
@@ -362,159 +362,159 @@ struct KerxSubTableFormat1
       }
     }
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat1 *table;
-    private:
-    const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
-    unsigned int depth;
-    bool crossStream;
+    ಧ್ರುವ KerxSubTableFormat1 *table;
+    ಗುಪ್ತ:
+    ಧ್ರುವ UnsizedArrayOf<FWORD> &kernAction;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ರಾಶಿ[8];
+    unsigned ಪೂರ್ಣಾಙ್ಕ depth;
+    ತಾರ್ಕಿಕ crossStream;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    if (!c->plan->requested_kerning &&
+    ಯದಿ (!c->plan->requested_kerning &&
 	!(header.coverage & header.CrossStream))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ಏತತ್, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  machine.sanitize (c)));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, ಅಂಕೆ_glyphs, *ಏತತ್);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   KernSubTableHeader				header;
   StateTable<Types, EntryData>			machine;
   NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>	kernAction;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat2
+ಸಂರಚನಾ KerxSubTableFormat2
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename KernSubTableHeader::Types Types;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ,
+		   hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs = c->sanitizer.get_ಅಂಕೆ_glyphs ();
+    unsigned ಪೂರ್ಣಾಙ್ಕ l = (ಏತತ್+ಎಡ_Class_Table).get_class (left, ಅಂಕೆ_glyphs, 0);
+    unsigned ಪೂರ್ಣಾಙ್ಕ r = (ಏತತ್+ಬಲ_Class_Table).get_class (ಬಲ, ಅಂಕೆ_glyphs, 0);
 
-    const UnsizedArrayOf<FWORD> &arrayZ = this+array;
-    unsigned int kern_idx = l + r;
-    kern_idx = Types::offsetToIndex (kern_idx, this, arrayZ.arrayZ);
-    const FWORD *v = &arrayZ[kern_idx];
-    if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+    ಧ್ರುವ UnsizedArrayOf<FWORD> &arrayZ = ಏತತ್+array;
+    unsigned ಪೂರ್ಣಾಙ್ಕ kern_idx = l + r;
+    kern_idx = Types::offsetToIndex (kern_idx, ಏತತ್, arrayZ.arrayZ);
+    ಧ್ರುವ FWORD *v = &arrayZ[kern_idx];
+    ಯದಿ (unlikely (!v->sanitize (&c->sanitizer))) ಪ್ರತ್ಯಾಗಮ 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    ಪ್ರತ್ಯಾಗಮ kerxTupleKern (*v, header.tuple_ಎಣಿಕೆ_2 (), ಏತತ್, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ಯದಿ (!c->plan->requested_kerning)
+      return_trace (ಅಸತ್ಯ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ಯದಿ (header.coverage & header.Backwards)
+      return_trace (ಅಸತ್ಯ);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ಏತತ್, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    (this+leftClassTable).collect_glyphs (first_set, num_glyphs);
-    (this+rightClassTable).collect_glyphs (second_set, num_glyphs);
+    (ಏತತ್+ಎಡ_Class_Table).collect_glyphs (first_set, ಅಂಕೆ_glyphs);
+    (ಏತತ್+ಬಲ_Class_Table).collect_glyphs (second_set, ಅಂಕೆ_glyphs);
   }
 
-  struct accelerator_t
+  ಸಂರಚನಾ accelerator_t
   {
-    const KerxSubTableFormat2 &table;
+    ಧ್ರುವ KerxSubTableFormat2 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat2 &table_,
+    accelerator_t (ಧ್ರುವ KerxSubTableFormat2 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ) ಧ್ರುವ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ಯದಿ (!(*c->first_set)[left] || !(*c->second_set)[ಬಲ]) ಪ್ರತ್ಯಾಗಮ 0;
+      ಪ್ರತ್ಯಾಗಮ table.get_kerning (left, ಬಲ, c);
     }
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  leftClassTable.sanitize (c, this) &&
-			  rightClassTable.sanitize (c, this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  ಎಡ_Class_Table.sanitize (c, ಏತತ್) &&
+			  ಬಲ_Class_Table.sanitize (c, ಏತತ್) &&
 			  hb_barrier () &&
-			  c->check_range (this, array)));
+			  c->check_range (ಏತತ್, array)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   KernSubTableHeader	header;
   HBUINT		rowWidth;	/* The width, in bytes, of a row in the table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			leftClassTable;	/* Offset from beginning of this subtable to
+			ಎಡ_Class_Table;	/* Offset from beginning of this subtable to
 					 * left-hand class table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			rightClassTable;/* Offset from beginning of this subtable to
+			ಬಲ_Class_Table;/* Offset from beginning of this subtable to
 					 * right-hand class table. */
   NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>
 			 array;		/* Offset from beginning of this subtable to
 					 * the start of the kerning array. */
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * sizeof (HBUINT));
+  ಸಾರ್ವಜನಿಕ:
+  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * ಪರಿಮಾಣ (HBUINT));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat4
+ಸಂರಚನಾ KerxSubTableFormat4
 {
-  typedef ExtendedTypes Types;
+  ಪ್ರಕಾರನಿರ್ದೇಶ ExtendedTypes Types;
 
-  struct EntryData
+  ಸಂರಚನಾ EntryData
   {
     HBUINT16	ankrActionIndex;/* Either 0xFFFF (for no action) or the index of
 				 * the action to perform. */
-    public:
+    ಸಾರ್ವಜನಿಕ:
     DEFINE_SIZE_STATIC (2);
   };
 
-  enum Flags
+  ಗಣನಾ Flags
   {
     Mark		= 0x8000,	/* If set, remember this glyph as the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -522,19 +522,19 @@ struct KerxSubTableFormat4
     Reserved		= 0x3FFF,	/* Not used; set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  ತಾರ್ಕಿಕ is_action_initiable (ಧ್ರುವ Entry<EntryData> &entry) ಧ್ರುವ
   {
-    return (entry.flags & Mark);
+    ಪ್ರತ್ಯಾಗಮ (entry.flags & Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  ತಾರ್ಕಿಕ is_actionable (ಧ್ರುವ Entry<EntryData> &entry) ಧ್ರುವ
   {
-    return entry.data.ankrActionIndex != 0xFFFF;
+    ಪ್ರತ್ಯಾಗಮ entry.data.ankrActionIndex != 0xFFFF;
   }
 
-  struct driver_context_t
+  ಸಂರಚನಾ driver_context_t
   {
-    static constexpr bool in_place = true;
-    enum SubTableFlags
+    ಸ್ಥಿರ constexpr ತಾರ್ಕಿಕ in_place = ಸತ್ಯ;
+    ಗಣನಾ SubTableFlags
     {
       ActionType	= 0xC0000000,	/* A two-bit field containing the action type. */
       Unused		= 0x3F000000,	/* Unused - must be zero. */
@@ -543,40 +543,40 @@ struct KerxSubTableFormat4
 					 * point table. */
     };
 
-    driver_context_t (const KerxSubTableFormat4 *table_,
+    driver_context_t (ಧ್ರುವ KerxSubTableFormat4 *table_,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
 	table (table_),
 	action_type ((table->flags & ActionType) >> 30),
-	ankrData ((HBUINT16 *) ((const char *) &table->machine + (table->flags & Offset))),
-	mark_set (false),
+	ankrData ((HBUINT16 *) ((ಧ್ರುವ ವರ್ಣ *) &table->machine + (table->flags & Offset))),
+	mark_set (ಅಸತ್ಯ),
 	mark (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    ಶೂನ್ಯ transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     ಧ್ರುವ Entry<EntryData> &entry)
     {
-      if (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
+      ಯದಿ (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
       {
 	hb_glyph_position_t &o = buffer->cur_pos();
-	switch (action_type)
+	ವಿಕಲ್ಪ (action_type)
 	{
-	  case 0: /* Control Point Actions.*/
+	  ಪಕ್ಷ 0: /* Control Point Actions.*/
 	  {
 	    /* Indexed into glyph outline. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ಧ್ರುವ HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
+	    ಯದಿ (!c->sanitizer.check_array (data, 2)) ಪ್ರತ್ಯಾಗಮ;
 	    hb_barrier ();
-	    unsigned int markControlPoint = *data++;
-	    unsigned int currControlPoint = *data++;
+	    unsigned ಪೂರ್ಣಾಙ್ಕ markControlPoint = *data++;
+	    unsigned ಪೂರ್ಣಾಙ್ಕ currControlPoint = *data++;
 	    hb_position_t markX = 0;
 	    hb_position_t markY = 0;
 	    hb_position_t currX = 0;
 	    hb_position_t currY = 0;
-	    if (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
+	    ಯದಿ (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
 							      markControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &markX, &markY) ||
@@ -584,237 +584,237 @@ struct KerxSubTableFormat4
 							      currControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &currX, &currY))
-	      return;
+	      ಪ್ರತ್ಯಾಗಮ;
 
 	    o.x_offset = hb_saturate_sub (markX, currX);
 	    o.y_offset = hb_saturate_sub (markY, currY);
 	  }
-	  break;
+	  ಭಙ್ಗ;
 
-	  case 1: /* Anchor Point Actions. */
+	  ಪಕ್ಷ 1: /* Anchor Point Actions. */
 	  {
 	    /* Indexed into 'ankr' table. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ಧ್ರುವ HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
+	    ಯದಿ (!c->sanitizer.check_array (data, 2)) ಪ್ರತ್ಯಾಗಮ;
 	    hb_barrier ();
-	    unsigned int markAnchorPoint = *data++;
-	    unsigned int currAnchorPoint = *data++;
-	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
+	    unsigned ಪೂರ್ಣಾಙ್ಕ markAnchorPoint = *data++;
+	    unsigned ಪೂರ್ಣಾಙ್ಕ currAnchorPoint = *data++;
+	    ಧ್ರುವ Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
 								  markAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
-	    const Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
+								  c->sanitizer.get_ಅಂಕೆ_glyphs ());
+	    ಧ್ರುವ Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
 								  currAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+								  c->sanitizer.get_ಅಂಕೆ_glyphs ());
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
 					  c->font->em_scale_x (currAnchor.xCoordinate));
 	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
 					  c->font->em_scale_y (currAnchor.yCoordinate));
 	  }
-	  break;
+	  ಭಙ್ಗ;
 
-	  case 2: /* Control Point Coordinate Actions. */
+	  ಪಕ್ಷ 2: /* Control Point Coordinate Actions. */
 	  {
 	    /* Each action contains four 16-bit fields, so we multiply the ankrActionIndex
 	       by 4 to get the correct offset for the given action. */
-	    const FWORD *data = (const FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
-	    if (!c->sanitizer.check_array (data, 4)) return;
+	    ಧ್ರುವ FWORD *data = (ಧ್ರುವ FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
+	    ಯದಿ (!c->sanitizer.check_array (data, 4)) ಪ್ರತ್ಯಾಗಮ;
 	    hb_barrier ();
-	    int markX = *data++;
-	    int markY = *data++;
-	    int currX = *data++;
-	    int currY = *data++;
+	    ಪೂರ್ಣಾಙ್ಕ markX = *data++;
+	    ಪೂರ್ಣಾಙ್ಕ markY = *data++;
+	    ಪೂರ್ಣಾಙ್ಕ currX = *data++;
+	    ಪೂರ್ಣಾಙ್ಕ currY = *data++;
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
 	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
 	  }
-	  break;
+	  ಭಙ್ಗ;
 	}
 	o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_MARK;
-	o.attach_chain() = (int) mark - (int) buffer->idx;
-	if (c->buffer_is_reversed)
+	o.attach_chain() = (ಪೂರ್ಣಾಙ್ಕ) mark - (ಪೂರ್ಣಾಙ್ಕ) buffer->idx;
+	ಯದಿ (c->buffer_is_reversed)
 	  o.attach_chain() = -o.attach_chain();
 	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
       }
 
-      if (entry.flags & Mark)
+      ಯದಿ (entry.flags & Mark)
       {
-	mark_set = true;
+	mark_set = ಸತ್ಯ;
 	mark = buffer->idx;
       }
     }
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat4 *table;
-    private:
-    unsigned int action_type;
-    const HBUINT16 *ankrData;
-    bool mark_set;
-    unsigned int mark;
+    ಧ್ರುವ KerxSubTableFormat4 *table;
+    ಗುಪ್ತ:
+    unsigned ಪೂರ್ಣಾಙ್ಕ action_type;
+    ಧ್ರುವ HBUINT16 *ankrData;
+    ತಾರ್ಕಿಕ mark_set;
+    unsigned ಪೂರ್ಣಾಙ್ಕ mark;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ಏತತ್, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  machine.sanitize (c)));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, ಅಂಕೆ_glyphs, *ಏತತ್);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   KernSubTableHeader		header;
   StateTable<Types, EntryData>	machine;
   HBUINT32			flags;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT32::static_size));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat6
+ಸಂರಚನಾ KerxSubTableFormat6
 {
-  enum Flags
+  ಗಣನಾ Flags
   {
-    ValuesAreLong	= 0x00000001,
+    ಮೌಲ್ಯಗಳು_Are_Long	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  ತಾರ್ಕಿಕ is_long () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ flags & ಮೌಲ್ಯಗಳು_Are_Long; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ,
+		   hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    if (is_long ())
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs = c->sanitizer.get_ಅಂಕೆ_glyphs ();
+    ಯದಿ (is_long ())
     {
-      const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      if (unlikely (offset < l)) return 0; /* Addition overflow. */
-      if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
-      const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ಧ್ರುವ auto &t = u.l;
+      unsigned ಪೂರ್ಣಾಙ್ಕ l = (ಏತತ್+t.rowIndexTable).get_ಮೌಲ್ಯ_or_null (left, ಅಂಕೆ_glyphs);
+      unsigned ಪೂರ್ಣಾಙ್ಕ r = (ಏತತ್+t.columnIndexTable).get_ಮೌಲ್ಯ_or_null (ಬಲ, ಅಂಕೆ_glyphs);
+      unsigned ಪೂರ್ಣಾಙ್ಕ offset = l + r;
+      ಯದಿ (unlikely (offset < l)) ಪ್ರತ್ಯಾಗಮ 0; /* Addition overflow. */
+      ಯದಿ (unlikely (hb_unsigned_mul_overflows (offset, ಪರಿಮಾಣ (FWORD32)))) ಪ್ರತ್ಯಾಗಮ 0;
+      ಧ್ರುವ FWORD32 *v = &StructAtOffset<FWORD32> (&(ಏತತ್+t.array), offset * ಪರಿಮಾಣ (FWORD32));
+      ಯದಿ (unlikely (!v->sanitize (&c->sanitizer))) ಪ್ರತ್ಯಾಗಮ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      ಪ್ರತ್ಯಾಗಮ kerxTupleKern (*v, header.tuple_ಎಣಿಕೆ_2 (), &(ಏತತ್+vector), c);
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ಧ್ರುವ auto &t = u.s;
+      unsigned ಪೂರ್ಣಾಙ್ಕ l = (ಏತತ್+t.rowIndexTable).get_ಮೌಲ್ಯ_or_null (left, ಅಂಕೆ_glyphs);
+      unsigned ಪೂರ್ಣಾಙ್ಕ r = (ಏತತ್+t.columnIndexTable).get_ಮೌಲ್ಯ_or_null (ಬಲ, ಅಂಕೆ_glyphs);
+      unsigned ಪೂರ್ಣಾಙ್ಕ offset = l + r;
+      ಧ್ರುವ FWORD *v = &StructAtOffset<FWORD> (&(ಏತತ್+t.array), offset * ಪರಿಮಾಣ (FWORD));
+      ಯದಿ (unlikely (!v->sanitize (&c->sanitizer))) ಪ್ರತ್ಯಾಗಮ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      ಪ್ರತ್ಯಾಗಮ kerxTupleKern (*v, header.tuple_ಎಣಿಕೆ_2 (), &(ಏತತ್+vector), c);
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_aat_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ಯದಿ (!c->plan->requested_kerning)
+      return_trace (ಅಸತ್ಯ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ಯದಿ (header.coverage & header.Backwards)
+      return_trace (ಅಸತ್ಯ);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ಏತತ್, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  hb_barrier () &&
 			  (is_long () ?
 			   (
-			     u.l.rowIndexTable.sanitize (c, this) &&
-			     u.l.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.l.array)
+			     u.l.rowIndexTable.sanitize (c, ಏತತ್) &&
+			     u.l.columnIndexTable.sanitize (c, ಏತತ್) &&
+			     c->check_range (ಏತತ್, u.l.array)
 			   ) : (
-			     u.s.rowIndexTable.sanitize (c, this) &&
-			     u.s.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.s.array)
+			     u.s.rowIndexTable.sanitize (c, ಏತತ್) &&
+			     u.s.columnIndexTable.sanitize (c, ಏತತ್) &&
+			     c->check_range (ಏತತ್, u.s.array)
 			   )) &&
-			  (header.tuple_count () == 0 ||
-			   c->check_range (this, vector))));
+			  (header.tuple_ಎಣಿಕೆ_2 () == 0 ||
+			   c->check_range (ಏತತ್, vector))));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    if (is_long ())
+    ಯದಿ (is_long ())
     {
-      const auto &t = u.l;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ಧ್ರುವ auto &t = u.l;
+      (ಏತತ್+t.rowIndexTable).collect_glyphs (first_set, ಅಂಕೆ_glyphs);
+      (ಏತತ್+t.columnIndexTable).collect_glyphs (second_set, ಅಂಕೆ_glyphs);
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      const auto &t = u.s;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ಧ್ರುವ auto &t = u.s;
+      (ಏತತ್+t.rowIndexTable).collect_glyphs (first_set, ಅಂಕೆ_glyphs);
+      (ಏತತ್+t.columnIndexTable).collect_glyphs (second_set, ಅಂಕೆ_glyphs);
     }
   }
 
-  struct accelerator_t
+  ಸಂರಚನಾ accelerator_t
   {
-    const KerxSubTableFormat6 &table;
+    ಧ್ರುವ KerxSubTableFormat6 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat6 &table_,
+    accelerator_t (ಧ್ರುವ KerxSubTableFormat6 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ಪೂರ್ಣಾಙ್ಕ get_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ) ಧ್ರುವ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ಯದಿ (!(*c->first_set)[left] || !(*c->second_set)[ಬಲ]) ಪ್ರತ್ಯಾಗಮ 0;
+      ಪ್ರತ್ಯಾಗಮ table.get_kerning (left, ಬಲ, c);
     }
   };
 
-  protected:
+  ರಕ್ಷಿತ:
   KernSubTableHeader		header;
   HBUINT32			flags;
-  HBUINT16			rowCount;
-  HBUINT16			columnCount;
-  union U
+  HBUINT16			row_ಎಣಿಕೆ;
+  HBUINT16			column_ಎಣಿಕೆ;
+  ಸಙ್ಘ U
   {
-    struct Long
+    ಸಂರಚನಾ Long
     {
       NNOffset32To<Lookup<HBUINT32>>		rowIndexTable;
       NNOffset32To<Lookup<HBUINT32>>		columnIndexTable;
       NNOffset32To<UnsizedArrayOf<FWORD32>>	array;
     } l;
-    struct Short
+    ಸಂರಚನಾ Short
     {
       NNOffset32To<Lookup<HBUINT16>>		rowIndexTable;
       NNOffset32To<Lookup<HBUINT16>>		columnIndexTable;
@@ -822,19 +822,19 @@ struct KerxSubTableFormat6
     } s;
   } u;
   NNOffset32To<UnsizedArrayOf<FWORD>>	vector;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 24);
 };
 
 
-struct KerxSubTableHeader
+ಸಂರಚನಾ KerxSubTableHeader
 {
-  typedef ExtendedTypes Types;
+  ಪ್ರಕಾರನಿರ್ದೇಶ ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_ಎಣಿಕೆ_2 () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ tuple_ಎಣಿಕೆ; }
+  ತಾರ್ಕಿಕ     is_horizontal () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ !(coverage & Vertical); }
 
-  enum Coverage
+  ಗಣನಾ Coverage
   {
     Vertical	= 0x80000000u,	/* Set if table has vertical kerning values. */
     CrossStream	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
@@ -848,70 +848,70 @@ struct KerxSubTableHeader
     SubtableType= 0x000000FFu,	/* Subtable type. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   HBUINT32	length;
   HBUINT32	coverage;
-  HBUINT32	tupleCount;
-  public:
+  HBUINT32	tuple_ಎಣಿಕೆ;
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct KerxSubTable
+ಸಂರಚನಾ KerxSubTable
 {
-  friend struct kerx;
+  friend ಸಂರಚನಾ kerx;
 
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.coverage & u.header.SubtableType; }
+  size_t get_size () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ u.header.length; }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_type () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ u.header.coverage & u.header.SubtableType; }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ಧ್ರುವ
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
-    default:	return_trace (c->default_return_value ());
+    unsigned ಪೂರ್ಣಾಙ್ಕ subtable_type = get_type ();
+    TRACE_DISPATCH (ಏತತ್, subtable_type);
+    ವಿಕಲ್ಪ (subtable_type) {
+    ಪಕ್ಷ 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    ಸ್ವಭಾವ:	return_trace (c->default_return_ಮೌಲ್ಯ ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ಶೂನ್ಯ collect_glyphs (set_t &first_set, set_t &second_set, unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
-    default:	return;
+    unsigned ಪೂರ್ಣಾಙ್ಕ subtable_type = get_type ();
+    ವಿಕಲ್ಪ (subtable_type) {
+    ಪಕ್ಷ 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, ಅಂಕೆ_glyphs); ಪ್ರತ್ಯಾಗಮ;
+    ಪಕ್ಷ 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, ಅಂಕೆ_glyphs); ಪ್ರತ್ಯಾಗಮ;
+    ಪಕ್ಷ 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, ಅಂಕೆ_glyphs); ಪ್ರತ್ಯಾಗಮ;
+    ಪಕ್ಷ 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, ಅಂಕೆ_glyphs); ಪ್ರತ್ಯಾಗಮ;
+    ಪಕ್ಷ 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, ಅಂಕೆ_glyphs); ಪ್ರತ್ಯಾಗಮ;
+    ಸ್ವಭಾವ:	ಪ್ರತ್ಯಾಗಮ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    if (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (ಏತತ್);
+    ಯದಿ (!(u.header.sanitize (c) &&
 	  hb_barrier () &&
 	  u.header.length >= u.header.static_size &&
-	  c->check_range (this, u.header.length)))
-      return_trace (false);
+	  c->check_range (ಏತತ್, u.header.length)))
+      return_trace (ಅಸತ್ಯ);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  ಸಾರ್ವಜನಿಕ:
+  ಸಙ್ಘ {
   KerxSubTableHeader				header;
   KerxSubTableFormat0<KerxSubTableHeader>	format0;
   KerxSubTableFormat1<KerxSubTableHeader>	format1;
@@ -919,7 +919,7 @@ struct KerxSubTable
   KerxSubTableFormat4<KerxSubTableHeader>	format4;
   KerxSubTableFormat6<KerxSubTableHeader>	format6;
   } u;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_MIN (12);
 };
 
@@ -928,126 +928,126 @@ struct KerxSubTable
  * The 'kerx' Table
  */
 
-struct kern_subtable_accelerator_data_t
+ಸಂರಚನಾ kern_subtable_accelerator_data_t
 {
   hb_bit_set_t first_set;
   hb_bit_set_t second_set;
   mutable hb_aat_class_cache_t class_cache;
 };
 
-struct kern_accelerator_data_t
+ಸಂರಚನಾ kern_accelerator_data_t
 {
   hb_vector_t<kern_subtable_accelerator_data_t> subtable_accels;
   hb_aat_scratch_t scratch;
 };
 
 template <typename T>
-struct KerxTable
+ಸಂರಚನಾ KerxTable
 {
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const T* thiz () const { return static_cast<const T *> (this); }
+  ಧ್ರುವ T* thiz () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ static_cast<ಧ್ರುವ T *> (ಏತತ್); }
 
-  bool has_state_machine () const
+  ತಾರ್ಕಿಕ has_state_machine () ಧ್ರುವ
   {
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
-      if (st->get_type () == 1)
-	return true;
+      ಯದಿ (st->get_type () == 1)
+	ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
       // TODO: What about format 4? What's this API used for anyway?
 
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  bool has_cross_stream () const
+  ತಾರ್ಕಿಕ has_cross_stream () ಧ್ರುವ
   {
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
-      if (st->u.header.coverage & st->u.header.CrossStream)
-	return true;
+      ಯದಿ (st->u.header.coverage & st->u.header.CrossStream)
+	ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  ಪೂರ್ಣಾಙ್ಕ get_h_kerning (hb_codepoint_t left, hb_codepoint_t ಬಲ) ಧ್ರುವ
   {
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    int v = 0;
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಪೂರ್ಣಾಙ್ಕ v = 0;
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
-      if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
+      ಯದಿ ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
 	  !st->u.header.is_horizontal ())
-	continue;
-      v += st->get_kerning (left, right);
+	ಅನುವರ್ತ;
+      v += st->get_kerning (left, ಬಲ);
       st = &StructAfter<SubTable> (*st);
     }
-    return v;
+    ಪ್ರತ್ಯಾಗಮ v;
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const kern_accelerator_data_t &accel_data) const
+  ತಾರ್ಕಿಕ apply (AAT::hb_aat_apply_context_t *c,
+	      ಧ್ರುವ kern_accelerator_data_t &accel_data) ಧ್ರುವ
   {
     c->buffer->unsafe_to_concat ();
 
     c->setup_buffer_glyph_set ();
 
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    bool ret = false;
-    bool seenCrossStream = false;
+    ತಾರ್ಕಿಕ ret = ಅಸತ್ಯ;
+    ತಾರ್ಕಿಕ seenCrossStream = ಅಸತ್ಯ;
     c->set_lookup_index (0);
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
-      bool reverse;
+      ತಾರ್ಕಿಕ reverse;
 
       auto &subtable_accel = accel_data.subtable_accels[i];
 
-      if (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
-	goto skip;
+      ಯದಿ (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
+	ಗಚ್ಛ skip;
 
-      if (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
-	goto skip;
+      ಯದಿ (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
+	ಗಚ್ಛ skip;
 
       c->first_set = &subtable_accel.first_set;
       c->second_set = &subtable_accel.second_set;
       c->machine_class_cache = &subtable_accel.class_cache;
 
-      if (!c->buffer_intersects_machine ())
+      ಯದಿ (!c->buffer_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(ಶೂನ್ಯ) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
+	ಗಚ್ಛ skip;
       }
 
-      reverse = bool (st->u.header.coverage & st->u.header.Backwards) !=
+      reverse = ತಾರ್ಕಿಕ (st->u.header.coverage & st->u.header.Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
-	goto skip;
+      ಯದಿ (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
+	ಗಚ್ಛ skip;
 
-      if (!seenCrossStream &&
+      ಯದಿ (!seenCrossStream &&
 	  (st->u.header.coverage & st->u.header.CrossStream))
       {
 	/* Attach all glyphs into a chain. */
-	seenCrossStream = true;
+	seenCrossStream = ಸತ್ಯ;
 	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = c->buffer->len;
+	ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
 	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
@@ -1057,44 +1057,44 @@ struct KerxTable
 	}
       }
 
-      if (reverse != c->buffer_is_reversed)
+      ಯದಿ (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       {
 	/* See comment in sanitize() for conditional here. */
-	hb_sanitize_with_object_t with (&c->sanitizer, i < count - 1 ? st : (const SubTable *) nullptr);
+	hb_sanitize_with_object_t with (&c->sanitizer, i < ಎಣಿಕೆ - 1 ? st : (ಧ್ರುವ SubTable *) nullptr);
 	ret |= st->dispatch (c);
       }
 
-      (void) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
+      (ಶೂನ್ಯ) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
 
     skip:
       st = &StructAfter<SubTable> (*st);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    ಯದಿ (c->buffer_is_reversed)
       c->reverse_buffer ();
 
-    return ret;
+    ಪ್ರತ್ಯಾಗಮ ret;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(thiz()->version.sanitize (c) &&
+    TRACE_SANITIZE (ಏತತ್);
+    ಯದಿ (unlikely (!(thiz()->version.sanitize (c) &&
 		    hb_barrier () &&
 		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
-		    thiz()->tableCount.sanitize (c))))
-      return_trace (false);
+		    thiz()->table_ಎಣಿಕೆ.sanitize (c))))
+      return_trace (ಅಸತ್ಯ);
 
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
-      if (unlikely (!st->u.header.sanitize (c)))
-	return_trace (false);
+      ಯದಿ (unlikely (!st->u.header.sanitize (c)))
+	return_trace (ಅಸತ್ಯ);
       hb_barrier ();
       /* OpenType kern table has 2-byte subtable lengths.  That's limiting.
        * MS implementation also only supports one subtable, of format 0,
@@ -1103,68 +1103,68 @@ struct KerxTable
        * is simply ignored.  Which makes sense.  It's only needed if you
        * have multiple subtables.  To handle such fonts, we just ignore
        * the length for the last subtable. */
-      hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
+      hb_sanitize_with_object_t with (c, i < ಎಣಿಕೆ - 1 ? st : (ಧ್ರುವ SubTable *) nullptr);
 
-      if (unlikely (!st->sanitize (c)))
-	return_trace (false);
+      ಯದಿ (unlikely (!st->sanitize (c)))
+	return_trace (ಅಸತ್ಯ);
 
       st = &StructAfter<SubTable> (*st);
     }
 
     unsigned majorVersion = thiz()->version;
-    if (sizeof (thiz()->version) == 4)
+    ಯದಿ (ಪರಿಮಾಣ (thiz()->version) == 4)
       majorVersion = majorVersion >> 16;
-    if (majorVersion >= 3)
+    ಯದಿ (majorVersion >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      ಧ್ರುವ SubtableGlyphCoverage *coverage = (ಧ್ರುವ SubtableGlyphCoverage *) st;
+      ಯದಿ (!coverage->sanitize (c, ಎಣಿಕೆ))
+        return_trace (ಅಸತ್ಯ);
     }
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  kern_accelerator_data_t create_accelerator_data (unsigned ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
     kern_accelerator_data_t accel_data;
 
-    typedef typename T::SubTable SubTable;
+    ಪ್ರಕಾರನಿರ್ದೇಶ typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ಧ್ರುವ SubTable *st = &thiz()->firstSubTable;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = thiz()->table_ಎಣಿಕೆ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
       auto &subtable_accel = *accel_data.subtable_accels.push ();
-      if (unlikely (accel_data.subtable_accels.in_error ()))
-	  return accel_data;
+      ಯದಿ (unlikely (accel_data.subtable_accels.in_error ()))
+	  ಪ್ರತ್ಯಾಗಮ accel_data;
 
-      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
+      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, ಅಂಕೆ_glyphs);
       subtable_accel.class_cache.clear ();
 
       st = &StructAfter<SubTable> (*st);
     }
 
-    return accel_data;
+    ಪ್ರತ್ಯಾಗಮ accel_data;
   }
 
-  struct accelerator_t
+  ಸಂರಚನಾ accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      ಏತತ್->table = sc.reference_table<T> (face);
+      ಏತತ್->accel_data = ಏತತ್->table->create_accelerator_data (face->get_ಅಂಕೆ_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      ಏತತ್->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    ತಾರ್ಕಿಕ apply (AAT::hb_aat_apply_context_t *c) ಧ್ರುವ
     {
-      return table->apply (c, accel_data);
+      ಪ್ರತ್ಯಾಗಮ table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<T> table;
@@ -1173,33 +1173,33 @@ struct KerxTable
   };
 };
 
-struct kerx : KerxTable<kerx>
+ಸಂರಚನಾ kerx : KerxTable<kerx>
 {
-  friend struct KerxTable<kerx>;
+  friend ಸಂರಚನಾ KerxTable<kerx>;
 
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
-  static constexpr unsigned minVersion = 2u;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
+  ಸ್ಥಿರ constexpr unsigned minVersion = 2u;
 
-  typedef KerxSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KerxSubTable SubTable;
+  ಪ್ರಕಾರನಿರ್ದೇಶ KerxSubTableHeader SubTableHeader;
+  ಪ್ರಕಾರನಿರ್ದೇಶ SubTableHeader::Types Types;
+  ಪ್ರಕಾರನಿರ್ದೇಶ KerxSubTable SubTable;
 
-  bool has_data () const { return version; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ version; }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	version;	/* The version number of the extended kerning table
 				 * (currently 2, 3, or 4). */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	tableCount;	/* The number of subtables included in the extended kerning
+  HBUINT32	table_ಎಣಿಕೆ;	/* The number of subtables included in the extended kerning
 				 * table. */
   SubTable	firstSubTable;	/* Subtables. */
 /*subtableGlyphCoverageArray*/	/* Only if version >= 3. We don't use. */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kerx_accelerator_t : kerx::accelerator_t {
+ಸಂರಚನಾ kerx_accelerator_t : kerx::accelerator_t {
   kerx_accelerator_t (hb_face_t *face) : kerx::accelerator_t (face) {}
 };
 

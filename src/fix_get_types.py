@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import re
-import argparse
+ಆನಯನ re
+ಆನಯನ argparse
 
 parser = argparse.ArgumentParser ()
 parser.add_argument ('input')
 parser.add_argument ('output')
 args = parser.parse_args ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
-    for l in inp.readlines ():
+with open (args.ಒಳಹರಿವು, 'r') ಇವ inp, open (args.output, 'w') ಇವ out:
+    ಪ್ರತಿ l ಅನ್ತಃ inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
-        out.write (l)
+        out.ಲಿಖ (l)

@@ -27,63 +27,63 @@
 #ifndef HB_SUBSET_CFF_COMMON_HH
 #define HB_SUBSET_CFF_COMMON_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
-#include "hb-subset-plan.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ಅನ್ತರ್ಭಾವ "hb-subset-plan.hh"
+#ಅನ್ತರ್ಭಾವ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+ನಾಮಾಕಾಶ CFF {
 
 /* CFF2 CharStrings may omit a tail of glyphs provided by VARC, in which
  * case FDSelect only covers the CharStrings glyphs.  Use FD 0 for glyphs
  * beyond that. */
 template <typename ACC>
-static inline unsigned
-subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ unsigned
+subset_get_fd (ಧ್ರುವ ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  ಪ್ರತ್ಯಾಗಮ likely (glyph < acc.ಅಂಕೆ_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
-struct str_encoder_t
+ಸಂರಚನಾ str_encoder_t
 {
   str_encoder_t (str_buff_t &buff_)
     : buff (buff_) {}
 
-  void reset () { buff.reset (); }
+  ಶೂನ್ಯ reset () { buff.reset (); }
 
-  void encode_byte (unsigned char b)
+  ಶೂನ್ಯ encode_byte (unsigned ವರ್ಣ b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
+    ಯದಿ (likely ((signed) buff.length < buff.allocated))
       buff.arrayZ[buff.length++] = b;
-    else
+    ಅನ್ಯಥಾ
       buff.push (b);
   }
 
-  void encode_int (int v)
+  ಶೂನ್ಯ encode_int (ಪೂರ್ಣಾಙ್ಕ v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    ಯದಿ ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      ಯದಿ ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      ಅನ್ಯಥಾ ಯದಿ (v > 0)
       {
 	v -= 108;
 	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
 	encode_byte (v & 0xFF);
       }
-      else
+      ಅನ್ಯಥಾ
       {
 	v = -v - 108;
 	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      if (unlikely (v < -32768))
+      ಯದಿ (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      ಅನ್ಯಥಾ ಯದಿ (unlikely (v > 32767))
 	v = 32767;
       encode_byte (OpCode_shortint);
       encode_byte ((v >> 8) & 0xFF);
@@ -92,13 +92,13 @@ struct str_encoder_t
   }
 
   // Encode number for CharString
-  void encode_num_cs (const number_t& n)
+  ಶೂನ್ಯ encode_ಅಂಕೆ_cs (ಧ್ರುವ ಸಂಖ್ಯೆ_t& n)
   {
-    if (n.in_int_range ())
+    ಯದಿ (n.in_int_range ())
     {
       encode_int (n.to_int ());
     }
-    else
+    ಅನ್ಯಥಾ
     {
       int32_t v = n.to_fixed ();
       encode_byte (OpCode_fixedcs);
@@ -110,24 +110,24 @@ struct str_encoder_t
   }
 
   // Encode number for TopDict / Private
-  void encode_num_tp (const number_t& n)
+  ಶೂನ್ಯ encode_ಅಂಕೆ_tp (ಧ್ರುವ ಸಂಖ್ಯೆ_t& n)
   {
-    if (n.in_int_range ())
+    ಯದಿ (n.in_int_range ())
     {
       // TODO longint
       encode_int (n.to_int ());
     }
-    else
+    ಅನ್ಯಥಾ
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
-      double v = n.to_real ();
+      ದ್ವಿಗುಣ v = n.to_real ();
       encode_byte (OpCode_BCD);
 
       // Based on:
       // https://github.com/fonttools/fonttools/blob/0738c41dfbcbc213ab9263f486ef0cccc6eb5ce5/Lib/fontTools/misc/psCharStrings.py#L267-L316
 
-      char buf[16];
+      ವರ್ಣ buf[16];
       /* FontTools has the following comment:
        *
        * # Note: 14 decimal digits seems to be the limitation for CFF real numbers
@@ -138,133 +138,133 @@ struct str_encoder_t
 
       hb_locale_t clocale HB_UNUSED;
       hb_locale_t oldlocale HB_UNUSED;
-      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-      snprintf (buf, sizeof (buf), "%.8G", v);
-      (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ರಿಕ್ತ));
+      snprintf (buf, ಪರಿಮಾಣ (buf), "%.8G", v);
+      (ಶೂನ್ಯ) hb_uselocale (((ಶೂನ್ಯ) freelocale (clocale), oldlocale));
 
-      char *s = buf;
+      ವರ್ಣ *s = buf;
       size_t len;
-      char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      ವರ್ಣ *comma = strchr (s, ',');
+      ಯದಿ (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      ಯದಿ (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      ಅನ್ಯಥಾ ಯದಿ (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      ಅನ್ಯಥಾ ಯದಿ ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
 	unsigned exponent = len - 3;
-	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	ವರ್ಣ *s2 = s + exponent - 1;
+	ಯಾವತ್ (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
-	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
+	snprintf (s2 + 1, ಪರಿಮಾಣ (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      ಅನ್ಯಥಾ
       {
-	char *dot = strchr (s, '.');
-	char *e = strchr (s, 'E');
-	if (dot && e)
+	ವರ್ಣ *dot = strchr (s, '.');
+	ವರ್ಣ *e = strchr (s, 'E');
+	ಯದಿ (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  ಪೂರ್ಣಾಙ್ಕ exponent = atoi (e + 1);
+	  ಪೂರ್ಣಾಙ್ಕ new_exponent = exponent - (e - (dot + 1));
+	  ಯದಿ (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
-	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
+	  ಅನ್ಯಥಾ
+	    snprintf (e - 1, ಪರಿಮಾಣ (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      ಯದಿ ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
-	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	ಪೂರ್ಣಾಙ್ಕ sign = s[0] == '-';
+	ವರ್ಣ *s2 = s + sign + 1;
+	ಯಾವತ್ (*s2 == '0')
 	  s2++;
 	len = strlen (s2);
 	memmove (s + sign, s2, len);
-	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
+	snprintf (s + sign + len, ಪರಿಮಾಣ (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
       }
-      hb_vector_t<char> nibbles;
-      while (*s)
+      hb_vector_t<ವರ್ಣ> nibbles;
+      ಯಾವತ್ (*s)
       {
-	char c = s[0];
+	ವರ್ಣ c = s[0];
 	s++;
 
-	switch (c)
+	ವಿಕಲ್ಪ (c)
 	{
-	  case 'E':
+	  ಪಕ್ಷ 'E':
 	  {
-	    char c2 = *s;
-	    if (c2 == '-')
+	    ವರ್ಣ c2 = *s;
+	    ಯದಿ (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } ಅನ್ಯಥಾ {
+	      ಯದಿ (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    ಯದಿ (*s == '0')
 	      s++;
-	    continue;
+	    ಅನುವರ್ತ;
 	  }
 
-	  case '.':
+	  ಪಕ್ಷ '.':
 	    nibbles.push (0x0A); // .
-	    continue;
+	    ಅನುವರ್ತ;
 
-	  case '-':
+	  ಪಕ್ಷ '-':
 	    nibbles.push (0x0E); // -
-	    continue;
+	    ಅನುವರ್ತ;
 	}
 
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      ಯದಿ (nibbles.length % 2)
 	nibbles.push (0x0F);
 
-      unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      unsigned ಎಣಿಕೆ = nibbles.length;
+      ಪ್ರತಿ (unsigned i = 0; i < ಎಣಿಕೆ; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
-  void encode_op (op_code_t op)
+  ಶೂನ್ಯ encode_op (op_code_t op)
   {
-    if (Is_OpCode_ESC (op))
+    ಯದಿ (Is_OpCode_ESC (op))
     {
       encode_byte (OpCode_escape);
       encode_byte (Unmake_OpCode_ESC (op));
     }
-    else
+    ಅನ್ಯಥಾ
       encode_byte (op);
   }
 
-  void copy_str (const unsigned char *str, unsigned length)
+  ಶೂನ್ಯ copy_str (ಧ್ರುವ unsigned ವರ್ಣ *str, unsigned length)
   {
-    assert ((signed) (buff.length + length) <= buff.allocated);
+    ಪ್ರತಿಜ್ಞಾ ((signed) (buff.length + length) <= buff.allocated);
     hb_memcpy (buff.arrayZ + buff.length, str, length);
     buff.length += length;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  ತಾರ್ಕಿಕ in_error () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ buff.in_error (); }
 
-  protected:
+  ರಕ್ಷಿತ:
 
   str_buff_t &buff;
 };
 
-struct cff_sub_table_info_t {
+ಸಂರಚನಾ cff_sub_table_info_t {
   cff_sub_table_info_t ()
     : fd_array_link (0),
       char_strings_link (0)
@@ -278,119 +278,119 @@ struct cff_sub_table_info_t {
 };
 
 template <typename OPSTR=op_str_t>
-struct cff_top_dict_op_serializer_t : op_serializer_t
+ಸಂರಚನಾ cff_ತುದಿ_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const OPSTR &opstr,
-		  const cff_sub_table_info_t &info) const
+  ತಾರ್ಕಿಕ serialize (hb_serialize_context_t *c,
+		  ಧ್ರುವ OPSTR &opstr,
+		  ಧ್ರುವ cff_sub_table_info_t &info) ಧ್ರುವ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ಏತತ್);
 
-    switch (opstr.op)
+    ವಿಕಲ್ಪ (opstr.op)
     {
-      case OpCode_CharStrings:
+      ಪಕ್ಷ OpCode_CharStrings:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
+      ಪಕ್ಷ OpCode_FDArray:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_array_link, whence_t::Absolute));
 
-      case OpCode_FDSelect:
+      ಪಕ್ಷ OpCode_FDSelect:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_select.link, whence_t::Absolute));
 
-      default:
+      ಸ್ವಭಾವ:
 	return_trace (copy_opstr (c, opstr));
     }
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 };
 
-struct cff_font_dict_op_serializer_t : op_serializer_t
+ಸಂರಚನಾ cff_font_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const table_info_t &privateDictInfo) const
+  ತಾರ್ಕಿಕ serialize (hb_serialize_context_t *c,
+		  ಧ್ರುವ op_str_t &opstr,
+		  ಧ್ರುವ table_info_t &privateDictInfo) ಧ್ರುವ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ಏತತ್);
 
-    if (opstr.op == OpCode_Private)
+    ಯದಿ (opstr.op == OpCode_Private)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
       return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
 		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      unsigned ವರ್ಣ *d = c->allocate_size<unsigned ವರ್ಣ> (opstr.length);
+      ಯದಿ (unlikely (!d)) return_trace (ಅಸತ್ಯ);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      ಪ್ರತಿ (unsigned i = 0; i < opstr.length; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 };
 
 /* CharString command for specialization */
-struct cs_command_t
+ಸಂರಚನಾ cs_command_t
 {
-  hb_vector_t<number_t> args;
-  hb_vector_t<unsigned char> mask_bytes; /* For hintmask/cntrmask payload bytes. */
+  hb_vector_t<ಸಂಖ್ಯೆ_t> args;
+  hb_vector_t<unsigned ವರ್ಣ> mask_bytes; /* For hintmask/cntrmask payload bytes. */
   op_code_t op;
 
   cs_command_t () : op (OpCode_Invalid) {}
   cs_command_t (op_code_t op_) : op (op_) {}
 };
 
-typedef hb_vector_t<cs_command_t> *cs_command_vec_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_vector_t<cs_command_t> *cs_command_vec_t;
 
-struct cff2_instancing_plan_t;
+ಸಂರಚನಾ cff2_instancing_plan_t;
 
-struct flatten_param_t
+ಸಂರಚನಾ flatten_param_t
 {
   flatten_param_t (str_buff_t &flatStr_,
-                   bool drop_hints_,
-                   const hb_subset_plan_t *plan_,
+                   ತಾರ್ಕಿಕ drop_hints_,
+                   ಧ್ರುವ hb_subset_plan_t *plan_,
                    cs_command_vec_t commands_ = nullptr)
     : flatStr (flatStr_), drop_hints (drop_hints_), plan (plan_), commands (commands_) {}
 
   str_buff_t     &flatStr;
-  bool	drop_hints;
-  const hb_subset_plan_t *plan;
+  ತಾರ್ಕಿಕ	drop_hints;
+  ಧ್ರುವ hb_subset_plan_t *plan;
   cs_command_vec_t commands; /* Optional: capture parsed commands for specialization */
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being copied or flattened. */
-  const cff2_instancing_plan_t *instancer = nullptr;
-  bool emitted_blend = false;
+  ಧ್ರುವ cff2_instancing_plan_t *instancer = nullptr;
+  ತಾರ್ಕಿಕ emitted_blend = ಅಸತ್ಯ;
 };
 
 template <typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_flattener_t
+ಸಂರಚನಾ subr_flattener_t
 {
-  subr_flattener_t (const ACC &acc_,
-		    const hb_subset_plan_t *plan_)
+  subr_flattener_t (ಧ್ರುವ ACC &acc_,
+		    ಧ್ರುವ hb_subset_plan_t *plan_)
 		   : acc (acc_), plan (plan_) {}
 
-  bool flatten (str_buff_vec_t &flat_charstrings,
+  ತಾರ್ಕಿಕ flatten (str_buff_vec_t &flat_charstrings,
                 hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
   {
-    unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ಎಣಿಕೆ = plan->ಅಂಕೆ_output_glyphs ();
+    ಯದಿ (!flat_charstrings.resize_exact (ಎಣಿಕೆ))
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      ಯದಿ (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
-	continue;
+	ಯದಿ (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
+	ಅನುವರ್ತ;
       }
-      const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      ಧ್ರುವ hb_ubytes_t str = (*acc.charStrings)[glyph];
+      unsigned ಪೂರ್ಣಾಙ್ಕ fd = subset_get_fd (acc, glyph);
+      ಯದಿ (unlikely (fd >= acc.fd_ಎಣಿಕೆ))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
 
       ENV env (str, acc, fd,
@@ -398,74 +398,74 @@ struct subr_flattener_t
       cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
-        (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+        (ತಾರ್ಕಿಕ) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
 	plan,
 	command_capture ? &(*command_capture)[i] : nullptr
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      ಯದಿ (unlikely (!interp.interpret (param)))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  const ACC &acc;
-  const hb_subset_plan_t *plan;
+  ಧ್ರುವ ACC &acc;
+  ಧ್ರುವ hb_subset_plan_t *plan;
 };
 
-struct subr_closures_t
+ಸಂರಚನಾ subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (unsigned ಪೂರ್ಣಾಙ್ಕ fd_ಎಣಿಕೆ_2) : global_closure (), local_closures ()
   {
-    local_closures.resize_exact (fd_count);
+    local_closures.resize_exact (fd_ಎಣಿಕೆ_2);
   }
 
-  void reset ()
+  ಶೂನ್ಯ reset ()
   {
     global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < local_closures.length; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
+  ತಾರ್ಕಿಕ in_error () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ local_closures.in_error (); }
   hb_set_t  global_closure;
   hb_vector_t<hb_set_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+ಸಂರಚನಾ parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
-    subr_num (subr_num_) {}
+  parsed_cs_op_t (unsigned ಪೂರ್ಣಾಙ್ಕ subr_ಅಂಕೆ = 0) :
+    subr_ಅಂಕೆ_2 (subr_ಅಂಕೆ) {}
 
-  bool is_hinting () const { return hinting_flag; }
-  void set_hinting ()       { hinting_flag = true; }
+  ತಾರ್ಕಿಕ is_hinting () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ hinting_flag; }
+  ಶೂನ್ಯ set_hinting ()       { hinting_flag = ಸತ್ಯ; }
 
   /* The layout of this struct is designed to fit within the
    * padding of op_str_t! */
 
-  protected:
-  bool	  hinting_flag = false;
+  ರಕ್ಷಿತ:
+  ತಾರ್ಕಿಕ	  hinting_flag = ಅಸತ್ಯ;
 
-  public:
-  uint16_t subr_num;
+  ಸಾರ್ವಜನಿಕ:
+  uint16_t subr_ಅಂಕೆ_2;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+ಸಂರಚನಾ parsed_cs_str_t : parsed_ಮೌಲ್ಯಗಳು_t<parsed_cs_op_t>
 {
   parsed_cs_str_t () :
-    parsed (false),
-    hint_dropped (false),
-    has_prefix_ (false),
-    has_calls_ (false),
-    coalescing_ (false)
+    parsed (ಅಸತ್ಯ),
+    hint_dropped (ಅಸತ್ಯ),
+    has_prefix_ (ಅಸತ್ಯ),
+    has_calls_ (ಅಸತ್ಯ),
+    coalescing_ (ಅಸತ್ಯ)
   {
     SUPER::init ();
   }
 
   HB_ALWAYS_INLINE
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref)
+  ಶೂನ್ಯ add_op (op_code_t op, ಧ್ರುವ byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    ಯದಿ (is_parsed ()) ಪ್ರತ್ಯಾಗಮ;
+    ಯದಿ (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
@@ -473,44 +473,44 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
        * is not needed later for hint analysis. */
       penultimate_end_ = last_end_;
       last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
+      ಯದಿ (unlikely (op == OpCode_return || op == OpCode_endchar))
 	flush_segment (str_ref, last_end_);
-      return;
+      ಪ್ರತ್ಯಾಗಮ;
     }
     SUPER::add_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  ಶೂನ್ಯ add_call_op (op_code_t op, ಧ್ರುವ byte_str_ref_t& str_ref, unsigned ಪೂರ್ಣಾಙ್ಕ subr_ಅಂಕೆ_2)
   {
-    if (is_parsed ()) return;
-    has_calls_ = true;
+    ಯದಿ (is_parsed ()) ಪ್ರತ್ಯಾಗಮ;
+    has_calls_ = ಸತ್ಯ;
 
-    if (coalescing_)
+    ಯದಿ (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
       flush_segment (str_ref, penultimate_end_);
       opStart = last_end_;
-      SUPER::add_op (op, str_ref, {subr_num});
+      SUPER::add_op (op, str_ref, {subr_ಅಂಕೆ_2});
       penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      ಪ್ರತ್ಯಾಗಮ;
     }
 
     /* Pop the subroutine number. */
-    values.pop ();
+    values.ತೆಗೆ ();
 
-    SUPER::add_op (op, str_ref, {subr_num});
+    SUPER::add_op (op, str_ref, {subr_ಅಂಕೆ_2});
   }
 
   /* Flush pending bytes [opStart, end) as verbatim segment entries. */
-  void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
+  ಶೂನ್ಯ flush_segment (ಧ್ರುವ byte_str_ref_t& str_ref, unsigned end)
   {
     unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    ಯದಿ (end <= start) ಪ್ರತ್ಯಾಗಮ;
+    ಯಾವತ್ (start < end)
     {
       auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      ಯದಿ (unlikely (!arr.length)) ಭಙ್ಗ;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
       val->length = arr.length;
@@ -522,65 +522,65 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   /* For coalescing mode: flush any pending bytes through the current
    * position; used where the string ends without an explicit
    * return/endchar op (CFF2). */
-  void flush_coalesced (const byte_str_ref_t& str_ref)
+  ಶೂನ್ಯ flush_coalesced (ಧ್ರುವ byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
+    ಯದಿ (coalescing_ && !is_parsed ())
       flush_segment (str_ref, str_ref.get_offset ());
   }
 
-  void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  ಶೂನ್ಯ enable_coalescing () { coalescing_ = ಸತ್ಯ; }
+  ತಾರ್ಕಿಕ is_coalescing () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ coalescing_; }
 
-  void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
+  ಶೂನ್ಯ set_prefix (ಧ್ರುವ ಸಂಖ್ಯೆ_t &ಅಂಕೆ, op_code_t op = OpCode_Invalid)
   {
-    has_prefix_ = true;
+    has_prefix_ = ಸತ್ಯ;
     prefix_op_ = op;
-    prefix_num_ = num;
+    prefix_ಅಂಕೆ = ಅಂಕೆ;
   }
 
-  bool at_end (unsigned int pos) const
+  ತಾರ್ಕಿಕ at_end (unsigned ಪೂರ್ಣಾಙ್ಕ pos) ಧ್ರುವ
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
+    ಪ್ರತ್ಯಾಗಮ ((pos + 1 >= values.length) /* CFF2 */
 	|| (values[pos + 1].op == OpCode_return));
   }
 
-  bool is_parsed () const { return parsed; }
-  void set_parsed ()      { parsed = true; }
+  ತಾರ್ಕಿಕ is_parsed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ parsed; }
+  ಶೂನ್ಯ set_parsed ()      { parsed = ಸತ್ಯ; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
-  void set_hint_dropped ()      { hint_dropped = true; }
+  ತಾರ್ಕಿಕ is_hint_dropped () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ hint_dropped; }
+  ಶೂನ್ಯ set_hint_dropped ()      { hint_dropped = ಸತ್ಯ; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
-  void set_vsindex_dropped ()      { vsindex_dropped = true; }
+  ತಾರ್ಕಿಕ is_vsindex_dropped () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ vsindex_dropped; }
+  ಶೂನ್ಯ set_vsindex_dropped ()      { vsindex_dropped = ಸತ್ಯ; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  ತಾರ್ಕಿಕ has_prefix () ಧ್ರುವ          { ಪ್ರತ್ಯಾಗಮ has_prefix_; }
+  op_code_t prefix_op () ಧ್ರುವ         { ಪ್ರತ್ಯಾಗಮ prefix_op_; }
+  ಧ್ರುವ ಸಂಖ್ಯೆ_t &prefix_ಅಂಕೆ_2 () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ prefix_ಅಂಕೆ; }
 
-  bool has_calls () const          { return has_calls_; }
+  ತಾರ್ಕಿಕ has_calls () ಧ್ರುವ          { ಪ್ರತ್ಯಾಗಮ has_calls_; }
 
-  void compact ()
+  ಶೂನ್ಯ compact ()
   {
-    unsigned count = values.length;
-    if (!count) return;
+    unsigned ಎಣಿಕೆ = values.length;
+    ಯದಿ (!ಎಣಿಕೆ) ಪ್ರತ್ಯಾಗಮ;
     auto &opstr = values.arrayZ;
     unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    ಪ್ರತಿ (unsigned i = 1; i < ಎಣಿಕೆ; i++)
     {
       /* See if we can combine op j and op i. */
-      bool combine =
+      ತಾರ್ಕಿಕ combine =
         (opstr[j].op != OpCode_callsubr && opstr[j].op != OpCode_callgsubr) &&
         (opstr[i].op != OpCode_callsubr && opstr[i].op != OpCode_callgsubr) &&
         (opstr[j].is_hinting () == opstr[i].is_hinting ()) &&
         (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
         (opstr[j].length + opstr[i].length <= 255);
 
-      if (combine)
+      ಯದಿ (combine)
       {
 	opstr[j].length += opstr[i].length;
 	opstr[j].op = OpCode_Invalid;
       }
-      else
+      ಅನ್ಯಥಾ
       {
 	opstr[++j] = opstr[i];
       }
@@ -588,51 +588,51 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     values.shrink (j + 1);
   }
 
-  protected:
-  bool    parsed : 1;
-  bool    hint_dropped : 1;
-  bool    vsindex_dropped : 1;
-  bool    has_prefix_ : 1;
-  bool    has_calls_ : 1;
+  ರಕ್ಷಿತ:
+  ತಾರ್ಕಿಕ    parsed : 1;
+  ತಾರ್ಕಿಕ    hint_dropped : 1;
+  ತಾರ್ಕಿಕ    vsindex_dropped : 1;
+  ತಾರ್ಕಿಕ    has_prefix_ : 1;
+  ತಾರ್ಕಿಕ    has_calls_ : 1;
   /* Record verbatim byte segments instead of individual tokens,
    * making a separate compact() pass unnecessary; incompatible with
    * hint analysis. */
-  bool    coalescing_ : 1;
+  ತಾರ್ಕಿಕ    coalescing_ : 1;
   /* End offsets of the last two tokens seen (coalescing mode). */
   unsigned penultimate_end_ = 0;
   unsigned last_end_ = 0;
   op_code_t	prefix_op_;
-  number_t	prefix_num_;
+  ಸಂಖ್ಯೆ_t	prefix_ಅಂಕೆ;
 
-  private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  ಗುಪ್ತ:
+  ಪ್ರಕಾರನಿರ್ದೇಶ parsed_ಮೌಲ್ಯಗಳು_t<parsed_cs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+ಸಂರಚನಾ parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
 {
-  private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  ಗುಪ್ತ:
+  ಪ್ರಕಾರನಿರ್ದೇಶ hb_vector_t<parsed_cs_str_t> SUPER;
 };
 
-struct cff_subset_accelerator_t
+ಸಂರಚನಾ cff_subset_accelerator_t
 {
-  static cff_subset_accelerator_t* create (
+  ಸ್ಥಿರ cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      ಧ್ರುವ parsed_cs_str_vec_t& parsed_charstrings,
+      ಧ್ರುವ parsed_cs_str_vec_t& parsed_global_subrs,
+      ಧ್ರುವ hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
-        (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
-    new (accel) cff_subset_accelerator_t (original_blob,
+        (cff_subset_accelerator_t*) hb_malloc (ಪರಿಮಾಣ(cff_subset_accelerator_t));
+    ಯದಿ (unlikely (!accel)) ಪ್ರತ್ಯಾಗಮ nullptr;
+    ನೂತನ (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    ಪ್ರತ್ಯಾಗಮ accel;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  ಸ್ಥಿರ ಶೂನ್ಯ destroy (ಶೂನ್ಯ* value) {
+    ಯದಿ (!value) ಪ್ರತ್ಯಾಗಮ;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -641,9 +641,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      ಧ್ರುವ parsed_cs_str_vec_t& parsed_charstrings_,
+      ಧ್ರುವ parsed_cs_str_vec_t& parsed_global_subrs_,
+      ಧ್ರುವ hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -658,7 +658,7 @@ struct cff_subset_accelerator_t
   {
     hb_blob_destroy (original_blob);
     auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    ಯದಿ (mapping)
     {
       mapping->~glyph_to_sid_map_t ();
       hb_free (mapping);
@@ -670,19 +670,19 @@ struct cff_subset_accelerator_t
   hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
   mutable hb_atomic_t<glyph_to_sid_map_t *> glyph_to_sid_map;
 
- private:
+ ಗುಪ್ತ:
   hb_blob_t* original_blob;
 };
 
-struct subr_subset_param_t
+ಸಂರಚನಾ subr_subset_param_t
 {
   subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
 		       parsed_cs_str_vec_t *parsed_global_subrs_,
 		       parsed_cs_str_vec_t *parsed_local_subrs_,
 		       hb_set_t *global_closure_,
 		       hb_set_t *local_closure_,
-		       bool drop_hints_,
-		       bool coalesce_ = false) :
+		       ತಾರ್ಕಿಕ drop_hints_,
+		       ತಾರ್ಕಿಕ coalesce_ = ಅಸತ್ಯ) :
       current_parsed_str (parsed_charstring_),
       parsed_charstring (parsed_charstring_),
       parsed_global_subrs (parsed_global_subrs_),
@@ -692,49 +692,49 @@ struct subr_subset_param_t
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    ಯದಿ (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
-    switch (context.type)
+    ವಿಕಲ್ಪ (context.type)
     {
-      case CSType_CharString:
-	return parsed_charstring;
+      ಪಕ್ಷ CSType_CharString:
+	ಪ್ರತ್ಯಾಗಮ parsed_charstring;
 
-      case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
-	break;
+      ಪಕ್ಷ CSType_LocalSubr:
+	ಯದಿ (likely (context.subr_ಅಂಕೆ_2 < parsed_local_subrs->length))
+	  ಪ್ರತ್ಯಾಗಮ &(*parsed_local_subrs)[context.subr_ಅಂಕೆ_2];
+	ಭಙ್ಗ;
 
-      case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
-	break;
+      ಪಕ್ಷ CSType_GlobalSubr:
+	ಯದಿ (likely (context.subr_ಅಂಕೆ_2 < parsed_global_subrs->length))
+	  ಪ್ರತ್ಯಾಗಮ &(*parsed_global_subrs)[context.subr_ಅಂಕೆ_2];
+	ಭಙ್ಗ;
     }
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
   template <typename ENV>
-  void set_current_str (ENV &env, bool calling)
+  ಶೂನ್ಯ set_current_str (ENV &env, ತಾರ್ಕಿಕ calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    ಯದಿ (unlikely (!parsed_str))
     {
       env.set_error ();
-      return;
+      ಪ್ರತ್ಯಾಗಮ;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
+    ಯದಿ (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
       env.set_error ();
-    else
+    ಅನ್ಯಥಾ
     {
-      if (!parsed_str->is_parsed ())
+      ಯದಿ (!parsed_str->is_parsed ())
       {
         parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        ಯದಿ (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -747,56 +747,56 @@ struct subr_subset_param_t
   parsed_cs_str_vec_t	*parsed_local_subrs;
   hb_set_t      *global_closure;
   hb_set_t      *local_closure;
-  bool	  drop_hints;
-  bool	  coalesce;
+  ತಾರ್ಕಿಕ	  drop_hints;
+  ತಾರ್ಕಿಕ	  coalesce;
 };
 
-struct subr_remap_t : hb_inc_bimap_t
+ಸಂರಚನಾ subr_remap_t : hb_inc_bimap_t
 {
-  void create (const hb_set_t *closure)
+  ಶೂನ್ಯ create (ಧ್ರುವ hb_set_t *closure)
   {
     /* create a remapping of subroutine numbers from old to new.
      * no optimization based on usage counts. fonttools doesn't appear doing that either.
      */
 
     alloc (closure->get_population ());
-    for (auto old_num : *closure)
-      add (old_num);
+    ಪ್ರತಿ (auto old_ಅಂಕೆ : *closure)
+      add (old_ಅಂಕೆ);
 
-    if (get_population () < 1240)
+    ಯದಿ (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    ಅನ್ಯಥಾ ಯದಿ (get_population () < 33900)
       bias = 1131;
-    else
+    ಅನ್ಯಥಾ
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  ಪೂರ್ಣಾಙ್ಕ biased_ಅಂಕೆ (unsigned ಪೂರ್ಣಾಙ್ಕ old_ಅಂಕೆ) ಧ್ರುವ
   {
-    hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    hb_codepoint_t new_ಅಂಕೆ = get (old_ಅಂಕೆ);
+    ಪ್ರತ್ಯಾಗಮ (ಪೂರ್ಣಾಙ್ಕ)new_ಅಂಕೆ - bias;
   }
 
-  protected:
-  int bias;
+  ರಕ್ಷಿತ:
+  ಪೂರ್ಣಾಙ್ಕ bias;
 };
 
-struct subr_remaps_t
+ಸಂರಚನಾ subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (unsigned ಪೂರ್ಣಾಙ್ಕ fd_ಎಣಿಕೆ)
   {
-    local_remaps.resize (fdCount);
+    local_remaps.resize (fd_ಎಣಿಕೆ);
   }
 
-  bool in_error()
+  ತಾರ್ಕಿಕ in_error()
   {
-    return local_remaps.in_error ();
+    ಪ್ರತ್ಯಾಗಮ local_remaps.in_error ();
   }
 
-  void create (subr_closures_t& closures)
+  ಶೂನ್ಯ create (subr_closures_t& closures)
   {
     global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < local_remaps.length; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
@@ -805,11 +805,11 @@ struct subr_remaps_t
 };
 
 template <typename SUBSETTER, typename SUBRS, typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_subsetter_t
+ಸಂರಚನಾ subr_subsetter_t
 {
-  subr_subsetter_t (ACC &acc_, const hb_subset_plan_t *plan_)
-      : acc (acc_), plan (plan_), closures(acc_.fdCount),
-        remaps(acc_.fdCount)
+  subr_subsetter_t (ACC &acc_, ಧ್ರುವ hb_subset_plan_t *plan_)
+      : acc (acc_), plan (plan_), closures(acc_.fd_ಎಣಿಕೆ),
+        remaps(acc_.fd_ಎಣಿಕೆ)
   {}
 
   /* Subroutine subsetting with --no-desubroutinize runs in phases:
@@ -826,73 +826,73 @@ struct subr_subsetter_t
    * Assumption: a callsubr/callgsubr operator must immediately follow a (biased) subroutine number
    * within the same charstring/subroutine, e.g., not split across a charstring and a subroutine.
    */
-  bool subset (void)
+  ತಾರ್ಕಿಕ subset (ಶೂನ್ಯ)
   {
-    unsigned fd_count = acc.fdCount;
-    const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    unsigned fd_ಎಣಿಕೆ_2 = acc.fd_ಎಣಿಕೆ;
+    ಧ್ರುವ cff_subset_accelerator_t* cff_accelerator = nullptr;
+    ಯದಿ (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
-      fd_count = cff_accelerator->parsed_local_subrs.length;
+      fd_ಎಣಿಕೆ_2 = cff_accelerator->parsed_local_subrs.length;
     }
 
-    if (cff_accelerator) {
+    ಯದಿ (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
-      cached_charstrings.resize_exact (plan->num_output_glyphs ());
+      cached_charstrings.resize_exact (plan->ಅಂಕೆ_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
-      parsed_charstrings.resize_exact (plan->num_output_glyphs ());
-      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
+    } ಅನ್ಯಥಾ {
+      parsed_charstrings.resize_exact (plan->ಅಂಕೆ_output_glyphs ());
+      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->ಎಣಿಕೆ);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      ಯದಿ (unlikely (!parsed_local_subrs_storage.resize (fd_ಎಣಿಕೆ_2))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < acc.fd_ಎಣಿಕೆ; i++)
       {
-        unsigned count = acc.privateDicts[i].localSubrs->count;
-        parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        unsigned ಎಣಿಕೆ = acc.privateDicts[i].localSubrs->ಎಣಿಕೆ;
+        parsed_local_subrs_storage[i].resize (ಎಣಿಕೆ);
+        ಯದಿ (unlikely (parsed_local_subrs_storage[i].in_error ())) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
+    ಯದಿ (unlikely (remaps.in_error()
                   || cached_charstrings.in_error ()
                   || parsed_charstrings.in_error ()
                   || parsed_global_subrs->in_error ()
                   || closures.in_error ())) {
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
      * the accelerator), coalesce parsed tokens as they are added,
      * instead of a separate compact() pass. */
-    bool coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+    ತಾರ್ಕಿಕ coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    ಪ್ರತಿ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      ಧ್ರುವ hb_ubytes_t str = (*acc.charStrings)[old_glyph];
+      unsigned ಪೂರ್ಣಾಙ್ಕ fd = subset_get_fd (acc, old_glyph);
+      ಯದಿ (unlikely (fd >= acc.fd_ಎಣಿಕೆ))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-      if (cff_accelerator)
+      ಯದಿ (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        ಯದಿ (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        ಅನ್ಯಥಾ
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
-        continue;
+        ಅನುವರ್ತ;
       }
 
       ENV env (str, acc, fd);
@@ -907,14 +907,14 @@ struct subr_subsetter_t
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      ಯದಿ (unlikely (!interp.interpret (param)))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      ಯದಿ ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
@@ -924,10 +924,10 @@ struct subr_subsetter_t
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	ಯದಿ (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
 	{
 	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
+	  ಯದಿ (drop.vsindex_dropped)
 	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
 	}
       }
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      ಯದಿ (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,189 +950,189 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    ಯದಿ ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
         !closure_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
+  ತಾರ್ಕಿಕ encode_charstrings (str_buff_vec_t &buffArray, ತಾರ್ಕಿಕ encode_prefix = ಸತ್ಯ) ಧ್ರುವ
   {
-    unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
+    unsigned ಅಂಕೆ_glyphs = plan->ಅಂಕೆ_output_glyphs ();
+    ಯದಿ (unlikely (!buffArray.resize_exact (ಅಂಕೆ_glyphs)))
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    ಪ್ರತಿ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      ಯದಿ (endchar_op != OpCode_Invalid)
+        ಪ್ರತಿ (; last < gid; last++)
 	{
 	  // Hack to point vector to static string.
 	  auto &b = buffArray.arrayZ[last];
-	  b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	  b.set_storage (const_cast<unsigned ವರ್ಣ *>(endchar_str), 1);
 	}
 
       last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      unsigned ಪೂರ್ಣಾಙ್ಕ  fd = subset_get_fd (acc, old_glyph);
+      ಯದಿ (unlikely (fd >= acc.fd_ಎಣಿಕೆ))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+      ಯದಿ (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    ಯದಿ (endchar_op != OpCode_Invalid)
+      ಪ್ರತಿ (; last < ಅಂಕೆ_glyphs; last++)
       {
 	// Hack to point vector to static string.
 	auto &b = buffArray.arrayZ[last];
-	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	b.set_storage (const_cast<unsigned ವರ್ಣ *>(endchar_str), 1);
       }
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  ತಾರ್ಕಿಕ encode_subrs (ಧ್ರುವ parsed_cs_str_vec_t &subrs, ಧ್ರುವ subr_remap_t& remap, unsigned ಪೂರ್ಣಾಙ್ಕ fd, str_buff_vec_t &buffArray) ಧ್ರುವ
   {
-    unsigned int  count = remap.get_population ();
+    unsigned ಪೂರ್ಣಾಙ್ಕ  ಎಣಿಕೆ = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    ಯದಿ (unlikely (!buffArray.resize_exact (ಎಣಿಕೆ)))
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ new_ಅಂಕೆ = 0; new_ಅಂಕೆ < ಎಣಿಕೆ; new_ಅಂಕೆ++)
     {
-      hb_codepoint_t old_num = remap.backward (new_num);
-      assert (old_num != CFF_UNDEF_CODE);
+      hb_codepoint_t old_ಅಂಕೆ = remap.backward (new_ಅಂಕೆ);
+      ಪ್ರತಿಜ್ಞಾ (old_ಅಂಕೆ != CFF_UNDEF_CODE);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      ಯದಿ (unlikely (!encode_str (subrs[old_ಅಂಕೆ], fd, buffArray[new_ಅಂಕೆ])))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool encode_globalsubrs (str_buff_vec_t &buffArray)
+  ತಾರ್ಕಿಕ encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    ಪ್ರತ್ಯಾಗಮ encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  ತಾರ್ಕಿಕ encode_localsubrs (unsigned ಪೂರ್ಣಾಙ್ಕ fd, str_buff_vec_t &buffArray) ಧ್ರುವ
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    ಪ್ರತ್ಯಾಗಮ encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
-  protected:
-  struct drop_hints_param_t
+  ರಕ್ಷಿತ:
+  ಸಂರಚನಾ drop_hints_param_t
   {
     drop_hints_param_t ()
-      : seen_moveto (false),
-	ends_in_hint (false),
-	all_dropped (false),
-	vsindex_dropped (false) {}
+      : seen_moveto (ಅಸತ್ಯ),
+	ends_in_hint (ಅಸತ್ಯ),
+	all_dropped (ಅಸತ್ಯ),
+	vsindex_dropped (ಅಸತ್ಯ) {}
 
-    bool  seen_moveto;
-    bool  ends_in_hint;
-    bool  all_dropped;
-    bool  vsindex_dropped;
+    ತಾರ್ಕಿಕ  seen_moveto;
+    ತಾರ್ಕಿಕ  ends_in_hint;
+    ತಾರ್ಕಿಕ  all_dropped;
+    ತಾರ್ಕಿಕ  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
-			   const subr_subset_param_t &param, drop_hints_param_t &drop)
+  ತಾರ್ಕಿಕ drop_hints_in_subr (parsed_cs_str_t &str, unsigned ಪೂರ್ಣಾಙ್ಕ pos,
+			   parsed_cs_str_vec_t &subrs, unsigned ಪೂರ್ಣಾಙ್ಕ subr_ಅಂಕೆ_2,
+			   ಧ್ರುವ subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    drop.ends_in_hint = false;
-    bool has_hint = drop_hints_in_str (subrs[subr_num], param, drop);
+    drop.ends_in_hint = ಅಸತ್ಯ;
+    ತಾರ್ಕಿಕ has_hint = drop_hints_in_str (subrs[subr_ಅಂಕೆ_2], param, drop);
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    ಯದಿ (drop.ends_in_hint)
     {
       str.values[pos].set_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
-	drop.ends_in_hint = false;
+      ಯದಿ (!str.at_end (pos))
+	drop.ends_in_hint = ಅಸತ್ಯ;
     }
-    else if (drop.all_dropped)
+    ಅನ್ಯಥಾ ಯದಿ (drop.all_dropped)
     {
       str.values[pos].set_hinting ();
     }
 
-    return has_hint;
+    ಪ್ರತ್ಯಾಗಮ has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  ತಾರ್ಕಿಕ drop_hints_in_str (parsed_cs_str_t &str, ಧ್ರುವ subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    bool  seen_hint = false;
+    ತಾರ್ಕಿಕ  seen_hint = ಅಸತ್ಯ;
 
-    unsigned count = str.values.length;
+    unsigned ಎಣಿಕೆ = str.values.length;
     auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ pos = 0; pos < ಎಣಿಕೆ; pos++)
     {
-      bool  has_hint = false;
-      switch (values[pos].op)
+      ತಾರ್ಕಿಕ  has_hint = ಅಸತ್ಯ;
+      ವಿಕಲ್ಪ (values[pos].op)
       {
-	case OpCode_callsubr:
+	ಪಕ್ಷ OpCode_callsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_local_subrs, values[pos].subr_num,
+					*param.parsed_local_subrs, values[pos].subr_ಅಂಕೆ_2,
 					param, drop);
-	  break;
+	  ಭಙ್ಗ;
 
-	case OpCode_callgsubr:
+	ಪಕ್ಷ OpCode_callgsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_global_subrs, values[pos].subr_num,
+					*param.parsed_global_subrs, values[pos].subr_ಅಂಕೆ_2,
 					param, drop);
-	  break;
+	  ಭಙ್ಗ;
 
-	case OpCode_rmoveto:
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  drop.seen_moveto = true;
-	  break;
+	ಪಕ್ಷ OpCode_rmoveto:
+	ಪಕ್ಷ OpCode_hmoveto:
+	ಪಕ್ಷ OpCode_vmoveto:
+	  drop.seen_moveto = ಸತ್ಯ;
+	  ಭಙ್ಗ;
 
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	ಪಕ್ಷ OpCode_hintmask:
+	ಪಕ್ಷ OpCode_cntrmask:
+	  ಯದಿ (drop.seen_moveto)
 	  {
 	    values[pos].set_hinting ();
-	    break;
+	    ಭಙ್ಗ;
 	  }
 	  HB_FALLTHROUGH;
 
-	case OpCode_hstemhm:
-	case OpCode_vstemhm:
-	case OpCode_hstem:
-	case OpCode_vstem:
-	  has_hint = true;
+	ಪಕ್ಷ OpCode_hstemhm:
+	ಪಕ್ಷ OpCode_vstemhm:
+	ಪಕ್ಷ OpCode_hstem:
+	ಪಕ್ಷ OpCode_vstem:
+	  has_hint = ಸತ್ಯ;
 	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
-	    drop.ends_in_hint = true;
-	  break;
+	  ಯದಿ (str.at_end (pos))
+	    drop.ends_in_hint = ಸತ್ಯ;
+	  ಭಙ್ಗ;
 
-	case OpCode_dotsection:
+	ಪಕ್ಷ OpCode_dotsection:
 	  values[pos].set_hinting ();
-	  break;
+	  ಭಙ್ಗ;
 
-	default:
+	ಸ್ವಭಾವ:
 	  /* NONE */
-	  break;
+	  ಭಙ್ಗ;
       }
-      if (has_hint)
+      ಯದಿ (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	ಪ್ರತಿ (ಪೂರ್ಣಾಙ್ಕ i = pos - 1; i >= 0; i--)
 	{
 	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
-	    break;
+	  ಯದಿ (csop.is_hinting ())
+	    ಭಙ್ಗ;
 	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
-	    drop.vsindex_dropped = true;
+	  ಯದಿ (csop.op == OpCode_vsindexcs)
+	    drop.vsindex_dropped = ಸತ್ಯ;
 	}
 	seen_hint |= has_hint;
       }
@@ -1142,33 +1142,33 @@ struct subr_subsetter_t
      * It may happen even after seeing the first moveto if a subr contains
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
-    drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    drop.all_dropped = ಸತ್ಯ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ pos = 0; pos < ಎಣಿಕೆ; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
-	break;
-      if (!csop.is_hinting ())
+      ಯದಿ (csop.op == OpCode_return)
+	ಭಙ್ಗ;
+      ಯದಿ (!csop.is_hinting ())
       {
-	drop.all_dropped = false;
-	break;
+	drop.all_dropped = ಅಸತ್ಯ;
+	ಭಙ್ಗ;
       }
     }
 
-    return seen_hint;
+    ಪ್ರತ್ಯಾಗಮ seen_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  ತಾರ್ಕಿಕ closure_subroutines (ಧ್ರುವ parsed_cs_str_vec_t& global_subrs,
+                            ಧ್ರುವ hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    ಪ್ರತಿ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      unsigned ಪೂರ್ಣಾಙ್ಕ fd = subset_get_fd (acc, old_glyph);
+      ಯದಿ (unlikely (fd >= acc.fd_ಎಣಿಕೆ))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
@@ -1181,108 +1181,108 @@ struct subr_subsetter_t
       collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
+  ಶೂನ್ಯ collect_subr_refs_in_subr (unsigned ಪೂರ್ಣಾಙ್ಕ subr_ಅಂಕೆ_2, parsed_cs_str_vec_t &subrs,
 				  hb_set_t *closure,
-				  const subr_subset_param_t &param)
+				  ಧ್ರುವ subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
-    closure->add (subr_num);
-    collect_subr_refs_in_str (subrs[subr_num], param);
+    ಯದಿ (closure->has (subr_ಅಂಕೆ_2))
+      ಪ್ರತ್ಯಾಗಮ;
+    closure->add (subr_ಅಂಕೆ_2);
+    collect_subr_refs_in_str (subrs[subr_ಅಂಕೆ_2], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
-                                 const subr_subset_param_t &param)
+  ಶೂನ್ಯ collect_subr_refs_in_str (ಧ್ರುವ parsed_cs_str_t &str,
+                                 ಧ್ರುವ subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    ಯದಿ (!str.has_calls ())
+      ಪ್ರತ್ಯಾಗಮ;
 
-    for (auto &opstr : str.values)
+    ಪ್ರತಿ (auto &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      ಯದಿ (!param.drop_hints || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ವಿಕಲ್ಪ (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_local_subrs,
+	  ಪಕ್ಷ OpCode_callsubr:
+	    collect_subr_refs_in_subr (opstr.subr_ಅಂಕೆ_2, *param.parsed_local_subrs,
 				       param.local_closure, param);
-	    break;
+	    ಭಙ್ಗ;
 
-	  case OpCode_callgsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_global_subrs,
+	  ಪಕ್ಷ OpCode_callgsubr:
+	    collect_subr_refs_in_subr (opstr.subr_ಅಂಕೆ_2, *param.parsed_global_subrs,
 				       param.global_closure, param);
-	    break;
+	    ಭಙ್ಗ;
 
-	  default: break;
+	  ಸ್ವಭಾವ: ಭಙ್ಗ;
 	}
       }
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  ತಾರ್ಕಿಕ encode_str (ಧ್ರುವ parsed_cs_str_t &str, ಧ್ರುವ unsigned ಪೂರ್ಣಾಙ್ಕ fd, str_buff_t &buff, ತಾರ್ಕಿಕ encode_prefix = ಸತ್ಯ) ಧ್ರುವ
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
-    bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    ತಾರ್ಕಿಕ hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    ಯದಿ (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
     {
-      encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
+      encoder.encode_ಅಂಕೆ_cs (str.prefix_ಅಂಕೆ_2 ());
+      ಯದಿ (str.prefix_op () != OpCode_Invalid)
 	encoder.encode_op (str.prefix_op ());
     }
 
     unsigned size = 0;
-    for (auto &opstr : str.values)
+    ಪ್ರತಿ (auto &opstr : str.values)
     {
       size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
+      ಯದಿ (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
         size += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    ಯದಿ (!buff.alloc_exact (buff.length + size))
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    for (auto &opstr : str.values)
+    ಪ್ರತಿ (auto &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      ಯದಿ (hinting || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ವಿಕಲ್ಪ (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    encoder.encode_int (remaps.local_remaps[fd].biased_num (opstr.subr_num));
+	  ಪಕ್ಷ OpCode_callsubr:
+	    encoder.encode_int (remaps.local_remaps[fd].biased_ಅಂಕೆ (opstr.subr_ಅಂಕೆ_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ಭಙ್ಗ;
 
-	  case OpCode_callgsubr:
-	    encoder.encode_int (remaps.global_remap.biased_num (opstr.subr_num));
+	  ಪಕ್ಷ OpCode_callgsubr:
+	    encoder.encode_int (remaps.global_remap.biased_ಅಂಕೆ (opstr.subr_ಅಂಕೆ_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ಭಙ್ಗ;
 
-	  default:
+	  ಸ್ವಭಾವ:
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ಭಙ್ಗ;
 	}
       }
     }
-    return !encoder.in_error ();
+    ಪ್ರತ್ಯಾಗಮ !encoder.in_error ();
   }
 
-  void compact_parsed_subrs () const
+  ಶೂನ್ಯ compact_parsed_subrs () ಧ್ರುವ
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    ಪ್ರತಿ (auto &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    ಪ್ರತಿ (auto &vec : parsed_local_subrs_storage)
+      ಪ್ರತಿ (auto &cs : vec)
 	cs.compact ();
   }
 
-  void populate_subset_accelerator () const
+  ಶೂನ್ಯ populate_subset_accelerator () ಧ್ರುವ
   {
-    if (!plan->inprogress_accelerator) return;
+    ಯದಿ (!plan->inprogress_accelerator) ಪ್ರತ್ಯಾಗಮ;
 
     compact_parsed_subrs ();
 
@@ -1293,52 +1293,52 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  ಧ್ರುವ parsed_cs_str_t& get_parsed_charstring (unsigned i) ಧ್ರುವ
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    ಯದಿ (cached_charstrings) ಪ್ರತ್ಯಾಗಮ *(cached_charstrings[i]);
+    ಪ್ರತ್ಯಾಗಮ parsed_charstrings[i];
   }
 
-  protected:
-  const ACC			&acc;
-  const hb_subset_plan_t	*plan;
+  ರಕ್ಷಿತ:
+  ಧ್ರುವ ACC			&acc;
+  ಧ್ರುವ hb_subset_plan_t	*plan;
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_vector_t<ಧ್ರುವ parsed_cs_str_t*>     cached_charstrings;
+  ಧ್ರುವ parsed_cs_str_vec_t*              parsed_global_subrs;
+  ಧ್ರುವ hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
-  private:
+  ಗುಪ್ತ:
 
   parsed_cs_str_vec_t		parsed_charstrings;
   parsed_cs_str_vec_t		parsed_global_subrs_storage;
   hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
-  typedef typename SUBRS::count_type subr_count_type;
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename SUBRS::ಎಣಿಕೆ_type subr_ಎಣಿಕೆ_type;
 };
 
 } /* namespace CFF */
 
-HB_INTERNAL bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
-			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
+HB_INTERNAL ತಾರ್ಕಿಕ
+hb_plan_subset_cff_fdselect (ಧ್ರುವ hb_subset_plan_t *plan,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ fd_ಎಣಿಕೆ,
+			    ಧ್ರುವ CFF::FDSelect &src, /* IN */
+			    unsigned ಪೂರ್ಣಾಙ್ಕ src_ಅಂಕೆ_glyphs,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ &subset_fd_ಎಣಿಕೆ /* OUT */,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ &subset_fdselect_size /* OUT */,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ &subset_fdselect_format /* OUT */,
 			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
 			    hb_inc_bimap_t &fdmap /* OUT */);
 
-HB_INTERNAL bool
+HB_INTERNAL ತಾರ್ಕಿಕ
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
-			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
-			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
+			  unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs,
+			  ಧ್ರುವ CFF::FDSelect &src,
+			  unsigned ಪೂರ್ಣಾಙ್ಕ fd_ಎಣಿಕೆ_2,
+			  unsigned ಪೂರ್ಣಾಙ್ಕ fdselect_format,
+			  unsigned ಪೂರ್ಣಾಙ್ಕ size,
+			  ಧ್ರುವ hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
 
 #endif /* HB_SUBSET_CFF_COMMON_HH */

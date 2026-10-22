@@ -8,6 +8,6 @@ CHECK_LIBSTDCXX_LIBS = [
     "harfbuzz-cairo",
 ]
 
-CHECK_SYMBOL_LIBS = CHECK_LIBSTDCXX_LIBS + [
+CHECK_ಚಿಹ್ನೆ_LIBS = CHECK_LIBSTDCXX_LIBS + [
     "harfbuzz-icu",
 ]

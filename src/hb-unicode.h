@@ -28,14 +28,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ಯದಿ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_UNICODE_H
 #define HB_UNICODE_H
 
-#include "hb-common.h"
+#ಅನ್ತರ್ಭಾವ "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -88,7 +88,7 @@ HB_BEGIN_DECLS
  **/
 
 /* Unicode Character Database property: General_Category (gc) */
-typedef enum
+ಪ್ರಕಾರನಿರ್ದೇಶ ಗಣನಾ
 {
   HB_UNICODE_GENERAL_CATEGORY_CONTROL,			/* Cc */
   HB_UNICODE_GENERAL_CATEGORY_FORMAT,			/* Cf */
@@ -103,9 +103,9 @@ typedef enum
   HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK,		/* Mc */
   HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK,		/* Me */
   HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK,		/* Mn */
-  HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER,		/* Nd */
-  HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER,		/* Nl */
-  HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER,		/* No */
+  HB_UNICODE_GENERAL_CATEGORY_DECIMAL_ಸಂಖ್ಯೆ,		/* Nd */
+  HB_UNICODE_GENERAL_CATEGORY_LETTER_ಸಂಖ್ಯೆ,		/* Nl */
+  HB_UNICODE_GENERAL_CATEGORY_OTHER_ಸಂಖ್ಯೆ,		/* No */
   HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION,	/* Pc */
   HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION,		/* Pd */
   HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION,	/* Pe */
@@ -113,11 +113,11 @@ typedef enum
   HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION,	/* Pi */
   HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION,	/* Po */
   HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION,		/* Ps */
-  HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL,		/* Sc */
-  HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL,		/* Sk */
-  HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL,		/* Sm */
-  HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL,		/* So */
-  HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR,		/* Zl */
+  HB_UNICODE_GENERAL_CATEGORY_CURRENCY_ಚಿಹ್ನೆ,		/* Sc */
+  HB_UNICODE_GENERAL_CATEGORY_MODIFIER_ಚಿಹ್ನೆ,		/* Sk */
+  HB_UNICODE_GENERAL_CATEGORY_MATH_ಚಿಹ್ನೆ,		/* Sm */
+  HB_UNICODE_GENERAL_CATEGORY_OTHER_ಚಿಹ್ನೆ,		/* So */
+  HB_UNICODE_GENERAL_CATEGORY_ಸಾಲು_SEPARATOR,		/* Zl */
   HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR,	/* Zp */
   HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR		/* Zs */
 } hb_unicode_general_category_t;
@@ -190,7 +190,7 @@ typedef enum
  * being returned from hb_unicode_combining_class().</note>
  *
  **/
-typedef enum
+ಪ್ರಕಾರನಿರ್ದೇಶ ಗಣನಾ
 {
   HB_UNICODE_COMBINING_CLASS_NOT_REORDERED	= 0,
   HB_UNICODE_COMBINING_CLASS_OVERLAY		= 1,
@@ -249,18 +249,18 @@ typedef enum
   HB_UNICODE_COMBINING_CLASS_CCC132	= 132,
 
 
-  HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT	= 200,
+  HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_ಎಡ	= 200,
   HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW		= 202,
   HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE		= 214,
-  HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT	= 216,
-  HB_UNICODE_COMBINING_CLASS_BELOW_LEFT			= 218,
+  HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_ಬಲ	= 216,
+  HB_UNICODE_COMBINING_CLASS_BELOW_ಎಡ			= 218,
   HB_UNICODE_COMBINING_CLASS_BELOW			= 220,
-  HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT		= 222,
-  HB_UNICODE_COMBINING_CLASS_LEFT			= 224,
-  HB_UNICODE_COMBINING_CLASS_RIGHT			= 226,
-  HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT			= 228,
+  HB_UNICODE_COMBINING_CLASS_BELOW_ಬಲ		= 222,
+  HB_UNICODE_COMBINING_CLASS_ಎಡ			= 224,
+  HB_UNICODE_COMBINING_CLASS_ಬಲ			= 226,
+  HB_UNICODE_COMBINING_CLASS_ABOVE_ಎಡ			= 228,
   HB_UNICODE_COMBINING_CLASS_ABOVE			= 230,
-  HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT		= 232,
+  HB_UNICODE_COMBINING_CLASS_ABOVE_ಬಲ		= 232,
   HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW		= 233,
   HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE		= 234,
 
@@ -286,42 +286,42 @@ typedef enum
  * needed, and replace the default by calling the setter for a
  * method.
  **/
-typedef struct hb_unicode_funcs_t hb_unicode_funcs_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_unicode_funcs_t hb_unicode_funcs_t;
 
 
 /*
  * just give me the best implementation you've got there.
  */
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_default (void);
+hb_unicode_funcs_get_default (ಶೂನ್ಯ);
 
 
 HB_EXTERN hb_unicode_funcs_t *
 hb_unicode_funcs_create (hb_unicode_funcs_t *parent);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_empty (void);
+hb_unicode_funcs_get_empty (ಶೂನ್ಯ);
 
 HB_EXTERN hb_unicode_funcs_t *
 hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs);
 
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
 hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t *key,
-				void *              data,
+				hb_user_data_ಕೀಲಿ_t *ಕೀಲಿ_2,
+				ಶೂನ್ಯ *              data,
 				hb_destroy_func_t   destroy,
 				hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t       *key);
+HB_EXTERN ಶೂನ್ಯ *
+hb_unicode_funcs_get_user_data (ಧ್ರುವ hb_unicode_funcs_t *ufuncs,
+				hb_user_data_ಕೀಲಿ_t       *ಕೀಲಿ_2);
 
 
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
@@ -351,9 +351,9 @@ hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs);
  * Return value: The #hb_unicode_combining_class_t of @unicode
  * 
  **/
-typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /**
  * hb_unicode_general_category_func_t:
@@ -369,9 +369,9 @@ typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_un
  * Return value: The #hb_unicode_general_category_t of @unicode
  *
  **/
-typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /**
  * hb_unicode_mirroring_func_t:
@@ -391,9 +391,9 @@ typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_
  * Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
  *
  **/
-typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /**
  * hb_unicode_script_func_t:
@@ -409,9 +409,9 @@ typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *uf
  * Return value: The #hb_script_t of @unicode
  * 
  **/
-typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /**
  * hb_unicode_compose_func_t:
@@ -432,11 +432,11 @@ typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` is @a,@b composed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      a,
 										 hb_codepoint_t      b,
 										 hb_codepoint_t     *ab,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /**
  * hb_unicode_decompose_func_t:
@@ -456,11 +456,11 @@ typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` if @ab decomposed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      ab,
 										 hb_codepoint_t     *a,
 										 hb_codepoint_t     *b,
-										 void               *user_data);
+										 ಶೂನ್ಯ               *user_data);
 
 /* func setters */
 
@@ -475,10 +475,10 @@ typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
 					   hb_unicode_combining_class_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_general_category_func:
@@ -491,10 +491,10 @@ hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
 					    hb_unicode_general_category_func_t func,
-					    void *user_data, hb_destroy_func_t destroy);
+					    ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_mirroring_func:
@@ -507,10 +507,10 @@ hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_mirroring_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_script_func:
@@ -523,10 +523,10 @@ hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
 				  hb_unicode_script_func_t func,
-				  void *user_data, hb_destroy_func_t destroy);
+				  ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_compose_func:
@@ -539,10 +539,10 @@ hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
 				   hb_unicode_compose_func_t func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_decompose_func:
@@ -555,10 +555,10 @@ hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_unicode_funcs_set_decompose_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_decompose_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     ಶೂನ್ಯ *user_data, hb_destroy_func_t destroy);
 
 /* accessors */
 

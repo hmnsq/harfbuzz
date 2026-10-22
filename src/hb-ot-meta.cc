@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_META
 
-#include "hb-ot-meta-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-meta-table.hh"
 
 /**
  * SECTION:hb-ot-meta
@@ -50,13 +50,13 @@
  *
  * Since: 2.6.0
  **/
-unsigned int
+unsigned ಪೂರ್ಣಾಙ್ಕ
 hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
+			   unsigned ಪೂರ್ಣಾಙ್ಕ      start_offset,
+			   unsigned ಪೂರ್ಣಾಙ್ಕ     *entries_ಎಣಿಕೆ, /* IN/OUT.  May be NULL. */
 			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */)
 {
-  return face->table.meta->get_entries (start_offset, entries_count, entries);
+  ಪ್ರತ್ಯಾಗಮ face->table.meta->get_entries (start_offset, entries_ಎಣಿಕೆ, entries);
 }
 
 /**
@@ -73,7 +73,7 @@ hb_ot_meta_get_entry_tags (hb_face_t        *face,
 hb_blob_t *
 hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag)
 {
-  return face->table.meta->reference_entry (meta_tag);
+  ಪ್ರತ್ಯಾಗಮ face->table.meta->reference_entry (meta_tag);
 }
 
 #endif

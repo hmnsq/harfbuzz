@@ -25,7 +25,7 @@
 #ifndef HB_LIMITS_HH
 #define HB_LIMITS_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 
 #ifndef HB_BUFFER_MAX_LEN_FACTOR
@@ -80,20 +80,20 @@
 #define HB_MAX_LANGSYS 2000
 #endif
 
-#ifndef HB_MAX_LANGSYS_FEATURE_COUNT
-#define HB_MAX_LANGSYS_FEATURE_COUNT 50000
+#ifndef HB_MAX_LANGSYS_FEATURE_ಎಣಿಕೆ
+#define HB_MAX_LANGSYS_FEATURE_ಎಣಿಕೆ 50000
 #endif
 
 #ifndef HB_MAX_FEATURE_INDICES
 #define HB_MAX_FEATURE_INDICES 8000
 #endif
 
-#ifndef HB_MAX_LOOKUP_VISIT_COUNT
-#define HB_MAX_LOOKUP_VISIT_COUNT 35000
+#ifndef HB_MAX_LOOKUP_VISIT_ಎಣಿಕೆ
+#define HB_MAX_LOOKUP_VISIT_ಎಣಿಕೆ 35000
 #endif
 
-#ifndef HB_MAX_GRAPH_EDGE_COUNT
-#define HB_MAX_GRAPH_EDGE_COUNT 16384
+#ifndef HB_MAX_GRAPH_EDGE_ಎಣಿಕೆ
+#define HB_MAX_GRAPH_EDGE_ಎಣಿಕೆ 16384
 #endif
 
 #ifndef HB_VAR_COMPOSITE_MAX_AXES
@@ -197,11 +197,11 @@
 
 /* Precharge COST * MULT.  Callers bound COST and MULT structurally, and live
  * budgets are concrete non-negative values when a session starts. */
-static HB_ALWAYS_INLINE bool
-hb_budget_spend (int64_t &budget, unsigned int cost, unsigned int mult = 1)
+ಸ್ಥಿರ HB_ALWAYS_INLINE ತಾರ್ಕಿಕ
+hb_budget_spend (int64_t &budget, unsigned ಪೂರ್ಣಾಙ್ಕ cost, unsigned ಪೂರ್ಣಾಙ್ಕ mult = 1)
 {
   budget -= (int64_t) cost * mult;
-  return budget >= 0;
+  ಪ್ರತ್ಯಾಗಮ budget >= 0;
 }
 
 /* The flat pixel-work floor for one raster paint session.  Pixel and

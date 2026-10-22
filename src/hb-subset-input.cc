@@ -24,19 +24,19 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb-subset-instancer-solver.hh"
-#include "hb-subset.hh"
-#include "hb-set.hh"
-#include "hb-utf.hh"
+#ಅನ್ತರ್ಭಾವ "hb-subset-instancer-solver.hh"
+#ಅನ್ತರ್ಭಾವ "hb-subset.hh"
+#ಅನ್ತರ್ಭಾವ "hb-set.hh"
+#ಅನ್ತರ್ಭಾವ "hb-utf.hh"
 
 
-hb_subset_input_t::hb_subset_input_t ()
+hb_subset_ಒಳಹರಿವು_t::hb_subset_ಒಳಹರಿವು_t ()
 {
-  for (auto& set : sets_iter ())
+  ಪ್ರತಿ (auto& set : sets_iter ())
     set = hb::shared_ptr<hb_set_t> (hb_set_create ());
 
-  if (in_error ())
-    return;
+  ಯದಿ (in_error ())
+    ಪ್ರತ್ಯಾಗಮ;
 
   flags = HB_SUBSET_FLAGS_DEFAULT;
 
@@ -200,21 +200,21 @@ hb_subset_input_t::hb_subset_input_t ()
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_create_or_fail (void)
+hb_subset_ಒಳಹರಿವು_t *
+hb_subset_ಒಳಹರಿವು_create_or_fail (ಶೂನ್ಯ)
 {
-  hb_subset_input_t *input = hb_object_create<hb_subset_input_t>();
+  hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು = hb_object_create<hb_subset_ಒಳಹರಿವು_t>();
 
-  if (unlikely (!input))
-    return nullptr;
+  ಯದಿ (unlikely (!ಒಳಹರಿವು))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  if (input->in_error ())
+  ಯದಿ (ಒಳಹರಿವು->in_error ())
   {
-    hb_subset_input_destroy (input);
-    return nullptr;
+    hb_subset_ಒಳಹರಿವು_destroy (ಒಳಹರಿವು);
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  return input;
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು;
 }
 
 /**
@@ -227,10 +227,10 @@ hb_subset_input_create_or_fail (void)
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_t *
+hb_subset_ಒಳಹರಿವು_reference (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  return hb_object_reference (input);
+  ಪ್ರತ್ಯಾಗಮ hb_object_reference (ಒಳಹರಿವು);
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_input_reference (hb_subset_input_t *input)
  *
  * Since: 1.8.0
  **/
-void
-hb_subset_input_destroy (hb_subset_input_t *input)
+ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_destroy (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  if (!hb_object_destroy (input)) return;
+  ಯದಿ (!hb_object_destroy (ಒಳಹರಿವು)) ಪ್ರತ್ಯಾಗಮ;
 
-  hb_free (input);
+  hb_free (ಒಳಹರಿವು);
 }
 
 /**
@@ -263,9 +263,9 @@ hb_subset_input_destroy (hb_subset_input_t *input)
  * Since: 1.8.0
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_unicode_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  return input->sets.unicodes;
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->sets.unicodes;
 }
 
 /**
@@ -280,9 +280,9 @@ hb_subset_input_unicode_set (hb_subset_input_t *input)
  * Since: 1.8.0
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_glyph_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  return input->sets.glyphs;
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->sets.glyphs;
 }
 
 /**
@@ -297,9 +297,9 @@ hb_subset_input_glyph_set (hb_subset_input_t *input)
  * Since: 2.9.1
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
+hb_subset_ಒಳಹರಿವು_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು, hb_subset_sets_t set_type)
 {
-  return input->sets_iter () [set_type];
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->sets_iter () [set_type];
 }
 
 /**
@@ -313,9 +313,9 @@ hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
  * Since: 2.9.0
  **/
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_get_flags (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  return (hb_subset_flags_t) input->flags;
+  ಪ್ರತ್ಯಾಗಮ (hb_subset_flags_t) ಒಳಹರಿವು->flags;
 }
 
 /**
@@ -328,11 +328,11 @@ hb_subset_input_get_flags (hb_subset_input_t *input)
  *
  * Since: 2.9.0
  **/
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_set_flags (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
 			   unsigned value)
 {
-  input->flags = (hb_subset_flags_t) value;
+  ಒಳಹರಿವು->flags = (hb_subset_flags_t) value;
 }
 
 /**
@@ -350,13 +350,13 @@ hb_subset_input_set_flags (hb_subset_input_t *input,
  * Since: 2.9.0
  **/
 hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_ಒಳಹರಿವು_set_user_data (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
+			       hb_user_data_ಕೀಲಿ_t *key,
+			       ಶೂನ್ಯ *		   data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace)
 {
-  return hb_object_set_user_data (input, key, data, destroy, replace);
+  ಪ್ರತ್ಯಾಗಮ hb_object_set_user_data (ಒಳಹರಿವು, key, data, destroy, replace);
 }
 
 /**
@@ -371,11 +371,11 @@ hb_subset_input_set_user_data (hb_subset_input_t  *input,
  *
  * Since: 2.9.0
  **/
-void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t     *key)
+ಶೂನ್ಯ *
+hb_subset_ಒಳಹರಿವು_get_user_data (ಧ್ರುವ hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
+			       hb_user_data_ಕೀಲಿ_t     *key)
 {
-  return hb_object_get_user_data (input, key);
+  ಪ್ರತ್ಯಾಗಮ hb_object_get_user_data (ಒಳಹರಿವು, key);
 }
 
 /**
@@ -390,27 +390,27 @@ hb_subset_input_get_user_data (const hb_subset_input_t *input,
  *
  * Since: 7.0.0
  */
-void
-hb_subset_input_keep_everything (hb_subset_input_t *input)
+ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_keep_everything (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  const hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
+  ಧ್ರುವ hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
 				      HB_SUBSET_SETS_GLYPH_INDEX,
 				      HB_SUBSET_SETS_NAME_ID,
 				      HB_SUBSET_SETS_NAME_LANG_ID,
 				      HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
 				      HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG};
 
-  for (auto idx : hb_iter (indices))
+  ಪ್ರತಿ (auto idx : hb_iter (indices))
   {
-    hb_set_t *set = hb_subset_input_set (input, idx);
+    hb_set_t *set = hb_subset_ಒಳಹರಿವು_set (ಒಳಹರಿವು, idx);
     hb_set_clear (set);
     hb_set_invert (set);
   }
 
   // Don't drop any tables
-  hb_set_clear (hb_subset_input_set (input, HB_SUBSET_SETS_DROP_TABLE_TAG));
+  hb_set_clear (hb_subset_ಒಳಹರಿವು_set (ಒಳಹರಿವು, HB_SUBSET_SETS_DROP_TABLE_TAG));
 
-  hb_subset_input_set_flags (input,
+  hb_subset_ಒಳಹರಿವು_set_flags (ಒಳಹರಿವು,
 			     HB_SUBSET_FLAGS_NOTDEF_OUTLINE |
 			     HB_SUBSET_FLAGS_GLYPH_NAMES |
 			     HB_SUBSET_FLAGS_NAME_LEGACY |
@@ -433,29 +433,29 @@ hb_subset_input_keep_everything (hb_subset_input_t *input)
  * Since: 8.3.1
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_all_axes_to_default (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
                                          hb_face_t          *face)
 {
-  unsigned axis_count = hb_ot_var_get_axis_count (face);
-  if (!axis_count) return false;
+  unsigned axis_ಎಣಿಕೆ = hb_ot_var_get_axis_ಎಣಿಕೆ (face);
+  ಯದಿ (!axis_ಎಣಿಕೆ) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_count, sizeof (hb_ot_var_axis_info_t));
-  if (unlikely (!axis_infos)) return false;
+  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_ಎಣಿಕೆ, ಪರಿಮಾಣ (hb_ot_var_axis_info_t));
+  ಯದಿ (unlikely (!axis_infos)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  (void) hb_ot_var_get_axis_infos (face, 0, &axis_count, axis_infos);
+  (ಶೂನ್ಯ) hb_ot_var_get_axis_infos (face, 0, &axis_ಎಣಿಕೆ, axis_infos);
 
-  for (unsigned i = 0; i < axis_count; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < axis_ಎಣಿಕೆ; i++)
   {
     hb_tag_t axis_tag = axis_infos[i].tag;
-    double default_val = (double) axis_infos[i].default_value;
-    if (!input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
+    ದ್ವಿಗುಣ default_val = (ದ್ವಿಗುಣ) axis_infos[i].default_ಮೌಲ್ಯ;
+    ಯದಿ (!ಒಳಹರಿವು->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
     {
       hb_free (axis_infos);
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
   }
   hb_free (axis_infos);
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 /**
@@ -473,16 +473,16 @@ hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_axis_to_default (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
                                      hb_face_t          *face,
                                      hb_tag_t            axis_tag)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ಯದಿ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  double default_val = (double) axis_info.default_value;
-  return input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
+  ದ್ವಿಗುಣ default_val = (ದ್ವಿಗುಣ) axis_info.default_ಮೌಲ್ಯ;
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
 }
 
 /**
@@ -501,17 +501,17 @@ hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_axis_location (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
                                    hb_face_t          *face,
                                    hb_tag_t            axis_tag,
-                                   float               axis_value)
+                                   ಭಿನ್ನ               axis_ಮೌಲ್ಯ)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ಯದಿ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  double val = hb_clamp((double) axis_value, (double) axis_info.min_value, (double) axis_info.max_value);
-  return input->axes_location.set (axis_tag, Triple (val, val, val));
+  ದ್ವಿಗುಣ val = hb_clamp((ದ್ವಿಗುಣ) axis_ಮೌಲ್ಯ, (ದ್ವಿಗುಣ) axis_info.min_ಮೌಲ್ಯ, (ದ್ವಿಗುಣ) axis_info.max_ಮೌಲ್ಯ);
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->axes_location.set (axis_tag, Triple (val, val, val));
 }
 
 /**
@@ -538,28 +538,28 @@ hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_set_axis_range (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
                                 hb_face_t          *face,
                                 hb_tag_t            axis_tag,
-                                float               axis_min_value,
-                                float               axis_max_value,
-                                float               axis_def_value)
+                                ಭಿನ್ನ               axis_min_ಮೌಲ್ಯ,
+                                ಭಿನ್ನ               axis_max_ಮೌಲ್ಯ,
+                                ಭಿನ್ನ               axis_def_ಮೌಲ್ಯ)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ಯದಿ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  float min = !std::isnan(axis_min_value) ? axis_min_value : axis_info.min_value;
-  float max = !std::isnan(axis_max_value) ? axis_max_value : axis_info.max_value;
-  float def = !std::isnan(axis_def_value) ? axis_def_value : axis_info.default_value;
+  ಭಿನ್ನ min = !std::isnan(axis_min_ಮೌಲ್ಯ) ? axis_min_ಮೌಲ್ಯ : axis_info.min_ಮೌಲ್ಯ;
+  ಭಿನ್ನ max = !std::isnan(axis_max_ಮೌಲ್ಯ) ? axis_max_ಮೌಲ್ಯ : axis_info.max_ಮೌಲ್ಯ;
+  ಭಿನ್ನ def = !std::isnan(axis_def_ಮೌಲ್ಯ) ? axis_def_ಮೌಲ್ಯ : axis_info.default_ಮೌಲ್ಯ;
 
-  if (min > max)
-    return false;
+  ಯದಿ (min > max)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  float new_min_val = hb_clamp(min, axis_info.min_value, axis_info.max_value);
-  float new_max_val = hb_clamp(max, axis_info.min_value, axis_info.max_value);
-  float new_default_val = hb_clamp(def, new_min_val, new_max_val);
-  return input->axes_location.set (axis_tag, Triple ((double) new_min_val, (double) new_default_val, (double) new_max_val));
+  ಭಿನ್ನ new_min_val = hb_clamp(min, axis_info.min_ಮೌಲ್ಯ, axis_info.max_ಮೌಲ್ಯ);
+  ಭಿನ್ನ new_max_val = hb_clamp(max, axis_info.min_ಮೌಲ್ಯ, axis_info.max_ಮೌಲ್ಯ);
+  ಭಿನ್ನ new_default_val = hb_clamp(def, new_min_val, new_max_val);
+  ಪ್ರತ್ಯಾಗಮ ಒಳಹರಿವು->axes_location.set (axis_tag, Triple ((ದ್ವಿಗುಣ) new_min_val, (ದ್ವಿಗುಣ) new_default_val, (ದ್ವಿಗುಣ) new_max_val));
 }
 
 /**
@@ -577,22 +577,22 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_get_axis_range (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value)
+				ಭಿನ್ನ              *axis_min_ಮೌಲ್ಯ,
+				ಭಿನ್ನ              *axis_max_ಮೌಲ್ಯ,
+				ಭಿನ್ನ              *axis_def_ಮೌಲ್ಯ)
 
 {
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return false;
+  ಯದಿ (!ಒಳಹರಿವು->axes_location.has(axis_tag, &triple)) {
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  *axis_min_value = triple->minimum;
-  *axis_def_value = triple->middle;
-  *axis_max_value = triple->maximum;
-  return true;
+  *axis_min_ಮೌಲ್ಯ = triple->minimum;
+  *axis_def_ಮೌಲ್ಯ = triple->ಮಧ್ಯ;
+  *axis_max_ಮೌಲ್ಯ = triple->maximum;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 /**
@@ -618,75 +618,75 @@ hb_subset_input_get_axis_range (hb_subset_input_t  *input,
  * Since: 10.2.0
  */
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-                                  float *axis_min_value,
-                                  float *axis_max_value,
-                                  float *axis_def_value)
+hb_subset_axis_range_from_string (ಧ್ರುವ ವರ್ಣ *str, ಪೂರ್ಣಾಙ್ಕ len,
+                                  ಭಿನ್ನ *axis_min_ಮೌಲ್ಯ,
+                                  ಭಿನ್ನ *axis_max_ಮೌಲ್ಯ,
+                                  ಭಿನ್ನ *axis_def_ಮೌಲ್ಯ)
 {
-  if (len < 0)
+  ಯದಿ (len < 0)
     len = strlen (str);
 
-  const char *end = str + len;
-  const char* part = strpbrk (str, ":");
-  if (!part)
+  ಧ್ರುವ ವರ್ಣ *end = str + len;
+  ಧ್ರುವ ವರ್ಣ* part = strpbrk (str, ":");
+  ಯದಿ (!part)
   {
     // Single value.
-    if (strcmp (str, "drop") == 0)
+    ಯದಿ (strcmp (str, "drop") == 0)
     {
-      *axis_min_value = NAN;
-      *axis_def_value = NAN;
-      *axis_max_value = NAN;
-      return true;
+      *axis_min_ಮೌಲ್ಯ = NAN;
+      *axis_def_ಮೌಲ್ಯ = NAN;
+      *axis_max_ಮೌಲ್ಯ = NAN;
+      ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
     }
 
-    double v;
-    if (!hb_parse_double (&str, end, &v)) return false;
+    ದ್ವಿಗುಣ v;
+    ಯದಿ (!hb_parse_double (&str, end, &v)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    *axis_min_value = v;
-    *axis_def_value = v;
-    *axis_max_value = v;
-    return true;
+    *axis_min_ಮೌಲ್ಯ = v;
+    *axis_def_ಮೌಲ್ಯ = v;
+    *axis_max_ಮೌಲ್ಯ = v;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  float values[3];
-  int count = 0;
-  for (int i = 0; i < 3; i++) {
-    count++;
-    if (!*str || part == str)
+  ಭಿನ್ನ values[3];
+  ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = 0;
+  ಪ್ರತಿ (ಪೂರ್ಣಾಙ್ಕ i = 0; i < 3; i++) {
+    ಎಣಿಕೆ++;
+    ಯದಿ (!*str || part == str)
     {
       values[i] = NAN;
 
-      if (part == NULL) break;
+      ಯದಿ (part == ರಿಕ್ತ) ಭಙ್ಗ;
       str = part + 1;
       part = strpbrk (str, ":");
-      continue;
+      ಅನುವರ್ತ;
     }
 
-    double v;
-    const char *piece_end = part ? part : end;
-    if (!hb_parse_double (&str, piece_end, &v)) return false;
+    ದ್ವಿಗುಣ v;
+    ಧ್ರುವ ವರ್ಣ *piece_end = part ? part : end;
+    ಯದಿ (!hb_parse_double (&str, piece_end, &v)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     values[i] = v;
 
-    if (part == NULL) break;
+    ಯದಿ (part == ರಿಕ್ತ) ಭಙ್ಗ;
     str = part + 1;
     part = strpbrk (str, ":");
   }
 
-  if (count == 2)
+  ಯದಿ (ಎಣಿಕೆ == 2)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = NAN;
-    *axis_max_value = values[1];
-    return true;
+    *axis_min_ಮೌಲ್ಯ = values[0];
+    *axis_def_ಮೌಲ್ಯ = NAN;
+    *axis_max_ಮೌಲ್ಯ = values[1];
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
-  else if (count == 3)
+  ಅನ್ಯಥಾ ಯದಿ (ಎಣಿಕೆ == 3)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = values[1];
-    *axis_max_value = values[2];
-    return true;
+    *axis_min_ಮೌಲ್ಯ = values[0];
+    *axis_def_ಮೌಲ್ಯ = values[1];
+    *axis_max_ಮೌಲ್ಯ = values[2];
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 /**
@@ -702,33 +702,33 @@ hb_subset_axis_range_from_string (const char *str, int len,
  *
  * Since: 10.2.0
  */
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_axis_range_to_string (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
                                 hb_tag_t axis_tag,
-                                char *buf, unsigned size)
+                                ವರ್ಣ *buf, unsigned size)
 {
-  if (unlikely (!size)) return;
+  ಯದಿ (unlikely (!size)) ಪ್ರತ್ಯಾಗಮ;
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return;
+  ಯದಿ (!ಒಳಹರಿವು->axes_location.has(axis_tag, &triple)) {
+    ಪ್ರತ್ಯಾಗಮ;
   }
 
-  char s[128];
+  ವರ್ಣ s[128];
   unsigned len = 0;
 
   hb_locale_t clocale HB_UNUSED;
   hb_locale_t oldlocale HB_UNUSED;
-  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-  len += hb_max (0, snprintf (s, ARRAY_LENGTH (s) - len, "%g", (double) triple->minimum));
+  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ರಿಕ್ತ));
+  len += hb_max (0, snprintf (s, ARRAY_LENGTH (s) - len, "%g", (ದ್ವಿಗುಣ) triple->minimum));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->middle));
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (ದ್ವಿಗುಣ) triple->ಮಧ್ಯ));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->maximum));
-  (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (ದ್ವಿಗುಣ) triple->maximum));
+  (ಶೂನ್ಯ) hb_uselocale (((ಶೂನ್ಯ) freelocale (clocale), oldlocale));
 
-  assert (len < ARRAY_LENGTH (s));
+  ಪ್ರತಿಜ್ಞಾ (len < ARRAY_LENGTH (s));
   len = hb_min (len, size - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
@@ -736,64 +736,64 @@ hb_subset_axis_range_to_string (hb_subset_input_t *input,
 #endif
 
 #ifdef HB_EXPERIMENTAL_API
-static void
-_append_arg (hb_vector_t<char> &sb, const char *arg)
+ಸ್ಥಿರ ಶೂನ್ಯ
+_append_arg (hb_vector_t<ವರ್ಣ> &sb, ಧ್ರುವ ವರ್ಣ *arg)
 {
-  if (sb.in_error ()) return;
-  if (sb.length)
+  ಯದಿ (sb.in_error ()) ಪ್ರತ್ಯಾಗಮ;
+  ಯದಿ (sb.length)
     sb.push (' ');
   unsigned len = strlen (arg);
   sb.extend (hb_bytes_t (arg, len));
 }
-static void
-_format_number_set (const hb_set_t *set, hb_vector_t<char> &out, unsigned base = 10)
+ಸ್ಥಿರ ಶೂನ್ಯ
+format_ಸಂಖ್ಯೆ_set (ಧ್ರುವ hb_set_t *set, hb_vector_t<ವರ್ಣ> &out, unsigned base = 10)
 {
-  assert (base == 10 || base == 16);
-  if (unlikely (base != 10 && base != 16)) return;
+  ಪ್ರತಿಜ್ಞಾ (base == 10 || base == 16);
+  ಯದಿ (unlikely (base != 10 && base != 16)) ಪ್ರತ್ಯಾಗಮ;
 
-  hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-  bool first_range = true;
-  while (hb_set_next_range (set, &first, &last))
+  hb_codepoint_t first = HB_SET_ಮೌಲ್ಯ_INVALID, last = HB_SET_ಮೌಲ್ಯ_INVALID;
+  ತಾರ್ಕಿಕ first_range = ಸತ್ಯ;
+  ಯಾವತ್ (hb_set_next_range (set, &first, &last))
   {
-    if (!first_range)
+    ಯದಿ (!first_range)
       out.push (',');
-    first_range = false;
+    first_range = ಅಸತ್ಯ;
 
-    char buf[64];
-    int len;
-    if (first == last)
+    ವರ್ಣ buf[64];
+    ಪೂರ್ಣಾಙ್ಕ len;
+    ಯದಿ (first == last)
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X", first);
-      else
-        len = snprintf (buf, sizeof (buf), "%u", first);
+      ಯದಿ (base == 16)
+        len = snprintf (buf, ಪರಿಮಾಣ (buf), "%X", first);
+      ಅನ್ಯಥಾ
+        len = snprintf (buf, ಪರಿಮಾಣ (buf), "%u", first);
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X-%X", first, last);
-      else
-        len = snprintf (buf, sizeof (buf), "%u-%u", first, last);
+      ಯದಿ (base == 16)
+        len = snprintf (buf, ಪರಿಮಾಣ (buf), "%X-%X", first, last);
+      ಅನ್ಯಥಾ
+        len = snprintf (buf, ಪರಿಮಾಣ (buf), "%u-%u", first, last);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return;
+    ಯದಿ (unlikely (len < 0 || (size_t) len >= ಪರಿಮಾಣ (buf))) ಪ್ರತ್ಯಾಗಮ;
     out.extend (hb_bytes_t (buf, len));
   }
 }
 
-static void
-_format_tag (hb_tag_t tag, hb_vector_t<char> &out)
+ಸ್ಥಿರ ಶೂನ್ಯ
+_format_tag (hb_tag_t tag, hb_vector_t<ವರ್ಣ> &out)
 {
-  char buf[4];
+  ವರ್ಣ buf[4];
   hb_tag_to_string (tag, buf);
 
   unsigned len = 4;
-  while (len > 0 && buf[len - 1] == ' ')
+  ಯಾವತ್ (len > 0 && buf[len - 1] == ' ')
     len--;
 
-  for (unsigned i = 0; i < len; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < len; i++)
   {
-    char c = buf[i];
-    if (!((c >= 'a' && c <= 'z') ||
+    ವರ್ಣ c = buf[i];
+    ಯದಿ (!((c >= 'a' && c <= 'z') ||
           (c >= 'A' && c <= 'Z') ||
           (c >= '0' && c <= '9') ||
           c == '-' || c == '_'))
@@ -804,192 +804,192 @@ _format_tag (hb_tag_t tag, hb_vector_t<char> &out)
   }
 }
 
-static void
-_format_tag_set (const hb_set_t *set, hb_vector_t<char> &out)
+ಸ್ಥಿರ ಶೂನ್ಯ
+_format_tag_set (ಧ್ರುವ hb_set_t *set, hb_vector_t<ವರ್ಣ> &out)
 {
-  bool first_tag = true;
-  for (hb_codepoint_t tag : *set)
+  ತಾರ್ಕಿಕ first_tag = ಸತ್ಯ;
+  ಪ್ರತಿ (hb_codepoint_t tag : *set)
   {
-    if (!first_tag)
+    ಯದಿ (!first_tag)
       out.push (',');
-    first_tag = false;
+    first_tag = ಅಸತ್ಯ;
 
     _format_tag (tag, out);
   }
 }
 
-static bool
-_is_set_default (const hb_set_t *set, const hb_set_t *default_set)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+_is_set_default (ಧ್ರುವ hb_set_t *set, ಧ್ರುವ hb_set_t *default_set)
 {
-  return hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
+  ಪ್ರತ್ಯಾಗಮ hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
          hb_set_is_equal (set, default_set);
 }
 
 template <typename Formatter>
-static void
-_format_set_arg (const hb_set_t *set,
-                 const char *opt_name,
+ಸ್ಥಿರ ಶೂನ್ಯ
+_format_set_arg (ಧ್ರುವ hb_set_t *set,
+                 ಧ್ರುವ ವರ್ಣ *opt_name,
                  Formatter &&formatter,
-                 hb_vector_t<char> &sb)
+                 hb_vector_t<ವರ್ಣ> &sb)
 {
-  if (hb_set_is_inverted (set))
+  ಯದಿ (hb_set_is_inverted (set))
   {
     hb_set_t *excluded = hb_set_copy (set);
     hb_set_invert (excluded);
 
-    hb_vector_t<char> opt;
+    hb_vector_t<ವರ್ಣ> opt;
     opt.extend (hb_bytes_t ("--", 2));
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("=*", 2));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ಯದಿ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
 
-    if (!hb_set_is_empty (excluded))
+    ಯದಿ (!hb_set_is_empty (excluded))
     {
-      hb_vector_t<char> formatted;
+      hb_vector_t<ವರ್ಣ> formatted;
       formatter (excluded, formatted);
-      if (formatted.length)
+      ಯದಿ (formatted.length)
       {
-        hb_vector_t<char> opt2;
+        hb_vector_t<ವರ್ಣ> opt2;
         opt2.extend (hb_bytes_t ("--", 2));
         opt2.extend (hb_bytes_t (opt_name, strlen (opt_name)));
         opt2.extend (hb_bytes_t ("-=", 2));
         opt2.extend (formatted.as_array ());
         opt2.push ('\0');
-        if (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
+        ಯದಿ (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
       }
     }
     hb_set_destroy (excluded);
   }
-  else if (hb_set_is_empty (set))
+  ಅನ್ಯಥಾ ಯದಿ (hb_set_is_empty (set))
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<ವರ್ಣ> opt;
     opt.extend (hb_bytes_t ("--", 2));
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("-=*", 3));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ಯದಿ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    hb_vector_t<char> formatted;
+    hb_vector_t<ವರ್ಣ> formatted;
     formatter (set, formatted);
-    if (formatted.length)
+    ಯದಿ (formatted.length)
     {
-      hb_vector_t<char> opt;
+      hb_vector_t<ವರ್ಣ> opt;
       opt.extend (hb_bytes_t ("--", 2));
       opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
       opt.extend (hb_bytes_t ("=", 1));
       opt.extend (formatted.as_array ());
       opt.push ('\0');
-      if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+      ಯದಿ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
     }
   }
 }
 
-static void
-_format_number_set_arg (const hb_set_t *set,
-                        const char *opt_name,
-                        hb_vector_t<char> &sb,
+ಸ್ಥಿರ ಶೂನ್ಯ
+format_ಸಂಖ್ಯೆ_set_arg (ಧ್ರುವ hb_set_t *set,
+                        ಧ್ರುವ ವರ್ಣ *opt_name,
+                        hb_vector_t<ವರ್ಣ> &sb,
                         unsigned base = 10)
 {
-  _format_set_arg (set, opt_name, [base] (const hb_set_t *s, hb_vector_t<char> &out) {
-    _format_number_set (s, out, base);
+  _format_set_arg (set, opt_name, [base] (ಧ್ರುವ hb_set_t *s, hb_vector_t<ವರ್ಣ> &out) {
+    format_ಸಂಖ್ಯೆ_set (s, out, base);
   }, sb);
 }
 
-static void
-_format_tag_set_arg (const hb_set_t *set,
-                     const char *opt_name,
-                     hb_vector_t<char> &sb)
+ಸ್ಥಿರ ಶೂನ್ಯ
+_format_tag_set_arg (ಧ್ರುವ hb_set_t *set,
+                     ಧ್ರುವ ವರ್ಣ *opt_name,
+                     hb_vector_t<ವರ್ಣ> &sb)
 {
   _format_set_arg (set, opt_name, _format_tag_set, sb);
 }
 
-static bool
-_format_glyph_map_arg (const hb_map_t &glyph_map,
-                       hb_vector_t<char> &sb)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+_format_glyph_map_arg (ಧ್ರುವ hb_map_t &glyph_map,
+                       hb_vector_t<ವರ್ಣ> &sb)
 {
-  if (glyph_map.is_empty ())
-    return true;
+  ಯದಿ (glyph_map.is_empty ())
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
-  hb_set_t keys;
-  hb_map_keys (&glyph_map, &keys);
-  hb_vector_t<char> pairs;
-  bool first = true;
-  for (hb_codepoint_t key : keys)
+  hb_set_t ಕೀಲಿಗಳು;
+  hb_map_ಕೀಲಿಗಳು (&glyph_map, &ಕೀಲಿಗಳು);
+  hb_vector_t<ವರ್ಣ> pairs;
+  ತಾರ್ಕಿಕ first = ಸತ್ಯ;
+  ಪ್ರತಿ (hb_codepoint_t key : ಕೀಲಿಗಳು)
   {
-    if (!first)
+    ಯದಿ (!first)
       pairs.push (',');
-    first = false;
+    first = ಅಸತ್ಯ;
     hb_codepoint_t val = hb_map_get (&glyph_map, key);
-    char buf[64];
-    int len = snprintf (buf, sizeof (buf), "%u:%u", key, val);
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    ವರ್ಣ buf[64];
+    ಪೂರ್ಣಾಙ್ಕ len = snprintf (buf, ಪರಿಮಾಣ (buf), "%u:%u", key, val);
+    ಯದಿ (unlikely (len < 0 || (size_t) len >= ಪರಿಮಾಣ (buf))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     pairs.extend (hb_bytes_t (buf, len));
   }
-  if (pairs.length)
+  ಯದಿ (pairs.length)
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<ವರ್ಣ> opt;
     opt.extend (hb_bytes_t ("--gid-map=", 10));
     opt.extend (pairs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ಯದಿ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-static bool
-_format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
-                           hb_vector_t<char> &sb)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+_format_axes_location_arg (ಧ್ರುವ hb_hashmap_t<hb_tag_t, Triple> &axes_location,
+                           hb_vector_t<ವರ್ಣ> &sb)
 {
-  if (axes_location.is_empty ())
-    return true;
+  ಯದಿ (axes_location.is_empty ())
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
   hb_vector_t<hb_tag_t> axis_tags;
-  for (auto tag : axes_location.keys ())
+  ಪ್ರತಿ (auto tag : axes_location.ಕೀಲಿಗಳು ())
     axis_tags.push (tag);
-  axis_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) { return a < b ? -1 : a > b ? 1 : 0; });
+  axis_tags.qsort ([] (ಧ್ರುವ hb_tag_t &a, ಧ್ರುವ hb_tag_t &b) { ಪ್ರತ್ಯಾಗಮ a < b ? -1 : a > b ? 1 : 0; });
 
-  hb_vector_t<char> specs;
-  bool first = true;
-  for (hb_tag_t tag : axis_tags)
+  hb_vector_t<ವರ್ಣ> specs;
+  ತಾರ್ಕಿಕ first = ಸತ್ಯ;
+  ಪ್ರತಿ (hb_tag_t tag : axis_tags)
   {
     Triple triple = axes_location.get (tag);
-    if (!first)
+    ಯದಿ (!first)
       specs.push (',');
-    first = false;
+    first = ಅಸತ್ಯ;
 
-    hb_vector_t<char> tag_buf;
+    hb_vector_t<ವರ್ಣ> tag_buf;
     _format_tag (tag, tag_buf);
 
-    char buf[128];
-    int len;
-    if (triple.minimum == triple.middle && triple.middle == triple.maximum)
+    ವರ್ಣ buf[128];
+    ಪೂರ್ಣಾಙ್ಕ len;
+    ಯದಿ (triple.minimum == triple.ಮಧ್ಯ && triple.ಮಧ್ಯ == triple.maximum)
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g", (int) tag_buf.length, tag_buf.arrayZ, (double) triple.middle);
+      len = snprintf (buf, ಪರಿಮಾಣ (buf), "%.*s=%g", (ಪೂರ್ಣಾಙ್ಕ) tag_buf.length, tag_buf.arrayZ, (ದ್ವಿಗುಣ) triple.ಮಧ್ಯ);
     }
-    else if (std::isnan (triple.minimum) && std::isnan (triple.middle) && std::isnan (triple.maximum))
+    ಅನ್ಯಥಾ ಯದಿ (std::isnan (triple.minimum) && std::isnan (triple.ಮಧ್ಯ) && std::isnan (triple.maximum))
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=drop", (int) tag_buf.length, tag_buf.arrayZ);
+      len = snprintf (buf, ಪರಿಮಾಣ (buf), "%.*s=drop", (ಪೂರ್ಣಾಙ್ಕ) tag_buf.length, tag_buf.arrayZ);
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g:%g:%g", (int) tag_buf.length, tag_buf.arrayZ,
-                      (double) triple.minimum, (double) triple.middle, (double) triple.maximum);
+      len = snprintf (buf, ಪರಿಮಾಣ (buf), "%.*s=%g:%g:%g", (ಪೂರ್ಣಾಙ್ಕ) tag_buf.length, tag_buf.arrayZ,
+                      (ದ್ವಿಗುಣ) triple.minimum, (ದ್ವಿಗುಣ) triple.ಮಧ್ಯ, (ದ್ವಿಗುಣ) triple.maximum);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    ಯದಿ (unlikely (len < 0 || (size_t) len >= ಪರಿಮಾಣ (buf))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     specs.extend (hb_bytes_t (buf, len));
   }
-  if (specs.length)
+  ಯದಿ (specs.length)
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<ವರ್ಣ> opt;
     opt.extend (hb_bytes_t ("--variations=", 13));
     opt.extend (specs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ಯದಿ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 /**
@@ -1005,18 +1005,18 @@ _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
  * XSince: EXPERIMENTAL
  **/
 hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_to_string_or_fail (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  if (unlikely (!input || input->in_error ()))
-    return nullptr;
+  ಯದಿ (unlikely (!ಒಳಹರಿವು || ಒಳಹರಿವು->in_error ()))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  hb_vector_t<char> sb;
+  hb_vector_t<ವರ್ಣ> sb;
 
-  struct flag_option_t {
+  ಸಂರಚನಾ flag_option_t {
     hb_subset_flags_t flag;
-    char option[32];
+    ವರ್ಣ option[32];
   };
-  static const flag_option_t flag_options[] = {
+  ಸ್ಥಿರ ಧ್ರುವ flag_option_t flag_options[] = {
     { HB_SUBSET_FLAGS_NO_HINTING, "no-hinting" },
     { HB_SUBSET_FLAGS_RETAIN_GIDS, "retain-gids" },
     { HB_SUBSET_FLAGS_DESUBROUTINIZE, "desubroutinize" },
@@ -1031,75 +1031,75 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
     { HB_SUBSET_FLAGS_NO_BIDI_CLOSURE, "no-bidi-closure" },
 #ifdef HB_EXPERIMENTAL_API
     { HB_SUBSET_FLAGS_IFTB_REQUIREMENTS, "iftb-requirements" },
-    { HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS, "retain-num-glyphs" },
+    { HB_SUBSET_FLAGS_RETAIN_ಅಂಕೆ_GLYPHS, "retain-num-glyphs" },
 #endif
     { HB_SUBSET_FLAGS_DOWNGRADE_CFF2, "downgrade-cff2" },
   };
 
 #ifdef HB_EXPERIMENTAL_API
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 15,
+  static_assert (ಪರಿಮಾಣ (flag_options) / ಪರಿಮಾಣ (flag_options[0]) == 15,
                  "Check all flags in hb_subset_flags_t are handled here.");
-#else
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 13,
+#ಅನ್ಯಥಾ
+  static_assert (ಪರಿಮಾಣ (flag_options) / ಪರಿಮಾಣ (flag_options[0]) == 13,
                  "Check all flags in hb_subset_flags_t are handled here.");
 #endif
 
-  for (const auto &fo : flag_options)
+  ಪ್ರತಿ (ಧ್ರುವ auto &fo : flag_options)
   {
-    if (input->flags & fo.flag)
+    ಯದಿ (ಒಳಹರಿವು->flags & fo.flag)
     {
-      char buf[36];
-      snprintf (buf, sizeof (buf), "--%s", fo.option);
+      ವರ್ಣ buf[36];
+      snprintf (buf, ಪರಿಮಾಣ (buf), "--%s", fo.option);
       _append_arg (sb, buf);
     }
   }
 
-  hb_subset_input_t *default_input = hb_subset_input_create_or_fail ();
-  if (unlikely (!default_input))
-    return nullptr;
+  hb_subset_ಒಳಹರಿವು_t *default_ಒಳಹರಿವು = hb_subset_ಒಳಹರಿವು_create_or_fail ();
+  ಯದಿ (unlikely (!default_ಒಳಹರಿವು))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   // Serialize all sets if they are not equal to their default setting:
-#define PROCESS_NUMBER_SET(field, opt_name, ...) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_number_set_arg (input->sets.field, opt_name, sb, ##__VA_ARGS__)
+#define PROCESS_ಸಂಖ್ಯೆ_SET(field, opt_name, ...) \
+  ಯದಿ (!_is_set_default (ಒಳಹರಿವು->sets.field, default_ಒಳಹರಿವು->sets.field)) \
+    format_ಸಂಖ್ಯೆ_set_arg (ಒಳಹರಿವು->sets.field, opt_name, sb, ##__VA_ARGS__)
 
 #define PROCESS_TAG_SET(field, opt_name) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_tag_set_arg (input->sets.field, opt_name, sb)
+  ಯದಿ (!_is_set_default (ಒಳಹರಿವು->sets.field, default_ಒಳಹರಿವು->sets.field)) \
+    _format_tag_set_arg (ಒಳಹರಿವು->sets.field, opt_name, sb)
 
-  PROCESS_NUMBER_SET (unicodes, "unicodes", 16);
-  PROCESS_NUMBER_SET (glyphs, "gids");
-  PROCESS_NUMBER_SET (name_ids, "name-IDs");
-  PROCESS_NUMBER_SET (name_languages, "name-languages");
+  PROCESS_ಸಂಖ್ಯೆ_SET (unicodes, "unicodes", 16);
+  PROCESS_ಸಂಖ್ಯೆ_SET (glyphs, "gids");
+  PROCESS_ಸಂಖ್ಯೆ_SET (name_ids, "name-IDs");
+  PROCESS_ಸಂಖ್ಯೆ_SET (name_languages, "name-languages");
   PROCESS_TAG_SET (layout_features, "layout-features");
   PROCESS_TAG_SET (layout_scripts, "layout-scripts");
   PROCESS_TAG_SET (drop_tables, "drop-tables");
   PROCESS_TAG_SET (no_subset_tables, "passthrough-tables");
 
-#undef PROCESS_NUMBER_SET
+#undef PROCESS_ಸಂಖ್ಯೆ_SET
 #undef PROCESS_TAG_SET
 
-  hb_subset_input_destroy (default_input);
+  hb_subset_ಒಳಹರಿವು_destroy (default_ಒಳಹರಿವು);
 
-  static_assert (sizeof (input->sets) / sizeof (hb_set_t*) == 8,
+  static_assert (ಪರಿಮಾಣ (ಒಳಹರಿವು->sets) / ಪರಿಮಾಣ (hb_set_t*) == 8,
                  "Check all sets in hb_subset_input_t::sets_t are handled here.");
 
-  if (unlikely (!_format_glyph_map_arg (input->glyph_map, sb)))
-    return nullptr;
+  ಯದಿ (unlikely (!_format_glyph_map_arg (ಒಳಹರಿವು->glyph_map, sb)))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  if (unlikely (!_format_axes_location_arg (input->axes_location, sb)))
-    return nullptr;
+  ಯದಿ (unlikely (!_format_axes_location_arg (ಒಳಹರಿವು->axes_location, sb)))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   sb.push ('\0');
-  if (unlikely (sb.in_error ()))
-    return nullptr;
+  ಯದಿ (unlikely (sb.in_error ()))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   unsigned len = 0;
-  char *buf = sb.steal (&len);
-  if (unlikely (!buf))
-    return nullptr;
+  ವರ್ಣ *buf = sb.steal (&len);
+  ಯದಿ (unlikely (!buf))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  return hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  ಪ್ರತ್ಯಾಗಮ hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 #endif
 
@@ -1127,28 +1127,28 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
 HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source)
 {
-  hb_subset_input_t* input = hb_subset_input_create_or_fail ();
-  if (!input)
-    return hb_face_reference (source);
+  hb_subset_ಒಳಹರಿವು_t* ಒಳಹರಿವು = hb_subset_ಒಳಹರಿವು_create_or_fail ();
+  ಯದಿ (!ಒಳಹರಿವು)
+    ಪ್ರತ್ಯಾಗಮ hb_face_reference (source);
 
-  hb_subset_input_keep_everything (input);
+  hb_subset_ಒಳಹರಿವು_keep_everything (ಒಳಹರಿವು);
 
-  input->attach_accelerator_data = true;
+  ಒಳಹರಿವು->attach_accelerator_data = ಸತ್ಯ;
 
   // Always use long loca in the preprocessed version. This allows
   // us to store the glyph bytes unpadded which allows the future subset
   // operation to run faster by skipping the trim padding step.
-  input->force_long_loca = true;
+  ಒಳಹರಿವು->force_long_loca = ಸತ್ಯ;
 
-  hb_face_t* new_source = hb_subset_or_fail (source, input);
-  hb_subset_input_destroy (input);
+  hb_face_t* new_source = hb_subset_or_fail (source, ಒಳಹರಿವು);
+  hb_subset_ಒಳಹರಿವು_destroy (ಒಳಹರಿವು);
 
-  if (!new_source) {
-    DEBUG_MSG (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
-    return hb_face_reference (source);
+  ಯದಿ (!new_source) {
+    DEBUG_ಸಂದೇಶ (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
+    ಪ್ರತ್ಯಾಗಮ hb_face_reference (source);
   }
 
-  return new_source;
+  ಪ್ರತ್ಯಾಗಮ new_source;
 }
 
 /**
@@ -1177,9 +1177,9 @@ hb_subset_preprocess (hb_face_t *source)
  * Since: 7.3.0
  **/
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
+hb_subset_ಒಳಹರಿವು_old_to_new_glyph_mapping (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು)
 {
-  return &input->glyph_map;
+  ಪ್ರತ್ಯಾಗಮ &ಒಳಹರಿವು->glyph_map;
 }
 
 #ifdef HB_EXPERIMENTAL_API
@@ -1203,50 +1203,50 @@ hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_override_name_table (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
                                      hb_ot_name_id_t     name_id,
                                      unsigned            platform_id,
                                      unsigned            encoding_id,
                                      unsigned            language_id,
-                                     const char         *name_str,
-                                     int                 str_len /* -1 means nul-terminated */)
+                                     ಧ್ರುವ ವರ್ಣ         *name_str,
+                                     ಪೂರ್ಣಾಙ್ಕ                 str_len /* -1 means nul-terminated */)
 {
-  if (!name_str)
+  ಯದಿ (!name_str)
   {
     str_len = 0;
   }
-  else if (str_len == -1)
+  ಅನ್ಯಥಾ ಯದಿ (str_len == -1)
   {
       str_len = strlen (name_str);
   }
 
   hb_bytes_t name_bytes (nullptr, 0);
-  if (str_len)
+  ಯದಿ (str_len)
   {
-    if (platform_id == 1)
+    ಯದಿ (platform_id == 1)
     {
-      const uint8_t *src = reinterpret_cast<const uint8_t*> (name_str);
-      const uint8_t *src_end = src + str_len;
+      ಧ್ರುವ uint8_t *src = reinterpret_cast<ಧ್ರುವ uint8_t*> (name_str);
+      ಧ್ರುವ uint8_t *src_end = src + str_len;
 
       hb_codepoint_t unicode;
-      const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
-      while (src < src_end)
+      ಧ್ರುವ hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+      ಯಾವತ್ (src < src_end)
       {
         src = hb_utf8_t::next (src, src_end, &unicode, replacement);
-        if (unicode >= 0x0080u)
+        ಯದಿ (unicode >= 0x0080u)
         {
           // Non-ascii character detected, ignored...
-          return false;
+          ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
         }
       }
     }
-    char *override_name = (char *) hb_malloc (str_len);
-    if (unlikely (!override_name)) return false;
+    ವರ್ಣ *override_name = (ವರ್ಣ *) hb_malloc (str_len);
+    ಯದಿ (unlikely (!override_name)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
     hb_memcpy (override_name, name_str, str_len);
     name_bytes = hb_bytes_t (override_name, str_len);
   }
-  input->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
-  return true;
+  ಒಳಹರಿವು->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 #endif

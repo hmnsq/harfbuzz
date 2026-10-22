@@ -14,36 +14,36 @@
  * # Date: 2026-06-29, 15:25:26 GMT
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-vowel-constraints.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shaper-vowel-constraints.hh"
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 _output_dotted_circle (hb_buffer_t *buffer)
 {
-  (void) buffer->output_glyph (0x25CCu);
+  (ಶೂನ್ಯ) buffer->output_glyph (0x25CCu);
   _hb_glyph_info_clear_continuation (&buffer->prev());
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 _output_with_dotted_circle (hb_buffer_t *buffer)
 {
   _output_dotted_circle (buffer);
-  (void) buffer->next_glyph ();
+  (ಶೂನ್ಯ) buffer->next_glyph ();
 }
 
-void
-_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ಶೂನ್ಯ
+_hb_preprocess_text_vowel_constraints (ಧ್ರುವ hb_ot_shape_plan_t *plan HB_UNUSED,
 				       hb_buffer_t              *buffer,
 				       hb_font_t                *font HB_UNUSED)
 {
 #ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
+  ಪ್ರತ್ಯಾಗಮ;
 #endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+  ಯದಿ (buffer->flags & HB_BUFFER_FLAG_DO_NOT_ಸೇರಿಸು_DOTTED_CIRCLE)
+    ಪ್ರತ್ಯಾಗಮ;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -52,424 +52,424 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
   buffer->clear_output ();
-  unsigned int count = buffer->len;
-  switch ((unsigned) buffer->props.script)
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = buffer->len;
+  ವಿಕಲ್ಪ ((unsigned) buffer->props.script)
   {
-    case HB_SCRIPT_DEVANAGARI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_DEVANAGARI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0905u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x0905u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x093Bu: case 0x093Eu: case 0x0945u:
-	      case 0x0946u: case 0x0949u: case 0x094Au: case 0x094Bu:
-	      case 0x094Cu: case 0x094Fu: case 0x0956u: case 0x0957u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x093Au: ಪಕ್ಷ 0x093Bu: ಪಕ್ಷ 0x093Eu: ಪಕ್ಷ 0x0945u:
+	      ಪಕ್ಷ 0x0946u: ಪಕ್ಷ 0x0949u: ಪಕ್ಷ 0x094Au: ಪಕ್ಷ 0x094Bu:
+	      ಪಕ್ಷ 0x094Cu: ಪಕ್ಷ 0x094Fu: ಪಕ್ಷ 0x0956u: ಪಕ್ಷ 0x0957u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0906u:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0906u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x0945u: case 0x0946u: case 0x0947u:
-	      case 0x0948u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x093Au: ಪಕ್ಷ 0x0945u: ಪಕ್ಷ 0x0946u: ಪಕ್ಷ 0x0947u:
+	      ಪಕ್ಷ 0x0948u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0909u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0909u:
 	    matched = 0x0941u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x090Fu:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x090Fu:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0945u: case 0x0946u: case 0x0947u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0945u: ಪಕ್ಷ 0x0946u: ಪಕ್ಷ 0x0947u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
-		buffer->idx + 2 < count &&
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0930u:
+	    ಯದಿ (0x094Du == buffer->cur (1).codepoint &&
+		buffer->idx + 2 < ಎಣಿಕೆ &&
 		0x0907u == buffer->cur (2).codepoint)
 	    {
-	      (void) buffer->next_glyph ();
-	      matched = true;
+	      (ಶೂನ್ಯ) buffer->next_glyph ();
+	      matched = ಸತ್ಯ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_BENGALI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_BENGALI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0985u:
+	  ಪಕ್ಷ 0x0985u:
 	    matched = 0x09BEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Bu:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x098Bu:
 	    matched = 0x09C3u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Cu:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x098Cu:
 	    matched = 0x09E2u == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_GURMUKHI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_GURMUKHI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0A05u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x0A05u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Eu: case 0x0A48u: case 0x0A4Cu:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0A3Eu: ಪಕ್ಷ 0x0A48u: ಪಕ್ಷ 0x0A4Cu:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0A72u:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0A72u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Fu: case 0x0A40u: case 0x0A47u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0A3Fu: ಪಕ್ಷ 0x0A40u: ಪಕ್ಷ 0x0A47u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0A73u:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0A73u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A41u: case 0x0A42u: case 0x0A4Bu:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0A41u: ಪಕ್ಷ 0x0A42u: ಪಕ್ಷ 0x0A4Bu:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_GUJARATI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_GUJARATI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0A85u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x0A85u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0ABEu: case 0x0AC5u: case 0x0AC7u: case 0x0AC8u:
-	      case 0x0AC9u: case 0x0ACBu: case 0x0ACCu:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0ABEu: ಪಕ್ಷ 0x0AC5u: ಪಕ್ಷ 0x0AC7u: ಪಕ್ಷ 0x0AC8u:
+	      ಪಕ್ಷ 0x0AC9u: ಪಕ್ಷ 0x0ACBu: ಪಕ್ಷ 0x0ACCu:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0AC5u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0AC5u:
 	    matched = 0x0ABEu == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_ORIYA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_ORIYA:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0B05u:
+	  ಪಕ್ಷ 0x0B05u:
 	    matched = 0x0B3Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0B0Fu: case 0x0B13u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0B0Fu: ಪಕ್ಷ 0x0B13u:
 	    matched = 0x0B57u == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_TAMIL:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_TAMIL:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ಯದಿ (0x0B85u == buffer->cur ().codepoint &&
 	    0x0BC2u == buffer->cur (1).codepoint)
 	{
-	  matched = true;
+	  matched = ಸತ್ಯ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_TELUGU:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_TELUGU:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0C12u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x0C12u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0C4Cu: case 0x0C55u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0C4Cu: ಪಕ್ಷ 0x0C55u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0C3Fu: case 0x0C46u: case 0x0C4Au:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0C3Fu: ಪಕ್ಷ 0x0C46u: ಪಕ್ಷ 0x0C4Au:
 	    matched = 0x0C55u == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_KANNADA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_KANNADA:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0C89u: case 0x0C8Bu:
+	  ಪಕ್ಷ 0x0C89u: ಪಕ್ಷ 0x0C8Bu:
 	    matched = 0x0CBEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0C92u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0C92u:
 	    matched = 0x0CCCu == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_MALAYALAM:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_MALAYALAM:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0D07u: case 0x0D09u:
+	  ಪಕ್ಷ 0x0D07u: ಪಕ್ಷ 0x0D09u:
 	    matched = 0x0D57u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D0Eu:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0D0Eu:
 	    matched = 0x0D46u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D12u:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0D12u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0D3Eu: case 0x0D57u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0D3Eu: ಪಕ್ಷ 0x0D57u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_SINHALA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_SINHALA:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x0D85u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x0D85u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCFu: case 0x0DD0u: case 0x0DD1u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0DCFu: ಪಕ್ಷ 0x0DD0u: ಪಕ್ಷ 0x0DD1u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x0D8Bu: case 0x0D8Fu: case 0x0D94u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0D8Bu: ಪಕ್ಷ 0x0D8Fu: ಪಕ್ಷ 0x0D94u:
 	    matched = 0x0DDFu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D8Du:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0D8Du:
 	    matched = 0x0DD8u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D91u:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x0D91u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCAu: case 0x0DD9u: case 0x0DDAu: case 0x0DDCu:
-	      case 0x0DDDu: case 0x0DDEu:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x0DCAu: ಪಕ್ಷ 0x0DD9u: ಪಕ್ಷ 0x0DDAu: ಪಕ್ಷ 0x0DDCu:
+	      ಪಕ್ಷ 0x0DDDu: ಪಕ್ಷ 0x0DDEu:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_BRAHMI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_BRAHMI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x11005u:
+	  ಪಕ್ಷ 0x11005u:
 	    matched = 0x11038u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Bu:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x1100Bu:
 	    matched = 0x1103Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Fu:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x1100Fu:
 	    matched = 0x11042u == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_KHOJKI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_KHOJKI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x11200u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x11200u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x1122Cu: case 0x11231u: case 0x11233u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x1122Cu: ಪಕ್ಷ 0x11231u: ಪಕ್ಷ 0x11233u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x11206u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x11206u:
 	    matched = 0x1122Cu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1122Cu:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x1122Cu:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x11230u: case 0x11231u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x11230u: ಪಕ್ಷ 0x11231u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x11240u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x11240u:
 	    matched = 0x1122Eu == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_KHUDAWADI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_KHUDAWADI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x112B0u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x112B0u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x112E0u: case 0x112E5u: case 0x112E6u: case 0x112E7u:
-	      case 0x112E8u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x112E0u: ಪಕ್ಷ 0x112E5u: ಪಕ್ಷ 0x112E6u: ಪಕ್ಷ 0x112E7u:
+	      ಪಕ್ಷ 0x112E8u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_TIRHUTA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_TIRHUTA:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x11481u:
+	  ಪಕ್ಷ 0x11481u:
 	    matched = 0x114B0u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1148Bu: case 0x1148Du:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x1148Bu: ಪಕ್ಷ 0x1148Du:
 	    matched = 0x114BAu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x114AAu:
-	    switch (buffer->cur (1).codepoint)
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x114AAu:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x114B5u: case 0x114B6u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x114B5u: ಪಕ್ಷ 0x114B6u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_MODI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_MODI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x11600u: case 0x11601u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x11600u: ಪಕ್ಷ 0x11601u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x11639u: case 0x1163Au:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x11639u: ಪಕ್ಷ 0x1163Au:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    case HB_SCRIPT_TAKRI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    ಪಕ್ಷ HB_SCRIPT_TAKRI:
+      ಪ್ರತಿ (buffer->idx = 0; buffer->idx + 1 < ಎಣಿಕೆ && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	ತಾರ್ಕಿಕ matched = ಅಸತ್ಯ;
+	ವಿಕಲ್ಪ (buffer->cur ().codepoint)
 	{
-	  case 0x11680u:
-	    switch (buffer->cur (1).codepoint)
+	  ಪಕ್ಷ 0x11680u:
+	    ವಿಕಲ್ಪ (buffer->cur (1).codepoint)
 	    {
-	      case 0x116ADu: case 0x116B4u: case 0x116B5u:
-		matched = true;
-		break;
+	      ಪಕ್ಷ 0x116ADu: ಪಕ್ಷ 0x116B4u: ಪಕ್ಷ 0x116B5u:
+		matched = ಸತ್ಯ;
+		ಭಙ್ಗ;
 	    }
-	    break;
-	  case 0x11686u:
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ 0x11686u:
 	    matched = 0x116B2u == buffer->cur (1).codepoint;
-	    break;
+	    ಭಙ್ಗ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ಶೂನ್ಯ) buffer->next_glyph ();
+	ಯದಿ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      ಭಙ್ಗ;
 
-    default:
-      break;
+    ಸ್ವಭಾವ:
+      ಭಙ್ಗ;
   }
-  buffer->sync ();
+  buffer->ಸಮಕಾಲ ();
 }
 
 

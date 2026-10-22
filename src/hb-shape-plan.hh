@@ -27,58 +27,58 @@
 #ifndef HB_SHAPE_PLAN_HH
 #define HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+ಸಂರಚನಾ hb_shape_plan_ಕೀಲಿ_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  ಧ್ರುವ hb_feature_t      *user_features;
+  unsigned ಪೂರ್ಣಾಙ್ಕ             ಅಂಕೆ_user_features;
 
 #ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
+  hb_ot_shape_plan_ಕೀಲಿ_t   ot;
 #endif
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  ಧ್ರುವ ವರ್ಣ              *shaper_name;
 
-  HB_INTERNAL bool init (bool                           copy,
+  HB_INTERNAL ತಾರ್ಕಿಕ init (ತಾರ್ಕಿಕ                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 ಧ್ರುವ hb_segment_properties_t *props,
+			 ಧ್ರುವ hb_feature_t            *user_features,
+			 unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+			 ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ                     *coords,
+			 unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_coords,
+			 ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_INTERNAL ಶೂನ್ಯ fini ()
   {
-    hb_free ((void *) user_features);
+    hb_free ((ಶೂನ್ಯ *) user_features);
     user_features = nullptr;
 #ifndef HB_NO_OT_SHAPE
     ot.fini ();
 #endif
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_INTERNAL ತಾರ್ಕಿಕ user_features_match (ಧ್ರುವ hb_shape_plan_ಕೀಲಿ_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_INTERNAL ತಾರ್ಕಿಕ equal (ಧ್ರುವ hb_shape_plan_ಕೀಲಿ_t *other);
 };
 
-struct hb_shape_plan_t
+ಸಂರಚನಾ hb_shape_plan_t
 {
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
+  hb_shape_plan_ಕೀಲಿ_t key;
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
 #endif
 #ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
+  hb_atomic_t<ಶೂನ್ಯ *> harfrust_data;
 #endif
 };
 

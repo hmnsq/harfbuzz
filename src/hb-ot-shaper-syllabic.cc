@@ -22,53 +22,53 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+ತಾರ್ಕಿಕ
+hb_syllabic_ಸೇರಿಸು_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+				   unsigned ಪೂರ್ಣಾಙ್ಕ broken_syllable_type,
+				   unsigned ಪೂರ್ಣಾಙ್ಕ dottedcircle_category,
+				   ಪೂರ್ಣಾಙ್ಕ repha_category,
+				   ಪೂರ್ಣಾಙ್ಕ dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  ಯದಿ (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_ಸೇರಿಸು_DOTTED_CIRCLE))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    ಯದಿ (buffer->messaging ())
+      (ಶೂನ್ಯ) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  if (buffer->messaging () &&
+  ಯದಿ (buffer->messaging () &&
       !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  ಯದಿ (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  ಯದಿ (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
   buffer->clear_output ();
 
   buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  unsigned ಪೂರ್ಣಾಙ್ಕ last_syllable = 0;
+  ಯಾವತ್ (buffer->idx < buffer->len && buffer->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    unsigned ಪೂರ್ಣಾಙ್ಕ syllable = buffer->cur().syllable();
+    ಯದಿ (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
@@ -78,34 +78,34 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
       ginfo.syllable() = buffer->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      ಯದಿ (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
+	ಯಾವತ್ (buffer->idx < buffer->len && buffer->successful &&
 	       last_syllable == buffer->cur().syllable() &&
 	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	  (ಶೂನ್ಯ) buffer->next_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (ಶೂನ್ಯ) buffer->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    ಅನ್ಯಥಾ
+      (ಶೂನ್ಯ) buffer->next_glyph ();
   }
-  buffer->sync ();
+  buffer->ಸಮಕಾಲ ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  ಯದಿ (buffer->messaging ())
+    (ಶೂನ್ಯ) buffer->message (font, "end inserting dotted-circles");
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL ತಾರ್ಕಿಕ
+hb_syllabic_clear_var (ಧ್ರುವ hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 

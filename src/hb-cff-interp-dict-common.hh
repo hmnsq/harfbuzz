@@ -26,174 +26,174 @@
 #ifndef HB_CFF_INTERP_DICT_COMMON_HH
 #define HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#ಅನ್ತರ್ಭಾವ "hb-cff-interp-common.hh"
 
-namespace CFF {
+ನಾಮಾಕಾಶ CFF {
 
-using namespace OT;
+using ನಾಮಾಕಾಶ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+ಸಂರಚನಾ dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  ಶೂನ್ಯ init () {}
+  ಶೂನ್ಯ fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ dict_val_t ಅಂಕೆ_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> ಸಂರಚನಾ dict_ಮೌಲ್ಯಗಳು_t : parsed_ಮೌಲ್ಯಗಳು_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+ಸಂರಚನಾ ತುದಿ_dict_ಮೌಲ್ಯಗಳು_t : dict_ಮೌಲ್ಯಗಳು_t<OPSTR>
 {
-  void init ()
+  ಶೂನ್ಯ init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_ಮೌಲ್ಯಗಳು_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  ಶೂನ್ಯ fini () { dict_ಮೌಲ್ಯಗಳು_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  ಪೂರ್ಣಾಙ್ಕ  charStringsOffset;
+  ಪೂರ್ಣಾಙ್ಕ  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+ಸಂರಚನಾ dict_opset_t : opset_t<ಸಂಖ್ಯೆ_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  ಸ್ಥಿರ ಶೂನ್ಯ process_op (op_code_t op, interp_env_t<ಸಂಖ್ಯೆ_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    ವಿಕಲ್ಪ (op) {
+      ಪಕ್ಷ OpCode_longintdict:  /* 5-byte integer */
+	env.arg_ರಾಶಿ.ತಳ್ಳು_longint_from_substr (env.str_ref);
+	ಭಙ್ಗ;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      ಪಕ್ಷ OpCode_BCD:  /* real number */
+	env.arg_ರಾಶಿ.ತಳ್ಳು_real (parse_bcd (env.str_ref));
+	ಭಙ್ಗ;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      ಸ್ವಭಾವ:
+	opset_t<ಸಂಖ್ಯೆ_t>::process_op (op, env);
+	ಭಙ್ಗ;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  ಸ್ಥಿರ ದ್ವಿಗುಣ parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    ಯದಿ (unlikely (str_ref.in_error ())) ಪ್ರತ್ಯಾಗಮ .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    ಗಣನಾ Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    ವರ್ಣ buf[32] = {0};
+    unsigned ವರ್ಣ byte = 0;
+    ಪ್ರತಿ (unsigned i = 0, ಎಣಿಕೆ = 0; ಎಣಿಕೆ < ARRAY_LENGTH (buf); ++i, ++ಎಣಿಕೆ)
     {
       unsigned nibble;
-      if (!(i & 1))
+      ಯದಿ (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	ಯದಿ (unlikely (!str_ref.avail ())) ಭಙ್ಗ;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      ಅನ್ಯಥಾ
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      ಯದಿ (unlikely (nibble == RESERVED)) ಭಙ್ಗ;
+      ಅನ್ಯಥಾ ಯದಿ (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	ಧ್ರುವ ವರ್ಣ *p = buf;
+	ದ್ವಿಗುಣ pv;
+	ಯದಿ (unlikely (!hb_parse_double (&p, p + ಎಣಿಕೆ, &pv, ಸತ್ಯ/* whole buffer */)))
+	  ಭಙ್ಗ;
+	ಪ್ರತ್ಯಾಗಮ pv;
       }
-      else
+      ಅನ್ಯಥಾ
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[ಎಣಿಕೆ] = "0123456789.EE?-?"[nibble];
+	ಯದಿ (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++ಎಣಿಕೆ;
+	  ಯದಿ (unlikely (ಎಣಿಕೆ == ARRAY_LENGTH (buf))) ಭಙ್ಗ;
+	  buf[ಎಣಿಕೆ] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    ಪ್ರತ್ಯಾಗಮ .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ is_hint_op (op_code_t op)
   {
-    switch (op)
+    ವಿಕಲ್ಪ (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      ಪಕ್ಷ Op_Code_Blue_ಮೌಲ್ಯಗಳು:
+      ಪಕ್ಷ OpCode_OtherBlues:
+      ಪಕ್ಷ OpCode_FamilyBlues:
+      ಪಕ್ಷ OpCode_FamilyOtherBlues:
+      ಪಕ್ಷ OpCode_StemSnapH:
+      ಪಕ್ಷ OpCode_StemSnapV:
+      ಪಕ್ಷ OpCode_StdHW:
+      ಪಕ್ಷ OpCode_StdVW:
+      ಪಕ್ಷ OpCode_BlueScale:
+      ಪಕ್ಷ OpCode_BlueShift:
+      ಪಕ್ಷ OpCode_BlueFuzz:
+      ಪಕ್ಷ OpCode_ForceBold:
+      ಪಕ್ಷ OpCode_LanguageGroup:
+      ಪಕ್ಷ OpCode_ExpansionFactor:
+	ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+      ಸ್ವಭಾವ:
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+ಸಂರಚನಾ ತುದಿ_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  ಸ್ಥಿರ ಶೂನ್ಯ process_op (op_code_t op, interp_env_t<ಸಂಖ್ಯೆ_t>& env, ತುದಿ_dict_ಮೌಲ್ಯಗಳು_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
+    ವಿಕಲ್ಪ (op) {
+      ಪಕ್ಷ OpCode_CharStrings:
+	dictval.charStringsOffset = env.arg_ರಾಶಿ.ತೆಗೆ_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
+	ಭಙ್ಗ;
+      ಪಕ್ಷ OpCode_FDArray:
+	dictval.FDArrayOffset = env.arg_ರಾಶಿ.ತೆಗೆ_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	ಭಙ್ಗ;
+      ಪಕ್ಷ OpCode_FontMatrix:
 	env.clear_args ();
-	break;
-      default:
+	ಭಙ್ಗ;
+      ಸ್ವಭಾವ:
 	dict_opset_t::process_op (op, env);
-	break;
+	ಭಙ್ಗ;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+template <typename OPSET, typename PARAM, typename ENV=ಅಂಕೆ_interp_env_t>
+ಸಂರಚನಾ dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  ತಾರ್ಕಿಕ interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    ಯಾವತ್ (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      ಯದಿ (unlikely (SUPER::env.in_error ()))
+	ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  ಗುಪ್ತ:
+  ಪ್ರಕಾರನಿರ್ದೇಶ interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

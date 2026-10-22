@@ -1,70 +1,70 @@
 #ifndef OT_LAYOUT_GSUB_ALTERNATESET_HH
 #define OT_LAYOUT_GSUB_ALTERNATESET_HH
 
-#include "Common.hh"
+#ಅನ್ತರ್ಭಾವ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GSUB_impl {
 
 template <typename Types>
-struct AlternateSet
+ಸಂರಚನಾ AlternateSet
 {
-  protected:
+  ರಕ್ಷಿತ:
   Array16Of<typename Types::HBGlyphID>
                 alternates;             /* Array of alternate GlyphIDs--in
                                          * arbitrary order */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (2, alternates);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     return_trace (alternates.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_any (alternates, glyphs); }
+  ತಾರ್ಕಿಕ intersects (ಧ್ರುವ hb_set_t *glyphs) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ hb_any (alternates, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
+  ಶೂನ್ಯ closure (hb_closure_context_t *c) ಧ್ರುವ
   { c->output->add_array (alternates.arrayZ, alternates.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  ಶೂನ್ಯ depend (hb_depend_context_t *c, hb_codepoint_t source) ಧ್ರುವ
   {
     + hb_iter (alternates)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (ಧ್ರುವ hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ಶೂನ್ಯ collect_glyphs (hb_collect_glyphs_context_t *c) ಧ್ರುವ
   { c->output->add_array (alternates.arrayZ, alternates.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_ot_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
-    unsigned int count = alternates.len;
+    TRACE_APPLY (ಏತತ್);
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = alternates.len;
 
-    if (unlikely (!count)) return_trace (false);
+    ಯದಿ (unlikely (!ಎಣಿಕೆ)) return_trace (ಅಸತ್ಯ);
 
     hb_mask_t glyph_mask = c->buffer->cur().mask;
     hb_mask_t lookup_mask = c->lookup_mask;
 
     /* Note: This breaks badly if two features enabled this lookup together. */
-    unsigned int shift = hb_ctz (lookup_mask);
-    unsigned int alt_index = ((lookup_mask & glyph_mask) >> shift);
+    unsigned ಪೂರ್ಣಾಙ್ಕ shift = hb_ctz (lookup_mask);
+    unsigned ಪೂರ್ಣಾಙ್ಕ alt_index = ((lookup_mask & glyph_mask) >> shift);
 
     /* If alt_index is MAX_VALUE, randomize feature if it is the rand feature. */
-    if (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
+    ಯದಿ (alt_index == HB_OT_MAP_MAX_ಮೌಲ್ಯ && c->random)
     {
       /* Maybe we can do better than unsafe-to-break all; but since we are
        * changing random state, it would be hard to track that.  Good 'nough. */
       c->buffer->unsafe_to_break (0, c->buffer->len);
-      alt_index = c->random_number () % count + 1;
+      alt_index = c->random_ಸಂಖ್ಯೆ () % ಎಣಿಕೆ + 1;
     }
 
-    if (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
+    ಯದಿ (unlikely (alt_index > ಎಣಿಕೆ || alt_index == 0)) return_trace (ಅಸತ್ಯ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ಯದಿ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -74,57 +74,57 @@ struct AlternateSet
 
     c->replace_glyph (alternates[alt_index - 1]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ಯದಿ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "replaced glyph at %u (alternate substitution)",
 			  c->buffer->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
   unsigned
   get_alternates (unsigned        start_offset,
-                  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+                  unsigned       *alternate_ಎಣಿಕೆ  /* IN/OUT.  May be NULL. */,
+                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) ಧ್ರುವ
   {
-    if (alternates.len && alternate_count && alternate_glyphs)
+    ಯದಿ (alternates.len && alternate_ಎಣಿಕೆ && alternate_glyphs)
     {
-      + alternates.as_array ().sub_array (start_offset, alternate_count)
-      | hb_sink (hb_array (alternate_glyphs, *alternate_count))
+      + alternates.as_array ().sub_array (start_offset, alternate_ಎಣಿಕೆ)
+      | hb_sink (hb_array (alternate_glyphs, *alternate_ಎಣಿಕೆ))
       ;
     }
-    return alternates.len;
+    ಪ್ರತ್ಯಾಗಮ alternates.len;
   }
 
-  void
+  ಶೂನ್ಯ
   collect_alternates (hb_codepoint_t gid,
-		      hb_map_t  *alternate_count /* IN/OUT */,
-		      hb_map_t  *alternate_glyphs /* IN/OUT */) const
+		      hb_map_t  *alternate_ಎಣಿಕೆ /* IN/OUT */,
+		      hb_map_t  *alternate_glyphs /* IN/OUT */) ಧ್ರುವ
   {
     + hb_enumerate (alternates)
-    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { return hb_pair (gid + (_.first << 24), _.second); })
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
+    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { ಪ್ರತ್ಯಾಗಮ hb_pair (gid + (_.first << 24), _.second); })
+    | hb_apply ([&] (ಧ್ರುವ hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> ಶೂನ್ಯ
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+						    alternate_ಎಣಿಕೆ, alternate_glyphs); })
     ;
   }
 
   template <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  ತಾರ್ಕಿಕ serialize (hb_serialize_context_t *c,
                   Iterator alts)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ಏತತ್);
     return_trace (alternates.serialize (c, alts));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ಏತತ್);
+    ಧ್ರುವ hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ಧ್ರುವ hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto it =
       + hb_iter (alternates)
@@ -132,7 +132,7 @@ struct AlternateSet
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
     return_trace (out->serialize (c->serializer, it) &&
                   out->alternates);
   }

@@ -32,12 +32,12 @@
 #ifndef HB_ATOMIC_HH
 #define HB_ATOMIC_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-meta.hh"
 
 
 #ifndef HB_NO_MT
-#include <atomic>
+#ಅನ್ತರ್ಭಾವ <atomic>
 #endif
 
 
@@ -47,13 +47,13 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
-#elif !defined(_MSC_VER)
-#include <atomic>
+#ಯದಿ defined(__ATOMIC_ACQUIRE) // gcc-like
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ _hb_compiler_memory_r_barrier () { asm ಚಞ್ಚಲ("": : :"memory"); }
+#ನೋಚೇದ್ಯದಿ !defined(_MSC_VER)
+#ಅನ್ತರ್ಭಾವ <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
+#ಅನ್ಯಥಾ
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
 
@@ -61,33 +61,33 @@ static inline void _hb_compiler_memory_r_barrier () {}
 #ifndef HB_NO_MT
 
 template <typename T>
-struct hb_atomic_t
+ಸಂರಚನಾ hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = ಸ್ವಭಾವ;
   constexpr hb_atomic_t (T v) : v (v) {}
-  constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
+  constexpr hb_atomic_t (ಧ್ರುವ hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (ಧ್ರುವ hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    ಪ್ರತ್ಯಾಗಮ *ಏತತ್;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_relaxed (); }
 
-  void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
-  void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  ಶೂನ್ಯ set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
+  ಶೂನ್ಯ set_release (T v_) { v.store (v_, std::memory_order_release); }
+  T get_relaxed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v.load (std::memory_order_relaxed); }
+  T get_acquire () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v.load (std::memory_order_acquire); }
+  T inc () { ಪ್ರತ್ಯಾಗಮ v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { ಪ್ರತ್ಯಾಗಮ v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  ಪೂರ್ಣಾಙ್ಕ operator++ (ಪೂರ್ಣಾಙ್ಕ) { ಪ್ರತ್ಯಾಗಮ inc (); }
+  ಪೂರ್ಣಾಙ್ಕ operator-- (ಪೂರ್ಣಾಙ್ಕ) { ಪ್ರತ್ಯಾಗಮ dec (); }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend ಶೂನ್ಯ swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T v = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -98,30 +98,30 @@ struct hb_atomic_t
 };
 
 template <typename T>
-struct hb_atomic_t<T *>
+ಸಂರಚನಾ hb_atomic_t<T *>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = ಸ್ವಭಾವ;
   constexpr hb_atomic_t (T *v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ಧ್ರುವ hb_atomic_t &other) = delete;
 
-  void init (T *v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  ಶೂನ್ಯ init (T *v_ = nullptr) { set_relaxed (v_); }
+  ಶೂನ್ಯ set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
+  T *get_relaxed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v.load (std::memory_order_relaxed); }
+  T *get_acquire () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v.load (std::memory_order_acquire); }
+  ತಾರ್ಕಿಕ cmpexch (T *old, T *new_) { ಪ್ರತ್ಯಾಗಮ v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (ಧ್ರುವ hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator ತಾರ್ಕಿಕ () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_acquire () != nullptr; }
+  T *operator->() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_acquire (); }
   template <typename C>
-  operator C * () const
+  operator C * () ಧ್ರುವ
   {
-    return get_acquire ();
+    ಪ್ರತ್ಯಾಗಮ get_acquire ();
   }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend ಶೂನ್ಯ swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T *p = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -131,51 +131,51 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#ಅನ್ಯಥಾ /* defined(HB_NO_MT) */
 
 template <typename T>
-struct hb_atomic_t
+ಸಂರಚನಾ hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = ಸ್ವಭಾವ;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  operator T () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_relaxed (); }
 
-  void set_relaxed (T v_) { v = v_; }
-  void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  ಶೂನ್ಯ set_relaxed (T v_) { v = v_; }
+  ಶೂನ್ಯ set_release (T v_) { v = v_; }
+  T get_relaxed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v; }
+  T get_acquire () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v; }
+  T inc () { ಪ್ರತ್ಯಾಗಮ v++; }
+  T dec () { ಪ್ರತ್ಯಾಗಮ v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  ಪೂರ್ಣಾಙ್ಕ operator ++ (ಪೂರ್ಣಾಙ್ಕ) { ಪ್ರತ್ಯಾಗಮ inc (); }
+  ಪೂರ್ಣಾಙ್ಕ operator -- (ಪೂರ್ಣಾಙ್ಕ) { ಪ್ರತ್ಯಾಗಮ dec (); }
 
   T v = 0;
 };
 
 template <typename T>
-struct hb_atomic_t<T*>
+ಸಂರಚನಾ hb_atomic_t<T*>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = ಸ್ವಭಾವ;
   constexpr hb_atomic_t (T* v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ಧ್ರುವ hb_atomic_t &other) = delete;
 
-  void init (T* v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
-  bool cmpexch (T *old, T *new_)
+  ಶೂನ್ಯ init (T* v_ = nullptr) { set_relaxed (v_); }
+  ಶೂನ್ಯ set_relaxed (T* v_) { v = v_; }
+  T *get_relaxed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v; }
+  T *get_acquire () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ v; }
+  ತಾರ್ಕಿಕ cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    ಯದಿ (v != old) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     v = new_;
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator ತಾರ್ಕಿಕ () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_acquire () != nullptr; }
+  T * operator -> () ಧ್ರುವ                    { ಪ್ರತ್ಯಾಗಮ get_acquire (); }
+  template <typename C> operator C * () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get_acquire (); }
 
   T *v = nullptr;
 };
@@ -183,10 +183,10 @@ struct hb_atomic_t<T*>
 #endif
 
 
-static inline bool hb_barrier ()
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 

@@ -27,179 +27,179 @@
 #ifndef HB_VECTOR_INTERNAL_HH
 #define HB_VECTOR_INTERNAL_HH
 
-#include "hb-vector.h"
+#ಅನ್ತರ್ಭಾವ "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+ಸಂರಚನಾ hb_vector_blob_meta_t
 {
-  char *data;
-  int allocated;
-  bool transferred;
-  bool in_replace;
+  ವರ್ಣ *data;
+  ಪೂರ್ಣಾಙ್ಕ allocated;
+  ತಾರ್ಕಿಕ transferred;
+  ತಾರ್ಕಿಕ in_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+ಸ್ಥಿರ hb_user_data_ಕೀಲಿ_t hb_vector_blob_meta_user_data_ಕೀಲಿ;
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+				ವರ್ಣ *data,
+				ಪೂರ್ಣಾಙ್ಕ allocated)
 {
   meta->data = data;
   meta->allocated = allocated;
-  meta->transferred = false;
+  meta->transferred = ಅಸತ್ಯ;
 }
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
+  ಯದಿ (!meta)
+    ಪ್ರತ್ಯಾಗಮ;
+  ಯದಿ (!meta->transferred && meta->data)
     hb_free (meta->data);
   meta->data = nullptr;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ಸತ್ಯ;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
+hb_vector_blob_meta_destroy (ಶೂನ್ಯ *data)
 {
   auto *meta = (hb_vector_blob_meta_t *) data;
   hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  ಯದಿ (meta->in_replace)
   {
-    meta->in_replace = false;
-    return;
+    meta->in_replace = ಅಸತ್ಯ;
+    ಪ್ರತ್ಯಾಗಮ;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
 		  hb_vector_buf_t *buf)
 {
   unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  ಪೂರ್ಣಾಙ್ಕ allocated = 0;
+  ವರ್ಣ *data = buf->steal (&len, &allocated);
+  ಯದಿ (!data)
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  ಯದಿ (*recycled_blob)
     blob = *recycled_blob;
-  bool reused_blob = blob && blob != hb_blob_get_empty ();
-  bool new_meta = false;
+  ತಾರ್ಕಿಕ reused_blob = blob && blob != hb_blob_get_empty ();
+  ತಾರ್ಕಿಕ new_meta = ಅಸತ್ಯ;
   auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
+             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_ಕೀಲಿ)
              : nullptr;
-  if (!meta)
+  ಯದಿ (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_vector_blob_meta_t *) hb_malloc (ಪರಿಮಾಣ (hb_vector_blob_meta_t));
+    ಯದಿ (!meta)
     {
       hb_free (data);
-      return nullptr;
+      ಪ್ರತ್ಯಾಗಮ nullptr;
     }
     meta->data = nullptr;
     meta->allocated = 0;
-    meta->transferred = true;
-    meta->in_replace = false;
-    new_meta = true;
+    meta->transferred = ಸತ್ಯ;
+    meta->in_replace = ಅಸತ್ಯ;
+    new_meta = ಸತ್ಯ;
   }
 
-  if (reused_blob)
+  ಯದಿ (reused_blob)
   {
-    meta->in_replace = true;
+    meta->in_replace = ಸತ್ಯ;
     blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
   }
-  else
+  ಅನ್ಯಥಾ
   {
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
     blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    ಯದಿ (unlikely (!blob))
+      ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  ಯದಿ (unlikely (blob == hb_blob_get_empty ()))
   {
-    if (new_meta)
+    ಯದಿ (new_meta)
       hb_free (meta);
     hb_free (data);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  if (new_meta &&
+  ಯದಿ (new_meta &&
       !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+                              &hb_vector_blob_meta_user_data_ಕೀಲಿ,
                               meta,
                               nullptr,
-                              true))
+                              ಸತ್ಯ))
   {
-    if (!reused_blob)
+    ಯದಿ (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  if (*recycled_blob)
+  ಯದಿ (*recycled_blob)
     *recycled_blob = nullptr;
 
-  return blob;
+  ಪ್ರತ್ಯಾಗಮ blob;
 }
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 hb_buf_recover_recycled (hb_blob_t *blob,
 			 hb_vector_buf_t *buf)
 {
-  if (!blob)
-    return;
+  ಯದಿ (!blob)
+    ಪ್ರತ್ಯಾಗಮ;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_ಕೀಲಿ);
+  ಯದಿ (!meta || meta->transferred || !meta->data)
+    ಪ್ರತ್ಯಾಗಮ;
 
   buf->recycle_buffer (meta->data, 0, meta->allocated);
   meta->data = nullptr;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ಸತ್ಯ;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
+hb_vector_transform_point (ಧ್ರುವ hb_transform_t<> &t,
+			   ಭಿನ್ನ x_scale_factor,
+			   ಭಿನ್ನ y_scale_factor,
+			   ಭಿನ್ನ x, ಭಿನ್ನ y,
+			   ಭಿನ್ನ *tx, ಭಿನ್ನ *ty)
 {
-  float xx = x, yy = y;
+  ಭಿನ್ನ xx = x, yy = y;
   t.transform_point (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
   *tx = xx / x_scale_factor;
   *ty = yy / y_scale_factor;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_bool_t
+hb_vector_set_glyph_extents_common (ಧ್ರುವ hb_transform_t<> &transform,
+				    ಭಿನ್ನ x_scale_factor,
+				    ಭಿನ್ನ y_scale_factor,
+				    ಧ್ರುವ hb_glyph_extents_t *glyph_extents,
 				    hb_vector_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  ಭಿನ್ನ x0 = (ಭಿನ್ನ) glyph_extents->x_bearing;
+  ಭಿನ್ನ y0 = (ಭಿನ್ನ) glyph_extents->y_bearing;
+  ಭಿನ್ನ x1 = x0 + glyph_extents->width;
+  ಭಿನ್ನ y1 = y0 + glyph_extents->height;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  ಭಿನ್ನ px[4] = {x0, x0, x1, x1};
+  ಭಿನ್ನ py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
+  ಭಿನ್ನ tx, ty;
   hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  ಭಿನ್ನ tx_min = tx, tx_max = tx;
+  ಭಿನ್ನ ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  ಪ್ರತಿ (unsigned i = 1; i < 4; i++)
   {
     hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
@@ -208,57 +208,57 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  ಯದಿ (tx_max <= tx_min || ty_max <= ty_min)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (*has_extents)
+  ಯದಿ (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    ಭಿನ್ನ x0 = hb_min (extents->x, tx_min);
+    ಭಿನ್ನ y0 = hb_min (extents->y, ty_min);
+    ಭಿನ್ನ x1 = hb_max (extents->x + extents->width, tx_max);
+    ಭಿನ್ನ y1 = hb_max (extents->y + extents->height, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  ಅನ್ಯಥಾ
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
-    *has_extents = true;
+    *has_extents = ಸತ್ಯ;
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
 					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+					 ಭಿನ್ನ x_scale_factor,
+					 ಭಿನ್ನ y_scale_factor,
+					 ಭಿನ್ನ xx, ಭಿನ್ನ yx,
+					 ಭಿನ್ನ xy, ಭಿನ್ನ yy,
+					 ಭಿನ್ನ tx, ಭಿನ್ನ ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  ಯದಿ (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
     out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_ಅಂಕೆ (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_ಅಂಕೆ (-ty / y_scale_factor, precision);
     out->append_str (") scale(1,-1)");
   }
-  else
+  ಅನ್ಯಥಾ
   {
     unsigned sprec = out->scale_precision ();
     out->append_str ("matrix(");
-    out->append_num (xx, sprec);
+    out->append_ಅಂಕೆ (xx, sprec);
     out->append_c (',');
-    out->append_num (yx, sprec);
+    out->append_ಅಂಕೆ (yx, sprec);
     out->append_c (',');
-    out->append_num (-xy, sprec);
+    out->append_ಅಂಕೆ (-xy, sprec);
     out->append_c (',');
-    out->append_num (-yy, sprec);
+    out->append_ಅಂಕೆ (-yy, sprec);
     out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_ಅಂಕೆ (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_ಅಂಕೆ (-ty / y_scale_factor, precision);
     out->append_c (')');
   }
 }

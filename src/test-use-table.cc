@@ -1,12 +1,12 @@
-#include "hb-ot-shaper-use-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
-  if (argc != 2)
+  ಯದಿ (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
+    ಪ್ರತಿ (unsigned u = 0; u < 0x10FFFFu; u++)
       printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    ಪ್ರತ್ಯಾಗಮ 0;
   }
 
   hb_codepoint_t u;
@@ -14,5 +14,5 @@ int main (int argc, char **argv)
 
   printf ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

@@ -1,13 +1,13 @@
-#include "hb-subset-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-subset-table.hh"
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-vorg-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff1-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff2-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-vorg-table.hh"
 
 
 #ifndef HB_NO_SUBSET_CFF
 template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff1>
+ಸಂರಚನಾ hb_subset_plan_t::source_table_loader<ಧ್ರುವ OT::cff1>
 {
   auto operator () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff1_accel :
@@ -15,7 +15,7 @@ struct hb_subset_plan_t::source_table_loader<const OT::cff1>
 		  plan->cff1_accel)
 };
 template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff2>
+ಸಂರಚನಾ hb_subset_plan_t::source_table_loader<ಧ್ರುವ OT::cff2>
 {
   auto operator () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff2_accel :
@@ -25,17 +25,17 @@ struct hb_subset_plan_t::source_table_loader<const OT::cff2>
 #endif
 
 
-bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+ತಾರ್ಕಿಕ _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<ವರ್ಣ> &buf, hb_tag_t tag, ತಾರ್ಕಿಕ *success)
 {
 #ifndef HB_NO_SUBSET_CFF
-  switch (tag)
+  ವಿಕಲ್ಪ (tag)
   {
-  case HB_TAG('C','F','F',' '): *success = _hb_subset_table<const OT::cff1> (plan, buf); return true;
-  case HB_TAG('C','F','F','2'): *success = _hb_subset_table<const OT::cff2> (plan, buf); return true;
-  case HB_TAG('V','O','R','G'): *success = _hb_subset_table<const OT::VORG> (plan, buf); return true;
+  ಪಕ್ಷ HB_TAG('C','F','F',' '): *success = _hb_subset_table<ಧ್ರುವ OT::cff1> (plan, buf); ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+  ಪಕ್ಷ HB_TAG('C','F','F','2'): *success = _hb_subset_table<ಧ್ರುವ OT::cff2> (plan, buf); ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+  ಪಕ್ಷ HB_TAG('V','O','R','G'): *success = _hb_subset_table<ಧ್ರುವ OT::VORG> (plan, buf); ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 #endif
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 
@@ -43,47 +43,47 @@ bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_t
 #ifndef HB_NO_CFF
 
 template<typename accel_t>
-static hb_blob_t* get_charstrings_data(accel_t& accel, hb_codepoint_t glyph_index) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+ಸ್ಥಿರ hb_blob_t* get_charstrings_data(accel_t& accel, hb_codepoint_t glyph_index) {
+  ಯದಿ (!accel.is_valid()) {
+    ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty ();
   }
 
   hb_ubytes_t bytes = (*accel.charStrings)[glyph_index];
-  if (!bytes) {
-    return hb_blob_get_empty ();
+  ಯದಿ (!bytes) {
+    ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty ();
   }
 
   hb_blob_t* cff_blob = accel.get_blob();
   uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  ಧ್ರುವ ವರ್ಣ* cff_data = hb_blob_get_data(cff_blob, &length) ;
 
-  long int offset = (const char*) bytes.arrayZ - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  long ಪೂರ್ಣಾಙ್ಕ offset = (ಧ್ರುವ ವರ್ಣ*) bytes.arrayZ - cff_data;
+  ಯದಿ (offset < 0 || offset > INT32_MAX) {
+    ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, bytes.length);
+  ಪ್ರತ್ಯಾಗಮ hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, bytes.length);
 }
 
 template<typename accel_t>
-static hb_blob_t* get_charstrings_index(accel_t& accel) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+ಸ್ಥಿರ hb_blob_t* get_charstrings_index(accel_t& accel) {
+  ಯದಿ (!accel.is_valid()) {
+    ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty ();
   }
 
-  const char* charstrings_start = (const char*) accel.charStrings;
+  ಧ್ರುವ ವರ್ಣ* charstrings_start = (ಧ್ರುವ ವರ್ಣ*) accel.charStrings;
   unsigned charstrings_length = accel.charStrings->get_size();
 
   hb_blob_t* cff_blob = accel.get_blob();
   uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  ಧ್ರುವ ವರ್ಣ* cff_data = hb_blob_get_data(cff_blob, &length) ;
 
-  long int offset = charstrings_start - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  long ಪೂರ್ಣಾಙ್ಕ offset = charstrings_start - cff_data;
+  ಯದಿ (offset < 0 || offset > INT32_MAX) {
+    ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, charstrings_length);
+  ಪ್ರತ್ಯಾಗಮ hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, charstrings_length);
 }
 
 /**
@@ -97,7 +97,7 @@ static hb_blob_t* get_charstrings_index(accel_t& accel) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff1, glyph);
+  ಪ್ರತ್ಯಾಗಮ get_charstrings_data(*face->table.cff1, glyph);
 }
 
 /**
@@ -110,7 +110,7 @@ hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff1);
+  ಪ್ರತ್ಯಾಗಮ get_charstrings_index (*face->table.cff1);
 }
 
 /**
@@ -124,7 +124,7 @@ hb_subset_cff_get_charstrings_index (hb_face_t* face) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff2, glyph);
+  ಪ್ರತ್ಯಾಗಮ get_charstrings_data(*face->table.cff2, glyph);
 }
 
 /**
@@ -137,7 +137,7 @@ hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff2_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff2);
+  ಪ್ರತ್ಯಾಗಮ get_charstrings_index (*face->table.cff2);
 }
 #endif
 #endif

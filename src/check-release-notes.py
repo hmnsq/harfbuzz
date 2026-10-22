@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+ಆನಯನ sys
 
 
 news_path = sys.argv[1]
 release = sys.argv[2]
 
-with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+with open(news_path, "r", encoding="utf-8") ಇವ news_file:
+    ಸಾಲುಗಳು = news_file.readlines()
 
 start = None
 end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
+ಪ್ರತಿ i, ಸಾಲು ಅನ್ತಃ enumerate(ಸಾಲುಗಳು):
+    ಸಾಲು = ಸಾಲು.rstrip()
+    ಯದಿ ಸಾಲು.startswith("Overview of changes leading to"):
+        ಯದಿ start is ನ None:  # Start of next release
             end = i
-            break
-        if line.endswith(release):  # Start of the release
+            ಭಙ್ಗ
+        ಯದಿ ಸಾಲು.endswith(release):  # Start of the release
             start = i + 3  # Skip the header lines
 
-assert start and end and end > start
+ಪ್ರತಿಜ್ಞಾ start ಚ end ಚ end > start
 
-print("".join(lines[start:end]))
+print("".join(ಸಾಲುಗಳು[start:end]))

@@ -24,17 +24,17 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
-  if (argc != 2) {
+  ಯದಿ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -47,35 +47,35 @@ main (int argc, char **argv)
   blob = nullptr;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  ಧ್ರುವ unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs = hb_face_get_glyph_ಎಣಿಕೆ (face);
+  ಪೂರ್ಣಾಙ್ಕ	result = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  ಪ್ರತಿ (hb_codepoint_t gid = 0; gid < ಅಂಕೆ_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    ವರ್ಣ buf[64];
+    unsigned ಪೂರ್ಣಾಙ್ಕ buf_size = ಪರಿಮಾಣ (buf);
+    ಯದಿ (hb_font_get_glyph_name (font, gid, buf, buf_size))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      ಯದಿ (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	ಯದಿ (gid == gid_inv)
 	{
 	  printf ("%u <-> %s\n", gid, buf);
 	}
-	else
+	ಅನ್ಯಥಾ
 	{
 	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
 	  result = 0;
 	}
       }
-      else
+      ಅನ್ಯಥಾ
       {
 	printf ("%u -> %s -> ?\n", gid, buf);
 	result = 0;
       }
     }
-    else
+    ಅನ್ಯಥಾ
     {
       printf ("%u -> ?\n", gid);
       result = 0;
@@ -85,5 +85,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  ಪ್ರತ್ಯಾಗಮ !result;
 }

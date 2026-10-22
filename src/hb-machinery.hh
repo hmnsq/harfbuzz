@@ -29,11 +29,11 @@
 #ifndef HB_MACHINERY_HH
 #define HB_MACHINERY_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-blob.hh"
 
-#include "hb-dispatch.hh"
-#include "hb-sanitize.hh"
+#ಅನ್ತರ್ಭಾವ "hb-dispatch.hh"
+#ಅನ್ತರ್ಭಾವ "hb-sanitize.hh"
 
 
 /*
@@ -43,26 +43,26 @@
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
 template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ Type& StructAtOffset(ಧ್ರುವ ಶೂನ್ಯ *P, unsigned ಪೂರ್ಣಾಙ್ಕ offset)
+{ ಪ್ರತ್ಯಾಗಮ * reinterpret_cast<ಧ್ರುವ Type*> ((ಧ್ರುವ ವರ್ಣ *) P + offset); }
 template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ Type& StructAtOffset(ಶೂನ್ಯ *P, unsigned ಪೂರ್ಣಾಙ್ಕ offset)
+{ ಪ್ರತ್ಯಾಗಮ * reinterpret_cast<Type*> ((ವರ್ಣ *) P + offset); }
 template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ Type& StructAtOffsetUnaligned(ಧ್ರುವ ಶೂನ್ಯ *P, unsigned ಪೂರ್ಣಾಙ್ಕ offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+  ಪ್ರತ್ಯಾಗಮ * reinterpret_cast<ಧ್ರುವ Type*> ((ಧ್ರುವ ವರ್ಣ *) P + offset);
+#pragma GCC diagnostic ತೆಗೆ
 }
 template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ Type& StructAtOffsetUnaligned(ಶೂನ್ಯ *P, unsigned ಪೂರ್ಣಾಙ್ಕ offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
-#pragma GCC diagnostic pop
+  ಪ್ರತ್ಯಾಗಮ * reinterpret_cast<Type*> ((ವರ್ಣ *) P + offset);
+#pragma GCC diagnostic ತೆಗೆ
 }
 
 /* StructAfter<T>(X) returns the struct T& that is placed after X.
@@ -70,15 +70,15 @@ static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ auto StructAfter(ಧ್ರುವ TObject &X, Ts... args) HB_AUTO_RETURN((
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
+  ಪರಿಮಾಣ(ಪೂರ್ಣಾಙ್ಕ[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
   : *reinterpret_cast<Type*> (0)
 ))
@@ -94,50 +94,50 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
 #endif
 
 /* Check _assertion in a method environment */
-#define _DEFINE_INSTANCE_ASSERTION1(_line, _assertion) \
-  void _instance_assertion_on_line_##_line () const \
+#define _DEFINE_INSTANCE_ASSERTION1(ಸಾಲು_2, _assertion) \
+  ಶೂನ್ಯ instance_assertion_on_ಸಾಲು##_line () ಧ್ರುವ \
   { static_assert ((_assertion), ""); }
-# define _DEFINE_INSTANCE_ASSERTION0(_line, _assertion) _DEFINE_INSTANCE_ASSERTION1 (_line, _assertion)
+# define _DEFINE_INSTANCE_ASSERTION0(ಸಾಲು_2, _assertion) _DEFINE_INSTANCE_ASSERTION1 (ಸಾಲು_2, _assertion)
 # define DEFINE_INSTANCE_ASSERTION(_assertion) _DEFINE_INSTANCE_ASSERTION0 (__LINE__, _assertion)
 
 /* Check that _code compiles in a method environment */
-#define _DEFINE_COMPILES_ASSERTION1(_line, _code) \
-  void _compiles_assertion_on_line_##_line () const \
+#define _DEFINE_COMPILES_ASSERTION1(ಸಾಲು_2, _code) \
+  ಶೂನ್ಯ compiles_assertion_on_ಸಾಲು##_line () ಧ್ರುವ \
   { _code; }
-# define _DEFINE_COMPILES_ASSERTION0(_line, _code) _DEFINE_COMPILES_ASSERTION1 (_line, _code)
+# define _DEFINE_COMPILES_ASSERTION0(ಸಾಲು_2, _code) _DEFINE_COMPILES_ASSERTION1 (ಸಾಲು_2, _code)
 # define DEFINE_COMPILES_ASSERTION(_code) _DEFINE_COMPILES_ASSERTION0 (__LINE__, _code)
 
 
 #define DEFINE_SIZE_STATIC(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size); \
-  static constexpr unsigned static_size = (size)
+  DEFINE_INSTANCE_ASSERTION (ಪರಿಮಾಣ (*ಏತತ್) == (size)) \
+  size_t get_size () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ (size); } \
+  ಸ್ಥಿರ constexpr unsigned null_size = (size); \
+  ಸ್ಥಿರ constexpr unsigned min_size = (size); \
+  ಸ್ಥಿರ constexpr unsigned static_size = (size)
 
 #define DEFINE_SIZE_UNION(size, _member) \
-  DEFINE_COMPILES_ASSERTION ((void) this->u._member.static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof(this->u._member) == (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_COMPILES_ASSERTION ((ಶೂನ್ಯ) ಏತತ್->u._member.static_size) \
+  DEFINE_INSTANCE_ASSERTION (ಪರಿಮಾಣ(ಏತತ್->u._member) == (size)) \
+  ಸ್ಥಿರ constexpr unsigned null_size = (size); \
+  ಸ್ಥಿರ constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_MIN(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_INSTANCE_ASSERTION (ಪರಿಮಾಣ (*ಏತತ್) >= (size)) \
+  ಸ್ಥಿರ constexpr unsigned null_size = (size); \
+  ಸ್ಥಿರ constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_UNBOUNDED(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned min_size = (size)
+  DEFINE_INSTANCE_ASSERTION (ಪರಿಮಾಣ (*ಏತತ್) >= (size)) \
+  ಸ್ಥಿರ constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY(size, array) \
-  DEFINE_COMPILES_ASSERTION ((void) (array)[0].static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size) + (HB_VAR_ARRAY+0) * sizeof ((array)[0])) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_COMPILES_ASSERTION ((ಶೂನ್ಯ) (array)[0].static_size) \
+  DEFINE_INSTANCE_ASSERTION (ಪರಿಮಾಣ (*ಏತತ್) == (size) + (HB_VAR_ARRAY+0) * ಪರಿಮಾಣ ((array)[0])) \
+  ಸ್ಥಿರ constexpr unsigned null_size = (size); \
+  ಸ್ಥಿರ constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
+  size_t get_size () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ (size - (array).min_size + (array).get_size ()); } \
   DEFINE_SIZE_ARRAY(size, array)
 
 
@@ -152,204 +152,204 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
-struct hb_data_wrapper_t
+template <typename Data, unsigned ಪೂರ್ಣಾಙ್ಕ WheresData>
+ಸಂರಚನಾ hb_data_wrapper_t
 {
   static_assert (WheresData > 0, "");
 
-  Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  Data * get_data () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ *(((Data **) (ಶೂನ್ಯ *) ಏತತ್) - WheresData); }
 
-  bool is_inert () const { return !get_data (); }
+  ತಾರ್ಕಿಕ is_inert () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ !get_data (); }
 
   template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  Stored * call_create () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ Subclass::create (get_data ()); }
 };
 template <>
-struct hb_data_wrapper_t<void, 0>
+ಸಂರಚನಾ hb_data_wrapper_t<ಶೂನ್ಯ, 0>
 {
-  bool is_inert () const { return false; }
+  ತಾರ್ಕಿಕ is_inert () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
 
   template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  Stored * call_create () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ Funcs::create (); }
 };
 
-template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
-template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
+template <typename T1, typename T2> ಸಂರಚನಾ hb_non_void_t { ಪ್ರಕಾರನಿರ್ದೇಶ T1 value; };
+template <typename T2> ಸಂರಚನಾ hb_non_void_t<ಶೂನ್ಯ, T2> { ಪ್ರಕಾರನಿರ್ದೇಶ T2 value; };
 
 template <typename Returned,
-	  typename Subclass = void,
-	  typename Data = void,
-	  unsigned int WheresData = 0,
+	  typename Subclass = ಶೂನ್ಯ,
+	  typename Data = ಶೂನ್ಯ,
+	  unsigned ಪೂರ್ಣಾಙ್ಕ WheresData = 0,
 	  typename Stored = Returned>
-struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
+ಸಂರಚನಾ hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 {
-  typedef typename hb_non_void_t<Subclass,
+  ಪ್ರಕಾರನಿರ್ದೇಶ typename hb_non_void_t<Subclass,
 				 hb_lazy_loader_t<Returned,Subclass,Data,WheresData,Stored>
 				>::value Funcs;
 
-  hb_lazy_loader_t () = default;
-  hb_lazy_loader_t (const hb_lazy_loader_t &other) = delete;
+  hb_lazy_loader_t () = ಸ್ವಭಾವ;
+  hb_lazy_loader_t (ಧ್ರುವ hb_lazy_loader_t &other) = delete;
 
-  void init0 () {} /* Init, when memory is already set to 0. No-op for us. */
-  void init ()  { instance.set_relaxed (nullptr); }
-  void fini ()  { do_destroy (instance.get_acquire ()); init (); }
+  ಶೂನ್ಯ init0 () {} /* Init, when memory is already set to 0. No-op for us. */
+  ಶೂನ್ಯ init ()  { instance.set_relaxed (nullptr); }
+  ಶೂನ್ಯ fini ()  { do_destroy (instance.get_acquire ()); init (); }
 
-  void free_instance ()
+  ಶೂನ್ಯ free_instance ()
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
-      goto retry;
+    ಯದಿ (unlikely (p && !cmpexch (p, nullptr)))
+      ಗಚ್ಛ retry;
     do_destroy (p);
   }
 
-  static void do_destroy (Stored *p)
+  ಸ್ಥಿರ ಶೂನ್ಯ do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    ಯದಿ (Funcs::tag_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      ಪ್ರತ್ಯಾಗಮ;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
-  template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
-  explicit operator bool () const
+  ಧ್ರುವ Returned * operator -> () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get (); }
+  template <typename U = Returned, hb_enable_if (!hb_is_same (U, ಶೂನ್ಯ))>
+  ಧ್ರುವ U & operator * () ಧ್ರುವ  { ಪ್ರತ್ಯಾಗಮ *get (); }
+  explicit operator ತಾರ್ಕಿಕ () ಧ್ರುವ
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    ಯದಿ (Funcs::tag_null)
     {
-      Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      Stored *raw = ಏತತ್->instance.get_relaxed ();
+      ಪ್ರತ್ಯಾಗಮ raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    ಪ್ರತ್ಯಾಗಮ p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  template <typename C> operator ಧ್ರುವ C * () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get (); }
 
-  Stored * get_stored () const
+  Stored * get_stored () ಧ್ರುವ
   {
   retry:
-    Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    Stored *p = ಏತತ್->instance.get_acquire ();
+    ಯದಿ (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      ಯದಿ (unlikely (ಏತತ್->is_inert ()))
+	ಪ್ರತ್ಯಾಗಮ const_cast<Stored *> (Funcs::get_null ());
 
-      p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      p = ಏತತ್->template call_create<Stored, Funcs> ();
+      ಯದಿ (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      ಯದಿ (unlikely (!cmpexch (nullptr, p)))
       {
 	do_destroy (p);
-	goto retry;
+	ಗಚ್ಛ retry;
       }
     }
-    return untagged (p);
+    ಪ್ರತ್ಯಾಗಮ untagged (p);
   }
-  Stored * get_stored_relaxed () const
+  Stored * get_stored_relaxed () ಧ್ರುವ
   {
-    return untagged (this->instance.get_relaxed ());
+    ಪ್ರತ್ಯಾಗಮ untagged (ಏತತ್->instance.get_relaxed ());
   }
 
-  bool cmpexch (Stored *current, Stored *value) const
+  ತಾರ್ಕಿಕ cmpexch (Stored *current, Stored *value) ಧ್ರುವ
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    ಪ್ರತ್ಯಾಗಮ ಏತತ್->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  ಧ್ರುವ Returned * get () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ Funcs::convert (get_stored ()); }
+  ಧ್ರುವ Returned * get_relaxed () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  ಸ್ಥಿರ Returned* convert (Stored *p) { ಪ್ರತ್ಯಾಗಮ p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  ಸ್ಥಿರ ಧ್ರುವ Stored* get_null () { ಪ್ರತ್ಯಾಗಮ &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
    * address.  Needed when get_null () is a per-library Null object: another
    * library sharing the object would not recognize its address. */
-  static constexpr bool tag_null = false;
-  static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
-  static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
-  static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
-  static Stored *create (Data *data)
+  ಸ್ಥಿರ constexpr ತಾರ್ಕಿಕ tag_null = ಅಸತ್ಯ;
+  ಸ್ಥಿರ ತಾರ್ಕಿಕ is_tagged_null (Stored *p)
+  { ಪ್ರತ್ಯಾಗಮ Funcs::tag_null && ((uintptr_t) (ಶೂನ್ಯ *) p & 1); }
+  ಸ್ಥಿರ Stored *tagged_null (Stored *p)
+  { ಪ್ರತ್ಯಾಗಮ Funcs::tag_null ? (Stored *) (ಶೂನ್ಯ *) ((uintptr_t) (ಶೂನ್ಯ *) p | 1) : p; }
+  ಸ್ಥಿರ Stored *untagged (Stored *p)
+  { ಪ್ರತ್ಯಾಗಮ Funcs::tag_null ? (Stored *) (ಶೂನ್ಯ *) ((uintptr_t) (ಶೂನ್ಯ *) p & ~(uintptr_t) 1) : p; }
+  ಸ್ಥಿರ Stored *create (Data *data)
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored (data);
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, ಪರಿಮಾಣ (Stored));
+    ಯದಿ (likely (p))
+      p = ನೂತನ (p) Stored (data);
+    ಪ್ರತ್ಯಾಗಮ p;
   }
-  static Stored *create ()
+  ಸ್ಥಿರ Stored *create ()
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored ();
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, ಪರಿಮಾಣ (Stored));
+    ಯದಿ (likely (p))
+      p = ನೂತನ (p) Stored ();
+    ಪ್ರತ್ಯಾಗಮ p;
   }
-  static void destroy (Stored *p)
+  ಸ್ಥಿರ ಶೂನ್ಯ destroy (Stored *p)
   {
     p->~Stored ();
     hb_free (p);
   }
 
-  private:
+  ಗುಪ್ತ:
   /* Must only have one pointer. */
   mutable hb_atomic_t<Stored *> instance;
 };
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
-struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned ಪೂರ್ಣಾಙ್ಕ WheresFace>
+ಸಂರಚನಾ hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
 {
   /* get_null () is this library's Null object; see tag_null. */
-  static constexpr bool tag_null = true;
+  ಸ್ಥಿರ constexpr ತಾರ್ಕಿಕ tag_null = ಸತ್ಯ;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { ಪ್ರತ್ಯಾಗಮ ಏತತ್->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
-struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned ಪೂರ್ಣಾಙ್ಕ WheresFace>
+ಸಂರಚನಾ hb_table_lazy_loader_t : hb_lazy_loader_t<T,
 						 hb_table_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
 						 hb_blob_t>
 {
-  static hb_blob_t *create (hb_face_t *face)
+  ಸ್ಥಿರ hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    ಪ್ರತ್ಯಾಗಮ c.reference_table<T> (face);
   }
-  static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
+  ಸ್ಥಿರ ಶೂನ್ಯ destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
-  static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  ಸ್ಥಿರ ಧ್ರುವ hb_blob_t *get_null ()
+  { ಪ್ರತ್ಯಾಗಮ hb_blob_get_empty (); }
 
-  static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  ಸ್ಥಿರ ಧ್ರುವ T* convert (ಧ್ರುವ hb_blob_t *blob)
+  { ಪ್ರತ್ಯಾಗಮ blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ ಏತತ್->get_stored (); }
 };
 
 #define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
   template <typename Subclass> \
-  struct hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
+  ಸಂರಚನಾ hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
   { \
-    static void destroy (hb_##Type##_funcs_t *p) \
+    ಸ್ಥಿರ ಶೂನ್ಯ destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
-    static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    ಸ್ಥಿರ ಧ್ರುವ hb_##Type##_funcs_t *get_null () \
+    { ಪ್ರತ್ಯಾಗಮ hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);

@@ -26,12 +26,12 @@
 #ifndef HB_SUBSET_SERIALIZE_H
 #define HB_SUBSET_SERIALIZE_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ಯದಿ !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 // Disabled to not break pre-existing users.
 //#error "Include <hb-subset.h> instead."
 #endif
 
-#include "hb.h"
+#ಅನ್ತರ್ಭಾವ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -47,10 +47,10 @@ HB_BEGIN_DECLS
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_link_t {
-  unsigned int width;
-  unsigned int position;
-  unsigned int objidx;
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_subset_serialize_link_t {
+  unsigned ಪೂರ್ಣಾಙ್ಕ width;
+  unsigned ಪೂರ್ಣಾಙ್ಕ position;
+  unsigned ಪೂರ್ಣಾಙ್ಕ objidx;
 } hb_subset_serialize_link_t;
 
 /**
@@ -68,19 +68,19 @@ typedef struct hb_subset_serialize_link_t {
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_object_t {
-  char *head;
-  char *tail;
-  unsigned int num_real_links;
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_subset_serialize_object_t {
+  ವರ್ಣ *head;
+  ವರ್ಣ *tail;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 
 HB_EXTERN hb_blob_t *
 hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs);
+                             unsigned                      ಅಂಕೆ_hb_objs);
 
 
 HB_END_DECLS

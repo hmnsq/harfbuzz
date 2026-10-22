@@ -28,11 +28,11 @@
 #define HB_SUBSET_H
 #define HB_SUBSET_H_IN
 
-#include "hb.h"
-#include "hb-ot.h"
-#include "hb-subset-serialize.h"
-#include "hb-subset-depend.h"
-#include "hb-subset-serialize.h"
+#ಅನ್ತರ್ಭಾವ "hb.h"
+#ಅನ್ತರ್ಭಾವ "hb-ot.h"
+#ಅನ್ತರ್ಭಾವ "hb-subset-serialize.h"
+#ಅನ್ತರ್ಭಾವ "hb-subset-depend.h"
+#ಅನ್ತರ್ಭಾವ "hb-subset-serialize.h"
 
 #undef HB_SUBSET_H_IN
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_subset_ಒಳಹರಿವು_t hb_subset_ಒಳಹರಿವು_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,7 +101,7 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+ಪ್ರಕಾರನಿರ್ದೇಶ ಗಣನಾ { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
@@ -117,7 +117,7 @@ typedef enum { /*< flags >*/
   HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
 #ifdef HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
+  HB_SUBSET_FLAGS_RETAIN_ಅಂಕೆ_GLYPHS  =  0x00002000u,
 #endif
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
   HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
@@ -142,7 +142,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
+ಪ್ರಕಾರನಿರ್ದೇಶ ಗಣನಾ {
   HB_SUBSET_SETS_GLYPH_INDEX = 0,
   HB_SUBSET_SETS_UNICODE,
   HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
@@ -153,102 +153,102 @@ typedef enum {
   HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_ಒಳಹರಿವು_t *
+hb_subset_ಒಳಹರಿವು_create_or_fail (ಶೂನ್ಯ);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_ಒಳಹರಿವು_t *
+hb_subset_ಒಳಹರಿವು_reference (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
-HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_destroy (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_ಒಳಹರಿವು_set_user_data (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
+			       hb_user_data_ಕೀಲಿ_t *ಕೀಲಿ_2,
+			       ಶೂನ್ಯ *		   data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
-HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+HB_EXTERN ಶೂನ್ಯ *
+hb_subset_ಒಳಹರಿವು_get_user_data (ಧ್ರುವ hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
+			       hb_user_data_ಕೀಲಿ_t      *ಕೀಲಿ_2);
 
-HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
-
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_keep_everything (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+hb_subset_ಒಳಹರಿವು_unicode_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+hb_subset_ಒಳಹರಿವು_glyph_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
+
+HB_EXTERN hb_set_t *
+hb_subset_ಒಳಹರಿವು_set (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು, hb_subset_sets_t set_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_ಒಳಹರಿವು_old_to_new_glyph_mapping (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_ಒಳಹರಿವು_get_flags (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_ಒಳಹರಿವು_set_flags (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
+			   unsigned ಮೌಲ್ಯ_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_all_axes_to_default (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_axis_to_default (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				     hb_face_t          *face,
 				     hb_tag_t            axis_tag);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_pin_axis_location (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				   hb_face_t          *face,
 				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   ಭಿನ್ನ               axis_ಮೌಲ್ಯ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_get_axis_range (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+				ಭಿನ್ನ              *axis_min_ಮೌಲ್ಯ,
+				ಭಿನ್ನ              *axis_max_ಮೌಲ್ಯ,
+				ಭಿನ್ನ              *axis_def_ಮೌಲ್ಯ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_set_axis_range (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				hb_face_t          *face,
 				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				ಭಿನ್ನ               axis_min_ಮೌಲ್ಯ,
+				ಭಿನ್ನ               axis_max_ಮೌಲ್ಯ,
+				ಭಿನ್ನ               axis_def_ಮೌಲ್ಯ);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+hb_subset_axis_range_from_string (ಧ್ರುವ ವರ್ಣ *str, ಪೂರ್ಣಾಙ್ಕ len,
+				  ಭಿನ್ನ *axis_min_ಮೌಲ್ಯ,
+				  ಭಿನ್ನ *axis_max_ಮೌಲ್ಯ,
+				  ಭಿನ್ನ *axis_def_ಮೌಲ್ಯ);
 
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
+HB_EXTERN ಶೂನ್ಯ
+hb_subset_axis_range_to_string (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು,
 				hb_tag_t axis_tag,
-				char *buf,
+				ವರ್ಣ *buf,
 				unsigned size);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_ಒಳಹರಿವು_to_string_or_fail (hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_ಒಳಹರಿವು_override_name_table (hb_subset_ಒಳಹರಿವು_t  *ಒಳಹರಿವು,
 				     hb_ot_name_id_t     name_id,
 				     unsigned            platform_id,
 				     unsigned            encoding_id,
 				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     ಧ್ರುವ ವರ್ಣ         *name_str,
+				     ಪೂರ್ಣಾಙ್ಕ                 str_len);
 
 
 /*
@@ -272,26 +272,26 @@ HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *source, ಧ್ರುವ hb_subset_ಒಳಹರಿವು_t *ಒಳಹರಿವು);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               ಧ್ರುವ hb_subset_ಒಳಹರಿವು_t   *ಒಳಹರಿವು);
 
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_to_new_glyph_mapping (ಧ್ರುವ hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_to_old_glyph_mapping (ಧ್ರುವ hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_to_old_glyph_mapping (ಧ್ರುವ hb_subset_plan_t *plan);
 
 
 HB_EXTERN hb_subset_plan_t *
@@ -299,22 +299,22 @@ hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
 hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+                              hb_user_data_ಕೀಲಿ_t *ಕೀಲಿ_2,
+                              ಶೂನ್ಯ               *data,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
-HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+HB_EXTERN ಶೂನ್ಯ *
+hb_subset_plan_get_user_data (ಧ್ರುವ hb_subset_plan_t *plan,
+                              hb_user_data_ಕೀಲಿ_t     *ಕೀಲಿ_2);
 
 
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ಯದಿ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_ಒಳಹರಿವು, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
 #endif

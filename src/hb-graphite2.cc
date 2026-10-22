@@ -26,17 +26,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifdef HAVE_GRAPHITE2
 
-#include "hb-shaper-impl.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper-impl.hh"
 
-#include "hb-graphite2.h"
+#ಅನ್ತರ್ಭಾವ "hb-graphite2.h"
 
-#include <graphite2/Segment.h>
+#ಅನ್ತರ್ಭಾವ <graphite2/Segment.h>
 
-#include "hb-ot-layout.h"
+#ಅನ್ತರ್ಭಾವ "hb-ot-layout.h"
 
 
 /**
@@ -57,41 +57,41 @@
  * shaper face data
  */
 
-typedef struct hb_graphite2_tablelist_t
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ hb_graphite2_tablelist_t
 {
-  struct hb_graphite2_tablelist_t *next;
+  ಸಂರಚನಾ hb_graphite2_tablelist_t *next;
   hb_blob_t *blob;
-  unsigned int tag;
+  unsigned ಪೂರ್ಣಾಙ್ಕ tag;
 } hb_graphite2_tablelist_t;
 
-struct hb_graphite2_face_data_t
+ಸಂರಚನಾ hb_graphite2_face_data_t
 {
   hb_face_t *face;
   gr_face   *grface;
   hb_atomic_t<hb_graphite2_tablelist_t *> tlist;
 };
 
-static const void *hb_graphite2_get_table (const void *data, unsigned int tag, size_t *len)
+ಸ್ಥಿರ ಧ್ರುವ ಶೂನ್ಯ *hb_graphite2_get_table (ಧ್ರುವ ಶೂನ್ಯ *data, unsigned ಪೂರ್ಣಾಙ್ಕ tag, size_t *len)
 {
   hb_graphite2_face_data_t *face_data = (hb_graphite2_face_data_t *) data;
   hb_graphite2_tablelist_t *tlist = face_data->tlist;
 
   hb_blob_t *blob = nullptr;
 
-  for (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
-    if (p->tag == tag) {
+  ಪ್ರತಿ (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
+    ಯದಿ (p->tag == tag) {
       blob = p->blob;
-      break;
+      ಭಙ್ಗ;
     }
 
-  if (unlikely (!blob))
+  ಯದಿ (unlikely (!blob))
   {
     blob = face_data->face->reference_table (tag);
 
-    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, sizeof (hb_graphite2_tablelist_t));
-    if (unlikely (!p)) {
+    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, ಪರಿಮಾಣ (hb_graphite2_tablelist_t));
+    ಯದಿ (unlikely (!p)) {
       hb_blob_destroy (blob);
-      return nullptr;
+      ಪ್ರತ್ಯಾಗಮ nullptr;
     }
     p->blob = blob;
     p->tag = tag;
@@ -100,14 +100,14 @@ retry:
     hb_graphite2_tablelist_t *tlist = face_data->tlist;
     p->next = tlist;
 
-    if (unlikely (!face_data->tlist.cmpexch (tlist, p)))
-      goto retry;
+    ಯದಿ (unlikely (!face_data->tlist.cmpexch (tlist, p)))
+      ಗಚ್ಛ retry;
   }
 
-  unsigned int tlen;
-  const char *d = hb_blob_get_data (blob, &tlen);
+  unsigned ಪೂರ್ಣಾಙ್ಕ tlen;
+  ಧ್ರುವ ವರ್ಣ *d = hb_blob_get_data (blob, &tlen);
   *len = tlen;
-  return d;
+  ಪ್ರತ್ಯಾಗಮ d;
 }
 
 hb_graphite2_face_data_t *
@@ -116,33 +116,33 @@ _hb_graphite2_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> silf_blob (face->reference_table (HB_GRAPHITE2_TAG_SILF));
   /* Umm, we just reference the table to check whether it exists.
    * Maybe add better API for this? */
-  if (!hb_blob_get_length (silf_blob))
-    return nullptr;
+  ಯದಿ (!hb_blob_get_length (silf_blob))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
-  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, sizeof (hb_graphite2_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, ಪರಿಮಾಣ (hb_graphite2_face_data_t));
+  ಯದಿ (unlikely (!data))
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   data->face = face;
-  const gr_face_ops ops = {sizeof(gr_face_ops), &hb_graphite2_get_table, NULL};
+  ಧ್ರುವ gr_face_ops ops = {ಪರಿಮಾಣ(gr_face_ops), &hb_graphite2_get_table, ರಿಕ್ತ};
   data->grface = gr_make_face_with_ops (data, &ops, gr_face_preloadAll);
 
-  if (unlikely (!data->grface)) {
+  ಯದಿ (unlikely (!data->grface)) {
     /* data->tlist has already been populated by the callback,
      * so everything needs to be destroyed */
     _hb_graphite2_shaper_face_data_destroy (data);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  return data;
+  ಪ್ರತ್ಯಾಗಮ data;
 }
 
-void
+ಶೂನ್ಯ
 _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 {
   hb_graphite2_tablelist_t *tlist = data->tlist;
 
-  while (tlist)
+  ಯಾವತ್ (tlist)
   {
     hb_graphite2_tablelist_t *old = tlist;
     hb_blob_destroy (tlist->blob);
@@ -169,8 +169,8 @@ _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face)
 {
-  const hb_graphite2_face_data_t *data = face->data.graphite2;
-  return data ? data->grface : nullptr;
+  ಧ್ರುವ hb_graphite2_face_data_t *data = face->data.graphite2;
+  ಪ್ರತ್ಯಾಗಮ data ? data->grface : nullptr;
 }
 
 
@@ -178,15 +178,15 @@ hb_graphite2_face_get_gr_face (hb_face_t *face)
  * shaper font data
  */
 
-struct hb_graphite2_font_data_t {};
+ಸಂರಚನಾ hb_graphite2_font_data_t {};
 
 hb_graphite2_font_data_t *
 _hb_graphite2_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ಪ್ರತ್ಯಾಗಮ (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+ಶೂನ್ಯ
 _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED)
 {
 }
@@ -206,7 +206,7 @@ _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED
 gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 {
-  return nullptr;
+  ಪ್ರತ್ಯಾಗಮ nullptr;
 }
 #endif
 
@@ -215,40 +215,40 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
  * shaper
  */
 
-struct hb_graphite2_cluster_t {
-  unsigned int base_char;
-  unsigned int num_chars;
-  unsigned int base_glyph;
-  unsigned int num_glyphs;
-  unsigned int cluster;
+ಸಂರಚನಾ hb_graphite2_cluster_t {
+  unsigned ಪೂರ್ಣಾಙ್ಕ base_char;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_chars;
+  unsigned ಪೂರ್ಣಾಙ್ಕ base_glyph;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs;
+  unsigned ಪೂರ್ಣಾಙ್ಕ cluster;
   hb_position_t advance;
 };
 
-struct hb_graphite2_glyph_t {
+ಸಂರಚನಾ hb_graphite2_glyph_t {
   hb_codepoint_t codepoint;
-  unsigned int cluster;
+  unsigned ಪೂರ್ಣಾಙ್ಕ cluster;
 };
 
 hb_bool_t
 _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
-		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     ಧ್ರುವ hb_feature_t *features,
+		     unsigned ಪೂರ್ಣಾಙ್ಕ        ಅಂಕೆ_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
 
-  const char *lang = hb_language_to_string (hb_buffer_get_language (buffer));
-  const char *lang_end = lang ? strchr (lang, '-') : nullptr;
-  int lang_len = lang_end ? lang_end - lang : -1;
+  ಧ್ರುವ ವರ್ಣ *lang = hb_language_to_string (hb_buffer_get_language (buffer));
+  ಧ್ರುವ ವರ್ಣ *lang_end = lang ? strchr (lang, '-') : nullptr;
+  ಪೂರ್ಣಾಙ್ಕ lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಅಂಕೆ_features; i++)
   {
-    const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
-    if (fref)
-      gr_fref_set_feature_value (fref, features[i].value, feats);
+    ಧ್ರುವ gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
+    ಯದಿ (fref)
+      gr_fref_set_feature_ಮೌಲ್ಯ (fref, features[i].value, feats);
   }
 
   hb_direction_t direction = buffer->props.direction;
@@ -257,7 +257,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  ಯದಿ ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != HB_DIRECTION_INVALID) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -267,16 +267,16 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   }
 
   gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  ಧ್ರುವ gr_slot *is;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ci = 0, ic = 0;
   hb_position_t curradvx = 0, curradvy = 0;
 
-  unsigned int scratch_size;
+  unsigned ಪೂರ್ಣಾಙ್ಕ scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
   uint32_t *chars = (uint32_t *) scratch;
 
-  for (unsigned int i = 0; i < buffer->len; ++i)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < buffer->len; ++i)
     chars[i] = buffer->info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -285,104 +285,104 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     gr_utf32, chars, buffer->len,
 		     2 | (direction == HB_DIRECTION_RTL ? 1 : 0));
 
-  if (unlikely (!seg)) {
-    if (feats) gr_featureval_destroy (feats);
-    return false;
+  ಯದಿ (unlikely (!seg)) {
+    ಯದಿ (feats) gr_featureval_destroy (feats);
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
-    if (feats) gr_featureval_destroy (feats);
+  unsigned ಪೂರ್ಣಾಙ್ಕ glyph_ಎಣಿಕೆ = gr_seg_n_slots (seg);
+  ಯದಿ (unlikely (!glyph_ಎಣಿಕೆ)) {
+    ಯದಿ (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  (void) buffer->ensure (glyph_count);
+  (ಶೂನ್ಯ) buffer->ensure (glyph_ಎಣಿಕೆ);
   scratch = buffer->get_scratch_buffer (&scratch_size);
-  while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
-	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
+  ಯಾವತ್ ((DIV_CEIL (ಪರಿಮಾಣ (hb_graphite2_cluster_t) * buffer->len, ಪರಿಮಾಣ (*scratch)) +
+	  DIV_CEIL (ಪರಿಮಾಣ (hb_graphite2_glyph_t) * glyph_ಎಣಿಕೆ, ಪರಿಮಾಣ (*scratch))) > scratch_size)
   {
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    ಯದಿ (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
-      if (feats) gr_featureval_destroy (feats);
+      ಯದಿ (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
     scratch = buffer->get_scratch_buffer (&scratch_size);
   }
 
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
-  do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    assert (_consumed <= scratch_size); \
+  ಕುರು { \
+    unsigned ಪೂರ್ಣಾಙ್ಕ _consumed = DIV_CEIL ((len) * ಪರಿಮಾಣ (Type), ಪರಿಮಾಣ (*scratch)); \
+    ಪ್ರತಿಜ್ಞಾ (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } ಯಾವತ್ (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
-  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
+  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_ಎಣಿಕೆ);
 
 #undef ALLOCATE_ARRAY
 
-  hb_memset (clusters, 0, sizeof (clusters[0]) * buffer->len);
+  hb_memset (clusters, 0, ಪರಿಮಾಣ (clusters[0]) * buffer->len);
 
   hb_graphite2_glyph_t *pg = glyphs;
   clusters[0].cluster = buffer->info[0].cluster;
-  unsigned int upem = hb_face_get_upem (face);
-  float xscale = (float) font->x_scale / upem;
-  float yscale = (float) font->y_scale / upem;
+  unsigned ಪೂರ್ಣಾಙ್ಕ upem = hb_face_get_upem (face);
+  ಭಿನ್ನ xscale = (ಭಿನ್ನ) font->x_scale / upem;
+  ಭಿನ್ನ yscale = (ಭಿನ್ನ) font->y_scale / upem;
   yscale *= yscale / xscale;
   hb_position_t curradv = 0;
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  ಯದಿ (HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradv = hb_clamp_to<hb_position_t> (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = hb_clamp_to<hb_position_t> ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  ಅನ್ಯಥಾ
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  ಪ್ರತಿ (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    int slot_before = gr_slot_before (is);
-    int slot_after = gr_slot_after (is);
-    if (unlikely (slot_before < 0 ||
+    ಪೂರ್ಣಾಙ್ಕ slot_before = gr_slot_before (is);
+    ಪೂರ್ಣಾಙ್ಕ slot_after = gr_slot_after (is);
+    ಯದಿ (unlikely (slot_before < 0 ||
 		  slot_after < slot_before ||
-		  (unsigned int) slot_after >= buffer->len))
+		  (unsigned ಪೂರ್ಣಾಙ್ಕ) slot_after >= buffer->len))
     {
-      if (feats) gr_featureval_destroy (feats);
+      ಯದಿ (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
-    unsigned int before = (unsigned int) slot_before;
-    unsigned int after = (unsigned int) slot_after;
+    unsigned ಪೂರ್ಣಾಙ್ಕ before = (unsigned ಪೂರ್ಣಾಙ್ಕ) slot_before;
+    unsigned ಪೂರ್ಣಾಙ್ಕ after = (unsigned ಪೂರ್ಣಾಙ್ಕ) slot_after;
     pg->codepoint = gr_slot_gid (is);
     pg->cluster = hb_min (buffer->info[before].cluster,
 			  buffer->info[after].cluster);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    ಯಾವತ್ (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].ಅಂಕೆ_chars += clusters[ci].ಅಂಕೆ_chars;
+      clusters[ci-1].ಅಂಕೆ_glyphs += clusters[ci].ಅಂಕೆ_glyphs;
       clusters[ci-1].advance = hb_saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    ಯದಿ (gr_slot_can_ಸೇರಿಸು_before (is) && clusters[ci].ಅಂಕೆ_chars && before >= clusters[ci].base_char + clusters[ci].ಅಂಕೆ_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].ಅಂಕೆ_chars;
       c->cluster = buffer->info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->ಅಂಕೆ_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (HB_DIRECTION_IS_BACKWARD (direction))
+      c->ಅಂಕೆ_glyphs = 0;
+      ಯದಿ (HB_DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
-						   (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) curradv -
+						   (ದ್ವಿಗುಣ) (gr_slot_origin_X(is) * xscale));
 	curradv = hb_saturate_sub (curradv, c->advance);
       }
-      else
+      ಅನ್ಯಥಾ
       {
 	hb_position_t origin_X = hb_clamp_to<hb_position_t> (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -392,22 +392,22 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].ಅಂಕೆ_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    ಯದಿ (clusters[ci].base_char + clusters[ci].ಅಂಕೆ_chars < after + 1)
+	clusters[ci].ಅಂಕೆ_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  ಯದಿ (HB_DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = hb_saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = hb_clamp_to<hb_position_t> ((double) clusters[ci].advance +
-							       (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  ಅನ್ಯಥಾ
+    clusters[ci].advance = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) clusters[ci].advance +
+							       (ದ್ವಿಗುಣ) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ j = 0; j < clusters[i].ಅಂಕೆ_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -418,63 +418,63 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       info->var2.u32 = i;                       // Graphite cluster index
     }
   }
-  buffer->len = glyph_count;
+  buffer->len = glyph_ಎಣಿಕೆ;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
-			    clusters[i].base_glyph + clusters[i].num_glyphs);
+			    clusters[i].base_glyph + clusters[i].ಅಂಕೆ_glyphs);
 
   /* Positioning. */
-  unsigned int curr_gr_cluster = UINT_MAX;
-  const hb_glyph_info_t *info = buffer->info;
+  unsigned ಪೂರ್ಣಾಙ್ಕ curr_gr_cluster = UINT_MAX;
+  ಧ್ರುವ hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pPos = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (!HB_DIRECTION_IS_BACKWARD (direction))
+  ಯದಿ (!HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    ಪ್ರತಿ (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->var2.u32 != curr_gr_cluster) {
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      ಯದಿ (info->var2.u32 != curr_gr_cluster) {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_add (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } ಅನ್ಯಥಾ
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_add (curradvy, pPos->y_advance);
     }
   }
-  else
+  ಅನ್ಯಥಾ
   {
     curradvx = hb_clamp_to<hb_position_t> (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    ಪ್ರತಿ (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->var2.u32 != curr_gr_cluster)
+      ಯದಿ (info->var2.u32 != curr_gr_cluster)
       {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_sub (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } ಅನ್ಯಥಾ
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) -
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) (gr_slot_origin_X (is) * xscale) -
 							  info->var1.i32 - curradvx + pPos->x_advance);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     hb_buffer_reverse_clusters (buffer);
   }
 
-  if (feats) gr_featureval_destroy (feats);
+  ಯದಿ (feats) gr_featureval_destroy (feats);
   gr_seg_destroy (seg);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 

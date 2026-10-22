@@ -24,13 +24,13 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-os2-unicode-ranges.hh"
 
-static void
-test (hb_codepoint_t cp, unsigned int bit)
+ಸ್ಥಿರ ಶೂನ್ಯ
+test (hb_codepoint_t cp, unsigned ಪೂರ್ಣಾಙ್ಕ bit)
 {
-  if (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
+  ಯದಿ (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
   {
     fprintf (stderr, "got incorrect bit (%u) for cp 0x%X. Should have been %u.",
 	     OT::_hb_ot_os2_get_unicode_range_bit (cp),
@@ -40,7 +40,7 @@ test (hb_codepoint_t cp, unsigned int bit)
   }
 }
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 test_get_unicode_range_bit ()
 {
   test (0x0000, 0);
@@ -58,9 +58,9 @@ test_get_unicode_range_bit ()
   test (0x110000, -1);
 }
 
-int
+ಪೂರ್ಣಾಙ್ಕ
 main ()
 {
   test_get_unicode_range_bit ();
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

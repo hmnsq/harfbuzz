@@ -23,12 +23,12 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-geometry.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-geometry.hh"
 
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc HB_UNUSED, ವರ್ಣ **argv HB_UNUSED)
 {
   {
     hb_extents_t<> extents (-0x1p31f, 0.f, 427.f, 1.f);
@@ -47,13 +47,13 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
       1,
       -3
     };
-    hb_extents_t<double> extents (glyph_extents);
+    hb_extents_t<ದ್ವಿಗುಣ> extents (glyph_extents);
 
-    hb_always_assert (extents.xmin == (double) hb_int_max (hb_position_t));
-    hb_always_assert (extents.xmax == (double) hb_int_max (hb_position_t) + 1);
+    hb_always_assert (extents.xmin == (ದ್ವಿಗುಣ) hb_int_max (hb_position_t));
+    hb_always_assert (extents.xmax == (ದ್ವಿಗುಣ) hb_int_max (hb_position_t) + 1);
     hb_always_assert (extents.ymin == 4);
     hb_always_assert (extents.ymax == 7);
   }
 
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

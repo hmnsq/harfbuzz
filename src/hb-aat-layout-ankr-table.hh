@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LAYOUT_ANKR_TABLE_HH
 #define HB_AAT_LAYOUT_ANKR_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
+#ಅನ್ತರ್ಭಾವ "hb-aat-layout-common.hh"
 
 /*
  * ankr -- Anchor Point
@@ -34,54 +34,54 @@
 #define HB_AAT_TAG_ankr HB_TAG('a','n','k','r')
 
 
-namespace AAT {
+ನಾಮಾಕಾಶ AAT {
 
-using namespace OT;
+using ನಾಮಾಕಾಶ OT;
 
 
-struct Anchor
+ಸಂರಚನಾ Anchor
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   FWORD		xCoordinate;
   FWORD		yCoordinate;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4);
 };
 
-typedef Array32Of<Anchor> GlyphAnchors;
+ಪ್ರಕಾರನಿರ್ದೇಶ Array32Of<Anchor> GlyphAnchors;
 
-struct ankr
+ಸಂರಚನಾ ankr
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
 
-  const Anchor &get_anchor (hb_codepoint_t glyph_id,
-			    unsigned int i,
-			    unsigned int num_glyphs) const
+  ಧ್ರುವ Anchor &get_anchor (hb_codepoint_t glyph_id,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ i,
+			    unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_glyphs) ಧ್ರುವ
   {
-    const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
-    if (!offset)
-      return Null (Anchor);
-    const GlyphAnchors &anchors = &(this+anchorData) + *offset;
-    return anchors[i];
+    ಧ್ರುವ NNOffset16To<GlyphAnchors> *offset = (ಏತತ್+lookupTable).get_ಮೌಲ್ಯ (glyph_id, ಅಂಕೆ_glyphs);
+    ಯದಿ (!offset)
+      ಪ್ರತ್ಯಾಗಮ Null (Anchor);
+    ಧ್ರುವ GlyphAnchors &anchors = &(ಏತತ್+anchorData) + *offset;
+    ಪ್ರತ್ಯಾಗಮ anchors[i];
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  hb_barrier () &&
 			  version == 0 &&
-			  c->check_range (this, anchorData) &&
-			  lookupTable.sanitize (c, this, &(this+anchorData))));
+			  c->check_range (ಏತತ್, anchorData) &&
+			  lookupTable.sanitize (c, ಏತತ್, &(ಏತತ್+anchorData))));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	version;	/* Version number (set to zero) */
   HBUINT16	flags;		/* Flags (currently unused; set to zero) */
   Offset32To<Lookup<NNOffset16To<GlyphAnchors>>>
@@ -89,7 +89,7 @@ struct ankr
   NNOffset32To<HBUINT8>
 		anchorData;	/* Offset to the glyph data table */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (12);
 };
 

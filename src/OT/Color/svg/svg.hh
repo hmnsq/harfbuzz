@@ -25,14 +25,14 @@
 #ifndef OT_COLOR_SVG_SVG_HH
 #define OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#ಅನ್ತರ್ಭಾವ "../../../hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-blob.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-limits.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-map.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-paint.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-zlib.hh"
+#ಅನ್ತರ್ಭಾವ <ctype.h>
+#ಅನ್ತರ್ಭಾವ <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
@@ -42,80 +42,80 @@
 #define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
 
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
 
-static inline hb_blob_t *
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
+                                     ಧ್ರುವ ವರ್ಣ **svg,
                                      unsigned *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
   unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  ಧ್ರುವ ವರ್ಣ *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
-    goto fail;
+  ಯದಿ (!data || !data_len)
+    ಗಚ್ಛ fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  ಯದಿ (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+    ಯದಿ (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
         unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+      ಗಚ್ಛ fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+    ಯದಿ (!uncompressed)
+      ಗಚ್ಛ fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    ಯದಿ (!data || !data_len)
+      ಗಚ್ಛ fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  ಯದಿ (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
+    ಗಚ್ಛ fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  ಯದಿ (svg) *svg = data;
+  ಯದಿ (len) *len = data_len;
+  ಪ್ರತ್ಯಾಗಮ blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  ಯದಿ (svg) *svg = nullptr;
+  ಯದಿ (len) *len = 0;
+  ಪ್ರತ್ಯಾಗಮ nullptr;
 }
 
-struct SVGDocumentIndexEntry
+ಸಂರಚನಾ SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_codepoint_t g) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_start_glyph () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ startGlyphID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_end_glyph () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned ಪೂರ್ಣಾಙ್ಕ index_offset) ಧ್ರುವ
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    ಪ್ರತ್ಯಾಗಮ hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (unsigned ಪೂರ್ಣಾಙ್ಕ) svgDoc,
 				    svgDocLength);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
 		  hb_barrier () &&
 		  svgDoc.sanitize (c, base, svgDocLength));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
 				 * this index entry. */
   HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
@@ -125,44 +125,44 @@ struct SVGDocumentIndexEntry
 				 * to an SVG document. Must be non-zero. */
   HBUINT32	svgDocLength;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct SVG
+ಸಂರಚನಾ SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
 
-  struct svg_id_span_t
+  ಸಂರಚನಾ svg_id_span_t
   {
-    const char *p;
+    ಧ್ರುವ ವರ್ಣ *p;
     unsigned len;
 
-    bool operator == (const svg_id_span_t &o) const
+    ತಾರ್ಕಿಕ operator == (ಧ್ರುವ svg_id_span_t &o) ಧ್ರುವ
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      ಪ್ರತ್ಯಾಗಮ len == o.len && !memcmp (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () ಧ್ರುವ
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      ಪ್ರತಿ (unsigned i = 0; i < len; i++)
+        h = h * 33u + (unsigned ವರ್ಣ) p[i];
+      ಪ್ರತ್ಯಾಗಮ h;
     }
   };
 
-  struct svg_defs_entry_t
+  ಸಂರಚನಾ svg_defs_entry_t
   {
     svg_id_span_t id;
     unsigned start;
     unsigned end;
   };
 
-  struct svg_doc_cache_t
+  ಸಂರಚನಾ svg_doc_cache_t
   {
     hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
+    ಧ್ರುವ ವರ್ಣ *svg = nullptr;
     unsigned len = 0;
     hb_vector_t<svg_defs_entry_t> defs_entries;
     hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
@@ -171,76 +171,76 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ svgDocEntries; }
 
-  struct accelerator_t
+  ಸಂರಚನಾ accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) ಧ್ರುವ
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      ಪ್ರತ್ಯಾಗಮ table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    unsigned get_document_ಎಣಿಕೆ () ಧ್ರುವ
+    { ಪ್ರತ್ಯಾಗಮ table->get_document_ಎಣಿಕೆ (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    ತಾರ್ಕಿಕ get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) ಧ್ರುವ
+    { ಪ್ರತ್ಯಾಗಮ table->get_glyph_document_index (glyph_id, index); }
 
-    bool get_document_glyph_range (unsigned index,
+    ತಾರ್ಕಿಕ get_document_glyph_range (unsigned index,
                                    hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+                                   hb_codepoint_t *end_glyph) ಧ್ರುವ
+    { ಪ್ರತ್ಯಾಗಮ table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ table->has_data (); }
 
-    const svg_doc_cache_t *
+    ಧ್ರುವ svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
+                             ಧ್ರುವ ವರ್ಣ *svg,
                              unsigned len,
                              unsigned doc_index,
                              hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             hb_codepoint_t end_glyph) ಧ್ರುವ;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    ಧ್ರುವ ವರ್ಣ *
+    doc_cache_get_svg (ಧ್ರುವ svg_doc_cache_t *doc,
+                       unsigned *len) ಧ್ರುವ;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    ಧ್ರುವ hb_vector_t<svg_defs_entry_t> *
+    doc_cache_get_defs_entries (ಧ್ರುವ svg_doc_cache_t *doc) ಧ್ರುವ;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    ತಾರ್ಕಿಕ
+    doc_cache_get_glyph_span (ಧ್ರುವ svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
                               unsigned *start,
-                              unsigned *end) const;
+                              unsigned *end) ಧ್ರುವ;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
+    ತಾರ್ಕಿಕ
+    doc_cache_find_id_span (ಧ್ರುವ svg_doc_cache_t *doc,
                             svg_id_span_t id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) ಧ್ರುವ;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
+    ತಾರ್ಕಿಕ
+    doc_cache_find_id_cstr (ಧ್ರುವ svg_doc_cache_t *doc,
+                            ಧ್ರುವ ವರ್ಣ *id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) ಧ್ರುವ;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    ತಾರ್ಕಿಕ paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, ಶೂನ್ಯ *data) ಧ್ರುವ
     {
-      if (!has_data ())
-        return false;
+      ಯದಿ (!has_data ())
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      ಯದಿ (blob == hb_blob_get_empty ())
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-      bool ret = funcs->image (data,
+      ತಾರ್ಕಿಕ ret = funcs->image (data,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
@@ -249,282 +249,282 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      ಪ್ರತ್ಯಾಗಮ ret;
     }
 
-    private:
+    ಗುಪ್ತ:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
+                    ಧ್ರುವ ವರ್ಣ *svg,
                     unsigned len,
                     hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    hb_codepoint_t end_glyph) ಧ್ರುವ;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    ಸ್ಥಿರ ಶೂನ್ಯ destroy_doc_cache (svg_doc_cache_t *doc);
 
     hb_blob_ptr_t<SVG> table;
     mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    ಸಾರ್ವಜನಿಕ:
+    DEFINE_SIZE_STATIC (ಪರಿಮಾಣ (hb_blob_ptr_t<SVG>) +
+                        ಪರಿಮಾಣ (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  ಧ್ರುವ SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ (ಏತತ್+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  unsigned get_document_ಎಣಿಕೆ () ಧ್ರುವ
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    ಯದಿ (!has_data ())
+      ಪ್ರತ್ಯಾಗಮ 0;
+    ಪ್ರತ್ಯಾಗಮ (ಏತತ್ + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  ತಾರ್ಕಿಕ get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) ಧ್ರುವ
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    ಯದಿ (!has_data ())
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+    ಪ್ರತ್ಯಾಗಮ (ಏತತ್ + svgDocEntries).bfind (glyph_id, index);
   }
 
-  bool get_document_glyph_range (unsigned index,
+  ತಾರ್ಕಿಕ get_document_glyph_range (unsigned index,
                                  hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+                                 hb_codepoint_t *end_glyph) ಧ್ರುವ
   {
-    if (!has_data ())
-      return false;
+    ಯದಿ (!has_data ())
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    ಧ್ರುವ auto &entries = ಏತತ್ + svgDocEntries;
+    ಯದಿ (index >= entries.len)
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    ಧ್ರುವ auto &entry = entries.arrayZ[index];
+    ಯದಿ (start_glyph) *start_glyph = entry.get_start_glyph ();
+    ಯದಿ (end_glyph) *end_glyph = entry.get_end_glyph ();
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  (ಏತತ್+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	version;	/* Table version (starting at 0). */
   Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+ನಾಮಾಕಾಶ _hb_svg_cache_impl {
 
-struct glyph_entry_t
+ಸಂರಚನಾ glyph_entry_t
 {
   hb_codepoint_t glyph;
   uint32_t start;
   uint32_t end;
 };
 
-struct id_entry_t
+ಸಂರಚನಾ id_entry_t
 {
   SVG::svg_id_span_t id;
   uint32_t start;
   uint32_t end;
 };
 
-struct open_elem_t
+ಸಂರಚನಾ open_elem_t
 {
   unsigned start;
   SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  ತಾರ್ಕಿಕ in_defs_content;
+  ತಾರ್ಕಿಕ is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+ಸ್ಥಿರ ಧ್ರುವ unsigned MAX_DEPTH = 128;
 
-static inline int
-find_substr (const char *s,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಪೂರ್ಣಾಙ್ಕ
+find_substr (ಧ್ರುವ ವರ್ಣ *s,
              unsigned n,
              unsigned from,
-             const char *needle,
+             ಧ್ರುವ ವರ್ಣ *needle,
              unsigned needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  ಯದಿ (!needle_len || from >= n || needle_len > n)
+    ಪ್ರತ್ಯಾಗಮ -1;
+  ಪ್ರತಿ (unsigned i = from; i + needle_len <= n; i++)
+    ಯದಿ (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      ಪ್ರತ್ಯಾಗಮ (ಪೂರ್ಣಾಙ್ಕ) i;
+  ಪ್ರತ್ಯಾಗಮ -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+parse_id_in_start_tag (ಧ್ರುವ ವರ್ಣ *svg,
                        unsigned tag_start,
                        unsigned tag_end,
                        SVG::svg_id_span_t *id)
 {
   unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  ಯಾವತ್ (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    ಯದಿ (!memcmp (svg + p, "id=\"", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      ಯಾವತ್ (e < tag_end && svg[e] != '"') e++;
+      ಯದಿ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    ಯದಿ (!memcmp (svg + p, "id='", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      ಯಾವತ್ (e < tag_end && svg[e] != '\'') e++;
+      ಯದಿ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       }
     }
     p++;
   }
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+parse_glyph_id_span (ಧ್ರುವ SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  ಯದಿ (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  ಪ್ರತಿ (unsigned i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    unsigned ವರ್ಣ c = (unsigned ವರ್ಣ) id.p[i];
+    ಯದಿ (c < '0' || c > '9')
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    ಯದಿ (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+parse_cache_entries_linear (ಧ್ರುವ ವರ್ಣ *svg,
                             unsigned len,
                             hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
                             hb_vector_t<id_entry_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
+  open_elem_t ರಾಶಿ[MAX_DEPTH] = {};
   unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  ಯದಿ (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   unsigned defs_depth = 0;
   unsigned i = 0;
-  while (i < len)
+  ಯಾವತ್ (i < len)
   {
-    if (svg[i] != '<')
+    ಯದಿ (svg[i] != '<')
     {
       i++;
-      continue;
+      ಅನುವರ್ತ;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    ಯದಿ (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
+      ಪೂರ್ಣಾಙ್ಕ cend = find_substr (svg, len, i + 4, "-->", 3);
+      ಯದಿ (cend < 0) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
       i = (unsigned) cend + 3;
-      continue;
+      ಅನುವರ್ತ;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    ಯದಿ (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
+      ಪೂರ್ಣಾಙ್ಕ cend = find_substr (svg, len, i + 9, "]]>", 3);
+      ಯದಿ (cend < 0) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
       i = (unsigned) cend + 3;
-      continue;
+      ಅನುವರ್ತ;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    ತಾರ್ಕಿಕ closing = (i + 1 < len && svg[i + 1] == '/');
+    ತಾರ್ಕಿಕ special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
     unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    ವರ್ಣ quote = 0;
+    ಯಾವತ್ (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      ವರ್ಣ c = svg[gt];
+      ಯದಿ (quote)
       {
-        if (c == quote) quote = 0;
+        ಯದಿ (c == quote) quote = 0;
       }
-      else
+      ಅನ್ಯಥಾ
       {
-        if (c == '"' || c == '\'')
+        ಯದಿ (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        ಅನ್ಯಥಾ ಯದಿ (c == '>')
+          ಭಙ್ಗ;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    ಯದಿ (gt >= len)
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    if (special)
+    ಯದಿ (special)
     {
       i = gt + 1;
-      continue;
+      ಅನುವರ್ತ;
     }
 
     unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
+    ಯಾವತ್ (p < gt && isspace ((unsigned ವರ್ಣ) svg[p])) p++;
+    ಧ್ರುವ ವರ್ಣ *name = svg + p;
     unsigned name_len = 0;
-    while (p + name_len < gt)
+    ಯಾವತ್ (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      unsigned ವರ್ಣ c = (unsigned ವರ್ಣ) name[name_len];
+      ಯದಿ (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        ಭಙ್ಗ;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    ತಾರ್ಕಿಕ is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    ಯದಿ (closing)
     {
-      if (!depth)
+      ಯದಿ (!depth)
       {
         i = gt + 1;
-        continue;
+        ಅನುವರ್ತ;
       }
 
-      open_elem_t e = stack[--depth];
+      open_elem_t e = ರಾಶಿ[--depth];
       unsigned end = gt + 1;
 
-      if (e.id.len)
+      ಯದಿ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ಯದಿ (unlikely (!id_entries->ತಳ್ಳು_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-        if (e.in_defs_content)
+        ಯದಿ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          ಯದಿ (unlikely (!defs_entries->ತಳ್ಳು_or_fail ()))
+            ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -532,26 +532,26 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ಯದಿ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ಯದಿ (unlikely (!glyph_spans->ತಳ್ಳು_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      ಯದಿ (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
-      continue;
+      ಅನುವರ್ತ;
     }
 
     SVG::svg_id_span_t id = {};
     parse_id_in_start_tag (svg, i, gt, &id);
 
     unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    ಯಾವತ್ (r > i && isspace ((unsigned ವರ್ಣ) svg[r - 1])) r--;
+    ತಾರ್ಕಿಕ self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
     e.start = i;
@@ -559,18 +559,18 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    ಯದಿ (self_closing)
     {
       unsigned end = gt + 1;
-      if (e.id.len)
+      ಯದಿ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ಯದಿ (unlikely (!id_entries->ತಳ್ಳು_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-        if (e.in_defs_content)
+        ಯದಿ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          ಯದಿ (unlikely (!defs_entries->ತಳ್ಳು_or_fail ()))
+            ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -578,56 +578,56 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ಯದಿ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ಯದಿ (unlikely (!glyph_spans->ತಳ್ಳು_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
         }
       }
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
+      ಯದಿ (unlikely (depth >= MAX_DEPTH))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+      ರಾಶಿ[depth++] = e;
+      ಯದಿ (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+ಅನ್ತಃಸ್ಥ
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  unsigned doc_ಎಣಿಕೆ = table->get_document_ಎಣಿಕೆ ();
+  ಯದಿ (doc_ಎಣಿಕೆ && unlikely (!doc_caches.resize (doc_ಎಣಿಕೆ)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
-inline
+ಅನ್ತಃಸ್ಥ
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < doc_caches.length; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
   table.destroy ();
 }
 
-inline void
+ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  ಯದಿ (!doc)
+    ಪ್ರತ್ಯಾಗಮ;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,18 +635,18 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+ಅನ್ತಃಸ್ಥ SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
+                                    ಧ್ರುವ ವರ್ಣ *svg,
                                     unsigned len,
                                     hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    hb_codepoint_t end_glyph) ಧ್ರುವ
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  ಸ್ಥಿರ ಧ್ರುವ uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  auto *doc = (svg_doc_cache_t *) hb_malloc (ಪರಿಮಾಣ (svg_doc_cache_t));
+  ಯದಿ (!doc)
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,26 +663,26 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  ಯದಿ (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  unsigned glyph_ಎಣಿಕೆ = end_glyph - start_glyph + 1;
+  ಯದಿ (!doc->glyph_spans.resize ((ಪೂರ್ಣಾಙ್ಕ) glyph_ಎಣಿಕೆ))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < glyph_ಎಣಿಕೆ; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  ಯದಿ (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,136 +690,136 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < glyph_spans.length; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
+    ಧ್ರುವ auto &span = glyph_spans.arrayZ[i];
+    ಯದಿ (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+      ಅನುವರ್ತ;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < id_entries.length; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
+    ಧ್ರುವ auto &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    ಯದಿ (doc->id_spans.has (e.id, &out))
+      ಅನುವರ್ತ;
+    ಯದಿ (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      ಪ್ರತ್ಯಾಗಮ nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  ಪ್ರತ್ಯಾಗಮ doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+ಅನ್ತಃಸ್ಥ ಧ್ರುವ SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
+                                              ಧ್ರುವ ವರ್ಣ *svg,
                                               unsigned len,
                                               unsigned doc_index,
                                               hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              hb_codepoint_t end_glyph) ಧ್ರುವ
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  ಯದಿ (doc_index >= doc_caches.length)
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   auto &slot = doc_caches.arrayZ[doc_index];
   auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  ಯದಿ (doc)
+    ಪ್ರತ್ಯಾಗಮ doc;
 
   auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  ಯದಿ (!fresh)
+    ಪ್ರತ್ಯಾಗಮ nullptr;
 
   auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  ಯದಿ (slot.cmpexch (expected, fresh))
+    ಪ್ರತ್ಯಾಗಮ fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  ಪ್ರತ್ಯಾಗಮ expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+ಅನ್ತಃಸ್ಥ ಧ್ರುವ ವರ್ಣ *
+SVG::accelerator_t::doc_cache_get_svg (ಧ್ರುವ svg_doc_cache_t *doc,
+                                       unsigned *len) ಧ್ರುವ
 {
-  if (!doc)
+  ಯದಿ (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    ಯದಿ (len) *len = 0;
+    ಪ್ರತ್ಯಾಗಮ nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  ಯದಿ (len) *len = doc->len;
+  ಪ್ರತ್ಯಾಗಮ doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+ಅನ್ತಃಸ್ಥ ಧ್ರುವ hb_vector_t<SVG::svg_defs_entry_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (ಧ್ರುವ svg_doc_cache_t *doc) ಧ್ರುವ
 {
-  return doc ? &doc->defs_entries : nullptr;
+  ಪ್ರತ್ಯಾಗಮ doc ? &doc->defs_entries : nullptr;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+SVG::accelerator_t::doc_cache_get_glyph_span (ಧ್ರುವ svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
                                               unsigned *start,
-                                              unsigned *end) const
+                                              unsigned *end) ಧ್ರುವ
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  ಸ್ಥಿರ ಧ್ರುವ uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  ಯದಿ (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  ಧ್ರುವ auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
+  ಯದಿ (span.first == INVALID_SPAN)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (span.first > span.second || span.second > doc->len))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  ಯದಿ (start) *start = span.first;
+  ಯದಿ (end) *end = span.second;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
+ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+SVG::accelerator_t::doc_cache_find_id_span (ಧ್ರುವ svg_doc_cache_t *doc,
                                             svg_id_span_t id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) ಧ್ರುವ
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  ಯದಿ (!doc || !id.p || !id.len)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  ಯದಿ (!doc->id_spans.has (id, &span))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (unlikely (span->first > span->second || span->second > doc->len))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಯದಿ (start) *start = span->first;
+  ಯದಿ (end) *end = span->second;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
+ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+SVG::accelerator_t::doc_cache_find_id_cstr (ಧ್ರುವ svg_doc_cache_t *doc,
+                                            ಧ್ರುವ ವರ್ಣ *id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) ಧ್ರುವ
 {
-  if (!id) return false;
+  ಯದಿ (!id) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  ಪ್ರತ್ಯಾಗಮ doc_cache_find_id_span (doc, key, start, end);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+ಸಂರಚನಾ SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 

@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-set.hh"
+#ಅನ್ತರ್ಭಾವ "hb-set.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_set_create ()
 {
   hb_set_t *set;
 
-  if (!(set = hb_object_create<hb_set_t> ()))
-    return hb_set_get_empty ();
+  ಯದಿ (!(set = hb_object_create<hb_set_t> ()))
+    ಪ್ರತ್ಯಾಗಮ hb_set_get_empty ();
 
-  return set;
+  ಪ್ರತ್ಯಾಗಮ set;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_set_create ()
 hb_set_t *
 hb_set_get_empty ()
 {
-  return const_cast<hb_set_t *> (&Null (hb_set_t));
+  ಪ್ರತ್ಯಾಗಮ const_cast<hb_set_t *> (&Null (hb_set_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_set_get_empty ()
 hb_set_t *
 hb_set_reference (hb_set_t *set)
 {
-  return hb_object_reference (set);
+  ಪ್ರತ್ಯಾಗಮ hb_object_reference (set);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_set_reference (hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_destroy (hb_set_t *set)
 {
-  if (!hb_object_destroy (set)) return;
+  ಯದಿ (!hb_object_destroy (set)) ಪ್ರತ್ಯಾಗಮ;
 
   hb_free (set);
 }
@@ -124,12 +124,12 @@ hb_set_destroy (hb_set_t *set)
  **/
 hb_bool_t
 hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+		      hb_user_data_ಕೀಲಿ_t *key,
+		      ಶೂನ್ಯ *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (set, key, data, destroy, replace);
+  ಪ್ರತ್ಯಾಗಮ hb_object_set_user_data (set, key, data, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_set_set_user_data (hb_set_t           *set,
  *
  * Since: 0.9.2
  **/
-void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key)
+ಶೂನ್ಯ *
+hb_set_get_user_data (ಧ್ರುವ hb_set_t     *set,
+		      hb_user_data_ಕೀಲಿ_t *key)
 {
-  return hb_object_get_user_data (set, key);
+  ಪ್ರತ್ಯಾಗಮ hb_object_get_user_data (set, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_set_get_user_data (const hb_set_t     *set,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_allocation_successful (const hb_set_t  *set)
+hb_set_allocation_successful (ಧ್ರುವ hb_set_t  *set)
 {
-  return !set->in_error ();
+  ಪ್ರತ್ಯಾಗಮ !set->in_error ();
 }
 
 /**
@@ -179,14 +179,14 @@ hb_set_allocation_successful (const hb_set_t  *set)
  * Since: 2.8.2
  **/
 hb_set_t *
-hb_set_copy (const hb_set_t *set)
+hb_set_copy (ಧ್ರುವ hb_set_t *set)
 {
   hb_set_t *copy = hb_set_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_set_get_empty ();
+  ಯದಿ (unlikely (copy->in_error ()))
+    ಪ್ರತ್ಯಾಗಮ hb_set_get_empty ();
 
   copy->set (*set);
-  return copy;
+  ಪ್ರತ್ಯಾಗಮ copy;
 }
 
 /**
@@ -197,7 +197,7 @@ hb_set_copy (const hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_clear (hb_set_t *set)
 {
   /* Immutable-safe. */
@@ -215,9 +215,9 @@ hb_set_clear (hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_empty (const hb_set_t *set)
+hb_set_is_empty (ಧ್ರುವ hb_set_t *set)
 {
-  return set->is_empty ();
+  ಪ್ರತ್ಯಾಗಮ set->is_empty ();
 }
 
 /**
@@ -232,10 +232,10 @@ hb_set_is_empty (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_set_has (ಧ್ರುವ hb_set_t *set,
 	    hb_codepoint_t  codepoint)
 {
-  return set->has (codepoint);
+  ಪ್ರತ್ಯಾಗಮ set->has (codepoint);
 }
 
 /**
@@ -247,7 +247,7 @@ hb_set_has (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_add (hb_set_t       *set,
 	    hb_codepoint_t  codepoint)
 {
@@ -267,15 +267,15 @@ hb_set_add (hb_set_t       *set,
  *
  * Since: 4.1.0
  */
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+		         ಧ್ರುವ hb_codepoint_t *sorted_codepoints,
+		         unsigned ಪೂರ್ಣಾಙ್ಕ          ಅಂಕೆ_codepoints)
 {
   /* Immutable-safe. */
   set->add_sorted_array (sorted_codepoints,
-		         num_codepoints,
-		         sizeof(hb_codepoint_t));
+		         ಅಂಕೆ_codepoints,
+		         ಪರಿಮಾಣ(hb_codepoint_t));
 }
 
 /**
@@ -289,7 +289,7 @@ hb_set_add_sorted_array (hb_set_t             *set,
  *
  * Since: 0.9.7
  **/
-void
+ಶೂನ್ಯ
 hb_set_add_range (hb_set_t       *set,
 		  hb_codepoint_t  first,
 		  hb_codepoint_t  last)
@@ -307,7 +307,7 @@ hb_set_add_range (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_del (hb_set_t       *set,
 	    hb_codepoint_t  codepoint)
 {
@@ -329,7 +329,7 @@ hb_set_del (hb_set_t       *set,
  *
  * Since: 0.9.7
  **/
-void
+ಶೂನ್ಯ
 hb_set_del_range (hb_set_t       *set,
 		  hb_codepoint_t  first,
 		  hb_codepoint_t  last)
@@ -351,10 +351,10 @@ hb_set_del_range (hb_set_t       *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other)
+hb_set_is_equal (ಧ್ರುವ hb_set_t *set,
+		 ಧ್ರುವ hb_set_t *other)
 {
-  return set->is_equal (*other);
+  ಪ್ರತ್ಯಾಗಮ set->is_equal (*other);
 }
 
 /**
@@ -369,10 +369,10 @@ hb_set_is_equal (const hb_set_t *set,
  * Since: 14.4.0
  **/
 hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other)
+hb_set_intersects (ಧ್ರುವ hb_set_t *set,
+		   ಧ್ರುವ hb_set_t *other)
 {
-  return set->intersects (*other);
+  ಪ್ರತ್ಯಾಗಮ set->intersects (*other);
 }
 
 /**
@@ -386,10 +386,10 @@ hb_set_intersects (const hb_set_t *set,
  *
  * Since: 4.4.0
  **/
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set)
+HB_EXTERN unsigned ಪೂರ್ಣಾಙ್ಕ
+hb_set_hash (ಧ್ರುವ hb_set_t *set)
 {
-  return set->hash ();
+  ಪ್ರತ್ಯಾಗಮ set->hash ();
 }
 
 /**
@@ -404,10 +404,10 @@ hb_set_hash (const hb_set_t *set)
  * Since: 1.8.1
  **/
 hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set)
+hb_set_is_subset (ಧ್ರುವ hb_set_t *set,
+		  ಧ್ರುವ hb_set_t *larger_set)
 {
-  return set->is_subset (*larger_set);
+  ಪ್ರತ್ಯಾಗಮ set->is_subset (*larger_set);
 }
 
 /**
@@ -419,9 +419,9 @@ hb_set_is_subset (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other)
+	    ಧ್ರುವ hb_set_t *other)
 {
   /* Immutable-safe. */
   set->set (*other);
@@ -436,9 +436,9 @@ hb_set_set (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other)
+	      ಧ್ರುವ hb_set_t *other)
 {
   /* Immutable-safe. */
   set->union_ (*other);
@@ -453,9 +453,9 @@ hb_set_union (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other)
+		  ಧ್ರುವ hb_set_t *other)
 {
   /* Immutable-safe. */
   set->intersect (*other);
@@ -470,9 +470,9 @@ hb_set_intersect (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other)
+		 ಧ್ರುವ hb_set_t *other)
 {
   /* Immutable-safe. */
   set->subtract (*other);
@@ -488,9 +488,9 @@ hb_set_subtract (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
+ಶೂನ್ಯ
 hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other)
+			     ಧ್ರುವ hb_set_t *other)
 {
   /* Immutable-safe. */
   set->symmetric_difference (*other);
@@ -504,7 +504,7 @@ hb_set_symmetric_difference (hb_set_t       *set,
  *
  * Since: 3.0.0
  **/
-void
+ಶೂನ್ಯ
 hb_set_invert (hb_set_t *set)
 {
   /* Immutable-safe. */
@@ -522,9 +522,9 @@ hb_set_invert (hb_set_t *set)
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_set_is_inverted (const hb_set_t *set)
+hb_set_is_inverted (ಧ್ರುವ hb_set_t *set)
 {
-  return set->is_inverted ();
+  ಪ್ರತ್ಯಾಗಮ set->is_inverted ();
 }
 
 /**
@@ -537,10 +537,10 @@ hb_set_is_inverted (const hb_set_t *set)
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_set_get_population (const hb_set_t *set)
+unsigned ಪೂರ್ಣಾಙ್ಕ
+hb_set_get_population (ಧ್ರುವ hb_set_t *set)
 {
-  return set->get_population ();
+  ಪ್ರತ್ಯಾಗಮ set->get_population ();
 }
 
 /**
@@ -554,9 +554,9 @@ hb_set_get_population (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_min (const hb_set_t *set)
+hb_set_get_min (ಧ್ರುವ hb_set_t *set)
 {
-  return set->get_min ();
+  ಪ್ರತ್ಯಾಗಮ set->get_min ();
 }
 
 /**
@@ -570,9 +570,9 @@ hb_set_get_min (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_max (const hb_set_t *set)
+hb_set_get_max (ಧ್ರುವ hb_set_t *set)
 {
-  return set->get_max ();
+  ಪ್ರತ್ಯಾಗಮ set->get_max ();
 }
 
 /**
@@ -590,10 +590,10 @@ hb_set_get_max (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_set_next (ಧ್ರುವ hb_set_t *set,
 	     hb_codepoint_t *codepoint)
 {
-  return set->next (codepoint);
+  ಪ್ರತ್ಯಾಗಮ set->next (codepoint);
 }
 
 /**
@@ -611,10 +611,10 @@ hb_set_next (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_set_previous (ಧ್ರುವ hb_set_t *set,
 		 hb_codepoint_t *codepoint)
 {
-  return set->previous (codepoint);
+  ಪ್ರತ್ಯಾಗಮ set->previous (codepoint);
 }
 
 /**
@@ -634,11 +634,11 @@ hb_set_previous (const hb_set_t *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_next_range (const hb_set_t *set,
+hb_set_next_range (ಧ್ರುವ hb_set_t *set,
 		   hb_codepoint_t *first,
 		   hb_codepoint_t *last)
 {
-  return set->next_range (first, last);
+  ಪ್ರತ್ಯಾಗಮ set->next_range (first, last);
 }
 
 /**
@@ -658,11 +658,11 @@ hb_set_next_range (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
+hb_set_previous_range (ಧ್ರುವ hb_set_t *set,
 		       hb_codepoint_t *first,
 		       hb_codepoint_t *last)
 {
-  return set->previous_range (first, last);
+  ಪ್ರತ್ಯಾಗಮ set->previous_range (first, last);
 }
 
 /**
@@ -681,11 +681,11 @@ hb_set_previous_range (const hb_set_t *set,
  *
  * Since: 4.2.0
  **/
-unsigned int
-hb_set_next_many (const hb_set_t *set,
+unsigned ಪೂರ್ಣಾಙ್ಕ
+hb_set_next_many (ಧ್ರುವ hb_set_t *set,
 		  hb_codepoint_t  codepoint,
 		  hb_codepoint_t *out,
-		  unsigned int    size)
+		  unsigned ಪೂರ್ಣಾಙ್ಕ    size)
 {
-  return set->next_many (codepoint, out, size);
+  ಪ್ರತ್ಯಾಗಮ set->next_many (codepoint, out, size);
 }

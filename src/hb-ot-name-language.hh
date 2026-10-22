@@ -27,14 +27,14 @@
 #ifndef HB_OT_NAME_LANGUAGE_HH
 #define HB_OT_NAME_LANGUAGE_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 
 HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code);
+_hb_ot_name_language_for_ms_code (unsigned ಪೂರ್ಣಾಙ್ಕ code);
 
 HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code);
+_hb_ot_name_language_for_mac_code (unsigned ಪೂರ್ಣಾಙ್ಕ code);
 
 
 #endif /* HB_OT_NAME_LANGUAGE_HH */

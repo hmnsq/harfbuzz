@@ -24,19 +24,19 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ಯದಿ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_FONT_H
 #define HB_OT_FONT_H
 
-#include "hb.h"
+#ಅನ್ತರ್ಭಾವ "hb.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN ಶೂನ್ಯ
 hb_ot_font_set_funcs (hb_font_t *font);
 
 

@@ -1,111 +1,111 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURESET_HH
 #define OT_LAYOUT_GSUB_LIGATURESET_HH
 
-#include "Common.hh"
-#include "Ligature.hh"
+#ಅನ್ತರ್ಭಾವ "Common.hh"
+#ಅನ್ತರ್ಭಾವ "Ligature.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GSUB_impl {
 
 template <typename Types>
-struct LigatureSet
+ಸಂರಚನಾ LigatureSet
 {
-  public:
+  ಸಾರ್ವಜನಿಕ:
   Array16Of<typename Types::template OffsetTo<Ligature<Types>>>
                 ligature;               /* Array LigatureSet tables
                                          * ordered by preference */
   
   DEFINE_SIZE_ARRAY (2, ligature);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (ligature.sanitize (c, this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (ligature.sanitize (c, ಏತತ್));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ತಾರ್ಕಿಕ intersects (ಧ್ರುವ hb_set_t *glyphs) ಧ್ರುವ
   {
-    return
+    ಪ್ರತ್ಯಾಗಮ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { return _.intersects (glyphs); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_map ([glyphs] (ಧ್ರುವ Ligature<Types> &_) { ಪ್ರತ್ಯಾಗಮ _.intersects (glyphs); })
     | hb_any
     ;
   }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
+  ತಾರ್ಕಿಕ intersects_lig_glyph (ಧ್ರುವ hb_set_t *glyphs) ಧ್ರುವ
   {
-    return
+    ಪ್ರತ್ಯಾಗಮ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { 
-      return _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
+    | hb_map (hb_add (ಏತತ್))
+    | hb_map ([glyphs] (ಧ್ರುವ Ligature<Types> &_) { 
+      ಪ್ರತ್ಯಾಗಮ _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
     })
     | hb_any
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  ಶೂನ್ಯ closure (hb_closure_context_t *c) ಧ್ರುವ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.closure (c); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_apply ([c] (ಧ್ರುವ Ligature<Types> &_) { _.closure (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  ಶೂನ್ಯ depend (hb_depend_context_t *c, hb_codepoint_t first) ಧ್ರುವ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const Ligature<Types> &_) { _.depend (c, first); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_apply ([&] (ಧ್ರುವ Ligature<Types> &_) { _.depend (c, first); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ಶೂನ್ಯ collect_glyphs (hb_collect_glyphs_context_t *c) ಧ್ರುವ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_apply ([c] (ಧ್ರುವ Ligature<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
   template <typename set_t>
-  void collect_seconds (set_t &s) const
+  ಶೂನ್ಯ collect_seconds (set_t &s) ಧ್ರುವ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&s] (const Ligature<Types> &_) { _.collect_second (s); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_apply ([&s] (ಧ್ರುವ Ligature<Types> &_) { _.collect_second (s); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  ತಾರ್ಕಿಕ would_apply (hb_would_apply_context_t *c) ಧ್ರುವ
   {
-    return
+    ಪ್ರತ್ಯಾಗಮ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([c] (const Ligature<Types> &_) { return _.would_apply (c); })
+    | hb_map (hb_add (ಏತತ್))
+    | hb_map ([c] (ಧ್ರುವ Ligature<Types> &_) { ಪ್ರತ್ಯಾಗಮ _.would_apply (c); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c, const hb_set_digest_t *seconds = nullptr) const
+  ತಾರ್ಕಿಕ apply (hb_ot_apply_context_t *c, ಧ್ರುವ hb_set_digest_t *seconds = nullptr) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
 
-    unsigned int num_ligs = ligature.len;
+    unsigned ಪೂರ್ಣಾಙ್ಕ ಅಂಕೆ_ligs = ligature.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
+    ಯದಿ (HB_OPTIMIZE_SIZE_VAL || ಅಂಕೆ_ligs <= 1)
 #endif
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಅಂಕೆ_ligs; i++)
       {
-	const auto &lig = this+ligature.arrayZ[i];
-	if (lig.apply (c)) return_trace (true);
+	ಧ್ರುವ auto &lig = ಏತತ್+ligature.arrayZ[i];
+	ಯದಿ (lig.apply (c)) return_trace (ಸತ್ಯ);
       }
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
     }
 
     /* This version is optimized for speed by matching the second component
@@ -119,87 +119,87 @@ struct LigatureSet
     skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
     unsigned unsafe_to;
     hb_codepoint_t second = (unsigned) -1;
-    bool matched = skippy_iter.next (&unsafe_to);
-    if (likely (matched))
+    ತಾರ್ಕಿಕ matched = skippy_iter.next (&unsafe_to);
+    ಯದಿ (likely (matched))
     {
       second = c->buffer->info[skippy_iter.idx].codepoint;
       unsafe_to = skippy_iter.idx + 1;
 
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      ಯದಿ (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        ಗಚ್ಛ slow;
       }
     }
-    else
-      goto slow;
+    ಅನ್ಯಥಾ
+      ಗಚ್ಛ slow;
 
-    if (seconds && !seconds->may_have (second))
+    ಯದಿ (seconds && !seconds->may_have (second))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
     }
-    bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    ತಾರ್ಕಿಕ unsafe_to_concat = ಅಸತ್ಯ;
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಅಂಕೆ_ligs; i++)
     {
-      const auto &lig = this+ligature.arrayZ[i];
-      if (unlikely (lig.component.lenP1 <= 1) ||
+      ಧ್ರುವ auto &lig = ಏತತ್+ligature.arrayZ[i];
+      ಯದಿ (unlikely (lig.component.lenP1 <= 1) ||
 	  lig.component.arrayZ[0] == second)
       {
-	if (lig.apply (c))
+	ಯದಿ (lig.apply (c))
 	{
-	  if (unsafe_to_concat)
+	  ಯದಿ (unsafe_to_concat)
 	    c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	  return_trace (true);
+	  return_trace (ಸತ್ಯ);
 	}
       }
-      else if (likely (lig.component.lenP1 > 1))
-        unsafe_to_concat = true;
+      ಅನ್ಯಥಾ ಯದಿ (likely (lig.component.lenP1 > 1))
+        unsafe_to_concat = ಸತ್ಯ;
     }
-    if (likely (unsafe_to_concat))
+    ಯದಿ (likely (unsafe_to_concat))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (ಅಸತ್ಯ);
   }
 
   template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  ತಾರ್ಕಿಕ serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ಧ್ರುವ unsigned ಪೂರ್ಣಾಙ್ಕ> component_ಎಣಿಕೆ_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
-    for (unsigned int i = 0; i < ligatures.length; i++)
+    TRACE_SERIALIZE (ಏತತ್);
+    ಯದಿ (unlikely (!c->extend_min (ಏತತ್))) return_trace (ಅಸತ್ಯ);
+    ಯದಿ (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (ಅಸತ್ಯ);
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ligatures.length; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
-      if (unlikely (!ligature[i].serialize_serialize (c,
+      unsigned ಪೂರ್ಣಾಙ್ಕ component_ಎಣಿಕೆ = (unsigned) hb_max ((ಪೂರ್ಣಾಙ್ಕ) component_ಎಣಿಕೆ_list[i] - 1, 0);
+      ಯದಿ (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
-                                                      component_list.sub_array (0, component_count))))
-        return_trace (false);
-      component_list += component_count;
+                                                      component_list.sub_array (0, component_ಎಣಿಕೆ))))
+        return_trace (ಅಸತ್ಯ);
+      component_list += component_ಎಣಿಕೆ;
     }
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c, unsigned coverage_idx) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
 
     + hb_iter (ligature)
-    | hb_filter (subset_offset_array (c, out->ligature, this, coverage_idx))
+    | hb_filter (subset_offset_array (c, out->ligature, ಏತತ್, coverage_idx))
     | hb_drain
     ;
 
-    if (bool (out->ligature))
+    ಯದಿ (ತಾರ್ಕಿಕ (out->ligature))
       // Ensure Coverage table is always packed after this.
       c->serializer->add_virtual_link (coverage_idx);
 
-    return_trace (bool (out->ligature));
+    return_trace (ತಾರ್ಕಿಕ (out->ligature));
   }
 };
 

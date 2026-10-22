@@ -22,24 +22,24 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-layout-jstf-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-layout-jstf-table.hh"
 
-static hb_face_t *
-create_face (const char *data, unsigned length)
+ಸ್ಥಿರ hb_face_t *
+create_face (ಧ್ರುವ ವರ್ಣ *data, unsigned length)
 {
   hb_face_t *face = hb_face_builder_create ();
   hb_blob_t *blob = hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
 				    nullptr, nullptr);
   hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  ಪ್ರತ್ಯಾಗಮ face;
 }
 
-int
-main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
-  static const char data[] = {
+  ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ data[] = {
     0, 1, 0, 1,				/* version 1.1 */
     0, 0,				/* JstfScriptRecord count */
     0, 1,				/* JstfScriptRecord2 count */
@@ -50,31 +50,31 @@ main (int argc, char **argv)
     0, 1, 1, 0, 1,			/* ExtenderGlyph2 */
   };
 
-  hb_face_t *face = create_face (data, sizeof (data));
+  hb_face_t *face = create_face (data, ಪರಿಮಾಣ (data));
   hb_blob_ptr_t<OT::JSTF> jstf =
       hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
 #ifndef HB_NO_BEYOND_64K
   hb_always_assert (jstf.get_length ());
-  hb_always_assert (jstf->get_script_count () == 1);
+  hb_always_assert (jstf->get_script_ಎಣಿಕೆ () == 1);
   hb_always_assert (jstf->get_script_tag (0) == HB_TAG ('a','r','a','b'));
   unsigned index;
   hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
   hb_always_assert (index == 0);
-  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
+  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_ಎಣಿಕೆ ());
+#ಅನ್ಯಥಾ
   hb_always_assert (jstf.get_length ());
-  hb_always_assert (!jstf->get_script_count ());
+  hb_always_assert (!jstf->get_script_ಎಣಿಕೆ ());
 #endif
   jstf.destroy ();
   hb_face_destroy (face);
 
 #ifndef HB_NO_BEYOND_64K
-  face = create_face (data, sizeof (data) - 1);
+  face = create_face (data, ಪರಿಮಾಣ (data) - 1);
   jstf = hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
   hb_always_assert (!jstf.get_length ());
   jstf.destroy ();
   hb_face_destroy (face);
 #endif
 
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }

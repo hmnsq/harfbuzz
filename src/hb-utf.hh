@@ -27,19 +27,19 @@
 #ifndef HB_UTF_HH
 #define HB_UTF_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
-#include "hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "hb-open-type.hh"
 
 
-struct hb_utf8_t
+ಸಂರಚನಾ hb_utf8_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 4;
+  ಪ್ರಕಾರನಿರ್ದೇಶ uint8_t codepoint_t;
+  ಸ್ಥಿರ constexpr unsigned max_len = 4;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  next (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *end,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
@@ -49,123 +49,123 @@ struct hb_utf8_t
 
     hb_codepoint_t c = *text++;
 
-    if (c > 0x7Fu)
+    ಯದಿ (c > 0x7Fu)
     {
-      if (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
+      ಯದಿ (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
       {
-	unsigned int t1;
-	if (likely (text < end &&
+	unsigned ಪೂರ್ಣಾಙ್ಕ t1;
+	ಯದಿ (likely (text < end &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x1Fu)<<6) | t1;
 	  text++;
 	}
-	else
-	  goto error;
+	ಅನ್ಯಥಾ
+	  ಗಚ್ಛ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
+      ಅನ್ಯಥಾ ಯದಿ (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
       {
-	unsigned int t1, t2;
-	if (likely (1 < end - text &&
+	unsigned ಪೂರ್ಣಾಙ್ಕ t1, t2;
+	ಯದಿ (likely (1 < end - text &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
 		    (t2 = text[1] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0xFu)<<12) | (t1<<6) | t2;
-	  if (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
-	    goto error;
+	  ಯದಿ (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+	    ಗಚ್ಛ error;
 	  text += 2;
 	}
-	else
-	  goto error;
+	ಅನ್ಯಥಾ
+	  ಗಚ್ಛ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
+      ಅನ್ಯಥಾ ಯದಿ (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
       {
-	unsigned int t1, t2, t3;
-	if (likely (2 < end - text &&
+	unsigned ಪೂರ್ಣಾಙ್ಕ t1, t2, t3;
+	ಯದಿ (likely (2 < end - text &&
 		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
 		    (t2 = text[1] - 0x80u) <= 0x3Fu &&
 		    (t3 = text[2] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x7u)<<18) | (t1<<12) | (t2<<6) | t3;
-	  if (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
-	    goto error;
+	  ಯದಿ (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
+	    ಗಚ್ಛ error;
 	  text += 3;
 	}
-	else
-	  goto error;
+	ಅನ್ಯಥಾ
+	  ಗಚ್ಛ error;
       }
-      else
-	goto error;
+      ಅನ್ಯಥಾ
+	ಗಚ್ಛ error;
     }
 
     *unicode = c;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
 
   error:
     *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  prev (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *start,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    const codepoint_t *end = text--;
-    while (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
+    ಧ್ರುವ codepoint_t *end = text--;
+    ಯಾವತ್ (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
       text--;
 
-    if (likely (next (text, end, unicode, replacement) == end))
-      return text;
+    ಯದಿ (likely (next (text, end, unicode, replacement) == end))
+      ಪ್ರತ್ಯಾಗಮ text;
 
     *unicode = replacement;
-    return end - 1;
+    ಪ್ರತ್ಯಾಗಮ end - 1;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
-  { return ::strlen ((const char *) text); }
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
+  strlen (ಧ್ರುವ codepoint_t *text)
+  { ಪ್ರತ್ಯಾಗಮ ::strlen ((ಧ್ರುವ ವರ್ಣ *) text); }
 
-  static unsigned int
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
   encode_len (hb_codepoint_t unicode)
   {
-    if (unicode <   0x0080u) return 1;
-    if (unicode <   0x0800u) return 2;
-    if (unicode <  0x10000u) return 3;
-    if (unicode < 0x110000u) return 4;
-    return 3;
+    ಯದಿ (unicode <   0x0080u) ಪ್ರತ್ಯಾಗಮ 1;
+    ಯದಿ (unicode <   0x0800u) ಪ್ರತ್ಯಾಗಮ 2;
+    ಯದಿ (unicode <  0x10000u) ಪ್ರತ್ಯಾಗಮ 3;
+    ಯದಿ (unicode < 0x110000u) ಪ್ರತ್ಯಾಗಮ 4;
+    ಪ್ರತ್ಯಾಗಮ 3;
   }
 
-  static codepoint_t *
+  ಸ್ಥಿರ codepoint_t *
   encode (codepoint_t *text,
-	  const codepoint_t *end,
+	  ಧ್ರುವ codepoint_t *end,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ಯದಿ (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x0080u)
+    ಯದಿ (unicode < 0x0080u)
      *text++ = unicode;
-    else if (unicode < 0x0800u)
+    ಅನ್ಯಥಾ ಯದಿ (unicode < 0x0800u)
     {
-      if (end - text >= 2)
+      ಯದಿ (end - text >= 2)
       {
 	*text++ =  0xC0u + (0x1Fu & (unicode >>  6));
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else if (unicode < 0x10000u)
+    ಅನ್ಯಥಾ ಯದಿ (unicode < 0x10000u)
     {
-      if (end - text >= 3)
+      ಯದಿ (end - text >= 3)
       {
 	*text++ =  0xE0u + (0x0Fu & (unicode >> 12));
 	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else
+    ಅನ್ಯಥಾ
     {
-      if (end - text >= 4)
+      ಯದಿ (end - text >= 4)
       {
 	*text++ =  0xF0u + (0x07u & (unicode >> 18));
 	*text++ =  0x80u + (0x3Fu & (unicode >> 12));
@@ -173,310 +173,310 @@ struct hb_utf8_t
 	*text++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 };
 
 
 template <typename TCodepoint>
-struct hb_utf16_xe_t
+ಸಂರಚನಾ hb_utf16_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 2, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 2;
+  static_assert (ಪರಿಮಾಣ (TCodepoint) == 2, "");
+  ಪ್ರಕಾರನಿರ್ದೇಶ TCodepoint codepoint_t;
+  ಸ್ಥಿರ constexpr unsigned max_len = 2;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  next (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *end,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *text++;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    ಯದಿ (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      ಪ್ರತ್ಯಾಗಮ text;
     }
 
-    if (likely (c <= 0xDBFFu && text < end))
+    ಯದಿ (likely (c <= 0xDBFFu && text < end))
     {
       /* High-surrogate in c */
       hb_codepoint_t l = *text;
-      if (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
+      ಯದಿ (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
       {
 	/* Low-surrogate in l */
 	*unicode = (c << 10) + l - ((0xD800u << 10) - 0x10000u + 0xDC00u);
 	 text++;
-	 return text;
+	 ಪ್ರತ್ಯಾಗಮ text;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  prev (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *start,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *--text;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    ಯದಿ (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      ಪ್ರತ್ಯಾಗಮ text;
     }
 
-    if (likely (c >= 0xDC00u && start < text))
+    ಯದಿ (likely (c >= 0xDC00u && start < text))
     {
       /* Low-surrogate in c */
       hb_codepoint_t h = text[-1];
-      if (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
+      ಯದಿ (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
       {
 	/* High-surrogate in h */
 	*unicode = (h << 10) + c - ((0xD800u << 10) - 0x10000u + 0xDC00u);
 	text--;
-	return text;
+	ಪ್ರತ್ಯಾಗಮ text;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
+  strlen (ಧ್ರುವ codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned ಪೂರ್ಣಾಙ್ಕ l = 0;
+    ಯಾವತ್ (*text++) l++;
+    ಪ್ರತ್ಯಾಗಮ l;
   }
 
-  static unsigned int
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
   encode_len (hb_codepoint_t unicode)
   {
-    return unicode < 0x10000 ? 1 : 2;
+    ಪ್ರತ್ಯಾಗಮ unicode < 0x10000 ? 1 : 2;
   }
 
-  static codepoint_t *
+  ಸ್ಥಿರ codepoint_t *
   encode (codepoint_t *text,
-	  const codepoint_t *end,
+	  ಧ್ರುವ codepoint_t *end,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ಯದಿ (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x10000u)
+    ಯದಿ (unicode < 0x10000u)
      *text++ = unicode;
-    else if (end - text >= 2)
+    ಅನ್ಯಥಾ ಯದಿ (end - text >= 2)
     {
       unicode -= 0x10000u;
       *text++ =  0xD800u + (unicode >> 10);
       *text++ =  0xDC00u + (unicode & 0x03FFu);
     }
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 };
 
-typedef hb_utf16_xe_t<uint16_t> hb_utf16_t;
-typedef hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_utf16_xe_t<uint16_t> hb_utf16_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
 
 
-template <typename TCodepoint, bool validate=true>
-struct hb_utf32_xe_t
+template <typename TCodepoint, ತಾರ್ಕಿಕ validate=ಸತ್ಯ>
+ಸಂರಚನಾ hb_utf32_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 4, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 1;
+  static_assert (ಪರಿಮಾಣ (TCodepoint) == 4, "");
+  ಪ್ರಕಾರನಿರ್ದೇಶ TCodepoint codepoint_t;
+  ಸ್ಥಿರ constexpr unsigned max_len = 1;
 
-  static inline const TCodepoint *
-  next (const TCodepoint *text,
-	const TCodepoint *end HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ TCodepoint *
+  next (ಧ್ರುವ TCodepoint *text,
+	ಧ್ರುವ TCodepoint *end HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *unicode = *text++;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    ಯದಿ (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static inline const TCodepoint *
-  prev (const TCodepoint *text,
-	const TCodepoint *start HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ TCodepoint *
+  prev (ಧ್ರುವ TCodepoint *text,
+	ಧ್ರುವ TCodepoint *start HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     hb_codepoint_t c = *unicode = *--text;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    ಯದಿ (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static unsigned int
-  strlen (const TCodepoint *text)
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
+  strlen (ಧ್ರುವ TCodepoint *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned ಪೂರ್ಣಾಙ್ಕ l = 0;
+    ಯಾವತ್ (*text++) l++;
+    ಪ್ರತ್ಯಾಗಮ l;
   }
 
-  static unsigned int
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    ಪ್ರತ್ಯಾಗಮ 1;
   }
 
-  static codepoint_t *
+  ಸ್ಥಿರ codepoint_t *
   encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+	  ಧ್ರುವ codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ಯದಿ (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
     *text++ = unicode;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 };
 
-typedef hb_utf32_xe_t<uint32_t> hb_utf32_t;
-typedef hb_utf32_xe_t<uint32_t, false> hb_utf32_novalidate_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_utf32_xe_t<uint32_t> hb_utf32_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ hb_utf32_xe_t<uint32_t, ಅಸತ್ಯ> hb_utf32_novalidate_t;
 
 
-struct hb_latin1_t
+ಸಂರಚನಾ hb_latin1_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  ಪ್ರಕಾರನಿರ್ದೇಶ uint8_t codepoint_t;
+  ಸ್ಥಿರ constexpr unsigned max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  next (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *end HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement HB_UNUSED)
   {
     *unicode = *text++;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  prev (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *start HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement HB_UNUSED)
   {
     *unicode = *--text;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
+  strlen (ಧ್ರುವ codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned ಪೂರ್ಣಾಙ್ಕ l = 0;
+    ಯಾವತ್ (*text++) l++;
+    ಪ್ರತ್ಯಾಗಮ l;
   }
 
-  static unsigned int
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    ಪ್ರತ್ಯಾಗಮ 1;
   }
 
-  static codepoint_t *
+  ಸ್ಥಿರ codepoint_t *
   encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+	  ಧ್ರುವ codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0100u))
+    ಯದಿ (unlikely (unicode >= 0x0100u))
       unicode = '?';
     *text++ = unicode;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 };
 
 
-struct hb_ascii_t
+ಸಂರಚನಾ hb_ascii_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  ಪ್ರಕಾರನಿರ್ದೇಶ uint8_t codepoint_t;
+  ಸ್ಥಿರ constexpr unsigned max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  next (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *end HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     *unicode = *text++;
-    if (*unicode >= 0x0080u)
+    ಯದಿ (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ codepoint_t *
+  prev (ಧ್ರುವ codepoint_t *text,
+	ಧ್ರುವ codepoint_t *start HB_UNUSED,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
     *unicode = *--text;
-    if (*unicode >= 0x0080u)
+    ಯದಿ (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
+  strlen (ಧ್ರುವ codepoint_t *text)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    unsigned ಪೂರ್ಣಾಙ್ಕ l = 0;
+    ಯಾವತ್ (*text++) l++;
+    ಪ್ರತ್ಯಾಗಮ l;
   }
 
-  static unsigned int
+  ಸ್ಥಿರ unsigned ಪೂರ್ಣಾಙ್ಕ
   encode_len (hb_codepoint_t unicode HB_UNUSED)
   {
-    return 1;
+    ಪ್ರತ್ಯಾಗಮ 1;
   }
 
-  static codepoint_t *
+  ಸ್ಥಿರ codepoint_t *
   encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+	  ಧ್ರುವ codepoint_t *end HB_UNUSED,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0080u))
+    ಯದಿ (unlikely (unicode >= 0x0080u))
       unicode = '?';
     *text++ = unicode;
-    return text;
+    ಪ್ರತ್ಯಾಗಮ text;
   }
 };
 
 template <typename utf_t>
-static inline const typename utf_t::codepoint_t *
-hb_utf_offset_to_pointer (const typename utf_t::codepoint_t *start,
-			  const typename utf_t::codepoint_t *text,
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಧ್ರುವ typename utf_t::codepoint_t *
+hb_utf_offset_to_pointer (ಧ್ರುವ typename utf_t::codepoint_t *start,
+			  ಧ್ರುವ typename utf_t::codepoint_t *text,
 			  unsigned text_len,
 			  signed offset)
 {
   hb_codepoint_t unicode;
 
-  while (offset-- > 0)
+  ಯಾವತ್ (offset-- > 0)
     start = utf_t::next (start,
 			 text + text_len,
 			 &unicode,
 			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  while (offset++ < 0)
+  ಯಾವತ್ (offset++ < 0)
     start = utf_t::prev (start,
 			 text,
 			 &unicode,
 			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  return start;
+  ಪ್ರತ್ಯಾಗಮ start;
 }
 
 

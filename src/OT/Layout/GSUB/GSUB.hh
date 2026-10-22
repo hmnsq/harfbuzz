@@ -1,59 +1,59 @@
 #ifndef OT_LAYOUT_GSUB_GSUB_HH
 #define OT_LAYOUT_GSUB_GSUB_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "SubstLookup.hh"
+#ಅನ್ತರ್ಭಾವ "../../../hb-ot-layout-gsubgpos.hh"
+#ಅನ್ತರ್ಭಾವ "Common.hh"
+#ಅನ್ತರ್ಭಾವ "SubstLookup.hh"
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
 
 using Layout::GSUB_impl::SubstLookup;
 
-namespace Layout {
+ನಾಮಾಕಾಶ Layout {
 
 /*
  * GSUB -- Glyph Substitution
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gsub
  */
 
-struct GSUB : GSUBGPOS
+ಸಂರಚನಾ GSUB : GSUBGPOS
 {
   using Lookup = SubstLookup;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  ಧ್ರುವ SubstLookup& get_lookup (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ static_cast<ಧ್ರುವ SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    ಪ್ರತ್ಯಾಗಮ GSUBGPOS::subset<SubstLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     return_trace (GSUBGPOS::sanitize<SubstLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL ತಾರ್ಕಿಕ is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ಧ್ರುವ;
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
+  ಶೂನ್ಯ closure_lookups (hb_face_t      *face,
+                        ಧ್ರುವ hb_set_t *glyphs,
+                        hb_set_t       *lookup_indexes /* IN/OUT */) ಧ್ರುವ
   { GSUBGPOS::closure_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GSUB> accelerator_t;
+  ಪ್ರಕಾರನಿರ್ದೇಶ GSUBGPOS::accelerator_t<GSUB> accelerator_t;
 };
 
 
 }
 
-struct GSUB_accelerator_t : Layout::GSUB::accelerator_t {
+ಸಂರಚನಾ GSUB_accelerator_t : Layout::GSUB::accelerator_t {
   GSUB_accelerator_t (hb_face_t *face) : Layout::GSUB::accelerator_t (face) {}
-  HB_INTERNAL void depend (hb_depend_data_builder_t *builder, hb_face_t *face) const;
+  HB_INTERNAL ಶೂನ್ಯ depend (hb_depend_data_builder_t *builder, hb_face_t *face) ಧ್ರುವ;
 };
 
 

@@ -28,17 +28,17 @@
 #define HB_OT_CFF2_TABLE_CC
 #ifdef HB_OT_CFF2_TABLE_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_OT_FONT_CFF
 
-#include "hb-ot-cff2-table.hh"
-#include "hb-cff2-interp-cs.hh"
-#include "hb-draw.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-cff2-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-cff2-interp-cs.hh"
+#ಅನ್ತರ್ಭಾವ "hb-draw.hh"
 
-using namespace CFF;
+using ನಾಮಾಕಾಶ CFF;
 
-struct cff2_extents_param_t
+ಸಂರಚನಾ cff2_extents_param_t
 {
   cff2_extents_param_t ()
   {
@@ -48,36 +48,36 @@ struct cff2_extents_param_t
     max_y.set_int (INT_MIN);
   }
 
-  void   start_path ()       { path_open = true; }
-  void     end_path ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  ಶೂನ್ಯ   start_path ()       { path_open = ಸತ್ಯ; }
+  ಶೂನ್ಯ     end_path ()       { path_open = ಅಸತ್ಯ; }
+  ತಾರ್ಕಿಕ is_path_open () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ path_open; }
 
-  void update_bounds (const point_t &pt)
+  ಶೂನ್ಯ update_bounds (ಧ್ರುವ point_t &pt)
   {
-    if (pt.x < min_x) min_x = pt.x;
-    if (pt.x > max_x) max_x = pt.x;
-    if (pt.y < min_y) min_y = pt.y;
-    if (pt.y > max_y) max_y = pt.y;
+    ಯದಿ (pt.x < min_x) min_x = pt.x;
+    ಯದಿ (pt.x > max_x) max_x = pt.x;
+    ಯದಿ (pt.y < min_y) min_y = pt.y;
+    ಯದಿ (pt.y > max_y) max_y = pt.y;
   }
 
-  bool  path_open = false;
-  number_t min_x;
-  number_t min_y;
-  number_t max_x;
-  number_t max_y;
+  ತಾರ್ಕಿಕ  path_open = ಅಸತ್ಯ;
+  ಸಂಖ್ಯೆ_t min_x;
+  ಸಂಖ್ಯೆ_t min_y;
+  ಸಂಖ್ಯೆ_t max_x;
+  ಸಂಖ್ಯೆ_t max_y;
 };
 
-struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<number_t>, cff2_extents_param_t>
+ಸಂರಚನಾ cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t>, cff2_extents_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt)
+  ಸ್ಥಿರ ಶೂನ್ಯ moveto (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_extents_param_t& param, ಧ್ರುವ point_t &pt)
   {
     param.end_path ();
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1)
+  ಸ್ಥಿರ ಶೂನ್ಯ ಸಾಲು (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_extents_param_t& param, ಧ್ರುವ point_t &pt1)
   {
-    if (!param.is_path_open ())
+    ಯದಿ (!param.is_path_open ())
     {
       param.start_path ();
       param.update_bounds (env.get_pt ());
@@ -86,9 +86,9 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
     param.update_bounds (env.get_pt ());
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ಸ್ಥಿರ ಶೂನ್ಯ curve (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_extents_param_t& param, ಧ್ರುವ point_t &pt1, ಧ್ರುವ point_t &pt2, ಧ್ರುವ point_t &pt3)
   {
-    if (!param.is_path_open ())
+    ಯದಿ (!param.is_path_open ())
     {
       param.start_path ();
       param.update_bounds (env.get_pt ());
@@ -101,67 +101,67 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
   }
 };
 
-struct cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t, cff2_path_procs_extents_t> {};
+ಸಂರಚನಾ cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, ಸಂಖ್ಯೆ_t, cff2_path_procs_extents_t> {};
 
-bool OT::cff2::accelerator_t::get_extents (hb_font_t *font,
+ತಾರ್ಕಿಕ OT::cff2::accelerator_t::get_extents (hb_font_t *font,
 					   hb_codepoint_t glyph,
-					   hb_glyph_extents_t *extents) const
+					   hb_glyph_extents_t *extents) ಧ್ರುವ
 {
-  return get_extents_at (font, glyph, extents, hb_array (font->coords, font->num_coords));
+  ಪ್ರತ್ಯಾಗಮ get_extents_at (font, glyph, extents, hb_array (font->coords, font->ಅಂಕೆ_coords));
 }
 
-bool OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
+ತಾರ್ಕಿಕ OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
 					      hb_codepoint_t glyph,
 					      hb_glyph_extents_t *extents,
-					      hb_array_t<const int> coords,
-					      int64_t *budget) const
+					      hb_array_t<ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ> coords,
+					      int64_t *budget) ಧ್ರುವ
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 #endif
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ಯದಿ (unlikely (!is_valid () || (glyph >= ಅಂಕೆ_glyphs))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ರಾಶಿ_budget = HB_BUDGET_GLYPH;
+  ಯದಿ (!budget) budget = &ರಾಶಿ_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t> interp (env);
+  unsigned ಪೂರ್ಣಾಙ್ಕ fd = fdSelect->get_fd (glyph);
+  ಧ್ರುವ hb_ubytes_t str = (*charStrings)[glyph];
+  cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> env (str, *ಏತತ್, fd, coords.arrayZ, coords.length);
+  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, ಸಂಖ್ಯೆ_t> interp (env);
   cff2_extents_param_t  param;
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ಯದಿ (unlikely (!interp.interpret (param, budget))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (param.min_x >= param.max_x)
+  ಯದಿ (param.min_x >= param.max_x)
   {
     extents->width = 0;
     extents->x_bearing = 0;
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    double x_bearing = roundf (param.min_x.to_real ());
+    ದ್ವಿಗುಣ x_bearing = roundf (param.min_x.to_real ());
     extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (param.max_x.to_real ()) - x_bearing);
+    extents->width = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) roundf (param.max_x.to_real ()) - x_bearing);
   }
-  if (param.min_y >= param.max_y)
+  ಯದಿ (param.min_y >= param.max_y)
   {
     extents->height = 0;
     extents->y_bearing = 0;
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    double y_bearing = roundf (param.max_y.to_real ());
+    ದ್ವಿಗುಣ y_bearing = roundf (param.max_y.to_real ());
     extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (param.min_y.to_real ()) - y_bearing);
+    extents->height = hb_clamp_to<hb_position_t> ((ದ್ವಿಗುಣ) roundf (param.min_y.to_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-struct cff2_path_param_t
+ಸಂರಚನಾ cff2_path_param_t
 {
   cff2_path_param_t (hb_font_t *font_, hb_draw_session_t &draw_session_)
   {
@@ -169,81 +169,81 @@ struct cff2_path_param_t
     font = font_;
   }
 
-  void move_to (const point_t &p)
+  ಶೂನ್ಯ move_to (ಧ್ರುವ point_t &p)
   { draw_session->move_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
 
-  void line_to (const point_t &p)
-  { draw_session->line_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  ಶೂನ್ಯ ಸಾಲು_to (ಧ್ರುವ point_t &p)
+  { draw_session->ಸಾಲು_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  ಶೂನ್ಯ cubic_to (ಧ್ರುವ point_t &p1, ಧ್ರುವ point_t &p2, ಧ್ರುವ point_t &p3)
   {
     draw_session->cubic_to (font->em_fscalef_x (p1.x.to_real ()), font->em_fscalef_y (p1.y.to_real ()),
 			   font->em_fscalef_x (p2.x.to_real ()), font->em_fscalef_y (p2.y.to_real ()),
 			   font->em_fscalef_x (p3.x.to_real ()), font->em_fscalef_y (p3.y.to_real ()));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   hb_draw_session_t *draw_session;
   hb_font_t *font;
 };
 
-struct cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<number_t>, cff2_path_param_t>
+ಸಂರಚನಾ cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t>, cff2_path_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt)
+  ಸ್ಥಿರ ಶೂನ್ಯ moveto (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_path_param_t& param, ಧ್ರುವ point_t &pt)
   {
     param.move_to (pt);
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1)
+  ಸ್ಥಿರ ಶೂನ್ಯ ಸಾಲು (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_path_param_t& param, ಧ್ರುವ point_t &pt1)
   {
-    param.line_to (pt1);
+    param.ಸಾಲು_to (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ಸ್ಥಿರ ಶೂನ್ಯ curve (cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> &env, cff2_path_param_t& param, ಧ್ರುವ point_t &pt1, ಧ್ರುವ point_t &pt2, ಧ್ರುವ point_t &pt3)
   {
     param.cubic_to (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-struct cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t, cff2_path_procs_path_t> {};
+ಸಂರಚನಾ cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, ಸಂಖ್ಯೆ_t, cff2_path_procs_path_t> {};
 
-bool OT::cff2::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph,
+ತಾರ್ಕಿಕ OT::cff2::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph,
 				       hb_draw_session_t &draw_session,
-				       int64_t *budget) const
+				       int64_t *budget) ಧ್ರುವ
 {
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ರಾಶಿ_budget = HB_BUDGET_GLYPH;
+  ಯದಿ (!budget) budget = &ರಾಶಿ_budget;
 
-  return get_path_at (font,
+  ಪ್ರತ್ಯಾಗಮ get_path_at (font,
 		      glyph,
 		      draw_session,
 		      hb_array (font->coords,
-				font->has_nonzero_coords ? font->num_coords : 0),
+				font->has_nonzero_coords ? font->ಅಂಕೆ_coords : 0),
 		      budget);
 }
 
-bool OT::cff2::accelerator_t::get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget) const
+ತಾರ್ಕಿಕ OT::cff2::accelerator_t::get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ> coords, int64_t *budget) ಧ್ರುವ
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 #endif
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ಯದಿ (unlikely (!is_valid () || (glyph >= ಅಂಕೆ_glyphs))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ರಾಶಿ_budget = HB_BUDGET_GLYPH;
+  ಯದಿ (!budget) budget = &ರಾಶಿ_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t> interp (env);
+  unsigned ಪೂರ್ಣಾಙ್ಕ fd = fdSelect->get_fd (glyph);
+  ಧ್ರುವ hb_ubytes_t str = (*charStrings)[glyph];
+  cff2_cs_interp_env_t<ಸಂಖ್ಯೆ_t> env (str, *ಏತತ್, fd, coords.arrayZ, coords.length);
+  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, ಸಂಖ್ಯೆ_t> interp (env);
   cff2_path_param_t param (font, draw_session);
-  if (unlikely (!interp.interpret (param, budget))) return false;
-  return true;
+  ಯದಿ (unlikely (!interp.interpret (param, budget))) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 #endif

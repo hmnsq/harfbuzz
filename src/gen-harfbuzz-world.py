@@ -9,9 +9,9 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+ಆನಯನ os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+ಯದಿ len(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
@@ -21,49 +21,49 @@ TEMPLATE = sys.argv[3]
 # Parse --TAG file... groups
 groups = {}
 current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
+ಪ್ರತಿ arg ಅನ್ತಃ sys.argv[4:]:
+    ಯದಿ arg.startswith('--'):
         current_tag = arg[2:]
         groups[current_tag] = []
-    elif current_tag is not None:
+    ನೋಚೇದ್ಯದಿ current_tag is ನ None:
         groups[current_tag].append(arg)
 
 # Build #include lines for each group
 def make_includes(files):
     seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
+    ಸಾಲುಗಳು = []
+    ಪ್ರತಿ f ಅನ್ತಃ sorted(files):
+        ಯದಿ ನ f.endswith('.cc'):
+            ಅನುವರ್ತ
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
+        ಯದಿ rel ನ ಅನ್ತಃ seen:
             seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+            ಸಾಲುಗಳು.append('#include "{}"'.format(rel))
+    ಪ್ರತ್ಯಾಗಮ '\n'.join(ಸಾಲುಗಳು)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+with open(TEMPLATE, 'r') ಇವ f:
+    content = f.ಪಠ()
 
-for tag, files in groups.items():
+ಪ್ರತಿ tag, files ಅನ್ತಃ groups.ವಸ್ತುಗಳು():
     placeholder = '%%{}%%'.format(tag)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+with open(OUTPUT, 'w') ಇವ f:
+    f.ಲಿಖ(content)
 
 # Copy back to source tree if changed
 baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+ಯತ್ನ:
+    with open(baseline, 'r') ಇವ b:
+        ಯದಿ b.ಪಠ() == content:
             sys.exit(0)
-except FileNotFoundError:
+ಅಪವಾದ FileNotFoundError:
     pass
 
-try:
+ಯತ್ನ:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+ಅಪವಾದ OSError:
+    ಆನಯನ filecmp
+    ಯದಿ os.path.exists(baseline) ಚ ನ filecmp.cmp(OUTPUT, baseline, shallow=ಅಸತ್ಯ):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

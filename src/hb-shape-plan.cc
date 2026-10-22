@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shape-plan.hh"
-#include "hb-shaper.hh"
-#include "hb-font.hh"
-#include "hb-buffer.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shape-plan.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper.hh"
+#ಅನ್ತರ್ಭಾವ "hb-font.hh"
+#ಅನ್ತರ್ಭಾವ "hb-buffer.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -53,14 +53,14 @@
  **/
 
 #ifdef HAVE_HARFRUST
-extern "C" void _hb_harfrust_shape_plan_destroy_rs (void *data);
+ಬಾಹ್ಯ "C" ಶೂನ್ಯ _hb_harfrust_shape_plan_destroy_rs (ಶೂನ್ಯ *data);
 #endif
 
 hb_shape_plan_t::~hb_shape_plan_t ()
 {
 #ifdef HAVE_HARFRUST
-  void *data = harfrust_data.get_relaxed ();
-  if (data)
+  ಶೂನ್ಯ *data = harfrust_data.get_relaxed ();
+  ಯದಿ (data)
     _hb_harfrust_shape_plan_destroy_rs (data);
 #endif
   key.fini ();
@@ -71,40 +71,40 @@ hb_shape_plan_t::~hb_shape_plan_t ()
  * hb_shape_plan_key_t
  */
 
-bool
-hb_shape_plan_key_t::init (bool                           copy,
+ತಾರ್ಕಿಕ
+hb_shape_plan_ಕೀಲಿ_t::init (ತಾರ್ಕಿಕ                           copy,
 			   hb_face_t                     *face,
-			   const hb_segment_properties_t *props,
-			   const hb_feature_t            *user_features,
-			   unsigned int                   num_user_features,
-			   const int                     *coords,
-			   unsigned int                   num_coords,
-			   const char * const            *shaper_list)
+			   ಧ್ರುವ hb_segment_properties_t *props,
+			   ಧ್ರುವ hb_feature_t            *user_features,
+			   unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+			   ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ                     *coords,
+			   unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_coords,
+			   ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list)
 {
   hb_feature_t *features = nullptr;
-  if (copy && num_user_features && !(features = (hb_feature_t *) hb_calloc (num_user_features, sizeof (hb_feature_t))))
-    goto bail;
+  ಯದಿ (copy && ಅಂಕೆ_user_features && !(features = (hb_feature_t *) hb_calloc (ಅಂಕೆ_user_features, ಪರಿಮಾಣ (hb_feature_t))))
+    ಗಚ್ಛ bail;
 
-  this->props = *props;
-  this->num_user_features = num_user_features;
-  this->user_features = copy ? features : user_features;
-  if (copy && num_user_features)
+  ಏತತ್->props = *props;
+  ಏತತ್->ಅಂಕೆ_user_features = ಅಂಕೆ_user_features;
+  ಏತತ್->user_features = copy ? features : user_features;
+  ಯದಿ (copy && ಅಂಕೆ_user_features)
   {
-    hb_memcpy (features, user_features, num_user_features * sizeof (hb_feature_t));
+    hb_memcpy (features, user_features, ಅಂಕೆ_user_features * ಪರಿಮಾಣ (hb_feature_t));
     /* Make start/end uniform to easier catch bugs. */
-    for (unsigned int i = 0; i < num_user_features; i++)
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಅಂಕೆ_user_features; i++)
     {
-      if (features[0].start != HB_FEATURE_GLOBAL_START)
+      ಯದಿ (features[0].start != HB_FEATURE_GLOBAL_START)
 	features[0].start = 1;
-      if (features[0].end   != HB_FEATURE_GLOBAL_END)
+      ಯದಿ (features[0].end   != HB_FEATURE_GLOBAL_END)
 	features[0].end   = 2;
     }
   }
-  this->shaper_func = nullptr;
-  this->shaper_name = nullptr;
+  ಏತತ್->shaper_func = nullptr;
+  ಏತತ್->shaper_name = nullptr;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!this->ot.init (face, coords, num_coords)))
-    goto bail;
+  ಯದಿ (unlikely (!ಏತತ್->ot.init (face, coords, ಅಂಕೆ_coords)))
+    ಗಚ್ಛ bail;
 #endif
 
   /*
@@ -113,75 +113,75 @@ hb_shape_plan_key_t::init (bool                           copy,
 
 #define HB_SHAPER_PLAN(shaper) \
 	HB_STMT_START { \
-	  if (face->data.shaper) \
+	  ಯದಿ (face->data.shaper) \
 	  { \
-	    this->shaper_func = _hb_##shaper##_shape; \
-	    this->shaper_name = #shaper; \
-	    return true; \
+	    ಏತತ್->shaper_func = _hb_##shaper##_shape; \
+	    ಏತತ್->shaper_name = #shaper; \
+	    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ; \
 	  } \
 	} HB_STMT_END
 
-  if (unlikely (shaper_list))
+  ಯದಿ (unlikely (shaper_list))
   {
-    for (; *shaper_list; shaper_list++)
-      if (false)
+    ಪ್ರತಿ (; *shaper_list; shaper_list++)
+      ಯದಿ (ಅಸತ್ಯ)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (0 == strcmp (*shaper_list, #shaper)) \
+      ಅನ್ಯಥಾ ಯದಿ (0 == strcmp (*shaper_list, #shaper)) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper-list.hh"
 
 #undef HB_SHAPER_IMPLEMENT
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    const HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    for (unsigned int i = 0; i < HB_SHAPERS_COUNT; i++)
-      if (false)
+    ಧ್ರುವ HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < HB_SHAPERS_ಎಣಿಕೆ; i++)
+      ಯದಿ (ಅಸತ್ಯ)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (shapers[i].func == _hb_##shaper##_shape) \
+      ಅನ್ಯಥಾ ಯದಿ (shapers[i].func == _hb_##shaper##_shape) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
   }
 #undef HB_SHAPER_PLAN
 
 bail:
 #ifndef HB_NO_OT_SHAPE
-  this->ot.fini ();
+  ಏತತ್->ot.fini ();
 #endif
   ::hb_free (features);
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-bool
-hb_shape_plan_key_t::user_features_match (const hb_shape_plan_key_t *other)
+ತಾರ್ಕಿಕ
+hb_shape_plan_ಕೀಲಿ_t::user_features_match (ಧ್ರುವ hb_shape_plan_ಕೀಲಿ_t *other)
 {
-  if (this->num_user_features != other->num_user_features)
-    return false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  ಯದಿ (ಏತತ್->ಅಂಕೆ_user_features != other->ಅಂಕೆ_user_features)
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಅಂಕೆ_user_features; i++)
   {
-    if (this->user_features[i].tag   != other->user_features[i].tag   ||
-	this->user_features[i].value != other->user_features[i].value ||
-	(this->user_features[i].start == HB_FEATURE_GLOBAL_START &&
-	 this->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
+    ಯದಿ (ಏತತ್->user_features[i].tag   != other->user_features[i].tag   ||
+	ಏತತ್->user_features[i].value != other->user_features[i].value ||
+	(ಏತತ್->user_features[i].start == HB_FEATURE_GLOBAL_START &&
+	 ಏತತ್->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
 	(other->user_features[i].start == HB_FEATURE_GLOBAL_START &&
 	 other->user_features[i].end   == HB_FEATURE_GLOBAL_END))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-bool
-hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
+ತಾರ್ಕಿಕ
+hb_shape_plan_ಕೀಲಿ_t::equal (ಧ್ರುವ hb_shape_plan_ಕೀಲಿ_t *other)
 {
-  return hb_segment_properties_equal (&this->props, &other->props) &&
-	 this->user_features_match (other) &&
+  ಪ್ರತ್ಯಾಗಮ hb_segment_properties_equal (&ಏತತ್->props, &other->props) &&
+	 ಏತತ್->user_features_match (other) &&
 #ifndef HB_NO_OT_SHAPE
-	 this->ot.equal (&other->ot) &&
+	 ಏತತ್->ot.equal (&other->ot) &&
 #endif
-	 this->shaper_func == other->shaper_func;
+	 ಏತತ್->shaper_func == other->shaper_func;
 }
 
 
@@ -207,13 +207,13 @@ hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
  **/
 hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list)
+		      ಧ್ರುವ hb_segment_properties_t *props,
+		      ಧ್ರುವ hb_feature_t            *user_features,
+		      unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+		      ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list)
 {
-  return hb_shape_plan_create2 (face, props,
-				user_features, num_user_features,
+  ಪ್ರತ್ಯಾಗಮ hb_shape_plan_create2 (face, props,
+				user_features, ಅಂಕೆ_user_features,
 				nullptr, 0,
 				shaper_list);
 }
@@ -238,50 +238,50 @@ hb_shape_plan_create (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list)
+		       ಧ್ರುವ hb_segment_properties_t *props,
+		       ಧ್ರುವ hb_feature_t            *user_features,
+		       unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+		       ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ                     *coords,
+		       unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_coords,
+		       ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_ಸಂದೇಶ_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u num_coords=%u shaper_list=%p",
 		  face,
-		  num_user_features,
-		  num_coords,
+		  ಅಂಕೆ_user_features,
+		  ಅಂಕೆ_coords,
 		  shaper_list);
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
-    return hb_shape_plan_get_empty ();
+  ಯದಿ (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
+    ಪ್ರತ್ಯಾಗಮ hb_shape_plan_get_empty ();
 
   hb_shape_plan_t *shape_plan;
 
-  if (unlikely (!props))
-    goto bail;
-  if (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
-    goto bail;
+  ಯದಿ (unlikely (!props))
+    ಗಚ್ಛ bail;
+  ಯದಿ (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
+    ಗಚ್ಛ bail;
 
-  if (unlikely (!face))
+  ಯದಿ (unlikely (!face))
     face = hb_face_get_empty ();
   hb_face_make_immutable (face);
   shape_plan->face_unsafe = face;
 
-  if (unlikely (!shape_plan->key.init (true,
+  ಯದಿ (unlikely (!shape_plan->key.init (ಸತ್ಯ,
 				       face,
 				       props,
 				       user_features,
-				       num_user_features,
+				       ಅಂಕೆ_user_features,
 				       coords,
-				       num_coords,
+				       ಅಂಕೆ_coords,
 				       shaper_list)))
-    goto bail2;
+    ಗಚ್ಛ bail2;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
-    goto bail3;
+  ಯದಿ (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
+    ಗಚ್ಛ bail3;
 #endif
 
-  return shape_plan;
+  ಪ್ರತ್ಯಾಗಮ shape_plan;
 
 #ifndef HB_NO_OT_SHAPE
 bail3:
@@ -290,7 +290,7 @@ bail3:
 bail2:
   hb_free (shape_plan);
 bail:
-  return hb_shape_plan_get_empty ();
+  ಪ್ರತ್ಯಾಗಮ hb_shape_plan_get_empty ();
 }
 
 /**
@@ -305,7 +305,7 @@ bail:
 hb_shape_plan_t *
 hb_shape_plan_get_empty ()
 {
-  return const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
+  ಪ್ರತ್ಯಾಗಮ const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
 }
 
 /**
@@ -321,7 +321,7 @@ hb_shape_plan_get_empty ()
 hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
 {
-  return hb_object_reference (shape_plan);
+  ಪ್ರತ್ಯಾಗಮ hb_object_reference (shape_plan);
 }
 
 /**
@@ -334,10 +334,10 @@ hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
  *
  * Since: 0.9.7
  **/
-void
+ಶೂನ್ಯ
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
 {
-  if (!hb_object_destroy (shape_plan)) return;
+  ಯದಿ (!hb_object_destroy (shape_plan)) ಪ್ರತ್ಯಾಗಮ;
 
   hb_free (shape_plan);
 }
@@ -358,12 +358,12 @@ hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
  **/
 hb_bool_t
 hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+			     hb_user_data_ಕೀಲಿ_t *key,
+			     ಶೂನ್ಯ *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (shape_plan, key, data, destroy, replace);
+  ಪ್ರತ್ಯಾಗಮ hb_object_set_user_data (shape_plan, key, data, destroy, replace);
 }
 
 /**
@@ -378,11 +378,11 @@ hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key)
+ಶೂನ್ಯ *
+hb_shape_plan_get_user_data (ಧ್ರುವ hb_shape_plan_t *shape_plan,
+			     hb_user_data_ಕೀಲಿ_t    *key)
 {
-  return hb_object_get_user_data (shape_plan, key);
+  ಪ್ರತ್ಯಾಗಮ hb_object_get_user_data (shape_plan, key);
 }
 
 /**
@@ -395,56 +395,56 @@ hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
  *
  * Since: 0.9.7
  **/
-const char *
+ಧ್ರುವ ವರ್ಣ *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan)
 {
-  return shape_plan->key.shaper_name;
+  ಪ್ರತ್ಯಾಗಮ shape_plan->key.shaper_name;
 }
 
 
-static bool
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
 _hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
 				 hb_font_t          *font,
 				 hb_buffer_t        *buffer,
-				 const hb_feature_t *features,
-				 unsigned int        num_features)
+				 ಧ್ರುವ hb_feature_t *features,
+				 unsigned ಪೂರ್ಣಾಙ್ಕ        ಅಂಕೆ_features)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan,
+  DEBUG_ಸಂದೇಶ_FUNC (SHAPE_PLAN, shape_plan,
 		  "num_features=%u shaper_func=%p, shaper_name=%s",
-		  num_features,
+		  ಅಂಕೆ_features,
 		  shape_plan->key.shaper_func,
 		  shape_plan->key.shaper_name);
 
-  if (unlikely (!buffer->len))
-    return true;
+  ಯದಿ (unlikely (!buffer->len))
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
-  assert (!hb_object_is_immutable (buffer));
+  ಪ್ರತಿಜ್ಞಾ (!hb_object_is_immutable (buffer));
 
   buffer->assert_unicode ();
 
-  if (unlikely (!hb_object_is_valid (shape_plan)))
-    return false;
+  ಯದಿ (unlikely (!hb_object_is_valid (shape_plan)))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  assert (shape_plan->face_unsafe == font->face);
-  assert (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
+  ಪ್ರತಿಜ್ಞಾ (shape_plan->face_unsafe == font->face);
+  ಪ್ರತಿಜ್ಞಾ (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
 
 #define HB_SHAPER_EXECUTE(shaper) \
 	HB_STMT_START { \
-	  return font->data.shaper && \
-		 _hb_##shaper##_shape (shape_plan, font, buffer, features, num_features); \
+	  ಪ್ರತ್ಯಾಗಮ font->data.shaper && \
+		 _hb_##shaper##_shape (shape_plan, font, buffer, features, ಅಂಕೆ_features); \
 	} HB_STMT_END
 
-  if (false)
+  ಯದಿ (ಅಸತ್ಯ)
     ;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-  else if (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
+  ಅನ್ಯಥಾ ಯದಿ (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
     HB_SHAPER_EXECUTE (shaper);
-#include "hb-shaper-list.hh"
+#ಅನ್ತರ್ಭಾವ "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
 #undef HB_SHAPER_EXECUTE
 
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 /**
  * hb_shape_plan_execute:
@@ -465,16 +465,16 @@ hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       ಧ್ರುವ hb_feature_t *features,
+		       unsigned ಪೂರ್ಣಾಙ್ಕ        ಅಂಕೆ_features)
 {
-  bool ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
-					      features, num_features);
+  ತಾರ್ಕಿಕ ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
+					      features, ಅಂಕೆ_features);
 
-  if (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  ಯದಿ (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
 
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 }
 
 
@@ -499,13 +499,13 @@ hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list)
+			     ಧ್ರುವ hb_segment_properties_t *props,
+			     ಧ್ರುವ hb_feature_t            *user_features,
+			     unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+			     ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list)
 {
-  return hb_shape_plan_create_cached2 (face, props,
-				       user_features, num_user_features,
+  ಪ್ರತ್ಯಾಗಮ hb_shape_plan_create_cached2 (face, props,
+				       user_features, ಅಂಕೆ_user_features,
 				       nullptr, 0,
 				       shaper_list);
 }
@@ -531,69 +531,69 @@ hb_shape_plan_create_cached (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list)
+			      ಧ್ರುವ hb_segment_properties_t *props,
+			      ಧ್ರುವ hb_feature_t            *user_features,
+			      unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_user_features,
+			      ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ                     *coords,
+			      unsigned ಪೂರ್ಣಾಙ್ಕ                   ಅಂಕೆ_coords,
+			      ಧ್ರುವ ವರ್ಣ * ಧ್ರುವ            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_ಸಂದೇಶ_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u shaper_list=%p",
 		  face,
-		  num_user_features,
+		  ಅಂಕೆ_user_features,
 		  shaper_list);
 
 retry:
-  hb_face_t::plan_node_t *cached_plan_nodes = face->shape_plans;
+  hb_face_t::plan_ಗಂಟು_t *cached_plan_nodes = face->shape_plans;
 
-  bool dont_cache = !hb_object_is_valid (face);
+  ತಾರ್ಕಿಕ dont_cache = !hb_object_is_valid (face);
 
-  if (likely (!dont_cache))
+  ಯದಿ (likely (!dont_cache))
   {
-    hb_shape_plan_key_t key;
-    if (!key.init (false,
+    hb_shape_plan_ಕೀಲಿ_t key;
+    ಯದಿ (!key.init (ಅಸತ್ಯ,
 		   face,
 		   props,
 		   user_features,
-		   num_user_features,
+		   ಅಂಕೆ_user_features,
 		   coords,
-		   num_coords,
+		   ಅಂಕೆ_coords,
 		   shaper_list))
-      return hb_shape_plan_get_empty ();
+      ಪ್ರತ್ಯಾಗಮ hb_shape_plan_get_empty ();
 
-    for (hb_face_t::plan_node_t *node = cached_plan_nodes; node; node = node->next)
-      if (node->shape_plan->key.equal (&key))
+    ಪ್ರತಿ (hb_face_t::plan_ಗಂಟು_t *node = cached_plan_nodes; node; node = node->next)
+      ಯದಿ (node->shape_plan->key.equal (&key))
       {
-	DEBUG_MSG_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
-	return hb_shape_plan_reference (node->shape_plan);
+	DEBUG_ಸಂದೇಶ_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
+	ಪ್ರತ್ಯಾಗಮ hb_shape_plan_reference (node->shape_plan);
       }
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create2 (face, props,
-						       user_features, num_user_features,
-						       coords, num_coords,
+						       user_features, ಅಂಕೆ_user_features,
+						       coords, ಅಂಕೆ_coords,
 						       shaper_list);
 
-  if (unlikely (dont_cache))
-    return shape_plan;
+  ಯದಿ (unlikely (dont_cache))
+    ಪ್ರತ್ಯಾಗಮ shape_plan;
 
-  hb_face_t::plan_node_t *node = (hb_face_t::plan_node_t *) hb_calloc (1, sizeof (hb_face_t::plan_node_t));
-  if (unlikely (!node))
-    return shape_plan;
+  hb_face_t::plan_ಗಂಟು_t *node = (hb_face_t::plan_ಗಂಟು_t *) hb_calloc (1, ಪರಿಮಾಣ (hb_face_t::plan_ಗಂಟು_t));
+  ಯದಿ (unlikely (!node))
+    ಪ್ರತ್ಯಾಗಮ shape_plan;
 
   node->shape_plan = shape_plan;
   node->next = cached_plan_nodes;
 
-  if (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
+  ಯದಿ (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
   {
     hb_shape_plan_destroy (shape_plan);
     hb_free (node);
-    goto retry;
+    ಗಚ್ಛ retry;
   }
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
+  DEBUG_ಸಂದೇಶ_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
 
-  return hb_shape_plan_reference (shape_plan);
+  ಪ್ರತ್ಯಾಗಮ hb_shape_plan_reference (shape_plan);
 }
 
 

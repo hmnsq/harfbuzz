@@ -25,71 +25,71 @@
 #ifndef HB_WASM_API_BUFFER_HH
 #define HB_WASM_API_BUFFER_HH
 
-#include "hb-wasm-api.hh"
+#ಅನ್ತರ್ಭಾವ "hb-wasm-api.hh"
 
-#include "hb-buffer.hh"
+#ಅನ್ತರ್ಭಾವ "hb-buffer.hh"
 
-namespace hb {
-namespace wasm {
+ನಾಮಾಕಾಶ hb {
+ನಾಮಾಕಾಶ wasm {
 
-static_assert (sizeof (glyph_info_t) == sizeof (hb_glyph_info_t), "");
-static_assert (sizeof (glyph_position_t) == sizeof (hb_glyph_position_t), "");
+static_assert (ಪರಿಮಾಣ (glyph_info_t) == ಪರಿಮಾಣ (hb_glyph_info_t), "");
+static_assert (ಪರಿಮಾಣ (glyph_position_t) == ಪರಿಮಾಣ (hb_glyph_position_t), "");
 
 HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
 					       ptr_d(buffer_contents_t, contents),
 					       uint32_t size)
 {
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ಯದಿ (unlikely (!contents))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (size <= contents->length)
-    return true;
+  ಯದಿ (size <= contents->length)
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 
   unsigned bytes;
-  if (hb_unsigned_mul_overflows (size, sizeof (glyph_info_t), &bytes))
-    return false;
+  ಯದಿ (hb_unsigned_mul_overflows (size, ಪರಿಮಾಣ (glyph_info_t), &bytes))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->length);
   glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->length);
 
-  if (unlikely (!info || !pos))
-    return false;
+  ಯದಿ (unlikely (!info || !pos))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   glyph_info_t *new_info = nullptr;
-  uint32_t new_inforef = module_malloc (bytes, (void **) &new_info);
+  uint32_t new_inforef = module_malloc (bytes, (ಶೂನ್ಯ **) &new_info);
   glyph_position_t *new_pos = nullptr;
-  uint32_t new_posref = module_malloc (bytes, (void **) &new_pos);
+  uint32_t new_posref = module_malloc (bytes, (ಶೂನ್ಯ **) &new_pos);
 
-  unsigned old_bytes = contents->length * sizeof (glyph_info_t);
-  if (likely (new_inforef))
+  unsigned old_bytes = contents->length * ಪರಿಮಾಣ (glyph_info_t);
+  ಯದಿ (likely (new_inforef))
   {
     hb_memcpy (new_info, info, old_bytes);
     module_free (contents->info);
     contents->info = new_inforef;
   }
-  if (likely (new_posref))
+  ಯದಿ (likely (new_posref))
   {
     hb_memcpy (new_pos, pos, old_bytes);
     module_free (contents->pos);
     contents->pos = new_posref;
   }
 
-  if (likely (new_info && new_pos))
+  ಯದಿ (likely (new_info && new_pos))
   {
     contents->length = size;
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ಶೂನ್ಯ, buffer_contents_free) (HB_WASM_EXEC_ENV
 					  ptr_d(buffer_contents_t, contents))
 {
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return;
+  ಯದಿ (unlikely (!contents))
+    ಪ್ರತ್ಯಾಗಮ;
 
   module_free (contents->info);
   module_free (contents->pos);
@@ -105,81 +105,81 @@ HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ಯದಿ (unlikely (!contents))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (buffer->have_output)
-    buffer->sync ();
-  if (!buffer->have_positions)
+  ಯದಿ (buffer->have_output)
+    buffer->ಸಮಕಾಲ ();
+  ಯದಿ (!buffer->have_positions)
     buffer->clear_positions ();
 
   unsigned length = buffer->len;
 
-  if (length <= contents->length)
+  ಯದಿ (length <= contents->length)
   {
     glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, length);
     glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, length);
 
-    if (unlikely (!info || !pos))
+    ಯದಿ (unlikely (!info || !pos))
     {
       contents->length = 0;
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
 
-    unsigned bytes = length * sizeof (hb_glyph_info_t);
+    unsigned bytes = length * ಪರಿಮಾಣ (hb_glyph_info_t);
     hb_memcpy (info, buffer->info, bytes);
     hb_memcpy (pos, buffer->pos, bytes);
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
   module_free (contents->info);
   module_free (contents->pos);
 
   contents->length = length;
-  unsigned bytes = length * sizeof (hb_glyph_info_t);
-  contents->info = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->info, bytes);
-  contents->pos = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->pos, bytes);
+  unsigned bytes = length * ಪರಿಮಾಣ (hb_glyph_info_t);
+  contents->info = wasm_runtime_module_dup_data (module_inst, (ಧ್ರುವ ವರ್ಣ *) buffer->info, bytes);
+  contents->pos = wasm_runtime_module_dup_data (module_inst, (ಧ್ರುವ ವರ್ಣ *) buffer->pos, bytes);
 
-  if (length && (!contents->info || !contents->pos))
+  ಯದಿ (length && (!contents->info || !contents->pos))
   {
     contents->length = 0;
-    return false;
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
 					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents))
+					   ptr_d(ಧ್ರುವ buffer_contents_t, contents))
 {
   HB_REF2OBJ (buffer);
   HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  ಯದಿ (unlikely (!contents))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   unsigned length = contents->length;
   unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (buffer->info[0]), &bytes)))
-    return false;
+  ಯದಿ (unlikely (hb_unsigned_mul_overflows (length, ಪರಿಮಾಣ (buffer->info[0]), &bytes)))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
   glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, bytes) ? addr_app_to_native (contents->info) : nullptr);
   glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, bytes) ? addr_app_to_native (contents->pos) : nullptr);
-  if (unlikely (!info || !pos))
-    return false;
+  ಯದಿ (unlikely (!info || !pos))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (unlikely (!buffer->resize (length)))
-    return false;
+  ಯದಿ (unlikely (!buffer->resize (length)))
+    ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  if (!buffer->have_positions)
+  ಯದಿ (!buffer->have_positions)
     buffer->clear_positions (); /* This is wasteful. */
 
   hb_memcpy (buffer->info, info, bytes);
   hb_memcpy (buffer->pos, pos, bytes);
   buffer->len = length;
 
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
@@ -187,7 +187,7 @@ HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
 
-  return (direction_t) hb_buffer_get_direction (buffer);
+  ಪ್ರತ್ಯಾಗಮ (direction_t) hb_buffer_get_direction (buffer);
 }
 
 HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
@@ -195,10 +195,10 @@ HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (buffer);
 
-  return hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
+  ಪ್ರತ್ಯಾಗಮ hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
 }
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
+HB_WASM_API (ಶೂನ್ಯ, buffer_reverse) (HB_WASM_EXEC_ENV
 				    ptr_d(buffer_t, buffer))
 {
   HB_REF2OBJ (buffer);
@@ -206,7 +206,7 @@ HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
   hb_buffer_reverse (buffer);
 }
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
+HB_WASM_API (ಶೂನ್ಯ, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
 					     ptr_d(buffer_t, buffer))
 {
   HB_REF2OBJ (buffer);

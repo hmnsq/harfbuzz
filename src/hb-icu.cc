@@ -27,7 +27,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifdef HAVE_ICU
 
@@ -36,18 +36,18 @@
 // https://github.com/harfbuzz/harfbuzz/issues/4915
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 
-#include "hb-icu.h"
+#ಅನ್ತರ್ಭಾವ "hb-icu.h"
 
-#include "hb-machinery.hh"
+#ಅನ್ತರ್ಭಾವ "hb-machinery.hh"
 
-#include <unicode/uchar.h>
-#include <unicode/unorm2.h>
-#include <unicode/ustring.h>
-#include <unicode/utf16.h>
-#include <unicode/uversion.h>
+#ಅನ್ತರ್ಭಾವ <unicode/uchar.h>
+#ಅನ್ತರ್ಭಾವ <unicode/unorm2.h>
+#ಅನ್ತರ್ಭಾವ <unicode/ustring.h>
+#ಅನ್ತರ್ಭಾವ <unicode/utf16.h>
+#ಅನ್ತರ್ಭಾವ <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
+#ಯದಿ U_ICU_VERSION_MAJOR_ಅಂಕೆ < 65 && (defined(__GNUC__) || defined(__clang__))
 #define HB_ICU_EXTRA_SEMI_IGNORED
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #endif
@@ -78,10 +78,10 @@
 hb_script_t
 hb_icu_script_to_script (UScriptCode script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  ಯದಿ (unlikely (script == USCRIPT_INVALID_CODE))
+    ಪ್ರತ್ಯಾಗಮ HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  ಪ್ರತ್ಯಾಗಮ hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -99,155 +99,155 @@ hb_icu_script_from_script (hb_script_t script)
 {
   UScriptCode out = USCRIPT_INVALID_CODE;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  ಯದಿ (unlikely (script == HB_SCRIPT_INVALID))
+    ಪ್ರತ್ಯಾಗಮ out;
 
   UErrorCode icu_err = U_ZERO_ERROR;
-  const unsigned char buf[5] = {HB_UNTAG (script), 0};
-  uscript_getCode ((const char *) buf, &out, 1, &icu_err);
+  ಧ್ರುವ unsigned ವರ್ಣ buf[5] = {HB_UNTAG (script), 0};
+  uscript_getCode ((ಧ್ರುವ ವರ್ಣ *) buf, &out, 1, &icu_err);
 
-  return out;
+  ಪ್ರತ್ಯಾಗಮ out;
 }
 
 
-static hb_unicode_combining_class_t
+ಸ್ಥಿರ hb_unicode_combining_class_t
 hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				hb_codepoint_t      unicode,
-				void               *user_data HB_UNUSED)
+				ಶೂನ್ಯ               *user_data HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  ಪ್ರತ್ಯಾಗಮ (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
-static hb_unicode_general_category_t
+ಸ್ಥಿರ hb_unicode_general_category_t
 hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 ಶೂನ್ಯ               *user_data HB_UNUSED)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  ವಿಕಲ್ಪ (u_get_Int_Property_ಮೌಲ್ಯ(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  ಪಕ್ಷ U_UNASSIGNED:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  ಪಕ್ಷ U_UPPERCASE_LETTER:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  ಪಕ್ಷ U_LOWERCASE_LETTER:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  ಪಕ್ಷ U_TITLECASE_LETTER:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  ಪಕ್ಷ U_MODIFIER_LETTER:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  ಪಕ್ಷ U_OTHER_LETTER:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  ಪಕ್ಷ U_NON_SPACING_MARK:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  ಪಕ್ಷ U_ENCLOSING_MARK:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  ಪಕ್ಷ U_COMBINING_SPACING_MARK:	ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  ಪಕ್ಷ U_DECIMAL_DIGIT_ಸಂಖ್ಯೆ:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_DECIMAL_ಸಂಖ್ಯೆ;
+  ಪಕ್ಷ U_LETTER_ಸಂಖ್ಯೆ:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_LETTER_ಸಂಖ್ಯೆ;
+  ಪಕ್ಷ U_OTHER_ಸಂಖ್ಯೆ:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_OTHER_ಸಂಖ್ಯೆ;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  ಪಕ್ಷ U_SPACE_SEPARATOR:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  ಪಕ್ಷ U_ಸಾಲು_SEPARATOR:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_ಸಾಲು_SEPARATOR;
+  ಪಕ್ಷ U_PARAGRAPH_SEPARATOR:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  ಪಕ್ಷ U_CONTROL_CHAR:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  ಪಕ್ಷ U_FORMAT_CHAR:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  ಪಕ್ಷ U_PRIVATE_USE_CHAR:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
+  ಪಕ್ಷ U_SURROGATE:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  ಪಕ್ಷ U_DASH_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  ಪಕ್ಷ U_START_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  ಪಕ್ಷ U_END_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  ಪಕ್ಷ U_CONNECTOR_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  ಪಕ್ಷ U_OTHER_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  ಪಕ್ಷ U_MATH_ಚಿಹ್ನೆ:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_MATH_ಚಿಹ್ನೆ;
+  ಪಕ್ಷ U_CURRENCY_ಚಿಹ್ನೆ:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_CURRENCY_ಚಿಹ್ನೆ;
+  ಪಕ್ಷ U_MODIFIER_ಚಿಹ್ನೆ:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_MODIFIER_ಚಿಹ್ನೆ;
+  ಪಕ್ಷ U_OTHER_ಚಿಹ್ನೆ:			ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_OTHER_ಚಿಹ್ನೆ;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  ಪಕ್ಷ U_INITIAL_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  ಪಕ್ಷ U_FINAL_PUNCTUATION:		ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  ಪ್ರತ್ಯಾಗಮ HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
-static hb_codepoint_t
+ಸ್ಥಿರ hb_codepoint_t
 hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  ಶೂನ್ಯ               *user_data HB_UNUSED)
 {
-  return u_charMirror(unicode);
+  ಪ್ರತ್ಯಾಗಮ u_charMirror(unicode);
 }
 
-static hb_script_t
+ಸ್ಥಿರ hb_script_t
 hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		       hb_codepoint_t      unicode,
-		       void               *user_data HB_UNUSED)
+		       ಶೂನ್ಯ               *user_data HB_UNUSED)
 {
   UErrorCode status = U_ZERO_ERROR;
   UScriptCode scriptCode = uscript_getScript(unicode, &status);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  ಯದಿ (unlikely (U_FAILURE (status)))
+    ಪ್ರತ್ಯಾಗಮ HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  ಪ್ರತ್ಯಾಗಮ hb_icu_script_to_script (scriptCode);
 }
 
-static hb_bool_t
+ಸ್ಥಿರ hb_bool_t
 hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t      a,
 			hb_codepoint_t      b,
 			hb_codepoint_t     *ab,
-			void               *user_data)
+			ಶೂನ್ಯ               *user_data)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ಧ್ರುವ UNormalizer2 *normalizer = (ಧ್ರುವ UNormalizer2 *) user_data;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  ಯದಿ (ret < 0) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   *ab = ret;
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-static hb_bool_t
+ಸ್ಥಿರ hb_bool_t
 hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      ab,
 			  hb_codepoint_t     *a,
 			  hb_codepoint_t     *b,
-			  void               *user_data)
+			  ಶೂನ್ಯ               *user_data)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ಧ್ರುವ UNormalizer2 *normalizer = (ಧ್ರುವ UNormalizer2 *) user_data;
   UChar decomposed[4];
-  int len;
+  ಪೂರ್ಣಾಙ್ಕ len;
   UErrorCode icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
 				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+  ಯದಿ (U_FAILURE (icu_err) || len < 0) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-  len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  len = u_ಎಣಿಕೆ_Char32 (decomposed, len);
+  ಯದಿ (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    ಪ್ರತ್ಯಾಗಮ *a != ab;
   }
-  else if (len == 2)
+  ಅನ್ಯಥಾ ಯದಿ (len == 2)
   {
     len = 0;
     U16_NEXT_UNSAFE (decomposed, len, *a);
     U16_NEXT_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
 
-static inline void free_static_icu_funcs ();
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ free_static_icu_funcs ();
 
-static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
+ಸ್ಥಿರ ಸಂರಚನಾ hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  ಸ್ಥಿರ hb_unicode_funcs_t *create ()
   {
-    void *user_data = nullptr;
+    ಶೂನ್ಯ *user_data = nullptr;
     UErrorCode icu_err = U_ZERO_ERROR;
-    user_data = (void *) unorm2_getNFCInstance (&icu_err);
-    assert (user_data);
+    user_data = (ಶೂನ್ಯ *) unorm2_getNFCInstance (&icu_err);
+    ಪ್ರತಿಜ್ಞಾ (user_data);
 
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -262,12 +262,12 @@ static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    ಪ್ರತ್ಯಾಗಮ funcs;
   }
 } static_icu_funcs;
 
-static inline
-void free_static_icu_funcs ()
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ
+ಶೂನ್ಯ free_static_icu_funcs ()
 {
   static_icu_funcs.free_instance ();
 }
@@ -285,9 +285,9 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  ಪ್ರತ್ಯಾಗಮ static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic ತೆಗೆ
 
 #endif

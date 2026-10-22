@@ -28,15 +28,15 @@
 #ifndef HB_SET_HH
 #define HB_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-set-invertible.hh"
-#include "hb-bit-vector.hh" // Just to include
+#ಅನ್ತರ್ಭಾವ "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb-bit-set-invertible.hh"
+#ಅನ್ತರ್ಭಾವ "hb-bit-vector.hh" // Just to include
 
 
 template <typename impl_t>
-struct hb_sparseset_t
+ಸಂರಚನಾ hb_sparseset_t
 {
-  static constexpr bool realloc_move = true;
+  ಸ್ಥಿರ constexpr ತಾರ್ಕಿಕ realloc_move = ಸತ್ಯ;
 
   hb_object_header_t header;
   impl_t s;
@@ -44,157 +44,157 @@ struct hb_sparseset_t
   hb_sparseset_t () { init (); }
   ~hb_sparseset_t () { fini (); }
 
-  hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
+  hb_sparseset_t (ಧ್ರುವ hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
-  friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
+  hb_sparseset_t& operator = (ಧ್ರುವ hb_sparseset_t& other) { set (other); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  friend ಶೂನ್ಯ swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
+    ಪ್ರತಿ (auto&& item : lst)
       add (item);
   }
   template <typename Iterable,
            hb_requires (hb_is_iterable (Iterable))>
-  hb_sparseset_t (const Iterable &o) : hb_sparseset_t ()
+  hb_sparseset_t (ಧ್ರುವ Iterable &o) : hb_sparseset_t ()
   {
-    hb_copy (o, *this);
+    hb_copy (o, *ಏತತ್);
   }
 
-  void init ()
+  ಶೂನ್ಯ init ()
   {
-    hb_object_init (this);
+    hb_object_init (ಏತತ್);
     s.init ();
   }
-  void fini ()
+  ಶೂನ್ಯ fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (ಏತತ್);
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator ತಾರ್ಕಿಕ () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ !is_empty (); }
 
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  ಶೂನ್ಯ err () { s.err (); }
+  ತಾರ್ಕಿಕ in_error () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.in_error (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset () { s.reset (); }
-  void clear () { s.clear (); }
-  void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  ಶೂನ್ಯ alloc (unsigned sz) { s.alloc (sz); }
+  ಶೂನ್ಯ reset () { s.reset (); }
+  ಶೂನ್ಯ clear () { s.clear (); }
+  ಶೂನ್ಯ invert () { s.invert (); }
+  ತಾರ್ಕಿಕ is_inverted () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.is_inverted (); }
+  ತಾರ್ಕಿಕ is_empty () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.is_empty (); }
+  uint32_t hash () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.hash (); }
 
-  void add (hb_codepoint_t g) { s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  ಶೂನ್ಯ add (hb_codepoint_t g) { s.add (g); }
+  ಶೂನ್ಯ add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
+  ತಾರ್ಕಿಕ add_range (hb_codepoint_t first, hb_codepoint_t last) { ಪ್ರತ್ಯಾಗಮ s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
+  ಶೂನ್ಯ add_array (ಧ್ರುವ T *array, unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ, unsigned ಪೂರ್ಣಾಙ್ಕ stride=ಪರಿಮಾಣ(T))
+  { s.add_array (array, ಎಣಿಕೆ, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ಶೂನ್ಯ add_array (ಧ್ರುವ hb_array_t<ಧ್ರುವ T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  ತಾರ್ಕಿಕ add_sorted_array (ಧ್ರುವ T *array, unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ, unsigned ಪೂರ್ಣಾಙ್ಕ stride=ಪರಿಮಾಣ(T))
+  { ಪ್ರತ್ಯಾಗಮ s.add_sorted_array (array, ಎಣಿಕೆ, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  ತಾರ್ಕಿಕ add_sorted_array (ಧ್ರುವ hb_sorted_array_t<ಧ್ರುವ T>& arr) { ಪ್ರತ್ಯಾಗಮ add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
+  ಶೂನ್ಯ del (hb_codepoint_t g) { s.del (g); }
+  ಶೂನ್ಯ del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  ತಾರ್ಕಿಕ get (hb_codepoint_t g) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.get (g); }
+  ತಾರ್ಕಿಕ may_have (hb_codepoint_t g) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  ತಾರ್ಕಿಕ operator [] (hb_codepoint_t k) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ get (k); }
+  ತಾರ್ಕಿಕ has (hb_codepoint_t k) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ (*ಏತತ್)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  ತಾರ್ಕಿಕ operator () (hb_codepoint_t k) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  hb_sparseset_t& operator << (ಧ್ರುವ hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
 
-  bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  ತಾರ್ಕಿಕ may_intersect (ಧ್ರುವ hb_sparseset_t &other) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.may_intersect (other.s); }
 
-  bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  ತಾರ್ಕಿಕ intersects (ಧ್ರುವ hb_sparseset_t &other) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.intersects (other.s); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  ತಾರ್ಕಿಕ intersects (hb_codepoint_t first, hb_codepoint_t last) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.intersects (first, last); }
 
-  void set (const hb_sparseset_t &other) { s.set (other.s); }
+  ಶೂನ್ಯ set (ಧ್ರುವ hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  ತಾರ್ಕಿಕ is_equal (ಧ್ರುವ hb_sparseset_t &other) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.is_equal (other.s); }
+  ತಾರ್ಕಿಕ operator == (ಧ್ರುವ hb_set_t &other) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ is_equal (other); }
+  ತಾರ್ಕಿಕ operator != (ಧ್ರುವ hb_set_t &other) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  ತಾರ್ಕಿಕ is_subset (ಧ್ರುವ hb_sparseset_t &larger_set) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.is_subset (larger_set.s); }
 
-  void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
-  void intersect (const hb_sparseset_t &other,
+  ಶೂನ್ಯ union_ (ಧ್ರುವ hb_sparseset_t &other) { s.union_ (other.s); }
+  ಶೂನ್ಯ intersect (ಧ್ರುವ hb_sparseset_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { s.intersect (other.s, workspace); }
-  void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
-  void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
+  ಶೂನ್ಯ subtract (ಧ್ರುವ hb_sparseset_t &other) { s.subtract (other.s); }
+  ಶೂನ್ಯ symmetric_difference (ಧ್ರುವ hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  ತಾರ್ಕಿಕ next (hb_codepoint_t *codepoint) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.next (codepoint); }
+  ತಾರ್ಕಿಕ next_bits (hb_codepoint_t *codepoint, uint64_t *bits) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.next_bits (codepoint, bits); }
+  ತಾರ್ಕಿಕ previous (hb_codepoint_t *codepoint) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.previous (codepoint); }
+  ತಾರ್ಕಿಕ next_range (hb_codepoint_t *first, hb_codepoint_t *last) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.next_range (first, last); }
+  ತಾರ್ಕಿಕ previous_range (hb_codepoint_t *first, hb_codepoint_t *last) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.previous_range (first, last); }
+  unsigned ಪೂರ್ಣಾಙ್ಕ next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned ಪೂರ್ಣಾಙ್ಕ size) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_population () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.get_population (); }
+  ತಾರ್ಕಿಕ get_singleton (hb_codepoint_t *codepoint) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.get_min (); }
+  hb_codepoint_t get_max () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ s.get_max (); }
 
-  static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
+  ಸ್ಥಿರ constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
   /*
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ iter_t (ಏತತ್->s); }
+  operator iter_t () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+ಸಂರಚನಾ hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
 {
   using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
 
-  ~hb_set_t () = default;
+  ~hb_set_t () = ಸ್ವಭಾವ;
   hb_set_t () : sparseset () {};
-  hb_set_t (const hb_set_t &o) : sparseset ((sparseset &) o) {};
+  hb_set_t (ಧ್ರುವ hb_set_t &o) : sparseset ((sparseset &) o) {};
   hb_set_t (hb_set_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
-  hb_set_t& operator = (const hb_set_t&) = default;
-  hb_set_t& operator = (hb_set_t&&) = default;
+  hb_set_t& operator = (ಧ್ರುವ hb_set_t&) = ಸ್ವಭಾವ;
+  hb_set_t& operator = (hb_set_t&&) = ಸ್ವಭಾವ;
   hb_set_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_set_t (const Iterable &o) : sparseset (o) {}
+  hb_set_t (ಧ್ರುವ Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
-  hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (v); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
+  hb_set_t& operator << (ಧ್ರುವ hb_codepoint_pair_t& range)
+  { sparseset::operator<< (range); ಪ್ರತ್ಯಾಗಮ *ಏತತ್; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_set_t::INVALID == HB_SET_ಮೌಲ್ಯ_INVALID, "");
 
 
 #endif /* HB_SET_HH */

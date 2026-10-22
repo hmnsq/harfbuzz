@@ -1,16 +1,16 @@
 #ifndef OT_LAYOUT_GPOS_MARKMARKPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_MARKMARKPOSFORMAT1_HH
 
-#include "MarkMarkPosFormat1.hh"
+#ಅನ್ತರ್ಭಾವ "MarkMarkPosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GPOS_impl {
 
 template <typename Types>
-struct MarkMarkPosFormat1_2
+ಸಂರಚನಾ MarkMarkPosFormat1_2
 {
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 mark1Coverage;          /* Offset to Combining Mark1 Coverage
@@ -20,139 +20,139 @@ struct MarkMarkPosFormat1_2
                 mark2Coverage;          /* Offset to Combining Mark2 Coverage
                                          * table--from beginning of MarkMarkPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
+  HBUINT16      class_ಎಣಿಕೆ_2;             /* Number of defined mark classes */
   typename Types::template LOffsetTo<MarkArray<Types>>
                 mark1Array;             /* Offset to Mark1Array table--from
                                          * beginning of MarkMarkPos subtable */
   typename Types::template LOffsetTo<AnchorMatrix<Types, HBUINT16>>
                 mark2Array;             /* Offset to Mark2Array table--from
                                          * beginning of MarkMarkPos subtable */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  mark1Coverage.sanitize (c, this) &&
-                  mark2Coverage.sanitize (c, this) &&
-                  mark1Array.sanitize (c, this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
+                  mark1Coverage.sanitize (c, ಏತತ್) &&
+                  mark2Coverage.sanitize (c, ಏತತ್) &&
+                  mark1Array.sanitize (c, ಏತತ್) &&
 		  hb_barrier () &&
-                  mark2Array.sanitize (c, this, (unsigned int) classCount));
+                  mark2Array.sanitize (c, ಏತತ್, (unsigned ಪೂರ್ಣಾಙ್ಕ) class_ಎಣಿಕೆ_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ತಾರ್ಕಿಕ intersects (ಧ್ರುವ hb_set_t *glyphs) ಧ್ರುವ
   {
-    return (this+mark1Coverage).intersects (glyphs) &&
-           (this+mark2Coverage).intersects (glyphs);
+    ಪ್ರತ್ಯಾಗಮ (ಏತತ್+mark1Coverage).intersects (glyphs) &&
+           (ಏತತ್+mark2Coverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ಶೂನ್ಯ closure_lookups (hb_closure_lookups_context_t *c) ಧ್ರುವ {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ಶೂನ್ಯ collect_variation_indices (hb_collect_variation_indices_context_t *c) ಧ್ರುವ
   {
-    (this+mark1Array).collect_variation_indices (c, this+mark1Coverage);
+    (ಏತತ್+mark1Array).collect_variation_indices (c, ಏತತ್+mark1Coverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, *c->glyph_set, &klass_mapping);
+    Markclass_closure_and_remap_indexes (ಏತತ್+mark1Coverage, ಏತತ್+mark1Array, *c->glyph_set, &klass_mapping);
 
     hb_sorted_vector_t<unsigned> mark2_indexes;
-    collect_anchor_indexes (this+mark2Coverage, (this+mark2Array).rows,
-                            classCount, *c->glyph_set, klass_mapping,
+    collect_anchor_indexes (ಏತತ್+mark2Coverage, (ಏತತ್+mark2Array).rows,
+                            class_ಎಣಿಕೆ_2, *c->glyph_set, klass_mapping,
                             mark2_indexes);
-    (this+mark2Array).collect_variation_indices (c, mark2_indexes.iter ());
+    (ಏತತ್+mark2Array).collect_variation_indices (c, mark2_indexes.iter ());
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ಶೂನ್ಯ collect_glyphs (hb_collect_glyphs_context_t *c) ಧ್ರುವ
   {
-    if (unlikely (!(this+mark1Coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+mark2Coverage).collect_coverage (c->input))) return;
+    ಯದಿ (unlikely (!(ಏತತ್+mark1Coverage).collect_coverage (c->ಒಳಹರಿವು))) ಪ್ರತ್ಯಾಗಮ;
+    ಯದಿ (unlikely (!(ಏತತ್+mark2Coverage).collect_coverage (c->ಒಳಹರಿವು))) ಪ್ರತ್ಯಾಗಮ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+mark2Coverage).collect_coverage (digest); }
+  ಶೂನ್ಯ collect_second_glyphs (hb_set_digest_t *digest) ಧ್ರುವ
+  { (ಏತತ್+mark2Coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+mark1Coverage; }
+  ಧ್ರುವ Coverage &get_coverage () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ ಏತತ್+mark1Coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ತಾರ್ಕಿಕ apply (hb_ot_apply_context_t *c) ಧ್ರುವ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ಏತತ್);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int mark1_index = (this+mark1Coverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark1_index == NOT_COVERED)) return_trace (false);
+    unsigned ಪೂರ್ಣಾಙ್ಕ mark1_index = (ಏತತ್+mark1Coverage).get_coverage  (buffer->cur().codepoint);
+    ಯದಿ (likely (mark1_index == NOT_COVERED)) return_trace (ಅಸತ್ಯ);
 
     /* now we search backwards for a suitable mark glyph until a non-mark glyph */
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_ಒಳಹರಿವು;
     skippy_iter.reset_fast (buffer->idx);
     skippy_iter.set_lookup_props (c->lookup_props & ~(uint32_t)LookupFlag::IgnoreFlags);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    ಯದಿ (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
     }
 
-    if (likely (!_hb_glyph_info_is_mark (&buffer->info[skippy_iter.idx])))
+    ಯದಿ (likely (!_hb_glyph_info_is_mark (&buffer->info[skippy_iter.idx])))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
     }
 
-    unsigned int j = skippy_iter.idx;
+    unsigned ಪೂರ್ಣಾಙ್ಕ j = skippy_iter.idx;
 
-    unsigned int id1 = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int id2 = _hb_glyph_info_get_lig_id (&buffer->info[j]);
-    unsigned int comp1 = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    unsigned int comp2 = _hb_glyph_info_get_lig_comp (&buffer->info[j]);
+    unsigned ಪೂರ್ಣಾಙ್ಕ id1 = _hb_glyph_info_get_lig_id (&buffer->cur());
+    unsigned ಪೂರ್ಣಾಙ್ಕ id2 = _hb_glyph_info_get_lig_id (&buffer->info[j]);
+    unsigned ಪೂರ್ಣಾಙ್ಕ comp1 = _hb_glyph_info_get_lig_comp (&buffer->cur());
+    unsigned ಪೂರ್ಣಾಙ್ಕ comp2 = _hb_glyph_info_get_lig_comp (&buffer->info[j]);
 
-    if (likely (id1 == id2))
+    ಯದಿ (likely (id1 == id2))
     {
-      if (id1 == 0) /* Marks belonging to the same base. */
-        goto good;
-      else if (comp1 == comp2) /* Marks belonging to the same ligature component. */
-        goto good;
+      ಯದಿ (id1 == 0) /* Marks belonging to the same base. */
+        ಗಚ್ಛ good;
+      ಅನ್ಯಥಾ ಯದಿ (comp1 == comp2) /* Marks belonging to the same ligature component. */
+        ಗಚ್ಛ good;
     }
-    else
+    ಅನ್ಯಥಾ
     {
       /* If ligature ids don't match, it may be the case that one of the marks
        * itself is a ligature.  In which case match. */
-      if ((id1 > 0 && !comp1) || (id2 > 0 && !comp2))
-        goto good;
+      ಯದಿ ((id1 > 0 && !comp1) || (id2 > 0 && !comp2))
+        ಗಚ್ಛ good;
     }
 
     /* Didn't match. */
     buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-    return_trace (false);
+    return_trace (ಅಸತ್ಯ);
 
     good:
-    unsigned int mark2_index = (this+mark2Coverage).get_coverage  (buffer->info[j].codepoint);
-    if (mark2_index == NOT_COVERED)
+    unsigned ಪೂರ್ಣಾಙ್ಕ mark2_index = (ಏತತ್+mark2Coverage).get_coverage  (buffer->info[j].codepoint);
+    ಯದಿ (mark2_index == NOT_COVERED)
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
     }
 
-    return_trace ((this+mark1Array).apply (c, mark1_index, mark2_index, this+mark2Array, classCount, j));
+    return_trace ((ಏತತ್+mark1Array).apply (c, mark1_index, mark2_index, ಏತತ್+mark2Array, class_ಎಣಿಕೆ_2, j));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ಏತತ್);
+    ಧ್ರುವ hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ಧ್ರುವ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
     out->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, glyphset, &klass_mapping);
+    Markclass_closure_and_remap_indexes (ಏತತ್+mark1Coverage, ಏತತ್+mark1Array, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    ಯದಿ (!klass_mapping.get_population ()) return_trace (ಅಸತ್ಯ);
+    out->class_ಎಣಿಕೆ_2 = klass_mapping.get_population ();
 
     auto mark1_iter =
-    + hb_zip (this+mark1Coverage, this+mark1Array)
+    + hb_zip (ಏತತ್+mark1Coverage, ಏತತ್+mark1Array)
     | hb_filter (glyphset, hb_first)
     ;
 
@@ -163,27 +163,27 @@ struct MarkMarkPosFormat1_2
     | hb_sink (new_coverage)
     ;
 
-    if (!out->mark1Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    ಯದಿ (!out->mark1Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (ಅಸತ್ಯ);
 
-    if (unlikely (!out->mark1Array.serialize_subset (c, mark1Array, this,
-						     (this+mark1Coverage).iter (),
+    ಯದಿ (unlikely (!out->mark1Array.serialize_subset (c, mark1Array, ಏತತ್,
+						     (ಏತತ್+mark1Coverage).iter (),
 						     &klass_mapping)))
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
 
     new_coverage.reset ();
     hb_sorted_vector_t<unsigned> mark2_indexes;
-    const auto &mark2_array = this+mark2Array;
-    collect_subset_anchor_indexes (this+mark2Coverage, mark2_array.rows,
-                                   classCount, mark2_array.matrixZ.arrayZ,
+    ಧ್ರುವ auto &mark2_array = ಏತತ್+mark2Array;
+    collect_subset_anchor_indexes (ಏತತ್+mark2Coverage, mark2_array.rows,
+                                   class_ಎಣಿಕೆ_2, mark2_array.matrixZ.arrayZ,
                                    glyphset, glyph_map, klass_mapping,
                                    new_coverage, mark2_indexes);
 
-    if (!new_coverage) return_trace (false);
-    if (!out->mark2Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    ಯದಿ (!new_coverage) return_trace (ಅಸತ್ಯ);
+    ಯದಿ (!out->mark2Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (ಅಸತ್ಯ);
 
-    return_trace (out->mark2Array.serialize_subset (c, mark2Array, this,
+    return_trace (out->mark2Array.serialize_subset (c, mark2Array, ಏತತ್,
 						    new_coverage.length,
 						    mark2_indexes.iter ()));
 

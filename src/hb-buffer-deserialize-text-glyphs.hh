@@ -29,11 +29,11 @@
 #ifndef HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 #define HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-text-glyphs.hh"
-static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
+ಸ್ಥಿರ ಧ್ರುವ unsigned ವರ್ಣ deserialize_text_glyphs_trans_ಕೀಲಿಗಳು[] = {
 	0u, 0u, 35u, 124u, 48u, 57u, 60u, 124u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 
 	48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 62u, 62u, 
 	93u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 35u, 124u, 
@@ -43,7 +43,7 @@ static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
 	35u, 124u, 0
 };
 
-static const char _deserialize_text_glyphs_key_spans[] = {
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ deserialize_text_glyphs_ಕೀಲಿ_spans[] = {
 	0, 90, 10, 65, 13, 10, 1, 13, 
 	10, 1, 13, 10, 1, 13, 10, 1, 
 	32, 13, 10, 90, 13, 10, 90, 90, 
@@ -53,7 +53,7 @@ static const char _deserialize_text_glyphs_key_spans[] = {
 	90
 };
 
-static const short _deserialize_text_glyphs_index_offsets[] = {
+ಸ್ಥಿರ ಧ್ರುವ short _deserialize_text_glyphs_index_offsets[] = {
 	0, 0, 91, 102, 168, 182, 193, 195, 
 	209, 220, 222, 236, 247, 249, 263, 274, 
 	276, 309, 323, 334, 425, 439, 450, 541, 
@@ -63,7 +63,7 @@ static const short _deserialize_text_glyphs_index_offsets[] = {
 	1933
 };
 
-static const char _deserialize_text_glyphs_indicies[] = {
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ _deserialize_text_glyphs_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 
 	0, 2, 3, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -320,7 +320,7 @@ static const char _deserialize_text_glyphs_indicies[] = {
 	74, 0
 };
 
-static const char _deserialize_text_glyphs_trans_targs[] = {
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ _deserialize_text_glyphs_trans_targs[] = {
 	1, 2, 17, 0, 25, 28, 30, 39, 
 	47, 3, 45, 4, 47, 5, 6, 44, 
 	7, 8, 9, 43, 10, 11, 12, 42, 
@@ -336,7 +336,7 @@ static const char _deserialize_text_glyphs_trans_targs[] = {
 	47
 };
 
-static const char _deserialize_text_glyphs_trans_actions[] = {
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ _deserialize_text_glyphs_trans_actions[] = {
 	0, 1, 1, 0, 1, 1, 1, 0, 
 	1, 2, 2, 3, 3, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -352,7 +352,7 @@ static const char _deserialize_text_glyphs_trans_actions[] = {
 	14
 };
 
-static const char _deserialize_text_glyphs_eof_actions[] = {
+ಸ್ಥಿರ ಧ್ರುವ ವರ್ಣ _deserialize_text_glyphs_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -362,30 +362,30 @@ static const char _deserialize_text_glyphs_eof_actions[] = {
 	0
 };
 
-static const int deserialize_text_glyphs_start = 46;
-static const int deserialize_text_glyphs_first_final = 46;
-static const int deserialize_text_glyphs_error = 0;
+ಸ್ಥಿರ ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ deserialize_text_glyphs_start = 46;
+ಸ್ಥಿರ ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ deserialize_text_glyphs_first_final = 46;
+ಸ್ಥಿರ ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ deserialize_text_glyphs_error = 0;
 
-static const int deserialize_text_glyphs_en_main = 46;
+ಸ್ಥಿರ ಧ್ರುವ ಪೂರ್ಣಾಙ್ಕ deserialize_text_glyphs_en_main = 46;
 
 
 #line 101 "hb-buffer-deserialize-text-glyphs.rl"
 
 
-static hb_bool_t
+ಸ್ಥಿರ hb_bool_t
 _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+				    ಧ್ರುವ ವರ್ಣ *buf,
+				    unsigned ಪೂರ್ಣಾಙ್ಕ buf_len,
+				    ಧ್ರುವ ವರ್ಣ **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  ಧ್ರುವ ವರ್ಣ *p = buf, *pe = buf + buf_len, *eof = pe;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (ಶೂನ್ಯ) hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  const char *tok = nullptr;
-  int cs;
+  ಧ್ರುವ ವರ್ಣ *tok = nullptr;
+  ಪೂರ್ಣಾಙ್ಕ cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -396,85 +396,85 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 
 #line 389 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	ಪೂರ್ಣಾಙ್ಕ _slen;
+	ಪೂರ್ಣಾಙ್ಕ _trans;
+	ಧ್ರುವ unsigned ವರ್ಣ *ಕೀಲಿಗಳು_2;
+	ಧ್ರುವ ವರ್ಣ *_inds;
+	ಯದಿ ( p == pe )
+		ಗಚ್ಛ _test_eof;
+	ಯದಿ ( cs == 0 )
+		ಗಚ್ಛ _out;
 _resume:
-	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
+	ಕೀಲಿಗಳು_2 = deserialize_text_glyphs_trans_ಕೀಲಿಗಳು + (cs<<1);
 	_inds = _deserialize_text_glyphs_indicies + _deserialize_text_glyphs_index_offsets[cs];
 
-	_slen = _deserialize_text_glyphs_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_glyphs_ಕೀಲಿ_spans[cs];
+	_trans = _inds[ _slen > 0 && ಕೀಲಿಗಳು_2[0] <=(*p) &&
+		(*p) <= ಕೀಲಿಗಳು_2[1] ?
+		(*p) - ಕೀಲಿಗಳು_2[0] : _slen ];
 
 	cs = _deserialize_text_glyphs_trans_targs[_trans];
 
-	if ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
-		goto _again;
+	ಯದಿ ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
+		ಗಚ್ಛ _again;
 
-	switch ( _deserialize_text_glyphs_trans_actions[_trans] ) {
-	case 2:
+	ವಿಕಲ್ಪ ( _deserialize_text_glyphs_trans_actions[_trans] ) {
+	ಪಕ್ಷ 2:
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 1:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 1:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	ಯದಿ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
-	break;
-	case 6:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 6:
 #line 62 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 7:
+	{ ಯದಿ (!parse_uint (tok, p, &info.cluster )) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 7:
 #line 63 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 8:
+	{ ಯದಿ (!parse_int  (tok, p, &pos.x_offset )) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 8:
 #line 64 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 4:
+	{ ಯದಿ (!parse_int  (tok, p, &pos.y_offset )) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 4:
 #line 65 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 5:
+	{ ಯದಿ (!parse_int  (tok, p, &pos.x_advance)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 5:
 #line 66 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 3:
+	{ ಯದಿ (!parse_int  (tok, p, &pos.y_advance)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 3:
 #line 67 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
+	{ ಯದಿ (!parse_uint (tok, p, &info.mask    )) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ; }
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 9:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, ಪರಿಮಾಣ (info));
+	hb_memset (&pos , 0, ಪರಿಮಾಣ (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 10:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, ಪರಿಮಾಣ (info));
+	hb_memset (&pos , 0, ಪರಿಮಾಣ (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -483,61 +483,61 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	ಯದಿ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
-	break;
-	case 12:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 12:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	ಯದಿ (unlikely (!buffer->successful))
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, ಪರಿಮಾಣ (info));
+	hb_memset (&pos , 0, ಪರಿಮಾಣ (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 14:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 14:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	ಯದಿ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, ಪರಿಮಾಣ (info));
+	hb_memset (&pos , 0, ಪರಿಮಾಣ (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 13:
+	ಭಙ್ಗ;
+	ಪಕ್ಷ 13:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	ಯದಿ (unlikely (!buffer->successful))
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, ಪರಿಮಾಣ (info));
+	hb_memset (&pos , 0, ಪರಿಮಾಣ (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -546,33 +546,33 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	ಯದಿ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
-	break;
+	ಭಙ್ಗ;
 #line 523 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	ಯದಿ ( cs == 0 )
+		ಗಚ್ಛ _out;
+	ಯದಿ ( ++p != pe )
+		ಗಚ್ಛ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ಯದಿ ( p == eof )
 	{
-	switch ( _deserialize_text_glyphs_eof_actions[cs] ) {
-	case 11:
+	ವಿಕಲ್ಪ ( _deserialize_text_glyphs_eof_actions[cs] ) {
+	ಪಕ್ಷ 11:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	ಯದಿ (unlikely (!buffer->successful))
+	  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 	*end_ptr = p;
 }
-	break;
+	ಭಙ್ಗ;
 #line 542 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 	}
@@ -585,7 +585,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  ಪ್ರತ್ಯಾಗಮ p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */

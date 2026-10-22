@@ -1,18 +1,18 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOS_HH
 #define OT_LAYOUT_GPOS_PAIRPOS_HH
 
-#include "PairPosFormat1.hh"
-#include "PairPosFormat2.hh"
+#ಅನ್ತರ್ಭಾವ "PairPosFormat1.hh"
+#ಅನ್ತರ್ಭಾವ "PairPosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GPOS_impl {
 
-struct PairPos
+ಸಂರಚನಾ PairPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;         /* Format identifier */
+  ರಕ್ಷಿತ:
+  ಸಙ್ಘ {
+  ಸಂರಚನಾ { HBUINT16 v; }	format;         /* Format identifier */
   PairPosFormat1_3<SmallTypes>	format1;
   PairPosFormat2_4<SmallTypes>	format2;
 #ifndef HB_NO_BEYOND_64K
@@ -21,20 +21,20 @@ struct PairPos
 #endif
   } u;
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ಧ್ರುವ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ಯದಿ (unlikely (!c->may_dispatch (ಏತತ್, &u.format.v))) ಪ್ರತ್ಯಾಗಮ c->no_dispatch_return_ಮೌಲ್ಯ ();
+    TRACE_DISPATCH (ಏತತ್, u.format.v);
+    ವಿಕಲ್ಪ (u.format.v) {
+    ಪಕ್ಷ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    ಸ್ವಭಾವ:return_trace (c->default_return_ಮೌಲ್ಯ ());
     }
   }
 };

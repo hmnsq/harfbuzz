@@ -29,210 +29,210 @@
 #ifndef HB_OT_LAYOUT_BASE_TABLE_HH
 #define HB_OT_LAYOUT_BASE_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#ಅನ್ತರ್ಭಾವ "hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-layout-common.hh"
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
 
 /*
  * BASE -- Baseline
  * https://docs.microsoft.com/en-us/typography/opentype/spec/base
  */
 
-struct BaseCoordFormat1
+ಸಂರಚನಾ BaseCoordFormat1
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) ಧ್ರುವ
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    ಪ್ರತ್ಯಾಗಮ HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (ಏತತ್);
+    return_trace ((ತಾರ್ಕಿಕ) c->serializer->embed (*ಏತತ್));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	format;		/* Format identifier--format = 1 */
   FWORD		coordinate;	/* X or Y value, in design units */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4);
 };
 
 template <typename Types>
-struct BaseCoordFormat2_4
+ಸಂರಚನಾ BaseCoordFormat2_4
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) ಧ್ರುವ
   {
     /* TODO */
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    ಪ್ರತ್ಯಾಗಮ HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
     hb_codepoint_t *new_gid;
-    if (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
-      return_trace (false);
+    ಯದಿ (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
+      return_trace (ಅಸತ್ಯ);
 
     return_trace (c->serializer->check_assign (out->referenceGlyph,
                                                *new_gid,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	format;		/* Format identifier--format = 2 or 4 */
   FWORD		coordinate;	/* X or Y value, in design units */
   typename Types::HBGlyphID
 		referenceGlyph;	/* Glyph ID of control glyph */
   HBUINT16	coordPoint;	/* Index of contour point on the
 				 * reference glyph */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (6 + Types::HBGlyphID::static_size);
 };
 
-struct BaseCoordFormat3
+ಸಂರಚನಾ BaseCoordFormat3
 {
   hb_position_t get_coord (hb_font_t *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t direction) const
+			   ಧ್ರುವ ItemVariationStore &var_store,
+			   hb_direction_t direction) ಧ್ರುವ
   {
-    const Device &device = this+deviceTable;
+    ಧ್ರುವ Device &device = ಏತತ್+deviceTable;
 
-    return HB_DIRECTION_IS_HORIZONTAL (direction)
+    ಪ್ರತ್ಯಾಗಮ HB_DIRECTION_IS_HORIZONTAL (direction)
 	 ? hb_saturate_add (font->em_scale_y (coordinate), device.get_y_delta (font, var_store))
 	 : hb_saturate_add (font->em_scale_x (coordinate), device.get_x_delta (font, var_store));
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    unsigned varidx = (this+deviceTable).get_variation_index ();
+    unsigned varidx = (ಏತತ್+deviceTable).get_variation_index ();
     varidx_set.add (varidx);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
-    if (!c->plan->pinned_at_default)
+    ಯದಿ (!c->plan->pinned_at_default)
     {
-      unsigned var_idx = (this+deviceTable).get_variation_index ();
-      if (var_idx != VarIdx::NO_VARIATION)
+      unsigned var_idx = (ಏತತ್+deviceTable).get_variation_index ();
+      ಯದಿ (var_idx != VarIdx::NO_VARIATION)
       {
-        hb_pair_t<unsigned, int> *v;
-        if (!c->plan->base_variation_idx_map.has (var_idx, &v))
-          return_trace (false);
+        hb_pair_t<unsigned, ಪೂರ್ಣಾಙ್ಕ> *v;
+        ಯದಿ (!c->plan->base_variation_idx_map.has (var_idx, &v))
+          return_trace (ಅಸತ್ಯ);
         
-        if (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
+        ಯದಿ (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
                                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-          return_trace (false);
+          return_trace (ಅಸತ್ಯ);
       }
     }
     
     out->deviceTable.serialize_copy (c->serializer, deviceTable,
-                                     this, 0,
+                                     ಏತತ್, 0,
                                      hb_serialize_context_t::Head,
                                      &c->plan->base_variation_idx_map);
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  deviceTable.sanitize (c, this)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  deviceTable.sanitize (c, ಏತತ್)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   HBUINT16	format;		/* Format identifier--format = 3 */
   FWORD		coordinate;	/* X or Y value, in design units */
   Offset16To<Device>
 		deviceTable;	/* Offset to Device table for X or
 				 * Y value, from beginning of
 				 * BaseCoord table (may be NULL). */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseCoord
+ಸಂರಚನಾ BaseCoord
 {
-  bool has_data () const { return u.format.v; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ u.format.v; }
 
   hb_position_t get_coord (hb_font_t            *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t        direction) const
+			   ಧ್ರುವ ItemVariationStore &var_store,
+			   hb_direction_t        direction) ಧ್ರುವ
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coord (font, direction);
-    case 2: hb_barrier (); return u.format2.get_coord (font, direction);
-    case 3: hb_barrier (); return u.format3.get_coord (font, var_store, direction);
+    ವಿಕಲ್ಪ (u.format.v) {
+    ಪಕ್ಷ 1: hb_barrier (); ಪ್ರತ್ಯಾಗಮ u.format1.get_coord (font, direction);
+    ಪಕ್ಷ 2: hb_barrier (); ಪ್ರತ್ಯಾಗಮ u.format2.get_coord (font, direction);
+    ಪಕ್ಷ 3: hb_barrier (); ಪ್ರತ್ಯಾಗಮ u.format3.get_coord (font, var_store, direction);
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return u.format4.get_coord (font, direction);
+    ಪಕ್ಷ 4: hb_barrier (); ಪ್ರತ್ಯಾಗಮ u.format4.get_coord (font, direction);
 #endif
-    default:return 0;
+    ಸ್ವಭಾವ:ಪ್ರತ್ಯಾಗಮ 0;
     }
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    switch (u.format.v) {
-    case 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); return;
-    default:return;
+    ವಿಕಲ್ಪ (u.format.v) {
+    ಪಕ್ಷ 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); ಪ್ರತ್ಯಾಗಮ;
+    ಸ್ವಭಾವ:ಪ್ರತ್ಯಾಗಮ;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ಧ್ರುವ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    ಯದಿ (unlikely (!c->may_dispatch (ಏತತ್, &u.format.v))) ಪ್ರತ್ಯಾಗಮ c->no_dispatch_return_ಮೌಲ್ಯ ();
+    TRACE_DISPATCH (ಏತತ್, u.format.v);
+    ವಿಕಲ್ಪ (u.format.v) {
+    ಪಕ್ಷ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ಪಕ್ಷ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    ಸ್ವಭಾವ:return_trace (c->default_return_ಮೌಲ್ಯ ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.format.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ಏತತ್);
+    ಯದಿ (unlikely (!u.format.v.sanitize (c))) return_trace (ಅಸತ್ಯ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    ವಿಕಲ್ಪ (u.format.v) {
+    ಪಕ್ಷ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    ಪಕ್ಷ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    ಪಕ್ಷ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    ಪಕ್ಷ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (false);
+    ಸ್ವಭಾವ:return_trace (ಅಸತ್ಯ);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;
+  ರಕ್ಷಿತ:
+  ಸಙ್ಘ {
+  ಸಂರಚನಾ { HBUINT16 v; }	format;
   BaseCoordFormat1	format1;
   BaseCoordFormat2_4<Layout::SmallTypes>
 			format2;
@@ -242,56 +242,56 @@ struct BaseCoord
 			format4;
 #endif
   } u;
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct FeatMinMaxRecord
+ಸಂರಚನಾ FeatMinMaxRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_tag_t key) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ tag.cmp (key); }
 
-  bool has_data () const { return tag; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ tag; }
 
-  hb_tag_t get_feature_tag () const { return tag; }
+  hb_tag_t get_feature_tag () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ tag; }
 
-  void get_min_max (const BaseCoord **min, const BaseCoord **max) const
+  ಶೂನ್ಯ get_min_max (ಧ್ರುವ BaseCoord **min, ಧ್ರುವ BaseCoord **max) ಧ್ರುವ
   {
-    if (likely (min)) *min = &(this+minCoord);
-    if (likely (max)) *max = &(this+maxCoord);
+    ಯದಿ (likely (min)) *min = &(ಏತತ್+minCoord);
+    ಯದಿ (likely (max)) *max = &(ಏತತ್+maxCoord);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void *base,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  ಧ್ರುವ ಶೂನ್ಯ *base,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    if (!plan->layout_features.has (tag))
-      return;
+    ಯದಿ (!plan->layout_features.has (tag))
+      ಪ್ರತ್ಯಾಗಮ;
 
     (base+minCoord).collect_variation_indices (varidx_set);
     (base+maxCoord).collect_variation_indices (varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c,
+               ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, base);
+    ತಾರ್ಕಿಕ ret = out->minCoord.serialize_subset (c, minCoord, base);
     ret |= out->maxCoord.serialize_subset (c, maxCoord, base);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  minCoord.sanitize (c, base) &&
 			  maxCoord.sanitize (c, base)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Tag		tag;		/* 4-byte feature identification tag--must
 				 * match feature tag in FeatureList */
   Offset16To<BaseCoord>
@@ -302,72 +302,72 @@ struct FeatMinMaxRecord
 		maxCoord;	/* Offset to BaseCoord table that defines
 				 * the maximum extent value, from beginning
 				 * of MinMax table (may be NULL) */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MinMax
+ಸಂರಚನಾ MinMax
 {
-  void get_min_max (hb_tag_t          feature_tag,
-		    const BaseCoord **min,
-		    const BaseCoord **max) const
+  ಶೂನ್ಯ get_min_max (hb_tag_t          feature_tag,
+		    ಧ್ರುವ BaseCoord **min,
+		    ಧ್ರುವ BaseCoord **max) ಧ್ರುವ
   {
-    const FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
-    if (minMaxCoord.has_data ())
+    ಧ್ರುವ FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
+    ಯದಿ (minMaxCoord.has_data ())
       minMaxCoord.get_min_max (min, max);
-    else
+    ಅನ್ಯಥಾ
     {
-      if (likely (min)) *min = &(this+minCoord);
-      if (likely (max)) *max = &(this+maxCoord);
+      ಯದಿ (likely (min)) *min = &(ಏತತ್+minCoord);
+      ಯದಿ (likely (max)) *max = &(ಏತತ್+maxCoord);
     }
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    (this+minCoord).collect_variation_indices (varidx_set);
-    (this+maxCoord).collect_variation_indices (varidx_set);
-    for (const FeatMinMaxRecord& record : featMinMaxRecords)
-      record.collect_variation_indices (plan, this, varidx_set);
+    (ಏತತ್+minCoord).collect_variation_indices (varidx_set);
+    (ಏತತ್+maxCoord).collect_variation_indices (varidx_set);
+    ಪ್ರತಿ (ಧ್ರುವ FeatMinMaxRecord& record : featMinMaxRecords)
+      record.collect_variation_indices (plan, ಏತತ್, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, this);
-    ret |= out->maxCoord.serialize_subset (c, maxCoord, this);
+    ತಾರ್ಕಿಕ ret = out->minCoord.serialize_subset (c, minCoord, ಏತತ್);
+    ret |= out->maxCoord.serialize_subset (c, maxCoord, ಏತತ್);
 
     unsigned len = 0;
-    for (const FeatMinMaxRecord& _ : featMinMaxRecords)
+    ಪ್ರತಿ (ಧ್ರುವ FeatMinMaxRecord& _ : featMinMaxRecords)
     {
       hb_tag_t feature_tag = _.get_feature_tag ();
-      if (!c->plan->layout_features.has (feature_tag))
-        continue;
+      ಯದಿ (!c->plan->layout_features.has (feature_tag))
+        ಅನುವರ್ತ;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      ಯದಿ (!_.subset (c, ಏತತ್)) c->serializer->revert (snap);
+      ಅನ್ಯಥಾ len++;
     }
 
-    if (len > 0) ret = true;
-    if (!ret) return_trace (false);
+    ಯದಿ (len > 0) ret = ಸತ್ಯ;
+    ಯದಿ (!ret) return_trace (ಅಸತ್ಯ);
     return_trace (c->serializer->check_assign (out->featMinMaxRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  minCoord.sanitize (c, this) &&
-			  maxCoord.sanitize (c, this) &&
-			  featMinMaxRecords.sanitize (c, this)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  minCoord.sanitize (c, ಏತತ್) &&
+			  maxCoord.sanitize (c, ಏತತ್) &&
+			  featMinMaxRecords.sanitize (c, ಏತತ್)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Offset16To<BaseCoord>
 		minCoord;	/* Offset to BaseCoord table that defines
 				 * minimum extent value, from the beginning
@@ -380,50 +380,50 @@ struct MinMax
 		featMinMaxRecords;
 				/* Array of FeatMinMaxRecords, in alphabetical
 				 * order by featureTableTag */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (6, featMinMaxRecords);
 };
 
-struct BaseValues
+ಸಂರಚನಾ Base_ಮೌಲ್ಯಗಳು
 {
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
+  ಧ್ರುವ BaseCoord &get_base_coord (ಪೂರ್ಣಾಙ್ಕ baseline_tag_index) ಧ್ರುವ
   {
-    if (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
-    return this+baseCoords[baseline_tag_index];
+    ಯದಿ (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
+    ಪ್ರತ್ಯಾಗಮ ಏತತ್+baseCoords[baseline_tag_index];
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    for (const auto& _ : baseCoords)
-      (this+_).collect_variation_indices (varidx_set);
+    ಪ್ರತಿ (ಧ್ರುವ auto& _ : baseCoords)
+      (ಏತತ್+_).collect_variation_indices (varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
     out->defaultIndex = defaultIndex;
 
-    bool ret = false;
-    for (const auto& _ : baseCoords)
+    ತಾರ್ಕಿಕ ret = ಅಸತ್ಯ;
+    ಪ್ರತಿ (ಧ್ರುವ auto& _ : baseCoords)
     {
       auto *o = out->baseCoords.serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-       ret |= o->serialize_subset (c, _, this);
+      ಯದಿ (unlikely (!o)) return_trace (ಅಸತ್ಯ);
+       ret |= o->serialize_subset (c, _, ಏತತ್);
     }
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseCoords.sanitize (c, this)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  baseCoords.sanitize (c, ಏತತ್)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Index		defaultIndex;	/* Index number of default baseline for this
 				 * script — equals index position of baseline tag
 				 * in baselineTags array of the BaseTagList */
@@ -434,110 +434,110 @@ struct BaseValues
 				 * Array of offsets to BaseCoord tables, from beginning of
 				 * BaseValues table — order matches baselineTags array in
 				 * the BaseTagList */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (4, baseCoords);
 };
 
-struct BaseLangSysRecord
+ಸಂರಚನಾ BaseLangSysRecord
 {
-  int cmp (hb_tag_t key) const { return baseLangSysTag.cmp (key); }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_tag_t key) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ baseLangSysTag.cmp (key); }
 
-  bool has_data () const { return baseLangSysTag; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ baseLangSysTag; }
 
-  const MinMax &get_min_max (const void* base) const { return base+minMax; }
+  ಧ್ರುವ MinMax &get_min_max (ಧ್ರುವ ಶೂನ್ಯ* base) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ base+minMax; }
 
-  void collect_variation_indices (const void* base,
-                                  const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ ಶೂನ್ಯ* base,
+                                  ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   { (base+minMax).collect_variation_indices (plan, varidx_set); }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c,
+               ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
     return_trace (out->minMax.serialize_subset (c, minMax, base));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  minMax.sanitize (c, base)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Tag		baseLangSysTag;	/* 4-byte language system identification tag */
   Offset16To<MinMax>
 		minMax;		/* Offset to MinMax table, from beginning
 				 * of BaseScript table */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScript
+ಸಂರಚನಾ BaseScript
 {
-  const MinMax &get_min_max (hb_tag_t language_tag) const
+  ಧ್ರುವ MinMax &get_min_max (hb_tag_t language_tag) ಧ್ರುವ
   {
-    const BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
-    return record.has_data () ? record.get_min_max (this) : this+defaultMinMax;
+    ಧ್ರುವ BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
+    ಪ್ರತ್ಯಾಗಮ record.has_data () ? record.get_min_max (ಏತತ್) : ಏತತ್+defaultMinMax;
   }
 
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
-  { return (this+baseValues).get_base_coord (baseline_tag_index); }
+  ಧ್ರುವ BaseCoord &get_base_coord (ಪೂರ್ಣಾಙ್ಕ baseline_tag_index) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ (ಏತತ್+base_ಮೌಲ್ಯಗಳು).get_base_coord (baseline_tag_index); }
 
-  bool has_values () const { return baseValues; }
-  bool has_min_max () const { return defaultMinMax || baseLangSysRecords; }
+  ತಾರ್ಕಿಕ has_ಮೌಲ್ಯಗಳು () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ base_ಮೌಲ್ಯಗಳು; }
+  ತಾರ್ಕಿಕ has_min_max () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ defaultMinMax || baseLangSysRecords; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    (this+baseValues).collect_variation_indices (varidx_set);
-    (this+defaultMinMax).collect_variation_indices (plan, varidx_set);
+    (ಏತತ್+base_ಮೌಲ್ಯಗಳು).collect_variation_indices (varidx_set);
+    (ಏತತ್+defaultMinMax).collect_variation_indices (plan, varidx_set);
     
-    for (const BaseLangSysRecord& _ : baseLangSysRecords)
-      _.collect_variation_indices (this, plan, varidx_set);
+    ಪ್ರತಿ (ಧ್ರುವ BaseLangSysRecord& _ : baseLangSysRecords)
+      _.collect_variation_indices (ಏತತ್, plan, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
 
-    bool ret = out->baseValues.serialize_subset (c, baseValues, this);
-    ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, this);
+    ತಾರ್ಕಿಕ ret = out->base_ಮೌಲ್ಯಗಳು.serialize_subset (c, base_ಮೌಲ್ಯಗಳು, ಏತತ್);
+    ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, ಏತತ್);
 
     unsigned len = 0;
-    for (const auto& _ : baseLangSysRecords)
+    ಪ್ರತಿ (ಧ್ರುವ auto& _ : baseLangSysRecords)
     {
       auto snap = c->serializer->snapshot ();
-      if (_.subset (c, this)) {
-        ret = true;
+      ಯದಿ (_.subset (c, ಏತತ್)) {
+        ret = ಸತ್ಯ;
         len++;
       }
-      else c->serializer->revert (snap);
+      ಅನ್ಯಥಾ c->serializer->revert (snap);
     }
 
-    if (!ret) return_trace (false);
+    ಯದಿ (!ret) return_trace (ಅಸತ್ಯ);
     return_trace (c->serializer->check_assign (out->baseLangSysRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseValues.sanitize (c, this) &&
-			  defaultMinMax.sanitize (c, this) &&
-			  baseLangSysRecords.sanitize (c, this)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  base_ಮೌಲ್ಯಗಳು.sanitize (c, ಏತತ್) &&
+			  defaultMinMax.sanitize (c, ಏತತ್) &&
+			  baseLangSysRecords.sanitize (c, ಏತತ್)));
   }
 
-  protected:
-  Offset16To<BaseValues>
-		baseValues;	/* Offset to BaseValues table, from beginning
+  ರಕ್ಷಿತ:
+  Offset16To<Base_ಮೌಲ್ಯಗಳು>
+		base_ಮೌಲ್ಯಗಳು;	/* Offset to BaseValues table, from beginning
 				 * of BaseScript table (may be NULL) */
   Offset16To<MinMax>
 		defaultMinMax;	/* Offset to MinMax table, from beginning of
@@ -547,183 +547,183 @@ struct BaseScript
 				/* Number of BaseLangSysRecords
 				 * defined — may be zero (0) */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (6, baseLangSysRecords);
 };
 
-struct BaseScriptList;
-struct BaseScriptRecord
+ಸಂರಚನಾ BaseScriptList;
+ಸಂರಚನಾ BaseScriptRecord
 {
-  int cmp (hb_tag_t key) const { return baseScriptTag.cmp (key); }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_tag_t key) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ baseScriptTag.cmp (key); }
 
-  bool has_data () const { return baseScriptTag; }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ baseScriptTag; }
 
-  hb_tag_t get_script_tag () const { return baseScriptTag; }
+  hb_tag_t get_script_tag () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ baseScriptTag; }
 
-  const BaseScript &get_base_script (const BaseScriptList *list) const
-  { return list+baseScript; }
+  ಧ್ರುವ BaseScript &get_base_script (ಧ್ರುವ BaseScriptList *list) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ list+baseScript; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void* list,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  ಧ್ರುವ ಶೂನ್ಯ* list,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    if (!plan->layout_scripts.has (baseScriptTag))
-      return;
+    ಯದಿ (!plan->layout_scripts.has (baseScriptTag))
+      ಪ್ರತ್ಯಾಗಮ;
 
     (list+baseScript).collect_variation_indices (plan, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c,
+               ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
     return_trace (out->baseScript.serialize_subset (c, baseScript, base));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  baseScript.sanitize (c, base)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Tag		baseScriptTag;	/* 4-byte script identification tag */
   Offset16To<BaseScript>
 		baseScript;	/* Offset to BaseScript table, from beginning
 				 * of BaseScriptList */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScriptList
+ಸಂರಚನಾ BaseScriptList
 {
-  const BaseScript &get_base_script (hb_tag_t script) const
+  ಧ್ರುವ BaseScript &get_base_script (hb_tag_t script) ಧ್ರುವ
   {
-    const BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
-    if (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
-    return record->has_data () ? record->get_base_script (this) : Null (BaseScript);
+    ಧ್ರುವ BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
+    ಯದಿ (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
+    ಪ್ರತ್ಯಾಗಮ record->has_data () ? record->get_base_script (ಏತತ್) : Null (BaseScript);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    for (const BaseScriptRecord& _ : baseScriptRecords)
-      _.collect_variation_indices (plan, this, varidx_set);
+    ಪ್ರತಿ (ಧ್ರುವ BaseScriptRecord& _ : baseScriptRecords)
+      _.collect_variation_indices (plan, ಏತತ್, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
 
     unsigned len = 0;
-    for (const BaseScriptRecord& _ : baseScriptRecords)
+    ಪ್ರತಿ (ಧ್ರುವ BaseScriptRecord& _ : baseScriptRecords)
     {
       hb_tag_t script_tag = _.get_script_tag ();
-      if (!c->plan->layout_scripts.has (script_tag))
-        continue;
+      ಯದಿ (!c->plan->layout_scripts.has (script_tag))
+        ಅನುವರ್ತ;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      ಯದಿ (!_.subset (c, ಏತತ್)) c->serializer->revert (snap);
+      ಅನ್ಯಥಾ len++;
     }
 
-    if (!len) return_trace (false);
+    ಯದಿ (!len) return_trace (ಅಸತ್ಯ);
     return_trace (c->serializer->check_assign (out->baseScriptRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  baseScriptRecords.sanitize (c, this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
+		  baseScriptRecords.sanitize (c, ಏತತ್));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   SortedArray16Of<BaseScriptRecord>
 			baseScriptRecords;
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (2, baseScriptRecords);
 };
 
-struct Axis
+ಸಂರಚನಾ Axis
 {
-  bool get_baseline (hb_tag_t          baseline_tag,
+  ತಾರ್ಕಿಕ get_baseline (hb_tag_t          baseline_tag,
 		     hb_tag_t          script_tag,
 		     hb_tag_t          language_tag,
-		     const BaseCoord **coord) const
+		     ಧ್ರುವ BaseCoord **coord) ಧ್ರುವ
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_values ())
+    ಧ್ರುವ BaseScript &base_script = (ಏತತ್+baseScriptList).get_base_script (script_tag);
+    ಯದಿ (!base_script.has_ಮೌಲ್ಯಗಳು ())
     {
       *coord = nullptr;
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
 
-    if (likely (coord))
+    ಯದಿ (likely (coord))
     {
-      unsigned int tag_index = 0;
-      if (!(this+baseTagList).bfind (baseline_tag, &tag_index))
+      unsigned ಪೂರ್ಣಾಙ್ಕ tag_index = 0;
+      ಯದಿ (!(ಏತತ್+baseTagList).bfind (baseline_tag, &tag_index))
       {
         *coord = nullptr;
-        return false;
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
       }
       *coord = &base_script.get_base_coord (tag_index);
     }
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool get_min_max (hb_tag_t          script_tag,
+  ತಾರ್ಕಿಕ get_min_max (hb_tag_t          script_tag,
 		    hb_tag_t          language_tag,
 		    hb_tag_t          feature_tag,
-		    const BaseCoord **min_coord,
-		    const BaseCoord **max_coord) const
+		    ಧ್ರುವ BaseCoord **min_coord,
+		    ಧ್ರುವ BaseCoord **max_coord) ಧ್ರುವ
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_min_max ())
+    ಧ್ರುವ BaseScript &base_script = (ಏತತ್+baseScriptList).get_base_script (script_tag);
+    ಯದಿ (!base_script.has_min_max ())
     {
       *min_coord = *max_coord = nullptr;
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
 
     base_script.get_min_max (language_tag).get_min_max (feature_tag, min_coord, max_coord);
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
-  { (this+baseScriptList).collect_variation_indices (plan, varidx_set); }
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
+  { (ಏತತ್+baseScriptList).collect_variation_indices (plan, varidx_set); }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
-    bool ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, this);
-    ret |= out->baseScriptList.serialize_subset (c, baseScriptList, this);
+    ತಾರ್ಕಿಕ ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, ಏತತ್);
+    ret |= out->baseScriptList.serialize_subset (c, baseScriptList, ಏತತ್);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseTagList.sanitize (c, this) &&
-			  baseScriptList.sanitize (c, this)));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
+			  baseTagList.sanitize (c, ಏತತ್) &&
+			  baseScriptList.sanitize (c, ಏತತ್)));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Offset16To<SortedArray16Of<Tag>>
 		baseTagList;	/* Offset to BaseTagList table, from beginning
 				 * of Axis table (may be NULL)
@@ -735,135 +735,135 @@ struct Axis
 				 * Array of BaseScriptRecords, in alphabetical order
 				 * by baseScriptTag */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BASE
+ಸಂರಚನಾ BASE
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
 
-  const Axis &get_axis (hb_direction_t direction) const
-  { return HB_DIRECTION_IS_VERTICAL (direction) ? this+vAxis : this+hAxis; }
+  ಧ್ರುವ Axis &get_axis (hb_direction_t direction) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ HB_DIRECTION_IS_VERTICAL (direction) ? ಏತತ್+vAxis : ಏತತ್+hAxis; }
 
-  bool has_var_store () const
-  { return version.to_int () >= 0x00010001u && varStore != 0; }
+  ತಾರ್ಕಿಕ has_var_store () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ version.to_int () >= 0x00010001u && varStore != 0; }
 
-  const ItemVariationStore &get_var_store () const
-  { return version.to_int () < 0x00010001u ? Null (ItemVariationStore) : this+varStore; }
+  ಧ್ರುವ ItemVariationStore &get_var_store () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ version.to_int () < 0x00010001u ? Null (ItemVariationStore) : ಏತತ್+varStore; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  ಶೂನ್ಯ collect_variation_indices (ಧ್ರುವ hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ಧ್ರುವ
   {
-    (this+hAxis).collect_variation_indices (plan, varidx_set);
-    (this+vAxis).collect_variation_indices (plan, varidx_set);
+    (ಏತತ್+hAxis).collect_variation_indices (plan, varidx_set);
+    (ಏತತ್+vAxis).collect_variation_indices (plan, varidx_set);
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        BASE *out /* OUT */) const
+  ತಾರ್ಕಿಕ subset_varstore (hb_subset_context_t *c,
+                        BASE *out /* OUT */) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    if (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
-        return_trace (false);
-    if (!c->plan->normalized_coords)
-      return_trace (out->varStore.serialize_subset (c, varStore, this, c->plan->base_varstore_inner_maps.as_array ()));
+    TRACE_SUBSET (ಏತತ್);
+    ಯದಿ (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
+        return_trace (ಅಸತ್ಯ);
+    ಯದಿ (!c->plan->normalized_coords)
+      return_trace (out->varStore.serialize_subset (c, varStore, ಏತತ್, c->plan->base_varstore_inner_maps.as_array ()));
 
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    ಯದಿ (c->plan->all_axes_pinned)
+      return_trace (ಸತ್ಯ);
 
     item_variations_t item_vars;
-    if (!item_vars.instantiate (this+varStore, c->plan, true, true,
+    ಯದಿ (!item_vars.instantiate (ಏತತ್+varStore, c->plan, ಸತ್ಯ, ಸತ್ಯ,
                                 c->plan->base_varstore_inner_maps.as_array ()))
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
 
-    if (!out->varStore.serialize_serialize (c->serializer,
+    ಯದಿ (!out->varStore.serialize_serialize (c->serializer,
                                             item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
 
-    const hb_map_t &varidx_map = item_vars.get_varidx_map ();
+    ಧ್ರುವ hb_map_t &varidx_map = item_vars.get_varidx_map ();
     /* base_variation_idx_map in the plan is old_varidx->(varidx, delta)
      * mapping, new varidx is generated for subsetting, we need to remap this
      * after instancing */
-    for (auto _ : c->plan->base_variation_idx_map.iter_ref ())
+    ಪ್ರತಿ (auto _ : c->plan->base_variation_idx_map.iter_ref ())
     {
       uint32_t varidx = _.second.first;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
+      ಯದಿ (varidx_map.has (varidx, &new_varidx))
         _.second.first = *new_varidx;
-      else
+      ಅನ್ಯಥಾ
         _.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->start_embed (*ಏತತ್);
+    ಯದಿ (unlikely (!out || !c->serializer->extend_min (out))) return_trace (ಅಸತ್ಯ);
 
     out->version = version;
-    bool ret = false;
-    if (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
+    ತಾರ್ಕಿಕ ret = ಅಸತ್ಯ;
+    ಯದಿ (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
 
-    ret |= out->hAxis.serialize_subset (c, hAxis, this);
-    ret |= out->vAxis.serialize_subset (c, vAxis, this);
+    ret |= out->hAxis.serialize_subset (c, hAxis, ಏತತ್);
+    ret |= out->vAxis.serialize_subset (c, vAxis, ಏತತ್);
 
     return_trace (ret);
   }
 
-  bool get_baseline (hb_font_t      *font,
+  ತಾರ್ಕಿಕ get_baseline (hb_font_t      *font,
 		     hb_tag_t        baseline_tag,
 		     hb_direction_t  direction,
 		     hb_tag_t        script_tag,
 		     hb_tag_t        language_tag,
-		     hb_position_t  *base) const
+		     hb_position_t  *base) ಧ್ರುವ
   {
-    const BaseCoord *base_coord = nullptr;
-    if (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
+    ಧ್ರುವ BaseCoord *base_coord = nullptr;
+    ಯದಿ (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
 		  !base_coord || !base_coord->has_data ()))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    if (likely (base))
+    ಯದಿ (likely (base))
       *base = base_coord->get_coord (font, get_var_store (), direction);
 
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool get_min_max (hb_font_t      *font,
+  ತಾರ್ಕಿಕ get_min_max (hb_font_t      *font,
 		    hb_direction_t  direction,
 		    hb_tag_t        script_tag,
 		    hb_tag_t        language_tag,
 		    hb_tag_t        feature_tag,
 		    hb_position_t  *min,
-		    hb_position_t  *max) const
+		    hb_position_t  *max) ಧ್ರುವ
   {
-    const BaseCoord *min_coord, *max_coord;
-    if (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
+    ಧ್ರುವ BaseCoord *min_coord, *max_coord;
+    ಯದಿ (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
 					   &min_coord, &max_coord))
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 
-    const ItemVariationStore &var_store = get_var_store ();
-    if (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
-    if (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
-    return true;
+    ಧ್ರುವ ItemVariationStore &var_store = get_var_store ();
+    ಯದಿ (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
+    ಯದಿ (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (likely (c->check_struct (ಏತತ್) &&
 			  hb_barrier () &&
 			  likely (version.major == 1) &&
-			  hAxis.sanitize (c, this) &&
-			  vAxis.sanitize (c, this) &&
-			  (version.to_int () < 0x00010001u || varStore.sanitize (c, this))));
+			  hAxis.sanitize (c, ಏತತ್) &&
+			  vAxis.sanitize (c, ಏತತ್) &&
+			  (version.to_int () < 0x00010001u || varStore.sanitize (c, ಏತತ್))));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   FixedVersion<>version;	/* Version of the BASE table */
   Offset16To<Axis>hAxis;		/* Offset to horizontal Axis table, from beginning
 				 * of BASE table (may be NULL) */
@@ -874,7 +874,7 @@ struct BASE
 				 * Store--from beginning of BASE
 				 * header (may be NULL).  Introduced
 				 * in version 0x00010001. */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_MIN (8);
 };
 

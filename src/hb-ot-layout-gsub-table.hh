@@ -29,107 +29,107 @@
 #ifndef HB_OT_LAYOUT_GSUB_TABLE_HH
 #define HB_OT_LAYOUT_GSUB_TABLE_HH
 
-#include "OT/Layout/GSUB/GSUB.hh"
+#ಅನ್ತರ್ಭಾವ "OT/Layout/GSUB/GSUB.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ನಾಮಾಕಾಶ OT {
+ನಾಮಾಕಾಶ Layout {
+ನಾಮಾಕಾಶ GSUB_impl {
 
 // TODO(garretrieger): Move into the new layout directory.
 /* Out-of-class implementation for methods recursing */
 
 #ifndef HB_NO_OT_LAYOUT
-/*static*/ inline bool ExtensionSubst::is_reverse () const
+/*static*/ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ ExtensionSubst::is_reverse () ಧ್ರುವ
 {
-  return SubstLookup::lookup_type_is_reverse (get_type ());
+  ಪ್ರತ್ಯಾಗಮ SubstLookup::lookup_type_is_reverse (get_type ());
 }
 template <typename context_t>
-/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned ಪೂರ್ಣಾಙ್ಕ lookup_index)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
+  ಧ್ರುವ SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  ಪ್ರತ್ಯಾಗಮ l.dispatch (c);
 }
 
 /*static*/ typename hb_closure_context_t::return_t SubstLookup::closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  if (l.may_have_non_1to1 ())
+  ಧ್ರುವ SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  ಯದಿ (l.may_have_non_1to1 ())
       hb_set_add_range (covered_seq_indices, seq_index, end_index);
-  return l.dispatch (c);
+  ಪ್ರತ್ಯಾಗಮ l.dispatch (c);
 }
 
 /*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  ಧ್ರುವ SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
   /* After a non-1-to-1 lookup (expansion/contraction), subsequent lookups in the same
    * contextual rule see all glyphs, not position-specific ones. This matches closure behavior.
    * Mark sequence positions as covered so later lookups use the full glyph set. */
-  if (l.may_have_non_1to1 ())
+  ಯದಿ (l.may_have_non_1to1 ())
       covered_seq_indices->add_range (seq_index, end_index);
 
-  hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
-    return hb_empty_t ();
+  hb_depend_context_t::recurse_ಕೀಲಿ_t key;
+  ಯದಿ (!c->get_recurse_ಕೀಲಿ (lookup_index, &key))
+    ಪ್ರತ್ಯಾಗಮ hb_empty_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
   c->finish_recurse (key);
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 }
 
 template <>
-inline hb_closure_lookups_context_t::return_t
+ಅನ್ತಃಸ್ಥ hb_closure_lookups_context_t::return_t
 SubstLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  ಧ್ರುವ SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
+  ಪ್ರತ್ಯಾಗಮ l.closure_lookups (c, this_index);
 }
 
 template <>
-inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned ಪೂರ್ಣಾಙ್ಕ lookup_index)
 {
   auto *gsub = c->face->table.GSUB.get_relaxed ();
-  const SubstLookup &l = gsub->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
+  ಧ್ರುವ SubstLookup &l = gsub->table->get_lookup (lookup_index);
+  unsigned ಪೂರ್ಣಾಙ್ಕ saved_lookup_props = c->lookup_props;
+  unsigned ಪೂರ್ಣಾಙ್ಕ saved_lookup_index = c->lookup_index;
   c->set_lookup_index (lookup_index);
   c->set_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
+  uint32_t ರಾಶಿ_match_positions[8];
   hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
+  saved_match_positions.set_storage (ರಾಶಿ_match_positions);
   hb_swap (c->match_positions, saved_match_positions);
 
-  bool ret = false;
+  ತಾರ್ಕಿಕ ret = ಅಸತ್ಯ;
   auto *accel = gsub->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  ret = accel && accel->apply (c, ಅಸತ್ಯ);
 
   c->set_lookup_index (saved_lookup_index);
   c->set_lookup_props (saved_lookup_props);
 
   hb_swap (c->match_positions, saved_match_positions);
 
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 }
 #endif
 
 } /* namespace GSUB_impl */
 } /* namespace Layout */
 
-inline void
-GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) const
+ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
+GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) ಧ್ರುವ
 {
-  if (!this->table->has_data ()) return;
+  ಯದಿ (!ಏತತ್->table->has_data ()) ಪ್ರತ್ಯಾಗಮ;
 
-  unsigned num_features = this->table->get_feature_count ();
-  unsigned num_lookups  = this->table->get_lookup_count ();
+  unsigned ಅಂಕೆ_features = ಏತತ್->table->get_feature_ಎಣಿಕೆ ();
+  unsigned ಅಂಕೆ_lookups  = ಏತತ್->table->get_lookup_ಎಣಿಕೆ ();
 
   hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
-    return;
-  this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
+  ಯದಿ (!builder->check_success (feature_tags.resize (ಅಂಕೆ_features)))
+    ಪ್ರತ್ಯಾಗಮ;
+  ಏತತ್->table->get_feature_tags (0, &ಅಂಕೆ_features, feature_tags.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
-    return;
+  ಯದಿ (!builder->init_lookup_features (ಅಂಕೆ_lookups))
+    ಪ್ರತ್ಯಾಗಮ;
 
   hb_vector_t<hb_tag_t> feature_query_v;
   feature_query_v.resize (2);
@@ -138,71 +138,71 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
   hb_set_t seen_features;
   hb_set_t feature_indexes, lookup_indexes;
 
-  for (auto ft : feature_tags)
+  ಪ್ರತಿ (auto ft : feature_tags)
   {
-    if (seen_features.has (ft)) continue;
+    ಯದಿ (seen_features.has (ft)) ಅನುವರ್ತ;
     seen_features.add (ft);
     feature_query_v[0] = ft;
     feature_indexes.reset ();
     hb_ot_layout_collect_features (face, HB_OT_TAG_GSUB, nullptr, nullptr,
                                    feature_query_v.arrayZ, &feature_indexes);
     lookup_indexes.reset ();
-    for (auto feature_index : feature_indexes)
-      this->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
+    ಪ್ರತಿ (auto feature_index : feature_indexes)
+      ಏತತ್->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
 
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+    ಪ್ರತಿ (auto lookup_index : lookup_indexes)
+      ಯದಿ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	ಪ್ರತ್ಯಾಗಮ;
 
-    auto &fv = this->table->get_feature_variations ();
-    auto fi_count = fv.record_count ();
-    for (unsigned i = 0; i < fi_count; i++)
+    auto &fv = ಏತತ್->table->get_feature_variations ();
+    auto fi_ಎಣಿಕೆ = fv.record_ಎಣಿಕೆ ();
+    ಪ್ರತಿ (unsigned i = 0; i < fi_ಎಣಿಕೆ; i++)
     {
       lookup_indexes.reset ();
-      for (auto feature_index : feature_indexes)
+      ಪ್ರತಿ (auto feature_index : feature_indexes)
       {
 	auto feature_ptr = fv.find_substitute (i, feature_index);
-	if (feature_ptr != nullptr)
+	ಯದಿ (feature_ptr != nullptr)
 	  feature_ptr->add_lookup_indexes_to (&lookup_indexes);
       }
-      for (auto lookup_index : lookup_indexes)
-	if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	  return;
+      ಪ್ರತಿ (auto lookup_index : lookup_indexes)
+	ಯದಿ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	  ಪ್ರತ್ಯಾಗಮ;
     }
 
 #ifndef HB_NO_VAR
     lookup_indexes.reset ();
     fv.collect_lookup_variation_lookups (&feature_indexes, &lookup_indexes);
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+    ಪ್ರತಿ (auto lookup_index : lookup_indexes)
+      ಯದಿ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	ಪ್ರತ್ಯಾಗಮ;
 #endif
   }
 
-  if (unlikely (!builder->finish_lookup_features ()))
-    return;
+  ಯದಿ (unlikely (!builder->finish_lookup_features ()))
+    ಪ್ರತ್ಯಾಗಮ;
 
   hb_set_t all_glyphs;
-  all_glyphs.add_range (0, face->get_num_glyphs () - 1);
+  all_glyphs.add_range (0, face->get_ಅಂಕೆ_glyphs () - 1);
 
   hb_depend_context_t c (builder, face, &all_glyphs);
 
-  for (unsigned i = 0; i < num_lookups; i++)
+  ಪ್ರತಿ (unsigned i = 0; i < ಅಂಕೆ_lookups; i++)
   {
     auto features = builder->get_lookup_features (i);
-    if (!features)
+    ಯದಿ (!features)
     {
-      DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+      DEBUG_ಸಂದೇಶ_LEVEL (DEPEND, nullptr, 1, 0,
                        "Skipping lookup %u (no features)", i);
-      continue;
+      ಅನುವರ್ತ;
     }
-    DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+    DEBUG_ಸಂದೇಶ_LEVEL (DEPEND, nullptr, 1, 0,
                      "Processing lookup %u with features:", i);
     c.lookup_index = i;
     c.reset_recurse_cache ();
     c.lookups_seen.clear ();
     c.lookups_seen.add (i);  /* Seed for A→B→A cycle detection in recurse(). */
-    this->table->get_lookup (i).depend (&c);
+    ಏತತ್->table->get_lookup (i).depend (&c);
   }
 }
 

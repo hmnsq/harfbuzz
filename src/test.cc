@@ -24,33 +24,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#ಅನ್ತರ್ಭಾವ "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+ಪೂರ್ಣಾಙ್ಕ
+main (ಪೂರ್ಣಾಙ್ಕ argc, ವರ್ಣ **argv)
 {
-  if (argc != 2) {
+  ಯದಿ (argc != 2) {
     fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
     exit (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
+  ಪ್ರತಿಜ್ಞಾ (blob);
   printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
 
   /* Create the face */
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
   blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned ಪೂರ್ಣಾಙ್ಕ upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
   hb_font_set_scale (font, upem, upem);
@@ -66,11 +66,11 @@ main (int argc, char **argv)
 
   hb_shape (font, buffer, nullptr, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = hb_buffer_get_length (buffer);
   hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
   hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  for (unsigned int i = 0; i < count; i++)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
@@ -89,7 +89,7 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  ಪ್ರತ್ಯಾಗಮ 0;
 }
 
 

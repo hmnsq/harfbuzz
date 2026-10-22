@@ -27,50 +27,50 @@
 #ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
 #define HB_OT_LAYOUT_JSTF_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
 
 
 /*
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+ಪ್ರಕಾರನಿರ್ದೇಶ IndexArray JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+ಪ್ರಕಾರನಿರ್ದೇಶ List16OfOffset16To<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+ಸಂರಚನಾ JstfPriority
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
+		  shrinkageEnableGSUB.sanitize (c, ಏತತ್) &&
+		  shrinkageDisableGSUB.sanitize (c, ಏತತ್) &&
+		  shrinkageEnableGPOS.sanitize (c, ಏತತ್) &&
+		  shrinkageDisableGPOS.sanitize (c, ಏತತ್) &&
+		  shrinkageJstfMax.sanitize (c, ಏತತ್) &&
+		  extensionEnableGSUB.sanitize (c, ಏತತ್) &&
+		  extensionDisableGSUB.sanitize (c, ಏತತ್) &&
+		  extensionEnableGPOS.sanitize (c, ಏತತ್) &&
+		  extensionDisableGPOS.sanitize (c, ಏತತ್) &&
+		  extensionJstfMax.sanitize (c, ಏತತ್));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   Offset16To<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
@@ -112,7 +112,7 @@ struct JstfPriority
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (20);
 };
 
@@ -121,12 +121,12 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+ಸಂರಚನಾ JstfLangSys : List16OfOffset16To<JstfPriority>
 {
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c,
+		 ಧ್ರುವ Record_sanitize_closure_t * = nullptr) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
   }
 };
@@ -145,37 +145,37 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
  */
 
 template <typename Types>
-struct JstfScript
+ಸಂರಚನಾ JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_lang_sys_ಎಣಿಕೆ () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ langSys.len; }
+  ಧ್ರುವ Tag& get_lang_sys_tag (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ langSys.get_tag (i); }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_lang_sys_tags (unsigned ಪೂರ್ಣಾಙ್ಕ start_offset,
+				  unsigned ಪೂರ್ಣಾಙ್ಕ *lang_sys_ಎಣಿಕೆ /* IN/OUT */,
+				  hb_tag_t     *lang_sys_tags /* OUT */) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ langSys.get_tags (start_offset, lang_sys_ಎಣಿಕೆ, lang_sys_tags); }
+  ಧ್ರುವ JstfLangSys& get_lang_sys (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    ಯದಿ (i == Index::NOT_FOUND_INDEX) ಪ್ರತ್ಯಾಗಮ get_default_lang_sys ();
+    ಪ್ರತ್ಯಾಗಮ ಏತತ್+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  ತಾರ್ಕಿಕ find_lang_sys_index (hb_tag_t tag, unsigned ಪೂರ್ಣಾಙ್ಕ *index) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  ತಾರ್ಕಿಕ has_default_lang_sys () ಧ್ರುವ               { ಪ್ರತ್ಯಾಗಮ defaultLangSys != 0; }
+  ಧ್ರುವ JstfLangSys& get_default_lang_sys () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ ಏತತ್+defaultLangSys; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c,
+		 ಧ್ರುವ Record_sanitize_closure_t * = nullptr) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (extenderGlyphs.sanitize (c, ಏತತ್) &&
+		  defaultLangSys.sanitize (c, ಏತತ್) &&
+		  langSys.sanitize (c, ಏತತ್));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
@@ -185,53 +185,53 @@ struct JstfScript
   RecordArrayOf<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
 };
 
 template <typename Types>
-struct JstfScriptRecord
+ಸಂರಚನಾ JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_tag_t a) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ tag.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, ಧ್ರುವ ಶೂನ್ಯ *base) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    ಧ್ರುವ Record_sanitize_closure_t closure = {tag, base};
+    return_trace (c->check_struct (ಏತತ್) &&
 		  offset.sanitize (c, base, &closure));
   }
 
   Tag		tag;		/* 4-byte JstfScript identification tag */
   typename Types::template LOffsetTo<JstfScript<Types>>
 		offset;		/* Offset from beginning of JSTF header */
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
 };
 
 template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+ಸಂರಚನಾ JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  ಧ್ರುವ Tag& get_tag (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ (*ಏತತ್)[i].tag; }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_tags (unsigned ಪೂರ್ಣಾಙ್ಕ start_offset,
+			 unsigned ಪೂರ್ಣಾಙ್ಕ *script_ಎಣಿಕೆ /* IN/OUT */,
+			 hb_tag_t     *script_tags /* OUT */) ಧ್ರುವ
   {
-    if (script_count)
+    ಯದಿ (script_ಎಣಿಕೆ)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
+      + ಏತತ್->as_array ().sub_array (start_offset, script_ಎಣಿಕೆ)
       | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      | hb_sink (hb_array (script_tags, *script_ಎಣಿಕೆ))
       ;
     }
-    return this->len;
+    ಪ್ರತ್ಯಾಗಮ ಏತತ್->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  ಧ್ರುವ JstfScript<Types>& get_script (ಧ್ರುವ ಶೂನ್ಯ *base, unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ base+(*ಏತತ್)[i].offset; }
+  ತಾರ್ಕಿಕ find_index (hb_tag_t tag, unsigned ಪೂರ್ಣಾಙ್ಕ *index) ಧ್ರುವ
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    ಪ್ರತ್ಯಾಗಮ ಏತತ್->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
@@ -241,68 +241,68 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+ಸಂರಚನಾ JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_script_ಎಣಿಕೆ () ಧ್ರುವ
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
+    ಯದಿ (has_script_list2 ()) ಪ್ರತ್ಯಾಗಮ get_script_list2 ().len;
 #endif
-    return scriptList.len;
+    ಪ್ರತ್ಯಾಗಮ scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  ಧ್ರುವ Tag& get_script_tag (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
+    ಯದಿ (has_script_list2 ()) ಪ್ರತ್ಯಾಗಮ get_script_list2 ().get_tag (i);
 #endif
-    return scriptList.get_tag (i);
+    ಪ್ರತ್ಯಾಗಮ scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_script_tags (unsigned ಪೂರ್ಣಾಙ್ಕ start_offset,
+				unsigned ಪೂರ್ಣಾಙ್ಕ *script_ಎಣಿಕೆ /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) ಧ್ರುವ
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+    ಯದಿ (has_script_list2 ())
+      ಪ್ರತ್ಯಾಗಮ get_script_list2 ().get_tags (start_offset, script_ಎಣಿಕೆ, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    ಪ್ರತ್ಯಾಗಮ scriptList.get_tags (start_offset, script_ಎಣಿಕೆ, script_tags);
   }
   template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  ಧ್ರುವ JstfScript<Types>& get_script (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ;
+  ತಾರ್ಕಿಕ find_script_index (hb_tag_t tag, unsigned ಪೂರ್ಣಾಙ್ಕ *index) ಧ್ರುವ
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
+    ಯದಿ (has_script_list2 ()) ಪ್ರತ್ಯಾಗಮ get_script_list2 ().find_index (tag, index);
 #endif
-    return scriptList.find_index (tag, index);
+    ಪ್ರತ್ಯಾಗಮ scriptList.find_index (tag, index);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (ಏತತ್);
+    ಯದಿ (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
-      return_trace (false);
+		  !scriptList.sanitize (c, ಏತತ್)))
+      return_trace (ಅಸತ್ಯ);
 #ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
-      return_trace (false);
+    ಯದಿ (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, ಏತತ್)))
+      return_trace (ಅಸತ್ಯ);
 #endif
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  private:
+  ಗುಪ್ತ:
 #ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+  ತಾರ್ಕಿಕ has_script_list2 () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ version.minor >= 1 && get_script_list2 ().len; }
+  ಧ್ರುವ JstfScriptList<Layout::MediumTypes>& get_script_list2 () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
 #endif
 
-  protected:
+  ರಕ್ಷಿತ:
   FixedVersion<>version;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
@@ -314,20 +314,20 @@ struct JSTF
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
 #endif
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_ARRAY (6, scriptList);
 };
 
 template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+ಅನ್ತಃಸ್ಥ ಧ್ರುವ JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ scriptList.get_script (ಏತತ್, i); }
 
 #ifndef HB_NO_BEYOND_64K
 template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
+ಅನ್ತಃಸ್ಥ ಧ್ರುವ JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ get_script_list2 ().get_script (ಏತತ್, i); }
 #endif
 
 

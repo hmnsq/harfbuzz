@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_OT_FETCH
 
-#include "hb-ot.h"
+#ಅನ್ತರ್ಭಾವ "hb-ot.h"
 
-#include "hb-ot-head-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-head-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-os2-table.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-post-table.hh"
 
 /**
  * SECTION:hb-ot-fetch
@@ -61,19 +61,19 @@ uint32_t
 hb_ot_fetch_bits (hb_face_t        *face,
 		hb_ot_bits_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  ವಿಕಲ್ಪ ((unsigned) tag)
   {
-  case HB_OT_BITS_TAG_FS_TYPE:		 return face->table.OS2->fsType;
-  case HB_OT_BITS_TAG_FS_SELECTION:	 return face->table.OS2->fsSelection;
-  case HB_OT_BITS_TAG_MAC_STYLE:	 return face->table.head->get_mac_style ();
-  case HB_OT_BITS_TAG_IS_FIXED_PITCH:	 return face->table.post->table->isFixedPitch;
-  case HB_OT_BITS_TAG_UNICODE_RANGE_1:	 return face->table.OS2->ulUnicodeRange[0];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_2:	 return face->table.OS2->ulUnicodeRange[1];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_3:	 return face->table.OS2->ulUnicodeRange[2];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_4:	 return face->table.OS2->ulUnicodeRange[3];
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: return face->table.OS2->v1 ().ulCodePageRange1;
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: return face->table.OS2->v1 ().ulCodePageRange2;
-  default:				 return 0;
+  ಪಕ್ಷ HB_OT_BITS_TAG_FS_TYPE:		 ಪ್ರತ್ಯಾಗಮ face->table.OS2->fsType;
+  ಪಕ್ಷ HB_OT_BITS_TAG_FS_SELECTION:	 ಪ್ರತ್ಯಾಗಮ face->table.OS2->fsSelection;
+  ಪಕ್ಷ HB_OT_BITS_TAG_MAC_STYLE:	 ಪ್ರತ್ಯಾಗಮ face->table.head->get_mac_style ();
+  ಪಕ್ಷ HB_OT_BITS_TAG_IS_FIXED_PITCH:	 ಪ್ರತ್ಯಾಗಮ face->table.post->table->isFixedPitch;
+  ಪಕ್ಷ HB_OT_BITS_TAG_UNICODE_RANGE_1:	 ಪ್ರತ್ಯಾಗಮ face->table.OS2->ulUnicodeRange[0];
+  ಪಕ್ಷ HB_OT_BITS_TAG_UNICODE_RANGE_2:	 ಪ್ರತ್ಯಾಗಮ face->table.OS2->ulUnicodeRange[1];
+  ಪಕ್ಷ HB_OT_BITS_TAG_UNICODE_RANGE_3:	 ಪ್ರತ್ಯಾಗಮ face->table.OS2->ulUnicodeRange[2];
+  ಪಕ್ಷ HB_OT_BITS_TAG_UNICODE_RANGE_4:	 ಪ್ರತ್ಯಾಗಮ face->table.OS2->ulUnicodeRange[3];
+  ಪಕ್ಷ HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: ಪ್ರತ್ಯಾಗಮ face->table.OS2->v1 ().ulCodePageRange1;
+  ಪಕ್ಷ HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: ಪ್ರತ್ಯಾಗಮ face->table.OS2->v1 ().ulCodePageRange2;
+  ಸ್ವಭಾವ:				 ಪ್ರತ್ಯಾಗಮ 0;
   }
 }
 
@@ -89,16 +89,16 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag)
+hb_ot_fetch_ಸಂಖ್ಯೆ (hb_face_t          *face,
+		  hb_ot_ಸಂಖ್ಯೆ_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  ವಿಕಲ್ಪ ((unsigned) tag)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
-  default:		       return 0;
+  ಪಕ್ಷ HB_OT_ಸಂಖ್ಯೆ_TAG_FONT_X_MIN: ಪ್ರತ್ಯಾಗಮ face->table.head->xMin;
+  ಪಕ್ಷ HB_OT_ಸಂಖ್ಯೆ_TAG_FONT_Y_MIN: ಪ್ರತ್ಯಾಗಮ face->table.head->yMin;
+  ಪಕ್ಷ HB_OT_ಸಂಖ್ಯೆ_TAG_FONT_X_MAX: ಪ್ರತ್ಯಾಗಮ face->table.head->xMax;
+  ಪಕ್ಷ HB_OT_ಸಂಖ್ಯೆ_TAG_FONT_Y_MAX: ಪ್ರತ್ಯಾಗಮ face->table.head->yMax;
+  ಸ್ವಭಾವ:		       ಪ್ರತ್ಯಾಗಮ 0;
   }
 }
 

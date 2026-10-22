@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ಅನ್ತರ್ಭಾವ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-myanmar-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shaper-myanmar-machine.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-shaper-indic.hh"
+#ಅನ್ತರ್ಭಾವ "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_tag_t
+ಸ್ಥಿರ ಧ್ರುವ hb_tag_t
 myanmar_basic_features[] =
 {
   /*
@@ -51,7 +51,7 @@ myanmar_basic_features[] =
   HB_TAG('b','l','w','f'),
   HB_TAG('p','s','t','f'),
 };
-static const hb_tag_t
+ಸ್ಥಿರ ಧ್ರುವ hb_tag_t
 myanmar_other_features[] =
 {
   /*
@@ -64,22 +64,22 @@ myanmar_other_features[] =
   HB_TAG('p','s','t','s'),
 };
 
-static inline void
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ
 set_myanmar_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  unsigned ಪೂರ್ಣಾಙ್ಕ type = hb_indic_get_categories (u);
 
   info.myanmar_category() = (myanmar_category_t) (type & 0xFFu);
 }
 
 
-static inline bool
-is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+is_one_of_myanmar (ಧ್ರುವ hb_glyph_info_t &info, unsigned ಪೂರ್ಣಾಙ್ಕ flags)
 {
   /* If it ligated, all bets are off. */
-  if (_hb_glyph_info_ligated (&info)) return false;
-  return !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
+  ಯದಿ (_hb_glyph_info_ligated (&info)) ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+  ಪ್ರತ್ಯಾಗಮ !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
 }
 
 /* Note:
@@ -91,23 +91,23 @@ is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
  * Keep in sync with consonant_categories in the generator. */
 #define CONSONANT_FLAGS_MYANMAR (FLAG (M_Cat(C)) | FLAG (M_Cat(CS)) | FLAG (M_Cat(Ra)) | /* FLAG (M_Cat(CM)) | */ FLAG (M_Cat(IV)) | FLAG (M_Cat(GB)) | FLAG (M_Cat(DOTTEDCIRCLE)))
 
-static inline bool
-is_consonant_myanmar (const hb_glyph_info_t &info)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ತಾರ್ಕಿಕ
+is_consonant_myanmar (ಧ್ರುವ hb_glyph_info_t &info)
 {
-  return is_one_of_myanmar (info, CONSONANT_FLAGS_MYANMAR);
+  ಪ್ರತ್ಯಾಗಮ is_one_of_myanmar (info, CONSONANT_FLAGS_MYANMAR);
 }
 
 
-static bool
-setup_syllables_myanmar (const hb_ot_shape_plan_t *plan,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+setup_syllables_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan,
 			 hb_font_t *font,
 			 hb_buffer_t *buffer);
-static bool
-reorder_myanmar (const hb_ot_shape_plan_t *plan,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+reorder_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
 		 hb_buffer_t *buffer);
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 collect_features_myanmar (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -123,19 +123,19 @@ collect_features_myanmar (hb_ot_shape_planner_t *plan)
 
   map->add_gsub_pause (reorder_myanmar);
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_basic_features); i++)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ARRAY_LENGTH (myanmar_basic_features); i++)
   {
     map->enable_feature (myanmar_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
     map->add_gsub_pause (nullptr);
   }
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_other_features); i++)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ARRAY_LENGTH (myanmar_other_features); i++)
     map->enable_feature (myanmar_other_features[i], F_MANUAL_ZWJ);
 }
 
-static void
-setup_masks_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ಸ್ಥಿರ ಶೂನ್ಯ
+setup_masks_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan HB_UNUSED,
 		     hb_buffer_t              *buffer,
 		     hb_font_t                *font HB_UNUSED)
 {
@@ -144,14 +144,14 @@ setup_masks_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
 
   /* No masks, we just save information about characters. */
 
-  unsigned int count = buffer->len;
+  unsigned ಪೂರ್ಣಾಙ್ಕ ಎಣಿಕೆ = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < ಎಣಿಕೆ; i++)
     set_myanmar_properties (info[i]);
 }
 
-static bool
-setup_syllables_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+setup_syllables_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan HB_UNUSED,
 			 hb_font_t *font HB_UNUSED,
 			 hb_buffer_t *buffer)
 {
@@ -159,64 +159,64 @@ setup_syllables_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
   find_syllables_myanmar (buffer);
   foreach_syllable (buffer, start, end)
     buffer->unsafe_to_break (start, end);
-  return false;
+  ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-static int
-compare_myanmar_order (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ
+compare_myanmar_order (ಧ್ರುವ hb_glyph_info_t *pa, ಧ್ರುವ hb_glyph_info_t *pb)
 {
-  int a = pa->myanmar_position();
-  int b = pb->myanmar_position();
+  ಪೂರ್ಣಾಙ್ಕ a = pa->myanmar_position();
+  ಪೂರ್ಣಾಙ್ಕ b = pb->myanmar_position();
 
-  return (int) a - (int) b;
+  ಪ್ರತ್ಯಾಗಮ (ಪೂರ್ಣಾಙ್ಕ) a - (ಪೂರ್ಣಾಙ್ಕ) b;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/myanmar */
 
-static void
+ಸ್ಥಿರ ಶೂನ್ಯ
 initial_reordering_consonant_syllable (hb_buffer_t *buffer,
-				       unsigned int start, unsigned int end)
+				       unsigned ಪೂರ್ಣಾಙ್ಕ start, unsigned ಪೂರ್ಣಾಙ್ಕ end)
 {
   hb_glyph_info_t *info = buffer->info;
 
-  unsigned int base = end;
-  bool has_reph = false;
+  unsigned ಪೂರ್ಣಾಙ್ಕ base = end;
+  ತಾರ್ಕಿಕ has_reph = ಅಸತ್ಯ;
 
   {
-    unsigned int limit = start;
-    if (start + 3 <= end &&
+    unsigned ಪೂರ್ಣಾಙ್ಕ limit = start;
+    ಯದಿ (start + 3 <= end &&
 	info[start  ].myanmar_category() == M_Cat(Ra) &&
 	info[start+1].myanmar_category() == M_Cat(As) &&
 	info[start+2].myanmar_category() == M_Cat(H))
     {
       limit += 3;
       base = start;
-      has_reph = true;
+      has_reph = ಸತ್ಯ;
     }
 
     {
-      if (!has_reph)
+      ಯದಿ (!has_reph)
 	base = limit;
 
-      for (unsigned int i = limit; i < end; i++)
-	if (is_consonant_myanmar (info[i]))
+      ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = limit; i < end; i++)
+	ಯದಿ (is_consonant_myanmar (info[i]))
 	{
 	  base = i;
-	  break;
+	  ಭಙ್ಗ;
 	}
     }
   }
 
   /* Reorder! */
   {
-    unsigned int i = start;
-    for (; i < start + (has_reph ? 3 : 0); i++)
+    unsigned ಪೂರ್ಣಾಙ್ಕ i = start;
+    ಪ್ರತಿ (; i < start + (has_reph ? 3 : 0); i++)
       info[i].myanmar_position() = POS_AFTER_MAIN;
-    for (; i < base; i++)
+    ಪ್ರತಿ (; i < base; i++)
       info[i].myanmar_position() = POS_PRE_C;
-    if (i < end)
+    ಯದಿ (i < end)
     {
       info[i].myanmar_position() = POS_BASE_C;
       i++;
@@ -224,46 +224,46 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
     myanmar_position_t pos = POS_AFTER_MAIN;
     /* The following loop may be ugly, but it implements all of
      * Myanmar reordering! */
-    for (; i < end; i++)
+    ಪ್ರತಿ (; i < end; i++)
     {
-      if (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
+      ಯದಿ (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
       {
 	info[i].myanmar_position() = POS_PRE_C;
-	continue;
+	ಅನುವರ್ತ;
       }
-      if (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
+      ಯದಿ (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
       {
 	info[i].myanmar_position() = POS_PRE_M;
-	continue;
+	ಅನುವರ್ತ;
       }
-      if (info[i].myanmar_category() == M_Cat(VS))
+      ಯದಿ (info[i].myanmar_category() == M_Cat(VS))
       {
 	info[i].myanmar_position() = info[i - 1].myanmar_position();
-	continue;
+	ಅನುವರ್ತ;
       }
 
-      if (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
+      ಯದಿ (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
       {
 	pos = POS_BELOW_C;
 	info[i].myanmar_position() = pos;
-	continue;
+	ಅನುವರ್ತ;
       }
 
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(A))
+      ಯದಿ (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(A))
       {
 	info[i].myanmar_position() = POS_BEFORE_SUB;
-	continue;
+	ಅನುವರ್ತ;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(VBlw))
+      ಯದಿ (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(VBlw))
       {
 	info[i].myanmar_position() = pos;
-	continue;
+	ಅನುವರ್ತ;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() != M_Cat(A))
+      ಯದಿ (pos == POS_BELOW_C && info[i].myanmar_category() != M_Cat(A))
       {
 	pos = POS_AFTER_SUB;
 	info[i].myanmar_position() = pos;
-	continue;
+	ಅನುವರ್ತ;
       }
       info[i].myanmar_position() = pos;
     }
@@ -273,26 +273,26 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
   buffer->sort (start, end, compare_myanmar_order);
 
   /* Flip left-matra sequence. */
-  unsigned first_left_matra = end;
-  unsigned last_left_matra = end;
-  for (unsigned int i = start; i < end; i++)
+  unsigned first_ಎಡ_matra = end;
+  unsigned last_ಎಡ_matra = end;
+  ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = start; i < end; i++)
   {
-    if (info[i].myanmar_position() == POS_PRE_M)
+    ಯದಿ (info[i].myanmar_position() == POS_PRE_M)
     {
-      if (first_left_matra == end)
-	first_left_matra = i;
-      last_left_matra = i;
+      ಯದಿ (first_ಎಡ_matra == end)
+	first_ಎಡ_matra = i;
+      last_ಎಡ_matra = i;
     }
   }
   /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-  if (first_left_matra < last_left_matra)
+  ಯದಿ (first_ಎಡ_matra < last_ಎಡ_matra)
   {
     /* No need to merge clusters, done already? */
-    buffer->reverse_range (first_left_matra, last_left_matra + 1);
+    buffer->reverse_range (first_ಎಡ_matra, last_ಎಡ_matra + 1);
     /* Reverse back VS, etc. */
-    unsigned i = first_left_matra;
-    for (unsigned j = i; j <= last_left_matra; j++)
-      if (info[j].myanmar_category() == M_Cat(VPre))
+    unsigned i = first_ಎಡ_matra;
+    ಪ್ರತಿ (unsigned j = i; j <= last_ಎಡ_matra; j++)
+      ಯದಿ (info[j].myanmar_category() == M_Cat(VPre))
       {
 	buffer->reverse_range (i, j + 1);
 	i = j + 1;
@@ -300,51 +300,51 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
   }
 }
 
-static void
-reorder_syllable_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ಸ್ಥಿರ ಶೂನ್ಯ
+reorder_syllable_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan HB_UNUSED,
 			  hb_face_t *face HB_UNUSED,
 			  hb_buffer_t *buffer,
-			  unsigned int start, unsigned int end)
+			  unsigned ಪೂರ್ಣಾಙ್ಕ start, unsigned ಪೂರ್ಣಾಙ್ಕ end)
 {
   myanmar_syllable_type_t syllable_type = (myanmar_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type) {
+  ವಿಕಲ್ಪ (syllable_type) {
 
-    case myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case myanmar_consonant_syllable:
+    ಪಕ್ಷ myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    ಪಕ್ಷ myanmar_consonant_syllable:
       initial_reordering_consonant_syllable  (buffer, start, end);
-      break;
+      ಭಙ್ಗ;
 
-    case myanmar_non_myanmar_cluster:
-      break;
+    ಪಕ್ಷ myanmar_non_myanmar_cluster:
+      ಭಙ್ಗ;
   }
 }
 
-static bool
-reorder_myanmar (const hb_ot_shape_plan_t *plan,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ
+reorder_myanmar (ಧ್ರುವ hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
 		 hb_buffer_t *buffer)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering myanmar"))
+  ತಾರ್ಕಿಕ ret = ಅಸತ್ಯ;
+  ಯದಿ (buffer->message (font, "start reordering myanmar"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    ಯದಿ (hb_syllabic_ಸೇರಿಸು_dotted_circles (font, buffer,
 					   myanmar_broken_cluster,
 					   M_Cat(DOTTEDCIRCLE)))
-      ret = true;
+      ret = ಸತ್ಯ;
 
     foreach_syllable (buffer, start, end)
       reorder_syllable_myanmar (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering myanmar");
+    (ಶೂನ್ಯ) buffer->message (font, "end reordering myanmar");
   }
 
   HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_category);
   HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_position);
 
-  return ret;
+  ಪ್ರತ್ಯಾಗಮ ret;
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_myanmar =
+ಧ್ರುವ hb_ot_shaper_t _hb_ot_shaper_myanmar =
 {
   collect_features_myanmar,
   nullptr, /* override_features */
@@ -359,7 +359,7 @@ const hb_ot_shaper_t _hb_ot_shaper_myanmar =
   HB_TAG_NONE, /* gpos_tag */
   HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
-  false, /* fallback_position */
+  ಅಸತ್ಯ, /* fallback_position */
 };
 
 
@@ -367,7 +367,7 @@ const hb_ot_shaper_t _hb_ot_shaper_myanmar =
 /* Ugly Zawgyi encoding.
  * Disable all auto processing.
  * https://github.com/harfbuzz/harfbuzz/issues/1162 */
-const hb_ot_shaper_t _hb_ot_shaper_myanmar_zawgyi =
+ಧ್ರುವ hb_ot_shaper_t _hb_ot_shaper_myanmar_zawgyi =
 {
   nullptr, /* collect_features */
   nullptr, /* override_features */
@@ -382,7 +382,7 @@ const hb_ot_shaper_t _hb_ot_shaper_myanmar_zawgyi =
   HB_TAG_NONE, /* gpos_tag */
   HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  ಅಸತ್ಯ, /* fallback_position */
 };
 #endif
 

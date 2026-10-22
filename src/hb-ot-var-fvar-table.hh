@@ -27,7 +27,7 @@
 #ifndef HB_OT_VAR_FVAR_TABLE_HH
 #define HB_OT_VAR_FVAR_TABLE_HH
 
-#include "hb-open-type.hh"
+#ಅನ್ತರ್ಭಾವ "hb-open-type.hh"
 
 /*
  * fvar -- Font Variations
@@ -37,106 +37,106 @@
 #define HB_OT_TAG_fvar HB_TAG('f','v','a','r')
 
 
-namespace OT {
+ನಾಮಾಕಾಶ OT {
 
-static bool axis_coord_pinned_or_within_axis_range (const hb_array_t<const F16DOT16> coords,
+ಸ್ಥಿರ ತಾರ್ಕಿಕ axis_coord_pinned_or_within_axis_range (ಧ್ರುವ hb_array_t<ಧ್ರುವ F16DOT16> coords,
                                                     unsigned axis_index,
                                                     Triple axis_limit)
 {
-  float axis_coord = coords[axis_index].to_float ();
-  if (axis_limit.is_point ())
+  ಭಿನ್ನ axis_coord = coords[axis_index].to_float ();
+  ಯದಿ (axis_limit.is_point ())
   {
-    if (axis_limit.minimum != axis_coord)
-      return false;
+    ಯದಿ (axis_limit.minimum != axis_coord)
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
-  else
+  ಅನ್ಯಥಾ
   {
-    if (axis_coord < axis_limit.minimum ||
+    ಯದಿ (axis_coord < axis_limit.minimum ||
         axis_coord > axis_limit.maximum)
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
   }
-  return true;
+  ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
 }
 
-struct InstanceRecord
+ಸಂರಚನಾ InstanceRecord
 {
-  friend struct fvar;
+  friend ಸಂರಚನಾ fvar;
 
-  hb_array_t<const F16DOT16> get_coordinates (unsigned int axis_count) const
-  { return coordinatesZ.as_array (axis_count); }
+  hb_array_t<ಧ್ರುವ F16DOT16> get_coordinates (unsigned ಪೂರ್ಣಾಙ್ಕ axis_ಎಣಿಕೆ) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ coordinatesZ.as_array (axis_ಎಣಿಕೆ); }
 
-  bool keep_instance (unsigned axis_count,
-                      const hb_map_t *axes_index_tag_map,
-                      const hb_hashmap_t<hb_tag_t, Triple> *axes_location) const
+  ತಾರ್ಕಿಕ keep_instance (unsigned axis_ಎಣಿಕೆ,
+                      ಧ್ರುವ hb_map_t *axes_index_tag_map,
+                      ಧ್ರುವ hb_hashmap_t<hb_tag_t, Triple> *axes_location) ಧ್ರುವ
   {
-    if (axes_location->is_empty ()) return true;
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    for (unsigned i = 0 ; i < axis_count; i++)
+    ಯದಿ (axes_location->is_empty ()) ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
+    ಧ್ರುವ hb_array_t<ಧ್ರುವ F16DOT16> coords = get_coordinates (axis_ಎಣಿಕೆ);
+    ಪ್ರತಿ (unsigned i = 0 ; i < axis_ಎಣಿಕೆ; i++)
     {
       uint32_t *axis_tag;
-      if (!axes_index_tag_map->has (i, &axis_tag))
-        return false;
-      if (!axes_location->has (*axis_tag))
-        continue;
+      ಯದಿ (!axes_index_tag_map->has (i, &axis_tag))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
+      ಯದಿ (!axes_location->has (*axis_tag))
+        ಅನುವರ್ತ;
 
       Triple axis_limit = axes_location->get (*axis_tag);
-      if (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
-        return false;
+      ಯದಿ (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
+        ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
     }
-    return true;
+    ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
   }
 
-  bool subset (hb_subset_context_t *c,
-               unsigned axis_count,
-               bool has_postscript_nameid) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c,
+               unsigned axis_ಎಣಿಕೆ,
+               ತಾರ್ಕಿಕ has_postscript_nameid) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
-    if (unlikely (!c->serializer->embed (flags))) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    ಯದಿ (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (ಅಸತ್ಯ);
+    ಯದಿ (unlikely (!c->serializer->embed (flags))) return_trace (ಅಸತ್ಯ);
 
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    const hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
-    for (unsigned i = 0 ; i < axis_count; i++)
+    ಧ್ರುವ hb_array_t<ಧ್ರುವ F16DOT16> coords = get_coordinates (axis_ಎಣಿಕೆ);
+    ಧ್ರುವ hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
+    ಪ್ರತಿ (unsigned i = 0 ; i < axis_ಎಣಿಕೆ; i++)
     {
       uint32_t *axis_tag;
       Triple *axis_limit;
       // only keep instances whose coordinates == pinned axis location
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
-      if (axes_location->has (*axis_tag, &axis_limit))
+      ಯದಿ (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (ಅಸತ್ಯ);
+      ಯದಿ (axes_location->has (*axis_tag, &axis_limit))
       {
-        if (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
-          return_trace (false);
+        ಯದಿ (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
+          return_trace (ಅಸತ್ಯ);
 
         //skip axes dropped from fvar (pinned; or self-contained under avar2,
         //where other pinned axes stay in fvar as hidden)
-        if (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
-          continue;
+        ಯದಿ (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
+          ಅನುವರ್ತ;
       }
 
-      if (!c->serializer->embed (coords[i]))
-        return_trace (false);
+      ಯದಿ (!c->serializer->embed (coords[i]))
+        return_trace (ಅಸತ್ಯ);
     }
 
-    if (has_postscript_nameid)
+    ಯದಿ (has_postscript_nameid)
     {
       NameID name_id;
       name_id = StructAfter<NameID> (coords);
-      if (!c->serializer->embed (name_id))
-        return_trace (false);
+      ಯದಿ (!c->serializer->embed (name_id))
+        return_trace (ಅಸತ್ಯ);
     }
 
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int axis_count) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c, unsigned ಪೂರ್ಣಾಙ್ಕ axis_ಎಣಿಕೆ) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್) &&
 		  hb_barrier () &&
-		  c->check_array (coordinatesZ.arrayZ, axis_count));
+		  c->check_array (coordinatesZ.arrayZ, axis_ಎಣಿಕೆ));
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   NameID	subfamilyNameID;/* The name ID for entries in the 'name' table
 				 * that provide subfamily names for this instance. */
   HBUINT16	flags;		/* Reserved for future use — set to 0. */
@@ -146,351 +146,351 @@ struct InstanceRecord
   //				  * table that provide PostScript names for this
   //				  * instance. */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_UNBOUNDED (4);
 };
 
-struct AxisRecord
+ಸಂರಚನಾ AxisRecord
 {
-  int cmp (hb_tag_t key) const { return axisTag.cmp (key); }
+  ಪೂರ್ಣಾಙ್ಕ cmp (hb_tag_t key) ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ axisTag.cmp (key); }
 
-  enum
+  ಗಣನಾ
   {
     AXIS_FLAG_HIDDEN	= 0x0001,
   };
 
 #ifndef HB_DISABLE_DEPRECATED
-  void get_axis_deprecated (hb_ot_var_axis_t *info) const
+  ಶೂನ್ಯ get_axis_deprecated (hb_ot_var_axis_t *info) ಧ್ರುವ
   {
     info->tag = axisTag;
     info->name_id = axisNameID;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    get_coordinates (info->min_ಮೌಲ್ಯ, info->default_ಮೌಲ್ಯ, info->max_ಮೌಲ್ಯ);
   }
 #endif
 
-  void get_axis_info (unsigned axis_index, hb_ot_var_axis_info_t *info) const
+  ಶೂನ್ಯ get_axis_info (unsigned axis_index, hb_ot_var_axis_info_t *info) ಧ್ರುವ
   {
     info->axis_index = axis_index;
     info->tag = axisTag;
     info->name_id = axisNameID;
-    info->flags = (hb_ot_var_axis_flags_t) (unsigned int) flags;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    info->flags = (hb_ot_var_axis_flags_t) (unsigned ಪೂರ್ಣಾಙ್ಕ) flags;
+    get_coordinates (info->min_ಮೌಲ್ಯ, info->default_ಮೌಲ್ಯ, info->max_ಮೌಲ್ಯ);
     info->reserved = 0;
   }
 
-  hb_tag_t get_axis_tag () const { return axisTag; }
+  hb_tag_t get_axis_tag () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ axisTag; }
 
-  bool is_hidden () const { return flags & AXIS_FLAG_HIDDEN; }
+  ತಾರ್ಕಿಕ is_hidden () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ flags & AXIS_FLAG_HIDDEN; }
 
-  float normalize_axis_value (float v) const
+  ಭಿನ್ನ normalize_axis_ಮೌಲ್ಯ (ಭಿನ್ನ v) ಧ್ರುವ
   {
-    float min_value, default_value, max_value;
-    get_coordinates (min_value, default_value, max_value);
+    ಭಿನ್ನ min_ಮೌಲ್ಯ, default_ಮೌಲ್ಯ, max_ಮೌಲ್ಯ;
+    get_coordinates (min_ಮೌಲ್ಯ, default_ಮೌಲ್ಯ, max_ಮೌಲ್ಯ);
 
-    v = hb_clamp (v, min_value, max_value);
+    v = hb_clamp (v, min_ಮೌಲ್ಯ, max_ಮೌಲ್ಯ);
 
-    if (v == default_value)
-      return 0;
-    else if (v < default_value)
-      return (v - default_value) / (default_value - min_value);
-    else
-      return (v - default_value) / (max_value - default_value);
+    ಯದಿ (v == default_ಮೌಲ್ಯ)
+      ಪ್ರತ್ಯಾಗಮ 0;
+    ಅನ್ಯಥಾ ಯದಿ (v < default_ಮೌಲ್ಯ)
+      ಪ್ರತ್ಯಾಗಮ (v - default_ಮೌಲ್ಯ) / (default_ಮೌಲ್ಯ - min_ಮೌಲ್ಯ);
+    ಅನ್ಯಥಾ
+      ಪ್ರತ್ಯಾಗಮ (v - default_ಮೌಲ್ಯ) / (max_ಮೌಲ್ಯ - default_ಮೌಲ್ಯ);
   }
 
-  hb_ot_name_id_t get_name_id () const { return axisNameID; }
+  hb_ot_name_id_t get_name_id () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ axisNameID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ಏತತ್);
+    return_trace (c->check_struct (ಏತತ್));
   }
 
-  void get_coordinates (float &min, float &default_, float &max) const
+  ಶೂನ್ಯ get_coordinates (ಭಿನ್ನ &min, ಭಿನ್ನ &default_, ಭಿನ್ನ &max) ಧ್ರುವ
   {
-    default_ = defaultValue.to_float ();
+    default_ = default_ಮೌಲ್ಯ_2.to_float ();
     /* Ensure order, to simplify client math. */
-    min = hb_min (default_, minValue.to_float ());
-    max = hb_max (default_, maxValue.to_float ());
+    min = hb_min (default_, min_ಮೌಲ್ಯ_2.to_float ());
+    max = hb_max (default_, max_ಮೌಲ್ಯ_2.to_float ());
   }
 
-  float get_default () const
+  ಭಿನ್ನ get_default () ಧ್ರುವ
   {
-    return defaultValue.to_float ();
+    ಪ್ರತ್ಯಾಗಮ default_ಮೌಲ್ಯ_2.to_float ();
   }
 
-  TripleDistances get_triple_distances () const
+  TripleDistances get_triple_distances () ಧ್ರುವ
   {
-    float min, default_, max;
+    ಭಿನ್ನ min, default_, max;
     get_coordinates (min, default_, max);
-    return TripleDistances (min, default_, max);
+    ಪ್ರತ್ಯಾಗಮ TripleDistances (min, default_, max);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    auto *out = c->serializer->embed (ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
+    ಧ್ರುವ hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
     Triple *axis_limit;
-    if (user_axes_location.has (axisTag, &axis_limit))
+    ಯದಿ (user_axes_location.has (axisTag, &axis_limit))
     {
-      if (c->plan->has_avar2 && axis_limit->is_point ())
+      ಯದಿ (c->plan->has_avar2 && axis_limit->is_point ())
       {
         /* Pinned axis in avar2 mode: keep in fvar as hidden with
          * min=default=max=pinned_value. */
-        out->minValue.set_float (axis_limit->middle);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->middle);
+        out->min_ಮೌಲ್ಯ_2.set_float (axis_limit->ಮಧ್ಯ);
+        out->default_ಮೌಲ್ಯ_2.set_float (axis_limit->ಮಧ್ಯ);
+        out->max_ಮೌಲ್ಯ_2.set_float (axis_limit->ಮಧ್ಯ);
         out->flags = out->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
       }
-      else
+      ಅನ್ಯಥಾ
       {
-        out->minValue.set_float (axis_limit->minimum);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->maximum);
+        out->min_ಮೌಲ್ಯ_2.set_float (axis_limit->minimum);
+        out->default_ಮೌಲ್ಯ_2.set_float (axis_limit->ಮಧ್ಯ);
+        out->max_ಮೌಲ್ಯ_2.set_float (axis_limit->maximum);
       }
     }
-    return_trace (true);
+    return_trace (ಸತ್ಯ);
   }
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   Tag		axisTag;	/* Tag identifying the design variation for the axis. */
-  protected:
-  F16DOT16	minValue;	/* The minimum coordinate value for the axis. */
-  F16DOT16	defaultValue;	/* The default coordinate value for the axis. */
-  F16DOT16	maxValue;	/* The maximum coordinate value for the axis. */
-  public:
+  ರಕ್ಷಿತ:
+  F16DOT16	min_ಮೌಲ್ಯ_2;	/* The minimum coordinate value for the axis. */
+  F16DOT16	default_ಮೌಲ್ಯ_2;	/* The default coordinate value for the axis. */
+  F16DOT16	max_ಮೌಲ್ಯ_2;	/* The maximum coordinate value for the axis. */
+  ಸಾರ್ವಜನಿಕ:
   HBUINT16	flags;		/* Axis flags. */
   NameID	axisNameID;	/* The name ID for entries in the 'name' table that
 				 * provide a display name for this axis. */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct fvar
+ಸಂರಚನಾ fvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
+  ಸ್ಥಿರ constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
 
-  bool has_data () const { return version.to_int (); }
+  ತಾರ್ಕಿಕ has_data () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ version.to_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ತಾರ್ಕಿಕ sanitize (hb_sanitize_context_t *c) ಧ್ರುವ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ಏತತ್);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  c->check_struct (ಏತತ್) &&
 		  hb_barrier () &&
 		  axisSize == 20 && /* Assumed in our code. */
-		  instanceSize >= axisCount * 4 + 4 &&
+		  instanceSize >= axis_ಎಣಿಕೆ_2 * 4 + 4 &&
 		  get_axes ().sanitize (c) &&
 		  c->check_range (&StructAfter<InstanceRecord> (get_axes ()),
-				  instanceCount, instanceSize));
+				  instance_ಎಣಿಕೆ, instanceSize));
   }
 
-  unsigned int get_axis_count () const { return axisCount; }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_axis_ಎಣಿಕೆ () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ axis_ಎಣಿಕೆ_2; }
 
 #ifndef HB_DISABLE_DEPRECATED
-  unsigned int get_axes_deprecated (unsigned int      start_offset,
-				    unsigned int     *axes_count /* IN/OUT */,
-				    hb_ot_var_axis_t *axes_array /* OUT */) const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_axes_deprecated (unsigned ಪೂರ್ಣಾಙ್ಕ      start_offset,
+				    unsigned ಪೂರ್ಣಾಙ್ಕ     *axes_ಎಣಿಕೆ /* IN/OUT */,
+				    hb_ot_var_axis_t *axes_array /* OUT */) ಧ್ರುವ
   {
-    if (axes_count && axes_array)
+    ಯದಿ (axes_ಎಣಿಕೆ && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<ಧ್ರುವ AxisRecord> arr = get_axes ().sub_array (start_offset, axes_ಎಣಿಕೆ);
+      ಪ್ರತಿ (unsigned i = 0; i < arr.length; ++i)
 	arr[i].get_axis_deprecated (&axes_array[i]);
     }
-    return axisCount;
+    ಪ್ರತ್ಯಾಗಮ axis_ಎಣಿಕೆ_2;
   }
 #endif
 
-  unsigned int get_axis_infos (unsigned int           start_offset,
-			       unsigned int          *axes_count /* IN/OUT */,
-			       hb_ot_var_axis_info_t *axes_array /* OUT */) const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_axis_infos (unsigned ಪೂರ್ಣಾಙ್ಕ           start_offset,
+			       unsigned ಪೂರ್ಣಾಙ್ಕ          *axes_ಎಣಿಕೆ /* IN/OUT */,
+			       hb_ot_var_axis_info_t *axes_array /* OUT */) ಧ್ರುವ
   {
-    if (axes_count && axes_array)
+    ಯದಿ (axes_ಎಣಿಕೆ && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<ಧ್ರುವ AxisRecord> arr = get_axes ().sub_array (start_offset, axes_ಎಣಿಕೆ);
+      ಪ್ರತಿ (unsigned i = 0; i < arr.length; ++i)
 	arr[i].get_axis_info (start_offset + i, &axes_array[i]);
     }
-    return axisCount;
+    ಪ್ರತ್ಯಾಗಮ axis_ಎಣಿಕೆ_2;
   }
 
 #ifndef HB_DISABLE_DEPRECATED
-  bool
-  find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) const
+  ತಾರ್ಕಿಕ
+  find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) ಧ್ರುವ
   {
     unsigned i;
-    if (!axis_index) axis_index = &i;
+    ಯದಿ (!axis_index) axis_index = &i;
     *axis_index = HB_OT_VAR_NO_AXIS_INDEX;
     auto axes = get_axes ();
-    return axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
+    ಪ್ರತ್ಯಾಗಮ axes.lfind (tag, axis_index) && ((ಶೂನ್ಯ) axes[*axis_index].get_axis_deprecated (info), ಸತ್ಯ);
   }
 #endif
-  bool
-  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) const
+  ತಾರ್ಕಿಕ
+  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) ಧ್ರುವ
   {
     unsigned i;
     auto axes = get_axes ();
-    return axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
+    ಪ್ರತ್ಯಾಗಮ axes.lfind (tag, &i) && ((ಶೂನ್ಯ) axes[i].get_axis_info (i, info), ಸತ್ಯ);
   }
 
-  float normalize_axis_value (unsigned int axis_index, float v) const
-  { return get_axes ()[axis_index].normalize_axis_value (v); }
+  ಭಿನ್ನ normalize_axis_ಮೌಲ್ಯ (unsigned ಪೂರ್ಣಾಙ್ಕ axis_index, ಭಿನ್ನ v) ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ get_axes ()[axis_index].normalize_axis_ಮೌಲ್ಯ (v); }
 
-  unsigned int get_instance_count () const { return instanceCount; }
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_instance_ಎಣಿಕೆ () ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ instance_ಎಣಿಕೆ; }
 
-  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned ಪೂರ್ಣಾಙ್ಕ instance_index) ಧ್ರುವ
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    return instance->subfamilyNameID;
+    ಧ್ರುವ InstanceRecord *instance = get_instance (instance_index);
+    ಯದಿ (unlikely (!instance)) ಪ್ರತ್ಯಾಗಮ HB_OT_NAME_ID_INVALID;
+    ಪ್ರತ್ಯಾಗಮ instance->subfamilyNameID;
   }
 
-  hb_ot_name_id_t get_instance_postscript_name_id (unsigned int instance_index) const
+  hb_ot_name_id_t get_instance_postscript_name_id (unsigned ಪೂರ್ಣಾಙ್ಕ instance_index) ಧ್ರುವ
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    if (instanceSize >= axisCount * 4 + 6)
-      return StructAfter<NameID> (instance->get_coordinates (axisCount));
-    return HB_OT_NAME_ID_INVALID;
+    ಧ್ರುವ InstanceRecord *instance = get_instance (instance_index);
+    ಯದಿ (unlikely (!instance)) ಪ್ರತ್ಯಾಗಮ HB_OT_NAME_ID_INVALID;
+    ಯದಿ (instanceSize >= axis_ಎಣಿಕೆ_2 * 4 + 6)
+      ಪ್ರತ್ಯಾಗಮ StructAfter<NameID> (instance->get_coordinates (axis_ಎಣಿಕೆ_2));
+    ಪ್ರತ್ಯಾಗಮ HB_OT_NAME_ID_INVALID;
   }
 
-  unsigned int get_instance_coords (unsigned int  instance_index,
-				    unsigned int *coords_length, /* IN/OUT */
-				    float        *coords         /* OUT */) const
+  unsigned ಪೂರ್ಣಾಙ್ಕ get_instance_coords (unsigned ಪೂರ್ಣಾಙ್ಕ  instance_index,
+				    unsigned ಪೂರ್ಣಾಙ್ಕ *coords_length, /* IN/OUT */
+				    ಭಿನ್ನ        *coords         /* OUT */) ಧ್ರುವ
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance))
+    ಧ್ರುವ InstanceRecord *instance = get_instance (instance_index);
+    ಯದಿ (unlikely (!instance))
     {
-      if (coords_length)
+      ಯದಿ (coords_length)
 	*coords_length = 0;
-      return 0;
+      ಪ್ರತ್ಯಾಗಮ 0;
     }
 
-    if (coords_length && *coords_length && coords)
+    ಯದಿ (coords_length && *coords_length && coords)
     {
-      hb_array_t<const F16DOT16> instanceCoords = instance->get_coordinates (axisCount)
+      hb_array_t<ಧ್ರುವ F16DOT16> instanceCoords = instance->get_coordinates (axis_ಎಣಿಕೆ_2)
 							 .sub_array (0, coords_length);
-      for (unsigned int i = 0; i < instanceCoords.length; i++)
+      ಪ್ರತಿ (unsigned ಪೂರ್ಣಾಙ್ಕ i = 0; i < instanceCoords.length; i++)
 	coords[i] = instanceCoords.arrayZ[i].to_float ();
     }
-    return axisCount;
+    ಪ್ರತ್ಯಾಗಮ axis_ಎಣಿಕೆ_2;
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+  ಶೂನ್ಯ collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
 			 hb_map_t *axes_old_index_tag_map,
-			 hb_set_t *nameids  /* IN/OUT */) const
+			 hb_set_t *nameids  /* IN/OUT */) ಧ್ರುವ
   {
-    if (!has_data ()) return;
+    ಯದಿ (!has_data ()) ಪ್ರತ್ಯಾಗಮ;
 
     auto axis_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    ಪ್ರತಿ (unsigned i = 0 ; i < (unsigned)axis_ಎಣಿಕೆ_2; i++)
     {
       hb_tag_t axis_tag = axis_records[i].get_axis_tag ();
-      if (user_axes_location->has (axis_tag) &&
+      ಯದಿ (user_axes_location->has (axis_tag) &&
           user_axes_location->get (axis_tag).is_point ())
-        continue;
+        ಅನುವರ್ತ;
 
       nameids->add (axis_records[i].get_name_id ());
     }
 
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    ಪ್ರತಿ (unsigned i = 0 ; i < (unsigned)instance_ಎಣಿಕೆ; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
+      ಧ್ರುವ InstanceRecord *instance = get_instance (i);
 
-      if (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
-        continue;
+      ಯದಿ (!instance->keep_instance (axis_ಎಣಿಕೆ_2, axes_old_index_tag_map, user_axes_location))
+        ಅನುವರ್ತ;
 
       nameids->add (instance->subfamilyNameID);
 
-      if (instanceSize >= axisCount * 4 + 6)
+      ಯದಿ (instanceSize >= axis_ಎಣಿಕೆ_2 * 4 + 6)
       {
-        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axisCount));
-        if (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
+        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axis_ಎಣಿಕೆ_2));
+        ಯದಿ (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
       }
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ತಾರ್ಕಿಕ subset (hb_subset_context_t *c) ಧ್ರುವ
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned
-      return_trace (false);
+    TRACE_SUBSET (ಏತತ್);
+    unsigned retained_axis_ಎಣಿಕೆ = c->plan->axes_index_map.get_population ();
+    ಯದಿ (!retained_axis_ಎಣಿಕೆ) //all axes are pinned
+      return_trace (ಅಸತ್ಯ);
 
-    fvar *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    fvar *out = c->serializer->embed (ಏತತ್);
+    ಯದಿ (unlikely (!out)) return_trace (ಅಸತ್ಯ);
 
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ಯದಿ (!c->serializer->check_assign (out->axis_ಎಣಿಕೆ_2, retained_axis_ಎಣಿಕೆ, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (ಅಸತ್ಯ);
 
-    bool has_postscript_nameid = false;
-    if (instanceSize >= axisCount * 4 + 6)
-      has_postscript_nameid = true;
+    ತಾರ್ಕಿಕ has_postscript_nameid = ಅಸತ್ಯ;
+    ಯದಿ (instanceSize >= axis_ಎಣಿಕೆ_2 * 4 + 6)
+      has_postscript_nameid = ಸತ್ಯ;
 
-    if (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
+    ಯದಿ (!c->serializer->check_assign (out->instanceSize, retained_axis_ಎಣಿಕೆ * 4 + (has_postscript_nameid ? 6 : 4),
                                       HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (ಅಸತ್ಯ);
 
     auto axes_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    ಪ್ರತಿ (unsigned i = 0 ; i < (unsigned)axis_ಎಣಿಕೆ_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue;
-      if (unlikely (!axes_records[i].subset (c)))
-        return_trace (false);
+      ಯದಿ (!c->plan->axes_index_map.has (i)) ಅನುವರ್ತ;
+      ಯದಿ (unlikely (!axes_records[i].subset (c)))
+        return_trace (ಅಸತ್ಯ);
     }
 
-    if (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ಯದಿ (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (ಅಸತ್ಯ);
 
-    unsigned num_retained_instances = 0;
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    unsigned ಅಂಕೆ_retained_instances = 0;
+    ಪ್ರತಿ (unsigned i = 0 ; i < (unsigned)instance_ಎಣಿಕೆ; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
+      ಧ್ರುವ InstanceRecord *instance = get_instance (i);
       auto snap = c->serializer->snapshot ();
-      if (!instance->subset (c, axisCount, has_postscript_nameid))
+      ಯದಿ (!instance->subset (c, axis_ಎಣಿಕೆ_2, has_postscript_nameid))
         c->serializer->revert (snap);
-      else
-        num_retained_instances++;
+      ಅನ್ಯಥಾ
+        ಅಂಕೆ_retained_instances++;
     }
 
-    return_trace (c->serializer->check_assign (out->instanceCount, num_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_assign (out->instance_ಎಣಿಕೆ, ಅಂಕೆ_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  public:
-  hb_array_t<const AxisRecord> get_axes () const
-  { return hb_array (&(this+firstAxis), axisCount); }
+  ಸಾರ್ವಜನಿಕ:
+  hb_array_t<ಧ್ರುವ AxisRecord> get_axes () ಧ್ರುವ
+  { ಪ್ರತ್ಯಾಗಮ hb_array (&(ಏತತ್+firstAxis), axis_ಎಣಿಕೆ_2); }
 
-  const InstanceRecord *get_instance (unsigned int i) const
+  ಧ್ರುವ InstanceRecord *get_instance (unsigned ಪೂರ್ಣಾಙ್ಕ i) ಧ್ರುವ
   {
-    if (unlikely (i >= instanceCount)) return nullptr;
-   return &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
+    ಯದಿ (unlikely (i >= instance_ಎಣಿಕೆ)) ಪ್ರತ್ಯಾಗಮ nullptr;
+   ಪ್ರತ್ಯಾಗಮ &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
 					   i * instanceSize);
   }
 
-  protected:
+  ರಕ್ಷಿತ:
   FixedVersion<>version;	/* Version of the fvar table
 				 * initially set to 0x00010000u */
   Offset16To<AxisRecord>
 		firstAxis;	/* Offset in bytes from the beginning of the table
 				 * to the start of the AxisRecord array. */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 2. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font (the
+  HBUINT16	axis_ಎಣಿಕೆ_2;	/* The number of variation axes in the font (the
 				 * number of records in the axes array). */
   HBUINT16	axisSize;	/* The size in bytes of each VariationAxisRecord —
 				 * set to 20 (0x0014) for this version. */
-  HBUINT16	instanceCount;	/* The number of named instances defined in the font
+  HBUINT16	instance_ಎಣಿಕೆ;	/* The number of named instances defined in the font
 				 * (the number of records in the instances array). */
   HBUINT16	instanceSize;	/* The size in bytes of each InstanceRecord — set
 				 * to either axisCount * sizeof(F16DOT16) + 4, or to
 				 * axisCount * sizeof(F16DOT16) + 6. */
 
-  public:
+  ಸಾರ್ವಜನಿಕ:
   DEFINE_SIZE_STATIC (16);
 };
 
