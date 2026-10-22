@@ -9,9 +9,9 @@ namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct ExtensionSubst : Extension<ExtensionSubst>
+sa_nracanaa ExtensionSubst : Extension<ExtensionSubst>
 {
-  typedef struct SubstLookupSubTable SubTable;
+  typedef sa_nracanaa SubstLookupSubTable SubTable;
   bool is_reverse () const;
 };
 

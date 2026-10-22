@@ -31,7 +31,7 @@
 
 namespace graph {
 
-enum graph_error_t {
+ga_nanaa graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,19 +43,19 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
+static anta_hstha const var_na* to_string(graph_error_t e) {
   switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
+    pak_sa ALLOCATION_FAILURE: ᨀᨘᨒ "Memory Allocation Failed";
+    pak_sa LIMIT_EXCEEDED: ᨀᨘᨒ "Limit Exceeded";
+    pak_sa INVALID_ARGUMENT: ᨀᨘᨒ "Invalid Argument";
+    pak_sa CYCLE_DETECTED: ᨀᨘᨒ "Cycle in Graph";
+    pak_sa SANITIZE_FAILURE: ᨀᨘᨒ "Failed Sanitization";
+    pak_sa OUT_OF_BOUNDS: ᨀᨘᨒ "Out of Bounds";
+    pak_sa ORPHANED_NODES: ᨀᨘᨒ "Graph is not fully connected";
+    pak_sa OVERFLOW_RESOLUTION_FAILED: ᨀᨘᨒ "Overflows are not able to be resolved";
+    pak_sa UNKNOWN:
     default:
-      return "Unknown Error";
+      ᨀᨘᨒ "Unknown Error";
   }
 }
 

@@ -9,9 +9,9 @@ namespace OT {
 namespace glyf_impl {
 
 
-struct SimpleGlyph
+sa_nracanaa SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  ga_nanaa simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -28,26 +28,26 @@ struct SimpleGlyph
   SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned puur_naa_nka instruction_len_offset () const
+  { ᨀᨘᨒ GlyphHeader::static_size + 2 * header.numberOfContours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned puur_naa_nka length (unsigned puur_naa_nka instruction_len) const
+  { ᨀᨘᨒ instruction_len_offset () + 2 + instruction_len; }
 
   bool has_instructions_length () const
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    ᨀᨘᨒ instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned puur_naa_nka instructions_length () const
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned puur_naa_nka instruction_length_offset = instruction_len_offset ();
+    ᨀᨘ (unlikely (instruction_length_offset + 2 > bytes.length)) ᨀᨘᨒ 0;
 
     const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    ᨀᨘ (unlikely (length (instructionLength) > bytes.length)) ᨀᨘᨒ 0;
+    ᨀᨘᨒ instructionLength;
   }
 
   const hb_bytes_t trim_padding () const
@@ -58,66 +58,66 @@ struct SimpleGlyph
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    ᨀᨘ (unlikely (glyph + 2 >= glyph_end)) ᨀᨘᨒ hb_bytes_t ();
+    unsigned puur_naa_nka num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned puur_naa_nka num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
     glyph += 2 + num_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned puur_naa_nka coord_bytes = 0;
+    unsigned puur_naa_nka coords_with_flags = 0;
+    ᨀᨛ (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned puur_naa_nka repeat = 1;
+      ᨀᨘ (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	ᨀᨘ (unlikely (glyph >= glyph_end)) ᨀᨘᨒ hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned puur_naa_nka xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      ᨀᨘ (flag & FLAG_X_SHORT) xBytes = 1;
+      ᨀᨘᨁ ᨀᨘ ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      ᨀᨘ (flag & FLAG_Y_SHORT) yBytes = 1;
+      ᨀᨘᨁ ᨀᨘ ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      ᨀᨘ (coords_with_flags >= num_coordinates) bha_nga;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    ᨀᨘ (unlikely (coords_with_flags != num_coordinates)) ᨀᨘᨒ hb_bytes_t ();
+    ᨀᨘᨒ bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
   void drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    ᨀᨘ (!has_instructions_length ()) ᨀᨘᨒ;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
   void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned puur_naa_nka instructions_len = instructions_length ();
+    unsigned puur_naa_nka glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
   void set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    ᨀᨘ (unlikely (!header.numberOfContours)) ᨀᨘᨒ;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    ᨀᨘ (unlikely (flags_offset + 1 > bytes.length)) ᨀᨘᨒ;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
@@ -130,23 +130,23 @@ struct SimpleGlyph
   {
     auto *points = points_.arrayZ;
     unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    for (unsigned puur_naa_nka i = 0; i < count;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ᨀᨘ (unlikely (p + 1 > end)) ᨀᨘᨒ false;
       uint8_t flag = *p++;
-      if (!extended)
+      ᨀᨘ (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      ᨀᨘ (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
+	ᨀᨘ (unlikely (p + 1 > end)) ᨀᨘᨒ false;
+	unsigned puur_naa_nka repeat_count = *p++;
 	unsigned stop = hb_min (i + repeat_count, count);
 	for (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    ᨀᨘᨒ true;
   }
 
   static bool read_points (const HBUINT8 *&p /* IN/OUT */,
@@ -156,28 +156,28 @@ struct SimpleGlyph
 			   const simple_glyph_flag_t short_flag,
 			   const simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    puur_naa_nka v = 0;
 
     for (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      ᨀᨘ (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
+	ᨀᨘ (unlikely (p + 1 > end)) ᨀᨘᨒ false;
 	v += (bool(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      ᨀᨘᨁ
       {
-	if (!(flag & same_flag))
+	ᨀᨘ (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
+	  ᨀᨘ (unlikely (p + HBINT16::static_size > end)) ᨀᨘᨒ false;
 	  v += *(const HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    ᨀᨘᨒ true;
   }
 
   bool get_contour_points (contour_point_vector_t &points /* OUT */,
@@ -186,63 +186,63 @@ struct SimpleGlyph
 			   int64_t *budget = nullptr) const
   {
     const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
+    puur_naa_nka num_contours = header.numberOfContours;
     assert (num_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    ᨀᨘ (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) ᨀᨘᨒ false;
+    unsigned puur_naa_nka num_points = endPtsOfContours[num_contours - 1] + 1;
+    ᨀᨘ (unlikely (num_points < (unsigned) num_contours)) ᨀᨘᨒ false;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    ᨀᨘ (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) ᨀᨘᨒ false;
 
     unsigned old_length = points.length;
     points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    ᨀᨘ (unlikely (!points.resize_dirty (points.length + num_points))) ᨀᨘᨒ false;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    ᨀᨘ (!phantom_only)
+      hb_memset (points_.arrayZ, 0, parimaa_na (contour_point_t) * num_points);
+    ᨀᨘ (phantom_only) ᨀᨘᨒ true;
 
-    for (int i = 0; i < num_contours; i++)
+    for (puur_naa_nka i = 0; i < num_contours; i++)
       points_[endPtsOfContours[i]].is_end_point = true;
 
     /* Skip instructions */
     const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
 						 endPtsOfContours[num_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
+    ᨀᨘ (unlikely ((const var_na *) p < bytes.arrayZ)) ᨀᨘᨒ false; /* Unlikely overflow */
     const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    ᨀᨘ (unlikely (p >= end)) ᨀᨘᨒ false;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    ᨀᨘᨒ read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  static void encode_coord (puur_naa_nka value,
                             unsigned &flag,
                             const simple_glyph_flag_t short_flag,
                             const simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    ᨀᨘ (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    ᨀᨘᨁ ᨀᨘ (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      ᨀᨘ (value > 0) flag |= same_flag;
+      ᨀᨘᨁ value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    ᨀᨘᨁ
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -255,22 +255,22 @@ struct SimpleGlyph
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    ᨀᨘ (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      ᨀᨘ (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      ᨀᨘᨁ
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    ᨀᨘᨁ
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
@@ -281,28 +281,28 @@ struct SimpleGlyph
                                   bool no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    ᨀᨘ (header.numberOfContours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      ᨀᨘᨒ true;
     }
     unsigned num_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    ᨀᨘ (unlikely (!flags.alloc_exact (num_points))) ᨀᨘᨒ false;
+    ᨀᨘ (unlikely (!x_coords.alloc_exact (2*num_points))) ᨀᨘᨒ false;
+    ᨀᨘ (unlikely (!y_coords.alloc_exact (2*num_points))) ᨀᨘᨒ false;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    puur_naa_nka prev_x = 0, prev_y = 0;
 
     for (unsigned i = 0; i < num_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      puur_naa_nka cur_x = roundf (all_points.arrayZ[i].x);
+      puur_naa_nka cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -316,20 +316,20 @@ struct SimpleGlyph
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    ᨀᨘ (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    var_na *p = (var_na *) hb_malloc (total_len);
+    ᨀᨘ (unlikely (!p)) ᨀᨘᨒ false;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    const var_na *src = bytes.arrayZ + GlyphHeader::static_size;
+    var_na *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    ᨀᨘ (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    ᨀᨘᨒ true;
   }
 };
 

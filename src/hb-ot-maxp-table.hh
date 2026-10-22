@@ -41,7 +41,7 @@ namespace OT {
 #define HB_OT_TAG_maxp HB_TAG('m','a','x','p')
 #define HB_OT_TAG_MAXP HB_TAG('M','A','X','P')
 
-struct maxpV1Tail
+sa_nracanaa maxpV1Tail
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -72,11 +72,11 @@ struct maxpV1Tail
 
 
 template <typename Types>
-struct maxp_MAXP
+sa_nracanaa maxp_MAXP
 {
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  unsigned puur_naa_nka get_num_glyphs () const { ᨀᨘᨒ numGlyphs; }
 
-  void set_num_glyphs (unsigned int count)
+  void set_num_glyphs (unsigned puur_naa_nka count)
   {
     numGlyphs = count;
   }
@@ -84,10 +84,10 @@ struct maxp_MAXP
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ᨀᨘ (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
-    if (version.major == 1)
+    ᨀᨘ (version.major == 1)
     {
       const maxpV1Tail &v1 = StructAfter<maxpV1Tail> (*this);
       return_trace (v1.sanitize (c));
@@ -99,21 +99,21 @@ struct maxp_MAXP
   {
     TRACE_SUBSET (this);
     maxp_MAXP *maxp_prime = c->serializer->embed (this);
-    if (unlikely (!maxp_prime)) return_trace (false);
+    ᨀᨘ (unlikely (!maxp_prime)) return_trace (false);
 
     maxp_prime->numGlyphs = hb_min (c->plan->num_output_glyphs (),
 				    (1u << (8 * Types::size)) - 1);
-    if (maxp_prime->version.major == 1)
+    ᨀᨘ (maxp_prime->version.major == 1)
     {
       hb_barrier ();
       const maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*this);
       maxpV1Tail *dest_v1 = c->serializer->embed<maxpV1Tail> (src_v1);
-      if (unlikely (!dest_v1)) return_trace (false);
+      ᨀᨘ (unlikely (!dest_v1)) return_trace (false);
 
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      ᨀᨘ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
 	drop_hint_fields (dest_v1);
 
-      if (c->plan->normalized_coords)
+      ᨀᨘ (c->plan->normalized_coords)
         instancing_update_fields (c->plan->head_maxp_info, dest_v1);
     }
 
@@ -141,7 +141,7 @@ struct maxp_MAXP
     dest_v1->maxSizeOfInstructions = 0;
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;/* Version of the maxp table (0.5 or 1.0),
 			 * 0x00005000u or 0x00010000u. */
   typename Types::HBUINT
@@ -152,17 +152,17 @@ struct maxp_MAXP
   DEFINE_SIZE_STATIC (4 + Types::HBUINT::static_size);
 };
 
-struct maxp : maxp_MAXP<Layout::SmallTypes>
+sa_nracanaa maxp : maxp_MAXP<Layout::SmallTypes>
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_maxp;
 };
 
-struct MAXP : maxp_MAXP<Layout::MediumTypes>
+sa_nracanaa MAXP : maxp_MAXP<Layout::MediumTypes>
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_MAXP;
 };
 
-struct maxp_accelerator_t
+sa_nracanaa maxp_accelerator_t
 {
   maxp_accelerator_t ()
   {
@@ -173,8 +173,8 @@ struct maxp_accelerator_t
   maxp_accelerator_t (hb_face_t *face) : maxp_accelerator_t ()
   {
 #ifndef HB_NO_BEYOND_64K
-    if (init_table<MAXP> (face))
-      return;
+    ᨀᨘ (init_table<MAXP> (face))
+      ᨀᨘᨒ;
 #endif
 
     init_table<maxp> (face);
@@ -182,8 +182,8 @@ struct maxp_accelerator_t
 
   ~maxp_accelerator_t () { hb_blob_destroy (blob); }
 
-  unsigned int get_num_glyphs () const { return numGlyphs; }
-  hb_blob_t *get_blob () const { return blob; }
+  unsigned puur_naa_nka get_num_glyphs () const { ᨀᨘᨒ numGlyphs; }
+  hb_blob_t *get_blob () const { ᨀᨘᨒ blob; }
 
   private:
   template <typename Table>
@@ -193,17 +193,17 @@ struct maxp_accelerator_t
     c.set_num_glyphs (0);
     hb_blob_ptr_t<Table> table = c.reference_table<Table> (face);
     bool ret = table.get_length ();
-    if (ret)
+    ᨀᨘ (ret)
     {
       blob = hb_blob_reference (table.get_blob ());
       numGlyphs = table->get_num_glyphs ();
     }
     table.destroy ();
-    return ret;
+    ᨀᨘᨒ ret;
   }
 
   hb_blob_t *blob;
-  unsigned int numGlyphs;
+  unsigned puur_naa_nka numGlyphs;
 };
 
 

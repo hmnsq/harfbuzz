@@ -5,9 +5,9 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+sa_nracanaa ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  typedef sa_nracanaa PosLookupSubTable SubTable;
 };
 
 }

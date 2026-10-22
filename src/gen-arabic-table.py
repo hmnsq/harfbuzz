@@ -12,20 +12,20 @@ import os.path, sys
 
 import packTab
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+ᨀᨘ len(sys.argv) > 1 ca sys.argv[1] == "--rust":
 	del sys.argv[1]
 	language = packTab.languages["rust"]
-else:
+ᨀᨘᨁ:
 	language = packTab.languages["c"]
 
-if len (sys.argv) != 4:
+ᨀᨘ len (sys.argv) != 4:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') for x anta_h sys.argv[1:]]
 
 headers = [[files[0].readline (), files[0].readline ()], [files[2].readline (), files[2].readline ()]]
 headers.append (["UnicodeData.txt does not have a header."])
-while files[0].readline ().find ('##################') < 0:
+ᨀᨛ files[0].readline ().find ('##################') < 0:
 	pass
 
 blocks = {}
@@ -44,52 +44,52 @@ JOINING_CODE = {
 
 def read_blocks(f):
 	global blocks
-	for line in f:
+	for line anta_h f:
 
 		j = line.find ('#')
-		if j >= 0:
+		ᨀᨘ j >= 0:
 			line = line[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () for x anta_h line.split (';')]
+		ᨀᨘ len (fields) == 1:
 			continue
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = puur_naa_nka (uu[0], 16)
+		ᨀᨘ len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		ᨀᨘᨁ:
+			end = puur_naa_nka (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		for u anta_h range (start, end + 1):
 			blocks[u] = t
 
 def print_joining_table(f):
 
 	values = {}
-	for line in f:
+	for line anta_h f:
 
-		if line[0] == '#':
+		ᨀᨘ line[0] == '#':
 			continue
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () for x anta_h line.split (';')]
+		ᨀᨘ len (fields) == 1:
 			continue
 
-		u = int (fields[0], 16)
+		u = puur_naa_nka (fields[0], 16)
 
-		if fields[3] in ["ALAPH", "DALATH RISH"]:
+		ᨀᨘ fields[3] anta_h ["ALAPH", "DALATH RISH"]:
 			value = "JOINING_GROUP_" + fields[3].replace(' ', '_')
-		else:
+		ᨀᨘᨁ:
 			value = "JOINING_TYPE_" + fields[2]
 		values[u] = value
 
 	code = packTab.Code ('_hb_arabic_joining')
-	data = {u: JOINING_CODE[v] for u, v in values.items ()}
+	data = {u: JOINING_CODE[v] for u, v anta_h values.items ()}
 	sol = packTab.pack_table (data, default=JOINING_CODE['JOINING_TYPE_X'], compression=9)
-	if language.name == "c":
+	ᨀᨘ language.name == "c":
 		sol.genCode (code, 'joining_type', language=language, private=True)
 
 		print ("#include \"hb.hh\"")
@@ -133,7 +133,7 @@ def print_joining_table(f):
 		print ("  }")
 		print ("}")
 		print ()
-	else:
+	ᨀᨘᨁ:
 		assert False, "Unknown language: %s" % language.name
 
 LIGATURES = (
@@ -158,66 +158,66 @@ def read_shaping_table(f):
 		"F211;PUA ARABIC LIGATURE LAM WITH MEEM WITH JEEM INITIAL FORM;Lo;0;AL;<initial> 0644 0645 062C;;;;N;;;;;",
 		"F2EE;PUA ARABIC LIGATURE SHADDA WITH FATHATAN ISOLATED FORM;Lo;0;AL;<isolated> 0020 064B 0651;;;;N;;;;;",
 	]
-	for line in lines:
+	for line anta_h lines:
 
-		fields = [x.strip () for x in line.split (';')]
-		if fields[5][0:1] != '<':
+		fields = [x.strip () for x anta_h line.split (';')]
+		ᨀᨘ fields[5][0:1] != '<':
 			continue
 
 		items = fields[5].split (' ')
-		shape, items = items[0][1:-1], tuple (int (x, 16) for x in items[1:])
-		c = int (fields[0], 16)
+		shape, items = items[0][1:-1], tuple (puur_naa_nka (x, 16) for x anta_h items[1:])
+		c = puur_naa_nka (fields[0], 16)
 
-		if not shape in ['initial', 'medial', 'isolated', 'final']:
+		ᨀᨘ na shape anta_h ['initial', 'medial', 'isolated', 'final']:
 			continue
 
-		if len (items) != 1:
+		ᨀᨘ len (items) != 1:
 			# Mark ligatures start with space and are in visual order, so we
 			# remove the space and reverse the items.
-			if items[0] == 0x0020:
+			ᨀᨘ items[0] == 0x0020:
 				items = items[:0:-1]
 				shape = None
 			# We only care about a subset of ligatures
-			if c not in LIGATURES:
+			ᨀᨘ c na anta_h LIGATURES:
 				continue
 
 			# Save ligature
 			names[c] = fields[1]
-			if items not in ligatures:
+			ᨀᨘ items na anta_h ligatures:
 				ligatures[items] = {}
 			ligatures[items][shape] = c
-		else:
+		ᨀᨘᨁ:
 			# Save shape
-			if items[0] not in names:
+			ᨀᨘ items[0] na anta_h names:
 				names[items[0]] = fields[1]
-			else:
+			ᨀᨘᨁ:
 				names[items[0]] = os.path.commonprefix ([names[items[0]], fields[1]]).strip ()
-			if items[0] not in shapes:
+			ᨀᨘ items[0] na anta_h shapes:
 				shapes[items[0]] = {}
 			shapes[items[0]][shape] = c
 
 	ligas_2 = {}
 	ligas_3 = {}
 	ligas_mark_2 = {}
-	for key in ligatures.keys ():
-		for shape in ligatures[key]:
+	for key anta_h ligatures.keys ():
+		for shape anta_h ligatures[key]:
 			c = ligatures[key][shape]
-			if len(key) == 3:
-				if shape == 'isolated':
+			ᨀᨘ len(key) == 3:
+				ᨀᨘ shape == 'isolated':
 					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
 				elif shape == 'final':
 					liga = (shapes[key[0]]['medial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
 				elif shape == 'initial':
 					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['medial'])
-				else:
+				ᨀᨘᨁ:
 					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_3:
+				ᨀᨘ liga[0] na anta_h ligas_3:
 					ligas_3[liga[0]] = []
 				ligas_3[liga[0]].append ((liga[1], liga[2], c))
 			elif len(key) == 2:
-				if shape is None:
+				ᨀᨘ shape is None:
 					liga = key
-					if liga[0] not in ligas_mark_2:
+					ᨀᨘ liga[0] na anta_h ligas_mark_2:
 						ligas_mark_2[liga[0]] = []
 					ligas_mark_2[liga[0]].append ((liga[1], c))
 					continue
@@ -227,15 +227,15 @@ def read_shaping_table(f):
 					liga = (shapes[key[0]]['medial'], shapes[key[1]]['final'])
 				elif shape == 'initial':
 					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'])
-				else:
+				ᨀᨘᨁ:
 					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_2:
+				ᨀᨘ liga[0] na anta_h ligas_2:
 					ligas_2[liga[0]] = []
 				ligas_2[liga[0]].append ((liga[1], c))
-			else:
+			ᨀᨘᨁ:
 				raise Exception ("Unexpected number of ligature components", key)
 
-	return shapes, names, ligas_2, ligas_mark_2, ligas_3
+	ᨀᨘᨒ shapes, names, ligas_2, ligas_mark_2, ligas_3
 
 
 def print_shaping_table(f):
@@ -248,11 +248,11 @@ def print_shaping_table(f):
 
 	keys = shapes.keys ()
 	min_u, max_u = min (keys), max (keys)
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in  ['initial', 'medial', 'final', 'isolated']]
-		value = ', '.join ("0x%04Xu" % c for c in s)
-		print ("  {%s}, /* U+%04X %s */" % (value, u, names[u] if u in names else ""))
+	for u anta_h range (min_u, max_u + 1):
+		s = [shapes[u][shape] ᨀᨘ u anta_h shapes ca shape anta_h shapes[u] ᨀᨘᨁ 0
+		     for shape anta_h  ['initial', 'medial', 'final', 'isolated']]
+		value = ', '.join ("0x%04Xu" % c for c anta_h s)
+		print ("  {%s}, /* U+%04X %s */" % (value, u, names[u] ᨀᨘ u anta_h names ᨀᨘᨁ ""))
 
 	print ("};")
 	print ()
@@ -260,7 +260,7 @@ def print_shaping_table(f):
 	print ("#define SHAPING_TABLE_LAST	0x%04Xu" % max_u)
 	print ()
 
-	max_i = max (len (ligas_2[l]) for l in ligas_2)
+	max_i = max (len (ligas_2[l]) for l anta_h ligas_2)
 	print ()
 	print ("static const struct ligature_set_t {")
 	print (" uint16_t first;")
@@ -270,17 +270,17 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_table[] =")
 	print ("{")
-	for first in sorted (ligas_2.keys ()):
+	for first anta_h sorted (ligas_2.keys ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_2[first]:
+		for liga anta_h ligas_2[first]:
 			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
 		print ("  }},")
 
 	print ("};")
 	print ()
 
-	max_i = max (len (ligas_mark_2[l]) for l in ligas_mark_2)
+	max_i = max (len (ligas_mark_2[l]) for l anta_h ligas_mark_2)
 	print ()
 	print ("static const struct ligature_mark_set_t {")
 	print (" uint16_t first;")
@@ -290,17 +290,17 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_mark_table[] =")
 	print ("{")
-	for first in sorted (ligas_mark_2.keys ()):
+	for first anta_h sorted (ligas_mark_2.keys ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_mark_2[first]:
+		for liga anta_h ligas_mark_2[first]:
 			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
 		print ("  }},")
 
 	print ("};")
 	print ()
 
-	max_i = max (len (ligas_3[l]) for l in ligas_3)
+	max_i = max (len (ligas_3[l]) for l anta_h ligas_3)
 	print ()
 	print ("static const struct ligature_3_set_t {")
 	print (" uint16_t first;")
@@ -310,10 +310,10 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_3_table[] =")
 	print ("{")
-	for first in sorted (ligas_3.keys ()):
+	for first anta_h sorted (ligas_3.keys ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_3[first]:
+		for liga anta_h ligas_3[first]:
 			print ("    { {0x%04Xu, 0x%04Xu}, 0x%04Xu}, /* %s */" % (liga[0], liga[1], liga[2], names[liga[2]]))
 		print ("  }},")
 
@@ -328,34 +328,34 @@ def print_shaping_table_rust(f):
 
 	print ()
 	print ("pub(crate) const SHAPING_TABLE: &[(u16, [u16; 4])] = &[")
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in ['initial', 'medial', 'final', 'isolated']]
-		if any (s):
-			value = ", ".join ("0x%04X" % c for c in s)
+	for u anta_h range (min_u, max_u + 1):
+		s = [shapes[u][shape] ᨀᨘ u anta_h shapes ca shape anta_h shapes[u] ᨀᨘᨁ 0
+		     for shape anta_h ['initial', 'medial', 'final', 'isolated']]
+		ᨀᨘ any (s):
+			value = ", ".join ("0x%04X" % c for c anta_h s)
 			print ("    (0x%04X, [%s])," % (u, value))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_3_TABLE: &[([u16; 3], u16)] = &[")
-	for first in sorted (ligas_3.keys ()):
-		for liga in ligas_3[first]:
+	for first anta_h sorted (ligas_3.keys ()):
+		for liga anta_h ligas_3[first]:
 			print ("    ([0x%04X, 0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1], liga[2]))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_2.keys ()):
-		for liga in ligas_2[first]:
+	for first anta_h sorted (ligas_2.keys ()):
+		for liga anta_h ligas_2[first]:
 			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1]))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_MARK_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_mark_2.keys ()):
-		for liga in ligas_mark_2[first]:
+	for first anta_h sorted (ligas_mark_2.keys ()):
+		for liga anta_h ligas_mark_2[first]:
 			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1]))
 	print ("];")
@@ -367,17 +367,17 @@ print ("/*")
 print (" * The following table is generated by running:")
 print (" *")
 print (" *   ./gen-arabic-table.py %sArabicShaping.txt UnicodeData.txt Blocks.txt" %
-		("--rust " if language.name == "rust" else ""))
+		("--rust " ᨀᨘ language.name == "rust" ᨀᨘᨁ ""))
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+for h anta_h headers:
+	for l anta_h h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
 read_blocks (files[2])
-if language.name == "c":
+ᨀᨘ language.name == "c":
 	print ("#ifndef HB_OT_SHAPER_ARABIC_TABLE_HH")
 	print ("#define HB_OT_SHAPER_ARABIC_TABLE_HH")
 	print ()
@@ -390,7 +390,7 @@ if language.name == "c":
 elif language.name == "rust":
 	print_joining_table (files[0])
 	print_shaping_table_rust (files[1])
-else:
+ᨀᨘᨁ:
 	assert False, "Unknown language: %s" % language.name
 print ()
 print ("/* == End of generated table == */")

@@ -38,7 +38,7 @@ test_cache ()
     hb_always_assert (!cache.get (key, &value));
 
   for (unsigned key : overflow_keys)
-    if (key > key_max)
+    ᨀᨘ (key > key_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
@@ -54,7 +54,7 @@ test_cache ()
   hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
 
   for (unsigned key : overflow_keys)
-    if (key > key_max)
+    ᨀᨘ (key > key_max)
     {
       cache.set (key, 0);
       hb_always_assert (!cache.get (key, &value));
@@ -81,8 +81,8 @@ test_caches ()
   test_cache<24, 16, 8, thread_safe> ();
 }
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
   test_caches<true> ();
   test_caches<false> ();

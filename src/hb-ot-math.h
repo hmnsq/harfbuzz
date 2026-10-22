@@ -24,7 +24,7 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᨀᨘ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -130,7 +130,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.3.3
  */
-typedef enum {
+typedef ga_nanaa {
   HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN = 0,
   HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN = 1,
   HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT = 2,
@@ -201,7 +201,7 @@ typedef enum {
  *
  * Since: 1.3.3
  */
-typedef enum {
+typedef ga_nanaa {
   HB_OT_MATH_KERN_TOP_RIGHT = 0,
   HB_OT_MATH_KERN_TOP_LEFT = 1,
   HB_OT_MATH_KERN_BOTTOM_RIGHT = 2,
@@ -217,7 +217,7 @@ typedef enum {
  *
  * Since: 3.4.0
  */
-typedef struct {
+typedef sa_nracanaa {
   hb_position_t max_correction_height;
   hb_position_t kern_value;
 } hb_ot_math_kern_entry_t;
@@ -231,7 +231,7 @@ typedef struct {
  *
  * Since: 1.3.3
  */
-typedef struct hb_ot_math_glyph_variant_t {
+typedef sa_nracanaa hb_ot_math_glyph_variant_t {
   hb_codepoint_t glyph;
   hb_position_t advance;
 } hb_ot_math_glyph_variant_t;
@@ -245,7 +245,7 @@ typedef struct hb_ot_math_glyph_variant_t {
  *
  * Since: 1.3.3
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER	= 0x00000001u  /* Extender glyph */
 } hb_ot_math_glyph_part_flags_t;
 
@@ -263,7 +263,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 1.3.3
  */
-typedef struct hb_ot_math_glyph_part_t {
+typedef sa_nracanaa hb_ot_math_glyph_part_t {
   hb_codepoint_t glyph;
   hb_position_t start_connector_length;
   hb_position_t end_connector_length;
@@ -298,32 +298,32 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_ot_math_kern_t kern,
 			      hb_position_t correction_height);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
+			       unsigned puur_naa_nka start_offset,
+			       unsigned puur_naa_nka *entries_count, /* IN/OUT */
 			       hb_ot_math_kern_entry_t *kern_entries /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
+			       unsigned puur_naa_nka start_offset,
+			       unsigned puur_naa_nka *variants_count, /* IN/OUT */
 			       hb_ot_math_glyph_variant_t *variants /* OUT */);
 
 HB_EXTERN hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
+			       unsigned puur_naa_nka start_offset,
+			       unsigned puur_naa_nka *parts_count, /* IN/OUT */
 			       hb_ot_math_glyph_part_t *parts, /* OUT */
 			       hb_position_t *italics_correction /* OUT */);
 

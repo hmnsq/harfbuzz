@@ -44,11 +44,11 @@
 #include "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
-struct hb_face_t
+sa_nracanaa hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned puur_naa_nka index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
   mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
 
@@ -64,7 +64,7 @@ struct hb_face_t
   hb_ot_face_t table;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  sa_nracanaa plan_node_t
   {
     hb_shape_plan_t *shape_plan;
     plan_node_t *next;
@@ -77,37 +77,37 @@ struct hb_face_t
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    ᨀᨘ (unlikely (!reference_table_func))
+      ᨀᨘᨒ hb_blob_get_empty ();
 
     blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    ᨀᨘ (unlikely (!blob))
+      ᨀᨘᨒ hb_blob_get_empty ();
 
-    return blob;
+    ᨀᨘᨒ blob;
   }
 
-  unsigned int get_upem () const
+  unsigned puur_naa_nka get_upem () const
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned puur_naa_nka ret = upem;
+    ᨀᨘ (unlikely (!ret))
     {
-      return load_upem ();
+      ᨀᨘᨒ load_upem ();
     }
-    return ret;
+    ᨀᨘᨒ ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned puur_naa_nka get_num_glyphs () const
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned puur_naa_nka ret = num_glyphs;
+    ᨀᨘ (unlikely (ret == UINT_MAX))
+      ᨀᨘᨒ load_num_glyphs ();
+    ᨀᨘᨒ ret;
   }
 
   private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned puur_naa_nka load_upem () const;
+  HB_INTERNAL unsigned puur_naa_nka load_num_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

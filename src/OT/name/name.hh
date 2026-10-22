@@ -36,12 +36,12 @@
 namespace OT {
 
 template <typename in_utf_t, typename out_utf_t>
-inline unsigned int
+anta_hstha unsigned puur_naa_nka
 hb_ot_name_convert_utf (hb_bytes_t                       bytes,
-			unsigned int                    *text_size /* IN/OUT */,
+			unsigned puur_naa_nka                    *text_size /* IN/OUT */,
 			typename out_utf_t::codepoint_t *text /* OUT */)
 {
-  unsigned int src_len = bytes.length / sizeof (typename in_utf_t::codepoint_t);
+  unsigned puur_naa_nka src_len = bytes.length / parimaa_na (typename in_utf_t::codepoint_t);
   const typename in_utf_t::codepoint_t *src = (const typename in_utf_t::codepoint_t *) bytes.arrayZ;
   const typename in_utf_t::codepoint_t *src_end = src + src_len;
 
@@ -50,17 +50,17 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   hb_codepoint_t unicode;
   const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
 
-  if (text_size && *text_size)
+  ᨀᨘ (text_size && *text_size)
   {
     (*text_size)--; /* Save room for NUL-termination. */
     const typename out_utf_t::codepoint_t *dst_end = text + *text_size;
 
-    while (src < src_end && dst < dst_end)
+    ᨀᨛ (src < src_end && dst < dst_end)
     {
       const typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
       typename out_utf_t::codepoint_t *dst_next = out_utf_t::encode (dst, dst_end, unicode);
-      if (dst_next == dst)
-	break; /* Out-of-room. */
+      ᨀᨘ (dst_next == dst)
+	bha_nga; /* Out-of-room. */
 
       dst = dst_next;
       src = src_next;
@@ -71,13 +71,13 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   }
 
   /* Accumulate length of rest. */
-  unsigned int dst_len = dst - text;
-  while (src < src_end)
+  unsigned puur_naa_nka dst_len = dst - text;
+  ᨀᨛ (src < src_end)
   {
     src = in_utf_t::next (src, src_end, &unicode, replacement);
     dst_len += out_utf_t::encode_len (unicode);
   }
-  return dst_len;
+  ᨀᨘᨒ dst_len;
 }
 
 #define entry_score var.u16[0]
@@ -92,54 +92,54 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
 
 #define UNSUPPORTED	42
 
-struct NameRecord
+sa_nracanaa NameRecord
 {
   hb_language_t language (hb_face_t *face) const
   {
 #ifndef HB_NO_OT_NAME_LANGUAGE
-    unsigned int p = platformID;
-    unsigned int l = languageID;
+    unsigned puur_naa_nka p = platformID;
+    unsigned puur_naa_nka l = languageID;
 
-    if (p == 3)
-      return _hb_ot_name_language_for_ms_code (l);
+    ᨀᨘ (p == 3)
+      ᨀᨘᨒ _hb_ot_name_language_for_ms_code (l);
 
-    if (p == 1)
-      return _hb_ot_name_language_for_mac_code (l);
+    ᨀᨘ (p == 1)
+      ᨀᨘᨒ _hb_ot_name_language_for_mac_code (l);
 
 #ifndef HB_NO_OT_NAME_LANGUAGE_AAT
-    if (p == 0)
-      return face->table.ltag->get_language (l);
+    ᨀᨘ (p == 0)
+      ᨀᨘᨒ face->table.ltag->get_language (l);
 #endif
 
 #endif
-    return HB_LANGUAGE_INVALID;
+    ᨀᨘᨒ HB_LANGUAGE_INVALID;
   }
 
   uint16_t score () const
   {
     /* Same order as in cmap::find_best_subtable(). */
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned puur_naa_nka p = platformID;
+    unsigned puur_naa_nka e = encodingID;
 
     /* 32-bit. */
-    if (p == 3 && e == 10) return 0;
-    if (p == 0 && e ==  6) return 1;
-    if (p == 0 && e ==  4) return 2;
+    ᨀᨘ (p == 3 && e == 10) ᨀᨘᨒ 0;
+    ᨀᨘ (p == 0 && e ==  6) ᨀᨘᨒ 1;
+    ᨀᨘ (p == 0 && e ==  4) ᨀᨘᨒ 2;
 
     /* 16-bit. */
-    if (p == 3 && e ==  1) return 3;
-    if (p == 0 && e ==  3) return 4;
-    if (p == 0 && e ==  2) return 5;
-    if (p == 0 && e ==  1) return 6;
-    if (p == 0 && e ==  0) return 7;
+    ᨀᨘ (p == 3 && e ==  1) ᨀᨘᨒ 3;
+    ᨀᨘ (p == 0 && e ==  3) ᨀᨘᨒ 4;
+    ᨀᨘ (p == 0 && e ==  2) ᨀᨘᨒ 5;
+    ᨀᨘ (p == 0 && e ==  1) ᨀᨘᨒ 6;
+    ᨀᨘ (p == 0 && e ==  0) ᨀᨘᨒ 7;
 
     /* Symbol. */
-    if (p == 3 && e ==  0) return 8;
+    ᨀᨘ (p == 3 && e ==  0) ᨀᨘᨒ 8;
 
     /* We treat all Mac Latin names as ASCII only. */
-    if (p == 1 && e ==  0) return 10; /* 10 is magic number :| */
+    ᨀᨘ (p == 1 && e ==  0) ᨀᨘᨒ 10; /* 10 is magic number :| */
 
-    return UNSUPPORTED;
+    ᨀᨘᨒ UNSUPPORTED;
   }
 
   NameRecord* copy (hb_serialize_context_t *c, const void *base
@@ -151,23 +151,23 @@ struct NameRecord
     TRACE_SERIALIZE (this);
     HB_UNUSED auto snap = c->snapshot ();
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    ᨀᨘ (unlikely (!out)) return_trace (nullptr);
 #ifdef HB_EXPERIMENTAL_API
     hb_ot_name_record_ids_t record_ids (platformID, encodingID, languageID, nameID);
     hb_bytes_t* name_bytes;
 
-    if (name_table_overrides->has (record_ids, &name_bytes)) {
+    ᨀᨘ (name_table_overrides->has (record_ids, &name_bytes)) {
       hb_bytes_t encoded_bytes = *name_bytes;
-      char *name_str_utf16_be = nullptr;
+      var_na *name_str_utf16_be = nullptr;
 
-      if (platformID != 1)
+      ᨀᨘ (platformID != 1)
       {
         unsigned text_size = hb_ot_name_convert_utf<hb_utf8_t, hb_utf16_be_t> (*name_bytes, nullptr, nullptr);
 
         text_size++; // needs to consider NULL terminator for use in hb_ot_name_convert_utf()
         unsigned byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        name_str_utf16_be = (char *) hb_calloc (byte_len, 1);
-        if (!name_str_utf16_be)
+        name_str_utf16_be = (var_na *) hb_calloc (byte_len, 1);
+        ᨀᨘ (!name_str_utf16_be)
         {
           c->revert (snap);
           return_trace (nullptr);
@@ -176,7 +176,7 @@ struct NameRecord
                                                           (hb_utf16_be_t::codepoint_t *) name_str_utf16_be);
 
         unsigned encoded_byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        if (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        ᨀᨘ (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           hb_free (name_str_utf16_be);
           return_trace (nullptr);
@@ -184,10 +184,10 @@ struct NameRecord
 
         encoded_bytes = hb_bytes_t (name_str_utf16_be, encoded_byte_len);
       }
-      else
+      ᨀᨘᨁ
       {
         // mac platform, copy the UTF-8 string(all ascii characters) as is
-        if (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        ᨀᨘ (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           return_trace (nullptr);
         }
@@ -199,7 +199,7 @@ struct NameRecord
       c->add_link (out->offset, c->pop_pack (), hb_serialize_context_t::Tail, 0);
       hb_free (name_str_utf16_be);
     }
-    else
+    ᨀᨘᨁ
 #endif
     {
       out->offset.serialize_copy (c, offset, base, 0, hb_serialize_context_t::Tail, length);
@@ -209,34 +209,34 @@ struct NameRecord
 
   bool isUnicode () const
   {
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned puur_naa_nka p = platformID;
+    unsigned puur_naa_nka e = encodingID;
 
-    return (p == 0 ||
+    ᨀᨘᨒ (p == 0 ||
 	    (p == 3 && (e == 0 || e == 1 || e == 10)));
   }
 
-  static int cmp (const void *pa, const void *pb)
+  static puur_naa_nka cmp (const void *pa, const void *pb)
   {
     const NameRecord *a = (const NameRecord *)pa;
     const NameRecord *b = (const NameRecord *)pb;
 
-    if (a->platformID != b->platformID)
-      return a->platformID - b->platformID;
+    ᨀᨘ (a->platformID != b->platformID)
+      ᨀᨘᨒ a->platformID - b->platformID;
 
-    if (a->encodingID != b->encodingID)
-      return a->encodingID - b->encodingID;
+    ᨀᨘ (a->encodingID != b->encodingID)
+      ᨀᨘᨒ a->encodingID - b->encodingID;
 
-    if (a->languageID != b->languageID)
-      return a->languageID - b->languageID;
+    ᨀᨘ (a->languageID != b->languageID)
+      ᨀᨘᨒ a->languageID - b->languageID;
 
-    if (a->nameID != b->nameID)
-      return a->nameID - b->nameID;
+    ᨀᨘ (a->nameID != b->nameID)
+      ᨀᨘᨒ a->nameID - b->nameID;
 
-    if (a->length != b->length)
-      return a->length - b->length;
+    ᨀᨘ (a->length != b->length)
+      ᨀᨘᨒ a->length - b->length;
 
-    return 0;
+    ᨀᨘᨒ 0;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -258,7 +258,7 @@ struct NameRecord
   DEFINE_SIZE_STATIC (12);
 };
 
-static int
+static puur_naa_nka
 _hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
 {
   const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
@@ -266,54 +266,54 @@ _hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
 
   /* Compare by name_id, then language. */
 
-  if (a->name_id != b->name_id)
-    return a->name_id - b->name_id;
+  ᨀᨘ (a->name_id != b->name_id)
+    ᨀᨘᨒ a->name_id - b->name_id;
 
-  if (a->language == b->language) return 0;
-  if (!a->language) return -1;
-  if (!b->language) return +1;
+  ᨀᨘ (a->language == b->language) ᨀᨘᨒ 0;
+  ᨀᨘ (!a->language) ᨀᨘᨒ -1;
+  ᨀᨘ (!b->language) ᨀᨘᨒ +1;
 
-  const char *astr = hb_language_to_string (a->language);
-  const char *bstr = hb_language_to_string (b->language);
+  const var_na *astr = hb_language_to_string (a->language);
+  const var_na *bstr = hb_language_to_string (b->language);
 
   signed c = strcmp (astr, bstr);
 
   // 'a' is the user request, and 'b' is string in the font.
   // If eg. user asks for "en-us" and font has "en", approve.
-  if (!exact && c &&
+  ᨀᨘ (!exact && c &&
       hb_language_matches (b->language, a->language))
-    return 0;
+    ᨀᨘᨒ 0;
 
-  return c;
+  ᨀᨘᨒ c;
 }
 
-static int
+static puur_naa_nka
 _hb_ot_name_entry_cmp (const void *pa, const void *pb)
 {
   /* Compare by name_id, then language, then score, then index. */
 
-  int v = _hb_ot_name_entry_cmp_key (pa, pb, true);
-  if (v)
-    return v;
+  puur_naa_nka v = _hb_ot_name_entry_cmp_key (pa, pb, true);
+  ᨀᨘ (v)
+    ᨀᨘᨒ v;
 
   const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
   const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
 
-  if (a->entry_score != b->entry_score)
-    return a->entry_score - b->entry_score;
+  ᨀᨘ (a->entry_score != b->entry_score)
+    ᨀᨘᨒ a->entry_score - b->entry_score;
 
-  if (a->entry_index != b->entry_index)
-    return a->entry_index - b->entry_index;
+  ᨀᨘ (a->entry_index != b->entry_index)
+    ᨀᨘᨒ a->entry_index - b->entry_index;
 
-  return 0;
+  ᨀᨘᨒ 0;
 }
 
-struct name
+sa_nracanaa name
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_name;
 
   size_t get_size () const
-  { return min_size + count * nameRecordZ.item_size; }
+  { ᨀᨘᨒ min_size + count * nameRecordZ.item_size; }
 
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, const NameRecord &))>
@@ -328,7 +328,7 @@ struct name
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    ᨀᨘ (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
     unsigned total_count = it.len ()
 #ifdef HB_EXPERIMENTAL_API
@@ -336,11 +336,11 @@ struct name
 #endif
         ;
     this->format = 0;
-    if (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return false;
+    ᨀᨘ (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      ᨀᨘᨒ false;
 
     NameRecord *name_records = (NameRecord *) hb_calloc (total_count, NameRecord::static_size);
-    if (unlikely (!name_records)) return_trace (false);
+    ᨀᨘ (unlikely (!name_records)) return_trace (false);
 
     hb_array_t<NameRecord> records (name_records, total_count);
 
@@ -377,7 +377,7 @@ struct name
     hb_free (records.arrayZ);
 
 
-    if (unlikely (c->ran_out_of_room ())) return_trace (false);
+    ᨀᨘ (unlikely (c->ran_out_of_room ())) return_trace (false);
 
     this->stringOffset = c->length ();
 
@@ -398,24 +398,24 @@ struct name
     | hb_filter (c->plan->name_ids, &NameRecord::nameID)
     | hb_filter (c->plan->name_languages, &NameRecord::languageID)
     | hb_filter ([&] (const NameRecord& namerecord) {
-      return
+      ᨀᨘᨒ
           (c->plan->flags & HB_SUBSET_FLAGS_NAME_LEGACY)
           || namerecord.isUnicode ();
     })
 #ifdef HB_EXPERIMENTAL_API
     | hb_filter ([&] (const NameRecord& namerecord) {
-      if (name_table_overrides->is_empty ())
-        return true;
+      ᨀᨘ (name_table_overrides->is_empty ())
+        ᨀᨘᨒ true;
       hb_ot_name_record_ids_t rec_ids (namerecord.platformID,
                                        namerecord.encodingID,
                                        namerecord.languageID,
                                        namerecord.nameID);
 
       hb_bytes_t *p;
-      if (name_table_overrides->has (rec_ids, &p) &&
+      ᨀᨘ (name_table_overrides->has (rec_ids, &p) &&
           (*p).length == 0)
-        return false;
-      return true;
+        ᨀᨘᨒ false;
+      ᨀᨘᨒ true;
     })
 #endif
     ;
@@ -432,22 +432,22 @@ struct name
     }
 
     hb_vector_t<hb_ot_name_record_ids_t> insert_name_records;
-    if (!name_table_overrides->is_empty ())
+    ᨀᨘ (!name_table_overrides->is_empty ())
     {
-      if (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
-        return false;
+      ᨀᨘ (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
+        ᨀᨘᨒ false;
       for (const auto& record_ids : name_table_overrides->keys ())
       {
-        if (name_table_overrides->get (record_ids).length == 0)
+        ᨀᨘ (name_table_overrides->get (record_ids).length == 0)
           continue;
-        if (retained_name_record_ids.has (record_ids))
+        ᨀᨘ (retained_name_record_ids.has (record_ids))
           continue;
         insert_name_records.push (record_ids);
       }
     }
 #endif
 
-    return name_prime->serialize (c->serializer, it,
+    ᨀᨘᨒ name_prime->serialize (c->serializer, it,
 				  std::addressof (this + stringOffset)
 #ifdef HB_EXPERIMENTAL_API
 				  , insert_name_records
@@ -474,20 +474,20 @@ struct name
 		  sanitize_records (c));
   }
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       this->table = hb_sanitize_context_t ().reference_table<name> (face);
       assert (this->table.get_length () >= this->table->stringOffset);
-      this->pool = (const char *) (const void *) (this->table+this->table->stringOffset);
+      this->pool = (const var_na *) (const void *) (this->table+this->table->stringOffset);
       this->pool_len = this->table.get_length () - this->table->stringOffset;
       const hb_array_t<const NameRecord> all_names (this->table->nameRecordZ.arrayZ,
 						    this->table->count);
 
       this->names.alloc_exact (all_names.length);
 
-      for (unsigned int i = 0; i < all_names.length; i++)
+      for (unsigned puur_naa_nka i = 0; i < all_names.length; i++)
       {
 	hb_ot_name_entry_t *entry = this->names.push ();
 
@@ -500,13 +500,13 @@ struct name
       this->names.qsort (_hb_ot_name_entry_cmp);
       /* Walk and pick best only for each name_id,language pair,
        * while dropping unsupported encodings. */
-      unsigned int j = 0;
-      for (unsigned int i = 0; i < this->names.length; i++)
+      unsigned puur_naa_nka j = 0;
+      for (unsigned puur_naa_nka i = 0; i < this->names.length; i++)
       {
-	if (this->names[i].entry_score == UNSUPPORTED ||
+	ᨀᨘ (this->names[i].entry_score == UNSUPPORTED ||
 	    this->names[i].language == HB_LANGUAGE_INVALID)
 	  continue;
-	if (i &&
+	ᨀᨘ (i &&
 	    this->names[i - 1].name_id  == this->names[i].name_id &&
 	    this->names[i - 1].language == this->names[i].language)
 	  continue;
@@ -519,46 +519,46 @@ struct name
       this->table.destroy ();
     }
 
-    int get_index (hb_ot_name_id_t  name_id,
+    puur_naa_nka get_index (hb_ot_name_id_t  name_id,
 		   hb_language_t    language,
-		   unsigned int    *width=nullptr) const
+		   unsigned puur_naa_nka    *width=nullptr) const
     {
       const hb_ot_name_entry_t key = {name_id, {0}, language};
       const hb_ot_name_entry_t *entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
 						    this->names.length,
-						    sizeof (hb_ot_name_entry_t),
+						    parimaa_na (hb_ot_name_entry_t),
 						    _hb_ot_name_entry_cmp_key,
 						    true);
 
-      if (!entry)
+      ᨀᨘ (!entry)
       {
 	entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
 			    this->names.length,
-			    sizeof (hb_ot_name_entry_t),
+			    parimaa_na (hb_ot_name_entry_t),
 			    _hb_ot_name_entry_cmp_key,
 			    false);
       }
 
-      if (!entry)
-	return -1;
+      ᨀᨘ (!entry)
+	ᨀᨘᨒ -1;
 
-      if (width)
+      ᨀᨘ (width)
 	*width = entry->entry_score < 10 ? 2 : 1;
 
-      return entry->entry_index;
+      ᨀᨘᨒ entry->entry_index;
     }
 
-    hb_bytes_t get_name (unsigned int idx) const
+    hb_bytes_t get_name (unsigned puur_naa_nka idx) const
     {
       const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
       const NameRecord &record = all_names[idx];
       const hb_bytes_t string_pool (pool, pool_len);
-      return string_pool.sub_array (record.offset, record.length);
+      ᨀᨘᨒ string_pool.sub_array (record.offset, record.length);
     }
 
     private:
-    const char *pool;
-    unsigned int pool_len;
+    const var_na *pool;
+    unsigned puur_naa_nka pool_len;
     public:
     hb_blob_ptr_t<name> table;
     hb_vector_t<hb_ot_name_entry_t> names;
@@ -579,7 +579,7 @@ struct name
 #undef entry_index
 #undef entry_score
 
-struct name_accelerator_t : name::accelerator_t {
+sa_nracanaa name_accelerator_t : name::accelerator_t {
   name_accelerator_t (hb_face_t *face) : name::accelerator_t (face) {}
 };
 
