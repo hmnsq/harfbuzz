@@ -25,68 +25,68 @@
 #ifndef HB_MULTIMAP_HH
 #define HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+بنية hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  فراغ add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    إذا (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      أرجع;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    إذا (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      أرجع;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<ثابت hb_codepoint_t> get (hb_codepoint_t k) ثابت
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ثابت hb_codepoint_t *v;
+    إذا (singulars.has (k, &v))
+      أرجع hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    إذا (multiples.has (k, &m))
+      أرجع m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    أرجع hb_array_t<ثابت hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  منطقي in_error () ثابت
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    إذا (singulars.in_error () || multiples.in_error ())
+      أرجع true;
+    لكل (ثابت auto &m : multiples.اقدار_ref ())
+      إذا (m.in_error ())
+        أرجع true;
+    أرجع خطأ;
   }
 
-  void alloc (unsigned size)
+  فراغ alloc (unsigned size)
   {
     singulars.alloc (size);
   }
 
-  protected:
+  محمي:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

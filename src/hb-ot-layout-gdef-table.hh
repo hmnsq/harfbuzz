@@ -29,6 +29,6 @@
 #ifndef HB_OT_LAYOUT_GDEF_TABLE_HH
 #define HB_OT_LAYOUT_GDEF_TABLE_HH
 
-#include "OT/Layout/GDEF/GDEF.hh"
+#ضمن "OT/Layout/GDEF/GDEF.hh"
 
 #endif /* HB_OT_LAYOUT_GDEF_TABLE_HH */

@@ -26,15 +26,15 @@
  * Google Author(s): Sascha Brawer, Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#إذا !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_COLOR_H
 #define HB_OT_COLOR_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#ضمن "hb.h"
+#ضمن "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -46,16 +46,16 @@ HB_BEGIN_DECLS
 HB_EXTERN hb_bool_t
 hb_ot_color_has_palettes (hb_face_t *face);
 
-HB_EXTERN unsigned int
-hb_ot_color_palette_get_count (hb_face_t *face);
+HB_EXTERN unsigned صحيح
+hb_ot_color_palette_get_گنتی (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_color_palette_get_name_id (hb_face_t *face,
-				 unsigned int palette_index);
+				 unsigned صحيح palette_index);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_color_palette_color_get_name_id (hb_face_t *face,
-				       unsigned int color_index);
+				       unsigned صحيح color_index);
 
 /**
  * hb_ot_color_palette_flags_t:
@@ -70,7 +70,7 @@ hb_ot_color_palette_color_get_name_id (hb_face_t *face,
  *
  * Since: 2.1.0
  */
-typedef enum { /*< flags >*/
+تعريفنوع تعداد { /*< flags >*/
   HB_OT_COLOR_PALETTE_FLAG_DEFAULT			= 0x00000000u,
   HB_OT_COLOR_PALETTE_FLAG_USABLE_WITH_LIGHT_BACKGROUND	= 0x00000001u,
   HB_OT_COLOR_PALETTE_FLAG_USABLE_WITH_DARK_BACKGROUND	= 0x00000002u
@@ -78,13 +78,13 @@ typedef enum { /*< flags >*/
 
 HB_EXTERN hb_ot_color_palette_flags_t
 hb_ot_color_palette_get_flags (hb_face_t *face,
-			       unsigned int palette_index);
+			       unsigned صحيح palette_index);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned صحيح
 hb_ot_color_palette_get_colors (hb_face_t    *face,
-				unsigned int  palette_index,
-				unsigned int  start_offset,
-				unsigned int *color_count,  /* IN/OUT.  May be NULL. */
+				unsigned صحيح  palette_index,
+				unsigned صحيح  start_offset,
+				unsigned صحيح *color_گنتی,  /* IN/OUT.  May be NULL. */
 				hb_color_t   *colors        /* OUT.     May be NULL. */);
 
 
@@ -108,16 +108,16 @@ hb_ot_color_has_layers (hb_face_t *face);
  *
  * Since: 2.1.0
  **/
-typedef struct hb_ot_color_layer_t {
+تعريفنوع بنية hb_ot_color_layer_t {
   hb_codepoint_t glyph;
-  unsigned int   color_index;
+  unsigned صحيح   color_index;
 } hb_ot_color_layer_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned صحيح
 hb_ot_color_glyph_get_layers (hb_face_t           *face,
 			      hb_codepoint_t       glyph,
-			      unsigned int         start_offset,
-			      unsigned int        *layer_count, /* IN/OUT.  May be NULL. */
+			      unsigned صحيح         start_offset,
+			      unsigned صحيح        *layer_گنتی, /* IN/OUT.  May be NULL. */
 			      hb_ot_color_layer_t *layers /* OUT.     May be NULL. */);
 
 /* COLRv1 */
@@ -136,17 +136,17 @@ hb_ot_color_glyph_has_paint (hb_face_t      *face,
 HB_EXTERN hb_bool_t
 hb_ot_color_has_svg (hb_face_t *face);
 
-HB_EXTERN unsigned int
-hb_ot_color_get_svg_document_count (hb_face_t *face);
+HB_EXTERN unsigned صحيح
+hb_ot_color_get_svg_document_گنتی (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
 hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
                                           hb_codepoint_t  glyph,
-                                          unsigned int   *svg_document_index /* OUT */);
+                                          unsigned صحيح   *svg_document_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
-                                          unsigned int    svg_document_index,
+                                          unsigned صحيح    svg_document_index,
                                           hb_codepoint_t *start_glyph_id, /* OUT */
                                           hb_codepoint_t *end_glyph_id /* OUT */);
 
