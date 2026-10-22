@@ -35,7 +35,7 @@
 
 
 /* Same order as the feature array below */
-enum {
+ga_nanaa {
   _JMO,
 
   LJMO,
@@ -59,7 +59,7 @@ collect_features_hangul (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
-  for (unsigned int i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
+  for (unsigned puur_naa_nka i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
     map->add_feature (hangul_features[i]);
 }
 
@@ -80,7 +80,7 @@ override_features_hangul (hb_ot_shape_planner_t *plan)
   plan->map.add_feature (HB_TAG('c','a','l','t'));
 }
 
-struct hangul_shape_plan_t
+sa_nracanaa hangul_shape_plan_t
 {
   hb_mask_t mask_array[HANGUL_FEATURE_COUNT];
   hb_mask_t calt_mask;
@@ -89,16 +89,16 @@ struct hangul_shape_plan_t
 static void *
 data_create_hangul (const hb_ot_shape_plan_t *plan)
 {
-  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, sizeof (hangul_shape_plan_t));
-  if (unlikely (!hangul_plan))
-    return nullptr;
+  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, parimaa_na (hangul_shape_plan_t));
+  ပေႃး (unlikely (!hangul_plan))
+    ပွၵ်ႈ nullptr;
 
-  for (unsigned int i = 0; i < HANGUL_FEATURE_COUNT; i++)
+  for (unsigned puur_naa_nka i = 0; i < HANGUL_FEATURE_COUNT; i++)
     hangul_plan->mask_array[i] = plan->map.get_1_mask (hangul_features[i]);
 
   hangul_plan->calt_mask = plan->map.get_1_mask (HB_TAG('c','a','l','t'));
 
-  return hangul_plan;
+  ပွၵ်ႈ hangul_plan;
 }
 
 static void
@@ -137,7 +137,7 @@ is_zero_width_char (hb_font_t *font,
 		    hb_codepoint_t unicode)
 {
   hb_codepoint_t glyph;
-  return hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
+  ပွၵ်ႈ hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
 }
 
 static void
@@ -196,55 +196,55 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
    */
 
   buffer->clear_output ();
-  unsigned int start = 0, end = 0; /* Extent of most recently seen syllable;
+  unsigned puur_naa_nka start = 0, end = 0; /* Extent of most recently seen syllable;
 				    * valid only if start < end
 				    */
-  unsigned int count = buffer->len;
+  unsigned puur_naa_nka count = buffer->len;
 
   for (buffer->idx = 0; buffer->idx < count && buffer->successful;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
 
-    if (isHangulTone (u))
+    ပေႃး (isHangulTone (u))
     {
       /*
        * We could cache the width of the tone marks and the existence of dotted-circle,
        * but the use of the Hangul tone mark characters seems to be rare enough that
        * I didn't bother for now.
        */
-      if (start < end && end == buffer->out_len)
+      ပေႃး (start < end && end == buffer->out_len)
       {
 	/* Tone mark follows a valid syllable; move it in front, unless it's zero width. */
 	buffer->unsafe_to_break_from_outbuffer (start, buffer->idx);
-	if (unlikely (!buffer->next_glyph ())) break;
-	if (!is_zero_width_char (font, u))
+	ပေႃး (unlikely (!buffer->next_glyph ())) bha_nga;
+	ပေႃး (!is_zero_width_char (font, u))
 	{
 	  buffer->merge_out_clusters (start, end + 1);
 	  hb_glyph_info_t *info = buffer->out_info;
 	  hb_glyph_info_t tone = info[end];
-	  memmove (&info[start + 1], &info[start], (end - start) * sizeof (hb_glyph_info_t));
+	  memmove (&info[start + 1], &info[start], (end - start) * parimaa_na (hb_glyph_info_t));
 	  info[start] = tone;
 	}
       }
-      else
+      ပေႃးဢမ်ႇ
       {
 	/* No valid syllable as base for tone mark; try to insert dotted circle. */
-	if (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
+	ပေႃး (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
 	    font->has_glyph (0x25CCu))
 	{
 	  hb_codepoint_t chars[2];
-	  if (!is_zero_width_char (font, u))
+	  ပေႃး (!is_zero_width_char (font, u))
 	  {
 	    chars[0] = u;
 	    chars[1] = 0x25CCu;
-	  } else
+	  } ပေႃးဢမ်ႇ
 	  {
 	    chars[0] = 0x25CCu;
 	    chars[1] = u;
 	  }
 	  (void) buffer->replace_glyphs (1, 2, chars);
 	}
-	else
+	ပေႃးဢမ်ႇ
 	{
 	  /* No dotted circle available in the font; just leave tone mark untouched. */
 	  (void) buffer->next_glyph ();
@@ -258,31 +258,31 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 			      * will only be used if we set end to a later position.
 			      */
 
-    if (isL (u) && buffer->idx + 1 < count)
+    ပေႃး (isL (u) && buffer->idx + 1 < count)
     {
       hb_codepoint_t l = u;
       hb_codepoint_t v = buffer->cur(+1).codepoint;
-      if (isV (v))
+      ပေႃး (isV (v))
       {
 	/* Have <L,V> or <L,V,T>. */
 	hb_codepoint_t t = 0;
-	unsigned int tindex = 0;
-	if (buffer->idx + 2 < count)
+	unsigned puur_naa_nka tindex = 0;
+	ပေႃး (buffer->idx + 2 < count)
 	{
 	  t = buffer->cur(+2).codepoint;
-	  if (isT (t))
+	  ပေႃး (isT (t))
 	    tindex = t - TBase; /* Only used if isCombiningT (t); otherwise invalid. */
-	  else
+	  ပေႃးဢမ်ႇ
 	    t = 0; /* The next character was not a trailing jamo. */
 	}
 	buffer->unsafe_to_break (buffer->idx, buffer->idx + (t ? 3 : 2));
 
 	/* We've got a syllable <L,V,T?>; see if it can potentially be composed. */
-	if (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
+	ပေႃး (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
 	{
 	  /* Try to compose; if this succeeds, end is set to start+1. */
 	  hb_codepoint_t s = SBase + (l - LBase) * NCount + (v - VBase) * TCount + tindex;
-	  if (font->has_glyph (s))
+	  ပေႃး (font->has_glyph (s))
 	  {
 	    (void) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
 	    end = start + 1;
@@ -299,52 +299,52 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	(void) buffer->next_glyph ();
 	buffer->cur().hangul_shaping_feature() = VJMO;
 	(void) buffer->next_glyph ();
-	if (t)
+	ပေႃး (t)
 	{
 	  buffer->cur().hangul_shaping_feature() = TJMO;
 	  (void) buffer->next_glyph ();
 	  end = start + 3;
 	}
-	else
+	ပေႃးဢမ်ႇ
 	  end = start + 2;
-	if (unlikely (!buffer->successful))
-	  break;
+	ပေႃး (unlikely (!buffer->successful))
+	  bha_nga;
 	buffer->merge_out_grapheme_clusters (start, end);
 	continue;
       }
     }
 
-    else if (isCombinedS (u))
+    ပေႃးဢမ်ႇ ပေႃး (isCombinedS (u))
     {
       /* Have <LV>, <LVT>, or <LV,T> */
       hb_codepoint_t s = u;
       bool has_glyph = font->has_glyph (s);
-      unsigned int lindex = (s - SBase) / NCount;
-      unsigned int nindex = (s - SBase) % NCount;
-      unsigned int vindex = nindex / TCount;
-      unsigned int tindex = nindex % TCount;
+      unsigned puur_naa_nka lindex = (s - SBase) / NCount;
+      unsigned puur_naa_nka nindex = (s - SBase) % NCount;
+      unsigned puur_naa_nka vindex = nindex / TCount;
+      unsigned puur_naa_nka tindex = nindex % TCount;
 
-      if (!tindex &&
+      ပေႃး (!tindex &&
 	  buffer->idx + 1 < count &&
 	  isCombiningT (buffer->cur(+1).codepoint))
       {
 	/* <LV,T>, try to combine. */
-	unsigned int new_tindex = buffer->cur(+1).codepoint - TBase;
+	unsigned puur_naa_nka new_tindex = buffer->cur(+1).codepoint - TBase;
 	hb_codepoint_t new_s = s + new_tindex;
-	if (font->has_glyph (new_s))
+	ပေႃး (font->has_glyph (new_s))
 	{
 	  (void) buffer->replace_glyphs (2, 1, &new_s);
 	  end = start + 1;
 	  continue;
 	}
-	else
+	ပေႃးဢမ်ႇ
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
       /* Otherwise, decompose if font doesn't support <LV> or <LVT>,
        * or if having non-combining <LV,T>.  Note that we already handled
        * combining <LV,T> above. */
-      if (!has_glyph ||
+      ပေႃး (!has_glyph ||
 	  (!tindex &&
 	   buffer->idx + 1 < count &&
 	   isT (buffer->cur(+1).codepoint)))
@@ -352,23 +352,23 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	hb_codepoint_t decomposed[3] = {LBase + lindex,
 					VBase + vindex,
 					TBase + tindex};
-	if (font->has_glyph (decomposed[0]) &&
+	ပေႃး (font->has_glyph (decomposed[0]) &&
 	    font->has_glyph (decomposed[1]) &&
 	    (!tindex || font->has_glyph (decomposed[2])))
 	{
-	  unsigned int s_len = tindex ? 3 : 2;
+	  unsigned puur_naa_nka s_len = tindex ? 3 : 2;
 	  (void) buffer->replace_glyphs (1, s_len, decomposed);
 
 	  /* If we decomposed an LV because of a non-combining T following,
 	   * we want to include this T in the syllable.
 	   */
-	  if (has_glyph && !tindex)
+	  ပေႃး (has_glyph && !tindex)
 	  {
 	    (void) buffer->next_glyph ();
 	    s_len++;
 	  }
-	  if (unlikely (!buffer->successful))
-	    break;
+	  ပေႃး (unlikely (!buffer->successful))
+	    bha_nga;
 
 	  /* We decomposed S: apply jamo features to the individual glyphs
 	   * that are now in buffer->out_info.
@@ -376,20 +376,20 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  hb_glyph_info_t *info = buffer->out_info;
 	  end = start + s_len;
 
-	  unsigned int i = start;
+	  unsigned puur_naa_nka i = start;
 	  info[i++].hangul_shaping_feature() = LJMO;
 	  info[i++].hangul_shaping_feature() = VJMO;
-	  if (i < end)
+	  ပေႃး (i < end)
 	    info[i++].hangul_shaping_feature() = TJMO;
 
 	  buffer->merge_out_grapheme_clusters (start, end);
 	  continue;
 	}
-	else if ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
+	ပေႃးဢမ်ႇ ပေႃး ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
-      if (has_glyph)
+      ပေႃး (has_glyph)
       {
 	/* We didn't decompose the S, so just advance past it and fall through. */
 	end = start + 1;
@@ -411,17 +411,17 @@ setup_masks_hangul (const hb_ot_shape_plan_t *plan,
 {
   const hangul_shape_plan_t *hangul_plan = (const hangul_shape_plan_t *) plan->data;
 
-  if (likely (hangul_plan))
+  ပေႃး (likely (hangul_plan))
   {
-    unsigned int count = buffer->len;
+    unsigned puur_naa_nka count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++, info++)
+    for (unsigned puur_naa_nka i = 0; i < count; i++, info++)
     {
       info->mask |= hangul_plan->mask_array[info->hangul_shaping_feature()];
 
       /* Keep 'calt' away from jamo; see override_features_hangul(). */
       hb_codepoint_t u = info->codepoint;
-      if (isL (u) || isV (u) || isT (u))
+      ပေႃး (isL (u) || isV (u) || isT (u))
 	info->mask &= ~hangul_plan->calt_mask;
     }
   }

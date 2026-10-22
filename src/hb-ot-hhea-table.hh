@@ -46,14 +46,14 @@ namespace OT {
 
 
 template <typename T, typename Types>
-struct _hea
+sa_nracanaa _hea
 {
   using LongMetricCount = typename Types::HBLUINT;
 
   static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  { ပွၵ်ႈ LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  bool has_data () const { ပွၵ်ႈ version.major; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -101,26 +101,26 @@ struct _hea
   DEFINE_SIZE_STATIC (34 + Types::HBLUINT::static_size);
 };
 
-struct hhea : _hea<hhea, Layout::SmallTypes> {
+sa_nracanaa hhea : _hea<hhea, Layout::SmallTypes> {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
 };
-struct HHEA : _hea<HHEA, Layout::MediumTypes> {
+sa_nracanaa HHEA : _hea<HHEA, Layout::MediumTypes> {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
 };
-struct vhea : _hea<vhea, Layout::SmallTypes> {
+sa_nracanaa vhea : _hea<vhea, Layout::SmallTypes> {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
 };
-struct VHEA : _hea<VHEA, Layout::MediumTypes> {
+sa_nracanaa VHEA : _hea<VHEA, Layout::MediumTypes> {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
 };
 
-struct hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
+sa_nracanaa hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
 {
   hhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<hhea, HHEA> (face) {}
 };
 
-struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
+sa_nracanaa vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
 {
   vhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<vhea, VHEA> (face) {}

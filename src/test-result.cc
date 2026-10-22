@@ -28,9 +28,9 @@
 
 
 // Track constructor and destructor counts to verify leak-freedom
-static int live_instances = 0;
+static puur_naa_nka live_instances = 0;
 
-enum error_code_t {
+ga_nanaa error_code_t {
   ERR_A,
   ERR_B,
   ERR_C,
@@ -39,11 +39,11 @@ enum error_code_t {
 template <typename T>
 using result = hb_result_t<T, error_code_t>;
 
-struct resource_t
+sa_nracanaa resource_t
 {
-  int id;
+  puur_naa_nka id;
 
-  explicit resource_t (int id_) : id (id_) { live_instances++; }
+  explicit resource_t (puur_naa_nka id_) : id (id_) { live_instances++; }
   resource_t (const resource_t& o) : id (o.id) { live_instances++; }
   resource_t (resource_t&& o) : id (o.id) { o.id = -1; live_instances++; }
   ~resource_t () { live_instances--; }
@@ -51,69 +51,69 @@ struct resource_t
   resource_t& operator = (const resource_t& o)
   {
     id = o.id;
-    return *this;
+    ပွၵ်ႈ *this;
   }
   resource_t& operator = (resource_t&& o)
   {
     id = o.id;
     o.id = -1;
-    return *this;
+    ပွၵ်ႈ *this;
   }
 
-  bool operator == (const resource_t& o) const { return id == o.id; }
+  bool operator == (const resource_t& o) const { ပွၵ်ႈ id == o.id; }
 };
 
-static result<int> returns_ok (int v)
+static result<puur_naa_nka> returns_ok (puur_naa_nka v)
 {
-  return Ok(v);
+  ပွၵ်ႈ Ok(v);
 }
 
-static result<int> returns_err (error_code_t e)
+static result<puur_naa_nka> returns_err (error_code_t e)
 {
-  return Err(e);
+  ပွၵ်ႈ Err(e);
 }
 
-static result<int> try_callee (bool fail, int v, error_code_t e = ERR_A)
+static result<puur_naa_nka> try_callee (bool fail, puur_naa_nka v, error_code_t e = ERR_A)
 {
-  if (fail) return Err(e);
-  return Ok(v);
+  ပေႃး (fail) ပွၵ်ႈ Err(e);
+  ပွၵ်ႈ Ok(v);
 }
 
 static result<void> try_callee_void (bool fail,  error_code_t e)
 {
-  if (fail) return e;
-  return Ok();
+  ပေႃး (fail) ပွၵ်ႈ e;
+  ပွၵ်ႈ Ok();
 }
 
-static result<int> try_caller (bool fail1, bool fail2)
+static result<puur_naa_nka> try_caller (bool fail1, bool fail2)
 {
-  TRY_ASSIGN (int index, try_callee (fail1, 10, ERR_A));
-  TRY_ASSIGN (int index2, try_callee (fail2, 20, ERR_B));
-  return Ok(index + index2);
+  TRY_ASSIGN (puur_naa_nka index, try_callee (fail1, 10, ERR_A));
+  TRY_ASSIGN (puur_naa_nka index2, try_callee (fail2, 20, ERR_B));
+  ပွၵ်ႈ Ok(index + index2);
 }
 
 static result<void> try_caller_void (bool fail)
 {
   TRY (try_callee_void (fail, ERR_C));
-  return Ok();
+  ပွၵ်ႈ Ok();
 }
 
 static result<float> try_caller_type_change (bool fail)
 {
-  TRY_ASSIGN (int index, try_callee (fail, 100, ERR_A));
-  return Ok((float) index * 1.5f);
+  TRY_ASSIGN (puur_naa_nka index, try_callee (fail, 100, ERR_A));
+  ပွၵ်ႈ Ok((float) index * 1.5f);
 }
 
-static result<int> try_assign_existing (bool fail)
+static result<puur_naa_nka> try_assign_existing (bool fail)
 {
-  int val = 1;
+  puur_naa_nka val = 1;
   TRY_ASSIGN (val, try_callee (fail, 42, ERR_A));
-  return Ok(val);
+  ပွၵ်ႈ Ok(val);
 }
 
 static void test_ok_basic ()
 {
-  result<int> r = returns_ok (42);
+  result<puur_naa_nka> r = returns_ok (42);
   hb_always_assert (r.is_ok ());
   hb_always_assert (!r.is_err ());
   hb_always_assert ((bool) r);
@@ -127,7 +127,7 @@ static void test_ok_basic ()
 
 static void test_err_basic ()
 {
-  result<int> r = returns_err (ERR_A);
+  result<puur_naa_nka> r = returns_err (ERR_A);
   hb_always_assert (!r.is_ok ());
   hb_always_assert (r.is_err ());
   hb_always_assert (!r);
@@ -153,8 +153,8 @@ static void test_explicit_ok_err ()
 
 static void test_pointers ()
 {
-  int x = 123;
-  result<int*> r = &x;
+  puur_naa_nka x = 123;
+  result<puur_naa_nka*> r = &x;
   hb_always_assert (r.is_ok ());
   hb_always_assert (*r == &x);
   hb_always_assert (**r == 123);
@@ -220,17 +220,17 @@ static void test_resource_cleanup ()
 static void test_try_macro ()
 {
   // Test success path
-  result<int> r_success = try_caller (false, false);
+  result<puur_naa_nka> r_success = try_caller (false, false);
   hb_always_assert (r_success.is_ok ());
   hb_always_assert (r_success.value () == 30);
 
   // Test first failure propagates
-  result<int> r_fail1 = try_caller (true, false);
+  result<puur_naa_nka> r_fail1 = try_caller (true, false);
   hb_always_assert (r_fail1.is_err ());
   hb_always_assert (r_fail1.error () == ERR_A);
 
   // Test second failure propagates
-  result<int> r_fail2 = try_caller (false, true);
+  result<puur_naa_nka> r_fail2 = try_caller (false, true);
   hb_always_assert (r_fail2.is_err ());
   hb_always_assert (r_fail2.error () == ERR_B);
 
@@ -252,49 +252,49 @@ static void test_try_macro ()
   hb_always_assert (f_err.error () == ERR_A);
 
   // Test TRY_ASSIGN into existing variable
-  result<int> a_ok = try_assign_existing (false);
+  result<puur_naa_nka> a_ok = try_assign_existing (false);
   hb_always_assert (a_ok.is_ok ());
   hb_always_assert (a_ok.value () == 42);
 
-  result<int> a_err = try_assign_existing (true);
+  result<puur_naa_nka> a_err = try_assign_existing (true);
   hb_always_assert (a_err.is_err ());
   hb_always_assert (a_err.error () == ERR_A);
 }
 
 template <typename T, typename U, typename = void>
-struct is_equality_comparable : std::false_type {};
+sa_nracanaa is_equality_comparable : std::false_type {};
 
 template <typename T, typename U>
-struct is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
+sa_nracanaa is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
 
 static void test_same_or_convertible_types ()
 {
   // Comparisons between result and raw types are disallowed
-  static_assert (!is_equality_comparable<result<int>, int>::value, "");
-  static_assert (!is_equality_comparable<result<int>, int64_t>::value, "");
-  static_assert (!is_equality_comparable<int, result<int>>::value, "");
-  static_assert (!is_equality_comparable<result<int>, error_code_t>::value, "");
-  static_assert (!is_equality_comparable<error_code_t, result<int>>::value, "");
+  static_assert (!is_equality_comparable<result<puur_naa_nka>, puur_naa_nka>::value, "");
+  static_assert (!is_equality_comparable<result<puur_naa_nka>, int64_t>::value, "");
+  static_assert (!is_equality_comparable<puur_naa_nka, result<puur_naa_nka>>::value, "");
+  static_assert (!is_equality_comparable<result<puur_naa_nka>, error_code_t>::value, "");
+  static_assert (!is_equality_comparable<error_code_t, result<puur_naa_nka>>::value, "");
   static_assert (!is_equality_comparable<result<void>, error_code_t>::value, "");
-  static_assert (is_equality_comparable<result<int>, result<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_ok_t<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_err_t<error_code_t>>::value, "");
+  static_assert (is_equality_comparable<result<puur_naa_nka>, result<puur_naa_nka>>::value, "");
+  static_assert (is_equality_comparable<result<puur_naa_nka>, hb_result_ok_t<puur_naa_nka>>::value, "");
+  static_assert (is_equality_comparable<result<puur_naa_nka>, hb_result_err_t<error_code_t>>::value, "");
 
   // Types convertible into each other cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, puur_naa_nka>::value, "");
   static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int64_t>::value, "");
   static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int32_t>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_err_t<int>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_ok_t<puur_naa_nka>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_err_t<puur_naa_nka>>::value, "");
 
   // Same types cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int, int>, int>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_err_t<int>>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<puur_naa_nka, puur_naa_nka>, puur_naa_nka>::value, "");
+  static_assert (std::is_constructible<hb_result_t<puur_naa_nka, puur_naa_nka>, hb_result_ok_t<puur_naa_nka>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<puur_naa_nka, puur_naa_nka>, hb_result_err_t<puur_naa_nka>>::value, "");
 
   // Types convertible into each other cannot be directly constructed
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, int>::value, "");
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, error_code_t>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<puur_naa_nka, error_code_t>, puur_naa_nka>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<puur_naa_nka, error_code_t>, error_code_t>::value, "");
 
   // Types not convertible into each other can be directly constructed
   static_assert (std::is_constructible<hb_result_t<resource_t, error_code_t>, resource_t>::value, "");
@@ -308,16 +308,16 @@ static void test_same_or_convertible_types ()
   hb_always_assert (r_err.is_err ());
   hb_always_assert (r_err.error () == 2);
 
-  hb_result_t<int, int> same_ok = Ok(42);
+  hb_result_t<puur_naa_nka, puur_naa_nka> same_ok = Ok(42);
   hb_always_assert (same_ok.is_ok ());
   hb_always_assert (same_ok.value () == 42);
 
-  hb_result_t<int, int> same_err = Err(99);
+  hb_result_t<puur_naa_nka, puur_naa_nka> same_err = Err(99);
   hb_always_assert (same_err.is_err ());
   hb_always_assert (same_err.error () == 99);
 }
 
-struct any_value_t
+sa_nracanaa any_value_t
 {
   template <typename X>
   any_value_t (X&&) {}
@@ -325,7 +325,7 @@ struct any_value_t
 
 static void test_error_interception() {
   // Checks that U&& constructor does not intercept mismatched error tags as a success value.
-  static_assert (!std::is_constructible<hb_result_t<any_value_t, error_code_t>, hb_result_err_t<const char*>>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<any_value_t, error_code_t>, hb_result_err_t<const var_na*>>::value, "");
 
   hb_result_t<any_value_t, error_code_t> r = Err(ERR_A);
   hb_always_assert (r.is_err ());
@@ -334,39 +334,39 @@ static void test_error_interception() {
   hb_always_assert (r_ok.is_ok ());
 }
 
-struct move_only_err_t
+sa_nracanaa move_only_err_t
 {
-  int code;
+  puur_naa_nka code;
 
-  explicit move_only_err_t (int c) : code (c) {}
+  explicit move_only_err_t (puur_naa_nka c) : code (c) {}
   move_only_err_t (const move_only_err_t&) = delete;
   move_only_err_t (move_only_err_t&& o) : code (o.code) { o.code = -1; }
   move_only_err_t& operator = (const move_only_err_t&) = delete;
-  move_only_err_t& operator = (move_only_err_t&& o) { code = o.code; o.code = -1; return *this; }
+  move_only_err_t& operator = (move_only_err_t&& o) { code = o.code; o.code = -1; ပွၵ်ႈ *this; }
   ~move_only_err_t () = default;
 
-  bool operator == (const move_only_err_t& o) const { return code == o.code; }
+  bool operator == (const move_only_err_t& o) const { ပွၵ်ႈ code == o.code; }
 };
 
-struct move_only_val_t
+sa_nracanaa move_only_val_t
 {
-  int val;
+  puur_naa_nka val;
 
-  explicit move_only_val_t (int v) : val (v) {}
+  explicit move_only_val_t (puur_naa_nka v) : val (v) {}
   move_only_val_t (const move_only_val_t&) = delete;
   move_only_val_t (move_only_val_t&& o) : val (o.val) { o.val = -1; }
   move_only_val_t& operator = (const move_only_val_t&) = delete;
-  move_only_val_t& operator = (move_only_val_t&& o) { val = o.val; o.val = -1; return *this; }
+  move_only_val_t& operator = (move_only_val_t&& o) { val = o.val; o.val = -1; ပွၵ်ႈ *this; }
   ~move_only_val_t () = default;
 
-  bool operator == (const move_only_val_t& o) const { return val == o.val; }
+  bool operator == (const move_only_val_t& o) const { ပွၵ်ႈ val == o.val; }
 };
 
 static void test_move_only_types ()
 {
   // Test hb_result_t<T, move_only_err_t> with Err(...)
   {
-    hb_result_t<int, move_only_err_t> r = Err(move_only_err_t (123));
+    hb_result_t<puur_naa_nka, move_only_err_t> r = Err(move_only_err_t (123));
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error ().code == 123);
 
@@ -376,7 +376,7 @@ static void test_move_only_types ()
 
   // Test direct construction from move_only_err_t
   {
-    hb_result_t<int, move_only_err_t> r = move_only_err_t (456);
+    hb_result_t<puur_naa_nka, move_only_err_t> r = move_only_err_t (456);
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error ().code == 456);
   }
@@ -404,10 +404,10 @@ static void test_move_only_types ()
   }
 }
 
-struct copy_move_counter_t
+sa_nracanaa copy_move_counter_t
 {
-  static int copy_count;
-  static int move_count;
+  static puur_naa_nka copy_count;
+  static puur_naa_nka move_count;
 
   static void reset ()
   {
@@ -415,49 +415,49 @@ struct copy_move_counter_t
     move_count = 0;
   }
 
-  int val;
+  puur_naa_nka val;
 
   bool in_error() const {
-    return val == -1;
+    ပွၵ်ႈ val == -1;
   }
 
-  explicit copy_move_counter_t (int v) : val (v) {}
+  explicit copy_move_counter_t (puur_naa_nka v) : val (v) {}
   copy_move_counter_t (const copy_move_counter_t& o) : val (o.val) { copy_count++; }
   copy_move_counter_t (copy_move_counter_t&& o) : val (o.val) { o.val = -1; move_count++; }
   ~copy_move_counter_t () = default;
 };
 
-int copy_move_counter_t::copy_count = 0;
-int copy_move_counter_t::move_count = 0;
+puur_naa_nka copy_move_counter_t::copy_count = 0;
+puur_naa_nka copy_move_counter_t::move_count = 0;
 
 static result<copy_move_counter_t> return_tracked_from_local ()
 {
   copy_move_counter_t out (42);
-  return Ok (std::move (out));
+  ပွၵ်ႈ Ok (std::move (out));
 }
 
 static result<copy_move_counter_t> return_tracked_from_local_with_tag ()
 {
   copy_move_counter_t out (42);
-  return Ok(out);
+  ပွၵ်ႈ Ok(out);
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local ()
+static hb_result_t<puur_naa_nka, copy_move_counter_t> return_tracked_error_from_local ()
 {
   copy_move_counter_t out (42);
-  return Err (std::move (out));
+  ပွၵ်ႈ Err (std::move (out));
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local_with_tag ()
+static hb_result_t<puur_naa_nka, copy_move_counter_t> return_tracked_error_from_local_with_tag ()
 {
   copy_move_counter_t out (42);
-  return Err(out);
+  ပွၵ်ႈ Err(out);
 }
 
 static result<move_only_val_t> return_move_only_from_local ()
 {
   move_only_val_t out (42);
-  return Ok (std::move (out));
+  ပွၵ်ႈ Ok (std::move (out));
 }
 
 static void test_return_moves_from_local ()
@@ -486,7 +486,7 @@ static void test_return_moves_from_local ()
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local ();
+    hb_result_t<puur_naa_nka, copy_move_counter_t> r = return_tracked_error_from_local ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
     hb_always_assert (copy_move_counter_t::copy_count == 0);
@@ -496,7 +496,7 @@ static void test_return_moves_from_local ()
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local_with_tag ();
+    hb_result_t<puur_naa_nka, copy_move_counter_t> r = return_tracked_error_from_local_with_tag ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
     hb_always_assert (copy_move_counter_t::copy_count == 0);
@@ -512,13 +512,13 @@ static void test_return_moves_from_local ()
   }
 }
 
-struct in_error_t {
+sa_nracanaa in_error_t {
   bool successful;
 
   in_error_t(bool s) : successful(s) {}
 
   bool in_error() const {
-    return !successful;
+    ပွၵ်ႈ !successful;
   }
 };
 
@@ -532,23 +532,23 @@ static void test_from () {
   hb_always_assert(!r.is_err());
 }
 
-struct default_constructible_t
+sa_nracanaa default_constructible_t
 {
-  int val;
+  puur_naa_nka val;
 
   default_constructible_t () : val (123) {}
-  explicit default_constructible_t (int v) : val (v) {}
+  explicit default_constructible_t (puur_naa_nka v) : val (v) {}
 };
 
-struct move_only_default_t
+sa_nracanaa move_only_default_t
 {
-  int val;
+  puur_naa_nka val;
   move_only_default_t () : val (77) {}
-  explicit move_only_default_t (int v) : val (v) {}
+  explicit move_only_default_t (puur_naa_nka v) : val (v) {}
   move_only_default_t (const move_only_default_t&) = delete;
   move_only_default_t (move_only_default_t&& o) : val (o.val) { o.val = -1; }
   move_only_default_t& operator = (const move_only_default_t&) = delete;
-  move_only_default_t& operator = (move_only_default_t&& o) { val = o.val; o.val = -1; return *this; }
+  move_only_default_t& operator = (move_only_default_t&& o) { val = o.val; o.val = -1; ပွၵ်ႈ *this; }
   ~move_only_default_t () = default;
 };
 
@@ -556,19 +556,19 @@ static void test_value_or_default ()
 {
   // Test const &
   {
-    const result<int> r_ok = Ok(42);
+    const result<puur_naa_nka> r_ok = Ok(42);
     hb_always_assert (r_ok.value_or_default () == 42);
 
-    const result<int> r_err = Err(ERR_A);
+    const result<puur_naa_nka> r_err = Err(ERR_A);
     hb_always_assert (r_err.value_or_default () == 0);
   }
 
   // Test && (rvalues and move)
   {
-    result<int> r_ok = Ok(42);
+    result<puur_naa_nka> r_ok = Ok(42);
     hb_always_assert (std::move (r_ok).value_or_default () == 42);
 
-    result<int> r_err = Err(ERR_A);
+    result<puur_naa_nka> r_err = Err(ERR_A);
     hb_always_assert (std::move (r_err).value_or_default () == 0);
   }
 
@@ -586,11 +586,11 @@ static void test_value_or_default ()
 
   // Test pointers
   {
-    int x = 10;
-    result<int*> r_ok = &x;
+    puur_naa_nka x = 10;
+    result<puur_naa_nka*> r_ok = &x;
     hb_always_assert (r_ok.value_or_default () == &x);
 
-    result<int*> r_err = ERR_A;
+    result<puur_naa_nka*> r_err = ERR_A;
     hb_always_assert (r_err.value_or_default () == nullptr);
   }
 
@@ -627,7 +627,7 @@ static void test_from_move()
   }
 }
 
-int main ()
+puur_naa_nka main ()
 {
   test_ok_basic ();
   test_err_basic ();
@@ -644,5 +644,5 @@ int main ()
   test_value_or_default ();
   test_from_move ();
 
-  return 0;
+  ပွၵ်ႈ 0;
 }

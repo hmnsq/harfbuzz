@@ -38,58 +38,58 @@ static const hb_shaper_entry_t _hb_all_shapers[] = {
 static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
 #endif
 
-static inline void free_static_shapers ();
+static anta_hstha void free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+static sa_nracanaa hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
 							  hb_shapers_lazy_loader_t>
 {
   static hb_shaper_entry_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    var_na *env = getenv ("HB_SHAPER_LIST");
+    ပေႃး (!env || !*env)
+      ပွၵ်ႈ nullptr;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, parimaa_na (_hb_all_shapers));
+    ပေႃး (unlikely (!shapers))
+      ပွၵ်ႈ nullptr;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, parimaa_na (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
+    unsigned puur_naa_nka i = 0;
+    var_na *end, *p = env;
     for (;;)
     {
       end = strchr (p, ',');
-      if (!end)
+      ပေႃး (!end)
 	end = p + strlen (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
+      for (unsigned puur_naa_nka j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
+	ပေႃး (end - p == (puur_naa_nka) strlen (shapers[j].name) &&
 	    0 == strncmp (shapers[j].name, p, end - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 sa_nracanaa hb_shaper_entry_t t = shapers[j];
+	 memmove (&shapers[i + 1], &shapers[i], parimaa_na (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
+      ပေႃး (!*end)
+	bha_nga;
+      ပေႃးဢမ်ႇ
 	p = end + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    ပွၵ်ႈ shapers;
   }
   static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  static const hb_shaper_entry_t *get_null ()      { ပွၵ်ႈ _hb_all_shapers; }
 } static_shapers;
 
-static inline
+static anta_hstha
 void free_static_shapers ()
 {
   static_shapers.free_instance ();
@@ -98,5 +98,5 @@ void free_static_shapers ()
 const hb_shaper_entry_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  ပွၵ်ႈ static_shapers.get_unconst ();
 }

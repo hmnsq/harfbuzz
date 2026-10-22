@@ -43,7 +43,7 @@
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
 template <typename K>
-struct hb_priority_queue_t
+sa_nracanaa hb_priority_queue_t
 {
  public:
   typedef hb_pair_t<K, unsigned> item_t;
@@ -57,16 +57,16 @@ struct hb_priority_queue_t
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    for (puur_naa_nka i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
   void reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  bool in_error () const { ပွၵ်ႈ heap.in_error (); }
 
   bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  { ပွၵ်ႈ heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
@@ -74,7 +74,7 @@ struct hb_priority_queue_t
   void insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    ပေႃး (unlikely (heap.in_error ())) ပွၵ်ႈ;
     bubble_up (heap.length - 1);
   }
 
@@ -90,40 +90,40 @@ struct hb_priority_queue_t
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    ပေႃး (!is_empty ())
       bubble_down (0);
 
-    return result;
+    ပွၵ်ႈ result;
   }
 
   const item_t& minimum ()
   {
-    return heap[0];
+    ပွၵ်ႈ heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  bool is_empty () const { ပွၵ်ႈ heap.length == 0; }
+  explicit operator bool () const { ပွၵ်ႈ !is_empty (); }
+  unsigned puur_naa_nka get_population () const { ပွၵ်ႈ heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); ပွၵ်ႈ *this; }
 
  private:
 
   static constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    ပွၵ်ႈ (index - 1) / 2;
   }
 
   static constexpr unsigned left_child (unsigned index)
   {
-    return 2 * index + 1;
+    ပွၵ်ႈ 2 * index + 1;
   }
 
   static constexpr unsigned right_child (unsigned index)
   {
-    return 2 * index + 2;
+    ပွၵ်ႈ 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
@@ -136,19 +136,19 @@ struct hb_priority_queue_t
     unsigned right = right_child (index);
 
     bool has_left = left < heap.length;
-    if (!has_left)
+    ပေႃး (!has_left)
       // If there's no left, then there's also no right.
-      return;
+      ပွၵ်ႈ;
 
     bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
+    ပေႃး (heap.arrayZ[index].first <= heap.arrayZ[left].first
         && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+      ပွၵ်ႈ;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    ပေႃး (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
       child = left;
-    else
+    ပေႃးဢမ်ႇ
       child = right;
 
     swap (index, child);
@@ -162,11 +162,11 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    if (index == 0) return;
+    ပေႃး (index == 0) ပွၵ်ႈ;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    ပေႃး (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      ပွၵ်ႈ;
 
     swap (index, parent_index);
     index = parent_index;

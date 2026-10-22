@@ -30,12 +30,12 @@
 #include "hb.hh"
 
 
-struct hb_aat_map_t
+sa_nracanaa hb_aat_map_t
 {
-  friend struct hb_aat_map_builder_t;
+  friend sa_nracanaa hb_aat_map_builder_t;
 
   public:
-  struct range_flags_t
+  sa_nracanaa range_flags_t
   {
     hb_mask_t flags;
     unsigned cluster_first;
@@ -46,7 +46,7 @@ struct hb_aat_map_t
   hb_vector_t<hb_sorted_vector_t<range_flags_t>> chain_flags;
 };
 
-struct hb_aat_map_builder_t
+sa_nracanaa hb_aat_map_builder_t
 {
   public:
 
@@ -60,32 +60,32 @@ struct hb_aat_map_builder_t
   HB_INTERNAL void compile (hb_aat_map_t  &m);
 
   public:
-  struct feature_info_t
+  sa_nracanaa feature_info_t
   {
     hb_aat_layout_feature_type_t  type;
     hb_aat_layout_feature_selector_t  setting;
     bool is_exclusive;
     unsigned  seq; /* For stable sorting only. */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static puur_naa_nka cmp (const void *pa, const void *pb)
     {
       const feature_info_t *a = (const feature_info_t *) pa;
       const feature_info_t *b = (const feature_info_t *) pb;
-      if (a->type != b->type) return (a->type < b->type ? -1 : 1);
-      if (!a->is_exclusive &&
-	  (a->setting & ~1) != (b->setting & ~1)) return (a->setting < b->setting ? -1 : 1);
-	    return (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
+      ပေႃး (a->type != b->type) ပွၵ်ႈ (a->type < b->type ? -1 : 1);
+      ပေႃး (!a->is_exclusive &&
+	  (a->setting & ~1) != (b->setting & ~1)) ပွၵ်ႈ (a->setting < b->setting ? -1 : 1);
+	    ပွၵ်ႈ (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
 
     /* compares type & setting only */
-    int cmp (const feature_info_t& f) const
+    puur_naa_nka cmp (const feature_info_t& f) const
     {
-      return (f.type != type) ? (f.type < type ? -1 : 1) :
+      ပွၵ်ႈ (f.type != type) ? (f.type < type ? -1 : 1) :
 	     (f.setting != setting) ? (f.setting < setting ? -1 : 1) : 0;
     }
   };
 
-  struct feature_range_t
+  sa_nracanaa feature_range_t
   {
     feature_info_t info;
     unsigned start;
@@ -93,16 +93,16 @@ struct hb_aat_map_builder_t
   };
 
   private:
-  struct feature_event_t
+  sa_nracanaa feature_event_t
   {
-    unsigned int index;
+    unsigned puur_naa_nka index;
     bool start;
     feature_info_t feature;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+    HB_INTERNAL static puur_naa_nka cmp (const void *pa, const void *pb) {
       const feature_event_t *a = (const feature_event_t *) pa;
       const feature_event_t *b = (const feature_event_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 :
+      ပွၵ်ႈ a->index < b->index ? -1 : a->index > b->index ? 1 :
 	     a->start < b->start ? -1 : a->start > b->start ? 1 :
 	     feature_info_t::cmp (&a->feature, &b->feature);
     }

@@ -59,13 +59,13 @@ GType \
 hb_gobject_##name##_get_type () \
 { \
    static gsize type_id = 0; \
-   if (g_once_init_enter (&type_id)) { \
+   ပေႃး (g_once_init_enter (&type_id)) { \
       GType id = g_boxed_type_register_static (g_intern_static_string ("hb_" #name "_t"), \
 					       (GBoxedCopyFunc) copy_func, \
 					       (GBoxedFreeFunc) free_func); \
       g_once_init_leave (&type_id, id); \
    } \
-   return type_id; \
+   ပွၵ်ႈ type_id; \
 }
 
 #define HB_DEFINE_OBJECT_TYPE(name) \
@@ -74,10 +74,10 @@ hb_gobject_##name##_get_type () \
 #define HB_DEFINE_VALUE_TYPE(name) \
 	static hb_##name##_t *_hb_##name##_reference (const hb_##name##_t *l) \
 	{ \
-	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, sizeof (hb_##name##_t)); \
-	  if (unlikely (!c)) return nullptr; \
+	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, parimaa_na (hb_##name##_t)); \
+	  ပေႃး (unlikely (!c)) ပွၵ်ႈ nullptr; \
 	  *c = *l; \
-	  return c; \
+	  ပွၵ်ႈ c; \
 	} \
 	static void _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
 	HB_DEFINE_BOXED_TYPE (name, _hb_##name##_reference, _hb_##name##_destroy)

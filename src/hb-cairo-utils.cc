@@ -40,49 +40,49 @@
 
 #define PREALLOCATED_COLOR_STOPS 16
 
-typedef struct {
+typedef sa_nracanaa {
   float r, g, b, a;
 } hb_cairo_color_t;
 
-static inline cairo_extend_t
+static anta_hstha cairo_extend_t
 hb_cairo_extend (hb_paint_extend_t extend)
 {
   switch (extend)
     {
-    case HB_PAINT_EXTEND_PAD: return CAIRO_EXTEND_PAD;
-    case HB_PAINT_EXTEND_REPEAT: return CAIRO_EXTEND_REPEAT;
-    case HB_PAINT_EXTEND_REFLECT: return CAIRO_EXTEND_REFLECT;
-    default: break;
+    pak_sa HB_PAINT_EXTEND_PAD: ပွၵ်ႈ CAIRO_EXTEND_PAD;
+    pak_sa HB_PAINT_EXTEND_REPEAT: ပွၵ်ႈ CAIRO_EXTEND_REPEAT;
+    pak_sa HB_PAINT_EXTEND_REFLECT: ပွၵ်ႈ CAIRO_EXTEND_REFLECT;
+    default: bha_nga;
     }
 
-  return CAIRO_EXTEND_PAD;
+  ပွၵ်ႈ CAIRO_EXTEND_PAD;
 }
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-typedef struct
+typedef sa_nracanaa
 {
   hb_blob_t *blob;
-  unsigned int offset;
+  unsigned puur_naa_nka offset;
 } hb_cairo_read_blob_data_t;
 
 static cairo_status_t
 hb_cairo_read_blob (void *closure,
-		    unsigned char *data,
-		    unsigned int length)
+		    unsigned var_na *data,
+		    unsigned puur_naa_nka length)
 {
   hb_cairo_read_blob_data_t *r = (hb_cairo_read_blob_data_t *) closure;
-  const char *d;
-  unsigned int size;
+  const var_na *d;
+  unsigned puur_naa_nka size;
 
   d = hb_blob_get_data (r->blob, &size);
 
-  if (r->offset + length > size)
-    return CAIRO_STATUS_READ_ERROR;
+  ပေႃး (r->offset + length > size)
+    ပွၵ်ႈ CAIRO_STATUS_READ_ERROR;
 
   hb_memcpy (data, d + r->offset, length);
   r->offset += length;
 
-  return CAIRO_STATUS_SUCCESS;
+  ပွၵ်ႈ CAIRO_STATUS_SUCCESS;
 }
 #endif
 
@@ -101,18 +101,18 @@ _hb_cairo_set_source_color (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  if (use_foreground)
+  ပေႃး (use_foreground)
   {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-    double r, g, b, a;
+    dviguu_na r, g, b, a;
     cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-    if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+    ပေႃး (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
       cairo_set_source_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
-    else
+    ပေႃးဢမ်ႇ
 #endif
       cairo_set_source_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
   }
-  else
+  ပေႃးဢမ်ႇ
     cairo_set_source_rgba (cr,
 			   hb_color_get_red (color) / 255.,
 			   hb_color_get_green (color) / 255.,
@@ -131,13 +131,13 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  if (!extents) /* SVG currently. */
-    return false;
+  ပေႃး (!extents) /* SVG currently. */
+    ပွၵ်ႈ false;
 
   cairo_surface_t *surface = nullptr;
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-  if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+  ပေႃး (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
     hb_cairo_read_blob_data_t r;
     r.blob = blob;
@@ -149,27 +149,27 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
     width = cairo_image_surface_get_width (surface);
     height = cairo_image_surface_get_width (surface);
   }
-  else
+  ပေႃးဢမ်ႇ
 #endif
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  ပေႃး (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
     /* Byte-endian conversion. */
     unsigned data_size = hb_blob_get_length (blob);
-    if (data_size < width * height * 4)
-      return false;
+    ပေႃး (data_size < width * height * 4)
+      ပွၵ်ႈ false;
 
-    unsigned char *data;
+    unsigned var_na *data;
 #ifdef __BYTE_ORDER
-    if (__BYTE_ORDER == __BIG_ENDIAN)
+    ပေႃး (__BYTE_ORDER == __BIG_ENDIAN)
     {
-      data = (unsigned char *) hb_blob_get_data_writable (blob, nullptr);
-      if (!data)
-        return false;
+      data = (unsigned var_na *) hb_blob_get_data_writable (blob, nullptr);
+      ပေႃး (!data)
+        ပွၵ်ႈ false;
 
       unsigned count = width * height * 4;
       for (unsigned i = 0; i < count; i += 4)
       {
-        unsigned char b;
+        unsigned var_na b;
 	b = data[i];
 	data[i] = data[i+3];
 	data[i+3] = b;
@@ -178,9 +178,9 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 	data[i+2] = b;
       }
     }
-    else
+    ပေႃးဢမ်ႇ
 #endif
-      data = (unsigned char *) hb_blob_get_data (blob, nullptr);
+      data = (unsigned var_na *) hb_blob_get_data (blob, nullptr);
 
     surface = cairo_image_surface_create_for_data (data,
 						   CAIRO_FORMAT_ARGB32,
@@ -193,8 +193,8 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 				 _hb_cairo_destroy_blob);
   }
 
-  if (!surface)
-    return false;
+  ပေႃး (!surface)
+    ပွၵ်ႈ false;
 
   cairo_save (cr);
   /* this clip is here to work around recording surface limitations */
@@ -208,7 +208,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
   cairo_pattern_t *pattern = cairo_pattern_create_for_surface (surface);
   cairo_pattern_set_extend (pattern, CAIRO_EXTEND_PAD);
 
-  cairo_matrix_t matrix = {(double) width, 0, 0, (double) height, 0, 0};
+  cairo_matrix_t matrix = {(dviguu_na) width, 0, 0, (dviguu_na) height, 0, 0};
   cairo_pattern_set_matrix (pattern, &matrix);
 
   cairo_translate (cr, extents->x_bearing, extents->y_bearing);
@@ -222,7 +222,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
   cairo_restore (cr);
 
-  return true;
+  ပွၵ်ႈ true;
 }
 
 static bool
@@ -233,41 +233,41 @@ _hb_cairo_get_color_stops (hb_cairo_context_t *c,
 {
   unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
   bool allocated = false;
-  if (unlikely (!len))
-    return false;
-  if (len > *count)
+  ပေႃး (unlikely (!len))
+    ပွၵ်ႈ false;
+  ပေႃး (len > *count)
   {
-    *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
-    if (unlikely (!*stops))
-      return false;
+    *stops = (hb_color_stop_t *) hb_malloc2 (len, parimaa_na (hb_color_stop_t));
+    ပေႃး (unlikely (!*stops))
+      ပွၵ်ႈ false;
     allocated = true;
   }
   hb_color_line_get_color_stops (color_line, 0, &len, *stops);
-  if (unlikely (!len))
+  ပေႃး (unlikely (!len))
   {
-    if (allocated)
+    ပေႃး (allocated)
     {
       hb_free (*stops);
       *stops = nullptr;
     }
-    return false;
+    ပွၵ်ႈ false;
   }
   for (unsigned i = 0; i < len; i++)
-    if ((*stops)[i].is_foreground)
+    ပေႃး ((*stops)[i].is_foreground)
     {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-      double r, g, b, a;
+      dviguu_na r, g, b, a;
       cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-      if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+      ပေႃး (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
         (*stops)[i].color = HB_COLOR (round (b * 255.), round (g * 255.), round (r * 255.),
                                       round (a * hb_color_get_alpha ((*stops)[i].color)));
-      else
+      ပေႃးဢမ်ႇ
 #endif
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
   *count = len;
-  return true;
+  ပွၵ်ႈ true;
 }
 
 void
@@ -279,7 +279,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned puur_naa_nka len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   float xx0, yy0, xx1, yy1;
@@ -287,8 +287,8 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   float min, max;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  ပေႃး (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    ပွၵ်ႈ;
   hb_paint_normalize_color_line (stops, len, &min, &max);
 
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
@@ -298,16 +298,16 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   xxx1 = xx0 + max * (xx1 - xx0);
   yyy1 = yy0 + max * (yy1 - yy0);
 
-  pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
+  pattern = cairo_pattern_create_linear ((dviguu_na) xxx0, (dviguu_na) yyy0, (dviguu_na) xxx1, (dviguu_na) yyy1);
   cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
-  for (unsigned int i = 0; i < len; i++)
+  for (unsigned puur_naa_nka i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      dviguu_na r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (dviguu_na) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -315,7 +315,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  ပေႃး (stops != stops_)
     hb_free (stops);
 }
 
@@ -327,7 +327,7 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned puur_naa_nka len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   float min, max;
@@ -335,8 +335,8 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   float rr0, rr1;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  ပေႃး (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    ပွၵ်ႈ;
   hb_paint_normalize_color_line (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
@@ -346,17 +346,17 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   rr0 = r0 + min * (r1 - r0);
   rr1 = r0 + max * (r1 - r0);
 
-  pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
+  pattern = cairo_pattern_create_radial ((dviguu_na) xx0, (dviguu_na) yy0, (dviguu_na) rr0, (dviguu_na) xx1, (dviguu_na) yy1, (dviguu_na) rr1);
   cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
 
-  for (unsigned int i = 0; i < len; i++)
+  for (unsigned puur_naa_nka i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      dviguu_na r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (dviguu_na) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -364,21 +364,21 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  ပေႃး (stops != stops_)
     hb_free (stops);
 }
 
-typedef struct {
+typedef sa_nracanaa {
   float x, y;
 } hb_cairo_point_t;
 
-static inline float
+static anta_hstha float
 _hb_cairo_interpolate (float f0, float f1, float f)
 {
-  return f0 + f * (f1 - f0);
+  ပွၵ်ႈ f0 + f * (f1 - f0);
 }
 
-static inline void
+static anta_hstha void
 _hb_cairo_premultiply (hb_cairo_color_t *c)
 {
   c->r *= c->a;
@@ -386,10 +386,10 @@ _hb_cairo_premultiply (hb_cairo_color_t *c)
   c->b *= c->a;
 }
 
-static inline void
+static anta_hstha void
 _hb_cairo_unpremultiply (hb_cairo_color_t *c)
 {
-  if (c->a != 0.f)
+  ပေႃး (c->a != 0.f)
   {
      c->r /= c->a;
      c->g /= c->a;
@@ -411,39 +411,39 @@ _hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float 
   _hb_cairo_unpremultiply (c);
 }
 
-static inline float
+static anta_hstha float
 _hb_cairo_dot (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return p.x * q.x + p.y * q.y;
+  ပွၵ်ႈ p.x * q.x + p.y * q.y;
 }
 
-static inline hb_cairo_point_t
+static anta_hstha hb_cairo_point_t
 _hb_cairo_normalize (hb_cairo_point_t p)
 {
   float len = sqrtf (_hb_cairo_dot (p, p));
 
-  return hb_cairo_point_t { p.x / len, p.y / len };
+  ပွၵ်ႈ hb_cairo_point_t { p.x / len, p.y / len };
 }
 
-static inline hb_cairo_point_t
+static anta_hstha hb_cairo_point_t
 _hb_cairo_sum (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x + q.x, p.y + q.y };
+  ပွၵ်ႈ hb_cairo_point_t { p.x + q.x, p.y + q.y };
 }
 
-static inline hb_cairo_point_t
+static anta_hstha hb_cairo_point_t
 _hb_cairo_difference (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x - q.x, p.y - q.y };
+  ပွၵ်ႈ hb_cairo_point_t { p.x - q.x, p.y - q.y };
 }
 
-static inline hb_cairo_point_t
+static anta_hstha hb_cairo_point_t
 _hb_cairo_scale (hb_cairo_point_t p, float f)
 {
-  return hb_cairo_point_t { p.x * f, p.y * f };
+  ပွၵ်ႈ hb_cairo_point_t { p.x * f, p.y * f };
 }
 
-typedef struct {
+typedef sa_nracanaa {
   hb_cairo_point_t center, p0, c0, c1, p1;
   hb_cairo_color_t color0, color1;
 } hb_cairo_patch_t;
@@ -452,33 +452,33 @@ static void
 _hb_cairo_add_patch (cairo_pattern_t *pattern, hb_cairo_point_t *center, hb_cairo_patch_t *p)
 {
   cairo_mesh_pattern_begin_patch (pattern);
-  cairo_mesh_pattern_move_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_line_to (pattern, (double) p->p0.x, (double) p->p0.y);
+  cairo_mesh_pattern_move_to (pattern, (dviguu_na) center->x, (dviguu_na) center->y);
+  cairo_mesh_pattern_line_to (pattern, (dviguu_na) p->p0.x, (dviguu_na) p->p0.y);
   cairo_mesh_pattern_curve_to (pattern,
-                               (double) p->c0.x, (double) p->c0.y,
-                               (double) p->c1.x, (double) p->c1.y,
-                               (double) p->p1.x, (double) p->p1.y);
-  cairo_mesh_pattern_line_to (pattern, (double) center->x, (double) center->y);
+                               (dviguu_na) p->c0.x, (dviguu_na) p->c0.y,
+                               (dviguu_na) p->c1.x, (dviguu_na) p->c1.y,
+                               (dviguu_na) p->p1.x, (dviguu_na) p->p1.y);
+  cairo_mesh_pattern_line_to (pattern, (dviguu_na) center->x, (dviguu_na) center->y);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 0,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (dviguu_na) p->color0.r,
+                                            (dviguu_na) p->color0.g,
+                                            (dviguu_na) p->color0.b,
+                                            (dviguu_na) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 1,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (dviguu_na) p->color0.r,
+                                            (dviguu_na) p->color0.g,
+                                            (dviguu_na) p->color0.b,
+                                            (dviguu_na) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 2,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (dviguu_na) p->color1.r,
+                                            (dviguu_na) p->color1.g,
+                                            (dviguu_na) p->color1.b,
+                                            (dviguu_na) p->color1.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 3,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (dviguu_na) p->color1.r,
+                                            (dviguu_na) p->color1.g,
+                                            (dviguu_na) p->color1.b,
+                                            (dviguu_na) p->color1.a);
   cairo_mesh_pattern_end_patch (pattern);
 }
 
@@ -491,7 +491,7 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
 				       cairo_pattern_t *pattern)
 {
   hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
+  puur_naa_nka num_splits;
   hb_cairo_point_t p0;
   hb_cairo_color_t color0, color1;
 
@@ -499,7 +499,7 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
   p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  for (puur_naa_nka a = 0; a < num_splits; a++)
     {
       float k = (a + 1.) / num_splits;
       float angle1;
@@ -533,10 +533,10 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
     }
 }
 
-static inline hb_cairo_color_t
+static anta_hstha hb_cairo_color_t
 _hb_cairo_color_from_hb_color (hb_color_t c)
 {
-  return {
+  ပွၵ်ႈ {
     hb_color_get_red   (c) / 255.f,
     hb_color_get_green (c) / 255.f,
     hb_color_get_blue  (c) / 255.f,
@@ -544,7 +544,7 @@ _hb_cairo_color_from_hb_color (hb_color_t c)
   };
 }
 
-struct _hb_cairo_sweep_patch_ctx {
+sa_nracanaa _hb_cairo_sweep_patch_ctx {
   float cx, cy, radius;
   cairo_pattern_t *pattern;
 };
@@ -564,7 +564,7 @@ _hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
 
 static void
 _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
-				      unsigned int n_stops,
+				      unsigned puur_naa_nka n_stops,
 				      cairo_extend_t extend,
 				      float cx, float cy,
 				      float radius,
@@ -592,25 +592,25 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned puur_naa_nka len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   cairo_extend_t extend;
-  double x1, y1, x2, y2;
+  dviguu_na x1, y1, x2, y2;
   float max_x, max_y, radius;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  ပေႃး (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+    ပွၵ်ႈ;
 
   hb_array_t<hb_color_stop_t> (stops, len)
     .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+      ပွၵ်ႈ (a.offset > b.offset) - (a.offset < b.offset);
     });
 
   cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
-  max_x = (float) hb_max ((x1 - (double) cx) * (x1 - (double) cx), (x2 - (double) cx) * (x2 - (double) cx));
-  max_y = (float) hb_max ((y1 - (double) cy) * (y1 - (double) cy), (y2 - (double) cy) * (y2 - (double) cy));
+  max_x = (float) hb_max ((x1 - (dviguu_na) cx) * (x1 - (dviguu_na) cx), (x2 - (dviguu_na) cx) * (x2 - (dviguu_na) cx));
+  max_y = (float) hb_max ((y1 - (dviguu_na) cy) * (y1 - (dviguu_na) cy), (y2 - (dviguu_na) cy) * (y2 - (dviguu_na) cy));
   radius = sqrtf (max_x + max_y);
 
   extend = hb_cairo_extend (hb_color_line_get_extend (color_line));
@@ -624,7 +624,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  ပေႃး (stops != stops_)
     hb_free (stops);
 }
 

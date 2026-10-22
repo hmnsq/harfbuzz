@@ -58,7 +58,7 @@ HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) cons
 {
   const COLR *colr_table = c->get_colr_table ();
   const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
+  ပေႃး (!baseglyph_paintrecord) ပွၵ်ႈ;
   c->add_glyph (gid);
 
   const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();

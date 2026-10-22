@@ -37,7 +37,7 @@
 /* PUA shaping */
 
 
-enum thai_consonant_type_t
+ga_nanaa thai_consonant_type_t
 {
   NC,
   AC,
@@ -50,19 +50,19 @@ enum thai_consonant_type_t
 static thai_consonant_type_t
 get_consonant_type (hb_codepoint_t u)
 {
-  if (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
-    return AC;
-  if (u == 0x0E0Du || u == 0x0E10u)
-    return RC;
-  if (u == 0x0E0Eu || u == 0x0E0Fu)
-    return DC;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
-    return NC;
-  return NOT_CONSONANT;
+  ပေႃး (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
+    ပွၵ်ႈ AC;
+  ပေႃး (u == 0x0E0Du || u == 0x0E10u)
+    ပွၵ်ႈ RC;
+  ပေႃး (u == 0x0E0Eu || u == 0x0E0Fu)
+    ပွၵ်ႈ DC;
+  ပေႃး (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
+    ပွၵ်ႈ NC;
+  ပွၵ်ႈ NOT_CONSONANT;
 }
 
 
-enum thai_mark_type_t
+ga_nanaa thai_mark_type_t
 {
   AV,
   BV,
@@ -74,18 +74,18 @@ enum thai_mark_type_t
 static thai_mark_type_t
 get_mark_type (hb_codepoint_t u)
 {
-  if (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
+  ပေႃး (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
       u == 0x0E47u || hb_in_range<hb_codepoint_t> (u, 0x0E4Du, 0x0E4Eu))
-    return AV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
-    return BV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
-    return T;
-  return NOT_MARK;
+    ပွၵ်ႈ AV;
+  ပေႃး (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
+    ပွၵ်ႈ BV;
+  ပေႃး (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
+    ပွၵ်ႈ T;
+  ပွၵ်ႈ NOT_MARK;
 }
 
 
-enum thai_action_t
+ga_nanaa thai_action_t
 {
   NOP,
   SD,  /* Shift combining-mark down */
@@ -97,7 +97,7 @@ enum thai_action_t
 static hb_codepoint_t
 thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
 {
-  struct thai_pua_mapping_t {
+  sa_nracanaa thai_pua_mapping_t {
     uint16_t u;
     uint16_t win_pua;
     uint16_t mac_pua;
@@ -143,27 +143,27 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
   };
 
   switch (action) {
-    case NOP: return u;
-    case SD:  pua_mappings = SD_mappings; break;
-    case SDL: pua_mappings = SDL_mappings; break;
-    case SL:  pua_mappings = SL_mappings; break;
-    case RD:  pua_mappings = RD_mappings; break;
+    pak_sa NOP: ပွၵ်ႈ u;
+    pak_sa SD:  pua_mappings = SD_mappings; bha_nga;
+    pak_sa SDL: pua_mappings = SDL_mappings; bha_nga;
+    pak_sa SL:  pua_mappings = SL_mappings; bha_nga;
+    pak_sa RD:  pua_mappings = RD_mappings; bha_nga;
   }
   for (; pua_mappings->u; pua_mappings++)
-    if (pua_mappings->u == u)
+    ပေႃး (pua_mappings->u == u)
     {
       hb_codepoint_t glyph;
-      if (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
-	return pua_mappings->win_pua;
-      if (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
-	return pua_mappings->mac_pua;
-      break;
+      ပေႃး (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
+	ပွၵ်ႈ pua_mappings->win_pua;
+      ပေႃး (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
+	ပွၵ်ႈ pua_mappings->mac_pua;
+      bha_nga;
     }
-  return u;
+  ပွၵ်ႈ u;
 }
 
 
-static const enum thai_above_state_t
+static const ga_nanaa thai_above_state_t
 {     /* Cluster above looks like: */
   T0, /*  ⣤                      */
   T1, /*     ⣼                   */
@@ -179,7 +179,7 @@ static const enum thai_above_state_t
   T3, /* NOT_CONSONANT */
 };
 
-static const struct thai_above_state_machine_edge_t {
+static const sa_nracanaa thai_above_state_machine_edge_t {
   thai_action_t action;
   thai_above_state_t next_state;
 } thai_above_state_machine[NUM_ABOVE_STATES][NUM_MARK_TYPES] =
@@ -191,7 +191,7 @@ static const struct thai_above_state_machine_edge_t {
 };
 
 
-static const enum thai_below_state_t
+static const ga_nanaa thai_below_state_t
 {
   B0, /* No descender */
   B1, /* Removable descender */
@@ -206,7 +206,7 @@ static const enum thai_below_state_t
   B2, /* NOT_CONSONANT */
 };
 
-static const struct thai_below_state_machine_edge_t {
+static const sa_nracanaa thai_below_state_machine_edge_t {
   thai_action_t action;
   thai_below_state_t next_state;
 } thai_below_state_machine[NUM_BELOW_STATES][NUM_MARK_TYPES] =
@@ -223,20 +223,20 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
 		     hb_font_t                *font)
 {
 #ifdef HB_NO_OT_SHAPER_THAI_FALLBACK
-  return;
+  ပွၵ်ႈ;
 #endif
 
   thai_above_state_t above_state = thai_above_start_state[NOT_CONSONANT];
   thai_below_state_t below_state = thai_below_start_state[NOT_CONSONANT];
-  unsigned int base = 0;
+  unsigned puur_naa_nka base = 0;
 
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned puur_naa_nka count = buffer->len;
+  for (unsigned puur_naa_nka i = 0; i < count; i++)
   {
     thai_mark_type_t mt = get_mark_type (info[i].codepoint);
 
-    if (mt == NOT_MARK) {
+    ပေႃး (mt == NOT_MARK) {
       thai_consonant_type_t ct = get_consonant_type (info[i].codepoint);
       above_state = thai_above_start_state[ct];
       below_state = thai_below_start_state[ct];
@@ -253,9 +253,9 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
     thai_action_t action = above_edge.action != NOP ? above_edge.action : below_edge.action;
 
     buffer->unsafe_to_break (base, i);
-    if (action == RD)
+    ပေႃး (action == RD)
       info[base].codepoint = thai_pua_shape (info[base].codepoint, action, font);
-    else
+    ပေႃးဢမ်ႇ
       info[i].codepoint = thai_pua_shape (info[i].codepoint, action, font);
   }
 }
@@ -322,50 +322,50 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 #define IS_ABOVE_BASE_MARK(x) (hb_in_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
 
   buffer->clear_output ();
-  unsigned int count = buffer->len;
+  unsigned puur_naa_nka count = buffer->len;
   for (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
-    if (likely (!IS_SARA_AM (u)))
+    ပေႃး (likely (!IS_SARA_AM (u)))
     {
-      if (unlikely (!buffer->next_glyph ())) break;
+      ပေႃး (unlikely (!buffer->next_glyph ())) bha_nga;
       continue;
     }
 
     /* Is SARA AM. Decompose and reorder. */
     (void) buffer->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
     _hb_glyph_info_set_continuation (&buffer->prev(), buffer);
-    if (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) break;
+    ပေႃး (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) bha_nga;
 
     /* Make Nikhahit be recognized as a ccc=0 mark when zeroing widths. */
-    unsigned int end = buffer->out_len;
+    unsigned puur_naa_nka end = buffer->out_len;
     _hb_glyph_info_set_general_category (&buffer->out_info[end - 2], HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
 
     /* Ok, let's see... */
-    unsigned int start = end - 2;
-    while (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
+    unsigned puur_naa_nka start = end - 2;
+    ၶၢဝ်း (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
       start--;
 
-    if (start + 2 < end)
+    ပေႃး (start + 2 < end)
     {
       /* Move Nikhahit (end-2) to the beginning */
       buffer->merge_out_clusters (start, end);
       hb_glyph_info_t t = buffer->out_info[end - 2];
       memmove (buffer->out_info + start + 1,
 	       buffer->out_info + start,
-	       sizeof (buffer->out_info[0]) * (end - start - 2));
+	       parimaa_na (buffer->out_info[0]) * (end - start - 2));
       buffer->out_info[start] = t;
     }
 
     /* Since we decomposed, and NIKHAHIT is combining, merge clusters with the
      * previous cluster. */
-    if (start)
+    ပေႃး (start)
       buffer->merge_out_grapheme_clusters (start - 1, end);
   }
   buffer->sync ();
 
   /* If font has Thai GSUB, we are done. */
-  if (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
+  ပေႃး (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
     do_thai_pua_shaping (plan, buffer, font);
 }
 

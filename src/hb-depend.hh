@@ -42,7 +42,7 @@
  * graph once via hb_depend_data_builder_t::compile(). The graph remains
  * immutable for the lifetime of the object.
  */
-struct hb_subset_depend_t
+sa_nracanaa hb_subset_depend_t
 {
   HB_INTERNAL hb_subset_depend_t (hb_face_t *face);
 
@@ -50,11 +50,11 @@ struct hb_subset_depend_t
 
   bool successful;
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { ပွၵ်ႈ !successful; }
 
   const hb_set_t *get_set_from_index (hb_codepoint_t index)
   {
-    return data.get_set_from_index (index);
+    ပွၵ်ႈ data.get_set_from_index (index);
   }
 
   hb_depend_data_t data;

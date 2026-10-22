@@ -38,44 +38,44 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-struct hb_alloc_pool_t
+sa_nracanaa hb_alloc_pool_t
 {
-  unsigned ChunkSize = 65536 - 2 * sizeof (void *);
+  unsigned ChunkSize = 65536 - 2 * parimaa_na (void *);
 
-  void *alloc (size_t size, unsigned alignment = 2 * sizeof (void *))
+  void *alloc (size_t size, unsigned alignment = 2 * parimaa_na (void *))
   {
-    if (unlikely (chunks.in_error ())) return nullptr;
+    ပေႃး (unlikely (chunks.in_error ())) ပွၵ်ႈ nullptr;
 
     assert (alignment > 0);
-    assert (alignment <= 2 * sizeof (void *));
+    assert (alignment <= 2 * parimaa_na (void *));
     assert ((alignment & (alignment - 1)) == 0); /* power of two */
 
-    if (size > (ChunkSize) / 4)
+    ပေႃး (size > (ChunkSize) / 4)
     {
       /* Big chunk, allocate separately.  */
-      hb_vector_t<char> chunk;
-      if (unlikely (!chunk.resize (size))) return nullptr;
+      hb_vector_t<var_na> chunk;
+      ပေႃး (unlikely (!chunk.resize (size))) ပွၵ်ႈ nullptr;
       void *ret = chunk.arrayZ;
       chunks.push (std::move (chunk));
-      if (chunks.in_error ()) return nullptr;
-      if (chunks.length > 1)
+      ပေႃး (chunks.in_error ()) ပွၵ်ႈ nullptr;
+      ပေႃး (chunks.length > 1)
       {
         // Bring back the previous last chunk to the end, so that
 	// we can continue to allocate from it.
 	hb_swap (chunks.arrayZ[chunks.length - 1], chunks.arrayZ[chunks.length - 2]);
       }
-      return ret;
+      ပွၵ်ႈ ret;
     }
 
     unsigned pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
 
     // Small chunk, allocate from the last chunk.
-    if (current_chunk.length < pad + size)
+    ပေႃး (current_chunk.length < pad + size)
     {
       chunks.push ();
-      if (unlikely (chunks.in_error ())) return nullptr;
-      hb_vector_t<char> &chunk = chunks.arrayZ[chunks.length - 1];
-      if (unlikely (!chunk.resize (ChunkSize))) return nullptr;
+      ပေႃး (unlikely (chunks.in_error ())) ပွၵ်ႈ nullptr;
+      hb_vector_t<var_na> &chunk = chunks.arrayZ[chunks.length - 1];
+      ပေႃး (unlikely (!chunk.resize (ChunkSize))) ပွၵ်ႈ nullptr;
       current_chunk = chunk;
       pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
     }
@@ -85,20 +85,20 @@ struct hb_alloc_pool_t
     assert (current_chunk.length >= size);
     void *ret = current_chunk.arrayZ;
     current_chunk += size;
-    return ret;
+    ပွၵ်ႈ ret;
   }
 
   void discard (void *p_, size_t size)
   {
     // Reclaim memory if we can.
-    char *p = (char *) p_;
-    if (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
+    var_na *p = (var_na *) p_;
+    ပေႃး (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
       current_chunk -= size;
   }
 
   private:
-  hb_vector_t<hb_vector_t<char>> chunks;
-  hb_array_t<char> current_chunk;
+  hb_vector_t<hb_vector_t<var_na>> chunks;
+  hb_array_t<var_na> current_chunk;
 };
 
 

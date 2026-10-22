@@ -36,30 +36,30 @@
 namespace OT {
 
 
-struct MathValueRecord
+sa_nracanaa MathValueRecord
 {
   hb_position_t get_x_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
+  { ပွၵ်ႈ hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
   hb_position_t get_y_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
+  { ပွၵ်ႈ hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
 
   const ItemVariationStore &get_var_store (hb_font_t *font, const void *base) const
   {
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
-    if ((base+deviceTable).is_variation_device ())
-      return font->face->table.GDEF->table->get_var_store ();
+#ပေႃး !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
+    ပေႃး ((base+deviceTable).is_variation_device ())
+      ပွၵ်ႈ font->face->table.GDEF->table->get_var_store ();
 #endif
-    return Null (ItemVariationStore);
+    ပွၵ်ႈ Null (ItemVariationStore);
   }
 
   MathValueRecord* copy (hb_serialize_context_t *c, const void *base,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
+    ပေႃး (unlikely (!out)) return_trace (nullptr);
+    hb_pair_t<unsigned, puur_naa_nka> *varidx_delta;
+    ပေႃး (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
         !c->check_assign (out->value, (int64_t) value + hb_second (*varidx_delta),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (nullptr);
@@ -77,7 +77,7 @@ struct MathValueRecord
     return_trace (c->check_struct (this) && deviceTable.sanitize (c, base));
   }
 
-  protected:
+  rak_sita:
   HBINT16		value;		/* The X or Y value in design units */
   Offset16To<Device>	deviceTable;	/* Offset to the device table - from the
 					 * beginning of parent table.  May be NULL.
@@ -87,30 +87,30 @@ struct MathValueRecord
   DEFINE_SIZE_STATIC (4);
 };
 
-struct MathConstants
+sa_nracanaa MathConstants
 {
-  friend struct MATH;
+  friend sa_nracanaa MATH;
 
   MathConstants* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
 
     HBINT16 *p = c->allocate_size<HBINT16> (HBINT16::static_size * 2);
-    if (unlikely (!p)) return_trace (nullptr);
+    ပေႃး (unlikely (!p)) return_trace (nullptr);
     hb_memcpy (p, percentScaleDown, HBINT16::static_size * 2);
 
     HBUINT16 *m = c->allocate_size<HBUINT16> (HBUINT16::static_size * 2);
-    if (unlikely (!m)) return_trace (nullptr);
+    ပေႃး (unlikely (!m)) return_trace (nullptr);
     hb_memcpy (m, minHeight, HBUINT16::static_size * 2);
 
     unsigned count = ARRAY_LENGTH (mathValueRecords);
     for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecords[i], this, variation_map))
+      ပေႃး (!c->copy (mathValueRecords[i], this, variation_map))
         return_trace (nullptr);
 
-    if (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
+    ပေႃး (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
     return_trace (out);
   }
 
@@ -124,9 +124,9 @@ struct MathConstants
   {
     TRACE_SANITIZE (this);
 
-    unsigned int count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecords[i].sanitize (c, this))
+    unsigned puur_naa_nka count = ARRAY_LENGTH (mathValueRecords);
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
+      ပေႃး (!mathValueRecords[i].sanitize (c, this))
 	return_trace (false);
 
     return_trace (true);
@@ -143,78 +143,78 @@ struct MathConstants
   {
     switch (constant) {
 
-    case HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
-    case HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
-      return percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
+    pak_sa HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
+      ပွၵ်ႈ percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
 
-    case HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
-    case HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
-      return font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
+    pak_sa HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
+    pak_sa HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
+      ပွၵ်ႈ font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
-    case HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
+    pak_sa HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
+      ပွၵ်ႈ mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
 
-    case HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_MATH_LEADING:
-    case HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX:
-    case HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
+    pak_sa HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
+    pak_sa HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
+    pak_sa HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
+    pak_sa HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_MATH_LEADING:
+    pak_sa HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
+    pak_sa HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
+    pak_sa HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
+    pak_sa HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX:
+    pak_sa HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
+    pak_sa HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
+    pak_sa HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
+    pak_sa HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
+    pak_sa HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
+    pak_sa HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
+    pak_sa HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
+    pak_sa HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
+    pak_sa HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
+      ပွၵ်ႈ mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
-      return radicalDegreeBottomRaisePercent;
+    pak_sa HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
+      ပွၵ်ႈ radicalDegreeBottomRaisePercent;
 
     default:
-      return 0;
+      ပွၵ်ႈ 0;
     }
   }
 
-  protected:
+  rak_sita:
   HBINT16 percentScaleDown[2];
   HBUINT16 minHeight[2];
   MathValueRecord mathValueRecords[51];
@@ -224,7 +224,7 @@ struct MathConstants
   DEFINE_SIZE_STATIC (214);
 };
 
-struct MathItalicsCorrectionInfo
+sa_nracanaa MathItalicsCorrectionInfo
 {
   bool subset (hb_subset_context_t *c) const
   {
@@ -233,7 +233,7 @@ struct MathItalicsCorrectionInfo
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ပေႃး (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+coverage, italicsCorrection)
@@ -251,7 +251,7 @@ struct MathItalicsCorrectionInfo
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
     for (const auto &entry : hb_zip (this+coverage, italicsCorrection))
-      if (c->glyph_set->has (hb_first (entry)))
+      ပေႃး (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -266,11 +266,11 @@ struct MathItalicsCorrectionInfo
   hb_position_t get_value (hb_codepoint_t glyph,
 			   hb_font_t *font) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    return italicsCorrection[index].get_x_value (font, this);
+    unsigned puur_naa_nka index = (this+coverage).get_coverage (glyph);
+    ပွၵ်ႈ italicsCorrection[index].get_x_value (font, this);
   }
 
-  protected:
+  rak_sita:
   Offset16To<Coverage>       coverage;		/* Offset to Coverage table -
 						 * from the beginning of
 						 * MathItalicsCorrectionInfo
@@ -284,7 +284,7 @@ struct MathItalicsCorrectionInfo
   DEFINE_SIZE_ARRAY (4, italicsCorrection);
 };
 
-struct MathTopAccentAttachment
+sa_nracanaa MathTopAccentAttachment
 {
   bool subset (hb_subset_context_t *c) const
   {
@@ -293,7 +293,7 @@ struct MathTopAccentAttachment
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ပေႃး (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+topAccentCoverage, topAccentAttachment)
@@ -311,7 +311,7 @@ struct MathTopAccentAttachment
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
     for (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
-      if (c->glyph_set->has (hb_first (entry)))
+      ပေႃး (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -326,13 +326,13 @@ struct MathTopAccentAttachment
   hb_position_t get_value (hb_codepoint_t glyph,
 			   hb_font_t *font) const
   {
-    unsigned int index = (this+topAccentCoverage).get_coverage (glyph);
-    if (index == NOT_COVERED)
-      return font->get_glyph_h_advance (glyph) / 2;
-    return topAccentAttachment[index].get_x_value (font, this);
+    unsigned puur_naa_nka index = (this+topAccentCoverage).get_coverage (glyph);
+    ပေႃး (index == NOT_COVERED)
+      ပွၵ်ႈ font->get_glyph_h_advance (glyph) / 2;
+    ပွၵ်ႈ topAccentAttachment[index].get_x_value (font, this);
   }
 
-  protected:
+  rak_sita:
   Offset16To<Coverage>       topAccentCoverage;   /* Offset to Coverage table -
 						 * from the beginning of
 						 * MathTopAccentAttachment
@@ -346,19 +346,19 @@ struct MathTopAccentAttachment
   DEFINE_SIZE_ARRAY (2 + 2, topAccentAttachment);
 };
 
-struct MathKern
+sa_nracanaa MathKern
 {
   MathKern* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
 
-    if (unlikely (!c->embed (heightCount))) return_trace (nullptr);
+    ပေႃး (unlikely (!c->embed (heightCount))) return_trace (nullptr);
 
     unsigned count = 2 * heightCount + 1;
     for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
+      ပေႃး (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
         return_trace (nullptr);
 
     return_trace (out);
@@ -373,9 +373,9 @@ struct MathKern
   bool sanitize_math_value_records (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    unsigned int count = 2 * heightCount + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
+    unsigned puur_naa_nka count = 2 * heightCount + 1;
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
+      ပေႃး (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
@@ -392,7 +392,7 @@ struct MathKern
   {
     const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
     const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    int sign = font->y_scale < 0 ? -1 : +1;
+    puur_naa_nka sign = font->y_scale < 0 ? -1 : +1;
 
     /* According to OpenType spec (v1.9), except for the boundary cases, the index
      * chosen for kern value should be i such that
@@ -400,52 +400,52 @@ struct MathKern
      * We can use the binary search algorithm of std::upper_bound(). Or, we can
      * use the internal hb_bsearch_impl.
      */
-    unsigned int pos;
+    unsigned puur_naa_nka pos;
     auto cmp = +[](const void* key, const void* p,
-                   int sign, hb_font_t* font, const MathKern* mathKern) -> int {
+                   puur_naa_nka sign, hb_font_t* font, const MathKern* mathKern) -> puur_naa_nka {
       hb_position_t a = *(hb_position_t *) key;
       hb_position_t b = ((MathValueRecord *) p)->get_y_value (font, mathKern);
-      if (a == b) return 0;
-      return sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
+      ပေႃး (a == b) ပွၵ်ႈ 0;
+      ပွၵ်ႈ sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
     };
-    unsigned int i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
+    unsigned puur_naa_nka i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
                                      heightCount, MathValueRecord::static_size,
                                      cmp, sign, font, this) ? pos + 1 : pos;
-    return kernValue[i].get_x_value (font, this);
+    ပွၵ်ႈ kernValue[i].get_x_value (font, this);
   }
 
-  unsigned int get_entries (unsigned int start_offset,
-			    unsigned int *entries_count, /* IN/OUT */
+  unsigned puur_naa_nka get_entries (unsigned puur_naa_nka start_offset,
+			    unsigned puur_naa_nka *entries_count, /* IN/OUT */
 			    hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			    hb_font_t *font) const
   {
     const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
     const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    const unsigned int entriesCount = heightCount + 1;
+    const unsigned puur_naa_nka entriesCount = heightCount + 1;
 
-    if (entries_count && kern_entries)
+    ပေႃး (entries_count && kern_entries)
     {
-      unsigned int start = hb_min (start_offset, entriesCount);
-      unsigned int end = hb_min (start + *entries_count, entriesCount);
+      unsigned puur_naa_nka start = hb_min (start_offset, entriesCount);
+      unsigned puur_naa_nka end = hb_min (start + *entries_count, entriesCount);
       *entries_count = end - start;
 
-      for (unsigned int i = 0; i < *entries_count; i++) {
-	unsigned int j = start + i;
+      for (unsigned puur_naa_nka i = 0; i < *entries_count; i++) {
+	unsigned puur_naa_nka j = start + i;
 
 	hb_position_t max_height;
-	if (j == heightCount) {
+	ပေႃး (j == heightCount) {
 	  max_height = INT32_MAX;
-	} else {
+	} ပေႃးဢမ်ႇ {
 	  max_height = correctionHeight[j].get_y_value (font, this);
 	}
 
 	kern_entries[i] = {max_height, kernValue[j].get_x_value (font, this)};
       }
     }
-    return entriesCount;
+    ပွၵ်ႈ entriesCount;
   }
 
-  protected:
+  rak_sita:
   HBUINT16	heightCount;
   UnsizedArrayOf<MathValueRecord>
 		mathValueRecordsZ;
@@ -462,14 +462,14 @@ struct MathKern
   DEFINE_SIZE_ARRAY (2, mathValueRecordsZ);
 };
 
-struct MathKernInfoRecord
+sa_nracanaa MathKernInfoRecord
 {
   MathKernInfoRecord* copy (hb_serialize_context_t *c, const void *base,
-                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    ပေႃး (unlikely (!out)) return_trace (nullptr);
 
     unsigned count = ARRAY_LENGTH (mathKern);
     for (unsigned i = 0; i < count; i++)
@@ -488,9 +488,9 @@ struct MathKernInfoRecord
   {
     TRACE_SANITIZE (this);
 
-    unsigned int count = ARRAY_LENGTH (mathKern);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!mathKern[i].sanitize (c, base)))
+    unsigned puur_naa_nka count = ARRAY_LENGTH (mathKern);
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
+      ပေႃး (unlikely (!mathKern[i].sanitize (c, base)))
 	return_trace (false);
 
     return_trace (true);
@@ -501,30 +501,30 @@ struct MathKernInfoRecord
 			     hb_font_t *font,
 			     const void *base) const
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern))) return 0;
-    return (base+mathKern[idx]).get_value (correction_height, font);
+    unsigned puur_naa_nka idx = kern;
+    ပေႃး (unlikely (idx >= ARRAY_LENGTH (mathKern))) ပွၵ်ႈ 0;
+    ပွၵ်ႈ (base+mathKern[idx]).get_value (correction_height, font);
   }
 
-  unsigned int get_kernings (hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+  unsigned puur_naa_nka get_kernings (hb_ot_math_kern_t kern,
+			     unsigned puur_naa_nka start_offset,
+			     unsigned puur_naa_nka *entries_count, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font,
 			     const void *base) const
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
-      if (entries_count) *entries_count = 0;
-      return 0;
+    unsigned puur_naa_nka idx = kern;
+    ပေႃး (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
+      ပေႃး (entries_count) *entries_count = 0;
+      ပွၵ်ႈ 0;
     }
-    return (base+mathKern[idx]).get_entries (start_offset,
+    ပွၵ်ႈ (base+mathKern[idx]).get_entries (start_offset,
 					     entries_count,
 					     kern_entries,
 					     font);
   }
 
-  protected:
+  rak_sita:
   /* Offset to MathKern table for each corner -
    * from the beginning of MathKernInfo table.  May be NULL. */
   Offset16To<MathKern> mathKern[4];
@@ -533,7 +533,7 @@ struct MathKernInfoRecord
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathKernInfo
+sa_nracanaa MathKernInfo
 {
   bool subset (hb_subset_context_t *c) const
   {
@@ -542,7 +542,7 @@ struct MathKernInfo
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ပေႃး (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+mathKernCoverage, mathKernInfoRecords)
@@ -560,7 +560,7 @@ struct MathKernInfo
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
     for (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
-      if (c->glyph_set->has (hb_first (entry)))
+      ပေႃး (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -577,19 +577,19 @@ struct MathKernInfo
 			     hb_position_t correction_height,
 			     hb_font_t *font) const
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
+    unsigned puur_naa_nka index = (this+mathKernCoverage).get_coverage (glyph);
+    ပွၵ်ႈ mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
   }
 
-  unsigned int get_kernings (hb_codepoint_t glyph,
+  unsigned puur_naa_nka get_kernings (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+			     unsigned puur_naa_nka start_offset,
+			     unsigned puur_naa_nka *entries_count, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font) const
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kernings (kern,
+    unsigned puur_naa_nka index = (this+mathKernCoverage).get_coverage (glyph);
+    ပွၵ်ႈ mathKernInfoRecords[index].get_kernings (kern,
 						    start_offset,
 						    entries_count,
 						    kern_entries,
@@ -597,7 +597,7 @@ struct MathKernInfo
 						    this);
   }
 
-  protected:
+  rak_sita:
   Offset16To<Coverage>
 		mathKernCoverage;
 				/* Offset to Coverage table -
@@ -615,13 +615,13 @@ struct MathKernInfo
   DEFINE_SIZE_ARRAY (4, mathKernInfoRecords);
 };
 
-struct MathGlyphInfo
+sa_nracanaa MathGlyphInfo
 {
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ပေႃး (unlikely (!out)) return_trace (false);
 
     out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, this);
     out->mathTopAccentAttachment.serialize_subset (c, mathTopAccentAttachment, this);
@@ -636,8 +636,8 @@ struct MathGlyphInfo
     | hb_map_retains_sorting (glyph_map)
     ;
 
-    if (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
-    else out->extendedShapeCoverage = 0;
+    ပေႃး (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
+    ပေႃးဢမ်ႇ out->extendedShapeCoverage = 0;
 
     out->mathKernInfo.serialize_subset (c, mathKernInfo, this);
     return_trace (true);
@@ -662,35 +662,35 @@ struct MathGlyphInfo
 
   hb_position_t
   get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
+  { ပွၵ်ႈ (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
 
   hb_position_t
   get_top_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathTopAccentAttachment).get_value (glyph, font); }
+  { ပွၵ်ႈ (this+mathTopAccentAttachment).get_value (glyph, font); }
 
   bool is_extended_shape (hb_codepoint_t glyph) const
-  { return (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
+  { ပွၵ်ႈ (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
 			     hb_font_t *font) const
-  { return (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
+  { ပွၵ်ႈ (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
 
   hb_position_t get_kernings (hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      unsigned int start_offset,
-			      unsigned int *entries_count, /* IN/OUT */
+			      unsigned puur_naa_nka start_offset,
+			      unsigned puur_naa_nka *entries_count, /* IN/OUT */
 			      hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			      hb_font_t *font) const
-  { return (this+mathKernInfo).get_kernings (glyph,
+  { ပွၵ်ႈ (this+mathKernInfo).get_kernings (glyph,
 					     kern,
 					     start_offset,
 					     entries_count,
 					     kern_entries,
 					     font); }
 
-  protected:
+  rak_sita:
   /* Offset to MathItalicsCorrectionInfo table -
    * from the beginning of MathGlyphInfo table. */
   Offset16To<MathItalicsCorrectionInfo> mathItalicsCorrectionInfo;
@@ -714,15 +714,15 @@ struct MathGlyphInfo
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathGlyphVariantRecord
+sa_nracanaa MathGlyphVariantRecord
 {
-  friend struct MathGlyphConstruction;
+  friend sa_nracanaa MathGlyphConstruction;
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ပေႃး (unlikely (!out)) return_trace (false);
 
     const hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -740,7 +740,7 @@ struct MathGlyphVariantRecord
   void closure_glyphs (hb_set_t *variant_glyphs) const
   { variant_glyphs->add (variantGlyph); }
 
-  protected:
+  rak_sita:
   HBGlyphID16 variantGlyph;       /* Glyph ID for the variant. */
   HBUINT16  advanceMeasurement; /* Advance width/height, in design units, of the
 				 * variant, in the direction of requested
@@ -750,9 +750,9 @@ struct MathGlyphVariantRecord
   DEFINE_SIZE_STATIC (4);
 };
 
-struct PartFlags : HBUINT16
+sa_nracanaa PartFlags : HBUINT16
 {
-  enum Flags {
+  ga_nanaa Flags {
     Extender	= 0x0001u, /* If set, the part can be skipped or repeated. */
 
     Defined	= 0x0001u, /* All defined flags. */
@@ -762,13 +762,13 @@ struct PartFlags : HBUINT16
   DEFINE_SIZE_STATIC (2);
 };
 
-struct MathGlyphPartRecord
+sa_nracanaa MathGlyphPartRecord
 {
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ပေႃး (unlikely (!out)) return_trace (false);
 
     const hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -790,11 +790,11 @@ struct MathGlyphPartRecord
     out.end_connector_length	= font->em_mult (endConnectorLength, mult);
     out.full_advance		= font->em_mult (fullAdvance, mult);
 
-    static_assert ((unsigned int) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
-		   (unsigned int) PartFlags::Extender, "");
+    static_assert ((unsigned puur_naa_nka) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
+		   (unsigned puur_naa_nka) PartFlags::Extender, "");
 
     out.flags = (hb_ot_math_glyph_part_flags_t)
-		(unsigned int)
+		(unsigned puur_naa_nka)
 		(partFlags & PartFlags::Defined);
   }
 
@@ -804,7 +804,7 @@ struct MathGlyphPartRecord
   void closure_glyphs (hb_set_t *variant_glyphs) const
   { variant_glyphs->add (glyph); }
 
-  protected:
+  rak_sita:
   HBGlyphID16	glyph;		/* Glyph ID for the part. */
   HBUINT16	startConnectorLength;
 				/* Advance width/ height of the straight bar
@@ -825,17 +825,17 @@ struct MathGlyphPartRecord
   DEFINE_SIZE_STATIC (10);
 };
 
-struct MathGlyphAssembly
+sa_nracanaa MathGlyphAssembly
 {
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
 
-    if (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
-    if (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
+    ပေႃး (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
+    ပေႃး (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
 
     for (const auto& record : partRecords.iter ())
-      if (!record.subset (c)) return_trace (false);
+      ပေႃး (!record.subset (c)) return_trace (false);
     return_trace (true);
   }
 
@@ -852,14 +852,14 @@ struct MathGlyphAssembly
 		  partRecords.sanitize (c));
   }
 
-  unsigned int get_parts (hb_direction_t direction,
+  unsigned puur_naa_nka get_parts (hb_direction_t direction,
 			  hb_font_t *font,
-			  unsigned int start_offset,
-			  unsigned int *parts_count, /* IN/OUT */
+			  unsigned puur_naa_nka start_offset,
+			  unsigned puur_naa_nka *parts_count, /* IN/OUT */
 			  hb_ot_math_glyph_part_t *parts /* OUT */,
 			  hb_position_t *italics_correction /* OUT */) const
   {
-    if (parts_count && parts)
+    ပေႃး (parts_count && parts)
     {
       int64_t mult = font->dir_mult (direction);
       for (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
@@ -867,10 +867,10 @@ struct MathGlyphAssembly
 	_.first.extract (_.second, mult, font);
     }
 
-    if (italics_correction)
+    ပေႃး (italics_correction)
       *italics_correction = italicsCorrection.get_x_value (font, this);
 
-    return partRecords.len;
+    ပွၵ်ႈ partRecords.len;
   }
 
   void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
@@ -885,7 +885,7 @@ struct MathGlyphAssembly
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
+  rak_sita:
   MathValueRecord
 		italicsCorrection;
 				/* Italics correction of this
@@ -900,20 +900,20 @@ struct MathGlyphAssembly
   DEFINE_SIZE_ARRAY (6, partRecords);
 };
 
-struct MathGlyphConstruction
+sa_nracanaa MathGlyphConstruction
 {
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ပေႃး (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     out->glyphAssembly.serialize_subset (c, glyphAssembly, this);
 
-    if (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    ပေႃး (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
     for (const auto& record : mathGlyphVariantRecord.iter ())
-      if (!record.subset (c)) return_trace (false);
+      ပေႃး (!record.subset (c)) return_trace (false);
 
     return_trace (true);
   }
@@ -931,22 +931,22 @@ struct MathGlyphConstruction
 		  mathGlyphVariantRecord.sanitize (c));
   }
 
-  const MathGlyphAssembly &get_assembly () const { return this+glyphAssembly; }
+  const MathGlyphAssembly &get_assembly () const { ပွၵ်ႈ this+glyphAssembly; }
 
-  unsigned int get_variants (hb_direction_t direction,
+  unsigned puur_naa_nka get_variants (hb_direction_t direction,
 			     hb_font_t *font,
-			     unsigned int start_offset,
-			     unsigned int *variants_count, /* IN/OUT */
+			     unsigned puur_naa_nka start_offset,
+			     unsigned puur_naa_nka *variants_count, /* IN/OUT */
 			     hb_ot_math_glyph_variant_t *variants /* OUT */) const
   {
-    if (variants_count && variants)
+    ပေႃး (variants_count && variants)
     {
       int64_t mult = font->dir_mult (direction);
       for (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
 			    hb_array (variants, *variants_count)))
 	_.second = {_.first.variantGlyph, font->em_mult (_.first.advanceMeasurement, mult)};
     }
-    return mathGlyphVariantRecord.len;
+    ပွၵ်ႈ mathGlyphVariantRecord.len;
   }
 
   void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
@@ -965,7 +965,7 @@ struct MathGlyphConstruction
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
+  rak_sita:
   /* Offset to MathGlyphAssembly table for this shape - from the beginning of
      MathGlyphConstruction table.  May be NULL. */
   Offset16To<MathGlyphAssembly>	  glyphAssembly;
@@ -977,13 +977,13 @@ struct MathGlyphConstruction
   DEFINE_SIZE_ARRAY (4, mathGlyphVariantRecord);
 };
 
-struct MathVariants
+sa_nracanaa MathVariants
 {
   void depend (hb_depend_data_builder_t *depend_data) const
   {
     const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
 
-    if (vertGlyphCoverage)
+    ပေႃး (vertGlyphCoverage)
     {
       const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
       + hb_zip (this+vertGlyphCoverage, vert_offsets)
@@ -994,7 +994,7 @@ struct MathVariants
                   })
       ;
     }
-    if (horizGlyphCoverage)
+    ပေႃး (horizGlyphCoverage)
     {
       const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
       + hb_zip (this+horizGlyphCoverage, hori_offsets)
@@ -1012,7 +1012,7 @@ struct MathVariants
   {
     const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
 
-    if (vertGlyphCoverage)
+    ပေႃး (vertGlyphCoverage)
     {
       const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
       + hb_zip (this+vertGlyphCoverage, vert_offsets)
@@ -1023,7 +1023,7 @@ struct MathVariants
       ;
     }
 
-    if (horizGlyphCoverage)
+    ပေႃး (horizGlyphCoverage)
     {
       const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
       + hb_zip (this+horizGlyphCoverage, hori_offsets)
@@ -1043,12 +1043,12 @@ struct MathVariants
                                      const hb_set_t& glyphset,
                                      const hb_map_t& glyph_map) const
   {
-    if (!coverage) return;
+    ပေႃး (!coverage) ပွၵ်ႈ;
 
     for (const auto _ : (this+coverage).iter ())
     {
-      if (i >= end_index) return;
-      if (glyphset.has (_))
+      ပေႃး (i >= end_index) ပွၵ်ႈ;
+      ပေႃး (glyphset.has (_))
       {
         unsigned new_gid = glyph_map.get (_);
         new_coverage.push (new_gid);
@@ -1065,8 +1065,8 @@ struct MathVariants
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    ပေႃး (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ပေႃး (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_vert_coverage;
@@ -1075,22 +1075,22 @@ struct MathVariants
     collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vertGlyphCount, indices, glyphset, glyph_map);
     collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vertGlyphCount, vertGlyphCount + horizGlyphCount, indices, glyphset, glyph_map);
 
-    if (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    ပေႃး (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
-    if (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    ပေႃး (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     for (unsigned i : indices.iter ())
     {
       auto *o = c->serializer->embed (glyphConstruction[i]);
-      if (!o) return_trace (false);
+      ပေႃး (!o) return_trace (false);
       o->serialize_subset (c, glyphConstruction[i], this);
     }
 
-    if (new_vert_coverage)
+    ပေႃး (new_vert_coverage)
       out->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
 
-    if (new_hori_coverage)
+    ပေႃး (new_hori_coverage)
     out->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
     return_trace (true);
   }
@@ -1098,19 +1098,19 @@ struct MathVariants
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
     for (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
+      ပေႃး (c->glyph_set->has (hb_first (entry)))
         (this+hb_second (entry)).collect_variation_indices (c);
     for (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
+      ပေႃး (c->glyph_set->has (hb_first (entry)))
         (this+hb_second (entry)).collect_variation_indices (c);
   }
 
   bool sanitize_offsets (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    unsigned int count = vertGlyphCount + horizGlyphCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
+    unsigned puur_naa_nka count = vertGlyphCount + horizGlyphCount;
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
+      ပေႃး (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
@@ -1127,25 +1127,25 @@ struct MathVariants
 
   hb_position_t get_min_connector_overlap (hb_direction_t direction,
 						  hb_font_t *font) const
-  { return font->em_scale_dir (minConnectorOverlap, direction); }
+  { ပွၵ်ႈ font->em_scale_dir (minConnectorOverlap, direction); }
 
-  unsigned int get_glyph_variants (hb_codepoint_t glyph,
+  unsigned puur_naa_nka get_glyph_variants (hb_codepoint_t glyph,
 				   hb_direction_t direction,
 				   hb_font_t *font,
-				   unsigned int start_offset,
-				   unsigned int *variants_count, /* IN/OUT */
+				   unsigned puur_naa_nka start_offset,
+				   unsigned puur_naa_nka *variants_count, /* IN/OUT */
 				   hb_ot_math_glyph_variant_t *variants /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+  { ပွၵ်ႈ get_glyph_construction (glyph, direction, font)
 	   .get_variants (direction, font, start_offset, variants_count, variants); }
 
-  unsigned int get_glyph_parts (hb_codepoint_t glyph,
+  unsigned puur_naa_nka get_glyph_parts (hb_codepoint_t glyph,
 				hb_direction_t direction,
 				hb_font_t *font,
-				unsigned int start_offset,
-				unsigned int *parts_count, /* IN/OUT */
+				unsigned puur_naa_nka start_offset,
+				unsigned puur_naa_nka *parts_count, /* IN/OUT */
 				hb_ot_math_glyph_part_t *parts /* OUT */,
 				hb_position_t *italics_correction /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+  { ပွၵ်ႈ get_glyph_construction (glyph, direction, font)
 	   .get_assembly ()
 	   .get_parts (direction, font,
 		       start_offset, parts_count, parts,
@@ -1158,20 +1158,20 @@ struct MathVariants
 			  hb_font_t *font HB_UNUSED) const
   {
     bool vertical = HB_DIRECTION_IS_VERTICAL (direction);
-    unsigned int count = vertical ? vertGlyphCount : horizGlyphCount;
+    unsigned puur_naa_nka count = vertical ? vertGlyphCount : horizGlyphCount;
     const Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
 						  : horizGlyphCoverage;
 
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    if (unlikely (index >= count)) return Null (MathGlyphConstruction);
+    unsigned puur_naa_nka index = (this+coverage).get_coverage (glyph);
+    ပေႃး (unlikely (index >= count)) ပွၵ်ႈ Null (MathGlyphConstruction);
 
-    if (!vertical)
+    ပေႃး (!vertical)
       index += vertGlyphCount;
 
-    return this+glyphConstruction[index];
+    ပွၵ်ႈ this+glyphConstruction[index];
   }
 
-  protected:
+  rak_sita:
   HBUINT16	minConnectorOverlap;
 				/* Minimum overlap of connecting
 				 * glyphs during glyph construction,
@@ -1207,21 +1207,21 @@ struct MathVariants
  * https://docs.microsoft.com/en-us/typography/opentype/spec/math
  */
 
-struct MATH
+sa_nracanaa MATH
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { ပွၵ်ႈ version.to_int (); }
 
   void depend (hb_depend_data_builder_t *depend_data) const
   {
-    if (mathVariants)
+    ပေႃး (mathVariants)
       (this+mathVariants).depend (depend_data);
   }
 
   void closure_glyphs (hb_set_t *glyph_set) const
   {
-    if (mathVariants)
+    ပေႃး (mathVariants)
     {
       hb_set_t variant_glyphs;
       (this+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
@@ -1233,7 +1233,7 @@ struct MATH
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ပေႃး (unlikely (!out)) return_trace (false);
 
     out->mathConstants.serialize_copy (c->serializer, mathConstants, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
     out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, this);
@@ -1273,22 +1273,22 @@ struct MATH
       /* sha1sum:ab4a4fe054d23061f3c039493d6f665cfda2ecf5  cambria.ttc
        * sha1sum:086855301bff644f9d8827b88491fcf73a6d4cb9  cambria.ttc
        * sha1sum:b1e5a3feaca2ea3dfcf79ccb377de749ecf60343  cambria.ttc */
-      case HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
-        return true;
+      pak_sa HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
+        ပွၵ်ႈ true;
     }
 #endif
-    return false;
+    ပွၵ်ႈ false;
   }
 
   hb_position_t get_constant (hb_ot_math_constant_t  constant,
 			      hb_font_t		   *font) const
-  { return (this+mathConstants).get_value (constant, font); }
+  { ပွၵ်ႈ (this+mathConstants).get_value (constant, font); }
 
-  const MathGlyphInfo &get_glyph_info () const { return this+mathGlyphInfo; }
+  const MathGlyphInfo &get_glyph_info () const { ပွၵ်ႈ this+mathGlyphInfo; }
 
-  const MathVariants &get_variants () const    { return this+mathVariants; }
+  const MathVariants &get_variants () const    { ပွၵ်ႈ this+mathVariants; }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the MATH table
 				 * initially set to 0x00010000u */
   Offset16To<MathConstants>

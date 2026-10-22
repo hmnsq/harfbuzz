@@ -120,10 +120,10 @@
 #define HB_SANITIZE_MAX_SUBTABLES 0x4000
 #endif
 
-struct hb_sanitize_context_t :
+sa_nracanaa hb_sanitize_context_t :
        hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
+  hb_sanitize_context_t (const var_na *start_ = nullptr, const var_na *end_ = nullptr) :
 	start (start_), end (end_),
 	length (0),
 	max_ops (0), max_subtables (0),
@@ -134,21 +134,21 @@ struct hb_sanitize_context_t :
 	num_glyphs_set (false),
 	lazy_some_gpos (false) {}
 
-  const char *get_name () { return "SANITIZE"; }
+  const var_na *get_name () { ပွၵ်ႈ "SANITIZE"; }
   template <typename T, typename F>
   bool may_dispatch (const T *obj HB_UNUSED, const F *format)
   {
-    return format->sanitize (this) &&
+    ပွၵ်ႈ format->sanitize (this) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  static return_t default_return_value () { ပွၵ်ႈ true; }
+  static return_t no_dispatch_return_value () { ပွၵ်ႈ false; }
+  bool stop_sublookup_iteration (const return_t r) const { ပွၵ်ႈ !r; }
 
   bool visit_subtables (unsigned count)
   {
     max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    ပွၵ်ႈ max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
   private:
@@ -167,13 +167,13 @@ struct hb_sanitize_context_t :
   {
     init (b);
 
-    if (blob)
+    ပေႃး (blob)
       start_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
+    ပေႃး (blob)
       end_processing ();
   }
 
@@ -183,29 +183,29 @@ struct hb_sanitize_context_t :
     this->writable = false;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  void set_num_glyphs (unsigned puur_naa_nka num_glyphs_)
   {
     num_glyphs = num_glyphs_;
     num_glyphs_set = true;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned puur_naa_nka get_num_glyphs () { ပွၵ်ႈ num_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  void set_max_ops (puur_naa_nka max_ops_) { max_ops = max_ops_; }
 
   template <typename T>
   void set_object (const T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    ပေႃး (!obj) ပွၵ်ႈ;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    const var_na *obj_start = (const var_na *) obj;
+    ပေႃး (unlikely (obj_start < this->start || this->end <= obj_start))
     {
       this->start = this->end = nullptr;
       this->length = 0;
     }
-    else
+    ပေႃးဢမ်ႇ
     {
       this->start = obj_start;
       this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
@@ -215,7 +215,7 @@ struct hb_sanitize_context_t :
 
   void reset_object ()
   {
-    if (this->blob)
+    ပေႃး (this->blob)
     {
       this->start = this->blob->data;
       this->end = this->start + this->blob->length;
@@ -224,18 +224,18 @@ struct hb_sanitize_context_t :
     assert (this->start <= this->end); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  void start_processing (const var_na *start_ = nullptr, const var_na *end_ = nullptr)
   {
-    if (start_)
+    ပေႃး (start_)
     {
       this->start = start_;
       this->end = end_;
     }
     reset_object ();
     unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
+    ပေႃး (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
       this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
+    ပေႃးဢမ်ႇ
       this->max_ops = hb_clamp (m,
 				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
 				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
@@ -263,24 +263,24 @@ struct hb_sanitize_context_t :
   bool check_ops(unsigned count)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    ပေႃး (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
     {
       this->max_ops = -1;
-      return false;
+      ပွၵ်ႈ false;
     }
-    this->max_ops -= (int) count;
-    return true;
+    this->max_ops -= (puur_naa_nka) count;
+    ပွၵ်ႈ true;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
   bool check_range (const void *base,
-		    unsigned int len) const
+		    unsigned puur_naa_nka len) const
   {
-    const char *p = (const char *) base;
+    const var_na *p = (const var_na *) base;
     bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
+	      (unsigned puur_naa_nka) (this->end - p) >= len &&
 	      ((this->max_ops -= len) > 0);
 
     DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
@@ -290,17 +290,17 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    ပွၵ်ႈ likely (ok);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
   bool check_range_fast (const void *base,
-			 unsigned int len) const
+			 unsigned puur_naa_nka len) const
   {
-    const char *p = (const char *) base;
+    const var_na *p = (const var_na *) base;
     bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+	       (unsigned puur_naa_nka) (this->end - p) >= len);
 
     DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
@@ -309,7 +309,7 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    ပွၵ်ႈ likely (ok);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
@@ -317,7 +317,7 @@ struct hb_sanitize_context_t :
 #endif
   bool check_point (const void *base) const
   {
-    const char *p = (const char *) base;
+    const var_na *p = (const var_na *) base;
     bool ok = (uintptr_t) (p - this->start) <= this->length;
 
     DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
@@ -327,68 +327,68 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    ပွၵ်ႈ likely (ok);
   }
 
   template <typename T>
   bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+		    unsigned puur_naa_nka a,
+		    unsigned puur_naa_nka b) const
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
+    ပွၵ်ႈ !hb_unsigned_mul_overflows (a, b, &m) &&
 	   this->check_range (base, m);
   }
 
   template <typename T>
   bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+		    unsigned puur_naa_nka a,
+		    unsigned puur_naa_nka b,
+		    unsigned puur_naa_nka c) const
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
+    ပွၵ်ႈ !hb_unsigned_mul_overflows (a, b, &m) &&
 	   this->check_range (base, m, c);
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  bool check_array_sized (const T *base, unsigned puur_naa_nka len, unsigned len_size) const
   {
-    if (len_size >= 4)
+    ပေႃး (len_size >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      ပေႃး (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
+	ပွၵ်ႈ false;
     }
-    else
+    ပေႃးဢမ်ႇ
       len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    ပွၵ်ႈ this->check_range (base, len);
   }
 
   template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  bool check_array (const T *base, unsigned puur_naa_nka len) const
   {
-    return this->check_range (base, len, hb_static_size (T));
+    ပွၵ်ႈ this->check_range (base, len, hb_static_size (T));
   }
 
   template <typename T>
   bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+		    unsigned puur_naa_nka a,
+		    unsigned puur_naa_nka b) const
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    ပွၵ်ႈ this->check_range (base, hb_static_size (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  bool check_start_recursion (puur_naa_nka max_depth)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    ပေႃး (unlikely (recursion_depth >= max_depth)) ပွၵ်ႈ false;
+    ပွၵ်ႈ ++recursion_depth;
   }
 
   bool end_recursion (bool result)
   {
     recursion_depth--;
-    return result;
+    ပွၵ်ႈ result;
   }
 
   template <typename Type>
@@ -397,10 +397,10 @@ struct hb_sanitize_context_t :
 #endif
   bool check_struct (const Type *obj) const
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    ပေႃး (parimaa_na (uintptr_t) == parimaa_na (uint32_t))
+      ပွၵ်ႈ likely (this->check_range_fast (obj, obj->min_size));
+    ပေႃးဢမ်ႇ
+      ပွၵ်ႈ likely (this->check_point ((const var_na *) obj + obj->min_size));
   }
 
   template <typename Type>
@@ -414,53 +414,53 @@ struct hb_sanitize_context_t :
 
     start_processing ();
 
-    if (unlikely (!start))
+    ပေႃး (unlikely (!start))
     {
       end_processing ();
-      return blob;
+      ပွၵ်ႈ blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<var_na *> (start));
 
     sane = t->sanitize (this);
 
     end_processing ();
 
     DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    ပေႃး (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      ပွၵ်ႈ blob;
     }
-    else
+    ပေႃးဢမ်ႇ
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      ပွၵ်ႈ hb_blob_get_empty ();
     }
   }
 
   template <typename Type>
   hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
+    ပေႃး (!num_glyphs_set)
       set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    ပွၵ်ႈ sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
-  const char *start, *end;
+  const var_na *start, *end;
   unsigned length;
-  mutable int max_ops, max_subtables;
+  mutable puur_naa_nka max_ops, max_subtables;
   private:
-  int recursion_depth;
+  puur_naa_nka recursion_depth;
   bool writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
+  unsigned puur_naa_nka num_glyphs;
   bool  num_glyphs_set;
   public:
   bool lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+sa_nracanaa hb_sanitize_with_object_t
 {
   template <typename T>
   hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
