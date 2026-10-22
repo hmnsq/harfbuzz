@@ -1,75 +1,75 @@
 #ifndef OT_LAYOUT_GPOS_POSLOOKUP_HH
 #define OT_LAYOUT_GPOS_POSLOOKUP_HH
 
-#include "PosLookupSubTable.hh"
-#include "../../../hb-ot-layout-common.hh"
+#ଅନ୍ତର୍ଭାଵ "PosLookupSubTable.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-ot-layout-common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-struct PosLookup : Lookup
+ସଂରଚନା PosLookup : Lookup
 {
   using SubTable = PosLookupSubTable;
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  ଅଚଳ SubTable& get_subtable (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i) ଅଚଳ
+  { ଫେରନ୍ତୁ Lookup::get_subtable<SubTable> (i); }
 
-  bool is_reverse () const
+  ତାର୍କିକ is_reverse () ଅଚଳ
   {
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ତାର୍କିକ apply (hb_ot_apply_context_t *c) ଅଚଳ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ଏହି);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ତାର୍କିକ intersects (ଅଚଳ hb_set_t *glyphs) ଅଚଳ
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    ଫେରନ୍ତୁ dispatch (&c);
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { return dispatch (c); }
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) ଅଚଳ
+  { ଫେରନ୍ତୁ dispatch (c); }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) ଅଚଳ
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    ଯଦି (c->is_lookup_visited (this_index))
+      ଫେରନ୍ତୁ hb_closure_lookups_context_t::default_return_ମୂଲ୍ୟ ();
 
     c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    ଯଦି (!intersects (c->glyphs))
     {
       c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      ଫେରନ୍ତୁ hb_closure_lookups_context_t::default_return_ମୂଲ୍ୟ ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    ଫେରନ୍ତୁ ret;
   }
 
   template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  ଶୂନ୍ୟ collect_coverage (set_t *glyphs) ଅଚଳ
   {
     hb_collect_coverage_context_t<set_t> c (glyphs);
     dispatch (&c);
   }
 
   template <typename context_t>
-  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  ସ୍ଥିର typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା lookup_index);
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ଅଚଳ
+  { ଫେରନ୍ତୁ Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
+  { ଫେରନ୍ତୁ Lookup::subset<SubTable> (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
+  { ଫେରନ୍ତୁ Lookup::sanitize<SubTable> (c); }
 };
 
 }

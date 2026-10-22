@@ -14,42 +14,42 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-machinery.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-unicode.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-machinery.hh"
 
-#include "hb-ucd-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ucd-table.hh"
 
-static hb_unicode_combining_class_t
+ସ୍ଥିର hb_unicode_combining_class_t
 hb_ucd_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t unicode,
-			void *user_data HB_UNUSED)
+			ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
-  return (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
+  ଫେରନ୍ତୁ (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
 }
 
-static hb_unicode_general_category_t
+ସ୍ଥିର hb_unicode_general_category_t
 hb_ucd_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			 hb_codepoint_t unicode,
-			 void *user_data HB_UNUSED)
+			 ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
-  return (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
+  ଫେରନ୍ତୁ (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
 }
 
-static hb_codepoint_t
+ସ୍ଥିର hb_codepoint_t
 hb_ucd_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t unicode,
-		  void *user_data HB_UNUSED)
+		  ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
-  return unicode + _hb_ucd_bmg (unicode);
+  ଫେରନ୍ତୁ unicode + _hb_ucd_bmg (unicode);
 }
 
-static hb_script_t
+ସ୍ଥିର hb_script_t
 hb_ucd_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 	       hb_codepoint_t unicode,
-	       void *user_data HB_UNUSED)
+	       ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
-  return _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
+  ଫେରନ୍ତୁ _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
 }
 
 
@@ -63,151 +63,151 @@ hb_ucd_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 #define TCOUNT 28u
 #define NCOUNT (VCOUNT * TCOUNT)
 
-static inline bool
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ତାର୍କିକ
 _hb_ucd_decompose_hangul (hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b)
 {
   unsigned si = ab - SBASE;
 
-  if (si >= SCOUNT)
-    return false;
+  ଯଦି (si >= SCOUNT)
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  if (si % TCOUNT)
+  ଯଦି (si % TCOUNT)
   {
     /* LV,T */
     *a = SBASE + (si / TCOUNT) * TCOUNT;
     *b = TBASE + (si % TCOUNT);
-    return true;
-  } else {
+    ଫେରନ୍ତୁ ସତ୍ୟ;
+  } ଅନ୍ୟଥା {
     /* L,V */
     *a = LBASE + (si / NCOUNT);
     *b = VBASE + (si % NCOUNT) / TCOUNT;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 }
 
-static inline bool
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ତାର୍କିକ
 _hb_ucd_compose_hangul (hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab)
 {
-  if (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
+  ଯଦି (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
     !((a - SBASE) % TCOUNT))
   {
     /* LV,T */
     *ab = a + (b - TBASE);
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
-  else if (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
+  ଅନ୍ୟଥା ଯଦି (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
   {
     /* L,V */
-    int li = a - LBASE;
-    int vi = b - VBASE;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା li = a - LBASE;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା vi = b - VBASE;
     *ab = SBASE + li * NCOUNT + vi * TCOUNT;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
-  else
-    return false;
+  ଅନ୍ୟଥା
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 }
 
-static int
-_cmp_pair (const void *_key, const void *_item)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+_cmp_pair (ଅଚଳ ଶୂନ୍ୟ *ଚାବି_3, ଅଚଳ ଶୂନ୍ୟ *_item)
 {
-  uint64_t& a = * (uint64_t*) _key;
+  uint64_t& a = * (uint64_t*) ଚାବି_3;
   uint64_t b = (* (uint64_t*) _item) & HB_CODEPOINT_ENCODE3(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  ଫେରନ୍ତୁ a < b ? -1 : a > b ? +1 : 0;
 }
-static int
-_cmp_pair_11_7_14 (const void *_key, const void *_item)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+_cmp_pair_11_7_14 (ଅଚଳ ଶୂନ୍ୟ *ଚାବି_3, ଅଚଳ ଶୂନ୍ୟ *_item)
 {
-  uint32_t& a = * (uint32_t*) _key;
+  uint32_t& a = * (uint32_t*) ଚାବି_3;
   uint32_t b = (* (uint32_t*) _item) & HB_CODEPOINT_ENCODE3_11_7_14(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  ଫେରନ୍ତୁ a < b ? -1 : a > b ? +1 : 0;
 }
 
-static hb_bool_t
+ସ୍ଥିର hb_bool_t
 hb_ucd_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab,
-		void *user_data HB_UNUSED)
+		ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
   // Hangul is handled algorithmically.
-  if (_hb_ucd_compose_hangul (a, b, ab)) return true;
+  ଯଦି (_hb_ucd_compose_hangul (a, b, ab)) ଫେରନ୍ତୁ ସତ୍ୟ;
 
   hb_codepoint_t u = 0;
 
-  if ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
+  ଯଦି ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
   {
     /* If "a" is small enough and "b" is in the U+0300 range,
      * the composition data is encoded in a 32bit array sorted
      * by "a,b" pair. */
     uint32_t k = HB_CODEPOINT_ENCODE3_11_7_14 (a, b, 0);
-    const uint32_t *v = hb_bsearch (k,
+    ଅଚଳ uint32_t *v = hb_bsearch (k,
 				    _hb_ucd_dm2_u32_map,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u32_map),
-				    sizeof (*_hb_ucd_dm2_u32_map),
+				    ଆକାର (*_hb_ucd_dm2_u32_map),
 				    _cmp_pair_11_7_14);
-    if (likely (!v)) return false;
+    ଯଦି (likely (!v)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
     u = HB_CODEPOINT_DECODE3_11_7_14_3 (*v);
   }
-  else
+  ଅନ୍ୟଥା
   {
     /* Otherwise it is stored in a 64bit array sorted by
      * "a,b" pair. */
     uint64_t k = HB_CODEPOINT_ENCODE3 (a, b, 0);
-    const uint64_t *v = hb_bsearch (k,
+    ଅଚଳ uint64_t *v = hb_bsearch (k,
 				    _hb_ucd_dm2_u64_map,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u64_map),
-				    sizeof (*_hb_ucd_dm2_u64_map),
+				    ଆକାର (*_hb_ucd_dm2_u64_map),
 				    _cmp_pair);
-    if (likely (!v)) return false;
+    ଯଦି (likely (!v)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
     u = HB_CODEPOINT_DECODE3_3 (*v);
   }
 
-  if (unlikely (!u)) return false;
+  ଯଦି (unlikely (!u)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
   *ab = u;
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
-static hb_bool_t
+ସ୍ଥିର hb_bool_t
 hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b,
-		  void *user_data HB_UNUSED)
+		  ଶୂନ୍ୟ *user_data HB_UNUSED)
 {
-  if (_hb_ucd_decompose_hangul (ab, a, b)) return true;
+  ଯଦି (_hb_ucd_decompose_hangul (ab, a, b)) ଫେରନ୍ତୁ ସତ୍ୟ;
 
   unsigned i = _hb_ucd_dm (ab);
 
   /* If no data, there's no decomposition. */
-  if (likely (!i)) return false;
+  ଯଦି (likely (!i)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
   i--;
 
   /* Check if it's a single-character decomposition. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
+  ଯଦି (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
   {
     /* Single-character decompositions currently are only in plane 0 or plane 2. */
-    if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
+    ଯଦି (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
     {
       /* Plane 0. */
       *a = _hb_ucd_dm1_p0_map[i];
     }
-    else
+    ଅନ୍ୟଥା
     {
       /* Plane 2. */
       i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map);
       *a = 0x20000 | _hb_ucd_dm1_p2_map[i];
     }
     *b = 0;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map);
 
   /* Otherwise they are encoded either in a 32bit array or a 64bit array. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
+  ଯଦି (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
   {
     /* 32bit array. */
     uint32_t v = _hb_ucd_dm2_u32_map[i];
     *a = HB_CODEPOINT_DECODE3_11_7_14_1 (v);
     *b = HB_CODEPOINT_DECODE3_11_7_14_2 (v);
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm2_u32_map);
 
@@ -215,15 +215,15 @@ hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   uint64_t v = _hb_ucd_dm2_u64_map[i];
   *a = HB_CODEPOINT_DECODE3_1 (v);
   *b = HB_CODEPOINT_DECODE3_2 (v);
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 
-static void free_static_ucd_funcs ();
+ସ୍ଥିର ଶୂନ୍ୟ free_static_ucd_funcs ();
 
-static struct hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_ucd_unicode_funcs_lazy_loader_t>
+ସ୍ଥିର ସଂରଚନା hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_ucd_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  ସ୍ଥିର hb_unicode_funcs_t *create ()
   {
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -238,12 +238,12 @@ static struct hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_ucd_funcs);
 
-    return funcs;
+    ଫେରନ୍ତୁ funcs;
   }
 } static_ucd_funcs;
 
-static inline
-void free_static_ucd_funcs ()
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ free_static_ucd_funcs ()
 {
   static_ucd_funcs.free_instance ();
 }
@@ -252,7 +252,7 @@ hb_unicode_funcs_t *
 hb_ucd_get_unicode_funcs ()
 {
 #ifdef HB_NO_UCD
-  return hb_unicode_funcs_get_empty ();
+  ଫେରନ୍ତୁ hb_unicode_funcs_get_empty ();
 #endif
-  return static_ucd_funcs.get_unconst ();
+  ଫେରନ୍ତୁ static_ucd_funcs.get_unconst ();
 }

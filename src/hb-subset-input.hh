@@ -24,22 +24,22 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ifndef HB_SUBSET_ନିବେଶ_HH
+#define HB_SUBSET_ନିବେଶ_HH
 
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-subset.h"
+#ଅନ୍ତର୍ଭାଵ "hb-map.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-set.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-cplusplus.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-font.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+ସଂରଚନା hb_ot_name_record_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
+  hb_ot_name_record_ids_t () = ପୂର୍ବନିର୍ଦ୍ଧାରିତ;
   hb_ot_name_record_ids_t (unsigned platform_id_,
                            unsigned encoding_id_,
                            unsigned language_id_,
@@ -49,25 +49,25 @@ struct hb_ot_name_record_ids_t
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  ତାର୍କିକ operator != (ଅଚଳ hb_ot_name_record_ids_t o) ଅଚଳ
+  { ଫେରନ୍ତୁ !(*ଏହି == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  ଧାଡ଼ିଭିତରେ ତାର୍କିକ operator == (ଅଚଳ hb_ot_name_record_ids_t& o) ଅଚଳ
   {
-    return platform_id == o.platform_id &&
+    ଫେରନ୍ତୁ platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  ଧାଡ଼ିଭିତରେ uint32_t hash () ଅଚଳ
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    ଫେରନ୍ତୁ current;
   }
 
   unsigned platform_id;
@@ -76,28 +76,28 @@ struct hb_ot_name_record_ids_t
   unsigned name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+ସଂରଚନା hb_subset_ନିବେଶ_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_ନିବେଶ_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_ନିବେଶ_t ()
   {
     sets.~sets_t ();
 
 #ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+    ପାଇଁ (auto _ : name_table_overrides.values ())
       _.fini ();
 #endif
   }
 
   hb_object_header_t header;
 
-  struct sets_t {
+  ସଂରଚନା sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,16 +108,16 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  ସଂଘ {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[ଆକାର (sets_t) / ଆକାର (hb_set_t*)];
   };
 
   unsigned flags;
-  bool attach_accelerator_data = false;
+  ତାର୍କିକ attach_accelerator_data = ମିଥ୍ୟା;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  ତାର୍କିକ force_long_loca = ମିଥ୍ୟା;
 
   hb_hashmap_t<hb_tag_t, Triple> axes_location;
   hb_map_t glyph_map;
@@ -125,25 +125,25 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  ଧାଡ଼ିଭିତରେ unsigned ଅଙ୍କ_sets () ଅଚଳ
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    ଫେରନ୍ତୁ ଆକାର (set_ptrs) / ଆକାର (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  ଧାଡ଼ିଭିତରେ hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    ଫେରନ୍ତୁ hb_array (set_ptrs);
   }
 
-  bool in_error () const
+  ତାର୍କିକ in_error () ଅଚଳ
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    ପାଇଁ (unsigned i = 0; i < ଅଙ୍କ_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      ଯଦି (unlikely (set_ptrs[i]->in_error ()))
+        ଫେରନ୍ତୁ ସତ୍ୟ;
     }
 
-    return axes_location.in_error ()
+    ଫେରନ୍ତୁ axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif

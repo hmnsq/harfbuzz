@@ -1,13 +1,13 @@
-#include "hb-subset-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-subset-table.hh"
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-vorg-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-cff1-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-cff2-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-vorg-table.hh"
 
 
 #ifndef HB_NO_SUBSET_CFF
 template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff1>
+ସଂରଚନା hb_subset_plan_t::source_table_loader<ଅଚଳ OT::cff1>
 {
   auto operator () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff1_accel :
@@ -15,7 +15,7 @@ struct hb_subset_plan_t::source_table_loader<const OT::cff1>
 		  plan->cff1_accel)
 };
 template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff2>
+ସଂରଚନା hb_subset_plan_t::source_table_loader<ଅଚଳ OT::cff2>
 {
   auto operator () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff2_accel :
@@ -25,17 +25,17 @@ struct hb_subset_plan_t::source_table_loader<const OT::cff2>
 #endif
 
 
-bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+ତାର୍କିକ _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<ଅକ୍ଷର> &buf, hb_tag_t tag, ତାର୍କିକ *success)
 {
 #ifndef HB_NO_SUBSET_CFF
-  switch (tag)
+  ବାଛ (tag)
   {
-  case HB_TAG('C','F','F',' '): *success = _hb_subset_table<const OT::cff1> (plan, buf); return true;
-  case HB_TAG('C','F','F','2'): *success = _hb_subset_table<const OT::cff2> (plan, buf); return true;
-  case HB_TAG('V','O','R','G'): *success = _hb_subset_table<const OT::VORG> (plan, buf); return true;
+  ସ୍ଥିତି HB_TAG('C','F','F',' '): *success = _hb_subset_table<ଅଚଳ OT::cff1> (plan, buf); ଫେରନ୍ତୁ ସତ୍ୟ;
+  ସ୍ଥିତି HB_TAG('C','F','F','2'): *success = _hb_subset_table<ଅଚଳ OT::cff2> (plan, buf); ଫେରନ୍ତୁ ସତ୍ୟ;
+  ସ୍ଥିତି HB_TAG('V','O','R','G'): *success = _hb_subset_table<ଅଚଳ OT::VORG> (plan, buf); ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 #endif
-  return false;
+  ଫେରନ୍ତୁ ମିଥ୍ୟା;
 }
 
 
@@ -43,47 +43,47 @@ bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_t
 #ifndef HB_NO_CFF
 
 template<typename accel_t>
-static hb_blob_t* get_charstrings_data(accel_t& accel, hb_codepoint_t glyph_index) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+ସ୍ଥିର hb_blob_t* get_charstrings_data(accel_t& accel, hb_codepoint_t glyph_index) {
+  ଯଦି (!accel.is_valid()) {
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   }
 
   hb_ubytes_t bytes = (*accel.charStrings)[glyph_index];
-  if (!bytes) {
-    return hb_blob_get_empty ();
+  ଯଦି (!bytes) {
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   }
 
   hb_blob_t* cff_blob = accel.get_blob();
   uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  ଅଚଳ ଅକ୍ଷର* cff_data = hb_blob_get_data(cff_blob, &length) ;
 
-  long int offset = (const char*) bytes.arrayZ - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  long ପୂର୍ଣ୍ଣସଂଖ୍ୟା offset = (ଅଚଳ ଅକ୍ଷର*) bytes.arrayZ - cff_data;
+  ଯଦି (offset < 0 || offset > INT32_MAX) {
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, bytes.length);
+  ଫେରନ୍ତୁ hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, bytes.length);
 }
 
 template<typename accel_t>
-static hb_blob_t* get_charstrings_index(accel_t& accel) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+ସ୍ଥିର hb_blob_t* get_charstrings_index(accel_t& accel) {
+  ଯଦି (!accel.is_valid()) {
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   }
 
-  const char* charstrings_start = (const char*) accel.charStrings;
+  ଅଚଳ ଅକ୍ଷର* charstrings_start = (ଅଚଳ ଅକ୍ଷର*) accel.charStrings;
   unsigned charstrings_length = accel.charStrings->get_size();
 
   hb_blob_t* cff_blob = accel.get_blob();
   uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  ଅଚଳ ଅକ୍ଷର* cff_data = hb_blob_get_data(cff_blob, &length) ;
 
-  long int offset = charstrings_start - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  long ପୂର୍ଣ୍ଣସଂଖ୍ୟା offset = charstrings_start - cff_data;
+  ଯଦି (offset < 0 || offset > INT32_MAX) {
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, charstrings_length);
+  ଫେରନ୍ତୁ hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, charstrings_length);
 }
 
 /**
@@ -97,7 +97,7 @@ static hb_blob_t* get_charstrings_index(accel_t& accel) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff1, glyph);
+  ଫେରନ୍ତୁ get_charstrings_data(*face->table.cff1, glyph);
 }
 
 /**
@@ -110,7 +110,7 @@ hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff1);
+  ଫେରନ୍ତୁ get_charstrings_index (*face->table.cff1);
 }
 
 /**
@@ -124,7 +124,7 @@ hb_subset_cff_get_charstrings_index (hb_face_t* face) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff2, glyph);
+  ଫେରନ୍ତୁ get_charstrings_data(*face->table.cff2, glyph);
 }
 
 /**
@@ -137,7 +137,7 @@ hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  **/
 HB_EXTERN hb_blob_t*
 hb_subset_cff2_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff2);
+  ଫେରନ୍ତୁ get_charstrings_index (*face->table.cff2);
 }
 #endif
 #endif

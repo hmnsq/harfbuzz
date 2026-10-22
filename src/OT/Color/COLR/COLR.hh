@@ -28,17 +28,17 @@
 #ifndef OT_COLOR_COLR_COLR_HH
 #define OT_COLOR_COLR_COLR_HH
 
-#include "../../../hb.hh"
-#include "../../../hb-decycler.hh"
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-var-common.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-paint-bounded.hh"
-#include "../../../hb-paint-extents.hh"
-#include "../../../hb-depend-data.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-decycler.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-ot-var-common.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-paint.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-paint-bounded.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-paint-extents.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-depend-data.hh"
 
-#include "../../../hb-ot-dual.hh"
-#include "../CPAL/CPAL.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-ot-dual.hh"
+#ଅନ୍ତର୍ଭାଵ "../CPAL/CPAL.hh"
 
 /*
  * COLR -- Color
@@ -46,51 +46,51 @@
  */
 #define HB_OT_TAG_COLR HB_TAG('C','O','L','R')
 
-namespace OT {
-struct hb_paint_context_t;
+ନାମାକାଶ OT {
+ସଂରଚନା hb_paint_context_t;
 }
 
-struct hb_colr_scratch_t
+ସଂରଚନା hb_colr_scratch_t
 {
   hb_paint_bounded_context_t paint_bounded;
   hb_paint_extents_context_t paint_extents;
 };
 
-namespace OT {
+ନାମାକାଶ OT {
 
-struct COLR;
+ସଂରଚନା COLR;
 
-struct Paint;
+ସଂରଚନା Paint;
 
-struct hb_paint_context_t :
+ସଂରଚନା hb_paint_context_t :
        hb_dispatch_context_t<hb_paint_context_t>
 {
-  const char *get_name () { return "PAINT"; }
+  ଅଚଳ ଅକ୍ଷର *get_name () { ଫେରନ୍ତୁ "PAINT"; }
   template <typename T>
-  return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (ଅଚଳ T &obj) { obj.paint_glyph (ଏହି); ଫେରନ୍ତୁ hb_empty_t (); }
+  ସ୍ଥିର return_t default_return_ମୂଲ୍ୟ () { ଫେରନ୍ତୁ hb_empty_t (); }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  ଅଚଳ COLR* get_colr_table () ଅଚଳ
+  { ଫେରନ୍ତୁ reinterpret_cast<ଅଚଳ COLR *> (base); }
 
-public:
-  const void *base;
+ସର୍ବସାଧାରଣ:
+  ଅଚଳ ଶୂନ୍ୟ *base;
   hb_paint_funcs_t *funcs;
-  void *data;
+  ଶୂନ୍ୟ *data;
   hb_font_t *font;
-  hb_array_t<const BGRAColor> palette;
+  hb_array_t<ଅଚଳ BGRAColor> palette;
   hb_color_t foreground;
   ItemVarStoreInstancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା depth_ବାମ = HB_MAX_NESTING_LEVEL;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା edge_ଗଣନା = HB_MAX_GRAPH_EDGE_ଗଣନା;
 
-  hb_paint_context_t (const void *base_,
+  hb_paint_context_t (ଅଚଳ ଶୂନ୍ୟ *base_,
 		      hb_paint_funcs_t *funcs_,
-		      void *data_,
+		      ଶୂନ୍ୟ *data_,
                       hb_font_t *font_,
-                      unsigned int palette_,
+                      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା palette_,
                       hb_color_t foreground_,
 		      ItemVarStoreInstancer &instancer_) :
     base (base_),
@@ -100,19 +100,19 @@ public:
     palette (
 #ifndef HB_NO_COLOR
 	     // https://github.com/harfbuzz/harfbuzz/issues/5116
-	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_count () ? palette_ : 0)
+	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_ଗଣନା () ? palette_ : 0)
 #endif
     ),
     foreground (foreground_),
     instancer (instancer_)
   {
-    if (font->is_synthetic)
+    ଯଦି (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
+      hb_font_set_synthetic_bold (font, 0, 0, ସତ୍ୟ);
       hb_font_set_synthetic_slant (font, 0);
     }
-    else
+    ଅନ୍ୟଥା
       hb_font_reference (font);
   }
 
@@ -121,177 +121,177 @@ public:
     hb_font_destroy (font);
   }
 
-  static unsigned
-  color_alpha (hb_color_t color, float alpha)
+  ସ୍ଥିର unsigned
+  color_alpha (hb_color_t color, ଦଶମିକ alpha)
   {
     /* Font-supplied alpha is F2DOT14 plus variation deltas, so it can be
      * negative or greater than one; converting that to unsigned is UB. */
-    return roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
+    ଫେରନ୍ତୁ roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
   }
 
-  hb_color_t get_color (unsigned int color_index, float alpha, hb_bool_t *is_foreground)
+  hb_color_t get_color (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା color_index, ଦଶମିକ alpha, hb_bool_t *is_foreground)
   {
     hb_color_t color = foreground;
 
-    *is_foreground = true;
+    *is_foreground = ସତ୍ୟ;
 
-    if (color_index != 0xffff)
+    ଯଦି (color_index != 0xffff)
     {
-      if (!funcs->custom_palette_color (data, color_index, &color))
+      ଯଦି (!funcs->custom_palette_color (data, color_index, &color))
         color = palette[color_index];
 
-      *is_foreground = false;
+      *is_foreground = ମିଥ୍ୟା;
     }
 
-    return HB_COLOR (hb_color_get_blue (color),
+    ଫେରନ୍ତୁ HB_COLOR (hb_color_get_blue (color),
                      hb_color_get_green (color),
                      hb_color_get_red (color),
                      color_alpha (color, alpha));
   }
 
-  inline void recurse (const Paint &paint);
+  ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ recurse (ଅଚଳ Paint &paint);
 };
 
-struct hb_colrv1_closure_context_t :
+ସଂରଚନା hb_colrv1_closure_context_t :
        hb_dispatch_context_t<hb_colrv1_closure_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ଅଚଳ T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    ଯଦି (unlikely (nesting_level_ବାମ == 0))
+      ଫେରନ୍ତୁ hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    ଯଦି (paint_visited (&obj))
+      ଫେରନ୍ତୁ hb_empty_t ();
 
-    nesting_level_left--;
-    obj.closurev1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_ବାମ--;
+    obj.closurev1 (ଏହି);
+    nesting_level_ବାମ++;
+    ଫେରନ୍ତୁ hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ସ୍ଥିର return_t default_return_ମୂଲ୍ୟ () { ଫେରନ୍ତୁ hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  ତାର୍କିକ paint_visited (ଅଚଳ ଶୂନ୍ୟ *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) base);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    ଯଦି (visited_paint.in_error() || visited_paint.has (delta))
+      ଫେରନ୍ତୁ ସତ୍ୟ;
 
     visited_paint.add (delta);
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  ଅଚଳ COLR* get_colr_table () ଅଚଳ
+  { ଫେରନ୍ତୁ reinterpret_cast<ଅଚଳ COLR *> (base); }
 
-  void add_glyph (unsigned glyph_id)
+  ଶୂନ୍ୟ add_glyph (unsigned glyph_id)
   { glyphs->add (glyph_id); }
 
-  void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
+  ଶୂନ୍ୟ add_layer_indices (unsigned first_layer_index, unsigned ଅଙ୍କ_of_layers)
   {
-    if (num_of_layers == 0) return;
-    layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
+    ଯଦି (ଅଙ୍କ_of_layers == 0) ଫେରନ୍ତୁ;
+    layer_indices->add_range (first_layer_index, first_layer_index + ଅଙ୍କ_of_layers - 1);
   }
 
-  void add_palette_index (unsigned palette_index)
+  ଶୂନ୍ୟ add_palette_index (unsigned palette_index)
   { palette_indices->add (palette_index); }
 
-  void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
+  ଶୂନ୍ୟ add_var_idxes (unsigned first_var_idx, unsigned ଅଙ୍କ_idxes)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
-    variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
+    ଯଦି (!ଅଙ୍କ_idxes || first_var_idx == VarIdx::NO_VARIATION) ଫେରନ୍ତୁ;
+    variation_indices->add_range (first_var_idx, first_var_idx + ଅଙ୍କ_idxes - 1);
   }
 
-  public:
-  const void *base;
+  ସର୍ବସାଧାରଣ:
+  ଅଚଳ ଶୂନ୍ୟ *base;
   hb_set_t visited_paint;
   hb_set_t *glyphs;
   hb_set_t *layer_indices;
   hb_set_t *palette_indices;
   hb_set_t *variation_indices;
-  unsigned num_var_idxes;
-  unsigned nesting_level_left;
+  unsigned ଅଙ୍କ_var_idxes;
+  unsigned nesting_level_ବାମ;
 
-  hb_colrv1_closure_context_t (const void *base_,
+  hb_colrv1_closure_context_t (ଅଚଳ ଶୂନ୍ୟ *base_,
                                hb_set_t *glyphs_,
                                hb_set_t *layer_indices_,
                                hb_set_t *palette_indices_,
                                hb_set_t *variation_indices_,
-                               unsigned num_var_idxes_ = 1,
-                               unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                               unsigned ଅଙ୍କ_var_idxes_2 = 1,
+                               unsigned nesting_level_ବାମ_2 = HB_MAX_NESTING_LEVEL) :
                           base (base_),
                           glyphs (glyphs_),
                           layer_indices (layer_indices_),
                           palette_indices (palette_indices_),
                           variation_indices (variation_indices_),
-                          num_var_idxes (num_var_idxes_),
-                          nesting_level_left (nesting_level_left_)
+                          ଅଙ୍କ_var_idxes (ଅଙ୍କ_var_idxes_2),
+                          nesting_level_ବାମ (nesting_level_ବାମ_2)
   {}
 };
 
 
-struct hb_colrv1_depend_context_t :
+ସଂରଚନା hb_colrv1_depend_context_t :
        hb_dispatch_context_t<hb_colrv1_depend_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (ଅଚଳ T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    ଯଦି (unlikely (nesting_level_ବାମ == 0))
+      ଫେରନ୍ତୁ hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    ଯଦି (paint_visited (&obj))
+      ଫେରନ୍ତୁ hb_empty_t ();
 
-    nesting_level_left--;
-    obj.dependv1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_ବାମ--;
+    obj.dependv1 (ଏହି);
+    nesting_level_ବାମ++;
+    ଫେରନ୍ତୁ hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ସ୍ଥିର return_t default_return_ମୂଲ୍ୟ () { ଫେରନ୍ତୁ hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  ତାର୍କିକ paint_visited (ଅଚଳ ଶୂନ୍ୟ *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) colr);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    ଯଦି (visited_paint.in_error() || visited_paint.has (delta))
+      ଫେରନ୍ତୁ ସତ୍ୟ;
 
     visited_paint.add (delta);
-    if (unlikely (visited_paint.in_error ()))
+    ଯଦି (unlikely (visited_paint.in_error ()))
       depend_data->fail ();
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  const COLR* get_colr_table () const
-  { return colr; }
+  ଅଚଳ COLR* get_colr_table () ଅଚଳ
+  { ଫେରନ୍ତୁ colr; }
 
-  public:
-  const COLR *colr;
+  ସର୍ବସାଧାରଣ:
+  ଅଚଳ COLR *colr;
   hb_depend_data_builder_t *depend_data;
   hb_set_t visited_paint;
-  unsigned nesting_level_left;
+  unsigned nesting_level_ବାମ;
   hb_codepoint_t source_gid;
 
-  hb_colrv1_depend_context_t (const COLR *colr_,
+  hb_colrv1_depend_context_t (ଅଚଳ COLR *colr_,
                               hb_depend_data_builder_t *depend_data_,
-                              unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                              unsigned nesting_level_ବାମ_2 = HB_MAX_NESTING_LEVEL) :
                           colr (colr_),
                           depend_data (depend_data_),
-                          nesting_level_left (nesting_level_left_),
+                          nesting_level_ବାମ (nesting_level_ବାମ_2),
                           source_gid (0)
   {}
 };
 
-struct LayerRecord
+ସଂରଚନା LayerRecord
 {
-  operator hb_ot_color_layer_t () const { return {glyphId, colorIdx}; }
+  operator hb_ot_color_layer_t () ଅଚଳ { ଫେରନ୍ତୁ {glyphId, colorIdx}; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBGlyphID16	glyphId;	/* Glyph ID of layer glyph */
   Index		colorIdx;	/* Index value to use with a
 				 * selected color palette.
@@ -303,73 +303,73 @@ struct LayerRecord
 				 * be used and shall not be
 				 * treated as actual index
 				 * into CPAL ColorRecord array. */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BaseGlyphRecord
+ସଂରଚନା BaseGlyphRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (hb_codepoint_t g) ଅଚଳ
+  { ଫେରନ୍ତୁ g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBGlyphID16	glyphId;	/* Glyph ID of reference glyph */
   HBUINT16	firstLayerIdx;	/* Index (from beginning of
 				 * the Layer Records) to the
 				 * layer record. There will be
 				 * numLayers consecutive entries
 				 * for this base glyph. */
-  HBUINT16	numLayers;	/* Number of color layers
+  HBUINT16	ଅଙ୍କ_Layers;	/* Number of color layers
 				 * associated with this glyph */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename T>
-struct Variable
+ସଂରଚନା Variable
 {
-  static constexpr bool is_variable = true;
+  ସ୍ଥିର constexpr ତାର୍କିକ is_variable = ସତ୍ୟ;
 
-  const T& get_value () const { return value; }
+  ଅଚଳ T& get_ମୂଲ୍ୟ () ଅଚଳ { ଫେରନ୍ତୁ value; }
 
-  Variable<T>* copy (hb_serialize_context_t *c) const
+  Variable<T>* copy (hb_serialize_context_t *c) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ଏହି);
+    return_trace (c->embed (ଏହି));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    c->num_var_idxes = 0;
+    c->ଅଙ୍କ_var_idxes = 0;
     // update c->num_var_idxes during value closure
     value.closurev1 (c);
-    c->add_var_idxes (varIdxBase, c->num_var_idxes);
+    c->add_var_idxes (varIdxBase, c->ଅଙ୍କ_var_idxes);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (!value.subset (c, instancer, varIdxBase)) return_trace (false);
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (!value.subset (c, instancer, varIdxBase)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (c->plan->all_axes_pinned)
+      return_trace (ସତ୍ୟ);
 
     VarIdx new_varidx;
     new_varidx = varIdxBase;
-    if (varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (varIdxBase != VarIdx::NO_VARIATION)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *new_varidx_delta;
+      ଯଦି (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
+        return_trace (ମିଥ୍ୟା);
 
       new_varidx = hb_first (*new_varidx_delta);
     }
@@ -377,139 +377,139 @@ struct Variable
     return_trace (c->serializer->embed (new_varidx));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ଏହି);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ଶୂନ୍ୟ get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     value.get_color_stop (c, stop, varIdxBase, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ଶୂନ୍ୟ get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ଅଚଳ
   {
     value.get_solid_color (c, varIdxBase, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ଅଚଳ
   {
-    return value.get_extend ();
+    ଫେରନ୍ତୁ value.get_extend ();
   }
 
-  protected:
+  ସୁରକ୍ଷିତ:
   T      value;
-  public:
+  ସର୍ବସାଧାରଣ:
   VarIdx varIdxBase;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (VarIdx::static_size + T::min_size);
 };
 
 template <typename T>
-struct NoVariable
+ସଂରଚନା NoVariable
 {
-  static constexpr bool is_variable = false;
+  ସ୍ଥିର constexpr ତାର୍କିକ is_variable = ମିଥ୍ୟା;
 
-  const T& get_value () const { return value; }
+  ଅଚଳ T& get_ମୂଲ୍ୟ () ଅଚଳ { ଫେରନ୍ତୁ value; }
 
-  static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
+  ସ୍ଥିର constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
 
-  NoVariable<T>* copy (hb_serialize_context_t *c) const
+  NoVariable<T>* copy (hb_serialize_context_t *c) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ଏହି);
+    return_trace (c->embed (ଏହି));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   { value.closurev1 (c); }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ଏହି);
     return_trace (value.subset (c, instancer, varIdxBase));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ଏହି);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ଶୂନ୍ୟ get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     value.get_color_stop (c, stop, VarIdx::NO_VARIATION, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ଶୂନ୍ୟ get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ଅଚଳ
   {
     value.get_solid_color (c, VarIdx::NO_VARIATION, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ଅଚଳ
   {
-    return value.get_extend ();
+    ଫେରନ୍ତୁ value.get_extend ();
   }
 
   T      value;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (T::min_size);
 };
 
 // Color structures
 
 template <typename Type, unsigned fraction_bits>
-static void
-set_fixed_clamped (HBFixed<Type, fraction_bits> &out, float value)
+ସ୍ଥିର ଶୂନ୍ୟ
+set_fixed_clamped (HBFixed<Type, fraction_bits> &out, ଦଶମିକ value)
 {
   // Variation deltas are unbounded; clamp before the implicit integer cast.
   out.set_int (hb_clamp_to<typename Type::type> (roundf ((value / HBFixed<Type, fraction_bits>::mult))));
 }
 
-struct ColorStop
+ସଂରଚନା ColorStop
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t * c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 2;
+    c->ଅଙ୍କ_var_idxes = 2;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (*ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->stopOffset, stopOffset.to_float(instancer (varIdxBase, 0)));
-      float a = alpha.to_float (instancer (varIdxBase, 1));
+      ଦଶମିକ a = alpha.to_float (instancer (varIdxBase, 1));
       /* Partial instances must keep the unclamped base: retained axes can
        * bring the alpha back into range. Clamp before narrowing a full
        * instance so overflow cannot wrap an opaque alpha to transparent. */
@@ -520,16 +520,16 @@ struct ColorStop
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ଶୂନ୍ୟ get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *out,
 		       uint32_t varIdx,
-		       const ItemVarStoreInstancer &instancer) const
+		       ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     out->offset = stopOffset.to_float(instancer (varIdx, 0));
     out->color = c->get_color (paletteIndex,
@@ -540,111 +540,111 @@ struct ColorStop
   F2DOT14	stopOffset;
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (2 + 2 * F2DOT14::static_size);
 };
 
-struct Extend : HBUINT8
+ସଂରଚନା Extend : HBUINT8
 {
-  enum {
+  ଗଣନା {
     EXTEND_PAD     = 0,
     EXTEND_REPEAT  = 1,
     EXTEND_REFLECT = 2,
   };
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (1);
 };
 
-template <template<typename> class Var>
-struct ColorLine
+template <template<typename> ଶ୍ରେଣୀ Var>
+ସଂରଚନା Color_ଧାଡ଼ି
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t * c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    for (const auto &stop : stops.iter ())
+    ପାଇଁ (ଅଚଳ auto &stop : stops.iter ())
       stop.closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->start_embed (ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out))) return_trace (ମିଥ୍ୟା);
 
-    if (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    if (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
+    ଯଦି (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (ମିଥ୍ୟା);
 
-    for (const auto& stop : stops.iter ())
+    ପାଇଁ (ଅଚଳ auto& stop : stops.iter ())
     {
-      if (!stop.subset (c, instancer)) return_trace (false);
+      ଯଦି (!stop.subset (c, instancer)) return_trace (ମିଥ୍ୟା);
     }
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
                   stops.sanitize (c));
   }
 
   /* get up to count stops from start */
-  unsigned int
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
   get_color_stops (hb_paint_context_t *c,
-                   unsigned int start,
-		   unsigned int *count,
+                   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+		   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *ଗଣନା_2,
 		   hb_color_stop_t *color_stops,
-		   const ItemVarStoreInstancer &instancer) const
+		   ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    unsigned int len = stops.len;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା len = stops.len;
 
-    if (count && color_stops)
+    ଯଦି (ଗଣନା_2 && color_stops)
     {
-      unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i;
+      ପାଇଁ (i = 0; i < *ଗଣନା_2 && start + i < len; i++)
         stops[start + i].get_color_stop (c, &color_stops[i], instancer);
-      *count = i;
+      *ଗଣନା_2 = i;
     }
 
-    return len;
+    ଫେରନ୍ତୁ len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  unsigned int start,
-							  unsigned int *count,
+  HB_INTERNAL ସ୍ଥିର unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା static_get_color_stops (hb_color_ଧାଡ଼ି_t *color_ଧାଡ଼ି,
+							  ଶୂନ୍ୟ *color_ଧାଡ଼ି_data,
+							  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+							  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *ଗଣନା_2,
 							  hb_color_stop_t *color_stops,
-							  void *user_data)
+							  ଶୂନ୍ୟ *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
+    ଅଚଳ Color_ଧାଡ଼ି *thiz = (ଅଚଳ Color_ଧାଡ଼ି *) color_ଧାଡ଼ି_data;
     hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    ଫେରନ୍ତୁ thiz->get_color_stops (c, start, ଗଣନା_2, color_stops, c->instancer);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ଅଚଳ
   {
-    switch ((unsigned int) extend)
+    ବାଛ ((unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) extend)
     {
-      case Extend::EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-      case Extend::EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
-      case Extend::EXTEND_PAD:
-      default:                     return HB_PAINT_EXTEND_PAD;
+      ସ୍ଥିତି Extend::EXTEND_REPEAT:  ଫେରନ୍ତୁ HB_PAINT_EXTEND_REPEAT;
+      ସ୍ଥିତି Extend::EXTEND_REFLECT: ଫେରନ୍ତୁ HB_PAINT_EXTEND_REFLECT;
+      ସ୍ଥିତି Extend::EXTEND_PAD:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:                     ଫେରନ୍ତୁ HB_PAINT_EXTEND_PAD;
     }
   }
 
-  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  void *user_data)
+  HB_INTERNAL ସ୍ଥିର hb_paint_extend_t static_get_extend (hb_color_ଧାଡ଼ି_t *color_ଧାଡ଼ି,
+							  ଶୂନ୍ୟ *color_ଧାଡ଼ି_data,
+							  ଶୂନ୍ୟ *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
-    return thiz->get_extend ();
+    ଅଚଳ Color_ଧାଡ଼ି *thiz = (ଅଚଳ Color_ଧାଡ଼ି *) color_ଧାଡ଼ି_data;
+    ଫେରନ୍ତୁ thiz->get_extend ();
   }
 
   Extend	extend;
   Array16Of<Var<ColorStop>>	stops;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY_SIZED (3, stops);
 };
 
@@ -653,38 +653,38 @@ struct ColorLine
 // Compositing modes are taken from https://www.w3.org/TR/compositing-1/
 // NOTE: a brief audit of major implementations suggests most support most
 // or all of the specified modes.
-struct CompositeMode : HBUINT8
+ସଂରଚନା CompositeMode : HBUINT8
 {
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (1);
 };
 
-struct Affine2x3
+ସଂରଚନା Affine2x3
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->num_var_idxes = 6; }
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
+  { c->ଅଙ୍କ_var_idxes = 6; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (*ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       auto fold = [&] (F16DOT16 &target, F16DOT16 source, unsigned offset) {
         // Keep the stored integer precise while applying the float delta.
-        target.set_int (hb_clamp_to<int32_t> (roundf ((double) source.to_int () +
-                                                    (double) instancer (varIdxBase, offset))));
+        target.set_int (hb_clamp_to<int32_t> (roundf ((ଦ୍ୱିଗୁଣ) source.to_int () +
+                                                    (ଦ୍ୱିଗୁଣ) instancer (varIdxBase, offset))));
       };
       fold (out->xx, xx, 0);
       fold (out->yx, yx, 1);
@@ -693,13 +693,13 @@ struct Affine2x3
       fold (out->dx, dx, 4);
       fold (out->dy, dy, 5);
     }
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    c->funcs->push_transform (c->data,
+    TRACE_PAINT (ଏହି);
+    c->funcs->ଠେଲ_transform (c->data,
 			      xx.to_float (c->instancer (varIdxBase, 0)),
 			      yx.to_float (c->instancer (varIdxBase, 1)),
                               xy.to_float (c->instancer (varIdxBase, 2)),
@@ -714,89 +714,89 @@ struct Affine2x3
   F16DOT16 yy;
   F16DOT16 dx;
   F16DOT16 dy;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6 * F16DOT16::static_size);
 };
 
-struct PaintColrLayers
+ସଂରଚନା PaintColrLayers
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer HB_UNUSED) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
+    uint32_t first_layer_index = ଅଙ୍କ_Layers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
     return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ;
 
   HBUINT8	format; /* format = 1 */
-  HBUINT8	numLayers;
+  HBUINT8	ଅଙ୍କ_Layers;
   HBUINT32	firstLayerIndex;  /* index into COLRv1::layerList */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct PaintSolid
+ସଂରଚନା PaintSolid
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ {}
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 1;
+    c->ଅଙ୍କ_var_idxes = 1;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (*ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float a = alpha.to_float (instancer (varIdxBase, 0));
+      ଦଶମିକ a = alpha.to_float (instancer (varIdxBase, 0));
       set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    if (format == 3 && c->plan->all_axes_pinned)
+    ଯଦି (format == 3 && c->plan->all_axes_pinned)
         out->format = 2;
 
     return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ଶୂନ୍ୟ get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
+                        hb_bool_t *is_foreground, hb_color_t *color) ଅଚଳ
   {
     *color = c->get_color (paletteIndex,
                            alpha.to_float (c->instancer (varIdxBase, 0)),
                            is_foreground);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ଏହି);
     hb_bool_t is_foreground;
     hb_color_t color;
 
@@ -807,58 +807,58 @@ struct PaintSolid
   HBUINT8	format; /* format = 2(noVar) or 3(Var)*/
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (3 + F2DOT14::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintLinearGradient
+template <template<typename> ଶ୍ରେଣୀ Var>
+ସଂରଚନା PaintLinearGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (ଏହି+color_ଧାଡ଼ି_2).closurev1 (c);
+    c->ଅଙ୍କ_var_idxes = 6;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 2)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->x2 = hb_clamp_to<int16_t> ((double) x2 + (double) roundf (instancer (varIdxBase, 4)));
-      out->y2 = hb_clamp_to<int16_t> ((double) y2 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) x0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) y0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
+      out->x1 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) x1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
+      out->y1 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) y1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 3)));
+      out->x2 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) x2 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 4)));
+      out->y2 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) y2 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 5 && c->plan->all_axes_pinned)
+    ଯଦି (format == 5 && c->plan->all_axes_pinned)
         out->format = 4;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_ଧାଡ଼ି_2.serialize_subset (c, color_ଧାଡ଼ି_2, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && color_ଧାଡ଼ି_2.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ଏହି);
+    hb_color_ଧାଡ଼ି_t cl = {
+      (ଶୂନ୍ୟ *) &(ଏହି+color_ଧାଡ଼ି_2),
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_color_stops, c,
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_extend, nullptr
     };
 
     c->funcs->linear_gradient (c->data, &cl,
@@ -871,7 +871,7 @@ struct PaintLinearGradient
   }
 
   HBUINT8			format; /* format = 4(noVar) or 5 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintLinearGradient
+  Offset24To<Color_ଧାଡ଼ି<Var>>	color_ଧାଡ଼ି_2; /* Offset (from beginning of PaintLinearGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -879,217 +879,217 @@ struct PaintLinearGradient
   FWORD			y1;
   FWORD			x2;
   FWORD			y2;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintRadialGradient
+template <template<typename> ଶ୍ରେଣୀ Var>
+ସଂରଚନା PaintRadialGradient
 {
-  bool constant_after_pinning (hb_subset_context_t *c,
-                               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ constant_after_pinning (hb_subset_context_t *c,
+                               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    if (c->plan->has_avar2) return false;
-    const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    ଯଦି (c->plan->has_avar2) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଅଚଳ auto &regions = instancer.varStore->get_region_list ();
+    ପାଇଁ (unsigned i = 0; i < regions.region_ଗଣନା; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axes;
-      if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
+      ଯଦି (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-        return false;
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
       }
-      for (auto axis : axes)
+      ପାଇଁ (auto axis : axes)
       {
         Triple *limit;
-        if (!c->plan->user_axes_location.has (axis.first, &limit) ||
+        ଯଦି (!c->plan->user_axes_location.has (axis.first, &limit) ||
             limit->minimum != limit->maximum)
-          return false;
+          ଫେରନ୍ତୁ ମିଥ୍ୟା;
       }
     }
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (ଏହି+color_ଧାଡ଼ି_2).closurev1 (c);
+    c->ଅଙ୍କ_var_idxes = 6;
   }
 
-  bool subset_nonnegative (hb_subset_context_t *c,
-                           const ItemVarStoreInstancer &instancer,
-                           uint32_t varIdxBase) const
+  ତାର୍କିକ subset_nonnegative (hb_subset_context_t *c,
+                           ଅଚଳ ItemVarStoreInstancer &instancer,
+                           uint32_t varIdxBase) ଅଚଳ
   {
-    double source[6] = {
-      x0 + (double) roundf (instancer (varIdxBase, 0)),
-      y0 + (double) roundf (instancer (varIdxBase, 1)),
-      radius0 + (double) roundf (instancer (varIdxBase, 2)),
-      x1 + (double) roundf (instancer (varIdxBase, 3)),
-      y1 + (double) roundf (instancer (varIdxBase, 4)),
-      radius1 + (double) roundf (instancer (varIdxBase, 5))
+    ଦ୍ୱିଗୁଣ source[6] = {
+      x0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 0)),
+      y0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)),
+      radius0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)),
+      x1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 3)),
+      y1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 4)),
+      radius1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 5))
     };
     auto transparent = [&] {
       auto *out = c->serializer->allocate_size<PaintSolid> (5);
-      if (!out) return false;
+      ଯଦି (!out) ଫେରନ୍ତୁ ମିଥ୍ୟା;
       out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
-      return true;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     };
-    const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
-    struct stop_t { double offset, alpha; unsigned palette, order; };
+    ଅଚଳ auto &ଧାଡ଼ି = ଏହି+color_ଧାଡ଼ି_2;
+    ଯଦି (source[2] == source[5] || !ଧାଡ଼ି.stops.len) ଫେରନ୍ତୁ transparent ();
+    ସଂରଚନା stop_t { ଦ୍ୱିଗୁଣ offset, alpha; unsigned palette, order; };
     hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
+    ଯଦି (!stops.alloc (ଧାଡ଼ି.stops.len)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
     unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    ପାଇଁ (ଅଚଳ auto &entry : ଧାଡ଼ି.stops.iter ())
     {
-      const auto &stop = entry.get_value ();
-      stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
-                   (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
+      ଅଚଳ auto &stop = entry.get_ମୂଲ୍ୟ ();
+      stops.push (stop_t {(ଦ୍ୱିଗୁଣ) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
+                   (ଦ୍ୱିଗୁଣ) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
                    stop.paletteIndex, order++});
     }
-    if (stops.in_error ()) return false;
-    stops.qsort ([] (const stop_t &a, const stop_t &b) {
-      return a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
+    ଯଦି (stops.in_error ()) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    stops.qsort ([] (ଅଚଳ stop_t &a, ଅଚଳ stop_t &b) {
+      ଫେରନ୍ତୁ a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
              a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
     });
-    double dr = source[5] - source[2];
+    ଦ୍ୱିଗୁଣ dr = source[5] - source[2];
     // Fractional shifts must preserve both integer circles and F2Dot14 stops.
     unsigned lattice = 16384;
-    for (unsigned j = 0; j < 3; j++)
+    ପାଇଁ (unsigned j = 0; j < 3; j++)
     {
-      double remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
-      if (!(remainder >= 0 && remainder < 16384))
+      ଦ୍ୱିଗୁଣ remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
+      ଯଦି (!(remainder >= 0 && remainder < 16384))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-        return false;
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
       }
-      unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      unsigned ଡାହାଣ = (unsigned) remainder;
+      ଯେତେବେଳେ (ଡାହାଣ) { unsigned r = lattice % ଡାହାଣ; lattice = ଡାହାଣ; ଡାହାଣ = r; }
     }
-    for (unsigned shift = 0; shift < 16; shift++)
+    ପାଇଁ (unsigned shift = 0; shift < 16; shift++)
     {
-      double b = 1u << shift;
-      double coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
-      double fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
+      ଦ୍ୱିଗୁଣ b = 1u << shift;
+      ଦ୍ୱିଗୁଣ coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
+      ଦ୍ୱିଗୁଣ fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
                             floor (source[2] / -dr * lattice) / lattice - b;
-      double candidates[] = {coarse, fine};
-      for (double a : candidates)
+      ଦ୍ୱିଗୁଣ candidates[] = {coarse, fine};
+      ପାଇଁ (ଦ୍ୱିଗୁଣ a : candidates)
       {
         // omega = a + b*q. Positive b preserves the largest valid root.
-        double geometry[6];
-        bool fits = true;
-        for (unsigned j = 0; j < 3; j++)
+        ଦ୍ୱିଗୁଣ geometry[6];
+        ତାର୍କିକ fits = ସତ୍ୟ;
+        ପାଇଁ (unsigned j = 0; j < 3; j++)
         {
-          double difference = source[j + 3] - source[j];
+          ଦ୍ୱିଗୁଣ difference = source[j + 3] - source[j];
           geometry[j] = source[j] + a * difference;
           geometry[j + 3] = source[j] + (a + b) * difference;
-          double low = j == 2 ? 0 : -32768, high = j == 2 ? 65535 : 32767;
-          fits &= geometry[j] >= low && geometry[j] <= high &&
-                  geometry[j + 3] >= low && geometry[j + 3] <= high;
+          ଦ୍ୱିଗୁଣ ତଳ = j == 2 ? 0 : -32768, ଉପର = j == 2 ? 65535 : 32767;
+          fits &= geometry[j] >= ତଳ && geometry[j] <= ଉପର &&
+                  geometry[j + 3] >= ତଳ && geometry[j + 3] <= ଉପର;
         }
-        if (!fits) continue;
-        unsigned first = 0, count = stops.length;
-        double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
-        double bias = 0;
-        bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        ଯଦି (!fits) ଜାରି;
+        unsigned first = 0, ଗଣନା_2 = stops.length;
+        ଦ୍ୱିଗୁଣ min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
+        ଦ୍ୱିଗୁଣ bias = 0;
+        ତାର୍କିକ constant = ମିଥ୍ୟା;
+        ଯଦି (ଧାଡ଼ି.extend == Extend::EXTEND_PAD)
         {
-          double tip = -geometry[2] / (b * dr);
-          if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
+          ଦ୍ୱିଗୁଣ tip = -geometry[2] / (b * dr);
+          ଯଦି ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
             first = dr > 0 ? stops.length - 1 : 0;
-            count = 1; constant = true;
+            ଗଣନା_2 = 1; constant = ସତ୍ୟ;
           }
         }
-        else
+        ଅନ୍ୟଥା
         {
-          double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
-          if (period <= 0) return transparent ();
-          double n = ceil ((-2 - min) / period);
-          if (n > floor ((32767. / 16384. - max) / period)) continue;
+          ଦ୍ୱିଗୁଣ period = max - min;
+          ଯଦି (ଧାଡ଼ି.extend == Extend::EXTEND_REFLECT) period *= 2;
+          ଯଦି (period <= 0) ଫେରନ୍ତୁ transparent ();
+          ଦ୍ୱିଗୁଣ n = ceil ((-2 - min) / period);
+          ଯଦି (n > floor ((32767. / 16384. - max) / period)) ଜାରି;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        ପାଇଁ (unsigned j = 0; j < ଗଣନା_2; j++)
         {
-          double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
+          ଦ୍ୱିଗୁଣ bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
           fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
         }
-        if (!fits) continue;
+        ଯଦି (!fits) ଜାରି;
         auto *out = c->serializer->allocate_size<PaintRadialGradient<NoVariable>> (16);
-        if (!out) return false;
+        ଯଦି (!out) ଫେରନ୍ତୁ ମିଥ୍ୟା;
         out->format = 6;
-        out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
-        out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
+        out->x0 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) geometry[0]; out->y0 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) geometry[1]; out->radius0 = (unsigned) geometry[2];
+        out->x1 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) geometry[3]; out->y1 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) geometry[4]; out->radius1 = (unsigned) geometry[5];
         c->serializer->push ();
-        auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
-        out_line->extend = line.extend;
-        out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        auto *out_ଧାଡ଼ି = c->serializer->allocate_size<Color_ଧାଡ଼ି<NoVariable>> (3 + ଗଣନା_2 * ColorStop::static_size);
+        ଯଦି (!out_ଧାଡ଼ି) { c->serializer->କାଢ଼_discard (); ଫେରନ୍ତୁ ମିଥ୍ୟା; }
+        out_ଧାଡ଼ି->extend = ଧାଡ଼ି.extend;
+        out_ଧାଡ଼ି->stops.len = ଗଣନା_2;
+        ପାଇଁ (unsigned j = 0; j < ଗଣନା_2; j++)
         {
-          const auto &stop = stops[first + j];
-          auto &out_stop = out_line->stops[j].value;
-          out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
-          out_stop.alpha.set_float ((float) stop.alpha);
-          if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
+          ଅଚଳ auto &stop = stops[first + j];
+          auto &out_stop = out_ଧାଡ଼ି->stops[j].value;
+          out_stop.stopOffset.set_float ((ଦଶମିକ) (constant ? 0 : (stop.offset - a) / b + bias));
+          out_stop.alpha.set_float ((ଦଶମିକ) stop.alpha);
+          ଯଦି (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          { c->serializer->କାଢ଼_discard (); ଫେରନ୍ତୁ ମିଥ୍ୟା; }
         }
-        c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
-        return !c->serializer->in_error ();
+        c->serializer->add_link (out->color_ଧାଡ଼ି_2, c->serializer->କାଢ଼_pack ());
+        ଫେରନ୍ତୁ !c->serializer->in_error ();
       }
     }
     // Reject an unrepresentable static result instead of changing its colors.
     c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (instancer && !c->plan->pinned_at_default &&
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (instancer && !c->plan->pinned_at_default &&
         (c->plan->all_axes_pinned || constant_after_pinning (c, instancer)) &&
         varIdxBase != VarIdx::NO_VARIATION &&
-        (radius0 + (double) roundf (instancer (varIdxBase, 2)) < 0 ||
-         radius1 + (double) roundf (instancer (varIdxBase, 5)) < 0))
+        (radius0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)) < 0 ||
+         radius1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 5)) < 0))
       return_trace (subset_nonnegative (c, instancer, varIdxBase));
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->radius0 = hb_clamp_to<uint16_t> ((double) radius0 + (double) roundf (instancer (varIdxBase, 2)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 4)));
-      out->radius1 = hb_clamp_to<uint16_t> ((double) radius1 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) x0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) y0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
+      out->radius0 = hb_clamp_to<uint16_t> ((ଦ୍ୱିଗୁଣ) radius0 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
+      out->x1 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) x1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 3)));
+      out->y1 = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) y1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 4)));
+      out->radius1 = hb_clamp_to<uint16_t> ((ଦ୍ୱିଗୁଣ) radius1 + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 7 && c->plan->all_axes_pinned)
+    ଯଦି (format == 7 && c->plan->all_axes_pinned)
         out->format = 6;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_ଧାଡ଼ି_2.serialize_subset (c, color_ଧାଡ଼ି_2, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && color_ଧାଡ଼ି_2.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ଏହି);
+    hb_color_ଧାଡ଼ି_t cl = {
+      (ଶୂନ୍ୟ *) &(ଏହି+color_ଧାଡ଼ି_2),
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_color_stops, c,
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_extend, nullptr
     };
 
     c->funcs->radial_gradient (c->data, &cl,
@@ -1102,7 +1102,7 @@ struct PaintRadialGradient
   }
 
   HBUINT8			format; /* format = 6(noVar) or 7 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintRadialGradient
+  Offset24To<Color_ଧାଡ଼ି<Var>>	color_ଧାଡ଼ି_2; /* Offset (from beginning of PaintRadialGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -1110,56 +1110,56 @@ struct PaintRadialGradient
   FWORD			x1;
   FWORD			y1;
   UFWORD		radius1;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintSweepGradient
+template <template<typename> ଶ୍ରେଣୀ Var>
+ସଂରଚନା PaintSweepGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 4;
+    (ଏହି+color_ଧାଡ଼ି_2).closurev1 (c);
+    c->ଅଙ୍କ_var_idxes = 4;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 0)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 1)));
+      out->centerX = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerX + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 0)));
+      out->centerY = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerY + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
       set_fixed_clamped (out->startAngle, startAngle.to_float (instancer (varIdxBase, 2)));
       set_fixed_clamped (out->endAngle, endAngle.to_float (instancer (varIdxBase, 3)));
     }
 
-    if (format == 9 && c->plan->all_axes_pinned)
+    ଯଦି (format == 9 && c->plan->all_axes_pinned)
         out->format = 8;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_ଧାଡ଼ି_2.serialize_subset (c, color_ଧାଡ଼ି_2, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && color_ଧାଡ଼ି_2.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ଏହି);
+    hb_color_ଧାଡ଼ି_t cl = {
+      (ଶୂନ୍ୟ *) &(ଏହି+color_ଧାଡ଼ି_2),
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_color_stops, c,
+      (ଏହି+color_ଧାଡ଼ି_2).static_get_extend, nullptr
     };
 
     c->funcs->sweep_gradient (c->data, &cl,
@@ -1170,190 +1170,190 @@ struct PaintSweepGradient
   }
 
   HBUINT8			format; /* format = 8(noVar) or 9 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintSweepGradient
+  Offset24To<Color_ଧାଡ଼ି<Var>>	color_ଧାଡ଼ି_2; /* Offset (from beginning of PaintSweepGradient
                                             * table) to ColorLine subtable. */
   FWORD			centerX;
   FWORD			centerY;
   F2DOT14		startAngle;
   F2DOT14		endAngle;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size + 2 * F2DOT14::static_size);
 };
 
 // Paint a non-COLR glyph, filled as indicated by paint.
 template <typename Types>
-struct PaintGlyph
+ସଂରଚନା PaintGlyph
 {
   using HBGlyphID = typename Types::HBGlyphID;
 
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
+    ଯଦି (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (ମିଥ୍ୟା);
 
-    return_trace (out->paint.serialize_subset (c, paint, this, instancer));
+    return_trace (out->paint.serialize_subset (c, paint, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && paint.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && paint.sanitize (c, ଏହି));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ;
 
   HBUINT8		format; /* format = 10 or 33 */
   Offset24To<Paint>	paint;  /* Offset (from beginning of PaintGlyph table) to Paint subtable. */
   HBGlyphID		gid;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + HBGlyphID::static_size);
 };
 
-struct PaintColrGlyph
+ସଂରଚନା PaintColrGlyph
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer HB_UNUSED) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
     return_trace (c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ;
 
   HBUINT8	format; /* format = 11 */
   HBUINT16	gid;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (3);
 };
 
-template <template<typename> class Var>
-struct PaintTransform
+template <template<typename> ଶ୍ରେଣୀ Var>
+ସଂରଚନା PaintTransform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
-    if (format == 13 && c->plan->all_axes_pinned)
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (!out->transform.serialize_subset (c, transform, ଏହି, instancer)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (format == 13 && c->plan->all_axes_pinned)
       out->format = 12;
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  src.sanitize (c, this) &&
-                  transform.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
+                  src.sanitize (c, ଏହି) &&
+                  transform.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    (this+transform).paint_glyph (c); // This does a push_transform()
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    TRACE_PAINT (ଏହି);
+    (ଏହି+transform).paint_glyph (c); // This does a push_transform()
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8			format; /* format = 12(noVar) or 13 (Var) */
   Offset24To<Paint>		src; /* Offset (from beginning of PaintTransform table) to Paint subtable. */
   Offset24To<Var<Affine2x3>>	transform;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (7);
 };
 
-struct PaintTranslate
+ସଂରଚନା PaintTranslate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->dx = hb_clamp_to<int16_t> ((double) dx + (double) roundf (instancer (varIdxBase, 0)));
-      out->dy = hb_clamp_to<int16_t> ((double) dy + (double) roundf (instancer (varIdxBase, 1)));
+      out->dx = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) dx + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 0)));
+      out->dy = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) dy + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
     }
 
-    if (format == 15 && c->plan->all_axes_pinned)
+    ଯଦି (format == 15 && c->plan->all_axes_pinned)
         out->format = 14;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float ddx = dx + c->instancer (varIdxBase, 0);
-    float ddy = dy + c->instancer (varIdxBase, 1);
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ ddx = dx + c->instancer (varIdxBase, 0);
+    ଦଶମିକ ddy = dy + c->instancer (varIdxBase, 1);
 
-    c->funcs->push_translate (c->data, ddx, ddy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_translate (c->data, ddx, ddy);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 14(noVar) or 15 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintTranslate table) to Paint subtable. */
   FWORD		dx;
   FWORD		dy;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size);
 };
 
 template <typename Source>
-static bool serialize_scale_transform (hb_subset_context_t *c,
-                                       float sx, float sy, float dx, float dy,
-                                       const Source &source)
+ସ୍ଥିର ତାର୍କିକ serialize_scale_transform (hb_subset_context_t *c,
+                                       ଦଶମିକ sx, ଦଶମିକ sy, ଦଶମିକ dx, ଦଶମିକ dy,
+                                       ଅଚଳ Source &source)
 {
   auto *out = c->serializer->allocate_size<PaintTransform<NoVariable>> (7);
-  if (unlikely (!out)) return false;
+  ଯଦି (unlikely (!out)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
   out->format = 12;
 
   c->serializer->push ();
   auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
-  if (unlikely (!transform))
+  ଯଦି (unlikely (!transform))
   {
-    c->serializer->pop_discard ();
-    return false;
+    c->serializer->କାଢ଼_discard ();
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
   set_fixed_clamped (transform->xx, sx);
   transform->yx.set_float (0);
@@ -1361,161 +1361,161 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
   set_fixed_clamped (transform->yy, sy);
   set_fixed_clamped (transform->dx, dx);
   set_fixed_clamped (transform->dy, dy);
-  c->serializer->add_link (out->transform, c->serializer->pop_pack ());
+  c->serializer->add_link (out->transform, c->serializer->କାଢ଼_pack ());
 
   c->serializer->push ();
-  bool ret = source ();
-  if (ret)
-    c->serializer->add_link (out->src, c->serializer->pop_pack ());
-  else
-    c->serializer->pop_discard ();
-  return ret;
+  ତାର୍କିକ ret = source ();
+  ଯଦି (ret)
+    c->serializer->add_link (out->src, c->serializer->କାଢ଼_pack ());
+  ଅନ୍ୟଥା
+    c->serializer->କାଢ଼_discard ();
+  ଫେରନ୍ତୁ ret;
 }
 
 template <typename Base>
-static bool subset_scale_as_transform (hb_subset_context_t *c,
-                                      const Base *base,
-                                      const Offset24To<Paint> &src,
-                                      const ItemVarStoreInstancer &instancer,
-                                      float sx, float sy,
-                                      float cx = 0, float cy = 0)
+ସ୍ଥିର ତାର୍କିକ subset_scale_as_transform (hb_subset_context_t *c,
+                                      ଅଚଳ Base *base,
+                                      ଅଚଳ Offset24To<Paint> &src,
+                                      ଅଚଳ ItemVarStoreInstancer &instancer,
+                                      ଦଶମିକ sx, ଦଶମିକ sy,
+                                      ଦଶମିକ cx = 0, ଦଶମିକ cy = 0)
 {
-  if (src.is_null ()) return false;
-  auto source = [&] { return c->dispatch (base+src, instancer); };
-  float dx = cx * (1 - sx), dy = cy * (1 - sy);
-  if (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
-    return serialize_scale_transform (c, sx, sy, dx, dy, source);
+  ଯଦି (src.is_null ()) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+  auto source = [&] { ଫେରନ୍ତୁ c->dispatch (base+src, instancer); };
+  ଦଶମିକ dx = cx * (1 - sx), dy = cy * (1 - sy);
+  ଯଦି (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
+    ଫେରନ୍ତୁ serialize_scale_transform (c, sx, sy, dx, dy, source);
 
   // Preserve the center as separate translations when the combined matrix
   // exceeds Fixed. Splitting also makes the inverse of -32768 representable.
   auto inner = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
+    ଫେରନ୍ତୁ serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
   };
   auto inverse = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
+    ଫେରନ୍ତୁ serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
   };
   auto scale = [&] {
-    return serialize_scale_transform (c, sx, sy, 0, 0, inverse);
+    ଫେରନ୍ତୁ serialize_scale_transform (c, sx, sy, 0, 0, inverse);
   };
   auto outer = [&] {
-    return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
+    ଫେରନ୍ତୁ serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
   };
-  return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
+  ଫେରନ୍ତୁ serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
 }
 
-struct PaintScale
+ସଂରଚନା PaintScale
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, sx, sy));
+      ଦଶମିକ sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ଦଶମିକ sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      ଯଦି (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+        return_trace (subset_scale_as_transform (c, ଏହି, src, instancer, sx, sy));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 17 && c->plan->all_axes_pinned)
+    ଯଦି (format == 17 && c->plan->all_axes_pinned)
         out->format = 16;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ଦଶମିକ sy = scaleY.to_float (c->instancer (varIdxBase, 1));
 
-    c->funcs->push_scale (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_scale (c->data, sx, sy);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 16 (noVar) or 17(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScale table) to Paint subtable. */
   F2DOT14		scaleX;
   F2DOT14		scaleY;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintScaleAroundCenter
+ସଂରଚନା PaintScaleAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      ଦଶମିକ sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ଦଶମିକ sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      ଯଦି (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, sx, sy,
+            c, ଏହି, src, instancer, sx, sy,
             centerX + roundf (instancer (varIdxBase, 2)),
             centerY + roundf (instancer (varIdxBase, 3))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerX + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerY + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 19 && c->plan->all_axes_pinned)
+    ଯଦି (format == 19 && c->plan->all_axes_pinned)
         out->format = 18;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ଦଶମିକ sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    ଦଶମିକ tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ଦଶମିକ tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 18 (noVar) or 19(Var) */
@@ -1524,114 +1524,114 @@ struct PaintScaleAroundCenter
   F2DOT14	scaleY;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintScaleUniform
+ସଂରଚନା PaintScaleUniform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, s, s));
+      ଦଶମିକ s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ଯଦି (s < -2 || s >= 2)
+        return_trace (subset_scale_as_transform (c, ଏହି, src, instancer, s, s));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 21 && c->plan->all_axes_pinned)
+    ଯଦି (format == 21 && c->plan->all_axes_pinned)
         out->format = 20;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ s = scale.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_scale (c->data, s, s);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_scale (c->data, s, s);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 20 (noVar) or 21(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleUniform table) to Paint subtable. */
   F2DOT14		scale;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintScaleUniformAroundCenter
+ସଂରଚନା PaintScaleUniformAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      ଦଶମିକ s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ଯଦି (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, s, s,
+            c, ଏହି, src, instancer, s, s,
             centerX + roundf (instancer (varIdxBase, 1)),
             centerY + roundf (instancer (varIdxBase, 2))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerX + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerY + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format == 23 && c->plan->all_axes_pinned)
+    ଯଦି (format == 23 && c->plan->all_axes_pinned)
         out->format = 22;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ s = scale.to_float (c->instancer (varIdxBase, 0));
+    ଦଶମିକ tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ଦଶମିକ tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_scale_around_center (c->data, s, s, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_scale_around_center (c->data, s, s, tCenterX, tCenterY);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 22 (noVar) or 23(Var) */
@@ -1639,97 +1639,97 @@ struct PaintScaleUniformAroundCenter
   F2DOT14	scale;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintRotate
+ସଂରଚନା PaintRotate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 25 && c->plan->all_axes_pinned)
+    ଯଦି (format == 25 && c->plan->all_axes_pinned)
       out->format = 24;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ a = angle.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_rotate (c->data, a);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_rotate (c->data, a);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 24 (noVar) or 25(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintRotate table) to Paint subtable. */
   F2DOT14		angle;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintRotateAroundCenter
+ସଂରଚନା PaintRotateAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerX + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerY + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format ==27 && c->plan->all_axes_pinned)
+    ଯଦି (format ==27 && c->plan->all_axes_pinned)
         out->format = 26;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ a = angle.to_float (c->instancer (varIdxBase, 0));
+    ଦଶମିକ tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ଦଶମିକ tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_rotate_around_center (c->data, a, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_rotate_around_center (c->data, a, tCenterX, tCenterY);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 26 (noVar) or 27(Var) */
@@ -1737,104 +1737,104 @@ struct PaintRotateAroundCenter
   F2DOT14	angle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintSkew
+ସଂରଚନା PaintSkew
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 29 && c->plan->all_axes_pinned)
+    ଯଦି (format == 29 && c->plan->all_axes_pinned)
         out->format = 28;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ଦଶମିକ sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
 
-    c->funcs->push_skew (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_skew (c->data, sx, sy);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 28(noVar) or 29 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintSkew table) to Paint subtable. */
   F2DOT14		xSkewAngle;
   F2DOT14		ySkewAngle;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintSkewAroundCenter
+ସଂରଚନା PaintSkewAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerX + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) centerY + (ଦ୍ୱିଗୁଣ) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 31 && c->plan->all_axes_pinned)
+    ଯଦି (format == 31 && c->plan->all_axes_pinned)
         out->format = 30;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ଏହି, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && src.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (ଏହି);
+    ଦଶମିକ sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ଦଶମିକ sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    ଦଶମିକ tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ଦଶମିକ tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ଠେଲ_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_transform (c->data);
   }
 
   HBUINT8		format; /* format = 30(noVar) or 31 (Var) */
@@ -1843,108 +1843,108 @@ struct PaintSkewAroundCenter
   F2DOT14	ySkewAngle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintComposite
+ସଂରଚନା PaintComposite
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ଶୂନ୍ୟ dependv1 (hb_colrv1_depend_context_t* c) ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    bool ret = false;
-    ret |= out->src.serialize_subset (c, src, this, instancer);
-    ret |= out->backdrop.serialize_subset (c, backdrop, this, instancer);
+    ତାର୍କିକ ret = ମିଥ୍ୟା;
+    ret |= out->src.serialize_subset (c, src, ଏହି, instancer);
+    ret |= out->backdrop.serialize_subset (c, backdrop, ଏହି, instancer);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  c->check_ops (this->min_size) && // PainComposite can get exponential
-                  src.sanitize (c, this) &&
-                  backdrop.sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
+		  c->check_ops (ଏହି->min_size) && // PainComposite can get exponential
+                  src.sanitize (c, ଏହି) &&
+                  backdrop.sanitize (c, ଏହି));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ଶୂନ୍ୟ paint_glyph (hb_paint_context_t *c) ଅଚଳ
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ଏହି);
     hb_paint_composite_mode_t composite_mode;
-    switch ((unsigned int) mode)
+    ବାଛ ((unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-      case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_XOR:
-      case HB_PAINT_COMPOSITE_MODE_PLUS:
-      case HB_PAINT_COMPOSITE_MODE_SCREEN:
-      case HB_PAINT_COMPOSITE_MODE_OVERLAY:
-      case HB_PAINT_COMPOSITE_MODE_DARKEN:
-      case HB_PAINT_COMPOSITE_MODE_LIGHTEN:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
-      case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
-      case HB_PAINT_COMPOSITE_MODE_EXCLUSION:
-      case HB_PAINT_COMPOSITE_MODE_MULTIPLY:
-      case HB_PAINT_COMPOSITE_MODE_HSL_HUE:
-      case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
-      case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
-      case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-	composite_mode = (hb_paint_composite_mode_t) (unsigned int) mode;
-	break;
-      default:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_CLEAR:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SRC:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DEST:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SRC_OVER:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DEST_IN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_XOR:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_PLUS:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SCREEN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_OVERLAY:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DARKEN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_LIGHTEN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_EXCLUSION:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_MULTIPLY:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_HSL_HUE:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
+      ସ୍ଥିତି HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
+	composite_mode = (hb_paint_composite_mode_t) (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) mode;
+	ଭାଙ୍ଗ;
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	composite_mode = HB_PAINT_COMPOSITE_MODE_CLEAR;
-	break;
+	ଭାଙ୍ଗ;
     }
 
-    c->funcs->push_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
-    c->recurse (this+backdrop);
-    c->funcs->push_group_for (c->data, composite_mode);
-    c->recurse (this+src);
-    c->funcs->pop_group (c->data, composite_mode);
-    c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->ଠେଲ_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->recurse (ଏହି+backdrop);
+    c->funcs->ଠେଲ_group_for (c->data, composite_mode);
+    c->recurse (ଏହି+src);
+    c->funcs->କାଢ଼_group (c->data, composite_mode);
+    c->funcs->କାଢ଼_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
   }
 
   HBUINT8		format; /* format = 32 */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintComposite table) to source Paint subtable. */
   CompositeMode		mode;   /* If mode is unrecognized use COMPOSITE_CLEAR */
   Offset24To<Paint>	backdrop; /* Offset (from beginning of PaintComposite table) to backdrop Paint subtable. */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ClipBoxData
+ସଂରଚନା ClipBoxData
 {
-  int xMin, yMin, xMax, yMax;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା xMin, yMin, xMax, yMax;
 };
 
-struct ClipBoxFormat1
+ସଂରଚନା ClipBoxFormat1
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  ଶୂନ୍ୟ get_clip_box (ClipBoxData &clip_box, ଅଚଳ ItemVarStoreInstancer &instancer HB_UNUSED) ଅଚଳ
   {
     clip_box.xMin = xMin;
     clip_box.yMin = yMin;
@@ -1952,193 +1952,193 @@ struct ClipBoxFormat1
     clip_box.yMax = yMax;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (*ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ଯଦି (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->xMin = hb_clamp_to<int16_t> ((double) xMin + (double) floorf (instancer (varIdxBase, 0)));
-      out->yMin = hb_clamp_to<int16_t> ((double) yMin + (double) floorf (instancer (varIdxBase, 1)));
-      out->xMax = hb_clamp_to<int16_t> ((double) xMax + (double) ceilf (instancer (varIdxBase, 2)));
-      out->yMax = hb_clamp_to<int16_t> ((double) yMax + (double) ceilf (instancer (varIdxBase, 3)));
+      out->xMin = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) xMin + (ଦ୍ୱିଗୁଣ) floorf (instancer (varIdxBase, 0)));
+      out->yMin = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) yMin + (ଦ୍ୱିଗୁଣ) floorf (instancer (varIdxBase, 1)));
+      out->xMax = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) xMax + (ଦ୍ୱିଗୁଣ) ceilf (instancer (varIdxBase, 2)));
+      out->yMax = hb_clamp_to<int16_t> ((ଦ୍ୱିଗୁଣ) yMax + (ଦ୍ୱିଗୁଣ) ceilf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 2 && c->plan->all_axes_pinned)
+    ଯଦି (format == 2 && c->plan->all_axes_pinned)
         out->format = 1;
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBUINT8	format; /* format = 1(noVar) or 2(Var)*/
   FWORD		xMin;
   FWORD		yMin;
   FWORD		xMax;
   FWORD		yMax;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (1 + 4 * FWORD::static_size);
 };
 
-struct ClipBoxFormat2 : Variable<ClipBoxFormat1>
+ସଂରଚନା ClipBoxFormat2 : Variable<ClipBoxFormat1>
 {
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer) const
+  ଶୂନ୍ୟ get_clip_box (ClipBoxData &clip_box, ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     value.get_clip_box(clip_box, instancer);
-    if (instancer)
+    ଯଦି (instancer)
     {
-      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 0))));
-      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 1))));
-      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 2))));
-      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 3))));
+      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> (floorf (instancer (varIdxBase, 0))));
+      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> (floorf (instancer (varIdxBase, 1))));
+      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> (ceilf (instancer (varIdxBase, 2))));
+      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> (ceilf (instancer (varIdxBase, 3))));
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   { c->variation_indices->add_range (varIdxBase, varIdxBase + 3); }
 };
 
-struct ClipBox
+ସଂରଚନା ClipBox
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
-    default:return_trace (c->default_return_value ());
+    TRACE_SUBSET (ଏହି);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (c->default_return_ମୂଲ୍ୟ ());
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c) ଅଚଳ
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.format2.closurev1 (c); return;
-    default:return;
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 2: hb_barrier (); u.format2.closurev1 (c); ଫେରନ୍ତୁ;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:ଫେରନ୍ତୁ;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ଅଚଳ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    ଯଦି (unlikely (!c->may_dispatch (ଏହି, &u.format.v))) ଫେରନ୍ତୁ c->no_dispatch_return_ମୂଲ୍ୟ ();
+    TRACE_DISPATCH (ଏହି, u.format.v);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (c->default_return_ମୂଲ୍ୟ ());
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-                    const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ get_extents (hb_glyph_extents_t *extents,
+                    ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     ClipBoxData clip_box;
-    switch (u.format.v) {
-    case 1:
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1:
       hb_barrier ();
       u.format1.get_clip_box (clip_box, instancer);
-      break;
-    case 2:
+      ଭାଙ୍ଗ;
+    ସ୍ଥିତି 2:
       hb_barrier ();
       u.format2.get_clip_box (clip_box, instancer);
-      break;
-    default:
-      return false;
+      ଭାଙ୍ଗ;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
     extents->x_bearing = clip_box.xMin;
     extents->y_bearing = clip_box.yMax;
     extents->width = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
     extents->height = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }	format;         /* Format identifier */
+  ସୁରକ୍ଷିତ:
+  ସଂଘ {
+  ସଂରଚନା { HBUINT8 v; }	format;         /* Format identifier */
   ClipBoxFormat1	format1;
   ClipBoxFormat2	format2;
   } u;
 };
 
-struct ClipRecord
+ସଂରଚନା ClipRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (hb_codepoint_t g) ଅଚଳ
+  { ଫେରନ୍ତୁ g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
 
-  void closurev1 (hb_colrv1_closure_context_t* c, const void *base) const
+  ଶୂନ୍ୟ closurev1 (hb_colrv1_closure_context_t* c, ଅଚଳ ଶୂନ୍ୟ *base) ଅଚଳ
   {
-    if (!c->glyphs->intersects (startGlyphID, endGlyphID)) return;
+    ଯଦି (!c->glyphs->intersects (startGlyphID, endGlyphID)) ଫେରନ୍ତୁ;
     (base+clipBox).closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ଶୂନ୍ୟ *base,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->embed (*ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
     return_trace (out->clipBox.serialize_subset (c, clipBox, base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, ଅଚଳ ଶୂନ୍ୟ *base) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && clipBox.sanitize (c, base));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) && clipBox.sanitize (c, base));
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-		    const void *base,
-		    const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ get_extents (hb_glyph_extents_t *extents,
+		    ଅଚଳ ଶୂନ୍ୟ *base,
+		    ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    return (base+clipBox).get_extents (extents, instancer);
+    ଫେରନ୍ତୁ (base+clipBox).get_extents (extents, instancer);
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBUINT16		startGlyphID;  // first gid clip applies to
   HBUINT16		endGlyphID;    // last gid clip applies to, inclusive
   Offset24To<ClipBox>	clipBox;   // Box or VarBox
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (7);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, ClipRecord);
 
-struct ClipList
+ସଂରଚନା ClipList
 {
   unsigned serialize_clip_records (hb_subset_context_t *c,
-                                   const ItemVarStoreInstancer &instancer,
-                                   const hb_set_t& gids,
-                                   const hb_map_t& gid_offset_map) const
+                                   ଅଚଳ ItemVarStoreInstancer &instancer,
+                                   ଅଚଳ hb_set_t& gids,
+                                   ଅଚଳ hb_map_t& gid_offset_map) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    if (gids.is_empty () ||
+    TRACE_SERIALIZE (ଏହି);
+    ଯଦି (gids.is_empty () ||
         gid_offset_map.get_population () != gids.get_population ())
       return_trace (0);
 
-    unsigned count  = 0;
+    unsigned ଗଣନା_2  = 0;
 
     hb_codepoint_t start_gid= gids.get_min ();
     hb_codepoint_t prev_gid = start_gid;
 
     unsigned offset = gid_offset_map.get (start_gid);
     unsigned prev_offset = offset;
-    for (const hb_codepoint_t _ : gids.iter ())
+    ପାଇଁ (ଅଚଳ hb_codepoint_t _ : gids.iter ())
     {
-      if (_ == start_gid) continue;
+      ଯଦି (_ == start_gid) ଜାରି;
 
       offset = gid_offset_map.get (_);
-      if (_ == prev_gid + 1 &&  offset == prev_offset)
+      ଯଦି (_ == prev_gid + 1 &&  offset == prev_offset)
       {
         prev_gid = _;
-        continue;
+        ଜାରି;
       }
 
       ClipRecord record;
@@ -2146,8 +2146,8 @@ struct ClipList
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
 
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      ଯଦି (!record.subset (c, ଏହି, instancer)) return_trace (0);
+      ଗଣନା_2++;
 
       start_gid = _;
       prev_gid = _;
@@ -2160,139 +2160,139 @@ struct ClipList
       record.startGlyphID = start_gid;
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      ଯଦି (!record.subset (c, ଏହି, instancer)) return_trace (0);
+      ଗଣନା_2++;
     }
-    return_trace (count);
+    return_trace (ଗଣନା_2);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->start_embed (*ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out))) return_trace (ମିଥ୍ୟା);
+    ଯଦି (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (ମିଥ୍ୟା);
 
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ଅଚଳ hb_set_t& glyphset = c->plan->_glyphset_colred;
+    ଅଚଳ hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_map_t new_gid_offset_map;
     hb_set_t new_gids;
-    for (const ClipRecord& record : clips.iter ())
+    ପାଇଁ (ଅଚଳ ClipRecord& record : clips.iter ())
     {
       unsigned start_gid = record.startGlyphID;
       unsigned end_gid = record.endGlyphID;
-      for (unsigned gid = start_gid; gid <= end_gid; gid++)
+      ପାଇଁ (unsigned gid = start_gid; gid <= end_gid; gid++)
       {
-        if (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
+        ଯଦି (!glyphset.has (gid) || !glyph_map.has (gid)) ଜାରି;
         unsigned new_gid = glyph_map.get (gid);
         new_gid_offset_map.set (new_gid, record.clipBox);
         new_gids.add (new_gid);
       }
     }
 
-    unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
-    return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned ଗଣନା_2 = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
+    ଯଦି (!ଗଣନା_2) return_trace (ମିଥ୍ୟା);
+    return_trace (c->serializer->check_assign (out->clips.len, ଗଣନା_2, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
     // TODO Make a formatted struct!
-    return_trace (c->check_struct (this) && clips.sanitize (c, this));
+    return_trace (c->check_struct (ଏହି) && clips.sanitize (c, ଏହି));
   }
 
-  bool
+  ତାର୍କିକ
   get_extents (hb_codepoint_t gid,
 	       hb_glyph_extents_t *extents,
-	       const ItemVarStoreInstancer &instancer) const
+	       ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
     auto *rec = clips.as_array ().bsearch (gid);
-    if (rec)
-      return rec->get_extents (extents, this, instancer);
-    return false;
+    ଯଦି (rec)
+      ଫେରନ୍ତୁ rec->get_extents (extents, ଏହି, instancer);
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
   HBUINT8			format;  // Set to 1.
   SortedArray32Of<ClipRecord>	clips;  // Clip records, sorted by startGlyphID
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY_SIZED (5, clips);
 };
 
-struct Paint
+ସଂରଚନା Paint
 {
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    ଯଦି (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_ମୂଲ୍ୟ ());
 
-    return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
+    return_trace (c->end_recursion (ଏହି->dispatch (c, std::forward<Ts> (ds)...)));
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ଅଚଳ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
-    case 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
-    case 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
-    case 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
-    case 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
-    case 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
-    case 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
-    case 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
-    case 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
-    case 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
-    case 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
-    case 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
-    case 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
-    case 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
-    case 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
-    case 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
-    case 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
-    case 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
-    case 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
-    case 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
-    case 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
-    case 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
-    case 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
-    case 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
-    case 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
-    case 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
-    case 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
+    ଯଦି (unlikely (!c->may_dispatch (ଏହି, &u.format.v))) ଫେରନ୍ତୁ c->no_dispatch_return_ମୂଲ୍ୟ ();
+    TRACE_DISPATCH (ଏହି, u.format.v);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (c->default_return_ମୂଲ୍ୟ ());
     }
   }
 
-  bool get_solid_color (hb_paint_context_t *c,
-			hb_bool_t *is_foreground, hb_color_t *color) const
+  ତାର୍କିକ get_solid_color (hb_paint_context_t *c,
+			hb_bool_t *is_foreground, hb_color_t *color) ଅଚଳ
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); return true;
-    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); return true;
-    default: return false;
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); ଫେରନ୍ତୁ ସତ୍ୟ;
+    ସ୍ଥିତି 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); ଫେରନ୍ତୁ ସତ୍ୟ;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ: ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }				format;
+  ସୁରକ୍ଷିତ:
+  ସଂଘ {
+  ସଂରଚନା { HBUINT8 v; }				format;
   PaintColrLayers				paintformat1;
   NoVariable<PaintSolid>			paintformat2;
   Variable<PaintSolid>				paintformat3;
@@ -2329,209 +2329,209 @@ struct Paint
   PaintGlyph<Layout::MediumTypes>		paintformat33;
 #endif
   } u;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (2);
 };
 
-struct BaseGlyphPaintRecord
+ସଂରଚନା BaseGlyphPaintRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (hb_codepoint_t g) ଅଚଳ
+  { ଫେରନ୍ତୁ g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool serialize (hb_serialize_context_t *s, const hb_map_t* glyph_map,
-                  const void* src_base, hb_subset_context_t *c,
-                  const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ serialize (hb_serialize_context_t *s, ଅଚଳ hb_map_t* glyph_map,
+                  ଅଚଳ ଶୂନ୍ୟ* src_base, hb_subset_context_t *c,
+                  ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = s->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
+    TRACE_SERIALIZE (ଏହି);
+    auto *out = s->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (ମିଥ୍ୟା);
 
     return_trace (out->paint.serialize_subset (c, paint, src_base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, ଅଚଳ ଶୂନ୍ୟ *base) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && paint.sanitize (c, base)));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (likely (c->check_struct (ଏହି) && paint.sanitize (c, base)));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBGlyphID16		glyphId;    /* Glyph ID of reference glyph */
   Offset32To<Paint>	paint;      /* Offset (from beginning of BaseGlyphPaintRecord array) to Paint,
                                      * Typically PaintColrLayers */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
+ସଂରଚନା BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
-    const hb_set_t* glyphset = &c->plan->_glyphset_colred;
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->start_embed (ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out)))  return_trace (ମିଥ୍ୟା);
+    ଅଚଳ hb_set_t* glyphset = &c->plan->_glyphset_colred;
 
-    for (const auto& _ : as_array ())
+    ପାଇଁ (ଅଚଳ auto& _ : as_array ())
     {
       unsigned gid = _.glyphId;
-      if (!glyphset->has (gid)) continue;
+      ଯଦି (!glyphset->has (gid)) ଜାରି;
 
-      if (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
-      else return_trace (false);
+      ଯଦି (_.serialize (c->serializer, c->plan->glyph_map, ଏହି, c, instancer)) out->len++;
+      ଅନ୍ୟଥା return_trace (ମିଥ୍ୟା);
     }
 
     return_trace (out->len != 0);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, ଏହି));
   }
 };
 
-struct LayerList : Array32OfOffset32To<Paint>
+ସଂରଚନା LayerList : Array32OfOffset32To<Paint>
 {
-  const Paint& get_paint (unsigned i) const
-  { return this+(*this)[i]; }
+  ଅଚଳ Paint& get_paint (unsigned i) ଅଚଳ
+  { ଫେରନ୍ତୁ ଏହି+(*ଏହି)[i]; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               ଅଚଳ ItemVarStoreInstancer &instancer) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->start_embed (ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out)))  return_trace (ମିଥ୍ୟା);
 
-    bool ret = false;
-    for (const auto& _ : + hb_enumerate (*this)
+    ତାର୍କିକ ret = ମିଥ୍ୟା;
+    ପାଇଁ (ଅଚଳ auto& _ : + hb_enumerate (*ଏହି)
                          | hb_filter (c->plan->colrv1_layers, hb_first))
 
     {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-      ret |= o->serialize_subset (c, _.second, this, instancer);
+      ଯଦି (unlikely (!o)) return_trace (ମିଥ୍ୟା);
+      ret |= o->serialize_subset (c, _.second, ଏହି, instancer);
     }
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (Array32OfOffset32To<Paint>::sanitize (c, this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (Array32OfOffset32To<Paint>::sanitize (c, ଏହି));
   }
 };
 
-struct delta_set_index_map_subset_plan_t
+ସଂରଚନା delta_set_index_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  unsigned get_inner_bit_ଗଣନା () ଅଚଳ { ଫେରନ୍ତୁ inner_bit_ଗଣନା; }
+  unsigned get_width ()           ଅଚଳ { ଫେରନ୍ତୁ ((outer_bit_ଗଣନା + inner_bit_ଗଣନା + 7) / 8); }
+  hb_array_t<ଅଚଳ uint32_t> get_output_map () ଅଚଳ { ଫେରନ୍ତୁ output_map.as_array (); }
 
-  delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
+  delta_set_index_map_subset_plan_t (ଅଚଳ hb_map_t &new_deltaset_idx_varidx_map)
   {
-    map_count = 0;
-    outer_bit_count = 0;
-    inner_bit_count = 1;
+    map_ଗଣନା = 0;
+    outer_bit_ଗଣନା = 0;
+    inner_bit_ଗଣନା = 1;
     output_map.init ();
 
     /* search backwards */
-    unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    unsigned ଗଣନା_2 = new_deltaset_idx_varidx_map.get_population ();
+    ଯଦି (!ଗଣନା_2) ଫେରନ୍ତୁ;
 
     unsigned last_idx = (unsigned)-1;
     unsigned last_varidx = (unsigned)-1;
 
-    for (unsigned i = count; i; i--)
+    ପାଇଁ (unsigned i = ଗଣନା_2; i; i--)
     {
       unsigned delta_set_idx = i - 1;
       unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      ଯଦି (i == ଗଣନା_2)
       {
         last_idx = delta_set_idx;
         last_varidx = var_idx;
-        continue;
+        ଜାରି;
       }
-      if (var_idx != last_varidx)
-        break;
+      ଯଦି (var_idx != last_varidx)
+        ଭାଙ୍ଗ;
       last_idx = delta_set_idx;
     }
 
-    map_count = last_idx + 1;
+    map_ଗଣନା = last_idx + 1;
   }
 
-  bool remap (const hb_map_t &new_deltaset_idx_varidx_map)
+  ତାର୍କିକ remap (ଅଚଳ hb_map_t &new_deltaset_idx_varidx_map)
   {
     /* recalculate bit_count */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_ଗଣନା = 1;
+    inner_bit_ଗଣନା = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    ଯଦି (unlikely (!output_map.resize_dirty (map_ଗଣନା))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    ପାଇଁ (unsigned idx = 0; idx < map_ଗଣନା; idx++)
     {
       uint32_t *var_idx;
-      if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
+      ଯଦି (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
       output_map.arrayZ[idx] = *var_idx;
 
       unsigned outer = (*var_idx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_ଗଣନା = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_ଗଣନା = hb_max (bit_ଗଣନା, outer_bit_ଗଣନା);
 
       unsigned inner = (*var_idx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_ଗଣନା = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_ଗଣନା = hb_max (bit_ଗଣନା, inner_bit_ଗଣନା);
     }
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  private:
-  unsigned map_count;
-  unsigned outer_bit_count;
-  unsigned inner_bit_count;
+  ବ୍ୟକ୍ତିଗତ:
+  unsigned map_ଗଣନା;
+  unsigned outer_bit_ଗଣନା;
+  unsigned inner_bit_ଗଣନା;
   hb_vector_t<uint32_t> output_map;
 };
 
-struct COLR
+ସଂରଚନା COLR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
 
-  bool has_data () const { return has_v0_data () || version; }
+  ତାର୍କିକ has_data () ଅଚଳ { ଫେରନ୍ତୁ has_v0_data () || version; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
-  bool has_v1_data () const
+  ତାର୍କିକ has_v0_data () ଅଚଳ { ଫେରନ୍ତୁ ଅଙ୍କ_Base_Glyphs; }
+  ତାର୍କିକ has_v1_data () ଅଚଳ
   {
-    if (version < 1)
-      return false;
+    ଯଦି (version < 1)
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     hb_barrier ();
 
-    return (this+baseGlyphList).len > 0;
+    ଫେରନ୍ତୁ (ଏହି+baseGlyphList).len > 0;
   }
 
-  unsigned int get_glyph_layers (hb_codepoint_t       glyph,
-				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
-				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_glyph_layers (hb_codepoint_t       glyph,
+				 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା         start_offset,
+				 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା        *ଗଣନା_2, /* IN/OUT.  May be NULL. */
+				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) ଅଚଳ
   {
-    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
+    ଅଚଳ BaseGlyphRecord &record = (ଏହି+baseGlyphsZ).bsearch (ଅଙ୍କ_Base_Glyphs, glyph);
 
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
-    hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-								       record.numLayers);
-    if (count && layers)
+    hb_array_t<ଅଚଳ LayerRecord> all_layers = (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers);
+    hb_array_t<ଅଚଳ LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+								       record.ଅଙ୍କ_Layers);
+    ଯଦି (ଗଣନା_2 && layers)
     {
-      + glyph_layers.sub_array (start_offset, count)
-      | hb_sink (hb_array (layers, *count))
+      + glyph_layers.sub_array (start_offset, ଗଣନା_2)
+      | hb_sink (hb_array (layers, *ଗଣନା_2))
       ;
     }
-    return glyph_layers.length;
+    ଫେରନ୍ତୁ glyph_layers.length;
   }
 
-  struct accelerator_t
+  ସଂରଚନା accelerator_t
   {
     accelerator_t (hb_face_t *face)
     { colr = hb_sanitize_context_t ().reference_table<COLR> (face); }
@@ -2539,7 +2539,7 @@ struct COLR
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      ଯଦି (scratch)
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2549,613 +2549,613 @@ struct COLR
     }
 
 
-    bool has_data () const { return colr->has_data (); }
+    ତାର୍କିକ has_data () ଅଚଳ { ଫେରନ୍ତୁ colr->has_data (); }
 
 #ifndef HB_NO_PAINT
-    bool
+    ତାର୍କିକ
     get_extents (hb_font_t *font,
 		 hb_codepoint_t glyph,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) ଅଚଳ
     {
-      if (unlikely (!has_data ())) return false;
+      ଯଦି (unlikely (!has_data ())) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->get_extents (font, glyph, extents, *scratch);
+      ଯଦି (unlikely (!scratch)) ଫେରନ୍ତୁ ସତ୍ୟ;
+      ତାର୍କିକ ret = colr->get_extents (font, glyph, extents, *scratch);
       release_scratch (scratch);
-      return ret;
+      ଫେରନ୍ତୁ ret;
     }
 
-    bool paint_glyph (hb_font_t *font,
+    ତାର୍କିକ paint_glyph (hb_font_t *font,
 		      hb_codepoint_t glyph,
-		      hb_paint_funcs_t *funcs, void *data,
-		      unsigned int palette_index,
+		      hb_paint_funcs_t *funcs, ଶୂନ୍ୟ *data,
+		      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା palette_index,
 		      hb_color_t foreground,
-		      bool clip = true) const
+		      ତାର୍କିକ clip = ସତ୍ୟ) ଅଚଳ
     {
-      if (unlikely (!has_data ())) return false;
+      ଯଦି (unlikely (!has_data ())) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
+      ଯଦି (unlikely (!scratch)) ଫେରନ୍ତୁ ସତ୍ୟ;
+      ତାର୍କିକ ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
       release_scratch (scratch);
-      return ret;
+      ଫେରନ୍ତୁ ret;
     }
 #endif
 
-    bool is_valid () { return colr.get_blob ()->length; }
+    ତାର୍କିକ is_valid () { ଫେରନ୍ତୁ colr.get_blob ()->length; }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    ଶୂନ୍ୟ depend (hb_depend_data_builder_t *depend_data) ଅଚଳ
     {
-      if (!has_data ()) return;
+      ଯଦି (!has_data ()) ଫେରନ୍ତୁ;
       colr->depend (depend_data);
     }
 
-    void closure_glyphs (hb_codepoint_t glyph,
-			 hb_set_t *related_ids /* OUT */) const
+    ଶୂନ୍ୟ closure_glyphs (hb_codepoint_t glyph,
+			 hb_set_t *related_ids /* OUT */) ଅଚଳ
     { colr->closure_glyphs (glyph, related_ids); }
 
-    void closure_V0palette_indices (const hb_set_t *glyphs,
-				    hb_set_t *palettes /* OUT */) const
+    ଶୂନ୍ୟ closure_V0palette_indices (ଅଚଳ hb_set_t *glyphs,
+				    hb_set_t *palettes /* OUT */) ଅଚଳ
     { colr->closure_V0palette_indices (glyphs, palettes); }
 
-    void closure_forV1 (hb_set_t *glyphset,
+    ଶୂନ୍ୟ closure_forV1 (hb_set_t *glyphset,
                         hb_set_t *layer_indices,
                         hb_set_t *palette_indices,
                         hb_set_t *variation_indices,
-                        hb_set_t *delta_set_indices) const
+                        hb_set_t *delta_set_indices) ଅଚଳ
     { colr->closure_forV1 (glyphset, layer_indices, palette_indices, variation_indices, delta_set_indices); }
 
-    bool has_var_store () const
-    { return colr->has_var_store (); }
+    ତାର୍କିକ has_var_store () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->has_var_store (); }
 
-    const ItemVariationStore &get_var_store () const
-    { return colr->get_var_store (); }
-    const ItemVariationStore *get_var_store_ptr () const
-    { return colr->get_var_store_ptr (); }
+    ଅଚଳ ItemVariationStore &get_var_store () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->get_var_store (); }
+    ଅଚଳ ItemVariationStore *get_var_store_ptr () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->get_var_store_ptr (); }
 
-    bool has_delta_set_index_map () const
-    { return colr->has_delta_set_index_map (); }
+    ତାର୍କିକ has_delta_set_index_map () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->has_delta_set_index_map (); }
 
-    const DeltaSetIndexMap &get_delta_set_index_map () const
-    { return colr->get_delta_set_index_map (); }
-    const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-    { return colr->get_delta_set_index_map_ptr (); }
+    ଅଚଳ DeltaSetIndexMap &get_delta_set_index_map () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->get_delta_set_index_map (); }
+    ଅଚଳ DeltaSetIndexMap *get_delta_set_index_map_ptr () ଅଚଳ
+    { ଫେରନ୍ତୁ colr->get_delta_set_index_map_ptr (); }
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
 
-    hb_colr_scratch_t *acquire_scratch () const
+    hb_colr_scratch_t *acquire_scratch () ଅଚଳ
     {
       hb_colr_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      ଯଦି (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_colr_scratch_t *) hb_calloc (1, sizeof (hb_colr_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_colr_scratch_t *) hb_calloc (1, ଆକାର (hb_colr_scratch_t));
+	ଯଦି (unlikely (!scratch))
+	  ଫେରନ୍ତୁ nullptr;
       }
 
-      return scratch;
+      ଫେରନ୍ତୁ scratch;
     }
-    void release_scratch (hb_colr_scratch_t *scratch) const
+    ଶୂନ୍ୟ release_scratch (hb_colr_scratch_t *scratch) ଅଚଳ
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      ଯଦି (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    public:
+    ସର୍ବସାଧାରଣ:
     hb_blob_ptr_t<COLR> colr;
-    private:
+    ବ୍ୟକ୍ତିଗତ:
     mutable hb_atomic_t<hb_colr_scratch_t *> cached_scratch;
   };
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  ଶୂନ୍ୟ depend (hb_depend_data_builder_t *depend_data) ଅଚଳ
   {
     // v0
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    for (const BaseGlyphRecord &record : baseGlyphs)
+    hb_array_t<ଅଚଳ BaseGlyphRecord> baseGlyphs = (ଏହି+baseGlyphsZ).as_array (ଅଙ୍କ_Base_Glyphs);
+    ପାଇଁ (ଅଚଳ BaseGlyphRecord &record : baseGlyphs)
     {
-      auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
-                                                                         record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      auto glyph_layers = (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers).sub_array (record.firstLayerIdx,
+                                                                         record.ଅଙ୍କ_Layers);
+      ପାଇଁ (ଅଚଳ LayerRecord layer : glyph_layers)
         depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
     }
 
-    if (!has_v1_data())
-      return;
+    ଯଦି (!has_v1_data())
+      ଫେରନ୍ତୁ;
 
     // v1
-    hb_colrv1_depend_context_t c (this, depend_data);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_depend_context_t c (ଏହି, depend_data);
+    ଅଚଳ BaseGlyphList &baseglyph_paintrecords = ଏହି+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    ପାଇଁ (ଅଚଳ BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       c.source_gid = baseglyph_paintrecord.glyphId;
       c.visited_paint.clear ();
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ଅଚଳ Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
   }
 
-  void closure_glyphs (hb_codepoint_t glyph,
-		       hb_set_t *related_ids /* OUT */) const
+  ଶୂନ୍ୟ closure_glyphs (hb_codepoint_t glyph,
+		       hb_set_t *related_ids /* OUT */) ଅଚଳ
   {
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (!record) return;
+    ଅଚଳ BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    ଯଦି (!record) ଫେରନ୍ତୁ;
 
-    auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
-								       record->numLayers);
-    if (!glyph_layers.length) return;
+    auto glyph_layers = (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers).sub_array (record->firstLayerIdx,
+								       record->ଅଙ୍କ_Layers);
+    ଯଦି (!glyph_layers.length) ଫେରନ୍ତୁ;
     related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
   }
 
-  void closure_V0palette_indices (const hb_set_t *glyphs,
-				  hb_set_t *palettes /* OUT */) const
+  ଶୂନ୍ୟ closure_V0palette_indices (ଅଚଳ hb_set_t *glyphs,
+				  hb_set_t *palettes /* OUT */) ଅଚଳ
   {
-    if (!numBaseGlyphs || !numLayers) return;
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    ଯଦି (!ଅଙ୍କ_Base_Glyphs || !ଅଙ୍କ_Layers) ଫେରନ୍ତୁ;
+    hb_array_t<ଅଚଳ BaseGlyphRecord> baseGlyphs = (ଏହି+baseGlyphsZ).as_array (ଅଙ୍କ_Base_Glyphs);
+    hb_array_t<ଅଚଳ LayerRecord> all_layers = (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers);
 
-    for (const BaseGlyphRecord record : baseGlyphs)
+    ପାଇଁ (ଅଚଳ BaseGlyphRecord record : baseGlyphs)
     {
-      if (!glyphs->has (record.glyphId)) continue;
-      hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-                                                                   record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      ଯଦି (!glyphs->has (record.glyphId)) ଜାରି;
+      hb_array_t<ଅଚଳ LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+                                                                   record.ଅଙ୍କ_Layers);
+      ପାଇଁ (ଅଚଳ LayerRecord layer : glyph_layers)
         palettes->add (layer.colorIdx);
     }
   }
 
-  void closure_forV1 (hb_set_t *glyphset,
+  ଶୂନ୍ୟ closure_forV1 (hb_set_t *glyphset,
                       hb_set_t *layer_indices,
                       hb_set_t *palette_indices,
                       hb_set_t *variation_indices,
-                      hb_set_t *delta_set_indices) const
+                      hb_set_t *delta_set_indices) ଅଚଳ
   {
-    if (version < 1) return;
+    ଯଦି (version < 1) ଫେରନ୍ତୁ;
     hb_barrier ();
 
     hb_set_t visited_glyphs;
 
-    hb_colrv1_closure_context_t c (this, &visited_glyphs, layer_indices, palette_indices, variation_indices);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_closure_context_t c (ଏହି, &visited_glyphs, layer_indices, palette_indices, variation_indices);
+    ଅଚଳ BaseGlyphList &baseglyph_paintrecords = ଏହି+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    ପାଇଁ (ଅଚଳ BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       unsigned gid = baseglyph_paintrecord.glyphId;
-      if (!glyphset->has (gid)) continue;
+      ଯଦି (!glyphset->has (gid)) ଜାରି;
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ଅଚଳ Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
     hb_set_union (glyphset, &visited_glyphs);
 
-    const ClipList &cliplist = this+clipList;
+    ଅଚଳ ClipList &cliplist = ଏହି+clipList;
     c.glyphs = glyphset;
-    for (const ClipRecord &clip_record : cliplist.clips.iter())
+    ପାଇଁ (ଅଚଳ ClipRecord &clip_record : cliplist.clips.iter())
       clip_record.closurev1 (&c, &cliplist);
 
     // if a DeltaSetIndexMap is included, collected variation indices are
     // actually delta set indices, we need to map them into variation indices
-    if (has_delta_set_index_map ())
+    ଯଦି (has_delta_set_index_map ())
     {
-      const DeltaSetIndexMap &var_idx_map = this+varIdxMap;
+      ଅଚଳ DeltaSetIndexMap &var_idx_map = ଏହି+varIdxMap;
       delta_set_indices->set (*variation_indices);
       variation_indices->clear ();
-      for (unsigned delta_set_idx : *delta_set_indices)
+      ପାଇଁ (unsigned delta_set_idx : *delta_set_indices)
         variation_indices->add (var_idx_map.map (delta_set_idx));
     }
   }
 
-  const LayerList& get_layerList () const
-  { return (this+layerList); }
+  ଅଚଳ LayerList& get_layerList () ଅଚଳ
+  { ଫେରନ୍ତୁ (ଏହି+layerList); }
 
-  const BaseGlyphList& get_baseglyphList () const
-  { return (this+baseGlyphList); }
+  ଅଚଳ BaseGlyphList& get_baseglyphList () ଅଚଳ
+  { ଫେରନ୍ତୁ (ଏହି+baseGlyphList); }
 
-  bool has_var_store () const
-  { return version >= 1 && hb_barrier () && varStore != 0; }
+  ତାର୍କିକ has_var_store () ଅଚଳ
+  { ଫେରନ୍ତୁ version >= 1 && hb_barrier () && varStore != 0; }
 
-  bool has_delta_set_index_map () const
-  { return version >= 1 && hb_barrier () && varIdxMap != 0; }
+  ତାର୍କିକ has_delta_set_index_map () ଅଚଳ
+  { ଫେରନ୍ତୁ version >= 1 && hb_barrier () && varIdxMap != 0; }
 
-  bool has_clip_list () const
-  { return version >= 1 && hb_barrier () && clipList != 0; }
+  ତାର୍କିକ has_clip_list () ଅଚଳ
+  { ଫେରନ୍ତୁ version >= 1 && hb_barrier () && clipList != 0; }
 
-  const DeltaSetIndexMap &get_delta_set_index_map () const
-  { return has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
-  const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-  { return has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
+  ଅଚଳ DeltaSetIndexMap &get_delta_set_index_map () ଅଚଳ
+  { ଫେରନ୍ତୁ has_delta_set_index_map () && hb_barrier () ? ଏହି+varIdxMap : Null (DeltaSetIndexMap); }
+  ଅଚଳ DeltaSetIndexMap *get_delta_set_index_map_ptr () ଅଚଳ
+  { ଫେରନ୍ତୁ has_delta_set_index_map () && hb_barrier () ? &(ଏହି+varIdxMap) : nullptr; }
 
-  const ItemVariationStore &get_var_store () const
-  { return has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
-  const ItemVariationStore *get_var_store_ptr () const
-  { return has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
+  ଅଚଳ ItemVariationStore &get_var_store () ଅଚଳ
+  { ଫେରନ୍ତୁ has_var_store () && hb_barrier () ? ଏହି+varStore : Null (ItemVariationStore); }
+  ଅଚଳ ItemVariationStore *get_var_store_ptr () ଅଚଳ
+  { ଫେରନ୍ତୁ has_var_store () && hb_barrier () ? &(ଏହି+varStore) : nullptr; }
 
-  const ClipList &get_clip_list () const
-  { return has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
+  ଅଚଳ ClipList &get_clip_list () ଅଚଳ
+  { ଫେରନ୍ତୁ has_clip_list () && hb_barrier () ? ଏହି+clipList : Null (ClipList); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
-                  (this+baseGlyphsZ).sanitize (c, numBaseGlyphs) &&
-                  (this+layersZ).sanitize (c, numLayers) &&
+                  (ଏହି+baseGlyphsZ).sanitize (c, ଅଙ୍କ_Base_Glyphs) &&
+                  (ଏହି+layersZ).sanitize (c, ଅଙ୍କ_Layers) &&
                   (version == 0 ||
 		   (hb_barrier () &&
-		    baseGlyphList.sanitize (c, this) &&
-		    layerList.sanitize (c, this) &&
-		    clipList.sanitize (c, this) &&
-		    varIdxMap.sanitize (c, this) &&
-		    varStore.sanitize (c, this))));
+		    baseGlyphList.sanitize (c, ଏହି) &&
+		    layerList.sanitize (c, ଏହି) &&
+		    clipList.sanitize (c, ଏହି) &&
+		    varIdxMap.sanitize (c, ଏହି) &&
+		    varStore.sanitize (c, ଏହି))));
   }
 
   template<typename BaseIterator, typename LayerIterator,
 	   hb_requires (hb_is_iterator (BaseIterator)),
 	   hb_requires (hb_is_iterator (LayerIterator))>
-  bool serialize_V0 (hb_serialize_context_t *c,
+  ତାର୍କିକ serialize_V0 (hb_serialize_context_t *c,
 		     unsigned version,
 		     BaseIterator base_it,
 		     LayerIterator layer_it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (base_it.len () != layer_it.len ()))
-      return_trace (false);
+    TRACE_SERIALIZE (ଏହି);
+    ଯଦି (unlikely (base_it.len () != layer_it.len ()))
+      return_trace (ମିଥ୍ୟା);
 
-    this->version = version;
-    numLayers = 0;
-    numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    ଏହି->version = version;
+    ଅଙ୍କ_Layers = 0;
+    ଅଙ୍କ_Base_Glyphs = base_it.len ();
+    ଯଦି (ଅଙ୍କ_Base_Glyphs == 0)
     {
       baseGlyphsZ = 0;
       layersZ = 0;
-      return_trace (true);
+      return_trace (ସତ୍ୟ);
     }
 
     c->push ();
-    for (const hb_item_type<BaseIterator> _ : + base_it.iter ())
+    ପାଇଁ (ଅଚଳ hb_item_type<BaseIterator> _ : + base_it.iter ())
     {
       auto* record = c->embed (_);
-      if (unlikely (!record)) return_trace (false);
-      record->firstLayerIdx = numLayers;
-      numLayers += record->numLayers;
+      ଯଦି (unlikely (!record)) return_trace (ମିଥ୍ୟା);
+      record->firstLayerIdx = ଅଙ୍କ_Layers;
+      ଅଙ୍କ_Layers += record->ଅଙ୍କ_Layers;
     }
-    c->add_link (baseGlyphsZ, c->pop_pack ());
+    c->add_link (baseGlyphsZ, c->କାଢ଼_pack ());
 
     c->push ();
-    for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
+    ପାଇଁ (ଅଚଳ hb_item_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
-    c->add_link (layersZ, c->pop_pack ());
+    c->add_link (layersZ, c->କାଢ଼_pack ());
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
+  ଅଚଳ BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) ଅଚଳ
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
-    if (record == &Null (BaseGlyphRecord) ||
+    ଅଚଳ BaseGlyphRecord* record = &(ଏହି+baseGlyphsZ).bsearch (ଅଙ୍କ_Base_Glyphs, (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) gid);
+    ଯଦି (record == &Null (BaseGlyphRecord) ||
         (record && (hb_codepoint_t) record->glyphId != gid))
       record = nullptr;
-    return record;
+    ଫେରନ୍ତୁ record;
   }
 
-  const BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) const
+  ଅଚଳ BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) ଅଚଳ
   {
-    const BaseGlyphList &list = this+baseGlyphList;
-    unsigned int i;
-    if (!list.bfind ((unsigned) gid, &i))
-      return nullptr;
-    return &list[i];
+    ଅଚଳ BaseGlyphList &list = ଏହି+baseGlyphList;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i;
+    ଯଦି (!list.bfind ((unsigned) gid, &i))
+      ଫେରନ୍ତୁ nullptr;
+    ଫେରନ୍ତୁ &list[i];
   }
 
-  bool downgrade_to_V0 (const hb_set_t &glyphset) const
+  ତାର୍କିକ downgrade_to_V0 (ଅଚଳ hb_set_t &glyphset) ଅଚଳ
   {
     //no more COLRv1 glyphs, downgrade to version 0
-    for (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
-      if (glyphset.has (_.glyphId))
-        return false;
+    ପାଇଁ (ଅଚଳ BaseGlyphPaintRecord& _ : get_baseglyphList ())
+      ଯଦି (glyphset.has (_.glyphId))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        COLR* out /* OUT */) const
+  ତାର୍କିକ subset_varstore (hb_subset_context_t *c,
+                        COLR* out /* OUT */) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (!varStore || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (!varStore || c->plan->all_axes_pinned ||
         !c->plan->colrv1_variation_idx_delta_map)
-      return_trace (true);
+      return_trace (ସତ୍ୟ);
 
-    const ItemVariationStore& var_store = this+varStore;
-    if (c->plan->normalized_coords)
+    ଅଚଳ ItemVariationStore& var_store = ଏହି+varStore;
+    ଯଦି (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
       /* turn off varstore optimization when varIdxMap is null, so we maintain
        * original var_idx sequence */
-      bool optimize = (varIdxMap != 0) ? true : false;
-      if (!item_vars.instantiate (var_store, c->plan,
+      ତାର୍କିକ optimize = (varIdxMap != 0) ? ସତ୍ୟ : ମିଥ୍ୟା;
+      ଯଦି (!item_vars.instantiate (var_store, c->plan,
                                   optimize, /* optimization */
                                   optimize, /* use_no_variation_idx = false */
                                   c->plan->colrv1_varstore_inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (ମିଥ୍ୟା);
 
       /* do not serialize varStore if there's no variation data after
        * instancing: region_list or var_data is empty */
-      if (item_vars.get_region_list () &&
+      ଯଦି (item_vars.get_region_list () &&
           item_vars.get_vardata_encodings () &&
           !out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
                                               c->plan->axis_tags,
                                               item_vars.get_region_list (),
                                               item_vars.get_vardata_encodings ()))
-        return_trace (false);
+        return_trace (ମିଥ୍ୟା);
 
       /* if varstore is optimized, update colrv1_new_deltaset_idx_varidx_map in
        * subset plan.
        * If varstore is empty after instancing, varidx_map would be empty and
        * all var_idxes will be updated to VarIdx::NO_VARIATION */
-      if (optimize)
+      ଯଦି (optimize)
       {
-        const hb_map_t &varidx_map = item_vars.get_varidx_map ();
-        for (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
+        ଅଚଳ hb_map_t &varidx_map = item_vars.get_varidx_map ();
+        ପାଇଁ (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
         {
           uint32_t varidx = _.second;
           uint32_t *new_varidx;
-          if (varidx_map.has (varidx, &new_varidx))
+          ଯଦି (varidx_map.has (varidx, &new_varidx))
             _.second = *new_varidx;
-          else
+          ଅନ୍ୟଥା
             _.second = VarIdx::NO_VARIATION;
         }
       }
     }
-    else
+    ଅନ୍ୟଥା
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
+      ଯଦି (c->plan->has_avar2)
         var_store.collect_dead_regions (c->plan->axes_old_index_tag_map,
                                         c->plan->avar2_reachable_ranges,
                                         dead_regions);
 
-      if (unlikely (!out->varStore.serialize_serialize (c->serializer,
+      ଯଦି (unlikely (!out->varStore.serialize_serialize (c->serializer,
                                                         &var_store,
                                                         c->plan->colrv1_varstore_inner_maps.as_array (),
                                                         dead_regions.get_population () ? &dead_regions : nullptr)))
-        return_trace (false);
+        return_trace (ମିଥ୍ୟା);
     }
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool subset_delta_set_index_map (hb_subset_context_t *c,
-                                   COLR* out /* OUT */) const
+  ତାର୍କିକ subset_delta_set_index_map (hb_subset_context_t *c,
+                                   COLR* out /* OUT */) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    if (!varIdxMap || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (ଏହି);
+    ଯଦି (!varIdxMap || c->plan->all_axes_pinned ||
         !c->plan->colrv1_new_deltaset_idx_varidx_map)
-      return_trace (true);
+      return_trace (ସତ୍ୟ);
 
-    const hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
+    ଅଚଳ hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
     delta_set_index_map_subset_plan_t index_map_plan (deltaset_idx_varidx_map);
 
-    if (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
-      return_trace (false);
+    ଯଦି (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
+      return_trace (ମିଥ୍ୟା);
 
     return_trace (out->varIdxMap.serialize_serialize (c->serializer, index_map_plan));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
+    TRACE_SUBSET (ଏହି);
+    ଅଚଳ hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
+    ଅଚଳ hb_set_t& glyphset = c->plan->_glyphset_colred;
 
     auto base_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->ଅଙ୍କ_output_glyphs ())
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
 		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
-		    if (glyphset.has (old_gid)) return true;
-		    return false;
+		    ଯଦି (glyphset.has (old_gid)) ଫେରନ୍ତୁ ସତ୍ୟ;
+		    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 		 })
     | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
 			      {
 				hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
 
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				if (unlikely (!old_record))
-				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
+				ଅଚଳ BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				ଯଦି (unlikely (!old_record))
+				  ଫେରନ୍ତୁ hb_pair_t<ତାର୍କିକ, BaseGlyphRecord> (ମିଥ୍ୟା, Null (BaseGlyphRecord));
 				BaseGlyphRecord new_record = {};
 				new_record.glyphId = new_gid;
-				new_record.numLayers = old_record->numLayers;
-				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
+				new_record.ଅଙ୍କ_Layers = old_record->ଅଙ୍କ_Layers;
+				ଫେରନ୍ତୁ hb_pair_t<ତାର୍କିକ, BaseGlyphRecord> (ସତ୍ୟ, new_record);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
     auto layer_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->ଅଙ୍କ_output_glyphs ())
     | hb_map (reverse_glyph_map)
     | hb_filter (glyphset)
     | hb_map_retains_sorting ([&](hb_codepoint_t old_gid)
 			      {
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				ଅଚଳ BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
 				hb_vector_t<LayerRecord> out_layers;
 
-				if (unlikely (!old_record ||
-					      old_record->firstLayerIdx >= numLayers ||
-					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
-				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				ଯଦି (unlikely (!old_record ||
+					      old_record->firstLayerIdx >= ଅଙ୍କ_Layers ||
+					      old_record->firstLayerIdx + old_record->ଅଙ୍କ_Layers > ଅଙ୍କ_Layers))
+				  ଫେରନ୍ତୁ hb_pair_t<ତାର୍କିକ, hb_vector_t<LayerRecord>> (ମିଥ୍ୟା, out_layers);
 
-				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
-											     old_record->numLayers);
+				auto layers = (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers).sub_array (old_record->firstLayerIdx,
+											     old_record->ଅଙ୍କ_Layers);
 				out_layers.resize (layers.length);
-				for (unsigned int i = 0; i < layers.length; i++) {
+				ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < layers.length; i++) {
 				  out_layers[i] = layers[i];
 				  hb_codepoint_t new_gid = 0;
-				  if (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
-				    return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				  ଯଦି (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
+				    ଫେରନ୍ତୁ hb_pair_t<ତାର୍କିକ, hb_vector_t<LayerRecord>> (ମିଥ୍ୟା, out_layers);
 				  out_layers[i].glyphId = new_gid;
 				  out_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
 				}
 
-				return hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
+				ଫେରନ୍ତୁ hb_pair_t<ତାର୍କିକ, hb_vector_t<LayerRecord>> (ସତ୍ୟ, out_layers);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
-    if (version == 0 && (!base_it || !layer_it))
-      return_trace (false);
+    ଯଦି (version == 0 && (!base_it || !layer_it))
+      return_trace (ମିଥ୍ୟା);
 
-    auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    auto *colr_ମୌଳିକ = c->serializer->start_embed<COLR> ();
+    ଯଦି (unlikely (!c->serializer->extend_min (colr_ମୌଳିକ)))  return_trace (ମିଥ୍ୟା);
 
-    if (version == 0 || downgrade_to_V0 (glyphset))
-      return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
+    ଯଦି (version == 0 || downgrade_to_V0 (glyphset))
+      return_trace (colr_ମୌଳିକ->serialize_V0 (c->serializer, 0, base_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
-    if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    ଯଦି (!c->serializer->allocate_size<ଶୂନ୍ୟ> (5 * HBUINT32::static_size)) return_trace (ମିଥ୍ୟା);
+    ଯଦି (!colr_ମୌଳିକ->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (ମିଥ୍ୟା);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    ଯଦି (!subset_varstore (c, colr_ମୌଳିକ)) return_trace (ମିଥ୍ୟା);
 
     ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
 				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
-      return_trace (false);
+    ଯଦି (!colr_ମୌଳିକ->baseGlyphList.serialize_subset (c, baseGlyphList, ଏହି, instancer))
+      return_trace (ମିଥ୍ୟା);
 
-    colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
-    colr_prime->clipList.serialize_subset (c, clipList, this, instancer);
+    colr_ମୌଳିକ->layerList.serialize_subset (c, layerList, ଏହି, instancer);
+    colr_ମୌଳିକ->clipList.serialize_subset (c, clipList, ଏହି, instancer);
 
-    return_trace (subset_delta_set_index_map (c, colr_prime));
+    return_trace (subset_delta_set_index_map (c, colr_ମୌଳିକ));
   }
 
-  const Paint *get_base_glyph_paint (hb_codepoint_t glyph) const
+  ଅଚଳ Paint *get_base_glyph_paint (hb_codepoint_t glyph) ଅଚଳ
   {
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
-    const BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
-    if (record)
+    ଅଚଳ BaseGlyphList &baseglyph_paintrecords = ଏହି+baseGlyphList;
+    ଅଚଳ BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
+    ଯଦି (record)
     {
-      const Paint &paint = &baseglyph_paintrecords+record->paint;
-      return &paint;
+      ଅଚଳ Paint &paint = &baseglyph_paintrecords+record->paint;
+      ଫେରନ୍ତୁ &paint;
     }
-    else
-      return nullptr;
+    ଅନ୍ୟଥା
+      ଫେରନ୍ତୁ nullptr;
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  ତାର୍କିକ
   get_extents (hb_font_t *font,
 	       hb_codepoint_t glyph,
 	       hb_glyph_extents_t *extents,
-	       hb_colr_scratch_t &scratch) const
+	       hb_colr_scratch_t &scratch) ଅଚଳ
   {
 
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
                                      get_delta_set_index_map_ptr (),
-                                     hb_array (font->coords, font->num_coords));
+                                     hb_array (font->coords, font->ଅଙ୍କ_coords));
 
-    if (get_clip (glyph, extents, instancer))
+    ଯଦି (get_clip (glyph, extents, instancer))
     {
       font->scale_glyph_extents (extents);
-      return true;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
 
     auto *extents_funcs = hb_paint_extents_get_funcs ();
     scratch.paint_extents.clear ();
-    bool ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), true, scratch);
+    ତାର୍କିକ ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), ସତ୍ୟ, scratch);
 
     auto e = scratch.paint_extents.get_extents ();
-    if (e.is_void ())
+    ଯଦି (e.is_void ())
     {
       extents->x_bearing = 0;
       extents->y_bearing = 0;
       extents->width = 0;
       extents->height = 0;
     }
-    else
+    ଅନ୍ୟଥା
       *extents = e.to_glyph_extents ();
 
-    return ret;
+    ଫେରନ୍ତୁ ret;
   }
 #endif
 
-  bool
-  has_paint_for_glyph (hb_codepoint_t glyph) const
+  ତାର୍କିକ
+  has_paint_for_glyph (hb_codepoint_t glyph) ଅଚଳ
   {
-    if (version >= 1)
+    ଯଦି (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
+      ଅଚଳ Paint *paint = get_base_glyph_paint (glyph);
 
-      return paint != nullptr;
+      ଫେରନ୍ତୁ paint != nullptr;
     }
 
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  bool get_clip (hb_codepoint_t glyph,
+  ତାର୍କିକ get_clip (hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents,
-		 const ItemVarStoreInstancer instancer) const
+		 ଅଚଳ ItemVarStoreInstancer instancer) ଅଚଳ
   {
-    return get_clip_list ().get_extents (glyph,
+    ଫେରନ୍ତୁ get_clip_list ().get_extents (glyph,
 					extents,
 					instancer);
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  ତାର୍କିକ
   paint_glyph (hb_font_t *font,
 	       hb_codepoint_t glyph,
-	       hb_paint_funcs_t *funcs, void *data,
-	       unsigned int palette_index, hb_color_t foreground,
-	       bool clip,
-	       hb_colr_scratch_t &scratch) const
+	       hb_paint_funcs_t *funcs, ଶୂନ୍ୟ *data,
+	       unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା palette_index, hb_color_t foreground,
+	       ତାର୍କିକ clip,
+	       hb_colr_scratch_t &scratch) ଅଚଳ
   {
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
 				     get_delta_set_index_map_ptr (),
 				     hb_array (font->coords,
-					       font->has_nonzero_coords ? font->num_coords : 0));
-    hb_paint_context_t c (this, funcs, data, font, palette_index, foreground, instancer);
+					       font->has_nonzero_coords ? font->ଅଙ୍କ_coords : 0));
+    hb_paint_context_t c (ଏହି, funcs, data, font, palette_index, foreground, instancer);
 
-    hb_decycler_node_t node (c.glyphs_decycler);
+    hb_decycler_ଗଣ୍ଠି_t node (c.glyphs_decycler);
     node.visit (glyph);
 
-    if (version >= 1)
+    ଯଦି (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
-      if (paint)
+      ଅଚଳ Paint *paint = get_base_glyph_paint (glyph);
+      ଯଦି (paint)
       {
         // COLRv1 glyph
 
-	bool is_bounded = true;
+	ତାର୍କିକ is_bounded = ସତ୍ୟ;
 	hb_glyph_extents_t extents = {};
-	if (clip)
+	ଯଦି (clip)
 	{
-	  if (!get_clip (glyph, &extents, instancer))
+	  ଯଦି (!get_clip (glyph, &extents, instancer))
 	  {
-	    clip = false;
-	    is_bounded = false;
+	    clip = ମିଥ୍ୟା;
+	    is_bounded = ମିଥ୍ୟା;
 	  }
 
-	  if (!is_bounded)
+	  ଯଦି (!is_bounded)
 	  {
 	    auto *bounded_funcs = hb_paint_bounded_get_funcs ();
 	    scratch.paint_bounded.clear ();
@@ -3163,161 +3163,161 @@ struct COLR
 	    paint_glyph (font, glyph,
 			 bounded_funcs, &scratch.paint_bounded,
 			 palette_index, foreground,
-			 false,
+			 ମିଥ୍ୟା,
 			 scratch);
 
 	    is_bounded = scratch.paint_bounded.is_bounded ();
 	  }
 	}
 
-	c.funcs->push_font_transform (c.data, font);
+	c.funcs->ଠେଲ_font_transform (c.data, font);
 
-	if (clip)
-	  c.funcs->push_clip_rectangle (c.data,
-					(float) extents.x_bearing,
-					(float) extents.y_bearing + extents.height,
-					(float) extents.x_bearing + extents.width,
-					(float) extents.y_bearing);
+	ଯଦି (clip)
+	  c.funcs->ଠେଲ_clip_rectangle (c.data,
+					(ଦଶମିକ) extents.x_bearing,
+					(ଦଶମିକ) extents.y_bearing + extents.height,
+					(ଦଶମିକ) extents.x_bearing + extents.width,
+					(ଦଶମିକ) extents.y_bearing);
 
-	if (is_bounded)
+	ଯଦି (is_bounded)
 	  c.recurse (*paint);
 
-	if (clip)
-	  c.funcs->pop_clip (c.data);
+	ଯଦି (clip)
+	  c.funcs->କାଢ଼_clip (c.data);
 
-	c.funcs->pop_transform (c.data);
+	c.funcs->କାଢ଼_transform (c.data);
 
-        return true;
+        ଫେରନ୍ତୁ ସତ୍ୟ;
       }
     }
 
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (record && ((hb_codepoint_t) record->glyphId == glyph))
+    ଅଚଳ BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    ଯଦି (record && ((hb_codepoint_t) record->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
-			   .sub_array (record->firstLayerIdx, record->numLayers))
+      ପାଇଁ (ଅଚଳ auto &r : (ଏହି+layersZ).as_array (ଅଙ୍କ_Layers)
+			   .sub_array (record->firstLayerIdx, record->ଅଙ୍କ_Layers))
       {
         hb_bool_t is_foreground;
         hb_color_t color = c.get_color (r.colorIdx, 1., &is_foreground);
         c.funcs->fill_glyph (c.data, r.glyphId, c.font, is_foreground, color);
       }
 
-      return true;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
 
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 #endif
 
-  protected:
+  ସୁରକ୍ଷିତ:
   HBUINT16	version;	/* Table version number (starts at 0). */
-  HBUINT16	numBaseGlyphs;	/* Number of Base Glyph Records. */
+  HBUINT16	ଅଙ୍କ_Base_Glyphs;	/* Number of Base Glyph Records. */
   NNOffset32To<SortedUnsizedArrayOf<BaseGlyphRecord>>
 		baseGlyphsZ;	/* Offset to Base Glyph records. */
   NNOffset32To<UnsizedArrayOf<LayerRecord>>
 		layersZ;	/* Offset to Layer Records. */
-  HBUINT16	numLayers;	/* Number of Layer Records. */
+  HBUINT16	ଅଙ୍କ_Layers;	/* Number of Layer Records. */
   // Version-1 additions
   Offset32To<BaseGlyphList>		baseGlyphList;
   Offset32To<LayerList>			layerList;
   Offset32To<ClipList>			clipList;   // Offset to ClipList table (may be NULL)
   Offset32To<DeltaSetIndexMap>		varIdxMap;  // Offset to DeltaSetIndexMap table (may be NULL)
   Offset32To<ItemVariationStore>	varStore;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (14);
 };
 
-struct COLR_accelerator_t : COLR::accelerator_t {
+ସଂରଚନା COLR_accelerator_t : COLR::accelerator_t {
   COLR_accelerator_t (hb_face_t *face) : COLR::accelerator_t (face) {}
 };
 
-void
-hb_paint_context_t::recurse (const Paint &paint)
+ଶୂନ୍ୟ
+hb_paint_context_t::recurse (ଅଚଳ Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-  depth_left--;
-  edge_count--;
-  paint.dispatch (this);
-  depth_left++;
+  ଯଦି (unlikely (depth_ବାମ <= 0 || edge_ଗଣନା <= 0)) ଫେରନ୍ତୁ;
+  depth_ବାମ--;
+  edge_ଗଣନା--;
+  paint.dispatch (ଏହି);
+  depth_ବାମ++;
 }
 
 template <typename Types>
-void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
+ଶୂନ୍ୟ PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) ଅଚଳ
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (ଏହି);
 
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
-      (this+paint).get_solid_color (c, &is_foreground, &color))
+  ଯଦି (likely (c->depth_ବାମ > 0 && c->edge_ଗଣନା > 0) &&
+      (ଏହି+paint).get_solid_color (c, &is_foreground, &color))
   {
-    c->edge_count--;
-    c->funcs->push_inverse_font_transform (c->data, c->font);
+    c->edge_ଗଣନା--;
+    c->funcs->ଠେଲ_inverse_font_transform (c->data, c->font);
     c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->କାଢ଼_transform (c->data);
+    ଫେରନ୍ତୁ;
   }
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  c->funcs->push_clip_glyph (c->data, gid, c->font);
-  c->funcs->push_font_transform (c->data, c->font);
-  c->recurse (this+paint);
-  c->funcs->pop_transform (c->data);
-  c->funcs->pop_clip (c->data);
-  c->funcs->pop_transform (c->data);
+  c->funcs->ଠେଲ_inverse_font_transform (c->data, c->font);
+  c->funcs->ଠେଲ_clip_glyph (c->data, gid, c->font);
+  c->funcs->ଠେଲ_font_transform (c->data, c->font);
+  c->recurse (ଏହି+paint);
+  c->funcs->କାଢ଼_transform (c->data);
+  c->funcs->କାଢ଼_clip (c->data);
+  c->funcs->କାଢ଼_transform (c->data);
 }
 
-void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
+ଶୂନ୍ୟ PaintColrLayers::paint_glyph (hb_paint_context_t *c) ଅଚଳ
 {
-  TRACE_PAINT (this);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  TRACE_PAINT (ଏହି);
+  ଅଚଳ LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  hb_decycler_ଗଣ୍ଠି_t node (c->layers_decycler);
+  ପାଇଁ (unsigned i = firstLayerIndex; i < firstLayerIndex + ଅଙ୍କ_Layers; i++)
   {
-    if (unlikely (!node.visit (i)))
-      return;
+    ଯଦି (unlikely (!node.visit (i)))
+      ଫେରନ୍ତୁ;
 
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ଅଚଳ Paint &paint = paint_offset_lists.get_paint (i);
     c->recurse (paint);
   }
 }
 
-void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
+ଶୂନ୍ୟ PaintColrGlyph::paint_glyph (hb_paint_context_t *c) ଅଚଳ
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (ଏହି);
 
-  hb_decycler_node_t node (c->glyphs_decycler);
-  if (unlikely (!node.visit (gid)))
-    return;
+  hb_decycler_ଗଣ୍ଠି_t node (c->glyphs_decycler);
+  ଯଦି (unlikely (!node.visit (gid)))
+    ଫେରନ୍ତୁ;
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  if (c->funcs->color_glyph (c->data, gid, c->font))
+  c->funcs->ଠେଲ_inverse_font_transform (c->data, c->font);
+  ଯଦି (c->funcs->color_glyph (c->data, gid, c->font))
   {
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->କାଢ଼_transform (c->data);
+    ଫେରନ୍ତୁ;
   }
-  c->funcs->pop_transform (c->data);
+  c->funcs->କାଢ଼_transform (c->data);
 
-  const COLR *colr_table = c->get_colr_table ();
-  const Paint *paint = colr_table->get_base_glyph_paint (gid);
+  ଅଚଳ COLR *colr_table = c->get_colr_table ();
+  ଅଚଳ Paint *paint = colr_table->get_base_glyph_paint (gid);
 
   hb_glyph_extents_t extents = {0};
-  bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
+  ତାର୍କିକ has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
 
-  if (has_clip_box)
-    c->funcs->push_clip_rectangle (c->data,
-				   (float) extents.x_bearing,
-				   (float) extents.y_bearing + extents.height,
-				   (float) extents.x_bearing + extents.width,
-				   (float) extents.y_bearing);
+  ଯଦି (has_clip_box)
+    c->funcs->ଠେଲ_clip_rectangle (c->data,
+				   (ଦଶମିକ) extents.x_bearing,
+				   (ଦଶମିକ) extents.y_bearing + extents.height,
+				   (ଦଶମିକ) extents.x_bearing + extents.width,
+				   (ଦଶମିକ) extents.y_bearing);
 
-  if (paint)
+  ଯଦି (paint)
     c->recurse (*paint);
 
-  if (has_clip_box)
-    c->funcs->pop_clip (c->data);
+  ଯଦି (has_clip_box)
+    c->funcs->କାଢ଼_clip (c->data);
 }
 
 } /* namespace OT */

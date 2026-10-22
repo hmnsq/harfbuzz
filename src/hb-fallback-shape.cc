@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-shaper-impl.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-shaper-impl.hh"
 
 #ifndef HB_NO_FALLBACK_SHAPE
 
@@ -32,15 +32,15 @@
  * shaper face data
  */
 
-struct hb_fallback_face_data_t {};
+ସଂରଚନା hb_fallback_face_data_t {};
 
 hb_fallback_face_data_t *
 _hb_fallback_shaper_face_data_create (hb_face_t *face HB_UNUSED)
 {
-  return (hb_fallback_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ଫେରନ୍ତୁ (hb_fallback_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+ଶୂନ୍ୟ
 _hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
 {
 }
@@ -50,15 +50,15 @@ _hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
  * shaper font data
  */
 
-struct hb_fallback_font_data_t {};
+ସଂରଚନା hb_fallback_font_data_t {};
 
 hb_fallback_font_data_t *
 _hb_fallback_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_fallback_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ଫେରନ୍ତୁ (hb_fallback_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+ଶୂନ୍ୟ
 _hb_fallback_shaper_font_data_destroy (hb_fallback_font_data_t *data HB_UNUSED)
 {
 }
@@ -72,28 +72,28 @@ hb_bool_t
 _hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features HB_UNUSED,
-		    unsigned int        num_features HB_UNUSED)
+		    ଅଚଳ hb_feature_t *features HB_UNUSED,
+		    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା        ଅଙ୍କ_features HB_UNUSED)
 {
   hb_codepoint_t space;
-  bool has_space = (bool) font->get_nominal_glyph (' ', &space);
+  ତାର୍କିକ has_space = (ତାର୍କିକ) font->get_nominal_glyph (' ', &space);
 
   buffer->clear_positions ();
 
   hb_direction_t direction = buffer->props.direction;
   hb_unicode_funcs_t *unicode = buffer->unicode;
-  unsigned int count = buffer->len;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
-  for (unsigned int i = 0; i < count; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
   {
-    if (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
+    ଯଦି (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
       info[i].codepoint = space;
       pos[i].x_advance = 0;
       pos[i].y_advance = 0;
-      continue;
+      ଜାରି;
     }
-    (void) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
+    (ଶୂନ୍ୟ) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
     font->get_glyph_advance_for_direction (info[i].codepoint,
 					   direction,
 					   &pos[i].x_advance,
@@ -104,12 +104,12 @@ _hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 					       &pos[i].y_offset);
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  ଯଦି (HB_DIRECTION_IS_BACKWARD (direction))
     hb_buffer_reverse (buffer);
 
   buffer->clear_glyph_flags ();
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 #endif

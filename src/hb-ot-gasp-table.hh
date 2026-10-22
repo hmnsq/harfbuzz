@@ -25,10 +25,10 @@
 #ifndef HB_OT_GASP_TABLE_HH
 #define HB_OT_GASP_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-hhea-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-os2-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
@@ -37,44 +37,44 @@
 #define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
 
 
-namespace OT {
+ନାମାକାଶ OT {
 
-struct GaspRange
+ସଂରଚନା GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct gasp
+ସଂରଚନା gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  ଅଚଳ GaspRange &get_gasp_range (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i) ଅଚଳ
+  { ଫେରନ୍ତୁ gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
+  ସୁରକ୍ଷିତ:
   HBUINT16	version;	/* Version number (set to 1) */
   Array16Of<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY (4, gaspRanges);
 };
 

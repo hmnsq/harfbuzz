@@ -1,37 +1,37 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
 #define OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
 
-#include "ValueFormat.hh"
+#ଅନ୍ତର୍ଭାଵ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
-                                     const ValueBase *base,
-                                     const Coverage &coverage,
-                                     const ClassDef &class_def1,
-                                     const ClassDef &class_def2,
-                                     const ValueFormat &valueFormat1,
-                                     const ValueFormat &valueFormat2,
-                                     unsigned class1_count,
-                                     unsigned class2_count,
-                                     const ValueRecord &values)
+HB_INTERNAL ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
+                                     ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                                     ଅଚଳ Coverage &coverage,
+                                     ଅଚଳ ClassDef &class_def1,
+                                     ଅଚଳ ClassDef &class_def2,
+                                     ଅଚଳ ମୂଲ୍ୟ_Format &ମୂଲ୍ୟ_Format1,
+                                     ଅଚଳ ମୂଲ୍ୟ_Format &ମୂଲ୍ୟ_Format2,
+                                     unsigned class1_ଗଣନା,
+                                     unsigned class2_ଗଣନା,
+                                     ଅଚଳ ମୂଲ୍ୟ_Record &values)
 {
-  if (!coverage.intersects (c->glyph_set) ||
-      !class_def2.intersects (c->glyph_set)) return;
-  if ((!valueFormat1.has_device ()) && (!valueFormat2.has_device ())) return;
+  ଯଦି (!coverage.intersects (c->glyph_set) ||
+      !class_def2.intersects (c->glyph_set)) ଫେରନ୍ତୁ;
+  ଯଦି ((!ମୂଲ୍ୟ_Format1.has_device ()) && (!ମୂଲ୍ୟ_Format2.has_device ())) ଫେରନ୍ତୁ;
 
   hb_set_t klass1_glyphs, klass2_glyphs;
-  if (!class_def1.collect_coverage (&klass1_glyphs)) return;
-  if (!class_def2.collect_coverage (&klass2_glyphs)) return;
+  ଯଦି (!class_def1.collect_coverage (&klass1_glyphs)) ଫେରନ୍ତୁ;
+  ଯଦି (!class_def2.collect_coverage (&klass2_glyphs)) ଫେରନ୍ତୁ;
 
   hb_set_t class1_set, class2_set;
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
+  ପାଇଁ (ଅଚଳ unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
   {
-    if (!klass1_glyphs.has (cp)) class1_set.add (0);
-    else
+    ଯଦି (!klass1_glyphs.has (cp)) class1_set.add (0);
+    ଅନ୍ୟଥା
     {
       unsigned klass1 = class_def1.get (cp);
       class1_set.add (klass1);
@@ -39,111 +39,111 @@ void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
   }
 
   class2_set.add (0);
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
+  ପାଇଁ (ଅଚଳ unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
   {
     unsigned klass2 = class_def2.get (cp);
     class2_set.add (klass2);
   }
 
-  if (class1_set.is_empty ()
+  ଯଦି (class1_set.is_empty ()
       || class2_set.is_empty ()
       || (class2_set.get_population() == 1 && class2_set.has(0)))
-    return;
+    ଫେରନ୍ତୁ;
 
-  unsigned len1 = valueFormat1.get_len ();
-  unsigned len2 = valueFormat2.get_len ();
-  const hb_array_t<const Value> values_array = values.as_array ((unsigned)class1_count * (unsigned) class2_count * (len1 + len2));
-  for (const unsigned class1_idx : class1_set.iter ())
+  unsigned len1 = ମୂଲ୍ୟ_Format1.get_len ();
+  unsigned len2 = ମୂଲ୍ୟ_Format2.get_len ();
+  ଅଚଳ hb_array_t<ଅଚଳ ମୂଲ୍ୟ> ମୂଲ୍ୟଗୁଡ଼ିକ_array = values.as_array ((unsigned)class1_ଗଣନା * (unsigned) class2_ଗଣନା * (len1 + len2));
+  ପାଇଁ (ଅଚଳ unsigned class1_idx : class1_set.iter ())
   {
-    for (const unsigned class2_idx : class2_set.iter ())
+    ପାଇଁ (ଅଚଳ unsigned class2_idx : class2_set.iter ())
     {
-      unsigned start_offset = (class1_idx * (unsigned) class2_count + class2_idx) * (len1 + len2);
-      if (valueFormat1.has_device ())
-        valueFormat1.collect_variation_indices (c, base, values_array.sub_array (start_offset, len1));
+      unsigned start_offset = (class1_idx * (unsigned) class2_ଗଣନା + class2_idx) * (len1 + len2);
+      ଯଦି (ମୂଲ୍ୟ_Format1.has_device ())
+        ମୂଲ୍ୟ_Format1.collect_variation_indices (c, base, ମୂଲ୍ୟଗୁଡ଼ିକ_array.sub_array (start_offset, len1));
 
-      if (valueFormat2.has_device ())
-        valueFormat2.collect_variation_indices (c, base, values_array.sub_array (start_offset+len1, len2));
+      ଯଦି (ମୂଲ୍ୟ_Format2.has_device ())
+        ମୂଲ୍ୟ_Format2.collect_variation_indices (c, base, ମୂଲ୍ୟଗୁଡ଼ିକ_array.sub_array (start_offset+len1, len2));
     }
   }
 }
 
 /* Keep class-matrix traversal independent of the source table width. */
-struct pair_pos_class_values_t
+ସଂରଚନା pair_pos_class_ମୂଲ୍ୟଗୁଡ଼ିକ_t
 {
-  const ValueBase *base;
-  const ValueRecord &values;
-  const ValueFormat &valueFormat1;
-  const ValueFormat &valueFormat2;
-  unsigned class1_count;
-  unsigned class2_count;
+  ଅଚଳ ମୂଲ୍ୟ_Base *base;
+  ଅଚଳ ମୂଲ୍ୟ_Record &values;
+  ଅଚଳ ମୂଲ୍ୟ_Format &ମୂଲ୍ୟ_Format1;
+  ଅଚଳ ମୂଲ୍ୟ_Format &ମୂଲ୍ୟ_Format2;
+  unsigned class1_ଗଣନା;
+  unsigned class2_ଗଣନା;
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_map_t &klass1_map,
-                                                               const hb_map_t &klass2_map,
-                                                               bool strip_hints, bool strip_empty,
-                                                               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<unsigned, unsigned> compute_effective_ମୂଲ୍ୟ_formats (ଅଚଳ hb_map_t &klass1_map,
+                                                               ଅଚଳ hb_map_t &klass2_map,
+                                                               ତାର୍କିକ strip_hints, ତାର୍କିକ strip_empty,
+                                                               ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *varidx_delta_map = nullptr) ଅଚଳ
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
+    unsigned len1 = ମୂଲ୍ୟ_Format1.get_len ();
+    unsigned len2 = ମୂଲ୍ୟ_Format2.get_len ();
     unsigned record_size = len1 + len2;
 
     unsigned format1 = 0;
     unsigned format2 = 0;
 
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    ପାଇଁ (unsigned class1_idx : + hb_range (class1_ଗଣନା) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : + hb_range (class2_count) | hb_filter (klass2_map))
+      ପାଇଁ (unsigned class2_idx : + hb_range (class2_ଗଣନା) | hb_filter (klass2_map))
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * record_size;
-        format1 = format1 | valueFormat1.get_effective_format (&values[idx], strip_hints, strip_empty, base, varidx_delta_map);
-        format2 = format2 | valueFormat2.get_effective_format (&values[idx + len1], strip_hints, strip_empty, base, varidx_delta_map);
+        unsigned idx = (class1_idx * class2_ଗଣନା + class2_idx) * record_size;
+        format1 = format1 | ମୂଲ୍ୟ_Format1.get_effective_format (&values[idx], strip_hints, strip_empty, base, varidx_delta_map);
+        format2 = format2 | ମୂଲ୍ୟ_Format2.get_effective_format (&values[idx + len1], strip_hints, strip_empty, base, varidx_delta_map);
       }
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat1 && format2 == valueFormat2)
-        break;
+      ଯଦି (!varidx_delta_map &&
+          format1 == ମୂଲ୍ୟ_Format1 && format2 == ମୂଲ୍ୟ_Format2)
+        ଭାଙ୍ଗ;
     }
 
-    return hb_pair (format1, format2);
+    ଫେରନ୍ତୁ hb_pair (format1, format2);
   }
 
-  bool serialize (hb_subset_context_t *c,
-                  const hb_map_t &klass1_map,
-                  const hb_map_t &klass2_map,
-                  ValueFormat newFormat1,
-                  ValueFormat newFormat2) const
+  ତାର୍କିକ serialize (hb_subset_context_t *c,
+                  ଅଚଳ hb_map_t &klass1_map,
+                  ଅଚଳ hb_map_t &klass2_map,
+                  ମୂଲ୍ୟ_Format newFormat1,
+                  ମୂଲ୍ୟ_Format newFormat2) ଅଚଳ
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
+    unsigned len1 = ମୂଲ୍ୟ_Format1.get_len ();
+    unsigned len2 = ମୂଲ୍ୟ_Format2.get_len ();
     unsigned total_len = len1 + len2;
-    hb_vector_t<unsigned> class2_idxs (+ hb_range (class2_count) | hb_filter (klass2_map));
-    if (unlikely (!c->serializer->propagate_error (class2_idxs)))
-      return false;
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    hb_vector_t<unsigned> class2_idxs (+ hb_range (class2_ଗଣନା) | hb_filter (klass2_map));
+    ଯଦି (unlikely (!c->serializer->propagate_error (class2_idxs)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ପାଇଁ (unsigned class1_idx : + hb_range (class1_ଗଣନା) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : class2_idxs)
+      ପାଇଁ (unsigned class2_idx : class2_idxs)
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * total_len;
-        valueFormat1.copy_values (c->serializer, newFormat1, base, &values[idx], &c->plan->layout_variation_idx_delta_map);
-        valueFormat2.copy_values (c->serializer, newFormat2, base, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
+        unsigned idx = (class1_idx * class2_ଗଣନା + class2_idx) * total_len;
+        ମୂଲ୍ୟ_Format1.copy_ମୂଲ୍ୟଗୁଡ଼ିକ (c->serializer, newFormat1, base, &values[idx], &c->plan->layout_variation_idx_delta_map);
+        ମୂଲ୍ୟ_Format2.copy_ମୂଲ୍ୟଗୁଡ଼ିକ (c->serializer, newFormat2, base, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
       }
     }
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 };
 
 template <typename Types>
-struct PairPosFormat2_4 : ValueBase
+ସଂରଚନା PairPosFormat2_4 : ମୂଲ୍ୟ_Base
 {
-  protected:
+  ସୁରକ୍ଷିତ:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat1;           /* ValueRecord definition--for the
+  ମୂଲ୍ୟ_Format   ମୂଲ୍ୟ_Format1;           /* ValueRecord definition--for the
                                          * first glyph of the pair--may be zero
                                          * (0) */
-  ValueFormat   valueFormat2;           /* ValueRecord definition--for the
+  ମୂଲ୍ୟ_Format   ମୂଲ୍ୟ_Format2;           /* ValueRecord definition--for the
                                          * second glyph of the pair--may be
                                          * zero (0) */
   typename Types::template LOffsetTo<ClassDef>
@@ -154,120 +154,120 @@ struct PairPosFormat2_4 : ValueBase
                 classDef2;              /* Offset to ClassDef table--from
                                          * beginning of PairPos subtable--for
                                          * the second glyph of the pair */
-  HBUINT16      class1Count;            /* Number of classes in ClassDef1
+  HBUINT16      class1_ଗଣନା_2;            /* Number of classes in ClassDef1
                                          * table--includes Class0 */
-  HBUINT16      class2Count;            /* Number of classes in ClassDef2
+  HBUINT16      class2_ଗଣନା_2;            /* Number of classes in ClassDef2
                                          * table--includes Class0 */
-  ValueRecord   values;                 /* Matrix of value pairs:
+  ମୂଲ୍ୟ_Record   values;                 /* Matrix of value pairs:
                                          * class1-major, class2-minor,
                                          * Each entry has value1 and value2 */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY (10 + 3 * Types::LOffset::static_size, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this)
-       && coverage.sanitize (c, this)
-       && classDef1.sanitize (c, this)
-       && classDef2.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (!(c->check_struct (ଏହି)
+       && coverage.sanitize (c, ଏହି)
+       && classDef1.sanitize (c, ଏହି)
+       && classDef2.sanitize (c, ଏହି))) return_trace (ମିଥ୍ୟା);
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int stride = HBUINT16::static_size * (len1 + len2);
-    unsigned int count = (unsigned int) class1Count * (unsigned int) class2Count;
-    return_trace (c->check_range ((const void *) values,
-                                  count,
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା len1 = ମୂଲ୍ୟ_Format1.get_len ();
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା len2 = ମୂଲ୍ୟ_Format2.get_len ();
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା stride = HBUINT16::static_size * (len1 + len2);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) class1_ଗଣନା_2 * (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) class2_ଗଣନା_2;
+    return_trace (c->check_range ((ଅଚଳ ଶୂନ୍ୟ *) values,
+                                  ଗଣନା_2,
                                   stride) &&
 		  (c->lazy_some_gpos ||
-		   (valueFormat1.sanitize_values_stride_unsafe (c, this, &values[0], count, stride) &&
-		    valueFormat2.sanitize_values_stride_unsafe (c, this, &values[len1], count, stride))));
+		   (ମୂଲ୍ୟ_Format1.sanitize_ମୂଲ୍ୟଗୁଡ଼ିକ_stride_unsafe (c, ଏହି, &values[0], ଗଣନା_2, stride) &&
+		    ମୂଲ୍ୟ_Format2.sanitize_ମୂଲ୍ୟଗୁଡ଼ିକ_stride_unsafe (c, ଏହି, &values[len1], ଗଣନା_2, stride))));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ତାର୍କିକ intersects (ଅଚଳ hb_set_t *glyphs) ଅଚଳ
   {
-    return (this+coverage).intersects (glyphs) &&
-           (this+classDef2).intersects (glyphs);
+    ଫେରନ୍ତୁ (ଏହି+coverage).intersects (glyphs) &&
+           (ଏହି+classDef2).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ଶୂନ୍ୟ closure_lookups (hb_closure_lookups_context_t *c) ଅଚଳ {}
+  ଶୂନ୍ୟ collect_variation_indices (hb_collect_variation_indices_context_t *c) ଅଚଳ
   {
-    collect_pair_variation_indices (c, this, this+coverage,
-                                    this+classDef1, this+classDef2,
-                                    valueFormat1, valueFormat2,
-                                    class1Count, class2Count, values);
+    collect_pair_variation_indices (c, ଏହି, ଏହି+coverage,
+                                    ଏହି+classDef1, ଏହି+classDef2,
+                                    ମୂଲ୍ୟ_Format1, ମୂଲ୍ୟ_Format2,
+                                    class1_ଗଣନା_2, class2_ଗଣନା_2, values);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ଶୂନ୍ୟ collect_glyphs (hb_collect_glyphs_context_t *c) ଅଚଳ
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+classDef2).collect_coverage (c->input))) return;
+    ଯଦି (unlikely (!(ଏହି+coverage).collect_coverage (c->ନିବେଶ))) ଫେରନ୍ତୁ;
+    ଯଦି (unlikely (!(ଏହି+classDef2).collect_coverage (c->ନିବେଶ))) ଫେରନ୍ତୁ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ଅଚଳ Coverage &get_coverage () ଅଚଳ { ଫେରନ୍ତୁ ଏହି+coverage; }
 
-  struct external_cache_t
+  ସଂରଚନା external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_ot_layout_mapping_cache_t first;
     hb_ot_layout_mapping_cache_t second;
   };
-  void *external_cache_create () const
+  ଶୂନ୍ୟ *external_cache_create () ଅଚଳ
   {
-    external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    external_cache_t *cache = (external_cache_t *) hb_malloc (ଆକାର (external_cache_t));
+    ଯଦି (likely (cache))
     {
       cache->coverage.clear ();
       cache->first.clear ();
       cache->second.clear ();
     }
-    return cache;
+    ଫେରନ୍ତୁ cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  ତାର୍କିକ apply (hb_ot_apply_context_t *c, ଶୂନ୍ୟ *external_cache) ଅଚଳ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ଏହି);
 
     hb_buffer_t *buffer = c->buffer;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା index = (ଏହି+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#ଅନ୍ୟଥା
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା index = (ଏହି+coverage).get_coverage  (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    ଯଦି (index == NOT_COVERED) return_trace (ମିଥ୍ୟା);
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_ନିବେଶ;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    ଯଦି (unlikely (!skippy_iter.next (&unsafe_to)))
     {
       buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      return_trace (ମିଥ୍ୟା);
     }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
-#else
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା klass1 = (ଏହି+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା klass2 = (ଏହି+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
+#ଅନ୍ୟଥା
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା klass1 = (ଏହି+classDef1).get_class (buffer->cur().codepoint);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା klass2 = (ଏହି+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
 #endif
-    if (unlikely (klass1 >= class1Count || klass2 >= class2Count))
+    ଯଦି (unlikely (klass1 >= class1_ଗଣନା_2 || klass2 >= class2_ଗଣନା_2))
     {
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      return_trace (ମିଥ୍ୟା);
     }
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int record_len = len1 + len2;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା len1 = ମୂଲ୍ୟ_Format1.get_len ();
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା len2 = ମୂଲ୍ୟ_Format2.get_len ();
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା record_len = len1 + len2;
 
-    const Value *v = &values[record_len * (klass1 * class2Count + klass2)];
+    ଅଚଳ ମୂଲ୍ୟ *v = &values[record_len * (klass1 * class2_ଗଣନା_2 + klass2)];
 
-    bool applied_first = false, applied_second = false;
+    ତାର୍କିକ applied_first = ମିଥ୍ୟା, applied_second = ମିଥ୍ୟା;
 
 
     /* Isolate simple kerning and apply it half to each side.
@@ -278,28 +278,28 @@ struct PairPosFormat2_4 : ValueBase
      * https://github.com/harfbuzz/harfbuzz/pull/3235#issuecomment-1029814978
      */
 #ifndef HB_SPLIT_KERN
-    if (false)
+    ଯଦି (ମିଥ୍ୟା)
 #endif
     {
-      if (!len2)
+      ଯଦି (!len2)
       {
-        const hb_direction_t dir = buffer->props.direction;
-        const bool horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
-        const bool backward = HB_DIRECTION_IS_BACKWARD (dir);
-        unsigned mask = horizontal ? ValueFormat::xAdvance : ValueFormat::yAdvance;
-        if (backward)
+        ଅଚଳ hb_direction_t dir = buffer->props.direction;
+        ଅଚଳ ତାର୍କିକ horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
+        ଅଚଳ ତାର୍କିକ backward = HB_DIRECTION_IS_BACKWARD (dir);
+        unsigned mask = horizontal ? ମୂଲ୍ୟ_Format::xAdvance : ମୂଲ୍ୟ_Format::yAdvance;
+        ଯଦି (backward)
           mask |= mask >> 2; /* Add eg. xPlacement in RTL. */
         /* Add Devices. */
         mask |= mask << 4;
 
-        if (valueFormat1 & ~mask)
-          goto bail;
+        ଯଦି (ମୂଲ୍ୟ_Format1 & ~mask)
+          ଯାଅ bail;
 
         /* Is simple kern. Apply value on an empty position slot,
          * then split it between sides. */
 
         hb_glyph_position_t pos{};
-        if (valueFormat1.apply_value (c, this, v, pos))
+        ଯଦି (ମୂଲ୍ୟ_Format1.apply_ମୂଲ୍ୟ (c, ଏହି, v, pos))
         {
           hb_position_t *src  = &pos.x_advance;
           hb_position_t *dst1 = &buffer->cur_pos().x_advance;
@@ -310,13 +310,13 @@ struct PairPosFormat2_4 : ValueBase
           hb_position_t kern1 = kern >> 1;
           hb_position_t kern2 = kern - kern1;
 
-          if (!backward)
+          ଯଦି (!backward)
           {
             dst1[i] = hb_saturate_add (dst1[i], kern1);
             dst2[i] = hb_saturate_add (dst2[i], kern2);
             dst2[i + 2] = hb_saturate_add (dst2[i + 2], kern2);
           }
-          else
+          ଅନ୍ୟଥା
           {
             dst1[i] = hb_saturate_add (dst1[i], kern1);
             dst1[i + 2] = hb_clamp_to<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
@@ -324,32 +324,32 @@ struct PairPosFormat2_4 : ValueBase
           }
 
           applied_first = applied_second = kern != 0;
-          goto success;
+          ଯାଅ success;
         }
-        goto boring;
+        ଯାଅ boring;
       }
     }
     bail:
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ଯଦି (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "try kerning glyphs at %u,%u",
 			  c->buffer->idx, skippy_iter.idx);
     }
 
-    applied_first = len1 && valueFormat1.apply_value (c, this, v, buffer->cur_pos());
-    applied_second = len2 && valueFormat2.apply_value (c, this, v + len1, buffer->pos[skippy_iter.idx]);
+    applied_first = len1 && ମୂଲ୍ୟ_Format1.apply_ମୂଲ୍ୟ (c, ଏହି, v, buffer->cur_pos());
+    applied_second = len2 && ମୂଲ୍ୟ_Format2.apply_ମୂଲ୍ୟ (c, ଏହି, v + len1, buffer->pos[skippy_iter.idx]);
 
-    if (applied_first || applied_second)
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ଯଦି (applied_first || applied_second)
+      ଯଦି (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "kerned glyphs at %u,%u",
 			    c->buffer->idx, skippy_iter.idx);
       }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ଯଦି (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "tried kerning glyphs at %u,%u",
@@ -357,13 +357,13 @@ struct PairPosFormat2_4 : ValueBase
     }
 
     success:
-    if (applied_first || applied_second)
+    ଯଦି (applied_first || applied_second)
       buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
-    else
+    ଅନ୍ୟଥା
     boring:
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
 
-    if (len2)
+    ଯଦି (len2)
     {
       skippy_iter.idx++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
@@ -373,59 +373,59 @@ struct PairPosFormat2_4 : ValueBase
 
     buffer->idx = skippy_iter.idx;
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *out = c->serializer->start_embed (*ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out))) return_trace (ମିଥ୍ୟା);
     out->format = format;
 
     hb_map_t klass1_map;
-    out->classDef1.serialize_subset (c, classDef1, this, &klass1_map, true, true, &(this + coverage));
-    out->class1Count = klass1_map.get_population ();
+    out->classDef1.serialize_subset (c, classDef1, ଏହି, &klass1_map, ସତ୍ୟ, ସତ୍ୟ, &(ଏହି + coverage));
+    out->class1_ଗଣନା_2 = klass1_map.get_population ();
 
     hb_map_t klass2_map;
-    out->classDef2.serialize_subset (c, classDef2, this, &klass2_map, true, false);
-    out->class2Count = klass2_map.get_population ();
+    out->classDef2.serialize_subset (c, classDef2, ଏହି, &klass2_map, ସତ୍ୟ, ମିଥ୍ୟା);
+    out->class2_ଗଣନା_2 = klass2_map.get_population ();
 
-    pair_pos_class_values_t class_values {this, values, valueFormat1, valueFormat2,
-                                         class1Count, class2Count};
+    pair_pos_class_ମୂଲ୍ୟଗୁଡ଼ିକ_t class_ମୂଲ୍ୟଗୁଡ଼ିକ {ଏହି, values, ମୂଲ୍ୟ_Format1, ମୂଲ୍ୟ_Format2,
+                                         class1_ଗଣନା_2, class2_ଗଣନା_2};
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat1, valueFormat2);
+    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (ମୂଲ୍ୟ_Format1, ମୂଲ୍ୟ_Format2);
 
-    if (c->plan->normalized_coords)
+    ଯଦି (c->plan->normalized_coords)
     {
       /* in case of full instancing, all var device flags will be dropped so no
        * need to strip hints here */
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = class_ମୂଲ୍ୟଗୁଡ଼ିକ.compute_effective_ମୂଲ୍ୟ_formats (klass1_map, klass2_map, ମିଥ୍ୟା, ମିଥ୍ୟା, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    ଅନ୍ୟଥା ଯଦି (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      ତାର୍କିକ has_fvar = (blob != hb_blob_get_empty ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      ତାର୍କିକ strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, strip, true);
+      ଯଦି (has_fvar && !c->plan->has_gdef_varstore)
+        strip = ସତ୍ୟ;
+      newFormats = class_ମୂଲ୍ୟଗୁଡ଼ିକ.compute_effective_ମୂଲ୍ୟ_formats (klass1_map, klass2_map, strip, ସତ୍ୟ);
     }
 
-    out->valueFormat1 = newFormats.first;
-    out->valueFormat2 = newFormats.second;
+    out->ମୂଲ୍ୟ_Format1 = newFormats.first;
+    out->ମୂଲ୍ୟ_Format2 = newFormats.second;
 
-    if (!class_values.serialize (c, klass1_map, klass2_map,
-                                 out->valueFormat1, out->valueFormat2))
-      return_trace (false);
+    ଯଦି (!class_ମୂଲ୍ୟଗୁଡ଼ିକ.serialize (c, klass1_map, klass2_map,
+                                 out->ମୂଲ୍ୟ_Format1, out->ମୂଲ୍ୟ_Format2))
+      return_trace (ମିଥ୍ୟା);
 
-    bool ret = out->coverage.serialize_subset(c, coverage, this);
-    return_trace (out->class1Count && out->class2Count && ret);
+    ତାର୍କିକ ret = out->coverage.serialize_subset(c, coverage, ଏହି);
+    return_trace (out->class1_ଗଣନା_2 && out->class2_ଗଣନା_2 && ret);
   }
 };
 

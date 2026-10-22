@@ -27,38 +27,38 @@
 #ifndef HB_VECTOR_PAINT_HH
 #define HB_VECTOR_PAINT_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-map.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-vector.h"
+#ଅନ୍ତର୍ଭାଵ "hb-geometry.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-machinery.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-map.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-vector-path.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-vector-buf.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-vector-internal.hh"
 
 
-struct hb_vector_paint_t
+ସଂରଚନା hb_vector_paint_t
 {
   hb_object_header_t header;
 
   hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
+  ଦଶମିକ x_scale_factor = 1.f;
+  ଦଶମିକ y_scale_factor = 1.f;
   hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  ତାର୍କିକ has_extents = ମିଥ୍ୟା;
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
-  char *id_prefix = nullptr;
+  ଅକ୍ଷର *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
 
   hb_vector_buf_t defs;
   hb_vector_buf_t path;
-  hb_vector_t<hb_vector_buf_t> group_stack;
+  hb_vector_t<hb_vector_buf_t> group_ଗଦା;
   uint64_t transform_group_open_mask = 0;
   unsigned transform_group_depth = 0;
   unsigned transform_group_overflow_depth = 0;
@@ -76,82 +76,82 @@ struct hb_vector_paint_t
   hb_vector_path_sink_t clip_path_sink = {nullptr, 0, 1.f, 1.f, nullptr};
   unsigned gradient_counter = 0;
   unsigned color_glyph_depth = 0;
-  unsigned path_def_count = 0;
+  unsigned path_def_ଗଣନା = 0;
   hb_set_t *active_color_glyphs = nullptr;
   hb_vector_t<hb_color_stop_t> color_stops_scratch;
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { ଫେରନ୍ତୁ group_ଗଦା.tail (); }
 
-  void recharge_budget ()
+  ଶୂନ୍ୟ recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  ଦଶମିକ sx (ଦଶମିକ v) ଅଚଳ { ଫେରନ୍ତୁ v / x_scale_factor; }
+  ଦଶମିକ sy (ଦଶମିକ v) ଅଚଳ { ଫେରନ୍ତୁ v / y_scale_factor; }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  ତାର୍କିକ fetch_color_stops (hb_color_ଧାଡ଼ି_t *color_ଧାଡ଼ି)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    unsigned ଗଣନା_2 = hb_color_ଧାଡ଼ି_get_color_stops (color_ଧାଡ଼ି, 0, nullptr, nullptr);
+    ଯଦି (unlikely (!ଗଣନା_2 || !color_stops_scratch.resize (ଗଣନା_2)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    hb_color_ଧାଡ଼ି_get_color_stops (color_ଧାଡ଼ି, 0, &ଗଣନା_2, color_stops_scratch.arrayZ);
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  void set_precision (unsigned p)
+  ଶୂନ୍ୟ set_precision (unsigned p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () ଅଚଳ { ଫେରନ୍ତୁ path.precision; }
 
-  bool ensure_initialized ()
+  ତାର୍କିକ ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
-             !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
-    group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    ଯଦି (group_ଗଦା.length)
+      ଫେରନ୍ତୁ !group_ଗଦା.in_error () &&
+             !group_ଗଦା.tail ().in_error ();
+    ଯଦି (unlikely (!group_ଗଦା.ଠେଲ_or_fail ()))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    group_ଗଦା.tail ().alloc (4096);
+    ଯଦି (unlikely (group_ଗଦା.tail ().in_error ()))
     {
-      group_stack.pop ();
-      return false;
+      group_ଗଦା.କାଢ଼ ();
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 };
 
-static inline hb_bool_t
-hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
-				     int64_t budget, void *)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ hb_bool_t
+hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, ଶୂନ୍ୟ *paint_data,
+				     int64_t budget, ଶୂନ୍ୟ *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
-static inline int64_t
-hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ int64_t
+hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, ଶୂନ୍ୟ *paint_data, ଶୂନ୍ୟ *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  ଫେରନ୍ତୁ ((hb_vector_paint_t *) paint_data)->budget;
 }
 
-static inline int64_t *
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
-					       void *paint_data, void *)
+					       ଶୂନ୍ୟ *paint_data, ଶୂନ୍ୟ *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  ଫେରନ୍ତୁ &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */
@@ -161,6 +161,6 @@ HB_INTERNAL hb_blob_t * hb_vector_paint_render_svg (hb_vector_paint_t *paint);
 /* Implemented in hb-vector-paint-pdf.cc */
 HB_INTERNAL hb_paint_funcs_t * hb_vector_paint_pdf_funcs_get ();
 HB_INTERNAL hb_blob_t * hb_vector_paint_render_pdf (hb_vector_paint_t *paint);
-HB_INTERNAL void hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
+HB_INTERNAL ଶୂନ୍ୟ hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
 
 #endif /* HB_VECTOR_PAINT_HH */

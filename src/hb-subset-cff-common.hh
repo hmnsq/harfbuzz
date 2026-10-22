@@ -27,63 +27,63 @@
 #ifndef HB_SUBSET_CFF_COMMON_HH
 #define HB_SUBSET_CFF_COMMON_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-subset-plan.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-subset-plan.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+ନାମାକାଶ CFF {
 
 /* CFF2 CharStrings may omit a tail of glyphs provided by VARC, in which
  * case FDSelect only covers the CharStrings glyphs.  Use FD 0 for glyphs
  * beyond that. */
 template <typename ACC>
-static inline unsigned
-subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ unsigned
+subset_get_fd (ଅଚଳ ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  ଫେରନ୍ତୁ likely (glyph < acc.ଅଙ୍କ_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
-struct str_encoder_t
+ସଂରଚନା str_encoder_t
 {
   str_encoder_t (str_buff_t &buff_)
     : buff (buff_) {}
 
-  void reset () { buff.reset (); }
+  ଶୂନ୍ୟ reset () { buff.reset (); }
 
-  void encode_byte (unsigned char b)
+  ଶୂନ୍ୟ encode_byte (unsigned ଅକ୍ଷର b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
+    ଯଦି (likely ((signed) buff.length < buff.allocated))
       buff.arrayZ[buff.length++] = b;
-    else
+    ଅନ୍ୟଥା
       buff.push (b);
   }
 
-  void encode_int (int v)
+  ଶୂନ୍ୟ encode_int (ପୂର୍ଣ୍ଣସଂଖ୍ୟା v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    ଯଦି ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      ଯଦି ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      ଅନ୍ୟଥା ଯଦି (v > 0)
       {
 	v -= 108;
 	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
 	encode_byte (v & 0xFF);
       }
-      else
+      ଅନ୍ୟଥା
       {
 	v = -v - 108;
 	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    ଅନ୍ୟଥା
     {
-      if (unlikely (v < -32768))
+      ଯଦି (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      ଅନ୍ୟଥା ଯଦି (unlikely (v > 32767))
 	v = 32767;
       encode_byte (OpCode_shortint);
       encode_byte ((v >> 8) & 0xFF);
@@ -92,13 +92,13 @@ struct str_encoder_t
   }
 
   // Encode number for CharString
-  void encode_num_cs (const number_t& n)
+  ଶୂନ୍ୟ encode_ଅଙ୍କ_cs (ଅଚଳ ସଂଖ୍ୟା_t& n)
   {
-    if (n.in_int_range ())
+    ଯଦି (n.in_int_range ())
     {
       encode_int (n.to_int ());
     }
-    else
+    ଅନ୍ୟଥା
     {
       int32_t v = n.to_fixed ();
       encode_byte (OpCode_fixedcs);
@@ -110,24 +110,24 @@ struct str_encoder_t
   }
 
   // Encode number for TopDict / Private
-  void encode_num_tp (const number_t& n)
+  ଶୂନ୍ୟ encode_ଅଙ୍କ_tp (ଅଚଳ ସଂଖ୍ୟା_t& n)
   {
-    if (n.in_int_range ())
+    ଯଦି (n.in_int_range ())
     {
       // TODO longint
       encode_int (n.to_int ());
     }
-    else
+    ଅନ୍ୟଥା
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
-      double v = n.to_real ();
+      ଦ୍ୱିଗୁଣ v = n.to_real ();
       encode_byte (OpCode_BCD);
 
       // Based on:
       // https://github.com/fonttools/fonttools/blob/0738c41dfbcbc213ab9263f486ef0cccc6eb5ce5/Lib/fontTools/misc/psCharStrings.py#L267-L316
 
-      char buf[16];
+      ଅକ୍ଷର buf[16];
       /* FontTools has the following comment:
        *
        * # Note: 14 decimal digits seems to be the limitation for CFF real numbers
@@ -138,133 +138,133 @@ struct str_encoder_t
 
       hb_locale_t clocale HB_UNUSED;
       hb_locale_t oldlocale HB_UNUSED;
-      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-      snprintf (buf, sizeof (buf), "%.8G", v);
-      (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ଖାଲି));
+      snprintf (buf, ଆକାର (buf), "%.8G", v);
+      (ଶୂନ୍ୟ) hb_uselocale (((ଶୂନ୍ୟ) freelocale (clocale), oldlocale));
 
-      char *s = buf;
+      ଅକ୍ଷର *s = buf;
       size_t len;
-      char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      ଅକ୍ଷର *comma = strchr (s, ',');
+      ଯଦି (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      ଯଦି (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      ଅନ୍ୟଥା ଯଦି (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      ଅନ୍ୟଥା ଯଦି ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
 	unsigned exponent = len - 3;
-	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	ଅକ୍ଷର *s2 = s + exponent - 1;
+	ଯେତେବେଳେ (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
-	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
+	snprintf (s2 + 1, ଆକାର (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      ଅନ୍ୟଥା
       {
-	char *dot = strchr (s, '.');
-	char *e = strchr (s, 'E');
-	if (dot && e)
+	ଅକ୍ଷର *dot = strchr (s, '.');
+	ଅକ୍ଷର *e = strchr (s, 'E');
+	ଯଦି (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  ପୂର୍ଣ୍ଣସଂଖ୍ୟା exponent = atoi (e + 1);
+	  ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_exponent = exponent - (e - (dot + 1));
+	  ଯଦି (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
-	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
+	  ଅନ୍ୟଥା
+	    snprintf (e - 1, ଆକାର (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      ଯଦି ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
-	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା sign = s[0] == '-';
+	ଅକ୍ଷର *s2 = s + sign + 1;
+	ଯେତେବେଳେ (*s2 == '0')
 	  s2++;
 	len = strlen (s2);
 	memmove (s + sign, s2, len);
-	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
+	snprintf (s + sign + len, ଆକାର (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
       }
-      hb_vector_t<char> nibbles;
-      while (*s)
+      hb_vector_t<ଅକ୍ଷର> nibbles;
+      ଯେତେବେଳେ (*s)
       {
-	char c = s[0];
+	ଅକ୍ଷର c = s[0];
 	s++;
 
-	switch (c)
+	ବାଛ (c)
 	{
-	  case 'E':
+	  ସ୍ଥିତି 'E':
 	  {
-	    char c2 = *s;
-	    if (c2 == '-')
+	    ଅକ୍ଷର c2 = *s;
+	    ଯଦି (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } ଅନ୍ୟଥା {
+	      ଯଦି (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    ଯଦି (*s == '0')
 	      s++;
-	    continue;
+	    ଜାରି;
 	  }
 
-	  case '.':
+	  ସ୍ଥିତି '.':
 	    nibbles.push (0x0A); // .
-	    continue;
+	    ଜାରି;
 
-	  case '-':
+	  ସ୍ଥିତି '-':
 	    nibbles.push (0x0E); // -
-	    continue;
+	    ଜାରି;
 	}
 
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      ଯଦି (nibbles.length % 2)
 	nibbles.push (0x0F);
 
-      unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      unsigned ଗଣନା_2 = nibbles.length;
+      ପାଇଁ (unsigned i = 0; i < ଗଣନା_2; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
-  void encode_op (op_code_t op)
+  ଶୂନ୍ୟ encode_op (op_code_t op)
   {
-    if (Is_OpCode_ESC (op))
+    ଯଦି (Is_OpCode_ESC (op))
     {
       encode_byte (OpCode_escape);
       encode_byte (Unmake_OpCode_ESC (op));
     }
-    else
+    ଅନ୍ୟଥା
       encode_byte (op);
   }
 
-  void copy_str (const unsigned char *str, unsigned length)
+  ଶୂନ୍ୟ copy_str (ଅଚଳ unsigned ଅକ୍ଷର *str, unsigned length)
   {
-    assert ((signed) (buff.length + length) <= buff.allocated);
+    ପ୍ରତିଜ୍ଞା ((signed) (buff.length + length) <= buff.allocated);
     hb_memcpy (buff.arrayZ + buff.length, str, length);
     buff.length += length;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  ତାର୍କିକ in_error () ଅଚଳ { ଫେରନ୍ତୁ buff.in_error (); }
 
-  protected:
+  ସୁରକ୍ଷିତ:
 
   str_buff_t &buff;
 };
 
-struct cff_sub_table_info_t {
+ସଂରଚନା cff_sub_table_info_t {
   cff_sub_table_info_t ()
     : fd_array_link (0),
       char_strings_link (0)
@@ -278,119 +278,119 @@ struct cff_sub_table_info_t {
 };
 
 template <typename OPSTR=op_str_t>
-struct cff_top_dict_op_serializer_t : op_serializer_t
+ସଂରଚନା cff_ଶୀର୍ଷ_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const OPSTR &opstr,
-		  const cff_sub_table_info_t &info) const
+  ତାର୍କିକ serialize (hb_serialize_context_t *c,
+		  ଅଚଳ OPSTR &opstr,
+		  ଅଚଳ cff_sub_table_info_t &info) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ଏହି);
 
-    switch (opstr.op)
+    ବାଛ (opstr.op)
     {
-      case OpCode_CharStrings:
+      ସ୍ଥିତି OpCode_CharStrings:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
+      ସ୍ଥିତି OpCode_FDArray:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_array_link, whence_t::Absolute));
 
-      case OpCode_FDSelect:
+      ସ୍ଥିତି OpCode_FDSelect:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_select.link, whence_t::Absolute));
 
-      default:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	return_trace (copy_opstr (c, opstr));
     }
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 };
 
-struct cff_font_dict_op_serializer_t : op_serializer_t
+ସଂରଚନା cff_font_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const table_info_t &privateDictInfo) const
+  ତାର୍କିକ serialize (hb_serialize_context_t *c,
+		  ଅଚଳ op_str_t &opstr,
+		  ଅଚଳ table_info_t &privateDictInfo) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ଏହି);
 
-    if (opstr.op == OpCode_Private)
+    ଯଦି (opstr.op == OpCode_Private)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
       return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
 		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
     }
-    else
+    ଅନ୍ୟଥା
     {
-      unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      unsigned ଅକ୍ଷର *d = c->allocate_size<unsigned ଅକ୍ଷର> (opstr.length);
+      ଯଦି (unlikely (!d)) return_trace (ମିଥ୍ୟା);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      ପାଇଁ (unsigned i = 0; i < opstr.length; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 };
 
 /* CharString command for specialization */
-struct cs_command_t
+ସଂରଚନା cs_command_t
 {
-  hb_vector_t<number_t> args;
-  hb_vector_t<unsigned char> mask_bytes; /* For hintmask/cntrmask payload bytes. */
+  hb_vector_t<ସଂଖ୍ୟା_t> args;
+  hb_vector_t<unsigned ଅକ୍ଷର> mask_bytes; /* For hintmask/cntrmask payload bytes. */
   op_code_t op;
 
   cs_command_t () : op (OpCode_Invalid) {}
   cs_command_t (op_code_t op_) : op (op_) {}
 };
 
-typedef hb_vector_t<cs_command_t> *cs_command_vec_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା hb_vector_t<cs_command_t> *cs_command_vec_t;
 
-struct cff2_instancing_plan_t;
+ସଂରଚନା cff2_instancing_plan_t;
 
-struct flatten_param_t
+ସଂରଚନା flatten_param_t
 {
   flatten_param_t (str_buff_t &flatStr_,
-                   bool drop_hints_,
-                   const hb_subset_plan_t *plan_,
+                   ତାର୍କିକ drop_hints_,
+                   ଅଚଳ hb_subset_plan_t *plan_,
                    cs_command_vec_t commands_ = nullptr)
     : flatStr (flatStr_), drop_hints (drop_hints_), plan (plan_), commands (commands_) {}
 
   str_buff_t     &flatStr;
-  bool	drop_hints;
-  const hb_subset_plan_t *plan;
+  ତାର୍କିକ	drop_hints;
+  ଅଚଳ hb_subset_plan_t *plan;
   cs_command_vec_t commands; /* Optional: capture parsed commands for specialization */
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being copied or flattened. */
-  const cff2_instancing_plan_t *instancer = nullptr;
-  bool emitted_blend = false;
+  ଅଚଳ cff2_instancing_plan_t *instancer = nullptr;
+  ତାର୍କିକ emitted_blend = ମିଥ୍ୟା;
 };
 
 template <typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_flattener_t
+ସଂରଚନା subr_flattener_t
 {
-  subr_flattener_t (const ACC &acc_,
-		    const hb_subset_plan_t *plan_)
+  subr_flattener_t (ଅଚଳ ACC &acc_,
+		    ଅଚଳ hb_subset_plan_t *plan_)
 		   : acc (acc_), plan (plan_) {}
 
-  bool flatten (str_buff_vec_t &flat_charstrings,
+  ତାର୍କିକ flatten (str_buff_vec_t &flat_charstrings,
                 hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
   {
-    unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned ଗଣନା_2 = plan->ଅଙ୍କ_output_glyphs ();
+    ଯଦି (!flat_charstrings.resize_exact (ଗଣନା_2))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      ଯଦି (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
-	continue;
+	ଯଦି (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
+	ଜାରି;
       }
-      const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      ଅଚଳ hb_ubytes_t str = (*acc.charStrings)[glyph];
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd = subset_get_fd (acc, glyph);
+      ଯଦି (unlikely (fd >= acc.fd_ଗଣନା))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
 
       ENV env (str, acc, fd,
@@ -398,74 +398,74 @@ struct subr_flattener_t
       cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
-        (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+        (ତାର୍କିକ) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
 	plan,
 	command_capture ? &(*command_capture)[i] : nullptr
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      ଯଦି (unlikely (!interp.interpret (param)))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  const ACC &acc;
-  const hb_subset_plan_t *plan;
+  ଅଚଳ ACC &acc;
+  ଅଚଳ hb_subset_plan_t *plan;
 };
 
-struct subr_closures_t
+ସଂରଚନା subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd_ଗଣନା_2) : global_closure (), local_closures ()
   {
-    local_closures.resize_exact (fd_count);
+    local_closures.resize_exact (fd_ଗଣନା_2);
   }
 
-  void reset ()
+  ଶୂନ୍ୟ reset ()
   {
     global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < local_closures.length; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
+  ତାର୍କିକ in_error () ଅଚଳ { ଫେରନ୍ତୁ local_closures.in_error (); }
   hb_set_t  global_closure;
   hb_vector_t<hb_set_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+ସଂରଚନା parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
-    subr_num (subr_num_) {}
+  parsed_cs_op_t (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା subr_ଅଙ୍କ = 0) :
+    subr_ଅଙ୍କ_2 (subr_ଅଙ୍କ) {}
 
-  bool is_hinting () const { return hinting_flag; }
-  void set_hinting ()       { hinting_flag = true; }
+  ତାର୍କିକ is_hinting () ଅଚଳ { ଫେରନ୍ତୁ hinting_flag; }
+  ଶୂନ୍ୟ set_hinting ()       { hinting_flag = ସତ୍ୟ; }
 
   /* The layout of this struct is designed to fit within the
    * padding of op_str_t! */
 
-  protected:
-  bool	  hinting_flag = false;
+  ସୁରକ୍ଷିତ:
+  ତାର୍କିକ	  hinting_flag = ମିଥ୍ୟା;
 
-  public:
-  uint16_t subr_num;
+  ସର୍ବସାଧାରଣ:
+  uint16_t subr_ଅଙ୍କ_2;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+ସଂରଚନା parsed_cs_str_t : parsed_ମୂଲ୍ୟଗୁଡ଼ିକ_t<parsed_cs_op_t>
 {
   parsed_cs_str_t () :
-    parsed (false),
-    hint_dropped (false),
-    has_prefix_ (false),
-    has_calls_ (false),
-    coalescing_ (false)
+    parsed (ମିଥ୍ୟା),
+    hint_dropped (ମିଥ୍ୟା),
+    has_prefix_ (ମିଥ୍ୟା),
+    has_calls_ (ମିଥ୍ୟା),
+    coalescing_ (ମିଥ୍ୟା)
   {
     SUPER::init ();
   }
 
   HB_ALWAYS_INLINE
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref)
+  ଶୂନ୍ୟ add_op (op_code_t op, ଅଚଳ byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    ଯଦି (is_parsed ()) ଫେରନ୍ତୁ;
+    ଯଦି (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
@@ -473,44 +473,44 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
        * is not needed later for hint analysis. */
       penultimate_end_ = last_end_;
       last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
+      ଯଦି (unlikely (op == OpCode_return || op == OpCode_endchar))
 	flush_segment (str_ref, last_end_);
-      return;
+      ଫେରନ୍ତୁ;
     }
     SUPER::add_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  ଶୂନ୍ୟ add_call_op (op_code_t op, ଅଚଳ byte_str_ref_t& str_ref, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା subr_ଅଙ୍କ_2)
   {
-    if (is_parsed ()) return;
-    has_calls_ = true;
+    ଯଦି (is_parsed ()) ଫେରନ୍ତୁ;
+    has_calls_ = ସତ୍ୟ;
 
-    if (coalescing_)
+    ଯଦି (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
       flush_segment (str_ref, penultimate_end_);
       opStart = last_end_;
-      SUPER::add_op (op, str_ref, {subr_num});
+      SUPER::add_op (op, str_ref, {subr_ଅଙ୍କ_2});
       penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      ଫେରନ୍ତୁ;
     }
 
     /* Pop the subroutine number. */
-    values.pop ();
+    values.କାଢ଼ ();
 
-    SUPER::add_op (op, str_ref, {subr_num});
+    SUPER::add_op (op, str_ref, {subr_ଅଙ୍କ_2});
   }
 
   /* Flush pending bytes [opStart, end) as verbatim segment entries. */
-  void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
+  ଶୂନ୍ୟ flush_segment (ଅଚଳ byte_str_ref_t& str_ref, unsigned end)
   {
     unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    ଯଦି (end <= start) ଫେରନ୍ତୁ;
+    ଯେତେବେଳେ (start < end)
     {
       auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      ଯଦି (unlikely (!arr.length)) ଭାଙ୍ଗ;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
       val->length = arr.length;
@@ -522,65 +522,65 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   /* For coalescing mode: flush any pending bytes through the current
    * position; used where the string ends without an explicit
    * return/endchar op (CFF2). */
-  void flush_coalesced (const byte_str_ref_t& str_ref)
+  ଶୂନ୍ୟ flush_coalesced (ଅଚଳ byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
+    ଯଦି (coalescing_ && !is_parsed ())
       flush_segment (str_ref, str_ref.get_offset ());
   }
 
-  void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  ଶୂନ୍ୟ enable_coalescing () { coalescing_ = ସତ୍ୟ; }
+  ତାର୍କିକ is_coalescing () ଅଚଳ { ଫେରନ୍ତୁ coalescing_; }
 
-  void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
+  ଶୂନ୍ୟ set_prefix (ଅଚଳ ସଂଖ୍ୟା_t &ଅଙ୍କ, op_code_t op = OpCode_Invalid)
   {
-    has_prefix_ = true;
+    has_prefix_ = ସତ୍ୟ;
     prefix_op_ = op;
-    prefix_num_ = num;
+    prefix_ଅଙ୍କ = ଅଙ୍କ;
   }
 
-  bool at_end (unsigned int pos) const
+  ତାର୍କିକ at_end (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା pos) ଅଚଳ
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
+    ଫେରନ୍ତୁ ((pos + 1 >= values.length) /* CFF2 */
 	|| (values[pos + 1].op == OpCode_return));
   }
 
-  bool is_parsed () const { return parsed; }
-  void set_parsed ()      { parsed = true; }
+  ତାର୍କିକ is_parsed () ଅଚଳ { ଫେରନ୍ତୁ parsed; }
+  ଶୂନ୍ୟ set_parsed ()      { parsed = ସତ୍ୟ; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
-  void set_hint_dropped ()      { hint_dropped = true; }
+  ତାର୍କିକ is_hint_dropped () ଅଚଳ { ଫେରନ୍ତୁ hint_dropped; }
+  ଶୂନ୍ୟ set_hint_dropped ()      { hint_dropped = ସତ୍ୟ; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
-  void set_vsindex_dropped ()      { vsindex_dropped = true; }
+  ତାର୍କିକ is_vsindex_dropped () ଅଚଳ { ଫେରନ୍ତୁ vsindex_dropped; }
+  ଶୂନ୍ୟ set_vsindex_dropped ()      { vsindex_dropped = ସତ୍ୟ; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  ତାର୍କିକ has_prefix () ଅଚଳ          { ଫେରନ୍ତୁ has_prefix_; }
+  op_code_t prefix_op () ଅଚଳ         { ଫେରନ୍ତୁ prefix_op_; }
+  ଅଚଳ ସଂଖ୍ୟା_t &prefix_ଅଙ୍କ_2 () ଅଚଳ { ଫେରନ୍ତୁ prefix_ଅଙ୍କ; }
 
-  bool has_calls () const          { return has_calls_; }
+  ତାର୍କିକ has_calls () ଅଚଳ          { ଫେରନ୍ତୁ has_calls_; }
 
-  void compact ()
+  ଶୂନ୍ୟ compact ()
   {
-    unsigned count = values.length;
-    if (!count) return;
+    unsigned ଗଣନା_2 = values.length;
+    ଯଦି (!ଗଣନା_2) ଫେରନ୍ତୁ;
     auto &opstr = values.arrayZ;
     unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    ପାଇଁ (unsigned i = 1; i < ଗଣନା_2; i++)
     {
       /* See if we can combine op j and op i. */
-      bool combine =
+      ତାର୍କିକ combine =
         (opstr[j].op != OpCode_callsubr && opstr[j].op != OpCode_callgsubr) &&
         (opstr[i].op != OpCode_callsubr && opstr[i].op != OpCode_callgsubr) &&
         (opstr[j].is_hinting () == opstr[i].is_hinting ()) &&
         (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
         (opstr[j].length + opstr[i].length <= 255);
 
-      if (combine)
+      ଯଦି (combine)
       {
 	opstr[j].length += opstr[i].length;
 	opstr[j].op = OpCode_Invalid;
       }
-      else
+      ଅନ୍ୟଥା
       {
 	opstr[++j] = opstr[i];
       }
@@ -588,51 +588,51 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     values.shrink (j + 1);
   }
 
-  protected:
-  bool    parsed : 1;
-  bool    hint_dropped : 1;
-  bool    vsindex_dropped : 1;
-  bool    has_prefix_ : 1;
-  bool    has_calls_ : 1;
+  ସୁରକ୍ଷିତ:
+  ତାର୍କିକ    parsed : 1;
+  ତାର୍କିକ    hint_dropped : 1;
+  ତାର୍କିକ    vsindex_dropped : 1;
+  ତାର୍କିକ    has_prefix_ : 1;
+  ତାର୍କିକ    has_calls_ : 1;
   /* Record verbatim byte segments instead of individual tokens,
    * making a separate compact() pass unnecessary; incompatible with
    * hint analysis. */
-  bool    coalescing_ : 1;
+  ତାର୍କିକ    coalescing_ : 1;
   /* End offsets of the last two tokens seen (coalescing mode). */
   unsigned penultimate_end_ = 0;
   unsigned last_end_ = 0;
   op_code_t	prefix_op_;
-  number_t	prefix_num_;
+  ସଂଖ୍ୟା_t	prefix_ଅଙ୍କ;
 
-  private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  ବ୍ୟକ୍ତିଗତ:
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା parsed_ମୂଲ୍ୟଗୁଡ଼ିକ_t<parsed_cs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+ସଂରଚନା parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
 {
-  private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  ବ୍ୟକ୍ତିଗତ:
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା hb_vector_t<parsed_cs_str_t> SUPER;
 };
 
-struct cff_subset_accelerator_t
+ସଂରଚନା cff_subset_accelerator_t
 {
-  static cff_subset_accelerator_t* create (
+  ସ୍ଥିର cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      ଅଚଳ parsed_cs_str_vec_t& parsed_charstrings,
+      ଅଚଳ parsed_cs_str_vec_t& parsed_global_subrs,
+      ଅଚଳ hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
-        (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
-    new (accel) cff_subset_accelerator_t (original_blob,
+        (cff_subset_accelerator_t*) hb_malloc (ଆକାର(cff_subset_accelerator_t));
+    ଯଦି (unlikely (!accel)) ଫେରନ୍ତୁ nullptr;
+    ନୂତନ (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    ଫେରନ୍ତୁ accel;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  ସ୍ଥିର ଶୂନ୍ୟ destroy (ଶୂନ୍ୟ* value) {
+    ଯଦି (!value) ଫେରନ୍ତୁ;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -641,9 +641,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      ଅଚଳ parsed_cs_str_vec_t& parsed_charstrings_,
+      ଅଚଳ parsed_cs_str_vec_t& parsed_global_subrs_,
+      ଅଚଳ hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -658,7 +658,7 @@ struct cff_subset_accelerator_t
   {
     hb_blob_destroy (original_blob);
     auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    ଯଦି (mapping)
     {
       mapping->~glyph_to_sid_map_t ();
       hb_free (mapping);
@@ -670,19 +670,19 @@ struct cff_subset_accelerator_t
   hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
   mutable hb_atomic_t<glyph_to_sid_map_t *> glyph_to_sid_map;
 
- private:
+ ବ୍ୟକ୍ତିଗତ:
   hb_blob_t* original_blob;
 };
 
-struct subr_subset_param_t
+ସଂରଚନା subr_subset_param_t
 {
   subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
 		       parsed_cs_str_vec_t *parsed_global_subrs_,
 		       parsed_cs_str_vec_t *parsed_local_subrs_,
 		       hb_set_t *global_closure_,
 		       hb_set_t *local_closure_,
-		       bool drop_hints_,
-		       bool coalesce_ = false) :
+		       ତାର୍କିକ drop_hints_,
+		       ତାର୍କିକ coalesce_ = ମିଥ୍ୟା) :
       current_parsed_str (parsed_charstring_),
       parsed_charstring (parsed_charstring_),
       parsed_global_subrs (parsed_global_subrs_),
@@ -692,49 +692,49 @@ struct subr_subset_param_t
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    ଯଦି (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
-    switch (context.type)
+    ବାଛ (context.type)
     {
-      case CSType_CharString:
-	return parsed_charstring;
+      ସ୍ଥିତି CSType_CharString:
+	ଫେରନ୍ତୁ parsed_charstring;
 
-      case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
-	break;
+      ସ୍ଥିତି CSType_LocalSubr:
+	ଯଦି (likely (context.subr_ଅଙ୍କ_2 < parsed_local_subrs->length))
+	  ଫେରନ୍ତୁ &(*parsed_local_subrs)[context.subr_ଅଙ୍କ_2];
+	ଭାଙ୍ଗ;
 
-      case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
-	break;
+      ସ୍ଥିତି CSType_GlobalSubr:
+	ଯଦି (likely (context.subr_ଅଙ୍କ_2 < parsed_global_subrs->length))
+	  ଫେରନ୍ତୁ &(*parsed_global_subrs)[context.subr_ଅଙ୍କ_2];
+	ଭାଙ୍ଗ;
     }
-    return nullptr;
+    ଫେରନ୍ତୁ nullptr;
   }
 
   template <typename ENV>
-  void set_current_str (ENV &env, bool calling)
+  ଶୂନ୍ୟ set_current_str (ENV &env, ତାର୍କିକ calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    ଯଦି (unlikely (!parsed_str))
     {
       env.set_error ();
-      return;
+      ଫେରନ୍ତୁ;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
+    ଯଦି (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
       env.set_error ();
-    else
+    ଅନ୍ୟଥା
     {
-      if (!parsed_str->is_parsed ())
+      ଯଦି (!parsed_str->is_parsed ())
       {
         parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        ଯଦି (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -747,56 +747,56 @@ struct subr_subset_param_t
   parsed_cs_str_vec_t	*parsed_local_subrs;
   hb_set_t      *global_closure;
   hb_set_t      *local_closure;
-  bool	  drop_hints;
-  bool	  coalesce;
+  ତାର୍କିକ	  drop_hints;
+  ତାର୍କିକ	  coalesce;
 };
 
-struct subr_remap_t : hb_inc_bimap_t
+ସଂରଚନା subr_remap_t : hb_inc_bimap_t
 {
-  void create (const hb_set_t *closure)
+  ଶୂନ୍ୟ create (ଅଚଳ hb_set_t *closure)
   {
     /* create a remapping of subroutine numbers from old to new.
      * no optimization based on usage counts. fonttools doesn't appear doing that either.
      */
 
     alloc (closure->get_population ());
-    for (auto old_num : *closure)
-      add (old_num);
+    ପାଇଁ (auto old_ଅଙ୍କ : *closure)
+      add (old_ଅଙ୍କ);
 
-    if (get_population () < 1240)
+    ଯଦି (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    ଅନ୍ୟଥା ଯଦି (get_population () < 33900)
       bias = 1131;
-    else
+    ଅନ୍ୟଥା
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା biased_ଅଙ୍କ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା old_ଅଙ୍କ) ଅଚଳ
   {
-    hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    hb_codepoint_t new_ଅଙ୍କ = get (old_ଅଙ୍କ);
+    ଫେରନ୍ତୁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା)new_ଅଙ୍କ - bias;
   }
 
-  protected:
-  int bias;
+  ସୁରକ୍ଷିତ:
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା bias;
 };
 
-struct subr_remaps_t
+ସଂରଚନା subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd_ଗଣନା)
   {
-    local_remaps.resize (fdCount);
+    local_remaps.resize (fd_ଗଣନା);
   }
 
-  bool in_error()
+  ତାର୍କିକ in_error()
   {
-    return local_remaps.in_error ();
+    ଫେରନ୍ତୁ local_remaps.in_error ();
   }
 
-  void create (subr_closures_t& closures)
+  ଶୂନ୍ୟ create (subr_closures_t& closures)
   {
     global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < local_remaps.length; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
@@ -805,11 +805,11 @@ struct subr_remaps_t
 };
 
 template <typename SUBSETTER, typename SUBRS, typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_subsetter_t
+ସଂରଚନା subr_subsetter_t
 {
-  subr_subsetter_t (ACC &acc_, const hb_subset_plan_t *plan_)
-      : acc (acc_), plan (plan_), closures(acc_.fdCount),
-        remaps(acc_.fdCount)
+  subr_subsetter_t (ACC &acc_, ଅଚଳ hb_subset_plan_t *plan_)
+      : acc (acc_), plan (plan_), closures(acc_.fd_ଗଣନା),
+        remaps(acc_.fd_ଗଣନା)
   {}
 
   /* Subroutine subsetting with --no-desubroutinize runs in phases:
@@ -826,73 +826,73 @@ struct subr_subsetter_t
    * Assumption: a callsubr/callgsubr operator must immediately follow a (biased) subroutine number
    * within the same charstring/subroutine, e.g., not split across a charstring and a subroutine.
    */
-  bool subset (void)
+  ତାର୍କିକ subset (ଶୂନ୍ୟ)
   {
-    unsigned fd_count = acc.fdCount;
-    const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    unsigned fd_ଗଣନା_2 = acc.fd_ଗଣନା;
+    ଅଚଳ cff_subset_accelerator_t* cff_accelerator = nullptr;
+    ଯଦି (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
-      fd_count = cff_accelerator->parsed_local_subrs.length;
+      fd_ଗଣନା_2 = cff_accelerator->parsed_local_subrs.length;
     }
 
-    if (cff_accelerator) {
+    ଯଦି (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
-      cached_charstrings.resize_exact (plan->num_output_glyphs ());
+      cached_charstrings.resize_exact (plan->ଅଙ୍କ_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
-      parsed_charstrings.resize_exact (plan->num_output_glyphs ());
-      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
+    } ଅନ୍ୟଥା {
+      parsed_charstrings.resize_exact (plan->ଅଙ୍କ_output_glyphs ());
+      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->ଗଣନା_2);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      ଯଦି (unlikely (!parsed_local_subrs_storage.resize (fd_ଗଣନା_2))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < acc.fd_ଗଣନା; i++)
       {
-        unsigned count = acc.privateDicts[i].localSubrs->count;
-        parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        unsigned ଗଣନା_2 = acc.privateDicts[i].localSubrs->ଗଣନା_2;
+        parsed_local_subrs_storage[i].resize (ଗଣନା_2);
+        ଯଦି (unlikely (parsed_local_subrs_storage[i].in_error ())) ଫେରନ୍ତୁ ମିଥ୍ୟା;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
+    ଯଦି (unlikely (remaps.in_error()
                   || cached_charstrings.in_error ()
                   || parsed_charstrings.in_error ()
                   || parsed_global_subrs->in_error ()
                   || closures.in_error ())) {
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
      * the accelerator), coalesce parsed tokens as they are added,
      * instead of a separate compact() pass. */
-    bool coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+    ତାର୍କିକ coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    ପାଇଁ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      ଅଚଳ hb_ubytes_t str = (*acc.charStrings)[old_glyph];
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd = subset_get_fd (acc, old_glyph);
+      ଯଦି (unlikely (fd >= acc.fd_ଗଣନା))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-      if (cff_accelerator)
+      ଯଦି (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        ଯଦି (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        ଅନ୍ୟଥା
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
-        continue;
+        ଜାରି;
       }
 
       ENV env (str, acc, fd);
@@ -907,14 +907,14 @@ struct subr_subsetter_t
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      ଯଦି (unlikely (!interp.interpret (param)))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      ଯଦି ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
@@ -924,10 +924,10 @@ struct subr_subsetter_t
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	ଯଦି (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
 	{
 	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
+	  ଯଦି (drop.vsindex_dropped)
 	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
 	}
       }
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      ଯଦି (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,189 +950,189 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    ଯଦି ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
         !closure_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
+  ତାର୍କିକ encode_charstrings (str_buff_vec_t &buffArray, ତାର୍କିକ encode_prefix = ସତ୍ୟ) ଅଚଳ
   {
-    unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
+    unsigned ଅଙ୍କ_glyphs = plan->ଅଙ୍କ_output_glyphs ();
+    ଯଦି (unlikely (!buffArray.resize_exact (ଅଙ୍କ_glyphs)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    ପାଇଁ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      ଯଦି (endchar_op != OpCode_Invalid)
+        ପାଇଁ (; last < gid; last++)
 	{
 	  // Hack to point vector to static string.
 	  auto &b = buffArray.arrayZ[last];
-	  b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	  b.set_storage (const_cast<unsigned ଅକ୍ଷର *>(endchar_str), 1);
 	}
 
       last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  fd = subset_get_fd (acc, old_glyph);
+      ଯଦି (unlikely (fd >= acc.fd_ଗଣନା))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
+      ଯଦି (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    ଯଦି (endchar_op != OpCode_Invalid)
+      ପାଇଁ (; last < ଅଙ୍କ_glyphs; last++)
       {
 	// Hack to point vector to static string.
 	auto &b = buffArray.arrayZ[last];
-	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	b.set_storage (const_cast<unsigned ଅକ୍ଷର *>(endchar_str), 1);
       }
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  ତାର୍କିକ encode_subrs (ଅଚଳ parsed_cs_str_vec_t &subrs, ଅଚଳ subr_remap_t& remap, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd, str_buff_vec_t &buffArray) ଅଚଳ
   {
-    unsigned int  count = remap.get_population ();
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  ଗଣନା_2 = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    ଯଦି (unlikely (!buffArray.resize_exact (ଗଣନା_2)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_ଅଙ୍କ = 0; new_ଅଙ୍କ < ଗଣନା_2; new_ଅଙ୍କ++)
     {
-      hb_codepoint_t old_num = remap.backward (new_num);
-      assert (old_num != CFF_UNDEF_CODE);
+      hb_codepoint_t old_ଅଙ୍କ = remap.backward (new_ଅଙ୍କ);
+      ପ୍ରତିଜ୍ଞା (old_ଅଙ୍କ != CFF_UNDEF_CODE);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      ଯଦି (unlikely (!encode_str (subrs[old_ଅଙ୍କ], fd, buffArray[new_ଅଙ୍କ])))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  bool encode_globalsubrs (str_buff_vec_t &buffArray)
+  ତାର୍କିକ encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    ଫେରନ୍ତୁ encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  ତାର୍କିକ encode_localsubrs (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd, str_buff_vec_t &buffArray) ଅଚଳ
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    ଫେରନ୍ତୁ encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
-  protected:
-  struct drop_hints_param_t
+  ସୁରକ୍ଷିତ:
+  ସଂରଚନା drop_hints_param_t
   {
     drop_hints_param_t ()
-      : seen_moveto (false),
-	ends_in_hint (false),
-	all_dropped (false),
-	vsindex_dropped (false) {}
+      : seen_moveto (ମିଥ୍ୟା),
+	ends_in_hint (ମିଥ୍ୟା),
+	all_dropped (ମିଥ୍ୟା),
+	vsindex_dropped (ମିଥ୍ୟା) {}
 
-    bool  seen_moveto;
-    bool  ends_in_hint;
-    bool  all_dropped;
-    bool  vsindex_dropped;
+    ତାର୍କିକ  seen_moveto;
+    ତାର୍କିକ  ends_in_hint;
+    ତାର୍କିକ  all_dropped;
+    ତାର୍କିକ  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
-			   const subr_subset_param_t &param, drop_hints_param_t &drop)
+  ତାର୍କିକ drop_hints_in_subr (parsed_cs_str_t &str, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା pos,
+			   parsed_cs_str_vec_t &subrs, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା subr_ଅଙ୍କ_2,
+			   ଅଚଳ subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    drop.ends_in_hint = false;
-    bool has_hint = drop_hints_in_str (subrs[subr_num], param, drop);
+    drop.ends_in_hint = ମିଥ୍ୟା;
+    ତାର୍କିକ has_hint = drop_hints_in_str (subrs[subr_ଅଙ୍କ_2], param, drop);
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    ଯଦି (drop.ends_in_hint)
     {
       str.values[pos].set_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
-	drop.ends_in_hint = false;
+      ଯଦି (!str.at_end (pos))
+	drop.ends_in_hint = ମିଥ୍ୟା;
     }
-    else if (drop.all_dropped)
+    ଅନ୍ୟଥା ଯଦି (drop.all_dropped)
     {
       str.values[pos].set_hinting ();
     }
 
-    return has_hint;
+    ଫେରନ୍ତୁ has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  ତାର୍କିକ drop_hints_in_str (parsed_cs_str_t &str, ଅଚଳ subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    bool  seen_hint = false;
+    ତାର୍କିକ  seen_hint = ମିଥ୍ୟା;
 
-    unsigned count = str.values.length;
+    unsigned ଗଣନା_2 = str.values.length;
     auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା pos = 0; pos < ଗଣନା_2; pos++)
     {
-      bool  has_hint = false;
-      switch (values[pos].op)
+      ତାର୍କିକ  has_hint = ମିଥ୍ୟା;
+      ବାଛ (values[pos].op)
       {
-	case OpCode_callsubr:
+	ସ୍ଥିତି OpCode_callsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_local_subrs, values[pos].subr_num,
+					*param.parsed_local_subrs, values[pos].subr_ଅଙ୍କ_2,
 					param, drop);
-	  break;
+	  ଭାଙ୍ଗ;
 
-	case OpCode_callgsubr:
+	ସ୍ଥିତି OpCode_callgsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_global_subrs, values[pos].subr_num,
+					*param.parsed_global_subrs, values[pos].subr_ଅଙ୍କ_2,
 					param, drop);
-	  break;
+	  ଭାଙ୍ଗ;
 
-	case OpCode_rmoveto:
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  drop.seen_moveto = true;
-	  break;
+	ସ୍ଥିତି OpCode_rmoveto:
+	ସ୍ଥିତି OpCode_hmoveto:
+	ସ୍ଥିତି OpCode_vmoveto:
+	  drop.seen_moveto = ସତ୍ୟ;
+	  ଭାଙ୍ଗ;
 
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	ସ୍ଥିତି OpCode_hintmask:
+	ସ୍ଥିତି OpCode_cntrmask:
+	  ଯଦି (drop.seen_moveto)
 	  {
 	    values[pos].set_hinting ();
-	    break;
+	    ଭାଙ୍ଗ;
 	  }
 	  HB_FALLTHROUGH;
 
-	case OpCode_hstemhm:
-	case OpCode_vstemhm:
-	case OpCode_hstem:
-	case OpCode_vstem:
-	  has_hint = true;
+	ସ୍ଥିତି OpCode_hstemhm:
+	ସ୍ଥିତି OpCode_vstemhm:
+	ସ୍ଥିତି OpCode_hstem:
+	ସ୍ଥିତି OpCode_vstem:
+	  has_hint = ସତ୍ୟ;
 	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
-	    drop.ends_in_hint = true;
-	  break;
+	  ଯଦି (str.at_end (pos))
+	    drop.ends_in_hint = ସତ୍ୟ;
+	  ଭାଙ୍ଗ;
 
-	case OpCode_dotsection:
+	ସ୍ଥିତି OpCode_dotsection:
 	  values[pos].set_hinting ();
-	  break;
+	  ଭାଙ୍ଗ;
 
-	default:
+	ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	  /* NONE */
-	  break;
+	  ଭାଙ୍ଗ;
       }
-      if (has_hint)
+      ଯଦି (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = pos - 1; i >= 0; i--)
 	{
 	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
-	    break;
+	  ଯଦି (csop.is_hinting ())
+	    ଭାଙ୍ଗ;
 	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
-	    drop.vsindex_dropped = true;
+	  ଯଦି (csop.op == OpCode_vsindexcs)
+	    drop.vsindex_dropped = ସତ୍ୟ;
 	}
 	seen_hint |= has_hint;
       }
@@ -1142,33 +1142,33 @@ struct subr_subsetter_t
      * It may happen even after seeing the first moveto if a subr contains
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
-    drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    drop.all_dropped = ସତ୍ୟ;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା pos = 0; pos < ଗଣନା_2; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
-	break;
-      if (!csop.is_hinting ())
+      ଯଦି (csop.op == OpCode_return)
+	ଭାଙ୍ଗ;
+      ଯଦି (!csop.is_hinting ())
       {
-	drop.all_dropped = false;
-	break;
+	drop.all_dropped = ମିଥ୍ୟା;
+	ଭାଙ୍ଗ;
       }
     }
 
-    return seen_hint;
+    ଫେରନ୍ତୁ seen_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  ତାର୍କିକ closure_subroutines (ଅଚଳ parsed_cs_str_vec_t& global_subrs,
+                            ଅଚଳ hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    ପାଇଁ (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd = subset_get_fd (acc, old_glyph);
+      ଯଦି (unlikely (fd >= acc.fd_ଗଣନା))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
@@ -1181,108 +1181,108 @@ struct subr_subsetter_t
       collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
+  ଶୂନ୍ୟ collect_subr_refs_in_subr (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା subr_ଅଙ୍କ_2, parsed_cs_str_vec_t &subrs,
 				  hb_set_t *closure,
-				  const subr_subset_param_t &param)
+				  ଅଚଳ subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
-    closure->add (subr_num);
-    collect_subr_refs_in_str (subrs[subr_num], param);
+    ଯଦି (closure->has (subr_ଅଙ୍କ_2))
+      ଫେରନ୍ତୁ;
+    closure->add (subr_ଅଙ୍କ_2);
+    collect_subr_refs_in_str (subrs[subr_ଅଙ୍କ_2], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
-                                 const subr_subset_param_t &param)
+  ଶୂନ୍ୟ collect_subr_refs_in_str (ଅଚଳ parsed_cs_str_t &str,
+                                 ଅଚଳ subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    ଯଦି (!str.has_calls ())
+      ଫେରନ୍ତୁ;
 
-    for (auto &opstr : str.values)
+    ପାଇଁ (auto &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      ଯଦି (!param.drop_hints || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ବାଛ (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_local_subrs,
+	  ସ୍ଥିତି OpCode_callsubr:
+	    collect_subr_refs_in_subr (opstr.subr_ଅଙ୍କ_2, *param.parsed_local_subrs,
 				       param.local_closure, param);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  case OpCode_callgsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_global_subrs,
+	  ସ୍ଥିତି OpCode_callgsubr:
+	    collect_subr_refs_in_subr (opstr.subr_ଅଙ୍କ_2, *param.parsed_global_subrs,
 				       param.global_closure, param);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  default: break;
+	  ପୂର୍ବନିର୍ଦ୍ଧାରିତ: ଭାଙ୍ଗ;
 	}
       }
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  ତାର୍କିକ encode_str (ଅଚଳ parsed_cs_str_t &str, ଅଚଳ unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd, str_buff_t &buff, ତାର୍କିକ encode_prefix = ସତ୍ୟ) ଅଚଳ
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
-    bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    ତାର୍କିକ hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    ଯଦି (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
     {
-      encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
+      encoder.encode_ଅଙ୍କ_cs (str.prefix_ଅଙ୍କ_2 ());
+      ଯଦି (str.prefix_op () != OpCode_Invalid)
 	encoder.encode_op (str.prefix_op ());
     }
 
     unsigned size = 0;
-    for (auto &opstr : str.values)
+    ପାଇଁ (auto &opstr : str.values)
     {
       size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
+      ଯଦି (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
         size += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    ଯଦି (!buff.alloc_exact (buff.length + size))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    for (auto &opstr : str.values)
+    ପାଇଁ (auto &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      ଯଦି (hinting || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ବାଛ (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    encoder.encode_int (remaps.local_remaps[fd].biased_num (opstr.subr_num));
+	  ସ୍ଥିତି OpCode_callsubr:
+	    encoder.encode_int (remaps.local_remaps[fd].biased_ଅଙ୍କ (opstr.subr_ଅଙ୍କ_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  case OpCode_callgsubr:
-	    encoder.encode_int (remaps.global_remap.biased_num (opstr.subr_num));
+	  ସ୍ଥିତି OpCode_callgsubr:
+	    encoder.encode_int (remaps.global_remap.biased_ଅଙ୍କ (opstr.subr_ଅଙ୍କ_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  default:
+	  ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    ଭାଙ୍ଗ;
 	}
       }
     }
-    return !encoder.in_error ();
+    ଫେରନ୍ତୁ !encoder.in_error ();
   }
 
-  void compact_parsed_subrs () const
+  ଶୂନ୍ୟ compact_parsed_subrs () ଅଚଳ
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    ପାଇଁ (auto &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    ପାଇଁ (auto &vec : parsed_local_subrs_storage)
+      ପାଇଁ (auto &cs : vec)
 	cs.compact ();
   }
 
-  void populate_subset_accelerator () const
+  ଶୂନ୍ୟ populate_subset_accelerator () ଅଚଳ
   {
-    if (!plan->inprogress_accelerator) return;
+    ଯଦି (!plan->inprogress_accelerator) ଫେରନ୍ତୁ;
 
     compact_parsed_subrs ();
 
@@ -1293,52 +1293,52 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  ଅଚଳ parsed_cs_str_t& get_parsed_charstring (unsigned i) ଅଚଳ
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    ଯଦି (cached_charstrings) ଫେରନ୍ତୁ *(cached_charstrings[i]);
+    ଫେରନ୍ତୁ parsed_charstrings[i];
   }
 
-  protected:
-  const ACC			&acc;
-  const hb_subset_plan_t	*plan;
+  ସୁରକ୍ଷିତ:
+  ଅଚଳ ACC			&acc;
+  ଅଚଳ hb_subset_plan_t	*plan;
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_vector_t<ଅଚଳ parsed_cs_str_t*>     cached_charstrings;
+  ଅଚଳ parsed_cs_str_vec_t*              parsed_global_subrs;
+  ଅଚଳ hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
-  private:
+  ବ୍ୟକ୍ତିଗତ:
 
   parsed_cs_str_vec_t		parsed_charstrings;
   parsed_cs_str_vec_t		parsed_global_subrs_storage;
   hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
-  typedef typename SUBRS::count_type subr_count_type;
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା typename SUBRS::ଗଣନା_type subr_ଗଣନା_type;
 };
 
 } /* namespace CFF */
 
-HB_INTERNAL bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
-			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
+HB_INTERNAL ତାର୍କିକ
+hb_plan_subset_cff_fdselect (ଅଚଳ hb_subset_plan_t *plan,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd_ଗଣନା,
+			    ଅଚଳ CFF::FDSelect &src, /* IN */
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା src_ଅଙ୍କ_glyphs,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା &subset_fd_ଗଣନା /* OUT */,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା &subset_fdselect_size /* OUT */,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା &subset_fdselect_format /* OUT */,
 			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
 			    hb_inc_bimap_t &fdmap /* OUT */);
 
-HB_INTERNAL bool
+HB_INTERNAL ତାର୍କିକ
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
-			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
-			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_glyphs,
+			  ଅଚଳ CFF::FDSelect &src,
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fd_ଗଣନା_2,
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fdselect_format,
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size,
+			  ଅଚଳ hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
 
 #endif /* HB_SUBSET_CFF_COMMON_HH */

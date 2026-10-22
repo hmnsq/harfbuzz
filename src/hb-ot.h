@@ -28,19 +28,19 @@
 #define HB_OT_H
 #define HB_OT_H_IN
 
-#include "hb.h"
+#ଅନ୍ତର୍ଭାଵ "hb.h"
 
-#include "hb-ot-fetch.h"
-#include "hb-ot-color.h"
-#include "hb-ot-deprecated.h"
-#include "hb-ot-font.h"
-#include "hb-ot-layout.h"
-#include "hb-ot-math.h"
-#include "hb-ot-meta.h"
-#include "hb-ot-metrics.h"
-#include "hb-ot-name.h"
-#include "hb-ot-shape.h"
-#include "hb-ot-var.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-fetch.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-color.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-deprecated.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-font.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-math.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-meta.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-metrics.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-name.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shape.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var.h"
 
 HB_BEGIN_DECLS
 

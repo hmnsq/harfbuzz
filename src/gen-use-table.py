@@ -15,26 +15,26 @@ Input files:
 * ms-use/IndicPositionalCategory-Additional.txt
 """
 
-import os
-import packTab
+ଆମଦାନୀ os
+ଆମଦାନୀ packTab
 
-import sys
-import logging
+ଆମଦାନୀ sys
+ଆମଦାନୀ logging
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+ଯଦି len(sys.argv) > 1 ଏବଂ sys.argv[1] == "--rust":
     del sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+ଅନ୍ୟଥା:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-import sys
+ଆମଦାନୀ sys
 
-if len (sys.argv) != 10:
+ଯଦି len (sys.argv) != 10:
 	sys.exit (__doc__)
 
 DISABLED_SCRIPTS = {
@@ -45,68 +45,68 @@ DISABLED_SCRIPTS = {
 	'Thai',
 }
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') ପାଇଁ x ଭିତରେ sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
-for j in range(7, 9):
-	for line in files[j]:
-		line = line.rstrip()
-		if not line:
-			break
-		headers[j - 1].append(line)
+headers = [[f.readline () ପାଇଁ i ଭିତରେ range (2)] ପାଇଁ j,f ଭିତରେ enumerate(files) ଯଦି j != 4]
+ପାଇଁ j ଭିତରେ range(7, 9):
+	ପାଇଁ ଧାଡ଼ି ଭିତରେ files[j]:
+		ଧାଡ଼ି = ଧାଡ଼ି.rstrip()
+		ଯଦି ନୁହେଁ ଧାଡ଼ି:
+			ଭାଙ୍ଗ
+		headers[j - 1].append(ଧାଡ଼ି)
 headers.append (["UnicodeData.txt does not have a header."])
 
-unicode_data = [{} for _ in files]
-values = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_data = [{} ପାଇଁ _ ଭିତରେ files]
+ମୂଲ୍ୟଗୁଡ଼ିକ = [{} ପାଇଁ _ ଭିତରେ files]
+ପାଇଁ i, f ଭିତରେ enumerate (files):
+	ପାଇଁ ଧାଡ଼ି ଭିତରେ f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = ଧାଡ଼ି.find ('#')
+		ଯଦି j >= 0:
+			ଧାଡ଼ି = ଧାଡ଼ି[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () ପାଇଁ x ଭିତରେ ଧାଡ଼ି.split (';')]
+		ଯଦି len (fields) == 1:
+			ଜାରି
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = ପୂର୍ଣ୍ଣସଂଖ୍ୟା (uu[0], 16)
+		ଯଦି len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		ଅନ୍ୟଥା:
+			end = ପୂର୍ଣ୍ଣସଂଖ୍ୟା (uu[1], 16)
 
-		t = fields[1 if i not in [2, 4] else 2]
+		t = fields[1 ଯଦି i ନୁହେଁ ଭିତରେ [2, 4] ଅନ୍ୟଥା 2]
 
-		if i == 2:
+		ଯଦି i == 2:
 			t = 'jt_' + t
-		elif i == 3 and t != 'Default_Ignorable_Code_Point':
-			continue
-		elif i == 7 and t == 'Consonant_Final_Modifier':
+		ନଚେତଯଦି i == 3 ଏବଂ t != 'Default_Ignorable_Code_Point':
+			ଜାରି
+		ନଚେତଯଦି i == 7 ଏବଂ t == 'Consonant_Final_Modifier':
 			# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/336
 			t = 'Syllable_Modifier'
-		elif i == 8 and t == 'NA':
+		ନଚେତଯଦି i == 8 ଏବଂ t == 'NA':
 			t = 'Not_Applicable'
 
-		i0 = i if i < 7 else i - 7
-		for u in range (start, end + 1):
+		i0 = i ଯଦି i < 7 ଅନ୍ୟଥା i - 7
+		ପାଇଁ u ଭିତରେ range (start, end + 1):
 			unicode_data[i0][u] = t
-		values[i0][t] = values[i0].get (t, 0) + end - start + 1
+		ମୂଲ୍ୟଗୁଡ଼ିକ[i0][t] = ମୂଲ୍ୟଗୁଡ଼ିକ[i0].get (t, 0) + end - start + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
-for i,v in enumerate (defaults):
-	values[i][v] = values[i].get (v, 0) + 1
+ପାଇଁ i,v ଭିତରେ enumerate (defaults):
+	ମୂଲ୍ୟଗୁଡ଼ିକ[i][v] = ମୂଲ୍ୟଗୁଡ଼ିକ[i].get (v, 0) + 1
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if not u in combined:
-			if i >= 4:
-				continue
+ପାଇଁ i,d ଭିତରେ enumerate (unicode_data):
+	ପାଇଁ u,v ଭିତରେ d.ବସ୍ତୁଗୁଡ଼ିକ ():
+		ଯଦି ନୁହେଁ u ଭିତରେ combined:
+			ଯଦି i >= 4:
+				ଜାରି
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v ପାଇଁ k, v ଭିତରେ combined.ବସ୍ତୁଗୁଡ଼ିକ() ଯଦି v[6] ନୁହେଁ ଭିତରେ DISABLED_SCRIPTS}
 
 
 property_names = [
@@ -188,120 +188,120 @@ property_names = [
 	'jt_X',
 ]
 
-class PropertyValue(object):
+ଶ୍ରେଣୀ Property_ମୂଲ୍ୟ(object):
 	def __init__(self, name_):
 		self.name = name_
 	def __str__(self):
-		return self.name
+		ଫେରନ୍ତୁ self.name
 	def __eq__(self, other):
-		return self.name == (other if isinstance(other, str) else other.name)
+		ଫେରନ୍ତୁ self.name == (other ଯଦି isinstance(other, str) ଅନ୍ୟଥା other.name)
 	def __ne__(self, other):
-		return not (self == other)
+		ଫେରନ୍ତୁ ନୁହେଁ (self == other)
 	def __hash__(self):
-		return hash(str(self))
+		ଫେରନ୍ତୁ hash(str(self))
 
-property_values = {}
+property_ମୂଲ୍ୟଗୁଡ଼ିକ = {}
 
-for name in property_names:
-	value = PropertyValue(name)
-	assert value not in property_values
-	assert value not in globals()
-	property_values[name] = value
-globals().update(property_values)
+ପାଇଁ name ଭିତରେ property_names:
+	ମୂଲ୍ୟ_2 = Property_ମୂଲ୍ୟ(name)
+	ପ୍ରତିଜ୍ଞା ମୂଲ୍ୟ_2 ନୁହେଁ ଭିତରେ property_ମୂଲ୍ୟଗୁଡ଼ିକ
+	ପ୍ରତିଜ୍ଞା ମୂଲ୍ୟ_2 ନୁହେଁ ଭିତରେ globals()
+	property_ମୂଲ୍ୟଗୁଡ଼ିକ[name] = ମୂଲ୍ୟ_2
+globals().update(property_ମୂଲ୍ୟଗୁଡ଼ିକ)
 
 
 def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+	ଫେରନ୍ତୁ (UISC ଭିତରେ [ସଂଖ୍ୟା, Consonant, Consonant_Head_Letter,
 			Tone_Letter,
 			Vowel_Independent,
-			] or
+			] କିମ୍ବା
 		# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/484
-		AJT in [jt_C, jt_D, jt_L, jt_R] and UISC != Joiner or
-		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
+		AJT ଭିତରେ [jt_C, jt_D, jt_L, jt_R] ଏବଂ UISC != Joiner କିମ୍ବା
+		(UGC == Lo ଏବଂ UISC ଭିତରେ [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
-def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
+def is_BASE_ଅଙ୍କ(U, UISC, UDI, UGC, AJT):
+	ଫେରନ୍ତୁ UISC == Brahmi_Joining_ସଂଖ୍ୟା
 def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
-	if UISC == Consonant_Placeholder: return True
-	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
+	ଯଦି UISC == Consonant_Placeholder: ଫେରନ୍ତୁ ସତ୍ୟ
+	ଫେରନ୍ତୁ U ଭିତରେ [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
 def is_CGJ(U, UISC, UDI, UGC, AJT):
 	# Also includes VARIATION_SELECTOR and ZWJ
-	return UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
+	ଫେରନ୍ତୁ UISC == Joiner କିମ୍ବା UDI ଏବଂ UGC ଭିତରେ [Mc, Me, Mn]
 def is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
-	return ((UISC == Consonant_Final and UGC != Lo) or
+	ଫେରନ୍ତୁ ((UISC == Consonant_Final ଏବଂ UGC != Lo) କିମ୍ବା
 		UISC == Consonant_Succeeding_Repha)
 def is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Syllable_Modifier
+	ଫେରନ୍ତୁ UISC == Syllable_Modifier
 def is_CONS_MED(U, UISC, UDI, UGC, AJT):
 	# Consonant_Initial_Postfixed is new in Unicode 11; not in the spec.
-	return (UISC == Consonant_Medial and UGC != Lo or
+	ଫେରନ୍ତୁ (UISC == Consonant_Medial ଏବଂ UGC != Lo କିମ୍ବା
 		UISC == Consonant_Initial_Postfixed)
 def is_CONS_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC in [Nukta, Gemination_Mark, Consonant_Killer]
+	ଫେରନ୍ତୁ UISC ଭିତରେ [Nukta, Gemination_Mark, Consonant_Killer]
 def is_CONS_SUB(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_Subjoined and UGC != Lo
+	ଫେରନ୍ତୁ UISC == Consonant_Subjoined ଏବଂ UGC != Lo
 def is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_With_Stacker
+	ଫେରନ୍ତୁ UISC == Consonant_With_Stacker
 def is_HALANT(U, UISC, UDI, UGC, AJT):
-	return UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
+	ଫେରନ୍ତୁ UISC == Virama ଏବଂ ନୁହେଁ is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
 def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x0DCA
-def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
+	ଫେରନ୍ତୁ U == 0x0DCA
+def is_HALANT_ଅଙ୍କ(U, UISC, UDI, UGC, AJT):
+	ଫେରନ୍ତୁ UISC == ସଂଖ୍ୟା_Joiner
 def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph
+	ଫେରନ୍ତୁ UISC == Hieroglyph
 def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Joiner
+	ଫେରନ୍ତୁ UISC == Hieroglyph_Joiner
 def is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Mirror
+	ଫେରନ୍ତୁ UISC == Hieroglyph_Mirror
 def is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Modifier
+	ଫେରନ୍ତୁ UISC == Hieroglyph_Modifier
 def is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
+	ଫେରନ୍ତୁ UISC ଭିତରେ [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
 def is_HIEROGLYPH_SEGMENT_END(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
+	ଫେରନ୍ତୁ UISC ଭିତରେ [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
 def is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return (UISC == Invisible_Stacker
-		and not is_SAKOT(U, UISC, UDI, UGC, AJT)
+	ଫେରନ୍ତୁ (UISC == Invisible_Stacker
+		ଏବଂ ନୁହେଁ is_SAKOT(U, UISC, UDI, UGC, AJT)
 	)
 def is_ZWNJ(U, UISC, UDI, UGC, AJT):
-	return UISC == Non_Joiner
+	ଫେରନ୍ତୁ UISC == Non_Joiner
 def is_OTHER(U, UISC, UDI, UGC, AJT):
 	# Also includes BASE_IND and SYM
-	return ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
-		and not is_BASE(U, UISC, UDI, UGC, AJT)
-		and not is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-		and not is_SYM_MOD(U, UISC, UDI, UGC, AJT)
-		and not is_Word_Joiner(U, UISC, UDI, UGC, AJT)
+	ଫେରନ୍ତୁ ((UGC == Po କିମ୍ବା UISC ଭିତରେ [Consonant_Dead, Joiner, Modifying_Letter, Other])
+		ଏବଂ ନୁହେଁ is_BASE(U, UISC, UDI, UGC, AJT)
+		ଏବଂ ନୁହେଁ is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
+		ଏବଂ ନୁହେଁ is_CGJ(U, UISC, UDI, UGC, AJT)
+		ଏବଂ ନୁହେଁ is_SYM_MOD(U, UISC, UDI, UGC, AJT)
+		ଏବଂ ନୁହେଁ is_Word_Joiner(U, UISC, UDI, UGC, AJT)
 	)
 def is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
-	return UISC == Reordering_Killer
+	ଫେରନ୍ତୁ UISC == Reordering_Killer
 def is_REPHA(U, UISC, UDI, UGC, AJT):
-	return UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
+	ଫେରନ୍ତୁ UISC ଭିତରେ [Consonant_Preceding_Repha, Consonant_Prefixed]
 def is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x1A60
+	ଫେରନ୍ତୁ U == 0x1A60
 def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
+	ଫେରନ୍ତୁ UISC == ପ୍ରତୀକ_Modifier
 def is_VOWEL(U, UISC, UDI, UGC, AJT):
-	return (UISC == Pure_Killer or
-		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
+	ଫେରନ୍ତୁ (UISC == Pure_Killer କିମ୍ବା
+		UGC != Lo ଏବଂ UISC ଭିତରେ [Vowel, Vowel_Dependent])
 def is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
-		UGC != Lo and UISC == Bindu)
+	ଫେରନ୍ତୁ (UISC ଭିତରେ [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] କିମ୍ବା
+		UGC != Lo ଏବଂ UISC == Bindu)
 def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
 	# Also includes Rsv
-	return (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
-		and UISC == Other
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-	) or UGC == Cn
+	ଫେରନ୍ତୁ (UDI ଏବଂ U ନୁହେଁ ଭିତରେ [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
+		ଏବଂ UISC == Other
+		ଏବଂ ନୁହେଁ is_CGJ(U, UISC, UDI, UGC, AJT)
+	) କିମ୍ବା UGC == Cn
 
 use_mapping = {
 	'B':	is_BASE,
-	'N':	is_BASE_NUM,
+	'N':	is_BASE_ଅଙ୍କ,
 	'GB':	is_BASE_OTHER,
 	'CGJ':	is_CGJ,
 	'F':	is_CONS_FINAL,
@@ -312,7 +312,7 @@ use_mapping = {
 	'CS':	is_CONS_WITH_STACKER,
 	'H':	is_HALANT,
 	'HVM':	is_HALANT_OR_VOWEL_MODIFIER,
-	'HN':	is_HALANT_NUM,
+	'HN':	is_HALANT_ଅଙ୍କ,
 	'IS':	is_INVISIBLE_STACKER,
 	'G':	is_HIEROGLYPH,
 	'HM':	is_HIEROGLYPH_MOD,
@@ -333,34 +333,34 @@ use_mapping = {
 
 use_positions = {
 	'F': {
-		'Abv': [Top],
+		'Abv': [ଶୀର୍ଷ],
 		'Blw': [Bottom],
-		'Pst': [Right],
+		'Pst': [ଡାହାଣ_2],
 	},
 	'M': {
-		'Abv': [Top],
-		'Blw': [Bottom, Bottom_And_Left, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Bottom_And_Left],
+		'Abv': [ଶୀର୍ଷ],
+		'Blw': [Bottom, Bottom_And_ବାମ, Bottom_And_ଡାହାଣ],
+		'Pst': [ଡାହାଣ_2],
+		'Pre': [ବାମ, ଶୀର୍ଷ_And_Bottom_And_ବାମ],
 	},
 	'CM': {
-		'Abv': [Top],
+		'Abv': [ଶୀର୍ଷ],
 		'Blw': [Bottom, Overstruck],
 	},
 	'V': {
-		'Abv': [Top, Top_And_Bottom, Top_And_Bottom_And_Right, Top_And_Right],
-		'Blw': [Bottom, Overstruck, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Left, Top_And_Left_And_Right, Left_And_Right],
+		'Abv': [ଶୀର୍ଷ, ଶୀର୍ଷ_And_Bottom, ଶୀର୍ଷ_And_Bottom_And_ଡାହାଣ, ଶୀର୍ଷ_And_ଡାହାଣ],
+		'Blw': [Bottom, Overstruck, Bottom_And_ଡାହାଣ],
+		'Pst': [ଡାହାଣ_2],
+		'Pre': [ବାମ, ଶୀର୍ଷ_And_ବାମ, ଶୀର୍ଷ_And_ବାମ_And_ଡାହାଣ, ବାମ_And_ଡାହାଣ],
 	},
 	'VM': {
-		'Abv': [Top],
+		'Abv': [ଶୀର୍ଷ],
 		'Blw': [Bottom, Overstruck],
-		'Pst': [Right],
-		'Pre': [Left],
+		'Pst': [ଡାହାଣ_2],
+		'Pre': [ବାମ],
 	},
 	'SM': {
-		'Abv': [Top],
+		'Abv': [ଶୀର୍ଷ],
 		'Blw': [Bottom],
 	},
 	'H': None,
@@ -370,7 +370,7 @@ use_positions = {
 	'IS': None,
 	'B': None,
 	'FM': {
-		'Abv': [Top],
+		'Abv': [ଶୀର୍ଷ],
 		'Blw': [Bottom],
 		'Pst': [Not_Applicable],
 	},
@@ -381,44 +381,44 @@ use_positions = {
 
 def map_to_use(data):
 	out = {}
-	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+	ବସ୍ତୁଗୁଡ଼ିକ = use_mapping.ବସ୍ତୁଗୁଡ଼ିକ()
+	ପାଇଁ U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) ଭିତରେ data.ବସ୍ତୁଗୁଡ଼ିକ():
 
 		# Resolve Indic_Syllabic_Category
 
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
+		ଯଦି 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
 
 		# Tibetan:
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
+		ଯଦି 0x0F18 <= U <= 0x0F19 କିମ୍ବା 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
 
 		# TODO: U+1CED should only be allowed after some of
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
-		if U == 0x1CED: UISC = Tone_Mark
+		ଯଦି U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
-		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
-		USE = values[0]
+		ମୂଲ୍ୟଗୁଡ଼ିକ = [k ପାଇଁ k,v ଭିତରେ ବସ୍ତୁଗୁଡ଼ିକ ଯଦି v(U, UISC, UDI, UGC, AJT)]
+		ପ୍ରତିଜ୍ଞା len(ମୂଲ୍ୟଗୁଡ଼ିକ) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, ମୂଲ୍ୟଗୁଡ଼ିକ)
+		USE = ମୂଲ୍ୟଗୁଡ଼ିକ[0]
 
 		# Resolve Indic_Positional_Category
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		ଯଦି U ଭିତରେ [0x11302, 0x11303, 0x114C1]: UIPC = ଶୀର୍ଷ
 
-		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
-			U == 0x0F7F or
-			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
+		ପ୍ରତିଜ୍ଞା (UIPC ଭିତରେ [Not_Applicable, Visual_Order_ବାମ] କିମ୍ବା
+			U == 0x0F7F କିମ୍ବା
+			USE ଭିତରେ use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
 		pos_mapping = use_positions.get(USE, None)
-		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
-			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
-			USE = USE + values[0]
+		ଯଦି pos_mapping:
+			ମୂଲ୍ୟଗୁଡ଼ିକ = [k ପାଇଁ k,v ଭିତରେ pos_mapping.ବସ୍ତୁଗୁଡ଼ିକ() ଯଦି v ଏବଂ UIPC ଭିତରେ v]
+			ପ୍ରତିଜ୍ଞା len(ମୂଲ୍ୟଗୁଡ଼ିକ) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, ମୂଲ୍ୟଗୁଡ଼ିକ)
+			USE = USE + ମୂଲ୍ୟଗୁଡ଼ିକ[0]
 
 		out[U] = (USE, UBlock)
-	return out
+	ଫେରନ୍ତୁ out
 
 use_data = map_to_use(combined)
 
@@ -430,12 +430,12 @@ print (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShap
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+ପାଇଁ h ଭିତରେ headers:
+	ପାଇଁ l ଭିତରେ h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
-if language.name == "c":
+ଯଦି language.name == "c":
     print ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
     print ("#define HB_OT_SHAPER_USE_TABLE_HH")
     print ()
@@ -446,38 +446,38 @@ if language.name == "c":
 
     print ('#pragma GCC diagnostic push')
     print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
-        if k in use_positions and use_positions[k]: continue
+    ପାଇଁ k,v ଭିତରେ sorted(use_mapping.ବସ୍ତୁଗୁଡ଼ିକ()):
+        ଯଦି k ଭିତରେ use_positions ଏବଂ use_positions[k]: ଜାରି
         print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    ପାଇଁ k,v ଭିତରେ sorted(use_positions.ବସ୍ତୁଗୁଡ଼ିକ()):
+        ଯଦି ନୁହେଁ v: ଜାରି
+        ପାଇଁ suf ଭିତରେ v.ଚାବିଗୁଡ଼ିକ():
             tag = k + suf
             print ("#define %s	USE(%s)" % (tag, tag))
     print ('#pragma GCC diagnostic pop')
     print ("")
 
-elif language.name == "rust":
+ନଚେତଯଦି language.name == "rust":
     print()
     print("#![allow(unused_parens)]")
     print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
     print()
     print("use super::ot_shaper_use::category::*;")
     print()
-else:
-    assert False, "Unknown language: %s" % language.name
+ଅନ୍ୟଥା:
+    ପ୍ରତିଜ୍ଞା ମିଥ୍ୟା, "Unknown language: %s" % language.name
 
-uu = sorted (use_data.keys ())
+uu = sorted (use_data.ଚାବିଗୁଡ଼ିକ ())
 
-data = {u:v[0] for u,v in use_data.items()}
+data = {u:v[0] ପାଇଁ u,v ଭିତରେ use_data.ବସ୍ତୁଗୁଡ଼ିକ()}
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
+ଯଦି language.name == "c":
+    ବ୍ୟକ୍ତିଗତ = ସତ୍ୟ
+ନଚେତଯଦି language.name == "rust":
+    ବ୍ୟକ୍ତିଗତ = ମିଥ୍ୟା
     language.public_function_linkage = "pub(crate)"
-else:
-    assert False, "Unknown language: %s" % language.name
+ଅନ୍ୟଥା:
+    ପ୍ରତିଜ୍ଞା ମିଥ୍ୟା, "Unknown language: %s" % language.name
 
 
 DEFAULT = "DEFAULT"
@@ -489,46 +489,46 @@ compression_level = {
 }
 
 modes = {}
-if language.name == "c":
+ଯଦି language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#else"
     modes[None] = "#endif"
-else:
+ଅନ୍ୟଥା:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+ପାଇଁ step, text ଭିତରେ modes.ବସ୍ତୁଗୁଡ଼ିକ():
     print()
-    if text:
+    ଯଦି text:
         print(text)
         print()
-    if step is None:
-        continue
+    ଯଦି step is None:
+        ଜାରି
 
     compression = compression_level[step]
     logging.info("  Compression=%d:" % compression)
 
     code = packTab.Code('hb_use')
-    sol = packTab.pack_table(data, compression=compression, default='O')
+    sol = packTab.pack_table(data, compression=compression, ପୂର୍ବନିର୍ଦ୍ଧାରିତ='O')
     logging.info('      FullCost=%d' % (sol.fullCost))
-    sol.genCode(code, f'get_category', language=language, private=private)
-    code.print_code(language=language, private=private)
+    sol.genCode(code, f'get_category', language=language, ବ୍ୟକ୍ତିଗତ=ବ୍ୟକ୍ତିଗତ)
+    code.print_code(language=language, ବ୍ୟକ୍ତିଗତ=ବ୍ୟକ୍ତିଗତ)
     print ()
 
-if language.name == "c":
+ଯଦି language.name == "c":
     print ()
-    for k in sorted(use_mapping.keys()):
-        if k in use_positions and use_positions[k]: continue
+    ପାଇଁ k ଭିତରେ sorted(use_mapping.ଚାବିଗୁଡ଼ିକ()):
+        ଯଦି k ଭିତରେ use_positions ଏବଂ use_positions[k]: ଜାରି
         print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    ପାଇଁ k,v ଭିତରେ sorted(use_positions.ବସ୍ତୁଗୁଡ଼ିକ()):
+        ଯଦି ନୁହେଁ v: ଜାରି
+        ପାଇଁ suf ଭିତରେ v.ଚାବିଗୁଡ଼ିକ():
             tag = k + suf
             print ("#undef %s" % tag)
     print ()
     print ()
     print ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
-elif language.name == "rust":
+ନଚେତଯଦି language.name == "rust":
     pass
-else:
-    assert False, "Unknown language: %s" % language.name
+ଅନ୍ୟଥା:
+    ପ୍ରତିଜ୍ଞା ମିଥ୍ୟା, "Unknown language: %s" % language.name
 print ("/* == End of generated table == */")

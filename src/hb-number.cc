@@ -23,124 +23,124 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ifndef HB_ସଂଖ୍ୟା_CC
+#define HB_ସଂଖ୍ୟା_CC
+#ifdef HB_ସଂଖ୍ୟା_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-number.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+ତାର୍କିକ
+hb_parse_double (ଅଚଳ ଅକ୍ଷର **pp, ଅଚଳ ଅକ୍ଷର *end, ଦ୍ୱିଗୁଣ *pv, ତାର୍କିକ whole_buffer)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  ଅଚଳ ଅକ୍ଷର *pend = end;
+  ଦ୍ୱିଗୁଣ value = hb_strtod (*pp, &pend);
+  ଯଦି (unlikely (*pp == pend)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+  ଯଦି (unlikely (whole_buffer && end != pend)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
   *pv = value;
   *pp = pend;
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_digit_ମୂଲ୍ୟ (ଅକ୍ଷର c, ପୂର୍ଣ୍ଣସଂଖ୍ୟା base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା d;
+  ଯଦି ('0' <= c && c <= '9')      d = c - '0';
+  ଅନ୍ୟଥା ଯଦି ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  ଅନ୍ୟଥା ଯଦି ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  ଅନ୍ୟଥା ଫେରନ୍ତୁ -1;
+  ଫେରନ୍ତୁ d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର *
+_hb_scan_digits (ଅଚଳ ଅକ୍ଷର *p, ଅଚଳ ଅକ୍ଷର *pe, ପୂର୍ଣ୍ଣସଂଖ୍ୟା base,
+                 uint64_t *value, ତାର୍କିକ *overflow, ତାର୍କିକ *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  ଅଚଳ uint64_t cutoff = UINT64_MAX / (unsigned) base;
+  ଅଚଳ uint64_t cutlim = UINT64_MAX % (unsigned) base;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  ତାର୍କିକ ov = ମିଥ୍ୟା, any = ମିଥ୍ୟା;
 
-  for (; p < pe; p++)
+  ପାଇଁ (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା d = hb_digit_ମୂଲ୍ୟ (*p, base);
+    ଯଦି (d < 0) ଭାଙ୍ଗ;
+    any = ସତ୍ୟ;
+    ଯଦି (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = ସତ୍ୟ;
+    ଅନ୍ୟଥା
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  ଫେରନ୍ତୁ p;
 }
 
 template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+ସ୍ଥିର ତାର୍କିକ
+parse_ସଂଖ୍ୟା (ଅଚଳ ଅକ୍ଷର **pp, ଅଚଳ ଅକ୍ଷର *end, T *pv,
+               ତାର୍କିକ whole_buffer, ପୂର୍ଣ୍ଣସଂଖ୍ୟା base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  ଅଚଳ ଅକ୍ଷର *pend = end;
+  ଅଚଳ ଅକ୍ଷର *p = *pp;
+  ତାର୍କିକ neg = ମିଥ୍ୟା, any = ମିଥ୍ୟା, overflow = ମିଥ୍ୟା;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  ଯେତେବେଳେ (p < pend && ISSPACE (*p)) p++;
+  ଯଦି (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  ଯଦି (base == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_ମୂଲ୍ୟ (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  ଯଦି (unlikely (!any || overflow)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  ଯଦି (unlikely (!post (v, neg, &out))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+  ଯଦି (unlikely (whole_buffer && p != pend)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   *pv = out;
   *pp = p;
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+ତାର୍କିକ
+hb_parse_int (ଅଚଳ ଅକ୍ଷର **pp, ଅଚଳ ଅକ୍ଷର *end, ପୂର୍ଣ୍ଣସଂଖ୍ୟା *pv, ତାର୍କିକ whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  ଫେରନ୍ତୁ parse_ସଂଖ୍ୟା (pp, end, pv, whole_buffer, 10,
+                        [] (uint64_t v, ତାର୍କିକ neg, ପୂର୍ଣ୍ଣସଂଖ୍ୟା *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    ଯଦି (unlikely (v > limit)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    *out = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) (neg ? -(int64_t) v : (int64_t) v);
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+ତାର୍କିକ
+hb_parse_uint (ଅଚଳ ଅକ୍ଷର **pp, ଅଚଳ ଅକ୍ଷର *end, unsigned *pv,
+               ତାର୍କିକ whole_buffer, ପୂର୍ଣ୍ଣସଂଖ୍ୟା base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  ଫେରନ୍ତୁ parse_ସଂଖ୍ୟା (pp, end, pv, whole_buffer, base,
+                        [] (uint64_t v, ତାର୍କିକ neg, unsigned *out) {
+    ଯଦି (unlikely (v > UINT_MAX)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   });
 }
 

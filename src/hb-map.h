@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ଯଦି !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_MAP_H
 #define HB_MAP_H
 
-#include "hb-common.h"
-#include "hb-set.h"
+#ଅନ୍ତର୍ଭାଵ "hb-common.h"
+#ଅନ୍ତର୍ଭାଵ "hb-set.h"
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.7.7
  */
-#define HB_MAP_VALUE_INVALID HB_CODEPOINT_INVALID
+#define HB_MAP_ମୂଲ୍ୟ_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_map_t:
@@ -52,91 +52,91 @@ HB_BEGIN_DECLS
  * Data type for holding integer-to-integer hash maps.
  *
  **/
-typedef struct hb_map_t hb_map_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା hb_map_t hb_map_t;
 
 
 HB_EXTERN hb_map_t *
-hb_map_create (void);
+hb_map_create (ଶୂନ୍ୟ);
 
 HB_EXTERN hb_map_t *
-hb_map_get_empty (void);
+hb_map_get_empty (ଶୂନ୍ୟ);
 
 HB_EXTERN hb_map_t *
 hb_map_reference (hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_destroy (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+		      hb_user_data_ଚାବି_t *ଚାବି_2,
+		      ଶୂନ୍ୟ *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key);
+HB_EXTERN ଶୂନ୍ୟ *
+hb_map_get_user_data (ଅଚଳ hb_map_t     *map,
+		      hb_user_data_ଚାବି_t *ଚାବି_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_map_allocation_successful (const hb_map_t *map);
+hb_map_allocation_successful (ଅଚଳ hb_map_t *map);
 
 HB_EXTERN hb_map_t *
-hb_map_copy (const hb_map_t *map);
+hb_map_copy (ଅଚଳ hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_clear (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_empty (const hb_map_t *map);
+hb_map_is_empty (ଅଚଳ hb_map_t *map);
 
-HB_EXTERN unsigned int
-hb_map_get_population (const hb_map_t *map);
+HB_EXTERN unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_map_get_population (ଅଚଳ hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other);
+hb_map_is_equal (ଅଚଳ hb_map_t *map,
+		 ଅଚଳ hb_map_t *other);
 
-HB_EXTERN unsigned int
-hb_map_hash (const hb_map_t *map);
+HB_EXTERN unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_map_hash (ଅଚଳ hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_set (hb_map_t       *map,
-	    hb_codepoint_t  key,
-	    hb_codepoint_t  value);
+	    hb_codepoint_t  ଚାବି_2,
+	    hb_codepoint_t  ମୂଲ୍ୟ_2);
 
 HB_EXTERN hb_codepoint_t
-hb_map_get (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_get (ଅଚଳ hb_map_t *map,
+	    hb_codepoint_t  ଚାବି_2);
 
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_del (hb_map_t       *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  ଚାବି_2);
 
 HB_EXTERN hb_bool_t
-hb_map_has (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_has (ଅଚଳ hb_map_t *map,
+	    hb_codepoint_t  ଚାବି_2);
 
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other);
+	       ଅଚଳ hb_map_t *other);
 
 /* Pass -1 in for idx to get started. */
 HB_EXTERN hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
-	     hb_codepoint_t *key,
-	     hb_codepoint_t *value);
+hb_map_next (ଅଚଳ hb_map_t *map,
+	     ପୂର୍ଣ୍ଣସଂଖ୍ୟା *idx,
+	     hb_codepoint_t *ଚାବି_2,
+	     hb_codepoint_t *ମୂଲ୍ୟ_2);
 
-HB_EXTERN void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys);
+HB_EXTERN ଶୂନ୍ୟ
+hb_map_ଚାବିଗୁଡ଼ିକ (ଅଚଳ hb_map_t *map,
+	     hb_set_t *ଚାବିଗୁଡ଼ିକ);
 
-HB_EXTERN void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values);
+HB_EXTERN ଶୂନ୍ୟ
+hb_map_ମୂଲ୍ୟଗୁଡ଼ିକ (ଅଚଳ hb_map_t *map,
+	       hb_set_t *ମୂଲ୍ୟଗୁଡ଼ିକ);
 
 HB_END_DECLS
 

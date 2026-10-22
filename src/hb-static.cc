@@ -28,28 +28,28 @@
 #define HB_STATIC_CC
 #ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-aat-layout-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-aat-layout-feat-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-cff-interp-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-cmap-table.hh"
+#ଅନ୍ତର୍ଭାଵ "OT/Color/COLR/COLR.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-glyf-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-head-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-hmtx-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-maxp-table.hh"
 
 #ifndef HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ଅଚଳ _hb_NullPool[(HB_NULL_POOL_SIZE + ଆକାର (uint64_t) - 1) / ଆକାର (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + ଆକାର (uint64_t) - 1) / ଆକାର (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
@@ -63,31 +63,31 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ଅଚଳ hb_codepoint_t minus_1 = -1;
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର static_endchar_str[] = {OpCode_endchar};
+ଅଚଳ unsigned ଅକ୍ଷର *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ unsigned
+load_ଅଙ୍କ_glyphs_from_maxp (ଅଚଳ hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  ଫେରନ୍ତୁ face->table.maxp->get_ଅଙ୍କ_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_t::load_ଅଙ୍କ_glyphs () ଅଚଳ
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  ଅଙ୍କ_glyphs = load_ଅଙ୍କ_glyphs_from_maxp (ଏହି);
+  ଫେରନ୍ତୁ ଅଙ୍କ_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_t::load_upem () ଅଚଳ
 {
-  unsigned int ret = table.head->get_upem ();
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  ଫେରନ୍ତୁ ret;
 }
 
 #endif

@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 #ifdef HAVE_GDI
 
-#include "hb-gdi.h"
+#ଅନ୍ତର୍ଭାଵ "hb-gdi.h"
 
 
 /**
@@ -38,32 +38,32 @@
  * Functions for using HarfBuzz with GDI fonts.
  **/
 
-static hb_blob_t *
-_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ସ୍ଥିର hb_blob_t *
+_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, ଶୂନ୍ୟ *user_data)
 {
-  char *buffer = nullptr;
+  ଅକ୍ଷର *buffer = nullptr;
   DWORD length = 0;
 
   HDC hdc = GetDC (nullptr);
-  if (unlikely (!SelectObject (hdc, (HFONT) user_data)))
-    return hb_blob_get_empty ();
+  ଯଦି (unlikely (!SelectObject (hdc, (HFONT) user_data)))
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   HB_SCOPE_GUARD (ReleaseDC (nullptr, hdc));
 
   length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  ଯଦି (unlikely (length == GDI_ERROR))
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
 
-  buffer = (char *) hb_malloc (length);
-  if (unlikely (!buffer))
-    return hb_blob_get_empty ();
+  buffer = (ଅକ୍ଷର *) hb_malloc (length);
+  ଯଦି (unlikely (!buffer))
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
   auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
 
   length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  ଯଦି (unlikely (length == GDI_ERROR))
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
 
   buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, hb_free);
+  ଫେରନ୍ତୁ hb_blob_create ((ଅଚଳ ଅକ୍ଷର *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, hb_free);
 }
 
 /**
@@ -79,7 +79,7 @@ _hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_dat
 hb_face_t *
 hb_gdi_face_create (HFONT hfont)
 {
-  return hb_face_create_for_tables (_hb_gdi_reference_table, (void *) hfont, nullptr);
+  ଫେରନ୍ତୁ hb_face_create_for_tables (_hb_gdi_reference_table, (ଶୂନ୍ୟ *) hfont, nullptr);
 }
 
 #endif

@@ -1,38 +1,38 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
 #define OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-struct AnchorFormat1
+ସଂରଚନା AnchorFormat1
 {
-  protected:
+  ସୁରକ୍ଷିତ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  ଶୂନ୍ୟ get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
+                   ଦଶମିକ *x, ଦଶମିକ *y) ଅଚଳ
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
   }
 
-  AnchorFormat1* copy (hb_serialize_context_t *c) const
+  AnchorFormat1* copy (hb_serialize_context_t *c) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    AnchorFormat1* out = c->embed<AnchorFormat1> (this);
-    if (!out) return_trace (out);
+    TRACE_SERIALIZE (ଏହି);
+    AnchorFormat1* out = c->embed<AnchorFormat1> (ଏହି);
+    ଯଦି (!out) return_trace (out);
     out->format = 1;
     return_trace (out);
   }

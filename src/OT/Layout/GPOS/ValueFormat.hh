@@ -1,21 +1,21 @@
 #ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH
 #define OT_LAYOUT_GPOS_VALUEFORMAT_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-typedef HBUINT16 Value;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା HBUINT16 ମୂଲ୍ୟ;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+ସଂରଚନା ମୂଲ୍ୟ_Base {}; // Dummy base class tag for OffsetTo<Value> bases.
 
-typedef UnsizedArrayOf<Value> ValueRecord;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା UnsizedArrayOf<ମୂଲ୍ୟ> ମୂଲ୍ୟ_Record;
 
-struct ValueFormat : HBUINT16
+ସଂରଚନା ମୂଲ୍ୟ_Format : HBUINT16
 {
-  enum Flags {
+  ଗଣନା Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
     yPlacement  = 0x0002u,      /* Includes vertical adjustment for placement */
     xAdvance    = 0x0004u,      /* Includes horizontal adjustment for advance */
@@ -31,7 +31,7 @@ struct ValueFormat : HBUINT16
   };
 
 /* All fields are options.  Only those available advance the value pointer. */
-#if 0
+#ଯଦି 0
   HBINT16               xPlacement;     /* Horizontal adjustment for
                                          * placement--in design units */
   HBINT16               yPlacement;     /* Vertical adjustment for
@@ -56,415 +56,415 @@ struct ValueFormat : HBUINT16
                                          * PosTable (may be NULL) */
 #endif
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  ଅଙ୍କ_Type& operator = (uint16_t i) { v = i; ଫେରନ୍ତୁ *ଏହି; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
   // currently defined are counted. We don't expect any new fields to
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
-  unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_len () ଅଚଳ  { ଫେରନ୍ତୁ hb_popcount8 ((uint8_t) *ଏହି); }
+  size_t get_size () ଅଚଳ { ଫେରନ୍ତୁ get_len () * ମୂଲ୍ୟ::static_size; }
 
-  hb_vector_t<unsigned> get_device_table_indices () const {
+  hb_vector_t<unsigned> get_device_table_indices () ଅଚଳ {
     unsigned i = 0;
     hb_vector_t<unsigned> result;
-    unsigned format = *this;
+    unsigned format = *ଏହି;
 
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance)   i++;
-    if (format & yAdvance)   i++;
+    ଯଦି (format & xPlacement) i++;
+    ଯଦି (format & yPlacement) i++;
+    ଯଦି (format & xAdvance)   i++;
+    ଯଦି (format & yAdvance)   i++;
 
-    if (format & xPlaDevice) result.push (i++);
-    if (format & yPlaDevice) result.push (i++);
-    if (format & xAdvDevice) result.push (i++);
-    if (format & yAdvDevice) result.push (i++);
+    ଯଦି (format & xPlaDevice) result.push (i++);
+    ଯଦି (format & yPlaDevice) result.push (i++);
+    ଯଦି (format & xAdvDevice) result.push (i++);
+    ଯଦି (format & yAdvDevice) result.push (i++);
 
-    return result;
+    ଫେରନ୍ତୁ result;
   }
 
-  bool apply_value (hb_ot_apply_context_t *c,
-                    const ValueBase       *base,
-                    const Value           *values,
-                    hb_glyph_position_t   &glyph_pos) const
+  ତାର୍କିକ apply_ମୂଲ୍ୟ (hb_ot_apply_context_t *c,
+                    ଅଚଳ ମୂଲ୍ୟ_Base       *base,
+                    ଅଚଳ ମୂଲ୍ୟ           *values,
+                    hb_glyph_position_t   &glyph_pos) ଅଚଳ
   {
-    bool ret = false;
-    unsigned int format = *this;
-    if (!format) return ret;
+    ତାର୍କିକ ret = ମିଥ୍ୟା;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା format = *ଏହି;
+    ଯଦି (!format) ଫେରନ୍ତୁ ret;
 
     hb_font_t *font = c->font;
-    bool horizontal =
+    ତାର୍କିକ horizontal =
 #ifndef HB_NO_VERTICAL
       HB_DIRECTION_IS_HORIZONTAL (c->direction)
-#else
-      true
+#ଅନ୍ୟଥା
+      ସତ୍ୟ
 #endif
       ;
 
-    if (format & xPlacement)
+    ଯଦି (format & xPlacement)
       glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, font->em_scale_x (get_short (values++, &ret)));
-    if (format & yPlacement)
+    ଯଦି (format & yPlacement)
       glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, font->em_scale_y (get_short (values++, &ret)));
-    if (format & xAdvance) {
-      if (likely (horizontal))
+    ଯଦି (format & xAdvance) {
+      ଯଦି (likely (horizontal))
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
       values++;
     }
     /* y_advance values grow downward but font-space grows upward, hence negation */
-    if (format & yAdvance) {
-      if (unlikely (!horizontal))
+    ଯଦି (format & yAdvance) {
+      ଯଦି (unlikely (!horizontal))
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, font->em_scale_y (get_short (values, &ret)));
       values++;
     }
 
-    if (!has_device ()) return ret;
+    ଯଦି (!has_device ()) ଫେରନ୍ତୁ ret;
 
-    bool use_x_device = font->x_ppem || font->has_nonzero_coords;
-    bool use_y_device = font->y_ppem || font->has_nonzero_coords;
+    ତାର୍କିକ use_x_device = font->x_ppem || font->has_nonzero_coords;
+    ତାର୍କିକ use_y_device = font->y_ppem || font->has_nonzero_coords;
 
-    if (!use_x_device && !use_y_device) return ret;
+    ଯଦି (!use_x_device && !use_y_device) ଫେରନ୍ତୁ ret;
 
-    const ItemVariationStore &store = c->var_store;
+    ଅଚଳ ItemVariationStore &store = c->var_store;
     auto *cache = c->var_store_cache;
 
     /* pixel -> fractional pixel */
-    if (format & xPlaDevice)
+    ଯଦି (format & xPlaDevice)
     {
-      if (use_x_device)
+      ଯଦି (use_x_device)
 	glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yPlaDevice)
+    ଯଦି (format & yPlaDevice)
     {
-      if (use_y_device)
+      ଯଦି (use_y_device)
 	glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    if (format & xAdvDevice)
+    ଯଦି (format & xAdvDevice)
     {
-      if (horizontal && use_x_device)
+      ଯଦି (horizontal && use_x_device)
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yAdvDevice)
+    ଯଦି (format & yAdvDevice)
     {
       /* y_advance values grow downward but font-space grows upward, hence negation */
-      if (!horizontal && use_y_device)
+      ଯଦି (!horizontal && use_y_device)
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    return ret;
+    ଫେରନ୍ତୁ ret;
   }
 
-  void position_single (hb_font_t *font,
+  ଶୂନ୍ୟ position_single (hb_font_t *font,
                         hb_blob_t *table_blob,
                         hb_direction_t direction,
-                        const ValueBase *base,
-                        const Value *values,
-                        hb_glyph_position_t &pos) const
+                        ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                        ଅଚଳ ମୂଲ୍ୟ *values,
+                        hb_glyph_position_t &pos) ଅଚଳ
   {
     /* This is ugly... */
     hb_buffer_t buffer {};
     buffer.props.direction = direction;
     hb_ot_apply_context_t c (1, font, &buffer, table_blob);
 
-    apply_value (&c, base, values, pos);
+    apply_ମୂଲ୍ୟ (&c, base, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_effective_format (ଅଚଳ ମୂଲ୍ୟ *values, ତାର୍କିକ strip_hints, ତାର୍କିକ strip_empty, ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                                     ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *varidx_delta_map) ଅଚଳ
   {
-    unsigned int format = *this;
-    for (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
-      if (format & flag)
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା format = *ଏହି;
+    ପାଇଁ (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
+      ଯଦି (format & flag)
       {
-        if (strip_hints && flag >= xPlaDevice)
+        ଯଦି (strip_hints && flag >= xPlaDevice)
         {
           format = format & ~flag;
           values++;
-          continue;
+          ଜାରି;
         }
-        if (varidx_delta_map && flag >= xPlaDevice)
+        ଯଦି (varidx_delta_map && flag >= xPlaDevice)
         {
           update_var_flag (values++, (Flags) flag, &format, base, varidx_delta_map);
-          continue;
+          ଜାରି;
         }
         /* do not strip empty when instancing, cause we don't know whether the new
          * default value is 0 or not */
-        if (strip_empty) should_drop (*values, (Flags) flag, &format);
+        ଯଦି (strip_empty) should_drop (*values, (Flags) flag, &format);
         values++;
       }
     }
 
-    return format;
+    ଫେରନ୍ତୁ format;
   }
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
-    unsigned int new_format = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_effective_format (Iterator it, ତାର୍କିକ strip_hints, ତାର୍କିକ strip_empty, ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                                     ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *varidx_delta_map) ଅଚଳ {
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
+    ପାଇଁ (ଅଚଳ hb_array_t<ଅଚଳ ମୂଲ୍ୟ>& values : it)
       new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
 
-    return new_format;
+    ଫେରନ୍ତୁ new_format;
   }
 
-  void copy_values (hb_serialize_context_t *c,
-                    unsigned int new_format,
-                    const ValueBase *base,
-                    const Value *values,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  ଶୂନ୍ୟ copy_ମୂଲ୍ୟଗୁଡ଼ିକ (hb_serialize_context_t *c,
+                    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_format,
+                    ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                    ଅଚଳ ମୂଲ୍ୟ *values,
+                    ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *layout_variation_idx_delta_map) ଅଚଳ
   {
-    unsigned int format = *this;
-    if (!format) return;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା format = *ଏହି;
+    ଯଦି (!format) ଫେରନ୍ତୁ;
 
     HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
-    if ((format | new_format) & xPlacement)
-      x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & yPlacement)
-      y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & xAdvance)
-      x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
-    if ((format | new_format) & yAdvance)
-      y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
+    ଯଦି ((format | new_format) & xPlacement)
+      x_placement = copy_ମୂଲ୍ୟ (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (ମୂଲ୍ୟ));
+    ଯଦି ((format | new_format) & yPlacement)
+      y_placement = copy_ମୂଲ୍ୟ (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (ମୂଲ୍ୟ));
+    ଯଦି ((format | new_format) & xAdvance)
+      x_adv = copy_ମୂଲ୍ୟ (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (ମୂଲ୍ୟ));
+    ଯଦି ((format | new_format) & yAdvance)
+      y_adv = copy_ମୂଲ୍ୟ (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (ମୂଲ୍ୟ));
 
-    if (!has_device ())
-      return;
+    ଯଦି (!has_device ())
+      ଫେରନ୍ତୁ;
 
-    if (format & xPlaDevice)
+    ଯଦି (format & xPlaDevice)
     {
-      add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_ମୂଲ୍ୟ (x_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
-    if (format & yPlaDevice)
+    ଯଦି (format & yPlaDevice)
     {
-      add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_ମୂଲ୍ୟ (y_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
-    if (format & xAdvDevice)
+    ଯଦି (format & xAdvDevice)
     {
-      add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_ମୂଲ୍ୟ (x_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
-    if (format & yAdvDevice)
+    ଯଦି (format & yAdvDevice)
     {
-      add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_ମୂଲ୍ୟ (y_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
     }
   }
 
-  HBINT16* copy_value (hb_serialize_context_t *c,
-                       unsigned int new_format,
+  HBINT16* copy_ମୂଲ୍ୟ (hb_serialize_context_t *c,
+                       unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_format,
                        Flags flag,
-                       Value value) const
+                       ମୂଲ୍ୟ value) ଅଚଳ
   {
     // Filter by new format.
-    if (!(new_format & flag)) return nullptr;
-    return reinterpret_cast<HBINT16 *> (c->copy (value));
+    ଯଦି (!(new_format & flag)) ଫେରନ୍ତୁ nullptr;
+    ଫେରନ୍ତୁ reinterpret_cast<HBINT16 *> (c->copy (value));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueBase *base,
-                                  const hb_array_t<const Value>& values) const
+  ଶୂନ୍ୟ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                                  ଅଚଳ hb_array_t<ଅଚଳ ମୂଲ୍ୟ>& values) ଅଚଳ
   {
-    unsigned format = *this;
+    unsigned format = *ଏହି;
     unsigned i = 0;
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance) i++;
-    if (format & yAdvance) i++;
-    if (format & xPlaDevice)
+    ଯଦି (format & xPlacement) i++;
+    ଯଦି (format & yPlacement) i++;
+    ଯଦି (format & xAdvance) i++;
+    ଯଦି (format & yAdvance) i++;
+    ଯଦି (format & xPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    ଯଦି (format & ମୂଲ୍ୟ_Format::yPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    ଯଦି (format & ମୂଲ୍ୟ_Format::xAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    ଯଦି (format & ମୂଲ୍ୟ_Format::yAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
   }
 
-  private:
-  bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  ବ୍ୟକ୍ତିଗତ:
+  ତାର୍କିକ sanitize_ମୂଲ୍ୟ_devices (hb_sanitize_context_t *c, ଅଚଳ ମୂଲ୍ୟ_Base *base, ଅଚଳ ମୂଲ୍ୟ *values) ଅଚଳ
   {
-    unsigned int format = *this;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା format = *ଏହି;
 
-    if (format & xPlacement) values++;
-    if (format & yPlacement) values++;
-    if (format & xAdvance)   values++;
-    if (format & yAdvance)   values++;
+    ଯଦି (format & xPlacement) values++;
+    ଯଦି (format & yPlacement) values++;
+    ଯଦି (format & xAdvance)   values++;
+    ଯଦି (format & yAdvance)   values++;
 
-    if ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
+    ଯଦି ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  ସ୍ଥିର ଧାଡ଼ିଭିତରେ Offset16To<Device, ମୂଲ୍ୟ_Base>& get_device (ମୂଲ୍ୟ* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    ଫେରନ୍ତୁ *static_cast<Offset16To<Device, ମୂଲ୍ୟ_Base> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଅଚଳ Offset16To<Device, ମୂଲ୍ୟ_Base>& get_device (ଅଚଳ ମୂଲ୍ୟ* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    ଫେରନ୍ତୁ *static_cast<ଅଚଳ Offset16To<Device, ମୂଲ୍ୟ_Base> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
-					  bool *worked,
-					  const ValueBase *base,
+  ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଅଚଳ Device& get_device (ଅଚଳ ମୂଲ୍ୟ* value,
+					  ତାର୍କିକ *worked,
+					  ଅଚଳ ମୂଲ୍ୟ_Base *base,
 					  hb_sanitize_context_t &c)
   {
-    if (worked) *worked |= bool (*value);
-    auto &offset = *static_cast<const Offset16To<Device> *> (value);
+    ଯଦି (worked) *worked |= ତାର୍କିକ (*value);
+    auto &offset = *static_cast<ଅଚଳ Offset16To<Device> *> (value);
 
-    if (unlikely (!offset.sanitize (&c, base)))
-      return Null(Device);
+    ଯଦି (unlikely (!offset.sanitize (&c, base)))
+      ଫେରନ୍ତୁ Null(Device);
     hb_barrier ();
 
-    return base + offset;
+    ଫେରନ୍ତୁ base + offset;
   }
 
-  void add_delta_to_value (HBINT16 *value,
-                           const ValueBase *base,
-                           const Value *src_value,
-                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  ଶୂନ୍ୟ add_delta_to_ମୂଲ୍ୟ (HBINT16 *value,
+                           ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                           ଅଚଳ ମୂଲ୍ୟ *src_ମୂଲ୍ୟ,
+                           ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *layout_variation_idx_delta_map) ଅଚଳ
   {
-    if (!value) return;
-    unsigned varidx = (base + get_device (src_value)).get_variation_index ();
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
+    ଯଦି (!value) ଫେରନ୍ତୁ;
+    unsigned varidx = (base + get_device (src_ମୂଲ୍ୟ)).get_variation_index ();
+    hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *varidx_delta;
+    ଯଦି (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) ଫେରନ୍ତୁ;
 
     *value += hb_second (*varidx_delta);
   }
 
-  bool copy_device (hb_serialize_context_t *c,
-                    const ValueBase *base,
-                    const Value *src_value,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                    unsigned int new_format, Flags flag) const
+  ତାର୍କିକ copy_device (hb_serialize_context_t *c,
+                    ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                    ଅଚଳ ମୂଲ୍ୟ *src_ମୂଲ୍ୟ,
+                    ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *layout_variation_idx_delta_map,
+                    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_format, Flags flag) ଅଚଳ
   {
     // Filter by new format.
-    if (!(new_format & flag)) return true;
+    ଯଦି (!(new_format & flag)) ଫେରନ୍ତୁ ସତ୍ୟ;
 
-    Value       *dst_value = c->copy (*src_value);
+    ମୂଲ୍ୟ       *dst_ମୂଲ୍ୟ = c->copy (*src_ମୂଲ୍ୟ);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    ଯଦି (!dst_ମୂଲ୍ୟ) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (*dst_ମୂଲ୍ୟ == 0) ଫେରନ୍ତୁ ସତ୍ୟ;
 
-    *dst_value = 0;
+    *dst_ମୂଲ୍ୟ = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    ଯଦି ((base + get_device (src_ମୂଲ୍ୟ)).copy (c, layout_variation_idx_delta_map))
     {
-      c->add_link (*dst_value, c->pop_pack ());
-      return true;
+      c->add_link (*dst_ମୂଲ୍ୟ, c->କାଢ଼_pack ());
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
-    else
+    ଅନ୍ୟଥା
     {
-      c->pop_discard ();
-      return false;
+      c->କାଢ଼_discard ();
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଅଚଳ HBINT16& get_short (ଅଚଳ ମୂଲ୍ୟ* value, ତାର୍କିକ *worked=nullptr)
   {
-    if (worked) *worked |= bool (*value);
-    return *reinterpret_cast<const HBINT16 *> (value);
+    ଯଦି (worked) *worked |= ତାର୍କିକ (*value);
+    ଫେରନ୍ତୁ *reinterpret_cast<ଅଚଳ HBINT16 *> (value);
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
 
-  bool has_device () const
+  ତାର୍କିକ has_device () ଅଚଳ
   {
-    unsigned int format = *this;
-    return (format & devices) != 0;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା format = *ଏହି;
+    ଫେରନ୍ତୁ (format & devices) != 0;
   }
 
-  bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  ତାର୍କିକ sanitize_ମୂଲ୍ୟ (hb_sanitize_context_t *c, ଅଚଳ ମୂଲ୍ୟ_Base *base, ଅଚଳ ମୂଲ୍ୟ *values) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
 
-    if (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
+    ଯଦି (unlikely (!c->check_range (values, get_size ()))) return_trace (ମିଥ୍ୟା);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ଯଦି (c->lazy_some_gpos)
+      return_trace (ସତ୍ୟ);
 
-    return_trace (!has_device () || sanitize_value_devices (c, base, values));
+    return_trace (!has_device () || sanitize_ମୂଲ୍ୟ_devices (c, base, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  ତାର୍କିକ sanitize_ମୂଲ୍ୟଗୁଡ଼ିକ (hb_sanitize_context_t *c, ଅଚଳ ମୂଲ୍ୟ_Base *base, ଅଚଳ ମୂଲ୍ୟ *values, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
     unsigned size = get_size ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    ଯଦି (!c->check_range (values, ଗଣନା_2, size)) return_trace (ମିଥ୍ୟା);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ଯଦି (c->lazy_some_gpos)
+      return_trace (ସତ୍ୟ);
 
     hb_barrier ();
-    return_trace (sanitize_values_stride_unsafe (c, base, values, count, size));
+    return_trace (sanitize_ମୂଲ୍ୟଗୁଡ଼ିକ_stride_unsafe (c, base, values, ଗଣନା_2, size));
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  ତାର୍କିକ sanitize_ମୂଲ୍ୟଗୁଡ଼ିକ_stride_unsafe (hb_sanitize_context_t *c, ଅଚଳ ମୂଲ୍ୟ_Base *base, ଅଚଳ ମୂଲ୍ୟ *values, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା stride) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
 
-    if (!has_device ()) return_trace (true);
+    ଯଦି (!has_device ()) return_trace (ସତ୍ୟ);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
-        return_trace (false);
-      values = &StructAtOffset<const Value> (values, stride);
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++) {
+      ଯଦି (!sanitize_ମୂଲ୍ୟ_devices (c, base, values))
+        return_trace (ମିଥ୍ୟା);
+      values = &StructAtOffset<ଅଚଳ ମୂଲ୍ୟ> (values, stride);
     }
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
- private:
+ ବ୍ୟକ୍ତିଗତ:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  ଶୂନ୍ୟ should_drop (ମୂଲ୍ୟ value, Flags flag, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା* format) ଅଚଳ
   {
-    if (value) return;
+    ଯଦି (value) ଫେରନ୍ତୁ;
     *format = *format & ~flag;
   }
 
-  void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
-                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  ଶୂନ୍ୟ update_var_flag (ଅଚଳ ମୂଲ୍ୟ* value, Flags flag,
+                        unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା* format, ଅଚଳ ମୂଲ୍ୟ_Base *base,
+                        ଅଚଳ hb_hashmap_t<unsigned, hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> *varidx_delta_map) ଅଚଳ
   {
-    if (*value)
+    ଯଦି (*value)
     {
       unsigned varidx = (base + get_device (value)).get_variation_index ();
-      hb_pair_t<unsigned, int> *varidx_delta;
-      if (varidx_delta_map->has (varidx, &varidx_delta))
+      hb_pair_t<unsigned, ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *varidx_delta;
+      ଯଦି (varidx_delta_map->has (varidx, &varidx_delta))
       {
         /* A device-only value needs a base field for its instanced delta. */
-        if (varidx_delta->second)
+        ଯଦି (varidx_delta->second)
           *format |= flag >> 4;
-        if (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          return;
+        ଯଦି (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          ଫେରନ୍ତୁ;
       }
     }
     *format = *format & ~flag;

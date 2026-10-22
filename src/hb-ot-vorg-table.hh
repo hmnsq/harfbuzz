@@ -27,8 +27,8 @@
 #ifndef HB_OT_VORG_TABLE_HH
 #define HB_OT_VORG_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-dual.hh"
 
 /*
  * VORG -- Vertical Origin Table
@@ -36,155 +36,155 @@
  */
 #define HB_OT_TAG_VORG HB_TAG('V','O','R','G')
 
-namespace OT {
+ନାମାକାଶ OT {
 
 template <typename Types>
-struct VertOriginMetric
+ସଂରଚନା VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (hb_codepoint_t g) ଅଚଳ { ଫେରନ୍ତୁ glyph.cmp (g); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   typename Types::HBGlyphID
 		glyph;
   FWORD		vertOriginY;
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (Types::HBGlyphID::static_size + FWORD::static_size);
 };
 
 template <typename Types>
-struct VORGFormat1_2
+ସଂରଚନା VORGFormat1_2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  ତାର୍କିକ has_data () ଅଚଳ { ଫେରନ୍ତୁ version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_y_origin (hb_codepoint_t glyph) ଅଚଳ
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i;
+    ଯଦି (!vertYOrigins.bfind (glyph, &i))
+      ଫେରନ୍ତୁ defaultVertOriginY;
+    ଫେରନ୍ତୁ vertYOrigins[i].vertOriginY;
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ଶୂନ୍ୟ serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    ଯଦି (unlikely (!c->extend_min ((*ଏହି))))  ଫେରନ୍ତୁ;
 
-    this->version.major = Types::size == 2 ? 1 : 2;
-    this->version.minor = 0;
+    ଏହି->version.major = Types::size == 2 ? 1 : 2;
+    ଏହି->version.minor = 0;
 
-    this->defaultVertOriginY = defaultVertOriginY;
-    this->vertYOrigins.len = it.len ();
+    ଏହି->defaultVertOriginY = defaultVertOriginY;
+    ଏହି->vertYOrigins.len = it.len ();
 
     c->copy_all (it);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    auto *vorg_ମୌଳିକ = c->serializer->start_embed<VORGFormat1_2> ();
+    ଯଦି (unlikely (!c->serializer->check_success (vorg_ମୌଳିକ))) return_trace (ମିଥ୍ୟା);
 
     auto it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
-    | hb_map ([&] (const VertOriginMetric<Types>& _)
+    | hb_map ([&] (ଅଚଳ VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_SET_ମୂଲ୍ୟ_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		ଫେରନ୍ତୁ metric;
 	      })
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
-    return_trace (true);
+    vorg_ମୌଳିକ->serialize (c->serializer, it, defaultVertOriginY);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
 		  version.major == (Types::size == 2 ? 1 : 2) &&
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
+  ସୁରକ୍ଷିତ:
   FixedVersion<>version;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
   typename Types::template SortedArrayOf<VertOriginMetric<Types>>
 		vertYOrigins;	/* The array of vertical origins. */
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
 };
 
-struct VORG
+ସଂରଚନା VORG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  ତାର୍କିକ has_data () ଅଚଳ { ଫେରନ୍ତୁ u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_y_origin (hb_codepoint_t glyph) ଅଚଳ
   {
-    switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
+    ବାଛ (u.version.v.major) {
+    ସ୍ଥିତି 1: ଫେରନ୍ତୁ u.version1.get_y_origin (glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
+    ସ୍ଥିତି 2: ଫେରନ୍ତୁ u.version2.get_y_origin (glyph);
 #endif
-    default: return 0;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ: ଫେରନ୍ତୁ 0;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
+    TRACE_SUBSET (ଏହି);
+    ବାଛ (u.version.v.major) {
+    ସ୍ଥିତି 1: return_trace (u.version1.subset (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
+    ସ୍ଥିତି 2: return_trace (u.version2.subset (c));
 #endif
-    default: return_trace (false);
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ: return_trace (ମିଥ୍ୟା);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (unlikely (!u.version.v.sanitize (c))) return_trace (ମିଥ୍ୟା);
     hb_barrier ();
-    switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    ବାଛ (u.version.v.major) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (u.version1.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (u.version2.sanitize (c));
 #endif
-    default: return_trace (false);
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ: return_trace (ମିଥ୍ୟା);
     }
   }
 
-  protected:
-  union {
-  struct {
+  ସୁରକ୍ଷିତ:
+  ସଂଘ {
+  ସଂରଚନା {
   FixedVersion<>v;		/* Version of VORG table. */
   }				version;
   VORGFormat1_2<Layout::SmallTypes>version1;
@@ -193,7 +193,7 @@ struct VORG
 #endif
   } u;
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_UNION (4, version.v);
 };
 } /* namespace OT */

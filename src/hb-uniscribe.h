@@ -27,9 +27,9 @@
 #ifndef HB_UNISCRIBE_H
 #define HB_UNISCRIBE_H
 
-#include "hb.h"
+#ଅନ୍ତର୍ଭାଵ "hb.h"
 
-#include <windows.h>
+#ଅନ୍ତର୍ଭାଵ <windows.h>
 
 HB_BEGIN_DECLS
 

@@ -27,12 +27,12 @@
 #ifndef HB_OT_CFF2_TABLE_HH
 #define HB_OT_CFF2_TABLE_HH
 
-#include "hb-ot-cff-common.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-cff-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-subset-cff-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-draw.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-paint.hh"
 
-namespace CFF {
+ନାମାକାଶ CFF {
 
 /*
  * CFF2 -- Compact Font Format (CFF) Version 2
@@ -40,98 +40,98 @@ namespace CFF {
  */
 #define HB_OT_TAG_CFF2 HB_TAG('C','F','F','2')
 
-typedef CFF2Index         CFF2CharStrings;
-typedef Subrs<HBUINT32>   CFF2Subrs;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା CFF2Index         CFF2CharStrings;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା Subrs<HBUINT32>   CFF2Subrs;
 
-typedef FDSelect3_4<HBUINT32, HBUINT16> FDSelect4;
-typedef FDSelect3_4_Range<HBUINT32, HBUINT16> FDSelect4_Range;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା FDSelect3_4<HBUINT32, HBUINT16> FDSelect4;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା FDSelect3_4_Range<HBUINT32, HBUINT16> FDSelect4_Range;
 
-struct CFF2FDSelect
+ସଂରଚନା CFF2FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const CFF2FDSelect &src, unsigned int num_glyphs)
+  ତାର୍କିକ serialize (hb_serialize_context_t *c, ଅଚଳ CFF2FDSelect &src, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
+    TRACE_SERIALIZE (ଏହି);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size = src.get_size (ଅଙ୍କ_glyphs);
     CFF2FDSelect *dest = c->allocate_size<CFF2FDSelect> (size);
-    if (unlikely (!dest)) return_trace (false);
+    ଯଦି (unlikely (!dest)) return_trace (ମିଥ୍ୟା);
     hb_memcpy (dest, &src, size);
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_glyphs) ଅଚଳ
   {
-    switch (format)
+    ବାଛ (format)
     {
-    case 0: hb_barrier (); return format.static_size + u.format0.get_size (num_glyphs);
-    case 3: hb_barrier (); return format.static_size + u.format3.get_size ();
-    case 4: hb_barrier (); return format.static_size + u.format4.get_size ();
-    default:return 0;
+    ସ୍ଥିତି 0: hb_barrier (); ଫେରନ୍ତୁ format.static_size + u.format0.get_size (ଅଙ୍କ_glyphs);
+    ସ୍ଥିତି 3: hb_barrier (); ଫେରନ୍ତୁ format.static_size + u.format3.get_size ();
+    ସ୍ଥିତି 4: hb_barrier (); ଫେରନ୍ତୁ format.static_size + u.format4.get_size ();
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:ଫେରନ୍ତୁ 0;
     }
   }
 
-  hb_codepoint_t get_fd (hb_codepoint_t glyph) const
+  hb_codepoint_t get_fd (hb_codepoint_t glyph) ଅଚଳ
   {
-    if (this == &Null (CFF2FDSelect))
-      return 0;
+    ଯଦି (ଏହି == &Null (CFF2FDSelect))
+      ଫେରନ୍ତୁ 0;
 
-    switch (format)
+    ବାଛ (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    case 4: hb_barrier (); return u.format4.get_fd (glyph);
-    default:return 0;
+    ସ୍ଥିତି 0: hb_barrier (); ଫେରନ୍ତୁ u.format0.get_fd (glyph);
+    ସ୍ଥିତି 3: hb_barrier (); ଫେରନ୍ତୁ u.format3.get_fd (glyph);
+    ସ୍ଥିତି 4: hb_barrier (); ଫେରନ୍ତୁ u.format4.get_fd (glyph);
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:ଫେରନ୍ତୁ 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int charstring_count = HB_CODEPOINT_INVALID) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା fdcount,
+                 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା charstring_ଗଣନା = HB_CODEPOINT_INVALID) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (unlikely (!c->check_struct (ଏହି)))
+      return_trace (ମିଥ୍ୟା);
     hb_barrier ();
 
-    switch (format)
+    ବାଛ (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount, charstring_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount, charstring_count));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c, fdcount, charstring_count));
-    default:return_trace (false);
+    ସ୍ଥିତି 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount, charstring_ଗଣନା));
+    ସ୍ଥିତି 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount, charstring_ଗଣନା));
+    ସ୍ଥିତି 4: hb_barrier (); return_trace (u.format4.sanitize (c, fdcount, charstring_ଗଣନା));
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (ମିଥ୍ୟା);
     }
   }
 
   HBUINT8	format;
-  union {
+  ସଂଘ {
   FDSelect0	format0;
   FDSelect3	format3;
   FDSelect4	format4;
   } u;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (2);
 };
 
-struct CFF2ItemVariationStore
+ସଂରଚନା CFF2ItemVariationStore
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
 		  c->check_range (&varStore, size) &&
 		  varStore.sanitize (c));
   }
 
-  bool serialize (hb_serialize_context_t *c, const CFF2ItemVariationStore *varStore)
+  ତାର୍କିକ serialize (hb_serialize_context_t *c, ଅଚଳ CFF2ItemVariationStore *varStore)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size_ = varStore->get_size ();
+    TRACE_SERIALIZE (ଏହି);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_ = varStore->get_size ();
     CFF2ItemVariationStore *dest = c->allocate_size<CFF2ItemVariationStore> (size_);
-    if (unlikely (!dest)) return_trace (false);
+    ଯଦି (unlikely (!dest)) return_trace (ମିଥ୍ୟା);
     hb_memcpy (dest, varStore, size_);
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  size_t get_size () const { return HBUINT16::static_size + size; }
+  size_t get_size () ଅଚଳ { ଫେରନ୍ତୁ HBUINT16::static_size + size; }
 
   HBUINT16	size;
   ItemVariationStore  varStore;
@@ -139,458 +139,458 @@ struct CFF2ItemVariationStore
   DEFINE_SIZE_MIN (2 + ItemVariationStore::min_size);
 };
 
-struct cff2_top_dict_values_t : top_dict_values_t<>
+ସଂରଚନା cff2_ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t : ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<>
 {
-  void init ()
+  ଶୂନ୍ୟ init ()
   {
-    top_dict_values_t<>::init ();
+    ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<>::init ();
     vstoreOffset = 0;
     FDSelectOffset = 0;
   }
-  void fini () { top_dict_values_t<>::fini (); }
+  ଶୂନ୍ୟ fini () { ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<>::fini (); }
 
-  int  vstoreOffset;
-  int  FDSelectOffset;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା  vstoreOffset;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା  FDSelectOffset;
 };
 
-struct cff2_top_dict_opset_t : top_dict_opset_t<>
+ସଂରଚନା cff2_ଶୀର୍ଷ_dict_opset_t : ଶୀର୍ଷ_dict_opset_t<>
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff2_top_dict_values_t& dictval)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, ଅଙ୍କ_interp_env_t& env, cff2_ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t& dictval)
   {
-    switch (op) {
-      case OpCode_FontMatrix:
+    ବାଛ (op) {
+      ସ୍ଥିତି OpCode_FontMatrix:
 	{
 	  dict_val_t val;
 	  val.init ();
 	  dictval.add_op (op, env.str_ref);
 	  env.clear_args ();
 	}
-	break;
+	ଭାଙ୍ଗ;
 
-      case OpCode_vstore:
-	dictval.vstoreOffset = env.argStack.pop_int ();
+      ସ୍ଥିତି OpCode_vstore:
+	dictval.vstoreOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDSelect:
-	dictval.FDSelectOffset = env.argStack.pop_int ();
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_FDSelect:
+	dictval.FDSelectOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      default:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	SUPER::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
+	ଯଦି (!env.arg_ଗଦା.is_empty ()) ଫେରନ୍ତୁ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ଯଦି (unlikely (env.in_error ())) ଫେରନ୍ତୁ;
 
     dictval.add_op (op, env.str_ref);
   }
 
-  typedef top_dict_opset_t<> SUPER;
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା ଶୀର୍ଷ_dict_opset_t<> SUPER;
 };
 
-struct cff2_font_dict_values_t : dict_values_t<op_str_t>
+ସଂରଚନା cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t : dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<op_str_t>
 {
-  void init ()
+  ଶୂନ୍ୟ init ()
   {
-    dict_values_t<op_str_t>::init ();
+    dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<op_str_t>::init ();
     privateDictInfo.init ();
   }
-  void fini () { dict_values_t<op_str_t>::fini (); }
+  ଶୂନ୍ୟ fini () { dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<op_str_t>::fini (); }
 
   table_info_t    privateDictInfo;
 };
 
-struct cff2_font_dict_opset_t : dict_opset_t
+ସଂରଚନା cff2_font_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff2_font_dict_values_t& dictval)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, ଅଙ୍କ_interp_env_t& env, cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t& dictval)
   {
-    switch (op) {
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_uint ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
+    ବାଛ (op) {
+      ସ୍ଥିତି OpCode_Private:
+	dictval.privateDictInfo.offset = env.arg_ଗଦା.କାଢ଼_uint ();
+	dictval.privateDictInfo.size = env.arg_ଗଦା.କାଢ଼_uint ();
 	env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      default:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ())
-	  return;
+	ଯଦି (!env.arg_ଗଦା.is_empty ())
+	  ଫେରନ୍ତୁ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ଯଦି (unlikely (env.in_error ())) ଫେରନ୍ତୁ;
 
     dictval.add_op (op, env.str_ref);
   }
 
-  private:
-  typedef dict_opset_t SUPER;
+  ବ୍ୟକ୍ତିଗତ:
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା dict_opset_t SUPER;
 };
 
 template <typename VAL>
-struct cff2_private_dict_values_base_t : dict_values_t<VAL>
+ସଂରଚନା cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_base_t : dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<VAL>
 {
-  void init ()
+  ଶୂନ୍ୟ init ()
   {
-    dict_values_t<VAL>::init ();
+    dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<VAL>::init ();
     subrsOffset = 0;
     localSubrs = &Null (CFF2Subrs);
     ivs = 0;
   }
-  void fini () { dict_values_t<VAL>::fini (); }
+  ଶୂନ୍ୟ fini () { dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<VAL>::fini (); }
 
-  int                subrsOffset;
-  const CFF2Subrs   *localSubrs;
-  unsigned int      ivs;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା                subrsOffset;
+  ଅଚଳ CFF2Subrs   *localSubrs;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା      ivs;
 };
 
-typedef cff2_private_dict_values_base_t<op_str_t> cff2_private_dict_values_subset_t;
-typedef cff2_private_dict_values_base_t<num_dict_val_t> cff2_private_dict_values_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_base_t<op_str_t> cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_subset_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_base_t<ଅଙ୍କ_dict_val_t> cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t;
 
-struct cff2_priv_dict_interp_env_t : num_interp_env_t
+ସଂରଚନା cff2_priv_dict_interp_env_t : ଅଙ୍କ_interp_env_t
 {
-  cff2_priv_dict_interp_env_t (const hb_ubytes_t &str) :
-    num_interp_env_t (str) {}
+  cff2_priv_dict_interp_env_t (ଅଚଳ hb_ubytes_t &str) :
+    ଅଙ୍କ_interp_env_t (str) {}
 
-  void process_vsindex ()
+  ଶୂନ୍ୟ process_vsindex ()
   {
-    if (likely (!seen_vsindex))
+    ଯଦି (likely (!seen_vsindex))
     {
-      set_ivs (argStack.pop_uint ());
+      set_ivs (arg_ଗଦା.କାଢ଼_uint ());
     }
-    seen_vsindex = true;
+    seen_vsindex = ସତ୍ୟ;
   }
 
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_ivs () ଅଚଳ { ଫେରନ୍ତୁ ivs; }
+  ଶୂନ୍ୟ	 set_ivs (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ivs_) { ivs = ivs_; }
 
-  protected:
-  unsigned int  ivs = 0;
-  bool	  seen_vsindex = false;
+  ସୁରକ୍ଷିତ:
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  ivs = 0;
+  ତାର୍କିକ	  seen_vsindex = ମିଥ୍ୟା;
 };
 
-struct cff2_private_dict_opset_t : dict_opset_t
+ସଂରଚନା cff2_private_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_values_t& dictval)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t& dictval)
   {
-    num_dict_val_t val;
+    ଅଙ୍କ_dict_val_t val;
     val.init ();
 
-    switch (op) {
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ExpansionFactor:
-      case OpCode_LanguageGroup:
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
+    ବାଛ (op) {
+      ସ୍ଥିତି OpCode_StdHW:
+      ସ୍ଥିତି OpCode_StdVW:
+      ସ୍ଥିତି OpCode_BlueScale:
+      ସ୍ଥିତି OpCode_BlueShift:
+      ସ୍ଥିତି OpCode_BlueFuzz:
+      ସ୍ଥିତି OpCode_ExpansionFactor:
+      ସ୍ଥିତି OpCode_LanguageGroup:
+      ସ୍ଥିତି Op_Code_Blue_ମୂଲ୍ୟଗୁଡ଼ିକ:
+      ସ୍ଥିତି OpCode_OtherBlues:
+      ସ୍ଥିତି OpCode_FamilyBlues:
+      ସ୍ଥିତି OpCode_FamilyOtherBlues:
+      ସ୍ଥିତି OpCode_StemSnapH:
+      ସ୍ଥିତି OpCode_StemSnapV:
 	env.clear_args ();
-	break;
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_Subrs:
+	dictval.subrsOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
-      case OpCode_vsindexdict:
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_vsindexdict:
 	env.process_vsindex ();
 	dictval.ivs = env.get_ivs ();
 	env.clear_args ();
-	break;
-      case OpCode_blenddict:
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_blenddict:
         /* Hint values are ignored here. Discard each group so raw operands
          * from successive blends cannot overflow the stack. */
         env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      default:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ଯଦି (!env.arg_ଗଦା.is_empty ()) ଫେରନ୍ତୁ;
+	ଭାଙ୍ଗ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ଯଦି (unlikely (env.in_error ())) ଫେରନ୍ତୁ;
 
     dictval.add_op (op, env.str_ref, val);
   }
 };
 
-struct cff2_private_dict_opset_subset_t : dict_opset_t
+ସଂରଚନା cff2_private_dict_opset_subset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_values_subset_t& dictval)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_subset_t& dictval)
   {
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
+    ବାଛ (op) {
+      ସ୍ଥିତି Op_Code_Blue_ମୂଲ୍ୟଗୁଡ଼ିକ:
+      ସ୍ଥିତି OpCode_OtherBlues:
+      ସ୍ଥିତି OpCode_FamilyBlues:
+      ସ୍ଥିତି OpCode_FamilyOtherBlues:
+      ସ୍ଥିତି OpCode_StdHW:
+      ସ୍ଥିତି OpCode_StdVW:
+      ସ୍ଥିତି OpCode_BlueScale:
+      ସ୍ଥିତି OpCode_BlueShift:
+      ସ୍ଥିତି OpCode_BlueFuzz:
+      ସ୍ଥିତି OpCode_StemSnapH:
+      ସ୍ଥିତି OpCode_StemSnapV:
+      ସ୍ଥିତି OpCode_LanguageGroup:
+      ସ୍ଥିତି OpCode_ExpansionFactor:
 	env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      case OpCode_blenddict:
+      ସ୍ଥିତି OpCode_blenddict:
 	env.clear_args ();
-	return;
+	ଫେରନ୍ତୁ;
 
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
+      ସ୍ଥିତି OpCode_Subrs:
+	dictval.subrsOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      case OpCode_vsindexdict:
+      ସ୍ଥିତି OpCode_vsindexdict:
 	env.process_vsindex ();
 	dictval.ivs = env.get_ivs ();
 	env.clear_args ();
-	break;
+	ଭାଙ୍ଗ;
 
-      default:
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ଯଦି (!env.arg_ଗଦା.is_empty ()) ଫେରନ୍ତୁ;
+	ଭାଙ୍ଗ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ଯଦି (unlikely (env.in_error ())) ଫେରନ୍ତୁ;
 
     dictval.add_op (op, env.str_ref);
   }
 
-  private:
-  typedef dict_opset_t SUPER;
+  ବ୍ୟକ୍ତିଗତ:
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା dict_opset_t SUPER;
 };
 
-typedef dict_interpreter_t<cff2_top_dict_opset_t, cff2_top_dict_values_t> cff2_top_dict_interpreter_t;
-typedef dict_interpreter_t<cff2_font_dict_opset_t, cff2_font_dict_values_t> cff2_font_dict_interpreter_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା dict_interpreter_t<cff2_ଶୀର୍ଷ_dict_opset_t, cff2_ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t> cff2_ଶୀର୍ଷ_dict_interpreter_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା dict_interpreter_t<cff2_font_dict_opset_t, cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t> cff2_font_dict_interpreter_t;
 
-struct CFF2FDArray : FDArray<HBUINT32>
+ସଂରଚନା CFF2FDArray : FDArray<HBUINT32>
 {
   /* FDArray::serialize does not compile without this partial specialization */
   template <typename ITER, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT32>::serialize<cff2_font_dict_values_t, table_info_t> (c, it, opszr); }
+  ତାର୍କିକ serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
+  { ଫେରନ୍ତୁ FDArray<HBUINT32>::serialize<cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t, table_info_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
 
-namespace OT {
+ନାମାକାଶ OT {
 
-using namespace CFF;
+using ନାମାକାଶ CFF;
 
-struct cff2
+ସଂରଚନା cff2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CFF2;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_CFF2;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
 		  likely (version.major == 2));
   }
 
   template <typename PRIVOPSET, typename PRIVDICTVAL>
-  struct accelerator_templ_t
+  ସଂରଚନା accelerator_templ_t
   {
-    static constexpr hb_tag_t tableTag = cff2::tableTag;
+    ସ୍ଥିର constexpr hb_tag_t tableTag = cff2::tableTag;
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      ଯଦି (!face) ଫେରନ୍ତୁ;
 
-      topDict.init ();
+      ଶୀର୍ଷ_Dict_2.init ();
       fontDicts.init ();
       privateDicts.init ();
 
-      this->blob = sc.reference_table<cff2> (face);
+      ଏହି->blob = sc.reference_table<cff2> (face);
 
       /* setup for run-time sanitization */
-      sc.init (this->blob);
+      sc.init (ଏହି->blob);
       sc.start_processing ();
 
-      const OT::cff2 *cff2 = this->blob->template as<OT::cff2> ();
+      ଅଚଳ OT::cff2 *cff2 = ଏହି->blob->template as<OT::cff2> ();
 
-      if (cff2 == &Null (OT::cff2))
-        goto fail;
+      ଯଦି (cff2 == &Null (OT::cff2))
+        ଯାଅ fail;
 
       { /* parse top dict */
-	hb_ubytes_t topDictStr = (cff2 + cff2->topDict).as_ubytes (cff2->topDictSize);
-	if (unlikely (!topDictStr.sanitize (&sc))) goto fail;
+	hb_ubytes_t ଶୀର୍ଷ_Dict_Str = (cff2 + cff2->ଶୀର୍ଷ_Dict_2).as_ubytes (cff2->ଶୀର୍ଷ_Dict_Size);
+	ଯଦି (unlikely (!ଶୀର୍ଷ_Dict_Str.sanitize (&sc))) ଯାଅ fail;
 	hb_barrier ();
-	num_interp_env_t env (topDictStr);
-	cff2_top_dict_interpreter_t top_interp (env);
-	topDict.init ();
-	if (unlikely (!top_interp.interpret (topDict))) goto fail;
+	ଅଙ୍କ_interp_env_t env (ଶୀର୍ଷ_Dict_Str);
+	cff2_ଶୀର୍ଷ_dict_interpreter_t ଶୀର୍ଷ_interp (env);
+	ଶୀର୍ଷ_Dict_2.init ();
+	ଯଦି (unlikely (!ଶୀର୍ଷ_interp.interpret (ଶୀର୍ଷ_Dict_2))) ଯାଅ fail;
       }
 
-      globalSubrs = &StructAtOffsetOrNull<CFF2Subrs> (cff2, cff2->topDict + cff2->topDictSize, sc);
-      varStore = &StructAtOffsetOrNull<CFF2ItemVariationStore> (cff2, topDict.vstoreOffset, sc);
-      charStrings = &StructAtOffsetOrNull<CFF2CharStrings> (cff2, topDict.charStringsOffset, sc);
-      fdArray = &StructAtOffsetOrNull<CFF2FDArray> (cff2, topDict.FDArrayOffset, sc);
+      globalSubrs = &StructAtOffsetOrNull<CFF2Subrs> (cff2, cff2->ଶୀର୍ଷ_Dict_2 + cff2->ଶୀର୍ଷ_Dict_Size, sc);
+      varStore = &StructAtOffsetOrNull<CFF2ItemVariationStore> (cff2, ଶୀର୍ଷ_Dict_2.vstoreOffset, sc);
+      charStrings = &StructAtOffsetOrNull<CFF2CharStrings> (cff2, ଶୀର୍ଷ_Dict_2.charStringsOffset, sc);
+      fdArray = &StructAtOffsetOrNull<CFF2FDArray> (cff2, ଶୀର୍ଷ_Dict_2.FDArrayOffset, sc);
 
-      if (charStrings == &Null (CFF2CharStrings) ||
+      ଯଦି (charStrings == &Null (CFF2CharStrings) ||
 	  globalSubrs == &Null (CFF2Subrs) ||
 	  fdArray == &Null (CFF2FDArray))
-        goto fail;
+        ଯାଅ fail;
 
-      num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      ଅଙ୍କ_glyphs = charStrings->ଗଣନା_2;
+      ଯଦି (ଅଙ୍କ_glyphs != sc.get_ଅଙ୍କ_glyphs ())
       {
         /* VARC can define glyphs beyond the CFF2 CharStrings INDEX. */
         hb_blob_t *varc = face->reference_table (HB_TAG ('V','A','R','C'));
-        bool valid_count = num_glyphs < sc.get_num_glyphs () &&
+        ତାର୍କିକ valid_ଗଣନା = ଅଙ୍କ_glyphs < sc.get_ଅଙ୍କ_glyphs () &&
                            hb_blob_get_length (varc);
         hb_blob_destroy (varc);
-        if (!valid_count) goto fail;
+        ଯଦି (!valid_ଗଣନା) ଯାଅ fail;
       }
 
-      fdSelect = &StructAtOffsetOrNull<CFF2FDSelect> (cff2, topDict.FDSelectOffset, sc,
-                                                   fdArray->count, num_glyphs);
-      if (topDict.FDSelectOffset && fdSelect == &Null (CFF2FDSelect))
-        goto fail;
+      fdSelect = &StructAtOffsetOrNull<CFF2FDSelect> (cff2, ଶୀର୍ଷ_Dict_2.FDSelectOffset, sc,
+                                                   fdArray->ଗଣନା_2, ଅଙ୍କ_glyphs);
+      ଯଦି (ଶୀର୍ଷ_Dict_2.FDSelectOffset && fdSelect == &Null (CFF2FDSelect))
+        ଯାଅ fail;
 
-      fdCount = fdArray->count;
-      if (!privateDicts.resize (fdCount))
-        goto fail;
+      fd_ଗଣନା = fdArray->ଗଣନା_2;
+      ଯଦି (!privateDicts.resize (fd_ଗଣନା))
+        ଯାଅ fail;
 
       /* parse font dicts and gather private dicts */
-      for (unsigned int i = 0; i < fdCount; i++)
+      ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < fd_ଗଣନା; i++)
       {
-	const hb_ubytes_t fontDictStr = (*fdArray)[i];
-	if (unlikely (!fontDictStr.sanitize (&sc))) goto fail;
+	ଅଚଳ hb_ubytes_t fontDictStr = (*fdArray)[i];
+	ଯଦି (unlikely (!fontDictStr.sanitize (&sc))) ଯାଅ fail;
 	hb_barrier ();
-	cff2_font_dict_values_t  *font;
-	num_interp_env_t env (fontDictStr);
+	cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t  *font;
+	ଅଙ୍କ_interp_env_t env (fontDictStr);
 	cff2_font_dict_interpreter_t font_interp (env);
 	font = fontDicts.push ();
-	if (unlikely (font == &Crap (cff2_font_dict_values_t))) goto fail;
+	ଯଦି (unlikely (font == &Crap (cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t))) ଯାଅ fail;
 	font->init ();
-	if (unlikely (!font_interp.interpret (*font))) goto fail;
+	ଯଦି (unlikely (!font_interp.interpret (*font))) ଯାଅ fail;
 
-	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff2, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (unlikely (font->privateDictInfo.size &&
-		      privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
+	ଅଚଳ hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff2, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
+	ଯଦି (unlikely (font->privateDictInfo.size &&
+		      privDictStr == (ଅଚଳ unsigned ଅକ୍ଷର *) &Null (UnsizedByteStr))) ଯାଅ fail;
 	cff2_priv_dict_interp_env_t env2 (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL, cff2_priv_dict_interp_env_t> priv_interp (env2);
 	privateDicts[i].init ();
-	if (unlikely (!priv_interp.interpret (privateDicts[i]))) goto fail;
+	ଯଦି (unlikely (!priv_interp.interpret (privateDicts[i]))) ଯାଅ fail;
 
 	privateDicts[i].localSubrs = &StructAtOffsetOrNull<CFF2Subrs> (&privDictStr[0], privateDicts[i].subrsOffset, sc);
       }
 
-      return;
+      ଫେରନ୍ତୁ;
 
       fail:
         _fini ();
     }
     ~accelerator_templ_t () { _fini (); }
-    void _fini ()
+    ଶୂନ୍ୟ _fini ()
     {
       sc.end_processing ();
-      topDict.fini ();
+      ଶୀର୍ଷ_Dict_2.fini ();
       fontDicts.fini ();
       privateDicts.fini ();
       hb_blob_destroy (blob);
       blob = nullptr;
 
       auto *scalars = cached_scalars_vector.get_acquire ();
-      if (scalars && cached_scalars_vector.cmpexch (scalars, nullptr))
+      ଯଦି (scalars && cached_scalars_vector.cmpexch (scalars, nullptr))
       {
 	scalars->fini ();
 	hb_free (scalars);
       }
     }
 
-    hb_vector_t<uint16_t> *create_glyph_to_sid_map () const
+    hb_vector_t<uint16_t> *create_glyph_to_sid_map () ଅଚଳ
     {
-      return nullptr;
+      ଫେରନ୍ତୁ nullptr;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () ଅଚଳ { ଫେରନ୍ତୁ blob; }
 
-    bool is_valid () const { return blob; }
+    ତାର୍କିକ is_valid () ଅଚଳ { ଫେରନ୍ତୁ blob; }
 
-    protected:
+    ସୁରକ୍ଷିତ:
     hb_sanitize_context_t	sc;
 
-    public:
+    ସର୍ବସାଧାରଣ:
     hb_blob_t			*blob = nullptr;
-    cff2_top_dict_values_t	topDict;
-    const CFF2Subrs		*globalSubrs = nullptr;
-    const CFF2ItemVariationStore	*varStore = nullptr;
-    const CFF2CharStrings	*charStrings = nullptr;
-    const CFF2FDArray		*fdArray = nullptr;
-    const CFF2FDSelect		*fdSelect = nullptr;
-    unsigned int		fdCount = 0;
+    cff2_ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t	ଶୀର୍ଷ_Dict_2;
+    ଅଚଳ CFF2Subrs		*globalSubrs = nullptr;
+    ଅଚଳ CFF2ItemVariationStore	*varStore = nullptr;
+    ଅଚଳ CFF2CharStrings	*charStrings = nullptr;
+    ଅଚଳ CFF2FDArray		*fdArray = nullptr;
+    ଅଚଳ CFF2FDSelect		*fdSelect = nullptr;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା		fd_ଗଣନା = 0;
 
-    hb_vector_t<cff2_font_dict_values_t>     fontDicts;
+    hb_vector_t<cff2_font_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t>     fontDicts;
     hb_vector_t<PRIVDICTVAL>  privateDicts;
 
-    mutable hb_atomic_t<hb_vector_t<float> *> cached_scalars_vector;
+    mutable hb_atomic_t<hb_vector_t<ଦଶମିକ> *> cached_scalars_vector;
 
-    unsigned int	      num_glyphs = 0;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା	      ଅଙ୍କ_glyphs = 0;
   };
 
-  struct accelerator_t : accelerator_templ_t<cff2_private_dict_opset_t, cff2_private_dict_values_t>
+  ସଂରଚନା accelerator_t : accelerator_templ_t<cff2_private_dict_opset_t, cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t>
   {
     accelerator_t (hb_face_t *face) : accelerator_templ_t (face) {}
 
-    HB_INTERNAL bool get_extents (hb_font_t *font,
+    HB_INTERNAL ତାର୍କିକ get_extents (hb_font_t *font,
 				  hb_codepoint_t glyph,
-				  hb_glyph_extents_t *extents) const;
-    HB_INTERNAL bool get_extents_at (hb_font_t *font,
+				  hb_glyph_extents_t *extents) ଅଚଳ;
+    HB_INTERNAL ତାର୍କିକ get_extents_at (hb_font_t *font,
 				     hb_codepoint_t glyph,
 				     hb_glyph_extents_t *extents,
-				     hb_array_t<const int> coords,
-				     int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget = nullptr) const;
+				     hb_array_t<ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା> coords,
+				     int64_t *budget = nullptr) ଅଚଳ;
+    HB_INTERNAL ତାର୍କିକ get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) ଅଚଳ;
+    HB_INTERNAL ତାର୍କିକ get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା> coords, int64_t *budget = nullptr) ଅଚଳ;
   };
 
-  struct accelerator_subset_t : accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_values_subset_t>
+  ସଂରଚନା accelerator_subset_t : accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_subset_t>
   {
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      ଯଦି (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
-    HB_INTERNAL bool subset (hb_subset_context_t *c) const;
-    HB_INTERNAL bool serialize (hb_serialize_context_t *c,
-				struct cff2_subset_plan &plan,
-				hb_array_t<int> normalized_coords) const;
+    HB_INTERNAL ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ;
+    HB_INTERNAL ତାର୍କିକ serialize (hb_serialize_context_t *c,
+				ସଂରଚନା cff2_subset_plan &plan,
+				hb_array_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> normalized_coords) ଅଚଳ;
 
     mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
 
-    typedef accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_values_subset_t> SUPER;
+    ପ୍ରକାରବ୍ୟାଖ୍ୟା accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_subset_t> SUPER;
   };
 
-  public:
+  ସର୍ବସାଧାରଣ:
   FixedVersion<HBUINT8>		version;	/* Version of CFF2 table. set to 0x0200u */
-  NNOffsetTo<TopDict, HBUINT8>	topDict;	/* headerSize = Offset to Top DICT. */
-  HBUINT16			topDictSize;	/* Top DICT size */
+  NNOffsetTo<ଶୀର୍ଷ_Dict, HBUINT8>	ଶୀର୍ଷ_Dict_2;	/* headerSize = Offset to Top DICT. */
+  HBUINT16			ଶୀର୍ଷ_Dict_Size;	/* Top DICT size */
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (5);
 };
 
-struct cff2_accelerator_t : cff2::accelerator_t {
+ସଂରଚନା cff2_accelerator_t : cff2::accelerator_t {
   cff2_accelerator_t (hb_face_t *face) : cff2::accelerator_t (face) {}
 };
 
-struct cff2_subset_accelerator_t : cff2::accelerator_subset_t {
+ସଂରଚନା cff2_subset_accelerator_t : cff2::accelerator_subset_t {
   cff2_subset_accelerator_t (hb_face_t *face) : cff2::accelerator_subset_t (face) {}
 };
 

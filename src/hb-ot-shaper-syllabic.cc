@@ -22,53 +22,53 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+ତାର୍କିକ
+hb_syllabic_ଭର୍ତ୍ତି_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+				   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା broken_syllable_type,
+				   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା dottedcircle_category,
+				   ପୂର୍ଣ୍ଣସଂଖ୍ୟା repha_category,
+				   ପୂର୍ଣ୍ଣସଂଖ୍ୟା dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  ଯଦି (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_ଭର୍ତ୍ତି_DOTTED_CIRCLE))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
+  ଯଦି (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    ଯଦି (buffer->messaging ())
+      (ଶୂନ୍ୟ) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  if (buffer->messaging () &&
+  ଯଦି (buffer->messaging () &&
       !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  ଯଦି (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  ଯଦି (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
   buffer->clear_output ();
 
   buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା last_syllable = 0;
+  ଯେତେବେଳେ (buffer->idx < buffer->len && buffer->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା syllable = buffer->cur().syllable();
+    ଯଦି (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
@@ -78,34 +78,34 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
       ginfo.syllable() = buffer->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      ଯଦି (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
+	ଯେତେବେଳେ (buffer->idx < buffer->len && buffer->successful &&
 	       last_syllable == buffer->cur().syllable() &&
 	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	  (ଶୂନ୍ୟ) buffer->next_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (ଶୂନ୍ୟ) buffer->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    ଅନ୍ୟଥା
+      (ଶୂନ୍ୟ) buffer->next_glyph ();
   }
-  buffer->sync ();
+  buffer->ସମକାଳ ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  ଯଦି (buffer->messaging ())
+    (ଶୂନ୍ୟ) buffer->message (font, "end inserting dotted-circles");
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL ତାର୍କିକ
+hb_syllabic_clear_var (ଅଚଳ hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  ଫେରନ୍ତୁ ମିଥ୍ୟା;
 }
 
 

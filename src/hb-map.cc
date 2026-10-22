@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-map.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-map.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  ଯଦି (!(map = hb_object_create<hb_map_t> ()))
+    ଫେରନ୍ତୁ hb_map_get_empty ();
 
-  return map;
+  ଫେରନ୍ତୁ map;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_map_create ()
 hb_map_t *
 hb_map_get_empty ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  ଫେରନ୍ତୁ const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  ଫେରନ୍ତୁ hb_object_reference (map);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_map_reference (hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+ଶୂନ୍ୟ
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  ଯଦି (!hb_object_destroy (map)) ଫେରନ୍ତୁ;
 
   hb_free (map);
 }
@@ -124,12 +124,12 @@ hb_map_destroy (hb_map_t *map)
  **/
 hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+		      hb_user_data_ଚାବି_t *key,
+		      ଶୂନ୍ୟ *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  ଫେରନ୍ତୁ hb_object_set_user_data (map, key, data, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_map_set_user_data (hb_map_t           *map,
  *
  * Since: 1.7.7
  **/
-void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key)
+ଶୂନ୍ୟ *
+hb_map_get_user_data (ଅଚଳ hb_map_t     *map,
+		      hb_user_data_ଚାବି_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  ଫେରନ୍ତୁ hb_object_get_user_data (map, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_map_get_user_data (const hb_map_t     *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_allocation_successful (const hb_map_t  *map)
+hb_map_allocation_successful (ଅଚଳ hb_map_t  *map)
 {
-  return map->successful;
+  ଫେରନ୍ତୁ map->successful;
 }
 
 /**
@@ -179,14 +179,14 @@ hb_map_allocation_successful (const hb_map_t  *map)
  * Since: 4.4.0
  **/
 hb_map_t *
-hb_map_copy (const hb_map_t *map)
+hb_map_copy (ଅଚଳ hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  ଯଦି (unlikely (copy->in_error ()))
+    ଫେରନ୍ତୁ hb_map_get_empty ();
 
   *copy = *map;
-  return copy;
+  ଫେରନ୍ତୁ copy;
 }
 
 /**
@@ -199,7 +199,7 @@ hb_map_copy (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+ଶୂନ୍ୟ
 hb_map_set (hb_map_t       *map,
 	    hb_codepoint_t  key,
 	    hb_codepoint_t  value)
@@ -218,10 +218,10 @@ hb_map_set (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_codepoint_t
-hb_map_get (const hb_map_t *map,
+hb_map_get (ଅଚଳ hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  ଫେରନ୍ତୁ map->get (key);
 }
 
 /**
@@ -233,7 +233,7 @@ hb_map_get (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+ଶୂନ୍ୟ
 hb_map_del (hb_map_t       *map,
 	    hb_codepoint_t  key)
 {
@@ -253,10 +253,10 @@ hb_map_del (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_has (const hb_map_t *map,
+hb_map_has (ଅଚଳ hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  ଫେରନ୍ତୁ map->has (key);
 }
 
 
@@ -268,10 +268,10 @@ hb_map_has (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+ଶୂନ୍ୟ
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  ଫେରନ୍ତୁ map->clear ();
 }
 
 /**
@@ -285,9 +285,9 @@ hb_map_clear (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_is_empty (const hb_map_t *map)
+hb_map_is_empty (ଅଚଳ hb_map_t *map)
 {
-  return map->is_empty ();
+  ଫେରନ୍ତୁ map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_map_get_population (const hb_map_t *map)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_map_get_population (ଅଚଳ hb_map_t *map)
 {
-  return map->get_population ();
+  ଫେରନ୍ତୁ map->get_population ();
 }
 
 /**
@@ -319,10 +319,10 @@ hb_map_get_population (const hb_map_t *map)
  * Since: 4.3.0
  **/
 hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other)
+hb_map_is_equal (ଅଚଳ hb_map_t *map,
+		 ଅଚଳ hb_map_t *other)
 {
-  return map->is_equal (*other);
+  ଫେରନ୍ତୁ map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
-hb_map_hash (const hb_map_t *map)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_map_hash (ଅଚଳ hb_map_t *map)
 {
-  return map->hash ();
+  ଫେରନ୍ତୁ map->hash ();
 }
 
 /**
@@ -351,9 +351,9 @@ hb_map_hash (const hb_map_t *map)
  *
  * Since: 7.0.0
  **/
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other)
+	       ଅଚଳ hb_map_t *other)
 {
   map->update (*other);
 }
@@ -378,12 +378,12 @@ hb_map_update (hb_map_t *map,
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
+hb_map_next (ଅଚଳ hb_map_t *map,
+	     ପୂର୍ଣ୍ଣସଂଖ୍ୟା *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  ଫେରନ୍ତୁ map->next (idx, key, value);
 }
 
 /**
@@ -395,11 +395,11 @@ hb_map_next (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys)
+ଶୂନ୍ୟ
+hb_map_ଚାବିଗୁଡ଼ିକ (ଅଚଳ hb_map_t *map,
+	     hb_set_t *ଚାବିଗୁଡ଼ିକ)
 {
-  hb_copy (map->keys() , *keys);
+  hb_copy (map->ଚାବିଗୁଡ଼ିକ() , *ଚାବିଗୁଡ଼ିକ);
 }
 
 /**
@@ -411,8 +411,8 @@ hb_map_keys (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_values (const hb_map_t *map,
+ଶୂନ୍ୟ
+hb_map_ମୂଲ୍ୟଗୁଡ଼ିକ (ଅଚଳ hb_map_t *map,
 	       hb_set_t *values)
 {
   hb_copy (map->values() , *values);

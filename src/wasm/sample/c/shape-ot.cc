@@ -1,18 +1,18 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#ଅନ୍ତର୍ଭାଵ <hb-wasm-api.h>
 
-extern "C" {
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+ବାହ୍ୟ "C" {
+ଶୂନ୍ୟ debugprint1 (ଅଚଳ ଅକ୍ଷର *s, int32_t);
+ଶୂନ୍ୟ debugprint2 (ଅଚଳ ଅକ୍ଷର *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (ଶୂନ୍ୟ *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ଅଚଳ feature_t *features,
+       uint32_t ଅଙ୍କ_features)
 {
-  return shape_with (font, buffer, features, num_features, "ot");
+  ଫେରନ୍ତୁ shape_with (font, buffer, features, ଅଙ୍କ_features, "ot");
 }

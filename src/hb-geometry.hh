@@ -24,23 +24,23 @@
 #ifndef HB_GEOMETRY_HH
 #define HB_GEOMETRY_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-algs.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-algs.hh"
 
-#include <cmath>
+#ଅନ୍ତର୍ଭାଵ <cmath>
 
 
-template <typename Float = float>
-struct hb_extents_t
+template <typename Float = ଦଶମିକ>
+ସଂରଚନା hb_extents_t
 {
   hb_extents_t () {}
-  hb_extents_t (const hb_glyph_extents_t &extents)
+  hb_extents_t (ଅଚଳ hb_glyph_extents_t &extents)
   {
-    double x0 = (double) extents.x_bearing;
-    double y0 = (double) extents.y_bearing;
-    double x1 = x0 + (double) extents.width;
-    double y1 = y0 + (double) extents.height;
+    ଦ୍ୱିଗୁଣ x0 = (ଦ୍ୱିଗୁଣ) extents.x_bearing;
+    ଦ୍ୱିଗୁଣ y0 = (ଦ୍ୱିଗୁଣ) extents.y_bearing;
+    ଦ୍ୱିଗୁଣ x1 = x0 + (ଦ୍ୱିଗୁଣ) extents.width;
+    ଦ୍ୱିଗୁଣ y1 = y0 + (ଦ୍ୱିଗୁଣ) extents.height;
 
     xmin = (Float) hb_min (x0, x1);
     ymin = (Float) hb_min (y0, y1);
@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  ତାର୍କିକ is_empty () ଅଚଳ { ଫେରନ୍ତୁ xmin >= xmax || ymin >= ymax; }
+  ତାର୍କିକ is_void () ଅଚଳ { ଫେରନ୍ତୁ xmin > xmax; }
 
-  void union_ (const hb_extents_t &o)
+  ଶୂନ୍ୟ union_ (ଅଚଳ hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    ଯଦି (o.is_empty ()) ଫେରନ୍ତୁ;
+    ଯଦି (is_empty ())
     {
-      *this = o;
-      return;
+      *ଏହି = o;
+      ଫେରନ୍ତୁ;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -67,12 +67,12 @@ struct hb_extents_t
     ymax = hb_max (ymax, o.ymax);
   }
 
-  void intersect (const hb_extents_t &o)
+  ଶୂନ୍ୟ intersect (ଅଚଳ hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    ଯଦି (o.is_empty () || is_empty ())
     {
-      *this = hb_extents_t {};
-      return;
+      *ଏହି = hb_extents_t {};
+      ଫେରନ୍ତୁ;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -80,15 +80,15 @@ struct hb_extents_t
     ymax = hb_min (ymax, o.ymax);
   }
 
-  void
+  ଶୂନ୍ୟ
   add_point (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    ଯଦି (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    ଅନ୍ୟଥା
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -97,20 +97,20 @@ struct hb_extents_t
     }
   }
 
-  hb_glyph_extents_t to_glyph_extents (bool xneg = false, bool yneg = false) const
+  hb_glyph_extents_t to_glyph_extents (ତାର୍କିକ xneg = ମିଥ୍ୟା, ତାର୍କିକ yneg = ମିଥ୍ୟା) ଅଚଳ
   {
-    double x0 = round ((double) xmin);
-    double y0 = round ((double) ymin);
-    double x1 = round ((double) xmax);
-    double y1 = round ((double) ymax);
+    ଦ୍ୱିଗୁଣ x0 = round ((ଦ୍ୱିଗୁଣ) xmin);
+    ଦ୍ୱିଗୁଣ y0 = round ((ଦ୍ୱିଗୁଣ) ymin);
+    ଦ୍ୱିଗୁଣ x1 = round ((ଦ୍ୱିଗୁଣ) xmax);
+    ଦ୍ୱିଗୁଣ y1 = round ((ଦ୍ୱିଗୁଣ) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    ଯଦି (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      ଫେରନ୍ତୁ hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
+    ଫେରନ୍ତୁ hb_glyph_extents_t {
       clamp_to_hb_position (xneg ? x1 : x0),
       clamp_to_hb_position (yneg ? y0 : y1),
       clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
@@ -123,17 +123,17 @@ struct hb_extents_t
   Float xmax = -1;
   Float ymax = -1;
 
-  static hb_position_t
-  clamp_to_hb_position (double v)
+  ସ୍ଥିର hb_position_t
+  clamp_to_hb_position (ଦ୍ୱିଗୁଣ v)
   {
-    return (hb_position_t) hb_clamp (v,
-				     (double) hb_int_min (hb_position_t),
-				     (double) hb_int_max (hb_position_t));
+    ଫେରନ୍ତୁ (hb_position_t) hb_clamp (v,
+				     (ଦ୍ୱିଗୁଣ) hb_int_min (hb_position_t),
+				     (ଦ୍ୱିଗୁଣ) hb_int_max (hb_position_t));
   }
 };
 
-template <typename Float = float>
-struct hb_transform_t
+template <typename Float = ଦଶମିକ>
+ସଂରଚନା hb_transform_t
 {
   hb_transform_t () {}
   hb_transform_t (Float xx, Float yx,
@@ -141,24 +141,24 @@ struct hb_transform_t
 		  Float x0, Float y0) :
     xx (xx), yx (yx), xy (xy), yy (yy), x0 (x0), y0 (y0) {}
 
-  bool is_identity () const
+  ତାର୍କିକ is_identity () ଅଚଳ
   {
-    return xx == 1 && yx == 0 &&
+    ଫେରନ୍ତୁ xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
-  bool is_translation () const
+  ତାର୍କିକ is_translation () ଅଚଳ
   {
-    return xx == 1 && yx == 0 &&
+    ଫେରନ୍ତୁ xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
-  void multiply (const hb_transform_t &o, bool before=false)
+  ଶୂନ୍ୟ multiply (ଅଚଳ hb_transform_t &o, ତାର୍କିକ before=ମିଥ୍ୟା)
   {
     // Copied from cairo-matrix.c
-    const hb_transform_t &a = before ? o : *this;
-    const hb_transform_t &b = before ? *this : o;
-    *this = {
+    ଅଚଳ hb_transform_t &a = before ? o : *ଏହି;
+    ଅଚଳ hb_transform_t &b = before ? *ଏହି : o;
+    *ଏହି = {
       a.xx * b.xx + a.xy * b.yx,
       a.yx * b.xx + a.yy * b.yx,
       a.xx * b.xy + a.xy * b.yy,
@@ -169,7 +169,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_distance (Float &dx, Float &dy) const
+  ଶୂନ୍ୟ transform_distance (Float &dx, Float &dy) ଅଚଳ
   {
     Float new_x = xx * dx + xy * dy;
     Float new_y = yx * dx + yy * dy;
@@ -178,7 +178,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_point (Float &x, Float &y) const
+  ଶୂନ୍ୟ transform_point (Float &x, Float &y) ଅଚଳ
   {
     Float new_x = x0 + xx * x + xy * y;
     Float new_y = y0 + yx * x + yy * y;
@@ -186,7 +186,7 @@ struct hb_transform_t
     y = new_y;
   }
 
-  void transform_extents (hb_extents_t<Float> &extents) const
+  ଶୂନ୍ୟ transform_extents (hb_extents_t<Float> &extents) ଅଚଳ
   {
     Float quad_x[4], quad_y[4];
 
@@ -200,123 +200,123 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    ପାଇଁ (unsigned i = 0; i < 4; i++)
     {
       transform_point (quad_x[i], quad_y[i]);
       extents.add_point (quad_x[i], quad_y[i]);
     }
   }
 
-  void transform (const hb_transform_t &o, bool before=false) { multiply (o, before); }
+  ଶୂନ୍ୟ transform (ଅଚଳ hb_transform_t &o, ତାର୍କିକ before=ମିଥ୍ୟା) { multiply (o, before); }
 
-  static hb_transform_t translation (Float x, Float y)
+  ସ୍ଥିର hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    ଫେରନ୍ତୁ {1, 0, 0, 1, x, y};
   }
-  void translate (Float x, Float y, bool before=false)
+  ଶୂନ୍ୟ translate (Float x, Float y, ତାର୍କିକ before=ମିଥ୍ୟା)
   {
-    if (before)
+    ଯଦି (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    ଅନ୍ୟଥା
     {
-      if (x == 0 && y == 0)
-	return;
+      ଯଦି (x == 0 && y == 0)
+	ଫେରନ୍ତୁ;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
     }
   }
 
-  static hb_transform_t scaling (Float scaleX, Float scaleY)
+  ସ୍ଥିର hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    ଫେରନ୍ତୁ {scaleX, 0, 0, scaleY, 0, 0};
   }
-  void scale (Float scaleX, Float scaleY)
+  ଶୂନ୍ୟ scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ଯଦି (scaleX == 1 && scaleY == 1)
+      ଫେରନ୍ତୁ;
 
     xx *= scaleX;
     yx *= scaleX;
     xy *= scaleY;
     yy *= scaleY;
   }
-  static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  ସ୍ଥିର hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    ଫେରନ୍ତୁ {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
-  void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  ଶୂନ୍ୟ scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ଯଦି (scaleX == 1 && scaleY == 1)
+      ଫେରନ୍ତୁ;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
 
-  static hb_transform_t rotation (Float radians)
+  ସ୍ଥିର hb_transform_t rotation (Float radians)
   {
     // https://github.com/fonttools/fonttools/blob/f66ee05f71c8b57b5f519ee975e95edcd1466e14/Lib/fontTools/misc/transform.py#L240
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    ଫେରନ୍ତୁ {c, s, -s, c, 0, 0};
   }
-  void rotate (Float radians, bool before=false)
+  ଶୂନ୍ୟ rotate (Float radians, ତାର୍କିକ before=ମିଥ୍ୟା)
   {
-    if (radians == 0)
-      return;
+    ଯଦି (radians == 0)
+      ଫେରନ୍ତୁ;
 
     transform (rotation (radians), before);
   }
 
-  static hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
+  ସ୍ଥିର hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    ଫେରନ୍ତୁ {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
     };
   }
-  void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
+  ଶୂନ୍ୟ rotate_around_center (Float radians, Float center_x, Float center_y, ତାର୍କିକ before=ମିଥ୍ୟା)
   {
-    if (radians == 0)
-      return;
+    ଯଦି (radians == 0)
+      ଫେରନ୍ତୁ;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
-  static hb_transform_t skewing (Float skewX, Float skewY)
+  ସ୍ଥିର hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    ଫେରନ୍ତୁ {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
-  void skew (Float skewX, Float skewY)
+  ଶୂନ୍ୟ skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    ଯଦି (skewX == 0 && skewY == 0)
+      ଫେରନ୍ତୁ;
 
     transform (skewing (skewX, skewY));
   }
-  static hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  ସ୍ଥିର hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    ଫେରନ୍ତୁ {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
     };
   }
-  void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  ଶୂନ୍ୟ skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    ଯଦି (skewX == 0 && skewY == 0)
+	    ଫେରନ୍ତୁ;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -331,44 +331,44 @@ struct hb_transform_t
 
 #define HB_TRANSFORM_IDENTITY {1, 0, 0, 1, 0, 0}
 
-template <typename Float = float>
-struct hb_bounds_t
+template <typename Float = ଦଶମିକ>
+ସଂରଚନା hb_bounds_t
 {
-  enum status_t {
+  ଗଣନା status_t {
     UNBOUNDED,
     BOUNDED,
     EMPTY,
   };
 
   hb_bounds_t (status_t status = UNBOUNDED) : status (status) {}
-  hb_bounds_t (const hb_extents_t<Float> &extents) :
+  hb_bounds_t (ଅଚଳ hb_extents_t<Float> &extents) :
     status (extents.is_empty () ? EMPTY : BOUNDED), extents (extents) {}
 
-  void union_ (const hb_bounds_t &o)
+  ଶୂନ୍ୟ union_ (ଅଚଳ hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
+    ଯଦି (o.status == UNBOUNDED)
       status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    ଅନ୍ୟଥା ଯଦି (o.status == BOUNDED)
     {
-      if (status == EMPTY)
-	*this = o;
-      else if (status == BOUNDED)
+      ଯଦି (status == EMPTY)
+	*ଏହି = o;
+      ଅନ୍ୟଥା ଯଦି (status == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
-  void intersect (const hb_bounds_t &o)
+  ଶୂନ୍ୟ intersect (ଅଚଳ hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
+    ଯଦି (o.status == EMPTY)
       status = EMPTY;
-    else if (o.status == BOUNDED)
+    ଅନ୍ୟଥା ଯଦି (o.status == BOUNDED)
     {
-      if (status == UNBOUNDED)
-	*this = o;
-      else if (status == BOUNDED)
+      ଯଦି (status == UNBOUNDED)
+	*ଏହି = o;
+      ଅନ୍ୟଥା ଯଦି (status == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
+	ଯଦି (extents.is_empty ())
 	  status = EMPTY;
       }
     }
@@ -378,8 +378,8 @@ struct hb_bounds_t
   hb_extents_t<Float> extents;
 };
 
-template <typename Float = float>
-struct hb_transform_decomposed_t
+template <typename Float = ଦଶମିକ>
+ସଂରଚନା hb_transform_decomposed_t
 {
   Float translateX = 0;
   Float translateY = 0;
@@ -391,16 +391,16 @@ struct hb_transform_decomposed_t
   Float tCenterX = 0;
   Float tCenterY = 0;
 
-  operator bool () const
+  operator ତାର୍କିକ () ଅଚଳ
   {
-    return translateX || translateY ||
+    ଫେରନ୍ତୁ translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
 	   tCenterX || tCenterY;
   }
 
-  hb_transform_t<Float> to_transform () const
+  hb_transform_t<Float> to_transform () ଅଚଳ
   {
     hb_transform_t<Float> t;
     t.translate (translateX + tCenterX, translateY + tCenterY);
@@ -408,7 +408,7 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    ଫେରନ୍ତୁ t;
   }
 };
 

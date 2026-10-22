@@ -25,36 +25,36 @@
 #ifndef HB_WASM_API_FACE_HH
 #define HB_WASM_API_FACE_HH
 
-#include "hb-wasm-api.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+ନାମାକାଶ hb {
+ନାମାକାଶ wasm {
 
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int index)
+					  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା index)
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return nullref;
+  ଯଦି (unlikely (!blob))
+    ଫେରନ୍ତୁ nullref;
 
-  char *data = HB_ARRAY_APP2NATIVE (char, blob->data, blob->length);
-  if (unlikely (!data))
-    return nullref;
+  ଅକ୍ଷର *data = HB_ARRAY_APP2NATIVE (ଅକ୍ଷର, blob->data, blob->length);
+  ଯଦି (unlikely (!data))
+    ଫେରନ୍ତୁ nullref;
 
   hb_blob_t *hb_blob = hb_blob_create(
 				      data,
 				      blob->length,
 				      HB_MEMORY_MODE_DUPLICATE,
-				      NULL,
-				      NULL);
+				      ଖାଲି,
+				      ଖାଲି);
 
   hb_face_t *face = hb_face_create(hb_blob, index);
   hb_blob_destroy (hb_blob);
 
   HB_OBJ2REF (face);
-  return faceref;
+  ଫେରନ୍ତୁ faceref;
 }
 
 HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
@@ -64,27 +64,27 @@ HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (face);
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return false;
+  ଯଦି (unlikely (!blob))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   hb_blob_t *hb_blob = hb_face_reference_table (face, table_tag);
 
   unsigned length;
-  const char *hb_data = hb_blob_get_data (hb_blob, &length);
+  ଅଚଳ ଅକ୍ଷର *hb_data = hb_blob_get_data (hb_blob, &length);
 
-  if (length <= blob->length)
+  ଯଦି (length <= blob->length)
   {
-    char *data = HB_ARRAY_APP2NATIVE (char, blob->data, length);
+    ଅକ୍ଷର *data = HB_ARRAY_APP2NATIVE (ଅକ୍ଷର, blob->data, length);
 
-    if (unlikely (!data))
+    ଯଦି (unlikely (!data))
     {
       blob->length = 0;
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
     hb_memcpy (data, hb_data, length);
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
   module_free (blob->data);
@@ -94,13 +94,13 @@ HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 
   hb_blob_destroy (hb_blob);
 
-  if (blob->length && !blob->data)
+  ଯଦି (blob->length && !blob->data)
   {
     blob->length = 0;
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
@@ -108,7 +108,7 @@ HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (face);
 
-  return hb_face_get_upem (face);
+  ଫେରନ୍ତୁ hb_face_get_upem (face);
 }
 
 

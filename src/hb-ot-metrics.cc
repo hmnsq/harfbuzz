@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-var-mvar-table.hh"
-#include "hb-ot-gasp-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-metrics.hh"
-#include "hb-ot-face.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-mvar-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-gasp-table.hh" // Just so we compile it; unused otherwise.
+#ଅନ୍ତର୍ଭାଵ "hb-ot-os2-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-post-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-hhea-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-metrics.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-face.hh"
 
 
 /**
@@ -42,80 +42,80 @@
  * Functions for fetching metrics from fonts.
  **/
 
-static float
-_fix_ascender_descender (float value, hb_ot_metrics_tag_t metrics_tag)
+ସ୍ଥିର ଦଶମିକ
+_fix_ascender_descender (ଦଶମିକ value, hb_ot_metrics_tag_t metrics_tag)
 {
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER ||
+  ଯଦି (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER ||
       metrics_tag == HB_OT_METRICS_TAG_VERTICAL_ASCENDER)
-    return fabs ((double) value);
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER ||
+    ଫେରନ୍ତୁ fabs ((ଦ୍ୱିଗୁଣ) value);
+  ଯଦି (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER ||
       metrics_tag == HB_OT_METRICS_TAG_VERTICAL_DESCENDER)
-    return -fabs ((double) value);
-  return value;
+    ଫେରନ୍ତୁ -fabs ((ଦ୍ୱିଗୁଣ) value);
+  ଫେରନ୍ତୁ value;
 }
 
 /* The common part of _get_position logic needed on hb-ot-font and here
    to be able to have slim builds without the not always needed parts */
-bool
+ତାର୍କିକ
 _hb_ot_metrics_get_position_common (hb_font_t           *font,
 				    hb_ot_metrics_tag_t  metrics_tag,
 				    hb_position_t       *position     /* OUT.  May be NULL. */)
 {
   hb_face_t *face = font->face;
-  switch ((unsigned) metrics_tag)
+  ବାଛ ((unsigned) metrics_tag)
   {
 #ifndef HB_NO_VAR
-#define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords)
-#else
+#define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->ଅଙ୍କ_coords)
+#ଅନ୍ୟଥା
 #define GET_VAR .0f
 #endif
 #define GET_METRIC_Y(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
-      face->table.TABLE->ATTR + GET_VAR, metrics_tag)))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
+      face->table.TABLE->ATTR + GET_VAR, metrics_tag)))), ସତ୍ୟ))
 #define GET_HEA_METRIC_X(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (_fix_ascender_descender ( \
-      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_x (_fix_ascender_descender ( \
+      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), ସତ୍ୟ))
 #define GET_HEA_METRIC_Y(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
-      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
+      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), ସତ୍ୟ))
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
+    ଫେରନ୍ତୁ (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
 	   GET_HEA_METRIC_Y (hhea, ascender);
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
+    ଫେରନ୍ତୁ (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
 	   GET_HEA_METRIC_Y (hhea, descender);
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoLineGap)) ||
-	   GET_HEA_METRIC_Y (hhea, lineGap);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP:
+    ଫେରନ୍ତୁ (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, s_Typo_ଧାଡ଼ି_Gap)) ||
+	   GET_HEA_METRIC_Y (hhea, ଧାଡ଼ି_Gap);
 
 #ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  return GET_HEA_METRIC_X (vhea, ascender);
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER: return GET_HEA_METRIC_X (vhea, descender);
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:  return GET_HEA_METRIC_X (vhea, lineGap);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  ଫେରନ୍ତୁ GET_HEA_METRIC_X (vhea, ascender);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_DESCENDER: ଫେରନ୍ତୁ GET_HEA_METRIC_X (vhea, descender);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ଧାଡ଼ି_GAP:  ଫେରନ୍ତୁ GET_HEA_METRIC_X (vhea, ଧାଡ଼ି_Gap);
 #endif
 
 #undef GET_HEA_METRIC_Y
 #undef GET_HEA_METRIC_X
 #undef GET_METRIC_Y
 #undef GET_VAR
-  default:                               assert (0); return false;
+  ପୂର୍ବନିର୍ଦ୍ଧାରିତ:                               ପ୍ରତିଜ୍ଞା (0); ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 }
 
 #ifndef HB_NO_METRICS
 
-#if 0
-static bool
-_get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
+#ଯଦି 0
+ସ୍ଥିର ତାର୍କିକ
+_get_gasp (hb_face_t *face, ଦଶମିକ *result, hb_ot_metrics_tag_t metrics_tag)
 {
-  const OT::GaspRange& range = face->table.gasp->get_gasp_range (metrics_tag - HB_TAG ('g','s','p','0'));
-  if (&range == &Null (OT::GaspRange)) return false;
-  if (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
-  return true;
+  ଅଚଳ OT::GaspRange& range = face->table.gasp->get_gasp_range (metrics_tag - HB_TAG ('g','s','p','0'));
+  ଯଦି (&range == &Null (OT::GaspRange)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+  ଯଦି (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->ଅଙ୍କ_coords);
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 #endif
 
@@ -124,8 +124,8 @@ _get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
 #define _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA  HB_TAG ('H','a','s','c')
 #define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2  HB_TAG ('O','d','s','c')
 #define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA HB_TAG ('H','d','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2   HB_TAG ('O','l','g','p')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA  HB_TAG ('H','l','g','p')
+#define HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP_OS2   HB_TAG ('O','l','g','p')
+#define HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP_HHEA  HB_TAG ('H','l','g','p')
 
 /**
  * hb_ot_metrics_get_position:
@@ -144,111 +144,111 @@ hb_ot_metrics_get_position (hb_font_t           *font,
 			    hb_position_t       *position     /* OUT.  May be NULL. */)
 {
   hb_face_t *face = font->face;
-  switch ((unsigned) metrics_tag)
+  ବାଛ ((unsigned) metrics_tag)
   {
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:           return _hb_ot_metrics_get_position_common (font, metrics_tag, position);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ଧାଡ଼ି_GAP:           ଫେରନ୍ତୁ _hb_ot_metrics_get_position_common (font, metrics_tag, position);
 #ifndef HB_NO_VAR
 #define GET_VAR hb_ot_metrics_get_variation (font, metrics_tag)
-#else
+#ଅନ୍ୟଥା
 #define GET_VAR 0
 #endif
 #define GET_METRIC_X(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (face->table.TABLE->ATTR + GET_VAR))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_x (face->table.TABLE->ATTR + GET_VAR))), ସତ୍ୟ))
 #define GET_METRIC_Y(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (face->table.TABLE->ATTR + GET_VAR))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_y (face->table.TABLE->ATTR + GET_VAR))), ସତ୍ୟ))
 #define GET_HEA_METRIC_X(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), true))
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_x (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), ସତ୍ୟ))
 #define GET_HEA_METRIC_Y(TABLE, ATTR) \
   (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), true))
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:  return GET_METRIC_Y (OS2, usWinAscent);
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT: return GET_METRIC_Y (OS2, usWinDescent);
+    ((ଶୂନ୍ୟ) (position && (*position = font->em_scalef_y (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), ସତ୍ୟ))
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:  ଫେରନ୍ତୁ GET_METRIC_Y (OS2, usWinAscent);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT: ଫେରନ୍ତୁ GET_METRIC_Y (OS2, usWinDescent);
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
   {
     unsigned mult = 1u;
 
-    if (font->slant)
+    ଯଦି (font->slant)
     {
       unsigned rise = HB_DUAL_GET (*face->table.hhea, table->caretSlopeRise);
       unsigned upem = face->get_upem ();
       mult = (rise && rise < upem) ? hb_min (upem / rise, 256u) : 1u;
     }
 
-    if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE)
+    ଯଦି (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE)
     {
-      bool ret = GET_HEA_METRIC_Y (hhea, caretSlopeRise);
+      ତାର୍କିକ ret = GET_HEA_METRIC_Y (hhea, caretSlopeRise);
 
-      if (position)
+      ଯଦି (position)
 	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
 
-      return ret;
+      ଫେରନ୍ତୁ ret;
     }
-    else
+    ଅନ୍ୟଥା
     {
       hb_position_t rise = 0;
 
-      if (font->slant && position && GET_HEA_METRIC_Y (hhea, caretSlopeRise))
+      ଯଦି (font->slant && position && GET_HEA_METRIC_Y (hhea, caretSlopeRise))
 	rise = *position;
 
-      bool ret = GET_HEA_METRIC_X (hhea, caretSlopeRun);
+      ତାର୍କିକ ret = GET_HEA_METRIC_X (hhea, caretSlopeRun);
 
-      if (position)
+      ଯଦି (position)
       {
 	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
 
-	if (font->slant)
+	ଯଦି (font->slant)
 	  *position = hb_saturate_add (*position,
 				       hb_clamp_to<hb_position_t> (roundf (mult * font->slant_xy * rise)));
       }
 
-      return ret;
+      ଫେରନ୍ତୁ ret;
     }
   }
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:     return GET_HEA_METRIC_X (hhea, caretOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:     ଫେରନ୍ତୁ GET_HEA_METRIC_X (hhea, caretOffset);
 
 #ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:         return GET_HEA_METRIC_X (vhea, caretSlopeRise);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:          return GET_HEA_METRIC_Y (vhea, caretSlopeRun);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:       return GET_HEA_METRIC_Y (vhea, caretOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:         ଫେରନ୍ତୁ GET_HEA_METRIC_X (vhea, caretSlopeRise);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:          ଫେରନ୍ତୁ GET_HEA_METRIC_Y (vhea, caretSlopeRun);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:       ଫେରନ୍ତୁ GET_HEA_METRIC_Y (vhea, caretOffset);
 #endif
-  case HB_OT_METRICS_TAG_X_HEIGHT:                    return GET_METRIC_Y (OS2->v2 (), sxHeight);
-  case HB_OT_METRICS_TAG_CAP_HEIGHT:                  return GET_METRIC_Y (OS2->v2 (), sCapHeight);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:         return GET_METRIC_X (OS2, ySubscriptXSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:         return GET_METRIC_Y (OS2, ySubscriptYSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:       return GET_METRIC_X (OS2, ySubscriptXOffset);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:       return GET_METRIC_Y (OS2, ySubscriptYOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:       return GET_METRIC_X (OS2, ySuperscriptXSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:       return GET_METRIC_Y (OS2, ySuperscriptYSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:     return GET_METRIC_X (OS2, ySuperscriptXOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:     return GET_METRIC_Y (OS2, ySuperscriptYOffset);
-  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:              return GET_METRIC_Y (OS2, yStrikeoutSize);
-  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:            return GET_METRIC_Y (OS2, yStrikeoutPosition);
-  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:              return GET_METRIC_Y (post->table, underlineThickness);
-  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:            return GET_METRIC_Y (post->table, underlinePosition);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_X_HEIGHT:                    ଫେରନ୍ତୁ GET_METRIC_Y (OS2->v2 (), sxHeight);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_CAP_HEIGHT:                  ଫେରନ୍ତୁ GET_METRIC_Y (OS2->v2 (), sCapHeight);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:         ଫେରନ୍ତୁ GET_METRIC_X (OS2, ySubscriptXSize);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:         ଫେରନ୍ତୁ GET_METRIC_Y (OS2, ySubscriptYSize);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:       ଫେରନ୍ତୁ GET_METRIC_X (OS2, ySubscriptXOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:       ଫେରନ୍ତୁ GET_METRIC_Y (OS2, ySubscriptYOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:       ଫେରନ୍ତୁ GET_METRIC_X (OS2, ySuperscriptXSize);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:       ଫେରନ୍ତୁ GET_METRIC_Y (OS2, ySuperscriptYSize);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:     ଫେରନ୍ତୁ GET_METRIC_X (OS2, ySuperscriptXOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:     ଫେରନ୍ତୁ GET_METRIC_Y (OS2, ySuperscriptYOffset);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_STRIKEOUT_SIZE:              ଫେରନ୍ତୁ GET_METRIC_Y (OS2, yStrikeoutSize);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:            ଫେରନ୍ତୁ GET_METRIC_Y (OS2, yStrikeoutPosition);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_UNDERLINE_SIZE:              ଫେରନ୍ତୁ GET_METRIC_Y (post->table, underlineThickness);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_UNDERLINE_OFFSET:            ଫେରନ୍ତୁ GET_METRIC_Y (post->table, underlinePosition);
 
   /* Private tags */
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2:    return GET_METRIC_Y (OS2, sTypoAscender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   return GET_HEA_METRIC_Y (hhea, ascender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   return GET_METRIC_Y (OS2, sTypoDescender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  return GET_HEA_METRIC_Y (hhea, descender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2:    return GET_METRIC_Y (OS2, sTypoLineGap);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA:   return GET_HEA_METRIC_Y (hhea, lineGap);
+  ସ୍ଥିତି _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2:    ଫେରନ୍ତୁ GET_METRIC_Y (OS2, sTypoAscender);
+  ସ୍ଥିତି _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   ଫେରନ୍ତୁ GET_HEA_METRIC_Y (hhea, ascender);
+  ସ୍ଥିତି _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   ଫେରନ୍ତୁ GET_METRIC_Y (OS2, sTypoDescender);
+  ସ୍ଥିତି _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  ଫେରନ୍ତୁ GET_HEA_METRIC_Y (hhea, descender);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP_OS2:    ଫେରନ୍ତୁ GET_METRIC_Y (OS2, s_Typo_ଧାଡ଼ି_Gap);
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP_HHEA:   ଫେରନ୍ତୁ GET_HEA_METRIC_Y (hhea, ଧାଡ଼ି_Gap);
 #undef GET_HEA_METRIC_Y
 #undef GET_HEA_METRIC_X
 #undef GET_METRIC_Y
 #undef GET_METRIC_X
 #undef GET_VAR
-  default:                                        return false;
+  ପୂର୍ବନିର୍ଦ୍ଧାରିତ:                                        ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 }
 
@@ -263,7 +263,7 @@ hb_ot_metrics_get_position (hb_font_t           *font,
  *
  * Since: 4.0.0
  **/
-void
+ଶୂନ୍ୟ
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
 					  hb_ot_metrics_tag_t  metrics_tag,
 					  hb_position_t       *position     /* OUT */)
@@ -272,86 +272,86 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
   hb_codepoint_t glyph;
   hb_glyph_extents_t extents;
 
-  if (hb_ot_metrics_get_position (font, metrics_tag, position))
+  ଯଦି (hb_ot_metrics_get_position (font, metrics_tag, position))
     {
-      if ((metrics_tag != HB_OT_METRICS_TAG_STRIKEOUT_SIZE &&
+      ଯଦି ((metrics_tag != HB_OT_METRICS_TAG_STRIKEOUT_SIZE &&
            metrics_tag != HB_OT_METRICS_TAG_UNDERLINE_SIZE) ||
           *position != 0)
-        return;
+        ଫେରନ୍ତୁ;
     }
 
-  switch (metrics_tag)
+  ବାଛ (metrics_tag)
   {
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     *position = font_extents.ascender;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
     *position = font_extents.ascender;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     *position = font_extents.descender;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
     *position = font_extents.ascender;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_ଧାଡ଼ି_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
-    *position = font_extents.line_gap;
-    break;
+    *position = font_extents.ଧାଡ଼ି_gap;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_ଧାଡ଼ି_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
-    *position = font_extents.line_gap;
-    break;
+    *position = font_extents.ଧାଡ଼ି_gap;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:
     *position = 1;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:
     *position = 0;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:
     *position = 0;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_X_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
+  ସ୍ଥିତି HB_OT_METRICS_TAG_X_HEIGHT:
+    ଯଦି (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
       *position = extents.y_bearing;
-    else
+    ଅନ୍ୟଥା
       *position = font->y_scale / 2;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_CAP_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
+  ସ୍ଥିତି HB_OT_METRICS_TAG_CAP_HEIGHT:
+    ଯଦି (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
       *position = hb_clamp_to<hb_position_t> ((int64_t) extents.height +
 					      2 * (int64_t) extents.y_bearing);
-    else
+    ଅନ୍ୟଥା
       *position = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 2 / 3);
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:
-  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_STRIKEOUT_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_UNDERLINE_SIZE:
     *position = font->y_scale / 18;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:
     {
       hb_position_t ascender;
       hb_ot_metrics_get_position_with_fallback (font,
@@ -359,36 +359,36 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
                                                 &ascender);
       *position = ascender / 2;
     }
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_UNDERLINE_OFFSET:
     *position = hb_saturate_neg (font->y_scale) / 18;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:
     *position = hb_clamp_to<hb_position_t> ((int64_t) font->x_scale * 10 / 12);
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:
     *position = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 10 / 12);
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:
     *position = 0;
-    break;
+    ଭାଙ୍ଗ;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:
     *position = font->y_scale / 5;
-    break;
+    ଭାଙ୍ଗ;
 
-  case _HB_OT_METRICS_TAG_MAX_VALUE:
-  default:
+  ସ୍ଥିତି HB_OT_METRICS_TAG_MAX_ମୂଲ୍ୟ:
+  ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
     *position = 0;
-    break;
+    ଭାଙ୍ଗ;
   }
 }
 
@@ -405,10 +405,10 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
  *
  * Since: 2.6.0
  **/
-float
+ଦଶମିକ
 hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  ଫେରନ୍ତୁ font->face->table.MVAR->get_var (metrics_tag, font->coords, font->ଅଙ୍କ_coords);
 }
 
 /**
@@ -426,7 +426,7 @@ hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 hb_position_t
 hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_tag));
+  ଫେରନ୍ତୁ font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_tag));
 }
 
 /**
@@ -444,7 +444,7 @@ hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 hb_position_t
 hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_tag));
+  ଫେରନ୍ତୁ font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_tag));
 }
 #endif
 

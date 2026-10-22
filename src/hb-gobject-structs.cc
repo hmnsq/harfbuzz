@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 #ifdef HAVE_GOBJECT
 
@@ -50,36 +50,36 @@
 
 
 /* g++ didn't like older gtype.h gcc-only code path. */
-#include <glib.h>
+#ଅନ୍ତର୍ଭାଵ <glib.h>
 
-#include "hb-gobject.h"
+#ଅନ୍ତର୍ଭାଵ "hb-gobject.h"
 
 #define HB_DEFINE_BOXED_TYPE(name,copy_func,free_func) \
 GType \
 hb_gobject_##name##_get_type () \
 { \
-   static gsize type_id = 0; \
-   if (g_once_init_enter (&type_id)) { \
+   ସ୍ଥିର gsize type_id = 0; \
+   ଯଦି (g_once_init_enter (&type_id)) { \
       GType id = g_boxed_type_register_static (g_intern_static_string ("hb_" #name "_t"), \
 					       (GBoxedCopyFunc) copy_func, \
 					       (GBoxedFreeFunc) free_func); \
       g_once_init_leave (&type_id, id); \
    } \
-   return type_id; \
+   ଫେରନ୍ତୁ type_id; \
 }
 
 #define HB_DEFINE_OBJECT_TYPE(name) \
 	HB_DEFINE_BOXED_TYPE (name, hb_##name##_reference, hb_##name##_destroy)
 
-#define HB_DEFINE_VALUE_TYPE(name) \
-	static hb_##name##_t *_hb_##name##_reference (const hb_##name##_t *l) \
+#define HB_DEFINE_ମୂଲ୍ୟ_TYPE(name) \
+	ସ୍ଥିର hb_##name##_t *_hb_##name##_reference (ଅଚଳ hb_##name##_t *l) \
 	{ \
-	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, sizeof (hb_##name##_t)); \
-	  if (unlikely (!c)) return nullptr; \
+	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, ଆକାର (hb_##name##_t)); \
+	  ଯଦି (unlikely (!c)) ଫେରନ୍ତୁ nullptr; \
 	  *c = *l; \
-	  return c; \
+	  ଫେରନ୍ତୁ c; \
 	} \
-	static void _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
+	ସ୍ଥିର ଶୂନ୍ୟ _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
 	HB_DEFINE_BOXED_TYPE (name, _hb_##name##_reference, _hb_##name##_destroy)
 
 HB_DEFINE_OBJECT_TYPE (buffer)
@@ -93,18 +93,18 @@ HB_DEFINE_OBJECT_TYPE (set)
 HB_DEFINE_OBJECT_TYPE (map)
 HB_DEFINE_OBJECT_TYPE (shape_plan)
 HB_DEFINE_OBJECT_TYPE (unicode_funcs)
-HB_DEFINE_VALUE_TYPE (feature)
-HB_DEFINE_VALUE_TYPE (glyph_info)
-HB_DEFINE_VALUE_TYPE (glyph_position)
-HB_DEFINE_VALUE_TYPE (segment_properties)
-HB_DEFINE_VALUE_TYPE (draw_state)
-HB_DEFINE_VALUE_TYPE (color_stop)
-HB_DEFINE_VALUE_TYPE (color_line)
-HB_DEFINE_VALUE_TYPE (user_data_key)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (feature)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (glyph_info)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (glyph_position)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (segment_properties)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (draw_state)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (color_stop)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (color_ଧାଡ଼ି)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (user_data_ଚାବି)
 
-HB_DEFINE_VALUE_TYPE (ot_var_axis_info)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_variant)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_part)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (ot_var_axis_info)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (ot_math_glyph_variant)
+HB_DEFINE_ମୂଲ୍ୟ_TYPE (ot_math_glyph_part)
 
 
 #endif

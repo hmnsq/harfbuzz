@@ -27,10 +27,10 @@
 #ifndef HB_OT_SHAPER_ARABIC_FALLBACK_HH
 #define HB_OT_SHAPER_ARABIC_FALLBACK_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-ot-layout-gsub-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shape.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout-gsub-table.hh"
 
 
 /* Features ordered the same as the entries in shaping_table rows,
@@ -39,7 +39,7 @@
  * We currently support one subtable per lookup, and one lookup
  * per feature.  But we allow duplicate features, so we use that!
  */
-static const hb_tag_t arabic_fallback_features[] =
+ସ୍ଥିର ଅଚଳ hb_tag_t arabic_fallback_features[] =
 {
   HB_TAG('i','n','i','t'),
   HB_TAG('m','e','d','i'),
@@ -50,181 +50,181 @@ static const hb_tag_t arabic_fallback_features[] =
   HB_TAG('r','l','i','g'),
 };
 
-static OT::SubstLookup *
-arabic_fallback_synthesize_lookup_single (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ସ୍ଥିର OT::SubstLookup *
+arabic_fallback_synthesize_lookup_single (ଅଚଳ hb_ot_shape_plan_t *plan HB_UNUSED,
 					  hb_font_t *font,
-					  unsigned int feature_index)
+					  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା feature_index)
 {
   OT::HBGlyphID16 glyphs[SHAPING_TABLE_LAST - SHAPING_TABLE_FIRST + 1];
   OT::HBGlyphID16 substitutes[SHAPING_TABLE_LAST - SHAPING_TABLE_FIRST + 1];
-  unsigned int num_glyphs = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_glyphs = 0;
 
   /* Populate arrays */
-  for (hb_codepoint_t u = SHAPING_TABLE_FIRST; u < SHAPING_TABLE_LAST + 1; u++)
+  ପାଇଁ (hb_codepoint_t u = SHAPING_TABLE_FIRST; u < SHAPING_TABLE_LAST + 1; u++)
   {
     hb_codepoint_t s = shaping_table[u - SHAPING_TABLE_FIRST][feature_index];
     hb_codepoint_t u_glyph, s_glyph;
 
-    if (!s ||
+    ଯଦି (!s ||
 	!hb_font_get_glyph (font, u, 0, &u_glyph) ||
 	!hb_font_get_glyph (font, s, 0, &s_glyph) ||
 	u_glyph == s_glyph ||
 	u_glyph > 0xFFFFu || s_glyph > 0xFFFFu)
-      continue;
+      ଜାରି;
 
-    glyphs[num_glyphs] = u_glyph;
-    substitutes[num_glyphs] = s_glyph;
+    glyphs[ଅଙ୍କ_glyphs] = u_glyph;
+    substitutes[ଅଙ୍କ_glyphs] = s_glyph;
 
-    num_glyphs++;
+    ଅଙ୍କ_glyphs++;
   }
 
-  if (!num_glyphs)
-    return nullptr;
+  ଯଦି (!ଅଙ୍କ_glyphs)
+    ଫେରନ୍ତୁ nullptr;
 
   /* Bubble-sort or something equally good!
    * May not be good-enough for presidential candidate interviews, but good-enough for us... */
-  hb_stable_sort (&glyphs[0], num_glyphs,
-		  (int(*)(const OT::HBUINT16*, const OT::HBUINT16 *)) OT::HBGlyphID16::cmp,
+  hb_stable_sort (&glyphs[0], ଅଙ୍କ_glyphs,
+		  (ପୂର୍ଣ୍ଣସଂଖ୍ୟା(*)(ଅଚଳ OT::HBUINT16*, ଅଚଳ OT::HBUINT16 *)) OT::HBGlyphID16::cmp,
 		  &substitutes[0]);
 
 
   /* Each glyph takes four bytes max, and there's some overhead. */
-  char buf[(SHAPING_TABLE_LAST - SHAPING_TABLE_FIRST + 1) * 4 + 128];
-  hb_serialize_context_t c (buf, sizeof (buf));
+  ଅକ୍ଷର buf[(SHAPING_TABLE_LAST - SHAPING_TABLE_FIRST + 1) * 4 + 128];
+  hb_serialize_context_t c (buf, ଆକାର (buf));
   OT::SubstLookup *lookup = c.start_serialize<OT::SubstLookup> ();
-  bool ret = lookup->serialize_single (&c,
+  ତାର୍କିକ ret = lookup->serialize_single (&c,
 				       OT::LookupFlag::IgnoreMarks,
-				       hb_sorted_array (glyphs, num_glyphs),
-				       hb_array (substitutes, num_glyphs));
+				       hb_sorted_array (glyphs, ଅଙ୍କ_glyphs),
+				       hb_array (substitutes, ଅଙ୍କ_glyphs));
   c.end_serialize ();
 
-  return ret && !c.in_error () ? c.copy<OT::SubstLookup> () : nullptr;
+  ଫେରନ୍ତୁ ret && !c.in_error () ? c.copy<OT::SubstLookup> () : nullptr;
 }
 
 template <typename T>
-static OT::SubstLookup *
-arabic_fallback_synthesize_lookup_ligature (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ସ୍ଥିର OT::SubstLookup *
+arabic_fallback_synthesize_lookup_ligature (ଅଚଳ hb_ot_shape_plan_t *plan HB_UNUSED,
 					    hb_font_t *font,
-					    const T &ligature_table,
+					    ଅଚଳ T &ligature_table,
 					    unsigned lookup_flags)
 {
   OT::HBGlyphID16 first_glyphs[ARRAY_LENGTH_CONST (ligature_table)];
-  unsigned int first_glyphs_indirection[ARRAY_LENGTH_CONST (ligature_table)];
-  unsigned int ligature_per_first_glyph_count_list[ARRAY_LENGTH_CONST (first_glyphs)];
-  unsigned int num_first_glyphs = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା first_glyphs_indirection[ARRAY_LENGTH_CONST (ligature_table)];
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ligature_per_first_glyph_ଗଣନା_list[ARRAY_LENGTH_CONST (first_glyphs)];
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_first_glyphs = 0;
 
   /* We know that all our ligatures have the same number of components. */
   OT::HBGlyphID16 ligature_list[ARRAY_LENGTH_CONST (first_glyphs) * ARRAY_LENGTH_CONST(ligature_table[0].ligatures)];
-  unsigned int component_count_list[ARRAY_LENGTH_CONST (ligature_list)];
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା component_ଗଣନା_list[ARRAY_LENGTH_CONST (ligature_list)];
   OT::HBGlyphID16 component_list[ARRAY_LENGTH_CONST (ligature_list) *
 				 ARRAY_LENGTH_CONST (ligature_table[0].ligatures[0].components)];
-  unsigned int num_ligatures = 0;
-  unsigned int num_components = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_ligatures = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_components = 0;
 
   /* Populate arrays */
 
   /* Sort out the first-glyphs */
-  for (unsigned int first_glyph_idx = 0; first_glyph_idx < ARRAY_LENGTH (first_glyphs); first_glyph_idx++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା first_glyph_idx = 0; first_glyph_idx < ARRAY_LENGTH (first_glyphs); first_glyph_idx++)
   {
     hb_codepoint_t first_u = ligature_table[first_glyph_idx].first;
     hb_codepoint_t first_glyph;
-    if (!hb_font_get_glyph (font, first_u, 0, &first_glyph))
-      continue;
-    first_glyphs[num_first_glyphs] = first_glyph;
-    ligature_per_first_glyph_count_list[num_first_glyphs] = 0;
-    first_glyphs_indirection[num_first_glyphs] = first_glyph_idx;
-    num_first_glyphs++;
+    ଯଦି (!hb_font_get_glyph (font, first_u, 0, &first_glyph))
+      ଜାରି;
+    first_glyphs[ଅଙ୍କ_first_glyphs] = first_glyph;
+    ligature_per_first_glyph_ଗଣନା_list[ଅଙ୍କ_first_glyphs] = 0;
+    first_glyphs_indirection[ଅଙ୍କ_first_glyphs] = first_glyph_idx;
+    ଅଙ୍କ_first_glyphs++;
   }
-  hb_stable_sort (&first_glyphs[0], num_first_glyphs,
-		  (int(*)(const OT::HBUINT16*, const OT::HBUINT16 *)) OT::HBGlyphID16::cmp,
+  hb_stable_sort (&first_glyphs[0], ଅଙ୍କ_first_glyphs,
+		  (ପୂର୍ଣ୍ଣସଂଖ୍ୟା(*)(ଅଚଳ OT::HBUINT16*, ଅଚଳ OT::HBUINT16 *)) OT::HBGlyphID16::cmp,
 		  &first_glyphs_indirection[0]);
 
   /* Now that the first-glyphs are sorted, walk again, populate ligatures. */
-  for (unsigned int i = 0; i < num_first_glyphs; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଅଙ୍କ_first_glyphs; i++)
   {
-    unsigned int first_glyph_idx = first_glyphs_indirection[i];
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା first_glyph_idx = first_glyphs_indirection[i];
 
-    for (unsigned int ligature_idx = 0; ligature_idx < ARRAY_LENGTH (ligature_table[0].ligatures); ligature_idx++)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ligature_idx = 0; ligature_idx < ARRAY_LENGTH (ligature_table[0].ligatures); ligature_idx++)
     {
       hb_codepoint_t ligature_u = ligature_table[first_glyph_idx].ligatures[ligature_idx].ligature;
       hb_codepoint_t ligature_glyph;
-      if (!hb_font_get_glyph (font, ligature_u, 0, &ligature_glyph))
-	continue;
+      ଯଦି (!hb_font_get_glyph (font, ligature_u, 0, &ligature_glyph))
+	ଜାରି;
 
-      const auto &components = ligature_table[first_glyph_idx].ligatures[ligature_idx].components;
-      unsigned component_count = ARRAY_LENGTH_CONST (components);
+      ଅଚଳ auto &components = ligature_table[first_glyph_idx].ligatures[ligature_idx].components;
+      unsigned component_ଗଣନା = ARRAY_LENGTH_CONST (components);
 
-      bool matched = true;
-      for (unsigned j = 0; j < component_count; j++)
+      ତାର୍କିକ matched = ସତ୍ୟ;
+      ପାଇଁ (unsigned j = 0; j < component_ଗଣନା; j++)
       {
 	hb_codepoint_t component_u   = ligature_table[first_glyph_idx].ligatures[ligature_idx].components[j];
 	hb_codepoint_t component_glyph;
-	if (!component_u ||
+	ଯଦି (!component_u ||
 	    !hb_font_get_nominal_glyph (font, component_u, &component_glyph))
 	{
-	  matched = false;
-	  break;
+	  matched = ମିଥ୍ୟା;
+	  ଭାଙ୍ଗ;
 	}
 
-	component_list[num_components++] = component_glyph;
+	component_list[ଅଙ୍କ_components++] = component_glyph;
       }
-      if (!matched)
-        continue;
+      ଯଦି (!matched)
+        ଜାରି;
 
-      component_count_list[num_ligatures] = 1 + component_count;
-      ligature_list[num_ligatures] = ligature_glyph;
+      component_ଗଣନା_list[ଅଙ୍କ_ligatures] = 1 + component_ଗଣନା;
+      ligature_list[ଅଙ୍କ_ligatures] = ligature_glyph;
 
-      ligature_per_first_glyph_count_list[i]++;
+      ligature_per_first_glyph_ଗଣନା_list[i]++;
 
-      num_ligatures++;
+      ଅଙ୍କ_ligatures++;
     }
   }
 
-  if (!num_ligatures)
-    return nullptr;
+  ଯଦି (!ଅଙ୍କ_ligatures)
+    ଫେରନ୍ତୁ nullptr;
 
 
   /* 16 bytes per ligature ought to be enough... */
-  char buf[ARRAY_LENGTH_CONST (ligature_list) * 16 + 128];
-  hb_serialize_context_t c (buf, sizeof (buf));
+  ଅକ୍ଷର buf[ARRAY_LENGTH_CONST (ligature_list) * 16 + 128];
+  hb_serialize_context_t c (buf, ଆକାର (buf));
   OT::SubstLookup *lookup = c.start_serialize<OT::SubstLookup> ();
-  bool ret = lookup->serialize_ligature (&c,
+  ତାର୍କିକ ret = lookup->serialize_ligature (&c,
 					 lookup_flags,
-					 hb_sorted_array (first_glyphs, num_first_glyphs),
-					 hb_array (ligature_per_first_glyph_count_list, num_first_glyphs),
-					 hb_array (ligature_list, num_ligatures),
-					 hb_array (component_count_list, num_ligatures),
-					 hb_array (component_list, num_components));
+					 hb_sorted_array (first_glyphs, ଅଙ୍କ_first_glyphs),
+					 hb_array (ligature_per_first_glyph_ଗଣନା_list, ଅଙ୍କ_first_glyphs),
+					 hb_array (ligature_list, ଅଙ୍କ_ligatures),
+					 hb_array (component_ଗଣନା_list, ଅଙ୍କ_ligatures),
+					 hb_array (component_list, ଅଙ୍କ_components));
   c.end_serialize ();
 
-  return ret && !c.in_error () ? c.copy<OT::SubstLookup> () : nullptr;
+  ଫେରନ୍ତୁ ret && !c.in_error () ? c.copy<OT::SubstLookup> () : nullptr;
 }
 
-static OT::SubstLookup *
-arabic_fallback_synthesize_lookup (const hb_ot_shape_plan_t *plan,
+ସ୍ଥିର OT::SubstLookup *
+arabic_fallback_synthesize_lookup (ଅଚଳ hb_ot_shape_plan_t *plan,
 				   hb_font_t *font,
-				   unsigned int feature_index)
+				   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା feature_index)
 {
-  if (feature_index < 4)
-    return arabic_fallback_synthesize_lookup_single (plan, font, feature_index);
-  else
+  ଯଦି (feature_index < 4)
+    ଫେରନ୍ତୁ arabic_fallback_synthesize_lookup_single (plan, font, feature_index);
+  ଅନ୍ୟଥା
   {
-    switch (feature_index) {
-      case 4: return arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_3_table, OT::LookupFlag::IgnoreMarks);
-      case 5: return arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_table, OT::LookupFlag::IgnoreMarks);
-      case 6: return arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_mark_table, 0);
+    ବାଛ (feature_index) {
+      ସ୍ଥିତି 4: ଫେରନ୍ତୁ arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_3_table, OT::LookupFlag::IgnoreMarks);
+      ସ୍ଥିତି 5: ଫେରନ୍ତୁ arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_table, OT::LookupFlag::IgnoreMarks);
+      ସ୍ଥିତି 6: ଫେରନ୍ତୁ arabic_fallback_synthesize_lookup_ligature (plan, font, ligature_mark_table, 0);
     }
   }
-  assert (false);
-  return nullptr;
+  ପ୍ରତିଜ୍ଞା (ମିଥ୍ୟା);
+  ଫେରନ୍ତୁ nullptr;
 }
 
 #define ARABIC_FALLBACK_MAX_LOOKUPS ARRAY_LENGTH_CONST (arabic_fallback_features)
 
-struct arabic_fallback_plan_t
+ସଂରଚନା arabic_fallback_plan_t
 {
-  unsigned int num_lookups;
-  bool free_lookups;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_lookups;
+  ତାର୍କିକ free_lookups;
 
   hb_mask_t mask_array[ARABIC_FALLBACK_MAX_LOOKUPS];
   OT::SubstLookup *lookup_array[ARABIC_FALLBACK_MAX_LOOKUPS];
@@ -232,47 +232,47 @@ struct arabic_fallback_plan_t
 };
 
 #ifndef HB_NO_WIN1256
-#include "hb-ot-shaper-arabic-win1256.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper-arabic-win1256.hh"
 #endif
 
-struct ManifestLookup
+ସଂରଚନା ManifestLookup
 {
-  public:
+  ସର୍ବସାଧାରଣ:
   OT::Tag tag;
   OT::Offset16To<OT::SubstLookup> lookupOffset;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (6);
 };
-typedef OT::Array16Of<ManifestLookup> Manifest;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା OT::Array16Of<ManifestLookup> Manifest;
 
-static bool
+ସ୍ଥିର ତାର୍କିକ
 arabic_fallback_plan_init_win1256 (arabic_fallback_plan_t *fallback_plan HB_UNUSED,
-				   const hb_ot_shape_plan_t *plan HB_UNUSED,
+				   ଅଚଳ hb_ot_shape_plan_t *plan HB_UNUSED,
 				   hb_font_t *font HB_UNUSED)
 {
 #ifndef HB_NO_WIN1256
   /* Does this font look like it's Windows-1256-encoded? */
   hb_codepoint_t g;
-  if (!(hb_font_get_glyph (font, 0x0627u, 0, &g) && g == 199 /* ALEF */ &&
+  ଯଦି (!(hb_font_get_glyph (font, 0x0627u, 0, &g) && g == 199 /* ALEF */ &&
 	hb_font_get_glyph (font, 0x0644u, 0, &g) && g == 225 /* LAM */ &&
 	hb_font_get_glyph (font, 0x0649u, 0, &g) && g == 236 /* ALEF MAKSURA */ &&
 	hb_font_get_glyph (font, 0x064Au, 0, &g) && g == 237 /* YEH */ &&
 	hb_font_get_glyph (font, 0x0652u, 0, &g) && g == 250 /* SUKUN */))
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  const Manifest &manifest = reinterpret_cast<const Manifest&> (arabic_win1256_gsub_lookups.manifest);
-  static_assert (sizeof (arabic_win1256_gsub_lookups.manifestData) <=
-		 ARABIC_FALLBACK_MAX_LOOKUPS * sizeof (ManifestLookup), "");
+  ଅଚଳ Manifest &manifest = reinterpret_cast<ଅଚଳ Manifest&> (arabic_win1256_gsub_lookups.manifest);
+  static_assert (ଆକାର (arabic_win1256_gsub_lookups.manifestData) <=
+		 ARABIC_FALLBACK_MAX_LOOKUPS * ଆକାର (ManifestLookup), "");
 
   unsigned j = 0;
-  unsigned int count = manifest.len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = manifest.len;
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
   {
     fallback_plan->mask_array[j] = plan->map.get_1_mask (manifest[i].tag);
-    if (fallback_plan->mask_array[j])
+    ଯଦି (fallback_plan->mask_array[j])
     {
       fallback_plan->lookup_array[j] = const_cast<OT::SubstLookup*> (&(&manifest+manifest[i].lookupOffset));
-      if (fallback_plan->lookup_array[j])
+      ଯଦି (fallback_plan->lookup_array[j])
       {
 	fallback_plan->accel_array[j] = OT::hb_ot_layout_lookup_accelerator_t::create (*fallback_plan->lookup_array[j]);
 	j++;
@@ -280,29 +280,29 @@ arabic_fallback_plan_init_win1256 (arabic_fallback_plan_t *fallback_plan HB_UNUS
     }
   }
 
-  fallback_plan->num_lookups = j;
-  fallback_plan->free_lookups = false;
+  fallback_plan->ଅଙ୍କ_lookups = j;
+  fallback_plan->free_lookups = ମିଥ୍ୟା;
 
-  return j > 0;
-#else
-  return false;
+  ଫେରନ୍ତୁ j > 0;
+#ଅନ୍ୟଥା
+  ଫେରନ୍ତୁ ମିଥ୍ୟା;
 #endif
 }
 
-static bool
+ସ୍ଥିର ତାର୍କିକ
 arabic_fallback_plan_init_unicode (arabic_fallback_plan_t *fallback_plan,
-				   const hb_ot_shape_plan_t *plan,
+				   ଅଚଳ hb_ot_shape_plan_t *plan,
 				   hb_font_t *font)
 {
   static_assert ((ARRAY_LENGTH_CONST (arabic_fallback_features) <= ARABIC_FALLBACK_MAX_LOOKUPS), "");
-  unsigned int j = 0;
-  for (unsigned int i = 0; i < ARRAY_LENGTH(arabic_fallback_features) ; i++)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା j = 0;
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ARRAY_LENGTH(arabic_fallback_features) ; i++)
   {
     fallback_plan->mask_array[j] = plan->map.get_1_mask (arabic_fallback_features[i]);
-    if (fallback_plan->mask_array[j])
+    ଯଦି (fallback_plan->mask_array[j])
     {
       fallback_plan->lookup_array[j] = arabic_fallback_synthesize_lookup (plan, font, i);
-      if (fallback_plan->lookup_array[j])
+      ଯଦି (fallback_plan->lookup_array[j])
       {
 	fallback_plan->accel_array[j] = OT::hb_ot_layout_lookup_accelerator_t::create (*fallback_plan->lookup_array[j]);
 	j++;
@@ -310,67 +310,67 @@ arabic_fallback_plan_init_unicode (arabic_fallback_plan_t *fallback_plan,
     }
   }
 
-  fallback_plan->num_lookups = j;
-  fallback_plan->free_lookups = true;
+  fallback_plan->ଅଙ୍କ_lookups = j;
+  fallback_plan->free_lookups = ସତ୍ୟ;
 
-  return j > 0;
+  ଫେରନ୍ତୁ j > 0;
 }
 
-static arabic_fallback_plan_t *
-arabic_fallback_plan_create (const hb_ot_shape_plan_t *plan,
+ସ୍ଥିର arabic_fallback_plan_t *
+arabic_fallback_plan_create (ଅଚଳ hb_ot_shape_plan_t *plan,
 			     hb_font_t *font)
 {
-  arabic_fallback_plan_t *fallback_plan = (arabic_fallback_plan_t *) hb_calloc (1, sizeof (arabic_fallback_plan_t));
-  if (unlikely (!fallback_plan))
-    return const_cast<arabic_fallback_plan_t *> (&Null (arabic_fallback_plan_t));
+  arabic_fallback_plan_t *fallback_plan = (arabic_fallback_plan_t *) hb_calloc (1, ଆକାର (arabic_fallback_plan_t));
+  ଯଦି (unlikely (!fallback_plan))
+    ଫେରନ୍ତୁ const_cast<arabic_fallback_plan_t *> (&Null (arabic_fallback_plan_t));
 
-  fallback_plan->num_lookups = 0;
-  fallback_plan->free_lookups = false;
+  fallback_plan->ଅଙ୍କ_lookups = 0;
+  fallback_plan->free_lookups = ମିଥ୍ୟା;
 
   /* Try synthesizing GSUB table using Unicode Arabic Presentation Forms,
    * in case the font has cmap entries for the presentation-forms characters. */
-  if (arabic_fallback_plan_init_unicode (fallback_plan, plan, font))
-    return fallback_plan;
+  ଯଦି (arabic_fallback_plan_init_unicode (fallback_plan, plan, font))
+    ଫେରନ୍ତୁ fallback_plan;
 
   /* See if this looks like a Windows-1256-encoded font.  If it does, use a
    * hand-coded GSUB table. */
-  if (arabic_fallback_plan_init_win1256 (fallback_plan, plan, font))
-    return fallback_plan;
+  ଯଦି (arabic_fallback_plan_init_win1256 (fallback_plan, plan, font))
+    ଫେରନ୍ତୁ fallback_plan;
 
-  assert (fallback_plan->num_lookups == 0);
+  ପ୍ରତିଜ୍ଞା (fallback_plan->ଅଙ୍କ_lookups == 0);
   hb_free (fallback_plan);
-  return const_cast<arabic_fallback_plan_t *> (&Null (arabic_fallback_plan_t));
+  ଫେରନ୍ତୁ const_cast<arabic_fallback_plan_t *> (&Null (arabic_fallback_plan_t));
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 arabic_fallback_plan_destroy (arabic_fallback_plan_t *fallback_plan)
 {
-  if (!fallback_plan || fallback_plan->num_lookups == 0)
-    return;
+  ଯଦି (!fallback_plan || fallback_plan->ଅଙ୍କ_lookups == 0)
+    ଫେରନ୍ତୁ;
 
-  for (unsigned int i = 0; i < fallback_plan->num_lookups; i++)
-    if (fallback_plan->lookup_array[i])
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < fallback_plan->ଅଙ୍କ_lookups; i++)
+    ଯଦି (fallback_plan->lookup_array[i])
     {
-      if (fallback_plan->accel_array[i])
+      ଯଦି (fallback_plan->accel_array[i])
 	fallback_plan->accel_array[i]->fini ();
       hb_free (fallback_plan->accel_array[i]);
-      if (fallback_plan->free_lookups)
+      ଯଦି (fallback_plan->free_lookups)
 	hb_free (fallback_plan->lookup_array[i]);
     }
 
   hb_free (fallback_plan);
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 arabic_fallback_plan_shape (arabic_fallback_plan_t *fallback_plan,
 			    hb_font_t *font,
 			    hb_buffer_t *buffer)
 {
   OT::hb_ot_apply_context_t c (0, font, buffer, hb_blob_get_empty ());
-  for (unsigned int i = 0; i < fallback_plan->num_lookups; i++)
-    if (fallback_plan->lookup_array[i]) {
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < fallback_plan->ଅଙ୍କ_lookups; i++)
+    ଯଦି (fallback_plan->lookup_array[i]) {
       c.set_lookup_mask (fallback_plan->mask_array[i]);
-      if (fallback_plan->accel_array[i])
+      ଯଦି (fallback_plan->accel_array[i])
 	hb_ot_layout_substitute_lookup (&c,
 					*fallback_plan->lookup_array[i],
 					*fallback_plan->accel_array[i]);

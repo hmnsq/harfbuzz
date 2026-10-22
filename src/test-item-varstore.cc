@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  */
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-hvar-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-hvar-table.hh"
 // HVAR table data from SourceSerif4Variable-Roman_subset.otf
-const char hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
+ଅଚଳ ଅକ୍ଷର hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_scalar_cache_precision ()
 {
-  const float scalars[] = {
+  ଅଚଳ ଦଶମିକ scalars[] = {
     0.f,
     1.f,
     1.f / 3.f,
@@ -38,35 +38,35 @@ test_scalar_cache_precision ()
      * fixed-point precision. */
     1.f / (16384.f * 16384.f * 16384.f),
   };
-  const unsigned counts[] = {4, 129};
+  ଅଚଳ unsigned counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  ପାଇଁ (unsigned ଗଣନା_2 : counts)
   {
-    auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
-    hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    auto *cache = OT::hb_scalar_cache_t::create (ଗଣନା_2, &scratch_cache);
+    hb_always_assert (cache->length == ଗଣନା_2);
+    ପାଇଁ (unsigned i = 0; i < ଗଣନା_2; i++)
     {
-      float value;
-      float scalar = scalars[i % ARRAY_LENGTH (scalars)];
+      ଦଶମିକ value;
+      ଦଶମିକ scalar = scalars[i % ARRAY_LENGTH (scalars)];
       hb_always_assert (!cache->get (i, &value));
       cache->set (i, scalar);
       hb_always_assert (cache->get (i, &value));
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    ପାଇଁ (unsigned i = 0; i < ଗଣନା_2; i++)
     {
-      float value;
+      ଦଶମିକ value;
       hb_always_assert (!cache->get (i, &value));
     }
     OT::hb_scalar_cache_t::destroy (cache, &scratch_cache);
   }
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_item_variations ()
 {
-  const OT::HVAR* hvar_table = reinterpret_cast<const OT::HVAR*> (hvar_data);
+  ଅଚଳ OT::HVAR* hvar_table = reinterpret_cast<ଅଚଳ OT::HVAR*> (hvar_data);
 
   hb_tag_t axis_tag = HB_TAG ('w', 'g', 'h', 't');
   hb_map_t axis_idx_tag_map;
@@ -76,8 +76,8 @@ test_item_variations ()
   axis_idx_tag_map.set (1, axis_tag);
 
   OT::item_variations_t item_vars;
-  const OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
-  bool result = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
+  ଅଚଳ OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
+  ତାର୍କିକ result = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
       
   hb_always_assert (result);
 
@@ -90,35 +90,35 @@ test_item_variations ()
 
   result = item_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
   hb_always_assert (result);
-  result = item_vars.as_item_varstore (false);
+  result = item_vars.as_item_varstore (ମିଥ୍ୟା);
   hb_always_assert (result);
   hb_always_assert (item_vars.get_region_list().length == 8);
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_implicit_advance_mapping ()
 {
-  char data[sizeof (hvar_data)];
-  hb_memcpy (data, hvar_data, sizeof (data));
+  ଅକ୍ଷର data[ଆକାର (hvar_data)];
+  hb_memcpy (data, hvar_data, ଆକାର (data));
   auto *hvar = reinterpret_cast<OT::HVAR *> (data);
-  const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
-  bool exercised_outer_one = false;
+  ଅଚଳ auto &store = hvar + hvar->varStore;
+  ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା locations[] = {-16384, 0, 16384};
+  ତାର୍କିକ exercised_outer_one = ମିଥ୍ୟା;
 
-  for (int weight : locations)
-    for (int size : locations)
+  ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା weight : locations)
+    ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size : locations)
     {
-      int coords[] = {weight, size};
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା coords[] = {weight, size};
       unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା weight : locations)
+    ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size : locations)
     {
-      int coords[] = {weight, size};
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା coords[] = {weight, size};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -129,36 +129,36 @@ test_implicit_advance_mapping ()
   hb_always_assert (exercised_outer_one);
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_item_variations_overflow ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+  hb_vector_t<hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା>> row_storage;
+  hb_hashmap_t<unsigned, ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା>*> front_mapping;
   OT::item_variations_t item_vars;
   unsigned old_varidx = 0;
-  const unsigned total_count = 0xFFFFu * 2u;
+  ଅଚଳ unsigned total_ଗଣନା = 0xFFFFu * 2u;
 
-  const unsigned counts[] = {
+  ଅଚଳ unsigned counts[] = {
     128u,                 /* 0..127: 1-byte deltas */
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା starts[] = {
     0,
     128,
     32768
   };
 
-  hb_always_assert (row_storage.alloc (total_count));
+  hb_always_assert (row_storage.alloc (total_ଗଣନା));
 
-  for (unsigned bucket = 0; bucket < 3; bucket++)
+  ପାଇଁ (unsigned bucket = 0; bucket < 3; bucket++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
+    hb_vector_t<ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା>*> rows;
     hb_always_assert (rows.alloc (counts[bucket]));
 
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    ପାଇଁ (unsigned i = 0; i < counts[bucket]; i++)
     {
-      hb_vector_t<int> row;
+      hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> row;
       hb_always_assert (row.resize (1));
       row[0] = starts[bucket] + i;
       row_storage.push (std::move (row));
@@ -167,9 +167,9 @@ test_item_variations_overflow ()
     hb_always_assert (!row_storage.in_error ());
 
     unsigned base = row_storage.length - counts[bucket];
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    ପାଇଁ (unsigned i = 0; i < counts[bucket]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
+      ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *row = &row_storage.arrayZ[base + i];
       rows.push (row);
       front_mapping.set (old_varidx++, row);
     }
@@ -181,14 +181,14 @@ test_item_variations_overflow ()
   hb_always_assert (!front_mapping.in_error ());
   hb_always_assert (item_vars.compile_varidx_map_for_testing (front_mapping));
 
-  const auto& encodings = item_vars.get_vardata_encodings ();
+  ଅଚଳ auto& encodings = item_vars.get_vardata_encodings ();
   hb_always_assert (encodings.length == 4);
-  hb_always_assert (encodings[0].items.length == 128u);
-  hb_always_assert (encodings[1].items.length == 32768u - 128u);
-  hb_always_assert (encodings[2].items.length == 0xFFFFu);
-  hb_always_assert (encodings[3].items.length == 32767u);
+  hb_always_assert (encodings[0].ବସ୍ତୁଗୁଡ଼ିକ.length == 128u);
+  hb_always_assert (encodings[1].ବସ୍ତୁଗୁଡ଼ିକ.length == 32768u - 128u);
+  hb_always_assert (encodings[2].ବସ୍ତୁଗୁଡ଼ିକ.length == 0xFFFFu);
+  hb_always_assert (encodings[3].ବସ୍ତୁଗୁଡ଼ିକ.length == 32767u);
 
-  const hb_map_t& varidx_map = item_vars.get_varidx_map ();
+  ଅଚଳ hb_map_t& varidx_map = item_vars.get_varidx_map ();
   hb_always_assert (varidx_map.get (0) == 0);
   hb_always_assert (varidx_map.get (127) == 127);
   hb_always_assert (varidx_map.get (128) == 0x00010000u);
@@ -199,10 +199,10 @@ test_item_variations_overflow ()
   hb_always_assert (varidx_map.get (131069) == 0x00037FFEu);
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
   hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
   hb_vector_t<hb_tag_t> axes;
@@ -211,38 +211,38 @@ test_signed_delta_widths ()
   axis_map.set (0, axis);
   hb_hashmap_t<hb_tag_t, Triple> region;
   region.set (axis, Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_vector_t<ଅଚଳ hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା delta : deltas)
   {
-    hb_vector_t<int> row;
+    hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> row;
     row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
+    hb_vector_t<ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *> rows;
     rows.push (&row);
     hb_vector_t<OT::delta_row_encoding_t> encodings;
     encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
 
-    char buf[128];
-    hb_serialize_context_t s (buf, sizeof (buf));
+    ଅକ୍ଷର buf[128];
+    hb_serialize_context_t s (buf, ଆକାର (buf));
     auto *out = s.start_serialize<OT::ItemVariationStore> ();
-    hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
+    hb_always_assert (out->serialize (&s, ସତ୍ୟ, axes, regions, encodings));
     s.end_serialize ();
     hb_bytes_t bytes = s.copy_bytes ();
-    const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-    const auto &data = store.get_sub_table (0);
+    ଅଚଳ auto &store = *reinterpret_cast<ଅଚଳ OT::ItemVariationStore *> (bytes.arrayZ);
+    ଅଚଳ auto &data = store.get_sub_table (0);
     hb_always_assert (data.get_item_delta (0, 0) == delta);
 
     hb_inc_bimap_t inner_map, region_map;
     inner_map.add (0);
     region_map.add (0);
-    char subset_buf[32];
-    hb_serialize_context_t subset_s (subset_buf, sizeof (subset_buf));
+    ଅକ୍ଷର subset_buf[32];
+    hb_serialize_context_t subset_s (subset_buf, ଆକାର (subset_buf));
     auto *subset = subset_s.start_serialize<OT::VarData> ();
     hb_always_assert (subset->serialize (&subset_s, &data, inner_map, region_map));
     subset_s.end_serialize ();
     hb_bytes_t subset_bytes = subset_s.copy_bytes ();
-    const auto &subset_data = *reinterpret_cast<const OT::VarData *> (subset_bytes.arrayZ);
+    ଅଚଳ auto &subset_data = *reinterpret_cast<ଅଚଳ OT::VarData *> (subset_bytes.arrayZ);
     hb_always_assert (subset_data.get_item_delta (0, 0) == delta);
 
     OT::item_variations_t item_vars;
@@ -258,70 +258,70 @@ test_signed_delta_widths ()
   }
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deltas[] = {20000, -20000, 1073741824};
+  ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା delta : deltas)
   {
     OT::item_variations_t item_vars;
     unsigned outer = item_vars.add_vardata (1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
+    ଯଦି (delta == 1073741824)
       hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    ଅନ୍ୟଥା
     {
       hb_always_assert (item_vars.as_item_varstore ());
       hb_always_assert (item_vars.has_long_word ());
-      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].items[0])[0] == 2 * delta);
+      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].ବସ୍ତୁଗୁଡ଼ିକ[0])[0] == 2 * delta);
     }
   }
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_condition_delta_precision ()
 {
   hb_vector_t<hb_tag_t> axes;
   axes.push (HB_TAG ('T','E','S','T'));
   hb_hashmap_t<hb_tag_t, Triple> neutral, region;
   region.set (axes[0], Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_vector_t<ଅଚଳ hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
+  hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> row;
   row.push (16777217);
   row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *> rows;
   rows.push (&row);
   hb_vector_t<OT::delta_row_encoding_t> encodings;
   encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
-  char buf[128];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  ଅକ୍ଷର buf[128];
+  hb_serialize_context_t s (buf, ଆକାର (buf));
   auto *out = s.start_serialize<OT::ItemVariationStore> ();
-  hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
+  hb_always_assert (out->serialize (&s, ସତ୍ୟ, axes, regions, encodings));
   s.end_serialize ();
   hb_bytes_t bytes = s.copy_bytes ();
-  const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
+  ଅଚଳ auto &store = *reinterpret_cast<ଅଚଳ OT::ItemVariationStore *> (bytes.arrayZ);
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା coords[] = {16384};
   OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
   hb_always_assert (instancer[0] == 0.f);
   hb_always_assert (instancer.get_condition_delta (0) == 1.);
-  const char condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
-  const auto &condition = *reinterpret_cast<const OT::Condition *> (condition_data);
+  ଅଚଳ ଅକ୍ଷର condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
+  ଅଚଳ auto &condition = *reinterpret_cast<ଅଚଳ OT::Condition *> (condition_data);
   hb_always_assert (condition.evaluate (coords, 1, &instancer));
   bytes.fini ();
 }
 
-static void
+ସ୍ଥିର ଶୂନ୍ୟ
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
+  hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> row;
   row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *> rows;
   rows.push (&row);
   OT::item_variations_t item_vars;
   hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
@@ -330,13 +330,13 @@ test_failed_encoding ()
   encoding.chars.clear ();
   encoding.chars.set_error ();
   hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
+  hb_hashmap_t<unsigned, ଅଚଳ hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> *> front_mapping;
   front_mapping.set (0, &row);
   hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+ମୁଖ୍ୟ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା argc, ଅକ୍ଷର **argv)
 {
   test_scalar_cache_precision ();
   test_item_variations ();

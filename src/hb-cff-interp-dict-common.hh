@@ -26,174 +26,174 @@
 #ifndef HB_CFF_INTERP_DICT_COMMON_HH
 #define HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-cff-interp-common.hh"
 
-namespace CFF {
+ନାମାକାଶ CFF {
 
-using namespace OT;
+using ନାମାକାଶ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+ସଂରଚନା dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  ଶୂନ୍ୟ init () {}
+  ଶୂନ୍ୟ fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା dict_val_t ଅଙ୍କ_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> ସଂରଚନା dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t : parsed_ମୂଲ୍ୟଗୁଡ଼ିକ_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+ସଂରଚନା ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t : dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<OPSTR>
 {
-  void init ()
+  ଶୂନ୍ୟ init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  ଶୂନ୍ୟ fini () { dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା  charStringsOffset;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+ସଂରଚନା dict_opset_t : opset_t<ସଂଖ୍ୟା_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, interp_env_t<ସଂଖ୍ୟା_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    ବାଛ (op) {
+      ସ୍ଥିତି OpCode_longintdict:  /* 5-byte integer */
+	env.arg_ଗଦା.ଠେଲ_longint_from_substr (env.str_ref);
+	ଭାଙ୍ଗ;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      ସ୍ଥିତି OpCode_BCD:  /* real number */
+	env.arg_ଗଦା.ଠେଲ_real (parse_bcd (env.str_ref));
+	ଭାଙ୍ଗ;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+	opset_t<ସଂଖ୍ୟା_t>::process_op (op, env);
+	ଭାଙ୍ଗ;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  ସ୍ଥିର ଦ୍ୱିଗୁଣ parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    ଯଦି (unlikely (str_ref.in_error ())) ଫେରନ୍ତୁ .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    ଗଣନା Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    ଅକ୍ଷର buf[32] = {0};
+    unsigned ଅକ୍ଷର byte = 0;
+    ପାଇଁ (unsigned i = 0, ଗଣନା_2 = 0; ଗଣନା_2 < ARRAY_LENGTH (buf); ++i, ++ଗଣନା_2)
     {
       unsigned nibble;
-      if (!(i & 1))
+      ଯଦି (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	ଯଦି (unlikely (!str_ref.avail ())) ଭାଙ୍ଗ;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      ଅନ୍ୟଥା
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      ଯଦି (unlikely (nibble == RESERVED)) ଭାଙ୍ଗ;
+      ଅନ୍ୟଥା ଯଦି (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	ଅଚଳ ଅକ୍ଷର *p = buf;
+	ଦ୍ୱିଗୁଣ pv;
+	ଯଦି (unlikely (!hb_parse_double (&p, p + ଗଣନା_2, &pv, ସତ୍ୟ/* whole buffer */)))
+	  ଭାଙ୍ଗ;
+	ଫେରନ୍ତୁ pv;
       }
-      else
+      ଅନ୍ୟଥା
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[ଗଣନା_2] = "0123456789.EE?-?"[nibble];
+	ଯଦି (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++ଗଣନା_2;
+	  ଯଦି (unlikely (ଗଣନା_2 == ARRAY_LENGTH (buf))) ଭାଙ୍ଗ;
+	  buf[ଗଣନା_2] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    ଫେରନ୍ତୁ .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  ସ୍ଥିର ତାର୍କିକ is_hint_op (op_code_t op)
   {
-    switch (op)
+    ବାଛ (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      ସ୍ଥିତି Op_Code_Blue_ମୂଲ୍ୟଗୁଡ଼ିକ:
+      ସ୍ଥିତି OpCode_OtherBlues:
+      ସ୍ଥିତି OpCode_FamilyBlues:
+      ସ୍ଥିତି OpCode_FamilyOtherBlues:
+      ସ୍ଥିତି OpCode_StemSnapH:
+      ସ୍ଥିତି OpCode_StemSnapV:
+      ସ୍ଥିତି OpCode_StdHW:
+      ସ୍ଥିତି OpCode_StdVW:
+      ସ୍ଥିତି OpCode_BlueScale:
+      ସ୍ଥିତି OpCode_BlueShift:
+      ସ୍ଥିତି OpCode_BlueFuzz:
+      ସ୍ଥିତି OpCode_ForceBold:
+      ସ୍ଥିତି OpCode_LanguageGroup:
+      ସ୍ଥିତି OpCode_ExpansionFactor:
+	ଫେରନ୍ତୁ ସତ୍ୟ;
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+ସଂରଚନା ଶୀର୍ଷ_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  ସ୍ଥିର ଶୂନ୍ୟ process_op (op_code_t op, interp_env_t<ସଂଖ୍ୟା_t>& env, ଶୀର୍ଷ_dict_ମୂଲ୍ୟଗୁଡ଼ିକ_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
+    ବାଛ (op) {
+      ସ୍ଥିତି OpCode_CharStrings:
+	dictval.charStringsOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_FDArray:
+	dictval.FDArrayOffset = env.arg_ଗଦା.କାଢ଼_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	ଭାଙ୍ଗ;
+      ସ୍ଥିତି OpCode_FontMatrix:
 	env.clear_args ();
-	break;
-      default:
+	ଭାଙ୍ଗ;
+      ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	dict_opset_t::process_op (op, env);
-	break;
+	ଭାଙ୍ଗ;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+template <typename OPSET, typename PARAM, typename ENV=ଅଙ୍କ_interp_env_t>
+ସଂରଚନା dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  ତାର୍କିକ interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    ଯେତେବେଳେ (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      ଯଦି (unlikely (SUPER::env.in_error ()))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  ବ୍ୟକ୍ତିଗତ:
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

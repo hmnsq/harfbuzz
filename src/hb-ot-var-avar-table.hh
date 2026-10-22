@@ -27,9 +27,9 @@
 #ifndef HB_OT_VAR_AVAR_TABLE_HH
 #define HB_OT_VAR_AVAR_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-fvar-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-common.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-var-fvar-table.hh"
 
 
 /*
@@ -40,69 +40,69 @@
 #define HB_OT_TAG_avar HB_TAG('a','v','a','r')
 
 
-namespace OT {
+ନାମାକାଶ OT {
 
 
 /* "Spec": https://github.com/be-fonts/boring-expansion-spec/issues/14 */
-struct avarV2Tail
+ସଂରଚନା avarV2Tail
 {
-  friend struct avar;
+  friend ସଂରଚନା avar;
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c,
+		 ଅଚଳ ଶୂନ୍ୟ *base) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ଏହି);
     return_trace (varIdxMap.sanitize (c, base) &&
 		  varStore.sanitize (c, base));
   }
 
-  protected:
+  ସୁରକ୍ଷିତ:
   Offset32To<DeltaSetIndexMap>	varIdxMap;	/* Offset from the beginning of 'avar' table. */
   Offset32To<ItemVariationStore>	varStore;	/* Offset from the beginning of 'avar' table. */
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (8);
 };
 
 
-struct AxisValueMap
+ସଂରଚନା Axis_ମୂଲ୍ୟ_Map
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି));
   }
 
-  void set_mapping (float from_coord, float to_coord)
+  ଶୂନ୍ୟ set_mapping (ଦଶମିକ from_coord, ଦଶମିକ to_coord)
   {
     coords[0].set_float (from_coord);
     coords[1].set_float (to_coord);
   }
 
-  bool is_outside_axis_range (const Triple& axis_range) const
+  ତାର୍କିକ is_outside_axis_range (ଅଚଳ Triple& axis_range) ଅଚଳ
   {
-    double from_coord = (double) coords[0].to_float ();
-    return !axis_range.contains (from_coord);
+    ଦ୍ୱିଗୁଣ from_coord = (ଦ୍ୱିଗୁଣ) coords[0].to_float ();
+    ଫେରନ୍ତୁ !axis_range.contains (from_coord);
   }
 
-  bool must_include () const
+  ତାର୍କିକ must_include () ଅଚଳ
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
-    return (from_coord == -1.f && to_coord == -1.f) ||
+    ଦଶମିକ from_coord = coords[0].to_float ();
+    ଦଶମିକ to_coord = coords[1].to_float ();
+    ଫେରନ୍ତୁ (from_coord == -1.f && to_coord == -1.f) ||
            (from_coord == 0.f && to_coord == 0.f) ||
            (from_coord == 1.f && to_coord == 1.f);
   }
 
-  void instantiate (const Triple& axis_range,
-                    const Triple& unmapped_range,
-                    const TripleDistances& triple_distances)
+  ଶୂନ୍ୟ instantiate (ଅଚଳ Triple& axis_range,
+                    ଅଚଳ Triple& unmapped_range,
+                    ଅଚଳ TripleDistances& triple_distances)
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
+    ଦଶମିକ from_coord = coords[0].to_float ();
+    ଦଶମିକ to_coord = coords[1].to_float ();
 
-    from_coord = renormalizeValue ((double) from_coord, unmapped_range, triple_distances);
-    to_coord = renormalizeValue ((double) to_coord, axis_range, triple_distances);
+    from_coord = renormalize_ମୂଲ୍ୟ ((ଦ୍ୱିଗୁଣ) from_coord, unmapped_range, triple_distances);
+    to_coord = renormalize_ମୂଲ୍ୟ ((ଦ୍ୱିଗୁଣ) to_coord, axis_range, triple_distances);
 
     /* Malformed input can renormalize outside [-1,1], which would
      * overflow F2DOT14. */
@@ -113,58 +113,58 @@ struct AxisValueMap
     coords[1].set_float (to_coord);
   }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (ଅଚଳ ଶୂନ୍ୟ *pa, ଅଚଳ ଶୂନ୍ୟ *pb)
   {
-    const AxisValueMap *a = (const AxisValueMap *) pa;
-    const AxisValueMap *b = (const AxisValueMap *) pb;
+    ଅଚଳ Axis_ମୂଲ୍ୟ_Map *a = (ଅଚଳ Axis_ମୂଲ୍ୟ_Map *) pa;
+    ଅଚଳ Axis_ମୂଲ୍ୟ_Map *b = (ଅଚଳ Axis_ମୂଲ୍ୟ_Map *) pb;
 
-    int a_from = a->coords[0].to_int ();
-    int b_from = b->coords[0].to_int ();
-    if (a_from != b_from)
-      return a_from - b_from;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା a_from = a->coords[0].to_int ();
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା b_from = b->coords[0].to_int ();
+    ଯଦି (a_from != b_from)
+      ଫେରନ୍ତୁ a_from - b_from;
 
     /* this should never be reached. according to the spec, all of the axis
      * value map records for a given axis must have different fromCoord values
      * */
-    int a_to = a->coords[1].to_int ();
-    int b_to = b->coords[1].to_int ();
-    return a_to - b_to;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା a_to = a->coords[1].to_int ();
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା b_to = b->coords[1].to_int ();
+    ଫେରନ୍ତୁ a_to - b_to;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  ତାର୍କିକ serialize (hb_serialize_context_t *c) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ଏହି);
+    return_trace (c->embed (ଏହି));
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
   F2DOT14	coords[2];
 //   F2DOT14	fromCoord;	/* A normalized coordinate value obtained using
 //				 * default normalization. */
 //   F2DOT14	toCoord;	/* The modified, normalized coordinate value. */
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct SegmentMaps : Array16Of<AxisValueMap>
+ସଂରଚନା SegmentMaps : Array16Of<Axis_ମୂଲ୍ୟ_Map>
 {
-  float map_float (float value, unsigned int from_offset = 0, unsigned int to_offset = 1) const
+  ଦଶମିକ map_float (ଦଶମିକ value, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା from_offset = 0, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା to_offset = 1) ଅଚଳ
   {
 #define fromCoord coords[from_offset].to_float ()
 #define toCoord coords[to_offset].to_float ()
 
-    const auto *map = arrayZ;
+    ଅଚଳ auto *map = arrayZ;
 
     /* The following special-cases are not part of OpenType, which requires
      * that at least -1, 0, and +1 must be mapped. But we include these as
      * part of a better error recovery scheme. */
-    if (len < 2)
+    ଯଦି (len < 2)
     {
-      if (!len)
-	return value;
-      else /* len == 1*/
-	return value - map[0].fromCoord + map[0].toCoord;
+      ଯଦି (!len)
+	ଫେରନ୍ତୁ value;
+      ଅନ୍ୟଥା /* len == 1*/
+	ଫେରନ୍ତୁ value - map[0].fromCoord + map[0].toCoord;
     }
 
     // At least two mappings now.
@@ -177,93 +177,93 @@ struct SegmentMaps : Array16Of<AxisValueMap>
 
     unsigned start = 0;
     unsigned end = len;
-    if (map[start].fromCoord == -1 && map[start].toCoord == -1 && map[start+1].fromCoord == -1)
+    ଯଦି (map[start].fromCoord == -1 && map[start].toCoord == -1 && map[start+1].fromCoord == -1)
       start++;
-    if (map[end-1].fromCoord == +1 && map[end-1].toCoord == +1 && map[end-2].fromCoord == +1)
+    ଯଦି (map[end-1].fromCoord == +1 && map[end-1].toCoord == +1 && map[end-2].fromCoord == +1)
       end--;
 
     /* Look for exact match first, and do lots of special-casing. */
     unsigned i;
-    for (i = start; i < end; i++)
-      if (value == map[i].fromCoord)
-	break;
-    if (i < end)
+    ପାଇଁ (i = start; i < end; i++)
+      ଯଦି (value == map[i].fromCoord)
+	ଭାଙ୍ଗ;
+    ଯଦି (i < end)
     {
       // There's at least one exact match. See if there are more.
       unsigned j = i;
-      for (; j + 1 < end; j++)
-	if (value != map[j + 1].fromCoord)
-	  break;
+      ପାଇଁ (; j + 1 < end; j++)
+	ଯଦି (value != map[j + 1].fromCoord)
+	  ଭାଙ୍ଗ;
 
       // [i,j] inclusive are all exact matches:
 
       // If there's only one, return it. This is the only spec-compliant case.
-      if (i == j)
-	return map[i].toCoord;
+      ଯଦି (i == j)
+	ଫେରନ୍ତୁ map[i].toCoord;
       // If there's exactly three, return the middle one.
-      if (i + 2 == j)
-	return map[i + 1].toCoord;
+      ଯଦି (i + 2 == j)
+	ଫେରନ୍ତୁ map[i + 1].toCoord;
 
       // Ignore the middle ones. Return the one mapping closer to 0.
-      if (value < 0) return map[j].toCoord;
-      if (value > 0) return map[i].toCoord;
+      ଯଦି (value < 0) ଫେରନ୍ତୁ map[j].toCoord;
+      ଯଦି (value > 0) ଫେରନ୍ତୁ map[i].toCoord;
 
       // Mapping 0? CoreText seems confused. It seems to prefer 0 here...
       // So we'll just return the smallest one. lol
-      return fabsf (map[i].toCoord) < fabsf (map[j].toCoord) ? map[i].toCoord : map[j].toCoord;
+      ଫେରନ୍ତୁ fabsf (map[i].toCoord) < fabsf (map[j].toCoord) ? map[i].toCoord : map[j].toCoord;
 
       // Mapping 0? Return one not mapping to 0.
-      if (map[i].toCoord == 0)
-	return map[j].toCoord;
-      else
-	return map[i].toCoord;
+      ଯଦି (map[i].toCoord == 0)
+	ଫେରନ୍ତୁ map[j].toCoord;
+      ଅନ୍ୟଥା
+	ଫେରନ୍ତୁ map[i].toCoord;
     }
 
     /* There's at least two and we're not an exact match. Prepare to lerp. */
 
     // Find the segment we're in.
-    for (i = start; i < end; i++)
-      if (value < map[i].fromCoord)
-	break;
+    ପାଇଁ (i = start; i < end; i++)
+      ଯଦି (value < map[i].fromCoord)
+	ଭାଙ୍ଗ;
 
-    if (i == start)
+    ଯଦି (i == start)
     {
       // Value before all segments; Shift.
-      return value - map[start].fromCoord + map[start].toCoord;
+      ଫେରନ୍ତୁ value - map[start].fromCoord + map[start].toCoord;
     }
-    if (i == end)
+    ଯଦି (i == end)
     {
       // Value after all segments; Shift.
-      return value - map[end - 1].fromCoord + map[end - 1].toCoord;
+      ଫେରନ୍ତୁ value - map[end - 1].fromCoord + map[end - 1].toCoord;
     }
 
     // Actually interpolate.
     auto &before = map[i-1];
     auto &after = map[i];
-    float denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
-    return before.toCoord + ((after.toCoord - before.toCoord) * (value - before.fromCoord)) / denom;
+    ଦଶମିକ denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
+    ଫେରନ୍ତୁ before.toCoord + ((after.toCoord - before.toCoord) * (value - before.fromCoord)) / denom;
 
 #undef toCoord
 #undef fromCoord
   }
 
-  float unmap_float (float value) const { return map_float (value, 1, 0); }
+  ଦଶମିକ unmap_float (ଦଶମିକ value) ଅଚଳ { ଫେରନ୍ତୁ map_float (value, 1, 0); }
 
 
   // TODO Kill this.
-  Triple unmap_axis_range (const Triple& axis_range) const
+  Triple unmap_axis_range (ଅଚଳ Triple& axis_range) ଅଚଳ
   {
-    float unmapped_min = unmap_float (axis_range.minimum);
-    float unmapped_middle = unmap_float (axis_range.middle);
-    float unmapped_max = unmap_float (axis_range.maximum);
+    ଦଶମିକ unmapped_min = unmap_float (axis_range.minimum);
+    ଦଶମିକ unmapped_ମଧ୍ୟ = unmap_float (axis_range.ମଧ୍ୟ);
+    ଦଶମିକ unmapped_max = unmap_float (axis_range.maximum);
 
-    return Triple{unmapped_min, unmapped_middle, unmapped_max};
+    ଫେରନ୍ତୁ Triple{unmapped_min, unmapped_ମଧ୍ୟ, unmapped_max};
   }
 
-  bool subset (hb_subset_context_t *c, hb_tag_t axis_tag,
-               hb_vector_t<AxisValueMap> *out_mappings = nullptr) const
+  ତାର୍କିକ subset (hb_subset_context_t *c, hb_tag_t axis_tag,
+               hb_vector_t<Axis_ମୂଲ୍ୟ_Map> *out_mappings = nullptr) ଅଚଳ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ଏହି);
 
     /* This function cannot work on avar2 table (and currently doesn't).
      * We should instead keep the design coords in the shape plan and use
@@ -272,172 +272,172 @@ struct SegmentMaps : Array16Of<AxisValueMap>
     /* avar mapped normalized axis range. Under avar2, axes_location holds
      * only the self-contained pins for the other tables; avar itself uses
      * the intermediate-space ranges of all restricted axes. */
-    const auto &axes_location = c->plan->has_avar2
+    ଅଚଳ auto &axes_location = c->plan->has_avar2
 				? c->plan->old_intermediates
 				: c->plan->axes_location;
     Triple *axis_range;
-    if (!axes_location.has (axis_tag, &axis_range))
-      return c->serializer->embed (*this);
+    ଯଦି (!axes_location.has (axis_tag, &axis_range))
+      ଫେରନ୍ତୁ c->serializer->embed (*ଏହି);
 
     TripleDistances *axis_triple_distances;
-    if (!c->plan->axes_triple_distances.has (axis_tag, &axis_triple_distances))
-      return_trace (false);
+    ଯଦି (!c->plan->axes_triple_distances.has (axis_tag, &axis_triple_distances))
+      return_trace (ମିଥ୍ୟା);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (ଏହି);
+    ଯଦି (unlikely (!c->serializer->extend_min (out))) return_trace (ମିଥ୍ୟା);
 
     Triple unmapped_range = unmap_axis_range (*axis_range);
 
     /* create a vector of retained mappings and sort */
-    hb_vector_t<AxisValueMap> value_mappings;
-    for (const auto& _ : as_array ())
+    hb_vector_t<Axis_ମୂଲ୍ୟ_Map> ମୂଲ୍ୟ_mappings;
+    ପାଇଁ (ଅଚଳ auto& _ : as_array ())
     {
-      if (_.is_outside_axis_range (unmapped_range))
-        continue;
-      AxisValueMap mapping;
+      ଯଦି (_.is_outside_axis_range (unmapped_range))
+        ଜାରି;
+      Axis_ମୂଲ୍ୟ_Map mapping;
       mapping = _;
       mapping.instantiate (*axis_range, unmapped_range, *axis_triple_distances);
       /* (-1, -1), (0, 0), (1, 1) mappings will be added later, so avoid
        * duplicates here */
-      if (mapping.must_include ())
-        continue;
-      value_mappings.push (mapping);
+      ଯଦି (mapping.must_include ())
+        ଜାରି;
+      ମୂଲ୍ୟ_mappings.push (mapping);
     }
 
-    AxisValueMap m;
+    Axis_ମୂଲ୍ୟ_Map m;
     m.set_mapping (-1.f, -1.f);
-    value_mappings.push (m);
+    ମୂଲ୍ୟ_mappings.push (m);
 
     m.set_mapping (0.f, 0.f);
-    value_mappings.push (m);
+    ମୂଲ୍ୟ_mappings.push (m);
 
     m.set_mapping (1.f, 1.f);
-    value_mappings.push (m);
+    ମୂଲ୍ୟ_mappings.push (m);
 
-    value_mappings.qsort ();
+    ମୂଲ୍ୟ_mappings.qsort ();
 
-    if (unlikely (value_mappings.in_error ()))
-      return_trace (false);
+    ଯଦି (unlikely (ମୂଲ୍ୟ_mappings.in_error ()))
+      return_trace (ମିଥ୍ୟା);
 
-    for (const auto& _ : value_mappings)
+    ପାଇଁ (ଅଚଳ auto& _ : ମୂଲ୍ୟ_mappings)
     {
-      if (!_.serialize (c->serializer))
-        return_trace (false);
+      ଯଦି (!_.serialize (c->serializer))
+        return_trace (ମିଥ୍ୟା);
     }
-    if (!c->serializer->check_assign (out->len, value_mappings.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ଯଦି (!c->serializer->check_assign (out->len, ମୂଲ୍ୟ_mappings.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (ମିଥ୍ୟା);
     /* Hand the instantiated mappings to the caller; avar2 offset
      * compensation needs them to locate the new mapping's kinks. */
-    if (out_mappings)
-      *out_mappings = std::move (value_mappings);
-    return_trace (true);
+    ଯଦି (out_mappings)
+      *out_mappings = std::move (ମୂଲ୍ୟ_mappings);
+    return_trace (ସତ୍ୟ);
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (2, *this);
+  ସର୍ବସାଧାରଣ:
+  DEFINE_SIZE_ARRAY (2, *ଏହି);
 };
 
 /* One knot of the avar2 offset-compensation function
  * offset(z) = inv_renorm(z) - z, in new intermediate space. */
-struct avar2_offset_knot_t
+ସଂରଚନା avar2_offset_knot_t
 {
-  double z;
-  double offset;
+  ଦ୍ୱିଗୁଣ z;
+  ଦ୍ୱିଗୁଣ offset;
 };
 
 /* Insert a knot keeping the vector sorted by z; first insertion wins on
  * duplicate z. */
-static inline void
-_avar2_add_knot (hb_vector_t<avar2_offset_knot_t> &knots, double z, double offset)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ
+_avar2_add_knot (hb_vector_t<avar2_offset_knot_t> &knots, ଦ୍ୱିଗୁଣ z, ଦ୍ୱିଗୁଣ offset)
 {
   unsigned i = 0;
-  while (i < knots.length && knots.arrayZ[i].z < z) i++;
-  if (i < knots.length && knots.arrayZ[i].z == z) return;
+  ଯେତେବେଳେ (i < knots.length && knots.arrayZ[i].z < z) i++;
+  ଯଦି (i < knots.length && knots.arrayZ[i].z == z) ଫେରନ୍ତୁ;
   knots.push (avar2_offset_knot_t {0.0, 0.0});
-  if (unlikely (knots.in_error ())) return;
-  for (unsigned j = knots.length - 1; j > i; j--)
+  ଯଦି (unlikely (knots.in_error ())) ଫେରନ୍ତୁ;
+  ପାଇଁ (unsigned j = knots.length - 1; j > i; j--)
     knots.arrayZ[j] = knots.arrayZ[j - 1];
   knots.arrayZ[i] = avar2_offset_knot_t {z, offset};
 }
 
 /* Piecewise-linear evaluation over the sorted knots. Inputs are always
  * within [-1, +1] and anchor knots at -1/0/+1 always exist. */
-static inline double
-_avar2_eval_offset (const hb_vector_t<avar2_offset_knot_t> &knots, double z)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଦ୍ୱିଗୁଣ
+_avar2_eval_offset (ଅଚଳ hb_vector_t<avar2_offset_knot_t> &knots, ଦ୍ୱିଗୁଣ z)
 {
   unsigned len = knots.length;
-  for (unsigned i = 0; i < len; i++)
+  ପାଇଁ (unsigned i = 0; i < len; i++)
   {
-    if (z == knots.arrayZ[i].z) return knots.arrayZ[i].offset;
-    if (z < knots.arrayZ[i].z)
+    ଯଦି (z == knots.arrayZ[i].z) ଫେରନ୍ତୁ knots.arrayZ[i].offset;
+    ଯଦି (z < knots.arrayZ[i].z)
     {
-      if (!i) return knots.arrayZ[0].offset;
-      const auto &before = knots.arrayZ[i - 1];
-      const auto &after = knots.arrayZ[i];
-      double denom = after.z - before.z;
-      return before.offset + (after.offset - before.offset) * (z - before.z) / denom;
+      ଯଦି (!i) ଫେରନ୍ତୁ knots.arrayZ[0].offset;
+      ଅଚଳ auto &before = knots.arrayZ[i - 1];
+      ଅଚଳ auto &after = knots.arrayZ[i];
+      ଦ୍ୱିଗୁଣ denom = after.z - before.z;
+      ଫେରନ୍ତୁ before.offset + (after.offset - before.offset) * (z - before.z) / denom;
     }
   }
-  return len ? knots.arrayZ[len - 1].offset : 0.0;
+  ଫେରନ୍ତୁ len ? knots.arrayZ[len - 1].offset : 0.0;
 }
 
 /* Piecewise-linear evaluation over instantiated avar v1 mappings, as
  * produced by SegmentMaps::subset (sorted, with -1/0/+1 anchors).
  * Matches SegmentMaps::map_float for such well-formed mappings. */
-static inline double
-_avar2_map_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v,
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଦ୍ୱିଗୁଣ
+_avar2_map_new_mapping (ଅଚଳ hb_vector_t<Axis_ମୂଲ୍ୟ_Map> &mappings, ଦ୍ୱିଗୁଣ v,
 			unsigned from_offset = 0, unsigned to_offset = 1)
 {
   unsigned len = mappings.length;
-  if (!len) return v;
+  ଯଦି (!len) ଫେରନ୍ତୁ v;
 
-  for (unsigned i = 0; i < len; i++)
+  ପାଇଁ (unsigned i = 0; i < len; i++)
   {
-    double from = (double) mappings.arrayZ[i].coords[from_offset].to_float ();
-    if (v == from)
-      return (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-    if (v < from)
+    ଦ୍ୱିଗୁଣ from = (ଦ୍ୱିଗୁଣ) mappings.arrayZ[i].coords[from_offset].to_float ();
+    ଯଦି (v == from)
+      ଫେରନ୍ତୁ (ଦ୍ୱିଗୁଣ) mappings.arrayZ[i].coords[to_offset].to_float ();
+    ଯଦି (v < from)
     {
-      double to = (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-      if (!i) return v - from + to;
-      double prev_from = (double) mappings.arrayZ[i - 1].coords[from_offset].to_float ();
-      double prev_to = (double) mappings.arrayZ[i - 1].coords[to_offset].to_float ();
-      double denom = from - prev_from;
-      if (denom == 0.0) return prev_to;
-      return prev_to + (to - prev_to) * (v - prev_from) / denom;
+      ଦ୍ୱିଗୁଣ to = (ଦ୍ୱିଗୁଣ) mappings.arrayZ[i].coords[to_offset].to_float ();
+      ଯଦି (!i) ଫେରନ୍ତୁ v - from + to;
+      ଦ୍ୱିଗୁଣ prev_from = (ଦ୍ୱିଗୁଣ) mappings.arrayZ[i - 1].coords[from_offset].to_float ();
+      ଦ୍ୱିଗୁଣ prev_to = (ଦ୍ୱିଗୁଣ) mappings.arrayZ[i - 1].coords[to_offset].to_float ();
+      ଦ୍ୱିଗୁଣ denom = from - prev_from;
+      ଯଦି (denom == 0.0) ଫେରନ୍ତୁ prev_to;
+      ଫେରନ୍ତୁ prev_to + (to - prev_to) * (v - prev_from) / denom;
     }
   }
-  return v - (double) mappings.arrayZ[len - 1].coords[from_offset].to_float ()
-           + (double) mappings.arrayZ[len - 1].coords[to_offset].to_float ();
+  ଫେରନ୍ତୁ v - (ଦ୍ୱିଗୁଣ) mappings.arrayZ[len - 1].coords[from_offset].to_float ()
+           + (ଦ୍ୱିଗୁଣ) mappings.arrayZ[len - 1].coords[to_offset].to_float ();
 }
 
 /* Inverse of _avar2_map_new_mapping: pull an output coordinate back to a
  * preimage input coordinate. For a non-strictly-monotone mapping this picks
  * one preimage, which is fine for its only use (augmenting the error
  * estimator's sample set). */
-static inline double
-_avar2_unmap_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଦ୍ୱିଗୁଣ
+_avar2_unmap_new_mapping (ଅଚଳ hb_vector_t<Axis_ମୂଲ୍ୟ_Map> &mappings, ଦ୍ୱିଗୁଣ v)
 {
-  return _avar2_map_new_mapping (mappings, v, 1, 0);
+  ଫେରନ୍ତୁ _avar2_map_new_mapping (mappings, v, 1, 0);
 }
 
 /* Plain (non-avar) fvar-style normalization of a user value against a
  * user-space (min, default, max) triple. */
-static inline double
-_avar2_normalize_value (double v, double min, double def, double max)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଦ୍ୱିଗୁଣ
+avar2_normalize_ମୂଲ୍ୟ (ଦ୍ୱିଗୁଣ v, ଦ୍ୱିଗୁଣ min, ଦ୍ୱିଗୁଣ def, ଦ୍ୱିଗୁଣ max)
 {
   v = hb_clamp (v, min, max);
-  if (v == def) return 0.0;
-  if (v < def) return def == min ? 0.0 : (v - def) / (def - min);
-  return def == max ? 0.0 : (v - def) / (max - def);
+  ଯଦି (v == def) ଫେରନ୍ତୁ 0.0;
+  ଯଦି (v < def) ଫେରନ୍ତୁ def == min ? 0.0 : (v - def) / (def - min);
+  ଫେରନ୍ତୁ def == max ? 0.0 : (v - def) / (max - def);
 }
 
 /* Inverse of the above: map a normalized value back to user space. */
-static inline double
-_avar2_denormalize_value (double v, double min, double def, double max)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଦ୍ୱିଗୁଣ
+avar2_denormalize_ମୂଲ୍ୟ (ଦ୍ୱିଗୁଣ v, ଦ୍ୱିଗୁଣ min, ଦ୍ୱିଗୁଣ def, ଦ୍ୱିଗୁଣ max)
 {
-  if (v == 0.0) return def;
-  return v < 0.0 ? def + v * (def - min) : def + v * (max - def);
+  ଯଦି (v == 0.0) ଫେରନ୍ତୁ def;
+  ଫେରନ୍ତୁ v < 0.0 ? def + v * (def - min) : def + v * (max - def);
 }
 
 /* Estimate the residual offset-compensation error for one restricted axis:
@@ -453,142 +453,142 @@ _avar2_denormalize_value (double v, double min, double def, double max)
  * knots), so the worst kink cannot fall between uniform samples. The
  * pointwise F2Dot14 rounding makes this an estimate rather than an exact
  * bound, but every piecewise-linear extremum is visited. */
-static inline unsigned
-_avar2_estimate_offset_error (const SegmentMaps &old_seg,
-                              const hb_vector_t<AxisValueMap> &new_mapping,
-                              double old_min, double old_def, double old_max,
-                              double new_min, double new_def, double new_max,
-                              const hb_vector_t<avar2_offset_knot_t> &knots)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ unsigned
+_avar2_estimate_offset_error (ଅଚଳ SegmentMaps &old_seg,
+                              ଅଚଳ hb_vector_t<Axis_ମୂଲ୍ୟ_Map> &new_mapping,
+                              ଦ୍ୱିଗୁଣ old_min, ଦ୍ୱିଗୁଣ old_def, ଦ୍ୱିଗୁଣ old_max,
+                              ଦ୍ୱିଗୁଣ new_min, ଦ୍ୱିଗୁଣ new_def, ଦ୍ୱିଗୁଣ new_max,
+                              ଅଚଳ hb_vector_t<avar2_offset_knot_t> &knots)
 {
   constexpr unsigned samples = 257;
-  hb_vector_t<double> us;
-  if (unlikely (!us.alloc (samples + old_seg.as_array ().length +
+  hb_vector_t<ଦ୍ୱିଗୁଣ> us;
+  ଯଦି (unlikely (!us.alloc (samples + old_seg.as_array ().length +
                            new_mapping.length + knots.length)))
-    return UINT_MAX; /* estimator only; fail towards "worse" */
-  for (unsigned i = 0; i < samples; i++)
+    ଫେରନ୍ତୁ UINT_MAX; /* estimator only; fail towards "worse" */
+  ପାଇଁ (unsigned i = 0; i < samples; i++)
     us.push (new_min + (new_max - new_min) * i / (samples - 1));
-  for (const auto &_ : old_seg.as_array ())
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  ପାଇଁ (ଅଚଳ auto &_ : old_seg.as_array ())
+    us.push (avar2_denormalize_ମୂଲ୍ୟ ((ଦ୍ୱିଗୁଣ) _.coords[0].to_float (),
                                        old_min, old_def, old_max));
-  for (const auto &_ : new_mapping)
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  ପାଇଁ (ଅଚଳ auto &_ : new_mapping)
+    us.push (avar2_denormalize_ମୂଲ୍ୟ ((ଦ୍ୱିଗୁଣ) _.coords[0].to_float (),
                                        new_min, new_def, new_max));
-  for (const auto &knot : knots)
-    us.push (_avar2_denormalize_value (
+  ପାଇଁ (ଅଚଳ auto &knot : knots)
+    us.push (avar2_denormalize_ମୂଲ୍ୟ (
                _avar2_unmap_new_mapping (new_mapping, knot.z),
                new_min, new_def, new_max));
-  if (unlikely (us.in_error ())) return UINT_MAX;
+  ଯଦି (unlikely (us.in_error ())) ଫେରନ୍ତୁ UINT_MAX;
 
   unsigned max_err = 0;
-  for (double u : us)
+  ପାଇଁ (ଦ୍ୱିଗୁଣ u : us)
   {
-    if (u < new_min || u > new_max) continue;
-    double n_old = _avar2_normalize_value (u, old_min, old_def, old_max);
-    double old_final = (double) old_seg.map_float ((float) n_old);
-    double n_new = _avar2_normalize_value (u, new_min, new_def, new_max);
-    double z = _avar2_map_new_mapping (new_mapping, n_new);
-    double new_final = z + _avar2_eval_offset (knots, z);
-    int err = abs ((int) roundf ((float) (old_final * 16384.0)) -
-                   (int) roundf ((float) (new_final * 16384.0)));
-    if ((unsigned) err > max_err) max_err = err;
+    ଯଦି (u < new_min || u > new_max) ଜାରି;
+    ଦ୍ୱିଗୁଣ n_old = avar2_normalize_ମୂଲ୍ୟ (u, old_min, old_def, old_max);
+    ଦ୍ୱିଗୁଣ old_final = (ଦ୍ୱିଗୁଣ) old_seg.map_float ((ଦଶମିକ) n_old);
+    ଦ୍ୱିଗୁଣ n_new = avar2_normalize_ମୂଲ୍ୟ (u, new_min, new_def, new_max);
+    ଦ୍ୱିଗୁଣ z = _avar2_map_new_mapping (new_mapping, n_new);
+    ଦ୍ୱିଗୁଣ new_final = z + _avar2_eval_offset (knots, z);
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା err = abs ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf ((ଦଶମିକ) (old_final * 16384.0)) -
+                   (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf ((ଦଶମିକ) (new_final * 16384.0)));
+    ଯଦି ((unsigned) err > max_err) max_err = err;
   }
-  return max_err;
+  ଫେରନ୍ତୁ max_err;
 }
 
-struct avar
+ସଂରଚନା avar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_avar;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_avar;
 
-  bool has_data () const { return version.to_int (); }
+  ତାର୍କିକ has_data () ଅଚଳ { ଫେରନ୍ତୁ version.to_int (); }
 
-  const SegmentMaps* get_segment_maps () const
-  { return &firstAxisSegmentMaps; }
+  ଅଚଳ SegmentMaps* get_segment_maps () ଅଚଳ
+  { ଫେରନ୍ତୁ &firstAxisSegmentMaps; }
 
-  unsigned get_axis_count () const
-  { return axisCount; }
+  unsigned get_axis_ଗଣନା () ଅଚଳ
+  { ଫେରନ୍ତୁ axis_ଗଣନା_2; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  (version.major == 1
 #ifndef HB_NO_AVAR2
 	   || version.major == 2
 #endif
 	   ) &&
-	  c->check_struct (this)))
-      return_trace (false);
+	  c->check_struct (ଏହି)))
+      return_trace (ମିଥ୍ୟା);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = axis_ଗଣନା_2;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
-      if (unlikely (!map->sanitize (c)))
-	return_trace (false);
+      ଯଦି (unlikely (!map->sanitize (c)))
+	return_trace (ମିଥ୍ୟା);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return_trace (true);
+    ଯଦି (version.major < 2)
+      return_trace (ସତ୍ୟ);
     hb_barrier ();
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    if (unlikely (!v2.sanitize (c, this)))
-      return_trace (false);
+    ଅଚଳ auto &v2 = * (ଅଚଳ avarV2Tail *) map;
+    ଯଦି (unlikely (!v2.sanitize (c, ଏହି)))
+      return_trace (ମିଥ୍ୟା);
 #endif
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  void map_coords_16_16 (int *coords, unsigned int coords_length) const
+  ଶୂନ୍ୟ map_coords_16_16 (ପୂର୍ଣ୍ଣସଂଖ୍ୟା *coords, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା coords_length) ଅଚଳ
   {
-    unsigned int count = hb_min (coords_length, axisCount);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = hb_min (coords_length, axis_ଗଣନା_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
       coords[i] = roundf (map->map_float (coords[i] / 65536.f) * 65536.f);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return;
+    ଯଦି (version.major < 2)
+      ଫେରନ୍ତୁ;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    ପାଇଁ (; ଗଣନା_2 < axis_ଗଣନା_2; ଗଣନା_2++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    ଅଚଳ auto &v2 = * (ଅଚଳ avarV2Tail *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ଅଚଳ auto &varidx_map = ଏହି+v2.varIdxMap;
+    ଅଚଳ auto &var_store = ଏହି+v2.varStore;
     auto *var_store_cache = var_store.create_cache ();
 
-    hb_vector_t<int> coords_2_14;
+    hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> coords_2_14;
     coords_2_14.resize (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    ପାଇଁ (unsigned i = 0; i < coords_length; i++)
       coords_2_14[i] = roundf (coords[i] / 4.f); // 16.16 -> 2.14
 
-    hb_vector_t<int> out;
+    hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> out;
     out.alloc (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    ପାଇଁ (unsigned i = 0; i < coords_length; i++)
     {
-      int v = coords[i];
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା v = coords[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      ଦଶମିକ delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
       /* Apply the delta unclamped and clamp only the result to [-1, +1],
        * matching fontTools. Since inputs and results are in [-1, +1],
        * deltas beyond ±2 are equivalent to ±2; clamp to that range only
        * to keep the float->int conversion safe. */
-      float d = hb_clamp (delta * 4, -(float) (1<<17), +(float) (1<<17)); // 2.14 -> 16.16
-      v += (int) roundf (d);
+      ଦଶମିକ d = hb_clamp (delta * 4, -(ଦଶମିକ) (1<<17), +(ଦଶମିକ) (1<<17)); // 2.14 -> 16.16
+      v += (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf (d);
       v = hb_clamp (v, -(1<<16), +(1<<16));
       out.push (v);
     }
-    for (unsigned i = 0; i < coords_length; i++)
+    ପାଇଁ (unsigned i = 0; i < coords_length; i++)
       coords[i] = out[i];
 
     OT::ItemVariationStore::destroy_cache (var_store_cache);
@@ -599,116 +599,116 @@ struct avar
    * varStore offset (legal; maps like plain v1) the avar2 subsetting path
    * applies, with "no variation" semantics for rows that don't resolve —
    * offset compensation then creates delta rows on demand. */
-  bool has_v2_data () const { return version.major > 1; }
+  ତାର୍କିକ has_v2_data () ଅଚଳ { ଫେରନ୍ତୁ version.major > 1; }
 
   /* Resolve the avar2 VarStore and VarIdxMap, for the subset planner.
    * Either pointer may be to the Null object (nullable offsets). */
-  bool get_v2_store_and_map (const ItemVariationStore **store,
-                             const DeltaSetIndexMap **varidx_map) const
+  ତାର୍କିକ get_v2_store_and_map (ଅଚଳ ItemVariationStore **store,
+                             ଅଚଳ DeltaSetIndexMap **varidx_map) ଅଚଳ
   {
 #ifndef HB_NO_AVAR2
-    if (version.major < 2) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+    ଯଦି (version.major < 2) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
       map = &StructAfter<SegmentMaps> (*map);
-    const auto &v2 = * (const avarV2Tail *) map;
-    *store = &(this+v2.varStore);
-    *varidx_map = &(this+v2.varIdxMap);
-    return true;
-#else
-    return false;
+    ଅଚଳ auto &v2 = * (ଅଚଳ avarV2Tail *) map;
+    *store = &(ଏହି+v2.varStore);
+    *varidx_map = &(ଏହି+v2.varIdxMap);
+    ଫେରନ୍ତୁ ସତ୍ୟ;
+#ଅନ୍ୟଥା
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 #endif
   }
 
   // axis normalization is done in 2.14 here
   // TODO: deprecate this API once fonttools is updated to use 16.16 normalization
-  bool map_coords_2_14 (float *coords, unsigned int coords_length,
-			bool v1_only = false) const
+  ତାର୍କିକ map_coords_2_14 (ଦଶମିକ *coords, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା coords_length,
+			ତାର୍କିକ v1_only = ମିଥ୍ୟା) ଅଚଳ
   {
-    hb_vector_t<int> coords_2_14;
-    if (!v1_only && !coords_2_14.resize (coords_length)) return false;
-    unsigned int count = hb_min (coords_length, axisCount);
+    hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> coords_2_14;
+    ଯଦି (!v1_only && !coords_2_14.resize (coords_length)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = hb_min (coords_length, axis_ଗଣନା_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
-      int v = roundf (map->map_float (coords[i]) * 16384.f);
-      if (!v1_only)
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା v = roundf (map->map_float (coords[i]) * 16384.f);
+      ଯଦି (!v1_only)
 	coords_2_14[i] = v;
       coords[i] = v / 16384.f;
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (v1_only)
-      return true;
+    ଯଦି (v1_only)
+      ଫେରନ୍ତୁ ସତ୍ୟ;
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return true;
+    ଯଦି (version.major < 2)
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    ପାଇଁ (; ଗଣନା_2 < axis_ଗଣନା_2; ଗଣନା_2++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    ଅଚଳ auto &v2 = * (ଅଚଳ avarV2Tail *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ଅଚଳ auto &varidx_map = ଏହି+v2.varIdxMap;
+    ଅଚଳ auto &var_store = ଏହି+v2.varStore;
     auto *var_store_cache = var_store.create_cache ();
 
-    for (unsigned i = 0; i < coords_length; i++)
+    ପାଇଁ (unsigned i = 0; i < coords_length; i++)
     {
-      int v = coords_2_14[i];
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା v = coords_2_14[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      ଦଶମିକ delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
       /* As above: apply the delta unclamped (±2 covers every useful case)
        * and clamp the result to [-1, +1], matching fontTools. */
-      v += (int) hb_clamp (roundf (delta), -(float) (1<<15), +(float) (1<<15));
+      v += (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) hb_clamp (roundf (delta), -(ଦଶମିକ) (1<<15), +(ଦଶମିକ) (1<<15));
       v = hb_clamp (v, -(1<<14), +(1<<14));
       coords[i] = v / 16384.f;
     }
 
     OT::ItemVariationStore::destroy_cache (var_store_cache);
-    return true;
-#else
-    return version.major < 2;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
+#ଅନ୍ୟଥା
+    ଫେରନ୍ତୁ version.major < 2;
 #endif
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned/dropped
-      return_trace (false);
+    TRACE_SUBSET (ଏହି);
+    unsigned retained_axis_ଗଣନା = c->plan->axes_index_map.get_population ();
+    ଯଦି (!retained_axis_ଗଣନା) //all axes are pinned/dropped
+      return_trace (ମିଥ୍ୟା);
 
     avar *out = c->serializer->allocate_min<avar> ();
-    if (unlikely (!out)) return_trace (false);
+    ଯଦି (unlikely (!out)) return_trace (ମିଥ୍ୟା);
 
     out->version.major = c->plan->has_avar2 ? 2 : 1;
     out->version.minor = 0;
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ଯଦି (!c->serializer->check_assign (out->axis_ଗଣନା_2, retained_axis_ଗଣନା, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (ମିଥ୍ୟା);
 
     /* For avar2, keep the instantiated v1 mappings around; offset
      * compensation needs them to locate the new mappings' kinks. */
-    hb_vector_t<hb_vector_t<AxisValueMap>> new_mappings;
-    if (c->plan->has_avar2 && !new_mappings.resize (axisCount))
-      return_trace (false);
+    hb_vector_t<hb_vector_t<Axis_ମୂଲ୍ୟ_Map>> new_mappings;
+    ଯଦି (c->plan->has_avar2 && !new_mappings.resize (axis_ଗଣନା_2))
+      return_trace (ମିଥ୍ୟା);
 
-    const hb_map_t& axes_index_map = c->plan->axes_index_map;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    ଅଚଳ hb_map_t& axes_index_map = c->plan->axes_index_map;
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    unsigned ଗଣନା_2 = axis_ଗଣନା_2;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
-      if (axes_index_map.has (i))
+      ଯଦି (axes_index_map.has (i))
       {
         hb_tag_t *axis_tag;
-        if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag))
-          return_trace (false);
+        ଯଦି (!c->plan->axes_old_index_tag_map.has (i, &axis_tag))
+          return_trace (ମିଥ୍ୟା);
 
         Triple *axis_location;
-        if (c->plan->has_avar2 &&
+        ଯଦି (c->plan->has_avar2 &&
             c->plan->user_axes_location.has (*axis_tag, &axis_location) &&
             axis_location->is_point ())
         {
@@ -716,142 +716,142 @@ struct avar
            * {-1->-1, 0->0, 1->1}. The axis is kept in fvar as hidden,
            * so avar needs a segment map entry for it. */
           auto *identity_map = c->serializer->start_embed<SegmentMaps> ();
-          if (unlikely (!c->serializer->extend_min (identity_map)))
-            return_trace (false);
-          AxisValueMap m;
+          ଯଦି (unlikely (!c->serializer->extend_min (identity_map)))
+            return_trace (ମିଥ୍ୟା);
+          Axis_ମୂଲ୍ୟ_Map m;
           m.set_mapping (-1.f, -1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
+          ଯଦି (!m.serialize (c->serializer)) return_trace (ମିଥ୍ୟା);
           m.set_mapping (0.f, 0.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
+          ଯଦି (!m.serialize (c->serializer)) return_trace (ମିଥ୍ୟା);
           m.set_mapping (1.f, 1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
-          if (!c->serializer->check_assign (identity_map->len, 3u,
+          ଯଦି (!m.serialize (c->serializer)) return_trace (ମିଥ୍ୟା);
+          ଯଦି (!c->serializer->check_assign (identity_map->len, 3u,
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-            return_trace (false);
+            return_trace (ମିଥ୍ୟା);
         }
-        else
+        ଅନ୍ୟଥା
         {
           /* Restricted or free axis: use standard SegmentMaps::subset() */
-          if (!map->subset (c, *axis_tag,
+          ଯଦି (!map->subset (c, *axis_tag,
                             c->plan->has_avar2 ? &new_mappings[i] : nullptr))
-            return_trace (false);
+            return_trace (ମିଥ୍ୟା);
         }
       }
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (c->plan->has_avar2)
+    ଯଦି (c->plan->has_avar2)
       return_trace (_subset_avar2 (c, new_mappings));
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  private:
-  struct avar2_index_map_plan_t
+  ବ୍ୟକ୍ତିଗତ:
+  ସଂରଚନା avar2_index_map_plan_t
   {
-    bool init (const hb_vector_t<uint32_t> &varidx_mapping,
-	       const hb_map_t &axes_index_map,
-	       unsigned axis_count)
+    ତାର୍କିକ init (ଅଚଳ hb_vector_t<uint32_t> &varidx_mapping,
+	       ଅଚଳ hb_map_t &axes_index_map,
+	       unsigned axis_ଗଣନା)
     {
-      if (!output_map.alloc (axes_index_map.get_population ()))
-	return false;
+      ଯଦି (!output_map.alloc (axes_index_map.get_population ()))
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-      bool has_no_variation = false;
+      ତାର୍କିକ has_no_variation = ମିଥ୍ୟା;
       unsigned max_outer = 0, max_inner = 0;
-      for (unsigned i = 0; i < axis_count; i++)
+      ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା; i++)
       {
-	if (!axes_index_map.has (i)) continue;
+	ଯଦି (!axes_index_map.has (i)) ଜାରି;
 	uint32_t varidx = varidx_mapping[i];
 	output_map.push (varidx);
-	if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+	ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
 	{
-	  has_no_variation = true;
-	  continue;
+	  has_no_variation = ସତ୍ୟ;
+	  ଜାରି;
 	}
 	max_outer = hb_max (max_outer, varidx >> 16);
 	max_inner = hb_max (max_inner, varidx & 0xFFFF);
       }
-      if (output_map.in_error () ||
+      ଯଦି (output_map.in_error () ||
 	  output_map.length != axes_index_map.get_population ())
-	return false;
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-      if (has_no_variation)
+      ଯଦି (has_no_variation)
       {
 	width = 4;
-	inner_bit_count = 16;
+	inner_bit_ଗଣନା = 16;
       }
-      else
+      ଅନ୍ୟଥା
       {
-	inner_bit_count = hb_max (1u, hb_bit_storage (max_inner));
-	unsigned outer_bit_count = hb_max (1u, hb_bit_storage (max_outer));
-	width = hb_clamp ((inner_bit_count + outer_bit_count + 7) / 8, 1u, 4u);
-	if (inner_bit_count + outer_bit_count > width * 8)
-	  inner_bit_count = width * 8 - outer_bit_count;
+	inner_bit_ଗଣନା = hb_max (1u, hb_bit_storage (max_inner));
+	unsigned outer_bit_ଗଣନା = hb_max (1u, hb_bit_storage (max_outer));
+	width = hb_clamp ((inner_bit_ଗଣନା + outer_bit_ଗଣନା + 7) / 8, 1u, 4u);
+	ଯଦି (inner_bit_ଗଣନା + outer_bit_ଗଣନା > width * 8)
+	  inner_bit_ଗଣନା = width * 8 - outer_bit_ଗଣନା;
       }
-      return true;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
 
-    unsigned get_inner_bit_count () const { return inner_bit_count; }
-    unsigned get_width () const { return width; }
-    hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+    unsigned get_inner_bit_ଗଣନା () ଅଚଳ { ଫେରନ୍ତୁ inner_bit_ଗଣନା; }
+    unsigned get_width () ଅଚଳ { ଫେରନ୍ତୁ width; }
+    hb_array_t<ଅଚଳ uint32_t> get_output_map () ଅଚଳ { ଫେରନ୍ତୁ output_map.as_array (); }
 
-    unsigned inner_bit_count = 1;
+    unsigned inner_bit_ଗଣନା = 1;
     unsigned width = 1;
     hb_vector_t<uint32_t> output_map;
   };
 
-  bool _subset_avar2 (hb_subset_context_t *c,
-                      const hb_vector_t<hb_vector_t<AxisValueMap>> &new_mappings) const
+  ତାର୍କିକ _subset_avar2 (hb_subset_context_t *c,
+                      ଅଚଳ hb_vector_t<hb_vector_t<Axis_ମୂଲ୍ୟ_Map>> &new_mappings) ଅଚଳ
   {
-#if defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
+#ଯଦି defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
     /* Not reachable: the plan never sets has_avar2 in these configurations. */
-    return false;
-#else
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
+#ଅନ୍ୟଥା
 
     /* 1. Locate original avar2 data, keeping per-axis old segment maps */
-    hb_vector_t<const SegmentMaps *> old_seg_maps;
-    if (!old_seg_maps.alloc (axisCount)) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_vector_t<ଅଚଳ SegmentMaps *> old_seg_maps;
+    ଯଦି (!old_seg_maps.alloc (axis_ଗଣନା_2)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଅଚଳ SegmentMaps *map = &firstAxisSegmentMaps;
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       old_seg_maps.push (map);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ଅଚଳ auto &v2 = * (ଅଚଳ avarV2Tail *) map;
+    ଅଚଳ auto &varidx_map = ଏହି+v2.varIdxMap;
+    ଅଚଳ auto &var_store = ଏହି+v2.varStore;
 
     auto fvar_axes = c->plan->source->table.fvar->get_axes ();
 
     /* 2. Compute default deltas by evaluating VarStore at old defaults */
-    hb_vector_t<int> default_coords;
-    if (!default_coords.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_vector_t<ପୂର୍ଣ୍ଣସଂଖ୍ୟା> default_coords;
+    ଯଦି (!default_coords.resize (axis_ଗଣନା_2)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       hb_tag_t *axis_tag;
-      if (c->plan->axes_old_index_tag_map.has (i, &axis_tag) &&
+      ଯଦି (c->plan->axes_old_index_tag_map.has (i, &axis_tag) &&
           c->plan->old_intermediates.has (*axis_tag))
       {
-        float d_i = (float) c->plan->old_intermediates.get (*axis_tag).middle;
+        ଦଶମିକ d_i = (ଦଶମିକ) c->plan->old_intermediates.get (*axis_tag).ମଧ୍ୟ;
         default_coords[i] = roundf (d_i * 16384.f);
       }
-      else
+      ଅନ୍ୟଥା
         default_coords[i] = 0;
     }
 
     auto *store_cache = var_store.create_cache ();
-    hb_vector_t<float> default_deltas;
-    if (!default_deltas.resize (axisCount)) {
+    hb_vector_t<ଦଶମିକ> default_deltas;
+    ଯଦି (!default_deltas.resize (axis_ଗଣନା_2)) {
       ItemVariationStore::destroy_cache (store_cache);
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+      ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
         default_deltas[i] = 0.f;
-      else
+      ଅନ୍ୟଥା
         default_deltas[i] = var_store.get_delta (varidx, default_coords.arrayZ,
                                                   default_coords.length, store_cache);
     }
@@ -859,12 +859,12 @@ struct avar
 
     /* 3. Rebase IVS regions */
     item_variations_t item_vars;
-    if (!item_vars.create_from_item_varstore (var_store, c->plan->axes_old_index_tag_map))
-      return false;
-    if (!item_vars.instantiate_tuple_vars (c->plan->old_intermediates,
+    ଯଦି (!item_vars.create_from_item_varstore (var_store, c->plan->axes_old_index_tag_map))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (!item_vars.instantiate_tuple_vars (c->plan->old_intermediates,
                                            c->plan->axes_triple_distances,
-                                           false))
-      return false;
+                                           ମିଥ୍ୟା))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
     /* 4. Self-contained pinned axes (whose final coordinate is constant over
      * the retained box) were detected at plan time
@@ -880,11 +880,11 @@ struct avar
      * writing into nonexistent ones. This also covers a NULL VarStore
      * (never downgraded: rows are created on demand). */
     hb_vector_t<uint32_t> new_varidx_mapping;
-    if (!new_varidx_mapping.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    ଯଦି (!new_varidx_mapping.resize (axis_ଗଣନା_2)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
+      ଯଦି (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
 	  !var_store.has_delta_set (varidx))
 	varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
       new_varidx_mapping[i] = varidx;
@@ -898,102 +898,102 @@ struct avar
      * the row (identical contents, preserving the rebased deltas), then
      * repoint its varIdx. Sharers keep the clean row; the varstore
      * optimization pass re-merges identical rows afterwards. */
-    hb_hashmap_t<uint32_t, unsigned> varidx_ref_count;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_hashmap_t<uint32_t, unsigned> varidx_ref_ଗଣନା;
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue; /* self-contained: dropped */
+      ଯଦି (!c->plan->axes_index_map.has (i)) ଜାରି; /* self-contained: dropped */
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX) continue;
-      unsigned *count;
-      if (varidx_ref_count.has (varidx, &count))
-        (*count)++;
-      else if (!varidx_ref_count.set (varidx, 1))
-        return false;
+      ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX) ଜାରି;
+      unsigned *ଗଣନା_2;
+      ଯଦି (varidx_ref_ଗଣନା.has (varidx, &ଗଣନା_2))
+        (*ଗଣନା_2)++;
+      ଅନ୍ୟଥା ଯଦି (!varidx_ref_ଗଣନା.set (varidx, 1))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
+      ଯଦି (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
       /* Only axes that will receive offset compensation (restricted or
        * pinned) can contaminate a shared row. */
-      if (!c->plan->axes_index_map.has (i) ||
+      ଯଦି (!c->plan->axes_index_map.has (i) ||
           !c->plan->user_axes_location.has (*axis_tag_ptr))
-        continue;
+        ଜାରି;
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue; /* gets a fresh, private VarData in the offset loop below */
-      unsigned *count;
-      if (!varidx_ref_count.has (varidx, &count) || *count <= 1)
-        continue; /* sole owner: safe to write offsets in place */
+      ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ଜାରି; /* gets a fresh, private VarData in the offset loop below */
+      unsigned *ଗଣନା_2;
+      ଯଦି (!varidx_ref_ଗଣନା.has (varidx, &ଗଣନା_2) || *ଗଣନା_2 <= 1)
+        ଜାରି; /* sole owner: safe to write offsets in place */
       unsigned outer = varidx >> 16;
       unsigned new_inner = item_vars.duplicate_row (outer, varidx & 0xFFFF);
-      if (unlikely (new_inner == (unsigned) -1)) return false;
+      ଯଦି (unlikely (new_inner == (unsigned) -1)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
       new_varidx_mapping[i] = (outer << 16) | new_inner;
-      (*count)--;
+      (*ଗଣନା_2)--;
     }
 
     /* 6. Add offset compensation tuples.
      * Track processed (outer,inner) pairs to avoid adding duplicate biases
      * when multiple axes share the same varIdx. */
     hb_set_t processed_varidxes;
-    for (unsigned i = 0; i < axisCount; i++)
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
+      ଯଦି (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
       hb_tag_t axis_tag = *axis_tag_ptr;
 
       /* Self-contained pinned axes are removed from fvar/avar; their
        * contribution is baked into the variation tables instead. */
-      if (!c->plan->axes_index_map.has (i))
-        continue;
+      ଯଦି (!c->plan->axes_index_map.has (i))
+        ଜାରି;
 
       Triple *new_user;
-      if (c->plan->user_axes_location.has (axis_tag, &new_user))
+      ଯଦି (c->plan->user_axes_location.has (axis_tag, &new_user))
       {
         /* This axis is being restricted or pinned */
         Triple *old_int;
-        if (!c->plan->old_intermediates.has (axis_tag, &old_int))
-          return false;
+        ଯଦି (!c->plan->old_intermediates.has (axis_tag, &old_int))
+          ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-        float a_i = (float) old_int->minimum;
-        float d_i = (float) old_int->middle;
-        float b_i = (float) old_int->maximum;
+        ଦଶମିକ a_i = (ଦଶମିକ) old_int->minimum;
+        ଦଶମିକ d_i = (ଦଶମିକ) old_int->ମଧ୍ୟ;
+        ଦଶମିକ b_i = (ଦଶମିକ) old_int->maximum;
 
-        int d_int = roundf (d_i * 16384.f);
+        ପୂର୍ଣ୍ଣସଂଖ୍ୟା d_int = roundf (d_i * 16384.f);
 
-        bool is_pinned = new_user->is_point ();
+        ତାର୍କିକ is_pinned = new_user->is_point ();
 
         uint32_t varidx = new_varidx_mapping[i];
-        unsigned outer, inner, item_count;
+        unsigned outer, inner, item_ଗଣନା_2;
 
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
         {
           /* No existing avar2 mapping. Create new VarData. */
           outer = item_vars.add_vardata (1);
           inner = 0;
-          item_count = 1;
+          item_ଗଣନା_2 = 1;
           new_varidx_mapping[i] = (outer << 16) | inner;
           default_deltas[i] = 0.f; /* no prior default delta */
         }
-        else
+        ଅନ୍ୟଥା
         {
           outer = varidx >> 16;
           inner = varidx & 0xFFFF;
-          item_count = item_vars.get_item_count (outer);
+          item_ଗଣନା_2 = item_vars.get_item_ଗଣନା (outer);
         }
 
         /* Empty-region bias: d_int + round(defaultDelta) */
-        int bias = d_int + (int) roundf (default_deltas[i]);
-        if (bias != 0)
+        ପୂର୍ଣ୍ଣସଂଖ୍ୟା bias = d_int + (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf (default_deltas[i]);
+        ଯଦି (bias != 0)
         {
           hb_hashmap_t<hb_tag_t, Triple> empty_region;
           item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, bias, item_count);
+                               inner, bias, item_ଗଣନା_2);
         }
 
-        if (!is_pinned)
+        ଯଦି (!is_pinned)
         {
           /* Offset compensation encodes, as avar2 deltas on this axis, the
            * piecewise-linear function offset(z) = inv_renorm(z) - z, where
@@ -1005,18 +1005,18 @@ struct avar
            *   z = +1  ->  b_i - 1   (new maximum)
            */
           hb_vector_t<avar2_offset_knot_t> knots;
-          _avar2_add_knot (knots, -1.0, (double) a_i + 1.0);
-          _avar2_add_knot (knots, 0.0, (double) d_i);
-          _avar2_add_knot (knots, 1.0, (double) b_i - 1.0);
+          _avar2_add_knot (knots, -1.0, (ଦ୍ୱିଗୁଣ) a_i + 1.0);
+          _avar2_add_knot (knots, 0.0, (ଦ୍ୱିଗୁଣ) d_i);
+          _avar2_add_knot (knots, 1.0, (ଦ୍ୱିଗୁଣ) b_i - 1.0);
 
-          const hb_vector_t<AxisValueMap> &new_mapping = new_mappings[i];
+          ଅଚଳ hb_vector_t<Axis_ମୂଲ୍ୟ_Map> &new_mapping = new_mappings[i];
 
-          float min_f = 0.f, def_f = 0.f, max_f = 0.f;
-          if (likely (i < fvar_axes.length))
+          ଦଶମିକ min_f = 0.f, def_f = 0.f, max_f = 0.f;
+          ଯଦି (likely (i < fvar_axes.length))
             fvar_axes[i].get_coordinates (min_f, def_f, max_f);
-          double old_min = (double) min_f;
-          double old_def = (double) def_f;
-          double old_max = (double) max_f;
+          ଦ୍ୱିଗୁଣ old_min = (ଦ୍ୱିଗୁଣ) min_f;
+          ଦ୍ୱିଗୁଣ old_def = (ଦ୍ୱିଗୁଣ) def_f;
+          ଦ୍ୱିଗୁଣ old_max = (ଦ୍ୱିଗୁଣ) max_f;
 
           /* If the axis default MOVED, inv_renorm also kinks where the OLD
            * default lands in the new space (the old intermediate coordinate
@@ -1024,13 +1024,13 @@ struct avar
            *   z = z_old  ->  -z_old
            * Omitting that knot (as a plain two-tent encoding would) makes
            * interior coordinates wrong. */
-          double z_old = _avar2_normalize_value ((double) old_def,
-                                                 (double) new_user->minimum,
-                                                 (double) new_user->middle,
-                                                 (double) new_user->maximum);
+          ଦ୍ୱିଗୁଣ z_old = avar2_normalize_ମୂଲ୍ୟ ((ଦ୍ୱିଗୁଣ) old_def,
+                                                 (ଦ୍ୱିଗୁଣ) new_user->minimum,
+                                                 (ଦ୍ୱିଗୁଣ) new_user->ମଧ୍ୟ,
+                                                 (ଦ୍ୱିଗୁଣ) new_user->maximum);
           z_old = _avar2_map_new_mapping (new_mapping, z_old);
-          z_old = (double) roundf ((float) (z_old * 16384.0)) / 16384.0;
-          if (-1.0 < z_old && z_old < 1.0)
+          z_old = (ଦ୍ୱିଗୁଣ) roundf ((ଦଶମିକ) (z_old * 16384.0)) / 16384.0;
+          ଯଦି (-1.0 < z_old && z_old < 1.0)
             _avar2_add_knot (knots, z_old, -z_old);
 
           /* Interior avar v1 breakpoints inside the retained range each put
@@ -1041,26 +1041,26 @@ struct avar
            * its old intermediate value so offset(z) is reproduced at every
            * kink. */
           hb_vector_t<avar2_offset_knot_t> with_breakpoints (knots);
-          for (const auto &m : new_mapping)
+          ପାଇଁ (ଅଚଳ auto &m : new_mapping)
           {
-            double from = (double) m.coords[0].to_float ();
-            if (from == -1.0 || from == 0.0 || from == 1.0)
-              continue; /* anchors already seeded */
-            double z = (double) m.coords[1].to_float ();
-            if (!(-1.0 < z && z < 1.0))
-              continue;
-            double user = _avar2_denormalize_value (from,
-                                                    (double) new_user->minimum,
-                                                    (double) new_user->middle,
-                                                    (double) new_user->maximum);
-            double n_old = _avar2_normalize_value (user, old_min, old_def, old_max);
-            double x_old = (double) old_seg_maps[i]->map_float ((float) n_old);
-            x_old = (double) roundf ((float) (x_old * 16384.0)) / 16384.0;
+            ଦ୍ୱିଗୁଣ from = (ଦ୍ୱିଗୁଣ) m.coords[0].to_float ();
+            ଯଦି (from == -1.0 || from == 0.0 || from == 1.0)
+              ଜାରି; /* anchors already seeded */
+            ଦ୍ୱିଗୁଣ z = (ଦ୍ୱିଗୁଣ) m.coords[1].to_float ();
+            ଯଦି (!(-1.0 < z && z < 1.0))
+              ଜାରି;
+            ଦ୍ୱିଗୁଣ user = avar2_denormalize_ମୂଲ୍ୟ (from,
+                                                    (ଦ୍ୱିଗୁଣ) new_user->minimum,
+                                                    (ଦ୍ୱିଗୁଣ) new_user->ମଧ୍ୟ,
+                                                    (ଦ୍ୱିଗୁଣ) new_user->maximum);
+            ଦ୍ୱିଗୁଣ n_old = avar2_normalize_ମୂଲ୍ୟ (user, old_min, old_def, old_max);
+            ଦ୍ୱିଗୁଣ x_old = (ଦ୍ୱିଗୁଣ) old_seg_maps[i]->map_float ((ଦଶମିକ) n_old);
+            x_old = (ଦ୍ୱିଗୁଣ) roundf ((ଦଶମିକ) (x_old * 16384.0)) / 16384.0;
             _avar2_add_knot (with_breakpoints, z, x_old - z);
           }
 
-          if (unlikely (knots.in_error () || with_breakpoints.in_error ()))
-            return false;
+          ଯଦି (unlikely (knots.in_error () || with_breakpoints.in_error ()))
+            ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
           /* Extra tents cost F2Dot14 rounding, so for a steep segment they
            * can add more quantization noise than the structural error they
@@ -1071,26 +1071,26 @@ struct avar
            * steep retained segment that cannot be reproduced in F2Dot14). */
           unsigned err = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
                                                        old_min, old_def, old_max,
-                                                       (double) new_user->minimum,
-                                                       (double) new_user->middle,
-                                                       (double) new_user->maximum,
+                                                       (ଦ୍ୱିଗୁଣ) new_user->minimum,
+                                                       (ଦ୍ୱିଗୁଣ) new_user->ମଧ୍ୟ,
+                                                       (ଦ୍ୱିଗୁଣ) new_user->maximum,
                                                        knots);
-          if (with_breakpoints.length != knots.length)
+          ଯଦି (with_breakpoints.length != knots.length)
           {
             unsigned err_with = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
                                                               old_min, old_def, old_max,
-                                                              (double) new_user->minimum,
-                                                              (double) new_user->middle,
-                                                              (double) new_user->maximum,
+                                                              (ଦ୍ୱିଗୁଣ) new_user->minimum,
+                                                              (ଦ୍ୱିଗୁଣ) new_user->ମଧ୍ୟ,
+                                                              (ଦ୍ୱିଗୁଣ) new_user->maximum,
                                                               with_breakpoints);
-            if (err_with <= err)
+            ଯଦି (err_with <= err)
             {
               knots = std::move (with_breakpoints);
               err = err_with;
             }
           }
-          if (err > 8)
-            DEBUG_MSG (SUBSET, nullptr,
+          ଯଦି (err > 8)
+            DEBUG_ସନ୍ଦେଶ (SUBSET, nullptr,
                        "avar2 offset compensation is approximate for axis %c%c%c%c: "
                        "max residual %u F2Dot14 units",
                        HB_UNTAG (axis_tag), err);
@@ -1101,110 +1101,110 @@ struct avar
            * bias above. This reduces to the classic pair of tents
            * (-1,-1,0) / (0,+1,+1) when the default is unchanged and there
            * are no interior knots. */
-          for (unsigned k = 0; k < knots.length; k++)
+          ପାଇଁ (unsigned k = 0; k < knots.length; k++)
           {
-            double z = knots.arrayZ[k].z;
-            if (z == 0.0) continue;
-            int delta = (int) roundf ((float) ((knots.arrayZ[k].offset - (double) d_i) * 16384.0));
-            if (!delta) continue;
-            double lower, upper;
-            if (z > 0.0)
+            ଦ୍ୱିଗୁଣ z = knots.arrayZ[k].z;
+            ଯଦି (z == 0.0) ଜାରି;
+            ପୂର୍ଣ୍ଣସଂଖ୍ୟା delta = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf ((ଦଶମିକ) ((knots.arrayZ[k].offset - (ଦ୍ୱିଗୁଣ) d_i) * 16384.0));
+            ଯଦି (!delta) ଜାରି;
+            ଦ୍ୱିଗୁଣ lower, upper;
+            ଯଦି (z > 0.0)
             {
               lower = knots.arrayZ[k - 1].z;
               upper = k + 1 < knots.length ? knots.arrayZ[k + 1].z : z;
             }
-            else
+            ଅନ୍ୟଥା
             {
               upper = knots.arrayZ[k + 1].z;
               lower = k > 0 ? knots.arrayZ[k - 1].z : z;
             }
             hb_hashmap_t<hb_tag_t, Triple> region;
-            if (unlikely (!region.set (axis_tag, Triple (lower, z, upper))))
-              return false;
+            ଯଦି (unlikely (!region.set (axis_tag, Triple (lower, z, upper))))
+              ଫେରନ୍ତୁ ମିଥ୍ୟା;
             item_vars.add_tuple (outer, std::move (region),
-                                 inner, delta, item_count);
+                                 inner, delta, item_ଗଣନା_2);
           }
         }
       }
-      else
+      ଅନ୍ୟଥା
       {
         /* Free or private axis — not being restricted.
          * If it has a non-zero default delta, add it back as a bias.
          * Skip if this (outer,inner) was already processed (shared varIdx). */
         uint32_t varidx = new_varidx_mapping[i];
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          continue;
+        ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          ଜାରି;
 
-        if (processed_varidxes.has (varidx))
-          continue;
+        ଯଦି (processed_varidxes.has (varidx))
+          ଜାରି;
         processed_varidxes.add (varidx);
 
         unsigned outer = varidx >> 16;
         unsigned inner = varidx & 0xFFFF;
-        int dd = (int) roundf (default_deltas[i]);
-        if (dd != 0)
+        ପୂର୍ଣ୍ଣସଂଖ୍ୟା dd = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) roundf (default_deltas[i]);
+        ଯଦି (dd != 0)
         {
-          unsigned item_count = item_vars.get_item_count (outer);
+          unsigned item_ଗଣନା_2 = item_vars.get_item_ଗଣନା (outer);
           hb_hashmap_t<hb_tag_t, Triple> empty_region;
           item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, dd, item_count);
+                               inner, dd, item_ଗଣନା_2);
         }
       }
     }
 
     /* 7. Finalize: build region list + convert to varstore */
-    if (!item_vars.build_region_list ()) return false;
-    if (!item_vars.as_item_varstore (true /* optimize */,
-                                     false /* use_no_variation_idx */))
-      return false;
+    ଯଦି (!item_vars.build_region_list ()) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (!item_vars.as_item_varstore (ସତ୍ୟ /* optimize */,
+                                     ମିଥ୍ୟା /* use_no_variation_idx */))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
     /* 8. Apply varidx_map optimization remapping */
-    const auto &opt_varidx_map = item_vars.get_varidx_map ();
-    for (unsigned i = 0; i < axisCount; i++)
+    ଅଚଳ auto &opt_varidx_map = item_vars.get_varidx_map ();
+    ପାଇଁ (unsigned i = 0; i < axis_ଗଣନା_2; i++)
     {
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue;
+      ଯଦି (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ଜାରି;
       uint32_t *new_idx;
-      if (opt_varidx_map.has (varidx, &new_idx))
+      ଯଦି (opt_varidx_map.has (varidx, &new_idx))
         new_varidx_mapping[i] = *new_idx;
     }
 
     /* 9. Serialize avarV2Tail. Entries cover the retained axes only;
      * self-contained pinned axes are removed from fvar. */
     avar2_index_map_plan_t index_map_plan;
-    if (!index_map_plan.init (new_varidx_mapping,
+    ଯଦି (!index_map_plan.init (new_varidx_mapping,
 			      c->plan->axes_index_map,
-			      axisCount))
-      return false;
+			      axis_ଗଣନା_2))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
     auto *tail = c->serializer->allocate_size<avarV2Tail> (avarV2Tail::static_size);
-    if (unlikely (!tail)) return false;
-    if (!tail->varIdxMap.serialize_serialize (c->serializer, index_map_plan))
-      return false;
-    if (!tail->varStore.serialize_serialize (c->serializer,
+    ଯଦି (unlikely (!tail)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (!tail->varIdxMap.serialize_serialize (c->serializer, index_map_plan))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (!tail->varStore.serialize_serialize (c->serializer,
 					     item_vars.has_long_word (),
 					     c->plan->axis_tags,
 					     item_vars.get_region_list (),
 					     item_vars.get_vardata_encodings ()))
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
 #endif
   }
 
-  public:
+  ସର୍ବସାଧାରଣ:
 
-  protected:
+  ସୁରକ୍ଷିତ:
   FixedVersion<>version;	/* Version of the avar table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 0. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font. This
+  HBUINT16	axis_ଗଣନା_2;	/* The number of variation axes in the font. This
 				 * must be the same number as axisCount in the
 				 * 'fvar' table. */
   SegmentMaps	firstAxisSegmentMaps;
 
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_MIN (8);
 };
 

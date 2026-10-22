@@ -2,64 +2,64 @@
 #define OT_GLYF_COMPOSITE_ITER_HH
 
 
-#include "../../hb.hh"
+#ଅନ୍ତର୍ଭାଵ "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ glyf_impl {
 
 
 template <typename CompositeGlyphRecord>
-struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
-						     const CompositeGlyphRecord &>
+ସଂରଚନା composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
+						     ଅଚଳ CompositeGlyphRecord &>
 {
-  typedef const CompositeGlyphRecord *__item_t__;
-  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, bool extended_) :
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା ଅଚଳ CompositeGlyphRecord *__item_t__;
+  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, ତାର୍କିକ extended_) :
       glyph (glyph_), current (nullptr), current_size (0), extended (extended_)
   {
     set_current (current_);
   }
 
-  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
+  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (ମିଥ୍ୟା) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
-  void __next__ ()
+  ଅଚଳ CompositeGlyphRecord & __item__ () ଅଚଳ { ଫେରନ୍ତୁ *current; }
+  ତାର୍କିକ __more__ () ଅଚଳ { ଫେରନ୍ତୁ current; }
+  ଶୂନ୍ୟ __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    ଯଦି (!current->has_more ()) { current = nullptr; ଫେରନ୍ତୁ; }
 
     set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
-  bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  composite_iter_tmpl __end__ () ଅଚଳ { ଫେରନ୍ତୁ composite_iter_tmpl (); }
+  ତାର୍କିକ operator != (ଅଚଳ composite_iter_tmpl& o) ଅଚଳ
+  { ଫେରନ୍ତୁ current != o.current; }
 
 
-  void set_current (__item_t__ current_)
+  ଶୂନ୍ୟ set_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    ଯଦି (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      ଫେରନ୍ତୁ;
     }
     unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    ଯଦି (!glyph.check_range (current_, size))
     {
       current = nullptr;
       current_size = 0;
-      return;
+      ଫେରନ୍ତୁ;
     }
 
     current = current_;
     current_size = size;
   }
 
-  private:
+  ବ୍ୟକ୍ତିଗତ:
   hb_bytes_t glyph;
   __item_t__ current;
   unsigned current_size;
-  bool extended;
+  ତାର୍କିକ extended;
 };
 
 

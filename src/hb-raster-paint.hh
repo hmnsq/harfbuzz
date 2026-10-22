@@ -27,13 +27,13 @@
 #ifndef HB_RASTER_PAINT_HH
 #define HB_RASTER_PAINT_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-raster-image.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+ସଂରଚନା hb_raster_clip_t
 {
   hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
   unsigned width  = 0;
@@ -41,85 +41,85 @@ struct hb_raster_clip_t
   unsigned stride = 0;
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
-  bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  ତାର୍କିକ is_rect = ସତ୍ୟ;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା rect_x0 = 0, rect_y0 = 0;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
   unsigned min_x = 0, min_y = 0;
   unsigned max_x = 0, max_y = 0;
 
-  void init_full (unsigned w, unsigned h)
+  ଶୂନ୍ୟ init_full (unsigned w, unsigned h)
   {
     width = w;
     height = h;
     stride = (w + 3u) & ~3u;
-    is_rect = true;
+    is_rect = ସତ୍ୟ;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) w;
+    rect_y1 = (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
     max_y = h;
   }
 
-  void update_bounds_from_rect ()
+  ଶୂନ୍ୟ update_bounds_from_rect ()
   {
     min_x = (unsigned) hb_max (rect_x0, 0);
     min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    max_x = (unsigned) hb_max (hb_min (rect_x1, (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) width), 0);
+    max_y = (unsigned) hb_max (hb_min (rect_y1, (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) height), 0);
   }
 
-  uint8_t get_alpha (unsigned x, unsigned y) const
+  uint8_t get_alpha (unsigned x, unsigned y) ଅଚଳ
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    ଯଦି (is_rect)
+      ଫେରନ୍ତୁ ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) x >= rect_x0 && (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) x < rect_x1 &&
+	      (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) y >= rect_y0 && (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) y < rect_y1) ? 255 : 0;
+    ଯଦି (x >= width || y >= height) ଫେରନ୍ତୁ 0;
+    ଯଦି (stride < width) ଫେରନ୍ତୁ 0;
+    ଯଦି (height && stride > (size_t) -1 / height) ଫେରନ୍ତୁ 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    ଯଦି (!alpha.arrayZ || idx >= alpha.length) ଫେରନ୍ତୁ 0;
+    ଫେରନ୍ତୁ alpha[idx];
   }
 
-  bool has_valid_alpha_mask () const
+  ତାର୍କିକ has_valid_alpha_mask () ଅଚଳ
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    ଯଦି (is_rect)
+      ଫେରନ୍ତୁ ସତ୍ୟ;
+    ଯଦି (!alpha.arrayZ || stride < width)
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଯଦି (height && stride > (size_t) -1 / height)
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଫେରନ୍ତୁ (size_t) stride * height <= alpha.length;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+ସଂରଚନା hb_raster_paint_t
 {
   hb_object_header_t header;
 
   /* Configuration */
   hb_transform_t<>    base_transform     = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor     = 1.f;
-  float               y_scale_factor     = 1.f;
+  ଦଶମିକ               x_scale_factor     = 1.f;
+  ଦଶମିକ               y_scale_factor     = 1.f;
   hb_raster_extents_t fixed_extents      = {};
-  bool                has_extents  = false;
+  ତାର୍କିକ                has_extents  = ମିଥ୍ୟା;
   hb_color_t          foreground         = HB_COLOR (0, 0, 0, 255);
   hb_color_t          background         = HB_COLOR (0, 0, 0, 0);
   unsigned            palette            = 0;
   hb_map_t           *custom_palette     = nullptr;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
+  hb_vector_t<hb_transform_t<>>     transform_ଗଦା;
+  hb_vector_t<hb_raster_clip_t>     clip_ଗଦା;
   hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_vector_t<hb_raster_image_t *>  surface_ଗଦା;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
   hb_vector_t<hb_raster_image_t *>  surface_cache;
@@ -148,114 +148,114 @@ struct hb_raster_paint_t
 
   /* Helpers */
 
-  int64_t get_default_pixel_budget () const
+  int64_t get_default_pixel_budget () ଅଚଳ
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    ଫେରନ୍ତୁ hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
 		   fixed_extents.width * fixed_extents.height);
   }
 
-  void recharge_budget ()
+  ଶୂନ୍ୟ recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
     pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+		      (surface_ଗଦା.length ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
   /* Returns whether the pixel operation should proceed.  Allows a single
    * overshoot past zero; callers skip work once the budget is spent. */
-  bool charge_work (int64_t work)
+  ତାର୍କିକ charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
+    ଯଦି (unlikely (pixel_remaining < 0)) ଫେରନ୍ତୁ ମିଥ୍ୟା;
     pixel_remaining -= work;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
-  bool precharge_work (int64_t work)
+  ତାର୍କିକ precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    ଯଦି (unlikely (pixel_remaining < work))
     {
       pixel_remaining = -1;
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
     pixel_remaining -= work;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
-      img = surface_cache.pop ();
-    else
+    ଯଦି (surface_cache.length)
+      img = surface_cache.କାଢ଼ ();
+    ଅନ୍ୟଥା
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      ଯଦି (unlikely (!img)) ଫେରନ୍ତୁ nullptr;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    ଯଦି (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      ଫେରନ୍ତୁ nullptr;
     }
     img->clear ();
-    return img;
+    ଫେରନ୍ତୁ img;
   }
 
-  void release_surface (hb_raster_image_t *img)
+  ଶୂନ୍ୟ release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    ଯଦି (!surface_cache.ଠେଲ_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
   hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
-      clip = clip_cache.pop ();
+    ଯଦି (clip_cache.length)
+      clip = clip_cache.କାଢ଼ ();
     clip.width = w;
     clip.height = h;
     clip.stride = (w + 3u) & ~3u;
-    clip.is_rect = false;
+    clip.is_rect = ମିଥ୍ୟା;
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    ଫେରନ୍ତୁ clip;
   }
 
-  void release_clip (hb_raster_clip_t &&clip)
+  ଶୂନ୍ୟ release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    ଯଦି (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
-  void release_all_clips ()
+  ଶୂନ୍ୟ release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    ଯେତେବେଳେ (clip_ଗଦା.length)
+      release_clip (clip_ଗଦା.କାଢ଼ ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    ଫେରନ୍ତୁ surface_ଗଦା.length ? surface_ଗଦା.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    ଫେରନ୍ତୁ clip_ଗଦା.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    ଯଦି (unlikely (!transform_ଗଦା.length))
+      ଫେରନ୍ତୁ {1, 0, 0, 1, 0, 0};
+    ଫେରନ୍ତୁ transform_ଗଦା.tail ();
   }
 
-  void apply_scale_factor (hb_transform_t<> &t) const
+  ଶୂନ୍ୟ apply_scale_factor (hb_transform_t<> &t) ଅଚଳ
   {
     t.xx /= x_scale_factor;
     t.xy /= x_scale_factor;
@@ -269,19 +269,19 @@ struct hb_raster_paint_t
   {
     hb_transform_t<> t = current_transform ();
     apply_scale_factor (t);
-    return t;
+    ଫେରନ୍ତୁ t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  ତାର୍କିକ fetch_color_stops (hb_color_ଧାଡ଼ି_t *color_ଧାଡ଼ି)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    unsigned ଗଣନା_2 = hb_color_ଧାଡ଼ି_get_color_stops (color_ଧାଡ଼ି, 0, nullptr, nullptr);
+    ଯଦି (unlikely (!ଗଣନା_2 || !scratch_color_stops.resize (ଗଣନା_2)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    hb_color_ଧାଡ଼ି_get_color_stops (color_ଧାଡ଼ି, 0, &ଗଣନା_2, scratch_color_stops.arrayZ);
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 };
 

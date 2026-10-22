@@ -29,10 +29,10 @@
 #ifndef HB_OT_SHAPER_INDIC_MACHINE_HH
 #define HB_OT_SHAPER_INDIC_MACHINE_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
 #define indic_category() ot_shaper_var_u8_category() /* indic_category_t */
@@ -43,11 +43,11 @@ using indic_position_t = ot_position_t;
 
 #define I_Cat(Cat) indic_syllable_machine_ex_##Cat
 
-enum indic_syllable_type_t {
+ଗଣନା indic_syllable_type_t {
   indic_consonant_syllable,
   indic_vowel_syllable,
   indic_standalone_cluster,
-  indic_symbol_cluster,
+  indic_ପ୍ରତୀକ_cluster,
   indic_broken_cluster,
   indic_non_indic_cluster,
 };
@@ -69,7 +69,7 @@ enum indic_syllable_type_t {
 #define indic_syllable_machine_ex_Repha 14u
 #define indic_syllable_machine_ex_SM 8u
 #define indic_syllable_machine_ex_SMPst 57u
-#define indic_syllable_machine_ex_Symbol 17u
+#define indic_syllable_machine_ex_ପ୍ରତୀକ 17u
 #define indic_syllable_machine_ex_V 2u
 #define indic_syllable_machine_ex_VD 9u
 #define indic_syllable_machine_ex_X 0u
@@ -78,7 +78,7 @@ enum indic_syllable_type_t {
 
 
 #line 76 "hb-ot-shaper-indic-machine.hh"
-static const unsigned char _indic_syllable_machine_trans_keys[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର indic_syllable_machine_trans_ଚାବିଗୁଡ଼ିକ[] = {
 	8u, 57u, 4u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 8u, 57u, 
@@ -99,7 +99,7 @@ static const unsigned char _indic_syllable_machine_trans_keys[] = {
 	5u, 9u, 1u, 15u, 0
 };
 
-static const char _indic_syllable_machine_key_spans[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର indic_syllable_machine_ଚାବି_spans[] = {
 	50, 54, 53, 53, 1, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 50, 
@@ -120,7 +120,7 @@ static const char _indic_syllable_machine_key_spans[] = {
 	5, 15
 };
 
-static const short _indic_syllable_machine_index_offsets[] = {
+ସ୍ଥିର ଅଚଳ short _indic_syllable_machine_index_offsets[] = {
 	0, 51, 106, 160, 214, 216, 271, 326, 
 	381, 432, 486, 540, 542, 597, 652, 707, 
 	762, 813, 867, 921, 923, 978, 1033, 1088, 
@@ -141,7 +141,7 @@ static const short _indic_syllable_machine_index_offsets[] = {
 	6737, 6743
 };
 
-static const unsigned char _indic_syllable_machine_indicies[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର _indic_syllable_machine_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -989,7 +989,7 @@ static const unsigned char _indic_syllable_machine_indicies[] = {
 	49, 118, 118, 118, 118, 42, 118, 0
 };
 
-static const unsigned char _indic_syllable_machine_trans_targs[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର _indic_syllable_machine_trans_targs[] = {
 	31, 37, 42, 2, 43, 46, 4, 50, 
 	51, 31, 60, 9, 66, 69, 61, 11, 
 	74, 75, 78, 31, 83, 17, 89, 92, 
@@ -1011,7 +1011,7 @@ static const unsigned char _indic_syllable_machine_trans_targs[] = {
 	29, 130, 31, 133, 30, 135, 136
 };
 
-static const char _indic_syllable_machine_trans_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _indic_syllable_machine_trans_actions[] = {
 	1, 0, 2, 0, 2, 0, 0, 2, 
 	2, 3, 2, 0, 2, 0, 0, 0, 
 	2, 2, 2, 4, 2, 0, 5, 5, 
@@ -1033,7 +1033,7 @@ static const char _indic_syllable_machine_trans_actions[] = {
 	0, 0, 20, 2, 0, 0, 0
 };
 
-static const char _indic_syllable_machine_to_state_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _indic_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1054,7 +1054,7 @@ static const char _indic_syllable_machine_to_state_actions[] = {
 	0, 0
 };
 
-static const char _indic_syllable_machine_from_state_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _indic_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1075,7 +1075,7 @@ static const char _indic_syllable_machine_from_state_actions[] = {
 	0, 0
 };
 
-static const short _indic_syllable_machine_eof_trans[] = {
+ସ୍ଥିର ଅଚଳ short _indic_syllable_machine_eof_trans[] = {
 	1, 1, 1, 1, 1, 1, 1, 10, 
 	10, 10, 10, 10, 10, 10, 10, 20, 
 	20, 27, 20, 27, 20, 20, 30, 30, 
@@ -1096,11 +1096,11 @@ static const short _indic_syllable_machine_eof_trans[] = {
 	147, 119
 };
 
-static const int indic_syllable_machine_start = 31;
-static const int indic_syllable_machine_first_final = 31;
-static const int indic_syllable_machine_error = -1;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା indic_syllable_machine_start = 31;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା indic_syllable_machine_first_final = 31;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା indic_syllable_machine_error = -1;
 
-static const int indic_syllable_machine_en_main = 31;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା indic_syllable_machine_en_main = 31;
 
 
 #line 58 "hb-ot-shaper-indic-machine.rl"
@@ -1112,18 +1112,18 @@ static const int indic_syllable_machine_en_main = 31;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    ଯଦି (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    ଯଦି (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
-inline void
+ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ
 find_syllables_indic (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act;
-  int cs;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା p, pe, eof, ts, te, act;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 1119 "hb-ot-shaper-indic-machine.hh"
@@ -1140,154 +1140,154 @@ find_syllables_indic (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା syllable_serial = 1;
   
 #line 1131 "hb-ot-shaper-indic-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const unsigned char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _slen;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _trans;
+	ଅଚଳ unsigned ଅକ୍ଷର *ଚାବିଗୁଡ଼ିକ_2;
+	ଅଚଳ unsigned ଅକ୍ଷର *_inds;
+	ଯଦି ( p == pe )
+		ଯାଅ _test_eof;
 _resume:
-	switch ( _indic_syllable_machine_from_state_actions[cs] ) {
-	case 10:
+	ବାଛ ( _indic_syllable_machine_from_state_actions[cs] ) {
+	ସ୍ଥିତି 10:
 #line 1 "NONE"
 	{ts = p;}
-	break;
+	ଭାଙ୍ଗ;
 #line 1143 "hb-ot-shaper-indic-machine.hh"
 	}
 
-	_keys = _indic_syllable_machine_trans_keys + (cs<<1);
+	ଚାବିଗୁଡ଼ିକ_2 = indic_syllable_machine_trans_ଚାବିଗୁଡ଼ିକ + (cs<<1);
 	_inds = _indic_syllable_machine_indicies + _indic_syllable_machine_index_offsets[cs];
 
-	_slen = _indic_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].indic_category()) &&
-		( info[p].indic_category()) <= _keys[1] ?
-		( info[p].indic_category()) - _keys[0] : _slen ];
+	_slen = indic_syllable_machine_ଚାବି_spans[cs];
+	_trans = _inds[ _slen > 0 && ଚାବିଗୁଡ଼ିକ_2[0] <=( info[p].indic_category()) &&
+		( info[p].indic_category()) <= ଚାବିଗୁଡ଼ିକ_2[1] ?
+		( info[p].indic_category()) - ଚାବିଗୁଡ଼ିକ_2[0] : _slen ];
 
 _eof_trans:
 	cs = _indic_syllable_machine_trans_targs[_trans];
 
-	if ( _indic_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	ଯଦି ( _indic_syllable_machine_trans_actions[_trans] == 0 )
+		ଯାଅ _again;
 
-	switch ( _indic_syllable_machine_trans_actions[_trans] ) {
-	case 2:
+	ବାଛ ( _indic_syllable_machine_trans_actions[_trans] ) {
+	ସ୍ଥିତି 2:
 #line 1 "NONE"
 	{te = p+1;}
-	break;
-	case 11:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 11:
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{te = p+1;{ found_syllable (indic_non_indic_cluster); }}
-	break;
-	case 14:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 14:
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_consonant_syllable); }}
-	break;
-	case 15:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 15:
 #line 112 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_vowel_syllable); }}
-	break;
-	case 18:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 18:
 #line 113 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_standalone_cluster); }}
-	break;
-	case 20:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 20:
 #line 114 "hb-ot-shaper-indic-machine.rl"
-	{te = p;p--;{ found_syllable (indic_symbol_cluster); }}
-	break;
-	case 16:
+	{te = p;p--;{ found_syllable (indic_ପ୍ରତୀକ_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 16:
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 17:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 17:
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{te = p;p--;{ found_syllable (indic_non_indic_cluster); }}
-	break;
-	case 1:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 1:
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_consonant_syllable); }}
-	break;
-	case 3:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 3:
 #line 112 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_vowel_syllable); }}
-	break;
-	case 7:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 7:
 #line 113 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_standalone_cluster); }}
-	break;
-	case 8:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 8:
 #line 114 "hb-ot-shaper-indic-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (indic_symbol_cluster); }}
-	break;
-	case 4:
+	{{p = ((te))-1;}{ found_syllable (indic_ପ୍ରତୀକ_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 4:
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{{p = ((te))-1;}{ found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 6:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 6:
 #line 1 "NONE"
-	{	switch( act ) {
-	case 1:
+	{	ବାଛ( act ) {
+	ସ୍ଥିତି 1:
 	{{p = ((te))-1;} found_syllable (indic_consonant_syllable); }
-	break;
-	case 5:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 5:
 	{{p = ((te))-1;} found_syllable (indic_non_indic_cluster); }
-	break;
-	case 6:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 6:
 	{{p = ((te))-1;} found_syllable (indic_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
-	case 7:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 7:
 	{{p = ((te))-1;} found_syllable (indic_non_indic_cluster); }
-	break;
+	ଭାଙ୍ଗ;
 	}
 	}
-	break;
-	case 19:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 19:
 #line 1 "NONE"
 	{te = p+1;}
 #line 111 "hb-ot-shaper-indic-machine.rl"
 	{act = 1;}
-	break;
-	case 13:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 13:
 #line 1 "NONE"
 	{te = p+1;}
 #line 115 "hb-ot-shaper-indic-machine.rl"
 	{act = 5;}
-	break;
-	case 5:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 5:
 #line 1 "NONE"
 	{te = p+1;}
 #line 116 "hb-ot-shaper-indic-machine.rl"
 	{act = 6;}
-	break;
-	case 12:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 12:
 #line 1 "NONE"
 	{te = p+1;}
 #line 117 "hb-ot-shaper-indic-machine.rl"
 	{act = 7;}
-	break;
+	ଭାଙ୍ଗ;
 #line 1232 "hb-ot-shaper-indic-machine.hh"
 	}
 
 _again:
-	switch ( _indic_syllable_machine_to_state_actions[cs] ) {
-	case 9:
+	ବାଛ ( _indic_syllable_machine_to_state_actions[cs] ) {
+	ସ୍ଥିତି 9:
 #line 1 "NONE"
 	{ts = 0;}
-	break;
+	ଭାଙ୍ଗ;
 #line 1239 "hb-ot-shaper-indic-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	ଯଦି ( ++p != pe )
+		ଯାଅ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ଯଦି ( p == eof )
 	{
-	if ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
+	ଯଦି ( _indic_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _indic_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		ଯାଅ _eof_trans;
 	}
 	}
 

@@ -25,21 +25,21 @@
 #ifndef HB_OT_SHAPER_SYLLABIC_HH
 #define HB_OT_SHAPER_SYLLABIC_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper.hh"
 
 
-HB_INTERNAL bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+HB_INTERNAL ତାର୍କିକ
+hb_syllabic_ଭର୍ତ୍ତି_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category = -1,
-				   int dottedcircle_position = -1);
+				   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା broken_syllable_type,
+				   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା dottedcircle_category,
+				   ପୂର୍ଣ୍ଣସଂଖ୍ୟା repha_category = -1,
+				   ପୂର୍ଣ୍ଣସଂଖ୍ୟା dottedcircle_position = -1);
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL ତାର୍କିକ
+hb_syllabic_clear_var (ଅଚଳ hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer);
 

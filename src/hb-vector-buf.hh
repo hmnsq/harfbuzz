@@ -27,20 +27,20 @@
 #ifndef HB_VECTOR_BUF_HH
 #define HB_VECTOR_BUF_HH
 
-#include "hb.hh"
-#include "hb-limits.hh"
-#include "hb-vector.hh"
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-limits.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-vector.hh"
+#ଅନ୍ତର୍ଭାଵ <math.h>
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <string.h>
 
-HB_INTERNAL const char *
-hb_vector_decimal_point_get (void);
+HB_INTERNAL ଅଚଳ ଅକ୍ଷର *
+hb_vector_decimal_point_get (ଶୂନ୍ୟ);
 
-static const double _hb_vector_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
+ସ୍ଥିର ଅଚଳ ଦ୍ୱିଗୁଣ _hb_vector_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
 						1e7, 1e8, 1e9, 1e10, 1e11, 1e12};
 
-struct hb_vector_buf_t : hb_vector_t<char>
+ସଂରଚନା hb_vector_buf_t : hb_vector_t<ଅକ୍ଷର>
 {
   unsigned precision = 2;
 
@@ -49,92 +49,92 @@ struct hb_vector_buf_t : hb_vector_t<char>
    * site that already checks it -- path commands, gradient meshes -- stops
    * cleanly.  Bounds output that the outline work budget cannot see, most
    * importantly sweep-gradient meshes and embedded bitmaps. */
-  bool overflowed = false;
+  ତାର୍କିକ overflowed = ମିଥ୍ୟା;
 
   /* Hides (does not override -- the base method is not virtual) the base
    * in_error(); every emission site uses hb_vector_buf_t directly, so the
    * cap is seen everywhere.  clear() resets the sticky flag so a context
    * reused across renders recovers after one over-cap glyph. */
-  bool in_error () const
-  { return hb_vector_t<char>::in_error () || overflowed; }
+  ତାର୍କିକ in_error () ଅଚଳ
+  { ଫେରନ୍ତୁ hb_vector_t<ଅକ୍ଷର>::in_error () || overflowed; }
 
-  void clear ()
+  ଶୂନ୍ୟ clear ()
   {
-    overflowed = false;
-    hb_vector_t<char>::clear ();
+    overflowed = ମିଥ୍ୟା;
+    hb_vector_t<ଅକ୍ଷର>::clear ();
   }
 
-  unsigned scale_precision () const
-  { return precision < 7 ? 7 : precision; }
+  unsigned scale_precision () ଅଚଳ
+  { ଫେରନ୍ତୁ precision < 7 ? 7 : precision; }
 
-  bool would_overflow (unsigned add)
+  ତାର୍କିକ would_overflow (unsigned add)
   {
-    if (unlikely (in_error ()))
-      return true;
+    ଯଦି (unlikely (in_error ()))
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
+    ଯଦି (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
 		  new_len > HB_VECTOR_MAX_DOCUMENT_SIZE))
     {
-      overflowed = true;
-      return true;
+      overflowed = ସତ୍ୟ;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
-    return false;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  bool append_len (const char *s, unsigned l)
+  ତାର୍କିକ append_len (ଅଚଳ ଅକ୍ଷର *s, unsigned l)
   {
-    if (unlikely (would_overflow (l)))
-      return false;
+    ଯଦି (unlikely (would_overflow (l)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+    ଯଦି (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
+		  !resize_dirty ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) new_len)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     hb_memcpy (arrayZ + old_len, s, l);
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  bool append_c (char ch)
+  ତାର୍କିକ append_c (ଅକ୍ଷର ch)
   {
-    if (unlikely (would_overflow (1)))
-      return false;
-    return push_or_fail (ch);
+    ଯଦି (unlikely (would_overflow (1)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    ଫେରନ୍ତୁ ଠେଲ_or_fail (ch);
   }
 
-  bool append_str (const char *s)
-  { return append_len (s, (unsigned) strlen (s)); }
+  ତାର୍କିକ append_str (ଅଚଳ ଅକ୍ଷର *s)
+  { ଫେରନ୍ତୁ append_len (s, (unsigned) strlen (s)); }
 
-  bool append_unsigned (unsigned v)
+  ତାର୍କିକ append_unsigned (unsigned v)
   {
-    char tmp[16];
-    snprintf (tmp, sizeof (tmp), "%u", v);
-    return append_len (tmp, (unsigned) strlen (tmp));
+    ଅକ୍ଷର tmp[16];
+    snprintf (tmp, ଆକାର (tmp), "%u", v);
+    ଫେରନ୍ତୁ append_len (tmp, (unsigned) strlen (tmp));
   }
 
-  bool append_hex_byte (unsigned v)
+  ତାର୍କିକ append_hex_byte (unsigned v)
   {
-    char tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
+    ଅକ୍ଷର tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
 		   "0123456789ABCDEF"[v & 15]};
-    return append_len (tmp, 2);
+    ଫେରନ୍ତୁ append_len (tmp, 2);
   }
 
-  void append_num (float v)
-  { append_num (v, precision); }
+  ଶୂନ୍ୟ append_ଅଙ୍କ (ଦଶମିକ v)
+  { append_ଅଙ୍କ (v, precision); }
 
-  void append_num (float v, unsigned p)
+  ଶୂନ୍ୟ append_ଅଙ୍କ (ଦଶମିକ v, unsigned p)
   {
-    if (p > 12) p = 12;
+    ଯଦି (p > 12) p = 12;
 
-    float rounded_zero_threshold = 0.5f;
-    for (unsigned i = 0; i < p; i++)
+    ଦଶମିକ rounded_zero_threshold = 0.5f;
+    ପାଇଁ (unsigned i = 0; i < p; i++)
       rounded_zero_threshold *= 0.1f;
-    if (fabsf (v) < rounded_zero_threshold)
+    ଯଦି (fabsf (v) < rounded_zero_threshold)
       v = 0.f;
 
-    if (!(v == v) || !std::isfinite (v))
+    ଯଦି (!(v == v) || !std::isfinite (v))
     {
       append_c ('0');
-      return;
+      ଫେରନ୍ତୁ;
     }
 
     /* Fast path: fixed-point decimal via integer math.  @v has a
@@ -143,53 +143,53 @@ struct hb_vector_buf_t : hb_vector_t<char>
      * matches snprintf "%.pf" output digit-for-digit, while skipping
      * the (much slower) printf floating-point formatting and any
      * locale decimal-point fix-up. */
-    double scaled = (double) v * _hb_vector_buf_pow10[p];
-    if (likely (fabs (scaled) < 9.0e18))
+    ଦ୍ୱିଗୁଣ scaled = (ଦ୍ୱିଗୁଣ) v * _hb_vector_buf_pow10[p];
+    ଯଦି (likely (fabs (scaled) < 9.0e18))
     {
-      double fl = floor (scaled);
-      double diff = scaled - fl;
+      ଦ୍ୱିଗୁଣ fl = floor (scaled);
+      ଦ୍ୱିଗୁଣ diff = scaled - fl;
       int64_t n = (int64_t) fl;
-      if (diff > 0.5 || (diff == 0.5 && (n & 1)))
+      ଯଦି (diff > 0.5 || (diff == 0.5 && (n & 1)))
 	n++;
 
       uint64_t u = (uint64_t) (n < 0 ? -n : n);
       unsigned frac = p;
-      while (frac && !(u % 10))
+      ଯେତେବେଳେ (frac && !(u % 10))
       {
 	u /= 10;
 	frac--;
       }
 
-      char tmp[24];
-      char *end = tmp + sizeof (tmp);
-      char *s = end;
+      ଅକ୍ଷର tmp[24];
+      ଅକ୍ଷର *end = tmp + ଆକାର (tmp);
+      ଅକ୍ଷର *s = end;
       unsigned d = 0;
-      do
+      କର
       {
-	*--s = (char) ('0' + (char) (u % 10));
+	*--s = (ଅକ୍ଷର) ('0' + (ଅକ୍ଷର) (u % 10));
 	u /= 10;
-	if (++d == frac)
+	ଯଦି (++d == frac)
 	  *--s = '.';
       }
-      while (u || d < frac + 1);
-      if (v < 0.f)
+      ଯେତେବେଳେ (u || d < frac + 1);
+      ଯଦି (v < 0.f)
 	*--s = '-';
 
       append_len (s, (unsigned) (end - s));
-      return;
+      ଫେରନ୍ତୁ;
     }
 
-    char fmt[6];
-    snprintf (fmt, sizeof (fmt), "%%.%uf", p);
-    char out[128];
-    snprintf (out, sizeof (out), fmt, (double) v);
+    ଅକ୍ଷର fmt[6];
+    snprintf (fmt, ଆକାର (fmt), "%%.%uf", p);
+    ଅକ୍ଷର out[128];
+    snprintf (out, ଆକାର (out), fmt, (ଦ୍ୱିଗୁଣ) v);
 
-    const char *decimal_point = hb_vector_decimal_point_get ();
+    ଅଚଳ ଅକ୍ଷର *decimal_point = hb_vector_decimal_point_get ();
 
-    if (decimal_point[0] != '.' || decimal_point[1] != '\0')
+    ଯଦି (decimal_point[0] != '.' || decimal_point[1] != '\0')
     {
-      char *dp = strstr (out, decimal_point);
-      if (dp)
+      ଅକ୍ଷର *dp = strstr (out, decimal_point);
+      ଯଦି (dp)
       {
 	unsigned dp_len = (unsigned) strlen (decimal_point);
 	unsigned tail_len = (unsigned) strlen (dp + dp_len);
@@ -198,27 +198,27 @@ struct hb_vector_buf_t : hb_vector_t<char>
       }
     }
 
-    char *dot = strchr (out, '.');
-    if (dot)
+    ଅକ୍ଷର *dot = strchr (out, '.');
+    ଯଦି (dot)
     {
-      char *end = out + strlen (out) - 1;
-      while (end > dot && *end == '0')
+      ଅକ୍ଷର *end = out + strlen (out) - 1;
+      ଯେତେବେଳେ (end > dot && *end == '0')
 	*end-- = '\0';
-      if (end == dot)
+      ଯଦି (end == dot)
 	*end = '\0';
     }
 
     append_len (out, (unsigned) strlen (out));
   }
 
-  void append_svg_color (hb_color_t color, bool with_alpha)
+  ଶୂନ୍ୟ append_svg_color (hb_color_t color, ତାର୍କିକ with_alpha)
   {
     unsigned r = hb_color_get_red (color);
     unsigned g = hb_color_get_green (color);
     unsigned b = hb_color_get_blue (color);
     unsigned a = hb_color_get_alpha (color);
     append_c ('#');
-    if (((r >> 4) == (r & 0xF)) &&
+    ଯଦି (((r >> 4) == (r & 0xF)) &&
 	((g >> 4) == (g & 0xF)) &&
 	((b >> 4) == (b & 0xF)))
     {
@@ -226,36 +226,36 @@ struct hb_vector_buf_t : hb_vector_t<char>
       append_c ("0123456789ABCDEF"[g & 0xF]);
       append_c ("0123456789ABCDEF"[b & 0xF]);
     }
-    else
+    ଅନ୍ୟଥା
     {
       append_hex_byte (r);
       append_hex_byte (g);
       append_hex_byte (b);
     }
-    if (with_alpha && a != 255)
+    ଯଦି (with_alpha && a != 255)
     {
       append_str ("\" fill-opacity=\"");
-      append_num (a / 255.f, 4);
+      append_ଅଙ୍କ (a / 255.f, 4);
     }
   }
 
-  bool append_base64 (const uint8_t *data, unsigned len)
+  ତାର୍କିକ append_base64 (ଅଚଳ uint8_t *data, unsigned len)
   {
     /* Output is 4 bytes per 3 input bytes; compute without overflowing. */
     unsigned ngroups = len / 3 + (len % 3 != 0);
     unsigned out_len;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
+    ଯଦି (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
 		  would_overflow (out_len) ||
 		  hb_unsigned_add_overflows (old_len, out_len, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+		  !resize_dirty ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) new_len)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    char *dst = arrayZ + old_len;
+    ଅକ୍ଷର *dst = arrayZ + old_len;
     unsigned di = 0;
     unsigned i = 0;
-    while (i + 2 < len)
+    ଯେତେବେଳେ (i + 2 < len)
     {
       unsigned v = ((unsigned) data[i] << 16) |
 		   ((unsigned) data[i + 1] << 8) |
@@ -267,10 +267,10 @@ struct hb_vector_buf_t : hb_vector_t<char>
       i += 3;
     }
 
-    if (i < len)
+    ଯଦି (i < len)
     {
       unsigned v = (unsigned) data[i] << 16;
-      if (i + 1 < len)
+      ଯଦି (i + 1 < len)
 	v |= (unsigned) data[i + 1] << 8;
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 18) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 12) & 63];
@@ -278,7 +278,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
       dst[di++] = '=';
     }
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 };
 

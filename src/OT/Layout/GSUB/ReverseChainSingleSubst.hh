@@ -1,18 +1,18 @@
 #ifndef OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBST_HH
 #define OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBST_HH
 
-#include "Common.hh"
-#include "ReverseChainSingleSubstFormat1.hh"
+#ଅନ୍ତର୍ଭାଵ "Common.hh"
+#ଅନ୍ତର୍ଭାଵ "ReverseChainSingleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GSUB_impl {
 
-struct ReverseChainSingleSubst
+ସଂରଚନା ReverseChainSingleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }                format;         /* Format identifier */
+  ସୁରକ୍ଷିତ:
+  ସଂଘ {
+  ସଂରଚନା { HBUINT16 v; }                format;         /* Format identifier */
   ReverseChainSingleSubstFormat1_2<SmallTypes>
                                         format1;
 #ifndef HB_NO_BEYOND_64K
@@ -21,18 +21,18 @@ struct ReverseChainSingleSubst
 #endif
   } u;
 
-  public:
+  ସର୍ବସାଧାରଣ:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ଅଚଳ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ଯଦି (unlikely (!c->may_dispatch (ଏହି, &u.format.v))) ଫେରନ୍ତୁ c->no_dispatch_return_ମୂଲ୍ୟ ();
+    TRACE_DISPATCH (ଏହି, u.format.v);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (c->default_return_ମୂଲ୍ୟ ());
     }
   }
 };

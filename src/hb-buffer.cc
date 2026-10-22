@@ -27,8 +27,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-buffer.hh"
-#include "hb-utf.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-buffer.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-utf.hh"
 
 
 /**
@@ -61,10 +61,10 @@
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b)
+hb_segment_properties_equal (ଅଚଳ hb_segment_properties_t *a,
+			     ଅଚଳ hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  ଫେରନ୍ତୁ a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_segment_properties_hash (ଅଚଳ hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  ଫେରନ୍ତୁ ((unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) p->direction * 31 +
+	  (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -109,26 +109,26 @@ hb_segment_properties_hash (const hb_segment_properties_t *p)
  *
  * Since: 3.3.0
  **/
-void
+ଶୂନ୍ୟ
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src)
+			       ଅଚଳ hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  ଯଦି (unlikely (!p || !src))
+    ଫେରନ୍ତୁ;
 
-  if (!p->direction)
+  ଯଦି (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  ଯଦି (p->direction != src->direction)
+    ଫେରନ୍ତୁ;
 
-  if (!p->script)
+  ଯଦି (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  ଯଦି (p->script != src->script)
+    ଫେରନ୍ତୁ;
 
-  if (!p->language)
+  ଯଦି (!p->language)
     p->language = src->language;
 }
 
@@ -155,87 +155,87 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 
 /* Internal API */
 
-bool
-hb_buffer_t::enlarge (unsigned int size)
+ତାର୍କିକ
+hb_buffer_t::enlarge (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size)
 {
-  if (unlikely (size > max_len))
+  ଯଦି (unlikely (size > max_len))
   {
-    successful = false;
-    return false;
+    successful = ମିଥ୍ୟା;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  if (unlikely (!successful))
-    return false;
+  ଯଦି (unlikely (!successful))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  unsigned int new_allocated = allocated;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_allocated = allocated;
   hb_glyph_position_t *new_pos = nullptr;
   hb_glyph_info_t *new_info = nullptr;
-  bool separate_out = out_info != info;
+  ତାର୍କିକ separate_out = out_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
-    goto done;
+  ଯଦି (unlikely (hb_unsigned_mul_overflows (size, ଆକାର (info[0]))))
+    ଯାଅ done;
 
-  while (size >= new_allocated)
+  ଯେତେବେଳେ (size >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
   unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
-    goto done;
+  ଯଦି (unlikely (hb_unsigned_mul_overflows (new_allocated, ଆକାର (info[0]), &new_bytes)))
+    ଯାଅ done;
 
-  static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
+  static_assert (ଆକାର (info[0]) == ଆକାର (pos[0]), "");
   new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_bytes);
   new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
 
 done:
-  if (unlikely (!new_pos || !new_info))
-    successful = false;
+  ଯଦି (unlikely (!new_pos || !new_info))
+    successful = ମିଥ୍ୟା;
 
-  if (likely (new_pos))
+  ଯଦି (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  ଯଦି (likely (new_info))
     info = new_info;
 
   out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  ଯଦି (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  ଫେରନ୍ତୁ likely (successful);
 }
 
-bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+ତାର୍କିକ
+hb_buffer_t::make_room_for (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_in,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  ଯଦି (unlikely (!ensure (out_len + ଅଙ୍କ_out))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  if (out_info == info &&
-      out_len + num_out > idx + num_in)
+  ଯଦି (out_info == info &&
+      out_len + ଅଙ୍କ_out > idx + ଅଙ୍କ_in)
   {
-    assert (have_output);
+    ପ୍ରତିଜ୍ଞା (have_output);
 
     out_info = (hb_glyph_info_t *) pos;
-    hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
+    hb_memcpy (out_info, info, out_len * ଆକାର (out_info[0]));
   }
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
-bool
-hb_buffer_t::shift_forward (unsigned int count)
+ତାର୍କିକ
+hb_buffer_t::shift_forward (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2)
 {
-  assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  ପ୍ରତିଜ୍ଞା (have_output);
+  ଯଦି (unlikely (!ensure (len + ଗଣନା_2))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  ଯଦି (unlikely (max_ops < 0))
   {
-    successful = false;
-    return false;
+    successful = ମିଥ୍ୟା;
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + ଗଣନା_2, info + idx, (len - idx) * ଆକାର (info[0]));
+  ଯଦି (idx + ଗଣନା_2 > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,34 +243,34 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + ଗଣନା_2 - len) * ଆକାର (info[0]));
   }
-  len += count;
-  idx += count;
+  len += ଗଣନା_2;
+  idx += ଗଣନା_2;
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_buffer_t::get_scratch_buffer (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *size)
 {
-  have_output = false;
-  have_positions = false;
+  have_output = ମିଥ୍ୟା;
+  have_positions = ମିଥ୍ୟା;
 
   out_len = 0;
   out_info = info;
 
-  assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
-  *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  ପ୍ରତିଜ୍ଞା ((uintptr_t) pos % ଆକାର (scratch_buffer_t) == 0);
+  *size = allocated * ଆକାର (pos[0]) / ଆକାର (scratch_buffer_t);
+  ଫେରନ୍ତୁ (scratch_buffer_t *) (ଶୂନ୍ୟ *) pos;
 }
 
 
 
 /* HarfBuzz-Internal API */
 
-void
-hb_buffer_t::similar (const hb_buffer_t &src)
+ଶୂନ୍ୟ
+hb_buffer_t::similar (ଅଚଳ hb_buffer_t &src)
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (src.unicode);
@@ -282,7 +282,7 @@ hb_buffer_t::similar (const hb_buffer_t &src)
   not_found_variation_selector = src.not_found_variation_selector;
 }
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::reset ()
 {
   hb_unicode_funcs_destroy (unicode);
@@ -297,24 +297,24 @@ hb_buffer_t::reset ()
   clear ();
 }
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::clear ()
 {
   content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
   hb_segment_properties_t default_props = HB_SEGMENT_PROPERTIES_DEFAULT;
   props = default_props;
 
-  successful = true;
-  have_output = false;
-  have_positions = false;
+  successful = ସତ୍ୟ;
+  have_output = ମିଥ୍ୟା;
+  have_positions = ମିଥ୍ୟା;
 
   idx = 0;
   len = 0;
   out_len = 0;
   out_info = info;
 
-  hb_memset (context, 0, sizeof context);
-  hb_memset (context_len, 0, sizeof context_len);
+  hb_memset (context, 0, ଆକାର context);
+  hb_memset (context_len, 0, ଆକାର context_len);
 
   deallocate_var_all ();
   serial = 0;
@@ -322,23 +322,23 @@ hb_buffer_t::clear ()
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
 }
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::enter ()
 {
   deallocate_var_all ();
   serial = 0;
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
   unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  ଯଦି (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
   {
     max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  ଯଦି (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
   {
     max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
   }
 }
-void
+ଶୂନ୍ୟ
 hb_buffer_t::leave ()
 {
   max_len = HB_BUFFER_MAX_LEN_DEFAULT;
@@ -348,17 +348,17 @@ hb_buffer_t::leave ()
 }
 
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+		  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  ଯଦି (unlikely (!ensure (len + 1))) ଫେରନ୍ତୁ;
 
   glyph = &info[len];
 
-  hb_memset (glyph, 0, sizeof (*glyph));
+  hb_memset (glyph, 0, ଆକାର (*glyph));
   glyph->codepoint = codepoint;
   glyph->mask = 0;
   glyph->cluster = cluster;
@@ -366,139 +366,139 @@ hb_buffer_t::add (hb_codepoint_t  codepoint,
   len++;
 }
 
-void
-hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
+ଶୂନ୍ୟ
+hb_buffer_t::add_info (ଅଚଳ hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  ଯଦି (unlikely (!ensure (len + 1))) ଫେରନ୍ତୁ;
 
   info[len] = glyph_info;
 
   len++;
 }
-void
-hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
-			       const hb_glyph_position_t &glyph_pos)
+ଶୂନ୍ୟ
+hb_buffer_t::add_info_and_pos (ଅଚଳ hb_glyph_info_t &glyph_info,
+			       ଅଚଳ hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  ଯଦି (unlikely (!ensure (len + 1))) ଫେରନ୍ତୁ;
 
   info[len] = glyph_info;
-  assert (have_positions);
+  ପ୍ରତିଜ୍ଞା (have_positions);
   pos[len] = glyph_pos;
 
   len++;
 }
 
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::clear_output ()
 {
-  have_output = true;
-  have_positions = false;
+  have_output = ସତ୍ୟ;
+  have_positions = ମିଥ୍ୟା;
 
   idx = 0;
   out_len = 0;
   out_info = info;
 }
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::clear_positions ()
 {
-  have_output = false;
-  have_positions = true;
+  have_output = ମିଥ୍ୟା;
+  have_positions = ସତ୍ୟ;
 
   out_len = 0;
   out_info = info;
 
-  hb_memset (pos, 0, sizeof (pos[0]) * len);
+  hb_memset (pos, 0, ଆକାର (pos[0]) * len);
 }
 
-bool
-hb_buffer_t::sync ()
+ତାର୍କିକ
+hb_buffer_t::ସମକାଳ ()
 {
-  bool ret = false;
+  ତାର୍କିକ ret = ମିଥ୍ୟା;
 
-  assert (have_output);
+  ପ୍ରତିଜ୍ଞା (have_output);
 
-  assert (idx <= len);
+  ପ୍ରତିଜ୍ଞା (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
-    goto reset;
+  ଯଦି (unlikely (!successful || !next_glyphs (len - idx)))
+    ଯାଅ reset;
 
-  if (out_info != info)
+  ଯଦି (out_info != info)
   {
     pos = (hb_glyph_position_t *) info;
     info = out_info;
   }
   len = out_len;
-  ret = true;
+  ret = ସତ୍ୟ;
 
 reset:
-  have_output = false;
+  have_output = ମିଥ୍ୟା;
   out_len = 0;
   out_info = info;
   idx = 0;
 
-  return ret;
+  ଫେରନ୍ତୁ ret;
 }
 
-int
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_buffer_t::sync_so_far ()
 {
-  bool had_output = have_output;
+  ତାର୍କିକ had_output = have_output;
   unsigned out_i = out_len;
   unsigned i = idx;
   unsigned old_idx = idx;
 
-  if (sync ())
+  ଯଦି (ସମକାଳ ())
     idx = out_i;
-  else
+  ଅନ୍ୟଥା
     idx = i;
 
-  if (had_output)
+  ଯଦି (had_output)
   {
-    have_output = true;
+    have_output = ସତ୍ୟ;
     out_len = idx;
   }
 
-  assert (idx <= len);
+  ପ୍ରତିଜ୍ଞା (idx <= len);
 
-  return idx - old_idx;
+  ଫେରନ୍ତୁ idx - old_idx;
 }
 
-bool
-hb_buffer_t::move_to (unsigned int i)
+ତାର୍କିକ
+hb_buffer_t::move_to (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i)
 {
-  if (!have_output)
+  ଯଦି (!have_output)
   {
-    assert (i <= len);
+    ପ୍ରତିଜ୍ଞା (i <= len);
     idx = i;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
-  if (unlikely (!successful))
-    return false;
+  ଯଦି (unlikely (!successful))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  assert (i <= out_len + (len - idx));
+  ପ୍ରତିଜ୍ଞା (i <= out_len + (len - idx));
 
-  if (out_len < i)
+  ଯଦି (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = i - out_len;
+    ଯଦି (unlikely (!make_room_for (ଗଣନା_2, ଗଣନା_2))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= ଗଣନା_2;
+    ଯଦି (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = ମିଥ୍ୟା;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (out_info + out_len, info + idx, ଗଣନା_2 * ଆକାର (out_info[0]));
+    idx += ଗଣନା_2;
+    out_len += ଗଣନା_2;
   }
-  else if (out_len > i)
+  ଅନ୍ୟଥା ଯଦି (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,191 +507,191 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    ଯଦି (unlikely (idx < ଗଣନା_2 && !shift_forward (ଗଣନା_2 - idx))) ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    assert (idx >= count);
+    ପ୍ରତିଜ୍ଞା (idx >= ଗଣନା_2);
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= ଗଣନା_2;
+    ଯଦି (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = ମିଥ୍ୟା;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= ଗଣନା_2;
+    out_len -= ଗଣନା_2;
+    memmove (info + idx, out_info + out_len, ଗଣନା_2 * ଆକାର (out_info[0]));
   }
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::set_masks (hb_mask_t    value,
 			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster_start,
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster_end)
 {
-  if (!mask)
-    return;
+  ଯଦି (!mask)
+    ଫେରନ୍ତୁ;
 
   hb_mask_t not_mask = ~mask;
   value &= mask;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  ଯଦି (unlikely (max_ops < 0))
+    successful = ମିଥ୍ୟା;
 
-  unsigned int count = len;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  ଯଦି (cluster_start == 0 && cluster_end == (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    ଫେରନ୍ତୁ;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
+    ଯଦି (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
 
-void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+ଶୂନ୍ୟ
+hb_buffer_t::merge_clusters_impl (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+				  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  ଯଦି (unlikely (max_ops < 0))
+    successful = ମିଥ୍ୟା;
 
-  unsigned int cluster = info[start].cluster;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster = info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start + 1; i < end; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
+  ଯଦି (cluster != info[end - 1].cluster)
+    ଯେତେବେଳେ (end < len && info[end - 1].cluster == info[end].cluster)
       end++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
+  ଯଦି (cluster != info[start].cluster)
+    ଯେତେବେଳେ (idx < start && info[start - 1].cluster == info[start].cluster)
       start--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
+  ଯଦି (idx == start && info[start].cluster != cluster)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
       set_cluster (out_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start; i < end; i++)
     set_cluster (info[i], cluster);
 }
-void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+ଶୂନ୍ୟ
+hb_buffer_t::merge_out_clusters_impl (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+				      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  ଯଦି (unlikely (max_ops < 0))
+    successful = ମିଥ୍ୟା;
 
-  unsigned int cluster = out_info[start].cluster;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster = out_info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start + 1; i < end; i++)
     cluster = hb_min (cluster, out_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
+  ଯେତେବେଳେ (start && out_info[start - 1].cluster == out_info[start].cluster)
     start--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
+  ଯେତେବେଳେ (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
     end++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
+  ଯଦି (end == out_len)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
       set_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start; i < end; i++)
     set_cluster (out_info[i], cluster);
 }
-void
+ଶୂନ୍ୟ
 hb_buffer_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster = info[idx].cluster;
+  ଯଦି ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
       (out_len && cluster == out_info[out_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
-    goto done;
+    ଯାଅ done;
   }
 
-  if (out_len)
+  ଯଦି (out_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    ଯଦି (cluster < out_info[out_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା mask = info[idx].mask;
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା old_cluster = out_info[out_len - 1].cluster;
+      ପାଇଁ (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
 	set_cluster (out_info[i - 1], cluster, mask);
     }
-    goto done;
+    ଯାଅ done;
   }
 
-  if (idx + 1 < len)
+  ଯଦି (idx + 1 < len)
   {
     /* Merge cluster forward. */
     merge_clusters (idx, idx + 2);
-    goto done;
+    ଯାଅ done;
   }
 
 done:
   skip_glyph ();
 }
 
-void
-hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info))
+ଶୂନ୍ୟ
+hb_buffer_t::delete_glyphs_inplace (ତାର୍କିକ (*filter) (ଅଚଳ hb_glyph_info_t *info))
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା j = 0;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = len;
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
   {
-    if (filter (&info[i]))
+    ଯଦି (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
-	continue; /* Cluster survives; do nothing. */
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster = info[i].cluster;
+      ଯଦି (i + 1 < ଗଣନା_2 && cluster == info[i + 1].cluster)
+	ଜାରି; /* Cluster survives; do nothing. */
 
-      if (j)
+      ଯଦି (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	ଯଦି (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
+	  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା mask = info[i].mask;
+	  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା old_cluster = info[j - 1].cluster;
+	  ପାଇଁ (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
 	    set_cluster (info[k - 1], cluster, mask);
 	}
-	continue;
+	ଜାରି;
       }
 
-      if (i + 1 < count)
+      ଯଦି (i + 1 < ଗଣନା_2)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
-      continue;
+      ଜାରି;
     }
 
-    if (j != i)
+    ଯଦି (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -701,33 +701,33 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   len = j;
 }
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::guess_segment_properties ()
 {
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  ଯଦି (props.script == HB_SCRIPT_INVALID) {
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      ଯଦି (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
-	break;
+	ଭାଙ୍ଗ;
       }
     }
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  ଯଦି (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    ଯଦି (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  ଯଦି (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -752,9 +752,9 @@ DEFINE_NULL_INSTANCE (hb_buffer_t) =
   HB_BUFFER_CONTENT_TYPE_INVALID,
   HB_SEGMENT_PROPERTIES_DEFAULT,
 
-  false, /* successful */
-  false, /* have_output */
-  true  /* have_positions */
+  ମିଥ୍ୟା, /* successful */
+  ମିଥ୍ୟା, /* have_output */
+  ସତ୍ୟ  /* have_positions */
 
   /* Zero is good enough for everything else. */
 };
@@ -779,15 +779,15 @@ hb_buffer_create ()
 {
   hb_buffer_t *buffer;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  ଯଦି (!(buffer = hb_object_create<hb_buffer_t> ()))
+    ଫେରନ୍ତୁ hb_buffer_get_empty ();
 
   buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
   buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
 
   buffer->reset ();
 
-  return buffer;
+  ଫେରନ୍ତୁ buffer;
 }
 
 /**
@@ -803,13 +803,13 @@ hb_buffer_create ()
  * Since: 3.3.0
  **/
 hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src)
+hb_buffer_create_similar (ଅଚଳ hb_buffer_t *src)
 {
   hb_buffer_t *buffer = hb_buffer_create ();
 
   buffer->similar (*src);
 
-  return buffer;
+  ଫେରନ୍ତୁ buffer;
 }
 
 /**
@@ -825,11 +825,11 @@ hb_buffer_create_similar (const hb_buffer_t *src)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_reset (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->reset ();
 }
@@ -846,7 +846,7 @@ hb_buffer_reset (hb_buffer_t *buffer)
 hb_buffer_t *
 hb_buffer_get_empty ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  ଫେରନ୍ତୁ const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
 }
 
 /**
@@ -864,7 +864,7 @@ hb_buffer_get_empty ()
 hb_buffer_t *
 hb_buffer_reference (hb_buffer_t *buffer)
 {
-  return hb_object_reference (buffer);
+  ଫେରନ୍ତୁ hb_object_reference (buffer);
 }
 
 /**
@@ -877,17 +877,17 @@ hb_buffer_reference (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_destroy (hb_buffer_t *buffer)
 {
-  if (!hb_object_destroy (buffer)) return;
+  ଯଦି (!hb_object_destroy (buffer)) ଫେରନ୍ତୁ;
 
   hb_unicode_funcs_destroy (buffer->unicode);
 
   hb_free (buffer->info);
   hb_free (buffer->pos);
 #ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
+  ଯଦି (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 #endif
 
@@ -910,12 +910,12 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  **/
 hb_bool_t
 hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+			 hb_user_data_ଚାବି_t *key,
+			 ଶୂନ୍ୟ *              data,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  ଫେରନ୍ତୁ hb_object_set_user_data (buffer, key, data, destroy, replace);
 }
 
 /**
@@ -930,11 +930,11 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  *
  * Since: 0.9.2
  **/
-void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+ଶୂନ୍ୟ *
+hb_buffer_get_user_data (ଅଚଳ hb_buffer_t  *buffer,
+			 hb_user_data_ଚାବି_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  ଫେରନ୍ତୁ hb_object_get_user_data (buffer, key);
 }
 
 
@@ -974,12 +974,12 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * Since: 0.9.5
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_content_type (hb_buffer_t              *buffer,
 			    hb_buffer_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->content_type = content_type;
 }
@@ -997,9 +997,9 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
  * Since: 0.9.5
  **/
 hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer)
+hb_buffer_get_content_type (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->content_type;
+  ଫେରନ୍ତୁ buffer->content_type;
 }
 
 
@@ -1013,14 +1013,14 @@ hb_buffer_get_content_type (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
-  if (!unicode_funcs)
+  ଯଦି (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
@@ -1039,9 +1039,9 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
+hb_buffer_get_unicode_funcs (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->unicode;
+  ଫେରନ୍ତୁ buffer->unicode;
 }
 
 /**
@@ -1059,12 +1059,12 @@ hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_direction (hb_buffer_t    *buffer,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->props.direction = direction;
 }
@@ -1081,9 +1081,9 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer)
+hb_buffer_get_direction (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->props.direction;
+  ଫେରନ୍ତୁ buffer->props.direction;
 }
 
 /**
@@ -1103,12 +1103,12 @@ hb_buffer_get_direction (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_script (hb_buffer_t *buffer,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->props.script = script;
 }
@@ -1125,9 +1125,9 @@ hb_buffer_set_script (hb_buffer_t *buffer,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer)
+hb_buffer_get_script (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->props.script;
+  ଫେରନ୍ତୁ buffer->props.script;
 }
 
 /**
@@ -1147,12 +1147,12 @@ hb_buffer_get_script (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_language (hb_buffer_t   *buffer,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->props.language = language;
 }
@@ -1169,9 +1169,9 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer)
+hb_buffer_get_language (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->props.language;
+  ଫେରନ୍ତୁ buffer->props.language;
 }
 
 /**
@@ -1185,12 +1185,12 @@ hb_buffer_get_language (const hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props)
+				  ଅଚଳ hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->props = *props;
 }
@@ -1204,8 +1204,8 @@ hb_buffer_set_segment_properties (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+ଶୂନ୍ୟ
+hb_buffer_get_segment_properties (ଅଚଳ hb_buffer_t *buffer,
 				  hb_segment_properties_t *props)
 {
   *props = buffer->props;
@@ -1221,12 +1221,12 @@ hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_flags (hb_buffer_t       *buffer,
 		     hb_buffer_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->flags = flags;
 }
@@ -1243,9 +1243,9 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
  * Since: 0.9.7
  **/
 hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer)
+hb_buffer_get_flags (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->flags;
+  ଫେରନ୍ତୁ buffer->flags;
 }
 
 /**
@@ -1259,12 +1259,12 @@ hb_buffer_get_flags (const hb_buffer_t *buffer)
  *
  * Since: 0.9.42
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 			     hb_buffer_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->cluster_level = cluster_level;
 }
@@ -1282,9 +1282,9 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
  * Since: 0.9.42
  **/
 hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
+hb_buffer_get_cluster_level (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->cluster_level;
+  ଫେରନ୍ତୁ buffer->cluster_level;
 }
 
 
@@ -1300,12 +1300,12 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
  *
  * Since: 0.9.31
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->replacement = replacement;
 }
@@ -1323,9 +1323,9 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
  * Since: 0.9.31
  **/
 hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
+hb_buffer_get_replacement_codepoint (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->replacement;
+  ଫେରନ୍ତୁ buffer->replacement;
 }
 
 
@@ -1341,12 +1341,12 @@ hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
  *
  * Since: 2.0.0
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->invisible = invisible;
 }
@@ -1363,9 +1363,9 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
  * Since: 2.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_invisible_glyph (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->invisible;
+  ଫେରନ୍ତୁ buffer->invisible;
 }
 
 /**
@@ -1381,12 +1381,12 @@ hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
  *
  * Since: 3.1.0
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  not_found)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->not_found = not_found;
 }
@@ -1403,9 +1403,9 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
  * Since: 3.1.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_not_found_glyph (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->not_found;
+  ଫେରନ୍ତୁ buffer->not_found;
 }
 
 /**
@@ -1424,7 +1424,7 @@ hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
  *
  * Since: 10.0.0
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
 						  hb_codepoint_t  not_found_variation_selector)
 {
@@ -1443,9 +1443,9 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
  * Since: 10.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
+hb_buffer_get_not_found_variation_selector_glyph (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->not_found_variation_selector;
+  ଫେରନ୍ତୁ buffer->not_found_variation_selector;
 }
 
 /**
@@ -1465,12 +1465,12 @@ hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
  *
  * Since: 8.4.0
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_random_state (hb_buffer_t    *buffer,
 			    unsigned        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->random_state = state;
 }
@@ -1487,9 +1487,9 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
  * Since: 8.4.0
  **/
 unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer)
+hb_buffer_get_random_state (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->random_state;
+  ଫେରନ୍ତୁ buffer->random_state;
 }
 
 /**
@@ -1505,11 +1505,11 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
  *
  * Since: 0.9.11
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_clear_contents (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
   buffer->clear ();
 }
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size)
 {
-  return buffer->ensure (size);
+  ଫେରନ୍ତୁ buffer->ensure (size);
 }
 
 /**
@@ -1546,7 +1546,7 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
 hb_bool_t
 hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 {
-  return buffer->successful;
+  ଫେରନ୍ତୁ buffer->successful;
 }
 
 /**
@@ -1566,10 +1566,10 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
  *
  * Since: 0.9.7
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    cluster)
 {
   buffer->add (codepoint, cluster);
   buffer->clear_context (1);
@@ -1590,31 +1590,31 @@ hb_buffer_add (hb_buffer_t    *buffer,
  **/
 hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+		      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  length)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ length == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  ଯଦି (unlikely (!buffer->ensure (length)))
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
-    hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
-      hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
+  ଯଦି (length > buffer->len) {
+    hb_memset (buffer->info + buffer->len, 0, ଆକାର (buffer->info[0]) * (length - buffer->len));
+    ଯଦି (buffer->have_positions)
+      hb_memset (buffer->pos + buffer->len, 0, ଆକାର (buffer->pos[0]) * (length - buffer->len));
   }
 
   buffer->len = length;
 
-  if (!length)
+  ଯଦି (!length)
   {
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
     buffer->clear_context (0);
   }
   buffer->clear_context (1);
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_buffer_get_length (ଅଚଳ hb_buffer_t *buffer)
 {
-  return buffer->len;
+  ଫେରନ୍ତୁ buffer->len;
 }
 
 /**
@@ -1651,12 +1651,12 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  **/
 hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+			   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *length)
 {
-  if (length)
+  ଯଦି (length)
     *length = buffer->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  ଫେରନ୍ତୁ (hb_glyph_info_t *) buffer->info;
 }
 
 /**
@@ -1680,20 +1680,20 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  **/
 hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+			       unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *length)
 {
-  if (length)
+  ଯଦି (length)
     *length = buffer->len;
 
-  if (!buffer->have_positions)
+  ଯଦି (!buffer->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    ଯଦି (unlikely (buffer->message_depth))
+      ଫେରନ୍ତୁ nullptr;
 
     buffer->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  ଫେରନ୍ତୁ (hb_glyph_position_t *) buffer->pos;
 }
 
 /**
@@ -1712,7 +1712,7 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer)
 {
-  return buffer->have_positions;
+  ଫେରନ୍ତୁ buffer->have_positions;
 }
 
 /**
@@ -1727,9 +1727,9 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
  * Since: 1.5.0
  **/
 hb_glyph_flags_t
-(hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
+(hb_glyph_info_get_glyph_flags) (ଅଚଳ hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  ଫେରନ୍ତୁ hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1740,7 +1740,7 @@ hb_glyph_flags_t
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_reverse (hb_buffer_t *buffer)
 {
   buffer->reverse ();
@@ -1756,9 +1756,9 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  *
  * Since: 0.9.41
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+			 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end)
 {
   buffer->reverse_range (start, end);
 }
@@ -1773,7 +1773,7 @@ hb_buffer_reverse_range (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_reverse_clusters (hb_buffer_t *buffer)
 {
   buffer->reverse_clusters ();
@@ -1807,41 +1807,41 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_guess_segment_properties (hb_buffer_t *buffer)
 {
   buffer->guess_segment_properties ();
 }
 
 template <typename utf_t>
-static inline void
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ
 hb_buffer_add_utf (hb_buffer_t  *buffer,
-		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+		   ଅଚଳ typename utf_t::codepoint_t *text,
+		   ପୂର୍ଣ୍ଣସଂଖ୍ୟା           text_length,
+		   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  item_offset,
+		   ପୂର୍ଣ୍ଣସଂଖ୍ୟା           item_length)
 {
-  typedef typename utf_t::codepoint_t T;
-  const hb_codepoint_t replacement = buffer->replacement;
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା typename utf_t::codepoint_t T;
+  ଅଚଳ hb_codepoint_t replacement = buffer->replacement;
 
   buffer->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)))
+    ଫେରନ୍ତୁ;
 
-  if (text_length == -1)
+  ଯଦି (text_length == -1)
     text_length = utf_t::strlen (text);
 
-  if (item_length == -1)
+  ଯଦି (item_length == -1)
     item_length = text_length - item_offset;
 
   item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  item_length = hb_clamp (item_length, 0, text_length - (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) item_offset);
 
-  if (unlikely (item_length < 0 ||
+  ଯଦି (unlikely (item_length < 0 ||
 		item_length > INT_MAX / 8 ||
-		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+		!buffer->ensure (buffer->len + item_length * ଆକାର (T) / 4)))
+    ଫେରନ୍ତୁ;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,13 +1850,13 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  ଯଦି (!buffer->len && item_offset > 0)
   {
     /* Add pre-context */
     buffer->clear_context (0);
-    const T *prev = text + item_offset;
-    const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    ଅଚଳ T *prev = text + item_offset;
+    ଅଚଳ T *start = text;
+    ଯେତେବେଳେ (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
     {
       hb_codepoint_t u;
       prev = utf_t::prev (prev, start, &u, replacement);
@@ -1864,20 +1864,20 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
     }
   }
 
-  const T *next = text + item_offset;
-  const T *end = next + item_length;
-  while (next < end)
+  ଅଚଳ T *next = text + item_offset;
+  ଅଚଳ T *end = next + item_length;
+  ଯେତେବେଳେ (next < end)
   {
     hb_codepoint_t u;
-    const T *old_next = next;
+    ଅଚଳ T *old_next = next;
     next = utf_t::next (next, end, &u, replacement);
-    buffer->add (u, old_next - (const T *) text);
+    buffer->add (u, old_next - (ଅଚଳ T *) text);
   }
 
   /* Add post-context */
   buffer->clear_context (1);
   end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  ଯେତେବେଳେ (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
   {
     hb_codepoint_t u;
     next = utf_t::next (next, end, &u, replacement);
@@ -1904,14 +1904,14 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+		    ଅଚଳ ଅକ୍ଷର   *text,
+		    ପୂର୍ଣ୍ଣସଂଖ୍ୟା           text_length,
+		    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  item_offset,
+		    ପୂର୍ଣ୍ଣସଂଖ୍ୟା           item_length)
 {
-  hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
+  hb_buffer_add_utf<hb_utf8_t> (buffer, (ଅଚଳ uint8_t *) text, text_length, item_offset, item_length);
 }
 
 /**
@@ -1930,12 +1930,12 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     ଅଚଳ uint16_t *text,
+		     ପୂର୍ଣ୍ଣସଂଖ୍ୟା             text_length,
+		     unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    item_offset,
+		     ପୂର୍ଣ୍ଣସଂଖ୍ୟା             item_length)
 {
   hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1956,12 +1956,12 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     ଅଚଳ uint32_t *text,
+		     ପୂର୍ଣ୍ଣସଂଖ୍ୟା             text_length,
+		     unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    item_offset,
+		     ପୂର୍ଣ୍ଣସଂଖ୍ୟା             item_length)
 {
   hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1983,12 +1983,12 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.39
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+		      ଅଚଳ uint8_t *text,
+		      ପୂର୍ଣ୍ଣସଂଖ୍ୟା            text_length,
+		      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା   item_offset,
+		      ପୂର୍ଣ୍ଣସଂଖ୍ୟା            item_length)
 {
   hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2019,12 +2019,12 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
  *
  * Since: 0.9.31
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+			  ଅଚଳ hb_codepoint_t *text,
+			  ପୂର୍ଣ୍ଣସଂଖ୍ୟା                   text_length,
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା          item_offset,
+			  ପୂର୍ଣ୍ଣସଂଖ୍ୟା                   item_length)
 {
   hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2041,96 +2041,96 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
  *
  * Since: 1.5.0
  **/
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+		  ଅଚଳ hb_buffer_t *source,
+		  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+		  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end)
 {
-  assert (!buffer->have_output && !source->have_output);
-  assert (buffer->have_positions == source->have_positions ||
+  ପ୍ରତିଜ୍ଞା (!buffer->have_output && !source->have_output);
+  ପ୍ରତିଜ୍ଞା (buffer->have_positions == source->have_positions ||
 	  !buffer->len || !source->len);
-  assert (buffer->content_type == source->content_type ||
+  ପ୍ରତିଜ୍ଞା (buffer->content_type == source->content_type ||
 	  !buffer->len || !source->len);
 
-  if (end > source->len)
+  ଯଦି (end > source->len)
     end = source->len;
-  if (start > end)
+  ଯଦି (start > end)
     start = end;
-  if (start == end)
-    return;
+  ଯଦି (start == end)
+    ଫେରନ୍ତୁ;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  ଯଦି (buffer->len + (end - start) < buffer->len) /* Overflows. */
   {
-    buffer->successful = false;
-    return;
+    buffer->successful = ମିଥ୍ୟା;
+    ଫେରନ୍ତୁ;
   }
 
-  unsigned int orig_len = buffer->len;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା orig_len = buffer->len;
   hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  ଯଦି (unlikely (!buffer->successful))
+    ଫେରନ୍ତୁ;
 
-  if (!orig_len)
+  ଯଦି (!orig_len)
     buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
+  ଯଦି (!buffer->have_positions && source->have_positions)
     buffer->clear_positions ();
 
   hb_segment_properties_overlay (&buffer->props, &source->props);
 
-  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
-    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
+  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * ଆକାର (buffer->info[0]));
+  ଯଦି (buffer->have_positions)
+    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * ଆକାର (buffer->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  ଯଦି (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    ଯଦି (!orig_len && start + source->context_len[0] > 0)
     {
       buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+      ଯେତେବେଳେ (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
 	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
+      ପାଇଁ (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
 	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
     }
 
     /* post-context */
     buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+    ଯେତେବେଳେ (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
       buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
+    ପାଇଁ (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
       buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
   }
 }
 
 
-static int
-compare_info_codepoint (const hb_glyph_info_t *pa,
-			const hb_glyph_info_t *pb)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+compare_info_codepoint (ଅଚଳ hb_glyph_info_t *pa,
+			ଅଚଳ hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  ଫେରନ୍ତୁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) pb->codepoint - (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) pa->codepoint;
 }
 
-static inline void
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ
 normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
-			  bool backward)
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start,
+			  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end,
+			  ତାର୍କିକ backward)
 {
   hb_glyph_position_t *pos = buffer->pos;
 
   /* Total cluster advance */
   hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start; i < end; i++)
   {
     total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
     total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start; i < end; i++)
   {
     pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
     pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
@@ -2142,18 +2142,18 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  ଯଦି (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
     pos[end - 1].x_advance = total_x_advance;
     pos[end - 1].y_advance = total_y_advance;
 
     hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+  } ଅନ୍ୟଥା {
     /* Transfer all cluster advance to the first glyph. */
     pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
     pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start + 1; i < end; i++) {
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
     }
@@ -2172,35 +2172,35 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
 {
-  assert (buffer->have_positions);
+  ପ୍ରତିଜ୍ଞା (buffer->have_positions);
 
   buffer->assert_glyphs ();
 
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  ତାର୍କିକ backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
   foreach_cluster (buffer, start, end)
     normalize_glyphs_cluster (buffer, start, end, backward);
 }
 
-void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+ଶୂନ୍ୟ
+hb_buffer_t::sort (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା end, ପୂର୍ଣ୍ଣସଂଖ୍ୟା(*compar)(ଅଚଳ hb_glyph_info_t *, ଅଚଳ hb_glyph_info_t *))
 {
-  assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  ପ୍ରତିଜ୍ଞା (!have_positions);
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = start + 1; i < end; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା j = i;
+    ଯେତେବେଳେ (j > start && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    ଯଦି (i == j)
+      ଜାରି;
     /* Move item i to occupy place for item j, shift what's in between. */
     merge_clusters (j, i + 1);
     {
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (hb_glyph_info_t));
+      memmove (&info[j + 1], &info[j], (i - j) * ଆକାର (hb_glyph_info_t));
       info[j] = t;
     }
   }
@@ -2228,82 +2228,82 @@ hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  ଯଦି (buffer->content_type != reference->content_type && buffer->len && reference->len)
+    ଫେରନ୍ତୁ HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
   hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
-  bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
+  ତାର୍କିକ contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = reference->len;
 
-  if (buffer->len != count)
+  ଯଦି (buffer->len != ଗଣନା_2)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
-    const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    ଅଚଳ hb_glyph_info_t *info = reference->info;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i;
+    ପାଇଁ (i = 0; i < ଗଣନା_2; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
+      ଯଦି (contains && info[i].codepoint == dottedcircle_glyph)
 	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
+      ଯଦି (contains && info[i].codepoint == 0)
 	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     }
     result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    ଫେରନ୍ତୁ hb_buffer_diff_flags_t (result);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  ଯଦି (!ଗଣନା_2)
+    ଫେରନ୍ତୁ hb_buffer_diff_flags_t (result);
 
-  const hb_glyph_info_t *buf_info = buffer->info;
-  const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  ଅଚଳ hb_glyph_info_t *buf_info = buffer->info;
+  ଅଚଳ hb_glyph_info_t *ref_info = reference->info;
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
+    ଯଦି (buf_info->codepoint != ref_info->codepoint)
       result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
+    ଯଦି (buf_info->cluster != ref_info->cluster)
       result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
+    ଯଦି ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
       result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
+    ଯଦି (contains && ref_info->codepoint == dottedcircle_glyph)
       result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
+    ଯଦି (contains && ref_info->codepoint == 0)
       result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  ଯଦି (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
   {
     auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      ଫେରନ୍ତୁ diff < 0 ? -diff : diff;
     };
-    assert (buffer->have_positions);
-    const hb_glyph_position_t *buf_pos = buffer->pos;
-    const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    ପ୍ରତିଜ୍ଞା (buffer->have_positions);
+    ଅଚଳ hb_glyph_position_t *buf_pos = buffer->pos;
+    ଅଚଳ hb_glyph_position_t *ref_pos = reference->pos;
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      ଯଦି (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
 	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
 	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
       {
 	result |= HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH;
-	break;
+	ଭାଙ୍ଗ;
       }
       buf_pos++;
       ref_pos++;
     }
   }
 
-  return result;
+  ଫେରନ୍ତୁ result;
 }
 
 
@@ -2311,18 +2311,18 @@ hb_buffer_diff (hb_buffer_t *buffer,
  * Debugging.
  */
 
-void
+ଶୂନ୍ୟ
 hb_buffer_t::changed ()
 {
 #ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+  ଫେରନ୍ତୁ;
+#ଅନ୍ୟଥା
+  ଯଦି (!message_depth)
+    ଫେରନ୍ତୁ;
 
-  if (changed_func)
-    changed_func (this, changed_data);
-  else
+  ଯଦି (changed_func)
+    changed_func (ଏହି, changed_data);
+  ଅନ୍ୟଥା
     update_digest ();
 #endif
 }
@@ -2342,27 +2342,27 @@ hb_buffer_t::changed ()
  *
  * Since: 1.1.3
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_set_message_func (hb_buffer_t *buffer,
 			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy)
+			    ଶୂନ୍ୟ *user_data, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
+  ଯଦି (unlikely (hb_object_is_immutable (buffer)) ||
       unlikely (buffer->message_depth))
   {
-    if (destroy)
+    ଯଦି (destroy)
       destroy (user_data);
-    return;
+    ଫେରନ୍ତୁ;
   }
 
-  if (buffer->message_destroy)
+  ଯଦି (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 
-  if (func) {
+  ଯଦି (func) {
     buffer->message_func = func;
     buffer->message_data = user_data;
     buffer->message_destroy = destroy;
-  } else {
+  } ଅନ୍ୟଥା {
     buffer->message_func = nullptr;
     buffer->message_data = nullptr;
     buffer->message_destroy = nullptr;
@@ -2379,25 +2379,25 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
  *
  * Since: 13.0.0
  **/
-void
+ଶୂନ୍ୟ
 hb_buffer_changed (hb_buffer_t *buffer)
 {
   buffer->changed ();
 }
 
-bool
-hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
+ତାର୍କିକ
+hb_buffer_t::message_impl (hb_font_t *font, ଅଚଳ ଅକ୍ଷର *fmt, va_list ap)
 {
-  assert (!have_output || (out_info == info && out_len == idx));
+  ପ୍ରତିଜ୍ଞା (!have_output || (out_info == info && out_len == idx));
 
   message_depth++;
 
-  char buf[100];
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  bool ret = (bool) this->message_func (this, font, buf, this->message_data);
+  ଅକ୍ଷର buf[100];
+  vsnprintf (buf, ଆକାର (buf), fmt, ap);
+  ତାର୍କିକ ret = (ତାର୍କିକ) ଏହି->message_func (ଏହି, font, buf, ଏହି->message_data);
 
   message_depth--;
 
-  return ret;
+  ଫେରନ୍ତୁ ret;
 }
 #endif

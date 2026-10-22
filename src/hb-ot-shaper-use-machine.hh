@@ -31,22 +31,22 @@
 #ifndef HB_OT_SHAPER_USE_MACHINE_HH
 #define HB_OT_SHAPER_USE_MACHINE_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-shaper-syllabic.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper-syllabic.hh"
 
 /* buffer var allocations */
 #define use_category() ot_shaper_var_u8_category()
 
 #define USE(Cat) use_syllable_machine_ex_##Cat
 
-enum use_syllable_type_t {
+ଗଣନା use_syllable_type_t {
   use_virama_terminated_cluster,
   use_sakot_terminated_cluster,
   use_standard_cluster,
-  use_number_joiner_terminated_cluster,
+  use_ସଂଖ୍ୟା_joiner_terminated_cluster,
   use_numeral_cluster,
-  use_symbol_cluster,
+  use_ପ୍ରତୀକ_cluster,
   use_hieroglyph_cluster,
   use_broken_cluster,
   use_non_cluster,
@@ -101,7 +101,7 @@ enum use_syllable_type_t {
 
 
 #line 99 "hb-ot-shaper-use-machine.hh"
-static const unsigned char _use_syllable_machine_trans_keys[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର use_syllable_machine_trans_ଚାବିଗୁଡ଼ିକ[] = {
 	49u, 51u, 0u, 56u, 11u, 56u, 11u, 56u, 1u, 53u, 14u, 48u, 14u, 47u, 14u, 47u, 
 	14u, 47u, 14u, 46u, 14u, 46u, 14u, 14u, 14u, 48u, 14u, 48u, 14u, 48u, 1u, 14u, 
 	14u, 48u, 14u, 53u, 14u, 53u, 14u, 53u, 14u, 53u, 12u, 53u, 14u, 53u, 12u, 53u, 
@@ -120,7 +120,7 @@ static const unsigned char _use_syllable_machine_trans_keys[] = {
 	14u, 42u, 1u, 5u, 14u, 55u, 14u, 51u, 14u, 52u, 14u, 54u, 11u, 56u, 0
 };
 
-static const char _use_syllable_machine_key_spans[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର use_syllable_machine_ଚାବି_spans[] = {
 	3, 57, 46, 46, 53, 35, 34, 34, 
 	34, 33, 33, 1, 35, 35, 35, 14, 
 	35, 40, 40, 40, 40, 42, 40, 42, 
@@ -139,7 +139,7 @@ static const char _use_syllable_machine_key_spans[] = {
 	29, 5, 42, 38, 39, 41, 46
 };
 
-static const short _use_syllable_machine_index_offsets[] = {
+ସ୍ଥିର ଅଚଳ short _use_syllable_machine_index_offsets[] = {
 	0, 4, 62, 109, 156, 210, 246, 281, 
 	316, 351, 385, 419, 421, 457, 493, 529, 
 	544, 580, 621, 662, 703, 744, 787, 828, 
@@ -158,7 +158,7 @@ static const short _use_syllable_machine_index_offsets[] = {
 	4203, 4233, 4239, 4282, 4321, 4361, 4403
 };
 
-static const unsigned char _use_syllable_machine_indicies[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର _use_syllable_machine_indicies[] = {
 	1, 0, 2, 0, 3, 4, 5, 5, 
 	6, 7, 5, 5, 5, 5, 5, 8, 
 	9, 10, 11, 5, 5, 5, 12, 5, 
@@ -718,7 +718,7 @@ static const unsigned char _use_syllable_machine_indicies[] = {
 	64, 39, 0
 };
 
-static const char _use_syllable_machine_trans_targs[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _use_syllable_machine_trans_targs[] = {
 	1, 122, 0, 2, 31, 1, 59, 61, 
 	90, 91, 116, 1, 118, 104, 92, 93, 
 	94, 95, 108, 110, 111, 112, 113, 105, 
@@ -740,7 +740,7 @@ static const char _use_syllable_machine_trans_targs[] = {
 	123, 124, 125
 };
 
-static const char _use_syllable_machine_trans_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _use_syllable_machine_trans_actions[] = {
 	1, 0, 0, 0, 0, 4, 0, 0, 
 	0, 0, 0, 5, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -762,7 +762,7 @@ static const char _use_syllable_machine_trans_actions[] = {
 	0, 0, 0
 };
 
-static const char _use_syllable_machine_to_state_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _use_syllable_machine_to_state_actions[] = {
 	0, 2, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -781,7 +781,7 @@ static const char _use_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const char _use_syllable_machine_from_state_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _use_syllable_machine_from_state_actions[] = {
 	0, 3, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -800,7 +800,7 @@ static const char _use_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const short _use_syllable_machine_eof_trans[] = {
+ସ୍ଥିର ଅଚଳ short _use_syllable_machine_eof_trans[] = {
 	1, 0, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
@@ -819,11 +819,11 @@ static const short _use_syllable_machine_eof_trans[] = {
 	136, 142, 143, 143, 143, 143, 40
 };
 
-static const int use_syllable_machine_start = 1;
-static const int use_syllable_machine_first_final = 1;
-static const int use_syllable_machine_error = -1;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା use_syllable_machine_start = 1;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା use_syllable_machine_first_final = 1;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା use_syllable_machine_error = -1;
 
-static const int use_syllable_machine_en_main = 1;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା use_syllable_machine_en_main = 1;
 
 
 #line 58 "hb-ot-shaper-use-machine.rl"
@@ -835,89 +835,89 @@ static const int use_syllable_machine_en_main = 1;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
-    for (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
+    ଯଦି (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
+    ପାଇଁ (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    ଯଦି (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 
 template <typename Iter>
-struct machine_index_t :
+ସଂରଚନା machine_index_t :
   hb_iter_with_fallback_t<machine_index_t<Iter>,
 			  typename Iter::item_t>
 {
-  machine_index_t (const Iter& it) : it (it) {}
-  machine_index_t (const machine_index_t& o) : hb_iter_with_fallback_t<machine_index_t<Iter>,
+  machine_index_t (ଅଚଳ Iter& it) : it (it) {}
+  machine_index_t (ଅଚଳ machine_index_t& o) : hb_iter_with_fallback_t<machine_index_t<Iter>,
 								       typename Iter::item_t> (),
 					       it (o.it), is_null (o.is_null) {}
 
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
+  ସ୍ଥିର constexpr ତାର୍କିକ is_random_access_iterator = Iter::is_random_access_iterator;
+  ସ୍ଥିର constexpr ତାର୍କିକ is_sorted_iterator = Iter::is_sorted_iterator;
 
-  typename Iter::item_t __item__ () const { return *it; }
-  typename Iter::item_t __item_at__ (unsigned i) const { return it[i]; }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
+  typename Iter::item_t __item__ () ଅଚଳ { ଫେରନ୍ତୁ *it; }
+  typename Iter::item_t __item_at__ (unsigned i) ଅଚଳ { ଫେରନ୍ତୁ it[i]; }
+  unsigned __len__ () ଅଚଳ { ଫେରନ୍ତୁ it.len (); }
+  ଶୂନ୍ୟ __next__ () { ++it; }
+  ଶୂନ୍ୟ __forward__ (unsigned n) { it += n; }
+  ଶୂନ୍ୟ __prev__ () { --it; }
+  ଶୂନ୍ୟ __rewind__ (unsigned n) { it -= n; }
 
-  void operator = (unsigned n)
+  ଶୂନ୍ୟ operator = (unsigned n)
   {
-    assert (n == 0);
-    is_null = true;
+    ପ୍ରତିଜ୍ଞା (n == 0);
+    is_null = ସତ୍ୟ;
   }
-  explicit operator bool () { return !is_null; }
+  explicit operator ତାର୍କିକ () { ଫେରନ୍ତୁ !is_null; }
 
-  void operator = (const machine_index_t& o)
+  ଶୂନ୍ୟ operator = (ଅଚଳ machine_index_t& o)
   {
     is_null = o.is_null;
     unsigned index = (*it).first;
     unsigned n = (*o.it).first;
-    if (index < n) it += n - index; else if (index > n) it -= index - n;
+    ଯଦି (index < n) it += n - index; ଅନ୍ୟଥା ଯଦି (index > n) it -= index - n;
   }
-  bool operator == (const machine_index_t& o) const
-  { return is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
-  bool operator != (const machine_index_t& o) const { return !(*this == o); }
+  ତାର୍କିକ operator == (ଅଚଳ machine_index_t& o) ଅଚଳ
+  { ଫେରନ୍ତୁ is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
+  ତାର୍କିକ operator != (ଅଚଳ machine_index_t& o) ଅଚଳ { ଫେରନ୍ତୁ !(*ଏହି == o); }
 
-  private:
+  ବ୍ୟକ୍ତିଗତ:
   Iter it;
-  bool is_null = false;
+  ତାର୍କିକ is_null = ମିଥ୍ୟା;
 };
-struct
+ସଂରଚନା
 {
   template <typename Iter,
 	    hb_requires (hb_is_iterable (Iter))>
   machine_index_t<hb_iter_type<Iter>>
-  operator () (Iter&& it) const
-  { return machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
+  operator () (Iter&& it) ଅଚଳ
+  { ଫେରନ୍ତୁ machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
 }
 HB_FUNCOBJ (machine_index);
 
 
 
-static bool
-not_ccs_default_ignorable (const hb_glyph_info_t &i)
-{ return i.use_category() != USE(CGJ); }
+ସ୍ଥିର ତାର୍କିକ
+not_ccs_default_ignorable (ଅଚଳ hb_glyph_info_t &i)
+{ ଫେରନ୍ତୁ i.use_category() != USE(CGJ); }
 
-static inline void
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ
 find_syllables_use (hb_buffer_t *buffer)
 {
   hb_glyph_info_t *info = buffer->info;
   auto p =
     + hb_iter (info, buffer->len)
     | hb_enumerate
-    | hb_filter ([] (const hb_glyph_info_t &i) { return not_ccs_default_ignorable (i); },
+    | hb_filter ([] (ଅଚଳ hb_glyph_info_t &i) { ଫେରନ୍ତୁ not_ccs_default_ignorable (i); },
 		 hb_second)
-    | hb_filter ([&] (const hb_pair_t<unsigned, const hb_glyph_info_t &> p)
+    | hb_filter ([&] (ଅଚଳ hb_pair_t<unsigned, ଅଚଳ hb_glyph_info_t &> p)
 		 {
-		   if (p.second.use_category() == USE(ZWNJ))
-		     for (unsigned i = p.first + 1; i < buffer->len; ++i)
-		       if (not_ccs_default_ignorable (info[i]))
-			 return !_hb_glyph_info_is_unicode_mark (&info[i]);
-		   return true;
+		   ଯଦି (p.second.use_category() == USE(ZWNJ))
+		     ପାଇଁ (unsigned i = p.first + 1; i < buffer->len; ++i)
+		       ଯଦି (not_ccs_default_ignorable (info[i]))
+			 ଫେରନ୍ତୁ !_hb_glyph_info_is_unicode_mark (&info[i]);
+		   ଫେରନ୍ତୁ ସତ୍ୟ;
 		 })
     | hb_enumerate
     | machine_index
@@ -926,8 +926,8 @@ find_syllables_use (hb_buffer_t *buffer)
   auto eof = +pe;
   auto ts = +p;
   auto te = +p;
-  unsigned int act HB_UNUSED;
-  int cs;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା act HB_UNUSED;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cs;
   
 #line 922 "hb-ot-shaper-use-machine.hh"
 	{
@@ -940,164 +940,164 @@ find_syllables_use (hb_buffer_t *buffer)
 #line 286 "hb-ot-shaper-use-machine.rl"
 
 
-  unsigned int syllable_serial = 1;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା syllable_serial = 1;
   
 #line 931 "hb-ot-shaper-use-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const unsigned char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _slen;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _trans;
+	ଅଚଳ unsigned ଅକ୍ଷର *ଚାବିଗୁଡ଼ିକ_2;
+	ଅଚଳ unsigned ଅକ୍ଷର *_inds;
+	ଯଦି ( p == pe )
+		ଯାଅ _test_eof;
 _resume:
-	switch ( _use_syllable_machine_from_state_actions[cs] ) {
-	case 3:
+	ବାଛ ( _use_syllable_machine_from_state_actions[cs] ) {
+	ସ୍ଥିତି 3:
 #line 1 "NONE"
 	{ts = p;}
-	break;
+	ଭାଙ୍ଗ;
 #line 943 "hb-ot-shaper-use-machine.hh"
 	}
 
-	_keys = _use_syllable_machine_trans_keys + (cs<<1);
+	ଚାବିଗୁଡ଼ିକ_2 = use_syllable_machine_trans_ଚାବିଗୁଡ଼ିକ + (cs<<1);
 	_inds = _use_syllable_machine_indicies + _use_syllable_machine_index_offsets[cs];
 
-	_slen = _use_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( (*p).second.second.use_category()) &&
-		( (*p).second.second.use_category()) <= _keys[1] ?
-		( (*p).second.second.use_category()) - _keys[0] : _slen ];
+	_slen = use_syllable_machine_ଚାବି_spans[cs];
+	_trans = _inds[ _slen > 0 && ଚାବିଗୁଡ଼ିକ_2[0] <=( (*p).second.second.use_category()) &&
+		( (*p).second.second.use_category()) <= ଚାବିଗୁଡ଼ିକ_2[1] ?
+		( (*p).second.second.use_category()) - ଚାବିଗୁଡ଼ିକ_2[0] : _slen ];
 
 _eof_trans:
 	cs = _use_syllable_machine_trans_targs[_trans];
 
-	if ( _use_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	ଯଦି ( _use_syllable_machine_trans_actions[_trans] == 0 )
+		ଯାଅ _again;
 
-	switch ( _use_syllable_machine_trans_actions[_trans] ) {
-	case 7:
+	ବାଛ ( _use_syllable_machine_trans_actions[_trans] ) {
+	ସ୍ଥିତି 7:
 #line 1 "NONE"
 	{te = p+1;}
-	break;
-	case 16:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 16:
 #line 173 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 14:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 14:
 #line 174 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 12:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 12:
 #line 175 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 20:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 20:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 18:
+	{te = p+1;{ found_syllable (use_ସଂଖ୍ୟା_joiner_terminated_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 18:
 #line 177 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 10:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 10:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 25:
+	{te = p+1;{ found_syllable (use_ପ୍ରତୀକ_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 25:
 #line 179 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 5:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 5:
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 4:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 4:
 #line 182 "hb-ot-shaper-use-machine.rl"
 	{te = p+1;{ found_syllable (use_non_cluster); }}
-	break;
-	case 15:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 15:
 #line 173 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 13:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 13:
 #line 174 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 11:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 11:
 #line 175 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 19:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 19:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 17:
+	{te = p;p--;{ found_syllable (use_ସଂଖ୍ୟା_joiner_terminated_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 17:
 #line 177 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 9:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 9:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 24:
+	{te = p;p--;{ found_syllable (use_ପ୍ରତୀକ_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 24:
 #line 179 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 21:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 21:
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 23:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 23:
 #line 182 "hb-ot-shaper-use-machine.rl"
 	{te = p;p--;{ found_syllable (use_non_cluster); }}
-	break;
-	case 1:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 1:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 22:
+	{{p = ((te))-1;}{ found_syllable (use_ପ୍ରତୀକ_cluster); }}
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 22:
 #line 1 "NONE"
-	{	switch( act ) {
-	case 8:
+	{	ବାଛ( act ) {
+	ସ୍ଥିତି 8:
 	{{p = ((te))-1;} found_syllable (use_non_cluster); }
-	break;
-	case 9:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 9:
 	{{p = ((te))-1;} found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	ଭାଙ୍ଗ;
 	}
 	}
-	break;
-	case 6:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 6:
 #line 1 "NONE"
 	{te = p+1;}
 #line 180 "hb-ot-shaper-use-machine.rl"
 	{act = 8;}
-	break;
-	case 8:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 8:
 #line 1 "NONE"
 	{te = p+1;}
 #line 181 "hb-ot-shaper-use-machine.rl"
 	{act = 9;}
-	break;
+	ଭାଙ୍ଗ;
 #line 1039 "hb-ot-shaper-use-machine.hh"
 	}
 
 _again:
-	switch ( _use_syllable_machine_to_state_actions[cs] ) {
-	case 2:
+	ବାଛ ( _use_syllable_machine_to_state_actions[cs] ) {
+	ସ୍ଥିତି 2:
 #line 1 "NONE"
 	{ts = 0;}
-	break;
+	ଭାଙ୍ଗ;
 #line 1046 "hb-ot-shaper-use-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	ଯଦି ( ++p != pe )
+		ଯାଅ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ଯଦି ( p == eof )
 	{
-	if ( _use_syllable_machine_eof_trans[cs] > 0 ) {
+	ଯଦି ( _use_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _use_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		ଯାଅ _eof_trans;
 	}
 	}
 

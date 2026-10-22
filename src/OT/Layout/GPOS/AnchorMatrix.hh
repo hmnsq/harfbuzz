@@ -1,158 +1,158 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 #define OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_anchor_indexes (unsigned rows,
-                                     unsigned class_count,
-                                     const hb_map_t &klass_mapping,
+HB_INTERNAL ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ collect_ligature_anchor_indexes (unsigned rows,
+                                     unsigned class_ଗଣନା,
+                                     ଅଚଳ hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+  ପାଇଁ (unsigned row = 0; row < rows; row++)
+    ପାଇଁ (unsigned col = 0; col < class_ଗଣନା; col++)
+      ଯଦି (klass_mapping.has (col))
+        indexes.push (row * class_ଗଣନା + col);
 }
 
-HB_INTERNAL inline
-void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
-                                      const void *base,
+HB_INTERNAL ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
+                                      ଅଚଳ ଶୂନ୍ୟ *base,
                                       glyph_data_t offsets,
-                                      hb_array_t<const unsigned> indexes)
+                                      hb_array_t<ଅଚଳ unsigned> indexes)
 {
-  for (unsigned i : indexes)
+  ପାଇଁ (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    ଯଦି (offset)
+      StructAtOffset<ଅଚଳ Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
-void collect_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ collect_anchor_indexes (ଅଚଳ Coverage &coverage,
                              unsigned rows,
-                             unsigned class_count,
-                             const hb_set_t &glyphset,
-                             const hb_map_t &klass_mapping,
+                             unsigned class_ଗଣନା,
+                             ଅଚଳ hb_set_t &glyphset,
+                             ଅଚଳ hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
-          indexes.push (_.second * class_count + col);
+  ପାଇଁ (ଅଚଳ auto _ : hb_zip (coverage, hb_range (rows)))
+    ଯଦି (glyphset.has (_.first))
+      ପାଇଁ (unsigned col = 0; col < class_ଗଣନା; col++)
+        ଯଦି (klass_mapping.has (col))
+          indexes.push (_.second * class_ଗଣନା + col);
 }
 
-HB_INTERNAL inline
-void collect_subset_anchor_indexes (const Coverage &coverage,
+HB_INTERNAL ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ collect_subset_anchor_indexes (ଅଚଳ Coverage &coverage,
                                     unsigned rows,
-                                    unsigned class_count,
+                                    unsigned class_ଗଣନା,
                                     glyph_data_t offsets,
-                                    const hb_set_t &glyphset,
-                                    const hb_map_t &glyph_map,
-                                    const hb_map_t &klass_mapping,
+                                    ଅଚଳ hb_set_t &glyphset,
+                                    ଅଚଳ hb_map_t &glyph_map,
+                                    ଅଚଳ hb_map_t &klass_mapping,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
                                     hb_sorted_vector_t<unsigned> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  ପାଇଁ (ଅଚଳ auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    ଯଦି (!glyphset.has (_.first)) ଜାରି;
     unsigned row = _.second;
-    bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    ତାର୍କିକ non_empty = ମିଥ୍ୟା;
+    ପାଇଁ (unsigned col = 0; col < class_ଗଣନା; col++)
+      ଯଦି (klass_mapping.has (col) && offsets[row * class_ଗଣନା + col])
       {
-        non_empty = true;
-        break;
+        non_empty = ସତ୍ୟ;
+        ଭାଙ୍ଗ;
       }
-    if (!non_empty) continue;
+    ଯଦି (!non_empty) ଜାରି;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+    ପାଇଁ (unsigned col = 0; col < class_ଗଣନା; col++)
+      ଯଦି (klass_mapping.has (col))
+        indexes.push (row * class_ଗଣନା + col);
   }
 }
 
-template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+template <typename Types, typename Row_ଗଣନା=typename Types::HBUINT>
+ସଂରଚନା AnchorMatrix
 {
-  RowCount      rows;                   /* Number of rows */
+  Row_ଗଣନା      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  ସର୍ବସାଧାରଣ:
+  DEFINE_SIZE_ARRAY (ଆକାର (Row_ଗଣନା), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cols) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (!c->check_struct (ଏହି)) return_trace (ମିଥ୍ୟା);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    ଯଦି (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (ମିଥ୍ୟା);
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଗଣନା_2 = rows * cols;
+    ଯଦି (!c->check_array (matrixZ.arrayZ, ଗଣନା_2)) return_trace (ମିଥ୍ୟା);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ଯଦି (c->lazy_some_gpos)
+      return_trace (ସତ୍ୟ);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଗଣନା_2; i++)
+      ଯଦି (!matrixZ[i].sanitize (c, ଏହି)) return_trace (ମିଥ୍ୟା);
+    return_trace (ସତ୍ୟ);
   }
 
-  const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+  ଅଚଳ Anchor& get_anchor (hb_ot_apply_context_t *c,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା row, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା col,
+			    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cols, ତାର୍କିକ *found) ଅଚଳ
   {
-    *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    *found = ମିଥ୍ୟା;
+    ଯଦି (unlikely (row >= rows || col >= cols)) ଫେରନ୍ତୁ Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    ଯଦି (unlikely (!offset.sanitize (&c->sanitizer, ଏହି))) ଫେରନ୍ତୁ Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    ଫେରନ୍ତୁ ଏହି+offset;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  hb_array_t<const unsigned> indexes) const
+  ଶୂନ୍ୟ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  hb_array_t<ଅଚଳ unsigned> indexes) ଅଚଳ
   {
-    collect_anchor_variation_indices (c, this, matrixZ.arrayZ, indexes);
+    collect_anchor_variation_indices (c, ଏହି, matrixZ.arrayZ, indexes);
   }
 
   template <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
-               unsigned             num_rows,
-               Iterator             index_iter) const
+  ତାର୍କିକ subset (hb_subset_context_t *c,
+               unsigned             ଅଙ୍କ_rows,
+               Iterator             index_iter) ଅଚଳ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ଏହି);
 
-    auto *out = c->serializer->start_embed (this);
+    auto *out = c->serializer->start_embed (ଏହି);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    ଯଦି (!index_iter) return_trace (ମିଥ୍ୟା);
+    ଯଦି (unlikely (!c->serializer->extend_min (out)))  return_trace (ମିଥ୍ୟା);
 
-    out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    out->rows = ଅଙ୍କ_rows;
+    ପାଇଁ (ଅଚଳ unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
-      offset->serialize_subset (c, matrixZ[i], this);
+      ଯଦି (!offset) return_trace (ମିଥ୍ୟା);
+      offset->serialize_subset (c, matrixZ[i], ଏହି);
     }
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  ତାର୍କିକ offset_is_null (unsigned row, unsigned col, unsigned ଅଙ୍କ_cols) ଅଚଳ
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
-    auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    ଯଦି (unlikely (row >= rows || col >= ଅଙ୍କ_cols)) ଫେରନ୍ତୁ ସତ୍ୟ;
+    auto &offset = matrixZ[row * ଅଙ୍କ_cols + col];
+    ଫେରନ୍ତୁ offset.is_null ();
   }
 };
 

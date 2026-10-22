@@ -27,40 +27,40 @@
 #ifndef OT_NAME_NAME_HH
 #define OT_NAME_NAME_HH
 
-#include "../../hb-open-type.hh"
-#include "../../hb-ot-name-language.hh"
-#include "../../hb-aat-layout.hh"
-#include "../../hb-utf.hh"
+#ଅନ୍ତର୍ଭାଵ "../../hb-open-type.hh"
+#ଅନ୍ତର୍ଭାଵ "../../hb-ot-name-language.hh"
+#ଅନ୍ତର୍ଭାଵ "../../hb-aat-layout.hh"
+#ଅନ୍ତର୍ଭାଵ "../../hb-utf.hh"
 
 
-namespace OT {
+ନାମାକାଶ OT {
 
 template <typename in_utf_t, typename out_utf_t>
-inline unsigned int
+ଧାଡ଼ିଭିତରେ unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_ot_name_convert_utf (hb_bytes_t                       bytes,
-			unsigned int                    *text_size /* IN/OUT */,
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା                    *text_size /* IN/OUT */,
 			typename out_utf_t::codepoint_t *text /* OUT */)
 {
-  unsigned int src_len = bytes.length / sizeof (typename in_utf_t::codepoint_t);
-  const typename in_utf_t::codepoint_t *src = (const typename in_utf_t::codepoint_t *) bytes.arrayZ;
-  const typename in_utf_t::codepoint_t *src_end = src + src_len;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା src_len = bytes.length / ଆକାର (typename in_utf_t::codepoint_t);
+  ଅଚଳ typename in_utf_t::codepoint_t *src = (ଅଚଳ typename in_utf_t::codepoint_t *) bytes.arrayZ;
+  ଅଚଳ typename in_utf_t::codepoint_t *src_end = src + src_len;
 
   typename out_utf_t::codepoint_t *dst = text;
 
   hb_codepoint_t unicode;
-  const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+  ଅଚଳ hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
 
-  if (text_size && *text_size)
+  ଯଦି (text_size && *text_size)
   {
     (*text_size)--; /* Save room for NUL-termination. */
-    const typename out_utf_t::codepoint_t *dst_end = text + *text_size;
+    ଅଚଳ typename out_utf_t::codepoint_t *dst_end = text + *text_size;
 
-    while (src < src_end && dst < dst_end)
+    ଯେତେବେଳେ (src < src_end && dst < dst_end)
     {
-      const typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
+      ଅଚଳ typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
       typename out_utf_t::codepoint_t *dst_next = out_utf_t::encode (dst, dst_end, unicode);
-      if (dst_next == dst)
-	break; /* Out-of-room. */
+      ଯଦି (dst_next == dst)
+	ଭାଙ୍ଗ; /* Out-of-room. */
 
       dst = dst_next;
       src = src_next;
@@ -71,13 +71,13 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   }
 
   /* Accumulate length of rest. */
-  unsigned int dst_len = dst - text;
-  while (src < src_end)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା dst_len = dst - text;
+  ଯେତେବେଳେ (src < src_end)
   {
     src = in_utf_t::next (src, src_end, &unicode, replacement);
     dst_len += out_utf_t::encode_len (unicode);
   }
-  return dst_len;
+  ଫେରନ୍ତୁ dst_len;
 }
 
 #define entry_score var.u16[0]
@@ -92,82 +92,82 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
 
 #define UNSUPPORTED	42
 
-struct NameRecord
+ସଂରଚନା NameRecord
 {
-  hb_language_t language (hb_face_t *face) const
+  hb_language_t language (hb_face_t *face) ଅଚଳ
   {
 #ifndef HB_NO_OT_NAME_LANGUAGE
-    unsigned int p = platformID;
-    unsigned int l = languageID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା p = platformID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା l = languageID;
 
-    if (p == 3)
-      return _hb_ot_name_language_for_ms_code (l);
+    ଯଦି (p == 3)
+      ଫେରନ୍ତୁ _hb_ot_name_language_for_ms_code (l);
 
-    if (p == 1)
-      return _hb_ot_name_language_for_mac_code (l);
+    ଯଦି (p == 1)
+      ଫେରନ୍ତୁ _hb_ot_name_language_for_mac_code (l);
 
 #ifndef HB_NO_OT_NAME_LANGUAGE_AAT
-    if (p == 0)
-      return face->table.ltag->get_language (l);
+    ଯଦି (p == 0)
+      ଫେରନ୍ତୁ face->table.ltag->get_language (l);
 #endif
 
 #endif
-    return HB_LANGUAGE_INVALID;
+    ଫେରନ୍ତୁ HB_LANGUAGE_INVALID;
   }
 
-  uint16_t score () const
+  uint16_t score () ଅଚଳ
   {
     /* Same order as in cmap::find_best_subtable(). */
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା p = platformID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା e = encodingID;
 
     /* 32-bit. */
-    if (p == 3 && e == 10) return 0;
-    if (p == 0 && e ==  6) return 1;
-    if (p == 0 && e ==  4) return 2;
+    ଯଦି (p == 3 && e == 10) ଫେରନ୍ତୁ 0;
+    ଯଦି (p == 0 && e ==  6) ଫେରନ୍ତୁ 1;
+    ଯଦି (p == 0 && e ==  4) ଫେରନ୍ତୁ 2;
 
     /* 16-bit. */
-    if (p == 3 && e ==  1) return 3;
-    if (p == 0 && e ==  3) return 4;
-    if (p == 0 && e ==  2) return 5;
-    if (p == 0 && e ==  1) return 6;
-    if (p == 0 && e ==  0) return 7;
+    ଯଦି (p == 3 && e ==  1) ଫେରନ୍ତୁ 3;
+    ଯଦି (p == 0 && e ==  3) ଫେରନ୍ତୁ 4;
+    ଯଦି (p == 0 && e ==  2) ଫେରନ୍ତୁ 5;
+    ଯଦି (p == 0 && e ==  1) ଫେରନ୍ତୁ 6;
+    ଯଦି (p == 0 && e ==  0) ଫେରନ୍ତୁ 7;
 
     /* Symbol. */
-    if (p == 3 && e ==  0) return 8;
+    ଯଦି (p == 3 && e ==  0) ଫେରନ୍ତୁ 8;
 
     /* We treat all Mac Latin names as ASCII only. */
-    if (p == 1 && e ==  0) return 10; /* 10 is magic number :| */
+    ଯଦି (p == 1 && e ==  0) ଫେରନ୍ତୁ 10; /* 10 is magic number :| */
 
-    return UNSUPPORTED;
+    ଫେରନ୍ତୁ UNSUPPORTED;
   }
 
-  NameRecord* copy (hb_serialize_context_t *c, const void *base
+  NameRecord* copy (hb_serialize_context_t *c, ଅଚଳ ଶୂନ୍ୟ *base
 #ifdef HB_EXPERIMENTAL_API
-                    , const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
+                    , ଅଚଳ hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
 #endif
-		    ) const
+		    ) ଅଚଳ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ଏହି);
     HB_UNUSED auto snap = c->snapshot ();
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    auto *out = c->embed (ଏହି);
+    ଯଦି (unlikely (!out)) return_trace (nullptr);
 #ifdef HB_EXPERIMENTAL_API
     hb_ot_name_record_ids_t record_ids (platformID, encodingID, languageID, nameID);
     hb_bytes_t* name_bytes;
 
-    if (name_table_overrides->has (record_ids, &name_bytes)) {
+    ଯଦି (name_table_overrides->has (record_ids, &name_bytes)) {
       hb_bytes_t encoded_bytes = *name_bytes;
-      char *name_str_utf16_be = nullptr;
+      ଅକ୍ଷର *name_str_utf16_be = nullptr;
 
-      if (platformID != 1)
+      ଯଦି (platformID != 1)
       {
         unsigned text_size = hb_ot_name_convert_utf<hb_utf8_t, hb_utf16_be_t> (*name_bytes, nullptr, nullptr);
 
         text_size++; // needs to consider NULL terminator for use in hb_ot_name_convert_utf()
         unsigned byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        name_str_utf16_be = (char *) hb_calloc (byte_len, 1);
-        if (!name_str_utf16_be)
+        name_str_utf16_be = (ଅକ୍ଷର *) hb_calloc (byte_len, 1);
+        ଯଦି (!name_str_utf16_be)
         {
           c->revert (snap);
           return_trace (nullptr);
@@ -176,7 +176,7 @@ struct NameRecord
                                                           (hb_utf16_be_t::codepoint_t *) name_str_utf16_be);
 
         unsigned encoded_byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        if (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        ଯଦି (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           hb_free (name_str_utf16_be);
           return_trace (nullptr);
@@ -184,10 +184,10 @@ struct NameRecord
 
         encoded_bytes = hb_bytes_t (name_str_utf16_be, encoded_byte_len);
       }
-      else
+      ଅନ୍ୟଥା
       {
         // mac platform, copy the UTF-8 string(all ascii characters) as is
-        if (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        ଯଦି (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           return_trace (nullptr);
         }
@@ -196,10 +196,10 @@ struct NameRecord
       out->offset = 0;
       c->push ();
       encoded_bytes.copy (c);
-      c->add_link (out->offset, c->pop_pack (), hb_serialize_context_t::Tail, 0);
+      c->add_link (out->offset, c->କାଢ଼_pack (), hb_serialize_context_t::Tail, 0);
       hb_free (name_str_utf16_be);
     }
-    else
+    ଅନ୍ୟଥା
 #endif
     {
       out->offset.serialize_copy (c, offset, base, 0, hb_serialize_context_t::Tail, length);
@@ -207,42 +207,42 @@ struct NameRecord
     return_trace (out);
   }
 
-  bool isUnicode () const
+  ତାର୍କିକ isUnicode () ଅଚଳ
   {
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା p = platformID;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା e = encodingID;
 
-    return (p == 0 ||
+    ଫେରନ୍ତୁ (p == 0 ||
 	    (p == 3 && (e == 0 || e == 1 || e == 10)));
   }
 
-  static int cmp (const void *pa, const void *pb)
+  ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା cmp (ଅଚଳ ଶୂନ୍ୟ *pa, ଅଚଳ ଶୂନ୍ୟ *pb)
   {
-    const NameRecord *a = (const NameRecord *)pa;
-    const NameRecord *b = (const NameRecord *)pb;
+    ଅଚଳ NameRecord *a = (ଅଚଳ NameRecord *)pa;
+    ଅଚଳ NameRecord *b = (ଅଚଳ NameRecord *)pb;
 
-    if (a->platformID != b->platformID)
-      return a->platformID - b->platformID;
+    ଯଦି (a->platformID != b->platformID)
+      ଫେରନ୍ତୁ a->platformID - b->platformID;
 
-    if (a->encodingID != b->encodingID)
-      return a->encodingID - b->encodingID;
+    ଯଦି (a->encodingID != b->encodingID)
+      ଫେରନ୍ତୁ a->encodingID - b->encodingID;
 
-    if (a->languageID != b->languageID)
-      return a->languageID - b->languageID;
+    ଯଦି (a->languageID != b->languageID)
+      ଫେରନ୍ତୁ a->languageID - b->languageID;
 
-    if (a->nameID != b->nameID)
-      return a->nameID - b->nameID;
+    ଯଦି (a->nameID != b->nameID)
+      ଫେରନ୍ତୁ a->nameID - b->nameID;
 
-    if (a->length != b->length)
-      return a->length - b->length;
+    ଯଦି (a->length != b->length)
+      ଫେରନ୍ତୁ a->length - b->length;
 
-    return 0;
+    ଫେରନ୍ତୁ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c, ଅଚଳ ଶୂନ୍ୟ *base) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
 		  offset.sanitize (c, base, length));
   }
@@ -254,106 +254,106 @@ struct NameRecord
   HBUINT16	length;		/* String length (in bytes). */
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		offset;		/* String offset from start of storage area (in bytes). */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_STATIC (12);
 };
 
-static int
-_hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_ot_name_entry_cmp_ଚାବି (ଅଚଳ ଶୂନ୍ୟ *pa, ଅଚଳ ଶୂନ୍ୟ *pb, ତାର୍କିକ exact)
 {
-  const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
-  const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
+  ଅଚଳ hb_ot_name_entry_t *a = (ଅଚଳ hb_ot_name_entry_t *) pa;
+  ଅଚଳ hb_ot_name_entry_t *b = (ଅଚଳ hb_ot_name_entry_t *) pb;
 
   /* Compare by name_id, then language. */
 
-  if (a->name_id != b->name_id)
-    return a->name_id - b->name_id;
+  ଯଦି (a->name_id != b->name_id)
+    ଫେରନ୍ତୁ a->name_id - b->name_id;
 
-  if (a->language == b->language) return 0;
-  if (!a->language) return -1;
-  if (!b->language) return +1;
+  ଯଦି (a->language == b->language) ଫେରନ୍ତୁ 0;
+  ଯଦି (!a->language) ଫେରନ୍ତୁ -1;
+  ଯଦି (!b->language) ଫେରନ୍ତୁ +1;
 
-  const char *astr = hb_language_to_string (a->language);
-  const char *bstr = hb_language_to_string (b->language);
+  ଅଚଳ ଅକ୍ଷର *astr = hb_language_to_string (a->language);
+  ଅଚଳ ଅକ୍ଷର *bstr = hb_language_to_string (b->language);
 
   signed c = strcmp (astr, bstr);
 
   // 'a' is the user request, and 'b' is string in the font.
   // If eg. user asks for "en-us" and font has "en", approve.
-  if (!exact && c &&
+  ଯଦି (!exact && c &&
       hb_language_matches (b->language, a->language))
-    return 0;
+    ଫେରନ୍ତୁ 0;
 
-  return c;
+  ଫେରନ୍ତୁ c;
 }
 
-static int
-_hb_ot_name_entry_cmp (const void *pa, const void *pb)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+_hb_ot_name_entry_cmp (ଅଚଳ ଶୂନ୍ୟ *pa, ଅଚଳ ଶୂନ୍ୟ *pb)
 {
   /* Compare by name_id, then language, then score, then index. */
 
-  int v = _hb_ot_name_entry_cmp_key (pa, pb, true);
-  if (v)
-    return v;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା v = hb_ot_name_entry_cmp_ଚାବି (pa, pb, ସତ୍ୟ);
+  ଯଦି (v)
+    ଫେରନ୍ତୁ v;
 
-  const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
-  const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
+  ଅଚଳ hb_ot_name_entry_t *a = (ଅଚଳ hb_ot_name_entry_t *) pa;
+  ଅଚଳ hb_ot_name_entry_t *b = (ଅଚଳ hb_ot_name_entry_t *) pb;
 
-  if (a->entry_score != b->entry_score)
-    return a->entry_score - b->entry_score;
+  ଯଦି (a->entry_score != b->entry_score)
+    ଫେରନ୍ତୁ a->entry_score - b->entry_score;
 
-  if (a->entry_index != b->entry_index)
-    return a->entry_index - b->entry_index;
+  ଯଦି (a->entry_index != b->entry_index)
+    ଫେରନ୍ତୁ a->entry_index - b->entry_index;
 
-  return 0;
+  ଫେରନ୍ତୁ 0;
 }
 
-struct name
+ସଂରଚନା name
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_name;
+  ସ୍ଥିର constexpr hb_tag_t tableTag = HB_OT_TAG_name;
 
-  size_t get_size () const
-  { return min_size + count * nameRecordZ.item_size; }
+  size_t get_size () ଅଚଳ
+  { ଫେରନ୍ତୁ min_size + ଗଣନା_2 * nameRecordZ.item_size; }
 
   template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, const NameRecord &))>
-  bool serialize (hb_serialize_context_t *c,
+	    hb_requires (hb_is_source_of (Iterator, ଅଚଳ NameRecord &))>
+  ତାର୍କିକ serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  const void *src_string_pool
+		  ଅଚଳ ଶୂନ୍ୟ *src_string_pool
 #ifdef HB_EXPERIMENTAL_API
-                  , const hb_vector_t<hb_ot_name_record_ids_t>& insert_name_records
-		  , const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
+                  , ଅଚଳ hb_vector_t<hb_ot_name_record_ids_t>& ଭର୍ତ୍ତି_name_records
+		  , ଅଚଳ hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
 #endif
 		  )
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ଏହି);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    ଯଦି (unlikely (!c->extend_min ((*ଏହି))))  return_trace (ମିଥ୍ୟା);
 
-    unsigned total_count = it.len ()
+    unsigned total_ଗଣନା = it.len ()
 #ifdef HB_EXPERIMENTAL_API
-        + insert_name_records.length
+        + ଭର୍ତ୍ତି_name_records.length
 #endif
         ;
-    this->format = 0;
-    if (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return false;
+    ଏହି->format = 0;
+    ଯଦି (!c->check_assign (ଏହି->ଗଣନା_2, total_ଗଣନା, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    NameRecord *name_records = (NameRecord *) hb_calloc (total_count, NameRecord::static_size);
-    if (unlikely (!name_records)) return_trace (false);
+    NameRecord *name_records = (NameRecord *) hb_calloc (total_ଗଣନା, NameRecord::static_size);
+    ଯଦି (unlikely (!name_records)) return_trace (ମିଥ୍ୟା);
 
-    hb_array_t<NameRecord> records (name_records, total_count);
+    hb_array_t<NameRecord> records (name_records, total_ଗଣନା);
 
-    for (const NameRecord& record : it)
+    ପାଇଁ (ଅଚଳ NameRecord& record : it)
     {
       hb_memcpy (name_records, &record, NameRecord::static_size);
       name_records++;
     }
 
 #ifdef HB_EXPERIMENTAL_API
-    for (unsigned i = 0; i < insert_name_records.length; i++)
+    ପାଇଁ (unsigned i = 0; i < ଭର୍ତ୍ତି_name_records.length; i++)
     {
-      const hb_ot_name_record_ids_t& ids = insert_name_records[i];
+      ଅଚଳ hb_ot_name_record_ids_t& ids = ଭର୍ତ୍ତି_name_records[i];
       NameRecord record;
       record.platformID = ids.platform_id;
       record.encodingID = ids.encoding_id;
@@ -377,52 +377,52 @@ struct name
     hb_free (records.arrayZ);
 
 
-    if (unlikely (c->ran_out_of_room ())) return_trace (false);
+    ଯଦି (unlikely (c->ran_out_of_room ())) return_trace (ମିଥ୍ୟା);
 
-    this->stringOffset = c->length ();
+    ଏହି->stringOffset = c->length ();
 
-    return_trace (true);
+    return_trace (ସତ୍ୟ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    auto *name_prime = c->serializer->start_embed<name> ();
+    auto *name_ମୌଳିକ = c->serializer->start_embed<name> ();
 
 #ifdef HB_EXPERIMENTAL_API
-    const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides =
+    ଅଚଳ hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides =
         &c->plan->name_table_overrides;
 #endif
 
     auto it =
-    + nameRecordZ.as_array (count)
+    + nameRecordZ.as_array (ଗଣନା_2)
     | hb_filter (c->plan->name_ids, &NameRecord::nameID)
     | hb_filter (c->plan->name_languages, &NameRecord::languageID)
-    | hb_filter ([&] (const NameRecord& namerecord) {
-      return
+    | hb_filter ([&] (ଅଚଳ NameRecord& namerecord) {
+      ଫେରନ୍ତୁ
           (c->plan->flags & HB_SUBSET_FLAGS_NAME_LEGACY)
           || namerecord.isUnicode ();
     })
 #ifdef HB_EXPERIMENTAL_API
-    | hb_filter ([&] (const NameRecord& namerecord) {
-      if (name_table_overrides->is_empty ())
-        return true;
+    | hb_filter ([&] (ଅଚଳ NameRecord& namerecord) {
+      ଯଦି (name_table_overrides->is_empty ())
+        ଫେରନ୍ତୁ ସତ୍ୟ;
       hb_ot_name_record_ids_t rec_ids (namerecord.platformID,
                                        namerecord.encodingID,
                                        namerecord.languageID,
                                        namerecord.nameID);
 
       hb_bytes_t *p;
-      if (name_table_overrides->has (rec_ids, &p) &&
+      ଯଦି (name_table_overrides->has (rec_ids, &p) &&
           (*p).length == 0)
-        return false;
-      return true;
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     })
 #endif
     ;
 
 #ifdef HB_EXPERIMENTAL_API
     hb_hashmap_t<hb_ot_name_record_ids_t, unsigned> retained_name_record_ids;
-    for (const NameRecord& rec : it)
+    ପାଇଁ (ଅଚଳ NameRecord& rec : it)
     {
       hb_ot_name_record_ids_t rec_ids (rec.platformID,
                                        rec.encodingID,
@@ -431,65 +431,65 @@ struct name
       retained_name_record_ids.set (rec_ids, 1);
     }
 
-    hb_vector_t<hb_ot_name_record_ids_t> insert_name_records;
-    if (!name_table_overrides->is_empty ())
+    hb_vector_t<hb_ot_name_record_ids_t> ଭର୍ତ୍ତି_name_records;
+    ଯଦି (!name_table_overrides->is_empty ())
     {
-      if (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
-        return false;
-      for (const auto& record_ids : name_table_overrides->keys ())
+      ଯଦି (unlikely (!ଭର୍ତ୍ତି_name_records.alloc (name_table_overrides->get_population (), ସତ୍ୟ)))
+        ଫେରନ୍ତୁ ମିଥ୍ୟା;
+      ପାଇଁ (ଅଚଳ auto& record_ids : name_table_overrides->ଚାବିଗୁଡ଼ିକ ())
       {
-        if (name_table_overrides->get (record_ids).length == 0)
-          continue;
-        if (retained_name_record_ids.has (record_ids))
-          continue;
-        insert_name_records.push (record_ids);
+        ଯଦି (name_table_overrides->get (record_ids).length == 0)
+          ଜାରି;
+        ଯଦି (retained_name_record_ids.has (record_ids))
+          ଜାରି;
+        ଭର୍ତ୍ତି_name_records.push (record_ids);
       }
     }
 #endif
 
-    return name_prime->serialize (c->serializer, it,
-				  std::addressof (this + stringOffset)
+    ଫେରନ୍ତୁ name_ମୌଳିକ->serialize (c->serializer, it,
+				  std::addressof (ଏହି + stringOffset)
 #ifdef HB_EXPERIMENTAL_API
-				  , insert_name_records
+				  , ଭର୍ତ୍ତି_name_records
 				  , name_table_overrides
 #endif
 				  );
   }
 
-  bool sanitize_records (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize_records (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    const void *string_pool = (this+stringOffset).arrayZ;
-    return_trace (nameRecordZ.sanitize (c, count, string_pool));
+    TRACE_SANITIZE (ଏହି);
+    ଅଚଳ ଶୂନ୍ୟ *string_pool = (ଏହି+stringOffset).arrayZ;
+    return_trace (nameRecordZ.sanitize (c, ଗଣନା_2, string_pool));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ଏହି);
+    return_trace (c->check_struct (ଏହି) &&
 		  hb_barrier () &&
 		  likely (format == 0 || format == 1) &&
-		  c->check_array (nameRecordZ.arrayZ, count) &&
-		  c->check_range (this, stringOffset) &&
+		  c->check_array (nameRecordZ.arrayZ, ଗଣନା_2) &&
+		  c->check_range (ଏହି, stringOffset) &&
 		  sanitize_records (c));
   }
 
-  struct accelerator_t
+  ସଂରଚନା accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      this->table = hb_sanitize_context_t ().reference_table<name> (face);
-      assert (this->table.get_length () >= this->table->stringOffset);
-      this->pool = (const char *) (const void *) (this->table+this->table->stringOffset);
-      this->pool_len = this->table.get_length () - this->table->stringOffset;
-      const hb_array_t<const NameRecord> all_names (this->table->nameRecordZ.arrayZ,
-						    this->table->count);
+      ଏହି->table = hb_sanitize_context_t ().reference_table<name> (face);
+      ପ୍ରତିଜ୍ଞା (ଏହି->table.get_length () >= ଏହି->table->stringOffset);
+      ଏହି->pool = (ଅଚଳ ଅକ୍ଷର *) (ଅଚଳ ଶୂନ୍ୟ *) (ଏହି->table+ଏହି->table->stringOffset);
+      ଏହି->pool_len = ଏହି->table.get_length () - ଏହି->table->stringOffset;
+      ଅଚଳ hb_array_t<ଅଚଳ NameRecord> all_names (ଏହି->table->nameRecordZ.arrayZ,
+						    ଏହି->table->ଗଣନା_2);
 
-      this->names.alloc_exact (all_names.length);
+      ଏହି->names.alloc_exact (all_names.length);
 
-      for (unsigned int i = 0; i < all_names.length; i++)
+      ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < all_names.length; i++)
       {
-	hb_ot_name_entry_t *entry = this->names.push ();
+	hb_ot_name_entry_t *entry = ଏହି->names.push ();
 
 	entry->name_id = all_names[i].nameID;
 	entry->language = all_names[i].language (face);
@@ -497,89 +497,89 @@ struct name
 	entry->entry_index = i;
       }
 
-      this->names.qsort (_hb_ot_name_entry_cmp);
+      ଏହି->names.qsort (_hb_ot_name_entry_cmp);
       /* Walk and pick best only for each name_id,language pair,
        * while dropping unsupported encodings. */
-      unsigned int j = 0;
-      for (unsigned int i = 0; i < this->names.length; i++)
+      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା j = 0;
+      ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଏହି->names.length; i++)
       {
-	if (this->names[i].entry_score == UNSUPPORTED ||
-	    this->names[i].language == HB_LANGUAGE_INVALID)
-	  continue;
-	if (i &&
-	    this->names[i - 1].name_id  == this->names[i].name_id &&
-	    this->names[i - 1].language == this->names[i].language)
-	  continue;
-	this->names[j++] = this->names[i];
+	ଯଦି (ଏହି->names[i].entry_score == UNSUPPORTED ||
+	    ଏହି->names[i].language == HB_LANGUAGE_INVALID)
+	  ଜାରି;
+	ଯଦି (i &&
+	    ଏହି->names[i - 1].name_id  == ଏହି->names[i].name_id &&
+	    ଏହି->names[i - 1].language == ଏହି->names[i].language)
+	  ଜାରି;
+	ଏହି->names[j++] = ଏହି->names[i];
       }
-      this->names.resize (j);
+      ଏହି->names.resize (j);
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      ଏହି->table.destroy ();
     }
 
-    int get_index (hb_ot_name_id_t  name_id,
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_index (hb_ot_name_id_t  name_id,
 		   hb_language_t    language,
-		   unsigned int    *width=nullptr) const
+		   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    *width=nullptr) ଅଚଳ
     {
-      const hb_ot_name_entry_t key = {name_id, {0}, language};
-      const hb_ot_name_entry_t *entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
-						    this->names.length,
-						    sizeof (hb_ot_name_entry_t),
-						    _hb_ot_name_entry_cmp_key,
-						    true);
+      ଅଚଳ hb_ot_name_entry_t key = {name_id, {0}, language};
+      ଅଚଳ hb_ot_name_entry_t *entry = hb_bsearch (key, (ଅଚଳ hb_ot_name_entry_t *) ଏହି->names,
+						    ଏହି->names.length,
+						    ଆକାର (hb_ot_name_entry_t),
+						    hb_ot_name_entry_cmp_ଚାବି,
+						    ସତ୍ୟ);
 
-      if (!entry)
+      ଯଦି (!entry)
       {
-	entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
-			    this->names.length,
-			    sizeof (hb_ot_name_entry_t),
-			    _hb_ot_name_entry_cmp_key,
-			    false);
+	entry = hb_bsearch (key, (ଅଚଳ hb_ot_name_entry_t *) ଏହି->names,
+			    ଏହି->names.length,
+			    ଆକାର (hb_ot_name_entry_t),
+			    hb_ot_name_entry_cmp_ଚାବି,
+			    ମିଥ୍ୟା);
       }
 
-      if (!entry)
-	return -1;
+      ଯଦି (!entry)
+	ଫେରନ୍ତୁ -1;
 
-      if (width)
+      ଯଦି (width)
 	*width = entry->entry_score < 10 ? 2 : 1;
 
-      return entry->entry_index;
+      ଫେରନ୍ତୁ entry->entry_index;
     }
 
-    hb_bytes_t get_name (unsigned int idx) const
+    hb_bytes_t get_name (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା idx) ଅଚଳ
     {
-      const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
-      const NameRecord &record = all_names[idx];
-      const hb_bytes_t string_pool (pool, pool_len);
-      return string_pool.sub_array (record.offset, record.length);
+      ଅଚଳ hb_array_t<ଅଚଳ NameRecord> all_names (table->nameRecordZ.arrayZ, table->ଗଣନା_2);
+      ଅଚଳ NameRecord &record = all_names[idx];
+      ଅଚଳ hb_bytes_t string_pool (pool, pool_len);
+      ଫେରନ୍ତୁ string_pool.sub_array (record.offset, record.length);
     }
 
-    private:
-    const char *pool;
-    unsigned int pool_len;
-    public:
+    ବ୍ୟକ୍ତିଗତ:
+    ଅଚଳ ଅକ୍ଷର *pool;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା pool_len;
+    ସର୍ବସାଧାରଣ:
     hb_blob_ptr_t<name> table;
     hb_vector_t<hb_ot_name_entry_t> names;
   };
 
-  public:
+  ସର୍ବସାଧାରଣ:
   /* We only implement format 0 for now. */
   HBUINT16	format;		/* Format selector (=0/1). */
-  HBUINT16	count;		/* Number of name records. */
+  HBUINT16	ଗଣନା_2;		/* Number of name records. */
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		stringOffset;	/* Offset to start of string storage (from start of table). */
   UnsizedArrayOf<NameRecord>
 		nameRecordZ;	/* The name records where count is the number of records. */
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_ARRAY (6, nameRecordZ);
 };
 
 #undef entry_index
 #undef entry_score
 
-struct name_accelerator_t : name::accelerator_t {
+ସଂରଚନା name_accelerator_t : name::accelerator_t {
   name_accelerator_t (hb_face_t *face) : name::accelerator_t (face) {}
 };
 

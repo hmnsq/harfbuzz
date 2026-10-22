@@ -27,11 +27,11 @@
 #ifndef HB_OT_SHAPER_HH
 #define HB_OT_SHAPER_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-shape-normalize.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shape.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shape-normalize.hh"
 
 
 /* buffer var allocations, used by all OT shapers */
@@ -41,7 +41,7 @@
 
 #define HB_OT_SHAPE_MAX_COMBINING_MARKS 32
 
-enum hb_ot_shape_zero_width_marks_type_t {
+ଗଣନା hb_ot_shape_zero_width_marks_type_t {
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE
@@ -51,7 +51,7 @@ enum hb_ot_shape_zero_width_marks_type_t {
 /* Master OT shaper list */
 #define HB_OT_SHAPERS_IMPLEMENT_SHAPERS \
   HB_OT_SHAPER_IMPLEMENT (arabic) \
-  HB_OT_SHAPER_IMPLEMENT (default) \
+  HB_OT_SHAPER_IMPLEMENT (ପୂର୍ବନିର୍ଦ୍ଧାରିତ) \
   HB_OT_SHAPER_IMPLEMENT (dumber) \
   HB_OT_SHAPER_IMPLEMENT (hangul) \
   HB_OT_SHAPER_IMPLEMENT (hebrew) \
@@ -64,14 +64,14 @@ enum hb_ot_shape_zero_width_marks_type_t {
   /* ^--- Add new shapers here; keep sorted. */
 
 
-struct hb_ot_shaper_t
+ସଂରଚନା hb_ot_shaper_t
 {
   /* collect_features()
    * Called during shape_plan().
    * Shapers should use plan->map to add their features and callbacks.
    * May be NULL.
    */
-  void (*collect_features) (hb_ot_shape_planner_t *plan);
+  ଶୂନ୍ୟ (*collect_features) (hb_ot_shape_planner_t *plan);
 
   /* override_features()
    * Called during shape_plan().
@@ -79,7 +79,7 @@ struct hb_ot_shaper_t
    * common features are added.
    * May be NULL.
    */
-  void (*override_features) (hb_ot_shape_planner_t *plan);
+  ଶୂନ୍ୟ (*override_features) (hb_ot_shape_planner_t *plan);
 
 
   /* data_create()
@@ -87,7 +87,7 @@ struct hb_ot_shaper_t
    * Whatever shapers return will be accessible through plan->data later.
    * If nullptr is returned, means a plan failure.
    */
-  void *(*data_create) (const hb_ot_shape_plan_t *plan);
+  ଶୂନ୍ୟ *(*data_create) (ଅଚଳ hb_ot_shape_plan_t *plan);
 
   /* data_destroy()
    * Called when the shape_plan is being destroyed.
@@ -95,7 +95,7 @@ struct hb_ot_shaper_t
    * If nullptr is returned, means a plan failure.
    * May be NULL.
    */
-  void (*data_destroy) (void *data);
+  ଶୂନ୍ୟ (*data_destroy) (ଶୂନ୍ୟ *data);
 
 
   /* preprocess_text()
@@ -103,7 +103,7 @@ struct hb_ot_shaper_t
    * Shapers can use to modify text before shaping starts.
    * May be NULL.
    */
-  void (*preprocess_text) (const hb_ot_shape_plan_t *plan,
+  ଶୂନ୍ୟ (*preprocess_text) (ଅଚଳ hb_ot_shape_plan_t *plan,
 			   hb_buffer_t              *buffer,
 			   hb_font_t                *font);
 
@@ -112,7 +112,7 @@ struct hb_ot_shaper_t
    * Shapers can use to modify glyphs after shaping ends.
    * May be NULL.
    */
-  void (*postprocess_glyphs) (const hb_ot_shape_plan_t *plan,
+  ଶୂନ୍ୟ (*postprocess_glyphs) (ଅଚଳ hb_ot_shape_plan_t *plan,
 			      hb_buffer_t              *buffer,
 			      hb_font_t                *font);
 
@@ -121,7 +121,7 @@ struct hb_ot_shaper_t
    * Called during shape()'s normalization.
    * May be NULL.
    */
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  ତାର୍କିକ (*decompose) (ଅଚଳ hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
@@ -130,7 +130,7 @@ struct hb_ot_shaper_t
    * Called during shape()'s normalization.
    * May be NULL.
    */
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  ତାର୍କିକ (*compose) (ଅଚଳ hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);
@@ -141,7 +141,7 @@ struct hb_ot_shaper_t
    * Shapers may NOT modify characters.
    * May be NULL.
    */
-  void (*setup_masks) (const hb_ot_shape_plan_t *plan,
+  ଶୂନ୍ୟ (*setup_masks) (ଅଚଳ hb_ot_shape_plan_t *plan,
 		       hb_buffer_t              *buffer,
 		       hb_font_t                *font);
 
@@ -150,10 +150,10 @@ struct hb_ot_shaper_t
    * Shapers can use to modify ordering of combining marks.
    * May be NULL.
    */
-  void (*reorder_marks) (const hb_ot_shape_plan_t *plan,
+  ଶୂନ୍ୟ (*reorder_marks) (ଅଚଳ hb_ot_shape_plan_t *plan,
 			 hb_buffer_t              *buffer,
-			 unsigned int              start,
-			 unsigned int              end);
+			 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା              start,
+			 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା              end);
 
   /* gpos_tag()
    * If not HB_TAG_NONE, then must match found GPOS script tag for
@@ -165,89 +165,89 @@ struct hb_ot_shaper_t
 
   hb_ot_shape_zero_width_marks_type_t zero_width_marks;
 
-  bool fallback_position;
+  ତାର୍କିକ fallback_position;
 };
 
-#define HB_OT_SHAPER_IMPLEMENT(name) extern HB_INTERNAL const hb_ot_shaper_t _hb_ot_shaper_##name;
+#define HB_OT_SHAPER_IMPLEMENT(name) ବାହ୍ୟ HB_INTERNAL ଅଚଳ hb_ot_shaper_t _hb_ot_shaper_##name;
 HB_OT_SHAPERS_IMPLEMENT_SHAPERS
 #undef HB_OT_SHAPER_IMPLEMENT
 
 
-static inline const hb_ot_shaper_t *
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଅଚଳ hb_ot_shaper_t *
 hb_ot_shaper_categorize (hb_script_t script,
 			 hb_direction_t direction,
 			 hb_tag_t gsub_script)
 {
-  switch ((hb_tag_t) script)
+  ବାଛ ((hb_tag_t) script)
   {
-    default:
-      return &_hb_ot_shaper_default;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+      ଫେରନ୍ତୁ &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
+    ସ୍ଥିତି HB_SCRIPT_ARABIC:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
+    ସ୍ଥିତି HB_SCRIPT_SYRIAC:
 
       /* For Arabic script, use the Arabic shaper even if no OT script tag was found.
        * This is because we do fallback shaping for Arabic script (and not others).
        * But note that Arabic shaping is applicable only to horizontal layout; for
        * vertical text, just use the generic shaper instead. */
-      if ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
+      ଯଦି ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
 	  HB_DIRECTION_IS_HORIZONTAL (direction))
-	return &_hb_ot_shaper_arabic;
-      else
-	return &_hb_ot_shaper_default;
+	ଫେରନ୍ତୁ &_hb_ot_shaper_arabic;
+      ଅନ୍ୟଥା
+	ଫେରନ୍ତୁ &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_THAI:
-    case HB_SCRIPT_LAO:
+    ସ୍ଥିତି HB_SCRIPT_THAI:
+    ସ୍ଥିତି HB_SCRIPT_LAO:
 
-      return &_hb_ot_shaper_thai;
-
-
-    /* Unicode-1.1 additions */
-    case HB_SCRIPT_HANGUL:
-
-      return &_hb_ot_shaper_hangul;
+      ଫେରନ୍ତୁ &_hb_ot_shaper_thai;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_HEBREW:
+    ସ୍ଥିତି HB_SCRIPT_HANGUL:
 
-      return &_hb_ot_shaper_hebrew;
+      ଫେରନ୍ତୁ &_hb_ot_shaper_hangul;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_BENGALI:
-    case HB_SCRIPT_DEVANAGARI:
-    case HB_SCRIPT_GUJARATI:
-    case HB_SCRIPT_GURMUKHI:
-    case HB_SCRIPT_KANNADA:
-    case HB_SCRIPT_MALAYALAM:
-    case HB_SCRIPT_ORIYA:
-    case HB_SCRIPT_TAMIL:
-    case HB_SCRIPT_TELUGU:
+    ସ୍ଥିତି HB_SCRIPT_HEBREW:
+
+      ଫେରନ୍ତୁ &_hb_ot_shaper_hebrew;
+
+
+    /* Unicode-1.1 additions */
+    ସ୍ଥିତି HB_SCRIPT_BENGALI:
+    ସ୍ଥିତି HB_SCRIPT_DEVANAGARI:
+    ସ୍ଥିତି HB_SCRIPT_GUJARATI:
+    ସ୍ଥିତି HB_SCRIPT_GURMUKHI:
+    ସ୍ଥିତି HB_SCRIPT_KANNADA:
+    ସ୍ଥିତି HB_SCRIPT_MALAYALAM:
+    ସ୍ଥିତି HB_SCRIPT_ORIYA:
+    ସ୍ଥିତି HB_SCRIPT_TAMIL:
+    ସ୍ଥିତି HB_SCRIPT_TELUGU:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        *
        * If it's indy3 tag, send to USE. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ଯଦି (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else if ((gsub_script & 0x000000FF) == '3')
-	return &_hb_ot_shaper_use;
-      else
-	return &_hb_ot_shaper_indic;
+	ଫେରନ୍ତୁ &_hb_ot_shaper_default;
+      ଅନ୍ୟଥା ଯଦି ((gsub_script & 0x000000FF) == '3')
+	ଫେରନ୍ତୁ &_hb_ot_shaper_use;
+      ଅନ୍ୟଥା
+	ଫେରନ୍ତୁ &_hb_ot_shaper_indic;
 
-    case HB_SCRIPT_KHMER:
-	return &_hb_ot_shaper_khmer;
+    ସ୍ଥିତି HB_SCRIPT_KHMER:
+	ଫେରନ୍ତୁ &_hb_ot_shaper_khmer;
 
-    case HB_SCRIPT_MYANMAR:
+    ସ୍ଥିତି HB_SCRIPT_MYANMAR:
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
@@ -255,168 +255,168 @@ hb_ot_shaper_categorize (hb_script_t script,
        * If designer designed for 'mymr' tag, also send to default
        * shaper.  That's tag used from before Myanmar shaping spec
        * was developed.  The shaping spec uses 'mym2' tag. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ଯଦି (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n') ||
 	  gsub_script == HB_TAG ('m','y','m','r'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_myanmar;
+	ଫେରନ୍ତୁ &_hb_ot_shaper_default;
+      ଅନ୍ୟଥା
+	ଫେରନ୍ତୁ &_hb_ot_shaper_myanmar;
 
 
 #ifndef HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
 #define HB_SCRIPT_MYANMAR_ZAWGYI	((hb_script_t) HB_TAG ('Q','a','a','g'))
-    case HB_SCRIPT_MYANMAR_ZAWGYI:
+    ସ୍ଥିତି HB_SCRIPT_MYANMAR_ZAWGYI:
     /* https://github.com/harfbuzz/harfbuzz/issues/1162 */
 
-      return &_hb_ot_shaper_myanmar_zawgyi;
+      ଫେରନ୍ତୁ &_hb_ot_shaper_myanmar_zawgyi;
 #endif
 
 
     /* Unicode-2.0 additions */
-    case HB_SCRIPT_TIBETAN:
+    ସ୍ଥିତି HB_SCRIPT_TIBETAN:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_SINHALA:
+    ସ୍ଥିତି HB_SCRIPT_MONGOLIAN:
+    ସ୍ଥିତି HB_SCRIPT_SINHALA:
 
     /* Unicode-3.2 additions */
-    case HB_SCRIPT_BUHID:
-    case HB_SCRIPT_HANUNOO:
-    case HB_SCRIPT_TAGALOG:
-    case HB_SCRIPT_TAGBANWA:
+    ସ୍ଥିତି HB_SCRIPT_BUHID:
+    ସ୍ଥିତି HB_SCRIPT_HANUNOO:
+    ସ୍ଥିତି HB_SCRIPT_TAGALOG:
+    ସ୍ଥିତି HB_SCRIPT_TAGBANWA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_LIMBU:
-    case HB_SCRIPT_TAI_LE:
+    ସ୍ଥିତି HB_SCRIPT_LIMBU:
+    ସ୍ଥିତି HB_SCRIPT_TAI_LE:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_BUGINESE:
-    case HB_SCRIPT_KHAROSHTHI:
-    case HB_SCRIPT_SYLOTI_NAGRI:
-    case HB_SCRIPT_TIFINAGH:
+    ସ୍ଥିତି HB_SCRIPT_BUGINESE:
+    ସ୍ଥିତି HB_SCRIPT_KHAROSHTHI:
+    ସ୍ଥିତି HB_SCRIPT_SYLOTI_NAGRI:
+    ସ୍ଥିତି HB_SCRIPT_TIFINAGH:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_BALINESE:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_PHAGS_PA:
+    ସ୍ଥିତି HB_SCRIPT_BALINESE:
+    ସ୍ଥିତି HB_SCRIPT_NKO:
+    ସ୍ଥିତି HB_SCRIPT_PHAGS_PA:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_CHAM:
-    case HB_SCRIPT_KAYAH_LI:
-    case HB_SCRIPT_LEPCHA:
-    case HB_SCRIPT_REJANG:
-    case HB_SCRIPT_SAURASHTRA:
-    case HB_SCRIPT_SUNDANESE:
+    ସ୍ଥିତି HB_SCRIPT_CHAM:
+    ସ୍ଥିତି HB_SCRIPT_KAYAH_LI:
+    ସ୍ଥିତି HB_SCRIPT_LEPCHA:
+    ସ୍ଥିତି HB_SCRIPT_REJANG:
+    ସ୍ଥିତି HB_SCRIPT_SAURASHTRA:
+    ସ୍ଥିତି HB_SCRIPT_SUNDANESE:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
-    case HB_SCRIPT_JAVANESE:
-    case HB_SCRIPT_KAITHI:
-    case HB_SCRIPT_MEETEI_MAYEK:
-    case HB_SCRIPT_TAI_THAM:
-    case HB_SCRIPT_TAI_VIET:
+    ସ୍ଥିତି HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
+    ସ୍ଥିତି HB_SCRIPT_JAVANESE:
+    ସ୍ଥିତି HB_SCRIPT_KAITHI:
+    ସ୍ଥିତି HB_SCRIPT_MEETEI_MAYEK:
+    ସ୍ଥିତି HB_SCRIPT_TAI_THAM:
+    ସ୍ଥିତି HB_SCRIPT_TAI_VIET:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_BATAK:
-    case HB_SCRIPT_BRAHMI:
-    case HB_SCRIPT_MANDAIC:
+    ସ୍ଥିତି HB_SCRIPT_BATAK:
+    ସ୍ଥିତି HB_SCRIPT_BRAHMI:
+    ସ୍ଥିତି HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_CHAKMA:
-    case HB_SCRIPT_MIAO:
-    case HB_SCRIPT_SHARADA:
-    case HB_SCRIPT_TAKRI:
+    ସ୍ଥିତି HB_SCRIPT_CHAKMA:
+    ସ୍ଥିତି HB_SCRIPT_MIAO:
+    ସ୍ଥିତି HB_SCRIPT_SHARADA:
+    ସ୍ଥିତି HB_SCRIPT_TAKRI:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_DUPLOYAN:
-    case HB_SCRIPT_GRANTHA:
-    case HB_SCRIPT_KHOJKI:
-    case HB_SCRIPT_KHUDAWADI:
-    case HB_SCRIPT_MAHAJANI:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MODI:
-    case HB_SCRIPT_PAHAWH_HMONG:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SIDDHAM:
-    case HB_SCRIPT_TIRHUTA:
+    ସ୍ଥିତି HB_SCRIPT_DUPLOYAN:
+    ସ୍ଥିତି HB_SCRIPT_GRANTHA:
+    ସ୍ଥିତି HB_SCRIPT_KHOJKI:
+    ସ୍ଥିତି HB_SCRIPT_KHUDAWADI:
+    ସ୍ଥିତି HB_SCRIPT_MAHAJANI:
+    ସ୍ଥିତି HB_SCRIPT_MANICHAEAN:
+    ସ୍ଥିତି HB_SCRIPT_MODI:
+    ସ୍ଥିତି HB_SCRIPT_PAHAWH_HMONG:
+    ସ୍ଥିତି HB_SCRIPT_PSALTER_PAHLAVI:
+    ସ୍ଥିତି HB_SCRIPT_SIDDHAM:
+    ସ୍ଥିତି HB_SCRIPT_TIRHUTA:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_AHOM:
-    case HB_SCRIPT_MULTANI:
+    ସ୍ଥିତି HB_SCRIPT_AHOM:
+    ସ୍ଥିତି HB_SCRIPT_MULTANI:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_BHAIKSUKI:
-    case HB_SCRIPT_MARCHEN:
-    case HB_SCRIPT_NEWA:
+    ସ୍ଥିତି HB_SCRIPT_ADLAM:
+    ସ୍ଥିତି HB_SCRIPT_BHAIKSUKI:
+    ସ୍ଥିତି HB_SCRIPT_MARCHEN:
+    ସ୍ଥିତି HB_SCRIPT_NEWA:
 
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_MASARAM_GONDI:
-    case HB_SCRIPT_SOYOMBO:
-    case HB_SCRIPT_ZANABAZAR_SQUARE:
+    ସ୍ଥିତି HB_SCRIPT_MASARAM_GONDI:
+    ସ୍ଥିତି HB_SCRIPT_SOYOMBO:
+    ସ୍ଥିତି HB_SCRIPT_ZANABAZAR_SQUARE:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_DOGRA:
-    case HB_SCRIPT_GUNJALA_GONDI:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MAKASAR:
-    case HB_SCRIPT_MEDEFAIDRIN:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    ସ୍ଥିତି HB_SCRIPT_DOGRA:
+    ସ୍ଥିତି HB_SCRIPT_GUNJALA_GONDI:
+    ସ୍ଥିତି HB_SCRIPT_HANIFI_ROHINGYA:
+    ସ୍ଥିତି HB_SCRIPT_MAKASAR:
+    ସ୍ଥିତି HB_SCRIPT_MEDEFAIDRIN:
+    ସ୍ଥିତି HB_SCRIPT_OLD_SOGDIAN:
+    ସ୍ଥିତି HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
-    case HB_SCRIPT_NANDINAGARI:
-    case HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
-    case HB_SCRIPT_WANCHO:
+    ସ୍ଥିତି HB_SCRIPT_ELYMAIC:
+    ସ୍ଥିତି HB_SCRIPT_NANDINAGARI:
+    ସ୍ଥିତି HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
+    ସ୍ଥିତି HB_SCRIPT_WANCHO:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_DIVES_AKURU:
-    case HB_SCRIPT_KHITAN_SMALL_SCRIPT:
-    case HB_SCRIPT_YEZIDI:
+    ସ୍ଥିତି HB_SCRIPT_CHORASMIAN:
+    ସ୍ଥିତି HB_SCRIPT_DIVES_AKURU:
+    ସ୍ଥିତି HB_SCRIPT_KHITAN_SMALL_SCRIPT:
+    ସ୍ଥିତି HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_CYPRO_MINOAN:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_TANGSA:
-    case HB_SCRIPT_TOTO:
-    case HB_SCRIPT_VITHKUQI:
+    ସ୍ଥିତି HB_SCRIPT_CYPRO_MINOAN:
+    ସ୍ଥିତି HB_SCRIPT_OLD_UYGHUR:
+    ସ୍ଥିତି HB_SCRIPT_TANGSA:
+    ସ୍ଥିତି HB_SCRIPT_TOTO:
+    ସ୍ଥିତି HB_SCRIPT_VITHKUQI:
 
     /* Unicode-15.0 additions */
-    case HB_SCRIPT_KAWI:
-    case HB_SCRIPT_NAG_MUNDARI:
+    ସ୍ଥିତି HB_SCRIPT_KAWI:
+    ସ୍ଥିତି HB_SCRIPT_NAG_MUNDARI:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
-    case HB_SCRIPT_GURUNG_KHEMA:
-    case HB_SCRIPT_KIRAT_RAI:
-    case HB_SCRIPT_OL_ONAL:
-    case HB_SCRIPT_SUNUWAR:
-    case HB_SCRIPT_TODHRI:
-    case HB_SCRIPT_TULU_TIGALARI:
+    ସ୍ଥିତି HB_SCRIPT_GARAY:
+    ସ୍ଥିତି HB_SCRIPT_GURUNG_KHEMA:
+    ସ୍ଥିତି HB_SCRIPT_KIRAT_RAI:
+    ସ୍ଥିତି HB_SCRIPT_OL_ONAL:
+    ସ୍ଥିତି HB_SCRIPT_SUNUWAR:
+    ସ୍ଥିତି HB_SCRIPT_TODHRI:
+    ସ୍ଥିତି HB_SCRIPT_TULU_TIGALARI:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_BERIA_ERFE:
-    case HB_SCRIPT_SIDETIC:
-    case HB_SCRIPT_TAI_YO:
-    case HB_SCRIPT_TOLONG_SIKI:
+    ସ୍ଥିତି HB_SCRIPT_BERIA_ERFE:
+    ସ୍ଥିତି HB_SCRIPT_SIDETIC:
+    ସ୍ଥିତି HB_SCRIPT_TAI_YO:
+    ସ୍ଥିତି HB_SCRIPT_TOLONG_SIKI:
 
     /* Unicode-18.0 additions */
-    case HB_SCRIPT_JURCHEN:
-    case HB_SCRIPT_PROTO_CUNEIFORM:
-    case HB_SCRIPT_SEAL:
+    ସ୍ଥିତି HB_SCRIPT_JURCHEN:
+    ସ୍ଥିତି HB_SCRIPT_PROTO_CUNEIFORM:
+    ସ୍ଥିତି HB_SCRIPT_SEAL:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        * Note that for some simple scripts, there may not be *any*
        * GSUB/GPOS needed, so there may be no scripts found! */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ଯଦି (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_use;
+	ଫେରନ୍ତୁ &_hb_ot_shaper_default;
+      ଅନ୍ୟଥା
+	ଫେରନ୍ତୁ &_hb_ot_shaper_use;
   }
 }
 

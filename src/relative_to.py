@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+ଆମଦାନୀ sys
+ତଃ os ଆମଦାନୀ path
 
 print(path.relpath(sys.argv[1], sys.argv[2]))

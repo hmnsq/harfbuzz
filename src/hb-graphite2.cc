@@ -26,17 +26,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 #ifdef HAVE_GRAPHITE2
 
-#include "hb-shaper-impl.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-shaper-impl.hh"
 
-#include "hb-graphite2.h"
+#ଅନ୍ତର୍ଭାଵ "hb-graphite2.h"
 
-#include <graphite2/Segment.h>
+#ଅନ୍ତର୍ଭାଵ <graphite2/Segment.h>
 
-#include "hb-ot-layout.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-layout.h"
 
 
 /**
@@ -57,41 +57,41 @@
  * shaper face data
  */
 
-typedef struct hb_graphite2_tablelist_t
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା hb_graphite2_tablelist_t
 {
-  struct hb_graphite2_tablelist_t *next;
+  ସଂରଚନା hb_graphite2_tablelist_t *next;
   hb_blob_t *blob;
-  unsigned int tag;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା tag;
 } hb_graphite2_tablelist_t;
 
-struct hb_graphite2_face_data_t
+ସଂରଚନା hb_graphite2_face_data_t
 {
   hb_face_t *face;
   gr_face   *grface;
   hb_atomic_t<hb_graphite2_tablelist_t *> tlist;
 };
 
-static const void *hb_graphite2_get_table (const void *data, unsigned int tag, size_t *len)
+ସ୍ଥିର ଅଚଳ ଶୂନ୍ୟ *hb_graphite2_get_table (ଅଚଳ ଶୂନ୍ୟ *data, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା tag, size_t *len)
 {
   hb_graphite2_face_data_t *face_data = (hb_graphite2_face_data_t *) data;
   hb_graphite2_tablelist_t *tlist = face_data->tlist;
 
   hb_blob_t *blob = nullptr;
 
-  for (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
-    if (p->tag == tag) {
+  ପାଇଁ (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
+    ଯଦି (p->tag == tag) {
       blob = p->blob;
-      break;
+      ଭାଙ୍ଗ;
     }
 
-  if (unlikely (!blob))
+  ଯଦି (unlikely (!blob))
   {
     blob = face_data->face->reference_table (tag);
 
-    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, sizeof (hb_graphite2_tablelist_t));
-    if (unlikely (!p)) {
+    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, ଆକାର (hb_graphite2_tablelist_t));
+    ଯଦି (unlikely (!p)) {
       hb_blob_destroy (blob);
-      return nullptr;
+      ଫେରନ୍ତୁ nullptr;
     }
     p->blob = blob;
     p->tag = tag;
@@ -100,14 +100,14 @@ retry:
     hb_graphite2_tablelist_t *tlist = face_data->tlist;
     p->next = tlist;
 
-    if (unlikely (!face_data->tlist.cmpexch (tlist, p)))
-      goto retry;
+    ଯଦି (unlikely (!face_data->tlist.cmpexch (tlist, p)))
+      ଯାଅ retry;
   }
 
-  unsigned int tlen;
-  const char *d = hb_blob_get_data (blob, &tlen);
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା tlen;
+  ଅଚଳ ଅକ୍ଷର *d = hb_blob_get_data (blob, &tlen);
   *len = tlen;
-  return d;
+  ଫେରନ୍ତୁ d;
 }
 
 hb_graphite2_face_data_t *
@@ -116,33 +116,33 @@ _hb_graphite2_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> silf_blob (face->reference_table (HB_GRAPHITE2_TAG_SILF));
   /* Umm, we just reference the table to check whether it exists.
    * Maybe add better API for this? */
-  if (!hb_blob_get_length (silf_blob))
-    return nullptr;
+  ଯଦି (!hb_blob_get_length (silf_blob))
+    ଫେରନ୍ତୁ nullptr;
 
-  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, sizeof (hb_graphite2_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, ଆକାର (hb_graphite2_face_data_t));
+  ଯଦି (unlikely (!data))
+    ଫେରନ୍ତୁ nullptr;
 
   data->face = face;
-  const gr_face_ops ops = {sizeof(gr_face_ops), &hb_graphite2_get_table, NULL};
+  ଅଚଳ gr_face_ops ops = {ଆକାର(gr_face_ops), &hb_graphite2_get_table, ଖାଲି};
   data->grface = gr_make_face_with_ops (data, &ops, gr_face_preloadAll);
 
-  if (unlikely (!data->grface)) {
+  ଯଦି (unlikely (!data->grface)) {
     /* data->tlist has already been populated by the callback,
      * so everything needs to be destroyed */
     _hb_graphite2_shaper_face_data_destroy (data);
-    return nullptr;
+    ଫେରନ୍ତୁ nullptr;
   }
 
-  return data;
+  ଫେରନ୍ତୁ data;
 }
 
-void
+ଶୂନ୍ୟ
 _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 {
   hb_graphite2_tablelist_t *tlist = data->tlist;
 
-  while (tlist)
+  ଯେତେବେଳେ (tlist)
   {
     hb_graphite2_tablelist_t *old = tlist;
     hb_blob_destroy (tlist->blob);
@@ -169,8 +169,8 @@ _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face)
 {
-  const hb_graphite2_face_data_t *data = face->data.graphite2;
-  return data ? data->grface : nullptr;
+  ଅଚଳ hb_graphite2_face_data_t *data = face->data.graphite2;
+  ଫେରନ୍ତୁ data ? data->grface : nullptr;
 }
 
 
@@ -178,15 +178,15 @@ hb_graphite2_face_get_gr_face (hb_face_t *face)
  * shaper font data
  */
 
-struct hb_graphite2_font_data_t {};
+ସଂରଚନା hb_graphite2_font_data_t {};
 
 hb_graphite2_font_data_t *
 _hb_graphite2_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ଫେରନ୍ତୁ (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+ଶୂନ୍ୟ
 _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED)
 {
 }
@@ -206,7 +206,7 @@ _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED
 gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 {
-  return nullptr;
+  ଫେରନ୍ତୁ nullptr;
 }
 #endif
 
@@ -215,40 +215,40 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
  * shaper
  */
 
-struct hb_graphite2_cluster_t {
-  unsigned int base_char;
-  unsigned int num_chars;
-  unsigned int base_glyph;
-  unsigned int num_glyphs;
-  unsigned int cluster;
+ସଂରଚନା hb_graphite2_cluster_t {
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା base_char;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_chars;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା base_glyph;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ଅଙ୍କ_glyphs;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster;
   hb_position_t advance;
 };
 
-struct hb_graphite2_glyph_t {
+ସଂରଚନା hb_graphite2_glyph_t {
   hb_codepoint_t codepoint;
-  unsigned int cluster;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା cluster;
 };
 
 hb_bool_t
 _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
-		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     ଅଚଳ hb_feature_t *features,
+		     unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା        ଅଙ୍କ_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
 
-  const char *lang = hb_language_to_string (hb_buffer_get_language (buffer));
-  const char *lang_end = lang ? strchr (lang, '-') : nullptr;
-  int lang_len = lang_end ? lang_end - lang : -1;
+  ଅଚଳ ଅକ୍ଷର *lang = hb_language_to_string (hb_buffer_get_language (buffer));
+  ଅଚଳ ଅକ୍ଷର *lang_end = lang ? strchr (lang, '-') : nullptr;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଅଙ୍କ_features; i++)
   {
-    const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
-    if (fref)
-      gr_fref_set_feature_value (fref, features[i].value, feats);
+    ଅଚଳ gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
+    ଯଦି (fref)
+      gr_fref_set_feature_ମୂଲ୍ୟ (fref, features[i].value, feats);
   }
 
   hb_direction_t direction = buffer->props.direction;
@@ -257,7 +257,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  ଯଦି ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != HB_DIRECTION_INVALID) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -267,16 +267,16 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   }
 
   gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  ଅଚଳ gr_slot *is;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା ci = 0, ic = 0;
   hb_position_t curradvx = 0, curradvy = 0;
 
-  unsigned int scratch_size;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
   uint32_t *chars = (uint32_t *) scratch;
 
-  for (unsigned int i = 0; i < buffer->len; ++i)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < buffer->len; ++i)
     chars[i] = buffer->info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -285,104 +285,104 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     gr_utf32, chars, buffer->len,
 		     2 | (direction == HB_DIRECTION_RTL ? 1 : 0));
 
-  if (unlikely (!seg)) {
-    if (feats) gr_featureval_destroy (feats);
-    return false;
+  ଯଦି (unlikely (!seg)) {
+    ଯଦି (feats) gr_featureval_destroy (feats);
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
-    if (feats) gr_featureval_destroy (feats);
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା glyph_ଗଣନା = gr_seg_n_slots (seg);
+  ଯଦି (unlikely (!glyph_ଗଣନା)) {
+    ଯଦି (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
-  (void) buffer->ensure (glyph_count);
+  (ଶୂନ୍ୟ) buffer->ensure (glyph_ଗଣନା);
   scratch = buffer->get_scratch_buffer (&scratch_size);
-  while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
-	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
+  ଯେତେବେଳେ ((DIV_CEIL (ଆକାର (hb_graphite2_cluster_t) * buffer->len, ଆକାର (*scratch)) +
+	  DIV_CEIL (ଆକାର (hb_graphite2_glyph_t) * glyph_ଗଣନା, ଆକାର (*scratch))) > scratch_size)
   {
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    ଯଦି (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
-      if (feats) gr_featureval_destroy (feats);
+      ଯଦି (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
     scratch = buffer->get_scratch_buffer (&scratch_size);
   }
 
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
-  do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    assert (_consumed <= scratch_size); \
+  କର { \
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା _consumed = DIV_CEIL ((len) * ଆକାର (Type), ଆକାର (*scratch)); \
+    ପ୍ରତିଜ୍ଞା (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } ଯେତେବେଳେ (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
-  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
+  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_ଗଣନା);
 
 #undef ALLOCATE_ARRAY
 
-  hb_memset (clusters, 0, sizeof (clusters[0]) * buffer->len);
+  hb_memset (clusters, 0, ଆକାର (clusters[0]) * buffer->len);
 
   hb_graphite2_glyph_t *pg = glyphs;
   clusters[0].cluster = buffer->info[0].cluster;
-  unsigned int upem = hb_face_get_upem (face);
-  float xscale = (float) font->x_scale / upem;
-  float yscale = (float) font->y_scale / upem;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା upem = hb_face_get_upem (face);
+  ଦଶମିକ xscale = (ଦଶମିକ) font->x_scale / upem;
+  ଦଶମିକ yscale = (ଦଶମିକ) font->y_scale / upem;
   yscale *= yscale / xscale;
   hb_position_t curradv = 0;
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  ଯଦି (HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradv = hb_clamp_to<hb_position_t> (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = hb_clamp_to<hb_position_t> ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  ଅନ୍ୟଥା
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  ପାଇଁ (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    int slot_before = gr_slot_before (is);
-    int slot_after = gr_slot_after (is);
-    if (unlikely (slot_before < 0 ||
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା slot_before = gr_slot_before (is);
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା slot_after = gr_slot_after (is);
+    ଯଦି (unlikely (slot_before < 0 ||
 		  slot_after < slot_before ||
-		  (unsigned int) slot_after >= buffer->len))
+		  (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) slot_after >= buffer->len))
     {
-      if (feats) gr_featureval_destroy (feats);
+      ଯଦି (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
-    unsigned int before = (unsigned int) slot_before;
-    unsigned int after = (unsigned int) slot_after;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା before = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) slot_before;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା after = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) slot_after;
     pg->codepoint = gr_slot_gid (is);
     pg->cluster = hb_min (buffer->info[before].cluster,
 			  buffer->info[after].cluster);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    ଯେତେବେଳେ (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].ଅଙ୍କ_chars += clusters[ci].ଅଙ୍କ_chars;
+      clusters[ci-1].ଅଙ୍କ_glyphs += clusters[ci].ଅଙ୍କ_glyphs;
       clusters[ci-1].advance = hb_saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    ଯଦି (gr_slot_can_ଭର୍ତ୍ତି_before (is) && clusters[ci].ଅଙ୍କ_chars && before >= clusters[ci].base_char + clusters[ci].ଅଙ୍କ_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].ଅଙ୍କ_chars;
       c->cluster = buffer->info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->ଅଙ୍କ_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (HB_DIRECTION_IS_BACKWARD (direction))
+      c->ଅଙ୍କ_glyphs = 0;
+      ଯଦି (HB_DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
-						   (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) curradv -
+						   (ଦ୍ୱିଗୁଣ) (gr_slot_origin_X(is) * xscale));
 	curradv = hb_saturate_sub (curradv, c->advance);
       }
-      else
+      ଅନ୍ୟଥା
       {
 	hb_position_t origin_X = hb_clamp_to<hb_position_t> (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -392,22 +392,22 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].ଅଙ୍କ_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    ଯଦି (clusters[ci].base_char + clusters[ci].ଅଙ୍କ_chars < after + 1)
+	clusters[ci].ଅଙ୍କ_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  ଯଦି (HB_DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = hb_saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = hb_clamp_to<hb_position_t> ((double) clusters[ci].advance +
-							       (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  ଅନ୍ୟଥା
+    clusters[ci].advance = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) clusters[ci].advance +
+							       (ଦ୍ୱିଗୁଣ) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା j = 0; j < clusters[i].ଅଙ୍କ_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -418,63 +418,63 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       info->var2.u32 = i;                       // Graphite cluster index
     }
   }
-  buffer->len = glyph_count;
+  buffer->len = glyph_ଗଣନା;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  ପାଇଁ (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
-			    clusters[i].base_glyph + clusters[i].num_glyphs);
+			    clusters[i].base_glyph + clusters[i].ଅଙ୍କ_glyphs);
 
   /* Positioning. */
-  unsigned int curr_gr_cluster = UINT_MAX;
-  const hb_glyph_info_t *info = buffer->info;
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା curr_gr_cluster = UINT_MAX;
+  ଅଚଳ hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pPos = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (!HB_DIRECTION_IS_BACKWARD (direction))
+  ଯଦି (!HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    ପାଇଁ (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->var2.u32 != curr_gr_cluster) {
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      ଯଦି (info->var2.u32 != curr_gr_cluster) {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_add (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } ଅନ୍ୟଥା
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_add (curradvy, pPos->y_advance);
     }
   }
-  else
+  ଅନ୍ୟଥା
   {
     curradvx = hb_clamp_to<hb_position_t> (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    ପାଇଁ (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->var2.u32 != curr_gr_cluster)
+      ଯଦି (info->var2.u32 != curr_gr_cluster)
       {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_sub (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } ଅନ୍ୟଥା
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) -
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) (gr_slot_origin_X (is) * xscale) -
 							  info->var1.i32 - curradvx + pPos->x_advance);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((ଦ୍ୱିଗୁଣ) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     hb_buffer_reverse_clusters (buffer);
   }
 
-  if (feats) gr_featureval_destroy (feats);
+  ଯଦି (feats) gr_featureval_destroy (feats);
   gr_seg_destroy (seg);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 

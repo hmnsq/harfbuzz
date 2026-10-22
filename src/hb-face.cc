@@ -26,22 +26,22 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-blob.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-cmap-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-face.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-blob.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-open-file.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-face.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-cmap-table.hh"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#ଅନ୍ତର୍ଭାଵ "hb-ft.h"
 #endif
 #ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
+#ଅନ୍ତର୍ଭାଵ "hb-coretext.h"
 #endif
 #ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
+#ଅନ୍ତର୍ଭାଵ "hb-directwrite.h"
 #endif
 
 
@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_face_count (hb_blob_t *blob)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_ଗଣନା (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  ଯଦି (unlikely (!blob))
+    ଫେରନ୍ତୁ 0;
 
   hb_sanitize_context_t c (blob);
 
   auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  ଯଦି (unlikely (!ot->sanitize (&c)))
+    ଫେରନ୍ତୁ 0;
 
-  return ot->get_face_count ();
+  ଫେରନ୍ତୁ ot->get_face_ଗଣନା ();
 }
 
 /*
@@ -128,52 +128,52 @@ DEFINE_NULL_INSTANCE (hb_face_t) =
  **/
 hb_face_t *
 hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+			   ଶୂନ୍ୟ                      *user_data,
 			   hb_destroy_func_t          destroy)
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
+  ଯଦି (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
+    ଯଦି (destroy)
       destroy (user_data);
-    return hb_face_get_empty ();
+    ଫେରନ୍ତୁ hb_face_get_empty ();
   }
 
   face->reference_table_func = reference_table_func;
   face->user_data = user_data;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->ଅଙ୍କ_glyphs = -1;
 
   face->data.init0 (face);
   face->table.init0 (face);
 
-  return face;
+  ଫେରନ୍ତୁ face;
 }
 
 
-typedef struct hb_face_for_data_closure_t {
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା hb_face_for_data_closure_t {
   hb_blob_t *blob;
   uint16_t  index;
 } hb_face_for_data_closure_t;
 
-static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+ସ୍ଥିର hb_face_for_data_closure_t *
+_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା index)
 {
   hb_face_for_data_closure_t *closure;
 
-  closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  closure = (hb_face_for_data_closure_t *) hb_calloc (1, ଆକାର (hb_face_for_data_closure_t));
+  ଯଦି (unlikely (!closure))
+    ଫେରନ୍ତୁ nullptr;
 
   closure->blob = blob;
   closure->index = (uint16_t) (index & 0xFFFFu);
 
-  return closure;
+  ଫେରନ୍ତୁ closure;
 }
 
-static void
-_hb_face_for_data_closure_destroy (void *data)
+ସ୍ଥିର ଶୂନ୍ୟ
+_hb_face_for_data_closure_destroy (ଶୂନ୍ୟ *data)
 {
   hb_face_for_data_closure_t *closure = (hb_face_for_data_closure_t *) data;
 
@@ -181,38 +181,38 @@ _hb_face_for_data_closure_destroy (void *data)
   hb_free (closure);
 }
 
-static hb_blob_t *
-_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ସ୍ଥିର hb_blob_t *
+_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, ଶୂନ୍ୟ *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  ଯଦି (tag == HB_TAG_NONE)
+    ଫେରନ୍ତୁ hb_blob_reference (data->blob);
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
+  ଅଚଳ OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା base_offset;
+  ଅଚଳ OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
 
-  const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
+  ଅଚଳ OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
 
   hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
 
-  return blob;
+  ଫେରନ୍ତୁ blob;
 }
 
-static unsigned
-_hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
+ସ୍ଥିର unsigned
+_hb_face_for_data_get_table_tags (ଅଚଳ hb_face_t *face HB_UNUSED,
+				  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା start_offset,
+				  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *table_ଗଣନା_2,
 				  hb_tag_t *table_tags,
-				  void *user_data)
+				  ଶୂନ୍ୟ *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
+  ଅଚଳ OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  ଅଚଳ OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  ଫେରନ୍ତୁ ot_face.get_table_tags (start_offset, table_ଗଣନା_2, table_tags);
 }
 
 
@@ -242,21 +242,21 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
+  ଯଦି (unlikely (!blob))
     blob = hb_blob_get_empty ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
   hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
 
-  if (unlikely (!closure))
+  ଯଦି (unlikely (!closure))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    ଫେରନ୍ତୁ hb_face_get_empty ();
   }
 
   face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
@@ -269,7 +269,7 @@ hb_face_create (hb_blob_t    *blob,
 
   face->index = index;
 
-  return face;
+  ଫେରନ୍ତୁ face;
 }
 
 /**
@@ -287,17 +287,17 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  unsigned ଅଙ୍କ_faces = hb_face_ଗଣନା (blob);
+  ଯଦି (index >= ଅଙ୍କ_faces)
+    ଫେରନ୍ତୁ nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  ଯଦି (hb_object_is_immutable (face))
+    ଫେରନ୍ତୁ nullptr;
 
-  return face;
+  ଫେରନ୍ତୁ face;
 }
 
 #ifndef HB_NO_OPEN
@@ -315,29 +315,29 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  * Since: 10.1.0
  **/
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+hb_face_create_from_file_or_fail (ଅଚଳ ଅକ୍ଷର   *file_name,
+				  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  ଯଦି (unlikely (!blob))
+    ଫେରନ୍ତୁ nullptr;
 
   hb_face_t *face = hb_face_create_or_fail (blob, index);
   hb_blob_destroy (blob);
 
-  return face;
+  ଫେରନ୍ତୁ face;
 }
 
-static const struct supported_face_loaders_t {
-	char name[16];
-	hb_face_t * (*from_file) (const char *font_file, unsigned face_index);
+ସ୍ଥିର ଅଚଳ ସଂରଚନା supported_face_loaders_t {
+	ଅକ୍ଷର name[16];
+	hb_face_t * (*from_file) (ଅଚଳ ଅକ୍ଷର *font_file, unsigned face_index);
 	hb_face_t * (*from_blob) (hb_blob_t *blob, unsigned face_index);
 } supported_face_loaders[] =
 {
   {"ot",
 #ifndef HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
+#ଅନ୍ୟଥା
    nullptr,
 #endif
    hb_face_create_or_fail
@@ -362,19 +362,19 @@ static const struct supported_face_loaders_t {
 #endif
 };
 
-static const char *get_default_loader_name ()
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର *get_default_loader_name ()
 {
-  static hb_atomic_t<const char *> static_loader_name;
-  const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  ସ୍ଥିର hb_atomic_t<ଅଚଳ ଅକ୍ଷର *> static_loader_name;
+  ଅଚଳ ଅକ୍ଷର *loader_name = static_loader_name.get_acquire ();
+  ଯଦି (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    ଯଦି (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    ଯଦି (!static_loader_name.cmpexch (nullptr, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  ଫେରନ୍ତୁ loader_name;
 }
 
 /**
@@ -397,34 +397,34 @@ static const char *get_default_loader_name ()
  * Since: 11.0.0
  **/
 hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name)
+hb_face_create_from_file_or_fail_using (ଅଚଳ ଅକ୍ଷର   *file_name,
+					unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index,
+					ଅଚଳ ଅକ୍ଷର   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  ତାର୍କିକ retry = ମିଥ୍ୟା;
+  ଯଦି (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = ସତ୍ୟ;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  ଯଦି (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  ପାଇଁ (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    ଯଦି (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      ଫେରନ୍ତୁ supported_face_loaders[i].from_file (file_name, index);
   }
 
-  if (retry)
+  ଯଦି (retry)
   {
-    retry = false;
+    retry = ମିଥ୍ୟା;
     loader_name = nullptr;
-    goto retry;
+    ଯାଅ retry;
   }
 
-  return nullptr;
+  ଫେରନ୍ତୁ nullptr;
 }
 
 /**
@@ -448,65 +448,65 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name)
+			      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index,
+			      ଅଚଳ ଅକ୍ଷର   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  ତାର୍କିକ retry = ମିଥ୍ୟା;
+  ଯଦି (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = ସତ୍ୟ;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  ଯଦି (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  ପାଇଁ (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    ଯଦି (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      ଫେରନ୍ତୁ supported_face_loaders[i].from_blob (blob, index);
   }
 
-  if (retry)
+  ଯଦି (retry)
   {
-    retry = false;
+    retry = ମିଥ୍ୟା;
     loader_name = nullptr;
-    goto retry;
+    ଯାଅ retry;
   }
 
-  return nullptr;
+  ଫେରନ୍ତୁ nullptr;
 }
 
-static inline void free_static_face_loader_list ();
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ free_static_face_loader_list ();
 
-static const char * const nil_face_loader_list[] = {nullptr};
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର * ଅଚଳ nil_face_loader_list[] = {nullptr};
 
-static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+ସ୍ଥିର ସଂରଚନା hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<ଅଚଳ ଅକ୍ଷର *,
 								  hb_face_loader_list_lazy_loader_t>
 {
-  static const char ** create ()
+  ସ୍ଥିର ଅଚଳ ଅକ୍ଷର ** create ()
   {
-    const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    ଅଚଳ ଅକ୍ଷର **face_loader_list = (ଅଚଳ ଅକ୍ଷର **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), ଆକାର (ଅଚଳ ଅକ୍ଷର *));
+    ଯଦି (unlikely (!face_loader_list))
+      ଫେରନ୍ତୁ nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    ପାଇଁ (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
     face_loader_list[i] = nullptr;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    ଫେରନ୍ତୁ face_loader_list;
   }
-  static void destroy (const char **l)
+  ସ୍ଥିର ଶୂନ୍ୟ destroy (ଅଚଳ ଅକ୍ଷର **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  ସ୍ଥିର ଅଚଳ ଅକ୍ଷର * ଅଚଳ * get_null ()
+  { ଫେରନ୍ତୁ nil_face_loader_list; }
 } static_face_loader_list;
 
-static inline
-void free_static_face_loader_list ()
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ
+ଶୂନ୍ୟ free_static_face_loader_list ()
 {
   static_face_loader_list.free_instance ();
 }
@@ -523,10 +523,10 @@ void free_static_face_loader_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+ଅଚଳ ଅକ୍ଷର **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  ଫେରନ୍ତୁ static_face_loader_list.get_unconst ();
 }
 #endif
 
@@ -543,7 +543,7 @@ hb_face_list_loaders ()
 hb_face_t *
 hb_face_get_empty ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  ଫେରନ୍ତୁ const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  ଫେରନ୍ତୁ hb_object_reference (face);
 }
 
 /**
@@ -573,15 +573,15 @@ hb_face_reference (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  ଯଦି (!hb_object_destroy (face)) ଫେରନ୍ତୁ;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  ପାଇଁ (hb_face_t::plan_ଗଣ୍ଠି_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_ଗଣ୍ଠି_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
@@ -591,10 +591,10 @@ hb_face_destroy (hb_face_t *face)
   face->data.fini ();
   face->table.fini ();
 
-  if (face->get_table_tags_destroy)
+  ଯଦି (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
-  if (face->destroy)
+  ଯଦି (face->destroy)
     face->destroy (face->user_data);
 
   hb_free (face);
@@ -616,12 +616,12 @@ hb_face_destroy (hb_face_t *face)
  **/
 hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_ଚାବି_t *key,
+		       ଶୂନ୍ୟ *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  ଫେରନ୍ତୁ hb_object_set_user_data (face, key, data, destroy, replace);
 }
 
 /**
@@ -636,11 +636,11 @@ hb_face_set_user_data (hb_face_t          *face,
  *
  * Since: 0.9.2
  **/
-void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+ଶୂନ୍ୟ *
+hb_face_get_user_data (ଅଚଳ hb_face_t    *face,
+		       hb_user_data_ଚାବି_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  ଫେରନ୍ତୁ hb_object_get_user_data (face, key);
 }
 
 /**
@@ -651,11 +651,11 @@ hb_face_get_user_data (const hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ଯଦି (hb_object_is_immutable (face))
+    ଫେରନ୍ତୁ;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  ଫେରନ୍ତୁ hb_object_is_immutable (face);
 }
 
 
@@ -691,13 +691,13 @@ hb_face_is_immutable (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
+hb_face_reference_table (ଅଚଳ hb_face_t *face,
 			 hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  ଯଦି (unlikely (tag == HB_TAG_NONE))
+    ଫେରନ୍ତୁ hb_blob_get_empty ();
 
-  return face->reference_table (tag);
+  ଫେରନ୍ତୁ face->reference_table (tag);
 }
 
 /**
@@ -718,27 +718,27 @@ hb_face_reference_blob (hb_face_t *face)
 {
   hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  ଯଦି (blob == hb_blob_get_empty ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    unsigned total_ଗଣନା = hb_face_get_table_tags (face, 0, nullptr, nullptr);
+    ଯଦି (total_ଗଣନା)
     {
       hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      unsigned ଗଣନା_2 = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      ପାଇଁ (unsigned offset = 0; offset < total_ଗଣନା; offset += ଗଣନା_2)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
-	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        hb_face_get_table_tags (face, offset, &ଗଣନା_2, tags);
+	ଯଦି (unlikely (!ଗଣନା_2))
+	  ଭାଙ୍ଗ; // Allocation error
+        ପାଇଁ (unsigned i = 0; i < ଗଣନା_2; i++)
         {
-	  if (unlikely (!tags[i]))
-	    continue;
+	  ଯଦି (unlikely (!tags[i]))
+	    ଜାରି;
 	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
 	  hb_face_builder_add_table (builder, tags[i], table);
 	  hb_blob_destroy (table);
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  ଫେରନ୍ତୁ blob;
 }
 
 /**
@@ -766,12 +766,12 @@ hb_face_reference_blob (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+		   unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  index)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ଯଦି (hb_object_is_immutable (face))
+    ଫେରନ୍ତୁ;
 
   face->index = index;
 }
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_index (const hb_face_t *face)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_get_index (ଅଚଳ hb_face_t *face)
 {
-  return face->index;
+  ଫେରନ୍ତୁ face->index;
 }
 
 /**
@@ -805,12 +805,12 @@ hb_face_get_index (const hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+ଶୂନ୍ୟ
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+		  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ଯଦି (hb_object_is_immutable (face))
+    ଫେରନ୍ତୁ;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_upem (const hb_face_t *face)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_get_upem (ଅଚଳ hb_face_t *face)
 {
-  return face->get_upem ();
+  ଫେରନ୍ତୁ face->get_upem ();
 }
 
 /**
@@ -845,14 +845,14 @@ hb_face_get_upem (const hb_face_t *face)
  *
  * Since: 0.9.7
  **/
-void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+ଶୂନ୍ୟ
+hb_face_set_glyph_ଗଣନା (hb_face_t    *face,
+			 unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  glyph_ଗଣନା)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ଯଦି (hb_object_is_immutable (face))
+    ଫେରନ୍ତୁ;
 
-  face->num_glyphs = glyph_count;
+  face->ଅଙ୍କ_glyphs = glyph_ଗଣନା;
 }
 
 /**
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_get_glyph_ଗଣନା (ଅଚଳ hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  ଫେରନ୍ତୁ face->get_ଅଙ୍କ_glyphs ();
 }
 
 /**
@@ -882,20 +882,20 @@ hb_face_get_glyph_count (const hb_face_t *face)
  *
  * Since: 10.0.0
  */
-HB_EXTERN void
+HB_EXTERN ଶୂନ୍ୟ
 hb_face_set_get_table_tags_func (hb_face_t *face,
 				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+				 ଶୂନ୍ୟ                    *user_data,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  ଯଦି (hb_object_is_immutable (face))
   {
-    if (destroy)
+    ଯଦି (destroy)
       destroy (user_data);
-    return;
+    ଫେରନ୍ତୁ;
   }
 
-  if (face->get_table_tags_destroy)
+  ଯଦି (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
   face->get_table_tags_func = func;
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
+hb_face_get_table_tags (ଅଚଳ hb_face_t *face,
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା  start_offset,
+			unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *table_ଗଣନା_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
-  if (!face->get_table_tags_func)
+  ଯଦି (!face->get_table_tags_func)
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    ଯଦି (table_ଗଣନା_2)
+      *table_ଗଣନା_2 = 0;
+    ଫେରନ୍ତୁ 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  ଫେରନ୍ତୁ face->get_table_tags_func (face, start_offset, table_ଗଣନା_2, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -951,11 +951,11 @@ hb_face_get_table_tags (const hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+ଶୂନ୍ୟ
 hb_face_collect_unicodes (hb_face_t *face,
 			  hb_set_t  *out)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->table.cmap->collect_unicodes (out, face->get_ଅଙ୍କ_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -968,15 +968,15 @@ hb_face_collect_unicodes (hb_face_t *face,
  *
  * Since: 7.0.0
  */
-void
+ଶୂନ୍ୟ
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
 				       hb_set_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
-  if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+  hb_set_t ଗଦା_unicodes;
+  ଯଦି (!unicodes)
+    unicodes = &ଗଦା_unicodes;
+  face->table.cmap->collect_mapping (unicodes, mapping, face->get_ଅଙ୍କ_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:
@@ -988,7 +988,7 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+ଶୂନ୍ୟ
 hb_face_collect_variation_selectors (hb_face_t *face,
 				     hb_set_t  *out)
 {
@@ -1005,7 +1005,7 @@ hb_face_collect_variation_selectors (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+ଶୂନ୍ୟ
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
 				    hb_set_t  *out)

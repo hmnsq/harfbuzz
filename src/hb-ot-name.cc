@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 #ifndef HB_NO_NAME
 
-#include "hb-ot-name-table.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-name-table.hh"
 
-#include "hb-utf.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-utf.hh"
 
 
 /**
@@ -55,48 +55,48 @@
  * Returns: (transfer none) (array length=num_entries): Array of available name entries.
  * Since: 2.1.0
  **/
-const hb_ot_name_entry_t *
+ଅଚଳ hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+		       unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *ଅଙ୍କ_entries /* OUT */)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  ଅଚଳ OT::name_accelerator_t &name = *face->table.name;
+  ଯଦି (ଅଙ୍କ_entries) *ଅଙ୍କ_entries = name.names.length;
+  ଫେରନ୍ତୁ (ଅଚଳ hb_ot_name_entry_t *) name.names;
 }
 
 template <typename utf_t>
-static inline unsigned int
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
+		    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    *text_size /* IN/OUT */,
 		    typename utf_t::codepoint_t *text /* OUT */)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
+  ଅଚଳ OT::name_accelerator_t &name = *face->table.name;
 
-  if (!language)
+  ଯଦି (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା width;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା idx = name.get_index (name_id, language, &width);
+  ଯଦି (idx != -1)
   {
     hb_bytes_t bytes = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    ଯଦି (width == 2) /* UTF16-BE */
+      ଫେରନ୍ତୁ OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    ଯଦି (width == 1) /* ASCII */
+      ଫେରନ୍ତୁ OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
   }
 
-  if (text_size)
+  ଯଦି (text_size)
   {
-    if (*text_size)
+    ଯଦି (*text_size)
       *text = 0;
     *text_size = 0;
   }
-  return 0;
+  ଫେରନ୍ତୁ 0;
 }
 
 /**
@@ -116,14 +116,14 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */)
+		     unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    *text_size /* IN/OUT */,
+		     ଅକ୍ଷର            *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
+  ଫେରନ୍ତୁ hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
 					(hb_utf8_t::codepoint_t *) text);
 }
 
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    *text_size /* IN/OUT */,
 		      uint16_t        *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  ଫେରନ୍ତୁ hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା    *text_size /* IN/OUT */,
 		      uint32_t        *text      /* OUT */)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  ଫେରନ୍ତୁ hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
 }
 
 #endif

@@ -15,29 +15,29 @@
 #ifndef HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
 #define HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
 
-static bool
+ସ୍ଥିର ତାର୍କିକ
 has_arabic_joining (hb_script_t script)
 {
   /* List of scripts that have data in arabic-table. */
-  switch ((int) script)
+  ବାଛ ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) script)
   {
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MANDAIC:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_PHAGS_PA:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SOGDIAN:
-    case HB_SCRIPT_SYRIAC:
-      return true;
+    ସ୍ଥିତି HB_SCRIPT_ADLAM:
+    ସ୍ଥିତି HB_SCRIPT_ARABIC:
+    ସ୍ଥିତି HB_SCRIPT_CHORASMIAN:
+    ସ୍ଥିତି HB_SCRIPT_HANIFI_ROHINGYA:
+    ସ୍ଥିତି HB_SCRIPT_MANDAIC:
+    ସ୍ଥିତି HB_SCRIPT_MANICHAEAN:
+    ସ୍ଥିତି HB_SCRIPT_MONGOLIAN:
+    ସ୍ଥିତି HB_SCRIPT_NKO:
+    ସ୍ଥିତି HB_SCRIPT_OLD_UYGHUR:
+    ସ୍ଥିତି HB_SCRIPT_PHAGS_PA:
+    ସ୍ଥିତି HB_SCRIPT_PSALTER_PAHLAVI:
+    ସ୍ଥିତି HB_SCRIPT_SOGDIAN:
+    ସ୍ଥିତି HB_SCRIPT_SYRIAC:
+      ଫେରନ୍ତୁ ସତ୍ୟ;
 
-    default:
-      return false;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
   }
 }
 

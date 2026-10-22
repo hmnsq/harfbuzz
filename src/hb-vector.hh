@@ -27,62 +27,62 @@
 #ifndef HB_VECTOR_HH
 #define HB_VECTOR_HH
 
-#include "hb.hh"
-#include "hb-array.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-array.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-meta.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#ଯଦି 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#ଅନ୍ୟଥା
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
 template <typename Type,
-	  bool sorted=false>
-struct hb_vector_t
+	  ତାର୍କିକ sorted=ମିଥ୍ୟା>
+ସଂରଚନା hb_vector_t
 {
-  static constexpr bool realloc_move = true;
+  ସ୍ଥିର constexpr ତାର୍କିକ realloc_move = ସତ୍ୟ;
 
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା Type item_t;
+  ସ୍ଥିର constexpr unsigned item_size = hb_static_size (Type);
   using array_t = typename std::conditional<sorted, hb_sorted_array_t<Type>, hb_array_t<Type>>::type;
-  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<const Type>, hb_array_t<const Type>>::type;
+  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<ଅଚଳ Type>, hb_array_t<ଅଚଳ Type>>::type;
 
-  hb_vector_t () = default;
+  hb_vector_t () = ପୂର୍ବନିର୍ଦ୍ଧାରିତ;
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
-    alloc (lst.size (), true);
-    for (auto&& item : lst)
+    alloc (lst.size (), ସତ୍ୟ);
+    ପାଇଁ (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  explicit hb_vector_t (const Iterable &o) : hb_vector_t ()
+  explicit hb_vector_t (ଅଚଳ Iterable &o) : hb_vector_t ()
   {
-    extend (o, true);
+    extend (o, ସତ୍ୟ);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
+  hb_vector_t (ଅଚଳ hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ଯଦି (unlikely (in_error ())) ଫେରନ୍ତୁ;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ଯଦି (unlikely (in_error ())) ଫେରନ୍ତୁ;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ଯଦି (unlikely (in_error ())) ଫେରନ୍ତୁ;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -95,20 +95,20 @@ struct hb_vector_t
   ~hb_vector_t () { fini (); }
 
   template <unsigned n>
-  void
+  ଶୂନ୍ୟ
   set_storage (Type (&array)[n])
   { set_storage (array, n); }
-  void
+  ଶୂନ୍ୟ
   set_storage (hb_array_t<Type> array)
   { set_storage (array.arrayZ, array.length); }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T) &&
 			  hb_is_trivially_destructible(T))>
-  void
+  ଶୂନ୍ୟ
   set_storage (Type *array, unsigned n)
   {
-    assert (allocated == 0);
-    assert (length == 0);
+    ପ୍ରତିଜ୍ଞା (allocated == 0);
+    ପ୍ରତିଜ୍ଞା (length == 0);
 
     arrayZ = array;
     length = n;
@@ -117,64 +117,64 @@ struct hb_vector_t
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const Iterable &o, bool exact=false)
+  ଶୂନ୍ୟ extend (ଅଚଳ Iterable &o, ତାର୍କିକ exact=ମିଥ୍ୟା)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    ଯଦି (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
-      unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
-	push_has_room (*iter++);
+      ଯଦି (unlikely (!alloc (length + hb_len (iter), exact)))
+	ଫେରନ୍ତୁ;
+      unsigned ଗଣନା_2 = hb_len (iter);
+      ପାଇଁ (unsigned i = 0; i < ଗଣନା_2; i++)
+	ଠେଲ_has_room (*iter++);
     }
-    while (iter)
+    ଯେତେବେଳେ (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      ଯଦି (unlikely (!alloc (length + 1)))
+        ଫେରନ୍ତୁ;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
-	push_has_room (*iter++);
+      ପାଇଁ (unsigned i = 0; i < room && iter; i++)
+	ଠେଲ_has_room (*iter++);
     }
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (array_t o, bool exact=false)
+  ଶୂନ୍ୟ extend (array_t o, ତାର୍କିକ exact=ମିଥ୍ୟା)
   { extend (c_array_t (o), exact); }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (c_array_t o, bool exact=false)
+  ଶୂନ୍ୟ extend (c_array_t o, ତାର୍କିକ exact=ମିଥ୍ୟା)
   {
     /* o may point into our own storage, eg. v.extend (v.as_array ()).
      * alloc() may move that storage, so find o again afterwards. */
-    bool aliased = o.length && in_storage (*o.arrayZ);
+    ତାର୍କିକ aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    ଯଦି (unlikely (in_error ())) ଫେରନ୍ତୁ;
+    ଯଦି (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const hb_vector_t &o, bool exact=false)
+  ଶୂନ୍ୟ extend (ଅଚଳ hb_vector_t &o, ତାର୍କିକ exact=ମିଥ୍ୟା)
   { extend (o.as_array (), exact); }
 
-  public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
-  public:
+  ସର୍ବସାଧାରଣ:
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା allocated = 0; /* < 0 means allocation failed. */
+  unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା length = 0;
+  ସର୍ବସାଧାରଣ:
   Type *arrayZ = nullptr;
 
-  void init ()
+  ଶୂନ୍ୟ init ()
   {
     allocated = length = 0;
     arrayZ = nullptr;
   }
-  void init0 ()
+  ଶୂନ୍ୟ init0 ()
   {
   }
 
-  void fini ()
+  ଶୂନ୍ୟ fini ()
   {
-    if (is_owned ())
+    ଯଦି (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    ଯଦି (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    ଫେରନ୍ତୁ *ଏହି;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    ଯଦି (unlikely (in_error ()))
       reset ();
-    return *this;
+    ଫେରନ୍ତୁ *ଏହି;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, ପୂର୍ଣ୍ଣସଂଖ୍ୟା *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    ଯଦି (!is_owned ())
+      ଫେରନ୍ତୁ nullptr;
+    ଯଦି (len)
       *len = length;
-    if (allocated_out)
+    ଯଦି (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    ଫେରନ୍ତୁ p;
   }
 
   /* Adopt a previously detached owned buffer. */
-  void
+  ଶୂନ୍ୟ
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  ପୂର୍ଣ୍ଣସଂଖ୍ୟା allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -227,215 +227,215 @@ struct hb_vector_t
     allocated = allocated_len;
   }
 
-  friend void swap (hb_vector_t& a, hb_vector_t& b) noexcept
+  friend ଶୂନ୍ୟ swap (hb_vector_t& a, hb_vector_t& b) noexcept
   {
     hb_swap (a.allocated, b.allocated);
     hb_swap (a.length, b.length);
     hb_swap (a.arrayZ, b.arrayZ);
   }
 
-  hb_vector_t& operator = (const hb_vector_t &o)
+  hb_vector_t& operator = (ଅଚଳ hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    ଯଦି (ଏହି == &o) ଫେରନ୍ତୁ *ଏହି;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    ଯଦି (unlikely (in_error ())) ଫେରନ୍ତୁ *ଏହି;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    ଫେରନ୍ତୁ *ଏହି;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*ଏହି, o);
+    ଫେରନ୍ତୁ *ଏହି;
   }
 
-  hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  hb_bytes_t as_bytes () ଅଚଳ
+  { ଫେରନ୍ତୁ hb_bytes_t ((ଅଚଳ ଅକ୍ଷର *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  ତାର୍କିକ operator == (ଅଚଳ hb_vector_t &o) ଅଚଳ { ଫେରନ୍ତୁ as_array () == o.as_array (); }
+  ତାର୍କିକ operator != (ଅଚଳ hb_vector_t &o) ଅଚଳ { ଫେରନ୍ତୁ !(*ଏହି == o); }
+  uint32_t hash () ଅଚଳ { ଫେରନ୍ତୁ as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (ପୂର୍ଣ୍ଣସଂଖ୍ୟା i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) i_;
+    ଯଦି (unlikely (i >= length))
+      ଫେରନ୍ତୁ Crap (Type);
+    ଫେରନ୍ତୁ arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  ଅଚଳ Type& operator [] (ପୂର୍ଣ୍ଣସଂଖ୍ୟା i_) ଅଚଳ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) i_;
+    ଯଦି (unlikely (i >= length))
+      ଫେରନ୍ତୁ Null (Type);
+    ଫେରନ୍ତୁ arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { ଫେରନ୍ତୁ (*ଏହି)[length - 1]; }
+  ଅଚଳ Type& tail () ଅଚଳ { ଫେରନ୍ତୁ (*ଏହି)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator ତାର୍କିକ () ଅଚଳ { ଫେରନ୍ତୁ length; }
+  size_t get_size () ଅଚଳ { ଫେରନ୍ତୁ hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); ଫେରନ୍ତୁ *ଏହି; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { ଫେରନ୍ତୁ hb_array (arrayZ, length); }
+  c_array_t as_array () ଅଚଳ { ଫେରନ୍ତୁ hb_array (arrayZ, length); }
 
   /* Iterator. */
-  typedef c_array_t   iter_t;
-  typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା c_array_t   iter_t;
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା array_t   writer_t;
+    iter_t   iter () ଅଚଳ { ଫେରନ୍ତୁ as_array (); }
+  writer_t writer ()       { ଫେରନ୍ତୁ as_array (); }
+  operator   iter_t () ଅଚଳ { ଫେରନ୍ତୁ   iter (); }
+  operator writer_t ()       { ଫେରନ୍ତୁ writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () ଅଚଳ { ଫେରନ୍ତୁ arrayZ; }
+  Type *end () ଅଚଳ { ଫେରନ୍ତୁ arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
-  hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { ଫେରନ୍ତୁ hb_sorted_array (arrayZ, length); }
+  hb_sorted_array_t<ଅଚଳ Type> as_sorted_array () ଅଚଳ
+  { ଫେରନ୍ତୁ hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { ଫେରନ୍ତୁ arrayZ; }
+  template <typename T> explicit operator ଅଚଳ T * () ଅଚଳ { ଫେରନ୍ତୁ arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i) { ଫେରନ୍ତୁ arrayZ + i; }
+  ଅଚଳ Type * operator  + (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i) ଅଚଳ { ଫେରନ୍ତୁ arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    ଯଦି (unlikely (!resize (length + 1)))
+      ଫେରନ୍ତୁ std::addressof (Crap (Type));
+    ଫେରନ୍ତୁ std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    ଯଦି (unlikely ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      ଯଦି (unlikely (in_error ()))
+	ଫେରନ୍ତୁ std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      ଯଦି (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	ଯଦି (unlikely (!alloc (length + 1)))
+	  ଫେରନ୍ତୁ std::addressof (Crap (Type));
+	ଫେରନ୍ତୁ ଠେଲ_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      ଯଦି (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	ଫେରନ୍ତୁ std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    ଫେରନ୍ତୁ ଠେଲ_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool push_or_fail (Args&&... args)
+  ତାର୍କିକ ଠେଲ_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    ଫେରନ୍ତୁ push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  Type *push_has_room (Args&&... args)
+  Type *ଠେଲ_has_room (Args&&... args)
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    ଫେରନ୍ତୁ ନୂତନ (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  ତାର୍କିକ in_storage () ଅଚଳ { ଫେରନ୍ତୁ ମିଥ୍ୟା; }
   template <typename T, typename... Ts>
-  bool in_storage (const T &v, const Ts &...vs) const
+  ତାର୍କିକ in_storage (ଅଚଳ T &v, ଅଚଳ Ts &...vs) ଅଚଳ
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    ଫେରନ୍ତୁ (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
-  bool is_owned () const
+  ତାର୍କିକ is_owned () ଅଚଳ
   {
-    return allocated != 0 && allocated != -1;
+    ଫେରନ୍ତୁ allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
-  void set_error ()
+  ତାର୍କିକ in_error () ଅଚଳ { ଫେରନ୍ତୁ allocated < 0; }
+  ଶୂନ୍ୟ set_error ()
   {
-    assert (allocated >= 0);
+    ପ୍ରତିଜ୍ଞା (allocated >= 0);
     allocated = -allocated - 1;
   }
-  void reset_error ()
+  ଶୂନ୍ୟ reset_error ()
   {
-    assert (allocated < 0);
+    ପ୍ରତିଜ୍ଞା (allocated < 0);
     allocated = -(allocated + 1);
   }
-  void ensure_error ()
+  ଶୂନ୍ୟ ensure_error ()
   {
-    if (!in_error ())
+    ଯଦି (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ଯଦି (!new_allocated)
     {
-      if (is_owned ())
+      ଯଦି (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      ଫେରନ୍ତୁ nullptr;
     }
-    if (!allocated && arrayZ)
+    ଯଦି (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
-      Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
-      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      Type *new_array = (Type *) hb_malloc (new_allocated * ଆକାର (Type));
+      ଯଦି (unlikely (!new_array))
+	ଫେରନ୍ତୁ nullptr;
+      hb_memcpy ((ଶୂନ୍ୟ *) new_array, (ଅଚଳ ଶୂନ୍ୟ *) arrayZ, length * ଆକାର (Type));
+      ଫେରନ୍ତୁ new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    ଫେରନ୍ତୁ (Type *) hb_realloc (arrayZ, new_allocated * ଆକାର (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ଯଦି (!new_allocated)
     {
-      if (is_owned ())
+      ଯଦି (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      ଫେରନ୍ତୁ nullptr;
     }
-    Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    Type *new_array = (Type *) hb_malloc (new_allocated * ଆକାର (Type));
+    ଯଦି (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      ପାଇଁ (unsigned i = 0; i < length; i++)
       {
-	new (std::addressof (new_array[i])) Type ();
+	ନୂତନ (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      ଯଦି (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    ଫେରନ୍ତୁ new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    ଫେରନ୍ତୁ _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    ଫେରନ୍ତୁ _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,60 +458,60 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    ଫେରନ୍ତୁ _realloc (new_allocated);
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T))>
-  void
+  ଶୂନ୍ୟ
   grow_vector (unsigned size, hb_priority<0>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * ଆକାର (*arrayZ));
     length = size;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_constructible(T))>
-  void
+  ଶୂନ୍ୟ
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
-      new (std::addressof (arrayZ[length])) Type ();
+    ପାଇଁ (; length < size; length++)
+      ନୂତନ (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
   template <typename T = Type,
 	    hb_enable_if (hb_is_same (T, hb_vector_t<typename T::item_t>) ||
 			  hb_is_same (T, hb_array_t <typename T::item_t>))>
-  void
+  ଶୂନ୍ୟ
   grow_vector (unsigned size, hb_priority<1>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * ଆକାର (*arrayZ));
     length = size;
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
+  ଶୂନ୍ୟ
   copy_array (hb_array_t<Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((ଶୂନ୍ୟ *) (arrayZ + length), (ଅଚଳ ଶୂନ୍ୟ *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ଶୂନ୍ୟ
+  copy_array (hb_array_t<ଅଚଳ Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((ଶୂନ୍ୟ *) (arrayZ + length), (ଅଚଳ ଶୂନ୍ୟ *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copyable (T) &&
 			   std::is_copy_constructible<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ଶୂନ୍ୟ
+  copy_array (hb_array_t<ଅଚଳ Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
-      new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
+    ପାଇଁ (unsigned i = 0; i < other.length; i++)
+      ନୂତନ (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
   template <typename T = Type,
@@ -519,269 +519,269 @@ struct hb_vector_t
 			  !std::is_copy_constructible<T>::value &&
 			  std::is_default_constructible<T>::value &&
 			  std::is_copy_assignable<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ଶୂନ୍ୟ
+  copy_array (hb_array_t<ଅଚଳ Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    ପାଇଁ (unsigned i = 0; i < other.length; i++)
     {
-      new (std::addressof (arrayZ[length + i])) Type ();
+      ନୂତନ (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
     }
     length += other.length;
   }
 
-  void
+  ଶୂନ୍ୟ
   shrink_vector (unsigned size)
   {
-    assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    ପ୍ରତିଜ୍ଞା (size <= length);
+    ଯଦି (!hb_is_trivially_destructible(Type))
     {
-      unsigned count = length - size;
+      unsigned ଗଣନା_2 = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      ଯେତେବେଳେ (ଗଣନା_2--)
         (--p)->~Type ();
     }
     length = size;
   }
 
-  void
+  ଶୂନ୍ୟ
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    ପାଇଁ (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  ତାର୍କିକ alloc (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size, ତାର୍କିକ exact=ମିଥ୍ୟା)
   {
-    if (unlikely (in_error ()))
-      return false;
+    ଯଦି (unlikely (in_error ()))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା new_allocated;
+    ଯଦି (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      ଯଦି (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	ଫେରନ୍ତୁ ସତ୍ୟ;
 
       new_allocated = size;
     }
-    else
+    ଅନ୍ୟଥା
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      ଯଦି (likely (size <= (unsigned) allocated))
+	ଫେରନ୍ତୁ ସତ୍ୟ;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      ଯେତେବେଳେ (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
-    bool overflows =
-      (int) in_error () ||
+    ତାର୍କିକ overflows =
+      (ପୂର୍ଣ୍ଣସଂଖ୍ୟା) in_error () ||
       (new_allocated < size) ||
-      hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
+      hb_unsigned_mul_overflows (new_allocated, ଆକାର (Type));
 
-    if (unlikely (overflows))
+    ଯଦି (unlikely (overflows))
     {
       set_error ();
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    ଯଦି (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      ଯଦି (new_allocated <= (unsigned) allocated)
+        ଫେରନ୍ତୁ ସତ୍ୟ; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  ତାର୍କିକ alloc_exact (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size)
   {
-    return alloc (size, true);
+    ଫେରନ୍ତୁ alloc (size, ସତ୍ୟ);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void clear ()
+  ଶୂନ୍ୟ clear ()
   {
     shrink_vector (0);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  ତାର୍କିକ allocate_from_pool (allocator_t *allocator, unsigned size, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା initialize = ସତ୍ୟ)
   {
-    if (allocator)
+    ଯଦି (allocator)
     {
-      assert (!length && !allocated);
-      arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      ପ୍ରତିଜ୍ଞା (!length && !allocated);
+      arrayZ = (Type *) allocator->alloc (size * ଆକାର (Type), alignof (Type));
+      ଯଦି (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	ଫେରନ୍ତୁ ମିଥ୍ୟା;
       }
-      if (initialize)
+      ଯଦି (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      ଅନ୍ୟଥା
 	length = size;
-      return true;
+      ଫେରନ୍ତୁ ସତ୍ୟ;
     }
-    return resize_full ((int) size, initialize, true);
+    ଫେରନ୍ତୁ resize_full ((ପୂର୍ଣ୍ଣସଂଖ୍ୟା) size, initialize, ସତ୍ୟ);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
+  ତାର୍କିକ duplicate_vector_from_pool (allocator_t *allocator, ଅଚଳ hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    ଯଦି (unlikely (!allocate_from_pool (allocator, other.length, ମିଥ୍ୟା)))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  ଶୂନ୍ୟ shrink_back_to_pool (allocator_t *allocator, ପୂର୍ଣ୍ଣସଂଖ୍ୟା size)
   {
     unsigned orig_length = length;
 
-    shrink (size, false);
+    shrink (size, ମିଥ୍ୟା);
 
-    if (allocator && !is_owned ())
-      allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
+    ଯଦି (allocator && !is_owned ())
+      allocator->discard (arrayZ + length, (orig_length - length) * ଆକାର (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  ତାର୍କିକ resize_full (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_, ତାର୍କିକ initialize, ତାର୍କିକ exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    ଯଦି (unlikely (size_ < 0))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) size_;
+    ଯଦି (!alloc (size, exact))
+      ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-    if (size > length)
+    ଯଦି (size > length)
     {
-      if (initialize)
+      ଯଦି (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    ଅନ୍ୟଥା ଯଦି (size < length)
     {
-      if (initialize)
+      ଯଦି (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    ଫେରନ୍ତୁ ସତ୍ୟ;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  ତାର୍କିକ resize (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_)
   {
-    return resize_full (size_, true, false);
+    ଫେରନ୍ତୁ resize_full (size_, ସତ୍ୟ, ମିଥ୍ୟା);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  ତାର୍କିକ resize_dirty (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_)
   {
-    return resize_full (size_, false, false);
+    ଫେରନ୍ତୁ resize_full (size_, ମିଥ୍ୟା, ମିଥ୍ୟା);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  ତାର୍କିକ resize_exact (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_)
   {
-    return resize_full (size_, true, true);
+    ଫେରନ୍ତୁ resize_full (size_, ସତ୍ୟ, ସତ୍ୟ);
   }
 
-  Type pop ()
+  Type କାଢ଼ ()
   {
-    if (!length) return Null (Type);
+    ଯଦି (!length) ଫେରନ୍ତୁ Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    ଫେରନ୍ତୁ v;
   }
 
-  void remove_ordered (unsigned int i)
+  ଶୂନ୍ୟ remove_ordered (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i)
   {
-    if (unlikely (i >= length))
-      return;
+    ଯଦି (unlikely (i >= length))
+      ଫେରନ୍ତୁ;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  template <bool Sorted = sorted,
+  template <ତାର୍କିକ Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  ଶୂନ୍ୟ remove_unordered (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    ଯଦି (unlikely (i >= length))
+      ଫେରନ୍ତୁ;
+    ଯଦି (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  ଶୂନ୍ୟ shrink (ପୂର୍ଣ୍ଣସଂଖ୍ୟା size_, ତାର୍କିକ shrink_memory = ସତ୍ୟ)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା size = size_ < 0 ? 0u : (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) size_;
+    ଯଦି (size >= length)
+      ଫେରନ୍ତୁ;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    ଯଦି (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
 
   /* Sorting API. */
   template <typename Compar>
-  void qsort (Compar compar)
+  ଶୂନ୍ୟ qsort (Compar compar)
   { as_array ().qsort (compar); }
-  void qsort ()
+  ଶୂନ୍ୟ qsort ()
   { as_array ().qsort (); }
 
   /* Unsorted search API. */
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  Type *lsearch (ଅଚଳ T &x, Type *not_found = nullptr)
+  { ଫେରନ୍ତୁ as_array ().lsearch (x, not_found); }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  ଅଚଳ Type *lsearch (ଅଚଳ T &x, ଅଚଳ Type *not_found = nullptr) ଅଚଳ
+  { ଫେରନ୍ତୁ as_array ().lsearch (x, not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  ତାର୍କିକ lfind (ଅଚଳ T &x, unsigned *pos = nullptr) ଅଚଳ
+  { ଫେରନ୍ତୁ as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+	    ତାର୍କିକ Sorted=sorted, hb_enable_if (Sorted)>
+  Type *bsearch (ଅଚଳ T &x, Type *not_found = nullptr)
+  { ଫେରନ୍ତୁ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+	    ତାର୍କିକ Sorted=sorted, hb_enable_if (Sorted)>
+  ଅଚଳ Type *bsearch (ଅଚଳ T &x, ଅଚଳ Type *not_found = nullptr) ଅଚଳ
+  { ଫେରନ୍ତୁ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+	    ତାର୍କିକ Sorted=sorted, hb_enable_if (Sorted)>
+  ତାର୍କିକ bfind (ଅଚଳ T &x, unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା to_store = (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) -1) ଅଚଳ
+  { ଫେରନ୍ତୁ as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>
-using hb_sorted_vector_t = hb_vector_t<Type, true>;
+using hb_sorted_vector_t = hb_vector_t<Type, ସତ୍ୟ>;
 
 #endif /* HB_VECTOR_HH */

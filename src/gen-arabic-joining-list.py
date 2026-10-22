@@ -7,59 +7,59 @@ Input files:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import os.path, sys
+ଆମଦାନୀ os.path, sys
 
-if len (sys.argv) != 3:
+ଯଦି len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') ପାଇଁ x ଭିତରେ sys.argv[1:]]
 
-headers = [[f.readline (), f.readline ()] for f in files]
-while files[0].readline ().find ('##################') < 0:
+headers = [[f.readline (), f.readline ()] ପାଇଁ f ଭିତରେ files]
+ଯେତେବେଳେ files[0].readline ().find ('##################') < 0:
 	pass
 
-def read (f):
+def ପଠ (f):
 	mapping = {}
-	for line in f:
+	ପାଇଁ ଧାଡ଼ି ଭିତରେ f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = ଧାଡ଼ି.find ('#')
+		ଯଦି j >= 0:
+			ଧାଡ଼ି = ଧାଡ଼ି[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () ପାଇଁ x ଭିତରେ ଧାଡ଼ି.split (';')]
+		ଯଦି len (fields) == 1:
+			ଜାରି
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = ପୂର୍ଣ୍ଣସଂଖ୍ୟା (uu[0], 16)
+		ଯଦି len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		ଅନ୍ୟଥା:
+			end = ପୂର୍ଣ୍ଣସଂଖ୍ୟା (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		ପାଇଁ u ଭିତରେ range (start, end + 1):
 			mapping[u] = t
 
-	return mapping
+	ଫେରନ୍ତୁ mapping
 
 def read_joining_uu (f):
-	values = set ()
-	for line in f:
+	ମୂଲ୍ୟଗୁଡ଼ିକ = set ()
+	ପାଇଁ ଧାଡ଼ି ଭିତରେ f:
 
-		if line[0] == '#':
-			continue
+		ଯଦି ଧାଡ଼ି[0] == '#':
+			ଜାରି
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
-		if fields[2] in {'T', 'U'}:
-			continue
+		fields = [x.strip () ପାଇଁ x ଭିତରେ ଧାଡ଼ି.split (';')]
+		ଯଦି len (fields) == 1:
+			ଜାରି
+		ଯଦି fields[2] ଭିତରେ {'T', 'U'}:
+			ଜାରି
 
-		values.add (int (fields[0], 16))
+		ମୂଲ୍ୟଗୁଡ଼ିକ.add (ପୂର୍ଣ୍ଣସଂଖ୍ୟା (fields[0], 16))
 
-	return sorted (values)
+	ଫେରନ୍ତୁ sorted (ମୂଲ୍ୟଗୁଡ଼ିକ)
 
 def print_has_arabic_joining (scripts, joining_uu):
 
@@ -70,7 +70,7 @@ def print_has_arabic_joining (scripts, joining_uu):
 	print ("  switch ((int) script)")
 	print ("  {")
 
-	for script in sorted ({scripts[u] for u in joining_uu if scripts[u] not in {'Common', 'Inherited'}}):
+	ପାଇଁ script ଭିତରେ sorted ({scripts[u] ପାଇଁ u ଭିତରେ joining_uu ଯଦି scripts[u] ନୁହେଁ ଭିତରେ {'Common', 'Inherited'}}):
 		print ("    case HB_SCRIPT_{}:".format (script.upper ()))
 
 	print ("      return true;")
@@ -89,8 +89,8 @@ print (" *   ./gen-arabic-joining-list.py ArabicShaping.txt Scripts.txt")
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+ପାଇଁ h ଭିତରେ headers:
+	ପାଇଁ l ଭିତରେ h:
 		print (" * %s" % (l.strip ()))
 print (" */")
 print ()
@@ -98,7 +98,7 @@ print ("#ifndef HB_OT_SHAPER_ARABIC_JOINING_LIST_HH")
 print ("#define HB_OT_SHAPER_ARABIC_JOINING_LIST_HH")
 print ()
 
-print_has_arabic_joining (read (files[1]), read_joining_uu (files[0]))
+print_has_arabic_joining (ପଠ (files[1]), read_joining_uu (files[0]))
 
 print ()
 print ("#endif /* HB_OT_SHAPER_ARABIC_JOINING_LIST_HH */")

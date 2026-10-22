@@ -1,33 +1,33 @@
 #ifndef HB_ZLIB_HH
 #define HB_ZLIB_HH
 
-#include "hb-blob.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-blob.hh"
 
-static inline bool
-hb_blob_is_gzip (const char *data,
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ତାର୍କିକ
+hb_blob_is_gzip (ଅଚଳ ଅକ୍ଷର *data,
                  unsigned    data_len)
 {
-  return data_len >= 3 &&
-         (unsigned char) data[0] == 0x1Fu &&
-         (unsigned char) data[1] == 0x8Bu &&
-         (unsigned char) data[2] == 0x08u;
+  ଫେରନ୍ତୁ data_len >= 3 &&
+         (unsigned ଅକ୍ଷର) data[0] == 0x1Fu &&
+         (unsigned ଅକ୍ଷର) data[1] == 0x8Bu &&
+         (unsigned ଅକ୍ଷର) data[2] == 0x08u;
 }
 
-static inline bool
-hb_gzip_get_uncompressed_size (const char *data,
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ତାର୍କିକ
+hb_gzip_get_uncompressed_size (ଅଚଳ ଅକ୍ଷର *data,
                                unsigned    data_len,
                                uint32_t   *size)
 {
-  if (data_len < 4)
-    return false;
+  ଯଦି (data_len < 4)
+    ଫେରନ୍ତୁ ମିଥ୍ୟା;
 
-  const unsigned char *trailer = (const unsigned char *) data + data_len - 4;
-  if (size)
+  ଅଚଳ unsigned ଅକ୍ଷର *trailer = (ଅଚଳ unsigned ଅକ୍ଷର *) data + data_len - 4;
+  ଯଦି (size)
     *size = (uint32_t) trailer[0] |
             ((uint32_t) trailer[1] << 8) |
             ((uint32_t) trailer[2] << 16) |
             ((uint32_t) trailer[3] << 24);
-  return true;
+  ଫେରନ୍ତୁ ସତ୍ୟ;
 }
 
 HB_INTERNAL hb_blob_t *

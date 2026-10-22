@@ -27,7 +27,7 @@
 #ifndef HB_FREE_POOL_HH
 #define HB_FREE_POOL_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -41,7 +41,7 @@
  * sophisticated, use a real allocator.  Or use a real language. */
 
 template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+ସଂରଚନା hb_free_pool_t
 {
   hb_free_pool_t () : next (nullptr) {}
   ~hb_free_pool_t ()
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    ଯଦି (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      ଯଦି (unlikely (!chunks.alloc (chunks.length + 1))) ଫେରନ୍ତୁ nullptr;
+      chunk_t *chunk = (chunk_t *) hb_malloc (ଆକାର (chunk_t));
+      ଯଦି (unlikely (!chunk)) ଫେରନ୍ତୁ nullptr;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,33 +67,33 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, ଆକାର (T));
 
-    return obj;
+    ଫେରନ୍ତୁ obj;
   }
 
-  void release (T* obj)
+  ଶୂନ୍ୟ release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  ବ୍ୟକ୍ତିଗତ:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (ଆକାର (T) >= ଆକାର (ଶୂନ୍ୟ *), "");
+  static_assert (alignof (T) % alignof (ଶୂନ୍ୟ *) == 0, "");
 
-  struct chunk_t
+  ସଂରଚନା chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      ପାଇଁ (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
       * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
 
-      return arrayZ;
+      ଫେରନ୍ତୁ arrayZ;
     }
 
     T arrayZ[ChunkLen];

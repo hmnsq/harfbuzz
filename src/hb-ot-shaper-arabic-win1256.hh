@@ -39,26 +39,26 @@
 /* First we measure, then we cut. */
 #ifndef OT_MEASURE
 #define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
+#define OT_TABLE_START			ସ୍ଥିର ଅଚଳ ସଂରଚନା TABLE_NAME {
 #define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
+#define OT_LABEL_START(Name)		unsigned ଅକ୍ଷର Name[
 #define OT_LABEL_END			];
 #define OT_UINT8(u8)			+1/*byte*/
 #define OT_UINT16(u16)			+2/*bytes*/
-#else
+#ଅନ୍ୟଥା
 #undef  OT_MEASURE
 #define OT_TABLE_START			TABLE_NAME = {
 #define OT_TABLE_END			};
 #define OT_LABEL_START(Name)		{
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#define OT_UINT16(u16)			(unsigned ଅକ୍ଷର)((u16)>>8), (unsigned ଅକ୍ଷର)((u16)&0xFFu),
+#define OT_ଗଣନା(Name, ItemSize)	((unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) ଆକାର(((ସଂରଚନା TABLE_NAME*)0)->Name) \
+					 / (unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#define OT_DISTANCE(From,To)		((unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା) \
+					 ((ଅକ୍ଷର*)(&((ସଂରଚନା TABLE_NAME*)0)->To) - \
+					  (ଅକ୍ଷର*)(&((ସଂରଚନା TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
 #endif
 
@@ -90,18 +90,18 @@
 /* Shorthand. */
 #define G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
+#define OT_UARRAY(Name, ବସ୍ତୁଗୁଡ଼ିକ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+	OT_UINT16(OT_ଗଣନା(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
+	ବସ୍ତୁଗୁଡ଼ିକ_2 \
 	OT_LABEL_END
 
-#define OT_UHEADLESSARRAY(Name, Items) \
+#define OT_UHEADLESSARRAY(Name, ବସ୍ତୁଗୁଡ଼ିକ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+	OT_UINT16(OT_ଗଣନା(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
+	ବସ୍ତୁଗୁଡ଼ିକ_2 \
 	OT_LABEL_END
 
 
@@ -118,16 +118,16 @@
 	OT_LABEL_END \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
+#define OT_SUBLOOKUP(Name, SubFormat, ବସ୍ତୁଗୁଡ଼ିକ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	ବସ୍ତୁଗୁଡ଼ିକ_2
 
-#define OT_COVERAGE1(Name, Items) \
+#define OT_COVERAGE1(Name, ବସ୍ତୁଗୁଡ଼ିକ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(1) \
 	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_UARRAY(Name##Glyphs, OT_LIST(ବସ୍ତୁଗୁଡ଼ିକ_2))
 
 
 /*
@@ -174,11 +174,11 @@
 #define TABLE_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
+#define MANIFEST(ବସ୍ତୁଗୁଡ଼ିକ_2) \
 	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
+	OT_UINT16(OT_ଗଣନା(manifestData, 6)) \
 	OT_LABEL(manifestData) \
-	Items \
+	ବସ୍ତୁଗୁଡ଼ିକ_2 \
 	OT_LABEL_END
 
 #define MANIFEST_LOOKUP(Tag, Name) \
@@ -310,7 +310,7 @@ OT_TABLE_END
 #undef OT_LABEL_END
 #undef OT_UINT8
 #undef OT_UINT16
-#undef OT_COUNT
+#undef OT_ଗଣନା
 #undef OT_DISTANCE
 
 #undef OT_LABEL
@@ -338,11 +338,11 @@ OT_TABLE_END
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
+#ଯଦି 0
+#ଅନ୍ତର୍ଭାଵ "hb.hh" /* Make check-includes.sh happy. */
 #endif
 #ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-ot-shaper-arabic-win1256.hh"
 #endif
 
 #define HB_OT_SHAPER_ARABIC_WIN1256_HH

@@ -2,17 +2,17 @@
 #define OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#ଅନ୍ତର୍ଭାଵ "../../../hb-ot-layout-gsubgpos.hh"
+#ଅନ୍ତର୍ଭାଵ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GSUB_impl {
 
-struct ExtensionSubst : Extension<ExtensionSubst>
+ସଂରଚନା ExtensionSubst : Extension<ExtensionSubst>
 {
-  typedef struct SubstLookupSubTable SubTable;
-  bool is_reverse () const;
+  ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା SubstLookupSubTable SubTable;
+  ତାର୍କିକ is_reverse () ଅଚଳ;
 };
 
 }

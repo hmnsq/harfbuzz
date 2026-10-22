@@ -29,26 +29,26 @@
 #ifndef HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
 #define HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-text-unicode.hh"
-static const unsigned char _deserialize_text_unicode_trans_keys[] = {
+ସ୍ଥିର ଅଚଳ unsigned ଅକ୍ଷର deserialize_text_unicode_trans_ଚାବିଗୁଡ଼ିକ[] = {
 	0u, 0u, 43u, 102u, 48u, 102u, 48u, 124u, 48u, 57u, 62u, 124u, 48u, 124u, 60u, 117u, 
 	85u, 117u, 85u, 117u, 0
 };
 
-static const char _deserialize_text_unicode_key_spans[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର deserialize_text_unicode_ଚାବି_spans[] = {
 	0, 60, 55, 77, 10, 63, 77, 58, 
 	33, 33
 };
 
-static const short _deserialize_text_unicode_index_offsets[] = {
+ସ୍ଥିର ଅଚଳ short _deserialize_text_unicode_index_offsets[] = {
 	0, 0, 61, 117, 195, 206, 270, 348, 
 	407, 441
 };
 
-static const char _deserialize_text_unicode_indicies[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _deserialize_text_unicode_indicies[] = {
 	0, 1, 1, 1, 1, 2, 2, 
 	2, 2, 2, 2, 2, 2, 2, 2, 
 	1, 1, 1, 1, 1, 1, 1, 2, 
@@ -111,44 +111,44 @@ static const char _deserialize_text_unicode_indicies[] = {
 	1, 1, 12, 1, 0
 };
 
-static const char _deserialize_text_unicode_trans_targs[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _deserialize_text_unicode_trans_targs[] = {
 	2, 0, 3, 3, 4, 9, 5, 6, 
 	9, 6, 8, 1, 1
 };
 
-static const char _deserialize_text_unicode_trans_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _deserialize_text_unicode_trans_actions[] = {
 	0, 0, 1, 0, 2, 2, 1, 1, 
 	3, 0, 0, 4, 6
 };
 
-static const char _deserialize_text_unicode_eof_actions[] = {
+ସ୍ଥିର ଅଚଳ ଅକ୍ଷର _deserialize_text_unicode_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 5
 };
 
-static const int deserialize_text_unicode_start = 7;
-static const int deserialize_text_unicode_first_final = 7;
-static const int deserialize_text_unicode_error = 0;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deserialize_text_unicode_start = 7;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deserialize_text_unicode_first_final = 7;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deserialize_text_unicode_error = 0;
 
-static const int deserialize_text_unicode_en_main = 7;
+ସ୍ଥିର ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା deserialize_text_unicode_en_main = 7;
 
 
 #line 80 "hb-buffer-deserialize-text-unicode.rl"
 
 
-static hb_bool_t
+ସ୍ଥିର hb_bool_t
 _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
-				     const char *buf,
-				     unsigned int buf_len,
-				     const char **end_ptr,
+				     ଅଚଳ ଅକ୍ଷର *buf,
+				     unsigned ପୂର୍ଣ୍ଣସଂଖ୍ୟା buf_len,
+				     ଅଚଳ ଅକ୍ଷର **end_ptr,
 				     hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  ଅଚଳ ଅକ୍ଷର *p = buf, *pe = buf + buf_len, *eof = pe;
 
-  const char *tok = nullptr;
-  int cs;
+  ଅଚଳ ଅକ୍ଷର *tok = nullptr;
+  ପୂର୍ଣ୍ଣସଂଖ୍ୟା cs;
   hb_glyph_info_t info = {0};
-  const hb_glyph_position_t pos = {0};
+  ଅଚଳ hb_glyph_position_t pos = {0};
   
 #line 147 "hb-buffer-deserialize-text-unicode.hh"
 	{
@@ -157,87 +157,87 @@ _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
 
 #line 150 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _slen;
+	ପୂର୍ଣ୍ଣସଂଖ୍ୟା _trans;
+	ଅଚଳ unsigned ଅକ୍ଷର *ଚାବିଗୁଡ଼ିକ_2;
+	ଅଚଳ ଅକ୍ଷର *_inds;
+	ଯଦି ( p == pe )
+		ଯାଅ _test_eof;
+	ଯଦି ( cs == 0 )
+		ଯାଅ _out;
 _resume:
-	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
+	ଚାବିଗୁଡ଼ିକ_2 = deserialize_text_unicode_trans_ଚାବିଗୁଡ଼ିକ + (cs<<1);
 	_inds = _deserialize_text_unicode_indicies + _deserialize_text_unicode_index_offsets[cs];
 
-	_slen = _deserialize_text_unicode_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_unicode_ଚାବି_spans[cs];
+	_trans = _inds[ _slen > 0 && ଚାବିଗୁଡ଼ିକ_2[0] <=(*p) &&
+		(*p) <= ଚାବିଗୁଡ଼ିକ_2[1] ?
+		(*p) - ଚାବିଗୁଡ଼ିକ_2[0] : _slen ];
 
 	cs = _deserialize_text_unicode_trans_targs[_trans];
 
-	if ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
-		goto _again;
+	ଯଦି ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
+		ଯାଅ _again;
 
-	switch ( _deserialize_text_unicode_trans_actions[_trans] ) {
-	case 4:
+	ବାଛ ( _deserialize_text_unicode_trans_actions[_trans] ) {
+	ସ୍ଥିତି 4:
 #line 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, ଆକାର (info));
 }
-	break;
-	case 1:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 1:
 #line 51 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	tok = p;
 }
-	break;
-	case 2:
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 2:
 #line 55 "hb-buffer-deserialize-text-unicode.rl"
-	{if (!parse_hex (tok, p, &info.codepoint )) return false; }
-	break;
-	case 3:
+	{ଯଦି (!parse_hex (tok, p, &info.codepoint )) ଫେରନ୍ତୁ ମିଥ୍ୟା; }
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 3:
 #line 57 "hb-buffer-deserialize-text-unicode.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
+	{ ଯଦି (!parse_uint (tok, p, &info.cluster )) ଫେରନ୍ତୁ ମିଥ୍ୟା; }
+	ଭାଙ୍ଗ;
+	ସ୍ଥିତି 6:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	ଯଦି (unlikely (!buffer->successful))
+	  ଫେରନ୍ତୁ ମିଥ୍ୟା;
+	ଯଦି (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, ଆକାର (info));
 }
-	break;
+	ଭାଙ୍ଗ;
 #line 203 "hb-buffer-deserialize-text-unicode.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	ଯଦି ( cs == 0 )
+		ଯାଅ _out;
+	ଯଦି ( ++p != pe )
+		ଯାଅ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ଯଦି ( p == eof )
 	{
-	switch ( _deserialize_text_unicode_eof_actions[cs] ) {
-	case 5:
+	ବାଛ ( _deserialize_text_unicode_eof_actions[cs] ) {
+	ସ୍ଥିତି 5:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	ଯଦି (unlikely (!buffer->successful))
+	  ଫେରନ୍ତୁ ମିଥ୍ୟା;
+	ଯଦି (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
+	ଭାଙ୍ଗ;
 #line 224 "hb-buffer-deserialize-text-unicode.hh"
 	}
 	}
@@ -250,7 +250,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  ଫେରନ୍ତୁ p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */

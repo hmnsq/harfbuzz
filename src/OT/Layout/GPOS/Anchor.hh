@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#ଅନ୍ତର୍ଭାଵ "AnchorFormat1.hh"
+#ଅନ୍ତର୍ଭାଵ "AnchorFormat2.hh"
+#ଅନ୍ତର୍ଭାଵ "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ନାମାକାଶ OT {
+ନାମାକାଶ Layout {
+ନାମାକାଶ GPOS_impl {
 
-struct Anchor
+ସଂରଚନା Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  ସୁରକ୍ଷିତ:
+  ସଂଘ {
+  ସଂରଚନା { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  ସର୍ବସାଧାରଣ:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ତାର୍କିକ sanitize (hb_sanitize_context_t *c) ଅଚଳ
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ଏହି);
+    ଯଦି (!u.format.v.sanitize (c)) return_trace (ମିଥ୍ୟା);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    ସ୍ଥିତି 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    ସ୍ଥିତି 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (ସତ୍ୟ);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  ଶୂନ୍ୟ get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   ଦଶମିକ *x, ଦଶମିକ *y) ଅଚଳ
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); ଫେରନ୍ତୁ;
+    ସ୍ଥିତି 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); ଫେରନ୍ତୁ;
+    ସ୍ଥିତି 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); ଫେରନ୍ତୁ;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:                                          ଫେରନ୍ତୁ;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ତାର୍କିକ subset (hb_subset_context_t *c) ଅଚଳ
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (ଏହି);
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: hb_barrier (); return_trace (ତାର୍କିକ (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    ସ୍ଥିତି 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      ଯଦି (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (ତାର୍କିକ (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (ତାର୍କିକ (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    ସ୍ଥିତି 3: hb_barrier (); return_trace (u.format3.subset (c));
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ:return_trace (ମିଥ୍ୟା);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ଶୂନ୍ୟ collect_variation_indices (hb_collect_variation_indices_context_t *c) ଅଚଳ
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    ବାଛ (u.format.v) {
+    ସ୍ଥିତି 1: ସ୍ଥିତି 2:
+      ଫେରନ୍ତୁ;
+    ସ୍ଥିତି 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      ଫେରନ୍ତୁ;
+    ପୂର୍ବନିର୍ଦ୍ଧାରିତ: ଫେରନ୍ତୁ;
     }
   }
 };

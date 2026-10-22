@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#ଅନ୍ତର୍ଭାଵ "hb.hh"
 
-#include "hb-draw.hh"
+#ଅନ୍ତର୍ଭାଵ "hb-draw.hh"
 
 
-struct hb_outline_point_t
+ସଂରଚନା hb_outline_point_t
 {
-  enum class type_t
+  ଗଣନା ଶ୍ରେଣୀ type_t
   {
     MOVE_TO,
-    LINE_TO,
+    ଧାଡ଼ି_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (ଦଶମିକ x, ଦଶମିକ y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  ଦଶମିକ x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+ସଂରଚନା hb_outline_vector_t
 {
-  float normalize_len ()
+  ଦଶମିକ normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    ଦଶମିକ len = hypotf (x, y);
+    ଯଦି (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    ଫେରନ୍ତୁ len;
   }
 
-  float x, y;
+  ଦଶମିକ x, y;
 };
 
-struct hb_outline_t
+ସଂରଚନା hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  ଶୂନ୍ୟ reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL ଶୂନ୍ୟ replay (hb_draw_funcs_t *pen, ଶୂନ୍ୟ *pen_data) ଅଚଳ;
+  HB_INTERNAL ଦଶମିକ control_area () ଅଚଳ;
+  HB_INTERNAL ଶୂନ୍ୟ translate (ଦଶମିକ dx, ଦଶମିକ dy);
+  HB_INTERNAL ଶୂନ୍ୟ slant (ଦଶମିକ slant_xy);
+  HB_INTERNAL ଶୂନ୍ୟ embolden (ଦଶମିକ x_strength, ଦଶମିକ y_strength,
+			     ଦଶମିକ x_shift, ଦଶମିକ y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;
