@@ -24,154 +24,154 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_OT_HDMX_TABLE_HH
-#define HB_OT_HDMX_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_HDMX_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_HDMX_ਸਾਰਣੀ_HH
 
-#include "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/hdmx
  */
-#define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_hdmx HB_ਟੈਗ('h','d','m','x')
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
 
-struct DeviceRecord
+ਬਣਤਰ Device_ਰਿਕਾਰਡ
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  ਸਥਿਰ size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
+  { ਵਾਪਸ hb_ceil_ਮੰਜ਼ਿਲ_4 (hb_unsigned_mul_ਜੋੜੋ_saturate (ਗਿਣਤੀ_2, HBUINT8::static_ਮਾਪ, min_ਮਾਪ)); }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned pixelSize,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ pixel_ਮਾਪ,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ਅਚਲ hb_ਸਦਿਸ਼_t<hb_codepoint_pair_t> new_ਮੰਜ਼ਿਲ_old_gid_list,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    ਜੇ (unlikely (!c->extend (ਇਹ, ਅੰਕ_glyphs)))  return_trace (ਝੂਠ);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    ਇਹ->pixel_ਮਾਪ = pixel_ਮਾਪ;
+    ਇਹ->max_ਚੌੜਾਈ =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
-      widthsZ[_.first] = *it++;
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : new_ਮੰਜ਼ਿਲ_old_gid_list)
+      widthsZ[_.ਪਹਿਲਾ] = *it++;
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_Device_ਰਿਕਾਰਡ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (ਇਹ, ਮਾਪ_Device_ਰਿਕਾਰਡ)));
   }
 
-  HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
-  HBUINT8			maxWidth;	/* Maximum width. */
-  UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  HBUINT8			pixel_ਮਾਪ;	/* Pixel size for following widths (as ppem). */
+  HBUINT8			max_ਚੌੜਾਈ;	/* Maximum width. */
+  Unsized_Array_ਦਾ<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_UNBOUNDED (2);
 };
 
 
-struct hdmx
+ਬਣਤਰ hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_ਜੋੜੋ_saturate (ਅੰਕ_ਰਿਕਾਰਡਾਂ_2, ਮਾਪ_Device_ਰਿਕਾਰਡ, min_ਮਾਪ); }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned version,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੰਸਕਰਣ,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ਅਚਲ hb_codepoint_pair_t> new_ਮੰਜ਼ਿਲ_old_gid_list,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    ਜੇ (unlikely (!c->extend_min ((*ਇਹ))))  return_trace (ਝੂਠ);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    ਇਹ->ਸੰਸਕਰਣ = ਸੰਸਕਰਣ;
+    ਇਹ->ਅੰਕ_ਰਿਕਾਰਡਾਂ_2 = it.len ();
+    ਇਹ->ਮਾਪ_Device_ਰਿਕਾਰਡ = Device_ਰਿਕਾਰਡ::get_ਮਾਪ (ਅੰਕ_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    ਲਈ (ਅਚਲ hb_ਵਸਤੂ_type<Iterator>& _ : +it)
+      c->ਸ਼ੁਰੂ_embed<Device_ਰਿਕਾਰਡ> ()->serialize (c, _.ਪਹਿਲਾ, _.second, new_ਮੰਜ਼ਿਲ_old_gid_list, ਅੰਕ_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ਇਹ);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    ਸਵੈਚਾਲਿਤ *hdmx_ਅਭਾਜ = c->serializer->ਸ਼ੁਰੂ_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
-    auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਨਿਵੇਸ਼_glyphs = get_ਅੰਕ_glyphs ();
+    ਸਵੈਚਾਲਿਤ it =
+    + hb_range ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕ_ਰਿਕਾਰਡਾਂ_2)
+    | hb_map ([c, ਅੰਕ_ਨਿਵੇਸ਼_glyphs, ਇਹ] (ਬਿਨਾਨਿਸ਼ਾਨੀ _)
 	{
-	  const DeviceRecord *device_record =
-	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
-					   _ * sizeDeviceRecord);
-	  auto row =
-	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	  ਅਚਲ Device_ਰਿਕਾਰਡ *device_ਰਿਕਾਰਡ =
+	    &Struct_At_ਵਿੱਥ<Device_ਰਿਕਾਰਡ> (&ਪਹਿਲਾ_Device_ਰਿਕਾਰਡ,
+					   _ * ਮਾਪ_Device_ਰਿਕਾਰਡ);
+	  ਸਵੈਚਾਲਿਤ ਪੰਕਤੀ =
+	    + hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list)
+	    | hb_map ([ਅੰਕ_ਨਿਵੇਸ਼_glyphs, device_ਰਿਕਾਰਡ] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			ਵਾਪਸ device_ਰਿਕਾਰਡ->widthsZ.as_array (ਅੰਕ_ਨਿਵੇਸ਼_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  ਵਾਪਸ hb_pair ((ਬਿਨਾਨਿਸ਼ਾਨੀ) device_ਰਿਕਾਰਡ->pixel_ਮਾਪ, +ਪੰਕਤੀ);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
-			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+    hdmx_ਅਭਾਜ->serialize (c->serializer, ਸੰਸਕਰਣ, it,
+			   c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list,
+			   c->plan->ਅੰਕ_output_glyphs ());
+    return_trace (ਸੱਚ);
   }
 
-  unsigned get_num_glyphs () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਅੰਕ_glyphs () ਅਚਲ
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    ਵਾਪਸ ਮਾਪ_Device_ਰਿਕਾਰਡ - Device_ਰਿਕਾਰਡ::min_ਮਾਪ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
-		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  !hb_unsigned_mul_overflows (ਅੰਕ_ਰਿਕਾਰਡਾਂ_2, ਮਾਪ_Device_ਰਿਕਾਰਡ) &&
+                  min_ਮਾਪ + ਅੰਕ_ਰਿਕਾਰਡਾਂ_2 * ਮਾਪ_Device_ਰਿਕਾਰਡ > ਅੰਕ_ਰਿਕਾਰਡਾਂ_2 * ਮਾਪ_Device_ਰਿਕਾਰਡ &&
+		  ਮਾਪ_Device_ਰਿਕਾਰਡ >= Device_ਰਿਕਾਰਡ::min_ਮਾਪ &&
+		  c->check_range (ਇਹ, get_ਮਾਪ ()));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
-  HBUINT32	sizeDeviceRecord;
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT16	ਸੰਸਕਰਣ;	/* Table version number (0) */
+  HBUINT16	ਅੰਕ_ਰਿਕਾਰਡਾਂ_2;	/* Number of device records. */
+  HBUINT32	ਮਾਪ_Device_ਰਿਕਾਰਡ;
 				/* Size of a device record, 32-bit aligned. */
-  DeviceRecord	firstDeviceRecord;
+  Device_ਰਿਕਾਰਡ	ਪਹਿਲਾ_Device_ਰਿਕਾਰਡ;
 				/* Array of device records. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HDMX_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_HDMX_TABLE_HH */

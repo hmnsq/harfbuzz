@@ -24,165 +24,165 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../OT/Layout/Common/Coverage.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "graph.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../OT/Layout/Common/Coverage.hh"
 
-#ifndef GRAPH_COVERAGE_GRAPH_HH
-#define GRAPH_COVERAGE_GRAPH_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਗ੍ਰਾਫ_COVERAGE_ਗ੍ਰਾਫ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਗ੍ਰਾਫ_COVERAGE_ਗ੍ਰਾਫ_HH
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
-  const graph_t::vertex_t& vertex
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (
+  ਅਚਲ OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
+  ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat1_3<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ();
+  constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = OT::Layout::Common::CoverageFormat1_3<Types>::min_ਮਾਪ;
+  ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ)) ਵਾਪਸ Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ + thiz->glyphArray.get_ਮਾਪ () - thiz->glyphArray.len.get_ਮਾਪ ()))
+    ਵਾਪਸ Err(SANITIZE_FAILURE);
+  ਵਾਪਸ Ok();
 }
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
-  const graph_t::vertex_t& vertex
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (
+  ਅਚਲ OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
+  ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat2_4<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ();
+  constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = OT::Layout::Common::CoverageFormat2_4<Types>::min_ਮਾਪ;
+  ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ)) ਵਾਪਸ Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ + thiz->range_ਰਿਕਾਰਡ.get_ਮਾਪ () - thiz->range_ਰਿਕਾਰਡ.len.get_ਮਾਪ ()))
+    ਵਾਪਸ Err(SANITIZE_FAILURE);
+  ਵਾਪਸ Ok();
 }
 
-struct Coverage : public OT::Layout::Common::Coverage
+ਬਣਤਰ Coverage : ਜਨਤਕ OT::Layout::Common::Coverage
 {
-  static graph_result_t<void> clone_coverage (gsubgpos_graph_context_t& c,
-                                              unsigned coverage_id,
-                                              unsigned new_parent_id,
-                                              unsigned link_position,
-                                              unsigned start, unsigned end)
+  ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> clone_coverage (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                              ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_id,
+                                              ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਮਾਪਾ_id,
+                                              ਬਿਨਾਨਿਸ਼ਾਨੀ link_position,
+                                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ)
 
   {
-    unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    auto& coverage_v = c.graph.vertices_[coverage_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+    ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਮਾਪ = c.ਗ੍ਰਾਫ.vertices_[coverage_id].ਸਾਰਣੀ_ਮਾਪ ();
+    ਸਵੈਚਾਲਿਤ& coverage_v = c.ਗ੍ਰਾਫ.vertices_[coverage_id];
+    ਅਚਲ Coverage* coverage_ਸਾਰਣੀ = (ਅਚਲ Coverage*) coverage_v.obj().ਸਿਰ_2;
+    ਜੇ (unlikely (!coverage_ਸਾਰਣੀ))
+      ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
+    TRY (coverage_ਸਾਰਣੀ->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    ਸਵੈਚਾਲਿਤ new_coverage =
+        + hb_zip (coverage_ਸਾਰਣੀ->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> p) {
+          ਵਾਪਸ p.second >= ਸ਼ੁਰੂ && p.second < ਸਿਰਾ;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
         ;
 
-    return add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
+    ਵਾਪਸ ਜੋੜੋ_coverage (c, new_ਮਾਪਾ_id, link_position, new_coverage, coverage_ਮਾਪ);
   }
 
-  template<typename It>
-  static graph_result_t<void> add_coverage (gsubgpos_graph_context_t& c,
-                                            unsigned parent_id,
-                                            unsigned link_position,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ It>
+  ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> ਜੋੜੋ_coverage (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                            ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪਾ_id,
+                                            ਬਿਨਾਨਿਸ਼ਾਨੀ link_position,
                                             It glyphs,
-                                            unsigned max_size)
+                                            ਬਿਨਾਨਿਸ਼ਾਨੀ max_size)
   {
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
-    TRY (make_coverage (c, glyphs, coverage_prime_id, max_size));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਅਭਾਜ_id, c.ਗ੍ਰਾਫ.new_ਗੰਢ (ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ));
+    ਸਵੈਚਾਲਿਤ& coverage_ਅਭਾਜ_ਸ਼ੀਰਸ਼ = c.ਗ੍ਰਾਫ.vertices_[coverage_ਅਭਾਜ_id];
+    TRY (make_coverage (c, glyphs, coverage_ਅਭਾਜ_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
-    TRY(coverage_prime_vertex.add_parent (parent_id, false));
+    TRY(c.ਗ੍ਰਾਫ.vertices_[ਮਾਪਾ_id].ਜੋੜੋ_real_link (SmallTypes::ਮਾਪ, coverage_ਅਭਾਜ_id, link_position));
+    TRY(coverage_ਅਭਾਜ_ਸ਼ੀਰਸ਼.ਜੋੜੋ_ਮਾਪਾ (ਮਾਪਾ_id, ਝੂਠ));
 
-    return Ok();
+    ਵਾਪਸ Ok();
   }
 
   // Filter an existing coverage table to glyphs at indices [start, end) and replace it with the filtered version.
-  static graph_result_t<void> filter_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned existing_coverage,
-                                                unsigned start, unsigned end) {
-    unsigned coverage_size = c.graph.vertices_[existing_coverage].table_size ();
-    auto& coverage_v = c.graph.vertices_[existing_coverage];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+  ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> filter_coverage (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                ਬਿਨਾਨਿਸ਼ਾਨੀ existing_coverage,
+                                                ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ) {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਮਾਪ = c.ਗ੍ਰਾਫ.vertices_[existing_coverage].ਸਾਰਣੀ_ਮਾਪ ();
+    ਸਵੈਚਾਲਿਤ& coverage_v = c.ਗ੍ਰਾਫ.vertices_[existing_coverage];
+    ਅਚਲ Coverage* coverage_ਸਾਰਣੀ = (ਅਚਲ Coverage*) coverage_v.obj().ਸਿਰ_2;
+    ਜੇ (unlikely (!coverage_ਸਾਰਣੀ))
+      ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
+    TRY (coverage_ਸਾਰਣੀ->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    ਸਵੈਚਾਲਿਤ new_coverage =
+        + hb_zip (coverage_ਸਾਰਣੀ->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> p) {
+          ਵਾਪਸ p.second >= ਸ਼ੁਰੂ && p.second < ਸਿਰਾ;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
         ;
 
-    return make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
+    ਵਾਪਸ make_coverage (c, new_coverage, existing_coverage, coverage_ਮਾਪ * 2 + 100);
   }
 
   // Replace the coverage table at dest obj with one covering 'glyphs'.
-  template<typename It>
-  static graph_result_t<void> make_coverage (gsubgpos_graph_context_t& c,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ It>
+  ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> make_coverage (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
                                              It glyphs,
-                                             unsigned dest_obj,
-                                             unsigned max_size)
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ dest_obj,
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    ਅੱਖਰ* ਬਫਰ = (ਅੱਖਰ*) hb_calloc (1, max_size);
+    ਜੇ (unlikely (!ਬਫਰ))
+      ਵਾਪਸ Err(ਵੰਡ_FAILURE);
 
-    hb_serialize_context_t serializer (buffer, max_size);
+    hb_serialize_context_t serializer (ਬਫਰ, max_size);
     OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
-    serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    serializer.ਸਿਰਾ_serialize ();
+    ਜੇ (unlikely (serializer.ਵਿੱਚ_error ()))
     {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      hb_free (ਬਫਰ);
+      ਵਾਪਸ Err(ਵੰਡ_FAILURE);
     }
 
-    hb_bytes_t coverage_copy = serializer.copy_bytes ();
-    if (unlikely (!coverage_copy.arrayZ)) {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+    hb_ਬਾਈਟਾਂ_t coverage_copy = serializer.copy_ਬਾਈਟਾਂ ();
+    ਜੇ (unlikely (!coverage_copy.arrayZ)) {
+      hb_free (ਬਫਰ);
+      ਵਾਪਸ Err(ਵੰਡ_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) coverage_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    ਸਵੈਚਾਲਿਤ res = c.ਜੋੜੋ_ਬਫਰ ((ਅੱਖਰ *) coverage_copy.arrayZ);
+    ਜੇ (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      hb_free ((char *) coverage_copy.arrayZ);
-      return res;
+      hb_free (ਬਫਰ);
+      hb_free ((ਅੱਖਰ *) coverage_copy.arrayZ);
+      ਵਾਪਸ res;
     }
 
-    auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) coverage_copy.arrayZ;
-    v.set_buffer (head, head + coverage_copy.length);
+    ਸਵੈਚਾਲਿਤ& v = c.ਗ੍ਰਾਫ.vertices_[dest_obj];
+    ਅੱਖਰ* ਸਿਰ_2 = (ਅੱਖਰ *) coverage_copy.arrayZ;
+    v.ਸੈੱਟ_ਬਫਰ (ਸਿਰ_2, ਸਿਰ_2 + coverage_copy.ਲੰਮਾਈ);
 
-    hb_free (buffer);
-    return Ok();
+    hb_free (ਬਫਰ);
+    ਵਾਪਸ Ok();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼) ਅਚਲ
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) return Err(SANITIZE_FAILURE);
+    size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ ();
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < OT::Layout::Common::Coverage::min_ਮਾਪ)) ਵਾਪਸ Err(SANITIZE_FAILURE);
     hb_barrier ();
-    switch (u.format.v)
+    ਚੋਣ (u.format.v)
     {
-    case 1: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
-    case 2: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
-    case 4: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
-#endif
-    default: return Err(SANITIZE_FAILURE);
+    ਹਾਲਤ 1: ਵਾਪਸ ਗ੍ਰਾਫ::sanitize ((ਅਚਲ OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) ਇਹ, ਸ਼ੀਰਸ਼);
+    ਹਾਲਤ 2: ਵਾਪਸ ਗ੍ਰਾਫ::sanitize ((ਅਚਲ OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) ਇਹ, ਸ਼ੀਰਸ਼);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 3: ਵਾਪਸ ਗ੍ਰਾਫ::sanitize ((ਅਚਲ OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) ਇਹ, ਸ਼ੀਰਸ਼);
+    ਹਾਲਤ 4: ਵਾਪਸ ਗ੍ਰਾਫ::sanitize ((ਅਚਲ OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) ਇਹ, ਸ਼ੀਰਸ਼);
+#ਜੇ_ਅੰਤ
+    ਮੂਲ: ਵਾਪਸ Err(SANITIZE_FAILURE);
     }
   }
 };
@@ -190,4 +190,4 @@ struct Coverage : public OT::Layout::Common::Coverage
 
 }
 
-#endif  // GRAPH_COVERAGE_GRAPH_HH
+#ਜੇ_ਅੰਤ  // GRAPH_COVERAGE_GRAPH_HH

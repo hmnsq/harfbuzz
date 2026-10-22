@@ -12,36 +12,36 @@
  * # Date: 2026-06-29, 15:25:26 GMT
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
-#define HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPER_ARABIC_JOINING_LIST_HH
 
-static bool
+ਸਥਿਰ ਤਾਰਕਿਕ
 has_arabic_joining (hb_script_t script)
 {
   /* List of scripts that have data in arabic-table. */
-  switch ((int) script)
+  ਚੋਣ ((ਪੂਰਨ) script)
   {
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MANDAIC:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_PHAGS_PA:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SOGDIAN:
-    case HB_SCRIPT_SYRIAC:
-      return true;
+    ਹਾਲਤ HB_SCRIPT_ADLAM:
+    ਹਾਲਤ HB_SCRIPT_ARABIC:
+    ਹਾਲਤ HB_SCRIPT_CHORASMIAN:
+    ਹਾਲਤ HB_SCRIPT_HANIFI_ROHINGYA:
+    ਹਾਲਤ HB_SCRIPT_MANDAIC:
+    ਹਾਲਤ HB_SCRIPT_MANICHAEAN:
+    ਹਾਲਤ HB_SCRIPT_MONGOLIAN:
+    ਹਾਲਤ HB_SCRIPT_NKO:
+    ਹਾਲਤ HB_SCRIPT_OLD_UYGHUR:
+    ਹਾਲਤ HB_SCRIPT_PHAGS_PA:
+    ਹਾਲਤ HB_SCRIPT_PSALTER_PAHLAVI:
+    ਹਾਲਤ HB_SCRIPT_SOGDIAN:
+    ਹਾਲਤ HB_SCRIPT_SYRIAC:
+      ਵਾਪਸ ਸੱਚ;
 
-    default:
-      return false;
+    ਮੂਲ:
+      ਵਾਪਸ ਝੂਠ;
   }
 }
 
 
-#endif /* HB_OT_SHAPER_ARABIC_JOINING_LIST_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPER_ARABIC_JOINING_LIST_HH */
 
 /* == End of generated function == */

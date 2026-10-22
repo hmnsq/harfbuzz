@@ -1,34 +1,34 @@
-#ifndef OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
 
-#include "Common.hh"
-#include "ValueFormat.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-template <typename Types>
-struct SinglePosFormat1_3 : ValueBase
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ SinglePosFormat1_3 : ਮੁੱਲ_ਅਧਾਰ
 {
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  ਮੁੱਲ_Format   ਮੁੱਲ_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
-  ValueRecord   values;                 /* Defines positioning
+  ਮੁੱਲ_ਰਿਕਾਰਡ   values;                 /* Defines positioning
                                          * value(s)--applied to all glyphs in
                                          * the Coverage table */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size, values);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (2 + Types::LOffset::static_ਮਾਪ + ਮੁੱਲ_Format::static_ਮਾਪ, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  coverage.sanitize (c, this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
+                  coverage.sanitize (c, ਇਹ) &&
 		  hb_barrier () &&
                   /* The coverage  table may use a range to represent a set
                    * of glyphs, which means a small number of bytes can
@@ -36,146 +36,146 @@ struct SinglePosFormat1_3 : ValueBase
                    * sanitizer max ops to take this into account.
                    *
                    * Note: This check *must* be right after coverage sanitize. */
-                  c->check_ops ((this + coverage).get_population () >> 1) &&
-                  valueFormat.sanitize_value (c, this, values));
+                  c->check_ops ((ਇਹ + coverage).get_population () >> 1) &&
+                  ਮੁੱਲ_Format_2.sanitize_ਮੁੱਲ (c, ਇਹ, values));
 
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
+  { ਵਾਪਸ (ਇਹ+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ਖਾਲੀ ਘੇਰਾ_lookups (hb_ਘੇਰਾ_lookups_context_t *c) ਅਚਲ {}
+  ਖਾਲੀ collect_variation_indices (hb_collect_variation_indices_context_t *c) ਅਚਲ
   {
-    if (!valueFormat.has_device ()) return;
+    ਜੇ (!ਮੁੱਲ_Format_2.has_device ()) ਵਾਪਸ;
 
-    hb_set_t intersection;
-    (this+coverage).intersect_set (*c->glyph_set, intersection);
-    if (!intersection) return;
+    hb_ਸੈੱਟ_t intersection;
+    (ਇਹ+coverage).intersect_ਸੈੱਟ (*c->glyph_ਸੈੱਟ, intersection);
+    ਜੇ (!intersection) ਵਾਪਸ;
 
-    valueFormat.collect_variation_indices (c, this, values.as_array (valueFormat.get_len ()));
+    ਮੁੱਲ_Format_2.collect_variation_indices (c, ਇਹ, values.as_array (ਮੁੱਲ_Format_2.get_len ()));
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
+  { ਜੇ (unlikely (!(ਇਹ+coverage).collect_coverage (c->ਨਿਵੇਸ਼))) ਵਾਪਸ; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ਅਚਲ Coverage &get_coverage () ਅਚਲ { ਵਾਪਸ ਇਹ+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  ਮੁੱਲ_Format get_ਮੁੱਲ_format () ਅਚਲ { ਵਾਪਸ ਮੁੱਲ_Format_2; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ਇਹ);
+    hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = (ਇਹ+coverage).get_coverage  (ਬਫਰ->cur().codepoint);
+    ਜੇ (ਸੂਚਕਾਂਕ_2 == NOT_COVERED) return_trace (ਝੂਠ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
     {
-      c->buffer->message (c->font,
+      c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			  "positioning glyph at %u",
-			  c->buffer->idx);
+			  c->ਬਫਰ->idx);
     }
 
-    valueFormat.apply_value (c, this, values, buffer->cur_pos());
+    ਮੁੱਲ_Format_2.apply_ਮੁੱਲ (c, ਇਹ, values, ਬਫਰ->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
     {
-      c->buffer->message (c->font,
+      c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			  "positioned glyph at %u",
-			  c->buffer->idx);
+			  c->ਬਫਰ->idx);
     }
 
-    buffer->idx++;
-    return_trace (true);
+    ਬਫਰ->idx++;
+    return_trace (ਸੱਚ);
   }
 
-  bool
+  ਤਾਰਕਿਕ
   position_single (hb_font_t           *font,
-		   hb_blob_t           *table_blob,
+		   hb_blob_t           *ਸਾਰਣੀ_blob,
 		   hb_direction_t       direction,
 		   hb_codepoint_t       gid,
-		   hb_glyph_position_t &pos) const
+		   hb_glyph_position_t &pos) ਅਚਲ
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = (ਇਹ+coverage).get_coverage  (gid);
+    ਜੇ (likely (ਸੂਚਕਾਂਕ_2 == NOT_COVERED)) ਵਾਪਸ ਝੂਠ;
 
-    valueFormat.position_single (font, table_blob, direction, this,
+    ਮੁੱਲ_Format_2.position_single (font, ਸਾਰਣੀ_blob, direction, ਇਹ,
                                  values, pos);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+  ਖਾਲੀ serialize (hb_serialize_context_t *c,
+                  ਅਚਲ ਮੁੱਲ_ਅਧਾਰ *src,
+                  ਮੁੱਲ_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  ਮੁੱਲ_Format newFormat,
+                  ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>> *layout_variation_idx_delta_map)
   {
-    if (unlikely (!c->extend_min (this))) return;
-    if (unlikely (!c->check_assign (valueFormat,
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) ਵਾਪਸ;
+    ਜੇ (unlikely (!c->check_ਸੌਂਪੋ (ਮੁੱਲ_Format_2,
                                     newFormat,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
+                                    HB_SERIALIZE_ERROR_INT_ਉਛਾਲ))) ਵਾਪਸ;
 
-    for (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
+    ਲਈ (ਅਚਲ hb_array_t<ਅਚਲ ਮੁੱਲ>& _ : + it | hb_map (hb_ਦੂਜਾ))
     {
-      src_format.copy_values (c, newFormat, src,  &_, layout_variation_idx_delta_map);
+      src_format.copy_ਮੁੱਲਾਂ (c, newFormat, src,  &_, layout_variation_idx_delta_map);
       // Only serialize the first entry in the iterator, the rest are assumed to
       // be the same.
-      break;
+      ਰੋਕੋ;
     }
 
-    auto glyphs =
+    ਸਵੈਚਾਲਿਤ glyphs =
     + it
-    | hb_map_retains_sorting (hb_first)
+    | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
     ;
 
     coverage.serialize_serialize (c, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ਇਹ);
+    ਅਚਲ hb_ਸੈੱਟ_t &glyphset = *c->plan->glyphset_gsub ();
+    ਅਚਲ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    hb_set_t intersection;
-    (this+coverage).intersect_set (glyphset, intersection);
+    hb_ਸੈੱਟ_t intersection;
+    (ਇਹ+coverage).intersect_ਸੈੱਟ (glyphset, intersection);
 
-    unsigned new_format = valueFormat;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_format = ਮੁੱਲ_Format_2;
 
-    if (c->plan->normalized_coords)
+    ਜੇ (c->plan->normalized_coords)
     {
-      new_format = valueFormat.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
+      new_format = ਮੁੱਲ_Format_2.get_effective_format (values.arrayZ, ਝੂਠ, ਝੂਠ, ਇਹ, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    ਨਹੀਂਤਾਂ ਜੇ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
-      hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      hb_blob_t* blob = hb_face_reference_ਸਾਰਣੀ (c->plan->ਸਰੋਤ, HB_ਟੈਗ ('f','v','a','r'));
+      ਤਾਰਕਿਕ has_fvar = (blob != hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      ਤਾਰਕਿਕ strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      new_format = valueFormat.get_effective_format (values.arrayZ,
+      ਜੇ (has_fvar && !c->plan->has_gdef_varstore)
+        strip = ਸੱਚ;
+      new_format = ਮੁੱਲ_Format_2.get_effective_format (values.arrayZ,
                                                      strip, /* strip hints */
-                                                     true, /* strip empty */
-                                                     this, nullptr);
+                                                     ਸੱਚ, /* strip empty */
+                                                     ਇਹ, ਖਾਲੀ_ਸੂਚਕ);
     }
 
-    auto it =
+    ਸਵੈਚਾਲਿਤ it =
     + hb_iter (intersection)
-    | hb_map_retains_sorting (glyph_map)
-    | hb_zip (hb_repeat (values.as_array (valueFormat.get_len ())))
+    | hb_map_retains_ਛਾਂਟੀ (glyph_map)
+    | hb_zip (hb_repeat (values.as_array (ਮੁੱਲ_Format_2.get_len ())))
     ;
 
-    bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    ਤਾਰਕਿਕ ret = ਤਾਰਕਿਕ (it);
+    SinglePos_serialize (c->serializer, ਇਹ, ਮੁੱਲ_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };
@@ -184,4 +184,4 @@ struct SinglePosFormat1_3 : ValueBase
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH */

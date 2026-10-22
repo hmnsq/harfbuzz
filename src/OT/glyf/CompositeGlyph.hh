@@ -1,431 +1,431 @@
-#ifndef OT_GLYF_COMPOSITEGLYPH_HH
-#define OT_GLYF_COMPOSITEGLYPH_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_GLYF_COMPOSITEGLYPH_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_GLYF_COMPOSITEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
-#include "composite-iter.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "composite-iter.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ glyf_impl {
 
 
-struct CompositeGlyphRecord
+ਬਣਤਰ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ
 {
-  protected:
-  enum composite_glyph_flag_t
+  ਸੁਰੱਖਿਅਤ:
+  ਗਿਣਤੀ ਸੰਯੁਕਤ_glyph_flag_t
   {
-    ARG_1_AND_2_ARE_WORDS	= 0x0001,
-    ARGS_ARE_XY_VALUES		= 0x0002,
-    ROUND_XY_TO_GRID		= 0x0004,
+    ARG_1_AND_2_ARE_ਸ਼ਬਦ	= 0x0001,
+    ਦਲੀਲਾਂ_ARE_XY_ਮੁੱਲਾਂ		= 0x0002,
+    ਗੇੜਾ_XY_ਮੰਜ਼ਿਲ_GRID		= 0x0004,
     WE_HAVE_A_SCALE		= 0x0008,
-    MORE_COMPONENTS		= 0x0020,
+    ਹੋਰ_COMPONENTS		= 0x0020,
     WE_HAVE_AN_X_AND_Y_SCALE	= 0x0040,
     WE_HAVE_A_TWO_BY_TWO	= 0x0080,
     WE_HAVE_INSTRUCTIONS	= 0x0100,
     USE_MY_METRICS		= 0x0200,
     OVERLAP_COMPOUND		= 0x0400,
-    SCALED_COMPONENT_OFFSET	= 0x0800,
-    UNSCALED_COMPONENT_OFFSET	= 0x1000,
-#ifndef HB_NO_BEYOND_64K
-    GID_IS_24BIT		= 0x2000
-#endif
+    SCALED_COMPONENT_ਵਿੱਥ	= 0x0800,
+    UNSCALED_COMPONENT_ਵਿੱਥ	= 0x1000,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ		= 0x2000
+#ਜੇ_ਅੰਤ
   };
 
-  public:
-  size_t get_size (bool extended) const
+  ਜਨਤਕ:
+  size_t get_ਮਾਪ (ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-    unsigned int size = min_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ = min_ਮਾਪ;
     /* glyphIndex is 24bit instead of 16bit */
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ)) ਮਾਪ += HBGlyphID24::static_ਮਾਪ - HBGlyphID16::static_ਮਾਪ;
+#ਜੇ_ਅੰਤ
     /* arg1 and 2 are int16 */
-    if (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
+    ਜੇ (flags & ARG_1_AND_2_ARE_ਸ਼ਬਦ) ਮਾਪ += 4;
     /* arg1 and 2 are int8 */
-    else size += 2;
+    ਨਹੀਂਤਾਂ ਮਾਪ += 2;
 
     /* One x 16 bit (scale) */
-    if (flags & WE_HAVE_A_SCALE) size += 2;
+    ਜੇ (flags & WE_HAVE_A_SCALE) ਮਾਪ += 2;
     /* Two x 16 bit (xscale, yscale) */
-    else if (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
+    ਨਹੀਂਤਾਂ ਜੇ (flags & WE_HAVE_AN_X_AND_Y_SCALE) ਮਾਪ += 4;
     /* Four x 16 bit (xscale, scale01, scale10, yscale) */
-    else if (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
+    ਨਹੀਂਤਾਂ ਜੇ (flags & WE_HAVE_A_TWO_BY_TWO) ਮਾਪ += 8;
 
-    return size;
+    ਵਾਪਸ ਮਾਪ;
   }
 
-  void drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
-  void set_overlaps_flag ()
+  ਖਾਲੀ drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
+  ਖਾਲੀ ਸੈੱਟ_overlaps_flag ()
   {
     flags = (uint16_t) flags | OVERLAP_COMPOUND;
   }
 
-  bool has_instructions ()  const { return   flags & WE_HAVE_INSTRUCTIONS; }
+  ਤਾਰਕਿਕ has_instructions ()  ਅਚਲ { ਵਾਪਸ   flags & WE_HAVE_INSTRUCTIONS; }
 
-  bool has_more ()          const { return   flags & MORE_COMPONENTS; }
-  bool is_use_my_metrics () const { return   flags & USE_MY_METRICS; }
-  bool is_anchored ()       const { return !(flags & ARGS_ARE_XY_VALUES); }
-  void get_anchor_points (unsigned int &point1, unsigned int &point2, bool extended) const
+  ਤਾਰਕਿਕ has_ਹੋਰ ()          ਅਚਲ { ਵਾਪਸ   flags & ਹੋਰ_COMPONENTS; }
+  ਤਾਰਕਿਕ is_use_my_metrics () ਅਚਲ { ਵਾਪਸ   flags & USE_MY_METRICS; }
+  ਤਾਰਕਿਕ is_anchored ()       ਅਚਲ { ਵਾਪਸ !(flags & ਦਲੀਲਾਂ_ARE_XY_ਮੁੱਲਾਂ); }
+  ਖਾਲੀ get_anchor_points (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ &point1, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ &point2, ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-    const auto *p = &StructAfter<const HBUINT8> (flags);
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
-#endif
-      p += HBGlyphID16::static_size;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *p = &StructAfter<ਅਚਲ HBUINT8> (flags);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ))
+      p += HBGlyphID24::static_ਮਾਪ;
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      p += HBGlyphID16::static_ਮਾਪ;
+    ਜੇ (flags & ARG_1_AND_2_ARE_ਸ਼ਬਦ)
     {
-      point1 = ((const HBUINT16 *) p)[0];
-      point2 = ((const HBUINT16 *) p)[1];
+      point1 = ((ਅਚਲ HBUINT16 *) p)[0];
+      point2 = ((ਅਚਲ HBUINT16 *) p)[1];
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       point1 = p[0];
       point2 = p[1];
     }
   }
 
-  static void transform (const float (&matrix)[4],
-			 hb_array_t<contour_point_t> points)
+  ਸਥਿਰ ਖਾਲੀ transform (ਅਚਲ ਦਸ਼ਮਲਵ (&ਮੈਟ੍ਰਿਕਸ)[4],
+			 hb_array_t<contour_ਬਿੰਦੂ_t> points)
   {
-    if (matrix[0] != 1.f || matrix[1] != 0.f ||
-	matrix[2] != 0.f || matrix[3] != 1.f)
-      for (auto &point : points)
-        point.transform (matrix);
+    ਜੇ (ਮੈਟ੍ਰਿਕਸ[0] != 1.f || ਮੈਟ੍ਰਿਕਸ[1] != 0.f ||
+	ਮੈਟ੍ਰਿਕਸ[2] != 0.f || ਮੈਟ੍ਰਿਕਸ[3] != 1.f)
+      ਲਈ (ਸਵੈਚਾਲਿਤ &ਬਿੰਦੂ : points)
+        ਬਿੰਦੂ.transform (ਮੈਟ੍ਰਿਕਸ);
   }
 
-  static void translate (const contour_point_t &trans,
-			 hb_array_t<contour_point_t> points)
+  ਸਥਿਰ ਖਾਲੀ translate (ਅਚਲ contour_ਬਿੰਦੂ_t &trans,
+			 hb_array_t<contour_ਬਿੰਦੂ_t> points)
   {
-    if (HB_OPTIMIZE_SIZE_VAL)
+    ਜੇ (HB_OPTIMIZE_ਮਾਪ_VAL)
     {
-      if (trans.x != 0.f || trans.y != 0.f)
-        for (auto &point : points)
-	  point.translate (trans);
+      ਜੇ (trans.x != 0.f || trans.y != 0.f)
+        ਲਈ (ਸਵੈਚਾਲਿਤ &ਬਿੰਦੂ : points)
+	  ਬਿੰਦੂ.translate (trans);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      if (trans.x != 0.f && trans.y != 0.f)
-        for (auto &point : points)
-	  point.translate (trans);
-      else
+      ਜੇ (trans.x != 0.f && trans.y != 0.f)
+        ਲਈ (ਸਵੈਚਾਲਿਤ &ਬਿੰਦੂ : points)
+	  ਬਿੰਦੂ.translate (trans);
+      ਨਹੀਂਤਾਂ
       {
-	if (trans.x != 0.f)
-	  for (auto &point : points)
-	    point.x += trans.x;
-	else if (trans.y != 0.f)
-	  for (auto &point : points)
-	    point.y += trans.y;
+	ਜੇ (trans.x != 0.f)
+	  ਲਈ (ਸਵੈਚਾਲਿਤ &ਬਿੰਦੂ : points)
+	    ਬਿੰਦੂ.x += trans.x;
+	ਨਹੀਂਤਾਂ ਜੇ (trans.y != 0.f)
+	  ਲਈ (ਸਵੈਚਾਲਿਤ &ਬਿੰਦੂ : points)
+	    ਬਿੰਦੂ.y += trans.y;
       }
     }
   }
 
-  void transform_points (hb_array_t<contour_point_t> points,
-			 const float (&matrix)[4],
-			 const contour_point_t &trans) const
+  ਖਾਲੀ transform_points (hb_array_t<contour_ਬਿੰਦੂ_t> points,
+			 ਅਚਲ ਦਸ਼ਮਲਵ (&ਮੈਟ੍ਰਿਕਸ)[4],
+			 ਅਚਲ contour_ਬਿੰਦੂ_t &trans) ਅਚਲ
   {
-    if (scaled_offsets ())
+    ਜੇ (scaled_offsets ())
     {
       translate (trans, points);
-      transform (matrix, points);
+      transform (ਮੈਟ੍ਰਿਕਸ, points);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      transform (matrix, points);
+      transform (ਮੈਟ੍ਰਿਕਸ, points);
       translate (trans, points);
     }
   }
 
-  bool get_points (contour_point_vector_t &points, bool extended) const
+  ਤਾਰਕਿਕ get_points (contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t &points, ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-    float matrix[4];
-    contour_point_t trans;
-    get_transformation (matrix, trans, extended);
-    if (unlikely (!points.alloc (points.length + 1 + 4))) return false; // For phantom points
+    ਦਸ਼ਮਲਵ ਮੈਟ੍ਰਿਕਸ[4];
+    contour_ਬਿੰਦੂ_t trans;
+    get_transformation (ਮੈਟ੍ਰਿਕਸ, trans, extended);
+    ਜੇ (unlikely (!points.alloc (points.ਲੰਮਾਈ + 1 + 4))) ਵਾਪਸ ਝੂਠ; // For phantom points
     points.push (trans);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  unsigned compile_with_point (const contour_point_t &point,
-                               char *out,
-			       bool extended) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ compile_with_ਬਿੰਦੂ (ਅਚਲ contour_ਬਿੰਦੂ_t &ਬਿੰਦੂ,
+                               ਅੱਖਰ *ਬਾਹਰਲਾ,
+			       ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-    const HBINT8 *p = &StructAfter<const HBINT8> (flags);
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
-#endif
-      p += HBGlyphID16::static_size;
+    ਅਚਲ HBINT8 *p = &StructAfter<ਅਚਲ HBINT8> (flags);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ))
+      p += HBGlyphID24::static_ਮਾਪ;
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      p += HBGlyphID16::static_ਮਾਪ;
 
-    unsigned len = get_size (extended);
-    unsigned len_before_val = (const char *)p - (const char *)this;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = get_ਮਾਪ (extended);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len_before_val = (ਅਚਲ ਅੱਖਰ *)p - (ਅਚਲ ਅੱਖਰ *)ਇਹ;
+    ਜੇ (flags & ARG_1_AND_2_ARE_ਸ਼ਬਦ)
     {
       // no overflow, copy value
-      hb_memcpy (out, this, len);
+      hb_memcpy (ਬਾਹਰਲਾ, ਇਹ, len);
 
-      HBINT16 *o = reinterpret_cast<HBINT16 *> (out + len_before_val);
-      o[0] = roundf (point.x);
-      o[1] = roundf (point.y);
+      HBINT16 *o = reinterpret_cast<HBINT16 *> (ਬਾਹਰਲਾ + len_before_val);
+      o[0] = roundf (ਬਿੰਦੂ.x);
+      o[1] = roundf (ਬਿੰਦੂ.y);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      int new_x = roundf (point.x);
-      int new_y = roundf (point.y);
-      if (new_x <= 127 && new_x >= -128 &&
+      ਪੂਰਨ new_x = roundf (ਬਿੰਦੂ.x);
+      ਪੂਰਨ new_y = roundf (ਬਿੰਦੂ.y);
+      ਜੇ (new_x <= 127 && new_x >= -128 &&
           new_y <= 127 && new_y >= -128)
       {
-        hb_memcpy (out, this, len);
-        HBINT8 *o = reinterpret_cast<HBINT8 *> (out + len_before_val);
+        hb_memcpy (ਬਾਹਰਲਾ, ਇਹ, len);
+        HBINT8 *o = reinterpret_cast<HBINT8 *> (ਬਾਹਰਲਾ + len_before_val);
         o[0] = new_x;
         o[1] = new_y;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
         // new point value has an int8 overflow
-        hb_memcpy (out, this, len_before_val);
+        hb_memcpy (ਬਾਹਰਲਾ, ਇਹ, len_before_val);
         
         //update flags
-        CompositeGlyphRecord *o = reinterpret_cast<CompositeGlyphRecord *> (out);
-        o->flags = flags | ARG_1_AND_2_ARE_WORDS;
-        out += len_before_val;
+        ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *o = reinterpret_cast<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *> (ਬਾਹਰਲਾ);
+        o->flags = flags | ARG_1_AND_2_ARE_ਸ਼ਬਦ;
+        ਬਾਹਰਲਾ += len_before_val;
 
-        HBINT16 new_value;
-        new_value = new_x;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
-        out += HBINT16::static_size;
+        HBINT16 new_ਮੁੱਲ;
+        new_ਮੁੱਲ = new_x;
+        hb_memcpy (ਬਾਹਰਲਾ, &new_ਮੁੱਲ, HBINT16::static_ਮਾਪ);
+        ਬਾਹਰਲਾ += HBINT16::static_ਮਾਪ;
 
-        new_value = new_y;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
-        out += HBINT16::static_size;
+        new_ਮੁੱਲ = new_y;
+        hb_memcpy (ਬਾਹਰਲਾ, &new_ਮੁੱਲ, HBINT16::static_ਮਾਪ);
+        ਬਾਹਰਲਾ += HBINT16::static_ਮਾਪ;
 
-        hb_memcpy (out, p+2, len - len_before_val - 2);
+        hb_memcpy (ਬਾਹਰਲਾ, p+2, len - len_before_val - 2);
         len += 2;
       }
     }
-    return len;
+    ਵਾਪਸ len;
   }
 
-  protected:
-  bool scaled_offsets () const
-  { return (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
+  ਸੁਰੱਖਿਅਤ:
+  ਤਾਰਕਿਕ scaled_offsets () ਅਚਲ
+  { ਵਾਪਸ (flags & (SCALED_COMPONENT_ਵਿੱਥ | UNSCALED_COMPONENT_ਵਿੱਥ)) == SCALED_COMPONENT_ਵਿੱਥ; }
 
-  public:
-  bool get_transformation (float (&matrix)[4], contour_point_t &trans, bool extended) const
+  ਜਨਤਕ:
+  ਤਾਰਕਿਕ get_transformation (ਦਸ਼ਮਲਵ (&ਮੈਟ੍ਰਿਕਸ)[4], contour_ਬਿੰਦੂ_t &trans, ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-    matrix[0] = matrix[3] = 1.f;
-    matrix[1] = matrix[2] = 0.f;
+    ਮੈਟ੍ਰਿਕਸ[0] = ਮੈਟ੍ਰਿਕਸ[3] = 1.f;
+    ਮੈਟ੍ਰਿਕਸ[1] = ਮੈਟ੍ਰਿਕਸ[2] = 0.f;
 
-    const auto *p = &StructAfter<const HBINT8> (flags);
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      p += HBGlyphID24::static_size;
-    else
-#endif
-      p += HBGlyphID16::static_size;
-    int tx, ty;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *p = &StructAfter<ਅਚਲ HBINT8> (flags);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ))
+      p += HBGlyphID24::static_ਮਾਪ;
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      p += HBGlyphID16::static_ਮਾਪ;
+    ਪੂਰਨ tx, ty;
+    ਜੇ (flags & ARG_1_AND_2_ARE_ਸ਼ਬਦ)
     {
-      tx = *(const HBINT16 *) p;
-      p += HBINT16::static_size;
-      ty = *(const HBINT16 *) p;
-      p += HBINT16::static_size;
+      tx = *(ਅਚਲ HBINT16 *) p;
+      p += HBINT16::static_ਮਾਪ;
+      ty = *(ਅਚਲ HBINT16 *) p;
+      p += HBINT16::static_ਮਾਪ;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       tx = *p++;
       ty = *p++;
     }
-    if (is_anchored ()) tx = ty = 0;
+    ਜੇ (is_anchored ()) tx = ty = 0;
 
     /* set is_end_point flag to true, used by IUP delta optimization */
-    trans.init ((float) tx, (float) ty, true);
+    trans.init ((ਦਸ਼ਮਲਵ) tx, (ਦਸ਼ਮਲਵ) ty, ਸੱਚ);
 
     {
-      const F2DOT14 *points = (const F2DOT14 *) p;
-      if (flags & WE_HAVE_A_SCALE)
+      ਅਚਲ F2DOT14 *points = (ਅਚਲ F2DOT14 *) p;
+      ਜੇ (flags & WE_HAVE_A_SCALE)
       {
-	matrix[0] = matrix[3] = points[0].to_float ();
-	return true;
+	ਮੈਟ੍ਰਿਕਸ[0] = ਮੈਟ੍ਰਿਕਸ[3] = points[0].ਮੰਜ਼ਿਲ_float ();
+	ਵਾਪਸ ਸੱਚ;
       }
-      else if (flags & WE_HAVE_AN_X_AND_Y_SCALE)
+      ਨਹੀਂਤਾਂ ਜੇ (flags & WE_HAVE_AN_X_AND_Y_SCALE)
       {
-	matrix[0] = points[0].to_float ();
-	matrix[3] = points[1].to_float ();
-	return true;
+	ਮੈਟ੍ਰਿਕਸ[0] = points[0].ਮੰਜ਼ਿਲ_float ();
+	ਮੈਟ੍ਰਿਕਸ[3] = points[1].ਮੰਜ਼ਿਲ_float ();
+	ਵਾਪਸ ਸੱਚ;
       }
-      else if (flags & WE_HAVE_A_TWO_BY_TWO)
+      ਨਹੀਂਤਾਂ ਜੇ (flags & WE_HAVE_A_TWO_BY_TWO)
       {
-	matrix[0] = points[0].to_float ();
-	matrix[1] = points[1].to_float ();
-	matrix[2] = points[2].to_float ();
-	matrix[3] = points[3].to_float ();
-	return true;
+	ਮੈਟ੍ਰਿਕਸ[0] = points[0].ਮੰਜ਼ਿਲ_float ();
+	ਮੈਟ੍ਰਿਕਸ[1] = points[1].ਮੰਜ਼ਿਲ_float ();
+	ਮੈਟ੍ਰਿਕਸ[2] = points[2].ਮੰਜ਼ਿਲ_float ();
+	ਮੈਟ੍ਰਿਕਸ[3] = points[3].ਮੰਜ਼ਿਲ_float ();
+	ਵਾਪਸ ਸੱਚ;
       }
     }
-    return tx || ty;
+    ਵਾਪਸ tx || ty;
   }
 
-  hb_codepoint_t get_gid (bool extended) const
+  hb_codepoint_t get_gid (ਤਾਰਕਿਕ extended) ਅਚਲ
   {
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      return StructAfter<const HBGlyphID24> (flags);
-    else
-#endif
-      return StructAfter<const HBGlyphID16> (flags);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ))
+      ਵਾਪਸ StructAfter<ਅਚਲ HBGlyphID24> (flags);
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      ਵਾਪਸ StructAfter<ਅਚਲ HBGlyphID16> (flags);
   }
-  void set_gid (hb_codepoint_t gid, bool extended)
+  ਖਾਲੀ ਸੈੱਟ_gid (hb_codepoint_t gid, ਤਾਰਕਿਕ extended)
   {
-#ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (extended && (flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ))
       StructAfter<HBGlyphID24> (flags) = gid;
-    else
-#endif
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
       /* TODO assert? */
       StructAfter<HBGlyphID16> (flags) = gid;
   }
 
-#ifndef HB_NO_BEYOND_64K
-  void lower_gid_24_to_16 ()
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+  ਖਾਲੀ ਹੇਠਲਾ_gid_24_ਮੰਜ਼ਿਲ_16 ()
   {
-    hb_codepoint_t gid = get_gid (true);
-    if (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
-      return;
+    hb_codepoint_t gid = get_gid (ਸੱਚ);
+    ਜੇ (!(flags & GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ) || gid > 0xFFFFu)
+      ਵਾਪਸ;
 
     /* Lower the flag and move the rest of the struct down. */
 
-    unsigned size = get_size (true);
-    char *end = (char *) this + size;
-    char *p = &StructAfter<char> (flags);
-    p += HBGlyphID24::static_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = get_ਮਾਪ (ਸੱਚ);
+    ਅੱਖਰ *ਸਿਰਾ = (ਅੱਖਰ *) ਇਹ + ਮਾਪ;
+    ਅੱਖਰ *p = &StructAfter<ਅੱਖਰ> (flags);
+    p += HBGlyphID24::static_ਮਾਪ;
 
-    flags = flags & ~GID_IS_24BIT;
-    set_gid (gid, true);
+    flags = flags & ~GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ;
+    ਸੈੱਟ_gid (gid, ਸੱਚ);
 
-    memmove (p - HBGlyphID24::static_size + HBGlyphID16::static_size, p, end - p);
+    memmove (p - HBGlyphID24::static_ਮਾਪ + HBGlyphID16::static_ਮਾਪ, p, ਸਿਰਾ - p);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16	flags;
   HBUINT24	pad;
-  public:
-  DEFINE_SIZE_MIN (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (4);
 };
 
-using composite_iter_t = composite_iter_tmpl<CompositeGlyphRecord>;
+ਵਰਤੋਂ ਸੰਯੁਕਤ_iter_t = ਸੰਯੁਕਤ_iter_tmpl<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ>;
 
-struct CompositeGlyph
+ਬਣਤਰ ਸੰਯੁਕਤ_Glyph
 {
-  const GlyphHeader &header;
-  hb_bytes_t bytes;
-  bool extended;
-  CompositeGlyph (const GlyphHeader &header_, hb_bytes_t bytes_, bool extended_) :
-    header (header_), bytes (bytes_), extended (extended_) {}
+  ਅਚਲ Glyph_ਸਿਰਲੇਖ &ਸਿਰਲੇਖ;
+  hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ;
+  ਤਾਰਕਿਕ extended;
+  ਸੰਯੁਕਤ_Glyph (ਅਚਲ Glyph_ਸਿਰਲੇਖ &ਸਿਰਲੇਖ_2, hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ_2, ਤਾਰਕਿਕ extended_) :
+    ਸਿਰਲੇਖ (ਸਿਰਲੇਖ_2), ਬਾਈਟਾਂ (ਬਾਈਟਾਂ_2), extended (extended_) {}
 
-  composite_iter_t iter () const
-  { return composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
+  ਸੰਯੁਕਤ_iter_t iter () ਅਚਲ
+  { ਵਾਪਸ ਸੰਯੁਕਤ_iter_t (ਬਾਈਟਾਂ, &StructAfter<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ, Glyph_ਸਿਰਲੇਖ> (ਸਿਰਲੇਖ), extended); }
 
-  unsigned int instructions_length (hb_bytes_t bytes) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ instructions_ਲੰਮਾਈ (hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ) ਅਚਲ
   {
-    unsigned int start = bytes.length;
-    unsigned int end = bytes.length;
-    const CompositeGlyphRecord *last = nullptr;
-    for (auto &item : iter ())
-      last = &item;
-    if (unlikely (!last)) return 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = ਬਾਈਟਾਂ.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਬਾਈਟਾਂ.ਲੰਮਾਈ;
+    ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *ਆਖਰੀ = ਖਾਲੀ_ਸੂਚਕ;
+    ਲਈ (ਸਵੈਚਾਲਿਤ &ਵਸਤੂ : iter ())
+      ਆਖਰੀ = &ਵਸਤੂ;
+    ਜੇ (unlikely (!ਆਖਰੀ)) ਵਾਪਸ 0;
 
-    if (last->has_instructions ())
-      start = (char *) last - &bytes + last->get_size (extended);
-    if (unlikely (start > end)) return 0;
-    return end - start;
+    ਜੇ (ਆਖਰੀ->has_instructions ())
+      ਸ਼ੁਰੂ = (ਅੱਖਰ *) ਆਖਰੀ - &ਬਾਈਟਾਂ + ਆਖਰੀ->get_ਮਾਪ (extended);
+    ਜੇ (unlikely (ਸ਼ੁਰੂ > ਸਿਰਾ)) ਵਾਪਸ 0;
+    ਵਾਪਸ ਸਿਰਾ - ਸ਼ੁਰੂ;
   }
 
   /* Trimming for composites not implemented.
    * If removing hints it falls out of that. */
-  const hb_bytes_t trim_padding () const { return bytes; }
+  ਅਚਲ hb_ਬਾਈਟਾਂ_t trim_padding () ਅਚਲ { ਵਾਪਸ ਬਾਈਟਾਂ; }
 
-  void drop_hints ()
+  ਖਾਲੀ drop_hints ()
   {
-    for (const auto &_ : iter ())
-      const_cast<CompositeGlyphRecord &> (_).drop_instructions_flag ();
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : iter ())
+      const_cast<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ &> (_).drop_instructions_flag ();
   }
 
   /* Chop instructions off the end */
-  void drop_hints_bytes (hb_bytes_t &dest_start) const
-  { dest_start = bytes.sub_array (0, bytes.length - instructions_length (bytes)); }
+  ਖਾਲੀ drop_hints_ਬਾਈਟਾਂ (hb_ਬਾਈਟਾਂ_t &dest_ਸ਼ੁਰੂ) ਅਚਲ
+  { dest_ਸ਼ੁਰੂ = ਬਾਈਟਾਂ.sub_array (0, ਬਾਈਟਾਂ.ਲੰਮਾਈ - instructions_ਲੰਮਾਈ (ਬਾਈਟਾਂ)); }
 
-  void set_overlaps_flag ()
+  ਖਾਲੀ ਸੈੱਟ_overlaps_flag ()
   {
-    CompositeGlyphRecord& glyph_chain = const_cast<CompositeGlyphRecord &> (
-	StructAfter<CompositeGlyphRecord, GlyphHeader> (header));
-    if (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
-      return;
-    glyph_chain.set_overlaps_flag ();
+    ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ& glyph_chain = const_cast<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ &> (
+	StructAfter<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ, Glyph_ਸਿਰਲੇਖ> (ਸਿਰਲੇਖ));
+    ਜੇ (!ਬਾਈਟਾਂ.check_range(&glyph_chain, ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ::min_ਮਾਪ))
+      ਵਾਪਸ;
+    glyph_chain.ਸੈੱਟ_overlaps_flag ();
   }
 
-  bool compile_bytes_with_deltas (const hb_bytes_t &source_bytes,
-                                  const contour_point_vector_t &points_with_deltas,
-                                  hb_bytes_t &dest_bytes /* OUT */)
+  ਤਾਰਕਿਕ compile_ਬਾਈਟਾਂ_with_deltas (ਅਚਲ hb_ਬਾਈਟਾਂ_t &ਸਰੋਤ_ਬਾਈਟਾਂ,
+                                  ਅਚਲ contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t &points_with_deltas,
+                                  hb_ਬਾਈਟਾਂ_t &dest_ਬਾਈਟਾਂ /*ਬਾਹਰਲਾ*/)
   {
-    if (source_bytes.length <= GlyphHeader::static_size ||
-        header.numberOfContours != -1)
+    ਜੇ (ਸਰੋਤ_ਬਾਈਟਾਂ.ਲੰਮਾਈ <= Glyph_ਸਿਰਲੇਖ::static_ਮਾਪ ||
+        ਸਿਰਲੇਖ.ਸੰਖਿਆ_ਦਾ_Contours != -1)
     {
-      dest_bytes = hb_bytes_t ();
-      return true;
+      dest_ਬਾਈਟਾਂ = hb_ਬਾਈਟਾਂ_t ();
+      ਵਾਪਸ ਸੱਚ;
     }
 
-    unsigned source_len = source_bytes.length - GlyphHeader::static_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਰੋਤ_len = ਸਰੋਤ_ਬਾਈਟਾਂ.ਲੰਮਾਈ - Glyph_ਸਿਰਲੇਖ::static_ਮਾਪ;
 
     /* try to allocate more memories than source glyph bytes
      * in case that there might be an overflow for int8 value
      * and we would need to use int16 instead */
-    char *o = (char *) hb_calloc (source_len * 2, sizeof (char));
-    if (unlikely (!o)) return false;
+    ਅੱਖਰ *o = (ਅੱਖਰ *) hb_calloc (ਸਰੋਤ_len * 2, ਆਕਾਰ (ਅੱਖਰ));
+    ਜੇ (unlikely (!o)) ਵਾਪਸ ਝੂਠ;
 
-    const CompositeGlyphRecord *c = reinterpret_cast<const CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_size);
-    auto it = composite_iter_t (hb_bytes_t ((const char *)c, source_len), c, extended);
+    ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *c = reinterpret_cast<ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *> (ਸਰੋਤ_ਬਾਈਟਾਂ.arrayZ + Glyph_ਸਿਰਲੇਖ::static_ਮਾਪ);
+    ਸਵੈਚਾਲਿਤ it = ਸੰਯੁਕਤ_iter_t (hb_ਬਾਈਟਾਂ_t ((ਅਚਲ ਅੱਖਰ *)c, ਸਰੋਤ_len), c, extended);
 
-    char *p = o;
-    unsigned i = 0, source_comp_len = 0;
-    for (const auto &component : it)
+    ਅੱਖਰ *p = o;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0, ਸਰੋਤ_comp_len = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &component : it)
     {
       /* last 4 points in points_with_deltas are phantom points and should not be included */
-      if (i >= points_with_deltas.length - 4) {
+      ਜੇ (i >= points_with_deltas.ਲੰਮਾਈ - 4) {
         hb_free (o);
-        return false;
+        ਵਾਪਸ ਝੂਠ;
       }
 
-      unsigned comp_len = component.get_size (extended);
-      if (component.is_anchored ())
+      ਬਿਨਾਨਿਸ਼ਾਨੀ comp_len = component.get_ਮਾਪ (extended);
+      ਜੇ (component.is_anchored ())
       {
         hb_memcpy (p, &component, comp_len);
         p += comp_len;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-        unsigned new_len = component.compile_with_point (points_with_deltas[i], p, extended);
+        ਬਿਨਾਨਿਸ਼ਾਨੀ new_len = component.compile_with_ਬਿੰਦੂ (points_with_deltas[i], p, extended);
         p += new_len;
       }
       i++;
-      source_comp_len += comp_len;
+      ਸਰੋਤ_comp_len += comp_len;
     }
 
     //copy instructions if any
-    if (source_len > source_comp_len)
+    ਜੇ (ਸਰੋਤ_len > ਸਰੋਤ_comp_len)
     {
-      unsigned instr_len = source_len - source_comp_len;
-      hb_memcpy (p, (const char *)c + source_comp_len, instr_len);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ instr_len = ਸਰੋਤ_len - ਸਰੋਤ_comp_len;
+      hb_memcpy (p, (ਅਚਲ ਅੱਖਰ *)c + ਸਰੋਤ_comp_len, instr_len);
       p += instr_len;
     }
 
-    unsigned len = p - o;
-    dest_bytes = hb_bytes_t (o, len);
-    return true;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = p - o;
+    dest_ਬਾਈਟਾਂ = hb_ਬਾਈਟਾਂ_t (o, len);
+    ਵਾਪਸ ਸੱਚ;
   }
 };
 
@@ -434,4 +434,4 @@ struct CompositeGlyph
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_COMPOSITEGLYPH_HH */
+#ਜੇ_ਅੰਤ /* OT_GLYF_COMPOSITEGLYPH_HH */

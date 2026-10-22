@@ -25,19 +25,19 @@
  * Google Author(s): Sascha Brawer, Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_COLOR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_COLOR
 
-#include "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
 
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/CPAL/CPAL.hh"
-#include "OT/Color/sbix/sbix.hh"
-#ifndef HB_NO_SVG
-#include "OT/Color/svg/svg.hh"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/CBDT/CBDT.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/COLR/COLR.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/CPAL/CPAL.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/sbix/sbix.hh"
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SVG
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/svg/svg.hh"
+#ਜੇ_ਅੰਤ
 
 
 /**
@@ -70,7 +70,7 @@
 hb_bool_t
 hb_ot_color_has_palettes (hb_face_t *face)
 {
-  return face->table.CPAL->has_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->has_ਅੰਕੜੇ ();
 }
 
 /**
@@ -83,10 +83,10 @@ hb_ot_color_has_palettes (hb_face_t *face)
  *
  * Since: 2.1.0
  */
-unsigned int
-hb_ot_color_palette_get_count (hb_face_t *face)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_color_palette_get_ਗਿਣਤੀ (hb_face_t *face)
 {
-  return face->table.CPAL->get_palette_count ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->get_palette_ਗਿਣਤੀ ();
 }
 
 /**
@@ -107,9 +107,9 @@ hb_ot_color_palette_get_count (hb_face_t *face)
  */
 hb_ot_name_id_t
 hb_ot_color_palette_get_name_id (hb_face_t *face,
-				 unsigned int palette_index)
+				 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ palette_ਸੂਚਕਾਂਕ)
 {
-  return face->table.CPAL->get_palette_name_id (palette_index);
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->get_palette_name_id (palette_ਸੂਚਕਾਂਕ);
 }
 
 /**
@@ -129,9 +129,9 @@ hb_ot_color_palette_get_name_id (hb_face_t *face,
  */
 hb_ot_name_id_t
 hb_ot_color_palette_color_get_name_id (hb_face_t *face,
-				       unsigned int color_index)
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ color_ਸੂਚਕਾਂਕ)
 {
-  return face->table.CPAL->get_color_name_id (color_index);
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->get_color_name_id (color_ਸੂਚਕਾਂਕ);
 }
 
 /**
@@ -147,9 +147,9 @@ hb_ot_color_palette_color_get_name_id (hb_face_t *face,
  */
 hb_ot_color_palette_flags_t
 hb_ot_color_palette_get_flags (hb_face_t *face,
-			       unsigned int palette_index)
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ palette_ਸੂਚਕਾਂਕ)
 {
-  return face->table.CPAL->get_palette_flags (palette_index);
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->get_palette_flags (palette_ਸੂਚਕਾਂਕ);
 }
 
 /**
@@ -177,14 +177,14 @@ hb_ot_color_palette_get_flags (hb_face_t *face,
  *
  * Since: 2.1.0
  */
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_color_palette_get_colors (hb_face_t     *face,
-				unsigned int   palette_index,
-				unsigned int   start_offset,
-				unsigned int  *colors_count  /* IN/OUT.  May be NULL. */,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   palette_ਸੂਚਕਾਂਕ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   ਸ਼ੁਰੂ_ਵਿੱਥ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  *colors_ਗਿਣਤੀ  /* IN/OUT.  May be NULL. */,
 				hb_color_t    *colors        /* OUT.     May be NULL. */)
 {
-  return face->table.CPAL->get_palette_colors (palette_index, start_offset, colors_count, colors);
+  ਵਾਪਸ face->ਸਾਰਣੀ.CPAL->get_palette_colors (palette_ਸੂਚਕਾਂਕ, ਸ਼ੁਰੂ_ਵਿੱਥ, colors_ਗਿਣਤੀ, colors);
 }
 
 
@@ -206,7 +206,7 @@ hb_ot_color_palette_get_colors (hb_face_t     *face,
 hb_bool_t
 hb_ot_color_has_layers (hb_face_t *face)
 {
-  return face->table.COLR->colr->has_v0_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.COLR->colr->has_v0_ਅੰਕੜੇ ();
 }
 
 /**
@@ -223,7 +223,7 @@ hb_ot_color_has_layers (hb_face_t *face)
 hb_bool_t
 hb_ot_color_has_paint (hb_face_t *face)
 {
-  return face->table.COLR->colr->has_v1_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.COLR->colr->has_v1_ਅੰਕੜੇ ();
 }
 
 /**
@@ -242,7 +242,7 @@ hb_bool_t
 hb_ot_color_glyph_has_paint (hb_face_t      *face,
                              hb_codepoint_t  glyph)
 {
-  return face->table.COLR->colr->has_paint_for_glyph (glyph);
+  ਵਾਪਸ face->ਸਾਰਣੀ.COLR->colr->has_paint_for_glyph (glyph);
 }
 
 /**
@@ -261,14 +261,14 @@ hb_ot_color_glyph_has_paint (hb_face_t      *face,
  *
  * Since: 2.1.0
  */
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_color_glyph_get_layers (hb_face_t           *face,
 			      hb_codepoint_t       glyph,
-			      unsigned int         start_offset,
-			      unsigned int        *layer_count, /* IN/OUT.  May be NULL. */
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ         ਸ਼ੁਰੂ_ਵਿੱਥ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        *layer_ਗਿਣਤੀ, /* IN/OUT.  May be NULL. */
 			      hb_ot_color_layer_t *layers /* OUT.     May be NULL. */)
 {
-  return face->table.COLR->colr->get_glyph_layers (glyph, start_offset, layer_count, layers);
+  ਵਾਪਸ face->ਸਾਰਣੀ.COLR->colr->get_glyph_layers (glyph, ਸ਼ੁਰੂ_ਵਿੱਥ, layer_ਗਿਣਤੀ, layers);
 }
 
 
@@ -276,7 +276,7 @@ hb_ot_color_glyph_get_layers (hb_face_t           *face,
  * SVG
  */
 
-#ifndef HB_NO_SVG
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SVG
 /**
  * hb_ot_color_has_svg:
  * @face: #hb_face_t to work upon.
@@ -290,7 +290,7 @@ hb_ot_color_glyph_get_layers (hb_face_t           *face,
 hb_bool_t
 hb_ot_color_has_svg (hb_face_t *face)
 {
-  return face->table.SVG->has_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.SVG->has_ਅੰਕੜੇ ();
 }
 
 /**
@@ -303,10 +303,10 @@ hb_ot_color_has_svg (hb_face_t *face)
  *
  * Since: 12.1.0
  */
-unsigned int
-hb_ot_color_get_svg_document_count (hb_face_t *face)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_color_get_svg_document_ਗਿਣਤੀ (hb_face_t *face)
 {
-  return face->table.SVG->get_document_count ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.SVG->get_document_ਗਿਣਤੀ ();
 }
 
 /**
@@ -322,15 +322,15 @@ hb_ot_color_get_svg_document_count (hb_face_t *face)
  * Since: 12.1.0
  */
 hb_bool_t
-hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
+hb_ot_color_glyph_get_svg_document_ਸੂਚਕਾਂਕ (hb_face_t      *face,
                                           hb_codepoint_t  glyph,
-                                          unsigned int   *svg_document_index)
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *svg_document_ਸੂਚਕਾਂਕ)
 {
-  unsigned doc_index = 0;
-  hb_bool_t ret = face->table.SVG->get_glyph_document_index (glyph, &doc_index);
-  if (ret && svg_document_index)
-    *svg_document_index = doc_index;
-  return ret;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ doc_ਸੂਚਕਾਂਕ = 0;
+  hb_bool_t ret = face->ਸਾਰਣੀ.SVG->get_glyph_document_ਸੂਚਕਾਂਕ (glyph, &doc_ਸੂਚਕਾਂਕ);
+  ਜੇ (ret && svg_document_ਸੂਚਕਾਂਕ)
+    *svg_document_ਸੂਚਕਾਂਕ = doc_ਸੂਚਕਾਂਕ;
+  ਵਾਪਸ ret;
 }
 
 /**
@@ -348,13 +348,13 @@ hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
  */
 hb_bool_t
 hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
-                                          unsigned int    svg_document_index,
-                                          hb_codepoint_t *start_glyph_id,
-                                          hb_codepoint_t *end_glyph_id)
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    svg_document_ਸੂਚਕਾਂਕ,
+                                          hb_codepoint_t *ਸ਼ੁਰੂ_glyph_id,
+                                          hb_codepoint_t *ਸਿਰਾ_glyph_id)
 {
-  return face->table.SVG->get_document_glyph_range (svg_document_index,
-                                                    start_glyph_id,
-                                                    end_glyph_id);
+  ਵਾਪਸ face->ਸਾਰਣੀ.SVG->get_document_glyph_range (svg_document_ਸੂਚਕਾਂਕ,
+                                                    ਸ਼ੁਰੂ_glyph_id,
+                                                    ਸਿਰਾ_glyph_id);
 }
 
 /**
@@ -373,9 +373,9 @@ hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
 hb_blob_t *
 hb_ot_color_glyph_reference_svg (hb_face_t *face, hb_codepoint_t glyph)
 {
-  return face->table.SVG->reference_blob_for_glyph (glyph);
+  ਵਾਪਸ face->ਸਾਰਣੀ.SVG->reference_blob_for_glyph (glyph);
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 
 /*
@@ -395,7 +395,7 @@ hb_ot_color_glyph_reference_svg (hb_face_t *face, hb_codepoint_t glyph)
 hb_bool_t
 hb_ot_color_has_png (hb_face_t *face)
 {
-  return face->table.CBDT->has_data () || face->table.sbix->has_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.CBDT->has_ਅੰਕੜੇ () || face->ਸਾਰਣੀ.sbix->has_ਅੰਕੜੇ ();
 }
 
 /**
@@ -416,16 +416,16 @@ hb_ot_color_has_png (hb_face_t *face)
 hb_blob_t *
 hb_ot_color_glyph_reference_png (hb_font_t *font, hb_codepoint_t  glyph)
 {
-  hb_blob_t *blob = hb_blob_get_empty ();
+  hb_blob_t *blob = hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  if (font->face->table.sbix->has_data ())
-    blob = font->face->table.sbix->reference_png (font, glyph, nullptr, nullptr, nullptr);
+  ਜੇ (font->face->ਸਾਰਣੀ.sbix->has_ਅੰਕੜੇ ())
+    blob = font->face->ਸਾਰਣੀ.sbix->reference_png (font, glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
-  if (!blob->length && font->face->table.CBDT->has_data ())
-    blob = font->face->table.CBDT->reference_png (font, glyph);
+  ਜੇ (!blob->ਲੰਮਾਈ && font->face->ਸਾਰਣੀ.CBDT->has_ਅੰਕੜੇ ())
+    blob = font->face->ਸਾਰਣੀ.CBDT->reference_png (font, glyph);
 
-  return blob;
+  ਵਾਪਸ blob;
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

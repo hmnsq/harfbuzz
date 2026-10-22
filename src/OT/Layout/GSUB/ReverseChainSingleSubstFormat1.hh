@@ -1,328 +1,328 @@
-#ifndef OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
 
-#include "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-template <typename Types>
-struct ReverseChainSingleSubstFormat1_2
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ ਉਲਟ_Chain_Single_Subst_Format1_2
 {
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of table */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Coverage>>
                 backtrack;              /* Array of coverage tables
                                          * in backtracking sequence, in glyph
                                          * sequence order */
   /* Format 2 widens the backtrack and lookahead coverage offsets but
    * keeps their counts 16-bit. */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Coverage>>
                 lookaheadX;             /* Array of coverage tables
                                          * in lookahead sequence, in glyph
                                          * sequence order */
-  typename Types::template ArrayOf<typename Types::HBGlyphID>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ Array_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::HBGlyphID>
                 substituteX;            /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_MIN (6 + Types::LOffset::static_size + Types::HBUINT::static_size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (6 + Types::LOffset::static_ਮਾਪ + Types::HBUINT::static_ਮਾਪ);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (!(coverage.sanitize (c, this) && backtrack.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (!(coverage.sanitize (c, ਇਹ) && backtrack.sanitize (c, ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    if (!lookahead.sanitize (c, this))
-      return_trace (false);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਜੇ (!lookahead.sanitize (c, ਇਹ))
+      return_trace (ਝੂਠ);
     hb_barrier ();
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    ਜੇ (!(ਇਹ+coverage).intersects (glyphs))
+      ਵਾਪਸ ਝੂਠ;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
 
-    unsigned int count;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+backtrack[i]).intersects (glyphs))
-        return false;
+    ਗਿਣਤੀ_2 = backtrack.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (!(ਇਹ+backtrack[i]).intersects (glyphs))
+        ਵਾਪਸ ਝੂਠ;
 
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+lookahead[i]).intersects (glyphs))
-        return false;
+    ਗਿਣਤੀ_2 = lookahead.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (!(ਇਹ+lookahead[i]).intersects (glyphs))
+        ਵਾਪਸ ਝੂਠ;
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  ਤਾਰਕਿਕ may_have_non_1to1 () ਅਚਲ
+  { ਵਾਪਸ ਝੂਠ; }
 
-  void depend (hb_depend_context_t *c) const {
+  ਖਾਲੀ depend (hb_depend_context_t *c) ਅਚਲ {
     // Filter by intersects and parent_active_glyphs like closure does
-    if (!intersects (c->glyphs)) return;
+    ਜੇ (!intersects (c->glyphs)) ਵਾਪਸ;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
     /* Build context set from backtrack and lookahead coverages.
      * ReverseChainSingleSubst has contextual requirements - the substitution
      * only fires when backtrack and lookahead glyphs are present. */
-    hb_set_t context_glyphs;
+    hb_ਸੈੱਟ_t context_glyphs;
 
     /* Add glyphs from backtrack coverages */
-    unsigned int count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = backtrack.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      hb_set_t back_glyphs;
-      (this+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
-      if (back_glyphs.get_population () == 1)
-        context_glyphs.add (back_glyphs.get_min ());
-      else if (back_glyphs.get_population () > 1)
+      hb_ਸੈੱਟ_t ਪਿੱਠ_glyphs;
+      (ਇਹ+backtrack[i]).intersect_ਸੈੱਟ (*c->glyphs, ਪਿੱਠ_glyphs);
+      ਜੇ (ਪਿੱਠ_glyphs.get_population () == 1)
+        context_glyphs.ਜੋੜੋ (ਪਿੱਠ_glyphs.get_min ());
+      ਨਹੀਂਤਾਂ ਜੇ (ਪਿੱਠ_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (back_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
-        context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+        hb_codepoint_t ਸੈੱਟ_idx = c->depend_ਅੰਕੜੇ->ਲੱਭੋ_or_create_context_ਸੈੱਟ (ਪਿੱਠ_glyphs);
+        ਜੇ (unlikely (ਸੈੱਟ_idx == HB_CODEPOINT_INVALID))
+          ਵਾਪਸ;
+        context_glyphs.ਜੋੜੋ (HB_DEPEND_CONTEXT_ਸੈੱਟ_FLAG | ਸੈੱਟ_idx);
       }
     }
 
     /* Add glyphs from lookahead coverages */
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    ਗਿਣਤੀ_2 = lookahead.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      hb_set_t look_glyphs;
-      (this+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
-      if (look_glyphs.get_population () == 1)
-        context_glyphs.add (look_glyphs.get_min ());
-      else if (look_glyphs.get_population () > 1)
+      hb_ਸੈੱਟ_t look_glyphs;
+      (ਇਹ+lookahead[i]).intersect_ਸੈੱਟ (*c->glyphs, look_glyphs);
+      ਜੇ (look_glyphs.get_population () == 1)
+        context_glyphs.ਜੋੜੋ (look_glyphs.get_min ());
+      ਨਹੀਂਤਾਂ ਜੇ (look_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (look_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
-        context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+        hb_codepoint_t ਸੈੱਟ_idx = c->depend_ਅੰਕੜੇ->ਲੱਭੋ_or_create_context_ਸੈੱਟ (look_glyphs);
+        ਜੇ (unlikely (ਸੈੱਟ_idx == HB_CODEPOINT_INVALID))
+          ਵਾਪਸ;
+        context_glyphs.ਜੋੜੋ (HB_DEPEND_CONTEXT_ਸੈੱਟ_FLAG | ਸੈੱਟ_idx);
       }
     }
 
     /* Allocate context set and save/restore around edge creation */
-    if (unlikely (context_glyphs.in_error ()))
+    ਜੇ (unlikely (context_glyphs.ਵਿੱਚ_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_ਅੰਕੜੇ->fail ();
+      ਵਾਪਸ;
     }
-    hb_codepoint_t context_set_idx = context_glyphs.is_empty ()
+    hb_codepoint_t context_ਸੈੱਟ_idx = context_glyphs.is_empty ()
       ? HB_CODEPOINT_INVALID
-      : c->depend_data->find_or_create_context_set (context_glyphs);
-    if (unlikely (!context_glyphs.is_empty () &&
-                  context_set_idx == HB_CODEPOINT_INVALID))
-      return;
+      : c->depend_ਅੰਕੜੇ->ਲੱਭੋ_or_create_context_ਸੈੱਟ (context_glyphs);
+    ਜੇ (unlikely (!context_glyphs.is_empty () &&
+                  context_ਸੈੱਟ_idx == HB_CODEPOINT_INVALID))
+      ਵਾਪਸ;
 
-    hb_codepoint_t saved_context = c->depend_data->current_context_set_index;
-    c->depend_data->current_context_set_index = context_set_idx;
+    hb_codepoint_t saved_context = c->depend_ਅੰਕੜੇ->current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ;
+    c->depend_ਅੰਕੜੇ->current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ = context_ਸੈੱਟ_idx;
 
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    + hb_zip (ਇਹ+coverage, substitute)
+    | hb_filter (c->ਮਾਪਾ_ਸਰਗਰਮ_glyphs (), hb_ਪਹਿਲਾ)
+    | hb_apply ([&] (ਅਚਲ hb_codepoint_pair_t &_) { c->depend_ਅੰਕੜੇ->ਜੋੜੋ_gsub_lookup (_.ਪਹਿਲਾ, c->lookup_ਸੂਚਕਾਂਕ, _.second); })
     ;
 
-    c->depend_data->current_context_set_index = saved_context;
+    c->depend_ਅੰਕੜੇ->current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ = saved_context;
   }
 
-  void closure (hb_closure_context_t *c) const
+  ਖਾਲੀ ਘੇਰਾ (hb_ਘੇਰਾ_context_t *c) ਅਚਲ
   {
-    if (!intersects (c->glyphs)) return;
+    ਜੇ (!intersects (c->glyphs)) ਵਾਪਸ;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_map (hb_second)
+    + hb_zip (ਇਹ+coverage, substitute)
+    | hb_filter (c->ਮਾਪਾ_ਸਰਗਰਮ_glyphs (), hb_ਪਹਿਲਾ)
+    | hb_map (hb_ਦੂਜਾ)
     | hb_sink (c->output)
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ਖਾਲੀ ਘੇਰਾ_lookups (hb_ਘੇਰਾ_lookups_context_t *c) ਅਚਲ {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    ਜੇ (unlikely (!(ਇਹ+coverage).collect_coverage (c->ਨਿਵੇਸ਼))) ਵਾਪਸ;
 
-    unsigned int count;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) return;
+    ਗਿਣਤੀ_2 = backtrack.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!(ਇਹ+backtrack[i]).collect_coverage (c->before))) ਵਾਪਸ;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) return;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਗਿਣਤੀ_2 = lookahead.len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!(ਇਹ+lookahead[i]).collect_coverage (c->after))) ਵਾਪਸ;
 
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
-    count = substitute.len;
-    c->output->add_array (substitute.arrayZ, substitute.len);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਗਿਣਤੀ_2 = substitute.len;
+    c->output->ਜੋੜੋ_array (substitute.arrayZ, substitute.len);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ਅਚਲ Coverage &get_coverage () ਅਚਲ { ਵਾਪਸ ਇਹ+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  ਤਾਰਕਿਕ would_apply (hb_would_apply_context_t *c) ਅਚਲ
+  { ਵਾਪਸ c->len == 1 && (ਇਹ+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = (ਇਹ+coverage).get_coverage (c->ਬਫਰ->cur ().codepoint);
+    ਜੇ (ਸੂਚਕਾਂਕ_2 == NOT_COVERED) return_trace (ਝੂਠ);
 
-    if (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
-      return_trace (false); /* No chaining to this type */
+    ਜੇ (unlikely (c->nesting_level_ਖੱਬਾ != HB_MAX_NESTING_LEVEL))
+      return_trace (ਝੂਠ); /* No chaining to this type */
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    ਜੇ (unlikely (ਸੂਚਕਾਂਕ_2 >= substitute.len)) return_trace (ਝੂਠ);
 
-    unsigned int start_index = 0, end_index = 0;
-    if (match_backtrack (c,
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਸੂਚਕਾਂਕ = 0, ਸਿਰਾ_ਸੂਚਕਾਂਕ = 0;
+    ਜੇ (ਮੇਲ_backtrack (c,
                          backtrack.len, backtrack.arrayZ,
-                         match_coverage, this,
-                         &start_index) &&
-        match_lookahead (c,
+                         ਮੇਲ_coverage, ਇਹ,
+                         &ਸ਼ੁਰੂ_ਸੂਚਕਾਂਕ) &&
+        ਮੇਲ_lookahead (c,
                          lookahead.len, lookahead.arrayZ,
-                         match_coverage, this,
-                         c->buffer->idx + 1, &end_index))
+                         ਮੇਲ_coverage, ਇਹ,
+                         c->ਬਫਰ->idx + 1, &ਸਿਰਾ_ਸੂਚਕਾਂਕ))
     {
-      c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
+      c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break_from_outbuffer (ਸ਼ੁਰੂ_ਸੂਚਕਾਂਕ, ਸਿਰਾ_ਸੂਚਕਾਂਕ);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
       {
-	c->buffer->message (c->font,
+	c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			    "replacing glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->ਬਫਰ->idx);
       }
 
-      c->replace_glyph_inplace (substitute[index]);
+      c->replace_glyph_inplace (substitute[ਸੂਚਕਾਂਕ_2]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
       {
-	c->buffer->message (c->font,
+	c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			    "replaced glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->ਬਫਰ->idx);
       }
 
       /* Note: We DON'T decrease buffer->idx.  The main loop does it
        * for us.  This is useful for preventing surprises if someone
        * calls us through a Context lookup. */
-      return_trace (true);
+      return_trace (ਸੱਚ);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
-      return_trace (false);
+      c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat_from_outbuffer (ਸ਼ੁਰੂ_ਸੂਚਕਾਂਕ, ਸਿਰਾ_ਸੂਚਕਾਂਕ);
+      return_trace (ਝੂਠ);
     }
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  ਤਾਰਕਿਕ serialize_coverage_ਵਿੱਥ_array (hb_subset_context_t *c, Iterator it) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed<Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Coverage>>> ();
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ->serialize (c->serializer, 0u))) return_trace (ਝੂਠ);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
-        return_trace (false);
+    ਲਈ (ਸਵੈਚਾਲਿਤ& ਵਿੱਥ : it) {
+      ਸਵੈਚਾਲਿਤ *o = ਬਾਹਰਲਾ->serialize_append (c->serializer);
+      ਜੇ (unlikely (!o) || !o->serialize_subset (c, ਵਿੱਥ, ਇਹ))
+        return_trace (ਝੂਠ);
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template<typename Iterator, typename BacktrackIterator, typename LookaheadIterator,
-           hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_pair_t)),
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator, ਕਿਸਮ_ਨਾਂ BacktrackIterator, ਕਿਸਮ_ਨਾਂ LookaheadIterator,
+           hb_requires (hb_is_sorted_ਸਰੋਤ_ਦਾ (Iterator, hb_codepoint_pair_t)),
            hb_requires (hb_is_iterator (BacktrackIterator)),
            hb_requires (hb_is_iterator (LookaheadIterator))>
-  bool serialize (hb_subset_context_t *c,
+  ਤਾਰਕਿਕ serialize (hb_subset_context_t *c,
                   Iterator coverage_subst_iter,
                   BacktrackIterator backtrack_iter,
-                  LookaheadIterator lookahead_iter) const
+                  LookaheadIterator lookahead_iter) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->coverage))) return_trace (false);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (ਇਹ);
+    ਜੇ (unlikely (!c->serializer->embed (ਇਹ->format))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (!c->serializer->embed (ਇਹ->coverage))) return_trace (ਝੂਠ);
 
-    if (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
-    if (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
+    ਜੇ (!serialize_coverage_ਵਿੱਥ_array (c, backtrack_iter)) return_trace (ਝੂਠ);
+    ਜੇ (!serialize_lookahead_coverage_ਵਿੱਥ_array (c, lookahead_iter)) return_trace (ਝੂਠ);
 
-    auto *substitute_out = c->serializer->start_embed<typename Types::template ArrayOf<typename Types::HBGlyphID>> ();
-    auto substitutes =
+    ਸਵੈਚਾਲਿਤ *substitute_ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ Array_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::HBGlyphID>> ();
+    ਸਵੈਚਾਲਿਤ substitutes =
     + coverage_subst_iter
-    | hb_map (hb_second)
+    | hb_map (hb_ਦੂਜਾ)
     ;
 
-    auto glyphs =
+    ਸਵੈਚਾਲਿਤ glyphs =
     + coverage_subst_iter
-    | hb_map_retains_sorting (hb_first)
+    | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
     ;
-    if (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
-        return_trace (false);
+    ਜੇ (unlikely (! c->serializer->check_success (substitute_ਬਾਹਰਲਾ->serialize (c->serializer, substitutes))))
+        return_trace (ਝੂਠ);
 
-    if (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
-      return_trace (false);
-    return_trace (true);
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ->coverage.serialize_serialize (c->serializer, glyphs)))
+      return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ਇਹ);
+    ਅਚਲ hb_ਸੈੱਟ_t &glyphset = *c->plan->glyphset_gsub ();
+    ਅਚਲ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    auto it =
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    ਸਵੈਚਾਲਿਤ it =
+    + hb_zip (ਇਹ+coverage, substitute)
+    | hb_filter (glyphset, hb_ਪਹਿਲਾ)
+    | hb_filter (glyphset, hb_ਦੂਜਾ)
+    | hb_map_retains_ਛਾਂਟੀ ([&] (hb_pair_t<hb_codepoint_t, ਅਚਲ ਕਿਸਮ_ਨਾਂ Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { ਵਾਪਸ hb_pair (glyph_map[p.ਪਹਿਲਾ], glyph_map[p.second]); })
     ;
 
-    return_trace (bool (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
+    return_trace (ਤਾਰਕਿਕ (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_lookahead_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  ਤਾਰਕਿਕ serialize_lookahead_coverage_ਵਿੱਥ_array (hb_subset_context_t *c, Iterator it) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed<Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Coverage>>> ();
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ->serialize (c->serializer, 0u))) return_trace (ਝੂਠ);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
-        return_trace (false);
+    ਲਈ (ਸਵੈਚਾਲਿਤ& ਵਿੱਥ : it) {
+      ਸਵੈਚਾਲਿਤ *o = ਬਾਹਰਲਾ->serialize_append (c->serializer);
+      ਜੇ (unlikely (!o) || !o->serialize_subset (c, ਵਿੱਥ, ਇਹ))
+        return_trace (ਝੂਠ);
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 };
 
@@ -330,4 +330,4 @@ struct ReverseChainSingleSubstFormat1_2
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */
+#ਜੇ_ਅੰਤ  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */

@@ -24,55 +24,55 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_SUBSET_ACCELERATOR_HH
-#define HB_SUBSET_ACCELERATOR_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_ACCELERATOR_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-map.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-multimap.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+ਬਾਹਰੀ HB_ਅੰਦਰੂਨੀ hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_subset_accelerator_user_ਅੰਕੜੇ_ਕੁੰਜੀ;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+ਨਾਮਾਕਾਸ਼ CFF {
+ਬਣਤਰ cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+ਨਾਮਾਕਾਸ਼ OT {
+ਬਣਤਰ SubtableUnicodesCache;
+ਬਣਤਰ cff1_subset_accelerator_t;
+ਬਣਤਰ cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+ਬਣਤਰ hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  ਸਥਿਰ hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t* user_ਅੰਕੜੇ_ਕੁੰਜੀ()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    ਵਾਪਸ &hb_subset_accelerator_user_ਅੰਕੜੇ_ਕੁੰਜੀ;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  ਸਥਿਰ hb_subset_accelerator_t* create(hb_face_t *ਸਰੋਤ,
+					 ਅਚਲ hb_map_t& unicode_ਮੰਜ਼ਿਲ_gid,
+					 ਅਚਲ hb_ਸੈੱਟ_t& unicodes_,
+					 ਤਾਰਕਿਕ has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, ਆਕਾਰ(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    ਜੇ (unlikely (!accel)) ਵਾਪਸ accel;
 
-    new (accel) hb_subset_accelerator_t (source,
-					 unicode_to_gid_,
+    ਨਵਾਂ (accel) hb_subset_accelerator_t (ਸਰੋਤ,
+					 unicode_ਮੰਜ਼ਿਲ_gid,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    ਵਾਪਸ accel;
   }
 
-  static void destroy (void* p)
+  ਸਥਿਰ ਖਾਲੀ destroy (ਖਾਲੀ* p)
   {
-    if (!p) return;
+    ਜੇ (!p) ਵਾਪਸ;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -81,61 +81,61 @@ struct hb_subset_accelerator_t
     hb_free (accel);
   }
 
-  hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
-    unicode_to_gid(unicode_to_gid_),
+  hb_subset_accelerator_t (hb_face_t *ਸਰੋਤ,
+			   ਅਚਲ hb_map_t& unicode_ਮੰਜ਼ਿਲ_gid,
+			   ਅਚਲ hb_ਸੈੱਟ_t& unicodes_,
+			   ਤਾਰਕਿਕ has_seac_) :
+    unicode_ਮੰਜ਼ਿਲ_gid_2(unicode_ਮੰਜ਼ਿਲ_gid),
     unicodes(unicodes_),
-    cmap_cache(nullptr),
-    destroy_cmap_cache(nullptr),
+    cmap_cache(ਖਾਲੀ_ਸੂਚਕ),
+    destroy_cmap_cache(ਖਾਲੀ_ਸੂਚਕ),
     has_seac(has_seac_),
-    source(hb_face_reference (source))
+    ਸਰੋਤ(hb_face_reference (ਸਰੋਤ))
   {
-    gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    gid_ਮੰਜ਼ਿਲ_unicodes.alloc (unicode_ਮੰਜ਼ਿਲ_gid_2.get_population ());
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : unicode_ਮੰਜ਼ਿਲ_gid_2)
     {
-      auto unicode = _.first;
-      auto gid = _.second;
-      gid_to_unicodes.add (gid, unicode);
+      ਸਵੈਚਾਲਿਤ unicode = _.ਪਹਿਲਾ;
+      ਸਵੈਚਾਲਿਤ gid = _.second;
+      gid_ਮੰਜ਼ਿਲ_unicodes.ਜੋੜੋ (gid, unicode);
     }
   }
 
-  HB_INTERNAL ~hb_subset_accelerator_t ();
+  HB_ਅੰਦਰੂਨੀ ~hb_subset_accelerator_t ();
 
   // Generic
 
-  mutable hb_mutex_t sanitized_table_cache_lock;
-  mutable hb_hashmap_t<hb_tag_t, hb::unique_ptr<hb_blob_t>> sanitized_table_cache;
+  ਬਦਲਣਯੋਗ hb_mutex_t sanitized_ਸਾਰਣੀ_cache_ਤਾਲਾ;
+  ਬਦਲਣਯੋਗ hb_hashmap_t<hb_ਟੈਗ_t, hb::unique_ptr<hb_blob_t>> sanitized_ਸਾਰਣੀ_cache;
 
-  hb_map_t unicode_to_gid;
-  hb_multimap_t gid_to_unicodes;
-  hb_set_t unicodes;
+  hb_map_t unicode_ਮੰਜ਼ਿਲ_gid_2;
+  hb_multimap_t gid_ਮੰਜ਼ਿਲ_unicodes;
+  hb_ਸੈੱਟ_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  ਅਚਲ OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  ਤਾਰਕਿਕ has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ
   {
-    return unicode_to_gid.in_error () ||
-	   gid_to_unicodes.in_error () ||
-	   unicodes.in_error () ||
-	   sanitized_table_cache.in_error ();
+    ਵਾਪਸ unicode_ਮੰਜ਼ਿਲ_gid_2.ਵਿੱਚ_error () ||
+	   gid_ਮੰਜ਼ਿਲ_unicodes.ਵਿੱਚ_error () ||
+	   unicodes.ਵਿੱਚ_error () ||
+	   sanitized_ਸਾਰਣੀ_cache.ਵਿੱਚ_error ();
   }
 
-  hb_face_t *source;
-#ifndef HB_NO_SUBSET_CFF
+  hb_face_t *ਸਰੋਤ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SUBSET_CFF
   // These have to be immediately after source:
-  mutable hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
-  mutable hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
-#endif
+  ਬਦਲਣਯੋਗ hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
+  ਬਦਲਣਯੋਗ hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
+#ਜੇ_ਅੰਤ
 };
 
 
-#endif /* HB_SUBSET_ACCELERATOR_HH */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_ACCELERATOR_HH */

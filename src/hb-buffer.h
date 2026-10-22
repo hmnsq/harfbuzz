@@ -27,16 +27,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ਜੇ !defined(HB_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_BUFFER_H
-#define HB_BUFFER_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਬਫਰ_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_H
 
-#include "hb-common.h"
-#include "hb-unicode.h"
-#include "hb-font.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-unicode.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -59,10 +59,10 @@ HB_BEGIN_DECLS
  * The #hb_glyph_info_t is the structure that holds information about the
  * glyphs and their relation to input text.
  */
-typedef struct hb_glyph_info_t {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_glyph_info_t {
   hb_codepoint_t codepoint;
   /*< private >*/
-  hb_mask_t      mask;
+  hb_ਨਕਾਬ_t      ਨਕਾਬ;
   /*< public >*/
   uint32_t       cluster;
 
@@ -157,19 +157,19 @@ typedef struct hb_glyph_info_t {
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_GLYPH_FLAG_UNSAFE_TO_BREAK			= 0x00000001,
-  HB_GLYPH_FLAG_UNSAFE_TO_CONCAT		= 0x00000002,
-  HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL		= 0x00000004,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
+  HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_BREAK			= 0x00000001,
+  HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT		= 0x00000002,
+  HB_GLYPH_FLAG_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL		= 0x00000004,
 
   HB_GLYPH_FLAG_DEFINED				= 0x00000007 /* OR of all defined flags */
 } hb_glyph_flags_t;
 
 HB_EXTERN hb_glyph_flags_t
-hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
+hb_glyph_info_get_glyph_flags (ਅਚਲ hb_glyph_info_t *info);
 
-#define hb_glyph_info_get_glyph_flags(info) \
-	((hb_glyph_flags_t) ((unsigned int) (info)->mask & HB_GLYPH_FLAG_DEFINED))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_glyph_info_get_glyph_flags(info) \
+	((hb_glyph_flags_t) ((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (info)->ਨਕਾਬ & HB_GLYPH_FLAG_DEFINED))
 
 
 /**
@@ -188,11 +188,11 @@ hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
  * #hb_glyph_position_t are relative to the current point.
  *
  */
-typedef struct hb_glyph_position_t {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_glyph_position_t {
   hb_position_t  x_advance;
   hb_position_t  y_advance;
-  hb_position_t  x_offset;
-  hb_position_t  y_offset;
+  hb_position_t  x_ਵਿੱਥ_2;
+  hb_position_t  y_ਵਿੱਥ_2;
 
   /*< private >*/
   hb_var_int_t   var;
@@ -208,13 +208,13 @@ typedef struct hb_glyph_position_t {
  * set and retrieved using hb_buffer_set_segment_properties() and
  * hb_buffer_get_segment_properties(), respectively.
  */
-typedef struct hb_segment_properties_t {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_segment_properties_t {
   hb_direction_t  direction;
   hb_script_t     script;
   hb_language_t   language;
   /*< private >*/
-  void           *reserved1;
-  void           *reserved2;
+  ਖਾਲੀ           *reserved1;
+  ਖਾਲੀ           *reserved2;
 } hb_segment_properties_t;
 
 /**
@@ -222,22 +222,22 @@ typedef struct hb_segment_properties_t {
  *
  * The default #hb_segment_properties_t of of freshly created #hb_buffer_t.
  */
-#define HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
 				       HB_SCRIPT_INVALID, \
 				       HB_LANGUAGE_INVALID, \
-				       (void *) 0, \
-				       (void *) 0}
+				       (ਖਾਲੀ *) 0, \
+				       (ਖਾਲੀ *) 0}
 
 HB_EXTERN hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b);
+hb_segment_properties_equal (ਅਚਲ hb_segment_properties_t *a,
+			     ਅਚਲ hb_segment_properties_t *b);
 
-HB_EXTERN unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_segment_properties_hash (ਅਚਲ hb_segment_properties_t *p);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src);
+			       ਅਚਲ hb_segment_properties_t *src);
 
 
 /**
@@ -247,37 +247,37 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
  * and output glyphs and their information after shaping.
  */
 
-typedef struct hb_buffer_t hb_buffer_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ਬਫਰ_t hb_ਬਫਰ_t;
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create (void);
+HB_EXTERN hb_ਬਫਰ_t *
+hb_ਬਫਰ_create (ਖਾਲੀ);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src);
+HB_EXTERN hb_ਬਫਰ_t *
+hb_ਬਫਰ_create_similar (ਅਚਲ hb_ਬਫਰ_t *src);
 
-HB_EXTERN void
-hb_buffer_reset (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_reset (hb_ਬਫਰ_t *ਬਫਰ);
 
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_get_empty (void);
+HB_EXTERN hb_ਬਫਰ_t *
+hb_ਬਫਰ_get_ਖਾਲੀ_ਥਾਵਾਂ (ਖਾਲੀ);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer);
+HB_EXTERN hb_ਬਫਰ_t *
+hb_ਬਫਰ_reference (hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_destroy (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_destroy (hb_ਬਫਰ_t *ਬਫਰ);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_ਬਫਰ_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_ਬਫਰ_t        *ਬਫਰ,
+			 hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+			 ਖਾਲੀ *              ਅੰਕੜੇ,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key);
+HB_EXTERN ਖਾਲੀ *
+hb_ਬਫਰ_get_user_ਅੰਕੜੇ (ਅਚਲ hb_ਬਫਰ_t  *ਬਫਰ,
+			 hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2);
 
 
 /**
@@ -288,59 +288,59 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * The type of #hb_buffer_t contents.
  */
-typedef enum {
-  HB_BUFFER_CONTENT_TYPE_INVALID = 0,
-  HB_BUFFER_CONTENT_TYPE_UNICODE,
-  HB_BUFFER_CONTENT_TYPE_GLYPHS
-} hb_buffer_content_type_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_ਬਫਰ_CONTENT_TYPE_INVALID = 0,
+  HB_ਬਫਰ_CONTENT_TYPE_UNICODE,
+  HB_ਬਫਰ_CONTENT_TYPE_GLYPHS
+} hb_ਬਫਰ_content_type_t;
 
-HB_EXTERN void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_content_type (hb_ਬਫਰ_t              *ਬਫਰ,
+			    hb_ਬਫਰ_content_type_t  content_type);
 
-HB_EXTERN hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer);
+HB_EXTERN hb_ਬਫਰ_content_type_t
+hb_ਬਫਰ_get_content_type (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
 
-HB_EXTERN void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_unicode_funcs (hb_ਬਫਰ_t        *ਬਫਰ,
 			     hb_unicode_funcs_t *unicode_funcs);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t  *buffer);
+hb_ਬਫਰ_get_unicode_funcs (ਅਚਲ hb_ਬਫਰ_t  *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_direction (hb_ਬਫਰ_t    *ਬਫਰ,
 			 hb_direction_t  direction);
 
 HB_EXTERN hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_direction (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_script (hb_buffer_t *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_script (hb_ਬਫਰ_t *ਬਫਰ,
 		      hb_script_t  script);
 
 HB_EXTERN hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_script (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_language (hb_ਬਫਰ_t   *ਬਫਰ,
 			hb_language_t  language);
 
 
 HB_EXTERN hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_language (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_segment_properties (hb_ਬਫਰ_t *ਬਫਰ,
+				  ਅਚਲ hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_get_segment_properties (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ,
 				  hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_guess_segment_properties (hb_ਬਫਰ_t *ਬਫਰ);
 
 
 /**
@@ -393,26 +393,26 @@ hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_FLAG_DEFAULT			= 0x00000000u,
-  HB_BUFFER_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
-  HB_BUFFER_FLAG_EOT				= 0x00000002u, /* End-of-text */
-  HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
-  HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
-  HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE	= 0x00000010u,
-  HB_BUFFER_FLAG_VERIFY				= 0x00000020u,
-  HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT	= 0x00000040u,
-  HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL	= 0x00000080u,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
+  HB_ਬਫਰ_FLAG_DEFAULT			= 0x00000000u,
+  HB_ਬਫਰ_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
+  HB_ਬਫਰ_FLAG_EOT				= 0x00000002u, /* End-of-text */
+  HB_ਬਫਰ_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
+  HB_ਬਫਰ_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
+  HB_ਬਫਰ_FLAG_DO_NOT_ਪਾਓ_DOTTED_CIRCLE	= 0x00000010u,
+  HB_ਬਫਰ_FLAG_VERIFY				= 0x00000020u,
+  HB_ਬਫਰ_FLAG_PRODUCE_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT	= 0x00000040u,
+  HB_ਬਫਰ_FLAG_PRODUCE_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL	= 0x00000080u,
 
-  HB_BUFFER_FLAG_DEFINED			= 0x000000FFu
-} hb_buffer_flags_t;
+  HB_ਬਫਰ_FLAG_DEFINED			= 0x000000FFu
+} hb_ਬਫਰ_flags_t;
 
-HB_EXTERN void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_flags (hb_ਬਫਰ_t       *ਬਫਰ,
+		     hb_ਬਫਰ_flags_t  flags);
 
-HB_EXTERN hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer);
+HB_EXTERN hb_ਬਫਰ_flags_t
+hb_ਬਫਰ_get_flags (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
 /**
  * hb_buffer_cluster_level_t:
@@ -458,13 +458,13 @@ hb_buffer_get_flags (const hb_buffer_t *buffer);
  *
  * Since: 0.9.42
  */
-typedef enum {
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
-  HB_BUFFER_CLUSTER_LEVEL_CHARACTERS		= 2,
-  HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES		= 3,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT = HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
-} hb_buffer_cluster_level_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
+  HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
+  HB_ਬਫਰ_CLUSTER_LEVEL_CHARACTERS		= 2,
+  HB_ਬਫਰ_CLUSTER_LEVEL_GRAPHEMES		= 3,
+  HB_ਬਫਰ_CLUSTER_LEVEL_DEFAULT = HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
+} hb_ਬਫਰ_cluster_level_t;
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE:
@@ -475,10 +475,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_CLUSTER_LEVEL_IS_MONOTONE(level) \
+	((bool) ((1u << (ਬਿਨਾਨਿਸ਼ਾਨੀ) (level)) & \
+		 ((1u << HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES:
@@ -489,10 +489,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES))))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
+	((bool) ((1u << (ਬਿਨਾਨਿਸ਼ਾਨੀ) (level)) & \
+		 ((1u << HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_ਬਫਰ_CLUSTER_LEVEL_GRAPHEMES))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS:
@@ -503,17 +503,17 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_CHARACTERS))))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_CLUSTER_LEVEL_IS_CHARACTERS(level) \
+	((bool) ((1u << (ਬਿਨਾਨਿਸ਼ਾਨੀ) (level)) & \
+		 ((1u << HB_ਬਫਰ_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
+		  (1u << HB_ਬਫਰ_CLUSTER_LEVEL_CHARACTERS))))
 
-HB_EXTERN void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_cluster_level (hb_ਬਫਰ_t               *ਬਫਰ,
+			     hb_ਬਫਰ_cluster_level_t  cluster_level);
 
-HB_EXTERN hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
+HB_EXTERN hb_ਬਫਰ_cluster_level_t
+hb_ਬਫਰ_get_cluster_level (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
 /**
  * HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT:
@@ -523,140 +523,140 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
  *
  * Since: 0.9.31
  */
-#define HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
 
-HB_EXTERN void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_replacement_codepoint (hb_ਬਫਰ_t    *ਬਫਰ,
 				     hb_codepoint_t  replacement);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_replacement_codepoint (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_invisible_glyph (hb_ਬਫਰ_t    *ਬਫਰ,
 			       hb_codepoint_t  invisible);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_invisible_glyph (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
-			       hb_codepoint_t  not_found);
-
-HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer);
-
-HB_EXTERN void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
-						  hb_codepoint_t  not_found_variation_selector);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_not_ਮਿਲਿਆ_glyph (hb_ਬਫਰ_t    *ਬਫਰ,
+			       hb_codepoint_t  not_ਮਿਲਿਆ);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer);
+hb_ਬਫਰ_get_not_ਮਿਲਿਆ_glyph (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
-			    unsigned        state);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_not_ਮਿਲਿਆ_variation_selector_glyph (hb_ਬਫਰ_t    *ਬਫਰ,
+						  hb_codepoint_t  not_ਮਿਲਿਆ_variation_selector);
 
-HB_EXTERN unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer);
+HB_EXTERN hb_codepoint_t
+hb_ਬਫਰ_get_not_ਮਿਲਿਆ_variation_selector_glyph (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
+
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_random_state (hb_ਬਫਰ_t    *ਬਫਰ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ        state);
+
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ
+hb_ਬਫਰ_get_random_state (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
 /*
  * Content API.
  */
 
-HB_EXTERN void
-hb_buffer_clear_contents (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_clear_contents (hb_ਬਫਰ_t *ਬਫਰ);
 
 HB_EXTERN hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t  *buffer,
-			unsigned int  size);
+hb_ਬਫਰ_pre_allocate (hb_ਬਫਰ_t  *ਬਫਰ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਮਾਪ);
 
 
 HB_EXTERN hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer);
+hb_ਬਫਰ_ਵੰਡ_successful (hb_ਬਫਰ_t  *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_reverse (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਉਲਟ (hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_EXTERN void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਉਲਟ_range (hb_ਬਫਰ_t *ਬਫਰ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ);
 
-HB_EXTERN void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਉਲਟ_clusters (hb_ਬਫਰ_t *ਬਫਰ);
 
 
 /* Filling the buffer in */
 
-HB_EXTERN void
-hb_buffer_add (hb_buffer_t    *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ (hb_ਬਫਰ_t    *ਬਫਰ,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster);
+	       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    cluster);
 
-HB_EXTERN void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ_utf8 (hb_ਬਫਰ_t  *ਬਫਰ,
+		    ਅਚਲ ਅੱਖਰ   *ਪਾਠ,
+		    ਪੂਰਨ           ਪਾਠ_ਲੰਮਾਈ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਵਸਤੂ_ਵਿੱਥ,
+		    ਪੂਰਨ           ਵਸਤੂ_ਲੰਮਾਈ);
 
-HB_EXTERN void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ_utf16 (hb_ਬਫਰ_t    *ਬਫਰ,
+		     ਅਚਲ uint16_t *ਪਾਠ,
+		     ਪੂਰਨ             ਪਾਠ_ਲੰਮਾਈ,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਵਸਤੂ_ਵਿੱਥ,
+		     ਪੂਰਨ             ਵਸਤੂ_ਲੰਮਾਈ);
 
-HB_EXTERN void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ_utf32 (hb_ਬਫਰ_t    *ਬਫਰ,
+		     ਅਚਲ uint32_t *ਪਾਠ,
+		     ਪੂਰਨ             ਪਾਠ_ਲੰਮਾਈ,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਵਸਤੂ_ਵਿੱਥ,
+		     ਪੂਰਨ             ਵਸਤੂ_ਲੰਮਾਈ);
 
-HB_EXTERN void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ_latin1 (hb_ਬਫਰ_t   *ਬਫਰ,
+		      ਅਚਲ uint8_t *ਪਾਠ,
+		      ਪੂਰਨ            ਪਾਠ_ਲੰਮਾਈ,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   ਵਸਤੂ_ਵਿੱਥ,
+		      ਪੂਰਨ            ਵਸਤੂ_ਲੰਮਾਈ);
 
-HB_EXTERN void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਜੋੜੋ_codepoints (hb_ਬਫਰ_t          *ਬਫਰ,
+			  ਅਚਲ hb_codepoint_t *ਪਾਠ,
+			  ਪੂਰਨ                   ਪਾਠ_ਲੰਮਾਈ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          ਵਸਤੂ_ਵਿੱਥ,
+			  ਪੂਰਨ                   ਵਸਤੂ_ਲੰਮਾਈ);
 
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_append (hb_ਬਫਰ_t *ਬਫਰ,
+		  ਅਚਲ hb_ਬਫਰ_t *ਸਰੋਤ,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length);
+hb_ਬਫਰ_ਸੈੱਟ_ਲੰਮਾਈ (hb_ਬਫਰ_t  *ਬਫਰ,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਲੰਮਾਈ);
 
-HB_EXTERN unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਬਫਰ_get_ਲੰਮਾਈ (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ);
 
 /* Getting glyphs out of the buffer */
 
 HB_EXTERN hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length);
+hb_ਬਫਰ_get_glyph_infos (hb_ਬਫਰ_t  *ਬਫਰ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਲੰਮਾਈ);
 
 HB_EXTERN hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length);
+hb_ਬਫਰ_get_glyph_positions (hb_ਬਫਰ_t  *ਬਫਰ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਲੰਮਾਈ);
 
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer);
+hb_ਬਫਰ_has_positions (hb_ਬਫਰ_t  *ਬਫਰ);
 
 
-HB_EXTERN void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_normalize_glyphs (hb_ਬਫਰ_t *ਬਫਰ);
 
 
 /*
@@ -684,17 +684,17 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES	= 0x00000004u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
+  HB_ਬਫਰ_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_NO_GLYPH_ਨਾਂ	= 0x00000004u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
+  HB_ਬਫਰ_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
 
-  HB_BUFFER_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
-} hb_buffer_serialize_flags_t;
+  HB_ਬਫਰ_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
+} hb_ਬਫਰ_serialize_flags_t;
 
 /**
  * hb_buffer_serialize_format_t:
@@ -707,67 +707,67 @@ typedef enum { /*< flags >*/
  *
  * Since: 0.9.2
  */
-typedef enum {
-  HB_BUFFER_SERIALIZE_FORMAT_TEXT	= HB_TAG('T','E','X','T'),
-  HB_BUFFER_SERIALIZE_FORMAT_JSON	= HB_TAG('J','S','O','N'),
-  HB_BUFFER_SERIALIZE_FORMAT_INVALID	= HB_TAG_NONE
-} hb_buffer_serialize_format_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_ਬਫਰ_SERIALIZE_FORMAT_ਪਾਠ	= HB_ਟੈਗ('T','E','X','T'),
+  HB_ਬਫਰ_SERIALIZE_FORMAT_JSON	= HB_ਟੈਗ('J','S','O','N'),
+  HB_ਬਫਰ_SERIALIZE_FORMAT_INVALID	= HB_ਟੈਗ_NONE
+} hb_ਬਫਰ_serialize_format_t;
 
-HB_EXTERN hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len);
+HB_EXTERN hb_ਬਫਰ_serialize_format_t
+hb_ਬਫਰ_serialize_format_from_string (ਅਚਲ ਅੱਖਰ *str, ਪੂਰਨ len);
 
-HB_EXTERN const char *
-hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
+HB_EXTERN ਅਚਲ ਅੱਖਰ *
+hb_ਬਫਰ_serialize_format_ਮੰਜ਼ਿਲ_string (hb_ਬਫਰ_serialize_format_t format);
 
-HB_EXTERN const char **
-hb_buffer_serialize_list_formats (void);
+HB_EXTERN ਅਚਲ ਅੱਖਰ **
+hb_ਬਫਰ_serialize_list_formats (ਖਾਲੀ);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-			    unsigned int start,
-			    unsigned int end,
-			    char *buf,
-			    unsigned int buf_size,
-			    unsigned int *buf_consumed,
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਬਫਰ_serialize_glyphs (hb_ਬਫਰ_t *ਬਫਰ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ,
+			    ਅੱਖਰ *buf,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_ਮਾਪ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *buf_consumed,
 			    hb_font_t *font,
-			    hb_buffer_serialize_format_t format,
-			    hb_buffer_serialize_flags_t flags);
+			    hb_ਬਫਰ_serialize_format_t format,
+			    hb_ਬਫਰ_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-			     unsigned int start,
-			     unsigned int end,
-			     char *buf,
-			     unsigned int buf_size,
-			     unsigned int *buf_consumed,
-			     hb_buffer_serialize_format_t format,
-			     hb_buffer_serialize_flags_t flags);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਬਫਰ_serialize_unicode (hb_ਬਫਰ_t *ਬਫਰ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ,
+			     ਅੱਖਰ *buf,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_ਮਾਪ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *buf_consumed,
+			     hb_ਬਫਰ_serialize_format_t format,
+			     hb_ਬਫਰ_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize (hb_buffer_t *buffer,
-		     unsigned int start,
-		     unsigned int end,
-		     char *buf,
-		     unsigned int buf_size,
-		     unsigned int *buf_consumed,
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਬਫਰ_serialize (hb_ਬਫਰ_t *ਬਫਰ,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ,
+		     ਅੱਖਰ *buf,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_ਮਾਪ,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *buf_consumed,
 		     hb_font_t *font,
-		     hb_buffer_serialize_format_t format,
-		     hb_buffer_serialize_flags_t flags);
+		     hb_ਬਫਰ_serialize_format_t format,
+		     hb_ਬਫਰ_serialize_flags_t flags);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-			      const char *buf,
-			      int buf_len,
-			      const char **end_ptr,
+hb_ਬਫਰ_deserialize_glyphs (hb_ਬਫਰ_t *ਬਫਰ,
+			      ਅਚਲ ਅੱਖਰ *buf,
+			      ਪੂਰਨ buf_len,
+			      ਅਚਲ ਅੱਖਰ **end_ptr,
 			      hb_font_t *font,
-			      hb_buffer_serialize_format_t format);
+			      hb_ਬਫਰ_serialize_format_t format);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-			       const char *buf,
-			       int buf_len,
-			       const char **end_ptr,
-			       hb_buffer_serialize_format_t format);
+hb_ਬਫਰ_deserialize_unicode (hb_ਬਫਰ_t *ਬਫਰ,
+			       ਅਚਲ ਅੱਖਰ *buf,
+			       ਪੂਰਨ buf_len,
+			       ਅਚਲ ਅੱਖਰ **end_ptr,
+			       hb_ਬਫਰ_serialize_format_t format);
 
 
 
@@ -804,39 +804,39 @@ hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_DIFF_FLAG_EQUAL			= 0x0000,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
+  HB_ਬਫਰ_DIFF_FLAG_EQUAL			= 0x0000,
 
   /* Buffers with different content_type cannot be meaningfully compared
    * in any further detail. */
-  HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
+  HB_ਬਫਰ_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
 
   /* For buffers with differing length, the per-glyph comparison is not
    * attempted, though we do still scan reference for dottedcircle / .notdef
    * glyphs. */
-  HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH		= 0x0002,
+  HB_ਬਫਰ_DIFF_FLAG_ਲੰਮਾਈ_MISMATCH		= 0x0002,
 
   /* We want to know if dottedcircle / .notdef glyphs are present in the
    * reference, as we may not care so much about other differences in this
    * case. */
-  HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
-  HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
+  HB_ਬਫਰ_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
+  HB_ਬਫਰ_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
 
   /* If the buffers have the same length, we compare them glyph-by-glyph
    * and report which aspect(s) of the glyph info/position are different. */
-  HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
-  HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
-  HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
-  HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
+  HB_ਬਫਰ_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
+  HB_ਬਫਰ_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
+  HB_ਬਫਰ_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
+  HB_ਬਫਰ_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
 
-} hb_buffer_diff_flags_t;
+} hb_ਬਫਰ_diff_flags_t;
 
 /* Compare the contents of two buffers, report types of differences. */
-HB_EXTERN hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+HB_EXTERN hb_ਬਫਰ_diff_flags_t
+hb_ਬਫਰ_diff (hb_ਬਫਰ_t *ਬਫਰ,
+		hb_ਬਫਰ_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz);
+		ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ position_fuzz);
 
 
 /*
@@ -860,20 +860,20 @@ hb_buffer_diff (hb_buffer_t *buffer,
  *
  * Since: 1.1.3
  */
-typedef hb_bool_t	(*hb_buffer_message_func_t)	(hb_buffer_t *buffer,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_bool_t	(*hb_ਬਫਰ_ਸੁਨੇਹਾ_func_t)	(hb_ਬਫਰ_t *ਬਫਰ,
 							 hb_font_t   *font,
-							 const char  *message,
-							 void        *user_data);
+							 ਅਚਲ ਅੱਖਰ  *ਸੁਨੇਹਾ,
+							 ਖਾਲੀ        *user_ਅੰਕੜੇ);
 
-HB_EXTERN void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਸੈੱਟ_ਸੁਨੇਹਾ_func (hb_ਬਫਰ_t *ਬਫਰ,
+			    hb_ਬਫਰ_ਸੁਨੇਹਾ_func_t func,
+			    ਖਾਲੀ *user_ਅੰਕੜੇ, hb_destroy_func_t destroy);
 
-HB_EXTERN void
-hb_buffer_changed (hb_buffer_t *buffer);
+HB_EXTERN ਖਾਲੀ
+hb_ਬਫਰ_ਬਦਲਿਆ (hb_ਬਫਰ_t *ਬਫਰ);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_BUFFER_H */
+#ਜੇ_ਅੰਤ /* HB_BUFFER_H */

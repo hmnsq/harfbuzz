@@ -24,11 +24,11 @@
  * Google Author(s): Seigo Nonaka, Calder Kitagawa
  */
 
-#ifndef OT_COLOR_CBDT_CBDT_HH
-#define OT_COLOR_CBDT_CBDT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_COLOR_CBDT_CBDT_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_COLOR_CBDT_CBDT_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-paint.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-paint.hh"
 
 /*
  * CBLC -- Color Bitmap Location
@@ -38,162 +38,162 @@
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cbdt
  * https://docs.microsoft.com/en-us/typography/opentype/spec/ebdt
  */
-#define HB_OT_TAG_CBLC HB_TAG('C','B','L','C')
-#define HB_OT_TAG_CBDT HB_TAG('C','B','D','T')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_CBLC HB_ਟੈਗ('C','B','L','C')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_CBDT HB_ਟੈਗ('C','B','D','T')
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
 /* Tracks image data blocks emitted into the subset CBDT table so that
  * identical subtables (for example the same bitmaps used by several strikes)
  * can share a single copy. */
-struct cbdt_dedup_context_t
+ਬਣਤਰ cbdt_dedup_context_t
 {
-  struct entry_t
+  ਬਣਤਰ ਇੰਦਰਾਜ_t
   {
-    unsigned int base;		/* Offset of the data in cbdt_prime. */
-    unsigned int lstart;	/* Start index in lengths. */
-    unsigned int lcount;	/* Number of length entries. */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਧਾਰ;		/* Offset of the data in cbdt_prime. */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lstart;	/* Start index in lengths. */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lcount;	/* Number of length entries. */
   };
 
-  static uint64_t hash (unsigned int image_format,
-			const hb_vector_t<char> &data,
-			const hb_vector_t<unsigned int> &lengths)
+  ਸਥਿਰ uint64_t hash (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_format,
+			ਅਚਲ hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &ਅੰਕੜੇ,
+			ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> &lengths)
   {
-    uint32_t h = hb_hash (hb_bytes_t (data.arrayZ, data.length));
-    h = h * 31 + hb_hash (hb_bytes_t ((const char *) lengths.arrayZ,
-				      lengths.length * sizeof (unsigned int)));
-    return ((uint64_t) image_format << 32) | h;
+    uint32_t h = hb_hash (hb_ਬਾਈਟਾਂ_t (ਅੰਕੜੇ.arrayZ, ਅੰਕੜੇ.ਲੰਮਾਈ));
+    h = h * 31 + hb_hash (hb_ਬਾਈਟਾਂ_t ((ਅਚਲ ਅੱਖਰ *) lengths.arrayZ,
+				      lengths.ਲੰਮਾਈ * ਆਕਾਰ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ)));
+    ਵਾਪਸ ((uint64_t) image_format << 32) | h;
   }
 
-  bool find (uint64_t key,
-	     const hb_vector_t<char> &data,
-	     const hb_vector_t<unsigned int> &lengths,
-	     const hb_vector_t<char> &cbdt_prime,
-	     unsigned int *base /* OUT */) const
+  ਤਾਰਕਿਕ find (uint64_t key,
+	     ਅਚਲ hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &ਅੰਕੜੇ,
+	     ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> &lengths,
+	     ਅਚਲ hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &cbdt_ਅਭਾਜ,
+	     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅਧਾਰ /*ਬਾਹਰਲਾ*/) ਅਚਲ
   {
-    unsigned int *idx_p = nullptr;
-    if (!map.has (key, &idx_p)) return false;
-    const entry_t &e = entries[*idx_p];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *idx_p = ਖਾਲੀ_ਸੂਚਕ;
+    ਜੇ (!map.has (key, &idx_p)) ਵਾਪਸ ਝੂਠ;
+    ਅਚਲ ਇੰਦਰਾਜ_t &e = entries[*idx_p];
     /* The data and the per-glyph lengths must both match, otherwise the
      * glyph extents implied by the offset array would differ. */
-    if (e.lcount != lengths.length) return false;
-    if (unlikely (e.base + data.length > (unsigned int) cbdt_prime.length)) return false;
-    if (hb_memcmp (cbdt_prime.arrayZ + e.base, data.arrayZ, data.length)) return false;
-    if (hb_memcmp (this->lengths.arrayZ + e.lstart,
-		   lengths.arrayZ, lengths.length * sizeof (unsigned int)))
-      return false;
-    *base = e.base;
-    return true;
+    ਜੇ (e.lcount != lengths.ਲੰਮਾਈ) ਵਾਪਸ ਝੂਠ;
+    ਜੇ (unlikely (e.ਅਧਾਰ + ਅੰਕੜੇ.ਲੰਮਾਈ > (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) cbdt_ਅਭਾਜ.ਲੰਮਾਈ)) ਵਾਪਸ ਝੂਠ;
+    ਜੇ (hb_memcmp (cbdt_ਅਭਾਜ.arrayZ + e.ਅਧਾਰ, ਅੰਕੜੇ.arrayZ, ਅੰਕੜੇ.ਲੰਮਾਈ)) ਵਾਪਸ ਝੂਠ;
+    ਜੇ (hb_memcmp (ਇਹ->lengths.arrayZ + e.lstart,
+		   lengths.arrayZ, lengths.ਲੰਮਾਈ * ਆਕਾਰ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ)))
+      ਵਾਪਸ ਝੂਠ;
+    *ਅਧਾਰ = e.ਅਧਾਰ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool add (uint64_t key,
-	    unsigned int base,
-	    const hb_vector_t<unsigned int> &lengths)
+  ਤਾਰਕਿਕ ਜੋੜੋ (uint64_t key,
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਧਾਰ,
+	    ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> &lengths)
   {
-    if (unlikely (entries.in_error () || this->lengths.in_error () || map.in_error ()))
-      return false;
-    entry_t e = {base, this->lengths.length, lengths.length};
-    if (unlikely (!entries.push_or_fail (e))) return false;
-    for (unsigned int length : lengths)
-      if (unlikely (!this->lengths.push_or_fail (length))) return false;
-    return map.set (key, entries.length - 1);
+    ਜੇ (unlikely (entries.ਵਿੱਚ_error () || ਇਹ->lengths.ਵਿੱਚ_error () || map.ਵਿੱਚ_error ()))
+      ਵਾਪਸ ਝੂਠ;
+    ਇੰਦਰਾਜ_t e = {ਅਧਾਰ, ਇਹ->lengths.ਲੰਮਾਈ, lengths.ਲੰਮਾਈ};
+    ਜੇ (unlikely (!entries.ਧੱਕੋ_or_fail (e))) ਵਾਪਸ ਝੂਠ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ : lengths)
+      ਜੇ (unlikely (!ਇਹ->lengths.ਧੱਕੋ_or_fail (ਲੰਮਾਈ))) ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ map.ਸੈੱਟ (key, entries.ਲੰਮਾਈ - 1);
   }
 
-  hb_hashmap_t<uint64_t, unsigned int> map;
-  hb_vector_t<entry_t> entries;
-  hb_vector_t<unsigned int> lengths; /* Concatenated per-entry lengths. */
+  hb_hashmap_t<uint64_t, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> map;
+  hb_ਸਦਿਸ਼_t<ਇੰਦਰਾਜ_t> entries;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> lengths; /* Concatenated per-entry lengths. */
 };
 
-struct cblc_bitmap_size_subset_context_t
+ਬਣਤਰ cblc_bitmap_ਮਾਪ_subset_context_t
 {
-  const char *cbdt;
-  unsigned int cbdt_length;
-  hb_vector_t<char> *cbdt_prime;
-  unsigned int size;		/* INOUT
+  ਅਚਲ ਅੱਖਰ *cbdt;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_ਲੰਮਾਈ;
+  hb_ਸਦਿਸ਼_t<ਅੱਖਰ> *cbdt_ਅਭਾਜ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ;		/* INOUT
 				 *  Input: old size of IndexSubtable
 				 *  Output: new size of IndexSubtable
 				 */
-  unsigned int num_tables;	/* INOUT
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_tables;	/* INOUT
 				 *  Input: old number of subtables.
 				 *  Output: new number of subtables.
 				 */
-  hb_codepoint_t start_glyph;	/* OUT */
-  hb_codepoint_t end_glyph;	/* OUT */
+  hb_codepoint_t ਸ਼ੁਰੂ_glyph;	/*ਬਾਹਰਲਾ*/
+  hb_codepoint_t ਸਿਰਾ_glyph;	/*ਬਾਹਰਲਾ*/
   cbdt_dedup_context_t *dedup;	/* Shared across strikes; may be null. */
 };
 
-static inline bool
-_copy_data_to_cbdt (hb_vector_t<char> *cbdt_prime,
-		    const void        *data,
-		    unsigned           length)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+copy_ਅੰਕੜੇ_ਮੰਜ਼ਿਲ_cbdt (hb_ਸਦਿਸ਼_t<ਅੱਖਰ> *cbdt_ਅਭਾਜ,
+		    ਅਚਲ ਖਾਲੀ        *ਅੰਕੜੇ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ           ਲੰਮਾਈ)
 {
-  unsigned int new_len = cbdt_prime->length + length;
-  if (unlikely (!cbdt_prime->alloc (new_len))) return false;
-  hb_memcpy (cbdt_prime->arrayZ + cbdt_prime->length, data, length);
-  cbdt_prime->length = new_len;
-  return true;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ new_len = cbdt_ਅਭਾਜ->ਲੰਮਾਈ + ਲੰਮਾਈ;
+  ਜੇ (unlikely (!cbdt_ਅਭਾਜ->alloc (new_len))) ਵਾਪਸ ਝੂਠ;
+  hb_memcpy (cbdt_ਅਭਾਜ->arrayZ + cbdt_ਅਭਾਜ->ਲੰਮਾਈ, ਅੰਕੜੇ, ਲੰਮਾਈ);
+  cbdt_ਅਭਾਜ->ਲੰਮਾਈ = new_len;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-struct SmallGlyphMetrics
+ਬਣਤਰ SmallGlyphMetrics
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  void get_extents (hb_font_t *font, hb_glyph_extents_t *extents, bool scale) const
+  ਖਾਲੀ get_extents (hb_font_t *font, hb_glyph_extents_t *extents, ਤਾਰਕਿਕ scale) ਅਚਲ
   {
     extents->x_bearing = bearingX;
     extents->y_bearing = bearingY;
-    extents->width = width;
-    extents->height = -static_cast<int> (height);
+    extents->ਚੌੜਾਈ = ਚੌੜਾਈ;
+    extents->ਉਚਾਈ = -static_cast<ਪੂਰਨ> (ਉਚਾਈ);
 
-    if (scale)
+    ਜੇ (scale)
       font->scale_glyph_extents (extents);
   }
 
-  HBUINT8	height;
-  HBUINT8	width;
+  HBUINT8	ਉਚਾਈ;
+  HBUINT8	ਚੌੜਾਈ;
   HBINT8	bearingX;
   HBINT8	bearingY;
   HBUINT8	advance;
-  public:
-  DEFINE_SIZE_STATIC (5);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (5);
 };
 
-struct BigGlyphMetrics : SmallGlyphMetrics
+ਬਣਤਰ BigGlyphMetrics : SmallGlyphMetrics
 {
   HBINT8	vertBearingX;
   HBINT8	vertBearingY;
   HBUINT8	vertAdvance;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-struct SBitLineMetrics
+ਬਣਤਰ SBit_ਸਤਰ_Metrics
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
   HBINT8	ascender;
   HBINT8	decender;
-  HBUINT8	widthMax;
-  HBINT8	caretSlopeNumerator;
-  HBINT8	caretSlopeDenominator;
-  HBINT8	caretOffset;
+  HBUINT8	ਚੌੜਾਈ_Max;
+  HBINT8	caret_ਢਲਾਨ_Numerator;
+  HBINT8	caret_ਢਲਾਨ_Denominator;
+  HBINT8	caret_ਵਿੱਥ;
   HBINT8	minOriginSB;
   HBINT8	minAdvanceSB;
   HBINT8	maxBeforeBL;
   HBINT8	minAfterBL;
   HBINT8	padding1;
   HBINT8	padding2;
-  public:
-  DEFINE_SIZE_STATIC (12);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (12);
 };
 
 
@@ -201,556 +201,556 @@ struct SBitLineMetrics
  * Index Subtables.
  */
 
-struct IndexSubtableHeader
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_ਸਿਰਲੇਖ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  HBUINT16	indexFormat;
+  HBUINT16	ਸੂਚਕਾਂਕ_Format;
   HBUINT16	imageFormat;
-  HBUINT32	imageDataOffset;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  HBUINT32	image_ਅੰਕੜੇ_ਵਿੱਥ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-template <typename OffsetType>
-struct IndexSubtableFormat1Or3
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type>
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_Format1_Or3
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_ਗਿਣਤੀ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  offsetArrayZ.sanitize (c, glyph_count + 1));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
+		  ਵਿੱਥ_Array_Z.sanitize (c, glyph_ਗਿਣਤੀ + 1));
   }
 
-  bool get_image_data (unsigned int idx,
-		       unsigned int *offset,
-		       unsigned int *length) const
+  ਤਾਰਕਿਕ get_image_ਅੰਕੜੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਵਿੱਥ,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਲੰਮਾਈ) ਅਚਲ
   {
-    if (unlikely (offsetArrayZ[idx + 1] <= offsetArrayZ[idx]))
-      return false;
+    ਜੇ (unlikely (ਵਿੱਥ_Array_Z[idx + 1] <= ਵਿੱਥ_Array_Z[idx]))
+      ਵਾਪਸ ਝੂਠ;
 
-    *offset = header.imageDataOffset + offsetArrayZ[idx];
-    *length = offsetArrayZ[idx + 1] - offsetArrayZ[idx];
-    return true;
+    *ਵਿੱਥ = ਸਿਰਲੇਖ.image_ਅੰਕੜੇ_ਵਿੱਥ + ਵਿੱਥ_Array_Z[idx];
+    *ਲੰਮਾਈ = ਵਿੱਥ_Array_Z[idx + 1] - ਵਿੱਥ_Array_Z[idx];
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool add_offset (hb_serialize_context_t *c,
-		   unsigned int offset,
-		   unsigned int *size /* OUT (accumulated) */)
+  ਤਾਰਕਿਕ ਜੋੜੋ_ਵਿੱਥ (hb_serialize_context_t *c,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਮਾਪ /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
-    Offset<OffsetType> embedded_offset;
-    embedded_offset = offset;
-    *size += sizeof (OffsetType);
-    auto *o = c->embed (embedded_offset);
-    return_trace ((bool) o);
+    TRACE_SERIALIZE (ਇਹ);
+    ਵਿੱਥ_2<ਵਿੱਥ_Type> embedded_ਵਿੱਥ;
+    embedded_ਵਿੱਥ = ਵਿੱਥ;
+    *ਮਾਪ += ਆਕਾਰ (ਵਿੱਥ_Type);
+    ਸਵੈਚਾਲਿਤ *o = c->embed (embedded_ਵਿੱਥ);
+    return_trace ((ਤਾਰਕਿਕ) o);
   }
 
-  IndexSubtableHeader	header;
-  UnsizedArrayOf<Offset<OffsetType>>
-			offsetArrayZ;
-  public:
-  DEFINE_SIZE_ARRAY (8, offsetArrayZ);
+  ਸੂਚਕਾਂਕ_Subtable_ਸਿਰਲੇਖ	ਸਿਰਲੇਖ;
+  Unsized_Array_ਦਾ<ਵਿੱਥ_2<ਵਿੱਥ_Type>>
+			ਵਿੱਥ_Array_Z;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (8, ਵਿੱਥ_Array_Z);
 };
 
-struct IndexSubtableFormat1 : IndexSubtableFormat1Or3<HBUINT32> {};
-struct IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_Format1 : ਸੂਚਕਾਂਕ_Subtable_Format1_Or3<HBUINT32> {};
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_Format3 : ਸੂਚਕਾਂਕ_Subtable_Format1_Or3<HBUINT16> {};
 
-struct IndexSubtable
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_ਗਿਣਤੀ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (!u.header.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (!u.ਸਿਰਲੇਖ.sanitize (c)) return_trace (ਝੂਠ);
     hb_barrier ();
-    switch (u.header.indexFormat)
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_count));
-    default:return_trace (true);
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_ਗਿਣਤੀ));
+    ਹਾਲਤ 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_ਗਿਣਤੀ));
+    ਮੂਲ:return_trace (ਸੱਚ);
     }
   }
 
-  bool
-  finish_subtable (hb_serialize_context_t *c,
-		   unsigned int end_offset,
-		   unsigned int num_glyphs,
-		   unsigned int *size /* OUT (accumulated) */)
+  ਤਾਰਕਿਕ
+  ਅੰਤ_subtable (hb_serialize_context_t *c,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ_ਵਿੱਥ,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਮਾਪ /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    switch (u.header.indexFormat)
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, end_offset, size));
-    case 3: {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.format1.ਜੋੜੋ_ਵਿੱਥ (c, ਸਿਰਾ_ਵਿੱਥ, ਮਾਪ));
+    ਹਾਲਤ 3: {
       hb_barrier ();
-      if (!u.format3.add_offset (c, end_offset, size))
-	return_trace (false);
-      if (!(num_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
-	return_trace (u.format3.add_offset (c, 0, size));
-      return_trace (true);
+      ਜੇ (!u.format3.ਜੋੜੋ_ਵਿੱਥ (c, ਸਿਰਾ_ਵਿੱਥ, ਮਾਪ))
+	return_trace (ਝੂਠ);
+      ਜੇ (!(ਅੰਕ_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
+	return_trace (u.format3.ਜੋੜੋ_ਵਿੱਥ (c, 0, ਮਾਪ));
+      return_trace (ਸੱਚ);
     }
     // TODO: implement 2, 4, 5.
-    case 2: case 4:  // No-op.
-    case 5:  // Pad to 32-bit aligned.
-    default: return_trace (false);
+    ਹਾਲਤ 2: ਹਾਲਤ 4:  // No-op.
+    ਹਾਲਤ 5:  // Pad to 32-bit aligned.
+    ਮੂਲ: return_trace (ਝੂਠ);
     }
   }
 
-  bool
-  add_offset (hb_serialize_context_t *c, unsigned int local_offset,
-	      unsigned int *size /* OUT (accumulated) */)
+  ਤਾਰਕਿਕ
+  ਜੋੜੋ_ਵਿੱਥ (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ local_ਵਿੱਥ,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਮਾਪ /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
-    switch (u.header.indexFormat)
+    TRACE_SERIALIZE (ਇਹ);
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, local_offset, size));
-    case 3: hb_barrier (); return_trace (u.format3.add_offset (c, local_offset, size));
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.format1.ਜੋੜੋ_ਵਿੱਥ (c, local_ਵਿੱਥ, ਮਾਪ));
+    ਹਾਲਤ 3: hb_barrier (); return_trace (u.format3.ਜੋੜੋ_ਵਿੱਥ (c, local_ਵਿੱਥ, ਮਾਪ));
     // TODO: Implement tables 2, 4, 5
-    case 2:  // Should be a no-op.
-    case 4: case 5:  // Handle sparse cases.
-    default: return_trace (false);
+    ਹਾਲਤ 2:  // Should be a no-op.
+    ਹਾਲਤ 4: ਹਾਲਤ 5:  // Handle sparse cases.
+    ਮੂਲ: return_trace (ਝੂਠ);
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents HB_UNUSED, bool scale HB_UNUSED) const
+  ਤਾਰਕਿਕ get_extents (hb_glyph_extents_t *extents HB_ਅਣਵਰਤਿਆ, ਤਾਰਕਿਕ scale HB_ਅਣਵਰਤਿਆ) ਅਚਲ
   {
-    switch (u.header.indexFormat)
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 2: case 5: /* TODO */
-    case 1: case 3: case 4: /* Variable-metrics formats do not have metrics here. */
-    default:return (false);
+    ਹਾਲਤ 2: ਹਾਲਤ 5: /* TODO */
+    ਹਾਲਤ 1: ਹਾਲਤ 3: ਹਾਲਤ 4: /* Variable-metrics formats do not have metrics here. */
+    ਮੂਲ:ਵਾਪਸ (ਝੂਠ);
     }
   }
 
-  bool
-  get_image_data (unsigned int idx, unsigned int *offset,
-		  unsigned int *length, unsigned int *format) const
+  ਤਾਰਕਿਕ
+  get_image_ਅੰਕੜੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਵਿੱਥ,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਲੰਮਾਈ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *format) ਅਚਲ
   {
-    *format = u.header.imageFormat;
-    switch (u.header.indexFormat)
+    *format = u.ਸਿਰਲੇਖ.imageFormat;
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 1: hb_barrier (); return u.format1.get_image_data (idx, offset, length);
-    case 3: hb_barrier (); return u.format3.get_image_data (idx, offset, length);
-    default: return false;
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ u.format1.get_image_ਅੰਕੜੇ (idx, ਵਿੱਥ, ਲੰਮਾਈ);
+    ਹਾਲਤ 3: hb_barrier (); ਵਾਪਸ u.format3.get_image_ਅੰਕੜੇ (idx, ਵਿੱਥ, ਲੰਮਾਈ);
+    ਮੂਲ: ਵਾਪਸ ਝੂਠ;
     }
   }
 
-  const IndexSubtableHeader* get_header () const { return &u.header; }
+  ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਸਿਰਲੇਖ* get_ਸਿਰਲੇਖ () ਅਚਲ { ਵਾਪਸ &u.ਸਿਰਲੇਖ; }
 
-  void populate_header (unsigned index_format,
-			unsigned image_format,
-			unsigned int image_data_offset,
-			unsigned int *size)
+  ਖਾਲੀ populate_ਸਿਰਲੇਖ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_format,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ image_format,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_ਅੰਕੜੇ_ਵਿੱਥ_2,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਮਾਪ)
   {
-    u.header.indexFormat = index_format;
-    u.header.imageFormat = image_format;
-    u.header.imageDataOffset = image_data_offset;
-    switch (u.header.indexFormat)
+    u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format = ਸੂਚਕਾਂਕ_format;
+    u.ਸਿਰਲੇਖ.imageFormat = image_format;
+    u.ਸਿਰਲੇਖ.image_ਅੰਕੜੇ_ਵਿੱਥ = image_ਅੰਕੜੇ_ਵਿੱਥ_2;
+    ਚੋਣ (u.ਸਿਰਲੇਖ.ਸੂਚਕਾਂਕ_Format)
     {
-    case 1: *size += IndexSubtableFormat1::min_size; break;
-    case 3: *size += IndexSubtableFormat3::min_size; break;
+    ਹਾਲਤ 1: *ਮਾਪ += ਸੂਚਕਾਂਕ_Subtable_Format1::min_ਮਾਪ; ਰੋਕੋ;
+    ਹਾਲਤ 3: *ਮਾਪ += ਸੂਚਕਾਂਕ_Subtable_Format3::min_ਮਾਪ; ਰੋਕੋ;
     }
   }
 
-  protected:
-  union {
-  IndexSubtableHeader	header;
-  IndexSubtableFormat1	format1;
-  IndexSubtableFormat3	format3;
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
+  ਸੂਚਕਾਂਕ_Subtable_ਸਿਰਲੇਖ	ਸਿਰਲੇਖ;
+  ਸੂਚਕਾਂਕ_Subtable_Format1	format1;
+  ਸੂਚਕਾਂਕ_Subtable_Format3	format3;
   /* TODO: Format 2, 4, 5. */
   } u;
-  public:
-  DEFINE_SIZE_UNION (8, header);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_UNION (8, ਸਿਰਲੇਖ);
 };
 
-struct IndexSubtableRecord
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ
 {
   /* XXX Remove this and fix by not inserting it into vector. */
-  IndexSubtableRecord& operator = (const IndexSubtableRecord &o)
+  ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ& ਸੰਚਾਲਕ = (ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ &o)
   {
-    firstGlyphIndex = o.firstGlyphIndex;
-    lastGlyphIndex = o.lastGlyphIndex;
-    offsetToSubtable = (unsigned) o.offsetToSubtable;
-    assert (offsetToSubtable.is_null ());
-    return *this;
+    ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ = o.ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ;
+    ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ = o.ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ;
+    ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable = (ਬਿਨਾਨਿਸ਼ਾਨੀ) o.ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable;
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable.is_null ());
+    ਵਾਪਸ *ਇਹ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  firstGlyphIndex <= lastGlyphIndex &&
-		  offsetToSubtable.sanitize (c, base, lastGlyphIndex - firstGlyphIndex + 1));
+		  ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ <= ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ &&
+		  ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable.sanitize (c, ਅਧਾਰ, ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ - ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ + 1));
   }
 
-  const IndexSubtable* get_subtable (const void *base) const
+  ਅਚਲ ਸੂਚਕਾਂਕ_Subtable* get_subtable (ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    return &(base+offsetToSubtable);
+    ਵਾਪਸ &(ਅਧਾਰ+ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable);
   }
 
-  bool add_new_subtable (hb_subset_context_t* c,
-			 cblc_bitmap_size_subset_context_t *bitmap_size_context,
-			 IndexSubtableRecord *record,
-			 const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
-			 const void *base,
-			 unsigned int *start /* INOUT */) const
+  ਤਾਰਕਿਕ ਜੋੜੋ_new_subtable (hb_subset_context_t* c,
+			 cblc_bitmap_ਮਾਪ_subset_context_t *bitmap_ਮਾਪ_context,
+			 ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ *ਰਿਕਾਰਡ,
+			 ਅਚਲ hb_ਸਦਿਸ਼_t<hb_pair_t<hb_codepoint_t, ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ*>> *lookup, /*ਵਿੱਚ*/
+			 ਅਚਲ ਖਾਲੀ *ਅਧਾਰ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਸ਼ੁਰੂ /* INOUT */) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    auto *subtable = c->serializer->start_embed<IndexSubtable> ();
-    if (unlikely (!c->serializer->extend_min (subtable))) return_trace (false);
+    ਸਵੈਚਾਲਿਤ *subtable = c->serializer->ਸ਼ੁਰੂ_embed<ਸੂਚਕਾਂਕ_Subtable> ();
+    ਜੇ (unlikely (!c->serializer->extend_min (subtable))) return_trace (ਝੂਠ);
 
-    auto *old_subtable = get_subtable (base);
-    auto *old_header = old_subtable->get_header ();
-    unsigned int image_format = old_header->imageFormat;
+    ਸਵੈਚਾਲਿਤ *old_subtable = get_subtable (ਅਧਾਰ);
+    ਸਵੈਚਾਲਿਤ *old_ਸਿਰਲੇਖ = old_subtable->get_ਸਿਰਲੇਖ ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_format = old_ਸਿਰਲੇਖ->imageFormat;
 
     /* Collect this subtable's image data and the length of each glyph's block
      * (zero for glyphs without data). This allows an earlier identical
      * subtable to share the same data. */
-    hb_vector_t<char> data;
-    hb_vector_t<unsigned int> lengths;
-    unsigned int num_glyphs = 0;
-    bool early_exit = false;
-    for (unsigned int i = *start; i < lookup->length; i++)
+    hb_ਸਦਿਸ਼_t<ਅੱਖਰ> ਅੰਕੜੇ;
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> lengths;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs = 0;
+    ਤਾਰਕਿਕ early_exit = ਝੂਠ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = *ਸ਼ੁਰੂ; i < lookup->ਲੰਮਾਈ; i++)
     {
-      hb_codepoint_t new_gid = (*lookup)[i].first;
-      const IndexSubtableRecord *next_record = (*lookup)[i].second;
-      const IndexSubtable *next_subtable = next_record->get_subtable (base);
-      auto *next_header = next_subtable->get_header ();
-      if (next_header != old_header)
+      hb_codepoint_t new_gid = (*lookup)[i].ਪਹਿਲਾ;
+      ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ *ਅਗਲਾ_ਰਿਕਾਰਡ = (*lookup)[i].second;
+      ਅਚਲ ਸੂਚਕਾਂਕ_Subtable *ਅਗਲਾ_subtable = ਅਗਲਾ_ਰਿਕਾਰਡ->get_subtable (ਅਧਾਰ);
+      ਸਵੈਚਾਲਿਤ *ਅਗਲਾ_ਸਿਰਲੇਖ = ਅਗਲਾ_subtable->get_ਸਿਰਲੇਖ ();
+      ਜੇ (ਅਗਲਾ_ਸਿਰਲੇਖ != old_ਸਿਰਲੇਖ)
       {
-	*start = i;
-	early_exit = true;
-	break;
+	*ਸ਼ੁਰੂ = i;
+	early_exit = ਸੱਚ;
+	ਰੋਕੋ;
       }
-      unsigned int num_missing = record->add_glyph_for_subset (new_gid);
-      for (unsigned int j = 0; j < num_missing; j++)
-	if (unlikely (!c->serializer->check_success (lengths.push_or_fail (0))))
-	  return_trace (false);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_missing = ਰਿਕਾਰਡ->ਜੋੜੋ_glyph_for_subset (new_gid);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = 0; j < ਅੰਕ_missing; j++)
+	ਜੇ (unlikely (!c->serializer->check_success (lengths.ਧੱਕੋ_or_fail (0))))
+	  return_trace (ਝੂਠ);
 
       hb_codepoint_t old_gid = 0;
       c->plan->old_gid_for_new_gid (new_gid, &old_gid);
-      if (old_gid < next_record->firstGlyphIndex)
-	return_trace (false);
+      ਜੇ (old_gid < ਅਗਲਾ_ਰਿਕਾਰਡ->ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ)
+	return_trace (ਝੂਠ);
 
-      unsigned int old_idx = (unsigned int) old_gid - next_record->firstGlyphIndex;
-      unsigned int offset, length, format;
-      if (unlikely (!next_subtable->get_image_data (old_idx, &offset, &length, &format)))
-	return_trace (false);
-      if (unlikely (offset > bitmap_size_context->cbdt_length ||
-		    bitmap_size_context->cbdt_length - offset < length))
-	return_trace (false);
-      if (unlikely (!c->serializer->check_success (
-			_copy_data_to_cbdt (&data,
-					    bitmap_size_context->cbdt + offset,
-					    length))))
-	return_trace (false);
-      if (unlikely (!c->serializer->check_success (lengths.push_or_fail (length))))
-	return_trace (false);
-      num_glyphs += 1 + num_missing;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ old_idx = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) old_gid - ਅਗਲਾ_ਰਿਕਾਰਡ->ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ, ਲੰਮਾਈ, format;
+      ਜੇ (unlikely (!ਅਗਲਾ_subtable->get_image_ਅੰਕੜੇ (old_idx, &ਵਿੱਥ, &ਲੰਮਾਈ, &format)))
+	return_trace (ਝੂਠ);
+      ਜੇ (unlikely (ਵਿੱਥ > bitmap_ਮਾਪ_context->cbdt_ਲੰਮਾਈ ||
+		    bitmap_ਮਾਪ_context->cbdt_ਲੰਮਾਈ - ਵਿੱਥ < ਲੰਮਾਈ))
+	return_trace (ਝੂਠ);
+      ਜੇ (unlikely (!c->serializer->check_success (
+			copy_ਅੰਕੜੇ_ਮੰਜ਼ਿਲ_cbdt (&ਅੰਕੜੇ,
+					    bitmap_ਮਾਪ_context->cbdt + ਵਿੱਥ,
+					    ਲੰਮਾਈ))))
+	return_trace (ਝੂਠ);
+      ਜੇ (unlikely (!c->serializer->check_success (lengths.ਧੱਕੋ_or_fail (ਲੰਮਾਈ))))
+	return_trace (ਝੂਠ);
+      ਅੰਕ_glyphs += 1 + ਅੰਕ_missing;
     }
-    if (!early_exit)
-      *start = lookup->length;
+    ਜੇ (!early_exit)
+      *ਸ਼ੁਰੂ = lookup->ਲੰਮਾਈ;
 
     /* Find or append the data block for this subtable. */
-    unsigned int image_data_offset;
-    cbdt_dedup_context_t *dedup = bitmap_size_context->dedup;
-    bool shared = false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_ਅੰਕੜੇ_ਵਿੱਥ_2;
+    cbdt_dedup_context_t *dedup = bitmap_ਮਾਪ_context->dedup;
+    ਤਾਰਕਿਕ shared = ਝੂਠ;
     uint64_t key = 0;
-    if (dedup && data.length)
+    ਜੇ (dedup && ਅੰਕੜੇ.ਲੰਮਾਈ)
     {
-      key = cbdt_dedup_context_t::hash (image_format, data, lengths);
-      shared = dedup->find (key, data, lengths,
-			    *bitmap_size_context->cbdt_prime,
-			    &image_data_offset);
+      key = cbdt_dedup_context_t::hash (image_format, ਅੰਕੜੇ, lengths);
+      shared = dedup->find (key, ਅੰਕੜੇ, lengths,
+			    *bitmap_ਮਾਪ_context->cbdt_ਅਭਾਜ,
+			    &image_ਅੰਕੜੇ_ਵਿੱਥ_2);
     }
-    if (!shared)
+    ਜੇ (!shared)
     {
-      image_data_offset = bitmap_size_context->cbdt_prime->length;
-      if (unlikely (!c->serializer->check_success (
-			_copy_data_to_cbdt (bitmap_size_context->cbdt_prime,
-					    data.arrayZ, data.length))))
-	return_trace (false);
-      if (dedup && data.length)
+      image_ਅੰਕੜੇ_ਵਿੱਥ_2 = bitmap_ਮਾਪ_context->cbdt_ਅਭਾਜ->ਲੰਮਾਈ;
+      ਜੇ (unlikely (!c->serializer->check_success (
+			copy_ਅੰਕੜੇ_ਮੰਜ਼ਿਲ_cbdt (bitmap_ਮਾਪ_context->cbdt_ਅਭਾਜ,
+					    ਅੰਕੜੇ.arrayZ, ਅੰਕੜੇ.ਲੰਮਾਈ))))
+	return_trace (ਝੂਠ);
+      ਜੇ (dedup && ਅੰਕੜੇ.ਲੰਮਾਈ)
 	/* The bitmap data is already copied; caching is best-effort. */
-	(void) dedup->add (key, image_data_offset, lengths);
+	(ਖਾਲੀ) dedup->ਜੋੜੋ (key, image_ਅੰਕੜੇ_ਵਿੱਥ_2, lengths);
     }
 
-    subtable->populate_header (old_header->indexFormat,
+    subtable->populate_ਸਿਰਲੇਖ (old_ਸਿਰਲੇਖ->ਸੂਚਕਾਂਕ_Format,
 			       image_format,
-			       image_data_offset,
-			       &bitmap_size_context->size);
+			       image_ਅੰਕੜੇ_ਵਿੱਥ_2,
+			       &bitmap_ਮਾਪ_context->ਮਾਪ);
 
     /* Glyphs without data use the offset of the following block's start,
      * which yields a zero length span, matching the old behavior. */
-    unsigned int cumulative = 0;
-    for (unsigned int length : lengths)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cumulative = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ : lengths)
     {
-      if (unlikely (!subtable->add_offset (c->serializer, cumulative,
-					   &bitmap_size_context->size)))
-	return_trace (false);
-      cumulative += length;
+      ਜੇ (unlikely (!subtable->ਜੋੜੋ_ਵਿੱਥ (c->serializer, cumulative,
+					   &bitmap_ਮਾਪ_context->ਮਾਪ)))
+	return_trace (ਝੂਠ);
+      cumulative += ਲੰਮਾਈ;
     }
-    if (unlikely (!subtable->finish_subtable (c->serializer,
+    ਜੇ (unlikely (!subtable->ਅੰਤ_subtable (c->serializer,
 					      cumulative,
-					      num_glyphs,
-					      &bitmap_size_context->size)))
-      return_trace (false);
-    return_trace (true);
+					      ਅੰਕ_glyphs,
+					      &bitmap_ਮਾਪ_context->ਮਾਪ)))
+      return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  bool add_new_record (hb_subset_context_t *c,
-		       cblc_bitmap_size_subset_context_t *bitmap_size_context,
-		       const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
-		       const void *base,
-		       unsigned int *start, /* INOUT */
-		       hb_vector_t<IndexSubtableRecord>* records /* INOUT */) const
+  ਤਾਰਕਿਕ ਜੋੜੋ_new_ਰਿਕਾਰਡ (hb_subset_context_t *c,
+		       cblc_bitmap_ਮਾਪ_subset_context_t *bitmap_ਮਾਪ_context,
+		       ਅਚਲ hb_ਸਦਿਸ਼_t<hb_pair_t<hb_codepoint_t, ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ*>> *lookup, /*ਵਿੱਚ*/
+		       ਅਚਲ ਖਾਲੀ *ਅਧਾਰ,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਸ਼ੁਰੂ, /* INOUT */
+		       hb_ਸਦਿਸ਼_t<ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ>* ਰਿਕਾਰਡਾਂ /* INOUT */) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    auto snap = c->serializer->snapshot ();
-    unsigned int old_size = bitmap_size_context->size;
-    unsigned int old_cbdt_prime_length = bitmap_size_context->cbdt_prime->length;
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ snap = c->serializer->snapshot ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ old_ਮਾਪ = bitmap_ਮਾਪ_context->ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ old_cbdt_ਅਭਾਜ_ਲੰਮਾਈ = bitmap_ਮਾਪ_context->cbdt_ਅਭਾਜ->ਲੰਮਾਈ;
 
     // Set to invalid state to indicate filling glyphs is not yet started.
-    if (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
-      return_trace (false);
+    ਜੇ (unlikely (!c->serializer->check_success (ਰਿਕਾਰਡਾਂ->resize (ਰਿਕਾਰਡਾਂ->ਲੰਮਾਈ + 1))))
+      return_trace (ਝੂਠ);
 
-    records->tail ().firstGlyphIndex = 1;
-    records->tail ().lastGlyphIndex = 0;
-    bitmap_size_context->size += IndexSubtableRecord::min_size;
+    ਰਿਕਾਰਡਾਂ->ਪੂਛ ().ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ = 1;
+    ਰਿਕਾਰਡਾਂ->ਪੂਛ ().ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ = 0;
+    bitmap_ਮਾਪ_context->ਮਾਪ += ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ::min_ਮਾਪ;
 
     c->serializer->push ();
 
-    if (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
+    ਜੇ (unlikely (!ਜੋੜੋ_new_subtable (c, bitmap_ਮਾਪ_context, &(ਰਿਕਾਰਡਾਂ->ਪੂਛ ()), lookup, ਅਧਾਰ, ਸ਼ੁਰੂ)))
     {
-      c->serializer->pop_discard ();
+      c->serializer->ਕੱਢੋ_discard ();
       c->serializer->revert (snap);
-      bitmap_size_context->cbdt_prime->shrink (old_cbdt_prime_length);
-      bitmap_size_context->size = old_size;
-      records->resize (records->length - 1);
-      return_trace (false);
+      bitmap_ਮਾਪ_context->cbdt_ਅਭਾਜ->shrink (old_cbdt_ਅਭਾਜ_ਲੰਮਾਈ);
+      bitmap_ਮਾਪ_context->ਮਾਪ = old_ਮਾਪ;
+      ਰਿਕਾਰਡਾਂ->resize (ਰਿਕਾਰਡਾਂ->ਲੰਮਾਈ - 1);
+      return_trace (ਝੂਠ);
     }
 
-    bitmap_size_context->num_tables += 1;
-    return_trace (true);
+    bitmap_ਮਾਪ_context->ਅੰਕ_tables += 1;
+    return_trace (ਸੱਚ);
   }
 
-  unsigned int add_glyph_for_subset (hb_codepoint_t gid)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਜੋੜੋ_glyph_for_subset (hb_codepoint_t gid)
   {
-    if (firstGlyphIndex > lastGlyphIndex)
+    ਜੇ (ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ > ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ)
     {
-      firstGlyphIndex = gid;
-      lastGlyphIndex = gid;
-      return 0;
+      ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ = gid;
+      ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ = gid;
+      ਵਾਪਸ 0;
     }
     // TODO maybe assert? this shouldn't occur.
-    if (lastGlyphIndex > gid)
-      return 0;
-    unsigned int num_missing = (unsigned int) (gid - lastGlyphIndex - 1);
-    lastGlyphIndex = gid;
-    return num_missing;
+    ਜੇ (ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ > gid)
+      ਵਾਪਸ 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_missing = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (gid - ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ - 1);
+    ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ = gid;
+    ਵਾਪਸ ਅੰਕ_missing;
   }
 
-  bool get_extents (hb_glyph_extents_t *extents, const void *base, bool scale) const
-  { return (base+offsetToSubtable).get_extents (extents, scale); }
+  ਤਾਰਕਿਕ get_extents (hb_glyph_extents_t *extents, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ, ਤਾਰਕਿਕ scale) ਅਚਲ
+  { ਵਾਪਸ (ਅਧਾਰ+ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable).get_extents (extents, scale); }
 
-  bool get_image_data (unsigned int  gid,
-		       const void   *base,
-		       unsigned int *offset,
-		       unsigned int *length,
-		       unsigned int *format) const
+  ਤਾਰਕਿਕ get_image_ਅੰਕੜੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  gid,
+		       ਅਚਲ ਖਾਲੀ   *ਅਧਾਰ,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਵਿੱਥ,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਲੰਮਾਈ,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *format) ਅਚਲ
   {
-    if (gid < firstGlyphIndex || gid > lastGlyphIndex) return false;
-    return (base+offsetToSubtable).get_image_data (gid - firstGlyphIndex,
-						   offset, length, format);
+    ਜੇ (gid < ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ || gid > ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ) ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ (ਅਧਾਰ+ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable).get_image_ਅੰਕੜੇ (gid - ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ,
+						   ਵਿੱਥ, ਲੰਮਾਈ, format);
   }
 
-  HBGlyphID16			firstGlyphIndex;
-  HBGlyphID16			lastGlyphIndex;
-  Offset32To<IndexSubtable>	offsetToSubtable;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  HBGlyphID16			ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ;
+  HBGlyphID16			ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ;
+  Offset32_ਮੰਜ਼ਿਲ<ਸੂਚਕਾਂਕ_Subtable>	ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-struct IndexSubtableArray
+ਬਣਤਰ ਸੂਚਕਾਂਕ_Subtable_Array
 {
-  friend struct CBDT;
+  ਮਿੱਤਰ ਬਣਤਰ CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (indexSubtablesZ.sanitize (c, count, this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (ਸੂਚਕਾਂਕ_Subtables_Z.sanitize (c, ਗਿਣਤੀ_2, ਇਹ));
   }
 
-  void
-  build_lookup (hb_subset_context_t *c, cblc_bitmap_size_subset_context_t *bitmap_size_context,
-		hb_vector_t<hb_pair_t<hb_codepoint_t,
-		const IndexSubtableRecord*>> *lookup /* OUT */) const
+  ਖਾਲੀ
+  build_lookup (hb_subset_context_t *c, cblc_bitmap_ਮਾਪ_subset_context_t *bitmap_ਮਾਪ_context,
+		hb_ਸਦਿਸ਼_t<hb_pair_t<hb_codepoint_t,
+		ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ*>> *lookup /*ਬਾਹਰਲਾ*/) ਅਚਲ
   {
-    bool start_glyph_is_set = false;
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    for (hb_codepoint_t new_gid = 0; new_gid < num_glyphs; new_gid++)
+    ਤਾਰਕਿਕ ਸ਼ੁਰੂ_glyph_is_ਸੈੱਟ = ਝੂਠ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs = c->plan->ਅੰਕ_output_glyphs ();
+    ਲਈ (hb_codepoint_t new_gid = 0; new_gid < ਅੰਕ_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) continue;
+      ਜੇ (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) ਜਾਰੀ;
 
-      const IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->num_tables);
-      if (unlikely (!record)) continue;
+      ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ* ਰਿਕਾਰਡ = ਲੱਭੋ_ਸਾਰਣੀ (old_gid, bitmap_ਮਾਪ_context->ਅੰਕ_tables);
+      ਜੇ (unlikely (!ਰਿਕਾਰਡ)) ਜਾਰੀ;
 
       // Don't add gaps to the lookup. The best way to determine if a glyph is a
       // gap is that it has no image data.
-      unsigned int offset, length, format;
-      if (unlikely (!record->get_image_data (old_gid, this, &offset, &length, &format))) continue;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ, ਲੰਮਾਈ, format;
+      ਜੇ (unlikely (!ਰਿਕਾਰਡ->get_image_ਅੰਕੜੇ (old_gid, ਇਹ, &ਵਿੱਥ, &ਲੰਮਾਈ, &format))) ਜਾਰੀ;
 
-      lookup->push (hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*> (new_gid, record));
+      lookup->push (hb_pair_t<hb_codepoint_t, ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ*> (new_gid, ਰਿਕਾਰਡ));
 
-      if (!start_glyph_is_set)
+      ਜੇ (!ਸ਼ੁਰੂ_glyph_is_ਸੈੱਟ)
       {
-	bitmap_size_context->start_glyph = new_gid;
-	start_glyph_is_set = true;
+	bitmap_ਮਾਪ_context->ਸ਼ੁਰੂ_glyph = new_gid;
+	ਸ਼ੁਰੂ_glyph_is_ਸੈੱਟ = ਸੱਚ;
       }
 
-      bitmap_size_context->end_glyph = new_gid;
+      bitmap_ਮਾਪ_context->ਸਿਰਾ_glyph = new_gid;
     }
   }
 
-  bool
+  ਤਾਰਕਿਕ
   subset (hb_subset_context_t *c,
-	  cblc_bitmap_size_subset_context_t *bitmap_size_context) const
+	  cblc_bitmap_ਮਾਪ_subset_context_t *bitmap_ਮਾਪ_context) ਅਚਲ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ਇਹ);
 
-    hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> lookup;
-    build_lookup (c, bitmap_size_context, &lookup);
-    if (unlikely (!c->serializer->propagate_error (lookup)))
-      return false;
+    hb_ਸਦਿਸ਼_t<hb_pair_t<hb_codepoint_t, ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ*>> lookup;
+    build_lookup (c, bitmap_ਮਾਪ_context, &lookup);
+    ਜੇ (unlikely (!c->serializer->propagate_error (lookup)))
+      ਵਾਪਸ ਝੂਠ;
 
-    bitmap_size_context->size = 0;
-    bitmap_size_context->num_tables = 0;
-    hb_vector_t<IndexSubtableRecord> records;
-    for (unsigned int start = 0; start < lookup.length;)
+    bitmap_ਮਾਪ_context->ਮਾਪ = 0;
+    bitmap_ਮਾਪ_context->ਅੰਕ_tables = 0;
+    hb_ਸਦਿਸ਼_t<ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ> ਰਿਕਾਰਡਾਂ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0; ਸ਼ੁਰੂ < lookup.ਲੰਮਾਈ;)
     {
-      if (unlikely (!lookup[start].second->add_new_record (c, bitmap_size_context, &lookup, this, &start, &records)))
+      ਜੇ (unlikely (!lookup[ਸ਼ੁਰੂ].second->ਜੋੜੋ_new_ਰਿਕਾਰਡ (c, bitmap_ਮਾਪ_context, &lookup, ਇਹ, &ਸ਼ੁਰੂ, &ਰਿਕਾਰਡਾਂ)))
       {
 	// Discard any leftover pushes to the serializer from successful records.
-	for (unsigned int i = 0; i < records.length; i++)
-	  c->serializer->pop_discard ();
-	return_trace (false);
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ; i++)
+	  c->serializer->ਕੱਢੋ_discard ();
+	return_trace (ਝੂਠ);
       }
     }
 
     /* Workaround to ensure offset ordering is from least to greatest when
      * resolving links. */
-    hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (unsigned int i = 0; i < records.length; i++)
-      objidxs.push (c->serializer->pop_pack ());
-    for (unsigned int i = 0; i < records.length; i++)
+    hb_ਸਦਿਸ਼_t<hb_serialize_context_t::objidx_t> objidxs;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ; i++)
+      objidxs.push (c->serializer->ਕੱਢੋ_pack ());
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ; i++)
     {
-      IndexSubtableRecord* record = c->serializer->embed (records[i]);
-      if (unlikely (!record)) return_trace (false);
-      c->serializer->add_link (record->offsetToSubtable, objidxs[records.length - 1 - i]);
+      ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ* ਰਿਕਾਰਡ = c->serializer->embed (ਰਿਕਾਰਡਾਂ[i]);
+      ਜੇ (unlikely (!ਰਿਕਾਰਡ)) return_trace (ਝੂਠ);
+      c->serializer->ਜੋੜੋ_link (ਰਿਕਾਰਡ->ਵਿੱਥ_ਮੰਜ਼ਿਲ_Subtable, objidxs[ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ - 1 - i]);
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  public:
-  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned int numTables) const
+  ਜਨਤਕ:
+  ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ* ਲੱਭੋ_ਸਾਰਣੀ (hb_codepoint_t glyph, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_Tables) ਅਚਲ
   {
-    for (unsigned int i = 0; i < numTables; ++i)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_Tables; ++i)
     {
-      unsigned int firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
-      unsigned int lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
-      if (firstGlyphIndex <= glyph && glyph <= lastGlyphIndex)
-	return &indexSubtablesZ[i];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ = ਸੂਚਕਾਂਕ_Subtables_Z[i].ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ = ਸੂਚਕਾਂਕ_Subtables_Z[i].ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ;
+      ਜੇ (ਪਹਿਲਾ_Glyph_ਸੂਚਕਾਂਕ <= glyph && glyph <= ਆਖਰੀ_Glyph_ਸੂਚਕਾਂਕ)
+	ਵਾਪਸ &ਸੂਚਕਾਂਕ_Subtables_Z[i];
     }
-    return nullptr;
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  protected:
-  UnsizedArrayOf<IndexSubtableRecord>	indexSubtablesZ;
+  ਸੁਰੱਖਿਅਤ:
+  Unsized_Array_ਦਾ<ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ>	ਸੂਚਕਾਂਕ_Subtables_Z;
 };
 
-struct BitmapSizeTable
+ਬਣਤਰ Bitmap_ਮਾਪ_ਸਾਰਣੀ
 {
-  friend struct CBLC;
-  friend struct CBDT;
+  ਮਿੱਤਰ ਬਣਤਰ CBLC;
+  ਮਿੱਤਰ ਬਣਤਰ CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  indexSubtableArrayOffset.sanitize (c, base, numberOfIndexSubtables) &&
+		  ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ.sanitize (c, ਅਧਾਰ, ਸੰਖਿਆ_ਦਾ_ਸੂਚਕਾਂਕ_Subtables) &&
 		  horizontal.sanitize (c) &&
 		  vertical.sanitize (c));
   }
 
-  const IndexSubtableRecord *
-  find_table (hb_codepoint_t glyph, const void *base, const void **out_base) const
+  ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ *
+  ਲੱਭੋ_ਸਾਰਣੀ (hb_codepoint_t glyph, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ, ਅਚਲ ਖਾਲੀ **ਬਾਹਰਲਾ_ਅਧਾਰ) ਅਚਲ
   {
-    *out_base = &(base+indexSubtableArrayOffset);
-    return (base+indexSubtableArrayOffset).find_table (glyph, numberOfIndexSubtables);
+    *ਬਾਹਰਲਾ_ਅਧਾਰ = &(ਅਧਾਰ+ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ);
+    ਵਾਪਸ (ਅਧਾਰ+ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ).ਲੱਭੋ_ਸਾਰਣੀ (glyph, ਸੰਖਿਆ_ਦਾ_ਸੂਚਕਾਂਕ_Subtables);
   }
 
-  bool
-  subset (hb_subset_context_t *c, const void *base,
-	  const char *cbdt, unsigned int cbdt_length,
-	  hb_vector_t<char> *cbdt_prime /* INOUT */,
-	  cbdt_dedup_context_t *dedup /* INOUT */) const
+  ਤਾਰਕਿਕ
+  subset (hb_subset_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ,
+	  ਅਚਲ ਅੱਖਰ *cbdt, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_ਲੰਮਾਈ,
+	  hb_ਸਦਿਸ਼_t<ਅੱਖਰ> *cbdt_ਅਭਾਜ /* INOUT */,
+	  cbdt_dedup_context_t *dedup /* INOUT */) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *out_table = c->serializer->embed (this);
-    if (unlikely (!out_table)) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ_ਸਾਰਣੀ = c->serializer->embed (ਇਹ);
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ_ਸਾਰਣੀ)) return_trace (ਝੂਠ);
 
-    cblc_bitmap_size_subset_context_t bitmap_size_context;
-    bitmap_size_context.cbdt = cbdt;
-    bitmap_size_context.cbdt_length = cbdt_length;
-    bitmap_size_context.cbdt_prime = cbdt_prime;
-    bitmap_size_context.size = indexTablesSize;
-    bitmap_size_context.num_tables = numberOfIndexSubtables;
-    bitmap_size_context.start_glyph = 1;
-    bitmap_size_context.end_glyph = 0;
-    bitmap_size_context.dedup = dedup;
+    cblc_bitmap_ਮਾਪ_subset_context_t bitmap_ਮਾਪ_context;
+    bitmap_ਮਾਪ_context.cbdt = cbdt;
+    bitmap_ਮਾਪ_context.cbdt_ਲੰਮਾਈ = cbdt_ਲੰਮਾਈ;
+    bitmap_ਮਾਪ_context.cbdt_ਅਭਾਜ = cbdt_ਅਭਾਜ;
+    bitmap_ਮਾਪ_context.ਮਾਪ = ਸੂਚਕਾਂਕ_Tables_ਮਾਪ;
+    bitmap_ਮਾਪ_context.ਅੰਕ_tables = ਸੰਖਿਆ_ਦਾ_ਸੂਚਕਾਂਕ_Subtables;
+    bitmap_ਮਾਪ_context.ਸ਼ੁਰੂ_glyph = 1;
+    bitmap_ਮਾਪ_context.ਸਿਰਾ_glyph = 0;
+    bitmap_ਮਾਪ_context.dedup = dedup;
 
-    if (!out_table->indexSubtableArrayOffset.serialize_subset (c,
-							       indexSubtableArrayOffset,
-							       base,
-							       &bitmap_size_context))
-      return_trace (false);
-    if (!bitmap_size_context.size ||
-	!bitmap_size_context.num_tables ||
-	bitmap_size_context.start_glyph > bitmap_size_context.end_glyph)
-      return_trace (false);
+    ਜੇ (!ਬਾਹਰਲਾ_ਸਾਰਣੀ->ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ.serialize_subset (c,
+							       ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ,
+							       ਅਧਾਰ,
+							       &bitmap_ਮਾਪ_context))
+      return_trace (ਝੂਠ);
+    ਜੇ (!bitmap_ਮਾਪ_context.ਮਾਪ ||
+	!bitmap_ਮਾਪ_context.ਅੰਕ_tables ||
+	bitmap_ਮਾਪ_context.ਸ਼ੁਰੂ_glyph > bitmap_ਮਾਪ_context.ਸਿਰਾ_glyph)
+      return_trace (ਝੂਠ);
 
-    out_table->indexTablesSize = bitmap_size_context.size;
-    out_table->numberOfIndexSubtables = bitmap_size_context.num_tables;
-    out_table->startGlyphIndex = bitmap_size_context.start_glyph;
-    out_table->endGlyphIndex = bitmap_size_context.end_glyph;
-    return_trace (true);
+    ਬਾਹਰਲਾ_ਸਾਰਣੀ->ਸੂਚਕਾਂਕ_Tables_ਮਾਪ = bitmap_ਮਾਪ_context.ਮਾਪ;
+    ਬਾਹਰਲਾ_ਸਾਰਣੀ->ਸੰਖਿਆ_ਦਾ_ਸੂਚਕਾਂਕ_Subtables = bitmap_ਮਾਪ_context.ਅੰਕ_tables;
+    ਬਾਹਰਲਾ_ਸਾਰਣੀ->ਸ਼ੁਰੂ_Glyph_ਸੂਚਕਾਂਕ = bitmap_ਮਾਪ_context.ਸ਼ੁਰੂ_glyph;
+    ਬਾਹਰਲਾ_ਸਾਰਣੀ->ਸਿਰਾ_Glyph_ਸੂਚਕਾਂਕ = bitmap_ਮਾਪ_context.ਸਿਰਾ_glyph;
+    return_trace (ਸੱਚ);
   }
 
-  protected:
-  NNOffset32To<IndexSubtableArray>
-			indexSubtableArrayOffset;
-  HBUINT32		indexTablesSize;
-  HBUINT32		numberOfIndexSubtables;
+  ਸੁਰੱਖਿਅਤ:
+  NNOffset32_ਮੰਜ਼ਿਲ<ਸੂਚਕਾਂਕ_Subtable_Array>
+			ਸੂਚਕਾਂਕ_Subtable_Array_ਵਿੱਥ;
+  HBUINT32		ਸੂਚਕਾਂਕ_Tables_ਮਾਪ;
+  HBUINT32		ਸੰਖਿਆ_ਦਾ_ਸੂਚਕਾਂਕ_Subtables;
   HBUINT32		colorRef;
-  SBitLineMetrics	horizontal;
-  SBitLineMetrics	vertical;
-  HBGlyphID16		startGlyphIndex;
-  HBGlyphID16		endGlyphIndex;
+  SBit_ਸਤਰ_Metrics	horizontal;
+  SBit_ਸਤਰ_Metrics	vertical;
+  HBGlyphID16		ਸ਼ੁਰੂ_Glyph_ਸੂਚਕਾਂਕ;
+  HBGlyphID16		ਸਿਰਾ_Glyph_ਸੂਚਕਾਂਕ;
   HBUINT8		ppemX;
   HBUINT8		ppemY;
-  HBUINT8		bitDepth;
+  HBUINT8		ਦੋਆਧਾਰੀ_ਅੰਕ_ਡੂੰਘਾਈ;
   HBINT8		flags;
-  public:
-  DEFINE_SIZE_STATIC (48);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (48);
 };
 
 
@@ -758,328 +758,328 @@ struct BitmapSizeTable
  * Glyph Bitmap Data Formats.
  */
 
-struct GlyphBitmapDataFormat17
+ਬਣਤਰ Glyph_Bitmap_ਅੰਕੜੇ_Format17
 {
   SmallGlyphMetrics	glyphMetrics;
-  Array32Of<HBUINT8>	data;
-  public:
-  DEFINE_SIZE_ARRAY (9, data);
+  Array32_ਦਾ<HBUINT8>	ਅੰਕੜੇ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (9, ਅੰਕੜੇ);
 };
 
-struct GlyphBitmapDataFormat18
+ਬਣਤਰ Glyph_Bitmap_ਅੰਕੜੇ_Format18
 {
   BigGlyphMetrics	glyphMetrics;
-  Array32Of<HBUINT8>	data;
-  public:
-  DEFINE_SIZE_ARRAY (12, data);
+  Array32_ਦਾ<HBUINT8>	ਅੰਕੜੇ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (12, ਅੰਕੜੇ);
 };
 
-struct GlyphBitmapDataFormat19
+ਬਣਤਰ Glyph_Bitmap_ਅੰਕੜੇ_Format19
 {
-  Array32Of<HBUINT8>	data;
-  public:
-  DEFINE_SIZE_ARRAY (4, data);
+  Array32_ਦਾ<HBUINT8>	ਅੰਕੜੇ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (4, ਅੰਕੜੇ);
 };
 
-struct CBLC
+ਬਣਤਰ CBLC
 {
-  friend struct CBDT;
+  ਮਿੱਤਰ ਬਣਤਰ CBDT;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CBLC;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_CBLC;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  likely (version.major == 2 || version.major == 3) &&
+		  likely (ਸੰਸਕਰਣ.major == 2 || ਸੰਸਕਰਣ.major == 3) &&
 		  hb_barrier () &&
-		  sizeTables.sanitize (c, this));
+		  ਮਾਪ_Tables.sanitize (c, ਇਹ));
   }
 
-  static bool
-  sink_cbdt (hb_subset_context_t *c, hb_vector_t<char>* cbdt_prime)
+  ਸਥਿਰ ਤਾਰਕਿਕ
+  sink_cbdt (hb_subset_context_t *c, hb_ਸਦਿਸ਼_t<ਅੱਖਰ>* cbdt_ਅਭਾਜ)
   {
-    hb_blob_t *cbdt_prime_blob = hb_blob_create (cbdt_prime->arrayZ,
-						 cbdt_prime->length,
-						 HB_MEMORY_MODE_WRITABLE,
-						 cbdt_prime->arrayZ,
+    hb_blob_t *cbdt_ਅਭਾਜ_blob = hb_blob_create (cbdt_ਅਭਾਜ->arrayZ,
+						 cbdt_ਅਭਾਜ->ਲੰਮਾਈ,
+						 HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE,
+						 cbdt_ਅਭਾਜ->arrayZ,
 						 hb_free);
-    cbdt_prime->init ();  // Leak arrayZ to the blob.
-    bool ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_prime_blob);
-    hb_blob_destroy (cbdt_prime_blob);
-    return ret;
+    cbdt_ਅਭਾਜ->init ();  // Leak arrayZ to the blob.
+    ਤਾਰਕਿਕ ret = c->plan->ਜੋੜੋ_ਸਾਰਣੀ (HB_OT_ਟੈਗ_CBDT, cbdt_ਅਭਾਜ_blob);
+    hb_blob_destroy (cbdt_ਅਭਾਜ_blob);
+    ਵਾਪਸ ret;
   }
 
-  bool
-  subset_size_table (hb_subset_context_t *c, const BitmapSizeTable& table,
-		     const char *cbdt /* IN */, unsigned int cbdt_length,
-		     CBLC *cblc_prime /* INOUT */, hb_vector_t<char> *cbdt_prime /* INOUT */,
-		     cbdt_dedup_context_t *dedup /* INOUT */) const
+  ਤਾਰਕਿਕ
+  subset_ਮਾਪ_ਸਾਰਣੀ (hb_subset_context_t *c, ਅਚਲ Bitmap_ਮਾਪ_ਸਾਰਣੀ& ਸਾਰਣੀ,
+		     ਅਚਲ ਅੱਖਰ *cbdt /*ਵਿੱਚ*/, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_ਲੰਮਾਈ,
+		     CBLC *cblc_ਅਭਾਜ /* INOUT */, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> *cbdt_ਅਭਾਜ /* INOUT */,
+		     cbdt_dedup_context_t *dedup /* INOUT */) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    cblc_prime->sizeTables.len++;
+    TRACE_SUBSET (ਇਹ);
+    cblc_ਅਭਾਜ->ਮਾਪ_Tables.len++;
 
-    auto snap = c->serializer->snapshot ();
-    auto cbdt_prime_len = cbdt_prime->length;
+    ਸਵੈਚਾਲਿਤ snap = c->serializer->snapshot ();
+    ਸਵੈਚਾਲਿਤ cbdt_ਅਭਾਜ_len = cbdt_ਅਭਾਜ->ਲੰਮਾਈ;
 
-    if (!table.subset (c, this, cbdt, cbdt_length, cbdt_prime, dedup))
+    ਜੇ (!ਸਾਰਣੀ.subset (c, ਇਹ, cbdt, cbdt_ਲੰਮਾਈ, cbdt_ਅਭਾਜ, dedup))
     {
-      cblc_prime->sizeTables.len--;
+      cblc_ਅਭਾਜ->ਮਾਪ_Tables.len--;
       c->serializer->revert (snap);
-      cbdt_prime->shrink (cbdt_prime_len);
-      return_trace (false);
+      cbdt_ਅਭਾਜ->shrink (cbdt_ਅਭਾਜ_len);
+      return_trace (ਝੂਠ);
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
   // Implemented in cc file as it depends on definition of CBDT.
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ;
 
-  protected:
-  const BitmapSizeTable &choose_strike (hb_font_t *font) const
+  ਸੁਰੱਖਿਅਤ:
+  ਅਚਲ Bitmap_ਮਾਪ_ਸਾਰਣੀ &ਚੁਣੋ_strike (hb_font_t *font) ਅਚਲ
   {
-    unsigned count = sizeTables.len;
-    if (unlikely (!count))
-      return Null (BitmapSizeTable);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ਮਾਪ_Tables.len;
+    ਜੇ (unlikely (!ਗਿਣਤੀ_2))
+      ਵਾਪਸ Null (Bitmap_ਮਾਪ_ਸਾਰਣੀ);
 
-    unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-    if (!requested_ppem)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+    ਜੇ (!requested_ppem)
       requested_ppem = 1<<30; /* Choose largest strike. */
-    unsigned int best_i = 0;
-    unsigned int best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਉੱਤਮ_i = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਉੱਤਮ_ppem = hb_max (ਮਾਪ_Tables[0].ppemX, ਮਾਪ_Tables[0].ppemY);
 
-    for (unsigned int i = 1; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 1; i < ਗਿਣਤੀ_2; i++)
     {
-      unsigned int ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
-      if ((requested_ppem <= ppem && ppem < best_ppem) ||
-	  (requested_ppem > best_ppem && ppem > best_ppem))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ppem = hb_max (ਮਾਪ_Tables[i].ppemX, ਮਾਪ_Tables[i].ppemY);
+      ਜੇ ((requested_ppem <= ppem && ppem < ਉੱਤਮ_ppem) ||
+	  (requested_ppem > ਉੱਤਮ_ppem && ppem > ਉੱਤਮ_ppem))
       {
-	best_i = i;
-	best_ppem = ppem;
+	ਉੱਤਮ_i = i;
+	ਉੱਤਮ_ppem = ppem;
       }
     }
 
-    return sizeTables[best_i];
+    ਵਾਪਸ ਮਾਪ_Tables[ਉੱਤਮ_i];
   }
 
-  protected:
-  FixedVersion<>		version;
-  Array32Of<BitmapSizeTable>	sizeTables;
-  public:
-  DEFINE_SIZE_ARRAY (8, sizeTables);
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>		ਸੰਸਕਰਣ;
+  Array32_ਦਾ<Bitmap_ਮਾਪ_ਸਾਰਣੀ>	ਮਾਪ_Tables;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (8, ਮਾਪ_Tables);
 };
 
-struct CBDT
+ਬਣਤਰ CBDT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CBDT;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_CBDT;
 
-  struct accelerator_t
+  ਬਣਤਰ accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      this->cblc = hb_sanitize_context_t ().reference_table<CBLC> (face);
-      this->cbdt = hb_sanitize_context_t ().reference_table<CBDT> (face);
+      ਇਹ->cblc = hb_sanitize_context_t ().reference_ਸਾਰਣੀ<CBLC> (face);
+      ਇਹ->cbdt = hb_sanitize_context_t ().reference_ਸਾਰਣੀ<CBDT> (face);
 
       upem = hb_face_get_upem (face);
     }
     ~accelerator_t ()
     {
-      this->cblc.destroy ();
-      this->cbdt.destroy ();
+      ਇਹ->cblc.destroy ();
+      ਇਹ->cbdt.destroy ();
     }
 
-    bool
-    get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, bool scale = true) const
+    ਤਾਰਕਿਕ
+    get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, ਤਾਰਕਿਕ scale = ਸੱਚ) ਅਚਲ
     {
-      const void *base;
-      const BitmapSizeTable &strike = this->cblc->choose_strike (font);
-      const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return false;
+      ਅਚਲ ਖਾਲੀ *ਅਧਾਰ;
+      ਅਚਲ Bitmap_ਮਾਪ_ਸਾਰਣੀ &strike = ਇਹ->cblc->ਚੁਣੋ_strike (font);
+      ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ *subtable_ਰਿਕਾਰਡ = strike.ਲੱਭੋ_ਸਾਰਣੀ (glyph, cblc, &ਅਧਾਰ);
+      ਜੇ (!subtable_ਰਿਕਾਰਡ || !strike.ppemX || !strike.ppemY)
+	ਵਾਪਸ ਝੂਠ;
 
-      if (subtable_record->get_extents (extents, base, scale))
-	return true;
+      ਜੇ (subtable_ਰਿਕਾਰਡ->get_extents (extents, ਅਧਾਰ, scale))
+	ਵਾਪਸ ਸੱਚ;
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return false;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_ਵਿੱਥ = 0, image_ਲੰਮਾਈ = 0, image_format = 0;
+      ਜੇ (!subtable_ਰਿਕਾਰਡ->get_image_ਅੰਕੜੇ (glyph, ਅਧਾਰ, &image_ਵਿੱਥ, &image_ਲੰਮਾਈ, &image_format))
+	ਵਾਪਸ ਝੂਠ;
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return false;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_len = cbdt.get_ਲੰਮਾਈ ();
+      ਜੇ (unlikely (image_ਵਿੱਥ > cbdt_len || cbdt_len - image_ਵਿੱਥ < image_ਲੰਮਾਈ))
+	ਵਾਪਸ ਝੂਠ;
 
-      switch (image_format)
+      ਚੋਣ (image_format)
       {
-      case 17: {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return false;
-	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
+      ਹਾਲਤ 17: {
+	ਜੇ (unlikely (image_ਲੰਮਾਈ < Glyph_Bitmap_ਅੰਕੜੇ_Format17::min_ਮਾਪ))
+	  ਵਾਪਸ ਝੂਠ;
+	ਸਵੈਚਾਲਿਤ &glyphFormat17 = Struct_At_ਵਿੱਥ<Glyph_Bitmap_ਅੰਕੜੇ_Format17> (ਇਹ->cbdt, image_ਵਿੱਥ);
 	glyphFormat17.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	ਰੋਕੋ;
       }
-      case 18: {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return false;
-	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
+      ਹਾਲਤ 18: {
+	ਜੇ (unlikely (image_ਲੰਮਾਈ < Glyph_Bitmap_ਅੰਕੜੇ_Format18::min_ਮਾਪ))
+	  ਵਾਪਸ ਝੂਠ;
+	ਸਵੈਚਾਲਿਤ &glyphFormat18 = Struct_At_ਵਿੱਥ<Glyph_Bitmap_ਅੰਕੜੇ_Format18> (ਇਹ->cbdt, image_ਵਿੱਥ);
 	glyphFormat18.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	ਰੋਕੋ;
       }
-      default: return false; /* TODO: Support other image formats. */
+      ਮੂਲ: ਵਾਪਸ ਝੂਠ; /* TODO: Support other image formats. */
       }
 
       /* Convert to font units. */
-      if (scale)
+      ਜੇ (scale)
       {
-	float x_scale = upem / (float) strike.ppemX;
-	float y_scale = upem / (float) strike.ppemY;
-	extents->x_bearing = hb_clamp_to<hb_position_t> (roundf (extents->x_bearing * x_scale));
-	extents->y_bearing = hb_clamp_to<hb_position_t> (roundf (extents->y_bearing * y_scale));
-	extents->width = hb_clamp_to<hb_position_t> (roundf (extents->width * x_scale));
-	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * y_scale));
+	ਦਸ਼ਮਲਵ x_scale = upem / (ਦਸ਼ਮਲਵ) strike.ppemX;
+	ਦਸ਼ਮਲਵ y_scale = upem / (ਦਸ਼ਮਲਵ) strike.ppemY;
+	extents->x_bearing = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (roundf (extents->x_bearing * x_scale));
+	extents->y_bearing = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (roundf (extents->y_bearing * y_scale));
+	extents->ਚੌੜਾਈ = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (roundf (extents->ਚੌੜਾਈ * x_scale));
+	extents->ਉਚਾਈ = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (roundf (extents->ਉਚਾਈ * y_scale));
       }
 
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
     hb_blob_t*
-    reference_png (hb_font_t *font, hb_codepoint_t glyph) const
+    reference_png (hb_font_t *font, hb_codepoint_t glyph) ਅਚਲ
     {
-      const void *base;
-      const BitmapSizeTable &strike = this->cblc->choose_strike (font);
-      const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return hb_blob_get_empty ();
+      ਅਚਲ ਖਾਲੀ *ਅਧਾਰ;
+      ਅਚਲ Bitmap_ਮਾਪ_ਸਾਰਣੀ &strike = ਇਹ->cblc->ਚੁਣੋ_strike (font);
+      ਅਚਲ ਸੂਚਕਾਂਕ_Subtable_ਰਿਕਾਰਡ *subtable_ਰਿਕਾਰਡ = strike.ਲੱਭੋ_ਸਾਰਣੀ (glyph, cblc, &ਅਧਾਰ);
+      ਜੇ (!subtable_ਰਿਕਾਰਡ || !strike.ppemX || !strike.ppemY)
+	ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return hb_blob_get_empty ();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ image_ਵਿੱਥ = 0, image_ਲੰਮਾਈ = 0, image_format = 0;
+      ਜੇ (!subtable_ਰਿਕਾਰਡ->get_image_ਅੰਕੜੇ (glyph, ਅਧਾਰ, &image_ਵਿੱਥ, &image_ਲੰਮਾਈ, &image_format))
+	ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return hb_blob_get_empty ();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_len = cbdt.get_ਲੰਮਾਈ ();
+      ਜੇ (unlikely (image_ਵਿੱਥ > cbdt_len || cbdt_len - image_ਵਿੱਥ < image_ਲੰਮਾਈ))
+	ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-      switch (image_format)
+      ਚੋਣ (image_format)
       {
-      case 17:
+      ਹਾਲਤ 17:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
-					image_offset + GlyphBitmapDataFormat17::min_size,
-					glyphFormat17.data.len);
+	ਜੇ (unlikely (image_ਲੰਮਾਈ < Glyph_Bitmap_ਅੰਕੜੇ_Format17::min_ਮਾਪ))
+	  ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+	ਸਵੈਚਾਲਿਤ &glyphFormat17 = Struct_At_ਵਿੱਥ<Glyph_Bitmap_ਅੰਕੜੇ_Format17> (ਇਹ->cbdt, image_ਵਿੱਥ);
+	ਵਾਪਸ hb_blob_create_sub_blob (cbdt.get_blob (),
+					image_ਵਿੱਥ + Glyph_Bitmap_ਅੰਕੜੇ_Format17::min_ਮਾਪ,
+					glyphFormat17.ਅੰਕੜੇ.len);
       }
-      case 18:
+      ਹਾਲਤ 18:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
-					image_offset + GlyphBitmapDataFormat18::min_size,
-					glyphFormat18.data.len);
+	ਜੇ (unlikely (image_ਲੰਮਾਈ < Glyph_Bitmap_ਅੰਕੜੇ_Format18::min_ਮਾਪ))
+	  ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+	ਸਵੈਚਾਲਿਤ &glyphFormat18 = Struct_At_ਵਿੱਥ<Glyph_Bitmap_ਅੰਕੜੇ_Format18> (ਇਹ->cbdt, image_ਵਿੱਥ);
+	ਵਾਪਸ hb_blob_create_sub_blob (cbdt.get_blob (),
+					image_ਵਿੱਥ + Glyph_Bitmap_ਅੰਕੜੇ_Format18::min_ਮਾਪ,
+					glyphFormat18.ਅੰਕੜੇ.len);
       }
-      case 19:
+      ਹਾਲਤ 19:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat19::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat19 = StructAtOffset<GlyphBitmapDataFormat19> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
-					image_offset + GlyphBitmapDataFormat19::min_size,
-					glyphFormat19.data.len);
+	ਜੇ (unlikely (image_ਲੰਮਾਈ < Glyph_Bitmap_ਅੰਕੜੇ_Format19::min_ਮਾਪ))
+	  ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+	ਸਵੈਚਾਲਿਤ &glyphFormat19 = Struct_At_ਵਿੱਥ<Glyph_Bitmap_ਅੰਕੜੇ_Format19> (ਇਹ->cbdt, image_ਵਿੱਥ);
+	ਵਾਪਸ hb_blob_create_sub_blob (cbdt.get_blob (),
+					image_ਵਿੱਥ + Glyph_Bitmap_ਅੰਕੜੇ_Format19::min_ਮਾਪ,
+					glyphFormat19.ਅੰਕੜੇ.len);
       }
-      default: return hb_blob_get_empty (); /* TODO: Support other image formats. */
+      ਮੂਲ: ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ (); /* TODO: Support other image formats. */
       }
     }
 
-    bool has_data () const { return cbdt->version.major; }
+    ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ cbdt->ਸੰਸਕਰਣ.major; }
 
-    bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    ਤਾਰਕਿਕ paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, ਖਾਲੀ *ਅੰਕੜੇ) ਅਚਲ
     {
-      if (!has_data ()) return false;
+      ਜੇ (!has_ਅੰਕੜੇ ()) ਵਾਪਸ ਝੂਠ;
 
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
-      if (unlikely (!font->get_glyph_extents (glyph, &extents, false)))
-        return false;
+      ਜੇ (unlikely (!font->get_glyph_extents (glyph, &extents, ਝੂਠ)))
+        ਵਾਪਸ ਝੂਠ;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      ਜੇ (unlikely (!get_extents (font, glyph, &pixel_extents, ਝੂਠ)))
+        ਵਾਪਸ ਝੂਠ;
 
       hb_blob_t *blob = reference_png (font, glyph);
-      if (unlikely (hb_blob_is_immutable (blob)))
-        return false;
+      ਜੇ (unlikely (hb_blob_is_immutable (blob)))
+        ਵਾਪਸ ਝੂਠ;
 
-      bool ret = funcs->image (data,
+      ਤਾਰਕਿਕ ret = funcs->image (ਅੰਕੜੇ,
 			       blob,
-			       pixel_extents.width, -pixel_extents.height,
+			       pixel_extents.ਚੌੜਾਈ, -pixel_extents.ਉਚਾਈ,
 			       HB_PAINT_IMAGE_FORMAT_PNG,
 			       0.f,
 			       &extents);
 
       hb_blob_destroy (blob);
 
-      return ret;
+      ਵਾਪਸ ret;
     }
 
-    private:
+    ਨਿਜੀ:
     hb_blob_ptr_t<CBLC> cblc;
     hb_blob_ptr_t<CBDT> cbdt;
 
-    unsigned int upem;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ upem;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  likely (version.major == 2 || version.major == 3));
+		  likely (ਸੰਸਕਰਣ.major == 2 || ਸੰਸਕਰਣ.major == 3));
   }
 
-  protected:
-  FixedVersion<>		version;
-  UnsizedArrayOf<HBUINT8>	dataZ;
-  public:
-  DEFINE_SIZE_ARRAY (4, dataZ);
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>		ਸੰਸਕਰਣ;
+  Unsized_Array_ਦਾ<HBUINT8>	ਅੰਕੜੇ_Z;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (4, ਅੰਕੜੇ_Z);
 };
 
-inline bool
-CBLC::subset (hb_subset_context_t *c) const
+ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+CBLC::subset (hb_subset_context_t *c) ਅਚਲ
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (ਇਹ);
 
   // Use a vector as a secondary buffer as the tables need to be built in parallel.
-  hb_vector_t<char> cbdt_prime;
+  hb_ਸਦਿਸ਼_t<ਅੱਖਰ> cbdt_ਅਭਾਜ;
 
-  auto *cblc_prime = c->serializer->start_embed<CBLC> ();
-  if (unlikely (!c->serializer->extend_min (cblc_prime))) return_trace (false);
-  cblc_prime->version = version;
+  ਸਵੈਚਾਲਿਤ *cblc_ਅਭਾਜ = c->serializer->ਸ਼ੁਰੂ_embed<CBLC> ();
+  ਜੇ (unlikely (!c->serializer->extend_min (cblc_ਅਭਾਜ))) return_trace (ਝੂਠ);
+  cblc_ਅਭਾਜ->ਸੰਸਕਰਣ = ਸੰਸਕਰਣ;
 
-  hb_blob_t* cbdt_blob = hb_sanitize_context_t ().reference_table<CBDT> (c->plan->source);
-  unsigned int cbdt_length;
-  CBDT* cbdt = (CBDT *) hb_blob_get_data (cbdt_blob, &cbdt_length);
-  if (unlikely (cbdt_length < CBDT::min_size))
+  hb_blob_t* cbdt_blob = hb_sanitize_context_t ().reference_ਸਾਰਣੀ<CBDT> (c->plan->ਸਰੋਤ);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cbdt_ਲੰਮਾਈ;
+  CBDT* cbdt = (CBDT *) hb_blob_get_ਅੰਕੜੇ (cbdt_blob, &cbdt_ਲੰਮਾਈ);
+  ਜੇ (unlikely (cbdt_ਲੰਮਾਈ < CBDT::min_ਮਾਪ))
   {
     hb_blob_destroy (cbdt_blob);
-    return_trace (false);
+    return_trace (ਝੂਠ);
   }
-  _copy_data_to_cbdt (&cbdt_prime, cbdt, CBDT::min_size);
+  copy_ਅੰਕੜੇ_ਮੰਜ਼ਿਲ_cbdt (&cbdt_ਅਭਾਜ, cbdt, CBDT::min_ਮਾਪ);
 
   cbdt_dedup_context_t dedup;
-  for (const BitmapSizeTable& table : + sizeTables.iter ())
-    subset_size_table (c, table, (const char *) cbdt, cbdt_length, cblc_prime, &cbdt_prime, &dedup);
+  ਲਈ (ਅਚਲ Bitmap_ਮਾਪ_ਸਾਰਣੀ& ਸਾਰਣੀ : + ਮਾਪ_Tables.iter ())
+    subset_ਮਾਪ_ਸਾਰਣੀ (c, ਸਾਰਣੀ, (ਅਚਲ ਅੱਖਰ *) cbdt, cbdt_ਲੰਮਾਈ, cblc_ਅਭਾਜ, &cbdt_ਅਭਾਜ, &dedup);
 
   hb_blob_destroy (cbdt_blob);
 
-  return_trace (CBLC::sink_cbdt (c, &cbdt_prime));
+  return_trace (CBLC::sink_cbdt (c, &cbdt_ਅਭਾਜ));
 }
 
-struct CBDT_accelerator_t : CBDT::accelerator_t {
+ਬਣਤਰ CBDT_accelerator_t : CBDT::accelerator_t {
   CBDT_accelerator_t (hb_face_t *face) : CBDT::accelerator_t (face) {}
 };
 
 
 } /* namespace OT */
 
-#endif /* OT_COLOR_CBDT_CBDT_HH */
+#ਜੇ_ਅੰਤ /* OT_COLOR_CBDT_CBDT_HH */

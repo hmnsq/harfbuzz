@@ -2,39 +2,39 @@
 
 "This tool is intended to be used from meson"
 
-import os, sys, shutil, re
+ਆਯਾਤ os, sys, shutil, re
 
-if len (sys.argv) < 4:
+ਜੇ ਲੰਬਾਈ (sys.argv) < 4:
 	sys.exit(__doc__)
 
-version = sys.argv[1]
-major, minor, micro = version.split (".")
+ਸੰਸਕਰਣ = sys.argv[1]
+major, minor, micro = ਸੰਸਕਰਣ.ਵੰਡੋ (".")
 
 OUTPUT = sys.argv[2]
-INPUT = sys.argv[3]
-CURRENT_SOURCE_DIR = os.path.dirname(INPUT)
+ਨਿਵੇਸ਼_2 = sys.argv[3]
+CURRENT_ਸਰੋਤ_DIR = os.ਰਸਤਾ.dirname(ਨਿਵੇਸ਼_2)
 
-try:
-	with open (OUTPUT, "r", encoding='utf-8') as old_output:
-		for line in old_output:
-			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", line)
-			if old_version and old_version[1] == version:
+ਕੋਸ਼ਿਸ਼:
+	ਨਾਲ open (OUTPUT, "r", encoding='utf-8') ਇਵ old_output:
+		ਲਈ ਸਤਰ ਵਿੱਚ old_output:
+			old_ਸੰਸਕਰਣ = re.ਮੇਲ (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", ਸਤਰ)
+			ਜੇ old_ਸੰਸਕਰਣ ਅਤੇ old_ਸੰਸਕਰਣ[1] == ਸੰਸਕਰਣ:
 				sys.exit ()
-except IOError:
-	pass
+ਅਪਵਾਦ IOError:
+	ਲੰਘੋ
 
-with open (INPUT, "r", encoding='utf-8') as template:
-	with open (OUTPUT, "wb") as output:
-		output.write (template.read ()
+ਨਾਲ open (ਨਿਵੇਸ਼_2, "r", encoding='utf-8') ਇਵ template:
+	ਨਾਲ open (OUTPUT, "wb") ਇਵ output:
+		output.ਲਿਖ (template.ਪਠ ()
 			.replace ("@HB_VERSION_MAJOR@", major)
 			.replace ("@HB_VERSION_MINOR@", minor)
 			.replace ("@HB_VERSION_MICRO@", micro)
-			.replace ("@HB_VERSION@", version)
+			.replace ("@HB_VERSION@", ਸੰਸਕਰਣ)
 			.encode ())
 
 # copy it also to the source tree, but only if it has changed
-baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
-with open(baseline_filename, "rb") as baseline:
-	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+baseline_filename = os.ਰਸਤਾ.join (CURRENT_ਸਰੋਤ_DIR, os.ਰਸਤਾ.basename (OUTPUT))
+ਨਾਲ open(baseline_filename, "rb") ਇਵ baseline:
+	ਨਾਲ open(OUTPUT, "rb") ਇਵ generated:
+		ਜੇ baseline.ਪਠ() != generated.ਪਠ():
 			shutil.copyfile (OUTPUT, baseline_filename)

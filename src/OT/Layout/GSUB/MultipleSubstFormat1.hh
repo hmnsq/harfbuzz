@@ -1,137 +1,137 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
 
-#include "Common.hh"
-#include "Sequence.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Sequence.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-template <typename Types>
-struct MultipleSubstFormat1_2
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ ਗੁਣਜ_Subst_Format1_2
 {
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of Substitution table */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<Sequence<Types>>>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ Array_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Sequence<Types>>>
                 sequence;               /* Array of Sequence tables
                                          * ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, sequence);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (2 + Types::LOffset::static_ਮਾਪ + Types::HBUINT::static_ਮਾਪ, sequence);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && sequence.sanitize (c, this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (coverage.sanitize (c, ਇਹ) && sequence.sanitize (c, ਇਹ));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
+  { ਵਾਪਸ (ਇਹ+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  ਤਾਰਕਿਕ may_have_non_1to1 () ਅਚਲ
+  { ਵਾਪਸ ਸੱਚ; }
 
-  void closure (hb_closure_context_t *c) const
+  ਖਾਲੀ ਘੇਰਾ (hb_ਘੇਰਾ_context_t *c) ਅਚਲ
   {
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.closure (c); })
+    + hb_zip (ਇਹ+coverage, sequence)
+    | hb_filter (c->ਮਾਪਾ_ਸਰਗਰਮ_glyphs (), hb_ਪਹਿਲਾ)
+    | hb_map (hb_ਦੂਜਾ)
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([c] (ਅਚਲ Sequence<Types> &_) { _.ਘੇਰਾ (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c) const
+  ਖਾਲੀ depend (hb_depend_context_t *c) ਅਚਲ
   {
     // Filter by parent_active_glyphs like closure does
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const typename Types::template OffsetTo<Sequence<Types>>&> &_)
+    + hb_zip (ਇਹ+coverage, sequence)
+    | hb_filter (c->ਮਾਪਾ_ਸਰਗਰਮ_glyphs (), hb_ਪਹਿਲਾ)
+    | hb_apply ([&] (ਅਚਲ hb_pair_t<hb_codepoint_t, ਅਚਲ ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Sequence<Types>>&> &_)
                 {
-                  const Sequence<Types>& s = this+_.second;
-                  s.depend (c, _.first);
+                  ਅਚਲ Sequence<Types>& s = ਇਹ+_.second;
+                  s.depend (c, _.ਪਹਿਲਾ);
                 })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ਖਾਲੀ ਘੇਰਾ_lookups (hb_ਘੇਰਾ_lookups_context_t *c) ਅਚਲ {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, sequence)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.collect_glyphs (c); })
+    ਜੇ (unlikely (!(ਇਹ+coverage).collect_coverage (c->ਨਿਵੇਸ਼))) ਵਾਪਸ;
+    + hb_zip (ਇਹ+coverage, sequence)
+    | hb_map (hb_ਦੂਜਾ)
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([c] (ਅਚਲ Sequence<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ਅਚਲ Coverage &get_coverage () ਅਚਲ { ਵਾਪਸ ਇਹ+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  ਤਾਰਕਿਕ would_apply (hb_would_apply_context_t *c) ਅਚਲ
+  { ਵਾਪਸ c->len == 1 && (ਇਹ+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = (ਇਹ+coverage).get_coverage (c->ਬਫਰ->cur().codepoint);
+    ਜੇ (ਸੂਚਕਾਂਕ_2 == NOT_COVERED) return_trace (ਝੂਠ);
 
-    return_trace ((this+sequence[index]).apply (c));
+    return_trace ((ਇਹ+sequence[ਸੂਚਕਾਂਕ_2]).apply (c));
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    auto sequences =
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ sequences =
       + it
-      | hb_map (hb_second)
+      | hb_map (hb_ਦੂਜਾ)
       ;
-    auto glyphs =
+    ਸਵੈਚਾਲਿਤ glyphs =
       + it
-      | hb_map_retains_sorting (hb_first)
+      | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
 
-    if (unlikely (!sequence.serialize (c, sequences.length))) return_trace (false);
+    ਜੇ (unlikely (!sequence.serialize (c, sequences.ਲੰਮਾਈ))) return_trace (ਝੂਠ);
 
-    for (auto& pair : hb_zip (sequences, sequence))
+    ਲਈ (ਸਵੈਚਾਲਿਤ& pair : hb_zip (sequences, sequence))
     {
-      if (unlikely (!pair.second
-		    .serialize_serialize (c, pair.first)))
-        return_trace (false);
+      ਜੇ (unlikely (!pair.second
+		    .serialize_serialize (c, pair.ਪਹਿਲਾ)))
+        return_trace (ਝੂਠ);
     }
 
     return_trace (coverage.serialize_serialize (c, glyphs));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ਇਹ);
+    ਅਚਲ hb_ਸੈੱਟ_t &glyphset = *c->plan->glyphset_gsub ();
+    ਅਚਲ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    ਜੇ (unlikely (!c->serializer->extend_min (ਬਾਹਰਲਾ))) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->format = format;
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->sequence, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_ਸਦਿਸ਼_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ਇਹ+coverage, sequence)
+    | hb_filter (glyphset, hb_ਪਹਿਲਾ)
+    | hb_filter (subset_ਵਿੱਥ_array (c, ਬਾਹਰਲਾ->sequence, ਇਹ), hb_ਦੂਜਾ)
+    | hb_map (hb_ਪਹਿਲਾ)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    ਬਾਹਰਲਾ->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (ਤਾਰਕਿਕ (new_coverage));
   }
 };
 
@@ -140,4 +140,4 @@ struct MultipleSubstFormat1_2
 }
 
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */

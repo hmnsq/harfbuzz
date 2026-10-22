@@ -24,16 +24,16 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_LAYOUT_H
-#define HB_OT_LAYOUT_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_LAYOUT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_LAYOUT_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include "hb-ot-name.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -43,31 +43,31 @@ HB_BEGIN_DECLS
  *
  * OpenType [Baseline Table](https://docs.microsoft.com/en-us/typography/opentype/spec/base).
  */
-#define HB_OT_TAG_BASE HB_TAG('B','A','S','E')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_ਅਧਾਰ HB_ਟੈਗ('B','A','S','E')
 /**
  * HB_OT_TAG_GDEF:
  *
  * OpenType [Glyph Definition Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gdef).
  */
-#define HB_OT_TAG_GDEF HB_TAG('G','D','E','F')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_GDEF HB_ਟੈਗ('G','D','E','F')
 /**
  * HB_OT_TAG_GSUB:
  *
  * OpenType [Glyph Substitution Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gsub).
  */
-#define HB_OT_TAG_GSUB HB_TAG('G','S','U','B')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_GSUB HB_ਟੈਗ('G','S','U','B')
 /**
  * HB_OT_TAG_GPOS:
  *
  * OpenType [Glyph Positioning Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gpos).
  */
-#define HB_OT_TAG_GPOS HB_TAG('G','P','O','S')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_GPOS HB_ਟੈਗ('G','P','O','S')
 /**
  * HB_OT_TAG_JSTF:
  *
  * OpenType [Justification Table](https://docs.microsoft.com/en-us/typography/opentype/spec/jstf).
  */
-#define HB_OT_TAG_JSTF HB_TAG('J','S','T','F')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_JSTF HB_ਟੈਗ('J','S','T','F')
 
 
 /*
@@ -80,14 +80,14 @@ HB_BEGIN_DECLS
  * OpenType script tag, `DFLT`, for features that are not script-specific.
  *
  */
-#define HB_OT_TAG_DEFAULT_SCRIPT	HB_TAG ('D', 'F', 'L', 'T')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_DEFAULT_SCRIPT	HB_ਟੈਗ ('D', 'F', 'L', 'T')
 /**
  * HB_OT_TAG_DEFAULT_LANGUAGE:
  *
  * OpenType language tag, `dflt`. Not a valid language tag, but some fonts
  * mistakenly use it.
  */
-#define HB_OT_TAG_DEFAULT_LANGUAGE	HB_TAG ('d', 'f', 'l', 't')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_DEFAULT_LANGUAGE	HB_ਟੈਗ ('d', 'f', 'l', 't')
 
 /**
  * HB_OT_MAX_TAGS_PER_SCRIPT:
@@ -96,7 +96,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_SCRIPT	3u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MAX_ਟੈਗ_ਸੂਚੀ_ਪ੍ਰਤੀ_SCRIPT	3u
 /**
  * HB_OT_MAX_TAGS_PER_LANGUAGE:
  *
@@ -104,27 +104,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_LANGUAGE	3u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MAX_ਟੈਗ_ਸੂਚੀ_ਪ੍ਰਤੀ_LANGUAGE	3u
 
-HB_EXTERN void
-hb_ot_tags_from_script_and_language (hb_script_t   script,
+HB_EXTERN ਖਾਲੀ
+hb_ot_ਟੈਗ_ਸੂਚੀ_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
-				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
-				     hb_tag_t     *language_tags /* OUT */);
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *script_ਗਿਣਤੀ /* IN/OUT */,
+				     hb_ਟੈਗ_t     *script_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *language_ਗਿਣਤੀ /* IN/OUT */,
+				     hb_ਟੈਗ_t     *language_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_script_t
-hb_ot_tag_to_script (hb_tag_t tag);
+hb_ot_ਟੈਗ_ਮੰਜ਼ਿਲ_script (hb_ਟੈਗ_t ਟੈਗ_2);
 
 HB_EXTERN hb_language_t
-hb_ot_tag_to_language (hb_tag_t tag);
+hb_ot_ਟੈਗ_ਮੰਜ਼ਿਲ_language (hb_ਟੈਗ_t ਟੈਗ_2);
 
-HB_EXTERN void
-hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
-				   hb_tag_t       language_tag,
-				   hb_script_t   *script /* OUT */,
-				   hb_language_t *language /* OUT */);
+HB_EXTERN ਖਾਲੀ
+hb_ot_ਟੈਗ_ਸੂਚੀ_ਮੰਜ਼ਿਲ_script_and_language (hb_ਟੈਗ_t       script_ਟੈਗ,
+				   hb_ਟੈਗ_t       language_ਟੈਗ,
+				   hb_script_t   *script /*ਬਾਹਰਲਾ*/,
+				   hb_language_t *language /*ਬਾਹਰਲਾ*/);
 
 
 /*
@@ -145,9 +145,9 @@ hb_ot_layout_has_glyph_classes (hb_face_t *face);
  * The GDEF classes defined for glyphs.
  *
  **/
-typedef enum {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
   HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED	= 0,
-  HB_OT_LAYOUT_GLYPH_CLASS_BASE_GLYPH	= 1,
+  HB_OT_LAYOUT_GLYPH_CLASS_ਅਧਾਰ_GLYPH	= 1,
   HB_OT_LAYOUT_GLYPH_CLASS_LIGATURE	= 2,
   HB_OT_LAYOUT_GLYPH_CLASS_MARK		= 3,
   HB_OT_LAYOUT_GLYPH_CLASS_COMPONENT	= 4
@@ -157,28 +157,28 @@ HB_EXTERN hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph);
 
-HB_EXTERN void
-hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
+HB_EXTERN ਖਾਲੀ
+hb_ot_layout_get_glyphs_ਵਿੱਚ_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
-				  hb_set_t                   *glyphs /* OUT */);
+				  hb_ਸੈੱਟ_t                   *glyphs /*ਬਾਹਰਲਾ*/);
 
 /* Not that useful.  Provides list of attach points for a glyph that a
  * client may want to cache */
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */);
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਸ਼ੁਰੂ_ਵਿੱਥ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *ਬਿੰਦੂ_ਗਿਣਤੀ /* IN/OUT */,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *ਬਿੰਦੂ_array /*ਬਾਹਰਲਾ*/);
 
 /* Ligature caret positions */
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
-				  hb_position_t  *caret_array /* OUT */);
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਸ਼ੁਰੂ_ਵਿੱਥ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *caret_ਗਿਣਤੀ /* IN/OUT */,
+				  hb_position_t  *caret_array /*ਬਾਹਰਲਾ*/);
 
 
 /*
@@ -190,182 +190,182 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
  *
  * Special value for script index indicating unsupported script.
  */
-#define HB_OT_LAYOUT_NO_SCRIPT_INDEX		0xFFFFu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_LAYOUT_NO_SCRIPT_ਸੂਚਕਾਂਕ		0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_FEATURE_INDEX:
  *
  * Special value for feature index indicating unsupported feature.
  */
-#define HB_OT_LAYOUT_NO_FEATURE_INDEX		0xFFFFu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_LAYOUT_NO_FEATURE_ਸੂਚਕਾਂਕ		0xFFFFu
 /**
  * HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX:
  *
  * Special value for language index indicating default or unsupported language.
  */
-#define HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX	0xFFFFu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_LAYOUT_DEFAULT_LANGUAGE_ਸੂਚਕਾਂਕ	0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_VARIATIONS_INDEX:
  *
  * Special value for variations index indicating unsupported variation.
  */
-#define HB_OT_LAYOUT_NO_VARIATIONS_INDEX	0xFFFFFFFFu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ	0xFFFFFFFFu
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_script_tags (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
-				    hb_tag_t     *script_tags /* OUT */);
-
-HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_script (hb_face_t    *face,
-				hb_tag_t      table_tag,
-				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_layout_ਸਾਰਣੀ_get_script_ਟੈਗ_ਸੂਚੀ (hb_face_t    *face,
+				    hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *script_ਗਿਣਤੀ /* IN/OUT */,
+				    hb_ਟੈਗ_t     *script_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_select_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index /* OUT */,
-				  hb_tag_t       *chosen_script /* OUT */);
+hb_ot_layout_ਸਾਰਣੀ_ਲੱਭੋ_script (hb_face_t    *face,
+				hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				hb_ਟੈਗ_t      script_ਟੈਗ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *script_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
-				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
-				     hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN hb_bool_t
+hb_ot_layout_ਸਾਰਣੀ_select_script (hb_face_t      *face,
+				  hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    script_ਗਿਣਤੀ,
+				  ਅਚਲ hb_ਟੈਗ_t *script_ਟੈਗ_ਸੂਚੀ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *script_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/,
+				  hb_ਟੈਗ_t       *chosen_script /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_script_get_language_tags (hb_face_t    *face,
-				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
-				       hb_tag_t     *language_tags /* OUT */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_layout_ਸਾਰਣੀ_get_feature_ਟੈਗ_ਸੂਚੀ (hb_face_t    *face,
+				     hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਗਿਣਤੀ_2 /* IN/OUT */,
+				     hb_ਟੈਗ_t     *feature_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
+
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_layout_script_get_language_ਟੈਗ_ਸੂਚੀ (hb_face_t    *face,
+				       hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *language_ਗਿਣਤੀ /* IN/OUT */,
+				       hb_ਟੈਗ_t     *language_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */);
+				     hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    script_ਸੂਚਕਾਂਕ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    language_ਗਿਣਤੀ,
+				     ਅਚਲ hb_ਟੈਗ_t *language_ਟੈਗ_ਸੂਚੀ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *language_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
-				     hb_tag_t       *chosen_language /* OUT */);
+				     hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    script_ਸੂਚਕਾਂਕ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    language_ਗਿਣਤੀ,
+				     ਅਚਲ hb_ਟੈਗ_t *language_ਟੈਗ_ਸੂਚੀ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *language_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/,
+				     hb_ਟੈਗ_t       *chosen_language /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_get_required_feature_ਸੂਚਕਾਂਕ (hb_face_t    *face,
+						  hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  language_ਸੂਚਕਾਂਕ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
-					    hb_tag_t     *feature_tag /* OUT */);
+					    hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  language_ਸੂਚਕਾਂਕ,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/,
+					    hb_ਟੈਗ_t     *feature_ਟੈਗ /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
-					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */);
+					   hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  language_ਸੂਚਕਾਂਕ,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਗਿਣਤੀ_2 /* IN/OUT */,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_indexes /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
-					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
-					hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_layout_language_get_feature_ਟੈਗ_ਸੂਚੀ (hb_face_t    *face,
+					hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  language_ਸੂਚਕਾਂਕ,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਗਿਣਤੀ_2 /* IN/OUT */,
+					hb_ਟੈਗ_t     *feature_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_find_feature (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
-				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_ਲੱਭੋ_feature (hb_face_t    *face,
+				    hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  language_ਸੂਚਕਾਂਕ,
+				    hb_ਟੈਗ_t      feature_ਟੈਗ,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *feature_ਸੂਚਕਾਂਕ /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
-				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */);
+				  hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  feature_ਸੂਚਕਾਂਕ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *lookup_ਗਿਣਤੀ /* IN/OUT */,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *lookup_indexes /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
-				     hb_tag_t      table_tag);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_layout_ਸਾਰਣੀ_get_lookup_ਗਿਣਤੀ (hb_face_t    *face,
+				     hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_collect_features (hb_face_t      *face,
-			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
-			       hb_set_t       *feature_indexes /* OUT */);
+			       hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+			       ਅਚਲ hb_ਟੈਗ_t *scripts,
+			       ਅਚਲ hb_ਟੈਗ_t *languages,
+			       ਅਚਲ hb_ਟੈਗ_t *features,
+			       hb_ਸੈੱਟ_t       *feature_indexes /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_collect_features_map (hb_face_t      *face,
-				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
-				   hb_map_t       *feature_map /* OUT */);
+				   hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ        script_ਸੂਚਕਾਂਕ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ        language_ਸੂਚਕਾਂਕ,
+				   hb_map_t       *feature_map /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_collect_lookups (hb_face_t      *face,
-			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
-			      hb_set_t       *lookup_indexes /* OUT */);
+			      hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+			      ਅਚਲ hb_ਟੈਗ_t *scripts,
+			      ਅਚਲ hb_ਟੈਗ_t *languages,
+			      ਅਚਲ hb_ਟੈਗ_t *features,
+			      hb_ਸੈੱਟ_t       *lookup_indexes /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
-				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */);
+				    hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  lookup_ਸੂਚਕਾਂਕ,
+				    hb_ਸੈੱਟ_t     *glyphs_before, /* OUT.  May be NULL */
+				    hb_ਸੈੱਟ_t     *glyphs_ਨਿਵੇਸ਼,  /* OUT.  May be NULL */
+				    hb_ਸੈੱਟ_t     *glyphs_after,  /* OUT.  May be NULL */
+				    hb_ਸੈੱਟ_t     *glyphs_output  /* OUT.  May be NULL */);
 
 
 /* Variations support */
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */);
+hb_ot_layout_ਸਾਰਣੀ_ਲੱਭੋ_feature_variations (hb_face_t    *face,
+					    hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+					    ਅਚਲ ਪੂਰਨ    *coords,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਅੰਕ_coords,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *variations_ਸੂਚਕਾਂਕ /* out */);
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */);
+						  hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  feature_ਸੂਚਕਾਂਕ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  variations_ਸੂਚਕਾਂਕ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *lookup_ਗਿਣਤੀ /* IN/OUT */,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *lookup_indexes /*ਬਾਹਰਲਾ*/);
 
 
 /*
@@ -375,37 +375,37 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face);
 
-HB_EXTERN unsigned
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  ਬਿਨਾਨਿਸ਼ਾਨੀ        lookup_ਸੂਚਕਾਂਕ,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count /* IN/OUT */,
-					  hb_codepoint_t *alternate_glyphs /* OUT */);
+					  ਬਿਨਾਨਿਸ਼ਾਨੀ        ਸ਼ੁਰੂ_ਵਿੱਥ,
+					  ਬਿਨਾਨਿਸ਼ਾਨੀ       *alternate_ਗਿਣਤੀ /* IN/OUT */,
+					  hb_codepoint_t *alternate_glyphs /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ   lookup_ਸੂਚਕਾਂਕ,
+					      hb_map_t  *alternate_ਗਿਣਤੀ /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          lookup_ਸੂਚਕਾਂਕ,
+				      ਅਚਲ hb_codepoint_t *glyphs,
+				      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          glyphs_ਲੰਮਾਈ,
 				      hb_bool_t             zero_context);
 
-HB_EXTERN void
-hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
-					hb_set_t     *glyphs
+HB_EXTERN ਖਾਲੀ
+hb_ot_layout_lookup_substitute_ਘੇਰਾ (hb_face_t    *face,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  lookup_ਸੂਚਕਾਂਕ,
+					hb_ਸੈੱਟ_t     *glyphs
 					/*TODO , hb_bool_t  inclusive */);
 
-HB_EXTERN void
-hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
-					 hb_set_t       *glyphs);
+HB_EXTERN ਖਾਲੀ
+hb_ot_layout_lookups_substitute_ਘੇਰਾ (hb_face_t      *face,
+					 ਅਚਲ hb_ਸੈੱਟ_t *lookups,
+					 hb_ਸੈੱਟ_t       *glyphs);
 
 
 /*
@@ -418,16 +418,16 @@ hb_ot_layout_has_positioning (hb_face_t *face);
 /* Optical 'size' feature info.  Returns true if found.
  * https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
 HB_EXTERN hb_bool_t
-hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+hb_ot_layout_get_ਮਾਪ_params (hb_face_t       *face,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *design_ਮਾਪ_2,       /* OUT.  May be NULL */
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */);
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *range_ਸ਼ੁਰੂ_2,       /* OUT.  May be NULL */
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *range_ਸਿਰਾ_2          /* OUT.  May be NULL */);
 
 HB_EXTERN hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ        lookup_ਸੂਚਕਾਂਕ,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph);
 
@@ -438,21 +438,21 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
-				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   hb_ਟੈਗ_t         ਸਾਰਣੀ_ਟੈਗ_2,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     feature_ਸੂਚਕਾਂਕ,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
-				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਅੰਕ_named_parameters /* OUT.  May be NULL */,
+				   hb_ot_name_id_t *ਪਹਿਲਾ_param_id       /* OUT.  May be NULL */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    feature_ਸੂਚਕਾਂਕ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਸ਼ੁਰੂ_ਵਿੱਥ,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *char_ਗਿਣਤੀ    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -463,8 +463,8 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_direction_t     direction,
-			       hb_tag_t           script_tag,
-			       hb_tag_t           language_tag,
+			       hb_ਟੈਗ_t           script_ਟੈਗ,
+			       hb_ਟੈਗ_t           language_ਟੈਗ,
 			       hb_font_extents_t *extents);
 
 HB_EXTERN hb_bool_t
@@ -500,56 +500,56 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 2.6.0
  */
-typedef enum {
-  HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
-  HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT	= HB_TAG ('i','c','f','t'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL		= HB_TAG ('I','c','f','c'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT	= HB_TAG ('i','d','e','o'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT	= HB_TAG ('i','d','t','p'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL		= HB_TAG ('I','d','c','e'),
-  HB_OT_LAYOUT_BASELINE_TAG_MATH			= HB_TAG ('m','a','t','h'),
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_ROMAN			= HB_ਟੈਗ ('r','o','m','n'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_HANGING			= HB_ਟੈਗ ('h','a','n','g'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_FACE_BOTTOM_OR_ਖੱਬਾ	= HB_ਟੈਗ ('i','c','f','b'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_FACE_ਸਿਖਰ_OR_ਸੱਜਾ	= HB_ਟੈਗ ('i','c','f','t'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_FACE_CENTRAL		= HB_ਟੈਗ ('I','c','f','c'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_EMBOX_BOTTOM_OR_ਖੱਬਾ	= HB_ਟੈਗ ('i','d','e','o'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_EMBOX_ਸਿਖਰ_OR_ਸੱਜਾ	= HB_ਟੈਗ ('i','d','t','p'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_IDEO_EMBOX_CENTRAL		= HB_ਟੈਗ ('I','d','c','e'),
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_MATH			= HB_ਟੈਗ ('m','a','t','h'),
 
   /*< private >*/
-  _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_layout_baseline_tag_t;
+  HB_OT_LAYOUT_BASELINE_ਟੈਗ_MAX_ਮੁੱਲ = HB_ਟੈਗ_MAX_SIGNED /*< skip >*/
+} hb_ot_layout_baseline_ਟੈਗ_t;
 
-HB_EXTERN hb_ot_layout_baseline_tag_t
-hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script);
+HB_EXTERN hb_ot_layout_baseline_ਟੈਗ_t
+hb_ot_layout_get_horizontal_baseline_ਟੈਗ_for_script (hb_script_t script);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline (hb_font_t                   *font,
-			   hb_ot_layout_baseline_tag_t  baseline_tag,
+			   hb_ot_layout_baseline_ਟੈਗ_t  baseline_ਟੈਗ,
 			   hb_direction_t               direction,
-			   hb_tag_t                     script_tag,
-			   hb_tag_t                     language_tag,
+			   hb_ਟੈਗ_t                     script_ਟੈਗ,
+			   hb_ਟੈਗ_t                     language_ਟੈਗ,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline2 (hb_font_t                   *font,
-			    hb_ot_layout_baseline_tag_t  baseline_tag,
+			    hb_ot_layout_baseline_ਟੈਗ_t  baseline_ਟੈਗ,
 			    hb_direction_t               direction,
 			    hb_script_t                  script,
 			    hb_language_t                language,
 			    hb_position_t               *coord        /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
-					 hb_ot_layout_baseline_tag_t  baseline_tag,
+					 hb_ot_layout_baseline_ਟੈਗ_t  baseline_ਟੈਗ,
 					 hb_direction_t               direction,
-					 hb_tag_t                     script_tag,
-					 hb_tag_t                     language_tag,
-					 hb_position_t               *coord        /* OUT */);
+					 hb_ਟੈਗ_t                     script_ਟੈਗ,
+					 hb_ਟੈਗ_t                     language_ਟੈਗ,
+					 hb_position_t               *coord        /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
-					  hb_ot_layout_baseline_tag_t  baseline_tag,
+					  hb_ot_layout_baseline_ਟੈਗ_t  baseline_ਟੈਗ,
 					  hb_direction_t               direction,
 					  hb_script_t                  script,
 					  hb_language_t                language,
-					  hb_position_t               *coord        /* OUT */);
+					  hb_position_t               *coord        /*ਬਾਹਰਲਾ*/);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_LAYOUT_H */
+#ਜੇ_ਅੰਤ /* HB_OT_LAYOUT_H */

@@ -24,73 +24,73 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_STATIC_CC
-#define HB_STATIC_CC
-#ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_STATIC_CC
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_STATIC_CC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-feat-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cff-interp-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cmap-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/COLR/COLR.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-glyf-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-head-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-hmtx-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-maxp-table.hh"
 
-#ifndef HB_NO_VISIBILITY
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ਅਚਲ _hb_NullPool[(HB_NULL_POOL_ਮਾਪ + ਆਕਾਰ (uint64_t) - 1) / ਆਕਾਰ (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_ਮਾਪ + ਆਕਾਰ (uint64_t) - 1) / ਆਕਾਰ (uint64_t)] = {};
 
-DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (OT, RangeRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, ClipRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, ਸੂਚਕਾਂਕ) =  {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, Range_ਰਿਕਾਰਡ) = {0x01};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, Clip_ਰਿਕਾਰਡ) = {0x01};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, Cmap_Subtable_Long_ਸਮੂਹ) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_ਬਾਈਟਾਂ (AAT, Lookup) = {0xFF,0xFF};
 
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ਅਚਲ hb_codepoint_t minus_1 = -1;
+ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ static_endchar_str[] = {Op_ਕੋਡ_endchar};
+ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ
+ਲੱਦੋ_ਅੰਕ_glyphs_from_maxp (ਅਚਲ hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.maxp->get_ਅੰਕ_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_t::ਲੱਦੋ_ਅੰਕ_glyphs () ਅਚਲ
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  ਅੰਕ_glyphs = ਲੱਦੋ_ਅੰਕ_glyphs_from_maxp (ਇਹ);
+  ਵਾਪਸ ਅੰਕ_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_t::ਲੱਦੋ_upem () ਅਚਲ
 {
-  unsigned int ret = table.head->get_upem ();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ret = ਸਾਰਣੀ.ਸਿਰ_2->get_upem ();
   upem = ret;
-  return ret;
+  ਵਾਪਸ ret;
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_STATIC_CC pacify */
-#endif /* HB_STATIC_CC guard */
+#ਜੇ_ਅੰਤ /* HB_STATIC_CC pacify */
+#ਜੇ_ਅੰਤ /* HB_STATIC_CC guard */

@@ -1,61 +1,61 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESUBST_HH
-#define OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_LIGATURESUBST_HH
 
-#include "Common.hh"
-#include "LigatureSubstFormat1.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "LigatureSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-struct LigatureSubst
+ਬਣਤਰ LigatureSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
+  ਬਣਤਰ { HBUINT16 v; }		format;         /* Format identifier */
   LigatureSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
   LigatureSubstFormat1_2<MediumTypes>	format2;
-#endif
+#ਜੇ_ਅੰਤ
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ਜਨਤਕ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, Ts&&... ds) ਅਚਲ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ਜੇ (unlikely (!c->may_dispatch (ਇਹ, &u.format.v))) ਵਾਪਸ c->no_dispatch_return_ਮੁੱਲ ();
+    TRACE_DISPATCH (ਇਹ, u.format.v);
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:return_trace (c->default_return_ਮੁੱਲ ());
     }
   }
 
   /* TODO This function should be done using iterators. While at it perhaps
    * using iterator of arrays of hb_codepoint_t instead. */
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
-                  hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ GlyphID>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+                  hb_sorted_array_t<GlyphID> ਪਹਿਲਾ_glyphs,
+                  hb_array_t<ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> ligature_ਪ੍ਰਤੀ_ਪਹਿਲਾ_glyph_ਗਿਣਤੀ_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> component_ਗਿਣਤੀ_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (u.format.v))) return_trace (ਝੂਠ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c,
-                                               first_glyphs,
-                                               ligature_per_first_glyph_count_list,
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.format1.serialize (c,
+                                               ਪਹਿਲਾ_glyphs,
+                                               ligature_ਪ੍ਰਤੀ_ਪਹਿਲਾ_glyph_ਗਿਣਤੀ_list,
                                                ligatures_list,
-                                               component_count_list,
+                                               component_ਗਿਣਤੀ_list,
                                                component_list));
-    default:return_trace (false);
+    ਮੂਲ:return_trace (ਝੂਠ);
     }
   }
 
@@ -68,4 +68,4 @@ struct LigatureSubst
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */
+#ਜੇ_ਅੰਤ  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */

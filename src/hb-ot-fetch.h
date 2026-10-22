@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_FETCH_H
-#define HB_OT_FETCH_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_FETCH_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_FETCH_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -50,26 +50,26 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  **/
-typedef enum {
-  HB_OT_BITS_TAG_FS_TYPE		= HB_TAG ('f','s','t','p'),
-  HB_OT_BITS_TAG_FS_SELECTION		= HB_TAG ('f','s','s','l'),
-  HB_OT_BITS_TAG_MAC_STYLE		= HB_TAG ('m','c','s','t'),
-  HB_OT_BITS_TAG_IS_FIXED_PITCH		= HB_TAG ('f','x','p','t'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_1	= HB_TAG ('u','r','n','1'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_2	= HB_TAG ('u','r','n','2'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_3	= HB_TAG ('u','r','n','3'),
-  HB_OT_BITS_TAG_UNICODE_RANGE_4	= HB_TAG ('u','r','n','4'),
-  HB_OT_BITS_TAG_CODE_PAGE_RANGE_1	= HB_TAG ('c','p','r','1'),
-  HB_OT_BITS_TAG_CODE_PAGE_RANGE_2	= HB_TAG ('c','p','r','2'),
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_OT_ਬਿੱਟ_ਟੈਗ_FS_TYPE		= HB_ਟੈਗ ('f','s','t','p'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_FS_SELECTION		= HB_ਟੈਗ ('f','s','s','l'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_MAC_STYLE		= HB_ਟੈਗ ('m','c','s','t'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_IS_FIXED_PITCH		= HB_ਟੈਗ ('f','x','p','t'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_UNICODE_RANGE_1	= HB_ਟੈਗ ('u','r','n','1'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_UNICODE_RANGE_2	= HB_ਟੈਗ ('u','r','n','2'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_UNICODE_RANGE_3	= HB_ਟੈਗ ('u','r','n','3'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_UNICODE_RANGE_4	= HB_ਟੈਗ ('u','r','n','4'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_ਕੋਡ_ਪੰਨਾ_RANGE_1	= HB_ਟੈਗ ('c','p','r','1'),
+  HB_OT_ਬਿੱਟ_ਟੈਗ_ਕੋਡ_ਪੰਨਾ_RANGE_2	= HB_ਟੈਗ ('c','p','r','2'),
 
   /*< private >*/
-  _HB_OT_BITS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_bits_tag_t;
+  HB_OT_ਬਿੱਟ_ਟੈਗ_MAX_ਮੁੱਲ = HB_ਟੈਗ_MAX_SIGNED /*< skip >*/
+} hb_ot_ਬਿੱਟ_ਟੈਗ_t;
 
 
 HB_EXTERN uint32_t
-hb_ot_fetch_bits (hb_face_t        *face,
-		hb_ot_bits_tag_t  tag);
+hb_ot_fetch_ਬਿੱਟ (hb_face_t        *face,
+		hb_ot_ਬਿੱਟ_ਟੈਗ_t  ਟੈਗ_2);
 
 /**
  * hb_ot_number_tag_t:
@@ -82,20 +82,20 @@ hb_ot_fetch_bits (hb_face_t        *face,
  *
  * Since: 14.3.0
  **/
-typedef enum {
-  HB_OT_NUMBER_TAG_FONT_X_MIN		= HB_TAG ('x','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_Y_MIN		= HB_TAG ('y','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_X_MAX		= HB_TAG ('x','m','a','x'),
-  HB_OT_NUMBER_TAG_FONT_Y_MAX		= HB_TAG ('y','m','a','x'),
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_OT_ਸੰਖਿਆ_ਟੈਗ_FONT_X_MIN		= HB_ਟੈਗ ('x','m','i','n'),
+  HB_OT_ਸੰਖਿਆ_ਟੈਗ_FONT_Y_MIN		= HB_ਟੈਗ ('y','m','i','n'),
+  HB_OT_ਸੰਖਿਆ_ਟੈਗ_FONT_X_MAX		= HB_ਟੈਗ ('x','m','a','x'),
+  HB_OT_ਸੰਖਿਆ_ਟੈਗ_FONT_Y_MAX		= HB_ਟੈਗ ('y','m','a','x'),
 
   /*< private >*/
-  _HB_OT_NUMBER_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_number_tag_t;
+  HB_OT_ਸੰਖਿਆ_ਟੈਗ_MAX_ਮੁੱਲ = HB_ਟੈਗ_MAX_SIGNED /*< skip >*/
+} hb_ot_ਸੰਖਿਆ_ਟੈਗ_t;
 
 HB_EXTERN int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag);
+hb_ot_fetch_ਸੰਖਿਆ (hb_face_t          *face,
+		  hb_ot_ਸੰਖਿਆ_ਟੈਗ_t  ਟੈਗ_2);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_FETCH_H */
+#ਜੇ_ਅੰਤ /* HB_OT_FETCH_H */

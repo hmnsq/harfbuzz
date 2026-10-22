@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_NAME
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_NAME
 
-#include "hb-ot-name-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-name-table.hh"
 
-#include "hb-utf.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-utf.hh"
 
 
 /**
@@ -55,48 +55,48 @@
  * Returns: (transfer none) (array length=num_entries): Array of available name entries.
  * Since: 2.1.0
  **/
-const hb_ot_name_entry_t *
-hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+ਅਚਲ hb_ot_name_ਇੰਦਰਾਜ_t *
+hb_ot_name_list_ਨਾਂ (hb_face_t    *face,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅੰਕ_entries /*ਬਾਹਰਲਾ*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  ਅਚਲ OT::name_accelerator_t &name = *face->ਸਾਰਣੀ.name;
+  ਜੇ (ਅੰਕ_entries) *ਅੰਕ_entries = name.ਨਾਂ.ਲੰਮਾਈ;
+  ਵਾਪਸ (ਅਚਲ hb_ot_name_ਇੰਦਰਾਜ_t *) name.ਨਾਂ;
 }
 
-template <typename utf_t>
-static inline unsigned int
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ utf_t>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
-		    typename utf_t::codepoint_t *text /* OUT */)
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਪਾਠ_ਮਾਪ /* IN/OUT */,
+		    ਕਿਸਮ_ਨਾਂ utf_t::codepoint_t *ਪਾਠ /*ਬਾਹਰਲਾ*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
+  ਅਚਲ OT::name_accelerator_t &name = *face->ਸਾਰਣੀ.name;
 
-  if (!language)
+  ਜੇ (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੌੜਾਈ;
+  ਪੂਰਨ idx = name.get_ਸੂਚਕਾਂਕ (name_id, language, &ਚੌੜਾਈ);
+  ਜੇ (idx != -1)
   {
-    hb_bytes_t bytes = name.get_name (idx);
+    hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    ਜੇ (ਚੌੜਾਈ == 2) /* UTF16-BE */
+      ਵਾਪਸ OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (ਬਾਈਟਾਂ, ਪਾਠ_ਮਾਪ, ਪਾਠ);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    ਜੇ (ਚੌੜਾਈ == 1) /* ASCII */
+      ਵਾਪਸ OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (ਬਾਈਟਾਂ, ਪਾਠ_ਮਾਪ, ਪਾਠ);
   }
 
-  if (text_size)
+  ਜੇ (ਪਾਠ_ਮਾਪ)
   {
-    if (*text_size)
-      *text = 0;
-    *text_size = 0;
+    ਜੇ (*ਪਾਠ_ਮਾਪ)
+      *ਪਾਠ = 0;
+    *ਪਾਠ_ਮਾਪ = 0;
   }
-  return 0;
+  ਵਾਪਸ 0;
 }
 
 /**
@@ -116,15 +116,15 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */)
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਪਾਠ_ਮਾਪ /* IN/OUT */,
+		     ਅੱਖਰ            *ਪਾਠ      /*ਬਾਹਰਲਾ*/)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
-					(hb_utf8_t::codepoint_t *) text);
+  ਵਾਪਸ hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, ਪਾਠ_ਮਾਪ,
+					(hb_utf8_t::codepoint_t *) ਪਾਠ);
 }
 
 /**
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint16_t        *text      /* OUT */)
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਪਾਠ_ਮਾਪ /* IN/OUT */,
+		      uint16_t        *ਪਾਠ      /*ਬਾਹਰਲਾ*/)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  ਵਾਪਸ hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, ਪਾਠ_ਮਾਪ, ਪਾਠ);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint32_t        *text      /* OUT */)
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਪਾਠ_ਮਾਪ /* IN/OUT */,
+		      uint32_t        *ਪਾਠ      /*ਬਾਹਰਲਾ*/)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  ਵਾਪਸ hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, ਪਾਠ_ਮਾਪ, ਪਾਠ);
 }
 
-#endif
+#ਜੇ_ਅੰਤ

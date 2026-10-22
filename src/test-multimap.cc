@@ -22,38 +22,38 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-multimap.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
   hb_multimap_t m;
 
-  hb_always_assert (m.get (10).length == 0);
+  hb_always_assert (m.get (10).ਲੰਮਾਈ == 0);
 
-  m.add (10, 11);
-  hb_always_assert (m.get (10).length == 1);
+  m.ਜੋੜੋ (10, 11);
+  hb_always_assert (m.get (10).ਲੰਮਾਈ == 1);
 
-  m.add (10, 12);
-  hb_always_assert (m.get (10).length == 2);
+  m.ਜੋੜੋ (10, 12);
+  hb_always_assert (m.get (10).ਲੰਮਾਈ == 2);
 
-  m.add (10, 13);
-  hb_always_assert (m.get (10).length == 3);
+  m.ਜੋੜੋ (10, 13);
+  hb_always_assert (m.get (10).ਲੰਮਾਈ == 3);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
 
-  hb_always_assert (m.get (11).length == 0);
-  m.add (11, 14);
-  hb_always_assert (m.get (10).length == 3);
-  hb_always_assert (m.get (11).length == 1);
-  hb_always_assert (m.get (12).length == 0);
+  hb_always_assert (m.get (11).ਲੰਮਾਈ == 0);
+  m.ਜੋੜੋ (11, 14);
+  hb_always_assert (m.get (10).ਲੰਮਾਈ == 3);
+  hb_always_assert (m.get (11).ਲੰਮਾਈ == 1);
+  hb_always_assert (m.get (12).ਲੰਮਾਈ == 0);
   hb_always_assert (m.get (10)[0] == 11);
   hb_always_assert (m.get (10)[1] == 12);
   hb_always_assert (m.get (10)[2] == 13);
   hb_always_assert (m.get (11)[0] == 14);
   hb_always_assert (m.get (12)[0] == 0); // Array fallback value
 
-  return 0;
+  ਵਾਪਸ 0;
 }

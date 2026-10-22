@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-import sys
-from fontTools.ttLib import TTFont
-from fontTools.ttLib.tables.DefaultTable import DefaultTable
+ਆਯਾਤ sys
+ਤਃ fontTools.ttLib ਆਯਾਤ TTFont
+ਤਃ fontTools.ttLib.tables.Default_ਸਾਰਣੀ ਆਯਾਤ Default_ਸਾਰਣੀ
 
-if len(sys.argv) == 1:
-    print("usage: python addTable.py input.ttf output.ttf Wasm.bin")
+ਜੇ ਲੰਬਾਈ(sys.argv) == 1:
+    ਛਾਪੋ("usage: python addTable.py input.ttf output.ttf Wasm.bin")
     sys.exit(1)
 
 font = TTFont(sys.argv[1])
 
-wasm_table = DefaultTable("Wasm")
-wasm_table.data = open(sys.argv[3], "rb").read()
+wasm_ਸਾਰਣੀ = Default_ਸਾਰਣੀ("Wasm")
+wasm_ਸਾਰਣੀ.ਅੰਕੜੇ = open(sys.argv[3], "rb").ਪਠ()
 
-font["Wasm"] = wasm_table
+font["Wasm"] = wasm_ਸਾਰਣੀ
 
 font.save(sys.argv[2])

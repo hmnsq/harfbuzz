@@ -24,17 +24,17 @@
  * Google Author(s): Rod Sheeter
  */
 
-#ifndef HB_SUBSET_H
-#define HB_SUBSET_H
-#define HB_SUBSET_H_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_H_ਵਿੱਚ
 
-#include "hb.h"
-#include "hb-ot.h"
-#include "hb-subset-serialize.h"
-#include "hb-subset-depend.h"
-#include "hb-subset-serialize.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-serialize.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-depend.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-serialize.h"
 
-#undef HB_SUBSET_H_IN
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SUBSET_H_ਵਿੱਚ
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_subset_ਨਿਵੇਸ਼_t hb_subset_ਨਿਵੇਸ਼_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,26 +101,26 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
   HB_SUBSET_FLAGS_DESUBROUTINIZE =	     0x00000004u,
   HB_SUBSET_FLAGS_NAME_LEGACY =		     0x00000008u,
-  HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG =	     0x00000010u,
+  HB_SUBSET_FLAGS_ਸੈੱਟ_OVERLAPS_FLAG =	     0x00000010u,
   HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED = 0x00000020u,
   HB_SUBSET_FLAGS_NOTDEF_OUTLINE =	     0x00000040u,
-  HB_SUBSET_FLAGS_GLYPH_NAMES =		     0x00000080u,
+  HB_SUBSET_FLAGS_GLYPH_ਨਾਂ =		     0x00000080u,
   HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES =  0x00000100u,
-  HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE =        0x00000200u,
+  HB_SUBSET_FLAGS_NO_LAYOUT_ਘੇਰਾ =        0x00000200u,
   HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS	  =  0x00000400u,
-  HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
-#ifdef HB_EXPERIMENTAL_API
+  HB_SUBSET_FLAGS_NO_BIDI_ਘੇਰਾ         =  0x00000800u,
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
-#endif
+  HB_SUBSET_FLAGS_RETAIN_ਅੰਕ_GLYPHS  =  0x00002000u,
+#ਜੇ_ਅੰਤ
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
-  HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
+  HB_SUBSET_FLAGS_CFF_ਪਛਾਣ_ਤੱਤ_CHARSET    =  0x00008000u,
 } hb_subset_flags_t;
 
 /**
@@ -142,113 +142,113 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
-  HB_SUBSET_SETS_GLYPH_INDEX = 0,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_SUBSET_SETS_GLYPH_ਸੂਚਕਾਂਕ = 0,
   HB_SUBSET_SETS_UNICODE,
-  HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
-  HB_SUBSET_SETS_DROP_TABLE_TAG,
+  HB_SUBSET_SETS_NO_SUBSET_ਸਾਰਣੀ_ਟੈਗ,
+  HB_SUBSET_SETS_DROP_ਸਾਰਣੀ_ਟੈਗ,
   HB_SUBSET_SETS_NAME_ID,
   HB_SUBSET_SETS_NAME_LANG_ID,
-  HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
-  HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
+  HB_SUBSET_SETS_LAYOUT_FEATURE_ਟੈਗ,
+  HB_SUBSET_SETS_LAYOUT_SCRIPT_ਟੈਗ,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_ਨਿਵੇਸ਼_t *
+hb_subset_ਨਿਵੇਸ਼_create_or_fail (ਖਾਲੀ);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_ਨਿਵੇਸ਼_t *
+hb_subset_ਨਿਵੇਸ਼_reference (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
-HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+HB_EXTERN ਖਾਲੀ
+hb_subset_ਨਿਵੇਸ਼_destroy (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_ਨਿਵੇਸ਼_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
+			       hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+			       ਖਾਲੀ *		   ਅੰਕੜੇ,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
-HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+HB_EXTERN ਖਾਲੀ *
+hb_subset_ਨਿਵੇਸ਼_get_user_ਅੰਕੜੇ (ਅਚਲ hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼,
+			       hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t      *ਕੁੰਜੀ_2);
 
-HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
+HB_EXTERN ਖਾਲੀ
+hb_subset_ਨਿਵੇਸ਼_keep_everything (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+HB_EXTERN hb_ਸੈੱਟ_t *
+hb_subset_ਨਿਵੇਸ਼_unicode_ਸੈੱਟ (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+HB_EXTERN hb_ਸੈੱਟ_t *
+hb_subset_ਨਿਵੇਸ਼_glyph_ਸੈੱਟ (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+HB_EXTERN hb_ਸੈੱਟ_t *
+hb_subset_ਨਿਵੇਸ਼_ਸੈੱਟ (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼, hb_subset_sets_t ਸੈੱਟ_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_ਨਿਵੇਸ਼_old_ਮੰਜ਼ਿਲ_new_glyph_mapping (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_ਨਿਵੇਸ਼_get_flags (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+HB_EXTERN ਖਾਲੀ
+hb_subset_ਨਿਵੇਸ਼_ਸੈੱਟ_flags (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_ਨਿਵੇਸ਼_pin_all_axes_ਮੰਜ਼ਿਲ_default (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_ਨਿਵੇਸ਼_pin_axis_ਮੰਜ਼ਿਲ_default (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
 				     hb_face_t          *face,
-				     hb_tag_t            axis_tag);
+				     hb_ਟੈਗ_t            axis_ਟੈਗ_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_ਨਿਵੇਸ਼_pin_axis_location (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
 				   hb_face_t          *face,
-				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   hb_ਟੈਗ_t            axis_ਟੈਗ_2,
+				   ਦਸ਼ਮਲਵ               axis_ਮੁੱਲ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
-				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+hb_subset_ਨਿਵੇਸ਼_get_axis_range (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
+				hb_ਟੈਗ_t            axis_ਟੈਗ_2,
+				ਦਸ਼ਮਲਵ              *axis_min_ਮੁੱਲ,
+				ਦਸ਼ਮਲਵ              *axis_max_ਮੁੱਲ,
+				ਦਸ਼ਮਲਵ              *axis_def_ਮੁੱਲ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_ਨਿਵੇਸ਼_ਸੈੱਟ_axis_range (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
 				hb_face_t          *face,
-				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				hb_ਟੈਗ_t            axis_ਟੈਗ_2,
+				ਦਸ਼ਮਲਵ               axis_min_ਮੁੱਲ,
+				ਦਸ਼ਮਲਵ               axis_max_ਮੁੱਲ,
+				ਦਸ਼ਮਲਵ               axis_def_ਮੁੱਲ);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+hb_subset_axis_range_from_string (ਅਚਲ ਅੱਖਰ *str, ਪੂਰਨ len,
+				  ਦਸ਼ਮਲਵ *axis_min_ਮੁੱਲ,
+				  ਦਸ਼ਮਲਵ *axis_max_ਮੁੱਲ,
+				  ਦਸ਼ਮਲਵ *axis_def_ਮੁੱਲ);
 
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
-				hb_tag_t axis_tag,
-				char *buf,
-				unsigned size);
+HB_EXTERN ਖਾਲੀ
+hb_subset_axis_range_ਮੰਜ਼ਿਲ_string (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼,
+				hb_ਟੈਗ_t axis_ਟੈਗ_2,
+				ਅੱਖਰ *buf,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ);
 
-#ifdef HB_EXPERIMENTAL_API
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_ਨਿਵੇਸ਼_ਮੰਜ਼ਿਲ_string_or_fail (hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_ਨਿਵੇਸ਼_override_name_ਸਾਰਣੀ (hb_subset_ਨਿਵੇਸ਼_t  *ਨਿਵੇਸ਼,
 				     hb_ot_name_id_t     name_id,
-				     unsigned            platform_id,
-				     unsigned            encoding_id,
-				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ            platform_id,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ            encoding_id,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ            language_id,
+				     ਅਚਲ ਅੱਖਰ         *name_str,
+				     ਪੂਰਨ                 str_len);
 
 
 /*
@@ -256,67 +256,67 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
 */
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff_get_charstring_ਅੰਕੜੇ (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstrings_index (hb_face_t* face);
+hb_subset_cff_get_charstrings_ਸੂਚਕਾਂਕ (hb_face_t* face);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff2_get_charstring_ਅੰਕੜੇ (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstrings_index (hb_face_t* face);
-#endif
+hb_subset_cff2_get_charstrings_ਸੂਚਕਾਂਕ (hb_face_t* face);
+#ਜੇ_ਅੰਤ
 
 HB_EXTERN hb_face_t *
-hb_subset_preprocess (hb_face_t *source);
+hb_subset_preprocess (hb_face_t *ਸਰੋਤ);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *ਸਰੋਤ, ਅਚਲ hb_subset_ਨਿਵੇਸ਼_t *ਨਿਵੇਸ਼);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               ਅਚਲ hb_subset_ਨਿਵੇਸ਼_t   *ਨਿਵੇਸ਼);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_ਮੰਜ਼ਿਲ_new_glyph_mapping (ਅਚਲ hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_ਮੰਜ਼ਿਲ_old_glyph_mapping (ਅਚਲ hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_ਮੰਜ਼ਿਲ_old_glyph_mapping (ਅਚਲ hb_subset_plan_t *plan);
 
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_subset_plan_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_subset_plan_t   *plan,
+                              hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+                              ਖਾਲੀ               *ਅੰਕੜੇ,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
-HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+HB_EXTERN ਖਾਲੀ *
+hb_subset_plan_get_user_ਅੰਕੜੇ (ਅਚਲ hb_subset_plan_t *plan,
+                              hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t     *ਕੁੰਜੀ_2);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ਜੇ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_ਨਿਵੇਸ਼, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_SUBSET_H */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_H */

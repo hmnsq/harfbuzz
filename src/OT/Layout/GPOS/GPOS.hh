@@ -1,209 +1,209 @@
-#ifndef OT_LAYOUT_GPOS_GPOS_HH
-#define OT_LAYOUT_GPOS_GPOS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_GPOS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_GPOS_HH
 
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "PosLookup.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-gsubgpos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "PosLookup.hh"
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-using Layout::GPOS_impl::PosLookup;
+ਵਰਤੋਂ Layout::GPOS_impl::PosLookup;
 
-namespace Layout {
+ਨਾਮਾਕਾਸ਼ Layout {
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len,
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i,
                               hb_direction_t direction,
-                              unsigned nesting_level = HB_MAX_NESTING_LEVEL);
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ nesting_level = HB_MAX_NESTING_LEVEL);
 
 /*
  * GPOS -- Glyph Positioning
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gpos
  */
 
-struct GPOS : GSUBGPOS
+ਬਣਤਰ GPOS : GSUBGPOS
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GPOS;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_GPOS;
 
-  using Lookup = PosLookup;
+  ਵਰਤੋਂ Lookup = PosLookup;
 
-  const PosLookup& get_lookup (unsigned int i) const
-  { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
+  ਅਚਲ PosLookup& get_lookup (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
+  { ਵਾਪਸ static_cast<ਅਚਲ PosLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  static inline void position_start (hb_font_t *font, hb_buffer_t *buffer);
-  static inline void position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
-  static inline void position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer);
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ position_ਸ਼ੁਰੂ (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ);
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ position_ਅੰਤ_advances (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ);
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ position_ਅੰਤ_offsets (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ);
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<PosLookup> (&l);
+    hb_subset_layout_context_t l (c, ਸਾਰਣੀ_ਟੈਗ);
+    ਵਾਪਸ GSUBGPOS::subset<PosLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (GSUBGPOS::sanitize<PosLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ਅਚਲ;
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ਖਾਲੀ collect_variation_indices (hb_collect_variation_indices_context_t *c) ਅਚਲ
   {
-    for (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < GSUBGPOS::get_lookup_ਗਿਣਤੀ (); i++)
     {
-      if (!c->gpos_lookups->has (i)) continue;
-      const PosLookup &l = get_lookup (i);
+      ਜੇ (!c->gpos_lookups->has (i)) ਜਾਰੀ;
+      ਅਚਲ PosLookup &l = get_lookup (i);
       l.dispatch (c);
     }
   }
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
-  { GSUBGPOS::closure_lookups<PosLookup> (face, glyphs, lookup_indexes); }
+  ਖਾਲੀ ਘੇਰਾ_lookups (hb_face_t      *face,
+                        ਅਚਲ hb_ਸੈੱਟ_t *glyphs,
+                        hb_ਸੈੱਟ_t       *lookup_indexes /* IN/OUT */) ਅਚਲ
+  { GSUBGPOS::ਘੇਰਾ_lookups<PosLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GPOS> accelerator_t;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ GSUBGPOS::accelerator_t<GPOS> accelerator_t;
 };
 
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len,
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i,
                               hb_direction_t direction,
-                              unsigned nesting_level)
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ nesting_level)
 {
   /* Adjusts offsets of attached glyphs (both cursive and mark) to accumulate
    * offset of glyph they are attached to. */
-  int chain = pos[i].attach_chain();
-  int type = pos[i].attach_type();
+  ਪੂਰਨ chain = pos[i].attach_chain();
+  ਪੂਰਨ type = pos[i].attach_type();
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = (ਪੂਰਨ) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  ਜੇ (unlikely (j >= len))
+    ਵਾਪਸ;
 
-  if (unlikely (!nesting_level))
-    return;
+  ਜੇ (unlikely (!nesting_level))
+    ਵਾਪਸ;
 
-  if (pos[j].attach_chain())
+  ਜੇ (pos[j].attach_chain())
     propagate_attachment_offsets (pos, len, j, direction, nesting_level - 1);
 
-  assert (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
+  ਪ੍ਰਤਿਜ੍ਞਾ (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
 
-  if (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
+  ਜੇ (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
-      pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
-    else
-      pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
+    ਜੇ (HB_DIRECTION_IS_HORIZONTAL (direction))
+      pos[i].y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].y_ਵਿੱਥ_2, pos[j].y_ਵਿੱਥ_2);
+    ਨਹੀਂਤਾਂ
+      pos[i].x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].x_ਵਿੱਥ_2, pos[j].x_ਵਿੱਥ_2);
   }
-  else /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
+  ਨਹੀਂਤਾਂ /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
-      pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
-    else
-      pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
+    ਜੇ (HB_DIRECTION_IS_HORIZONTAL (direction))
+      pos[i].x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].x_ਵਿੱਥ_2, pos[j].x_ਵਿੱਥ_2);
+    ਨਹੀਂਤਾਂ
+      pos[i].y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].y_ਵਿੱਥ_2, pos[j].y_ਵਿੱਥ_2);
 
     // i is the position of the mark; j is the base.
-    if (j < i)
+    ਜੇ (j < i)
     {
       /* This is the common case: mark follows base.
        * And currently the only way in OpenType. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = j; k < i; k++) {
-	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
-	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
+      ਜੇ (HB_DIRECTION_IS_FORWARD (direction))
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ k = j; k < i; k++) {
+	  pos[i].x_ਵਿੱਥ_2 = hb_saturate_sub (pos[i].x_ਵਿੱਥ_2, pos[k].x_advance);
+	  pos[i].y_ਵਿੱਥ_2 = hb_saturate_sub (pos[i].y_ਵਿੱਥ_2, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = j + 1; k < i + 1; k++) {
-	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
-	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
+      ਨਹੀਂਤਾਂ
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ k = j + 1; k < i + 1; k++) {
+	  pos[i].x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].x_ਵਿੱਥ_2, pos[k].x_advance);
+	  pos[i].y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].y_ਵਿੱਥ_2, pos[k].y_advance);
 	}
     }
-    else // j > i
+    ਨਹੀਂਤਾਂ // j > i
     {
       /* This can happen with `kerx`: a mark attaching
        * to a base after it in the logical order. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = i; k < j; k++) {
-	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
-	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
+      ਜੇ (HB_DIRECTION_IS_FORWARD (direction))
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ k = i; k < j; k++) {
+	  pos[i].x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].x_ਵਿੱਥ_2, pos[k].x_advance);
+	  pos[i].y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[i].y_ਵਿੱਥ_2, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = i + 1; k < j + 1; k++) {
-	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
-	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
+      ਨਹੀਂਤਾਂ
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ k = i + 1; k < j + 1; k++) {
+	  pos[i].x_ਵਿੱਥ_2 = hb_saturate_sub (pos[i].x_ਵਿੱਥ_2, pos[k].x_advance);
+	  pos[i].y_ਵਿੱਥ_2 = hb_saturate_sub (pos[i].y_ਵਿੱਥ_2, pos[k].y_advance);
 	}
     }
   }
 }
 
-void
-GPOS::position_start (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer)
+ਖਾਲੀ
+GPOS::position_ਸ਼ੁਰੂ (hb_font_t *font HB_ਅਣਵਰਤਿਆ, hb_ਬਫਰ_t *ਬਫਰ)
 {
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
-    buffer->pos[i].attach_chain() = buffer->pos[i].attach_type() = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+    ਬਫਰ->pos[i].attach_chain() = ਬਫਰ->pos[i].attach_type() = 0;
 }
 
-void
-GPOS::position_finish_advances (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer HB_UNUSED)
+ਖਾਲੀ
+GPOS::position_ਅੰਤ_advances (hb_font_t *font HB_ਅਣਵਰਤਿਆ, hb_ਬਫਰ_t *ਬਫਰ HB_ਅਣਵਰਤਿਆ)
 {
   //_hb_buffer_assert_gsubgpos_vars (buffer);
 }
 
-void
-GPOS::position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
+ਖਾਲੀ
+GPOS::position_ਅੰਤ_offsets (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ)
 {
-  _hb_buffer_assert_gsubgpos_vars (buffer);
+  hb_ਬਫਰ_assert_gsubgpos_vars (ਬਫਰ);
 
-  unsigned int len;
-  hb_glyph_position_t *pos = hb_buffer_get_glyph_positions (buffer, &len);
-  hb_direction_t direction = buffer->props.direction;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len;
+  hb_glyph_position_t *pos = hb_ਬਫਰ_get_glyph_positions (ਬਫਰ, &len);
+  hb_direction_t direction = ਬਫਰ->props.direction;
 
   /* Handle attachments */
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
+  ਜੇ (ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
   {
-    auto *pos = buffer->pos;
+    ਸਵੈਚਾਲਿਤ *pos = ਬਫਰ->pos;
     // https://github.com/harfbuzz/harfbuzz/issues/5514
-    if (HB_DIRECTION_IS_FORWARD (direction))
+    ਜੇ (HB_DIRECTION_IS_FORWARD (direction))
     {
-      for (unsigned i = 0; i < len; i++)
-	if (pos[i].attach_chain())
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len; i++)
+	ਜੇ (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
-    } else {
-      for (unsigned i = len; i-- > 0; )
-	if (pos[i].attach_chain())
+    } ਨਹੀਂਤਾਂ {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = len; i-- > 0; )
+	ਜੇ (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
     }
   }
 
-  if (unlikely (font->slant_xy) &&
+  ਜੇ (unlikely (font->slant_xy) &&
       HB_DIRECTION_IS_HORIZONTAL (direction))
   {
     /* Slanting shaping results is only supported for horizontal text,
      * as it gets weird otherwise. */
-    for (unsigned i = 0; i < len; i++)
-      if (unlikely (pos[i].y_offset))
-        pos[i].x_offset = hb_clamp_to<hb_position_t> ((double) pos[i].x_offset +
-						      (double) roundf (font->slant_xy * pos[i].y_offset));
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len; i++)
+      ਜੇ (unlikely (pos[i].y_ਵਿੱਥ_2))
+        pos[i].x_ਵਿੱਥ_2 = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> ((ਦੁੱਗਣਾ) pos[i].x_ਵਿੱਥ_2 +
+						      (ਦੁੱਗਣਾ) roundf (font->slant_xy * pos[i].y_ਵਿੱਥ_2));
   }
 }
 
 }
 
-struct GPOS_accelerator_t : Layout::GPOS::accelerator_t {
+ਬਣਤਰ GPOS_accelerator_t : Layout::GPOS::accelerator_t {
   GPOS_accelerator_t (hb_face_t *face) : Layout::GPOS::accelerator_t (face) {}
 };
 
 }
 
-#endif  /* OT_LAYOUT_GPOS_GPOS_HH */
+#ਜੇ_ਅੰਤ  /* OT_LAYOUT_GPOS_GPOS_HH */

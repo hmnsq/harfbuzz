@@ -26,51 +26,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ਜੇ !defined(HB_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_SHAPE_H
-#define HB_SHAPE_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SHAPE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-buffer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  hb_ਬਫਰ_t         *ਬਫਰ,
+	  ਅਚਲ hb_feature_t  *features,
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ         ਅੰਕ_features);
 
 HB_EXTERN hb_bool_t
-hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+hb_shape_ਭਰਿਆ (hb_font_t          *font,
+	       hb_ਬਫਰ_t        *ਬਫਰ,
+	       ਅਚਲ hb_feature_t *features,
+	       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features,
+	       ਅਚਲ ਅੱਖਰ * ਅਚਲ *shaper_list);
 
-#ifdef HB_EXPERIMENTAL_API
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
-		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
-#endif
+		  hb_ਬਫਰ_t        *ਬਫਰ,
+		  ਅਚਲ hb_feature_t *features,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features,
+		  ਅਚਲ ਅੱਖਰ * ਅਚਲ *shaper_list,
+		  ਦਸ਼ਮਲਵ               min_ਨਿਸ਼ਾਨਾ_advance,
+		  ਦਸ਼ਮਲਵ               max_ਨਿਸ਼ਾਨਾ_advance,
+		  ਦਸ਼ਮਲਵ              *advance, /* IN/OUT */
+		  hb_ਟੈਗ_t           *var_ਟੈਗ, /*ਬਾਹਰਲਾ*/
+		  ਦਸ਼ਮਲਵ              *var_ਮੁੱਲ /*ਬਾਹਰਲਾ*/);
+#ਜੇ_ਅੰਤ
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN ਅਚਲ ਅੱਖਰ **
+hb_shape_list_shapers (ਖਾਲੀ);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_SHAPE_H */
+#ਜੇ_ਅੰਤ /* HB_SHAPE_H */

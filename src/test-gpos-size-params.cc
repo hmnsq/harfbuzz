@@ -24,21 +24,21 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OPEN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_blob_create_from_file_or_fail(x)  hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ()
+#ਜੇ_ਅੰਤ
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  if (argc != 2) {
+  ਜੇ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    ਬਾਹਰ_ਨਿਕਲੋ (1);
   }
 
   /* Create the face */
@@ -46,17 +46,17 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = ਖਾਲੀ_ਸੂਚਕ;
 
-  bool ret = true;
+  ਤਾਰਕਿਕ ret = ਸੱਚ;
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  unsigned int p[5];
-  ret = hb_ot_layout_get_size_params (face, p, p+1, (p+2), p+3, p+4);
-  printf ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_LAYOUT_FEATURE_PARAMS
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ p[5];
+  ret = hb_ot_layout_get_ਮਾਪ_params (face, p, p+1, (p+2), p+3, p+4);
+  ਲਿਖੋ ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
+#ਜੇ_ਅੰਤ
 
   hb_face_destroy (face);
 
-  return !ret;
+  ਵਾਪਸ !ret;
 }

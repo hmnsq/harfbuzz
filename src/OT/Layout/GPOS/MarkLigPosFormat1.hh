@@ -1,208 +1,208 @@
-#ifndef OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
 
-#include "LigatureArray.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "LigatureArray.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
 
-template <typename Types>
-struct MarkLigPosFormat1_2
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ MarkLigPosFormat1_2
 {
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<Coverage>
                 markCoverage;           /* Offset to Mark Coverage table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<Coverage>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<Coverage>
                 ligatureCoverage;       /* Offset to Ligature Coverage
                                          * table--from beginning of MarkLigPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
-  typename Types::template LOffsetTo<MarkArray<Types>>
+  HBUINT16      class_ਗਿਣਤੀ_2;             /* Number of defined mark classes */
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<MarkArray<Types>>
                 markArray;              /* Offset to MarkArray table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<LigatureArray<Types>>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ LOffset_ਮੰਜ਼ਿਲ<LigatureArray<Types>>
                 ligatureArray;          /* Offset to LigatureArray table--from
                                          * beginning of MarkLigPos subtable */
-  public:
-  DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4 + 4 * Types::LOffset::static_ਮਾਪ);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  markCoverage.sanitize (c, this) &&
-                  ligatureCoverage.sanitize (c, this) &&
-                  markArray.sanitize (c, this) &&
-                  ligatureArray.sanitize (c, this, (unsigned int) classCount));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
+                  markCoverage.sanitize (c, ਇਹ) &&
+                  ligatureCoverage.sanitize (c, ਇਹ) &&
+                  markArray.sanitize (c, ਇਹ) &&
+                  ligatureArray.sanitize (c, ਇਹ, (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) class_ਗਿਣਤੀ_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    return (this+markCoverage).intersects (glyphs) &&
-           (this+ligatureCoverage).intersects (glyphs);
+    ਵਾਪਸ (ਇਹ+markCoverage).intersects (glyphs) &&
+           (ਇਹ+ligatureCoverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ਖਾਲੀ ਘੇਰਾ_lookups (hb_ਘੇਰਾ_lookups_context_t *c) ਅਚਲ {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ਖਾਲੀ collect_variation_indices (hb_collect_variation_indices_context_t *c) ਅਚਲ
   {
-    (this+markArray).collect_variation_indices (c, this+markCoverage);
+    (ਇਹ+markArray).collect_variation_indices (c, ਇਹ+markCoverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
+    Markclass_ਘੇਰਾ_and_remap_indexes (ਇਹ+markCoverage, ਇਹ+markArray, *c->glyph_ਸੈੱਟ, &klass_mapping);
 
-    (this+ligatureArray).collect_variation_indices (c, this+ligatureCoverage,
-                                                   classCount, klass_mapping);
+    (ਇਹ+ligatureArray).collect_variation_indices (c, ਇਹ+ligatureCoverage,
+                                                   class_ਗਿਣਤੀ_2, klass_mapping);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
+    ਜੇ (unlikely (!(ਇਹ+markCoverage).collect_coverage (c->ਨਿਵੇਸ਼))) ਵਾਪਸ;
+    ਜੇ (unlikely (!(ਇਹ+ligatureCoverage).collect_coverage (c->ਨਿਵੇਸ਼))) ਵਾਪਸ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+ligatureCoverage).collect_coverage (digest); }
+  ਖਾਲੀ collect_ਦੂਜਾ_glyphs (hb_ਸੈੱਟ_digest_t *digest) ਅਚਲ
+  { (ਇਹ+ligatureCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  ਅਚਲ Coverage &get_coverage () ਅਚਲ { ਵਾਪਸ ਇਹ+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ accept (hb_ਬਫਰ_t *ਬਫਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence,
      * which might have been ligated into a preceding ligature, and in that
      * case the mark should attach to that ligature.
      * https://github.com/harfbuzz/harfbuzz/issues/4969
      * Reject others... */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
-	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]);
+    ਵਾਪਸ !_hb_glyph_info_multiplied (&ਬਫਰ->info[idx]) ||
+	   0 == _hb_glyph_info_get_lig_comp (&ਬਫਰ->info[idx]);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    TRACE_APPLY (ਇਹ);
+    hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark_ਸੂਚਕਾਂਕ = (ਇਹ+markCoverage).get_coverage  (ਬਫਰ->cur().codepoint);
+    ਜੇ (likely (mark_ਸੂਚਕਾਂਕ == NOT_COVERED)) return_trace (ਝੂਠ);
 
     /* Now we search backwards for a non-mark glyph */
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
+    ਸਵੈਚਾਲਿਤ &skippy_iter = c->iter_ਨਿਵੇਸ਼;
+    skippy_iter.ਸੈੱਟ_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    ਜੇ (c->ਆਖਰੀ_ਅਧਾਰ_until > ਬਫਰ->idx)
     {
-      c->last_base_until = 0;
-      c->last_base = -1;
+      c->ਆਖਰੀ_ਅਧਾਰ_until = 0;
+      c->ਆਖਰੀ_ਅਧਾਰ = -1;
     }
-    unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ j;
+    ਲਈ (j = ਬਫਰ->idx; j > c->ਆਖਰੀ_ਅਧਾਰ_until; j--)
     {
-      auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      ਸਵੈਚਾਲਿਤ ਮੇਲ = skippy_iter.ਮੇਲ (ਬਫਰ->info[j - 1]);
+      ਜੇ (ਮੇਲ == skippy_iter.ਮੇਲ_2)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
-	    NOT_COVERED == (this+ligatureCoverage).get_coverage  (buffer->info[j - 1].codepoint))
-	  match = skippy_iter.SKIP;
+	ਜੇ (!accept (ਬਫਰ, j - 1) &&
+	    NOT_COVERED == (ਇਹ+ligatureCoverage).get_coverage  (ਬਫਰ->info[j - 1].codepoint))
+	  ਮੇਲ = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      ਜੇ (ਮੇਲ == skippy_iter.ਮੇਲ_2)
       {
-	c->last_base = (signed) j - 1;
-	break;
+	c->ਆਖਰੀ_ਅਧਾਰ = (ਨਿਸ਼ਾਨੀਵਾਲਾ) j - 1;
+	ਰੋਕੋ;
       }
     }
-    c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    c->ਆਖਰੀ_ਅਧਾਰ_until = ਬਫਰ->idx;
+    ਜੇ (c->ਆਖਰੀ_ਅਧਾਰ == -1)
     {
-      buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
-      return_trace (false);
+      ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat_from_outbuffer (0, ਬਫਰ->idx + 1);
+      return_trace (ਝੂਠ);
     }
 
-    unsigned idx = (unsigned) c->last_base;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ idx = (ਬਿਨਾਨਿਸ਼ਾਨੀ) c->ਆਖਰੀ_ਅਧਾਰ;
 
     /* Checking that matched glyph is actually a ligature by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_ligature (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int lig_index = (this+ligatureCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (lig_index == NOT_COVERED)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lig_ਸੂਚਕਾਂਕ = (ਇਹ+ligatureCoverage).get_coverage  (ਬਫਰ->info[idx].codepoint);
+    ਜੇ (lig_ਸੂਚਕਾਂਕ == NOT_COVERED)
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat_from_outbuffer (idx, ਬਫਰ->idx + 1);
+      return_trace (ਝੂਠ);
     }
 
-    const LigatureArray<Types>& lig_array = this+ligatureArray;
-    const AnchorMatrix<Types, HBUINT16>& lig_attach = lig_array[lig_index];
+    ਅਚਲ LigatureArray<Types>& lig_array = ਇਹ+ligatureArray;
+    ਅਚਲ Anchor_ਮੈਟ੍ਰਿਕਸ<Types, HBUINT16>& lig_attach = lig_array[lig_ਸੂਚਕਾਂਕ];
 
     /* Find component to attach to */
-    unsigned int comp_count = lig_attach.rows;
-    if (unlikely (!comp_count))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ comp_ਗਿਣਤੀ = lig_attach.ਪੰਕਤੀਆਂ;
+    ਜੇ (unlikely (!comp_ਗਿਣਤੀ))
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat_from_outbuffer (idx, ਬਫਰ->idx + 1);
+      return_trace (ਝੂਠ);
     }
 
     /* We must now check whether the ligature ID of the current mark glyph
      * is identical to the ligature ID of the found ligature.  If yes, we
      * can directly use the component index.  If not, we attach the mark
      * glyph to the last component of the ligature. */
-    unsigned int comp_index;
-    unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[idx]);
-    unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    if (lig_id && lig_id == mark_id && mark_comp > 0)
-      comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
-    else
-      comp_index = comp_count - 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ comp_ਸੂਚਕਾਂਕ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lig_id = _hb_glyph_info_get_lig_id (&ਬਫਰ->info[idx]);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark_id = _hb_glyph_info_get_lig_id (&ਬਫਰ->cur());
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark_comp = _hb_glyph_info_get_lig_comp (&ਬਫਰ->cur());
+    ਜੇ (lig_id && lig_id == mark_id && mark_comp > 0)
+      comp_ਸੂਚਕਾਂਕ = hb_min (comp_ਗਿਣਤੀ, _hb_glyph_info_get_lig_comp (&ਬਫਰ->cur())) - 1;
+    ਨਹੀਂਤਾਂ
+      comp_ਸੂਚਕਾਂਕ = comp_ਗਿਣਤੀ - 1;
 
-    return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, idx));
+    return_trace ((ਇਹ+markArray).apply (c, mark_ਸੂਚਕਾਂਕ, comp_ਸੂਚਕਾਂਕ, lig_attach, class_ਗਿਣਤੀ_2, idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (ਇਹ);
+    ਅਚਲ hb_ਸੈੱਟ_t &glyphset = *c->plan->glyphset_gsub ();
+    ਅਚਲ hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    ਜੇ (unlikely (!c->serializer->extend_min (ਬਾਹਰਲਾ))) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+    Markclass_ਘੇਰਾ_and_remap_indexes (ਇਹ+markCoverage, ਇਹ+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    ਜੇ (!klass_mapping.get_population ()) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->class_ਗਿਣਤੀ_2 = klass_mapping.get_population ();
 
-    auto mark_iter =
-    + hb_zip (this+markCoverage, hb_range ((unsigned) (this+markArray).len))
-    | hb_filter (glyphset, hb_first)
+    ਸਵੈਚਾਲਿਤ mark_iter =
+    + hb_zip (ਇਹ+markCoverage, hb_range ((ਬਿਨਾਨਿਸ਼ਾਨੀ) (ਇਹ+markArray).len))
+    | hb_filter (glyphset, hb_ਪਹਿਲਾ)
     ;
 
-    auto new_mark_coverage =
+    ਸਵੈਚਾਲਿਤ new_mark_coverage =
     + mark_iter
-    | hb_map_retains_sorting (hb_first)
-    | hb_map_retains_sorting (glyph_map)
+    | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
+    | hb_map_retains_ਛਾਂਟੀ (glyph_map)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
-      return_trace (false);
+    ਜੇ (!ਬਾਹਰਲਾ->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
+      return_trace (ਝੂਠ);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
-						    (this+markCoverage).iter (),
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ->markArray.serialize_subset (c, markArray, ਇਹ,
+						    (ਇਹ+markCoverage).iter (),
 						    &klass_mapping)))
-      return_trace (false);
+      return_trace (ਝੂਠ);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_lig_coverage;
-    if (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
-					      hb_iter (this+ligatureCoverage),
-					      classCount, &klass_mapping, new_lig_coverage))
-      return_trace (false);
+    hb_sorted_ਸਦਿਸ਼_t<hb_codepoint_t> new_lig_coverage;
+    ਜੇ (!ਬਾਹਰਲਾ->ligatureArray.serialize_subset (c, ligatureArray, ਇਹ,
+					      hb_iter (ਇਹ+ligatureCoverage),
+					      class_ਗਿਣਤੀ_2, &klass_mapping, new_lig_coverage))
+      return_trace (ਝੂਠ);
 
-    return_trace (out->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
+    return_trace (ਬਾਹਰਲਾ->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
   }
 
 };
@@ -211,4 +211,4 @@ struct MarkLigPosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */

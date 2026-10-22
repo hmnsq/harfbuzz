@@ -23,358 +23,358 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_OT_CFF_COMMON_HH
-#define HB_OT_CFF_COMMON_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_CFF_COMMON_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-bimap.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cff-interp-dict-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-plan.hh"
 
-namespace CFF {
+ਨਾਮਾਕਾਸ਼ CFF {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
-#define CFF_UNDEF_CODE  0xFFFFFFFF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ CFF_UNDEF_ਕੋਡ  0xFFFFFFFF
 
-using objidx_t = hb_serialize_context_t::objidx_t;
-using whence_t = hb_serialize_context_t::whence_t;
+ਵਰਤੋਂ objidx_t = hb_serialize_context_t::objidx_t;
+ਵਰਤੋਂ whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
-template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ...Ts>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ Type& Struct_At_ਵਿੱਥ_Or_Null (ਅਚਲ ਖਾਲੀ *P, ਪੂਰਨ ਵਿੱਥ, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  ਜੇ (!ਵਿੱਥ) ਵਾਪਸ Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  ਅਚਲ ਅੱਖਰ *p = (ਅਚਲ ਅੱਖਰ *) P + ਵਿੱਥ;
+  ਜੇ (!sc.check_ਬਿੰਦੂ (p)) ਵਾਪਸ Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ਅਚਲ Type &obj = *reinterpret_cast<ਅਚਲ Type *> (p);
+  ਜੇ (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) ਵਾਪਸ Null (Type);
 
-  return obj;
+  ਵਾਪਸ obj;
 }
 
 
-struct code_pair_t
+ਬਣਤਰ ਕੋਡ_pair_t
 {
-  unsigned code;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੋਡ;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
-using str_buff_vec_t = hb_vector_t<str_buff_t>;
-using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
+ਵਰਤੋਂ str_buff_t = hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ>;
+ਵਰਤੋਂ str_buff_vec_t = hb_ਸਦਿਸ਼_t<str_buff_t>;
+ਵਰਤੋਂ glyph_ਮੰਜ਼ਿਲ_sid_map_t = hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+ਬਣਤਰ Dict : UnsizedByteStr
 {
-  template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ DICTVAL, ਕਿਸਮ_ਨਾਂ OP_SERIALIZER, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+		  ਅਚਲ DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < dictval.get_ਗਿਣਤੀ (); i++)
+      ਜੇ (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (ਝੂਠ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ V>
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_int_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, V value, op_ਕੋਡ_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    ਜੇ (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      ਵਾਪਸ ਝੂਠ;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_ਮਾਪ<HBUINT8> (Op_ਕੋਡ_ਮਾਪ (op), ਝੂਠ);
+    ਜੇ (unlikely (!p)) return_trace (ਝੂਠ);
+    ਜੇ (Is_Op_ਕੋਡ_ESC (op))
     {
-      *p = OpCode_escape;
-      op = Unmake_OpCode_ESC (op);
+      *p = Op_ਕੋਡ_escape;
+      op = Unmake_Op_ਕੋਡ_ESC (op);
       p++;
     }
     *p = op;
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ V>
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_int4_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, V value)
+  { ਵਾਪਸ serialize_int_op<HBINT32> (c, op, value, Op_ਕੋਡ_longintdict); }
 
-  template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ V>
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_int2_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, V value)
+  { ਵਾਪਸ serialize_int_op<HBINT16> (c, op, value, Op_ਕੋਡ_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਪੂਰਨ int_op>
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_link_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, objidx_t link, whence_t whence)
   {
-    T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
-    c->add_link (ofs, link, whence);
-    return true;
+    T &ofs = *(T *) (c->ਸਿਰ_2 + Op_ਕੋਡ_ਮਾਪ (int_op));
+    ਜੇ (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) ਵਾਪਸ ਝੂਠ;
+    c->ਜੋੜੋ_link (ofs, link, whence);
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_link4_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, objidx_t link, whence_t whence = whence_t::ਸਿਰ)
+  { ਵਾਪਸ serialize_link_op<HBINT32, Op_ਕੋਡ_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize_link2_op (hb_serialize_context_t *c, op_ਕੋਡ_t op, objidx_t link, whence_t whence = whence_t::ਸਿਰ)
+  { ਵਾਪਸ serialize_link_op<HBINT16, Op_ਕੋਡ_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+ਬਣਤਰ ਸਿਖਰ_Dict : Dict {};
+ਬਣਤਰ FontDict : Dict {};
+ਬਣਤਰ ਨਿੱਜੀ_Dict : Dict {};
 
-struct table_info_t
+ਬਣਤਰ ਸਾਰਣੀ_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  ਖਾਲੀ init () { ਵਿੱਥ = ਮਾਪ = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਵਿੱਥ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਗਿਣਤੀ_4>
+ਬਣਤਰ FDArray : CFFIndex<ਗਿਣਤੀ_4>
 {
-  template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ DICTVAL, ਕਿਸਮ_ਨਾਂ INFO, ਕਿਸਮ_ਨਾਂ Iterator, ਕਿਸਮ_ਨਾਂ OP_SERIALIZER>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
     /* serialize INDEX data */
-    hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> sizes;
+    ਜੇ (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    ਅੱਖਰ *ਅੰਕੜੇ_ਅਧਾਰ = c->ਸਿਰ_2;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (ਅਚਲ hb_pair_t<ਅਚਲ DICTVAL&, ਅਚਲ INFO&> &_)
     {
-      FontDict *dict = c->start_embed<FontDict> ();
-		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+      FontDict *dict = c->ਸ਼ੁਰੂ_embed<FontDict> ();
+		dict->serialize (c, _.ਪਹਿਲਾ, opszr, _.second);
+		ਵਾਪਸ c->ਸਿਰ_2 - (ਅਚਲ ਅੱਖਰ*)dict;
 	      })
     | hb_sink (sizes)
     ;
-    unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕੜੇ_ਮਾਪ = c->ਸਿਰ_2 - ਅੰਕੜੇ_ਅਧਾਰ;
+    c->ਕੱਢੋ_pack (ਝੂਠ);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    ਜੇ (unlikely (sizes.ਵਿੱਚ_error ())) return_trace (ਝੂਠ);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<ਗਿਣਤੀ_4>::serialize_ਸਿਰਲੇਖ (c, hb_iter (sizes), ਅੰਕੜੇ_ਮਾਪ));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+ਬਣਤਰ FDSelect0 {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fdcount,
+                 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_ਗਿਣਤੀ = HB_CODEPOINT_INVALID) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!(c->check_struct (ਇਹ))))
+      return_trace (ਝੂਠ);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    ਜੇ (unlikely (!c->check_array (fds, glyph_ਗਿਣਤੀ == HB_CODEPOINT_INVALID ?
+                                     c->get_ਅੰਕ_glyphs () : glyph_ਗਿਣਤੀ)))
+      return_trace (ਝੂਠ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_fd (hb_codepoint_t glyph) ਅਚਲ
+  { ਵਾਪਸ fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ਅਚਲ
+  { ਵਾਪਸ {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_saturate (HBUINT8::static_ਮਾਪ, ਅੰਕ_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
-  DEFINE_SIZE_MIN (0);
+  DEFINE_ਮਾਪ_MIN (0);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ GID_TYPE, ਕਿਸਮ_ਨਾਂ FD_TYPE>
+ਬਣਤਰ FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ * /*nullptr*/, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fdcount) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  ਪਹਿਲਾ < c->get_ਅੰਕ_glyphs () && (fd < fdcount));
   }
 
-  GID_TYPE    first;
+  GID_TYPE    ਪਹਿਲਾ;
   FD_TYPE     fd;
-  public:
-  DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (GID_TYPE::static_ਮਾਪ + FD_TYPE::static_ਮਾਪ);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ GID_TYPE, ਕਿਸਮ_ਨਾਂ FD_TYPE>
+ਬਣਤਰ FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate ((size_t) GID_TYPE::static_ਮਾਪ * 2, ranges.get_ਮਾਪ ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fdcount,
+                 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ min_glyphs = HB_CODEPOINT_INVALID) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
-		    ranges.sanitize (c, nullptr, fdcount) &&
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!(c->check_struct (ਇਹ) &&
+		    ranges.sanitize (c, ਖਾਲੀ_ਸੂਚਕ, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
-		    ranges[0].first == 0)))
-      return_trace (false);
+		    ranges[0].ਪਹਿਲਾ == 0)))
+      return_trace (ਝੂਠ);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 1; i < nRanges (); i++)
+      ਜੇ (unlikely (ranges[i - 1].ਪਹਿਲਾ >= ranges[i].ਪਹਿਲਾ))
+	return_trace (ਝੂਠ);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    ਜੇ (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
-                   sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() > ranges[nRanges () - 1].ਪਹਿਲਾ &&
+                   sentinel() <= c->get_ਅੰਕ_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_ਅੰਕ_glyphs () : min_glyphs))))
+      return_trace (ਝੂਠ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  ਸਥਿਰ ਪੂਰਨ _cmp_range (ਅਚਲ ਖਾਲੀ *ਕੁੰਜੀ_3, ਅਚਲ ਖਾਲੀ *ਵਸਤੂ_2)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
-    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) ਕੁੰਜੀ_3;
+    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) ਵਸਤੂ_2;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    ਜੇ (glyph < range[0].ਪਹਿਲਾ) ਵਾਪਸ -1;
+    ਜੇ (glyph < range[1].ਪਹਿਲਾ) ਵਾਪਸ 0;
+    ਵਾਪਸ +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_fd (hb_codepoint_t glyph) ਅਚਲ
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    ਸਵੈਚਾਲਿਤ *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, ਆਕਾਰ (ranges[0]), _cmp_range);
+    ਵਾਪਸ range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ਅਚਲ
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
-    hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    ਸਵੈਚਾਲਿਤ *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, ਆਕਾਰ (ranges[0]), _cmp_range);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ fd = range ? range->fd : ranges[nRanges () - 1].fd;
+    hb_codepoint_t ਸਿਰਾ = range ? range[1].ਪਹਿਲਾ : ranges[nRanges () - 1].ਪਹਿਲਾ;
+    ਵਾਪਸ {fd, ਸਿਰਾ};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { ਵਾਪਸ ranges.len; }
+  GID_TYPE         nRanges () ਅਚਲ { ਵਾਪਸ ranges.len; }
+  GID_TYPE       &sentinel ()       { ਵਾਪਸ StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  ਅਚਲ GID_TYPE &sentinel () ਅਚਲ { ਵਾਪਸ StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
-  ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
+  Array_ਦਾ<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
 
-  DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
+  DEFINE_ਮਾਪ_ARRAY (GID_TYPE::static_ਮਾਪ, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+ਬਣਤਰ FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਅਚਲ FDSelect &src, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, &src, size);
-    return_trace (true);
+    TRACE_SERIALIZE (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ = src.get_ਮਾਪ (ਅੰਕ_glyphs);
+    FDSelect *dest = c->allocate_ਮਾਪ<FDSelect> (ਮਾਪ, ਝੂਠ);
+    ਜੇ (unlikely (!dest)) return_trace (ਝੂਠ);
+    hb_memcpy (dest, &src, ਮਾਪ);
+    return_trace (ਸੱਚ);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (format.static_ਮਾਪ, u.format0.get_ਮਾਪ (ਅੰਕ_glyphs));
+    ਹਾਲਤ 3: hb_barrier (); ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (format.static_ਮਾਪ, u.format3.get_ਮਾਪ ());
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_fd (hb_codepoint_t glyph) ਅਚਲ
   {
-    if (this == &Null (FDSelect)) return 0;
+    ਜੇ (ਇਹ == &Null (FDSelect)) ਵਾਪਸ 0;
 
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ u.format0.get_fd (glyph);
+    ਹਾਲਤ 3: hb_barrier (); ਵਾਪਸ u.format3.get_fd (glyph);
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ਅਚਲ
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    ਜੇ (ਇਹ == &Null (FDSelect)) ਵਾਪਸ {0, 1};
 
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ u.format0.get_fd_range (glyph);
+    ਹਾਲਤ 3: hb_barrier (); ਵਾਪਸ u.format3.get_fd_range (glyph);
+    ਮੂਲ:ਵਾਪਸ {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fdcount) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    ਹਾਲਤ 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    ਹਾਲਤ 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    ਮੂਲ:return_trace (ਝੂਠ);
     }
   }
 
   HBUINT8	format;
-  union {
+  ਸੰਘ {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
-  DEFINE_SIZE_MIN (1);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਗਿਣਤੀ_4>
+ਬਣਤਰ Subrs : CFFIndex<ਗਿਣਤੀ_4>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ_4 ਗਿਣਤੀ_type;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFFIndex<ਗਿਣਤੀ_4> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_OT_CFF_COMMON_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_CFF_COMMON_HH */

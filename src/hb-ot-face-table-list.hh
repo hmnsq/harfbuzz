@@ -28,14 +28,14 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_TABLE_LIST_HH
-#define HB_OT_FACE_TABLE_LIST_HH
-#endif /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_FACE_ਸਾਰਣੀ_LIST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_FACE_ਸਾਰਣੀ_LIST_HH
+#ਜੇ_ਅੰਤ /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_OT_ACCELERATOR
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type)
-#define _HB_OT_ACCELERATOR_UNDEF
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_ACCELERATOR
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ACCELERATOR(Namespace, Type) HB_OT_ਸਾਰਣੀ (Namespace, Type)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _HB_OT_ACCELERATOR_UNDEF
+#ਜੇ_ਅੰਤ
 
 
 /* This lists font tables that the hb_face_t will contain and lazily
@@ -46,103 +46,103 @@
 
 
 /* OpenType fundamentals. */
-HB_OT_TABLE (OT, head)
+HB_OT_ਸਾਰਣੀ (OT, ਸਿਰ_2)
 HB_OT_ACCELERATOR (OT, maxp)
-#if !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
+#ਜੇ !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
 HB_OT_ACCELERATOR (OT, cmap)
-#endif
+#ਜੇ_ਅੰਤ
 HB_OT_ACCELERATOR (OT, hhea)
 HB_OT_ACCELERATOR (OT, hmtx)
-HB_OT_TABLE (OT, OS2)
-#if !defined(HB_NO_OT_FONT_GLYPH_NAMES) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
+HB_OT_ਸਾਰਣੀ (OT, OS2)
+#ਜੇ !defined(HB_NO_OT_FONT_GLYPH_ਨਾਂ) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
 HB_OT_ACCELERATOR (OT, post)
-#endif
-#ifndef HB_NO_NAME
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_NAME
 HB_OT_ACCELERATOR (OT, name)
-#endif
-#ifndef HB_NO_STYLE
-HB_OT_TABLE (OT, STAT)
-#endif
-#ifndef HB_NO_META
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_STYLE
+HB_OT_ਸਾਰਣੀ (OT, STAT)
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_META
 HB_OT_ACCELERATOR (OT, meta)
-#endif
+#ਜੇ_ਅੰਤ
 
 /* Vertical layout. */
-#ifndef HB_NO_VERTICAL
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
 HB_OT_ACCELERATOR (OT, vhea)
 HB_OT_ACCELERATOR (OT, vmtx)
-HB_OT_TABLE (OT, VORG)
-#endif
+HB_OT_ਸਾਰਣੀ (OT, VORG)
+#ਜੇ_ਅੰਤ
 
 /* TrueType outlines. */
-HB_OT_TABLE (OT, loca)
+HB_OT_ਸਾਰਣੀ (OT, loca)
 HB_OT_ACCELERATOR (OT, glyf)
 
 /* CFF outlines. */
-#ifndef HB_NO_CFF
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_CFF
 HB_OT_ACCELERATOR (OT, cff1)
 HB_OT_ACCELERATOR (OT, cff2)
-#endif
+#ਜੇ_ਅੰਤ
 
 /* OpenType variations. */
-#ifndef HB_NO_VAR
-HB_OT_TABLE (OT, fvar)
-HB_OT_TABLE (OT, avar)
-HB_OT_TABLE (OT, cvar)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+HB_OT_ਸਾਰਣੀ (OT, fvar)
+HB_OT_ਸਾਰਣੀ (OT, avar)
+HB_OT_ਸਾਰਣੀ (OT, cvar)
 HB_OT_ACCELERATOR (OT, gvar)
-HB_OT_TABLE (OT, MVAR)
-#ifndef HB_NO_VAR_COMPOSITES
+HB_OT_ਸਾਰਣੀ (OT, MVAR)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
 HB_OT_ACCELERATOR (OT, VARC)
-#endif
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 /* Legacy kern. */
-#ifndef HB_NO_OT_KERN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
 HB_OT_ACCELERATOR (OT, kern)
-#endif
+#ਜੇ_ਅੰਤ
 
 /* OpenType shaping. */
-#ifndef HB_NO_OT_LAYOUT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_LAYOUT
 HB_OT_ACCELERATOR (OT, GDEF)
 HB_OT_ACCELERATOR (OT, GSUB)
 HB_OT_ACCELERATOR (OT, GPOS)
 //HB_OT_TABLE (OT, JSTF)
-#endif
+#ਜੇ_ਅੰਤ
 
 /* OpenType baseline. */
-#ifndef HB_NO_BASE
-HB_OT_TABLE (OT, BASE)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_ਅਧਾਰ
+HB_OT_ਸਾਰਣੀ (OT, ਅਧਾਰ_4)
+#ਜੇ_ਅੰਤ
 
 /* AAT shaping. */
-#ifndef HB_NO_AAT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT
 HB_OT_ACCELERATOR (AAT, morx)
 HB_OT_ACCELERATOR (AAT, mort)
 HB_OT_ACCELERATOR (AAT, kerx)
-HB_OT_TABLE (AAT, ankr)
-HB_OT_TABLE (AAT, trak)
-HB_OT_TABLE (AAT, ltag)
-HB_OT_TABLE (AAT, feat)
+HB_OT_ਸਾਰਣੀ (AAT, ankr)
+HB_OT_ਸਾਰਣੀ (AAT, trak)
+HB_OT_ਸਾਰਣੀ (AAT, ltag)
+HB_OT_ਸਾਰਣੀ (AAT, feat)
 // HB_OT_TABLE (AAT, opbd)
-#endif
+#ਜੇ_ਅੰਤ
 
 /* OpenType color fonts. */
-#ifndef HB_NO_COLOR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_COLOR
 HB_OT_ACCELERATOR (OT, COLR)
-HB_OT_TABLE (OT, CPAL)
+HB_OT_ਸਾਰਣੀ (OT, CPAL)
 HB_OT_ACCELERATOR (OT, CBDT)
 HB_OT_ACCELERATOR (OT, sbix)
-#ifndef HB_NO_SVG
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SVG
 HB_OT_ACCELERATOR (OT, SVG)
-#endif
-#endif
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
 /* OpenType math. */
-#ifndef HB_NO_MATH
-HB_OT_TABLE (OT, MATH)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_MATH
+HB_OT_ਸਾਰਣੀ (OT, MATH)
+#ਜੇ_ਅੰਤ
 
 
-#ifdef _HB_OT_ACCELERATOR_UNDEF
-#undef HB_OT_ACCELERATOR
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ _HB_OT_ACCELERATOR_UNDEF
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ACCELERATOR
+#ਜੇ_ਅੰਤ

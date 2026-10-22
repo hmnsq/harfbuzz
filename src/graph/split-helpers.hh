@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਗ੍ਰਾਫ_ਵੰਡੋ_HELPERS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਗ੍ਰਾਫ_ਵੰਡੋ_HELPERS_HH
 
-#include "graph-result.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "graph-result.hh"
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Context>
+HB_ਅੰਦਰੂਨੀ
+ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>> actuate_subtable_ਵੰਡੋ (Context& ਵੰਡੋ_context,
+                                                              ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& ਵੰਡੋ_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> new_objects;
+  ਜੇ (!ਵੰਡੋ_points)
+    ਵਾਪਸ Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਵੰਡੋ_points.ਲੰਮਾਈ; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = ਵੰਡੋ_points[i];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ = (i < ਵੰਡੋ_points.ਲੰਮਾਈ - 1)
+                   ? ਵੰਡੋ_points[i + 1]
+                   : ਵੰਡੋ_context.original_ਗਿਣਤੀ_2 ();
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ id, ਵੰਡੋ_context.clone_range (ਸ਼ੁਰੂ, ਸਿਰਾ));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ>::from (new_objects, ਵੰਡ_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (ਵੰਡੋ_context.shrink (ਵੰਡੋ_points[0]));
 
-  return Ok(new_objects);
+  ਵਾਪਸ Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#ਜੇ_ਅੰਤ  // GRAPH_SPLIT_HELPERS_HH

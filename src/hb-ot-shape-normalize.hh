@@ -24,80 +24,80 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_NORMALIZE_HH
-#define HB_OT_SHAPE_NORMALIZE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPE_NORMALIZE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPE_NORMALIZE_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-unicode.hh"
 
 
 /* buffer var allocations, used during the normalization process */
-#define normalizer_glyph_index()	var1.u32
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ normalizer_glyph_ਸੂਚਕਾਂਕ()	var1.u32
 
-struct hb_ot_shape_plan_t;
+ਬਣਤਰ hb_ot_shape_plan_t;
 
-enum hb_ot_shape_normalization_mode_t {
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED,
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS, /* Never composes base-to-base */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
+ਗਿਣਤੀ hb_ot_shape_normalization_ਬਹੁਲਕ_t {
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_NONE,
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_DECOMPOSED,
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_COMPOSED_DIACRITICS, /* Never composes base-to-base */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
 
-  HB_OT_SHAPE_NORMALIZATION_MODE_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT = HB_OT_SHAPE_NORMALIZATION_MODE_AUTO
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_DEFAULT = HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_AUTO
 };
 
-HB_INTERNAL void _hb_ot_shape_normalize (const hb_ot_shape_plan_t *shaper,
-					 hb_buffer_t *buffer,
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ _hb_ot_shape_normalize (ਅਚਲ hb_ot_shape_plan_t *shaper,
+					 hb_ਬਫਰ_t *ਬਫਰ,
 					 hb_font_t *font);
 
 
-struct hb_ot_shape_normalize_context_t
+ਬਣਤਰ hb_ot_shape_normalize_context_t
 {
-  static bool
-  decompose_unicode (const hb_ot_shape_normalize_context_t *c,
+  ਸਥਿਰ ਤਾਰਕਿਕ
+  decompose_unicode (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    ਵਾਪਸ (ਤਾਰਕਿਕ) c->unicode->decompose (ab, a, b);
   }
 
-  static bool
-  compose_unicode (const hb_ot_shape_normalize_context_t *c,
+  ਸਥਿਰ ਤਾਰਕਿਕ
+  compose_unicode (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    ਵਾਪਸ (ਤਾਰਕਿਕ) c->unicode->compose (a, b, ab);
   }
 
-  void
-  override_decompose_and_compose (bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  ਖਾਲੀ
+  override_decompose_and_compose (ਤਾਰਕਿਕ (*decompose) (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 						      hb_codepoint_t  ab,
 						      hb_codepoint_t *a,
 						      hb_codepoint_t *b),
-				  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+				  ਤਾਰਕਿਕ (*compose) (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 						   hb_codepoint_t  a,
 						   hb_codepoint_t  b,
 						   hb_codepoint_t *ab))
   {
-    this->decompose = decompose ? decompose : decompose_unicode;
-    this->compose = compose ? compose : compose_unicode;
+    ਇਹ->decompose = decompose ? decompose : decompose_unicode;
+    ਇਹ->compose = compose ? compose : compose_unicode;
   }
 
-  const hb_ot_shape_plan_t *plan;
-  hb_buffer_t *buffer;
+  ਅਚਲ hb_ot_shape_plan_t *plan;
+  hb_ਬਫਰ_t *ਬਫਰ;
   hb_font_t *font;
   hb_unicode_funcs_t *unicode;
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  ਤਾਰਕਿਕ (*decompose) (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  ਤਾਰਕਿਕ (*compose) (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);
 };
 
 
-#endif /* HB_OT_SHAPE_NORMALIZE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPE_NORMALIZE_HH */

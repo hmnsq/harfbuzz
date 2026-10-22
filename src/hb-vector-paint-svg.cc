@@ -24,36 +24,36 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-paint.hh"
-#include "hb-vector-path.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-paint.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-path.hh"
 
-#include <math.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <math.h>
 
-static const char *
-hb_vector_svg_extend_mode_str (hb_paint_extend_t ext)
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ *
+hb_ਸਦਿਸ਼_svg_extend_ਬਹੁਲਕ_str (hb_paint_extend_t ext)
 {
-  switch (ext)
+  ਚੋਣ (ext)
   {
-    case HB_PAINT_EXTEND_PAD: return "pad";
-    case HB_PAINT_EXTEND_REPEAT: return "repeat";
-    case HB_PAINT_EXTEND_REFLECT: return "reflect";
-    default: return "pad";
+    ਹਾਲਤ HB_PAINT_EXTEND_PAD: ਵਾਪਸ "pad";
+    ਹਾਲਤ HB_PAINT_EXTEND_REPEAT: ਵਾਪਸ "repeat";
+    ਹਾਲਤ HB_PAINT_EXTEND_REFLECT: ਵਾਪਸ "reflect";
+    ਮੂਲ: ਵਾਪਸ "pad";
   }
 }
 
-static void
-hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
-				hb_vector_buf_t *buf,
-				hb_vector_t<hb_color_stop_t> *stops)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_emit_color_stops (hb_ਸਦਿਸ਼_paint_t *paint,
+				hb_ਸਦਿਸ਼_buf_t *buf,
+				hb_ਸਦਿਸ਼_t<hb_color_stop_t> *stops)
 {
-  for (unsigned i = 0; i < stops->length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < stops->ਲੰਮਾਈ; i++)
   {
     hb_color_t c = stops->arrayZ[i].color;
     buf->append_str ("<stop offset=\"");
-    buf->append_num (stops->arrayZ[i].offset, 4);
+    buf->append_ਅੰਕ (stops->arrayZ[i].ਵਿੱਥ, 4);
     buf->append_str ("\" stop-color=\"rgb(");
     buf->append_unsigned (hb_color_get_red (c));
     buf->append_c (',');
@@ -61,181 +61,181 @@ hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
     buf->append_c (',');
     buf->append_unsigned (hb_color_get_blue (c));
     buf->append_str (")\"");
-    if (hb_color_get_alpha (c) != 255)
+    ਜੇ (hb_color_get_alpha (c) != 255)
     {
       buf->append_str (" stop-opacity=\"");
-      buf->append_num (hb_color_get_alpha (c) / 255.f, 4);
+      buf->append_ਅੰਕ (hb_color_get_alpha (c) / 255.f, 4);
       buf->append_c ('"');
     }
     buf->append_str ("/>\n");
   }
 }
 
-static const char *
-hb_vector_svg_composite_mode_str (hb_paint_composite_mode_t mode)
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ *
+hb_ਸਦਿਸ਼_svg_ਸੰਯੁਕਤ_ਬਹੁਲਕ_str (hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ)
 {
-  switch (mode)
+  ਚੋਣ (ਬਹੁਲਕ)
   {
     /* Porter-Duff modes have no SVG mix-blend-mode equivalent;
      * approximate the two that have a plausible color-blend analog,
      * and let the rest fall through to normal (SRC_OVER). */
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_XOR: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_CLEAR:
-    case HB_PAINT_COMPOSITE_MODE_SRC:
-    case HB_PAINT_COMPOSITE_MODE_DEST:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      return nullptr;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return "normal";
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return "overlay";
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return "darken";
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return "lighten";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return "color-dodge";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return "color-burn";
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return "hard-light";
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return "soft-light";
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return "exclusion";
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return "multiply";
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return "hue";
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "saturation";
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return "color";
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "luminosity";
-    default: return nullptr;
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_PLUS: ਵਾਪਸ "screen";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_XOR: ਵਾਪਸ "difference";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_CLEAR:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_OVER:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਵਿੱਚ:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਵਿੱਚ:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਬਾਹਰਲਾ:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਬਾਹਰਲਾ:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ATOP:
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ATOP:
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_OVER: ਵਾਪਸ "normal";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SCREEN: ਵਾਪਸ "screen";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_OVERLAY: ਵਾਪਸ "overlay";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DARKEN: ਵਾਪਸ "darken";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_LIGHTEN: ਵਾਪਸ "lighten";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_COLOR_DODGE: ਵਾਪਸ "color-dodge";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_COLOR_BURN: ਵਾਪਸ "color-burn";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_HARD_LIGHT: ਵਾਪਸ "hard-light";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SOFT_LIGHT: ਵਾਪਸ "soft-light";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DIFFERENCE: ਵਾਪਸ "difference";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_EXCLUSION: ਵਾਪਸ "exclusion";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_MULTIPLY: ਵਾਪਸ "multiply";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_HSL_HUE: ਵਾਪਸ "hue";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_HSL_SATURATION: ਵਾਪਸ "saturation";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_HSL_COLOR: ਵਾਪਸ "color";
+    ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_HSL_LUMINOSITY: ਵਾਪਸ "luminosity";
+    ਮੂਲ: ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 }
 
-struct hb_vector_svg_point_t { float x, y; };
-struct hb_vector_svg_rgba_t { float r, g, b, a; };
+ਬਣਤਰ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t { ਦਸ਼ਮਲਵ x, y; };
+ਬਣਤਰ hb_ਸਦਿਸ਼_svg_rgba_t { ਦਸ਼ਮਲਵ r, g, b, a; };
 
-static inline float
-hb_vector_svg_lerp (float a, float b, float t)
-{ return a + (b - a) * t; }
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+hb_ਸਦਿਸ਼_svg_lerp (ਦਸ਼ਮਲਵ a, ਦਸ਼ਮਲਵ b, ਦਸ਼ਮਲਵ t)
+{ ਵਾਪਸ a + (b - a) * t; }
 
-static inline float
-hb_vector_svg_clamp01 (float v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+hb_ਸਦਿਸ਼_svg_clamp01 (ਦਸ਼ਮਲਵ v)
 {
-  if (v < 0.f) return 0.f;
-  if (v > 1.f) return 1.f;
-  return v;
+  ਜੇ (v < 0.f) ਵਾਪਸ 0.f;
+  ਜੇ (v > 1.f) ਵਾਪਸ 1.f;
+  ਵਾਪਸ v;
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_rgba_from_hb_color (hb_color_t c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_rgba_t
+hb_ਸਦਿਸ਼_svg_rgba_from_hb_color (hb_color_t c)
 {
-  return {(float) hb_color_get_red (c) / 255.f,
-          (float) hb_color_get_green (c) / 255.f,
-          (float) hb_color_get_blue (c) / 255.f,
-          (float) hb_color_get_alpha (c) / 255.f};
+  ਵਾਪਸ {(ਦਸ਼ਮਲਵ) hb_color_get_red (c) / 255.f,
+          (ਦਸ਼ਮਲਵ) hb_color_get_green (c) / 255.f,
+          (ਦਸ਼ਮਲਵ) hb_color_get_blue (c) / 255.f,
+          (ਦਸ਼ਮਲਵ) hb_color_get_alpha (c) / 255.f};
 }
 
-static inline hb_color_t
-hb_vector_svg_hb_color_from_rgba (const hb_vector_svg_rgba_t &c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_color_t
+hb_ਸਦਿਸ਼_svg_hb_color_from_rgba (ਅਚਲ hb_ਸਦਿਸ਼_svg_rgba_t &c)
 {
-  unsigned r = (unsigned) roundf (hb_vector_svg_clamp01 (c.r) * 255.f);
-  unsigned g = (unsigned) roundf (hb_vector_svg_clamp01 (c.g) * 255.f);
-  unsigned b = (unsigned) roundf (hb_vector_svg_clamp01 (c.b) * 255.f);
-  unsigned a = (unsigned) roundf (hb_vector_svg_clamp01 (c.a) * 255.f);
-  return HB_COLOR (b, g, r, a);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ r = (ਬਿਨਾਨਿਸ਼ਾਨੀ) roundf (hb_ਸਦਿਸ਼_svg_clamp01 (c.r) * 255.f);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ g = (ਬਿਨਾਨਿਸ਼ਾਨੀ) roundf (hb_ਸਦਿਸ਼_svg_clamp01 (c.g) * 255.f);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ b = (ਬਿਨਾਨਿਸ਼ਾਨੀ) roundf (hb_ਸਦਿਸ਼_svg_clamp01 (c.b) * 255.f);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ a = (ਬਿਨਾਨਿਸ਼ਾਨੀ) roundf (hb_ਸਦਿਸ਼_svg_clamp01 (c.a) * 255.f);
+  ਵਾਪਸ HB_COLOR (b, g, r, a);
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_lerp_rgba (const hb_vector_svg_rgba_t &c0,
-			 const hb_vector_svg_rgba_t &c1,
-			 float t)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_rgba_t
+hb_ਸਦਿਸ਼_svg_lerp_rgba (ਅਚਲ hb_ਸਦਿਸ਼_svg_rgba_t &c0,
+			 ਅਚਲ hb_ਸਦਿਸ਼_svg_rgba_t &c1,
+			 ਦਸ਼ਮਲਵ t)
 {
-  return {hb_vector_svg_lerp (c0.r, c1.r, t),
-          hb_vector_svg_lerp (c0.g, c1.g, t),
-          hb_vector_svg_lerp (c0.b, c1.b, t),
-          hb_vector_svg_lerp (c0.a, c1.a, t)};
+  ਵਾਪਸ {hb_ਸਦਿਸ਼_svg_lerp (c0.r, c1.r, t),
+          hb_ਸਦਿਸ਼_svg_lerp (c0.g, c1.g, t),
+          hb_ਸਦਿਸ਼_svg_lerp (c0.b, c1.b, t),
+          hb_ਸਦਿਸ਼_svg_lerp (c0.a, c1.a, t)};
 }
 
-static inline float hb_vector_svg_dot (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return p.x * q.x + p.y * q.y; }
-static inline hb_vector_svg_point_t hb_vector_svg_add (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x + q.x, p.y + q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_sub (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x - q.x, p.y - q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_scale (const hb_vector_svg_point_t &p, float f) { return {p.x * f, p.y * f}; }
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ hb_ਸਦਿਸ਼_svg_dot (ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &p, ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &q) { ਵਾਪਸ p.x * q.x + p.y * q.y; }
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &p, ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &q) { ਵਾਪਸ {p.x + q.x, p.y + q.y}; }
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t hb_ਸਦਿਸ਼_svg_sub (ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &p, ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &q) { ਵਾਪਸ {p.x - q.x, p.y - q.y}; }
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t hb_ਸਦਿਸ਼_svg_scale (ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &p, ਦਸ਼ਮਲਵ f) { ਵਾਪਸ {p.x * f, p.y * f}; }
 
-static inline hb_vector_svg_point_t
-hb_vector_svg_normalize (const hb_vector_svg_point_t &p)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t
+hb_ਸਦਿਸ਼_svg_normalize (ਅਚਲ hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t &p)
 {
-  float len = sqrtf (hb_vector_svg_dot (p, p));
-  if (len == 0.f) return {0.f, 0.f};
-  return hb_vector_svg_scale (p, 1.f / len);
+  ਦਸ਼ਮਲਵ len = sqrtf (hb_ਸਦਿਸ਼_svg_dot (p, p));
+  ਜੇ (len == 0.f) ਵਾਪਸ {0.f, 0.f};
+  ਵਾਪਸ hb_ਸਦਿਸ਼_svg_scale (p, 1.f / len);
 }
 
-static void
-hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
-			       unsigned precision,
-			       float cx, float cy, float radius,
-			       float a0, const hb_vector_svg_rgba_t &c0_in,
-			       float a1, const hb_vector_svg_rgba_t &c1_in)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਜੋੜੋ_sweep_patch (hb_ਸਦਿਸ਼_buf_t *body,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ precision,
+			       ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy, ਦਸ਼ਮਲਵ radius,
+			       ਦਸ਼ਮਲਵ a0, ਅਚਲ hb_ਸਦਿਸ਼_svg_rgba_t &c0_ਵਿੱਚ,
+			       ਦਸ਼ਮਲਵ a1, ਅਚਲ hb_ਸਦਿਸ਼_svg_rgba_t &c1_ਵਿੱਚ)
 {
-  static const float max_angle = HB_PI / 16.f;
-  hb_vector_svg_point_t center = {cx, cy};
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / max_angle);
-  if (num_splits < 1) num_splits = 1;
+  ਸਥਿਰ ਅਚਲ ਦਸ਼ਮਲਵ max_angle = HB_PI / 16.f;
+  hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t center = {cx, cy};
+  ਪੂਰਨ ਅੰਕ_splits = (ਪੂਰਨ) ceilf (fabsf (a1 - a0) / max_angle);
+  ਜੇ (ਅੰਕ_splits < 1) ਅੰਕ_splits = 1;
 
-  hb_vector_svg_point_t p0 = {cosf (a0), sinf (a0)};
-  hb_vector_svg_rgba_t color0 = c0_in;
+  hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t p0 = {cosf (a0), sinf (a0)};
+  hb_ਸਦਿਸ਼_svg_rgba_t color0 = c0_ਵਿੱਚ;
 
-  for (int a = 0; a < num_splits; a++)
+  ਲਈ (ਪੂਰਨ a = 0; a < ਅੰਕ_splits; a++)
   {
-    float k = (a + 1.f) / num_splits;
-    float angle1 = hb_vector_svg_lerp (a0, a1, k);
-    hb_vector_svg_rgba_t color1 = hb_vector_svg_lerp_rgba (c0_in, c1_in, k);
+    ਦਸ਼ਮਲਵ k = (a + 1.f) / ਅੰਕ_splits;
+    ਦਸ਼ਮਲਵ angle1 = hb_ਸਦਿਸ਼_svg_lerp (a0, a1, k);
+    hb_ਸਦਿਸ਼_svg_rgba_t color1 = hb_ਸਦਿਸ਼_svg_lerp_rgba (c0_ਵਿੱਚ, c1_ਵਿੱਚ, k);
 
-    hb_vector_svg_point_t p1 = {cosf (angle1), sinf (angle1)};
-    hb_vector_svg_point_t sp0 = hb_vector_svg_add (center, hb_vector_svg_scale (p0, radius));
-    hb_vector_svg_point_t sp1 = hb_vector_svg_add (center, hb_vector_svg_scale (p1, radius));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t p1 = {cosf (angle1), sinf (angle1)};
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t sp0 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (center, hb_ਸਦਿਸ਼_svg_scale (p0, radius));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t sp1 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (center, hb_ਸਦਿਸ਼_svg_scale (p1, radius));
 
-    hb_vector_svg_point_t A = hb_vector_svg_normalize (hb_vector_svg_add (p0, p1));
-    hb_vector_svg_point_t U = {-A.y, A.x};
-    float up0 = hb_vector_svg_dot (U, p0);
-    float up1 = hb_vector_svg_dot (U, p1);
-    if (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t A = hb_ਸਦਿਸ਼_svg_normalize (hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (p0, p1));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t U = {-A.y, A.x};
+    ਦਸ਼ਮਲਵ up0 = hb_ਸਦਿਸ਼_svg_dot (U, p0);
+    ਦਸ਼ਮਲਵ up1 = hb_ਸਦਿਸ਼_svg_dot (U, p1);
+    ਜੇ (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
     {
       p0 = p1;
       color0 = color1;
-      continue;
+      ਜਾਰੀ;
     }
-    hb_vector_svg_point_t C0 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p0, A), p0) / up0));
-    hb_vector_svg_point_t C1 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p1, A), p1) / up1));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t C0 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (A, hb_ਸਦਿਸ਼_svg_scale (U, hb_ਸਦਿਸ਼_svg_dot (hb_ਸਦਿਸ਼_svg_sub (p0, A), p0) / up0));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t C1 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (A, hb_ਸਦਿਸ਼_svg_scale (U, hb_ਸਦਿਸ਼_svg_dot (hb_ਸਦਿਸ਼_svg_sub (p1, A), p1) / up1));
 
-    hb_vector_svg_point_t sc0 = hb_vector_svg_add (center, hb_vector_svg_scale (hb_vector_svg_add (C0, hb_vector_svg_scale (hb_vector_svg_sub (C0, p0), 0.33333f)), radius));
-    hb_vector_svg_point_t sc1 = hb_vector_svg_add (center, hb_vector_svg_scale (hb_vector_svg_add (C1, hb_vector_svg_scale (hb_vector_svg_sub (C1, p1), 0.33333f)), radius));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t sc0 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (center, hb_ਸਦਿਸ਼_svg_scale (hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (C0, hb_ਸਦਿਸ਼_svg_scale (hb_ਸਦਿਸ਼_svg_sub (C0, p0), 0.33333f)), radius));
+    hb_ਸਦਿਸ਼_svg_ਬਿੰਦੂ_t sc1 = hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (center, hb_ਸਦਿਸ਼_svg_scale (hb_ਸਦਿਸ਼_svg_ਜੋੜੋ (C1, hb_ਸਦਿਸ਼_svg_scale (hb_ਸਦਿਸ਼_svg_sub (C1, p1), 0.33333f)), radius));
 
-    hb_vector_svg_rgba_t mid_color = hb_vector_svg_lerp_rgba (color0, color1, 0.5f);
-    hb_color_t mid = hb_vector_svg_hb_color_from_rgba (mid_color);
+    hb_ਸਦਿਸ਼_svg_rgba_t mid_color = hb_ਸਦਿਸ਼_svg_lerp_rgba (color0, color1, 0.5f);
+    hb_color_t mid = hb_ਸਦਿਸ਼_svg_hb_color_from_rgba (mid_color);
 
     body->append_str ("<path d=\"M");
-    body->append_num (center.x, precision);
+    body->append_ਅੰਕ (center.x, precision);
     body->append_c (',');
-    body->append_num (center.y, precision);
+    body->append_ਅੰਕ (center.y, precision);
     body->append_str ("L");
-    body->append_num (sp0.x, precision);
+    body->append_ਅੰਕ (sp0.x, precision);
     body->append_c (',');
-    body->append_num (sp0.y, precision);
+    body->append_ਅੰਕ (sp0.y, precision);
     body->append_str ("C");
-    body->append_num (sc0.x, precision);
+    body->append_ਅੰਕ (sc0.x, precision);
     body->append_c (',');
-    body->append_num (sc0.y, precision);
+    body->append_ਅੰਕ (sc0.y, precision);
     body->append_c (' ');
-    body->append_num (sc1.x, precision);
+    body->append_ਅੰਕ (sc1.x, precision);
     body->append_c (',');
-    body->append_num (sc1.y, precision);
+    body->append_ਅੰਕ (sc1.y, precision);
     body->append_c (' ');
-    body->append_num (sp1.x, precision);
+    body->append_ਅੰਕ (sp1.x, precision);
     body->append_c (',');
-    body->append_num (sp1.y, precision);
+    body->append_ਅੰਕ (sp1.y, precision);
     body->append_str ("Z\" fill=\"");
-    body->append_svg_color (mid, true);
+    body->append_svg_color (mid, ਸੱਚ);
     body->append_str ("\"/>\n");
 
     p0 = p1;
@@ -244,250 +244,250 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_vector_svg_sweep_ctx_t
+ਬਣਤਰ hb_ਸਦਿਸ਼_svg_sweep_ctx_t
 {
-  hb_vector_buf_t *body;
-  unsigned precision;
-  float cx, cy, radius;
+  hb_ਸਦਿਸ਼_buf_t *body;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ precision;
+  ਦਸ਼ਮਲਵ cx, cy, radius;
 };
 
-static void
-hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
-				float a1, hb_color_t c1,
-				void *user_data)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_sweep_emit_patch (ਦਸ਼ਮਲਵ a0, hb_color_t c0,
+				ਦਸ਼ਮਲਵ a1, hb_color_t c1,
+				ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  auto *ctx = (hb_vector_svg_sweep_ctx_t *) user_data;
+  ਸਵੈਚਾਲਿਤ *ctx = (hb_ਸਦਿਸ਼_svg_sweep_ctx_t *) user_ਅੰਕੜੇ;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once
    * the buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->body->in_error ()))
-    return;
-  hb_vector_svg_add_sweep_patch (ctx->body, ctx->precision,
+  ਜੇ (unlikely (ctx->body->ਵਿੱਚ_error ()))
+    ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_svg_ਜੋੜੋ_sweep_patch (ctx->body, ctx->precision,
 				 ctx->cx, ctx->cy, ctx->radius,
-				 a0, hb_vector_svg_rgba_from_hb_color (c0),
-				 a1, hb_vector_svg_rgba_from_hb_color (c1));
+				 a0, hb_ਸਦਿਸ਼_svg_rgba_from_hb_color (c0),
+				 a1, hb_ਸਦਿਸ਼_svg_rgba_from_hb_color (c1));
 }
 
 
-static void hb_vector_paint_push_transform (hb_paint_funcs_t *, void *,
-                                            float, float, float, float, float, float,
-                                            void *);
-static void hb_vector_paint_pop_transform (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_fill_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, void *);
-static void hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static void hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *, void *, float, float, float, float, void *);
-static hb_draw_funcs_t * hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *, void *, void **, void *);
-static void hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_clip (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_color (hb_paint_funcs_t *, void *, hb_bool_t, hb_color_t, void *);
-static hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, void *, hb_blob_t *, unsigned, unsigned, hb_tag_t, float, hb_glyph_extents_t *, void *);
-static void hb_vector_paint_linear_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_radial_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, void *);
-static void hb_vector_paint_push_group (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_group (hb_paint_funcs_t *, void *, hb_paint_composite_mode_t, void *);
-static hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static hb_bool_t
-hb_vector_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				      void *paint_data,
-				      unsigned color_index,
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_transform (hb_paint_funcs_t *, ਖਾਲੀ *,
+                                            ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ,
+                                            ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_transform (hb_paint_funcs_t *, ਖਾਲੀ *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_fill_glyph (hb_paint_funcs_t *, ਖਾਲੀ *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_glyph (hb_paint_funcs_t *, ਖਾਲੀ *, hb_codepoint_t, hb_font_t *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_rectangle (hb_paint_funcs_t *, ਖਾਲੀ *, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਖਾਲੀ *);
+ਸਥਿਰ hb_draw_funcs_t * hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ (hb_paint_funcs_t *, ਖਾਲੀ *, ਖਾਲੀ **, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ (hb_paint_funcs_t *, ਖਾਲੀ *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_clip (hb_paint_funcs_t *, ਖਾਲੀ *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_color (hb_paint_funcs_t *, ਖਾਲੀ *, hb_bool_t, hb_color_t, ਖਾਲੀ *);
+ਸਥਿਰ hb_bool_t hb_ਸਦਿਸ਼_paint_image (hb_paint_funcs_t *, ਖਾਲੀ *, hb_blob_t *, ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_ਟੈਗ_t, ਦਸ਼ਮਲਵ, hb_glyph_extents_t *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਰੇਖਿਕ_gradient (hb_paint_funcs_t *, ਖਾਲੀ *, hb_color_ਸਤਰ_t *, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_radial_gradient (hb_paint_funcs_t *, ਖਾਲੀ *, hb_color_ਸਤਰ_t *, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_sweep_gradient (hb_paint_funcs_t *, ਖਾਲੀ *, hb_color_ਸਤਰ_t *, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਦਸ਼ਮਲਵ, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_ਸਮੂਹ (hb_paint_funcs_t *, ਖਾਲੀ *, ਖਾਲੀ *);
+ਸਥਿਰ ਖਾਲੀ hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_ਸਮੂਹ (hb_paint_funcs_t *, ਖਾਲੀ *, hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t, ਖਾਲੀ *);
+ਸਥਿਰ hb_bool_t hb_ਸਦਿਸ਼_paint_color_glyph (hb_paint_funcs_t *, ਖਾਲੀ *, hb_codepoint_t, hb_font_t *, ਖਾਲੀ *);
+ਸਥਿਰ hb_bool_t
+hb_ਸਦਿਸ਼_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+				      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				      ਬਿਨਾਨਿਸ਼ਾਨੀ color_ਸੂਚਕਾਂਕ,
 				      hb_color_t *color,
-				      void *user_data HB_UNUSED)
+				      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_vector_paint_t *paint = (hb_vector_paint_t *) paint_data;
-  if (!color)
-    return false;
+  hb_ਸਦਿਸ਼_paint_t *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (!color)
+    ਵਾਪਸ ਝੂਠ;
 
-  hb_color_t *value = nullptr;
-  if (!paint->custom_palette_colors.has (color_index, &value) || !value)
-    return false;
+  hb_color_t *value = ਖਾਲੀ_ਸੂਚਕ;
+  ਜੇ (!paint->custom_palette_colors.has (color_ਸੂਚਕਾਂਕ, &value) || !value)
+    ਵਾਪਸ ਝੂਠ;
   *color = *value;
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static inline void free_static_vector_paint_funcs ();
-static struct hb_vector_paint_funcs_lazy_loader_t
-  : hb_paint_funcs_lazy_loader_t<hb_vector_paint_funcs_lazy_loader_t>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_ਸਦਿਸ਼_paint_funcs ();
+ਸਥਿਰ ਬਣਤਰ hb_ਸਦਿਸ਼_paint_funcs_lazy_loader_t
+  : hb_paint_funcs_lazy_loader_t<hb_ਸਦਿਸ਼_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ਸਥਿਰ hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_vector_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_vector_paint_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_vector_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_vector_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_vector_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_vector_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_vector_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_vector_paint_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_vector_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_vector_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_vector_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_vector_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_vector_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_vector_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_vector_paint_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_vector_paint_color_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_vector_paint_custom_palette_color, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_vector_paint_get_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_transform_func (funcs, (hb_paint_ਧੱਕੋ_transform_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_transform_func (funcs, (hb_paint_ਕੱਢੋ_transform_func_t) hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_ਸਦਿਸ਼_paint_fill_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_glyph_func (funcs, (hb_paint_ਧੱਕੋ_clip_glyph_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_rectangle_func (funcs, (hb_paint_ਧੱਕੋ_clip_rectangle_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_rectangle, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ_func (funcs, (hb_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ_func (funcs, (hb_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_clip_func (funcs, (hb_paint_ਕੱਢੋ_clip_func_t) hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_clip, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_color_func (funcs, (hb_paint_color_func_t) hb_ਸਦਿਸ਼_paint_color, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_image_func (funcs, (hb_paint_image_func_t) hb_ਸਦਿਸ਼_paint_image, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਰੇਖਿਕ_gradient_func (funcs, (hb_paint_ਰੇਖਿਕ_gradient_func_t) hb_ਸਦਿਸ਼_paint_ਰੇਖਿਕ_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_ਸਦਿਸ਼_paint_radial_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_ਸਦਿਸ਼_paint_sweep_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_ਸਮੂਹ_func (funcs, (hb_paint_ਧੱਕੋ_ਸਮੂਹ_func_t) hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_ਸਮੂਹ_func (funcs, (hb_paint_ਕੱਢੋ_ਸਮੂਹ_func_t) hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_ਸਦਿਸ਼_paint_color_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_ਸਦਿਸ਼_paint_custom_palette_color, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਸੈੱਟ_budget_func (funcs, hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_budget_callback, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_func (funcs, hb_ਸਦਿਸ਼_paint_get_budget_callback, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_ਸਦਿਸ਼_paint_get_budget_ਬਚਿਆ_callback, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
     hb_paint_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_paint_funcs);
-    return funcs;
+    hb_atexit (free_static_ਸਦਿਸ਼_paint_funcs);
+    ਵਾਪਸ funcs;
   }
-} static_vector_paint_funcs;
+} static_ਸਦਿਸ਼_paint_funcs;
 
-static inline void
-free_static_vector_paint_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+free_static_ਸਦਿਸ਼_paint_funcs ()
 {
-  static_vector_paint_funcs.free_instance ();
+  static_ਸਦਿਸ਼_paint_funcs.free_instance ();
 }
 
 hb_paint_funcs_t *
-hb_vector_paint_svg_funcs_get ()
+hb_ਸਦਿਸ਼_paint_svg_funcs_get ()
 {
-  return static_vector_paint_funcs.get_unconst ();
+  ਵਾਪਸ static_ਸਦਿਸ਼_paint_funcs.get_unconst ();
 }
 
 
-static void
-hb_vector_paint_push_transform (hb_paint_funcs_t *,
-                                void *paint_data,
-                                float xx, float yx,
-                                float xy, float yy,
-                                float dx, float dy,
-                                void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_transform (hb_paint_funcs_t *,
+                                ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+                                ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+                                ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy,
+                                ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  if (unlikely (paint->transform_group_overflow_depth))
+  ਜੇ (unlikely (paint->transform_ਸਮੂਹ_ਉਛਾਲ_ਡੂੰਘਾਈ))
   {
-    paint->transform_group_overflow_depth++;
-    return;
+    paint->transform_ਸਮੂਹ_ਉਛਾਲ_ਡੂੰਘਾਈ++;
+    ਵਾਪਸ;
   }
-  if (unlikely (paint->transform_group_depth >= 64))
+  ਜੇ (unlikely (paint->transform_ਸਮੂਹ_ਡੂੰਘਾਈ >= 64))
   {
-    paint->transform_group_overflow_depth = 1;
-    return;
+    paint->transform_ਸਮੂਹ_ਉਛਾਲ_ਡੂੰਘਾਈ = 1;
+    ਵਾਪਸ;
   }
 
   hb_bool_t opened =
     !(fabsf (xx - 1.f) < 1e-6f && fabsf (yx) < 1e-6f &&
       fabsf (xy) < 1e-6f && fabsf (yy - 1.f) < 1e-6f &&
       fabsf (paint->sx (dx)) < 1e-6f && fabsf (paint->sy (dy)) < 1e-6f);
-  paint->transform_group_open_mask = (paint->transform_group_open_mask << 1) | (opened ? 1ull : 0ull);
-  paint->transform_group_depth++;
+  paint->transform_ਸਮੂਹ_open_ਨਕਾਬ = (paint->transform_ਸਮੂਹ_open_ਨਕਾਬ << 1) | (opened ? 1ull : 0ull);
+  paint->transform_ਸਮੂਹ_ਡੂੰਘਾਈ++;
 
-  if (!opened)
-    return;
+  ਜੇ (!opened)
+    ਵਾਪਸ;
 
-  auto &body = paint->current_body ();
-  unsigned sprec = paint->defs.scale_precision ();
+  ਸਵੈਚਾਲਿਤ &body = paint->current_body ();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ sprec = paint->defs.scale_precision ();
   body.append_str ("<g transform=\"matrix(");
-  body.append_num (xx, sprec);
+  body.append_ਅੰਕ (xx, sprec);
   body.append_c (',');
-  body.append_num (yx, sprec);
+  body.append_ਅੰਕ (yx, sprec);
   body.append_c (',');
-  body.append_num (xy, sprec);
+  body.append_ਅੰਕ (xy, sprec);
   body.append_c (',');
-  body.append_num (yy, sprec);
+  body.append_ਅੰਕ (yy, sprec);
   body.append_c (',');
-  body.append_num (paint->sx (dx));
+  body.append_ਅੰਕ (paint->sx (dx));
   body.append_c (',');
-  body.append_num (paint->sy (dy));
+  body.append_ਅੰਕ (paint->sy (dy));
   body.append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_transform (hb_paint_funcs_t *,
-                               void *paint_data,
-                               void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_transform (hb_paint_funcs_t *,
+                               ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                               ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (paint->transform_group_overflow_depth))
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
+  ਜੇ (unlikely (paint->transform_ਸਮੂਹ_ਉਛਾਲ_ਡੂੰਘਾਈ))
   {
-    paint->transform_group_overflow_depth--;
-    return;
+    paint->transform_ਸਮੂਹ_ਉਛਾਲ_ਡੂੰਘਾਈ--;
+    ਵਾਪਸ;
   }
-  if (!paint->transform_group_depth)
-    return;
-  paint->transform_group_depth--;
-  hb_bool_t opened = !!(paint->transform_group_open_mask & 1ull);
-  paint->transform_group_open_mask >>= 1;
-  if (opened)
+  ਜੇ (!paint->transform_ਸਮੂਹ_ਡੂੰਘਾਈ)
+    ਵਾਪਸ;
+  paint->transform_ਸਮੂਹ_ਡੂੰਘਾਈ--;
+  hb_bool_t opened = !!(paint->transform_ਸਮੂਹ_open_ਨਕਾਬ & 1ull);
+  paint->transform_ਸਮੂਹ_open_ਨਕਾਬ >>= 1;
+  ਜੇ (opened)
     paint->current_body ().append_str ("</g>\n");
 }
 
-static void
-hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
-                            void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_fill_glyph (hb_paint_funcs_t *,
+                            ਖਾਲੀ *paint_ਅੰਕੜੇ,
                             hb_codepoint_t glyph,
                             hb_font_t *font,
                             hb_bool_t,
                             hb_color_t color,
-                            void *)
+                            ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  paint->path.clear ();
+  paint->ਰਸਤਾ.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  ਜੇ (likely (paint->budget_ਬਚਿਆ >= 0))
   {
-    hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
-				 paint->x_scale_factor, paint->y_scale_factor,
-				 &paint->budget_remaining};
-    hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
+    hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t sink = {&paint->ਰਸਤਾ, paint->get_precision (),
+				 paint->x_scale_ਗੁਣਕ, paint->y_scale_ਗੁਣਕ,
+				 &paint->budget_ਬਚਿਆ};
+    hb_font_draw_glyph (font, glyph, hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_get (), &sink);
   }
 
-  auto &body = paint->current_body ();
+  ਸਵੈਚਾਲਿਤ &body = paint->current_body ();
   body.append_str ("<path d=\"");
-  body.append_len (paint->path.arrayZ, paint->path.length);
+  body.append_len (paint->ਰਸਤਾ.arrayZ, paint->ਰਸਤਾ.ਲੰਮਾਈ);
   body.append_str ("\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, ਸੱਚ);
   body.append_str ("\"/>\n");
 }
 
-static void
-hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
-                                 void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_glyph (hb_paint_funcs_t *,
+                                 ਖਾਲੀ *paint_ਅੰਕੜੇ,
                                  hb_codepoint_t glyph,
                                  hb_font_t *font,
-                                 void *)
+                                 ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
+  ਅਚਲ ਅੱਖਰ *pfx = paint->id_ਅਗੇਤਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pfx_len = paint->id_ਅਗੇਤਰ_ਲੰਮਾਈ;
 
-  paint->path.clear ();
+  paint->ਰਸਤਾ.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip path clips everything out. */
-  if (likely (paint->budget_remaining >= 0))
+  ਜੇ (likely (paint->budget_ਬਚਿਆ >= 0))
   {
-    hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
-				 paint->x_scale_factor, paint->y_scale_factor,
-				 &paint->budget_remaining};
-    hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
+    hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t sink = {&paint->ਰਸਤਾ, paint->get_precision (),
+				 paint->x_scale_ਗੁਣਕ, paint->y_scale_ਗੁਣਕ,
+				 &paint->budget_ਬਚਿਆ};
+    hb_font_draw_glyph (font, glyph, hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_get (), &sink);
   }
 
-  unsigned def_id = paint->path_def_count++;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ def_id = paint->ਰਸਤਾ_def_ਗਿਣਤੀ++;
   paint->defs.append_str ("<path id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('p');
   paint->defs.append_unsigned (def_id);
   paint->defs.append_str ("\" d=\"");
-  paint->defs.append_len (paint->path.arrayZ, paint->path.length);
+  paint->defs.append_len (paint->ਰਸਤਾ.arrayZ, paint->ਰਸਤਾ.ਲੰਮਾਈ);
   paint->defs.append_str ("\"/>\n");
   paint->defs.append_str ("<clipPath id=\"");
   paint->defs.append_len (pfx, pfx_len);
@@ -506,32 +506,32 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
-                                     void *paint_data,
-                                     float xmin, float ymin,
-                                     float xmax, float ymax,
-                                     void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_rectangle (hb_paint_funcs_t *,
+                                     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                     ਦਸ਼ਮਲਵ xmin, ਦਸ਼ਮਲਵ ymin,
+                                     ਦਸ਼ਮਲਵ xmax, ਦਸ਼ਮਲਵ ymax,
+                                     ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned clip_id = paint->clip_rect_counter++;
+  ਅਚਲ ਅੱਖਰ *pfx = paint->id_ਅਗੇਤਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pfx_len = paint->id_ਅਗੇਤਰ_ਲੰਮਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ clip_id = paint->clip_rect_counter++;
   paint->defs.append_str ("<clipPath id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('c');
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><rect x=\"");
-  paint->defs.append_num (paint->sx (xmin));
+  paint->defs.append_ਅੰਕ (paint->sx (xmin));
   paint->defs.append_str ("\" y=\"");
-  paint->defs.append_num (paint->sy (ymin));
+  paint->defs.append_ਅੰਕ (paint->sy (ymin));
   paint->defs.append_str ("\" width=\"");
-  paint->defs.append_num (paint->sx (xmax - xmin));
+  paint->defs.append_ਅੰਕ (paint->sx (xmax - xmin));
   paint->defs.append_str ("\" height=\"");
-  paint->defs.append_num (paint->sy (ymax - ymin));
+  paint->defs.append_ਅੰਕ (paint->sy (ymax - ymin));
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -541,40 +541,40 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static hb_draw_funcs_t *
-hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
-                                      void *paint_data,
-                                      void **draw_data,
-                                      void *)
+ਸਥਿਰ hb_draw_funcs_t *
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ (hb_paint_funcs_t *,
+                                      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                      ਖਾਲੀ **draw_ਅੰਕੜੇ,
+                                      ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
   {
-    *draw_data = nullptr;
-    return nullptr;
+    *draw_ਅੰਕੜੇ = ਖਾਲੀ_ਸੂਚਕ;
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  paint->path.clear ();
-  paint->clip_path_sink = {&paint->path, paint->get_precision (),
-			   paint->x_scale_factor,
-			   paint->y_scale_factor,
-			   &paint->budget_remaining};
-  *draw_data = &paint->clip_path_sink;
-  return hb_vector_svg_path_draw_funcs_get ();
+  paint->ਰਸਤਾ.clear ();
+  paint->clip_ਰਸਤਾ_sink = {&paint->ਰਸਤਾ, paint->get_precision (),
+			   paint->x_scale_ਗੁਣਕ,
+			   paint->y_scale_ਗੁਣਕ,
+			   &paint->budget_ਬਚਿਆ};
+  *draw_ਅੰਕੜੇ = &paint->clip_ਰਸਤਾ_sink;
+  ਵਾਪਸ hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_get ();
 }
 
-static void
-hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
-                                    void *paint_data,
-                                    void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ (hb_paint_funcs_t *,
+                                    ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                    ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned clip_id = paint->clip_path_counter++;
+  ਅਚਲ ਅੱਖਰ *pfx = paint->id_ਅਗੇਤਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pfx_len = paint->id_ਅਗੇਤਰ_ਲੰਮਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ clip_id = paint->clip_ਰਸਤਾ_counter++;
 
   /* The accumulated path is in font Y-up coords (the
    * convention used inside per-glyph <use scale(_,-sy)>
@@ -587,7 +587,7 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->defs.append_str ("cp");
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><path transform=\"scale(1,-1)\" d=\"");
-  paint->defs.append_len (paint->path.arrayZ, paint->path.length);
+  paint->defs.append_len (paint->ਰਸਤਾ.arrayZ, paint->ਰਸਤਾ.ਲੰਮਾਈ);
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -597,138 +597,138 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_clip (hb_paint_funcs_t *,
-                          void *paint_data,
-                          void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_clip (hb_paint_funcs_t *,
+                          ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                          ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
   paint->current_body ().append_str ("</g>\n");
 }
 
-static void
-hb_vector_paint_color (hb_paint_funcs_t *,
-                       void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_color (hb_paint_funcs_t *,
+                       ਖਾਲੀ *paint_ਅੰਕੜੇ,
                        hb_bool_t,
                        hb_color_t color,
-                       void *)
+                       ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  auto &body = paint->current_body ();
+  ਸਵੈਚਾਲਿਤ &body = paint->current_body ();
   body.append_str ("<rect x=\"-32767\" y=\"-32767\" width=\"65534\" height=\"65534\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, ਸੱਚ);
   body.append_str ("\"/>\n");
 }
 
-static hb_bool_t
-hb_vector_paint_image (hb_paint_funcs_t *,
-                       void *paint_data,
+ਸਥਿਰ hb_bool_t
+hb_ਸਦਿਸ਼_paint_image (hb_paint_funcs_t *,
+                       ਖਾਲੀ *paint_ਅੰਕੜੇ,
                        hb_blob_t *image,
-                       unsigned width,
-                       unsigned height,
-                       hb_tag_t format,
-                       float slant HB_UNUSED,
+                       ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+                       ਬਿਨਾਨਿਸ਼ਾਨੀ ਉਚਾਈ,
+                       hb_ਟੈਗ_t format,
+                       ਦਸ਼ਮਲਵ slant HB_ਅਣਵਰਤਿਆ,
                        hb_glyph_extents_t *extents,
-                       void *)
+                       ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ ਝੂਠ;
 
-  auto &body = paint->current_body ();
-  if (format == HB_TAG ('p','n','g',' '))
+  ਸਵੈਚਾਲਿਤ &body = paint->current_body ();
+  ਜੇ (format == HB_ਟੈਗ ('p','n','g',' '))
   {
-    if (!extents || !width || !height)
-      return false;
+    ਜੇ (!extents || !ਚੌੜਾਈ || !ਉਚਾਈ)
+      ਵਾਪਸ ਝੂਠ;
 
-    unsigned len = 0;
-    const char *png_data = hb_blob_get_data (image, &len);
-    if (!png_data || !len)
-      return false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = 0;
+    ਅਚਲ ਅੱਖਰ *png_ਅੰਕੜੇ = hb_blob_get_ਅੰਕੜੇ (image, &len);
+    ਜੇ (!png_ਅੰਕੜੇ || !len)
+      ਵਾਪਸ ਝੂਠ;
 
     body.append_str ("<g transform=\"translate(");
-    body.append_num (paint->sx ((float) extents->x_bearing));
+    body.append_ਅੰਕ (paint->sx ((ਦਸ਼ਮਲਵ) extents->x_bearing));
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->y_bearing));
+    body.append_ਅੰਕ (paint->sy ((ਦਸ਼ਮਲਵ) extents->y_bearing));
     body.append_str (") scale(");
-    body.append_num (paint->sx ((float) extents->width) / width);
+    body.append_ਅੰਕ (paint->sx ((ਦਸ਼ਮਲਵ) extents->ਚੌੜਾਈ) / ਚੌੜਾਈ);
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->height) / height);
+    body.append_ਅੰਕ (paint->sy ((ਦਸ਼ਮਲਵ) extents->ਉਚਾਈ) / ਉਚਾਈ);
     body.append_str (")\">\n");
 
     body.append_str ("<image href=\"data:image/png;base64,");
-    body.append_base64 ((const uint8_t *) png_data, len);
+    body.append_base64 ((ਅਚਲ uint8_t *) png_ਅੰਕੜੇ, len);
     body.append_str ("\" width=\"");
-    body.append_num ((float) width);
+    body.append_ਅੰਕ ((ਦਸ਼ਮਲਵ) ਚੌੜਾਈ);
     body.append_str ("\" height=\"");
-    body.append_num ((float) height);
+    body.append_ਅੰਕ ((ਦਸ਼ਮਲਵ) ਉਚਾਈ);
     body.append_str ("\"/>\n</g>\n");
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
 
-static void
-hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0,
-                                 float x1, float y1,
-                                 float x2, float y2,
-                                 void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਰੇਖਿਕ_gradient (hb_paint_funcs_t *,
+                                 ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                 hb_color_ਸਤਰ_t *color_ਸਤਰ,
+                                 ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0,
+                                 ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1,
+                                 ਦਸ਼ਮਲਵ x2, ਦਸ਼ਮਲਵ y2,
+                                 ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ਜੇ (!paint->fetch_color_stops (color_ਸਤਰ))
+    ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   /* Sort + rescale stops to [0, 1]; shift the gradient axis
    * by the original (mn, mx) so the visible gradient stays
    * put.  SVG <stop offset="..."> requires offsets in [0,1];
    * out-of-range stops would otherwise be silently clamped. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ਦਸ਼ਮਲਵ mn, mx;
+  hb_paint_normalize_color_ਸਤਰ (stops.arrayZ, stops.ਲੰਮਾਈ, &mn, &mx);
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned grad_id = paint->gradient_counter++;
+  ਅਚਲ ਅੱਖਰ *pfx = paint->id_ਅਗੇਤਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pfx_len = paint->id_ਅਗੇਤਰ_ਲੰਮਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ grad_id = paint->gradient_counter++;
 
   /* Reduce COLR's 3-anchor (P0, P1, P2) to SVG's 2-point
    * (start, end) gradient. */
-  float lx0, ly0, lx1, ly1;
-  hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2,
+  ਦਸ਼ਮਲਵ lx0, ly0, lx1, ly1;
+  hb_paint_reduce_ਰੇਖਿਕ_anchors (x0, y0, x1, y1, x2, y2,
 				  &lx0, &ly0, &lx1, &ly1);
-  float gx0 = lx0 + mn * (lx1 - lx0);
-  float gy0 = ly0 + mn * (ly1 - ly0);
-  float gx1 = lx0 + mx * (lx1 - lx0);
-  float gy1 = ly0 + mx * (ly1 - ly0);
+  ਦਸ਼ਮਲਵ gx0 = lx0 + mn * (lx1 - lx0);
+  ਦਸ਼ਮਲਵ gy0 = ly0 + mn * (ly1 - ly0);
+  ਦਸ਼ਮਲਵ gx1 = lx0 + mx * (lx1 - lx0);
+  ਦਸ਼ਮਲਵ gy1 = ly0 + mx * (ly1 - ly0);
 
   paint->defs.append_str ("<linearGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" x1=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_ਅੰਕ (paint->sx (gx0));
   paint->defs.append_str ("\" y1=\"");
-  paint->defs.append_num (paint->sy (gy0));
+  paint->defs.append_ਅੰਕ (paint->sy (gy0));
   paint->defs.append_str ("\" x2=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_ਅੰਕ (paint->sx (gx1));
   paint->defs.append_str ("\" y2=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_ਅੰਕ (paint->sy (gy1));
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_ਸਦਿਸ਼_svg_extend_ਬਹੁਲਕ_str (hb_color_ਸਤਰ_get_extend (color_ਸਤਰ)));
   paint->defs.append_str ("\">\n");
-  hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
+  hb_ਸਦਿਸ਼_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</linearGradient>\n");
 
   paint->current_body ().append_str (
@@ -739,61 +739,61 @@ hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
-hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0, float r0,
-                                 float x1, float y1, float r1,
-                                 void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_radial_gradient (hb_paint_funcs_t *,
+                                 ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                 hb_color_ਸਤਰ_t *color_ਸਤਰ,
+                                 ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0, ਦਸ਼ਮਲਵ r0,
+                                 ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1, ਦਸ਼ਮਲਵ r1,
+                                 ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ਜੇ (!paint->fetch_color_stops (color_ਸਤਰ))
+    ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ਦਸ਼ਮਲਵ mn, mx;
+  hb_paint_normalize_color_ਸਤਰ (stops.arrayZ, stops.ਲੰਮਾਈ, &mn, &mx);
 
   /* Shift centers + radii by (mn, mx) along the gradient axis
    * to compensate for rescaling stops to [0, 1]. */
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  ਦਸ਼ਮਲਵ gx0 = x0 + mn * (x1 - x0);
+  ਦਸ਼ਮਲਵ gy0 = y0 + mn * (y1 - y0);
+  ਦਸ਼ਮਲਵ gr0 = r0 + mn * (r1 - r0);
+  ਦਸ਼ਮਲਵ gx1 = x0 + mx * (x1 - x0);
+  ਦਸ਼ਮਲਵ gy1 = y0 + mx * (y1 - y0);
+  ਦਸ਼ਮਲਵ gr1 = r0 + mx * (r1 - r0);
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned grad_id = paint->gradient_counter++;
+  ਅਚਲ ਅੱਖਰ *pfx = paint->id_ਅਗੇਤਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pfx_len = paint->id_ਅਗੇਤਰ_ਲੰਮਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ grad_id = paint->gradient_counter++;
 
   paint->defs.append_str ("<radialGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" cx=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_ਅੰਕ (paint->sx (gx1));
   paint->defs.append_str ("\" cy=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_ਅੰਕ (paint->sy (gy1));
   paint->defs.append_str ("\" r=\"");
-  paint->defs.append_num (paint->sx (gr1));
+  paint->defs.append_ਅੰਕ (paint->sx (gr1));
   paint->defs.append_str ("\" fx=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_ਅੰਕ (paint->sx (gx0));
   paint->defs.append_str ("\" fy=\"");
-  paint->defs.append_num (paint->sy (gy0));
-  if (gr0 > 0)
+  paint->defs.append_ਅੰਕ (paint->sy (gy0));
+  ਜੇ (gr0 > 0)
   {
     paint->defs.append_str ("\" fr=\"");
-    paint->defs.append_num (paint->sx (gr0));
+    paint->defs.append_ਅੰਕ (paint->sx (gr0));
   }
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_ਸਦਿਸ਼_svg_extend_ਬਹੁਲਕ_str (hb_color_ਸਤਰ_get_extend (color_ਸਤਰ)));
   paint->defs.append_str ("\">\n");
-  hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
+  hb_ਸਦਿਸ਼_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</radialGradient>\n");
 
   paint->current_body ().append_str (
@@ -804,184 +804,184 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
-hb_vector_paint_sweep_gradient (hb_paint_funcs_t *,
-                                void *paint_data,
-                                hb_color_line_t *color_line,
-                                float cx, float cy,
-                                float start_angle, float end_angle,
-                                void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_sweep_gradient (hb_paint_funcs_t *,
+                                ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                hb_color_ਸਤਰ_t *color_ਸਤਰ,
+                                ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy,
+                                ਦਸ਼ਮਲਵ ਸ਼ੁਰੂ_angle, ਦਸ਼ਮਲਵ ਸਿਰਾ_angle,
+                                ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ਜੇ (!paint->fetch_color_stops (color_ਸਤਰ))
+    ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ਦਸ਼ਮਲਵ mn, mx;
+  hb_paint_normalize_color_ਸਤਰ (stops.arrayZ, stops.ਲੰਮਾਈ, &mn, &mx);
 
   /* Shift the angle range to compensate for rescaling stops
    * to [0, 1]. */
-  float ga0 = start_angle + mn * (end_angle - start_angle);
-  float ga1 = start_angle + mx * (end_angle - start_angle);
+  ਦਸ਼ਮਲਵ ga0 = ਸ਼ੁਰੂ_angle + mn * (ਸਿਰਾ_angle - ਸ਼ੁਰੂ_angle);
+  ਦਸ਼ਮਲਵ ga1 = ਸ਼ੁਰੂ_angle + mx * (ਸਿਰਾ_angle - ਸ਼ੁਰੂ_angle);
 
-  hb_vector_svg_sweep_ctx_t ctx {
+  hb_ਸਦਿਸ਼_svg_sweep_ctx_t ctx {
     &paint->current_body (), paint->get_precision (), paint->sx (cx), paint->sy (cy), 32767.f
   };
-  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length,
-				 hb_color_line_get_extend (color_line),
+  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.ਲੰਮਾਈ,
+				 hb_color_ਸਤਰ_get_extend (color_ਸਤਰ),
 				 ga0, ga1,
-				 hb_vector_svg_sweep_emit_patch,
+				 hb_ਸਦਿਸ਼_svg_sweep_emit_patch,
 				 &ctx);
 }
 
-static void
-hb_vector_paint_push_group (hb_paint_funcs_t *,
-                            void *paint_data,
-                            void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਧੱਕੋ_ਸਮੂਹ (hb_paint_funcs_t *,
+                            ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                            ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (!paint->group_stack.push_or_fail (hb_vector_buf_t {})))
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
+  ਜੇ (unlikely (!paint->ਸਮੂਹ_ਢੇਰ.ਧੱਕੋ_or_fail (hb_ਸਦਿਸ਼_buf_t {})))
+    ਵਾਪਸ;
 }
 
-static void
-hb_vector_paint_pop_group (hb_paint_funcs_t *,
-                           void *paint_data,
-                           hb_paint_composite_mode_t mode,
-                           void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਕੱਢੋ_ਸਮੂਹ (hb_paint_funcs_t *,
+                           ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                           hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ,
+                           ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (paint->group_stack.length < 2)
-    return;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ;
+  ਜੇ (paint->ਸਮੂਹ_ਢੇਰ.ਲੰਮਾਈ < 2)
+    ਵਾਪਸ;
 
-  hb_vector_buf_t group = paint->group_stack.pop ();
-  auto &body = paint->current_body ();
+  hb_ਸਦਿਸ਼_buf_t ਸਮੂਹ = paint->ਸਮੂਹ_ਢੇਰ.ਕੱਢੋ ();
+  ਸਵੈਚਾਲਿਤ &body = paint->current_body ();
 
-  const char *blend = hb_vector_svg_composite_mode_str (mode);
-  if (blend)
+  ਅਚਲ ਅੱਖਰ *blend = hb_ਸਦਿਸ਼_svg_ਸੰਯੁਕਤ_ਬਹੁਲਕ_str (ਬਹੁਲਕ);
+  ਜੇ (blend)
   {
     body.append_str ("<g style=\"mix-blend-mode:");
     body.append_str (blend);
     body.append_str ("\">\n");
-    body.append_len (group.arrayZ, group.length);
+    body.append_len (ਸਮੂਹ.arrayZ, ਸਮੂਹ.ਲੰਮਾਈ);
     body.append_str ("</g>\n");
   }
-  else
-    body.append_len (group.arrayZ, group.length);
+  ਨਹੀਂਤਾਂ
+    body.append_len (ਸਮੂਹ.arrayZ, ਸਮੂਹ.ਲੰਮਾਈ);
 }
 
-static hb_bool_t
-hb_vector_paint_color_glyph (hb_paint_funcs_t *,
-                             void *paint_data,
+ਸਥਿਰ hb_bool_t
+hb_ਸਦਿਸ਼_paint_color_glyph (hb_paint_funcs_t *,
+                             ਖਾਲੀ *paint_ਅੰਕੜੇ,
                              hb_codepoint_t glyph,
                              hb_font_t *font,
-                             void *)
+                             ਖਾਲੀ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  if (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
-    return false;
-  if (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
-    return false;
+  ਸਵੈਚਾਲਿਤ *paint = (hb_ਸਦਿਸ਼_paint_t *) paint_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ ਝੂਠ;
+  ਜੇ (unlikely (paint->color_glyph_ਡੂੰਘਾਈ >= HB_MAX_NESTING_LEVEL))
+    ਵਾਪਸ ਝੂਠ;
+  ਜੇ (unlikely (hb_ਸੈੱਟ_has (paint->ਸਰਗਰਮ_color_glyphs, glyph)))
+    ਵਾਪਸ ਝੂਠ;
 
-  paint->color_glyph_depth++;
-  hb_set_add (paint->active_color_glyphs, glyph);
+  paint->color_glyph_ਡੂੰਘਾਈ++;
+  hb_ਸੈੱਟ_ਜੋੜੋ (paint->ਸਰਗਰਮ_color_glyphs, glyph);
 
   hb_font_paint_glyph (font, glyph,
-		       hb_vector_paint_svg_funcs_get (),
+		       hb_ਸਦਿਸ਼_paint_svg_funcs_get (),
 		       paint,
 		       paint->palette,
 		       paint->foreground);
-  hb_set_del (paint->active_color_glyphs, glyph);
-  paint->color_glyph_depth--;
-  return true;
+  hb_ਸੈੱਟ_del (paint->ਸਰਗਰਮ_color_glyphs, glyph);
+  paint->color_glyph_ਡੂੰਘਾਈ--;
+  ਵਾਪਸ ਸੱਚ;
 }
 
 
 
 
 hb_blob_t *
-hb_vector_paint_render_svg (hb_vector_paint_t *paint)
+hb_ਸਦਿਸ਼_paint_render_svg (hb_ਸਦਿਸ਼_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
+  ਜੇ (!paint->has_extents)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  if (unlikely (!paint->ensure_initialized ()))
-    return nullptr;
+  ਜੇ (unlikely (!paint->ensure_initialized ()))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  hb_vector_buf_t out;
-  hb_buf_recover_recycled (paint->recycled_blob, &out);
-  unsigned estimated = paint->defs.length +
-		       paint->group_stack.arrayZ[0].length +
+  hb_ਸਦਿਸ਼_buf_t ਬਾਹਰਲਾ;
+  hb_buf_recover_recycled (paint->recycled_blob, &ਬਾਹਰਲਾ);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ estimated = paint->defs.ਲੰਮਾਈ +
+		       paint->ਸਮੂਹ_ਢੇਰ.arrayZ[0].ਲੰਮਾਈ +
 		       320;
-  out.alloc (estimated);
-  float vb_x = paint->extents.x;
-  float vb_y = -(paint->extents.y + paint->extents.height);
-  float vb_w = paint->extents.width;
-  float vb_h = paint->extents.height;
-  out.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
-  out.append_num (vb_x);
-  out.append_c (' ');
-  out.append_num (vb_y);
-  out.append_c (' ');
-  out.append_num (vb_w);
-  out.append_c (' ');
-  out.append_num (vb_h);
-  out.append_str ("\" width=\"");
-  out.append_num (vb_w);
-  out.append_str ("\" height=\"");
-  out.append_num (vb_h);
-  out.append_str ("\">\n");
+  ਬਾਹਰਲਾ.alloc (estimated);
+  ਦਸ਼ਮਲਵ vb_x = paint->extents.x;
+  ਦਸ਼ਮਲਵ vb_y = -(paint->extents.y + paint->extents.ਉਚਾਈ);
+  ਦਸ਼ਮਲਵ vb_w = paint->extents.ਚੌੜਾਈ;
+  ਦਸ਼ਮਲਵ vb_h = paint->extents.ਉਚਾਈ;
+  ਬਾਹਰਲਾ.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_x);
+  ਬਾਹਰਲਾ.append_c (' ');
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_y);
+  ਬਾਹਰਲਾ.append_c (' ');
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_w);
+  ਬਾਹਰਲਾ.append_c (' ');
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_h);
+  ਬਾਹਰਲਾ.append_str ("\" width=\"");
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_w);
+  ਬਾਹਰਲਾ.append_str ("\" height=\"");
+  ਬਾਹਰਲਾ.append_ਅੰਕ (vb_h);
+  ਬਾਹਰਲਾ.append_str ("\">\n");
 
-  if (paint->defs.length)
+  ਜੇ (paint->defs.ਲੰਮਾਈ)
   {
-    out.append_str ("<defs>\n");
-    out.append_len (paint->defs.arrayZ, paint->defs.length);
-    out.append_str ("</defs>\n");
+    ਬਾਹਰਲਾ.append_str ("<defs>\n");
+    ਬਾਹਰਲਾ.append_len (paint->defs.arrayZ, paint->defs.ਲੰਮਾਈ);
+    ਬਾਹਰਲਾ.append_str ("</defs>\n");
   }
 
-  if (hb_color_get_alpha (paint->background))
+  ਜੇ (hb_color_get_alpha (paint->background))
   {
-    out.append_str ("<rect x=\"");
-    out.append_num (vb_x);
-    out.append_str ("\" y=\"");
-    out.append_num (vb_y);
-    out.append_str ("\" width=\"");
-    out.append_num (vb_w);
-    out.append_str ("\" height=\"");
-    out.append_num (vb_h);
-    out.append_str ("\" fill=\"rgb(");
-    out.append_unsigned (hb_color_get_red (paint->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_green (paint->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_blue (paint->background));
-    out.append_str (")\"");
-    if (hb_color_get_alpha (paint->background) < 255)
+    ਬਾਹਰਲਾ.append_str ("<rect x=\"");
+    ਬਾਹਰਲਾ.append_ਅੰਕ (vb_x);
+    ਬਾਹਰਲਾ.append_str ("\" y=\"");
+    ਬਾਹਰਲਾ.append_ਅੰਕ (vb_y);
+    ਬਾਹਰਲਾ.append_str ("\" width=\"");
+    ਬਾਹਰਲਾ.append_ਅੰਕ (vb_w);
+    ਬਾਹਰਲਾ.append_str ("\" height=\"");
+    ਬਾਹਰਲਾ.append_ਅੰਕ (vb_h);
+    ਬਾਹਰਲਾ.append_str ("\" fill=\"rgb(");
+    ਬਾਹਰਲਾ.append_unsigned (hb_color_get_red (paint->background));
+    ਬਾਹਰਲਾ.append_c (',');
+    ਬਾਹਰਲਾ.append_unsigned (hb_color_get_green (paint->background));
+    ਬਾਹਰਲਾ.append_c (',');
+    ਬਾਹਰਲਾ.append_unsigned (hb_color_get_blue (paint->background));
+    ਬਾਹਰਲਾ.append_str (")\"");
+    ਜੇ (hb_color_get_alpha (paint->background) < 255)
     {
-      out.append_str (" fill-opacity=\"");
-      out.append_num (hb_color_get_alpha (paint->background) / 255.f, 4);
-      out.append_c ('"');
+      ਬਾਹਰਲਾ.append_str (" fill-opacity=\"");
+      ਬਾਹਰਲਾ.append_ਅੰਕ (hb_color_get_alpha (paint->background) / 255.f, 4);
+      ਬਾਹਰਲਾ.append_c ('"');
     }
-    out.append_str ("/>\n");
+    ਬਾਹਰਲਾ.append_str ("/>\n");
   }
 
-  out.append_str ("<g transform=\"scale(1,-1)\">\n");
-  out.append_len (paint->group_stack.arrayZ[0].arrayZ, paint->group_stack.arrayZ[0].length);
-  out.append_str ("</g>\n");
+  ਬਾਹਰਲਾ.append_str ("<g transform=\"scale(1,-1)\">\n");
+  ਬਾਹਰਲਾ.append_len (paint->ਸਮੂਹ_ਢੇਰ.arrayZ[0].arrayZ, paint->ਸਮੂਹ_ਢੇਰ.arrayZ[0].ਲੰਮਾਈ);
+  ਬਾਹਰਲਾ.append_str ("</g>\n");
 
-  out.append_str ("</svg>\n");
+  ਬਾਹਰਲਾ.append_str ("</svg>\n");
 
-  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
+  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &ਬਾਹਰਲਾ);
 
-  return blob;
+  ਵਾਪਸ blob;
 }

@@ -24,1531 +24,1531 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF1_TABLE_HH
-#define HB_OT_CFF1_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_CFF1_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_CFF1_ਸਾਰਣੀ_HH
 
-#include "hb-ot-cff-common.hh"
-#include "hb-depend-data.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-depend-data.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-cff-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.hh"
 
-#define HB_STRING_ARRAY_NAME cff1_std_strings
-#define HB_STRING_ARRAY_LIST "hb-ot-cff1-std-str.hh"
-#include "hb-string-array.hh"
-#undef HB_STRING_ARRAY_LIST
-#undef HB_STRING_ARRAY_NAME
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_STRING_ARRAY_NAME cff1_std_ਲੜੀਆਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_STRING_ARRAY_LIST "hb-ot-cff1-std-str.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-string-array.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_STRING_ARRAY_LIST
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_STRING_ARRAY_NAME
 
-namespace CFF {
+ਨਾਮਾਕਾਸ਼ CFF {
 
 /*
  * CFF -- Compact Font Format (CFF)
  * https://www.adobe.com/content/dam/acom/en/devnet/font/pdfs/5176.CFF.pdf
  */
-#define HB_OT_TAG_CFF1 HB_TAG('C','F','F',' ')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_CFF1 HB_ਟੈਗ('C','F','F',' ')
 
-#define CFF_UNDEF_SID   CFF_UNDEF_CODE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ CFF_UNDEF_SID   CFF_UNDEF_ਕੋਡ
 
-enum EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
-enum CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
+ਗਿਣਤੀ EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
+ਗਿਣਤੀ CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
 
-typedef CFF1Index          CFF1CharStrings;
-typedef Subrs<HBUINT16>    CFF1Subrs;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFF1_ਸੂਚਕਾਂਕ          CFF1_Char_ਲੜੀਆਂ;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Subrs<HBUINT16>    CFF1Subrs;
 
-struct CFF1FDSelect : FDSelect {};
+ਬਣਤਰ CFF1FDSelect : FDSelect {};
 
 /* Encoding */
-struct Encoding0 {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਬਣਤਰ Encoding0 {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (codes.sanitize (c));
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_ਕੋਡ (hb_codepoint_t glyph) ਅਚਲ
   {
-    assert (glyph > 0);
+    ਪ੍ਰਤਿਜ੍ਞਾ (glyph > 0);
     glyph--;
-    if (glyph < nCodes ())
+    ਜੇ (glyph < nCodes ())
     {
-      return (hb_codepoint_t)codes[glyph];
+      ਵਾਪਸ (hb_codepoint_t)codes[glyph];
     }
-    else
-      return CFF_UNDEF_CODE;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ CFF_UNDEF_ਕੋਡ;
   }
 
-  HBUINT8 &nCodes () { return codes.len; }
-  HBUINT8 nCodes () const { return codes.len; }
+  HBUINT8 &nCodes () { ਵਾਪਸ codes.len; }
+  HBUINT8 nCodes () ਅਚਲ { ਵਾਪਸ codes.len; }
 
-  ArrayOf<HBUINT8, HBUINT8> codes;
+  Array_ਦਾ<HBUINT8, HBUINT8> codes;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, codes);
+  DEFINE_ਮਾਪ_ARRAY_SIZED (1, codes);
 };
 
-struct Encoding1_Range {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਬਣਤਰ Encoding1_Range {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  HBUINT8   first;
-  HBUINT8   nLeft;
+  HBUINT8   ਪਹਿਲਾ;
+  HBUINT8   n_ਖੱਬਾ;
 
-  DEFINE_SIZE_STATIC (2);
+  DEFINE_ਮਾਪ_STATIC (2);
 };
 
-struct Encoding1 {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਬਣਤਰ Encoding1 {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (ranges.sanitize (c));
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_ਕੋਡ (hb_codepoint_t glyph) ਅਚਲ
   {
     /* TODO: Add cache like get_sid. */
-    assert (glyph > 0);
+    ਪ੍ਰਤਿਜ੍ਞਾ (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; i < nRanges (); i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < nRanges (); i++)
     {
-      if (glyph <= ranges[i].nLeft)
+      ਜੇ (glyph <= ranges[i].n_ਖੱਬਾ)
       {
-	hb_codepoint_t code = (hb_codepoint_t) ranges[i].first + glyph;
-	return (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
+	hb_codepoint_t ਕੋਡ = (hb_codepoint_t) ranges[i].ਪਹਿਲਾ + glyph;
+	ਵਾਪਸ (likely (ਕੋਡ < 0x100) ? ਕੋਡ: CFF_UNDEF_ਕੋਡ);
       }
-      glyph -= (ranges[i].nLeft + 1);
+      glyph -= (ranges[i].n_ਖੱਬਾ + 1);
     }
-    return CFF_UNDEF_CODE;
+    ਵਾਪਸ CFF_UNDEF_ਕੋਡ;
   }
 
-  HBUINT8 &nRanges () { return ranges.len; }
-  HBUINT8 nRanges () const { return ranges.len; }
+  HBUINT8 &nRanges () { ਵਾਪਸ ranges.len; }
+  HBUINT8 nRanges () ਅਚਲ { ਵਾਪਸ ranges.len; }
 
-  ArrayOf<Encoding1_Range, HBUINT8> ranges;
+  Array_ਦਾ<Encoding1_Range, HBUINT8> ranges;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, ranges);
+  DEFINE_ਮਾਪ_ARRAY_SIZED (1, ranges);
 };
 
-struct SuppEncoding {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਬਣਤਰ SuppEncoding {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  HBUINT8   code;
+  HBUINT8   ਕੋਡ;
   HBUINT16  glyph;
 
-  DEFINE_SIZE_STATIC (3);
+  DEFINE_ਮਾਪ_STATIC (3);
 };
 
-struct CFF1SuppEncData {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਬਣਤਰ CFF1_Supp_Enc_ਅੰਕੜੇ {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (supps.sanitize (c));
   }
 
-  void get_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
+  ਖਾਲੀ get_codes (hb_codepoint_t sid, hb_ਸਦਿਸ਼_t<hb_codepoint_t> &codes) ਅਚਲ
   {
-    for (unsigned int i = 0; i < nSups (); i++)
-      if (sid == supps[i].glyph)
-	codes.push (supps[i].code);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < nSups (); i++)
+      ਜੇ (sid == supps[i].glyph)
+	codes.push (supps[i].ਕੋਡ);
   }
 
-  HBUINT8 &nSups () { return supps.len; }
-  HBUINT8 nSups () const { return supps.len; }
+  HBUINT8 &nSups () { ਵਾਪਸ supps.len; }
+  HBUINT8 nSups () ਅਚਲ { ਵਾਪਸ supps.len; }
 
-  ArrayOf<SuppEncoding, HBUINT8> supps;
+  Array_ਦਾ<SuppEncoding, HBUINT8> supps;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, supps);
+  DEFINE_ਮਾਪ_ARRAY_SIZED (1, supps);
 };
 
-struct Encoding
+ਬਣਤਰ Encoding
 {
   /* serialize a fullset Encoding */
-  bool serialize (hb_serialize_context_t *c, const Encoding &src)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਅਚਲ Encoding &src)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
     return_trace (c->embed (src));
   }
 
   /* serialize a subset Encoding */
-  bool serialize (hb_serialize_context_t *c,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int enc_count,
-		  const hb_vector_t<code_pair_t>& code_ranges,
-		  const hb_vector_t<code_pair_t>& supp_codes)
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ enc_ਗਿਣਤੀ,
+		  ਅਚਲ hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t>& ਕੋਡ_ranges,
+		  ਅਚਲ hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t>& supp_codes)
   {
-    TRACE_SERIALIZE (this);
-    Encoding *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
-    dest->format = format | ((supp_codes.length > 0) ? 0x80 : 0);
-    switch (format) {
-    case 0:
+    TRACE_SERIALIZE (ਇਹ);
+    Encoding *dest = c->extend_min (ਇਹ);
+    ਜੇ (unlikely (!dest)) return_trace (ਝੂਠ);
+    dest->format = format | ((supp_codes.ਲੰਮਾਈ > 0) ? 0x80 : 0);
+    ਚੋਣ (format) {
+    ਹਾਲਤ 0:
     {
-      Encoding0 *fmt0 = c->allocate_size<Encoding0> (Encoding0::min_size + HBUINT8::static_size * enc_count);
-      if (unlikely (!fmt0)) return_trace (false);
-      fmt0->nCodes () = enc_count;
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      Encoding0 *fmt0 = c->allocate_ਮਾਪ<Encoding0> (Encoding0::min_ਮਾਪ + HBUINT8::static_ਮਾਪ * enc_ਗਿਣਤੀ);
+      ਜੇ (unlikely (!fmt0)) return_trace (ਝੂਠ);
+      fmt0->nCodes () = enc_ਗਿਣਤੀ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਕੋਡ_ranges.ਲੰਮਾਈ; i++)
       {
-	hb_codepoint_t code = code_ranges[i].code;
-	for (int left = (int)code_ranges[i].glyph; left >= 0; left--)
-	  fmt0->codes[glyph++] = code++;
-	if (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
-	  return_trace (false);
+	hb_codepoint_t ਕੋਡ = ਕੋਡ_ranges[i].ਕੋਡ;
+	ਲਈ (ਪੂਰਨ ਖੱਬੇ = (ਪੂਰਨ)ਕੋਡ_ranges[i].glyph; ਖੱਬੇ >= 0; ਖੱਬੇ--)
+	  fmt0->codes[glyph++] = ਕੋਡ++;
+	ਜੇ (unlikely (!((glyph <= 0x100) && (ਕੋਡ <= 0x100))))
+	  return_trace (ਝੂਠ);
       }
     }
-    break;
+    ਰੋਕੋ;
 
-    case 1:
+    ਹਾਲਤ 1:
     {
-      Encoding1 *fmt1 = c->allocate_size<Encoding1> (Encoding1::min_size + Encoding1_Range::static_size * code_ranges.length);
-      if (unlikely (!fmt1)) return_trace (false);
-      fmt1->nRanges () = code_ranges.length;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      Encoding1 *fmt1 = c->allocate_ਮਾਪ<Encoding1> (Encoding1::min_ਮਾਪ + Encoding1_Range::static_ਮਾਪ * ਕੋਡ_ranges.ਲੰਮਾਈ);
+      ਜੇ (unlikely (!fmt1)) return_trace (ਝੂਠ);
+      fmt1->nRanges () = ਕੋਡ_ranges.ਲੰਮਾਈ;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਕੋਡ_ranges.ਲੰਮਾਈ; i++)
       {
-	if (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
-	  return_trace (false);
-	fmt1->ranges[i].first = code_ranges[i].code;
-	fmt1->ranges[i].nLeft = code_ranges[i].glyph;
+	ਜੇ (unlikely (!((ਕੋਡ_ranges[i].ਕੋਡ <= 0xFF) && (ਕੋਡ_ranges[i].glyph <= 0xFF))))
+	  return_trace (ਝੂਠ);
+	fmt1->ranges[i].ਪਹਿਲਾ = ਕੋਡ_ranges[i].ਕੋਡ;
+	fmt1->ranges[i].n_ਖੱਬਾ = ਕੋਡ_ranges[i].glyph;
       }
     }
-    break;
+    ਰੋਕੋ;
 
     }
 
-    if (supp_codes.length)
+    ਜੇ (supp_codes.ਲੰਮਾਈ)
     {
-      CFF1SuppEncData *suppData = c->allocate_size<CFF1SuppEncData> (CFF1SuppEncData::min_size + SuppEncoding::static_size * supp_codes.length);
-      if (unlikely (!suppData)) return_trace (false);
-      suppData->nSups () = supp_codes.length;
-      for (unsigned int i = 0; i < supp_codes.length; i++)
+      CFF1_Supp_Enc_ਅੰਕੜੇ *supp_ਅੰਕੜੇ = c->allocate_ਮਾਪ<CFF1_Supp_Enc_ਅੰਕੜੇ> (CFF1_Supp_Enc_ਅੰਕੜੇ::min_ਮਾਪ + SuppEncoding::static_ਮਾਪ * supp_codes.ਲੰਮਾਈ);
+      ਜੇ (unlikely (!supp_ਅੰਕੜੇ)) return_trace (ਝੂਠ);
+      supp_ਅੰਕੜੇ->nSups () = supp_codes.ਲੰਮਾਈ;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < supp_codes.ਲੰਮਾਈ; i++)
       {
-	suppData->supps[i].code = supp_codes[i].code;
-	suppData->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
+	supp_ਅੰਕੜੇ->supps[i].ਕੋਡ = supp_codes[i].ਕੋਡ;
+	supp_ਅੰਕੜੇ->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
       }
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  size_t get_size () const
+  size_t get_ਮਾਪ () ਅਚਲ
   {
-    size_t size = min_size;
-    switch (table_format ())
+    size_t ਮਾਪ = min_ਮਾਪ;
+    ਚੋਣ (ਸਾਰਣੀ_format ())
     {
-    case 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); break;
-    case 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); break;
+    ਹਾਲਤ 0: hb_barrier (); ਮਾਪ = hb_unsigned_ਜੋੜੋ_saturate (ਮਾਪ, u.format0.get_ਮਾਪ ()); ਰੋਕੋ;
+    ਹਾਲਤ 1: hb_barrier (); ਮਾਪ = hb_unsigned_ਜੋੜੋ_saturate (ਮਾਪ, u.format1.get_ਮਾਪ ()); ਰੋਕੋ;
     }
-    if (has_supplement ())
-      size = hb_unsigned_add_saturate (size, suppEncData ().get_size ());
-    return size;
+    ਜੇ (has_supplement ())
+      ਮਾਪ = hb_unsigned_ਜੋੜੋ_saturate (ਮਾਪ, supp_Enc_ਅੰਕੜੇ ().get_ਮਾਪ ());
+    ਵਾਪਸ ਮਾਪ;
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_ਕੋਡ (hb_codepoint_t glyph) ਅਚਲ
   {
-    switch (table_format ())
+    ਚੋਣ (ਸਾਰਣੀ_format ())
     {
-    case 0: hb_barrier (); return u.format0.get_code (glyph);
-    case 1: hb_barrier (); return u.format1.get_code (glyph);
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ u.format0.get_ਕੋਡ (glyph);
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ u.format1.get_ਕੋਡ (glyph);
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
 
-  uint8_t table_format () const { return format & 0x7F; }
-  bool  has_supplement () const { return format & 0x80; }
+  uint8_t ਸਾਰਣੀ_format () ਅਚਲ { ਵਾਪਸ format & 0x7F; }
+  ਤਾਰਕਿਕ  has_supplement () ਅਚਲ { ਵਾਪਸ format & 0x80; }
 
-  void get_supplement_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
+  ਖਾਲੀ get_supplement_codes (hb_codepoint_t sid, hb_ਸਦਿਸ਼_t<hb_codepoint_t> &codes) ਅਚਲ
   {
     codes.clear ();
-    if (has_supplement ())
-      suppEncData().get_codes (sid, codes);
+    ਜੇ (has_supplement ())
+      supp_Enc_ਅੰਕੜੇ().get_codes (sid, codes);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    switch (table_format ())
+    ਚੋਣ (ਸਾਰਣੀ_format ())
     {
-    case 0: hb_barrier (); if (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
-    case 1: hb_barrier (); if (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
-    default:return_trace (false);
+    ਹਾਲਤ 0: hb_barrier (); ਜੇ (unlikely (!u.format0.sanitize (c))) { return_trace (ਝੂਠ); } ਰੋਕੋ;
+    ਹਾਲਤ 1: hb_barrier (); ਜੇ (unlikely (!u.format1.sanitize (c))) { return_trace (ਝੂਠ); } ਰੋਕੋ;
+    ਮੂਲ:return_trace (ਝੂਠ);
     }
-    return_trace (likely (!has_supplement () || suppEncData ().sanitize (c)));
+    return_trace (likely (!has_supplement () || supp_Enc_ਅੰਕੜੇ ().sanitize (c)));
   }
 
-  protected:
-  const CFF1SuppEncData &suppEncData () const
+  ਸੁਰੱਖਿਅਤ:
+  ਅਚਲ CFF1_Supp_Enc_ਅੰਕੜੇ &supp_Enc_ਅੰਕੜੇ () ਅਚਲ
   {
-    switch (table_format ())
+    ਚੋਣ (ਸਾਰਣੀ_format ())
     {
-    case 0: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
-    case 1: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
-    default:return Null (CFF1SuppEncData);
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ StructAfter<CFF1_Supp_Enc_ਅੰਕੜੇ> (u.format0.codes[u.format0.nCodes ()-1]);
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ StructAfter<CFF1_Supp_Enc_ਅੰਕੜੇ> (u.format1.ranges[u.format1.nRanges ()-1]);
+    ਮੂਲ:ਵਾਪਸ Null (CFF1_Supp_Enc_ਅੰਕੜੇ);
     }
   }
 
-  public:
+  ਜਨਤਕ:
   HBUINT8	format;
-  union {
+  ਸੰਘ {
   Encoding0	format0;
   Encoding1	format1;
   } u;
   /* CFF1SuppEncData  suppEncData; */
 
-  DEFINE_SIZE_MIN (1);
+  DEFINE_ਮਾਪ_MIN (1);
 };
 
 /* Charset */
-struct Charset0
+ਬਣਤਰ Charset0
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs, ਬਿਨਾਨਿਸ਼ਾਨੀ *ਅੰਕ_charset_entries) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (num_charset_entries) *num_charset_entries = num_glyphs;
-    return_trace (sids.sanitize (c, num_glyphs - 1));
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (ਅੰਕ_charset_entries) *ਅੰਕ_charset_entries = ਅੰਕ_glyphs;
+    return_trace (sids.sanitize (c, ਅੰਕ_glyphs - 1));
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    if (unlikely (glyph == 0))
-      return 0;
-    else
-      return sids[glyph - 1];
+    ਜੇ (unlikely (glyph >= ਅੰਕ_glyphs)) ਵਾਪਸ 0;
+    ਜੇ (unlikely (glyph == 0))
+      ਵਾਪਸ 0;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ sids[glyph - 1];
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  ਖਾਲੀ collect_glyph_ਮੰਜ਼ਿਲ_sid_map (glyph_ਮੰਜ਼ਿਲ_sid_map_t *mapping, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
-    for (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
+    ਜੇ (!mapping->resize_dirty  (ਅੰਕ_glyphs)) ਵਾਪਸ;
+    ਲਈ (hb_codepoint_t gid = 1; gid < ਅੰਕ_glyphs; gid++)
       mapping->arrayZ[gid] = {sids[gid - 1], gid};
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (sid == 0)
-      return 0;
+    ਜੇ (sid == 0)
+      ਵਾਪਸ 0;
 
-    for (unsigned int glyph = 1; glyph < num_glyphs; glyph++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph = 1; glyph < ਅੰਕ_glyphs; glyph++)
     {
-      if (sids[glyph-1] == sid)
-	return glyph;
+      ਜੇ (sids[glyph-1] == sid)
+	ਵਾਪਸ glyph;
     }
-    return 0;
+    ਵਾਪਸ 0;
   }
 
-  static size_t get_size (unsigned int num_glyphs)
+  ਸਥਿਰ size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs)
   {
-    assert (num_glyphs > 0);
-    return UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਅੰਕ_glyphs > 0);
+    ਵਾਪਸ Unsized_Array_ਦਾ<HBUINT16>::get_ਮਾਪ (ਅੰਕ_glyphs - 1);
   }
 
-  UnsizedArrayOf<HBUINT16> sids;
+  Unsized_Array_ਦਾ<HBUINT16> sids;
 
-  DEFINE_SIZE_ARRAY(0, sids);
+  DEFINE_ਮਾਪ_ARRAY(0, sids);
 };
 
-template <typename TYPE>
-struct Charset_Range {
-  bool sanitize (hb_sanitize_context_t *c) const
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ TYPE>
+ਬਣਤਰ Charset_Range {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  HBUINT16  first;
-  TYPE      nLeft;
+  HBUINT16  ਪਹਿਲਾ;
+  TYPE      n_ਖੱਬਾ;
 
-  DEFINE_SIZE_STATIC (HBUINT16::static_size + TYPE::static_size);
+  DEFINE_ਮਾਪ_STATIC (HBUINT16::static_ਮਾਪ + TYPE::static_ਮਾਪ);
 };
 
-template <typename TYPE>
-struct Charset1_2 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ TYPE>
+ਬਣਤਰ Charset1_2 {
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs, ਬਿਨਾਨਿਸ਼ਾਨੀ *ਅੰਕ_charset_entries) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    num_glyphs--;
-    unsigned i;
-    for (i = 0; num_glyphs > 0; i++)
+    TRACE_SANITIZE (ਇਹ);
+    ਅੰਕ_glyphs--;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i;
+    ਲਈ (i = 0; ਅੰਕ_glyphs > 0; i++)
     {
-      if (unlikely (!(ranges[i].sanitize (c) &&
+      ਜੇ (unlikely (!(ranges[i].sanitize (c) &&
 		      hb_barrier () &&
-		      (num_glyphs >= ranges[i].nLeft + 1))))
-	return_trace (false);
-      num_glyphs -= (ranges[i].nLeft + 1);
+		      (ਅੰਕ_glyphs >= ranges[i].n_ਖੱਬਾ + 1))))
+	return_trace (ਝੂਠ);
+      ਅੰਕ_glyphs -= (ranges[i].n_ਖੱਬਾ + 1);
     }
-    if (num_charset_entries)
-      *num_charset_entries = i;
-    return_trace (true);
+    ਜੇ (ਅੰਕ_charset_entries)
+      *ਅੰਕ_charset_entries = i;
+    return_trace (ਸੱਚ);
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs,
-			  code_pair_t *cache = nullptr) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs,
+			  ਕੋਡ_pair_t *cache = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    unsigned i;
-    hb_codepoint_t start_glyph;
-    if (cache && likely (cache->glyph <= glyph))
+    ਜੇ (unlikely (glyph >= ਅੰਕ_glyphs)) ਵਾਪਸ 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i;
+    hb_codepoint_t ਸ਼ੁਰੂ_glyph;
+    ਜੇ (cache && likely (cache->glyph <= glyph))
     {
-      i = cache->code;
-      start_glyph = cache->glyph;
+      i = cache->ਕੋਡ;
+      ਸ਼ੁਰੂ_glyph = cache->glyph;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      if (unlikely (glyph == 0)) return 0;
+      ਜੇ (unlikely (glyph == 0)) ਵਾਪਸ 0;
       i = 0;
-      start_glyph = 1;
+      ਸ਼ੁਰੂ_glyph = 1;
     }
-    glyph -= start_glyph;
-    for (;; i++)
+    glyph -= ਸ਼ੁਰੂ_glyph;
+    ਲਈ (;; i++)
     {
-      unsigned count = ranges[i].nLeft;
-      if (glyph <= count)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ranges[i].n_ਖੱਬਾ;
+      ਜੇ (glyph <= ਗਿਣਤੀ_2)
       {
-        if (cache)
-	  *cache = {i, start_glyph};
-	return ranges[i].first + glyph;
+        ਜੇ (cache)
+	  *cache = {i, ਸ਼ੁਰੂ_glyph};
+	ਵਾਪਸ ranges[i].ਪਹਿਲਾ + glyph;
       }
-      count++;
-      start_glyph += count;
-      glyph -= count;
+      ਗਿਣਤੀ_2++;
+      ਸ਼ੁਰੂ_glyph += ਗਿਣਤੀ_2;
+      glyph -= ਗਿਣਤੀ_2;
     }
 
-    return 0;
+    ਵਾਪਸ 0;
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  ਖਾਲੀ collect_glyph_ਮੰਜ਼ਿਲ_sid_map (glyph_ਮੰਜ਼ਿਲ_sid_map_t *mapping, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
+    ਜੇ (!mapping->resize_dirty  (ਅੰਕ_glyphs)) ਵਾਪਸ;
 
     hb_codepoint_t gid = 1;
-    if (gid >= num_glyphs)
-      return;
+    ਜੇ (gid >= ਅੰਕ_glyphs)
+      ਵਾਪਸ;
 
-    for (unsigned i = 0;; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;; i++)
     {
-      hb_codepoint_t sid = ranges[i].first;
-      unsigned count = ranges[i].nLeft + 1;
-      unsigned last = gid + count;
-      for (unsigned j = 0; j < count; j++)
-	mapping->arrayZ[gid++] = {sid++, last - 1};
+      hb_codepoint_t sid = ranges[i].ਪਹਿਲਾ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ranges[i].n_ਖੱਬਾ + 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਆਖਰੀ = gid + ਗਿਣਤੀ_2;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < ਗਿਣਤੀ_2; j++)
+	mapping->arrayZ[gid++] = {sid++, ਆਖਰੀ - 1};
 
-      if (gid >= num_glyphs)
-        break;
+      ਜੇ (gid >= ਅੰਕ_glyphs)
+        ਰੋਕੋ;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (sid == 0) return 0;
+    ਜੇ (sid == 0) ਵਾਪਸ 0;
     hb_codepoint_t  glyph = 1;
-    for (unsigned int i = 0;; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0;; i++)
     {
-      if (glyph >= num_glyphs)
-	return 0;
-      if ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
-	return glyph + (sid - ranges[i].first);
-      glyph += (ranges[i].nLeft + 1);
+      ਜੇ (glyph >= ਅੰਕ_glyphs)
+	ਵਾਪਸ 0;
+      ਜੇ ((ranges[i].ਪਹਿਲਾ <= sid) && (sid <= ranges[i].ਪਹਿਲਾ + ranges[i].n_ਖੱਬਾ))
+	ਵਾਪਸ glyph + (sid - ranges[i].ਪਹਿਲਾ);
+      glyph += (ranges[i].n_ਖੱਬਾ + 1);
     }
 
-    return 0;
+    ਵਾਪਸ 0;
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    int glyph = (int) num_glyphs;
-    unsigned num_ranges = 0;
+    ਪੂਰਨ glyph = (ਪੂਰਨ) ਅੰਕ_glyphs;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ranges = 0;
 
-    assert (glyph > 0);
+    ਪ੍ਰਤਿਜ੍ਞਾ (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; glyph > 0; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; glyph > 0; i++)
     {
-      glyph -= (ranges[i].nLeft + 1);
-      num_ranges++;
+      glyph -= (ranges[i].n_ਖੱਬਾ + 1);
+      ਅੰਕ_ranges++;
     }
 
-    return get_size_for_ranges (num_ranges);
+    ਵਾਪਸ get_ਮਾਪ_for_ranges (ਅੰਕ_ranges);
   }
 
-  static size_t get_size_for_ranges (unsigned int num_ranges)
+  ਸਥਿਰ size_t get_ਮਾਪ_for_ranges (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ranges)
   {
-    return UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
+    ਵਾਪਸ Unsized_Array_ਦਾ<Charset_Range<TYPE> >::get_ਮਾਪ (ਅੰਕ_ranges);
   }
 
-  UnsizedArrayOf<Charset_Range<TYPE>> ranges;
+  Unsized_Array_ਦਾ<Charset_Range<TYPE>> ranges;
 
-  DEFINE_SIZE_ARRAY (0, ranges);
+  DEFINE_ਮਾਪ_ARRAY (0, ranges);
 };
 
-typedef Charset1_2<HBUINT8>     Charset1;
-typedef Charset1_2<HBUINT16>    Charset2;
-typedef Charset_Range<HBUINT8>  Charset1_Range;
-typedef Charset_Range<HBUINT16> Charset2_Range;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Charset1_2<HBUINT8>     Charset1;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Charset1_2<HBUINT16>    Charset2;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Charset_Range<HBUINT8>  Charset1_Range;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Charset_Range<HBUINT16> Charset2_Range;
 
-struct Charset
+ਬਣਤਰ Charset
 {
   /* serialize a fullset Charset */
-  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned int num_glyphs)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਅਚਲ Charset &src, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed ((const char *) &src, src.get_size (num_glyphs)));
+    TRACE_SERIALIZE (ਇਹ);
+    return_trace (c->embed ((ਅਚਲ ਅੱਖਰ *) &src, src.get_ਮਾਪ (ਅੰਕ_glyphs)));
   }
 
   /* serialize a subset Charset */
-  bool serialize (hb_serialize_context_t *c,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int num_glyphs,
-		  const hb_vector_t<code_pair_t>& sid_ranges)
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs,
+		  ਅਚਲ hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t>& sid_ranges)
   {
-    TRACE_SERIALIZE (this);
-    Charset *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    Charset *dest = c->extend_min (ਇਹ);
+    ਜੇ (unlikely (!dest)) return_trace (ਝੂਠ);
     dest->format = format;
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0:
+    ਹਾਲਤ 0:
     {
-      Charset0 *fmt0 = c->allocate_size<Charset0> (Charset0::get_size (num_glyphs), false);
-      if (unlikely (!fmt0)) return_trace (false);
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      Charset0 *fmt0 = c->allocate_ਮਾਪ<Charset0> (Charset0::get_ਮਾਪ (ਅੰਕ_glyphs), ਝੂਠ);
+      ਜੇ (unlikely (!fmt0)) return_trace (ਝੂਠ);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < sid_ranges.ਲੰਮਾਈ; i++)
       {
-	hb_codepoint_t sid = sid_ranges.arrayZ[i].code;
-	for (int left = (int)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
+	hb_codepoint_t sid = sid_ranges.arrayZ[i].ਕੋਡ;
+	ਲਈ (ਪੂਰਨ ਖੱਬੇ = (ਪੂਰਨ)sid_ranges.arrayZ[i].glyph; ਖੱਬੇ >= 0; ਖੱਬੇ--)
 	  fmt0->sids[glyph++] = sid++;
       }
     }
-    break;
+    ਰੋਕੋ;
 
-    case 1:
+    ਹਾਲਤ 1:
     {
-      Charset1 *fmt1 = c->allocate_size<Charset1> (Charset1::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt1)) return_trace (false);
+      Charset1 *fmt1 = c->allocate_ਮਾਪ<Charset1> (Charset1::get_ਮਾਪ_for_ranges (sid_ranges.ਲੰਮਾਈ), ਝੂਠ);
+      ਜੇ (unlikely (!fmt1)) return_trace (ਝੂਠ);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < sid_ranges.ਲੰਮਾਈ; i++)
       {
-        auto &_ = sid_ranges.arrayZ[i];
+        ਸਵੈਚਾਲਿਤ &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
-	fmt1->ranges[i].first = _.code;
-	fmt1->ranges[i].nLeft = _.glyph;
+	fmt1->ranges[i].ਪਹਿਲਾ = _.ਕੋਡ;
+	fmt1->ranges[i].n_ਖੱਬਾ = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFF)))
-	return_trace (false);
+      ਜੇ (unlikely (!(all_glyphs <= 0xFF)))
+	return_trace (ਝੂਠ);
     }
-    break;
+    ਰੋਕੋ;
 
-    case 2:
+    ਹਾਲਤ 2:
     {
-      Charset2 *fmt2 = c->allocate_size<Charset2> (Charset2::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt2)) return_trace (false);
+      Charset2 *fmt2 = c->allocate_ਮਾਪ<Charset2> (Charset2::get_ਮਾਪ_for_ranges (sid_ranges.ਲੰਮਾਈ), ਝੂਠ);
+      ਜੇ (unlikely (!fmt2)) return_trace (ਝੂਠ);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < sid_ranges.ਲੰਮਾਈ; i++)
       {
-        auto &_ = sid_ranges.arrayZ[i];
+        ਸਵੈਚਾਲਿਤ &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
-	fmt2->ranges[i].first = _.code;
-	fmt2->ranges[i].nLeft = _.glyph;
+	fmt2->ranges[i].ਪਹਿਲਾ = _.ਕੋਡ;
+	fmt2->ranges[i].n_ਖੱਬਾ = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFFFF)))
-	return_trace (false);
+      ਜੇ (unlikely (!(all_glyphs <= 0xFFFF)))
+	return_trace (ਝੂਠ);
     }
-    break;
+    ਰੋਕੋ;
 
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
-    case 1: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
-    case 2: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (min_ਮਾਪ, u.format0.get_ਮਾਪ (ਅੰਕ_glyphs));
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (min_ਮਾਪ, u.format1.get_ਮਾਪ (ਅੰਕ_glyphs));
+    ਹਾਲਤ 2: hb_barrier (); ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (min_ਮਾਪ, u.format2.get_ਮਾਪ (ਅੰਕ_glyphs));
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned int num_glyphs,
-			  code_pair_t *cache = nullptr) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs,
+			  ਕੋਡ_pair_t *cache = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return u.format0.get_sid (glyph, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_sid (glyph, num_glyphs, cache);
-    case 2: hb_barrier (); return u.format2.get_sid (glyph, num_glyphs, cache);
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ u.format0.get_sid (glyph, ਅੰਕ_glyphs);
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ u.format1.get_sid (glyph, ਅੰਕ_glyphs, cache);
+    ਹਾਲਤ 2: hb_barrier (); ਵਾਪਸ u.format2.get_sid (glyph, ਅੰਕ_glyphs, cache);
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  ਖਾਲੀ collect_glyph_ਮੰਜ਼ਿਲ_sid_map (glyph_ਮੰਜ਼ਿਲ_sid_map_t *mapping, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    default:return;
+    ਹਾਲਤ 0: hb_barrier (); u.format0.collect_glyph_ਮੰਜ਼ਿਲ_sid_map (mapping, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 1: hb_barrier (); u.format1.collect_glyph_ਮੰਜ਼ਿਲ_sid_map (mapping, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 2: hb_barrier (); u.format2.collect_glyph_ਮੰਜ਼ਿਲ_sid_map (mapping, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਮੂਲ:ਵਾਪਸ;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return u.format0.get_glyph (sid, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_glyph (sid, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_glyph (sid, num_glyphs);
-    default:return 0;
+    ਹਾਲਤ 0: hb_barrier (); ਵਾਪਸ u.format0.get_glyph (sid, ਅੰਕ_glyphs);
+    ਹਾਲਤ 1: hb_barrier (); ਵਾਪਸ u.format1.get_glyph (sid, ਅੰਕ_glyphs);
+    ਹਾਲਤ 2: hb_barrier (); ਵਾਪਸ u.format2.get_glyph (sid, ਅੰਕ_glyphs);
+    ਮੂਲ:ਵਾਪਸ 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned *num_charset_entries) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ *ਅੰਕ_charset_entries) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    default:return_trace (false);
+    ਹਾਲਤ 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_ਅੰਕ_glyphs (), ਅੰਕ_charset_entries));
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_ਅੰਕ_glyphs (), ਅੰਕ_charset_entries));
+    ਹਾਲਤ 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_ਅੰਕ_glyphs (), ਅੰਕ_charset_entries));
+    ਮੂਲ:return_trace (ਝੂਠ);
     }
   }
 
   HBUINT8       format;
-  union {
+  ਸੰਘ {
     Charset0    format0;
     Charset1    format1;
     Charset2    format2;
   } u;
 
-  DEFINE_SIZE_MIN (1);
+  DEFINE_ਮਾਪ_MIN (1);
 };
 
-struct CFF1StringIndex : CFF1Index
+ਬਣਤਰ CFF1_String_ਸੂਚਕਾਂਕ : CFF1_ਸੂਚਕਾਂਕ
 {
-  bool serialize (hb_serialize_context_t *c, const CFF1StringIndex &strings,
-		  const hb_vector_t<unsigned> &sidmap)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਅਚਲ CFF1_String_ਸੂਚਕਾਂਕ &ਲੜੀਆਂ,
+		  ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> &sidmap)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely ((strings.count == 0) || (sidmap.length == 0)))
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely ((ਲੜੀਆਂ.ਗਿਣਤੀ_2 == 0) || (sidmap.ਲੰਮਾਈ == 0)))
     {
-      if (unlikely (!c->extend_min (this->count)))
-	return_trace (false);
-      count = 0;
-      return_trace (true);
+      ਜੇ (unlikely (!c->extend_min (ਇਹ->ਗਿਣਤੀ_2)))
+	return_trace (ਝੂਠ);
+      ਗਿਣਤੀ_2 = 0;
+      return_trace (ਸੱਚ);
     }
 
-    if (unlikely (sidmap.in_error ())) return_trace (false);
+    ਜੇ (unlikely (sidmap.ਵਿੱਚ_error ())) return_trace (ਝੂਠ);
 
     // Save this in a vector since serialize() iterates it twice.
-    hb_vector_t<hb_ubytes_t> bytesArray (+ hb_iter (sidmap)
-					 | hb_map (strings));
+    hb_ਸਦਿਸ਼_t<hb_ubytes_t> ਬਾਈਟਾਂ_Array (+ hb_iter (sidmap)
+					 | hb_map (ਲੜੀਆਂ));
 
-    if (unlikely (bytesArray.in_error ())) return_trace (false);
+    ਜੇ (unlikely (ਬਾਈਟਾਂ_Array.ਵਿੱਚ_error ())) return_trace (ਝੂਠ);
 
-    bool result = CFF1Index::serialize (c, bytesArray);
-    return_trace (result);
+    ਤਾਰਕਿਕ ਨਤੀਜਾ = CFF1_ਸੂਚਕਾਂਕ::serialize (c, ਬਾਈਟਾਂ_Array);
+    return_trace (ਨਤੀਜਾ);
   }
 };
 
-struct cff1_top_dict_interp_env_t : num_interp_env_t
+ਬਣਤਰ cff1_ਸਿਖਰ_dict_interp_env_t : ਅੰਕ_interp_env_t
 {
-  cff1_top_dict_interp_env_t ()
-    : num_interp_env_t(), prev_offset(0), last_offset(0) {}
-  cff1_top_dict_interp_env_t (const hb_ubytes_t &bytes)
-    : num_interp_env_t(bytes), prev_offset(0), last_offset(0) {}
+  cff1_ਸਿਖਰ_dict_interp_env_t ()
+    : ਅੰਕ_interp_env_t(), prev_ਵਿੱਥ(0), ਆਖਰੀ_ਵਿੱਥ(0) {}
+  cff1_ਸਿਖਰ_dict_interp_env_t (ਅਚਲ hb_ubytes_t &ਬਾਈਟਾਂ)
+    : ਅੰਕ_interp_env_t(ਬਾਈਟਾਂ), prev_ਵਿੱਥ(0), ਆਖਰੀ_ਵਿੱਥ(0) {}
 
-  unsigned int prev_offset;
-  unsigned int last_offset;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ prev_ਵਿੱਥ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਆਖਰੀ_ਵਿੱਥ;
 };
 
-struct name_dict_values_t
+ਬਣਤਰ name_dict_ਮੁੱਲਾਂ_t
 {
-  enum name_dict_val_index_t
+  ਗਿਣਤੀ name_dict_val_ਸੂਚਕਾਂਕ_t
   {
-      version,
+      ਸੰਸਕਰਣ,
       notice,
       copyright,
-      fullName,
+      ਭਰਿਆ_Name,
       familyName,
-      weight,
+      ਭਾਰ,
       postscript,
       fontName,
-      baseFontName,
+      ਅਧਾਰ_Font_Name,
       registry,
       ordering,
 
-      ValCount
+      Val_ਗਿਣਤੀ
   };
 
-  void init ()
+  ਖਾਲੀ init ()
   {
-    for (unsigned int i = 0; i < ValCount; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < Val_ਗਿਣਤੀ; i++)
       values[i] = CFF_UNDEF_SID;
   }
 
-  unsigned int& operator[] (unsigned int i)
-  { assert (i < ValCount); return values[i]; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ& ਸੰਚਾਲਕ[] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i)
+  { ਪ੍ਰਤਿਜ੍ਞਾ (i < Val_ਗਿਣਤੀ); ਵਾਪਸ values[i]; }
 
-  unsigned int operator[] (unsigned int i) const
-  { assert (i < ValCount); return values[i]; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੰਚਾਲਕ[] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
+  { ਪ੍ਰਤਿਜ੍ਞਾ (i < Val_ਗਿਣਤੀ); ਵਾਪਸ values[i]; }
 
-  static enum name_dict_val_index_t name_op_to_index (op_code_t op)
+  ਸਥਿਰ ਗਿਣਤੀ name_dict_val_ਸੂਚਕਾਂਕ_t name_op_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ (op_ਕੋਡ_t op)
   {
-    switch (op) {
-      default: // can't happen - just make some compiler happy
-      case OpCode_version:
-	return version;
-      case OpCode_Notice:
-	return notice;
-      case OpCode_Copyright:
-	return copyright;
-      case OpCode_FullName:
-	return fullName;
-      case OpCode_FamilyName:
-	return familyName;
-      case OpCode_Weight:
-	return weight;
-      case OpCode_PostScript:
-	return postscript;
-      case OpCode_FontName:
-	return fontName;
-      case OpCode_BaseFontName:
-	return baseFontName;
+    ਚੋਣ (op) {
+      ਮੂਲ: // can't happen - just make some compiler happy
+      ਹਾਲਤ Op_ਕੋਡ_ਸੰਸਕਰਣ:
+	ਵਾਪਸ ਸੰਸਕਰਣ;
+      ਹਾਲਤ Op_ਕੋਡ_Notice:
+	ਵਾਪਸ notice;
+      ਹਾਲਤ Op_ਕੋਡ_Copyright:
+	ਵਾਪਸ copyright;
+      ਹਾਲਤ Op_ਕੋਡ_ਭਰਿਆ_Name:
+	ਵਾਪਸ ਭਰਿਆ_Name;
+      ਹਾਲਤ Op_ਕੋਡ_Family_Name:
+	ਵਾਪਸ familyName;
+      ਹਾਲਤ Op_ਕੋਡ_ਭਾਰ:
+	ਵਾਪਸ ਭਾਰ;
+      ਹਾਲਤ Op_ਕੋਡ_Post_Script:
+	ਵਾਪਸ postscript;
+      ਹਾਲਤ Op_ਕੋਡ_Font_Name:
+	ਵਾਪਸ fontName;
+      ਹਾਲਤ Op_ਕੋਡ_ਅਧਾਰ_Font_Name:
+	ਵਾਪਸ ਅਧਾਰ_Font_Name;
     }
   }
 
-  unsigned int  values[ValCount];
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  values[Val_ਗਿਣਤੀ];
 };
 
-struct cff1_top_dict_val_t : op_str_t
+ਬਣਤਰ cff1_ਸਿਖਰ_dict_val_t : op_str_t
 {
-  unsigned int  last_arg_offset;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਆਖਰੀ_arg_ਵਿੱਥ;
 };
 
-struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
+ਬਣਤਰ cff1_ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t : ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t<cff1_ਸਿਖਰ_dict_val_t>
 {
-  void init ()
+  ਖਾਲੀ init ()
   {
-    top_dict_values_t<cff1_top_dict_val_t>::init ();
+    ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t<cff1_ਸਿਖਰ_dict_val_t>::init ();
 
     nameSIDs.init ();
     ros_supplement = 0;
-    cidCount = 8720;
-    EncodingOffset = 0;
-    CharsetOffset = 0;
-    FDSelectOffset = 0;
-    privateDictInfo.init ();
+    cid_ਗਿਣਤੀ = 8720;
+    Encoding_ਵਿੱਥ = 0;
+    Charset_ਵਿੱਥ = 0;
+    FDSelect_ਵਿੱਥ = 0;
+    ਨਿੱਜੀ_Dict_Info.init ();
   }
-  void fini () { top_dict_values_t<cff1_top_dict_val_t>::fini (); }
+  ਖਾਲੀ fini () { ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t<cff1_ਸਿਖਰ_dict_val_t>::fini (); }
 
-  bool is_CID () const
-  { return nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
+  ਤਾਰਕਿਕ is_CID () ਅਚਲ
+  { ਵਾਪਸ nameSIDs[name_dict_ਮੁੱਲਾਂ_t::registry] != CFF_UNDEF_SID; }
 
-  name_dict_values_t  nameSIDs;
-  unsigned int    ros_supplement_offset;
-  unsigned int    ros_supplement;
-  unsigned int    cidCount;
+  name_dict_ਮੁੱਲਾਂ_t  nameSIDs;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ros_supplement_ਵਿੱਥ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ros_supplement;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    cid_ਗਿਣਤੀ;
 
-  int             EncodingOffset;
-  int             CharsetOffset;
-  int             FDSelectOffset;
-  table_info_t    privateDictInfo;
+  ਪੂਰਨ             Encoding_ਵਿੱਥ;
+  ਪੂਰਨ             Charset_ਵਿੱਥ;
+  ਪੂਰਨ             FDSelect_ਵਿੱਥ;
+  ਸਾਰਣੀ_info_t    ਨਿੱਜੀ_Dict_Info;
 };
 
-struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
+ਬਣਤਰ cff1_ਸਿਖਰ_dict_opset_t : ਸਿਖਰ_dict_opset_t<cff1_ਸਿਖਰ_dict_val_t>
 {
-  static void process_op (op_code_t op, cff1_top_dict_interp_env_t& env, cff1_top_dict_values_t& dictval)
+  ਸਥਿਰ ਖਾਲੀ process_op (op_ਕੋਡ_t op, cff1_ਸਿਖਰ_dict_interp_env_t& env, cff1_ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t& dictval)
   {
-    cff1_top_dict_val_t  val {};
+    cff1_ਸਿਖਰ_dict_val_t  val {};
 
-    switch (op) {
-      case OpCode_version:
-      case OpCode_Notice:
-      case OpCode_Copyright:
-      case OpCode_FullName:
-      case OpCode_FontName:
-      case OpCode_FamilyName:
-      case OpCode_Weight:
-      case OpCode_PostScript:
-      case OpCode_BaseFontName:
-	dictval.nameSIDs[name_dict_values_t::name_op_to_index (op)] = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
-      case OpCode_isFixedPitch:
-      case OpCode_ItalicAngle:
-      case OpCode_UnderlinePosition:
-      case OpCode_UnderlineThickness:
-      case OpCode_PaintType:
-      case OpCode_CharstringType:
-      case OpCode_UniqueID:
-      case OpCode_StrokeWidth:
-      case OpCode_SyntheticBase:
-      case OpCode_CIDFontVersion:
-      case OpCode_CIDFontRevision:
-      case OpCode_CIDFontType:
-      case OpCode_UIDBase:
-      case OpCode_FontBBox:
-      case OpCode_XUID:
-      case OpCode_BaseFontBlend:
-	env.clear_args ();
-	break;
+    ਚੋਣ (op) {
+      ਹਾਲਤ Op_ਕੋਡ_ਸੰਸਕਰਣ:
+      ਹਾਲਤ Op_ਕੋਡ_Notice:
+      ਹਾਲਤ Op_ਕੋਡ_Copyright:
+      ਹਾਲਤ Op_ਕੋਡ_ਭਰਿਆ_Name:
+      ਹਾਲਤ Op_ਕੋਡ_Font_Name:
+      ਹਾਲਤ Op_ਕੋਡ_Family_Name:
+      ਹਾਲਤ Op_ਕੋਡ_ਭਾਰ:
+      ਹਾਲਤ Op_ਕੋਡ_Post_Script:
+      ਹਾਲਤ Op_ਕੋਡ_ਅਧਾਰ_Font_Name:
+	dictval.nameSIDs[name_dict_ਮੁੱਲਾਂ_t::name_op_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ (op)] = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
+      ਹਾਲਤ Op_ਕੋਡ_is_Fixed_Pitch:
+      ਹਾਲਤ Op_ਕੋਡ_Italic_Angle:
+      ਹਾਲਤ Op_ਕੋਡ_Underline_Position:
+      ਹਾਲਤ Op_ਕੋਡ_Underline_Thickness:
+      ਹਾਲਤ Op_ਕੋਡ_Paint_Type:
+      ਹਾਲਤ Op_ਕੋਡ_Charstring_Type:
+      ਹਾਲਤ Op_ਕੋਡ_Unique_ID:
+      ਹਾਲਤ Op_ਕੋਡ_Stroke_ਚੌੜਾਈ:
+      ਹਾਲਤ Op_ਕੋਡ_Synthetic_ਅਧਾਰ:
+      ਹਾਲਤ Op_ਕੋਡ_CIDFont_ਸੰਸਕਰਣ:
+      ਹਾਲਤ Op_ਕੋਡ_CIDFont_Revision:
+      ਹਾਲਤ Op_ਕੋਡ_CIDFont_Type:
+      ਹਾਲਤ Op_ਕੋਡ_UIDBase:
+      ਹਾਲਤ Op_ਕੋਡ_Font_BBox:
+      ਹਾਲਤ Op_ਕੋਡ_XUID:
+      ਹਾਲਤ Op_ਕੋਡ_ਅਧਾਰ_Font_Blend:
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      case OpCode_CIDCount:
-	dictval.cidCount = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_CIDCount:
+	dictval.cid_ਗਿਣਤੀ = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      case OpCode_ROS:
-	dictval.ros_supplement = env.argStack.pop_uint ();
-	dictval.nameSIDs[name_dict_values_t::ordering] = env.argStack.pop_uint ();
-	dictval.nameSIDs[name_dict_values_t::registry] = env.argStack.pop_uint ();
-	env.clear_args ();
-	if (unlikely (env.in_error ())) return;
-	assert (env.last_offset > dictval.opStart);
-	val.last_arg_offset = (env.last_offset - 1) - dictval.opStart;  /* offset to the last argument */
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_ROS:
+	dictval.ros_supplement = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	dictval.nameSIDs[name_dict_ਮੁੱਲਾਂ_t::ordering] = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	dictval.nameSIDs[name_dict_ਮੁੱਲਾਂ_t::registry] = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਜੇ (unlikely (env.ਵਿੱਚ_error ())) ਵਾਪਸ;
+	ਪ੍ਰਤਿਜ੍ਞਾ (env.ਆਖਰੀ_ਵਿੱਥ > dictval.op_ਸ਼ੁਰੂ);
+	val.ਆਖਰੀ_arg_ਵਿੱਥ = (env.ਆਖਰੀ_ਵਿੱਥ - 1) - dictval.op_ਸ਼ੁਰੂ;  /* offset to the last argument */
+	ਰੋਕੋ;
 
-      case OpCode_Encoding:
-	dictval.EncodingOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	if (unlikely (dictval.EncodingOffset == 0)) return;
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_Encoding:
+	dictval.Encoding_ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਜੇ (unlikely (dictval.Encoding_ਵਿੱਥ == 0)) ਵਾਪਸ;
+	ਰੋਕੋ;
 
-      case OpCode_charset:
-	dictval.CharsetOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	if (unlikely (dictval.CharsetOffset == 0)) return;
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_charset:
+	dictval.Charset_ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਜੇ (unlikely (dictval.Charset_ਵਿੱਥ == 0)) ਵਾਪਸ;
+	ਰੋਕੋ;
 
-      case OpCode_FDSelect:
-	dictval.FDSelectOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_FDSelect:
+	dictval.FDSelect_ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_int ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_ਨਿੱਜੀ:
+	dictval.ਨਿੱਜੀ_Dict_Info.ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	dictval.ਨਿੱਜੀ_Dict_Info.ਮਾਪ = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      default:
-	env.last_offset = env.str_ref.get_offset ();
-	top_dict_opset_t<cff1_top_dict_val_t>::process_op (op, env, dictval);
+      ਮੂਲ:
+	env.ਆਖਰੀ_ਵਿੱਥ = env.str_ref.get_ਵਿੱਥ ();
+	ਸਿਖਰ_dict_opset_t<cff1_ਸਿਖਰ_dict_val_t>::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ਜੇ (!env.arg_ਢੇਰ.is_empty ()) ਵਾਪਸ;
+	ਰੋਕੋ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ਜੇ (unlikely (env.ਵਿੱਚ_error ())) ਵਾਪਸ;
 
-    dictval.add_op (op, env.str_ref, val);
+    dictval.ਜੋੜੋ_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_font_dict_values_t : dict_values_t<op_str_t>
+ਬਣਤਰ cff1_font_dict_ਮੁੱਲਾਂ_t : dict_ਮੁੱਲਾਂ_t<op_str_t>
 {
-  void init ()
+  ਖਾਲੀ init ()
   {
-    dict_values_t<op_str_t>::init ();
-    privateDictInfo.init ();
+    dict_ਮੁੱਲਾਂ_t<op_str_t>::init ();
+    ਨਿੱਜੀ_Dict_Info.init ();
     fontName = CFF_UNDEF_SID;
   }
-  void fini () { dict_values_t<op_str_t>::fini (); }
+  ਖਾਲੀ fini () { dict_ਮੁੱਲਾਂ_t<op_str_t>::fini (); }
 
-  table_info_t       privateDictInfo;
-  unsigned int    fontName;
+  ਸਾਰਣੀ_info_t       ਨਿੱਜੀ_Dict_Info;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    fontName;
 };
 
-struct cff1_font_dict_opset_t : dict_opset_t
+ਬਣਤਰ cff1_font_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_font_dict_values_t& dictval)
+  ਸਥਿਰ ਖਾਲੀ process_op (op_ਕੋਡ_t op, ਅੰਕ_interp_env_t& env, cff1_font_dict_ਮੁੱਲਾਂ_t& dictval)
   {
-    switch (op) {
-      case OpCode_FontName:
-	dictval.fontName = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-      case OpCode_PaintType:
-	env.clear_args ();
-	break;
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_uint ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+    ਚੋਣ (op) {
+      ਹਾਲਤ Op_ਕੋਡ_Font_Name:
+	dictval.fontName = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
+      ਹਾਲਤ Op_ਕੋਡ_Font_ਮੈਟ੍ਰਿਕਸ:
+      ਹਾਲਤ Op_ਕੋਡ_Paint_Type:
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
+      ਹਾਲਤ Op_ਕੋਡ_ਨਿੱਜੀ:
+	dictval.ਨਿੱਜੀ_Dict_Info.ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	dictval.ਨਿੱਜੀ_Dict_Info.ਮਾਪ = env.arg_ਢੇਰ.ਕੱਢੋ_uint ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      default:
+      ਮੂਲ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ਜੇ (!env.arg_ਢੇਰ.is_empty ()) ਵਾਪਸ;
+	ਰੋਕੋ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ਜੇ (unlikely (env.ਵਿੱਚ_error ())) ਵਾਪਸ;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.ਜੋੜੋ_op (op, env.str_ref);
   }
 };
 
-template <typename VAL>
-struct cff1_private_dict_values_base_t : dict_values_t<VAL>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ VAL>
+ਬਣਤਰ cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_ਅਧਾਰ_t : dict_ਮੁੱਲਾਂ_t<VAL>
 {
-  void init ()
+  ਖਾਲੀ init ()
   {
-    dict_values_t<VAL>::init ();
-    subrsOffset = 0;
+    dict_ਮੁੱਲਾਂ_t<VAL>::init ();
+    subrs_ਵਿੱਥ = 0;
     localSubrs = &Null (CFF1Subrs);
   }
-  void fini () { dict_values_t<VAL>::fini (); }
+  ਖਾਲੀ fini () { dict_ਮੁੱਲਾਂ_t<VAL>::fini (); }
 
-  int                 subrsOffset;
-  const CFF1Subrs    *localSubrs;
+  ਪੂਰਨ                 subrs_ਵਿੱਥ;
+  ਅਚਲ CFF1Subrs    *localSubrs;
 };
 
-typedef cff1_private_dict_values_base_t<op_str_t> cff1_private_dict_values_subset_t;
-typedef cff1_private_dict_values_base_t<num_dict_val_t> cff1_private_dict_values_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_ਅਧਾਰ_t<op_str_t> cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_subset_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_ਅਧਾਰ_t<ਅੰਕ_dict_val_t> cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_t;
 
-struct cff1_private_dict_opset_t : dict_opset_t
+ਬਣਤਰ cff1_ਨਿੱਜੀ_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_t& dictval)
+  ਸਥਿਰ ਖਾਲੀ process_op (op_ਕੋਡ_t op, ਅੰਕ_interp_env_t& env, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_t& dictval)
   {
-    num_dict_val_t val;
+    ਅੰਕ_dict_val_t val;
     val.init ();
 
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
-	env.clear_args ();
-	break;
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+    ਚੋਣ (op) {
+      ਹਾਲਤ Op_ਕੋਡ_Blue_ਮੁੱਲਾਂ:
+      ਹਾਲਤ Op_ਕੋਡ_Other_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Family_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Family_Other_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Stem_Snap_H:
+      ਹਾਲਤ Op_ਕੋਡ_Stem_Snap_V:
+      ਹਾਲਤ Op_ਕੋਡ_Std_HW:
+      ਹਾਲਤ Op_ਕੋਡ_Std_VW:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_Scale:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_ਖਿਸਕਾਓ:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_Fuzz:
+      ਹਾਲਤ Op_ਕੋਡ_Force_Bold:
+      ਹਾਲਤ Op_ਕੋਡ_Language_ਸਮੂਹ:
+      ਹਾਲਤ Op_ਕੋਡ_Expansion_ਗੁਣਕ:
+      ਹਾਲਤ Op_ਕੋਡ_initial_Random_ਬੀਜ:
+      ਹਾਲਤ Op_ਕੋਡ_default_ਚੌੜਾਈ_X:
+      ਹਾਲਤ Op_ਕੋਡ_nominal_ਚੌੜਾਈ_X:
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
+      ਹਾਲਤ Op_ਕੋਡ_Subrs:
+	dictval.subrs_ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      default:
+      ਮੂਲ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ਜੇ (!env.arg_ਢੇਰ.is_empty ()) ਵਾਪਸ;
+	ਰੋਕੋ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ਜੇ (unlikely (env.ਵਿੱਚ_error ())) ਵਾਪਸ;
 
-    dictval.add_op (op, env.str_ref, val);
+    dictval.ਜੋੜੋ_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_private_dict_opset_subset_t : dict_opset_t
+ਬਣਤਰ cff1_ਨਿੱਜੀ_dict_opset_subset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_subset_t& dictval)
+  ਸਥਿਰ ਖਾਲੀ process_op (op_ਕੋਡ_t op, ਅੰਕ_interp_env_t& env, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_subset_t& dictval)
   {
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
-	env.clear_args ();
-	break;
+    ਚੋਣ (op) {
+      ਹਾਲਤ Op_ਕੋਡ_Blue_ਮੁੱਲਾਂ:
+      ਹਾਲਤ Op_ਕੋਡ_Other_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Family_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Family_Other_Blues:
+      ਹਾਲਤ Op_ਕੋਡ_Stem_Snap_H:
+      ਹਾਲਤ Op_ਕੋਡ_Stem_Snap_V:
+      ਹਾਲਤ Op_ਕੋਡ_Std_HW:
+      ਹਾਲਤ Op_ਕੋਡ_Std_VW:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_Scale:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_ਖਿਸਕਾਓ:
+      ਹਾਲਤ Op_ਕੋਡ_Blue_Fuzz:
+      ਹਾਲਤ Op_ਕੋਡ_Force_Bold:
+      ਹਾਲਤ Op_ਕੋਡ_Language_ਸਮੂਹ:
+      ਹਾਲਤ Op_ਕੋਡ_Expansion_ਗੁਣਕ:
+      ਹਾਲਤ Op_ਕੋਡ_initial_Random_ਬੀਜ:
+      ਹਾਲਤ Op_ਕੋਡ_default_ਚੌੜਾਈ_X:
+      ਹਾਲਤ Op_ਕੋਡ_nominal_ਚੌੜਾਈ_X:
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      ਹਾਲਤ Op_ਕੋਡ_Subrs:
+	dictval.subrs_ਵਿੱਥ = env.arg_ਢੇਰ.ਕੱਢੋ_int ();
+	env.clear_ਦਲੀਲਾਂ ();
+	ਰੋਕੋ;
 
-      default:
+      ਮੂਲ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ਜੇ (!env.arg_ਢੇਰ.is_empty ()) ਵਾਪਸ;
+	ਰੋਕੋ;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ਜੇ (unlikely (env.ਵਿੱਚ_error ())) ਵਾਪਸ;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.ਜੋੜੋ_op (op, env.str_ref);
   }
 };
 
-typedef dict_interpreter_t<cff1_top_dict_opset_t, cff1_top_dict_values_t, cff1_top_dict_interp_env_t> cff1_top_dict_interpreter_t;
-typedef dict_interpreter_t<cff1_font_dict_opset_t, cff1_font_dict_values_t> cff1_font_dict_interpreter_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ dict_interpreter_t<cff1_ਸਿਖਰ_dict_opset_t, cff1_ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t, cff1_ਸਿਖਰ_dict_interp_env_t> cff1_ਸਿਖਰ_dict_interpreter_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ dict_interpreter_t<cff1_font_dict_opset_t, cff1_font_dict_ਮੁੱਲਾਂ_t> cff1_font_dict_interpreter_t;
 
-typedef CFF1Index CFF1NameIndex;
-typedef CFF1Index CFF1TopDictIndex;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFF1_ਸੂਚਕਾਂਕ CFF1_Name_ਸੂਚਕਾਂਕ;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFF1_ਸੂਚਕਾਂਕ CFF1_ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ;
 
-struct cff1_font_dict_values_mod_t
+ਬਣਤਰ cff1_font_dict_ਮੁੱਲਾਂ_mod_t
 {
-  cff1_font_dict_values_mod_t() { init (); }
+  cff1_font_dict_ਮੁੱਲਾਂ_mod_t() { init (); }
 
-  void init () { init ( &Null (cff1_font_dict_values_t), CFF_UNDEF_SID ); }
+  ਖਾਲੀ init () { init ( &Null (cff1_font_dict_ਮੁੱਲਾਂ_t), CFF_UNDEF_SID ); }
 
-  void init (const cff1_font_dict_values_t *base_,
-	     unsigned int fontName_)
+  ਖਾਲੀ init (ਅਚਲ cff1_font_dict_ਮੁੱਲਾਂ_t *ਅਧਾਰ_2,
+	     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fontName_)
   {
-    base = base_;
+    ਅਧਾਰ = ਅਧਾਰ_2;
     fontName = fontName_;
-    privateDictInfo.init ();
+    ਨਿੱਜੀ_Dict_Info.init ();
   }
 
-  unsigned get_count () const { return base->get_count (); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਗਿਣਤੀ () ਅਚਲ { ਵਾਪਸ ਅਧਾਰ->get_ਗਿਣਤੀ (); }
 
-  const op_str_t &operator [] (unsigned int i) const { return (*base)[i]; }
+  ਅਚਲ op_str_t &ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ { ਵਾਪਸ (*ਅਧਾਰ)[i]; }
 
-  const cff1_font_dict_values_t    *base;
-  table_info_t		   privateDictInfo;
-  unsigned int		fontName;
+  ਅਚਲ cff1_font_dict_ਮੁੱਲਾਂ_t    *ਅਧਾਰ;
+  ਸਾਰਣੀ_info_t		   ਨਿੱਜੀ_Dict_Info;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ		fontName;
 };
 
-struct CFF1FDArray : FDArray<HBUINT16>
+ਬਣਤਰ CFF1FDArray : FDArray<HBUINT16>
 {
   /* FDArray::serialize() requires this partial specialization to compile */
-  template <typename ITER, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ITER, ਕਿਸਮ_ਨਾਂ OP_SERIALIZER>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
+  { ਵਾਪਸ FDArray<HBUINT16>::serialize<cff1_font_dict_ਮੁੱਲਾਂ_mod_t, cff1_font_dict_ਮੁੱਲਾਂ_mod_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-using namespace CFF;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ CFF;
 
-struct cff1
+ਬਣਤਰ cff1
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CFF1;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_CFF1;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  likely (version.major == 1));
+		  likely (ਸੰਸਕਰਣ.major == 1));
   }
 
-  template <typename PRIVOPSET, typename PRIVDICTVAL>
-  struct accelerator_templ_t
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ PRIVOPSET, ਕਿਸਮ_ਨਾਂ PRIVDICTVAL>
+  ਬਣਤਰ accelerator_templ_t
   {
-    static constexpr hb_tag_t tableTag = cff1::tableTag;
+    ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = cff1::ਸਾਰਣੀ_ਟੈਗ;
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      ਜੇ (!face) ਵਾਪਸ;
 
-      topDict.init ();
+      ਸਿਖਰ_Dict_2.init ();
       fontDicts.init ();
-      privateDicts.init ();
+      ਨਿੱਜੀ_Dicts.init ();
 
-      this->blob = sc.reference_table<cff1> (face);
+      ਇਹ->blob = sc.reference_ਸਾਰਣੀ<cff1> (face);
 
       /* setup for run-time sanitization */
-      sc.init (this->blob);
-      sc.start_processing ();
+      sc.init (ਇਹ->blob);
+      sc.ਸ਼ੁਰੂ_processing ();
 
-      const OT::cff1 *cff = this->blob->template as<OT::cff1> ();
+      ਅਚਲ OT::cff1 *cff = ਇਹ->blob->ਸਾਂਚਾ as<OT::cff1> ();
 
-      if (cff == &Null (OT::cff1))
-        goto fail;
+      ਜੇ (cff == &Null (OT::cff1))
+        ਜਾਓ fail;
 
-      nameIndex = &cff->nameIndex (cff);
-      if ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
-        goto fail;
+      name_ਸੂਚਕਾਂਕ = &cff->name_ਸੂਚਕਾਂਕ (cff);
+      ਜੇ ((name_ਸੂਚਕਾਂਕ == &Null (CFF1_Name_ਸੂਚਕਾਂਕ)) || !name_ਸੂਚਕਾਂਕ->sanitize (&sc))
+        ਜਾਓ fail;
       hb_barrier ();
 
-      topDictIndex = &StructAtOffsetOrNull<CFF1TopDictIndex> (nameIndex, nameIndex->get_size (), sc);
-      if (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
-        goto fail;
+      ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ = &Struct_At_ਵਿੱਥ_Or_Null<CFF1_ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ> (name_ਸੂਚਕਾਂਕ, name_ਸੂਚਕਾਂਕ->get_ਮਾਪ (), sc);
+      ਜੇ (ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ == &Null (CFF1_ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ) || (ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ->ਗਿਣਤੀ_2 == 0))
+        ਜਾਓ fail;
       hb_barrier ();
 
       { /* parse top dict */
-	const hb_ubytes_t topDictStr = (*topDictIndex)[0];
-	if (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
+	ਅਚਲ hb_ubytes_t ਸਿਖਰ_Dict_Str = (*ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ)[0];
+	ਜੇ (unlikely (!ਸਿਖਰ_Dict_Str.sanitize (&sc)))   ਜਾਓ fail;
 	hb_barrier ();
-	cff1_top_dict_interp_env_t env (topDictStr);
-	cff1_top_dict_interpreter_t top_interp (env);
-	if (unlikely (!top_interp.interpret (topDict)))   goto fail;
+	cff1_ਸਿਖਰ_dict_interp_env_t env (ਸਿਖਰ_Dict_Str);
+	cff1_ਸਿਖਰ_dict_interpreter_t ਸਿਖਰ_interp (env);
+	ਜੇ (unlikely (!ਸਿਖਰ_interp.interpret (ਸਿਖਰ_Dict_2)))   ਜਾਓ fail;
       }
 
-      if (is_predef_charset ())
+      ਜੇ (is_predef_charset ())
 	charset = &Null (Charset);
-      else
+      ਨਹੀਂਤਾਂ
       {
-	charset = &StructAtOffsetOrNull<Charset> (cff, topDict.CharsetOffset, sc, &num_charset_entries);
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	charset = &Struct_At_ਵਿੱਥ_Or_Null<Charset> (cff, ਸਿਖਰ_Dict_2.Charset_ਵਿੱਥ, sc, &ਅੰਕ_charset_entries);
+	ਜੇ (unlikely (charset == &Null (Charset)))   ਜਾਓ fail;
       }
 
-      fdCount = 1;
-      if (is_CID ())
+      fd_ਗਿਣਤੀ = 1;
+      ਜੇ (is_CID ())
       {
-	fdArray = &StructAtOffsetOrNull<CFF1FDArray> (cff, topDict.FDArrayOffset, sc);
-	fdSelect = &StructAtOffsetOrNull<CFF1FDSelect> (cff, topDict.FDSelectOffset, sc, fdArray->count);
-	if (unlikely (fdArray == &Null (CFF1FDArray) ||
+	fdArray = &Struct_At_ਵਿੱਥ_Or_Null<CFF1FDArray> (cff, ਸਿਖਰ_Dict_2.FDArray_ਵਿੱਥ, sc);
+	fdSelect = &Struct_At_ਵਿੱਥ_Or_Null<CFF1FDSelect> (cff, ਸਿਖਰ_Dict_2.FDSelect_ਵਿੱਥ, sc, fdArray->ਗਿਣਤੀ_2);
+	ਜੇ (unlikely (fdArray == &Null (CFF1FDArray) ||
 		      fdSelect == &Null (CFF1FDSelect)))
-	  goto fail;
+	  ਜਾਓ fail;
 
-	fdCount = fdArray->count;
+	fd_ਗਿਣਤੀ = fdArray->ਗਿਣਤੀ_2;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
 	fdArray = &Null (CFF1FDArray);
 	fdSelect = &Null (CFF1FDSelect);
       }
 
       encoding = &Null (Encoding);
-      if (is_CID ())
+      ਜੇ (is_CID ())
       {
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	ਜੇ (unlikely (charset == &Null (Charset)))   ਜਾਓ fail;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	if (!is_predef_encoding ())
+	ਜੇ (!is_predef_encoding ())
 	{
-	  encoding = &StructAtOffsetOrNull<Encoding> (cff, topDict.EncodingOffset, sc);
-	  if (unlikely (encoding == &Null (Encoding)))   goto fail;
+	  encoding = &Struct_At_ਵਿੱਥ_Or_Null<Encoding> (cff, ਸਿਖਰ_Dict_2.Encoding_ਵਿੱਥ, sc);
+	  ਜੇ (unlikely (encoding == &Null (Encoding)))   ਜਾਓ fail;
 	}
       }
 
-      stringIndex = &StructAtOffsetOrNull<CFF1StringIndex> (topDictIndex, topDictIndex->get_size (), sc);
-      if (stringIndex == &Null (CFF1StringIndex))
-        goto fail;
+      string_ਸੂਚਕਾਂਕ = &Struct_At_ਵਿੱਥ_Or_Null<CFF1_String_ਸੂਚਕਾਂਕ> (ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ, ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ->get_ਮਾਪ (), sc);
+      ਜੇ (string_ਸੂਚਕਾਂਕ == &Null (CFF1_String_ਸੂਚਕਾਂਕ))
+        ਜਾਓ fail;
 
-      globalSubrs = &StructAtOffsetOrNull<CFF1Subrs> (stringIndex, stringIndex->get_size (), sc);
-      charStrings = &StructAtOffsetOrNull<CFF1CharStrings> (cff, topDict.charStringsOffset, sc);
-      if (charStrings == &Null (CFF1CharStrings))
-        goto fail;
+      globalSubrs = &Struct_At_ਵਿੱਥ_Or_Null<CFF1Subrs> (string_ਸੂਚਕਾਂਕ, string_ਸੂਚਕਾਂਕ->get_ਮਾਪ (), sc);
+      char_ਲੜੀਆਂ = &Struct_At_ਵਿੱਥ_Or_Null<CFF1_Char_ਲੜੀਆਂ> (cff, ਸਿਖਰ_Dict_2.char_ਲੜੀਆਂ_ਵਿੱਥ, sc);
+      ਜੇ (char_ਲੜੀਆਂ == &Null (CFF1_Char_ਲੜੀਆਂ))
+        ਜਾਓ fail;
 
-      num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
-        goto fail;
+      ਅੰਕ_glyphs = char_ਲੜੀਆਂ->ਗਿਣਤੀ_2;
+      ਜੇ (ਅੰਕ_glyphs != sc.get_ਅੰਕ_glyphs ())
+        ਜਾਓ fail;
 
-      if (unlikely (!privateDicts.resize (fdCount)))
-        goto fail;
-      for (unsigned int i = 0; i < fdCount; i++)
-	privateDicts[i].init ();
+      ਜੇ (unlikely (!ਨਿੱਜੀ_Dicts.resize (fd_ਗਿਣਤੀ)))
+        ਜਾਓ fail;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < fd_ਗਿਣਤੀ; i++)
+	ਨਿੱਜੀ_Dicts[i].init ();
 
       // parse CID font dicts and gather private dicts
-      if (is_CID ())
+      ਜੇ (is_CID ())
       {
-	for (unsigned int i = 0; i < fdCount; i++)
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < fd_ਗਿਣਤੀ; i++)
 	{
 	  hb_ubytes_t fontDictStr = (*fdArray)[i];
-	  if (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
+	  ਜੇ (unlikely (!fontDictStr.sanitize (&sc)))   ਜਾਓ fail;
 	  hb_barrier ();
-	  cff1_font_dict_values_t *font;
-	  cff1_top_dict_interp_env_t env (fontDictStr);
+	  cff1_font_dict_ਮੁੱਲਾਂ_t *font;
+	  cff1_ਸਿਖਰ_dict_interp_env_t env (fontDictStr);
 	  cff1_font_dict_interpreter_t font_interp (env);
 	  font = fontDicts.push ();
-	  if (unlikely (fontDicts.in_error ()))   goto fail;
+	  ਜੇ (unlikely (fontDicts.ਵਿੱਚ_error ()))   ਜਾਓ fail;
 
 	  font->init ();
-	  if (unlikely (!font_interp.interpret (*font)))   goto fail;
-	  PRIVDICTVAL *priv = &privateDicts[i];
-	  const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	  if (unlikely (font->privateDictInfo.size &&
-			privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
-	  num_interp_env_t env2 (privDictStr);
+	  ਜੇ (unlikely (!font_interp.interpret (*font)))   ਜਾਓ fail;
+	  PRIVDICTVAL *priv = &ਨਿੱਜੀ_Dicts[i];
+	  ਅਚਲ hb_ubytes_t privDictStr = Struct_At_ਵਿੱਥ_Or_Null<UnsizedByteStr> (cff, font->ਨਿੱਜੀ_Dict_Info.ਵਿੱਥ, sc, font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ).as_ubytes (font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ);
+	  ਜੇ (unlikely (font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ &&
+			privDictStr == (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) &Null (UnsizedByteStr))) ਜਾਓ fail;
+	  ਅੰਕ_interp_env_t env2 (privDictStr);
 	  dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env2);
 	  priv->init ();
-	  if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	  ਜੇ (unlikely (!priv_interp.interpret (*priv)))   ਜਾਓ fail;
 
-	  priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
+	  priv->localSubrs = &Struct_At_ਵਿੱਥ_Or_Null<CFF1Subrs> (&privDictStr, priv->subrs_ਵਿੱਥ, sc);
 	}
       }
-      else  /* non-CID */
+      ਨਹੀਂਤਾਂ  /* non-CID */
       {
-	cff1_top_dict_values_t *font = &topDict;
-	PRIVDICTVAL *priv = &privateDicts[0];
+	cff1_ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t *font = &ਸਿਖਰ_Dict_2;
+	PRIVDICTVAL *priv = &ਨਿੱਜੀ_Dicts[0];
 
-	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (font->privateDictInfo.size &&
-	    unlikely (privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
-	num_interp_env_t env (privDictStr);
+	ਅਚਲ hb_ubytes_t privDictStr = Struct_At_ਵਿੱਥ_Or_Null<UnsizedByteStr> (cff, font->ਨਿੱਜੀ_Dict_Info.ਵਿੱਥ, sc, font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ).as_ubytes (font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ);
+	ਜੇ (font->ਨਿੱਜੀ_Dict_Info.ਮਾਪ &&
+	    unlikely (privDictStr == (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) &Null (UnsizedByteStr))) ਜਾਓ fail;
+	ਅੰਕ_interp_env_t env (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env);
 	priv->init ();
-	if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	ਜੇ (unlikely (!priv_interp.interpret (*priv)))   ਜਾਓ fail;
 
-	priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
+	priv->localSubrs = &Struct_At_ਵਿੱਥ_Or_Null<CFF1Subrs> (&privDictStr, priv->subrs_ਵਿੱਥ, sc);
 	hb_barrier ();
       }
 
-      return;
+      ਵਾਪਸ;
 
       fail:
         _fini ();
     }
     ~accelerator_templ_t () { _fini (); }
-    void _fini ()
+    ਖਾਲੀ _fini ()
     {
-      sc.end_processing ();
-      topDict.fini ();
+      sc.ਸਿਰਾ_processing ();
+      ਸਿਖਰ_Dict_2.fini ();
       fontDicts.fini ();
-      privateDicts.fini ();
+      ਨਿੱਜੀ_Dicts.fini ();
       hb_blob_destroy (blob);
-      blob = nullptr;
+      blob = ਖਾਲੀ_ਸੂਚਕ;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () ਅਚਲ { ਵਾਪਸ blob; }
 
-    bool is_valid () const { return blob; }
-    bool   is_CID () const { return topDict.is_CID (); }
+    ਤਾਰਕਿਕ is_valid () ਅਚਲ { ਵਾਪਸ blob; }
+    ਤਾਰਕਿਕ   is_CID () ਅਚਲ { ਵਾਪਸ ਸਿਖਰ_Dict_2.is_CID (); }
 
-    bool is_predef_charset () const { return topDict.CharsetOffset <= ExpertSubsetCharset; }
+    ਤਾਰਕਿਕ is_predef_charset () ਅਚਲ { ਵਾਪਸ ਸਿਖਰ_Dict_2.Charset_ਵਿੱਥ <= ExpertSubsetCharset; }
 
-    unsigned int std_code_to_glyph (hb_codepoint_t code) const
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ std_ਕੋਡ_ਮੰਜ਼ਿਲ_glyph (hb_codepoint_t ਕੋਡ) ਅਚਲ
     {
-      hb_codepoint_t sid = lookup_standard_encoding_for_sid (code);
-      if (unlikely (sid == CFF_UNDEF_SID))
-	return 0;
+      hb_codepoint_t sid = lookup_standard_encoding_for_sid (ਕੋਡ);
+      ਜੇ (unlikely (sid == CFF_UNDEF_SID))
+	ਵਾਪਸ 0;
 
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else if ((topDict.CharsetOffset == ISOAdobeCharset)
-	      && (code <= 228 /*zcaron*/)) return sid;
-      return 0;
+      ਜੇ (charset != &Null (Charset))
+	ਵਾਪਸ charset->get_glyph (sid, ਅੰਕ_glyphs);
+      ਨਹੀਂਤਾਂ ਜੇ ((ਸਿਖਰ_Dict_2.Charset_ਵਿੱਥ == ISOAdobeCharset)
+	      && (ਕੋਡ <= 228 /*zcaron*/)) ਵਾਪਸ sid;
+      ਵਾਪਸ 0;
     }
 
-    bool is_predef_encoding () const { return topDict.EncodingOffset <= ExpertEncoding; }
+    ਤਾਰਕਿਕ is_predef_encoding () ਅਚਲ { ਵਾਪਸ ਸਿਖਰ_Dict_2.Encoding_ਵਿੱਥ <= ExpertEncoding; }
 
-    hb_codepoint_t glyph_to_code (hb_codepoint_t glyph,
-				  code_pair_t *glyph_to_sid_cache = nullptr) const
+    hb_codepoint_t glyph_ਮੰਜ਼ਿਲ_ਕੋਡ (hb_codepoint_t glyph,
+				  ਕੋਡ_pair_t *glyph_ਮੰਜ਼ਿਲ_sid_cache = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
     {
-      if (encoding != &Null (Encoding))
-	return encoding->get_code (glyph);
-      else
+      ਜੇ (encoding != &Null (Encoding))
+	ਵਾਪਸ encoding->get_ਕੋਡ (glyph);
+      ਨਹੀਂਤਾਂ
       {
-	hb_codepoint_t sid = glyph_to_sid (glyph, glyph_to_sid_cache);
-	if (sid == 0) return 0;
-	hb_codepoint_t code = 0;
-	switch (topDict.EncodingOffset)
+	hb_codepoint_t sid = glyph_ਮੰਜ਼ਿਲ_sid (glyph, glyph_ਮੰਜ਼ਿਲ_sid_cache);
+	ਜੇ (sid == 0) ਵਾਪਸ 0;
+	hb_codepoint_t ਕੋਡ = 0;
+	ਚੋਣ (ਸਿਖਰ_Dict_2.Encoding_ਵਿੱਥ)
 	{
-	case StandardEncoding:
-	  code = lookup_standard_encoding_for_code (sid);
-	  break;
-	case ExpertEncoding:
-	  code = lookup_expert_encoding_for_code (sid);
-	  break;
-	default:
-	  break;
+	ਹਾਲਤ StandardEncoding:
+	  ਕੋਡ = lookup_standard_encoding_for_ਕੋਡ (sid);
+	  ਰੋਕੋ;
+	ਹਾਲਤ ExpertEncoding:
+	  ਕੋਡ = lookup_expert_encoding_for_ਕੋਡ (sid);
+	  ਰੋਕੋ;
+	ਮੂਲ:
+	  ਰੋਕੋ;
 	}
-	return code;
+	ਵਾਪਸ ਕੋਡ;
       }
     }
 
-    glyph_to_sid_map_t *create_glyph_to_sid_map () const
+    glyph_ਮੰਜ਼ਿਲ_sid_map_t *create_glyph_ਮੰਜ਼ਿਲ_sid_map () ਅਚਲ
     {
-      if (charset != &Null (Charset))
+      ਜੇ (charset != &Null (Charset))
       {
-	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (sizeof (glyph_to_sid_map_t));
-	if (unlikely (!mapping)) return nullptr;
-	mapping = new (mapping) glyph_to_sid_map_t ();
-	mapping->push (code_pair_t {0, 1});
-	charset->collect_glyph_to_sid_map (mapping, num_glyphs);
-	return mapping;
+	ਸਵੈਚਾਲਿਤ *mapping = (glyph_ਮੰਜ਼ਿਲ_sid_map_t *) hb_malloc (ਆਕਾਰ (glyph_ਮੰਜ਼ਿਲ_sid_map_t));
+	ਜੇ (unlikely (!mapping)) ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+	mapping = ਨਵਾਂ (mapping) glyph_ਮੰਜ਼ਿਲ_sid_map_t ();
+	mapping->push (ਕੋਡ_pair_t {0, 1});
+	charset->collect_glyph_ਮੰਜ਼ਿਲ_sid_map (mapping, ਅੰਕ_glyphs);
+	ਵਾਪਸ mapping;
       }
-      else
-	return nullptr;
+      ਨਹੀਂਤਾਂ
+	ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
 
-    hb_codepoint_t glyph_to_sid (hb_codepoint_t glyph,
-				 code_pair_t *cache = nullptr) const
+    hb_codepoint_t glyph_ਮੰਜ਼ਿਲ_sid (hb_codepoint_t glyph,
+				 ਕੋਡ_pair_t *cache = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
     {
-      if (charset != &Null (Charset))
-	return charset->get_sid (glyph, num_glyphs, cache);
-      else
+      ਜੇ (charset != &Null (Charset))
+	ਵਾਪਸ charset->get_sid (glyph, ਅੰਕ_glyphs, cache);
+      ਨਹੀਂਤਾਂ
       {
 	hb_codepoint_t sid = 0;
-	switch (topDict.CharsetOffset)
+	ਚੋਣ (ਸਿਖਰ_Dict_2.Charset_ਵਿੱਥ)
 	{
-	  case ISOAdobeCharset:
-	    if (glyph <= 228 /*zcaron*/) sid = glyph;
-	    break;
-	  case ExpertCharset:
+	  ਹਾਲਤ ISOAdobeCharset:
+	    ਜੇ (glyph <= 228 /*zcaron*/) sid = glyph;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ ExpertCharset:
 	    sid = lookup_expert_charset_for_sid (glyph);
-	    break;
-	  case ExpertSubsetCharset:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ ExpertSubsetCharset:
 	      sid = lookup_expert_subset_charset_for_sid (glyph);
-	    break;
-	  default:
-	    break;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
+	    ਰੋਕੋ;
 	}
-	return sid;
+	ਵਾਪਸ sid;
       }
     }
 
-    hb_codepoint_t sid_to_glyph (hb_codepoint_t sid) const
+    hb_codepoint_t sid_ਮੰਜ਼ਿਲ_glyph (hb_codepoint_t sid) ਅਚਲ
     {
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else
+      ਜੇ (charset != &Null (Charset))
+	ਵਾਪਸ charset->get_glyph (sid, ਅੰਕ_glyphs);
+      ਨਹੀਂਤਾਂ
       {
 	hb_codepoint_t glyph = 0;
-	switch (topDict.CharsetOffset)
+	ਚੋਣ (ਸਿਖਰ_Dict_2.Charset_ਵਿੱਥ)
 	{
-	  case ISOAdobeCharset:
-	    if (sid <= 228 /*zcaron*/) glyph = sid;
-	    break;
-	  case ExpertCharset:
+	  ਹਾਲਤ ISOAdobeCharset:
+	    ਜੇ (sid <= 228 /*zcaron*/) glyph = sid;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ ExpertCharset:
 	    glyph = lookup_expert_charset_for_glyph (sid);
-	    break;
-	  case ExpertSubsetCharset:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ ExpertSubsetCharset:
 	    glyph = lookup_expert_subset_charset_for_glyph (sid);
-	    break;
-	  default:
-	    break;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
+	    ਰੋਕੋ;
 	}
-	return glyph;
+	ਵਾਪਸ glyph;
       }
     }
 
-    protected:
+    ਸੁਰੱਖਿਅਤ:
     hb_sanitize_context_t   sc;
 
-    public:
-    hb_blob_t               *blob = nullptr;
-    const Encoding	    *encoding = nullptr;
-    const Charset	    *charset = nullptr;
-    const CFF1NameIndex     *nameIndex = nullptr;
-    const CFF1TopDictIndex  *topDictIndex = nullptr;
-    const CFF1StringIndex   *stringIndex = nullptr;
-    const CFF1Subrs	    *globalSubrs = nullptr;
-    const CFF1CharStrings   *charStrings = nullptr;
-    const CFF1FDArray       *fdArray = nullptr;
-    const CFF1FDSelect      *fdSelect = nullptr;
-    unsigned int	     fdCount = 0;
+    ਜਨਤਕ:
+    hb_blob_t               *blob = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ Encoding	    *encoding = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ Charset	    *charset = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1_Name_ਸੂਚਕਾਂਕ     *name_ਸੂਚਕਾਂਕ = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1_ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ  *ਸਿਖਰ_Dict_ਸੂਚਕਾਂਕ = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1_String_ਸੂਚਕਾਂਕ   *string_ਸੂਚਕਾਂਕ = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1Subrs	    *globalSubrs = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1_Char_ਲੜੀਆਂ   *char_ਲੜੀਆਂ = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1FDArray       *fdArray = ਖਾਲੀ_ਸੂਚਕ;
+    ਅਚਲ CFF1FDSelect      *fdSelect = ਖਾਲੀ_ਸੂਚਕ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ	     fd_ਗਿਣਤੀ = 0;
 
-    cff1_top_dict_values_t   topDict;
-    hb_vector_t<cff1_font_dict_values_t>
+    cff1_ਸਿਖਰ_dict_ਮੁੱਲਾਂ_t   ਸਿਖਰ_Dict_2;
+    hb_ਸਦਿਸ਼_t<cff1_font_dict_ਮੁੱਲਾਂ_t>
 			     fontDicts;
-    hb_vector_t<PRIVDICTVAL> privateDicts;
+    hb_ਸਦਿਸ਼_t<PRIVDICTVAL> ਨਿੱਜੀ_Dicts;
 
-    unsigned int	     num_glyphs = 0;
-    unsigned int	     num_charset_entries = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ	     ਅੰਕ_glyphs = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ	     ਅੰਕ_charset_entries = 0;
   };
 
-  struct accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
+  ਬਣਤਰ accelerator_t : accelerator_templ_t<cff1_ਨਿੱਜੀ_dict_opset_t, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_t>
   {
     accelerator_t (hb_face_t *face) : SUPER (face)
     {
-      glyph_names.set_relaxed (nullptr);
+      glyph_ਨਾਂ.ਸੈੱਟ_relaxed (ਖਾਲੀ_ਸੂਚਕ);
 
-      if (!is_valid ()) return;
-      if (is_CID ()) return;
+      ਜੇ (!is_valid ()) ਵਾਪਸ;
+      ਜੇ (is_CID ()) ਵਾਪਸ;
     }
     ~accelerator_t ()
     {
-      hb_sorted_vector_t<gname_t> *names = glyph_names.get_relaxed ();
-      if (names)
+      hb_sorted_ਸਦਿਸ਼_t<gname_t> *ਨਾਂ = glyph_ਨਾਂ.get_relaxed ();
+      ਜੇ (ਨਾਂ)
       {
-	names->fini ();
-	hb_free (names);
+	ਨਾਂ->fini ();
+	hb_free (ਨਾਂ);
       }
     }
 
-    bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+    ਤਾਰਕਿਕ get_glyph_name (hb_codepoint_t glyph,
+			 ਅੱਖਰ *buf, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_len) ਅਚਲ
     {
-      if (unlikely (glyph >= num_glyphs)) return false;
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (unlikely (!buf_len)) return true;
-      hb_codepoint_t sid = glyph_to_sid (glyph);
-      const char *str;
+      ਜੇ (unlikely (glyph >= ਅੰਕ_glyphs)) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (unlikely (!is_valid ())) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (is_CID()) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (unlikely (!buf_len)) ਵਾਪਸ ਸੱਚ;
+      hb_codepoint_t sid = glyph_ਮੰਜ਼ਿਲ_sid (glyph);
+      ਅਚਲ ਅੱਖਰ *str;
       size_t str_len;
-      if (sid < cff1_std_strings_length)
+      ਜੇ (sid < cff1_std_ਲੜੀਆਂ_ਲੰਮਾਈ)
       {
-	hb_bytes_t byte_str = cff1_std_strings (sid);
+	hb_ਬਾਈਟਾਂ_t byte_str = cff1_std_ਲੜੀਆਂ (sid);
 	str = byte_str.arrayZ;
-	str_len = byte_str.length;
+	str_len = byte_str.ਲੰਮਾਈ;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	hb_ubytes_t ubyte_str = (*stringIndex)[sid - cff1_std_strings_length];
-	str = (const char *)ubyte_str.arrayZ;
-	str_len = ubyte_str.length;
+	hb_ubytes_t ubyte_str = (*string_ਸੂਚਕਾਂਕ)[sid - cff1_std_ਲੜੀਆਂ_ਲੰਮਾਈ];
+	str = (ਅਚਲ ਅੱਖਰ *)ubyte_str.arrayZ;
+	str_len = ubyte_str.ਲੰਮਾਈ;
       }
-      if (!str_len) return false;
-      unsigned int len = hb_min (buf_len - 1, str_len);
-      strncpy (buf, (const char*)str, len);
+      ਜੇ (!str_len) ਵਾਪਸ ਝੂਠ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len = hb_min (buf_len - 1, str_len);
+      strncpy (buf, (ਅਚਲ ਅੱਖਰ*)str, len);
       buf[len] = '\0';
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
-			      hb_codepoint_t *glyph) const
+    ਤਾਰਕਿਕ get_glyph_from_name (ਅਚਲ ਅੱਖਰ *name, ਪੂਰਨ len,
+			      hb_codepoint_t *glyph) ਅਚਲ
     {
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (len < 0) len = strlen (name);
-      if (unlikely (!len)) return false;
+      ਜੇ (unlikely (!is_valid ())) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (is_CID()) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (len < 0) len = ਲੜੀ_ਲੰਬਾਈ (name);
+      ਜੇ (unlikely (!len)) ਵਾਪਸ ਝੂਠ;
 
     retry:
-      hb_sorted_vector_t<gname_t> *names = glyph_names.get_acquire ();
-      if (unlikely (!names))
+      hb_sorted_ਸਦਿਸ਼_t<gname_t> *ਨਾਂ = glyph_ਨਾਂ.get_acquire ();
+      ਜੇ (unlikely (!ਨਾਂ))
       {
-	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, sizeof (hb_sorted_vector_t<gname_t>));
-	if (likely (names))
+	ਨਾਂ = (hb_sorted_ਸਦਿਸ਼_t<gname_t> *) hb_calloc (1, ਆਕਾਰ (hb_sorted_ਸਦਿਸ਼_t<gname_t>));
+	ਜੇ (likely (ਨਾਂ))
 	{
-	  names->init ();
+	  ਨਾਂ->init ();
 	  /* TODO */
 
 	  /* fill glyph names */
-	  code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-	  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+	  ਕੋਡ_pair_t glyph_ਮੰਜ਼ਿਲ_sid_cache {0, HB_CODEPOINT_INVALID};
+	  ਲਈ (hb_codepoint_t gid = 0; gid < ਅੰਕ_glyphs; gid++)
 	  {
-	    hb_codepoint_t	sid = glyph_to_sid (gid, &glyph_to_sid_cache);
+	    hb_codepoint_t	sid = glyph_ਮੰਜ਼ਿਲ_sid (gid, &glyph_ਮੰਜ਼ਿਲ_sid_cache);
 	    gname_t	gname;
 	    gname.sid = sid;
-	    if (sid < cff1_std_strings_length)
-	      gname.name = cff1_std_strings (sid);
-	    else
+	    ਜੇ (sid < cff1_std_ਲੜੀਆਂ_ਲੰਮਾਈ)
+	      gname.name = cff1_std_ਲੜੀਆਂ (sid);
+	    ਨਹੀਂਤਾਂ
 	    {
-	      hb_ubytes_t	ustr = (*stringIndex)[sid - cff1_std_strings_length];
-	      gname.name = hb_bytes_t ((const char*) ustr.arrayZ, ustr.length);
+	      hb_ubytes_t	ustr = (*string_ਸੂਚਕਾਂਕ)[sid - cff1_std_ਲੜੀਆਂ_ਲੰਮਾਈ];
+	      gname.name = hb_ਬਾਈਟਾਂ_t ((ਅਚਲ ਅੱਖਰ*) ustr.arrayZ, ustr.ਲੰਮਾਈ);
 	    }
-	    if (unlikely (!gname.name.arrayZ))
-	      gname.name = hb_bytes_t ("", 0); /* To avoid nullptr. */
-	    names->push (gname);
+	    ਜੇ (unlikely (!gname.name.arrayZ))
+	      gname.name = hb_ਬਾਈਟਾਂ_t ("", 0); /* To avoid nullptr. */
+	    ਨਾਂ->push (gname);
 	  }
-	  names->qsort ();
+	  ਨਾਂ->qsort ();
 	}
-	if (unlikely (!glyph_names.cmpexch (nullptr, names)))
+	ਜੇ (unlikely (!glyph_ਨਾਂ.cmpexch (ਖਾਲੀ_ਸੂਚਕ, ਨਾਂ)))
 	{
-	  if (names)
+	  ਜੇ (ਨਾਂ)
 	  {
-	    names->fini ();
-	    hb_free (names);
+	    ਨਾਂ->fini ();
+	    hb_free (ਨਾਂ);
 	  }
-	  goto retry;
+	  ਜਾਓ retry;
 	}
       }
 
-      gname_t key = { hb_bytes_t (name, len), 0 };
-      const gname_t *gname = names ? names->bsearch (key) : nullptr;
-      if (!gname) return false;
-      hb_codepoint_t gid = sid_to_glyph (gname->sid);
-      if (!gid && gname->sid) return false;
+      gname_t key = { hb_ਬਾਈਟਾਂ_t (name, len), 0 };
+      ਅਚਲ gname_t *gname = ਨਾਂ ? ਨਾਂ->bsearch (key) : ਖਾਲੀ_ਸੂਚਕ;
+      ਜੇ (!gname) ਵਾਪਸ ਝੂਠ;
+      hb_codepoint_t gid = sid_ਮੰਜ਼ਿਲ_glyph (gname->sid);
+      ਜੇ (!gid && gname->sid) ਵਾਪਸ ਝੂਠ;
       *glyph = gid;
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
-    HB_INTERNAL bool get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
+    HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ;
+    HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ get_ਰਸਤਾ (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ;
 
-    private:
-    struct gname_t
+    ਨਿਜੀ:
+    ਬਣਤਰ gname_t
     {
-      hb_bytes_t	name;
+      hb_ਬਾਈਟਾਂ_t	name;
       uint16_t		sid;
 
-      static int cmp (const void *a_, const void *b_)
+      ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *a_, ਅਚਲ ਖਾਲੀ *b_)
       {
-	const gname_t *a = (const gname_t *)a_;
-	const gname_t *b = (const gname_t *)b_;
-	unsigned minlen = hb_min (a->name.length, b->name.length);
-	int ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
-	if (ret) return ret;
-	return a->name.length - b->name.length;
+	ਅਚਲ gname_t *a = (ਅਚਲ gname_t *)a_;
+	ਅਚਲ gname_t *b = (ਅਚਲ gname_t *)b_;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ minlen = hb_min (a->name.ਲੰਮਾਈ, b->name.ਲੰਮਾਈ);
+	ਪੂਰਨ ret = ਲੜੀ_ਤੁਲਨਾ (a->name.arrayZ, b->name.arrayZ, minlen);
+	ਜੇ (ret) ਵਾਪਸ ret;
+	ਵਾਪਸ a->name.ਲੰਮਾਈ - b->name.ਲੰਮਾਈ;
       }
 
-      int cmp (const gname_t &a) const { return cmp (&a, this); }
+      ਪੂਰਨ cmp (ਅਚਲ gname_t &a) ਅਚਲ { ਵਾਪਸ cmp (&a, ਇਹ); }
     };
 
-    mutable hb_atomic_t<hb_sorted_vector_t<gname_t> *> glyph_names;
+    ਬਦਲਣਯੋਗ hb_atomic_t<hb_sorted_ਸਦਿਸ਼_t<gname_t> *> glyph_ਨਾਂ;
 
-    typedef accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t> SUPER;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ accelerator_templ_t<cff1_ਨਿੱਜੀ_dict_opset_t, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_t> SUPER;
   };
 
-  struct accelerator_subset_t : accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t>
+  ਬਣਤਰ accelerator_subset_t : accelerator_templ_t<cff1_ਨਿੱਜੀ_dict_opset_subset_t, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_subset_t>
   {
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      ਜੇ (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
-    HB_INTERNAL bool subset (hb_subset_context_t *c) const;
-    HB_INTERNAL bool serialize (hb_serialize_context_t *c,
-				struct cff1_subset_plan &plan) const;
-    HB_INTERNAL bool get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const;
+    HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ;
+    HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+				ਬਣਤਰ cff1_subset_plan &plan) ਅਚਲ;
+    HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *ਅਧਾਰ, hb_codepoint_t *accent) ਅਚਲ;
 
-    mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
+    ਬਦਲਣਯੋਗ CFF::cff_subset_accelerator_t* cff_accelerator = ਖਾਲੀ_ਸੂਚਕ;
 
-    typedef accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t> SUPER;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ accelerator_templ_t<cff1_ਨਿੱਜੀ_dict_opset_subset_t, cff1_ਨਿੱਜੀ_dict_ਮੁੱਲਾਂ_subset_t> SUPER;
   };
 
-  protected:
-  HB_INTERNAL static hb_codepoint_t lookup_standard_encoding_for_code (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_encoding_for_code (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_charset_for_sid (hb_codepoint_t glyph);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_charset_for_glyph (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_standard_encoding_for_sid (hb_codepoint_t code);
+  ਸੁਰੱਖਿਅਤ:
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_standard_encoding_for_ਕੋਡ (hb_codepoint_t sid);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_expert_encoding_for_ਕੋਡ (hb_codepoint_t sid);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_expert_charset_for_sid (hb_codepoint_t glyph);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_expert_charset_for_glyph (hb_codepoint_t sid);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ hb_codepoint_t lookup_standard_encoding_for_sid (hb_codepoint_t ਕੋਡ);
 
-  public:
-  FixedVersion<HBUINT8> version;	  /* Version of CFF table. set to 0x0100u */
-  NNOffsetTo<CFF1NameIndex, HBUINT8> nameIndex; /* headerSize = Offset to Name INDEX. */
-  HBUINT8	       offSize;	  /* offset size (unused?) */
+  ਜਨਤਕ:
+  Fixed_ਸੰਸਕਰਣ<HBUINT8> ਸੰਸਕਰਣ;	  /* Version of CFF table. set to 0x0100u */
+  NNOffset_ਮੰਜ਼ਿਲ<CFF1_Name_ਸੂਚਕਾਂਕ, HBUINT8> name_ਸੂਚਕਾਂਕ; /* headerSize = Offset to Name INDEX. */
+  HBUINT8	       off_ਮਾਪ;	  /* offset size (unused?) */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-struct cff1_accelerator_t : cff1::accelerator_t {
+ਬਣਤਰ cff1_accelerator_t : cff1::accelerator_t {
   cff1_accelerator_t (hb_face_t *face) : cff1::accelerator_t (face) {}
 };
 
-struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
+ਬਣਤਰ cff1_subset_accelerator_t : cff1::accelerator_subset_t {
   cff1_subset_accelerator_t (hb_face_t *face) : cff1::accelerator_subset_t (face) {}
 
-  void depend (hb_depend_data_builder_t *builder) const
+  ਖਾਲੀ depend (hb_depend_ਅੰਕੜੇ_builder_t *builder) ਅਚਲ
   {
-    if (!is_valid ()) return;
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+    ਜੇ (!is_valid ()) ਵਾਪਸ;
+    ਲਈ (hb_codepoint_t gid = 0; gid < ਅੰਕ_glyphs; gid++)
     {
-      hb_codepoint_t base_gid, accent_gid;
-      if (get_seac_components (gid, &base_gid, &accent_gid))
+      hb_codepoint_t ਅਧਾਰ_gid, accent_gid;
+      ਜੇ (get_seac_components (gid, &ਅਧਾਰ_gid, &accent_gid))
       {
-        builder->add_depend (gid, HB_TAG('C','F','F',' '), base_gid);
-        builder->add_depend (gid, HB_TAG('C','F','F',' '), accent_gid);
+        builder->ਜੋੜੋ_depend (gid, HB_ਟੈਗ('C','F','F',' '), ਅਧਾਰ_gid);
+        builder->ਜੋੜੋ_depend (gid, HB_ਟੈਗ('C','F','F',' '), accent_gid);
       }
     }
   }
@@ -1556,4 +1556,4 @@ struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
 
 } /* namespace OT */
 
-#endif /* HB_OT_CFF1_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_CFF1_TABLE_HH */

@@ -26,239 +26,239 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
-#define OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 
-#include "RangeRecord.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "RangeRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ Common {
 
-template <typename Types>
-struct CoverageFormat2_4
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ CoverageFormat2_4
 {
-  friend struct Coverage;
-  using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
+  ਮਿੱਤਰ ਬਣਤਰ Coverage;
+  ਵਰਤੋਂ Coverage_Range_ਰਿਕਾਰਡ = Range_ਰਿਕਾਰਡ<Types, ਕਿਸਮ_ਨਾਂ Types::HBUINT>;
 
-  public:
+  ਜਨਤਕ:
   HBUINT16      coverageFormat; /* Format identifier--format = 2 */
-  typename Types::template SortedArrayOf<CoverageRangeRecord>
-                rangeRecord;    /* Array of glyph ranges--ordered by
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ Sorted_Array_ਦਾ<Coverage_Range_ਰਿਕਾਰਡ>
+                range_ਰਿਕਾਰਡ;    /* Array of glyph ranges--ordered by
                                  * Start GlyphID. rangeCount entries
                                  * long */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, rangeRecord);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (2 + Types::HBUINT::static_ਮਾਪ, range_ਰਿਕਾਰਡ);
 
-  private:
+  ਨਿਜੀ:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (rangeRecord.sanitize (c));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (range_ਰਿਕਾਰਡ.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_coverage (hb_codepoint_t glyph_id) ਅਚਲ
   {
-    const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    ਅਚਲ Coverage_Range_ਰਿਕਾਰਡ &range = range_ਰਿਕਾਰਡ.bsearch (glyph_id);
+    ਵਾਪਸ likely (range.ਪਹਿਲਾ <= range.ਆਖਰੀ)
+         ? (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) range.value + (glyph_id - range.ਪਹਿਲਾ)
          : NOT_COVERED;
   }
 
-  unsigned get_population () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_population () ਅਚਲ
   {
-    typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    ਕਿਸਮ_ਨਾਂ Types::large_int ret = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &r : range_ਰਿਕਾਰਡ)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    ਵਾਪਸ ret > UINT_MAX ? UINT_MAX : (ਬਿਨਾਨਿਸ਼ਾਨੀ) ret;
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+      hb_requires (hb_is_sorted_ਸਰੋਤ_ਦਾ (Iterator, hb_codepoint_t))>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
 
-    unsigned num_ranges = 0;
-    hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ranges = 0;
+    hb_codepoint_t ਆਖਰੀ = (hb_codepoint_t) -2;
+    ਲਈ (ਸਵੈਚਾਲਿਤ g: glyphs)
     {
-      if (last + 1 != g)
-        num_ranges++;
-      last = g;
+      ਜੇ (ਆਖਰੀ + 1 != g)
+        ਅੰਕ_ranges++;
+      ਆਖਰੀ = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    ਜੇ (unlikely (!range_ਰਿਕਾਰਡ.serialize (c, ਅੰਕ_ranges))) return_trace (ਝੂਠ);
+    ਜੇ (!ਅੰਕ_ranges) return_trace (ਸੱਚ);
 
-    unsigned count = 0;
-    unsigned range = (unsigned) -1;
-    last = (hb_codepoint_t) -2;
-    unsigned unsorted = false;
-    for (auto g: glyphs)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ range = (ਬਿਨਾਨਿਸ਼ਾਨੀ) -1;
+    ਆਖਰੀ = (hb_codepoint_t) -2;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ unsorted = ਝੂਠ;
+    ਲਈ (ਸਵੈਚਾਲਿਤ g: glyphs)
     {
-      if (last + 1 != g)
+      ਜੇ (ਆਖਰੀ + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
-	  unsorted = true;
+	ਜੇ (unlikely (ਆਖਰੀ != (hb_codepoint_t) -2 && ਆਖਰੀ + 1 > g))
+	  unsorted = ਸੱਚ;
 
         range++;
-        rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        range_ਰਿਕਾਰਡ.arrayZ[range].ਪਹਿਲਾ = g;
+        range_ਰਿਕਾਰਡ.arrayZ[range].value = ਗਿਣਤੀ_2;
       }
-      rangeRecord.arrayZ[range].last = g;
-      last = g;
-      count++;
+      range_ਰਿਕਾਰਡ.arrayZ[range].ਆਖਰੀ = g;
+      ਆਖਰੀ = g;
+      ਗਿਣਤੀ_2++;
     }
 
-    if (unlikely (unsorted))
-      rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
+    ਜੇ (unlikely (unsorted))
+      range_ਰਿਕਾਰਡ.as_array ().qsort (Coverage_Range_ਰਿਕਾਰਡ::cmp_range);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    ਜੇ (range_ਰਿਕਾਰਡ.len > glyphs->get_population () * hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage ((ਬਿਨਾਨਿਸ਼ਾਨੀ) range_ਰਿਕਾਰਡ.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      ਲਈ (ਸਵੈਚਾਲਿਤ g : *glyphs)
+        ਜੇ (get_coverage (g) != NOT_COVERED)
+	  ਵਾਪਸ ਸੱਚ;
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    ਵਾਪਸ hb_any (+ hb_iter (range_ਰਿਕਾਰਡ)
+                   | hb_map ([glyphs] (ਅਚਲ Coverage_Range_ਰਿਕਾਰਡ &range) { ਵਾਪਸ range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  ਤਾਰਕਿਕ intersects_coverage (ਅਚਲ hb_ਸੈੱਟ_t *glyphs, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2) ਅਚਲ
   {
-    auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    ਸਵੈਚਾਲਿਤ *range = range_ਰਿਕਾਰਡ.as_array ().bsearch (ਸੂਚਕਾਂਕ_2);
+    ਜੇ (range)
+      ਵਾਪਸ range->intersects (*glyphs);
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
-  { set.add_bits (base, bits); }
+  ਸਥਿਰ ਖਾਲੀ ਜੋੜੋ_intersected_ਬਿੱਟ (hb_ਸੈੱਟ_t &ਸੈੱਟ, hb_codepoint_t ਅਧਾਰ, uint64_t ਬਿੱਟ)
+  { ਸੈੱਟ.ਜੋੜੋ_ਬਿੱਟ (ਅਧਾਰ, ਬਿੱਟ); }
 
-  template <typename IterableOut>
-  static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable_ਬਾਹਰਲਾ>
+  ਸਥਿਰ ਖਾਲੀ ਜੋੜੋ_intersected_ਬਿੱਟ (Iterable_ਬਾਹਰਲਾ&& ਬਾਹਰਲਾ, hb_codepoint_t ਅਧਾਰ, uint64_t ਬਿੱਟ)
   {
-    while (bits)
+    ਜਦੋਂ (ਬਿੱਟ)
     {
-      out << base + hb_ctz (bits);
-      bits &= bits - 1;
+      ਬਾਹਰਲਾ << ਅਧਾਰ + hb_ctz (ਬਿੱਟ);
+      ਬਿੱਟ &= ਬਿੱਟ - 1;
     }
   }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable_ਬਾਹਰਲਾ,
+	    hb_requires (hb_is_sink_ਦਾ (Iterable_ਬਾਹਰਲਾ, hb_codepoint_t))>
+  ਖਾਲੀ intersect_ਸੈੱਟ (ਅਚਲ hb_ਸੈੱਟ_t &glyphs, Iterable_ਬਾਹਰਲਾ&& intersect_glyphs) ਅਚਲ
   {
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
-    hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    hb_codepoint_t ਆਖਰੀ = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ& range : range_ਰਿਕਾਰਡ)
     {
-      if (unlikely (range.first < last))
-        break;
-      last = range.last;
-      hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
-      uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      ਜੇ (unlikely (range.ਪਹਿਲਾ < ਆਖਰੀ))
+        ਰੋਕੋ;
+      ਆਖਰੀ = range.ਆਖਰੀ;
+      hb_codepoint_t cursor = range.ਪਹਿਲਾ & ~hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ELT_ਨਕਾਬ;
+      cursor = cursor ? cursor - 1 : HB_ਸੈੱਟ_ਮੁੱਲ_INVALID;
+      uint64_t ਬਿੱਟ;
+      ਜਦੋਂ (glyphs.ਅਗਲਾ_ਬਿੱਟ (&cursor, &ਬਿੱਟ) && cursor <= ਆਖਰੀ)
       {
-	if (range.first > cursor)
-	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
-	  bits &= (uint64_t (1) << (end + 1)) - 1;
-	add_intersected_bits (intersect_glyphs, cursor, bits);
+	ਜੇ (range.ਪਹਿਲਾ > cursor)
+	  ਬਿੱਟ &= UINT64_MAX << (range.ਪਹਿਲਾ - cursor);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਆਖਰੀ - cursor;
+	ਜੇ (ਸਿਰਾ < hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ELT_ਬਿੱਟ - 1)
+	  ਬਿੱਟ &= (uint64_t (1) << (ਸਿਰਾ + 1)) - 1;
+	ਜੋੜੋ_intersected_ਬਿੱਟ (intersect_glyphs, cursor, ਬਿੱਟ);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲਾਗਤ () ਅਚਲ { ਵਾਪਸ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage ((ਬਿਨਾਨਿਸ਼ਾਨੀ) range_ਰਿਕਾਰਡ.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਤਾਰਕਿਕ collect_coverage (ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ& range: range_ਰਿਕਾਰਡ)
+      ਜੇ (unlikely (!range.collect_coverage (glyphs)))
+        ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  public:
+  ਜਨਤਕ:
   /* Older compilers need this to be public. */
-  struct iter_t
+  ਬਣਤਰ iter_t
   {
-    void init (const CoverageFormat2_4 &c_)
+    ਖਾਲੀ init (ਅਚਲ CoverageFormat2_4 &c_)
     {
       c = &c_;
       coverage = 0;
       i = 0;
-      j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      j = c->range_ਰਿਕਾਰਡ.len ? c->range_ਰਿਕਾਰਡ[0].ਪਹਿਲਾ : 0;
+      ਜੇ (unlikely (c->range_ਰਿਕਾਰਡ[0].ਪਹਿਲਾ > c->range_ਰਿਕਾਰਡ[0].ਆਖਰੀ))
       {
         /* Broken table. Skip. */
-        i = c->rangeRecord.len;
+        i = c->range_ਰਿਕਾਰਡ.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
-    void __next__ ()
+    ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ i < c->range_ਰਿਕਾਰਡ.len; }
+    ਖਾਲੀ __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      ਜੇ (j >= c->range_ਰਿਕਾਰਡ[i].ਆਖਰੀ)
       {
         i++;
-        if (__more__ ())
+        ਜੇ (__more__ ())
         {
-          unsigned int old = coverage;
-          j = c->rangeRecord.arrayZ[i].first;
-          coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ old = coverage;
+          j = c->range_ਰਿਕਾਰਡ.arrayZ[i].ਪਹਿਲਾ;
+          coverage = c->range_ਰਿਕਾਰਡ.arrayZ[i].value;
+          ਜੇ (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
              * consecutive and monotonically increasing,
              * ie. iota(). */
-           i = c->rangeRecord.len;
+           i = c->range_ਰਿਕਾਰਡ.len;
            j = 0;
-           return;
+           ਵਾਪਸ;
           }
         }
-        else
+        ਨਹੀਂਤਾਂ
           j = 0;
-        return;
+        ਵਾਪਸ;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
-    iter_t __end__ () const
+    hb_codepoint_t get_glyph () ਅਚਲ { ਵਾਪਸ j; }
+    ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ iter_t& o) ਅਚਲ
+    { ਵਾਪਸ i != o.i || j != o.j; }
+    iter_t __end__ () ਅਚਲ
     {
       iter_t it;
       it.init (*c);
-      it.i = c->rangeRecord.len;
+      it.i = c->range_ਰਿਕਾਰਡ.len;
       it.j = 0;
-      return it;
+      ਵਾਪਸ it;
     }
 
-    private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    ਨਿਜੀ:
+    ਅਚਲ ਬਣਤਰ CoverageFormat2_4 *c;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i, coverage;
     hb_codepoint_t j;
   };
-  private:
+  ਨਿਜੀ:
 };
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#ਜੇ_ਅੰਤ  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH

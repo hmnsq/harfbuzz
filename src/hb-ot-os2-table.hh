@@ -25,105 +25,105 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_OS2_TABLE_HH
-#define HB_OT_OS2_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_OS2_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_OS2_ਸਾਰਣੀ_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-os2-unicode-ranges.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-mvar-table.hh"
 
-#include "hb-set.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.hh"
 
 /*
  * OS/2 and Windows Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/os2
  */
-#define HB_OT_TAG_OS2 HB_TAG('O','S','/','2')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_OS2 HB_ਟੈਗ('O','S','/','2')
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-struct OS2V1Tail
+ਬਣਤਰ OS2_V1_ਪੂਛ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  HBUINT32	ulCodePageRange1;
-  HBUINT32	ulCodePageRange2;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  HBUINT32	ul_ਕੋਡ_ਪੰਨਾ_Range1;
+  HBUINT32	ul_ਕੋਡ_ਪੰਨਾ_Range2;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-struct OS2V2Tail
+ਬਣਤਰ OS2_V2_ਪੂਛ
 {
-  bool has_data () const { return sxHeight || sCapHeight; }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ sx_ਉਚਾਈ || s_Cap_ਉਚਾਈ; }
 
-  const OS2V2Tail * operator -> () const { return this; }
-  OS2V2Tail * operator -> () { return this; }
+  ਅਚਲ OS2_V2_ਪੂਛ * ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ ਇਹ; }
+  OS2_V2_ਪੂਛ * ਸੰਚਾਲਕ -> () { ਵਾਪਸ ਇਹ; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  HBINT16	sxHeight;
-  HBINT16	sCapHeight;
+  ਜਨਤਕ:
+  HBINT16	sx_ਉਚਾਈ;
+  HBINT16	s_Cap_ਉਚਾਈ;
   HBUINT16	usDefaultChar;
   HBUINT16	usBreakChar;
   HBUINT16	usMaxContext;
-  public:
-  DEFINE_SIZE_STATIC (10);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (10);
 };
 
-struct OS2V5Tail
+ਬਣਤਰ OS2_V5_ਪੂਛ
 {
-  inline bool get_optical_size (unsigned int *lower, unsigned int *upper) const
+  ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ get_optical_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਹੇਠਲਾ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਉੱਤਲਾ) ਅਚਲ
   {
-    unsigned int lower_optical_size = usLowerOpticalPointSize;
-    unsigned int upper_optical_size = usUpperOpticalPointSize;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਹੇਠਲਾ_optical_ਮਾਪ = us_ਹੇਠਲਾ_Optical_ਬਿੰਦੂ_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਉੱਤਲਾ_optical_ਮਾਪ = us_ਉੱਤਲਾ_Optical_ਬਿੰਦੂ_ਮਾਪ;
 
     /* Per https://docs.microsoft.com/en-us/typography/opentype/spec/os2#lps */
-    if (lower_optical_size < upper_optical_size &&
-	lower_optical_size >= 1 && lower_optical_size <= 0xFFFE &&
-	upper_optical_size >= 2 && upper_optical_size <= 0xFFFF)
+    ਜੇ (ਹੇਠਲਾ_optical_ਮਾਪ < ਉੱਤਲਾ_optical_ਮਾਪ &&
+	ਹੇਠਲਾ_optical_ਮਾਪ >= 1 && ਹੇਠਲਾ_optical_ਮਾਪ <= 0xFFFE &&
+	ਉੱਤਲਾ_optical_ਮਾਪ >= 2 && ਉੱਤਲਾ_optical_ਮਾਪ <= 0xFFFF)
     {
-      *lower = lower_optical_size;
-      *upper = upper_optical_size;
-      return true;
+      *ਹੇਠਲਾ = ਹੇਠਲਾ_optical_ਮਾਪ;
+      *ਉੱਤਲਾ = ਉੱਤਲਾ_optical_ਮਾਪ;
+      ਵਾਪਸ ਸੱਚ;
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  HBUINT16	usLowerOpticalPointSize;
-  HBUINT16	usUpperOpticalPointSize;
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  HBUINT16	us_ਹੇਠਲਾ_Optical_ਬਿੰਦੂ_ਮਾਪ;
+  HBUINT16	us_ਉੱਤਲਾ_Optical_ਬਿੰਦੂ_ਮਾਪ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-struct OS2
+ਬਣਤਰ OS2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_OS2;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_OS2;
 
-  bool has_data () const { return usWeightClass || usWidthClass || usFirstCharIndex || usLastCharIndex; }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ us_ਭਾਰ_Class || us_ਚੌੜਾਈ_Class || us_ਪਹਿਲਾ_Char_ਸੂਚਕਾਂਕ || us_ਆਖਰੀ_Char_ਸੂਚਕਾਂਕ; }
 
-  const OS2V1Tail &v1 () const { return version >= 1 ? v1X : Null (OS2V1Tail); }
-  const OS2V2Tail &v2 () const { return version >= 2 ? v2X : Null (OS2V2Tail); }
-  const OS2V5Tail &v5 () const { return version >= 5 ? v5X : Null (OS2V5Tail); }
+  ਅਚਲ OS2_V1_ਪੂਛ &v1 () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ >= 1 ? v1X : Null (OS2_V1_ਪੂਛ); }
+  ਅਚਲ OS2_V2_ਪੂਛ &v2 () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ >= 2 ? v2X : Null (OS2_V2_ਪੂਛ); }
+  ਅਚਲ OS2_V5_ਪੂਛ &v5 () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ >= 5 ? v5X : Null (OS2_V5_ਪੂਛ); }
 
-  enum selection_flag_t {
+  ਗਿਣਤੀ selection_flag_t {
     ITALIC		= 1u<<0,
     UNDERSCORE		= 1u<<1,
     NEGATIVE		= 1u<<2,
@@ -136,239 +136,239 @@ struct OS2
     OBLIQUE		= 1u<<9
   };
 
-  bool        is_italic () const { return fsSelection & ITALIC; }
-  bool       is_oblique () const { return fsSelection & OBLIQUE; }
-  bool use_typo_metrics () const { return fsSelection & USE_TYPO_METRICS; }
+  ਤਾਰਕਿਕ        is_italic () ਅਚਲ { ਵਾਪਸ fsSelection & ITALIC; }
+  ਤਾਰਕਿਕ       is_oblique () ਅਚਲ { ਵਾਪਸ fsSelection & OBLIQUE; }
+  ਤਾਰਕਿਕ use_typo_metrics () ਅਚਲ { ਵਾਪਸ fsSelection & USE_TYPO_METRICS; }
 
-  enum width_class_t {
+  ਗਿਣਤੀ ਚੌੜਾਈ_class_t {
     FWIDTH_ULTRA_CONDENSED	= 1, /* 50% */
     FWIDTH_EXTRA_CONDENSED	= 2, /* 62.5% */
     FWIDTH_CONDENSED		= 3, /* 75% */
     FWIDTH_SEMI_CONDENSED	= 4, /* 87.5% */
-    FWIDTH_NORMAL		= 5, /* 100% */
+    FWIDTH_ਸਾਧਾਰਨ		= 5, /* 100% */
     FWIDTH_SEMI_EXPANDED	= 6, /* 112.5% */
     FWIDTH_EXPANDED		= 7, /* 125% */
     FWIDTH_EXTRA_EXPANDED	= 8, /* 150% */
     FWIDTH_ULTRA_EXPANDED	= 9  /* 200% */
   };
 
-  float get_width () const
+  ਦਸ਼ਮਲਵ get_ਚੌੜਾਈ () ਅਚਲ
   {
-    switch (usWidthClass) {
-    case FWIDTH_ULTRA_CONDENSED:return 50.f;
-    case FWIDTH_EXTRA_CONDENSED:return 62.5f;
-    case FWIDTH_CONDENSED:	return 75.f;
-    case FWIDTH_SEMI_CONDENSED:	return 87.5f;
-    default:
-    case FWIDTH_NORMAL:		return 100.f;
-    case FWIDTH_SEMI_EXPANDED:	return 112.5f;
-    case FWIDTH_EXPANDED:	return 125.f;
-    case FWIDTH_EXTRA_EXPANDED:	return 150.f;
-    case FWIDTH_ULTRA_EXPANDED:	return 200.f;
+    ਚੋਣ (us_ਚੌੜਾਈ_Class) {
+    ਹਾਲਤ FWIDTH_ULTRA_CONDENSED:ਵਾਪਸ 50.f;
+    ਹਾਲਤ FWIDTH_EXTRA_CONDENSED:ਵਾਪਸ 62.5f;
+    ਹਾਲਤ FWIDTH_CONDENSED:	ਵਾਪਸ 75.f;
+    ਹਾਲਤ FWIDTH_SEMI_CONDENSED:	ਵਾਪਸ 87.5f;
+    ਮੂਲ:
+    ਹਾਲਤ FWIDTH_ਸਾਧਾਰਨ:		ਵਾਪਸ 100.f;
+    ਹਾਲਤ FWIDTH_SEMI_EXPANDED:	ਵਾਪਸ 112.5f;
+    ਹਾਲਤ FWIDTH_EXPANDED:	ਵਾਪਸ 125.f;
+    ਹਾਲਤ FWIDTH_EXTRA_EXPANDED:	ਵਾਪਸ 150.f;
+    ਹਾਲਤ FWIDTH_ULTRA_EXPANDED:	ਵਾਪਸ 200.f;
     }
   }
 
-  float map_wdth_to_widthclass(float width) const
+  ਦਸ਼ਮਲਵ map_wdth_ਮੰਜ਼ਿਲ_widthclass(ਦਸ਼ਮਲਵ ਚੌੜਾਈ) ਅਚਲ
   {
-    if (width < 50) return 1.0f;
-    if (width > 200) return 9.0f;
+    ਜੇ (ਚੌੜਾਈ < 50) ਵਾਪਸ 1.0f;
+    ਜੇ (ਚੌੜਾਈ > 200) ਵਾਪਸ 9.0f;
 
-    float ratio = (width - 50) / 12.5f;
-    int a = (int) floorf (ratio);
-    int b = (int) ceilf (ratio);
+    ਦਸ਼ਮਲਵ ਅਨੁਪਾਤ = (ਚੌੜਾਈ - 50) / 12.5f;
+    ਪੂਰਨ a = (ਪੂਰਨ) floorf (ਅਨੁਪਾਤ);
+    ਪੂਰਨ b = (ਪੂਰਨ) ceilf (ਅਨੁਪਾਤ);
 
     /* follow this maping:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/os2#uswidthclass
      */
-    if (b <= 6) // 50-125
+    ਜੇ (b <= 6) // 50-125
     {
-      if (a == b) return a + 1.0f;
+      ਜੇ (a == b) ਵਾਪਸ a + 1.0f;
     }
-    else if (b == 7) // no mapping for 137.5
+    ਨਹੀਂਤਾਂ ਜੇ (b == 7) // no mapping for 137.5
     {
       a = 6;
       b = 8;
     }
-    else if (b == 8)
+    ਨਹੀਂਤਾਂ ਜੇ (b == 8)
     {
-      if (a == b) return 8.0f; // 150
+      ਜੇ (a == b) ਵਾਪਸ 8.0f; // 150
       a = 6;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      if (a == b && a == 12) return 9.0f; //200
+      ਜੇ (a == b && a == 12) ਵਾਪਸ 9.0f; //200
       b = 12;
       a = 8;
     }
 
-    float va = 50 + a * 12.5f;
-    float vb = 50 + b * 12.5f;
+    ਦਸ਼ਮਲਵ va = 50 + a * 12.5f;
+    ਦਸ਼ਮਲਵ vb = 50 + b * 12.5f;
 
-    float ret =  a + (width - va) / (vb - va);
-    if (a <= 6) ret += 1.0f;
-    return ret;
+    ਦਸ਼ਮਲਵ ret =  a + (ਚੌੜਾਈ - va) / (vb - va);
+    ਜੇ (a <= 6) ret += 1.0f;
+    ਵਾਪਸ ret;
   }
 
-  static unsigned calc_avg_char_width (const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>& hmtx_map)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ calc_avg_char_ਚੌੜਾਈ (ਅਚਲ hb_hashmap_t<hb_codepoint_t, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>>& hmtx_map)
   {
-    unsigned num = 0;
-    unsigned total_width = 0;
-    for (const auto& _ : hmtx_map.values_ref ())
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_ਚੌੜਾਈ = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ& _ : hmtx_map.ਮੁੱਲਾਂ_ref ())
     {
-      unsigned width = _.first;
-      if (width)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ = _.ਪਹਿਲਾ;
+      ਜੇ (ਚੌੜਾਈ)
       {
-        total_width += width;
-        num++;
+        ਕੁੱਲ_ਚੌੜਾਈ += ਚੌੜਾਈ;
+        ਅੰਕ++;
       }
     }
 
-    return num ? (unsigned) roundf ((double) total_width / (double) num) : 0;
+    ਵਾਪਸ ਅੰਕ ? (ਬਿਨਾਨਿਸ਼ਾਨੀ) roundf ((ਦੁੱਗਣਾ) ਕੁੱਲ_ਚੌੜਾਈ / (ਦੁੱਗਣਾ) ਅੰਕ) : 0;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    OS2 *os2_prime = c->serializer->embed (this);
-    if (unlikely (!os2_prime)) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    OS2 *os2_ਅਭਾਜ = c->serializer->embed (ਇਹ);
+    ਜੇ (unlikely (!os2_ਅਭਾਜ)) return_trace (ਝੂਠ);
 
-#ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+    ਜੇ (c->plan->normalized_coords)
     {
-      auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = os2_prime;
+      ਸਵੈਚਾਲਿਤ &MVAR = *c->plan->ਸਰੋਤ->ਸਾਰਣੀ.MVAR;
+      ਸਵੈਚਾਲਿਤ *ਸਾਰਣੀ = os2_ਅਭਾਜ;
 
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,         sTypoAscender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,        sTypoDescender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,         sTypoLineGap);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE,         ySubscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE,         ySubscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET,       ySubscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET,       ySubscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE,       ySuperscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE,       ySuperscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET,     ySuperscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET,     ySuperscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_SIZE,              yStrikeoutSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_OFFSET,            yStrikeoutPosition);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_HORIZONTAL_ASCENDER,         sTypoAscender);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_HORIZONTAL_DESCENDER,        sTypoDescender);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_HORIZONTAL_ਸਤਰ_GAP,         s_Typo_ਸਤਰ_Gap);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUBSCRIPT_EM_X_ਮਾਪ,         ySubscriptXSize);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUBSCRIPT_EM_Y_ਮਾਪ,         ySubscriptYSize);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUBSCRIPT_EM_X_ਵਿੱਥ,       ySubscriptXOffset);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUBSCRIPT_EM_Y_ਵਿੱਥ,       ySubscriptYOffset);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUPERSCRIPT_EM_X_ਮਾਪ,       ySuperscriptXSize);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUPERSCRIPT_EM_Y_ਮਾਪ,       ySuperscriptYSize);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUPERSCRIPT_EM_X_ਵਿੱਥ,     ySuperscriptXOffset);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_SUPERSCRIPT_EM_Y_ਵਿੱਥ,     ySuperscriptYOffset);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_STRIKEOUT_ਮਾਪ,              y_Strikeout_ਮਾਪ);
+      HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_STRIKEOUT_ਵਿੱਥ,            yStrikeoutPosition);
 
-      if (os2_prime->version >= 2)
+      ਜੇ (os2_ਅਭਾਜ->ਸੰਸਕਰਣ >= 2)
       {
         hb_barrier ();
-        auto *table = & const_cast<OS2V2Tail &> (os2_prime->v2 ());
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_X_HEIGHT,                   sxHeight);
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_CAP_HEIGHT,                 sCapHeight);
+        ਸਵੈਚਾਲਿਤ *ਸਾਰਣੀ = & const_cast<OS2_V2_ਪੂਛ &> (os2_ਅਭਾਜ->v2 ());
+        HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_X_ਉਚਾਈ,                   sx_ਉਚਾਈ);
+        HB_ਜੋੜੋ_MVAR_VAR (HB_OT_METRICS_ਟੈਗ_CAP_ਉਚਾਈ,                 s_Cap_ਉਚਾਈ);
       }
 
-      unsigned avg_char_width = calc_avg_char_width (c->plan->hmtx_map);
-      if (!c->serializer->check_assign (os2_prime->xAvgCharWidth, avg_char_width,
-                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-        return_trace (false);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ avg_char_ਚੌੜਾਈ = calc_avg_char_ਚੌੜਾਈ (c->plan->hmtx_map);
+      ਜੇ (!c->serializer->check_ਸੌਂਪੋ (os2_ਅਭਾਜ->x_Avg_Char_ਚੌੜਾਈ, avg_char_ਚੌੜਾਈ,
+                                        HB_SERIALIZE_ERROR_INT_ਉਛਾਲ))
+        return_trace (ਝੂਠ);
     }
-#endif
+#ਜੇ_ਅੰਤ
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('w','g','h','t'), &axis_range))
+    ਜੇ (c->plan->user_axes_location.has (HB_ਟੈਗ ('w','g','h','t'), &axis_range))
     {
-      unsigned weight_class = static_cast<unsigned> (roundf (hb_clamp (axis_range->middle, 1.0f, 1000.0f)));
-      if (os2_prime->usWeightClass != weight_class)
-        os2_prime->usWeightClass = weight_class;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਭਾਰ_class = static_cast<ਬਿਨਾਨਿਸ਼ਾਨੀ> (roundf (hb_clamp (axis_range->ਵਿਚਕਾਰ, 1.0f, 1000.0f)));
+      ਜੇ (os2_ਅਭਾਜ->us_ਭਾਰ_Class != ਭਾਰ_class)
+        os2_ਅਭਾਜ->us_ਭਾਰ_Class = ਭਾਰ_class;
     }
 
-    if (c->plan->user_axes_location.has (HB_TAG ('w','d','t','h'), &axis_range))
+    ਜੇ (c->plan->user_axes_location.has (HB_ਟੈਗ ('w','d','t','h'), &axis_range))
     {
-      unsigned width_class = static_cast<unsigned> (roundf (map_wdth_to_widthclass (axis_range->middle)));
-      if (os2_prime->usWidthClass != width_class)
-        os2_prime->usWidthClass = width_class;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ_class = static_cast<ਬਿਨਾਨਿਸ਼ਾਨੀ> (roundf (map_wdth_ਮੰਜ਼ਿਲ_widthclass (axis_range->ਵਿਚਕਾਰ)));
+      ਜੇ (os2_ਅਭਾਜ->us_ਚੌੜਾਈ_Class != ਚੌੜਾਈ_class)
+        os2_ਅਭਾਜ->us_ਚੌੜਾਈ_Class = ਚੌੜਾਈ_class;
     }
 
-    os2_prime->usFirstCharIndex = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
-    os2_prime->usLastCharIndex  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
+    os2_ਅਭਾਜ->us_ਪਹਿਲਾ_Char_ਸੂਚਕਾਂਕ = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
+    os2_ਅਭਾਜ->us_ਆਖਰੀ_Char_ਸੂਚਕਾਂਕ  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
 
-    if (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
-      return_trace (true);
+    ਜੇ (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
+      return_trace (ਸੱਚ);
 
-    _update_unicode_ranges (&c->plan->unicodes, os2_prime->ulUnicodeRange);
+    _update_unicode_ranges (&c->plan->unicodes, os2_ਅਭਾਜ->ulUnicodeRange);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  void _update_unicode_ranges (const hb_set_t *codepoints,
-			       HBUINT32 ulUnicodeRange[4]) const
+  ਖਾਲੀ _update_unicode_ranges (ਅਚਲ hb_ਸੈੱਟ_t *codepoints,
+			       HBUINT32 ulUnicodeRange[4]) ਅਚਲ
   {
-    HBUINT32 newBits[4];
-    for (unsigned int i = 0; i < 4; i++)
-      newBits[i] = 0;
+    HBUINT32 new_ਬਿੱਟ[4];
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < 4; i++)
+      new_ਬਿੱਟ[i] = 0;
 
     /* This block doesn't show up in profiles. If it ever did,
      * we can rewrite it to iterate over OS/2 ranges and use
      * set iteration to check if the range matches. */
-    for (auto cp : *codepoints)
+    ਲਈ (ਸਵੈਚਾਲਿਤ cp : *codepoints)
     {
-      unsigned int bit = _hb_ot_os2_get_unicode_range_bit (cp);
-      if (bit < 128)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ bit = hb_ot_os2_get_unicode_range_ਦੋਆਧਾਰੀ_ਅੰਕ (cp);
+      ਜੇ (bit < 128)
       {
-	unsigned int block = bit / 32;
-	unsigned int bit_in_block = bit % 32;
-	unsigned int mask = 1 << bit_in_block;
-	newBits[block] = newBits[block] | mask;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਖੰਡ = bit / 32;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਦੋਆਧਾਰੀ_ਅੰਕ_ਵਿੱਚ_ਖੰਡ = bit % 32;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਨਕਾਬ = 1 << ਦੋਆਧਾਰੀ_ਅੰਕ_ਵਿੱਚ_ਖੰਡ;
+	new_ਬਿੱਟ[ਖੰਡ] = new_ਬਿੱਟ[ਖੰਡ] | ਨਕਾਬ;
       }
-      if (cp >= 0x10000 && cp <= 0x110000)
+      ਜੇ (cp >= 0x10000 && cp <= 0x110000)
       {
 	/* the spec says that bit 57 ("Non Plane 0") implies that there's
 	   at least one codepoint beyond the BMP; so I also include all
 	   the non-BMP codepoints here */
-	newBits[1] = newBits[1] | (1 << 25);
+	new_ਬਿੱਟ[1] = new_ਬਿੱਟ[1] | (1 << 25);
       }
     }
 
-    for (unsigned int i = 0; i < 4; i++)
-      ulUnicodeRange[i] = ulUnicodeRange[i] & newBits[i]; // set bits only if set in the original
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < 4; i++)
+      ulUnicodeRange[i] = ulUnicodeRange[i] & new_ਬਿੱਟ[i]; // set bits only if set in the original
   }
 
   /* https://github.com/Microsoft/Font-Validator/blob/520aaae/OTFontFileVal/val_OS2.cs#L644-L681
    * https://docs.microsoft.com/en-us/typography/legacy/legacy_arabic_fonts */
-  enum font_page_t
+  ਗਿਣਤੀ font_ਪੰਨਾ_t
   {
-    FONT_PAGE_NONE		= 0,
-    FONT_PAGE_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
-    FONT_PAGE_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
-    FONT_PAGE_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
-    FONT_PAGE_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
-    FONT_PAGE_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
-    FONT_PAGE_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
-    FONT_PAGE_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
+    FONT_ਪੰਨਾ_NONE		= 0,
+    FONT_ਪੰਨਾ_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
+    FONT_ਪੰਨਾ_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
+    FONT_ਪੰਨਾ_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
+    FONT_ਪੰਨਾ_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
+    FONT_ਪੰਨਾ_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
+    FONT_ਪੰਨਾ_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
+    FONT_ਪੰਨਾ_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
   };
-  font_page_t get_font_page () const
-  { return (font_page_t) (version == 0 ? fsSelection & 0xFF00 : 0); }
+  font_ਪੰਨਾ_t get_font_ਪੰਨਾ () ਅਚਲ
+  { ਵਾਪਸ (font_ਪੰਨਾ_t) (ਸੰਸਕਰਣ == 0 ? fsSelection & 0xFF00 : 0); }
 
-  size_t get_size () const
+  size_t get_ਮਾਪ () ਅਚਲ
   {
-    size_t result = min_size;
-    if (version >= 1) result = hb_unsigned_add_saturate (result, v1X.get_size ());
-    if (version >= 2) result = hb_unsigned_add_saturate (result, v2X.get_size ());
-    if (version >= 5) result = hb_unsigned_add_saturate (result, v5X.get_size ());
-    return result;
+    size_t ਨਤੀਜਾ = min_ਮਾਪ;
+    ਜੇ (ਸੰਸਕਰਣ >= 1) ਨਤੀਜਾ = hb_unsigned_ਜੋੜੋ_saturate (ਨਤੀਜਾ, v1X.get_ਮਾਪ ());
+    ਜੇ (ਸੰਸਕਰਣ >= 2) ਨਤੀਜਾ = hb_unsigned_ਜੋੜੋ_saturate (ਨਤੀਜਾ, v2X.get_ਮਾਪ ());
+    ਜੇ (ਸੰਸਕਰਣ >= 5) ਨਤੀਜਾ = hb_unsigned_ਜੋੜੋ_saturate (ਨਤੀਜਾ, v5X.get_ਮਾਪ ());
+    ਵਾਪਸ ਨਤੀਜਾ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ))) return_trace (ਝੂਠ);
     hb_barrier ();
-    if (unlikely (version >= 1 && !v1X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 2 && !v2X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 5 && !v5X.sanitize (c))) return_trace (false);
-    return_trace (true);
+    ਜੇ (unlikely (ਸੰਸਕਰਣ >= 1 && !v1X.sanitize (c))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (ਸੰਸਕਰਣ >= 2 && !v2X.sanitize (c))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (ਸੰਸਕਰਣ >= 5 && !v5X.sanitize (c))) return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  public:
-  HBUINT16	version;
-  HBINT16	xAvgCharWidth;
-  HBUINT16	usWeightClass;
-  HBUINT16	usWidthClass;
+  ਜਨਤਕ:
+  HBUINT16	ਸੰਸਕਰਣ;
+  HBINT16	x_Avg_Char_ਚੌੜਾਈ;
+  HBUINT16	us_ਭਾਰ_Class;
+  HBUINT16	us_ਚੌੜਾਈ_Class;
   HBUINT16	fsType;
   HBINT16	ySubscriptXSize;
   HBINT16	ySubscriptYSize;
@@ -378,28 +378,28 @@ struct OS2
   HBINT16	ySuperscriptYSize;
   HBINT16	ySuperscriptXOffset;
   HBINT16	ySuperscriptYOffset;
-  HBINT16	yStrikeoutSize;
+  HBINT16	y_Strikeout_ਮਾਪ;
   HBINT16	yStrikeoutPosition;
   HBINT16	sFamilyClass;
   HBUINT8	panose[10];
   HBUINT32	ulUnicodeRange[4];
-  Tag		achVendID;
+  ਟੈਗ		achVendID;
   HBUINT16	fsSelection;
-  HBUINT16	usFirstCharIndex;
-  HBUINT16	usLastCharIndex;
+  HBUINT16	us_ਪਹਿਲਾ_Char_ਸੂਚਕਾਂਕ;
+  HBUINT16	us_ਆਖਰੀ_Char_ਸੂਚਕਾਂਕ;
   HBINT16	sTypoAscender;
   HBINT16	sTypoDescender;
-  HBINT16	sTypoLineGap;
+  HBINT16	s_Typo_ਸਤਰ_Gap;
   HBUINT16	usWinAscent;
   HBUINT16	usWinDescent;
-  OS2V1Tail	v1X;
-  OS2V2Tail	v2X;
-  OS2V5Tail	v5X;
-  public:
-  DEFINE_SIZE_MIN (78);
+  OS2_V1_ਪੂਛ	v1X;
+  OS2_V2_ਪੂਛ	v2X;
+  OS2_V5_ਪੂਛ	v5X;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (78);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_OS2_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_OS2_TABLE_HH */

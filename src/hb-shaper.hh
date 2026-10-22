@@ -24,111 +24,111 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_HH
-#define HB_SHAPER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SHAPER_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
-typedef hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
 				   hb_font_t          *font,
-				   hb_buffer_t        *buffer,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   hb_ਬਫਰ_t        *ਬਫਰ,
+				   ਅਚਲ hb_feature_t *features,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features);
 
-#define HB_SHAPER_IMPLEMENT(name) \
-	extern "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(name) \
+	ਬਾਹਰੀ "C" HB_ਅੰਦਰੂਨੀ hb_shape_func_t _hb_##name##_shape;
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
 
-struct hb_shaper_entry_t {
-  char name[16];
+ਬਣਤਰ hb_shaper_ਇੰਦਰਾਜ_t {
+  ਅੱਖਰ name[16];
   hb_shape_func_t *func;
 };
 
-HB_INTERNAL const hb_shaper_entry_t *
+HB_ਅੰਦਰੂਨੀ ਅਚਲ hb_shaper_ਇੰਦਰਾਜ_t *
 _hb_shapers_get ();
 
 
-template <typename Data, unsigned int WheresData, typename T>
-struct hb_shaper_lazy_loader_t;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅੰਕੜੇ_3, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ Wheres_ਅੰਕੜੇ, ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hb_shaper_lazy_loader_t;
 
-#define HB_SHAPER_ORDER(Shaper) \
-  HB_PASTE (HB_SHAPER_ORDER_, Shaper)
-enum hb_shaper_order_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਕ੍ਰਮ(Shaper) \
+  HB_PASTE (HB_SHAPER_ਕ੍ਰਮ_2, Shaper)
+ਗਿਣਤੀ hb_shaper_ਕ੍ਰਮ_t
 {
-  _HB_SHAPER_ORDER_ORDER_ZERO,
-#define HB_SHAPER_IMPLEMENT(Shaper) \
-      HB_SHAPER_ORDER (Shaper),
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
-  _HB_SHAPERS_COUNT_PLUS_ONE,
-  HB_SHAPERS_COUNT = _HB_SHAPERS_COUNT_PLUS_ONE - 1,
+  HB_SHAPER_ਕ੍ਰਮ_ਕ੍ਰਮ_ZERO,
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(Shaper) \
+      HB_SHAPER_ਕ੍ਰਮ (Shaper),
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
+  HB_SHAPERS_ਗਿਣਤੀ_PLUS_ONE,
+  HB_SHAPERS_ਗਿਣਤੀ = HB_SHAPERS_ਗਿਣਤੀ_PLUS_ONE - 1,
 };
 
-template <enum hb_shaper_order_t order, typename Object> struct hb_shaper_object_data_type_t;
+ਸਾਂਚਾ <ਗਿਣਤੀ hb_shaper_ਕ੍ਰਮ_t ਕ੍ਰਮ, ਕਿਸਮ_ਨਾਂ Object> ਬਣਤਰ hb_shaper_object_ਅੰਕੜੇ_type_t;
 
-#define HB_SHAPER_DATA_SUCCEEDED ((void *) +1)
-#define HB_SHAPER_DATA_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
-#define HB_SHAPER_DATA_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
-#define HB_SHAPER_DATA_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਅੰਕੜੇ_SUCCEEDED ((ਖਾਲੀ *) +1)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਅੰਕੜੇ_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਅੰਕੜੇ_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
 
-#define HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, object) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_ਅੰਕੜੇ_INSTANTIATE_SHAPERS(shaper, object) \
 	\
-	struct HB_SHAPER_DATA_TYPE (shaper, object); /* Type forward declaration. */ \
-	extern "C" HB_INTERNAL HB_SHAPER_DATA_TYPE (shaper, object) * \
-	HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
-	extern "C" HB_INTERNAL void \
-	HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (HB_SHAPER_DATA_TYPE (shaper, object) *shaper##_##object); \
+	ਬਣਤਰ HB_SHAPER_ਅੰਕੜੇ_TYPE (shaper, object); /* Type forward declaration. */ \
+	ਬਾਹਰੀ "C" HB_ਅੰਦਰੂਨੀ HB_SHAPER_ਅੰਕੜੇ_TYPE (shaper, object) * \
+	HB_SHAPER_ਅੰਕੜੇ_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
+	ਬਾਹਰੀ "C" HB_ਅੰਦਰੂਨੀ ਖਾਲੀ \
+	HB_SHAPER_ਅੰਕੜੇ_DESTROY_FUNC (shaper, object) (HB_SHAPER_ਅੰਕੜੇ_TYPE (shaper, object) *shaper##_##object); \
 	\
-	template <> \
-	struct hb_shaper_object_data_type_t<HB_SHAPER_ORDER (shaper), hb_##object##_t> \
+	ਸਾਂਚਾ <> \
+	ਬਣਤਰ hb_shaper_object_ਅੰਕੜੇ_type_t<HB_SHAPER_ਕ੍ਰਮ (shaper), hb_##object##_t> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) value; \
+	  ਕਿਸਮਪਰਿਭਾਸ਼ਾ HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object) value; \
 	}; \
 	\
-	template <unsigned int WheresData> \
-	struct hb_shaper_lazy_loader_t<hb_##object##_t, WheresData, HB_SHAPER_DATA_TYPE(shaper, object)> \
-		: hb_lazy_loader_t<HB_SHAPER_DATA_TYPE(shaper, object), \
+	ਸਾਂਚਾ <ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ Wheres_ਅੰਕੜੇ> \
+	ਬਣਤਰ hb_shaper_lazy_loader_t<hb_##object##_t, Wheres_ਅੰਕੜੇ, HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object)> \
+		: hb_lazy_loader_t<HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object), \
 				   hb_shaper_lazy_loader_t<hb_##object##_t, \
-							   WheresData, \
-							   HB_SHAPER_DATA_TYPE(shaper, object)>, \
-				   hb_##object##_t, WheresData> \
+							   Wheres_ਅੰਕੜੇ, \
+							   HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object)>, \
+				   hb_##object##_t, Wheres_ਅੰਕੜੇ> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) Type; \
-	  static Type* create (hb_##object##_t *data) \
-	  { return HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (data); } \
-	  static Type *get_null () { return nullptr; } \
-	  static void destroy (Type *p) { HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (p); } \
+	  ਕਿਸਮਪਰਿਭਾਸ਼ਾ HB_SHAPER_ਅੰਕੜੇ_TYPE(shaper, object) Type; \
+	  ਸਥਿਰ Type* create (hb_##object##_t *ਅੰਕੜੇ) \
+	  { ਵਾਪਸ HB_SHAPER_ਅੰਕੜੇ_CREATE_FUNC (shaper, object) (ਅੰਕੜੇ); } \
+	  ਸਥਿਰ Type *get_null () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; } \
+	  ਸਥਿਰ ਖਾਲੀ destroy (Type *p) { HB_SHAPER_ਅੰਕੜੇ_DESTROY_FUNC (shaper, object) (p); } \
 	}; \
 	\
-	static_assert (true, "") /* Require semicolon after. */
+	static_assert (ਸੱਚ, "") /* Require semicolon after. */
 
 
-template <typename Object>
-struct hb_shaper_object_dataset_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Object>
+ਬਣਤਰ hb_shaper_object_dataset_t
 {
-  void init0 (Object *parent_data)
+  ਖਾਲੀ init0 (Object *ਮਾਪਾ_ਅੰਕੜੇ)
   {
-    this->parent_data = parent_data;
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+    ਇਹ->ਮਾਪਾ_ਅੰਕੜੇ = ਮਾਪਾ_ਅੰਕੜੇ;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
   }
-  void fini ()
+  ਖਾਲੀ fini ()
   {
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
   }
 
-  Object *parent_data; /* MUST be JUST before the lazy loaders. */
-#define HB_SHAPER_IMPLEMENT(shaper) \
-	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ORDER(shaper), \
-				typename hb_shaper_object_data_type_t<HB_SHAPER_ORDER(shaper), Object>::value \
+  Object *ਮਾਪਾ_ਅੰਕੜੇ; /* MUST be JUST before the lazy loaders. */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(shaper) \
+	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ਕ੍ਰਮ(shaper), \
+				ਕਿਸਮ_ਨਾਂ hb_shaper_object_ਅੰਕੜੇ_type_t<HB_SHAPER_ਕ੍ਰਮ(shaper), Object>::value \
 			       > shaper;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
 };
 
-#endif /* HB_SHAPER_HH */
+#ਜੇ_ਅੰਤ /* HB_SHAPER_HH */

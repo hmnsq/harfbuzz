@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_META
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_META
 
-#include "hb-ot-meta-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-meta-table.hh"
 
 /**
  * SECTION:hb-ot-meta
@@ -50,13 +50,13 @@
  *
  * Since: 2.6.0
  **/
-unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_meta_get_ਇੰਦਰਾਜ_ਟੈਗ_ਸੂਚੀ (hb_face_t        *face,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ      ਸ਼ੁਰੂ_ਵਿੱਥ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *entries_ਗਿਣਤੀ, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ਟੈਗ_t *entries        /* OUT.     May be NULL. */)
 {
-  return face->table.meta->get_entries (start_offset, entries_count, entries);
+  ਵਾਪਸ face->ਸਾਰਣੀ.meta->get_entries (ਸ਼ੁਰੂ_ਵਿੱਥ, entries_ਗਿਣਤੀ, entries);
 }
 
 /**
@@ -71,9 +71,9 @@ hb_ot_meta_get_entry_tags (hb_face_t        *face,
  * Since: 2.6.0
  **/
 hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag)
+hb_ot_meta_reference_ਇੰਦਰਾਜ (hb_face_t *face, hb_ot_meta_ਟੈਗ_t meta_ਟੈਗ)
 {
-  return face->table.meta->reference_entry (meta_tag);
+  ਵਾਪਸ face->ਸਾਰਣੀ.meta->reference_ਇੰਦਰਾਜ (meta_ਟੈਗ);
 }
 
-#endif
+#ਜੇ_ਅੰਤ

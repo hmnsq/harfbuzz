@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+ਬਣਤਰ hb_intp_lazy_loader_t : hb_lazy_loader_t<ਪੂਰਨ, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  ਸਥਿਰ ਪੂਰਨ* create () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
+  ਸਥਿਰ ਖਾਲੀ destroy (ਪੂਰਨ* l) {}
+  ਸਥਿਰ ਪੂਰਨ* get_null () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+ਬਣਤਰ hb_void_lazy_loader_t : hb_lazy_loader_t<ਖਾਲੀ, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  ਸਥਿਰ ਖਾਲੀ* create () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
+  ਸਥਿਰ ਖਾਲੀ destroy (ਖਾਲੀ* l) {}
+  ਸਥਿਰ ਖਾਲੀ* get_null () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
 };
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  return 0;
+  ਵਾਪਸ 0;
 }

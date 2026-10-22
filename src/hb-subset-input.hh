@@ -24,132 +24,132 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_ਨਿਵੇਸ਼_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_ਨਿਵੇਸ਼_HH
 
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-map.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cplusplus.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+ਬਣਤਰ hb_ot_name_ਰਿਕਾਰਡ_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
-  hb_ot_name_record_ids_t (unsigned platform_id_,
-                           unsigned encoding_id_,
-                           unsigned language_id_,
-                           unsigned name_id_)
+  hb_ot_name_ਰਿਕਾਰਡ_ids_t () = ਮੂਲ;
+  hb_ot_name_ਰਿਕਾਰਡ_ids_t (ਬਿਨਾਨਿਸ਼ਾਨੀ platform_id_,
+                           ਬਿਨਾਨਿਸ਼ਾਨੀ encoding_id_,
+                           ਬਿਨਾਨਿਸ਼ਾਨੀ language_id_,
+                           ਬਿਨਾਨਿਸ਼ਾਨੀ name_id_)
       :platform_id (platform_id_),
       encoding_id (encoding_id_),
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ot_name_ਰਿਕਾਰਡ_ids_t o) ਅਚਲ
+  { ਵਾਪਸ !(*ਇਹ == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ot_name_ਰਿਕਾਰਡ_ids_t& o) ਅਚਲ
   {
-    return platform_id == o.platform_id &&
+    ਵਾਪਸ platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  ਸਤਰਅੰਦਰ uint32_t hash () ਅਚਲ
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    ਵਾਪਸ current;
   }
 
-  unsigned platform_id;
-  unsigned encoding_id;
-  unsigned language_id;
-  unsigned name_id;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ platform_id;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ encoding_id;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ language_id;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ot_name_ਰਿਕਾਰਡ_ids_t hb_ot_name_ਰਿਕਾਰਡ_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+ਬਣਤਰ hb_subset_ਨਿਵੇਸ਼_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_ਅੰਦਰੂਨੀ hb_subset_ਨਿਵੇਸ਼_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_ਨਿਵੇਸ਼_t ()
   {
     sets.~sets_t ();
 
-#ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
+    ਲਈ (ਸਵੈਚਾਲਿਤ _ : name_ਸਾਰਣੀ_overrides.values ())
       _.fini ();
-#endif
+#ਜੇ_ਅੰਤ
   }
 
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
-  struct sets_t {
-    hb::shared_ptr<hb_set_t> glyphs;
-    hb::shared_ptr<hb_set_t> unicodes;
-    hb::shared_ptr<hb_set_t> no_subset_tables;
-    hb::shared_ptr<hb_set_t> drop_tables;
-    hb::shared_ptr<hb_set_t> name_ids;
-    hb::shared_ptr<hb_set_t> name_languages;
-    hb::shared_ptr<hb_set_t> layout_features;
-    hb::shared_ptr<hb_set_t> layout_scripts;
+  ਬਣਤਰ sets_t {
+    hb::shared_ptr<hb_ਸੈੱਟ_t> glyphs;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> unicodes;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> no_subset_tables;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> drop_tables;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> name_ids;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> name_languages;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> layout_features;
+    hb::shared_ptr<hb_ਸੈੱਟ_t> layout_scripts;
   };
 
-  union {
+  ਸੰਘ {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_ਸੈੱਟ_t> ਸੈੱਟ_ptrs[ਆਕਾਰ (sets_t) / ਆਕਾਰ (hb_ਸੈੱਟ_t*)];
   };
 
-  unsigned flags;
-  bool attach_accelerator_data = false;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ flags;
+  ਤਾਰਕਿਕ attach_accelerator_ਅੰਕੜੇ = ਝੂਠ;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  ਤਾਰਕਿਕ force_long_loca = ਝੂਠ;
 
-  hb_hashmap_t<hb_tag_t, Triple> axes_location;
+  hb_hashmap_t<hb_ਟੈਗ_t, Triple> axes_location;
   hb_map_t glyph_map;
-#ifdef HB_EXPERIMENTAL_API
-  hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
+  hb_hashmap_t<hb_ot_name_ਰਿਕਾਰਡ_ids_t, hb_ਬਾਈਟਾਂ_t> name_ਸਾਰਣੀ_overrides;
+#ਜੇ_ਅੰਤ
 
-  inline unsigned num_sets () const
+  ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_sets () ਅਚਲ
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    ਵਾਪਸ ਆਕਾਰ (ਸੈੱਟ_ptrs) / ਆਕਾਰ (hb_ਸੈੱਟ_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  ਸਤਰਅੰਦਰ hb_array_t<hb::shared_ptr<hb_ਸੈੱਟ_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    ਵਾਪਸ hb_array (ਸੈੱਟ_ptrs);
   }
 
-  bool in_error () const
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      ਜੇ (unlikely (ਸੈੱਟ_ptrs[i]->ਵਿੱਚ_error ()))
+        ਵਾਪਸ ਸੱਚ;
     }
 
-    return axes_location.in_error ()
-#ifdef HB_EXPERIMENTAL_API
-	|| name_table_overrides.in_error ()
-#endif
+    ਵਾਪਸ axes_location.ਵਿੱਚ_error ()
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
+	|| name_ਸਾਰਣੀ_overrides.ਵਿੱਚ_error ()
+#ਜੇ_ਅੰਤ
 	;
   }
 };
 
 
-#endif /* HB_SUBSET_INPUT_HH */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_INPUT_HH */

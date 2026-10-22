@@ -1,22 +1,22 @@
-#ifndef OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
-#define OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-gsubgpos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-struct ExtensionSubst : Extension<ExtensionSubst>
+ਬਣਤਰ ExtensionSubst : Extension<ExtensionSubst>
 {
-  typedef struct SubstLookupSubTable SubTable;
-  bool is_reverse () const;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ Subst_Lookup_Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
+  ਤਾਰਕਿਕ is_ਉਲਟ () ਅਚਲ;
 };
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_EXTENSIONSUBST_HH */
+#ਜੇ_ਅੰਤ  /* OT_LAYOUT_GSUB_EXTENSIONSUBST_HH */

@@ -24,50 +24,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_LIST_HH
-#define HB_SHAPER_LIST_HH
-#endif /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SHAPER_LIST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_LIST_HH
+#ਜੇ_ਅੰਤ /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_NO_SHAPER
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SHAPER
 
 
 /* v--- Add new shapers in the right place here. */
 
-#ifdef HAVE_WASM
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_WASM
 /* Only picks up fonts that have a "Wasm" table. */
 HB_SHAPER_IMPLEMENT (wasm)
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef HAVE_GRAPHITE2
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_GRAPHITE2
 /* Only picks up fonts that have a "Silf" table. */
 HB_SHAPER_IMPLEMENT (graphite2)
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 HB_SHAPER_IMPLEMENT (ot) /* <--- This is our main shaper. */
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef HAVE_UNISCRIBE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_UNISCRIBE
 HB_SHAPER_IMPLEMENT (uniscribe)
-#endif
-#ifdef HAVE_DIRECTWRITE
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_DIRECTWRITE
 HB_SHAPER_IMPLEMENT (directwrite)
-#endif
-#ifdef HAVE_CORETEXT
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CORETEXT
 HB_SHAPER_IMPLEMENT (coretext)
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef HAVE_HARFRUST
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_HARFRUST
 HB_SHAPER_IMPLEMENT (harfrust)
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef HAVE_KBTS
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_KBTS
 HB_SHAPER_IMPLEMENT (kbts)
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_FALLBACK_SHAPE
 HB_SHAPER_IMPLEMENT (fallback) /* <--- This should be last. */
-#endif
+#ਜੇ_ਅੰਤ
 
 
-#endif
+#ਜੇ_ਅੰਤ

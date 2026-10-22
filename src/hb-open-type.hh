@@ -26,18 +26,18 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OPEN_TYPE_HH
-#define HB_OPEN_TYPE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPEN_TYPE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-blob.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-meta.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset.hh"
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
 
 /*
@@ -54,316 +54,316 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
-	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+ਸਾਂਚਾ <ਤਾਰਕਿਕ BE,
+	  ਕਿਸਮ_ਨਾਂ Type,
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ_2 = ਆਕਾਰ (Type)>
+ਬਣਤਰ ਅੰਕ_Type
 {
-  typedef Type type;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
-				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ std::conditional<std::is_integral<Type>::value && ਆਕਾਰ (Type) <= ਆਕਾਰ(ਪੂਰਨ),
+				     ਕਿਸਮ_ਨਾਂ std::conditional<std::is_signed<Type>::value, ਨਿਸ਼ਾਨੀਵਾਲਾ, ਬਿਨਾਨਿਸ਼ਾਨੀ>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  ਅੰਕ_Type () = ਮੂਲ;
+  ਸਪਸ਼ਟ constexpr ਅੰਕ_Type (Type V) : v {V} {}
+  ਅੰਕ_Type& ਸੰਚਾਲਕ = (Type V) { v = V; ਵਾਪਸ *ਇਹ; }
 
-  operator WideType () const { return v; }
+  ਸੰਚਾਲਕ WideType () ਅਚਲ { ਵਾਪਸ v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ ਅੰਕ_Type &o) ਅਚਲ { ਵਾਪਸ (Type) v == (Type) o.v; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ ਅੰਕ_Type &o) ਅਚਲ { ਵਾਪਸ !(*ਇਹ == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  ਅੰਕ_Type& ਸੰਚਾਲਕ += (WideType ਗਿਣਤੀ_2) { *ਇਹ = *ਇਹ + ਗਿਣਤੀ_2; ਵਾਪਸ *ਇਹ; }
+  ਅੰਕ_Type& ਸੰਚਾਲਕ -= (WideType ਗਿਣਤੀ_2) { *ਇਹ = *ਇਹ - ਗਿਣਤੀ_2; ਵਾਪਸ *ਇਹ; }
+  ਅੰਕ_Type& ਸੰਚਾਲਕ ++ () { *ਇਹ += 1; ਵਾਪਸ *ਇਹ; }
+  ਅੰਕ_Type& ਸੰਚਾਲਕ -- () { *ਇਹ -= 1; ਵਾਪਸ *ਇਹ; }
+  ਅੰਕ_Type ਸੰਚਾਲਕ ++ (ਪੂਰਨ) { ਅੰਕ_Type c (*ਇਹ); ++*ਇਹ; ਵਾਪਸ c; }
+  ਅੰਕ_Type ਸੰਚਾਲਕ -- (ਪੂਰਨ) { ਅੰਕ_Type c (*ਇਹ); --*ਇਹ; ਵਾਪਸ c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () ਅਚਲ { ਵਾਪਸ hb_array ((ਅਚਲ ਅੱਖਰ *) &v, ਆਕਾਰ (v)).hash (); }
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਅੰਕ_Type *a, ਅਚਲ ਅੰਕ_Type *b)
+  { ਵਾਪਸ b->cmp (*a); }
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *a, ਅਚਲ ਖਾਲੀ *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    ਅੰਕ_Type *pa = (ਅੰਕ_Type *) a;
+    ਅੰਕ_Type *pb = (ਅੰਕ_Type *) b;
 
-    return pb->cmp (*pa);
+    ਵਾਪਸ pb->cmp (*pa);
   }
-  template <typename Type2,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  ਪੂਰਨ cmp (Type2 a) ਅਚਲ
   {
     Type b = v;
-    return (a > b) - (a < b);
+    ਵਾਪਸ (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
-  protected:
-  typename std::conditional<std::is_integral<Type>::value,
-			    HBInt<BE, Type, Size>,
-			    HBFloat<BE, Type, Size>>::type v;
-  public:
-  DEFINE_SIZE_STATIC (Size);
+  ਸੁਰੱਖਿਅਤ:
+  ਕਿਸਮ_ਨਾਂ std::conditional<std::is_integral<Type>::value,
+			    HBInt<BE, Type, ਮਾਪ_2>,
+			    HBFloat<BE, Type, ਮਾਪ_2>>::type v;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (ਮਾਪ_2);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ,  ਦਸ਼ਮਲਵ>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਸੱਚ,  ਦੁੱਗਣਾ> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, ਦਸ਼ਮਲਵ>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅੰਕ_Type<ਝੂਠ, ਦੁੱਗਣਾ> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+ਬਣਤਰ HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
-  DEFINE_SIZE_STATIC (2);
+  HBUINT15& ਸੰਚਾਲਕ = (uint16_t i ) { HBUINT16::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+ਬਣਤਰ HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_ਮਾਪ () ਅਚਲ
   {
-    unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ b0 = v[0];
+    ਜੇ (b0 < 0x80)
+      ਵਾਪਸ 1;
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xC0)
+      ਵਾਪਸ 2;
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xE0)
+      ਵਾਪਸ 3;
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xF0)
+      ਵਾਪਸ 4;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ 5;
   }
 
-  static size_t get_size (uint32_t v)
+  ਸਥਿਰ size_t get_ਮਾਪ (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    ਜੇ (v < 0x80)
+      ਵਾਪਸ 1;
+    ਨਹੀਂਤਾਂ ਜੇ (v < 0x4000)
+      ਵਾਪਸ 2;
+    ਨਹੀਂਤਾਂ ਜੇ (v < 0x200000)
+      ਵਾਪਸ 3;
+    ਨਹੀਂਤਾਂ ਜੇ (v < 0x10000000)
+      ਵਾਪਸ 4;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
-		  c->check_range (v, get_size ()));
+		  c->check_range (v, get_ਮਾਪ ()));
   }
 
-  operator uint32_t () const
+  ਸੰਚਾਲਕ uint32_t () ਅਚਲ
   {
-    unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ b0 = v[0];
+    ਜੇ (b0 < 0x80)
+      ਵਾਪਸ b0;
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xC0)
+      ਵਾਪਸ ((b0 & 0x3F) << 8) | v[1];
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xE0)
+      ਵਾਪਸ ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    ਨਹੀਂਤਾਂ ਜੇ (b0 < 0xF0)
+      ਵਾਪਸ ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ serialize_unsafe (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *buf, uint32_t v)
   {
-    unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = get_ਮਾਪ (v);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *p = buf + len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    ਜੇ (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    ਵਾਪਸ len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  ਸਥਿਰ ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, uint32_t v)
   {
-    unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = get_ਮਾਪ (v);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *buf = c->allocate_ਮਾਪ<ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ> (len, ਝੂਠ);
+    ਜੇ (unlikely (!buf))
+      ਵਾਪਸ ਝੂਠ;
 
     serialize_unsafe (buf, v);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  protected:
-  unsigned char v[5];
+  ਸੁਰੱਖਿਅਤ:
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ v[5];
 
-  public:
-  DEFINE_SIZE_MIN (1);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ HBUINT16 UFWORD;
 
-template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਬਿਨਾਨਿਸ਼ਾਨੀ fraction_ਬਿੱਟ>
+ਬਣਤਰ HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
-  static_assert (Type::static_size * 8 > fraction_bits, "");
+  ਸਥਿਰ constexpr ਦਸ਼ਮਲਵ mult = 1.f / (1 << fraction_ਬਿੱਟ);
+  static_assert (Type::static_ਮਾਪ * 8 > fraction_ਬਿੱਟ, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
-  DEFINE_SIZE_STATIC (Type::static_size);
+  ਸੰਚਾਲਕ ਨਿਸ਼ਾਨੀਵਾਲਾ () ਅਚਲ = ਮਿਟਾਓ;
+  ਸੰਚਾਲਕ ਬਿਨਾਨਿਸ਼ਾਨੀ () ਅਚਲ = ਮਿਟਾਓ;
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਦਸ਼ਮਲਵ () ਅਚਲ { ਵਾਪਸ ਮੰਜ਼ਿਲ_float (); }
+  ਕਿਸਮ_ਨਾਂ Type::type ਮੰਜ਼ਿਲ_int () ਅਚਲ { ਵਾਪਸ Type::v; }
+  ਖਾਲੀ ਸੈੱਟ_int (ਕਿਸਮ_ਨਾਂ Type::type i ) { Type::v = i; }
+  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_float (ਦਸ਼ਮਲਵ ਵਿੱਥ = 0) ਅਚਲ  { ਵਾਪਸ ((int32_t) Type::v + ਵਿੱਥ) * mult; }
+  ਖਾਲੀ ਸੈੱਟ_float (ਦਸ਼ਮਲਵ f) { Type::v = roundf (f / mult); }
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Type::static_ਮਾਪ);
 };
 
 /* 16-bit signed fixed number with the low 14 bits of fraction (2.14). */
-using F2DOT14 = HBFixed<HBINT16, 14>;
-using F4DOT12 = HBFixed<HBINT16, 12>;
-using F6DOT10 = HBFixed<HBINT16, 10>;
+ਵਰਤੋਂ F2DOT14 = HBFixed<HBINT16, 14>;
+ਵਰਤੋਂ F4DOT12 = HBFixed<HBINT16, 12>;
+ਵਰਤੋਂ F6DOT10 = HBFixed<HBINT16, 10>;
 
 /* 32-bit signed fixed-point number (16.16). */
-using F16DOT16 = HBFixed<HBINT32, 16>;
+ਵਰਤੋਂ F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+ਬਣਤਰ LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBINT32 major;
   HBUINT32 minor;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+ਬਣਤਰ ਟੈਗ : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  ਟੈਗ& ਸੰਚਾਲਕ = (hb_ਟੈਗ_t i) { HBUINT32::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਸੰਚਾਲਕ ਅਚਲ ਅੱਖਰ* () ਅਚਲ { ਵਾਪਸ reinterpret_cast<ਅਚਲ ਅੱਖਰ *> (ਇਹ); }
+  ਸੰਚਾਲਕ ਅੱਖਰ* ()             { ਵਾਪਸ reinterpret_cast<ਅੱਖਰ *> (ਇਹ); }
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+ਬਣਤਰ HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& ਸੰਚਾਲਕ = (uint16_t i) { HBUINT16::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 };
-struct HBGlyphID24 : HBUINT24
+ਬਣਤਰ HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& ਸੰਚਾਲਕ = (uint32_t i) { HBUINT24::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+ਬਣਤਰ ਸੂਚਕਾਂਕ : HBUINT16 {
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ NOT_ਮਿਲਿਆ_ਸੂਚਕਾਂਕ = 0xFFFFu;
+  ਸੂਚਕਾਂਕ& ਸੰਚਾਲਕ = (uint16_t i) { HBUINT16::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
+DECLARE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, ਸੂਚਕਾਂਕ);
 
-typedef Index NameID;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਸੂਚਕਾਂਕ NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
-  static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+ਬਣਤਰ VarIdx : HBUINT32 {
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ NO_VARIATION = 0xFFFFFFFFu;
+  static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ, "");
+  VarIdx& ਸੰਚਾਲਕ = (uint32_t i) { HBUINT32::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
+DECLARE_NULL_NAMESPACE_ਬਾਈਟਾਂ (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+ਬਣਤਰ ਵਿੱਥ_2 : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  ਵਿੱਥ_2& ਸੰਚਾਲਕ = (ਕਿਸਮ_ਨਾਂ Type::type i) { Type::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 
-  typedef Type type;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  ਤਾਰਕਿਕ is_null () ਅਚਲ { ਵਾਪਸ has_null && 0 == *ਇਹ; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (ਆਕਾਰ (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਵਿੱਥ_2<HBUINT16> Offset16;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਵਿੱਥ_2<HBUINT24> Offset24;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਵਿੱਥ_2<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+ਬਣਤਰ Check_ਜੋੜ : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  Check_ਜੋੜ& ਸੰਚਾਲਕ = (uint32_t i) { HBUINT32::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  ਸਥਿਰ uint32_t Calc_ਸਾਰਣੀ_Checksum (ਅਚਲ HBUINT32 *ਸਾਰਣੀ_3, uint32_t ਲੰਮਾਈ_3)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    ਪ੍ਰਤਿਜ੍ਞਾ (0 == (ਲੰਮਾਈ_3 & 3));
+    ਅਚਲ HBUINT32 *ਸਿਰਾ_Ptr = ਸਾਰਣੀ_3 + ਲੰਮਾਈ_3 / HBUINT32::static_ਮਾਪ;
 
-    while (Table < EndPtr)
-      Sum += *Table++;
-    return Sum;
+    ਜਦੋਂ (ਸਾਰਣੀ_3 < ਸਿਰਾ_Ptr)
+      Sum += *ਸਾਰਣੀ_3++;
+    ਵਾਪਸ Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  ਖਾਲੀ ਸੈੱਟ_for_ਅੰਕੜੇ (ਅਚਲ ਖਾਲੀ *ਅੰਕੜੇ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ)
+  { *ਇਹ = Calc_ਸਾਰਣੀ_Checksum ((ਅਚਲ HBUINT32 *) ਅੰਕੜੇ, ਲੰਮਾਈ); }
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
 
@@ -371,21 +371,21 @@ struct CheckSum : HBUINT32
  * Version Numbers
  */
 
-template <typename FixedType=HBUINT16>
-struct FixedVersion
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ FixedType=HBUINT16>
+ਬਣਤਰ Fixed_ਸੰਸਕਰਣ
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t ਮੰਜ਼ਿਲ_int () ਅਚਲ { ਵਾਪਸ (major << (ਆਕਾਰ (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (2 * ਆਕਾਰ (FixedType));
 };
 
 
@@ -394,1737 +394,1737 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਤਾਰਕਿਕ has_null>
+ਬਣਤਰ _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  ਸਥਿਰ ਅਚਲ Type *get_null () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
+  ਸਥਿਰ Type *get_crap ()       { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
 };
-template <typename Type>
-struct _hb_has_null<Type, true>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+ਬਣਤਰ _hb_has_null<Type, ਸੱਚ>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  ਸਥਿਰ ਅਚਲ Type *get_null () { ਵਾਪਸ &Null (Type); }
+  ਸਥਿਰ       Type *get_crap () { ਵਾਪਸ &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+ਬਣਤਰ ਵਿੱਥ_ਮੰਜ਼ਿਲ : ਵਿੱਥ_2<ਵਿੱਥ_Type, has_null>
 {
-  using target_t = Type;
+  ਵਰਤੋਂ ਨਿਸ਼ਾਨਾ_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
-		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
+  static_assert (has_null == ਝੂਠ ||
+		 (hb_has_null_ਮਾਪ_2 (Type) || !hb_has_min_ਮਾਪ_2 (Type)), "");
 
-  HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  HB_DELETE_COPY_ਸੌਂਪੋ (ਵਿੱਥ_ਮੰਜ਼ਿਲ);
+  ਵਿੱਥ_ਮੰਜ਼ਿਲ () = ਮੂਲ;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  ਵਿੱਥ_ਮੰਜ਼ਿਲ& ਸੰਚਾਲਕ = (ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type::type i) { ਵਿੱਥ_Type::ਸੰਚਾਲਕ= (i); ਵਾਪਸ *ਇਹ; }
 
-  const Type& operator () (const void *base) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ () (ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    ਜੇ (unlikely (ਇਹ->is_null ())) ਵਾਪਸ *_hb_has_null<Type, has_null>::get_null ();
+    ਵਾਪਸ Struct_At_ਵਿੱਥ<ਅਚਲ Type> (ਅਧਾਰ, *ਇਹ);
   }
-  Type& operator () (void *base) const
+  Type& ਸੰਚਾਲਕ () (ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    ਜੇ (unlikely (ਇਹ->is_null ())) ਵਾਪਸ *_hb_has_null<Type, has_null>::get_crap ();
+    ਵਾਪਸ Struct_At_ਵਿੱਥ<Type> (ਅਧਾਰ, *ਇਹ);
   }
 
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_3,
+	    hb_enable_if (hb_is_convertible (ਅਚਲ ਅਧਾਰ_3, ਅਚਲ ਅਧਾਰ_Type *))>
+  ਮਿੱਤਰ ਅਚਲ Type& ਸੰਚਾਲਕ + (ਅਚਲ ਅਧਾਰ_3 &ਅਧਾਰ, ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ &ਵਿੱਥ) { ਵਾਪਸ ਵਿੱਥ ((ਅਚਲ ਖਾਲੀ *) ਅਧਾਰ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_3,
+	    hb_enable_if (hb_is_convertible (ਅਚਲ ਅਧਾਰ_3, ਅਚਲ ਅਧਾਰ_Type *))>
+  ਮਿੱਤਰ ਅਚਲ Type& ਸੰਚਾਲਕ + (ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ &ਵਿੱਥ, ਅਚਲ ਅਧਾਰ_3 &ਅਧਾਰ) { ਵਾਪਸ ਵਿੱਥ ((ਅਚਲ ਖਾਲੀ *) ਅਧਾਰ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_3,
+	    hb_enable_if (hb_is_convertible (ਅਧਾਰ_3, ਅਧਾਰ_Type *))>
+  ਮਿੱਤਰ Type& ਸੰਚਾਲਕ + (ਅਧਾਰ_3 &&ਅਧਾਰ, ਵਿੱਥ_ਮੰਜ਼ਿਲ &ਵਿੱਥ) { ਵਾਪਸ ਵਿੱਥ ((ਖਾਲੀ *) ਅਧਾਰ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_3,
+	    hb_enable_if (hb_is_convertible (ਅਧਾਰ_3, ਅਧਾਰ_Type *))>
+  ਮਿੱਤਰ Type& ਸੰਚਾਲਕ + (ਵਿੱਥ_ਮੰਜ਼ਿਲ &ਵਿੱਥ, ਅਧਾਰ_3 &&ਅਧਾਰ) { ਵਾਪਸ ਵਿੱਥ ((ਖਾਲੀ *) ਅਧਾਰ); }
 
 
-  template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_3, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ serialize_subset (hb_subset_context_t *c, ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ& src,
+			 ਅਚਲ ਅਧਾਰ_3 *src_ਅਧਾਰ, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *ਇਹ = 0;
+    ਜੇ (src.is_null ())
+      ਵਾਪਸ ਝੂਠ;
 
-    auto *s = c->serializer;
+    ਸਵੈਚਾਲਿਤ *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    ਤਾਰਕਿਕ ret = c->dispatch (src_ਅਧਾਰ+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    ਜੇ (ret || !has_null)
+      s->ਜੋੜੋ_link (*ਇਹ, s->ਕੱਢੋ_pack ());
+    ਨਹੀਂਤਾਂ
+      s->ਕੱਢੋ_discard ();
 
-    return ret;
+    ਵਾਪਸ ret;
   }
 
 
-  template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *ਇਹ = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    ਤਾਰਕਿਕ ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    ਜੇ (ret)
+      c->ਜੋੜੋ_link (*ਇਹ, c->ਕੱਢੋ_pack ());
+    ਨਹੀਂਤਾਂ
+      c->ਕੱਢੋ_discard ();
 
-    return ret;
+    ਵਾਪਸ ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
   /* Workaround clang bug: https://bugs.llvm.org/show_bug.cgi?id=23029
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
-  template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ serialize_copy (hb_serialize_context_t *c, ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ& src,
+		       ਅਚਲ ਖਾਲੀ *src_ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *ਇਹ = 0;
+    ਜੇ (src.is_null ())
+      ਵਾਪਸ ਝੂਠ;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    ਤਾਰਕਿਕ ret = c->copy (src_ਅਧਾਰ+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->ਜੋੜੋ_link (*ਇਹ, c->ਕੱਢੋ_pack (), whence, dst_bias);
 
-    return ret;
+    ਵਾਪਸ ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  ਤਾਰਕਿਕ serialize_copy (hb_serialize_context_t *c, ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ& src,
+		       ਅਚਲ ਖਾਲੀ *src_ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ dst_bias = 0)
+  { ਵਾਪਸ serialize_copy (c, src, src_ਅਧਾਰ, dst_bias, hb_serialize_context_t::ਸਿਰ); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c, ਅਚਲ ਅਧਾਰ_Type *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ))) return_trace (ਝੂਠ);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    ਜੇ (unlikely ((ਅਚਲ ਅੱਖਰ *) ਅਧਾਰ + (ਬਿਨਾਨਿਸ਼ਾਨੀ) *ਇਹ < (ਅਚਲ ਅੱਖਰ *) ਅਧਾਰ)) return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename ...Ts>
-#ifndef HB_OPTIMIZE_SIZE
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਅਧਾਰ_Type *ਅਧਾਰ, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (sanitize_shallow (c, base) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (sanitize_shallow (c, ਅਧਾਰ) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (ਇਹ->is_null () ||
+		   c->dispatch (Struct_At_ਵਿੱਥ<Type> (ਅਧਾਰ, *ਇਹ), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_ਮਾਪ_STATIC (ਆਕਾਰ (ਵਿੱਥ_Type));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ> ਵਰਤੋਂ Offset16_ਮੰਜ਼ਿਲ = ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT16, ਅਧਾਰ_Type, has_null>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ> ਵਰਤੋਂ Offset24_ਮੰਜ਼ਿਲ = ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT24, ਅਧਾਰ_Type, has_null>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ> ਵਰਤੋਂ Offset32_ਮੰਜ਼ਿਲ = ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT32, ਅਧਾਰ_Type, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ> ਵਰਤੋਂ NNOffset_ਮੰਜ਼ਿਲ = ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, ਝੂਠ>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ> ਵਰਤੋਂ NNOffset16_ਮੰਜ਼ਿਲ = Offset16_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, ਝੂਠ>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ> ਵਰਤੋਂ NNOffset24_ਮੰਜ਼ਿਲ = Offset24_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, ਝੂਠ>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ> ਵਰਤੋਂ NNOffset32_ਮੰਜ਼ਿਲ = Offset32_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, ਝੂਠ>;
 
 
 /*
  * Array Types
  */
 
-template <typename Type>
-struct UnsizedArrayOf
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+ਬਣਤਰ Unsized_Array_ਦਾ
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Type ਵਸਤੂ_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_ਮਾਪ = hb_static_ਮਾਪ (Type);
 
-  HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
+  HB_DELETE_CREATE_COPY_ਸੌਂਪੋ (Unsized_Array_ਦਾ);
 
-  const Type& operator [] (unsigned int i) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
   {
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i)
   {
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  ਸਥਿਰ size_t get_ਮਾਪ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len)
+  { ਵਾਪਸ hb_unsigned_mul_saturate (len, Type::static_ਮਾਪ); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> ਸੰਚਾਲਕ T * () { ਵਾਪਸ arrayZ; }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> ਸੰਚਾਲਕ ਅਚਲ T * () ਅਚਲ { ਵਾਪਸ arrayZ; }
+  hb_array_t<Type> as_array (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len)
+  { ਵਾਪਸ hb_array (arrayZ, len); }
+  hb_array_t<ਅਚਲ Type> as_array (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len) ਅਚਲ
+  { ਵਾਪਸ hb_array (arrayZ, len); }
 
-  template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
-  template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
-  template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  Type &lsearch (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, Type &not_ਮਿਲਿਆ = Crap (Type))
+  { ਵਾਪਸ *as_array (len).lsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਅਚਲ Type &lsearch (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, ਅਚਲ Type &not_ਮਿਲਿਆ = Null (Type)) ਅਚਲ
+  { ਵਾਪਸ *as_array (len).lsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ lfind (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *i = ਖਾਲੀ_ਸੂਚਕ,
+	      hb_not_ਮਿਲਿਆ_t not_ਮਿਲਿਆ = HB_NOT_ਮਿਲਿਆ_DONT_STORE,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮੰਜ਼ਿਲ_store = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) -1) ਅਚਲ
+  { ਵਾਪਸ as_array (len).lfind (x, i, not_ਮਿਲਿਆ, ਮੰਜ਼ਿਲ_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
-  { as_array (len).qsort (start, end); }
+  ਖਾਲੀ qsort (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) -1)
+  { as_array (len).qsort (ਸ਼ੁਰੂ, ਸਿਰਾ); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੀਜ਼ਾਂ_len, ਤਾਰਕਿਕ clear = ਸੱਚ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_ਮਾਪ (ਇਹ, get_ਮਾਪ (ਚੀਜ਼ਾਂ_len), clear))) return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+	    hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator, Type))>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, Iterator ਚੀਜ਼ਾਂ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_len (ਚੀਜ਼ਾਂ);
+    ਜੇ (unlikely (!serialize (c, ਗਿਣਤੀ_2, ਝੂਠ))) return_trace (ਝੂਠ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++, ++ਚੀਜ਼ਾਂ)
+      arrayZ[i] = *ਚੀਜ਼ਾਂ;
+    return_trace (ਸੱਚ);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  Unsized_Array_ਦਾ* copy (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
-    return_trace (out);
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->ਸ਼ੁਰੂ_embed (ਇਹ);
+    ਜੇ (unlikely (!as_array (ਗਿਣਤੀ_2).copy (c))) return_trace (ਖਾਲੀ_ਸੂਚਕ);
+    return_trace (ਬਾਹਰਲਾ);
   }
 
-  template <typename ...Ts>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!sanitize_shallow (c, ਗਿਣਤੀ_2))) return_trace (ਝੂਠ);
+    ਜੇ (!ਆਕਾਰ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (ਸੱਚ);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_array (arrayZ, ਗਿਣਤੀ_2));
   }
 
-  public:
+  ਜਨਤਕ:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_UNBOUNDED (0);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+ਵਰਤੋਂ Unsized_Array16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ = Unsized_Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+ਬਣਤਰ Unsized_List_ਦਾ_Offset16_ਮੰਜ਼ਿਲ : Unsized_Array16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, has_null>
 {
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, has_null> *p = &ਇਹ->arrayZ[i];
+    ਜੇ (unlikely ((ਅਚਲ ਖਾਲੀ *) p < (ਅਚਲ ਖਾਲੀ *) ਇਹ->arrayZ)) ਵਾਪਸ Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    ਵਾਪਸ ਇਹ+*p;
   }
-  Type& operator [] (int i_)
+  Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਅਚਲ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, has_null> *p = &ਇਹ->arrayZ[i];
+    ਜੇ (unlikely ((ਅਚਲ ਖਾਲੀ *) p < (ਅਚਲ ਖਾਲੀ *) ਇਹ->arrayZ)) ਵਾਪਸ Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    ਵਾਪਸ ਇਹ+*p;
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace ((Unsized_Array16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type, ਅਧਾਰ_Type, has_null>
+		   ::sanitize (c, ਗਿਣਤੀ_2, ਇਹ, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
-template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+ਬਣਤਰ Sorted_Unsized_Array_ਦਾ : Unsized_Array_ਦਾ<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len)
+  { ਵਾਪਸ hb_sorted_array (ਇਹ->arrayZ, len); }
+  hb_sorted_array_t<ਅਚਲ Type> as_array (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len) ਅਚਲ
+  { ਵਾਪਸ hb_sorted_array (ਇਹ->arrayZ, len); }
+  ਸੰਚਾਲਕ hb_sorted_array_t<Type> ()             { ਵਾਪਸ as_array (); }
+  ਸੰਚਾਲਕ hb_sorted_array_t<ਅਚਲ Type> () ਅਚਲ { ਵਾਪਸ as_array (); }
 
-  template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
-  template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
-  template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  Type &bsearch (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, Type &not_ਮਿਲਿਆ = Crap (Type))
+  { ਵਾਪਸ *as_array (len).bsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਅਚਲ Type &bsearch (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, ਅਚਲ Type &not_ਮਿਲਿਆ = Null (Type)) ਅਚਲ
+  { ਵਾਪਸ *as_array (len).bsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ bfind (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len, ਅਚਲ T &x, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *i = ਖਾਲੀ_ਸੂਚਕ,
+	      hb_not_ਮਿਲਿਆ_t not_ਮਿਲਿਆ = HB_NOT_ਮਿਲਿਆ_DONT_STORE,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮੰਜ਼ਿਲ_store = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) -1) ਅਚਲ
+  { ਵਾਪਸ as_array (len).bfind (x, i, not_ਮਿਲਿਆ, ਮੰਜ਼ਿਲ_store); }
 };
 
 
 /* An array with a number of elements. */
-template <typename Type, typename LenType>
-struct ArrayOf
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ LenType>
+ਬਣਤਰ Array_ਦਾ
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Type ਵਸਤੂ_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_ਮਾਪ = hb_static_ਮਾਪ (Type);
 
-  HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
+  HB_DELETE_CREATE_COPY_ਸੌਂਪੋ (Array_ਦਾ);
 
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= len)) ਵਾਪਸ Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= len)) ਵਾਪਸ Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_ਜੋੜੋ_saturate (len, Type::static_ਮਾਪ, len.static_ਮਾਪ); }
 
-  explicit operator bool () const { return len; }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ len; }
 
-  void pop () { len--; }
+  ਖਾਲੀ ਕੱਢੋ () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { ਵਾਪਸ hb_array (arrayZ, len); }
+  hb_array_t<ਅਚਲ Type> as_array () ਅਚਲ { ਵਾਪਸ hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_array_t<ਅਚਲ Type>   iter_t;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_array_t<      Type> writer_t;
+    iter_t   iter () ਅਚਲ { ਵਾਪਸ as_array (); }
+  writer_t writer ()       { ਵਾਪਸ as_array (); }
+  ਸੰਚਾਲਕ   iter_t () ਅਚਲ { ਵਾਪਸ   iter (); }
+  ਸੰਚਾਲਕ writer_t ()       { ਵਾਪਸ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  ਅਚਲ Type *begin () ਅਚਲ { ਵਾਪਸ arrayZ; }
+  ਅਚਲ Type *ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ arrayZ + len; }
 
-  template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
-  template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
-  template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  Type &lsearch (ਅਚਲ T &x, Type &not_ਮਿਲਿਆ = Crap (Type))
+  { ਵਾਪਸ *as_array ().lsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਅਚਲ Type &lsearch (ਅਚਲ T &x, ਅਚਲ Type &not_ਮਿਲਿਆ = Null (Type)) ਅਚਲ
+  { ਵਾਪਸ *as_array ().lsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ lfind (ਅਚਲ T &x, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *i = ਖਾਲੀ_ਸੂਚਕ,
+	      hb_not_ਮਿਲਿਆ_t not_ਮਿਲਿਆ = HB_NOT_ਮਿਲਿਆ_DONT_STORE,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮੰਜ਼ਿਲ_store = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) -1) ਅਚਲ
+  { ਵਾਪਸ as_array ().lfind (x, i, not_ਮਿਲਿਆ, ਮੰਜ਼ਿਲ_store); }
 
-  void qsort ()
+  ਖਾਲੀ qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੀਜ਼ਾਂ_len, ਤਾਰਕਿਕ clear = ਸੱਚ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
+    c->check_ਸੌਂਪੋ (len, ਚੀਜ਼ਾਂ_len, HB_SERIALIZE_ERROR_ARRAY_ਉਛਾਲ);
+    ਜੇ (unlikely (!c->extend_ਮਾਪ (ਇਹ, get_ਮਾਪ (), clear))) return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+	    hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator, Type))>
+  HB_NODISCARD ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, Iterator ਚੀਜ਼ਾਂ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_len (ਚੀਜ਼ਾਂ);
+    ਜੇ (unlikely (!serialize (c, ਗਿਣਤੀ_2, ਝੂਠ))) return_trace (ਝੂਠ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++, ++ਚੀਜ਼ਾਂ)
+      arrayZ[i] = *ਚੀਜ਼ਾਂ;
+    return_trace (ਸੱਚ);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    ਜੇ (unlikely (!len || !c->extend (ਇਹ)))
     {
       len--;
-      return_trace (nullptr);
+      return_trace (ਖਾਲੀ_ਸੂਚਕ);
     }
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  Array_ਦਾ* copy (hb_serialize_context_t *c) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
-    c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
-    return_trace (out);
+    TRACE_SERIALIZE (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->ਸ਼ੁਰੂ_embed (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (ਬਾਹਰਲਾ))) return_trace (ਖਾਲੀ_ਸੂਚਕ);
+    c->check_ਸੌਂਪੋ (ਬਾਹਰਲਾ->len, len, HB_SERIALIZE_ERROR_ARRAY_ਉਛਾਲ);
+    ਜੇ (unlikely (!as_array ().copy (c))) return_trace (ਖਾਲੀ_ਸੂਚਕ);
+    return_trace (ਬਾਹਰਲਾ);
   }
 
-  template <typename ...Ts>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!sanitize_shallow (c))) return_trace (ਝੂਠ);
+    ਜੇ (!ਆਕਾਰ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (ਸੱਚ);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, ਆਕਾਰ (LenType)));
   }
 
-  public:
+  ਜਨਤਕ:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (ਆਕਾਰ (LenType), arrayZ);
 };
-template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
-template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
-template <typename Type> using Array32Of = ArrayOf<Type, HBUINT32>;
-using PString = ArrayOf<HBUINT8, HBUINT8>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array16_ਦਾ = Array_ਦਾ<Type, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array24_ਦਾ = Array_ਦਾ<Type, HBUINT24>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array32_ਦਾ = Array_ਦਾ<Type, HBUINT32>;
+ਵਰਤੋਂ PString = Array_ਦਾ<HBUINT8, HBUINT8>;
 
 /* Array of Offset's */
-template <typename Type> using Array8OfOffset24To = ArrayOf<OffsetTo<Type, HBUINT24>, HBUINT8>;
-template <typename Type> using Array16OfOffset16To = ArrayOf<OffsetTo<Type, HBUINT16>, HBUINT16>;
-template <typename Type> using Array16OfOffset32To = ArrayOf<OffsetTo<Type, HBUINT32>, HBUINT16>;
-template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUINT32>, HBUINT32>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array8_ਦਾ_Offset24_ਮੰਜ਼ਿਲ = Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT24>, HBUINT8>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array16_ਦਾ_Offset16_ਮੰਜ਼ਿਲ = Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT16>, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array16_ਦਾ_Offset32_ਮੰਜ਼ਿਲ = Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT32>, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Array32_ਦਾ_Offset32_ਮੰਜ਼ਿਲ = Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT32>, HBUINT32>;
 
 /* Array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type>
+ਬਣਤਰ List16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ : Array_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= ਇਹ->len)) ਵਾਪਸ Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    ਵਾਪਸ ਇਹ+ਇਹ->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= ਇਹ->len)) ਵਾਪਸ Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    ਵਾਪਸ ਇਹ+ਇਹ->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (ਇਹ);
+    ਬਣਤਰ List16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ *ਬਾਹਰਲਾ = c->serializer->embed (*ਇਹ);
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ)) return_trace (ਝੂਠ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਇਹ->len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਬਾਹਰਲਾ->arrayZ[i].serialize_subset (c, ਇਹ->arrayZ[i], ਇਹ, ਬਾਹਰਲਾ);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace ((Array16_ਦਾ<ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, ਵਿੱਥ_Type>>::sanitize (c, ਇਹ, std::forward<Ts> (ds)...)));
   }
 };
 
-template <typename Type>
-using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+ਵਰਤੋਂ List16_ਦਾ_Offset16_ਮੰਜ਼ਿਲ = List16_ਦਾ_ਵਿੱਥ_ਮੰਜ਼ਿਲ<Type, HBUINT16>;
 
 /* An array starting at second element. */
-template <typename Type, typename LenType>
-struct HeadlessArrayOf
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ LenType>
+ਬਣਤਰ Headless_Array_ਦਾ
 {
-  static constexpr unsigned item_size = Type::static_size;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_ਮਾਪ = Type::static_ਮਾਪ;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
+  HB_DELETE_CREATE_COPY_ਸੌਂਪੋ (Headless_Array_ਦਾ);
 
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= lenP1 || !i)) ਵਾਪਸ Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    ਵਾਪਸ arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= lenP1 || !i)) ਵਾਪਸ Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    ਵਾਪਸ arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_ਜੋੜੋ_saturate (get_ਲੰਮਾਈ (), Type::static_ਮਾਪ, lenP1.static_ਮਾਪ); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਲੰਮਾਈ () ਅਚਲ { ਵਾਪਸ lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { ਵਾਪਸ hb_array (arrayZ, get_ਲੰਮਾਈ ()); }
+  hb_array_t<ਅਚਲ Type> as_array () ਅਚਲ { ਵਾਪਸ hb_array (arrayZ, get_ਲੰਮਾਈ ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_array_t<ਅਚਲ Type>   iter_t;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_array_t<      Type> writer_t;
+    iter_t   iter () ਅਚਲ { ਵਾਪਸ as_array (); }
+  writer_t writer ()       { ਵਾਪਸ as_array (); }
+  ਸੰਚਾਲਕ   iter_t () ਅਚਲ { ਵਾਪਸ   iter (); }
+  ਸੰਚਾਲਕ writer_t ()       { ਵਾਪਸ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  ਅਚਲ Type *begin () ਅਚਲ { ਵਾਪਸ arrayZ; }
+  ਅਚਲ Type *ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ arrayZ + get_ਲੰਮਾਈ (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੀਜ਼ਾਂ_len, ਤਾਰਕਿਕ clear = ਸੱਚ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
+    c->check_ਸੌਂਪੋ (lenP1, ਚੀਜ਼ਾਂ_len + 1, HB_SERIALIZE_ERROR_ARRAY_ਉਛਾਲ);
+    ਜੇ (unlikely (!c->extend_ਮਾਪ (ਇਹ, get_ਮਾਪ (), clear))) return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+	    hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator, Type))>
+  HB_NODISCARD ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, Iterator ਚੀਜ਼ਾਂ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_len (ਚੀਜ਼ਾਂ);
+    ਜੇ (unlikely (!serialize (c, ਗਿਣਤੀ_2, ਝੂਠ))) return_trace (ਝੂਠ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++, ++ਚੀਜ਼ਾਂ)
+      arrayZ[i] = *ਚੀਜ਼ਾਂ;
+    return_trace (ਸੱਚ);
   }
 
-  template <typename ...Ts>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!sanitize_shallow (c))) return_trace (ਝੂਠ);
+    ਜੇ (!ਆਕਾਰ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (ਸੱਚ);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = get_ਲੰਮਾਈ ();
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ਨਿਜੀ:
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, ਆਕਾਰ (LenType))));
   }
 
-  public:
+  ਜਨਤਕ:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (ਆਕਾਰ (LenType), arrayZ);
 };
-template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Headless_Array16_ਦਾ = Headless_Array_ਦਾ<Type, HBUINT16>;
 
 /* An array storing length-1. */
-template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ LenType=HBUINT16>
+ਬਣਤਰ Array_ਦਾ_M1
 {
-  HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
+  HB_DELETE_CREATE_COPY_ਸੌਂਪੋ (Array_ਦਾ_M1);
 
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i > lenM1)) ਵਾਪਸ Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i > lenM1)) ਵਾਪਸ Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    ਵਾਪਸ arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_ਜੋੜੋ_saturate (lenM1 + 1, Type::static_ਮਾਪ, lenM1.static_ਮਾਪ); }
 
-  template <typename ...Ts>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!sanitize_shallow (c))) return_trace (ਝੂਠ);
+    ਜੇ (!ਆਕਾਰ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (ਸੱਚ);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = lenM1 + 1;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ਨਿਜੀ:
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, ਆਕਾਰ (LenType))));
   }
 
-  public:
+  ਜਨਤਕ:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (ਆਕਾਰ (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
-template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ LenType>
+ਬਣਤਰ Sorted_Array_ਦਾ : Array_ਦਾ<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { ਵਾਪਸ hb_sorted_array (ਇਹ->arrayZ, ਇਹ->len); }
+  hb_sorted_array_t<ਅਚਲ Type> as_array () ਅਚਲ { ਵਾਪਸ hb_sorted_array (ਇਹ->arrayZ, ਇਹ->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_sorted_array_t<ਅਚਲ Type>   iter_t;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () ਅਚਲ { ਵਾਪਸ as_array (); }
+  writer_t writer ()       { ਵਾਪਸ as_array (); }
+  ਸੰਚਾਲਕ   iter_t () ਅਚਲ { ਵਾਪਸ   iter (); }
+  ਸੰਚਾਲਕ writer_t ()       { ਵਾਪਸ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  ਅਚਲ Type *begin () ਅਚਲ { ਵਾਪਸ ਇਹ->arrayZ; }
+  ਅਚਲ Type *ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ ਇਹ->arrayZ + ਇਹ->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੀਜ਼ਾਂ_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (ਇਹ);
+    ਤਾਰਕਿਕ ret = Array_ਦਾ<Type, LenType>::serialize (c, ਚੀਜ਼ਾਂ_len);
     return_trace (ret);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+	    hb_requires (hb_is_sorted_ਸਰੋਤ_ਦਾ (Iterator, Type))>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c, Iterator ਚੀਜ਼ਾਂ)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (ਇਹ);
+    ਤਾਰਕਿਕ ret = Array_ਦਾ<Type, LenType>::serialize (c, ਚੀਜ਼ਾਂ);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  Sorted_Array_ਦਾ* copy (hb_serialize_context_t *c) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
-    return_trace (out);
+    TRACE_SERIALIZE (ਇਹ);
+    Sorted_Array_ਦਾ* ਬਾਹਰਲਾ = reinterpret_cast<Sorted_Array_ਦਾ *> (Array_ਦਾ<Type, LenType>::copy (c));
+    return_trace (ਬਾਹਰਲਾ);
   }
 
-  template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
-  template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
-  template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  Type &bsearch (ਅਚਲ T &x, Type &not_ਮਿਲਿਆ = Crap (Type))
+  { ਵਾਪਸ *as_array ().bsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਅਚਲ Type &bsearch (ਅਚਲ T &x, ਅਚਲ Type &not_ਮਿਲਿਆ = Null (Type)) ਅਚਲ
+  { ਵਾਪਸ *as_array ().bsearch (x, &not_ਮਿਲਿਆ); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ bfind (ਅਚਲ T &x, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *i = ਖਾਲੀ_ਸੂਚਕ,
+	      hb_not_ਮਿਲਿਆ_t not_ਮਿਲਿਆ = HB_NOT_ਮਿਲਿਆ_DONT_STORE,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮੰਜ਼ਿਲ_store = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) -1) ਅਚਲ
+  { ਵਾਪਸ as_array ().bfind (x, i, not_ਮਿਲਿਆ, ਮੰਜ਼ਿਲ_store); }
 };
 
-template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
-template <typename Type> using SortedArray24Of = SortedArrayOf<Type, HBUINT24>;
-template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Sorted_Array16_ਦਾ = Sorted_Array_ਦਾ<Type, HBUINT16>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Sorted_Array24_ਦਾ = Sorted_Array_ਦਾ<Type, HBUINT24>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਵਰਤੋਂ Sorted_Array32_ਦਾ = Sorted_Array_ਦਾ<Type, HBUINT32>;
 
 /*
  * Binary-search arrays
  */
 
-template <typename LenType=HBUINT16>
-struct BinSearchHeader
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ LenType=HBUINT16>
+ਬਣਤਰ Bin_ਖੋਜ_ਸਿਰਲੇਖ
 {
-  operator uint32_t () const { return len; }
+  ਸੰਚਾਲਕ uint32_t () ਅਚਲ { ਵਾਪਸ len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_ਖੋਜ_ਸਿਰਲੇਖ& ਸੰਚਾਲਕ = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ v)
   {
     len = v;
-    assert (len == v);
-    entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    ਪ੍ਰਤਿਜ੍ਞਾ (len == v);
+    ਇੰਦਰਾਜ_Selector = hb_max (1u, hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (v)) - 1;
+    ਖੋਜ_Range = 16 * (1u << ਇੰਦਰਾਜ_Selector);
+    range_ਖਿਸਕਾਓ = v * 16 > ਖੋਜ_Range
+		 ? 16 * v - ਖੋਜ_Range
 		 : 0;
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   LenType	len;
-  LenType	searchRange;
-  LenType	entrySelector;
-  LenType	rangeShift;
+  LenType	ਖੋਜ_Range;
+  LenType	ਇੰਦਰਾਜ_Selector;
+  LenType	range_ਖਿਸਕਾਓ;
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ LenType=HBUINT16>
+ਵਰਤੋਂ Bin_ਖੋਜ_Array_ਦਾ = Sorted_Array_ਦਾ<Type, Bin_ਖੋਜ_ਸਿਰਲੇਖ<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+ਬਣਤਰ Var_Sized_Bin_ਖੋਜ_ਸਿਰਲੇਖ
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
+  HBUINT16	unit_ਮਾਪ;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	ਖੋਜ_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
-  HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
+  HBUINT16	ਇੰਦਰਾਜ_Selector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
-  HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
+  HBUINT16	range_ਖਿਸਕਾਓ;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (10);
 };
 
-template <typename Type>
-struct VarSizedBinSearchArrayOf
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+ਬਣਤਰ Var_Sized_Bin_ਖੋਜ_Array_ਦਾ
 {
-  static constexpr unsigned item_size = Type::static_size;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_ਮਾਪ = Type::static_ਮਾਪ;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ਸੌਂਪੋ (Var_Sized_Bin_ਖੋਜ_Array_ਦਾ);
 
-  bool last_is_terminator () const
+  ਤਾਰਕਿਕ ਆਖਰੀ_is_terminator () ਅਚਲ
   {
-    if (unlikely (!header.nUnits)) return false;
+    ਜੇ (unlikely (!ਸਿਰਲੇਖ.nUnits)) ਵਾਪਸ ਝੂਠ;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    ਅਚਲ HBUINT16 *ਸ਼ਬਦ_2 = &Struct_At_ਵਿੱਥ<HBUINT16> (&ਬਾਈਟਾਂ_Z, (ਸਿਰਲੇਖ.nUnits - 1) * ਸਿਰਲੇਖ.unit_ਮਾਪ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = Type::Termination_ਸ਼ਬਦ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (ਸ਼ਬਦ_2[i] != 0xFFFFu)
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  const Type& operator [] (int i_) const
+  ਅਚਲ Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_) ਅਚਲ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= get_ਲੰਮਾਈ ())) ਵਾਪਸ Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    ਵਾਪਸ Struct_At_ਵਿੱਥ<Type> (&ਬਾਈਟਾਂ_Z, i * ਸਿਰਲੇਖ.unit_ਮਾਪ);
   }
-  Type& operator [] (int i_)
+  Type& ਸੰਚਾਲਕ [] (ਪੂਰਨ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) i_;
+    ਜੇ (unlikely (i >= get_ਲੰਮਾਈ ())) ਵਾਪਸ Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    ਵਾਪਸ Struct_At_ਵਿੱਥ<Type> (&ਬਾਈਟਾਂ_Z, i * ਸਿਰਲੇਖ.unit_ਮਾਪ);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_ਲੰਮਾਈ () ਅਚਲ
+  { ਵਾਪਸ ਸਿਰਲੇਖ.nUnits - ਆਖਰੀ_is_terminator (); }
+  size_t get_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ hb_unsigned_mul_ਜੋੜੋ_saturate (ਸਿਰਲੇਖ.nUnits, ਸਿਰਲੇਖ.unit_ਮਾਪ, ਸਿਰਲੇਖ.static_ਮਾਪ); }
 
-  template <typename ...Ts>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, Ts&&... ds) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!sanitize_shallow (c))) return_trace (ਝੂਠ);
+    ਜੇ (!ਆਕਾਰ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (ਸੱਚ);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = get_ਲੰਮਾਈ ();
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (unlikely (!(*ਇਹ)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (ਝੂਠ);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename T>
-  const Type *bsearch (const T &key) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਅਚਲ Type *bsearch (ਅਚਲ T &key) ਅਚਲ
   {
-    unsigned pos;
-    return hb_bsearch_impl (&pos,
+    ਬਿਨਾਨਿਸ਼ਾਨੀ pos;
+    ਵਾਪਸ hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
-			    get_length (),
-			    header.unitSize,
-			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
-	   : nullptr;
+			    (ਅਚਲ ਖਾਲੀ *) ਬਾਈਟਾਂ_Z,
+			    get_ਲੰਮਾਈ (),
+			    ਸਿਰਲੇਖ.unit_ਮਾਪ,
+			    hb_cmp_ਵਿਧੀ<T, Type>)
+	   ? (ਅਚਲ Type *) (((ਅਚਲ ਅੱਖਰ *) &ਬਾਈਟਾਂ_Z) + (pos * ਸਿਰਲੇਖ.unit_ਮਾਪ))
+	   : ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ਨਿਜੀ:
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (header.sanitize (c) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (ਸਿਰਲੇਖ.sanitize (c) &&
 		  hb_barrier () &&
-		  Type::static_size <= header.unitSize &&
-		  c->check_range (bytesZ.arrayZ,
-				  header.nUnits,
-				  header.unitSize));
+		  Type::static_ਮਾਪ <= ਸਿਰਲੇਖ.unit_ਮਾਪ &&
+		  c->check_range (ਬਾਈਟਾਂ_Z.arrayZ,
+				  ਸਿਰਲੇਖ.nUnits,
+				  ਸਿਰਲੇਖ.unit_ਮਾਪ));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
-  UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
-  DEFINE_SIZE_ARRAY (10, bytesZ);
+  ਸੁਰੱਖਿਅਤ:
+  Var_Sized_Bin_ਖੋਜ_ਸਿਰਲੇਖ	ਸਿਰਲੇਖ;
+  Unsized_Array_ਦਾ<HBUINT8>	ਬਾਈਟਾਂ_Z;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (10, ਬਾਈਟਾਂ_Z);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਗਿਣਤੀ_4>
+ਬਣਤਰ CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ_array_ਮਾਪ () ਅਚਲ
+  { ਵਾਪਸ off_ਮਾਪ * (ਗਿਣਤੀ_2 + 1); }
 
-  template <typename Iterable,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
-                  unsigned min_off_size = 0)
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+		  ਅਚਲ Iterable &iterable,
+		  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ *p_ਅੰਕੜੇ_ਮਾਪ = ਖਾਲੀ_ਸੂਚਕ,
+                  ਬਿਨਾਨਿਸ਼ਾਨੀ min_off_ਮਾਪ = 0)
   {
-    TRACE_SERIALIZE (this);
-    unsigned data_size;
-    if (p_data_size)
-      data_size = *p_data_size;
-    else
-      total_size (iterable, &data_size);
+    TRACE_SERIALIZE (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕੜੇ_ਮਾਪ;
+    ਜੇ (p_ਅੰਕੜੇ_ਮਾਪ)
+      ਅੰਕੜੇ_ਮਾਪ = *p_ਅੰਕੜੇ_ਮਾਪ;
+    ਨਹੀਂਤਾਂ
+      ਕੁੱਲ_ਮਾਪ (iterable, &ਅੰਕੜੇ_ਮਾਪ);
 
-    auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
-    unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    ਸਵੈਚਾਲਿਤ it = hb_iter (iterable);
+    ਜੇ (unlikely (!serialize_ਸਿਰਲੇਖ (c, +it, ਅੰਕੜੇ_ਮਾਪ, min_off_ਮਾਪ))) return_trace (ਝੂਠ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ret = c->allocate_ਮਾਪ<ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ> (ਅੰਕੜੇ_ਮਾਪ, ਝੂਠ);
+    ਜੇ (unlikely (!ret)) return_trace (ਝੂਠ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਚਿਆ = ਅੰਕੜੇ_ਮਾਪ;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
     {
-      unsigned len = _.length;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ len = _.ਲੰਮਾਈ;
 
-      if (!len)
-	continue;
+      ਜੇ (!len)
+	ਜਾਰੀ;
 
-      if (unlikely (len > remaining)) {
+      ਜੇ (unlikely (len > ਬਚਿਆ)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (ਝੂਠ, HB_SERIALIZE_ERROR_INT_ਉਛਾਲ));
       }
 
-      remaining -= len;
+      ਬਚਿਆ -= len;
 
-      if (len <= 1)
+      ਜੇ (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	ਜਾਰੀ;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename Iterator,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  ਤਾਰਕਿਕ serialize_ਸਿਰਲੇਖ (hb_serialize_context_t *c,
 			 Iterator it,
-			 unsigned data_size,
-                         unsigned min_off_size = 0)
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕੜੇ_ਮਾਪ,
+                         ਬਿਨਾਨਿਸ਼ਾਨੀ min_off_ਮਾਪ = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
-    off_size = hb_max(min_off_size, off_size);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ off_ਮਾਪ_2 = (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (ਅੰਕੜੇ_ਮਾਪ + 1) + 7) / 8;
+    off_ਮਾਪ_2 = hb_max(min_off_ਮਾਪ, off_ਮਾਪ_2);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
+    ਇਹ->ਗਿਣਤੀ_2 = hb_len (it);
+    ਜੇ (!ਇਹ->ਗਿਣਤੀ_2) return_trace (ਸੱਚ);
+    ਜੇ (unlikely (!c->extend (ਇਹ->off_ਮਾਪ))) return_trace (ਝੂਠ);
+    ਇਹ->off_ਮਾਪ = off_ਮਾਪ_2;
+    ਜੇ (unlikely (!c->allocate_ਮਾਪ<HBUINT8> (off_ਮਾਪ_2 * (ਇਹ->ਗਿਣਤੀ_2 + 1), ਝੂਠ)))
+      return_trace (ਝੂਠ);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ = 1;
+    ਜੇ (HB_OPTIMIZE_ਮਾਪ_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0;
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
       {
-	set_offset_at (i++, offset);
-	offset += hb_len_of (_);
+	ਸੈੱਟ_ਵਿੱਥ_at (i++, ਵਿੱਥ);
+	ਵਿੱਥ += hb_len_ਦਾ (_);
       }
-      set_offset_at (i, offset);
+      ਸੈੱਟ_ਵਿੱਥ_at (i, ਵਿੱਥ);
     }
-    else
-      switch (off_size)
+    ਨਹੀਂਤਾਂ
+      ਚੋਣ (off_ਮਾਪ_2)
       {
-	case 1:
+	ਹਾਲਤ 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = ਵਿੱਥ;
+	    ਵਿੱਥ += hb_len_ਦਾ (_);
 	  }
-	  *p = offset;
+	  *p = ਵਿੱਥ;
 	}
-	break;
-	case 2:
+	ਰੋਕੋ;
+	ਹਾਲਤ 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = ਵਿੱਥ;
+	    ਵਿੱਥ += hb_len_ਦਾ (_);
 	  }
-	  *p = offset;
+	  *p = ਵਿੱਥ;
 	}
-	break;
-	case 3:
+	ਰੋਕੋ;
+	ਹਾਲਤ 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = ਵਿੱਥ;
+	    ਵਿੱਥ += hb_len_ਦਾ (_);
 	  }
-	  *p = offset;
+	  *p = ਵਿੱਥ;
 	}
-	break;
-	case 4:
+	ਰੋਕੋ;
+	ਹਾਲਤ 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = ਵਿੱਥ;
+	    ਵਿੱਥ += hb_len_ਦਾ (_);
 	  }
-	  *p = offset;
+	  *p = ਵਿੱਥ;
 	}
-	break;
-	default:
-	break;
+	ਰੋਕੋ;
+	ਮੂਲ:
+	ਰੋਕੋ;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਵਿੱਥ == ਅੰਕੜੇ_ਮਾਪ + 1);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename Iterable,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_ਮਾਪ (ਅਚਲ Iterable &iterable, ਬਿਨਾਨਿਸ਼ਾਨੀ *ਅੰਕੜੇ_ਮਾਪ = ਖਾਲੀ_ਸੂਚਕ, ਬਿਨਾਨਿਸ਼ਾਨੀ min_off_ਮਾਪ = 0)
   {
-    auto it = + hb_iter (iterable);
-    if (!it)
+    ਸਵੈਚਾਲਿਤ it = + hb_iter (iterable);
+    ਜੇ (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      ਜੇ (ਅੰਕੜੇ_ਮਾਪ) *ਅੰਕੜੇ_ਮਾਪ = 0;
+      ਵਾਪਸ min_ਮਾਪ;
     }
 
-    unsigned total = 0;
-    for (const auto &_ : +it)
-      total += hb_len_of (_);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &_ : +it)
+      ਕੁੱਲ += hb_len_ਦਾ (_);
 
-    if (data_size) *data_size = total;
+    ਜੇ (ਅੰਕੜੇ_ਮਾਪ) *ਅੰਕੜੇ_ਮਾਪ = ਕੁੱਲ;
 
-    unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
-    off_size = hb_max(min_off_size, off_size);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ off_ਮਾਪ_2 = (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (ਕੁੱਲ + 1) + 7) / 8;
+    off_ਮਾਪ_2 = hb_max(min_off_ਮਾਪ, off_ਮਾਪ_2);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    ਵਾਪਸ min_ਮਾਪ + HBUINT8::static_ਮਾਪ + (hb_len (it) + 1) * off_ਮਾਪ_2 + ਕੁੱਲ;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  ਖਾਲੀ ਸੈੱਟ_ਵਿੱਥ_at (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
   {
-    assert (index <= count);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸੂਚਕਾਂਕ_2 <= ਗਿਣਤੀ_2);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ = off_ਮਾਪ;
+    ਅਚਲ HBUINT8 *p = offsets;
+    ਚੋਣ (ਮਾਪ)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
-    }
-  }
-
-  private:
-  unsigned int offset_at (unsigned int index) const
-  {
-    assert (index <= count);
-
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
-    {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      ਹਾਲਤ 1: ((HBUINT8  *) p)[ਸੂਚਕਾਂਕ_2] = ਵਿੱਥ; ਰੋਕੋ;
+      ਹਾਲਤ 2: ((HBUINT16 *) p)[ਸੂਚਕਾਂਕ_2] = ਵਿੱਥ; ਰੋਕੋ;
+      ਹਾਲਤ 3: ((HBUINT24 *) p)[ਸੂਚਕਾਂਕ_2] = ਵਿੱਥ; ਰੋਕੋ;
+      ਹਾਲਤ 4: ((HBUINT32 *) p)[ਸੂਚਕਾਂਕ_2] = ਵਿੱਥ; ਰੋਕੋ;
+      ਮੂਲ: ਵਾਪਸ;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
-
-  hb_ubytes_t operator [] (unsigned int index) const
+  ਨਿਜੀ:
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ_at (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2) ਅਚਲ
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸੂਚਕਾਂਕ_2 <= ਗਿਣਤੀ_2);
+
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ = off_ਮਾਪ;
+    ਅਚਲ HBUINT8 *p = offsets;
+    ਚੋਣ (ਮਾਪ)
+    {
+      ਹਾਲਤ 1: ਵਾਪਸ ((HBUINT8  *) p)[ਸੂਚਕਾਂਕ_2];
+      ਹਾਲਤ 2: ਵਾਪਸ ((HBUINT16 *) p)[ਸੂਚਕਾਂਕ_2];
+      ਹਾਲਤ 3: ਵਾਪਸ ((HBUINT24 *) p)[ਸੂਚਕਾਂਕ_2];
+      ਹਾਲਤ 4: ਵਾਪਸ ((HBUINT32 *) p)[ਸੂਚਕਾਂਕ_2];
+      ਮੂਲ: ਵਾਪਸ 0;
+    }
+  }
+
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਅੰਕੜੇ_ਅਧਾਰ () ਅਚਲ
+  { ਵਾਪਸ (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) ਇਹ + min_ਮਾਪ + off_ਮਾਪ.static_ਮਾਪ - 1 + ਵਿੱਥ_array_ਮਾਪ (); }
+  ਜਨਤਕ:
+
+  hb_ubytes_t ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2) ਅਚਲ
+  {
+    ਜੇ (unlikely (ਸੂਚਕਾਂਕ_2 >= ਗਿਣਤੀ_2)) ਵਾਪਸ hb_ubytes_t ();
     hb_barrier ();
-    unsigned offset0 = offset_at (index);
-    unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ offset0 = ਵਿੱਥ_at (ਸੂਚਕਾਂਕ_2);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ offset1 = ਵਿੱਥ_at (ਸੂਚਕਾਂਕ_2 + 1);
+    ਜੇ (unlikely (offset1 < offset0 || offset1 > ਵਿੱਥ_at (ਗਿਣਤੀ_2)))
+      ਵਾਪਸ hb_ubytes_t ();
+    ਵਾਪਸ hb_ubytes_t (ਅੰਕੜੇ_ਅਧਾਰ () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_ਮਾਪ () ਅਚਲ
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    ਜੇ (ਗਿਣਤੀ_2)
+      ਵਾਪਸ hb_unsigned_ਜੋੜੋ_saturate (min_ਮਾਪ, off_ਮਾਪ.static_ਮਾਪ,
+				       ਵਿੱਥ_array_ਮਾਪ (), ਵਿੱਥ_at (ਗਿਣਤੀ_2) - 1);
+    ਵਾਪਸ min_ਮਾਪ;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
-			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			  (ਗਿਣਤੀ_2 == 0 || /* empty INDEX */
+			   (ਗਿਣਤੀ_2 < ਗਿਣਤੀ_2 + 1u &&
+			    c->check_struct (&off_ਮਾਪ) && off_ਮਾਪ >= 1 && off_ਮਾਪ <= 4 &&
+			    c->check_array (offsets, off_ਮਾਪ, ਗਿਣਤੀ_2 + 1u) &&
+			    c->check_range (ਅੰਕੜੇ_ਅਧਾਰ (), ਵਿੱਥ_at (ਗਿਣਤੀ_2))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
-  HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
+  ਜਨਤਕ:
+  ਗਿਣਤੀ_4		ਗਿਣਤੀ_2;		/* Number of object data. Note there are (count+1) offsets */
+  ਨਿਜੀ:
+  HBUINT8	off_ਮਾਪ;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (ਗਿਣਤੀ_4::static_ਮਾਪ);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFFIndex<HBUINT16> CFF1_ਸੂਚਕਾਂਕ;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CFFIndex<HBUINT32> CFF2_ਸੂਚਕਾਂਕ;
 
 
 /* TupleValues */
-struct TupleValues
+ਬਣਤਰ Tuple_ਮੁੱਲਾਂ
 {
-  enum packed_value_flag_t
+  ਗਿਣਤੀ packed_ਮੁੱਲ_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    ਮੁੱਲਾਂ_ARE_ZEROS     = 0x80,
+    ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ     = 0x00,
+    ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ     = 0x40,
+    ਮੁੱਲਾਂ_ARE_LONGS     = 0xC0,
+    ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ     = 0xC0,
+    ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ compile_unsafe (hb_array_t<ਅਚਲ ਪੂਰਨ> values, /*ਵਿੱਚ*/
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *encoded_ਬਾਈਟਾਂ /*ਬਾਹਰਲਾ*/)
   {
-    unsigned num_values = values.length;
-    unsigned encoded_len = 0;
-    unsigned i = 0;
-    while (i < num_values)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਮੁੱਲਾਂ_3 = values.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ encoded_len = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;
+    ਜਦੋਂ (i < ਅੰਕ_ਮੁੱਲਾਂ_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      ਪੂਰਨ val = values.arrayZ[i];
+      ਜੇ (val == 0)
+        encoded_len += encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_zeroes (i, encoded_ਬਾਈਟਾਂ + encoded_len, values);
+      ਨਹੀਂਤਾਂ ਜੇ ((int8_t) val == val)
+        encoded_len += encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_ਬਾਈਟਾਂ (i, encoded_ਬਾਈਟਾਂ + encoded_len, values);
+      ਨਹੀਂਤਾਂ ਜੇ ((int16_t) val == val)
+        encoded_len += encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_ਸ਼ਬਦ (i, encoded_ਬਾਈਟਾਂ + encoded_len, values);
+      ਨਹੀਂਤਾਂ
+        encoded_len += encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_longs (i, encoded_ਬਾਈਟਾਂ + encoded_len, values);
     }
-    return encoded_len;
+    ਵਾਪਸ encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_zeroes (ਬਿਨਾਨਿਸ਼ਾਨੀ& i,
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *it,
+					      hb_array_t<ਅਚਲ ਪੂਰਨ> values)
   {
-    unsigned num_values = values.length;
-    unsigned run_length = 0;
-    unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਮੁੱਲਾਂ_3 = values.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਲੰਮਾਈ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ encoded_len = 0;
+    ਜਦੋਂ (i < ਅੰਕ_ਮੁੱਲਾਂ_3 && values.arrayZ[i] == 0)
     {
       i++;
-      run_length++;
+      ਲੜੀਵਾਰ_ਲੰਮਾਈ++;
     }
 
-    while (run_length >= 64)
+    ਜਦੋਂ (ਲੜੀਵਾਰ_ਲੰਮਾਈ >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
-      run_length -= 64;
+      *it++ = ਅੱਖਰ (ਮੁੱਲਾਂ_ARE_ZEROS | 63);
+      ਲੜੀਵਾਰ_ਲੰਮਾਈ -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    ਜੇ (ਲੜੀਵਾਰ_ਲੰਮਾਈ)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = ਅੱਖਰ (ਮੁੱਲਾਂ_ARE_ZEROS | (ਲੜੀਵਾਰ_ਲੰਮਾਈ - 1));
       encoded_len++;
     }
-    return encoded_len;
+    ਵਾਪਸ encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_ਬਾਈਟਾਂ (ਬਿਨਾਨਿਸ਼ਾਨੀ &i,
+					     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *it,
+					     hb_array_t<ਅਚਲ ਪੂਰਨ> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = i;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਮੁੱਲਾਂ_3 = values.ਲੰਮਾਈ;
+    ਜਦੋਂ (i < ਅੰਕ_ਮੁੱਲਾਂ_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      ਪੂਰਨ val = values.arrayZ[i];
+      ਜੇ ((int8_t) val != val)
+        ਰੋਕੋ;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      ਜੇ (val == 0 && i + 1 < ਅੰਕ_ਮੁੱਲਾਂ_3 && values.arrayZ[i+1] == 0)
+        ਰੋਕੋ;
 
       i++;
     }
-    unsigned run_length = i - start;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਲੰਮਾਈ = i - ਸ਼ੁਰੂ;
 
-    unsigned encoded_len = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ encoded_len = 0;
 
-    while (run_length >= 64)
+    ਜਦੋਂ (ਲੜੀਵਾਰ_ਲੰਮਾਈ >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < 64; j++)
+	it[j] = static_cast<ਅੱਖਰ> (values.arrayZ[ਸ਼ੁਰੂ + j]);
       it += 64;
       encoded_len += 64;
 
-      start += 64;
-      run_length -= 64;
+      ਸ਼ੁਰੂ += 64;
+      ਲੜੀਵਾਰ_ਲੰਮਾਈ -= 64;
     }
 
-    if (run_length)
+    ਜੇ (ਲੜੀਵਾਰ_ਲੰਮਾਈ)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ | (ਲੜੀਵਾਰ_ਲੰਮਾਈ - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
-      encoded_len += run_length;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < ਲੜੀਵਾਰ_ਲੰਮਾਈ; j++)
+        it[j] = static_cast<ਅੱਖਰ> (values.arrayZ[ਸ਼ੁਰੂ + j]);
+      encoded_len += ਲੜੀਵਾਰ_ਲੰਮਾਈ;
     }
 
-    return encoded_len;
+    ਵਾਪਸ encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_ਸ਼ਬਦ (ਬਿਨਾਨਿਸ਼ਾਨੀ &i,
+					     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *it,
+					     hb_array_t<ਅਚਲ ਪੂਰਨ> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = i;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਮੁੱਲਾਂ_3 = values.ਲੰਮਾਈ;
+    ਜਦੋਂ (i < ਅੰਕ_ਮੁੱਲਾਂ_3)
     {
-      int val = values.arrayZ[i];
+      ਪੂਰਨ val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      ਜੇ ((int16_t) val != val)
+        ਰੋਕੋ;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      ਜੇ (val == 0) ਰੋਕੋ;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      ਜੇ ((int8_t) val == val &&
+          i + 1 < ਅੰਕ_ਮੁੱਲਾਂ_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        ਰੋਕੋ;
 
       i++;
     }
 
-    unsigned run_length = i - start;
-    unsigned encoded_len = 0;
-    while (run_length >= 64)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਲੰਮਾਈ = i - ਸ਼ੁਰੂ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ encoded_len = 0;
+    ਜਦੋਂ (ਲੜੀਵਾਰ_ਲੰਮਾਈ >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t ਮੁੱਲ_val = values.arrayZ[ਸ਼ੁਰੂ + j];
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 8);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val & 0xFF);
 
         encoded_len += 2;
       }
 
-      start += 64;
-      run_length -= 64;
+      ਸ਼ੁਰੂ += 64;
+      ਲੜੀਵਾਰ_ਲੰਮਾਈ -= 64;
     }
 
-    if (run_length)
+    ਜੇ (ਲੜੀਵਾਰ_ਲੰਮਾਈ)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ | (ਲੜੀਵਾਰ_ਲੰਮਾਈ - 1));
       encoded_len++;
-      while (start < i)
+      ਜਦੋਂ (ਸ਼ੁਰੂ < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t ਮੁੱਲ_val = values.arrayZ[ਸ਼ੁਰੂ++];
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 8);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    ਵਾਪਸ encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ encode_ਮੁੱਲ_ਲੜੀਵਾਰ_as_longs (ਬਿਨਾਨਿਸ਼ਾਨੀ &i,
+					     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *it,
+					     hb_array_t<ਅਚਲ ਪੂਰਨ> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = i;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਮੁੱਲਾਂ_3 = values.ਲੰਮਾਈ;
+    ਜਦੋਂ (i < ਅੰਕ_ਮੁੱਲਾਂ_3)
     {
-      int val = values.arrayZ[i];
+      ਪੂਰਨ val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      ਜੇ ((int16_t) val == val)
+        ਰੋਕੋ;
 
       i++;
     }
 
-    unsigned run_length = i - start;
-    unsigned encoded_len = 0;
-    while (run_length >= 64)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਲੰਮਾਈ = i - ਸ਼ੁਰੂ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ encoded_len = 0;
+    ਜਦੋਂ (ਲੜੀਵਾਰ_ਲੰਮਾਈ >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (ਮੁੱਲਾਂ_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t ਮੁੱਲ_val = values.arrayZ[ਸ਼ੁਰੂ + j];
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 24);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 16);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 8);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val & 0xFF);
 
         encoded_len += 4;
       }
 
-      start += 64;
-      run_length -= 64;
+      ਸ਼ੁਰੂ += 64;
+      ਲੜੀਵਾਰ_ਲੰਮਾਈ -= 64;
     }
 
-    if (run_length)
+    ਜੇ (ਲੜੀਵਾਰ_ਲੰਮਾਈ)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (ਮੁੱਲਾਂ_ARE_LONGS | (ਲੜੀਵਾਰ_ਲੰਮਾਈ - 1));
       encoded_len++;
-      while (start < i)
+      ਜਦੋਂ (ਸ਼ੁਰੂ < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t ਮੁੱਲ_val = values.arrayZ[ਸ਼ੁਰੂ++];
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 24);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 16);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val >> 8);
+        *it++ = static_cast<ਅੱਖਰ> (ਮੁੱਲ_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    ਵਾਪਸ encoded_len;
   }
 
-  template <typename T>
-#ifndef HB_OPTIMIZE_SIZE
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
-			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
-			 unsigned start = 0)
+#ਜੇ_ਅੰਤ
+  ਸਥਿਰ ਤਾਰਕਿਕ decompile (ਅਚਲ HBUINT8 *&p /* IN/OUT */,
+			 hb_ਸਦਿਸ਼_t<T> &values /* IN/OUT */,
+			 ਅਚਲ HBUINT8 *ਸਿਰਾ,
+			 ਤਾਰਕਿਕ consume_all = ਝੂਠ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = 0)
   {
-    unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
-      values.alloc ((end - p) / 2);
-    while (i < count)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = consume_all ? UINT_MAX : values.ਲੰਮਾਈ;
+    ਜੇ (consume_all)
+      values.alloc ((ਸਿਰਾ - p) / 2);
+    ਜਦੋਂ (i < ਗਿਣਤੀ_2)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
-      unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      ਜੇ (unlikely (p + 1 > ਸਿਰਾ)) ਵਾਪਸ consume_all;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ control = *p++;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਗਿਣਤੀ = (control & ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ) + 1;
+      ਜੇ (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        ਜੇ (unlikely (!values.resize_dirty  (values.ਲੰਮਾਈ + ਲੜੀਵਾਰ_ਗਿਣਤੀ)))
+	  ਵਾਪਸ ਝੂਠ;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ stop = i + ਲੜੀਵਾਰ_ਗਿਣਤੀ;
+      ਜੇ (unlikely (stop > ਗਿਣਤੀ_2)) ਵਾਪਸ ਝੂਠ;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ skip = i < ਸ਼ੁਰੂ ? hb_min (ਸ਼ੁਰੂ - i, ਲੜੀਵਾਰ_ਗਿਣਤੀ) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      ਜੇ ((control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ) == ਮੁੱਲਾਂ_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * ਆਕਾਰ (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      ਨਹੀਂਤਾਂ ਜੇ ((control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ) ==  ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
-	p += skip * HBINT16::static_size;
-#ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * HBINT16::static_ਮਾਪ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	p += skip * HBINT16::static_ਮਾਪ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+        ਲਈ (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
+	  values.arrayZ[i] = * (ਅਚਲ HBINT16 *) p;
+	  p += HBINT16::static_ਮਾਪ;
+	  values.arrayZ[i + 1] = * (ਅਚਲ HBINT16 *) p;
+	  p += HBINT16::static_ਮਾਪ;
+	  values.arrayZ[i + 2] = * (ਅਚਲ HBINT16 *) p;
+	  p += HBINT16::static_ਮਾਪ;
+	  values.arrayZ[i + 3] = * (ਅਚਲ HBINT16 *) p;
+	  p += HBINT16::static_ਮਾਪ;
 	}
-#endif
-        for (; i < stop; i++)
+#ਜੇ_ਅੰਤ
+        ਲਈ (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
-          p += HBINT16::static_size;
+          values.arrayZ[i] = * (ਅਚਲ HBINT16 *) p;
+          p += HBINT16::static_ਮਾਪ;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      ਨਹੀਂਤਾਂ ਜੇ ((control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ) ==  ਮੁੱਲਾਂ_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
-	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * HBINT32::static_ਮਾਪ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	p += skip * HBINT32::static_ਮਾਪ;
+        ਲਈ (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
-          p += HBINT32::static_size;
+          values.arrayZ[i] = * (ਅਚਲ HBINT32 *) p;
+          p += HBINT32::static_ਮਾਪ;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      ਨਹੀਂਤਾਂ ਜੇ ((control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ) ==  ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ)
       {
-        if (unlikely (p + run_count > end)) return false;
-	p += skip * HBINT8::static_size;
-#ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+        ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	p += skip * HBINT8::static_ਮਾਪ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+	ਲਈ (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (ਅਚਲ HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (ਅਚਲ HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (ਅਚਲ HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (ਅਚਲ HBINT8 *) p++;
 	}
-#endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+#ਜੇ_ਅੰਤ
+        ਲਈ (; i < stop; i++)
+          values.arrayZ[i] = * (ਅਚਲ HBINT8 *) p++;
       }
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  ਸਥਿਰ ਤਾਰਕਿਕ skip (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *&p /* IN/OUT */,
+		    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਸਿਰਾ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
   {
-    unsigned seen = 0;
-    while (seen < count)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਵੇਖਿਆ = 0;
+    ਜਦੋਂ (ਵੇਖਿਆ < ਗਿਣਤੀ_2)
     {
-      if (unlikely (p >= end)) return false;
-      unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      ਜੇ (unlikely (p >= ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ control = *p++;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਗਿਣਤੀ = (control & ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ) + 1;
+      ਜੇ (unlikely (ਲੜੀਵਾਰ_ਗਿਣਤੀ > ਗਿਣਤੀ_2 - ਵੇਖਿਆ)) ਵਾਪਸ ਝੂਠ;
 
-      unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ = 0;
+      ਚੋਣ (control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ZEROS: ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ: ਚੌੜਾਈ = HBINT8::static_ਮਾਪ; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ: ਚੌੜਾਈ = HBINT16::static_ਮਾਪ; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_LONGS: ਚੌੜਾਈ = HBINT32::static_ਮਾਪ; ਰੋਕੋ;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - p) < ਲੜੀਵਾਰ_ਗਿਣਤੀ * ਚੌੜਾਈ)) ਵਾਪਸ ਝੂਠ;
+      p += ਲੜੀਵਾਰ_ਗਿਣਤੀ * ਚੌੜਾਈ;
+      ਵੇਖਿਆ += ਲੜੀਵਾਰ_ਗਿਣਤੀ;
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  ਬਣਤਰ iter_t : hb_iter_with_fallback_t<iter_t, ਪੂਰਨ>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *p_, ਬਿਨਾਨਿਸ਼ਾਨੀ len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { ਜੇ (likely (ensure_ਲੜੀਵਾਰ ())) read_ਮੁੱਲ (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
-    unsigned width = 0;
+    ਨਿਜੀ:
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *p;
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ * ਅਚਲ endp;
+    ਪੂਰਨ current_ਮੁੱਲ = 0;
+    ਨਿਸ਼ਾਨੀਵਾਲਾ ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    ਤਾਰਕਿਕ ensure_ਲੜੀਵਾਰ ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      ਜੇ (likely (ਲੜੀਵਾਰ_ਗਿਣਤੀ > 0)) ਵਾਪਸ ਸੱਚ;
+      ਵਾਪਸ ensure_ਲੜੀਵਾਰ_2 ();
     }
-    bool _ensure_run ()
+    ਤਾਰਕਿਕ ensure_ਲੜੀਵਾਰ_2 ()
     {
-      if (unlikely (p >= endp))
+      ਜੇ (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+        current_ਮੁੱਲ = 0;
+	ਵਾਪਸ ਝੂਠ;
       }
 
-      unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ control = *p++;
+      ਲੜੀਵਾਰ_ਗਿਣਤੀ = (control & ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ) + 1;
+      ਚੌੜਾਈ = control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ;
+      ਚੋਣ (ਚੌੜਾਈ)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ZEROS: ਚੌੜਾਈ = 0; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ: ਚੌੜਾਈ = HBINT8::static_ਮਾਪ;  ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ: ਚੌੜਾਈ = HBINT16::static_ਮਾਪ; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_LONGS: ਚੌੜਾਈ = HBINT32::static_ਮਾਪ; ਰੋਕੋ;
+	ਮੂਲ: ਪ੍ਰਤਿਜ੍ਞਾ (ਝੂਠ);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * ਚੌੜਾਈ > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+	current_ਮੁੱਲ = 0;
+	ਵਾਪਸ ਝੂਠ;
       }
 
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
-    void read_value ()
+    ਖਾਲੀ read_ਮੁੱਲ ()
     {
-      switch (width)
+      ਚੋਣ (ਚੌੜਾਈ)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        ਹਾਲਤ 0: current_ਮੁੱਲ = 0; ਰੋਕੋ;
+	ਹਾਲਤ 1: current_ਮੁੱਲ = * (ਅਚਲ HBINT8  *) p; ਰੋਕੋ;
+	ਹਾਲਤ 2: current_ਮੁੱਲ = * (ਅਚਲ HBINT16 *) p; ਰੋਕੋ;
+	ਹਾਲਤ 4: current_ਮੁੱਲ = * (ਅਚਲ HBINT32 *) p; ਰੋਕੋ;
       }
-      p += width;
+      p += ਚੌੜਾਈ;
     }
 
-    public:
+    ਜਨਤਕ:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਪੂਰਨ __item_t__;
+    __item_t__ __item__ () ਅਚਲ
+    { ਵਾਪਸ current_ਮੁੱਲ; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਲੜੀਵਾਰ_ਗਿਣਤੀ || p < endp; }
+    ਖਾਲੀ __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      ਲੜੀਵਾਰ_ਗਿਣਤੀ--;
+      ਜੇ (unlikely (!ensure_ਲੜੀਵਾਰ ()))
+	ਵਾਪਸ;
+      read_ਮੁੱਲ ();
     }
-    void __forward__ (unsigned n)
+    ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      ਜੇ (unlikely (!ensure_ਲੜੀਵਾਰ ()))
+	ਵਾਪਸ;
+      ਜਦੋਂ (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ i = hb_min (n, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀਵਾਰ_ਗਿਣਤੀ);
+	ਲੜੀਵਾਰ_ਗਿਣਤੀ -= i;
 	n -= i;
-	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	p += (i - 1) * ਚੌੜਾਈ;
+	ਜੇ (unlikely (!ensure_ਲੜੀਵਾਰ ()))
+	  ਵਾਪਸ;
+	read_ਮੁੱਲ ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ iter_t& o) ਅਚਲ
+    { ਵਾਪਸ p != o.p || ਲੜੀਵਾਰ_ਗਿਣਤੀ != o.ਲੜੀਵਾਰ_ਗਿਣਤੀ; }
+    iter_t __end__ () ਅਚਲ
     {
       iter_t it (endp, 0);
-      return it;
+      ਵਾਪਸ it;
     }
   };
 
-  struct fetcher_t
+  ਬਣਤਰ fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
-	      : p (p_), end (p_ + len_) {}
+    fetcher_t (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *p_, ਬਿਨਾਨਿਸ਼ਾਨੀ len_)
+	      : p (p_), ਸਿਰਾ (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
-    unsigned width = 0;
+    ਨਿਜੀ:
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *p;
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ * ਅਚਲ ਸਿਰਾ;
+    ਨਿਸ਼ਾਨੀਵਾਲਾ ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    ਤਾਰਕਿਕ ensure_ਲੜੀਵਾਰ ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      ਜੇ (likely (ਲੜੀਵਾਰ_ਗਿਣਤੀ > 0)) ਵਾਪਸ ਸੱਚ;
+      ਵਾਪਸ ensure_ਲੜੀਵਾਰ_2 ();
     }
 
-    bool _ensure_run ()
+    ਤਾਰਕਿਕ ensure_ਲੜੀਵਾਰ_2 ()
     {
-      if (unlikely (p >= end))
+      ਜੇ (unlikely (p >= ਸਿਰਾ))
       {
-        run_count = 0;
-	return false;
+        ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+	ਵਾਪਸ ਝੂਠ;
       }
 
-      unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ control = *p++;
+      ਲੜੀਵਾਰ_ਗਿਣਤੀ = (control & ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ) + 1;
+      ਚੌੜਾਈ = control & ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ;
+      ਚੋਣ (ਚੌੜਾਈ)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ZEROS: ਚੌੜਾਈ = 0; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ: ਚੌੜਾਈ = HBINT8::static_ਮਾਪ;  ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ: ਚੌੜਾਈ = HBINT16::static_ਮਾਪ; ਰੋਕੋ;
+	ਹਾਲਤ ਮੁੱਲਾਂ_ARE_LONGS: ਚੌੜਾਈ = HBINT32::static_ਮਾਪ; ਰੋਕੋ;
+	ਮੂਲ: ਪ੍ਰਤਿਜ੍ਞਾ (ਝੂਠ);
       }
 
-      if (unlikely (p + run_count * width > end))
+      ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * ਚੌੜਾਈ > ਸਿਰਾ))
       {
-	run_count = 0;
-	return false;
+	ਲੜੀਵਾਰ_ਗਿਣਤੀ = 0;
+	ਵਾਪਸ ਝੂਠ;
       }
 
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
-    public:
-    void skip (unsigned n)
+    ਜਨਤਕ:
+    ਖਾਲੀ skip (ਬਿਨਾਨਿਸ਼ਾਨੀ n)
     {
-      while (n)
+      ਜਦੋਂ (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	ਜੇ (unlikely (!ensure_ਲੜੀਵਾਰ ()))
+	  ਵਾਪਸ;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ i = hb_min (n, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀਵਾਰ_ਗਿਣਤੀ);
+	ਲੜੀਵਾਰ_ਗਿਣਤੀ -= i;
 	n -= i;
-	p += i * width;
+	p += i * ਚੌੜਾਈ;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    ਨਿਜੀ:
+    ਸਾਂਚਾ <ਤਾਰਕਿਕ scaled, ਕਿਸਮ_ਨਾਂ T>
+    ਖਾਲੀ ਜੋੜੋ_ਮੰਜ਼ਿਲ (hb_array_t<T> ਬਾਹਰਲਾ, T scale = T (1))
     {
-      unsigned n = out.length;
-      T *arrayZ = out.arrayZ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ n = ਬਾਹਰਲਾ.ਲੰਮਾਈ;
+      T *arrayZ = ਬਾਹਰਲਾ.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	ਜੇ (unlikely (!ensure_ਲੜੀਵਾਰ ()))
+	  ਰੋਕੋ;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_min (n - i, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀਵਾਰ_ਗਿਣਤੀ);
+	ਚੋਣ (ਚੌੜਾਈ)
 	{
-	  case 0:
+	  ਹਾਲਤ 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += ਗਿਣਤੀ_2;
+	    ਰੋਕੋ;
 	  }
-	  case 1:
+	  ਹਾਲਤ 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
-	    unsigned j = 0;
-#ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT8 *) p;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+	    ਲਈ (; j + 3 < ਗਿਣਤੀ_2; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
-#endif
-	    for (; j < count; j++)
+#ਜੇ_ਅੰਤ
+	    ਲਈ (; j < ਗਿਣਤੀ_2; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) pp;
 	  }
-	  break;
-	  case 2:
+	  ਰੋਕੋ;
+	  ਹਾਲਤ 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
-	    unsigned j = 0;
-#ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT16 *) p;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+	    ਲਈ (; j + 3 < ਗਿਣਤੀ_2; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
-#endif
-	    for (; j < count; j++)
+#ਜੇ_ਅੰਤ
+	    ਲਈ (; j < ਗਿਣਤੀ_2; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) pp;
 	  }
-	  break;
-	  case 4:
+	  ਰੋਕੋ;
+	  ਹਾਲਤ 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT32 *) p;
+	    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < ਗਿਣਤੀ_2; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) pp;
 	  }
-	  break;
+	  ਰੋਕੋ;
 	}
-	run_count -= count;
-	i += count;
+	ਲੜੀਵਾਰ_ਗਿਣਤੀ -= ਗਿਣਤੀ_2;
+	i += ਗਿਣਤੀ_2;
       }
     }
 
-    public:
-    template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    ਜਨਤਕ:
+    ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+    ਖਾਲੀ ਜੋੜੋ_ਮੰਜ਼ਿਲ_2 (hb_array_t<T> ਬਾਹਰਲਾ, ਦਸ਼ਮਲਵ scale = 1.0f)
     {
-#ifndef HB_OPTIMIZE_SIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
-#endif
-        _add_to<true> (out, (T) scale);
+      ਜੇ (ਝੂਠ && scale == 1.0f)
+        ਜੋੜੋ_ਮੰਜ਼ਿਲ<ਝੂਠ> (ਬਾਹਰਲਾ);
+      ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+        ਜੋੜੋ_ਮੰਜ਼ਿਲ<ਸੱਚ> (ਬਾਹਰਲਾ, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+ਬਣਤਰ TupleList : CFF2_ਸੂਚਕਾਂਕ
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_ਮੁੱਲਾਂ::iter_t ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ
   {
-    auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    ਸਵੈਚਾਲਿਤ ਬਾਈਟਾਂ = CFF2_ਸੂਚਕਾਂਕ::ਸੰਚਾਲਕ [] (i);
+    ਵਾਪਸ Tuple_ਮੁੱਲਾਂ::iter_t (ਬਾਈਟਾਂ.arrayZ, ਬਾਈਟਾਂ.ਲੰਮਾਈ);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_ਮੁੱਲਾਂ::fetcher_t fetcher (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ
   {
-    auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    ਸਵੈਚਾਲਿਤ ਬਾਈਟਾਂ = CFF2_ਸੂਚਕਾਂਕ::ਸੰਚਾਲਕ [] (i);
+    ਵਾਪਸ Tuple_ਮੁੱਲਾਂ::fetcher_t (ਬਾਈਟਾਂ.arrayZ, ਬਾਈਟਾਂ.ਲੰਮਾਈ);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+ਸਾਂਚਾ <ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ alignment>
+ਬਣਤਰ Align
 {
-  size_t get_size (const void *base) const
+  size_t get_ਮਾਪ (ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ = (ਅਚਲ ਅੱਖਰ *) ਇਹ - (ਅਚਲ ਅੱਖਰ *) ਅਧਾਰ;
+    ਵਾਪਸ (alignment - ਵਿੱਥ) & (alignment - 1);
   }
 
-  public:
-  DEFINE_SIZE_MIN (0);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (0);
 };
 
 
@@ -2132,4 +2132,4 @@ struct Align
 } /* namespace OT */
 
 
-#endif /* HB_OPEN_TYPE_HH */
+#ਜੇ_ਅੰਤ /* HB_OPEN_TYPE_HH */

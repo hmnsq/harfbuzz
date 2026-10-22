@@ -1,290 +1,290 @@
 #!/usr/bin/env python3
 
-import gi
+ਆਯਾਤ gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, HarfBuzz as hb
+gi.require_ਸੰਸਕਰਣ("Gtk", "3.0")
+ਤਃ gi.repository ਆਯਾਤ Gtk, HarfBuzz ਇਵ hb
 
 
 POOL = {}
 
 
-def move_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.move_to(to_x, to_y)
+ਪਰਿਭਾਸ਼ਾ move_ਮੰਜ਼ਿਲ_f(funcs, draw_ਅੰਕੜੇ, st, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, user_ਅੰਕੜੇ):
+    context = POOL[draw_ਅੰਕੜੇ]
+    context.move_ਮੰਜ਼ਿਲ(ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y)
 
 
-def line_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.line_to(to_x, to_y)
+ਪਰਿਭਾਸ਼ਾ ਸਤਰ_ਮੰਜ਼ਿਲ_f(funcs, draw_ਅੰਕੜੇ, st, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, user_ਅੰਕੜੇ):
+    context = POOL[draw_ਅੰਕੜੇ]
+    context.ਸਤਰ_ਮੰਜ਼ਿਲ(ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y)
 
 
-def cubic_to_f(
+ਪਰਿਭਾਸ਼ਾ cubic_ਮੰਜ਼ਿਲ_f(
     funcs,
-    draw_data,
+    draw_ਅੰਕੜੇ,
     st,
     control1_x,
     control1_y,
     control2_x,
     control2_y,
-    to_x,
-    to_y,
-    user_data,
+    ਮੰਜ਼ਿਲ_x,
+    ਮੰਜ਼ਿਲ_y,
+    user_ਅੰਕੜੇ,
 ):
-    context = POOL[draw_data]
-    context.curve_to(control1_x, control1_y, control2_x, control2_y, to_x, to_y)
+    context = POOL[draw_ਅੰਕੜੇ]
+    context.ਵਕਰ_ਮੰਜ਼ਿਲ(control1_x, control1_y, control2_x, control2_y, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y)
 
 
-def close_path_f(funcs, draw_data, st, user_data):
-    context = POOL[draw_data]
-    context.close_path()
+ਪਰਿਭਾਸ਼ਾ close_ਰਸਤਾ_f(funcs, draw_ਅੰਕੜੇ, st, user_ਅੰਕੜੇ):
+    context = POOL[draw_ਅੰਕੜੇ]
+    context.close_ਰਸਤਾ()
 
 
 DFUNCS = hb.draw_funcs_create()
-hb.draw_funcs_set_move_to_func(DFUNCS, move_to_f, None)
-hb.draw_funcs_set_line_to_func(DFUNCS, line_to_f, None)
-hb.draw_funcs_set_cubic_to_func(DFUNCS, cubic_to_f, None)
-hb.draw_funcs_set_close_path_func(DFUNCS, close_path_f, None)
+hb.draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func(DFUNCS, move_ਮੰਜ਼ਿਲ_f, ਕੁਝ_ਨਹੀਂ)
+hb.draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func(DFUNCS, ਸਤਰ_ਮੰਜ਼ਿਲ_f, ਕੁਝ_ਨਹੀਂ)
+hb.draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func(DFUNCS, cubic_ਮੰਜ਼ਿਲ_f, ਕੁਝ_ਨਹੀਂ)
+hb.draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func(DFUNCS, close_ਰਸਤਾ_f, ਕੁਝ_ਨਹੀਂ)
 
 
-def push_transform_f(funcs, paint_data, xx, yx, xy, yy, dx, dy, user_data):
-    raise NotImplementedError
+ਪਰਿਭਾਸ਼ਾ ਧੱਕੋ_transform_f(funcs, paint_ਅੰਕੜੇ, xx, yx, xy, yy, dx, dy, user_ਅੰਕੜੇ):
+    ਉਠਾਓ NotImplementedError
 
 
-def pop_transform_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+ਪਰਿਭਾਸ਼ਾ ਕੱਢੋ_transform_f(funcs, paint_ਅੰਕੜੇ, user_ਅੰਕੜੇ):
+    ਉਠਾਓ NotImplementedError
 
 
-def color_f(funcs, paint_data, is_foreground, color, user_data):
-    context = POOL[paint_data]
+ਪਰਿਭਾਸ਼ਾ color_f(funcs, paint_ਅੰਕੜੇ, is_foreground, color, user_ਅੰਕੜੇ):
+    context = POOL[paint_ਅੰਕੜੇ]
     r = hb.color_get_red(color) / 255
     g = hb.color_get_green(color) / 255
     b = hb.color_get_blue(color) / 255
     a = hb.color_get_alpha(color) / 255
-    context.set_source_rgba(r, g, b, a)
+    context.ਸੈੱਟ_ਸਰੋਤ_rgba(r, g, b, a)
     context.paint()
 
 
-def push_clip_rectangle_f(funcs, paint_data, xmin, ymin, xmax, ymax, user_data):
-    context = POOL[paint_data]
+ਪਰਿਭਾਸ਼ਾ ਧੱਕੋ_clip_rectangle_f(funcs, paint_ਅੰਕੜੇ, xmin, ymin, xmax, ymax, user_ਅੰਕੜੇ):
+    context = POOL[paint_ਅੰਕੜੇ]
     context.save()
     context.rectangle(xmin, ymin, xmax, ymax)
     context.clip()
 
 
-def push_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
-    context = POOL[paint_data]
+ਪਰਿਭਾਸ਼ਾ ਧੱਕੋ_clip_glyph_f(funcs, paint_ਅੰਕੜੇ, glyph, font, user_ਅੰਕੜੇ):
+    context = POOL[paint_ਅੰਕੜੇ]
     context.save()
-    context.new_path()
-    hb.font_draw_glyph(font, glyph, DFUNCS, paint_data)
-    context.close_path()
+    context.new_ਰਸਤਾ()
+    hb.font_draw_glyph(font, glyph, DFUNCS, paint_ਅੰਕੜੇ)
+    context.close_ਰਸਤਾ()
     context.clip()
 
 
-def pop_clip_f(funcs, paint_data, user_data):
-    context = POOL[paint_data]
+ਪਰਿਭਾਸ਼ਾ ਕੱਢੋ_clip_f(funcs, paint_ਅੰਕੜੇ, user_ਅੰਕੜੇ):
+    context = POOL[paint_ਅੰਕੜੇ]
     context.restore()
 
 
-def push_group_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+ਪਰਿਭਾਸ਼ਾ ਧੱਕੋ_ਸਮੂਹ_f(funcs, paint_ਅੰਕੜੇ, user_ਅੰਕੜੇ):
+    ਉਠਾਓ NotImplementedError
 
 
-def pop_group_f(funcs, paint_data, mode, user_data):
-    raise NotImplementedError
+ਪਰਿਭਾਸ਼ਾ ਕੱਢੋ_ਸਮੂਹ_f(funcs, paint_ਅੰਕੜੇ, ਬਹੁਲਕ, user_ਅੰਕੜੇ):
+    ਉਠਾਓ NotImplementedError
 
 
 PFUNCS = hb.paint_funcs_create()
-hb.paint_funcs_set_push_transform_func(PFUNCS, push_transform_f, None)
-hb.paint_funcs_set_pop_transform_func(PFUNCS, pop_transform_f, None)
-hb.paint_funcs_set_color_func(PFUNCS, color_f, None)
-hb.paint_funcs_set_push_clip_glyph_func(PFUNCS, push_clip_glyph_f, None)
-hb.paint_funcs_set_push_clip_rectangle_func(PFUNCS, push_clip_rectangle_f, None)
-hb.paint_funcs_set_pop_clip_func(PFUNCS, pop_clip_f, None)
-hb.paint_funcs_set_push_group_func(PFUNCS, push_group_f, None)
-hb.paint_funcs_set_pop_group_func(PFUNCS, pop_group_f, None)
+hb.paint_funcs_ਸੈੱਟ_ਧੱਕੋ_transform_func(PFUNCS, ਧੱਕੋ_transform_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਕੱਢੋ_transform_func(PFUNCS, ਕੱਢੋ_transform_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_color_func(PFUNCS, color_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_glyph_func(PFUNCS, ਧੱਕੋ_clip_glyph_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_rectangle_func(PFUNCS, ਧੱਕੋ_clip_rectangle_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਕੱਢੋ_clip_func(PFUNCS, ਕੱਢੋ_clip_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਧੱਕੋ_ਸਮੂਹ_func(PFUNCS, ਧੱਕੋ_ਸਮੂਹ_f, ਕੁਝ_ਨਹੀਂ)
+hb.paint_funcs_ਸੈੱਟ_ਕੱਢੋ_ਸਮੂਹ_func(PFUNCS, ਕੱਢੋ_ਸਮੂਹ_f, ਕੁਝ_ਨਹੀਂ)
 
 
-def makebuffer(words):
-    buf = hb.buffer_create()
+ਪਰਿਭਾਸ਼ਾ makebuffer(ਸ਼ਬਦ_2):
+    buf = hb.ਬਫਰ_create()
 
-    text = " ".join(words)
-    hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
+    ਪਾਠ = " ".join(ਸ਼ਬਦ_2)
+    hb.ਬਫਰ_ਜੋੜੋ_codepoints(buf, [ord(c) ਲਈ c ਵਿੱਚ ਪਾਠ], 0, ਲੰਬਾਈ(ਪਾਠ))
 
-    hb.buffer_guess_segment_properties(buf)
+    hb.ਬਫਰ_guess_segment_properties(buf)
 
-    return buf
+    ਵਾਪਸ buf
 
 
-def justify(face, words, advance, target_advance):
+ਪਰਿਭਾਸ਼ਾ justify(face, ਸ਼ਬਦ_2, advance, ਨਿਸ਼ਾਨਾ_advance):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(ਸ਼ਬਦ_2)
 
     wiggle = 5
-    shrink = target_advance - wiggle < advance
-    expand = target_advance + wiggle > advance
+    shrink = ਨਿਸ਼ਾਨਾ_advance - wiggle < advance
+    expand = ਨਿਸ਼ਾਨਾ_advance + wiggle > advance
 
-    ret, advance, tag, value = hb.shape_justify(
+    ret, advance, ਟੈਗ_2, ਮੁੱਲ_2 = hb.shape_justify(
         font,
         buf,
-        None,
-        None,
-        target_advance,
-        target_advance,
+        ਕੁਝ_ਨਹੀਂ,
+        ਕੁਝ_ਨਹੀਂ,
+        ਨਿਸ਼ਾਨਾ_advance,
+        ਨਿਸ਼ਾਨਾ_advance,
         advance,
     )
 
-    if not ret:
-        return False, buf, None
+    ਜੇ ਨਹੀਂ ret:
+        ਵਾਪਸ ਝੂਠ, buf, ਕੁਝ_ਨਹੀਂ
 
-    if tag:
+    ਜੇ ਟੈਗ_2:
         variation = hb.variation_t()
-        variation.tag = tag
-        variation.value = value
-    else:
-        variation = None
+        variation.ਟੈਗ_2 = ਟੈਗ_2
+        variation.ਮੁੱਲ_2 = ਮੁੱਲ_2
+    ਨਹੀਂਤਾਂ:
+        variation = ਕੁਝ_ਨਹੀਂ
 
-    if shrink and advance > target_advance + wiggle:
-        return False, buf, variation
-    if expand and advance < target_advance - wiggle:
-        return False, buf, variation
+    ਜੇ shrink ਅਤੇ advance > ਨਿਸ਼ਾਨਾ_advance + wiggle:
+        ਵਾਪਸ ਝੂਠ, buf, variation
+    ਜੇ expand ਅਤੇ advance < ਨਿਸ਼ਾਨਾ_advance - wiggle:
+        ਵਾਪਸ ਝੂਠ, buf, variation
 
-    return True, buf, variation
+    ਵਾਪਸ ਸੱਚ, buf, variation
 
 
-def shape(face, words):
+ਪਰਿਭਾਸ਼ਾ shape(face, ਸ਼ਬਦ_2):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(ਸ਼ਬਦ_2)
     hb.shape(font, buf)
-    positions = hb.buffer_get_glyph_positions(buf)
-    advance = sum(p.x_advance for p in positions)
-    return buf, advance
+    positions = hb.ਬਫਰ_get_glyph_positions(buf)
+    advance = ਜੋੜ(p.x_advance ਲਈ p ਵਿੱਚ positions)
+    ਵਾਪਸ buf, advance
 
 
-def typeset(face, text, target_advance):
-    lines = []
-    words = []
-    for word in text.split():
-        words.append(word)
-        buf, advance = shape(face, words)
-        if advance > target_advance:
+ਪਰਿਭਾਸ਼ਾ typeset(face, ਪਾਠ, ਨਿਸ਼ਾਨਾ_advance):
+    ਸਤਰਾਂ = []
+    ਸ਼ਬਦ_2 = []
+    ਲਈ ਸ਼ਬਦ_3 ਵਿੱਚ ਪਾਠ.ਵੰਡੋ():
+        ਸ਼ਬਦ_2.append(ਸ਼ਬਦ_3)
+        buf, advance = shape(face, ਸ਼ਬਦ_2)
+        ਜੇ advance > ਨਿਸ਼ਾਨਾ_advance:
             # Shrink
-            ret, buf, variation = justify(face, words, advance, target_advance)
-            if ret:
-                lines.append((buf, variation))
-                words = []
+            ret, buf, variation = justify(face, ਸ਼ਬਦ_2, advance, ਨਿਸ਼ਾਨਾ_advance)
+            ਜੇ ret:
+                ਸਤਰਾਂ.append((buf, variation))
+                ਸ਼ਬਦ_2 = []
             # If if fails, pop the last word and shrink, and hope for the best.
             # A too short line is better than too long.
-            elif len(words) > 1:
-                words.pop()
-                _, buf, variation = justify(face, words, advance, target_advance)
-                lines.append((buf, variation))
-                words = [word]
+            ਜਾਂਜੇ ਲੰਬਾਈ(ਸ਼ਬਦ_2) > 1:
+                ਸ਼ਬਦ_2.ਕੱਢੋ()
+                _, buf, variation = justify(face, ਸ਼ਬਦ_2, advance, ਨਿਸ਼ਾਨਾ_advance)
+                ਸਤਰਾਂ.append((buf, variation))
+                ਸ਼ਬਦ_2 = [ਸ਼ਬਦ_3]
             # But if it is one word, meh.
-            else:
-                lines.append((buf, variation))
-                words = []
+            ਨਹੀਂਤਾਂ:
+                ਸਤਰਾਂ.append((buf, variation))
+                ਸ਼ਬਦ_2 = []
 
     # Justify last line
-    if words:
-        _, buf, variation = justify(face, words, advance, target_advance)
-        lines.append((buf, variation))
+    ਜੇ ਸ਼ਬਦ_2:
+        _, buf, variation = justify(face, ਸ਼ਬਦ_2, advance, ਨਿਸ਼ਾਨਾ_advance)
+        ਸਤਰਾਂ.append((buf, variation))
 
-    return lines
+    ਵਾਪਸ ਸਤਰਾਂ
 
 
-def render(face, text, context, width, height, fontsize):
+ਪਰਿਭਾਸ਼ਾ render(face, ਪਾਠ, context, ਚੌੜਾਈ, ਉਚਾਈ, fontsize):
     font = hb.font_create(face)
 
     margin = fontsize * 2
     scale = fontsize / hb.face_get_upem(face)
-    target_advance = (width - (margin * 2)) / scale
+    ਨਿਸ਼ਾਨਾ_advance = (ਚੌੜਾਈ - (margin * 2)) / scale
 
-    lines = typeset(face, text, target_advance)
+    ਸਤਰਾਂ = typeset(face, ਪਾਠ, ਨਿਸ਼ਾਨਾ_advance)
 
     _, extents = hb.font_get_h_extents(font)
-    lineheight = extents.ascender - extents.descender + extents.line_gap
+    lineheight = extents.ascender - extents.descender + extents.ਸਤਰ_gap
     lineheight *= scale
 
     context.save()
     context.translate(0, margin)
-    context.set_font_size(12)
-    context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
-        rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
-        if rtl:
-            hb.buffer_reverse(buf)
-        infos = hb.buffer_get_glyph_infos(buf)
-        positions = hb.buffer_get_glyph_positions(buf)
-        advance = sum(p.x_advance for p in positions)
+    context.ਸੈੱਟ_font_ਮਾਪ(12)
+    context.ਸੈੱਟ_ਸਰੋਤ_rgb(1, 0, 0)
+    ਲਈ buf, variation ਵਿੱਚ ਸਤਰਾਂ:
+        rtl = hb.ਬਫਰ_get_direction(buf) == hb.direction_t.RTL
+        ਜੇ rtl:
+            hb.ਬਫਰ_ਉਲਟ(buf)
+        infos = hb.ਬਫਰ_get_glyph_infos(buf)
+        positions = hb.ਬਫਰ_get_glyph_positions(buf)
+        advance = ਜੋੜ(p.x_advance ਲਈ p ਵਿੱਚ positions)
 
         context.translate(0, lineheight)
         context.save()
 
         context.save()
-        context.move_to(0, -20)
-        if variation:
-            tag = hb.tag_to_string(variation.tag).decode("ascii")
-            context.show_text(f" {tag}={variation.value:g}")
-        context.move_to(0, 0)
-        context.show_text(f" {advance:g}/{target_advance:g}")
+        context.move_ਮੰਜ਼ਿਲ(0, -20)
+        ਜੇ variation:
+            ਟੈਗ_2 = hb.ਟੈਗ_ਮੰਜ਼ਿਲ_string(variation.ਟੈਗ_2).decode("ascii")
+            context.show_ਪਾਠ(f" {tag}={variation.value:g}")
+        context.move_ਮੰਜ਼ਿਲ(0, 0)
+        context.show_ਪਾਠ(f" {advance:g}/{target_advance:g}")
         context.restore()
 
-        if variation:
-            hb.font_set_variations(font, [variation])
+        ਜੇ variation:
+            hb.font_ਸੈੱਟ_variations(font, [variation])
 
         context.translate(margin, 0)
         context.scale(scale, -scale)
 
-        if rtl:
-            context.translate(target_advance, 0)
+        ਜੇ rtl:
+            context.translate(ਨਿਸ਼ਾਨਾ_advance, 0)
 
-        for info, pos in zip(infos, positions):
-            if rtl:
+        ਲਈ info, pos ਵਿੱਚ zip(infos, positions):
+            ਜੇ rtl:
                 context.translate(-pos.x_advance, pos.y_advance)
             context.save()
-            context.translate(pos.x_offset, pos.y_offset)
+            context.translate(pos.x_ਵਿੱਥ_2, pos.y_ਵਿੱਥ_2)
             hb.font_paint_glyph(font, info.codepoint, PFUNCS, id(context), 0, 0x0000FF)
             context.restore()
-            if not rtl:
+            ਜੇ ਨਹੀਂ rtl:
                 context.translate(+pos.x_advance, pos.y_advance)
 
         context.restore()
     context.restore()
 
 
-def main(fontpath, textpath):
+ਪਰਿਭਾਸ਼ਾ ਮੁੱਖ(fontpath, textpath):
     fontsize = 70
 
     blob = hb.blob_create_from_file(fontpath)
     face = hb.face_create(blob, 0)
 
-    with open(textpath) as f:
-        text = f.read()
+    ਨਾਲ open(textpath) ਇਵ f:
+        ਪਾਠ = f.ਪਠ()
 
-    def on_draw(da, context):
-        alloc = da.get_allocation()
+    ਪਰਿਭਾਸ਼ਾ on_draw(da, context):
+        alloc = da.get_ਵੰਡ()
         POOL[id(context)] = context
-        render(face, text, context, alloc.width, alloc.height, fontsize)
-        del POOL[id(context)]
+        render(face, ਪਾਠ, context, alloc.ਚੌੜਾਈ, alloc.ਉਚਾਈ, fontsize)
+        ਹਟਾਓ POOL[id(context)]
 
     drawingarea = Gtk.DrawingArea()
     drawingarea.connect("draw", on_draw)
 
-    win = Gtk.Window()
+    win = Gtk.ਖਿੜਕੀ()
     win.connect("destroy", Gtk.main_quit)
-    win.set_default_size(1000, 700)
-    win.add(drawingarea)
+    win.ਸੈੱਟ_default_ਮਾਪ(1000, 700)
+    win.ਜੋੜੋ(drawingarea)
 
     win.show_all()
-    Gtk.main()
+    Gtk.ਮੁੱਖ()
 
 
-if __name__ == "__main__":
-    import argparse
+ਜੇ __name__ == "__main__":
+    ਆਯਾਤ argparse
 
-    parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")
-    parser.add_argument("fontfile", help="font file")
-    parser.add_argument("textfile", help="text")
-    args = parser.parse_args()
-    main(args.fontfile, args.textfile)
+    parser = argparse.ਦਲੀਲ_Parser(description="HarfBuzz justification demo.")
+    parser.ਜੋੜੋ_ਦਲੀਲ("fontfile", help="font file")
+    parser.ਜੋੜੋ_ਦਲੀਲ("textfile", help="text")
+    ਦਲੀਲਾਂ = parser.parse_ਦਲੀਲਾਂ()
+    ਮੁੱਖ(ਦਲੀਲਾਂ.fontfile, ਦਲੀਲਾਂ.textfile)

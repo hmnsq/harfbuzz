@@ -24,22 +24,22 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_FONT_H
-#define HB_OT_FONT_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_FONT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_FONT_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
-hb_ot_font_set_funcs (hb_font_t *font);
+HB_EXTERN ਖਾਲੀ
+hb_ot_font_ਸੈੱਟ_funcs (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_FONT_H */
+#ਜੇ_ਅੰਤ /* HB_OT_FONT_H */

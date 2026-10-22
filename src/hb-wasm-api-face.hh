@@ -22,96 +22,96 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_FACE_HH
-#define HB_WASM_API_FACE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_FACE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_FACE_HH
 
-#include "hb-wasm-api.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+ਨਾਮਾਕਾਸ਼ hb {
+ਨਾਮਾਕਾਸ਼ wasm {
 
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int index)
+					  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2)
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return nullref;
+  ਜੇ (unlikely (!blob))
+    ਵਾਪਸ nullref;
 
-  char *data = HB_ARRAY_APP2NATIVE (char, blob->data, blob->length);
-  if (unlikely (!data))
-    return nullref;
+  ਅੱਖਰ *ਅੰਕੜੇ = HB_ARRAY_APP2NATIVE (ਅੱਖਰ, blob->ਅੰਕੜੇ, blob->ਲੰਮਾਈ);
+  ਜੇ (unlikely (!ਅੰਕੜੇ))
+    ਵਾਪਸ nullref;
 
   hb_blob_t *hb_blob = hb_blob_create(
-				      data,
-				      blob->length,
-				      HB_MEMORY_MODE_DUPLICATE,
-				      NULL,
-				      NULL);
+				      ਅੰਕੜੇ,
+				      blob->ਲੰਮਾਈ,
+				      HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_DUPLICATE,
+				      ਨਿਰਾ,
+				      ਨਿਰਾ);
 
-  hb_face_t *face = hb_face_create(hb_blob, index);
+  hb_face_t *face = hb_face_create(hb_blob, ਸੂਚਕਾਂਕ_2);
   hb_blob_destroy (hb_blob);
 
   HB_OBJ2REF (face);
-  return faceref;
+  ਵਾਪਸ faceref;
 }
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_ਸਾਰਣੀ) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
 				       ptr_d(blob_t, blob))
 {
   HB_REF2OBJ (face);
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return false;
+  ਜੇ (unlikely (!blob))
+    ਵਾਪਸ ਝੂਠ;
 
-  hb_blob_t *hb_blob = hb_face_reference_table (face, table_tag);
+  hb_blob_t *hb_blob = hb_face_reference_ਸਾਰਣੀ (face, ਸਾਰਣੀ_ਟੈਗ_2);
 
-  unsigned length;
-  const char *hb_data = hb_blob_get_data (hb_blob, &length);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾਈ;
+  ਅਚਲ ਅੱਖਰ *hb_ਅੰਕੜੇ = hb_blob_get_ਅੰਕੜੇ (hb_blob, &ਲੰਮਾਈ);
 
-  if (length <= blob->length)
+  ਜੇ (ਲੰਮਾਈ <= blob->ਲੰਮਾਈ)
   {
-    char *data = HB_ARRAY_APP2NATIVE (char, blob->data, length);
+    ਅੱਖਰ *ਅੰਕੜੇ = HB_ARRAY_APP2NATIVE (ਅੱਖਰ, blob->ਅੰਕੜੇ, ਲੰਮਾਈ);
 
-    if (unlikely (!data))
+    ਜੇ (unlikely (!ਅੰਕੜੇ))
     {
-      blob->length = 0;
-      return false;
+      blob->ਲੰਮਾਈ = 0;
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    hb_memcpy (data, hb_data, length);
+    hb_memcpy (ਅੰਕੜੇ, hb_ਅੰਕੜੇ, ਲੰਮਾਈ);
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  module_free (blob->data);
+  module_free (blob->ਅੰਕੜੇ);
 
-  blob->length = length;
-  blob->data = wasm_runtime_module_dup_data (module_inst, hb_data, length);
+  blob->ਲੰਮਾਈ = ਲੰਮਾਈ;
+  blob->ਅੰਕੜੇ = wasm_runtime_module_dup_ਅੰਕੜੇ (module_inst, hb_ਅੰਕੜੇ, ਲੰਮਾਈ);
 
   hb_blob_destroy (hb_blob);
 
-  if (blob->length && !blob->data)
+  ਜੇ (blob->ਲੰਮਾਈ && !blob->ਅੰਕੜੇ)
   {
-    blob->length = 0;
-    return false;
+    blob->ਲੰਮਾਈ = 0;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਬਿਨਾਨਿਸ਼ਾਨੀ, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face))
 {
   HB_REF2OBJ (face);
 
-  return hb_face_get_upem (face);
+  ਵਾਪਸ hb_face_get_upem (face);
 }
 
 
 }}
 
-#endif /* HB_WASM_API_FACE_HH */
+#ਜੇ_ਅੰਤ /* HB_WASM_API_FACE_HH */

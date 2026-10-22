@@ -24,117 +24,117 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_BUF_HH
-#define HB_VECTOR_BUF_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸਦਿਸ਼_BUF_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸਦਿਸ਼_BUF_HH
 
-#include "hb.hh"
-#include "hb-limits.hh"
-#include "hb-vector.hh"
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-limits.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ <math.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <string.h>
 
-HB_INTERNAL const char *
-hb_vector_decimal_point_get (void);
+HB_ਅੰਦਰੂਨੀ ਅਚਲ ਅੱਖਰ *
+hb_ਸਦਿਸ਼_decimal_ਬਿੰਦੂ_get (ਖਾਲੀ);
 
-static const double _hb_vector_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
+ਸਥਿਰ ਅਚਲ ਦੁੱਗਣਾ hb_ਸਦਿਸ਼_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
 						1e7, 1e8, 1e9, 1e10, 1e11, 1e12};
 
-struct hb_vector_buf_t : hb_vector_t<char>
+ਬਣਤਰ hb_ਸਦਿਸ਼_buf_t : hb_ਸਦਿਸ਼_t<ਅੱਖਰ>
 {
-  unsigned precision = 2;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ precision = 2;
 
   /* Sticky flag set once the serialized document would exceed
    * HB_VECTOR_MAX_DOCUMENT_SIZE.  Folded into in_error() so every emission
    * site that already checks it -- path commands, gradient meshes -- stops
    * cleanly.  Bounds output that the outline work budget cannot see, most
    * importantly sweep-gradient meshes and embedded bitmaps. */
-  bool overflowed = false;
+  ਤਾਰਕਿਕ overflowed = ਝੂਠ;
 
   /* Hides (does not override -- the base method is not virtual) the base
    * in_error(); every emission site uses hb_vector_buf_t directly, so the
    * cap is seen everywhere.  clear() resets the sticky flag so a context
    * reused across renders recovers after one over-cap glyph. */
-  bool in_error () const
-  { return hb_vector_t<char>::in_error () || overflowed; }
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ
+  { ਵਾਪਸ hb_ਸਦਿਸ਼_t<ਅੱਖਰ>::ਵਿੱਚ_error () || overflowed; }
 
-  void clear ()
+  ਖਾਲੀ clear ()
   {
-    overflowed = false;
-    hb_vector_t<char>::clear ();
+    overflowed = ਝੂਠ;
+    hb_ਸਦਿਸ਼_t<ਅੱਖਰ>::clear ();
   }
 
-  unsigned scale_precision () const
-  { return precision < 7 ? 7 : precision; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ scale_precision () ਅਚਲ
+  { ਵਾਪਸ precision < 7 ? 7 : precision; }
 
-  bool would_overflow (unsigned add)
+  ਤਾਰਕਿਕ would_ਉਛਾਲ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਜੋੜੋ)
   {
-    if (unlikely (in_error ()))
-      return true;
-    unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
-		  new_len > HB_VECTOR_MAX_DOCUMENT_SIZE))
+    ਜੇ (unlikely (ਵਿੱਚ_error ()))
+      ਵਾਪਸ ਸੱਚ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_len;
+    ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਲੰਮਾਈ, ਜੋੜੋ, &new_len) ||
+		  new_len > HB_ਸਦਿਸ਼_MAX_DOCUMENT_ਮਾਪ))
     {
-      overflowed = true;
-      return true;
+      overflowed = ਸੱਚ;
+      ਵਾਪਸ ਸੱਚ;
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool append_len (const char *s, unsigned l)
+  ਤਾਰਕਿਕ append_len (ਅਚਲ ਅੱਖਰ *s, ਬਿਨਾਨਿਸ਼ਾਨੀ l)
   {
-    if (unlikely (would_overflow (l)))
-      return false;
-    unsigned old_len = length;
-    unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+    ਜੇ (unlikely (would_ਉਛਾਲ (l)))
+      ਵਾਪਸ ਝੂਠ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ old_len = ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_len;
+    ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (old_len, l, &new_len) ||
+		  !resize_dirty ((ਪੂਰਨ) new_len)))
+      ਵਾਪਸ ਝੂਠ;
     hb_memcpy (arrayZ + old_len, s, l);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool append_c (char ch)
+  ਤਾਰਕਿਕ append_c (ਅੱਖਰ ch)
   {
-    if (unlikely (would_overflow (1)))
-      return false;
-    return push_or_fail (ch);
+    ਜੇ (unlikely (would_ਉਛਾਲ (1)))
+      ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਧੱਕੋ_or_fail (ch);
   }
 
-  bool append_str (const char *s)
-  { return append_len (s, (unsigned) strlen (s)); }
+  ਤਾਰਕਿਕ append_str (ਅਚਲ ਅੱਖਰ *s)
+  { ਵਾਪਸ append_len (s, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀ_ਲੰਬਾਈ (s)); }
 
-  bool append_unsigned (unsigned v)
+  ਤਾਰਕਿਕ append_unsigned (ਬਿਨਾਨਿਸ਼ਾਨੀ v)
   {
-    char tmp[16];
-    snprintf (tmp, sizeof (tmp), "%u", v);
-    return append_len (tmp, (unsigned) strlen (tmp));
+    ਅੱਖਰ tmp[16];
+    snprintf (tmp, ਆਕਾਰ (tmp), "%u", v);
+    ਵਾਪਸ append_len (tmp, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀ_ਲੰਬਾਈ (tmp));
   }
 
-  bool append_hex_byte (unsigned v)
+  ਤਾਰਕਿਕ append_hex_byte (ਬਿਨਾਨਿਸ਼ਾਨੀ v)
   {
-    char tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
+    ਅੱਖਰ tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
 		   "0123456789ABCDEF"[v & 15]};
-    return append_len (tmp, 2);
+    ਵਾਪਸ append_len (tmp, 2);
   }
 
-  void append_num (float v)
-  { append_num (v, precision); }
+  ਖਾਲੀ append_ਅੰਕ (ਦਸ਼ਮਲਵ v)
+  { append_ਅੰਕ (v, precision); }
 
-  void append_num (float v, unsigned p)
+  ਖਾਲੀ append_ਅੰਕ (ਦਸ਼ਮਲਵ v, ਬਿਨਾਨਿਸ਼ਾਨੀ p)
   {
-    if (p > 12) p = 12;
+    ਜੇ (p > 12) p = 12;
 
-    float rounded_zero_threshold = 0.5f;
-    for (unsigned i = 0; i < p; i++)
-      rounded_zero_threshold *= 0.1f;
-    if (fabsf (v) < rounded_zero_threshold)
+    ਦਸ਼ਮਲਵ rounded_zero_ਹੱਦ = 0.5f;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < p; i++)
+      rounded_zero_ਹੱਦ *= 0.1f;
+    ਜੇ (fabsf (v) < rounded_zero_ਹੱਦ)
       v = 0.f;
 
-    if (!(v == v) || !std::isfinite (v))
+    ਜੇ (!(v == v) || !std::isfinite (v))
     {
       append_c ('0');
-      return;
+      ਵਾਪਸ;
     }
 
     /* Fast path: fixed-point decimal via integer math.  @v has a
@@ -143,82 +143,82 @@ struct hb_vector_buf_t : hb_vector_t<char>
      * matches snprintf "%.pf" output digit-for-digit, while skipping
      * the (much slower) printf floating-point formatting and any
      * locale decimal-point fix-up. */
-    double scaled = (double) v * _hb_vector_buf_pow10[p];
-    if (likely (fabs (scaled) < 9.0e18))
+    ਦੁੱਗਣਾ scaled = (ਦੁੱਗਣਾ) v * hb_ਸਦਿਸ਼_buf_pow10[p];
+    ਜੇ (likely (fabs (scaled) < 9.0e18))
     {
-      double fl = floor (scaled);
-      double diff = scaled - fl;
+      ਦੁੱਗਣਾ fl = floor (scaled);
+      ਦੁੱਗਣਾ diff = scaled - fl;
       int64_t n = (int64_t) fl;
-      if (diff > 0.5 || (diff == 0.5 && (n & 1)))
+      ਜੇ (diff > 0.5 || (diff == 0.5 && (n & 1)))
 	n++;
 
       uint64_t u = (uint64_t) (n < 0 ? -n : n);
-      unsigned frac = p;
-      while (frac && !(u % 10))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ frac = p;
+      ਜਦੋਂ (frac && !(u % 10))
       {
 	u /= 10;
 	frac--;
       }
 
-      char tmp[24];
-      char *end = tmp + sizeof (tmp);
-      char *s = end;
-      unsigned d = 0;
-      do
+      ਅੱਖਰ tmp[24];
+      ਅੱਖਰ *ਸਿਰਾ = tmp + ਆਕਾਰ (tmp);
+      ਅੱਖਰ *s = ਸਿਰਾ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ d = 0;
+      ਕਰੋ
       {
-	*--s = (char) ('0' + (char) (u % 10));
+	*--s = (ਅੱਖਰ) ('0' + (ਅੱਖਰ) (u % 10));
 	u /= 10;
-	if (++d == frac)
+	ਜੇ (++d == frac)
 	  *--s = '.';
       }
-      while (u || d < frac + 1);
-      if (v < 0.f)
+      ਜਦੋਂ (u || d < frac + 1);
+      ਜੇ (v < 0.f)
 	*--s = '-';
 
-      append_len (s, (unsigned) (end - s));
-      return;
+      append_len (s, (ਬਿਨਾਨਿਸ਼ਾਨੀ) (ਸਿਰਾ - s));
+      ਵਾਪਸ;
     }
 
-    char fmt[6];
-    snprintf (fmt, sizeof (fmt), "%%.%uf", p);
-    char out[128];
-    snprintf (out, sizeof (out), fmt, (double) v);
+    ਅੱਖਰ fmt[6];
+    snprintf (fmt, ਆਕਾਰ (fmt), "%%.%uf", p);
+    ਅੱਖਰ ਬਾਹਰਲਾ[128];
+    snprintf (ਬਾਹਰਲਾ, ਆਕਾਰ (ਬਾਹਰਲਾ), fmt, (ਦੁੱਗਣਾ) v);
 
-    const char *decimal_point = hb_vector_decimal_point_get ();
+    ਅਚਲ ਅੱਖਰ *decimal_point = hb_ਸਦਿਸ਼_decimal_ਬਿੰਦੂ_get ();
 
-    if (decimal_point[0] != '.' || decimal_point[1] != '\0')
+    ਜੇ (decimal_point[0] != '.' || decimal_point[1] != '\0')
     {
-      char *dp = strstr (out, decimal_point);
-      if (dp)
+      ਅੱਖਰ *dp = ਲੜੀ_ਖੋਜ (ਬਾਹਰਲਾ, decimal_point);
+      ਜੇ (dp)
       {
-	unsigned dp_len = (unsigned) strlen (decimal_point);
-	unsigned tail_len = (unsigned) strlen (dp + dp_len);
-	memmove (dp + 1, dp + dp_len, tail_len + 1);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ dp_len = (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀ_ਲੰਬਾਈ (decimal_point);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਛ_len = (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀ_ਲੰਬਾਈ (dp + dp_len);
+	memmove (dp + 1, dp + dp_len, ਪੂਛ_len + 1);
 	*dp = '.';
       }
     }
 
-    char *dot = strchr (out, '.');
-    if (dot)
+    ਅੱਖਰ *dot = strchr (ਬਾਹਰਲਾ, '.');
+    ਜੇ (dot)
     {
-      char *end = out + strlen (out) - 1;
-      while (end > dot && *end == '0')
-	*end-- = '\0';
-      if (end == dot)
-	*end = '\0';
+      ਅੱਖਰ *ਸਿਰਾ = ਬਾਹਰਲਾ + ਲੜੀ_ਲੰਬਾਈ (ਬਾਹਰਲਾ) - 1;
+      ਜਦੋਂ (ਸਿਰਾ > dot && *ਸਿਰਾ == '0')
+	*ਸਿਰਾ-- = '\0';
+      ਜੇ (ਸਿਰਾ == dot)
+	*ਸਿਰਾ = '\0';
     }
 
-    append_len (out, (unsigned) strlen (out));
+    append_len (ਬਾਹਰਲਾ, (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਲੜੀ_ਲੰਬਾਈ (ਬਾਹਰਲਾ));
   }
 
-  void append_svg_color (hb_color_t color, bool with_alpha)
+  ਖਾਲੀ append_svg_color (hb_color_t color, ਤਾਰਕਿਕ with_alpha)
   {
-    unsigned r = hb_color_get_red (color);
-    unsigned g = hb_color_get_green (color);
-    unsigned b = hb_color_get_blue (color);
-    unsigned a = hb_color_get_alpha (color);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ r = hb_color_get_red (color);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ g = hb_color_get_green (color);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ b = hb_color_get_blue (color);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ a = hb_color_get_alpha (color);
     append_c ('#');
-    if (((r >> 4) == (r & 0xF)) &&
+    ਜੇ (((r >> 4) == (r & 0xF)) &&
 	((g >> 4) == (g & 0xF)) &&
 	((b >> 4) == (b & 0xF)))
     {
@@ -226,40 +226,40 @@ struct hb_vector_buf_t : hb_vector_t<char>
       append_c ("0123456789ABCDEF"[g & 0xF]);
       append_c ("0123456789ABCDEF"[b & 0xF]);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       append_hex_byte (r);
       append_hex_byte (g);
       append_hex_byte (b);
     }
-    if (with_alpha && a != 255)
+    ਜੇ (with_alpha && a != 255)
     {
       append_str ("\" fill-opacity=\"");
-      append_num (a / 255.f, 4);
+      append_ਅੰਕ (a / 255.f, 4);
     }
   }
 
-  bool append_base64 (const uint8_t *data, unsigned len)
+  ਤਾਰਕਿਕ append_base64 (ਅਚਲ uint8_t *ਅੰਕੜੇ, ਬਿਨਾਨਿਸ਼ਾਨੀ len)
   {
     /* Output is 4 bytes per 3 input bytes; compute without overflowing. */
-    unsigned ngroups = len / 3 + (len % 3 != 0);
-    unsigned out_len;
-    unsigned old_len = length;
-    unsigned new_len;
-    if (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
-		  would_overflow (out_len) ||
-		  hb_unsigned_add_overflows (old_len, out_len, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ngroups = len / 3 + (len % 3 != 0);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਾਹਰਲਾ_len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ old_len = ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_len;
+    ਜੇ (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &ਬਾਹਰਲਾ_len) ||
+		  would_ਉਛਾਲ (ਬਾਹਰਲਾ_len) ||
+		  hb_unsigned_ਜੋੜੋ_overflows (old_len, ਬਾਹਰਲਾ_len, &new_len) ||
+		  !resize_dirty ((ਪੂਰਨ) new_len)))
+      ਵਾਪਸ ਝੂਠ;
 
-    char *dst = arrayZ + old_len;
-    unsigned di = 0;
-    unsigned i = 0;
-    while (i + 2 < len)
+    ਅੱਖਰ *dst = arrayZ + old_len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ di = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;
+    ਜਦੋਂ (i + 2 < len)
     {
-      unsigned v = ((unsigned) data[i] << 16) |
-		   ((unsigned) data[i + 1] << 8) |
-		   ((unsigned) data[i + 2]);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ v = ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ[i] << 16) |
+		   ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ[i + 1] << 8) |
+		   ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ[i + 2]);
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 18) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 12) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 6) & 63];
@@ -267,19 +267,19 @@ struct hb_vector_buf_t : hb_vector_t<char>
       i += 3;
     }
 
-    if (i < len)
+    ਜੇ (i < len)
     {
-      unsigned v = (unsigned) data[i] << 16;
-      if (i + 1 < len)
-	v |= (unsigned) data[i + 1] << 8;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ v = (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ[i] << 16;
+      ਜੇ (i + 1 < len)
+	v |= (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ[i + 1] << 8;
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 18) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 12) & 63];
       dst[di++] = (i + 1 < len) ? "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 6) & 63] : '=';
       dst[di++] = '=';
     }
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 };
 
-#endif /* HB_VECTOR_BUF_HH */
+#ਜੇ_ਅੰਤ /* HB_VECTOR_BUF_HH */

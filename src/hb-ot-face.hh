@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_HH
-#define HB_OT_FACE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_FACE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_FACE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
 
 /*
@@ -39,36 +39,36 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਸਾਰਣੀ(Namespace, Type) ਨਾਮਾਕਾਸ਼ Namespace { ਬਣਤਰ Type; }
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ACCELERATOR(Namespace, Type) HB_OT_ਸਾਰਣੀ (Namespace, Type##_accelerator_t)
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face-table-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ACCELERATOR
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ਸਾਰਣੀ
 
-struct hb_ot_face_t
+ਬਣਤਰ hb_ot_face_t
 {
-  HB_INTERNAL void init0 (hb_face_t *face);
-  HB_INTERNAL void fini ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ init0 (hb_face_t *face);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ fini ();
 
-#define HB_OT_TABLE_ORDER(Namespace, Type) \
-    HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਸਾਰਣੀ_ਕ੍ਰਮ(Namespace, Type) \
+    HB_PASTE (ਕ੍ਰਮ_2, HB_PASTE (Namespace, HB_PASTE (_, Type)))
+  ਗਿਣਤੀ ਕ੍ਰਮ_t
   {
-    ORDER_ZERO,
-#define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+    ਕ੍ਰਮ_ZERO,
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਸਾਰਣੀ(Namespace, Type) HB_OT_ਸਾਰਣੀ_ਕ੍ਰਮ (Namespace, Type),
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face-table-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ਸਾਰਣੀ
   };
 
   hb_face_t *face; /* MUST be JUST before the lazy loaders. */
-#define HB_OT_TABLE(Namespace, Type) \
-  hb_table_lazy_loader_t<Namespace::Type, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#define HB_OT_ACCELERATOR(Namespace, Type) \
-  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਸਾਰਣੀ(Namespace, Type) \
+  hb_ਸਾਰਣੀ_lazy_loader_t<Namespace::Type, HB_OT_ਸਾਰਣੀ_ਕ੍ਰਮ (Namespace, Type)> Type;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ACCELERATOR(Namespace, Type) \
+  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_ਸਾਰਣੀ_ਕ੍ਰਮ (Namespace, Type)> Type;
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face-table-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ACCELERATOR
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_ਸਾਰਣੀ
 };
 
 
-#endif /* HB_OT_FACE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_FACE_HH */

@@ -23,15 +23,15 @@
  *
  */
 
-#ifndef HB_SUBSET_SERIALIZE_H
-#define HB_SUBSET_SERIALIZE_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_SERIALIZE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_SERIALIZE_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ਜੇ !defined(HB_SUBSET_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
 // Disabled to not break pre-existing users.
 //#error "Include <hb-subset.h> instead."
-#endif
+#ਜੇ_ਅੰਤ
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -47,10 +47,10 @@ HB_BEGIN_DECLS
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_link_t {
-  unsigned int width;
-  unsigned int position;
-  unsigned int objidx;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_subset_serialize_link_t {
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੌੜਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ position;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ objidx;
 } hb_subset_serialize_link_t;
 
 /**
@@ -68,21 +68,21 @@ typedef struct hb_subset_serialize_link_t {
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_object_t {
-  char *head;
-  char *tail;
-  unsigned int num_real_links;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_subset_serialize_object_t {
+  ਅੱਖਰ *ਸਿਰ_2;
+  ਅੱਖਰ *ਪੂਛ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 
 HB_EXTERN hb_blob_t *
-hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
+hb_subset_serialize_or_fail (hb_ਟੈਗ_t                      ਸਾਰਣੀ_ਟੈਗ_2,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs);
+                             ਬਿਨਾਨਿਸ਼ਾਨੀ                      ਅੰਕ_hb_objs);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_SUBSET_SERIALIZE_H */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_SERIALIZE_H */

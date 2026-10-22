@@ -1,11 +1,11 @@
-#ifndef OT_LAYOUT_GPOS_COMMON_HH
-#define OT_LAYOUT_GPOS_COMMON_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_COMMON_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_COMMON_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-enum attach_type_t {
+ਗਿਣਤੀ attach_type_t {
   ATTACH_TYPE_NONE      = 0X00,
 
   /* Each attachment should be either a mark or a cursive; can't be both. */
@@ -14,24 +14,24 @@ enum attach_type_t {
 };
 
 /* buffer **position** var allocations */
-#define attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
-#define attach_type() var.u8[2] /* attachment type */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ attach_type() var.u8[2] /* attachment type */
 /* Note! if attach_chain() is zero, the value of attach_type() is irrelevant. */
 
-struct ValueBase;
-struct ValueFormat;
+ਬਣਤਰ ਮੁੱਲ_ਅਧਾਰ;
+ਬਣਤਰ ਮੁੱਲ_Format;
 
-template<typename Iterator>
-static void SinglePos_serialize (hb_serialize_context_t *c,
-                                 const ValueBase *src,
-                                 ValueFormat src_format,
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator>
+ਸਥਿਰ ਖਾਲੀ SinglePos_serialize (hb_serialize_context_t *c,
+                                 ਅਚਲ ਮੁੱਲ_ਅਧਾਰ *src,
+                                 ਮੁੱਲ_Format src_format,
                                  Iterator it,
-                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                                 unsigned new_format);
+                                 ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>> *layout_variation_idx_delta_map,
+                                 ਬਿਨਾਨਿਸ਼ਾਨੀ new_format);
 
 
 }
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_COMMON_HH
+#ਜੇ_ਅੰਤ  // OT_LAYOUT_GPOS_COMMON_HH

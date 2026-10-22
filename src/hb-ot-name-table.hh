@@ -24,9 +24,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_NAME_TABLE_HH
-#define HB_OT_NAME_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_NAME_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_NAME_ਸਾਰਣੀ_HH
 
-#include "OT/name/name.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/name/name.hh"
 
-#endif /* HB_OT_NAME_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_NAME_TABLE_HH */

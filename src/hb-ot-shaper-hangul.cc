@@ -24,46 +24,46 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper.hh"
 
 
 /* Hangul shaper */
 
 
 /* Same order as the feature array below */
-enum {
+ਗਿਣਤੀ {
   _JMO,
 
   LJMO,
   VJMO,
   TJMO,
 
-  FIRST_HANGUL_FEATURE = LJMO,
-  HANGUL_FEATURE_COUNT = TJMO + 1
+  ਪਹਿਲਾ_HANGUL_FEATURE = LJMO,
+  HANGUL_FEATURE_ਗਿਣਤੀ = TJMO + 1
 };
 
-static const hb_tag_t hangul_features[HANGUL_FEATURE_COUNT] =
+ਸਥਿਰ ਅਚਲ hb_ਟੈਗ_t hangul_features[HANGUL_FEATURE_ਗਿਣਤੀ] =
 {
-  HB_TAG_NONE,
-  HB_TAG('l','j','m','o'),
-  HB_TAG('v','j','m','o'),
-  HB_TAG('t','j','m','o')
+  HB_ਟੈਗ_NONE,
+  HB_ਟੈਗ('l','j','m','o'),
+  HB_ਟੈਗ('v','j','m','o'),
+  HB_ਟੈਗ('t','j','m','o')
 };
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 collect_features_hangul (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
-  for (unsigned int i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
-    map->add_feature (hangul_features[i]);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਪਹਿਲਾ_HANGUL_FEATURE; i < HANGUL_FEATURE_ਗਿਣਤੀ; i++)
+    map->ਜੋੜੋ_feature (hangul_features[i]);
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 override_features_hangul (hb_ot_shape_planner_t *plan)
 {
   /* Uniscribe does not apply 'calt' for Hangul, and certain fonts
@@ -77,75 +77,75 @@ override_features_hangul (hb_ot_shape_planner_t *plan)
    * the run shape with 'calt' as usual.
    *
    * https://github.com/harfbuzz/harfbuzz/discussions/4853 */
-  plan->map.add_feature (HB_TAG('c','a','l','t'));
+  plan->map.ਜੋੜੋ_feature (HB_ਟੈਗ('c','a','l','t'));
 }
 
-struct hangul_shape_plan_t
+ਬਣਤਰ hangul_shape_plan_t
 {
-  hb_mask_t mask_array[HANGUL_FEATURE_COUNT];
-  hb_mask_t calt_mask;
+  hb_ਨਕਾਬ_t ਨਕਾਬ_array[HANGUL_FEATURE_ਗਿਣਤੀ];
+  hb_ਨਕਾਬ_t calt_ਨਕਾਬ;
 };
 
-static void *
-data_create_hangul (const hb_ot_shape_plan_t *plan)
+ਸਥਿਰ ਖਾਲੀ *
+ਅੰਕੜੇ_create_hangul (ਅਚਲ hb_ot_shape_plan_t *plan)
 {
-  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, sizeof (hangul_shape_plan_t));
-  if (unlikely (!hangul_plan))
-    return nullptr;
+  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, ਆਕਾਰ (hangul_shape_plan_t));
+  ਜੇ (unlikely (!hangul_plan))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  for (unsigned int i = 0; i < HANGUL_FEATURE_COUNT; i++)
-    hangul_plan->mask_array[i] = plan->map.get_1_mask (hangul_features[i]);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < HANGUL_FEATURE_ਗਿਣਤੀ; i++)
+    hangul_plan->ਨਕਾਬ_array[i] = plan->map.get_1_ਨਕਾਬ (hangul_features[i]);
 
-  hangul_plan->calt_mask = plan->map.get_1_mask (HB_TAG('c','a','l','t'));
+  hangul_plan->calt_ਨਕਾਬ = plan->map.get_1_ਨਕਾਬ (HB_ਟੈਗ('c','a','l','t'));
 
-  return hangul_plan;
+  ਵਾਪਸ hangul_plan;
 }
 
-static void
-data_destroy_hangul (void *data)
+ਸਥਿਰ ਖਾਲੀ
+ਅੰਕੜੇ_destroy_hangul (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  hb_free (data);
+  hb_free (ਅੰਕੜੇ);
 }
 
 /* Constants for algorithmic hangul syllable [de]composition. */
-#define LBase 0x1100u
-#define VBase 0x1161u
-#define TBase 0x11A7u
-#define LCount 19u
-#define VCount 21u
-#define TCount 28u
-#define SBase 0xAC00u
-#define NCount (VCount * TCount)
-#define SCount (LCount * NCount)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ LBase 0x1100u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ VBase 0x1161u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TBase 0x11A7u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ LCount 19u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ VCount 21u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TCount 28u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SBase 0xAC00u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NCount (VCount * TCount)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SCount (LCount * NCount)
 
-#define isCombiningL(u) (hb_in_range<hb_codepoint_t> ((u), LBase, LBase+LCount-1))
-#define isCombiningV(u) (hb_in_range<hb_codepoint_t> ((u), VBase, VBase+VCount-1))
-#define isCombiningT(u) (hb_in_range<hb_codepoint_t> ((u), TBase+1, TBase+TCount-1))
-#define isCombinedS(u) (hb_in_range<hb_codepoint_t> ((u), SBase, SBase+SCount-1))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isCombiningL(u) (hb_ਵਿੱਚ_range<hb_codepoint_t> ((u), LBase, LBase+LCount-1))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isCombiningV(u) (hb_ਵਿੱਚ_range<hb_codepoint_t> ((u), VBase, VBase+VCount-1))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isCombiningT(u) (hb_ਵਿੱਚ_range<hb_codepoint_t> ((u), TBase+1, TBase+TCount-1))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isCombinedS(u) (hb_ਵਿੱਚ_range<hb_codepoint_t> ((u), SBase, SBase+SCount-1))
 
-#define isL(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x1100u, 0x115Fu, 0xA960u, 0xA97Cu))
-#define isV(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x1160u, 0x11A7u, 0xD7B0u, 0xD7C6u))
-#define isT(u) (hb_in_ranges<hb_codepoint_t> ((u), 0x11A8u, 0x11FFu, 0xD7CBu, 0xD7FBu))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isL(u) (hb_ਵਿੱਚ_ranges<hb_codepoint_t> ((u), 0x1100u, 0x115Fu, 0xA960u, 0xA97Cu))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isV(u) (hb_ਵਿੱਚ_ranges<hb_codepoint_t> ((u), 0x1160u, 0x11A7u, 0xD7B0u, 0xD7C6u))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isT(u) (hb_ਵਿੱਚ_ranges<hb_codepoint_t> ((u), 0x11A8u, 0x11FFu, 0xD7CBu, 0xD7FBu))
 
-#define isHangulTone(u) (hb_in_range<hb_codepoint_t> ((u), 0x302Eu, 0x302Fu))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ isHangulTone(u) (hb_ਵਿੱਚ_range<hb_codepoint_t> ((u), 0x302Eu, 0x302Fu))
 
 /* buffer var allocations */
-#define hangul_shaping_feature() ot_shaper_var_u8_auxiliary() /* hangul jamo shaping feature */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hangul_shaping_feature() ot_shaper_var_u8_auxiliary() /* hangul jamo shaping feature */
 
-static bool
-is_zero_width_char (hb_font_t *font,
+ਸਥਿਰ ਤਾਰਕਿਕ
+is_zero_ਚੌੜਾਈ_char (hb_font_t *font,
 		    hb_codepoint_t unicode)
 {
   hb_codepoint_t glyph;
-  return hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
+  ਵਾਪਸ hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
 }
 
-static void
-preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
-			hb_buffer_t              *buffer,
+ਸਥਿਰ ਖਾਲੀ
+preprocess_ਪਾਠ_hangul (ਅਚਲ hb_ot_shape_plan_t *plan HB_ਅਣਵਰਤਿਆ,
+			hb_ਬਫਰ_t              *ਬਫਰ,
 			hb_font_t                *font)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, hangul_shaping_feature);
+  HB_ਬਫਰ_ALLOCATE_VAR (ਬਫਰ, hangul_shaping_feature);
 
   /* Hangul syllables come in two shapes: LV, and LVT.  Of those:
    *
@@ -195,98 +195,98 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
    *   decompose.
    */
 
-  buffer->clear_output ();
-  unsigned int start = 0, end = 0; /* Extent of most recently seen syllable;
+  ਬਫਰ->clear_output ();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਸਿਰਾ = 0; /* Extent of most recently seen syllable;
 				    * valid only if start < end
 				    */
-  unsigned int count = buffer->len;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
 
-  for (buffer->idx = 0; buffer->idx < count && buffer->successful;)
+  ਲਈ (ਬਫਰ->idx = 0; ਬਫਰ->idx < ਗਿਣਤੀ_2 && ਬਫਰ->successful;)
   {
-    hb_codepoint_t u = buffer->cur().codepoint;
+    hb_codepoint_t u = ਬਫਰ->cur().codepoint;
 
-    if (isHangulTone (u))
+    ਜੇ (isHangulTone (u))
     {
       /*
        * We could cache the width of the tone marks and the existence of dotted-circle,
        * but the use of the Hangul tone mark characters seems to be rare enough that
        * I didn't bother for now.
        */
-      if (start < end && end == buffer->out_len)
+      ਜੇ (ਸ਼ੁਰੂ < ਸਿਰਾ && ਸਿਰਾ == ਬਫਰ->ਬਾਹਰਲਾ_len)
       {
 	/* Tone mark follows a valid syllable; move it in front, unless it's zero width. */
-	buffer->unsafe_to_break_from_outbuffer (start, buffer->idx);
-	if (unlikely (!buffer->next_glyph ())) break;
-	if (!is_zero_width_char (font, u))
+	ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break_from_outbuffer (ਸ਼ੁਰੂ, ਬਫਰ->idx);
+	ਜੇ (unlikely (!ਬਫਰ->ਅਗਲਾ_glyph ())) ਰੋਕੋ;
+	ਜੇ (!is_zero_ਚੌੜਾਈ_char (font, u))
 	{
-	  buffer->merge_out_clusters (start, end + 1);
-	  hb_glyph_info_t *info = buffer->out_info;
-	  hb_glyph_info_t tone = info[end];
-	  memmove (&info[start + 1], &info[start], (end - start) * sizeof (hb_glyph_info_t));
-	  info[start] = tone;
+	  ਬਫਰ->ਮਿਲਾਓ_ਬਾਹਰਲਾ_clusters (ਸ਼ੁਰੂ, ਸਿਰਾ + 1);
+	  hb_glyph_info_t *info = ਬਫਰ->ਬਾਹਰਲਾ_info;
+	  hb_glyph_info_t tone = info[ਸਿਰਾ];
+	  memmove (&info[ਸ਼ੁਰੂ + 1], &info[ਸ਼ੁਰੂ], (ਸਿਰਾ - ਸ਼ੁਰੂ) * ਆਕਾਰ (hb_glyph_info_t));
+	  info[ਸ਼ੁਰੂ] = tone;
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
 	/* No valid syllable as base for tone mark; try to insert dotted circle. */
-	if (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
+	ਜੇ (!(ਬਫਰ->flags & HB_ਬਫਰ_FLAG_DO_NOT_ਪਾਓ_DOTTED_CIRCLE) &&
 	    font->has_glyph (0x25CCu))
 	{
 	  hb_codepoint_t chars[2];
-	  if (!is_zero_width_char (font, u))
+	  ਜੇ (!is_zero_ਚੌੜਾਈ_char (font, u))
 	  {
 	    chars[0] = u;
 	    chars[1] = 0x25CCu;
-	  } else
+	  } ਨਹੀਂਤਾਂ
 	  {
 	    chars[0] = 0x25CCu;
 	    chars[1] = u;
 	  }
-	  (void) buffer->replace_glyphs (1, 2, chars);
+	  (ਖਾਲੀ) ਬਫਰ->replace_glyphs (1, 2, chars);
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
 	  /* No dotted circle available in the font; just leave tone mark untouched. */
-	  (void) buffer->next_glyph ();
+	  (ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
 	}
       }
-      start = end = buffer->out_len;
-      continue;
+      ਸ਼ੁਰੂ = ਸਿਰਾ = ਬਫਰ->ਬਾਹਰਲਾ_len;
+      ਜਾਰੀ;
     }
 
-    start = buffer->out_len; /* Remember current position as a potential syllable start;
+    ਸ਼ੁਰੂ = ਬਫਰ->ਬਾਹਰਲਾ_len; /* Remember current position as a potential syllable start;
 			      * will only be used if we set end to a later position.
 			      */
 
-    if (isL (u) && buffer->idx + 1 < count)
+    ਜੇ (isL (u) && ਬਫਰ->idx + 1 < ਗਿਣਤੀ_2)
     {
       hb_codepoint_t l = u;
-      hb_codepoint_t v = buffer->cur(+1).codepoint;
-      if (isV (v))
+      hb_codepoint_t v = ਬਫਰ->cur(+1).codepoint;
+      ਜੇ (isV (v))
       {
 	/* Have <L,V> or <L,V,T>. */
 	hb_codepoint_t t = 0;
-	unsigned int tindex = 0;
-	if (buffer->idx + 2 < count)
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ tindex = 0;
+	ਜੇ (ਬਫਰ->idx + 2 < ਗਿਣਤੀ_2)
 	{
-	  t = buffer->cur(+2).codepoint;
-	  if (isT (t))
+	  t = ਬਫਰ->cur(+2).codepoint;
+	  ਜੇ (isT (t))
 	    tindex = t - TBase; /* Only used if isCombiningT (t); otherwise invalid. */
-	  else
+	  ਨਹੀਂਤਾਂ
 	    t = 0; /* The next character was not a trailing jamo. */
 	}
-	buffer->unsafe_to_break (buffer->idx, buffer->idx + (t ? 3 : 2));
+	ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (ਬਫਰ->idx, ਬਫਰ->idx + (t ? 3 : 2));
 
 	/* We've got a syllable <L,V,T?>; see if it can potentially be composed. */
-	if (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
+	ਜੇ (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
 	{
 	  /* Try to compose; if this succeeds, end is set to start+1. */
 	  hb_codepoint_t s = SBase + (l - LBase) * NCount + (v - VBase) * TCount + tindex;
-	  if (font->has_glyph (s))
+	  ਜੇ (font->has_glyph (s))
 	  {
-	    (void) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
-	    end = start + 1;
-	    continue;
+	    (ਖਾਲੀ) ਬਫਰ->replace_glyphs (t ? 3 : 2, 1, &s);
+	    ਸਿਰਾ = ਸ਼ੁਰੂ + 1;
+	    ਜਾਰੀ;
 	  }
 	}
 
@@ -295,158 +295,158 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	 * necessary precomposed glyph.
 	 * Set jamo features on the individual glyphs, and advance past them.
 	 */
-	buffer->cur().hangul_shaping_feature() = LJMO;
-	(void) buffer->next_glyph ();
-	buffer->cur().hangul_shaping_feature() = VJMO;
-	(void) buffer->next_glyph ();
-	if (t)
+	ਬਫਰ->cur().hangul_shaping_feature() = LJMO;
+	(ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
+	ਬਫਰ->cur().hangul_shaping_feature() = VJMO;
+	(ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
+	ਜੇ (t)
 	{
-	  buffer->cur().hangul_shaping_feature() = TJMO;
-	  (void) buffer->next_glyph ();
-	  end = start + 3;
+	  ਬਫਰ->cur().hangul_shaping_feature() = TJMO;
+	  (ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
+	  ਸਿਰਾ = ਸ਼ੁਰੂ + 3;
 	}
-	else
-	  end = start + 2;
-	if (unlikely (!buffer->successful))
-	  break;
-	buffer->merge_out_grapheme_clusters (start, end);
-	continue;
+	ਨਹੀਂਤਾਂ
+	  ਸਿਰਾ = ਸ਼ੁਰੂ + 2;
+	ਜੇ (unlikely (!ਬਫਰ->successful))
+	  ਰੋਕੋ;
+	ਬਫਰ->ਮਿਲਾਓ_ਬਾਹਰਲਾ_grapheme_clusters (ਸ਼ੁਰੂ, ਸਿਰਾ);
+	ਜਾਰੀ;
       }
     }
 
-    else if (isCombinedS (u))
+    ਨਹੀਂਤਾਂ ਜੇ (isCombinedS (u))
     {
       /* Have <LV>, <LVT>, or <LV,T> */
       hb_codepoint_t s = u;
-      bool has_glyph = font->has_glyph (s);
-      unsigned int lindex = (s - SBase) / NCount;
-      unsigned int nindex = (s - SBase) % NCount;
-      unsigned int vindex = nindex / TCount;
-      unsigned int tindex = nindex % TCount;
+      ਤਾਰਕਿਕ has_glyph = font->has_glyph (s);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lindex = (s - SBase) / NCount;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ nindex = (s - SBase) % NCount;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ vindex = nindex / TCount;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ tindex = nindex % TCount;
 
-      if (!tindex &&
-	  buffer->idx + 1 < count &&
-	  isCombiningT (buffer->cur(+1).codepoint))
+      ਜੇ (!tindex &&
+	  ਬਫਰ->idx + 1 < ਗਿਣਤੀ_2 &&
+	  isCombiningT (ਬਫਰ->cur(+1).codepoint))
       {
 	/* <LV,T>, try to combine. */
-	unsigned int new_tindex = buffer->cur(+1).codepoint - TBase;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ new_tindex = ਬਫਰ->cur(+1).codepoint - TBase;
 	hb_codepoint_t new_s = s + new_tindex;
-	if (font->has_glyph (new_s))
+	ਜੇ (font->has_glyph (new_s))
 	{
-	  (void) buffer->replace_glyphs (2, 1, &new_s);
-	  end = start + 1;
-	  continue;
+	  (ਖਾਲੀ) ਬਫਰ->replace_glyphs (2, 1, &new_s);
+	  ਸਿਰਾ = ਸ਼ੁਰੂ + 1;
+	  ਜਾਰੀ;
 	}
-	else
-	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
+	ਨਹੀਂਤਾਂ
+	  ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (ਬਫਰ->idx, ਬਫਰ->idx + 2); /* Mark unsafe between LV and T. */
       }
 
       /* Otherwise, decompose if font doesn't support <LV> or <LVT>,
        * or if having non-combining <LV,T>.  Note that we already handled
        * combining <LV,T> above. */
-      if (!has_glyph ||
+      ਜੇ (!has_glyph ||
 	  (!tindex &&
-	   buffer->idx + 1 < count &&
-	   isT (buffer->cur(+1).codepoint)))
+	   ਬਫਰ->idx + 1 < ਗਿਣਤੀ_2 &&
+	   isT (ਬਫਰ->cur(+1).codepoint)))
       {
 	hb_codepoint_t decomposed[3] = {LBase + lindex,
 					VBase + vindex,
 					TBase + tindex};
-	if (font->has_glyph (decomposed[0]) &&
+	ਜੇ (font->has_glyph (decomposed[0]) &&
 	    font->has_glyph (decomposed[1]) &&
 	    (!tindex || font->has_glyph (decomposed[2])))
 	{
-	  unsigned int s_len = tindex ? 3 : 2;
-	  (void) buffer->replace_glyphs (1, s_len, decomposed);
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ s_len = tindex ? 3 : 2;
+	  (ਖਾਲੀ) ਬਫਰ->replace_glyphs (1, s_len, decomposed);
 
 	  /* If we decomposed an LV because of a non-combining T following,
 	   * we want to include this T in the syllable.
 	   */
-	  if (has_glyph && !tindex)
+	  ਜੇ (has_glyph && !tindex)
 	  {
-	    (void) buffer->next_glyph ();
+	    (ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
 	    s_len++;
 	  }
-	  if (unlikely (!buffer->successful))
-	    break;
+	  ਜੇ (unlikely (!ਬਫਰ->successful))
+	    ਰੋਕੋ;
 
 	  /* We decomposed S: apply jamo features to the individual glyphs
 	   * that are now in buffer->out_info.
 	   */
-	  hb_glyph_info_t *info = buffer->out_info;
-	  end = start + s_len;
+	  hb_glyph_info_t *info = ਬਫਰ->ਬਾਹਰਲਾ_info;
+	  ਸਿਰਾ = ਸ਼ੁਰੂ + s_len;
 
-	  unsigned int i = start;
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ;
 	  info[i++].hangul_shaping_feature() = LJMO;
 	  info[i++].hangul_shaping_feature() = VJMO;
-	  if (i < end)
+	  ਜੇ (i < ਸਿਰਾ)
 	    info[i++].hangul_shaping_feature() = TJMO;
 
-	  buffer->merge_out_grapheme_clusters (start, end);
-	  continue;
+	  ਬਫਰ->ਮਿਲਾਓ_ਬਾਹਰਲਾ_grapheme_clusters (ਸ਼ੁਰੂ, ਸਿਰਾ);
+	  ਜਾਰੀ;
 	}
-	else if ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
-	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
+	ਨਹੀਂਤਾਂ ਜੇ ((!tindex && ਬਫਰ->idx + 1 < ਗਿਣਤੀ_2 && isT (ਬਫਰ->cur(+1).codepoint)))
+	  ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (ਬਫਰ->idx, ਬਫਰ->idx + 2); /* Mark unsafe between LV and T. */
       }
 
-      if (has_glyph)
+      ਜੇ (has_glyph)
       {
 	/* We didn't decompose the S, so just advance past it and fall through. */
-	end = start + 1;
+	ਸਿਰਾ = ਸ਼ੁਰੂ + 1;
       }
     }
 
     /* Didn't find a recognizable syllable, so we leave end <= start;
      * this will prevent tone-mark reordering happening.
      */
-    (void) buffer->next_glyph ();
+    (ਖਾਲੀ) ਬਫਰ->ਅਗਲਾ_glyph ();
   }
-  buffer->sync ();
+  ਬਫਰ->ਸਮਕਾਲੀ ();
 }
 
-static void
-setup_masks_hangul (const hb_ot_shape_plan_t *plan,
-		    hb_buffer_t              *buffer,
-		    hb_font_t                *font HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+ਤਿਆਰੀ_masks_hangul (ਅਚਲ hb_ot_shape_plan_t *plan,
+		    hb_ਬਫਰ_t              *ਬਫਰ,
+		    hb_font_t                *font HB_ਅਣਵਰਤਿਆ)
 {
-  const hangul_shape_plan_t *hangul_plan = (const hangul_shape_plan_t *) plan->data;
+  ਅਚਲ hangul_shape_plan_t *hangul_plan = (ਅਚਲ hangul_shape_plan_t *) plan->ਅੰਕੜੇ;
 
-  if (likely (hangul_plan))
+  ਜੇ (likely (hangul_plan))
   {
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++, info++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+    hb_glyph_info_t *info = ਬਫਰ->info;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++, info++)
     {
-      info->mask |= hangul_plan->mask_array[info->hangul_shaping_feature()];
+      info->ਨਕਾਬ |= hangul_plan->ਨਕਾਬ_array[info->hangul_shaping_feature()];
 
       /* Keep 'calt' away from jamo; see override_features_hangul(). */
       hb_codepoint_t u = info->codepoint;
-      if (isL (u) || isV (u) || isT (u))
-	info->mask &= ~hangul_plan->calt_mask;
+      ਜੇ (isL (u) || isV (u) || isT (u))
+	info->ਨਕਾਬ &= ~hangul_plan->calt_ਨਕਾਬ;
     }
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, hangul_shaping_feature);
+  HB_ਬਫਰ_DEALLOCATE_VAR (ਬਫਰ, hangul_shaping_feature);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_hangul =
+ਅਚਲ hb_ot_shaper_t _hb_ot_shaper_hangul =
 {
   collect_features_hangul,
   override_features_hangul,
-  data_create_hangul,
-  data_destroy_hangul,
-  preprocess_text_hangul,
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  setup_masks_hangul,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  true, /* fallback_position */
+  ਅੰਕੜੇ_create_hangul,
+  ਅੰਕੜੇ_destroy_hangul,
+  preprocess_ਪਾਠ_hangul,
+  ਖਾਲੀ_ਸੂਚਕ, /* postprocess_glyphs */
+  ਖਾਲੀ_ਸੂਚਕ, /* decompose */
+  ਖਾਲੀ_ਸੂਚਕ, /* compose */
+  ਤਿਆਰੀ_masks_hangul,
+  ਖਾਲੀ_ਸੂਚਕ, /* reorder_marks */
+  HB_ਟੈਗ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_NONE,
+  HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_NONE,
+  ਸੱਚ, /* fallback_position */
 };
 
 
-#endif
+#ਜੇ_ਅੰਤ

@@ -25,314 +25,314 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OUTLINE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OUTLINE
 
-#include "hb-outline.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-outline.hh"
 
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
 
-void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
+ਖਾਲੀ hb_outline_t::replay (hb_draw_funcs_t *pen, ਖਾਲੀ *pen_ਅੰਕੜੇ) ਅਚਲ
 {
   hb_draw_state_t st = HB_DRAW_STATE_DEFAULT;
 
-  unsigned first = 0;
-  for (unsigned contour : contours)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪਹਿਲਾ = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ contour : contours)
   {
-    auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    ਸਵੈਚਾਲਿਤ it = points.as_array ().sub_array (ਪਹਿਲਾ, contour - ਪਹਿਲਾ);
+    ਜਦੋਂ (it)
     {
-      hb_outline_point_t p1 = *it++;
-      switch (p1.type)
+      hb_outline_ਬਿੰਦੂ_t p1 = *it++;
+      ਚੋਣ (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	ਹਾਲਤ hb_outline_ਬਿੰਦੂ_t::type_t::MOVE_ਮੰਜ਼ਿਲ:
 	{
-	  pen->move_to (pen_data, st,
+	  pen->move_ਮੰਜ਼ਿਲ (pen_ਅੰਕੜੇ, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	ਰੋਕੋ;
+	ਹਾਲਤ hb_outline_ਬਿੰਦੂ_t::type_t::ਸਤਰ_ਮੰਜ਼ਿਲ_2:
 	{
-	  pen->line_to (pen_data, st,
+	  pen->ਸਤਰ_ਮੰਜ਼ਿਲ (pen_ਅੰਕੜੇ, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	ਰੋਕੋ;
+	ਹਾਲਤ hb_outline_ਬਿੰਦੂ_t::type_t::QUADRATIC_ਮੰਜ਼ਿਲ:
 	{
-	  hb_outline_point_t p2 = *it++;
-	  pen->quadratic_to (pen_data, st,
+	  hb_outline_ਬਿੰਦੂ_t p2 = *it++;
+	  pen->quadratic_ਮੰਜ਼ਿਲ (pen_ਅੰਕੜੇ, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	ਰੋਕੋ;
+	ਹਾਲਤ hb_outline_ਬਿੰਦੂ_t::type_t::CUBIC_ਮੰਜ਼ਿਲ:
 	{
-	  hb_outline_point_t p2 = *it++;
-	  hb_outline_point_t p3 = *it++;
-	  pen->cubic_to (pen_data, st,
+	  hb_outline_ਬਿੰਦੂ_t p2 = *it++;
+	  hb_outline_ਬਿੰਦੂ_t p3 = *it++;
+	  pen->cubic_ਮੰਜ਼ਿਲ (pen_ਅੰਕੜੇ, st,
 			    p1.x, p1.y,
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	ਰੋਕੋ;
       }
     }
-    pen->close_path (pen_data, st);
-    first = contour;
+    pen->close_ਰਸਤਾ (pen_ਅੰਕੜੇ, st);
+    ਪਹਿਲਾ = contour;
   }
 }
 
-void hb_outline_t::translate (float dx, float dy)
+ਖਾਲੀ hb_outline_t::translate (ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy)
 {
-  for (auto &p : points)
+  ਲਈ (ਸਵੈਚਾਲਿਤ &p : points)
   {
     p.x += dx;
     p.y += dy;
   }
 }
 
-void hb_outline_t::slant (float slant_xy)
+ਖਾਲੀ hb_outline_t::slant (ਦਸ਼ਮਲਵ slant_xy)
 {
-  for (auto &p : points)
+  ਲਈ (ਸਵੈਚਾਲਿਤ &p : points)
     p.x += slant_xy * p.y;
 }
 
-float hb_outline_t::control_area () const
+ਦਸ਼ਮਲਵ hb_outline_t::control_area () ਅਚਲ
 {
-  float a = 0;
-  unsigned first = 0;
-  for (unsigned contour : contours)
+  ਦਸ਼ਮਲਵ a = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪਹਿਲਾ = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ contour : contours)
   {
-    for (unsigned i = first; i < contour; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਪਹਿਲਾ; i < contour; i++)
     {
-      unsigned j = i + 1 < contour ? i + 1 : first;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ j = i + 1 < contour ? i + 1 : ਪਹਿਲਾ;
 
-      auto &pi = points[i];
-      auto &pj = points[j];
+      ਸਵੈਚਾਲਿਤ &pi = points[i];
+      ਸਵੈਚਾਲਿਤ &pj = points[j];
       a += pi.x * pj.y - pi.y * pj.x;
     }
 
-    first = contour;
+    ਪਹਿਲਾ = contour;
   }
-  return a * .5f;
+  ਵਾਪਸ a * .5f;
 }
 
-void hb_outline_t::embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift)
+ਖਾਲੀ hb_outline_t::embolden (ਦਸ਼ਮਲਵ x_strength, ਦਸ਼ਮਲਵ y_strength,
+			     ਦਸ਼ਮਲਵ x_ਖਿਸਕਾਓ, ਦਸ਼ਮਲਵ y_ਖਿਸਕਾਓ)
 {
   /* This function is a straight port of FreeType's FT_Outline_EmboldenXY.
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  ਜੇ (!x_strength && !y_strength) ਵਾਪਸ;
+  ਜੇ (!points) ਵਾਪਸ;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
 
-  bool orientation_negative = control_area () < 0;
+  ਤਾਰਕਿਕ orientation_negative = control_area () < 0;
 
-  signed first = 0;
-  for (unsigned c = 0; c < contours.length; c++)
+  ਨਿਸ਼ਾਨੀਵਾਲਾ ਪਹਿਲਾ = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ c = 0; c < contours.ਲੰਮਾਈ; c++)
   {
-    hb_outline_vector_t in, out, anchor, shift;
-    float l_in, l_out, l_anchor = 0, l, q, d;
+    hb_outline_ਸਦਿਸ਼_t ਵਿੱਚ, ਬਾਹਰਲਾ, anchor, ਖਿਸਕਾਓ;
+    ਦਸ਼ਮਲਵ l_ਵਿੱਚ, l_ਬਾਹਰਲਾ, l_anchor = 0, l, q, d;
 
-    l_in = 0;
-    signed last = (int) contours[c] - 1;
+    l_ਵਿੱਚ = 0;
+    ਨਿਸ਼ਾਨੀਵਾਲਾ ਆਖਰੀ = (ਪੂਰਨ) contours[c] - 1;
 
     /* pacify compiler */
-    in.x = in.y = anchor.x = anchor.y = 0;
+    ਵਿੱਚ.x = ਵਿੱਚ.y = anchor.x = anchor.y = 0;
 
     /* Counter j cycles though the points; counter i advances only  */
     /* when points are moved; anchor k marks the first moved point. */
-    for ( signed i = last, j = first, k = -1;
+    ਲਈ ( ਨਿਸ਼ਾਨੀਵਾਲਾ i = ਆਖਰੀ, j = ਪਹਿਲਾ, k = -1;
 	  j != i && i != k;
-	  j = j < last ? j + 1 : first )
+	  j = j < ਆਖਰੀ ? j + 1 : ਪਹਿਲਾ )
     {
-      if ( j != k )
+      ਜੇ ( j != k )
       {
-	out.x = points[j].x - points[i].x;
-	out.y = points[j].y - points[i].y;
-	l_out = out.normalize_len ();
+	ਬਾਹਰਲਾ.x = points[j].x - points[i].x;
+	ਬਾਹਰਲਾ.y = points[j].y - points[i].y;
+	l_ਬਾਹਰਲਾ = ਬਾਹਰਲਾ.normalize_len ();
 
-	if ( l_out == 0 )
-	  continue;
+	ਜੇ ( l_ਬਾਹਰਲਾ == 0 )
+	  ਜਾਰੀ;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	out   = anchor;
-	l_out = l_anchor;
+	ਬਾਹਰਲਾ   = anchor;
+	l_ਬਾਹਰਲਾ = l_anchor;
       }
 
-      if ( l_in != 0 )
+      ਜੇ ( l_ਵਿੱਚ != 0 )
       {
-	if ( k < 0 )
+	ਜੇ ( k < 0 )
 	{
 	  k        = i;
-	  anchor   = in;
-	  l_anchor = l_in;
+	  anchor   = ਵਿੱਚ;
+	  l_anchor = l_ਵਿੱਚ;
 	}
 
-	d = in.x * out.x + in.y * out.y;
+	d = ਵਿੱਚ.x * ਬਾਹਰਲਾ.x + ਵਿੱਚ.y * ਬਾਹਰਲਾ.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	ਜੇ ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
 	  /* shift components along lateral bisector in proper orientation */
-	  shift.x = in.y + out.y;
-	  shift.y = in.x + out.x;
+	  ਖਿਸਕਾਓ.x = ਵਿੱਚ.y + ਬਾਹਰਲਾ.y;
+	  ਖਿਸਕਾਓ.y = ਵਿੱਚ.x + ਬਾਹਰਲਾ.x;
 
-	  if ( orientation_negative )
-	    shift.x = -shift.x;
-	  else
-	    shift.y = -shift.y;
+	  ਜੇ ( orientation_negative )
+	    ਖਿਸਕਾਓ.x = -ਖਿਸਕਾਓ.x;
+	  ਨਹੀਂਤਾਂ
+	    ਖਿਸਕਾਓ.y = -ਖਿਸਕਾਓ.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
-	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  q = ਬਾਹਰਲਾ.x * ਵਿੱਚ.y - ਬਾਹਰਲਾ.y * ਵਿੱਚ.x;
+	  ਜੇ ( orientation_negative )
 	    q = -q;
 
-	  l = hb_min (l_in, l_out);
+	  l = hb_min (l_ਵਿੱਚ, l_ਬਾਹਰਲਾ);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
-	    shift.x = shift.x * x_strength / d;
-	  else
-	    shift.x = shift.x * l / q;
+	  ਜੇ (x_strength * q <= l * d)
+	    ਖਿਸਕਾਓ.x = ਖਿਸਕਾਓ.x * x_strength / d;
+	  ਨਹੀਂਤਾਂ
+	    ਖਿਸਕਾਓ.x = ਖਿਸਕਾਓ.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
-	    shift.y = shift.y * y_strength / d;
-	  else
-	    shift.y = shift.y * l / q;
+	  ਜੇ (y_strength * q <= l * d)
+	    ਖਿਸਕਾਓ.y = ਖਿਸਕਾਓ.y * y_strength / d;
+	  ਨਹੀਂਤਾਂ
+	    ਖਿਸਕਾਓ.y = ਖਿਸਕਾਓ.y * l / q;
 	}
-	else
-	  shift.x = shift.y = 0;
+	ਨਹੀਂਤਾਂ
+	  ਖਿਸਕਾਓ.x = ਖਿਸਕਾਓ.y = 0;
 
-	for ( ;
+	ਲਈ ( ;
 	      i != j;
-	      i = i < last ? i + 1 : first )
+	      i = i < ਆਖਰੀ ? i + 1 : ਪਹਿਲਾ )
 	{
-	  points[i].x += x_shift + shift.x;
-	  points[i].y += y_shift + shift.y;
+	  points[i].x += x_ਖਿਸਕਾਓ + ਖਿਸਕਾਓ.x;
+	  points[i].y += y_ਖਿਸਕਾਓ + ਖਿਸਕਾਓ.y;
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
 	i = j;
 
-      in   = out;
-      l_in = l_out;
+      ਵਿੱਚ   = ਬਾਹਰਲਾ;
+      l_ਵਿੱਚ = l_ਬਾਹਰਲਾ;
     }
 
-    first = last + 1;
+    ਪਹਿਲਾ = ਆਖਰੀ + 1;
   }
 }
 
-static void
-hb_outline_recording_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_outline_recording_pen_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				  ਖਾਲੀ *ਅੰਕੜੇ,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::MOVE_TO});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, hb_outline_ਬਿੰਦੂ_t::type_t::MOVE_ਮੰਜ਼ਿਲ});
 }
 
-static void
-hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_outline_recording_pen_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				  ਖਾਲੀ *ਅੰਕੜੇ,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::LINE_TO});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, hb_outline_ਬਿੰਦੂ_t::type_t::ਸਤਰ_ਮੰਜ਼ਿਲ_2});
 }
 
-static void
-hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				       void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_outline_recording_pen_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				       ਖਾਲੀ *ਅੰਕੜੇ,
 				       hb_draw_state_t *st,
-				       float control_x, float control_y,
-				       float to_x, float to_y,
-				       void *user_data HB_UNUSED)
+				       ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+				       ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				       ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  c->points.push (hb_outline_point_t {control_x, control_y, hb_outline_point_t::type_t::QUADRATIC_TO});
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::QUADRATIC_TO});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {control_x, control_y, hb_outline_ਬਿੰਦੂ_t::type_t::QUADRATIC_ਮੰਜ਼ਿਲ});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, hb_outline_ਬਿੰਦੂ_t::type_t::QUADRATIC_ਮੰਜ਼ਿਲ});
 }
 
-static void
-hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				   void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_outline_recording_pen_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				   ਖਾਲੀ *ਅੰਕੜੇ,
 				   hb_draw_state_t *st,
-				   float control1_x, float control1_y,
-				   float control2_x, float control2_y,
-				   float to_x, float to_y,
-				   void *user_data HB_UNUSED)
+				   ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+				   ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+				   ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  c->points.push (hb_outline_point_t {control1_x, control1_y, hb_outline_point_t::type_t::CUBIC_TO});
-  c->points.push (hb_outline_point_t {control2_x, control2_y, hb_outline_point_t::type_t::CUBIC_TO});
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::CUBIC_TO});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {control1_x, control1_y, hb_outline_ਬਿੰਦੂ_t::type_t::CUBIC_ਮੰਜ਼ਿਲ});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {control2_x, control2_y, hb_outline_ਬਿੰਦੂ_t::type_t::CUBIC_ਮੰਜ਼ਿਲ});
+  c->points.push (hb_outline_ਬਿੰਦੂ_t {ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y, hb_outline_ਬਿੰਦੂ_t::type_t::CUBIC_ਮੰਜ਼ਿਲ});
 }
 
-static void
-hb_outline_recording_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				     void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_outline_recording_pen_close_ਰਸਤਾ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				     ਖਾਲੀ *ਅੰਕੜੇ,
 				     hb_draw_state_t *st,
-				     void *user_data HB_UNUSED)
+				     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  c->contours.push (c->points.length);
+  c->contours.push (c->points.ਲੰਮਾਈ);
 }
 
-static int64_t *
-hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
-					       void *data,
-					       void *user_data HB_UNUSED)
+ਸਥਿਰ int64_t *
+hb_outline_recording_pen_get_budget_ਬਚਿਆ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+					       ਖਾਲੀ *ਅੰਕੜੇ,
+					       ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) ਅੰਕੜੇ;
 
-  return c->budget_remaining;
+  ਵਾਪਸ c->budget_ਬਚਿਆ;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_outline_recording_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_outline_recording_pen_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_outline_recording_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_outline_recording_pen_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_outline_recording_pen_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_outline_recording_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, hb_outline_recording_pen_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, hb_outline_recording_pen_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, hb_outline_recording_pen_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, hb_outline_recording_pen_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func (funcs, hb_outline_recording_pen_close_ਰਸਤਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_outline_recording_pen_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
-void free_static_outline_recording_pen_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
 }
@@ -340,8 +340,8 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  ਵਾਪਸ static_outline_recording_pen_funcs.get_unconst ();
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

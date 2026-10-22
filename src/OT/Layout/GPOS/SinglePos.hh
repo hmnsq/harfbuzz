@@ -1,128 +1,128 @@
-#ifndef OT_LAYOUT_GPOS_SINGLEPOS_HH
-#define OT_LAYOUT_GPOS_SINGLEPOS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_SINGLEPOS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_SINGLEPOS_HH
 
-#include "SinglePosFormat1.hh"
-#include "SinglePosFormat2.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "SinglePosFormat1.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "SinglePosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct SinglePos
+ਬਣਤਰ SinglePos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
+  ਬਣਤਰ { HBUINT16 v; } format;        /* Format identifier */
   SinglePosFormat1_3<SmallTypes> format1;
   SinglePosFormat2_4<SmallTypes> format2;
-#ifndef HB_NO_BEYOND_64K
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
   SinglePosFormat1_3<MediumTypes> format3;
   SinglePosFormat2_4<MediumTypes> format4;
-#endif
+#ਜੇ_ਅੰਤ
   } u;
 
-  public:
-  template<typename Iterator,
+  ਜਨਤਕ:
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  unsigned get_format (Iterator glyph_val_iter_pairs)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_format (Iterator glyph_val_iter_ਜੋੜੇ)
   {
-    hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
+    hb_array_t<ਅਚਲ ਮੁੱਲ> ਪਹਿਲਾ_val_iter = hb_ਦੂਜਾ (*glyph_val_iter_ਜੋੜੇ);
 
-    for (const auto iter : glyph_val_iter_pairs)
-      for (const auto _ : hb_zip (iter.second, first_val_iter))
-        if (_.first != _.second)
-          return 2;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ iter : glyph_val_iter_ਜੋੜੇ)
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ _ : hb_zip (iter.second, ਪਹਿਲਾ_val_iter))
+        ਜੇ (_.ਪਹਿਲਾ != _.second)
+          ਵਾਪਸ 2;
 
-    return 1;
+    ਵਾਪਸ 1;
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase* src,
-                  ValueFormat src_format,
-                  Iterator glyph_val_iter_pairs,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                  unsigned newFormat)
+  ਖਾਲੀ serialize (hb_serialize_context_t *c,
+                  ਅਚਲ ਮੁੱਲ_ਅਧਾਰ* src,
+                  ਮੁੱਲ_Format src_format,
+                  Iterator glyph_val_iter_ਜੋੜੇ,
+                  ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>> *layout_variation_idx_delta_map,
+                  ਬਿਨਾਨਿਸ਼ਾਨੀ newFormat)
   {
-    if (unlikely (!c->extend_min (u.format.v))) return;
-    unsigned format = 2;
-    ValueFormat new_format;
+    ਜੇ (unlikely (!c->extend_min (u.format.v))) ਵਾਪਸ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ format = 2;
+    ਮੁੱਲ_Format new_format;
     new_format = newFormat;
 
-    if (glyph_val_iter_pairs)
-      format = get_format (glyph_val_iter_pairs);
+    ਜੇ (glyph_val_iter_ਜੋੜੇ)
+      format = get_format (glyph_val_iter_ਜੋੜੇ);
 
-#ifndef HB_NO_BEYOND_64K
-    if (+ glyph_val_iter_pairs
-	| hb_map_retains_sorting (hb_first)
-	| hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (+ glyph_val_iter_ਜੋੜੇ
+	| hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
+	| hb_filter ([] (hb_codepoint_t gid) { ਵਾਪਸ gid > 0xFFFFu; }))
       format += 2;
-#endif
+#ਜੇ_ਅੰਤ
 
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.serialize (c,
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1: hb_barrier (); u.format1.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_ਜੋੜੇ,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 2: hb_barrier (); u.format2.serialize (c,
+      ਵਾਪਸ;
+    ਹਾਲਤ 2: hb_barrier (); u.format2.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_ਜੋੜੇ,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#ifndef HB_NO_BEYOND_64K
-    case 3: u.format3.serialize (c,
+      ਵਾਪਸ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 3: u.format3.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_ਜੋੜੇ,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 4: u.format4.serialize (c,
+      ਵਾਪਸ;
+    ਹਾਲਤ 4: u.format4.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_ਜੋੜੇ,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#endif
-    default:return;
+      ਵਾਪਸ;
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:ਵਾਪਸ;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, Ts&&... ds) ਅਚਲ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ਜੇ (unlikely (!c->may_dispatch (ਇਹ, &u.format.v))) ਵਾਪਸ c->no_dispatch_return_ਮੁੱਲ ();
+    TRACE_DISPATCH (ਇਹ, u.format.v);
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:return_trace (c->default_return_ਮੁੱਲ ());
     }
   }
 };
 
 
-template<typename Iterator>
-static void
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator>
+ਸਥਿਰ ਖਾਲੀ
 SinglePos_serialize (hb_serialize_context_t *c,
-                     const ValueBase *src,
-                     ValueFormat src_format,
+                     ਅਚਲ ਮੁੱਲ_ਅਧਾਰ *src,
+                     ਮੁੱਲ_Format src_format,
                      Iterator it,
-                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                     unsigned new_format)
-{ c->start_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
+                     ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>> *layout_variation_idx_delta_map,
+                     ਬਿਨਾਨਿਸ਼ਾਨੀ new_format)
+{ c->ਸ਼ੁਰੂ_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
 
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_SINGLEPOS_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_SINGLEPOS_HH */

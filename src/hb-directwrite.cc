@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifdef HAVE_DIRECTWRITE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_DIRECTWRITE
 
-#include "hb-directwrite.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-directwrite.hh"
 
-#include "hb-font.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.hh"
 
 
 /**
@@ -40,40 +40,40 @@
  * Functions for using HarfBuzz with DirectWrite fonts.
  **/
 
-static inline void free_static_directwrite_global ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_directwrite_global ();
 
-static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
+ਸਥਿਰ ਬਣਤਰ hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
 								     hb_directwrite_global_lazy_loader_t>
 {
-  static hb_directwrite_global_t * create ()
+  ਸਥਿਰ hb_directwrite_global_t * create ()
   {
     hb_directwrite_global_t *global = hb_directwrite_object_create<hb_directwrite_global_t> ();
 
-    if (unlikely (!global))
-      return nullptr;
-    if (unlikely (!global->success))
+    ਜੇ (unlikely (!global))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+    ਜੇ (unlikely (!global->success))
     {
       hb_directwrite_object_destroy (global);
-      return nullptr;
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
 
     hb_atexit (free_static_directwrite_global);
 
-    return global;
+    ਵਾਪਸ global;
   }
-  static void destroy (hb_directwrite_global_t *l)
+  ਸਥਿਰ ਖਾਲੀ destroy (hb_directwrite_global_t *l)
   {
     hb_directwrite_object_destroy (l);
   }
-  static hb_directwrite_global_t * get_null ()
+  ਸਥਿਰ hb_directwrite_global_t * get_null ()
   {
-    return nullptr;
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 } static_directwrite_global;
 
 
-static inline
-void free_static_directwrite_global ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_directwrite_global ()
 {
   static_directwrite_global.free_instance ();
 }
@@ -81,176 +81,176 @@ void free_static_directwrite_global ()
 hb_directwrite_global_t *
 get_directwrite_global ()
 {
-  return static_directwrite_global.get_unconst ();
+  ਵਾਪਸ static_directwrite_global.get_unconst ();
 }
 
-DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
+DWrite_Font_File_ਧਾਰਾ::DWrite_Font_File_ਧਾਰਾ (hb_blob_t *blob)
 {
-  auto *global = get_directwrite_global ();
+  ਸਵੈਚਾਲਿਤ *global = get_directwrite_global ();
   mLoader = global->fontFileLoader;
-  mRefCount.init ();
-  mLoader->AddRef ();
+  m_Ref_ਗਿਣਤੀ.init ();
+  mLoader->ਜੋੜੋ_Ref ();
   hb_blob_make_immutable (blob);
   mBlob = hb_blob_reference (blob);
-  mData = (uint8_t *) hb_blob_get_data (blob, &mSize);
-  fontFileKey = mLoader->RegisterFontFileStream (this);
+  m_ਅੰਕੜੇ = (uint8_t *) hb_blob_get_ਅੰਕੜੇ (blob, &m_ਮਾਪ);
+  font_File_ਕੁੰਜੀ = mLoader->ਰਜਿਸਟਰ_Font_File_ਧਾਰਾ (ਇਹ);
 }
 
-DWriteFontFileStream::~DWriteFontFileStream()
+DWrite_Font_File_ਧਾਰਾ::~DWrite_Font_File_ਧਾਰਾ()
 {
-  mLoader->UnregisterFontFileStream (fontFileKey);
+  mLoader->Unregister_Font_File_ਧਾਰਾ (font_File_ਕੁੰਜੀ);
   mLoader->Release ();
   hb_blob_destroy (mBlob);
 }
 
 IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index)
+dw_face_create (hb_blob_t *blob, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
 {
-#define FAIL(...) \
-  HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return nullptr; \
-  } HB_STMT_END
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FAIL(...) \
+  HB_STMT_ਸ਼ੁਰੂ { \
+    DEBUG_ਸੁਨੇਹਾ (DIRECTWRITE, ਖਾਲੀ_ਸੂਚਕ, __VA_ARGS__); \
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; \
+  } HB_STMT_ਸਿਰਾ
 
-  auto *global = get_directwrite_global ();
-  if (unlikely (!global))
+  ਸਵੈਚਾਲਿਤ *global = get_directwrite_global ();
+  ਜੇ (unlikely (!global))
     FAIL ("Couldn't load DirectWrite!");
 
-  DWriteFontFileStream *fontFileStream = hb_directwrite_object_create<DWriteFontFileStream> (blob);
-  if (unlikely (!fontFileStream))
+  DWrite_Font_File_ਧਾਰਾ *font_File_ਧਾਰਾ = hb_directwrite_object_create<DWrite_Font_File_ਧਾਰਾ> (blob);
+  ਜੇ (unlikely (!font_File_ਧਾਰਾ))
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  ਸਵੈਚਾਲਿਤ hr = global->dwriteFactory->CreateCustomFontFileReference (&font_File_ਧਾਰਾ->font_File_ਕੁੰਜੀ, ਆਕਾਰ (font_File_ਧਾਰਾ->font_File_ਕੁੰਜੀ),
 								  global->fontFileLoader, &fontFile);
 
-  fontFileStream->Release ();
+  font_File_ਧਾਰਾ->Release ();
 
-  if (FAILED (hr))
+  ਜੇ (FAILED (hr))
     FAIL ("Failed to load font file from data!");
 
   BOOL isSupported;
   DWRITE_FONT_FILE_TYPE fileType;
   DWRITE_FONT_FACE_TYPE faceType;
-  uint32_t numberOfFaces;
-  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
-  if (FAILED (hr) || !isSupported)
+  uint32_t ਸੰਖਿਆ_ਦਾ_Faces;
+  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &ਸੰਖਿਆ_ਦਾ_Faces);
+  ਜੇ (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
     FAIL ("Font file is not supported.");
   }
 
-#undef FAIL
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ FAIL
 
-  IDWriteFontFace *fontFace = nullptr;
-  global->dwriteFactory->CreateFontFace (faceType, 1, &fontFile, index,
+  IDWriteFontFace *fontFace = ਖਾਲੀ_ਸੂਚਕ;
+  global->dwriteFactory->CreateFontFace (faceType, 1, &fontFile, ਸੂਚਕਾਂਕ_2,
 					 DWRITE_FONT_SIMULATIONS_NONE, &fontFace);
   fontFile->Release ();
 
-  return fontFace;
+  ਵਾਪਸ fontFace;
 }
 
-struct _hb_directwrite_font_table_context {
+ਬਣਤਰ hb_directwrite_font_ਸਾਰਣੀ_context {
   IDWriteFontFace *face;
-  void *table_context;
+  ਖਾਲੀ *ਸਾਰਣੀ_context;
 };
 
-static void
-_hb_directwrite_table_data_release (void *data)
+ਸਥਿਰ ਖਾਲੀ
+hb_directwrite_ਸਾਰਣੀ_ਅੰਕੜੇ_release (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) data;
-  context->face->ReleaseFontTable (context->table_context);
+  hb_directwrite_font_ਸਾਰਣੀ_context *context = (hb_directwrite_font_ਸਾਰਣੀ_context *) ਅੰਕੜੇ;
+  context->face->Release_Font_ਸਾਰਣੀ (context->ਸਾਰਣੀ_context);
   hb_free (context);
 }
 
-static hb_blob_t *
+ਸਥਿਰ hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
-  UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
-    return nullptr;
+  UINT32 file_ਗਿਣਤੀ;
+  ਜੇ (FAILED (dw_face->GetFiles(&file_ਗਿਣਤੀ, ਨਿਰਾ)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
-    return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
-    return nullptr;
+  hb_ਸਦਿਸ਼_t<IDWriteFontFile *> files;
+  ਜੇ (unlikely (!files.resize_exact (file_ਗਿਣਤੀ)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+  ਜੇ (FAILED (dw_face->GetFiles(&file_ਗਿਣਤੀ, files.arrayZ)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  hb_blob_t *blob = ਖਾਲੀ_ਸੂਚਕ;
+  ਲਈ (UINT32 i = 0; i < file_ਗਿਣਤੀ; i++)
   {
-    LPCVOID reference_key;
-    UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
-      continue;
+    LPCVOID reference_ਕੁੰਜੀ;
+    UINT32 reference_ਕੁੰਜੀ_ਮਾਪ;
+    ਜੇ (FAILED (files[i]->Get_Reference_ਕੁੰਜੀ(&reference_ਕੁੰਜੀ, &reference_ਕੁੰਜੀ_ਮਾਪ)))
+      ਜਾਰੀ;
 
     IDWriteFontFileLoader *loader;
-    if (FAILED (files[i]->GetLoader(&loader)))
-      continue;
+    ਜੇ (FAILED (files[i]->GetLoader(&loader)))
+      ਜਾਰੀ;
     
-    IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    IDWrite_Font_File_ਧਾਰਾ *ਧਾਰਾ;
+    ਜੇ (FAILED (loader->Create_ਧਾਰਾ_From_ਕੁੰਜੀ (reference_ਕੁੰਜੀ, reference_ਕੁੰਜੀ_ਮਾਪ, &ਧਾਰਾ)))
     {
       loader->Release ();
-      continue;
+      ਜਾਰੀ;
     }
 
-    UINT64 file_size;
-    const void *fragment;
-    void *context;
-    if (FAILED (stream->GetFileSize(&file_size)) ||
-        FAILED (stream->ReadFileFragment (&fragment, 0, file_size, &context)))
+    UINT64 file_ਮਾਪ;
+    ਅਚਲ ਖਾਲੀ *fragment;
+    ਖਾਲੀ *context;
+    ਜੇ (FAILED (ਧਾਰਾ->Get_File_ਮਾਪ(&file_ਮਾਪ)) ||
+        FAILED (ਧਾਰਾ->ReadFileFragment (&fragment, 0, file_ਮਾਪ, &context)))
     {
       loader->Release ();
-      continue;
+      ਜਾਰੀ;
     }
-    blob = hb_blob_create ((const char *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
-    stream->ReleaseFileFragment (context);
+    blob = hb_blob_create ((ਅਚਲ ਅੱਖਰ *) fragment, file_ਮਾਪ, HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_DUPLICATE, ਨਿਰਾ, ਨਿਰਾ);
+    ਧਾਰਾ->ReleaseFileFragment (context);
     loader->Release ();
-    break;
+    ਰੋਕੋ;
   }
 
-  return blob;
+  ਵਾਪਸ blob;
 }
 
-static hb_blob_t *
-_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ਸਥਿਰ hb_blob_t *
+hb_directwrite_reference_ਸਾਰਣੀ (hb_face_t *face HB_ਅਣਵਰਤਿਆ, hb_ਟੈਗ_t ਟੈਗ_2, ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_data);
-  const void *data;
-  uint32_t length;
-  void *table_context;
+  IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_ਅੰਕੜੇ);
+  ਅਚਲ ਖਾਲੀ *ਅੰਕੜੇ;
+  uint32_t ਲੰਮਾਈ;
+  ਖਾਲੀ *ਸਾਰਣੀ_context;
   BOOL exists;
-  if (tag == HB_TAG_NONE)
-    return _hb_directwrite_get_file_blob (dw_face);
+  ਜੇ (ਟੈਗ_2 == HB_ਟੈਗ_NONE)
+    ਵਾਪਸ _hb_directwrite_get_file_blob (dw_face);
 
-  if (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
-					&length, &table_context, &exists)))
-    return nullptr;
+  ਜੇ (FAILED (dw_face->Try_Get_Font_ਸਾਰਣੀ (hb_uint32_ਅਦਲਾ_ਬਦਲੀ (ਟੈਗ_2), &ਅੰਕੜੇ,
+					&ਲੰਮਾਈ, &ਸਾਰਣੀ_context, &exists)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  if (!data || !exists || !length)
+  ਜੇ (!ਅੰਕੜੇ || !exists || !ਲੰਮਾਈ)
   {
-    dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    dw_face->Release_Font_ਸਾਰਣੀ (ਸਾਰਣੀ_context);
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (sizeof (_hb_directwrite_font_table_context));
-  if (unlikely (!context))
+  hb_directwrite_font_ਸਾਰਣੀ_context *context = (hb_directwrite_font_ਸਾਰਣੀ_context *) hb_malloc (ਆਕਾਰ (hb_directwrite_font_ਸਾਰਣੀ_context));
+  ਜੇ (unlikely (!context))
   {
-    dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    dw_face->Release_Font_ਸਾਰਣੀ (ਸਾਰਣੀ_context);
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
   context->face = dw_face;
-  context->table_context = table_context;
+  context->ਸਾਰਣੀ_context = ਸਾਰਣੀ_context;
 
-  return hb_blob_create ((const char *) data, length, HB_MEMORY_MODE_READONLY,
-			 context, _hb_directwrite_table_data_release);
+  ਵਾਪਸ hb_blob_create ((ਅਚਲ ਅੱਖਰ *) ਅੰਕੜੇ, ਲੰਮਾਈ, HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_READONLY,
+			 context, hb_directwrite_ਸਾਰਣੀ_ਅੰਕੜੇ_release);
 }
 
-static void
-_hb_directwrite_face_release (void *data)
+ਸਥਿਰ ਖਾਲੀ
+_hb_directwrite_face_release (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  ((IDWriteFontFace *) data)->Release ();
+  ((IDWriteFontFace *) ਅੰਕੜੇ)->Release ();
 }
 
 /**
@@ -266,18 +266,18 @@ _hb_directwrite_face_release (void *data)
 hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face)
 {
-  if (!dw_face)
-    return hb_face_get_empty ();
+  ਜੇ (!dw_face)
+    ਵਾਪਸ hb_face_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  dw_face->AddRef ();
-  hb_face_t *face = hb_face_create_for_tables (_hb_directwrite_reference_table,
+  dw_face->ਜੋੜੋ_Ref ();
+  hb_face_t *face = hb_face_create_for_tables (hb_directwrite_reference_ਸਾਰਣੀ,
 					       dw_face,
 					       _hb_directwrite_face_release);
 
-  hb_face_set_index (face, dw_face->GetIndex ());
-  hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
+  hb_face_ਸੈੱਟ_ਸੂਚਕਾਂਕ (face, dw_face->Get_ਸੂਚਕਾਂਕ ());
+  hb_face_ਸੈੱਟ_glyph_ਗਿਣਤੀ (face, dw_face->Get_Glyph_ਗਿਣਤੀ ());
 
-  return face;
+  ਵਾਪਸ face;
 }
 
 /**
@@ -297,14 +297,14 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
  * Since: 11.0.0
  */
 hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index)
+hb_directwrite_face_create_from_file_or_fail (ਅਚਲ ਅੱਖਰ   *file_name,
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2)
 {
-  auto *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  ਸਵੈਚਾਲਿਤ *blob = hb_blob_create_from_file_or_fail (file_name);
+  ਜੇ (unlikely (!blob))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  return hb_directwrite_face_create_from_blob_or_fail (blob, index);
+  ਵਾਪਸ hb_directwrite_face_create_from_blob_or_fail (blob, ਸੂਚਕਾਂਕ_2);
 }
 
 /**
@@ -325,23 +325,23 @@ hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
  */
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index)
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2)
 {
-  IDWriteFontFace *dw_face = dw_face_create (blob, index);
-  if (unlikely (!dw_face))
-    return nullptr;
+  IDWriteFontFace *dw_face = dw_face_create (blob, ਸੂਚਕਾਂਕ_2);
+  ਜੇ (unlikely (!dw_face))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
-  if (unlikely (hb_object_is_immutable (face)))
+  ਜੇ (unlikely (hb_object_is_immutable (face)))
   {
     dw_face->Release ();
-    return face;
+    ਵਾਪਸ face;
   }
 
   /* Let there be dragons here... */
-  face->data.directwrite.cmpexch (nullptr, (hb_directwrite_face_data_t *) dw_face);
+  face->ਅੰਕੜੇ.directwrite.cmpexch (ਖਾਲੀ_ਸੂਚਕ, (hb_directwrite_face_ਅੰਕੜੇ_t *) dw_face);
 
-  return face;
+  ਵਾਪਸ face;
 }
 
 /**
@@ -357,10 +357,10 @@ hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
 IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 {
-  return (IDWriteFontFace *) (const void *) face->data.directwrite;
+  ਵਾਪਸ (IDWriteFontFace *) (ਅਚਲ ਖਾਲੀ *) face->ਅੰਕੜੇ.directwrite;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
 
 /**
 * hb_directwrite_face_get_font_face:
@@ -376,10 +376,10 @@ hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 IDWriteFontFace *
 hb_directwrite_face_get_font_face (hb_face_t *face)
 {
-  return hb_directwrite_face_get_dw_font_face (face);
+  ਵਾਪਸ hb_directwrite_face_get_dw_font_face (face);
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
 /**
  * hb_directwrite_font_create:
@@ -394,35 +394,35 @@ hb_directwrite_face_get_font_face (hb_face_t *face)
 hb_font_t *
 hb_directwrite_font_create (IDWriteFontFace *dw_face)
 {
-  IDWriteFontFace5 *dw_face5 = nullptr;
+  IDWriteFontFace5 *dw_face5 = ਖਾਲੀ_ਸੂਚਕ;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  ਜੇ (unlikely (hb_object_is_immutable (font)))
+    ਵਾਪਸ font;
 
   /* Copy font variations */
-  if (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
+  ਜੇ (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (ਖਾਲੀ**) &dw_face5)))
   {
-    if (dw_face5->HasVariations ())
+    ਜੇ (dw_face5->HasVariations ())
     {
-      hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
-      uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
-	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
+      hb_ਸਦਿਸ਼_t<DWRITE_FONT_AXIS_ਮੁੱਲ> values;
+      uint32_t ਗਿਣਤੀ_2 = dw_face5->Get_Font_Axis_ਮੁੱਲ_ਗਿਣਤੀ ();
+      ਜੇ (likely (values.resize_exact (ਗਿਣਤੀ_2)) &&
+	  SUCCEEDED (dw_face5->Get_Font_Axis_ਮੁੱਲਾਂ (values.arrayZ, ਗਿਣਤੀ_2)))
       {
-	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	hb_ਸਦਿਸ਼_t<hb_variation_t> vars;
+	ਜੇ (likely (vars.resize_exact (ਗਿਣਤੀ_2)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  ਲਈ (uint32_t i = 0; i < ਗਿਣਤੀ_2; ++i)
 	  {
-	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
-	    float value = values[i].value;
-	    vars[i] = {tag, value};
+	    hb_ਟੈਗ_t ਟੈਗ_2 = hb_uint32_ਅਦਲਾ_ਬਦਲੀ (values[i].axis_ਟੈਗ);
+	    ਦਸ਼ਮਲਵ value = values[i].value;
+	    vars[i] = {ਟੈਗ_2, value};
 	  }
-	  hb_font_set_variations (font, vars.arrayZ, vars.length);
+	  hb_font_ਸੈੱਟ_variations (font, vars.arrayZ, vars.ਲੰਮਾਈ);
 	}
       }
     }
@@ -430,10 +430,10 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   }
 
   /* Let there be dragons here... */
-  dw_face->AddRef ();
-  font->data.directwrite.cmpexch (nullptr, (hb_directwrite_font_data_t *) dw_face);
+  dw_face->ਜੋੜੋ_Ref ();
+  font->ਅੰਕੜੇ.directwrite.cmpexch (ਖਾਲੀ_ਸੂਚਕ, (hb_directwrite_font_ਅੰਕੜੇ_t *) dw_face);
 
-  return font;
+  ਵਾਪਸ font;
 }
 
 /**
@@ -449,10 +449,10 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
 IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 {
-  return (IDWriteFontFace *) (const void *) font->data.directwrite;
+  ਵਾਪਸ (IDWriteFontFace *) (ਅਚਲ ਖਾਲੀ *) font->ਅੰਕੜੇ.directwrite;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
 
 /**
 * hb_directwrite_font_get_dw_font:
@@ -468,9 +468,9 @@ hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font)
 {
-  return nullptr;
+  ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ

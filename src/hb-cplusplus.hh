@@ -22,175 +22,175 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_CPLUSPLUS_HH
-#define HB_CPLUSPLUS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CPLUSPLUS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CPLUSPLUS_HH
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#ifdef __cplusplus
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
 
-#include <functional>
-#include <utility>
+#ਅਨ੍ਤਰ੍ਭਾਵ <functional>
+#ਅਨ੍ਤਰ੍ਭਾਵ <utility>
 
-#if 0
-#if !(__cplusplus >= 201103L)
-#error "HarfBuzz C++ helpers require C++11"
-#endif
-#endif
+#ਜੇ 0
+#ਜੇ !(__cplusplus >= 201103L)
+#ਗਲਤੀ "HarfBuzz C++ helpers require C++11"
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-namespace hb {
+ਨਾਮਾਕਾਸ਼ hb {
 
 
-template <typename T>
-struct vtable;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ vtable;
 
-template <typename T>
-struct shared_ptr
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ shared_ptr
 {
-  using element_type = T;
+  ਵਰਤੋਂ element_type = T;
 
-  using v = vtable<T>;
+  ਵਰਤੋਂ v = vtable<T>;
 
-  explicit shared_ptr (T *p = nullptr) : p (p) {}
-  shared_ptr (const shared_ptr &o) : p (v::reference (o.p)) {}
-  shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  shared_ptr& operator = (const shared_ptr &o) { if (p != o.p) { destroy (); p = o.p; reference (); } return *this; }
-  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
-  ~shared_ptr () { v::destroy (p); p = nullptr; }
+  ਸਪਸ਼ਟ shared_ptr (T *p = ਖਾਲੀ_ਸੂਚਕ) : p (p) {}
+  shared_ptr (ਅਚਲ shared_ptr &o) : p (v::reference (o.p)) {}
+  shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = ਖਾਲੀ_ਸੂਚਕ; }
+  shared_ptr& ਸੰਚਾਲਕ = (ਅਚਲ shared_ptr &o) { ਜੇ (p != o.p) { destroy (); p = o.p; reference (); } ਵਾਪਸ *ਇਹ; }
+  shared_ptr& ਸੰਚਾਲਕ = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = ਖਾਲੀ_ਸੂਚਕ; ਵਾਪਸ *ਇਹ; }
+  ~shared_ptr () { v::destroy (p); p = ਖਾਲੀ_ਸੂਚਕ; }
 
-  T* get() const { return p; }
+  T* get() ਅਚਲ { ਵਾਪਸ p; }
 
-  void swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  ਖਾਲੀ swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
+  ਮਿੱਤਰ ਖਾਲੀ swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () const { return p; }
-  bool operator == (const shared_ptr &o) const { return p == o.p; }
-  bool operator != (const shared_ptr &o) const { return p != o.p; }
+  ਸੰਚਾਲਕ T * () ਅਚਲ { ਵਾਪਸ p; }
+  T& ਸੰਚਾਲਕ * () ਅਚਲ { ਵਾਪਸ *get (); }
+  T* ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ get (); }
+  ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ p; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ shared_ptr &o) ਅਚਲ { ਵਾਪਸ p == o.p; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ shared_ptr &o) ਅਚਲ { ਵਾਪਸ p != o.p; }
 
-  static T* get_empty() { return v::get_empty (); }
-  T* reference() { return v::reference (p); }
-  void destroy() { v::destroy (p); }
-  void set_user_data (hb_user_data_key_t *key,
-		      void *value,
+  ਸਥਿਰ T* get_ਖਾਲੀ_ਥਾਵਾਂ() { ਵਾਪਸ v::get_ਖਾਲੀ_ਥਾਵਾਂ (); }
+  T* reference() { ਵਾਪਸ v::reference (p); }
+  ਖਾਲੀ destroy() { v::destroy (p); }
+  ਖਾਲੀ ਸੈੱਟ_user_ਅੰਕੜੇ (hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key,
+		      ਖਾਲੀ *value,
 		      hb_destroy_func_t destroy,
-		      hb_bool_t replace) { v::set_user_data (p, key, value, destroy, replace); } 
-  void * get_user_data (hb_user_data_key_t *key) { return v::get_user_data (p, key); }
+		      hb_bool_t replace) { v::ਸੈੱਟ_user_ਅੰਕੜੇ (p, key, value, destroy, replace); } 
+  ਖਾਲੀ * get_user_ਅੰਕੜੇ (hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key) { ਵਾਪਸ v::get_user_ਅੰਕੜੇ (p, key); }
 
-  private:
+  ਨਿਜੀ:
   T *p;
 };
 
-template<typename T> struct is_shared_ptr : std::false_type {};
-template<typename T> struct is_shared_ptr<shared_ptr<T>> : std::true_type {};
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T> ਬਣਤਰ is_shared_ptr : std::false_type {};
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T> ਬਣਤਰ is_shared_ptr<shared_ptr<T>> : std::true_type {};
 
-template <typename T>
-struct unique_ptr
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ unique_ptr
 {
-  using element_type = T;
+  ਵਰਤੋਂ element_type = T;
 
-  using v = vtable<T>;
+  ਵਰਤੋਂ v = vtable<T>;
 
-  explicit unique_ptr (T *p = nullptr) : p (p) {}
-  unique_ptr (const unique_ptr &o) = delete;
-  unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  unique_ptr& operator = (const unique_ptr &o) = delete;
-  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
-  ~unique_ptr () { v::destroy (p); p = nullptr; }
+  ਸਪਸ਼ਟ unique_ptr (T *p = ਖਾਲੀ_ਸੂਚਕ) : p (p) {}
+  unique_ptr (ਅਚਲ unique_ptr &o) = ਮਿਟਾਓ;
+  unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = ਖਾਲੀ_ਸੂਚਕ; }
+  unique_ptr& ਸੰਚਾਲਕ = (ਅਚਲ unique_ptr &o) = ਮਿਟਾਓ;
+  unique_ptr& ਸੰਚਾਲਕ = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = ਖਾਲੀ_ਸੂਚਕ; ਵਾਪਸ *ਇਹ; }
+  ~unique_ptr () { v::destroy (p); p = ਖਾਲੀ_ਸੂਚਕ; }
 
-  T* get() const { return p; }
-  T* release () { T* v = p; p = nullptr; return v; }
+  T* get() ਅਚਲ { ਵਾਪਸ p; }
+  T* release () { T* v = p; p = ਖਾਲੀ_ਸੂਚਕ; ਵਾਪਸ v; }
 
-  void swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  ਖਾਲੀ swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
+  ਮਿੱਤਰ ਖਾਲੀ swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () { return p; }
+  ਸੰਚਾਲਕ T * () ਅਚਲ { ਵਾਪਸ p; }
+  T& ਸੰਚਾਲਕ * () ਅਚਲ { ਵਾਪਸ *get (); }
+  T* ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ get (); }
+  ਸੰਚਾਲਕ ਤਾਰਕਿਕ () { ਵਾਪਸ p; }
 
-  private:
+  ਨਿਜੀ:
   T *p;
 };
 
-template<typename T> struct is_unique_ptr : std::false_type {};
-template<typename T> struct is_unique_ptr<unique_ptr<T>> : std::true_type {};
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T> ਬਣਤਰ is_unique_ptr : std::false_type {};
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T> ਬਣਤਰ is_unique_ptr<unique_ptr<T>> : std::true_type {};
 
-template <typename T,
-	  T * (*_get_empty) (void),
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T,
+	  T * (*get_ਖਾਲੀ_ਥਾਵਾਂ_2) (ਖਾਲੀ),
 	  T * (*_reference) (T *),
-	  void (*_destroy) (T *),
-	  hb_bool_t (*_set_user_data) (T *,
-				       hb_user_data_key_t *,
-				       void *,
+	  ਖਾਲੀ (*_destroy) (T *),
+	  hb_bool_t (*ਸੈੱਟ_user_ਅੰਕੜੇ_2) (T *,
+				       hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *,
+				       ਖਾਲੀ *,
 				       hb_destroy_func_t,
 				       hb_bool_t),
-	  void * (*_get_user_data) (const T *,
-				    hb_user_data_key_t *)>
-struct vtable_t
+	  ਖਾਲੀ * (*get_user_ਅੰਕੜੇ_2) (ਅਚਲ T *,
+				    hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *)>
+ਬਣਤਰ vtable_t
 {
-  static constexpr auto get_empty = _get_empty;
-  static constexpr auto reference = _reference;
-  static constexpr auto destroy = _destroy;
-  static constexpr auto set_user_data = _set_user_data;
-  static constexpr auto get_user_data = _get_user_data;
+  ਸਥਿਰ constexpr ਸਵੈਚਾਲਿਤ get_ਖਾਲੀ_ਥਾਵਾਂ = get_ਖਾਲੀ_ਥਾਵਾਂ_2;
+  ਸਥਿਰ constexpr ਸਵੈਚਾਲਿਤ reference = _reference;
+  ਸਥਿਰ constexpr ਸਵੈਚਾਲਿਤ destroy = _destroy;
+  ਸਥਿਰ constexpr ਸਵੈਚਾਲਿਤ ਸੈੱਟ_user_ਅੰਕੜੇ = ਸੈੱਟ_user_ਅੰਕੜੇ_2;
+  ਸਥਿਰ constexpr ਸਵੈਚਾਲਿਤ get_user_ਅੰਕੜੇ = get_user_ਅੰਕੜੇ_2;
 };
 
-#define HB_DEFINE_VTABLE(name, empty) \
-	template<> \
-	struct vtable<hb_##name##_t> \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DEFINE_VTABLE(name, ਖਾਲੀ_ਥਾਵਾਂ_2) \
+	ਸਾਂਚਾ<> \
+	ਬਣਤਰ vtable<hb_##name##_t> \
 	     : vtable_t<hb_##name##_t, \
-			empty, \
+			ਖਾਲੀ_ਥਾਵਾਂ_2, \
 			&hb_##name##_reference, \
 			&hb_##name##_destroy, \
 			&hb_##name##_set_user_data, \
 			&hb_##name##_get_user_data> {}
 
-HB_DEFINE_VTABLE (buffer, &hb_buffer_get_empty);
-HB_DEFINE_VTABLE (blob, &hb_blob_get_empty);
-HB_DEFINE_VTABLE (face, &hb_face_get_empty);
-HB_DEFINE_VTABLE (font, &hb_font_get_empty);
-HB_DEFINE_VTABLE (font_funcs, &hb_font_funcs_get_empty);
-HB_DEFINE_VTABLE (map, &hb_map_get_empty);
-HB_DEFINE_VTABLE (set, &hb_set_get_empty);
-HB_DEFINE_VTABLE (shape_plan, &hb_shape_plan_get_empty);
-HB_DEFINE_VTABLE (unicode_funcs, &hb_unicode_funcs_get_empty);
-HB_DEFINE_VTABLE (draw_funcs, &hb_draw_funcs_get_empty);
-HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_empty);
+HB_DEFINE_VTABLE (ਬਫਰ, &hb_ਬਫਰ_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (blob, &hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (face, &hb_face_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (font, &hb_font_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (font_funcs, &hb_font_funcs_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (map, &hb_map_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (ਸੈੱਟ, &hb_ਸੈੱਟ_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (shape_plan, &hb_shape_plan_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (unicode_funcs, &hb_unicode_funcs_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (draw_funcs, &hb_draw_funcs_get_ਖਾਲੀ_ਥਾਵਾਂ);
+HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_ਖਾਲੀ_ਥਾਵਾਂ);
 
 
-#ifdef HB_SUBSET_H
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_H
 
-HB_DEFINE_VTABLE (subset_input, nullptr);
-HB_DEFINE_VTABLE (subset_plan, nullptr);
+HB_DEFINE_VTABLE (subset_ਨਿਵੇਸ਼, ਖਾਲੀ_ਸੂਚਕ);
+HB_DEFINE_VTABLE (subset_plan, ਖਾਲੀ_ਸੂਚਕ);
 
-#endif
-
-
-#ifdef HB_RASTER_H
-
-HB_DEFINE_VTABLE (raster_image, nullptr);
-HB_DEFINE_VTABLE (raster_draw, nullptr);
-HB_DEFINE_VTABLE (raster_paint, nullptr);
-
-#endif
+#ਜੇ_ਅੰਤ
 
 
-#ifdef HB_VECTOR_H
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_RASTER_H
 
-HB_DEFINE_VTABLE (vector_draw, nullptr);
-HB_DEFINE_VTABLE (vector_paint, nullptr);
+HB_DEFINE_VTABLE (raster_image, ਖਾਲੀ_ਸੂਚਕ);
+HB_DEFINE_VTABLE (raster_draw, ਖਾਲੀ_ਸੂਚਕ);
+HB_DEFINE_VTABLE (raster_paint, ਖਾਲੀ_ਸੂਚਕ);
 
-#endif
+#ਜੇ_ਅੰਤ
 
 
-#ifdef HB_GPU_H
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_ਸਦਿਸ਼_H
 
-HB_DEFINE_VTABLE (gpu_draw, nullptr);
+HB_DEFINE_VTABLE (ਸਦਿਸ਼_draw, ਖਾਲੀ_ਸੂਚਕ);
+HB_DEFINE_VTABLE (ਸਦਿਸ਼_paint, ਖਾਲੀ_ਸੂਚਕ);
 
-#endif
+#ਜੇ_ਅੰਤ
+
+
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_GPU_H
+
+HB_DEFINE_VTABLE (gpu_draw, ਖਾਲੀ_ਸੂਚਕ);
+
+#ਜੇ_ਅੰਤ
 
 /* HB_DEFINE_VTABLE stays available for subsystem headers' paired tail
  * blocks (see hb-raster.h, hb-vector.h, hb-gpu.h, hb-subset.h). */
@@ -201,32 +201,32 @@ HB_DEFINE_VTABLE (gpu_draw, nullptr);
 /* Workaround for GCC < 7, see:
  * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56480
  * https://stackoverflow.com/a/25594741 */
-namespace std {
+ਨਾਮਾਕਾਸ਼ std {
 
 
-template<typename T>
-struct hash<hb::shared_ptr<T>>
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hash<hb::shared_ptr<T>>
 {
-    std::size_t operator()(const hb::shared_ptr<T>& v) const noexcept
+    std::size_t ਸੰਚਾਲਕ()(ਅਚਲ hb::shared_ptr<T>& v) ਅਚਲ noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        ਵਾਪਸ h;
     }
 };
 
-template<typename T>
-struct hash<hb::unique_ptr<T>>
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hash<hb::unique_ptr<T>>
 {
-    std::size_t operator()(const hb::unique_ptr<T>& v) const noexcept
+    std::size_t ਸੰਚਾਲਕ()(ਅਚਲ hb::unique_ptr<T>& v) ਅਚਲ noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        ਵਾਪਸ h;
     }
 };
 
 
 } // namespace std
 
-#endif /* __cplusplus */
+#ਜੇ_ਅੰਤ /* __cplusplus */
 
-#endif /* HB_CPLUSPLUS_HH */
+#ਜੇ_ਅੰਤ /* HB_CPLUSPLUS_HH */

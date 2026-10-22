@@ -1,30 +1,30 @@
-#ifndef OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
-#define OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
 
-#include "SinglePos.hh"
-#include "PairPos.hh"
-#include "CursivePos.hh"
-#include "MarkBasePos.hh"
-#include "MarkLigPos.hh"
-#include "MarkMarkPos.hh"
-#include "ContextPos.hh"
-#include "ChainContextPos.hh"
-#include "ExtensionPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "SinglePos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "PairPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "CursivePos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "MarkBasePos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "MarkLigPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "MarkMarkPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "ContextPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "ChainContextPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "ExtensionPos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct PosLookupSubTable
+ਬਣਤਰ Pos_Lookup_Sub_ਸਾਰਣੀ
 {
-  friend struct ::OT::Lookup;
-  friend struct PosLookup;
+  ਮਿੱਤਰ ਬਣਤਰ ::OT::Lookup;
+  ਮਿੱਤਰ ਬਣਤਰ PosLookup;
 
-  enum Type {
+  ਗਿਣਤੀ Type {
     Single              = 1,
     Pair                = 2,
     Cursive             = 3,
-    MarkBase            = 4,
+    Mark_ਅਧਾਰ            = 4,
     MarkLig             = 5,
     MarkMark            = 6,
     Context             = 7,
@@ -32,48 +32,48 @@ struct PosLookupSubTable
     Extension           = 9
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lookup_type, Ts&&... ds) ਅਚਲ
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
-    case Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkBase:              hb_barrier (); return_trace (u.markBase.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (ਇਹ, lookup_type);
+    ਚੋਣ (lookup_type) {
+    ਹਾਲਤ Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ Mark_ਅਧਾਰ:              hb_barrier (); return_trace (u.mark_ਅਧਾਰ.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    ਹਾਲਤ Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    ਮੂਲ:                    return_trace (c->default_return_ਮੁੱਲ ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lookup_type) ਅਚਲ
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    ਵਾਪਸ dispatch (&c, lookup_type);
   }
 
-  protected:
-  union {
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
   SinglePos             single;
   PairPos               pair;
   CursivePos            cursive;
-  MarkBasePos           markBase;
+  Mark_ਅਧਾਰ_Pos           mark_ਅਧਾਰ;
   MarkLigPos            markLig;
   MarkMarkPos           markMark;
   ContextPos            context;
   ChainContextPos       chainContext;
   ExtensionPos          extension;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (0);
 };
 
 }
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */
+#ਜੇ_ਅੰਤ  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */

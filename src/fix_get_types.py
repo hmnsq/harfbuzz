@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import re
-import argparse
+ਆਯਾਤ re
+ਆਯਾਤ argparse
 
-parser = argparse.ArgumentParser ()
-parser.add_argument ('input')
-parser.add_argument ('output')
-args = parser.parse_args ()
+parser = argparse.ਦਲੀਲ_Parser ()
+parser.ਜੋੜੋ_ਦਲੀਲ ('input')
+parser.ਜੋੜੋ_ਦਲੀਲ ('output')
+ਦਲੀਲਾਂ = parser.parse_ਦਲੀਲਾਂ ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
-    for l in inp.readlines ():
+ਨਾਲ open (ਦਲੀਲਾਂ.ਨਿਵੇਸ਼, 'r') ਇਵ inp, open (ਦਲੀਲਾਂ.output, 'w') ਇਵ ਬਾਹਰਲਾ:
+    ਲਈ l ਵਿੱਚ inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
-        out.write (l)
+        ਬਾਹਰਲਾ.ਲਿਖ (l)

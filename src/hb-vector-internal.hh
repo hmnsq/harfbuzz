@@ -24,243 +24,243 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_INTERNAL_HH
-#define HB_VECTOR_INTERNAL_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸਦਿਸ਼_ਅੰਦਰੂਨੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸਦਿਸ਼_ਅੰਦਰੂਨੀ_HH
 
-#include "hb-vector.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+ਬਣਤਰ hb_ਸਦਿਸ਼_blob_meta_t
 {
-  char *data;
-  int allocated;
-  bool transferred;
-  bool in_replace;
+  ਅੱਖਰ *ਅੰਕੜੇ;
+  ਪੂਰਨ allocated;
+  ਤਾਰਕਿਕ transferred;
+  ਤਾਰਕਿਕ ਵਿੱਚ_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+ਸਥਿਰ hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_ਸਦਿਸ਼_blob_meta_user_ਅੰਕੜੇ_ਕੁੰਜੀ;
 
-static inline void
-hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_blob_meta_ਸੈੱਟ_ਬਫਰ (hb_ਸਦਿਸ਼_blob_meta_t *meta,
+				ਅੱਖਰ *ਅੰਕੜੇ,
+				ਪੂਰਨ allocated)
 {
-  meta->data = data;
+  meta->ਅੰਕੜੇ = ਅੰਕੜੇ;
   meta->allocated = allocated;
-  meta->transferred = false;
+  meta->transferred = ਝੂਠ;
 }
 
-static inline void
-hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_blob_meta_release_ਬਫਰ (hb_ਸਦਿਸ਼_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
-    hb_free (meta->data);
-  meta->data = nullptr;
+  ਜੇ (!meta)
+    ਵਾਪਸ;
+  ਜੇ (!meta->transferred && meta->ਅੰਕੜੇ)
+    hb_free (meta->ਅੰਕੜੇ);
+  meta->ਅੰਕੜੇ = ਖਾਲੀ_ਸੂਚਕ;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ਸੱਚ;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_blob_meta_destroy (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  auto *meta = (hb_vector_blob_meta_t *) data;
-  hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  ਸਵੈਚਾਲਿਤ *meta = (hb_ਸਦਿਸ਼_blob_meta_t *) ਅੰਕੜੇ;
+  hb_ਸਦਿਸ਼_blob_meta_release_ਬਫਰ (meta);
+  ਜੇ (meta->ਵਿੱਚ_replace)
   {
-    meta->in_replace = false;
-    return;
+    meta->ਵਿੱਚ_replace = ਝੂਠ;
+    ਵਾਪਸ;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
-		  hb_vector_buf_t *buf)
+		  hb_ਸਦਿਸ਼_buf_t *buf)
 {
-  unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ len = 0;
+  ਪੂਰਨ allocated = 0;
+  ਅੱਖਰ *ਅੰਕੜੇ = buf->steal (&len, &allocated);
+  ਜੇ (!ਅੰਕੜੇ)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  hb_blob_t *blob = ਖਾਲੀ_ਸੂਚਕ;
+  ਜੇ (*recycled_blob)
     blob = *recycled_blob;
-  bool reused_blob = blob && blob != hb_blob_get_empty ();
-  bool new_meta = false;
-  auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
-             : nullptr;
-  if (!meta)
+  ਤਾਰਕਿਕ reused_blob = blob && blob != hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+  ਤਾਰਕਿਕ new_meta = ਝੂਠ;
+  ਸਵੈਚਾਲਿਤ *meta = reused_blob
+             ? (hb_ਸਦਿਸ਼_blob_meta_t *) hb_blob_get_user_ਅੰਕੜੇ (blob, &hb_ਸਦਿਸ਼_blob_meta_user_ਅੰਕੜੇ_ਕੁੰਜੀ)
+             : ਖਾਲੀ_ਸੂਚਕ;
+  ਜੇ (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_ਸਦਿਸ਼_blob_meta_t *) hb_malloc (ਆਕਾਰ (hb_ਸਦਿਸ਼_blob_meta_t));
+    ਜੇ (!meta)
     {
-      hb_free (data);
-      return nullptr;
+      hb_free (ਅੰਕੜੇ);
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
-    meta->data = nullptr;
+    meta->ਅੰਕੜੇ = ਖਾਲੀ_ਸੂਚਕ;
     meta->allocated = 0;
-    meta->transferred = true;
-    meta->in_replace = false;
-    new_meta = true;
+    meta->transferred = ਸੱਚ;
+    meta->ਵਿੱਚ_replace = ਝੂਠ;
+    new_meta = ਸੱਚ;
   }
 
-  if (reused_blob)
+  ਜੇ (reused_blob)
   {
-    meta->in_replace = true;
-    blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
+    meta->ਵਿੱਚ_replace = ਸੱਚ;
+    blob->replace_ਬਫਰ (ਅੰਕੜੇ, len, HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE, meta, hb_ਸਦਿਸ਼_blob_meta_destroy);
+    hb_ਸਦਿਸ਼_blob_meta_ਸੈੱਟ_ਬਫਰ (meta, ਅੰਕੜੇ, allocated);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
-    blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    hb_ਸਦਿਸ਼_blob_meta_ਸੈੱਟ_ਬਫਰ (meta, ਅੰਕੜੇ, allocated);
+    blob = hb_blob_create_or_fail (ਅੰਕੜੇ, len, HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE, meta, hb_ਸਦਿਸ਼_blob_meta_destroy);
+    ਜੇ (unlikely (!blob))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  ਜੇ (unlikely (blob == hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ()))
   {
-    if (new_meta)
+    ਜੇ (new_meta)
       hb_free (meta);
-    hb_free (data);
-    return nullptr;
+    hb_free (ਅੰਕੜੇ);
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  if (new_meta &&
-      !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+  ਜੇ (new_meta &&
+      !hb_blob_ਸੈੱਟ_user_ਅੰਕੜੇ (blob,
+                              &hb_ਸਦਿਸ਼_blob_meta_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
                               meta,
-                              nullptr,
-                              true))
+                              ਖਾਲੀ_ਸੂਚਕ,
+                              ਸੱਚ))
   {
-    if (!reused_blob)
+    ਜੇ (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  if (*recycled_blob)
-    *recycled_blob = nullptr;
+  ਜੇ (*recycled_blob)
+    *recycled_blob = ਖਾਲੀ_ਸੂਚਕ;
 
-  return blob;
+  ਵਾਪਸ blob;
 }
 
-static inline void
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
 hb_buf_recover_recycled (hb_blob_t *blob,
-			 hb_vector_buf_t *buf)
+			 hb_ਸਦਿਸ਼_buf_t *buf)
 {
-  if (!blob)
-    return;
+  ਜੇ (!blob)
+    ਵਾਪਸ;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  ਸਵੈਚਾਲਿਤ *meta = (hb_ਸਦਿਸ਼_blob_meta_t *) hb_blob_get_user_ਅੰਕੜੇ (blob, &hb_ਸਦਿਸ਼_blob_meta_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+  ਜੇ (!meta || meta->transferred || !meta->ਅੰਕੜੇ)
+    ਵਾਪਸ;
 
-  buf->recycle_buffer (meta->data, 0, meta->allocated);
-  meta->data = nullptr;
+  buf->recycle_ਬਫਰ (meta->ਅੰਕੜੇ, 0, meta->allocated);
+  meta->ਅੰਕੜੇ = ਖਾਲੀ_ਸੂਚਕ;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = ਸੱਚ;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_transform_ਬਿੰਦੂ (ਅਚਲ hb_transform_t<> &t,
+			   ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ,
+			   ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ,
+			   ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y,
+			   ਦਸ਼ਮਲਵ *tx, ਦਸ਼ਮਲਵ *ty)
 {
-  float xx = x, yy = y;
-  t.transform_point (xx, yy);
+  ਦਸ਼ਮਲਵ xx = x, yy = y;
+  t.transform_ਬਿੰਦੂ (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
-  *tx = xx / x_scale_factor;
-  *ty = yy / y_scale_factor;
+  *tx = xx / x_scale_ਗੁਣਕ;
+  *ty = yy / y_scale_ਗੁਣਕ;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
-				    hb_vector_extents_t *extents,
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_bool_t
+hb_ਸਦਿਸ਼_ਸੈੱਟ_glyph_extents_common (ਅਚਲ hb_transform_t<> &transform,
+				    ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ,
+				    ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ,
+				    ਅਚਲ hb_glyph_extents_t *glyph_extents,
+				    hb_ਸਦਿਸ਼_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  ਦਸ਼ਮਲਵ x0 = (ਦਸ਼ਮਲਵ) glyph_extents->x_bearing;
+  ਦਸ਼ਮਲਵ y0 = (ਦਸ਼ਮਲਵ) glyph_extents->y_bearing;
+  ਦਸ਼ਮਲਵ x1 = x0 + glyph_extents->ਚੌੜਾਈ;
+  ਦਸ਼ਮਲਵ y1 = y0 + glyph_extents->ਉਚਾਈ;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  ਦਸ਼ਮਲਵ px[4] = {x0, x0, x1, x1};
+  ਦਸ਼ਮਲਵ py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
-  hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  ਦਸ਼ਮਲਵ tx, ty;
+  hb_ਸਦਿਸ਼_transform_ਬਿੰਦੂ (transform, x_scale_ਗੁਣਕ, y_scale_ਗੁਣਕ, px[0], py[0], &tx, &ty);
+  ਦਸ਼ਮਲਵ tx_min = tx, tx_max = tx;
+  ਦਸ਼ਮਲਵ ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 1; i < 4; i++)
   {
-    hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
+    hb_ਸਦਿਸ਼_transform_ਬਿੰਦੂ (transform, x_scale_ਗੁਣਕ, y_scale_ਗੁਣਕ, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
     tx_max = hb_max (tx_max, tx);
     ty_min = hb_min (ty_min, ty);
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  ਜੇ (tx_max <= tx_min || ty_max <= ty_min)
+    ਵਾਪਸ ਝੂਠ;
 
-  if (*has_extents)
+  ਜੇ (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    ਦਸ਼ਮਲਵ x0 = hb_min (extents->x, tx_min);
+    ਦਸ਼ਮਲਵ y0 = hb_min (extents->y, ty_min);
+    ਦਸ਼ਮਲਵ x1 = hb_max (extents->x + extents->ਚੌੜਾਈ, tx_max);
+    ਦਸ਼ਮਲਵ y1 = hb_max (extents->y + extents->ਉਚਾਈ, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
-    *has_extents = true;
+    *has_extents = ਸੱਚ;
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static inline void
-hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
-					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_append_instance_transform (hb_ਸਦਿਸ਼_buf_t *ਬਾਹਰਲਾ,
+					 ਬਿਨਾਨਿਸ਼ਾਨੀ precision,
+					 ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ,
+					 ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ,
+					 ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+					 ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+					 ਦਸ਼ਮਲਵ tx, ਦਸ਼ਮਲਵ ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  ਜੇ (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
-    out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_str (") scale(1,-1)");
+    ਬਾਹਰਲਾ->append_str ("translate(");
+    ਬਾਹਰਲਾ->append_ਅੰਕ (tx / x_scale_ਗੁਣਕ, precision);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (-ty / y_scale_ਗੁਣਕ, precision);
+    ਬਾਹਰਲਾ->append_str (") scale(1,-1)");
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    unsigned sprec = out->scale_precision ();
-    out->append_str ("matrix(");
-    out->append_num (xx, sprec);
-    out->append_c (',');
-    out->append_num (yx, sprec);
-    out->append_c (',');
-    out->append_num (-xy, sprec);
-    out->append_c (',');
-    out->append_num (-yy, sprec);
-    out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_c (')');
+    ਬਿਨਾਨਿਸ਼ਾਨੀ sprec = ਬਾਹਰਲਾ->scale_precision ();
+    ਬਾਹਰਲਾ->append_str ("matrix(");
+    ਬਾਹਰਲਾ->append_ਅੰਕ (xx, sprec);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (yx, sprec);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (-xy, sprec);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (-yy, sprec);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (tx / x_scale_ਗੁਣਕ, precision);
+    ਬਾਹਰਲਾ->append_c (',');
+    ਬਾਹਰਲਾ->append_ਅੰਕ (-ty / y_scale_ਗੁਣਕ, precision);
+    ਬਾਹਰਲਾ->append_c (')');
   }
 }
 
-#endif /* HB_VECTOR_INTERNAL_HH */
+#ਜੇ_ਅੰਤ /* HB_VECTOR_INTERNAL_HH */

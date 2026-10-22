@@ -22,66 +22,66 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_BSLN_TABLE_HH
-#define HB_AAT_LAYOUT_BSLN_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LAYOUT_BSLN_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LAYOUT_BSLN_ਸਾਰਣੀ_HH
 
-#include "hb-aat-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-common.hh"
 
 /*
  * bsln -- Baseline
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6bsln.html
  */
-#define HB_AAT_TAG_bsln HB_TAG('b','s','l','n')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_ਟੈਗ_bsln HB_ਟੈਗ('b','s','l','n')
 
 
-namespace AAT {
+ਨਾਮਾਕਾਸ਼ AAT {
 
 
-struct BaselineTableFormat0Part
+ਬਣਤਰ Baseline_ਸਾਰਣੀ_Format0_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   // Roman, Ideographic centered, Ideographic low, Hanging and Math
   // are the default defined ones, but any other maybe accessed also.
   HBINT16	deltas[32];	/* These are the FUnit distance deltas from
 				 * the font's natural baseline to the other
 				 * baselines used in the font. */
-  public:
-  DEFINE_SIZE_STATIC (64);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (64);
 };
 
-struct BaselineTableFormat1Part
+ਬਣਤਰ Baseline_ਸਾਰਣੀ_Format1_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  lookupTable.sanitize (c)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
+			  lookup_ਸਾਰਣੀ.sanitize (c)));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBINT16	deltas[32];	/* ditto */
   Lookup<HBUINT16>
-		lookupTable;	/* Lookup table that maps glyphs to their
+		lookup_ਸਾਰਣੀ;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
-  DEFINE_SIZE_MIN (66);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (66);
 };
 
-struct BaselineTableFormat2Part
+ਬਣਤਰ Baseline_ਸਾਰਣੀ_Format2_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBGlyphID16	stdGlyph;	/* The specific glyph index number in this
 				 * font that is used to set the baseline values.
 				 * This is the standard glyph.
@@ -92,68 +92,68 @@ struct BaselineTableFormat2Part
 				 * associated with the standard glyph.
 				 * A value of 0xFFFF means there is no corresponding
 				 * control point in the standard glyph. */
-  public:
-  DEFINE_SIZE_STATIC (66);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (66);
 };
 
-struct BaselineTableFormat3Part
+ਬਣਤਰ Baseline_ਸਾਰਣੀ_Format3_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) && lookup_ਸਾਰਣੀ.sanitize (c)));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBGlyphID16	stdGlyph;	/* ditto */
   HBUINT16	ctlPoints[32];	/* ditto */
   Lookup<HBUINT16>
-		lookupTable;	/* Lookup table that maps glyphs to their
+		lookup_ਸਾਰਣੀ;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
-  DEFINE_SIZE_MIN (68);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (68);
 };
 
-struct bsln
+ਬਣਤਰ bsln
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_AAT_ਟੈਗ_bsln;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!(c->check_struct (ਇਹ) && defaultBaseline < 32)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    switch (format)
+    ਚੋਣ (format)
     {
-    case 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
-    default:return_trace (true);
+    ਹਾਲਤ 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
+    ਹਾਲਤ 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
+    ਹਾਲਤ 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
+    ਹਾਲਤ 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
+    ਮੂਲ:return_trace (ਸੱਚ);
     }
   }
 
-  protected:
-  FixedVersion<>version;	/* Version number of the Baseline table. */
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;	/* Version number of the Baseline table. */
   HBUINT16	format;		/* Format of the baseline table. Only one baseline
 				 * format may be selected for the font. */
   HBUINT16	defaultBaseline;/* Default baseline value for all glyphs.
 				 * This value can be from 0 through 31. */
-  union {
+  ਸੰਘ {
   // Distance-Based Formats
-  BaselineTableFormat0Part	format0;
-  BaselineTableFormat1Part	format1;
+  Baseline_ਸਾਰਣੀ_Format0_Part	format0;
+  Baseline_ਸਾਰਣੀ_Format1_Part	format1;
   // Control Point-based Formats
-  BaselineTableFormat2Part	format2;
-  BaselineTableFormat3Part	format3;
+  Baseline_ਸਾਰਣੀ_Format2_Part	format2;
+  Baseline_ਸਾਰਣੀ_Format3_Part	format3;
   } parts;
-  public:
-  DEFINE_SIZE_MIN (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (8);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_BSLN_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LAYOUT_BSLN_TABLE_HH */

@@ -1,48 +1,48 @@
-#ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
-#define OT_LAYOUT_GPOS_MARKRECORD_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_MARKRECORD_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_MARKRECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-template <typename Types> struct MarkArray;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types> ਬਣਤਰ MarkArray;
 
-template <typename Types>
-struct MarkRecord
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ Mark_ਰਿਕਾਰਡ
 {
-  friend struct MarkArray<Types>;
+  ਮਿੱਤਰ ਬਣਤਰ MarkArray<Types>;
 
-  public:
+  ਜਨਤਕ:
   HBUINT16      klass;                  /* Class defined for this mark */
-  typename Types::template OffsetTo<Anchor, MarkArray<Types>>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
-  DEFINE_SIZE_STATIC (2 + Types::size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (2 + Types::ਮਾਪ);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_class () ਅਚਲ { ਵਾਪਸ (ਬਿਨਾਨਿਸ਼ਾਨੀ) klass; }
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ MarkArray<Types> *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) && markAnchor.sanitize (c, ਅਧਾਰ));
   }
 
-  bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t    *c,
+	       ਅਚਲ MarkArray<Types> *src_ਅਧਾਰ,
+	       ਅਚਲ hb_map_t         *klass_mapping) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->embed (ਇਹ);
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ)) return_trace (ਝੂਠ);
 
-    out->klass = klass_mapping->get (klass);
-    return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
+    ਬਾਹਰਲਾ->klass = klass_mapping->get (klass);
+    return_trace (ਬਾਹਰਲਾ->markAnchor.serialize_subset (c, markAnchor, src_ਅਧਾਰ));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  ਖਾਲੀ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ਅਚਲ MarkArray<Types> *src_ਅਧਾਰ) ਅਚਲ
   {
-    (src_base+markAnchor).collect_variation_indices (c);
+    (src_ਅਧਾਰ+markAnchor).collect_variation_indices (c);
   }
 };
 
@@ -51,4 +51,4 @@ struct MarkRecord
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKRECORD_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_MARKRECORD_HH */

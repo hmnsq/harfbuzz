@@ -9,61 +9,61 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+ਆਯਾਤ os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+ਜੇ ਲੰਬਾਈ(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
-CURRENT_SOURCE_DIR = sys.argv[2]
+CURRENT_ਸਰੋਤ_DIR = sys.argv[2]
 TEMPLATE = sys.argv[3]
 
 # Parse --TAG file... groups
 groups = {}
-current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
-        current_tag = arg[2:]
-        groups[current_tag] = []
-    elif current_tag is not None:
-        groups[current_tag].append(arg)
+current_ਟੈਗ = ਕੁਝ_ਨਹੀਂ
+ਲਈ arg ਵਿੱਚ sys.argv[4:]:
+    ਜੇ arg.startswith('--'):
+        current_ਟੈਗ = arg[2:]
+        groups[current_ਟੈਗ] = []
+    ਜਾਂਜੇ current_ਟੈਗ ਹੈ ਨਹੀਂ ਕੁਝ_ਨਹੀਂ:
+        groups[current_ਟੈਗ].append(arg)
 
 # Build #include lines for each group
-def make_includes(files):
-    seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
-        rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
-            seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+ਪਰਿਭਾਸ਼ਾ make_includes(files):
+    ਵੇਖਿਆ = ਸੈੱਟ()
+    ਸਤਰਾਂ = []
+    ਲਈ f ਵਿੱਚ sorted(files):
+        ਜੇ ਨਹੀਂ f.endswith('.cc'):
+            ਜਾਰੀ
+        rel = pathlib.ਰਸਤਾ_2(os.ਰਸਤਾ.relpath(os.ਰਸਤਾ.abspath(f), CURRENT_ਸਰੋਤ_DIR)).as_posix()
+        ਜੇ rel ਨਹੀਂ ਵਿੱਚ ਵੇਖਿਆ:
+            ਵੇਖਿਆ.ਜੋੜੋ(rel)
+            ਸਤਰਾਂ.append('#include "{}"'.format(rel))
+    ਵਾਪਸ '\n'.join(ਸਤਰਾਂ)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+ਨਾਲ open(TEMPLATE, 'r') ਇਵ f:
+    content = f.ਪਠ()
 
-for tag, files in groups.items():
-    placeholder = '%%{}%%'.format(tag)
+ਲਈ ਟੈਗ_2, files ਵਿੱਚ groups.ਚੀਜ਼ਾਂ():
+    placeholder = '%%{}%%'.format(ਟੈਗ_2)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+ਨਾਲ open(OUTPUT, 'w') ਇਵ f:
+    f.ਲਿਖ(content)
 
 # Copy back to source tree if changed
-baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+baseline = os.ਰਸਤਾ.join(CURRENT_ਸਰੋਤ_DIR, os.ਰਸਤਾ.basename(OUTPUT))
+ਕੋਸ਼ਿਸ਼:
+    ਨਾਲ open(baseline, 'r') ਇਵ b:
+        ਜੇ b.ਪਠ() == content:
             sys.exit(0)
-except FileNotFoundError:
-    pass
+ਅਪਵਾਦ File_Not_ਮਿਲਿਆ_Error:
+    ਲੰਘੋ
 
-try:
+ਕੋਸ਼ਿਸ਼:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+ਅਪਵਾਦ OSError:
+    ਆਯਾਤ filecmp
+    ਜੇ os.ਰਸਤਾ.exists(baseline) ਅਤੇ ਨਹੀਂ filecmp.cmp(OUTPUT, baseline, shallow=ਝੂਠ):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

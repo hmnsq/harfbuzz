@@ -27,101 +27,101 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_HH
-#define HB_BUFFER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਬਫਰ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-set-digest.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-unicode.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set-digest.hh"
 
 
-static_assert ((sizeof (hb_glyph_info_t) == 20), "");
-static_assert ((sizeof (hb_glyph_info_t) == sizeof (hb_glyph_position_t)), "");
+static_assert ((ਆਕਾਰ (hb_glyph_info_t) == 20), "");
+static_assert ((ਆਕਾਰ (hb_glyph_info_t) == ਆਕਾਰ (hb_glyph_position_t)), "");
 
 HB_MARK_AS_FLAG_T (hb_glyph_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_serialize_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_diff_flags_t);
+HB_MARK_AS_FLAG_T (hb_ਬਫਰ_flags_t);
+HB_MARK_AS_FLAG_T (hb_ਬਫਰ_serialize_flags_t);
+HB_MARK_AS_FLAG_T (hb_ਬਫਰ_diff_flags_t);
 
-enum hb_buffer_scratch_flags_t {
-  HB_BUFFER_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK		= 0x00000004u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT		= 0x00000008u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_CGJ			= 0x00000010u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE		= 0x00000020u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK= 0x00000040u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS		= 0x00000080u,
+ਗਿਣਤੀ hb_ਬਫਰ_scratch_flags_t {
+  HB_ਬਫਰ_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_SPACE_FALLBACK		= 0x00000004u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT		= 0x00000008u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_CGJ			= 0x00000010u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE		= 0x00000020u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK= 0x00000040u,
+  HB_ਬਫਰ_SCRATCH_FLAG_HAS_CONTINUATIONS		= 0x00000080u,
 
   /* Reserved for shapers' internal use. */
-  HB_BUFFER_SCRATCH_FLAG_SHAPER0			= 0x01000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER1			= 0x02000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER2			= 0x04000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER3			= 0x08000000u,
+  HB_ਬਫਰ_SCRATCH_FLAG_SHAPER0			= 0x01000000u,
+  HB_ਬਫਰ_SCRATCH_FLAG_SHAPER1			= 0x02000000u,
+  HB_ਬਫਰ_SCRATCH_FLAG_SHAPER2			= 0x04000000u,
+  HB_ਬਫਰ_SCRATCH_FLAG_SHAPER3			= 0x08000000u,
 };
-HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
+HB_MARK_AS_FLAG_T (hb_ਬਫਰ_scratch_flags_t);
 
 
 /*
  * hb_buffer_t
  */
 
-struct hb_buffer_t
+ਬਣਤਰ hb_ਬਫਰ_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
   /*
    * Information about how the text in the buffer should be treated.
    */
 
   hb_unicode_funcs_t *unicode; /* Unicode functions */
-  hb_buffer_flags_t flags; /* BOT / EOT / etc. */
-  hb_buffer_cluster_level_t cluster_level;
+  hb_ਬਫਰ_flags_t flags; /* BOT / EOT / etc. */
+  hb_ਬਫਰ_cluster_level_t cluster_level;
   hb_codepoint_t replacement; /* U+FFFD or something else. */
   hb_codepoint_t invisible; /* 0 or something else. */
-  hb_codepoint_t not_found; /* 0 or something else. */
-  hb_codepoint_t not_found_variation_selector; /* HB_CODEPOINT_INVALID or something else. */
+  hb_codepoint_t not_ਮਿਲਿਆ; /* 0 or something else. */
+  hb_codepoint_t not_ਮਿਲਿਆ_variation_selector; /* HB_CODEPOINT_INVALID or something else. */
 
   /*
    * Buffer contents
    */
 
-  hb_buffer_content_type_t content_type;
+  hb_ਬਫਰ_content_type_t content_type;
   hb_segment_properties_t props; /* Script, language, direction */
 
-  bool successful; /* Allocations successful */
-  bool have_output; /* Whether we have an output buffer going on */
-  bool have_positions; /* Whether we have positions */
+  ਤਾਰਕਿਕ successful; /* Allocations successful */
+  ਤਾਰਕਿਕ have_output; /* Whether we have an output buffer going on */
+  ਤਾਰਕਿਕ have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx; /* Cursor into ->info and ->pos arrays */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len; /* Length of ->info and ->pos arrays */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਬਾਹਰਲਾ_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
-  hb_glyph_info_t     *out_info;
+  hb_glyph_info_t     *ਬਾਹਰਲਾ_info;
   hb_glyph_position_t *pos;
 
   /* Text before / after the main buffer contents.
    * Always in Unicode, and ordered outward.
    * Index 0 is for "pre-context", 1 for "post-context". */
-  static constexpr unsigned CONTEXT_LENGTH = 5u;
-  hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ CONTEXT_ਲੰਮਾਈ = 5u;
+  hb_codepoint_t context[2][CONTEXT_ਲੰਮਾਈ];
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ context_len[2];
 
-  hb_set_digest_t digest; /* Manually updated sometimes */
+  hb_ਸੈੱਟ_digest_t digest; /* Manually updated sometimes */
 
   /*
    * Managed by enter / leave
    */
 
-  uint8_t allocated_var_bits;
+  uint8_t allocated_var_ਬਿੱਟ;
   uint8_t serial;
   uint32_t random_state;
-  hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  hb_ਬਫਰ_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ max_len; /* Maximum allowed len. */
+  ਪੂਰਨ max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -129,605 +129,605 @@ struct hb_buffer_t
    * Messaging callback
    */
 
-#ifndef HB_NO_BUFFER_MESSAGE
-  typedef void (*changed_func_t) (hb_buffer_t *buffer, void *user_data);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_ਸੁਨੇਹਾ
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ (*ਬਦਲਿਆ_func_t) (hb_ਬਫਰ_t *ਬਫਰ, ਖਾਲੀ *user_ਅੰਕੜੇ);
 
-  hb_buffer_message_func_t message_func;
-  void *message_data;
-  hb_destroy_func_t message_destroy;
-  changed_func_t changed_func;
-  void *changed_data;
-  unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
-  static constexpr unsigned message_depth = 0u;
-#endif
+  hb_ਬਫਰ_ਸੁਨੇਹਾ_func_t ਸੁਨੇਹਾ_func;
+  ਖਾਲੀ *ਸੁਨੇਹਾ_ਅੰਕੜੇ;
+  hb_destroy_func_t ਸੁਨੇਹਾ_destroy;
+  ਬਦਲਿਆ_func_t ਬਦਲਿਆ_func;
+  ਖਾਲੀ *ਬਦਲਿਆ_ਅੰਕੜੇ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੁਨੇਹਾ_ਡੂੰਘਾਈ; /* How deeply are we inside a message callback? */
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੁਨੇਹਾ_ਡੂੰਘਾਈ = 0u;
+#ਜੇ_ਅੰਤ
 
 
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ { ਵਾਪਸ !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  ਖਾਲੀ allocate_var (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (0 == (allocated_var_bits & bits));
-    allocated_var_bits |= bits;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਸ਼ੁਰੂ + ਗਿਣਤੀ_2;
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸਿਰਾ <= 8);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਬਿੱਟ = (1u<<ਸਿਰਾ) - (1u<<ਸ਼ੁਰੂ);
+    ਪ੍ਰਤਿਜ੍ਞਾ (0 == (allocated_var_ਬਿੱਟ & ਬਿੱਟ));
+    allocated_var_ਬਿੱਟ |= ਬਿੱਟ;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  ਤਾਰਕਿਕ try_allocate_var (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
-    allocated_var_bits |= bits;
-    return true;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਸ਼ੁਰੂ + ਗਿਣਤੀ_2;
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸਿਰਾ <= 8);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਬਿੱਟ = (1u<<ਸਿਰਾ) - (1u<<ਸ਼ੁਰੂ);
+    ਜੇ (allocated_var_ਬਿੱਟ & ਬਿੱਟ)
+      ਵਾਪਸ ਝੂਠ;
+    allocated_var_ਬਿੱਟ |= ਬਿੱਟ;
+    ਵਾਪਸ ਸੱਚ;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  ਖਾਲੀ deallocate_var (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
-    allocated_var_bits &= ~bits;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਸ਼ੁਰੂ + ਗਿਣਤੀ_2;
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸਿਰਾ <= 8);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਬਿੱਟ = (1u<<ਸਿਰਾ) - (1u<<ਸ਼ੁਰੂ);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਬਿੱਟ == (allocated_var_ਬਿੱਟ & ਬਿੱਟ));
+    allocated_var_ਬਿੱਟ &= ~ਬਿੱਟ;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  ਖਾਲੀ assert_var (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = ਸ਼ੁਰੂ + ਗਿਣਤੀ_2;
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸਿਰਾ <= 8);
+    HB_ਅਣਵਰਤਿਆ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਬਿੱਟ = (1u<<ਸਿਰਾ) - (1u<<ਸ਼ੁਰੂ);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਬਿੱਟ == (allocated_var_ਬਿੱਟ & ਬਿੱਟ));
   }
-  void deallocate_var_all ()
+  ਖਾਲੀ deallocate_var_all ()
   {
-    allocated_var_bits = 0;
+    allocated_var_ਬਿੱਟ = 0;
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0) { ਵਾਪਸ info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0) ਅਚਲ { ਵਾਪਸ info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0) { ਵਾਪਸ pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0) ਅਚਲ { ਵਾਪਸ pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { ਵਾਪਸ ਬਾਹਰਲਾ_info[ਬਾਹਰਲਾ_len ? ਬਾਹਰਲਾ_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () ਅਚਲ { ਵਾਪਸ ਬਾਹਰਲਾ_info[ਬਾਹਰਲਾ_len ? ਬਾਹਰਲਾ_len - 1 : 0]; }
 
-  template <typename set_t>
-  void collect_codepoints (set_t &d) const
-  { d.clear (); d.add_array (&info[0].codepoint, len, sizeof (info[0])); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_codepoints (ਸੈੱਟ_t &d) ਅਚਲ
+  { d.clear (); d.ਜੋੜੋ_array (&info[0].codepoint, len, ਆਕਾਰ (info[0])); }
 
-  void update_digest ()
+  ਖਾਲੀ update_digest ()
   {
-    digest = hb_set_digest_t ();
+    digest = hb_ਸੈੱਟ_digest_t ();
     collect_codepoints (digest);
   }
 
-  HB_INTERNAL void similar (const hb_buffer_t &src);
-  HB_INTERNAL void reset ();
-  HB_INTERNAL void clear ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ similar (ਅਚਲ hb_ਬਫਰ_t &src);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ reset ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ clear ();
 
   /* Called around shape() */
-  HB_INTERNAL void enter ();
-  HB_INTERNAL void leave ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ enter ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ leave ();
 
-#ifndef HB_NO_BUFFER_VERIFY
-  HB_INTERNAL
-#endif
-  bool verify (hb_buffer_t        *text_buffer,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_VERIFY
+  HB_ਅੰਦਰੂਨੀ
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ verify (hb_ਬਫਰ_t        *ਪਾਠ_ਬਫਰ,
 	       hb_font_t          *font,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shapers)
-#ifndef HB_NO_BUFFER_VERIFY
+	       ਅਚਲ hb_feature_t *features,
+	       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features,
+	       ਅਚਲ ਅੱਖਰ * ਅਚਲ *shapers)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_VERIFY
   ;
-#else
-  { return true; }
-#endif
+#ਨਹੀਂਤਾਂ
+  { ਵਾਪਸ ਸੱਚ; }
+#ਜੇ_ਅੰਤ
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ backtrack_len () ਅਚਲ { ਵਾਪਸ have_output ? ਬਾਹਰਲਾ_len : idx; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lookahead_len () ਅਚਲ { ਵਾਪਸ len - idx; }
+  uint8_t ਅਗਲਾ_serial () { ਵਾਪਸ ++serial ? serial : ++serial; }
 
-  HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
-  HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
-  HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
-				     const hb_glyph_position_t &glyph_pos);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ (hb_codepoint_t  codepoint,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    cluster);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ_info (ਅਚਲ hb_glyph_info_t &glyph_info);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ_info_and_pos (ਅਚਲ hb_glyph_info_t &glyph_info,
+				     ਅਚਲ hb_glyph_position_t &glyph_pos);
 
-  void reverse_range (unsigned start, unsigned end)
+  ਖਾਲੀ ਉਲਟ_range (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ)
   {
-    hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
-      hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
+    hb_array_t<hb_glyph_info_t> (info, len).reverse (ਸ਼ੁਰੂ, ਸਿਰਾ);
+    ਜੇ (have_positions)
+      hb_array_t<hb_glyph_position_t> (pos, len).reverse (ਸ਼ੁਰੂ, ਸਿਰਾ);
   }
-  void reverse () { reverse_range (0, len); }
+  ਖਾਲੀ reverse () { ਉਲਟ_range (0, len); }
 
-  template <typename FuncType>
-  void reverse_groups (const FuncType& group,
-		       bool merge_clusters = false)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ FuncType>
+  ਖਾਲੀ ਉਲਟ_groups (ਅਚਲ FuncType& ਸਮੂਹ,
+		       ਤਾਰਕਿਕ ਮਿਲਾਓ_clusters = ਝੂਠ)
   {
-    if (unlikely (!len))
-      return;
+    ਜੇ (unlikely (!len))
+      ਵਾਪਸ;
 
-    unsigned start = 0;
-    unsigned i;
-    for (i = 1; i < len; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i;
+    ਲਈ (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      ਜੇ (!ਸਮੂਹ (info[i - 1], info[i]))
       {
-	if (merge_clusters)
-	  this->merge_clusters (start, i);
-	reverse_range (start, i);
-	start = i;
+	ਜੇ (ਮਿਲਾਓ_clusters)
+	  ਇਹ->ਮਿਲਾਓ_clusters (ਸ਼ੁਰੂ, i);
+	ਉਲਟ_range (ਸ਼ੁਰੂ, i);
+	ਸ਼ੁਰੂ = i;
       }
     }
-    if (merge_clusters)
-      this->merge_clusters (start, i);
-    reverse_range (start, i);
+    ਜੇ (ਮਿਲਾਓ_clusters)
+      ਇਹ->ਮਿਲਾਓ_clusters (ਸ਼ੁਰੂ, i);
+    ਉਲਟ_range (ਸ਼ੁਰੂ, i);
 
     reverse ();
   }
 
-  template <typename FuncType>
-  unsigned group_end (unsigned start, const FuncType& group) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ FuncType>
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਮੂਹ_ਸਿਰਾ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਅਚਲ FuncType& ਸਮੂਹ) ਅਚਲ
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    ਜਦੋਂ (++ਸ਼ੁਰੂ < len && ਸਮੂਹ (info[ਸ਼ੁਰੂ - 1], info[ਸ਼ੁਰੂ]))
       ;
 
-    return start;
+    ਵਾਪਸ ਸ਼ੁਰੂ;
   }
 
-  static bool _cluster_group_func (const hb_glyph_info_t& a,
-				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  ਸਥਿਰ ਤਾਰਕਿਕ cluster_ਸਮੂਹ_func (ਅਚਲ hb_glyph_info_t& a,
+				   ਅਚਲ hb_glyph_info_t& b)
+  { ਵਾਪਸ a.cluster == b.cluster; }
 
-  void reverse_clusters () { reverse_groups (_cluster_group_func); }
+  ਖਾਲੀ ਉਲਟ_clusters () { ਉਲਟ_groups (cluster_ਸਮੂਹ_func); }
 
-  HB_INTERNAL void guess_segment_properties ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ guess_segment_properties ();
 
-  HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
-  HB_INTERNAL void clear_output ();
-  HB_INTERNAL void clear_positions ();
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ ਸਮਕਾਲੀ ();
+  HB_ਅੰਦਰੂਨੀ ਪੂਰਨ sync_so_far ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ clear_output ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ clear_positions ();
 
-  template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
-				    const T *glyph_data)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  HB_NODISCARD ਤਾਰਕਿਕ replace_glyphs (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ਵਿੱਚ,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ਬਾਹਰਲਾ,
+				    ਅਚਲ T *glyph_ਅੰਕੜੇ)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    ਜੇ (unlikely (!make_ਗੁੰਜਾਇਸ਼_for (ਅੰਕ_ਵਿੱਚ, ਅੰਕ_ਬਾਹਰਲਾ))) ਵਾਪਸ ਝੂਠ;
 
-    assert (idx + num_in <= len);
+    ਪ੍ਰਤਿਜ੍ਞਾ (idx + ਅੰਕ_ਵਿੱਚ <= len);
 
-    merge_clusters (idx, idx + num_in);
+    ਮਿਲਾਓ_clusters (idx, idx + ਅੰਕ_ਵਿੱਚ);
 
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
-    hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    hb_glyph_info_t *pinfo = &ਬਾਹਰਲਾ_info[ਬਾਹਰਲਾ_len];
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_ਬਾਹਰਲਾ; i++)
     {
       *pinfo = orig_info;
-      pinfo->codepoint = glyph_data[i];
+      pinfo->codepoint = glyph_ਅੰਕੜੇ[i];
       pinfo++;
     }
 
-    idx  += num_in;
-    out_len += num_out;
-    return true;
+    idx  += ਅੰਕ_ਵਿੱਚ;
+    ਬਾਹਰਲਾ_len += ਅੰਕ_ਬਾਹਰਲਾ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  HB_NODISCARD ਤਾਰਕਿਕ replace_glyph (hb_codepoint_t glyph_ਸੂਚਕਾਂਕ)
+  { ਵਾਪਸ replace_glyphs (1, 1, &glyph_ਸੂਚਕਾਂਕ); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
-  HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  HB_NODISCARD ਤਾਰਕਿਕ output_glyph (hb_codepoint_t glyph_ਸੂਚਕਾਂਕ)
+  { ਵਾਪਸ replace_glyphs (0, 1, &glyph_ਸੂਚਕਾਂਕ); }
 
-  HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
+  HB_NODISCARD ਤਾਰਕਿਕ output_info (ਅਚਲ hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    ਜੇ (unlikely (!make_ਗੁੰਜਾਇਸ਼_for (0, 1))) ਵਾਪਸ ਝੂਠ;
 
-    out_info[out_len] = glyph_info;
+    ਬਾਹਰਲਾ_info[ਬਾਹਰਲਾ_len] = glyph_info;
 
-    out_len++;
-    return true;
+    ਬਾਹਰਲਾ_len++;
+    ਵਾਪਸ ਸੱਚ;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
-  HB_NODISCARD bool copy_glyph ()
+  HB_NODISCARD ਤਾਰਕਿਕ copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    ਵਾਪਸ output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyph ()
+  HB_NODISCARD ਤਾਰਕਿਕ ਅਗਲਾ_glyph ()
   {
-    if (have_output)
+    ਜੇ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ਜੇ (ਬਾਹਰਲਾ_info != info || ਬਾਹਰਲਾ_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
-	out_info[out_len] = info[idx];
+	ਜੇ (unlikely (!ensure (ਬਾਹਰਲਾ_len + 1))) ਵਾਪਸ ਝੂਠ;
+	ਬਾਹਰਲਾ_info[ਬਾਹਰਲਾ_len] = info[idx];
       }
-      out_len++;
+      ਬਾਹਰਲਾ_len++;
     }
 
     idx++;
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD ਤਾਰਕਿਕ ਅਗਲਾ_glyphs (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ n)
   {
-    if (have_output)
+    ਜੇ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ਜੇ (ਬਾਹਰਲਾ_info != info || ਬਾਹਰਲਾ_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
-	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
+	ਜੇ (unlikely (!ensure (ਬਾਹਰਲਾ_len + n))) ਵਾਪਸ ਝੂਠ;
+	memmove (ਬਾਹਰਲਾ_info + ਬਾਹਰਲਾ_len, info + idx, n * ਆਕਾਰ (ਬਾਹਰਲਾ_info[0]));
       }
-      out_len += n;
+      ਬਾਹਰਲਾ_len += n;
     }
 
     idx += n;
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
   /* Advance idx without copying to output. */
-  void skip_glyph () { idx++; }
-  void add_masks (hb_mask_t mask)
+  ਖਾਲੀ skip_glyph () { idx++; }
+  ਖਾਲੀ ਜੋੜੋ_masks (hb_ਨਕਾਬ_t ਨਕਾਬ)
   {
-    for (unsigned int j = 0; j < len; j++)
-      info[j].mask |= mask;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = 0; j < len; j++)
+      info[j].ਨਕਾਬ |= ਨਕਾਬ;
   }
-  HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਸੈੱਟ_masks (hb_ਨਕਾਬ_t value, hb_ਨਕਾਬ_t ਨਕਾਬ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster_ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster_ਸਿਰਾ);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  ਖਾਲੀ ਮਿਲਾਓ_clusters (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    ਜੇ (ਸਿਰਾ - ਸ਼ੁਰੂ < 2)
+      ਵਾਪਸ;
+    ਜੇ (!HB_ਬਫਰ_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_ਮੰਜ਼ਿਲ_break (ਸ਼ੁਰੂ, ਸਿਰਾ);
+      ਵਾਪਸ;
     }
-    merge_clusters_impl (start, end);
+    ਮਿਲਾਓ_clusters_impl (ਸ਼ੁਰੂ, ਸਿਰਾ);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  ਖਾਲੀ ਮਿਲਾਓ_grapheme_clusters (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    ਜੇ (ਸਿਰਾ - ਸ਼ੁਰੂ < 2)
+      ਵਾਪਸ;
+    ਜੇ (!HB_ਬਫਰ_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_ਮੰਜ਼ਿਲ_break (ਸ਼ੁਰੂ, ਸਿਰਾ);
+      ਵਾਪਸ;
     }
-    merge_clusters_impl (start, end);
+    ਮਿਲਾਓ_clusters_impl (ਸ਼ੁਰੂ, ਸਿਰਾ);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਮਿਲਾਓ_clusters_impl (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ);
+  ਖਾਲੀ ਮਿਲਾਓ_ਬਾਹਰਲਾ_clusters (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
-    merge_out_clusters_impl (start, end);
+    ਜੇ (ਸਿਰਾ - ਸ਼ੁਰੂ < 2)
+      ਵਾਪਸ;
+    ਜੇ (!HB_ਬਫਰ_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      ਵਾਪਸ;
+    ਮਿਲਾਓ_ਬਾਹਰਲਾ_clusters_impl (ਸ਼ੁਰੂ, ਸਿਰਾ);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  ਖਾਲੀ ਮਿਲਾਓ_ਬਾਹਰਲਾ_grapheme_clusters (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
-    merge_out_clusters_impl (start, end);
+    ਜੇ (ਸਿਰਾ - ਸ਼ੁਰੂ < 2)
+      ਵਾਪਸ;
+    ਜੇ (!HB_ਬਫਰ_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      ਵਾਪਸ;
+    ਮਿਲਾਓ_ਬਾਹਰਲਾ_clusters_impl (ਸ਼ੁਰੂ, ਸਿਰਾ);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਮਿਲਾਓ_ਬਾਹਰਲਾ_clusters_impl (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ);
   /* Merge clusters for deleting current glyph, and skip it. */
-  HB_INTERNAL void delete_glyph ();
-  HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ delete_glyph ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ delete_glyphs_inplace (ਤਾਰਕਿਕ (*filter) (ਅਚਲ hb_glyph_info_t *info));
 
 
 
   /* Adds glyph flags in mask to infos with clusters between start and end.
    * The start index will be from out-buffer if from_out_buffer is true.
    * If interior is true, then the cluster having the minimum value is skipped. */
-  void _set_glyph_flags_impl (hb_mask_t mask,
-			      unsigned start,
-			      unsigned end,
-			      bool interior,
-			      bool from_out_buffer)
+  ਖਾਲੀ ਸੈੱਟ_glyph_flags_impl (hb_ਨਕਾਬ_t ਨਕਾਬ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ,
+			      ਤਾਰਕਿਕ interior,
+			      ਤਾਰਕਿਕ from_ਬਾਹਰਲਾ_ਬਫਰ)
   {
-    if (!from_out_buffer || !have_output)
+    ਜੇ (!from_ਬਾਹਰਲਾ_ਬਫਰ || !have_output)
     {
-      if (!interior)
+      ਜੇ (!interior)
       {
-	for (unsigned i = start; i < end; i++)
-	  info[i].mask |= mask;
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+	  info[i].ਨਕਾਬ |= ਨਕਾਬ;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	unsigned cluster = _infos_find_min_cluster (info, start, end);
-	_infos_set_glyph_flags (info, start, end, cluster, mask);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ cluster = infos_ਲੱਭੋ_min_cluster (info, ਸ਼ੁਰੂ, ਸਿਰਾ);
+	infos_ਸੈੱਟ_glyph_flags (info, ਸ਼ੁਰੂ, ਸਿਰਾ, cluster, ਨਕਾਬ);
       }
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      assert (start <= out_len);
-      assert (idx <= end);
+      ਪ੍ਰਤਿਜ੍ਞਾ (ਸ਼ੁਰੂ <= ਬਾਹਰਲਾ_len);
+      ਪ੍ਰਤਿਜ੍ਞਾ (idx <= ਸਿਰਾ);
 
-      if (!interior)
+      ਜੇ (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
-	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
-	  info[i].mask |= mask;
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ; i < ਬਾਹਰਲਾ_len; i++)
+	  ਬਾਹਰਲਾ_info[i].ਨਕਾਬ |= ਨਕਾਬ;
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = idx; i < ਸਿਰਾ; i++)
+	  info[i].ਨਕਾਬ |= ਨਕਾਬ;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	unsigned cluster = _infos_find_min_cluster (info, idx, end);
-	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ cluster = infos_ਲੱਭੋ_min_cluster (info, idx, ਸਿਰਾ);
+	cluster = infos_ਲੱਭੋ_min_cluster (ਬਾਹਰਲਾ_info, ਸ਼ੁਰੂ, ਬਾਹਰਲਾ_len, cluster);
 
-	_infos_set_glyph_flags (out_info, start, out_len, cluster, mask);
-	_infos_set_glyph_flags (info, idx, end, cluster, mask);
+	infos_ਸੈੱਟ_glyph_flags (ਬਾਹਰਲਾ_info, ਸ਼ੁਰੂ, ਬਾਹਰਲਾ_len, cluster, ਨਕਾਬ);
+	infos_ਸੈੱਟ_glyph_flags (info, idx, ਸਿਰਾ, cluster, ਨਕਾਬ);
       }
     }
   }
 
   HB_ALWAYS_INLINE
-  void _set_glyph_flags (hb_mask_t mask,
-			 unsigned start = 0,
-			 unsigned end = (unsigned) -1,
-			 bool interior = false,
-			 bool from_out_buffer = false)
+  ਖਾਲੀ ਸੈੱਟ_glyph_flags (hb_ਨਕਾਬ_t ਨਕਾਬ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = 0,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ = (ਬਿਨਾਨਿਸ਼ਾਨੀ) -1,
+			 ਤਾਰਕਿਕ interior = ਝੂਠ,
+			 ਤਾਰਕਿਕ from_ਬਾਹਰਲਾ_ਬਫਰ = ਝੂਠ)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    ਜੇ (unlikely (ਸਿਰਾ != (ਬਿਨਾਨਿਸ਼ਾਨੀ) -1 && ਸਿਰਾ - ਸ਼ੁਰੂ > 255))
+      ਵਾਪਸ;
 
-    end = hb_min (end, len);
+    ਸਿਰਾ = hb_min (ਸਿਰਾ, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    ਜੇ (interior && !from_ਬਾਹਰਲਾ_ਬਫਰ && ਸਿਰਾ - ਸ਼ੁਰੂ < 2)
+      ਵਾਪਸ;
 
-    _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
+    ਸੈੱਟ_glyph_flags_impl (ਨਕਾਬ, ਸ਼ੁਰੂ, ਸਿਰਾ, interior, from_ਬਾਹਰਲਾ_ਬਫਰ);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  ਖਾਲੀ unsafe_ਮੰਜ਼ਿਲ_break (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = -1)
   {
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      true);
+    ਸੈੱਟ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_BREAK | HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT,
+		      ਸ਼ੁਰੂ, ਸਿਰਾ,
+		      ਸੱਚ);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  ਖਾਲੀ ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_tatweel (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    ਜੇ ((flags & HB_ਬਫਰ_FLAG_PRODUCE_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL) == 0)
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_ਮੰਜ਼ਿਲ_break (ਸ਼ੁਰੂ, ਸਿਰਾ);
+      ਵਾਪਸ;
     }
-    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
-		      start, end,
-		      true);
+    ਸੈੱਟ_glyph_flags (HB_GLYPH_FLAG_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL,
+		      ਸ਼ੁਰੂ, ਸਿਰਾ,
+		      ਸੱਚ);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+#ਜੇ_ਅੰਤ
+  ਖਾਲੀ unsafe_ਮੰਜ਼ਿਲ_concat (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      false);
+    ਜੇ (likely ((flags & HB_ਬਫਰ_FLAG_PRODUCE_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT) == 0))
+      ਵਾਪਸ;
+    ਸੈੱਟ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT,
+		      ਸ਼ੁਰੂ, ਸਿਰਾ,
+		      ਝੂਠ);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  ਖਾਲੀ unsafe_ਮੰਜ਼ਿਲ_break_from_outbuffer (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = -1)
   {
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      true, true);
+    ਸੈੱਟ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_BREAK | HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT,
+		      ਸ਼ੁਰੂ, ਸਿਰਾ,
+		      ਸੱਚ, ਸੱਚ);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+#ਜੇ_ਅੰਤ
+  ਖਾਲੀ unsafe_ਮੰਜ਼ਿਲ_concat_from_outbuffer (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = 0, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      false, true);
+    ਜੇ (likely ((flags & HB_ਬਫਰ_FLAG_PRODUCE_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT) == 0))
+      ਵਾਪਸ;
+    ਸੈੱਟ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT,
+		      ਸ਼ੁਰੂ, ਸਿਰਾ,
+		      ਝੂਠ, ਸੱਚ);
   }
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ move_ਮੰਜ਼ਿਲ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ enlarge (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ);
 
-  HB_NODISCARD bool resize (unsigned length)
+  HB_NODISCARD ਤਾਰਕਿਕ resize (ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾਈ)
   {
-    assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
-    len = length;
-    return true;
+    ਪ੍ਰਤਿਜ੍ਞਾ (!have_output);
+    ਜੇ (unlikely (!ensure (ਲੰਮਾਈ))) ਵਾਪਸ ਝੂਠ;
+    len = ਲੰਮਾਈ;
+    ਵਾਪਸ ਸੱਚ;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD ਤਾਰਕਿਕ ensure (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ)
+  { ਵਾਪਸ likely (!ਮਾਪ || ਮਾਪ < allocated) ? ਸੱਚ : enlarge (ਮਾਪ); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD ਤਾਰਕਿਕ ensure_inplace (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ)
+  { ਵਾਪਸ likely (!ਮਾਪ || ਮਾਪ < allocated); }
 
-  void assert_glyphs ()
+  ਖਾਲੀ assert_glyphs ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
-	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
+    ਪ੍ਰਤਿਜ੍ਞਾ ((content_type == HB_ਬਫਰ_CONTENT_TYPE_GLYPHS) ||
+	    (!len && (content_type == HB_ਬਫਰ_CONTENT_TYPE_INVALID)));
   }
-  void assert_unicode ()
+  ਖਾਲੀ assert_unicode ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
-	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
+    ਪ੍ਰਤਿਜ੍ਞਾ ((content_type == HB_ਬਫਰ_CONTENT_TYPE_UNICODE) ||
+	    (!len && (content_type == HB_ਬਫਰ_CONTENT_TYPE_INVALID)));
   }
-  HB_NODISCARD bool ensure_glyphs ()
+  HB_NODISCARD ਤਾਰਕਿਕ ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    ਜੇ (unlikely (content_type != HB_ਬਫਰ_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
-      content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
+      ਜੇ (content_type != HB_ਬਫਰ_CONTENT_TYPE_INVALID)
+	ਵਾਪਸ ਝੂਠ;
+      ਪ੍ਰਤਿਜ੍ਞਾ (len == 0);
+      content_type = HB_ਬਫਰ_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
-  HB_NODISCARD bool ensure_unicode ()
+  HB_NODISCARD ਤਾਰਕਿਕ ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    ਜੇ (unlikely (content_type != HB_ਬਫਰ_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
-      content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
+      ਜੇ (content_type != HB_ਬਫਰ_CONTENT_TYPE_INVALID)
+	ਵਾਪਸ ਝੂਠ;
+      ਪ੍ਰਤਿਜ੍ਞਾ (len == 0);
+      content_type = HB_ਬਫਰ_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ make_ਗੁੰਜਾਇਸ਼_for (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ਵਿੱਚ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ਬਾਹਰਲਾ);
+  HB_NODISCARD HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ ਖਿਸਕਾਓ_forward (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2);
 
-  typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਲੰਮਾ scratch_ਬਫਰ_t;
+  HB_ਅੰਦਰੂਨੀ scratch_ਬਫਰ_t *get_scratch_ਬਫਰ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਮਾਪ);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  ਖਾਲੀ clear_context (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ sort (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ, ਪੂਰਨ(*compar)(ਅਚਲ hb_glyph_info_t *, ਅਚਲ hb_glyph_info_t *));
 
-  bool messaging ()
+  ਤਾਰਕਿਕ messaging ()
   {
-#ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_ਸੁਨੇਹਾ
+    ਵਾਪਸ ਝੂਠ;
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ unlikely (ਸੁਨੇਹਾ_func);
+#ਜੇ_ਅੰਤ
   }
-  bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
+  ਤਾਰਕਿਕ ਸੁਨੇਹਾ (hb_font_t *font, ਅਚਲ ਅੱਖਰ *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
-#ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_ਸੁਨੇਹਾ
+    ਵਾਪਸ ਸੱਚ;
+#ਨਹੀਂਤਾਂ
+    ਜੇ (likely (!messaging ()))
+      ਵਾਪਸ ਸੱਚ;
 
     va_list ap;
-    va_start (ap, fmt);
-    bool ret = message_impl (font, fmt, ap);
-    va_end (ap);
+    va_ਸ਼ੁਰੂ (ap, fmt);
+    ਤਾਰਕਿਕ ret = ਸੁਨੇਹਾ_impl (font, fmt, ap);
+    va_ਸਿਰਾ (ap);
 
-    return ret;
-#endif
+    ਵਾਪਸ ret;
+#ਜੇ_ਅੰਤ
   }
-  HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
-  HB_INTERNAL void changed ();
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ ਸੁਨੇਹਾ_impl (hb_font_t *font, ਅਚਲ ਅੱਖਰ *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਬਦਲਿਆ ();
 
-  static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  ਸਥਿਰ ਖਾਲੀ
+  ਸੈੱਟ_cluster (hb_glyph_info_t &inf, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਨਕਾਬ = 0)
   {
-    if (inf.cluster != cluster)
-      inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
+    ਜੇ (inf.cluster != cluster)
+      inf.ਨਕਾਬ = (inf.ਨਕਾਬ & ~HB_GLYPH_FLAG_DEFINED) | (ਨਕਾਬ & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
-  void
-  _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
-			  hb_mask_t mask)
+  ਖਾਲੀ
+  infos_ਸੈੱਟ_glyph_flags (hb_glyph_info_t *infos,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster,
+			  hb_ਨਕਾਬ_t ਨਕਾਬ)
   {
-    if (unlikely (start == end))
-      return;
+    ਜੇ (unlikely (ਸ਼ੁਰੂ == ਸਿਰਾ))
+      ਵਾਪਸ;
 
-    max_ops -= end - start;
-    if (unlikely (max_ops < 0))
-      successful = false;
+    max_ops -= ਸਿਰਾ - ਸ਼ੁਰੂ;
+    ਜੇ (unlikely (max_ops < 0))
+      successful = ਝੂਠ;
 
-    unsigned cluster_first = infos[start].cluster;
-    unsigned cluster_last = infos[end - 1].cluster;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ cluster_ਪਹਿਲਾ = infos[ਸ਼ੁਰੂ].cluster;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ cluster_ਆਖਰੀ = infos[ਸਿਰਾ - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
-	(cluster != cluster_first && cluster != cluster_last))
+    ਜੇ (cluster_level == HB_ਬਫਰ_CLUSTER_LEVEL_CHARACTERS ||
+	(cluster != cluster_ਪਹਿਲਾ && cluster != cluster_ਆਖਰੀ))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
-	  infos[i].mask |= mask;
-      return;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+	ਜੇ (cluster != infos[i].cluster)
+	  infos[i].ਨਕਾਬ |= ਨਕਾਬ;
+      ਵਾਪਸ;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    ਜੇ (cluster == cluster_ਪਹਿਲਾ)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
-	infos[i - 1].mask |= mask;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸਿਰਾ; ਸ਼ੁਰੂ < i && infos[i - 1].cluster != cluster_ਪਹਿਲਾ; i--)
+	infos[i - 1].ਨਕਾਬ |= ਨਕਾਬ;
     }
-    else /* cluster == cluster_last */
+    ਨਹੀਂਤਾਂ /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
-	infos[i].mask |= mask;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ && infos[i].cluster != cluster_ਆਖਰੀ; i++)
+	infos[i].ਨਕਾਬ |= ਨਕਾਬ;
     }
   }
-  unsigned
-  _infos_find_min_cluster (const hb_glyph_info_t *infos,
-			   unsigned start, unsigned end,
-			   unsigned cluster = UINT_MAX)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ
+  infos_ਲੱਭੋ_min_cluster (ਅਚਲ hb_glyph_info_t *infos,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ cluster = UINT_MAX)
   {
-    if (unlikely (start == end))
-      return cluster;
+    ਜੇ (unlikely (ਸ਼ੁਰੂ == ਸਿਰਾ))
+      ਵਾਪਸ cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    ਜੇ (cluster_level == HB_ਬਫਰ_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      ਵਾਪਸ cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    ਵਾਪਸ hb_min (cluster, hb_min (infos[ਸ਼ੁਰੂ].cluster, infos[ਸਿਰਾ - 1].cluster));
   }
 
-  void clear_glyph_flags (hb_mask_t mask = 0)
+  ਖਾਲੀ clear_glyph_flags (hb_ਨਕਾਬ_t ਨਕਾਬ = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
-      info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < len; i++)
+      info[i].ਨਕਾਬ = (info[i].ਨਕਾਬ & ~HB_GLYPH_FLAG_DEFINED) | (ਨਕਾਬ & HB_GLYPH_FLAG_DEFINED);
   }
 };
-DECLARE_NULL_INSTANCE (hb_buffer_t);
+DECLARE_NULL_INSTANCE (hb_ਬਫਰ_t);
 
 
-#define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
-       start < _count; \
-       start = end, end = buffer->group_end (start, group_func))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ foreach_ਸਮੂਹ(ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ, ਸਮੂਹ_func) \
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ \
+       ਗਿਣਤੀ_3 = ਬਫਰ->len, \
+       ਸ਼ੁਰੂ = 0, ਸਿਰਾ = ਗਿਣਤੀ_3 ? ਬਫਰ->ਸਮੂਹ_ਸਿਰਾ (0, ਸਮੂਹ_func) : 0; \
+       ਸ਼ੁਰੂ < ਗਿਣਤੀ_3; \
+       ਸ਼ੁਰੂ = ਸਿਰਾ, ਸਿਰਾ = ਬਫਰ->ਸਮੂਹ_ਸਿਰਾ (ਸ਼ੁਰੂ, ਸਮੂਹ_func))
 
-#define foreach_cluster(buffer, start, end) \
-	foreach_group (buffer, start, end, hb_buffer_t::_cluster_group_func)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ foreach_cluster(ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ) \
+	foreach_ਸਮੂਹ (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ, hb_ਬਫਰ_t::cluster_ਸਮੂਹ_func)
 
 
-#define HB_BUFFER_XALLOCATE_VAR(b, func, var) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_XALLOCATE_VAR(b, func, var) \
   b->func (offsetof (hb_glyph_info_t, var) - offsetof(hb_glyph_info_t, var1), \
-	   sizeof (b->info[0].var))
-#define HB_BUFFER_ALLOCATE_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, allocate_var,     var ())
-#define HB_BUFFER_TRY_ALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, try_allocate_var, var ())
-#define HB_BUFFER_DEALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, deallocate_var,   var ())
-#define HB_BUFFER_ASSERT_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, assert_var,       var ())
+	   ਆਕਾਰ (b->info[0].var))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_ALLOCATE_VAR(b, var)		HB_ਬਫਰ_XALLOCATE_VAR (b, allocate_var,     var ())
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_TRY_ALLOCATE_VAR(b, var)	HB_ਬਫਰ_XALLOCATE_VAR (b, try_allocate_var, var ())
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_DEALLOCATE_VAR(b, var)	HB_ਬਫਰ_XALLOCATE_VAR (b, deallocate_var,   var ())
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_ASSERT_VAR(b, var)		HB_ਬਫਰ_XALLOCATE_VAR (b, assert_var,       var ())
 
 
-#endif /* HB_BUFFER_HH */
+#ਜੇ_ਅੰਤ /* HB_BUFFER_HH */

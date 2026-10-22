@@ -26,55 +26,55 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
-#define OT_LAYOUT_COMMON_RANGERECORD_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_COMMON_RANGERECORD_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types, ਕਿਸਮ_ਨਾਂ ਮੁੱਲ = HBUINT16>
+ਬਣਤਰ Range_ਰਿਕਾਰਡ
 {
-  typename Types::HBGlyphID     first;          /* First GlyphID in the range */
-  typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  ਕਿਸਮ_ਨਾਂ Types::HBGlyphID     ਪਹਿਲਾ;          /* First GlyphID in the range */
+  ਕਿਸਮ_ਨਾਂ Types::HBGlyphID     ਆਖਰੀ;           /* Last GlyphID in the range */
+  ਮੁੱਲ                         value;          /*ਮੁੱਲ*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_ਮਾਪ_STATIC (2 * Types::ਮਾਪ + ਮੁੱਲ::static_ਮਾਪ);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  ਪੂਰਨ cmp (hb_codepoint_t g) ਅਚਲ
+  { ਵਾਪਸ g < ਪਹਿਲਾ ? -1 : g <= ਆਖਰੀ ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp_range (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb) {
+    ਅਚਲ Range_ਰਿਕਾਰਡ *a = (ਅਚਲ Range_ਰਿਕਾਰਡ *) pa;
+    ਅਚਲ Range_ਰਿਕਾਰਡ *b = (ਅਚਲ Range_ਰਿਕਾਰਡ *) pb;
+    ਜੇ (a->ਪਹਿਲਾ < b->ਪਹਿਲਾ) ਵਾਪਸ -1;
+    ਜੇ (a->ਪਹਿਲਾ > b->ਪਹਿਲਾ) ਵਾਪਸ +1;
+    ਜੇ (a->ਆਖਰੀ < b->ਆਖਰੀ) ਵਾਪਸ -1;
+    ਜੇ (a->ਆਖਰੀ > b->ਆਖਰੀ) ਵਾਪਸ +1;
+    ਜੇ (a->value < b->value) ਵਾਪਸ -1;
+    ਜੇ (a->value > b->value) ਵਾਪਸ +1;
+    ਵਾਪਸ 0;
   }
 
-  unsigned get_population () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_population () ਅਚਲ
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    ਜੇ (unlikely (ਆਖਰੀ < ਪਹਿਲਾ)) ਵਾਪਸ 0;
+    ਵਾਪਸ (ਆਖਰੀ - ਪਹਿਲਾ + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t &glyphs) ਅਚਲ
+  { ਵਾਪਸ glyphs.intersects (ਪਹਿਲਾ, ਆਖਰੀ); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਤਾਰਕਿਕ collect_coverage (ਸੈੱਟ_t *glyphs) ਅਚਲ
+  { ਵਾਪਸ glyphs->ਜੋੜੋ_range (ਪਹਿਲਾ, ਆਖਰੀ); }
 };
 
 }
@@ -85,13 +85,13 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+ਬਾਹਰੀ HB_ਅੰਦਰੂਨੀ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ hb_Null_OT_Range_ਰਿਕਾਰਡ[9];
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Spec, ਕਿਸਮ_ਨਾਂ ਮੁੱਲ>
+ਬਣਤਰ Null<OT::Layout::Common::Range_ਰਿਕਾਰਡ<Spec, ਮੁੱਲ>> {
+  ਸਥਿਰ OT::Layout::Common::Range_ਰਿਕਾਰਡ<Spec, ਮੁੱਲ> ਅਚਲ & get_null () {
+    ਵਾਪਸ *reinterpret_cast<ਅਚਲ OT::Layout::Common::Range_ਰਿਕਾਰਡ<Spec, ਮੁੱਲ> *> (hb_Null_OT_Range_ਰਿਕਾਰਡ);
   }
 };
 
 
-#endif  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
+#ਜੇ_ਅੰਤ  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH

@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_DRAW
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_DRAW
 
-#include "hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.hh"
 
-#include "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
 
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
-#include <cmath>
+#ਅਨ੍ਤਰ੍ਭਾਵ <cmath>
 
 
 /**
@@ -46,150 +46,150 @@
  * The #hb_draw_funcs_t struct can be used with hb_font_draw_glyph().
  **/
 
-static void
-hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_move_ਮੰਜ਼ਿਲ_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+		     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) {}
 
-static void
-hb_draw_line_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x HB_UNUSED, float to_y HB_UNUSED,
-		     void *user_data HB_UNUSED) {}
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+		     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) {}
 
-static void
-hb_draw_quadratic_to_nil (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_quadratic_ਮੰਜ਼ਿਲ_nil (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 			  hb_draw_state_t *st,
-			  float control_x, float control_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+			  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
   /* Compute in double precision, so that the result does not depend
    * on how the compiler evaluates float expressions. */
-#define HB_TWO_THIRD 0.66666666666666666666666667
-  double current_x = (double) st->current_x;
-  double current_y = (double) st->current_y;
-  double cx = (double) control_x;
-  double cy = (double) control_y;
-  double tx = (double) to_x;
-  double ty = (double) to_y;
-  dfuncs->emit_cubic_to (draw_data, *st,
-			 (float) (current_x + (cx - current_x) * HB_TWO_THIRD),
-			 (float) (current_y + (cy - current_y) * HB_TWO_THIRD),
-			 (float) (tx + (cx - tx) * HB_TWO_THIRD),
-			 (float) (ty + (cy - ty) * HB_TWO_THIRD),
-			 to_x, to_y);
-#undef HB_TWO_THIRD
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_TWO_ਤੀਜਾ 0.66666666666666666666666667
+  ਦੁੱਗਣਾ current_x = (ਦੁੱਗਣਾ) st->current_x;
+  ਦੁੱਗਣਾ current_y = (ਦੁੱਗਣਾ) st->current_y;
+  ਦੁੱਗਣਾ cx = (ਦੁੱਗਣਾ) control_x;
+  ਦੁੱਗਣਾ cy = (ਦੁੱਗਣਾ) control_y;
+  ਦੁੱਗਣਾ tx = (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x;
+  ਦੁੱਗਣਾ ty = (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y;
+  dfuncs->emit_cubic_ਮੰਜ਼ਿਲ (draw_ਅੰਕੜੇ, *st,
+			 (ਦਸ਼ਮਲਵ) (current_x + (cx - current_x) * HB_TWO_ਤੀਜਾ),
+			 (ਦਸ਼ਮਲਵ) (current_y + (cy - current_y) * HB_TWO_ਤੀਜਾ),
+			 (ਦਸ਼ਮਲਵ) (tx + (cx - tx) * HB_TWO_ਤੀਜਾ),
+			 (ਦਸ਼ਮਲਵ) (ty + (cy - ty) * HB_TWO_ਤੀਜਾ),
+			 ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_TWO_ਤੀਜਾ
 }
 
-static void
-hb_draw_cubic_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-		      hb_draw_state_t *st HB_UNUSED,
-		      float control1_x HB_UNUSED, float control1_y HB_UNUSED,
-		      float control2_x HB_UNUSED, float control2_y HB_UNUSED,
-		      float to_x HB_UNUSED, float to_y HB_UNUSED,
-		      void *user_data HB_UNUSED) {}
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_cubic_ਮੰਜ਼ਿਲ_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+		      hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		      ਦਸ਼ਮਲਵ control1_x HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ control1_y HB_ਅਣਵਰਤਿਆ,
+		      ਦਸ਼ਮਲਵ control2_x HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ control2_y HB_ਅਣਵਰਤਿਆ,
+		      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y HB_ਅਣਵਰਤਿਆ,
+		      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) {}
 
-static void
-hb_draw_close_path_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			hb_draw_state_t *st HB_UNUSED,
-			void *user_data HB_UNUSED) {}
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_close_ਰਸਤਾ_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+			hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+			ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) {}
 
-static hb_bool_t
-hb_draw_set_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			int64_t budget HB_UNUSED,
-			void *user_data HB_UNUSED) { return false; }
+ਸਥਿਰ hb_bool_t
+hb_draw_ਸੈੱਟ_budget_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+			int64_t budget HB_ਅਣਵਰਤਿਆ,
+			ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) { ਵਾਪਸ ਝੂਠ; }
 
-static int64_t
-hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-			void *user_data HB_UNUSED) { return HB_BUDGET_DEFAULT; }
+ਸਥਿਰ int64_t
+hb_draw_get_budget_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+			ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) { ਵਾਪਸ HB_BUDGET_DEFAULT; }
 
-static int64_t *
-hb_draw_get_budget_remaining_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
-				  void *user_data HB_UNUSED) { return nullptr; }
+ਸਥਿਰ int64_t *
+hb_draw_get_budget_ਬਚਿਆ_nil (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *draw_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
+				  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ) { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
 
 
-static bool
-_hb_draw_funcs_set_preamble (hb_draw_funcs_t    *dfuncs,
-			     bool                func_is_null,
-			     void              **user_data,
+ਸਥਿਰ ਤਾਰਕਿਕ
+hb_draw_funcs_ਸੈੱਟ_preamble (hb_draw_funcs_t    *dfuncs,
+			     ਤਾਰਕਿਕ                func_is_null,
+			     ਖਾਲੀ              **user_ਅੰਕੜੇ,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (dfuncs))
+  ਜੇ (hb_object_is_immutable (dfuncs))
   {
-    if (*destroy)
-      (*destroy) (*user_data);
-    return false;
+    ਜੇ (*destroy)
+      (*destroy) (*user_ਅੰਕੜੇ);
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  if (func_is_null)
+  ਜੇ (func_is_null)
   {
-    if (*destroy)
-      (*destroy) (*user_data);
-    *destroy = nullptr;
-    *user_data = nullptr;
+    ਜੇ (*destroy)
+      (*destroy) (*user_ਅੰਕੜੇ);
+    *destroy = ਖਾਲੀ_ਸੂਚਕ;
+    *user_ਅੰਕੜੇ = ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool
-_hb_draw_funcs_set_middle (hb_draw_funcs_t   *dfuncs,
-			   void              *user_data,
+ਸਥਿਰ ਤਾਰਕਿਕ
+hb_draw_funcs_ਸੈੱਟ_ਵਿਚਕਾਰ (hb_draw_funcs_t   *dfuncs,
+			   ਖਾਲੀ              *user_ਅੰਕੜੇ,
 			   hb_destroy_func_t  destroy)
 {
-  auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+  ਸਵੈਚਾਲਿਤ destroy_guard = hb_make_scope_guard ([&]() {
+    ਜੇ (destroy) destroy (user_ਅੰਕੜੇ);
   });
 
-  if (user_data && !dfuncs->user_data)
+  ਜੇ (user_ਅੰਕੜੇ && !dfuncs->user_ਅੰਕੜੇ)
   {
-    dfuncs->user_data = (decltype (dfuncs->user_data)) hb_calloc (1, sizeof (*dfuncs->user_data));
-    if (unlikely (!dfuncs->user_data))
-      return false;
+    dfuncs->user_ਅੰਕੜੇ = (decltype (dfuncs->user_ਅੰਕੜੇ)) hb_calloc (1, ਆਕਾਰ (*dfuncs->user_ਅੰਕੜੇ));
+    ਜੇ (unlikely (!dfuncs->user_ਅੰਕੜੇ))
+      ਵਾਪਸ ਝੂਠ;
   }
-  if (destroy && !dfuncs->destroy)
+  ਜੇ (destroy && !dfuncs->destroy)
   {
-    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, sizeof (*dfuncs->destroy));
-    if (unlikely (!dfuncs->destroy))
-      return false;
+    dfuncs->destroy = (decltype (dfuncs->destroy)) hb_calloc (1, ਆਕਾਰ (*dfuncs->destroy));
+    ਜੇ (unlikely (!dfuncs->destroy))
+      ਵਾਪਸ ਝੂਠ;
   }
 
   destroy_guard.release ();
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-#define HB_DRAW_FUNC_IMPLEMENT(name)						\
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DRAW_FUNC_IMPLEMENT(name)						\
 										\
-void										\
-hb_draw_funcs_set_##name##_func (hb_draw_funcs_t	 *dfuncs,		\
+ਖਾਲੀ										\
+hb_draw_funcs_ਸੈੱਟ##name##_func (hb_draw_funcs_t	 *dfuncs,		\
 				 hb_draw_##name##_func_t  func,			\
-				 void			 *user_data,		\
+				 ਖਾਲੀ			 *user_ਅੰਕੜੇ,		\
 				 hb_destroy_func_t	  destroy)		\
 {										\
-  if (!_hb_draw_funcs_set_preamble (dfuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  ਜੇ (!hb_draw_funcs_ਸੈੱਟ_preamble (dfuncs, !func, &user_ਅੰਕੜੇ, &destroy))\
+      ਵਾਪਸ;                                                            \
 										\
-  if (dfuncs->destroy && dfuncs->destroy->name)					\
-    dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name); \
+  ਜੇ (dfuncs->destroy && dfuncs->destroy->name)					\
+    dfuncs->destroy->name (!dfuncs->user_ਅੰਕੜੇ ? ਖਾਲੀ_ਸੂਚਕ : dfuncs->user_ਅੰਕੜੇ->name); \
 									 \
-  if (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
-      return;                                                            \
+  ਜੇ (!hb_draw_funcs_ਸੈੱਟ_ਵਿਚਕਾਰ (dfuncs, user_ਅੰਕੜੇ, destroy))           \
+      ਵਾਪਸ;                                                            \
 									\
-  if (func)								\
+  ਜੇ (func)								\
     dfuncs->func.name = func;						\
-  else									\
+  ਨਹੀਂਤਾਂ									\
     dfuncs->func.name = hb_draw_##name##_nil;				\
 									\
-  if (dfuncs->user_data)						\
-    dfuncs->user_data->name = user_data;				\
-  if (dfuncs->destroy)							\
+  ਜੇ (dfuncs->user_ਅੰਕੜੇ)						\
+    dfuncs->user_ਅੰਕੜੇ->name = user_ਅੰਕੜੇ;				\
+  ਜੇ (dfuncs->destroy)							\
     dfuncs->destroy->name = destroy;					\
 }
 
 HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_DRAW_FUNC_IMPLEMENT
 
 /**
  * hb_draw_funcs_create:
@@ -209,22 +209,22 @@ hb_draw_funcs_t *
 hb_draw_funcs_create ()
 {
   hb_draw_funcs_t *dfuncs;
-  if (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
-    return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  ਜੇ (unlikely (!(dfuncs = hb_object_create<hb_draw_funcs_t> ())))
+    ਵਾਪਸ const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 
   dfuncs->func =  Null (hb_draw_funcs_t).func;
 
-  return dfuncs;
+  ਵਾਪਸ dfuncs;
 }
 
 DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_ਸਿਰਲੇਖ_STATIC,
 
   {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_nil,
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_nil,
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_DRAW_FUNC_IMPLEMENT
   }
 };
 
@@ -238,9 +238,9 @@ DEFINE_NULL_INSTANCE (hb_draw_funcs_t) =
  * Since: 7.0.0
  **/
 hb_draw_funcs_t *
-hb_draw_funcs_get_empty ()
+hb_draw_funcs_get_ਖਾਲੀ_ਥਾਵਾਂ ()
 {
-  return const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
+  ਵਾਪਸ const_cast<hb_draw_funcs_t *> (&Null (hb_draw_funcs_t));
 }
 
 /**
@@ -260,7 +260,7 @@ hb_draw_funcs_get_empty ()
 hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_reference (dfuncs);
+  ਵਾਪਸ hb_object_reference (dfuncs);
 }
 
 /**
@@ -273,21 +273,21 @@ hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs)
  *
  * Since: 4.0.0
  **/
-void
+ਖਾਲੀ
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
 {
-  if (!hb_object_destroy (dfuncs)) return;
+  ਜੇ (!hb_object_destroy (dfuncs)) ਵਾਪਸ;
 
-  if (dfuncs->destroy)
+  ਜੇ (dfuncs->destroy)
   {
-#define HB_DRAW_FUNC_IMPLEMENT(name) \
-    if (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name);
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DRAW_FUNC_IMPLEMENT(name) \
+    ਜੇ (dfuncs->destroy->name) dfuncs->destroy->name (!dfuncs->user_ਅੰਕੜੇ ? ਖਾਲੀ_ਸੂਚਕ : dfuncs->user_ਅੰਕੜੇ->name);
       HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_DRAW_FUNC_IMPLEMENT
   }
 
   hb_free (dfuncs->destroy);
-  hb_free (dfuncs->user_data);
+  hb_free (dfuncs->user_ਅੰਕੜੇ);
 
   hb_free (dfuncs);
 }
@@ -307,13 +307,13 @@ hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_draw_funcs_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_draw_funcs_t *dfuncs,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key,
+			     ਖਾਲੀ *              ਅੰਕੜੇ,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (dfuncs, key, data, destroy, replace);
+  ਵਾਪਸ hb_object_ਸੈੱਟ_user_ਅੰਕੜੇ (dfuncs, key, ਅੰਕੜੇ, destroy, replace);
 }
 
 /**
@@ -328,11 +328,11 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
  *
  * Since: 7.0.0
  **/
-void *
-hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key)
+ਖਾਲੀ *
+hb_draw_funcs_get_user_ਅੰਕੜੇ (ਅਚਲ hb_draw_funcs_t *dfuncs,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t       *key)
 {
-  return hb_object_get_user_data (dfuncs, key);
+  ਵਾਪਸ hb_object_get_user_ਅੰਕੜੇ (dfuncs, key);
 }
 
 /**
@@ -343,11 +343,11 @@ hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
  *
  * Since: 4.0.0
  **/
-void
+ਖਾਲੀ
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 {
-  if (hb_object_is_immutable (dfuncs))
-    return;
+  ਜੇ (hb_object_is_immutable (dfuncs))
+    ਵਾਪਸ;
 
   hb_object_make_immutable (dfuncs);
 }
@@ -365,7 +365,7 @@ hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs)
 hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
 {
-  return hb_object_is_immutable (dfuncs);
+  ਵਾਪਸ hb_object_is_immutable (dfuncs);
 }
 
 /**
@@ -382,9 +382,9 @@ hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs)
  * Since: 14.5.0
  **/
 hb_bool_t
-hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
+hb_draw_ਸੈੱਟ_budget (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ, int64_t budget)
 {
-  return dfuncs->set_budget (draw_data, budget);
+  ਵਾਪਸ dfuncs->ਸੈੱਟ_budget (draw_ਅੰਕੜੇ, budget);
 }
 
 /**
@@ -399,9 +399,9 @@ hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data, int64_t budget)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ)
 {
-  return dfuncs->get_budget (draw_data);
+  ਵਾਪਸ dfuncs->get_budget (draw_ਅੰਕੜੇ);
 }
 
 /**
@@ -419,14 +419,14 @@ hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data)
  * Since: 14.5.0
  **/
 int64_t
-hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
+hb_draw_get_budget_ਬਚਿਆ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ)
 {
-  int64_t *remaining = dfuncs->get_budget_remaining_ptr (draw_data);
-  if (remaining)
-    return *remaining;
+  int64_t *ਬਚਿਆ = dfuncs->get_budget_ਬਚਿਆ_ptr (draw_ਅੰਕੜੇ);
+  ਜੇ (ਬਚਿਆ)
+    ਵਾਪਸ *ਬਚਿਆ;
 
-  int64_t budget = dfuncs->get_budget (draw_data);
-  return budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
+  int64_t budget = dfuncs->get_budget (draw_ਅੰਕੜੇ);
+  ਵਾਪਸ budget == HB_BUDGET_DEFAULT ? HB_BUDGET_UNLIMITED : budget;
 }
 
 
@@ -442,13 +442,13 @@ hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data)
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y)
 {
-  dfuncs->move_to (draw_data, *st,
-		   to_x, to_y);
+  dfuncs->move_ਮੰਜ਼ਿਲ (draw_ਅੰਕੜੇ, *st,
+		   ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
 /**
@@ -463,13 +463,13 @@ hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y)
+		 ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y)
 {
-  dfuncs->line_to (draw_data, *st,
-		   to_x, to_y);
+  dfuncs->ਸਤਰ_ਮੰਜ਼ਿਲ (draw_ਅੰਕੜੇ, *st,
+		   ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
 /**
@@ -486,15 +486,15 @@ hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		      hb_draw_state_t *st,
-		      float control_x, float control_y,
-		      float to_x, float to_y)
+		      ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+		      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y)
 {
-  dfuncs->quadratic_to (draw_data, *st,
+  dfuncs->quadratic_ਮੰਜ਼ਿਲ (draw_ਅੰਕੜੇ, *st,
 			control_x, control_y,
-			to_x, to_y);
+			ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
 /**
@@ -513,17 +513,17 @@ hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		  hb_draw_state_t *st,
-		  float control1_x, float control1_y,
-		  float control2_x, float control2_y,
-		  float to_x, float to_y)
+		  ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+		  ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+		  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y)
 {
-  dfuncs->cubic_to (draw_data, *st,
+  dfuncs->cubic_ਮੰਜ਼ਿਲ (draw_ਅੰਕੜੇ, *st,
 		    control1_x, control1_y,
 		    control2_x, control2_y,
-		    to_x, to_y);
+		    ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
 /**
@@ -536,11 +536,11 @@ hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 4.0.0
  **/
-void
-hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_close_ਰਸਤਾ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		    hb_draw_state_t *st)
 {
-  dfuncs->close_path (draw_data, *st);
+  dfuncs->close_ਰਸਤਾ (draw_ਅੰਕੜੇ, *st);
 }
 
 
@@ -570,68 +570,68 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_ਸਤਰ (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 	      hb_draw_state_t *st,
-	      float x0, float y0, float w0,
-	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap)
+	      ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0, ਦਸ਼ਮਲਵ w0,
+	      ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1, ਦਸ਼ਮਲਵ w1,
+	      hb_draw_ਸਤਰ_cap_t cap)
 {
-  if (std::isnan (w1)) w1 = w0;
-  float dx = x1 - x0, dy = y1 - y0;
-  float len = sqrtf (dx * dx + dy * dy);
-  if (len <= 0.f)
-    return;
+  ਜੇ (std::isnan (w1)) w1 = w0;
+  ਦਸ਼ਮਲਵ dx = x1 - x0, dy = y1 - y0;
+  ਦਸ਼ਮਲਵ len = sqrtf (dx * dx + dy * dy);
+  ਜੇ (len <= 0.f)
+    ਵਾਪਸ;
   /* Unit tangent and normal to the line direction. */
-  float tx = dx / len;
-  float ty = dy / len;
-  float nx = -ty;
-  float ny =  tx;
-  float h0 = 0.5f * w0;
-  float h1 = 0.5f * w1;
+  ਦਸ਼ਮਲਵ tx = dx / len;
+  ਦਸ਼ਮਲਵ ty = dy / len;
+  ਦਸ਼ਮਲਵ nx = -ty;
+  ਦਸ਼ਮਲਵ ny =  tx;
+  ਦਸ਼ਮਲਵ h0 = 0.5f * w0;
+  ਦਸ਼ਮਲਵ h1 = 0.5f * w1;
   /* Square caps: extend each endpoint outward along the line
    * tangent by half its local stroke width. */
-  if (cap == HB_DRAW_LINE_CAP_SQUARE)
+  ਜੇ (cap == HB_DRAW_ਸਤਰ_CAP_ਵਰਗਫਲ)
   {
     x0 -= tx * h0; y0 -= ty * h0;
     x1 += tx * h1; y1 += ty * h1;
   }
   /* Trapezoid corners (counter-clockwise). */
-  float ax = x0 + nx * h0, ay = y0 + ny * h0;
-  float bx = x1 + nx * h1, by = y1 + ny * h1;
-  float cx = x1 - nx * h1, cy = y1 - ny * h1;
-  float dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
+  ਦਸ਼ਮਲਵ ax = x0 + nx * h0, ay = y0 + ny * h0;
+  ਦਸ਼ਮਲਵ bx = x1 + nx * h1, by = y1 + ny * h1;
+  ਦਸ਼ਮਲਵ cx = x1 - nx * h1, cy = y1 - ny * h1;
+  ਦਸ਼ਮਲਵ dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
 
-  hb_draw_move_to   (dfuncs, draw_data, st, ax, ay);
-  hb_draw_line_to   (dfuncs, draw_data, st, bx, by);
-  hb_draw_line_to   (dfuncs, draw_data, st, cx, cy);
-  hb_draw_line_to   (dfuncs, draw_data, st, dx_, dy_);
-  hb_draw_close_path (dfuncs, draw_data, st);
+  hb_draw_move_ਮੰਜ਼ਿਲ   (dfuncs, draw_ਅੰਕੜੇ, st, ax, ay);
+  hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ   (dfuncs, draw_ਅੰਕੜੇ, st, bx, by);
+  hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ   (dfuncs, draw_ਅੰਕੜੇ, st, cx, cy);
+  hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ   (dfuncs, draw_ਅੰਕੜੇ, st, dx_, dy_);
+  hb_draw_close_ਰਸਤਾ (dfuncs, draw_ਅੰਕੜੇ, st);
 }
 
 /* Emit an axis-aligned rectangle as a single closed contour.
  * @ccw picks the winding direction (useful for cutting a hole
  * out of another rectangle in a stroked rect). */
-static void
-_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਸਥਿਰ ਖਾਲੀ
+_hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		       hb_draw_state_t *st,
-		       float x, float y, float w, float h,
-		       bool ccw)
+		       ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y, ਦਸ਼ਮਲਵ w, ਦਸ਼ਮਲਵ h,
+		       ਤਾਰਕਿਕ ccw)
 {
-  hb_draw_move_to (dfuncs, draw_data, st, x, y);
-  if (ccw)
+  hb_draw_move_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x, y);
+  ਜੇ (ccw)
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x + w, y);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x + w, y + h);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x,     y + h);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x,     y + h);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x + w, y + h);
+    hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, x + w, y);
   }
-  hb_draw_close_path (dfuncs, draw_data, st);
+  hb_draw_close_ਰਸਤਾ (dfuncs, draw_ਅੰਕੜੇ, st);
 }
 
 /**
@@ -660,30 +660,30 @@ _hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_rectangle (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		   hb_draw_state_t *st,
-		   float x, float y,
-		   float w, float h,
-		   float stroke_width)
+		   ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y,
+		   ਦਸ਼ਮਲਵ w, ਦਸ਼ਮਲਵ h,
+		   ਦਸ਼ਮਲਵ stroke_ਚੌੜਾਈ)
 {
-  if (std::isnan (stroke_width))
+  ਜੇ (std::isnan (stroke_ਚੌੜਾਈ))
   {
     /* Filled rectangle with zero area is nothing to draw. */
-    if (w == 0.f || h == 0.f)
-      return;
-    _hb_draw_rect_contour (dfuncs, draw_data, st, x, y, w, h, /*ccw*/ true);
-    return;
+    ਜੇ (w == 0.f || h == 0.f)
+      ਵਾਪਸ;
+    _hb_draw_rect_contour (dfuncs, draw_ਅੰਕੜੇ, st, x, y, w, h, /*ccw*/ ਸੱਚ);
+    ਵਾਪਸ;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  ਜੇ (stroke_ਚੌੜਾਈ <= 0.f || !std::isfinite (stroke_ਚੌੜਾਈ))
+    ਵਾਪਸ;
 
   /* Normalize to non-negative width/height so the stroke math
    * below (outer grows by sw, inner shrinks by sw) produces the
    * expected outer-contains-inner ring regardless of w/h signs. */
-  if (w < 0.f) { x += w; w = -w; }
-  if (h < 0.f) { y += h; h = -h; }
+  ਜੇ (w < 0.f) { x += w; w = -w; }
+  ਜੇ (h < 0.f) { y += h; h = -h; }
   /* w or h == 0 is still meaningful when stroking: a stroked
    * zero-height rect is a horizontal line of length w; zero
    * width is a vertical line.  Both degenerate to a single
@@ -691,74 +691,74 @@ hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
 
   /* Stroke is centered on the edge: outer contour grows by
    * stroke_width/2, inner contour shrinks by the same. */
-  float s = 0.5f * stroke_width;
+  ਦਸ਼ਮਲਵ s = 0.5f * stroke_ਚੌੜਾਈ;
   /* Outer rectangle (CCW = adds coverage). */
-  _hb_draw_rect_contour (dfuncs, draw_data, st,
+  _hb_draw_rect_contour (dfuncs, draw_ਅੰਕੜੇ, st,
 			 x - s, y - s,
-			 w + stroke_width, h + stroke_width,
-			 /*ccw*/ true);
+			 w + stroke_ਚੌੜਾਈ, h + stroke_ਚੌੜਾਈ,
+			 /*ccw*/ ਸੱਚ);
   /* Inner rectangle (CW = removes coverage for the hole). */
-  float iw = w - stroke_width;
-  float ih = h - stroke_width;
-  if (iw > 0.f && ih > 0.f)
-    _hb_draw_rect_contour (dfuncs, draw_data, st,
+  ਦਸ਼ਮਲਵ iw = w - stroke_ਚੌੜਾਈ;
+  ਦਸ਼ਮਲਵ ih = h - stroke_ਚੌੜਾਈ;
+  ਜੇ (iw > 0.f && ih > 0.f)
+    _hb_draw_rect_contour (dfuncs, draw_ਅੰਕੜੇ, st,
 			   x + s, y + s, iw, ih,
-			   /*ccw*/ false);
+			   /*ccw*/ ਝੂਠ);
 }
 
 /* Circle approximated by 4 cubic Beziers, one per quadrant.
  * The magic constant 0.5522847498307936 is
  *   (4/3) * (sqrt(2) - 1)
  * and minimizes the max radial error to ~2.7e-4 of r. */
-static void
-_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਸਥਿਰ ਖਾਲੀ
+_hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 			 hb_draw_state_t *st,
-			 float cx, float cy, float r,
-			 bool ccw)
+			 ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy, ਦਸ਼ਮਲਵ r,
+			 ਤਾਰਕਿਕ ccw)
 {
-  static const float k = 0.5522847498307936f;
-  float ck = r * k;
+  ਸਥਿਰ ਅਚਲ ਦਸ਼ਮਲਵ k = 0.5522847498307936f;
+  ਦਸ਼ਮਲਵ ck = r * k;
 
-  hb_draw_move_to (dfuncs, draw_data, st, cx + r, cy);
-  if (ccw)
+  hb_draw_move_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st, cx + r, cy);
+  ਜੇ (ccw)
   {
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx + r, cy + ck,
 		      cx + ck, cy + r,
 		      cx,      cy + r);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx - ck, cy + r,
 		      cx - r,  cy + ck,
 		      cx - r,  cy);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx - r,  cy - ck,
 		      cx - ck, cy - r,
 		      cx,      cy - r);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx + ck, cy - r,
 		      cx + r,  cy - ck,
 		      cx + r,  cy);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx + r, cy - ck,
 		      cx + ck, cy - r,
 		      cx,      cy - r);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx - ck, cy - r,
 		      cx - r,  cy - ck,
 		      cx - r,  cy);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx - r,  cy + ck,
 		      cx - ck, cy + r,
 		      cx,      cy + r);
-    hb_draw_cubic_to (dfuncs, draw_data, st,
+    hb_draw_cubic_ਮੰਜ਼ਿਲ (dfuncs, draw_ਅੰਕੜੇ, st,
 		      cx + ck, cy + r,
 		      cx + r,  cy + ck,
 		      cx + r,  cy);
   }
-  hb_draw_close_path (dfuncs, draw_data, st);
+  hb_draw_close_ਰਸਤਾ (dfuncs, draw_ਅੰਕੜੇ, st);
 }
 
 /**
@@ -779,110 +779,110 @@ _hb_draw_circle_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-void
-hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
+ਖਾਲੀ
+hb_draw_circle (hb_draw_funcs_t *dfuncs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
 		hb_draw_state_t *st,
-		float cx, float cy,
-		float r,
-		float stroke_width)
+		ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy,
+		ਦਸ਼ਮਲਵ r,
+		ਦਸ਼ਮਲਵ stroke_ਚੌੜਾਈ)
 {
-  if (r <= 0.f)
-    return;
+  ਜੇ (r <= 0.f)
+    ਵਾਪਸ;
 
-  if (std::isnan (stroke_width))
+  ਜੇ (std::isnan (stroke_ਚੌੜਾਈ))
   {
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r, /*ccw*/ true);
-    return;
+    _hb_draw_circle_contour (dfuncs, draw_ਅੰਕੜੇ, st, cx, cy, r, /*ccw*/ ਸੱਚ);
+    ਵਾਪਸ;
   }
 
-  if (stroke_width <= 0.f || !std::isfinite (stroke_width))
-    return;
+  ਜੇ (stroke_ਚੌੜਾਈ <= 0.f || !std::isfinite (stroke_ਚੌੜਾਈ))
+    ਵਾਪਸ;
 
-  float s = 0.5f * stroke_width;
-  _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, r + s, /*ccw*/ true);
-  float ir = r - s;
-  if (ir > 0.f)
-    _hb_draw_circle_contour (dfuncs, draw_data, st, cx, cy, ir, /*ccw*/ false);
+  ਦਸ਼ਮਲਵ s = 0.5f * stroke_ਚੌੜਾਈ;
+  _hb_draw_circle_contour (dfuncs, draw_ਅੰਕੜੇ, st, cx, cy, r + s, /*ccw*/ ਸੱਚ);
+  ਦਸ਼ਮਲਵ ir = r - s;
+  ਜੇ (ir > 0.f)
+    _hb_draw_circle_contour (dfuncs, draw_ਅੰਕੜੇ, st, cx, cy, ir, /*ccw*/ ਝੂਠ);
 }
 
 
-static void
-hb_draw_extents_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_extents_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			 ਖਾਲੀ *ਅੰਕੜੇ,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_extents_t<> *extents = (hb_extents_t<> *) data;
+  hb_extents_t<> *extents = (hb_extents_t<> *) ਅੰਕੜੇ;
 
-  extents->add_point (to_x, to_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_draw_extents_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_extents_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			 ਖਾਲੀ *ਅੰਕੜੇ,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_extents_t<> *extents = (hb_extents_t<> *) data;
+  hb_extents_t<> *extents = (hb_extents_t<> *) ਅੰਕੜੇ;
 
-  extents->add_point (to_x, to_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_draw_extents_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_extents_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *ਅੰਕੜੇ,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+			      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_extents_t<> *extents = (hb_extents_t<> *) data;
+  hb_extents_t<> *extents = (hb_extents_t<> *) ਅੰਕੜੇ;
 
-  extents->add_point (control_x, control_y);
-  extents->add_point (to_x, to_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (control_x, control_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_draw_extents_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_draw_extents_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *ਅੰਕੜੇ,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+			  ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+			  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_extents_t<> *extents = (hb_extents_t<> *) data;
+  hb_extents_t<> *extents = (hb_extents_t<> *) ਅੰਕੜੇ;
 
-  extents->add_point (control1_x, control1_y);
-  extents->add_point (control2_x, control2_y);
-  extents->add_point (to_x, to_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (control1_x, control1_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (control2_x, control2_y);
+  extents->ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static inline void free_static_draw_extents_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_draw_extents_funcs ();
 
-static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_draw_extents_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_draw_extents_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_draw_extents_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_draw_extents_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_draw_extents_cubic_to, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, hb_draw_extents_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, hb_draw_extents_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, hb_draw_extents_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, hb_draw_extents_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_draw_extents_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_draw_extents_funcs;
 
-static inline
-void free_static_draw_extents_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_draw_extents_funcs ()
 {
   static_draw_extents_funcs.free_instance ();
 }
@@ -890,8 +890,8 @@ void free_static_draw_extents_funcs ()
 hb_draw_funcs_t *
 hb_draw_extents_get_funcs ()
 {
-  return static_draw_extents_funcs.get_unconst ();
+  ਵਾਪਸ static_draw_extents_funcs.get_unconst ();
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

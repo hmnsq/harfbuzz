@@ -28,21 +28,21 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_UNICODE_HH
-#define HB_UNICODE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_UNICODE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 
-extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
+ਬਾਹਰੀ HB_ਅੰਦਰੂਨੀ ਅਚਲ uint8_t _hb_modified_combining_class[256];
 
 /*
  * hb_unicode_funcs_t
  */
 
-#define HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS \
   HB_UNICODE_FUNC_IMPLEMENT (combining_class) \
-  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (eastasian_width)) \
+  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (eastasian_ਚੌੜਾਈ)) \
   HB_UNICODE_FUNC_IMPLEMENT (general_category) \
   HB_UNICODE_FUNC_IMPLEMENT (mirroring) \
   HB_UNICODE_FUNC_IMPLEMENT (script) \
@@ -52,75 +52,75 @@ extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
   /* ^--- Add new callbacks here */
 
 /* Simple callbacks are those taking a hb_codepoint_t and returning a hb_codepoint_t */
-#define HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_combining_class_t, combining_class) \
-  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned int, eastasian_width)) \
+  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ, eastasian_ਚੌੜਾਈ)) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_general_category_t, general_category) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_codepoint_t, mirroring) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_script_t, script) \
   /* ^--- Add new simple callbacks here */
 
-struct hb_unicode_funcs_t
+ਬਣਤਰ hb_unicode_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
-  hb_unicode_funcs_t *parent;
+  hb_unicode_funcs_t *ਮਾਪਾ;
 
-#define HB_UNICODE_FUNC_IMPLEMENT(return_type, name) \
-  return_type name (hb_codepoint_t unicode) { return func.name (this, unicode, user_data.name); }
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNC_IMPLEMENT(return_type, name) \
+  return_type name (hb_codepoint_t unicode) { ਵਾਪਸ func.name (ਇਹ, unicode, user_ਅੰਕੜੇ.name); }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_UNICODE_FUNC_IMPLEMENT
 
   hb_bool_t compose (hb_codepoint_t a, hb_codepoint_t b,
 		     hb_codepoint_t *ab)
   {
     *ab = 0;
-    if (unlikely (!a || !b)) return false;
-    return func.compose (this, a, b, ab, user_data.compose);
+    ਜੇ (unlikely (!a || !b)) ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ func.compose (ਇਹ, a, b, ab, user_ਅੰਕੜੇ.compose);
   }
 
   hb_bool_t decompose (hb_codepoint_t ab,
 		       hb_codepoint_t *a, hb_codepoint_t *b)
   {
     *a = ab; *b = 0;
-    return func.decompose (this, ab, a, b, user_data.decompose);
+    ਵਾਪਸ func.decompose (ਇਹ, ab, a, b, user_ਅੰਕੜੇ.decompose);
   }
 
-  unsigned int decompose_compatibility (hb_codepoint_t  u,
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ decompose_compatibility (hb_codepoint_t  u,
 					hb_codepoint_t *decomposed)
   {
-#ifdef HB_DISABLE_DEPRECATED
-    unsigned int ret  = 0;
-#else
-    unsigned int ret = func.decompose_compatibility (this, u, decomposed, user_data.decompose_compatibility);
-#endif
-    if (ret == 1 && u == decomposed[0]) {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ret  = 0;
+#ਨਹੀਂਤਾਂ
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ret = func.decompose_compatibility (ਇਹ, u, decomposed, user_ਅੰਕੜੇ.decompose_compatibility);
+#ਜੇ_ਅੰਤ
+    ਜੇ (ret == 1 && u == decomposed[0]) {
       decomposed[0] = 0;
-      return 0;
+      ਵਾਪਸ 0;
     }
     decomposed[ret] = 0;
-    return ret;
+    ਵਾਪਸ ret;
   }
 
-  unsigned int
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
   modified_combining_class (hb_codepoint_t u)
   {
     /* Reorder SAKOT to ensure it comes after any tone marks. */
-    if (unlikely (u == 0x1A60u)) return 254;
+    ਜੇ (unlikely (u == 0x1A60u)) ਵਾਪਸ 254;
     /* Reorder PADMA to ensure it comes after any vowel marks. */
-    if (unlikely (u == 0x0FC6u)) return 254;
+    ਜੇ (unlikely (u == 0x0FC6u)) ਵਾਪਸ 254;
     /* Reorder TSA -PHRU to reorder before U+0F74 */
-    if (unlikely (u == 0x0F39u)) return 127;
+    ਜੇ (unlikely (u == 0x0F39u)) ਵਾਪਸ 127;
 
-    return _hb_modified_combining_class[combining_class (u)];
+    ਵਾਪਸ _hb_modified_combining_class[combining_class (u)];
   }
 
-  static hb_bool_t
+  ਸਥਿਰ hb_bool_t
   is_variation_selector (hb_codepoint_t unicode)
   {
     /* U+180B..180D, U+180F MONGOLIAN FREE VARIATION SELECTORs are handled in the
      * Arabic shaper.  No need to match them here. */
-    return unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
+    ਵਾਪਸ unlikely (hb_ਵਿੱਚ_ranges<hb_codepoint_t> (unicode,
 						   0xFE00u, 0xFE0Fu, /* VARIATION SELECTOR-1..16 */
 						   0xE0100u, 0xE01EFu));  /* VARIATION SELECTOR-17..256 */
   }
@@ -163,35 +163,35 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * E0100..E01EF  # Mn [240] VARIATION SELECTOR-17..VARIATION SELECTOR-256
    * E01F0..E0FFF  # Cn [3600] <reserved-E01F0>..<reserved-E0FFF>
    */
-  static hb_bool_t
+  ਸਥਿਰ hb_bool_t
   is_default_ignorable (hb_codepoint_t ch)
   {
     hb_codepoint_t plane = ch >> 16;
-    if (likely (plane == 0))
+    ਜੇ (likely (plane == 0))
     {
       /* BMP */
-      hb_codepoint_t page = ch >> 8;
-      switch (page) {
-	case 0x00: return unlikely (ch == 0x00ADu);
-	case 0x03: return unlikely (ch == 0x034Fu);
-	case 0x06: return unlikely (ch == 0x061Cu);
-	case 0x17: return hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
-	case 0x18: return hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
-	case 0x20: return hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
+      hb_codepoint_t ਪੰਨਾ = ch >> 8;
+      ਚੋਣ (ਪੰਨਾ) {
+	ਹਾਲਤ 0x00: ਵਾਪਸ unlikely (ch == 0x00ADu);
+	ਹਾਲਤ 0x03: ਵਾਪਸ unlikely (ch == 0x034Fu);
+	ਹਾਲਤ 0x06: ਵਾਪਸ unlikely (ch == 0x061Cu);
+	ਹਾਲਤ 0x17: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
+	ਹਾਲਤ 0x18: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
+	ਹਾਲਤ 0x20: ਵਾਪਸ hb_ਵਿੱਚ_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
 					    0x202Au, 0x202Eu,
 					    0x2060u, 0x206Fu);
-	case 0xFE: return hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
-	case 0xFF: return hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
-	default: return false;
+	ਹਾਲਤ 0xFE: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
+	ਹਾਲਤ 0xFF: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
+	ਮੂਲ: ਵਾਪਸ ਝੂਠ;
       }
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       /* Other planes */
-      switch (plane) {
-	case 0x01: return hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
-	case 0x0E: return hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
-	default: return false;
+      ਚੋਣ (plane) {
+	ਹਾਲਤ 0x01: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
+	ਹਾਲਤ 0x0E: ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
+	ਮੂਲ: ਵਾਪਸ ਝੂਠ;
       }
     }
   }
@@ -200,7 +200,7 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * https://unicode.org/charts/PDF/U2000.pdf
    * https://docs.microsoft.com/en-us/typography/develop/character-design-standards/whitespace
    */
-  enum space_t {
+  ਗਿਣਤੀ space_t {
     NOT_SPACE = 0,
     SPACE_EM   = 1,
     SPACE_EM_2 = 2,
@@ -215,99 +215,99 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
     SPACE_PUNCTUATION,
     SPACE_NARROW,
   };
-  static space_t
+  ਸਥਿਰ space_t
   space_fallback_type (hb_codepoint_t u)
   {
-    switch (u)
+    ਚੋਣ (u)
     {
       /* All GC=Zs chars that can use a fallback. */
-      default:	    return NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
-      case 0x0020u: return SPACE;	/* U+0020 SPACE */
-      case 0x00A0u: return SPACE;	/* U+00A0 NO-BREAK SPACE */
-      case 0x2000u: return SPACE_EM_2;	/* U+2000 EN QUAD */
-      case 0x2001u: return SPACE_EM;	/* U+2001 EM QUAD */
-      case 0x2002u: return SPACE_EM_2;	/* U+2002 EN SPACE */
-      case 0x2003u: return SPACE_EM;	/* U+2003 EM SPACE */
-      case 0x2004u: return SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
-      case 0x2005u: return SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
-      case 0x2006u: return SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
-      case 0x2007u: return SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
-      case 0x2008u: return SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
-      case 0x2009u: return SPACE_EM_5;		/* U+2009 THIN SPACE */
-      case 0x200Au: return SPACE_EM_16;		/* U+200A HAIR SPACE */
-      case 0x202Fu: return SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
-      case 0x205Fu: return SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
-      case 0x3000u: return SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
+      ਮੂਲ:	    ਵਾਪਸ NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
+      ਹਾਲਤ 0x0020u: ਵਾਪਸ SPACE;	/* U+0020 SPACE */
+      ਹਾਲਤ 0x00A0u: ਵਾਪਸ SPACE;	/* U+00A0 NO-BREAK SPACE */
+      ਹਾਲਤ 0x2000u: ਵਾਪਸ SPACE_EM_2;	/* U+2000 EN QUAD */
+      ਹਾਲਤ 0x2001u: ਵਾਪਸ SPACE_EM;	/* U+2001 EM QUAD */
+      ਹਾਲਤ 0x2002u: ਵਾਪਸ SPACE_EM_2;	/* U+2002 EN SPACE */
+      ਹਾਲਤ 0x2003u: ਵਾਪਸ SPACE_EM;	/* U+2003 EM SPACE */
+      ਹਾਲਤ 0x2004u: ਵਾਪਸ SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
+      ਹਾਲਤ 0x2005u: ਵਾਪਸ SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
+      ਹਾਲਤ 0x2006u: ਵਾਪਸ SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
+      ਹਾਲਤ 0x2007u: ਵਾਪਸ SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
+      ਹਾਲਤ 0x2008u: ਵਾਪਸ SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
+      ਹਾਲਤ 0x2009u: ਵਾਪਸ SPACE_EM_5;		/* U+2009 THIN SPACE */
+      ਹਾਲਤ 0x200Au: ਵਾਪਸ SPACE_EM_16;		/* U+200A HAIR SPACE */
+      ਹਾਲਤ 0x202Fu: ਵਾਪਸ SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
+      ਹਾਲਤ 0x205Fu: ਵਾਪਸ SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
+      ਹਾਲਤ 0x3000u: ਵਾਪਸ SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
     }
   }
 
-  static hb_codepoint_t
+  ਸਥਿਰ hb_codepoint_t
   vertical_char_for (hb_codepoint_t u)
   {
-    switch (u >> 8)
+    ਚੋਣ (u >> 8)
     {
-      case 0x20: switch (u) {
-	case 0x2013u: return 0xfe32u; // EN DASH
-	case 0x2014u: return 0xfe31u; // EM DASH
-	case 0x2025u: return 0xfe30u; // TWO DOT LEADER
-	case 0x2026u: return 0xfe19u; // HORIZONTAL ELLIPSIS
-      } break;
-      case 0x30: switch (u) {
-	case 0x3001u: return 0xfe11u; // IDEOGRAPHIC COMMA
-	case 0x3002u: return 0xfe12u; // IDEOGRAPHIC FULL STOP
-	case 0x3008u: return 0xfe3fu; // LEFT ANGLE BRACKET
-	case 0x3009u: return 0xfe40u; // RIGHT ANGLE BRACKET
-	case 0x300au: return 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
-	case 0x300bu: return 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
-	case 0x300cu: return 0xfe41u; // LEFT CORNER BRACKET
-	case 0x300du: return 0xfe42u; // RIGHT CORNER BRACKET
-	case 0x300eu: return 0xfe43u; // LEFT WHITE CORNER BRACKET
-	case 0x300fu: return 0xfe44u; // RIGHT WHITE CORNER BRACKET
-	case 0x3010u: return 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
-	case 0x3011u: return 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
-	case 0x3014u: return 0xfe39u; // LEFT TORTOISE SHELL BRACKET
-	case 0x3015u: return 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
-	case 0x3016u: return 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
-	case 0x3017u: return 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
-      } break;
-      case 0xfe: switch (u) {
-	case 0xfe4fu: return 0xfe34u; // WAVY LOW LINE
-      } break;
-      case 0xff: switch (u) {
-	case 0xff01u: return 0xfe15u; // FULLWIDTH EXCLAMATION MARK
-	case 0xff08u: return 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
-	case 0xff09u: return 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
-	case 0xff0cu: return 0xfe10u; // FULLWIDTH COMMA
-	case 0xff1au: return 0xfe13u; // FULLWIDTH COLON
-	case 0xff1bu: return 0xfe14u; // FULLWIDTH SEMICOLON
-	case 0xff1fu: return 0xfe16u; // FULLWIDTH QUESTION MARK
-	case 0xff3bu: return 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
-	case 0xff3du: return 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
-	case 0xff3fu: return 0xfe33u; // FULLWIDTH LOW LINE
-	case 0xff5bu: return 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
-	case 0xff5du: return 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
-      } break;
+      ਹਾਲਤ 0x20: ਚੋਣ (u) {
+	ਹਾਲਤ 0x2013u: ਵਾਪਸ 0xfe32u; // EN DASH
+	ਹਾਲਤ 0x2014u: ਵਾਪਸ 0xfe31u; // EM DASH
+	ਹਾਲਤ 0x2025u: ਵਾਪਸ 0xfe30u; // TWO DOT LEADER
+	ਹਾਲਤ 0x2026u: ਵਾਪਸ 0xfe19u; // HORIZONTAL ELLIPSIS
+      } ਰੋਕੋ;
+      ਹਾਲਤ 0x30: ਚੋਣ (u) {
+	ਹਾਲਤ 0x3001u: ਵਾਪਸ 0xfe11u; // IDEOGRAPHIC COMMA
+	ਹਾਲਤ 0x3002u: ਵਾਪਸ 0xfe12u; // IDEOGRAPHIC FULL STOP
+	ਹਾਲਤ 0x3008u: ਵਾਪਸ 0xfe3fu; // LEFT ANGLE BRACKET
+	ਹਾਲਤ 0x3009u: ਵਾਪਸ 0xfe40u; // RIGHT ANGLE BRACKET
+	ਹਾਲਤ 0x300au: ਵਾਪਸ 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
+	ਹਾਲਤ 0x300bu: ਵਾਪਸ 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
+	ਹਾਲਤ 0x300cu: ਵਾਪਸ 0xfe41u; // LEFT CORNER BRACKET
+	ਹਾਲਤ 0x300du: ਵਾਪਸ 0xfe42u; // RIGHT CORNER BRACKET
+	ਹਾਲਤ 0x300eu: ਵਾਪਸ 0xfe43u; // LEFT WHITE CORNER BRACKET
+	ਹਾਲਤ 0x300fu: ਵਾਪਸ 0xfe44u; // RIGHT WHITE CORNER BRACKET
+	ਹਾਲਤ 0x3010u: ਵਾਪਸ 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
+	ਹਾਲਤ 0x3011u: ਵਾਪਸ 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
+	ਹਾਲਤ 0x3014u: ਵਾਪਸ 0xfe39u; // LEFT TORTOISE SHELL BRACKET
+	ਹਾਲਤ 0x3015u: ਵਾਪਸ 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
+	ਹਾਲਤ 0x3016u: ਵਾਪਸ 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
+	ਹਾਲਤ 0x3017u: ਵਾਪਸ 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
+      } ਰੋਕੋ;
+      ਹਾਲਤ 0xfe: ਚੋਣ (u) {
+	ਹਾਲਤ 0xfe4fu: ਵਾਪਸ 0xfe34u; // WAVY LOW LINE
+      } ਰੋਕੋ;
+      ਹਾਲਤ 0xff: ਚੋਣ (u) {
+	ਹਾਲਤ 0xff01u: ਵਾਪਸ 0xfe15u; // FULLWIDTH EXCLAMATION MARK
+	ਹਾਲਤ 0xff08u: ਵਾਪਸ 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
+	ਹਾਲਤ 0xff09u: ਵਾਪਸ 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
+	ਹਾਲਤ 0xff0cu: ਵਾਪਸ 0xfe10u; // FULLWIDTH COMMA
+	ਹਾਲਤ 0xff1au: ਵਾਪਸ 0xfe13u; // FULLWIDTH COLON
+	ਹਾਲਤ 0xff1bu: ਵਾਪਸ 0xfe14u; // FULLWIDTH SEMICOLON
+	ਹਾਲਤ 0xff1fu: ਵਾਪਸ 0xfe16u; // FULLWIDTH QUESTION MARK
+	ਹਾਲਤ 0xff3bu: ਵਾਪਸ 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
+	ਹਾਲਤ 0xff3du: ਵਾਪਸ 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
+	ਹਾਲਤ 0xff3fu: ਵਾਪਸ 0xfe33u; // FULLWIDTH LOW LINE
+	ਹਾਲਤ 0xff5bu: ਵਾਪਸ 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
+	ਹਾਲਤ 0xff5du: ਵਾਪਸ 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
+      } ਰੋਕੋ;
     }
 
-    return u;
+    ਵਾਪਸ u;
   }
 
-  struct {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_func_t name;
+  ਬਣਤਰ {
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_UNICODE_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) void *name;
+  ਬਣਤਰ {
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNC_IMPLEMENT(name) ਖਾਲੀ *name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
-  } user_data;
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_UNICODE_FUNC_IMPLEMENT
+  } user_ਅੰਕੜੇ;
 
-  struct {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  ਬਣਤਰ {
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_UNICODE_FUNC_IMPLEMENT
   } destroy;
 };
 DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
@@ -330,23 +330,23 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * More details here:
  * https://bugzilla.mozilla.org/show_bug.cgi?id=662055
  */
-#define HB_MODIFIED_COMBINING_CLASS_CCC10 22 /* sheva */
-#define HB_MODIFIED_COMBINING_CLASS_CCC11 15 /* hataf segol */
-#define HB_MODIFIED_COMBINING_CLASS_CCC12 16 /* hataf patah */
-#define HB_MODIFIED_COMBINING_CLASS_CCC13 17 /* hataf qamats */
-#define HB_MODIFIED_COMBINING_CLASS_CCC14 23 /* hiriq */
-#define HB_MODIFIED_COMBINING_CLASS_CCC15 18 /* tsere */
-#define HB_MODIFIED_COMBINING_CLASS_CCC16 19 /* segol */
-#define HB_MODIFIED_COMBINING_CLASS_CCC17 20 /* patah */
-#define HB_MODIFIED_COMBINING_CLASS_CCC18 21 /* qamats & qamats qatan */
-#define HB_MODIFIED_COMBINING_CLASS_CCC19 14 /* holam & holam haser for vav*/
-#define HB_MODIFIED_COMBINING_CLASS_CCC20 24 /* qubuts */
-#define HB_MODIFIED_COMBINING_CLASS_CCC21 12 /* dagesh */
-#define HB_MODIFIED_COMBINING_CLASS_CCC22 25 /* meteg */
-#define HB_MODIFIED_COMBINING_CLASS_CCC23 13 /* rafe */
-#define HB_MODIFIED_COMBINING_CLASS_CCC24 10 /* shin dot */
-#define HB_MODIFIED_COMBINING_CLASS_CCC25 11 /* sin dot */
-#define HB_MODIFIED_COMBINING_CLASS_CCC26 26 /* point varika */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC10 22 /* sheva */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC11 15 /* hataf segol */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC12 16 /* hataf patah */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC13 17 /* hataf qamats */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC14 23 /* hiriq */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC15 18 /* tsere */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC16 19 /* segol */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC17 20 /* patah */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC18 21 /* qamats & qamats qatan */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC19 14 /* holam & holam haser for vav*/
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC20 24 /* qubuts */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC21 12 /* dagesh */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC22 25 /* meteg */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC23 13 /* rafe */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC24 10 /* shin dot */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC25 11 /* sin dot */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC26 26 /* point varika */
 
 /*
  * Arabic
@@ -355,18 +355,18 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * https://unicode.org/faq/normalization.html#8
  * https://unicode.org/faq/normalization.html#9
  */
-#define HB_MODIFIED_COMBINING_CLASS_CCC27 28 /* fathatan */
-#define HB_MODIFIED_COMBINING_CLASS_CCC28 29 /* dammatan */
-#define HB_MODIFIED_COMBINING_CLASS_CCC29 30 /* kasratan */
-#define HB_MODIFIED_COMBINING_CLASS_CCC30 31 /* fatha */
-#define HB_MODIFIED_COMBINING_CLASS_CCC31 32 /* damma */
-#define HB_MODIFIED_COMBINING_CLASS_CCC32 33 /* kasra */
-#define HB_MODIFIED_COMBINING_CLASS_CCC33 27 /* shadda */
-#define HB_MODIFIED_COMBINING_CLASS_CCC34 34 /* sukun */
-#define HB_MODIFIED_COMBINING_CLASS_CCC35 35 /* superscript alef */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC27 28 /* fathatan */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC28 29 /* dammatan */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC29 30 /* kasratan */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC30 31 /* fatha */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC31 32 /* damma */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC32 33 /* kasra */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC33 27 /* shadda */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC34 34 /* sukun */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC35 35 /* superscript alef */
 
 /* Syriac */
-#define HB_MODIFIED_COMBINING_CLASS_CCC36 36 /* superscript alaph */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC36 36 /* superscript alaph */
 
 /* Telugu
  *
@@ -375,8 +375,8 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * a non-zero ccc.  That makes them reorder with the Halant (ccc=9).
  * Assign 4 and 5, which are otherwise unassigned.
  */
-#define HB_MODIFIED_COMBINING_CLASS_CCC84 4 /* length mark */
-#define HB_MODIFIED_COMBINING_CLASS_CCC91 5 /* ai length mark */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC84 4 /* length mark */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC91 5 /* ai length mark */
 
 /* Thai
  *
@@ -384,31 +384,31 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * Assign 3, which is unassigned otherwise.
  * Uniscribe does this reordering too.
  */
-#define HB_MODIFIED_COMBINING_CLASS_CCC103 3 /* sara u / sara uu */
-#define HB_MODIFIED_COMBINING_CLASS_CCC107 107 /* mai * */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC103 3 /* sara u / sara uu */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC107 107 /* mai * */
 
 /* Lao */
-#define HB_MODIFIED_COMBINING_CLASS_CCC118 118 /* sign u / sign uu */
-#define HB_MODIFIED_COMBINING_CLASS_CCC122 122 /* mai * */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC118 118 /* sign u / sign uu */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC122 122 /* mai * */
 
 /* Tibetan
  *
  * In case of multiple vowel-signs, use u first (but after achung)
  * this allows Dzongkha multi-vowel shortcuts to render correctly
  */
-#define HB_MODIFIED_COMBINING_CLASS_CCC129 129 /* sign aa */
-#define HB_MODIFIED_COMBINING_CLASS_CCC130 132 /* sign i */
-#define HB_MODIFIED_COMBINING_CLASS_CCC132 131 /* sign u */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC129 129 /* sign aa */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC130 132 /* sign i */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MODIFIED_COMBINING_CLASS_CCC132 131 /* sign u */
 
 /* Misc */
 
-#define HB_UNICODE_GENERAL_CATEGORY_IS_MARK(gen_cat) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_GENERAL_CATEGORY_IS_MARK(gen_cat) \
 	(FLAG_UNSAFE (gen_cat) & \
 	 (FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)))
 
-#define HB_UNICODE_GENERAL_CATEGORY_IS_LETTER(gen_cat) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UNICODE_GENERAL_CATEGORY_IS_LETTER(gen_cat) \
 	(FLAG_UNSAFE (gen_cat) & \
 	 (FLAG (HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER) | \
@@ -420,35 +420,35 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * Ranges, used for bsearch tables.
  */
 
-struct hb_unicode_range_t
+ਬਣਤਰ hb_unicode_range_t
 {
-  static int
-  cmp (const void *_key, const void *_item)
+  ਸਥਿਰ ਪੂਰਨ
+  cmp (ਅਚਲ ਖਾਲੀ *ਕੁੰਜੀ_3, ਅਚਲ ਖਾਲੀ *ਵਸਤੂ_2)
   {
-    hb_codepoint_t cp = *((hb_codepoint_t *) _key);
-    const hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
+    hb_codepoint_t cp = *((hb_codepoint_t *) ਕੁੰਜੀ_3);
+    ਅਚਲ hb_unicode_range_t *range = (hb_unicode_range_t *) ਵਸਤੂ_2;
 
-    if (cp < range->start)
-      return -1;
-    else if (cp <= range->end)
-      return 0;
-    else
-      return +1;
+    ਜੇ (cp < range->ਸ਼ੁਰੂ)
+      ਵਾਪਸ -1;
+    ਨਹੀਂਤਾਂ ਜੇ (cp <= range->ਸਿਰਾ)
+      ਵਾਪਸ 0;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ +1;
   }
 
-  hb_codepoint_t start;
-  hb_codepoint_t end;
+  hb_codepoint_t ਸ਼ੁਰੂ;
+  hb_codepoint_t ਸਿਰਾ;
 };
 
 /*
  * Emoji.
  */
 
-HB_INTERNAL bool
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
 _hb_unicode_is_emoji_Extended_Pictographic (hb_codepoint_t cp);
 
 
-extern "C" HB_INTERNAL hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
+ਬਾਹਰੀ "C" HB_ਅੰਦਰੂਨੀ hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
 
 
-#endif /* HB_UNICODE_HH */
+#ਜੇ_ਅੰਤ /* HB_UNICODE_HH */

@@ -26,15 +26,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-use-machine.hh"
-#include "hb-ot-shaper-use-table.hh"
-#include "hb-ot-shaper-arabic.hh"
-#include "hb-ot-shaper-arabic-joining-list.hh"
-#include "hb-ot-shaper-vowel-constraints.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-use-machine.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-use-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-arabic.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-arabic-joining-list.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-vowel-constraints.hh"
 
 
 /*
@@ -42,7 +42,7 @@
  * https://docs.microsoft.com/en-us/typography/script-development/use
  */
 
-static const hb_tag_t
+ਸਥਿਰ ਅਚਲ hb_ਟੈਗ_t
 use_basic_features[] =
 {
   /*
@@ -50,31 +50,31 @@ use_basic_features[] =
    * These features are applied all at once, before reordering, constrained
    * to the syllable.
    */
-  HB_TAG('r','k','r','f'),
-  HB_TAG('a','b','v','f'),
-  HB_TAG('b','l','w','f'),
-  HB_TAG('h','a','l','f'),
-  HB_TAG('p','s','t','f'),
-  HB_TAG('v','a','t','u'),
-  HB_TAG('c','j','c','t'),
+  HB_ਟੈਗ('r','k','r','f'),
+  HB_ਟੈਗ('a','b','v','f'),
+  HB_ਟੈਗ('b','l','w','f'),
+  HB_ਟੈਗ('h','a','l','f'),
+  HB_ਟੈਗ('p','s','t','f'),
+  HB_ਟੈਗ('v','a','t','u'),
+  HB_ਟੈਗ('c','j','c','t'),
 };
-static const hb_tag_t
+ਸਥਿਰ ਅਚਲ hb_ਟੈਗ_t
 use_topographical_features[] =
 {
-  HB_TAG('i','s','o','l'),
-  HB_TAG('i','n','i','t'),
-  HB_TAG('m','e','d','i'),
-  HB_TAG('f','i','n','a'),
+  HB_ਟੈਗ('i','s','o','l'),
+  HB_ਟੈਗ('i','n','i','t'),
+  HB_ਟੈਗ('m','e','d','i'),
+  HB_ਟੈਗ('f','i','n','a'),
 };
 /* Same order as use_topographical_features. */
-enum joining_form_t {
+ਗਿਣਤੀ joining_form_t {
   JOINING_FORM_ISOL,
   JOINING_FORM_INIT,
   JOINING_FORM_MEDI,
   JOINING_FORM_FINA,
   _JOINING_FORM_NONE
 };
-static const hb_tag_t
+ਸਥਿਰ ਅਚਲ hb_ਟੈਗ_t
 use_other_features[] =
 {
   /*
@@ -82,299 +82,299 @@ use_other_features[] =
    * These features are applied all at once, after reordering and
    * clearing syllables.
    */
-  HB_TAG('a','b','v','s'),
-  HB_TAG('b','l','w','s'),
-  HB_TAG('h','a','l','n'),
-  HB_TAG('p','r','e','s'),
-  HB_TAG('p','s','t','s'),
+  HB_ਟੈਗ('a','b','v','s'),
+  HB_ਟੈਗ('b','l','w','s'),
+  HB_ਟੈਗ('h','a','l','n'),
+  HB_ਟੈਗ('p','r','e','s'),
+  HB_ਟੈਗ('p','s','t','s'),
 };
 
-static bool
-setup_syllables_use (const hb_ot_shape_plan_t *plan,
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਤਿਆਰੀ_syllables_use (ਅਚਲ hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
-static bool
-record_rphf_use (const hb_ot_shape_plan_t *plan,
+		     hb_ਬਫਰ_t *ਬਫਰ);
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਰਿਕਾਰਡ_rphf_use (ਅਚਲ hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer);
-static bool
-record_pref_use (const hb_ot_shape_plan_t *plan,
+		 hb_ਬਫਰ_t *ਬਫਰ);
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਰਿਕਾਰਡ_pref_use (ਅਚਲ hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer);
-static bool
-reorder_use (const hb_ot_shape_plan_t *plan,
+		 hb_ਬਫਰ_t *ਬਫਰ);
+ਸਥਿਰ ਤਾਰਕਿਕ
+reorder_use (ਅਚਲ hb_ot_shape_plan_t *plan,
 	     hb_font_t *font,
-	     hb_buffer_t *buffer);
+	     hb_ਬਫਰ_t *ਬਫਰ);
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 collect_features_use (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_use);
+  map->ਜੋੜੋ_gsub_pause (ਤਿਆਰੀ_syllables_use);
 
   /* "Default glyph pre-processing group" */
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('n','u','k','t'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('a','k','h','n'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
+  map->enable_feature (HB_ਟੈਗ('l','o','c','l'), F_ਪ੍ਰਤੀ_SYLLABLE);
+  map->enable_feature (HB_ਟੈਗ('c','c','m','p'), F_ਪ੍ਰਤੀ_SYLLABLE);
+  map->enable_feature (HB_ਟੈਗ('n','u','k','t'), F_ਪ੍ਰਤੀ_SYLLABLE);
+  map->enable_feature (HB_ਟੈਗ('a','k','h','n'), F_MANUAL_ZWJ | F_ਪ੍ਰਤੀ_SYLLABLE);
 
   /* "Reordering group" */
-  map->add_gsub_pause (_hb_clear_substitution_flags);
-  map->add_feature (HB_TAG('r','p','h','f'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
-  map->add_gsub_pause (record_rphf_use);
-  map->add_gsub_pause (_hb_clear_substitution_flags);
-  map->enable_feature (HB_TAG('p','r','e','f'), F_MANUAL_ZWJ | F_PER_SYLLABLE);
-  map->add_gsub_pause (record_pref_use);
+  map->ਜੋੜੋ_gsub_pause (_hb_clear_substitution_flags);
+  map->ਜੋੜੋ_feature (HB_ਟੈਗ('r','p','h','f'), F_MANUAL_ZWJ | F_ਪ੍ਰਤੀ_SYLLABLE);
+  map->ਜੋੜੋ_gsub_pause (ਰਿਕਾਰਡ_rphf_use);
+  map->ਜੋੜੋ_gsub_pause (_hb_clear_substitution_flags);
+  map->enable_feature (HB_ਟੈਗ('p','r','e','f'), F_MANUAL_ZWJ | F_ਪ੍ਰਤੀ_SYLLABLE);
+  map->ਜੋੜੋ_gsub_pause (ਰਿਕਾਰਡ_pref_use);
 
   /* "Orthographic unit shaping group" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_basic_features); i++)
-    map->enable_feature (use_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (use_basic_features); i++)
+    map->enable_feature (use_basic_features[i], F_MANUAL_ZWJ | F_ਪ੍ਰਤੀ_SYLLABLE);
 
-  map->add_gsub_pause (reorder_use);
-  map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  map->ਜੋੜੋ_gsub_pause (reorder_use);
+  map->ਜੋੜੋ_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
   /* "Topographical features" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_topographical_features); i++)
-    map->add_feature (use_topographical_features[i]);
-  map->add_gsub_pause (nullptr);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (use_topographical_features); i++)
+    map->ਜੋੜੋ_feature (use_topographical_features[i]);
+  map->ਜੋੜੋ_gsub_pause (ਖਾਲੀ_ਸੂਚਕ);
 
   /* "Standard typographic presentation" */
-  for (unsigned int i = 0; i < ARRAY_LENGTH (use_other_features); i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (use_other_features); i++)
     map->enable_feature (use_other_features[i], F_MANUAL_ZWJ);
 }
 
-struct use_shape_plan_t
+ਬਣਤਰ use_shape_plan_t
 {
-  hb_mask_t rphf_mask;
+  hb_ਨਕਾਬ_t rphf_ਨਕਾਬ;
 
   arabic_shape_plan_t *arabic_plan;
 };
 
-static void *
-data_create_use (const hb_ot_shape_plan_t *plan)
+ਸਥਿਰ ਖਾਲੀ *
+ਅੰਕੜੇ_create_use (ਅਚਲ hb_ot_shape_plan_t *plan)
 {
-  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, sizeof (use_shape_plan_t));
-  if (unlikely (!use_plan))
-    return nullptr;
+  use_shape_plan_t *use_plan = (use_shape_plan_t *) hb_calloc (1, ਆਕਾਰ (use_shape_plan_t));
+  ਜੇ (unlikely (!use_plan))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  use_plan->rphf_mask = plan->map.get_1_mask (HB_TAG('r','p','h','f'));
+  use_plan->rphf_ਨਕਾਬ = plan->map.get_1_ਨਕਾਬ (HB_ਟੈਗ('r','p','h','f'));
 
-  if (has_arabic_joining (plan->props.script))
+  ਜੇ (has_arabic_joining (plan->props.script))
   {
-    use_plan->arabic_plan = (arabic_shape_plan_t *) data_create_arabic (plan);
-    if (unlikely (!use_plan->arabic_plan))
+    use_plan->arabic_plan = (arabic_shape_plan_t *) ਅੰਕੜੇ_create_arabic (plan);
+    ਜੇ (unlikely (!use_plan->arabic_plan))
     {
       hb_free (use_plan);
-      return nullptr;
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
   }
 
-  return use_plan;
+  ਵਾਪਸ use_plan;
 }
 
-static void
-data_destroy_use (void *data)
+ਸਥਿਰ ਖਾਲੀ
+ਅੰਕੜੇ_destroy_use (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  use_shape_plan_t *use_plan = (use_shape_plan_t *) data;
+  use_shape_plan_t *use_plan = (use_shape_plan_t *) ਅੰਕੜੇ;
 
-  if (use_plan->arabic_plan)
-    data_destroy_arabic (use_plan->arabic_plan);
+  ਜੇ (use_plan->arabic_plan)
+    ਅੰਕੜੇ_destroy_arabic (use_plan->arabic_plan);
 
-  hb_free (data);
+  hb_free (ਅੰਕੜੇ);
 }
 
-static void
-setup_masks_use (const hb_ot_shape_plan_t *plan,
-		 hb_buffer_t              *buffer,
-		 hb_font_t                *font HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+ਤਿਆਰੀ_masks_use (ਅਚਲ hb_ot_shape_plan_t *plan,
+		 hb_ਬਫਰ_t              *ਬਫਰ,
+		 hb_font_t                *font HB_ਅਣਵਰਤਿਆ)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ਅਚਲ use_shape_plan_t *use_plan = (ਅਚਲ use_shape_plan_t *) plan->ਅੰਕੜੇ;
 
   /* Do this before allocating use_category(). */
-  if (use_plan->arabic_plan)
+  ਜੇ (use_plan->arabic_plan)
   {
-    setup_masks_arabic_plan (use_plan->arabic_plan, buffer, plan->props.script);
+    ਤਿਆਰੀ_masks_arabic_plan (use_plan->arabic_plan, ਬਫਰ, plan->props.script);
   }
 
-  HB_BUFFER_ALLOCATE_VAR (buffer, use_category);
+  HB_ਬਫਰ_ALLOCATE_VAR (ਬਫਰ, use_category);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     info[i].use_category() = hb_use_get_category (info[i].codepoint);
 }
 
-static void
-setup_rphf_mask (const hb_ot_shape_plan_t *plan,
-		 hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+ਤਿਆਰੀ_rphf_ਨਕਾਬ (ਅਚਲ hb_ot_shape_plan_t *plan,
+		 hb_ਬਫਰ_t *ਬਫਰ)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ਅਚਲ use_shape_plan_t *use_plan = (ਅਚਲ use_shape_plan_t *) plan->ਅੰਕੜੇ;
 
-  hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return;
+  hb_ਨਕਾਬ_t ਨਕਾਬ = use_plan->rphf_ਨਕਾਬ;
+  ਜੇ (!ਨਕਾਬ) ਵਾਪਸ;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
   {
-    unsigned int limit = info[start].use_category() == USE(R) ? 1 : hb_min (3u, end - start);
-    for (unsigned int i = start; i < start + limit; i++)
-      info[i].mask |= mask;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਹੱਦਬੰਦੀ = info[ਸ਼ੁਰੂ].use_category() == USE(R) ? 1 : hb_min (3u, ਸਿਰਾ - ਸ਼ੁਰੂ);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸ਼ੁਰੂ + ਹੱਦਬੰਦੀ; i++)
+      info[i].ਨਕਾਬ |= ਨਕਾਬ;
   }
 }
 
-static void
-setup_topographical_masks (const hb_ot_shape_plan_t *plan,
-			   hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+ਤਿਆਰੀ_topographical_masks (ਅਚਲ hb_ot_shape_plan_t *plan,
+			   hb_ਬਫਰ_t *ਬਫਰ)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
-  if (use_plan->arabic_plan)
-    return;
+  ਅਚਲ use_shape_plan_t *use_plan = (ਅਚਲ use_shape_plan_t *) plan->ਅੰਕੜੇ;
+  ਜੇ (use_plan->arabic_plan)
+    ਵਾਪਸ;
 
   static_assert ((JOINING_FORM_INIT < 4 && JOINING_FORM_ISOL < 4 && JOINING_FORM_MEDI < 4 && JOINING_FORM_FINA < 4), "");
-  hb_mask_t masks[4], all_masks = 0;
-  for (unsigned int i = 0; i < 4; i++)
+  hb_ਨਕਾਬ_t masks[4], all_masks = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < 4; i++)
   {
-    masks[i] = plan->map.get_1_mask (use_topographical_features[i]);
-    if (masks[i] == plan->map.get_global_mask ())
+    masks[i] = plan->map.get_1_ਨਕਾਬ (use_topographical_features[i]);
+    ਜੇ (masks[i] == plan->map.get_global_ਨਕਾਬ ())
       masks[i] = 0;
     all_masks |= masks[i];
   }
-  if (!all_masks)
-    return;
-  hb_mask_t other_masks = ~all_masks;
+  ਜੇ (!all_masks)
+    ਵਾਪਸ;
+  hb_ਨਕਾਬ_t other_masks = ~all_masks;
 
-  unsigned int last_start = 0;
-  joining_form_t last_form = _JOINING_FORM_NONE;
-  hb_glyph_info_t *info = buffer->info;
-  foreach_syllable (buffer, start, end)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਆਖਰੀ_ਸ਼ੁਰੂ = 0;
+  joining_form_t ਆਖਰੀ_form = _JOINING_FORM_NONE;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
   {
-    use_syllable_type_t syllable_type = (use_syllable_type_t) (info[start].syllable() & 0x0F);
-    switch (syllable_type)
+    use_syllable_type_t syllable_type = (use_syllable_type_t) (info[ਸ਼ੁਰੂ].syllable() & 0x0F);
+    ਚੋਣ (syllable_type)
     {
-      case use_hieroglyph_cluster:
-      case use_non_cluster:
+      ਹਾਲਤ use_hieroglyph_cluster:
+      ਹਾਲਤ use_non_cluster:
 	/* These don't join.  Nothing to do. */
-	last_form = _JOINING_FORM_NONE;
-	break;
+	ਆਖਰੀ_form = _JOINING_FORM_NONE;
+	ਰੋਕੋ;
 
-      case use_virama_terminated_cluster:
-      case use_sakot_terminated_cluster:
-      case use_standard_cluster:
-      case use_number_joiner_terminated_cluster:
-      case use_numeral_cluster:
-      case use_symbol_cluster:
-      case use_broken_cluster:
+      ਹਾਲਤ use_virama_terminated_cluster:
+      ਹਾਲਤ use_sakot_terminated_cluster:
+      ਹਾਲਤ use_standard_cluster:
+      ਹਾਲਤ use_ਸੰਖਿਆ_joiner_terminated_cluster:
+      ਹਾਲਤ use_numeral_cluster:
+      ਹਾਲਤ use_ਚਿੰਨ੍ਹ_cluster:
+      ਹਾਲਤ use_broken_cluster:
 
-	bool join = last_form == JOINING_FORM_FINA || last_form == JOINING_FORM_ISOL;
+	ਤਾਰਕਿਕ join = ਆਖਰੀ_form == JOINING_FORM_FINA || ਆਖਰੀ_form == JOINING_FORM_ISOL;
 
-	if (join)
+	ਜੇ (join)
 	{
 	  /* Fixup previous syllable's form. */
-	  last_form = last_form == JOINING_FORM_FINA ? JOINING_FORM_MEDI : JOINING_FORM_INIT;
-	  for (unsigned int i = last_start; i < start; i++)
-	    info[i].mask = (info[i].mask & other_masks) | masks[last_form];
+	  ਆਖਰੀ_form = ਆਖਰੀ_form == JOINING_FORM_FINA ? JOINING_FORM_MEDI : JOINING_FORM_INIT;
+	  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਆਖਰੀ_ਸ਼ੁਰੂ; i < ਸ਼ੁਰੂ; i++)
+	    info[i].ਨਕਾਬ = (info[i].ਨਕਾਬ & other_masks) | masks[ਆਖਰੀ_form];
 	}
 
 	/* Form for this syllable. */
-	last_form = join ? JOINING_FORM_FINA : JOINING_FORM_ISOL;
-	for (unsigned int i = start; i < end; i++)
-	  info[i].mask = (info[i].mask & other_masks) | masks[last_form];
+	ਆਖਰੀ_form = join ? JOINING_FORM_FINA : JOINING_FORM_ISOL;
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+	  info[i].ਨਕਾਬ = (info[i].ਨਕਾਬ & other_masks) | masks[ਆਖਰੀ_form];
 
-	break;
+	ਰੋਕੋ;
     }
 
-    last_start = start;
+    ਆਖਰੀ_ਸ਼ੁਰੂ = ਸ਼ੁਰੂ;
   }
 }
 
-static bool
-setup_syllables_use (const hb_ot_shape_plan_t *plan,
-		     hb_font_t *font HB_UNUSED,
-		     hb_buffer_t *buffer)
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਤਿਆਰੀ_syllables_use (ਅਚਲ hb_ot_shape_plan_t *plan,
+		     hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+		     hb_ਬਫਰ_t *ਬਫਰ)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_use (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  setup_rphf_mask (plan, buffer);
-  setup_topographical_masks (plan, buffer);
-  return false;
+  HB_ਬਫਰ_ALLOCATE_VAR (ਬਫਰ, syllable);
+  ਲੱਭੋ_syllables_use (ਬਫਰ);
+  foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
+    ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (ਸ਼ੁਰੂ, ਸਿਰਾ);
+  ਤਿਆਰੀ_rphf_ਨਕਾਬ (plan, ਬਫਰ);
+  ਤਿਆਰੀ_topographical_masks (plan, ਬਫਰ);
+  ਵਾਪਸ ਝੂਠ;
 }
 
-static bool
-record_rphf_use (const hb_ot_shape_plan_t *plan,
-		 hb_font_t *font HB_UNUSED,
-		 hb_buffer_t *buffer)
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਰਿਕਾਰਡ_rphf_use (ਅਚਲ hb_ot_shape_plan_t *plan,
+		 hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+		 hb_ਬਫਰ_t *ਬਫਰ)
 {
-  const use_shape_plan_t *use_plan = (const use_shape_plan_t *) plan->data;
+  ਅਚਲ use_shape_plan_t *use_plan = (ਅਚਲ use_shape_plan_t *) plan->ਅੰਕੜੇ;
 
-  hb_mask_t mask = use_plan->rphf_mask;
-  if (!mask) return false;
-  hb_glyph_info_t *info = buffer->info;
+  hb_ਨਕਾਬ_t ਨਕਾਬ = use_plan->rphf_ਨਕਾਬ;
+  ਜੇ (!ਨਕਾਬ) ਵਾਪਸ ਝੂਠ;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
   {
     /* Mark a substituted repha as USE(R). */
-    for (unsigned int i = start; i < end && (info[i].mask & mask); i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ && (info[i].ਨਕਾਬ & ਨਕਾਬ); i++)
+      ਜੇ (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(R);
-	break;
+	ਰੋਕੋ;
       }
   }
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
 
-static bool
-record_pref_use (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		 hb_font_t *font HB_UNUSED,
-		 hb_buffer_t *buffer)
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਰਿਕਾਰਡ_pref_use (ਅਚਲ hb_ot_shape_plan_t *plan HB_ਅਣਵਰਤਿਆ,
+		 hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+		 hb_ਬਫਰ_t *ਬਫਰ)
 {
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  foreach_syllable (buffer, start, end)
+  foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
   {
     /* Mark a substituted pref as VPre, as they behave the same way. */
-    for (unsigned int i = start; i < end; i++)
-      if (_hb_glyph_info_substituted (&info[i]))
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+      ਜੇ (_hb_glyph_info_substituted (&info[i]))
       {
 	info[i].use_category() = USE(VPre);
-	break;
+	ਰੋਕੋ;
       }
   }
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
 
-static inline bool
-is_halant_use (const hb_glyph_info_t &info)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+is_halant_use (ਅਚਲ hb_glyph_info_t &info)
 {
-  return (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
+  ਵਾਪਸ (info.use_category() == USE(H) || info.use_category() == USE(HVM) || info.use_category() == USE(IS)) &&
 	 !_hb_glyph_info_ligated (&info);
 }
 
-static void
-reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
+ਸਥਿਰ ਖਾਲੀ
+reorder_syllable_use (hb_ਬਫਰ_t *ਬਫਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
 {
-  use_syllable_type_t syllable_type = (use_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
+  use_syllable_type_t syllable_type = (use_syllable_type_t) (ਬਫਰ->info[ਸ਼ੁਰੂ].syllable() & 0x0F);
   /* Only a few syllable types need reordering. */
-  if (unlikely (!(FLAG_UNSAFE (syllable_type) &
+  ਜੇ (unlikely (!(FLAG_UNSAFE (syllable_type) &
 		  (FLAG (use_virama_terminated_cluster) |
 		   FLAG (use_sakot_terminated_cluster) |
 		   FLAG (use_standard_cluster) |
-		   FLAG (use_symbol_cluster) |
+		   FLAG (use_ਚਿੰਨ੍ਹ_cluster) |
 		   FLAG (use_broken_cluster) |
 		   0))))
-    return;
+    ਵਾਪਸ;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-#define POST_BASE_FLAGS64 (FLAG64 (USE(FAbv)) | \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ POST_ਅਧਾਰ_FLAGS64 (FLAG64 (USE(FAbv)) | \
 			   FLAG64 (USE(FBlw)) | \
 			   FLAG64 (USE(FPst)) | \
 			   FLAG64 (USE(FMAbv)) | \
@@ -394,121 +394,121 @@ reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
 			   FLAG64 (USE(VMPre)))
 
   /* Move things forward. */
-  if (info[start].use_category() == USE(R) && end - start > 1)
+  ਜੇ (info[ਸ਼ੁਰੂ].use_category() == USE(R) && ਸਿਰਾ - ਸ਼ੁਰੂ > 1)
   {
     /* Got a repha.  Reorder it towards the end, but before the first post-base
      * glyph. */
-    for (unsigned int i = start + 1; i < end; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ + 1; i < ਸਿਰਾ; i++)
     {
-      bool is_post_base_glyph = (FLAG64_UNSAFE (info[i].use_category()) & POST_BASE_FLAGS64) ||
+      ਤਾਰਕਿਕ is_post_ਅਧਾਰ_glyph = (FLAG64_UNSAFE (info[i].use_category()) & POST_ਅਧਾਰ_FLAGS64) ||
 				is_halant_use (info[i]);
-      if (is_post_base_glyph || i == end - 1)
+      ਜੇ (is_post_ਅਧਾਰ_glyph || i == ਸਿਰਾ - 1)
       {
 	/* If we hit a post-base glyph, move before it; otherwise move to the
 	 * end. Shift things in between backward. */
 
-	if (is_post_base_glyph)
+	ਜੇ (is_post_ਅਧਾਰ_glyph)
 	  i--;
 
-	buffer->merge_clusters (start, i + 1);
-	hb_glyph_info_t t = info[start];
-	memmove (&info[start], &info[start + 1], (i - start) * sizeof (info[0]));
+	ਬਫਰ->ਮਿਲਾਓ_clusters (ਸ਼ੁਰੂ, i + 1);
+	hb_glyph_info_t t = info[ਸ਼ੁਰੂ];
+	memmove (&info[ਸ਼ੁਰੂ], &info[ਸ਼ੁਰੂ + 1], (i - ਸ਼ੁਰੂ) * ਆਕਾਰ (info[0]));
 	info[i] = t;
 
-	break;
+	ਰੋਕੋ;
       }
     }
   }
 
   /* Move things back. */
-  unsigned int j = start;
-  for (unsigned int i = start; i < end; i++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = ਸ਼ੁਰੂ;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
   {
     uint32_t flag = FLAG_UNSAFE (info[i].use_category());
-    if (is_halant_use (info[i]))
+    ਜੇ (is_halant_use (info[i]))
     {
       /* If we hit a halant, move after it; otherwise move to the beginning, and
        * shift things in between forward. */
       j = i + 1;
     }
-    else if (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
+    ਨਹੀਂਤਾਂ ਜੇ (((flag) & (FLAG (USE(VPre)) | FLAG (USE(VMPre)))) &&
 	     /* Only move the first component of a MultipleSubst. */
 	     0 == _hb_glyph_info_get_lig_comp (&info[i]) &&
 	     j < i)
     {
-      buffer->merge_clusters (j, i + 1);
+      ਬਫਰ->ਮਿਲਾਓ_clusters (j, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (info[0]));
+      memmove (&info[j + 1], &info[j], (i - j) * ਆਕਾਰ (info[0]));
       info[j] = t;
     }
   }
 }
 
-static bool
-reorder_use (const hb_ot_shape_plan_t *plan,
+ਸਥਿਰ ਤਾਰਕਿਕ
+reorder_use (ਅਚਲ hb_ot_shape_plan_t *plan,
 	     hb_font_t *font,
-	     hb_buffer_t *buffer)
+	     hb_ਬਫਰ_t *ਬਫਰ)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering USE"))
+  ਤਾਰਕਿਕ ret = ਝੂਠ;
+  ਜੇ (ਬਫਰ->ਸੁਨੇਹਾ (font, "start reordering USE"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    ਜੇ (hb_syllabic_ਪਾਓ_dotted_circles (font, ਬਫਰ,
 					   use_broken_cluster,
 					   USE(B),
 					   USE(R)))
-      ret = true;
+      ret = ਸੱਚ;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_use (buffer, start, end);
+    foreach_syllable (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
+      reorder_syllable_use (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ);
 
-    (void) buffer->message (font, "end reordering USE");
+    (ਖਾਲੀ) ਬਫਰ->ਸੁਨੇਹਾ (font, "end reordering USE");
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, use_category);
+  HB_ਬਫਰ_DEALLOCATE_VAR (ਬਫਰ, use_category);
 
-  return ret;
+  ਵਾਪਸ ret;
 }
 
 
-static void
-preprocess_text_use (const hb_ot_shape_plan_t *plan,
-		     hb_buffer_t              *buffer,
+ਸਥਿਰ ਖਾਲੀ
+preprocess_ਪਾਠ_use (ਅਚਲ hb_ot_shape_plan_t *plan,
+		     hb_ਬਫਰ_t              *ਬਫਰ,
 		     hb_font_t                *font)
 {
-  _hb_preprocess_text_vowel_constraints (plan, buffer, font);
+  hb_preprocess_ਪਾਠ_vowel_constraints (plan, ਬਫਰ, font);
 }
 
-static bool
-compose_use (const hb_ot_shape_normalize_context_t *c,
+ਸਥਿਰ ਤਾਰਕਿਕ
+compose_use (ਅਚਲ hb_ot_shape_normalize_context_t *c,
 	     hb_codepoint_t  a,
 	     hb_codepoint_t  b,
 	     hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  ਜੇ (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    ਵਾਪਸ ਝੂਠ;
 
-  return (bool)c->unicode->compose (a, b, ab);
+  ਵਾਪਸ (ਤਾਰਕਿਕ)c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_use =
+ਅਚਲ hb_ot_shaper_t _hb_ot_shaper_use =
 {
   collect_features_use,
-  nullptr, /* override_features */
-  data_create_use,
-  data_destroy_use,
-  preprocess_text_use,
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
+  ਖਾਲੀ_ਸੂਚਕ, /* override_features */
+  ਅੰਕੜੇ_create_use,
+  ਅੰਕੜੇ_destroy_use,
+  preprocess_ਪਾਠ_use,
+  ਖਾਲੀ_ਸੂਚਕ, /* postprocess_glyphs */
+  ਖਾਲੀ_ਸੂਚਕ, /* decompose */
   compose_use,
-  setup_masks_use,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
-  false, /* fallback_position */
+  ਤਿਆਰੀ_masks_use,
+  ਖਾਲੀ_ਸੂਚਕ, /* reorder_marks */
+  HB_ਟੈਗ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_EARLY,
+  ਝੂਠ, /* fallback_position */
 };
 
 
-#endif
+#ਜੇ_ਅੰਤ

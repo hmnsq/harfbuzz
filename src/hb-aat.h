@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_H
-#define HB_AAT_H
-#define HB_AAT_H_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_H_ਵਿੱਚ
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include "hb-aat-layout.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#undef HB_AAT_H_IN
-#endif /* HB_AAT_H */
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_AAT_H_ਵਿੱਚ
+#ਜੇ_ਅੰਤ /* HB_AAT_H */

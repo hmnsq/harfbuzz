@@ -23,126 +23,126 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸੰਖਿਆ_CC
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਖਿਆ_CC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_ਸੰਖਿਆ_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-number.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+ਤਾਰਕਿਕ
+hb_parse_double (ਅਚਲ ਅੱਖਰ **pp, ਅਚਲ ਅੱਖਰ *ਸਿਰਾ, ਦੁੱਗਣਾ *pv, ਤਾਰਕਿਕ ਸਾਰਾ_ਬਫਰ)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  ਅਚਲ ਅੱਖਰ *pend = ਸਿਰਾ;
+  ਦੁੱਗਣਾ value = hb_strtod (*pp, &pend);
+  ਜੇ (unlikely (*pp == pend)) ਵਾਪਸ ਝੂਠ;
+  ਜੇ (unlikely (ਸਾਰਾ_ਬਫਰ && ਸਿਰਾ != pend)) ਵਾਪਸ ਝੂਠ;
   *pv = value;
   *pp = pend;
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+ਸਥਿਰ ਪੂਰਨ
+hb_digit_ਮੁੱਲ (ਅੱਖਰ c, ਪੂਰਨ ਅਧਾਰ)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  ਪੂਰਨ d;
+  ਜੇ ('0' <= c && c <= '9')      d = c - '0';
+  ਨਹੀਂਤਾਂ ਜੇ ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  ਨਹੀਂਤਾਂ ਜੇ ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  ਨਹੀਂਤਾਂ ਵਾਪਸ -1;
+  ਵਾਪਸ d < ਅਧਾਰ ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ *
+hb_ਜਾਂਚ_digits (ਅਚਲ ਅੱਖਰ *p, ਅਚਲ ਅੱਖਰ *pe, ਪੂਰਨ ਅਧਾਰ,
+                 uint64_t *value, ਤਾਰਕਿਕ *ਉਛਾਲ, ਤਾਰਕਿਕ *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  ਅਚਲ uint64_t cutoff = UINT64_MAX / (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅਧਾਰ;
+  ਅਚਲ uint64_t cutlim = UINT64_MAX % (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅਧਾਰ;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  ਤਾਰਕਿਕ ov = ਝੂਠ, any = ਝੂਠ;
 
-  for (; p < pe; p++)
+  ਲਈ (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
-      v = v * (unsigned) base + (uint64_t) d;
+    ਪੂਰਨ d = hb_digit_ਮੁੱਲ (*p, ਅਧਾਰ);
+    ਜੇ (d < 0) ਰੋਕੋ;
+    any = ਸੱਚ;
+    ਜੇ (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = ਸੱਚ;
+    ਨਹੀਂਤਾਂ
+      v = v * (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅਧਾਰ + (uint64_t) d;
   }
 
   *value = v;
-  *overflow = ov;
+  *ਉਛਾਲ = ov;
   *any_digits = any;
-  return p;
+  ਵਾਪਸ p;
 }
 
-template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ Postprocess>
+ਸਥਿਰ ਤਾਰਕਿਕ
+parse_ਸੰਖਿਆ (ਅਚਲ ਅੱਖਰ **pp, ਅਚਲ ਅੱਖਰ *ਸਿਰਾ, T *pv,
+               ਤਾਰਕਿਕ ਸਾਰਾ_ਬਫਰ, ਪੂਰਨ ਅਧਾਰ, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  ਅਚਲ ਅੱਖਰ *pend = ਸਿਰਾ;
+  ਅਚਲ ਅੱਖਰ *p = *pp;
+  ਤਾਰਕਿਕ neg = ਝੂਠ, any = ਝੂਠ, ਉਛਾਲ = ਝੂਠ;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  ਜਦੋਂ (p < pend && ISSPACE (*p)) p++;
+  ਜੇ (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  ਜੇ (ਅਧਾਰ == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_ਮੁੱਲ (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
-  p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  p = hb_ਜਾਂਚ_digits (p, pend, ਅਧਾਰ, &v, &ਉਛਾਲ, &any);
+  ਜੇ (unlikely (!any || ਉਛਾਲ)) ਵਾਪਸ ਝੂਠ;
 
-  T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  T ਬਾਹਰਲਾ;
+  ਜੇ (unlikely (!post (v, neg, &ਬਾਹਰਲਾ))) ਵਾਪਸ ਝੂਠ;
+  ਜੇ (unlikely (ਸਾਰਾ_ਬਫਰ && p != pend)) ਵਾਪਸ ਝੂਠ;
 
-  *pv = out;
+  *pv = ਬਾਹਰਲਾ;
   *pp = p;
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+ਤਾਰਕਿਕ
+hb_parse_int (ਅਚਲ ਅੱਖਰ **pp, ਅਚਲ ਅੱਖਰ *ਸਿਰਾ, ਪੂਰਨ *pv, ਤਾਰਕਿਕ ਸਾਰਾ_ਬਫਰ)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  ਵਾਪਸ parse_ਸੰਖਿਆ (pp, ਸਿਰਾ, pv, ਸਾਰਾ_ਬਫਰ, 10,
+                        [] (uint64_t v, ਤਾਰਕਿਕ neg, ਪੂਰਨ *ਬਾਹਰਲਾ) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
-    uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    uint64_t ਹੱਦਬੰਦੀ = neg ? (uint64_t) ਵੱਧ_ਤੋਂ_ਵੱਧ_ਅੰਕ + 1 : (uint64_t) ਵੱਧ_ਤੋਂ_ਵੱਧ_ਅੰਕ;
+    ਜੇ (unlikely (v > ਹੱਦਬੰਦੀ)) ਵਾਪਸ ਝੂਠ;
+    *ਬਾਹਰਲਾ = (ਪੂਰਨ) (neg ? -(int64_t) v : (int64_t) v);
+    ਵਾਪਸ ਸੱਚ;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+ਤਾਰਕਿਕ
+hb_parse_uint (ਅਚਲ ਅੱਖਰ **pp, ਅਚਲ ਅੱਖਰ *ਸਿਰਾ, ਬਿਨਾਨਿਸ਼ਾਨੀ *pv,
+               ਤਾਰਕਿਕ ਸਾਰਾ_ਬਫਰ, ਪੂਰਨ ਅਧਾਰ)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  ਵਾਪਸ parse_ਸੰਖਿਆ (pp, ਸਿਰਾ, pv, ਸਾਰਾ_ਬਫਰ, ਅਧਾਰ,
+                        [] (uint64_t v, ਤਾਰਕਿਕ neg, ਬਿਨਾਨਿਸ਼ਾਨੀ *ਬਾਹਰਲਾ) {
+    ਜੇ (unlikely (v > UINT_MAX)) ਵਾਪਸ ਝੂਠ;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
-    unsigned u = (unsigned) v;
-    *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ u = (ਬਿਨਾਨਿਸ਼ਾਨੀ) v;
+    *ਬਾਹਰਲਾ = neg ? (ਬਿਨਾਨਿਸ਼ਾਨੀ) (0u - u) : u;
+    ਵਾਪਸ ਸੱਚ;
   });
 }
 
-#endif /* HB_NUMBER_CC pacify */
-#endif /* HB_NUMBER_CC guard */
+#ਜੇ_ਅੰਤ /* HB_NUMBER_CC pacify */
+#ਜੇ_ਅੰਤ /* HB_NUMBER_CC guard */

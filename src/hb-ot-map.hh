@@ -26,164 +26,164 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_MAP_HH
-#define HB_OT_MAP_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_MAP_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MAP_HH
 
-#include "hb-buffer.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-buffer.hh"
 
 
-#define HB_OT_MAP_MAX_BITS 8u
-#define HB_OT_MAP_MAX_VALUE ((1u << HB_OT_MAP_MAX_BITS) - 1u)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MAP_MAX_ਬਿੱਟ 8u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MAP_MAX_ਮੁੱਲ ((1u << HB_OT_MAP_MAX_ਬਿੱਟ) - 1u)
 
-struct hb_ot_shape_plan_t;
+ਬਣਤਰ hb_ot_shape_plan_t;
 
-static const hb_tag_t table_tags[2] = {HB_OT_TAG_GSUB, HB_OT_TAG_GPOS};
+ਸਥਿਰ ਅਚਲ hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ[2] = {HB_OT_ਟੈਗ_GSUB, HB_OT_ਟੈਗ_GPOS};
 
-struct hb_ot_map_t
+ਬਣਤਰ hb_ot_map_t
 {
-  friend struct hb_ot_map_builder_t;
+  ਮਿੱਤਰ ਬਣਤਰ hb_ot_map_builder_t;
 
-  public:
+  ਜਨਤਕ:
 
-  struct feature_map_t {
-    hb_tag_t tag; /* should be first for our bsearch to work */
-    unsigned int index[2]; /* GSUB/GPOS */
-    unsigned int stage[2]; /* GSUB/GPOS */
-    unsigned int shift;
-    hb_mask_t mask;
-    hb_mask_t _1_mask; /* mask for value=1, for quick access */
-    unsigned int needs_fallback : 1;
-    unsigned int auto_zwnj : 1;
-    unsigned int auto_zwj : 1;
-    unsigned int random : 1;
-    unsigned int per_syllable : 1;
+  ਬਣਤਰ feature_map_t {
+    hb_ਟੈਗ_t ਟੈਗ_2; /* should be first for our bsearch to work */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2[2]; /* GSUB/GPOS */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stage[2]; /* GSUB/GPOS */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਖਿਸਕਾਓ;
+    hb_ਨਕਾਬ_t ਨਕਾਬ;
+    hb_ਨਕਾਬ_t _1_mask; /* mask for value=1, for quick access */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ needs_fallback : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ auto_zwnj : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ auto_zwj : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ random : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਪ੍ਰਤੀ_syllable : 1;
 
-    int cmp (const hb_tag_t tag_) const
-    { return tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
+    ਪੂਰਨ cmp (ਅਚਲ hb_ਟੈਗ_t ਟੈਗ_4) ਅਚਲ
+    { ਵਾਪਸ ਟੈਗ_4 < ਟੈਗ_2 ? -1 : ਟੈਗ_4 > ਟੈਗ_2 ? 1 : 0; }
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
     {
-      const feature_map_t *a = (const feature_map_t *) pa;
-      const feature_map_t *b = (const feature_map_t *) pb;
-      return a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
+      ਅਚਲ feature_map_t *a = (ਅਚਲ feature_map_t *) pa;
+      ਅਚਲ feature_map_t *b = (ਅਚਲ feature_map_t *) pb;
+      ਵਾਪਸ a->ਟੈਗ_2 < b->ਟੈਗ_2 ? -1 : a->ਟੈਗ_2 > b->ਟੈਗ_2 ? 1 : 0;
     }
   };
 
-  struct lookup_map_t {
-    unsigned short index;
-    unsigned short auto_zwnj : 1;
-    unsigned short auto_zwj : 1;
-    unsigned short random : 1;
-    unsigned short per_syllable : 1;
-    hb_mask_t mask;
-    hb_tag_t feature_tag;
+  ਬਣਤਰ lookup_map_t {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਛੋਟਾ ਸੂਚਕਾਂਕ_2;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਛੋਟਾ auto_zwnj : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਛੋਟਾ auto_zwj : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਛੋਟਾ random : 1;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਛੋਟਾ ਪ੍ਰਤੀ_syllable : 1;
+    hb_ਨਕਾਬ_t ਨਕਾਬ;
+    hb_ਟੈਗ_t feature_ਟੈਗ;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
     {
-      const lookup_map_t *a = (const lookup_map_t *) pa;
-      const lookup_map_t *b = (const lookup_map_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
+      ਅਚਲ lookup_map_t *a = (ਅਚਲ lookup_map_t *) pa;
+      ਅਚਲ lookup_map_t *b = (ਅਚਲ lookup_map_t *) pb;
+      ਵਾਪਸ a->ਸੂਚਕਾਂਕ_2 < b->ਸੂਚਕਾਂਕ_2 ? -1 : a->ਸੂਚਕਾਂਕ_2 > b->ਸੂਚਕਾਂਕ_2 ? 1 : 0;
     }
   };
 
   /* Pause functions return true if new glyph indices might have been
    * added to the buffer.  This is used to update buffer digest. */
-  typedef bool (*pause_func_t) (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਤਾਰਕਿਕ (*pause_func_t) (ਅਚਲ ਬਣਤਰ hb_ot_shape_plan_t *plan, hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ);
 
-  struct stage_map_t {
-    unsigned int last_lookup; /* Cumulative */
+  ਬਣਤਰ stage_map_t {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਆਖਰੀ_lookup; /* Cumulative */
     pause_func_t pause_func;
   };
 
-  void init ()
+  ਖਾਲੀ init ()
   {
-    hb_memset (this, 0, sizeof (*this));
+    hb_memset (ਇਹ, 0, ਆਕਾਰ (*ਇਹ));
 
     features.init0 ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ = 0; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ < 2; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ++)
     {
-      lookups[table_index].init0 ();
-      stages[table_index].init0 ();
+      lookups[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].init0 ();
+      stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].init0 ();
     }
   }
-  void fini ()
+  ਖਾਲੀ fini ()
   {
     features.fini ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ = 0; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ < 2; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ++)
     {
-      lookups[table_index].fini ();
-      stages[table_index].fini ();
+      lookups[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].fini ();
+      stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].fini ();
     }
   }
 
-  hb_mask_t get_global_mask () const { return global_mask; }
+  hb_ਨਕਾਬ_t get_global_ਨਕਾਬ () ਅਚਲ { ਵਾਪਸ global_ਨਕਾਬ; }
 
-  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned int *shift = nullptr) const
+  hb_ਨਕਾਬ_t get_ਨਕਾਬ (hb_ਟੈਗ_t feature_ਟੈਗ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਖਿਸਕਾਓ = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    if (shift) *shift = map ? map->shift : 0;
-    return map ? map->mask : 0;
+    ਅਚਲ feature_map_t *map = features.bsearch (feature_ਟੈਗ);
+    ਜੇ (ਖਿਸਕਾਓ) *ਖਿਸਕਾਓ = map ? map->ਖਿਸਕਾਓ : 0;
+    ਵਾਪਸ map ? map->ਨਕਾਬ : 0;
   }
 
-  bool needs_fallback (hb_tag_t feature_tag) const
+  ਤਾਰਕਿਕ needs_fallback (hb_ਟੈਗ_t feature_ਟੈਗ) ਅਚਲ
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->needs_fallback : false;
+    ਅਚਲ feature_map_t *map = features.bsearch (feature_ਟੈਗ);
+    ਵਾਪਸ map ? map->needs_fallback : ਝੂਠ;
   }
 
-  hb_mask_t get_1_mask (hb_tag_t feature_tag) const
+  hb_ਨਕਾਬ_t get_1_ਨਕਾਬ (hb_ਟੈਗ_t feature_ਟੈਗ) ਅਚਲ
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->_1_mask : 0;
+    ਅਚਲ feature_map_t *map = features.bsearch (feature_ਟੈਗ);
+    ਵਾਪਸ map ? map->_1_mask : 0;
   }
 
-  unsigned int get_feature_index (unsigned int table_index, hb_tag_t feature_tag) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_feature_ਸੂਚਕਾਂਕ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, hb_ਟੈਗ_t feature_ਟੈਗ) ਅਚਲ
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
+    ਅਚਲ feature_map_t *map = features.bsearch (feature_ਟੈਗ);
+    ਵਾਪਸ map ? map->ਸੂਚਕਾਂਕ_2[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ] : HB_OT_LAYOUT_NO_FEATURE_ਸੂਚਕਾਂਕ;
   }
 
-  unsigned int get_feature_stage (unsigned int table_index, hb_tag_t feature_tag) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_feature_stage (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, hb_ਟੈਗ_t feature_ਟੈਗ) ਅਚਲ
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->stage[table_index] : UINT_MAX;
+    ਅਚਲ feature_map_t *map = features.bsearch (feature_ਟੈਗ);
+    ਵਾਪਸ map ? map->stage[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ] : UINT_MAX;
   }
 
-  hb_array_t<const hb_ot_map_t::lookup_map_t>
-  get_stage_lookups (unsigned int table_index, unsigned int stage) const
+  hb_array_t<ਅਚਲ hb_ot_map_t::lookup_map_t>
+  get_stage_lookups (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stage) ਅਚਲ
   {
-    if (unlikely (stage > stages[table_index].length))
-      return hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
+    ਜੇ (unlikely (stage > stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].ਲੰਮਾਈ))
+      ਵਾਪਸ hb_array<ਅਚਲ hb_ot_map_t::lookup_map_t> (ਖਾਲੀ_ਸੂਚਕ, 0);
 
-    unsigned int start = stage ? stages[table_index][stage - 1].last_lookup : 0;
-    unsigned int end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
-    return lookups[table_index].as_array ().sub_array (start, end - start);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = stage ? stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ][stage - 1].ਆਖਰੀ_lookup : 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ   = stage < stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].ਲੰਮਾਈ ? stages[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ][stage].ਆਖਰੀ_lookup : lookups[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].ਲੰਮਾਈ;
+    ਵਾਪਸ lookups[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].as_array ().sub_array (ਸ਼ੁਰੂ, ਸਿਰਾ - ਸ਼ੁਰੂ);
   }
 
-  HB_INTERNAL void collect_lookups (unsigned int table_index, hb_set_t *lookups) const;
-  template <typename Proxy>
-  HB_INTERNAL void apply (const Proxy &proxy,
-			  const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
-					     hb_tag_t     *tags /* OUT */) const;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ collect_lookups (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, hb_ਸੈੱਟ_t *lookups) ਅਚਲ;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Proxy>
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ apply (ਅਚਲ Proxy &proxy,
+			  ਅਚਲ ਬਣਤਰ hb_ot_shape_plan_t *plan, hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ substitute (ਅਚਲ ਬਣਤਰ hb_ot_shape_plan_t *plan, hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ position (ਅਚਲ ਬਣਤਰ hb_ot_shape_plan_t *plan, hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_feature_ਟੈਗ_ਸੂਚੀ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+					     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਟੈਗ_ਗਿਣਤੀ, /* IN/OUT */
+					     hb_ਟੈਗ_t     *ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/) ਅਚਲ;
 
-  public:
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
+  ਜਨਤਕ:
+  hb_ਟੈਗ_t chosen_script[2];
+  ਤਾਰਕਿਕ ਮਿਲਿਆ_script[2];
 
-  private:
+  ਨਿਜੀ:
 
-  hb_mask_t global_mask = 0;
+  hb_ਨਕਾਬ_t global_ਨਕਾਬ = 0;
 
-  hb_sorted_vector_t<feature_map_t> features;
-  hb_vector_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
-  hb_vector_t<stage_map_t> stages[2]; /* GSUB/GPOS */
+  hb_sorted_ਸਦਿਸ਼_t<feature_map_t> features;
+  hb_ਸਦਿਸ਼_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
+  hb_ਸਦਿਸ਼_t<stage_map_t> stages[2]; /* GSUB/GPOS */
 };
 
-enum hb_ot_map_feature_flags_t
+ਗਿਣਤੀ hb_ot_map_feature_flags_t
 {
   F_NONE		= 0x0000u,
   F_GLOBAL		= 0x0001u, /* Feature applies to all characters; results in no mask allocated for it. */
@@ -193,109 +193,109 @@ enum hb_ot_map_feature_flags_t
   F_MANUAL_JOINERS	= F_MANUAL_ZWNJ | F_MANUAL_ZWJ,
   F_GLOBAL_MANUAL_JOINERS= F_GLOBAL | F_MANUAL_JOINERS,
   F_GLOBAL_HAS_FALLBACK = F_GLOBAL | F_HAS_FALLBACK,
-  F_GLOBAL_SEARCH	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
+  F_GLOBAL_ਖੋਜ	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
   F_RANDOM		= 0x0020u, /* Randomly select a glyph from an AlternateSubstFormat1 subtable. */
-  F_PER_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
+  F_ਪ੍ਰਤੀ_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
 };
 HB_MARK_AS_FLAG_T (hb_ot_map_feature_flags_t);
 
 
-struct hb_ot_map_feature_t
+ਬਣਤਰ hb_ot_map_feature_t
 {
-  hb_tag_t tag;
+  hb_ਟੈਗ_t ਟੈਗ_2;
   hb_ot_map_feature_flags_t flags;
 };
 
-struct hb_ot_shape_plan_key_t;
+ਬਣਤਰ hb_ot_shape_plan_ਕੁੰਜੀ_t;
 
-struct hb_ot_map_builder_t
+ਬਣਤਰ hb_ot_map_builder_t
 {
-  public:
+  ਜਨਤਕ:
 
-  HB_INTERNAL hb_ot_map_builder_t (hb_face_t *face_,
-				   const hb_segment_properties_t &props_);
+  HB_ਅੰਦਰੂਨੀ hb_ot_map_builder_t (hb_face_t *face_,
+				   ਅਚਲ hb_segment_properties_t &props_);
 
-  HB_INTERNAL ~hb_ot_map_builder_t ();
+  HB_ਅੰਦਰੂਨੀ ~hb_ot_map_builder_t ();
 
-  HB_INTERNAL void add_feature (hb_tag_t tag,
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ_feature (hb_ਟੈਗ_t ਟੈਗ_2,
 				hb_ot_map_feature_flags_t flags=F_NONE,
-				unsigned int value=1);
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ value=1);
 
-  HB_INTERNAL bool has_feature (hb_tag_t tag);
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ has_feature (hb_ਟੈਗ_t ਟੈਗ_2);
 
-  void add_feature (const hb_ot_map_feature_t &feat)
-  { add_feature (feat.tag, feat.flags); }
+  ਖਾਲੀ ਜੋੜੋ_feature (ਅਚਲ hb_ot_map_feature_t &feat)
+  { ਜੋੜੋ_feature (feat.ਟੈਗ_2, feat.flags); }
 
-  void enable_feature (hb_tag_t tag,
+  ਖਾਲੀ enable_feature (hb_ਟੈਗ_t ਟੈਗ_2,
 		       hb_ot_map_feature_flags_t flags=F_NONE,
-		       unsigned int value=1)
-  { add_feature (tag, F_GLOBAL | flags, value); }
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ value=1)
+  { ਜੋੜੋ_feature (ਟੈਗ_2, F_GLOBAL | flags, value); }
 
-  void disable_feature (hb_tag_t tag)
-  { add_feature (tag, F_GLOBAL, 0); }
+  ਖਾਲੀ disable_feature (hb_ਟੈਗ_t ਟੈਗ_2)
+  { ਜੋੜੋ_feature (ਟੈਗ_2, F_GLOBAL, 0); }
 
-  void add_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (0, pause_func); }
-  void add_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (1, pause_func); }
+  ਖਾਲੀ ਜੋੜੋ_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
+  { ਜੋੜੋ_pause (0, pause_func); }
+  ਖਾਲੀ ਜੋੜੋ_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
+  { ਜੋੜੋ_pause (1, pause_func); }
 
-  HB_INTERNAL void compile (hb_ot_map_t                  &m,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ compile (hb_ot_map_t                  &m,
+			    ਅਚਲ hb_ot_shape_plan_ਕੁੰਜੀ_t &key);
 
-  private:
+  ਨਿਜੀ:
 
-  HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
-				unsigned int  table_index,
-				unsigned int  feature_index,
-				const hb_ot_shape_plan_key_t &key,
-				hb_mask_t     mask,
-				bool          auto_zwnj = true,
-				bool          auto_zwj = true,
-				bool          random = false,
-				bool          per_syllable = false,
-				hb_tag_t      feature_tag = HB_TAG(' ',' ',' ',' '));
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ_lookups (hb_ot_map_t  &m,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸਾਰਣੀ_ਸੂਚਕਾਂਕ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  feature_ਸੂਚਕਾਂਕ,
+				ਅਚਲ hb_ot_shape_plan_ਕੁੰਜੀ_t &key,
+				hb_ਨਕਾਬ_t     ਨਕਾਬ,
+				ਤਾਰਕਿਕ          auto_zwnj = ਸੱਚ,
+				ਤਾਰਕਿਕ          auto_zwj = ਸੱਚ,
+				ਤਾਰਕਿਕ          random = ਝੂਠ,
+				ਤਾਰਕਿਕ          ਪ੍ਰਤੀ_syllable = ਝੂਠ,
+				hb_ਟੈਗ_t      feature_ਟੈਗ = HB_ਟੈਗ(' ',' ',' ',' '));
 
-  struct feature_info_t {
-    hb_tag_t tag;
-    unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+  ਬਣਤਰ feature_info_t {
+    hb_ਟੈਗ_t ਟੈਗ_2;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ seq; /* sequence#, used for stable sorting only */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ max_ਮੁੱਲ;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
-    unsigned int stage[2]; /* GSUB/GPOS */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ default_ਮੁੱਲ; /* for non-global features, what should the unset glyphs take */
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stage[2]; /* GSUB/GPOS */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      return (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
+      ਅਚਲ feature_info_t *a = (ਅਚਲ feature_info_t *) pa;
+      ਅਚਲ feature_info_t *b = (ਅਚਲ feature_info_t *) pb;
+      ਵਾਪਸ (a->ਟੈਗ_2 != b->ਟੈਗ_2) ?  (a->ਟੈਗ_2 < b->ਟੈਗ_2 ? -1 : 1) :
 	     (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
   };
 
-  struct stage_info_t {
-    unsigned int index;
+  ਬਣਤਰ stage_info_t {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2;
     hb_ot_map_t::pause_func_t pause_func;
   };
 
-  HB_INTERNAL void add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਜੋੜੋ_pause (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, hb_ot_map_t::pause_func_t pause_func);
 
-  public:
+  ਜਨਤਕ:
 
   hb_face_t *face;
   hb_segment_properties_t props;
-  bool is_simple;
+  ਤਾਰਕਿਕ is_simple;
 
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
-  unsigned int script_index[2], language_index[2];
+  hb_ਟੈਗ_t chosen_script[2];
+  ਤਾਰਕਿਕ ਮਿਲਿਆ_script[2];
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ script_ਸੂਚਕਾਂਕ[2], language_ਸੂਚਕਾਂਕ[2];
 
-  private:
+  ਨਿਜੀ:
 
-  unsigned int current_stage[2]; /* GSUB/GPOS */
-  hb_vector_t<feature_info_t> feature_infos;
-  hb_vector_t<stage_info_t> stages[2]; /* GSUB/GPOS */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ current_stage[2]; /* GSUB/GPOS */
+  hb_ਸਦਿਸ਼_t<feature_info_t> feature_infos;
+  hb_ਸਦਿਸ਼_t<stage_info_t> stages[2]; /* GSUB/GPOS */
 };
 
 
 
-#endif /* HB_OT_MAP_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_MAP_HH */

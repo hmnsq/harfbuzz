@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_PAINT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_PAINT
 
-#include "hb-paint-extents.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint-extents.hh"
 
-#include "hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.hh"
 
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
 
 /*
@@ -39,323 +39,323 @@
  * https://learn.microsoft.com/en-us/typography/opentype/spec/colr#glyph-metrics-and-boundedness
  */
 
-static void
-hb_paint_extents_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-				 void *paint_data,
-				 float xx, float yx,
-				 float xy, float yy,
-				 float dx, float dy,
-				 void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਧੱਕੋ_transform (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				 ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				 ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+				 ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+				 ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy,
+				 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  c->push_transform (hb_transform_t<> {xx, yx, xy, yy, dx, dy});
+  c->ਧੱਕੋ_transform (hb_transform_t<> {xx, yx, xy, yy, dx, dy});
 }
 
-static void
-hb_paint_extents_pop_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			        void *paint_data,
-				void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਕੱਢੋ_transform (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			        ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  c->pop_transform ();
+  c->ਕੱਢੋ_transform ();
 }
 
 /* Like the hb_draw_extents_get_funcs() sink, but tied to the paint
  * session's live work budget. */
-struct hb_paint_extents_sink_t
+ਬਣਤਰ hb_paint_extents_sink_t
 {
   hb_extents_t<> extents;
-  int64_t *budget_remaining;
+  int64_t *budget_ਬਚਿਆ;
 
-  bool consume_segment ()
+  ਤਾਰਕਿਕ consume_segment ()
   {
-    return hb_budget_spend (*budget_remaining, HB_BUDGET_1);
+    ਵਾਪਸ hb_budget_spend (*budget_ਬਚਿਆ, HB_BUDGET_1);
   }
 };
 
-static void
-hb_paint_extents_count_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				hb_draw_state_t *st HB_UNUSED,
-				float to_x, float to_y,
-				void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਗਿਣਤੀ_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *ਅੰਕੜੇ,
+				hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+				ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) ਅੰਕੜੇ;
+  ਜੇ (unlikely (!sink->consume_segment ())) ਵਾਪਸ;
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_paint_extents_count_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				hb_draw_state_t *st HB_UNUSED,
-				float to_x, float to_y,
-				void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਗਿਣਤੀ_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *ਅੰਕੜੇ,
+				hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+				ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) ਅੰਕੜੇ;
+  ਜੇ (unlikely (!sink->consume_segment ())) ਵਾਪਸ;
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_paint_extents_count_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				     hb_draw_state_t *st HB_UNUSED,
-				     float control_x, float control_y,
-				     float to_x, float to_y,
-				     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਗਿਣਤੀ_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *ਅੰਕੜੇ,
+				     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+				     ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+				     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (control_x, control_y);
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) ਅੰਕੜੇ;
+  ਜੇ (unlikely (!sink->consume_segment ())) ਵਾਪਸ;
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (control_x, control_y);
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_paint_extents_count_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				 hb_draw_state_t *st HB_UNUSED,
-				 float control1_x, float control1_y,
-				 float control2_x, float control2_y,
-				 float to_x, float to_y,
-				 void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਗਿਣਤੀ_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ, ਖਾਲੀ *ਅੰਕੜੇ,
+				 hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+				 ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+				 ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+				 ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (control1_x, control1_y);
-  sink->extents.add_point (control2_x, control2_y);
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) ਅੰਕੜੇ;
+  ਜੇ (unlikely (!sink->consume_segment ())) ਵਾਪਸ;
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (control1_x, control1_y);
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (control2_x, control2_y);
+  sink->extents.ਜੋੜੋ_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static int64_t *
-hb_paint_extents_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ਸਥਿਰ int64_t *
+hb_paint_extents_get_budget_ਬਚਿਆ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_paint_extents_sink_t *) draw_data)->budget_remaining;
+  ਵਾਪਸ ((hb_paint_extents_sink_t *) draw_ਅੰਕੜੇ)->budget_ਬਚਿਆ;
 }
 
-static inline void free_static_paint_extents_draw_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_paint_extents_draw_funcs ();
 
-static struct hb_paint_extents_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_paint_extents_draw_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_paint_extents_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_paint_extents_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_paint_extents_count_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_paint_extents_count_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_paint_extents_count_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_paint_extents_count_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_paint_extents_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, hb_paint_extents_ਗਿਣਤੀ_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, hb_paint_extents_ਗਿਣਤੀ_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, hb_paint_extents_ਗਿਣਤੀ_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, hb_paint_extents_ਗਿਣਤੀ_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_paint_extents_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_paint_extents_draw_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_paint_extents_draw_funcs;
 
-static inline
-void free_static_paint_extents_draw_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_paint_extents_draw_funcs ()
 {
   static_paint_extents_draw_funcs.free_instance ();
 }
 
-static void
-hb_paint_extents_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-				  void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਧੱਕੋ_clip_glyph (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				  ਖਾਲੀ *paint_ਅੰਕੜੇ,
 				  hb_codepoint_t glyph,
 				  hb_font_t *font,
-				  void *user_data HB_UNUSED)
+				  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  hb_paint_extents_sink_t sink {{}, &c->budget_remaining};
+  hb_paint_extents_sink_t sink {{}, &c->budget_ਬਚਿਆ};
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip clips everything out. */
-  if (likely (c->budget_remaining >= 0))
+  ਜੇ (likely (c->budget_ਬਚਿਆ >= 0))
     hb_font_draw_glyph (font, glyph, static_paint_extents_draw_funcs.get_unconst (), &sink);
-  c->push_clip (sink.extents);
+  c->ਧੱਕੋ_clip (sink.extents);
 }
 
-static void
-hb_paint_extents_push_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      float xmin, float ymin, float xmax, float ymax,
-				      void *user_data)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਧੱਕੋ_clip_rectangle (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				      ਦਸ਼ਮਲਵ xmin, ਦਸ਼ਮਲਵ ymin, ਦਸ਼ਮਲਵ xmax, ਦਸ਼ਮਲਵ ymax,
+				      ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
   hb_extents_t<> extents = {xmin, ymin, xmax, ymax};
-  c->push_clip (extents);
+  c->ਧੱਕੋ_clip (extents);
 }
 
-static void
-hb_paint_extents_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਕੱਢੋ_clip (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			   ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  c->pop_clip ();
+  c->ਕੱਢੋ_clip ();
 }
 
-static void
-hb_paint_extents_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਧੱਕੋ_ਸਮੂਹ (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  c->push_group ();
+  c->ਧੱਕੋ_ਸਮੂਹ ();
 }
 
-static void
-hb_paint_extents_pop_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void *paint_data,
-			    hb_paint_composite_mode_t mode,
-			    void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_ਕੱਢੋ_ਸਮੂਹ (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			    ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			    hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ,
+			    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  c->pop_group (mode);
+  c->ਕੱਢੋ_ਸਮੂਹ (ਬਹੁਲਕ);
 }
 
-static hb_bool_t
-hb_paint_extents_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
-			      hb_tag_t format HB_UNUSED,
-			      float slant HB_UNUSED,
+ਸਥਿਰ hb_bool_t
+hb_paint_extents_paint_image (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			      hb_blob_t *blob HB_ਅਣਵਰਤਿਆ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਚੌੜਾਈ HB_ਅਣਵਰਤਿਆ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਉਚਾਈ HB_ਅਣਵਰਤਿਆ,
+			      hb_ਟੈਗ_t format HB_ਅਣਵਰਤਿਆ,
+			      ਦਸ਼ਮਲਵ slant HB_ਅਣਵਰਤਿਆ,
 			      hb_glyph_extents_t *glyph_extents,
-			      void *user_data HB_UNUSED)
+			      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
-  if (!glyph_extents)
-    return false; // Happens with SVG images.
+  ਜੇ (!glyph_extents)
+    ਵਾਪਸ ਝੂਠ; // Happens with SVG images.
 
-  hb_extents_t<> extents = {(float) glyph_extents->x_bearing,
-			    (float) glyph_extents->y_bearing + glyph_extents->height,
-			    (float) glyph_extents->x_bearing + glyph_extents->width,
-			    (float) glyph_extents->y_bearing};
-  c->push_clip (extents);
+  hb_extents_t<> extents = {(ਦਸ਼ਮਲਵ) glyph_extents->x_bearing,
+			    (ਦਸ਼ਮਲਵ) glyph_extents->y_bearing + glyph_extents->ਉਚਾਈ,
+			    (ਦਸ਼ਮਲਵ) glyph_extents->x_bearing + glyph_extents->ਚੌੜਾਈ,
+			    (ਦਸ਼ਮਲਵ) glyph_extents->y_bearing};
+  c->ਧੱਕੋ_clip (extents);
   c->paint ();
-  c->pop_clip ();
+  c->ਕੱਢੋ_clip ();
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static void
-hb_paint_extents_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_bool_t use_foreground HB_UNUSED,
-			      hb_color_t color HB_UNUSED,
-			      void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_paint_color (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			      hb_bool_t use_foreground HB_ਅਣਵਰਤਿਆ,
+			      hb_color_t color HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
-
-  c->paint ();
-}
-
-static void
-hb_paint_extents_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED,
-				        float x2 HB_UNUSED, float y2 HB_UNUSED,
-				        void *user_data HB_UNUSED)
-{
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
   c->paint ();
 }
 
-static void
-hb_paint_extents_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED, float r0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED, float r1 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_paint_ਰੇਖਿਕ_gradient (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				        ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				        hb_color_ਸਤਰ_t *color_ਸਤਰ HB_ਅਣਵਰਤਿਆ,
+				        ਦਸ਼ਮਲਵ x0 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ y0 HB_ਅਣਵਰਤਿਆ,
+				        ਦਸ਼ਮਲਵ x1 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ y1 HB_ਅਣਵਰਤਿਆ,
+				        ਦਸ਼ਮਲਵ x2 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ y2 HB_ਅਣਵਰਤਿਆ,
+				        ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
   c->paint ();
 }
 
-static void
-hb_paint_extents_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				       void *paint_data,
-				       hb_color_line_t *color_line HB_UNUSED,
-				       float cx HB_UNUSED, float cy HB_UNUSED,
-				       float start_angle HB_UNUSED,
-				       float end_angle HB_UNUSED,
-				       void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_paint_radial_gradient (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				        ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				        hb_color_ਸਤਰ_t *color_ਸਤਰ HB_ਅਣਵਰਤਿਆ,
+				        ਦਸ਼ਮਲਵ x0 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ y0 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ r0 HB_ਅਣਵਰਤਿਆ,
+				        ਦਸ਼ਮਲਵ x1 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ y1 HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ r1 HB_ਅਣਵਰਤਿਆ,
+				        ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
 
   c->paint ();
 }
 
-static hb_bool_t
-hb_paint_extents_set_budget (hb_paint_funcs_t *, void *paint_data,
-			     int64_t budget, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_paint_extents_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_ਅਣਵਰਤਿਆ,
+				       ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				       hb_color_ਸਤਰ_t *color_ਸਤਰ HB_ਅਣਵਰਤਿਆ,
+				       ਦਸ਼ਮਲਵ cx HB_ਅਣਵਰਤਿਆ, ਦਸ਼ਮਲਵ cy HB_ਅਣਵਰਤਿਆ,
+				       ਦਸ਼ਮਲਵ ਸ਼ੁਰੂ_angle HB_ਅਣਵਰਤਿਆ,
+				       ਦਸ਼ਮਲਵ ਸਿਰਾ_angle HB_ਅਣਵਰਤਿਆ,
+				       ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  auto *context = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
+
+  c->paint ();
+}
+
+ਸਥਿਰ hb_bool_t
+hb_paint_extents_ਸੈੱਟ_budget (hb_paint_funcs_t *, ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			     int64_t budget, ਖਾਲੀ *)
+{
+  ਸਵੈਚਾਲਿਤ *context = (hb_paint_extents_context_t *) paint_ਅੰਕੜੇ;
   context->budget = budget;
-  context->budget_initialized = true;
+  context->budget_initialized = ਸੱਚ;
   context->recharge_budget ();
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static int64_t
-hb_paint_extents_get_budget (hb_paint_funcs_t *, void *paint_data, void *)
+ਸਥਿਰ int64_t
+hb_paint_extents_get_budget (hb_paint_funcs_t *, ਖਾਲੀ *paint_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_paint_extents_context_t *) paint_data)->budget;
+  ਵਾਪਸ ((hb_paint_extents_context_t *) paint_ਅੰਕੜੇ)->budget;
 }
 
-static int64_t *
-hb_paint_extents_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void *)
+ਸਥਿਰ int64_t *
+hb_paint_extents_get_budget_ਬਚਿਆ (hb_paint_funcs_t *, ਖਾਲੀ *paint_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return &((hb_paint_extents_context_t *) paint_data)->budget_remaining;
+  ਵਾਪਸ &((hb_paint_extents_context_t *) paint_ਅੰਕੜੇ)->budget_ਬਚਿਆ;
 }
 
-static inline void free_static_paint_extents_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_paint_extents_funcs ();
 
-static struct hb_paint_extents_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_extents_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_paint_extents_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_extents_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ਸਥਿਰ hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func (funcs, hb_paint_extents_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, hb_paint_extents_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_paint_extents_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_paint_extents_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_paint_extents_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_paint_extents_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_paint_extents_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, hb_paint_extents_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, hb_paint_extents_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, hb_paint_extents_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, hb_paint_extents_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, hb_paint_extents_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_paint_extents_set_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_paint_extents_get_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_paint_extents_get_budget_remaining, nullptr, nullptr);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_transform_func (funcs, hb_paint_extents_ਧੱਕੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_transform_func (funcs, hb_paint_extents_ਕੱਢੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_glyph_func (funcs, hb_paint_extents_ਧੱਕੋ_clip_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_rectangle_func (funcs, hb_paint_extents_ਧੱਕੋ_clip_rectangle, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_clip_func (funcs, hb_paint_extents_ਕੱਢੋ_clip, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_ਸਮੂਹ_func (funcs, hb_paint_extents_ਧੱਕੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_ਸਮੂਹ_func (funcs, hb_paint_extents_ਕੱਢੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_color_func (funcs, hb_paint_extents_paint_color, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_image_func (funcs, hb_paint_extents_paint_image, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਰੇਖਿਕ_gradient_func (funcs, hb_paint_extents_paint_ਰੇਖਿਕ_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_radial_gradient_func (funcs, hb_paint_extents_paint_radial_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_sweep_gradient_func (funcs, hb_paint_extents_paint_sweep_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਸੈੱਟ_budget_func (funcs, hb_paint_extents_ਸੈੱਟ_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_func (funcs, hb_paint_extents_get_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_paint_extents_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_paint_extents_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_paint_extents_funcs;
 
-static inline
-void free_static_paint_extents_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_paint_extents_funcs ()
 {
   static_paint_extents_funcs.free_instance ();
 }
@@ -363,8 +363,8 @@ void free_static_paint_extents_funcs ()
 hb_paint_funcs_t *
 hb_paint_extents_get_funcs ()
 {
-  return static_paint_extents_funcs.get_unconst ();
+  ਵਾਪਸ static_paint_extents_funcs.get_unconst ();
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

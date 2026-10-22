@@ -1,79 +1,79 @@
-#ifndef OT_LAYOUT_GPOS_POSLOOKUP_HH
-#define OT_LAYOUT_GPOS_POSLOOKUP_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_POSLOOKUP_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_POSLOOKUP_HH
 
-#include "PosLookupSubTable.hh"
-#include "../../../hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "PosLookupSubTable.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct PosLookup : Lookup
+ਬਣਤਰ PosLookup : Lookup
 {
-  using SubTable = PosLookupSubTable;
+  ਵਰਤੋਂ Sub_ਸਾਰਣੀ = Pos_Lookup_Sub_ਸਾਰਣੀ;
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  ਅਚਲ Sub_ਸਾਰਣੀ& get_subtable (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
+  { ਵਾਪਸ Lookup::get_subtable<Sub_ਸਾਰਣੀ> (i); }
 
-  bool is_reverse () const
+  ਤਾਰਕਿਕ is_ਉਲਟ () ਅਚਲ
   {
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    ਵਾਪਸ dispatch (&c);
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { return dispatch (c); }
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
+  { ਵਾਪਸ dispatch (c); }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_ਘੇਰਾ_lookups_context_t::return_t ਘੇਰਾ_lookups (hb_ਘੇਰਾ_lookups_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    ਜੇ (c->is_lookup_ਦੇਖਿਆ (this_ਸੂਚਕਾਂਕ))
+      ਵਾਪਸ hb_ਘੇਰਾ_lookups_context_t::default_return_ਮੁੱਲ ();
 
-    c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    c->ਸੈੱਟ_lookup_ਦੇਖਿਆ (this_ਸੂਚਕਾਂਕ);
+    ਜੇ (!intersects (c->glyphs))
     {
-      c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      c->ਸੈੱਟ_lookup_inactive (this_ਸੂਚਕਾਂਕ);
+      ਵਾਪਸ hb_ਘੇਰਾ_lookups_context_t::default_return_ਮੁੱਲ ();
     }
 
-    hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    hb_ਘੇਰਾ_lookups_context_t::return_t ret = dispatch (c);
+    ਵਾਪਸ ret;
   }
 
-  template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_coverage (ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    hb_collect_coverage_context_t<set_t> c (glyphs);
+    hb_collect_coverage_context_t<ਸੈੱਟ_t> c (glyphs);
     dispatch (&c);
   }
 
-  template <typename context_t>
-  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t>
+  ਸਥਿਰ ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch_recurse_func (context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ lookup_ਸੂਚਕਾਂਕ);
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, Ts&&... ds) ਅਚਲ
+  { ਵਾਪਸ Lookup::dispatch<Sub_ਸਾਰਣੀ> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
+  { ਵਾਪਸ Lookup::subset<Sub_ਸਾਰਣੀ> (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
+  { ਵਾਪਸ Lookup::sanitize<Sub_ਸਾਰਣੀ> (c); }
 };
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GPOS_POSLOOKUP_HH */
+#ਜੇ_ਅੰਤ  /* OT_LAYOUT_GPOS_POSLOOKUP_HH */

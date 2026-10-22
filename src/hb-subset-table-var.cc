@@ -1,60 +1,60 @@
-#include "hb-subset-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-table.hh"
 
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
-#ifndef HB_NO_VAR_COMPOSITES
-#include "OT/Var/VARC/VARC-subset.hh"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-hvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-gvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-fvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-avar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-cvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-mvar-table.hh"
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Var/VARC/VARC-subset.hh"
+#ਜੇ_ਅੰਤ
 
-bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_var		(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success)
 {
-#ifndef HB_NO_VAR
-  switch (tag)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+  ਚੋਣ (ਟੈਗ_2)
   {
-  case HB_TAG('H','V','A','R'): *success = _hb_subset_table<const OT::HVAR> (plan, buf); return true;
-  case HB_TAG('V','V','A','R'): *success = _hb_subset_table<const OT::VVAR> (plan, buf); return true;
-  case HB_TAG('g','v','a','r'): *success = _hb_subset_table<const OT::gvar> (plan, buf); return true;
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'): *success = _hb_subset_table<const OT::GVAR> (plan, buf); return true;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  case HB_TAG('V','A','R','C'): *success = _hb_subset_table<const OT::VARC> (plan, buf); return true;
-#endif
-  case HB_TAG('f','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::fvar> (plan, buf);
-    return true;
-  case HB_TAG('a','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::avar> (plan, buf);
-    return true;
-  case HB_TAG('c','v','a','r'):
+  ਹਾਲਤ HB_ਟੈਗ('H','V','A','R'): *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::HVAR> (plan, buf); ਵਾਪਸ ਸੱਚ;
+  ਹਾਲਤ HB_ਟੈਗ('V','V','A','R'): *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::VVAR> (plan, buf); ਵਾਪਸ ਸੱਚ;
+  ਹਾਲਤ HB_ਟੈਗ('g','v','a','r'): *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::gvar> (plan, buf); ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+  ਹਾਲਤ HB_ਟੈਗ('G','V','A','R'): *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::GVAR> (plan, buf); ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
+  ਹਾਲਤ HB_ਟੈਗ('V','A','R','C'): *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::VARC> (plan, buf); ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+  ਹਾਲਤ HB_ਟੈਗ('f','v','a','r'):
+    ਜੇ (plan->user_axes_location.is_empty ())
+      *success = hb_subset_ਸਾਰਣੀ_passthrough (plan, ਟੈਗ_2);
+    ਨਹੀਂਤਾਂ
+      *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::fvar> (plan, buf);
+    ਵਾਪਸ ਸੱਚ;
+  ਹਾਲਤ HB_ਟੈਗ('a','v','a','r'):
+    ਜੇ (plan->user_axes_location.is_empty ())
+      *success = hb_subset_ਸਾਰਣੀ_passthrough (plan, ਟੈਗ_2);
+    ਨਹੀਂਤਾਂ
+      *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::avar> (plan, buf);
+    ਵਾਪਸ ਸੱਚ;
+  ਹਾਲਤ HB_ਟੈਗ('c','v','a','r'):
     /* TODO: For avar2 partial instancing, cull unreachable tuple
      * variations (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    ਜੇ (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::cvar> (plan, buf);
-    return true;
-  case HB_TAG('M','V','A','R'):
+      *success = hb_subset_ਸਾਰਣੀ_passthrough (plan, ਟੈਗ_2);
+    ਨਹੀਂਤਾਂ
+      *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::cvar> (plan, buf);
+    ਵਾਪਸ ਸੱਚ;
+  ਹਾਲਤ HB_ਟੈਗ('M','V','A','R'):
     /* TODO: For avar2 partial instancing, cull unreachable VarStore
      * regions (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    ਜੇ (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::MVAR> (plan, buf);
-    return true;
+      *success = hb_subset_ਸਾਰਣੀ_passthrough (plan, ਟੈਗ_2);
+    ਨਹੀਂਤਾਂ
+      *success = hb_subset_ਸਾਰਣੀ<ਅਚਲ OT::MVAR> (plan, buf);
+    ਵਾਪਸ ਸੱਚ;
   }
-#endif
-  return false;
+#ਜੇ_ਅੰਤ
+  ਵਾਪਸ ਝੂਠ;
 }

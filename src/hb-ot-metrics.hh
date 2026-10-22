@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_METRICS_HH
-#define HB_OT_METRICS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_METRICS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_METRICS_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-HB_INTERNAL bool
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
 _hb_ot_metrics_get_position_common (hb_font_t           *font,
-				    hb_ot_metrics_tag_t  metrics_tag,
+				    hb_ot_metrics_ਟੈਗ_t  metrics_ਟੈਗ,
 				    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-#endif /* HB_OT_METRICS_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_METRICS_HH */

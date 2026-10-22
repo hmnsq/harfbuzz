@@ -26,12 +26,12 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ITER_HH
-#define HB_ITER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ITER_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ITER_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-meta.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-algs.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-meta.hh"
 
 
 /* Unified iterator object.
@@ -55,195 +55,195 @@
  */
 
 /* Base class for all iterators. */
-template <typename iter_t, typename Item = typename iter_t::__item_t__>
-struct hb_iter_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ iter_t, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_3 = ਕਿਸਮ_ਨਾਂ iter_t::__item_t__>
+ਬਣਤਰ hb_iter_t
 {
-  typedef Item item_t;
-  constexpr unsigned get_item_size () const { return hb_static_size (Item); }
-  static constexpr bool is_iterator = true;
-  static constexpr bool is_random_access_iterator = false;
-  static constexpr bool is_sorted_iterator = false;
-  static constexpr bool has_fast_len = false; // Should be checked in combination with is_random_access_iterator.
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਵਸਤੂ_3 ਵਸਤੂ_t;
+  constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਵਸਤੂ_ਮਾਪ () ਅਚਲ { ਵਾਪਸ hb_static_ਮਾਪ (ਵਸਤੂ_3); }
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_iterator = ਸੱਚ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator = ਝੂਠ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਝੂਠ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ has_fast_len = ਝੂਠ; // Should be checked in combination with is_random_access_iterator.
 
-  private:
+  ਨਿਜੀ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  ਅਚਲ iter_t* thiz () ਅਚਲ { ਵਾਪਸ static_cast<ਅਚਲ iter_t *> (ਇਹ); }
+	iter_t* thiz ()       { ਵਾਪਸ static_cast<      iter_t *> (ਇਹ); }
+  ਜਨਤਕ:
 
   /* Operators. */
-  iter_t iter () const { return *thiz(); }
-  iter_t operator + () const { return *thiz(); }
-  iter_t _begin () const { return *thiz(); }
-  iter_t begin () const { return _begin (); }
-  iter_t _end () const { return thiz()->__end__ (); }
-  iter_t end () const { return _end (); }
-  explicit operator bool () const { return thiz()->__more__ (); }
-  unsigned len () const { return thiz()->__len__ (); }
+  iter_t iter () ਅਚਲ { ਵਾਪਸ *thiz(); }
+  iter_t ਸੰਚਾਲਕ + () ਅਚਲ { ਵਾਪਸ *thiz(); }
+  iter_t _begin () ਅਚਲ { ਵਾਪਸ *thiz(); }
+  iter_t begin () ਅਚਲ { ਵਾਪਸ _begin (); }
+  iter_t ਸਿਰਾ_3 () ਅਚਲ { ਵਾਪਸ thiz()->__end__ (); }
+  iter_t ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ ਸਿਰਾ_3 (); }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ thiz()->__more__ (); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ len () ਅਚਲ { ਵਾਪਸ thiz()->__len__ (); }
   /* The following can only be enabled if item_t is reference type.  Otherwise
    * it will be returning pointer to temporary rvalue. */
-  template <typename T = item_t,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T = ਵਸਤੂ_t,
 	    hb_enable_if (std::is_reference<T>::value)>
-  hb_remove_reference<item_t>* operator -> () const { return std::addressof (**thiz()); }
-  item_t operator * () const { return thiz()->__item__ (); }
-  item_t operator * () { return thiz()->__item__ (); }
-  item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
-  item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
-  iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
-  iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
-  iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
-  iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
-  iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
-  template <typename T>
-  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); return *thiz(); }
+  hb_remove_reference<ਵਸਤੂ_t>* ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ std::addressof (**thiz()); }
+  ਵਸਤੂ_t ਸੰਚਾਲਕ * () ਅਚਲ { ਵਾਪਸ thiz()->__item__ (); }
+  ਵਸਤੂ_t ਸੰਚਾਲਕ * () { ਵਾਪਸ thiz()->__item__ (); }
+  ਵਸਤੂ_t ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ { ਵਾਪਸ thiz()->__item_at__ (i); }
+  ਵਸਤੂ_t ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ i) { ਵਾਪਸ thiz()->__item_at__ (i); }
+  iter_t& ਸੰਚਾਲਕ += (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) &  { thiz()->__forward__ (ਗਿਣਤੀ_2); ਵਾਪਸ *thiz(); }
+  iter_t  ਸੰਚਾਲਕ += (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) && { thiz()->__forward__ (ਗਿਣਤੀ_2); ਵਾਪਸ *thiz(); }
+  iter_t& ਸੰਚਾਲਕ ++ () &  { thiz()->__next__ (); ਵਾਪਸ *thiz(); }
+  iter_t  ਸੰਚਾਲਕ ++ () && { thiz()->__next__ (); ਵਾਪਸ *thiz(); }
+  iter_t& ਸੰਚਾਲਕ -= (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) &  { thiz()->__rewind__ (ਗਿਣਤੀ_2); ਵਾਪਸ *thiz(); }
+  iter_t  ਸੰਚਾਲਕ -= (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) && { thiz()->__rewind__ (ਗਿਣਤੀ_2); ਵਾਪਸ *thiz(); }
+  iter_t& ਸੰਚਾਲਕ -- () &  { thiz()->__prev__ (); ਵਾਪਸ *thiz(); }
+  iter_t  ਸੰਚਾਲਕ -- () && { thiz()->__prev__ (); ਵਾਪਸ *thiz(); }
+  iter_t ਸੰਚਾਲਕ + (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ { ਸਵੈਚਾਲਿਤ c = thiz()->iter (); c += ਗਿਣਤੀ_2; ਵਾਪਸ c; }
+  ਮਿੱਤਰ iter_t ਸੰਚਾਲਕ + (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2, ਅਚਲ iter_t &it) { ਵਾਪਸ it + ਗਿਣਤੀ_2; }
+  iter_t ਸੰਚਾਲਕ ++ (ਪੂਰਨ) { iter_t c (*thiz()); ++*thiz(); ਵਾਪਸ c; }
+  iter_t ਸੰਚਾਲਕ - (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ { ਸਵੈਚਾਲਿਤ c = thiz()->iter (); c -= ਗਿਣਤੀ_2; ਵਾਪਸ c; }
+  iter_t ਸੰਚਾਲਕ -- (ਪੂਰਨ) { iter_t c (*thiz()); --*thiz(); ਵਾਪਸ c; }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  iter_t& ਸੰਚਾਲਕ >> (T &v) &  { v = **thiz(); ++*thiz(); ਵਾਪਸ *thiz(); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  iter_t  ਸੰਚਾਲਕ >> (T &v) && { v = **thiz(); ++*thiz(); ਵਾਪਸ *thiz(); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  iter_t& ਸੰਚਾਲਕ << (ਅਚਲ T v) &  { **thiz() = v; ++*thiz(); ਵਾਪਸ *thiz(); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  iter_t  ਸੰਚਾਲਕ << (ਅਚਲ T v) && { **thiz() = v; ++*thiz(); ਵਾਪਸ *thiz(); }
 
-  protected:
-  hb_iter_t () = default;
-  hb_iter_t (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t (hb_iter_t &&o HB_UNUSED) = default;
-  hb_iter_t& operator = (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t& operator = (hb_iter_t &&o HB_UNUSED) = default;
+  ਸੁਰੱਖਿਅਤ:
+  hb_iter_t () = ਮੂਲ;
+  hb_iter_t (ਅਚਲ hb_iter_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_t (hb_iter_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_iter_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_t& ਸੰਚਾਲਕ = (hb_iter_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
 };
 
-#define HB_ITER_USING(Name) \
-  using item_t = typename Name::item_t; \
-  using Name::_begin; \
-  using Name::begin; \
-  using Name::_end; \
-  using Name::end; \
-  using Name::get_item_size; \
-  using Name::is_iterator; \
-  using Name::iter; \
-  using Name::operator bool; \
-  using Name::len; \
-  using Name::operator ->; \
-  using Name::operator *; \
-  using Name::operator []; \
-  using Name::operator +=; \
-  using Name::operator ++; \
-  using Name::operator -=; \
-  using Name::operator --; \
-  using Name::operator +; \
-  using Name::operator -; \
-  using Name::operator >>; \
-  using Name::operator <<; \
-  static_assert (true, "")
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ITER_USING(Name) \
+  ਵਰਤੋਂ ਵਸਤੂ_t = ਕਿਸਮ_ਨਾਂ Name::ਵਸਤੂ_t; \
+  ਵਰਤੋਂ Name::_begin; \
+  ਵਰਤੋਂ Name::begin; \
+  ਵਰਤੋਂ Name::ਸਿਰਾ_3; \
+  ਵਰਤੋਂ Name::ਸਿਰਾ; \
+  ਵਰਤੋਂ Name::get_ਵਸਤੂ_ਮਾਪ; \
+  ਵਰਤੋਂ Name::is_iterator; \
+  ਵਰਤੋਂ Name::iter; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ ਤਾਰਕਿਕ; \
+  ਵਰਤੋਂ Name::len; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ ->; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ *; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ []; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ +=; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ ++; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ -=; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ --; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ +; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ -; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ >>; \
+  ਵਰਤੋਂ Name::ਸੰਚਾਲਕ <<; \
+  static_assert (ਸੱਚ, "")
 
 /* Returns iterator / item type of a type. */
-template <typename Iterable>
-using hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
-template <typename Iterable>
-using hb_item_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable>
+ਵਰਤੋਂ hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable>
+ਵਰਤੋਂ hb_ਵਸਤੂ_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
 
 
-template <typename> struct hb_array_t;
-template <typename> struct hb_sorted_array_t;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ> ਬਣਤਰ hb_array_t;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ> ਬਣਤਰ hb_sorted_array_t;
 
-struct
+ਬਣਤਰ
 {
-  template <typename T> hb_iter_type<T>
-  operator () (T&& c) const
-  { return hb_deref (std::forward<T> (c)).iter (); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> hb_iter_type<T>
+  ਸੰਚਾਲਕ () (T&& c) ਅਚਲ
+  { ਵਾਪਸ hb_deref (std::forward<T> (c)).iter (); }
 
   /* Specialization for C arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (Type *array, unsigned int length) const
-  { return hb_array_t<Type> (array, length); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਸਤਰਅੰਦਰ hb_array_t<Type>
+  ਸੰਚਾਲਕ () (Type *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ) ਅਚਲ
+  { ਵਾਪਸ hb_array_t<Type> (array, ਲੰਮਾਈ); }
 
-  template <typename Type, unsigned int length> hb_array_t<Type>
-  operator () (Type (&array)[length]) const
-  { return hb_array_t<Type> (array, length); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ> hb_array_t<Type>
+  ਸੰਚਾਲਕ () (Type (&array)[ਲੰਮਾਈ]) ਅਚਲ
+  { ਵਾਪਸ hb_array_t<Type> (array, ਲੰਮਾਈ); }
 
 }
 HB_FUNCOBJ (hb_iter);
-struct
+ਬਣਤਰ
 {
-  template <typename T> auto
-  impl (T&& c, hb_priority<1>) const HB_RETURN (unsigned, c.len ())
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> ਸਵੈਚਾਲਿਤ
+  impl (T&& c, hb_ਤਰਜੀਹ<1>) ਅਚਲ HB_RETURN (ਬਿਨਾਨਿਸ਼ਾਨੀ, c.len ())
 
-  template <typename T> auto
-  impl (T&& c, hb_priority<0>) const HB_RETURN (unsigned, c.len)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> ਸਵੈਚਾਲਿਤ
+  impl (T&& c, hb_ਤਰਜੀਹ<0>) ਅਚਲ HB_RETURN (ਬਿਨਾਨਿਸ਼ਾਨੀ, c.len)
 
-  public:
+  ਜਨਤਕ:
 
-  template <typename T> auto
-  operator () (T&& c) const HB_RETURN (unsigned, impl (std::forward<T> (c), hb_prioritize))
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> ਸਵੈਚਾਲਿਤ
+  ਸੰਚਾਲਕ () (T&& c) ਅਚਲ HB_RETURN (ਬਿਨਾਨਿਸ਼ਾਨੀ, impl (std::forward<T> (c), hb_prioritize))
 }
 HB_FUNCOBJ (hb_len);
 
 /* Mixin to fill in what the subclass doesn't provide. */
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_fallback_mixin_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ iter_t, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_t = ਕਿਸਮ_ਨਾਂ iter_t::__item_t__>
+ਬਣਤਰ hb_iter_fallback_mixin_t
 {
-  private:
+  ਨਿਜੀ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  ਅਚਲ iter_t* thiz () ਅਚਲ { ਵਾਪਸ static_cast<ਅਚਲ iter_t *> (ਇਹ); }
+	iter_t* thiz ()       { ਵਾਪਸ static_cast<      iter_t *> (ਇਹ); }
+  ਜਨਤਕ:
 
   /* Access: Implement __item__(), or __item_at__() if random-access. */
-  item_t __item__ () const { return (*thiz())[0]; }
-  item_t __item_at__ (unsigned i) const { return *(*thiz() + i); }
+  ਵਸਤੂ_t __item__ () ਅਚਲ { ਵਾਪਸ (*thiz())[0]; }
+  ਵਸਤੂ_t __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ { ਵਾਪਸ *(*thiz() + i); }
 
   /* Termination: Implement __more__(), or __len__() if random-access. */
-  bool __more__ () const { return bool (thiz()->len ()); }
-  unsigned __len__ () const
-  { iter_t c (*thiz()); unsigned l = 0; while (c) { c++; l++; } return l; }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਤਾਰਕਿਕ (thiz()->len ()); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ
+  { iter_t c (*thiz()); ਬਿਨਾਨਿਸ਼ਾਨੀ l = 0; ਜਦੋਂ (c) { c++; l++; } ਵਾਪਸ l; }
 
   /* Advancing: Implement __next__(), or __forward__() if random-access. */
-  void __next__ () { *thiz() += 1; }
-  void __forward__ (unsigned n) { while (*thiz() && n--) ++*thiz(); }
+  ਖਾਲੀ __next__ () { *thiz() += 1; }
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { ਜਦੋਂ (*thiz() && n--) ++*thiz(); }
 
   /* Rewinding: Implement __prev__() or __rewind__() if bidirectional. */
-  void __prev__ () { *thiz() -= 1; }
-  void __rewind__ (unsigned n) { while (*thiz() && n--) --*thiz(); }
+  ਖਾਲੀ __prev__ () { *thiz() -= 1; }
+  ਖਾਲੀ __rewind__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { ਜਦੋਂ (*thiz() && n--) --*thiz(); }
 
   /* Range-based for: Implement __end__() if can be done faster,
    * and operator!=. */
-  iter_t __end__ () const
+  iter_t __end__ () ਅਚਲ
   {
-    if (thiz()->is_random_access_iterator)
-      return *thiz() + thiz()->len ();
+    ਜੇ (thiz()->is_random_access_iterator)
+      ਵਾਪਸ *thiz() + thiz()->len ();
     /* Above expression loops twice. Following loops once. */
-    auto it = *thiz();
-    while (it) ++it;
-    return it;
+    ਸਵੈਚਾਲਿਤ it = *thiz();
+    ਜਦੋਂ (it) ++it;
+    ਵਾਪਸ it;
   }
 
-  protected:
-  hb_iter_fallback_mixin_t () = default;
-  hb_iter_fallback_mixin_t (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
+  ਸੁਰੱਖਿਅਤ:
+  hb_iter_fallback_mixin_t () = ਮੂਲ;
+  hb_iter_fallback_mixin_t (ਅਚਲ hb_iter_fallback_mixin_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_fallback_mixin_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_iter_fallback_mixin_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_fallback_mixin_t& ਸੰਚਾਲਕ = (hb_iter_fallback_mixin_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
 };
 
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_with_fallback_t :
-  hb_iter_t<iter_t, item_t>,
-  hb_iter_fallback_mixin_t<iter_t, item_t>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ iter_t, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_t = ਕਿਸਮ_ਨਾਂ iter_t::__item_t__>
+ਬਣਤਰ hb_iter_with_fallback_t :
+  hb_iter_t<iter_t, ਵਸਤੂ_t>,
+  hb_iter_fallback_mixin_t<iter_t, ਵਸਤੂ_t>
 {
-  protected:
-  hb_iter_with_fallback_t () = default;
-  hb_iter_with_fallback_t (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
+  ਸੁਰੱਖਿਅਤ:
+  hb_iter_with_fallback_t () = ਮੂਲ;
+  hb_iter_with_fallback_t (ਅਚਲ hb_iter_with_fallback_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_with_fallback_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_iter_with_fallback_t &o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
+  hb_iter_with_fallback_t& ਸੰਚਾਲਕ = (hb_iter_with_fallback_t &&o HB_ਅਣਵਰਤਿਆ) = ਮੂਲ;
 };
 
 /*
@@ -252,109 +252,109 @@ struct hb_iter_with_fallback_t :
 
 /* hb_is_iterator() / hb_is_iterator_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_iterator_of
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iter, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_3>
+ਬਣਤਰ hb_is_iterator_ਦਾ
 {
-  template <typename Item2 = Item>
-  static hb_true_type impl (hb_priority<2>, hb_iter_t<Iter, hb_type_identity<Item2>> *);
-  static hb_false_type impl (hb_priority<0>, const void *);
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Item2 = ਵਸਤੂ_3>
+  ਸਥਿਰ hb_true_type impl (hb_ਤਰਜੀਹ<2>, hb_iter_t<Iter, hb_type_ਪਛਾਣ_ਤੱਤ<Item2>> *);
+  ਸਥਿਰ hb_false_type impl (hb_ਤਰਜੀਹ<0>, ਅਚਲ ਖਾਲੀ *);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
+  ਜਨਤਕ:
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
 };
-#define hb_is_iterator_of(Iter, Item) hb_is_iterator_of<Iter, Item>::value
-#define hb_is_iterator(Iter) hb_is_iterator_of (Iter, typename Iter::item_t)
-#define hb_is_sorted_iterator_of(Iter, Item) (hb_is_iterator_of<Iter, Item>::value && Iter::is_sorted_iterator)
-#define hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_of (Iter, typename Iter::item_t)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_iterator_ਦਾ(Iter, ਵਸਤੂ_3) hb_is_iterator_ਦਾ<Iter, ਵਸਤੂ_3>::value
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_iterator(Iter) hb_is_iterator_ਦਾ (Iter, ਕਿਸਮ_ਨਾਂ Iter::ਵਸਤੂ_t)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_sorted_iterator_ਦਾ(Iter, ਵਸਤੂ_3) (hb_is_iterator_ਦਾ<Iter, ਵਸਤੂ_3>::value && Iter::is_sorted_iterator)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_ਦਾ (Iter, ਕਿਸਮ_ਨਾਂ Iter::ਵਸਤੂ_t)
 
 /* hb_is_iterable() */
 
-template <typename T>
-struct hb_is_iterable
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hb_is_iterable
 {
-  private:
+  ਨਿਜੀ:
 
-  template <typename U>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਸਥਿਰ ਸਵੈਚਾਲਿਤ impl (hb_ਤਰਜੀਹ<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
 
-  template <typename>
-  static hb_false_type impl (hb_priority<0>);
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ>
+  ਸਥਿਰ hb_false_type impl (hb_ਤਰਜੀਹ<0>);
 
-  public:
-  static constexpr bool value = decltype (impl<T> (hb_prioritize))::value;
+  ਜਨਤਕ:
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ value = decltype (impl<T> (hb_prioritize))::value;
 };
-#define hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
 
 /* hb_is_source_of() / hb_is_sink_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_source_of
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iter, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_3>
+ਬਣਤਰ hb_is_ਸਰੋਤ_ਦਾ
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<const Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) >> hb_declval (Item &), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  ਨਿਜੀ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (ਕਿਸਮ_ਨਾਂ Iter2::ਵਸਤੂ_t, hb_ਜੋੜੋ_lvalue_reference<ਅਚਲ ਵਸਤੂ_3>))>
+  ਸਥਿਰ hb_true_type impl (hb_ਤਰਜੀਹ<2>);
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter2 = Iter>
+  ਸਥਿਰ ਸਵੈਚਾਲਿਤ impl (hb_ਤਰਜੀਹ<1>) -> decltype (hb_declval (Iter2) >> hb_declval (ਵਸਤੂ_3 &), hb_true_type ());
+  ਸਥਿਰ hb_false_type impl (hb_ਤਰਜੀਹ<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  ਜਨਤਕ:
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_source_of(Iter, Item) hb_is_source_of<Iter, Item>::value
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_ਸਰੋਤ_ਦਾ(Iter, ਵਸਤੂ_3) hb_is_ਸਰੋਤ_ਦਾ<Iter, ਵਸਤੂ_3>::value
 
-template<typename Iter, typename Item>
-struct hb_is_sink_of
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iter, ਕਿਸਮ_ਨਾਂ ਵਸਤੂ_3>
+ਬਣਤਰ hb_is_sink_ਦਾ
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) << hb_declval (Item), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  ਨਿਜੀ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (ਕਿਸਮ_ਨਾਂ Iter2::ਵਸਤੂ_t, hb_ਜੋੜੋ_lvalue_reference<ਵਸਤੂ_3>))>
+  ਸਥਿਰ hb_true_type impl (hb_ਤਰਜੀਹ<2>);
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter2 = Iter>
+  ਸਥਿਰ ਸਵੈਚਾਲਿਤ impl (hb_ਤਰਜੀਹ<1>) -> decltype (hb_declval (Iter2) << hb_declval (ਵਸਤੂ_3), hb_true_type ());
+  ਸਥਿਰ hb_false_type impl (hb_ਤਰਜੀਹ<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  ਜਨਤਕ:
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_sink_of(Iter, Item) hb_is_sink_of<Iter, Item>::value
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_sink_ਦਾ(Iter, ਵਸਤੂ_3) hb_is_sink_ਦਾ<Iter, ਵਸਤੂ_3>::value
 
 /* This is commonly used, so define: */
-#define hb_is_sorted_source_of(Iter, Item) \
-	(hb_is_source_of(Iter, Item) && Iter::is_sorted_iterator)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_is_sorted_ਸਰੋਤ_ਦਾ(Iter, ਵਸਤੂ_3) \
+	(hb_is_ਸਰੋਤ_ਦਾ(Iter, ਵਸਤੂ_3) && Iter::is_sorted_iterator)
 
 
-struct
+ਬਣਤਰ
 {
-  template <typename Iterable,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  unsigned operator () (const Iterable &_) const { return hb_len (hb_iter (_)); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੰਚਾਲਕ () (ਅਚਲ Iterable &_) ਅਚਲ { ਵਾਪਸ hb_len (hb_iter (_)); }
 
-  unsigned operator () (unsigned _) const { return _; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੰਚਾਲਕ () (ਬਿਨਾਨਿਸ਼ਾਨੀ _) ਅਚਲ { ਵਾਪਸ _; }
 }
-HB_FUNCOBJ (hb_len_of);
+HB_FUNCOBJ (hb_len_ਦਾ);
 
 /* Range-based 'for' for iterables. */
 
-template <typename Iterable,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ ਸਿਰਾ (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).ਸਿਰਾ ())
 
 /* begin()/end() are NOT looked up non-ADL.  So each namespace must declare them.
  * Do it for namespace OT. */
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-template <typename Iterable,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ ਸਿਰਾ (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).ਸਿਰਾ ())
 
 }
 
@@ -363,196 +363,196 @@ static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).
  * Adaptors, combiners, etc.
  */
 
-template <typename Lhs, typename Rhs,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Lhs, ਕਿਸਮ_ਨਾਂ Rhs,
 	  hb_requires (hb_is_iterator (Lhs))>
-static inline auto
-operator | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ
+ਸੰਚਾਲਕ | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
 
 /* hb_map(), hb_filter(), hb_reduce() */
 
-enum  class hb_function_sortedness_t {
+ਗਿਣਤੀ  ਵਰਗ hb_function_sortedness_t {
   NOT_SORTED,
-  RETAINS_SORTING,
+  RETAINS_ਛਾਂਟੀ,
   SORTED,
 };
 
-template <typename Iter, typename Proj, hb_function_sortedness_t Sorted,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter, ਕਿਸਮ_ਨਾਂ Proj, hb_function_sortedness_t Sorted,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_map_iter_t :
+ਬਣਤਰ hb_map_iter_t :
   hb_iter_t<hb_map_iter_t<Iter, Proj, Sorted>,
 	    decltype (hb_get (hb_declval (Proj), *hb_declval (Iter)))>
 {
-  hb_map_iter_t (const Iter& it, Proj f_) : it (it), f (f_) {}
+  hb_map_iter_t (ਅਚਲ Iter& it, Proj f_) : it (it), f (f_) {}
 
-  typedef decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator =
-    Sorted == hb_function_sortedness_t::SORTED ? true :
-    Sorted == hb_function_sortedness_t::RETAINS_SORTING ? Iter::is_sorted_iterator :
-    false;
-  __item_t__ __item__ () const { return hb_get (f.get (), *it); }
-  __item_t__ __item_at__ (unsigned i) const { return hb_get (f.get (), it[i]); }
-  bool __more__ () const { return bool (it); }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
-  hb_map_iter_t __end__ () const { return hb_map_iter_t (it._end (), f); }
-  bool operator != (const hb_map_iter_t& o) const
-  { return it != o.it; }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator = Iter::is_random_access_iterator;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator =
+    Sorted == hb_function_sortedness_t::SORTED ? ਸੱਚ :
+    Sorted == hb_function_sortedness_t::RETAINS_ਛਾਂਟੀ ? Iter::is_sorted_iterator :
+    ਝੂਠ;
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ hb_get (f.get (), *it); }
+  __item_t__ __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ { ਵਾਪਸ hb_get (f.get (), it[i]); }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਤਾਰਕਿਕ (it); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ it.len (); }
+  ਖਾਲੀ __next__ () { ++it; }
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { it += n; }
+  ਖਾਲੀ __prev__ () { --it; }
+  ਖਾਲੀ __rewind__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { it -= n; }
+  hb_map_iter_t __end__ () ਅਚਲ { ਵਾਪਸ hb_map_iter_t (it.ਸਿਰਾ_3 (), f); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_map_iter_t& o) ਅਚਲ
+  { ਵਾਪਸ it != o.it; }
 
-  private:
+  ਨਿਜੀ:
   Iter it;
-  mutable hb_reference_wrapper<Proj> f;
+  ਬਦਲਣਯੋਗ hb_reference_wrapper<Proj> f;
 };
 
-template <typename Proj, hb_function_sortedness_t Sorted>
-struct hb_map_iter_factory_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Proj, hb_function_sortedness_t Sorted>
+ਬਣਤਰ hb_map_iter_factory_t
 {
   hb_map_iter_factory_t (Proj f) : f (f) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_map_iter_t<Iter, Proj, Sorted>
-  operator () (Iter it)
-  { return hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
+  ਸੰਚਾਲਕ () (Iter it)
+  { ਵਾਪਸ hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
 
-  private:
+  ਨਿਜੀ:
   Proj f;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Proj>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
+  ਸੰਚਾਲਕ () (Proj&& f) ਅਚਲ
+  { ਵਾਪਸ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map);
-struct
+ਬਣਤਰ
 {
-  template <typename Proj>
-  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Proj>
+  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_ਛਾਂਟੀ>
+  ਸੰਚਾਲਕ () (Proj&& f) ਅਚਲ
+  { ਵਾਪਸ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_ਛਾਂਟੀ> (f); }
 }
-HB_FUNCOBJ (hb_map_retains_sorting);
-struct
+HB_FUNCOBJ (hb_map_retains_ਛਾਂਟੀ);
+ਬਣਤਰ
 {
-  template <typename Proj>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
+  ਸੰਚਾਲਕ () (Proj&& f) ਅਚਲ
+  { ਵਾਪਸ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map_sorted);
 
-template <typename Iter, typename Pred, typename Proj,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter, ਕਿਸਮ_ਨਾਂ Pred, ਕਿਸਮ_ਨਾਂ Proj,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_filter_iter_t :
+ਬਣਤਰ hb_filter_iter_t :
   hb_iter_with_fallback_t<hb_filter_iter_t<Iter, Pred, Proj>,
-			  typename Iter::item_t>
+			  ਕਿਸਮ_ਨਾਂ Iter::ਵਸਤੂ_t>
 {
-  hb_filter_iter_t (const Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
-  { while (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
+  hb_filter_iter_t (ਅਚਲ Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
+  { ਜਦੋਂ (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
 
-  typedef typename Iter::item_t __item_t__;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
-  __item_t__ __item__ () const { return *it; }
-  bool __more__ () const { return bool (it); }
-  void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
-  void __prev__ ()
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Iter::ਵਸਤੂ_t __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = Iter::is_sorted_iterator;
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ *it; }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਤਾਰਕਿਕ (it); }
+  ਖਾਲੀ __next__ () { ਕਰੋ ++it; ਜਦੋਂ (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
+  ਖਾਲੀ __prev__ ()
   {
-    unsigned count = 0;
-    do
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = 0;
+    ਕਰੋ
     {
       Iter old = it;
       --it;
-      if (!(it != old))
+      ਜੇ (!(it != old))
       {
-	it += count;
-	return;
+	it += ਗਿਣਤੀ_2;
+	ਵਾਪਸ;
       }
-      count++;
+      ਗਿਣਤੀ_2++;
     }
-    while (!hb_has (p.get (), hb_get (f.get (), *it)));
+    ਜਦੋਂ (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
-  hb_filter_iter_t __end__ () const { return hb_filter_iter_t (it._end (), p, f); }
-  bool operator != (const hb_filter_iter_t& o) const
-  { return it != o.it; }
+  hb_filter_iter_t __end__ () ਅਚਲ { ਵਾਪਸ hb_filter_iter_t (it.ਸਿਰਾ_3 (), p, f); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_filter_iter_t& o) ਅਚਲ
+  { ਵਾਪਸ it != o.it; }
 
-  private:
+  ਨਿਜੀ:
   Iter it;
-  mutable hb_reference_wrapper<Pred> p;
-  mutable hb_reference_wrapper<Proj> f;
+  ਬਦਲਣਯੋਗ hb_reference_wrapper<Pred> p;
+  ਬਦਲਣਯੋਗ hb_reference_wrapper<Proj> f;
 };
-template <typename Pred, typename Proj>
-struct hb_filter_iter_factory_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Pred, ਕਿਸਮ_ਨਾਂ Proj>
+ਬਣਤਰ hb_filter_iter_factory_t
 {
   hb_filter_iter_factory_t (Pred p, Proj f) : p (p), f (f) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_filter_iter_t<Iter, Pred, Proj>
-  operator () (Iter it)
-  { return hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
+  ਸੰਚਾਲਕ () (Iter it)
+  { ਵਾਪਸ hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
 
-  private:
+  ਨਿਜੀ:
   Pred p;
   Proj f;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity))>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Pred = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
+	    ਕਿਸਮ_ਨਾਂ Proj = decltype ((hb_ਪਛਾਣ_ਤੱਤ))>
   hb_filter_iter_factory_t<Pred, Proj>
-  operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) const
-  { return hb_filter_iter_factory_t<Pred, Proj> (p, f); }
+  ਸੰਚਾਲਕ () (Pred&& p = hb_ਪਛਾਣ_ਤੱਤ, Proj&& f = hb_ਪਛਾਣ_ਤੱਤ) ਅਚਲ
+  { ਵਾਪਸ hb_filter_iter_factory_t<Pred, Proj> (p, f); }
 }
 HB_FUNCOBJ (hb_filter);
 
-template <typename Redu, typename InitT>
-struct hb_reduce_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Redu, ਕਿਸਮ_ਨਾਂ InitT>
+ਬਣਤਰ hb_reduce_t
 {
-  hb_reduce_t (Redu r, InitT init_value) : r (r), init_value (init_value) {}
+  hb_reduce_t (Redu r, InitT init_ਮੁੱਲ) : r (r), init_ਮੁੱਲ (init_ਮੁੱਲ) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter)),
-	    typename AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (typename Iter::item_t)))>>
+	    ਕਿਸਮ_ਨਾਂ AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (ਕਿਸਮ_ਨਾਂ Iter::ਵਸਤੂ_t)))>>
   AccuT
-  operator () (Iter it)
+  ਸੰਚਾਲਕ () (Iter it)
   {
-    AccuT value = init_value;
-    for (; it; ++it)
+    AccuT value = init_ਮੁੱਲ;
+    ਲਈ (; it; ++it)
       value = r (value, *it);
-    return value;
+    ਵਾਪਸ value;
   }
 
-  private:
+  ਨਿਜੀ:
   Redu r;
-  InitT init_value;
+  InitT init_ਮੁੱਲ;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Redu, typename InitT>
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Redu, ਕਿਸਮ_ਨਾਂ InitT>
   hb_reduce_t<Redu, InitT>
-  operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  ਸੰਚਾਲਕ () (Redu&& r, InitT init_ਮੁੱਲ) ਅਚਲ
+  { ਵਾਪਸ hb_reduce_t<Redu, InitT> (r, init_ਮੁੱਲ); }
 }
 HB_FUNCOBJ (hb_reduce);
 
 
 /* hb_zip() */
 
-template <typename A, typename B>
-struct hb_zip_iter_t :
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ A, ਕਿਸਮ_ਨਾਂ B>
+ਬਣਤਰ hb_zip_iter_t :
   hb_iter_t<hb_zip_iter_t<A, B>,
-	    hb_pair_t<typename A::item_t, typename B::item_t>>
+	    hb_pair_t<ਕਿਸਮ_ਨਾਂ A::ਵਸਤੂ_t, ਕਿਸਮ_ਨਾਂ B::ਵਸਤੂ_t>>
 {
   hb_zip_iter_t () {}
-  hb_zip_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_zip_iter_t (ਅਚਲ A& a, ਅਚਲ B& b) : a (a), b (b) {}
 
-  typedef hb_pair_t<typename A::item_t, typename B::item_t> __item_t__;
-  static constexpr bool is_random_access_iterator =
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_pair_t<ਕਿਸਮ_ਨਾਂ A::ਵਸਤੂ_t, ਕਿਸਮ_ਨਾਂ B::ਵਸਤੂ_t> __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
   /* Note.  The following categorization is only valid if A is strictly sorted,
@@ -579,452 +579,452 @@ struct hb_zip_iter_t :
    * This semantical limitation does NOT affect logic in any other place I
    * know of as of this writing.
    */
-  static constexpr bool is_sorted_iterator = A::is_sorted_iterator;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = A::is_sorted_iterator;
 
-  __item_t__ __item__ () const { return __item_t__ (*a, *b); }
-  __item_t__ __item_at__ (unsigned i) const { return __item_t__ (a[i], b[i]); }
-  bool __more__ () const { return bool (a) && bool (b); }
-  unsigned __len__ () const { return hb_min (a.len (), b.len ()); }
-  void __next__ () { ++a; ++b; }
-  void __forward__ (unsigned n) { a += n; b += n; }
-  void __prev__ () { --a; --b; }
-  void __rewind__ (unsigned n) { a -= n; b -= n; }
-  hb_zip_iter_t __end__ () const { return hb_zip_iter_t (a._end (), b._end ()); }
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ __item_t__ (*a, *b); }
+  __item_t__ __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ { ਵਾਪਸ __item_t__ (a[i], b[i]); }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਤਾਰਕਿਕ (a) && ਤਾਰਕਿਕ (b); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ hb_min (a.len (), b.len ()); }
+  ਖਾਲੀ __next__ () { ++a; ++b; }
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { a += n; b += n; }
+  ਖਾਲੀ __prev__ () { --a; --b; }
+  ਖਾਲੀ __rewind__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { a -= n; b -= n; }
+  hb_zip_iter_t __end__ () ਅਚਲ { ਵਾਪਸ hb_zip_iter_t (a.ਸਿਰਾ_3 (), b.ਸਿਰਾ_3 ()); }
   /* Note, we should stop if ANY of the iters reaches end.  As such two compare
    * unequal if both items are unequal, NOT if either is unequal. */
-  bool operator != (const hb_zip_iter_t& o) const
-  { return a != o.a && b != o.b; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_zip_iter_t& o) ਅਚਲ
+  { ਵਾਪਸ a != o.a && b != o.b; }
 
-  private:
+  ਨਿਜੀ:
   A a;
   B b;
 };
-struct
+ਬਣਤਰ
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ A, ਕਿਸਮ_ਨਾਂ B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  ਸੰਚਾਲਕ () (A&& a, B&& b) ਅਚਲ
+  { ਵਾਪਸ hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_zip);
 
 /* hb_concat() */
 
-template <typename A, typename B>
-struct hb_concat_iter_t :
-    hb_iter_t<hb_concat_iter_t<A, B>, typename A::item_t>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ A, ਕਿਸਮ_ਨਾਂ B>
+ਬਣਤਰ hb_concat_iter_t :
+    hb_iter_t<hb_concat_iter_t<A, B>, ਕਿਸਮ_ਨਾਂ A::ਵਸਤੂ_t>
 {
   hb_concat_iter_t () {}
   hb_concat_iter_t (A& a, B& b) : a (a), b (b) {}
-  hb_concat_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_concat_iter_t (ਅਚਲ A& a, ਅਚਲ B& b) : a (a), b (b) {}
 
 
-  typedef typename A::item_t __item_t__;
-  static constexpr bool is_random_access_iterator =
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ A::ਵਸਤੂ_t __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = false;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਝੂਠ;
 
-  __item_t__ __item__ () const
+  __item_t__ __item__ () ਅਚਲ
   {
-    if (!a)
-      return *b;
-    return *a;
+    ਜੇ (!a)
+      ਵਾਪਸ *b;
+    ਵਾਪਸ *a;
   }
 
-  __item_t__ __item_at__ (unsigned i) const
+  __item_t__ __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ
   {
-    unsigned a_len = a.len ();
-    if (i < a_len)
-      return a[i];
-    return b[i - a_len];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ a_len = a.len ();
+    ਜੇ (i < a_len)
+      ਵਾਪਸ a[i];
+    ਵਾਪਸ b[i - a_len];
   }
 
-  bool __more__ () const { return bool (a) || bool (b); }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਤਾਰਕਿਕ (a) || ਤਾਰਕਿਕ (b); }
 
-  unsigned __len__ () const { return a.len () + b.len (); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ a.len () + b.len (); }
 
-  void __next__ ()
+  ਖਾਲੀ __next__ ()
   {
-    if (a)
+    ਜੇ (a)
       ++a;
-    else
+    ਨਹੀਂਤਾਂ
       ++b;
   }
 
-  void __forward__ (unsigned n)
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n)
   {
-    if (!n) return;
-    if (!is_random_access_iterator) {
-      while (n-- && *this) {
-        (*this)++;
+    ਜੇ (!n) ਵਾਪਸ;
+    ਜੇ (!is_random_access_iterator) {
+      ਜਦੋਂ (n-- && *ਇਹ) {
+        (*ਇਹ)++;
       }
-      return;
+      ਵਾਪਸ;
     }
 
-    unsigned a_len = a.len ();
-    if (n > a_len) {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ a_len = a.len ();
+    ਜੇ (n > a_len) {
       n -= a_len;
       a.__forward__ (a_len);
       b.__forward__ (n);
-    } else {
+    } ਨਹੀਂਤਾਂ {
       a.__forward__ (n);
     }
   }
 
-  hb_concat_iter_t __end__ () const { return hb_concat_iter_t (a._end (), b._end ()); }
-  bool operator != (const hb_concat_iter_t& o) const
+  hb_concat_iter_t __end__ () ਅਚਲ { ਵਾਪਸ hb_concat_iter_t (a.ਸਿਰਾ_3 (), b.ਸਿਰਾ_3 ()); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_concat_iter_t& o) ਅਚਲ
   {
-    return a != o.a
+    ਵਾਪਸ a != o.a
         || b != o.b;
   }
 
-  private:
+  ਨਿਜੀ:
   A a;
   B b;
 };
-struct
+ਬਣਤਰ
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ A, ਕਿਸਮ_ਨਾਂ B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  ਸੰਚਾਲਕ () (A&& a, B&& b) ਅਚਲ
+  { ਵਾਪਸ hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_concat);
 
 /* hb_apply() */
 
-template <typename Appl>
-struct hb_apply_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Appl>
+ਬਣਤਰ hb_apply_t
 {
   hb_apply_t (Appl a) : a (a) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ਖਾਲੀ ਸੰਚਾਲਕ () (Iter it)
   {
-    for (; it; ++it)
-      (void) hb_invoke (a, *it);
+    ਲਈ (; it; ++it)
+      (ਖਾਲੀ) hb_invoke (a, *it);
   }
 
-  private:
+  ਨਿਜੀ:
   Appl a;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Appl> hb_apply_t<Appl>
-  operator () (Appl&& a) const
-  { return hb_apply_t<Appl> (a); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Appl> hb_apply_t<Appl>
+  ਸੰਚਾਲਕ () (Appl&& a) ਅਚਲ
+  { ਵਾਪਸ hb_apply_t<Appl> (a); }
 
-  template <typename Appl> hb_apply_t<Appl&>
-  operator () (Appl *a) const
-  { return hb_apply_t<Appl&> (*a); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Appl> hb_apply_t<Appl&>
+  ਸੰਚਾਲਕ () (Appl *a) ਅਚਲ
+  { ਵਾਪਸ hb_apply_t<Appl&> (*a); }
 }
 HB_FUNCOBJ (hb_apply);
 
 /* hb_range()/hb_iota()/hb_repeat() */
 
-template <typename T, typename S>
-struct hb_range_iter_t :
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ S>
+ਬਣਤਰ hb_range_iter_t :
   hb_iter_t<hb_range_iter_t<T, S>, T>
 {
-  hb_range_iter_t (T start, T end_, S step) : v (start), end_ (end_for (start, end_, step)), step (step) {}
+  hb_range_iter_t (T ਸ਼ੁਰੂ, T ਸਿਰਾ_4, S ਕਦਮ) : v (ਸ਼ੁਰੂ), ਸਿਰਾ_4 (ਸਿਰਾ_for (ਸ਼ੁਰੂ, ਸਿਰਾ_4, ਕਦਮ)), ਕਦਮ (ਕਦਮ) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  __item_t__ __item_at__ (unsigned j) const { return v + j * step; }
-  bool __more__ () const { return v != end_; }
-  unsigned __len__ () const { return !step ? UINT_MAX : (end_ - v) / step; }
-  void __next__ () { v += step; }
-  void __forward__ (unsigned n) { v += n * step; }
-  void __prev__ () { v -= step; }
-  void __rewind__ (unsigned n) { v -= n * step; }
-  hb_range_iter_t __end__ () const { return hb_range_iter_t (end_, end_, step); }
-  bool operator != (const hb_range_iter_t& o) const
-  { return v != o.v; }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ T __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator = ਸੱਚ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਸੱਚ;
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ hb_ridentity (v); }
+  __item_t__ __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ j) ਅਚਲ { ਵਾਪਸ v + j * ਕਦਮ; }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ v != ਸਿਰਾ_4; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ !ਕਦਮ ? UINT_MAX : (ਸਿਰਾ_4 - v) / ਕਦਮ; }
+  ਖਾਲੀ __next__ () { v += ਕਦਮ; }
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { v += n * ਕਦਮ; }
+  ਖਾਲੀ __prev__ () { v -= ਕਦਮ; }
+  ਖਾਲੀ __rewind__ (ਬਿਨਾਨਿਸ਼ਾਨੀ n) { v -= n * ਕਦਮ; }
+  hb_range_iter_t __end__ () ਅਚਲ { ਵਾਪਸ hb_range_iter_t (ਸਿਰਾ_4, ਸਿਰਾ_4, ਕਦਮ); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_range_iter_t& o) ਅਚਲ
+  { ਵਾਪਸ v != o.v; }
 
-  private:
-  static inline T end_for (T start, T end_, S step)
+  ਨਿਜੀ:
+  ਸਥਿਰ ਸਤਰਅੰਦਰ T ਸਿਰਾ_for (T ਸ਼ੁਰੂ, T ਸਿਰਾ_4, S ਕਦਮ)
   {
-    if (!step)
-      return end_;
-    auto res = (end_ - start) % step;
-    if (!res)
-      return end_;
-    end_ += step - res;
-    return end_;
+    ਜੇ (!ਕਦਮ)
+      ਵਾਪਸ ਸਿਰਾ_4;
+    ਸਵੈਚਾਲਿਤ res = (ਸਿਰਾ_4 - ਸ਼ੁਰੂ) % ਕਦਮ;
+    ਜੇ (!res)
+      ਵਾਪਸ ਸਿਰਾ_4;
+    ਸਿਰਾ_4 += ਕਦਮ - res;
+    ਵਾਪਸ ਸਿਰਾ_4;
   }
 
-  private:
+  ਨਿਜੀ:
   T v;
-  T end_;
-  S step;
+  T ਸਿਰਾ_4;
+  S ਕਦਮ;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename T = unsigned> hb_range_iter_t<T, unsigned>
-  operator () (T end = (unsigned) -1) const
-  { return hb_range_iter_t<T, unsigned> (0, end, 1u); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T = ਬਿਨਾਨਿਸ਼ਾਨੀ> hb_range_iter_t<T, ਬਿਨਾਨਿਸ਼ਾਨੀ>
+  ਸੰਚਾਲਕ () (T ਸਿਰਾ = (ਬਿਨਾਨਿਸ਼ਾਨੀ) -1) ਅਚਲ
+  { ਵਾਪਸ hb_range_iter_t<T, ਬਿਨਾਨਿਸ਼ਾਨੀ> (0, ਸਿਰਾ, 1u); }
 
-  template <typename T, typename S = unsigned> hb_range_iter_t<T, S>
-  operator () (T start, T end, S step = 1u) const
-  { return hb_range_iter_t<T, S> (start, end, step); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ S = ਬਿਨਾਨਿਸ਼ਾਨੀ> hb_range_iter_t<T, S>
+  ਸੰਚਾਲਕ () (T ਸ਼ੁਰੂ, T ਸਿਰਾ, S ਕਦਮ = 1u) ਅਚਲ
+  { ਵਾਪਸ hb_range_iter_t<T, S> (ਸ਼ੁਰੂ, ਸਿਰਾ, ਕਦਮ); }
 }
 HB_FUNCOBJ (hb_range);
 
-template <typename T, typename S>
-struct hb_iota_iter_t :
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ S>
+ਬਣਤਰ hb_iota_iter_t :
   hb_iter_with_fallback_t<hb_iota_iter_t<T, S>, T>
 {
-  hb_iota_iter_t (T start, S step) : v (start), step (step) {}
+  hb_iota_iter_t (T ਸ਼ੁਰੂ, S ਕਦਮ) : v (ਸ਼ੁਰੂ), ਕਦਮ (ਕਦਮ) {}
 
-  private:
+  ਨਿਜੀ:
 
-  template <typename S2 = S>
-  auto
-  inc (hb_type_identity<S2> s, hb_priority<1>)
-    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_identity<S2>> (s),
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ S2 = S>
+  ਸਵੈਚਾਲਿਤ
+  inc (hb_type_ਪਛਾਣ_ਤੱਤ<S2> s, hb_ਤਰਜੀਹ<1>)
+    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_ਪਛਾਣ_ਤੱਤ<S2>> (s),
                                       hb_declval<T&> ()))>
-  { v = hb_invoke (std::forward<hb_type_identity<S2>> (s), v); }
+  { v = hb_invoke (std::forward<hb_type_ਪਛਾਣ_ਤੱਤ<S2>> (s), v); }
 
-  void
-  inc (S s, hb_priority<0>)
+  ਖਾਲੀ
+  inc (S s, hb_ਤਰਜੀਹ<0>)
   { v += s; }
 
-  public:
+  ਜਨਤਕ:
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () { inc (step, hb_prioritize); }
-  void __prev__ () { v -= step; }
-  hb_iota_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_iota_iter_t& o) const { return true; }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ T __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator = ਸੱਚ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਸੱਚ;
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ hb_ridentity (v); }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਸੱਚ; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ UINT_MAX; }
+  ਖਾਲੀ __next__ () { inc (ਕਦਮ, hb_prioritize); }
+  ਖਾਲੀ __prev__ () { v -= ਕਦਮ; }
+  hb_iota_iter_t __end__ () ਅਚਲ { ਵਾਪਸ *ਇਹ; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_iota_iter_t& o) ਅਚਲ { ਵਾਪਸ ਸੱਚ; }
 
-  private:
+  ਨਿਜੀ:
   T v;
-  S step;
+  S ਕਦਮ;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename T = unsigned, typename S = unsigned> hb_iota_iter_t<T, S>
-  operator () (T start = 0u, S step = 1u) const
-  { return hb_iota_iter_t<T, S> (start, step); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T = ਬਿਨਾਨਿਸ਼ਾਨੀ, ਕਿਸਮ_ਨਾਂ S = ਬਿਨਾਨਿਸ਼ਾਨੀ> hb_iota_iter_t<T, S>
+  ਸੰਚਾਲਕ () (T ਸ਼ੁਰੂ = 0u, S ਕਦਮ = 1u) ਅਚਲ
+  { ਵਾਪਸ hb_iota_iter_t<T, S> (ਸ਼ੁਰੂ, ਕਦਮ); }
 }
 HB_FUNCOBJ (hb_iota);
 
-template <typename T>
-struct hb_repeat_iter_t :
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hb_repeat_iter_t :
   hb_iter_t<hb_repeat_iter_t<T>, T>
 {
   hb_repeat_iter_t (T value) : v (value) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return v; }
-  __item_t__ __item_at__ (unsigned j) const { return v; }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () {}
-  void __forward__ (unsigned) {}
-  void __prev__ () {}
-  void __rewind__ (unsigned) {}
-  hb_repeat_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_repeat_iter_t& o) const { return true; }
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ T __item_t__;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_random_access_iterator = ਸੱਚ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਸੱਚ;
+  __item_t__ __item__ () ਅਚਲ { ਵਾਪਸ v; }
+  __item_t__ __item_at__ (ਬਿਨਾਨਿਸ਼ਾਨੀ j) ਅਚਲ { ਵਾਪਸ v; }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ ਸੱਚ; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ UINT_MAX; }
+  ਖਾਲੀ __next__ () {}
+  ਖਾਲੀ __forward__ (ਬਿਨਾਨਿਸ਼ਾਨੀ) {}
+  ਖਾਲੀ __prev__ () {}
+  ਖਾਲੀ __rewind__ (ਬਿਨਾਨਿਸ਼ਾਨੀ) {}
+  hb_repeat_iter_t __end__ () ਅਚਲ { ਵਾਪਸ *ਇਹ; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_repeat_iter_t& o) ਅਚਲ { ਵਾਪਸ ਸੱਚ; }
 
-  private:
+  ਨਿਜੀ:
   T v;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename T> hb_repeat_iter_t<T>
-  operator () (T value) const
-  { return hb_repeat_iter_t<T> (value); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T> hb_repeat_iter_t<T>
+  ਸੰਚਾਲਕ () (T value) ਅਚਲ
+  { ਵਾਪਸ hb_repeat_iter_t<T> (value); }
 }
 HB_FUNCOBJ (hb_repeat);
 
 /* hb_enumerate()/hb_take() */
 
-struct
+ਬਣਤਰ
 {
-  template <typename Iterable,
-	    typename Index = unsigned,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
+	    ਕਿਸਮ_ਨਾਂ ਸੂਚਕਾਂਕ = ਬਿਨਾਨਿਸ਼ਾਨੀ,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, Index start = 0u) const HB_AUTO_RETURN
-  ( hb_zip (hb_iota (start), it) )
+  ਸਵੈਚਾਲਿਤ ਸੰਚਾਲਕ () (Iterable&& it, ਸੂਚਕਾਂਕ ਸ਼ੁਰੂ = 0u) ਅਚਲ HB_AUTO_RETURN
+  ( hb_zip (hb_iota (ਸ਼ੁਰੂ), it) )
 }
 HB_FUNCOBJ (hb_enumerate);
 
-struct
+ਬਣਤਰ
 { HB_PARTIALIZE(2);
-  template <typename Iterable,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, unsigned count) const HB_AUTO_RETURN
-  ( hb_zip (hb_range (count), it) | hb_map_retains_sorting (hb_second) )
+  ਸਵੈਚਾਲਿਤ ਸੰਚਾਲਕ () (Iterable&& it, ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ HB_AUTO_RETURN
+  ( hb_zip (hb_range (ਗਿਣਤੀ_2), it) | hb_map_retains_ਛਾਂਟੀ (hb_ਦੂਜਾ) )
 
   /* Specialization arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਸਤਰਅੰਦਰ hb_array_t<Type>
+  ਸੰਚਾਲਕ () (hb_array_t<Type> array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ
+  { ਵਾਪਸ array.sub_array (0, ਗਿਣਤੀ_2); }
 
-  template <typename Type> inline hb_sorted_array_t<Type>
-  operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type> ਸਤਰਅੰਦਰ hb_sorted_array_t<Type>
+  ਸੰਚਾਲਕ () (hb_sorted_array_t<Type> array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ
+  { ਵਾਪਸ array.sub_array (0, ਗਿਣਤੀ_2); }
 }
 HB_FUNCOBJ (hb_take);
 
-struct
+ਬਣਤਰ
 { HB_PARTIALIZE(2);
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  auto operator () (Iter it, unsigned count) const HB_AUTO_RETURN
+  ਸਵੈਚਾਲਿਤ ਸੰਚਾਲਕ () (Iter it, ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2) ਅਚਲ HB_AUTO_RETURN
   (
-    + hb_iota (it, hb_add (count))
-    | hb_map (hb_take (count))
-    | hb_take ((hb_len (it) + count - 1) / count)
+    + hb_iota (it, hb_ਜੋੜੋ (ਗਿਣਤੀ_2))
+    | hb_map (hb_take (ਗਿਣਤੀ_2))
+    | hb_take ((hb_len (it) + ਗਿਣਤੀ_2 - 1) / ਗਿਣਤੀ_2)
   )
 }
 HB_FUNCOBJ (hb_chop);
 
 /* hb_sink() */
 
-template <typename Sink>
-struct hb_sink_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink>
+ਬਣਤਰ hb_sink_t
 {
   hb_sink_t (Sink s) : s (s) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ਖਾਲੀ ਸੰਚਾਲਕ () (Iter it)
   {
-    for (; it; ++it)
+    ਲਈ (; it; ++it)
       s << *it;
   }
 
-  private:
+  ਨਿਜੀ:
   Sink s;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Sink> hb_sink_t<Sink>
-  operator () (Sink&& s) const
-  { return hb_sink_t<Sink> (s); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink> hb_sink_t<Sink>
+  ਸੰਚਾਲਕ () (Sink&& s) ਅਚਲ
+  { ਵਾਪਸ hb_sink_t<Sink> (s); }
 
-  template <typename Sink> hb_sink_t<Sink&>
-  operator () (Sink *s) const
-  { return hb_sink_t<Sink&> (*s); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink> hb_sink_t<Sink&>
+  ਸੰਚਾਲਕ () (Sink *s) ਅਚਲ
+  { ਵਾਪਸ hb_sink_t<Sink&> (*s); }
 }
 HB_FUNCOBJ (hb_sink);
 
 /* hb-drain: hb_sink to void / blackhole / /dev/null. */
 
-struct
+ਬਣਤਰ
 {
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it) const
+  ਖਾਲੀ ਸੰਚਾਲਕ () (Iter it) ਅਚਲ
   {
-    for (; it; ++it)
-      (void) *it;
+    ਲਈ (; it; ++it)
+      (ਖਾਲੀ) *it;
   }
 }
 HB_FUNCOBJ (hb_drain);
 
 /* hb_unzip(): unzip and sink to two sinks. */
 
-template <typename Sink1, typename Sink2>
-struct hb_unzip_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink1, ਕਿਸਮ_ਨਾਂ Sink2>
+ਬਣਤਰ hb_unzip_t
 {
   hb_unzip_t (Sink1 s1, Sink2 s2) : s1 (s1), s2 (s2) {}
 
-  template <typename Iter,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ਖਾਲੀ ਸੰਚਾਲਕ () (Iter it)
   {
-    for (; it; ++it)
+    ਲਈ (; it; ++it)
     {
-      const auto &v = *it;
-      s1 << v.first;
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &v = *it;
+      s1 << v.ਪਹਿਲਾ;
       s2 << v.second;
     }
   }
 
-  private:
+  ਨਿਜੀ:
   Sink1 s1;
   Sink2 s2;
 };
-struct
+ਬਣਤਰ
 {
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1, Sink2>
-  operator () (Sink1&& s1, Sink2&& s2) const
-  { return hb_unzip_t<Sink1, Sink2> (s1, s2); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink1, ਕਿਸਮ_ਨਾਂ Sink2> hb_unzip_t<Sink1, Sink2>
+  ਸੰਚਾਲਕ () (Sink1&& s1, Sink2&& s2) ਅਚਲ
+  { ਵਾਪਸ hb_unzip_t<Sink1, Sink2> (s1, s2); }
 
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1&, Sink2&>
-  operator () (Sink1 *s1, Sink2 *s2) const
-  { return hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Sink1, ਕਿਸਮ_ਨਾਂ Sink2> hb_unzip_t<Sink1&, Sink2&>
+  ਸੰਚਾਲਕ () (Sink1 *s1, Sink2 *s2) ਅਚਲ
+  { ਵਾਪਸ hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
 }
 HB_FUNCOBJ (hb_unzip);
 
 
 /* hb-all, hb-any, hb-none. */
 
-struct
+ਬਣਤਰ
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
+	    ਕਿਸਮ_ਨਾਂ Pred = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
+	    ਕਿਸਮ_ਨਾਂ Proj = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ () (Iterable&& c,
+		    Pred&& p = hb_ਪਛਾਣ_ਤੱਤ,
+		    Proj&& f = hb_ਪਛਾਣ_ਤੱਤ) ਅਚਲ
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (!hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    ਲਈ (ਸਵੈਚਾਲਿਤ it = hb_iter (c); it; ++it)
+      ਜੇ (!hb_ਮੇਲ (p, hb_get (f, *it)))
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 }
 HB_FUNCOBJ (hb_all);
-struct
+ਬਣਤਰ
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
+	    ਕਿਸਮ_ਨਾਂ Pred = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
+	    ਕਿਸਮ_ਨਾਂ Proj = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ () (Iterable&& c,
+		    Pred&& p = hb_ਪਛਾਣ_ਤੱਤ,
+		    Proj&& f = hb_ਪਛਾਣ_ਤੱਤ) ਅਚਲ
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return true;
-    return false;
+    ਲਈ (ਸਵੈਚਾਲਿਤ it = hb_iter (c); it; ++it)
+      ਜੇ (hb_ਮੇਲ (p, hb_get (f, *it)))
+	ਵਾਪਸ ਸੱਚ;
+    ਵਾਪਸ ਝੂਠ;
   }
 }
 HB_FUNCOBJ (hb_any);
-struct
+ਬਣਤਰ
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterable,
+	    ਕਿਸਮ_ਨਾਂ Pred = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
+	    ਕਿਸਮ_ਨਾਂ Proj = decltype ((hb_ਪਛਾਣ_ਤੱਤ)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ () (Iterable&& c,
+		    Pred&& p = hb_ਪਛਾਣ_ਤੱਤ,
+		    Proj&& f = hb_ਪਛਾਣ_ਤੱਤ) ਅਚਲ
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    ਲਈ (ਸਵੈਚਾਲਿਤ it = hb_iter (c); it; ++it)
+      ਜੇ (hb_ਮੇਲ (p, hb_get (f, *it)))
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 }
 HB_FUNCOBJ (hb_none);
@@ -1033,21 +1033,21 @@ HB_FUNCOBJ (hb_none);
  * Algorithms operating on iterators.
  */
 
-template <typename C, typename V,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ C, ਕਿਸਮ_ਨਾਂ V,
 	  hb_requires (hb_is_iterable (C))>
-inline void
-hb_fill (C&& c, const V &v)
+ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_fill (C&& c, ਅਚਲ V &v)
 {
-  for (auto i = hb_iter (c); i; i++)
+  ਲਈ (ਸਵੈਚਾਲਿਤ i = hb_iter (c); i; i++)
     *i = v;
 }
 
-template <typename S, typename D>
-inline void
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ S, ਕਿਸਮ_ਨਾਂ D>
+ਸਤਰਅੰਦਰ ਖਾਲੀ
 hb_copy (S&& is, D&& id)
 {
   hb_iter (is) | hb_sink (id);
 }
 
 
-#endif /* HB_ITER_HH */
+#ਜੇ_ਅੰਤ /* HB_ITER_HH */

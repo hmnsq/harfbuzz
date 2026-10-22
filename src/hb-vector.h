@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_H
-#define HB_VECTOR_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸਦਿਸ਼_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸਦਿਸ਼_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -41,11 +41,11 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_FORMAT_INVALID = HB_TAG_NONE,
-  HB_VECTOR_FORMAT_SVG = HB_TAG ('s','v','g',' '),
-  HB_VECTOR_FORMAT_PDF = HB_TAG ('p','d','f',' '),
-} hb_vector_format_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_ਸਦਿਸ਼_FORMAT_INVALID = HB_ਟੈਗ_NONE,
+  HB_ਸਦਿਸ਼_FORMAT_SVG = HB_ਟੈਗ ('s','v','g',' '),
+  HB_ਸਦਿਸ਼_FORMAT_PDF = HB_ਟੈਗ ('p','d','f',' '),
+} hb_ਸਦਿਸ਼_format_t;
 
 /**
  * hb_vector_extents_t:
@@ -58,10 +58,10 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_extents_t {
-  float x, y;
-  float width, height;
-} hb_vector_extents_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ਸਦਿਸ਼_extents_t {
+  ਦਸ਼ਮਲਵ x, y;
+  ਦਸ਼ਮਲਵ ਚੌੜਾਈ, ਉਚਾਈ;
+} hb_ਸਦਿਸ਼_extents_t;
 
 /**
  * hb_vector_extents_mode_t:
@@ -72,10 +72,10 @@ typedef struct hb_vector_extents_t {
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_EXTENTS_MODE_NONE = 0,
-  HB_VECTOR_EXTENTS_MODE_EXPAND = 1,
-} hb_vector_extents_mode_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_ਸਦਿਸ਼_EXTENTS_ਬਹੁਲਕ_NONE = 0,
+  HB_ਸਦਿਸ਼_EXTENTS_ਬਹੁਲਕ_EXPAND = 1,
+} hb_ਸਦਿਸ਼_extents_ਬਹੁਲਕ_t;
 
 /* hb_vector_draw_t */
 
@@ -86,115 +86,115 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_draw_t hb_vector_draw_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ਸਦਿਸ਼_draw_t hb_ਸਦਿਸ਼_draw_t;
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_ਸਦਿਸ਼_draw_t *
+hb_ਸਦਿਸ਼_draw_create_or_fail (hb_ਸਦਿਸ਼_format_t format);
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_reference (hb_vector_draw_t *draw);
+HB_EXTERN hb_ਸਦਿਸ਼_draw_t *
+hb_ਸਦਿਸ਼_draw_reference (hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_destroy (hb_vector_draw_t *draw);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_destroy (hb_ਸਦਿਸ਼_draw_t *draw);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_ਸਦਿਸ਼_draw_t   *draw,
+                              hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+                              ਖਾਲੀ               *ਅੰਕੜੇ,
                               hb_destroy_func_t   destroy,
                               hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key);
+HB_EXTERN ਖਾਲੀ *
+hb_ਸਦਿਸ਼_draw_get_user_ਅੰਕੜੇ (ਅਚਲ hb_ਸਦਿਸ਼_draw_t   *draw,
+                              hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2);
 
-HB_EXTERN void
-hb_vector_draw_set_transform (hb_vector_draw_t *draw,
-                              float xx, float yx,
-                              float xy, float yy,
-                              float dx, float dy);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_transform (hb_ਸਦਿਸ਼_draw_t *draw,
+                              ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+                              ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+                              ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy);
 
-HB_EXTERN void
-hb_vector_draw_get_transform (const hb_vector_draw_t *draw,
-                              float *xx, float *yx,
-                              float *xy, float *yy,
-                              float *dx, float *dy);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_get_transform (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw,
+                              ਦਸ਼ਮਲਵ *xx, ਦਸ਼ਮਲਵ *yx,
+                              ਦਸ਼ਮਲਵ *xy, ਦਸ਼ਮਲਵ *yy,
+                              ਦਸ਼ਮਲਵ *dx, ਦਸ਼ਮਲਵ *dy);
 
-HB_EXTERN void
-hb_vector_draw_set_scale_factor (hb_vector_draw_t *draw,
-                                 float x_scale_factor,
-                                 float y_scale_factor);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_scale_ਗੁਣਕ (hb_ਸਦਿਸ਼_draw_t *draw,
+                                 ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ,
+                                 ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ);
 
-HB_EXTERN void
-hb_vector_draw_get_scale_factor (const hb_vector_draw_t *draw,
-                                 float *x_scale_factor,
-                                 float *y_scale_factor);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_get_scale_ਗੁਣਕ (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw,
+                                 ਦਸ਼ਮਲਵ *x_scale_ਗੁਣਕ,
+                                 ਦਸ਼ਮਲਵ *y_scale_ਗੁਣਕ);
 
-HB_EXTERN void
-hb_vector_draw_set_extents (hb_vector_draw_t *draw,
-                            const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_draw_get_extents (const hb_vector_draw_t *draw,
-                            hb_vector_extents_t *extents);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_extents (hb_ਸਦਿਸ਼_draw_t *draw,
+                            ਅਚਲ hb_ਸਦਿਸ਼_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_glyph_extents (hb_vector_draw_t *draw,
-                                  const hb_glyph_extents_t *glyph_extents);
+hb_ਸਦਿਸ਼_draw_get_extents (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw,
+                            hb_ਸਦਿਸ਼_extents_t *extents);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_draw_get_format (const hb_vector_draw_t *draw);
+HB_EXTERN hb_bool_t
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_glyph_extents (hb_ਸਦਿਸ਼_draw_t *draw,
+                                  ਅਚਲ hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN hb_ਸਦਿਸ਼_format_t
+hb_ਸਦਿਸ਼_draw_get_format (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_vector_draw_get_funcs (const hb_vector_draw_t *draw);
+hb_ਸਦਿਸ਼_draw_get_funcs (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_new_path (hb_vector_draw_t *draw);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_new_ਰਸਤਾ (hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_glyph (hb_vector_draw_t *draw,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_glyph (hb_ਸਦਿਸ਼_draw_t *draw,
                       hb_font_t *font,
                       hb_codepoint_t glyph,
-                      hb_vector_extents_mode_t extents_mode);
+                      hb_ਸਦਿਸ਼_extents_ਬਹੁਲਕ_t extents_ਬਹੁਲਕ);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
+hb_ਸਦਿਸ਼_draw_glyph_or_fail (hb_ਸਦਿਸ਼_draw_t *draw,
                               hb_font_t *font,
                               hb_codepoint_t glyph,
-                              hb_vector_extents_mode_t extents_mode);
+                              hb_ਸਦਿਸ਼_extents_ਬਹੁਲਕ_t extents_ਬਹੁਲਕ);
 
-HB_EXTERN void
-hb_vector_draw_set_precision (hb_vector_draw_t *draw,
-                             unsigned precision);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_precision (hb_ਸਦਿਸ਼_draw_t *draw,
+                             ਬਿਨਾਨਿਸ਼ਾਨੀ precision);
 
-HB_EXTERN unsigned
-hb_vector_draw_get_precision (const hb_vector_draw_t *draw);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ
+hb_ਸਦਿਸ਼_draw_get_precision (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_foreground (hb_vector_draw_t *draw,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_foreground (hb_ਸਦਿਸ਼_draw_t *draw,
                                hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_foreground (const hb_vector_draw_t *draw);
+hb_ਸਦਿਸ਼_draw_get_foreground (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_background (hb_vector_draw_t *draw,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_ਸੈੱਟ_background (hb_ਸਦਿਸ਼_draw_t *draw,
                                hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_background (const hb_vector_draw_t *draw);
+hb_ਸਦਿਸ਼_draw_get_background (ਅਚਲ hb_ਸਦਿਸ਼_draw_t *draw);
 
 HB_EXTERN hb_blob_t *
-hb_vector_draw_render (hb_vector_draw_t *draw);
+hb_ਸਦਿਸ਼_draw_render (hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_clear (hb_vector_draw_t *draw);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_clear (hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_reset (hb_vector_draw_t *draw);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_reset (hb_ਸਦਿਸ਼_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_draw_recycle_blob (hb_ਸਦਿਸ਼_draw_t *draw,
                              hb_blob_t *blob);
 
 
@@ -207,144 +207,144 @@ hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_paint_t hb_vector_paint_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ਸਦਿਸ਼_paint_t hb_ਸਦਿਸ਼_paint_t;
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_ਸਦਿਸ਼_paint_t *
+hb_ਸਦਿਸ਼_paint_create_or_fail (hb_ਸਦਿਸ਼_format_t format);
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_reference (hb_vector_paint_t *paint);
+HB_EXTERN hb_ਸਦਿਸ਼_paint_t *
+hb_ਸਦਿਸ਼_paint_reference (hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_destroy (hb_vector_paint_t *paint);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_destroy (hb_ਸਦਿਸ਼_paint_t *paint);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
-                               void               *data,
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_ਸਦਿਸ਼_paint_t  *paint,
+                               hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+                               ਖਾਲੀ               *ਅੰਕੜੇ,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key);
+HB_EXTERN ਖਾਲੀ *
+hb_ਸਦਿਸ਼_paint_get_user_ਅੰਕੜੇ (ਅਚਲ hb_ਸਦਿਸ਼_paint_t  *paint,
+                               hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2);
 
-HB_EXTERN void
-hb_vector_paint_set_transform (hb_vector_paint_t *paint,
-                               float xx, float yx,
-                               float xy, float yy,
-                               float dx, float dy);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_transform (hb_ਸਦਿਸ਼_paint_t *paint,
+                               ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+                               ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+                               ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy);
 
-HB_EXTERN void
-hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
-                               float *xx, float *yx,
-                               float *xy, float *yy,
-                               float *dx, float *dy);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_get_transform (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint,
+                               ਦਸ਼ਮਲਵ *xx, ਦਸ਼ਮਲਵ *yx,
+                               ਦਸ਼ਮਲਵ *xy, ਦਸ਼ਮਲਵ *yy,
+                               ਦਸ਼ਮਲਵ *dx, ਦਸ਼ਮਲਵ *dy);
 
-HB_EXTERN void
-hb_vector_paint_set_scale_factor (hb_vector_paint_t *paint,
-                                  float x_scale_factor,
-                                  float y_scale_factor);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_scale_ਗੁਣਕ (hb_ਸਦਿਸ਼_paint_t *paint,
+                                  ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ,
+                                  ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ);
 
-HB_EXTERN void
-hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
-                                  float *x_scale_factor,
-                                  float *y_scale_factor);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_get_scale_ਗੁਣਕ (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint,
+                                  ਦਸ਼ਮਲਵ *x_scale_ਗੁਣਕ,
+                                  ਦਸ਼ਮਲਵ *y_scale_ਗੁਣਕ);
 
-HB_EXTERN void
-hb_vector_paint_set_extents (hb_vector_paint_t *paint,
-                             const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
-                             hb_vector_extents_t *extents);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_extents (hb_ਸਦਿਸ਼_paint_t *paint,
+                             ਅਚਲ hb_ਸਦਿਸ਼_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
-                                   const hb_glyph_extents_t *glyph_extents);
+hb_ਸਦਿਸ਼_paint_get_extents (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint,
+                             hb_ਸਦਿਸ਼_extents_t *extents);
 
-HB_EXTERN void
-hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
+HB_EXTERN hb_bool_t
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_glyph_extents (hb_ਸਦਿਸ਼_paint_t *paint,
+                                   ਅਚਲ hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_foreground (hb_ਸਦਿਸ਼_paint_t *paint,
                                 hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_foreground (const hb_vector_paint_t *paint);
+hb_ਸਦਿਸ਼_paint_get_foreground (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_background (hb_vector_paint_t *paint,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_background (hb_ਸਦਿਸ਼_paint_t *paint,
                                 hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_background (const hb_vector_paint_t *paint);
+hb_ਸਦਿਸ਼_paint_get_background (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_palette (hb_ਸਦਿਸ਼_paint_t *paint,
+                             ਪੂਰਨ palette);
 
-HB_EXTERN int
-hb_vector_paint_get_palette (const hb_vector_paint_t *paint);
+HB_EXTERN ਪੂਰਨ
+hb_ਸਦਿਸ਼_paint_get_palette (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_custom_palette_color (hb_vector_paint_t *paint,
-                                          unsigned color_index,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_custom_palette_color (hb_ਸਦਿਸ਼_paint_t *paint,
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ color_ਸੂਚਕਾਂਕ,
                                           hb_color_t color);
 
-HB_EXTERN void
-hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_clear_custom_palette_colors (hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_paint_get_format (const hb_vector_paint_t *paint);
+HB_EXTERN hb_ਸਦਿਸ਼_format_t
+hb_ਸਦਿਸ਼_paint_get_format (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_vector_paint_get_funcs (const hb_vector_paint_t *paint);
+hb_ਸਦਿਸ਼_paint_get_funcs (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_glyph (hb_vector_paint_t *paint,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_glyph (hb_ਸਦਿਸ਼_paint_t *paint,
 		       hb_font_t         *font,
 		       hb_codepoint_t     glyph,
-		       hb_vector_extents_mode_t extents_mode);
+		       hb_ਸਦਿਸ਼_extents_ਬਹੁਲਕ_t extents_ਬਹੁਲਕ);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
+hb_ਸਦਿਸ਼_paint_glyph_or_fail (hb_ਸਦਿਸ਼_paint_t *paint,
 			       hb_font_t         *font,
 			       hb_codepoint_t     glyph,
-			       hb_vector_extents_mode_t extents_mode);
+			       hb_ਸਦਿਸ਼_extents_ਬਹੁਲਕ_t extents_ਬਹੁਲਕ);
 
-HB_EXTERN void
-hb_vector_paint_set_precision (hb_vector_paint_t *paint,
-                                   unsigned precision);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_precision (hb_ਸਦਿਸ਼_paint_t *paint,
+                                   ਬਿਨਾਨਿਸ਼ਾਨੀ precision);
 
-HB_EXTERN unsigned
-hb_vector_paint_get_precision (const hb_vector_paint_t *paint);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ
+hb_ਸਦਿਸ਼_paint_get_precision (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_ਸੈੱਟ_svg_ਅਗੇਤਰ (hb_ਸਦਿਸ਼_paint_t *paint,
+                                ਅਚਲ ਅੱਖਰ *ਅਗੇਤਰ);
 
-HB_EXTERN const char *
-hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint);
+HB_EXTERN ਅਚਲ ਅੱਖਰ *
+hb_ਸਦਿਸ਼_paint_get_svg_ਅਗੇਤਰ (ਅਚਲ hb_ਸਦਿਸ਼_paint_t *paint);
 
 HB_EXTERN hb_blob_t *
-hb_vector_paint_render (hb_vector_paint_t *paint);
+hb_ਸਦਿਸ਼_paint_render (hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_clear (hb_vector_paint_t *paint);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_clear (hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_reset (hb_vector_paint_t *paint);
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_reset (hb_ਸਦਿਸ਼_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
+HB_EXTERN ਖਾਲੀ
+hb_ਸਦਿਸ਼_paint_recycle_blob (hb_ਸਦਿਸ਼_paint_t *paint,
                               hb_blob_t *blob);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ਜੇ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (vector_draw,  nullptr);
-HB_DEFINE_VTABLE (vector_paint, nullptr);
+HB_DEFINE_VTABLE (ਸਦਿਸ਼_draw,  nullptr);
+HB_DEFINE_VTABLE (ਸਦਿਸ਼_paint, nullptr);
 } // namespace hb
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_VECTOR_H */
+#ਜੇ_ਅੰਤ /* HB_VECTOR_H */

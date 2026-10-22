@@ -22,75 +22,75 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_MULTIMAP_HH
-#define HB_MULTIMAP_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_MULTIMAP_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-map.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+ਬਣਤਰ hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  ਖਾਲੀ ਜੋੜੋ (hb_codepoint_t k, hb_codepoint_t v)
   {
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    hb_ਸਦਿਸ਼_t<hb_codepoint_t> *m;
+    ਜੇ (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      ਵਾਪਸ;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ਜੇ (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
-      multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      multiples.ਸੈੱਟ (k, hb_ਸਦਿਸ਼_t<hb_codepoint_t> {old, v});
+      ਵਾਪਸ;
     }
 
-    singulars.set (k, v);
+    singulars.ਸੈੱਟ (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<ਅਚਲ hb_codepoint_t> get (hb_codepoint_t k) ਅਚਲ
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ਅਚਲ hb_codepoint_t *v;
+    ਜੇ (singulars.has (k, &v))
+      ਵਾਪਸ hb_array (v, 1);
 
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    hb_ਸਦਿਸ਼_t<hb_codepoint_t> *m;
+    ਜੇ (multiples.has (k, &m))
+      ਵਾਪਸ m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    ਵਾਪਸ hb_array_t<ਅਚਲ hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    ਜੇ (singulars.ਵਿੱਚ_error () || multiples.ਵਿੱਚ_error ())
+      ਵਾਪਸ ਸੱਚ;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &m : multiples.ਮੁੱਲਾਂ_ref ())
+      ਜੇ (m.ਵਿੱਚ_error ())
+        ਵਾਪਸ ਸੱਚ;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  void alloc (unsigned size)
+  ਖਾਲੀ alloc (ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ)
   {
-    singulars.alloc (size);
+    singulars.alloc (ਮਾਪ);
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   hb_map_t singulars;
-  hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
+  hb_hashmap_t<hb_codepoint_t, hb_ਸਦਿਸ਼_t<hb_codepoint_t>> multiples;
 };
 
 
 
-#endif /* HB_MULTIMAP_HH */
+#ਜੇ_ਅੰਤ /* HB_MULTIMAP_HH */

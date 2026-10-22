@@ -24,79 +24,79 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
 
-static const hb_shaper_entry_t _hb_all_shapers[] = {
-#define HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+ਸਥਿਰ ਅਚਲ hb_shaper_ਇੰਦਰਾਜ_t _hb_all_shapers[] = {
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
 };
-#ifndef HB_NO_SHAPER
-static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SHAPER
+static_assert (0 != ARRAY_ਲੰਮਾਈ_CONST (_hb_all_shapers), "No shaper enabled.");
+#ਜੇ_ਅੰਤ
 
-static inline void free_static_shapers ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+ਸਥਿਰ ਬਣਤਰ hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_ਇੰਦਰਾਜ_t,
 							  hb_shapers_lazy_loader_t>
 {
-  static hb_shaper_entry_t *create ()
+  ਸਥਿਰ hb_shaper_ਇੰਦਰਾਜ_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    ਅੱਖਰ *env = getenv ("HB_SHAPER_LIST");
+    ਜੇ (!env || !*env)
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_ਇੰਦਰਾਜ_t *shapers = (hb_shaper_ਇੰਦਰਾਜ_t *) hb_calloc (1, ਆਕਾਰ (_hb_all_shapers));
+    ਜੇ (unlikely (!shapers))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, ਆਕਾਰ (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
-    for (;;)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0;
+    ਅੱਖਰ *ਸਿਰਾ, *p = env;
+    ਲਈ (;;)
     {
-      end = strchr (p, ',');
-      if (!end)
-	end = p + strlen (p);
+      ਸਿਰਾ = strchr (p, ',');
+      ਜੇ (!ਸਿਰਾ)
+	ਸਿਰਾ = p + ਲੜੀ_ਲੰਬਾਈ (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
-	    0 == strncmp (shapers[j].name, p, end - p))
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = i; j < ARRAY_ਲੰਮਾਈ_CONST (_hb_all_shapers); j++)
+	ਜੇ (ਸਿਰਾ - p == (ਪੂਰਨ) ਲੜੀ_ਲੰਬਾਈ (shapers[j].name) &&
+	    0 == ਲੜੀ_ਤੁਲਨਾ (shapers[j].name, p, ਸਿਰਾ - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 ਬਣਤਰ hb_shaper_ਇੰਦਰਾਜ_t t = shapers[j];
+	 memmove (&shapers[i + 1], &shapers[i], ਆਕਾਰ (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
-	p = end + 1;
+      ਜੇ (!*ਸਿਰਾ)
+	ਰੋਕੋ;
+      ਨਹੀਂਤਾਂ
+	p = ਸਿਰਾ + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    ਵਾਪਸ shapers;
   }
-  static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  ਸਥਿਰ ਖਾਲੀ destroy (hb_shaper_ਇੰਦਰਾਜ_t *p) { hb_free (p); }
+  ਸਥਿਰ ਅਚਲ hb_shaper_ਇੰਦਰਾਜ_t *get_null ()      { ਵਾਪਸ _hb_all_shapers; }
 } static_shapers;
 
-static inline
-void free_static_shapers ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_shapers ()
 {
   static_shapers.free_instance ();
 }
 
-const hb_shaper_entry_t *
+ਅਚਲ hb_shaper_ਇੰਦਰਾਜ_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  ਵਾਪਸ static_shapers.get_unconst ();
 }

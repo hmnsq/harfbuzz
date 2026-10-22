@@ -1,117 +1,117 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct AnchorFormat3
+ਬਣਤਰ AnchorFormat3
 {
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT16      format;                 /* Format identifier--format = 3 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  Offset16To<Device>
-                xDeviceTable;           /* Offset to Device table for X
+  Offset16_ਮੰਜ਼ਿਲ<Device>
+                x_Device_ਸਾਰਣੀ;           /* Offset to Device table for X
                                          * coordinate-- from beginning of
                                          * Anchor table (may be NULL) */
-  Offset16To<Device>
-                yDeviceTable;           /* Offset to Device table for Y
+  Offset16_ਮੰਜ਼ਿਲ<Device>
+                y_Device_ਸਾਰਣੀ;           /* Offset to Device table for Y
                                          * coordinate-- from beginning of
                                          * Anchor table (may be NULL) */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (10);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ))) return_trace (ਝੂਠ);
 
-    return_trace (xDeviceTable.sanitize (c, this) && yDeviceTable.sanitize (c, this));
+    return_trace (x_Device_ਸਾਰਣੀ.sanitize (c, ਇਹ) && y_Device_ਸਾਰਣੀ.sanitize (c, ਇਹ));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  ਖਾਲੀ get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_ਅਣਵਰਤਿਆ,
+                   ਦਸ਼ਮਲਵ *x, ਦਸ਼ਮਲਵ *y) ਅਚਲ
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
 
-    if ((font->x_ppem || font->has_nonzero_coords) && xDeviceTable.sanitize (&c->sanitizer, this))
+    ਜੇ ((font->x_ppem || font->has_nonzero_coords) && x_Device_ਸਾਰਣੀ.sanitize (&c->sanitizer, ਇਹ))
     {
       hb_barrier ();
-      *x += (this+xDeviceTable).get_x_delta_f (font, c->var_store, c->var_store_cache);
+      *x += (ਇਹ+x_Device_ਸਾਰਣੀ).get_x_delta_f (font, c->var_store, c->var_store_cache);
     }
-    if ((font->y_ppem || font->has_nonzero_coords) && yDeviceTable.sanitize (&c->sanitizer, this))
+    ਜੇ ((font->y_ppem || font->has_nonzero_coords) && y_Device_ਸਾਰਣੀ.sanitize (&c->sanitizer, ਇਹ))
     {
       hb_barrier ();
-      *y += (this+yDeviceTable).get_y_delta_f (font, c->var_store, c->var_store_cache);
+      *y += (ਇਹ+y_Device_ਸਾਰਣੀ).get_y_delta_f (font, c->var_store, c->var_store_cache);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->embed (format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (xCoordinate))) return_trace (false);
-    if (unlikely (!c->serializer->embed (yCoordinate))) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    ਜੇ (unlikely (!c->serializer->embed (format))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (!c->serializer->embed (xCoordinate))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (!c->serializer->embed (yCoordinate))) return_trace (ਝੂਠ);
 
-    unsigned x_varidx = xDeviceTable ? (this+xDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ x_varidx = x_Device_ਸਾਰਣੀ ? (ਇਹ+x_Device_ਸਾਰਣੀ).get_variation_ਸੂਚਕਾਂਕ () : HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ;
+    ਜੇ (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ> *new_varidx_delta;
+      ਜੇ (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
+        return_trace (ਝੂਠ);
 
-      x_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      x_varidx = hb_ਪਹਿਲਾ (*new_varidx_delta);
+      ਪੂਰਨ delta = hb_ਦੂਜਾ (*new_varidx_delta);
+      ਜੇ (delta != 0)
       {
-        if (!c->serializer->check_assign (out->xCoordinate, xCoordinate + delta,
-                                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        ਜੇ (!c->serializer->check_ਸੌਂਪੋ (ਬਾਹਰਲਾ->xCoordinate, xCoordinate + delta,
+                                          HB_SERIALIZE_ERROR_INT_ਉਛਾਲ))
+          return_trace (ਝੂਠ);
       }
     }
 
-    unsigned y_varidx = yDeviceTable ? (this+yDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ y_varidx = y_Device_ਸਾਰਣੀ ? (ਇਹ+y_Device_ਸਾਰਣੀ).get_variation_ਸੂਚਕਾਂਕ () : HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ;
+    ਜੇ (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ> *new_varidx_delta;
+      ਜੇ (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
+        return_trace (ਝੂਠ);
 
-      y_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      y_varidx = hb_ਪਹਿਲਾ (*new_varidx_delta);
+      ਪੂਰਨ delta = hb_ਦੂਜਾ (*new_varidx_delta);
+      ਜੇ (delta != 0)
       {
-        if (!c->serializer->check_assign (out->yCoordinate, yCoordinate + delta,
-                                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        ਜੇ (!c->serializer->check_ਸੌਂਪੋ (ਬਾਹਰਲਾ->yCoordinate, yCoordinate + delta,
+                                          HB_SERIALIZE_ERROR_INT_ਉਛਾਲ))
+          return_trace (ਝੂਠ);
       }
     }
 
 
-    bool no_downgrade = (!xDeviceTable.is_null () && !(this+xDeviceTable).is_variation_device ()) ||
-                        x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
-                        y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
-                        (!yDeviceTable.is_null () && !(this+yDeviceTable).is_variation_device ());
+    ਤਾਰਕਿਕ no_downgrade = (!x_Device_ਸਾਰਣੀ.is_null () && !(ਇਹ+x_Device_ਸਾਰਣੀ).is_variation_device ()) ||
+                        x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ ||
+                        y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ ||
+                        (!y_Device_ਸਾਰਣੀ.is_null () && !(ਇਹ+y_Device_ਸਾਰਣੀ).is_variation_device ());
 
-    if (!no_downgrade)
-      return_trace (c->serializer->check_assign (out->format, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    ਜੇ (!no_downgrade)
+      return_trace (c->serializer->check_ਸੌਂਪੋ (ਬਾਹਰਲਾ->format, 1, HB_SERIALIZE_ERROR_INT_ਉਛਾਲ));
 
-    if (!c->serializer->embed (xDeviceTable)) return_trace (false);
-    if (!c->serializer->embed (yDeviceTable)) return_trace (false);
+    ਜੇ (!c->serializer->embed (x_Device_ਸਾਰਣੀ)) return_trace (ਝੂਠ);
+    ਜੇ (!c->serializer->embed (y_Device_ਸਾਰਣੀ)) return_trace (ਝੂਠ);
 
-    out->xDeviceTable.serialize_copy (c->serializer, xDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->yDeviceTable.serialize_copy (c->serializer, yDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    return_trace (out);
+    ਬਾਹਰਲਾ->x_Device_ਸਾਰਣੀ.serialize_copy (c->serializer, x_Device_ਸਾਰਣੀ, ਇਹ, 0, hb_serialize_context_t::ਸਿਰ, &c->plan->layout_variation_idx_delta_map);
+    ਬਾਹਰਲਾ->y_Device_ਸਾਰਣੀ.serialize_copy (c->serializer, y_Device_ਸਾਰਣੀ, ਇਹ, 0, hb_serialize_context_t::ਸਿਰ, &c->plan->layout_variation_idx_delta_map);
+    return_trace (ਬਾਹਰਲਾ);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ਖਾਲੀ collect_variation_indices (hb_collect_variation_indices_context_t *c) ਅਚਲ
   {
-    (this+xDeviceTable).collect_variation_indices (c);
-    (this+yDeviceTable).collect_variation_indices (c);
+    (ਇਹ+x_Device_ਸਾਰਣੀ).collect_variation_indices (c);
+    (ਇਹ+y_Device_ਸਾਰਣੀ).collect_variation_indices (c);
   }
 };
 
@@ -120,4 +120,4 @@ struct AnchorFormat3
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#ਜੇ_ਅੰਤ  // OT_LAYOUT_GPOS_ANCHORFORMAT3_HH

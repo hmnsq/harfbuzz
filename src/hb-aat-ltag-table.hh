@@ -22,74 +22,74 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LTAG_TABLE_HH
-#define HB_AAT_LTAG_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LTAG_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LTAG_ਸਾਰਣੀ_HH
 
-#include "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ltag.html
  */
-#define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_ਟੈਗ_ltag HB_ਟੈਗ('l','t','a','g')
 
 
-namespace AAT {
+ਨਾਮਾਕਾਸ਼ AAT {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
 
-struct FTStringRange
+ਬਣਤਰ FTStringRange
 {
-  friend struct ltag;
+  ਮਿੱਤਰ ਬਣਤਰ ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  (base+tag).sanitize (c, length));
+		  (ਅਧਾਰ+ਟੈਗ_2).sanitize (c, ਲੰਮਾਈ));
   }
 
-  protected:
-  NNOffset16To<UnsizedArrayOf<HBUINT8>>
-		tag;		/* Offset from the start of the table to
+  ਸੁਰੱਖਿਅਤ:
+  NNOffset16_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<HBUINT8>>
+		ਟੈਗ_2;		/* Offset from the start of the table to
 				 * the beginning of the string */
-  HBUINT16	length;		/* String length (in bytes) */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  HBUINT16	ਲੰਮਾਈ;		/* String length (in bytes) */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-struct ltag
+ਬਣਤਰ ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_AAT_ਟੈਗ_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
-				    range.length);
+    ਅਚਲ FTStringRange &range = ਟੈਗ_Ranges[i];
+    ਵਾਪਸ hb_language_from_string ((ਅਚਲ ਅੱਖਰ *) (ਇਹ+range.ਟੈਗ_2).arrayZ,
+				    range.ਲੰਮਾਈ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
-			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  ਸੰਸਕਰਣ >= 1 &&
+			  ਟੈਗ_Ranges.sanitize (c, ਇਹ)));
   }
 
-  protected:
-  HBUINT32	version;	/* Table version; currently 1 */
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT32	ਸੰਸਕਰਣ;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
-  Array32Of<FTStringRange>
-		tagRanges;	/* Range for each tag's string */
-  public:
-  DEFINE_SIZE_ARRAY (12, tagRanges);
+  Array32_ਦਾ<FTStringRange>
+		ਟੈਗ_Ranges;	/* Range for each tag's string */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (12, ਟੈਗ_Ranges);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LTAG_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LTAG_TABLE_HH */

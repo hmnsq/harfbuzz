@@ -24,42 +24,42 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_MVAR_TABLE_HH
-#define HB_OT_VAR_MVAR_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_MVAR_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_MVAR_ਸਾਰਣੀ_HH
 
-#include "hb-ot-var-common.hh"
-
-
-namespace OT {
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-common.hh"
 
 
-struct VariationValueRecord
+ਨਾਮਾਕਾਸ਼ OT {
+
+
+ਬਣਤਰ Variation_ਮੁੱਲ_ਰਿਕਾਰਡ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_map_t& varidx_map) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c,
+               ਅਚਲ hb_map_t& varidx_map) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->embed (*ਇਹ);
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ)) return_trace (ਝੂਠ);
 
     hb_codepoint_t *new_idx;
-    return_trace (c->serializer->check_assign (out->varIdx,
-                                               (varidx_map.has (varIdx, &new_idx)) ? *new_idx : HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_ਸੌਂਪੋ (ਬਾਹਰਲਾ->varIdx,
+                                               (varidx_map.has (varIdx, &new_idx)) ? *new_idx : HB_OT_LAYOUT_NO_VARIATIONS_ਸੂਚਕਾਂਕ,
+                                               HB_SERIALIZE_ERROR_INT_ਉਛਾਲ));
   }
 
-  public:
-  Tag		valueTag;	/* Four-byte tag identifying a font-wide measure. */
+  ਜਨਤਕ:
+  ਟੈਗ		ਮੁੱਲ_ਟੈਗ;	/* Four-byte tag identifying a font-wide measure. */
   VarIdx	varIdx;		/* Outer/inner index into ItemVariationStore item. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
 
@@ -67,118 +67,118 @@ struct VariationValueRecord
  * MVAR -- Metrics Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/mvar
  */
-#define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_MVAR HB_ਟੈਗ('M','V','A','R')
 
-struct MVAR
+ਬਣਤਰ MVAR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_MVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (ਸੰਸਕਰਣ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  likely (ਸੰਸਕਰਣ.major == 1) &&
+		  c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  valueRecordSize >= VariationValueRecord::static_size &&
-		  varStore.sanitize (c, this) &&
-		  c->check_range (valuesZ.arrayZ,
-				  valueRecordCount,
-				  valueRecordSize));
+		  ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ >= Variation_ਮੁੱਲ_ਰਿਕਾਰਡ::static_ਮਾਪ &&
+		  varStore.sanitize (c, ਇਹ) &&
+		  c->check_range (ਮੁੱਲਾਂ_Z.arrayZ,
+				  ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ,
+				  ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SUBSET (ਇਹ);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+    return_trace (ਝੂਠ);
+#ਜੇ_ਅੰਤ
 
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    ਜੇ (c->plan->all_axes_pinned)
+      return_trace (ਝੂਠ);
 
-    MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->version = version;
-    out->reserved = reserved;
-    out->valueRecordSize = valueRecordSize;
-    out->valueRecordCount = valueRecordCount;
+    MVAR *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    ਜੇ (unlikely (!c->serializer->extend_min (ਬਾਹਰਲਾ))) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->ਸੰਸਕਰਣ = ਸੰਸਕਰਣ;
+    ਬਾਹਰਲਾ->reserved = reserved;
+    ਬਾਹਰਲਾ->ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ = ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ;
+    ਬਾਹਰਲਾ->ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ = ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ;
 
-    item_variations_t item_vars;
-    const ItemVariationStore& src_var_store = this+varStore;
+    ਵਸਤੂ_variations_t ਵਸਤੂ_vars;
+    ਅਚਲ ਵਸਤੂ_Variation_Store& src_var_store = ਇਹ+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
-      return_trace (false);
+    ਜੇ (!ਵਸਤੂ_vars.instantiate (src_var_store, c->plan))
+      return_trace (ਝੂਠ);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
-                                            c->plan->axis_tags,
-                                            item_vars.get_region_list (),
-                                            item_vars.get_vardata_encodings ()))
-      return_trace (false);
+    ਜੇ (!ਬਾਹਰਲਾ->varStore.serialize_serialize (c->serializer, ਵਸਤੂ_vars.has_long_ਸ਼ਬਦ (),
+                                            c->plan->axis_ਟੈਗ_ਸੂਚੀ,
+                                            ਵਸਤੂ_vars.get_region_list (),
+                                            ਵਸਤੂ_vars.get_vardata_encodings ()))
+      return_trace (ਝੂਠ);
 
     /* serialize value records array */
-    unsigned value_rec_count = valueRecordCount;
-    const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_rec_ਗਿਣਤੀ = ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ;
+    ਅਚਲ Variation_ਮੁੱਲ_ਰਿਕਾਰਡ *ਰਿਕਾਰਡ = reinterpret_cast<ਅਚਲ Variation_ਮੁੱਲ_ਰਿਕਾਰਡ*> (ਮੁੱਲਾਂ_Z.arrayZ);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਮੁੱਲ_rec_ਗਿਣਤੀ; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
-      record++;
+      ਜੇ (!ਰਿਕਾਰਡ->subset (c, ਵਸਤੂ_vars.get_varidx_map ())) return_trace (ਝੂਠ);
+      ਰਿਕਾਰਡ++;
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+  ਦਸ਼ਮਲਵ get_var (hb_ਟੈਗ_t ਟੈਗ_2,
+		 ਅਚਲ ਪੂਰਨ *coords, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ coord_ਗਿਣਤੀ) ਅਚਲ
   {
-    const VariationValueRecord *record;
-    record = (VariationValueRecord *) hb_bsearch (tag,
-						  (const VariationValueRecord *)
-						    (const HBUINT8 *) valuesZ,
-						  valueRecordCount, valueRecordSize,
-						  tag_compare);
-    if (!record)
-      return 0.;
+    ਅਚਲ Variation_ਮੁੱਲ_ਰਿਕਾਰਡ *ਰਿਕਾਰਡ;
+    ਰਿਕਾਰਡ = (Variation_ਮੁੱਲ_ਰਿਕਾਰਡ *) hb_bsearch (ਟੈਗ_2,
+						  (ਅਚਲ Variation_ਮੁੱਲ_ਰਿਕਾਰਡ *)
+						    (ਅਚਲ HBUINT8 *) ਮੁੱਲਾਂ_Z,
+						  ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ, ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ,
+						  ਟੈਗ_compare);
+    ਜੇ (!ਰਿਕਾਰਡ)
+      ਵਾਪਸ 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    ਵਾਪਸ (ਇਹ+varStore).get_delta (ਰਿਕਾਰਡ->varIdx, coords, coord_ਗਿਣਤੀ);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+ਸੁਰੱਖਿਅਤ:
+  ਸਥਿਰ ਪੂਰਨ ਟੈਗ_compare (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
   {
-    const hb_tag_t *a = (const hb_tag_t *) pa;
-    const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    ਅਚਲ hb_ਟੈਗ_t *a = (ਅਚਲ hb_ਟੈਗ_t *) pa;
+    ਅਚਲ ਟੈਗ *b = (ਅਚਲ ਟੈਗ *) pb;
+    ਵਾਪਸ b->cmp (*a);
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the metrics variation table
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */
-  HBUINT16	valueRecordSize;/* The size in bytes of each value record —
+  HBUINT16	ਮੁੱਲ_ਰਿਕਾਰਡ_ਮਾਪ;/* The size in bytes of each value record —
 				 * must be greater than zero. */
-  HBUINT16	valueRecordCount;/* The number of value records — may be zero. */
-  Offset16To<ItemVariationStore>
+  HBUINT16	ਮੁੱਲ_ਰਿਕਾਰਡ_ਗਿਣਤੀ;/* The number of value records — may be zero. */
+  Offset16_ਮੰਜ਼ਿਲ<ਵਸਤੂ_Variation_Store>
 		varStore;	/* Offset to item variation store table. */
-  UnsizedArrayOf<HBUINT8>
-		valuesZ;	/* Array of value records. The records must be
+  Unsized_Array_ਦਾ<HBUINT8>
+		ਮੁੱਲਾਂ_Z;	/* Array of value records. The records must be
 				 * in binary order of their valueTag field. */
 
-  public:
-  DEFINE_SIZE_ARRAY (12, valuesZ);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (12, ਮੁੱਲਾਂ_Z);
 };
 
 } /* namespace OT */
 
 
-#define HB_ADD_MVAR_VAR(tag, field) \
-       c->serializer->check_assign (table->field, \
-				    roundf (table->field + \
-					    MVAR.get_var (tag, \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਜੋੜੋ_MVAR_VAR(ਟੈਗ_2, ਖੇਤਰ) \
+       c->serializer->check_ਸੌਂਪੋ (ਸਾਰਣੀ->ਖੇਤਰ, \
+				    roundf (ਸਾਰਣੀ->ਖੇਤਰ + \
+					    MVAR.get_var (ਟੈਗ_2, \
 							  c->plan->normalized_coords.arrayZ, \
-							  c->plan->normalized_coords.length)), \
-				    HB_SERIALIZE_ERROR_INT_OVERFLOW)
+							  c->plan->normalized_coords.ਲੰਮਾਈ)), \
+				    HB_SERIALIZE_ERROR_INT_ਉਛਾਲ)
 
 
-#endif /* HB_OT_VAR_MVAR_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_MVAR_TABLE_HH */

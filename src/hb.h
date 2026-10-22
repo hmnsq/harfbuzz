@@ -24,28 +24,28 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_H
-#define HB_H
-#define HB_H_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_H_ਵਿੱਚ
 
-#include "hb-blob.h"
-#include "hb-buffer.h"
-#include "hb-common.h"
-#include "hb-deprecated.h"
-#include "hb-draw.h"
-#include "hb-face.h"
-#include "hb-font.h"
-#include "hb-map.h"
-#include "hb-paint.h"
-#include "hb-set.h"
-#include "hb-shape.h"
-#include "hb-shape-plan.h"
-#include "hb-style.h"
-#include "hb-unicode.h"
-#include "hb-version.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-blob.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-buffer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-deprecated.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-face.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-map.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shape.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shape-plan.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-style.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-unicode.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-version.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#undef HB_H_IN
-#endif /* HB_H */
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_H_ਵਿੱਚ
+#ਜੇ_ਅੰਤ /* HB_H */

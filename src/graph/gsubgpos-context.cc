@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "gsubgpos-graph.hh"
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
-                                                                           graph_t& graph_)
+ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<gsubgpos_ਗ੍ਰਾਫ_context_t> gsubgpos_ਗ੍ਰਾਫ_context_t::create (hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_3,
+                                                                           ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ_2)
 {
-  gsubgpos_graph_context_t context (table_tag_, graph_);
+  gsubgpos_ਗ੍ਰਾਫ_context_t context (ਸਾਰਣੀ_ਟੈਗ_3, ਗ੍ਰਾਫ_2);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
-                && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+  ਜੇ (unlikely (ਸਾਰਣੀ_ਟੈਗ_3 != HB_OT_ਟੈਗ_GPOS
+                && ਸਾਰਣੀ_ਟੈਗ_3 != HB_OT_ਟੈਗ_GSUB))
+    ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
-  TRY(gstar->find_lookups (context.graph, context.lookups));
-  TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
+  TRY_ਸੌਂਪੋ (ਅਚਲ GSTAR* gstar, ਗ੍ਰਾਫ::GSTAR::ਗ੍ਰਾਫ_ਮੰਜ਼ਿਲ_gstar (context.ਗ੍ਰਾਫ));
+  TRY(gstar->ਲੱਭੋ_lookups (context.ਗ੍ਰਾਫ, context.lookups));
+  TRY_ਸੌਂਪੋ (context.lookup_list_ਸੂਚਕਾਂਕ, gstar->get_lookup_list_ਸੂਚਕਾਂਕ (context.ਗ੍ਰਾਫ));
 
-  return context;
+  ਵਾਪਸ context;
 }
 
-gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                                    graph_t& graph_)
-    : table_tag (table_tag_),
-      graph (graph_),
-      lookup_list_index (0),
+gsubgpos_ਗ੍ਰਾਫ_context_t::gsubgpos_ਗ੍ਰਾਫ_context_t (hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_3,
+                                                    ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ_2)
+    : ਸਾਰਣੀ_ਟੈਗ_2 (ਸਾਰਣੀ_ਟੈਗ_3),
+      ਗ੍ਰਾਫ (ਗ੍ਰਾਫ_2),
+      lookup_list_ਸੂਚਕਾਂਕ (0),
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> gsubgpos_ਗ੍ਰਾਫ_context_t::create_ਗੰਢ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  ਅੱਖਰ* ਬਫਰ = (ਅੱਖਰ*) hb_calloc (1, ਮਾਪ);
+  ਜੇ (unlikely (!ਬਫਰ))
+    ਵਾਪਸ Err(ਵੰਡ_FAILURE);
 
-  auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  ਸਵੈਚਾਲਿਤ res = ਜੋੜੋ_ਬਫਰ (ਬਫਰ);
+  ਜੇ (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
-    hb_free (buffer);
-    return Err(res.error ());
+    hb_free (ਬਫਰ);
+    ਵਾਪਸ Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  ਵਾਪਸ ਗ੍ਰਾਫ.new_ਗੰਢ (ਬਫਰ, ਬਫਰ + ਮਾਪ);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+ਬਿਨਾਨਿਸ਼ਾਨੀ gsubgpos_ਗ੍ਰਾਫ_context_t::ਅੰਕ_non_ext_subtables ()  {
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = 0;
+  ਲਈ (ਸਵੈਚਾਲਿਤ l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    ਜੇ (l->is_extension (ਸਾਰਣੀ_ਟੈਗ_2)) ਜਾਰੀ;
+    ਗਿਣਤੀ_2 += l->ਸੰਖਿਆ_ਦਾ_subtables ();
   }
-  return count;
+  ਵਾਪਸ ਗਿਣਤੀ_2;
 }
 
 }

@@ -24,11 +24,11 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_PRIORITY_QUEUE_HH
-#define HB_PRIORITY_QUEUE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਤਰਜੀਹ_ਕਤਾਰ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਤਰਜੀਹ_ਕਤਾਰ_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -42,143 +42,143 @@
  * priority of its children. The heap is stored in an array, with the
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
-template <typename K>
-struct hb_priority_queue_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ K>
+ਬਣਤਰ hb_ਤਰਜੀਹ_ਕਤਾਰ_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ ਜਨਤਕ:
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_pair_t<K, ਬਿਨਾਨਿਸ਼ਾਨੀ> ਵਸਤੂ_t;
 
- private:
-  hb_vector_t<item_t> heap;
+ ਨਿਜੀ:
+  hb_ਸਦਿਸ਼_t<ਵਸਤੂ_t> ਢੇਰ_2;
 
- public:
+ ਜਨਤਕ:
 
-  hb_priority_queue_t () = default;
-  hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
+  hb_ਤਰਜੀਹ_ਕਤਾਰ_t () = ਮੂਲ;
+  hb_ਤਰਜੀਹ_ਕਤਾਰ_t (hb_ਸਦਿਸ਼_t<ਵਸਤੂ_t>&& other) : ਢੇਰ_2 (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
-      bubble_down (i);
+    ਲਈ (ਪੂਰਨ i = (ਢੇਰ_2.ਲੰਮਾਈ / 2) - 1; i >= 0; i--)
+      bubble_ਥੱਲੇ (i);
   }
 
-  void reset () { heap.clear (); }
+  ਖਾਲੀ reset () { ਢੇਰ_2.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ { ਵਾਪਸ ਢੇਰ_2.ਵਿੱਚ_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  ਤਾਰਕਿਕ alloc (ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ)
+  { ਵਾਪਸ ਢੇਰ_2.alloc (ਮਾਪ); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  void insert (K priority, unsigned value)
+#ਜੇ_ਅੰਤ
+  ਖਾਲੀ insert (K ਤਰਜੀਹ, ਬਿਨਾਨਿਸ਼ਾਨੀ value)
   {
-    heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
-    bubble_up (heap.length - 1);
+    ਢੇਰ_2.push (ਵਸਤੂ_t (ਤਰਜੀਹ, value));
+    ਜੇ (unlikely (ਢੇਰ_2.ਵਿੱਚ_error ())) ਵਾਪਸ;
+    bubble_ਉੱਪਰ (ਢੇਰ_2.ਲੰਮਾਈ - 1);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
   HB_ALWAYS_INLINE
-#endif
-  item_t pop_minimum ()
+#ਜੇ_ਅੰਤ
+  ਵਸਤੂ_t ਕੱਢੋ_minimum ()
   {
-    assert (!is_empty ());
+    ਪ੍ਰਤਿਜ੍ਞਾ (!is_empty ());
 
-    item_t result = heap.arrayZ[0];
+    ਵਸਤੂ_t ਨਤੀਜਾ = ਢੇਰ_2.arrayZ[0];
 
-    heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
-    heap.resize (heap.length - 1);
+    ਢੇਰ_2.arrayZ[0] = ਢੇਰ_2.arrayZ[ਢੇਰ_2.ਲੰਮਾਈ - 1];
+    ਢੇਰ_2.resize (ਢੇਰ_2.ਲੰਮਾਈ - 1);
 
-    if (!is_empty ())
-      bubble_down (0);
+    ਜੇ (!is_empty ())
+      bubble_ਥੱਲੇ (0);
 
-    return result;
+    ਵਾਪਸ ਨਤੀਜਾ;
   }
 
-  const item_t& minimum ()
+  ਅਚਲ ਵਸਤੂ_t& minimum ()
   {
-    return heap[0];
+    ਵਾਪਸ ਢੇਰ_2[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  ਤਾਰਕਿਕ is_empty () ਅਚਲ { ਵਾਪਸ ਢੇਰ_2.ਲੰਮਾਈ == 0; }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ !is_empty (); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_population () ਅਚਲ { ਵਾਪਸ ਢੇਰ_2.ਲੰਮਾਈ; }
 
   /* Sink interface. */
-  hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  hb_ਤਰਜੀਹ_ਕਤਾਰ_t& ਸੰਚਾਲਕ << (ਵਸਤੂ_t ਵਸਤੂ)
+  { insert (ਵਸਤੂ.ਪਹਿਲਾ, ਵਸਤੂ.second); ਵਾਪਸ *ਇਹ; }
 
- private:
+ ਨਿਜੀ:
 
-  static constexpr unsigned parent (unsigned index)
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪਾ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
   {
-    return (index - 1) / 2;
+    ਵਾਪਸ (ਸੂਚਕਾਂਕ_2 - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਖੱਬਾ_ਬੱਚਾ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
   {
-    return 2 * index + 1;
+    ਵਾਪਸ 2 * ਸੂਚਕਾਂਕ_2 + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੱਜਾ_ਬੱਚਾ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
   {
-    return 2 * index + 2;
+    ਵਾਪਸ 2 * ਸੂਚਕਾਂਕ_2 + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  ਖਾਲੀ bubble_ਥੱਲੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
   {
     repeat:
-    assert (index < heap.length);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸੂਚਕਾਂਕ_2 < ਢੇਰ_2.ਲੰਮਾਈ);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਖੱਬੇ = ਖੱਬਾ_ਬੱਚਾ (ਸੂਚਕਾਂਕ_2);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੱਜੇ = ਸੱਜਾ_ਬੱਚਾ (ਸੂਚਕਾਂਕ_2);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    ਤਾਰਕਿਕ has_ਖੱਬਾ = ਖੱਬੇ < ਢੇਰ_2.ਲੰਮਾਈ;
+    ਜੇ (!has_ਖੱਬਾ)
       // If there's no left, then there's also no right.
-      return;
+      ਵਾਪਸ;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    ਤਾਰਕਿਕ has_ਸੱਜਾ = ਸੱਜੇ < ਢੇਰ_2.ਲੰਮਾਈ;
+    ਜੇ (ਢੇਰ_2.arrayZ[ਸੂਚਕਾਂਕ_2].ਪਹਿਲਾ <= ਢੇਰ_2.arrayZ[ਖੱਬੇ].ਪਹਿਲਾ
+        && (!has_ਸੱਜਾ || ਢੇਰ_2.arrayZ[ਸੂਚਕਾਂਕ_2].ਪਹਿਲਾ <= ਢੇਰ_2.arrayZ[ਸੱਜੇ].ਪਹਿਲਾ))
+      ਵਾਪਸ;
 
-    unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
-      child = left;
-    else
-      child = right;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਬੱਚਾ;
+    ਜੇ (!has_ਸੱਜਾ || ਢੇਰ_2.arrayZ[ਖੱਬੇ].ਪਹਿਲਾ < ਢੇਰ_2.arrayZ[ਸੱਜੇ].ਪਹਿਲਾ)
+      ਬੱਚਾ = ਖੱਬੇ;
+    ਨਹੀਂਤਾਂ
+      ਬੱਚਾ = ਸੱਜੇ;
 
-    swap (index, child);
-    index = child;
-    goto repeat;
+    swap (ਸੂਚਕਾਂਕ_2, ਬੱਚਾ);
+    ਸੂਚਕਾਂਕ_2 = ਬੱਚਾ;
+    ਜਾਓ repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  ਖਾਲੀ bubble_ਉੱਪਰ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2)
   {
     repeat:
-    assert (index < heap.length);
+    ਪ੍ਰਤਿਜ੍ਞਾ (ਸੂਚਕਾਂਕ_2 < ਢੇਰ_2.ਲੰਮਾਈ);
 
-    if (index == 0) return;
+    ਜੇ (ਸੂਚਕਾਂਕ_2 == 0) ਵਾਪਸ;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪਾ_ਸੂਚਕਾਂਕ = ਮਾਪਾ (ਸੂਚਕਾਂਕ_2);
+    ਜੇ (ਢੇਰ_2.arrayZ[ਮਾਪਾ_ਸੂਚਕਾਂਕ].ਪਹਿਲਾ <= ਢੇਰ_2.arrayZ[ਸੂਚਕਾਂਕ_2].ਪਹਿਲਾ)
+      ਵਾਪਸ;
 
-    swap (index, parent_index);
-    index = parent_index;
-    goto repeat;
+    swap (ਸੂਚਕਾਂਕ_2, ਮਾਪਾ_ਸੂਚਕਾਂਕ);
+    ਸੂਚਕਾਂਕ_2 = ਮਾਪਾ_ਸੂਚਕਾਂਕ;
+    ਜਾਓ repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  ਖਾਲੀ swap (ਬਿਨਾਨਿਸ਼ਾਨੀ a, ਬਿਨਾਨਿਸ਼ਾਨੀ b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
-    hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
+    ਪ੍ਰਤਿਜ੍ਞਾ (a < ਢੇਰ_2.ਲੰਮਾਈ);
+    ਪ੍ਰਤਿਜ੍ਞਾ (b < ਢੇਰ_2.ਲੰਮਾਈ);
+    hb_ਅਦਲਾ_ਬਦਲੀ (ਢੇਰ_2.arrayZ[a], ਢੇਰ_2.arrayZ[b]);
   }
 };
 
-#endif /* HB_PRIORITY_QUEUE_HH */
+#ਜੇ_ਅੰਤ /* HB_PRIORITY_QUEUE_HH */

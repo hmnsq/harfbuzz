@@ -1,58 +1,58 @@
-#ifndef OT_VAR_VARC_COORD_SETTER_HH
-#define OT_VAR_VARC_COORD_SETTER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_VAR_VARC_COORD_SETTER_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb.hh"
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 //namespace Var {
 
 
-struct coord_setter_t
+ਬਣਤਰ coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<ਅਚਲ ਪੂਰਨ> coords_)
   {
-    length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    ਲੰਮਾਈ = coords_.ਲੰਮਾਈ;
+    ਜੇ (ਲੰਮਾਈ <= ARRAY_ਲੰਮਾਈ (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, ਲੰਮਾਈ * ਆਕਾਰ (ਪੂਰਨ));
+    ਨਹੀਂਤਾਂ
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  ਪੂਰਨ& ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    ਜੇ (unlikely (idx >= HB_VAR_ਸੰਯੁਕਤ_MAX_AXES))
+      ਵਾਪਸ Crap(ਪੂਰਨ);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    ਜੇ (ਲੰਮਾਈ <= ARRAY_ਲੰਮਾਈ (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      ਜੇ (idx < ARRAY_ਲੰਮਾਈ (static_coords))
       {
-        while (length <= idx)
-	  static_coords[length++] = 0;
-	return static_coords[idx];
+        ਜਦੋਂ (ਲੰਮਾਈ <= idx)
+	  static_coords[ਲੰਮਾਈ++] = 0;
+	ਵਾਪਸ static_coords[idx];
       }
-      else
-        dynamic_coords.extend (hb_array (static_coords, length));
+      ਨਹੀਂਤਾਂ
+        dynamic_coords.extend (hb_array (static_coords, ਲੰਮਾਈ));
     }
 
-    if (dynamic_coords.length <= idx)
+    ਜੇ (dynamic_coords.ਲੰਮਾਈ <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
-      length = idx + 1;
+      ਜੇ (unlikely (!dynamic_coords.resize (idx + 1)))
+	ਵਾਪਸ Crap(ਪੂਰਨ);
+      ਲੰਮਾਈ = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    ਵਾਪਸ dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<ਪੂਰਨ> get_coords ()
+  { ਵਾਪਸ ਲੰਮਾਈ <= ARRAY_ਲੰਮਾਈ (static_coords) ? hb_array (static_coords, ਲੰਮਾਈ) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
-  unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  ਨਿਜੀ:
+  hb_ਸਦਿਸ਼_t<ਪੂਰਨ> dynamic_coords;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾਈ;
+  ਪੂਰਨ static_coords[ਆਕਾਰ (ਖਾਲੀ *) * 8];
 };
 
 
@@ -60,4 +60,4 @@ struct coord_setter_t
 
 } // namespace OT
 
-#endif /* OT_VAR_VARC_COORD_SETTER_HH */
+#ਜੇ_ਅੰਤ /* OT_VAR_VARC_COORD_SETTER_HH */

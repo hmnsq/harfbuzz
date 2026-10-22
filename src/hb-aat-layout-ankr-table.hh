@@ -22,78 +22,78 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_ANKR_TABLE_HH
-#define HB_AAT_LAYOUT_ANKR_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LAYOUT_ANKR_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LAYOUT_ANKR_ਸਾਰਣੀ_HH
 
-#include "hb-aat-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-common.hh"
 
 /*
  * ankr -- Anchor Point
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ankr.html
  */
-#define HB_AAT_TAG_ankr HB_TAG('a','n','k','r')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_ਟੈਗ_ankr HB_ਟੈਗ('a','n','k','r')
 
 
-namespace AAT {
+ਨਾਮਾਕਾਸ਼ AAT {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
 
-struct Anchor
+ਬਣਤਰ Anchor
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
+  ਜਨਤਕ:
   FWORD		xCoordinate;
   FWORD		yCoordinate;
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-typedef Array32Of<Anchor> GlyphAnchors;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Array32_ਦਾ<Anchor> GlyphAnchors;
 
-struct ankr
+ਬਣਤਰ ankr
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_AAT_ਟੈਗ_ankr;
 
-  const Anchor &get_anchor (hb_codepoint_t glyph_id,
-			    unsigned int i,
-			    unsigned int num_glyphs) const
+  ਅਚਲ Anchor &get_anchor (hb_codepoint_t glyph_id,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs) ਅਚਲ
   {
-    const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
-    if (!offset)
-      return Null (Anchor);
-    const GlyphAnchors &anchors = &(this+anchorData) + *offset;
-    return anchors[i];
+    ਅਚਲ NNOffset16_ਮੰਜ਼ਿਲ<GlyphAnchors> *ਵਿੱਥ = (ਇਹ+lookup_ਸਾਰਣੀ).get_ਮੁੱਲ (glyph_id, ਅੰਕ_glyphs);
+    ਜੇ (!ਵਿੱਥ)
+      ਵਾਪਸ Null (Anchor);
+    ਅਚਲ GlyphAnchors &anchors = &(ਇਹ+anchor_ਅੰਕੜੇ) + *ਵਿੱਥ;
+    ਵਾਪਸ anchors[i];
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
-			  version == 0 &&
-			  c->check_range (this, anchorData) &&
-			  lookupTable.sanitize (c, this, &(this+anchorData))));
+			  ਸੰਸਕਰਣ == 0 &&
+			  c->check_range (ਇਹ, anchor_ਅੰਕੜੇ) &&
+			  lookup_ਸਾਰਣੀ.sanitize (c, ਇਹ, &(ਇਹ+anchor_ਅੰਕੜੇ))));
   }
 
-  protected:
-  HBUINT16	version;	/* Version number (set to zero) */
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT16	ਸੰਸਕਰਣ;	/* Version number (set to zero) */
   HBUINT16	flags;		/* Flags (currently unused; set to zero) */
-  Offset32To<Lookup<NNOffset16To<GlyphAnchors>>>
-		lookupTable;	/* Offset to the table's lookup table */
-  NNOffset32To<HBUINT8>
-		anchorData;	/* Offset to the glyph data table */
+  Offset32_ਮੰਜ਼ਿਲ<Lookup<NNOffset16_ਮੰਜ਼ਿਲ<GlyphAnchors>>>
+		lookup_ਸਾਰਣੀ;	/* Offset to the table's lookup table */
+  NNOffset32_ਮੰਜ਼ਿਲ<HBUINT8>
+		anchor_ਅੰਕੜੇ;	/* Offset to the glyph data table */
 
-  public:
-  DEFINE_SIZE_STATIC (12);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (12);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_ANKR_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LAYOUT_ANKR_TABLE_HH */

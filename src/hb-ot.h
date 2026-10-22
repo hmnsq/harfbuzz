@@ -24,27 +24,27 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_H
-#define HB_OT_H
-#define HB_OT_H_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_H_ਵਿੱਚ
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include "hb-ot-fetch.h"
-#include "hb-ot-color.h"
-#include "hb-ot-deprecated.h"
-#include "hb-ot-font.h"
-#include "hb-ot-layout.h"
-#include "hb-ot-math.h"
-#include "hb-ot-meta.h"
-#include "hb-ot-metrics.h"
-#include "hb-ot-name.h"
-#include "hb-ot-shape.h"
-#include "hb-ot-var.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-fetch.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-color.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-deprecated.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-font.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-math.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-meta.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-metrics.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-name.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shape.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#undef HB_OT_H_IN
-#endif /* HB_OT_H */
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_OT_H_ਵਿੱਚ
+#ਜੇ_ਅੰਤ /* HB_OT_H */

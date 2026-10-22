@@ -25,208 +25,208 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MS_FEATURE_RANGES_HH
-#define HB_MS_FEATURE_RANGES_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_MS_FEATURE_RANGES_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MS_FEATURE_RANGES_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 /* Variations of this code exist in hb-coretext-shape.cc as well
  * as hb-aat-map.cc... */
 
-typedef struct hb_ms_feature_t {
-  uint32_t tag_le;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ms_feature_t {
+  uint32_t ਟੈਗ_le;
   uint32_t value;
 } hb_ms_feature_t;
 
-typedef struct hb_ms_features_t {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ms_features_t {
   hb_ms_feature_t *features;
-  uint32_t         num_features;
+  uint32_t         ਅੰਕ_features;
 } hb_ms_features_t;
 
-struct hb_ms_active_feature_t {
+ਬਣਤਰ hb_ms_ਸਰਗਰਮ_feature_t {
   hb_ms_feature_t fea;
-  unsigned int order;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕ੍ਰਮ;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-    const auto *a = (const hb_ms_active_feature_t *) pa;
-    const auto *b = (const hb_ms_active_feature_t *) pb;
-    return a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
-	   a->order < b->order ? -1 : a->order > b->order ? 1 :
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb) {
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *a = (ਅਚਲ hb_ms_ਸਰਗਰਮ_feature_t *) pa;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *b = (ਅਚਲ hb_ms_ਸਰਗਰਮ_feature_t *) pb;
+    ਵਾਪਸ a->fea.ਟੈਗ_le < b->fea.ਟੈਗ_le ? -1 : a->fea.ਟੈਗ_le > b->fea.ਟੈਗ_le ? 1 :
+	   a->ਕ੍ਰਮ < b->ਕ੍ਰਮ ? -1 : a->ਕ੍ਰਮ > b->ਕ੍ਰਮ ? 1 :
 	   a->fea.value < b->fea.value ? -1 : a->fea.value > b->fea.value ? 1 :
 	   0;
   }
-  bool operator== (const hb_ms_active_feature_t& f) const
-  { return cmp (this, &f) == 0; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ== (ਅਚਲ hb_ms_ਸਰਗਰਮ_feature_t& f) ਅਚਲ
+  { ਵਾਪਸ cmp (ਇਹ, &f) == 0; }
 };
 
-struct hb_ms_feature_event_t {
-  unsigned int index;
-  bool start;
-  hb_ms_active_feature_t feature;
+ਬਣਤਰ hb_ms_feature_event_t {
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2;
+  ਤਾਰਕਿਕ ਸ਼ੁਰੂ;
+  hb_ms_ਸਰਗਰਮ_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਪੂਰਨ cmp (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
   {
-    const auto *a = (const hb_ms_feature_event_t *) pa;
-    const auto *b = (const hb_ms_feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
-	   a->start < b->start ? -1 : a->start > b->start ? 1 :
-	   hb_ms_active_feature_t::cmp (&a->feature, &b->feature);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *a = (ਅਚਲ hb_ms_feature_event_t *) pa;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ *b = (ਅਚਲ hb_ms_feature_event_t *) pb;
+    ਵਾਪਸ a->ਸੂਚਕਾਂਕ_2 < b->ਸੂਚਕਾਂਕ_2 ? -1 : a->ਸੂਚਕਾਂਕ_2 > b->ਸੂਚਕਾਂਕ_2 ? 1 :
+	   a->ਸ਼ੁਰੂ < b->ਸ਼ੁਰੂ ? -1 : a->ਸ਼ੁਰੂ > b->ਸ਼ੁਰੂ ? 1 :
+	   hb_ms_ਸਰਗਰਮ_feature_t::cmp (&a->feature, &b->feature);
   }
 };
 
-struct hb_ms_range_record_t {
+ਬਣਤਰ hb_ms_range_ਰਿਕਾਰਡ_t {
   hb_ms_features_t features;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_ਪਹਿਲਾ; /* == start */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_ਆਖਰੀ;  /* == end - 1 */
 };
 
-static inline bool
-hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
-		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
-		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+hb_ms_ਤਿਆਰੀ_features (ਅਚਲ hb_feature_t                *features,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                       ਅੰਕ_features,
+		      hb_ਸਦਿਸ਼_t<hb_ms_feature_t>      &feature_ਰਿਕਾਰਡਾਂ, /*ਬਾਹਰਲਾ*/
+		      hb_ਸਦਿਸ਼_t<hb_ms_range_ਰਿਕਾਰਡ_t> &range_ਰਿਕਾਰਡਾਂ /*ਬਾਹਰਲਾ*/)
 {
-  feature_records.clear ();
-  range_records.clear ();
+  feature_ਰਿਕਾਰਡਾਂ.clear ();
+  range_ਰਿਕਾਰਡਾਂ.clear ();
 
   /* Sort features by start/end events. */
-  hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  hb_ਸਦਿਸ਼_t<hb_ms_feature_event_t> feature_events;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_features; i++)
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = hb_uint32_swap (features[i].tag);
+    hb_ms_ਸਰਗਰਮ_feature_t feature;
+    feature.fea.ਟੈਗ_le = hb_uint32_ਅਦਲਾ_ਬਦਲੀ (features[i].ਟੈਗ_2);
     feature.fea.value = features[i].value;
-    feature.order = i;
+    feature.ਕ੍ਰਮ = i;
 
     hb_ms_feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = features[i].start;
-    event->start = true;
+    event->ਸੂਚਕਾਂਕ_2 = features[i].ਸ਼ੁਰੂ;
+    event->ਸ਼ੁਰੂ = ਸੱਚ;
     event->feature = feature;
 
     event = feature_events.push ();
-    event->index = features[i].end;
-    event->start = false;
+    event->ਸੂਚਕਾਂਕ_2 = features[i].ਸਿਰਾ;
+    event->ਸ਼ੁਰੂ = ਝੂਠ;
     event->feature = feature;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = 0;
+    hb_ms_ਸਰਗਰਮ_feature_t feature;
+    feature.fea.ਟੈਗ_le = 0;
     feature.fea.value = 0;
-    feature.order = num_features + 1;
+    feature.ਕ੍ਰਮ = ਅੰਕ_features + 1;
 
-    auto *event = feature_events.push ();
-    event->index = 0; /* This value does magic. */
-    event->start = false;
+    ਸਵੈਚਾਲਿਤ *event = feature_events.push ();
+    event->ਸੂਚਕਾਂਕ_2 = 0; /* This value does magic. */
+    event->ਸ਼ੁਰੂ = ਝੂਠ;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
-  hb_vector_t<hb_ms_active_feature_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  hb_ਸਦਿਸ਼_t<hb_ms_ਸਰਗਰਮ_feature_t> ਸਰਗਰਮ_features;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਆਖਰੀ_ਸੂਚਕਾਂਕ = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < feature_events.ਲੰਮਾਈ; i++)
   {
-    auto *event = &feature_events[i];
+    ਸਵੈਚਾਲਿਤ *event = &feature_events[i];
 
-    if (event->index != last_index)
+    ਜੇ (event->ਸੂਚਕਾਂਕ_2 != ਆਖਰੀ_ਸੂਚਕਾਂਕ)
     {
       /* Save a snapshot of active features and the range. */
-      auto *range = range_records.push ();
-      auto offset = feature_records.length;
+      ਸਵੈਚਾਲਿਤ *range = range_ਰਿਕਾਰਡਾਂ.push ();
+      ਸਵੈਚਾਲਿਤ ਵਿੱਥ = feature_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ;
 
-      active_features.qsort ();
-      for (unsigned int j = 0; j < active_features.length; j++)
+      ਸਰਗਰਮ_features.qsort ();
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = 0; j < ਸਰਗਰਮ_features.ਲੰਮਾਈ; j++)
       {
-        if (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
+        ਜੇ (!j || ਸਰਗਰਮ_features[j].fea.ਟੈਗ_le != feature_ਰਿਕਾਰਡਾਂ[feature_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ - 1].ਟੈਗ_le)
         {
-          feature_records.push (active_features[j].fea);
+          feature_ਰਿਕਾਰਡਾਂ.push (ਸਰਗਰਮ_features[j].fea);
         }
-        else
+        ਨਹੀਂਤਾਂ
         {
           /* Overrides value for existing feature. */
-          feature_records[feature_records.length - 1].value = active_features[j].fea.value;
+          feature_ਰਿਕਾਰਡਾਂ[feature_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ - 1].value = ਸਰਗਰਮ_features[j].fea.value;
         }
       }
 
       /* Will convert to pointer after all is ready, since feature_records.array
        * may move as we grow it. */
-      range->features.features = reinterpret_cast<hb_ms_feature_t *> (offset);
-      range->features.num_features = feature_records.length - offset;
-      range->index_first = last_index;
-      range->index_last  = event->index - 1;
+      range->features.features = reinterpret_cast<hb_ms_feature_t *> (ਵਿੱਥ);
+      range->features.ਅੰਕ_features = feature_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ - ਵਿੱਥ;
+      range->ਸੂਚਕਾਂਕ_ਪਹਿਲਾ = ਆਖਰੀ_ਸੂਚਕਾਂਕ;
+      range->ਸੂਚਕਾਂਕ_ਆਖਰੀ  = event->ਸੂਚਕਾਂਕ_2 - 1;
 
-      last_index = event->index;
+      ਆਖਰੀ_ਸੂਚਕਾਂਕ = event->ਸੂਚਕਾਂਕ_2;
     }
 
-    if (event->start)
+    ਜੇ (event->ਸ਼ੁਰੂ)
     {
-      active_features.push (event->feature);
+      ਸਰਗਰਮ_features.push (event->feature);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      auto *feature = active_features.lsearch (event->feature);
-      if (feature)
-        active_features.remove_ordered (feature - active_features.arrayZ);
+      ਸਵੈਚਾਲਿਤ *feature = ਸਰਗਰਮ_features.lsearch (event->feature);
+      ਜੇ (feature)
+        ਸਰਗਰਮ_features.remove_ordered (feature - ਸਰਗਰਮ_features.arrayZ);
     }
   }
 
-  if (!range_records.length) /* No active feature found. */
-    num_features = 0;
+  ਜੇ (!range_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ) /* No active feature found. */
+    ਅੰਕ_features = 0;
 
   /* Fixup the pointers. */
-  for (unsigned int i = 0; i < range_records.length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < range_ਰਿਕਾਰਡਾਂ.ਲੰਮਾਈ; i++)
   {
-    auto *range = &range_records[i];
-    range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
+    ਸਵੈਚਾਲਿਤ *range = &range_ਰਿਕਾਰਡਾਂ[i];
+    range->features.features = (hb_ms_feature_t *) feature_ਰਿਕਾਰਡਾਂ + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  ਵਾਪਸ !!ਅੰਕ_features;
 }
 
-static inline void
-hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
-			   hb_vector_t<hb_ms_range_record_t> &range_records,
-			   unsigned int                       chars_offset,
-			   unsigned int                       chars_len,
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ms_make_feature_ranges (hb_ਸਦਿਸ਼_t<hb_ms_feature_t>      &feature_ਰਿਕਾਰਡਾਂ,
+			   hb_ਸਦਿਸ਼_t<hb_ms_range_ਰਿਕਾਰਡ_t> &range_ਰਿਕਾਰਡਾਂ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                       chars_ਵਿੱਥ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                       chars_len,
 			   uint16_t                          *log_clusters,
-			   hb_vector_t<hb_ms_features_t*>    &range_features, /* OUT */
-			   hb_vector_t<uint32_t>             &range_counts /* OUT */)
+			   hb_ਸਦਿਸ਼_t<hb_ms_features_t*>    &range_features, /*ਬਾਹਰਲਾ*/
+			   hb_ਸਦਿਸ਼_t<uint32_t>             &range_counts /*ਬਾਹਰਲਾ*/)
 {
   range_features.clear ();
   range_counts.clear ();
 
-  auto *last_range = &range_records[0];
-  for (unsigned int i = chars_offset; i < chars_len; i++)
+  ਸਵੈਚਾਲਿਤ *ਆਖਰੀ_range = &range_ਰਿਕਾਰਡਾਂ[0];
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = chars_ਵਿੱਥ; i < chars_len; i++)
   {
-    auto *range = last_range;
-    while (log_clusters[i] < range->index_first)
+    ਸਵੈਚਾਲਿਤ *range = ਆਖਰੀ_range;
+    ਜਦੋਂ (log_clusters[i] < range->ਸੂਚਕਾਂਕ_ਪਹਿਲਾ)
       range--;
-    while (log_clusters[i] > range->index_last)
+    ਜਦੋਂ (log_clusters[i] > range->ਸੂਚਕਾਂਕ_ਆਖਰੀ)
       range++;
-    if (!range_features.length ||
-        &range->features != range_features[range_features.length - 1])
+    ਜੇ (!range_features.ਲੰਮਾਈ ||
+        &range->features != range_features[range_features.ਲੰਮਾਈ - 1])
     {
-      auto **features = range_features.push ();
-      auto *c = range_counts.push ();
-      if (unlikely (!features || !c))
+      ਸਵੈਚਾਲਿਤ **features = range_features.push ();
+      ਸਵੈਚਾਲਿਤ *c = range_counts.push ();
+      ਜੇ (unlikely (!features || !c))
       {
         range_features.clear ();
         range_counts.clear ();
-        break;
+        ਰੋਕੋ;
       }
       *features = &range->features;
       *c = 1;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      range_counts[range_counts.length - 1]++;
+      range_counts[range_counts.ਲੰਮਾਈ - 1]++;
     }
 
-    last_range = range;
+    ਆਖਰੀ_range = range;
   }
 }
 
-#endif /* HB_MS_FEATURE_RANGES_HH */
+#ਜੇ_ਅੰਤ /* HB_MS_FEATURE_RANGES_HH */

@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MACHINERY_HH
-#define HB_MACHINERY_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_MACHINERY_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MACHINERY_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-blob.hh"
 
-#include "hb-dispatch.hh"
-#include "hb-sanitize.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-dispatch.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-sanitize.hh"
 
 
 /*
@@ -42,44 +42,44 @@
 
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
-template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
-template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
-template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ Type& Struct_At_ਵਿੱਥ(ਅਚਲ ਖਾਲੀ *P, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
+{ ਵਾਪਸ * reinterpret_cast<ਅਚਲ Type*> ((ਅਚਲ ਅੱਖਰ *) P + ਵਿੱਥ); }
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type>
+ਸਥਿਰ ਸਤਰਅੰਦਰ Type& Struct_At_ਵਿੱਥ(ਖਾਲੀ *P, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
+{ ਵਾਪਸ * reinterpret_cast<Type*> ((ਅੱਖਰ *) P + ਵਿੱਥ); }
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ Type& Struct_At_ਵਿੱਥ_Unaligned(ਅਚਲ ਖਾਲੀ *P, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#ਹਦਾਇਤ GCC diagnostic push
+#ਹਦਾਇਤ GCC diagnostic ignored "-Wcast-align"
+  ਵਾਪਸ * reinterpret_cast<ਅਚਲ Type*> ((ਅਚਲ ਅੱਖਰ *) P + ਵਿੱਥ);
+#ਹਦਾਇਤ GCC diagnostic ਕੱਢੋ
 }
-template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type>
+ਸਥਿਰ ਸਤਰਅੰਦਰ Type& Struct_At_ਵਿੱਥ_Unaligned(ਖਾਲੀ *P, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
-#pragma GCC diagnostic pop
+#ਹਦਾਇਤ GCC diagnostic push
+#ਹਦਾਇਤ GCC diagnostic ignored "-Wcast-align"
+  ਵਾਪਸ * reinterpret_cast<Type*> ((ਅੱਖਰ *) P + ਵਿੱਥ);
+#ਹਦਾਇਤ GCC diagnostic ਕੱਢੋ
 }
 
 /* StructAfter<T>(X) returns the struct T& that is placed after X.
  * Works with X of variable size also.  X must implement get_size().
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
-template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ TObject, ਕਿਸਮ_ਨਾਂ ...Ts>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ StructAfter(ਅਚਲ TObject &X, Ts... ਦਲੀਲਾਂ) HB_AUTO_RETURN((
+  Struct_At_ਵਿੱਥ<Type>(&X, X.get_ਮਾਪ(std::forward<Ts> (ਦਲੀਲਾਂ)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
-template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ TObject, ਕਿਸਮ_ਨਾਂ ...Ts>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਸਵੈਚਾਲਿਤ StructAfter(TObject &X, Ts... ਦਲੀਲਾਂ) HB_AUTO_RETURN((
+  ਆਕਾਰ(ਪੂਰਨ[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+  Struct_At_ਵਿੱਥ<Type>(&X, X.get_ਮਾਪ(std::forward<Ts> (ਦਲੀਲਾਂ)...))
   : *reinterpret_cast<Type*> (0)
 ))
 
@@ -89,56 +89,56 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  */
 
 /* Size signifying variable-sized array */
-#ifndef HB_VAR_ARRAY
-#define HB_VAR_ARRAY 1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_VAR_ARRAY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_VAR_ARRAY 1
+#ਜੇ_ਅੰਤ
 
 /* Check _assertion in a method environment */
-#define _DEFINE_INSTANCE_ASSERTION1(_line, _assertion) \
-  void _instance_assertion_on_line_##_line () const \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _DEFINE_INSTANCE_ASSERTION1(ਸਤਰ_2, _assertion) \
+  ਖਾਲੀ instance_assertion_on_ਸਤਰ##_line () ਅਚਲ \
   { static_assert ((_assertion), ""); }
-# define _DEFINE_INSTANCE_ASSERTION0(_line, _assertion) _DEFINE_INSTANCE_ASSERTION1 (_line, _assertion)
+# define _DEFINE_INSTANCE_ASSERTION0(ਸਤਰ_2, _assertion) _DEFINE_INSTANCE_ASSERTION1 (ਸਤਰ_2, _assertion)
 # define DEFINE_INSTANCE_ASSERTION(_assertion) _DEFINE_INSTANCE_ASSERTION0 (__LINE__, _assertion)
 
 /* Check that _code compiles in a method environment */
-#define _DEFINE_COMPILES_ASSERTION1(_line, _code) \
-  void _compiles_assertion_on_line_##_line () const \
-  { _code; }
-# define _DEFINE_COMPILES_ASSERTION0(_line, _code) _DEFINE_COMPILES_ASSERTION1 (_line, _code)
-# define DEFINE_COMPILES_ASSERTION(_code) _DEFINE_COMPILES_ASSERTION0 (__LINE__, _code)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _DEFINE_COMPILES_ASSERTION1(ਸਤਰ_2, ਕੋਡ_3) \
+  ਖਾਲੀ compiles_assertion_on_ਸਤਰ##_line () ਅਚਲ \
+  { ਕੋਡ_3; }
+# define _DEFINE_COMPILES_ASSERTION0(ਸਤਰ_2, ਕੋਡ_3) _DEFINE_COMPILES_ASSERTION1 (ਸਤਰ_2, ਕੋਡ_3)
+# define DEFINE_COMPILES_ASSERTION(ਕੋਡ_3) _DEFINE_COMPILES_ASSERTION0 (__LINE__, ਕੋਡ_3)
 
 
-#define DEFINE_SIZE_STATIC(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size); \
-  static constexpr unsigned static_size = (size)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_STATIC(ਮਾਪ) \
+  DEFINE_INSTANCE_ASSERTION (ਆਕਾਰ (*ਇਹ) == (ਮਾਪ)) \
+  size_t get_ਮਾਪ () ਅਚਲ { ਵਾਪਸ (ਮਾਪ); } \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ null_ਮਾਪ = (ਮਾਪ); \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = (ਮਾਪ); \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ static_ਮਾਪ = (ਮਾਪ)
 
-#define DEFINE_SIZE_UNION(size, _member) \
-  DEFINE_COMPILES_ASSERTION ((void) this->u._member.static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof(this->u._member) == (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_UNION(ਮਾਪ, _member) \
+  DEFINE_COMPILES_ASSERTION ((ਖਾਲੀ) ਇਹ->u._member.static_ਮਾਪ) \
+  DEFINE_INSTANCE_ASSERTION (ਆਕਾਰ(ਇਹ->u._member) == (ਮਾਪ)) \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ null_ਮਾਪ = (ਮਾਪ); \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = (ਮਾਪ)
 
-#define DEFINE_SIZE_MIN(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_MIN(ਮਾਪ) \
+  DEFINE_INSTANCE_ASSERTION (ਆਕਾਰ (*ਇਹ) >= (ਮਾਪ)) \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ null_ਮਾਪ = (ਮਾਪ); \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = (ਮਾਪ)
 
-#define DEFINE_SIZE_UNBOUNDED(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned min_size = (size)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_UNBOUNDED(ਮਾਪ) \
+  DEFINE_INSTANCE_ASSERTION (ਆਕਾਰ (*ਇਹ) >= (ਮਾਪ)) \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = (ਮਾਪ)
 
-#define DEFINE_SIZE_ARRAY(size, array) \
-  DEFINE_COMPILES_ASSERTION ((void) (array)[0].static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size) + (HB_VAR_ARRAY+0) * sizeof ((array)[0])) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_ARRAY(ਮਾਪ, array) \
+  DEFINE_COMPILES_ASSERTION ((ਖਾਲੀ) (array)[0].static_ਮਾਪ) \
+  DEFINE_INSTANCE_ASSERTION (ਆਕਾਰ (*ਇਹ) == (ਮਾਪ) + (HB_VAR_ARRAY+0) * ਆਕਾਰ ((array)[0])) \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ null_ਮਾਪ = (ਮਾਪ); \
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = (ਮਾਪ)
 
-#define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
-  DEFINE_SIZE_ARRAY(size, array)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEFINE_ਮਾਪ_ARRAY_SIZED(ਮਾਪ, array) \
+  size_t get_ਮਾਪ () ਅਚਲ { ਵਾਪਸ (ਮਾਪ - (array).min_ਮਾਪ + (array).get_ਮਾਪ ()); } \
+  DEFINE_ਮਾਪ_ARRAY(ਮਾਪ, array)
 
 
 /*
@@ -152,204 +152,204 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
-struct hb_data_wrapper_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਅੰਕੜੇ_3, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ Wheres_ਅੰਕੜੇ>
+ਬਣਤਰ hb_ਅੰਕੜੇ_wrapper_t
 {
-  static_assert (WheresData > 0, "");
+  static_assert (Wheres_ਅੰਕੜੇ > 0, "");
 
-  Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  ਅੰਕੜੇ_3 * get_ਅੰਕੜੇ () ਅਚਲ
+  { ਵਾਪਸ *(((ਅੰਕੜੇ_3 **) (ਖਾਲੀ *) ਇਹ) - Wheres_ਅੰਕੜੇ); }
 
-  bool is_inert () const { return !get_data (); }
+  ਤਾਰਕਿਕ is_inert () ਅਚਲ { ਵਾਪਸ !get_ਅੰਕੜੇ (); }
 
-  template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Stored, ਕਿਸਮ_ਨਾਂ Subclass>
+  Stored * call_create () ਅਚਲ { ਵਾਪਸ Subclass::create (get_ਅੰਕੜੇ ()); }
 };
-template <>
-struct hb_data_wrapper_t<void, 0>
+ਸਾਂਚਾ <>
+ਬਣਤਰ hb_ਅੰਕੜੇ_wrapper_t<ਖਾਲੀ, 0>
 {
-  bool is_inert () const { return false; }
+  ਤਾਰਕਿਕ is_inert () ਅਚਲ { ਵਾਪਸ ਝੂਠ; }
 
-  template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Stored, ਕਿਸਮ_ਨਾਂ Funcs>
+  Stored * call_create () ਅਚਲ { ਵਾਪਸ Funcs::create (); }
 };
 
-template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
-template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T1, ਕਿਸਮ_ਨਾਂ T2> ਬਣਤਰ hb_non_void_t { ਕਿਸਮਪਰਿਭਾਸ਼ਾ T1 value; };
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T2> ਬਣਤਰ hb_non_void_t<ਖਾਲੀ, T2> { ਕਿਸਮਪਰਿਭਾਸ਼ਾ T2 value; };
 
-template <typename Returned,
-	  typename Subclass = void,
-	  typename Data = void,
-	  unsigned int WheresData = 0,
-	  typename Stored = Returned>
-struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Returned,
+	  ਕਿਸਮ_ਨਾਂ Subclass = ਖਾਲੀ,
+	  ਕਿਸਮ_ਨਾਂ ਅੰਕੜੇ_3 = ਖਾਲੀ,
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ Wheres_ਅੰਕੜੇ = 0,
+	  ਕਿਸਮ_ਨਾਂ Stored = Returned>
+ਬਣਤਰ hb_lazy_loader_t : hb_ਅੰਕੜੇ_wrapper_t<ਅੰਕੜੇ_3, Wheres_ਅੰਕੜੇ>
 {
-  typedef typename hb_non_void_t<Subclass,
-				 hb_lazy_loader_t<Returned,Subclass,Data,WheresData,Stored>
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ hb_non_void_t<Subclass,
+				 hb_lazy_loader_t<Returned,Subclass,ਅੰਕੜੇ_3,Wheres_ਅੰਕੜੇ,Stored>
 				>::value Funcs;
 
-  hb_lazy_loader_t () = default;
-  hb_lazy_loader_t (const hb_lazy_loader_t &other) = delete;
+  hb_lazy_loader_t () = ਮੂਲ;
+  hb_lazy_loader_t (ਅਚਲ hb_lazy_loader_t &other) = ਮਿਟਾਓ;
 
-  void init0 () {} /* Init, when memory is already set to 0. No-op for us. */
-  void init ()  { instance.set_relaxed (nullptr); }
-  void fini ()  { do_destroy (instance.get_acquire ()); init (); }
+  ਖਾਲੀ init0 () {} /* Init, when memory is already set to 0. No-op for us. */
+  ਖਾਲੀ init ()  { instance.ਸੈੱਟ_relaxed (ਖਾਲੀ_ਸੂਚਕ); }
+  ਖਾਲੀ fini ()  { do_destroy (instance.get_acquire ()); init (); }
 
-  void free_instance ()
+  ਖਾਲੀ free_instance ()
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
-      goto retry;
+    ਜੇ (unlikely (p && !cmpexch (p, ਖਾਲੀ_ਸੂਚਕ)))
+      ਜਾਓ retry;
     do_destroy (p);
   }
 
-  static void do_destroy (Stored *p)
+  ਸਥਿਰ ਖਾਲੀ do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    ਜੇ (Funcs::ਟੈਗ_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      ਵਾਪਸ;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
-  template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
-  explicit operator bool () const
+  ਅਚਲ Returned * ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ get (); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U = Returned, hb_enable_if (!hb_is_same (U, ਖਾਲੀ))>
+  ਅਚਲ U & ਸੰਚਾਲਕ * () ਅਚਲ  { ਵਾਪਸ *get (); }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    ਜੇ (Funcs::ਟੈਗ_null)
     {
-      Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      Stored *raw = ਇਹ->instance.get_relaxed ();
+      ਵਾਪਸ raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    ਵਾਪਸ p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ C> ਸੰਚਾਲਕ ਅਚਲ C * () ਅਚਲ { ਵਾਪਸ get (); }
 
-  Stored * get_stored () const
+  Stored * get_stored () ਅਚਲ
   {
   retry:
-    Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    Stored *p = ਇਹ->instance.get_acquire ();
+    ਜੇ (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      ਜੇ (unlikely (ਇਹ->is_inert ()))
+	ਵਾਪਸ const_cast<Stored *> (Funcs::get_null ());
 
-      p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      p = ਇਹ->ਸਾਂਚਾ call_create<Stored, Funcs> ();
+      ਜੇ (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      ਜੇ (unlikely (!cmpexch (ਖਾਲੀ_ਸੂਚਕ, p)))
       {
 	do_destroy (p);
-	goto retry;
+	ਜਾਓ retry;
       }
     }
-    return untagged (p);
+    ਵਾਪਸ untagged (p);
   }
-  Stored * get_stored_relaxed () const
+  Stored * get_stored_relaxed () ਅਚਲ
   {
-    return untagged (this->instance.get_relaxed ());
+    ਵਾਪਸ untagged (ਇਹ->instance.get_relaxed ());
   }
 
-  bool cmpexch (Stored *current, Stored *value) const
+  ਤਾਰਕਿਕ cmpexch (Stored *current, Stored *value) ਅਚਲ
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    ਵਾਪਸ ਇਹ->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  ਅਚਲ Returned * get () ਅਚਲ { ਵਾਪਸ Funcs::convert (get_stored ()); }
+  ਅਚਲ Returned * get_relaxed () ਅਚਲ { ਵਾਪਸ Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () ਅਚਲ { ਵਾਪਸ const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  ਸਥਿਰ Returned* convert (Stored *p) { ਵਾਪਸ p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  ਸਥਿਰ ਅਚਲ Stored* get_null () { ਵਾਪਸ &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
    * address.  Needed when get_null () is a per-library Null object: another
    * library sharing the object would not recognize its address. */
-  static constexpr bool tag_null = false;
-  static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
-  static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
-  static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
-  static Stored *create (Data *data)
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ ਟੈਗ_null = ਝੂਠ;
+  ਸਥਿਰ ਤਾਰਕਿਕ is_tagged_null (Stored *p)
+  { ਵਾਪਸ Funcs::ਟੈਗ_null && ((uintptr_t) (ਖਾਲੀ *) p & 1); }
+  ਸਥਿਰ Stored *tagged_null (Stored *p)
+  { ਵਾਪਸ Funcs::ਟੈਗ_null ? (Stored *) (ਖਾਲੀ *) ((uintptr_t) (ਖਾਲੀ *) p | 1) : p; }
+  ਸਥਿਰ Stored *untagged (Stored *p)
+  { ਵਾਪਸ Funcs::ਟੈਗ_null ? (Stored *) (ਖਾਲੀ *) ((uintptr_t) (ਖਾਲੀ *) p & ~(uintptr_t) 1) : p; }
+  ਸਥਿਰ Stored *create (ਅੰਕੜੇ_3 *ਅੰਕੜੇ)
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored (data);
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, ਆਕਾਰ (Stored));
+    ਜੇ (likely (p))
+      p = ਨਵਾਂ (p) Stored (ਅੰਕੜੇ);
+    ਵਾਪਸ p;
   }
-  static Stored *create ()
+  ਸਥਿਰ Stored *create ()
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored ();
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, ਆਕਾਰ (Stored));
+    ਜੇ (likely (p))
+      p = ਨਵਾਂ (p) Stored ();
+    ਵਾਪਸ p;
   }
-  static void destroy (Stored *p)
+  ਸਥਿਰ ਖਾਲੀ destroy (Stored *p)
   {
     p->~Stored ();
     hb_free (p);
   }
 
-  private:
+  ਨਿਜੀ:
   /* Must only have one pointer. */
-  mutable hb_atomic_t<Stored *> instance;
+  ਬਦਲਣਯੋਗ hb_atomic_t<Stored *> instance;
 };
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
-struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ WheresFace>
+ਬਣਤਰ hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
 {
   /* get_null () is this library's Null object; see tag_null. */
-  static constexpr bool tag_null = true;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ ਟੈਗ_null = ਸੱਚ;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { ਵਾਪਸ ਇਹ->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
-struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
-						 hb_table_lazy_loader_t<T, WheresFace>,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ WheresFace>
+ਬਣਤਰ hb_ਸਾਰਣੀ_lazy_loader_t : hb_lazy_loader_t<T,
+						 hb_ਸਾਰਣੀ_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
 						 hb_blob_t>
 {
-  static hb_blob_t *create (hb_face_t *face)
+  ਸਥਿਰ hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    ਵਾਪਸ c.reference_ਸਾਰਣੀ<T> (face);
   }
-  static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
+  ਸਥਿਰ ਖਾਲੀ destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
-  static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  ਸਥਿਰ ਅਚਲ hb_blob_t *get_null ()
+  { ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ (); }
 
-  static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  ਸਥਿਰ ਅਚਲ T* convert (ਅਚਲ hb_blob_t *blob)
+  { ਵਾਪਸ blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () ਅਚਲ { ਵਾਪਸ ਇਹ->get_stored (); }
 };
 
-#define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
-  template <typename Subclass> \
-  struct hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Subclass> \
+  ਬਣਤਰ hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
   { \
-    static void destroy (hb_##Type##_funcs_t *p) \
+    ਸਥਿਰ ਖਾਲੀ destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
-    static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    ਸਥਿਰ ਅਚਲ hb_##Type##_funcs_t *get_null () \
+    { ਵਾਪਸ hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);
@@ -357,7 +357,7 @@ HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (unicode);
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (draw);
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (paint);
 
-#undef HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T
 
 
-#endif /* HB_MACHINERY_HH */
+#ਜੇ_ਅੰਤ /* HB_MACHINERY_HH */

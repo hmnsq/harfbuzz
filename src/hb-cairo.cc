@@ -24,16 +24,16 @@
  * Red Hat Author(s): Matthias Clasen
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifdef HAVE_CAIRO
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO
 
-#include "hb-cairo.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cairo.h"
 
-#include "hb-cairo-utils.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cairo-utils.hh"
 
-#include "hb-machinery.hh"
-#include "hb-utf.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-utf.hh"
 
 
 /**
@@ -47,196 +47,196 @@
  * HarfBuzz supports using cairo for rendering.
  **/
 
-static void
-hb_cairo_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		  void *draw_data,
-		  hb_draw_state_t *st HB_UNUSED,
-		  float to_x, float to_y,
-		  void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		  ਖਾਲੀ *draw_ਅੰਕੜੇ,
+		  hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!c->spend (HB_BUDGET_1)))
+    ਵਾਪਸ;
 
-  cairo_move_to (c->cr, (double) to_x, (double) to_y);
+  cairo_move_ਮੰਜ਼ਿਲ (c->cr, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_cairo_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		  void *draw_data,
-		  hb_draw_state_t *st HB_UNUSED,
-		  float to_x, float to_y,
-		  void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		  ਖਾਲੀ *draw_ਅੰਕੜੇ,
+		  hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!c->spend (HB_BUDGET_1)))
+    ਵਾਪਸ;
 
-  cairo_line_to (c->cr, (double) to_x, (double) to_y);
+  cairo_ਸਤਰ_ਮੰਜ਼ਿਲ (c->cr, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_cairo_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		   void *draw_data,
-		   hb_draw_state_t *st HB_UNUSED,
-		   float control1_x, float control1_y,
-		   float control2_x, float control2_y,
-		   float to_x, float to_y,
-		   void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		   ਖਾਲੀ *draw_ਅੰਕੜੇ,
+		   hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		   ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+		   ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+		   ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!c->spend (HB_BUDGET_1)))
+    ਵਾਪਸ;
 
-  cairo_curve_to (c->cr,
-                  (double) control1_x, (double) control1_y,
-                  (double) control2_x, (double) control2_y,
-                  (double) to_x, (double) to_y);
+  cairo_ਵਕਰ_ਮੰਜ਼ਿਲ (c->cr,
+                  (ਦੁੱਗਣਾ) control1_x, (ਦੁੱਗਣਾ) control1_y,
+                  (ਦੁੱਗਣਾ) control2_x, (ਦੁੱਗਣਾ) control2_y,
+                  (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_cairo_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		     void *draw_data,
-		     hb_draw_state_t *st HB_UNUSED,
-		     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_close_ਰਸਤਾ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *draw_ਅੰਕੜੇ,
+		     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!c->spend (HB_BUDGET_1)))
+    ਵਾਪਸ;
 
-  cairo_close_path (c->cr);
+  cairo_close_ਰਸਤਾ (c->cr);
 }
 
-static hb_bool_t
-hb_cairo_draw_set_budget (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *draw_data,
+ਸਥਿਰ hb_bool_t
+hb_cairo_draw_ਸੈੱਟ_budget (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *draw_ਅੰਕੜੇ,
 			  int64_t budget,
-			  void *user_data HB_UNUSED)
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) draw_data)->set_budget (budget);
+  ਵਾਪਸ ((hb_cairo_context_t *) draw_ਅੰਕੜੇ)->ਸੈੱਟ_budget (budget);
 }
 
-static int64_t
-hb_cairo_draw_get_budget (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *draw_data,
-			  void *user_data HB_UNUSED)
+ਸਥਿਰ int64_t
+hb_cairo_draw_get_budget (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *draw_ਅੰਕੜੇ,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) draw_data)->get_budget ();
+  ਵਾਪਸ ((hb_cairo_context_t *) draw_ਅੰਕੜੇ)->get_budget ();
 }
 
-static int64_t *
-hb_cairo_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				    void *draw_data,
-				    void *user_data HB_UNUSED)
+ਸਥਿਰ int64_t *
+hb_cairo_draw_get_budget_ਬਚਿਆ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				    ਖਾਲੀ *draw_ਅੰਕੜੇ,
+				    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) draw_data)->get_budget_remaining ();
+  ਵਾਪਸ ((hb_cairo_context_t *) draw_ਅੰਕੜੇ)->get_budget_ਬਚਿਆ ();
 }
 
-static inline void free_static_cairo_draw_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_cairo_draw_funcs ();
 
-static struct hb_cairo_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_cairo_draw_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_cairo_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_cairo_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_cairo_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_cairo_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_cairo_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_cairo_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_set_budget_func (funcs, hb_cairo_draw_set_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_func (funcs, hb_cairo_draw_get_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_cairo_draw_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, hb_cairo_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, hb_cairo_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, hb_cairo_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func (funcs, hb_cairo_close_ਰਸਤਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸੈੱਟ_budget_func (funcs, hb_cairo_draw_ਸੈੱਟ_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_func (funcs, hb_cairo_draw_get_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_cairo_draw_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_cairo_draw_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_cairo_draw_funcs;
 
-static inline
-void free_static_cairo_draw_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_cairo_draw_funcs ()
 {
   static_cairo_draw_funcs.free_instance ();
 }
 
-static hb_draw_funcs_t *
+ਸਥਿਰ hb_draw_funcs_t *
 hb_cairo_draw_get_funcs ()
 {
-  return static_cairo_draw_funcs.get_unconst ();
+  ਵਾਪਸ static_cairo_draw_funcs.get_unconst ();
 }
 
 
-#ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_FONT_FACE_ਸੈੱਟ_RENDER_COLOR_GLYPH_FUNC
 
-static void
-hb_cairo_push_transform (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			 void *paint_data,
-			 float xx, float yx,
-			 float xy, float yy,
-			 float dx, float dy,
-			 void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਧੱਕੋ_transform (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			 ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			 ਦਸ਼ਮਲਵ xx, ਦਸ਼ਮਲਵ yx,
+			 ਦਸ਼ਮਲਵ xy, ਦਸ਼ਮਲਵ yy,
+			 ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy,
+			 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-  cairo_matrix_t m;
+  cairo_ਮੈਟ੍ਰਿਕਸ_t m;
 
   cairo_save (cr);
-  cairo_matrix_init (&m, (double) xx, (double) yx,
-                         (double) xy, (double) yy,
-                         (double) dx, (double) dy);
+  cairo_ਮੈਟ੍ਰਿਕਸ_init (&m, (ਦੁੱਗਣਾ) xx, (ਦੁੱਗਣਾ) yx,
+                         (ਦੁੱਗਣਾ) xy, (ਦੁੱਗਣਾ) yy,
+                         (ਦੁੱਗਣਾ) dx, (ਦੁੱਗਣਾ) dy);
   cairo_transform (cr, &m);
 }
 
-static void
-hb_cairo_pop_transform (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		        void *paint_data,
-		        void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਕੱਢੋ_transform (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		        ਖਾਲੀ *paint_ਅੰਕੜੇ,
+		        ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_restore (cr);
 }
 
-static void
-hb_cairo_fill_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		     void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_fill_glyph (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *paint_ਅੰਕੜੇ,
 		     hb_codepoint_t glyph,
 		     hb_font_t *font,
 		     hb_bool_t use_foreground,
 		     hb_color_t color,
-		     void *user_data HB_UNUSED)
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_save (cr);
 
-  cairo_new_path (cr);
+  cairo_new_ਰਸਤਾ (cr);
   hb_font_draw_glyph (font, glyph, hb_cairo_draw_get_funcs (), c);
-  cairo_close_path (cr);
-  _hb_cairo_set_source_color (c, use_foreground, color);
+  cairo_close_ਰਸਤਾ (cr);
+  hb_cairo_ਸੈੱਟ_ਸਰੋਤ_color (c, use_foreground, color);
   cairo_fill (cr);
 
   cairo_restore (cr);
 }
 
-static hb_bool_t
-hb_cairo_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			    void *paint_data,
+ਸਥਿਰ hb_bool_t
+hb_cairo_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			    ਖਾਲੀ *paint_ਅੰਕੜੇ,
 			    hb_codepoint_t glyph,
 			    hb_font_t *font,
-			    void *user_data HB_UNUSED)
+			    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return true;
+  ਜੇ (unlikely (!c->spend (HB_BUDGET_1)))
+    ਵਾਪਸ ਸੱਚ;
 
   cairo_save (cr);
 
@@ -245,224 +245,224 @@ hb_cairo_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
   cairo_scale (cr, x_scale, -y_scale);
 
   cairo_glyph_t cairo_glyph = { glyph, 0, 0 };
-  cairo_set_scaled_font (cr, c->scaled_font);
-  cairo_set_font_size (cr, 1);
+  cairo_ਸੈੱਟ_scaled_font (cr, c->scaled_font);
+  cairo_ਸੈੱਟ_font_ਮਾਪ (cr, 1);
   cairo_show_glyphs (cr, &cairo_glyph, 1);
 
   cairo_restore (cr);
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static void
-hb_cairo_push_clip_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			  void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਧੱਕੋ_clip_glyph (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *paint_ਅੰਕੜੇ,
 			  hb_codepoint_t glyph,
 			  hb_font_t *font,
-			  void *user_data HB_UNUSED)
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_save (cr);
-  cairo_new_path (cr);
+  cairo_new_ਰਸਤਾ (cr);
 
   hb_font_draw_glyph (font, glyph, hb_cairo_draw_get_funcs (), c);
 
-  cairo_close_path (cr);
+  cairo_close_ਰਸਤਾ (cr);
   cairo_clip (cr);
 }
 
-static void
-hb_cairo_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			      void *paint_data,
-			      float xmin, float ymin, float xmax, float ymax,
-			      void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਧੱਕੋ_clip_rectangle (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			      ਦਸ਼ਮਲਵ xmin, ਦਸ਼ਮਲਵ ymin, ਦਸ਼ਮਲਵ xmax, ਦਸ਼ਮਲਵ ymax,
+			      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_save (cr);
   cairo_rectangle (cr,
-                   (double) xmin, (double) ymin,
-                   (double) (xmax - xmin), (double) (ymax - ymin));
+                   (ਦੁੱਗਣਾ) xmin, (ਦੁੱਗਣਾ) ymin,
+                   (ਦੁੱਗਣਾ) (xmax - xmin), (ਦੁੱਗਣਾ) (ymax - ymin));
   cairo_clip (cr);
 }
 
-static hb_draw_funcs_t *
-hb_cairo_push_clip_path_start (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			       void *paint_data,
-			       void **draw_data,
-			       void *user_data HB_UNUSED)
+ਸਥਿਰ hb_draw_funcs_t *
+hb_cairo_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			       ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			       ਖਾਲੀ **draw_ਅੰਕੜੇ,
+			       ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_save (cr);
-  cairo_new_path (cr);
-  *draw_data = c;
-  return hb_cairo_draw_get_funcs ();
+  cairo_new_ਰਸਤਾ (cr);
+  *draw_ਅੰਕੜੇ = c;
+  ਵਾਪਸ hb_cairo_draw_get_funcs ();
 }
 
-static void
-hb_cairo_push_clip_path_end (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-  cairo_close_path (cr);
+  cairo_close_ਰਸਤਾ (cr);
   cairo_clip (cr);
 }
 
-static void
-hb_cairo_pop_clip (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		   void *paint_data,
-		   void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਕੱਢੋ_clip (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		   ਖਾਲੀ *paint_ਅੰਕੜੇ,
+		   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_restore (cr);
 }
 
-static void
-hb_cairo_push_group (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		     void *paint_data,
-		     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਧੱਕੋ_ਸਮੂਹ (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
   cairo_save (cr);
-  cairo_push_group (cr);
+  cairo_ਧੱਕੋ_ਸਮੂਹ (cr);
 }
 
-static void
-hb_cairo_pop_group (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		    void *paint_data,
-		    hb_paint_composite_mode_t mode,
-		    void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਕੱਢੋ_ਸਮੂਹ (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		    ਖਾਲੀ *paint_ਅੰਕੜੇ,
+		    hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ,
+		    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-  cairo_pop_group_to_source (cr);
-  cairo_set_operator (cr, _hb_paint_composite_mode_to_cairo (mode));
+  cairo_ਕੱਢੋ_ਸਮੂਹ_ਮੰਜ਼ਿਲ_ਸਰੋਤ (cr);
+  cairo_ਸੈੱਟ_operator (cr, hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_ਮੰਜ਼ਿਲ_cairo (ਬਹੁਲਕ));
   cairo_paint (cr);
 
   cairo_restore (cr);
 }
 
-static void
-hb_cairo_paint_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		      void *paint_data,
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_paint_color (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		      ਖਾਲੀ *paint_ਅੰਕੜੇ,
 		      hb_bool_t use_foreground,
 		      hb_color_t color,
-		      void *user_data HB_UNUSED)
+		      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-  _hb_cairo_set_source_color (c, use_foreground, color);
+  hb_cairo_ਸੈੱਟ_ਸਰੋਤ_color (c, use_foreground, color);
   cairo_paint (cr);
 }
 
-static hb_bool_t
-hb_cairo_paint_image (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		      void *paint_data,
+ਸਥਿਰ hb_bool_t
+hb_cairo_paint_image (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+		      ਖਾਲੀ *paint_ਅੰਕੜੇ,
 		      hb_blob_t *blob,
-		      unsigned width,
-		      unsigned height,
-		      hb_tag_t format,
-		      float slant,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਉਚਾਈ,
+		      hb_ਟੈਗ_t format,
+		      ਦਸ਼ਮਲਵ slant,
 		      hb_glyph_extents_t *extents,
-		      void *user_data HB_UNUSED)
+		      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
 
-  return _hb_cairo_paint_glyph_image (c, blob, width, height, format, slant, extents);
+  ਵਾਪਸ _hb_cairo_paint_glyph_image (c, blob, ਚੌੜਾਈ, ਉਚਾਈ, format, slant, extents);
 }
 
-static void
-hb_cairo_paint_linear_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				void *paint_data,
-				hb_color_line_t *color_line,
-				float x0, float y0,
-				float x1, float y1,
-				float x2, float y2,
-				void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_paint_ਰੇਖਿਕ_gradient_2 (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+				ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				hb_color_ਸਤਰ_t *color_ਸਤਰ,
+				ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0,
+				ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1,
+				ਦਸ਼ਮਲਵ x2, ਦਸ਼ਮਲਵ y2,
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
 
-  _hb_cairo_paint_linear_gradient (c, color_line, x0, y0, x1, y1, x2, y2);
+  hb_cairo_paint_ਰੇਖਿਕ_gradient (c, color_ਸਤਰ, x0, y0, x1, y1, x2, y2);
 }
 
-static void
-hb_cairo_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				void *paint_data,
-				hb_color_line_t *color_line,
-				float x0, float y0, float r0,
-				float x1, float y1, float r1,
-				void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+				ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				hb_color_ਸਤਰ_t *color_ਸਤਰ,
+				ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0, ਦਸ਼ਮਲਵ r0,
+				ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1, ਦਸ਼ਮਲਵ r1,
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
 
-  _hb_cairo_paint_radial_gradient (c, color_line, x0, y0, r0, x1, y1, r1);
+  _hb_cairo_paint_radial_gradient (c, color_ਸਤਰ, x0, y0, r0, x1, y1, r1);
 }
 
-static void
-hb_cairo_paint_sweep_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			       void *paint_data,
-			       hb_color_line_t *color_line,
-			       float x0, float y0,
-			       float start_angle, float end_angle,
-			       void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_paint_sweep_gradient (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			       ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			       hb_color_ਸਤਰ_t *color_ਸਤਰ,
+			       ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0,
+			       ਦਸ਼ਮਲਵ ਸ਼ੁਰੂ_angle, ਦਸ਼ਮਲਵ ਸਿਰਾ_angle,
+			       ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
 
-  _hb_cairo_paint_sweep_gradient (c, color_line, x0, y0, start_angle, end_angle);
+  _hb_cairo_paint_sweep_gradient (c, color_ਸਤਰ, x0, y0, ਸ਼ੁਰੂ_angle, ਸਿਰਾ_angle);
 }
 
-static const cairo_user_data_key_t color_cache_key = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t color_cache_ਕੁੰਜੀ = {0};
 
-static void
-_hb_cairo_destroy_map (void *p)
+ਸਥਿਰ ਖਾਲੀ
+_hb_cairo_destroy_map (ਖਾਲੀ *p)
 {
   hb_map_destroy ((hb_map_t *) p);
 }
 
-static hb_bool_t
+ਸਥਿਰ hb_bool_t
 hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
-                                     void *paint_data,
-                                     unsigned int color_index,
+                                     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+                                     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ color_ਸੂਚਕਾਂਕ,
                                      hb_color_t *color,
-                                     void *user_data HB_UNUSED)
+                                     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-#ifdef HAVE_CAIRO_FONT_OPTIONS_GET_CUSTOM_PALETTE_COLOR
-  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_FONT_OPTIONS_GET_CUSTOM_PALETTE_COLOR
+  hb_cairo_context_t *c = (hb_cairo_context_t *) paint_ਅੰਕੜੇ;
   cairo_t *cr = c->cr;
 
-#define HB_DEADBEEF HB_TAG(0xDE,0xAD,0xBE,0xEF)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DEADBEEF HB_ਟੈਗ(0xDE,0xAD,0xBE,0xEF)
 
   hb_map_t *color_cache = c->color_cache;
   hb_codepoint_t *v;
-  if (likely (color_cache && color_cache->has (color_index, &v)))
+  ਜੇ (likely (color_cache && color_cache->has (color_ਸੂਚਕਾਂਕ, &v)))
   {
-    if (*v == HB_DEADBEEF)
-      return false;
+    ਜੇ (*v == HB_DEADBEEF)
+      ਵਾਪਸ ਝੂਠ;
     *color = *v;
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   cairo_font_options_t *options;
-  double red, green, blue, alpha;
+  ਦੁੱਗਣਾ red, green, blue, alpha;
 
   options = cairo_font_options_create ();
   cairo_get_font_options (cr, options);
-  if (CAIRO_STATUS_SUCCESS ==
-      cairo_font_options_get_custom_palette_color (options, color_index,
+  ਜੇ (CAIRO_ਸਥਿਤੀ_SUCCESS ==
+      cairo_font_options_get_custom_palette_color (options, color_ਸੂਚਕਾਂਕ,
                                                    &red, &green, &blue, &alpha))
   {
     cairo_font_options_destroy (options);
@@ -471,193 +471,193 @@ hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
 		       round (255 * red),
 		       round (255 * alpha));
 
-    if (likely (color_cache && *color != HB_DEADBEEF))
-      color_cache->set (color_index, *color);
+    ਜੇ (likely (color_cache && *color != HB_DEADBEEF))
+      color_cache->ਸੈੱਟ (color_ਸੂਚਕਾਂਕ, *color);
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
   cairo_font_options_destroy (options);
 
-  if (likely (color_cache))
-    color_cache->set (color_index, HB_DEADBEEF);
+  ਜੇ (likely (color_cache))
+    color_cache->ਸੈੱਟ (color_ਸੂਚਕਾਂਕ, HB_DEADBEEF);
 
-#undef HB_DEADBEEF
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_DEADBEEF
 
-#endif
+#ਜੇ_ਅੰਤ
 
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
 
-static hb_bool_t
-hb_cairo_paint_set_budget (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			   void *paint_data,
+ਸਥਿਰ hb_bool_t
+hb_cairo_paint_ਸੈੱਟ_budget (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			   ਖਾਲੀ *paint_ਅੰਕੜੇ,
 			   int64_t budget,
-			   void *user_data HB_UNUSED)
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) paint_data)->set_budget (budget);
+  ਵਾਪਸ ((hb_cairo_context_t *) paint_ਅੰਕੜੇ)->ਸੈੱਟ_budget (budget);
 }
 
-static int64_t
-hb_cairo_paint_get_budget (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+ਸਥਿਰ int64_t
+hb_cairo_paint_get_budget (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+			   ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) paint_data)->get_budget ();
+  ਵਾਪਸ ((hb_cairo_context_t *) paint_ਅੰਕੜੇ)->get_budget ();
 }
 
-static int64_t *
-hb_cairo_paint_get_budget_remaining (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				     void *paint_data,
-				     void *user_data HB_UNUSED)
+ਸਥਿਰ int64_t *
+hb_cairo_paint_get_budget_ਬਚਿਆ (hb_paint_funcs_t *pfuncs HB_ਅਣਵਰਤਿਆ,
+				     ਖਾਲੀ *paint_ਅੰਕੜੇ,
+				     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return ((hb_cairo_context_t *) paint_data)->get_budget_remaining ();
+  ਵਾਪਸ ((hb_cairo_context_t *) paint_ਅੰਕੜੇ)->get_budget_ਬਚਿਆ ();
 }
 
-static inline void free_static_cairo_paint_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_cairo_paint_funcs ();
 
-static struct hb_cairo_paint_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_cairo_paint_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_cairo_paint_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_cairo_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ਸਥਿਰ hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func (funcs, hb_cairo_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, hb_cairo_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_fill_glyph_func (funcs, hb_cairo_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_color_glyph_func (funcs, hb_cairo_paint_color_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_cairo_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_cairo_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, hb_cairo_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, hb_cairo_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_cairo_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_cairo_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_cairo_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, hb_cairo_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, hb_cairo_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, hb_cairo_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, hb_cairo_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, hb_cairo_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_custom_palette_color_func (funcs, hb_cairo_paint_custom_palette_color, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_cairo_paint_set_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_cairo_paint_get_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_cairo_paint_get_budget_remaining, nullptr, nullptr);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_transform_func (funcs, hb_cairo_ਧੱਕੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_transform_func (funcs, hb_cairo_ਕੱਢੋ_transform, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_fill_glyph_func (funcs, hb_cairo_fill_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_color_glyph_func (funcs, hb_cairo_paint_color_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_glyph_func (funcs, hb_cairo_ਧੱਕੋ_clip_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_rectangle_func (funcs, hb_cairo_ਧੱਕੋ_clip_rectangle, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ_func (funcs, hb_cairo_ਧੱਕੋ_clip_ਰਸਤਾ_ਸ਼ੁਰੂ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ_func (funcs, hb_cairo_ਧੱਕੋ_clip_ਰਸਤਾ_ਸਿਰਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_clip_func (funcs, hb_cairo_ਕੱਢੋ_clip, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਧੱਕੋ_ਸਮੂਹ_func (funcs, hb_cairo_ਧੱਕੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਕੱਢੋ_ਸਮੂਹ_func (funcs, hb_cairo_ਕੱਢੋ_ਸਮੂਹ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_color_func (funcs, hb_cairo_paint_color, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_image_func (funcs, hb_cairo_paint_image, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਰੇਖਿਕ_gradient_func (funcs, hb_cairo_paint_ਰੇਖਿਕ_gradient_2, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_radial_gradient_func (funcs, hb_cairo_paint_radial_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_sweep_gradient_func (funcs, hb_cairo_paint_sweep_gradient, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_custom_palette_color_func (funcs, hb_cairo_paint_custom_palette_color, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_ਸੈੱਟ_budget_func (funcs, hb_cairo_paint_ਸੈੱਟ_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_func (funcs, hb_cairo_paint_get_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_paint_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_cairo_paint_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_cairo_paint_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_cairo_paint_funcs;
 
-static inline
-void free_static_cairo_paint_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_cairo_paint_funcs ()
 {
   static_cairo_paint_funcs.free_instance ();
 }
 
-static hb_paint_funcs_t *
+ਸਥਿਰ hb_paint_funcs_t *
 hb_cairo_paint_get_funcs ()
 {
-  return static_cairo_paint_funcs.get_unconst ();
+  ਵਾਪਸ static_cairo_paint_funcs.get_unconst ();
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-static const cairo_user_data_key_t hb_cairo_face_user_data_key = {0};
-static const cairo_user_data_key_t hb_cairo_font_user_data_key = {0};
-static const cairo_user_data_key_t hb_cairo_font_init_func_user_data_key = {0};
-static const cairo_user_data_key_t hb_cairo_font_init_user_data_user_data_key = {0};
-static const cairo_user_data_key_t hb_cairo_scale_factor_user_data_key = {0};
-static const cairo_user_data_key_t hb_cairo_budget_user_data_key = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_face_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_font_init_func_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_font_init_user_ਅੰਕੜੇ_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_scale_ਗੁਣਕ_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t hb_cairo_budget_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
 
-static void hb_cairo_face_destroy (void *p) { hb_face_destroy ((hb_face_t *) p); }
-static void hb_cairo_font_destroy (void *p) { hb_font_destroy ((hb_font_t *) p); }
-static void
-hb_cairo_budget_destroy (void *p)
+ਸਥਿਰ ਖਾਲੀ hb_cairo_face_destroy (ਖਾਲੀ *p) { hb_face_destroy ((hb_face_t *) p); }
+ਸਥਿਰ ਖਾਲੀ hb_cairo_font_destroy (ਖਾਲੀ *p) { hb_font_destroy ((hb_font_t *) p); }
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_budget_destroy (ਖਾਲੀ *p)
 {
   hb_cairo_budget_t *budget = (hb_cairo_budget_t *) p;
   budget->~hb_cairo_budget_t ();
   hb_free (budget);
 }
 
-static cairo_status_t
+ਸਥਿਰ cairo_ਸਥਿਤੀ_t
 hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
-			   cairo_t              *cr HB_UNUSED,
+			   cairo_t              *cr HB_ਅਣਵਰਤਿਆ,
 			   cairo_font_extents_t *extents)
 {
   cairo_font_face_t *font_face = cairo_scaled_font_get_font_face (scaled_font);
 
-  hb_font_t *font = (hb_font_t *) cairo_font_face_get_user_data (font_face,
-								 &hb_cairo_font_user_data_key);
+  hb_font_t *font = (hb_font_t *) cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+								 &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 
-  if (!font)
+  ਜੇ (!font)
   {
-    hb_face_t *face = (hb_face_t *) cairo_font_face_get_user_data (font_face,
-								   &hb_cairo_face_user_data_key);
+    hb_face_t *face = (hb_face_t *) cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+								   &hb_cairo_face_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
     font = hb_font_create (face);
 
-#if !defined(HB_NO_VAR) && CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1,16,0)
+#ਜੇ !defined(HB_NO_VAR) && CAIRO_ਸੰਸਕਰਣ >= CAIRO_ਸੰਸਕਰਣ_ENCODE(1,16,0)
     cairo_font_options_t *font_options = cairo_font_options_create ();
 
     // Set variations
     cairo_scaled_font_get_font_options (scaled_font, font_options);
-    const char *variations = cairo_font_options_get_variations (font_options);
-    hb_vector_t<hb_variation_t> vars;
-    const char *p = variations;
-    while (p && *p)
+    ਅਚਲ ਅੱਖਰ *variations = cairo_font_options_get_variations (font_options);
+    hb_ਸਦਿਸ਼_t<hb_variation_t> vars;
+    ਅਚਲ ਅੱਖਰ *p = variations;
+    ਜਦੋਂ (p && *p)
     {
-      const char *end = strpbrk ((char *) p, ", ");
+      ਅਚਲ ਅੱਖਰ *ਸਿਰਾ = strpbrk ((ਅੱਖਰ *) p, ", ");
       hb_variation_t var;
-      if (hb_variation_from_string (p, end ? end - p : -1, &var))
+      ਜੇ (hb_variation_from_string (p, ਸਿਰਾ ? ਸਿਰਾ - p : -1, &var))
 	vars.push (var);
-      p = end ? end + 1 : nullptr;
+      p = ਸਿਰਾ ? ਸਿਰਾ + 1 : ਖਾਲੀ_ਸੂਚਕ;
     }
-    hb_font_set_variations (font, &vars[0], vars.length);
+    hb_font_ਸੈੱਟ_variations (font, &vars[0], vars.ਲੰਮਾਈ);
 
     cairo_font_options_destroy (font_options);
-#endif
+#ਜੇ_ਅੰਤ
 
     // Set scale; Note: should NOT set slant, or we'll double-slant.
-    unsigned scale_factor = hb_cairo_font_face_get_scale_factor (font_face);
-    if (scale_factor)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ scale_ਗੁਣਕ = hb_cairo_font_face_get_scale_ਗੁਣਕ (font_face);
+    ਜੇ (scale_ਗੁਣਕ)
     {
-      cairo_matrix_t font_matrix;
-      cairo_scaled_font_get_scale_matrix (scaled_font, &font_matrix);
-      hb_font_set_scale (font,
-			 hb_clamp_to<int32_t> (round (font_matrix.xx * scale_factor)),
-			 hb_clamp_to<int32_t> (round (font_matrix.yy * scale_factor)));
+      cairo_ਮੈਟ੍ਰਿਕਸ_t font_ਮੈਟ੍ਰਿਕਸ;
+      cairo_scaled_font_get_scale_ਮੈਟ੍ਰਿਕਸ (scaled_font, &font_ਮੈਟ੍ਰਿਕਸ);
+      hb_font_ਸੈੱਟ_scale (font,
+			 hb_clamp_ਮੰਜ਼ਿਲ<int32_t> (round (font_ਮੈਟ੍ਰਿਕਸ.xx * scale_ਗੁਣਕ)),
+			 hb_clamp_ਮੰਜ਼ਿਲ<int32_t> (round (font_ਮੈਟ੍ਰਿਕਸ.yy * scale_ਗੁਣਕ)));
     }
 
-    auto *init_func = (hb_cairo_font_init_func_t)
-		      cairo_font_face_get_user_data (font_face,
-						     &hb_cairo_font_init_func_user_data_key);
-    if (init_func)
+    ਸਵੈਚਾਲਿਤ *init_func = (hb_cairo_font_init_func_t)
+		      cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+						     &hb_cairo_font_init_func_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+    ਜੇ (init_func)
     {
-      void *user_data = cairo_font_face_get_user_data (font_face,
-						       &hb_cairo_font_init_user_data_user_data_key);
-      font = init_func (font, scaled_font, user_data);
+      ਖਾਲੀ *user_ਅੰਕੜੇ = cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+						       &hb_cairo_font_init_user_ਅੰਕੜੇ_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+      font = init_func (font, scaled_font, user_ਅੰਕੜੇ);
     }
 
     hb_font_make_immutable (font);
   }
 
-  cairo_scaled_font_set_user_data (scaled_font,
-				   &hb_cairo_font_user_data_key,
-				   (void *) hb_font_reference (font),
+  cairo_scaled_font_ਸੈੱਟ_user_ਅੰਕੜੇ (scaled_font,
+				   &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+				   (ਖਾਲੀ *) hb_font_reference (font),
 				   hb_cairo_font_destroy);
 
-  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) hb_malloc (sizeof (hb_cairo_budget_t));
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
-  new (budget) hb_cairo_budget_t ();
-  cairo_status_t status = cairo_scaled_font_set_user_data (scaled_font,
-						   &hb_cairo_budget_user_data_key,
+  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) hb_malloc (ਆਕਾਰ (hb_cairo_budget_t));
+  ਜੇ (unlikely (!budget))
+    ਵਾਪਸ CAIRO_ਸਥਿਤੀ_NO_ਸਮ੍ਰਿਤੀ;
+  ਨਵਾਂ (budget) hb_cairo_budget_t ();
+  cairo_ਸਥਿਤੀ_t ਸਥਿਤੀ = cairo_scaled_font_ਸੈੱਟ_user_ਅੰਕੜੇ (scaled_font,
+						   &hb_cairo_budget_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
 						   budget,
 						   hb_cairo_budget_destroy);
-  if (unlikely (status != CAIRO_STATUS_SUCCESS))
+  ਜੇ (unlikely (ਸਥਿਤੀ != CAIRO_ਸਥਿਤੀ_SUCCESS))
   {
     hb_cairo_budget_destroy (budget);
-    return status;
+    ਵਾਪਸ ਸਥਿਤੀ;
   }
 
   hb_position_t x_scale, y_scale;
@@ -666,70 +666,70 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
   hb_font_extents_t hb_extents;
   hb_font_get_h_extents (font, &hb_extents);
 
-  extents->ascent  = (double)  hb_extents.ascender  / y_scale;
-  extents->descent = -(double) hb_extents.descender / y_scale;
-  extents->height  = extents->ascent + extents->descent;
+  extents->ascent  = (ਦੁੱਗਣਾ)  hb_extents.ascender  / y_scale;
+  extents->descent = -(ਦੁੱਗਣਾ) hb_extents.descender / y_scale;
+  extents->ਉਚਾਈ  = extents->ascent + extents->descent;
 
-#ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_FONT_FACE_ਸੈੱਟ_RENDER_COLOR_GLYPH_FUNC
   hb_map_t *color_cache = hb_map_create ();
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_scaled_font_set_user_data (scaled_font,
-									 &color_cache_key,
+  ਜੇ (unlikely (CAIRO_ਸਥਿਤੀ_SUCCESS != cairo_scaled_font_ਸੈੱਟ_user_ਅੰਕੜੇ (scaled_font,
+									 &color_cache_ਕੁੰਜੀ,
 									 color_cache,
 									 _hb_cairo_destroy_map)))
     hb_map_destroy (color_cache);
-#endif
+#ਜੇ_ਅੰਤ
 
-  return CAIRO_STATUS_SUCCESS;
+  ਵਾਪਸ CAIRO_ਸਥਿਤੀ_SUCCESS;
 }
 
-static cairo_status_t
-hb_cairo_text_to_glyphs (cairo_scaled_font_t        *scaled_font,
-			 const char	            *utf8,
-			 int		             utf8_len,
+ਸਥਿਰ cairo_ਸਥਿਤੀ_t
+hb_cairo_ਪਾਠ_ਮੰਜ਼ਿਲ_glyphs (cairo_scaled_font_t        *scaled_font,
+			 ਅਚਲ ਅੱਖਰ	            *utf8,
+			 ਪੂਰਨ		             utf8_len,
 			 cairo_glyph_t	           **glyphs,
-			 int		            *num_glyphs,
-			 cairo_text_cluster_t      **clusters,
-			 int		            *num_clusters,
-			 cairo_text_cluster_flags_t *cluster_flags)
+			 ਪੂਰਨ		            *ਅੰਕ_glyphs,
+			 cairo_ਪਾਠ_cluster_t      **clusters,
+			 ਪੂਰਨ		            *ਅੰਕ_clusters,
+			 cairo_ਪਾਠ_cluster_flags_t *cluster_flags)
 {
-  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font,
-								   &hb_cairo_font_user_data_key);
+  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font,
+								   &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 
-  hb_buffer_t *buffer = hb_buffer_create ();
-  hb_buffer_add_utf8 (buffer, utf8, utf8_len, 0, utf8_len);
-  hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, nullptr, 0);
+  hb_ਬਫਰ_t *ਬਫਰ = hb_ਬਫਰ_create ();
+  hb_ਬਫਰ_ਜੋੜੋ_utf8 (ਬਫਰ, utf8, utf8_len, 0, utf8_len);
+  hb_ਬਫਰ_guess_segment_properties (ਬਫਰ);
+  hb_shape (font, ਬਫਰ, ਖਾਲੀ_ਸੂਚਕ, 0);
 
-  int x_scale, y_scale;
+  ਪੂਰਨ x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
 
-  hb_cairo_glyphs_from_buffer (buffer,
-			       true,
+  hb_cairo_glyphs_from_ਬਫਰ (ਬਫਰ,
+			       ਸੱਚ,
 			       x_scale, y_scale,
 			       0., 0.,
 			       utf8, utf8_len,
-			       glyphs, (unsigned *) num_glyphs,
-			       clusters, (unsigned *) num_clusters,
+			       glyphs, (ਬਿਨਾਨਿਸ਼ਾਨੀ *) ਅੰਕ_glyphs,
+			       clusters, (ਬਿਨਾਨਿਸ਼ਾਨੀ *) ਅੰਕ_clusters,
 			       cluster_flags);
 
-  hb_buffer_destroy (buffer);
+  hb_ਬਫਰ_destroy (ਬਫਰ);
 
-  return CAIRO_STATUS_SUCCESS;
+  ਵਾਪਸ CAIRO_ਸਥਿਤੀ_SUCCESS;
 }
 
-static cairo_status_t
+ਸਥਿਰ cairo_ਸਥਿਤੀ_t
 hb_cairo_render_glyph (cairo_scaled_font_t  *scaled_font,
-		       unsigned long         glyph,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ         glyph,
 		       cairo_t              *cr,
-		       cairo_text_extents_t *extents)
+		       cairo_ਪਾਠ_extents_t *extents)
 {
-  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font,
-								   &hb_cairo_font_user_data_key);
-  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_data (scaled_font,
-									     &hb_cairo_budget_user_data_key);
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
-  hb_cairo_context_t c {scaled_font, cr, nullptr, budget};
+  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font,
+								   &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font,
+									     &hb_cairo_budget_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+  ਜੇ (unlikely (!budget))
+    ਵਾਪਸ CAIRO_ਸਥਿਤੀ_NO_ਸਮ੍ਰਿਤੀ;
+  hb_cairo_context_t c {scaled_font, cr, ਖਾਲੀ_ਸੂਚਕ, budget};
 
   hb_position_t x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
@@ -737,36 +737,36 @@ hb_cairo_render_glyph (cairo_scaled_font_t  *scaled_font,
   cairo_scale (cr,
 	       +1. / (x_scale ? x_scale : 1),
 	       -1. / (y_scale ? y_scale : 1));
-  if (hb_font_draw_glyph_or_fail (font, glyph, hb_cairo_draw_get_funcs (), &c))
+  ਜੇ (hb_font_draw_glyph_or_fail (font, glyph, hb_cairo_draw_get_funcs (), &c))
     cairo_fill (cr);
 
   // If draw fails, we still return SUCCESS, as we want empty drawing, not
   // setting the cairo object into error.
-  return CAIRO_STATUS_SUCCESS;
+  ਵਾਪਸ CAIRO_ਸਥਿਤੀ_SUCCESS;
 }
 
-#ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_FONT_FACE_ਸੈੱਟ_RENDER_COLOR_GLYPH_FUNC
 
-static cairo_status_t
+ਸਥਿਰ cairo_ਸਥਿਤੀ_t
 hb_cairo_render_color_glyph (cairo_scaled_font_t  *scaled_font,
-			     unsigned long         glyph,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ         glyph,
 			     cairo_t              *cr,
-			     cairo_text_extents_t *extents)
+			     cairo_ਪਾਠ_extents_t *extents)
 {
-  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font,
-								   &hb_cairo_font_user_data_key);
-  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_data (scaled_font,
-									     &hb_cairo_budget_user_data_key);
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
+  hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font,
+								   &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+  hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font,
+									     &hb_cairo_budget_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
+  ਜੇ (unlikely (!budget))
+    ਵਾਪਸ CAIRO_ਸਥਿਤੀ_NO_ਸਮ੍ਰਿਤੀ;
 
-  unsigned int palette = 0;
-#ifdef CAIRO_COLOR_PALETTE_DEFAULT
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ palette = 0;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CAIRO_COLOR_PALETTE_DEFAULT
   cairo_font_options_t *options = cairo_font_options_create ();
   cairo_scaled_font_get_font_options (scaled_font, options);
   palette = cairo_font_options_get_color_palette (options);
   cairo_font_options_destroy (options);
-#endif
+#ਜੇ_ਅੰਤ
 
   hb_color_t color = HB_COLOR (0, 0, 0, 255);
   hb_position_t x_scale, y_scale;
@@ -777,7 +777,7 @@ hb_cairo_render_color_glyph (cairo_scaled_font_t  *scaled_font,
 
   hb_cairo_context_t c {scaled_font,
 			cr,
-			(hb_map_t *) cairo_scaled_font_get_user_data (scaled_font, &color_cache_key),
+			(hb_map_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font, &color_cache_ਕੁੰਜੀ),
 			budget};
 
   /* Synthesizing variant: mono glyphs render here too via the
@@ -786,31 +786,31 @@ hb_cairo_render_color_glyph (cairo_scaled_font_t  *scaled_font,
    * CAIRO_COLOR_MODE_NO_COLOR on the font options instead. */
   hb_font_paint_glyph (font, glyph, hb_cairo_paint_get_funcs (), &c, palette, color);
 
-  return CAIRO_STATUS_SUCCESS;
+  ਵਾਪਸ CAIRO_ਸਥਿਤੀ_SUCCESS;
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-static cairo_font_face_t *
+ਸਥਿਰ cairo_font_face_t *
 user_font_face_create (hb_face_t *face)
 {
   cairo_font_face_t *cairo_face;
 
   cairo_face = cairo_user_font_face_create ();
-  cairo_user_font_face_set_init_func (cairo_face, hb_cairo_init_scaled_font);
-  cairo_user_font_face_set_text_to_glyphs_func (cairo_face, hb_cairo_text_to_glyphs);
-  cairo_user_font_face_set_render_glyph_func (cairo_face, hb_cairo_render_glyph);
-#ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
-  cairo_user_font_face_set_render_color_glyph_func (cairo_face, hb_cairo_render_color_glyph);
-#endif
+  cairo_user_font_face_ਸੈੱਟ_init_func (cairo_face, hb_cairo_init_scaled_font);
+  cairo_user_font_face_ਸੈੱਟ_ਪਾਠ_ਮੰਜ਼ਿਲ_glyphs_func (cairo_face, hb_cairo_ਪਾਠ_ਮੰਜ਼ਿਲ_glyphs);
+  cairo_user_font_face_ਸੈੱਟ_render_glyph_func (cairo_face, hb_cairo_render_glyph);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_FONT_FACE_ਸੈੱਟ_RENDER_COLOR_GLYPH_FUNC
+  cairo_user_font_face_ਸੈੱਟ_render_color_glyph_func (cairo_face, hb_cairo_render_color_glyph);
+#ਜੇ_ਅੰਤ
 
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
-								       &hb_cairo_face_user_data_key,
-								       (void *) hb_face_reference (face),
+  ਜੇ (unlikely (CAIRO_ਸਥਿਤੀ_SUCCESS != cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (cairo_face,
+								       &hb_cairo_face_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+								       (ਖਾਲੀ *) hb_face_reference (face),
 								       hb_cairo_face_destroy)))
     hb_face_destroy (face);
 
-  return cairo_face;
+  ਵਾਪਸ cairo_face;
 }
 
 /**
@@ -832,16 +832,16 @@ hb_cairo_font_face_create_for_font (hb_font_t *font)
 {
   hb_font_make_immutable (font);
 
-  auto *hb_face = hb_font_get_face (font);
-  auto *cairo_face =  user_font_face_create (hb_face);
+  ਸਵੈਚਾਲਿਤ *hb_face = hb_font_get_face (font);
+  ਸਵੈਚਾਲਿਤ *cairo_face =  user_font_face_create (hb_face);
 
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
-								       &hb_cairo_font_user_data_key,
-								       (void *) hb_font_reference (font),
+  ਜੇ (unlikely (CAIRO_ਸਥਿਤੀ_SUCCESS != cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (cairo_face,
+								       &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+								       (ਖਾਲੀ *) hb_font_reference (font),
 								       hb_cairo_font_destroy)))
     hb_font_destroy (font);
 
-  return cairo_face;
+  ਵਾਪਸ cairo_face;
 }
 
 /**
@@ -857,8 +857,8 @@ hb_cairo_font_face_create_for_font (hb_font_t *font)
 hb_font_t *
 hb_cairo_font_face_get_font (cairo_font_face_t *font_face)
 {
-  return (hb_font_t *) cairo_font_face_get_user_data (font_face,
-						      &hb_cairo_font_user_data_key);
+  ਵਾਪਸ (hb_font_t *) cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+						      &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 }
 
 /**
@@ -877,7 +877,7 @@ hb_cairo_font_face_create_for_face (hb_face_t *face)
 {
   hb_face_make_immutable (face);
 
-  return user_font_face_create (face);
+  ਵਾਪਸ user_font_face_create (face);
 }
 
 /**
@@ -893,8 +893,8 @@ hb_cairo_font_face_create_for_face (hb_face_t *face)
 hb_face_t *
 hb_cairo_font_face_get_face (cairo_font_face_t *font_face)
 {
-  return (hb_face_t *) cairo_font_face_get_user_data (font_face,
-						      &hb_cairo_face_user_data_key);
+  ਵਾਪਸ (hb_face_t *) cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+						      &hb_cairo_face_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 }
 
 /**
@@ -910,26 +910,26 @@ hb_cairo_font_face_get_face (cairo_font_face_t *font_face)
  *
  * Since: 7.0.0
  */
-void
-hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
+ਖਾਲੀ
+hb_cairo_font_face_ਸੈੱਟ_font_init_func (cairo_font_face_t *font_face,
 				       hb_cairo_font_init_func_t func,
-				       void *user_data,
+				       ਖਾਲੀ *user_ਅੰਕੜੇ,
 				       hb_destroy_func_t destroy)
 {
-  cairo_font_face_set_user_data (font_face,
-				 &hb_cairo_font_init_func_user_data_key,
-				 (void *) func,
-				 nullptr);
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (font_face,
-								       &hb_cairo_font_init_user_data_user_data_key,
-								       (void *) user_data,
+  cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (font_face,
+				 &hb_cairo_font_init_func_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+				 (ਖਾਲੀ *) func,
+				 ਖਾਲੀ_ਸੂਚਕ);
+  ਜੇ (unlikely (CAIRO_ਸਥਿਤੀ_SUCCESS != cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (font_face,
+								       &hb_cairo_font_init_user_ਅੰਕੜੇ_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+								       (ਖਾਲੀ *) user_ਅੰਕੜੇ,
 								       destroy)) && destroy)
   {
-    destroy (user_data);
-    cairo_font_face_set_user_data (font_face,
-				   &hb_cairo_font_init_func_user_data_key,
-				   nullptr,
-				   nullptr);
+    destroy (user_ਅੰਕੜੇ);
+    cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (font_face,
+				   &hb_cairo_font_init_func_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+				   ਖਾਲੀ_ਸੂਚਕ,
+				   ਖਾਲੀ_ਸੂਚਕ);
   }
 }
 
@@ -946,7 +946,7 @@ hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
 hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font)
 {
-  return (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font, &hb_cairo_font_user_data_key);
+  ਵਾਪਸ (hb_font_t *) cairo_scaled_font_get_user_ਅੰਕੜੇ (scaled_font, &hb_cairo_font_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 }
 
 
@@ -991,14 +991,14 @@ hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font)
  *
  * Since: 7.0.0
  */
-void
-hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor)
+ਖਾਲੀ
+hb_cairo_font_face_ਸੈੱਟ_scale_ਗੁਣਕ (cairo_font_face_t *font_face,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ scale_ਗੁਣਕ)
 {
-  cairo_font_face_set_user_data (font_face,
-				 &hb_cairo_scale_factor_user_data_key,
-				 (void *) (uintptr_t) scale_factor,
-				 nullptr);
+  cairo_font_face_ਸੈੱਟ_user_ਅੰਕੜੇ (font_face,
+				 &hb_cairo_scale_ਗੁਣਕ_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
+				 (ਖਾਲੀ *) (uintptr_t) scale_ਗੁਣਕ,
+				 ਖਾਲੀ_ਸੂਚਕ);
 }
 
 /**
@@ -1012,12 +1012,12 @@ hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
  *
  * Since: 7.0.0
  */
-unsigned int
-hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_cairo_font_face_get_scale_ਗੁਣਕ (cairo_font_face_t *font_face)
 {
-  return (unsigned int) (uintptr_t)
-	 cairo_font_face_get_user_data (font_face,
-					&hb_cairo_scale_factor_user_data_key);
+  ਵਾਪਸ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (uintptr_t)
+	 cairo_font_face_get_user_ਅੰਕੜੇ (font_face,
+					&hb_cairo_scale_ਗੁਣਕ_user_ਅੰਕੜੇ_ਕੁੰਜੀ);
 }
 
 /**
@@ -1074,113 +1074,113 @@ hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face)
  *
  * Since: 7.0.0
  */
-void
-hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
+ਖਾਲੀ
+hb_cairo_glyphs_from_ਬਫਰ (hb_ਬਫਰ_t *ਬਫਰ,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     ਦੁੱਗਣਾ x_scale_ਗੁਣਕ,
+			     ਦੁੱਗਣਾ y_scale_ਗੁਣਕ,
+			     ਦੁੱਗਣਾ x,
+			     ਦੁੱਗਣਾ y,
+			     ਅਚਲ ਅੱਖਰ *utf8,
+			     ਪੂਰਨ utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
-			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
-			     cairo_text_cluster_flags_t *cluster_flags)
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅੰਕ_glyphs,
+			     cairo_ਪਾਠ_cluster_t **clusters,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅੰਕ_clusters,
+			     cairo_ਪਾਠ_cluster_flags_t *cluster_flags)
 {
-  if (utf8 && utf8_len < 0)
-    utf8_len = strlen (utf8);
+  ਜੇ (utf8 && utf8_len < 0)
+    utf8_len = ਲੜੀ_ਲੰਬਾਈ (utf8);
 
-  unsigned orig_num_glyphs = *num_glyphs;
-  *num_glyphs = hb_buffer_get_length (buffer);
-  hb_glyph_info_t *hb_glyph = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *hb_position = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (orig_num_glyphs < *num_glyphs + 1)
-    *glyphs = cairo_glyph_allocate (*num_glyphs + 1);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ orig_ਅੰਕ_glyphs = *ਅੰਕ_glyphs;
+  *ਅੰਕ_glyphs = hb_ਬਫਰ_get_ਲੰਮਾਈ (ਬਫਰ);
+  hb_glyph_info_t *hb_glyph = hb_ਬਫਰ_get_glyph_infos (ਬਫਰ, ਖਾਲੀ_ਸੂਚਕ);
+  hb_glyph_position_t *hb_position = hb_ਬਫਰ_get_glyph_positions (ਬਫਰ, ਖਾਲੀ_ਸੂਚਕ);
+  ਜੇ (orig_ਅੰਕ_glyphs < *ਅੰਕ_glyphs + 1)
+    *glyphs = cairo_glyph_allocate (*ਅੰਕ_glyphs + 1);
 
-  if (clusters && utf8)
+  ਜੇ (clusters && utf8)
   {
-    unsigned orig_num_clusters = *num_clusters;
-    *num_clusters = *num_glyphs ? 1 : 0;
-    for (unsigned int i = 1; i < *num_glyphs; i++)
-      if (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
-	(*num_clusters)++;
-    if (orig_num_clusters < *num_clusters)
-      *clusters = cairo_text_cluster_allocate (*num_clusters);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ orig_ਅੰਕ_clusters = *ਅੰਕ_clusters;
+    *ਅੰਕ_clusters = *ਅੰਕ_glyphs ? 1 : 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 1; i < *ਅੰਕ_glyphs; i++)
+      ਜੇ (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
+	(*ਅੰਕ_clusters)++;
+    ਜੇ (orig_ਅੰਕ_clusters < *ਅੰਕ_clusters)
+      *clusters = cairo_ਪਾਠ_cluster_allocate (*ਅੰਕ_clusters);
   }
 
-  double x_scale = x_scale_factor ? 1. / x_scale_factor : 0.;
-  double y_scale = y_scale_factor ? 1. / y_scale_factor : 0.;
-  double hx = 0, hy = 0;
-  int i;
-  for (i = 0; i < (int) *num_glyphs; i++)
+  ਦੁੱਗਣਾ x_scale = x_scale_ਗੁਣਕ ? 1. / x_scale_ਗੁਣਕ : 0.;
+  ਦੁੱਗਣਾ y_scale = y_scale_ਗੁਣਕ ? 1. / y_scale_ਗੁਣਕ : 0.;
+  ਦੁੱਗਣਾ hx = 0, hy = 0;
+  ਪੂਰਨ i;
+  ਲਈ (i = 0; i < (ਪੂਰਨ) *ਅੰਕ_glyphs; i++)
   {
-    (*glyphs)[i].index = hb_glyph[i].codepoint;
-    (*glyphs)[i].x = x + ((double) hb_position->x_offset + hx) * x_scale;
-    (*glyphs)[i].y = y + (-(double) hb_position->y_offset + hy) * y_scale;
+    (*glyphs)[i].ਸੂਚਕਾਂਕ_2 = hb_glyph[i].codepoint;
+    (*glyphs)[i].x = x + ((ਦੁੱਗਣਾ) hb_position->x_ਵਿੱਥ_2 + hx) * x_scale;
+    (*glyphs)[i].y = y + (-(ਦੁੱਗਣਾ) hb_position->y_ਵਿੱਥ_2 + hy) * y_scale;
     hx +=  hb_position->x_advance;
     hy -= hb_position->y_advance;
 
     hb_position++;
   }
-  (*glyphs)[i].index = -1;
+  (*glyphs)[i].ਸੂਚਕਾਂਕ_2 = -1;
   (*glyphs)[i].x = round (hx * x_scale);
   (*glyphs)[i].y = round (hy * y_scale);
 
-  if (clusters && *num_clusters && utf8)
+  ਜੇ (clusters && *ਅੰਕ_clusters && utf8)
   {
-    hb_memset ((void *) *clusters, 0, *num_clusters * sizeof ((*clusters)[0]));
-    hb_bool_t backward = HB_DIRECTION_IS_BACKWARD (hb_buffer_get_direction (buffer));
-    *cluster_flags = backward ? CAIRO_TEXT_CLUSTER_FLAG_BACKWARD : (cairo_text_cluster_flags_t) 0;
-    unsigned int cluster = 0;
-    const char *start = utf8, *end;
-    (*clusters)[cluster].num_glyphs++;
-    if (backward)
+    hb_memset ((ਖਾਲੀ *) *clusters, 0, *ਅੰਕ_clusters * ਆਕਾਰ ((*clusters)[0]));
+    hb_bool_t backward = HB_DIRECTION_IS_BACKWARD (hb_ਬਫਰ_get_direction (ਬਫਰ));
+    *cluster_flags = backward ? CAIRO_ਪਾਠ_CLUSTER_FLAG_BACKWARD : (cairo_ਪਾਠ_cluster_flags_t) 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster = 0;
+    ਅਚਲ ਅੱਖਰ *ਸ਼ੁਰੂ = utf8, *ਸਿਰਾ;
+    (*clusters)[cluster].ਅੰਕ_glyphs++;
+    ਜੇ (backward)
     {
-      for (i = *num_glyphs - 2; i >= 0; i--)
+      ਲਈ (i = *ਅੰਕ_glyphs - 2; i >= 0; i--)
       {
-	if (hb_glyph[i].cluster != hb_glyph[i+1].cluster)
+	ਜੇ (hb_glyph[i].cluster != hb_glyph[i+1].cluster)
 	{
-	  assert (hb_glyph[i].cluster > hb_glyph[i+1].cluster);
-	  if (utf8_clusters)
-	    end = start + hb_glyph[i].cluster - hb_glyph[i+1].cluster;
-	  else
-	    end = (const char *) hb_utf_offset_to_pointer<hb_utf8_t> ((const uint8_t *) start,
-								      (const uint8_t *) utf8, utf8_len,
-								      (signed) (hb_glyph[i].cluster - hb_glyph[i+1].cluster));
-	  (*clusters)[cluster].num_bytes = end - start;
-	  start = end;
+	  ਪ੍ਰਤਿਜ੍ਞਾ (hb_glyph[i].cluster > hb_glyph[i+1].cluster);
+	  ਜੇ (utf8_clusters)
+	    ਸਿਰਾ = ਸ਼ੁਰੂ + hb_glyph[i].cluster - hb_glyph[i+1].cluster;
+	  ਨਹੀਂਤਾਂ
+	    ਸਿਰਾ = (ਅਚਲ ਅੱਖਰ *) hb_utf_ਵਿੱਥ_ਮੰਜ਼ਿਲ_ਸੂਚਕ<hb_utf8_t> ((ਅਚਲ uint8_t *) ਸ਼ੁਰੂ,
+								      (ਅਚਲ uint8_t *) utf8, utf8_len,
+								      (ਨਿਸ਼ਾਨੀਵਾਲਾ) (hb_glyph[i].cluster - hb_glyph[i+1].cluster));
+	  (*clusters)[cluster].ਅੰਕ_ਬਾਈਟਾਂ = ਸਿਰਾ - ਸ਼ੁਰੂ;
+	  ਸ਼ੁਰੂ = ਸਿਰਾ;
 	  cluster++;
 	}
-	(*clusters)[cluster].num_glyphs++;
+	(*clusters)[cluster].ਅੰਕ_glyphs++;
       }
-      (*clusters)[cluster].num_bytes = utf8 + utf8_len - start;
+      (*clusters)[cluster].ਅੰਕ_ਬਾਈਟਾਂ = utf8 + utf8_len - ਸ਼ੁਰੂ;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      for (i = 1; i < (int) *num_glyphs; i++)
+      ਲਈ (i = 1; i < (ਪੂਰਨ) *ਅੰਕ_glyphs; i++)
       {
-	if (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
+	ਜੇ (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
 	{
-	  assert (hb_glyph[i].cluster > hb_glyph[i-1].cluster);
-	  if (utf8_clusters)
-	    end = start + hb_glyph[i].cluster - hb_glyph[i-1].cluster;
-	  else
-	    end = (const char *) hb_utf_offset_to_pointer<hb_utf8_t> ((const uint8_t *) start,
-								      (const uint8_t *) utf8, utf8_len,
-								      (signed) (hb_glyph[i].cluster - hb_glyph[i-1].cluster));
-	  (*clusters)[cluster].num_bytes = end - start;
-	  start = end;
+	  ਪ੍ਰਤਿਜ੍ਞਾ (hb_glyph[i].cluster > hb_glyph[i-1].cluster);
+	  ਜੇ (utf8_clusters)
+	    ਸਿਰਾ = ਸ਼ੁਰੂ + hb_glyph[i].cluster - hb_glyph[i-1].cluster;
+	  ਨਹੀਂਤਾਂ
+	    ਸਿਰਾ = (ਅਚਲ ਅੱਖਰ *) hb_utf_ਵਿੱਥ_ਮੰਜ਼ਿਲ_ਸੂਚਕ<hb_utf8_t> ((ਅਚਲ uint8_t *) ਸ਼ੁਰੂ,
+								      (ਅਚਲ uint8_t *) utf8, utf8_len,
+								      (ਨਿਸ਼ਾਨੀਵਾਲਾ) (hb_glyph[i].cluster - hb_glyph[i-1].cluster));
+	  (*clusters)[cluster].ਅੰਕ_ਬਾਈਟਾਂ = ਸਿਰਾ - ਸ਼ੁਰੂ;
+	  ਸ਼ੁਰੂ = ਸਿਰਾ;
 	  cluster++;
 	}
-	(*clusters)[cluster].num_glyphs++;
+	(*clusters)[cluster].ਅੰਕ_glyphs++;
       }
-      (*clusters)[cluster].num_bytes = utf8 + utf8_len - start;
+      (*clusters)[cluster].ਅੰਕ_ਬਾਈਟਾਂ = utf8 + utf8_len - ਸ਼ੁਰੂ;
     }
   }
-  else if (num_clusters)
-    *num_clusters = 0;
+  ਨਹੀਂਤਾਂ ਜੇ (ਅੰਕ_clusters)
+    *ਅੰਕ_clusters = 0;
 }
 
-#endif
+#ਜੇ_ਅੰਤ

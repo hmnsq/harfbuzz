@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_SUBSET_CFF
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff-common.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff2-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-cff-common.hh"
 
 /* Disable FDSelect format 0 for compatibility with fonttools which doesn't seem choose it.
  * Rarely any/much smaller than format 3 anyway. */
-#define CFF_SERIALIZE_FDSELECT_0  0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ CFF_SERIALIZE_FDSELECT_0  0
 
-using namespace CFF;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ CFF;
 
 
 /* Determine an optimal FDSelect format according to a provided plan.
@@ -45,192 +45,192 @@ using namespace CFF;
  * along with a font index remapping table
  */
 
-bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			     unsigned int fdCount,
-			     const FDSelect &src, /* IN */
-			     unsigned int src_num_glyphs,
-			     unsigned int &subset_fd_count /* OUT */,
-			     unsigned int &subset_fdselect_size /* OUT */,
-			     unsigned int &subset_fdselect_format /* OUT */,
-			     hb_vector_t<code_pair_t> &fdselect_ranges /* OUT */,
-			     hb_inc_bimap_t &fdmap /* OUT */)
+ਤਾਰਕਿਕ
+hb_plan_subset_cff_fdselect (ਅਚਲ hb_subset_plan_t *plan,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd_ਗਿਣਤੀ,
+			     ਅਚਲ FDSelect &src, /*ਵਿੱਚ*/
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ src_ਅੰਕ_glyphs,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ &subset_fd_ਗਿਣਤੀ /*ਬਾਹਰਲਾ*/,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ &subset_fdselect_ਮਾਪ /*ਬਾਹਰਲਾ*/,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ &subset_fdselect_format /*ਬਾਹਰਲਾ*/,
+			     hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t> &fdselect_ranges /*ਬਾਹਰਲਾ*/,
+			     hb_inc_bimap_t &fdmap /*ਬਾਹਰਲਾ*/)
 {
-  subset_fd_count = 0;
-  subset_fdselect_size = 0;
+  subset_fd_ਗਿਣਤੀ = 0;
+  subset_fdselect_ਮਾਪ = 0;
   subset_fdselect_format = 0;
-  unsigned int num_ranges = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ranges = 0;
 
-  unsigned int subset_num_glyphs = plan->num_output_glyphs ();
-  if (subset_num_glyphs == 0)
-    return true;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ subset_ਅੰਕ_glyphs = plan->ਅੰਕ_output_glyphs ();
+  ਜੇ (subset_ਅੰਕ_glyphs == 0)
+    ਵਾਪਸ ਸੱਚ;
 
   {
     /* use hb_set to determine the subset of font dicts */
-    hb_set_t set;
-    hb_codepoint_t prev_fd = CFF_UNDEF_CODE;
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    auto _ = *it;
-    for (hb_codepoint_t gid = 0; gid < subset_num_glyphs; gid++)
+    hb_ਸੈੱਟ_t ਸੈੱਟ;
+    hb_codepoint_t prev_fd = CFF_UNDEF_ਕੋਡ;
+    ਸਵੈਚਾਲਿਤ it = hb_iter (plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+    ਸਵੈਚਾਲਿਤ _ = *it;
+    ਲਈ (hb_codepoint_t gid = 0; gid < subset_ਅੰਕ_glyphs; gid++)
     {
       hb_codepoint_t old_glyph;
-      if (gid == _.first)
+      ਜੇ (gid == _.ਪਹਿਲਾ)
       {
 	old_glyph = _.second;
 	_ = *++it;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
 	/* fonttools retains FDSelect & font dicts for missing glyphs. do the same */
 	old_glyph = gid;
       }
       /* FDSelect may only cover the CharStrings glyphs; see subset_get_fd (). */
-      hb_pair_t<unsigned, hb_codepoint_t> fd_range =
-	likely (old_glyph < src_num_glyphs) ?
+      hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> fd_range =
+	likely (old_glyph < src_ਅੰਕ_glyphs) ?
 	src.get_fd_range (old_glyph) :
-	hb_pair_t<unsigned, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
-      if (old_glyph < src_num_glyphs)
-	fd_range.second = hb_min (fd_range.second, src_num_glyphs);
-      unsigned fd = fd_range.first;
+	hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
+      ਜੇ (old_glyph < src_ਅੰਕ_glyphs)
+	fd_range.second = hb_min (fd_range.second, src_ਅੰਕ_glyphs);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ fd = fd_range.ਪਹਿਲਾ;
 
-      if (fd != prev_fd)
+      ਜੇ (fd != prev_fd)
       {
-	set.add (fd);
-	num_ranges++;
+	ਸੈੱਟ.ਜੋੜੋ (fd);
+	ਅੰਕ_ranges++;
 	prev_fd = fd;
-	fdselect_ranges.push (code_pair_t { fd, gid });
+	fdselect_ranges.push (ਕੋਡ_pair_t { fd, gid });
 
-	if (gid == old_glyph)
-	  gid = hb_min (_.first - 1, fd_range.second - 1);
+	ਜੇ (gid == old_glyph)
+	  gid = hb_min (_.ਪਹਿਲਾ - 1, fd_range.second - 1);
       }
     }
 
-    subset_fd_count = set.get_population ();
-    if (subset_fd_count == fdCount)
+    subset_fd_ਗਿਣਤੀ = ਸੈੱਟ.get_population ();
+    ਜੇ (subset_fd_ਗਿਣਤੀ == fd_ਗਿਣਤੀ)
     {
       /* all font dicts belong to the subset. no need to subset FDSelect & FDArray */
-      fdmap.identity (fdCount);
+      fdmap.ਪਛਾਣ_ਤੱਤ (fd_ਗਿਣਤੀ);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       /* create a fdmap */
       fdmap.reset ();
 
-      hb_codepoint_t fd = CFF_UNDEF_CODE;
-      while (set.next (&fd))
-	fdmap.add (fd);
-      if (unlikely (fdmap.get_population () != subset_fd_count))
-	return false;
+      hb_codepoint_t fd = CFF_UNDEF_ਕੋਡ;
+      ਜਦੋਂ (ਸੈੱਟ.next (&fd))
+	fdmap.ਜੋੜੋ (fd);
+      ਜੇ (unlikely (fdmap.get_population () != subset_fd_ਗਿਣਤੀ))
+	ਵਾਪਸ ਝੂਠ;
     }
 
     /* update each font dict index stored as "code" in fdselect_ranges */
-    for (unsigned int i = 0; i < fdselect_ranges.length; i++)
-      fdselect_ranges[i].code = fdmap[fdselect_ranges[i].code];
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < fdselect_ranges.ਲੰਮਾਈ; i++)
+      fdselect_ranges[i].ਕੋਡ = fdmap[fdselect_ranges[i].ਕੋਡ];
   }
 
   /* determine which FDSelect format is most compact */
-  if (subset_fd_count > 0xFF)
+  ਜੇ (subset_fd_ਗਿਣਤੀ > 0xFF)
   {
-    if (unlikely (src.format != 4))
-      return false;
+    ਜੇ (unlikely (src.format != 4))
+      ਵਾਪਸ ਝੂਠ;
     subset_fdselect_format = 4;
-    subset_fdselect_size = FDSelect::min_size + FDSelect4::min_size + FDSelect4_Range::static_size * num_ranges + HBUINT32::static_size;
+    subset_fdselect_ਮਾਪ = FDSelect::min_ਮਾਪ + FDSelect4::min_ਮਾਪ + FDSelect4_Range::static_ਮਾਪ * ਅੰਕ_ranges + HBUINT32::static_ਮਾਪ;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-#if CFF_SERIALIZE_FDSELECT_0
-    unsigned int format0_size = FDSelect::min_size + FDSelect0::min_size + HBUINT8::static_size * subset_num_glyphs;
-#endif
-    unsigned int format3_size = FDSelect::min_size + FDSelect3::min_size + FDSelect3_Range::static_size * num_ranges + HBUINT16::static_size;
+#ਜੇ CFF_SERIALIZE_FDSELECT_0
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ format0_ਮਾਪ = FDSelect::min_ਮਾਪ + FDSelect0::min_ਮਾਪ + HBUINT8::static_ਮਾਪ * subset_ਅੰਕ_glyphs;
+#ਜੇ_ਅੰਤ
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ format3_ਮਾਪ = FDSelect::min_ਮਾਪ + FDSelect3::min_ਮਾਪ + FDSelect3_Range::static_ਮਾਪ * ਅੰਕ_ranges + HBUINT16::static_ਮਾਪ;
 
-#if CFF_SERIALIZE_FDSELECT_0
-    if (format0_size <= format3_size)
+#ਜੇ CFF_SERIALIZE_FDSELECT_0
+    ਜੇ (format0_ਮਾਪ <= format3_ਮਾਪ)
     {
       // subset_fdselect_format = 0;
-      subset_fdselect_size = format0_size;
+      subset_fdselect_ਮਾਪ = format0_ਮਾਪ;
     }
-    else
-#endif
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
     {
       subset_fdselect_format = 3;
-      subset_fdselect_size = format3_size;
+      subset_fdselect_ਮਾਪ = format3_ਮਾਪ;
     }
   }
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-template <typename FDSELECT3_4>
-static inline bool
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ FDSELECT3_4>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
 serialize_fdselect_3_4 (hb_serialize_context_t *c,
-			const unsigned int num_glyphs,
-			const FDSelect &src,
-			unsigned int size,
-			const hb_vector_t<code_pair_t> &fdselect_ranges)
+			ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs,
+			ਅਚਲ FDSelect &src,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ,
+			ਅਚਲ hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
-  FDSELECT3_4 *p = c->allocate_size<FDSELECT3_4> (size);
-  if (unlikely (!p)) return_trace (false);
-  p->nRanges () = fdselect_ranges.length;
-  for (unsigned int i = 0; i < fdselect_ranges.length; i++)
+  TRACE_SERIALIZE (ਇਹ);
+  FDSELECT3_4 *p = c->allocate_ਮਾਪ<FDSELECT3_4> (ਮਾਪ);
+  ਜੇ (unlikely (!p)) return_trace (ਝੂਠ);
+  p->nRanges () = fdselect_ranges.ਲੰਮਾਈ;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < fdselect_ranges.ਲੰਮਾਈ; i++)
   {
-    p->ranges[i].first = fdselect_ranges[i].glyph;
-    p->ranges[i].fd = fdselect_ranges[i].code;
+    p->ranges[i].ਪਹਿਲਾ = fdselect_ranges[i].glyph;
+    p->ranges[i].fd = fdselect_ranges[i].ਕੋਡ;
   }
-  p->sentinel () = num_glyphs;
-  return_trace (true);
+  p->sentinel () = ਅੰਕ_glyphs;
+  return_trace (ਸੱਚ);
 }
 
 /* Serialize a subset FDSelect format planned above. */
-bool
+ਤਾਰਕਿਕ
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			   const unsigned int num_glyphs,
-			   const FDSelect &src,
-			   unsigned int fd_count,
-			   unsigned int fdselect_format,
-			   unsigned int size,
-			   const hb_vector_t<code_pair_t> &fdselect_ranges)
+			   ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs,
+			   ਅਚਲ FDSelect &src,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd_ਗਿਣਤੀ_2,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fdselect_format,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ,
+			   ਅਚਲ hb_ਸਦਿਸ਼_t<ਕੋਡ_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
+  TRACE_SERIALIZE (ਇਹ);
   FDSelect *p = c->allocate_min<FDSelect> ();
-  if (unlikely (!p)) return_trace (false);
+  ਜੇ (unlikely (!p)) return_trace (ਝੂਠ);
   p->format = fdselect_format;
-  size -= FDSelect::min_size;
+  ਮਾਪ -= FDSelect::min_ਮਾਪ;
 
-  switch (fdselect_format)
+  ਚੋਣ (fdselect_format)
   {
-#if CFF_SERIALIZE_FDSELECT_0
-  case 0:
+#ਜੇ CFF_SERIALIZE_FDSELECT_0
+  ਹਾਲਤ 0:
   {
-    FDSelect0 *p = c->allocate_size<FDSelect0> (size);
-    if (unlikely (!p)) return_trace (false);
-    unsigned int range_index = 0;
-    unsigned int fd = fdselect_ranges[range_index++].code;
-    for (unsigned int i = 0; i < num_glyphs; i++)
+    FDSelect0 *p = c->allocate_ਮਾਪ<FDSelect0> (ਮਾਪ);
+    ਜੇ (unlikely (!p)) return_trace (ਝੂਠ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ range_ਸੂਚਕਾਂਕ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd = fdselect_ranges[range_ਸੂਚਕਾਂਕ++].ਕੋਡ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_glyphs; i++)
     {
-      if ((range_index < fdselect_ranges.len) &&
-	  (i >= fdselect_ranges[range_index].glyph))
+      ਜੇ ((range_ਸੂਚਕਾਂਕ < fdselect_ranges.len) &&
+	  (i >= fdselect_ranges[range_ਸੂਚਕਾਂਕ].glyph))
       {
-	fd = fdselect_ranges[range_index++].code;
+	fd = fdselect_ranges[range_ਸੂਚਕਾਂਕ++].ਕੋਡ;
       }
       p->fds[i] = fd;
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
-#endif /* CFF_SERIALIZE_FDSELECT_0 */
+#ਜੇ_ਅੰਤ /* CFF_SERIALIZE_FDSELECT_0 */
 
-  case 3:
-    return serialize_fdselect_3_4<FDSelect3> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  ਹਾਲਤ 3:
+    ਵਾਪਸ serialize_fdselect_3_4<FDSelect3> (c, ਅੰਕ_glyphs, src,
+					      ਮਾਪ, fdselect_ranges);
 
-  case 4:
-    return serialize_fdselect_3_4<FDSelect4> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  ਹਾਲਤ 4:
+    ਵਾਪਸ serialize_fdselect_3_4<FDSelect4> (c, ਅੰਕ_glyphs, src,
+					      ਮਾਪ, fdselect_ranges);
 
-  default:
-    return_trace (false);
+  ਮੂਲ:
+    return_trace (ਝੂਠ);
   }
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifdef HAVE_GDI
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_GDI
 
-#include "hb-gdi.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gdi.h"
 
 
 /**
@@ -38,32 +38,32 @@
  * Functions for using HarfBuzz with GDI fonts.
  **/
 
-static hb_blob_t *
-_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ਸਥਿਰ hb_blob_t *
+hb_gdi_reference_ਸਾਰਣੀ (hb_face_t *face HB_ਅਣਵਰਤਿਆ, hb_ਟੈਗ_t ਟੈਗ_2, ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  char *buffer = nullptr;
-  DWORD length = 0;
+  ਅੱਖਰ *ਬਫਰ = ਖਾਲੀ_ਸੂਚਕ;
+  DWORD ਲੰਮਾਈ = 0;
 
-  HDC hdc = GetDC (nullptr);
-  if (unlikely (!SelectObject (hdc, (HFONT) user_data)))
-    return hb_blob_get_empty ();
-  HB_SCOPE_GUARD (ReleaseDC (nullptr, hdc));
+  HDC hdc = GetDC (ਖਾਲੀ_ਸੂਚਕ);
+  ਜੇ (unlikely (!SelectObject (hdc, (HFONT) user_ਅੰਕੜੇ)))
+    ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+  HB_SCOPE_GUARD (ReleaseDC (ਖਾਲੀ_ਸੂਚਕ, hdc));
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  ਲੰਮਾਈ = Get_Font_ਅੰਕੜੇ (hdc, hb_uint32_ਅਦਲਾ_ਬਦਲੀ (ਟੈਗ_2), 0, ਬਫਰ, ਲੰਮਾਈ);
+  ਜੇ (unlikely (ਲੰਮਾਈ == GDI_ERROR))
+    ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  buffer = (char *) hb_malloc (length);
-  if (unlikely (!buffer))
-    return hb_blob_get_empty ();
-  auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
+  ਬਫਰ = (ਅੱਖਰ *) hb_malloc (ਲੰਮਾਈ);
+  ਜੇ (unlikely (!ਬਫਰ))
+    ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
+  ਸਵੈਚਾਲਿਤ ਬਫਰ_guard = hb_make_scope_guard ([&]() { hb_free (ਬਫਰ); });
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  ਲੰਮਾਈ = Get_Font_ਅੰਕੜੇ (hdc, hb_uint32_ਅਦਲਾ_ਬਦਲੀ (ਟੈਗ_2), 0, ਬਫਰ, ਲੰਮਾਈ);
+  ਜੇ (unlikely (ਲੰਮਾਈ == GDI_ERROR))
+    ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, hb_free);
+  ਬਫਰ_guard.release ();
+  ਵਾਪਸ hb_blob_create ((ਅਚਲ ਅੱਖਰ *) ਬਫਰ, ਲੰਮਾਈ, HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE, ਬਫਰ, hb_free);
 }
 
 /**
@@ -79,7 +79,7 @@ _hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_dat
 hb_face_t *
 hb_gdi_face_create (HFONT hfont)
 {
-  return hb_face_create_for_tables (_hb_gdi_reference_table, (void *) hfont, nullptr);
+  ਵਾਪਸ hb_face_create_for_tables (hb_gdi_reference_ਸਾਰਣੀ, (ਖਾਲੀ *) hfont, ਖਾਲੀ_ਸੂਚਕ);
 }
 
-#endif
+#ਜੇ_ਅੰਤ

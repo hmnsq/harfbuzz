@@ -24,35 +24,35 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_DEPEND_DATA_HH
-#define HB_DEPEND_DATA_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DEPEND_ਅੰਕੜੇ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DEPEND_ਅੰਕੜੇ_HH
 
 /* This file exists to break include cycles: hb-ot-layout-gsubgpos.hh needs
  * hb_depend_data_builder_t for hb_depend_context_t, but hb-depend.hh pulls
  * in table headers that include hb-ot-layout-gsubgpos.hh. */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-multimap.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-multimap.hh"
 
 /* hb_subset_depend_edge_flags_t is defined in hb-depend.h (public header).
  * We redeclare it here under the same include-guard so internal code that
  * includes hb-depend-data.hh without going through hb-depend.h still gets
  * the type. The definitions must stay in sync. */
-#ifndef HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
-#define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
-typedef enum {
-  HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
-} hb_subset_depend_edge_flags_t;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAGS_T_DEFINED
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAGS_T_DEFINED
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE                   = 0x00u,
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
+} hb_subset_depend_ਕਿਨਾਰਾ_flags_t;
+#ਜੇ_ਅੰਤ
 /* Apply operator overloads now that hb.hh (and thus hb-algs.hh) is available. */
-HB_MARK_AS_FLAG_T (hb_subset_depend_edge_flags_t);
+HB_MARK_AS_FLAG_T (hb_subset_depend_ਕਿਨਾਰਾ_flags_t);
 
 /* High bit of a context-set element marks it as an index into the sets array
  * rather than a raw glyph ID. */
-#define HB_DEPEND_CONTEXT_SET_FLAG 0x80000000u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DEPEND_CONTEXT_ਸੈੱਟ_FLAG 0x80000000u
 
 /**
  * hb_depend_edge_t:
@@ -68,56 +68,56 @@ HB_MARK_AS_FLAG_T (hb_subset_depend_edge_flags_t);
  * - context_set: Index into sets array for context requirements, else INVALID
  * - flags: Edge flags (FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT)
  */
-struct hb_depend_edge_t {
-  hb_depend_edge_t() = delete;
-  hb_depend_edge_t(hb_tag_t table_tag,
+ਬਣਤਰ hb_depend_ਕਿਨਾਰਾ_t {
+  hb_depend_ਕਿਨਾਰਾ_t() = ਮਿਟਾਓ;
+  hb_depend_ਕਿਨਾਰਾ_t(hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
                    hb_codepoint_t dependent,
-                   hb_tag_t layout_tag,
-                   hb_codepoint_t ligature_set,
-                   hb_codepoint_t context_set,
-                   hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE) : table_tag(table_tag),
-     dependent(dependent), layout_tag(layout_tag),
-     ligature_set(ligature_set), context_set(context_set),
+                   hb_ਟੈਗ_t layout_ਟੈਗ,
+                   hb_codepoint_t ligature_ਸੈੱਟ_2,
+                   hb_codepoint_t context_ਸੈੱਟ,
+                   hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags = HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE) : ਸਾਰਣੀ_ਟੈਗ_2(ਸਾਰਣੀ_ਟੈਗ_2),
+     dependent(dependent), layout_ਟੈਗ(layout_ਟੈਗ),
+     ligature_ਸੈੱਟ_2(ligature_ਸੈੱਟ_2), context_ਸੈੱਟ(context_ਸੈੱਟ),
      flags(flags)
      {}
 
-  bool operator == (const hb_depend_edge_t &o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_depend_ਕਿਨਾਰਾ_t &o) ਅਚਲ
   {
     /* NOTE: flags intentionally excluded from equality comparison.
      * Flags are metadata about how an edge was discovered (e.g.,
      * FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT), not part of the
      * edge's identity. Multiple discoveries of the same edge via
      * different paths should be treated as duplicates. */
-    return table_tag == o.table_tag &&
+    ਵਾਪਸ ਸਾਰਣੀ_ਟੈਗ_2 == o.ਸਾਰਣੀ_ਟੈਗ_2 &&
            dependent == o.dependent &&
-           layout_tag == o.layout_tag &&
-           ligature_set == o.ligature_set &&
-           context_set == o.context_set;
+           layout_ਟੈਗ == o.layout_ਟੈਗ &&
+           ligature_ਸੈੱਟ_2 == o.ligature_ਸੈੱਟ_2 &&
+           context_ਸੈੱਟ == o.context_ਸੈੱਟ;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ਅਚਲ
   {
     /* FNV-1a hash of all identity fields (excludes flags) */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
-    current = current ^ hb_hash (table_tag);
+    current = current ^ hb_hash (ਸਾਰਣੀ_ਟੈਗ_2);
     current = current * 16777619;   /* FNV-1a prime */
     current = current ^ hb_hash (dependent);
     current = current * 16777619;
-    current = current ^ hb_hash (layout_tag);
+    current = current ^ hb_hash (layout_ਟੈਗ);
     current = current * 16777619;
-    current = current ^ hb_hash (ligature_set);
+    current = current ^ hb_hash (ligature_ਸੈੱਟ_2);
     current = current * 16777619;
-    current = current ^ hb_hash (context_set);
+    current = current ^ hb_hash (context_ਸੈੱਟ);
     current = current * 16777619;
-    return current;
+    ਵਾਪਸ current;
   }
 
-  hb_tag_t table_tag;
+  hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2;
   hb_codepoint_t dependent;
-  hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set;
-  hb_codepoint_t context_set;
-  hb_subset_depend_edge_flags_t flags;
+  hb_ਟੈਗ_t layout_ਟੈਗ;
+  hb_codepoint_t ligature_ਸੈੱਟ_2;
+  hb_codepoint_t context_ਸੈੱਟ;
+  hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags;
 };
 
 /**
@@ -126,35 +126,35 @@ struct hb_depend_edge_t {
  * Key structure for edge deduplication. Combines source glyph with edge record.
  * Uses the record's equality and hash operators for comparison.
  */
-struct hb_depend_edge_key_t {
-  hb_codepoint_t source;
-  hb_depend_edge_t record;
+ਬਣਤਰ hb_depend_ਕਿਨਾਰਾ_ਕੁੰਜੀ_t {
+  hb_codepoint_t ਸਰੋਤ;
+  hb_depend_ਕਿਨਾਰਾ_t ਰਿਕਾਰਡ;
 
-  hb_depend_edge_key_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+  hb_depend_ਕਿਨਾਰਾ_ਕੁੰਜੀ_t () : ਸਰੋਤ (0), ਰਿਕਾਰਡ (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE) {}
 
-  hb_depend_edge_key_t (hb_codepoint_t source,
-              hb_tag_t table_tag,
-              hb_tag_t layout_tag,
+  hb_depend_ਕਿਨਾਰਾ_ਕੁੰਜੀ_t (hb_codepoint_t ਸਰੋਤ,
+              hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
+              hb_ਟੈਗ_t layout_ਟੈਗ,
               hb_codepoint_t dependent,
-              hb_codepoint_t ligature_set,
-              hb_codepoint_t context_set)
-    : source (source),
-      record (table_tag, dependent, layout_tag, ligature_set, context_set, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+              hb_codepoint_t ligature_ਸੈੱਟ_2,
+              hb_codepoint_t context_ਸੈੱਟ)
+    : ਸਰੋਤ (ਸਰੋਤ),
+      ਰਿਕਾਰਡ (ਸਾਰਣੀ_ਟੈਗ_2, dependent, layout_ਟੈਗ, ligature_ਸੈੱਟ_2, context_ਸੈੱਟ, HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE) {}
 
-  bool operator == (const hb_depend_edge_key_t &o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_depend_ਕਿਨਾਰਾ_ਕੁੰਜੀ_t &o) ਅਚਲ
   {
-    return source == o.source && record == o.record;
+    ਵਾਪਸ ਸਰੋਤ == o.ਸਰੋਤ && ਰਿਕਾਰਡ == o.ਰਿਕਾਰਡ;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ਅਚਲ
   {
     /* Combine source hash with record hash */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
-    current = current ^ hb_hash (source);
+    current = current ^ hb_hash (ਸਰੋਤ);
     current = current * 16777619;   /* FNV-1a prime */
-    current = current ^ record.hash ();
+    current = current ^ ਰਿਕਾਰਡ.hash ();
     current = current * 16777619;
-    return current;
+    ਵਾਪਸ current;
   }
 };
 
@@ -163,8 +163,8 @@ struct hb_depend_edge_key_t {
  *
  * Internal structure holding all dependency edges for a single glyph.
  */
-struct hb_depend_glyph_record_t {
-  hb_vector_t<hb_depend_edge_t> dependencies;
+ਬਣਤਰ hb_depend_glyph_ਰਿਕਾਰਡ_t {
+  hb_ਸਦਿਸ਼_t<hb_depend_ਕਿਨਾਰਾ_t> dependencies;
 };
 
 /**
@@ -174,23 +174,23 @@ struct hb_depend_glyph_record_t {
  * Used during GSUB dependency analysis to record the feature tags that
  * activate each lookup.
  */
-struct hb_depend_lookup_revmap_t
+ਬਣਤਰ hb_depend_lookup_revmap_t
 {
-  hb_depend_lookup_revmap_t () = default;
-  explicit hb_depend_lookup_revmap_t (bool full) : full (full) {}
-  hb_depend_lookup_revmap_t (const hb_depend_lookup_revmap_t &o) : full(o.full),
+  hb_depend_lookup_revmap_t () = ਮੂਲ;
+  ਸਪਸ਼ਟ hb_depend_lookup_revmap_t (ਤਾਰਕਿਕ ਭਰਿਆ) : ਭਰਿਆ (ਭਰਿਆ) {}
+  hb_depend_lookup_revmap_t (ਅਚਲ hb_depend_lookup_revmap_t &o) : ਭਰਿਆ(o.ਭਰਿਆ),
                                                                      fv_indexes(o.fv_indexes) {}
-  hb_depend_lookup_revmap_t (hb_depend_lookup_revmap_t &&o) : full(o.full),
+  hb_depend_lookup_revmap_t (hb_depend_lookup_revmap_t &&o) : ਭਰਿਆ(o.ਭਰਿਆ),
                                                                 fv_indexes(std::move(o.fv_indexes)) {}
-  hb_depend_lookup_revmap_t& operator = (const hb_depend_lookup_revmap_t &o)
+  hb_depend_lookup_revmap_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_depend_lookup_revmap_t &o)
   {
-    full = o.full;
+    ਭਰਿਆ = o.ਭਰਿਆ;
     fv_indexes = o.fv_indexes;
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  bool full = true;
-  hb_set_t fv_indexes;
+  ਤਾਰਕਿਕ ਭਰਿਆ = ਸੱਚ;
+  hb_ਸੈੱਟ_t fv_indexes;
 };
 
 /**
@@ -203,63 +203,63 @@ struct hb_depend_lookup_revmap_t
  *
  * Constructed via hb_depend_data_builder_t; immutable thereafter.
  */
-struct hb_depend_data_t
+ਬਣਤਰ hb_depend_ਅੰਕੜੇ_t
 {
   /* Set storage: vector of heap-allocated sets (both ligature and context sets).
    * Using unique_ptr follows HarfBuzz pattern and provides stable pointers. */
-  hb_vector_t<hb::unique_ptr<hb_set_t>> sets;
+  hb_ਸਦਿਸ਼_t<hb::unique_ptr<hb_ਸੈੱਟ_t>> sets;
 
-  hb_vector_t<hb_depend_glyph_record_t> glyph_dependencies;
+  hb_ਸਦਿਸ਼_t<hb_depend_glyph_ਰਿਕਾਰਡ_t> glyph_dependencies;
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  ਅਚਲ hb_ਸੈੱਟ_t *get_ਸੈੱਟ_from_ਸੂਚਕਾਂਕ (hb_codepoint_t ਸੂਚਕਾਂਕ_2)
   {
-    if (index < sets.length)
-      return sets[index].get ();
-    return nullptr;
+    ਜੇ (ਸੂਚਕਾਂਕ_2 < sets.ਲੰਮਾਈ)
+      ਵਾਪਸ sets[ਸੂਚਕਾਂਕ_2].get ();
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  unsigned int get_glyph_entry_count (hb_codepoint_t gid) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_glyph_ਇੰਦਰਾਜ_ਗਿਣਤੀ (hb_codepoint_t gid) ਅਚਲ
   {
-    if (gid < glyph_dependencies.length)
-      return glyph_dependencies[gid].dependencies.length;
-    return 0;
+    ਜੇ (gid < glyph_dependencies.ਲੰਮਾਈ)
+      ਵਾਪਸ glyph_dependencies[gid].dependencies.ਲੰਮਾਈ;
+    ਵਾਪਸ 0;
   }
 
-  bool get_glyph_entry (hb_codepoint_t gid, unsigned int index,
-                        hb_tag_t *table_tag, hb_codepoint_t *dependent,
-                        hb_tag_t *layout_tag, hb_codepoint_t *ligature_set,
-                        hb_codepoint_t *context_set, uint8_t *flags)
+  ਤਾਰਕਿਕ get_glyph_ਇੰਦਰਾਜ (hb_codepoint_t gid, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2,
+                        hb_ਟੈਗ_t *ਸਾਰਣੀ_ਟੈਗ_2, hb_codepoint_t *dependent,
+                        hb_ਟੈਗ_t *layout_ਟੈਗ, hb_codepoint_t *ligature_ਸੈੱਟ_2,
+                        hb_codepoint_t *context_ਸੈੱਟ, uint8_t *flags)
   {
-    if (gid < glyph_dependencies.length &&
-        index < glyph_dependencies[gid].dependencies.length) {
-      auto &d = glyph_dependencies[gid].dependencies[index];
-      *table_tag = d.table_tag;
+    ਜੇ (gid < glyph_dependencies.ਲੰਮਾਈ &&
+        ਸੂਚਕਾਂਕ_2 < glyph_dependencies[gid].dependencies.ਲੰਮਾਈ) {
+      ਸਵੈਚਾਲਿਤ &d = glyph_dependencies[gid].dependencies[ਸੂਚਕਾਂਕ_2];
+      *ਸਾਰਣੀ_ਟੈਗ_2 = d.ਸਾਰਣੀ_ਟੈਗ_2;
       *dependent = d.dependent;
-      *layout_tag = d.layout_tag;
-      *ligature_set = d.ligature_set;
-      *context_set = d.context_set;
-      if (flags) *flags = d.flags;
-      return true;
+      *layout_ਟੈਗ = d.layout_ਟੈਗ;
+      *ligature_ਸੈੱਟ_2 = d.ligature_ਸੈੱਟ_2;
+      *context_ਸੈੱਟ = d.context_ਸੈੱਟ;
+      ਜੇ (flags) *flags = d.flags;
+      ਵਾਪਸ ਸੱਚ;
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  void print ()
+  ਖਾਲੀ print ()
   {
-    for (unsigned i = 0; i < glyph_dependencies.length; i++) {
-      auto &gd = glyph_dependencies[i];
-      if (!gd.dependencies.length)
-        continue;
-      printf ("GID %u:\n", i);
-      for (auto &d : gd.dependencies) {
-        if (d.table_tag == HB_OT_TAG_GSUB) {
-          printf ("  layout %c%c%c%c -> %u", HB_UNTAG(d.layout_tag), d.dependent);
-          if (d.ligature_set != HB_CODEPOINT_INVALID)
-            printf ("  (ligature)");
-        } else {
-          printf ("  %c%c%c%c -> %u", HB_UNTAG(d.table_tag), d.dependent);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < glyph_dependencies.ਲੰਮਾਈ; i++) {
+      ਸਵੈਚਾਲਿਤ &gd = glyph_dependencies[i];
+      ਜੇ (!gd.dependencies.ਲੰਮਾਈ)
+        ਜਾਰੀ;
+      ਲਿਖੋ ("GID %u:\n", i);
+      ਲਈ (ਸਵੈਚਾਲਿਤ &d : gd.dependencies) {
+        ਜੇ (d.ਸਾਰਣੀ_ਟੈਗ_2 == HB_OT_ਟੈਗ_GSUB) {
+          ਲਿਖੋ ("  layout %c%c%c%c -> %u", HB_UNTAG(d.layout_ਟੈਗ), d.dependent);
+          ਜੇ (d.ligature_ਸੈੱਟ_2 != HB_CODEPOINT_INVALID)
+            ਲਿਖੋ ("  (ligature)");
+        } ਨਹੀਂਤਾਂ {
+          ਲਿਖੋ ("  %c%c%c%c -> %u", HB_UNTAG(d.ਸਾਰਣੀ_ਟੈਗ_2), d.dependent);
         }
-        printf ("\n");
+        ਲਿਖੋ ("\n");
       }
     }
   }
@@ -281,83 +281,83 @@ struct hb_depend_data_t
  * - current_context_set_index: Context requirements for current rule
  * - current_edge_flags: Flags to apply to edges being recorded
  */
-struct hb_depend_data_builder_t
+ਬਣਤਰ hb_depend_ਅੰਕੜੇ_builder_t
 {
-  hb_depend_data_builder_t (hb_depend_data_t &data_)
-    : current_context_set_index (HB_CODEPOINT_INVALID),
-      current_edge_flags (HB_SUBSET_DEPEND_EDGE_FLAG_NONE),
-      data (data_) {}
+  hb_depend_ਅੰਕੜੇ_builder_t (hb_depend_ਅੰਕੜੇ_t &ਅੰਕੜੇ_2)
+    : current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ (HB_CODEPOINT_INVALID),
+      current_ਕਿਨਾਰਾ_flags (HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE),
+      ਅੰਕੜੇ (ਅੰਕੜੇ_2) {}
 
   /* Forward to data for use during construction (e.g. from hb_depend_context_t) */
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
-  { return data.get_set_from_index (index); }
+  ਅਚਲ hb_ਸੈੱਟ_t *get_ਸੈੱਟ_from_ਸੂਚਕਾਂਕ (hb_codepoint_t ਸੂਚਕਾਂਕ_2)
+  { ਵਾਪਸ ਅੰਕੜੇ.get_ਸੈੱਟ_from_ਸੂਚਕਾਂਕ (ਸੂਚਕਾਂਕ_2); }
 
   /* Discard an unused set that was allocated but had no edges added. */
-  void discard_set (hb_codepoint_t set_index)
+  ਖਾਲੀ discard_ਸੈੱਟ (hb_codepoint_t ਸੈੱਟ_ਸੂਚਕਾਂਕ)
   {
-    if (set_index >= data.sets.length)
+    ਜੇ (ਸੈੱਟ_ਸੂਚਕਾਂਕ >= ਅੰਕੜੇ.sets.ਲੰਮਾਈ)
     {
-      DEBUG_MSG (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
-                 set_index, data.sets.length - 1);
-      return;
+      DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "Attempting to discard invalid set %u (max is %u)",
+                 ਸੈੱਟ_ਸੂਚਕਾਂਕ, ਅੰਕੜੇ.sets.ਲੰਮਾਈ - 1);
+      ਵਾਪਸ;
     }
-    set_to_index.del (data.sets[set_index].get ());
-    data.sets[set_index]->clear ();
-    check_success (free_set_list.push_or_fail (set_index));
+    ਸੈੱਟ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ.del (ਅੰਕੜੇ.sets[ਸੈੱਟ_ਸੂਚਕਾਂਕ].get ());
+    ਅੰਕੜੇ.sets[ਸੈੱਟ_ਸੂਚਕਾਂਕ]->clear ();
+    check_success (free_ਸੈੱਟ_list.ਧੱਕੋ_or_fail (ਸੈੱਟ_ਸੂਚਕਾਂਕ));
   }
 
-  hb_codepoint_t new_set (const hb_set_t &set)
+  hb_codepoint_t new_ਸੈੱਟ (ਅਚਲ hb_ਸੈੱਟ_t &ਸੈੱਟ)
   {
-    hb_codepoint_t set_index;
+    hb_codepoint_t ਸੈੱਟ_ਸੂਚਕਾਂਕ;
 
-    if (free_set_list.length > 0)
+    ਜੇ (free_ਸੈੱਟ_list.ਲੰਮਾਈ > 0)
     {
-      set_index = free_set_list.pop ();
-      data.sets[set_index]->set (set);
-      if (unlikely (data.sets[set_index]->in_error ()))
-	return fail_invalid ();
+      ਸੈੱਟ_ਸੂਚਕਾਂਕ = free_ਸੈੱਟ_list.ਕੱਢੋ ();
+      ਅੰਕੜੇ.sets[ਸੈੱਟ_ਸੂਚਕਾਂਕ]->ਸੈੱਟ (ਸੈੱਟ);
+      ਜੇ (unlikely (ਅੰਕੜੇ.sets[ਸੈੱਟ_ਸੂਚਕਾਂਕ]->ਵਿੱਚ_error ()))
+	ਵਾਪਸ fail_invalid ();
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      set_index = data.sets.length;
-      hb_set_t *new_set = hb_set_create ();
-      if (unlikely (!new_set))
-	return fail_invalid ();
-      new_set->set (set);
-      if (unlikely (new_set->in_error ()))
+      ਸੈੱਟ_ਸੂਚਕਾਂਕ = ਅੰਕੜੇ.sets.ਲੰਮਾਈ;
+      hb_ਸੈੱਟ_t *new_ਸੈੱਟ = hb_ਸੈੱਟ_create ();
+      ਜੇ (unlikely (!new_ਸੈੱਟ))
+	ਵਾਪਸ fail_invalid ();
+      new_ਸੈੱਟ->ਸੈੱਟ (ਸੈੱਟ);
+      ਜੇ (unlikely (new_ਸੈੱਟ->ਵਿੱਚ_error ()))
       {
-	hb_set_destroy (new_set);
-	return fail_invalid ();
+	hb_ਸੈੱਟ_destroy (new_ਸੈੱਟ);
+	ਵਾਪਸ fail_invalid ();
       }
-      if (unlikely (!data.sets.push_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
-	return fail_invalid ();
+      ਜੇ (unlikely (!ਅੰਕੜੇ.sets.ਧੱਕੋ_or_fail (hb::unique_ptr<hb_ਸੈੱਟ_t> {new_ਸੈੱਟ})))
+	ਵਾਪਸ fail_invalid ();
     }
 
-    return set_index;
+    ਵਾਪਸ ਸੈੱਟ_ਸੂਚਕਾਂਕ;
   }
 
   /* Find an existing dependency set with the same contents, or create one. */
-  hb_codepoint_t find_or_create_set (const hb_set_t &set, bool *created = nullptr)
+  hb_codepoint_t ਲੱਭੋ_or_create_ਸੈੱਟ (ਅਚਲ hb_ਸੈੱਟ_t &ਸੈੱਟ, ਤਾਰਕਿਕ *created = ਖਾਲੀ_ਸੂਚਕ)
   {
-    hb_codepoint_t *existing_idx = nullptr;
-    if (set_to_index.has (&set, &existing_idx))
+    hb_codepoint_t *existing_idx = ਖਾਲੀ_ਸੂਚਕ;
+    ਜੇ (ਸੈੱਟ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ.has (&ਸੈੱਟ, &existing_idx))
     {
-      if (created) *created = false;
-      return *existing_idx;
+      ਜੇ (created) *created = ਝੂਠ;
+      ਵਾਪਸ *existing_idx;
     }
 
-    hb_codepoint_t new_idx = new_set (set);
-    if (unlikely (new_idx == HB_CODEPOINT_INVALID))
-      return HB_CODEPOINT_INVALID;
+    hb_codepoint_t new_idx = new_ਸੈੱਟ (ਸੈੱਟ);
+    ਜੇ (unlikely (new_idx == HB_CODEPOINT_INVALID))
+      ਵਾਪਸ HB_CODEPOINT_INVALID;
 
-    if (unlikely (!set_to_index.set (data.sets[new_idx].get (), new_idx)))
-      return fail_invalid ();
-    if (created) *created = true;
-    return new_idx;
+    ਜੇ (unlikely (!ਸੈੱਟ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ.ਸੈੱਟ (ਅੰਕੜੇ.sets[new_idx].get (), new_idx)))
+      ਵਾਪਸ fail_invalid ();
+    ਜੇ (created) *created = ਸੱਚ;
+    ਵਾਪਸ new_idx;
   }
 
-  hb_codepoint_t find_or_create_context_set (const hb_set_t &set)
-  { return find_or_create_set (set); }
+  hb_codepoint_t ਲੱਭੋ_or_create_context_ਸੈੱਟ (ਅਚਲ hb_ਸੈੱਟ_t &ਸੈੱਟ)
+  { ਵਾਪਸ ਲੱਭੋ_or_create_ਸੈੱਟ (ਸੈੱਟ); }
 
   /* Build a context set from context information.
    * Encodes backtrack and lookahead requirements as a flattened set.
@@ -368,301 +368,301 @@ struct hb_depend_data_builder_t
    * 2. Second pass: create disjunction sets, subtracting direct requirements
    * 3. Combine: add direct requirements and filtered disjunction references
    */
-  hb_codepoint_t build_context_set (const hb_vector_t<hb_set_t> *backtrack_sets,
-                                     const hb_vector_t<hb_set_t> *lookahead_sets)
+  hb_codepoint_t build_context_ਸੈੱਟ (ਅਚਲ hb_ਸਦਿਸ਼_t<hb_ਸੈੱਟ_t> *backtrack_sets,
+                                     ਅਚਲ hb_ਸਦਿਸ਼_t<hb_ਸੈੱਟ_t> *lookahead_sets)
   {
-    if ((!backtrack_sets || backtrack_sets->length == 0) &&
-        (!lookahead_sets || lookahead_sets->length == 0))
-      return HB_CODEPOINT_INVALID;
+    ਜੇ ((!backtrack_sets || backtrack_sets->ਲੰਮਾਈ == 0) &&
+        (!lookahead_sets || lookahead_sets->ਲੰਮਾਈ == 0))
+      ਵਾਪਸ HB_CODEPOINT_INVALID;
 
     /* First pass: collect all direct (single-glyph) requirements */
-    hb_set_t direct_requirements;
+    hb_ਸੈੱਟ_t ਸਿੱਧਾ_requirements;
 
-    if (backtrack_sets)
+    ਜੇ (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &ਪਿੱਠ_ਸੈੱਟ : *backtrack_sets)
       {
-        if (back_set.get_population () == 1)
-          direct_requirements.add (back_set.get_min ());
+        ਜੇ (ਪਿੱਠ_ਸੈੱਟ.get_population () == 1)
+          ਸਿੱਧਾ_requirements.ਜੋੜੋ (ਪਿੱਠ_ਸੈੱਟ.get_min ());
       }
     }
 
-    if (lookahead_sets)
+    ਜੇ (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &look_ਸੈੱਟ : *lookahead_sets)
       {
-        if (look_set.get_population () == 1)
-          direct_requirements.add (look_set.get_min ());
+        ਜੇ (look_ਸੈੱਟ.get_population () == 1)
+          ਸਿੱਧਾ_requirements.ਜੋੜੋ (look_ਸੈੱਟ.get_min ());
       }
     }
 
     /* Second pass: create disjunction sets, filtering out direct requirements */
-    hb_set_t context_elements;
+    hb_ਸੈੱਟ_t context_elements;
 
-    if (backtrack_sets)
+    ਜੇ (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &ਪਿੱਠ_ਸੈੱਟ : *backtrack_sets)
       {
-        if (back_set.get_population () > 1)
+        ਜੇ (ਪਿੱਠ_ਸੈੱਟ.get_population () > 1)
         {
-          hb_set_t filtered_set;
-          filtered_set.set (back_set);
-          filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          hb_ਸੈੱਟ_t filtered_ਸੈੱਟ;
+          filtered_ਸੈੱਟ.ਸੈੱਟ (ਪਿੱਠ_ਸੈੱਟ);
+          filtered_ਸੈੱਟ.ਘਟਾਓ (ਸਿੱਧਾ_requirements);
+          ਜੇ (unlikely (filtered_ਸੈੱਟ.ਵਿੱਚ_error ()))
+            ਵਾਪਸ fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          ਜੇ (!filtered_ਸੈੱਟ.is_empty ())
           {
-            hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
-            context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+            hb_codepoint_t ਸੈੱਟ_idx = ਲੱਭੋ_or_create_context_ਸੈੱਟ (filtered_ਸੈੱਟ);
+            ਜੇ (unlikely (ਸੈੱਟ_idx == HB_CODEPOINT_INVALID))
+              ਵਾਪਸ HB_CODEPOINT_INVALID;
+            context_elements.ਜੋੜੋ (HB_DEPEND_CONTEXT_ਸੈੱਟ_FLAG | ਸੈੱਟ_idx);
           }
         }
       }
     }
 
-    if (lookahead_sets)
+    ਜੇ (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &look_ਸੈੱਟ : *lookahead_sets)
       {
-        if (look_set.get_population () > 1)
+        ਜੇ (look_ਸੈੱਟ.get_population () > 1)
         {
-          hb_set_t filtered_set;
-          filtered_set.set (look_set);
-          filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          hb_ਸੈੱਟ_t filtered_ਸੈੱਟ;
+          filtered_ਸੈੱਟ.ਸੈੱਟ (look_ਸੈੱਟ);
+          filtered_ਸੈੱਟ.ਘਟਾਓ (ਸਿੱਧਾ_requirements);
+          ਜੇ (unlikely (filtered_ਸੈੱਟ.ਵਿੱਚ_error ()))
+            ਵਾਪਸ fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          ਜੇ (!filtered_ਸੈੱਟ.is_empty ())
           {
-            hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
-            context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+            hb_codepoint_t ਸੈੱਟ_idx = ਲੱਭੋ_or_create_context_ਸੈੱਟ (filtered_ਸੈੱਟ);
+            ਜੇ (unlikely (ਸੈੱਟ_idx == HB_CODEPOINT_INVALID))
+              ਵਾਪਸ HB_CODEPOINT_INVALID;
+            context_elements.ਜੋੜੋ (HB_DEPEND_CONTEXT_ਸੈੱਟ_FLAG | ਸੈੱਟ_idx);
           }
         }
       }
     }
 
-    context_elements.union_ (direct_requirements);
-    if (unlikely (direct_requirements.in_error () ||
-                  context_elements.in_error ()))
-      return fail_invalid ();
+    context_elements.union_ (ਸਿੱਧਾ_requirements);
+    ਜੇ (unlikely (ਸਿੱਧਾ_requirements.ਵਿੱਚ_error () ||
+                  context_elements.ਵਿੱਚ_error ()))
+      ਵਾਪਸ fail_invalid ();
 
-    if (context_elements.is_empty ())
-      return HB_CODEPOINT_INVALID;
+    ਜੇ (context_elements.is_empty ())
+      ਵਾਪਸ HB_CODEPOINT_INVALID;
 
-    return find_or_create_context_set (context_elements);
+    ਵਾਪਸ ਲੱਭੋ_or_create_context_ਸੈੱਟ (context_elements);
   }
 
-  static uint64_t encode_edge_ref (hb_codepoint_t source, unsigned int index)
-  { return (uint64_t (source) + 1) << 32 | index; }
+  ਸਥਿਰ uint64_t encode_ਕਿਨਾਰਾ_ref (hb_codepoint_t ਸਰੋਤ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2)
+  { ਵਾਪਸ (uint64_t (ਸਰੋਤ) + 1) << 32 | ਸੂਚਕਾਂਕ_2; }
 
-  static void decode_edge_ref (uint64_t ref,
-			       hb_codepoint_t *source,
-			       unsigned int *index)
+  ਸਥਿਰ ਖਾਲੀ decode_ਕਿਨਾਰਾ_ref (uint64_t ref,
+			       hb_codepoint_t *ਸਰੋਤ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਸੂਚਕਾਂਕ_2)
   {
-    *source = (ref >> 32) - 1;
-    *index = ref;
+    *ਸਰੋਤ = (ref >> 32) - 1;
+    *ਸੂਚਕਾਂਕ_2 = ref;
   }
 
-  uint32_t edge_hash (hb_codepoint_t source, const hb_depend_edge_t &record) const
+  uint32_t ਕਿਨਾਰਾ_hash (hb_codepoint_t ਸਰੋਤ, ਅਚਲ hb_depend_ਕਿਨਾਰਾ_t &ਰਿਕਾਰਡ) ਅਚਲ
   {
-    hb_depend_edge_key_t key (source, record.table_tag, record.layout_tag,
-			      record.dependent, record.ligature_set,
-			      record.context_set);
-    return key.hash ();
+    hb_depend_ਕਿਨਾਰਾ_ਕੁੰਜੀ_t key (ਸਰੋਤ, ਰਿਕਾਰਡ.ਸਾਰਣੀ_ਟੈਗ_2, ਰਿਕਾਰਡ.layout_ਟੈਗ,
+			      ਰਿਕਾਰਡ.dependent, ਰਿਕਾਰਡ.ligature_ਸੈੱਟ_2,
+			      ਰਿਕਾਰਡ.context_ਸੈੱਟ);
+    ਵਾਪਸ key.hash ();
   }
 
-  bool resize_edge_slots ()
+  ਤਾਰਕਿਕ resize_ਕਿਨਾਰਾ_slots ()
   {
-    unsigned int new_size = edge_slots.length ? edge_slots.length * 2 : 8;
-    if (unlikely (new_size < edge_slots.length))
-      return fail ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ new_ਮਾਪ = ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ ? ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ * 2 : 8;
+    ਜੇ (unlikely (new_ਮਾਪ < ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ))
+      ਵਾਪਸ fail ();
 
-    hb_vector_t<uint64_t> new_slots;
-    if (unlikely (!new_slots.resize_exact (new_size)))
-      return fail ();
+    hb_ਸਦਿਸ਼_t<uint64_t> new_slots;
+    ਜੇ (unlikely (!new_slots.resize_exact (new_ਮਾਪ)))
+      ਵਾਪਸ fail ();
 
-    for (uint64_t ref : edge_slots)
+    ਲਈ (uint64_t ref : ਕਿਨਾਰਾ_slots)
     {
-      if (!ref)
-	continue;
+      ਜੇ (!ref)
+	ਜਾਰੀ;
 
-      hb_codepoint_t source;
-      unsigned int index;
-      decode_edge_ref (ref, &source, &index);
-      const hb_depend_edge_t &record = data.glyph_dependencies[source].dependencies[index];
-      unsigned int slot = edge_hash (source, record) & (new_size - 1);
-      unsigned int step = 0;
-      while (new_slots[slot])
-	slot = (slot + ++step) & (new_size - 1);
-      new_slots[slot] = ref;
+      hb_codepoint_t ਸਰੋਤ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2;
+      decode_ਕਿਨਾਰਾ_ref (ref, &ਸਰੋਤ, &ਸੂਚਕਾਂਕ_2);
+      ਅਚਲ hb_depend_ਕਿਨਾਰਾ_t &ਰਿਕਾਰਡ = ਅੰਕੜੇ.glyph_dependencies[ਸਰੋਤ].dependencies[ਸੂਚਕਾਂਕ_2];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਥਾਂ = ਕਿਨਾਰਾ_hash (ਸਰੋਤ, ਰਿਕਾਰਡ) & (new_ਮਾਪ - 1);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕਦਮ = 0;
+      ਜਦੋਂ (new_slots[ਥਾਂ])
+	ਥਾਂ = (ਥਾਂ + ++ਕਦਮ) & (new_ਮਾਪ - 1);
+      new_slots[ਥਾਂ] = ref;
     }
 
-    edge_slots = std::move (new_slots);
-    return true;
+    ਕਿਨਾਰਾ_slots = std::move (new_slots);
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool add_edge (hb_codepoint_t source, const hb_depend_edge_t &record)
+  ਤਾਰਕਿਕ ਜੋੜੋ_ਕਿਨਾਰਾ (hb_codepoint_t ਸਰੋਤ, ਅਚਲ hb_depend_ਕਿਨਾਰਾ_t &ਰਿਕਾਰਡ)
   {
     /* Store only a source and per-glyph edge index in each bucket.  The edge
      * itself already lives in the output vector, where it can be compared to
      * resolve hash collisions exactly.  Adding one to the encoded source
      * reserves zero as the empty-bucket value. */
-    if (unlikely (!edge_slots.length ||
-		  uint64_t (edge_population) * 3 / 2 >= edge_slots.length - 1))
-      if (unlikely (!resize_edge_slots ()))
-	return false;
+    ਜੇ (unlikely (!ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ ||
+		  uint64_t (ਕਿਨਾਰਾ_population) * 3 / 2 >= ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ - 1))
+      ਜੇ (unlikely (!resize_ਕਿਨਾਰਾ_slots ()))
+	ਵਾਪਸ ਝੂਠ;
 
-    unsigned int slot = edge_hash (source, record) & (edge_slots.length - 1);
-    unsigned int step = 0;
-    while (uint64_t ref = edge_slots[slot])
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਥਾਂ = ਕਿਨਾਰਾ_hash (ਸਰੋਤ, ਰਿਕਾਰਡ) & (ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ - 1);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕਦਮ = 0;
+    ਜਦੋਂ (uint64_t ref = ਕਿਨਾਰਾ_slots[ਥਾਂ])
     {
-      hb_codepoint_t existing_source;
-      unsigned int existing_index;
-      decode_edge_ref (ref, &existing_source, &existing_index);
-      if (existing_source == source &&
-	  data.glyph_dependencies[source].dependencies[existing_index] == record)
-	return false;
-      slot = (slot + ++step) & (edge_slots.length - 1);
+      hb_codepoint_t existing_ਸਰੋਤ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ existing_ਸੂਚਕਾਂਕ;
+      decode_ਕਿਨਾਰਾ_ref (ref, &existing_ਸਰੋਤ, &existing_ਸੂਚਕਾਂਕ);
+      ਜੇ (existing_ਸਰੋਤ == ਸਰੋਤ &&
+	  ਅੰਕੜੇ.glyph_dependencies[ਸਰੋਤ].dependencies[existing_ਸੂਚਕਾਂਕ] == ਰਿਕਾਰਡ)
+	ਵਾਪਸ ਝੂਠ;
+      ਥਾਂ = (ਥਾਂ + ++ਕਦਮ) & (ਕਿਨਾਰਾ_slots.ਲੰਮਾਈ - 1);
     }
 
-    auto &dependencies = data.glyph_dependencies[source].dependencies;
-    unsigned int index = dependencies.length;
-    if (unlikely (!dependencies.push_or_fail (record)))
-      return fail ();
+    ਸਵੈਚਾਲਿਤ &dependencies = ਅੰਕੜੇ.glyph_dependencies[ਸਰੋਤ].dependencies;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = dependencies.ਲੰਮਾਈ;
+    ਜੇ (unlikely (!dependencies.ਧੱਕੋ_or_fail (ਰਿਕਾਰਡ)))
+      ਵਾਪਸ fail ();
 
-    edge_slots[slot] = encode_edge_ref (source, index);
-    edge_population++;
-    return true;
+    ਕਿਨਾਰਾ_slots[ਥਾਂ] = encode_ਕਿਨਾਰਾ_ref (ਸਰੋਤ, ਸੂਚਕਾਂਕ_2);
+    ਕਿਨਾਰਾ_population++;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool add_depend_layout (hb_codepoint_t target, hb_tag_t table_tag,
-                          hb_tag_t layout_tag,
+  ਤਾਰਕਿਕ ਜੋੜੋ_depend_layout (hb_codepoint_t target, hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
+                          hb_ਟੈਗ_t layout_ਟੈਗ,
                           hb_codepoint_t dependent,
-                          hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                          hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
-                          hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
+                          hb_codepoint_t lig_ਸੈੱਟ = HB_CODEPOINT_INVALID,
+                          hb_codepoint_t context_ਸੈੱਟ = HB_CODEPOINT_INVALID,
+                          hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags = HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE)
   {
-    if (target >= data.glyph_dependencies.length) {
-      DEBUG_MSG (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
-                 target, HB_UNTAG(table_tag));
-      return false;
+    ਜੇ (target >= ਅੰਕੜੇ.glyph_dependencies.ਲੰਮਾਈ) {
+      DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "Dependency glyph %u for %c%c%c%c too large",
+                 target, HB_UNTAG(ਸਾਰਣੀ_ਟੈਗ_2));
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    return add_edge (target, hb_depend_edge_t (table_tag, dependent, layout_tag,
-					      lig_set, context_set, flags));
+    ਵਾਪਸ ਜੋੜੋ_ਕਿਨਾਰਾ (target, hb_depend_ਕਿਨਾਰਾ_t (ਸਾਰਣੀ_ਟੈਗ_2, dependent, layout_ਟੈਗ,
+					      lig_ਸੈੱਟ, context_ਸੈੱਟ, flags));
   }
 
-  bool add_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_index,
+  ਤਾਰਕਿਕ ਜੋੜੋ_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_ਸੂਚਕਾਂਕ,
                         hb_codepoint_t dependent,
-                        hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                        hb_codepoint_t context_set = HB_CODEPOINT_INVALID)
+                        hb_codepoint_t lig_ਸੈੱਟ = HB_CODEPOINT_INVALID,
+                        hb_codepoint_t context_ਸੈੱਟ = HB_CODEPOINT_INVALID)
   {
-    if (context_set == HB_CODEPOINT_INVALID)
-      context_set = current_context_set_index;
-    hb_subset_depend_edge_flags_t flags = current_edge_flags;
+    ਜੇ (context_ਸੈੱਟ == HB_CODEPOINT_INVALID)
+      context_ਸੈੱਟ = current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ;
+    hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags = current_ਕਿਨਾਰਾ_flags;
 
-    bool any_added = false;
-    for (uint64_t entry : get_lookup_features (lookup_index)) {
-      hb_tag_t t = (hb_tag_t) entry;
-      if (add_depend_layout (target, HB_OT_TAG_GSUB, t, dependent, lig_set, context_set, flags))
-        any_added = true;
+    ਤਾਰਕਿਕ any_added = ਝੂਠ;
+    ਲਈ (uint64_t ਇੰਦਰਾਜ : get_lookup_features (lookup_ਸੂਚਕਾਂਕ)) {
+      hb_ਟੈਗ_t t = (hb_ਟੈਗ_t) ਇੰਦਰਾਜ;
+      ਜੇ (ਜੋੜੋ_depend_layout (target, HB_OT_ਟੈਗ_GSUB, t, dependent, lig_ਸੈੱਟ, context_ਸੈੱਟ, flags))
+        any_added = ਸੱਚ;
     }
-    return any_added;
+    ਵਾਪਸ any_added;
   }
 
-  bool init_lookup_features (unsigned lookup_count)
+  ਤਾਰਕਿਕ init_lookup_features (ਬਿਨਾਨਿਸ਼ਾਨੀ lookup_ਗਿਣਤੀ)
   {
-    return check_success (lookup_feature_offsets.resize (lookup_count + 1));
+    ਵਾਪਸ check_success (lookup_feature_offsets.resize (lookup_ਗਿਣਤੀ + 1));
   }
 
-  bool add_lookup_feature (hb_codepoint_t lookup_index, hb_tag_t feature_tag)
+  ਤਾਰਕਿਕ ਜੋੜੋ_lookup_feature (hb_codepoint_t lookup_ਸੂਚਕਾਂਕ, hb_ਟੈਗ_t feature_ਟੈਗ)
   {
-    if (feature_tag == HB_SET_VALUE_INVALID)
-      return true;
+    ਜੇ (feature_ਟੈਗ == HB_ਸੈੱਟ_ਮੁੱਲ_INVALID)
+      ਵਾਪਸ ਸੱਚ;
 
-    if (unlikely (!lookup_feature_offsets.length ||
-		  lookup_index >= lookup_feature_offsets.length - 1))
-      return fail ();
+    ਜੇ (unlikely (!lookup_feature_offsets.ਲੰਮਾਈ ||
+		  lookup_ਸੂਚਕਾਂਕ >= lookup_feature_offsets.ਲੰਮਾਈ - 1))
+      ਵਾਪਸ fail ();
 
-    uint64_t entry = ((uint64_t) lookup_index << 32) | feature_tag;
-    return check_success (lookup_features.push_or_fail (entry));
+    uint64_t ਇੰਦਰਾਜ = ((uint64_t) lookup_ਸੂਚਕਾਂਕ << 32) | feature_ਟੈਗ;
+    ਵਾਪਸ check_success (lookup_features.ਧੱਕੋ_or_fail (ਇੰਦਰਾਜ));
   }
 
-  bool finish_lookup_features ()
+  ਤਾਰਕਿਕ ਅੰਤ_lookup_features ()
   {
     lookup_features.qsort ([] (uint64_t a, uint64_t b) {
-      return a < b ? -1 : a > b ? 1 : 0;
+      ਵਾਪਸ a < b ? -1 : a > b ? 1 : 0;
     });
 
-    unsigned write = 0;
-    for (uint64_t entry : lookup_features)
-      if (!write || entry != lookup_features[write - 1])
-	lookup_features[write++] = entry;
-    lookup_features.shrink (write, false);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲਿਖ = 0;
+    ਲਈ (uint64_t ਇੰਦਰਾਜ : lookup_features)
+      ਜੇ (!ਲਿਖ || ਇੰਦਰਾਜ != lookup_features[ਲਿਖ - 1])
+	lookup_features[ਲਿਖ++] = ਇੰਦਰਾਜ;
+    lookup_features.shrink (ਲਿਖ, ਝੂਠ);
 
-    unsigned feature_index = 0;
-    unsigned lookup_count = lookup_feature_offsets.length - 1;
-    for (unsigned lookup_index = 0; lookup_index < lookup_count; lookup_index++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ feature_ਸੂਚਕਾਂਕ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ lookup_ਗਿਣਤੀ = lookup_feature_offsets.ਲੰਮਾਈ - 1;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ lookup_ਸੂਚਕਾਂਕ = 0; lookup_ਸੂਚਕਾਂਕ < lookup_ਗਿਣਤੀ; lookup_ਸੂਚਕਾਂਕ++)
     {
-      lookup_feature_offsets[lookup_index] = feature_index;
-      while (feature_index < lookup_features.length &&
-	     lookup_features[feature_index] >> 32 == lookup_index)
-	feature_index++;
+      lookup_feature_offsets[lookup_ਸੂਚਕਾਂਕ] = feature_ਸੂਚਕਾਂਕ;
+      ਜਦੋਂ (feature_ਸੂਚਕਾਂਕ < lookup_features.ਲੰਮਾਈ &&
+	     lookup_features[feature_ਸੂਚਕਾਂਕ] >> 32 == lookup_ਸੂਚਕਾਂਕ)
+	feature_ਸੂਚਕਾਂਕ++;
     }
-    lookup_feature_offsets[lookup_count] = feature_index;
-    return true;
+    lookup_feature_offsets[lookup_ਗਿਣਤੀ] = feature_ਸੂਚਕਾਂਕ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  hb_array_t<const uint64_t> get_lookup_features (hb_codepoint_t lookup_index) const
+  hb_array_t<ਅਚਲ uint64_t> get_lookup_features (hb_codepoint_t lookup_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    if (unlikely (!lookup_feature_offsets.length ||
-		  lookup_index >= lookup_feature_offsets.length - 1))
-      return {};
+    ਜੇ (unlikely (!lookup_feature_offsets.ਲੰਮਾਈ ||
+		  lookup_ਸੂਚਕਾਂਕ >= lookup_feature_offsets.ਲੰਮਾਈ - 1))
+      ਵਾਪਸ {};
 
-    unsigned start = lookup_feature_offsets[lookup_index];
-    unsigned end = lookup_feature_offsets[lookup_index + 1];
-    return lookup_features.as_array ().sub_array (start, end - start);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = lookup_feature_offsets[lookup_ਸੂਚਕਾਂਕ];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ = lookup_feature_offsets[lookup_ਸੂਚਕਾਂਕ + 1];
+    ਵਾਪਸ lookup_features.as_array ().sub_array (ਸ਼ੁਰੂ, ਸਿਰਾ - ਸ਼ੁਰੂ);
   }
 
-  void add_depend (hb_codepoint_t target, hb_tag_t table_tag,
+  ਖਾਲੀ ਜੋੜੋ_depend (hb_codepoint_t target, hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
                    hb_codepoint_t dependent,
-                   hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                   hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
-                   hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
+                   hb_codepoint_t lig_ਸੈੱਟ = HB_CODEPOINT_INVALID,
+                   hb_codepoint_t context_ਸੈੱਟ = HB_CODEPOINT_INVALID,
+                   hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags = HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE)
   {
-    add_depend_layout (target, table_tag, HB_CODEPOINT_INVALID, dependent, lig_set,
-                       context_set, flags);
+    ਜੋੜੋ_depend_layout (target, ਸਾਰਣੀ_ਟੈਗ_2, HB_CODEPOINT_INVALID, dependent, lig_ਸੈੱਟ,
+                       context_ਸੈੱਟ, flags);
   }
 
   hb_codepoint_t get_nominal_glyph (hb_codepoint_t cp)
-  { return hb_map_get (&nominal_glyphs, cp); }
+  { ਵਾਪਸ hb_map_get (&nominal_glyphs, cp); }
 
-  HB_INTERNAL bool compile (hb_face_t *face);
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ compile (hb_face_t *face);
 
-  bool fail () { successful = false; return false; }
-  hb_codepoint_t fail_invalid () { fail (); return HB_CODEPOINT_INVALID; }
-  bool check_success (bool s) { successful = (successful && s); return successful; }
+  ਤਾਰਕਿਕ fail () { successful = ਝੂਠ; ਵਾਪਸ ਝੂਠ; }
+  hb_codepoint_t fail_invalid () { fail (); ਵਾਪਸ HB_CODEPOINT_INVALID; }
+  ਤਾਰਕਿਕ check_success (ਤਾਰਕਿਕ s) { successful = (successful && s); ਵਾਪਸ successful; }
 
-  HB_INTERNAL void get_gsub_dependencies (hb_face_t *face);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ get_gsub_dependencies (hb_face_t *face);
 
-  bool successful = true;
-  hb_set_t unicodes;
+  ਤਾਰਕਿਕ successful = ਸੱਚ;
+  hb_ਸੈੱਟ_t unicodes;
   hb_map_t nominal_glyphs;
-  hb_vector_t<uint64_t> lookup_features;
-  hb_vector_t<unsigned> lookup_feature_offsets;
-  hb_vector_t<uint64_t> edge_slots;
-  unsigned int edge_population = 0;
-  hb_hashmap_t<const hb_set_t*, hb_codepoint_t> set_to_index;
-  hb_vector_t<hb_codepoint_t> free_set_list;
-  hb_codepoint_t current_context_set_index;
-  hb_subset_depend_edge_flags_t current_edge_flags;
+  hb_ਸਦਿਸ਼_t<uint64_t> lookup_features;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> lookup_feature_offsets;
+  hb_ਸਦਿਸ਼_t<uint64_t> ਕਿਨਾਰਾ_slots;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕਿਨਾਰਾ_population = 0;
+  hb_hashmap_t<ਅਚਲ hb_ਸੈੱਟ_t*, hb_codepoint_t> ਸੈੱਟ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ;
+  hb_ਸਦਿਸ਼_t<hb_codepoint_t> free_ਸੈੱਟ_list;
+  hb_codepoint_t current_context_ਸੈੱਟ_ਸੂਚਕਾਂਕ;
+  hb_subset_depend_ਕਿਨਾਰਾ_flags_t current_ਕਿਨਾਰਾ_flags;
 
-  hb_depend_data_t &data;
+  hb_depend_ਅੰਕੜੇ_t &ਅੰਕੜੇ;
 };
 
 
-#endif /* HB_DEPEND_DATA_HH */
+#ਜੇ_ਅੰਤ /* HB_DEPEND_DATA_HH */

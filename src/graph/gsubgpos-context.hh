@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "graph.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਗ੍ਰਾਫ_GSUBGPOS_CONTEXT_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਗ੍ਰਾਫ_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-struct Lookup;
+ਬਣਤਰ Lookup;
 
-struct gsubgpos_graph_context_t
+ਬਣਤਰ gsubgpos_ਗ੍ਰਾਫ_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<gsubgpos_ਗ੍ਰਾਫ_context_t> create (hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_3,
+                                                                      ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2;
+  ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ lookup_list_ਸੂਚਕਾਂਕ;
+  hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਗ੍ਰਾਫ::Lookup*> lookups;
+  hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> subtable_ਮੰਜ਼ਿਲ_extension;
+  hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>> ਵੰਡੋ_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_ਅੰਦਰੂਨੀ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> create_ਗੰਢ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> ਜੋੜੋ_ਬਫਰ (ਅੱਖਰ* ਬਫਰ)
   {
-    return graph.add_buffer (buffer);
+    ਵਾਪਸ ਗ੍ਰਾਫ.ਜੋੜੋ_ਬਫਰ (ਬਫਰ);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ ਨਿਜੀ:
+  HB_ਅੰਦਰੂਨੀ gsubgpos_ਗ੍ਰਾਫ_context_t (hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_3,
+                                        ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_ਅੰਦਰੂਨੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#ਜੇ_ਅੰਤ  // GRAPH_GSUBGPOS_CONTEXT

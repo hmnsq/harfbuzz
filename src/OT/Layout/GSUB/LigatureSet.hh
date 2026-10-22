@@ -1,111 +1,111 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESET_HH
-#define OT_LAYOUT_GSUB_LIGATURESET_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_LIGATURESET_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_LIGATURESET_HH
 
-#include "Common.hh"
-#include "Ligature.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Ligature.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-template <typename Types>
-struct LigatureSet
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ Ligature_ਸੈੱਟ
 {
-  public:
-  Array16Of<typename Types::template OffsetTo<Ligature<Types>>>
+  ਜਨਤਕ:
+  Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ ਵਿੱਥ_ਮੰਜ਼ਿਲ<Ligature<Types>>>
                 ligature;               /* Array LigatureSet tables
                                          * ordered by preference */
   
-  DEFINE_SIZE_ARRAY (2, ligature);
+  DEFINE_ਮਾਪ_ARRAY (2, ligature);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (ligature.sanitize (c, this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (ligature.sanitize (c, ਇਹ));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    return
+    ਵਾਪਸ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { return _.intersects (glyphs); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_map ([glyphs] (ਅਚਲ Ligature<Types> &_) { ਵਾਪਸ _.intersects (glyphs); })
     | hb_any
     ;
   }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
+  ਤਾਰਕਿਕ intersects_lig_glyph (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
   {
-    return
+    ਵਾਪਸ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { 
-      return _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_map ([glyphs] (ਅਚਲ Ligature<Types> &_) { 
+      ਵਾਪਸ _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
     })
     | hb_any
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  ਖਾਲੀ ਘੇਰਾ (hb_ਘੇਰਾ_context_t *c) ਅਚਲ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.closure (c); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([c] (ਅਚਲ Ligature<Types> &_) { _.ਘੇਰਾ (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  ਖਾਲੀ depend (hb_depend_context_t *c, hb_codepoint_t ਪਹਿਲਾ) ਅਚਲ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const Ligature<Types> &_) { _.depend (c, first); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([&] (ਅਚਲ Ligature<Types> &_) { _.depend (c, ਪਹਿਲਾ); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([c] (ਅਚਲ Ligature<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  template <typename set_t>
-  void collect_seconds (set_t &s) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_seconds (ਸੈੱਟ_t &s) ਅਚਲ
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&s] (const Ligature<Types> &_) { _.collect_second (s); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_apply ([&s] (ਅਚਲ Ligature<Types> &_) { _.collect_ਦੂਜਾ (s); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  ਤਾਰਕਿਕ would_apply (hb_would_apply_context_t *c) ਅਚਲ
   {
-    return
+    ਵਾਪਸ
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([c] (const Ligature<Types> &_) { return _.would_apply (c); })
+    | hb_map (hb_ਜੋੜੋ (ਇਹ))
+    | hb_map ([c] (ਅਚਲ Ligature<Types> &_) { ਵਾਪਸ _.would_apply (c); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c, const hb_set_digest_t *seconds = nullptr) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c, ਅਚਲ hb_ਸੈੱਟ_digest_t *seconds = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    unsigned int num_ligs = ligature.len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_ligs = ligature.len;
 
-#ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_RULESETS_FAST_ਰਸਤਾ
+    ਜੇ (HB_OPTIMIZE_ਮਾਪ_VAL || ਅੰਕ_ligs <= 1)
+#ਜੇ_ਅੰਤ
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_ligs; i++)
       {
-	const auto &lig = this+ligature.arrayZ[i];
-	if (lig.apply (c)) return_trace (true);
+	ਅਚਲ ਸਵੈਚਾਲਿਤ &lig = ਇਹ+ligature.arrayZ[i];
+	ਜੇ (lig.apply (c)) return_trace (ਸੱਚ);
       }
-      return_trace (false);
+      return_trace (ਝੂਠ);
     }
 
     /* This version is optimized for speed by matching the second component
@@ -113,93 +113,93 @@ struct LigatureSet
      *
      * This is replicated in ChainRuleSet and RuleSet. */
 
-    auto &skippy_iter = c->iter_context;
-    skippy_iter.reset (c->buffer->idx);
-    skippy_iter.set_match_func (match_always, nullptr);
-    skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
-    unsigned unsafe_to;
-    hb_codepoint_t second = (unsigned) -1;
-    bool matched = skippy_iter.next (&unsafe_to);
-    if (likely (matched))
+    ਸਵੈਚਾਲਿਤ &skippy_iter = c->iter_context;
+    skippy_iter.reset (c->ਬਫਰ->idx);
+    skippy_iter.ਸੈੱਟ_ਮੇਲ_func (ਮੇਲ_always, ਖਾਲੀ_ਸੂਚਕ);
+    skippy_iter.ਸੈੱਟ_glyph_ਅੰਕੜੇ ((HBUINT16 *) ਖਾਲੀ_ਸੂਚਕ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ unsafe_ਮੰਜ਼ਿਲ;
+    hb_codepoint_t second = (ਬਿਨਾਨਿਸ਼ਾਨੀ) -1;
+    ਤਾਰਕਿਕ matched = skippy_iter.next (&unsafe_ਮੰਜ਼ਿਲ);
+    ਜੇ (likely (matched))
     {
-      second = c->buffer->info[skippy_iter.idx].codepoint;
-      unsafe_to = skippy_iter.idx + 1;
+      second = c->ਬਫਰ->info[skippy_iter.idx].codepoint;
+      unsafe_ਮੰਜ਼ਿਲ = skippy_iter.idx + 1;
 
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      ਜੇ (skippy_iter.may_skip (c->ਬਫਰ->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        ਜਾਓ slow;
       }
     }
-    else
-      goto slow;
+    ਨਹੀਂਤਾਂ
+      ਜਾਓ slow;
 
-    if (seconds && !seconds->may_have (second))
+    ਜੇ (seconds && !seconds->may_have (second))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-      return_trace (false);
+      c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat (c->ਬਫਰ->idx, unsafe_ਮੰਜ਼ਿਲ);
+      return_trace (ਝੂਠ);
     }
-    bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    ਤਾਰਕਿਕ unsafe_ਮੰਜ਼ਿਲ_concat = ਝੂਠ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_ligs; i++)
     {
-      const auto &lig = this+ligature.arrayZ[i];
-      if (unlikely (lig.component.lenP1 <= 1) ||
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &lig = ਇਹ+ligature.arrayZ[i];
+      ਜੇ (unlikely (lig.component.lenP1 <= 1) ||
 	  lig.component.arrayZ[0] == second)
       {
-	if (lig.apply (c))
+	ਜੇ (lig.apply (c))
 	{
-	  if (unsafe_to_concat)
-	    c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	  return_trace (true);
+	  ਜੇ (unsafe_ਮੰਜ਼ਿਲ_concat)
+	    c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat (c->ਬਫਰ->idx, unsafe_ਮੰਜ਼ਿਲ);
+	  return_trace (ਸੱਚ);
 	}
       }
-      else if (likely (lig.component.lenP1 > 1))
-        unsafe_to_concat = true;
+      ਨਹੀਂਤਾਂ ਜੇ (likely (lig.component.lenP1 > 1))
+        unsafe_ਮੰਜ਼ਿਲ_concat = ਸੱਚ;
     }
-    if (likely (unsafe_to_concat))
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
+    ਜੇ (likely (unsafe_ਮੰਜ਼ਿਲ_concat))
+      c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat (c->ਬਫਰ->idx, unsafe_ਮੰਜ਼ਿਲ);
 
-    return_trace (false);
+    return_trace (ਝੂਠ);
   }
 
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ GlyphID>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> component_ਗਿਣਤੀ_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
-    for (unsigned int i = 0; i < ligatures.length; i++)
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (unlikely (!c->extend_min (ਇਹ))) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (!ligature.serialize (c, ligatures.ਲੰਮਾਈ))) return_trace (ਝੂਠ);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ligatures.ਲੰਮਾਈ; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
-      if (unlikely (!ligature[i].serialize_serialize (c,
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ component_ਗਿਣਤੀ = (ਬਿਨਾਨਿਸ਼ਾਨੀ) hb_max ((ਪੂਰਨ) component_ਗਿਣਤੀ_list[i] - 1, 0);
+      ਜੇ (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
-                                                      component_list.sub_array (0, component_count))))
-        return_trace (false);
-      component_list += component_count;
+                                                      component_list.sub_array (0, component_ਗਿਣਤੀ))))
+        return_trace (ਝੂਠ);
+      component_list += component_ਗਿਣਤੀ;
     }
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c, ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_idx) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    ਜੇ (unlikely (!c->serializer->extend_min (ਬਾਹਰਲਾ))) return_trace (ਝੂਠ);
 
     + hb_iter (ligature)
-    | hb_filter (subset_offset_array (c, out->ligature, this, coverage_idx))
+    | hb_filter (subset_ਵਿੱਥ_array (c, ਬਾਹਰਲਾ->ligature, ਇਹ, coverage_idx))
     | hb_drain
     ;
 
-    if (bool (out->ligature))
+    ਜੇ (ਤਾਰਕਿਕ (ਬਾਹਰਲਾ->ligature))
       // Ensure Coverage table is always packed after this.
-      c->serializer->add_virtual_link (coverage_idx);
+      c->serializer->ਜੋੜੋ_virtual_link (coverage_idx);
 
-    return_trace (bool (out->ligature));
+    return_trace (ਤਾਰਕਿਕ (ਬਾਹਰਲਾ->ligature));
   }
 };
 
@@ -207,4 +207,4 @@ struct LigatureSet
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESET_HH */
+#ਜੇ_ਅੰਤ  /* OT_LAYOUT_GSUB_LIGATURESET_HH */

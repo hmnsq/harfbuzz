@@ -1,37 +1,37 @@
-#ifndef HB_ZLIB_HH
-#define HB_ZLIB_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ZLIB_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ZLIB_HH
 
-#include "hb-blob.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-blob.hh"
 
-static inline bool
-hb_blob_is_gzip (const char *data,
-                 unsigned    data_len)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+hb_blob_is_gzip (ਅਚਲ ਅੱਖਰ *ਅੰਕੜੇ,
+                 ਬਿਨਾਨਿਸ਼ਾਨੀ    ਅੰਕੜੇ_len)
 {
-  return data_len >= 3 &&
-         (unsigned char) data[0] == 0x1Fu &&
-         (unsigned char) data[1] == 0x8Bu &&
-         (unsigned char) data[2] == 0x08u;
+  ਵਾਪਸ ਅੰਕੜੇ_len >= 3 &&
+         (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ) ਅੰਕੜੇ[0] == 0x1Fu &&
+         (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ) ਅੰਕੜੇ[1] == 0x8Bu &&
+         (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ) ਅੰਕੜੇ[2] == 0x08u;
 }
 
-static inline bool
-hb_gzip_get_uncompressed_size (const char *data,
-                               unsigned    data_len,
-                               uint32_t   *size)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+hb_gzip_get_uncompressed_ਮਾਪ (ਅਚਲ ਅੱਖਰ *ਅੰਕੜੇ,
+                               ਬਿਨਾਨਿਸ਼ਾਨੀ    ਅੰਕੜੇ_len,
+                               uint32_t   *ਮਾਪ)
 {
-  if (data_len < 4)
-    return false;
+  ਜੇ (ਅੰਕੜੇ_len < 4)
+    ਵਾਪਸ ਝੂਠ;
 
-  const unsigned char *trailer = (const unsigned char *) data + data_len - 4;
-  if (size)
-    *size = (uint32_t) trailer[0] |
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *trailer = (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) ਅੰਕੜੇ + ਅੰਕੜੇ_len - 4;
+  ਜੇ (ਮਾਪ)
+    *ਮਾਪ = (uint32_t) trailer[0] |
             ((uint32_t) trailer[1] << 8) |
             ((uint32_t) trailer[2] << 16) |
             ((uint32_t) trailer[3] << 24);
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-HB_INTERNAL hb_blob_t *
+HB_ਅੰਦਰੂਨੀ hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len);
+                         ਬਿਨਾਨਿਸ਼ਾਨੀ   max_output_len);
 
-#endif /* HB_ZLIB_HH */
+#ਜੇ_ਅੰਤ /* HB_ZLIB_HH */

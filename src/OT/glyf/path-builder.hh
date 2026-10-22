@@ -1,34 +1,34 @@
-#ifndef OT_GLYF_PATH_BUILDER_HH
-#define OT_GLYF_PATH_BUILDER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_GLYF_ਰਸਤਾ_BUILDER_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_GLYF_ਰਸਤਾ_BUILDER_HH
 
 
-#include "../../hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ glyf_impl {
 
 
-struct path_builder_t
+ਬਣਤਰ ਰਸਤਾ_builder_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
 
-  struct optional_point_t
+  ਬਣਤਰ optional_ਬਿੰਦੂ_t
   {
-    optional_point_t () {}
-    optional_point_t (float x_, float y_) : has_data (true), x (x_), y (y_) {}
-    operator bool () const { return has_data; }
+    optional_ਬਿੰਦੂ_t () {}
+    optional_ਬਿੰਦੂ_t (ਦਸ਼ਮਲਵ x_, ਦਸ਼ਮਲਵ y_) : has_ਅੰਕੜੇ (ਸੱਚ), x (x_), y (y_) {}
+    ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ has_ਅੰਕੜੇ; }
 
-    bool has_data = false;
-    float x;
-    float y;
+    ਤਾਰਕਿਕ has_ਅੰਕੜੇ = ਝੂਠ;
+    ਦਸ਼ਮਲਵ x;
+    ਦਸ਼ਮਲਵ y;
 
-    optional_point_t mid (optional_point_t p)
-    { return optional_point_t ((x + p.x) * 0.5f, (y + p.y) * 0.5f); }
-  } first_oncurve, first_offcurve, first_offcurve2, last_offcurve, last_offcurve2;
+    optional_ਬਿੰਦੂ_t mid (optional_ਬਿੰਦੂ_t p)
+    { ਵਾਪਸ optional_ਬਿੰਦੂ_t ((x + p.x) * 0.5f, (y + p.y) * 0.5f); }
+  } ਪਹਿਲਾ_oncurve, ਪਹਿਲਾ_offcurve, ਪਹਿਲਾ_offcurve2, ਆਖਰੀ_offcurve, ਆਖਰੀ_offcurve2;
 
-  path_builder_t (hb_font_t *font_, hb_draw_session_t &draw_session_) :
+  ਰਸਤਾ_builder_t (hb_font_t *font_, hb_draw_session_t &draw_session_) :
     font (font_), draw_session (&draw_session_) {}
 
   /* based on https://github.com/RazrFalcon/ttf-parser/blob/4f32821/src/glyf.rs#L287
@@ -38,159 +38,159 @@ struct path_builder_t
      *
      * Cubic support added. */
   HB_ALWAYS_INLINE
-  void consume_point (const contour_point_t &point)
+  ਖਾਲੀ consume_ਬਿੰਦੂ (ਅਚਲ contour_ਬਿੰਦੂ_t &ਬਿੰਦੂ)
   {
-    bool is_on_curve = point.flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE;
-#ifdef HB_NO_CUBIC_GLYF
-    constexpr bool is_cubic = false;
-#else
-    bool is_cubic = !is_on_curve && (point.flag & glyf_impl::SimpleGlyph::FLAG_CUBIC);
-#endif
-    optional_point_t p (font->em_fscalef_x (point.x), font->em_fscalef_y (point.y));
-    if (unlikely (!first_oncurve))
+    ਤਾਰਕਿਕ is_on_ਵਕਰ = ਬਿੰਦੂ.flag & glyf_impl::SimpleGlyph::FLAG_ON_ਵਕਰ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_CUBIC_GLYF
+    constexpr ਤਾਰਕਿਕ is_cubic = ਝੂਠ;
+#ਨਹੀਂਤਾਂ
+    ਤਾਰਕਿਕ is_cubic = !is_on_ਵਕਰ && (ਬਿੰਦੂ.flag & glyf_impl::SimpleGlyph::FLAG_CUBIC);
+#ਜੇ_ਅੰਤ
+    optional_ਬਿੰਦੂ_t p (font->em_fscalef_x (ਬਿੰਦੂ.x), font->em_fscalef_y (ਬਿੰਦੂ.y));
+    ਜੇ (unlikely (!ਪਹਿਲਾ_oncurve))
     {
-      if (is_on_curve)
+      ਜੇ (is_on_ਵਕਰ)
       {
-	first_oncurve = p;
-	draw_session->move_to (p.x, p.y);
+	ਪਹਿਲਾ_oncurve = p;
+	draw_session->move_ਮੰਜ਼ਿਲ (p.x, p.y);
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	if (is_cubic && !first_offcurve2)
+	ਜੇ (is_cubic && !ਪਹਿਲਾ_offcurve2)
 	{
-	  first_offcurve2 = first_offcurve;
-	  first_offcurve = p;
+	  ਪਹਿਲਾ_offcurve2 = ਪਹਿਲਾ_offcurve;
+	  ਪਹਿਲਾ_offcurve = p;
 	}
-	else if (first_offcurve)
+	ਨਹੀਂਤਾਂ ਜੇ (ਪਹਿਲਾ_offcurve)
 	{
-	  optional_point_t mid = first_offcurve.mid (p);
-	  first_oncurve = mid;
-	  last_offcurve = p;
-	  draw_session->move_to (mid.x, mid.y);
+	  optional_ਬਿੰਦੂ_t mid = ਪਹਿਲਾ_offcurve.mid (p);
+	  ਪਹਿਲਾ_oncurve = mid;
+	  ਆਖਰੀ_offcurve = p;
+	  draw_session->move_ਮੰਜ਼ਿਲ (mid.x, mid.y);
 	}
-	else
-	  first_offcurve = p;
+	ਨਹੀਂਤਾਂ
+	  ਪਹਿਲਾ_offcurve = p;
       }
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      if (last_offcurve)
+      ਜੇ (ਆਖਰੀ_offcurve)
       {
-	if (is_on_curve)
+	ਜੇ (is_on_ਵਕਰ)
 	{
-	  if (last_offcurve2)
+	  ਜੇ (ਆਖਰੀ_offcurve2)
 	  {
-	    draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
-				    last_offcurve.x, last_offcurve.y,
+	    draw_session->cubic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve2.x, ਆਖਰੀ_offcurve2.y,
+				    ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 				    p.x, p.y);
-	    last_offcurve2 = optional_point_t ();
+	    ਆਖਰੀ_offcurve2 = optional_ਬਿੰਦੂ_t ();
 	  }
-	  else
-	    draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
+	  ਨਹੀਂਤਾਂ
+	    draw_session->quadratic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 				       p.x, p.y);
-	  last_offcurve = optional_point_t ();
+	  ਆਖਰੀ_offcurve = optional_ਬਿੰਦੂ_t ();
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
-	  if (is_cubic && !last_offcurve2)
+	  ਜੇ (is_cubic && !ਆਖਰੀ_offcurve2)
 	  {
-	    last_offcurve2 = last_offcurve;
-	    last_offcurve = p;
+	    ਆਖਰੀ_offcurve2 = ਆਖਰੀ_offcurve;
+	    ਆਖਰੀ_offcurve = p;
 	  }
-	  else
+	  ਨਹੀਂਤਾਂ
 	  {
-	    optional_point_t mid = last_offcurve.mid (p);
+	    optional_ਬਿੰਦੂ_t mid = ਆਖਰੀ_offcurve.mid (p);
 
-	    if (is_cubic)
+	    ਜੇ (is_cubic)
 	    {
-	      draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
-				      last_offcurve.x, last_offcurve.y,
+	      draw_session->cubic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve2.x, ਆਖਰੀ_offcurve2.y,
+				      ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 				      mid.x, mid.y);
-	      last_offcurve2 = optional_point_t ();
+	      ਆਖਰੀ_offcurve2 = optional_ਬਿੰਦੂ_t ();
 	    }
-	    else
-	      draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
+	    ਨਹੀਂਤਾਂ
+	      draw_session->quadratic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 					 mid.x, mid.y);
-	    last_offcurve = p;
+	    ਆਖਰੀ_offcurve = p;
 	  }
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	if (is_on_curve)
-	  draw_session->line_to (p.x, p.y);
-	else
-	  last_offcurve = p;
+	ਜੇ (is_on_ਵਕਰ)
+	  draw_session->ਸਤਰ_ਮੰਜ਼ਿਲ (p.x, p.y);
+	ਨਹੀਂਤਾਂ
+	  ਆਖਰੀ_offcurve = p;
       }
     }
 
   }
 
-  void contour_end ()
+  ਖਾਲੀ contour_ਸਿਰਾ ()
   {
-    if (first_offcurve && last_offcurve)
+    ਜੇ (ਪਹਿਲਾ_offcurve && ਆਖਰੀ_offcurve)
     {
-      optional_point_t mid = last_offcurve.mid (first_offcurve2 ?
-						first_offcurve2 :
-						first_offcurve);
-      if (last_offcurve2)
-	draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
-				last_offcurve.x, last_offcurve.y,
+      optional_ਬਿੰਦੂ_t mid = ਆਖਰੀ_offcurve.mid (ਪਹਿਲਾ_offcurve2 ?
+						ਪਹਿਲਾ_offcurve2 :
+						ਪਹਿਲਾ_offcurve);
+      ਜੇ (ਆਖਰੀ_offcurve2)
+	draw_session->cubic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve2.x, ਆਖਰੀ_offcurve2.y,
+				ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 				mid.x, mid.y);
-      else
-	draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
+      ਨਹੀਂਤਾਂ
+	draw_session->quadratic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
 				   mid.x, mid.y);
-      last_offcurve = optional_point_t ();
+      ਆਖਰੀ_offcurve = optional_ਬਿੰਦੂ_t ();
     }
     /* now check the rest */
 
-    if (first_offcurve && first_oncurve)
+    ਜੇ (ਪਹਿਲਾ_offcurve && ਪਹਿਲਾ_oncurve)
     {
-      if (first_offcurve2)
-	draw_session->cubic_to (first_offcurve2.x, first_offcurve2.y,
-				first_offcurve.x, first_offcurve.y,
-				first_oncurve.x, first_oncurve.y);
-      else
-	draw_session->quadratic_to (first_offcurve.x, first_offcurve.y,
-				   first_oncurve.x, first_oncurve.y);
+      ਜੇ (ਪਹਿਲਾ_offcurve2)
+	draw_session->cubic_ਮੰਜ਼ਿਲ (ਪਹਿਲਾ_offcurve2.x, ਪਹਿਲਾ_offcurve2.y,
+				ਪਹਿਲਾ_offcurve.x, ਪਹਿਲਾ_offcurve.y,
+				ਪਹਿਲਾ_oncurve.x, ਪਹਿਲਾ_oncurve.y);
+      ਨਹੀਂਤਾਂ
+	draw_session->quadratic_ਮੰਜ਼ਿਲ (ਪਹਿਲਾ_offcurve.x, ਪਹਿਲਾ_offcurve.y,
+				   ਪਹਿਲਾ_oncurve.x, ਪਹਿਲਾ_oncurve.y);
     }
-    else if (last_offcurve && first_oncurve)
+    ਨਹੀਂਤਾਂ ਜੇ (ਆਖਰੀ_offcurve && ਪਹਿਲਾ_oncurve)
     {
-      if (last_offcurve2)
-	draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
-				last_offcurve.x, last_offcurve.y,
-				first_oncurve.x, first_oncurve.y);
-      else
-	draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
-				   first_oncurve.x, first_oncurve.y);
+      ਜੇ (ਆਖਰੀ_offcurve2)
+	draw_session->cubic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve2.x, ਆਖਰੀ_offcurve2.y,
+				ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
+				ਪਹਿਲਾ_oncurve.x, ਪਹਿਲਾ_oncurve.y);
+      ਨਹੀਂਤਾਂ
+	draw_session->quadratic_ਮੰਜ਼ਿਲ (ਆਖਰੀ_offcurve.x, ਆਖਰੀ_offcurve.y,
+				   ਪਹਿਲਾ_oncurve.x, ਪਹਿਲਾ_oncurve.y);
     }
-    else if (first_oncurve)
-      draw_session->line_to (first_oncurve.x, first_oncurve.y);
-    else if (first_offcurve2)
+    ਨਹੀਂਤਾਂ ਜੇ (ਪਹਿਲਾ_oncurve)
+      draw_session->ਸਤਰ_ਮੰਜ਼ਿਲ (ਪਹਿਲਾ_oncurve.x, ਪਹਿਲਾ_oncurve.y);
+    ਨਹੀਂਤਾਂ ਜੇ (ਪਹਿਲਾ_offcurve2)
     {
       /* A contour with just two cubic controls closes at their midpoint. */
-      optional_point_t mid = first_offcurve2.mid (first_offcurve);
-      draw_session->move_to (mid.x, mid.y);
-      draw_session->cubic_to (first_offcurve2.x, first_offcurve2.y,
-			      first_offcurve.x, first_offcurve.y,
+      optional_ਬਿੰਦੂ_t mid = ਪਹਿਲਾ_offcurve2.mid (ਪਹਿਲਾ_offcurve);
+      draw_session->move_ਮੰਜ਼ਿਲ (mid.x, mid.y);
+      draw_session->cubic_ਮੰਜ਼ਿਲ (ਪਹਿਲਾ_offcurve2.x, ਪਹਿਲਾ_offcurve2.y,
+			      ਪਹਿਲਾ_offcurve.x, ਪਹਿਲਾ_offcurve.y,
 			      mid.x, mid.y);
     }
-    else if (first_offcurve)
+    ਨਹੀਂਤਾਂ ਜੇ (ਪਹਿਲਾ_offcurve)
     {
-      float x = first_offcurve.x, y = first_offcurve.y;
-      draw_session->move_to (x, y);
-      draw_session->quadratic_to (x, y, x, y);
+      ਦਸ਼ਮਲਵ x = ਪਹਿਲਾ_offcurve.x, y = ਪਹਿਲਾ_offcurve.y;
+      draw_session->move_ਮੰਜ਼ਿਲ (x, y);
+      draw_session->quadratic_ਮੰਜ਼ਿਲ (x, y, x, y);
     }
 
     /* Getting ready for the next contour */
-    first_oncurve = first_offcurve = first_offcurve2 = last_offcurve = last_offcurve2 = optional_point_t ();
-    draw_session->close_path ();
+    ਪਹਿਲਾ_oncurve = ਪਹਿਲਾ_offcurve = ਪਹਿਲਾ_offcurve2 = ਆਖਰੀ_offcurve = ਆਖਰੀ_offcurve2 = optional_ਬਿੰਦੂ_t ();
+    draw_session->close_ਰਸਤਾ ();
   }
 
-  void points_end () {}
+  ਖਾਲੀ points_ਸਿਰਾ () {}
 
-  bool is_consuming_contour_points () { return true; }
-  contour_point_t *get_phantoms_sink () { return nullptr; }
+  ਤਾਰਕਿਕ is_consuming_contour_points () { ਵਾਪਸ ਸੱਚ; }
+  contour_ਬਿੰਦੂ_t *get_phantoms_sink () { ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ; }
 };
 
 
@@ -198,4 +198,4 @@ struct path_builder_t
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_PATH_BUILDER_HH */
+#ਜੇ_ਅੰਤ /* OT_GLYF_PATH_BUILDER_HH */

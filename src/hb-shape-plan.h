@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ਜੇ !defined(HB_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_SHAPE_PLAN_H
-#define HB_SHAPE_PLAN_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SHAPE_PLAN_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPE_PLAN_H
 
-#include "hb-common.h"
-#include "hb-font.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -50,73 +50,73 @@ HB_BEGIN_DECLS
  * etc.).
  *
  **/
-typedef struct hb_shape_plan_t hb_shape_plan_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_shape_plan_t hb_shape_plan_t;
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list);
+		      ਅਚਲ hb_segment_properties_t *props,
+		      ਅਚਲ hb_feature_t            *user_features,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_user_features,
+		      ਅਚਲ ਅੱਖਰ * ਅਚਲ            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list);
+			     ਅਚਲ hb_segment_properties_t *props,
+			     ਅਚਲ hb_feature_t            *user_features,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_user_features,
+			     ਅਚਲ ਅੱਖਰ * ਅਚਲ            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list);
+		       ਅਚਲ hb_segment_properties_t *props,
+		       ਅਚਲ hb_feature_t            *user_features,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_user_features,
+		       ਅਚਲ ਪੂਰਨ                     *coords,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_coords,
+		       ਅਚਲ ਅੱਖਰ * ਅਚਲ            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list);
+			      ਅਚਲ hb_segment_properties_t *props,
+			      ਅਚਲ hb_feature_t            *user_features,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_user_features,
+			      ਅਚਲ ਪੂਰਨ                     *coords,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                   ਅੰਕ_coords,
+			      ਅਚਲ ਅੱਖਰ * ਅਚਲ            *shaper_list);
 
 
 HB_EXTERN hb_shape_plan_t *
-hb_shape_plan_get_empty (void);
+hb_shape_plan_get_ਖਾਲੀ_ਥਾਵਾਂ (ਖਾਲੀ);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan);
 
 HB_EXTERN hb_bool_t
-hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_shape_plan_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_shape_plan_t    *shape_plan,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+			     ਖਾਲੀ *              ਅੰਕੜੇ,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key);
+HB_EXTERN ਖਾਲੀ *
+hb_shape_plan_get_user_ਅੰਕੜੇ (ਅਚਲ hb_shape_plan_t *shape_plan,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t    *ਕੁੰਜੀ_2);
 
 
 HB_EXTERN hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       hb_ਬਫਰ_t        *ਬਫਰ,
+		       ਅਚਲ hb_feature_t *features,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features);
 
-HB_EXTERN const char *
+HB_EXTERN ਅਚਲ ਅੱਖਰ *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_SHAPE_PLAN_H */
+#ਜੇ_ਅੰਤ /* HB_SHAPE_PLAN_H */

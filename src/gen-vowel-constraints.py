@@ -13,53 +13,53 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+ਆਯਾਤ collections
+ਆਯਾਤ os
+ਪਰਿਭਾਸ਼ਾ ਲਿਖ (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.ਬਫਰ.ਲਿਖ (s.encode ('utf-8'))
+ਆਯਾਤ sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
-	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+ਜੇ ਲੰਬਾਈ (sys.argv) > 1 ਅਤੇ sys.argv[1] == '--rust':
+	ਹਟਾਓ sys.argv[1]
+	output_rust = ਸੱਚ
+ਨਹੀਂਤਾਂ:
+	output_rust = ਝੂਠ
 
-if len (sys.argv) != 3:
+ਜੇ ਲੰਬਾਈ (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+ਨਾਲ open (sys.argv[2], encoding='utf-8') ਇਵ f:
+	scripts_ਸਿਰਲੇਖ = [f.readline () ਲਈ i ਵਿੱਚ ਸੀਮਾ (2)]
 	scripts = {}
-	script_order = {}
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+	script_ਕ੍ਰਮ = {}
+	ਲਈ ਸਤਰ ਵਿੱਚ f:
+		j = ਸਤਰ.ਲੱਭੋ ('#')
+		ਜੇ j >= 0:
+			ਸਤਰ = ਸਤਰ[:j]
+		fields = [x.strip () ਲਈ x ਵਿੱਚ ਸਤਰ.ਵੰਡੋ (';')]
+		ਜੇ ਲੰਬਾਈ (fields) == 1:
+			ਜਾਰੀ
+		uu = fields[0].ਵੰਡੋ ('..')
+		ਸ਼ੁਰੂ = ਪੂਰਨ (uu[0], 16)
+		ਜੇ ਲੰਬਾਈ (uu) == 1:
+			ਸਿਰਾ = ਸ਼ੁਰੂ
+		ਨਹੀਂਤਾਂ:
+			ਸਿਰਾ = ਪੂਰਨ (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		ਲਈ u ਵਿੱਚ ਸੀਮਾ (ਸ਼ੁਰੂ, ਸਿਰਾ + 1):
 			scripts[u] = script
-		if script not in script_order:
-			script_order[script] = start
+		ਜੇ script ਨਹੀਂ ਵਿੱਚ script_ਕ੍ਰਮ:
+			script_ਕ੍ਰਮ[script] = ਸ਼ੁਰੂ
 
-class ConstraintSet (object):
+ਵਰਗ Constraint_ਸੈੱਟ (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
 		constraint (List[int]): A prohibited code point sequence.
 
 	"""
-	def __init__ (self, constraint):
+	ਪਰਿਭਾਸ਼ਾ __init__ (self, constraint):
 		# Either a list or a dictionary. As a list of code points, it
 		# represents a prohibited code point sequence. As a dictionary,
 		# it represents a set of prohibited sequences, where each item
@@ -68,259 +68,259 @@ class ConstraintSet (object):
 		# (ConstraintSets).
 		self._c = constraint
 
-	def add (self, constraint):
+	ਪਰਿਭਾਸ਼ਾ ਜੋੜੋ (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
-		first = constraint[0]
+		ਜੇ ਨਹੀਂ constraint:
+			ਵਾਪਸ
+		ਪਹਿਲਾ = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		ਜੇ isinstance (self._c, list):
+			ਜੇ constraint == self._c[:ਲੰਬਾਈ (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
-				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
-				self._c[first].add (rest)
-			else:
-				self._c[first] = ConstraintSet (rest)
+			ਜਾਂਜੇ self._c != constraint[:ਲੰਬਾਈ (self._c)]:
+				self._c = {self._c[0]: Constraint_ਸੈੱਟ (self._c[1:])}
+		ਜੇ isinstance (self._c, dict):
+			ਜੇ ਪਹਿਲਾ ਵਿੱਚ self._c:
+				self._c[ਪਹਿਲਾ].ਜੋੜੋ (rest)
+			ਨਹੀਂਤਾਂ:
+				self._c[ਪਹਿਲਾ] = Constraint_ਸੈੱਟ (rest)
 
 	@staticmethod
-	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+	ਪਰਿਭਾਸ਼ਾ _indent (ਡੂੰਘਾਈ):
+		ਵਾਪਸ ('  ' * ਡੂੰਘਾਈ).replace ('        ', '\t')
 
-	def __str__ (self, index=0, depth=4):
+	ਪਰਿਭਾਸ਼ਾ __str__ (self, ਸੂਚਕਾਂਕ_2=0, ਡੂੰਘਾਈ=4):
 		s = []
-		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		indent = self._indent (ਡੂੰਘਾਈ)
+		ਜੇ isinstance (self._c, list):
+			ਜੇ ਲੰਬਾਈ (self._c) == 0:
+				ਪ੍ਰਤਿਜ੍ਞਾ ਸੂਚਕਾਂਕ_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
-					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			ਜਾਂਜੇ ਲੰਬਾਈ (self._c) == 1:
+				ਪ੍ਰਤਿਜ੍ਞਾ ਸੂਚਕਾਂਕ_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, ਅਗਲਾ (iter (self._c)), ਸੂਚਕਾਂਕ_2 ਜਾਂ ''))
+			ਨਹੀਂਤਾਂ:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], ਸੂਚਕਾਂਕ_2 ਜਾਂ ''))
+				ਜੇ ਸੂਚਕਾਂਕ_2:
+					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (ਡੂੰਘਾਈ + 2), ਸੂਚਕਾਂਕ_2 + 1))
+				ਲਈ i, cp ਵਿੱਚ enumerate (self._c[1:], ਸ਼ੁਰੂ=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (ਡੂੰਘਾਈ + 2), cp, ਸੂਚਕਾਂਕ_2 + i, ')' ਜੇ i == ਲੰਬਾਈ (self._c) - 1 ਨਹੀਂਤਾਂ ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
-					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
-				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
+				ਲਈ i ਵਿੱਚ ਸੀਮਾ (ਸੂਚਕਾਂਕ_2):
+					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (ਡੂੰਘਾਈ + 1)))
+				s.append ('{}matched = true;\n'.format (self._indent (ਡੂੰਘਾਈ + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		ਨਹੀਂਤਾਂ:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, ਸੂਚਕਾਂਕ_2 ਜਾਂ ''))
 			s.append ('{}{{\n'.format (indent))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
-						s.append (self._indent (depth + 1))
-					else:
+			cases = collections.defaultdict (ਸੈੱਟ)
+			ਲਈ ਪਹਿਲਾ, rest ਵਿੱਚ sorted (self._c.ਚੀਜ਼ਾਂ ()):
+				cases[rest.__str__ (ਸੂਚਕਾਂਕ_2 + 1, ਡੂੰਘਾਈ + 2)].ਜੋੜੋ (ਪਹਿਲਾ)
+			ਲਈ body, labels ਵਿੱਚ sorted (cases.ਚੀਜ਼ਾਂ (), ਕੁੰਜੀ_2=ਅਨਾਮ b_ls: sorted (b_ls[1])[0]):
+				ਲਈ i, cp ਵਿੱਚ enumerate (sorted (labels)):
+					ਜੇ i % 4 == 0:
+						s.append (self._indent (ਡੂੰਘਾਈ + 1))
+					ਨਹੀਂਤਾਂ:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' ਜੇ i % 4 == 3 ਨਹੀਂਤਾਂ ''))
+				ਜੇ ਲੰਬਾਈ (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
-				s.append ('{}break;\n'.format (self._indent (depth + 2)))
+				s.append ('{}break;\n'.format (self._indent (ਡੂੰਘਾਈ + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		ਵਾਪਸ ''.join (s)
 
-	def rust_str (self, index=0):
+	ਪਰਿਭਾਸ਼ਾ rust_str (self, ਸੂਚਕਾਂਕ_2=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		ਜੇ isinstance (self._c, list):
+			ਜੇ ਲੰਬਾਈ (self._c) == 0:
+				ਪ੍ਰਤਿਜ੍ਞਾ ਸੂਚਕਾਂਕ_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
-				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
-					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			ਜਾਂਜੇ ਲੰਬਾਈ (self._c) == 1:
+				ਪ੍ਰਤਿਜ੍ਞਾ ਸੂਚਕਾਂਕ_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (ਅਗਲਾ (iter (self._c)), ਸੂਚਕਾਂਕ_2))
+			ਨਹੀਂਤਾਂ:
+				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], ਸੂਚਕਾਂਕ_2))
+				ਜੇ ਸੂਚਕਾਂਕ_2:
+					s.append ('buffer.idx + {} < buffer.len &&\n'.format (ਸੂਚਕਾਂਕ_2 + 1))
+				ਲਈ i, cp ਵਿੱਚ enumerate (self._c[1:], ਸ਼ੁਰੂ=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, ਸੂਚਕਾਂਕ_2 + i, '' ਜੇ i == ਲੰਬਾਈ (self._c) - 1 ਨਹੀਂਤਾਂ ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				ਲਈ i ਵਿੱਚ ਸੀਮਾ (ਸੂਚਕਾਂਕ_2 + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
-			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+		ਨਹੀਂਤਾਂ:
+			s.append ('match buffer.cur({}).glyph_id {{\n'.format (ਸੂਚਕਾਂਕ_2))
+			cases = collections.defaultdict (ਸੈੱਟ)
+			ਲਈ ਪਹਿਲਾ, rest ਵਿੱਚ sorted (self._c.ਚੀਜ਼ਾਂ ()):
+				cases[rest.rust_str (ਸੂਚਕਾਂਕ_2 + 1)].ਜੋੜੋ (ਪਹਿਲਾ)
+			ਚੀਜ਼ਾਂ = sorted (cases.ਚੀਜ਼ਾਂ (), ਕੁੰਜੀ_2=ਅਨਾਮ b_ls: sorted (b_ls[1])[0])
+			ਲਈ ii, (body, labels) ਵਿੱਚ enumerate (ਚੀਜ਼ਾਂ):
+				ਲਈ i, cp ਵਿੱਚ enumerate (sorted (labels)):
+					ਜੇ i == ਲੰਬਾਈ (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' ਜੇ i % 4 == 3 ਨਹੀਂਤਾਂ ''))
+					ਨਹੀਂਤਾਂ:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' ਜੇ i % 4 == 3 ਨਹੀਂਤਾਂ ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				ਜੇ ii == ਲੰਬਾਈ (ਚੀਜ਼ਾਂ) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		ਵਾਪਸ ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
-	constraints_header = []
-	while True:
-		line = f.readline ().strip ()
-		if line == '#':
-			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+ਨਾਲ open (sys.argv[1], encoding='utf-8') ਇਵ f:
+	constraints_ਸਿਰਲੇਖ = []
+	ਜਦੋਂ ਸੱਚ:
+		ਸਤਰ = f.readline ().strip ()
+		ਜੇ ਸਤਰ == '#':
+			ਰੋਕੋ
+		constraints_ਸਿਰਲੇਖ.append(ਸਤਰ)
+	ਲਈ ਸਤਰ ਵਿੱਚ f:
+		j = ਸਤਰ.ਲੱਭੋ ('#')
+		ਜੇ j >= 0:
+			ਸਤਰ = ਸਤਰ[:j]
+		constraint = [ਪੂਰਨ (cp, 16) ਲਈ cp ਵਿੱਚ ਸਤਰ.ਵੰਡੋ (';')[0].ਵੰਡੋ ()]
+		ਜੇ ਨਹੀਂ constraint: ਜਾਰੀ
+		ਪ੍ਰਤਿਜ੍ਞਾ 2 <= ਲੰਬਾਈ (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
-			constraints[script].add (constraint)
-		else:
-			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		ਜੇ script ਵਿੱਚ constraints:
+			constraints[script].ਜੋੜੋ (constraint)
+		ਨਹੀਂਤਾਂ:
+			constraints[script] = Constraint_ਸੈੱਟ (constraint)
+		ਪ੍ਰਤਿਜ੍ਞਾ constraints, 'No constraints found'
 
-print ('/* == Start of generated functions == */')
-if output_rust:
-	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
-	print ()
-	print ('#![allow(clippy::single_match)]')
-	print ()
-	print ('use super::buffer::hb_buffer_t;')
-	print ('use super::script;')
-	print ('use crate::BufferFlags;')
-	print ()
-	print ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    buffer.output_glyph(0x25CC);')
-	print ('    {')
-	print ('        let out_idx = buffer.out_len - 1;')
-	print ('        buffer.out_info_mut()[out_idx].clear_continuation();')
-	print ('    }')
-	print ('}')
-	print ()
-	print ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    output_dotted_circle(buffer);')
-	print ('    buffer.next_glyph();')
-	print ('}')
-	print ()
-	print ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
-	print ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
-	print ('        return;')
-	print ('    }')
-	print ()
-	print ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('    // vowel-sequences that look like another vowel.  Data for each script')
-	print ('    // collected from the USE script development spec.')
-	print ('    //')
-	print ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('    buffer.clear_output();')
-	print ('    match buffer.script {')
+ਛਾਪੋ ('/* == Start of generated functions == */')
+ਜੇ output_rust:
+	ਛਾਪੋ ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('#![allow(clippy::single_match)]')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('use super::buffer::hb_buffer_t;')
+	ਛਾਪੋ ('use super::script;')
+	ਛਾਪੋ ('use crate::BufferFlags;')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ਛਾਪੋ ('    buffer.output_glyph(0x25CC);')
+	ਛਾਪੋ ('    {')
+	ਛਾਪੋ ('        let out_idx = buffer.out_len - 1;')
+	ਛਾਪੋ ('        buffer.out_info_mut()[out_idx].clear_continuation();')
+	ਛਾਪੋ ('    }')
+	ਛਾਪੋ ('}')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ਛਾਪੋ ('    output_dotted_circle(buffer);')
+	ਛਾਪੋ ('    buffer.next_glyph();')
+	ਛਾਪੋ ('}')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
+	ਛਾਪੋ ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
+	ਛਾਪੋ ('        return;')
+	ਛਾਪੋ ('    }')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ਛਾਪੋ ('    // vowel-sequences that look like another vowel.  Data for each script')
+	ਛਾਪੋ ('    // collected from the USE script development spec.')
+	ਛਾਪੋ ('    //')
+	ਛਾਪੋ ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ਛਾਪੋ ('    buffer.clear_output();')
+	ਛਾਪੋ ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('        Some(script::{}) => {{'.format (script.upper ()))
-		print ('            buffer.idx = 0;')
-		print ('            while buffer.idx + 1 < buffer.len {')
-		print ('                #[allow(unused_mut)]')
-		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
-		print ('                buffer.next_glyph();')
-		print ('                if matched { output_with_dotted_circle(buffer); }')
-		print ('            }')
-		print ('        }')
-		print ()
+	ਲਈ script, constraints ਵਿੱਚ sorted (constraints.ਚੀਜ਼ਾਂ (), ਕੁੰਜੀ_2=ਅਨਾਮ s_c: script_ਕ੍ਰਮ[s_c[0]]):
+		ਛਾਪੋ ('        Some(script::{}) => {{'.format (script.ਉੱਤਲਾ ()))
+		ਛਾਪੋ ('            buffer.idx = 0;')
+		ਛਾਪੋ ('            while buffer.idx + 1 < buffer.len {')
+		ਛਾਪੋ ('                #[allow(unused_mut)]')
+		ਛਾਪੋ ('                let mut matched = false;')
+		ਲਿਖ (constraints.rust_str ())
+		ਛਾਪੋ ('                buffer.next_glyph();')
+		ਛਾਪੋ ('                if matched { output_with_dotted_circle(buffer); }')
+		ਛਾਪੋ ('            }')
+		ਛਾਪੋ ('        }')
+		ਛਾਪੋ ()
 
-	print ('        _ => {}')
-	print ('    }')
-	print ('    buffer.sync();')
-	print ('}')
-else:
-	print ('/*')
-	print (' * The following functions are generated by running:')
-	print (' *')
-	print (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.path.basename (sys.argv[0]))
-	print (' *')
-	print (' * on files with these headers:')
-	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
-	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
-	print (' */')
-	print ()
-	print ('#include "hb.hh"')
-	print ()
-	print ('#ifndef HB_NO_OT_SHAPE')
-	print ()
-	print ('#include "hb-ot-shaper-vowel-constraints.hh"')
-	print ()
-	print ('static void')
-	print ('_output_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  (void) buffer->output_glyph (0x25CCu);')
-	print ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
-	print ('}')
-	print ()
-	print ('static void')
-	print ('_output_with_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  _output_dotted_circle (buffer);')
-	print ('  (void) buffer->next_glyph ();')
-	print ('}')
-	print ()
-	print ('void')
-	print ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
-	print ('\t\t\t\t       hb_buffer_t              *buffer,')
-	print ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
-	print ('{')
-	print ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
-	print ('  return;')
-	print ('#endif')
-	print ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
-	print ('    return;')
-	print ()
-	print ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('   * vowel-sequences that look like another vowel.  Data for each script')
-	print ('   * collected from the USE script development spec.')
-	print ('   *')
-	print ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('   */')
-	print ('  buffer->clear_output ();')
-	print ('  unsigned int count = buffer->len;')
-	print ('  switch ((unsigned) buffer->props.script)')
-	print ('  {')
+	ਛਾਪੋ ('        _ => {}')
+	ਛਾਪੋ ('    }')
+	ਛਾਪੋ ('    buffer.sync();')
+	ਛਾਪੋ ('}')
+ਨਹੀਂਤਾਂ:
+	ਛਾਪੋ ('/*')
+	ਛਾਪੋ (' * The following functions are generated by running:')
+	ਛਾਪੋ (' *')
+	ਛਾਪੋ (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.ਰਸਤਾ.basename (sys.argv[0]))
+	ਛਾਪੋ (' *')
+	ਛਾਪੋ (' * on files with these headers:')
+	ਛਾਪੋ (' *')
+	ਲਈ ਸਤਰ ਵਿੱਚ constraints_ਸਿਰਲੇਖ:
+		ਛਾਪੋ (' * %s' % ਸਤਰ.strip ())
+	ਛਾਪੋ (' *')
+	ਲਈ ਸਤਰ ਵਿੱਚ scripts_ਸਿਰਲੇਖ:
+		ਛਾਪੋ (' * %s' % ਸਤਰ.strip ())
+	ਛਾਪੋ (' */')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('#include "hb.hh"')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('#ifndef HB_NO_OT_SHAPE')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('#include "hb-ot-shaper-vowel-constraints.hh"')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('static void')
+	ਛਾਪੋ ('_output_dotted_circle (hb_buffer_t *buffer)')
+	ਛਾਪੋ ('{')
+	ਛਾਪੋ ('  (void) buffer->output_glyph (0x25CCu);')
+	ਛਾਪੋ ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
+	ਛਾਪੋ ('}')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('static void')
+	ਛਾਪੋ ('_output_with_dotted_circle (hb_buffer_t *buffer)')
+	ਛਾਪੋ ('{')
+	ਛਾਪੋ ('  _output_dotted_circle (buffer);')
+	ਛਾਪੋ ('  (void) buffer->next_glyph ();')
+	ਛਾਪੋ ('}')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('void')
+	ਛਾਪੋ ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
+	ਛਾਪੋ ('\t\t\t\t       hb_buffer_t              *buffer,')
+	ਛਾਪੋ ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
+	ਛਾਪੋ ('{')
+	ਛਾਪੋ ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
+	ਛਾਪੋ ('  return;')
+	ਛਾਪੋ ('#endif')
+	ਛਾਪੋ ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
+	ਛਾਪੋ ('    return;')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ਛਾਪੋ ('   * vowel-sequences that look like another vowel.  Data for each script')
+	ਛਾਪੋ ('   * collected from the USE script development spec.')
+	ਛਾਪੋ ('   *')
+	ਛਾਪੋ ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ਛਾਪੋ ('   */')
+	ਛਾਪੋ ('  buffer->clear_output ();')
+	ਛਾਪੋ ('  unsigned int count = buffer->len;')
+	ਛਾਪੋ ('  switch ((unsigned) buffer->props.script)')
+	ਛਾਪੋ ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
-		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
-		print ('      {')
-		print ('\tbool matched = false;')
-		write (str (constraints))
-		print ('\t(void) buffer->next_glyph ();')
-		print ('\tif (matched) _output_with_dotted_circle (buffer);')
-		print ('      }')
-		print ('      break;')
-		print ()
+	ਲਈ script, constraints ਵਿੱਚ sorted (constraints.ਚੀਜ਼ਾਂ (), ਕੁੰਜੀ_2=ਅਨਾਮ s_c: script_ਕ੍ਰਮ[s_c[0]]):
+		ਛਾਪੋ ('    case HB_SCRIPT_{}:'.format (script.ਉੱਤਲਾ ()))
+		ਛਾਪੋ ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
+		ਛਾਪੋ ('      {')
+		ਛਾਪੋ ('\tbool matched = false;')
+		ਲਿਖ (str (constraints))
+		ਛਾਪੋ ('\t(void) buffer->next_glyph ();')
+		ਛਾਪੋ ('\tif (matched) _output_with_dotted_circle (buffer);')
+		ਛਾਪੋ ('      }')
+		ਛਾਪੋ ('      break;')
+		ਛਾਪੋ ()
 
-	print ('    default:')
-	print ('      break;')
-	print ('  }')
-	print ('  buffer->sync ();')
-	print ('}')
-	print ()
-	print ()
-	print ('#endif')
-print ('/* == End of generated functions == */')
+	ਛਾਪੋ ('    default:')
+	ਛਾਪੋ ('      break;')
+	ਛਾਪੋ ('  }')
+	ਛਾਪੋ ('  buffer->sync ();')
+	ਛਾਪੋ ('}')
+	ਛਾਪੋ ()
+	ਛਾਪੋ ()
+	ਛਾਪੋ ('#endif')
+ਛਾਪੋ ('/* == End of generated functions == */')

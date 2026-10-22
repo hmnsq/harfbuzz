@@ -24,73 +24,73 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF2_TABLE_CC
-#define HB_OT_CFF2_TABLE_CC
-#ifdef HB_OT_CFF2_TABLE_CC /* Pacify -Wunused-macros. */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_CFF2_ਸਾਰਣੀ_CC
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_CFF2_ਸਾਰਣੀ_CC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OT_CFF2_ਸਾਰਣੀ_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_FONT_CFF
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
 
-#include "hb-ot-cff2-table.hh"
-#include "hb-cff2-interp-cs.hh"
-#include "hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff2-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cff2-interp-cs.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.hh"
 
-using namespace CFF;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ CFF;
 
-struct cff2_extents_param_t
+ਬਣਤਰ cff2_extents_param_t
 {
   cff2_extents_param_t ()
   {
-    min_x.set_int (INT_MAX);
-    min_y.set_int (INT_MAX);
-    max_x.set_int (INT_MIN);
-    max_y.set_int (INT_MIN);
+    min_x.ਸੈੱਟ_int (ਵੱਧ_ਤੋਂ_ਵੱਧ_ਅੰਕ);
+    min_y.ਸੈੱਟ_int (ਵੱਧ_ਤੋਂ_ਵੱਧ_ਅੰਕ);
+    max_x.ਸੈੱਟ_int (INT_MIN);
+    max_y.ਸੈੱਟ_int (INT_MIN);
   }
 
-  void   start_path ()       { path_open = true; }
-  void     end_path ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  ਖਾਲੀ   ਸ਼ੁਰੂ_ਰਸਤਾ ()       { ਰਸਤਾ_open = ਸੱਚ; }
+  ਖਾਲੀ     ਸਿਰਾ_ਰਸਤਾ ()       { ਰਸਤਾ_open = ਝੂਠ; }
+  ਤਾਰਕਿਕ is_ਰਸਤਾ_open () ਅਚਲ { ਵਾਪਸ ਰਸਤਾ_open; }
 
-  void update_bounds (const point_t &pt)
+  ਖਾਲੀ update_bounds (ਅਚਲ ਬਿੰਦੂ_t &pt)
   {
-    if (pt.x < min_x) min_x = pt.x;
-    if (pt.x > max_x) max_x = pt.x;
-    if (pt.y < min_y) min_y = pt.y;
-    if (pt.y > max_y) max_y = pt.y;
+    ਜੇ (pt.x < min_x) min_x = pt.x;
+    ਜੇ (pt.x > max_x) max_x = pt.x;
+    ਜੇ (pt.y < min_y) min_y = pt.y;
+    ਜੇ (pt.y > max_y) max_y = pt.y;
   }
 
-  bool  path_open = false;
-  number_t min_x;
-  number_t min_y;
-  number_t max_x;
-  number_t max_y;
+  ਤਾਰਕਿਕ  ਰਸਤਾ_open = ਝੂਠ;
+  ਸੰਖਿਆ_t min_x;
+  ਸੰਖਿਆ_t min_y;
+  ਸੰਖਿਆ_t max_x;
+  ਸੰਖਿਆ_t max_y;
 };
 
-struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<number_t>, cff2_extents_param_t>
+ਬਣਤਰ cff2_ਰਸਤਾ_procs_extents_t : ਰਸਤਾ_procs_t<cff2_ਰਸਤਾ_procs_extents_t, cff2_cs_interp_env_t<ਸੰਖਿਆ_t>, cff2_extents_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt)
+  ਸਥਿਰ ਖਾਲੀ moveto (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_extents_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt)
   {
-    param.end_path ();
+    param.ਸਿਰਾ_ਰਸਤਾ ();
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1)
+  ਸਥਿਰ ਖਾਲੀ ਸਤਰ (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_extents_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt1)
   {
-    if (!param.is_path_open ())
+    ਜੇ (!param.is_ਰਸਤਾ_open ())
     {
-      param.start_path ();
+      param.ਸ਼ੁਰੂ_ਰਸਤਾ ();
       param.update_bounds (env.get_pt ());
     }
     env.moveto (pt1);
     param.update_bounds (env.get_pt ());
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ਸਥਿਰ ਖਾਲੀ ਵਕਰ (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_extents_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt1, ਅਚਲ ਬਿੰਦੂ_t &pt2, ਅਚਲ ਬਿੰਦੂ_t &pt3)
   {
-    if (!param.is_path_open ())
+    ਜੇ (!param.is_ਰਸਤਾ_open ())
     {
-      param.start_path ();
+      param.ਸ਼ੁਰੂ_ਰਸਤਾ ();
       param.update_bounds (env.get_pt ());
     }
     /* include control points */
@@ -101,152 +101,152 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
   }
 };
 
-struct cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t, cff2_path_procs_extents_t> {};
+ਬਣਤਰ cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, ਸੰਖਿਆ_t, cff2_ਰਸਤਾ_procs_extents_t> {};
 
-bool OT::cff2::accelerator_t::get_extents (hb_font_t *font,
+ਤਾਰਕਿਕ OT::cff2::accelerator_t::get_extents (hb_font_t *font,
 					   hb_codepoint_t glyph,
-					   hb_glyph_extents_t *extents) const
+					   hb_glyph_extents_t *extents) ਅਚਲ
 {
-  return get_extents_at (font, glyph, extents, hb_array (font->coords, font->num_coords));
+  ਵਾਪਸ get_extents_at (font, glyph, extents, hb_array (font->coords, font->ਅੰਕ_coords));
 }
 
-bool OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
+ਤਾਰਕਿਕ OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
 					      hb_codepoint_t glyph,
 					      hb_glyph_extents_t *extents,
-					      hb_array_t<const int> coords,
-					      int64_t *budget) const
+					      hb_array_t<ਅਚਲ ਪੂਰਨ> coords,
+					      int64_t *budget) ਅਚਲ
 {
-#ifdef HB_NO_OT_FONT_CFF
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ਜੇ (unlikely (!is_valid () || (glyph >= ਅੰਕ_glyphs))) ਵਾਪਸ ਝੂਠ;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ਢੇਰ_budget = HB_BUDGET_GLYPH;
+  ਜੇ (!budget) budget = &ਢੇਰ_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t> interp (env);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd = fdSelect->get_fd (glyph);
+  ਅਚਲ hb_ubytes_t str = (*char_ਲੜੀਆਂ)[glyph];
+  cff2_cs_interp_env_t<ਸੰਖਿਆ_t> env (str, *ਇਹ, fd, coords.arrayZ, coords.ਲੰਮਾਈ);
+  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, ਸੰਖਿਆ_t> interp (env);
   cff2_extents_param_t  param;
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ਜੇ (unlikely (!interp.interpret (param, budget))) ਵਾਪਸ ਝੂਠ;
 
-  if (param.min_x >= param.max_x)
+  ਜੇ (param.min_x >= param.max_x)
   {
-    extents->width = 0;
+    extents->ਚੌੜਾਈ = 0;
     extents->x_bearing = 0;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    double x_bearing = roundf (param.min_x.to_real ());
-    extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (param.max_x.to_real ()) - x_bearing);
+    ਦੁੱਗਣਾ x_bearing = roundf (param.min_x.ਮੰਜ਼ਿਲ_real ());
+    extents->x_bearing = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (x_bearing);
+    extents->ਚੌੜਾਈ = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> ((ਦੁੱਗਣਾ) roundf (param.max_x.ਮੰਜ਼ਿਲ_real ()) - x_bearing);
   }
-  if (param.min_y >= param.max_y)
+  ਜੇ (param.min_y >= param.max_y)
   {
-    extents->height = 0;
+    extents->ਉਚਾਈ = 0;
     extents->y_bearing = 0;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    double y_bearing = roundf (param.max_y.to_real ());
-    extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (param.min_y.to_real ()) - y_bearing);
+    ਦੁੱਗਣਾ y_bearing = roundf (param.max_y.ਮੰਜ਼ਿਲ_real ());
+    extents->y_bearing = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> (y_bearing);
+    extents->ਉਚਾਈ = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> ((ਦੁੱਗਣਾ) roundf (param.min_y.ਮੰਜ਼ਿਲ_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-struct cff2_path_param_t
+ਬਣਤਰ cff2_ਰਸਤਾ_param_t
 {
-  cff2_path_param_t (hb_font_t *font_, hb_draw_session_t &draw_session_)
+  cff2_ਰਸਤਾ_param_t (hb_font_t *font_, hb_draw_session_t &draw_session_)
   {
     draw_session = &draw_session_;
     font = font_;
   }
 
-  void move_to (const point_t &p)
-  { draw_session->move_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  ਖਾਲੀ move_ਮੰਜ਼ਿਲ (ਅਚਲ ਬਿੰਦੂ_t &p)
+  { draw_session->move_ਮੰਜ਼ਿਲ (font->em_fscalef_x (p.x.ਮੰਜ਼ਿਲ_real ()), font->em_fscalef_y (p.y.ਮੰਜ਼ਿਲ_real ())); }
 
-  void line_to (const point_t &p)
-  { draw_session->line_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  ਖਾਲੀ ਸਤਰ_ਮੰਜ਼ਿਲ (ਅਚਲ ਬਿੰਦੂ_t &p)
+  { draw_session->ਸਤਰ_ਮੰਜ਼ਿਲ (font->em_fscalef_x (p.x.ਮੰਜ਼ਿਲ_real ()), font->em_fscalef_y (p.y.ਮੰਜ਼ਿਲ_real ())); }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  ਖਾਲੀ cubic_ਮੰਜ਼ਿਲ (ਅਚਲ ਬਿੰਦੂ_t &p1, ਅਚਲ ਬਿੰਦੂ_t &p2, ਅਚਲ ਬਿੰਦੂ_t &p3)
   {
-    draw_session->cubic_to (font->em_fscalef_x (p1.x.to_real ()), font->em_fscalef_y (p1.y.to_real ()),
-			   font->em_fscalef_x (p2.x.to_real ()), font->em_fscalef_y (p2.y.to_real ()),
-			   font->em_fscalef_x (p3.x.to_real ()), font->em_fscalef_y (p3.y.to_real ()));
+    draw_session->cubic_ਮੰਜ਼ਿਲ (font->em_fscalef_x (p1.x.ਮੰਜ਼ਿਲ_real ()), font->em_fscalef_y (p1.y.ਮੰਜ਼ਿਲ_real ()),
+			   font->em_fscalef_x (p2.x.ਮੰਜ਼ਿਲ_real ()), font->em_fscalef_y (p2.y.ਮੰਜ਼ਿਲ_real ()),
+			   font->em_fscalef_x (p3.x.ਮੰਜ਼ਿਲ_real ()), font->em_fscalef_y (p3.y.ਮੰਜ਼ਿਲ_real ()));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   hb_draw_session_t *draw_session;
   hb_font_t *font;
 };
 
-struct cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<number_t>, cff2_path_param_t>
+ਬਣਤਰ cff2_ਰਸਤਾ_procs_ਰਸਤਾ_t : ਰਸਤਾ_procs_t<cff2_ਰਸਤਾ_procs_ਰਸਤਾ_t, cff2_cs_interp_env_t<ਸੰਖਿਆ_t>, cff2_ਰਸਤਾ_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt)
+  ਸਥਿਰ ਖਾਲੀ moveto (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_ਰਸਤਾ_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt)
   {
-    param.move_to (pt);
+    param.move_ਮੰਜ਼ਿਲ (pt);
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1)
+  ਸਥਿਰ ਖਾਲੀ ਸਤਰ (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_ਰਸਤਾ_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt1)
   {
-    param.line_to (pt1);
+    param.ਸਤਰ_ਮੰਜ਼ਿਲ (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  ਸਥਿਰ ਖਾਲੀ ਵਕਰ (cff2_cs_interp_env_t<ਸੰਖਿਆ_t> &env, cff2_ਰਸਤਾ_param_t& param, ਅਚਲ ਬਿੰਦੂ_t &pt1, ਅਚਲ ਬਿੰਦੂ_t &pt2, ਅਚਲ ਬਿੰਦੂ_t &pt3)
   {
-    param.cubic_to (pt1, pt2, pt3);
+    param.cubic_ਮੰਜ਼ਿਲ (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-struct cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t, cff2_path_procs_path_t> {};
+ਬਣਤਰ cff2_cs_opset_ਰਸਤਾ_t : cff2_cs_opset_t<cff2_cs_opset_ਰਸਤਾ_t, cff2_ਰਸਤਾ_param_t, ਸੰਖਿਆ_t, cff2_ਰਸਤਾ_procs_ਰਸਤਾ_t> {};
 
-bool OT::cff2::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph,
+ਤਾਰਕਿਕ OT::cff2::accelerator_t::get_ਰਸਤਾ (hb_font_t *font, hb_codepoint_t glyph,
 				       hb_draw_session_t &draw_session,
-				       int64_t *budget) const
+				       int64_t *budget) ਅਚਲ
 {
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ਢੇਰ_budget = HB_BUDGET_GLYPH;
+  ਜੇ (!budget) budget = &ਢੇਰ_budget;
 
-  return get_path_at (font,
+  ਵਾਪਸ get_ਰਸਤਾ_at (font,
 		      glyph,
 		      draw_session,
 		      hb_array (font->coords,
-				font->has_nonzero_coords ? font->num_coords : 0),
+				font->has_nonzero_coords ? font->ਅੰਕ_coords : 0),
 		      budget);
 }
 
-bool OT::cff2::accelerator_t::get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget) const
+ਤਾਰਕਿਕ OT::cff2::accelerator_t::get_ਰਸਤਾ_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<ਅਚਲ ਪੂਰਨ> coords, int64_t *budget) ਅਚਲ
 {
-#ifdef HB_NO_OT_FONT_CFF
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ਜੇ (unlikely (!is_valid () || (glyph >= ਅੰਕ_glyphs))) ਵਾਪਸ ਝੂਠ;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ਢੇਰ_budget = HB_BUDGET_GLYPH;
+  ਜੇ (!budget) budget = &ਢੇਰ_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t> interp (env);
-  cff2_path_param_t param (font, draw_session);
-  if (unlikely (!interp.interpret (param, budget))) return false;
-  return true;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd = fdSelect->get_fd (glyph);
+  ਅਚਲ hb_ubytes_t str = (*char_ਲੜੀਆਂ)[glyph];
+  cff2_cs_interp_env_t<ਸੰਖਿਆ_t> env (str, *ਇਹ, fd, coords.arrayZ, coords.ਲੰਮਾਈ);
+  cff2_cs_interpreter_t<cff2_cs_opset_ਰਸਤਾ_t, cff2_ਰਸਤਾ_param_t, ਸੰਖਿਆ_t> interp (env);
+  cff2_ਰਸਤਾ_param_t param (font, draw_session);
+  ਜੇ (unlikely (!interp.interpret (param, budget))) ਵਾਪਸ ਝੂਠ;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_OT_CFF2_TABLE_CC pacify */
-#endif /* HB_OT_CFF2_TABLE_CC guard */
+#ਜੇ_ਅੰਤ /* HB_OT_CFF2_TABLE_CC pacify */
+#ਜੇ_ਅੰਤ /* HB_OT_CFF2_TABLE_CC guard */

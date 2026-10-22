@@ -1,140 +1,140 @@
-#ifndef OT_LAYOUT_GSUB_ALTERNATESET_HH
-#define OT_LAYOUT_GSUB_ALTERNATESET_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GSUB_ALTERNATESET_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GSUB_ALTERNATESET_HH
 
-#include "Common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GSUB_impl {
 
-template <typename Types>
-struct AlternateSet
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ Alternate_ਸੈੱਟ
 {
-  protected:
-  Array16Of<typename Types::HBGlyphID>
+  ਸੁਰੱਖਿਅਤ:
+  Array16_ਦਾ<ਕਿਸਮ_ਨਾਂ Types::HBGlyphID>
                 alternates;             /* Array of alternate GlyphIDs--in
                                          * arbitrary order */
-  public:
-  DEFINE_SIZE_ARRAY (2, alternates);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (2, alternates);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     return_trace (alternates.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_any (alternates, glyphs); }
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਸੈੱਟ_t *glyphs) ਅਚਲ
+  { ਵਾਪਸ hb_any (alternates, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
-  { c->output->add_array (alternates.arrayZ, alternates.len); }
+  ਖਾਲੀ ਘੇਰਾ (hb_ਘੇਰਾ_context_t *c) ਅਚਲ
+  { c->output->ਜੋੜੋ_array (alternates.arrayZ, alternates.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  ਖਾਲੀ depend (hb_depend_context_t *c, hb_codepoint_t ਸਰੋਤ) ਅਚਲ
   {
     + hb_iter (alternates)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (ਅਚਲ hb_codepoint_t &target) { c->depend_ਅੰਕੜੇ->ਜੋੜੋ_gsub_lookup (ਸਰੋਤ, c->lookup_ਸੂਚਕਾਂਕ, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { c->output->add_array (alternates.arrayZ, alternates.len); }
+  ਖਾਲੀ collect_glyphs (hb_collect_glyphs_context_t *c) ਅਚਲ
+  { c->output->ਜੋੜੋ_array (alternates.arrayZ, alternates.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_ot_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
-    unsigned int count = alternates.len;
+    TRACE_APPLY (ਇਹ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = alternates.len;
 
-    if (unlikely (!count)) return_trace (false);
+    ਜੇ (unlikely (!ਗਿਣਤੀ_2)) return_trace (ਝੂਠ);
 
-    hb_mask_t glyph_mask = c->buffer->cur().mask;
-    hb_mask_t lookup_mask = c->lookup_mask;
+    hb_ਨਕਾਬ_t glyph_ਨਕਾਬ = c->ਬਫਰ->cur().ਨਕਾਬ;
+    hb_ਨਕਾਬ_t lookup_ਨਕਾਬ = c->lookup_ਨਕਾਬ;
 
     /* Note: This breaks badly if two features enabled this lookup together. */
-    unsigned int shift = hb_ctz (lookup_mask);
-    unsigned int alt_index = ((lookup_mask & glyph_mask) >> shift);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਖਿਸਕਾਓ = hb_ctz (lookup_ਨਕਾਬ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ alt_ਸੂਚਕਾਂਕ = ((lookup_ਨਕਾਬ & glyph_ਨਕਾਬ) >> ਖਿਸਕਾਓ);
 
     /* If alt_index is MAX_VALUE, randomize feature if it is the rand feature. */
-    if (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
+    ਜੇ (alt_ਸੂਚਕਾਂਕ == HB_OT_MAP_MAX_ਮੁੱਲ && c->random)
     {
       /* Maybe we can do better than unsafe-to-break all; but since we are
        * changing random state, it would be hard to track that.  Good 'nough. */
-      c->buffer->unsafe_to_break (0, c->buffer->len);
-      alt_index = c->random_number () % count + 1;
+      c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (0, c->ਬਫਰ->len);
+      alt_ਸੂਚਕਾਂਕ = c->random_ਸੰਖਿਆ () % ਗਿਣਤੀ_2 + 1;
     }
 
-    if (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
+    ਜੇ (unlikely (alt_ਸੂਚਕਾਂਕ > ਗਿਣਤੀ_2 || alt_ਸੂਚਕਾਂਕ == 0)) return_trace (ਝੂਠ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->ਬਫਰ->sync_so_far ();
+      c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			  "replacing glyph at %u (alternate substitution)",
-			  c->buffer->idx);
+			  c->ਬਫਰ->idx);
     }
 
-    c->replace_glyph (alternates[alt_index - 1]);
+    c->replace_glyph (alternates[alt_ਸੂਚਕਾਂਕ - 1]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ਜੇ (HB_ਬਫਰ_ਸੁਨੇਹਾ_ਹੋਰ && c->ਬਫਰ->messaging ())
     {
-      c->buffer->message (c->font,
+      c->ਬਫਰ->ਸੁਨੇਹਾ (c->font,
 			  "replaced glyph at %u (alternate substitution)",
-			  c->buffer->idx - 1u);
+			  c->ਬਫਰ->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  unsigned
-  get_alternates (unsigned        start_offset,
-                  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ
+  get_alternates (ਬਿਨਾਨਿਸ਼ਾਨੀ        ਸ਼ੁਰੂ_ਵਿੱਥ,
+                  ਬਿਨਾਨਿਸ਼ਾਨੀ       *alternate_ਗਿਣਤੀ  /* IN/OUT.  May be NULL. */,
+                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) ਅਚਲ
   {
-    if (alternates.len && alternate_count && alternate_glyphs)
+    ਜੇ (alternates.len && alternate_ਗਿਣਤੀ && alternate_glyphs)
     {
-      + alternates.as_array ().sub_array (start_offset, alternate_count)
-      | hb_sink (hb_array (alternate_glyphs, *alternate_count))
+      + alternates.as_array ().sub_array (ਸ਼ੁਰੂ_ਵਿੱਥ, alternate_ਗਿਣਤੀ)
+      | hb_sink (hb_array (alternate_glyphs, *alternate_ਗਿਣਤੀ))
       ;
     }
-    return alternates.len;
+    ਵਾਪਸ alternates.len;
   }
 
-  void
+  ਖਾਲੀ
   collect_alternates (hb_codepoint_t gid,
-		      hb_map_t  *alternate_count /* IN/OUT */,
-		      hb_map_t  *alternate_glyphs /* IN/OUT */) const
+		      hb_map_t  *alternate_ਗਿਣਤੀ /* IN/OUT */,
+		      hb_map_t  *alternate_glyphs /* IN/OUT */) ਅਚਲ
   {
     + hb_enumerate (alternates)
-    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { return hb_pair (gid + (_.first << 24), _.second); })
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
-		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+    | hb_map ([gid] (hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_codepoint_t> _) { ਵਾਪਸ hb_pair (gid + (_.ਪਹਿਲਾ << 24), _.second); })
+    | hb_apply ([&] (ਅਚਲ hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> ਖਾਲੀ
+		{ hb_collect_glyph_alternates_ਜੋੜੋ (p.ਪਹਿਲਾ, p.second,
+						    alternate_ਗਿਣਤੀ, alternate_glyphs); })
     ;
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
+            hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator, hb_codepoint_t))>
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
                   Iterator alts)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
     return_trace (alternates.serialize (c, alts));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ਇਹ);
+    ਅਚਲ hb_ਸੈੱਟ_t &glyphset = *c->plan->glyphset_gsub ();
+    ਅਚਲ hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto it =
+    ਸਵੈਚਾਲਿਤ it =
       + hb_iter (alternates)
       | hb_filter (glyphset)
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, it) &&
-                  out->alternates);
+    ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->serializer->ਸ਼ੁਰੂ_embed (*ਇਹ);
+    return_trace (ਬਾਹਰਲਾ->serialize (c->serializer, it) &&
+                  ਬਾਹਰਲਾ->alternates);
   }
 };
 
@@ -143,4 +143,4 @@ struct AlternateSet
 }
 
 
-#endif /* OT_LAYOUT_GSUB_ALTERNATESET_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GSUB_ALTERNATESET_HH */

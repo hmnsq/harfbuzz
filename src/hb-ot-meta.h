@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_META_H
-#define HB_OT_META_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_META_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_META_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,27 +46,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
 /*
    HB_OT_META_TAG_APPL		= HB_TAG ('a','p','p','l'),
    HB_OT_META_TAG_BILD		= HB_TAG ('b','i','l','d'),
 */
-  HB_OT_META_TAG_DESIGN_LANGUAGES	= HB_TAG ('d','l','n','g'),
-  HB_OT_META_TAG_SUPPORTED_LANGUAGES	= HB_TAG ('s','l','n','g'),
+  HB_OT_META_ਟੈਗ_DESIGN_LANGUAGES	= HB_ਟੈਗ ('d','l','n','g'),
+  HB_OT_META_ਟੈਗ_SUPPORTED_LANGUAGES	= HB_ਟੈਗ ('s','l','n','g'),
 
   /*< private >*/
-  _HB_OT_META_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_meta_tag_t;
+  HB_OT_META_ਟੈਗ_MAX_ਮੁੱਲ = HB_ਟੈਗ_MAX_SIGNED /*< skip >*/
+} hb_ot_meta_ਟੈਗ_t;
 
-HB_EXTERN unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_meta_get_ਇੰਦਰਾਜ_ਟੈਗ_ਸੂਚੀ (hb_face_t        *face,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ      ਸ਼ੁਰੂ_ਵਿੱਥ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *entries_ਗਿਣਤੀ, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ਟੈਗ_t *entries        /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag);
+hb_ot_meta_reference_ਇੰਦਰਾਜ (hb_face_t *face, hb_ot_meta_ਟੈਗ_t meta_ਟੈਗ);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_META_H */
+#ਜੇ_ਅੰਤ /* HB_OT_META_H */

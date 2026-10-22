@@ -24,44 +24,44 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਗ੍ਰਾਫ_ਗ੍ਰਾਫ_ਨਤੀਜਾ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਗ੍ਰਾਫ_ਗ੍ਰਾਫ_ਨਤੀਜਾ_HH
 
-#include "../hb-result.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../hb-result.hh"
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-enum graph_error_t {
-  ALLOCATION_FAILURE,
-  LIMIT_EXCEEDED,
-  INVALID_ARGUMENT,
-  CYCLE_DETECTED,
+ਗਿਣਤੀ ਗ੍ਰਾਫ_error_t {
+  ਵੰਡ_FAILURE,
+  ਹੱਦਬੰਦੀ_EXCEEDED,
+  INVALID_ਦਲੀਲ,
+  ਚੱਕਰ_DETECTED,
   SANITIZE_FAILURE,
-  OUT_OF_BOUNDS,
+  ਬਾਹਰਲਾ_ਦਾ_BOUNDS,
   ORPHANED_NODES,
-  OVERFLOW_RESOLUTION_FAILED,
+  ਉਛਾਲ_RESOLUTION_FAILED,
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ ਅੱਖਰ* to_string(ਗ੍ਰਾਫ_error_t e) {
+  ਚੋਣ (e) {
+    ਹਾਲਤ ਵੰਡ_FAILURE: ਵਾਪਸ "Memory Allocation Failed";
+    ਹਾਲਤ ਹੱਦਬੰਦੀ_EXCEEDED: ਵਾਪਸ "Limit Exceeded";
+    ਹਾਲਤ INVALID_ਦਲੀਲ: ਵਾਪਸ "Invalid Argument";
+    ਹਾਲਤ ਚੱਕਰ_DETECTED: ਵਾਪਸ "Cycle in Graph";
+    ਹਾਲਤ SANITIZE_FAILURE: ਵਾਪਸ "Failed Sanitization";
+    ਹਾਲਤ ਬਾਹਰਲਾ_ਦਾ_BOUNDS: ਵਾਪਸ "Out of Bounds";
+    ਹਾਲਤ ORPHANED_NODES: ਵਾਪਸ "Graph is not fully connected";
+    ਹਾਲਤ ਉਛਾਲ_RESOLUTION_FAILED: ਵਾਪਸ "Overflows are not able to be resolved";
+    ਹਾਲਤ UNKNOWN:
+    ਮੂਲ:
+      ਵਾਪਸ "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ T>
+ਵਰਤੋਂ ਗ੍ਰਾਫ_ਨਤੀਜਾ_t = hb_ਨਤੀਜਾ_t<T, ਗ੍ਰਾਫ_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#ਜੇ_ਅੰਤ /* GRAPH_GRAPH_RESULT_HH */

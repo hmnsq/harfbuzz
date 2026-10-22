@@ -24,18 +24,18 @@
  * Mozilla Author(s): Jonathan Kew
  */
 
-#ifndef HB_CORETEXT_H
-#define HB_CORETEXT_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CORETEXT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#ਅਨ੍ਤਰ੍ਭਾਵ <TargetConditionals.h>
+#ਜੇ ਨਿਸ਼ਾਨਾ_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#ਨਹੀਂਤਾਂ
 #  include <ApplicationServices/ApplicationServices.h>
-#endif
+#ਜੇ_ਅੰਤ
 
 HB_BEGIN_DECLS
 
@@ -50,7 +50,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6mort.html
  *
  **/
-#define HB_CORETEXT_TAG_MORT HB_TAG('m','o','r','t')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_ਟੈਗ_MORT HB_ਟੈਗ('m','o','r','t')
 
 /**
  * HB_CORETEXT_TAG_MORX:
@@ -62,7 +62,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6morx.html
  *
  **/
-#define HB_CORETEXT_TAG_MORX HB_TAG('m','o','r','x')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_ਟੈਗ_MORX HB_ਟੈਗ('m','o','r','x')
 
 /**
  * HB_CORETEXT_TAG_KERX:
@@ -74,19 +74,19 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6kerx.html
  *
  **/
-#define HB_CORETEXT_TAG_KERX HB_TAG('k','e','r','x')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_ਟੈਗ_KERX HB_ਟੈਗ('k','e','r','x')
 
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (ਅਚਲ ਅੱਖਰ   *file_name,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);
@@ -98,10 +98,10 @@ hb_coretext_face_get_cg_font (hb_face_t *face);
 HB_EXTERN CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font);
 
-HB_EXTERN void
-hb_coretext_font_set_funcs (hb_font_t *font);
+HB_EXTERN ਖਾਲੀ
+hb_coretext_font_ਸੈੱਟ_funcs (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_CORETEXT_H */
+#ਜੇ_ਅੰਤ /* HB_CORETEXT_H */

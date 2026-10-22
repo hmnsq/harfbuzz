@@ -24,194 +24,194 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_TABLE_HH
-#define HB_SUBSET_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_ਸਾਰਣੀ_HH
 
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-subset.hh"
-#include "hb-repacker.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-repacker.hh"
 
 
-template<typename TableType>
-static bool
-_hb_subset_table_try (const TableType *table,
-		      hb_vector_t<char>* buf,
-		      hb_subset_context_t* c /* OUT */)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ ਸਾਰਣੀ_Type>
+ਸਥਿਰ ਤਾਰਕਿਕ
+hb_subset_ਸਾਰਣੀ_try (ਅਚਲ ਸਾਰਣੀ_Type *ਸਾਰਣੀ,
+		      hb_ਸਦਿਸ਼_t<ਅੱਖਰ>* buf,
+		      hb_subset_context_t* c /*ਬਾਹਰਲਾ*/)
 {
-  c->serializer->start_serialize ();
-  if (c->serializer->in_error ()) return false;
+  c->serializer->ਸ਼ੁਰੂ_serialize ();
+  ਜੇ (c->serializer->ਵਿੱਚ_error ()) ਵਾਪਸ ਝੂਠ;
 
-  bool needed = table->subset (c);
-  if (!c->serializer->ran_out_of_room ())
+  ਤਾਰਕਿਕ needed = ਸਾਰਣੀ->subset (c);
+  ਜੇ (!c->serializer->ran_ਬਾਹਰਲਾ_ਦਾ_ਗੁੰਜਾਇਸ਼ ())
   {
-    c->serializer->end_serialize ();
-    return needed;
+    c->serializer->ਸਿਰਾ_serialize ();
+    ਵਾਪਸ needed;
   }
 
-  unsigned buf_size = buf->allocated;
-  buf_size = buf_size * 2 + 16;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ buf_ਮਾਪ = buf->allocated;
+  buf_ਮਾਪ = buf_ਮਾਪ * 2 + 16;
 
 
 
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
-             HB_UNTAG (c->table_tag), buf_size);
+  DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
+             HB_UNTAG (c->ਸਾਰਣੀ_ਟੈਗ_2), buf_ਮਾਪ);
 
-  if (unlikely (buf_size > c->source_blob->length * 256 ||
-		!buf->alloc_exact (buf_size)))
+  ਜੇ (unlikely (buf_ਮਾਪ > c->ਸਰੋਤ_blob->ਲੰਮਾਈ * 256 ||
+		!buf->alloc_exact (buf_ਮਾਪ)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
-               HB_UNTAG (c->table_tag), buf_size);
-    return needed;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c failed to reallocate %u bytes.",
+               HB_UNTAG (c->ਸਾਰਣੀ_ਟੈਗ_2), buf_ਮਾਪ);
+    ਵਾਪਸ needed;
   }
 
   c->serializer->reset (buf->arrayZ, buf->allocated);
-  return _hb_subset_table_try (table, buf, c);
+  ਵਾਪਸ hb_subset_ਸਾਰਣੀ_try (ਸਾਰਣੀ, buf, c);
 }
 
-static HB_UNUSED unsigned
-_hb_subset_estimate_table_size (hb_subset_plan_t *plan,
-				unsigned table_len,
-				hb_tag_t table_tag)
+ਸਥਿਰ HB_ਅਣਵਰਤਿਆ ਬਿਨਾਨਿਸ਼ਾਨੀ
+hb_subset_estimate_ਸਾਰਣੀ_ਮਾਪ (hb_subset_plan_t *plan,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਾਰਣੀ_len,
+				hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2)
 {
-  unsigned src_glyphs = plan->source->get_num_glyphs ();
-  unsigned dst_glyphs = plan->glyphset ()->get_population ();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ src_glyphs = plan->ਸਰੋਤ->get_ਅੰਕ_glyphs ();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ dst_glyphs = plan->glyphset ()->get_population ();
 
-  unsigned bulk = 8192;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ bulk = 8192;
   /* Tables that we want to allocate same space as the source table. For GSUB/GPOS it's
    * because those are expensive to subset, so giving them more room is fine. */
-  bool same_size = table_tag == HB_TAG('G','S','U','B') ||
-		   table_tag == HB_TAG('G','P','O','S') ||
-		   table_tag == HB_TAG('G','D','E','F') ||
-		   table_tag == HB_TAG('n','a','m','e');
+  ਤਾਰਕਿਕ same_ਮਾਪ = ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('G','S','U','B') ||
+		   ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('G','P','O','S') ||
+		   ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('G','D','E','F') ||
+		   ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('n','a','m','e');
 
-  if (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
+  ਜੇ (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
   {
-    if (table_tag == HB_TAG('C','F','F',' '))
+    ਜੇ (ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('C','F','F',' '))
     {
       /* Add some extra room for the CFF charset. */
       bulk += src_glyphs * 16;
     }
-    else if (table_tag == HB_TAG('C','F','F','2'))
+    ਨਹੀਂਤਾਂ ਜੇ (ਸਾਰਣੀ_ਟੈਗ_2 == HB_ਟੈਗ('C','F','F','2'))
     {
       /* Just extra CharString offsets. */
       bulk += src_glyphs * 4;
     }
   }
 
-  if (unlikely (!src_glyphs) || same_size)
-    return bulk + table_len;
+  ਜੇ (unlikely (!src_glyphs) || same_ਮਾਪ)
+    ਵਾਪਸ bulk + ਸਾਰਣੀ_len;
 
-  return bulk + (unsigned) (table_len * sqrt ((double) dst_glyphs / src_glyphs));
+  ਵਾਪਸ bulk + (ਬਿਨਾਨਿਸ਼ਾਨੀ) (ਸਾਰਣੀ_len * ਵਰਗਮੂਲ ((ਦੁੱਗਣਾ) dst_glyphs / src_glyphs));
 }
 
 /*
  * Repack the serialization buffer if any offset overflows exist.
  */
-static HB_UNUSED hb_blob_t*
-_hb_subset_repack (hb_tag_t tag, const hb_serialize_context_t& c)
+ਸਥਿਰ HB_ਅਣਵਰਤਿਆ hb_blob_t*
+_hb_subset_repack (hb_ਟੈਗ_t ਟੈਗ_2, ਅਚਲ hb_serialize_context_t& c)
 {
-  if (!c.offset_overflow ())
-    return c.copy_blob ();
+  ਜੇ (!c.ਵਿੱਥ_ਉਛਾਲ ())
+    ਵਾਪਸ c.copy_blob ();
 
-  hb_blob_t* result = hb_resolve_overflows (c.object_graph (), tag);
+  hb_blob_t* ਨਤੀਜਾ = hb_resolve_overflows (c.object_ਗ੍ਰਾਫ (), ਟੈਗ_2);
 
-  if (unlikely (!result))
+  ਜੇ (unlikely (!ਨਤੀਜਾ))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
-               HB_UNTAG (tag));
-    return nullptr;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c offset overflow resolution failed.",
+               HB_UNTAG (ਟੈਗ_2));
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  return result;
+  ਵਾਪਸ ਨਤੀਜਾ;
 }
 
-template <typename T>
-static HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (void, t.destroy ())
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਸਥਿਰ HB_ਅਣਵਰਤਿਆ ਸਵੈਚਾਲਿਤ _hb_do_destroy (T &t, hb_ਤਰਜੀਹ<1>) HB_RETURN (ਖਾਲੀ, t.destroy ())
 
-template <typename T>
-static HB_UNUSED void _hb_do_destroy (T &t, hb_priority<0>) {}
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਸਥਿਰ HB_ਅਣਵਰਤਿਆ ਖਾਲੀ _hb_do_destroy (T &t, hb_ਤਰਜੀਹ<0>) {}
 
-template<typename TableType>
-static bool
-_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ ਸਾਰਣੀ_Type>
+ਸਥਿਰ ਤਾਰਕਿਕ
+hb_subset_ਸਾਰਣੀ (hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf)
 {
-  auto &&source_blob = plan->source_table<TableType> ();
-  auto *table = source_blob.get ();
+  ਸਵੈਚਾਲਿਤ &&ਸਰੋਤ_blob = plan->ਸਰੋਤ_ਸਾਰਣੀ<ਸਾਰਣੀ_Type> ();
+  ਸਵੈਚਾਲਿਤ *ਸਾਰਣੀ = ਸਰੋਤ_blob.get ();
 
-  hb_tag_t tag = TableType::tableTag;
-  hb_blob_t *blob = source_blob.get_blob();
-  if (unlikely (!blob || !blob->data))
+  hb_ਟੈਗ_t ਟੈਗ_2 = ਸਾਰਣੀ_Type::ਸਾਰਣੀ_ਟੈਗ;
+  hb_blob_t *blob = ਸਰੋਤ_blob.get_blob();
+  ਜੇ (unlikely (!blob || !blob->ਅੰਕੜੇ))
   {
-    DEBUG_MSG (SUBSET, nullptr,
-               "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (tag));
-    _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ,
+               "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (ਟੈਗ_2));
+    _hb_do_destroy (ਸਰੋਤ_blob, hb_prioritize);
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  unsigned buf_size = _hb_subset_estimate_table_size (plan, blob->length, TableType::tableTag);
-  DEBUG_MSG (SUBSET, nullptr,
-             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_size);
-  if (unlikely (!buf.alloc (buf_size)))
+  ਬਿਨਾਨਿਸ਼ਾਨੀ buf_ਮਾਪ = hb_subset_estimate_ਸਾਰਣੀ_ਮਾਪ (plan, blob->ਲੰਮਾਈ, ਸਾਰਣੀ_Type::ਸਾਰਣੀ_ਟੈਗ);
+  DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ,
+             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (ਟੈਗ_2), buf_ਮਾਪ);
+  ਜੇ (unlikely (!buf.alloc (buf_ਮਾਪ)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
-    _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (ਟੈਗ_2), buf_ਮਾਪ);
+    _hb_do_destroy (ਸਰੋਤ_blob, hb_prioritize);
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool needed = false;
+  ਤਾਰਕਿਕ needed = ਝੂਠ;
   hb_serialize_context_t serializer (buf.arrayZ, buf.allocated);
   {
-    hb_subset_context_t c (blob, plan, &serializer, tag);
-    needed = _hb_subset_table_try (table, &buf, &c);
+    hb_subset_context_t c (blob, plan, &serializer, ਟੈਗ_2);
+    needed = hb_subset_ਸਾਰਣੀ_try (ਸਾਰਣੀ, &buf, &c);
   }
-  _hb_do_destroy (source_blob, hb_prioritize);
+  _hb_do_destroy (ਸਰੋਤ_blob, hb_prioritize);
 
-  if (serializer.in_error () && !serializer.only_offset_overflow ())
+  ਜੇ (serializer.ਵਿੱਚ_error () && !serializer.only_ਵਿੱਥ_ਉਛਾਲ ())
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
-    return false;
-  }
-
-  if (!needed)
-  {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
-    return true;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (ਟੈਗ_2));
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool result = false;
-  hb_blob_t *dest_blob = _hb_subset_repack (tag, serializer);
-  if (dest_blob)
+  ਜੇ (!needed)
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (ਟੈਗ_2));
+    ਵਾਪਸ ਸੱਚ;
+  }
+
+  ਤਾਰਕਿਕ ਨਤੀਜਾ = ਝੂਠ;
+  hb_blob_t *dest_blob = _hb_subset_repack (ਟੈਗ_2, serializer);
+  ਜੇ (dest_blob)
+  {
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ,
                "OT::%c%c%c%c final subset table size: %u bytes.",
-               HB_UNTAG (tag), dest_blob->length);
-    result = plan->add_table (tag, dest_blob);
+               HB_UNTAG (ਟੈਗ_2), dest_blob->ਲੰਮਾਈ);
+    ਨਤੀਜਾ = plan->ਜੋੜੋ_ਸਾਰਣੀ (ਟੈਗ_2, dest_blob);
     hb_blob_destroy (dest_blob);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
-             HB_UNTAG (tag), result ? "success" : "FAILED!");
-  return result;
+  DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "OT::%c%c%c%c::subset %s",
+             HB_UNTAG (ਟੈਗ_2), ਨਤੀਜਾ ? "success" : "FAILED!");
+  ਵਾਪਸ ਨਤੀਜਾ;
 }
 
-static HB_UNUSED bool
-_hb_subset_table_passthrough (hb_subset_plan_t *plan, hb_tag_t tag)
+ਸਥਿਰ HB_ਅਣਵਰਤਿਆ ਤਾਰਕਿਕ
+hb_subset_ਸਾਰਣੀ_passthrough (hb_subset_plan_t *plan, hb_ਟੈਗ_t ਟੈਗ_2)
 {
-  hb_blob_t *source_table = hb_face_reference_table (plan->source, tag);
-  bool result = plan->add_table (tag, source_table);
-  hb_blob_destroy (source_table);
-  return result;
+  hb_blob_t *ਸਰੋਤ_ਸਾਰਣੀ = hb_face_reference_ਸਾਰਣੀ (plan->ਸਰੋਤ, ਟੈਗ_2);
+  ਤਾਰਕਿਕ ਨਤੀਜਾ = plan->ਜੋੜੋ_ਸਾਰਣੀ (ਟੈਗ_2, ਸਰੋਤ_ਸਾਰਣੀ);
+  hb_blob_destroy (ਸਰੋਤ_ਸਾਰਣੀ);
+  ਵਾਪਸ ਨਤੀਜਾ;
 }
 
 
-HB_INTERNAL bool _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_layout	(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_var		(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_cff		(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_color		(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ hb_subset_ਸਾਰਣੀ_other		(hb_subset_plan_t *plan, hb_ਸਦਿਸ਼_t<ਅੱਖਰ> &buf, hb_ਟੈਗ_t ਟੈਗ_2, ਤਾਰਕਿਕ *success);
 
 
-#endif /* HB_SUBSET_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_TABLE_HH */

@@ -1,35 +1,35 @@
-#ifndef OT_LAYOUT_GPOS_MARKBASEPOS_HH
-#define OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_MARKBASEPOS_HH
 
-#include "MarkBasePosFormat1.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "MarkBasePosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct MarkBasePos
+ਬਣਤਰ Mark_ਅਧਾਰ_Pos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
-  MarkBasePosFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
-  MarkBasePosFormat1_2<MediumTypes>	format2;
-#endif
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
+  ਬਣਤਰ { HBUINT16 v; }		format;         /* Format identifier */
+  Mark_ਅਧਾਰ_Pos_Format1_2<SmallTypes>	format1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+  Mark_ਅਧਾਰ_Pos_Format1_2<MediumTypes>	format2;
+#ਜੇ_ਅੰਤ
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ਜਨਤਕ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, Ts&&... ds) ਅਚਲ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ਜੇ (unlikely (!c->may_dispatch (ਇਹ, &u.format.v))) ਵਾਪਸ c->no_dispatch_return_ਮੁੱਲ ();
+    TRACE_DISPATCH (ਇਹ, u.format.v);
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:return_trace (c->default_return_ਮੁੱਲ ());
     }
   }
 };
@@ -38,4 +38,4 @@ struct MarkBasePos
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */

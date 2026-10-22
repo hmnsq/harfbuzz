@@ -24,54 +24,54 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_HH
-#define HB_AAT_LAYOUT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LAYOUT_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LAYOUT_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-aat-ltag-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shape.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-ltag-table.hh"
 
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-#define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_DEFAULT_FONT_ਮਾਪ 12.f
 
-struct hb_aat_feature_mapping_t
+ਬਣਤਰ hb_aat_feature_mapping_t
 {
-  hb_tag_t otFeatureTag;
+  hb_ਟੈਗ_t ot_Feature_ਟੈਗ;
   hb_aat_layout_feature_type_t aatFeatureType;
-  hb_aat_layout_feature_selector_t selectorToEnable;
-  hb_aat_layout_feature_selector_t selectorToDisable;
+  hb_aat_layout_feature_selector_t selector_ਮੰਜ਼ਿਲ_Enable;
+  hb_aat_layout_feature_selector_t selector_ਮੰਜ਼ਿਲ_Disable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  ਪੂਰਨ cmp (hb_ਟੈਗ_t key) ਅਚਲ
+  { ਵਾਪਸ key < ot_Feature_ਟੈਗ ? -1 : key > ot_Feature_ਟੈਗ ? 1 : 0; }
 };
 
-HB_INTERNAL const hb_aat_feature_mapping_t *
-hb_aat_layout_find_feature_mapping (hb_tag_t tag);
+HB_ਅੰਦਰੂਨੀ ਅਚਲ hb_aat_feature_mapping_t *
+hb_aat_layout_ਲੱਭੋ_feature_mapping (hb_ਟੈਗ_t ਟੈਗ_2);
 
-HB_INTERNAL void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_aat_layout_compile_map (ਅਚਲ hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map);
 
-HB_INTERNAL void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_aat_layout_substitute (ਅਚਲ hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features);
+			  hb_ਬਫਰ_t *ਬਫਰ,
+			  ਅਚਲ hb_feature_t *features,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_features);
 
-HB_INTERNAL void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer);
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_aat_layout_remove_deleted_glyphs (hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_INTERNAL void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_aat_layout_position (ਅਚਲ hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer);
+			hb_ਬਫਰ_t *ਬਫਰ);
 
-HB_INTERNAL void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_aat_layout_track (ਅਚਲ hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
+		     hb_ਬਫਰ_t *ਬਫਰ);
 
 
-#endif /* HB_AAT_LAYOUT_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LAYOUT_HH */

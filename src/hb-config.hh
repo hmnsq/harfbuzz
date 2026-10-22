@@ -24,190 +24,190 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CONFIG_HH
-#define HB_CONFIG_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CONFIG_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
-#include "hb.hh"
-#endif
+#ਜੇ 0 /* Make test happy. */
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਜੇ_ਅੰਤ
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CONFIG_H
+#ਅਨ੍ਤਰ੍ਭਾਵ "config.h"
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_EXPERIMENTAL_API
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#define HB_NO_SUBSET_DEPEND
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_BEYOND_64K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_CUBIC_GLYF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_SUBSET_DEPEND
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_TINY
-#define HB_LEAN
-#define HB_MINI
-#define HB_NO_SVG
-#define HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_MORE
-#define HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_MT
-#define HB_NO_UCD_UNASSIGNED
-#ifndef NDEBUG
-#define NDEBUG
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_TINY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_LEAN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MINI
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_SVG
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPTIMIZE_ਮਾਪ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPTIMIZE_ਮਾਪ_ਹੋਰ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MINIMIZE_ਸਮ੍ਰਿਤੀ_USAGE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_MT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_UCD_UNASSIGNED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ NDEBUG
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NDEBUG
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_LEAN
-#define HB_DISABLE_DEPRECATED
-#define HB_NO_ATEXIT
-#define HB_NO_BUFFER_MESSAGE
-#define HB_NO_BUFFER_SERIALIZE
-#define HB_NO_BUFFER_VERIFY
-#define HB_NO_BITMAP
-#define HB_NO_ERRNO
-#define HB_NO_FACE_COLLECT_UNICODES
-#define HB_NO_GETENV
-#define HB_NO_HINTING
-#define HB_NO_LAYOUT_FEATURE_PARAMS
-#define HB_NO_LAYOUT_COLLECT_GLYPHS
-#define HB_NO_LAYOUT_RARELY_USED
-#define HB_NO_LAYOUT_UNUSED
-#define HB_NO_MATH
-#define HB_NO_META
-#define HB_NO_METRICS
-#define HB_NO_MMAP
-#define HB_NO_NAME
-#define HB_NO_OPEN
-#define HB_NO_OT_FETCH
-#define HB_NO_OT_FONT_GLYPH_NAMES
-#define HB_NO_SETLOCALE
-#define HB_NO_STYLE
-#define HB_NO_SUBSET_DEPEND
-#define HB_NO_VERTICAL
-#define HB_NO_VAR
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_LEAN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DISABLE_DEPRECATED
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_ATEXIT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_ਬਫਰ_ਸੁਨੇਹਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_ਬਫਰ_SERIALIZE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_ਬਫਰ_VERIFY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_BITMAP
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_ERRNO
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_FACE_COLLECT_UNICODES
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_GETENV
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_HINTING
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_LAYOUT_FEATURE_PARAMS
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_LAYOUT_COLLECT_GLYPHS
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_LAYOUT_RARELY_ਵਰਤਿਆ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_LAYOUT_ਅਣਵਰਤਿਆ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_MATH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_META
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_METRICS
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_MMAP
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_NAME
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OPEN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FETCH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT_GLYPH_ਨਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_SETLOCALE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_STYLE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_SUBSET_DEPEND
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_VERTICAL
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
-#define HB_NO_COLOR
-#define HB_NO_DRAW
-#define HB_NO_PAINT
-#endif
+#ਜੇ !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_ਸਦਿਸ਼) || defined(HB_HAS_GPU))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_COLOR
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_DRAW
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_PAINT
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_MINI
-#define HB_NO_AAT
-#define HB_NO_LEGACY
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_MINI
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_AAT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_LEGACY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_BEYOND_64K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_CUBIC_GLYF
+#ਜੇ_ਅੰਤ
 
-#ifdef __OPTIMIZE_SIZE__
-#ifndef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE
-#endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __OPTIMIZE_SIZE__
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPTIMIZE_ਮਾਪ
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
-#ifndef HB_CONFIG_OVERRIDE_H
-#define HB_CONFIG_OVERRIDE_H "config-override.h"
-#endif
-#include HB_CONFIG_OVERRIDE_H
-#endif
+#ਜੇ defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CONFIG_OVERRIDE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CONFIG_OVERRIDE_H "config-override.h"
+#ਜੇ_ਅੰਤ
+#ਅਨ੍ਤਰ੍ਭਾਵ HB_CONFIG_OVERRIDE_H
+#ਜੇ_ਅੰਤ
 
 /* Closure of options. */
 
-#ifdef HB_NO_VAR
-#define HB_NO_VAR_COMPOSITES
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_VAR_COMPOSITES
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_DISABLE_DEPRECATED
-#define HB_IF_NOT_DEPRECATED(x)
-#else
-#define HB_IF_NOT_DEPRECATED(x) x
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_IF_NOT_DEPRECATED(x)
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_IF_NOT_DEPRECATED(x) x
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_SHAPER
-#define HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_SHAPER
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_AAT_SHAPE
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_AAT
-#define HB_NO_OT_NAME_LANGUAGE_AAT
-#define HB_NO_AAT_SHAPE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_NAME_LANGUAGE_AAT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_AAT_SHAPE
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_BITMAP
-#define HB_NO_OT_FONT_BITMAP
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_BITMAP
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT_BITMAP
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_DRAW
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_OUTLINE
-#define HB_NO_PAINT
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_DRAW
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT_CFF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OUTLINE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_PAINT
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_CFF
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_SUBSET_CFF
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_CFF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT_CFF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_SUBSET_CFF
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_LEGACY
-#define HB_NO_CMAP_LEGACY_SUBTABLES
-#define HB_NO_FALLBACK_SHAPE
-#define HB_NO_OT_KERN
-#define HB_NO_OT_LAYOUT_BLOCKLIST
-#define HB_NO_AAT_LAYOUT_BLOCKLIST
-#define HB_NO_OT_SHAPE_FALLBACK
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_LEGACY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_CMAP_LEGACY_SUBTABLES
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_FALLBACK_SHAPE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_KERN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_LAYOUT_BLOCKLIST
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_AAT_LAYOUT_BLOCKLIST
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPE_FALLBACK
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_NAME
-#define HB_NO_OT_NAME_LANGUAGE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_NAME
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_NAME_LANGUAGE
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_OT
-#define HB_NO_OT_FONT
-#define HB_NO_OT_LAYOUT
-#define HB_NO_OT_TAG
-#define HB_NO_OT_SHAPE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_LAYOUT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_ਟੈਗ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPE
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_AAT_SHAPE
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-#define HB_NO_OT_SHAPER_ARABIC_FALLBACK
-#define HB_NO_OT_SHAPER_HEBREW_FALLBACK
-#define HB_NO_OT_SHAPER_THAI_FALLBACK
-#define HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-#define HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FALLBACK
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPER_ARABIC_FALLBACK
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPER_HEBREW_FALLBACK
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPER_THAI_FALLBACK
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_OPTIMIZE_SIZE_MORE
-#define HB_NO_OT_RULESETS_FAST_PATH
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ_ਹੋਰ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_RULESETS_FAST_ਰਸਤਾ
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_GDEF_CACHE
-#define HB_NO_OT_LAYOUT_LOOKUP_CACHE
-#define HB_NO_OT_FONT_CMAP_CACHE
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_MINIMIZE_ਸਮ੍ਰਿਤੀ_USAGE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_GDEF_CACHE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_NO_OT_FONT_CMAP_CACHE
+#ਜੇ_ਅੰਤ
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
-#ifndef HB_CONFIG_OVERRIDE_LAST_H
-#define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
-#endif
-#include HB_CONFIG_OVERRIDE_LAST_H
-#endif
+#ਜੇ defined(HAVE_CONFIG_OVERRIDE_ਆਖਰੀ_H) || defined(HB_CONFIG_OVERRIDE_ਆਖਰੀ_H)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CONFIG_OVERRIDE_ਆਖਰੀ_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CONFIG_OVERRIDE_ਆਖਰੀ_H "config-override-last.h"
+#ਜੇ_ਅੰਤ
+#ਅਨ੍ਤਰ੍ਭਾਵ HB_CONFIG_OVERRIDE_ਆਖਰੀ_H
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_VAL 1
-#else
-#define HB_OPTIMIZE_SIZE_VAL 0
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPTIMIZE_ਮਾਪ_VAL 1
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OPTIMIZE_ਮਾਪ_VAL 0
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 0
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_MINIMIZE_ਸਮ੍ਰਿਤੀ_USAGE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MINIMIZE_ਸਮ੍ਰਿਤੀ_USAGE_VAL 1
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MINIMIZE_ਸਮ੍ਰਿਤੀ_USAGE_VAL 0
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_CONFIG_HH */
+#ਜੇ_ਅੰਤ /* HB_CONFIG_HH */

@@ -1,18 +1,18 @@
-#include "hb-ot-shaper-use-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+ਪੂਰਨ ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  if (argc != 2)
+  ਜੇ (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
-      printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ u = 0; u < 0x10FFFFu; u++)
+      ਲਿਖੋ ("U+%04X %d\n", u, hb_use_get_category (u));
+    ਵਾਪਸ 0;
   }
 
   hb_codepoint_t u;
-  sscanf (argv[1], "%x", &u);
+  ਲੜੀ_ਤੋਂ_ਪੜ੍ਹੋ (argv[1], "%x", &u);
 
-  printf ("%d\n", hb_use_get_category (u));
+  ਲਿਖੋ ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  ਵਾਪਸ 0;
 }

@@ -22,63 +22,63 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_GASP_TABLE_HH
-#define HB_OT_GASP_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_GASP_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_GASP_ਸਾਰਣੀ_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-hhea-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-os2-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gasp
  */
-#define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_gasp HB_ਟੈਗ('g','a','s','p')
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-struct GaspRange
+ਬਣਤਰ GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
+  ਜਨਤਕ:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-struct gasp
+ਬਣਤਰ gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  ਅਚਲ GaspRange &get_gasp_range (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
+  { ਵਾਪਸ gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
-  HBUINT16	version;	/* Version number (set to 1) */
-  Array16Of<GaspRange>
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT16	ਸੰਸਕਰਣ;	/* Version number (set to 1) */
+  Array16_ਦਾ<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
-  DEFINE_SIZE_ARRAY (4, gaspRanges);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (4, gaspRanges);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_GASP_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_GASP_TABLE_HH */

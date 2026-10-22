@@ -24,178 +24,178 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_VORG_TABLE_HH
-#define HB_OT_VORG_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VORG_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VORG_ਸਾਰਣੀ_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-dual.hh"
 
 /*
  * VORG -- Vertical Origin Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/vorg
  */
-#define HB_OT_TAG_VORG HB_TAG('V','O','R','G')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VORG HB_ਟੈਗ('V','O','R','G')
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-template <typename Types>
-struct VertOriginMetric
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  ਪੂਰਨ cmp (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ glyph.cmp (g); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  typename Types::HBGlyphID
+  ਜਨਤਕ:
+  ਕਿਸਮ_ਨਾਂ Types::HBGlyphID
 		glyph;
   FWORD		vertOriginY;
 
-  public:
-  DEFINE_SIZE_STATIC (Types::HBGlyphID::static_size + FWORD::static_size);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Types::HBGlyphID::static_ਮਾਪ + FWORD::static_ਮਾਪ);
 };
 
-template <typename Types>
-struct VORGFormat1_2
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ VORGFormat1_2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ.ਮੰਜ਼ਿਲ_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ਪੂਰਨ get_y_origin (hb_codepoint_t glyph) ਅਚਲ
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i;
+    ਜੇ (!vertYOrigins.bfind (glyph, &i))
+      ਵਾਪਸ defaultVertOriginY;
+    ਵਾਪਸ vertYOrigins[i].vertOriginY;
   }
 
-  template <typename Iterator,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ਖਾਲੀ serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    ਜੇ (unlikely (!c->extend_min ((*ਇਹ))))  ਵਾਪਸ;
 
-    this->version.major = Types::size == 2 ? 1 : 2;
-    this->version.minor = 0;
+    ਇਹ->ਸੰਸਕਰਣ.major = Types::ਮਾਪ == 2 ? 1 : 2;
+    ਇਹ->ਸੰਸਕਰਣ.minor = 0;
 
-    this->defaultVertOriginY = defaultVertOriginY;
-    this->vertYOrigins.len = it.len ();
+    ਇਹ->defaultVertOriginY = defaultVertOriginY;
+    ਇਹ->vertYOrigins.len = it.len ();
 
     c->copy_all (it);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਸਵੈਚਾਲਿਤ *vorg_ਅਭਾਜ = c->serializer->ਸ਼ੁਰੂ_embed<VORGFormat1_2> ();
+    ਜੇ (unlikely (!c->serializer->check_success (vorg_ਅਭਾਜ))) return_trace (ਝੂਠ);
 
-    auto it =
+    ਸਵੈਚਾਲਿਤ it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
-    | hb_map ([&] (const VertOriginMetric<Types>& _)
+    | hb_map ([&] (ਅਚਲ VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_ਸੈੱਟ_ਮੁੱਲ_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		ਵਾਪਸ metric;
 	      })
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
-    return_trace (true);
+    vorg_ਅਭਾਜ->serialize (c->serializer, it, defaultVertOriginY);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  version.major == (Types::size == 2 ? 1 : 2) &&
+		  ਸੰਸਕਰਣ.major == (Types::ਮਾਪ == 2 ? 1 : 2) &&
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of VORG table. */
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
-  typename Types::template SortedArrayOf<VertOriginMetric<Types>>
+  ਕਿਸਮ_ਨਾਂ Types::ਸਾਂਚਾ Sorted_Array_ਦਾ<VertOriginMetric<Types>>
 		vertYOrigins;	/* The array of vertical origins. */
 
-  public:
-  DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY(6 + Types::HBUINT::static_ਮਾਪ, vertYOrigins);
 };
 
-struct VORG
+ਬਣਤਰ VORG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ u.ਸੰਸਕਰਣ.v.ਮੰਜ਼ਿਲ_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  ਪੂਰਨ get_y_origin (hb_codepoint_t glyph) ਅਚਲ
   {
-    switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
-#ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
-#endif
-    default: return 0;
+    ਚੋਣ (u.ਸੰਸਕਰਣ.v.major) {
+    ਹਾਲਤ 1: ਵਾਪਸ u.version1.get_y_origin (glyph);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 2: ਵਾਪਸ u.version2.get_y_origin (glyph);
+#ਜੇ_ਅੰਤ
+    ਮੂਲ: ਵਾਪਸ 0;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
-#ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
-#endif
-    default: return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਚੋਣ (u.ਸੰਸਕਰਣ.v.major) {
+    ਹਾਲਤ 1: return_trace (u.version1.subset (c));
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 2: return_trace (u.version2.subset (c));
+#ਜੇ_ਅੰਤ
+    ਮੂਲ: return_trace (ਝੂਠ);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!u.ਸੰਸਕਰਣ.v.sanitize (c))) return_trace (ਝੂਠ);
     hb_barrier ();
-    switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
-#endif
-    default: return_trace (false);
+    ਚੋਣ (u.ਸੰਸਕਰਣ.v.major) {
+    ਹਾਲਤ 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+#ਜੇ_ਅੰਤ
+    ਮੂਲ: return_trace (ਝੂਠ);
     }
   }
 
-  protected:
-  union {
-  struct {
-  FixedVersion<>v;		/* Version of VORG table. */
-  }				version;
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ {
+  ਬਣਤਰ {
+  Fixed_ਸੰਸਕਰਣ<>v;		/* Version of VORG table. */
+  }				ਸੰਸਕਰਣ;
   VORGFormat1_2<Layout::SmallTypes>version1;
-#ifndef HB_NO_BEYOND_64K
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
   VORGFormat1_2<Layout::MediumTypes>version2;
-#endif
+#ਜੇ_ਅੰਤ
   } u;
 
-  public:
-  DEFINE_SIZE_UNION (4, version.v);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_UNION (4, ਸੰਸਕਰਣ.v);
 };
 } /* namespace OT */
 
-#endif /* HB_OT_VORG_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_VORG_TABLE_HH */

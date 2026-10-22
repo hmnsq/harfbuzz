@@ -24,12 +24,12 @@
  * Red Hat Author(s): Matthias Clasen
  */
 
-#ifndef HB_CAIRO_H
-#define HB_CAIRO_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CAIRO_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CAIRO_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include <cairo.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <cairo.h>
 
 HB_BEGIN_DECLS
 
@@ -59,41 +59,41 @@ hb_cairo_font_face_get_face (cairo_font_face_t *font_face);
  *
  * Since: 7.0.0
  */
-typedef hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
 						  cairo_scaled_font_t *scaled_font,
-						  void *user_data);
+						  ਖਾਲੀ *user_ਅੰਕੜੇ);
 
-HB_EXTERN void
-hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
+HB_EXTERN ਖਾਲੀ
+hb_cairo_font_face_ਸੈੱਟ_font_init_func (cairo_font_face_t *font_face,
 				       hb_cairo_font_init_func_t func,
-				       void *user_data,
+				       ਖਾਲੀ *user_ਅੰਕੜੇ,
 				       hb_destroy_func_t destroy);
 
 HB_EXTERN hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font);
 
-HB_EXTERN void
-hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor);
+HB_EXTERN ਖਾਲੀ
+hb_cairo_font_face_ਸੈੱਟ_scale_ਗੁਣਕ (cairo_font_face_t *font_face,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ scale_ਗੁਣਕ);
 
-HB_EXTERN unsigned int
-hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_cairo_font_face_get_scale_ਗੁਣਕ (cairo_font_face_t *font_face);
 
-HB_EXTERN void
-hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
+HB_EXTERN ਖਾਲੀ
+hb_cairo_glyphs_from_ਬਫਰ (hb_ਬਫਰ_t *ਬਫਰ,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     ਦੁੱਗਣਾ x_scale_ਗੁਣਕ,
+			     ਦੁੱਗਣਾ y_scale_ਗੁਣਕ,
+			     ਦੁੱਗਣਾ x,
+			     ਦੁੱਗਣਾ y,
+			     ਅਚਲ ਅੱਖਰ *utf8,
+			     ਪੂਰਨ utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
-			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
-			     cairo_text_cluster_flags_t *cluster_flags);
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅੰਕ_glyphs,
+			     cairo_ਪਾਠ_cluster_t **clusters,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਅੰਕ_clusters,
+			     cairo_ਪਾਠ_cluster_flags_t *cluster_flags);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_CAIRO_H */
+#ਜੇ_ਅੰਤ /* HB_CAIRO_H */

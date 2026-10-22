@@ -22,65 +22,65 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OUTLINE_HH
-#define HB_OUTLINE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OUTLINE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OUTLINE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-draw.hh"
 
 
-struct hb_outline_point_t
+ਬਣਤਰ hb_outline_ਬਿੰਦੂ_t
 {
-  enum class type_t
+  ਗਿਣਤੀ ਵਰਗ type_t
   {
-    MOVE_TO,
-    LINE_TO,
-    QUADRATIC_TO,
-    CUBIC_TO,
+    MOVE_ਮੰਜ਼ਿਲ,
+    ਸਤਰ_ਮੰਜ਼ਿਲ_2,
+    QUADRATIC_ਮੰਜ਼ਿਲ,
+    CUBIC_ਮੰਜ਼ਿਲ,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_ਬਿੰਦੂ_t (ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  ਦਸ਼ਮਲਵ x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+ਬਣਤਰ hb_outline_ਸਦਿਸ਼_t
 {
-  float normalize_len ()
+  ਦਸ਼ਮਲਵ normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    ਦਸ਼ਮਲਵ len = hypotf (x, y);
+    ਜੇ (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    ਵਾਪਸ len;
   }
 
-  float x, y;
+  ਦਸ਼ਮਲਵ x, y;
 };
 
-struct hb_outline_t
+ਬਣਤਰ hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  ਖਾਲੀ reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ replay (hb_draw_funcs_t *pen, ਖਾਲੀ *pen_ਅੰਕੜੇ) ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਦਸ਼ਮਲਵ control_area () ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ translate (ਦਸ਼ਮਲਵ dx, ਦਸ਼ਮਲਵ dy);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ slant (ਦਸ਼ਮਲਵ slant_xy);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ embolden (ਦਸ਼ਮਲਵ x_strength, ਦਸ਼ਮਲਵ y_strength,
+			     ਦਸ਼ਮਲਵ x_ਖਿਸਕਾਓ, ਦਸ਼ਮਲਵ y_ਖਿਸਕਾਓ);
 
-  hb_vector_t<hb_outline_point_t> points;
-  hb_vector_t<unsigned> contours;
-  int64_t *budget_remaining = nullptr;
+  hb_ਸਦਿਸ਼_t<hb_outline_ਬਿੰਦੂ_t> points;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> contours;
+  int64_t *budget_ਬਚਿਆ = ਖਾਲੀ_ਸੂਚਕ;
 };
 
-HB_INTERNAL hb_draw_funcs_t *
+HB_ਅੰਦਰੂਨੀ hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ();
 
 
-#endif /* HB_OUTLINE_HH */
+#ਜੇ_ਅੰਤ /* HB_OUTLINE_HH */

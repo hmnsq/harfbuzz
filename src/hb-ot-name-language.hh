@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_NAME_LANGUAGE_HH
-#define HB_OT_NAME_LANGUAGE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_NAME_LANGUAGE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_NAME_LANGUAGE_HH
 
-#include "hb.hh"
-
-
-HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code);
-
-HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code);
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 
-#endif /* HB_OT_NAME_LANGUAGE_HH */
+HB_ਅੰਦਰੂਨੀ hb_language_t
+hb_ot_name_language_for_ms_ਕੋਡ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕੋਡ);
+
+HB_ਅੰਦਰੂਨੀ hb_language_t
+hb_ot_name_language_for_mac_ਕੋਡ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕੋਡ);
+
+
+#ਜੇ_ਅੰਤ /* HB_OT_NAME_LANGUAGE_HH */

@@ -22,8 +22,8 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_H
-#define HB_WASM_API_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_H
 
 /*
 #include "hb.h"
@@ -32,70 +32,70 @@ HB_BEGIN_DECLS
 HB_END_DECLS
 */
 
-#include <stdint.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h>
 
 
-#ifndef HB_WASM_BEGIN_DECLS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_WASM_BEGIN_DECLS	extern "C" {
-#  define HB_WASM_END_DECLS	}
-# else /* !__cplusplus */
+#  define HB_WASM_BEGIN_DECLS	ਬਾਹਰੀ "C" {
+#  define HB_WASM_ਸਿਰਾ_DECLS	}
+# ਨਹੀਂਤਾਂ /* !__cplusplus */
 #  define HB_WASM_BEGIN_DECLS
-#  define HB_WASM_END_DECLS
+#  define HB_WASM_ਸਿਰਾ_DECLS
 # endif /* !__cplusplus */
-#endif
+#ਜੇ_ਅੰਤ
 
 
 HB_WASM_BEGIN_DECLS
 
-#ifndef HB_WASM_API
-#define HB_WASM_API(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_API_COMPOUND /* compound return type */
-#define HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
-#endif
-#ifndef HB_WASM_INTERFACE
-#define HB_WASM_INTERFACE(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_EXEC_ENV
-#define HB_WASM_EXEC_ENV
-#endif
-#ifndef HB_WASM_EXEC_ENV_COMPOUND
-#define HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API(ret_t, name) ret_t name
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_COMPOUND /* compound return type */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_INTERFACE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_INTERFACE(ret_t, name) ret_t name
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_EXEC_ENV
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_EXEC_ENV
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_EXEC_ENV_COMPOUND
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
+#ਜੇ_ਅੰਤ
 
 
-#ifndef bool_t
-#define bool_t uint32_t
-#endif
-#ifndef ptr_t
-#define ptr_t(type_t) type_t *
-#endif
-#ifndef ptr_d
-#define ptr_d(type_t, name) type_t *name
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ bool_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ bool_t uint32_t
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ptr_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ptr_t(type_t) type_t *
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ptr_d
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ptr_d(type_t, name) type_t *name
+#ਜੇ_ਅੰਤ
 
-typedef uint32_t codepoint_t;
-typedef int32_t position_t;
-typedef uint32_t mask_t;
-typedef uint32_t tag_t;
-#define TAG(c1,c2,c3,c4) ((tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint32_t codepoint_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ int32_t position_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint32_t ਨਕਾਬ_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint32_t ਟੈਗ_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਟੈਗ_3(c1,c2,c3,c4) ((ਟੈਗ_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
-typedef enum {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ {
   DIRECTION_INVALID = 0,
   DIRECTION_LTR = 4,
   DIRECTION_RTL,
   DIRECTION_TTB,
   DIRECTION_BTT
 } direction_t;
-#define DIRECTION_IS_VALID(dir)		((((unsigned int) (dir)) & ~3U) == 4)
-#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
-#define DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
-#define DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
-#define DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
-#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned int) (dir)) ^ 1))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_IS_VALID(dir)		((((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) & ~3U) == 4)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_IS_HORIZONTAL(dir)	((((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) & ~1U) == 4)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_IS_VERTICAL(dir)	((((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) & ~1U) == 6)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_IS_FORWARD(dir)	((((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) & ~2U) == 4)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_IS_BACKWARD(dir)	((((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) & ~2U) == 5)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DIRECTION_ਉਲਟ(dir)		((direction_t) (((ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ) (dir)) ^ 1))
 
-typedef tag_t script_t; /* ISO 15924 representation of Unicode scripts. */
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਟੈਗ_t script_t; /* ISO 15924 representation of Unicode scripts. */
 
 
 /* common */
@@ -106,92 +106,92 @@ HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 
 /* blob */
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  uint32_t length;
-  ptr_t(char) data;
+  uint32_t ਲੰਮਾਈ;
+  ptr_t(ਅੱਖਰ) ਅੰਕੜੇ;
 } blob_t;
-#define BLOB_INIT {0, 0}
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ BLOB_INIT {0, 0}
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob));
 
-/* buffer */
+/*ਬਫਰ*/
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
   uint32_t codepoint;
-  uint32_t mask;
+  uint32_t ਨਕਾਬ;
   uint32_t cluster;
   uint32_t var1;
   uint32_t var2;
 } glyph_info_t;
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
   position_t x_advance;
   position_t y_advance;
-  position_t x_offset;
-  position_t y_offset;
+  position_t x_ਵਿੱਥ_2;
+  position_t y_ਵਿੱਥ_2;
   uint32_t var;
 } glyph_position_t;
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  uint32_t length;
+  uint32_t ਲੰਮਾਈ;
   ptr_t(glyph_info_t) info;
   ptr_t(glyph_position_t) pos;
-} buffer_contents_t;
-#define BUFFER_CONTENTS_INIT {0, 0, 0}
+} ਬਫਰ_contents_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਬਫਰ_CONTENTS_INIT {0, 0, 0}
 
-HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
-					       ptr_d(buffer_contents_t, contents),
-					       uint32_t size);
+HB_WASM_API (bool_t, ਬਫਰ_contents_realloc) (HB_WASM_EXEC_ENV
+					       ptr_d(ਬਫਰ_contents_t, contents),
+					       uint32_t ਮਾਪ);
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
-					  ptr_d(buffer_contents_t, contents));
+HB_WASM_API (ਖਾਲੀ, ਬਫਰ_contents_free) (HB_WASM_EXEC_ENV
+					  ptr_d(ਬਫਰ_contents_t, contents));
 
-typedef struct buffer_t buffer_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ ਬਫਰ_t ਬਫਰ_t;
 
-HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
-					    ptr_d(buffer_t, buffer),
-					    ptr_d(buffer_contents_t, contents));
+HB_WASM_API (bool_t, ਬਫਰ_copy_contents) (HB_WASM_EXEC_ENV
+					    ptr_d(ਬਫਰ_t, ਬਫਰ),
+					    ptr_d(ਬਫਰ_contents_t, contents));
 
-HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents));
+HB_WASM_API (bool_t, ਬਫਰ_ਸੈੱਟ_contents) (HB_WASM_EXEC_ENV
+					   ptr_d(ਬਫਰ_t, ਬਫਰ),
+					   ptr_d(ਅਚਲ ਬਫਰ_contents_t, contents));
 
-HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
-						 ptr_d(buffer_t, buffer));
+HB_WASM_API (direction_t, ਬਫਰ_get_direction) (HB_WASM_EXEC_ENV
+						 ptr_d(ਬਫਰ_t, ਬਫਰ));
 
-HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer));
+HB_WASM_API (script_t, ਬਫਰ_get_script) (HB_WASM_EXEC_ENV
+					   ptr_d(ਬਫਰ_t, ਬਫਰ));
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
-				    ptr_d(buffer_t, buffer));
+HB_WASM_API (ਖਾਲੀ, ਬਫਰ_ਉਲਟ) (HB_WASM_EXEC_ENV
+				    ptr_d(ਬਫਰ_t, ਬਫਰ));
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
-					     ptr_d(buffer_t, buffer));
+HB_WASM_API (ਖਾਲੀ, ਬਫਰ_ਉਲਟ_clusters) (HB_WASM_EXEC_ENV
+					     ptr_d(ਬਫਰ_t, ਬਫਰ));
 
 /* face */
 
-typedef struct face_t face_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ face_t face_t;
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int);
+					  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ);
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_ਸਾਰਣੀ) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
 				       ptr_d(blob_t, blob));
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਬਿਨਾਨਿਸ਼ਾਨੀ, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face));
 
 /* font */
 
-typedef struct font_t font_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ font_t font_t;
 
 HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 					  ptr_d(face_t, face));
@@ -199,7 +199,7 @@ HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
 					    ptr_d(font_t, font));
 
-HB_WASM_API (void, font_get_scale) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, font_get_scale) (HB_WASM_EXEC_ENV
 				    ptr_d(font_t, font),
 				    ptr_d(int32_t, x_scale),
 				    ptr_d(int32_t, y_scale));
@@ -217,12 +217,12 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    ptr_d(font_t, font),
 						    codepoint_t glyph);
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
   position_t x_bearing;
   position_t y_bearing;
-  position_t width;
-  position_t height;
+  position_t ਚੌੜਾਈ;
+  position_t ਉਚਾਈ;
 } glyph_extents_t;
 
 HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
@@ -230,53 +230,53 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 					      codepoint_t glyph,
 					      ptr_d(glyph_extents_t, extents));
 
-HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, font_glyph_ਮੰਜ਼ਿਲ_string) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  codepoint_t glyph,
-					  ptr_d(char, s), uint32_t size);
+					  ptr_d(ਅੱਖਰ, s), uint32_t ਮਾਪ);
 
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  unsigned int length;
-  ptr_t(int) coords;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ;
+  ptr_t(ਪੂਰਨ) coords;
 } coords_t;
 
 HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
-HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, font_ਸੈੱਟ_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
 /* outline */
 
-enum glyph_outline_point_type_t
+ਗਿਣਤੀ glyph_outline_ਬਿੰਦੂ_type_t
 {
-  MOVE_TO,
-  LINE_TO,
-  QUADRATIC_TO,
-  CUBIC_TO,
+  MOVE_ਮੰਜ਼ਿਲ,
+  ਸਤਰ_ਮੰਜ਼ਿਲ_2,
+  QUADRATIC_ਮੰਜ਼ਿਲ,
+  CUBIC_ਮੰਜ਼ਿਲ,
 };
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  float x;
-  float y;
+  ਦਸ਼ਮਲਵ x;
+  ਦਸ਼ਮਲਵ y;
   uint32_t type;
-} glyph_outline_point_t;
+} glyph_outline_ਬਿੰਦੂ_t;
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
   uint32_t n_points;
-  ptr_t(glyph_outline_point_t) points;
+  ptr_t(glyph_outline_ਬਿੰਦੂ_t) points;
   uint32_t n_contours;
   ptr_t(uint32_t) contours;
 } glyph_outline_t;
-#define GLYPH_OUTLINE_INIT {0, 0, 0, 0}
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ GLYPH_OUTLINE_INIT {0, 0, 0, 0}
 
-HB_WASM_API (void, glyph_outline_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, glyph_outline_free) (HB_WASM_EXEC_ENV
 					ptr_d(glyph_outline_t, outline));
 
 HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
@@ -287,51 +287,51 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 
 /* shape */
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  tag_t    tag;
-  uint32_t value;
-  uint32_t start;
-  uint32_t end;
+  ਟੈਗ_t    ਟੈਗ_2;
+  uint32_t ਮੁੱਲ_2;
+  uint32_t ਸ਼ੁਰੂ;
+  uint32_t ਸਿਰਾ;
 } feature_t;
-#define FEATURE_GLOBAL_START	0
-#define FEATURE_GLOBAL_END	((uint32_t) -1)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FEATURE_GLOBAL_ਸ਼ੁਰੂ	0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FEATURE_GLOBAL_ਸਿਰਾ	((uint32_t) -1)
 
-typedef struct
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
-  uint32_t length;
+  uint32_t ਲੰਮਾਈ;
   ptr_t(feature_t) features;
 } features_t;
-#define FEATURES_INIT {0, 0}
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FEATURES_INIT {0, 0}
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
-					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       ptr_d(ਅਚਲ feature_t, features),
+					       uint32_t ਅੰਕ_features,
 					       ptr_d(features_t, output));
 
-HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, features_free) (HB_WASM_EXEC_ENV
 				     ptr_d(features_t, features));
 
 HB_WASM_API (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				  ptr_d(font_t, font),
-				  ptr_d(buffer_t, buffer),
-				  ptr_d(const feature_t, features),
-				  uint32_t num_features,
-				  const char *shaper);
+				  ptr_d(ਬਫਰ_t, ਬਫਰ),
+				  ptr_d(ਅਚਲ feature_t, features),
+				  uint32_t ਅੰਕ_features,
+				  ਅਚਲ ਅੱਖਰ *shaper);
 
 /* Implement these in your shaper. */
 
-HB_WASM_INTERFACE (ptr_t(void), shape_plan_create) (ptr_d(face_t, face));
+HB_WASM_INTERFACE (ptr_t(ਖਾਲੀ), shape_plan_create) (ptr_d(face_t, face));
 
-HB_WASM_INTERFACE (bool_t, shape) (ptr_d(void, shape_plan),
+HB_WASM_INTERFACE (bool_t, shape) (ptr_d(ਖਾਲੀ, shape_plan),
 				   ptr_d(font_t, font),
-				   ptr_d(buffer_t, buffer),
-				   ptr_d(const feature_t, features),
-				   uint32_t num_features);
+				   ptr_d(ਬਫਰ_t, ਬਫਰ),
+				   ptr_d(ਅਚਲ feature_t, features),
+				   uint32_t ਅੰਕ_features);
 
-HB_WASM_INTERFACE (void, shape_plan_destroy) (ptr_d(void, shape_plan));
+HB_WASM_INTERFACE (ਖਾਲੀ, shape_plan_destroy) (ptr_d(ਖਾਲੀ, shape_plan));
 
 
-HB_WASM_END_DECLS
+HB_WASM_ਸਿਰਾ_DECLS
 
-#endif /* HB_WASM_API_H */
+#ਜੇ_ਅੰਤ /* HB_WASM_API_H */

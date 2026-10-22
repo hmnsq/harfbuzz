@@ -26,90 +26,90 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FACE_HH
-#define HB_FACE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_FACE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_FACE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-ot-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shape-plan.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face.hh"
 
 
 /*
  * hb_face_t
  */
 
-#define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, face);
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_ਅੰਕੜੇ_INSTANTIATE_SHAPERS(shaper, face);
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-list.hh"
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_SHAPER_IMPLEMENT
 
-struct hb_face_t
+ਬਣਤਰ hb_face_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
-  mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
-  mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2;			/* Face index in a collection, zero-based. */
+  ਬਦਲਣਯੋਗ hb_atomic_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> upem;	/* Units-per-EM. */
+  ਬਦਲਣਯੋਗ hb_atomic_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਅੰਕ_glyphs;/* Number of glyphs. */
 
-  hb_reference_table_func_t  reference_table_func;
-  void                      *user_data;
+  hb_reference_ਸਾਰਣੀ_func_t  reference_ਸਾਰਣੀ_func;
+  ਖਾਲੀ                      *user_ਅੰਕੜੇ;
   hb_destroy_func_t          destroy;
 
-  hb_get_table_tags_func_t   get_table_tags_func;
-  void                      *get_table_tags_user_data;
-  hb_destroy_func_t          get_table_tags_destroy;
+  hb_get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_func_t   get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_func;
+  ਖਾਲੀ                      *get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_user_ਅੰਕੜੇ;
+  hb_destroy_func_t          get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_destroy;
 
-  hb_shaper_object_dataset_t<hb_face_t> data;/* Various shaper data. */
-  hb_ot_face_t table;			/* All the face's tables. */
+  hb_shaper_object_dataset_t<hb_face_t> ਅੰਕੜੇ;/* Various shaper data. */
+  hb_ot_face_t ਸਾਰਣੀ;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  ਬਣਤਰ plan_ਗੰਢ_t
   {
     hb_shape_plan_t *shape_plan;
-    plan_node_t *next;
+    plan_ਗੰਢ_t *next;
   };
-#ifndef HB_NO_SHAPER
-  hb_atomic_t<plan_node_t *> shape_plans;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SHAPER
+  hb_atomic_t<plan_ਗੰਢ_t *> shape_plans;
+#ਜੇ_ਅੰਤ
 
-  hb_blob_t *reference_table (hb_tag_t tag) const
+  hb_blob_t *reference_ਸਾਰਣੀ (hb_ਟੈਗ_t ਟੈਗ_2) ਅਚਲ
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    ਜੇ (unlikely (!reference_ਸਾਰਣੀ_func))
+      ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-    blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    blob = reference_ਸਾਰਣੀ_func (/*Oh, well.*/const_cast<hb_face_t *> (ਇਹ), ਟੈਗ_2, user_ਅੰਕੜੇ);
+    ਜੇ (unlikely (!blob))
+      ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-    return blob;
+    ਵਾਪਸ blob;
   }
 
-  unsigned int get_upem () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_upem () ਅਚਲ
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ret = upem;
+    ਜੇ (unlikely (!ret))
     {
-      return load_upem ();
+      ਵਾਪਸ ਲੱਦੋ_upem ();
     }
-    return ret;
+    ਵਾਪਸ ret;
   }
 
-  unsigned int get_num_glyphs () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_ਅੰਕ_glyphs () ਅਚਲ
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ret = ਅੰਕ_glyphs;
+    ਜੇ (unlikely (ret == UINT_MAX))
+      ਵਾਪਸ ਲੱਦੋ_ਅੰਕ_glyphs ();
+    ਵਾਪਸ ret;
   }
 
-  private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  ਨਿਜੀ:
+  HB_ਅੰਦਰੂਨੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੱਦੋ_upem () ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੱਦੋ_ਅੰਕ_glyphs () ਅਚਲ;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 
 
-#endif /* HB_FACE_HH */
+#ਜੇ_ਅੰਤ /* HB_FACE_HH */

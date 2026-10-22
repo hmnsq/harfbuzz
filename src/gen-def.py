@@ -2,21 +2,21 @@
 
 "usage: gen-def.py harfbuzz.def hb.h [hb-blob.h hb-buffer.h ...]"
 
-import os, re, sys
+ਆਯਾਤ os, re, sys
 
-if len (sys.argv) < 3:
+ਜੇ ਲੰਬਾਈ (sys.argv) < 3:
 	sys.exit(__doc__)
 
 output_file = sys.argv[1]
-header_paths = sys.argv[2:]
+ਸਿਰਲੇਖ_paths = sys.argv[2:]
 
-headers_content = []
-for h in header_paths:
-	if h.endswith (".h"):
-		with open (h, encoding='utf-8') as f: headers_content.append (f.read ())
+ਸਿਰਲੇਖਾਂ_content = []
+ਲਈ h ਵਿੱਚ ਸਿਰਲੇਖ_paths:
+	ਜੇ h.endswith (".h"):
+		ਨਾਲ open (h, encoding='utf-8') ਇਵ f: ਸਿਰਲੇਖਾਂ_content.append (f.ਪਠ ())
 
-symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (headers_content), re.M))
-if '--experimental-api' not in sys.argv:
+symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (ਸਿਰਲੇਖਾਂ_content), re.M))
+ਜੇ '--experimental-api' ਨਹੀਂ ਵਿੱਚ sys.argv:
 	# Move these to harfbuzz-sections.txt when got stable
 	experimental_symbols = \
 """hb_shape_justify
@@ -31,11 +31,11 @@ hb_subset_depend_lookup_glyph
 hb_subset_depend_lookup_set
 hb_subset_depend_destroy
 """.splitlines ()
-	symbols = [x for x in symbols if x not in experimental_symbols]
+	symbols = [x ਲਈ x ਵਿੱਚ symbols ਜੇ x ਨਹੀਂ ਵਿੱਚ experimental_symbols]
 symbols = "\n".join (symbols)
 
-result = symbols if os.getenv ('PLAIN_LIST', '') else """EXPORTS
+ਨਤੀਜਾ = symbols ਜੇ os.getenv ('PLAIN_LIST', '') ਨਹੀਂਤਾਂ """EXPORTS
 %s
 LIBRARY lib%s-0.dll""" % (symbols, output_file.replace ('src/', '').replace ('.def', ''))
 
-with open (output_file, "w") as f: f.write (result)
+ਨਾਲ open (output_file, "w") ਇਵ f: f.ਲਿਖ (ਨਤੀਜਾ)

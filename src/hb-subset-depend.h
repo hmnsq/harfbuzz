@@ -24,14 +24,14 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_SUBSET_DEPEND_H
-#define HB_SUBSET_DEPEND_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_DEPEND_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-subset.h> instead."
-#endif
+#ਜੇ !defined(HB_SUBSET_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-subset.h> instead."
+#ਜੇ_ਅੰਤ
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -62,15 +62,15 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  */
-typedef enum { /*< flags >*/
-  HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
-} hb_subset_depend_edge_flags_t;
-#define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_NONE                   = 0x00u,
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
+  HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
+} hb_subset_depend_ਕਿਨਾਰਾ_flags_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_DEPEND_ਕਿਨਾਰਾ_FLAGS_T_DEFINED
 /* HB_MARK_AS_FLAG_T is applied in hb-depend-data.hh (internal header only) */
 
-#ifndef HB_NO_SUBSET_DEPEND
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_t:
@@ -81,7 +81,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 14.3.0
  */
-typedef struct hb_subset_depend_t hb_subset_depend_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_subset_depend_t hb_subset_depend_t;
 
 /**
  * hb_subset_depend_entry_t:
@@ -99,35 +99,35 @@ typedef struct hb_subset_depend_t hb_subset_depend_t;
  *
  * Since: 14.3.0
  */
-typedef struct {
-  hb_tag_t table_tag;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
+  hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2;
   hb_codepoint_t dependent;
-  hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set_index;
-  hb_codepoint_t context_set_index;
-  hb_subset_depend_edge_flags_t flags;
-} hb_subset_depend_entry_t;
+  hb_ਟੈਗ_t layout_ਟੈਗ;
+  hb_codepoint_t ligature_ਸੈੱਟ_ਸੂਚਕਾਂਕ;
+  hb_codepoint_t context_ਸੈੱਟ_ਸੂਚਕਾਂਕ;
+  hb_subset_depend_ਕਿਨਾਰਾ_flags_t flags;
+} hb_subset_depend_ਇੰਦਰਾਜ_t;
 
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
-                                hb_subset_depend_entry_t *entries /* OUT */);
+                                ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਵਿੱਥ,
+                                ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਇੰਦਰਾਜ_ਗਿਣਤੀ, /* IN/OUT */
+                                hb_subset_depend_ਇੰਦਰਾਜ_t *entries /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend,
-                              hb_codepoint_t index,
-                              hb_set_t *out /* OUT */);
+hb_subset_depend_lookup_ਸੈੱਟ (hb_subset_depend_t *depend,
+                              hb_codepoint_t ਸੂਚਕਾਂਕ_2,
+                              hb_ਸੈੱਟ_t *ਬਾਹਰਲਾ /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_subset_depend_destroy (hb_subset_depend_t *depend);
 
-#endif
+#ਜੇ_ਅੰਤ
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_SUBSET_DEPEND_H */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_DEPEND_H */

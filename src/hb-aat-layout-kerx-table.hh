@@ -25,496 +25,496 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_KERX_TABLE_HH
-#define HB_AAT_LAYOUT_KERX_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LAYOUT_KERX_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LAYOUT_KERX_ਸਾਰਣੀ_HH
 
-#include "hb-kern.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-set-digest.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-kern.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-ankr-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set-digest.hh"
 
 /*
  * kerx -- Extended Kerning
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6kerx.html
  */
-#define HB_AAT_TAG_kerx HB_TAG('k','e','r','x')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_ਟੈਗ_kerx HB_ਟੈਗ('k','e','r','x')
 
 
-namespace AAT {
+ਨਾਮਾਕਾਸ਼ AAT {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
 
-static inline int
-kerxTupleKern (int value,
-	       unsigned int tupleCount,
-	       const void *base,
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਪੂਰਨ
+kerxTupleKern (ਪੂਰਨ value,
+	       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ tuple_ਗਿਣਤੀ,
+	       ਅਚਲ ਖਾਲੀ *ਅਧਾਰ,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  ਜੇ (likely (!tuple_ਗਿਣਤੀ || !c)) ਵਾਪਸ value;
 
-  unsigned int offset = value;
-  const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ = value;
+  ਅਚਲ FWORD *pv = &Struct_At_ਵਿੱਥ<FWORD> (ਅਧਾਰ, ਵਿੱਥ);
+  ਜੇ (unlikely (!c->sanitizer.check_array (pv, tuple_ਗਿਣਤੀ))) ਵਾਪਸ 0;
   hb_barrier ();
-  return *pv;
+  ਵਾਪਸ *pv;
 }
 
 
-struct hb_glyph_pair_t
+ਬਣਤਰ hb_glyph_pair_t
 {
-  hb_codepoint_t left;
-  hb_codepoint_t right;
+  hb_codepoint_t ਖੱਬੇ;
+  hb_codepoint_t ਸੱਜੇ;
 };
 
-struct KernPair
+ਬਣਤਰ KernPair
 {
-  int get_kerning () const { return value; }
+  ਪੂਰਨ get_kerning () ਅਚਲ { ਵਾਪਸ value; }
 
-  int cmp (const hb_glyph_pair_t &o) const
+  ਪੂਰਨ cmp (ਅਚਲ hb_glyph_pair_t &o) ਅਚਲ
   {
-    int ret = left.cmp (o.left);
-    if (ret) return ret;
-    return right.cmp (o.right);
+    ਪੂਰਨ ret = ਖੱਬੇ.cmp (o.ਖੱਬੇ);
+    ਜੇ (ret) ਵਾਪਸ ret;
+    ਵਾਪਸ ਸੱਜੇ.cmp (o.ਸੱਜੇ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  HBGlyphID16	left;
-  HBGlyphID16	right;
+  ਜਨਤਕ:
+  HBGlyphID16	ਖੱਬੇ;
+  HBGlyphID16	ਸੱਜੇ;
   FWORD		value;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (6);
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat0
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_Format0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c = nullptr) const
+  ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ,
+		   hb_aat_apply_context_t *c = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    hb_glyph_pair_t pair = {left, right};
-    int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    hb_glyph_pair_t pair = {ਖੱਬੇ, ਸੱਜੇ};
+    ਪੂਰਨ v = ਜੋੜੇ.bsearch (pair).get_kerning ();
+    ਵਾਪਸ kerxTupleKern (v, ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 (), ਇਹ, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_aat_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ਜੇ (!c->plan->requested_kerning)
+      return_trace (ਝੂਠ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ਜੇ (ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Backwards)
+      return_trace (ਝੂਠ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*ਇਹ, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Cross_ਧਾਰਾ);
+    machine.kern (c->font, c->ਬਫਰ, c->plan->kern_ਨਕਾਬ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    for (const KernPair& pair : pairs)
+    ਲਈ (ਅਚਲ KernPair& pair : ਜੋੜੇ)
     {
-      first_set.add (pair.left);
-      second_set.add (pair.right);
+      ਪਹਿਲਾ_ਸੈੱਟ.ਜੋੜੋ (pair.ਖੱਬੇ);
+      ਦੂਜਾ_ਸੈੱਟ.ਜੋੜੋ (pair.ਸੱਜੇ);
     }
   }
 
-  struct accelerator_t
+  ਬਣਤਰ accelerator_t
   {
-    const KerxSubTableFormat0 &table;
+    ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format0 &ਸਾਰਣੀ;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat0 &table_,
+    accelerator_t (ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format0 &ਸਾਰਣੀ_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     ਸਾਰਣੀ (ਸਾਰਣੀ_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ) ਅਚਲ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ਜੇ (!(*c->ਪਹਿਲਾ_ਸੈੱਟ)[ਖੱਬੇ] || !(*c->ਦੂਜਾ_ਸੈੱਟ)[ਸੱਜੇ]) ਵਾਪਸ 0;
+      ਵਾਪਸ ਸਾਰਣੀ.get_kerning (ਖੱਬੇ, ਸੱਜੇ, c);
     }
   };
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (pairs.sanitize (c)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (ਜੋੜੇ.sanitize (c)));
   }
 
-  protected:
-  KernSubTableHeader	header;
-  BinSearchArrayOf<KernPair, typename KernSubTableHeader::Types::HBUINT>
-			pairs;	/* Sorted kern records. */
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 16, pairs);
+  ਸੁਰੱਖਿਅਤ:
+  Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ	ਸਿਰਲੇਖ;
+  Bin_ਖੋਜ_Array_ਦਾ<KernPair, ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::Types::HBUINT>
+			ਜੋੜੇ;	/* Sorted kern records. */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::static_ਮਾਪ + 16, ਜੋੜੇ);
 };
 
 
-template <bool extended>
-struct Format1Entry;
+ਸਾਂਚਾ <ਤਾਰਕਿਕ extended>
+ਬਣਤਰ Format1_ਇੰਦਰਾਜ;
 
-template <>
-struct Format1Entry<true>
+ਸਾਂਚਾ <>
+ਬਣਤਰ Format1_ਇੰਦਰਾਜ<ਸੱਚ>
 {
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ਧੱਕੋ		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Reset		= 0x2000,	/* If set, reset the kerning data (clear the stack) */
     Reserved		= 0x1FFF,	/* Not used; set to 0. */
   };
 
-  struct EntryData
+  ਬਣਤਰ ਇੰਦਰਾਜ_ਅੰਕੜੇ
   {
-    HBUINT16	kernActionIndex;/* Index into the kerning value array. If
+    HBUINT16	kern_Action_ਸੂਚਕਾਂਕ;/* Index into the kerning value array. If
 				 * this index is 0xFFFF, then no kerning
 				 * is to be performed. */
-    public:
-    DEFINE_SIZE_STATIC (2);
+    ਜਨਤਕ:
+    DEFINE_ਮਾਪ_STATIC (2);
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ਸਥਿਰ ਤਾਰਕਿਕ initiateAction (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.flags & ਧੱਕੋ; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex != 0xFFFF; }
+  ਸਥਿਰ ਤਾਰਕਿਕ performAction (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.ਅੰਕੜੇ.kern_Action_ਸੂਚਕਾਂਕ != 0xFFFF; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex; }
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ kern_Action_ਸੂਚਕਾਂਕ (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.ਅੰਕੜੇ.kern_Action_ਸੂਚਕਾਂਕ; }
 };
-template <>
-struct Format1Entry<false>
+ਸਾਂਚਾ <>
+ਬਣਤਰ Format1_ਇੰਦਰਾਜ<ਝੂਠ>
 {
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    ਧੱਕੋ		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
-    Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
+    ਵਿੱਥ_2		= 0x3FFF,	/* Byte offset from beginning of subtable to the
 					 * value table for the glyphs on the kerning stack. */
 
     Reset		= 0x0000,	/* Not supported? */
   };
 
-  typedef void EntryData;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ਇੰਦਰਾਜ_ਅੰਕੜੇ;
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  ਸਥਿਰ ਤਾਰਕਿਕ initiateAction (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.flags & ਧੱਕੋ; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ਸਥਿਰ ਤਾਰਕਿਕ performAction (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.flags & ਵਿੱਥ_2; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ kern_Action_ਸੂਚਕਾਂਕ (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
+  { ਵਾਪਸ ਇੰਦਰਾਜ.flags & ਵਿੱਥ_2; }
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat1
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_Format1
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::Types Types;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Types::HBUINT HBUINT;
 
-  typedef Format1Entry<Types::extended> Format1EntryT;
-  typedef typename Format1EntryT::EntryData EntryData;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Format1_ਇੰਦਰਾਜ<Types::extended> Format1_ਇੰਦਰਾਜ_T;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Format1_ਇੰਦਰਾਜ_T::ਇੰਦਰਾਜ_ਅੰਕੜੇ ਇੰਦਰਾਜ_ਅੰਕੜੇ;
 
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
-    DontAdvance	= Format1EntryT::DontAdvance,
+    DontAdvance	= Format1_ਇੰਦਰਾਜ_T::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  ਤਾਰਕਿਕ is_action_initiable (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ) ਅਚਲ
   {
-    return Format1EntryT::initiateAction (entry);
+    ਵਾਪਸ Format1_ਇੰਦਰਾਜ_T::initiateAction (ਇੰਦਰਾਜ);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  ਤਾਰਕਿਕ is_actionable (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ) ਅਚਲ
   {
-    return Format1EntryT::performAction (entry);
+    ਵਾਪਸ Format1_ਇੰਦਰਾਜ_T::performAction (ਇੰਦਰਾਜ);
   }
 
-  struct driver_context_t
+  ਬਣਤਰ driver_context_t
   {
-    static constexpr bool in_place = true;
+    ਸਥਿਰ constexpr ਤਾਰਕਿਕ in_place = ਸੱਚ;
 
-    driver_context_t (const KerxSubTableFormat1 *table_,
+    driver_context_t (ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format1 *ਸਾਰਣੀ_2,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
-	table (table_),
+	ਸਾਰਣੀ (ਸਾਰਣੀ_2),
 	/* Apparently the offset kernAction is from the beginning of the state-machine,
 	 * similar to offsets in morx table, NOT from beginning of this table, like
 	 * other subtables in kerx.  Discovered via testing. */
-	kernAction (&table->machine + table->kernAction),
-	depth (0),
-	crossStream (table->header.coverage & table->header.CrossStream) {}
+	kernAction (&ਸਾਰਣੀ->machine + ਸਾਰਣੀ->kernAction),
+	ਡੂੰਘਾਈ (0),
+	cross_ਧਾਰਾ (ਸਾਰਣੀ->ਸਿਰਲੇਖ.coverage & ਸਾਰਣੀ->ਸਿਰਲੇਖ.Cross_ਧਾਰਾ) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    ਖਾਲੀ transition (hb_ਬਫਰ_t *ਬਫਰ,
+		     State_ਸਾਰਣੀ_Driver<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ, Flags> *driver,
+		     ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
     {
-      unsigned int flags = entry.flags;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ flags = ਇੰਦਰਾਜ.flags;
 
-      if (flags & Format1EntryT::Reset)
-	depth = 0;
+      ਜੇ (flags & Format1_ਇੰਦਰਾਜ_T::Reset)
+	ਡੂੰਘਾਈ = 0;
 
-      if (flags & Format1EntryT::Push)
+      ਜੇ (flags & Format1_ਇੰਦਰਾਜ_T::ਧੱਕੋ)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
-	  stack[depth++] = buffer->idx;
-	else
-	  depth = 0; /* Probably not what CoreText does, but better? */
+	ਜੇ (likely (ਡੂੰਘਾਈ < ARRAY_ਲੰਮਾਈ (ਢੇਰ)))
+	  ਢੇਰ[ਡੂੰਘਾਈ++] = ਬਫਰ->idx;
+	ਨਹੀਂਤਾਂ
+	  ਡੂੰਘਾਈ = 0; /* Probably not what CoreText does, but better? */
       }
 
-      if (Format1EntryT::performAction (entry) && depth)
+      ਜੇ (Format1_ਇੰਦਰਾਜ_T::performAction (ਇੰਦਰਾਜ) && ਡੂੰਘਾਈ)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ tuple_ਗਿਣਤੀ_2 = hb_max (1u, ਸਾਰਣੀ->ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 ());
 
-	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
-	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
-	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ kern_idx = Format1_ਇੰਦਰਾਜ_T::kern_Action_ਸੂਚਕਾਂਕ (ਇੰਦਰਾਜ);
+	kern_idx = Types::byte_ਵਿੱਥ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ (kern_idx, &ਸਾਰਣੀ->machine, kernAction.arrayZ);
+	ਅਚਲ FWORD *actions = &kernAction[kern_idx];
+	ਜੇ (!c->sanitizer.check_array (actions, ਡੂੰਘਾਈ, tuple_ਗਿਣਤੀ_2))
 	{
-	  depth = 0;
-	  return;
+	  ਡੂੰਘਾਈ = 0;
+	  ਵਾਪਸ;
 	}
 	hb_barrier ();
 
-	hb_mask_t kern_mask = c->plan->kern_mask;
+	hb_ਨਕਾਬ_t kern_ਨਕਾਬ = c->plan->kern_ਨਕਾਬ;
 
 	/* From Apple 'kern' spec:
 	 * "Each pops one glyph from the kerning stack and applies the kerning value to it.
 	 * The end of the list is marked by an odd value... */
-	bool last = false;
-	while (!last && depth)
+	ਤਾਰਕਿਕ ਆਖਰੀ = ਝੂਠ;
+	ਜਦੋਂ (!ਆਖਰੀ && ਡੂੰਘਾਈ)
 	{
-	  unsigned int idx = stack[--depth];
-	  int v = *actions;
-	  actions += tuple_count;
-	  if (idx >= buffer->len) continue;
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx = ਢੇਰ[--ਡੂੰਘਾਈ];
+	  ਪੂਰਨ v = *actions;
+	  actions += tuple_ਗਿਣਤੀ_2;
+	  ਜੇ (idx >= ਬਫਰ->len) ਜਾਰੀ;
 
 	  /* "The end of the list is marked by an odd value..." */
-	  last = v & 1;
+	  ਆਖਰੀ = v & 1;
 	  v &= ~1;
 
-	  hb_glyph_position_t &o = buffer->pos[idx];
+	  hb_glyph_position_t &o = ਬਫਰ->pos[idx];
 
-	  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	  ਜੇ (HB_DIRECTION_IS_HORIZONTAL (ਬਫਰ->props.direction))
 	  {
-	    if (crossStream)
+	    ਜੇ (cross_ਧਾਰਾ)
 	    {
 	      /* The following flag is undocumented in the spec, but described
 	       * in the 'kern' table example. */
-	      if (v == -0x8000)
+	      ਜੇ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
-		o.y_offset = 0;
+		o.y_ਵਿੱਥ_2 = 0;
 	      }
-	      else if (o.attach_type())
+	      ਨਹੀਂਤਾਂ ਜੇ (o.attach_type())
 	      {
-		o.y_offset = hb_saturate_add (o.y_offset, c->font->em_scale_y (v));
-		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+		o.y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (o.y_ਵਿੱਥ_2, c->font->em_scale_y (v));
+		ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    ਨਹੀਂਤਾਂ ਜੇ (ਬਫਰ->info[idx].ਨਕਾਬ & kern_ਨਕਾਬ)
 	    {
-	      auto scaled = c->font->em_scale_x (v);
-	      o.x_advance = hb_saturate_add (o.x_advance, scaled);
-	      o.x_offset = hb_saturate_add (o.x_offset, scaled);
+	      ਸਵੈਚਾਲਿਤ scaled = c->font->em_scale_x (v);
+	      o.x_advance = hb_saturate_ਜੋੜੋ (o.x_advance, scaled);
+	      o.x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (o.x_ਵਿੱਥ_2, scaled);
 	    }
 	  }
-	  else
+	  ਨਹੀਂਤਾਂ
 	  {
-	    if (crossStream)
+	    ਜੇ (cross_ਧਾਰਾ)
 	    {
 	      /* CoreText doesn't do crossStream kerning in vertical.  We do. */
-	      if (v == -0x8000)
+	      ਜੇ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
-		o.x_offset = 0;
+		o.x_ਵਿੱਥ_2 = 0;
 	      }
-	      else if (o.attach_type())
+	      ਨਹੀਂਤਾਂ ਜੇ (o.attach_type())
 	      {
-		o.x_offset = hb_saturate_add (o.x_offset, c->font->em_scale_x (v));
-		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+		o.x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (o.x_ਵਿੱਥ_2, c->font->em_scale_x (v));
+		ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    ਨਹੀਂਤਾਂ ਜੇ (ਬਫਰ->info[idx].ਨਕਾਬ & kern_ਨਕਾਬ)
 	    {
-	      auto scaled = c->font->em_scale_y (v);
-	      o.y_advance = hb_saturate_add (o.y_advance, scaled);
-	      o.y_offset = hb_saturate_add (o.y_offset, scaled);
+	      ਸਵੈਚਾਲਿਤ scaled = c->font->em_scale_y (v);
+	      o.y_advance = hb_saturate_ਜੋੜੋ (o.y_advance, scaled);
+	      o.y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (o.y_ਵਿੱਥ_2, scaled);
 	    }
 	  }
 	}
       }
     }
 
-    public:
+    ਜਨਤਕ:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat1 *table;
-    private:
-    const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
-    unsigned int depth;
-    bool crossStream;
+    ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format1 *ਸਾਰਣੀ;
+    ਨਿਜੀ:
+    ਅਚਲ Unsized_Array_ਦਾ<FWORD> &kernAction;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਢੇਰ[8];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਡੂੰਘਾਈ;
+    ਤਾਰਕਿਕ cross_ਧਾਰਾ;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_aat_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    if (!c->plan->requested_kerning &&
-	!(header.coverage & header.CrossStream))
-      return false;
+    ਜੇ (!c->plan->requested_kerning &&
+	!(ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Cross_ਧਾਰਾ))
+      ਵਾਪਸ ਝੂਠ;
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ਇਹ, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
+    State_ਸਾਰਣੀ_Driver<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  machine.sanitize (c)));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਅੰਕ_glyphs, *ਇਹ);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
-  KernSubTableHeader				header;
-  StateTable<Types, EntryData>			machine;
-  NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>	kernAction;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT::static_size));
+  ਸੁਰੱਖਿਅਤ:
+  Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ				ਸਿਰਲੇਖ;
+  State_ਸਾਰਣੀ<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ>			machine;
+  NNOffset_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<FWORD>, HBUINT>	kernAction;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::static_ਮਾਪ + (State_ਸਾਰਣੀ<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ>::static_ਮਾਪ + HBUINT::static_ਮਾਪ));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat2
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_Format2
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::Types Types;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ,
+		   hb_aat_apply_context_t *c) ਅਚਲ
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs = c->sanitizer.get_ਅੰਕ_glyphs ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = (ਇਹ+ਖੱਬਾ_Class_ਸਾਰਣੀ).get_class (ਖੱਬੇ, ਅੰਕ_glyphs, 0);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ r = (ਇਹ+ਸੱਜਾ_Class_ਸਾਰਣੀ).get_class (ਸੱਜੇ, ਅੰਕ_glyphs, 0);
 
-    const UnsizedArrayOf<FWORD> &arrayZ = this+array;
-    unsigned int kern_idx = l + r;
-    kern_idx = Types::offsetToIndex (kern_idx, this, arrayZ.arrayZ);
-    const FWORD *v = &arrayZ[kern_idx];
-    if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+    ਅਚਲ Unsized_Array_ਦਾ<FWORD> &arrayZ = ਇਹ+array;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ kern_idx = l + r;
+    kern_idx = Types::ਵਿੱਥ_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ (kern_idx, ਇਹ, arrayZ.arrayZ);
+    ਅਚਲ FWORD *v = &arrayZ[kern_idx];
+    ਜੇ (unlikely (!v->sanitize (&c->sanitizer))) ਵਾਪਸ 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    ਵਾਪਸ kerxTupleKern (*v, ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 (), ਇਹ, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_aat_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ਜੇ (!c->plan->requested_kerning)
+      return_trace (ਝੂਠ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ਜੇ (ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Backwards)
+      return_trace (ਝੂਠ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*ਇਹ, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Cross_ਧਾਰਾ);
+    machine.kern (c->font, c->ਬਫਰ, c->plan->kern_ਨਕਾਬ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    (this+leftClassTable).collect_glyphs (first_set, num_glyphs);
-    (this+rightClassTable).collect_glyphs (second_set, num_glyphs);
+    (ਇਹ+ਖੱਬਾ_Class_ਸਾਰਣੀ).collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
+    (ਇਹ+ਸੱਜਾ_Class_ਸਾਰਣੀ).collect_glyphs (ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
   }
 
-  struct accelerator_t
+  ਬਣਤਰ accelerator_t
   {
-    const KerxSubTableFormat2 &table;
+    ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format2 &ਸਾਰਣੀ;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat2 &table_,
+    accelerator_t (ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format2 &ਸਾਰਣੀ_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     ਸਾਰਣੀ (ਸਾਰਣੀ_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ) ਅਚਲ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ਜੇ (!(*c->ਪਹਿਲਾ_ਸੈੱਟ)[ਖੱਬੇ] || !(*c->ਦੂਜਾ_ਸੈੱਟ)[ਸੱਜੇ]) ਵਾਪਸ 0;
+      ਵਾਪਸ ਸਾਰਣੀ.get_kerning (ਖੱਬੇ, ਸੱਜੇ, c);
     }
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  leftClassTable.sanitize (c, this) &&
-			  rightClassTable.sanitize (c, this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
+			  ਖੱਬਾ_Class_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
+			  ਸੱਜਾ_Class_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
 			  hb_barrier () &&
-			  c->check_range (this, array)));
+			  c->check_range (ਇਹ, array)));
   }
 
-  protected:
-  KernSubTableHeader	header;
-  HBUINT		rowWidth;	/* The width, in bytes, of a row in the table. */
-  NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			leftClassTable;	/* Offset from beginning of this subtable to
+  ਸੁਰੱਖਿਅਤ:
+  Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ	ਸਿਰਲੇਖ;
+  HBUINT		ਪੰਕਤੀ_ਚੌੜਾਈ;	/* The width, in bytes, of a row in the table. */
+  NNOffset_ਮੰਜ਼ਿਲ<ਕਿਸਮ_ਨਾਂ Types::ClassTypeWide, HBUINT>
+			ਖੱਬਾ_Class_ਸਾਰਣੀ;	/* Offset from beginning of this subtable to
 					 * left-hand class table. */
-  NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			rightClassTable;/* Offset from beginning of this subtable to
+  NNOffset_ਮੰਜ਼ਿਲ<ਕਿਸਮ_ਨਾਂ Types::ClassTypeWide, HBUINT>
+			ਸੱਜਾ_Class_ਸਾਰਣੀ;/* Offset from beginning of this subtable to
 					 * right-hand class table. */
-  NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>
+  NNOffset_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<FWORD>, HBUINT>
 			 array;		/* Offset from beginning of this subtable to
 					 * the start of the kerning array. */
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * sizeof (HBUINT));
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::static_ਮਾਪ + 4 * ਆਕਾਰ (HBUINT));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat4
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_Format4
 {
-  typedef ExtendedTypes Types;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ExtendedTypes Types;
 
-  struct EntryData
+  ਬਣਤਰ ਇੰਦਰਾਜ_ਅੰਕੜੇ
   {
-    HBUINT16	ankrActionIndex;/* Either 0xFFFF (for no action) or the index of
+    HBUINT16	ankr_Action_ਸੂਚਕਾਂਕ;/* Either 0xFFFF (for no action) or the index of
 				 * the action to perform. */
-    public:
-    DEFINE_SIZE_STATIC (2);
+    ਜਨਤਕ:
+    DEFINE_ਮਾਪ_STATIC (2);
   };
 
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
     Mark		= 0x8000,	/* If set, remember this glyph as the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -522,322 +522,322 @@ struct KerxSubTableFormat4
     Reserved		= 0x3FFF,	/* Not used; set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  ਤਾਰਕਿਕ is_action_initiable (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ) ਅਚਲ
   {
-    return (entry.flags & Mark);
+    ਵਾਪਸ (ਇੰਦਰਾਜ.flags & Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  ਤਾਰਕਿਕ is_actionable (ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ) ਅਚਲ
   {
-    return entry.data.ankrActionIndex != 0xFFFF;
+    ਵਾਪਸ ਇੰਦਰਾਜ.ਅੰਕੜੇ.ankr_Action_ਸੂਚਕਾਂਕ != 0xFFFF;
   }
 
-  struct driver_context_t
+  ਬਣਤਰ driver_context_t
   {
-    static constexpr bool in_place = true;
-    enum SubTableFlags
+    ਸਥਿਰ constexpr ਤਾਰਕਿਕ in_place = ਸੱਚ;
+    ਗਿਣਤੀ Sub_ਸਾਰਣੀ_Flags
     {
       ActionType	= 0xC0000000,	/* A two-bit field containing the action type. */
-      Unused		= 0x3F000000,	/* Unused - must be zero. */
-      Offset		= 0x00FFFFFF,	/* Masks the offset in bytes from the beginning
+      ਅਣਵਰਤਿਆ		= 0x3F000000,	/* Unused - must be zero. */
+      ਵਿੱਥ_2		= 0x00FFFFFF,	/* Masks the offset in bytes from the beginning
 					 * of the subtable to the beginning of the control
 					 * point table. */
     };
 
-    driver_context_t (const KerxSubTableFormat4 *table_,
+    driver_context_t (ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format4 *ਸਾਰਣੀ_2,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
-	table (table_),
-	action_type ((table->flags & ActionType) >> 30),
-	ankrData ((HBUINT16 *) ((const char *) &table->machine + (table->flags & Offset))),
-	mark_set (false),
+	ਸਾਰਣੀ (ਸਾਰਣੀ_2),
+	action_type ((ਸਾਰਣੀ->flags & ActionType) >> 30),
+	ankr_ਅੰਕੜੇ ((HBUINT16 *) ((ਅਚਲ ਅੱਖਰ *) &ਸਾਰਣੀ->machine + (ਸਾਰਣੀ->flags & ਵਿੱਥ_2))),
+	mark_ਸੈੱਟ (ਝੂਠ),
 	mark (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    ਖਾਲੀ transition (hb_ਬਫਰ_t *ਬਫਰ,
+		     State_ਸਾਰਣੀ_Driver<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ, Flags> *driver,
+		     ਅਚਲ ਇੰਦਰਾਜ_2<ਇੰਦਰਾਜ_ਅੰਕੜੇ> &ਇੰਦਰਾਜ)
     {
-      if (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
+      ਜੇ (mark_ਸੈੱਟ && ਇੰਦਰਾਜ.ਅੰਕੜੇ.ankr_Action_ਸੂਚਕਾਂਕ != 0xFFFF && ਬਫਰ->idx < ਬਫਰ->len)
       {
-	hb_glyph_position_t &o = buffer->cur_pos();
-	switch (action_type)
+	hb_glyph_position_t &o = ਬਫਰ->cur_pos();
+	ਚੋਣ (action_type)
 	{
-	  case 0: /* Control Point Actions.*/
+	  ਹਾਲਤ 0: /* Control Point Actions.*/
 	  {
 	    /* Indexed into glyph outline. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ਅਚਲ HBUINT16 *ਅੰਕੜੇ = &ankr_ਅੰਕੜੇ[ਇੰਦਰਾਜ.ਅੰਕੜੇ.ankr_Action_ਸੂਚਕਾਂਕ * 2];
+	    ਜੇ (!c->sanitizer.check_array (ਅੰਕੜੇ, 2)) ਵਾਪਸ;
 	    hb_barrier ();
-	    unsigned int markControlPoint = *data++;
-	    unsigned int currControlPoint = *data++;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark_Control_ਬਿੰਦੂ = *ਅੰਕੜੇ++;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ curr_Control_ਬਿੰਦੂ = *ਅੰਕੜੇ++;
 	    hb_position_t markX = 0;
 	    hb_position_t markY = 0;
 	    hb_position_t currX = 0;
 	    hb_position_t currY = 0;
-	    if (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
-							      markControlPoint,
+	    ਜੇ (!c->font->get_glyph_contour_ਬਿੰਦੂ_for_origin (c->ਬਫਰ->info[mark].codepoint,
+							      mark_Control_ਬਿੰਦੂ,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &markX, &markY) ||
-		!c->font->get_glyph_contour_point_for_origin (c->buffer->cur ().codepoint,
-							      currControlPoint,
+		!c->font->get_glyph_contour_ਬਿੰਦੂ_for_origin (c->ਬਫਰ->cur ().codepoint,
+							      curr_Control_ਬਿੰਦੂ,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &currX, &currY))
-	      return;
+	      ਵਾਪਸ;
 
-	    o.x_offset = hb_saturate_sub (markX, currX);
-	    o.y_offset = hb_saturate_sub (markY, currY);
+	    o.x_ਵਿੱਥ_2 = hb_saturate_sub (markX, currX);
+	    o.y_ਵਿੱਥ_2 = hb_saturate_sub (markY, currY);
 	  }
-	  break;
+	  ਰੋਕੋ;
 
-	  case 1: /* Anchor Point Actions. */
+	  ਹਾਲਤ 1: /* Anchor Point Actions. */
 	  {
 	    /* Indexed into 'ankr' table. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    ਅਚਲ HBUINT16 *ਅੰਕੜੇ = &ankr_ਅੰਕੜੇ[ਇੰਦਰਾਜ.ਅੰਕੜੇ.ankr_Action_ਸੂਚਕਾਂਕ * 2];
+	    ਜੇ (!c->sanitizer.check_array (ਅੰਕੜੇ, 2)) ਵਾਪਸ;
 	    hb_barrier ();
-	    unsigned int markAnchorPoint = *data++;
-	    unsigned int currAnchorPoint = *data++;
-	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
-								  markAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
-	    const Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
-								  currAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark_Anchor_ਬਿੰਦੂ = *ਅੰਕੜੇ++;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ curr_Anchor_ਬਿੰਦੂ = *ਅੰਕੜੇ++;
+	    ਅਚਲ Anchor &markAnchor = c->ankr_ਸਾਰਣੀ->get_anchor (c->ਬਫਰ->info[mark].codepoint,
+								  mark_Anchor_ਬਿੰਦੂ,
+								  c->sanitizer.get_ਅੰਕ_glyphs ());
+	    ਅਚਲ Anchor &currAnchor = c->ankr_ਸਾਰਣੀ->get_anchor (c->ਬਫਰ->cur ().codepoint,
+								  curr_Anchor_ਬਿੰਦੂ,
+								  c->sanitizer.get_ਅੰਕ_glyphs ());
 
-	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
+	    o.x_ਵਿੱਥ_2 = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
 					  c->font->em_scale_x (currAnchor.xCoordinate));
-	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
+	    o.y_ਵਿੱਥ_2 = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
 					  c->font->em_scale_y (currAnchor.yCoordinate));
 	  }
-	  break;
+	  ਰੋਕੋ;
 
-	  case 2: /* Control Point Coordinate Actions. */
+	  ਹਾਲਤ 2: /* Control Point Coordinate Actions. */
 	  {
 	    /* Each action contains four 16-bit fields, so we multiply the ankrActionIndex
 	       by 4 to get the correct offset for the given action. */
-	    const FWORD *data = (const FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
-	    if (!c->sanitizer.check_array (data, 4)) return;
+	    ਅਚਲ FWORD *ਅੰਕੜੇ = (ਅਚਲ FWORD *) &ankr_ਅੰਕੜੇ[ਇੰਦਰਾਜ.ਅੰਕੜੇ.ankr_Action_ਸੂਚਕਾਂਕ * 4];
+	    ਜੇ (!c->sanitizer.check_array (ਅੰਕੜੇ, 4)) ਵਾਪਸ;
 	    hb_barrier ();
-	    int markX = *data++;
-	    int markY = *data++;
-	    int currX = *data++;
-	    int currY = *data++;
+	    ਪੂਰਨ markX = *ਅੰਕੜੇ++;
+	    ਪੂਰਨ markY = *ਅੰਕੜੇ++;
+	    ਪੂਰਨ currX = *ਅੰਕੜੇ++;
+	    ਪੂਰਨ currY = *ਅੰਕੜੇ++;
 
-	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
-	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
+	    o.x_ਵਿੱਥ_2 = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
+	    o.y_ਵਿੱਥ_2 = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
 	  }
-	  break;
+	  ਰੋਕੋ;
 	}
 	o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_MARK;
-	o.attach_chain() = (int) mark - (int) buffer->idx;
-	if (c->buffer_is_reversed)
+	o.attach_chain() = (ਪੂਰਨ) mark - (ਪੂਰਨ) ਬਫਰ->idx;
+	ਜੇ (c->ਬਫਰ_is_reversed)
 	  o.attach_chain() = -o.attach_chain();
-	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
       }
 
-      if (entry.flags & Mark)
+      ਜੇ (ਇੰਦਰਾਜ.flags & Mark)
       {
-	mark_set = true;
-	mark = buffer->idx;
+	mark_ਸੈੱਟ = ਸੱਚ;
+	mark = ਬਫਰ->idx;
       }
     }
 
-    public:
+    ਜਨਤਕ:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat4 *table;
-    private:
-    unsigned int action_type;
-    const HBUINT16 *ankrData;
-    bool mark_set;
-    unsigned int mark;
+    ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format4 *ਸਾਰਣੀ;
+    ਨਿਜੀ:
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ action_type;
+    ਅਚਲ HBUINT16 *ankr_ਅੰਕੜੇ;
+    ਤਾਰਕਿਕ mark_ਸੈੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mark;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_aat_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ਇਹ, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
+    State_ਸਾਰਣੀ_Driver<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  machine.sanitize (c)));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਅੰਕ_glyphs, *ਇਹ);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
-  KernSubTableHeader		header;
-  StateTable<Types, EntryData>	machine;
+  ਸੁਰੱਖਿਅਤ:
+  Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ		ਸਿਰਲੇਖ;
+  State_ਸਾਰਣੀ<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ>	machine;
   HBUINT32			flags;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT32::static_size));
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::static_ਮਾਪ + (State_ਸਾਰਣੀ<Types, ਇੰਦਰਾਜ_ਅੰਕੜੇ>::static_ਮਾਪ + HBUINT32::static_ਮਾਪ));
 };
 
-template <typename KernSubTableHeader>
-struct KerxSubTableFormat6
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_Format6
 {
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
-    ValuesAreLong	= 0x00000001,
+    ਮੁੱਲਾਂ_Are_Long	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  ਤਾਰਕਿਕ is_long () ਅਚਲ { ਵਾਪਸ flags & ਮੁੱਲਾਂ_Are_Long; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ,
+		   hb_aat_apply_context_t *c) ਅਚਲ
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    if (is_long ())
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs = c->sanitizer.get_ਅੰਕ_glyphs ();
+    ਜੇ (is_long ())
     {
-      const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      if (unlikely (offset < l)) return 0; /* Addition overflow. */
-      if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
-      const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &t = u.l;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = (ਇਹ+t.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).get_ਮੁੱਲ_or_null (ਖੱਬੇ, ਅੰਕ_glyphs);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ r = (ਇਹ+t.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).get_ਮੁੱਲ_or_null (ਸੱਜੇ, ਅੰਕ_glyphs);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ = l + r;
+      ਜੇ (unlikely (ਵਿੱਥ < l)) ਵਾਪਸ 0; /* Addition overflow. */
+      ਜੇ (unlikely (hb_unsigned_mul_overflows (ਵਿੱਥ, ਆਕਾਰ (FWORD32)))) ਵਾਪਸ 0;
+      ਅਚਲ FWORD32 *v = &Struct_At_ਵਿੱਥ<FWORD32> (&(ਇਹ+t.array), ਵਿੱਥ * ਆਕਾਰ (FWORD32));
+      ਜੇ (unlikely (!v->sanitize (&c->sanitizer))) ਵਾਪਸ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      ਵਾਪਸ kerxTupleKern (*v, ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 (), &(ਇਹ+vector), c);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &t = u.s;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = (ਇਹ+t.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).get_ਮੁੱਲ_or_null (ਖੱਬੇ, ਅੰਕ_glyphs);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ r = (ਇਹ+t.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).get_ਮੁੱਲ_or_null (ਸੱਜੇ, ਅੰਕ_glyphs);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ = l + r;
+      ਅਚਲ FWORD *v = &Struct_At_ਵਿੱਥ<FWORD> (&(ਇਹ+t.array), ਵਿੱਥ * ਆਕਾਰ (FWORD));
+      ਜੇ (unlikely (!v->sanitize (&c->sanitizer))) ਵਾਪਸ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      ਵਾਪਸ kerxTupleKern (*v, ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 (), &(ਇਹ+vector), c);
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  ਤਾਰਕਿਕ apply (hb_aat_apply_context_t *c) ਅਚਲ
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ਇਹ);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    ਜੇ (!c->plan->requested_kerning)
+      return_trace (ਝੂਠ);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    ਜੇ (ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Backwards)
+      return_trace (ਝੂਠ);
 
-    accelerator_t accel (*this, c);
-    hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
-    machine.kern (c->font, c->buffer, c->plan->kern_mask);
+    accelerator_t accel (*ਇਹ, c);
+    hb_kern_machine_t<accelerator_t> machine (accel, ਸਿਰਲੇਖ.coverage & ਸਿਰਲੇਖ.Cross_ਧਾਰਾ);
+    machine.kern (c->font, c->ਬਫਰ, c->plan->kern_ਨਕਾਬ);
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
 			  (is_long () ?
 			   (
-			     u.l.rowIndexTable.sanitize (c, this) &&
-			     u.l.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.l.array)
+			     u.l.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
+			     u.l.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
+			     c->check_range (ਇਹ, u.l.array)
 			   ) : (
-			     u.s.rowIndexTable.sanitize (c, this) &&
-			     u.s.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.s.array)
+			     u.s.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
+			     u.s.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ.sanitize (c, ਇਹ) &&
+			     c->check_range (ਇਹ, u.s.array)
 			   )) &&
-			  (header.tuple_count () == 0 ||
-			   c->check_range (this, vector))));
+			  (ਸਿਰਲੇਖ.tuple_ਗਿਣਤੀ_2 () == 0 ||
+			   c->check_range (ਇਹ, vector))));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    if (is_long ())
+    ਜੇ (is_long ())
     {
-      const auto &t = u.l;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &t = u.l;
+      (ਇਹ+t.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
+      (ਇਹ+t.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).collect_glyphs (ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      const auto &t = u.s;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &t = u.s;
+      (ਇਹ+t.ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
+      (ਇਹ+t.ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ).collect_glyphs (ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
     }
   }
 
-  struct accelerator_t
+  ਬਣਤਰ accelerator_t
   {
-    const KerxSubTableFormat6 &table;
+    ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format6 &ਸਾਰਣੀ;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat6 &table_,
+    accelerator_t (ਅਚਲ Kerx_Sub_ਸਾਰਣੀ_Format6 &ਸਾਰਣੀ_2,
 		   hb_aat_apply_context_t *c_) :
-		     table (table_), c (c_) {}
+		     ਸਾਰਣੀ (ਸਾਰਣੀ_2), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    ਪੂਰਨ get_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ) ਅਚਲ
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      ਜੇ (!(*c->ਪਹਿਲਾ_ਸੈੱਟ)[ਖੱਬੇ] || !(*c->ਦੂਜਾ_ਸੈੱਟ)[ਸੱਜੇ]) ਵਾਪਸ 0;
+      ਵਾਪਸ ਸਾਰਣੀ.get_kerning (ਖੱਬੇ, ਸੱਜੇ, c);
     }
   };
 
-  protected:
-  KernSubTableHeader		header;
+  ਸੁਰੱਖਿਅਤ:
+  Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ		ਸਿਰਲੇਖ;
   HBUINT32			flags;
-  HBUINT16			rowCount;
-  HBUINT16			columnCount;
-  union U
+  HBUINT16			ਪੰਕਤੀ_ਗਿਣਤੀ_2;
+  HBUINT16			ਕਾਲਮ_ਗਿਣਤੀ;
+  ਸੰਘ U
   {
-    struct Long
+    ਬਣਤਰ Long
     {
-      NNOffset32To<Lookup<HBUINT32>>		rowIndexTable;
-      NNOffset32To<Lookup<HBUINT32>>		columnIndexTable;
-      NNOffset32To<UnsizedArrayOf<FWORD32>>	array;
+      NNOffset32_ਮੰਜ਼ਿਲ<Lookup<HBUINT32>>		ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ;
+      NNOffset32_ਮੰਜ਼ਿਲ<Lookup<HBUINT32>>		ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ;
+      NNOffset32_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<FWORD32>>	array;
     } l;
-    struct Short
+    ਬਣਤਰ Short
     {
-      NNOffset32To<Lookup<HBUINT16>>		rowIndexTable;
-      NNOffset32To<Lookup<HBUINT16>>		columnIndexTable;
-      NNOffset32To<UnsizedArrayOf<FWORD>>	array;
+      NNOffset32_ਮੰਜ਼ਿਲ<Lookup<HBUINT16>>		ਪੰਕਤੀ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ;
+      NNOffset32_ਮੰਜ਼ਿਲ<Lookup<HBUINT16>>		ਕਾਲਮ_ਸੂਚਕਾਂਕ_ਸਾਰਣੀ;
+      NNOffset32_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<FWORD>>	array;
     } s;
   } u;
-  NNOffset32To<UnsizedArrayOf<FWORD>>	vector;
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 24);
+  NNOffset32_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<FWORD>>	vector;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (Kern_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::static_ਮਾਪ + 24);
 };
 
 
-struct KerxSubTableHeader
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ
 {
-  typedef ExtendedTypes Types;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ   tuple_ਗਿਣਤੀ_2 () ਅਚਲ { ਵਾਪਸ tuple_ਗਿਣਤੀ; }
+  ਤਾਰਕਿਕ     is_horizontal () ਅਚਲ { ਵਾਪਸ !(coverage & Vertical); }
 
-  enum Coverage
+  ਗਿਣਤੀ Coverage
   {
     Vertical	= 0x80000000u,	/* Set if table has vertical kerning values. */
-    CrossStream	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
+    Cross_ਧਾਰਾ	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
     Variation	= 0x20000000u,	/* Set if table has variation kerning values. */
     Backwards	= 0x10000000u,	/* If clear, process the glyphs forwards, that
 				 * is, from first to last in the glyph stream.
@@ -848,79 +848,79 @@ struct KerxSubTableHeader
     SubtableType= 0x000000FFu,	/* Subtable type. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  public:
-  HBUINT32	length;
+  ਜਨਤਕ:
+  HBUINT32	ਲੰਮਾਈ;
   HBUINT32	coverage;
-  HBUINT32	tupleCount;
-  public:
-  DEFINE_SIZE_STATIC (12);
+  HBUINT32	tuple_ਗਿਣਤੀ;
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (12);
 };
 
-struct KerxSubTable
+ਬਣਤਰ Kerx_Sub_ਸਾਰਣੀ
 {
-  friend struct kerx;
+  ਮਿੱਤਰ ਬਣਤਰ kerx;
 
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.coverage & u.header.SubtableType; }
+  size_t get_ਮਾਪ () ਅਚਲ { ਵਾਪਸ u.ਸਿਰਲੇਖ.ਲੰਮਾਈ; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_type () ਅਚਲ { ਵਾਪਸ u.ਸਿਰਲੇਖ.coverage & u.ਸਿਰਲੇਖ.SubtableType; }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ context_t, ਕਿਸਮ_ਨਾਂ ...Ts>
+  ਕਿਸਮ_ਨਾਂ context_t::return_t dispatch (context_t *c, Ts&&... ds) ਅਚਲ
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
-    default:	return_trace (c->default_return_value ());
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ subtable_type = get_type ();
+    TRACE_DISPATCH (ਇਹ, subtable_type);
+    ਚੋਣ (subtable_type) {
+    ਹਾਲਤ 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    ਹਾਲਤ 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    ਮੂਲ:	return_trace (c->default_return_ਮੁੱਲ ());
     }
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੈੱਟ_t>
+  ਖਾਲੀ collect_glyphs (ਸੈੱਟ_t &ਪਹਿਲਾ_ਸੈੱਟ, ਸੈੱਟ_t &ਦੂਜਾ_ਸੈੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
-    default:	return;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ subtable_type = get_type ();
+    ਚੋਣ (subtable_type) {
+    ਹਾਲਤ 0:	hb_barrier (); u.format0.collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 1:	hb_barrier (); u.format1.collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 2:	hb_barrier (); u.format2.collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 4:	hb_barrier (); u.format4.collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਹਾਲਤ 6:	hb_barrier (); u.format6.collect_glyphs (ਪਹਿਲਾ_ਸੈੱਟ, ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs); ਵਾਪਸ;
+    ਮੂਲ:	ਵਾਪਸ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (!(u.ਸਿਰਲੇਖ.sanitize (c) &&
 	  hb_barrier () &&
-	  u.header.length >= u.header.static_size &&
-	  c->check_range (this, u.header.length)))
-      return_trace (false);
+	  u.ਸਿਰਲੇਖ.ਲੰਮਾਈ >= u.ਸਿਰਲੇਖ.static_ਮਾਪ &&
+	  c->check_range (ਇਹ, u.ਸਿਰਲੇਖ.ਲੰਮਾਈ)))
+      return_trace (ਝੂਠ);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
-  KerxSubTableHeader				header;
-  KerxSubTableFormat0<KerxSubTableHeader>	format0;
-  KerxSubTableFormat1<KerxSubTableHeader>	format1;
-  KerxSubTableFormat2<KerxSubTableHeader>	format2;
-  KerxSubTableFormat4<KerxSubTableHeader>	format4;
-  KerxSubTableFormat6<KerxSubTableHeader>	format6;
+  ਜਨਤਕ:
+  ਸੰਘ {
+  Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ				ਸਿਰਲੇਖ;
+  Kerx_Sub_ਸਾਰਣੀ_Format0<Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>	format0;
+  Kerx_Sub_ਸਾਰਣੀ_Format1<Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>	format1;
+  Kerx_Sub_ਸਾਰਣੀ_Format2<Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>	format2;
+  Kerx_Sub_ਸਾਰਣੀ_Format4<Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>	format4;
+  Kerx_Sub_ਸਾਰਣੀ_Format6<Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ>	format6;
   } u;
-  public:
-  DEFINE_SIZE_MIN (12);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (12);
 };
 
 
@@ -928,173 +928,173 @@ struct KerxSubTable
  * The 'kerx' Table
  */
 
-struct kern_subtable_accelerator_data_t
+ਬਣਤਰ kern_subtable_accelerator_ਅੰਕੜੇ_t
 {
-  hb_bit_set_t first_set;
-  hb_bit_set_t second_set;
-  mutable hb_aat_class_cache_t class_cache;
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t ਪਹਿਲਾ_ਸੈੱਟ;
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t ਦੂਜਾ_ਸੈੱਟ;
+  ਬਦਲਣਯੋਗ hb_aat_class_cache_t class_cache;
 };
 
-struct kern_accelerator_data_t
+ਬਣਤਰ kern_accelerator_ਅੰਕੜੇ_t
 {
-  hb_vector_t<kern_subtable_accelerator_data_t> subtable_accels;
+  hb_ਸਦਿਸ਼_t<kern_subtable_accelerator_ਅੰਕੜੇ_t> subtable_accels;
   hb_aat_scratch_t scratch;
 };
 
-template <typename T>
-struct KerxTable
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ Kerx_ਸਾਰਣੀ
 {
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const T* thiz () const { return static_cast<const T *> (this); }
+  ਅਚਲ T* thiz () ਅਚਲ { ਵਾਪਸ static_cast<ਅਚਲ T *> (ਇਹ); }
 
-  bool has_state_machine () const
+  ਤਾਰਕਿਕ has_state_machine () ਅਚਲ
   {
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      if (st->get_type () == 1)
-	return true;
+      ਜੇ (st->get_type () == 1)
+	ਵਾਪਸ ਸੱਚ;
 
       // TODO: What about format 4? What's this API used for anyway?
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  bool has_cross_stream () const
+  ਤਾਰਕਿਕ has_cross_ਧਾਰਾ () ਅਚਲ
   {
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      if (st->u.header.coverage & st->u.header.CrossStream)
-	return true;
-      st = &StructAfter<SubTable> (*st);
+      ਜੇ (st->u.ਸਿਰਲੇਖ.coverage & st->u.ਸਿਰਲੇਖ.Cross_ਧਾਰਾ)
+	ਵਾਪਸ ਸੱਚ;
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  ਪੂਰਨ get_h_kerning (hb_codepoint_t ਖੱਬੇ, hb_codepoint_t ਸੱਜੇ) ਅਚਲ
   {
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    int v = 0;
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਪੂਰਨ v = 0;
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
-	  !st->u.header.is_horizontal ())
-	continue;
-      v += st->get_kerning (left, right);
-      st = &StructAfter<SubTable> (*st);
+      ਜੇ ((st->u.ਸਿਰਲੇਖ.coverage & (st->u.ਸਿਰਲੇਖ.Variation | st->u.ਸਿਰਲੇਖ.Cross_ਧਾਰਾ)) ||
+	  !st->u.ਸਿਰਲੇਖ.is_horizontal ())
+	ਜਾਰੀ;
+      v += st->get_kerning (ਖੱਬੇ, ਸੱਜੇ);
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
     }
-    return v;
+    ਵਾਪਸ v;
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const kern_accelerator_data_t &accel_data) const
+  ਤਾਰਕਿਕ apply (AAT::hb_aat_apply_context_t *c,
+	      ਅਚਲ kern_accelerator_ਅੰਕੜੇ_t &accel_ਅੰਕੜੇ) ਅਚਲ
   {
-    c->buffer->unsafe_to_concat ();
+    c->ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat ();
 
-    c->setup_buffer_glyph_set ();
+    c->ਤਿਆਰੀ_ਬਫਰ_glyph_ਸੈੱਟ ();
 
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    bool ret = false;
-    bool seenCrossStream = false;
-    c->set_lookup_index (0);
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਤਾਰਕਿਕ ret = ਝੂਠ;
+    ਤਾਰਕਿਕ ਵੇਖਿਆ_Cross_ਧਾਰਾ = ਝੂਠ;
+    c->ਸੈੱਟ_lookup_ਸੂਚਕਾਂਕ (0);
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      bool reverse;
+      ਤਾਰਕਿਕ reverse;
 
-      auto &subtable_accel = accel_data.subtable_accels[i];
+      ਸਵੈਚਾਲਿਤ &subtable_accel = accel_ਅੰਕੜੇ.subtable_accels[i];
 
-      if (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
-	goto skip;
+      ਜੇ (!T::Types::extended && (st->u.ਸਿਰਲੇਖ.coverage & st->u.ਸਿਰਲੇਖ.Variation))
+	ਜਾਓ skip;
 
-      if (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
-	goto skip;
+      ਜੇ (HB_DIRECTION_IS_HORIZONTAL (c->ਬਫਰ->props.direction) != st->u.ਸਿਰਲੇਖ.is_horizontal ())
+	ਜਾਓ skip;
 
-      c->first_set = &subtable_accel.first_set;
-      c->second_set = &subtable_accel.second_set;
+      c->ਪਹਿਲਾ_ਸੈੱਟ = &subtable_accel.ਪਹਿਲਾ_ਸੈੱਟ;
+      c->ਦੂਜਾ_ਸੈੱਟ = &subtable_accel.ਦੂਜਾ_ਸੈੱਟ;
       c->machine_class_cache = &subtable_accel.class_cache;
 
-      if (!c->buffer_intersects_machine ())
+      ਜੇ (!c->ਬਫਰ_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(ਖਾਲੀ) c->ਬਫਰ->ਸੁਨੇਹਾ (c->font, "skipped subtable %u because no glyph matches", c->lookup_ਸੂਚਕਾਂਕ);
+	ਜਾਓ skip;
       }
 
-      reverse = bool (st->u.header.coverage & st->u.header.Backwards) !=
-		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
+      reverse = ਤਾਰਕਿਕ (st->u.ਸਿਰਲੇਖ.coverage & st->u.ਸਿਰਲੇਖ.Backwards) !=
+		HB_DIRECTION_IS_BACKWARD (c->ਬਫਰ->props.direction);
 
-      if (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
-	goto skip;
+      ਜੇ (!c->ਬਫਰ->ਸੁਨੇਹਾ (c->font, "start subtable %u", c->lookup_ਸੂਚਕਾਂਕ))
+	ਜਾਓ skip;
 
-      if (!seenCrossStream &&
-	  (st->u.header.coverage & st->u.header.CrossStream))
+      ਜੇ (!ਵੇਖਿਆ_Cross_ਧਾਰਾ &&
+	  (st->u.ਸਿਰਲੇਖ.coverage & st->u.ਸਿਰਲੇਖ.Cross_ਧਾਰਾ))
       {
 	/* Attach all glyphs into a chain. */
-	seenCrossStream = true;
-	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	ਵੇਖਿਆ_Cross_ਧਾਰਾ = ਸੱਚ;
+	hb_glyph_position_t *pos = c->ਬਫਰ->pos;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = c->ਬਫਰ->len;
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
-	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
+	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->ਬਫਰ->props.direction) ? -1 : +1;
 	  /* We intentionally don't set HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT,
 	   * since there needs to be a non-zero attachment for post-positioning to
 	   * be needed. */
 	}
       }
 
-      if (reverse != c->buffer_is_reversed)
-        c->reverse_buffer ();
+      ਜੇ (reverse != c->ਬਫਰ_is_reversed)
+        c->ਉਲਟ_ਬਫਰ ();
 
       {
 	/* See comment in sanitize() for conditional here. */
-	hb_sanitize_with_object_t with (&c->sanitizer, i < count - 1 ? st : (const SubTable *) nullptr);
+	hb_sanitize_with_object_t with (&c->sanitizer, i < ਗਿਣਤੀ_2 - 1 ? st : (ਅਚਲ Sub_ਸਾਰਣੀ *) ਖਾਲੀ_ਸੂਚਕ);
 	ret |= st->dispatch (c);
       }
 
-      (void) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
+      (ਖਾਲੀ) c->ਬਫਰ->ਸੁਨੇਹਾ (c->font, "end subtable %u", c->lookup_ਸੂਚਕਾਂਕ);
 
     skip:
-      st = &StructAfter<SubTable> (*st);
-      c->set_lookup_index (c->lookup_index + 1);
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
+      c->ਸੈੱਟ_lookup_ਸੂਚਕਾਂਕ (c->lookup_ਸੂਚਕਾਂਕ + 1);
     }
-    if (c->buffer_is_reversed)
-      c->reverse_buffer ();
+    ਜੇ (c->ਬਫਰ_is_reversed)
+      c->ਉਲਟ_ਬਫਰ ();
 
-    return ret;
+    ਵਾਪਸ ret;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(thiz()->version.sanitize (c) &&
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!(thiz()->ਸੰਸਕਰਣ.sanitize (c) &&
 		    hb_barrier () &&
-		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
-		    thiz()->tableCount.sanitize (c))))
-      return_trace (false);
+		    (ਬਿਨਾਨਿਸ਼ਾਨੀ) thiz()->ਸੰਸਕਰਣ >= (ਬਿਨਾਨਿਸ਼ਾਨੀ) T::min_ਸੰਸਕਰਣ &&
+		    thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ.sanitize (c))))
+      return_trace (ਝੂਠ);
 
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      if (unlikely (!st->u.header.sanitize (c)))
-	return_trace (false);
+      ਜੇ (unlikely (!st->u.ਸਿਰਲੇਖ.sanitize (c)))
+	return_trace (ਝੂਠ);
       hb_barrier ();
       /* OpenType kern table has 2-byte subtable lengths.  That's limiting.
        * MS implementation also only supports one subtable, of format 0,
@@ -1103,106 +1103,106 @@ struct KerxTable
        * is simply ignored.  Which makes sense.  It's only needed if you
        * have multiple subtables.  To handle such fonts, we just ignore
        * the length for the last subtable. */
-      hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
+      hb_sanitize_with_object_t with (c, i < ਗਿਣਤੀ_2 - 1 ? st : (ਅਚਲ Sub_ਸਾਰਣੀ *) ਖਾਲੀ_ਸੂਚਕ);
 
-      if (unlikely (!st->sanitize (c)))
-	return_trace (false);
+      ਜੇ (unlikely (!st->sanitize (c)))
+	return_trace (ਝੂਠ);
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
     }
 
-    unsigned majorVersion = thiz()->version;
-    if (sizeof (thiz()->version) == 4)
-      majorVersion = majorVersion >> 16;
-    if (majorVersion >= 3)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ major_ਸੰਸਕਰਣ = thiz()->ਸੰਸਕਰਣ;
+    ਜੇ (ਆਕਾਰ (thiz()->ਸੰਸਕਰਣ) == 4)
+      major_ਸੰਸਕਰਣ = major_ਸੰਸਕਰਣ >> 16;
+    ਜੇ (major_ਸੰਸਕਰਣ >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      ਅਚਲ SubtableGlyphCoverage *coverage = (ਅਚਲ SubtableGlyphCoverage *) st;
+      ਜੇ (!coverage->sanitize (c, ਗਿਣਤੀ_2))
+        return_trace (ਝੂਠ);
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  kern_accelerator_ਅੰਕੜੇ_t create_accelerator_ਅੰਕੜੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs) ਅਚਲ
   {
-    kern_accelerator_data_t accel_data;
+    kern_accelerator_ਅੰਕੜੇ_t accel_ਅੰਕੜੇ;
 
-    typedef typename T::SubTable SubTable;
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਕਿਸਮ_ਨਾਂ T::Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ਅਚਲ Sub_ਸਾਰਣੀ *st = &thiz()->ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = thiz()->ਸਾਰਣੀ_ਗਿਣਤੀ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      auto &subtable_accel = *accel_data.subtable_accels.push ();
-      if (unlikely (accel_data.subtable_accels.in_error ()))
-	  return accel_data;
+      ਸਵੈਚਾਲਿਤ &subtable_accel = *accel_ਅੰਕੜੇ.subtable_accels.push ();
+      ਜੇ (unlikely (accel_ਅੰਕੜੇ.subtable_accels.ਵਿੱਚ_error ()))
+	  ਵਾਪਸ accel_ਅੰਕੜੇ;
 
-      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
+      st->collect_glyphs (subtable_accel.ਪਹਿਲਾ_ਸੈੱਟ, subtable_accel.ਦੂਜਾ_ਸੈੱਟ, ਅੰਕ_glyphs);
       subtable_accel.class_cache.clear ();
 
-      st = &StructAfter<SubTable> (*st);
+      st = &StructAfter<Sub_ਸਾਰਣੀ> (*st);
     }
 
-    return accel_data;
+    ਵਾਪਸ accel_ਅੰਕੜੇ;
   }
 
-  struct accelerator_t
+  ਬਣਤਰ accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      ਇਹ->ਸਾਰਣੀ = sc.reference_ਸਾਰਣੀ<T> (face);
+      ਇਹ->accel_ਅੰਕੜੇ = ਇਹ->ਸਾਰਣੀ->create_accelerator_ਅੰਕੜੇ (face->get_ਅੰਕ_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      ਇਹ->ਸਾਰਣੀ.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ਅਚਲ { ਵਾਪਸ ਸਾਰਣੀ.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    ਤਾਰਕਿਕ apply (AAT::hb_aat_apply_context_t *c) ਅਚਲ
     {
-      return table->apply (c, accel_data);
+      ਵਾਪਸ ਸਾਰਣੀ->apply (c, accel_ਅੰਕੜੇ);
     }
 
-    hb_blob_ptr_t<T> table;
-    kern_accelerator_data_t accel_data;
+    hb_blob_ptr_t<T> ਸਾਰਣੀ;
+    kern_accelerator_ਅੰਕੜੇ_t accel_ਅੰਕੜੇ;
     hb_aat_scratch_t scratch;
   };
 };
 
-struct kerx : KerxTable<kerx>
+ਬਣਤਰ kerx : Kerx_ਸਾਰਣੀ<kerx>
 {
-  friend struct KerxTable<kerx>;
+  ਮਿੱਤਰ ਬਣਤਰ Kerx_ਸਾਰਣੀ<kerx>;
 
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
-  static constexpr unsigned minVersion = 2u;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_AAT_ਟੈਗ_kerx;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਸੰਸਕਰਣ = 2u;
 
-  typedef KerxSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KerxSubTable SubTable;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Kerx_Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Sub_ਸਾਰਣੀ_ਸਿਰਲੇਖ::Types Types;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Kerx_Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 
-  bool has_data () const { return version; }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ; }
 
-  protected:
-  HBUINT16	version;	/* The version number of the extended kerning table
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT16	ਸੰਸਕਰਣ;	/* The version number of the extended kerning table
 				 * (currently 2, 3, or 4). */
-  HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	tableCount;	/* The number of subtables included in the extended kerning
+  HBUINT16	ਅਣਵਰਤਿਆ_2;		/* Set to 0. */
+  HBUINT32	ਸਾਰਣੀ_ਗਿਣਤੀ;	/* The number of subtables included in the extended kerning
 				 * table. */
-  SubTable	firstSubTable;	/* Subtables. */
+  Sub_ਸਾਰਣੀ	ਪਹਿਲਾ_Sub_ਸਾਰਣੀ;	/* Subtables. */
 /*subtableGlyphCoverageArray*/	/* Only if version >= 3. We don't use. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (8);
 };
 
-struct kerx_accelerator_t : kerx::accelerator_t {
+ਬਣਤਰ kerx_accelerator_t : kerx::accelerator_t {
   kerx_accelerator_t (hb_face_t *face) : kerx::accelerator_t (face) {}
 };
 
 } /* namespace AAT */
 
-#endif /* HB_AAT_LAYOUT_KERX_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LAYOUT_KERX_TABLE_HH */

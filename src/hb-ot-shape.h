@@ -24,35 +24,35 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_SHAPE_H
-#define HB_OT_SHAPE_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPE_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
-hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
-			    hb_set_t           *glyphs);
+HB_EXTERN ਖਾਲੀ
+hb_ot_shape_glyphs_ਘੇਰਾ (hb_font_t          *font,
+			    hb_ਬਫਰ_t        *ਬਫਰ,
+			    ਅਚਲ hb_feature_t *features,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features,
+			    hb_ਸੈੱਟ_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
-				  hb_tag_t         table_tag,
-				  hb_set_t        *lookup_indexes /* OUT */);
+				  hb_ਟੈਗ_t         ਸਾਰਣੀ_ਟੈਗ_2,
+				  hb_ਸੈੱਟ_t        *lookup_indexes /*ਬਾਹਰਲਾ*/);
 
-HB_EXTERN unsigned int
-hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
-				   hb_tag_t        *tags /* OUT */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_shape_plan_get_feature_ਟੈਗ_ਸੂਚੀ (hb_shape_plan_t *shape_plan,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     ਸ਼ੁਰੂ_ਵਿੱਥ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਟੈਗ_ਗਿਣਤੀ, /* IN/OUT */
+				   hb_ਟੈਗ_t        *ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 /**
  * HB_OT_SHAPE_BUFFER_FORMAT_SERIAL:
@@ -64,11 +64,11 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  *
  * Since: 13.2.0
  */
-#define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPE_ਬਫਰ_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_shape_get_ਬਫਰ_format_serial (ਖਾਲੀ);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_SHAPE_H */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPE_H */

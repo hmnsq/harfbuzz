@@ -26,35 +26,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DISPATCH_HH
-#define HB_DISPATCH_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISPATCH_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DISPATCH_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Context, ਕਿਸਮ_ਨਾਂ Return=hb_ਖਾਲੀ_ਥਾਵਾਂ_t, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ Max_Debug_ਡੂੰਘਾਈ=0>
+ਬਣਤਰ hb_dispatch_context_t
 {
-  private:
+  ਨਿਜੀ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
-  unsigned debug_depth = 0;
+  ਅਚਲ Context* thiz () ਅਚਲ { ਵਾਪਸ static_cast<ਅਚਲ Context *> (ਇਹ); }
+	Context* thiz ()       { ਵਾਪਸ static_cast<      Context *> (ਇਹ); }
+  ਜਨਤਕ:
+  ਅਚਲ ਅੱਖਰ *get_name () { ਵਾਪਸ "UNKNOWN"; }
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_debug_ਡੂੰਘਾਈ = Max_Debug_ਡੂੰਘਾਈ;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ Return return_t;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ F>
+  ਤਾਰਕਿਕ may_dispatch (ਅਚਲ T *obj HB_ਅਣਵਰਤਿਆ, ਅਚਲ F *format HB_ਅਣਵਰਤਿਆ) { ਵਾਪਸ ਸੱਚ; }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ ...Ts>
+  return_t dispatch (ਅਚਲ T &obj, Ts&&... ds)
+  { ਵਾਪਸ obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  ਸਥਿਰ return_t no_dispatch_return_ਮੁੱਲ () { ਵਾਪਸ Context::default_return_ਮੁੱਲ (); }
+  ਸਥਿਰ ਤਾਰਕਿਕ stop_sublookup_iteration (ਅਚਲ return_t r HB_ਅਣਵਰਤਿਆ) { ਵਾਪਸ ਝੂਠ; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ debug_ਡੂੰਘਾਈ = 0;
 };
 
 
-#endif /* HB_DISPATCH_HH */
+#ਜੇ_ਅੰਤ /* HB_DISPATCH_HH */

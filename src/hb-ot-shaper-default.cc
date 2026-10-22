@@ -24,52 +24,52 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper.hh"
 
 
-const hb_ot_shaper_t _hb_ot_shaper_default =
+ਅਚਲ hb_ot_shaper_t _hb_ot_shaper_default =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  true, /* fallback_position */
+  ਖਾਲੀ_ਸੂਚਕ, /* collect_features */
+  ਖਾਲੀ_ਸੂਚਕ, /* override_features */
+  ਖਾਲੀ_ਸੂਚਕ, /* data_create */
+  ਖਾਲੀ_ਸੂਚਕ, /* data_destroy */
+  ਖਾਲੀ_ਸੂਚਕ, /* preprocess_text */
+  ਖਾਲੀ_ਸੂਚਕ, /* postprocess_glyphs */
+  ਖਾਲੀ_ਸੂਚਕ, /* decompose */
+  ਖਾਲੀ_ਸੂਚਕ, /* compose */
+  ਖਾਲੀ_ਸੂਚਕ, /* setup_masks */
+  ਖਾਲੀ_ਸੂਚਕ, /* reorder_marks */
+  HB_ਟੈਗ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_DEFAULT,
+  HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_LATE,
+  ਸੱਚ, /* fallback_position */
 };
 
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
 /* Same as default but no mark advance zeroing / fallback positioning.
  * Dumbest shaper ever, basically. */
-const hb_ot_shaper_t _hb_ot_shaper_dumber =
+ਅਚਲ hb_ot_shaper_t _hb_ot_shaper_dumber =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  ਖਾਲੀ_ਸੂਚਕ, /* collect_features */
+  ਖਾਲੀ_ਸੂਚਕ, /* override_features */
+  ਖਾਲੀ_ਸੂਚਕ, /* data_create */
+  ਖਾਲੀ_ਸੂਚਕ, /* data_destroy */
+  ਖਾਲੀ_ਸੂਚਕ, /* preprocess_text */
+  ਖਾਲੀ_ਸੂਚਕ, /* postprocess_glyphs */
+  ਖਾਲੀ_ਸੂਚਕ, /* decompose */
+  ਖਾਲੀ_ਸੂਚਕ, /* compose */
+  ਖਾਲੀ_ਸੂਚਕ, /* setup_masks */
+  ਖਾਲੀ_ਸੂਚਕ, /* reorder_marks */
+  HB_ਟੈਗ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_ਬਹੁਲਕ_DEFAULT,
+  HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_NONE,
+  ਝੂਠ, /* fallback_position */
 };
-#endif
+#ਜੇ_ਅੰਤ
 
 
-#endif
+#ਜੇ_ਅੰਤ

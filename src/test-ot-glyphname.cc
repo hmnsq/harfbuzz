@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OPEN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_blob_create_from_file_or_fail(x)  hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ()
+#ਜੇ_ਅੰਤ
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  if (argc != 2) {
+  ਜੇ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    ਬਾਹਰ_ਨਿਕਲੋ (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
@@ -44,46 +44,46 @@ main (int argc, char **argv)
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_font_t *font = hb_font_create (face);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = ਖਾਲੀ_ਸੂਚਕ;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs = hb_face_get_glyph_ਗਿਣਤੀ (face);
+  ਪੂਰਨ	ਨਤੀਜਾ = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  ਲਈ (hb_codepoint_t gid = 0; gid < ਅੰਕ_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    ਅੱਖਰ buf[64];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_ਮਾਪ = ਆਕਾਰ (buf);
+    ਜੇ (hb_font_get_glyph_name (font, gid, buf, buf_ਮਾਪ))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      ਜੇ (hb_font_get_glyph_from_name(font, buf, ਲੜੀ_ਲੰਬਾਈ (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	ਜੇ (gid == gid_inv)
 	{
-	  printf ("%u <-> %s\n", gid, buf);
+	  ਲਿਖੋ ("%u <-> %s\n", gid, buf);
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
-	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
-	  result = 0;
+	  ਲਿਖੋ ("%u -> %s -> %u\n", gid, buf, gid_inv);
+	  ਨਤੀਜਾ = 0;
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	printf ("%u -> %s -> ?\n", gid, buf);
-	result = 0;
+	ਲਿਖੋ ("%u -> %s -> ?\n", gid, buf);
+	ਨਤੀਜਾ = 0;
       }
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      printf ("%u -> ?\n", gid);
-      result = 0;
+      ਲਿਖੋ ("%u -> ?\n", gid);
+      ਨਤੀਜਾ = 0;
     }
   }
 
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  ਵਾਪਸ !ਨਤੀਜਾ;
 }

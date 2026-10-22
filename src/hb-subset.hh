@@ -24,50 +24,50 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_HH
-#define HB_SUBSET_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_SUBSET_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_SUBSET_HH
 
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-subset.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset.h"
 
-#include "hb-machinery.hh"
-#include "hb-serialize.hh"
-#include "hb-subset-input.hh"
-#include "hb-subset-plan.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-serialize.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-input.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-plan.hh"
 
-struct hb_subset_context_t :
-       hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
+ਬਣਤਰ hb_subset_context_t :
+       hb_dispatch_context_t<hb_subset_context_t, ਤਾਰਕਿਕ, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  ਅਚਲ ਅੱਖਰ *get_name () { ਵਾਪਸ "SUBSET"; }
+  ਸਥਿਰ return_t default_return_ਮੁੱਲ () { ਵਾਪਸ ਸੱਚ; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.subset (this, std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  ਨਿਜੀ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ ...Ts> ਸਵੈਚਾਲਿਤ
+  _dispatch (ਅਚਲ T &obj, hb_ਤਰਜੀਹ<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.subset (ਇਹ, std::forward<Ts> (ds)...) )
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ ...Ts> ਸਵੈਚਾਲਿਤ
+  _dispatch (ਅਚਲ T &obj, hb_ਤਰਜੀਹ<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (ਇਹ, std::forward<Ts> (ds)...) )
+  ਜਨਤਕ:
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ ...Ts> ਸਵੈਚਾਲਿਤ
+  dispatch (ਅਚਲ T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
-  hb_blob_t *source_blob;
+  hb_blob_t *ਸਰੋਤ_blob;
   hb_subset_plan_t *plan;
   hb_serialize_context_t *serializer;
-  hb_tag_t table_tag;
+  hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2;
 
-  hb_subset_context_t (hb_blob_t *source_blob_,
+  hb_subset_context_t (hb_blob_t *ਸਰੋਤ_blob_2,
 		       hb_subset_plan_t *plan_,
 		       hb_serialize_context_t *serializer_,
-		       hb_tag_t table_tag_) :
-		        source_blob (source_blob_),
+		       hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_3) :
+		        ਸਰੋਤ_blob (ਸਰੋਤ_blob_2),
 			plan (plan_),
 			serializer (serializer_),
-			table_tag (table_tag_) {}
+			ਸਾਰਣੀ_ਟੈਗ_2 (ਸਾਰਣੀ_ਟੈਗ_3) {}
 };
 
-#endif /* HB_SUBSET_HH */
+#ਜੇ_ਅੰਤ /* HB_SUBSET_HH */

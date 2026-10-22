@@ -25,1214 +25,1214 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_HH
-#define HB_BIT_SET_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-bit-page.hh"
 
-struct hb_bit_set_t
+ਬਣਤਰ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t () = ਮੂਲ;
+  ~hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t () = ਮੂਲ;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& other) : hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t () { ਸੈੱਟ (other, ਸੱਚ); }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t ( hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t&& other)  noexcept : hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t () { hb_ਅਦਲਾ_ਬਦਲੀ (*ਇਹ, other); }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& ਸੰਚਾਲਕ= (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& other) { ਸੈੱਟ (other); ਵਾਪਸ *ਇਹ; }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& ਸੰਚਾਲਕ= (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t&& other)  noexcept { hb_ਅਦਲਾ_ਬਦਲੀ (*ਇਹ, other); ਵਾਪਸ *ਇਹ; }
+  ਮਿੱਤਰ ਖਾਲੀ swap (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &a, hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
-    hb_swap (a.population, b.population);
-    hb_swap (a.last_page_lookup, b.last_page_lookup);
-    hb_swap (a.page_map, b.page_map);
-    hb_swap (a.pages, b.pages);
+    ਜੇ (likely (!a.successful || !b.successful))
+      ਵਾਪਸ;
+    hb_ਅਦਲਾ_ਬਦਲੀ (a.population, b.population);
+    hb_ਅਦਲਾ_ਬਦਲੀ (a.ਆਖਰੀ_ਪੰਨਾ_lookup, b.ਆਖਰੀ_ਪੰਨਾ_lookup);
+    hb_ਅਦਲਾ_ਬਦਲੀ (a.ਪੰਨਾ_map, b.ਪੰਨਾ_map);
+    hb_ਅਦਲਾ_ਬਦਲੀ (a.ਪੰਨੇ, b.ਪੰਨੇ);
   }
 
-  void init ()
+  ਖਾਲੀ init ()
   {
-    successful = true;
+    successful = ਸੱਚ;
     population = 0;
-    last_page_lookup = 0;
-    page_map.init ();
-    pages.init ();
+    ਆਖਰੀ_ਪੰਨਾ_lookup = 0;
+    ਪੰਨਾ_map.init ();
+    ਪੰਨੇ.init ();
   }
-  void fini ()
+  ਖਾਲੀ fini ()
   {
-    page_map.fini ();
-    pages.fini ();
+    ਪੰਨਾ_map.fini ();
+    ਪੰਨੇ.fini ();
   }
 
-  using page_t = hb_bit_page_t;
-  struct page_map_t
+  ਵਰਤੋਂ ਪੰਨਾ_t = hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t;
+  ਬਣਤਰ ਪੰਨਾ_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    ਪੂਰਨ cmp (ਅਚਲ ਪੰਨਾ_map_t &o) ਅਚਲ { ਵਾਪਸ cmp (o.major); }
+    ਪੂਰਨ cmp (uint32_t o_major) ਅਚਲ { ਵਾਪਸ (ਪੂਰਨ) o_major - (ਪੂਰਨ) major; }
 
     uint32_t major;
-    uint32_t index;
+    uint32_t ਸੂਚਕਾਂਕ_2;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
-  mutable hb_atomic_t<unsigned> last_page_lookup = 0;
-  hb_sorted_vector_t<page_map_t> page_map;
-  hb_vector_t<page_t> pages;
+  ਤਾਰਕਿਕ successful = ਸੱਚ; /* Allocations successful */
+  ਬਦਲਣਯੋਗ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ population = 0;
+  ਬਦਲਣਯੋਗ hb_atomic_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਆਖਰੀ_ਪੰਨਾ_lookup = 0;
+  hb_sorted_ਸਦਿਸ਼_t<ਪੰਨਾ_map_t> ਪੰਨਾ_map;
+  hb_ਸਦਿਸ਼_t<ਪੰਨਾ_t> ਪੰਨੇ;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  ਖਾਲੀ err () { ਜੇ (successful) successful = ਝੂਠ; } /* TODO Remove */
+  ਤਾਰਕਿਕ ਵਿੱਚ_error () ਅਚਲ { ਵਾਪਸ !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  ਤਾਰਕਿਕ resize (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਤਾਰਕਿਕ clear = ਸੱਚ, ਤਾਰਕਿਕ exact_ਮਾਪ = ਝੂਠ)
   {
-    if (unlikely (!successful)) return false;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ ਝੂਠ;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    ਜੇ (ਪੰਨੇ.ਲੰਮਾਈ < ਗਿਣਤੀ_2 && (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਪੰਨੇ.allocated < ਗਿਣਤੀ_2 && ਗਿਣਤੀ_2 <= 2)
+      exact_ਮਾਪ = ਸੱਚ; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    ਜੇ (unlikely (!ਪੰਨੇ.resize_ਭਰਿਆ (ਗਿਣਤੀ_2, clear, exact_ਮਾਪ) ||
+	!ਪੰਨਾ_map.resize_ਭਰਿਆ (ਗਿਣਤੀ_2, clear, ਝੂਠ)))
     {
-      pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      ਪੰਨੇ.resize_ਭਰਿਆ (ਪੰਨਾ_map.ਲੰਮਾਈ, clear, exact_ਮਾਪ);
+      successful = ਝੂਠ;
+      ਵਾਪਸ ਝੂਠ;
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  void alloc (unsigned sz)
+  ਖਾਲੀ alloc (ਬਿਨਾਨਿਸ਼ਾਨੀ sz)
   {
-    sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
-    pages.alloc (sz);
-    page_map.alloc (sz);
+    sz >>= (ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ_LOG_2 - 1);
+    ਪੰਨੇ.alloc (sz);
+    ਪੰਨਾ_map.alloc (sz);
   }
 
-  hb_bit_set_t& reset ()
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& reset ()
   {
-    successful = true;
+    successful = ਸੱਚ;
     clear ();
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  void clear ()
+  ਖਾਲੀ clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
-    pages.clear ();
-    page_map.clear ();
+    ਜੇ (!ਪੰਨੇ.ਲੰਮਾਈ && !population) ਵਾਪਸ;
+    ਪੰਨੇ.clear ();
+    ਪੰਨਾ_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  ਤਾਰਕਿਕ is_empty () ਅਚਲ
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਜੇ (!ਪੰਨੇ[i].is_empty ())
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
-  explicit operator bool () const { return !is_empty (); }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ਅਚਲ
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    ਲਈ (ਸਵੈਚਾਲਿਤ &map : ਪੰਨਾ_map)
     {
-      auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
-      h = h * 31 + hb_hash (map.major) + hb_hash (page);
+      ਸਵੈਚਾਲਿਤ &ਪੰਨਾ = ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2];
+      ਜੇ (unlikely (ਪੰਨਾ.is_empty ())) ਜਾਰੀ;
+      h = h * 31 + hb_hash (map.major) + hb_hash (ਪੰਨਾ);
     }
-    return h;
+    ਵਾਪਸ h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  ਨਿਜੀ:
+  ਖਾਲੀ dirty () { population = UINT_MAX; }
+  ਜਨਤਕ:
 
-  void add (hb_codepoint_t g)
+  ਖਾਲੀ ਜੋੜੋ (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
+    ਜੇ (unlikely (g == INVALID)) ਵਾਪਸ;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add (g);
+    ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g, ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ;
+    ਪੰਨਾ->ਜੋੜੋ (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  ਖਾਲੀ ਜੋੜੋ_ਬਿੱਟ (hb_codepoint_t g, uint64_t ਬਿੱਟ)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    ਜੇ (unlikely (!successful) || unlikely (!ਬਿੱਟ)) ਵਾਪਸ;
+    ਪ੍ਰਤਿਜ੍ਞਾ (!(g & (ਪੰਨਾ_t::ELT_ਬਿੱਟ - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add_bits (g, bits);
+    ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g, ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ;
+    ਪੰਨਾ->ਜੋੜੋ_ਬਿੱਟ (g, ਬਿੱਟ);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  ਤਾਰਕਿਕ ਜੋੜੋ_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ ਸੱਚ; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    ਜੇ (unlikely (a > b || a == INVALID || b == INVALID)) ਵਾਪਸ ਝੂਠ;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ma = get_major (a);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mb = get_major (b);
+    ਜੇ (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, b);
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (a, ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ ਝੂਠ;
+      ਪੰਨਾ->ਜੋੜੋ_range (a, b);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, major_start (ma + 1) - 1);
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (a, ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ ਝੂਠ;
+      ਪੰਨਾ->ਜੋੜੋ_range (a, major_ਸ਼ੁਰੂ (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
-	page->init1 ();
+	ਪੰਨਾ = ਪੰਨਾ_for (major_ਸ਼ੁਰੂ (m), ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ ਝੂਠ;
+	ਪੰਨਾ->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
-      page->add_range (major_start (mb), b);
+      ਪੰਨਾ = ਪੰਨਾ_for (b, ਸੱਚ); ਜੇ (unlikely (!ਪੰਨਾ)) ਵਾਪਸ ਝੂਠ;
+      ਪੰਨਾ->ਜੋੜੋ_range (major_ਸ਼ੁਰੂ (mb), b);
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
-  template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Type>
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ Type& Struct_At_ਵਿੱਥ_Unaligned(ਅਚਲ ਖਾਲੀ *P, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ)
   {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#ਹਦਾਇਤ GCC diagnostic push
+#ਹਦਾਇਤ GCC diagnostic ignored "-Wcast-align"
+    ਵਾਪਸ * reinterpret_cast<ਅਚਲ Type*> ((ਅਚਲ ਅੱਖਰ *) P + ਵਿੱਥ);
+#ਹਦਾਇਤ GCC diagnostic ਕੱਢੋ
   }
 
-  template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਖਾਲੀ ਸੈੱਟ_array (ਤਾਰਕਿਕ v, ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
+    ਜੇ (!ਗਿਣਤੀ_2) ਵਾਪਸ;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    ਜਦੋਂ (ਗਿਣਤੀ_2)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ m = get_major (g);
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g, v); ਜੇ (unlikely (v && !ਪੰਨਾ)) ਵਾਪਸ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = major_ਸ਼ੁਰੂ (m);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = major_ਸ਼ੁਰੂ (m + 1);
+      ਕਰੋ
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        ਜੇ (g != INVALID && (v || ਪੰਨਾ)) /* The v check is to optimize out the page check if v is true. */
+	  ਪੰਨਾ->ਸੈੱਟ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_ਵਿੱਥ_Unaligned<T> (array, stride);
+	ਗਿਣਤੀ_2--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      ਜਦੋਂ (ਗਿਣਤੀ_2 && (g = *array, ਸ਼ੁਰੂ <= g && g < ਸਿਰਾ));
     }
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਖਾਲੀ ਜੋੜੋ_array (ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
+  { ਸੈੱਟ_array (ਸੱਚ, array, ਗਿਣਤੀ_2, stride); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਖਾਲੀ ਜੋੜੋ_array (ਅਚਲ hb_array_t<ਅਚਲ T>& arr) { ਜੋੜੋ_array (&arr, arr.len ()); }
 
-  template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
-  template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਖਾਲੀ del_array (ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
+  { ਸੈੱਟ_array (ਝੂਠ, array, ਗਿਣਤੀ_2, stride); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਖਾਲੀ del_array (ਅਚਲ hb_array_t<ਅਚਲ T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ ਸੈੱਟ_sorted_array (ਤਾਰਕਿਕ v, ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ ਸੱਚ; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    ਜੇ (unlikely (!ਗਿਣਤੀ_2)) ਵਾਪਸ ਸੱਚ;
     dirty ();
     hb_codepoint_t g = *array;
-    hb_codepoint_t last_g = g;
-    while (count)
+    hb_codepoint_t ਆਖਰੀ_g = g;
+    ਜਦੋਂ (ਗਿਣਤੀ_2)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ m = get_major (g);
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g, v); ਜੇ (unlikely (v && !ਪੰਨਾ)) ਵਾਪਸ ਝੂਠ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ = major_ਸ਼ੁਰੂ (m + 1);
+      ਕਰੋ
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
-	last_g = g;
+	ਜੇ (g < ਆਖਰੀ_g) ਵਾਪਸ ਝੂਠ;
+	ਆਖਰੀ_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        ਜੇ (g != INVALID && (v || ਪੰਨਾ)) /* The v check is to optimize out the page check if v is true. */
+	  ਪੰਨਾ->ਸੈੱਟ (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_ਵਿੱਥ_Unaligned<T> (array, stride);
+	ਗਿਣਤੀ_2--;
       }
-      while (count && (g = *array, g < end));
+      ਜਦੋਂ (ਗਿਣਤੀ_2 && (g = *array, g < ਸਿਰਾ));
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ ਜੋੜੋ_sorted_array (ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
+  { ਵਾਪਸ ਸੈੱਟ_sorted_array (ਸੱਚ, array, ਗਿਣਤੀ_2, stride); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ ਜੋੜੋ_sorted_array (ਅਚਲ hb_sorted_array_t<ਅਚਲ T>& arr) { ਵਾਪਸ ਜੋੜੋ_sorted_array (&arr, arr.len ()); }
 
-  template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
-  template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ del_sorted_array (ਅਚਲ T *array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ stride=ਆਕਾਰ(T))
+  { ਵਾਪਸ ਸੈੱਟ_sorted_array (ਝੂਠ, array, ਗਿਣਤੀ_2, stride); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+  ਤਾਰਕਿਕ del_sorted_array (ਅਚਲ hb_sorted_array_t<ਅਚਲ T>& arr) { ਵਾਪਸ del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  ਖਾਲੀ del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
+    ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g);
+    ਜੇ (!ਪੰਨਾ)
+      ਵਾਪਸ;
     dirty ();
-    page->del (g);
+    ਪੰਨਾ->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  ਖਾਲੀ del_ਬਿੱਟ (hb_codepoint_t g, uint64_t ਬਿੱਟ)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    ਜੇ (unlikely (!successful) || unlikely (!ਬਿੱਟ)) ਵਾਪਸ;
+    ਪ੍ਰਤਿਜ੍ਞਾ (!(g & (ਪੰਨਾ_t::ELT_ਬਿੱਟ - 1)));
+    ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g);
+    ਜੇ (!ਪੰਨਾ)
+      ਵਾਪਸ;
     dirty ();
-    page->del_bits (g, bits);
+    ਪੰਨਾ->del_ਬਿੱਟ (g, ਬਿੱਟ);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  ਨਿਜੀ:
+  ਖਾਲੀ del_ਪੰਨੇ (ਪੂਰਨ ds, ਪੂਰਨ de)
   {
-    if (ds <= de)
+    ਜੇ (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
-      hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> compact_workspace;
+      ਜੇ (unlikely (!allocate_compact_workspace (compact_workspace))) ਵਾਪਸ;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ write_ਸੂਚਕਾਂਕ = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਪੰਨਾ_map.ਲੰਮਾਈ; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
-	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
+	ਪੂਰਨ m = (ਪੂਰਨ) ਪੰਨਾ_map.arrayZ[i].major;
+	ਜੇ (m < ds || de < m)
+	  ਪੰਨਾ_map.arrayZ[write_ਸੂਚਕਾਂਕ++] = ਪੰਨਾ_map.arrayZ[i];
       }
-      compact (compact_workspace, write_index);
-      resize (write_index);
+      compact (compact_workspace, write_ਸੂਚਕਾਂਕ);
+      resize (write_ਸੂਚਕਾਂਕ);
     }
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  ਜਨਤਕ:
+  ਖਾਲੀ del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
+    ਜੇ (unlikely (a > b || a == INVALID)) ਵਾਪਸ;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ma = get_major (a);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    ਪੂਰਨ ds = (a == major_ਸ਼ੁਰੂ (ma))? (ਪੂਰਨ) ma: (ਪੂਰਨ) (ma + 1);
+    ਪੂਰਨ de = (b + 1 == major_ਸ਼ੁਰੂ (mb + 1))? (ਪੂਰਨ) mb: ((ਪੂਰਨ) mb - 1);
+    ਜੇ (ds > de || (ਪੂਰਨ) ma < ds)
     {
-      page_t *page = page_for (a);
-      if (page)
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (a);
+      ਜੇ (ਪੰਨਾ)
       {
-	if (ma == mb)
-	  page->del_range (a, b);
-	else
-	  page->del_range (a, major_start (ma + 1) - 1);
+	ਜੇ (ma == mb)
+	  ਪੰਨਾ->del_range (a, b);
+	ਨਹੀਂਤਾਂ
+	  ਪੰਨਾ->del_range (a, major_ਸ਼ੁਰੂ (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    ਜੇ (de < (ਪੂਰਨ) mb && ma != mb)
     {
-      page_t *page = page_for (b);
-      if (page)
-	page->del_range (major_start (mb), b);
+      ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (b);
+      ਜੇ (ਪੰਨਾ)
+	ਪੰਨਾ->del_range (major_ਸ਼ੁਰੂ (mb), b);
     }
-    del_pages (ds, de);
+    del_ਪੰਨੇ (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  ਤਾਰਕਿਕ get (hb_codepoint_t g) ਅਚਲ
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    ਅਚਲ ਪੰਨਾ_t *ਪੰਨਾ = ਪੰਨਾ_for (g);
+    ਜੇ (!ਪੰਨਾ)
+      ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਪੰਨਾ->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  ਤਾਰਕਿਕ may_have (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ [] (hb_codepoint_t k) ਅਚਲ { ਵਾਪਸ get (k); }
+  ਤਾਰਕਿਕ has (hb_codepoint_t k) ਅਚਲ { ਵਾਪਸ (*ਇਹ)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ () (hb_codepoint_t k) ਅਚਲ { ਵਾਪਸ has (k); }
 
   /* Sink interface. */
-  hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& ਸੰਚਾਲਕ << (hb_codepoint_t v)
+  { ਜੋੜੋ (v); ਵਾਪਸ *ਇਹ; }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t& ਸੰਚਾਲਕ << (ਅਚਲ hb_codepoint_pair_t& range)
+  { ਜੋੜੋ_range (range.ਪਹਿਲਾ, range.second); ਵਾਪਸ *ਇਹ; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) ਅਚਲ
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ na = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ nb = other.ਪੰਨੇ.ਲੰਮਾਈ;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ a = 0, b = 0;
+    ਲਈ (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      ਜੇ (ਪੰਨਾ_map.arrayZ[a].major == other.ਪੰਨਾ_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	ਜੇ (ਪੰਨਾ_at (a).intersects (other.ਪੰਨਾ_at (b)))
+	  ਵਾਪਸ ਸੱਚ;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      ਨਹੀਂਤਾਂ ਜੇ (ਪੰਨਾ_map.arrayZ[a].major < other.ਪੰਨਾ_map.arrayZ[b].major)
 	a++;
-      else
+      ਨਹੀਂਤਾਂ
 	b++;
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  ਤਾਰਕਿਕ may_intersect (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) ਅਚਲ
+  { ਵਾਪਸ intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  ਤਾਰਕਿਕ intersects (hb_codepoint_t ਪਹਿਲਾ, hb_codepoint_t ਆਖਰੀ) ਅਚਲ
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = ਪਹਿਲਾ - 1;
+    ਵਾਪਸ next (&c) && c <= ਆਖਰੀ;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  ਖਾਲੀ ਸੈੱਟ (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other, ਤਾਰਕਿਕ exact_ਮਾਪ = ਝੂਠ)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = other.ਪੰਨੇ.ਲੰਮਾਈ;
+    ਜੇ (unlikely (!resize  (ਗਿਣਤੀ_2, ਝੂਠ, exact_ਮਾਪ)))
+      ਵਾਪਸ;
     population = other.population;
 
-    page_map = other.page_map;
-    pages = other.pages;
+    ਪੰਨਾ_map = other.ਪੰਨਾ_map;
+    ਪੰਨੇ = other.ਪੰਨੇ;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  ਤਾਰਕਿਕ is_equal (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) ਅਚਲ
   {
-    if (has_population () && other.has_population () &&
+    ਜੇ (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ na = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ nb = other.ਪੰਨੇ.ਲੰਮਾਈ;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ a = 0, b = 0;
+    ਲਈ (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
-	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+      ਜੇ (ਪੰਨਾ_at (a).is_empty ()) { a++; ਜਾਰੀ; }
+      ਜੇ (other.ਪੰਨਾ_at (b).is_empty ()) { b++; ਜਾਰੀ; }
+      ਜੇ (ਪੰਨਾ_map.arrayZ[a].major != other.ਪੰਨਾ_map.arrayZ[b].major ||
+	  !ਪੰਨਾ_at (a).is_equal (other.ਪੰਨਾ_at (b)))
+	ਵਾਪਸ ਝੂਠ;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    ਲਈ (; a < na; a++)
+      ਜੇ (!ਪੰਨਾ_at (a).is_empty ()) { ਵਾਪਸ ਝੂਠ; }
+    ਲਈ (; b < nb; b++)
+      ਜੇ (!other.ਪੰਨਾ_at (b).is_empty ()) { ਵਾਪਸ ਝੂਠ; }
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  ਤਾਰਕਿਕ is_subset (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &larger_ਸੈੱਟ) ਅਚਲ
   {
-    if (has_population () && larger_set.has_population () &&
-	population > larger_set.population)
-      return false;
+    ਜੇ (has_population () && larger_ਸੈੱਟ.has_population () &&
+	population > larger_ਸੈੱਟ.population)
+      ਵਾਪਸ ਝੂਠ;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    ਜਦੋਂ (spi < ਪੰਨਾ_map.ਲੰਮਾਈ && lpi < larger_ਸੈੱਟ.ਪੰਨਾ_map.ਲੰਮਾਈ)
     {
-      uint32_t spm = page_map.arrayZ[spi].major;
-      uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
-      auto sp = page_at (spi);
+      uint32_t spm = ਪੰਨਾ_map.arrayZ[spi].major;
+      uint32_t lpm = larger_ਸੈੱਟ.ਪੰਨਾ_map.arrayZ[lpi].major;
+      ਸਵੈਚਾਲਿਤ sp = ਪੰਨਾ_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      ਜੇ (spm < lpm) {
+        ਜੇ (!sp.is_empty ())
+          ਵਾਪਸ ਝੂਠ;
         spi++;
-        continue;
+        ਜਾਰੀ;
       }
 
-      if (lpm < spm) {
+      ਜੇ (lpm < spm) {
         lpi++;
-        continue;
+        ਜਾਰੀ;
       }
 
-      auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      ਸਵੈਚਾਲਿਤ lp = larger_ਸੈੱਟ.ਪੰਨਾ_at (lpi);
+      ਜੇ (!sp.is_subset (lp))
+        ਵਾਪਸ ਝੂਠ;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    ਜਦੋਂ (spi < ਪੰਨਾ_map.ਲੰਮਾਈ)
+      ਜੇ (!ਪੰਨਾ_at (spi++).is_empty ())
+        ਵਾਪਸ ਝੂਠ;
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  ਨਿਜੀ:
+  ਤਾਰਕਿਕ allocate_compact_workspace (hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    ਜੇ (unlikely (!workspace.resize_exact (ਪੰਨੇ.ਲੰਮਾਈ)))
     {
-      successful = false;
-      return false;
+      successful = ਝੂਠ;
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  ਖਾਲੀ compact (hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& workspace,
+                ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ)
   {
-    assert(workspace.length == pages.length);
-    hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
+    ਪ੍ਰਤਿਜ੍ਞਾ(workspace.ਲੰਮਾਈ == ਪੰਨੇ.ਲੰਮਾਈ);
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ = workspace;
 
-    hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
-      old_index_to_page_map_index[page_map[i].index] =  i;
+    hb_fill (old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ.writer(), 0xFFFFFFFF);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਲੰਮਾਈ; i++)
+      old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ[ਪੰਨਾ_map[i].ਸੂਚਕਾਂਕ_2] =  i;
 
-    compact_pages (old_index_to_page_map_index);
+    compact_ਪੰਨੇ (old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  ਖਾਲੀ compact_ਪੰਨੇ (ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ write_ਸੂਚਕਾਂਕ = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਪੰਨੇ.ਲੰਮਾਈ; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      ਜੇ (old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ[i] == 0xFFFFFFFF) ਜਾਰੀ;
 
-      if (write_index < i)
-	pages[write_index] = pages[i];
+      ਜੇ (write_ਸੂਚਕਾਂਕ < i)
+	ਪੰਨੇ[write_ਸੂਚਕਾਂਕ] = ਪੰਨੇ[i];
 
-      page_map[old_index_to_page_map_index[i]].index = write_index;
-      write_index++;
+      ਪੰਨਾ_map[old_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_ਪੰਨਾ_map_ਸੂਚਕਾਂਕ[i]].ਸੂਚਕਾਂਕ_2 = write_ਸੂਚਕਾਂਕ;
+      write_ਸੂਚਕਾਂਕ++;
     }
   }
-  public:
+  ਜਨਤਕ:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
-		 hb_vector_t<unsigned> *workspace = nullptr)
+  ਖਾਲੀ process_ (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t (*op) (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t &, ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t &),
+		 ਤਾਰਕਿਕ passthru_ਖੱਬਾ, ਤਾਰਕਿਕ passthru_ਸੱਜਾ,
+		 ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other,
+		 hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> *workspace = ਖਾਲੀ_ਸੂਚਕ)
   {
-    if (unlikely (!successful)) return;
+    ਜੇ (unlikely (!successful)) ਵਾਪਸ;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ na = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ nb = other.ਪੰਨੇ.ਲੰਮਾਈ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਗਲਾ_ਪੰਨਾ = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = 0, new_ਗਿਣਤੀ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ a = 0, b = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ write_ਸੂਚਕਾਂਕ = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
-    hb_vector_t<unsigned> local_workspace;
-    hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> local_workspace;
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> &compact_workspace = workspace ? *workspace : local_workspace;
+    ਜੇ (!passthru_ਖੱਬਾ)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      ਤਾਰਕਿਕ allocated = workspace ? compact_workspace.resize (ਪੰਨੇ.ਲੰਮਾਈ)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      ਜੇ (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = ਝੂਠ;
+	ਵਾਪਸ;
       }
     }
 
-    for (; a < na && b < nb; )
+    ਲਈ (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      ਜੇ (ਪੰਨਾ_map.arrayZ[a].major == other.ਪੰਨਾ_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	ਜੇ (!passthru_ਖੱਬਾ)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
-	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
-	  write_index++;
+	  ਜੇ (write_ਸੂਚਕਾਂਕ < a)
+	    ਪੰਨਾ_map.arrayZ[write_ਸੂਚਕਾਂਕ] = ਪੰਨਾ_map.arrayZ[a];
+	  write_ਸੂਚਕਾਂਕ++;
 	}
 
-	count++;
+	ਗਿਣਤੀ_2++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      ਨਹੀਂਤਾਂ ਜੇ (ਪੰਨਾ_map.arrayZ[a].major < other.ਪੰਨਾ_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	ਜੇ (passthru_ਖੱਬਾ)
+	  ਗਿਣਤੀ_2++;
 	a++;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	if (passthru_right)
-	  count++;
+	ਜੇ (passthru_ਸੱਜਾ)
+	  ਗਿਣਤੀ_2++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    ਜੇ (passthru_ਖੱਬਾ)
+      ਗਿਣਤੀ_2 += na - a;
+    ਜੇ (passthru_ਸੱਜਾ)
+      ਗਿਣਤੀ_2 += nb - b;
 
-    if (!passthru_left)
+    ਜੇ (!passthru_ਖੱਬਾ)
     {
-      na  = write_index;
-      next_page = write_index;
-      compact (compact_workspace, write_index);
+      na  = write_ਸੂਚਕਾਂਕ;
+      ਅਗਲਾ_ਪੰਨਾ = write_ਸੂਚਕਾਂਕ;
+      compact (compact_workspace, write_ਸੂਚਕਾਂਕ);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    ਜੇ (unlikely (!resize (ਗਿਣਤੀ_2)))
+      ਵਾਪਸ;
 
-    newCount = count;
+    new_ਗਿਣਤੀ = ਗਿਣਤੀ_2;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    ਲਈ (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      ਜੇ (ਪੰਨਾ_map.arrayZ[a - 1].major == other.ਪੰਨਾ_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	ਗਿਣਤੀ_2--;
+	ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2] = ਪੰਨਾ_map.arrayZ[a];
+	ਪੰਨਾ_at (ਗਿਣਤੀ_2).v = op (ਪੰਨਾ_at (a).v, other.ਪੰਨਾ_at (b).v);
+	ਪੰਨਾ_at (ਗਿਣਤੀ_2).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      ਨਹੀਂਤਾਂ ਜੇ (ਪੰਨਾ_map.arrayZ[a - 1].major > other.ਪੰਨਾ_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	ਜੇ (passthru_ਖੱਬਾ)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  ਗਿਣਤੀ_2--;
+	  ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2] = ਪੰਨਾ_map.arrayZ[a];
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
 	b--;
-	if (passthru_right)
+	ਜੇ (passthru_ਸੱਜਾ)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  ਗਿਣਤੀ_2--;
+	  ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2].major = other.ਪੰਨਾ_map.arrayZ[b].major;
+	  ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2].ਸੂਚਕਾਂਕ_2 = ਅਗਲਾ_ਪੰਨਾ++;
+	  ਪੰਨਾ_at (ਗਿਣਤੀ_2) = other.ਪੰਨਾ_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    ਜੇ (passthru_ਖੱਬਾ)
+      ਜਦੋਂ (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	ਗਿਣਤੀ_2--;
+	ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2] = ਪੰਨਾ_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    ਜੇ (passthru_ਸੱਜਾ)
+      ਜਦੋਂ (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	ਗਿਣਤੀ_2--;
+	ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2].major = other.ਪੰਨਾ_map.arrayZ[b].major;
+	ਪੰਨਾ_map.arrayZ[ਗਿਣਤੀ_2].ਸੂਚਕਾਂਕ_2 = ਅਗਲਾ_ਪੰਨਾ++;
+	ਪੰਨਾ_at (ਗਿਣਤੀ_2) = other.ਪੰਨਾ_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    ਪ੍ਰਤਿਜ੍ਞਾ (!ਗਿਣਤੀ_2);
+    resize (new_ਗਿਣਤੀ);
   }
-  template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Op>
+  ਸਥਿਰ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t
+  op_ (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t &a, ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t::ਸਦਿਸ਼_t &b)
+  { ਵਾਪਸ Op{} (a, b); }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Op>
+  ਖਾਲੀ process (ਅਚਲ Op& op,
+		ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other,
+		hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> *workspace = ਖਾਲੀ_ਸੂਚਕ)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  ਖਾਲੀ union_ (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) { process (hb_bitwise_or, other); }
+  ਖਾਲੀ intersect (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other,
+		  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> *workspace = ਖਾਲੀ_ਸੂਚਕ)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  ਖਾਲੀ ਘਟਾਓ (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) { process (hb_bitwise_gt, other); }
+  ਖਾਲੀ ਸਮਮਿਤ_difference (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  ਤਾਰਕਿਕ next (hb_codepoint_t *codepoint) ਅਚਲ
   {
-    if (unlikely (*codepoint == INVALID)) {
+    ਜੇ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      ਵਾਪਸ *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨਾ_map_array = ਪੰਨਾ_map.arrayZ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (*codepoint);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਆਖਰੀ_ਪੰਨਾ_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    ਜੇ (unlikely (i >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[i].major != major))
     {
-      page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      ਪੰਨਾ_map.bfind (major, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
+      ਜੇ (i >= ਪੰਨਾ_map.ਲੰਮਾਈ) {
         *codepoint = INVALID;
-        return false;
+        ਵਾਪਸ ਝੂਠ;
       }
-      last_page_lookup = i;
+      ਆਖਰੀ_ਪੰਨਾ_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨੇ_array = ਪੰਨੇ.arrayZ;
+    ਅਚਲ ਪੰਨਾ_map_t &current = ਪੰਨਾ_map_array[i];
+    ਜੇ (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      ਜੇ (ਪੰਨੇ_array[current.ਸੂਚਕਾਂਕ_2].next (codepoint))
       {
-        *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        *codepoint += current.major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ;
+        ਵਾਪਸ ਸੱਚ;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    ਲਈ (; i < ਪੰਨਾ_map.ਲੰਮਾਈ; i++)
     {
-      const page_map_t &current = page_map_array[i];
-      hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      ਅਚਲ ਪੰਨਾ_map_t &current = ਪੰਨਾ_map_array[i];
+      hb_codepoint_t m = ਪੰਨੇ_array[current.ਸੂਚਕਾਂਕ_2].get_min ();
+      ਜੇ (m != INVALID)
       {
-	*codepoint = current.major * page_t::PAGE_BITS + m;
-        last_page_lookup = i;
-	return true;
+	*codepoint = current.major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ + m;
+        ਆਖਰੀ_ਪੰਨਾ_lookup = i;
+	ਵਾਪਸ ਸੱਚ;
       }
     }
     *codepoint = INVALID;
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  ਤਾਰਕਿਕ ਅਗਲਾ_ਬਿੱਟ (hb_codepoint_t *codepoint, uint64_t *ਬਿੱਟ) ਅਚਲ
   {
-    static_assert (page_t::ELT_BITS == 64, "");
+    static_assert (ਪੰਨਾ_t::ELT_ਬਿੱਟ == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ elt = 0;
+    ਜੇ (likely (*codepoint != INVALID))
     {
-      hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
-      base += page_t::ELT_BITS;
+      hb_codepoint_t ਅਧਾਰ = *codepoint & ~ਪੰਨਾ_t::ELT_ਨਕਾਬ;
+      ਜੇ (unlikely (ਅਧਾਰ >= INVALID - ਪੰਨਾ_t::ELT_ਬਿੱਟ + 1))
+        ਜਾਓ ਪੂਰਾ;
+      ਅਧਾਰ += ਪੰਨਾ_t::ELT_ਬਿੱਟ;
 
-      unsigned int major = get_major (base);
-      i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (ਅਧਾਰ);
+      i = ਆਖਰੀ_ਪੰਨਾ_lookup;
+      ਜੇ (unlikely (i >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map.arrayZ[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	ਪੰਨਾ_map.bfind (major, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
+	ਜੇ (i >= ਪੰਨਾ_map.ਲੰਮਾਈ)
+	  ਜਾਓ ਪੂਰਾ;
       }
-      if (page_map.arrayZ[i].major == major)
-	elt = page_remainder (base) / page_t::ELT_BITS;
+      ਜੇ (ਪੰਨਾ_map.arrayZ[i].major == major)
+	elt = ਪੰਨਾ_remainder (ਅਧਾਰ) / ਪੰਨਾ_t::ELT_ਬਿੱਟ;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    ਲਈ (; i < ਪੰਨਾ_map.ਲੰਮਾਈ; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      ਅਚਲ ਪੰਨਾ_map_t &map = ਪੰਨਾ_map.arrayZ[i];
+      ਅਚਲ ਪੰਨਾ_t &ਪੰਨਾ = ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2];
+      ਲਈ (; elt < ਪੰਨਾ_t::len (); elt++)
+	ਜੇ (ਪੰਨਾ.v[elt])
 	{
-	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
-	  *bits = page.v[elt];
-	  last_page_lookup = i;
-	  return true;
+	  *codepoint = major_ਸ਼ੁਰੂ (map.major) + elt * ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+	  *ਬਿੱਟ = ਪੰਨਾ.v[elt];
+	  ਆਖਰੀ_ਪੰਨਾ_lookup = i;
+	  ਵਾਪਸ ਸੱਚ;
 	}
     }
 
-  done:
+  ਪੂਰਾ:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *ਬਿੱਟ = 0;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  ਤਾਰਕਿਕ ਪਿਛਲਾ (hb_codepoint_t *codepoint) ਅਚਲ
   {
-    if (unlikely (*codepoint == INVALID)) {
+    ਜੇ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      ਵਾਪਸ *codepoint != INVALID;
     }
 
-    page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
-    page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    ਪੰਨਾ_map_t map = {get_major (*codepoint), 0};
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i;
+    ਪੰਨਾ_map.bfind (map, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
+    ਜੇ (i < ਪੰਨਾ_map.ਲੰਮਾਈ && ਪੰਨਾ_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      ਜੇ (ਪੰਨੇ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2].ਪਿਛਲਾ (codepoint))
       {
-	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	*codepoint += ਪੰਨਾ_map.arrayZ[i].major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ;
+	ਵਾਪਸ ਸੱਚ;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    ਲਈ (; (ਪੂਰਨ) i >= 0; i--)
     {
-      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      hb_codepoint_t m = ਪੰਨੇ.arrayZ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2].get_max ();
+      ਜੇ (m != INVALID)
       {
-	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	*codepoint = ਪੰਨਾ_map.arrayZ[i].major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ + m;
+	ਵਾਪਸ ਸੱਚ;
       }
     }
     *codepoint = INVALID;
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  ਤਾਰਕਿਕ ਅਗਲਾ_range (hb_codepoint_t *ਪਹਿਲਾ, hb_codepoint_t *ਆਖਰੀ) ਅਚਲ
   {
     hb_codepoint_t i;
 
-    i = *last;
-    if (!next (&i))
+    i = *ਆਖਰੀ;
+    ਜੇ (!next (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *ਆਖਰੀ = *ਪਹਿਲਾ = INVALID;
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    *last = *first = i;
+    *ਆਖਰੀ = *ਪਹਿਲਾ = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨਾ_map_array = ਪੰਨਾ_map.arrayZ;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨੇ_array = ਪੰਨੇ.arrayZ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (*ਆਖਰੀ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ p_ਸੂਚਕਾਂਕ = ਆਖਰੀ_ਪੰਨਾ_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    ਜੇ (unlikely (p_ਸੂਚਕਾਂਕ >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      ਪੰਨਾ_map.bfind (major, &p_ਸੂਚਕਾਂਕ, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      ਪ੍ਰਤਿਜ੍ਞਾ(p_ਸੂਚਕਾਂਕ < ਪੰਨਾ_map.ਲੰਮਾਈ && ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].major == major);
+      ਆਖਰੀ_ਪੰਨਾ_lookup = p_ਸੂਚਕਾਂਕ;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ rem = ਪੰਨਾ_remainder (*ਆਖਰੀ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ elt = rem / ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ bit = rem & ਪੰਨਾ_t::ELT_ਨਕਾਬ;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
-    *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    ਅਚਲ ਪੰਨਾ_t *ਪੰਨਾ = &ਪੰਨੇ_array[ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].ਸੂਚਕਾਂਕ_2];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੜੀਵਾਰ = hb_ctz (~(ਪੰਨਾ->v[elt] >> bit));
+    *ਆਖਰੀ += ਲੜੀਵਾਰ - 1;
+    ਜੇ (ਲੜੀਵਾਰ < ਪੰਨਾ_t::ELT_ਬਿੱਟ - bit)
+      ਵਾਪਸ ਸੱਚ;
 
     elt++;
 
-    while (true)
+    ਜਦੋਂ (ਸੱਚ)
     {
-      for (; elt < page_t::len (); elt++)
+      ਲਈ (; elt < ਪੰਨਾ_t::len (); elt++)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = ਪੰਨਾ->v[elt];
+        ਜੇ (w == (uint64_t) -1)
         {
-          *last += page_t::ELT_BITS;
-          continue;
+          *ਆਖਰੀ += ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+          ਜਾਰੀ;
         }
         uint64_t inv = ~w;
-        *last += hb_ctz (inv);
-        return true;
+        *ਆਖਰੀ += hb_ctz (inv);
+        ਵਾਪਸ ਸੱਚ;
       }
 
-      p_index++;
+      p_ਸੂਚਕਾਂਕ++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      ਜੇ (p_ਸੂਚਕਾਂਕ >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].major != major + 1)
+        ਵਾਪਸ ਸੱਚ;
 
-      const auto& entry = page_map_array[p_index];
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& ਇੰਦਰਾਜ = ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ];
+      major = ਇੰਦਰਾਜ.major;
+      ਆਖਰੀ_ਪੰਨਾ_lookup = p_ਸੂਚਕਾਂਕ;
+      ਪੰਨਾ = &ਪੰਨੇ_array[ਇੰਦਰਾਜ.ਸੂਚਕਾਂਕ_2];
       elt = 0;
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  ਤਾਰਕਿਕ ਪਿਛਲਾ_range (hb_codepoint_t *ਪਹਿਲਾ, hb_codepoint_t *ਆਖਰੀ) ਅਚਲ
   {
     hb_codepoint_t i;
 
-    i = *first;
-    if (!previous (&i))
+    i = *ਪਹਿਲਾ;
+    ਜੇ (!ਪਿਛਲਾ (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *ਆਖਰੀ = *ਪਹਿਲਾ = INVALID;
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    *last = *first = i;
+    *ਆਖਰੀ = *ਪਹਿਲਾ = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨਾ_map_array = ਪੰਨਾ_map.arrayZ;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨੇ_array = ਪੰਨੇ.arrayZ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (*ਪਹਿਲਾ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ p_ਸੂਚਕਾਂਕ = ਆਖਰੀ_ਪੰਨਾ_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    ਜੇ (unlikely (p_ਸੂਚਕਾਂਕ >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      ਪੰਨਾ_map.bfind (major, &p_ਸੂਚਕਾਂਕ, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      ਪ੍ਰਤਿਜ੍ਞਾ(p_ਸੂਚਕਾਂਕ < ਪੰਨਾ_map.ਲੰਮਾਈ && ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].major == major);
+      ਆਖਰੀ_ਪੰਨਾ_lookup = p_ਸੂਚਕਾਂਕ;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ rem = ਪੰਨਾ_remainder (*ਪਹਿਲਾ);
+    ਪੂਰਨ elt = rem / ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ bit = rem & ਪੰਨਾ_t::ELT_ਨਕਾਬ;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-    *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    ਅਚਲ ਪੰਨਾ_t *ਪੰਨਾ = &ਪੰਨੇ_array[ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ].ਸੂਚਕਾਂਕ_2];
+    uint64_t inv = ~(ਪੰਨਾ->v[elt] << (63 - bit));
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੜੀਵਾਰ = hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (inv) ? (ਪੰਨਾ_t::ELT_ਬਿੱਟ - hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (inv)) : ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+    *ਪਹਿਲਾ -= ਲੜੀਵਾਰ - 1;
+    ਜੇ (ਲੜੀਵਾਰ < bit + 1)
+      ਵਾਪਸ ਸੱਚ;
 
     elt--;
 
-    while (true)
+    ਜਦੋਂ (ਸੱਚ)
     {
-      for (; elt >= 0; elt--)
+      ਲਈ (; elt >= 0; elt--)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = ਪੰਨਾ->v[elt];
+        ਜੇ (w == (uint64_t) -1)
         {
-          *first -= page_t::ELT_BITS;
-          continue;
+          *ਪਹਿਲਾ -= ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+          ਜਾਰੀ;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-        *first -= zeros;
-        return true;
+        ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ zeros = hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (inv) ? (ਪੰਨਾ_t::ELT_ਬਿੱਟ - hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (inv)) : ਪੰਨਾ_t::ELT_ਬਿੱਟ;
+        *ਪਹਿਲਾ -= zeros;
+        ਵਾਪਸ ਸੱਚ;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      ਜੇ (p_ਸੂਚਕਾਂਕ == 0 || ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ - 1].major != major - 1)
+        ਵਾਪਸ ਸੱਚ;
 
-      p_index--;
-      const auto& entry = page_map_array[p_index];
+      p_ਸੂਚਕਾਂਕ--;
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& ਇੰਦਰਾਜ = ਪੰਨਾ_map_array[p_ਸੂਚਕਾਂਕ];
 
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
-      elt = page_t::len () - 1;
+      major = ਇੰਦਰਾਜ.major;
+      ਆਖਰੀ_ਪੰਨਾ_lookup = p_ਸੂਚਕਾਂਕ;
+      ਪੰਨਾ = &ਪੰਨੇ_array[ਇੰਦਰਾਜ.ਸੂਚਕਾਂਕ_2];
+      elt = ਪੰਨਾ_t::len () - 1;
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਗਲਾ_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *ਬਾਹਰਲਾ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ) ਅਚਲ
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਪੰਨਾ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
+    ਜੇ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨਾ_map_array = ਪੰਨਾ_map.arrayZ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (codepoint);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਆਖਰੀ_ਪੰਨਾ_lookup;
+      ਜੇ (unlikely (i >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	ਪੰਨਾ_map.bfind (major, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
+	ਜੇ (i >= ਪੰਨਾ_map.ਲੰਮਾਈ)
+	  ਵਾਪਸ 0;  // codepoint is greater than our max element.
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      ਸ਼ੁਰੂ_ਪੰਨਾ = i;
+      ਜੇ (ਪੰਨਾ_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = ਪੰਨਾ_remainder (codepoint + 1);
+        ਜੇ (unlikely (ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          ਸ਼ੁਰੂ_ਪੰਨਾ++;
+          ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ initial_ਮਾਪ = ਮਾਪ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ_ਪੰਨਾ; i < ਪੰਨਾ_map.ਲੰਮਾਈ && ਮਾਪ; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t ਅਧਾਰ = major_ਸ਼ੁਰੂ (ਪੰਨਾ_map.arrayZ[i].major);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ n = ਪੰਨੇ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2].ਲਿਖ (ਅਧਾਰ, ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ, ਬਾਹਰਲਾ, ਮਾਪ);
+      ਬਾਹਰਲਾ += n;
+      ਮਾਪ -= n;
+      ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
     }
-    return initial_size - size;
+    ਵਾਪਸ initial_ਮਾਪ - ਮਾਪ;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
-				   hb_codepoint_t *out,
-				   unsigned int    size) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਗਲਾ_many_inverted (hb_codepoint_t  codepoint,
+				   hb_codepoint_t *ਬਾਹਰਲਾ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ) ਅਚਲ
   {
-    unsigned int initial_size = size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ initial_ਮਾਪ = ਮਾਪ;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਪੰਨਾ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
+    ਜੇ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ਅਚਲ ਸਵੈਚਾਲਿਤ* ਪੰਨਾ_map_array = ਪੰਨਾ_map.arrayZ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major = get_major (codepoint);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਆਖਰੀ_ਪੰਨਾ_lookup;
+      ਜੇ (unlikely (i >= ਪੰਨਾ_map.ਲੰਮਾਈ || ਪੰਨਾ_map_array[i].major != major))
       {
-        page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        ਪੰਨਾ_map.bfind(major, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST);
+        ਜੇ (unlikely (i >= ਪੰਨਾ_map.ਲੰਮਾਈ))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          ਜਦੋਂ (++codepoint != INVALID && ਮਾਪ)
           {
-            *out++ = codepoint;
-            size--;
+            *ਬਾਹਰਲਾ++ = codepoint;
+            ਮਾਪ--;
           }
-          return initial_size - size;
+          ਵਾਪਸ initial_ਮਾਪ - ਮਾਪ;
         }
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      ਸ਼ੁਰੂ_ਪੰਨਾ = i;
+      ਜੇ (ਪੰਨਾ_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = ਪੰਨਾ_remainder (codepoint + 1);
+        ਜੇ (unlikely (ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          ਸ਼ੁਰੂ_ਪੰਨਾ++;
+          ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t ਅਗਲਾ_ਮੁੱਲ = codepoint + 1;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i=ਸ਼ੁਰੂ_ਪੰਨਾ; i<ਪੰਨਾ_map.ਲੰਮਾਈ && ਮਾਪ; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t ਅਧਾਰ = major_ਸ਼ੁਰੂ (ਪੰਨਾ_map.arrayZ[i].major);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ n = ਪੰਨੇ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2].write_inverted (ਅਧਾਰ, ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ, ਬਾਹਰਲਾ, ਮਾਪ, &ਅਗਲਾ_ਮੁੱਲ);
+      ਬਾਹਰਲਾ += n;
+      ਮਾਪ -= n;
+      ਸ਼ੁਰੂ_ਪੰਨਾ_ਮੁੱਲ = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
-      size--;
+    ਜਦੋਂ (ਅਗਲਾ_ਮੁੱਲ < HB_ਸੈੱਟ_ਮੁੱਲ_INVALID && ਮਾਪ) {
+      *ਬਾਹਰਲਾ++ = ਅਗਲਾ_ਮੁੱਲ++;
+      ਮਾਪ--;
     }
-    return initial_size - size;
+    ਵਾਪਸ initial_ਮਾਪ - ਮਾਪ;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  ਤਾਰਕਿਕ has_population () ਅਚਲ { ਵਾਪਸ population != UINT_MAX; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_population () ਅਚਲ
   {
-    if (has_population ())
-      return population;
+    ਜੇ (has_population ())
+      ਵਾਪਸ population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਕੱਢੋ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਕੱਢੋ += ਪੰਨੇ[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = ਕੱਢੋ;
+    ਵਾਪਸ ਕੱਢੋ;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  ਤਾਰਕਿਕ get_singleton (hb_codepoint_t *codepoint) ਅਚਲ
   {
-    if (has_population ())
+    ਜੇ (has_population ())
     {
-      if (population != 1) return false;
+      ਜੇ (population != 1) ਵਾਪਸ ਝੂਠ;
       *codepoint = get_min ();
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ &map : ਪੰਨਾ_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &ਪੰਨਾ = ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2];
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਪੰਨਾ_t::len (); i++)
       {
-	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
-	singleton = map.major * page_t::PAGE_BITS +
-		    i * page_t::ELT_BITS + hb_ctz (bits);
+	ਪੰਨਾ_t::elt_t ਬਿੱਟ = ਪੰਨਾ.v[i];
+	ਜੇ (!ਬਿੱਟ) ਜਾਰੀ;
+	ਜੇ (singleton != INVALID || (ਬਿੱਟ & (ਬਿੱਟ - 1)))
+	  ਵਾਪਸ ਝੂਠ;
+	singleton = map.major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ +
+		    i * ਪੰਨਾ_t::ELT_ਬਿੱਟ + hb_ctz (ਬਿੱਟ);
       }
     }
 
-    if (singleton == INVALID)
+    ਜੇ (singleton == INVALID)
     {
       population = 0;
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ਅਚਲ
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& map = ਪੰਨਾ_map.arrayZ[i];
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& ਪੰਨਾ = ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      ਜੇ (!ਪੰਨਾ.is_empty ())
+	ਵਾਪਸ map.major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ + ਪੰਨਾ.get_min ();
     }
-    return INVALID;
+    ਵਾਪਸ INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ਅਚਲ
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ਪੰਨੇ.ਲੰਮਾਈ;
+    ਲਈ (ਨਿਸ਼ਾਨੀਵਾਲਾ i = ਗਿਣਤੀ_2 - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& map = ਪੰਨਾ_map.arrayZ[(ਬਿਨਾਨਿਸ਼ਾਨੀ) i];
+      ਅਚਲ ਸਵੈਚਾਲਿਤ& ਪੰਨਾ = ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      ਜੇ (!ਪੰਨਾ.is_empty ())
+	ਵਾਪਸ map.major * ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ + ਪੰਨਾ.get_max ();
     }
-    return INVALID;
+    ਵਾਪਸ INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  ਸਥਿਰ constexpr hb_codepoint_t INVALID = ਪੰਨਾ_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ਬਣਤਰ iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਸੱਚ;
+    ਸਥਿਰ constexpr ਤਾਰਕਿਕ has_fast_len = ਸੱਚ;
+    iter_t (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t &s_ = Null (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t),
+	    ਤਾਰਕਿਕ init = ਸੱਚ) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      ਜੇ (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ਅਚਲ { ਵਾਪਸ v; }
+    ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ v != INVALID; }
+    ਖਾਲੀ __next__ () { s->next (&v); ਜੇ (l) l--; }
+    ਖਾਲੀ __prev__ () { s->ਪਿਛਲਾ (&v); }
+    ਬਿਨਾਨਿਸ਼ਾਨੀ __len__ () ਅਚਲ { ਵਾਪਸ l; }
+    iter_t ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ iter_t (*s, ਝੂਠ); }
+    ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ iter_t& o) ਅਚਲ
+    { ਵਾਪਸ v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    ਸੁਰੱਖਿਅਤ:
+    ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਸੈੱਟ_t *s;
     hb_codepoint_t v;
-    unsigned l;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ਅਚਲ { ਵਾਪਸ iter_t (*ਇਹ); }
+  ਸੰਚਾਲਕ iter_t () ਅਚਲ { ਵਾਪਸ iter (); }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  ਪੰਨਾ_t *ਪੰਨਾ_for (hb_codepoint_t g, ਤਾਰਕਿਕ insert = ਝੂਠ)
   {
-    unsigned major = get_major (g);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਆਖਰੀ_ਪੰਨਾ_lookup;
+    ਜੇ (likely (i < ਪੰਨਾ_map.ਲੰਮਾਈ))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      ਸਵੈਚਾਲਿਤ &cached_ਪੰਨਾ = ਪੰਨਾ_map.arrayZ[i];
+      ਜੇ (cached_ਪੰਨਾ.major == major)
+	ਵਾਪਸ &ਪੰਨੇ.arrayZ[cached_ਪੰਨਾ.ਸੂਚਕਾਂਕ_2];
     }
 
-    page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    ਪੰਨਾ_map_t map = {major, ਪੰਨੇ.ਲੰਮਾਈ};
+    ਜੇ (!ਪੰਨਾ_map.bfind (map, &i, HB_NOT_ਮਿਲਿਆ_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      ਜੇ (!insert)
+        ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      ਜੇ (unlikely (!resize (ਪੰਨੇ.ਲੰਮਾਈ + 1)))
+	ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-      pages.arrayZ[map.index].init0 ();
-      memmove (page_map.arrayZ + i + 1,
-	       page_map.arrayZ + i,
-	       (page_map.length - 1 - i) * page_map.item_size);
-      page_map.arrayZ[i] = map;
+      ਪੰਨੇ.arrayZ[map.ਸੂਚਕਾਂਕ_2].init0 ();
+      memmove (ਪੰਨਾ_map.arrayZ + i + 1,
+	       ਪੰਨਾ_map.arrayZ + i,
+	       (ਪੰਨਾ_map.ਲੰਮਾਈ - 1 - i) * ਪੰਨਾ_map.ਵਸਤੂ_ਮਾਪ);
+      ਪੰਨਾ_map.arrayZ[i] = map;
     }
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    ਆਖਰੀ_ਪੰਨਾ_lookup = i;
+    ਵਾਪਸ &ਪੰਨੇ.arrayZ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  ਅਚਲ ਪੰਨਾ_t *ਪੰਨਾ_for (hb_codepoint_t g) ਅਚਲ
   {
-    unsigned major = get_major (g);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਆਖਰੀ_ਪੰਨਾ_lookup;
+    ਜੇ (likely (i < ਪੰਨਾ_map.ਲੰਮਾਈ))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      ਸਵੈਚਾਲਿਤ &cached_ਪੰਨਾ = ਪੰਨਾ_map.arrayZ[i];
+      ਜੇ (cached_ਪੰਨਾ.major == major)
+	ਵਾਪਸ &ਪੰਨੇ.arrayZ[cached_ਪੰਨਾ.ਸੂਚਕਾਂਕ_2];
     }
 
-    page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    ਪੰਨਾ_map_t key = {major};
+    ਜੇ (!ਪੰਨਾ_map.bfind (key, &i))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    ਆਖਰੀ_ਪੰਨਾ_lookup = i;
+    ਵਾਪਸ &ਪੰਨੇ.arrayZ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2];
   }
-  page_t &page_at (unsigned int i)
+  ਪੰਨਾ_t &ਪੰਨਾ_at (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    ਪ੍ਰਤਿਜ੍ਞਾ (i < ਪੰਨਾ_map.ਲੰਮਾਈ);
+    ਵਾਪਸ ਪੰਨੇ.arrayZ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2];
   }
-  const page_t &page_at (unsigned int i) const
+  ਅਚਲ ਪੰਨਾ_t &ਪੰਨਾ_at (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    ਪ੍ਰਤਿਜ੍ਞਾ (i < ਪੰਨਾ_map.ਲੰਮਾਈ);
+    ਵਾਪਸ ਪੰਨੇ.arrayZ[ਪੰਨਾ_map.arrayZ[i].ਸੂਚਕਾਂਕ_2];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_major (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ g >> ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ_LOG_2; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਪੰਨਾ_remainder (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ g & ਪੰਨਾ_t::ਪੰਨਾ_BITMASK; }
+  hb_codepoint_t major_ਸ਼ੁਰੂ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major) ਅਚਲ { ਵਾਪਸ major << ਪੰਨਾ_t::ਪੰਨਾ_ਬਿੱਟ_LOG_2; }
 };
 
 
-#endif /* HB_BIT_SET_HH */
+#ਜੇ_ਅੰਤ /* HB_BIT_SET_HH */

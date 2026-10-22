@@ -24,31 +24,31 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_FONT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT
 
-#include "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
 
-#include "hb-cache.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
-#include "hb-ot-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cache.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-font.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-ot-vorg-table.hh"
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/sbix/sbix.hh"
-#include "OT/Color/svg/svg.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cmap-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-glyf-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-gvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff2-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-cff1-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-hmtx-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-post-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-stat-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-varc-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-vorg-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/CBDT/CBDT.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/COLR/COLR.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/sbix/sbix.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Color/svg/svg.hh"
 
 
 /**
@@ -62,96 +62,96 @@
  * never need to call these functions directly.
  **/
 
-using hb_ot_font_advance_cache_t = hb_cache_t<24, 16>;
-static_assert (sizeof (hb_ot_font_advance_cache_t) == 1024, "");
+ਵਰਤੋਂ hb_ot_font_advance_cache_t = hb_cache_t<24, 16>;
+static_assert (ਆਕਾਰ (hb_ot_font_advance_cache_t) == 1024, "");
 
-using hb_ot_font_origin_cache_t = hb_cache_t<20, 20>;
-static_assert (sizeof (hb_ot_font_origin_cache_t) == 1024, "");
+ਵਰਤੋਂ hb_ot_font_origin_cache_t = hb_cache_t<20, 20>;
+static_assert (ਆਕਾਰ (hb_ot_font_origin_cache_t) == 1024, "");
 
-struct hb_ot_font_t
+ਬਣਤਰ hb_ot_font_t
 {
-  const hb_ot_face_t *ot_face;
+  ਅਚਲ hb_ot_face_t *ot_face;
 
-  mutable hb_atomic_t<int> cached_serial;
-  mutable hb_atomic_t<int> cached_coords_serial;
+  ਬਦਲਣਯੋਗ hb_atomic_t<ਪੂਰਨ> cached_serial;
+  ਬਦਲਣਯੋਗ hb_atomic_t<ਪੂਰਨ> cached_coords_serial;
 
-  struct direction_cache_t
+  ਬਣਤਰ direction_cache_t
   {
-    mutable hb_atomic_t<hb_ot_font_advance_cache_t *> advance_cache;
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
+    ਬਦਲਣਯੋਗ hb_atomic_t<hb_ot_font_advance_cache_t *> advance_cache;
+    ਬਦਲਣਯੋਗ hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
 
     ~direction_cache_t ()
     {
       clear ();
     }
 
-    hb_ot_font_advance_cache_t *acquire_advance_cache () const
+    hb_ot_font_advance_cache_t *acquire_advance_cache () ਅਚਲ
     {
     retry:
-      auto *cache = advance_cache.get_acquire ();
-      if (!cache)
+      ਸਵੈਚਾਲਿਤ *cache = advance_cache.get_acquire ();
+      ਜੇ (!cache)
       {
-        cache = (hb_ot_font_advance_cache_t *) hb_malloc (sizeof (hb_ot_font_advance_cache_t));
-	if (!cache)
-	  return nullptr;
-	new (cache) hb_ot_font_advance_cache_t;
-	return cache;
+        cache = (hb_ot_font_advance_cache_t *) hb_malloc (ਆਕਾਰ (hb_ot_font_advance_cache_t));
+	ਜੇ (!cache)
+	  ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+	ਨਵਾਂ (cache) hb_ot_font_advance_cache_t;
+	ਵਾਪਸ cache;
       }
-      if (advance_cache.cmpexch (cache, nullptr))
-        return cache;
-      else
-        goto retry;
+      ਜੇ (advance_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+        ਵਾਪਸ cache;
+      ਨਹੀਂਤਾਂ
+        ਜਾਓ retry;
     }
-    void release_advance_cache (hb_ot_font_advance_cache_t *cache) const
+    ਖਾਲੀ release_advance_cache (hb_ot_font_advance_cache_t *cache) ਅਚਲ
     {
-      if (!cache)
-        return;
-      if (!advance_cache.cmpexch (nullptr, cache))
+      ਜੇ (!cache)
+        ਵਾਪਸ;
+      ਜੇ (!advance_cache.cmpexch (ਖਾਲੀ_ਸੂਚਕ, cache))
         hb_free (cache);
     }
-    void clear_advance_cache () const
+    ਖਾਲੀ clear_advance_cache () ਅਚਲ
     {
     retry:
-      auto *cache = advance_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (advance_cache.cmpexch (cache, nullptr))
+      ਸਵੈਚਾਲਿਤ *cache = advance_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (advance_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
 	hb_free (cache);
-      else
-        goto retry;
+      ਨਹੀਂਤਾਂ
+        ਜਾਓ retry;
     }
 
-    OT::hb_scalar_cache_t *acquire_varStore_cache (const OT::ItemVariationStore &varStore) const
+    OT::hb_scalar_cache_t *acquire_varStore_cache (ਅਚਲ OT::ਵਸਤੂ_Variation_Store &varStore) ਅਚਲ
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return varStore.create_cache ();
-      if (varStore_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      ਸਵੈਚਾਲਿਤ *cache = varStore_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ varStore.create_cache ();
+      ਜੇ (varStore_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+	ਵਾਪਸ cache;
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
-    void release_varStore_cache (OT::hb_scalar_cache_t *cache) const
+    ਖਾਲੀ release_varStore_cache (OT::hb_scalar_cache_t *cache) ਅਚਲ
     {
-      if (!cache)
-	return;
-      if (!varStore_cache.cmpexch (nullptr, cache))
-	OT::ItemVariationStore::destroy_cache (cache);
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (!varStore_cache.cmpexch (ਖਾਲੀ_ਸੂਚਕ, cache))
+	OT::ਵਸਤੂ_Variation_Store::destroy_cache (cache);
     }
-    void clear_varStore_cache () const
+    ਖਾਲੀ clear_varStore_cache () ਅਚਲ
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (varStore_cache.cmpexch (cache, nullptr))
-	OT::ItemVariationStore::destroy_cache (cache);
-      else
-	goto retry;
+      ਸਵੈਚਾਲਿਤ *cache = varStore_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (varStore_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+	OT::ਵਸਤੂ_Variation_Store::destroy_cache (cache);
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
 
-    void clear () const
+    ਖਾਲੀ clear () ਅਚਲ
     {
       clear_advance_cache ();
       clear_varStore_cache ();
@@ -159,148 +159,148 @@ struct hb_ot_font_t
 
   } h, v;
 
-  struct origin_cache_t
+  ਬਣਤਰ origin_cache_t
   {
-    mutable hb_atomic_t<hb_ot_font_origin_cache_t *> origin_cache;
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
+    ਬਦਲਣਯੋਗ hb_atomic_t<hb_ot_font_origin_cache_t *> origin_cache;
+    ਬਦਲਣਯੋਗ hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
 
     ~origin_cache_t ()
     {
       clear ();
     }
 
-    hb_ot_font_origin_cache_t *acquire_origin_cache () const
+    hb_ot_font_origin_cache_t *acquire_origin_cache () ਅਚਲ
     {
     retry:
-      auto *cache = origin_cache.get_acquire ();
-      if (!cache)
+      ਸਵੈਚਾਲਿਤ *cache = origin_cache.get_acquire ();
+      ਜੇ (!cache)
       {
-        cache = (hb_ot_font_origin_cache_t *) hb_malloc (sizeof (hb_ot_font_origin_cache_t));
-	if (!cache)
-	  return nullptr;
-	new (cache) hb_ot_font_origin_cache_t;
-	return cache;
+        cache = (hb_ot_font_origin_cache_t *) hb_malloc (ਆਕਾਰ (hb_ot_font_origin_cache_t));
+	ਜੇ (!cache)
+	  ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+	ਨਵਾਂ (cache) hb_ot_font_origin_cache_t;
+	ਵਾਪਸ cache;
       }
-      if (origin_cache.cmpexch (cache, nullptr))
-        return cache;
-      else
-        goto retry;
+      ਜੇ (origin_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+        ਵਾਪਸ cache;
+      ਨਹੀਂਤਾਂ
+        ਜਾਓ retry;
     }
-    void release_origin_cache (hb_ot_font_origin_cache_t *cache) const
+    ਖਾਲੀ release_origin_cache (hb_ot_font_origin_cache_t *cache) ਅਚਲ
     {
-      if (!cache)
-        return;
-      if (!origin_cache.cmpexch (nullptr, cache))
+      ਜੇ (!cache)
+        ਵਾਪਸ;
+      ਜੇ (!origin_cache.cmpexch (ਖਾਲੀ_ਸੂਚਕ, cache))
         hb_free (cache);
     }
-    void clear_origin_cache () const
+    ਖਾਲੀ clear_origin_cache () ਅਚਲ
     {
     retry:
-      auto *cache = origin_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (origin_cache.cmpexch (cache, nullptr))
+      ਸਵੈਚਾਲਿਤ *cache = origin_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (origin_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
 	hb_free (cache);
-      else
-        goto retry;
+      ਨਹੀਂਤਾਂ
+        ਜਾਓ retry;
     }
 
-    OT::hb_scalar_cache_t *acquire_varStore_cache (const OT::ItemVariationStore &varStore) const
+    OT::hb_scalar_cache_t *acquire_varStore_cache (ਅਚਲ OT::ਵਸਤੂ_Variation_Store &varStore) ਅਚਲ
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return varStore.create_cache ();
-      if (varStore_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      ਸਵੈਚਾਲਿਤ *cache = varStore_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ varStore.create_cache ();
+      ਜੇ (varStore_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+	ਵਾਪਸ cache;
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
-    void release_varStore_cache (OT::hb_scalar_cache_t *cache) const
+    ਖਾਲੀ release_varStore_cache (OT::hb_scalar_cache_t *cache) ਅਚਲ
     {
-      if (!cache)
-	return;
-      if (!varStore_cache.cmpexch (nullptr, cache))
-	OT::ItemVariationStore::destroy_cache (cache);
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (!varStore_cache.cmpexch (ਖਾਲੀ_ਸੂਚਕ, cache))
+	OT::ਵਸਤੂ_Variation_Store::destroy_cache (cache);
     }
-    void clear_varStore_cache () const
+    ਖਾਲੀ clear_varStore_cache () ਅਚਲ
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (varStore_cache.cmpexch (cache, nullptr))
-	OT::ItemVariationStore::destroy_cache (cache);
-      else
-	goto retry;
+      ਸਵੈਚਾਲਿਤ *cache = varStore_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (varStore_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+	OT::ਵਸਤੂ_Variation_Store::destroy_cache (cache);
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
 
-    void clear () const
+    ਖਾਲੀ clear () ਅਚਲ
     {
       clear_origin_cache ();
       clear_varStore_cache ();
     }
   } v_origin;
 
-  struct draw_cache_t
+  ਬਣਤਰ draw_cache_t
   {
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> gvar_cache;
+    ਬਦਲਣਯੋਗ hb_atomic_t<OT::hb_scalar_cache_t *> gvar_cache;
 
     ~draw_cache_t ()
     {
       clear ();
     }
 
-    OT::hb_scalar_cache_t *acquire_gvar_cache (const OT::gvar_accelerator_t &gvar) const
+    OT::hb_scalar_cache_t *acquire_gvar_cache (ਅਚਲ OT::gvar_accelerator_t &gvar) ਅਚਲ
     {
     retry:
-      auto *cache = gvar_cache.get_acquire ();
-      if (!cache)
-	return gvar.create_cache ();
-      if (gvar_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      ਸਵੈਚਾਲਿਤ *cache = gvar_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ gvar.create_cache ();
+      ਜੇ (gvar_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
+	ਵਾਪਸ cache;
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
-    void release_gvar_cache (OT::hb_scalar_cache_t *cache) const
+    ਖਾਲੀ release_gvar_cache (OT::hb_scalar_cache_t *cache) ਅਚਲ
     {
-      if (!cache)
-	return;
-      if (!gvar_cache.cmpexch (nullptr, cache))
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (!gvar_cache.cmpexch (ਖਾਲੀ_ਸੂਚਕ, cache))
 	OT::gvar_accelerator_t::destroy_cache (cache);
     }
-    void clear_gvar_cache () const
+    ਖਾਲੀ clear_gvar_cache () ਅਚਲ
     {
     retry:
-      auto *cache = gvar_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (gvar_cache.cmpexch (cache, nullptr))
+      ਸਵੈਚਾਲਿਤ *cache = gvar_cache.get_acquire ();
+      ਜੇ (!cache)
+	ਵਾਪਸ;
+      ਜੇ (gvar_cache.cmpexch (cache, ਖਾਲੀ_ਸੂਚਕ))
 	OT::gvar_accelerator_t::destroy_cache (cache);
-      else
-	goto retry;
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ retry;
     }
 
-    void clear () const
+    ਖਾਲੀ clear () ਅਚਲ
     {
       clear_gvar_cache ();
     }
   } draw;
 
-  void check_serial (hb_font_t *font) const
+  ਖਾਲੀ check_serial (hb_font_t *font) ਅਚਲ
   {
-    int font_serial = font->serial.get_acquire ();
-    if (cached_serial.get_acquire () != font_serial)
+    ਪੂਰਨ font_serial = font->serial.get_acquire ();
+    ਜੇ (cached_serial.get_acquire () != font_serial)
     {
       /* These caches are dependent on scale and synthetic settings.
        * Any change to the font invalidates them. */
       v_origin.clear ();
 
-      cached_serial.set_release (font_serial);
+      cached_serial.ਸੈੱਟ_release (font_serial);
     }
 
-    int font_serial_coords = font->serial_coords.get_acquire ();
-    if (cached_coords_serial.get_acquire () != font_serial_coords)
+    ਪੂਰਨ font_serial_coords = font->serial_coords.get_acquire ();
+    ਜੇ (cached_coords_serial.get_acquire () != font_serial_coords)
     {
       /* These caches are independent of scale or synthetic settings.
        * Just variation changes will invalidate them. */
@@ -308,352 +308,352 @@ struct hb_ot_font_t
       v.clear ();
       draw.clear ();
 
-      cached_coords_serial.set_release (font_serial_coords);
+      cached_coords_serial.ਸੈੱਟ_release (font_serial_coords);
     }
   }
 };
 
-static hb_ot_font_t *
+ਸਥਿਰ hb_ot_font_t *
 _hb_ot_font_create (hb_font_t *font)
 {
-  hb_ot_font_t *ot_font = (hb_ot_font_t *) hb_calloc (1, sizeof (hb_ot_font_t));
-  if (unlikely (!ot_font))
-    return nullptr;
+  hb_ot_font_t *ot_font = (hb_ot_font_t *) hb_calloc (1, ਆਕਾਰ (hb_ot_font_t));
+  ਜੇ (unlikely (!ot_font))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  ot_font->ot_face = &font->face->table;
+  ot_font->ot_face = &font->face->ਸਾਰਣੀ;
 
-  return ot_font;
+  ਵਾਪਸ ot_font;
 }
 
-static void
-_hb_ot_font_destroy (void *font_data)
+ਸਥਿਰ ਖਾਲੀ
+_hb_ot_font_destroy (ਖਾਲੀ *font_ਅੰਕੜੇ)
 {
-  hb_ot_font_t *ot_font = (hb_ot_font_t *) font_data;
+  hb_ot_font_t *ot_font = (hb_ot_font_t *) font_ਅੰਕੜੇ;
 
   ot_font->~hb_ot_font_t ();
 
   hb_free (ot_font);
 }
 
-static hb_bool_t
-hb_ot_get_nominal_glyph (hb_font_t *font HB_UNUSED,
-			 void *font_data,
+ਸਥਿਰ hb_bool_t
+hb_ot_get_nominal_glyph (hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+			 ਖਾਲੀ *font_ਅੰਕੜੇ,
 			 hb_codepoint_t unicode,
 			 hb_codepoint_t *glyph,
-			 void *user_data HB_UNUSED)
+			 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_nominal_glyph (unicode, glyph);
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਵਾਪਸ ot_face->cmap->get_nominal_glyph (unicode, glyph);
 }
 
-static unsigned int
-hb_ot_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
-			  void *font_data,
-			  unsigned int count,
-			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
-			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
-			  void *user_data HB_UNUSED)
+ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_get_nominal_glyphs (hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *font_ਅੰਕੜੇ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2,
+			  ਅਚਲ hb_codepoint_t *ਪਹਿਲਾ_unicode,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ unicode_stride,
+			  hb_codepoint_t *ਪਹਿਲਾ_glyph,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_stride,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_nominal_glyphs (count,
-					    first_unicode, unicode_stride,
-					    first_glyph, glyph_stride);
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਵਾਪਸ ot_face->cmap->get_nominal_glyphs (ਗਿਣਤੀ_2,
+					    ਪਹਿਲਾ_unicode, unicode_stride,
+					    ਪਹਿਲਾ_glyph, glyph_stride);
 }
 
-static hb_bool_t
-hb_ot_get_variation_glyph (hb_font_t *font HB_UNUSED,
-			   void *font_data,
+ਸਥਿਰ hb_bool_t
+hb_ot_get_variation_glyph (hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+			   ਖਾਲੀ *font_ਅੰਕੜੇ,
 			   hb_codepoint_t unicode,
 			   hb_codepoint_t variation_selector,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_variation_glyph (unicode,
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਵਾਪਸ ot_face->cmap->get_variation_glyph (unicode,
                                              variation_selector, glyph);
 }
 
-static void
-hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
-			    unsigned glyph_stride,
-			    hb_position_t *first_advance,
-			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_get_glyph_h_advances (hb_font_t* font, ਖਾਲੀ* font_ਅੰਕੜੇ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2,
+			    ਅਚਲ hb_codepoint_t *ਪਹਿਲਾ_glyph,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_stride,
+			    hb_position_t *ਪਹਿਲਾ_advance,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ advance_stride,
+			    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
   // Duplicated in v_advances. Ugly. Keep in sync'ish.
 
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  const OT::hmtx_accelerator_t &hmtx = *ot_face->hmtx;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ OT::hmtx_accelerator_t &hmtx = *ot_face->hmtx;
 
-  if (unlikely (!hmtx.has_data ()))
+  ਜੇ (unlikely (!hmtx.has_ਅੰਕੜੇ ()))
   {
     hb_position_t advance = font->face->get_upem () / 2;
     advance = font->em_scale_x (advance);
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      *first_advance = advance;
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = advance;
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
-    return;
+    ਵਾਪਸ;
   }
 
-#ifndef HB_NO_VAR
-  if (!font->has_nonzero_coords)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+  ਜੇ (!font->has_nonzero_coords)
   {
   fallback:
-#else
+#ਨਹੀਂਤਾਂ
   {
-#endif
+#ਜੇ_ਅੰਤ
     // Just plain htmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      *first_advance = font->em_scale_x (hmtx.get_advance_without_var_unscaled (*first_glyph));
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_x (hmtx.get_advance_without_var_unscaled (*ਪਹਿਲਾ_glyph));
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
-    return;
+    ਵਾਪਸ;
   }
 
-#ifndef HB_NO_VAR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
   /* has_nonzero_coords. */
 
   ot_font->check_serial (font);
   hb_ot_font_advance_cache_t *advance_cache = ot_font->h.acquire_advance_cache ();
-  if (!advance_cache)
+  ਜੇ (!advance_cache)
   {
     // malloc failure. Just use the fallback non-variable path.
-    goto fallback;
+    ਜਾਓ fallback;
   }
 
   /* If HVAR is present, use it.*/
-  const OT::HVAR &HVAR = *hmtx.var_table;
-  if (HVAR.has_data ())
+  ਅਚਲ OT::HVAR &HVAR = *hmtx.var_ਸਾਰਣੀ;
+  ਜੇ (HVAR.has_ਅੰਕੜੇ ())
   {
-    const OT::ItemVariationStore &varStore = &HVAR + HVAR.varStore;
+    ਅਚਲ OT::ਵਸਤੂ_Variation_Store &varStore = &HVAR + HVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->h.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+      ਜੇ (advance_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	v = cv;
-      else
+      ਨਹੀਂਤਾਂ
       {
-        v = hmtx.get_advance_with_var_unscaled (*first_glyph, font, varStore_cache);
-	advance_cache->set (*first_glyph, v);
+        v = hmtx.get_advance_with_var_unscaled (*ਪਹਿਲਾ_glyph, font, varStore_cache);
+	advance_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, v);
       }
-      *first_advance = font->em_scale_x (v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_x (v);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
 
     ot_font->h.release_varStore_cache (varStore_cache);
     ot_font->h.release_advance_cache (advance_cache);
-    return;
+    ਵਾਪਸ;
   }
 
-  const auto &gvar = *ot_face->gvar;
-  if (gvar.has_data ())
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &gvar = *ot_face->gvar;
+  ਜੇ (gvar.has_ਅੰਕੜੇ ())
   {
-    const auto &glyf = *ot_face->glyf;
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &glyf = *ot_face->glyf;
+    ਸਵੈਚਾਲਿਤ *scratch = glyf.acquire_scratch ();
+    ਜੇ (unlikely (!scratch))
     {
       ot_font->h.release_advance_cache (advance_cache);
-      goto fallback;
+      ਜਾਓ fallback;
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+      ਜੇ (advance_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	v = cv;
-      else
+      ਨਹੀਂਤਾਂ
       {
-        v = glyf.get_advance_with_var_unscaled (*first_glyph, font, false, *scratch, gvar_cache);
-	advance_cache->set (*first_glyph, v);
+        v = glyf.get_advance_with_var_unscaled (*ਪਹਿਲਾ_glyph, font, ਝੂਠ, *scratch, gvar_cache);
+	advance_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, v);
       }
-      *first_advance = font->em_scale_x (v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_x (v);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
 
     ot_font->draw.release_gvar_cache (gvar_cache);
     glyf.release_scratch (scratch);
     ot_font->h.release_advance_cache (advance_cache);
-    return;
+    ਵਾਪਸ;
   }
 
   ot_font->h.release_advance_cache (advance_cache);
   // No HVAR or GVAR.  Just use the fallback non-variable path.
-  goto fallback;
-#endif
+  ਜਾਓ fallback;
+#ਜੇ_ਅੰਤ
 }
 
-#ifndef HB_NO_VERTICAL
-static void
-hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
-			    unsigned glyph_stride,
-			    hb_position_t *first_advance,
-			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_get_glyph_v_advances (hb_font_t* font, ਖਾਲੀ* font_ਅੰਕੜੇ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2,
+			    ਅਚਲ hb_codepoint_t *ਪਹਿਲਾ_glyph,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_stride,
+			    hb_position_t *ਪਹਿਲਾ_advance,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ advance_stride,
+			    ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
   // Duplicated from h_advances. Ugly. Keep in sync'ish.
 
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  const OT::vmtx_accelerator_t &vmtx = *ot_face->vmtx;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ OT::vmtx_accelerator_t &vmtx = *ot_face->vmtx;
 
-  if (unlikely (!vmtx.has_data ()))
+  ਜੇ (unlikely (!vmtx.has_ਅੰਕੜੇ ()))
   {
     hb_font_extents_t font_extents;
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t advance = font_extents.descender - font_extents.ascender;
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      *first_advance = advance;
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = advance;
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
-    return;
+    ਵਾਪਸ;
   }
 
-#ifndef HB_NO_VAR
-  if (!font->has_nonzero_coords)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+  ਜੇ (!font->has_nonzero_coords)
   {
   fallback:
-#else
+#ਨਹੀਂਤਾਂ
   {
-#endif
+#ਜੇ_ਅੰਤ
     // Just plain vtmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      *first_advance = font->em_scale_y (- (int) vmtx.get_advance_without_var_unscaled (*first_glyph));
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_y (- (ਪੂਰਨ) vmtx.get_advance_without_var_unscaled (*ਪਹਿਲਾ_glyph));
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
-    return;
+    ਵਾਪਸ;
   }
 
-#ifndef HB_NO_VAR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
   /* has_nonzero_coords. */
 
   ot_font->check_serial (font);
   hb_ot_font_advance_cache_t *advance_cache = ot_font->v.acquire_advance_cache ();
-  if (!advance_cache)
+  ਜੇ (!advance_cache)
   {
     // malloc failure. Just use the fallback non-variable path.
-    goto fallback;
+    ਜਾਓ fallback;
   }
 
   /* If VVAR is present, use it.*/
-  const OT::VVAR &VVAR = *vmtx.var_table;
-  if (VVAR.has_data ())
+  ਅਚਲ OT::VVAR &VVAR = *vmtx.var_ਸਾਰਣੀ;
+  ਜੇ (VVAR.has_ਅੰਕੜੇ ())
   {
-    const OT::ItemVariationStore &varStore = &VVAR + VVAR.varStore;
+    ਅਚਲ OT::ਵਸਤੂ_Variation_Store &varStore = &VVAR + VVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->v.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+      ਜੇ (advance_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	v = cv;
-      else
+      ਨਹੀਂਤਾਂ
       {
-        v = vmtx.get_advance_with_var_unscaled (*first_glyph, font, varStore_cache);
-	advance_cache->set (*first_glyph, v);
+        v = vmtx.get_advance_with_var_unscaled (*ਪਹਿਲਾ_glyph, font, varStore_cache);
+	advance_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, v);
       }
-      *first_advance = font->em_scale_y (- (int) v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_y (- (ਪੂਰਨ) v);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
 
     ot_font->v.release_varStore_cache (varStore_cache);
     ot_font->v.release_advance_cache (advance_cache);
-    return;
+    ਵਾਪਸ;
   }
 
-  const auto &gvar = *ot_face->gvar;
-  if (gvar.has_data ())
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &gvar = *ot_face->gvar;
+  ਜੇ (gvar.has_ਅੰਕੜੇ ())
   {
-    const auto &glyf = *ot_face->glyf;
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &glyf = *ot_face->glyf;
+    ਸਵੈਚਾਲਿਤ *scratch = glyf.acquire_scratch ();
+    ਜੇ (unlikely (!scratch))
     {
       ot_font->v.release_advance_cache (advance_cache);
-      goto fallback;
+      ਜਾਓ fallback;
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+      ਜੇ (advance_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	v = cv;
-      else
+      ਨਹੀਂਤਾਂ
       {
-        v = glyf.get_advance_with_var_unscaled (*first_glyph, font, true, *scratch, gvar_cache);
-	advance_cache->set (*first_glyph, v);
+        v = glyf.get_advance_with_var_unscaled (*ਪਹਿਲਾ_glyph, font, ਸੱਚ, *scratch, gvar_cache);
+	advance_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, v);
       }
-      *first_advance = font->em_scale_y (- (int) v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *ਪਹਿਲਾ_advance = font->em_scale_y (- (ਪੂਰਨ) v);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_advance = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_advance, advance_stride);
     }
 
     ot_font->draw.release_gvar_cache (gvar_cache);
     glyf.release_scratch (scratch);
     ot_font->v.release_advance_cache (advance_cache);
-    return;
+    ਵਾਪਸ;
   }
 
   ot_font->v.release_advance_cache (advance_cache);
   // No VVAR or GVAR.  Just use the fallback non-variable path.
-  goto fallback;
-#endif
+  ਜਾਓ fallback;
+#ਜੇ_ਅੰਤ
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_VERTICAL
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
 HB_HOT
-static hb_bool_t
+ਸਥਿਰ hb_bool_t
 hb_ot_get_glyph_v_origins (hb_font_t *font,
-			   void *font_data,
-			   unsigned int count,
-			   const hb_codepoint_t *first_glyph,
-			   unsigned glyph_stride,
-			   hb_position_t *first_x,
-			   unsigned x_stride,
-			   hb_position_t *first_y,
-			   unsigned y_stride,
-			   void *user_data HB_UNUSED)
+			   ਖਾਲੀ *font_ਅੰਕੜੇ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2,
+			   ਅਚਲ hb_codepoint_t *ਪਹਿਲਾ_glyph,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_stride,
+			   hb_position_t *ਪਹਿਲਾ_x,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ x_stride,
+			   hb_position_t *ਪਹਿਲਾ_y,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ y_stride,
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
 
   ot_font->check_serial (font);
 
   /* First, set all the x values to half the advance width. */
-  font->get_glyph_h_advances (count,
-			      first_glyph, glyph_stride,
-			      first_x, x_stride);
-  for (unsigned i = 0; i < count; i++)
+  font->get_glyph_h_advances (ਗਿਣਤੀ_2,
+			      ਪਹਿਲਾ_glyph, glyph_stride,
+			      ਪਹਿਲਾ_x, x_stride);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
-    *first_x /= 2;
-    first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
+    *ਪਹਿਲਾ_x /= 2;
+    ਪਹਿਲਾ_x = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_x, x_stride);
   }
 
   /* The vertical origin business is messy...
@@ -664,355 +664,355 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
   hb_ot_font_origin_cache_t *origin_cache = ot_font->v_origin.acquire_origin_cache ();
 
   /* If there is VORG, always use it. It uses VVAR for variations if necessary. */
-  const OT::VORG &VORG = *ot_face->VORG;
-  if (origin_cache && VORG.has_data ())
+  ਅਚਲ OT::VORG &VORG = *ot_face->VORG;
+  ਜੇ (origin_cache && VORG.has_ਅੰਕੜੇ ())
   {
-#ifndef HB_NO_VAR
-    if (!font->has_nonzero_coords)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+    ਜੇ (!font->has_nonzero_coords)
+#ਜੇ_ਅੰਤ
     {
-      for (unsigned i = 0; i < count; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
       {
 	hb_position_t origin;
-	unsigned cv;
-	if (origin_cache->get (*first_glyph, &cv))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+	ਜੇ (origin_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	  origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-	else
+	ਨਹੀਂਤਾਂ
 	{
-	  origin = font->em_scalef_y (VORG.get_y_origin (*first_glyph));
-	  origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	  origin = font->em_scalef_y (VORG.get_y_origin (*ਪਹਿਲਾ_glyph));
+	  origin_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, font->y_scale < 0 ? -origin : origin);
 	}
 
-	*first_y = origin;
+	*ਪਹਿਲਾ_y = origin;
 
-	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+	ਪਹਿਲਾ_y = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_y, y_stride);
       }
     }
-#ifndef HB_NO_VAR
-    else
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+    ਨਹੀਂਤਾਂ
     {
-      const OT::VVAR &VVAR = *ot_face->vmtx->var_table;
-      const auto &varStore = &VVAR + VVAR.varStore;
-      auto *varStore_cache = ot_font->v_origin.acquire_varStore_cache (varStore);
-      for (unsigned i = 0; i < count; i++)
+      ਅਚਲ OT::VVAR &VVAR = *ot_face->vmtx->var_ਸਾਰਣੀ;
+      ਅਚਲ ਸਵੈਚਾਲਿਤ &varStore = &VVAR + VVAR.varStore;
+      ਸਵੈਚਾਲਿਤ *varStore_cache = ot_font->v_origin.acquire_varStore_cache (varStore);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
       {
 	hb_position_t origin;
-	unsigned cv;
-	if (origin_cache->get (*first_glyph, &cv))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+	ਜੇ (origin_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	  origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-	else
+	ਨਹੀਂਤਾਂ
 	{
-	  origin = font->em_scalef_y (VORG.get_y_origin (*first_glyph) +
-				      VVAR.get_vorg_delta_unscaled (*first_glyph,
-								    font->coords, font->num_coords,
+	  origin = font->em_scalef_y (VORG.get_y_origin (*ਪਹਿਲਾ_glyph) +
+				      VVAR.get_vorg_delta_unscaled (*ਪਹਿਲਾ_glyph,
+								    font->coords, font->ਅੰਕ_coords,
 								    varStore_cache));
-	  origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	  origin_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, font->y_scale < 0 ? -origin : origin);
 	}
 
-	*first_y = origin;
+	*ਪਹਿਲਾ_y = origin;
 
-	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+	ਪਹਿਲਾ_y = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_y, y_stride);
       }
       ot_font->v_origin.release_varStore_cache (varStore_cache);
     }
-#endif
+#ਜੇ_ਅੰਤ
     ot_font->v_origin.release_origin_cache (origin_cache);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* If and only if `vmtx` is present and it's a `glyf` font,
    * we use the top phantom point, deduced from vmtx,glyf[,gvar]. */
-  const auto &vmtx = *ot_face->vmtx;
-  const auto &glyf = *ot_face->glyf;
-  if (origin_cache && vmtx.has_data() && glyf.has_data ())
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &vmtx = *ot_face->vmtx;
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &glyf = *ot_face->glyf;
+  ਜੇ (origin_cache && vmtx.has_ਅੰਕੜੇ() && glyf.has_ਅੰਕੜੇ ())
   {
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    ਸਵੈਚਾਲਿਤ *scratch = glyf.acquire_scratch ();
+    ਜੇ (unlikely (!scratch))
     {
       ot_font->v_origin.release_origin_cache (origin_cache);
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
-    OT::hb_scalar_cache_t *gvar_cache = nullptr;
-#ifndef HB_NO_VAR
+    OT::hb_scalar_cache_t *gvar_cache = ਖਾਲੀ_ਸੂਚਕ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
     gvar_cache = font->has_nonzero_coords ?
 					ot_font->draw.acquire_gvar_cache (*ot_face->gvar) :
-					nullptr;
-#endif
+					ਖਾਲੀ_ਸੂਚਕ;
+#ਜੇ_ਅੰਤ
 
-    for (unsigned i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t origin;
-      unsigned cv;
-      if (origin_cache->get (*first_glyph, &cv))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
+      ਜੇ (origin_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-      else
+      ਨਹੀਂਤਾਂ
       {
-	origin = font->em_scalef_y (glyf.get_v_origin_with_var_unscaled (*first_glyph, font, *scratch, gvar_cache));
-	origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	origin = font->em_scalef_y (glyf.get_v_origin_with_var_unscaled (*ਪਹਿਲਾ_glyph, font, *scratch, gvar_cache));
+	origin_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, font->y_scale < 0 ? -origin : origin);
       }
 
-      *first_y = origin;
+      *ਪਹਿਲਾ_y = origin;
 
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_y = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_y, y_stride);
     }
 
-#ifndef HB_NO_VAR
-    if (gvar_cache)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+    ਜੇ (gvar_cache)
       ot_font->draw.release_gvar_cache (gvar_cache);
-#endif
+#ਜੇ_ਅੰਤ
     glyf.release_scratch (scratch);
     ot_font->v_origin.release_origin_cache (origin_cache);
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* Otherwise, use glyph extents to center the glyph vertically.
    * If getting glyph extents failed, just use the font ascender. */
-  if (origin_cache && font->has_glyph_extents_func ())
+  ਜੇ (origin_cache && font->has_glyph_extents_func ())
   {
     hb_font_extents_t font_extents;
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t font_advance = font_extents.ascender - font_extents.descender;
 
-    for (unsigned i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
       hb_position_t origin;
-      unsigned cv;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cv;
 
-      if (origin_cache->get (*first_glyph, &cv))
+      ਜੇ (origin_cache->get (*ਪਹਿਲਾ_glyph, &cv))
 	origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-      else
+      ਨਹੀਂਤਾਂ
       {
 	hb_glyph_extents_t extents = {0};
-	if (likely (font->get_glyph_extents (*first_glyph, &extents)))
-	  origin = hb_clamp_to<hb_position_t> ((int64_t) extents.y_bearing +
-					 (((int64_t) font_advance + extents.height) >> 1));
-	else
+	ਜੇ (likely (font->get_glyph_extents (*ਪਹਿਲਾ_glyph, &extents)))
+	  origin = hb_clamp_ਮੰਜ਼ਿਲ<hb_position_t> ((int64_t) extents.y_bearing +
+					 (((int64_t) font_advance + extents.ਉਚਾਈ) >> 1));
+	ਨਹੀਂਤਾਂ
 	  origin = font_extents.ascender;
 
-	origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	origin_cache->ਸੈੱਟ (*ਪਹਿਲਾ_glyph, font->y_scale < 0 ? -origin : origin);
       }
 
-      *first_y = origin;
+      *ਪਹਿਲਾ_y = origin;
 
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      ਪਹਿਲਾ_glyph = &Struct_At_ਵਿੱਥ_Unaligned<hb_codepoint_t> (ਪਹਿਲਾ_glyph, glyph_stride);
+      ਪਹਿਲਾ_y = &Struct_At_ਵਿੱਥ_Unaligned<hb_position_t> (ਪਹਿਲਾ_y, y_stride);
     }
   }
 
   ot_font->v_origin.release_origin_cache (origin_cache);
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-static hb_bool_t
+ਸਥਿਰ hb_bool_t
 hb_ot_get_glyph_extents (hb_font_t *font,
-			 void *font_data,
+			 ਖਾਲੀ *font_ਅੰਕੜੇ,
 			 hb_codepoint_t glyph,
 			 hb_glyph_extents_t *extents,
-			 void *user_data HB_UNUSED)
+			 ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
 
-#if !defined(HB_NO_OT_FONT_BITMAP) && !defined(HB_NO_COLOR)
-  if (ot_face->sbix->get_extents (font, glyph, extents)) return true;
-  if (ot_face->CBDT->get_extents (font, glyph, extents)) return true;
-#endif
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_PAINT)
-  if (ot_face->COLR->get_extents (font, glyph, extents)) return true;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  if (ot_face->VARC->get_extents (font, glyph, extents)) return true;
-#endif
-  if (ot_face->glyf->get_extents (font, glyph, extents)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-  if (ot_face->cff2->get_extents (font, glyph, extents)) return true;
-  if (ot_face->cff1->get_extents (font, glyph, extents)) return true;
-#endif
+#ਜੇ !defined(HB_NO_OT_FONT_BITMAP) && !defined(HB_NO_COLOR)
+  ਜੇ (ot_face->sbix->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+  ਜੇ (ot_face->CBDT->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ !defined(HB_NO_COLOR) && !defined(HB_NO_PAINT)
+  ਜੇ (ot_face->COLR->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
+  ਜੇ (ot_face->VARC->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+  ਜੇ (ot_face->glyf->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
+  ਜੇ (ot_face->cff2->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+  ਜੇ (ot_face->cff1->get_extents (font, glyph, extents)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
 
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-static hb_bool_t
-hb_ot_get_glyph_name (hb_font_t *font HB_UNUSED,
-		      void *font_data,
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_GLYPH_ਨਾਂ
+ਸਥਿਰ hb_bool_t
+hb_ot_get_glyph_name (hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+		      ਖਾਲੀ *font_ਅੰਕੜੇ,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
-		      void *user_data HB_UNUSED)
+		      ਅੱਖਰ *name, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ,
+		      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
 
-  if (ot_face->post->get_glyph_name (glyph, name, size)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-  if (ot_face->cff1->get_glyph_name (glyph, name, size)) return true;
-#endif
-  return false;
+  ਜੇ (ot_face->post->get_glyph_name (glyph, name, ਮਾਪ)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
+  ਜੇ (ot_face->cff1->get_glyph_name (glyph, name, ਮਾਪ)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+  ਵਾਪਸ ਝੂਠ;
 }
-static hb_bool_t
-hb_ot_get_glyph_from_name (hb_font_t *font HB_UNUSED,
-			   void *font_data,
-			   const char *name, int len,
+ਸਥਿਰ hb_bool_t
+hb_ot_get_glyph_from_name (hb_font_t *font HB_ਅਣਵਰਤਿਆ,
+			   ਖਾਲੀ *font_ਅੰਕੜੇ,
+			   ਅਚਲ ਅੱਖਰ *name, ਪੂਰਨ len,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  ਅਚਲ hb_ot_face_t *ot_face = ot_font->ot_face;
 
-  if (ot_face->post->get_glyph_from_name (name, len, glyph)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-    if (ot_face->cff1->get_glyph_from_name (name, len, glyph)) return true;
-#endif
-  return false;
+  ਜੇ (ot_face->post->get_glyph_from_name (name, len, glyph)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_CFF
+    ਜੇ (ot_face->cff1->get_glyph_from_name (name, len, glyph)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+  ਵਾਪਸ ਝੂਠ;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-static hb_bool_t
+ਸਥਿਰ hb_bool_t
 hb_ot_get_font_h_extents (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  ਖਾਲੀ *font_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER, &metrics->ascender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP, &metrics->line_gap);
+  ਵਾਪਸ _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_HORIZONTAL_ASCENDER, &metrics->ascender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_HORIZONTAL_DESCENDER, &metrics->descender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_HORIZONTAL_ਸਤਰ_GAP, &metrics->ਸਤਰ_gap);
 }
 
-#ifndef HB_NO_VERTICAL
-static hb_bool_t
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
+ਸਥਿਰ hb_bool_t
 hb_ot_get_font_v_extents (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  ਖਾਲੀ *font_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_ASCENDER, &metrics->ascender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_LINE_GAP, &metrics->line_gap);
+  ਵਾਪਸ _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_VERTICAL_ASCENDER, &metrics->ascender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_VERTICAL_DESCENDER, &metrics->descender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ਟੈਗ_VERTICAL_ਸਤਰ_GAP, &metrics->ਸਤਰ_gap);
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_DRAW
-static hb_bool_t
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_DRAW
+ਸਥਿਰ hb_bool_t
 hb_ot_draw_glyph_or_fail (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  ਖਾਲੀ *font_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ,
 			  hb_codepoint_t glyph,
-			  hb_draw_funcs_t *draw_funcs, void *draw_data,
-			  void *user_data)
+			  hb_draw_funcs_t *draw_funcs, ਖਾਲੀ *draw_ਅੰਕੜੇ,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  hb_draw_session_t draw_session {draw_funcs, draw_data};
+  ਅਚਲ hb_ot_font_t *ot_font = (ਅਚਲ hb_ot_font_t *) font_ਅੰਕੜੇ;
+  hb_draw_session_t draw_session {draw_funcs, draw_ਅੰਕੜੇ};
 
-  OT::hb_scalar_cache_t *gvar_cache = nullptr;
-#ifndef HB_NO_VAR
-  if (font->num_coords)
+  OT::hb_scalar_cache_t *gvar_cache = ਖਾਲੀ_ਸੂਚਕ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
+  ਜੇ (font->ਅੰਕ_coords)
   {
     ot_font->check_serial (font);
     gvar_cache = ot_font->draw.acquire_gvar_cache (*ot_font->ot_face->gvar);
   }
-#endif
+#ਜੇ_ਅੰਤ
   HB_SCOPE_GUARD (ot_font->draw.release_gvar_cache (gvar_cache));
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (font->face->table.VARC->get_path (font, glyph, draw_session)) return true;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
+  ਜੇ (font->face->ਸਾਰਣੀ.VARC->get_ਰਸਤਾ (font, glyph, draw_session)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
   // Keep the following in synch with VARC::get_path_at()
-  if (font->face->table.glyf->get_path (font, glyph, draw_session, gvar_cache,
-				       &draw_session.get_budget ())) return true;
+  ਜੇ (font->face->ਸਾਰਣੀ.glyf->get_ਰਸਤਾ (font, glyph, draw_session, gvar_cache,
+				       &draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ;
 
-#ifndef HB_NO_CFF
-  if (font->face->table.cff2->get_path (font, glyph, draw_session,
-				       &draw_session.get_budget ())) return true;
-  if (font->face->table.cff1->get_path (font, glyph, draw_session,
-				       &draw_session.get_budget ())) return true;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_CFF
+  ਜੇ (font->face->ਸਾਰਣੀ.cff2->get_ਰਸਤਾ (font, glyph, draw_session,
+				       &draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ;
+  ਜੇ (font->face->ਸਾਰਣੀ.cff1->get_ਰਸਤਾ (font, glyph, draw_session,
+				       &draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
 
-  return false;
+  ਵਾਪਸ ਝੂਠ;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_PAINT
-static hb_bool_t
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_PAINT
+ਸਥਿਰ hb_bool_t
 hb_ot_paint_glyph_or_fail (hb_font_t *font,
-			   void *font_data,
+			   ਖਾਲੀ *font_ਅੰਕੜੇ,
 			   hb_codepoint_t glyph,
-			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette,
+			   hb_paint_funcs_t *paint_funcs, ਖਾਲੀ *paint_ਅੰਕੜੇ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ palette,
 			   hb_color_t foreground,
-			   void *user_data)
+			   ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-#ifndef HB_NO_COLOR
-  if (font->face->table.COLR->paint_glyph (font, glyph, paint_funcs, paint_data, palette, foreground)) return true;
-#ifndef HB_NO_SVG
-  if (font->face->table.SVG->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-#endif
-#ifndef HB_NO_OT_FONT_BITMAP
-  if (font->face->table.CBDT->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-  if (font->face->table.sbix->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-#endif
-#endif
-  return false;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_COLOR
+  ਜੇ (font->face->ਸਾਰਣੀ.COLR->paint_glyph (font, glyph, paint_funcs, paint_ਅੰਕੜੇ, palette, foreground)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_SVG
+  ਜੇ (font->face->ਸਾਰਣੀ.SVG->paint_glyph (font, glyph, paint_funcs, paint_ਅੰਕੜੇ)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_BITMAP
+  ਜੇ (font->face->ਸਾਰਣੀ.CBDT->paint_glyph (font, glyph, paint_funcs, paint_ਅੰਕੜੇ)) ਵਾਪਸ ਸੱਚ;
+  ਜੇ (font->face->ਸਾਰਣੀ.sbix->paint_glyph (font, glyph, paint_funcs, paint_ਅੰਕੜੇ)) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+  ਵਾਪਸ ਝੂਠ;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-static inline void free_static_ot_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_ot_funcs ();
 
-static struct hb_ot_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ot_font_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_ot_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ot_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  ਸਥਿਰ hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyph_func (funcs, hb_ot_get_nominal_glyph, nullptr, nullptr);
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_ot_get_nominal_glyphs, nullptr, nullptr);
-    hb_font_funcs_set_variation_glyph_func (funcs, hb_ot_get_variation_glyph, nullptr, nullptr);
+    hb_font_funcs_ਸੈੱਟ_nominal_glyph_func (funcs, hb_ot_get_nominal_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_nominal_glyphs_func (funcs, hb_ot_get_nominal_glyphs, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_variation_glyph_func (funcs, hb_ot_get_variation_glyph, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_ot_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_ot_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_ਸੈੱਟ_font_h_extents_func (funcs, hb_ot_get_font_h_extents, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_glyph_h_advances_func (funcs, hb_ot_get_glyph_h_advances, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_font_v_extents_func (funcs, hb_ot_get_font_v_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_ot_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origins_func (funcs, hb_ot_get_glyph_v_origins, nullptr, nullptr);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
+    hb_font_funcs_ਸੈੱਟ_font_v_extents_func (funcs, hb_ot_get_font_v_extents, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_glyph_v_advances_func (funcs, hb_ot_get_glyph_v_advances, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_glyph_v_origins_func (funcs, hb_ot_get_glyph_v_origins, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_ot_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_DRAW
+    hb_font_funcs_ਸੈੱਟ_draw_glyph_or_fail_func (funcs, hb_ot_draw_glyph_or_fail, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_PAINT
-    hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ot_paint_glyph_or_fail, nullptr, nullptr);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_PAINT
+    hb_font_funcs_ਸੈੱਟ_paint_glyph_or_fail_func (funcs, hb_ot_paint_glyph_or_fail, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+#ਜੇ_ਅੰਤ
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_ot_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_ਸੈੱਟ_glyph_extents_func (funcs, hb_ot_get_glyph_extents, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
     //hb_font_funcs_set_glyph_contour_point_func (funcs, hb_ot_get_glyph_contour_point, nullptr, nullptr);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-    hb_font_funcs_set_glyph_name_func (funcs, hb_ot_get_glyph_name, nullptr, nullptr);
-    hb_font_funcs_set_glyph_from_name_func (funcs, hb_ot_get_glyph_from_name, nullptr, nullptr);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_FONT_GLYPH_ਨਾਂ
+    hb_font_funcs_ਸੈੱਟ_glyph_name_func (funcs, hb_ot_get_glyph_name, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_font_funcs_ਸੈੱਟ_glyph_from_name_func (funcs, hb_ot_get_glyph_from_name, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+#ਜੇ_ਅੰਤ
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_ot_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_ot_funcs;
 
-static inline
-void free_static_ot_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_ot_funcs ()
 {
   static_ot_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+ਸਥਿਰ hb_font_funcs_t *
 _hb_ot_get_font_funcs ()
 {
-  return static_ot_funcs.get_unconst ();
+  ਵਾਪਸ static_ot_funcs.get_unconst ();
 }
 
 
@@ -1026,17 +1026,17 @@ _hb_ot_get_font_funcs ()
  *
  * Since: 0.9.28
  **/
-void
-hb_ot_font_set_funcs (hb_font_t *font)
+ਖਾਲੀ
+hb_ot_font_ਸੈੱਟ_funcs (hb_font_t *font)
 {
   hb_ot_font_t *ot_font = _hb_ot_font_create (font);
-  if (unlikely (!ot_font))
-    return;
+  ਜੇ (unlikely (!ot_font))
+    ਵਾਪਸ;
 
-  hb_font_set_funcs (font,
+  hb_font_ਸੈੱਟ_funcs (font,
 		     _hb_ot_get_font_funcs (),
 		     ot_font,
 		     _hb_ot_font_destroy);
 }
 
-#endif
+#ਜੇ_ਅੰਤ

@@ -1,92 +1,92 @@
-#ifndef HB_ZLIB_CC
-#define HB_ZLIB_CC
-#ifdef HB_ZLIB_CC /* Pacify -Wunused-macros. */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ZLIB_CC
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ZLIB_CC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_ZLIB_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-zlib.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-zlib.hh"
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_ZLIB
+#ਅਨ੍ਤਰ੍ਭਾਵ <zlib.h>
+#ਜੇ_ਅੰਤ
 
 hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len)
+                         ਬਿਨਾਨਿਸ਼ਾਨੀ   max_output_len)
 {
-#ifndef HAVE_ZLIB
-  return nullptr;
-#else
-  unsigned compressed_len = 0;
-  const uint8_t *compressed = (const uint8_t *) hb_blob_get_data (blob, &compressed_len);
-  if (!compressed || !compressed_len)
-    return nullptr;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HAVE_ZLIB
+  ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+#ਨਹੀਂਤਾਂ
+  ਬਿਨਾਨਿਸ਼ਾਨੀ compressed_len = 0;
+  ਅਚਲ uint8_t *compressed = (ਅਚਲ uint8_t *) hb_blob_get_ਅੰਕੜੇ (blob, &compressed_len);
+  ਜੇ (!compressed || !compressed_len)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  z_stream stream = {};
-  stream.next_in = (Bytef *) compressed;
-  stream.avail_in = compressed_len;
+  z_ਧਾਰਾ ਧਾਰਾ = {};
+  ਧਾਰਾ.ਅਗਲਾ_ਵਿੱਚ = (Bytef *) compressed;
+  ਧਾਰਾ.avail_ਵਿੱਚ = compressed_len;
 
-  if (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
-    return nullptr;
-  HB_SCOPE_GUARD (inflateEnd (&stream));
+  ਜੇ (inflateInit2 (&ਧਾਰਾ, 16 + MAX_WBITS) != Z_OK)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+  HB_SCOPE_GUARD (inflate_ਸਿਰਾ (&ਧਾਰਾ));
 
-  uint32_t expected_size = 0;
-  hb_gzip_get_uncompressed_size ((const char *) compressed,
+  uint32_t expected_ਮਾਪ = 0;
+  hb_gzip_get_uncompressed_ਮਾਪ ((ਅਚਲ ਅੱਖਰ *) compressed,
                                  compressed_len,
-                                 &expected_size);
+                                 &expected_ਮਾਪ);
 
-  size_t allocated = hb_min ((size_t) hb_max (expected_size, 4096u),
+  size_t allocated = hb_min ((size_t) hb_max (expected_ਮਾਪ, 4096u),
                              (size_t) max_output_len);
-  char *output = (char *) hb_malloc (allocated);
-  if (!output)
-    return nullptr;
-  auto output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
+  ਅੱਖਰ *output = (ਅੱਖਰ *) hb_malloc (allocated);
+  ਜੇ (!output)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+  ਸਵੈਚਾਲਿਤ output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
 
-  int status = Z_OK;
-  while (true)
+  ਪੂਰਨ ਸਥਿਤੀ = Z_OK;
+  ਜਦੋਂ (ਸੱਚ)
   {
-    size_t produced = (size_t) stream.total_out;
-    if (unlikely (produced >= (size_t) max_output_len))
-      return nullptr;
+    size_t produced = (size_t) ਧਾਰਾ.ਕੁੱਲ_ਬਾਹਰਲਾ;
+    ਜੇ (unlikely (produced >= (size_t) max_output_len))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-    if (produced == allocated)
+    ਜੇ (produced == allocated)
     {
       size_t new_allocated = hb_min (allocated * 2, (size_t) max_output_len);
-      if (unlikely (new_allocated <= allocated))
-        return nullptr;
+      ਜੇ (unlikely (new_allocated <= allocated))
+        ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-      char *new_output = (char *) hb_realloc (output, new_allocated);
-      if (unlikely (!new_output))
-        return nullptr;
+      ਅੱਖਰ *new_output = (ਅੱਖਰ *) hb_realloc (output, new_allocated);
+      ਜੇ (unlikely (!new_output))
+        ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
       output = new_output;
       allocated = new_allocated;
     }
 
-    stream.next_out = (Bytef *) output + stream.total_out;
-    stream.avail_out = (uInt) (allocated - (size_t) stream.total_out);
+    ਧਾਰਾ.ਅਗਲਾ_ਬਾਹਰਲਾ = (Bytef *) output + ਧਾਰਾ.ਕੁੱਲ_ਬਾਹਰਲਾ;
+    ਧਾਰਾ.avail_ਬਾਹਰਲਾ = (uInt) (allocated - (size_t) ਧਾਰਾ.ਕੁੱਲ_ਬਾਹਰਲਾ);
 
-    status = inflate (&stream, Z_FINISH);
-    if (status == Z_STREAM_END)
-      break;
+    ਸਥਿਤੀ = inflate (&ਧਾਰਾ, Z_ਅੰਤ);
+    ਜੇ (ਸਥਿਤੀ == Z_ਧਾਰਾ_ਸਿਰਾ)
+      ਰੋਕੋ;
 
-    if ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
-      continue;
+    ਜੇ ((ਸਥਿਤੀ == Z_OK || ਸਥਿਤੀ == Z_BUF_ERROR) && ਧਾਰਾ.avail_ਬਾਹਰਲਾ == 0)
+      ਜਾਰੀ;
 
-    return nullptr;
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  if (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
-    return nullptr;
+  ਜੇ (unlikely ((size_t) ਧਾਰਾ.ਕੁੱਲ_ਬਾਹਰਲਾ > (size_t) max_output_len))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
   output_guard.release ();
-  return hb_blob_create_or_fail (output,
-                                 (unsigned) stream.total_out,
-                                 HB_MEMORY_MODE_WRITABLE,
+  ਵਾਪਸ hb_blob_create_or_fail (output,
+                                 (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਧਾਰਾ.ਕੁੱਲ_ਬਾਹਰਲਾ,
+                                 HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE,
                                  output,
                                  hb_free);
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-#endif /* HB_ZLIB_CC pacify */
-#endif /* HB_ZLIB_CC guard */
+#ਜੇ_ਅੰਤ /* HB_ZLIB_CC pacify */
+#ਜੇ_ਅੰਤ /* HB_ZLIB_CC guard */

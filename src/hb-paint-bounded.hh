@@ -22,23 +22,23 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_BOUNDED_HH
-#define HB_PAINT_BOUNDED_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_PAINT_BOUNDED_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_PAINT_BOUNDED_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.h"
 
-#include "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+ਬਣਤਰ hb_paint_bounded_context_t
 {
-  void clear ()
+  ਖਾਲੀ clear ()
   {
     clips = 0;
-    bounded = true;
+    bounded = ਸੱਚ;
     groups.clear ();
   }
 
@@ -47,71 +47,71 @@ struct hb_paint_bounded_context_t
     clear ();
   }
 
-  bool is_bounded ()
+  ਤਾਰਕਿਕ is_bounded ()
   {
-    return bounded;
+    ਵਾਪਸ bounded;
   }
 
-  void push_clip ()
+  ਖਾਲੀ ਧੱਕੋ_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  ਖਾਲੀ ਕੱਢੋ_clip ()
   {
-    if (clips == 0) return;
+    ਜੇ (clips == 0) ਵਾਪਸ;
     clips--;
   }
 
-  void push_group ()
+  ਖਾਲੀ ਧੱਕੋ_ਸਮੂਹ ()
   {
     groups.push (bounded);
-    bounded = true;
+    bounded = ਸੱਚ;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  ਖਾਲੀ ਕੱਢੋ_ਸਮੂਹ (hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ)
   {
-    const bool src_bounded = bounded;
-    bounded = groups.pop ();
-    bool &backdrop_bounded = bounded;
+    ਅਚਲ ਤਾਰਕਿਕ src_bounded = bounded;
+    bounded = groups.ਕੱਢੋ ();
+    ਤਾਰਕਿਕ &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    ਚੋਣ ((ਪੂਰਨ) ਬਹੁਲਕ)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_CLEAR:
+	backdrop_bounded = ਸੱਚ;
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਬਾਹਰਲਾ:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਬਾਹਰਲਾ:
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਵਿੱਚ:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਵਿੱਚ:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
-      default:
+	ਰੋਕੋ;
+      ਮੂਲ:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	ਰੋਕੋ;
      }
   }
 
-  void paint ()
+  ਖਾਲੀ paint ()
   {
-    if (!clips)
-      bounded = false;
+    ਜੇ (!clips)
+      bounded = ਝੂਠ;
   }
 
-  protected:
-  bool bounded; // true if current drawing bounded
-  unsigned clips; // number of active clips
-  hb_vector_t<bool> groups; // true if group bounded
+  ਸੁਰੱਖਿਅਤ:
+  ਤਾਰਕਿਕ bounded; // true if current drawing bounded
+  ਬਿਨਾਨਿਸ਼ਾਨੀ clips; // number of active clips
+  hb_ਸਦਿਸ਼_t<ਤਾਰਕਿਕ> groups; // true if group bounded
 };
 
-HB_INTERNAL hb_paint_funcs_t *
+HB_ਅੰਦਰੂਨੀ hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ();
 
 
-#endif /* HB_PAINT_BOUNDED_HH */
+#ਜੇ_ਅੰਤ /* HB_PAINT_BOUNDED_HH */

@@ -22,12 +22,12 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_DIRECTWRITE_H
-#define HB_DIRECTWRITE_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DIRECTWRITE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DIRECTWRITE_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include <dwrite_3.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <dwrite_3.h>
 
 HB_BEGIN_DECLS
 
@@ -35,12 +35,12 @@ HB_EXTERN hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face);
 
 HB_EXTERN hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index);
+hb_directwrite_face_create_from_file_or_fail (ਅਚਲ ਅੱਖਰ   *file_name,
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index);
+					      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face);
@@ -51,10 +51,10 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face);
 HB_EXTERN IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font);
 
-HB_EXTERN void
-hb_directwrite_font_set_funcs (hb_font_t *font);
+HB_EXTERN ਖਾਲੀ
+hb_directwrite_font_ਸੈੱਟ_funcs (hb_font_t *font);
 
-#ifndef HB_DISABLE_DEPRECATED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
 
 HB_DEPRECATED_FOR (hb_directwrite_face_get_dw_font_face)
 HB_EXTERN IDWriteFontFace *
@@ -64,8 +64,8 @@ HB_DEPRECATED
 HB_EXTERN IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font);
 
-#endif
+#ਜੇ_ਅੰਤ
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_DIRECTWRITE_H */
+#ਜੇ_ਅੰਤ /* HB_DIRECTWRITE_H */

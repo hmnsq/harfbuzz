@@ -24,115 +24,115 @@
  *
  */
 
-#ifndef OT_COLOR_COLR_COLRV1_CLOSURE_HH
-#define OT_COLOR_COLR_COLRV1_CLOSURE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_COLOR_COLR_COLRV1_ਘੇਰਾ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_COLOR_COLR_COLRV1_ਘੇਰਾ_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintColrLayers::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  c->ਜੋੜੋ_layer_indices (ਪਹਿਲਾ_Layer_ਸੂਚਕਾਂਕ, ਅੰਕ_Layers);
+  ਅਚਲ LayerList &paint_ਵਿੱਥ_lists = c->get_colr_ਸਾਰਣੀ ()->get_layerList ();
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਪਹਿਲਾ_Layer_ਸੂਚਕਾਂਕ; i < ਪਹਿਲਾ_Layer_ਸੂਚਕਾਂਕ + ਅੰਕ_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ਅਚਲ Paint &paint = paint_ਵਿੱਥ_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) const
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Types>
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintGlyph<Types>::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  c->add_glyph (gid);
-  (this+paint).dispatch (c);
+  c->ਜੋੜੋ_glyph (gid);
+  (ਇਹ+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintColrGlyph::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
-  c->add_glyph (gid);
+  ਅਚਲ COLR *colr_ਸਾਰਣੀ = c->get_colr_ਸਾਰਣੀ ();
+  ਅਚਲ ਅਧਾਰ_Glyph_Paint_ਰਿਕਾਰਡ* baseglyph_paintrecord = colr_ਸਾਰਣੀ->get_ਅਧਾਰ_glyph_paintrecord (gid);
+  ਜੇ (!baseglyph_paintrecord) ਵਾਪਸ;
+  c->ਜੋੜੋ_glyph (gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  ਅਚਲ ਅਧਾਰ_Glyph_List &baseglyph_list = colr_ਸਾਰਣੀ->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) const
+ਸਾਂਚਾ <ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ> ਵਰਗ Var>
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintTransform<Var>::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  (this+transform).closurev1 (c);
+  (ਇਹ+src).dispatch (c);
+  (ਇਹ+transform).closurev1 (c);
 }
 
-HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintTranslate::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintScale::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintScaleAroundCenter::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ Paint_Scale_ਇਕਸਾਰ::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ Paint_Scale_ਇਕਸਾਰ_Around_Center::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintRotate::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintRotateAroundCenter::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintSkew::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ PaintSkewAroundCenter::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (ਇਹ+src).dispatch (c);
+  c->ਅੰਕ_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ Paint_ਸੰਯੁਕਤ::closurev1 (hb_colrv1_ਘੇਰਾ_context_t* c) ਅਚਲ
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (ਇਹ+src).dispatch (c);
+  (ਇਹ+backdrop).dispatch (c);
 }
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */
+#ਜੇ_ਅੰਤ /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */

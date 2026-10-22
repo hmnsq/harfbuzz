@@ -1290,7 +1290,7 @@ if have_gobject
       header: 'hb-gobject.h',
       install: true,
       extra_args:  ['--cflags-begin',
-                    '-DHB_NO_SINGLE_HEADER_ERROR',
+                    '-DHB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR',
                     '-DHAVE_GOBJECT',
                     '-DHB_EXTERN=',
                     '--cflags-end'])

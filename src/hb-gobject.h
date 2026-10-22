@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GOBJECT_H
-#define HB_GOBJECT_H
-#define HB_GOBJECT_H_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_GOBJECT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_GOBJECT_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_GOBJECT_H_ਵਿੱਚ
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include "hb-gobject-enums.h"
-#include "hb-gobject-structs.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gobject-enums.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gobject-structs.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#undef HB_GOBJECT_H_IN
-#endif /* HB_GOBJECT_H */
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ HB_GOBJECT_H_ਵਿੱਚ
+#ਜੇ_ਅੰਤ /* HB_GOBJECT_H */

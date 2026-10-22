@@ -22,228 +22,228 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_JUST_TABLE_HH
-#define HB_AAT_LAYOUT_JUST_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_AAT_LAYOUT_JUST_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_LAYOUT_JUST_ਸਾਰਣੀ_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
 
-#include "hb-aat-layout-morx-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-morx-table.hh"
 
 /*
  * just -- Justification
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6just.html
  */
-#define HB_AAT_TAG_just HB_TAG('j','u','s','t')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_AAT_ਟੈਗ_just HB_ਟੈਗ('j','u','s','t')
 
 
-namespace AAT {
+ਨਾਮਾਕਾਸ਼ AAT {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
 
-struct ActionSubrecordHeader
+ਬਣਤਰ Action_Subrecord_ਸਿਰਲੇਖ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
   HBUINT16	actionClass;	/* The JustClass value associated with this
 				 * ActionSubrecord. */
   HBUINT16	actionType;	/* The type of postcompensation action. */
-  HBUINT16	actionLength;	/* Length of this ActionSubrecord record, which
+  HBUINT16	action_ਲੰਮਾਈ;	/* Length of this ActionSubrecord record, which
 				 * must be a multiple of 4. */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (6);
 };
 
-struct DecompositionAction
+ਬਣਤਰ DecompositionAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  ActionSubrecordHeader
-		header;
-  F16DOT16	lowerLimit;	/* If the distance factor is less than this value,
+  Action_Subrecord_ਸਿਰਲੇਖ
+		ਸਿਰਲੇਖ;
+  F16DOT16	ਹੇਠਲਾ_ਹੱਦਬੰਦੀ;	/* If the distance factor is less than this value,
 				 * then the ligature is decomposed. */
-  F16DOT16	upperLimit;	/* If the distance factor is greater than this value,
+  F16DOT16	ਉੱਤਲਾ_ਹੱਦਬੰਦੀ;	/* If the distance factor is greater than this value,
 				 * then the ligature is decomposed. */
-  HBUINT16	order;		/* Numerical order in which this ligature will
+  HBUINT16	ਕ੍ਰਮ;		/* Numerical order in which this ligature will
 				 * be decomposed; you may want infrequent ligatures
 				 * to decompose before more frequent ones. The ligatures
 				 * on the line of text will decompose in increasing
 				 * value of this field. */
-  Array16Of<HBUINT16>
+  Array16_ਦਾ<HBUINT16>
 		decomposedglyphs;
 				/* Number of 16-bit glyph indexes that follow;
 				 * the ligature will be decomposed into these glyphs.
 				 *
 				 * Array of decomposed glyphs. */
-  public:
-  DEFINE_SIZE_ARRAY (18, decomposedglyphs);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+ਬਣਤਰ Unconditional_ਜੋੜੋ_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
-  HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
+  ਸੁਰੱਖਿਅਤ:
+  Action_Subrecord_ਸਿਰਲੇਖ
+		ਸਿਰਲੇਖ;
+  HBGlyphID16	ਜੋੜੋ_Glyph;	/* Glyph that should be added if the distance factor
 				 * is growing. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+ਬਣਤਰ Conditional_ਜੋੜੋ_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
-  F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
+  ਸੁਰੱਖਿਅਤ:
+  Action_Subrecord_ਸਿਰਲੇਖ
+		ਸਿਰਲੇਖ;
+  F16DOT16	subst_ਹੱਦ; /* Distance growth factor (in ems) at which
 				 * this glyph is replaced and the growth factor
 				 * recalculated. */
-  HBGlyphID16	addGlyph;	/* Glyph to be added as kashida. If this value is
+  HBGlyphID16	ਜੋੜੋ_Glyph;	/* Glyph to be added as kashida. If this value is
 				 * 0xFFFF, no extra glyph will be added. Note that
 				 * generally when a glyph is added, justification
 				 * will need to be redone. */
   HBGlyphID16	substGlyph;	/* Glyph to be substituted for this glyph if the
 				 * growth factor equals or exceeds the value of
 				 * substThreshold. */
-  public:
-  DEFINE_SIZE_STATIC (14);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (14);
 };
 
-struct DuctileGlyphAction
+ਬਣਤਰ DuctileGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
+  ਸੁਰੱਖਿਅਤ:
+  Action_Subrecord_ਸਿਰਲੇਖ
+		ਸਿਰਲੇਖ;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
 				 * This would normally be 0x64756374 ('duct'),
 				 * but you may use any axis the font contains. */
-  F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
+  F16DOT16	minimum_ਹੱਦਬੰਦੀ;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_ਮੁੱਲ; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
-  F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
+  F16DOT16	ਵੱਧ_ਤੋਂ_ਵੱਧ_ਹੱਦਬੰਦੀ;	/* The highest value for the ductility axis that
 				 * still yields an acceptable appearance. */
-  public:
-  DEFINE_SIZE_STATIC (22);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+ਬਣਤਰ Repeated_ਜੋੜੋ_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
+  ਸੁਰੱਖਿਅਤ:
+  Action_Subrecord_ਸਿਰਲੇਖ
+		ਸਿਰਲੇਖ;
   HBUINT16	flags;		/* Currently unused; set to 0. */
   HBGlyphID16	glyph;		/* Glyph that should be added if the distance factor
 				 * is growing. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (10);
 };
 
-struct ActionSubrecord
+ਬਣਤਰ ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_ਲੰਮਾਈ () ਅਚਲ { ਵਾਪਸ u.ਸਿਰਲੇਖ.action_ਲੰਮਾਈ; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    switch (u.header.actionType)
+    ਚੋਣ (u.ਸਿਰਲੇਖ.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    ਹਾਲਤ 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    ਹਾਲਤ 1: hb_barrier ();  return_trace (u.unconditional_ਜੋੜੋ_Glyph_Action.sanitize (c));
+    ਹਾਲਤ 2: hb_barrier ();  return_trace (u.conditional_ਜੋੜੋ_Glyph_Action.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    default: return_trace (true);
+    ਹਾਲਤ 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    ਹਾਲਤ 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    ਮੂਲ: return_trace (ਸੱਚ);
     }
   }
 
-  protected:
-  union	{
-  ActionSubrecordHeader		header;
+  ਸੁਰੱਖਿਅਤ:
+  ਸੰਘ	{
+  Action_Subrecord_ਸਿਰਲੇਖ		ਸਿਰਲੇਖ;
   DecompositionAction		decompositionAction;
-  UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
-  ConditionalAddGlyphAction	conditionalAddGlyphAction;
+  Unconditional_ਜੋੜੋ_Glyph_Action	unconditional_ਜੋੜੋ_Glyph_Action;
+  Conditional_ਜੋੜੋ_Glyph_Action	conditional_ਜੋੜੋ_Glyph_Action;
   /* StretchGlyphAction stretchGlyphAction; -- Not supported by CoreText */
   DuctileGlyphAction		ductileGlyphAction;
-  RepeatedAddGlyphAction	repeatedAddGlyphAction;
+  Repeated_ਜੋੜੋ_Glyph_Action	repeated_ਜੋੜੋ_Glyph_Action;
   } u;				/* Data. The format of this data depends on
 				 * the value of the actionType field. */
-  public:
-  DEFINE_SIZE_UNION (6, header);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_UNION (6, ਸਿਰਲੇਖ);
 };
 
-struct PostcompensationActionChain
+ਬਣਤਰ PostcompensationActionChain
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ਇਹ);
+    ਜੇ (unlikely (!c->check_struct (ਇਹ)))
+      return_trace (ਝੂਠ);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ = min_ਮਾਪ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
-      offset += subrecord.get_length ();
+      ਅਚਲ ActionSubrecord& subrecord = Struct_At_ਵਿੱਥ<ActionSubrecord> (ਇਹ, ਵਿੱਥ);
+      ਜੇ (unlikely (!subrecord.sanitize (c))) return_trace (ਝੂਠ);
+      ਵਿੱਥ += subrecord.get_ਲੰਮਾਈ ();
     }
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  protected:
-  HBUINT32	count;
+  ਸੁਰੱਖਿਅਤ:
+  HBUINT32	ਗਿਣਤੀ_2;
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+ਬਣਤਰ Just_ਚੌੜਾਈ_Delta_ਇੰਦਰਾਜ
 {
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -251,10 +251,10 @@ struct JustWidthDeltaEntry
 				 * it and any other glyphs on the line having this
 				 * bit set absorb all the remaining gap. */
     Reserved2		=0x0FF0,/* Reserved. You should set these bits to zero. */
-    Priority		=0x000F /* The justification priority of the glyph. */
+    ਤਰਜੀਹ_2		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  ਗਿਣਤੀ ਤਰਜੀਹ_2
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -263,7 +263,7 @@ struct JustWidthDeltaEntry
 				 * get this priority. */
     InterCharacter	= 2,	/* Inter-character priority. Give this to any
 				 * remaining glyphs. */
-    NullPriority	= 3	/* Null priority. You should set this priority for
+    Null_ਤਰਜੀਹ	= 3	/* Null priority. You should set this priority for
 				 * glyphs that only participate in justification
 				 * after the above priorities. Normally all glyphs
 				 * have one of the previous three values. If you
@@ -272,55 +272,55 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
-  F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
+  ਸੁਰੱਖਿਅਤ:
+  F16DOT16	before_Grow_ਹੱਦਬੰਦੀ;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
-  F16DOT16	beforeShrinkLimit;
+  F16DOT16	before_Shrink_ਹੱਦਬੰਦੀ;
 				/* The ratio by which the advance width of the
 				 * glyph is permitted to shrink on the left or top side. */
-  F16DOT16	afterGrowLimit;	/* The ratio by which the advance width of the glyph
+  F16DOT16	after_Grow_ਹੱਦਬੰਦੀ;	/* The ratio by which the advance width of the glyph
 				 * is permitted to shrink on the left or top side. */
-  F16DOT16	afterShrinkLimit;
+  F16DOT16	after_Shrink_ਹੱਦਬੰਦੀ;
 				/* The ratio by which the advance width of the glyph
 				 * is at most permitted to shrink on the right or
 				 * bottom side. */
   HBUINT16	growFlags;	/* Flags controlling the grow case. */
   HBUINT16	shrinkFlags;	/* Flags controlling the shrink case. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (20);
 };
 
-struct WidthDeltaPair
+ਬਣਤਰ ਚੌੜਾਈ_Delta_Pair
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
 				 * used as padding to guarantee longword
 				 * alignment of the following record). */
-  JustWidthDeltaEntry
-		wdRecord;	/* The actual width delta record. */
+  Just_ਚੌੜਾਈ_Delta_ਇੰਦਰਾਜ
+		wd_ਰਿਕਾਰਡ;	/* The actual width delta record. */
 
-  public:
-  DEFINE_SIZE_STATIC (24);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (24);
 };
 
-typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ OT::Array32_ਦਾ<ਚੌੜਾਈ_Delta_Pair> ਚੌੜਾਈ_Delta_Cluster;
 
-struct JustificationCategory
+ਬਣਤਰ JustificationCategory
 {
-  typedef void EntryData;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ਇੰਦਰਾਜ_ਅੰਕੜੇ;
 
-  enum Flags
+  ਗਿਣਤੀ Flags
   {
-    SetMark		=0x8000,/* If set, make the current glyph the marked
+    ਸੈੱਟ_Mark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
     DontAdvance		=0x4000,/* If set, don't advance to the next glyph before
 				 * going to the new state. */
@@ -330,91 +330,91 @@ struct JustificationCategory
 				 * glyph if nonzero. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  morphHeader.sanitize (c) &&
-			  stHeader.sanitize (c)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
+			  morph_ਸਿਰਲੇਖ.sanitize (c) &&
+			  st_ਸਿਰਲੇਖ.sanitize (c)));
   }
 
-  protected:
+  ਸੁਰੱਖਿਅਤ:
   ChainSubtable<ObsoleteTypes>
-		morphHeader;	/* Metamorphosis-style subtable header. */
-  StateTable<ObsoleteTypes, EntryData>
-		stHeader;	/* The justification insertion state table header */
-  public:
-  DEFINE_SIZE_STATIC (30);
+		morph_ਸਿਰਲੇਖ;	/* Metamorphosis-style subtable header. */
+  State_ਸਾਰਣੀ<ObsoleteTypes, ਇੰਦਰਾਜ_ਅੰਕੜੇ>
+		st_ਸਿਰਲੇਖ;	/* The justification insertion state table header */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (30);
 };
 
-struct JustificationHeader
+ਬਣਤਰ Justification_ਸਿਰਲੇਖ
 {
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c, ਅਚਲ ਖਾਲੀ *ਅਧਾਰ) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  justClassTable.sanitize (c, base, base) &&
-			  wdcTable.sanitize (c, base) &&
-			  pcTable.sanitize (c, base) &&
-			  lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (likely (c->check_struct (ਇਹ) &&
+			  just_Class_ਸਾਰਣੀ.sanitize (c, ਅਧਾਰ, ਅਧਾਰ) &&
+			  wdc_ਸਾਰਣੀ.sanitize (c, ਅਧਾਰ) &&
+			  pc_ਸਾਰਣੀ.sanitize (c, ਅਧਾਰ) &&
+			  lookup_ਸਾਰਣੀ.sanitize (c, ਅਧਾਰ)));
   }
 
-  protected:
-  Offset16To<JustificationCategory>
-		justClassTable;	/* Offset to the justification category state table. */
-  Offset16To<WidthDeltaCluster>
-		wdcTable;	/* Offset from start of justification table to start
+  ਸੁਰੱਖਿਅਤ:
+  Offset16_ਮੰਜ਼ਿਲ<JustificationCategory>
+		just_Class_ਸਾਰਣੀ;	/* Offset to the justification category state table. */
+  Offset16_ਮੰਜ਼ਿਲ<ਚੌੜਾਈ_Delta_Cluster>
+		wdc_ਸਾਰਣੀ;	/* Offset from start of justification table to start
 				 * of the subtable containing the width delta factors
 				 * for the glyphs in your font.
 				 *
 				 * The width delta clusters table. */
-  Offset16To<PostcompensationActionChain>
-		pcTable;	/* Offset from start of justification table to start
+  Offset16_ਮੰਜ਼ਿਲ<PostcompensationActionChain>
+		pc_ਸਾਰਣੀ;	/* Offset from start of justification table to start
 				 * of postcompensation subtable (set to zero if none).
 				 *
 				 * The postcompensation subtable, if present in the font. */
-  Lookup<Offset16To<WidthDeltaCluster>>
-		lookupTable;	/* Lookup table associating glyphs with width delta
+  Lookup<Offset16_ਮੰਜ਼ਿਲ<ਚੌੜਾਈ_Delta_Cluster>>
+		lookup_ਸਾਰਣੀ;	/* Lookup table associating glyphs with width delta
 				 * clusters. See the description of Width Delta Clusters
 				 * table for details on how to interpret the lookup values. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (8);
 };
 
-struct just
+ਬਣਤਰ just
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_AAT_ਟੈਗ_just;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ਇਹ);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ਇਹ) &&
 			  hb_barrier () &&
-			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  ਸੰਸਕਰਣ.major == 1 &&
+			  horiz_ਅੰਕੜੇ.sanitize (c, ਇਹ, ਇਹ) &&
+			  vert_ਅੰਕੜੇ.sanitize (c, ਇਹ, ਇਹ)));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the justification table
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
-  Offset16To<JustificationHeader>
-		horizData;	/* Byte offset from the start of the justification table
+  Offset16_ਮੰਜ਼ਿਲ<Justification_ਸਿਰਲੇਖ>
+		horiz_ਅੰਕੜੇ;	/* Byte offset from the start of the justification table
 				 * to the header for tables that contain justification
 				 * information for horizontal text.
 				 * If you are not including this information,
 				 * store 0. */
-  Offset16To<JustificationHeader>
-		vertData;	/* ditto, vertical */
+  Offset16_ਮੰਜ਼ਿਲ<Justification_ਸਿਰਲੇਖ>
+		vert_ਅੰਕੜੇ;	/* ditto, vertical */
 
-  public:
-  DEFINE_SIZE_STATIC (10);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_STATIC (10);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_JUST_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_AAT_LAYOUT_JUST_TABLE_HH */

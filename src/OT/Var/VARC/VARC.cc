@@ -1,22 +1,22 @@
-#ifndef HB_OT_VAR_VARC_CC
-#define HB_OT_VAR_VARC_CC
-#ifdef HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_VARC_CC
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_VARC_CC
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
 
-#include "VARC.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "VARC.hh"
 
-#ifndef HB_NO_VAR_COMPOSITES
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR_COMPOSITES
 
-#include "../../../hb-draw.hh"
-#include "../../../hb-depend-data.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-layout-gdef-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-depend-data.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../../hb-ot-layout-gdef-table.hh"
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
 //namespace Var {
 
-#define VARC_PROCESS_TRANSFORM_COMPONENTS \
-	HB_STMT_START { \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ VARC_PROCESS_TRANSFORM_COMPONENTS \
+	HB_STMT_ਸ਼ੁਰੂ { \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_X, translateX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_Y, translateY); \
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_ROTATION, rotation); \
@@ -26,540 +26,540 @@ namespace OT {
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_SKEW_Y, skewY); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_X, tCenterX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_Y, tCenterY); \
-	} HB_STMT_END
+	} HB_STMT_ਸਿਰਾ
 
-bool
-VarComponent::decompile_record (const VARC &varc,
-				hb_ubytes_t total_record,
-				hb_vector_t<unsigned> *axis_indices,
-				hb_vector_t<double> *axis_values,
-				record_t *decoded,
+ਤਾਰਕਿਕ
+VarComponent::decompile_ਰਿਕਾਰਡ (ਅਚਲ VARC &varc,
+				hb_ubytes_t ਕੁੱਲ_ਰਿਕਾਰਡ,
+				hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> *axis_indices,
+				hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ> *axis_ਮੁੱਲਾਂ,
+				ਰਿਕਾਰਡ_t *decoded,
 				int64_t *budget)
 {
-  const unsigned char *start = total_record.arrayZ;
-  const unsigned char *record = start;
-  const unsigned char *end = start + total_record.length;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਸ਼ੁਰੂ = ਕੁੱਲ_ਰਿਕਾਰਡ.arrayZ;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਰਿਕਾਰਡ = ਸ਼ੁਰੂ;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਸਿਰਾ = ਸ਼ੁਰੂ + ਕੁੱਲ_ਰਿਕਾਰਡ.ਲੰਮਾਈ;
 
-  if (axis_indices) axis_indices->clear ();
-  if (axis_values) axis_values->clear ();
+  ਜੇ (axis_indices) axis_indices->clear ();
+  ਜੇ (axis_ਮੁੱਲਾਂ) axis_ਮੁੱਲਾਂ->clear ();
 
-#define READ_UINT32VAR(name) \
-  HB_STMT_START { \
-    if (unlikely (unsigned (end - record) < HBUINT32VAR::min_size)) return false; \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ READ_UINT32VAR(name) \
+  HB_STMT_ਸ਼ੁਰੂ { \
+    ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - ਰਿਕਾਰਡ) < HBUINT32VAR::min_ਮਾਪ)) ਵਾਪਸ ਝੂਠ; \
     hb_barrier (); \
-    auto &varint = * (const HBUINT32VAR *) record; \
-    unsigned size = varint.get_size (); \
-    if (unlikely (unsigned (end - record) < size)) return false; \
+    ਸਵੈਚਾਲਿਤ &varint = * (ਅਚਲ HBUINT32VAR *) ਰਿਕਾਰਡ; \
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = varint.get_ਮਾਪ (); \
+    ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - ਰਿਕਾਰਡ) < ਮਾਪ)) ਵਾਪਸ ਝੂਠ; \
     name = (uint32_t) varint; \
-    record += size; \
-  } HB_STMT_END
-#define READ_UINT32VAR_FIELD(name, field) \
-  HB_STMT_START { \
-    decoded->field##_offset = record - start; \
+    ਰਿਕਾਰਡ += ਮਾਪ; \
+  } HB_STMT_ਸਿਰਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ READ_UINT32_VAR_ਖੇਤਰ(name, ਖੇਤਰ) \
+  HB_STMT_ਸ਼ੁਰੂ { \
+    decoded->ਖੇਤਰ##_offset = ਰਿਕਾਰਡ - ਸ਼ੁਰੂ; \
     READ_UINT32VAR (name); \
-    decoded->field##_size = record - start - decoded->field##_offset; \
-  } HB_STMT_END
+    decoded->ਖੇਤਰ##_size = ਰਿਕਾਰਡ - ਸ਼ੁਰੂ - decoded->ਖੇਤਰ##_offset; \
+  } HB_STMT_ਸਿਰਾ
 
   READ_UINT32VAR (decoded->flags);
 
-  decoded->gid_offset = record - start;
-  if (decoded->flags & (unsigned) flags_t::GID_IS_24BIT)
+  decoded->gid_ਵਿੱਥ = ਰਿਕਾਰਡ - ਸ਼ੁਰੂ;
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::GID_IS_24_ਦੋਆਧਾਰੀ_ਅੰਕ)
   {
-    decoded->gid_size = HBGlyphID24::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID24::static_size)) return false;
+    decoded->gid_ਮਾਪ = HBGlyphID24::static_ਮਾਪ;
+    ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - ਰਿਕਾਰਡ) < HBGlyphID24::static_ਮਾਪ)) ਵਾਪਸ ਝੂਠ;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID24 *) record;
-    record += HBGlyphID24::static_size;
+    decoded->gid = * (ਅਚਲ HBGlyphID24 *) ਰਿਕਾਰਡ;
+    ਰਿਕਾਰਡ += HBGlyphID24::static_ਮਾਪ;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    decoded->gid_size = HBGlyphID16::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID16::static_size)) return false;
+    decoded->gid_ਮਾਪ = HBGlyphID16::static_ਮਾਪ;
+    ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - ਰਿਕਾਰਡ) < HBGlyphID16::static_ਮਾਪ)) ਵਾਪਸ ਝੂਠ;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID16 *) record;
-    record += HBGlyphID16::static_size;
+    decoded->gid = * (ਅਚਲ HBGlyphID16 *) ਰਿਕਾਰਡ;
+    ਰਿਕਾਰਡ += HBGlyphID16::static_ਮਾਪ;
   }
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_CONDITION)
-    READ_UINT32VAR_FIELD (decoded->condition_index, condition);
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::HAVE_CONDITION)
+    READ_UINT32_VAR_ਖੇਤਰ (decoded->condition_ਸੂਚਕਾਂਕ, condition);
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_AXES)
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::HAVE_AXES)
   {
-    READ_UINT32VAR_FIELD (decoded->axis_indices_index, axis_indices);
-    unsigned axis_count;
-    if (axis_indices)
+    READ_UINT32_VAR_ਖੇਤਰ (decoded->axis_indices_ਸੂਚਕਾਂਕ, axis_indices);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ;
+    ਜੇ (axis_indices)
     {
-      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-      if (unlikely (axis_indices->in_error ())) return false;
-      axis_count = axis_indices->length;
+      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_ਸੂਚਕਾਂਕ]);
+      ਜੇ (unlikely (axis_indices->ਵਿੱਚ_error ())) ਵਾਪਸ ਝੂਠ;
+      axis_ਗਿਣਤੀ = axis_indices->ਲੰਮਾਈ;
     }
-    else
-      axis_count = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-    if (unlikely (budget && axis_count &&
-		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_count)))
-      return false;
-    if (axis_values)
+    ਨਹੀਂਤਾਂ
+      axis_ਗਿਣਤੀ = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_ਸੂਚਕਾਂਕ]);
+    ਜੇ (unlikely (budget && axis_ਗਿਣਤੀ &&
+		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_ਗਿਣਤੀ)))
+      ਵਾਪਸ ਝੂਠ;
+    ਜੇ (axis_ਮੁੱਲਾਂ)
     {
-      if (unlikely (!axis_values->resize (axis_count))) return false;
-      const HBUINT8 *p = (const HBUINT8 *) record;
-      if (unlikely (!TupleValues::decompile (p, *axis_values,
-					    (const HBUINT8 *) end)))
-	return false;
-      record = (const unsigned char *) p;
+      ਜੇ (unlikely (!axis_ਮੁੱਲਾਂ->resize (axis_ਗਿਣਤੀ))) ਵਾਪਸ ਝੂਠ;
+      ਅਚਲ HBUINT8 *p = (ਅਚਲ HBUINT8 *) ਰਿਕਾਰਡ;
+      ਜੇ (unlikely (!Tuple_ਮੁੱਲਾਂ::decompile (p, *axis_ਮੁੱਲਾਂ,
+					    (ਅਚਲ HBUINT8 *) ਸਿਰਾ)))
+	ਵਾਪਸ ਝੂਠ;
+      ਰਿਕਾਰਡ = (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) p;
     }
-    else if (unlikely (!TupleValues::skip (record, end, axis_count)))
-      return false;
+    ਨਹੀਂਤਾਂ ਜੇ (unlikely (!Tuple_ਮੁੱਲਾਂ::skip (ਰਿਕਾਰਡ, ਸਿਰਾ, axis_ਗਿਣਤੀ)))
+      ਵਾਪਸ ਝੂਠ;
   }
 
-  decoded->axis_values_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->axis_values_var_idx, axis_values_var);
+  decoded->axis_ਮੁੱਲਾਂ_var_idx = VarIdx::NO_VARIATION;
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::AXIS_ਮੁੱਲਾਂ_HAVE_VARIATION)
+    READ_UINT32_VAR_ਖੇਤਰ (decoded->axis_ਮੁੱਲਾਂ_var_idx, axis_ਮੁੱਲਾਂ_var);
 
   decoded->transform_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::TRANSFORM_HAS_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->transform_var_idx, transform_var);
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::TRANSFORM_HAS_VARIATION)
+    READ_UINT32_VAR_ਖੇਤਰ (decoded->transform_var_idx, transform_var);
 
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-  if (decoded->flags & (unsigned) flags_t::flag) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PROCESS_TRANSFORM_COMPONENT(ਖਿਸਕਾਓ, type, flag, name) \
+  ਜੇ (decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::flag) \
   { \
-    static_assert (type::static_size == HBINT16::static_size, ""); \
-    if (unlikely (unsigned (end - record) < HBINT16::static_size)) return false; \
+    static_assert (type::static_ਮਾਪ == HBINT16::static_ਮਾਪ, ""); \
+    ਜੇ (unlikely (ਬਿਨਾਨਿਸ਼ਾਨੀ (ਸਿਰਾ - ਰਿਕਾਰਡ) < HBINT16::static_ਮਾਪ)) ਵਾਪਸ ਝੂਠ; \
     hb_barrier (); \
-    decoded->transform.name = * (const HBINT16 *) record; \
-    record += HBINT16::static_size; \
+    decoded->transform.name = * (ਅਚਲ HBINT16 *) ਰਿਕਾਰਡ; \
+    ਰਿਕਾਰਡ += HBINT16::static_ਮਾਪ; \
   }
   VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ PROCESS_TRANSFORM_COMPONENT
 
-  unsigned reserved = decoded->flags & (unsigned) flags_t::RESERVED_MASK;
-  while (reserved)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ reserved = decoded->flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::RESERVED_ਨਕਾਬ;
+  ਜਦੋਂ (reserved)
   {
-    uint32_t discard HB_UNUSED;
+    uint32_t discard HB_ਅਣਵਰਤਿਆ;
     READ_UINT32VAR (discard);
     reserved &= reserved - 1;
   }
 
-  decoded->size = record - start;
-#undef READ_UINT32VAR_FIELD
-#undef READ_UINT32VAR
-  return true;
+  decoded->ਮਾਪ = ਰਿਕਾਰਡ - ਸ਼ੁਰੂ;
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ READ_UINT32_VAR_ਖੇਤਰ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ READ_UINT32VAR
+  ਵਾਪਸ ਸੱਚ;
 }
 
-bool
-VARC::closure_glyphs (hb_set_t *glyphset) const
+ਤਾਰਕਿਕ
+VARC::ਘੇਰਾ_glyphs (hb_ਸੈੱਟ_t *glyphset) ਅਚਲ
 {
-  if (unlikely (glyphset->in_error ()))
-    return false;
+  ਜੇ (unlikely (glyphset->ਵਿੱਚ_error ()))
+    ਵਾਪਸ ਝੂਠ;
 
-  hb_set_t pending = *glyphset;
-  if (unlikely (pending.in_error ()))
-    return false;
+  hb_ਸੈੱਟ_t pending = *glyphset;
+  ਜੇ (unlikely (pending.ਵਿੱਚ_error ()))
+    ਵਾਪਸ ਝੂਠ;
 
-  while (pending)
+  ਜਦੋਂ (pending)
   {
     hb_codepoint_t gid = pending.get_min ();
     pending.del (gid);
 
-    unsigned index = (this+coverage).get_coverage (gid);
-    if (index == NOT_COVERED) continue;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_2 = (ਇਹ+coverage).get_coverage (gid);
+    ਜੇ (ਸੂਚਕਾਂਕ_2 == NOT_COVERED) ਜਾਰੀ;
 
-    hb_ubytes_t record = (this+glyphRecords)[index];
-    while (record)
+    hb_ubytes_t ਰਿਕਾਰਡ = (ਇਹ+glyph_ਰਿਕਾਰਡਾਂ)[ਸੂਚਕਾਂਕ_2];
+    ਜਦੋਂ (ਰਿਕਾਰਡ)
     {
-      VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (*this, record,
-						     nullptr, nullptr, &component)))
-	return false;
-      if (!glyphset->has (component.gid))
+      VarComponent::ਰਿਕਾਰਡ_t component;
+      ਜੇ (unlikely (!VarComponent::decompile_ਰਿਕਾਰਡ (*ਇਹ, ਰਿਕਾਰਡ,
+						     ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, &component)))
+	ਵਾਪਸ ਝੂਠ;
+      ਜੇ (!glyphset->has (component.gid))
       {
-	glyphset->add (component.gid);
-	if (unlikely (glyphset->in_error ()))
-	  return false;
-	pending.add (component.gid);
-	if (unlikely (pending.in_error ()))
-	  return false;
+	glyphset->ਜੋੜੋ (component.gid);
+	ਜੇ (unlikely (glyphset->ਵਿੱਚ_error ()))
+	  ਵਾਪਸ ਝੂਠ;
+	pending.ਜੋੜੋ (component.gid);
+	ਜੇ (unlikely (pending.ਵਿੱਚ_error ()))
+	  ਵਾਪਸ ਝੂਠ;
       }
-      record = record.sub_array (component.size);
+      ਰਿਕਾਰਡ = ਰਿਕਾਰਡ.sub_array (component.ਮਾਪ);
     }
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-void
-VARC::depend (hb_depend_data_builder_t *depend_data) const
+ਖਾਲੀ
+VARC::depend (hb_depend_ਅੰਕੜੇ_builder_t *depend_ਅੰਕੜੇ) ਅਚਲ
 {
-  const CFF2Index &records = this+glyphRecords;
-  for (auto _ : + hb_zip (this+coverage,
-			  hb_range ((unsigned) records.count)))
+  ਅਚਲ CFF2_ਸੂਚਕਾਂਕ &ਰਿਕਾਰਡਾਂ = ਇਹ+glyph_ਰਿਕਾਰਡਾਂ;
+  ਲਈ (ਸਵੈਚਾਲਿਤ _ : + hb_zip (ਇਹ+coverage,
+			  hb_range ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਰਿਕਾਰਡਾਂ.ਗਿਣਤੀ_2)))
   {
-    hb_codepoint_t gid = _.first;
-    hb_ubytes_t record = records[_.second];
-    while (record)
+    hb_codepoint_t gid = _.ਪਹਿਲਾ;
+    hb_ubytes_t ਰਿਕਾਰਡ = ਰਿਕਾਰਡਾਂ[_.second];
+    ਜਦੋਂ (ਰਿਕਾਰਡ)
     {
-	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (*this, record,
-						       nullptr, nullptr, &component)))
+	VarComponent::ਰਿਕਾਰਡ_t component;
+	ਜੇ (unlikely (!VarComponent::decompile_ਰਿਕਾਰਡ (*ਇਹ, ਰਿਕਾਰਡ,
+						       ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, &component)))
 	{
-	  depend_data->fail ();
-	  return;
+	  depend_ਅੰਕੜੇ->fail ();
+	  ਵਾਪਸ;
 	}
-      depend_data->add_depend (gid, tableTag, component.gid);
-      record = record.sub_array (component.size);
+      depend_ਅੰਕੜੇ->ਜੋੜੋ_depend (gid, ਸਾਰਣੀ_ਟੈਗ, component.gid);
+      ਰਿਕਾਰਡ = ਰਿਕਾਰਡ.sub_array (component.ਮਾਪ);
     }
   }
 }
 
 
-#ifndef HB_NO_DRAW
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_DRAW
 
-struct hb_transforming_pen_context_t
+ਬਣਤਰ hb_transforming_pen_context_t
 {
   hb_transform_t<> transform;
   hb_draw_funcs_t *dfuncs;
-  void *data;
+  ਖਾਲੀ *ਅੰਕੜੇ;
   hb_draw_state_t *st;
-  int64_t *budget_remaining;
+  int64_t *budget_ਬਚਿਆ;
 };
 
-static void
-hb_transforming_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_transforming_pen_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			     ਖਾਲੀ *ਅੰਕੜੇ,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) ਅੰਕੜੇ;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 
-  c->dfuncs->move_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->move_ਮੰਜ਼ਿਲ (c->ਅੰਕੜੇ, *c->st, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_transforming_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_transforming_pen_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			     ਖਾਲੀ *ਅੰਕੜੇ,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) ਅੰਕੜੇ;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 
-  c->dfuncs->line_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->ਸਤਰ_ਮੰਜ਼ਿਲ (c->ਅੰਕੜੇ, *c->st, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_transforming_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_transforming_pen_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				  ਖਾਲੀ *ਅੰਕੜੇ,
 				  hb_draw_state_t *st,
-				  float control_x, float control_y,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+				  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+				  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) ਅੰਕੜੇ;
 
-  c->transform.transform_point (control_x, control_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_ਬਿੰਦੂ (control_x, control_y);
+  c->transform.transform_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 
-  c->dfuncs->quadratic_to (c->data, *c->st, control_x, control_y, to_x, to_y);
+  c->dfuncs->quadratic_ਮੰਜ਼ਿਲ (c->ਅੰਕੜੇ, *c->st, control_x, control_y, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_transforming_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_transforming_pen_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			      ਖਾਲੀ *ਅੰਕੜੇ,
 			      hb_draw_state_t *st,
-			      float control1_x, float control1_y,
-			      float control2_x, float control2_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+			      ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+			      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) ਅੰਕੜੇ;
 
-  c->transform.transform_point (control1_x, control1_y);
-  c->transform.transform_point (control2_x, control2_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_ਬਿੰਦੂ (control1_x, control1_y);
+  c->transform.transform_ਬਿੰਦੂ (control2_x, control2_y);
+  c->transform.transform_ਬਿੰਦੂ (ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 
-  c->dfuncs->cubic_to (c->data, *c->st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+  c->dfuncs->cubic_ਮੰਜ਼ਿਲ (c->ਅੰਕੜੇ, *c->st, control1_x, control1_y, control2_x, control2_y, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_transforming_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				void *data,
+ਸਥਿਰ ਖਾਲੀ
+hb_transforming_pen_close_ਰਸਤਾ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+				ਖਾਲੀ *ਅੰਕੜੇ,
 				hb_draw_state_t *st,
-				void *user_data HB_UNUSED)
+				ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) ਅੰਕੜੇ;
 
-  c->dfuncs->close_path (c->data, *c->st);
+  c->dfuncs->close_ਰਸਤਾ (c->ਅੰਕੜੇ, *c->st);
 }
 
-static int64_t *
-hb_transforming_pen_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ਸਥਿਰ int64_t *
+hb_transforming_pen_get_budget_ਬਚਿਆ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_transforming_pen_context_t *) draw_data)->budget_remaining;
+  ਵਾਪਸ ((hb_transforming_pen_context_t *) draw_ਅੰਕੜੇ)->budget_ਬਚਿਆ;
 }
 
-static inline void free_static_transforming_pen_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_transforming_pen_funcs ();
 
-static struct hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_transforming_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_transforming_pen_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_transforming_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_transforming_pen_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_transforming_pen_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_transforming_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, hb_transforming_pen_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, hb_transforming_pen_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, hb_transforming_pen_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, hb_transforming_pen_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func (funcs, hb_transforming_pen_close_ਰਸਤਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_transforming_pen_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_transforming_pen_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_transforming_pen_funcs;
 
-static inline
-void free_static_transforming_pen_funcs ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ
+ਖਾਲੀ free_static_transforming_pen_funcs ()
 {
   static_transforming_pen_funcs.free_instance ();
 }
 
-static hb_draw_funcs_t *
+ਸਥਿਰ hb_draw_funcs_t *
 hb_transforming_pen_get_funcs ()
 {
-  return static_transforming_pen_funcs.get_unconst ();
+  ਵਾਪਸ static_transforming_pen_funcs.get_unconst ();
 }
 
 hb_ubytes_t
-VarComponent::get_path_at (const hb_varc_context_t &c,
-			   hb_codepoint_t parent_gid,
-			   hb_array_t<const int> coords,
-			   hb_transform_t<> total_transform,
-			   hb_ubytes_t total_record,
-			   hb_scalar_cache_t *cache) const
+VarComponent::get_ਰਸਤਾ_at (ਅਚਲ hb_varc_context_t &c,
+			   hb_codepoint_t ਮਾਪਾ_gid,
+			   hb_array_t<ਅਚਲ ਪੂਰਨ> coords,
+			   hb_transform_t<> ਕੁੱਲ_transform,
+			   hb_ubytes_t ਕੁੱਲ_ਰਿਕਾਰਡ,
+			   hb_scalar_cache_t *cache) ਅਚਲ
 {
-  if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
-    return hb_ubytes_t ();
+  ਜੇ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
+    ਵਾਪਸ hb_ubytes_t ();
 
-  const unsigned char *end = total_record.arrayZ + total_record.length;
-  auto &VARC = *c.font->face->table.VARC->table;
-  auto &varStore = &VARC+VARC.varStore;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਸਿਰਾ = ਕੁੱਲ_ਰਿਕਾਰਡ.arrayZ + ਕੁੱਲ_ਰਿਕਾਰਡ.ਲੰਮਾਈ;
+  ਸਵੈਚਾਲਿਤ &VARC = *c.font->face->ਸਾਰਣੀ.VARC->ਸਾਰਣੀ;
+  ਸਵੈਚਾਲਿਤ &varStore = &VARC+VARC.varStore;
 
-  auto &axisIndices = c.scratch.axisIndices;
-  auto &axisValues = c.scratch.axisValues;
-  record_t component;
-  if (unlikely (!decompile_record (VARC, total_record,
-				   &axisIndices, &axisValues, &component,
+  ਸਵੈਚਾਲਿਤ &axisIndices = c.scratch.axisIndices;
+  ਸਵੈਚਾਲਿਤ &axis_ਮੁੱਲਾਂ_2 = c.scratch.axis_ਮੁੱਲਾਂ_2;
+  ਰਿਕਾਰਡ_t component;
+  ਜੇ (unlikely (!decompile_ਰਿਕਾਰਡ (VARC, ਕੁੱਲ_ਰਿਕਾਰਡ,
+				   &axisIndices, &axis_ਮੁੱਲਾਂ_2, &component,
 				   &c.budget)))
-    return hb_ubytes_t ();
+    ਵਾਪਸ hb_ubytes_t ();
 
   uint32_t flags = component.flags;
   hb_codepoint_t gid = component.gid;
-  const unsigned char *record = total_record.arrayZ + component.size;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਰਿਕਾਰਡ = ਕੁੱਲ_ਰਿਕਾਰਡ.arrayZ + component.ਮਾਪ;
 
   // Condition
-  bool show = true;
-  if (flags & (unsigned) flags_t::HAVE_CONDITION)
+  ਤਾਰਕਿਕ show = ਸੱਚ;
+  ਜੇ (flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::HAVE_CONDITION)
   {
-    const auto &condition = (&VARC+VARC.conditionList)[component.condition_index];
-    auto instancer = MultiItemVarStoreInstancer(&varStore, nullptr, coords, cache);
-    show = condition.evaluate (coords.arrayZ, coords.length, &instancer);
+    ਅਚਲ ਸਵੈਚਾਲਿਤ &condition = (&VARC+VARC.conditionList)[component.condition_ਸੂਚਕਾਂਕ];
+    ਸਵੈਚਾਲਿਤ instancer = Multi_ਵਸਤੂ_Var_Store_Instancer(&varStore, ਖਾਲੀ_ਸੂਚਕ, coords, cache);
+    show = condition.evaluate (coords.arrayZ, coords.ਲੰਮਾਈ, &instancer);
   }
 
   // Axis values
 
   // Apply variations if any
-  if ((flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-      show && !axisValues.in_error ())
+  ਜੇ ((flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::AXIS_ਮੁੱਲਾਂ_HAVE_VARIATION) &&
+      show && !axis_ਮੁੱਲਾਂ_2.ਵਿੱਚ_error ())
   {
-    if (unlikely (!hb_budget_spend (c.budget, axisValues.length,
-				    coords.length)))
-      return hb_ubytes_t ();
-    varStore.get_delta (component.axis_values_var_idx, coords,
-			axisValues.as_array (), cache);
+    ਜੇ (unlikely (!hb_budget_spend (c.budget, axis_ਮੁੱਲਾਂ_2.ਲੰਮਾਈ,
+				    coords.ਲੰਮਾਈ)))
+      ਵਾਪਸ hb_ubytes_t ();
+    varStore.get_delta (component.axis_ਮੁੱਲਾਂ_var_idx, coords,
+			axis_ਮੁੱਲਾਂ_2.as_array (), cache);
   }
 
-  auto component_coords = coords;
+  ਸਵੈਚਾਲਿਤ component_coords = coords;
   /* Copying coords is expensive; so we have put an arbitrary
    * limit on the max number of coords for now. */
-  if ((flags & (unsigned) flags_t::RESET_UNSPECIFIED_AXES) ||
-      coords.length > HB_VAR_COMPOSITE_MAX_AXES)
-    component_coords = hb_array (c.font->coords, c.font->num_coords);
+  ਜੇ ((flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::RESET_UNSPECIFIED_AXES) ||
+      coords.ਲੰਮਾਈ > HB_VAR_ਸੰਯੁਕਤ_MAX_AXES)
+    component_coords = hb_array (c.font->coords, c.font->ਅੰਕ_coords);
 
   uint32_t transformVarIdx = component.transform_var_idx;
   hb_transform_decomposed_t<> transform = component.transform;
 
-  if (show)
+  ਜੇ (show)
   {
     // Only use coord_setter if there's actually any axis overrides.
-    if (unlikely (axisIndices &&
+    ਜੇ (unlikely (axisIndices &&
 		  !hb_budget_spend (c.budget, HB_BUDGET_1,
-				    component_coords.length)))
-      return hb_ubytes_t ();
-    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<int> ());
-    for (unsigned i = 0; i < axisIndices.length; i++)
-      coord_setter[axisIndices[i]] = hb_clamp_to<int> (round (axisValues[i]));
-    if (axisIndices)
+				    component_coords.ਲੰਮਾਈ)))
+      ਵਾਪਸ hb_ubytes_t ();
+    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<ਪੂਰਨ> ());
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < axisIndices.ਲੰਮਾਈ; i++)
+      coord_setter[axisIndices[i]] = hb_clamp_ਮੰਜ਼ਿਲ<ਪੂਰਨ> (round (axis_ਮੁੱਲਾਂ_2[i]));
+    ਜੇ (axisIndices)
       component_coords = coord_setter.get_coords ();
 
     // Apply transform variations if any
-    if (transformVarIdx != VarIdx::NO_VARIATION)
+    ਜੇ (transformVarIdx != VarIdx::NO_VARIATION)
     {
-      double transformValues[9];
-      unsigned numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transformValues[numTransformValues++] = (double) transform.name;
+      ਦੁੱਗਣਾ transform_ਮੁੱਲਾਂ[9];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_Transform_ਮੁੱਲਾਂ = 0;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PROCESS_TRANSFORM_COMPONENT(ਖਿਸਕਾਓ, type, flag, name) \
+	  ਜੇ (flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::flag) \
+	    transform_ਮੁੱਲਾਂ[ਅੰਕ_Transform_ਮੁੱਲਾਂ++] = (ਦੁੱਗਣਾ) transform.name;
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
-      if (unlikely (!hb_budget_spend (c.budget, numTransformValues,
-				      coords.length)))
-	return hb_ubytes_t ();
-      varStore.get_delta (transformVarIdx, coords, hb_array (transformValues, numTransformValues), cache);
-      numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transform.name = (float) transformValues[numTransformValues++];
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ PROCESS_TRANSFORM_COMPONENT
+      ਜੇ (unlikely (!hb_budget_spend (c.budget, ਅੰਕ_Transform_ਮੁੱਲਾਂ,
+				      coords.ਲੰਮਾਈ)))
+	ਵਾਪਸ hb_ubytes_t ();
+      varStore.get_delta (transformVarIdx, coords, hb_array (transform_ਮੁੱਲਾਂ, ਅੰਕ_Transform_ਮੁੱਲਾਂ), cache);
+      ਅੰਕ_Transform_ਮੁੱਲਾਂ = 0;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PROCESS_TRANSFORM_COMPONENT(ਖਿਸਕਾਓ, type, flag, name) \
+	  ਜੇ (flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::flag) \
+	    transform.name = (ਦਸ਼ਮਲਵ) transform_ਮੁੱਲਾਂ[ਅੰਕ_Transform_ਮੁੱਲਾਂ++];
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ PROCESS_TRANSFORM_COMPONENT
     }
 
     // Divide them by their divisors
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (shift && (flags & (unsigned) flags_t::flag)) \
-	     transform.name *= 1.f / (1 << shift);
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PROCESS_TRANSFORM_COMPONENT(ਖਿਸਕਾਓ, type, flag, name) \
+	  ਜੇ (ਖਿਸਕਾਓ && (flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::flag)) \
+	     transform.name *= 1.f / (1 << ਖਿਸਕਾਓ);
     VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ PROCESS_TRANSFORM_COMPONENT
 
-    if (!(flags & (unsigned) flags_t::HAVE_SCALE_Y))
+    ਜੇ (!(flags & (ਬਿਨਾਨਿਸ਼ਾਨੀ) flags_t::HAVE_SCALE_Y))
       transform.scaleY = transform.scaleX;
 
     transform.rotation *= HB_PI;
     transform.skewX *= HB_PI;
     transform.skewY *= HB_PI;
 
-    total_transform.transform (transform.to_transform ());
+    ਕੁੱਲ_transform.transform (transform.ਮੰਜ਼ਿਲ_transform ());
 
-    bool same_coords = component_coords.length == coords.length &&
+    ਤਾਰਕਿਕ same_coords = component_coords.ਲੰਮਾਈ == coords.ਲੰਮਾਈ &&
 		       component_coords.arrayZ == coords.arrayZ;
 
-    c.depth_left--;
-    VARC.get_path_at (c, gid,
-		      component_coords, total_transform,
-		      parent_gid,
-		      same_coords ? cache : nullptr);
-    c.depth_left++;
+    c.ਡੂੰਘਾਈ_ਖੱਬਾ--;
+    VARC.get_ਰਸਤਾ_at (c, gid,
+		      component_coords, ਕੁੱਲ_transform,
+		      ਮਾਪਾ_gid,
+		      same_coords ? cache : ਖਾਲੀ_ਸੂਚਕ);
+    c.ਡੂੰਘਾਈ_ਖੱਬਾ++;
   }
 
-  return hb_ubytes_t (record, end - record);
+  ਵਾਪਸ hb_ubytes_t (ਰਿਕਾਰਡ, ਸਿਰਾ - ਰਿਕਾਰਡ);
 }
 
-bool
-VARC::get_path_at (const hb_varc_context_t &c,
+ਤਾਰਕਿਕ
+VARC::get_ਰਸਤਾ_at (ਅਚਲ hb_varc_context_t &c,
 		   hb_codepoint_t glyph,
-		   hb_array_t<const int> coords,
+		   hb_array_t<ਅਚਲ ਪੂਰਨ> coords,
 		   hb_transform_t<> transform,
-		   hb_codepoint_t parent_glyph,
-		   hb_scalar_cache_t *parent_cache) const
+		   hb_codepoint_t ਮਾਪਾ_glyph,
+		   hb_scalar_cache_t *ਮਾਪਾ_cache) ਅਚਲ
 {
   // Don't recurse on the same glyph.
-  unsigned idx = glyph == parent_glyph ?
+  ਬਿਨਾਨਿਸ਼ਾਨੀ idx = glyph == ਮਾਪਾ_glyph ?
 		 NOT_COVERED :
-		 (this+coverage).get_coverage (glyph);
-  if (idx == NOT_COVERED)
+		 (ਇਹ+coverage).get_coverage (glyph);
+  ਜੇ (idx == NOT_COVERED)
   {
-    if (c.draw_session)
+    ਜੇ (c.draw_session)
     {
       /* Out of budget: draw nothing, but signal success so remaining
        * leaves are skipped instead of falling back per-glyph. */
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      ਜੇ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) ਵਾਪਸ ਸੱਚ;
 
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
+      hb_transform_t<> ਪੱਤੀ_transform = transform;
+      ਪੱਤੀ_transform.x0 *= c.font->x_multf;
+      ਪੱਤੀ_transform.y0 *= c.font->y_multf;
 
       // Build a transforming pen to apply the transform.
       hb_draw_funcs_t *transformer_funcs = hb_transforming_pen_get_funcs ();
-      hb_transforming_pen_context_t context {leaf_transform,
+      hb_transforming_pen_context_t context {ਪੱਤੀ_transform,
 					     c.draw_session->funcs,
-					     c.draw_session->draw_data,
+					     c.draw_session->draw_ਅੰਕੜੇ,
 					     &c.draw_session->st,
 					     &c.budget};
       hb_draw_session_t transformer_session {transformer_funcs, &context};
-      hb_draw_session_t &shape_draw_session = leaf_transform.is_identity () ? *c.draw_session : transformer_session;
+      hb_draw_session_t &shape_draw_session = ਪੱਤੀ_transform.is_ਪਛਾਣ_ਤੱਤ () ? *c.draw_session : transformer_session;
 
-      if (c.font->face->table.glyf->get_path_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, nullptr, &shape_draw_session.get_budget ())) return true;
-#ifndef HB_NO_CFF
-      if (c.font->face->table.cff2->get_path_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) return true;
-      if (c.font->face->table.cff1->get_path (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) return true; // Doesn't have variations
-#endif
-      return false;
+      ਜੇ (c.font->face->ਸਾਰਣੀ.glyf->get_ਰਸਤਾ_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, ਖਾਲੀ_ਸੂਚਕ, &shape_draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_CFF
+      ਜੇ (c.font->face->ਸਾਰਣੀ.cff2->get_ਰਸਤਾ_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ;
+      ਜੇ (c.font->face->ਸਾਰਣੀ.cff1->get_ਰਸਤਾ (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) ਵਾਪਸ ਸੱਚ; // Doesn't have variations
+#ਜੇ_ਅੰਤ
+      ਵਾਪਸ ਝੂਠ;
     }
-    else if (c.extents)
+    ਨਹੀਂਤਾਂ ਜੇ (c.extents)
     {
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      ਜੇ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) ਵਾਪਸ ਸੱਚ;
 
       hb_glyph_extents_t glyph_extents;
-      if (!c.font->face->table.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-#ifndef HB_NO_CFF
-      if (!c.font->face->table.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-      if (!c.font->face->table.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
-#endif
-	return false;
+      ਜੇ (!c.font->face->ਸਾਰਣੀ.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_CFF
+      ਜੇ (!c.font->face->ਸਾਰਣੀ.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+      ਜੇ (!c.font->face->ਸਾਰਣੀ.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
+#ਜੇ_ਅੰਤ
+	ਵਾਪਸ ਝੂਠ;
 
       hb_extents_t<> comp_extents (glyph_extents);
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
-      leaf_transform.transform_extents (comp_extents);
+      hb_transform_t<> ਪੱਤੀ_transform = transform;
+      ਪੱਤੀ_transform.x0 *= c.font->x_multf;
+      ਪੱਤੀ_transform.y0 *= c.font->y_multf;
+      ਪੱਤੀ_transform.transform_extents (comp_extents);
       c.extents->union_ (comp_extents);
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  if (c.depth_left <= 0)
-    return true;
+  ਜੇ (c.ਡੂੰਘਾਈ_ਖੱਬਾ <= 0)
+    ਵਾਪਸ ਸੱਚ;
 
-  if (c.edges_left <= 0)
-    return true;
-  (c.edges_left)--;
+  ਜੇ (c.ਕਿਨਾਰੇ_ਖੱਬਾ <= 0)
+    ਵਾਪਸ ਸੱਚ;
+  (c.ਕਿਨਾਰੇ_ਖੱਬਾ)--;
 
-  hb_decycler_node_t node (c.decycler);
-  if (unlikely (!node.visit (glyph)))
-    return true;
+  hb_decycler_ਗੰਢ_t node (c.decycler);
+  ਜੇ (unlikely (!node.ਦੇਖੋ (glyph)))
+    ਵਾਪਸ ਸੱਚ;
 
-  hb_ubytes_t record = (this+glyphRecords)[idx];
+  hb_ubytes_t ਰਿਕਾਰਡ = (ਇਹ+glyph_ਰਿਕਾਰਡਾਂ)[idx];
 
   hb_scalar_cache_t static_cache;
-  hb_scalar_cache_t *cache = parent_cache ?
-				  parent_cache :
-				  (this+varStore).create_cache (&static_cache);
+  hb_scalar_cache_t *cache = ਮਾਪਾ_cache ?
+				  ਮਾਪਾ_cache :
+				  (ਇਹ+varStore).create_cache (&static_cache);
 
-  VarCompositeGlyph::get_path_at (c,
+  Var_ਸੰਯੁਕਤ_Glyph::get_ਰਸਤਾ_at (c,
 				  glyph,
 				  coords, transform,
-				  record,
+				  ਰਿਕਾਰਡ,
 				  cache);
 
-  if (cache != parent_cache)
-    (this+varStore).destroy_cache (cache, &static_cache);
+  ਜੇ (cache != ਮਾਪਾ_cache)
+    (ਇਹ+varStore).destroy_cache (cache, &static_cache);
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#undef VARC_PROCESS_TRANSFORM_COMPONENTS
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ VARC_PROCESS_TRANSFORM_COMPONENTS
 
 //} // namespace Var
 } // namespace OT
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_OT_VAR_VARC_CC (pacify clang) */
-#endif /* HB_OT_VAR_VARC_CC */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_VARC_CC (pacify clang) */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_VARC_CC */

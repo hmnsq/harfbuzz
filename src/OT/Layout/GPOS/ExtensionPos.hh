@@ -1,17 +1,17 @@
-#ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
-#define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
+ਨਾਮਾਕਾਸ਼ GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+ਬਣਤਰ ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ Pos_Lookup_Sub_ਸਾਰਣੀ Sub_ਸਾਰਣੀ;
 };
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */
+#ਜੇ_ਅੰਤ /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */

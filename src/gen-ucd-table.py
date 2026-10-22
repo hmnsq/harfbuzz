@@ -7,31 +7,31 @@ Input file:
 """
 
 # https://github.com/harfbuzz/packtab
-import packTab
-import packTab.ucdxml
+ਆਯਾਤ packTab
+ਆਯਾਤ packTab.ucdxml
 
-import sys, re
-import logging
+ਆਯਾਤ sys, re
+ਆਯਾਤ logging
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-    del sys.argv[1]
+ਜੇ ਲੰਬਾਈ(sys.argv) > 1 ਅਤੇ sys.argv[1] == "--rust":
+    ਹਟਾਓ sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+ਨਹੀਂਤਾਂ:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-if len(sys.argv) not in (2, 3):
+ਜੇ ਲੰਬਾਈ(sys.argv) ਨਹੀਂ ਵਿੱਚ (2, 3):
     sys.exit(__doc__)
 
 logging.info("Loading UCDXML...")
-ucdxml = packTab.ucdxml.load_ucdxml(sys.argv[1])
+ucdxml = packTab.ucdxml.ਲੱਦੋ_ucdxml(sys.argv[1])
 ucd = packTab.ucdxml.ucdxml_get_repertoire(ucdxml)
 
-hb_script_list_h = "hb-script-list.h" if len(sys.argv) < 3 else sys.argv[2]
+hb_script_list_h = "hb-script-list.h" ਜੇ ਲੰਬਾਈ(sys.argv) < 3 ਨਹੀਂਤਾਂ sys.argv[2]
 
 logging.info("Preparing data tables...")
 
@@ -47,10 +47,10 @@ logging.info("Preparing data tables...")
 # Composition & Decomposition (dm) are encoded elaborately,
 # as discussed below.
 
-gc = [u["gc"] for u in ucd]
-ccc = [int(u["ccc"]) for u in ucd]
-bmg = [int(v, 16) - int(u) if v else 0 for u, v in enumerate(u["bmg"] for u in ucd)]
-sc = [u["sc"] for u in ucd]
+gc = [u["gc"] ਲਈ u ਵਿੱਚ ucd]
+ccc = [ਪੂਰਨ(u["ccc"]) ਲਈ u ਵਿੱਚ ucd]
+bmg = [ਪੂਰਨ(v, 16) - ਪੂਰਨ(u) ਜੇ v ਨਹੀਂਤਾਂ 0 ਲਈ u, v ਵਿੱਚ enumerate(u["bmg"] ਲਈ u ਵਿੱਚ ucd)]
+sc = [u["sc"] ਲਈ u ਵਿੱਚ ucd]
 
 
 # Prepare Compose / Decompose data
@@ -58,53 +58,53 @@ sc = [u["sc"] for u in ucd]
 # This code is very dense.  See hb_ucd_compose() / hb_ucd_decompose() for the logic.
 
 dm = {
-    i: tuple(int(v, 16) for v in u["dm"].split())
-    for i, u in enumerate(ucd)
-    if u["dm"] != "#" and u["dt"] == "can" and not (0xAC00 <= i < 0xAC00 + 11172)
+    i: tuple(ਪੂਰਨ(v, 16) ਲਈ v ਵਿੱਚ u["dm"].ਵੰਡੋ())
+    ਲਈ i, u ਵਿੱਚ enumerate(ucd)
+    ਜੇ u["dm"] != "#" ਅਤੇ u["dt"] == "can" ਅਤੇ ਨਹੀਂ (0xAC00 <= i < 0xAC00 + 11172)
 }
-ce = {i for i, u in enumerate(ucd) if u["Comp_Ex"] == "Y"}
+ce = {i ਲਈ i, u ਵਿੱਚ enumerate(ucd) ਜੇ u["Comp_Ex"] == "Y"}
 
-assert not any(v for v in dm.values() if len(v) not in (1, 2))
-dm1 = sorted(set(v for v in dm.values() if len(v) == 1))
-assert all((v[0] >> 16) in (0, 2) for v in dm1)
-dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 0]
-dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 2]
-dm1_order = {v: i + 1 for i, v in enumerate(dm1)}
+ਪ੍ਰਤਿਜ੍ਞਾ ਨਹੀਂ any(v ਲਈ v ਵਿੱਚ dm.ਮੁੱਲਾਂ() ਜੇ ਲੰਬਾਈ(v) ਨਹੀਂ ਵਿੱਚ (1, 2))
+dm1 = sorted(ਸੈੱਟ(v ਲਈ v ਵਿੱਚ dm.ਮੁੱਲਾਂ() ਜੇ ਲੰਬਾਈ(v) == 1))
+ਪ੍ਰਤਿਜ੍ਞਾ all((v[0] >> 16) ਵਿੱਚ (0, 2) ਲਈ v ਵਿੱਚ dm1)
+dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) ਲਈ v ਵਿੱਚ dm1 ਜੇ (v[0] >> 16) == 0]
+dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) ਲਈ v ਵਿੱਚ dm1 ਜੇ (v[0] >> 16) == 2]
+dm1_ਕ੍ਰਮ = {v: i + 1 ਲਈ i, v ਵਿੱਚ enumerate(dm1)}
 
 dm2 = sorted(
-    (v + (i if i not in ce and not ccc[i] else 0,), v)
-    for i, v in dm.items()
-    if len(v) == 2
+    (v + (i ਜੇ i ਨਹੀਂ ਵਿੱਚ ce ਅਤੇ ਨਹੀਂ ccc[i] ਨਹੀਂਤਾਂ 0,), v)
+    ਲਈ i, v ਵਿੱਚ dm.ਚੀਜ਼ਾਂ()
+    ਜੇ ਲੰਬਾਈ(v) == 2
 )
 
-filt = lambda v: (
+filt = ਅਨਾਮ v: (
     (v[0] & 0xFFFFF800) == 0x0000
-    and (v[1] & 0xFFFFFF80) == 0x0300
-    and (v[2] & 0xFFF0C000) == 0x0000
+    ਅਤੇ (v[1] & 0xFFFFFF80) == 0x0300
+    ਅਤੇ (v[2] & 0xFFF0C000) == 0x0000
 )
-dm2_u32_array = [v for v in dm2 if filt(v[0])]
-dm2_u64_array = [v for v in dm2 if not filt(v[0])]
-assert dm2_u32_array + dm2_u64_array == dm2
+dm2_u32_array = [v ਲਈ v ਵਿੱਚ dm2 ਜੇ filt(v[0])]
+dm2_u64_array = [v ਲਈ v ਵਿੱਚ dm2 ਜੇ ਨਹੀਂ filt(v[0])]
+ਪ੍ਰਤਿਜ੍ਞਾ dm2_u32_array + dm2_u64_array == dm2
 dm2_u32_array = [
     "HB_CODEPOINT_ENCODE3_11_7_14 (0x%04X, 0x%04X, 0x%04X)" % v[0]
-    for v in dm2_u32_array
+    ਲਈ v ਵਿੱਚ dm2_u32_array
 ]
 dm2_u64_array = [
-    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] for v in dm2_u64_array
+    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] ਲਈ v ਵਿੱਚ dm2_u64_array
 ]
 
-l = 1 + len(dm1_p0_array) + len(dm1_p2_array)
-dm2_order = {v[1]: i + l for i, v in enumerate(dm2)}
+l = 1 + ਲੰਬਾਈ(dm1_p0_array) + ਲੰਬਾਈ(dm1_p2_array)
+dm2_ਕ੍ਰਮ = {v[1]: i + l ਲਈ i, v ਵਿੱਚ enumerate(dm2)}
 
-dm_order = {None: 0}
-dm_order.update(dm1_order)
-dm_order.update(dm2_order)
+dm_ਕ੍ਰਮ = {ਕੁਝ_ਨਹੀਂ: 0}
+dm_ਕ੍ਰਮ.update(dm1_ਕ੍ਰਮ)
+dm_ਕ੍ਰਮ.update(dm2_ਕ੍ਰਮ)
 
 
 # Prepare General_Category / Script mapping arrays
 
-gc_order = dict()
-for i, v in enumerate(
+gc_ਕ੍ਰਮ = dict()
+ਲਈ i, v ਵਿੱਚ enumerate(
     (
         "Cc",
         "Cf",
@@ -138,22 +138,22 @@ for i, v in enumerate(
         "Zs",
     )
 ):
-    gc_order[i] = v
-    gc_order[v] = i
+    gc_ਕ੍ਰਮ[i] = v
+    gc_ਕ੍ਰਮ[v] = i
 
-sc_order = dict()
+sc_ਕ੍ਰਮ = dict()
 sc_array = []
 sc_re = re.compile(r"\b(HB_SCRIPT_[_A-Z]*).*HB_TAG [(]'(.)','(.)','(.)','(.)'[)]")
-for line in open(hb_script_list_h):
-    m = sc_re.search(line)
-    if not m:
-        continue
-    name = m.group(1)
-    tag = "".join(m.group(i) for i in range(2, 6))
-    i = len(sc_array)
-    sc_order[tag] = i
-    sc_order[i] = tag
-    if language.name == "rust":
+ਲਈ ਸਤਰ ਵਿੱਚ open(hb_script_list_h):
+    m = sc_re.ਖੋਜ(ਸਤਰ)
+    ਜੇ ਨਹੀਂ m:
+        ਜਾਰੀ
+    name = m.ਸਮੂਹ(1)
+    ਟੈਗ_2 = "".join(m.ਸਮੂਹ(i) ਲਈ i ਵਿੱਚ ਸੀਮਾ(2, 6))
+    i = ਲੰਬਾਈ(sc_array)
+    sc_ਕ੍ਰਮ[ਟੈਗ_2] = i
+    sc_ਕ੍ਰਮ[i] = ਟੈਗ_2
+    ਜੇ language.name == "rust":
         name = name.replace("HB_SCRIPT_", "script::")
     sc_array.append(name)
 
@@ -171,36 +171,36 @@ compression_level = {
 }
 
 logging.info("Generating output...")
-print("/* == Start of generated table == */")
-print("/*")
-print(" * The following table is generated by running:")
-print(" *")
-print(
+ਛਾਪੋ("/* == Start of generated table == */")
+ਛਾਪੋ("/*")
+ਛਾਪੋ(" * The following table is generated by running:")
+ਛਾਪੋ(" *")
+ਛਾਪੋ(
     " *   ./gen-ucd-table.py %sucd.nounihan.grouped.xml hb-script-list.h"
-    % (("--%s " % language.name) if language.name != "c" else "")
+    % (("--%s " % language.name) ਜੇ language.name != "c" ਨਹੀਂਤਾਂ "")
 )
-print(" *")
-print(" * on file with this description:", ucdxml.description)
-print(" */")
-print()
-if language.name == "c":
-    print("#ifndef HB_UCD_TABLE_HH")
-    print("#define HB_UCD_TABLE_HH")
-    print()
-    print('#include "hb.hh"')
-    print()
-elif language.name == "rust":
-    print("pub(crate) mod ucd {")
-    print()
-    print("#![allow(unused_parens)]")
-    print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-    print()
-    print("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
-    print("use crate::hb::common::script;")
-    print("use crate::hb::common::Script as hb_script_t;")
-    print()
-else:
-    assert False, "Unknown language: %s" % language.name
+ਛਾਪੋ(" *")
+ਛਾਪੋ(" * on file with this description:", ucdxml.description)
+ਛਾਪੋ(" */")
+ਛਾਪੋ()
+ਜੇ language.name == "c":
+    ਛਾਪੋ("#ifndef HB_UCD_TABLE_HH")
+    ਛਾਪੋ("#define HB_UCD_TABLE_HH")
+    ਛਾਪੋ()
+    ਛਾਪੋ('#include "hb.hh"')
+    ਛਾਪੋ()
+ਜਾਂਜੇ language.name == "rust":
+    ਛਾਪੋ("pub(crate) mod ucd {")
+    ਛਾਪੋ()
+    ਛਾਪੋ("#![allow(unused_parens)]")
+    ਛਾਪੋ("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+    ਛਾਪੋ()
+    ਛਾਪੋ("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
+    ਛਾਪੋ("use crate::hb::common::script;")
+    ਛਾਪੋ("use crate::hb::common::Script as hb_script_t;")
+    ਛਾਪੋ()
+ਨਹੀਂਤਾਂ:
+    ਪ੍ਰਤਿਜ੍ਞਾ ਝੂਠ, "Unknown language: %s" % language.name
 
 # Write mapping data
 
@@ -208,85 +208,85 @@ uint16_t = language.type_name("u16")
 uint32_t = language.type_name("u32")
 uint64_t = language.type_name("u64")
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
-else:
-    assert False, "Unknown language: %s" % language.name
+ਜੇ language.name == "c":
+    ਨਿਜੀ = ਸੱਚ
+ਜਾਂਜੇ language.name == "rust":
+    ਨਿਜੀ = ਝੂਠ
+ਨਹੀਂਤਾਂ:
+    ਪ੍ਰਤਿਜ੍ਞਾ ਝੂਠ, "Unknown language: %s" % language.name
 
-code = packTab.Code("_hb_ucd")
-sc_array, _ = code.addArray("hb_script_t", "sc_map", sc_array)
-dm1_p0_array, _ = code.addArray(uint16_t, "dm1_p0_map", dm1_p0_array)
-dm1_p2_array, _ = code.addArray(uint16_t, "dm1_p2_map", dm1_p2_array)
-dm2_u32_array, _ = code.addArray(uint32_t, "dm2_u32_map", dm2_u32_array)
-dm2_u64_array, _ = code.addArray(uint64_t, "dm2_u64_map", dm2_u64_array)
-code.print_code(language=language, private=private)
+ਕੋਡ = packTab.ਕੋਡ_2("_hb_ucd")
+sc_array, _ = ਕੋਡ.ਜੋੜੋ_Array("hb_script_t", "sc_map", sc_array)
+dm1_p0_array, _ = ਕੋਡ.ਜੋੜੋ_Array(uint16_t, "dm1_p0_map", dm1_p0_array)
+dm1_p2_array, _ = ਕੋਡ.ਜੋੜੋ_Array(uint16_t, "dm1_p2_map", dm1_p2_array)
+dm2_u32_array, _ = ਕੋਡ.ਜੋੜੋ_Array(uint32_t, "dm2_u32_map", dm2_u32_array)
+dm2_u64_array, _ = ਕੋਡ.ਜੋੜੋ_Array(uint64_t, "dm2_u64_map", dm2_u64_array)
+ਕੋਡ.print_ਕੋਡ(language=language, ਨਿਜੀ=ਨਿਜੀ)
 
 datasets = [
-    ("gc", gc, "Cn", gc_order),
-    ("ccc", ccc, 0, None),
-    ("bmg", bmg, 0, None),
-    ("sc", sc, "Zzzz", sc_order),
-    ("dm", dm, None, dm_order),
+    ("gc", gc, "Cn", gc_ਕ੍ਰਮ),
+    ("ccc", ccc, 0, ਕੁਝ_ਨਹੀਂ),
+    ("bmg", bmg, 0, ਕੁਝ_ਨਹੀਂ),
+    ("sc", sc, "Zzzz", sc_ਕ੍ਰਮ),
+    ("dm", dm, ਕੁਝ_ਨਹੀਂ, dm_ਕ੍ਰਮ),
 ]
 
 
 # Write main data
 
 modes = {}
-if language.name == "c":
+ਜੇ language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#elif !defined(HB_NO_UCD_UNASSIGNED)"
     modes[SLOPPY] = "#else"
-    modes[None] = "#endif"
-else:
+    modes[ਕੁਝ_ਨਹੀਂ] = "#endif"
+ਨਹੀਂਤਾਂ:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
-    print()
-    if text:
-        print(text)
-        print()
-    if step is None:
-        continue
+ਲਈ ਕਦਮ, ਪਾਠ ਵਿੱਚ modes.ਚੀਜ਼ਾਂ():
+    ਛਾਪੋ()
+    ਜੇ ਪਾਠ:
+        ਛਾਪੋ(ਪਾਠ)
+        ਛਾਪੋ()
+    ਜੇ ਕਦਮ ਹੈ ਕੁਝ_ਨਹੀਂ:
+        ਜਾਰੀ
 
-    compression = compression_level[step]
+    compression = compression_level[ਕਦਮ]
     logging.info("  Compression=%d:" % compression)
 
-    if step == SLOPPY:
-        for i in range(len(gc)):
-            if (i % 128) and gc[i] == "Cn":
+    ਜੇ ਕਦਮ == SLOPPY:
+        ਲਈ i ਵਿੱਚ ਸੀਮਾ(ਲੰਬਾਈ(gc)):
+            ਜੇ (i % 128) ਅਤੇ gc[i] == "Cn":
                 gc[i] = gc[i - 1]
-        for i in range(len(gc) - 2, -1, -1):
-            if ((i + 1) % 128) and gc[i] == "Cn":
+        ਲਈ i ਵਿੱਚ ਸੀਮਾ(ਲੰਬਾਈ(gc) - 2, -1, -1):
+            ਜੇ ((i + 1) % 128) ਅਤੇ gc[i] == "Cn":
                 gc[i] = gc[i + 1]
-        for i in range(len(sc)):
-            if (i % 128) and sc[i] == "Zzzz":
+        ਲਈ i ਵਿੱਚ ਸੀਮਾ(ਲੰਬਾਈ(sc)):
+            ਜੇ (i % 128) ਅਤੇ sc[i] == "Zzzz":
                 sc[i] = sc[i - 1]
-        for i in range(len(sc) - 2, -1, -1):
-            if ((i + 1) % 128) and sc[i] == "Zzzz":
+        ਲਈ i ਵਿੱਚ ਸੀਮਾ(ਲੰਬਾਈ(sc) - 2, -1, -1):
+            ਜੇ ((i + 1) % 128) ਅਤੇ sc[i] == "Zzzz":
                 sc[i] = sc[i + 1]
 
-    code = packTab.Code("_hb_ucd")
+    ਕੋਡ = packTab.ਕੋਡ_2("_hb_ucd")
 
-    for name, data, default, mapping in datasets:
-        sol = packTab.pack_table(
-            data, default, mapping=mapping, compression=compression
+    ਲਈ name, ਅੰਕੜੇ, ਮੂਲ, mapping ਵਿੱਚ datasets:
+        sol = packTab.pack_ਸਾਰਣੀ(
+            ਅੰਕੜੇ, ਮੂਲ, mapping=mapping, compression=compression
         )
-        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.fullCost))
-        sol.genCode(code, name, private=private, language=language)
+        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.ਭਰਿਆ_ਲਾਗਤ))
+        sol.gen_ਕੋਡ(ਕੋਡ, name, ਨਿਜੀ=ਨਿਜੀ, language=language)
 
-    code.print_code(language=language)
+    ਕੋਡ.print_ਕੋਡ(language=language)
 
-    print()
+    ਛਾਪੋ()
 
-if language.name == "c":
-    print("#endif /* HB_UCD_TABLE_HH */")
-elif language.name == "rust":
-    print("}")
-else:
-    assert False, "Unknown language: %s" % language.name
-print()
-print("/* == End of generated table == */")
+ਜੇ language.name == "c":
+    ਛਾਪੋ("#endif /* HB_UCD_TABLE_HH */")
+ਜਾਂਜੇ language.name == "rust":
+    ਛਾਪੋ("}")
+ਨਹੀਂਤਾਂ:
+    ਪ੍ਰਤਿਜ੍ਞਾ ਝੂਠ, "Unknown language: %s" % language.name
+ਛਾਪੋ()
+ਛਾਪੋ("/* == End of generated table == */")
 logging.info("Done.")

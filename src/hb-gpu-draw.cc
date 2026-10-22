@@ -24,19 +24,19 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-gpu.h"
-#include "hb-gpu-draw.hh"
-#include "hb-gpu-cu2qu.hh"
-#include "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-draw.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-cu2qu.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
 
-#include <cmath>
+#ਅਨ੍ਤਰ੍ਭਾਵ <cmath>
 
 /* ---- Accumulator ---- */
 
-static void
-acc_update_extents (hb_gpu_draw_t *g, double x, double y)
+ਸਥਿਰ ਖਾਲੀ
+acc_update_extents (hb_gpu_draw_t *g, ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
   g->ext_min_x = hb_min (g->ext_min_x, x);
   g->ext_min_y = hb_min (g->ext_min_y, y);
@@ -44,31 +44,31 @@ acc_update_extents (hb_gpu_draw_t *g, double x, double y)
   g->ext_max_y = hb_max (g->ext_max_y, y);
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 acc_emit (hb_gpu_draw_t *g,
-	  bool contour_start,
-	  double p1x, double p1y,
-	  double p2x, double p2y,
-	  double p3x, double p3y)
+	  ਤਾਰਕਿਕ contour_ਸ਼ੁਰੂ,
+	  ਦੁੱਗਣਾ p1x, ਦੁੱਗਣਾ p1y,
+	  ਦੁੱਗਣਾ p2x, ਦੁੱਗਣਾ p2y,
+	  ਦੁੱਗਣਾ p3x, ਦੁੱਗਣਾ p3y)
 {
-  int64_t *budget = g->get_budget_remaining ();
-  if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
-    return;
+  int64_t *budget = g->get_budget_ਬਚਿਆ ();
+  ਜੇ (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
+    ਵਾਪਸ;
 
-  if (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
+  ਜੇ (unlikely (g->ਅੰਕ_curves >= HB_GPU_DRAW_MAX_CURVES))
   {
-    g->success = false;
-    return;
+    g->success = ਝੂਠ;
+    ਵਾਪਸ;
   }
 
-  hb_gpu_curve_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_start};
-  if (unlikely (!g->curves.push_or_fail (c)))
+  hb_gpu_ਵਕਰ_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_ਸ਼ੁਰੂ};
+  ਜੇ (unlikely (!g->curves.ਧੱਕੋ_or_fail (c)))
   {
-    g->success = false;
-    return;
+    g->success = ਝੂਠ;
+    ਵਾਪਸ;
   }
 
-  g->num_curves++;
+  g->ਅੰਕ_curves++;
   g->current_x = p3x;
   g->current_y = p3y;
 
@@ -77,99 +77,99 @@ acc_emit (hb_gpu_draw_t *g,
   acc_update_extents (g, p3x, p3y);
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 acc_emit_conic (hb_gpu_draw_t *g,
-		double cx, double cy,
-		double x, double y)
+		ਦੁੱਗਣਾ cx, ਦੁੱਗਣਾ cy,
+		ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
-  if (g->current_x == x && g->current_y == y)
-    return;
+  ਜੇ (g->current_x == x && g->current_y == y)
+    ਵਾਪਸ;
 
-  bool contour_start = g->need_moveto;
-  if (g->need_moveto) {
-    g->start_x = g->current_x;
-    g->start_y = g->current_y;
-    g->need_moveto = false;
+  ਤਾਰਕਿਕ contour_ਸ਼ੁਰੂ = g->need_moveto;
+  ਜੇ (g->need_moveto) {
+    g->ਸ਼ੁਰੂ_x = g->current_x;
+    g->ਸ਼ੁਰੂ_y = g->current_y;
+    g->need_moveto = ਝੂਠ;
   }
 
-  acc_emit (g, contour_start,
+  acc_emit (g, contour_ਸ਼ੁਰੂ,
 	    g->current_x, g->current_y, cx, cy, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_move_to (double x, double y)
+ਖਾਲੀ
+hb_gpu_draw_t::acc_move_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
-  if (unlikely (!success))
-    return;
+  ਜੇ (unlikely (!success))
+    ਵਾਪਸ;
 
-  need_moveto = true;
+  need_moveto = ਸੱਚ;
   current_x = x;
   current_y = y;
 }
 
-void
-hb_gpu_draw_t::acc_line_to (double x, double y)
+ਖਾਲੀ
+hb_gpu_draw_t::acc_ਸਤਰ_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
-  if (unlikely (!success))
-    return;
+  ਜੇ (unlikely (!success))
+    ਵਾਪਸ;
 
-  acc_emit_conic (this, current_x, current_y, x, y);
+  acc_emit_conic (ਇਹ, current_x, current_y, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
+ਖਾਲੀ
+hb_gpu_draw_t::acc_conic_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ cx, ਦੁੱਗਣਾ cy, ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
-  if (unlikely (!success))
-    return;
+  ਜੇ (unlikely (!success))
+    ਵਾਪਸ;
 
-  acc_emit_conic (this, cx, cy, x, y);
+  acc_emit_conic (ਇਹ, cx, cy, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_close_path ()
+ਖਾਲੀ
+hb_gpu_draw_t::acc_close_ਰਸਤਾ ()
 {
-  if (unlikely (!success))
-    return;
+  ਜੇ (unlikely (!success))
+    ਵਾਪਸ;
 
-  if (!need_moveto &&
-      (current_x != start_x || current_y != start_y))
-    acc_line_to (start_x, start_y);
+  ਜੇ (!need_moveto &&
+      (current_x != ਸ਼ੁਰੂ_x || current_y != ਸ਼ੁਰੂ_y))
+    acc_ਸਤਰ_ਮੰਜ਼ਿਲ (ਸ਼ੁਰੂ_x, ਸ਼ੁਰੂ_y);
 }
 
 
-void
-hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
-			       double c2x, double c2y,
-			       double x, double y)
+ਖਾਲੀ
+hb_gpu_draw_t::acc_cubic_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ c1x, ਦੁੱਗਣਾ c1y,
+			       ਦੁੱਗਣਾ c2x, ਦੁੱਗਣਾ c2y,
+			       ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y)
 {
-  if (unlikely (!success))
-    return;
+  ਜੇ (unlikely (!success))
+    ਵਾਪਸ;
 
-  double c0x = current_x, c0y = current_y;
+  ਦੁੱਗਣਾ c0x = current_x, c0y = current_y;
 
-  if (c0x == x && c0y == y &&
+  ਜੇ (c0x == x && c0y == y &&
       c1x == x && c1y == y &&
       c2x == x && c2y == y)
-    return;
+    ਵਾਪਸ;
 
   /* Degenerate cubic: all control points are collinear.
    * Emit as a line instead of running cu2qu subdivision. */
-  double dx = x - c0x, dy = y - c0y;
-  double len_sq = dx * dx + dy * dy;
-  if (len_sq > 0.)
+  ਦੁੱਗਣਾ dx = x - c0x, dy = y - c0y;
+  ਦੁੱਗਣਾ len_sq = dx * dx + dy * dy;
+  ਜੇ (len_sq > 0.)
   {
-    double inv = 1.0 / len_sq;
-    double cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
-    double cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
-    if (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
+    ਦੁੱਗਣਾ inv = 1.0 / len_sq;
+    ਦੁੱਗਣਾ cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
+    ਦੁੱਗਣਾ cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
+    ਜੇ (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
 	cross2 * cross2 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE)
     {
-      acc_line_to (x, y);
-      return;
+      acc_ਸਤਰ_ਮੰਜ਼ਿਲ (x, y);
+      ਵਾਪਸ;
     }
   }
 
-  hb_gpu_cubic_to_quadratics (this,
+  hb_gpu_cubic_ਮੰਜ਼ਿਲ_quadratics (ਇਹ,
 			      {c0x, c0y}, {c1x, c1y},
 			      {c2x, c2y}, {x, y},
 			      HB_GPU_CU2QU_TOLERANCE, 0);
@@ -178,115 +178,115 @@ hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
 
 /* ---- Draw funcs ---- */
 
-static void
-hb_gpu_draw_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		     void *data,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x, float to_y,
-		     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_gpu_draw_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *ਅੰਕੜੇ,
+		     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_close_path ();
-  g->acc_move_to ((double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ਅੰਕੜੇ;
+  g->acc_close_ਰਸਤਾ ();
+  g->acc_move_ਮੰਜ਼ਿਲ ((ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_gpu_draw_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		     void *data,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x, float to_y,
-		     void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_gpu_draw_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		     ਖਾਲੀ *ਅੰਕੜੇ,
+		     hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		     ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_line_to ((double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ਅੰਕੜੇ;
+  g->acc_ਸਤਰ_ਮੰਜ਼ਿਲ ((ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_gpu_draw_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data,
-			  hb_draw_state_t *st HB_UNUSED,
-			  float control_x, float control_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_gpu_draw_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			  ਖਾਲੀ *ਅੰਕੜੇ,
+			  hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+			  ਦਸ਼ਮਲਵ control_x, ਦਸ਼ਮਲਵ control_y,
+			  ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+			  ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_conic_to ((double) control_x, (double) control_y,
-		   (double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ਅੰਕੜੇ;
+  g->acc_conic_ਮੰਜ਼ਿਲ ((ਦੁੱਗਣਾ) control_x, (ਦੁੱਗਣਾ) control_y,
+		   (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_gpu_draw_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		      void *data,
-		      hb_draw_state_t *st HB_UNUSED,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y,
-		      void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_gpu_draw_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+		      ਖਾਲੀ *ਅੰਕੜੇ,
+		      hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+		      ਦਸ਼ਮਲਵ control1_x, ਦਸ਼ਮਲਵ control1_y,
+		      ਦਸ਼ਮਲਵ control2_x, ਦਸ਼ਮਲਵ control2_y,
+		      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y,
+		      ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_cubic_to ((double) control1_x, (double) control1_y,
-		   (double) control2_x, (double) control2_y,
-		   (double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ਅੰਕੜੇ;
+  g->acc_cubic_ਮੰਜ਼ਿਲ ((ਦੁੱਗਣਾ) control1_x, (ਦੁੱਗਣਾ) control1_y,
+		   (ਦੁੱਗਣਾ) control2_x, (ਦੁੱਗਣਾ) control2_y,
+		   (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_x, (ਦੁੱਗਣਾ) ਮੰਜ਼ਿਲ_y);
 }
 
-static void
-hb_gpu_draw_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			void *data,
-			hb_draw_state_t *st HB_UNUSED,
-			void *user_data HB_UNUSED)
+ਸਥਿਰ ਖਾਲੀ
+hb_gpu_draw_close_ਰਸਤਾ (hb_draw_funcs_t *dfuncs HB_ਅਣਵਰਤਿਆ,
+			ਖਾਲੀ *ਅੰਕੜੇ,
+			hb_draw_state_t *st HB_ਅਣਵਰਤਿਆ,
+			ਖਾਲੀ *user_ਅੰਕੜੇ HB_ਅਣਵਰਤਿਆ)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_close_path ();
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ਅੰਕੜੇ;
+  g->acc_close_ਰਸਤਾ ();
 }
 
-static hb_bool_t
-hb_gpu_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
-			int64_t budget, void *)
+ਸਥਿਰ hb_bool_t
+hb_gpu_draw_ਸੈੱਟ_budget (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ,
+			int64_t budget, ਖਾਲੀ *)
 {
-  auto *draw = (hb_gpu_draw_t *) draw_data;
+  ਸਵੈਚਾਲਿਤ *draw = (hb_gpu_draw_t *) draw_ਅੰਕੜੇ;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static int64_t
-hb_gpu_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
+ਸਥਿਰ int64_t
+hb_gpu_draw_get_budget (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->budget;
+  ਵਾਪਸ ((hb_gpu_draw_t *) draw_ਅੰਕੜੇ)->budget;
 }
 
-static int64_t *
-hb_gpu_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ਸਥਿਰ int64_t *
+hb_gpu_draw_get_budget_ਬਚਿਆ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
+  ਵਾਪਸ ((hb_gpu_draw_t *) draw_ਅੰਕੜੇ)->get_budget_ਬਚਿਆ ();
 }
 
-static inline void free_static_gpu_draw_funcs ();
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_gpu_draw_funcs ();
 
-static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
+ਸਥਿਰ ਬਣਤਰ hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_draw_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_draw_line_to,      nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_draw_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_draw_cubic_to,     nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_draw_close_path,   nullptr, nullptr);
-    hb_draw_funcs_set_set_budget_func (funcs, hb_gpu_draw_set_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_func (funcs, hb_gpu_draw_get_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_gpu_draw_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func      (funcs, hb_gpu_draw_move_ਮੰਜ਼ਿਲ,      ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func      (funcs, hb_gpu_draw_ਸਤਰ_ਮੰਜ਼ਿਲ,      ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, hb_gpu_draw_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func     (funcs, hb_gpu_draw_cubic_ਮੰਜ਼ਿਲ,     ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func   (funcs, hb_gpu_draw_close_ਰਸਤਾ,   ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸੈੱਟ_budget_func (funcs, hb_gpu_draw_ਸੈੱਟ_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_func (funcs, hb_gpu_draw_get_budget, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_gpu_draw_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_gpu_draw_funcs);
 
-    return funcs;
+    ਵਾਪਸ funcs;
   }
 } static_gpu_draw_funcs;
 
-static inline void
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
 free_static_gpu_draw_funcs ()
 {
   static_gpu_draw_funcs.free_instance ();
@@ -295,63 +295,63 @@ free_static_gpu_draw_funcs ()
 
 /* ---- Encode ---- */
 
-struct hb_gpu_texel_t
+ਬਣਤਰ hb_gpu_texel_t
 {
   int16_t r, g, b, a;
 };
 
-static hb_position_t
-clamp_to_hb_position (double v)
+ਸਥਿਰ hb_position_t
+clamp_ਮੰਜ਼ਿਲ_hb_position (ਦੁੱਗਣਾ v)
 {
-  return (hb_position_t) hb_clamp (v,
-				   (double) hb_int_min (hb_position_t),
-				   (double) hb_int_max (hb_position_t));
+  ਵਾਪਸ (hb_position_t) hb_clamp (v,
+				   (ਦੁੱਗਣਾ) hb_int_min (hb_position_t),
+				   (ਦੁੱਗਣਾ) hb_int_max (hb_position_t));
 }
 
-static inline int16_t
-quantize (double v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ int16_t
+quantize (ਦੁੱਗਣਾ v)
 {
-  return (int16_t) round (v * HB_GPU_UNITS_PER_EM);
+  ਵਾਪਸ (int16_t) round (v * HB_GPU_UNITS_ਪ੍ਰਤੀ_EM);
 }
 
-static inline int16_t
-quantize_down (double v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ int16_t
+quantize_ਥੱਲੇ (ਦੁੱਗਣਾ v)
 {
-  return (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
+  ਵਾਪਸ (int16_t) floor (v * HB_GPU_UNITS_ਪ੍ਰਤੀ_EM);
 }
 
-static inline int16_t
-quantize_up (double v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ int16_t
+quantize_ਉੱਪਰ (ਦੁੱਗਣਾ v)
 {
-  return (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
+  ਵਾਪਸ (int16_t) ceil (v * HB_GPU_UNITS_ਪ੍ਰਤੀ_EM);
 }
 
-static inline double
-dequantize (int v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦੁੱਗਣਾ
+dequantize (ਪੂਰਨ v)
 {
-  return (double) v / HB_GPU_UNITS_PER_EM;
+  ਵਾਪਸ (ਦੁੱਗਣਾ) v / HB_GPU_UNITS_ਪ੍ਰਤੀ_EM;
 }
 
-static inline bool
-quantize_down_fits_i16 (double v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+quantize_ਥੱਲੇ_ਸਮਾਉਂਦਾ_i16 (ਦੁੱਗਣਾ v)
 {
-  double q = floor (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  ਦੁੱਗਣਾ q = floor (v * HB_GPU_UNITS_ਪ੍ਰਤੀ_EM);
+  ਵਾਪਸ q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline bool
-quantize_up_fits_i16 (double v)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+quantize_ਉੱਪਰ_ਸਮਾਉਂਦਾ_i16 (ਦੁੱਗਣਾ v)
 {
-  double q = ceil (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  ਦੁੱਗਣਾ q = ceil (v * HB_GPU_UNITS_ਪ੍ਰਤੀ_EM);
+  ਵਾਪਸ q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline int16_t
-encode_offset (unsigned offset)
+ਸਥਿਰ ਸਤਰਅੰਦਰ int16_t
+encode_ਵਿੱਥ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ)
 {
-  return (int16_t) (offset - 32768u);
+  ਵਾਪਸ (int16_t) (ਵਿੱਥ - 32768u);
 }
 
 /* Note: the bounds are computed from the *quantized* control points,
@@ -360,13 +360,13 @@ encode_offset (unsigned offset)
  * quantized extent reaches into; fragments in that sliver then never
  * see the curve, get the wrong winding number, and render as a thin
  * black line through the glyph. */
-static hb_gpu_encode_curve_info_t
-encode_curve_info (const hb_gpu_curve_t *c)
+ਸਥਿਰ hb_gpu_encode_ਵਕਰ_info_t
+encode_ਵਕਰ_info (ਅਚਲ hb_gpu_ਵਕਰ_t *c)
 {
-  hb_gpu_encode_curve_info_t info;
+  hb_gpu_encode_ਵਕਰ_info_t info;
 
-  int p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
-  int p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
+  ਪੂਰਨ p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
+  ਪੂਰਨ p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
 
   info.min_x = dequantize (hb_min (hb_min (p1x, p2x), p3x));
   info.max_x = dequantize (hb_max (hb_max (p1x, p2x), p3x));
@@ -379,45 +379,45 @@ encode_curve_info (const hb_gpu_curve_t *c)
   info.vband_lo = 0;
   info.vband_hi = -1;
 
-  return info;
+  ਵਾਪਸ info;
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
 			  hb_glyph_extents_t *extents)
 {
-  if (unlikely (!draw->success) ||
-      draw->num_curves == 0 ||
+  ਜੇ (unlikely (!draw->success) ||
+      draw->ਅੰਕ_curves == 0 ||
       draw->ext_min_x == HUGE_VAL)
   {
     extents->x_bearing = 0;
     extents->y_bearing = 0;
-    extents->width = 0;
-    extents->height = 0;
-    return;
+    extents->ਚੌੜਾਈ = 0;
+    extents->ਉਚਾਈ = 0;
+    ਵਾਪਸ;
   }
 
-  double min_x = floor (draw->ext_min_x);
-  double min_y = floor (draw->ext_min_y);
-  double max_x = ceil  (draw->ext_max_x);
-  double max_y = ceil  (draw->ext_max_y);
+  ਦੁੱਗਣਾ min_x = floor (draw->ext_min_x);
+  ਦੁੱਗਣਾ min_y = floor (draw->ext_min_y);
+  ਦੁੱਗਣਾ max_x = ceil  (draw->ext_max_x);
+  ਦੁੱਗਣਾ max_y = ceil  (draw->ext_max_y);
 
-  if (unlikely (!std::isfinite (min_x) ||
+  ਜੇ (unlikely (!std::isfinite (min_x) ||
 		!std::isfinite (min_y) ||
 		!std::isfinite (max_x) ||
 		!std::isfinite (max_y)))
   {
     extents->x_bearing = 0;
     extents->y_bearing = 0;
-    extents->width = 0;
-    extents->height = 0;
-    return;
+    extents->ਚੌੜਾਈ = 0;
+    extents->ਉਚਾਈ = 0;
+    ਵਾਪਸ;
   }
 
-  extents->x_bearing = clamp_to_hb_position (min_x);
-  extents->y_bearing = clamp_to_hb_position (max_y);
-  extents->width     = clamp_to_hb_position (max_x - min_x);
-  extents->height    = clamp_to_hb_position (min_y - max_y);
+  extents->x_bearing = clamp_ਮੰਜ਼ਿਲ_hb_position (min_x);
+  extents->y_bearing = clamp_ਮੰਜ਼ਿਲ_hb_position (max_y);
+  extents->ਚੌੜਾਈ     = clamp_ਮੰਜ਼ਿਲ_hb_position (max_x - min_x);
+  extents->ਉਚਾਈ    = clamp_ਮੰਜ਼ਿਲ_hb_position (min_y - max_y);
 }
 
 
@@ -452,24 +452,24 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
                     hb_glyph_extents_t *extents)
 {
   /* Capture computed extents before auto-clear wipes them. */
-  if (extents)
+  ਜੇ (extents)
     _hb_gpu_draw_get_extents (draw, extents);
   HB_SCOPE_GUARD (hb_gpu_draw_clear (draw));
 
-  if (unlikely (!draw->success))
-    return nullptr;
+  ਜੇ (unlikely (!draw->success))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  const hb_gpu_curve_t *curves = draw->curves.arrayZ;
-  unsigned num_curves = draw->curves.length;
+  ਅਚਲ hb_gpu_ਵਕਰ_t *curves = draw->curves.arrayZ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_curves = draw->curves.ਲੰਮਾਈ;
 
-  if (num_curves == 0)
-    return hb_blob_get_empty ();
+  ਜੇ (ਅੰਕ_curves == 0)
+    ਵਾਪਸ hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
   hb_gpu_encode_scratch_t &s = draw->scratch;
 
-  s.curve_infos.reset_if_error ();
-  s.hband_curve_counts.reset_if_error ();
-  s.vband_curve_counts.reset_if_error ();
+  s.ਵਕਰ_infos.reset_if_error ();
+  s.hband_ਵਕਰ_counts.reset_if_error ();
+  s.vband_ਵਕਰ_counts.reset_if_error ();
   s.hband_offsets.reset_if_error ();
   s.vband_offsets.reset_if_error ();
   s.hband_curves.reset_if_error ();
@@ -478,258 +478,258 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   s.vband_curves_asc.reset_if_error ();
   s.hband_cursors.reset_if_error ();
   s.vband_cursors.reset_if_error ();
-  s.curve_texel_offset.reset_if_error ();
+  s.ਵਕਰ_texel_ਵਿੱਥ.reset_if_error ();
 
   /* Compute per-curve info and extents */
-  if (unlikely (!s.curve_infos.resize (num_curves)))
-    return nullptr;
+  ਜੇ (unlikely (!s.ਵਕਰ_infos.resize (ਅੰਕ_curves)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
   /* Validate the extents fit in i16 before quantizing: the casts in
    * quantize_down()/quantize_up() are undefined for out-of-range
    * values, and every later i16 conversion of a curve point is bounded
    * by these extents. */
-  if (!quantize_down_fits_i16 (draw->ext_min_x) ||
-      !quantize_down_fits_i16 (draw->ext_min_y) ||
-      !quantize_up_fits_i16 (draw->ext_max_x) ||
-      !quantize_up_fits_i16 (draw->ext_max_y))
-    return nullptr;
+  ਜੇ (!quantize_ਥੱਲੇ_ਸਮਾਉਂਦਾ_i16 (draw->ext_min_x) ||
+      !quantize_ਥੱਲੇ_ਸਮਾਉਂਦਾ_i16 (draw->ext_min_y) ||
+      !quantize_ਉੱਪਰ_ਸਮਾਉਂਦਾ_i16 (draw->ext_max_x) ||
+      !quantize_ਉੱਪਰ_ਸਮਾਉਂਦਾ_i16 (draw->ext_max_y))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  int16_t min_x_q = quantize_down (draw->ext_min_x);
-  int16_t min_y_q = quantize_down (draw->ext_min_y);
-  int16_t max_x_q = quantize_up (draw->ext_max_x);
-  int16_t max_y_q = quantize_up (draw->ext_max_y);
+  int16_t min_x_q = quantize_ਥੱਲੇ (draw->ext_min_x);
+  int16_t min_y_q = quantize_ਥੱਲੇ (draw->ext_min_y);
+  int16_t max_x_q = quantize_ਉੱਪਰ (draw->ext_max_x);
+  int16_t max_y_q = quantize_ਉੱਪਰ (draw->ext_max_y);
 
-  double min_x = dequantize (min_x_q);
-  double min_y = dequantize (min_y_q);
-  double max_x = dequantize (max_x_q);
-  double max_y = dequantize (max_y_q);
+  ਦੁੱਗਣਾ min_x = dequantize (min_x_q);
+  ਦੁੱਗਣਾ min_y = dequantize (min_y_q);
+  ਦੁੱਗਣਾ max_x = dequantize (max_x_q);
+  ਦੁੱਗਣਾ max_y = dequantize (max_y_q);
 
-  for (unsigned i = 0; i < num_curves; i++)
-    s.curve_infos.arrayZ[i] = encode_curve_info (&curves[i]);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_curves; i++)
+    s.ਵਕਰ_infos.arrayZ[i] = encode_ਵਕਰ_info (&curves[i]);
 
   /* Choose number of bands (capped at 16 per Slug paper) */
-  unsigned num_hbands = hb_min (num_curves, 16u);
-  unsigned num_vbands = hb_min (num_curves, 16u);
-  num_hbands = hb_max (num_hbands, 1u);
-  num_vbands = hb_max (num_vbands, 1u);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_hbands = hb_min (ਅੰਕ_curves, 16u);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_vbands = hb_min (ਅੰਕ_curves, 16u);
+  ਅੰਕ_hbands = hb_max (ਅੰਕ_hbands, 1u);
+  ਅੰਕ_vbands = hb_max (ਅੰਕ_vbands, 1u);
 
-  double height = max_y - min_y;
-  double width  = max_x - min_x;
+  ਦੁੱਗਣਾ ਉਚਾਈ = max_y - min_y;
+  ਦੁੱਗਣਾ ਚੌੜਾਈ  = max_x - min_x;
 
-  if (height <= 0) num_hbands = 1;
-  if (width  <= 0) num_vbands = 1;
+  ਜੇ (ਉਚਾਈ <= 0) ਅੰਕ_hbands = 1;
+  ਜੇ (ਚੌੜਾਈ  <= 0) ਅੰਕ_vbands = 1;
 
-  double hband_size = height / num_hbands;
-  double vband_size = width  / num_vbands;
+  ਦੁੱਗਣਾ hband_ਮਾਪ = ਉਚਾਈ / ਅੰਕ_hbands;
+  ਦੁੱਗਣਾ vband_ਮਾਪ = ਚੌੜਾਈ  / ਅੰਕ_vbands;
 
   /* The shader recomputes the band index from the fragment position in
    * float32, this code does it in double.  Widen the band range of each
    * curve by a hair so the two cannot disagree at a band boundary. */
-  static const double BAND_EPSILON = 1.0 / 1024;
+  ਸਥਿਰ ਅਚਲ ਦੁੱਗਣਾ BAND_EPSILON = 1.0 / 1024;
 
-  if (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
-		!s.vband_curve_counts.resize (num_vbands)))
-    return nullptr;
+  ਜੇ (unlikely (!s.hband_ਵਕਰ_counts.resize (ਅੰਕ_hbands) ||
+		!s.vband_ਵਕਰ_counts.resize (ਅੰਕ_vbands)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_hbands; b++) s.hband_ਵਕਰ_counts.arrayZ[b] = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_vbands; b++) s.vband_ਵਕਰ_counts.arrayZ[b] = 0;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_curves; i++)
   {
-    hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
+    hb_gpu_encode_ਵਕਰ_info_t &info = s.ਵਕਰ_infos.arrayZ[i];
 
-    if (!info.is_horizontal)
+    ਜੇ (!info.is_horizontal)
     {
-      if (height > 0) {
-	info.hband_lo = (int) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
-	info.hband_hi = (int) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
+      ਜੇ (ਉਚਾਈ > 0) {
+	info.hband_lo = (ਪੂਰਨ) floor ((info.min_y - min_y) / hband_ਮਾਪ - BAND_EPSILON);
+	info.hband_hi = (ਪੂਰਨ) floor ((info.max_y - min_y) / hband_ਮਾਪ + BAND_EPSILON);
 	info.hband_lo = hb_max (info.hband_lo, 0);
-	info.hband_hi = hb_min (info.hband_hi, (int) num_hbands - 1);
-	for (int b = info.hband_lo; b <= info.hband_hi; b++)
-	  s.hband_curve_counts.arrayZ[b]++;
-      } else {
+	info.hband_hi = hb_min (info.hband_hi, (ਪੂਰਨ) ਅੰਕ_hbands - 1);
+	ਲਈ (ਪੂਰਨ b = info.hband_lo; b <= info.hband_hi; b++)
+	  s.hband_ਵਕਰ_counts.arrayZ[b]++;
+      } ਨਹੀਂਤਾਂ {
 	info.hband_lo = 0;
 	info.hband_hi = 0;
-	s.hband_curve_counts.arrayZ[0]++;
+	s.hband_ਵਕਰ_counts.arrayZ[0]++;
       }
     }
 
-    if (!info.is_vertical)
+    ਜੇ (!info.is_vertical)
     {
-      if (width > 0) {
-	info.vband_lo = (int) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
-	info.vband_hi = (int) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
+      ਜੇ (ਚੌੜਾਈ > 0) {
+	info.vband_lo = (ਪੂਰਨ) floor ((info.min_x - min_x) / vband_ਮਾਪ - BAND_EPSILON);
+	info.vband_hi = (ਪੂਰਨ) floor ((info.max_x - min_x) / vband_ਮਾਪ + BAND_EPSILON);
 	info.vband_lo = hb_max (info.vband_lo, 0);
-	info.vband_hi = hb_min (info.vband_hi, (int) num_vbands - 1);
-	for (int b = info.vband_lo; b <= info.vband_hi; b++)
-	  s.vband_curve_counts.arrayZ[b]++;
-      } else {
+	info.vband_hi = hb_min (info.vband_hi, (ਪੂਰਨ) ਅੰਕ_vbands - 1);
+	ਲਈ (ਪੂਰਨ b = info.vband_lo; b <= info.vband_hi; b++)
+	  s.vband_ਵਕਰ_counts.arrayZ[b]++;
+      } ਨਹੀਂਤਾਂ {
 	info.vband_lo = 0;
 	info.vband_hi = 0;
-	s.vband_curve_counts.arrayZ[0]++;
+	s.vband_ਵਕਰ_counts.arrayZ[0]++;
       }
     }
   }
 
-  if (unlikely (!s.hband_offsets.resize (num_hbands) ||
-		!s.vband_offsets.resize (num_vbands)))
-    return nullptr;
+  ਜੇ (unlikely (!s.hband_offsets.resize (ਅੰਕ_hbands) ||
+		!s.vband_offsets.resize (ਅੰਕ_vbands)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned total_hband_indices = 0;
-  unsigned total_vband_indices = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_hband_indices = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_vband_indices = 0;
 
-  for (unsigned b = 0; b < num_hbands; b++) {
-    s.hband_offsets.arrayZ[b] = total_hband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
-					     s.hband_curve_counts.arrayZ[b],
-					     &total_hband_indices)))
-      return nullptr;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_hbands; b++) {
+    s.hband_offsets.arrayZ[b] = ਕੁੱਲ_hband_indices;
+    ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_hband_indices,
+					     s.hband_ਵਕਰ_counts.arrayZ[b],
+					     &ਕੁੱਲ_hband_indices)))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++) {
-    s.vband_offsets.arrayZ[b] = total_vband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_vband_indices,
-					     s.vband_curve_counts.arrayZ[b],
-					     &total_vband_indices)))
-      return nullptr;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_vbands; b++) {
+    s.vband_offsets.arrayZ[b] = ਕੁੱਲ_vband_indices;
+    ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_vband_indices,
+					     s.vband_ਵਕਰ_counts.arrayZ[b],
+					     &ਕੁੱਲ_vband_indices)))
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
   /* Assign curves to bands */
-  if (unlikely (!s.hband_curves.resize (total_hband_indices) ||
-		!s.hband_curves_asc.resize (total_hband_indices) ||
-		!s.vband_curves.resize (total_vband_indices) ||
-		!s.vband_curves_asc.resize (total_vband_indices) ||
-		!s.hband_cursors.resize (num_hbands) ||
-		!s.vband_cursors.resize (num_vbands)))
-    return nullptr;
+  ਜੇ (unlikely (!s.hband_curves.resize (ਕੁੱਲ_hband_indices) ||
+		!s.hband_curves_asc.resize (ਕੁੱਲ_hband_indices) ||
+		!s.vband_curves.resize (ਕੁੱਲ_vband_indices) ||
+		!s.vband_curves_asc.resize (ਕੁੱਲ_vband_indices) ||
+		!s.hband_cursors.resize (ਅੰਕ_hbands) ||
+		!s.vband_cursors.resize (ਅੰਕ_vbands)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_curves; i++)
   {
-    const hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
+    ਅਚਲ hb_gpu_encode_ਵਕਰ_info_t &info = s.ਵਕਰ_infos.arrayZ[i];
 
-    for (int b = info.hband_lo; b <= info.hband_hi; b++) {
-      unsigned idx = s.hband_cursors.arrayZ[b]++;
+    ਲਈ (ਪੂਰਨ b = info.hband_lo; b <= info.hband_hi; b++) {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx = s.hband_cursors.arrayZ[b]++;
       s.hband_curves.arrayZ[idx] = i;
       s.hband_curves_asc.arrayZ[idx] = i;
     }
 
-    for (int b = info.vband_lo; b <= info.vband_hi; b++) {
-      unsigned idx = s.vband_cursors.arrayZ[b]++;
+    ਲਈ (ਪੂਰਨ b = info.vband_lo; b <= info.vband_hi; b++) {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx = s.vband_cursors.arrayZ[b]++;
       s.vband_curves.arrayZ[idx] = i;
       s.vband_curves_asc.arrayZ[idx] = i;
     }
   }
 
   /* Sort: descending by max, ascending by min */
-  const hb_gpu_encode_curve_info_t *infos = s.curve_infos.arrayZ;
+  ਅਚਲ hb_gpu_encode_ਵਕਰ_info_t *infos = s.ਵਕਰ_infos.arrayZ;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_hbands; b++)
   {
-    unsigned off = s.hband_offsets.arrayZ[b];
-    unsigned count = s.hband_curve_counts.arrayZ[b];
-    s.hband_curves.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].max_x, bv = infos[b].max_x;
-	return (av < bv) - (av > bv);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ off = s.hband_offsets.arrayZ[b];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = s.hband_ਵਕਰ_counts.arrayZ[b];
+    s.hband_curves.as_array ().sub_array (off, ਗਿਣਤੀ_2)
+      .qsort ([infos] (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &a, ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &b) {
+	ਸਵੈਚਾਲਿਤ av = infos[a].max_x, bv = infos[b].max_x;
+	ਵਾਪਸ (av < bv) - (av > bv);
       });
-    s.hband_curves_asc.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].min_x, bv = infos[b].min_x;
-	return (av > bv) - (av < bv);
+    s.hband_curves_asc.as_array ().sub_array (off, ਗਿਣਤੀ_2)
+      .qsort ([infos] (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &a, ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &b) {
+	ਸਵੈਚਾਲਿਤ av = infos[a].min_x, bv = infos[b].min_x;
+	ਵਾਪਸ (av > bv) - (av < bv);
       });
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_vbands; b++)
   {
-    unsigned off = s.vband_offsets.arrayZ[b];
-    unsigned count = s.vband_curve_counts.arrayZ[b];
-    s.vband_curves.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].max_y, bv = infos[b].max_y;
-	return (av < bv) - (av > bv);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ off = s.vband_offsets.arrayZ[b];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = s.vband_ਵਕਰ_counts.arrayZ[b];
+    s.vband_curves.as_array ().sub_array (off, ਗਿਣਤੀ_2)
+      .qsort ([infos] (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &a, ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &b) {
+	ਸਵੈਚਾਲਿਤ av = infos[a].max_y, bv = infos[b].max_y;
+	ਵਾਪਸ (av < bv) - (av > bv);
       });
-    s.vband_curves_asc.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].min_y, bv = infos[b].min_y;
-	return (av > bv) - (av < bv);
+    s.vband_curves_asc.as_array ().sub_array (off, ਗਿਣਤੀ_2)
+      .qsort ([infos] (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &a, ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ &b) {
+	ਸਵੈਚਾਲਿਤ av = infos[a].min_y, bv = infos[b].min_y;
+	ਵਾਪਸ (av > bv) - (av < bv);
       });
   }
 
   /* Compute sizes */
-  unsigned total_curve_indices;
-  if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
-					   total_vband_indices,
-					   &total_curve_indices) ||
-		hb_unsigned_mul_overflows (total_curve_indices,
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_ਵਕਰ_indices;
+  ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_hband_indices,
+					   ਕੁੱਲ_vband_indices,
+					   &ਕੁੱਲ_ਵਕਰ_indices) ||
+		hb_unsigned_mul_overflows (ਕੁੱਲ_ਵਕਰ_indices,
 					   2,
-					   &total_curve_indices)))
-    return nullptr;
+					   &ਕੁੱਲ_ਵਕਰ_indices)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned header_len = 2;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਲੇਖ_len = 2;
 
-  unsigned num_contour_breaks = 0;
-  for (unsigned i = 0; i + 1 < num_curves; i++)
-    if (curves[i + 1].contour_start)
-      num_contour_breaks++;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_contour_breaks = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i + 1 < ਅੰਕ_curves; i++)
+    ਜੇ (curves[i + 1].contour_ਸ਼ੁਰੂ)
+      ਅੰਕ_contour_breaks++;
 
-  unsigned curve_data_len;
-  if (unlikely (hb_unsigned_add_overflows (num_curves,
-					   num_contour_breaks,
-					   &curve_data_len) ||
-		hb_unsigned_add_overflows (curve_data_len,
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਕਰ_ਅੰਕੜੇ_len;
+  ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਅੰਕ_curves,
+					   ਅੰਕ_contour_breaks,
+					   &ਵਕਰ_ਅੰਕੜੇ_len) ||
+		hb_unsigned_ਜੋੜੋ_overflows (ਵਕਰ_ਅੰਕੜੇ_len,
 					   1,
-					   &curve_data_len)))
-    return nullptr;
+					   &ਵਕਰ_ਅੰਕੜੇ_len)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned band_headers_len;
-  if (unlikely (hb_unsigned_add_overflows (num_hbands,
-					   num_vbands,
-					   &band_headers_len)))
-    return nullptr;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ band_ਸਿਰਲੇਖਾਂ_len;
+  ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਅੰਕ_hbands,
+					   ਅੰਕ_vbands,
+					   &band_ਸਿਰਲੇਖਾਂ_len)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned total_len = header_len;
-  if (unlikely (hb_unsigned_add_overflows (total_len,
-					   band_headers_len,
-					   &total_len) ||
-		hb_unsigned_add_overflows (total_len,
-					   total_curve_indices,
-					   &total_len) ||
-		hb_unsigned_add_overflows (total_len,
-					   curve_data_len,
-					   &total_len)))
-    return nullptr;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_len = ਸਿਰਲੇਖ_len;
+  ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_len,
+					   band_ਸਿਰਲੇਖਾਂ_len,
+					   &ਕੁੱਲ_len) ||
+		hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_len,
+					   ਕੁੱਲ_ਵਕਰ_indices,
+					   &ਕੁੱਲ_len) ||
+		hb_unsigned_ਜੋੜੋ_overflows (ਕੁੱਲ_len,
+					   ਵਕਰ_ਅੰਕੜੇ_len,
+					   &ਕੁੱਲ_len)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
   /* Validate fits in uint16 offsets (stored as int16 with bias) */
-  if (total_len > (unsigned) UINT16_MAX + 1u)
-    return nullptr;
+  ਜੇ (ਕੁੱਲ_len > (ਬਿਨਾਨਿਸ਼ਾਨੀ) UINT16_MAX + 1u)
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
 
   /* Allocate or reuse encode buffer */
-  unsigned needed_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (total_len,
-					   sizeof (hb_gpu_texel_t),
-					   &needed_bytes)))
-    return nullptr;
-  unsigned buf_capacity = 0;
-  char *replaced_recycled_buf = nullptr;
-  char *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_bytes,
-					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
-  hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (void *) buf_raw;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ needed_ਬਾਈਟਾਂ;
+  ਜੇ (unlikely (hb_unsigned_mul_overflows (ਕੁੱਲ_len,
+					   ਆਕਾਰ (hb_gpu_texel_t),
+					   &needed_ਬਾਈਟਾਂ)))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ buf_ਸਮਰੱਥਾ = 0;
+  ਅੱਖਰ *replaced_recycled_buf = ਖਾਲੀ_ਸੂਚਕ;
+  ਅੱਖਰ *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_ਬਾਈਟਾਂ,
+					&buf_ਸਮਰੱਥਾ, &replaced_recycled_buf);
+  ਜੇ (unlikely (!buf_raw))
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+  hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (ਖਾਲੀ *) buf_raw;
 
-  unsigned curve_data_offset = header_len;
-  if (unlikely (hb_unsigned_add_overflows (curve_data_offset,
-					   band_headers_len,
-					   &curve_data_offset) ||
-		hb_unsigned_add_overflows (curve_data_offset,
-					   total_curve_indices,
-					   &curve_data_offset)))
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ = ਸਿਰਲੇਖ_len;
+  ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ,
+					   band_ਸਿਰਲੇਖਾਂ_len,
+					   &ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ) ||
+		hb_unsigned_ਜੋੜੋ_overflows (ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ,
+					   ਕੁੱਲ_ਵਕਰ_indices,
+					   &ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((ਅੱਖਰ *) buf, draw->recycled_blob);
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
   /* Pack header */
@@ -737,44 +737,44 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   buf[0].g = min_y_q;
   buf[0].b = max_x_q;
   buf[0].a = max_y_q;
-  buf[1].r = (int16_t) num_hbands;
-  buf[1].g = (int16_t) num_vbands;
+  buf[1].r = (int16_t) ਅੰਕ_hbands;
+  buf[1].g = (int16_t) ਅੰਕ_vbands;
   buf[1].b = (int16_t) hb_clamp (draw->x_scale, -32768, 32767);
   buf[1].a = (int16_t) hb_clamp (draw->y_scale, -32768, 32767);
 
   /* Pack curve data with shared endpoints */
-  if (unlikely (!s.curve_texel_offset.resize (num_curves)))
+  ਜੇ (unlikely (!s.ਵਕਰ_texel_ਵਿੱਥ.resize (ਅੰਕ_curves)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((ਅੱਖਰ *) buf, draw->recycled_blob);
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  unsigned texel = curve_data_offset;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ texel = ਵਕਰ_ਅੰਕੜੇ_ਵਿੱਥ;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_curves; i++)
   {
-    bool contour_start = curves[i].contour_start;
+    ਤਾਰਕਿਕ contour_ਸ਼ੁਰੂ = curves[i].contour_ਸ਼ੁਰੂ;
 
-    if (contour_start) {
-      s.curve_texel_offset.arrayZ[i] = texel;
+    ਜੇ (contour_ਸ਼ੁਰੂ) {
+      s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[i] = texel;
       buf[texel].r = quantize (curves[i].p1x);
       buf[texel].g = quantize (curves[i].p1y);
       buf[texel].b = quantize (curves[i].p2x);
       buf[texel].a = quantize (curves[i].p2y);
       texel++;
-    } else {
-      s.curve_texel_offset.arrayZ[i] = texel - 1;
+    } ਨਹੀਂਤਾਂ {
+      s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[i] = texel - 1;
     }
 
-    bool has_next = i + 1 < num_curves &&
-		    !curves[i + 1].contour_start;
+    ਤਾਰਕਿਕ has_ਅਗਲਾ = i + 1 < ਅੰਕ_curves &&
+		    !curves[i + 1].contour_ਸ਼ੁਰੂ;
 
     buf[texel].r = quantize (curves[i].p3x);
     buf[texel].g = quantize (curves[i].p3y);
-    if (has_next) {
+    ਜੇ (has_ਅਗਲਾ) {
       buf[texel].b = quantize (curves[i + 1].p2x);
       buf[texel].a = quantize (curves[i + 1].p2y);
-    } else {
+    } ਨਹੀਂਤਾਂ {
       buf[texel].b = 0;
       buf[texel].a = 0;
     }
@@ -782,112 +782,112 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   }
 
   /* Pack band headers and curve indices */
-  unsigned index_offset = header_len + band_headers_len;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ_ਵਿੱਥ = ਸਿਰਲੇਖ_len + band_ਸਿਰਲੇਖਾਂ_len;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_hbands; b++)
   {
-    int16_t hband_split;
+    int16_t hband_ਵੰਡੋ;
     {
-      unsigned off = s.hband_offsets.arrayZ[b];
-      unsigned n = s.hband_curve_counts.arrayZ[b];
-      unsigned best_worst = n;
-      double best_split = (min_x + max_x) * 0.5;
-      unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + left_count - 1]].min_x > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
-	  best_worst = worst;
-	  best_split = split;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ off = s.hband_offsets.arrayZ[b];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ n = s.hband_ਵਕਰ_counts.arrayZ[b];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਉੱਤਮ_worst = n;
+      ਦੁੱਗਣਾ ਉੱਤਮ_ਵੰਡੋ = (min_x + max_x) * 0.5;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਖੱਬਾ_ਗਿਣਤੀ = n;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < n; ci++) {
+	ਦੁੱਗਣਾ ਵੰਡੋ = s.ਵਕਰ_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੱਜਾ_ਗਿਣਤੀ = ci + 1;
+	ਜਦੋਂ (ਖੱਬਾ_ਗਿਣਤੀ &&
+	       s.ਵਕਰ_infos.arrayZ[s.hband_curves_asc.arrayZ[off + ਖੱਬਾ_ਗਿਣਤੀ - 1]].min_x > ਵੰਡੋ)
+	  ਖੱਬਾ_ਗਿਣਤੀ--;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ worst = hb_max (ਸੱਜਾ_ਗਿਣਤੀ, ਖੱਬਾ_ਗਿਣਤੀ);
+	ਜੇ (worst < ਉੱਤਮ_worst) {
+	  ਉੱਤਮ_worst = worst;
+	  ਉੱਤਮ_ਵੰਡੋ = ਵੰਡੋ;
 	}
       }
-      hband_split = quantize (best_split);
+      hband_ਵੰਡੋ = quantize (ਉੱਤਮ_ਵੰਡੋ);
     }
-    unsigned hdr = header_len + b;
-    unsigned desc_off = index_offset;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ hdr = ਸਿਰਲੇਖ_len + b;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ desc_off = ਸੂਚਕਾਂਕ_ਵਿੱਥ;
 
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
-    }
-
-    unsigned asc_off = index_offset;
-
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves_asc.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < s.hband_ਵਕਰ_counts.arrayZ[b]; ci++) {
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].r = encode_ਵਿੱਥ (s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[s.hband_curves.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].g = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].b = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].a = 0;
+      ਸੂਚਕਾਂਕ_ਵਿੱਥ++;
     }
 
-    buf[hdr].r = (int16_t) s.hband_curve_counts.arrayZ[b];
-    buf[hdr].g = encode_offset (desc_off);
-    buf[hdr].b = encode_offset (asc_off);
-    buf[hdr].a = hband_split;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ asc_off = ਸੂਚਕਾਂਕ_ਵਿੱਥ;
+
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < s.hband_ਵਕਰ_counts.arrayZ[b]; ci++) {
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].r = encode_ਵਿੱਥ (s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[s.hband_curves_asc.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].g = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].b = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].a = 0;
+      ਸੂਚਕਾਂਕ_ਵਿੱਥ++;
+    }
+
+    buf[hdr].r = (int16_t) s.hband_ਵਕਰ_counts.arrayZ[b];
+    buf[hdr].g = encode_ਵਿੱਥ (desc_off);
+    buf[hdr].b = encode_ਵਿੱਥ (asc_off);
+    buf[hdr].a = hband_ਵੰਡੋ;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ b = 0; b < ਅੰਕ_vbands; b++)
   {
-    int16_t vband_split;
+    int16_t vband_ਵੰਡੋ;
     {
-      unsigned off = s.vband_offsets.arrayZ[b];
-      unsigned n = s.vband_curve_counts.arrayZ[b];
-      unsigned best_worst = n;
-      double best_split = (min_y + max_y) * 0.5;
-      unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + left_count - 1]].min_y > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
-	  best_worst = worst;
-	  best_split = split;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ off = s.vband_offsets.arrayZ[b];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ n = s.vband_ਵਕਰ_counts.arrayZ[b];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਉੱਤਮ_worst = n;
+      ਦੁੱਗਣਾ ਉੱਤਮ_ਵੰਡੋ = (min_y + max_y) * 0.5;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਖੱਬਾ_ਗਿਣਤੀ = n;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < n; ci++) {
+	ਦੁੱਗਣਾ ਵੰਡੋ = s.ਵਕਰ_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੱਜਾ_ਗਿਣਤੀ = ci + 1;
+	ਜਦੋਂ (ਖੱਬਾ_ਗਿਣਤੀ &&
+	       s.ਵਕਰ_infos.arrayZ[s.vband_curves_asc.arrayZ[off + ਖੱਬਾ_ਗਿਣਤੀ - 1]].min_y > ਵੰਡੋ)
+	  ਖੱਬਾ_ਗਿਣਤੀ--;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ worst = hb_max (ਸੱਜਾ_ਗਿਣਤੀ, ਖੱਬਾ_ਗਿਣਤੀ);
+	ਜੇ (worst < ਉੱਤਮ_worst) {
+	  ਉੱਤਮ_worst = worst;
+	  ਉੱਤਮ_ਵੰਡੋ = ਵੰਡੋ;
 	}
       }
-      vband_split = quantize (best_split);
+      vband_ਵੰਡੋ = quantize (ਉੱਤਮ_ਵੰਡੋ);
     }
 
-    unsigned hdr = header_len + num_hbands + b;
-    unsigned desc_off = index_offset;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ hdr = ਸਿਰਲੇਖ_len + ਅੰਕ_hbands + b;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ desc_off = ਸੂਚਕਾਂਕ_ਵਿੱਥ;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < s.vband_ਵਕਰ_counts.arrayZ[b]; ci++) {
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].r = encode_ਵਿੱਥ (s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[s.vband_curves.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].g = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].b = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].a = 0;
+      ਸੂਚਕਾਂਕ_ਵਿੱਥ++;
     }
 
-    unsigned asc_off = index_offset;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ asc_off = ਸੂਚਕਾਂਕ_ਵਿੱਥ;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves_asc.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ci = 0; ci < s.vband_ਵਕਰ_counts.arrayZ[b]; ci++) {
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].r = encode_ਵਿੱਥ (s.ਵਕਰ_texel_ਵਿੱਥ.arrayZ[s.vband_curves_asc.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].g = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].b = 0;
+      buf[ਸੂਚਕਾਂਕ_ਵਿੱਥ].a = 0;
+      ਸੂਚਕਾਂਕ_ਵਿੱਥ++;
     }
 
-    buf[hdr].r = (int16_t) s.vband_curve_counts.arrayZ[b];
-    buf[hdr].g = encode_offset (desc_off);
-    buf[hdr].b = encode_offset (asc_off);
-    buf[hdr].a = vband_split;
+    buf[hdr].r = (int16_t) s.vband_ਵਕਰ_counts.arrayZ[b];
+    buf[hdr].g = encode_ਵਿੱਥ (desc_off);
+    buf[hdr].b = encode_ਵਿੱਥ (asc_off);
+    buf[hdr].a = vband_ਵੰਡੋ;
   }
 
   hb_blob_t *recycled = draw->recycled_blob;
-  draw->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize ((char *) buf, buf_capacity, needed_bytes,
+  draw->recycled_blob = ਖਾਲੀ_ਸੂਚਕ;
+  ਵਾਪਸ hb_blob_t::recycle_finalize ((ਅੱਖਰ *) buf, buf_ਸਮਰੱਥਾ, needed_ਬਾਈਟਾਂ,
 				recycled, replaced_recycled_buf);
 }
 
@@ -905,9 +905,9 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
  * Since: 14.0.0
  **/
 hb_gpu_draw_t *
-hb_gpu_draw_create_or_fail (void)
+hb_gpu_draw_create_or_fail (ਖਾਲੀ)
 {
-  return hb_object_create<hb_gpu_draw_t> ();
+  ਵਾਪਸ hb_object_create<hb_gpu_draw_t> ();
 }
 
 /**
@@ -924,7 +924,7 @@ hb_gpu_draw_create_or_fail (void)
 hb_gpu_draw_t *
 hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  ਵਾਪਸ hb_object_reference (draw);
 }
 
 /**
@@ -936,11 +936,11 @@ hb_gpu_draw_reference (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+ਖਾਲੀ
 hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  ਜੇ (!hb_object_should_destroy (draw))
+    ਵਾਪਸ;
 
   hb_blob_destroy (draw->recycled_blob);
 
@@ -963,13 +963,13 @@ hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
  * Since: 14.0.0
  **/
 hb_bool_t
-hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key,
-			     void               *data,
+hb_gpu_draw_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_gpu_draw_t     *draw,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key,
+			     ਖਾਲੀ               *ਅੰਕੜੇ,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  ਵਾਪਸ hb_object_ਸੈੱਟ_user_ਅੰਕੜੇ (draw, key, ਅੰਕੜੇ, destroy, replace);
 }
 
 /**
@@ -984,11 +984,11 @@ hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
  *
  * Since: 14.0.0
  **/
-void *
-hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key)
+ਖਾਲੀ *
+hb_gpu_draw_get_user_ਅੰਕੜੇ (ਅਚਲ hb_gpu_draw_t     *draw,
+			     hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  ਵਾਪਸ hb_object_get_user_ਅੰਕੜੇ (draw, key);
 }
 
 /**
@@ -1005,9 +1005,9 @@ hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
  * Since: 14.2.0
  **/
 hb_draw_funcs_t *
-hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
+hb_gpu_draw_get_funcs (ਅਚਲ hb_gpu_draw_t *draw HB_ਅਣਵਰਤਿਆ)
 {
-  return static_gpu_draw_funcs.get_unconst ();
+  ਵਾਪਸ static_gpu_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1022,10 +1022,10 @@ hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
  *
  * Since: 14.1.0
  **/
-void
-hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
-		       int            x_scale,
-		       int            y_scale)
+ਖਾਲੀ
+hb_gpu_draw_ਸੈੱਟ_scale (hb_gpu_draw_t *draw,
+		       ਪੂਰਨ            x_scale,
+		       ਪੂਰਨ            y_scale)
 {
   draw->x_scale = x_scale;
   draw->y_scale = y_scale;
@@ -1042,13 +1042,13 @@ hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_draw_get_scale (const hb_gpu_draw_t *draw,
-		       int                 *x_scale,
-		       int                 *y_scale)
+ਖਾਲੀ
+hb_gpu_draw_get_scale (ਅਚਲ hb_gpu_draw_t *draw,
+		       ਪੂਰਨ                 *x_scale,
+		       ਪੂਰਨ                 *y_scale)
 {
-  if (x_scale) *x_scale = draw->x_scale;
-  if (y_scale) *y_scale = draw->y_scale;
+  ਜੇ (x_scale) *x_scale = draw->x_scale;
+  ਜੇ (y_scale) *y_scale = draw->y_scale;
 }
 
 /**
@@ -1075,11 +1075,11 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
 			   hb_font_t      *font,
 			   hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  ਪੂਰਨ x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
-  hb_gpu_draw_set_scale (draw, x_scale, y_scale);
+  hb_gpu_draw_ਸੈੱਟ_scale (draw, x_scale, y_scale);
 
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  ਵਾਪਸ hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_gpu_draw_get_funcs (draw),
 				     draw);
 }
@@ -1095,7 +1095,7 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
  *
  * Since: 14.0.0
  **/
-void
+ਖਾਲੀ
 hb_gpu_draw_glyph (hb_gpu_draw_t  *draw,
 		   hb_font_t      *font,
 		   hb_codepoint_t  glyph)
@@ -1113,14 +1113,14 @@ hb_gpu_draw_glyph (hb_gpu_draw_t  *draw,
  *
  * Since: 14.2.0
  **/
-void
+ਖਾਲੀ
 hb_gpu_draw_clear (hb_gpu_draw_t *draw)
 {
-  draw->start_x = draw->start_y = 0;
+  draw->ਸ਼ੁਰੂ_x = draw->ਸ਼ੁਰੂ_y = 0;
   draw->current_x = draw->current_y = 0;
-  draw->need_moveto = true;
-  draw->num_curves = 0;
-  draw->success = true;
+  draw->need_moveto = ਸੱਚ;
+  draw->ਅੰਕ_curves = 0;
+  draw->success = ਸੱਚ;
   draw->curves.reset ();
 
   draw->ext_min_x =  HUGE_VAL;
@@ -1140,7 +1140,7 @@ hb_gpu_draw_clear (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+ਖਾਲੀ
 hb_gpu_draw_reset (hb_gpu_draw_t *draw)
 {
   draw->x_scale = 0;
@@ -1163,7 +1163,7 @@ hb_gpu_draw_reset (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+ਖਾਲੀ
 hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
 			    hb_blob_t      *blob)
 {
@@ -1171,10 +1171,10 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
 }
 
 
-#include "hb-gpu-draw-fragment-glsl.hh"
-#include "hb-gpu-draw-fragment-msl.hh"
-#include "hb-gpu-draw-fragment-wgsl.hh"
-#include "hb-gpu-draw-fragment-hlsl.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-draw-fragment-glsl.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-draw-fragment-msl.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-draw-fragment-wgsl.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu-draw-fragment-hlsl.hh"
 
 /**
  * hb_gpu_draw_shader_source:
@@ -1201,30 +1201,30 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-const char *
-hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
+ਅਚਲ ਅੱਖਰ *
+hb_gpu_draw_shader_ਸਰੋਤ (hb_gpu_shader_stage_t stage,
 			   hb_gpu_shader_lang_t  lang)
 {
-  switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_draw_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_draw_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_draw_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_draw_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  ਚੋਣ (stage) {
+  ਹਾਲਤ HB_GPU_SHADER_STAGE_FRAGMENT:
+    ਚੋਣ (lang) {
+    ਹਾਲਤ HB_GPU_SHADER_LANG_GLSL: ਵਾਪਸ hb_gpu_draw_fragment_glsl;
+    ਹਾਲਤ HB_GPU_SHADER_LANG_MSL:  ਵਾਪਸ hb_gpu_draw_fragment_msl;
+    ਹਾਲਤ HB_GPU_SHADER_LANG_WGSL: ਵਾਪਸ hb_gpu_draw_fragment_wgsl;
+    ਹਾਲਤ HB_GPU_SHADER_LANG_HLSL: ਵਾਪਸ hb_gpu_draw_fragment_hlsl;
+    ਹਾਲਤ HB_GPU_SHADER_LANG_INVALID:
+    ਮੂਲ: ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL:
-    case HB_GPU_SHADER_LANG_MSL:
-    case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  ਹਾਲਤ HB_GPU_SHADER_STAGE_ਸ਼ੀਰਸ਼:
+    ਚੋਣ (lang) {
+    ਹਾਲਤ HB_GPU_SHADER_LANG_GLSL:
+    ਹਾਲਤ HB_GPU_SHADER_LANG_MSL:
+    ਹਾਲਤ HB_GPU_SHADER_LANG_WGSL:
+    ਹਾਲਤ HB_GPU_SHADER_LANG_HLSL: ਵਾਪਸ "";
+    ਹਾਲਤ HB_GPU_SHADER_LANG_INVALID:
+    ਮੂਲ: ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
-  default:
-    return nullptr;
+  ਮੂਲ:
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 }

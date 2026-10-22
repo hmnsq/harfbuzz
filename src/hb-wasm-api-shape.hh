@@ -22,95 +22,95 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_SHAPE_HH
-#define HB_WASM_API_SHAPE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_SHAPE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_SHAPE_HH
 
-#include "hb-wasm-api.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+ਨਾਮਾਕਾਸ਼ hb {
+ਨਾਮਾਕਾਸ਼ wasm {
 
 
-static_assert (sizeof (feature_t) == sizeof (hb_feature_t), "");
+static_assert (ਆਕਾਰ (feature_t) == ਆਕਾਰ (hb_feature_t), "");
 
 HB_WASM_INTERFACE (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				        ptr_d(font_t, font),
-				        ptr_d(buffer_t, buffer),
-				        ptr_d(const feature_t, features),
-				        uint32_t num_features,
-					const char *shaper)
+				        ptr_d(ਬਫਰ_t, ਬਫਰ),
+				        ptr_d(ਅਚਲ feature_t, features),
+				        uint32_t ਅੰਕ_features,
+					ਅਚਲ ਅੱਖਰ *shaper)
 {
-  if (unlikely (0 == strcmp (shaper, "wasm")))
-    return false;
+  ਜੇ (unlikely (0 == strcmp (shaper, "wasm")))
+    ਵਾਪਸ ਝੂਠ;
 
   HB_REF2OBJ (font);
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (ਬਫਰ);
 
   /* Pre-conditions that make hb_shape_full() crash should be checked here. */
 
-  if (unlikely (!buffer->ensure_unicode ()))
-    return false;
+  ਜੇ (unlikely (!ਬਫਰ->ensure_unicode ()))
+    ਵਾਪਸ ਝੂਠ;
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (buffer->props.direction)))
-    return false;
+  ਜੇ (unlikely (!HB_DIRECTION_IS_VALID (ਬਫਰ->props.direction)))
+    ਵਾਪਸ ਝੂਠ;
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features && num_features))
-    return false;
+  HB_ARRAY_PARAM (ਅਚਲ feature_t, features, ਅੰਕ_features);
+  ਜੇ (unlikely (!features && ਅੰਕ_features))
+    ਵਾਪਸ ਝੂਠ;
 
-  const char * shaper_list[] = {shaper, nullptr};
-  return hb_shape_full (font, buffer,
-			(hb_feature_t *) features, num_features,
+  ਅਚਲ ਅੱਖਰ * shaper_list[] = {shaper, ਖਾਲੀ_ਸੂਚਕ};
+  ਵਾਪਸ hb_shape_ਭਰਿਆ (font, ਬਫਰ,
+			(hb_feature_t *) features, ਅੰਕ_features,
 			shaper_list);
 }
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
-					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       ptr_d(ਅਚਲ feature_t, features),
+					       uint32_t ਅੰਕ_features,
 					       ptr_d(features_t, output))
 {
   HB_PTR_PARAM (features_t, output);
-  if (unlikely (!output))
-    return false;
+  ਜੇ (unlikely (!output))
+    ਵਾਪਸ ਝੂਠ;
 
-  unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (num_features, sizeof (feature_t), &bytes)))
-    return false;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਾਈਟਾਂ;
+  ਜੇ (unlikely (hb_unsigned_mul_overflows (ਅੰਕ_features, ਆਕਾਰ (feature_t), &ਬਾਈਟਾਂ)))
+    ਵਾਪਸ ਝੂਠ;
 
-  if (!num_features)
+  ਜੇ (!ਅੰਕ_features)
   {
-    output->length = 0;
+    output->ਲੰਮਾਈ = 0;
     output->features = nullref;
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features))
-    return false;
+  HB_ARRAY_PARAM (ਅਚਲ feature_t, features, ਅੰਕ_features);
+  ਜੇ (unlikely (!features))
+    ਵਾਪਸ ਝੂਠ;
 
-  feature_t *dst = nullptr;
-  uint32_t dstref = module_malloc (bytes, (void **) &dst);
-  if (unlikely (!dstref))
-    return false;
+  feature_t *dst = ਖਾਲੀ_ਸੂਚਕ;
+  uint32_t dstref = module_malloc (ਬਾਈਟਾਂ, (ਖਾਲੀ **) &dst);
+  ਜੇ (unlikely (!dstref))
+    ਵਾਪਸ ਝੂਠ;
 
-  hb_memcpy (dst, features, bytes);
-  output->length = num_features;
+  hb_memcpy (dst, features, ਬਾਈਟਾਂ);
+  output->ਲੰਮਾਈ = ਅੰਕ_features;
   output->features = dstref;
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, features_free) (HB_WASM_EXEC_ENV
 				    ptr_d(features_t, features))
 {
   HB_PTR_PARAM (features_t, features);
-  if (unlikely (!features))
-    return;
+  ਜੇ (unlikely (!features))
+    ਵਾਪਸ;
 
   module_free (features->features);
   features->features = nullref;
-  features->length = 0;
+  features->ਲੰਮਾਈ = 0;
 }
 
 }}
 
-#endif /* HB_WASM_API_SHAPE_HH */
+#ਜੇ_ਅੰਤ /* HB_WASM_API_SHAPE_HH */

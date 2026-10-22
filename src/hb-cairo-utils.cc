@@ -25,12 +25,12 @@
  * Google Author(s): Matthias Clasen
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifdef HAVE_CAIRO
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO
 
-#include "hb-cairo-utils.hh"
-#include "hb-paint.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cairo-utils.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.hh"
 
 /* Some routines in this file were ported from BlackRenderer by Black Foundry.
  * Used by permission to relicense to HarfBuzz license.
@@ -38,82 +38,82 @@
  * https://github.com/BlackFoundryCom/black-renderer
  */
 
-#define PREALLOCATED_COLOR_STOPS 16
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PREALLOCATED_COLOR_STOPS 16
 
-typedef struct {
-  float r, g, b, a;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
+  ਦਸ਼ਮਲਵ r, g, b, a;
 } hb_cairo_color_t;
 
-static inline cairo_extend_t
+ਸਥਿਰ ਸਤਰਅੰਦਰ cairo_extend_t
 hb_cairo_extend (hb_paint_extend_t extend)
 {
-  switch (extend)
+  ਚੋਣ (extend)
     {
-    case HB_PAINT_EXTEND_PAD: return CAIRO_EXTEND_PAD;
-    case HB_PAINT_EXTEND_REPEAT: return CAIRO_EXTEND_REPEAT;
-    case HB_PAINT_EXTEND_REFLECT: return CAIRO_EXTEND_REFLECT;
-    default: break;
+    ਹਾਲਤ HB_PAINT_EXTEND_PAD: ਵਾਪਸ CAIRO_EXTEND_PAD;
+    ਹਾਲਤ HB_PAINT_EXTEND_REPEAT: ਵਾਪਸ CAIRO_EXTEND_REPEAT;
+    ਹਾਲਤ HB_PAINT_EXTEND_REFLECT: ਵਾਪਸ CAIRO_EXTEND_REFLECT;
+    ਮੂਲ: ਰੋਕੋ;
     }
 
-  return CAIRO_EXTEND_PAD;
+  ਵਾਪਸ CAIRO_EXTEND_PAD;
 }
 
-#ifdef CAIRO_HAS_PNG_FUNCTIONS
-typedef struct
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CAIRO_HAS_PNG_FUNCTIONS
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ
 {
   hb_blob_t *blob;
-  unsigned int offset;
-} hb_cairo_read_blob_data_t;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਵਿੱਥ;
+} hb_cairo_read_blob_ਅੰਕੜੇ_t;
 
-static cairo_status_t
-hb_cairo_read_blob (void *closure,
-		    unsigned char *data,
-		    unsigned int length)
+ਸਥਿਰ cairo_ਸਥਿਤੀ_t
+hb_cairo_read_blob (ਖਾਲੀ *ਘੇਰਾ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਅੰਕੜੇ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ)
 {
-  hb_cairo_read_blob_data_t *r = (hb_cairo_read_blob_data_t *) closure;
-  const char *d;
-  unsigned int size;
+  hb_cairo_read_blob_ਅੰਕੜੇ_t *r = (hb_cairo_read_blob_ਅੰਕੜੇ_t *) ਘੇਰਾ;
+  ਅਚਲ ਅੱਖਰ *d;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਮਾਪ;
 
-  d = hb_blob_get_data (r->blob, &size);
+  d = hb_blob_get_ਅੰਕੜੇ (r->blob, &ਮਾਪ);
 
-  if (r->offset + length > size)
-    return CAIRO_STATUS_READ_ERROR;
+  ਜੇ (r->ਵਿੱਥ + ਲੰਮਾਈ > ਮਾਪ)
+    ਵਾਪਸ CAIRO_ਸਥਿਤੀ_READ_ERROR;
 
-  hb_memcpy (data, d + r->offset, length);
-  r->offset += length;
+  hb_memcpy (ਅੰਕੜੇ, d + r->ਵਿੱਥ, ਲੰਮਾਈ);
+  r->ਵਿੱਥ += ਲੰਮਾਈ;
 
-  return CAIRO_STATUS_SUCCESS;
+  ਵਾਪਸ CAIRO_ਸਥਿਤੀ_SUCCESS;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-static const cairo_user_data_key_t *_hb_cairo_surface_blob_user_data_key = {0};
+ਸਥਿਰ ਅਚਲ cairo_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *hb_cairo_surface_blob_user_ਅੰਕੜੇ_ਕੁੰਜੀ = {0};
 
-static void
-_hb_cairo_destroy_blob (void *p)
+ਸਥਿਰ ਖਾਲੀ
+_hb_cairo_destroy_blob (ਖਾਲੀ *p)
 {
   hb_blob_destroy ((hb_blob_t *) p);
 }
 
-void
-_hb_cairo_set_source_color (hb_cairo_context_t *c,
+ਖਾਲੀ
+hb_cairo_ਸੈੱਟ_ਸਰੋਤ_color (hb_cairo_context_t *c,
 			    hb_bool_t use_foreground,
 			    hb_color_t color)
 {
   cairo_t *cr = c->cr;
 
-  if (use_foreground)
+  ਜੇ (use_foreground)
   {
-#ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-    double r, g, b, a;
-    cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-    if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
-      cairo_set_source_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
-    else
-#endif
-      cairo_set_source_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_ਸਰੋਤ
+    ਦੁੱਗਣਾ r, g, b, a;
+    cairo_ਨਮੂਨਾ_t *foreground = cairo_user_scaled_font_get_foreground_ਸਰੋਤ (c->scaled_font);
+    ਜੇ (cairo_ਨਮੂਨਾ_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_ਸਥਿਤੀ_SUCCESS)
+      cairo_ਸੈੱਟ_ਸਰੋਤ_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      cairo_ਸੈੱਟ_ਸਰੋਤ_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
   }
-  else
-    cairo_set_source_rgba (cr,
+  ਨਹੀਂਤਾਂ
+    cairo_ਸੈੱਟ_ਸਰੋਤ_rgba (cr,
 			   hb_color_get_red (color) / 255.,
 			   hb_color_get_green (color) / 255.,
 			   hb_color_get_blue (color) / 255.,
@@ -123,221 +123,221 @@ _hb_cairo_set_source_color (hb_cairo_context_t *c,
 hb_bool_t
 _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 			     hb_blob_t *blob,
-			     unsigned width,
-			     unsigned height,
-			     hb_tag_t format,
-			     HB_UNUSED float slant_deprecated,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਉਚਾਈ,
+			     hb_ਟੈਗ_t format,
+			     HB_ਅਣਵਰਤਿਆ ਦਸ਼ਮਲਵ slant_deprecated,
 			     hb_glyph_extents_t *extents)
 {
   cairo_t *cr = c->cr;
 
-  if (!extents) /* SVG currently. */
-    return false;
+  ਜੇ (!extents) /* SVG currently. */
+    ਵਾਪਸ ਝੂਠ;
 
-  cairo_surface_t *surface = nullptr;
+  cairo_surface_t *surface = ਖਾਲੀ_ਸੂਚਕ;
 
-#ifdef CAIRO_HAS_PNG_FUNCTIONS
-  if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CAIRO_HAS_PNG_FUNCTIONS
+  ਜੇ (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
-    hb_cairo_read_blob_data_t r;
+    hb_cairo_read_blob_ਅੰਕੜੇ_t r;
     r.blob = blob;
-    r.offset = 0;
-    surface = cairo_image_surface_create_from_png_stream (hb_cairo_read_blob, &r);
+    r.ਵਿੱਥ = 0;
+    surface = cairo_image_surface_create_from_png_ਧਾਰਾ (hb_cairo_read_blob, &r);
 
     /* For PNG, width,height can be unreliable, as is the case for NotoColorEmoji :(.
      * Just pull them out of the surface. */
-    width = cairo_image_surface_get_width (surface);
-    height = cairo_image_surface_get_width (surface);
+    ਚੌੜਾਈ = cairo_image_surface_get_ਚੌੜਾਈ (surface);
+    ਉਚਾਈ = cairo_image_surface_get_ਚੌੜਾਈ (surface);
   }
-  else
-#endif
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+  ਜੇ (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
     /* Byte-endian conversion. */
-    unsigned data_size = hb_blob_get_length (blob);
-    if (data_size < width * height * 4)
-      return false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕੜੇ_ਮਾਪ = hb_blob_get_ਲੰਮਾਈ (blob);
+    ਜੇ (ਅੰਕੜੇ_ਮਾਪ < ਚੌੜਾਈ * ਉਚਾਈ * 4)
+      ਵਾਪਸ ਝੂਠ;
 
-    unsigned char *data;
-#ifdef __BYTE_ORDER
-    if (__BYTE_ORDER == __BIG_ENDIAN)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਅੰਕੜੇ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __BYTE_ORDER
+    ਜੇ (__BYTE_ORDER == __BIG_ENDIAN)
     {
-      data = (unsigned char *) hb_blob_get_data_writable (blob, nullptr);
-      if (!data)
-        return false;
+      ਅੰਕੜੇ = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) hb_blob_get_ਅੰਕੜੇ_writable (blob, ਖਾਲੀ_ਸੂਚਕ);
+      ਜੇ (!ਅੰਕੜੇ)
+        ਵਾਪਸ ਝੂਠ;
 
-      unsigned count = width * height * 4;
-      for (unsigned i = 0; i < count; i += 4)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = ਚੌੜਾਈ * ਉਚਾਈ * 4;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i += 4)
       {
-        unsigned char b;
-	b = data[i];
-	data[i] = data[i+3];
-	data[i+3] = b;
-	b = data[i+1];
-	data[i+1] = data[i+2];
-	data[i+2] = b;
+        ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ b;
+	b = ਅੰਕੜੇ[i];
+	ਅੰਕੜੇ[i] = ਅੰਕੜੇ[i+3];
+	ਅੰਕੜੇ[i+3] = b;
+	b = ਅੰਕੜੇ[i+1];
+	ਅੰਕੜੇ[i+1] = ਅੰਕੜੇ[i+2];
+	ਅੰਕੜੇ[i+2] = b;
       }
     }
-    else
-#endif
-      data = (unsigned char *) hb_blob_get_data (blob, nullptr);
+    ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
+      ਅੰਕੜੇ = (ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *) hb_blob_get_ਅੰਕੜੇ (blob, ਖਾਲੀ_ਸੂਚਕ);
 
-    surface = cairo_image_surface_create_for_data (data,
+    surface = cairo_image_surface_create_for_ਅੰਕੜੇ (ਅੰਕੜੇ,
 						   CAIRO_FORMAT_ARGB32,
-						   width, height,
-						   width * 4);
+						   ਚੌੜਾਈ, ਉਚਾਈ,
+						   ਚੌੜਾਈ * 4);
 
-    cairo_surface_set_user_data (surface,
-				 _hb_cairo_surface_blob_user_data_key,
+    cairo_surface_ਸੈੱਟ_user_ਅੰਕੜੇ (surface,
+				 hb_cairo_surface_blob_user_ਅੰਕੜੇ_ਕੁੰਜੀ,
 				 hb_blob_reference (blob),
 				 _hb_cairo_destroy_blob);
   }
 
-  if (!surface)
-    return false;
+  ਜੇ (!surface)
+    ਵਾਪਸ ਝੂਠ;
 
   cairo_save (cr);
   /* this clip is here to work around recording surface limitations */
   cairo_rectangle (cr,
                    extents->x_bearing,
                    extents->y_bearing,
-                   extents->width,
-                   extents->height);
+                   extents->ਚੌੜਾਈ,
+                   extents->ਉਚਾਈ);
   cairo_clip (cr);
 
-  cairo_pattern_t *pattern = cairo_pattern_create_for_surface (surface);
-  cairo_pattern_set_extend (pattern, CAIRO_EXTEND_PAD);
+  cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ = cairo_ਨਮੂਨਾ_create_for_surface (surface);
+  cairo_ਨਮੂਨਾ_ਸੈੱਟ_extend (ਨਮੂਨਾ, CAIRO_EXTEND_PAD);
 
-  cairo_matrix_t matrix = {(double) width, 0, 0, (double) height, 0, 0};
-  cairo_pattern_set_matrix (pattern, &matrix);
+  cairo_ਮੈਟ੍ਰਿਕਸ_t ਮੈਟ੍ਰਿਕਸ = {(ਦੁੱਗਣਾ) ਚੌੜਾਈ, 0, 0, (ਦੁੱਗਣਾ) ਉਚਾਈ, 0, 0};
+  cairo_ਨਮੂਨਾ_ਸੈੱਟ_ਮੈਟ੍ਰਿਕਸ (ਨਮੂਨਾ, &ਮੈਟ੍ਰਿਕਸ);
 
   cairo_translate (cr, extents->x_bearing, extents->y_bearing);
-  cairo_scale (cr, extents->width, extents->height);
-  cairo_set_source (cr, pattern);
+  cairo_scale (cr, extents->ਚੌੜਾਈ, extents->ਉਚਾਈ);
+  cairo_ਸੈੱਟ_ਸਰੋਤ (cr, ਨਮੂਨਾ);
 
   cairo_paint (cr);
 
-  cairo_pattern_destroy (pattern);
+  cairo_ਨਮੂਨਾ_destroy (ਨਮੂਨਾ);
   cairo_surface_destroy (surface);
 
   cairo_restore (cr);
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool
+ਸਥਿਰ ਤਾਰਕਿਕ
 _hb_cairo_get_color_stops (hb_cairo_context_t *c,
-			   hb_color_line_t *color_line,
-			   unsigned *count,
+			   hb_color_ਸਤਰ_t *color_ਸਤਰ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ *ਗਿਣਤੀ_2,
 			   hb_color_stop_t **stops)
 {
-  unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  bool allocated = false;
-  if (unlikely (!len))
-    return false;
-  if (len > *count)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ len = hb_color_ਸਤਰ_get_color_stops (color_ਸਤਰ, 0, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+  ਤਾਰਕਿਕ allocated = ਝੂਠ;
+  ਜੇ (unlikely (!len))
+    ਵਾਪਸ ਝੂਠ;
+  ਜੇ (len > *ਗਿਣਤੀ_2)
   {
-    *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
-    if (unlikely (!*stops))
-      return false;
-    allocated = true;
+    *stops = (hb_color_stop_t *) hb_malloc2 (len, ਆਕਾਰ (hb_color_stop_t));
+    ਜੇ (unlikely (!*stops))
+      ਵਾਪਸ ਝੂਠ;
+    allocated = ਸੱਚ;
   }
-  hb_color_line_get_color_stops (color_line, 0, &len, *stops);
-  if (unlikely (!len))
+  hb_color_ਸਤਰ_get_color_stops (color_ਸਤਰ, 0, &len, *stops);
+  ਜੇ (unlikely (!len))
   {
-    if (allocated)
+    ਜੇ (allocated)
     {
       hb_free (*stops);
-      *stops = nullptr;
+      *stops = ਖਾਲੀ_ਸੂਚਕ;
     }
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  for (unsigned i = 0; i < len; i++)
-    if ((*stops)[i].is_foreground)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len; i++)
+    ਜੇ ((*stops)[i].is_foreground)
     {
-#ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-      double r, g, b, a;
-      cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-      if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_ਸਰੋਤ
+      ਦੁੱਗਣਾ r, g, b, a;
+      cairo_ਨਮੂਨਾ_t *foreground = cairo_user_scaled_font_get_foreground_ਸਰੋਤ (c->scaled_font);
+      ਜੇ (cairo_ਨਮੂਨਾ_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_ਸਥਿਤੀ_SUCCESS)
         (*stops)[i].color = HB_COLOR (round (b * 255.), round (g * 255.), round (r * 255.),
                                       round (a * hb_color_get_alpha ((*stops)[i].color)));
-      else
-#endif
+      ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
-  *count = len;
-  return true;
+  *ਗਿਣਤੀ_2 = len;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-void
-_hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2)
+ਖਾਲੀ
+hb_cairo_paint_ਰੇਖਿਕ_gradient (hb_cairo_context_t *c,
+				 hb_color_ਸਤਰ_t *color_ਸਤਰ,
+				 ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0,
+				 ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1,
+				 ਦਸ਼ਮਲਵ x2, ਦਸ਼ਮਲਵ y2)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float xx0, yy0, xx1, yy1;
-  float xxx0, yyy0, xxx1, yyy1;
-  float min, max;
-  cairo_pattern_t *pattern;
+  ਦਸ਼ਮਲਵ xx0, yy0, xx1, yy1;
+  ਦਸ਼ਮਲਵ xxx0, yyy0, xxx1, yyy1;
+  ਦਸ਼ਮਲਵ min, max;
+  cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  ਜੇ (unlikely (!_hb_cairo_get_color_stops (c, color_ਸਤਰ, &len, &stops)))
+    ਵਾਪਸ;
+  hb_paint_normalize_color_ਸਤਰ (stops, len, &min, &max);
 
-  hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
+  hb_paint_reduce_ਰੇਖਿਕ_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
 
   xxx0 = xx0 + min * (xx1 - xx0);
   yyy0 = yy0 + min * (yy1 - yy0);
   xxx1 = xx0 + max * (xx1 - xx0);
   yyy1 = yy0 + max * (yy1 - yy0);
 
-  pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
-  for (unsigned int i = 0; i < len; i++)
+  ਨਮੂਨਾ = cairo_ਨਮੂਨਾ_create_ਰੇਖਿਕ ((ਦੁੱਗਣਾ) xxx0, (ਦੁੱਗਣਾ) yyy0, (ਦੁੱਗਣਾ) xxx1, (ਦੁੱਗਣਾ) yyy1);
+  cairo_ਨਮੂਨਾ_ਸੈੱਟ_extend (ਨਮੂਨਾ, hb_cairo_extend (hb_color_ਸਤਰ_get_extend (color_ਸਤਰ)));
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      ਦੁੱਗਣਾ r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_ਨਮੂਨਾ_ਜੋੜੋ_color_stop_rgba (ਨਮੂਨਾ, (ਦੁੱਗਣਾ) stops[i].ਵਿੱਥ, r, g, b, a);
     }
 
-  cairo_set_source (cr, pattern);
+  cairo_ਸੈੱਟ_ਸਰੋਤ (cr, ਨਮੂਨਾ);
   cairo_paint (cr);
 
-  cairo_pattern_destroy (pattern);
+  cairo_ਨਮੂਨਾ_destroy (ਨਮੂਨਾ);
 
-  if (stops != stops_)
+  ਜੇ (stops != stops_)
     hb_free (stops);
 }
 
-void
+ਖਾਲੀ
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1)
+				 hb_color_ਸਤਰ_t *color_ਸਤਰ,
+				 ਦਸ਼ਮਲਵ x0, ਦਸ਼ਮਲਵ y0, ਦਸ਼ਮਲਵ r0,
+				 ਦਸ਼ਮਲਵ x1, ਦਸ਼ਮਲਵ y1, ਦਸ਼ਮਲਵ r1)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float min, max;
-  float xx0, yy0, xx1, yy1;
-  float rr0, rr1;
-  cairo_pattern_t *pattern;
+  ਦਸ਼ਮਲਵ min, max;
+  ਦਸ਼ਮਲਵ xx0, yy0, xx1, yy1;
+  ਦਸ਼ਮਲਵ rr0, rr1;
+  cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  ਜੇ (unlikely (!_hb_cairo_get_color_stops (c, color_ਸਤਰ, &len, &stops)))
+    ਵਾਪਸ;
+  hb_paint_normalize_color_ਸਤਰ (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
   yy0 = y0 + min * (y1 - y0);
@@ -346,39 +346,39 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   rr0 = r0 + min * (r1 - r0);
   rr1 = r0 + max * (r1 - r0);
 
-  pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
+  ਨਮੂਨਾ = cairo_ਨਮੂਨਾ_create_radial ((ਦੁੱਗਣਾ) xx0, (ਦੁੱਗਣਾ) yy0, (ਦੁੱਗਣਾ) rr0, (ਦੁੱਗਣਾ) xx1, (ਦੁੱਗਣਾ) yy1, (ਦੁੱਗਣਾ) rr1);
+  cairo_ਨਮੂਨਾ_ਸੈੱਟ_extend (ਨਮੂਨਾ, hb_cairo_extend (hb_color_ਸਤਰ_get_extend (color_ਸਤਰ)));
 
-  for (unsigned int i = 0; i < len; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      ਦੁੱਗਣਾ r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_ਨਮੂਨਾ_ਜੋੜੋ_color_stop_rgba (ਨਮੂਨਾ, (ਦੁੱਗਣਾ) stops[i].ਵਿੱਥ, r, g, b, a);
     }
 
-  cairo_set_source (cr, pattern);
+  cairo_ਸੈੱਟ_ਸਰੋਤ (cr, ਨਮੂਨਾ);
   cairo_paint (cr);
 
-  cairo_pattern_destroy (pattern);
+  cairo_ਨਮੂਨਾ_destroy (ਨਮੂਨਾ);
 
-  if (stops != stops_)
+  ਜੇ (stops != stops_)
     hb_free (stops);
 }
 
-typedef struct {
-  float x, y;
-} hb_cairo_point_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
+  ਦਸ਼ਮਲਵ x, y;
+} hb_cairo_ਬਿੰਦੂ_t;
 
-static inline float
-_hb_cairo_interpolate (float f0, float f1, float f)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+_hb_cairo_interpolate (ਦਸ਼ਮਲਵ f0, ਦਸ਼ਮਲਵ f1, ਦਸ਼ਮਲਵ f)
 {
-  return f0 + f * (f1 - f0);
+  ਵਾਪਸ f0 + f * (f1 - f0);
 }
 
-static inline void
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
 _hb_cairo_premultiply (hb_cairo_color_t *c)
 {
   c->r *= c->a;
@@ -386,10 +386,10 @@ _hb_cairo_premultiply (hb_cairo_color_t *c)
   c->b *= c->a;
 }
 
-static inline void
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
 _hb_cairo_unpremultiply (hb_cairo_color_t *c)
 {
-  if (c->a != 0.f)
+  ਜੇ (c->a != 0.f)
   {
      c->r /= c->a;
      c->g /= c->a;
@@ -397,8 +397,8 @@ _hb_cairo_unpremultiply (hb_cairo_color_t *c)
   }
 }
 
-static void
-_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float k, hb_cairo_color_t *c)
+ਸਥਿਰ ਖਾਲੀ
+_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, ਦਸ਼ਮਲਵ k, hb_cairo_color_t *c)
 {
   // According to the COLR specification, gradients
   // should be interpolated in premultiplied form
@@ -411,101 +411,101 @@ _hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float 
   _hb_cairo_unpremultiply (c);
 }
 
-static inline float
-_hb_cairo_dot (hb_cairo_point_t p, hb_cairo_point_t q)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+_hb_cairo_dot (hb_cairo_ਬਿੰਦੂ_t p, hb_cairo_ਬਿੰਦੂ_t q)
 {
-  return p.x * q.x + p.y * q.y;
+  ਵਾਪਸ p.x * q.x + p.y * q.y;
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_normalize (hb_cairo_point_t p)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_cairo_ਬਿੰਦੂ_t
+_hb_cairo_normalize (hb_cairo_ਬਿੰਦੂ_t p)
 {
-  float len = sqrtf (_hb_cairo_dot (p, p));
+  ਦਸ਼ਮਲਵ len = sqrtf (_hb_cairo_dot (p, p));
 
-  return hb_cairo_point_t { p.x / len, p.y / len };
+  ਵਾਪਸ hb_cairo_ਬਿੰਦੂ_t { p.x / len, p.y / len };
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_sum (hb_cairo_point_t p, hb_cairo_point_t q)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_cairo_ਬਿੰਦੂ_t
+hb_cairo_ਜੋੜ (hb_cairo_ਬਿੰਦੂ_t p, hb_cairo_ਬਿੰਦੂ_t q)
 {
-  return hb_cairo_point_t { p.x + q.x, p.y + q.y };
+  ਵਾਪਸ hb_cairo_ਬਿੰਦੂ_t { p.x + q.x, p.y + q.y };
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_difference (hb_cairo_point_t p, hb_cairo_point_t q)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_cairo_ਬਿੰਦੂ_t
+_hb_cairo_difference (hb_cairo_ਬਿੰਦੂ_t p, hb_cairo_ਬਿੰਦੂ_t q)
 {
-  return hb_cairo_point_t { p.x - q.x, p.y - q.y };
+  ਵਾਪਸ hb_cairo_ਬਿੰਦੂ_t { p.x - q.x, p.y - q.y };
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_scale (hb_cairo_point_t p, float f)
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_cairo_ਬਿੰਦੂ_t
+_hb_cairo_scale (hb_cairo_ਬਿੰਦੂ_t p, ਦਸ਼ਮਲਵ f)
 {
-  return hb_cairo_point_t { p.x * f, p.y * f };
+  ਵਾਪਸ hb_cairo_ਬਿੰਦੂ_t { p.x * f, p.y * f };
 }
 
-typedef struct {
-  hb_cairo_point_t center, p0, c0, c1, p1;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
+  hb_cairo_ਬਿੰਦੂ_t center, p0, c0, c1, p1;
   hb_cairo_color_t color0, color1;
 } hb_cairo_patch_t;
 
-static void
-_hb_cairo_add_patch (cairo_pattern_t *pattern, hb_cairo_point_t *center, hb_cairo_patch_t *p)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਜੋੜੋ_patch (cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ, hb_cairo_ਬਿੰਦੂ_t *center, hb_cairo_patch_t *p)
 {
-  cairo_mesh_pattern_begin_patch (pattern);
-  cairo_mesh_pattern_move_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_line_to (pattern, (double) p->p0.x, (double) p->p0.y);
-  cairo_mesh_pattern_curve_to (pattern,
-                               (double) p->c0.x, (double) p->c0.y,
-                               (double) p->c1.x, (double) p->c1.y,
-                               (double) p->p1.x, (double) p->p1.y);
-  cairo_mesh_pattern_line_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_set_corner_color_rgba (pattern, 0,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
-  cairo_mesh_pattern_set_corner_color_rgba (pattern, 1,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
-  cairo_mesh_pattern_set_corner_color_rgba (pattern, 2,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
-  cairo_mesh_pattern_set_corner_color_rgba (pattern, 3,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
-  cairo_mesh_pattern_end_patch (pattern);
+  cairo_mesh_ਨਮੂਨਾ_begin_patch (ਨਮੂਨਾ);
+  cairo_mesh_ਨਮੂਨਾ_move_ਮੰਜ਼ਿਲ (ਨਮੂਨਾ, (ਦੁੱਗਣਾ) center->x, (ਦੁੱਗਣਾ) center->y);
+  cairo_mesh_ਨਮੂਨਾ_ਸਤਰ_ਮੰਜ਼ਿਲ (ਨਮੂਨਾ, (ਦੁੱਗਣਾ) p->p0.x, (ਦੁੱਗਣਾ) p->p0.y);
+  cairo_mesh_ਨਮੂਨਾ_ਵਕਰ_ਮੰਜ਼ਿਲ (ਨਮੂਨਾ,
+                               (ਦੁੱਗਣਾ) p->c0.x, (ਦੁੱਗਣਾ) p->c0.y,
+                               (ਦੁੱਗਣਾ) p->c1.x, (ਦੁੱਗਣਾ) p->c1.y,
+                               (ਦੁੱਗਣਾ) p->p1.x, (ਦੁੱਗਣਾ) p->p1.y);
+  cairo_mesh_ਨਮੂਨਾ_ਸਤਰ_ਮੰਜ਼ਿਲ (ਨਮੂਨਾ, (ਦੁੱਗਣਾ) center->x, (ਦੁੱਗਣਾ) center->y);
+  cairo_mesh_ਨਮੂਨਾ_ਸੈੱਟ_ਕੋਨਾ_color_rgba (ਨਮੂਨਾ, 0,
+                                            (ਦੁੱਗਣਾ) p->color0.r,
+                                            (ਦੁੱਗਣਾ) p->color0.g,
+                                            (ਦੁੱਗਣਾ) p->color0.b,
+                                            (ਦੁੱਗਣਾ) p->color0.a);
+  cairo_mesh_ਨਮੂਨਾ_ਸੈੱਟ_ਕੋਨਾ_color_rgba (ਨਮੂਨਾ, 1,
+                                            (ਦੁੱਗਣਾ) p->color0.r,
+                                            (ਦੁੱਗਣਾ) p->color0.g,
+                                            (ਦੁੱਗਣਾ) p->color0.b,
+                                            (ਦੁੱਗਣਾ) p->color0.a);
+  cairo_mesh_ਨਮੂਨਾ_ਸੈੱਟ_ਕੋਨਾ_color_rgba (ਨਮੂਨਾ, 2,
+                                            (ਦੁੱਗਣਾ) p->color1.r,
+                                            (ਦੁੱਗਣਾ) p->color1.g,
+                                            (ਦੁੱਗਣਾ) p->color1.b,
+                                            (ਦੁੱਗਣਾ) p->color1.a);
+  cairo_mesh_ਨਮੂਨਾ_ਸੈੱਟ_ਕੋਨਾ_color_rgba (ਨਮੂਨਾ, 3,
+                                            (ਦੁੱਗਣਾ) p->color1.r,
+                                            (ਦੁੱਗਣਾ) p->color1.g,
+                                            (ਦੁੱਗਣਾ) p->color1.b,
+                                            (ਦੁੱਗਣਾ) p->color1.a);
+  cairo_mesh_ਨਮੂਨਾ_ਸਿਰਾ_patch (ਨਮੂਨਾ);
 }
 
-#define MAX_ANGLE (HB_PI / 8.f)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MAX_ANGLE (HB_PI / 8.f)
 
-static void
-_hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
-				       float a0, hb_cairo_color_t *c0,
-				       float a1, hb_cairo_color_t *c1,
-				       cairo_pattern_t *pattern)
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਜੋੜੋ_sweep_gradient_patches1 (ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy, ਦਸ਼ਮਲਵ radius,
+				       ਦਸ਼ਮਲਵ a0, hb_cairo_color_t *c0,
+				       ਦਸ਼ਮਲਵ a1, hb_cairo_color_t *c1,
+				       cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ)
 {
-  hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
-  hb_cairo_point_t p0;
+  hb_cairo_ਬਿੰਦੂ_t center = hb_cairo_ਬਿੰਦੂ_t { cx, cy };
+  ਪੂਰਨ ਅੰਕ_splits;
+  hb_cairo_ਬਿੰਦੂ_t p0;
   hb_cairo_color_t color0, color1;
 
-  num_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
-  p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
+  ਅੰਕ_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
+  p0 = hb_cairo_ਬਿੰਦੂ_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  ਲਈ (ਪੂਰਨ a = 0; a < ਅੰਕ_splits; a++)
     {
-      float k = (a + 1.) / num_splits;
-      float angle1;
-      hb_cairo_point_t p1;
-      hb_cairo_point_t A, U;
-      hb_cairo_point_t C0, C1;
+      ਦਸ਼ਮਲਵ k = (a + 1.) / ਅੰਕ_splits;
+      ਦਸ਼ਮਲਵ angle1;
+      hb_cairo_ਬਿੰਦੂ_t p1;
+      hb_cairo_ਬਿੰਦੂ_t A, U;
+      hb_cairo_ਬਿੰਦੂ_t C0, C1;
       hb_cairo_patch_t patch;
 
       angle1 = _hb_cairo_interpolate (a0, a1, k);
@@ -514,29 +514,29 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
       patch.color0 = color0;
       patch.color1 = color1;
 
-      p1 = hb_cairo_point_t { cosf (angle1), sinf (angle1) };
-      patch.p0 = _hb_cairo_sum (center, _hb_cairo_scale (p0, radius));
-      patch.p1 = _hb_cairo_sum (center, _hb_cairo_scale (p1, radius));
+      p1 = hb_cairo_ਬਿੰਦੂ_t { cosf (angle1), sinf (angle1) };
+      patch.p0 = hb_cairo_ਜੋੜ (center, _hb_cairo_scale (p0, radius));
+      patch.p1 = hb_cairo_ਜੋੜ (center, _hb_cairo_scale (p1, radius));
 
-      A = _hb_cairo_normalize (_hb_cairo_sum (p0, p1));
-      U = hb_cairo_point_t { -A.y, A.x };
-      C0 = _hb_cairo_sum (A, _hb_cairo_scale (U, _hb_cairo_dot (_hb_cairo_difference (p0, A), p0) / _hb_cairo_dot (U, p0)));
-      C1 = _hb_cairo_sum (A, _hb_cairo_scale (U, _hb_cairo_dot (_hb_cairo_difference (p1, A), p1) / _hb_cairo_dot (U, p1)));
+      A = _hb_cairo_normalize (hb_cairo_ਜੋੜ (p0, p1));
+      U = hb_cairo_ਬਿੰਦੂ_t { -A.y, A.x };
+      C0 = hb_cairo_ਜੋੜ (A, _hb_cairo_scale (U, _hb_cairo_dot (_hb_cairo_difference (p0, A), p0) / _hb_cairo_dot (U, p0)));
+      C1 = hb_cairo_ਜੋੜ (A, _hb_cairo_scale (U, _hb_cairo_dot (_hb_cairo_difference (p1, A), p1) / _hb_cairo_dot (U, p1)));
 
-      patch.c0 = _hb_cairo_sum (center, _hb_cairo_scale (_hb_cairo_sum (C0, _hb_cairo_scale (_hb_cairo_difference (C0, p0), 0.33333f)), radius));
-      patch.c1 = _hb_cairo_sum (center, _hb_cairo_scale (_hb_cairo_sum (C1, _hb_cairo_scale (_hb_cairo_difference (C1, p1), 0.33333f)), radius));
+      patch.c0 = hb_cairo_ਜੋੜ (center, _hb_cairo_scale (hb_cairo_ਜੋੜ (C0, _hb_cairo_scale (_hb_cairo_difference (C0, p0), 0.33333f)), radius));
+      patch.c1 = hb_cairo_ਜੋੜ (center, _hb_cairo_scale (hb_cairo_ਜੋੜ (C1, _hb_cairo_scale (_hb_cairo_difference (C1, p1), 0.33333f)), radius));
 
-      _hb_cairo_add_patch (pattern, &center, &patch);
+      hb_cairo_ਜੋੜੋ_patch (ਨਮੂਨਾ, &center, &patch);
 
       p0 = p1;
       color0 = color1;
     }
 }
 
-static inline hb_cairo_color_t
+ਸਥਿਰ ਸਤਰਅੰਦਰ hb_cairo_color_t
 _hb_cairo_color_from_hb_color (hb_color_t c)
 {
-  return {
+  ਵਾਪਸ {
     hb_color_get_red   (c) / 255.f,
     hb_color_get_green (c) / 255.f,
     hb_color_get_blue  (c) / 255.f,
@@ -544,88 +544,88 @@ _hb_cairo_color_from_hb_color (hb_color_t c)
   };
 }
 
-struct _hb_cairo_sweep_patch_ctx {
-  float cx, cy, radius;
-  cairo_pattern_t *pattern;
+ਬਣਤਰ _hb_cairo_sweep_patch_ctx {
+  ਦਸ਼ਮਲਵ cx, cy, radius;
+  cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ;
 };
 
-static void
-_hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
-			    float a1, hb_color_t c1,
-			    void *user_data)
+ਸਥਿਰ ਖਾਲੀ
+_hb_cairo_sweep_emit_patch (ਦਸ਼ਮਲਵ a0, hb_color_t c0,
+			    ਦਸ਼ਮਲਵ a1, hb_color_t c1,
+			    ਖਾਲੀ *user_ਅੰਕੜੇ)
 {
-  auto *ctx = (_hb_cairo_sweep_patch_ctx *) user_data;
+  ਸਵੈਚਾਲਿਤ *ctx = (_hb_cairo_sweep_patch_ctx *) user_ਅੰਕੜੇ;
   hb_cairo_color_t cc0 = _hb_cairo_color_from_hb_color (c0);
   hb_cairo_color_t cc1 = _hb_cairo_color_from_hb_color (c1);
-  _hb_cairo_add_sweep_gradient_patches1 (ctx->cx, ctx->cy, ctx->radius,
+  hb_cairo_ਜੋੜੋ_sweep_gradient_patches1 (ctx->cx, ctx->cy, ctx->radius,
 					 a0, &cc0, a1, &cc1,
-					 ctx->pattern);
+					 ctx->ਨਮੂਨਾ);
 }
 
-static void
-_hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
-				      unsigned int n_stops,
+ਸਥਿਰ ਖਾਲੀ
+hb_cairo_ਜੋੜੋ_sweep_gradient_patches (hb_color_stop_t *stops,
+				      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ n_stops,
 				      cairo_extend_t extend,
-				      float cx, float cy,
-				      float radius,
-				      float start_angle,
-				      float end_angle,
-				      cairo_pattern_t *pattern)
+				      ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy,
+				      ਦਸ਼ਮਲਵ radius,
+				      ਦਸ਼ਮਲਵ ਸ਼ੁਰੂ_angle,
+				      ਦਸ਼ਮਲਵ ਸਿਰਾ_angle,
+				      cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ)
 {
   hb_paint_extend_t hb_extend =
     extend == CAIRO_EXTEND_REPEAT  ? HB_PAINT_EXTEND_REPEAT  :
     extend == CAIRO_EXTEND_REFLECT ? HB_PAINT_EXTEND_REFLECT :
 				     HB_PAINT_EXTEND_PAD;
 
-  _hb_cairo_sweep_patch_ctx ctx { cx, cy, radius, pattern };
+  _hb_cairo_sweep_patch_ctx ctx { cx, cy, radius, ਨਮੂਨਾ };
   hb_paint_sweep_gradient_tiles (stops, n_stops, hb_extend,
-				 start_angle, end_angle,
+				 ਸ਼ੁਰੂ_angle, ਸਿਰਾ_angle,
 				 _hb_cairo_sweep_emit_patch, &ctx);
 }
 
-void
+ਖਾਲੀ
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
-				float cx, float cy,
-				float start_angle,
-				float end_angle)
+				hb_color_ਸਤਰ_t *color_ਸਤਰ,
+				ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy,
+				ਦਸ਼ਮਲਵ ਸ਼ੁਰੂ_angle,
+				ਦਸ਼ਮਲਵ ਸਿਰਾ_angle)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   cairo_extend_t extend;
-  double x1, y1, x2, y2;
-  float max_x, max_y, radius;
-  cairo_pattern_t *pattern;
+  ਦੁੱਗਣਾ x1, y1, x2, y2;
+  ਦਸ਼ਮਲਵ max_x, max_y, radius;
+  cairo_ਨਮੂਨਾ_t *ਨਮੂਨਾ;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  ਜੇ (unlikely (!_hb_cairo_get_color_stops (c, color_ਸਤਰ, &len, &stops)))
+    ਵਾਪਸ;
 
   hb_array_t<hb_color_stop_t> (stops, len)
-    .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+    .qsort ([] (ਅਚਲ hb_color_stop_t &a, ਅਚਲ hb_color_stop_t &b) {
+      ਵਾਪਸ (a.ਵਿੱਥ > b.ਵਿੱਥ) - (a.ਵਿੱਥ < b.ਵਿੱਥ);
     });
 
   cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
-  max_x = (float) hb_max ((x1 - (double) cx) * (x1 - (double) cx), (x2 - (double) cx) * (x2 - (double) cx));
-  max_y = (float) hb_max ((y1 - (double) cy) * (y1 - (double) cy), (y2 - (double) cy) * (y2 - (double) cy));
+  max_x = (ਦਸ਼ਮਲਵ) hb_max ((x1 - (ਦੁੱਗਣਾ) cx) * (x1 - (ਦੁੱਗਣਾ) cx), (x2 - (ਦੁੱਗਣਾ) cx) * (x2 - (ਦੁੱਗਣਾ) cx));
+  max_y = (ਦਸ਼ਮਲਵ) hb_max ((y1 - (ਦੁੱਗਣਾ) cy) * (y1 - (ਦੁੱਗਣਾ) cy), (y2 - (ਦੁੱਗਣਾ) cy) * (y2 - (ਦੁੱਗਣਾ) cy));
   radius = sqrtf (max_x + max_y);
 
-  extend = hb_cairo_extend (hb_color_line_get_extend (color_line));
-  pattern = cairo_pattern_create_mesh ();
+  extend = hb_cairo_extend (hb_color_ਸਤਰ_get_extend (color_ਸਤਰ));
+  ਨਮੂਨਾ = cairo_ਨਮੂਨਾ_create_mesh ();
 
-  _hb_cairo_add_sweep_gradient_patches (stops, len, extend, cx, cy,
-					radius, start_angle, end_angle, pattern);
+  hb_cairo_ਜੋੜੋ_sweep_gradient_patches (stops, len, extend, cx, cy,
+					radius, ਸ਼ੁਰੂ_angle, ਸਿਰਾ_angle, ਨਮੂਨਾ);
 
-  cairo_set_source (cr, pattern);
+  cairo_ਸੈੱਟ_ਸਰੋਤ (cr, ਨਮੂਨਾ);
   cairo_paint (cr);
 
-  cairo_pattern_destroy (pattern);
+  cairo_ਨਮੂਨਾ_destroy (ਨਮੂਨਾ);
 
-  if (stops != stops_)
+  ਜੇ (stops != stops_)
     hb_free (stops);
 }
 
-#endif
+#ਜੇ_ਅੰਤ

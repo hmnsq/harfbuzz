@@ -23,138 +23,138 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CFF1_INTERP_CS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+ਨਾਮਾਕਾਸ਼ CFF {
 
-using namespace OT;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+ਬਣਤਰ cff1_cs_interp_env_t : cs_interp_env_t<ਸੰਖਿਆ_t, CFF1Subrs>
 {
-  template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ACC>
+  cff1_cs_interp_env_t (ਅਚਲ hb_ubytes_t &str, ACC &acc, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ fd,
+			ਅਚਲ ਪੂਰਨ *coords_=ਖਾਲੀ_ਸੂਚਕ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.ਨਿੱਜੀ_Dicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
-    arg_start = 0;
-    in_seac = false;
+    processed_ਚੌੜਾਈ = ਝੂਠ;
+    has_ਚੌੜਾਈ = ਝੂਠ;
+    arg_ਸ਼ੁਰੂ = 0;
+    ਵਿੱਚ_seac = ਝੂਠ;
   }
 
-  void set_width (bool has_width_)
+  ਖਾਲੀ ਸੈੱਟ_ਚੌੜਾਈ (ਤਾਰਕਿਕ has_ਚੌੜਾਈ_2)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    ਜੇ (likely (!processed_ਚੌੜਾਈ && (SUPER::arg_ਢੇਰ.get_ਗਿਣਤੀ () > 0)))
     {
-      if (has_width_)
+      ਜੇ (has_ਚੌੜਾਈ_2)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
-	arg_start = 1;
+	ਚੌੜਾਈ = SUPER::arg_ਢੇਰ[0];
+	has_ਚੌੜਾਈ = ਸੱਚ;
+	arg_ਸ਼ੁਰੂ = 1;
       }
     }
-    processed_width = true;
+    processed_ਚੌੜਾਈ = ਸੱਚ;
   }
 
-  void clear_args ()
+  ਖਾਲੀ clear_ਦਲੀਲਾਂ ()
   {
-    arg_start = 0;
-    SUPER::clear_args ();
+    arg_ਸ਼ੁਰੂ = 0;
+    SUPER::clear_ਦਲੀਲਾਂ ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  ਖਾਲੀ ਸੈੱਟ_ਵਿੱਚ_seac (ਤਾਰਕਿਕ ਵਿੱਚ_seac_2) { ਵਿੱਚ_seac = ਵਿੱਚ_seac_2; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  ਤਾਰਕਿਕ	  processed_ਚੌੜਾਈ;
+  ਤਾਰਕਿਕ	  has_ਚੌੜਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  arg_ਸ਼ੁਰੂ;
+  ਸੰਖਿਆ_t	ਚੌੜਾਈ;
+  ਤਾਰਕਿਕ	  ਵਿੱਚ_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  ਨਿਜੀ:
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ cs_interp_env_t<ਸੰਖਿਆ_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ OPSET, ਕਿਸਮ_ਨਾਂ PARAM, ਕਿਸਮ_ਨਾਂ ਰਸਤਾ_3=ਰਸਤਾ_procs_null_t<cff1_cs_interp_env_t, PARAM>>
+ਬਣਤਰ cff1_cs_opset_t : cs_opset_t<ਸੰਖਿਆ_t, OPSET, cff1_cs_interp_env_t, PARAM, ਰਸਤਾ_3>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ਸਥਿਰ ਖਾਲੀ process_op (op_ਕੋਡ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
-	break;
+    ਚੋਣ (op) {
+      ਹਾਲਤ Op_ਕੋਡ_dotsection:
+	SUPER::flush_ਦਲੀਲਾਂ_and_op (op, env, param);
+	ਰੋਕੋ;
 
-      case OpCode_endchar:
-	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+      ਹਾਲਤ Op_ਕੋਡ_endchar:
+	OPSET::check_ਚੌੜਾਈ (op, env, param);
+	ਜੇ (env.arg_ਢੇਰ.get_ਗਿਣਤੀ () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	OPSET::flush_ਦਲੀਲਾਂ_and_op (op, env, param);
+	env.ਸੈੱਟ_endchar (ਸੱਚ);
+	ਰੋਕੋ;
 
-      default:
+      ਮੂਲ:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ਸਥਿਰ ਖਾਲੀ check_ਚੌੜਾਈ (op_ਕੋਡ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    ਜੇ (!env.processed_ਚੌੜਾਈ)
     {
-      bool  has_width = false;
-      switch (op)
+      ਤਾਰਕਿਕ  has_ਚੌੜਾਈ = ਝੂਠ;
+      ਚੋਣ (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	ਹਾਲਤ Op_ਕੋਡ_endchar:
+	ਹਾਲਤ Op_ਕੋਡ_hstem:
+	ਹਾਲਤ Op_ਕੋਡ_hstemhm:
+	ਹਾਲਤ Op_ਕੋਡ_vstem:
+	ਹਾਲਤ Op_ਕੋਡ_vstemhm:
+	ਹਾਲਤ Op_ਕੋਡ_hintmask:
+	ਹਾਲਤ Op_ਕੋਡ_cntrmask:
+	  has_ਚੌੜਾਈ = ((env.arg_ਢੇਰ.get_ਗਿਣਤੀ () & 1) != 0);
+	  ਰੋਕੋ;
+	ਹਾਲਤ Op_ਕੋਡ_hmoveto:
+	ਹਾਲਤ Op_ਕੋਡ_vmoveto:
+	  has_ਚੌੜਾਈ = (env.arg_ਢੇਰ.get_ਗਿਣਤੀ () > 1);
+	  ਰੋਕੋ;
+	ਹਾਲਤ Op_ਕੋਡ_rmoveto:
+	  has_ਚੌੜਾਈ = (env.arg_ਢੇਰ.get_ਗਿਣਤੀ () > 2);
+	  ਰੋਕੋ;
+	ਮੂਲ:
+	  ਵਾਪਸ;
       }
-      env.set_width (has_width);
+      env.ਸੈੱਟ_ਚੌੜਾਈ (has_ਚੌੜਾਈ);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  ਸਥਿਰ ਖਾਲੀ process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  ਸਥਿਰ ਖਾਲੀ flush_ਦਲੀਲਾਂ (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_ਦਲੀਲਾਂ (env, param);
+    env.clear_ਦਲੀਲਾਂ ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  ਨਿਜੀ:
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ cs_opset_t<ਸੰਖਿਆ_t, OPSET, cff1_cs_interp_env_t, PARAM, ਰਸਤਾ_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ OPSET, ਕਿਸਮ_ਨਾਂ PARAM>
+ਵਰਤੋਂ cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#ਜੇ_ਅੰਤ /* HB_CFF1_INTERP_CS_HH */

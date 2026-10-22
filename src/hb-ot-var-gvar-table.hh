@@ -25,1099 +25,1099 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_VAR_GVAR_TABLE_HH
-#define HB_OT_VAR_GVAR_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_GVAR_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_GVAR_ਸਾਰਣੀ_HH
 
-#include "hb-decycler.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-var-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-decycler.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-dual.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-common.hh"
 
 /*
  * gvar -- Glyph Variation Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gvar
  */
-#define HB_OT_TAG_gvar HB_TAG('g','v','a','r')
-#define HB_OT_TAG_GVAR HB_TAG('G','V','A','R')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_gvar HB_ਟੈਗ('g','v','a','r')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_GVAR HB_ਟੈਗ('G','V','A','R')
 
-struct hb_glyf_scratch_t
+ਬਣਤਰ hb_glyf_scratch_t
 {
   // glyf
-  contour_point_vector_t all_points;
-  contour_point_vector_t comp_points;
+  contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t all_points;
+  contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t comp_points;
   hb_decycler_t decycler;
 
   // gvar
-  contour_point_vector_t orig_points;
-  hb_vector_t<int> x_deltas;
-  hb_vector_t<int> y_deltas;
-  contour_point_vector_t deltas;
-  hb_vector_t<unsigned int> shared_indices;
-  hb_vector_t<unsigned int> private_indices;
+  contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t orig_points;
+  hb_ਸਦਿਸ਼_t<ਪੂਰਨ> x_deltas;
+  hb_ਸਦਿਸ਼_t<ਪੂਰਨ> y_deltas;
+  contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t deltas;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> shared_indices;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> ਨਿੱਜੀ_indices;
 };
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 
-template <typename OffsetType>
-struct glyph_variations_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਵਿੱਥ_Type>
+ਬਣਤਰ glyph_variations_t
 {
   // TODO: Move tuple_variations_t to outside of TupleVariationData
-  using tuple_variations_t = typename TupleVariationData<OffsetType>::tuple_variations_t;
-  using GlyphVariationData = TupleVariationData<OffsetType>;
+  ਵਰਤੋਂ tuple_variations_t = ਕਿਸਮ_ਨਾਂ Tuple_Variation_ਅੰਕੜੇ<ਵਿੱਥ_Type>::tuple_variations_t;
+  ਵਰਤੋਂ Glyph_Variation_ਅੰਕੜੇ = Tuple_Variation_ਅੰਕੜੇ<ਵਿੱਥ_Type>;
 
-  hb_vector_t<tuple_variations_t> glyph_variations;
+  hb_ਸਦਿਸ਼_t<tuple_variations_t> glyph_variations;
 
-  hb_vector_t<F2DOT14> compiled_shared_tuples;
-  private:
-  unsigned shared_tuples_count = 0;
+  hb_ਸਦਿਸ਼_t<F2DOT14> compiled_shared_tuples;
+  ਨਿਜੀ:
+  ਬਿਨਾਨਿਸ਼ਾਨੀ shared_tuples_ਗਿਣਤੀ = 0;
 
   /* shared coords-> index map after instantiation */
-  hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> shared_tuples_idx_map;
+  hb_hashmap_t<ਅਚਲ hb_ਸਦਿਸ਼_t<F2DOT14>*, ਬਿਨਾਨਿਸ਼ਾਨੀ> shared_tuples_idx_map;
 
   hb_alloc_pool_t pool;
 
-  public:
-  unsigned compiled_shared_tuples_count () const
-  { return shared_tuples_count; }
+  ਜਨਤਕ:
+  ਬਿਨਾਨਿਸ਼ਾਨੀ compiled_shared_tuples_ਗਿਣਤੀ () ਅਚਲ
+  { ਵਾਪਸ shared_tuples_ਗਿਣਤੀ; }
 
-  unsigned compiled_byte_size () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ compiled_byte_ਮਾਪ () ਅਚਲ
   {
-    unsigned byte_size = 0;
-    for (const auto& _ : glyph_variations)
-      byte_size += _.get_compiled_byte_size ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ byte_ਮਾਪ = 0;
+    ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ& _ : glyph_variations)
+      byte_ਮਾਪ += _.get_compiled_byte_ਮਾਪ ();
 
-    return byte_size;
+    ਵਾਪਸ byte_ਮਾਪ;
   }
 
-  bool create_from_glyphs_var_data (unsigned axis_count,
-                                    const hb_array_t<const F2DOT14> shared_tuples,
-                                    const hb_subset_plan_t *plan,
-                                    const hb_hashmap_t<hb_codepoint_t, hb_bytes_t>& new_gid_var_data_map)
+  ਤਾਰਕਿਕ create_from_glyphs_var_ਅੰਕੜੇ (ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ,
+                                    ਅਚਲ hb_array_t<ਅਚਲ F2DOT14> shared_tuples,
+                                    ਅਚਲ hb_subset_plan_t *plan,
+                                    ਅਚਲ hb_hashmap_t<hb_codepoint_t, hb_ਬਾਈਟਾਂ_t>& new_gid_var_ਅੰਕੜੇ_map)
   {
-    if (unlikely (!glyph_variations.alloc_exact (plan->new_to_old_gid_list.length)))
-      return false;
+    ਜੇ (unlikely (!glyph_variations.alloc_exact (plan->new_ਮੰਜ਼ਿਲ_old_gid_list.ਲੰਮਾਈ)))
+      ਵਾਪਸ ਝੂਠ;
 
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    for (auto &_ : it)
+    ਸਵੈਚਾਲਿਤ it = hb_iter (plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
-      contour_point_vector_t *all_contour_points;
-      if (!new_gid_var_data_map.has (new_gid) ||
+      hb_codepoint_t new_gid = _.ਪਹਿਲਾ;
+      contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t *all_contour_points;
+      ਜੇ (!new_gid_var_ਅੰਕੜੇ_map.has (new_gid) ||
           !plan->new_gid_contour_points_map.has (new_gid, &all_contour_points))
-        return false;
-      hb_bytes_t var_data = new_gid_var_data_map.get (new_gid);
+        ਵਾਪਸ ਝੂਠ;
+      hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ = new_gid_var_ਅੰਕੜੇ_map.get (new_gid);
 
-      const GlyphVariationData* p = reinterpret_cast<const GlyphVariationData*> (var_data.arrayZ);
-      typename GlyphVariationData::tuple_iterator_t iterator;
+      ਅਚਲ Glyph_Variation_ਅੰਕੜੇ* p = reinterpret_cast<ਅਚਲ Glyph_Variation_ਅੰਕੜੇ*> (var_ਅੰਕੜੇ.arrayZ);
+      ਕਿਸਮ_ਨਾਂ Glyph_Variation_ਅੰਕੜੇ::tuple_iterator_t iterator;
       tuple_variations_t tuple_vars;
 
-      hb_vector_t<unsigned> shared_indices;
+      hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> shared_indices;
 
       /* in case variation data is empty, push an empty struct into the vector,
        * keep the vector in sync with the new_to_old_gid_list */
-      if (!var_data || ! p->has_data () || !all_contour_points->length ||
-          !GlyphVariationData::get_tuple_iterator (var_data, axis_count,
-                                                   var_data.arrayZ,
+      ਜੇ (!var_ਅੰਕੜੇ || ! p->has_ਅੰਕੜੇ () || !all_contour_points->ਲੰਮਾਈ ||
+          !Glyph_Variation_ਅੰਕੜੇ::get_tuple_iterator (var_ਅੰਕੜੇ, axis_ਗਿਣਤੀ,
+                                                   var_ਅੰਕੜੇ.arrayZ,
                                                    shared_indices, &iterator))
       {
         glyph_variations.push (std::move (tuple_vars));
-        continue;
+        ਜਾਰੀ;
       }
 
-      bool is_composite_glyph = false;
-      is_composite_glyph = plan->composite_new_gids.has (new_gid);
+      ਤਾਰਕਿਕ is_ਸੰਯੁਕਤ_glyph = ਝੂਠ;
+      is_ਸੰਯੁਕਤ_glyph = plan->ਸੰਯੁਕਤ_new_gids.has (new_gid);
 
-      if (!p->decompile_tuple_variations (all_contour_points->length, true /* is_gvar */,
-                                          iterator, &(plan->axes_old_index_tag_map),
+      ਜੇ (!p->decompile_tuple_variations (all_contour_points->ਲੰਮਾਈ, ਸੱਚ /* is_gvar */,
+                                          iterator, &(plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map),
                                           shared_indices, shared_tuples,
-                                          tuple_vars, /* OUT */
+                                          tuple_vars, /*ਬਾਹਰਲਾ*/
 					  &pool,
-                                          is_composite_glyph))
-        return false;
+                                          is_ਸੰਯੁਕਤ_glyph))
+        ਵਾਪਸ ਝੂਠ;
       glyph_variations.push (std::move (tuple_vars));
     }
-    return !glyph_variations.in_error () && glyph_variations.length == plan->new_to_old_gid_list.length;
+    ਵਾਪਸ !glyph_variations.ਵਿੱਚ_error () && glyph_variations.ਲੰਮਾਈ == plan->new_ਮੰਜ਼ਿਲ_old_gid_list.ਲੰਮਾਈ;
   }
 
-  bool instantiate (const hb_subset_plan_t *plan)
+  ਤਾਰਕਿਕ instantiate (ਅਚਲ hb_subset_plan_t *plan)
   {
-    unsigned count = plan->new_to_old_gid_list.length;
-    bool iup_optimize = false;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = plan->new_ਮੰਜ਼ਿਲ_old_gid_list.ਲੰਮਾਈ;
+    ਤਾਰਕਿਕ iup_optimize = ਝੂਠ;
     optimize_scratch_t scratch;
     iup_optimize = plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS;
-    for (unsigned i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      hb_codepoint_t new_gid = plan->new_to_old_gid_list[i].first;
-      contour_point_vector_t *all_points;
-      if (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
-        return false;
+      hb_codepoint_t new_gid = plan->new_ਮੰਜ਼ਿਲ_old_gid_list[i].ਪਹਿਲਾ;
+      contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t *all_points;
+      ਜੇ (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
+        ਵਾਪਸ ਝੂਠ;
       /* IUP adds rebased constant deltas to the contour coordinates. Keep
        * the plan's original points intact across serialization retries. */
-      contour_point_vector_t points;
-      if (iup_optimize)
+      contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t points;
+      ਜੇ (iup_optimize)
       {
         points = *all_points;
-        if (unlikely (points.in_error ())) return false;
+        ਜੇ (unlikely (points.ਵਿੱਚ_error ())) ਵਾਪਸ ਝੂਠ;
         all_points = &points;
       }
       /* avar2 partial instancing: cull unreachable tuples. */
-      if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      ਜੇ (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
 	glyph_variations[i].cull_unreachable (plan->avar2_reachable_ranges);
-      if (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
-        return false;
+      ਜੇ (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
+        ਵਾਪਸ ਝੂਠ;
     }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool compile_bytes (const hb_map_t& axes_index_map,
-                      const hb_map_t& axes_old_index_tag_map)
+  ਤਾਰਕਿਕ compile_ਬਾਈਟਾਂ (ਅਚਲ hb_map_t& axes_ਸੂਚਕਾਂਕ_map,
+                      ਅਚਲ hb_map_t& axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map)
   {
-    if (!compile_shared_tuples (axes_index_map, axes_old_index_tag_map))
-      return false;
-    for (tuple_variations_t& vars: glyph_variations)
-      if (!vars.compile_bytes (axes_index_map, axes_old_index_tag_map,
-                               true, /* use shared points*/
-                               true,
+    ਜੇ (!compile_shared_tuples (axes_ਸੂਚਕਾਂਕ_map, axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map))
+      ਵਾਪਸ ਝੂਠ;
+    ਲਈ (tuple_variations_t& vars: glyph_variations)
+      ਜੇ (!vars.compile_ਬਾਈਟਾਂ (axes_ਸੂਚਕਾਂਕ_map, axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map,
+                               ਸੱਚ, /* use shared points*/
+                               ਸੱਚ,
                                &shared_tuples_idx_map,
 			       &pool))
-        return false;
+        ਵਾਪਸ ਝੂਠ;
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool compile_shared_tuples (const hb_map_t& axes_index_map,
-                              const hb_map_t& axes_old_index_tag_map)
+  ਤਾਰਕਿਕ compile_shared_tuples (ਅਚਲ hb_map_t& axes_ਸੂਚਕਾਂਕ_map,
+                              ਅਚਲ hb_map_t& axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map)
   {
     /* key is pointer to compiled_peak_coords inside each tuple, hashing
      * function will always deref pointers first */
-    hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> coords_count_map;
+    hb_hashmap_t<ਅਚਲ hb_ਸਦਿਸ਼_t<F2DOT14>*, ਬਿਨਾਨਿਸ਼ਾਨੀ> coords_ਗਿਣਤੀ_map;
 
     /* count the num of shared coords */
-    for (tuple_variations_t& vars: glyph_variations)
+    ਲਈ (tuple_variations_t& vars: glyph_variations)
     {
-      for (tuple_delta_t& var : vars.tuple_vars)
+      ਲਈ (tuple_delta_t& var : vars.tuple_vars)
       {
-        if (!var.compile_coords (axes_index_map, axes_old_index_tag_map, &pool))
-          return false;
-        unsigned *count;
-	unsigned hash = hb_hash (&var.compiled_peak_coords);
-        if (coords_count_map.has_with_hash (&(var.compiled_peak_coords), hash, &count))
-	  (*count)++;
-        else
-          coords_count_map.set_with_hash (&(var.compiled_peak_coords), hash, 1);
+        ਜੇ (!var.compile_coords (axes_ਸੂਚਕਾਂਕ_map, axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map, &pool))
+          ਵਾਪਸ ਝੂਠ;
+        ਬਿਨਾਨਿਸ਼ਾਨੀ *ਗਿਣਤੀ_2;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ hash = hb_hash (&var.compiled_peak_coords);
+        ਜੇ (coords_ਗਿਣਤੀ_map.has_with_hash (&(var.compiled_peak_coords), hash, &ਗਿਣਤੀ_2))
+	  (*ਗਿਣਤੀ_2)++;
+        ਨਹੀਂਤਾਂ
+          coords_ਗਿਣਤੀ_map.ਸੈੱਟ_with_hash (&(var.compiled_peak_coords), hash, 1);
       }
     }
 
-    if (!coords_count_map || coords_count_map.in_error ())
-      return false;
+    ਜੇ (!coords_ਗਿਣਤੀ_map || coords_ਗਿਣਤੀ_map.ਵਿੱਚ_error ())
+      ਵਾਪਸ ਝੂਠ;
 
     /* add only those coords that are used more than once into the vector and sort */
-    hb_vector_t<hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>> shared_coords {
-      + hb_iter (coords_count_map)
-      | hb_filter ([] (const hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>& p) { return p.second > 1; })
+    hb_ਸਦਿਸ਼_t<hb_pair_t<ਅਚਲ hb_ਸਦਿਸ਼_t<F2DOT14>*, ਬਿਨਾਨਿਸ਼ਾਨੀ>> shared_coords {
+      + hb_iter (coords_ਗਿਣਤੀ_map)
+      | hb_filter ([] (ਅਚਲ hb_pair_t<ਅਚਲ hb_ਸਦਿਸ਼_t<F2DOT14>*, ਬਿਨਾਨਿਸ਼ਾਨੀ>& p) { ਵਾਪਸ p.second > 1; })
     };
-    if (unlikely (shared_coords.in_error ())) return false;
+    ਜੇ (unlikely (shared_coords.ਵਿੱਚ_error ())) ਵਾਪਸ ਝੂਠ;
 
     /* no shared tuples: no coords are used more than once */
-    if (!shared_coords) return true;
+    ਜੇ (!shared_coords) ਵਾਪਸ ਸੱਚ;
     /* sorting based on the coords frequency first (high to low), then compare
      * the coords bytes */
     shared_coords.qsort (_cmp_coords);
 
     /* build shared_coords->idx map and shared tuples byte array */
 
-    shared_tuples_count = hb_min (0xFFFu + 1, shared_coords.length);
-    unsigned len = shared_tuples_count * (shared_coords[0].first->length);
-    if (unlikely (!compiled_shared_tuples.alloc (len)))
-      return false;
+    shared_tuples_ਗਿਣਤੀ = hb_min (0xFFFu + 1, shared_coords.ਲੰਮਾਈ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = shared_tuples_ਗਿਣਤੀ * (shared_coords[0].ਪਹਿਲਾ->ਲੰਮਾਈ);
+    ਜੇ (unlikely (!compiled_shared_tuples.alloc (len)))
+      ਵਾਪਸ ਝੂਠ;
 
-    for (unsigned i = 0; i < shared_tuples_count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < shared_tuples_ਗਿਣਤੀ; i++)
     {
-      shared_tuples_idx_map.set (shared_coords[i].first, i);
+      shared_tuples_idx_map.ਸੈੱਟ (shared_coords[i].ਪਹਿਲਾ, i);
       /* add a concat() in hb_vector_t? */
-      for (auto c : shared_coords[i].first->iter ())
+      ਲਈ (ਸਵੈਚਾਲਿਤ c : shared_coords[i].ਪਹਿਲਾ->iter ())
         compiled_shared_tuples.push (c);
     }
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  static int _cmp_coords (const void *pa, const void *pb)
+  ਸਥਿਰ ਪੂਰਨ _cmp_coords (ਅਚਲ ਖਾਲੀ *pa, ਅਚਲ ਖਾਲੀ *pb)
   {
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *a = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pa;
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *b = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pb;
+    ਅਚਲ hb_pair_t<hb_ਸਦਿਸ਼_t<F2DOT14> *, ਬਿਨਾਨਿਸ਼ਾਨੀ> *a = (ਅਚਲ hb_pair_t<hb_ਸਦਿਸ਼_t<F2DOT14> *, ਬਿਨਾਨਿਸ਼ਾਨੀ> *) pa;
+    ਅਚਲ hb_pair_t<hb_ਸਦਿਸ਼_t<F2DOT14> *, ਬਿਨਾਨਿਸ਼ਾਨੀ> *b = (ਅਚਲ hb_pair_t<hb_ਸਦਿਸ਼_t<F2DOT14> *, ਬਿਨਾਨਿਸ਼ਾਨੀ> *) pb;
 
-    if (a->second != b->second)
-      return b->second - a->second; // high to low
+    ਜੇ (a->second != b->second)
+      ਵਾਪਸ b->second - a->second; // high to low
 
-    return b->first->as_array().cmp (a->first->as_array ());
+    ਵਾਪਸ b->ਪਹਿਲਾ->as_array().cmp (a->ਪਹਿਲਾ->as_array ());
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_glyph_var_data (hb_serialize_context_t *c,
+  ਤਾਰਕਿਕ serialize_glyph_var_ਅੰਕੜੇ (hb_serialize_context_t *c,
                                  Iterator it,
-                                 bool long_offset,
-                                 unsigned num_glyphs,
-                                 char* glyph_var_data_offsets /* OUT: glyph var data offsets array */) const
+                                 ਤਾਰਕਿਕ long_ਵਿੱਥ,
+                                 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs,
+                                 ਅੱਖਰ* glyph_var_ਅੰਕੜੇ_offsets /* OUT: glyph var data offsets array */) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ਇਹ);
 
-    if (long_offset)
+    ਜੇ (long_ਵਿੱਥ)
     {
-      ((HBUINT32 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 4;
+      ((HBUINT32 *) glyph_var_ਅੰਕੜੇ_offsets)[0] = 0;
+      glyph_var_ਅੰਕੜੇ_offsets += 4;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      ((HBUINT16 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 2;
+      ((HBUINT16 *) glyph_var_ਅੰਕੜੇ_offsets)[0] = 0;
+      glyph_var_ਅੰਕੜੇ_offsets += 2;
     }
-    unsigned glyph_offset = 0;
-    hb_codepoint_t last_gid = 0;
-    unsigned idx = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਵਿੱਥ = 0;
+    hb_codepoint_t ਆਖਰੀ_gid = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0;
 
-    GlyphVariationData* cur_glyph = c->start_embed<GlyphVariationData> ();
-    if (!cur_glyph) return_trace (false);
-    for (auto &_ : it)
+    Glyph_Variation_ਅੰਕੜੇ* cur_glyph = c->ਸ਼ੁਰੂ_embed<Glyph_Variation_ਅੰਕੜੇ> ();
+    ਜੇ (!cur_glyph) return_trace (ਝੂਠ);
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : it)
     {
-      hb_codepoint_t gid = _.first;
-      if (long_offset)
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-      else
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
+      hb_codepoint_t gid = _.ਪਹਿਲਾ;
+      ਜੇ (long_ਵਿੱਥ)
+        ਲਈ (; ਆਖਰੀ_gid < gid; ਆਖਰੀ_gid++)
+          ((HBUINT32 *) glyph_var_ਅੰਕੜੇ_offsets)[ਆਖਰੀ_gid] = glyph_ਵਿੱਥ;
+      ਨਹੀਂਤਾਂ
+        ਲਈ (; ਆਖਰੀ_gid < gid; ਆਖਰੀ_gid++)
+          ((HBUINT16 *) glyph_var_ਅੰਕੜੇ_offsets)[ਆਖਰੀ_gid] = glyph_ਵਿੱਥ / 2;
 
-      if (idx >= glyph_variations.length) return_trace (false);
-      if (!cur_glyph->serialize (c, true, glyph_variations[idx])) return_trace (false);
-      GlyphVariationData* next_glyph = c->start_embed<GlyphVariationData> ();
-      glyph_offset += (char *) next_glyph - (char *) cur_glyph;
+      ਜੇ (idx >= glyph_variations.ਲੰਮਾਈ) return_trace (ਝੂਠ);
+      ਜੇ (!cur_glyph->serialize (c, ਸੱਚ, glyph_variations[idx])) return_trace (ਝੂਠ);
+      Glyph_Variation_ਅੰਕੜੇ* ਅਗਲਾ_glyph = c->ਸ਼ੁਰੂ_embed<Glyph_Variation_ਅੰਕੜੇ> ();
+      glyph_ਵਿੱਥ += (ਅੱਖਰ *) ਅਗਲਾ_glyph - (ਅੱਖਰ *) cur_glyph;
 
-      if (long_offset)
-        ((HBUINT32 *) glyph_var_data_offsets)[gid] = glyph_offset;
-      else
-        ((HBUINT16 *) glyph_var_data_offsets)[gid] = glyph_offset / 2;
+      ਜੇ (long_ਵਿੱਥ)
+        ((HBUINT32 *) glyph_var_ਅੰਕੜੇ_offsets)[gid] = glyph_ਵਿੱਥ;
+      ਨਹੀਂਤਾਂ
+        ((HBUINT16 *) glyph_var_ਅੰਕੜੇ_offsets)[gid] = glyph_ਵਿੱਥ / 2;
 
-      last_gid++;
+      ਆਖਰੀ_gid++;
       idx++;
-      cur_glyph = next_glyph;
+      cur_glyph = ਅਗਲਾ_glyph;
     }
 
-    if (long_offset)
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-    else
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
-    return_trace (true);
+    ਜੇ (long_ਵਿੱਥ)
+      ਲਈ (; ਆਖਰੀ_gid < ਅੰਕ_glyphs; ਆਖਰੀ_gid++)
+        ((HBUINT32 *) glyph_var_ਅੰਕੜੇ_offsets)[ਆਖਰੀ_gid] = glyph_ਵਿੱਥ;
+    ਨਹੀਂਤਾਂ
+      ਲਈ (; ਆਖਰੀ_gid < ਅੰਕ_glyphs; ਆਖਰੀ_gid++)
+        ((HBUINT16 *) glyph_var_ਅੰਕੜੇ_offsets)[ਆਖਰੀ_gid] = glyph_ਵਿੱਥ / 2;
+    return_trace (ਸੱਚ);
   }
 };
 
-template <typename T, typename Types>
-struct gvar_GVAR
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ Types>
+ਬਣਤਰ gvar_GVAR
 {
-  using GlyphCountType = typename Types::HBUINT;
+  ਵਰਤੋਂ Glyph_ਗਿਣਤੀ_Type = ਕਿਸਮ_ਨਾਂ Types::HBUINT;
 
-  using GlyphVariationData = TupleVariationData<GlyphCountType>;
-  static constexpr unsigned glyph_count_max ()
-  { return (1u << (8 * GlyphCountType::static_size)) - 1; }
+  ਵਰਤੋਂ Glyph_Variation_ਅੰਕੜੇ = Tuple_Variation_ਅੰਕੜੇ<Glyph_ਗਿਣਤੀ_Type>;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਗਿਣਤੀ_max ()
+  { ਵਾਪਸ (1u << (8 * Glyph_ਗਿਣਤੀ_Type::static_ਮਾਪ)) - 1; }
 
-  bool has_data () const { return version.to_int () != 0; }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ ਸੰਸਕਰਣ.ਮੰਜ਼ਿਲ_int () != 0; }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize_shallow (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  (version.major == 1) &&
-		  sharedTuples.sanitize (c, this, axisCount * sharedTupleCount) &&
-		  (is_long_offset () ?
-		     c->check_array (get_long_offset_array (), c->get_num_glyphs () + 1) :
-		     c->check_array (get_short_offset_array (), c->get_num_glyphs () + 1)));
+		  (ਸੰਸਕਰਣ.major == 1) &&
+		  sharedTuples.sanitize (c, ਇਹ, axis_ਗਿਣਤੀ_2 * shared_Tuple_ਗਿਣਤੀ) &&
+		  (is_long_ਵਿੱਥ () ?
+		     c->check_array (get_long_ਵਿੱਥ_array (), c->get_ਅੰਕ_glyphs () + 1) :
+		     c->check_array (get_short_ਵਿੱਥ_array (), c->get_ਅੰਕ_glyphs () + 1)));
   }
 
   /* GlyphVariationData not sanitized here; must be checked while accessing each glyph variation data */
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return sanitize_shallow (c); }
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
+  { ਵਾਪਸ sanitize_shallow (c); }
 
-  bool decompile_glyph_variations (hb_subset_context_t *c,
-                                   glyph_variations_t<GlyphCountType>& glyph_vars /* OUT */) const
+  ਤਾਰਕਿਕ decompile_glyph_variations (hb_subset_context_t *c,
+                                   glyph_variations_t<Glyph_ਗਿਣਤੀ_Type>& glyph_vars /*ਬਾਹਰਲਾ*/) ਅਚਲ
   {
-    hb_hashmap_t<hb_codepoint_t, hb_bytes_t> new_gid_var_data_map;
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_hashmap_t<hb_codepoint_t, hb_ਬਾਈਟਾਂ_t> new_gid_var_ਅੰਕੜੇ_map;
+    ਸਵੈਚਾਲਿਤ it = hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+    ਜੇ (it->ਪਹਿਲਾ == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      new_gid_var_data_map.set (0, hb_bytes_t ());
+      new_gid_var_ਅੰਕੜੇ_map.ਸੈੱਟ (0, hb_ਬਾਈਟਾਂ_t ());
       it++;
     }
 
-    for (auto &_ : it)
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
+      hb_codepoint_t new_gid = _.ਪਹਿਲਾ;
       hb_codepoint_t old_gid = _.second;
-      hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyphCountX, old_gid);
-      new_gid_var_data_map.set (new_gid, var_data_bytes);
+      hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (c->ਸਰੋਤ_blob, glyph_ਗਿਣਤੀ_X, old_gid);
+      new_gid_var_ਅੰਕੜੇ_map.ਸੈੱਟ (new_gid, var_ਅੰਕੜੇ_ਬਾਈਟਾਂ);
     }
 
-    if (new_gid_var_data_map.in_error ()) return false;
+    ਜੇ (new_gid_var_ਅੰਕੜੇ_map.ਵਿੱਚ_error ()) ਵਾਪਸ ਝੂਠ;
 
-    hb_array_t<const F2DOT14> shared_tuples = (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-    return glyph_vars.create_from_glyphs_var_data (axisCount, shared_tuples, c->plan, new_gid_var_data_map);
+    hb_array_t<ਅਚਲ F2DOT14> shared_tuples = (ਇਹ+sharedTuples).as_array ((ਬਿਨਾਨਿਸ਼ਾਨੀ) shared_Tuple_ਗਿਣਤੀ * (ਬਿਨਾਨਿਸ਼ਾਨੀ) axis_ਗਿਣਤੀ_2);
+    ਵਾਪਸ glyph_vars.create_from_glyphs_var_ਅੰਕੜੇ (axis_ਗਿਣਤੀ_2, shared_tuples, c->plan, new_gid_var_ਅੰਕੜੇ_map);
   }
 
-  template<typename Iterator,
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-                  const glyph_variations_t<GlyphCountType>& glyph_vars,
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+                  ਅਚਲ glyph_variations_t<Glyph_ਗਿਣਤੀ_Type>& glyph_vars,
                   Iterator it,
-                  unsigned axis_count,
-                  unsigned num_glyphs,
-                  bool force_long_offsets) const
+                  ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ,
+                  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs,
+                  ਤਾਰਕਿਕ force_long_offsets) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    gvar_GVAR *out = c->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    gvar_GVAR *ਬਾਹਰਲਾ = c->allocate_min<gvar_GVAR> ();
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ)) return_trace (ਝੂਠ);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axis_count;
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    ਬਾਹਰਲਾ->ਸੰਸਕਰਣ.major = 1;
+    ਬਾਹਰਲਾ->ਸੰਸਕਰਣ.minor = 0;
+    ਬਾਹਰਲਾ->axis_ਗਿਣਤੀ_2 = axis_ਗਿਣਤੀ;
+    ਬਾਹਰਲਾ->glyph_ਗਿਣਤੀ_X = hb_min (glyph_ਗਿਣਤੀ_max (), ਅੰਕ_glyphs);
 
-    unsigned glyph_var_data_size = glyph_vars.compiled_byte_size ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_var_ਅੰਕੜੇ_ਮਾਪ = glyph_vars.compiled_byte_ਮਾਪ ();
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = glyph_var_data_size > 0x1FFFEu || force_long_offsets;
-    out->flags = long_offset ? 1 : 0;
+    ਤਾਰਕਿਕ long_ਵਿੱਥ = glyph_var_ਅੰਕੜੇ_ਮਾਪ > 0x1FFFEu || force_long_offsets;
+    ਬਾਹਰਲਾ->flags = long_ਵਿੱਥ ? 1 : 0;
 
-    unsigned glyph_var_data_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *glyph_var_data_offsets = c->allocate_size<HBUINT8> (glyph_var_data_offsets_size, false);
-    if (!glyph_var_data_offsets) return_trace (false);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_var_ਅੰਕੜੇ_offsets_ਮਾਪ = (long_ਵਿੱਥ ? 4 : 2) * (ਅੰਕ_glyphs + 1);
+    HBUINT8 *glyph_var_ਅੰਕੜੇ_offsets = c->allocate_ਮਾਪ<HBUINT8> (glyph_var_ਅੰਕੜੇ_offsets_ਮਾਪ, ਝੂਠ);
+    ਜੇ (!glyph_var_ਅੰਕੜੇ_offsets) return_trace (ਝੂਠ);
 
     /* shared tuples */
-    unsigned shared_tuple_count = glyph_vars.compiled_shared_tuples_count ();
-    out->sharedTupleCount = shared_tuple_count;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ shared_tuple_ਗਿਣਤੀ = glyph_vars.compiled_shared_tuples_ਗਿਣਤੀ ();
+    ਬਾਹਰਲਾ->shared_Tuple_ਗਿਣਤੀ = shared_tuple_ਗਿਣਤੀ;
 
-    if (!shared_tuple_count)
-      out->sharedTuples = (char *) glyph_var_data_offsets + glyph_var_data_offsets_size - (char *) out;
-    else
+    ਜੇ (!shared_tuple_ਗਿਣਤੀ)
+      ਬਾਹਰਲਾ->sharedTuples = (ਅੱਖਰ *) glyph_var_ਅੰਕੜੇ_offsets + glyph_var_ਅੰਕੜੇ_offsets_ਮਾਪ - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
+    ਨਹੀਂਤਾਂ
     {
-      hb_array_t<const F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
-      if (!shared_tuples.arrayZ) return_trace (false);
-      out->sharedTuples = (const char *) shared_tuples.arrayZ - (char *) out;
+      hb_array_t<ਅਚਲ F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
+      ਜੇ (!shared_tuples.arrayZ) return_trace (ਝੂਠ);
+      ਬਾਹਰਲਾ->sharedTuples = (ਅਚਲ ਅੱਖਰ *) shared_tuples.arrayZ - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
     }
 
-    char *glyph_var_data = c->start_embed<char> ();
-    if (!glyph_var_data) return_trace (false);
-    out->dataZ = glyph_var_data - (char *) out;
+    ਅੱਖਰ *glyph_var_ਅੰਕੜੇ = c->ਸ਼ੁਰੂ_embed<ਅੱਖਰ> ();
+    ਜੇ (!glyph_var_ਅੰਕੜੇ) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->ਅੰਕੜੇ_Z = glyph_var_ਅੰਕੜੇ - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
 
-    return_trace (glyph_vars.serialize_glyph_var_data (c, it, long_offset, num_glyphs,
-                                                       (char *) glyph_var_data_offsets));
+    return_trace (glyph_vars.serialize_glyph_var_ਅੰਕੜੇ (c, it, long_ਵਿੱਥ, ਅੰਕ_glyphs,
+                                                       (ਅੱਖਰ *) glyph_var_ਅੰਕੜੇ_offsets));
   }
 
-  bool instantiate (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ instantiate (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    glyph_variations_t<GlyphCountType> glyph_vars;
-    if (!decompile_glyph_variations (c, glyph_vars))
-      return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    glyph_variations_t<Glyph_ਗਿਣਤੀ_Type> glyph_vars;
+    ਜੇ (!decompile_glyph_variations (c, glyph_vars))
+      return_trace (ਝੂਠ);
 
-    if (!glyph_vars.instantiate (c->plan)) return_trace (false);
-    if (!glyph_vars.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map))
-      return_trace (false);
+    ਜੇ (!glyph_vars.instantiate (c->plan)) return_trace (ਝੂਠ);
+    ਜੇ (!glyph_vars.compile_ਬਾਈਟਾਂ (c->plan->axes_ਸੂਚਕਾਂਕ_map, c->plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map))
+      return_trace (ਝੂਠ);
 
-    unsigned axis_count = c->plan->axes_index_map.get_population ();
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ = c->plan->axes_ਸੂਚਕਾਂਕ_map.get_population ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs = c->plan->ਅੰਕ_output_glyphs ();
+    ਸਵੈਚਾਲਿਤ it = hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
 
-    bool force_long_offsets = false;
-#ifdef HB_EXPERIMENTAL_API
+    ਤਾਰਕਿਕ force_long_offsets = ਝੂਠ;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
     force_long_offsets = c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS;
-#endif
-    return_trace (serialize (c->serializer, glyph_vars, it, axis_count, num_glyphs, force_long_offsets));
+#ਜੇ_ਅੰਤ
+    return_trace (serialize (c->serializer, glyph_vars, it, axis_ਗਿਣਤੀ, ਅੰਕ_glyphs, force_long_offsets));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਜੇ (c->plan->all_axes_pinned)
+      return_trace (ਝੂਠ);
 
-    if (c->plan->normalized_coords)
+    ਜੇ (c->plan->normalized_coords)
       return_trace (instantiate (c));
 
-    unsigned glyph_count = version.to_int () ? c->plan->source->get_num_glyphs () : 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਗਿਣਤੀ = ਸੰਸਕਰਣ.ਮੰਜ਼ਿਲ_int () ? c->plan->ਸਰੋਤ->get_ਅੰਕ_glyphs () : 0;
 
-    gvar_GVAR *out = c->serializer->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    gvar_GVAR *ਬਾਹਰਲਾ = c->serializer->allocate_min<gvar_GVAR> ();
+    ਜੇ (unlikely (!ਬਾਹਰਲਾ)) return_trace (ਝੂਠ);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axisCount;
-    out->sharedTupleCount = sharedTupleCount;
+    ਬਾਹਰਲਾ->ਸੰਸਕਰਣ.major = 1;
+    ਬਾਹਰਲਾ->ਸੰਸਕਰਣ.minor = 0;
+    ਬਾਹਰਲਾ->axis_ਗਿਣਤੀ_2 = axis_ਗਿਣਤੀ_2;
+    ਬਾਹਰਲਾ->shared_Tuple_ਗਿਣਤੀ = shared_Tuple_ਗਿਣਤੀ;
 
-    unsigned int num_glyphs = c->plan->num_output_glyphs ();
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs = c->plan->ਅੰਕ_output_glyphs ();
+    ਬਾਹਰਲਾ->glyph_ਗਿਣਤੀ_X = hb_min (glyph_ਗਿਣਤੀ_max (), ਅੰਕ_glyphs);
 
     /* avar2 partial instancing: cull tuple variations whose region falls
      * outside the reachable old-space final-coord ranges. Rewritten glyph
      * data is cached per new gid; untouched glyphs are copied verbatim. */
-    hb_vector_t<hb_vector_t<char>> culled_vars;
-    hb_set_t culled_gids;
-    if (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
+    hb_ਸਦਿਸ਼_t<hb_ਸਦਿਸ਼_t<ਅੱਖਰ>> culled_vars;
+    hb_ਸੈੱਟ_t culled_gids;
+    ਜੇ (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
     {
-      hb_array_t<const F2DOT14> shared_tuples_array =
-	  (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-      if (unlikely (!culled_vars.resize (num_glyphs))) return_trace (false);
-      auto cull_it = hb_iter (c->plan->new_to_old_gid_list);
-      if (cull_it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+      hb_array_t<ਅਚਲ F2DOT14> shared_tuples_array =
+	  (ਇਹ+sharedTuples).as_array ((ਬਿਨਾਨਿਸ਼ਾਨੀ) shared_Tuple_ਗਿਣਤੀ * (ਬਿਨਾਨਿਸ਼ਾਨੀ) axis_ਗਿਣਤੀ_2);
+      ਜੇ (unlikely (!culled_vars.resize (ਅੰਕ_glyphs))) return_trace (ਝੂਠ);
+      ਸਵੈਚਾਲਿਤ cull_it = hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+      ਜੇ (cull_it->ਪਹਿਲਾ == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
 	cull_it++;
-      for (auto &_ : cull_it)
+      ਲਈ (ਸਵੈਚਾਲਿਤ &_ : cull_it)
       {
-	hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_count, _.second);
-	if (var_data_bytes.length < GlyphVariationData::min_size) continue;
-	bool changed = false;
-	if (unlikely (!var_data_bytes.as<GlyphVariationData> ()
-		      ->cull_tuple_variations (var_data_bytes, axisCount,
+	hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (c->ਸਰੋਤ_blob, glyph_ਗਿਣਤੀ, _.second);
+	ਜੇ (var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.ਲੰਮਾਈ < Glyph_Variation_ਅੰਕੜੇ::min_ਮਾਪ) ਜਾਰੀ;
+	ਤਾਰਕਿਕ ਬਦਲਿਆ = ਝੂਠ;
+	ਜੇ (unlikely (!var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.as<Glyph_Variation_ਅੰਕੜੇ> ()
+		      ->cull_tuple_variations (var_ਅੰਕੜੇ_ਬਾਈਟਾਂ, axis_ਗਿਣਤੀ_2,
 					       shared_tuples_array,
-					       &c->plan->axes_old_index_tag_map,
+					       &c->plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map,
 					       c->plan->avar2_reachable_ranges,
-					       culled_vars[_.first], &changed)))
-	  return_trace (false);
-	if (changed) culled_gids.add (_.first);
+					       culled_vars[_.ਪਹਿਲਾ], &ਬਦਲਿਆ)))
+	  return_trace (ਝੂਠ);
+	ਜੇ (ਬਦਲਿਆ) culled_gids.ਜੋੜੋ (_.ਪਹਿਲਾ);
       }
-      if (unlikely (culled_gids.in_error ())) return_trace (false);
+      ਜੇ (unlikely (culled_gids.ਵਿੱਚ_error ())) return_trace (ਝੂਠ);
     }
 
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    ਸਵੈਚਾਲਿਤ it = hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+    ਜੇ (it->ਪਹਿਲਾ == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    unsigned subset_data_size = 0;
-    unsigned padding_size = 0;
-    for (auto &_ : it)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ subset_ਅੰਕੜੇ_ਮਾਪ = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ padding_ਮਾਪ = 0;
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : it)
     {
       hb_codepoint_t old_gid = _.second;
-      unsigned glyph_data_size = culled_gids.has (_.first)
-				 ? culled_vars[_.first].length
-				 : get_glyph_var_data_bytes (c->source_blob, glyph_count, old_gid).length;
-      if (glyph_data_size % 2)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਅੰਕੜੇ_ਮਾਪ = culled_gids.has (_.ਪਹਿਲਾ)
+				 ? culled_vars[_.ਪਹਿਲਾ].ਲੰਮਾਈ
+				 : get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (c->ਸਰੋਤ_blob, glyph_ਗਿਣਤੀ, old_gid).ਲੰਮਾਈ;
+      ਜੇ (glyph_ਅੰਕੜੇ_ਮਾਪ % 2)
       {
-        glyph_data_size++;
-        padding_size++;
+        glyph_ਅੰਕੜੇ_ਮਾਪ++;
+        padding_ਮਾਪ++;
       }
 
-      if (unlikely (hb_unsigned_add_overflows (subset_data_size, glyph_data_size, &subset_data_size)))
-	return_trace (false);
+      ਜੇ (unlikely (hb_unsigned_ਜੋੜੋ_overflows (subset_ਅੰਕੜੇ_ਮਾਪ, glyph_ਅੰਕੜੇ_ਮਾਪ, &subset_ਅੰਕੜੇ_ਮਾਪ)))
+	return_trace (ਝੂਠ);
     }
 
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = subset_data_size > 0x1FFFEu;
-#ifdef HB_EXPERIMENTAL_API
-    long_offset = long_offset || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
-#endif
-    out->flags = long_offset ? 1 : 0;
+    ਤਾਰਕਿਕ long_ਵਿੱਥ = subset_ਅੰਕੜੇ_ਮਾਪ > 0x1FFFEu;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_EXPERIMENTAL_API
+    long_ਵਿੱਥ = long_ਵਿੱਥ || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
+#ਜੇ_ਅੰਤ
+    ਬਾਹਰਲਾ->flags = long_ਵਿੱਥ ? 1 : 0;
 
-    unsigned subset_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *subset_offsets = c->serializer->allocate_size<HBUINT8> (subset_offsets_size, false);
-    if (!subset_offsets) return_trace (false);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ subset_offsets_ਮਾਪ = (long_ਵਿੱਥ ? 4 : 2) * (ਅੰਕ_glyphs + 1);
+    HBUINT8 *subset_offsets = c->serializer->allocate_ਮਾਪ<HBUINT8> (subset_offsets_ਮਾਪ, ਝੂਠ);
+    ਜੇ (!subset_offsets) return_trace (ਝੂਠ);
 
     /* shared tuples */
-    if (!sharedTupleCount || !sharedTuples)
-      out->sharedTuples = (char *) subset_offsets + subset_offsets_size - (char *) out;
-    else
+    ਜੇ (!shared_Tuple_ਗਿਣਤੀ || !sharedTuples)
+      ਬਾਹਰਲਾ->sharedTuples = (ਅੱਖਰ *) subset_offsets + subset_offsets_ਮਾਪ - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
+    ਨਹੀਂਤਾਂ
     {
-      unsigned int shared_tuple_size = F2DOT14::static_size * axisCount * sharedTupleCount;
-      F2DOT14 *tuples = c->serializer->allocate_size<F2DOT14> (shared_tuple_size);
-      if (!tuples) return_trace (false);
-      out->sharedTuples = (char *) tuples - (char *) out;
-      hb_memcpy (tuples, this+sharedTuples, shared_tuple_size);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ shared_tuple_ਮਾਪ = F2DOT14::static_ਮਾਪ * axis_ਗਿਣਤੀ_2 * shared_Tuple_ਗਿਣਤੀ;
+      F2DOT14 *tuples = c->serializer->allocate_ਮਾਪ<F2DOT14> (shared_tuple_ਮਾਪ);
+      ਜੇ (!tuples) return_trace (ਝੂਠ);
+      ਬਾਹਰਲਾ->sharedTuples = (ਅੱਖਰ *) tuples - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
+      hb_memcpy (tuples, ਇਹ+sharedTuples, shared_tuple_ਮਾਪ);
     }
 
     /* This ordering relative to the shared tuples array, which puts the glyphVariationData
        last in the table, is required when HB_SUBSET_FLAGS_IFTB_REQUIREMENTS is set */
-    if (long_offset)
-      subset_data_size -= padding_size;
-    char *subset_data = c->serializer->allocate_size<char> (subset_data_size, false);
-    if (!subset_data) return_trace (false);
-    out->dataZ = subset_data - (char *) out;
+    ਜੇ (long_ਵਿੱਥ)
+      subset_ਅੰਕੜੇ_ਮਾਪ -= padding_ਮਾਪ;
+    ਅੱਖਰ *subset_ਅੰਕੜੇ = c->serializer->allocate_ਮਾਪ<ਅੱਖਰ> (subset_ਅੰਕੜੇ_ਮਾਪ, ਝੂਠ);
+    ਜੇ (!subset_ਅੰਕੜੇ) return_trace (ਝੂਠ);
+    ਬਾਹਰਲਾ->ਅੰਕੜੇ_Z = subset_ਅੰਕੜੇ - (ਅੱਖਰ *) ਬਾਹਰਲਾ;
 
 
-    if (long_offset)
+    ਜੇ (long_ਵਿੱਥ)
     {
       ((HBUINT32 *) subset_offsets)[0] = 0;
       subset_offsets += 4;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       ((HBUINT16 *) subset_offsets)[0] = 0;
       subset_offsets += 2;
     }
-    unsigned int glyph_offset = 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_ਵਿੱਥ = 0;
 
-    hb_codepoint_t last = 0;
-    it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_codepoint_t ਆਖਰੀ = 0;
+    it = hb_iter (c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list);
+    ਜੇ (it->ਪਹਿਲਾ == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    for (auto &_ : it)
+    ਲਈ (ਸਵੈਚਾਲਿਤ &_ : it)
     {
-      hb_codepoint_t gid = _.first;
+      hb_codepoint_t gid = _.ਪਹਿਲਾ;
       hb_codepoint_t old_gid = _.second;
 
-      if (long_offset)
-	for (; last < gid; last++)
-	  ((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-      else
-	for (; last < gid; last++)
-	  ((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+      ਜੇ (long_ਵਿੱਥ)
+	ਲਈ (; ਆਖਰੀ < gid; ਆਖਰੀ++)
+	  ((HBUINT32 *) subset_offsets)[ਆਖਰੀ] = glyph_ਵਿੱਥ;
+      ਨਹੀਂਤਾਂ
+	ਲਈ (; ਆਖਰੀ < gid; ਆਖਰੀ++)
+	  ((HBUINT16 *) subset_offsets)[ਆਖਰੀ] = glyph_ਵਿੱਥ / 2;
 
-      hb_bytes_t var_data_bytes = culled_gids.has (gid)
-				  ? hb_bytes_t (culled_vars[gid].arrayZ,
-						culled_vars[gid].length)
-				  : get_glyph_var_data_bytes (c->source_blob,
-							      glyph_count,
+      hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = culled_gids.has (gid)
+				  ? hb_ਬਾਈਟਾਂ_t (culled_vars[gid].arrayZ,
+						culled_vars[gid].ਲੰਮਾਈ)
+				  : get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (c->ਸਰੋਤ_blob,
+							      glyph_ਗਿਣਤੀ,
 							      old_gid);
 
-      hb_memcpy (subset_data, var_data_bytes.arrayZ, var_data_bytes.length);
-      unsigned glyph_data_size = var_data_bytes.length;
-      subset_data += glyph_data_size;
-      glyph_offset += glyph_data_size;
+      hb_memcpy (subset_ਅੰਕੜੇ, var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.arrayZ, var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.ਲੰਮਾਈ);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਅੰਕੜੇ_ਮਾਪ = var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.ਲੰਮਾਈ;
+      subset_ਅੰਕੜੇ += glyph_ਅੰਕੜੇ_ਮਾਪ;
+      glyph_ਵਿੱਥ += glyph_ਅੰਕੜੇ_ਮਾਪ;
 
-      if (!long_offset && (glyph_data_size % 2))
+      ਜੇ (!long_ਵਿੱਥ && (glyph_ਅੰਕੜੇ_ਮਾਪ % 2))
       {
-        *subset_data = 0;
-        subset_data++;
-        glyph_offset++;
+        *subset_ਅੰਕੜੇ = 0;
+        subset_ਅੰਕੜੇ++;
+        glyph_ਵਿੱਥ++;
       }
 
-      if (long_offset)
-	((HBUINT32 *) subset_offsets)[gid] = glyph_offset;
-      else
-	((HBUINT16 *) subset_offsets)[gid] = glyph_offset / 2;
+      ਜੇ (long_ਵਿੱਥ)
+	((HBUINT32 *) subset_offsets)[gid] = glyph_ਵਿੱਥ;
+      ਨਹੀਂਤਾਂ
+	((HBUINT16 *) subset_offsets)[gid] = glyph_ਵਿੱਥ / 2;
 
-      last++; // Skip over gid
+      ਆਖਰੀ++; // Skip over gid
     }
 
-    if (long_offset)
-      for (; last < num_glyphs; last++)
-	((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-    else
-      for (; last < num_glyphs; last++)
-	((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+    ਜੇ (long_ਵਿੱਥ)
+      ਲਈ (; ਆਖਰੀ < ਅੰਕ_glyphs; ਆਖਰੀ++)
+	((HBUINT32 *) subset_offsets)[ਆਖਰੀ] = glyph_ਵਿੱਥ;
+    ਨਹੀਂਤਾਂ
+      ਲਈ (; ਆਖਰੀ < ਅੰਕ_glyphs; ਆਖਰੀ++)
+	((HBUINT16 *) subset_offsets)[ਆਖਰੀ] = glyph_ਵਿੱਥ / 2;
 
-    return_trace (true);
+    return_trace (ਸੱਚ);
   }
 
-  protected:
-  const hb_bytes_t get_glyph_var_data_bytes (hb_blob_t *blob,
-					     unsigned glyph_count,
-					     hb_codepoint_t glyph) const
+  ਸੁਰੱਖਿਅਤ:
+  ਅਚਲ hb_ਬਾਈਟਾਂ_t get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (hb_blob_t *blob,
+					     ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਗਿਣਤੀ,
+					     hb_codepoint_t glyph) ਅਚਲ
   {
-    unsigned start_offset = get_offset (glyph_count, glyph);
-    unsigned end_offset = get_offset (glyph_count, glyph+1);
-    if (unlikely (end_offset < start_offset)) return hb_bytes_t ();
-    unsigned length = end_offset - start_offset;
-    hb_bytes_t var_data = blob->as_bytes ().sub_array (((unsigned) dataZ) + start_offset, length);
-    return likely (var_data.length >= GlyphVariationData::min_size) ? var_data : hb_bytes_t ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ_ਵਿੱਥ = get_ਵਿੱਥ (glyph_ਗਿਣਤੀ, glyph);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ_ਵਿੱਥ = get_ਵਿੱਥ (glyph_ਗਿਣਤੀ, glyph+1);
+    ਜੇ (unlikely (ਸਿਰਾ_ਵਿੱਥ < ਸ਼ੁਰੂ_ਵਿੱਥ)) ਵਾਪਸ hb_ਬਾਈਟਾਂ_t ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾਈ = ਸਿਰਾ_ਵਿੱਥ - ਸ਼ੁਰੂ_ਵਿੱਥ;
+    hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ = blob->as_ਬਾਈਟਾਂ ().sub_array (((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਅੰਕੜੇ_Z) + ਸ਼ੁਰੂ_ਵਿੱਥ, ਲੰਮਾਈ);
+    ਵਾਪਸ likely (var_ਅੰਕੜੇ.ਲੰਮਾਈ >= Glyph_Variation_ਅੰਕੜੇ::min_ਮਾਪ) ? var_ਅੰਕੜੇ : hb_ਬਾਈਟਾਂ_t ();
   }
 
-  bool is_long_offset () const { return flags & 1; }
+  ਤਾਰਕਿਕ is_long_ਵਿੱਥ () ਅਚਲ { ਵਾਪਸ flags & 1; }
 
-  unsigned get_offset (unsigned glyph_count, unsigned i) const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਵਿੱਥ (ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਗਿਣਤੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ
   {
-    if (unlikely (i > glyph_count)) return 0;
+    ਜੇ (unlikely (i > glyph_ਗਿਣਤੀ)) ਵਾਪਸ 0;
     hb_barrier ();
-    return is_long_offset () ? get_long_offset_array ()[i] : get_short_offset_array ()[i] * 2;
+    ਵਾਪਸ is_long_ਵਿੱਥ () ? get_long_ਵਿੱਥ_array ()[i] : get_short_ਵਿੱਥ_array ()[i] * 2;
   }
 
-  const HBUINT32 * get_long_offset_array () const { return (const HBUINT32 *) &offsetZ; }
-  const HBUINT16 *get_short_offset_array () const { return (const HBUINT16 *) &offsetZ; }
+  ਅਚਲ HBUINT32 * get_long_ਵਿੱਥ_array () ਅਚਲ { ਵਾਪਸ (ਅਚਲ HBUINT32 *) &ਵਿੱਥ_Z; }
+  ਅਚਲ HBUINT16 *get_short_ਵਿੱਥ_array () ਅਚਲ { ਵਾਪਸ (ਅਚਲ HBUINT16 *) &ਵਿੱਥ_Z; }
 
-  public:
-  struct accelerator_t
+  ਜਨਤਕ:
+  ਬਣਤਰ accelerator_t
   {
 
-    hb_scalar_cache_t *create_cache () const
+    hb_scalar_cache_t *create_cache () ਅਚਲ
     {
-      return hb_scalar_cache_t::create (hb_min ((unsigned) table->sharedTupleCount,
-						+TupleVariationHeader::max_shared_tuple_count));
+      ਵਾਪਸ hb_scalar_cache_t::create (hb_min ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਸਾਰਣੀ->shared_Tuple_ਗਿਣਤੀ,
+						+Tuple_Variation_ਸਿਰਲੇਖ::max_shared_tuple_ਗਿਣਤੀ));
     }
 
-    static void destroy_cache (hb_scalar_cache_t *cache)
+    ਸਥਿਰ ਖਾਲੀ destroy_cache (hb_scalar_cache_t *cache)
     {
       hb_scalar_cache_t::destroy (cache);
     }
 
-    bool has_data () const { return table->has_data (); }
+    ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ ਸਾਰਣੀ->has_ਅੰਕੜੇ (); }
 
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<gvar_GVAR> (face, T::tableTag);
+      ਸਾਰਣੀ = hb_sanitize_context_t ().reference_ਸਾਰਣੀ<gvar_GVAR> (face, T::ਸਾਰਣੀ_ਟੈਗ);
       /* If sanitize failed, set glyphCount to 0. */
-      glyphCount = table->version.to_int () ? face->get_num_glyphs () : 0;
+      glyph_ਗਿਣਤੀ_2 = ਸਾਰਣੀ->ਸੰਸਕਰਣ.ਮੰਜ਼ਿਲ_int () ? face->get_ਅੰਕ_glyphs () : 0;
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { ਸਾਰਣੀ.destroy (); }
 
-    private:
+    ਨਿਜੀ:
 
-    static float infer_delta (const hb_array_t<contour_point_t> points,
-			      const hb_array_t<contour_point_t> deltas,
-			      unsigned int target, unsigned int prev, unsigned int next,
-			      float contour_point_t::*m)
+    ਸਥਿਰ ਦਸ਼ਮਲਵ infer_delta (ਅਚਲ hb_array_t<contour_ਬਿੰਦੂ_t> points,
+			      ਅਚਲ hb_array_t<contour_ਬਿੰਦੂ_t> deltas,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ target, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ prev, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ next,
+			      ਦਸ਼ਮਲਵ contour_ਬਿੰਦੂ_t::*m)
     {
-      float target_val = points.arrayZ[target].*m;
-      float prev_val = points.arrayZ[prev].*m;
-      float next_val = points.arrayZ[next].*m;
-      float prev_delta =  deltas.arrayZ[prev].*m;
-      float next_delta =  deltas.arrayZ[next].*m;
+      ਦਸ਼ਮਲਵ ਨਿਸ਼ਾਨਾ_val = points.arrayZ[target].*m;
+      ਦਸ਼ਮਲਵ prev_val = points.arrayZ[prev].*m;
+      ਦਸ਼ਮਲਵ ਅਗਲਾ_val = points.arrayZ[next].*m;
+      ਦਸ਼ਮਲਵ prev_delta =  deltas.arrayZ[prev].*m;
+      ਦਸ਼ਮਲਵ ਅਗਲਾ_delta =  deltas.arrayZ[next].*m;
 
-      if (prev_val == next_val)
-	return (prev_delta == next_delta) ? prev_delta : 0.f;
-      else if (target_val <= hb_min (prev_val, next_val))
-	return (prev_val < next_val) ? prev_delta : next_delta;
-      else if (target_val >= hb_max (prev_val, next_val))
-	return (prev_val > next_val) ? prev_delta : next_delta;
+      ਜੇ (prev_val == ਅਗਲਾ_val)
+	ਵਾਪਸ (prev_delta == ਅਗਲਾ_delta) ? prev_delta : 0.f;
+      ਨਹੀਂਤਾਂ ਜੇ (ਨਿਸ਼ਾਨਾ_val <= hb_min (prev_val, ਅਗਲਾ_val))
+	ਵਾਪਸ (prev_val < ਅਗਲਾ_val) ? prev_delta : ਅਗਲਾ_delta;
+      ਨਹੀਂਤਾਂ ਜੇ (ਨਿਸ਼ਾਨਾ_val >= hb_max (prev_val, ਅਗਲਾ_val))
+	ਵਾਪਸ (prev_val > ਅਗਲਾ_val) ? prev_delta : ਅਗਲਾ_delta;
 
       /* linear interpolation */
-      float r = (target_val - prev_val) / (next_val - prev_val);
-      return prev_delta + r * (next_delta - prev_delta);
+      ਦਸ਼ਮਲਵ r = (ਨਿਸ਼ਾਨਾ_val - prev_val) / (ਅਗਲਾ_val - prev_val);
+      ਵਾਪਸ prev_delta + r * (ਅਗਲਾ_delta - prev_delta);
     }
 
-    static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-    { return (i >= end) ? start : (i + 1); }
+    ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਗਲਾ_ਸੂਚਕਾਂਕ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਿਰਾ)
+    { ਵਾਪਸ (i >= ਸਿਰਾ) ? ਸ਼ੁਰੂ : (i + 1); }
 
-#ifndef HB_OPTIMIZE_SIZE
-    template <bool is_x>
-#endif
-    static bool decompile_deltas_add_to_points (const HBUINT8 *&p /* IN/OUT */,
-						hb_array_t<contour_point_t> points,
-						float scalar,
-						const HBUINT8 *end,
-						unsigned start
-#ifdef HB_OPTIMIZE_SIZE
-						, bool is_x
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+    ਸਾਂਚਾ <ਤਾਰਕਿਕ is_x>
+#ਜੇ_ਅੰਤ
+    ਸਥਿਰ ਤਾਰਕਿਕ decompile_deltas_ਜੋੜੋ_ਮੰਜ਼ਿਲ_points (ਅਚਲ HBUINT8 *&p /* IN/OUT */,
+						hb_array_t<contour_ਬਿੰਦੂ_t> points,
+						ਦਸ਼ਮਲਵ scalar,
+						ਅਚਲ HBUINT8 *ਸਿਰਾ,
+						ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+						, ਤਾਰਕਿਕ is_x
+#ਜੇ_ਅੰਤ
 						)
     {
-      unsigned i = 0;
-      unsigned count = points.length;
-      while (i < count)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = points.ਲੰਮਾਈ;
+      ਜਦੋਂ (i < ਗਿਣਤੀ_2)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned control = *p++;
-	unsigned run_count = (control & TupleValues::VALUE_RUN_COUNT_MASK) + 1;
-	unsigned stop = i + run_count;
-	if (unlikely (stop > count)) return false;
+	ਜੇ (unlikely (p + 1 > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ control = *p++;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੜੀਵਾਰ_ਗਿਣਤੀ = (control & Tuple_ਮੁੱਲਾਂ::ਮੁੱਲ_ਲੜੀਵਾਰ_ਗਿਣਤੀ_ਨਕਾਬ) + 1;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ stop = i + ਲੜੀਵਾਰ_ਗਿਣਤੀ;
+	ਜੇ (unlikely (stop > ਗਿਣਤੀ_2)) ਵਾਪਸ ਝੂਠ;
 
-	unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ skip = i < ਸ਼ੁਰੂ ? hb_min (ਸ਼ੁਰੂ - i, ਲੜੀਵਾਰ_ਗਿਣਤੀ) : 0;
 	i += skip;
 
-	switch (control & TupleValues::VALUES_SIZE_MASK)
+	ਚੋਣ (control & Tuple_ਮੁੱਲਾਂ::ਮੁੱਲਾਂ_ਮਾਪ_ਨਕਾਬ)
 	{
-	  case TupleValues::VALUES_ARE_ZEROS:
+	  ਹਾਲਤ Tuple_ਮੁੱਲਾਂ::ਮੁੱਲਾਂ_ARE_ZEROS:
 	    i = stop;
-	    break;
-	  case TupleValues::VALUES_ARE_WORDS:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ Tuple_ਮੁੱਲਾਂ::ਮੁੱਲਾਂ_ARE_ਸ਼ਬਦ:
 	  {
-	    if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
-	    p += skip * HBINT16::static_size;
-	    const auto *pp = (const HBINT16 *) p;
-	    for (; i < stop; i++)
+	    ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * HBINT16::static_ਮਾਪ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	    p += skip * HBINT16::static_ਮਾਪ;
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT16 *) p;
+	    ਲਈ (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ਦਸ਼ਮਲਵ v = *pp++ * scalar;
+	      ਜੇ (is_x) points.arrayZ[i].x += v;
+	      ਨਹੀਂਤਾਂ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ਅਚਲ HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_LONGS:
+	  ਰੋਕੋ;
+	  ਹਾਲਤ Tuple_ਮੁੱਲਾਂ::ਮੁੱਲਾਂ_ARE_LONGS:
 	  {
-	    if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
-	    p += skip * HBINT32::static_size;
-	    const auto *pp = (const HBINT32 *) p;
-	    for (; i < stop; i++)
+	    ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ * HBINT32::static_ਮਾਪ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	    p += skip * HBINT32::static_ਮਾਪ;
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT32 *) p;
+	    ਲਈ (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ਦਸ਼ਮਲਵ v = *pp++ * scalar;
+	      ਜੇ (is_x) points.arrayZ[i].x += v;
+	      ਨਹੀਂਤਾਂ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ਅਚਲ HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_BYTES:
+	  ਰੋਕੋ;
+	  ਹਾਲਤ Tuple_ਮੁੱਲਾਂ::ਮੁੱਲਾਂ_ARE_ਬਾਈਟਾਂ:
 	  {
-	    if (unlikely (p + run_count > end)) return false;
-	    p += skip * HBINT8::static_size;
-	    const auto *pp = (const HBINT8 *) p;
-	    for (; i < stop; i++)
+	    ਜੇ (unlikely (p + ਲੜੀਵਾਰ_ਗਿਣਤੀ > ਸਿਰਾ)) ਵਾਪਸ ਝੂਠ;
+	    p += skip * HBINT8::static_ਮਾਪ;
+	    ਅਚਲ ਸਵੈਚਾਲਿਤ *pp = (ਅਚਲ HBINT8 *) p;
+	    ਲਈ (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ਦਸ਼ਮਲਵ v = *pp++ * scalar;
+	      ਜੇ (is_x) points.arrayZ[i].x += v;
+	      ਨਹੀਂਤਾਂ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ਅਚਲ HBUINT8 *) pp;
 	  }
-	  break;
+	  ਰੋਕੋ;
 	}
       }
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
-    public:
-    bool apply_deltas_to_points (hb_codepoint_t glyph,
-				 hb_array_t<const int> coords,
-				 const hb_array_t<contour_point_t> points,
+    ਜਨਤਕ:
+    ਤਾਰਕਿਕ apply_deltas_ਮੰਜ਼ਿਲ_points (hb_codepoint_t glyph,
+				 hb_array_t<ਅਚਲ ਪੂਰਨ> coords,
+				 ਅਚਲ hb_array_t<contour_ਬਿੰਦੂ_t> points,
 				 hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr,
-				 bool phantom_only = false,
-				 int64_t *budget = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = ਖਾਲੀ_ਸੂਚਕ,
+				 ਤਾਰਕਿਕ phantom_only = ਝੂਠ,
+				 int64_t *budget = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
     {
-      if (unlikely (glyph >= glyphCount)) return true;
+      ਜੇ (unlikely (glyph >= glyph_ਗਿਣਤੀ_2)) ਵਾਪਸ ਸੱਚ;
       hb_scalar_cache_t *scalar_cache = gvar_cache ?
 					gvar_cache :
 					(hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-      hb_bytes_t var_data_bytes = table->get_glyph_var_data_bytes (table.get_blob (), glyphCount, glyph);
-      if (!var_data_bytes.as<GlyphVariationData> ()->has_data ()) return true;
+      hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = ਸਾਰਣੀ->get_glyph_var_ਅੰਕੜੇ_ਬਾਈਟਾਂ (ਸਾਰਣੀ.get_blob (), glyph_ਗਿਣਤੀ_2, glyph);
+      ਜੇ (!var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.as<Glyph_Variation_ਅੰਕੜੇ> ()->has_ਅੰਕੜੇ ()) ਵਾਪਸ ਸੱਚ;
 
-      auto &shared_indices = scratch.shared_indices;
+      ਸਵੈਚਾਲਿਤ &shared_indices = scratch.shared_indices;
       shared_indices.clear ();
 
-      typename GlyphVariationData::tuple_iterator_t iterator;
-      if (!GlyphVariationData::get_tuple_iterator (var_data_bytes, table->axisCount,
-						   var_data_bytes.arrayZ,
+      ਕਿਸਮ_ਨਾਂ Glyph_Variation_ਅੰਕੜੇ::tuple_iterator_t iterator;
+      ਜੇ (!Glyph_Variation_ਅੰਕੜੇ::get_tuple_iterator (var_ਅੰਕੜੇ_ਬਾਈਟਾਂ, ਸਾਰਣੀ->axis_ਗਿਣਤੀ_2,
+						   var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.arrayZ,
 						   shared_indices, &iterator))
-	return true; /* so isn't applied at all */
+	ਵਾਪਸ ਸੱਚ; /* so isn't applied at all */
 
-      bool any_private_points = false;
-      bool private_points_checked = false;
+      ਤਾਰਕਿਕ any_ਨਿੱਜੀ_points = ਝੂਠ;
+      ਤਾਰਕਿਕ ਨਿੱਜੀ_points_checked = ਝੂਠ;
 
       /* Save original points for inferred delta calculation */
-      auto &orig_points_vec = scratch.orig_points;
+      ਸਵੈਚਾਲਿਤ &orig_points_vec = scratch.orig_points;
       orig_points_vec.clear (); // Populated lazily
-      auto orig_points = orig_points_vec.as_array ();
+      ਸਵੈਚਾਲਿਤ orig_points = orig_points_vec.as_array ();
 
       /* flag is used to indicate referenced point */
-      auto &deltas_vec = scratch.deltas;
+      ਸਵੈਚਾਲਿਤ &deltas_vec = scratch.deltas;
       deltas_vec.clear (); // Populated lazily
-      auto deltas = deltas_vec.as_array ();
+      ਸਵੈਚਾਲਿਤ deltas = deltas_vec.as_array ();
 
-      unsigned num_coords = table->axisCount;
-      hb_array_t<const F2DOT14> shared_tuples = (table+table->sharedTuples).as_array (table->sharedTupleCount * num_coords);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_coords = ਸਾਰਣੀ->axis_ਗਿਣਤੀ_2;
+      hb_array_t<ਅਚਲ F2DOT14> shared_tuples = (ਸਾਰਣੀ+ਸਾਰਣੀ->sharedTuples).as_array (ਸਾਰਣੀ->shared_Tuple_ਗਿਣਤੀ * ਅੰਕ_coords);
 
-      auto &private_indices = scratch.private_indices;
-      auto &x_deltas = scratch.x_deltas;
-      auto &y_deltas = scratch.y_deltas;
+      ਸਵੈਚਾਲਿਤ &ਨਿੱਜੀ_indices = scratch.ਨਿੱਜੀ_indices;
+      ਸਵੈਚਾਲਿਤ &x_deltas = scratch.x_deltas;
+      ਸਵੈਚਾਲਿਤ &y_deltas = scratch.y_deltas;
 
-      unsigned count = points.length;
-      bool flush = false;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = points.ਲੰਮਾਈ;
+      ਤਾਰਕਿਕ flush = ਝੂਠ;
 
-      do
+      ਕਰੋ
       {
-	float scalar = iterator.current_tuple->calculate_scalar (coords, num_coords, shared_tuples,
+	ਦਸ਼ਮਲਵ scalar = iterator.current_tuple->calculate_scalar (coords, ਅੰਕ_coords, shared_tuples,
 								 scalar_cache);
 
-	if (scalar == 0.f) continue;
+	ਜੇ (scalar == 0.f) ਜਾਰੀ;
 
-	if (budget &&
+	ਜੇ (budget &&
 	    unlikely (!hb_budget_spend (*budget, HB_BUDGET_1,
-					 phantom_only && count >= 4 ? 4 : count)))
-	  return false;
+					 phantom_only && ਗਿਣਤੀ_2 >= 4 ? 4 : ਗਿਣਤੀ_2)))
+	  ਵਾਪਸ ਝੂਠ;
 
-	if (!private_points_checked)
+	ਜੇ (!ਨਿੱਜੀ_points_checked)
 	{
-	  auto scan = iterator;
-	  do
+	  ਸਵੈਚਾਲਿਤ ਜਾਂਚ = iterator;
+	  ਕਰੋ
 	  {
-	    if (scan.current_tuple->has_private_points ())
+	    ਜੇ (ਜਾਂਚ.current_tuple->has_ਨਿੱਜੀ_points ())
 	    {
-	      any_private_points = true;
-	      break;
+	      any_ਨਿੱਜੀ_points = ਸੱਚ;
+	      ਰੋਕੋ;
 	    }
-	  } while (scan.move_to_next ());
-	  private_points_checked = true;
+	  } ਜਦੋਂ (ਜਾਂਚ.move_ਮੰਜ਼ਿਲ_ਅਗਲਾ ());
+	  ਨਿੱਜੀ_points_checked = ਸੱਚ;
 	}
-	const HBUINT8 *p = iterator.get_serialized_data ();
-	unsigned int length = iterator.current_tuple->get_data_size ();
-	if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-	  return false;
+	ਅਚਲ HBUINT8 *p = iterator.get_serialized_ਅੰਕੜੇ ();
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ = iterator.current_tuple->get_ਅੰਕੜੇ_ਮਾਪ ();
+	ਜੇ (unlikely (!iterator.var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.check_range (p, ਲੰਮਾਈ)))
+	  ਵਾਪਸ ਝੂਠ;
 
-	if (!deltas)
+	ਜੇ (!deltas)
 	{
-	  if (unlikely (!deltas_vec.resize_dirty  (count))) return false;
+	  ਜੇ (unlikely (!deltas_vec.resize_dirty  (ਗਿਣਤੀ_2))) ਵਾਪਸ ਝੂਠ;
 	  deltas = deltas_vec.as_array ();
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? ਗਿਣਤੀ_2 - 4 : 0), 0,
+		     (phantom_only ? 4 : ਗਿਣਤੀ_2) * ਆਕਾਰ (deltas[0]));
 	}
 
-	const HBUINT8 *end = p + length;
+	ਅਚਲ HBUINT8 *ਸਿਰਾ = p + ਲੰਮਾਈ;
 
-	bool has_private_points = iterator.current_tuple->has_private_points ();
-	if (has_private_points &&
-	    !GlyphVariationData::decompile_points (p, private_indices, end))
-	  return false;
-	const hb_array_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+	ਤਾਰਕਿਕ has_ਨਿੱਜੀ_points = iterator.current_tuple->has_ਨਿੱਜੀ_points ();
+	ਜੇ (has_ਨਿੱਜੀ_points &&
+	    !Glyph_Variation_ਅੰਕੜੇ::decompile_points (p, ਨਿੱਜੀ_indices, ਸਿਰਾ))
+	  ਵਾਪਸ ਝੂਠ;
+	ਅਚਲ hb_array_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> &indices = has_ਨਿੱਜੀ_points ? ਨਿੱਜੀ_indices : shared_indices;
 
-	bool apply_to_all = (indices.length == 0);
-	unsigned num_deltas = apply_to_all ? points.length : indices.length;
-	unsigned start_deltas = (apply_to_all && phantom_only && num_deltas >= 4 ? num_deltas - 4 : 0);
+	ਤਾਰਕਿਕ apply_ਮੰਜ਼ਿਲ_all = (indices.ਲੰਮਾਈ == 0);
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_deltas = apply_ਮੰਜ਼ਿਲ_all ? points.ਲੰਮਾਈ : indices.ਲੰਮਾਈ;
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ_deltas = (apply_ਮੰਜ਼ਿਲ_all && phantom_only && ਅੰਕ_deltas >= 4 ? ਅੰਕ_deltas - 4 : 0);
 
-	if (apply_to_all && !any_private_points)
+	ਜੇ (apply_ਮੰਜ਼ਿਲ_all && !any_ਨਿੱਜੀ_points)
 	{
-#ifdef HB_OPTIMIZE_SIZE
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, true))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, false))) return false;
-#else
-	  if (unlikely (!decompile_deltas_add_to_points<true> (p, points, scalar, end, start_deltas))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points<false> (p, points, scalar, end, start_deltas))) return false;
-#endif
-	  continue;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_OPTIMIZE_ਮਾਪ
+	  ਜੇ (unlikely (!decompile_deltas_ਜੋੜੋ_ਮੰਜ਼ਿਲ_points (p, points, scalar, ਸਿਰਾ, ਸ਼ੁਰੂ_deltas, ਸੱਚ))) ਵਾਪਸ ਝੂਠ;
+	  ਜੇ (unlikely (!decompile_deltas_ਜੋੜੋ_ਮੰਜ਼ਿਲ_points (p, points, scalar, ਸਿਰਾ, ਸ਼ੁਰੂ_deltas, ਝੂਠ))) ਵਾਪਸ ਝੂਠ;
+#ਨਹੀਂਤਾਂ
+	  ਜੇ (unlikely (!decompile_deltas_ਜੋੜੋ_ਮੰਜ਼ਿਲ_points<ਸੱਚ> (p, points, scalar, ਸਿਰਾ, ਸ਼ੁਰੂ_deltas))) ਵਾਪਸ ਝੂਠ;
+	  ਜੇ (unlikely (!decompile_deltas_ਜੋੜੋ_ਮੰਜ਼ਿਲ_points<ਝੂਠ> (p, points, scalar, ਸਿਰਾ, ਸ਼ੁਰੂ_deltas))) ਵਾਪਸ ਝੂਠ;
+#ਜੇ_ਅੰਤ
+	  ਜਾਰੀ;
 	}
 
-	if (unlikely (!x_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, x_deltas, end, false, start_deltas))) return false;
-	if (unlikely (!y_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, y_deltas, end, false, start_deltas))) return false;
+	ਜੇ (unlikely (!x_deltas.resize_dirty  (ਅੰਕ_deltas))) ਵਾਪਸ ਝੂਠ;
+	ਜੇ (unlikely (!Glyph_Variation_ਅੰਕੜੇ::decompile_deltas (p, x_deltas, ਸਿਰਾ, ਝੂਠ, ਸ਼ੁਰੂ_deltas))) ਵਾਪਸ ਝੂਠ;
+	ਜੇ (unlikely (!y_deltas.resize_dirty  (ਅੰਕ_deltas))) ਵਾਪਸ ਝੂਠ;
+	ਜੇ (unlikely (!Glyph_Variation_ਅੰਕੜੇ::decompile_deltas (p, y_deltas, ਸਿਰਾ, ਝੂਠ, ਸ਼ੁਰੂ_deltas))) ਵਾਪਸ ਝੂਠ;
 
-	if (!apply_to_all)
+	ਜੇ (!apply_ਮੰਜ਼ਿਲ_all)
 	{
-	  if (!orig_points && !phantom_only)
+	  ਜੇ (!orig_points && !phantom_only)
 	  {
 	    orig_points_vec.extend (points);
-	    if (unlikely (orig_points_vec.in_error ())) return false;
+	    ਜੇ (unlikely (orig_points_vec.ਵਿੱਚ_error ())) ਵਾਪਸ ਝੂਠ;
 	    orig_points = orig_points_vec.as_array ();
 	  }
 
-	  if (flush)
+	  ਜੇ (flush)
 	  {
-	    for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = phantom_only ? ਗਿਣਤੀ_2 - 4 : 0; i < ਗਿਣਤੀ_2; i++)
 	      points.arrayZ[i].translate (deltas.arrayZ[i]);
 	  }
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? ਗਿਣਤੀ_2 - 4 : 0), 0,
+		     (phantom_only ? 4 : ਗਿਣਤੀ_2) * ਆਕਾਰ (deltas[0]));
 	}
 
-	if (HB_OPTIMIZE_SIZE_VAL)
+	ਜੇ (HB_OPTIMIZE_ਮਾਪ_VAL)
 	{
-	  for (unsigned int i = 0; i < num_deltas; i++)
+	  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_deltas; i++)
 	  {
-	    unsigned int pt_index;
-	    if (apply_to_all)
-	      pt_index = i;
-	    else
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ pt_ਸੂਚਕਾਂਕ;
+	    ਜੇ (apply_ਮੰਜ਼ਿਲ_all)
+	      pt_ਸੂਚਕਾਂਕ = i;
+	    ਨਹੀਂਤਾਂ
 	    {
-	      pt_index = indices[i];
-	      if (unlikely (pt_index >= deltas.length)) continue;
+	      pt_ਸੂਚਕਾਂਕ = indices[i];
+	      ਜੇ (unlikely (pt_ਸੂਚਕਾਂਕ >= deltas.ਲੰਮਾਈ)) ਜਾਰੀ;
 	    }
-	    if (phantom_only && pt_index < count - 4) continue;
-	    auto &delta = deltas.arrayZ[pt_index];
+	    ਜੇ (phantom_only && pt_ਸੂਚਕਾਂਕ < ਗਿਣਤੀ_2 - 4) ਜਾਰੀ;
+	    ਸਵੈਚਾਲਿਤ &delta = deltas.arrayZ[pt_ਸੂਚਕਾਂਕ];
 	    delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-	    delta.add_delta (x_deltas.arrayZ[i] * scalar,
+	    delta.ਜੋੜੋ_delta (x_deltas.arrayZ[i] * scalar,
 			     y_deltas.arrayZ[i] * scalar);
 	  }
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
 	  /* Ouch. Four cases... for optimization. */
-	  if (scalar != 1.0f)
+	  ਜੇ (scalar != 1.0f)
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    ਜੇ (apply_ਮੰਜ਼ਿਲ_all)
+	      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = phantom_only ? ਗਿਣਤੀ_2 - 4 : 0; i < ਗਿਣਤੀ_2; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		ਸਵੈਚਾਲਿਤ &delta = deltas.arrayZ[i];
+		delta.ਜੋੜੋ_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    ਨਹੀਂਤਾਂ
+	      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ pt_ਸੂਚਕਾਂਕ = indices[i];
+		ਜੇ (unlikely (pt_ਸੂਚਕਾਂਕ >= deltas.ਲੰਮਾਈ)) ਜਾਰੀ;
+		ਜੇ (phantom_only && pt_ਸੂਚਕਾਂਕ < ਗਿਣਤੀ_2 - 4) ਜਾਰੀ;
+		ਸਵੈਚਾਲਿਤ &delta = deltas.arrayZ[pt_ਸੂਚਕਾਂਕ];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		delta.ਜੋੜੋ_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
 	  }
-	  else
+	  ਨਹੀਂਤਾਂ
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    ਜੇ (apply_ਮੰਜ਼ਿਲ_all)
+	      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = phantom_only ? ਗਿਣਤੀ_2 - 4 : 0; i < ਗਿਣਤੀ_2; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i],
+		ਸਵੈਚਾਲਿਤ &delta = deltas.arrayZ[i];
+		delta.ਜੋੜੋ_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    ਨਹੀਂਤਾਂ
+	      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ pt_ਸੂਚਕਾਂਕ = indices[i];
+		ਜੇ (unlikely (pt_ਸੂਚਕਾਂਕ >= deltas.ਲੰਮਾਈ)) ਜਾਰੀ;
+		ਜੇ (phantom_only && pt_ਸੂਚਕਾਂਕ < ਗਿਣਤੀ_2 - 4) ਜਾਰੀ;
+		ਸਵੈਚਾਲਿਤ &delta = deltas.arrayZ[pt_ਸੂਚਕਾਂਕ];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i],
+		delta.ਜੋੜੋ_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
 	  }
 	}
 
 	/* infer deltas for unreferenced points */
-	if (!apply_to_all && !phantom_only)
+	ਜੇ (!apply_ਮੰਜ਼ਿਲ_all && !phantom_only)
 	{
-	  unsigned start_point = 0;
-	  unsigned end_point = 0;
-	  while (true)
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ_ਬਿੰਦੂ_2 = 0;
+	  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ_ਬਿੰਦੂ = 0;
+	  ਜਦੋਂ (ਸੱਚ)
 	  {
-	    while (end_point < count && !points.arrayZ[end_point].is_end_point)
-	      end_point++;
-	    if (unlikely (end_point == count)) break;
+	    ਜਦੋਂ (ਸਿਰਾ_ਬਿੰਦੂ < ਗਿਣਤੀ_2 && !points.arrayZ[ਸਿਰਾ_ਬਿੰਦੂ].is_ਸਿਰਾ_ਬਿੰਦੂ)
+	      ਸਿਰਾ_ਬਿੰਦੂ++;
+	    ਜੇ (unlikely (ਸਿਰਾ_ਬਿੰਦੂ == ਗਿਣਤੀ_2)) ਰੋਕੋ;
 
 	    /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
-	    unsigned unref_count = 0;
-	    for (unsigned i = start_point; i < end_point + 1; i++)
-	      unref_count += deltas.arrayZ[i].flag;
-	    unref_count = (end_point - start_point + 1) - unref_count;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ unref_ਗਿਣਤੀ = 0;
+	    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ_ਬਿੰਦੂ_2; i < ਸਿਰਾ_ਬਿੰਦੂ + 1; i++)
+	      unref_ਗਿਣਤੀ += deltas.arrayZ[i].flag;
+	    unref_ਗਿਣਤੀ = (ਸਿਰਾ_ਬਿੰਦੂ - ਸ਼ੁਰੂ_ਬਿੰਦੂ_2 + 1) - unref_ਗਿਣਤੀ;
 
-	    unsigned j = start_point;
-	    if (unref_count == 0 || unref_count > end_point - start_point)
-	      goto no_more_gaps;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ j = ਸ਼ੁਰੂ_ਬਿੰਦੂ_2;
+	    ਜੇ (unref_ਗਿਣਤੀ == 0 || unref_ਗਿਣਤੀ > ਸਿਰਾ_ਬਿੰਦੂ - ਸ਼ੁਰੂ_ਬਿੰਦੂ_2)
+	      ਜਾਓ no_ਹੋਰ_gaps;
 
-	    for (;;)
+	    ਲਈ (;;)
 	    {
 	      /* Locate the next gap of unreferenced points between two referenced points prev and next.
 	       * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
 	       */
-	      unsigned int prev, next, i;
-	      for (;;)
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ prev, next, i;
+	      ਲਈ (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) break;
+		j = ਅਗਲਾ_ਸੂਚਕਾਂਕ (i, ਸ਼ੁਰੂ_ਬਿੰਦੂ_2, ਸਿਰਾ_ਬਿੰਦੂ);
+		ਜੇ (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) ਰੋਕੋ;
 	      }
 	      prev = j = i;
-	      for (;;)
+	      ਲਈ (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) break;
+		j = ਅਗਲਾ_ਸੂਚਕਾਂਕ (i, ਸ਼ੁਰੂ_ਬਿੰਦੂ_2, ਸਿਰਾ_ਬਿੰਦੂ);
+		ਜੇ (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) ਰੋਕੋ;
 	      }
 	      next = j;
 	      /* Infer deltas for all unref points in the gap between prev and next */
 	      i = prev;
-	      for (;;)
+	      ਲਈ (;;)
 	      {
-		i = next_index (i, start_point, end_point);
-		if (i == next) break;
-		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::x);
-		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::y);
-		if (--unref_count == 0) goto no_more_gaps;
+		i = ਅਗਲਾ_ਸੂਚਕਾਂਕ (i, ਸ਼ੁਰੂ_ਬਿੰਦੂ_2, ਸਿਰਾ_ਬਿੰਦੂ);
+		ਜੇ (i == next) ਰੋਕੋ;
+		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_ਬਿੰਦੂ_t::x);
+		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_ਬਿੰਦੂ_t::y);
+		ਜੇ (--unref_ਗਿਣਤੀ == 0) ਜਾਓ no_ਹੋਰ_gaps;
 	      }
 	    }
-	  no_more_gaps:
-	    start_point = end_point = end_point + 1;
+	  no_ਹੋਰ_gaps:
+	    ਸ਼ੁਰੂ_ਬਿੰਦੂ_2 = ਸਿਰਾ_ਬਿੰਦੂ = ਸਿਰਾ_ਬਿੰਦੂ + 1;
 	  }
 	}
 
-	flush = true;
+	flush = ਸੱਚ;
 
-      } while (iterator.move_to_next ());
+      } ਜਦੋਂ (iterator.move_ਮੰਜ਼ਿਲ_ਅਗਲਾ ());
 
-      if (flush)
+      ਜੇ (flush)
       {
-	for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = phantom_only ? ਗਿਣਤੀ_2 - 4 : 0; i < ਗਿਣਤੀ_2; i++)
 	  points.arrayZ[i].translate (deltas.arrayZ[i]);
       }
 
-      return true;
+      ਵਾਪਸ ਸੱਚ;
     }
 
-    unsigned int get_axis_count () const { return table->axisCount; }
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_axis_ਗਿਣਤੀ () ਅਚਲ { ਵਾਪਸ ਸਾਰਣੀ->axis_ਗਿਣਤੀ_2; }
 
-    private:
-    hb_blob_ptr_t<gvar_GVAR> table;
-    unsigned glyphCount;
+    ਨਿਜੀ:
+    hb_blob_ptr_t<gvar_GVAR> ਸਾਰਣੀ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_ਗਿਣਤੀ_2;
   };
 
-  protected:
-  FixedVersion<>version;	/* Version number of the glyph variations table
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;	/* Version number of the glyph variations table
 				 * Set to 0x00010000u. */
-  HBUINT16	axisCount;	/* The number of variation axes for this font. This must be
+  HBUINT16	axis_ਗਿਣਤੀ_2;	/* The number of variation axes for this font. This must be
 				 * the same number as axisCount in the 'fvar' table. */
-  HBUINT16	sharedTupleCount;
+  HBUINT16	shared_Tuple_ਗਿਣਤੀ;
 				/* The number of shared tuple records. Shared tuple records
 				 * can be referenced within glyph variation data tables for
 				 * multiple glyphs, as opposed to other tuple records stored
 				 * directly within a glyph variation data table. */
-  NNOffset32To<UnsizedArrayOf<F2DOT14>>
+  NNOffset32_ਮੰਜ਼ਿਲ<Unsized_Array_ਦਾ<F2DOT14>>
 		sharedTuples;	/* Offset from the start of this table to the shared tuple records.
 				 * Array of tuple records shared across all glyph variation data tables. */
-  GlyphCountType
-		glyphCountX;	/* The number of glyphs in this font. This must match the number of
+  Glyph_ਗਿਣਤੀ_Type
+		glyph_ਗਿਣਤੀ_X;	/* The number of glyphs in this font. This must match the number of
 				 * glyphs stored elsewhere in the font. */
   HBUINT16	flags;		/* Bit-field that gives the format of the offset array that follows.
 				 * If bit 0 is clear, the offsets are uint16; if bit 0 is set, the
 				 * offsets are uint32. */
-  Offset32To<GlyphVariationData>
-		dataZ;		/* Offset from the start of this table to the array of
+  Offset32_ਮੰਜ਼ਿਲ<Glyph_Variation_ਅੰਕੜੇ>
+		ਅੰਕੜੇ_Z;		/* Offset from the start of this table to the array of
 				 * GlyphVariationData tables. */
-  UnsizedArrayOf<HBUINT8>
-		offsetZ;	/* Offsets from the start of the GlyphVariationData array
+  Unsized_Array_ਦਾ<HBUINT8>
+		ਵਿੱਥ_Z;	/* Offsets from the start of the GlyphVariationData array
 				 * to each GlyphVariationData table. */
-  public:
-  DEFINE_SIZE_ARRAY (18 + GlyphCountType::static_size, offsetZ);
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_ARRAY (18 + Glyph_ਗਿਣਤੀ_Type::static_ਮਾਪ, ਵਿੱਥ_Z);
 };
 
-struct gvar : gvar_GVAR<gvar, SmallTypes>
+ਬਣਤਰ gvar : gvar_GVAR<gvar, SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gvar;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_gvar;
 };
 
-struct GVAR : gvar_GVAR<GVAR, MediumTypes>
+ਬਣਤਰ GVAR : gvar_GVAR<GVAR, MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GVAR;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_GVAR;
 };
 
-struct gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
+ਬਣਤਰ gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
 						  GVAR::accelerator_t>
 {
   gvar_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<gvar::accelerator_t, GVAR::accelerator_t> (face) {}
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () ਅਚਲ
   {
-    if (has_data ()) return HB_DUAL_GET (*this, create_cache ());
-    return nullptr;
+    ਜੇ (has_ਅੰਕੜੇ ()) ਵਾਪਸ HB_DUAL_GET (*ਇਹ, create_cache ());
+    ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  ਸਥਿਰ ਖਾਲੀ destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  bool apply_deltas_to_points (hb_codepoint_t glyph,
-			       hb_array_t<const int> coords,
-			       const hb_array_t<contour_point_t> points,
+  ਤਾਰਕਿਕ apply_deltas_ਮੰਜ਼ਿਲ_points (hb_codepoint_t glyph,
+			       hb_array_t<ਅਚਲ ਪੂਰਨ> coords,
+			       ਅਚਲ hb_array_t<contour_ਬਿੰਦੂ_t> points,
 			       hb_glyf_scratch_t &scratch,
-			       hb_scalar_cache_t *gvar_cache = nullptr,
-			       bool phantom_only = false,
-			       int64_t *budget = nullptr) const
+			       hb_scalar_cache_t *gvar_cache = ਖਾਲੀ_ਸੂਚਕ,
+			       ਤਾਰਕਿਕ phantom_only = ਝੂਠ,
+			       int64_t *budget = ਖਾਲੀ_ਸੂਚਕ) ਅਚਲ
   {
-    return HB_DUAL_GET (*this, apply_deltas_to_points (glyph, coords, points,
+    ਵਾਪਸ HB_DUAL_GET (*ਇਹ, apply_deltas_ਮੰਜ਼ਿਲ_points (glyph, coords, points,
 						       scratch, gvar_cache,
 						       phantom_only, budget));
   }
 
-  unsigned int get_axis_count () const
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ get_axis_ਗਿਣਤੀ () ਅਚਲ
   {
-    if (has_data ()) return HB_DUAL_GET (*this, get_axis_count ());
-    return 0;
+    ਜੇ (has_ਅੰਕੜੇ ()) ਵਾਪਸ HB_DUAL_GET (*ਇਹ, get_axis_ਗਿਣਤੀ ());
+    ਵਾਪਸ 0;
   }
 };
 
 } /* namespace OT */
 
-#endif /* HB_OT_VAR_GVAR_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_GVAR_TABLE_HH */

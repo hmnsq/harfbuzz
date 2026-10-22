@@ -24,51 +24,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OPEN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_blob_create_from_file_or_fail(x)  hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ()
+#ਜੇ_ਅੰਤ
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  if (argc != 2) {
+  ਜੇ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    ਬਾਹਰ_ਨਿਕਲੋ (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned int count = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = 0;
 
-#ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_NAME
+  ਅਚਲ hb_ot_name_ਇੰਦਰਾਜ_t *entries = hb_ot_name_list_ਨਾਂ (face, &ਗਿਣਤੀ_2);
 
-  for (unsigned int i = 0; i < count; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
-    printf ("%u	%s	",
+    ਲਿਖੋ ("%u	%s	",
 	    entries[i].name_id,
-	    hb_language_to_string (entries[i].language));
+	    hb_language_ਮੰਜ਼ਿਲ_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    ਅੱਖਰ buf[64];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_ਮਾਪ = ਆਕਾਰ (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
-			 &buf_size,
+			 &buf_ਮਾਪ,
 			 buf);
 
-    printf ("%s\n", buf);
+    ਲਿਖੋ ("%s\n", buf);
   }
-#endif
+#ਜੇ_ਅੰਤ
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  ਵਾਪਸ ਗਿਣਤੀ_2 ? 0 : 1;
 }

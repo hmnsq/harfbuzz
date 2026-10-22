@@ -24,632 +24,632 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_PAIRPOS_GRAPH_HH
-#define GRAPH_PAIRPOS_GRAPH_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਗ੍ਰਾਫ_PAIRPOS_ਗ੍ਰਾਫ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਗ੍ਰਾਫ_PAIRPOS_ਗ੍ਰਾਫ_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "classdef-graph.hh"
-#include "../OT/Layout/GPOS/PairPos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "split-helpers.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "coverage-graph.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "classdef-graph.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../OT/Layout/GPOS/PairPos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+ਨਾਮਾਕਾਸ਼ ਗ੍ਰਾਫ {
 
-struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
+ਬਣਤਰ PairPosFormat1 : ਜਨਤਕ OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼) ਅਚਲ
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_ਮਾਪ;
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ)) ਵਾਪਸ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + pairSet.get_size () - pairSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ + pair_ਸੈੱਟ.get_ਮਾਪ () - pair_ਸੈੱਟ.len.get_ਮਾਪ()))
+      ਵਾਪਸ Err(SANITIZE_FAILURE);
+    ਵਾਪਸ Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>> ਵੰਡੋ_subtables (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                         ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ)
   {
-    hb_set_t visited;
+    hb_ਸੈੱਟ_t ਦੇਖਿਆ;
 
-    TRY_ASSIGN (const unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    const unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
+    TRY_ਸੌਂਪੋ (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_id, c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, &coverage));
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਮਾਪ = c.ਗ੍ਰਾਫ.vertices_[coverage_id].ਸਾਰਣੀ_ਮਾਪ ();
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_ਮਾਪ;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < pairSet.len; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ partial_coverage_ਮਾਪ = 4;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ accumulated = ਅਧਾਰ_ਮਾਪ;
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਵੰਡੋ_points;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < pair_ਸੈੱਟ.len; i++)
     {
-      TRY_ASSIGN (unsigned pair_set_index, pair_set_graph_index (c, this_index, i));
-      unsigned accumulated_delta =
-          c.graph.find_subgraph_size (pair_set_index, visited).value_or (0) +
-          SmallTypes::size; // for PairSet offset.
-      partial_coverage_size += OT::HBUINT16::static_size;
+      TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ pair_ਸੈੱਟ_ਸੂਚਕਾਂਕ, pair_ਸੈੱਟ_ਗ੍ਰਾਫ_ਸੂਚਕਾਂਕ (c, this_ਸੂਚਕਾਂਕ, i));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ accumulated_delta =
+          c.ਗ੍ਰਾਫ.ਲੱਭੋ_subgraph_ਮਾਪ (pair_ਸੈੱਟ_ਸੂਚਕਾਂਕ, ਦੇਖਿਆ).ਮੁੱਲ_or (0) +
+          SmallTypes::ਮਾਪ; // for PairSet offset.
+      partial_coverage_ਮਾਪ += OT::HBUINT16::static_ਮਾਪ;
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + hb_min (partial_coverage_size, coverage_size);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ = accumulated + hb_min (partial_coverage_ਮਾਪ, coverage_ਮਾਪ);
 
-      if (total >= (1 << 16))
+      ਜੇ (ਕੁੱਲ >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
-        accumulated = base_size + accumulated_delta;
-        partial_coverage_size = 6;
-        visited.clear (); // node sharing isn't allowed between splits.
+        ਵੰਡੋ_points.push (i);
+        TRY (ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ>::from (ਵੰਡੋ_points, ਵੰਡ_FAILURE));
+        accumulated = ਅਧਾਰ_ਮਾਪ + accumulated_delta;
+        partial_coverage_ਮਾਪ = 6;
+        ਦੇਖਿਆ.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    ਵੰਡੋ_context_t ਵੰਡੋ_context {
       c,
-      this,
-      this_index,
+      ਇਹ,
+      this_ਸੂਚਕਾਂਕ,
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    ਵਾਪਸ actuate_subtable_ਵੰਡੋ<ਵੰਡੋ_context_t> (ਵੰਡੋ_context, ਵੰਡੋ_points);
   }
 
- private:
+ ਨਿਜੀ:
 
-  struct split_context_t {
-    gsubgpos_graph_context_t& c;
+  ਬਣਤਰ ਵੰਡੋ_context_t {
+    gsubgpos_ਗ੍ਰਾਫ_context_t& c;
     PairPosFormat1* thiz;
-    unsigned this_index;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ;
 
-    unsigned original_count ()
+    ਬਿਨਾਨਿਸ਼ਾਨੀ original_ਗਿਣਤੀ_2 ()
     {
-      return thiz->pairSet.len;
+      ਵਾਪਸ thiz->pair_ਸੈੱਟ.len;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> clone_range (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ)
     {
-      return thiz->clone_range (this->c, this->this_index, start, end);
+      ਵਾਪਸ thiz->clone_range (ਇਹ->c, ਇਹ->this_ਸੂਚਕਾਂਕ, ਸ਼ੁਰੂ, ਸਿਰਾ);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> shrink (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
     {
-      return thiz->shrink (this->c, this->this_index, count);
+      ਵਾਪਸ thiz->shrink (ਇਹ->c, ਇਹ->this_ਸੂਚਕਾਂਕ, ਗਿਣਤੀ_2);
     }
   };
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned count)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> shrink (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                               ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ,
+                               ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_ਸੁਨੇਹਾ (SUBSET_REPACK, ਖਾਲੀ_ਸੂਚਕ,
                "  Shrinking PairPosFormat1 (%u) to [0, %u).",
-               this_index,
-               count);
-    unsigned old_count = pairSet.len;
-    if (count >= old_count)
-      return Ok();
+               this_ਸੂਚਕਾਂਕ,
+               ਗਿਣਤੀ_2);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ old_ਗਿਣਤੀ = pair_ਸੈੱਟ.len;
+    ਜੇ (ਗਿਣਤੀ_2 >= old_ਗਿਣਤੀ)
+      ਵਾਪਸ Ok();
 
-    pairSet.len = count;
-    c.graph.vertices_[this_index].shrink_buffer ((old_count - count) * SmallTypes::size);
+    pair_ਸੈੱਟ.len = ਗਿਣਤੀ_2;
+    c.ਗ੍ਰਾਫ.vertices_[this_ਸੂਚਕਾਂਕ].shrink_ਬਫਰ ((old_ਗਿਣਤੀ - ਗਿਣਤੀ_2) * SmallTypes::ਮਾਪ);
 
-    TRY_ASSIGN (auto coverage, c.graph.as_mutable_table<Coverage> (this_index, &this->coverage));
+    TRY_ਸੌਂਪੋ (ਸਵੈਚਾਲਿਤ coverage, c.ਗ੍ਰਾਫ.as_mutable_ਸਾਰਣੀ<Coverage> (this_ਸੂਚਕਾਂਕ, &ਇਹ->coverage));
 
-    unsigned coverage_size = coverage.vertex->table_size ();
-    auto new_coverage =
-        + hb_zip (coverage.table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < count;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਮਾਪ = coverage.ਸ਼ੀਰਸ਼->ਸਾਰਣੀ_ਮਾਪ ();
+    ਸਵੈਚਾਲਿਤ new_coverage =
+        + hb_zip (coverage.ਸਾਰਣੀ->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> p) {
+          ਵਾਪਸ p.second < ਗਿਣਤੀ_2;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage.index, coverage_size);
+    ਵਾਪਸ Coverage::make_coverage (c, new_coverage, coverage.ਸੂਚਕਾਂਕ_2, coverage_ਮਾਪ);
   }
 
   // Create a new PairPos including PairSet's from start (inclusive) to end (exclusive).
   // Returns object id of the new object.
-  graph_result_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> clone_range (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                        ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ,
+                                        ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ) ਅਚਲ
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_index, start, end);
+    DEBUG_ਸੁਨੇਹਾ (SUBSET_REPACK, ਖਾਲੀ_ਸੂਚਕ,
+               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_ਸੂਚਕਾਂਕ, ਸ਼ੁਰੂ, ਸਿਰਾ);
 
-    unsigned num_pair_sets = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
-                          + num_pair_sets * SmallTypes::size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_pair_sets = ਸਿਰਾ - ਸ਼ੁਰੂ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਭਾਜ_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_ਮਾਪ
+                          + ਅੰਕ_pair_sets * SmallTypes::ਮਾਪ;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, c.create_node (prime_size));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ pair_pos_ਅਭਾਜ_id, c.create_ਗੰਢ (ਅਭਾਜ_ਮਾਪ));
 
-    PairPosFormat1* pair_pos_prime = (PairPosFormat1*) c.graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat[0] = this->valueFormat[0];
-    pair_pos_prime->valueFormat[1] = this->valueFormat[1];
-    pair_pos_prime->pairSet.len = num_pair_sets;
+    PairPosFormat1* pair_pos_ਅਭਾਜ = (PairPosFormat1*) c.ਗ੍ਰਾਫ.object (pair_pos_ਅਭਾਜ_id).ਸਿਰ_2;
+    pair_pos_ਅਭਾਜ->format = ਇਹ->format;
+    pair_pos_ਅਭਾਜ->ਮੁੱਲ_Format_2[0] = ਇਹ->ਮੁੱਲ_Format_2[0];
+    pair_pos_ਅਭਾਜ->ਮੁੱਲ_Format_2[1] = ਇਹ->ਮੁੱਲ_Format_2[1];
+    pair_pos_ਅਭਾਜ->pair_ਸੈੱਟ.len = ਅੰਕ_pair_sets;
 
-    for (unsigned i = start; i < end; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
     {
-      TRY (c.graph.move_child<> (this_index,
-                                 &pairSet[i],
-                                 pair_pos_prime_id,
-                                 &pair_pos_prime->pairSet[i - start]));
+      TRY (c.ਗ੍ਰਾਫ.move_ਬੱਚਾ<> (this_ਸੂਚਕਾਂਕ,
+                                 &pair_ਸੈੱਟ[i],
+                                 pair_pos_ਅਭਾਜ_id,
+                                 &pair_pos_ਅਭਾਜ->pair_ਸੈੱਟ[i - ਸ਼ੁਰੂ]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    c.graph.vertices_[this_index].sort_real_links ();
+    c.ਗ੍ਰਾਫ.vertices_[this_ਸੂਚਕਾਂਕ].ਛਾਂਟੋ_real_links ();
 
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_id, c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, &coverage));
     TRY (Coverage::clone_coverage (c,
                                    coverage_id,
-                                   pair_pos_prime_id,
+                                   pair_pos_ਅਭਾਜ_id,
                                    2,
-                                   start, end));
+                                   ਸ਼ੁਰੂ, ਸਿਰਾ));
 
-    return Ok(pair_pos_prime_id);
+    ਵਾਪਸ Ok(pair_pos_ਅਭਾਜ_id);
   }
 
 
 
-  graph_result_t<unsigned> pair_set_graph_index (gsubgpos_graph_context_t& c, unsigned this_index, unsigned i) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> pair_ਸੈੱਟ_ਗ੍ਰਾਫ_ਸੂਚਕਾਂਕ (gsubgpos_ਗ੍ਰਾਫ_context_t& c, ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ, ਬਿਨਾਨਿਸ਼ਾਨੀ i) ਅਚਲ
   {
-    return c.graph.index_for_offset (this_index, &pairSet[i]);
+    ਵਾਪਸ c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, &pair_ਸੈੱਟ[i]);
   }
 };
 
-struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
+ਬਣਤਰ PairPosFormat2 : ਜਨਤਕ OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼) ਅਚਲ
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ ();
+    ਬਿਨਾਨਿਸ਼ਾਨੀ min_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_ਮਾਪ;
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ)) ਵਾਪਸ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    const unsigned class1_count = class1Count;
-    if (unlikely (vertex_len < min_size + class1_count * get_class1_record_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ class1_ਗਿਣਤੀ = class1_ਗਿਣਤੀ_2;
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < min_ਮਾਪ + class1_ਗਿਣਤੀ * get_class1_ਰਿਕਾਰਡ_ਮਾਪ ()))
+      ਵਾਪਸ Err(SANITIZE_FAILURE);
+    ਵਾਪਸ Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>> ਵੰਡੋ_subtables (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                         ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ)
   {
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    TRY_ASSIGN (const unsigned class_def_2_size, size_of (c, this_index, &classDef2));
-    TRY_ASSIGN (const Coverage* coverage, get_coverage (c, this_index));
-    TRY_ASSIGN (const ClassDef* class_def_1, get_class_def_1 (c, this_index));
-    auto gid_and_class =
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_ਮਾਪ;
+    TRY_ਸੌਂਪੋ (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ class_def_2_ਮਾਪ, ਮਾਪ_ਦਾ (c, this_ਸੂਚਕਾਂਕ, &classDef2));
+    TRY_ਸੌਂਪੋ (ਅਚਲ Coverage* coverage, get_coverage (c, this_ਸੂਚਕਾਂਕ));
+    TRY_ਸੌਂਪੋ (ਅਚਲ ClassDef* class_def_1, get_class_def_1 (c, this_ਸੂਚਕਾਂਕ));
+    ਸਵੈਚਾਲਿਤ gid_and_class =
         + coverage->iter ()
-        | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-          return hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
+        | hb_map_retains_ਛਾਂਟੀ ([&] (hb_codepoint_t gid) {
+          ਵਾਪਸ hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
         })
         ;
-    TRY_ASSIGN (class_def_size_estimator_t estimator, class_def_size_estimator_t::create (gid_and_class));
+    TRY_ਸੌਂਪੋ (class_def_ਮਾਪ_estimator_t estimator, class_def_ਮਾਪ_estimator_t::create (gid_and_class));
 
-    const unsigned class1_count = class1Count;
-    const unsigned class2_count = class2Count;
-    const unsigned class1_record_size = get_class1_record_size ();
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ class1_ਗਿਣਤੀ = class1_ਗਿਣਤੀ_2;
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ class2_ਗਿਣਤੀ = class2_ਗਿਣਤੀ_2;
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ class1_ਰਿਕਾਰਡ_ਮਾਪ = get_class1_ਰਿਕਾਰਡ_ਮਾਪ ();
 
-    const unsigned value_1_len = valueFormat1.get_len ();
-    const unsigned value_2_len = valueFormat2.get_len ();
-    const unsigned total_value_len = value_1_len + value_2_len;
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_1_len = ਮੁੱਲ_Format1.get_len ();
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_2_len = ਮੁੱਲ_Format2.get_len ();
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ_ਮੁੱਲ_len = ਮੁੱਲ_1_len + ਮੁੱਲ_2_len;
 
-    unsigned accumulated = base_size;
-    unsigned coverage_size = 4;
-    unsigned class_def_1_size = 4;
-    unsigned max_coverage_size = coverage_size;
-    unsigned max_class_def_1_size = class_def_1_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ accumulated = ਅਧਾਰ_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_ਮਾਪ = 4;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ class_def_1_ਮਾਪ = 4;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ max_coverage_ਮਾਪ = coverage_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ max_class_def_1_ਮਾਪ = class_def_1_ਮਾਪ;
 
-    hb_vector_t<unsigned> split_points;
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਵੰਡੋ_points;
 
-    TRY_ASSIGN (auto device_tables, get_all_device_tables (c, this_index));
-    hb_vector_t<unsigned> format1_device_table_indices = valueFormat1.get_device_table_indices ();
-    hb_vector_t<unsigned> format2_device_table_indices = valueFormat2.get_device_table_indices ();
-    bool has_device_tables = bool(format1_device_table_indices) || bool(format2_device_table_indices);
+    TRY_ਸੌਂਪੋ (ਸਵੈਚਾਲਿਤ device_tables, get_all_device_tables (c, this_ਸੂਚਕਾਂਕ));
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> format1_device_ਸਾਰਣੀ_indices = ਮੁੱਲ_Format1.get_device_ਸਾਰਣੀ_indices ();
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> format2_device_ਸਾਰਣੀ_indices = ਮੁੱਲ_Format2.get_device_ਸਾਰਣੀ_indices ();
+    ਤਾਰਕਿਕ has_device_tables = ਤਾਰਕਿਕ(format1_device_ਸਾਰਣੀ_indices) || ਤਾਰਕਿਕ(format2_device_ਸਾਰਣੀ_indices);
 
-    hb_set_t visited;
-    for (unsigned i = 0; i < class1_count; i++)
+    hb_ਸੈੱਟ_t ਦੇਖਿਆ;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < class1_ਗਿਣਤੀ; i++)
     {
-      unsigned accumulated_delta = class1_record_size;
-      class_def_1_size = estimator.add_class_def_size (i);
-      coverage_size = estimator.coverage_size ();
-      max_coverage_size = hb_max (max_coverage_size, coverage_size);
-      max_class_def_1_size = hb_max (max_class_def_1_size, class_def_1_size);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ accumulated_delta = class1_ਰਿਕਾਰਡ_ਮਾਪ;
+      class_def_1_ਮਾਪ = estimator.ਜੋੜੋ_class_def_ਮਾਪ (i);
+      coverage_ਮਾਪ = estimator.coverage_ਮਾਪ ();
+      max_coverage_ਮਾਪ = hb_max (max_coverage_ਮਾਪ, coverage_ਮਾਪ);
+      max_class_def_1_ਮਾਪ = hb_max (max_class_def_1_ਮਾਪ, class_def_1_ਮਾਪ);
 
-      if (has_device_tables) {
-        for (unsigned j = 0; j < class2_count; j++)
+      ਜੇ (has_device_tables) {
+        ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < class2_ਗਿਣਤੀ; j++)
         {
-          unsigned value1_index = total_value_len * (class2_count * i + j);
-          unsigned value2_index = value1_index + value_1_len;
-          accumulated_delta += size_of_value_record_children (c,
+          ਬਿਨਾਨਿਸ਼ਾਨੀ value1_ਸੂਚਕਾਂਕ = ਕੁੱਲ_ਮੁੱਲ_len * (class2_ਗਿਣਤੀ * i + j);
+          ਬਿਨਾਨਿਸ਼ਾਨੀ value2_ਸੂਚਕਾਂਕ = value1_ਸੂਚਕਾਂਕ + ਮੁੱਲ_1_len;
+          accumulated_delta += ਮਾਪ_ਦਾ_ਮੁੱਲ_ਰਿਕਾਰਡ_children (c,
                                                         device_tables,
-                                                        format1_device_table_indices,
-                                                        value1_index,
-                                                        visited);
-          accumulated_delta += size_of_value_record_children (c,
+                                                        format1_device_ਸਾਰਣੀ_indices,
+                                                        value1_ਸੂਚਕਾਂਕ,
+                                                        ਦੇਖਿਆ);
+          accumulated_delta += ਮਾਪ_ਦਾ_ਮੁੱਲ_ਰਿਕਾਰਡ_children (c,
                                                         device_tables,
-                                                        format2_device_table_indices,
-                                                        value2_index,
-                                                        visited);
+                                                        format2_device_ਸਾਰਣੀ_indices,
+                                                        value2_ਸੂਚਕਾਂਕ,
+                                                        ਦੇਖਿਆ);
         }
       }
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated
-                       + coverage_size + class_def_1_size + class_def_2_size
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਕੁੱਲ = accumulated
+                       + coverage_ਮਾਪ + class_def_1_ਮਾਪ + class_def_2_ਮਾਪ
                        // The largest object will pack last and can exceed the size limit.
-                       - hb_max (hb_max (coverage_size, class_def_1_size), class_def_2_size);
-      if (total >= (1 << 16))
+                       - hb_max (hb_max (coverage_ਮਾਪ, class_def_1_ਮਾਪ), class_def_2_ਮਾਪ);
+      ਜੇ (ਕੁੱਲ >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        ਵੰਡੋ_points.push (i);
+        TRY (ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ>::from (ਵੰਡੋ_points, ਵੰਡ_FAILURE));
         // split does not include i, so add the size for i when we reset the size counters.
-        accumulated = base_size + accumulated_delta;
+        accumulated = ਅਧਾਰ_ਮਾਪ + accumulated_delta;
 
         estimator.reset();
-        class_def_1_size = estimator.add_class_def_size(i);
-        coverage_size = estimator.coverage_size();
-        visited.clear (); // node sharing isn't allowed between splits.
+        class_def_1_ਮਾਪ = estimator.ਜੋੜੋ_class_def_ਮਾਪ(i);
+        coverage_ਮਾਪ = estimator.coverage_ਮਾਪ();
+        ਦੇਖਿਆ.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    ਵੰਡੋ_context_t ਵੰਡੋ_context {
       c,
-      this,
-      this_index,
-      class1_record_size,
-      total_value_len,
-      value_1_len,
-      value_2_len,
-      max_coverage_size,
-      max_class_def_1_size,
+      ਇਹ,
+      this_ਸੂਚਕਾਂਕ,
+      class1_ਰਿਕਾਰਡ_ਮਾਪ,
+      ਕੁੱਲ_ਮੁੱਲ_len,
+      ਮੁੱਲ_1_len,
+      ਮੁੱਲ_2_len,
+      max_coverage_ਮਾਪ,
+      max_class_def_1_ਮਾਪ,
       device_tables,
-      format1_device_table_indices,
-      format2_device_table_indices
+      format1_device_ਸਾਰਣੀ_indices,
+      format2_device_ਸਾਰਣੀ_indices
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    ਵਾਪਸ actuate_subtable_ਵੰਡੋ<ਵੰਡੋ_context_t> (ਵੰਡੋ_context, ਵੰਡੋ_points);
   }
- private:
+ ਨਿਜੀ:
 
-  struct split_context_t
+  ਬਣਤਰ ਵੰਡੋ_context_t
   {
-    gsubgpos_graph_context_t& c;
+    gsubgpos_ਗ੍ਰਾਫ_context_t& c;
     PairPosFormat2* thiz;
-    unsigned this_index;
-    unsigned class1_record_size;
-    unsigned value_record_len;
-    unsigned value1_record_len;
-    unsigned value2_record_len;
-    unsigned max_coverage_size;
-    unsigned max_class_def_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ class1_ਰਿਕਾਰਡ_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_ਰਿਕਾਰਡ_len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ value1_ਰਿਕਾਰਡ_len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ value2_ਰਿਕਾਰਡ_len;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ max_coverage_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ max_class_def_ਮਾਪ;
 
-    const hb_hashmap_t<unsigned, unsigned>& device_tables;
-    const hb_vector_t<unsigned>& format1_device_table_indices;
-    const hb_vector_t<unsigned>& format2_device_table_indices;
+    ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ>& device_tables;
+    ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& format1_device_ਸਾਰਣੀ_indices;
+    ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& format2_device_ਸਾਰਣੀ_indices;
 
-    unsigned original_count ()
+    ਬਿਨਾਨਿਸ਼ਾਨੀ original_ਗਿਣਤੀ_2 ()
     {
-      return thiz->class1Count;
+      ਵਾਪਸ thiz->class1_ਗਿਣਤੀ_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> clone_range (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ)
     {
-      return thiz->clone_range (*this, start, end);
+      ਵਾਪਸ thiz->clone_range (*ਇਹ, ਸ਼ੁਰੂ, ਸਿਰਾ);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> shrink (ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
     {
-      return thiz->shrink (*this, count);
+      ਵਾਪਸ thiz->shrink (*ਇਹ, ਗਿਣਤੀ_2);
     }
   };
 
-  size_t get_class1_record_size () const
+  size_t get_class1_ਰਿਕਾਰਡ_ਮਾਪ () ਅਚਲ
   {
-    const size_t class2_count = class2Count;
-    return
-        class2_count * (valueFormat1.get_size () + valueFormat2.get_size ());
+    ਅਚਲ size_t class2_ਗਿਣਤੀ = class2_ਗਿਣਤੀ_2;
+    ਵਾਪਸ
+        class2_ਗਿਣਤੀ * (ਮੁੱਲ_Format1.get_ਮਾਪ () + ਮੁੱਲ_Format2.get_ਮਾਪ ());
   }
 
-  graph_result_t<unsigned> clone_range (split_context_t& split_context,
-                                        unsigned start, unsigned end) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> clone_range (ਵੰਡੋ_context_t& ਵੰਡੋ_context,
+                                        ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ) ਅਚਲ
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat2 (%u) range [%u, %u).", split_context.this_index, start, end);
+    DEBUG_ਸੁਨੇਹਾ (SUBSET_REPACK, ਖਾਲੀ_ਸੂਚਕ,
+               "  Cloning PairPosFormat2 (%u) range [%u, %u).", ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, ਸ਼ੁਰੂ, ਸਿਰਾ);
 
-    graph_t& graph = split_context.c.graph;
+    ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ = ਵੰਡੋ_context.c.ਗ੍ਰਾਫ;
 
-    unsigned num_records = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
-                          + num_records * split_context.class1_record_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਰਿਕਾਰਡਾਂ = ਸਿਰਾ - ਸ਼ੁਰੂ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਭਾਜ_ਮਾਪ = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_ਮਾਪ
+                          + ਅੰਕ_ਰਿਕਾਰਡਾਂ * ਵੰਡੋ_context.class1_ਰਿਕਾਰਡ_ਮਾਪ;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, split_context.c.create_node (prime_size));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ pair_pos_ਅਭਾਜ_id, ਵੰਡੋ_context.c.create_ਗੰਢ (ਅਭਾਜ_ਮਾਪ));
 
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat1 = this->valueFormat1;
-    pair_pos_prime->valueFormat2 = this->valueFormat2;
-    pair_pos_prime->class1Count = num_records;
-    pair_pos_prime->class2Count = this->class2Count;
-    TRY (clone_class1_records (split_context,
-                               pair_pos_prime_id,
-                               start,
-                               end));
+    PairPosFormat2* pair_pos_ਅਭਾਜ =
+        (PairPosFormat2*) ਗ੍ਰਾਫ.object (pair_pos_ਅਭਾਜ_id).ਸਿਰ_2;
+    pair_pos_ਅਭਾਜ->format = ਇਹ->format;
+    pair_pos_ਅਭਾਜ->ਮੁੱਲ_Format1 = ਇਹ->ਮੁੱਲ_Format1;
+    pair_pos_ਅਭਾਜ->ਮੁੱਲ_Format2 = ਇਹ->ਮੁੱਲ_Format2;
+    pair_pos_ਅਭਾਜ->class1_ਗਿਣਤੀ_2 = ਅੰਕ_ਰਿਕਾਰਡਾਂ;
+    pair_pos_ਅਭਾਜ->class2_ਗਿਣਤੀ_2 = ਇਹ->class2_ਗਿਣਤੀ_2;
+    TRY (clone_class1_ਰਿਕਾਰਡਾਂ (ਵੰਡੋ_context,
+                               pair_pos_ਅਭਾਜ_id,
+                               ਸ਼ੁਰੂ,
+                               ਸਿਰਾ));
 
-    TRY_ASSIGN (unsigned coverage_id,
-         graph.index_for_offset (split_context.this_index, &coverage));
-    TRY_ASSIGN (unsigned class_def_1_id,
-         graph.index_for_offset (split_context.this_index, &classDef1));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_id,
+         ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, &coverage));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ class_def_1_id,
+         ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, &classDef1));
 
-    auto& coverage_v = graph.vertices_[coverage_id];
-    auto& class_def_1_v = graph.vertices_[class_def_1_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!coverage_table || !class_def_1_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
-    TRY (class_def_1_table->sanitize (class_def_1_v));
+    ਸਵੈਚਾਲਿਤ& coverage_v = ਗ੍ਰਾਫ.vertices_[coverage_id];
+    ਸਵੈਚਾਲਿਤ& class_def_1_v = ਗ੍ਰਾਫ.vertices_[class_def_1_id];
+    ਅਚਲ Coverage* coverage_ਸਾਰਣੀ = (ਅਚਲ Coverage*) coverage_v.obj().ਸਿਰ_2;
+    ਅਚਲ ClassDef* class_def_1_ਸਾਰਣੀ = (ਅਚਲ ClassDef*) class_def_1_v.obj().ਸਿਰ_2;
+    ਜੇ (unlikely (!coverage_ਸਾਰਣੀ || !class_def_1_ਸਾਰਣੀ))
+      ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
+    TRY (coverage_ਸਾਰਣੀ->sanitize (coverage_v));
+    TRY (class_def_1_ਸਾਰਣੀ->sanitize (class_def_1_v));
 
-    auto klass_map =
-    + coverage_table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1_table->get_class (gid));
+    ਸਵੈਚਾਲਿਤ klass_map =
+    + coverage_ਸਾਰਣੀ->iter ()
+    | hb_map_retains_ਛਾਂਟੀ ([&] (hb_codepoint_t gid) {
+      ਵਾਪਸ hb_codepoint_pair_t (gid, class_def_1_ਸਾਰਣੀ->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass >= start && klass < end;
-    }, hb_second)
-    | hb_map_retains_sorting ([&] (hb_codepoint_pair_t gid_and_class) {
+      ਵਾਪਸ klass >= ਸ਼ੁਰੂ && klass < ਸਿਰਾ;
+    }, hb_ਦੂਜਾ)
+    | hb_map_retains_ਛਾਂਟੀ ([&] (hb_codepoint_pair_t gid_and_class) {
       // Classes must be from 0...N so subtract start
-      return hb_codepoint_pair_t (gid_and_class.first, gid_and_class.second - start);
+      ਵਾਪਸ hb_codepoint_pair_t (gid_and_class.ਪਹਿਲਾ, gid_and_class.second - ਸ਼ੁਰੂ);
     })
     ;
 
-    TRY (Coverage::add_coverage (split_context.c,
-                                 pair_pos_prime_id,
+    TRY (Coverage::ਜੋੜੋ_coverage (ਵੰਡੋ_context.c,
+                                 pair_pos_ਅਭਾਜ_id,
                                  2,
-                                 + klass_map | hb_map_retains_sorting (hb_first),
-                                 split_context.max_coverage_size));
+                                 + klass_map | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ),
+                                 ਵੰਡੋ_context.max_coverage_ਮਾਪ));
 
     // classDef1
-    TRY (ClassDef::add_class_def (split_context.c,
-                                  pair_pos_prime_id,
+    TRY (ClassDef::ਜੋੜੋ_class_def (ਵੰਡੋ_context.c,
+                                  pair_pos_ਅਭਾਜ_id,
                                   8,
                                   + klass_map,
-                                  split_context.max_class_def_size));
+                                  ਵੰਡੋ_context.max_class_def_ਮਾਪ));
 
     // classDef2
-    TRY_ASSIGN (unsigned class_def_2_id,
-         graph.index_for_offset (split_context.this_index, &classDef2));
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ class_def_2_id,
+         ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, &classDef2));
 
-    TRY(graph.vertices_[pair_pos_prime_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
-    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_prime_id, false));
+    TRY(ਗ੍ਰਾਫ.vertices_[pair_pos_ਅਭਾਜ_id].ਜੋੜੋ_real_link (SmallTypes::ਮਾਪ, class_def_2_id, 10));
+    TRY(ਗ੍ਰਾਫ.vertices_[class_def_2_id].ਜੋੜੋ_ਮਾਪਾ (pair_pos_ਅਭਾਜ_id, ਝੂਠ));
 
-    return Ok(pair_pos_prime_id);
+    ਵਾਪਸ Ok(pair_pos_ਅਭਾਜ_id);
   }
 
-  graph_result_t<void> clone_class1_records (split_context_t& split_context,
-                                             unsigned pair_pos_prime_id,
-                                             unsigned start, unsigned end) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> clone_class1_ਰਿਕਾਰਡਾਂ (ਵੰਡੋ_context_t& ਵੰਡੋ_context,
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ pair_pos_ਅਭਾਜ_id,
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ) ਅਚਲ
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_ਅਭਾਜ =
+        (PairPosFormat2*) ਵੰਡੋ_context.c.ਗ੍ਰਾਫ.object (pair_pos_ਅਭਾਜ_id).ਸਿਰ_2;
 
-    char* start_addr = ((char*)&values[0]) + start * split_context.class1_record_size;
-    unsigned num_records = end - start;
-    hb_memcpy (&pair_pos_prime->values[0],
-            start_addr,
-            num_records * split_context.class1_record_size);
+    ਅੱਖਰ* ਸ਼ੁਰੂ_addr = ((ਅੱਖਰ*)&values[0]) + ਸ਼ੁਰੂ * ਵੰਡੋ_context.class1_ਰਿਕਾਰਡ_ਮਾਪ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_ਰਿਕਾਰਡਾਂ = ਸਿਰਾ - ਸ਼ੁਰੂ;
+    hb_memcpy (&pair_pos_ਅਭਾਜ->values[0],
+            ਸ਼ੁਰੂ_addr,
+            ਅੰਕ_ਰਿਕਾਰਡਾਂ * ਵੰਡੋ_context.class1_ਰਿਕਾਰਡ_ਮਾਪ);
 
-    if (!split_context.format1_device_table_indices
-        && !split_context.format2_device_table_indices)
+    ਜੇ (!ਵੰਡੋ_context.format1_device_ਸਾਰਣੀ_indices
+        && !ਵੰਡੋ_context.format2_device_ਸਾਰਣੀ_indices)
       // No device tables to move over.
-      return Ok();
+      ਵਾਪਸ Ok();
 
-    unsigned class2_count = class2Count;
-    for (unsigned i = start; i < end; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ class2_ਗਿਣਤੀ = class2_ਗਿਣਤੀ_2;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
     {
-      for (unsigned j = 0; j < class2_count; j++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < class2_ਗਿਣਤੀ; j++)
       {
-        unsigned value1_index = split_context.value_record_len * (class2_count * i + j);
-        unsigned value2_index = value1_index + split_context.value1_record_len;
+        ਬਿਨਾਨਿਸ਼ਾਨੀ value1_ਸੂਚਕਾਂਕ = ਵੰਡੋ_context.ਮੁੱਲ_ਰਿਕਾਰਡ_len * (class2_ਗਿਣਤੀ * i + j);
+        ਬਿਨਾਨਿਸ਼ਾਨੀ value2_ਸੂਚਕਾਂਕ = value1_ਸੂਚਕਾਂਕ + ਵੰਡੋ_context.value1_ਰਿਕਾਰਡ_len;
 
-        unsigned new_value1_index = split_context.value_record_len * (class2_count * (i - start) + j);
-        unsigned new_value2_index = new_value1_index + split_context.value1_record_len;
+        ਬਿਨਾਨਿਸ਼ਾਨੀ new_value1_ਸੂਚਕਾਂਕ = ਵੰਡੋ_context.ਮੁੱਲ_ਰਿਕਾਰਡ_len * (class2_ਗਿਣਤੀ * (i - ਸ਼ੁਰੂ) + j);
+        ਬਿਨਾਨਿਸ਼ਾਨੀ new_value2_ਸੂਚਕਾਂਕ = new_value1_ਸੂਚਕਾਂਕ + ਵੰਡੋ_context.value1_ਰਿਕਾਰਡ_len;
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format1_device_table_indices,
-                                     value1_index,
-                                     new_value1_index));
+        TRY (transfer_device_tables (ਵੰਡੋ_context,
+                                     pair_pos_ਅਭਾਜ_id,
+                                     ਵੰਡੋ_context.format1_device_ਸਾਰਣੀ_indices,
+                                     value1_ਸੂਚਕਾਂਕ,
+                                     new_value1_ਸੂਚਕਾਂਕ));
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format2_device_table_indices,
-                                     value2_index,
-                                     new_value2_index));
+        TRY (transfer_device_tables (ਵੰਡੋ_context,
+                                     pair_pos_ਅਭਾਜ_id,
+                                     ਵੰਡੋ_context.format2_device_ਸਾਰਣੀ_indices,
+                                     value2_ਸੂਚਕਾਂਕ,
+                                     new_value2_ਸੂਚਕਾਂਕ));
       }
     }
-    return Ok();
+    ਵਾਪਸ Ok();
   }
 
-  graph_result_t<void> transfer_device_tables (split_context_t& split_context,
-                                               unsigned pair_pos_prime_id,
-                                               const hb_vector_t<unsigned>& device_table_indices,
-                                               unsigned old_value_record_index,
-                                               unsigned new_value_record_index) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> transfer_device_tables (ਵੰਡੋ_context_t& ਵੰਡੋ_context,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ pair_pos_ਅਭਾਜ_id,
+                                               ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& device_ਸਾਰਣੀ_indices,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ old_ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_ਅਭਾਜ =
+        (PairPosFormat2*) ਵੰਡੋ_context.c.ਗ੍ਰਾਫ.object (pair_pos_ਅਭਾਜ_id).ਸਿਰ_2;
 
-    for (unsigned i : device_table_indices)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i : device_ਸਾਰਣੀ_indices)
     {
-      OT::Offset16* record = (OT::Offset16*) &values[old_value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      if (!split_context.device_tables.has (record_position)) continue;
+      OT::Offset16* ਰਿਕਾਰਡ = (OT::Offset16*) &values[old_ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ + i];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਰਿਕਾਰਡ_position = ((ਅੱਖਰ*) ਰਿਕਾਰਡ) - ((ਅੱਖਰ*) ਇਹ);
+      ਜੇ (!ਵੰਡੋ_context.device_tables.has (ਰਿਕਾਰਡ_position)) ਜਾਰੀ;
 
-      TRY (split_context.c.graph.move_child (
-          split_context.this_index,
-          record,
-          pair_pos_prime_id,
-          (OT::Offset16*) &pair_pos_prime->values[new_value_record_index + i]));
+      TRY (ਵੰਡੋ_context.c.ਗ੍ਰਾਫ.move_ਬੱਚਾ (
+          ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ,
+          ਰਿਕਾਰਡ,
+          pair_pos_ਅਭਾਜ_id,
+          (OT::Offset16*) &pair_pos_ਅਭਾਜ->values[new_ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ + i]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    split_context.c.graph.vertices_[split_context.this_index].sort_real_links ();
+    ਵੰਡੋ_context.c.ਗ੍ਰਾਫ.vertices_[ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ].ਛਾਂਟੋ_real_links ();
 
-    return Ok();
+    ਵਾਪਸ Ok();
   }
 
-  graph_result_t<void> shrink (split_context_t& split_context,
-                               unsigned count)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> shrink (ਵੰਡੋ_context_t& ਵੰਡੋ_context,
+                               ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_ਸੁਨੇਹਾ (SUBSET_REPACK, ਖਾਲੀ_ਸੂਚਕ,
                "  Shrinking PairPosFormat2 (%u) to [0, %u).",
-               split_context.this_index,
-               count);
-    unsigned old_count = class1Count;
-    if (count >= old_count)
-      return Ok();
+               ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ,
+               ਗਿਣਤੀ_2);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ old_ਗਿਣਤੀ = class1_ਗਿਣਤੀ_2;
+    ਜੇ (ਗਿਣਤੀ_2 >= old_ਗਿਣਤੀ)
+      ਵਾਪਸ Ok();
 
-    graph_t& graph = split_context.c.graph;
-    class1Count = count;
-    graph.vertices_[split_context.this_index].shrink_buffer(
-        (old_count - count) * split_context.class1_record_size);
+    ਗ੍ਰਾਫ_t& ਗ੍ਰਾਫ = ਵੰਡੋ_context.c.ਗ੍ਰਾਫ;
+    class1_ਗਿਣਤੀ_2 = ਗਿਣਤੀ_2;
+    ਗ੍ਰਾਫ.vertices_[ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ].shrink_ਬਫਰ(
+        (old_ਗਿਣਤੀ - ਗਿਣਤੀ_2) * ਵੰਡੋ_context.class1_ਰਿਕਾਰਡ_ਮਾਪ);
 
-    TRY_ASSIGN (auto coverage,
-         graph.as_mutable_table<Coverage> (split_context.this_index, &this->coverage));
+    TRY_ਸੌਂਪੋ (ਸਵੈਚਾਲਿਤ coverage,
+         ਗ੍ਰਾਫ.as_mutable_ਸਾਰਣੀ<Coverage> (ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, &ਇਹ->coverage));
 
-    TRY_ASSIGN (auto class_def_1,
-         graph.as_mutable_table<ClassDef> (split_context.this_index, &classDef1));
+    TRY_ਸੌਂਪੋ (ਸਵੈਚਾਲਿਤ class_def_1,
+         ਗ੍ਰਾਫ.as_mutable_ਸਾਰਣੀ<ClassDef> (ਵੰਡੋ_context.this_ਸੂਚਕਾਂਕ, &classDef1));
 
-    auto klass_map =
-    + coverage.table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
+    ਸਵੈਚਾਲਿਤ klass_map =
+    + coverage.ਸਾਰਣੀ->iter ()
+    | hb_map_retains_ਛਾਂਟੀ ([&] (hb_codepoint_t gid) {
+      ਵਾਪਸ hb_codepoint_pair_t (gid, class_def_1.ਸਾਰਣੀ->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass < count;
-    }, hb_second)
+      ਵਾਪਸ klass < ਗਿਣਤੀ_2;
+    }, hb_ਦੂਜਾ)
     ;
 
-    auto new_coverage = + klass_map | hb_map_retains_sorting (hb_first);
-    TRY (Coverage::make_coverage (split_context.c,
+    ਸਵੈਚਾਲਿਤ new_coverage = + klass_map | hb_map_retains_ਛਾਂਟੀ (hb_ਪਹਿਲਾ);
+    TRY (Coverage::make_coverage (ਵੰਡੋ_context.c,
                                   + new_coverage,
-                                  coverage.index,
+                                  coverage.ਸੂਚਕਾਂਕ_2,
                                   // existing ranges my not be kept, worst case size is a format 1
                                   // coverage table.
                                   4 + new_coverage.len() * 2));
 
-    return ClassDef::make_class_def (split_context.c,
+    ਵਾਪਸ ClassDef::make_class_def (ਵੰਡੋ_context.c,
                                      + klass_map,
-                                     class_def_1.index,
-                                     class_def_1.vertex->table_size ());
+                                     class_def_1.ਸੂਚਕਾਂਕ_2,
+                                     class_def_1.ਸ਼ੀਰਸ਼->ਸਾਰਣੀ_ਮਾਪ ());
   }
 
-  graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-  get_all_device_tables (gsubgpos_graph_context_t& c,
-                         unsigned this_index) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ>>
+  get_all_device_tables (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                         ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    const auto& v = c.graph.vertices_[this_index];
-    return v.position_to_index_map ();
+    ਅਚਲ ਸਵੈਚਾਲਿਤ& v = c.ਗ੍ਰਾਫ.vertices_[this_ਸੂਚਕਾਂਕ];
+    ਵਾਪਸ v.position_ਮੰਜ਼ਿਲ_ਸੂਚਕਾਂਕ_map ();
   }
 
-  graph_result_t<const Coverage*> get_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned this_index) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਅਚਲ Coverage*> get_coverage (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    auto& coverage_v = c.graph.vertices_[coverage_id];
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ coverage_id, c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, &coverage));
+    ਸਵੈਚਾਲਿਤ& coverage_v = c.ਗ੍ਰਾਫ.vertices_[coverage_id];
 
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table)) return Err(INVALID_ARGUMENT);
-    TRY(coverage_table->sanitize (coverage_v));
+    ਅਚਲ Coverage* coverage_ਸਾਰਣੀ = (ਅਚਲ Coverage*) coverage_v.obj().ਸਿਰ_2;
+    ਜੇ (unlikely (!coverage_ਸਾਰਣੀ)) ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
+    TRY(coverage_ਸਾਰਣੀ->sanitize (coverage_v));
 
-    return coverage_table;
+    ਵਾਪਸ coverage_ਸਾਰਣੀ;
   }
 
-  graph_result_t<const ClassDef*> get_class_def_1 (gsubgpos_graph_context_t& c,
-                                                   unsigned this_index) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਅਚਲ ClassDef*> get_class_def_1 (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                   ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ) ਅਚਲ
   {
-    TRY_ASSIGN (unsigned class_def_1_id, c.graph.index_for_offset (this_index, &classDef1));
-    auto& class_def_1_v = c.graph.vertices_[class_def_1_id];
+    TRY_ਸੌਂਪੋ (ਬਿਨਾਨਿਸ਼ਾਨੀ class_def_1_id, c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, &classDef1));
+    ਸਵੈਚਾਲਿਤ& class_def_1_v = c.ਗ੍ਰਾਫ.vertices_[class_def_1_id];
 
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!class_def_1_table)) return Err(INVALID_ARGUMENT);
-    TRY(class_def_1_table->sanitize (class_def_1_v));
-    return class_def_1_table;
+    ਅਚਲ ClassDef* class_def_1_ਸਾਰਣੀ = (ਅਚਲ ClassDef*) class_def_1_v.obj().ਸਿਰ_2;
+    ਜੇ (unlikely (!class_def_1_ਸਾਰਣੀ)) ਵਾਪਸ Err(INVALID_ਦਲੀਲ);
+    TRY(class_def_1_ਸਾਰਣੀ->sanitize (class_def_1_v));
+    ਵਾਪਸ class_def_1_ਸਾਰਣੀ;
   }
 
-  unsigned size_of_value_record_children (gsubgpos_graph_context_t& c,
-                                          const hb_hashmap_t<unsigned, unsigned>& device_tables,
-                                          const hb_vector_t<unsigned> device_table_indices,
-                                          unsigned value_record_index,
-                                          hb_set_t& visited)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_ਦਾ_ਮੁੱਲ_ਰਿਕਾਰਡ_children (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                          ਅਚਲ hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ>& device_tables,
+                                          ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> device_ਸਾਰਣੀ_indices,
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ,
+                                          hb_ਸੈੱਟ_t& ਦੇਖਿਆ)
   {
-    unsigned size = 0;
-    for (unsigned i : device_table_indices)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i : device_ਸਾਰਣੀ_indices)
     {
-      OT::Layout::GPOS_impl::Value* record = &values[value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      unsigned* obj_idx;
-      if (!device_tables.has (record_position, &obj_idx)) continue;
-      size += c.graph.find_subgraph_size (*obj_idx, visited).value_or (0);
+      OT::Layout::GPOS_impl::ਮੁੱਲ* ਰਿਕਾਰਡ = &values[ਮੁੱਲ_ਰਿਕਾਰਡ_ਸੂਚਕਾਂਕ + i];
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਰਿਕਾਰਡ_position = ((ਅੱਖਰ*) ਰਿਕਾਰਡ) - ((ਅੱਖਰ*) ਇਹ);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ* obj_idx;
+      ਜੇ (!device_tables.has (ਰਿਕਾਰਡ_position, &obj_idx)) ਜਾਰੀ;
+      ਮਾਪ += c.ਗ੍ਰਾਫ.ਲੱਭੋ_subgraph_ਮਾਪ (*obj_idx, ਦੇਖਿਆ).ਮੁੱਲ_or (0);
     }
-    return size;
+    ਵਾਪਸ ਮਾਪ;
   }
 
-  graph_result_t<unsigned> size_of (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const void* offset) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਮਾਪ_ਦਾ (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                    ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ,
+                                    ਅਚਲ ਖਾਲੀ* ਵਿੱਥ) ਅਚਲ
   {
-    TRY_ASSIGN (const unsigned id, c.graph.index_for_offset (this_index, offset));
-    return Ok(c.graph.vertices_[id].table_size ());
+    TRY_ਸੌਂਪੋ (ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ id, c.ਗ੍ਰਾਫ.ਸੂਚਕਾਂਕ_for_ਵਿੱਥ (this_ਸੂਚਕਾਂਕ, ਵਿੱਥ));
+    ਵਾਪਸ Ok(c.ਗ੍ਰਾਫ.vertices_[id].ਸਾਰਣੀ_ਮਾਪ ());
   }
 };
 
-struct PairPos : public OT::Layout::GPOS_impl::PairPos
+ਬਣਤਰ PairPos : ਜਨਤਕ OT::Layout::GPOS_impl::PairPos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>> ਵੰਡੋ_subtables (gsubgpos_ਗ੍ਰਾਫ_context_t& c,
+                                                         ਬਿਨਾਨਿਸ਼ਾਨੀ this_ਸੂਚਕਾਂਕ)
   {
-    switch (u.format.v) {
-    case 1:
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->split_subtables (c, this_index);
-    case 2:
+      ਵਾਪਸ ((PairPosFormat1*)(&u.format1))->ਵੰਡੋ_subtables (c, this_ਸੂਚਕਾਂਕ);
+    ਹਾਲਤ 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->split_subtables (c, this_index);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
+      ਵਾਪਸ ((PairPosFormat2*)(&u.format2))->ਵੰਡੋ_subtables (c, this_ਸੂਚਕਾਂਕ);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 3: HB_FALLTHROUGH;
+    ਹਾਲਤ 4: HB_FALLTHROUGH;
       // 24-bit PairPos formats already have widened offsets; leave them unsplit.
-#endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:
+      ਵਾਪਸ Ok(hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  ਗ੍ਰਾਫ_ਨਤੀਜਾ_t<ਖਾਲੀ> sanitize (ਅਚਲ ਗ੍ਰਾਫ_t::ਸ਼ੀਰਸ਼_t& ਸ਼ੀਰਸ਼) ਅਚਲ
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    size_t ਸ਼ੀਰਸ਼_len = ਸ਼ੀਰਸ਼.ਸਾਰਣੀ_ਮਾਪ();
+    ਜੇ (unlikely (ਸ਼ੀਰਸ਼_len < u.format.v.get_ਮਾਪ ())) ਵਾਪਸ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    ਚੋਣ (u.format.v) {
+    ਹਾਲਤ 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->sanitize (vertex);
-    case 2:
+      ਵਾਪਸ ((PairPosFormat1*)(&u.format1))->sanitize (ਸ਼ੀਰਸ਼);
+    ਹਾਲਤ 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->sanitize (vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
-#endif
-    default:
+      ਵਾਪਸ ((PairPosFormat2*)(&u.format2))->sanitize (ਸ਼ੀਰਸ਼);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਹਾਲਤ 3: HB_FALLTHROUGH;
+    ਹਾਲਤ 4: HB_FALLTHROUGH;
+#ਜੇ_ਅੰਤ
+    ਮੂਲ:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      ਵਾਪਸ Err(SANITIZE_FAILURE);
     }
   }
 };
 
 }
 
-#endif  // GRAPH_PAIRPOS_GRAPH_HH
+#ਜੇ_ਅੰਤ  // GRAPH_PAIRPOS_GRAPH_HH

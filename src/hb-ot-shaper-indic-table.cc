@@ -14,125 +14,125 @@
  * # Date: 2026-07-08
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-indic.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-indic.hh"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-macros"
+#ਹਦਾਇਤ GCC diagnostic push
+#ਹਦਾਇਤ GCC diagnostic ignored "-Wunused-macros"
 
-#include "hb-ot-shaper-indic-machine.hh"
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-myanmar-machine.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-indic-machine.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-khmer-machine.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-myanmar-machine.hh"
 
 /* indic */
-#define OT_X I_Cat(X)
-#define OT_C I_Cat(C)
-#define OT_V I_Cat(V)
-#define OT_N I_Cat(N)
-#define OT_H I_Cat(H)
-#define OT_ZWNJ I_Cat(ZWNJ)
-#define OT_ZWJ I_Cat(ZWJ)
-#define OT_M I_Cat(M)
-#define OT_SM I_Cat(SM)
-#define OT_A I_Cat(A)
-#define OT_VD I_Cat(VD)
-#define OT_PLACEHOLDER I_Cat(PLACEHOLDER)
-#define OT_DOTTEDCIRCLE I_Cat(DOTTEDCIRCLE)
-#define OT_RS I_Cat(RS)
-#define OT_MPst I_Cat(MPst)
-#define OT_Repha I_Cat(Repha)
-#define OT_Ra I_Cat(Ra)
-#define OT_CM I_Cat(CM)
-#define OT_Symbol I_Cat(Symbol)
-#define OT_CS I_Cat(CS)
-#define OT_SMPst I_Cat(SMPst)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_X I_Cat(X)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_C I_Cat(C)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_V I_Cat(V)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_N I_Cat(N)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_H I_Cat(H)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_ZWNJ I_Cat(ZWNJ)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_ZWJ I_Cat(ZWJ)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_M I_Cat(M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_SM I_Cat(SM)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_A I_Cat(A)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VD I_Cat(VD)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_PLACEHOLDER I_Cat(PLACEHOLDER)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_DOTTEDCIRCLE I_Cat(DOTTEDCIRCLE)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_RS I_Cat(RS)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_MPst I_Cat(MPst)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_Repha I_Cat(Repha)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_Ra I_Cat(Ra)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_CM I_Cat(CM)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_ਚਿੰਨ੍ਹ I_Cat(ਚਿੰਨ੍ਹ_2)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_CS I_Cat(CS)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_SMPst I_Cat(SMPst)
 /* khmer */
-#define OT_VAbv K_Cat(VAbv)
-#define OT_VBlw K_Cat(VBlw)
-#define OT_VPre K_Cat(VPre)
-#define OT_VPst K_Cat(VPst)
-#define OT_Robatic K_Cat(Robatic)
-#define OT_Xgroup K_Cat(Xgroup)
-#define OT_Ygroup K_Cat(Ygroup)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VAbv K_Cat(VAbv)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VBlw K_Cat(VBlw)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VPre K_Cat(VPre)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VPst K_Cat(VPst)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_Robatic K_Cat(Robatic)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_Xgroup K_Cat(Xgroup)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_Ygroup K_Cat(Ygroup)
 /* myanmar */
 static_assert (OT_VAbv == M_Cat(VAbv), "");
 static_assert (OT_VBlw == M_Cat(VBlw), "");
 static_assert (OT_VPre == M_Cat(VPre), "");
 static_assert (OT_VPst == M_Cat(VPst), "");
-#define OT_IV M_Cat(IV)
-#define OT_As M_Cat(As)
-#define OT_DB M_Cat(DB)
-#define OT_GB M_Cat(GB)
-#define OT_MH M_Cat(MH)
-#define OT_MR M_Cat(MR)
-#define OT_MW M_Cat(MW)
-#define OT_MY M_Cat(MY)
-#define OT_PT M_Cat(PT)
-#define OT_VS M_Cat(VS)
-#define OT_ML M_Cat(ML)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_IV M_Cat(IV)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_As M_Cat(As)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_DB M_Cat(DB)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_GB M_Cat(GB)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_MH M_Cat(MH)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_MR M_Cat(MR)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_MW M_Cat(MW)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_MY M_Cat(MY)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_PT M_Cat(PT)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_VS M_Cat(VS)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_ML M_Cat(ML)
 
 
-#define _OT_A    OT_A            /*  53 chars; A */
-#define _OT_As   OT_As           /*   1 chars; As */
-#define _OT_C    OT_C            /* 476 chars; C */
-#define _OT_CM   OT_CM           /*   1 chars; CM */
-#define _OT_CS   OT_CS           /*   4 chars; CS */
-#define _OT_DC   OT_DOTTEDCIRCLE /*   1 chars; DOTTEDCIRCLE */
-#define _OT_H    OT_H            /*  11 chars; H */
-#define _OT_M    OT_M            /* 144 chars; M */
-#define _OT_MH   OT_MH           /*   1 chars; MH */
-#define _OT_ML   OT_ML           /*   1 chars; ML */
-#define _OT_MP   OT_MPst         /*   1 chars; MPst */
-#define _OT_MR   OT_MR           /*   1 chars; MR */
-#define _OT_MW   OT_MW           /*   2 chars; MW */
-#define _OT_MY   OT_MY           /*   3 chars; MY */
-#define _OT_N    OT_N            /*  17 chars; N */
-#define _OT_GB   OT_PLACEHOLDER  /* 185 chars; PLACEHOLDER */
-#define _OT_PT   OT_PT           /*   8 chars; PT */
-#define _OT_R    OT_Ra           /*  14 chars; Ra */
-#define _OT_Rf   OT_Repha        /*   1 chars; Repha */
-#define _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
-#define _OT_SM   OT_SM           /*  50 chars; SM */
-#define _OT_SP   OT_SMPst        /*   6 chars; SMPst */
-#define _OT_S    OT_Symbol       /*  22 chars; Symbol */
-#define _OT_V    OT_V            /* 172 chars; V */
-#define _OT_VA   OT_VAbv         /*  18 chars; VAbv */
-#define _OT_VB   OT_VBlw         /*   7 chars; VBlw */
-#define _OT_VL   OT_VPre         /*   5 chars; VPre */
-#define _OT_VR   OT_VPst         /*  13 chars; VPst */
-#define _OT_VS   OT_VS           /*  16 chars; VS */
-#define _OT_X    OT_X            /*   2 chars; X */
-#define _OT_Xg   OT_Xgroup       /*   7 chars; Xgroup */
-#define _OT_Yg   OT_Ygroup       /*   4 chars; Ygroup */
-#define _OT_ZWJ  OT_ZWJ          /*   1 chars; ZWJ */
-#define _OT_ZWNJ OT_ZWNJ         /*   1 chars; ZWNJ */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_A    OT_A            /*  53 chars; A */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_As   OT_As           /*   1 chars; As */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_C    OT_C            /* 476 chars; C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_CM   OT_CM           /*   1 chars; CM */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_CS   OT_CS           /*   4 chars; CS */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_DC   OT_DOTTEDCIRCLE /*   1 chars; DOTTEDCIRCLE */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_H    OT_H            /*  11 chars; H */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_M    OT_M            /* 144 chars; M */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_MH   OT_MH           /*   1 chars; MH */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_ML   OT_ML           /*   1 chars; ML */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_MP   OT_MPst         /*   1 chars; MPst */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_MR   OT_MR           /*   1 chars; MR */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_MW   OT_MW           /*   2 chars; MW */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_MY   OT_MY           /*   3 chars; MY */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_N    OT_N            /*  17 chars; N */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_GB   OT_PLACEHOLDER  /* 185 chars; PLACEHOLDER */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_PT   OT_PT           /*   8 chars; PT */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_R    OT_Ra           /*  14 chars; Ra */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_Rf   OT_Repha        /*   1 chars; Repha */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_SM   OT_SM           /*  50 chars; SM */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_SP   OT_SMPst        /*   6 chars; SMPst */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_S    OT_ਚਿੰਨ੍ਹ       /*  22 chars; Symbol */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_V    OT_V            /* 172 chars; V */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_VA   OT_VAbv         /*  18 chars; VAbv */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_VB   OT_VBlw         /*   7 chars; VBlw */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_VL   OT_VPre         /*   5 chars; VPre */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_VR   OT_VPst         /*  13 chars; VPst */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_VS   OT_VS           /*  16 chars; VS */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_X    OT_X            /*   2 chars; X */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_Xg   OT_Xgroup       /*   7 chars; Xgroup */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_Yg   OT_Ygroup       /*   4 chars; Ygroup */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_ZWJ  OT_ZWJ          /*   1 chars; ZWJ */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _OT_ZWNJ OT_ZWNJ         /*   1 chars; ZWNJ */
 
-#define _POS_T   POS_ABOVE_C     /*  22 chars; ABOVE_C */
-#define _POS_A   POS_AFTER_MAIN  /*   5 chars; AFTER_MAIN */
-#define _POS_AP  POS_AFTER_POST  /*  50 chars; AFTER_POST */
-#define _POS_AS  POS_AFTER_SUB   /*  51 chars; AFTER_SUB */
-#define _POS_C   POS_BASE_C      /* 853 chars; BASE_C */
-#define _POS_BS  POS_BEFORE_SUB  /*  25 chars; BEFORE_SUB */
-#define _POS_B   POS_BELOW_C     /*  13 chars; BELOW_C */
-#define _POS_X   POS_END         /*  71 chars; END */
-#define _POS_R   POS_POST_C      /*  13 chars; POST_C */
-#define _POS_L   POS_PRE_C       /*   5 chars; PRE_C */
-#define _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
-#define _POS_SM  POS_SMVD        /* 130 chars; SMVD */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_T   POS_ABOVE_C     /*  22 chars; ABOVE_C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_A   POS_AFTER_MAIN  /*   5 chars; AFTER_MAIN */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_AP  POS_AFTER_POST  /*  50 chars; AFTER_POST */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_AS  POS_AFTER_SUB   /*  51 chars; AFTER_SUB */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_C   POS_ਅਧਾਰ_C      /* 853 chars; BASE_C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_BS  POS_BEFORE_SUB  /*  25 chars; BEFORE_SUB */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_B   POS_ਹੇਠਾਂ_C     /*  13 chars; BELOW_C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_X   POS_ਸਿਰਾ         /*  71 chars; END */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_R   POS_POST_C      /*  13 chars; POST_C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_L   POS_PRE_C       /*   5 chars; PRE_C */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _POS_SM  POS_SMVD        /* 130 chars; SMVD */
 
-#pragma GCC diagnostic pop
+#ਹਦਾਇਤ GCC diagnostic ਕੱਢੋ
 
-#define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
 
-#define _(S,M) INDIC_COMBINE_CATEGORIES (_OT_##S, _POS_##M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ _(S,M) INDIC_COMBINE_CATEGORIES (_OT_##S, _POS_##M)
 
 
-#include <stdint.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h>
 
-static const uint16_t _hb_indic_values[42]=
+ਸਥਿਰ ਅਚਲ uint16_t hb_indic_ਮੁੱਲਾਂ[42]=
 {
     _(A,SM),  _(As,X),   _(C,C),  _(CM,C),  _(CS,C),  _(DC,C),  _(GB,C),   _(H,B),
      _(H,T),   _(H,X),   _(M,A),  _(M,AP),  _(M,AS),   _(M,B),  _(M,BS),  _(M,LM),
@@ -141,7 +141,7 @@ static const uint16_t _hb_indic_values[42]=
     _(VA,T),  _(VB,B),  _(VL,L),  _(VR,R),  _(VS,X),   _(X,X),  _(Xg,X),  _(Yg,X),
    _(ZWJ,X),_(ZWNJ,X),
 };
-static const uint8_t _hb_indic_u8[1224]=
+ਸਥਿਰ ਅਚਲ uint8_t _hb_indic_u8[1224]=
 {
     1,  0, 50,  4,  5, 96,  0,  7,  8,  9,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -222,73 +222,73 @@ static const uint8_t _hb_indic_u8[1224]=
     5, 37, 31, 12,  2, 23, 37, 22,
 };
 
-static inline uint8_t _hb_indic_b4 (const uint8_t* a, unsigned i)
+ਸਥਿਰ ਸਤਰਅੰਦਰ uint8_t _hb_indic_b4 (ਅਚਲ uint8_t* a, ਬਿਨਾਨਿਸ਼ਾਨੀ i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  ਵਾਪਸ (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_indic_get_categories_index (unsigned u)
+ਸਥਿਰ ਸਤਰਅੰਦਰ uint8_t hb_indic_get_categories_ਸੂਚਕਾਂਕ (ਬਿਨਾਨਿਸ਼ਾਨੀ u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^1] */
-  return u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
+  ਵਾਪਸ u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
 }
 
 uint16_t
 hb_indic_get_categories (hb_codepoint_t u)
 {
-  return _hb_indic_values[_hb_indic_get_categories_index (u)];
+  ਵਾਪਸ hb_indic_ਮੁੱਲਾਂ[hb_indic_get_categories_ਸੂਚਕਾਂਕ (u)];
 }
 
-#undef _
-#undef INDIC_COMBINE_CATEGORIES
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ INDIC_COMBINE_CATEGORIES
 
-#undef _OT_A
-#undef _OT_As
-#undef _OT_C
-#undef _OT_CM
-#undef _OT_CS
-#undef _OT_DC
-#undef _OT_H
-#undef _OT_M
-#undef _OT_MH
-#undef _OT_ML
-#undef _OT_MP
-#undef _OT_MR
-#undef _OT_MW
-#undef _OT_MY
-#undef _OT_N
-#undef _OT_GB
-#undef _OT_PT
-#undef _OT_R
-#undef _OT_Rf
-#undef _OT_Rt
-#undef _OT_SM
-#undef _OT_SP
-#undef _OT_S
-#undef _OT_V
-#undef _OT_VA
-#undef _OT_VB
-#undef _OT_VL
-#undef _OT_VR
-#undef _OT_VS
-#undef _OT_X
-#undef _OT_Xg
-#undef _OT_Yg
-#undef _OT_ZWJ
-#undef _OT_ZWNJ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_A
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_As
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_C
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_CM
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_CS
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_DC
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_H
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_M
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_MH
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_ML
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_MP
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_MR
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_MW
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_MY
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_N
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_GB
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_PT
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_R
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_Rf
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_Rt
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_SM
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_SP
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_S
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_V
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_VA
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_VB
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_VL
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_VR
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_VS
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_X
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_Xg
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_Yg
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_ZWJ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _OT_ZWNJ
 
-#undef _POS_T
-#undef _POS_A
-#undef _POS_AP
-#undef _POS_AS
-#undef _POS_C
-#undef _POS_BS
-#undef _POS_B
-#undef _POS_X
-#undef _POS_R
-#undef _POS_L
-#undef _POS_LM
-#undef _POS_SM
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_T
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_A
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_AP
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_AS
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_C
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_BS
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_B
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_X
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_R
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_L
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_LM
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ _POS_SM
 
-#endif
+#ਜੇ_ਅੰਤ
 
 /* == End of generated table == */

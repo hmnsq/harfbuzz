@@ -22,20 +22,20 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_EXTENTS_HH
-#define HB_PAINT_EXTENTS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_PAINT_EXTENTS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_PAINT_EXTENTS_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-paint.h"
 
-#include "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+ਬਣਤਰ hb_paint_extents_context_t
 {
-  void clear ()
+  ਖਾਲੀ clear ()
   {
     transforms.clear ();
     clips.clear ();
@@ -43,16 +43,16 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    ਜੇ (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
-      budget_initialized = true;
+      budget_initialized = ਸੱਚ;
     }
     recharge_budget ();
 
     transforms.push (hb_transform_t<>{});
     clips.push (hb_bounds_t<>{hb_bounds_t<>::UNBOUNDED});
-    groups.push (hb_bounds_t<>{hb_bounds_t<>::EMPTY});
+    groups.push (hb_bounds_t<>{hb_bounds_t<>::ਖਾਲੀ_ਥਾਵਾਂ});
   }
 
   hb_paint_extents_context_t ()
@@ -62,105 +62,105 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    ਵਾਪਸ groups.ਪੂਛ().extents;
   }
 
-  bool is_bounded ()
+  ਤਾਰਕਿਕ is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    ਵਾਪਸ groups.ਪੂਛ().ਸਥਿਤੀ != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  ਖਾਲੀ ਧੱਕੋ_transform (ਅਚਲ hb_transform_t<> &trans)
   {
-    hb_transform_t<> t = transforms.tail ();
+    hb_transform_t<> t = transforms.ਪੂਛ ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  ਖਾਲੀ ਕੱਢੋ_transform ()
   {
-    transforms.pop ();
+    transforms.ਕੱਢੋ ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  ਖਾਲੀ ਧੱਕੋ_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
-    const hb_transform_t<> &t = transforms.tail ();
+    ਅਚਲ hb_transform_t<> &t = transforms.ਪੂਛ ();
     t.transform_extents (extents);
 
-    auto bounds = hb_bounds_t<> {extents};
-    bounds.intersect (clips.tail ());
+    ਸਵੈਚਾਲਿਤ bounds = hb_bounds_t<> {extents};
+    bounds.intersect (clips.ਪੂਛ ());
 
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  ਖਾਲੀ ਕੱਢੋ_clip ()
   {
-    clips.pop ();
+    clips.ਕੱਢੋ ();
   }
 
-  void push_group ()
+  ਖਾਲੀ ਧੱਕੋ_ਸਮੂਹ ()
   {
-    groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
+    groups.push (hb_bounds_t<> {hb_bounds_t<>::ਖਾਲੀ_ਥਾਵਾਂ});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  ਖਾਲੀ ਕੱਢੋ_ਸਮੂਹ (hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
-    hb_bounds_t<> &backdrop_bounds = groups.tail ();
+    ਅਚਲ hb_bounds_t<> src_bounds = groups.ਕੱਢੋ ();
+    hb_bounds_t<> &backdrop_bounds = groups.ਪੂਛ ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    ਚੋਣ ((ਪੂਰਨ) ਬਹੁਲਕ)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_CLEAR:
+	backdrop_bounds.ਸਥਿਤੀ = hb_bounds_t<>::ਖਾਲੀ_ਥਾਵਾਂ;
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਬਾਹਰਲਾ:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਬਾਹਰਲਾ:
+	ਰੋਕੋ;
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_SRC_ਵਿੱਚ:
+      ਹਾਲਤ HB_PAINT_ਸੰਯੁਕਤ_ਬਹੁਲਕ_DEST_ਵਿੱਚ:
 	backdrop_bounds.intersect (src_bounds);
-	break;
-      default:
+	ਰੋਕੋ;
+      ਮੂਲ:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	ਰੋਕੋ;
      }
   }
 
-  void paint ()
+  ਖਾਲੀ paint ()
   {
-    const hb_bounds_t<> &clip = clips.tail ();
-    hb_bounds_t<> &group = groups.tail ();
+    ਅਚਲ hb_bounds_t<> &clip = clips.ਪੂਛ ();
+    hb_bounds_t<> &ਸਮੂਹ = groups.ਪੂਛ ();
 
-    group.union_ (clip);
+    ਸਮੂਹ.union_ (clip);
   }
 
   /* Cumulative work budget for the current session; reset by clear().
    * Outline traversal and consumed segments charge the same live
    * counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  bool budget_initialized = true;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
+  ਤਾਰਕਿਕ budget_initialized = ਸੱਚ;
+  int64_t budget_ਬਚਿਆ = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  ਖਾਲੀ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_ਬਚਿਆ = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
-  hb_vector_t<hb_transform_t<>> transforms;
-  hb_vector_t<hb_bounds_t<>> clips;
-  hb_vector_t<hb_bounds_t<>> groups;
+  ਸੁਰੱਖਿਅਤ:
+  hb_ਸਦਿਸ਼_t<hb_transform_t<>> transforms;
+  hb_ਸਦਿਸ਼_t<hb_bounds_t<>> clips;
+  hb_ਸਦਿਸ਼_t<hb_bounds_t<>> groups;
 };
 
-HB_INTERNAL hb_paint_funcs_t *
+HB_ਅੰਦਰੂਨੀ hb_paint_funcs_t *
 hb_paint_extents_get_funcs ();
 
 
-#endif /* HB_PAINT_EXTENTS_HH */
+#ਜੇ_ਅੰਤ /* HB_PAINT_EXTENTS_HH */

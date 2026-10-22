@@ -1,269 +1,269 @@
-#define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <hb-wasm-api.h>
 
-#include <graphite2/Segment.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <graphite2/Segment.h>
 
-#include <stdlib.h>
-#include <string.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <string.h>
 
-static int32_t
-clamp_position (double value)
+ਸਥਿਰ int32_t
+clamp_position (ਦੁੱਗਣਾ value)
 {
-  if (value <= INT32_MIN) return INT32_MIN;
-  if (value >= INT32_MAX) return INT32_MAX;
-  return (int32_t) value;
+  ਜੇ (value <= INT32_MIN) ਵਾਪਸ INT32_MIN;
+  ਜੇ (value >= INT32_MAX) ਵਾਪਸ INT32_MAX;
+  ਵਾਪਸ (int32_t) value;
 }
 
-static int32_t
-saturate_add (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a + b); }
+ਸਥਿਰ int32_t
+saturate_ਜੋੜੋ (int32_t a, int32_t b)
+{ ਵਾਪਸ clamp_position ((int64_t) a + b); }
 
-static int32_t
+ਸਥਿਰ int32_t
 saturate_sub (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a - b); }
+{ ਵਾਪਸ clamp_position ((int64_t) a - b); }
 
-void debugprint1 (char *s, int32_t);
-void debugprint2 (char *s, int32_t, int32_t);
+ਖਾਲੀ debugprint1 (ਅੱਖਰ *s, int32_t);
+ਖਾਲੀ debugprint2 (ਅੱਖਰ *s, int32_t, int32_t);
 
-static const void *copy_table (const void *data, unsigned int tag, size_t *len)
+ਸਥਿਰ ਅਚਲ ਖਾਲੀ *copy_ਸਾਰਣੀ (ਅਚਲ ਖਾਲੀ *ਅੰਕੜੇ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਟੈਗ_2, size_t *len)
 {
-  face_t *face = (face_t *) data;
+  face_t *face = (face_t *) ਅੰਕੜੇ;
   blob_t blob = BLOB_INIT;
-  if (!face_copy_table (face, tag, &blob))
+  ਜੇ (!face_copy_ਸਾਰਣੀ (face, ਟੈਗ_2, &blob))
     abort ();
 
-  *len = blob.length;
-  return blob.data;
+  *len = blob.ਲੰਮਾਈ;
+  ਵਾਪਸ blob.ਅੰਕੜੇ;
 }
 
-static void free_table (const void *data, const void *table_data)
+ਸਥਿਰ ਖਾਲੀ free_ਸਾਰਣੀ (ਅਚਲ ਖਾਲੀ *ਅੰਕੜੇ, ਅਚਲ ਖਾਲੀ *ਸਾਰਣੀ_ਅੰਕੜੇ)
 {
   blob_t blob;
-  blob.length = 0; // Doesn't matter
-  blob.data = (char *) table_data;
+  blob.ਲੰਮਾਈ = 0; // Doesn't matter
+  blob.ਅੰਕੜੇ = (ਅੱਖਰ *) ਸਾਰਣੀ_ਅੰਕੜੇ;
   blob_free (&blob);
 }
 
-void *
+ਖਾਲੀ *
 shape_plan_create (face_t *face)
 {
-  const gr_face_ops ops = {sizeof (gr_face_ops), &copy_table, &free_table};
+  ਅਚਲ gr_face_ops ops = {ਆਕਾਰ (gr_face_ops), &copy_ਸਾਰਣੀ, &free_ਸਾਰਣੀ};
   gr_face *grface = gr_make_face_with_ops (face, &ops, gr_face_preloadAll);
-  return grface;
+  ਵਾਪਸ grface;
 }
 
-void
-shape_plan_destroy (void *data)
+ਖਾਲੀ
+shape_plan_destroy (ਖਾਲੀ *ਅੰਕੜੇ)
 {
-  gr_face_destroy ((gr_face *) data);
+  gr_face_destroy ((gr_face *) ਅੰਕੜੇ);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (ਖਾਲੀ *shape_plan,
        font_t *font,
-       buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ਬਫਰ_t *ਬਫਰ,
+       ਅਚਲ feature_t *features,
+       uint32_t ਅੰਕ_features)
 {
   face_t *face = font_get_face (font);
   gr_face *grface = (gr_face *) shape_plan;
 
-  direction_t direction = buffer_get_direction (buffer);
-  direction_t horiz_dir = script_get_horizontal_direction (buffer_get_script (buffer));
+  direction_t direction = ਬਫਰ_get_direction (ਬਫਰ);
+  direction_t horiz_dir = script_get_horizontal_direction (ਬਫਰ_get_script (ਬਫਰ));
   /* TODO vertical:
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((DIRECTION_IS_HORIZONTAL (direction) &&
+  ਜੇ ((DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != DIRECTION_INVALID) ||
       (DIRECTION_IS_VERTICAL   (direction) &&
        direction != DIRECTION_TTB))
   {
-    buffer_reverse_clusters (buffer);
-    direction = DIRECTION_REVERSE (direction);
+    ਬਫਰ_ਉਲਟ_clusters (ਬਫਰ);
+    direction = DIRECTION_ਉਲਟ (direction);
   }
 
-  buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  ਬਫਰ_contents_t contents = ਬਫਰ_CONTENTS_INIT;
+  ਜੇ (!ਬਫਰ_copy_contents (ਬਫਰ, &contents))
+    ਵਾਪਸ ਝੂਠ;
 
-  gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  gr_segment *seg = ਖਾਲੀ_ਸੂਚਕ;
+  ਅਚਲ gr_ਥਾਂ *is;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ci = 0, ic = 0;
   int32_t curradvx = 0, curradvy = 0;
-  unsigned length = contents.length;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾਈ = contents.ਲੰਮਾਈ;
 
-  uint32_t *chars = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!chars)
-    return false;
-  for (unsigned int i = 0; i < contents.length; ++i)
+  uint32_t *chars = (uint32_t *) ਸਮ੍ਰਿਤੀ_ਦਿਓ (ਲੰਮਾਈ * ਆਕਾਰ (uint32_t));
+  ਜੇ (!chars)
+    ਵਾਪਸ ਝੂਠ;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < contents.ਲੰਮਾਈ; ++i)
     chars[i] = contents.info[i].codepoint;
 
-  seg = gr_make_seg (nullptr, grface,
+  seg = gr_make_seg (ਖਾਲੀ_ਸੂਚਕ, grface,
 		     0, // https://github.com/harfbuzz/harfbuzz/issues/3439#issuecomment-1442650148
-		     nullptr,
-		     gr_utf32, chars, contents.length,
+		     ਖਾਲੀ_ਸੂਚਕ,
+		     gr_utf32, chars, contents.ਲੰਮਾਈ,
 		     2 | (direction == DIRECTION_RTL ? 1 : 0));
 
-  free (chars);
+  ਮੁਕਤ (chars);
 
-  if (!seg)
-    return false;
+  ਜੇ (!seg)
+    ਵਾਪਸ ਝੂਠ;
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ glyph_ਗਿਣਤੀ = gr_seg_n_slots (seg);
 
-  struct cluster_t {
-    unsigned int base_char;
-    unsigned int num_chars;
-    unsigned int base_glyph;
-    unsigned int num_glyphs;
-    unsigned int cluster;
+  ਬਣਤਰ cluster_t {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਧਾਰ_char;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_chars;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅਧਾਰ_glyph;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਅੰਕ_glyphs;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ cluster;
     int32_t advance;
   };
 
-  length = glyph_count;
-  if (!buffer_contents_realloc (&contents, length))
-    return false;
-  cluster_t *clusters = (cluster_t *) malloc (length * sizeof (cluster_t));
-  uint32_t *gids = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!clusters || !gids)
+  ਲੰਮਾਈ = glyph_ਗਿਣਤੀ;
+  ਜੇ (!ਬਫਰ_contents_realloc (&contents, ਲੰਮਾਈ))
+    ਵਾਪਸ ਝੂਠ;
+  cluster_t *clusters = (cluster_t *) ਸਮ੍ਰਿਤੀ_ਦਿਓ (ਲੰਮਾਈ * ਆਕਾਰ (cluster_t));
+  uint32_t *gids = (uint32_t *) ਸਮ੍ਰਿਤੀ_ਦਿਓ (ਲੰਮਾਈ * ਆਕਾਰ (uint32_t));
+  ਜੇ (!clusters || !gids)
   {
-    free (clusters);
-    free (gids);
-    return false;
+    ਮੁਕਤ (clusters);
+    ਮੁਕਤ (gids);
+    ਵਾਪਸ ਝੂਠ;
   }
 
-  memset (clusters, 0, sizeof (clusters[0]) * length);
+  memset (clusters, 0, ਆਕਾਰ (clusters[0]) * ਲੰਮਾਈ);
   codepoint_t *pg = gids;
   clusters[0].cluster = contents.info[0].cluster;
-  unsigned int upem = face_get_upem (face);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ upem = face_get_upem (face);
   int32_t font_x_scale, font_y_scale;
   font_get_scale (font, &font_x_scale, &font_y_scale);
-  float xscale = (float) font_x_scale / upem;
-  float yscale = (float) font_y_scale / upem;
+  ਦਸ਼ਮਲਵ xscale = (ਦਸ਼ਮਲਵ) font_x_scale / upem;
+  ਦਸ਼ਮਲਵ yscale = (ਦਸ਼ਮਲਵ) font_y_scale / upem;
   yscale *= yscale / xscale;
   int32_t curradv = 0;
-  if (DIRECTION_IS_BACKWARD (direction))
+  ਜੇ (DIRECTION_IS_BACKWARD (direction))
   {
-    curradv = clamp_position (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = clamp_position ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    curradv = clamp_position (gr_ਥਾਂ_origin_X(gr_seg_ਪਹਿਲਾ_ਥਾਂ(seg)) * xscale);
+    clusters[0].advance = clamp_position ((ਦੁੱਗਣਾ) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  ਨਹੀਂਤਾਂ
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  ਲਈ (is = gr_seg_ਪਹਿਲਾ_ਥਾਂ (seg), ic = 0; is; is = gr_ਥਾਂ_ਅਗਲਾ_ਵਿੱਚ_segment (is), ic++)
   {
-    unsigned int before = gr_slot_before (is);
-    unsigned int after = gr_slot_after (is);
-    *pg = gr_slot_gid (is);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ before = gr_ਥਾਂ_before (is);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ after = gr_ਥਾਂ_after (is);
+    *pg = gr_ਥਾਂ_gid (is);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    ਜਦੋਂ (clusters[ci].ਅਧਾਰ_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
-      clusters[ci-1].advance = saturate_add (clusters[ci-1].advance, clusters[ci].advance);
+      clusters[ci-1].ਅੰਕ_chars += clusters[ci].ਅੰਕ_chars;
+      clusters[ci-1].ਅੰਕ_glyphs += clusters[ci].ਅੰਕ_glyphs;
+      clusters[ci-1].advance = saturate_ਜੋੜੋ (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    ਜੇ (gr_ਥਾਂ_can_ਪਾਓ_before (is) && clusters[ci].ਅੰਕ_chars && before >= clusters[ci].ਅਧਾਰ_char + clusters[ci].ਅੰਕ_chars)
     {
       cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
-      c->cluster = contents.info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
-      c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (DIRECTION_IS_BACKWARD (direction))
+      c->ਅਧਾਰ_char = clusters[ci].ਅਧਾਰ_char + clusters[ci].ਅੰਕ_chars;
+      c->cluster = contents.info[c->ਅਧਾਰ_char].cluster;
+      c->ਅੰਕ_chars = before - c->ਅਧਾਰ_char;
+      c->ਅਧਾਰ_glyph = ic;
+      c->ਅੰਕ_glyphs = 0;
+      ਜੇ (DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = clamp_position ((double) curradv - (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = clamp_position ((ਦੁੱਗਣਾ) curradv - (ਦੁੱਗਣਾ) (gr_ਥਾਂ_origin_X(is) * xscale));
 	curradv = saturate_sub (curradv, c->advance);
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	int32_t origin_X = clamp_position (gr_slot_origin_X (is) * xscale);
+	int32_t origin_X = clamp_position (gr_ਥਾਂ_origin_X (is) * xscale);
 	c->advance = 0;
-	clusters[ci].advance = saturate_add (clusters[ci].advance,
+	clusters[ci].advance = saturate_ਜੋੜੋ (clusters[ci].advance,
 					     saturate_sub (origin_X, curradv));
 	curradv = origin_X;
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].ਅੰਕ_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    ਜੇ (clusters[ci].ਅਧਾਰ_char + clusters[ci].ਅੰਕ_chars < after + 1)
+	clusters[ci].ਅੰਕ_chars = after + 1 - clusters[ci].ਅਧਾਰ_char;
   }
 
-  if (DIRECTION_IS_BACKWARD (direction))
-    clusters[ci].advance = saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = clamp_position ((double) clusters[ci].advance +
-					   (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  ਜੇ (DIRECTION_IS_BACKWARD (direction))
+    clusters[ci].advance = saturate_ਜੋੜੋ (clusters[ci].advance, curradv);
+  ਨਹੀਂਤਾਂ
+    clusters[ci].advance = clamp_position ((ਦੁੱਗਣਾ) clusters[ci].advance +
+					   (ਦੁੱਗਣਾ) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = 0; j < clusters[i].ਅੰਕ_glyphs; ++j)
     {
-      glyph_info_t *info = &contents.info[clusters[i].base_glyph + j];
-      info->codepoint = gids[clusters[i].base_glyph + j];
+      glyph_info_t *info = &contents.info[clusters[i].ਅਧਾਰ_glyph + j];
+      info->codepoint = gids[clusters[i].ਅਧਾਰ_glyph + j];
       info->cluster = clusters[i].cluster;
-      info->var1 = (unsigned) clusters[i].advance;     // all glyphs in the cluster get the same advance
+      info->var1 = (ਬਿਨਾਨਿਸ਼ਾਨੀ) clusters[i].advance;     // all glyphs in the cluster get the same advance
     }
   }
-  contents.length = glyph_count;
+  contents.ਲੰਮਾਈ = glyph_ਗਿਣਤੀ;
 
   /* Positioning. */
-  unsigned int currclus = 0xFFFFFFFF;
-  const glyph_info_t *info = contents.info;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ currclus = 0xFFFFFFFF;
+  ਅਚਲ glyph_info_t *info = contents.info;
   glyph_position_t *pPos = contents.pos;
-  if (!DIRECTION_IS_BACKWARD (direction))
+  ਜੇ (!DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    ਲਈ (is = gr_seg_ਪਹਿਲਾ_ਥਾਂ (seg); is; pPos++, ++info, is = gr_ਥਾਂ_ਅਗਲਾ_ਵਿੱਚ_segment (is))
     {
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->cluster != currclus) {
-	pPos->x_advance = (int) info->var1;
-	curradvx = saturate_add (curradvx, pPos->x_advance);
+      pPos->x_ਵਿੱਥ_2 = clamp_position ((ਦੁੱਗਣਾ) (gr_ਥਾਂ_origin_X (is) * xscale) - curradvx);
+      pPos->y_ਵਿੱਥ_2 = clamp_position ((ਦੁੱਗਣਾ) (gr_ਥਾਂ_origin_Y (is) * yscale) - curradvy);
+      ਜੇ (info->cluster != currclus) {
+	pPos->x_advance = (ਪੂਰਨ) info->var1;
+	curradvx = saturate_ਜੋੜੋ (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } ਨਹੀਂਤਾਂ
 	pPos->x_advance = 0.;
 
-      pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
-      curradvy = saturate_add (curradvy, pPos->y_advance);
+      pPos->y_advance = clamp_position (gr_ਥਾਂ_advance_Y (is, grface, ਖਾਲੀ_ਸੂਚਕ) * yscale);
+      curradvy = saturate_ਜੋੜੋ (curradvy, pPos->y_advance);
     }
-    buffer_set_contents (buffer, &contents);
+    ਬਫਰ_ਸੈੱਟ_contents (ਬਫਰ, &contents);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
     curradvx = clamp_position (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    ਲਈ (is = gr_seg_ਪਹਿਲਾ_ਥਾਂ (seg); is; pPos++, info++, is = gr_ਥਾਂ_ਅਗਲਾ_ਵਿੱਚ_segment (is))
     {
-      if (info->cluster != currclus)
+      ਜੇ (info->cluster != currclus)
       {
-	pPos->x_advance = (int) info->var1;
+	pPos->x_advance = (ਪੂਰਨ) info->var1;
 	curradvx = saturate_sub (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } ਨਹੀਂਤਾਂ
 	pPos->x_advance = 0.;
 
-      pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
+      pPos->y_advance = clamp_position (gr_ਥਾਂ_advance_Y (is, grface, ਖਾਲੀ_ਸੂਚਕ) * yscale);
       curradvy = saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) -
-					      (int) info->var1 - curradvx + pPos->x_advance);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->x_ਵਿੱਥ_2 = clamp_position ((ਦੁੱਗਣਾ) (gr_ਥਾਂ_origin_X (is) * xscale) -
+					      (ਪੂਰਨ) info->var1 - curradvx + pPos->x_advance);
+      pPos->y_ਵਿੱਥ_2 = clamp_position ((ਦੁੱਗਣਾ) (gr_ਥਾਂ_origin_Y (is) * yscale) - curradvy);
     }
-    buffer_set_contents (buffer, &contents);
-    buffer_reverse_clusters (buffer);
+    ਬਫਰ_ਸੈੱਟ_contents (ਬਫਰ, &contents);
+    ਬਫਰ_ਉਲਟ_clusters (ਬਫਰ);
   }
 
   gr_seg_destroy (seg);
-  free (clusters);
-  free (gids);
+  ਮੁਕਤ (clusters);
+  ਮੁਕਤ (gids);
 
-  bool ret = glyph_count;
+  ਤਾਰਕਿਕ ret = glyph_ਗਿਣਤੀ;
 
-  return ret;
+  ਵਾਪਸ ret;
 }

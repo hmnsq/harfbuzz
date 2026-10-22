@@ -1,44 +1,44 @@
-#define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <hb-wasm-api.h>
 
-extern "C" {
-void debugprint (const char *s);
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+ਬਾਹਰੀ "C" {
+ਖਾਲੀ debugprint (ਅਚਲ ਅੱਖਰ *s);
+ਖਾਲੀ debugprint1 (ਅਚਲ ਅੱਖਰ *s, int32_t);
+ਖਾਲੀ debugprint2 (ਅਚਲ ਅੱਖਰ *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (ਖਾਲੀ *shape_plan,
        font_t *font,
-       buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ਬਫਰ_t *ਬਫਰ,
+       ਅਚਲ feature_t *features,
+       uint32_t ਅੰਕ_features)
 {
   face_t *face = font_get_face (font);
 
   blob_t blob = BLOB_INIT;
-  face_copy_table (face, TAG ('c','m','a','p'), &blob);
+  face_copy_ਸਾਰਣੀ (face, ਟੈਗ_3 ('c','m','a','p'), &blob);
 
-  debugprint1 ("cmap length", blob.length);
+  debugprint1 ("cmap length", blob.ਲੰਮਾਈ);
 
   blob_free (&blob);
 
-  buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  ਬਫਰ_contents_t contents = ਬਫਰ_CONTENTS_INIT;
+  ਜੇ (!ਬਫਰ_copy_contents (ਬਫਰ, &contents))
+    ਵਾਪਸ ਝੂਠ;
 
-  debugprint1 ("buffer length", contents.length);
+  debugprint1 ("buffer length", contents.ਲੰਮਾਈ);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < contents.ਲੰਮਾਈ; i++)
   {
-    char name[64];
+    ਅੱਖਰ name[64];
 
     debugprint1 ("glyph at", i);
 
-    font_glyph_to_string (font, contents.info[i].codepoint, name, sizeof (name));
+    font_glyph_ਮੰਜ਼ਿਲ_string (font, contents.info[i].codepoint, name, ਆਕਾਰ (name));
 
     debugprint (name);
 
@@ -52,9 +52,9 @@ shape (void *shape_plan,
 
   glyph_outline_free (&outline);
 
-  bool_t ret = buffer_set_contents (buffer, &contents);
+  bool_t ret = ਬਫਰ_ਸੈੱਟ_contents (ਬਫਰ, &contents);
 
-  buffer_contents_free (&contents);
+  ਬਫਰ_contents_free (&contents);
 
-  return ret;
+  ਵਾਪਸ ret;
 }

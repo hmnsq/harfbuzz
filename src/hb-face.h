@@ -24,23 +24,23 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ਜੇ !defined(HB_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_FACE_H
-#define HB_FACE_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_FACE_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_FACE_H
 
-#include "hb-common.h"
-#include "hb-blob.h"
-#include "hb-map.h"
-#include "hb-set.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-blob.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-map.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN unsigned int
-hb_face_count (hb_blob_t *blob);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_ਗਿਣਤੀ (hb_blob_t *blob);
 
 
 /*
@@ -53,32 +53,32 @@ hb_face_count (hb_blob_t *blob);
  * Data type for holding font faces.
  *
  **/
-typedef struct hb_face_t hb_face_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_face_t hb_face_t;
 
 HB_EXTERN hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index);
+		ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index);
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name);
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2,
+			      ਅਚਲ ਅੱਖਰ   *loader_name);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index);
+hb_face_create_from_file_or_fail (ਅਚਲ ਅੱਖਰ   *file_name,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name);
+hb_face_create_from_file_or_fail_using (ਅਚਲ ਅੱਖਰ   *file_name,
+					ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2,
+					ਅਚਲ ਅੱਖਰ   *loader_name);
 
-HB_EXTERN const char **
-hb_face_list_loaders (void);
+HB_EXTERN ਅਚਲ ਅੱਖਰ **
+hb_face_list_loaders (ਖਾਲੀ);
 
 
 /**
@@ -99,35 +99,35 @@ hb_face_list_loaders (void);
  * Since: 0.9.2
  */
 
-typedef hb_blob_t * (*hb_reference_table_func_t)  (hb_face_t *face, hb_tag_t tag, void *user_data);
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_blob_t * (*hb_reference_ਸਾਰਣੀ_func_t)  (hb_face_t *face, hb_ਟੈਗ_t ਟੈਗ_2, ਖਾਲੀ *user_ਅੰਕੜੇ);
 
 /* calls destroy() when not needing user_data anymore */
 HB_EXTERN hb_face_t *
-hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+hb_face_create_for_tables (hb_reference_ਸਾਰਣੀ_func_t  reference_ਸਾਰਣੀ_func,
+			   ਖਾਲੀ                      *user_ਅੰਕੜੇ,
 			   hb_destroy_func_t          destroy);
 
 HB_EXTERN hb_face_t *
-hb_face_get_empty (void);
+hb_face_get_ਖਾਲੀ_ਥਾਵਾਂ (ਖਾਲੀ);
 
 HB_EXTERN hb_face_t *
 hb_face_reference (hb_face_t *face);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_destroy (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
-hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_face_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_face_t          *face,
+		       hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2,
+		       ਖਾਲੀ *              ਅੰਕੜੇ,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key);
+HB_EXTERN ਖਾਲੀ *
+hb_face_get_user_ਅੰਕੜੇ (ਅਚਲ hb_face_t    *face,
+		       hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *ਕੁੰਜੀ_2);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_make_immutable (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
@@ -135,32 +135,32 @@ hb_face_is_immutable (hb_face_t *face);
 
 
 HB_EXTERN hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
-			 hb_tag_t tag);
+hb_face_reference_ਸਾਰਣੀ (ਅਚਲ hb_face_t *face,
+			 hb_ਟੈਗ_t ਟੈਗ_2);
 
 HB_EXTERN hb_blob_t *
 hb_face_reference_blob (hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index);
+HB_EXTERN ਖਾਲੀ
+hb_face_ਸੈੱਟ_ਸੂਚਕਾਂਕ (hb_face_t    *face,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸੂਚਕਾਂਕ_2);
 
-HB_EXTERN unsigned int
-hb_face_get_index (const hb_face_t *face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_get_ਸੂਚਕਾਂਕ (ਅਚਲ hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem);
+HB_EXTERN ਖਾਲੀ
+hb_face_ਸੈੱਟ_upem (hb_face_t    *face,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  upem);
 
-HB_EXTERN unsigned int
-hb_face_get_upem (const hb_face_t *face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_get_upem (ਅਚਲ hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count);
+HB_EXTERN ਖਾਲੀ
+hb_face_ਸੈੱਟ_glyph_ਗਿਣਤੀ (hb_face_t    *face,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  glyph_ਗਿਣਤੀ);
 
-HB_EXTERN unsigned int
-hb_face_get_glyph_count (const hb_face_t *face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_get_glyph_ਗਿਣਤੀ (ਅਚਲ hb_face_t *face);
 
 
 /**
@@ -178,46 +178,46 @@ hb_face_get_glyph_count (const hb_face_t *face);
  *
  * Since: 10.0.0
  */
-typedef unsigned int (*hb_get_table_tags_func_t) (const hb_face_t *face,
-						  unsigned int  start_offset,
-						  unsigned int *table_count, /* IN/OUT */
-						  hb_tag_t     *table_tags /* OUT */,
-						  void         *user_data);
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ (*hb_get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_func_t) (ਅਚਲ hb_face_t *face,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+						  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਸਾਰਣੀ_ਗਿਣਤੀ_2, /* IN/OUT */
+						  hb_ਟੈਗ_t     *ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/,
+						  ਖਾਲੀ         *user_ਅੰਕੜੇ);
 
-HB_EXTERN void
-hb_face_set_get_table_tags_func (hb_face_t *face,
-				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+HB_EXTERN ਖਾਲੀ
+hb_face_ਸੈੱਟ_get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_func (hb_face_t *face,
+				 hb_get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ_func_t func,
+				 ਖਾਲੀ                    *user_ਅੰਕੜੇ,
 				 hb_destroy_func_t        destroy);
 
-HB_EXTERN unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
-			hb_tag_t     *table_tags /* OUT */);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_face_get_ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ (ਅਚਲ hb_face_t *face,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  ਸ਼ੁਰੂ_ਵਿੱਥ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *ਸਾਰਣੀ_ਗਿਣਤੀ_2, /* IN/OUT */
+			hb_ਟੈਗ_t     *ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/);
 
 
 /*
  * Character set.
  */
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_collect_unicodes (hb_face_t *face,
-			  hb_set_t  *out);
+			  hb_ਸੈੱਟ_t  *ਬਾਹਰਲਾ);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
-				       hb_set_t  *unicodes);
+				       hb_ਸੈੱਟ_t  *unicodes);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_collect_variation_selectors (hb_face_t *face,
-				     hb_set_t  *out);
+				     hb_ਸੈੱਟ_t  *ਬਾਹਰਲਾ);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
-				    hb_set_t  *out);
+				    hb_ਸੈੱਟ_t  *ਬਾਹਰਲਾ);
 
 
 /*
@@ -225,18 +225,18 @@ hb_face_collect_variation_unicodes (hb_face_t *face,
  */
 
 HB_EXTERN hb_face_t *
-hb_face_builder_create (void);
+hb_face_builder_create (ਖਾਲੀ);
 
 HB_EXTERN hb_bool_t
-hb_face_builder_add_table (hb_face_t *face,
-			   hb_tag_t   tag,
+hb_face_builder_ਜੋੜੋ_ਸਾਰਣੀ (hb_face_t *face,
+			   hb_ਟੈਗ_t   ਟੈਗ_2,
 			   hb_blob_t *blob);
 
-HB_EXTERN void
-hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags);
+HB_EXTERN ਖਾਲੀ
+hb_face_builder_ਛਾਂਟੋ_tables (hb_face_t *face,
+                             ਅਚਲ hb_ਟੈਗ_t  *ਟੈਗ_ਸੂਚੀ);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_FACE_H */
+#ਜੇ_ਅੰਤ /* HB_FACE_H */

@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-subset-instancer-iup.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-subset-instancer-iup.hh"
 
-#include "hb-bit-page.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-bit-page.hh"
 
-using hb_iup_set_t = hb_bit_page_t;
+ਵਰਤੋਂ hb_iup_ਸੈੱਟ_t = hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t;
 
 /* This file is a straight port of the following:
  *
@@ -36,52 +36,52 @@ using hb_iup_set_t = hb_bit_page_t;
  * referenced point indices.
  */
 
-constexpr static unsigned MAX_LOOKBACK = 8;
+constexpr ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ MAX_LOOKBACK = 8;
 
-static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_t> contour_points,
-                                           const hb_array_t<const int> x_deltas,
-                                           const hb_array_t<const int> y_deltas,
-                                           hb_iup_set_t& forced_set, /* OUT */
-                                           double tolerance = 0.0)
+ਸਥਿਰ ਖਾਲੀ iup_contour_bound_forced_ਸੈੱਟ (ਅਚਲ hb_array_t<ਅਚਲ contour_ਬਿੰਦੂ_t> contour_points,
+                                           ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> x_deltas,
+                                           ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> y_deltas,
+                                           hb_iup_ਸੈੱਟ_t& forced_ਸੈੱਟ, /*ਬਾਹਰਲਾ*/
+                                           ਦੁੱਗਣਾ tolerance = 0.0)
 {
-  unsigned len = contour_points.length;
-  unsigned next_i = 0;
-  for (int i = len - 1; i >= 0; i--)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ len = contour_points.ਲੰਮਾਈ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਗਲਾ_i = 0;
+  ਲਈ (ਪੂਰਨ i = len - 1; i >= 0; i--)
   {
-    unsigned last_i = (len + i - 1) % len;
-    for (unsigned j = 0; j < 2; j++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਆਖਰੀ_i = (len + i - 1) % len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < 2; j++)
     {
-      double cj, lcj, ncj;
-      double dj, ldj, ndj;
-      if (j == 0)
+      ਦੁੱਗਣਾ cj, lcj, ncj;
+      ਦੁੱਗਣਾ dj, ldj, ndj;
+      ਜੇ (j == 0)
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].x);
+        cj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[i].x);
         dj = x_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].x);
-        ldj = x_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].x);
-        ndj = x_deltas.arrayZ[next_i];
+        lcj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[ਆਖਰੀ_i].x);
+        ldj = x_deltas.arrayZ[ਆਖਰੀ_i];
+        ncj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[ਅਗਲਾ_i].x);
+        ndj = x_deltas.arrayZ[ਅਗਲਾ_i];
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].y);
+        cj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[i].y);
         dj = y_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].y);
-        ldj = y_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].y);
-        ndj = y_deltas.arrayZ[next_i];
+        lcj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[ਆਖਰੀ_i].y);
+        ldj = y_deltas.arrayZ[ਆਖਰੀ_i];
+        ncj = static_cast<ਦੁੱਗਣਾ> (contour_points.arrayZ[ਅਗਲਾ_i].y);
+        ndj = y_deltas.arrayZ[ਅਗਲਾ_i];
       }
 
-      double c1, c2;
-      double d1, d2;
-      if (lcj <= ncj)
+      ਦੁੱਗਣਾ c1, c2;
+      ਦੁੱਗਣਾ d1, d2;
+      ਜੇ (lcj <= ncj)
       {
         c1 = lcj;
         c2 = ncj;
         d1 = ldj;
         d2 = ndj;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
         c1 = ncj;
         c2 = lcj;
@@ -89,488 +89,488 @@ static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_
         d2 = ldj;
       }
 
-      bool force = false;
-      if (c1 == c2)
+      ਤਾਰਕਿਕ force = ਝੂਠ;
+      ਜੇ (c1 == c2)
       {
-        if (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
-          force = true;
+        ਜੇ (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
+          force = ਸੱਚ;
       }
-      else if (c1 <= cj && cj <= c2)
+      ਨਹੀਂਤਾਂ ਜੇ (c1 <= cj && cj <= c2)
       {
-        if (!(hb_min (d1, d2) - tolerance <= dj &&
+        ਜੇ (!(hb_min (d1, d2) - tolerance <= dj &&
               dj <= hb_max (d1, d2) + tolerance))
-          force = true;
+          force = ਸੱਚ;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-        if (d1 != d2)
+        ਜੇ (d1 != d2)
         {
-          if (cj < c1)
+          ਜੇ (cj < c1)
           {
-            if (fabs (dj) > tolerance &&
+            ਜੇ (fabs (dj) > tolerance &&
                 fabs (dj - d1) > tolerance &&
                 ((dj - tolerance < d1) != (d1 < d2)))
-                force = true;
+                force = ਸੱਚ;
           }
-          else
+          ਨਹੀਂਤਾਂ
           {
-            if (fabs (dj) > tolerance &&
+            ਜੇ (fabs (dj) > tolerance &&
                 fabs (dj - d2) > tolerance &&
                 ((d2 < dj + tolerance) != (d1 < d2)))
-              force = true;
+              force = ਸੱਚ;
           }
         }
       }
 
-      if (force)
+      ਜੇ (force)
       {
-        forced_set.add (i);
-        break;
+        forced_ਸੈੱਟ.ਜੋੜੋ (i);
+        ਰੋਕੋ;
       }
     }
-    next_i = i;
+    ਅਗਲਾ_i = i;
   }
 }
 
-template <typename T,
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T,
           hb_enable_if (hb_is_trivially_copyable (T))>
-static bool rotate_array (const hb_array_t<const T>& org_array,
-                          int k,
-                          hb_vector_t<T>& out)
+ਸਥਿਰ ਤਾਰਕਿਕ rotate_array (ਅਚਲ hb_array_t<ਅਚਲ T>& org_array,
+                          ਪੂਰਨ k,
+                          hb_ਸਦਿਸ਼_t<T>& ਬਾਹਰਲਾ)
 {
-  unsigned n = org_array.length;
-  if (!n) return true;
-  if (unlikely (!out.resize_dirty  (n)))
-    return false;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ n = org_array.ਲੰਮਾਈ;
+  ਜੇ (!n) ਵਾਪਸ ਸੱਚ;
+  ਜੇ (unlikely (!ਬਾਹਰਲਾ.resize_dirty  (n)))
+    ਵਾਪਸ ਝੂਠ;
 
-  unsigned item_size = hb_static_size (T);
-  if (k < 0)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_ਮਾਪ = hb_static_ਮਾਪ (T);
+  ਜੇ (k < 0)
     k = n - (-k) % n;
-  else
+  ਨਹੀਂਤਾਂ
     k %= n;
 
-  hb_memcpy ((void *) out.arrayZ, (const void *) (org_array.arrayZ + n - k), k * item_size);
-  hb_memcpy ((void *) (out.arrayZ + k), (const void *) org_array.arrayZ, (n - k) * item_size);
-  return true;
+  hb_memcpy ((ਖਾਲੀ *) ਬਾਹਰਲਾ.arrayZ, (ਅਚਲ ਖਾਲੀ *) (org_array.arrayZ + n - k), k * ਵਸਤੂ_ਮਾਪ);
+  hb_memcpy ((ਖਾਲੀ *) (ਬਾਹਰਲਾ.arrayZ + k), (ਅਚਲ ਖਾਲੀ *) org_array.arrayZ, (n - k) * ਵਸਤੂ_ਮਾਪ);
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool rotate_set (const hb_iup_set_t& org_set,
-                        int k,
-                        unsigned n,
-                        hb_iup_set_t& out)
+ਸਥਿਰ ਤਾਰਕਿਕ rotate_ਸੈੱਟ (ਅਚਲ hb_iup_ਸੈੱਟ_t& org_ਸੈੱਟ,
+                        ਪੂਰਨ k,
+                        ਬਿਨਾਨਿਸ਼ਾਨੀ n,
+                        hb_iup_ਸੈੱਟ_t& ਬਾਹਰਲਾ)
 {
-  if (!n) return false;
+  ਜੇ (!n) ਵਾਪਸ ਝੂਠ;
   k %= n;
-  if (k < 0)
+  ਜੇ (k < 0)
     k = n + k;
 
-  if (k == 0)
+  ਜੇ (k == 0)
   {
-    out = org_set;
+    ਬਾਹਰਲਾ = org_ਸੈੱਟ;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    for (unsigned v : org_set)
-      out.add ((v + k) % n);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ v : org_ਸੈੱਟ)
+      ਬਾਹਰਲਾ.ਜੋੜੋ ((v + k) % n);
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
 /* Given two reference coordinates (start and end of contour_points array),
  * output interpolated deltas for points in between */
-static bool _iup_segment (const hb_array_t<const contour_point_t> contour_points,
-                          const hb_array_t<const int> x_deltas,
-                          const hb_array_t<const int> y_deltas,
-                          const contour_point_t& p1, const contour_point_t& p2,
-                          int p1_dx, int p2_dx,
-                          int p1_dy, int p2_dy,
-			  double tolerance_sq,
-                          hb_vector_t<double>& interp_x_deltas, /* OUT */
-                          hb_vector_t<double>& interp_y_deltas /* OUT */)
+ਸਥਿਰ ਤਾਰਕਿਕ _iup_segment (ਅਚਲ hb_array_t<ਅਚਲ contour_ਬਿੰਦੂ_t> contour_points,
+                          ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> x_deltas,
+                          ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> y_deltas,
+                          ਅਚਲ contour_ਬਿੰਦੂ_t& p1, ਅਚਲ contour_ਬਿੰਦੂ_t& p2,
+                          ਪੂਰਨ p1_dx, ਪੂਰਨ p2_dx,
+                          ਪੂਰਨ p1_dy, ਪੂਰਨ p2_dy,
+			  ਦੁੱਗਣਾ tolerance_sq,
+                          hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ>& interp_x_deltas, /*ਬਾਹਰਲਾ*/
+                          hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ>& interp_y_deltas /*ਬਾਹਰਲਾ*/)
 {
-  unsigned n = contour_points.length;
-  if (unlikely (!interp_x_deltas.resize_dirty  (n) ||
+  ਬਿਨਾਨਿਸ਼ਾਨੀ n = contour_points.ਲੰਮਾਈ;
+  ਜੇ (unlikely (!interp_x_deltas.resize_dirty  (n) ||
                 !interp_y_deltas.resize_dirty  (n)))
-    return false;
+    ਵਾਪਸ ਝੂਠ;
 
-  for (unsigned j = 0; j < 2; j++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ j = 0; j < 2; j++)
   {
-    float contour_point_t::* xp;
-    double x1, x2, d1, d2;
-    const int *in;
-    double *out;
-    if (j == 0)
+    ਦਸ਼ਮਲਵ contour_ਬਿੰਦੂ_t::* xp;
+    ਦੁੱਗਣਾ x1, x2, d1, d2;
+    ਅਚਲ ਪੂਰਨ *ਵਿੱਚ;
+    ਦੁੱਗਣਾ *ਬਾਹਰਲਾ;
+    ਜੇ (j == 0)
     {
-      xp = &contour_point_t::x;
-      x1 = static_cast<double> (p1.x);
-      x2 = static_cast<double> (p2.x);
+      xp = &contour_ਬਿੰਦੂ_t::x;
+      x1 = static_cast<ਦੁੱਗਣਾ> (p1.x);
+      x2 = static_cast<ਦੁੱਗਣਾ> (p2.x);
       d1 = p1_dx;
       d2 = p2_dx;
-      in = x_deltas.arrayZ;
-      out = interp_x_deltas.arrayZ;
+      ਵਿੱਚ = x_deltas.arrayZ;
+      ਬਾਹਰਲਾ = interp_x_deltas.arrayZ;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      xp = &contour_point_t::y;
-      x1 = static_cast<double> (p1.y);
-      x2 = static_cast<double> (p2.y);
+      xp = &contour_ਬਿੰਦੂ_t::y;
+      x1 = static_cast<ਦੁੱਗਣਾ> (p1.y);
+      x2 = static_cast<ਦੁੱਗਣਾ> (p2.y);
       d1 = p1_dy;
       d2 = p2_dy;
-      in = y_deltas.arrayZ;
-      out = interp_y_deltas.arrayZ;
+      ਵਿੱਚ = y_deltas.arrayZ;
+      ਬਾਹਰਲਾ = interp_y_deltas.arrayZ;
     }
 
-    if (x1 == x2)
+    ਜੇ (x1 == x2)
     {
-      if (d1 == d2)
+      ਜੇ (d1 == d2)
       {
-        for (unsigned i = 0; i < n; i++)
-          out[i] = d1;
+        ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
+          ਬਾਹਰਲਾ[i] = d1;
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-        for (unsigned i = 0; i < n; i++)
-          out[i] = 0.0;
+        ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
+          ਬਾਹਰਲਾ[i] = 0.0;
       }
-      continue;
+      ਜਾਰੀ;
     }
 
-    if (x1 > x2)
+    ਜੇ (x1 > x2)
     {
-      hb_swap (x1, x2);
-      hb_swap (d1, d2);
+      hb_ਅਦਲਾ_ਬਦਲੀ (x1, x2);
+      hb_ਅਦਲਾ_ਬਦਲੀ (d1, d2);
     }
 
-    double scale = (d2 - d1) / (x2 - x1);
-    for (unsigned i = 0; i < n; i++)
+    ਦੁੱਗਣਾ scale = (d2 - d1) / (x2 - x1);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
     {
-      double x = (double) (contour_points.arrayZ[i].*xp);
-      double d;
-      if (x <= x1)
+      ਦੁੱਗਣਾ x = (ਦੁੱਗਣਾ) (contour_points.arrayZ[i].*xp);
+      ਦੁੱਗਣਾ d;
+      ਜੇ (x <= x1)
         d = d1;
-      else if (x >= x2)
+      ਨਹੀਂਤਾਂ ਜੇ (x >= x2)
         d = d2;
-      else
+      ਨਹੀਂਤਾਂ
         d = d1 + (x - x1) * scale;
 
-      out[i] = d;
-      double err = d - in[i];
-      if (err * err > tolerance_sq)
-	return false;
+      ਬਾਹਰਲਾ[i] = d;
+      ਦੁੱਗਣਾ err = d - ਵਿੱਚ[i];
+      ਜੇ (err * err > tolerance_sq)
+	ਵਾਪਸ ਝੂਠ;
     }
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool _can_iup_in_between (const hb_array_t<const contour_point_t> contour_points,
-                                 const hb_array_t<const int> x_deltas,
-                                 const hb_array_t<const int> y_deltas,
-                                 const contour_point_t& p1, const contour_point_t& p2,
-                                 int p1_dx, int p2_dx,
-                                 int p1_dy, int p2_dy,
-                                 double tolerance_sq,
-				 hb_vector_t<double> &interp_x_deltas, /* scratch */
-				 hb_vector_t<double> &interp_y_deltas /* scratch */)
+ਸਥਿਰ ਤਾਰਕਿਕ can_iup_ਵਿੱਚ_between (ਅਚਲ hb_array_t<ਅਚਲ contour_ਬਿੰਦੂ_t> contour_points,
+                                 ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> x_deltas,
+                                 ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> y_deltas,
+                                 ਅਚਲ contour_ਬਿੰਦੂ_t& p1, ਅਚਲ contour_ਬਿੰਦੂ_t& p2,
+                                 ਪੂਰਨ p1_dx, ਪੂਰਨ p2_dx,
+                                 ਪੂਰਨ p1_dy, ਪੂਰਨ p2_dy,
+                                 ਦੁੱਗਣਾ tolerance_sq,
+				 hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ> &interp_x_deltas, /* scratch */
+				 hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ> &interp_y_deltas /* scratch */)
 {
-  if (!_iup_segment (contour_points, x_deltas, y_deltas,
+  ਜੇ (!_iup_segment (contour_points, x_deltas, y_deltas,
                      p1, p2, p1_dx, p2_dx, p1_dy, p2_dy,
 		     tolerance_sq,
                      interp_x_deltas, interp_y_deltas))
-    return false;
+    ਵਾਪਸ ਝੂਠ;
 
-  unsigned num = contour_points.length;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ = contour_points.ਲੰਮਾਈ;
 
-  for (unsigned i = 0; i < num; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ; i++)
   {
-    double dx = static_cast<double> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
-    double dy = static_cast<double> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
+    ਦੁੱਗਣਾ dx = static_cast<ਦੁੱਗਣਾ> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
+    ਦੁੱਗਣਾ dy = static_cast<ਦੁੱਗਣਾ> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
 
-    if (dx * dx + dy * dy > tolerance_sq)
-      return false;
+    ਜੇ (dx * dx + dy * dy > tolerance_sq)
+      ਵਾਪਸ ਝੂਠ;
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool _iup_contour_optimize_dp (const contour_point_vector_t& contour_points,
-                                      const hb_vector_t<int>& x_deltas,
-                                      const hb_vector_t<int>& y_deltas,
-                                      const hb_iup_set_t& forced_set,
-                                      double tolerance_sq,
-                                      unsigned lookback,
-                                      hb_vector_t<unsigned>& costs, /* OUT */
-                                      hb_vector_t<int>& chain, /* OUT */
-				      hb_vector_t<double> &interp_x_deltas_scratch,
-				      hb_vector_t<double> &interp_y_deltas_scratch)
+ਸਥਿਰ ਤਾਰਕਿਕ _iup_contour_optimize_dp (ਅਚਲ contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t& contour_points,
+                                      ਅਚਲ hb_ਸਦਿਸ਼_t<ਪੂਰਨ>& x_deltas,
+                                      ਅਚਲ hb_ਸਦਿਸ਼_t<ਪੂਰਨ>& y_deltas,
+                                      ਅਚਲ hb_iup_ਸੈੱਟ_t& forced_ਸੈੱਟ,
+                                      ਦੁੱਗਣਾ tolerance_sq,
+                                      ਬਿਨਾਨਿਸ਼ਾਨੀ lookback,
+                                      hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ>& costs, /*ਬਾਹਰਲਾ*/
+                                      hb_ਸਦਿਸ਼_t<ਪੂਰਨ>& chain, /*ਬਾਹਰਲਾ*/
+				      hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ> &interp_x_deltas_scratch,
+				      hb_ਸਦਿਸ਼_t<ਦੁੱਗਣਾ> &interp_y_deltas_scratch)
 {
-  unsigned n = contour_points.length;
-  if (unlikely (!costs.resize_dirty  (n) ||
+  ਬਿਨਾਨਿਸ਼ਾਨੀ n = contour_points.ਲੰਮਾਈ;
+  ਜੇ (unlikely (!costs.resize_dirty  (n) ||
                 !chain.resize_dirty  (n)))
-    return false;
+    ਵਾਪਸ ਝੂਠ;
 
   lookback = hb_min (lookback, MAX_LOOKBACK);
 
-  for (unsigned i = 0; i < n; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
   {
-    unsigned best_cost = (i == 0 ? 1 : costs.arrayZ[i-1] + 1);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਉੱਤਮ_ਲਾਗਤ = (i == 0 ? 1 : costs.arrayZ[i-1] + 1);
 
-    costs.arrayZ[i] = best_cost;
+    costs.arrayZ[i] = ਉੱਤਮ_ਲਾਗਤ;
     chain.arrayZ[i] = (i == 0 ? -1 : i - 1);
 
-    if (i > 0 && forced_set.has (i - 1))
-      continue;
+    ਜੇ (i > 0 && forced_ਸੈੱਟ.has (i - 1))
+      ਜਾਰੀ;
 
-    int lookback_index = hb_max ((int) i - (int) lookback + 1, -1);
-    for (int j = i - 2; j >= lookback_index; j--)
+    ਪੂਰਨ lookback_ਸੂਚਕਾਂਕ = hb_max ((ਪੂਰਨ) i - (ਪੂਰਨ) lookback + 1, -1);
+    ਲਈ (ਪੂਰਨ j = i - 2; j >= lookback_ਸੂਚਕਾਂਕ; j--)
     {
-      unsigned cost = j == -1 ? 1 : costs.arrayZ[j] + 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲਾਗਤ = j == -1 ? 1 : costs.arrayZ[j] + 1;
       /* num points between i and j */
-      unsigned num_points = i - j - 1;
-      unsigned p1 = (j == -1 ? n - 1 : j);
-      if (cost < best_cost &&
-          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, num_points),
-                               x_deltas.as_array ().sub_array (j + 1, num_points),
-                               y_deltas.as_array ().sub_array (j + 1, num_points),
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_points = i - j - 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ p1 = (j == -1 ? n - 1 : j);
+      ਜੇ (ਲਾਗਤ < ਉੱਤਮ_ਲਾਗਤ &&
+          can_iup_ਵਿੱਚ_between (contour_points.as_array ().sub_array (j + 1, ਅੰਕ_points),
+                               x_deltas.as_array ().sub_array (j + 1, ਅੰਕ_points),
+                               y_deltas.as_array ().sub_array (j + 1, ਅੰਕ_points),
                                contour_points.arrayZ[p1], contour_points.arrayZ[i],
                                x_deltas.arrayZ[p1], x_deltas.arrayZ[i],
                                y_deltas.arrayZ[p1], y_deltas.arrayZ[i],
                                tolerance_sq,
 			       interp_x_deltas_scratch, interp_y_deltas_scratch))
       {
-        best_cost = cost;
-        costs.arrayZ[i] = best_cost;
+        ਉੱਤਮ_ਲਾਗਤ = ਲਾਗਤ;
+        costs.arrayZ[i] = ਉੱਤਮ_ਲਾਗਤ;
         chain.arrayZ[i] = j;
       }
 
-      if (j > 0 && forced_set.has (j))
-        break;
+      ਜੇ (j > 0 && forced_ਸੈੱਟ.has (j))
+        ਰੋਕੋ;
     }
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-static bool _iup_contour_optimize (const hb_array_t<const contour_point_t> contour_points,
-                                   const hb_array_t<const int> x_deltas,
-                                   const hb_array_t<const int> y_deltas,
-                                   hb_array_t<bool> opt_indices, /* OUT */
-                                   double tolerance,
+ਸਥਿਰ ਤਾਰਕਿਕ _iup_contour_optimize (ਅਚਲ hb_array_t<ਅਚਲ contour_ਬਿੰਦੂ_t> contour_points,
+                                   ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> x_deltas,
+                                   ਅਚਲ hb_array_t<ਅਚਲ ਪੂਰਨ> y_deltas,
+                                   hb_array_t<ਤਾਰਕਿਕ> opt_indices, /*ਬਾਹਰਲਾ*/
+                                   ਦੁੱਗਣਾ tolerance,
 				   iup_scratch_t &scratch)
 {
-  unsigned n = contour_points.length;
-  if (opt_indices.length != n ||
-      x_deltas.length != n ||
-      y_deltas.length != n)
-    return false;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ n = contour_points.ਲੰਮਾਈ;
+  ਜੇ (opt_indices.ਲੰਮਾਈ != n ||
+      x_deltas.ਲੰਮਾਈ != n ||
+      y_deltas.ਲੰਮਾਈ != n)
+    ਵਾਪਸ ਝੂਠ;
 
-  if (unlikely (n > hb_iup_set_t::PAGE_BITS))
+  ਜੇ (unlikely (n > hb_iup_ਸੈੱਟ_t::ਪੰਨਾ_ਬਿੱਟ))
   {
     /* The forced and solution sets cannot hold this contour. Preserve
      * its explicit deltas instead of leaving every reference false. */
-    for (unsigned i = 0; i < n; i++)
-      opt_indices.arrayZ[i] = true;
-    return true;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
+      opt_indices.arrayZ[i] = ਸੱਚ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool all_within_tolerance = true;
-  double tolerance_sq = tolerance * tolerance;
-  for (unsigned i = 0; i < n; i++)
+  ਤਾਰਕਿਕ all_within_tolerance = ਸੱਚ;
+  ਦੁੱਗਣਾ tolerance_sq = tolerance * tolerance;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
   {
-    int dx = x_deltas.arrayZ[i];
-    int dy = y_deltas.arrayZ[i];
-    if ((double) dx * dx + (double) dy * dy > tolerance_sq)
+    ਪੂਰਨ dx = x_deltas.arrayZ[i];
+    ਪੂਰਨ dy = y_deltas.arrayZ[i];
+    ਜੇ ((ਦੁੱਗਣਾ) dx * dx + (ਦੁੱਗਣਾ) dy * dy > tolerance_sq)
     {
-      all_within_tolerance = false;
-      break;
+      all_within_tolerance = ਝੂਠ;
+      ਰੋਕੋ;
     }
   }
 
   /* If all are within tolerance distance, do nothing, opt_indices is
    * initilized to false */
-  if (all_within_tolerance)
-    return true;
+  ਜੇ (all_within_tolerance)
+    ਵਾਪਸ ਸੱਚ;
 
   /* If there's exactly one point, return it */
-  if (n == 1)
+  ਜੇ (n == 1)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = ਸੱਚ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* If all deltas are exactly the same, return just one (the first one) */
-  bool all_deltas_are_equal = true;
-  for (unsigned i = 1; i < n; i++)
-    if (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
+  ਤਾਰਕਿਕ all_deltas_are_equal = ਸੱਚ;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 1; i < n; i++)
+    ਜੇ (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
         y_deltas.arrayZ[i] != y_deltas.arrayZ[0])
     {
-      all_deltas_are_equal = false;
-      break;
+      all_deltas_are_equal = ਝੂਠ;
+      ਰੋਕੋ;
     }
 
-  if (all_deltas_are_equal)
+  ਜੇ (all_deltas_are_equal)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = ਸੱਚ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* else, solve the general problem using Dynamic Programming */
-  hb_iup_set_t forced_set;
-  _iup_contour_bound_forced_set (contour_points, x_deltas, y_deltas, forced_set, tolerance);
+  hb_iup_ਸੈੱਟ_t forced_ਸੈੱਟ;
+  iup_contour_bound_forced_ਸੈੱਟ (contour_points, x_deltas, y_deltas, forced_ਸੈੱਟ, tolerance);
 
-  hb_vector_t<unsigned> &costs = scratch.costs.reset ();
-  hb_vector_t<int> &chain = scratch.chain.reset ();
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> &costs = scratch.costs.reset ();
+  hb_ਸਦਿਸ਼_t<ਪੂਰਨ> &chain = scratch.chain.reset ();
 
-  if (!forced_set.is_empty ())
+  ਜੇ (!forced_ਸੈੱਟ.is_empty ())
   {
-    int k = n - 1 - forced_set.get_max ();
-    if (k < 0)
-      return false;
+    ਪੂਰਨ k = n - 1 - forced_ਸੈੱਟ.get_max ();
+    ਜੇ (k < 0)
+      ਵਾਪਸ ਝੂਠ;
 
-    hb_vector_t<int> &rot_x_deltas = scratch.rot_x_deltas.reset ();
-    hb_vector_t<int> &rot_y_deltas = scratch.rot_y_deltas.reset ();
-    contour_point_vector_t &rot_points = scratch.rot_points;
+    hb_ਸਦਿਸ਼_t<ਪੂਰਨ> &rot_x_deltas = scratch.rot_x_deltas.reset ();
+    hb_ਸਦਿਸ਼_t<ਪੂਰਨ> &rot_y_deltas = scratch.rot_y_deltas.reset ();
+    contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t &rot_points = scratch.rot_points;
     rot_points.reset ();
-    hb_iup_set_t rot_forced_set;
-    if (!rotate_array (contour_points, k, rot_points) ||
+    hb_iup_ਸੈੱਟ_t rot_forced_ਸੈੱਟ;
+    ਜੇ (!rotate_array (contour_points, k, rot_points) ||
         !rotate_array (x_deltas, k, rot_x_deltas) ||
         !rotate_array (y_deltas, k, rot_y_deltas) ||
-        !rotate_set (forced_set, k, n, rot_forced_set))
-      return false;
+        !rotate_ਸੈੱਟ (forced_ਸੈੱਟ, k, n, rot_forced_ਸੈੱਟ))
+      ਵਾਪਸ ਝੂਠ;
 
-    if (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
-                                   rot_forced_set, tolerance_sq, n,
+    ਜੇ (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
+                                   rot_forced_ਸੈੱਟ, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 
-    hb_iup_set_t solution;
-    int index = n - 1;
-    while (index != -1)
+    hb_iup_ਸੈੱਟ_t solution;
+    ਪੂਰਨ ਸੂਚਕਾਂਕ_2 = n - 1;
+    ਜਦੋਂ (ਸੂਚਕਾਂਕ_2 != -1)
     {
-      solution.add (index);
-      index = chain.arrayZ[index];
+      solution.ਜੋੜੋ (ਸੂਚਕਾਂਕ_2);
+      ਸੂਚਕਾਂਕ_2 = chain.arrayZ[ਸੂਚਕਾਂਕ_2];
     }
 
-    if (solution.is_empty () ||
-        forced_set.get_population () > solution.get_population ())
-      return false;
+    ਜੇ (solution.is_empty () ||
+        forced_ਸੈੱਟ.get_population () > solution.get_population ())
+      ਵਾਪਸ ਝੂਠ;
 
-    for (unsigned i : solution)
-      opt_indices.arrayZ[i] = true;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i : solution)
+      opt_indices.arrayZ[i] = ਸੱਚ;
 
-    hb_vector_t<bool> &rot_indices = scratch.rot_indices.reset ();
-    const hb_array_t<const bool> opt_indices_array (opt_indices.arrayZ, opt_indices.length);
-    if (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
-      return false;
+    hb_ਸਦਿਸ਼_t<ਤਾਰਕਿਕ> &rot_indices = scratch.rot_indices.reset ();
+    ਅਚਲ hb_array_t<ਅਚਲ ਤਾਰਕਿਕ> opt_indices_array (opt_indices.arrayZ, opt_indices.ਲੰਮਾਈ);
+    ਜੇ (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
+      ਵਾਪਸ ਝੂਠ;
 
-    for (unsigned i = 0; i < n; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
       opt_indices.arrayZ[i] = rot_indices.arrayZ[i];
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    hb_vector_t<int> repeat_x_deltas, repeat_y_deltas;
-    contour_point_vector_t repeat_points;
+    hb_ਸਦਿਸ਼_t<ਪੂਰਨ> repeat_x_deltas, repeat_y_deltas;
+    contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t repeat_points;
 
-    if (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
+    ਜੇ (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
                   !repeat_y_deltas.resize_dirty  (n * 2) ||
                   !repeat_points.resize_dirty  (n * 2)))
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 
-    unsigned contour_point_size = hb_static_size (contour_point_t);
-    for (unsigned i = 0; i < n; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ contour_ਬਿੰਦੂ_ਮਾਪ = hb_static_ਮਾਪ (contour_ਬਿੰਦੂ_t);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
     {
-      hb_memcpy ((void *) repeat_x_deltas.arrayZ, (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_x_deltas.arrayZ + n), (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((ਖਾਲੀ *) repeat_x_deltas.arrayZ, (ਅਚਲ ਖਾਲੀ *) x_deltas.arrayZ, n * ਆਕਾਰ (repeat_x_deltas[0]));
+      hb_memcpy ((ਖਾਲੀ *) (repeat_x_deltas.arrayZ + n), (ਅਚਲ ਖਾਲੀ *) x_deltas.arrayZ, n * ਆਕਾਰ (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_y_deltas.arrayZ, (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_y_deltas.arrayZ + n), (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((ਖਾਲੀ *) repeat_y_deltas.arrayZ, (ਅਚਲ ਖਾਲੀ *) y_deltas.arrayZ, n * ਆਕਾਰ (repeat_x_deltas[0]));
+      hb_memcpy ((ਖਾਲੀ *) (repeat_y_deltas.arrayZ + n), (ਅਚਲ ਖਾਲੀ *) y_deltas.arrayZ, n * ਆਕਾਰ (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_points.arrayZ, (const void *) contour_points.arrayZ, n * contour_point_size);
-      hb_memcpy ((void *) (repeat_points.arrayZ + n), (const void *) contour_points.arrayZ, n * contour_point_size);
+      hb_memcpy ((ਖਾਲੀ *) repeat_points.arrayZ, (ਅਚਲ ਖਾਲੀ *) contour_points.arrayZ, n * contour_ਬਿੰਦੂ_ਮਾਪ);
+      hb_memcpy ((ਖਾਲੀ *) (repeat_points.arrayZ + n), (ਅਚਲ ਖਾਲੀ *) contour_points.arrayZ, n * contour_ਬਿੰਦੂ_ਮਾਪ);
     }
 
-    if (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
-                                   forced_set, tolerance_sq, n,
+    ਜੇ (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
+                                   forced_ਸੈੱਟ, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 
-    unsigned best_cost = n + 1;
-    int len = costs.length;
-    hb_iup_set_t best_sol;
-    for (int start = n - 1; start < len; start++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਉੱਤਮ_ਲਾਗਤ = n + 1;
+    ਪੂਰਨ len = costs.ਲੰਮਾਈ;
+    hb_iup_ਸੈੱਟ_t ਉੱਤਮ_sol;
+    ਲਈ (ਪੂਰਨ ਸ਼ੁਰੂ = n - 1; ਸ਼ੁਰੂ < len; ਸ਼ੁਰੂ++)
     {
-      hb_iup_set_t solution;
-      int i = start;
-      int lookback = start - (int) n;
-      while (i > lookback)
+      hb_iup_ਸੈੱਟ_t solution;
+      ਪੂਰਨ i = ਸ਼ੁਰੂ;
+      ਪੂਰਨ lookback = ਸ਼ੁਰੂ - (ਪੂਰਨ) n;
+      ਜਦੋਂ (i > lookback)
       {
-        solution.add (i % n);
+        solution.ਜੋੜੋ (i % n);
         i = chain.arrayZ[i];
       }
-      if (i == lookback)
+      ਜੇ (i == lookback)
       {
-        unsigned cost_i = i < 0 ? 0 : costs.arrayZ[i];
-        unsigned cost = costs.arrayZ[start] - cost_i;
-        if (cost <= best_cost)
+        ਬਿਨਾਨਿਸ਼ਾਨੀ ਲਾਗਤ_i = i < 0 ? 0 : costs.arrayZ[i];
+        ਬਿਨਾਨਿਸ਼ਾਨੀ ਲਾਗਤ = costs.arrayZ[ਸ਼ੁਰੂ] - ਲਾਗਤ_i;
+        ਜੇ (ਲਾਗਤ <= ਉੱਤਮ_ਲਾਗਤ)
         {
-          best_sol = solution;
-          best_cost = cost;
+          ਉੱਤਮ_sol = solution;
+          ਉੱਤਮ_ਲਾਗਤ = ਲਾਗਤ;
         }
       }
     }
 
-    for (unsigned i = 0; i < n; i++)
-      if (best_sol.has (i))
-        opt_indices.arrayZ[i] = true;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < n; i++)
+      ਜੇ (ਉੱਤਮ_sol.has (i))
+        opt_indices.arrayZ[i] = ਸੱਚ;
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                         const hb_vector_t<int>& x_deltas,
-                         const hb_vector_t<int>& y_deltas,
-                         hb_vector_t<bool>& opt_indices, /* OUT */
+ਤਾਰਕਿਕ iup_delta_optimize (ਅਚਲ contour_ਬਿੰਦੂ_ਸਦਿਸ਼_t& contour_points,
+                         ਅਚਲ hb_ਸਦਿਸ਼_t<ਪੂਰਨ>& x_deltas,
+                         ਅਚਲ hb_ਸਦਿਸ਼_t<ਪੂਰਨ>& y_deltas,
+                         hb_ਸਦਿਸ਼_t<ਤਾਰਕਿਕ>& opt_indices, /*ਬਾਹਰਲਾ*/
 			 iup_scratch_t &scratch,
-                         double tolerance)
+                         ਦੁੱਗਣਾ tolerance)
 {
-  if (!opt_indices.resize (contour_points.length))
-      return false;
+  ਜੇ (!opt_indices.resize (contour_points.ਲੰਮਾਈ))
+      ਵਾਪਸ ਝੂਠ;
 
-  hb_vector_t<unsigned> &end_points = scratch.end_points.reset ();
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> &ਸਿਰਾ_points = scratch.ਸਿਰਾ_points.reset ();
 
-  unsigned count = contour_points.length;
-  if (unlikely (!end_points.alloc (count)))
-    return false;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = contour_points.ਲੰਮਾਈ;
+  ਜੇ (unlikely (!ਸਿਰਾ_points.alloc (ਗਿਣਤੀ_2)))
+    ਵਾਪਸ ਝੂਠ;
 
-  if (count < 4)
+  ਜੇ (ਗਿਣਤੀ_2 < 4)
   {
-    for (unsigned i = 0; i < count; i++)
-      end_points.push (i);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
+      ਸਿਰਾ_points.push (i);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    for (unsigned i = 0; i < count - 4; i++)
-      if (contour_points.arrayZ[i].is_end_point)
-        end_points.push (i);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2 - 4; i++)
+      ਜੇ (contour_points.arrayZ[i].is_ਸਿਰਾ_ਬਿੰਦੂ)
+        ਸਿਰਾ_points.push (i);
 
     /* phantom points */
-    for (unsigned i = count - 4; i < count; i++)
-      end_points.push (i);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਗਿਣਤੀ_2 - 4; i < ਗਿਣਤੀ_2; i++)
+      ਸਿਰਾ_points.push (i);
   }
 
-  if (end_points.in_error ()) return false;
+  ਜੇ (ਸਿਰਾ_points.ਵਿੱਚ_error ()) ਵਾਪਸ ਝੂਠ;
 
-  unsigned start = 0;
-  for (unsigned end : end_points)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ੁਰੂ = 0;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਿਰਾ : ਸਿਰਾ_points)
   {
-    unsigned len = end - start + 1;
-    if (!_iup_contour_optimize (contour_points.as_array ().sub_array (start, len),
-                                x_deltas.as_array ().sub_array (start, len),
-                                y_deltas.as_array ().sub_array (start, len),
-                                opt_indices.as_array ().sub_array (start, len),
+    ਬਿਨਾਨਿਸ਼ਾਨੀ len = ਸਿਰਾ - ਸ਼ੁਰੂ + 1;
+    ਜੇ (!_iup_contour_optimize (contour_points.as_array ().sub_array (ਸ਼ੁਰੂ, len),
+                                x_deltas.as_array ().sub_array (ਸ਼ੁਰੂ, len),
+                                y_deltas.as_array ().sub_array (ਸ਼ੁਰੂ, len),
+                                opt_indices.as_array ().sub_array (ਸ਼ੁਰੂ, len),
                                 tolerance,
 				scratch))
-      return false;
-    start = end + 1;
+      ਵਾਪਸ ਝੂਠ;
+    ਸ਼ੁਰੂ = ਸਿਰਾ + 1;
   }
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }

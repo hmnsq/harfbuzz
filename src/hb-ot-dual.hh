@@ -26,120 +26,120 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef HB_OT_DUAL_HH
-#define HB_OT_DUAL_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_DUAL_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_DUAL_HH
 
-#include "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
 
 
-namespace OT {
-namespace Layout {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ Layout {
 
-struct SmallTypes {
-  static constexpr unsigned size = 2;
-  using large_int = uint32_t;
-  using HBUINT = HBUINT16;
-  using HBLUINT = HBUINT16;
-  using HBGlyphID = HBGlyphID16;
-  using Offset = Offset16;
-  using LOffset = Offset16;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array16Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray16Of<Type>;
+ਬਣਤਰ SmallTypes {
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = 2;
+  ਵਰਤੋਂ large_int = uint32_t;
+  ਵਰਤੋਂ HBUINT = HBUINT16;
+  ਵਰਤੋਂ HBLUINT = HBUINT16;
+  ਵਰਤੋਂ HBGlyphID = HBGlyphID16;
+  ਵਰਤੋਂ ਵਿੱਥ_2 = Offset16;
+  ਵਰਤੋਂ LOffset = Offset16;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+  ਵਰਤੋਂ ਵਿੱਥ_ਮੰਜ਼ਿਲ = OT::Offset16_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, has_null>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+  ਵਰਤੋਂ LOffset_ਮੰਜ਼ਿਲ = OT::Offset16_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, has_null>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+  ਵਰਤੋਂ Array_ਦਾ = OT::Array16_ਦਾ<Type>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+  ਵਰਤੋਂ Sorted_Array_ਦਾ = OT::Sorted_Array16_ਦਾ<Type>;
 };
 
-struct MediumTypes {
-  static constexpr unsigned size = 3;
-  using large_int = uint64_t;
-  using HBUINT = HBUINT24;
-  using HBLUINT = HBUINT32;
-  using HBGlyphID = HBGlyphID24;
-  using Offset = Offset24;
+ਬਣਤਰ MediumTypes {
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = 3;
+  ਵਰਤੋਂ large_int = uint64_t;
+  ਵਰਤੋਂ HBUINT = HBUINT24;
+  ਵਰਤੋਂ HBLUINT = HBUINT32;
+  ਵਰਤੋਂ HBGlyphID = HBGlyphID24;
+  ਵਰਤੋਂ ਵਿੱਥ_2 = Offset24;
   /* Long offsets for large tables. */
-  using LOffset = Offset32;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset24To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset32To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array24Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray24Of<Type>;
+  ਵਰਤੋਂ LOffset = Offset32;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+  ਵਰਤੋਂ ਵਿੱਥ_ਮੰਜ਼ਿਲ = OT::Offset24_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, has_null>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type, ਕਿਸਮ_ਨਾਂ ਅਧਾਰ_Type=ਖਾਲੀ, ਤਾਰਕਿਕ has_null=ਸੱਚ>
+  ਵਰਤੋਂ LOffset_ਮੰਜ਼ਿਲ = OT::Offset32_ਮੰਜ਼ਿਲ<Type, ਅਧਾਰ_Type, has_null>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+  ਵਰਤੋਂ Array_ਦਾ = OT::Array24_ਦਾ<Type>;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Type>
+  ਵਰਤੋਂ Sorted_Array_ਦਾ = OT::Sorted_Array24_ਦਾ<Type>;
 };
 
 }
 }
 
 
-template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਹੇਠਲਾ_2, ਕਿਸਮ_ਨਾਂ ਉੱਤਲਾ_2>
+ਬਣਤਰ hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
-#ifndef HB_NO_BEYOND_64K
-    upper (face),
-#endif
-    lower (
-#ifndef HB_NO_BEYOND_64K
-	   upper.has_data () ? hb_face_get_empty () :
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਉੱਤਲਾ (face),
+#ਜੇ_ਅੰਤ
+    ਹੇਠਲਾ (
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+	   ਉੱਤਲਾ.has_ਅੰਕੜੇ () ? hb_face_get_ਖਾਲੀ_ਥਾਵਾਂ () :
+#ਜੇ_ਅੰਤ
 	   face)
   {}
 
-  bool has_data () const
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ
   {
-#ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
-#endif
-    return lower.has_data ();
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਜੇ (ਉੱਤਲਾ.has_ਅੰਕੜੇ ()) ਵਾਪਸ ਸੱਚ;
+#ਜੇ_ਅੰਤ
+    ਵਾਪਸ ਹੇਠਲਾ.has_ਅੰਕੜੇ ();
   }
 
-  bool has_upper_data () const
+  ਤਾਰਕਿਕ has_ਉੱਤਲਾ_ਅੰਕੜੇ () ਅਚਲ
   {
-#ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+    ਵਾਪਸ ਉੱਤਲਾ.has_ਅੰਕੜੇ ();
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ ਝੂਠ;
+#ਜੇ_ਅੰਤ
   }
 
-#ifndef HB_NO_BEYOND_64K
-  Upper upper;
-#endif
-  Lower lower;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+  ਉੱਤਲਾ_2 ਉੱਤਲਾ;
+#ਜੇ_ਅੰਤ
+  ਹੇਠਲਾ_2 ਹੇਠਲਾ;
 };
 
-template <typename Table>
-struct hb_table_accelerator_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸਾਰਣੀ_3>
+ਬਣਤਰ hb_ਸਾਰਣੀ_accelerator_t
 {
-  hb_table_accelerator_t (hb_face_t *face) :
-    table (hb_sanitize_context_t ().reference_table<Table> (face))
+  hb_ਸਾਰਣੀ_accelerator_t (hb_face_t *face) :
+    ਸਾਰਣੀ (hb_sanitize_context_t ().reference_ਸਾਰਣੀ<ਸਾਰਣੀ_3> (face))
   {}
-  ~hb_table_accelerator_t () { table.destroy (); }
+  ~hb_ਸਾਰਣੀ_accelerator_t () { ਸਾਰਣੀ.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  ਤਾਰਕਿਕ has_ਅੰਕੜੇ () ਅਚਲ { ਵਾਪਸ ਸਾਰਣੀ->has_ਅੰਕੜੇ (); }
 
-  hb_blob_ptr_t<Table> table;
+  hb_blob_ptr_t<ਸਾਰਣੀ_3> ਸਾਰਣੀ;
 };
 
-template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-					       hb_table_accelerator_t<Upper>>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਹੇਠਲਾ_2, ਕਿਸਮ_ਨਾਂ ਉੱਤਲਾ_2>
+ਬਣਤਰ hb_dual_ਸਾਰਣੀ_t : hb_dual_accelerator_t<hb_ਸਾਰਣੀ_accelerator_t<ਹੇਠਲਾ_2>,
+					       hb_ਸਾਰਣੀ_accelerator_t<ਉੱਤਲਾ_2>>
 {
-  hb_dual_table_t (hb_face_t *face) :
-    hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-			  hb_table_accelerator_t<Upper>> (face) {}
+  hb_dual_ਸਾਰਣੀ_t (hb_face_t *face) :
+    hb_dual_accelerator_t<hb_ਸਾਰਣੀ_accelerator_t<ਹੇਠਲਾ_2>,
+			  hb_ਸਾਰਣੀ_accelerator_t<ਉੱਤਲਾ_2>> (face) {}
 };
 
-#ifndef HB_NO_BEYOND_64K
-#define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
-#define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_BEYOND_64K
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DUAL_GET(accel, ਵਿਅੰਜਕ) ((accel).ਉੱਤਲਾ.has_ਅੰਕੜੇ () ? (accel).ਉੱਤਲਾ.ਵਿਅੰਜਕ : (accel).ਹੇਠਲਾ.ਵਿਅੰਜਕ)
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_DUAL_GET(accel, ਵਿਅੰਜਕ) ((accel).ਹੇਠਲਾ.ਵਿਅੰਜਕ)
+#ਜੇ_ਅੰਤ
 
 
-#endif  /* HB_OT_DUAL_HH */
+#ਜੇ_ਅੰਤ  /* HB_OT_DUAL_HH */

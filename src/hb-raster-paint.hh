@@ -24,109 +24,109 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_PAINT_HH
-#define HB_RASTER_PAINT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_RASTER_PAINT_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_RASTER_PAINT_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-raster-image.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+ਬਣਤਰ hb_raster_clip_t
 {
-  hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
-  unsigned width  = 0;
-  unsigned height = 0;
-  unsigned stride = 0;
+  hb_ਸਦਿਸ਼_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ  = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਉਚਾਈ = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ stride = 0;
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
-  bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  ਤਾਰਕਿਕ is_rect = ਸੱਚ;
+  ਪੂਰਨ rect_x0 = 0, rect_y0 = 0;
+  ਪੂਰਨ rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
-  unsigned min_x = 0, min_y = 0;
-  unsigned max_x = 0, max_y = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ min_x = 0, min_y = 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ max_x = 0, max_y = 0;
 
-  void init_full (unsigned w, unsigned h)
+  ਖਾਲੀ init_ਭਰਿਆ (ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਬਿਨਾਨਿਸ਼ਾਨੀ h)
   {
-    width = w;
-    height = h;
+    ਚੌੜਾਈ = w;
+    ਉਚਾਈ = h;
     stride = (w + 3u) & ~3u;
-    is_rect = true;
+    is_rect = ਸੱਚ;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (ਪੂਰਨ) w;
+    rect_y1 = (ਪੂਰਨ) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
     max_y = h;
   }
 
-  void update_bounds_from_rect ()
+  ਖਾਲੀ update_bounds_from_rect ()
   {
-    min_x = (unsigned) hb_max (rect_x0, 0);
-    min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    min_x = (ਬਿਨਾਨਿਸ਼ਾਨੀ) hb_max (rect_x0, 0);
+    min_y = (ਬਿਨਾਨਿਸ਼ਾਨੀ) hb_max (rect_y0, 0);
+    max_x = (ਬਿਨਾਨਿਸ਼ਾਨੀ) hb_max (hb_min (rect_x1, (ਪੂਰਨ) ਚੌੜਾਈ), 0);
+    max_y = (ਬਿਨਾਨਿਸ਼ਾਨੀ) hb_max (hb_min (rect_y1, (ਪੂਰਨ) ਉਚਾਈ), 0);
   }
 
-  uint8_t get_alpha (unsigned x, unsigned y) const
+  uint8_t get_alpha (ਬਿਨਾਨਿਸ਼ਾਨੀ x, ਬਿਨਾਨਿਸ਼ਾਨੀ y) ਅਚਲ
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    ਜੇ (is_rect)
+      ਵਾਪਸ ((ਪੂਰਨ) x >= rect_x0 && (ਪੂਰਨ) x < rect_x1 &&
+	      (ਪੂਰਨ) y >= rect_y0 && (ਪੂਰਨ) y < rect_y1) ? 255 : 0;
+    ਜੇ (x >= ਚੌੜਾਈ || y >= ਉਚਾਈ) ਵਾਪਸ 0;
+    ਜੇ (stride < ਚੌੜਾਈ) ਵਾਪਸ 0;
+    ਜੇ (ਉਚਾਈ && stride > (size_t) -1 / ਉਚਾਈ) ਵਾਪਸ 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    ਜੇ (!alpha.arrayZ || idx >= alpha.ਲੰਮਾਈ) ਵਾਪਸ 0;
+    ਵਾਪਸ alpha[idx];
   }
 
-  bool has_valid_alpha_mask () const
+  ਤਾਰਕਿਕ has_valid_alpha_ਨਕਾਬ () ਅਚਲ
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    ਜੇ (is_rect)
+      ਵਾਪਸ ਸੱਚ;
+    ਜੇ (!alpha.arrayZ || stride < ਚੌੜਾਈ)
+      ਵਾਪਸ ਝੂਠ;
+    ਜੇ (ਉਚਾਈ && stride > (size_t) -1 / ਉਚਾਈ)
+      ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ (size_t) stride * ਉਚਾਈ <= alpha.ਲੰਮਾਈ;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+ਬਣਤਰ hb_raster_paint_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
   /* Configuration */
-  hb_transform_t<>    base_transform     = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor     = 1.f;
-  float               y_scale_factor     = 1.f;
+  hb_transform_t<>    ਅਧਾਰ_transform     = {1, 0, 0, 1, 0, 0};
+  ਦਸ਼ਮਲਵ               x_scale_ਗੁਣਕ     = 1.f;
+  ਦਸ਼ਮਲਵ               y_scale_ਗੁਣਕ     = 1.f;
   hb_raster_extents_t fixed_extents      = {};
-  bool                has_extents  = false;
+  ਤਾਰਕਿਕ                has_extents  = ਝੂਠ;
   hb_color_t          foreground         = HB_COLOR (0, 0, 0, 255);
   hb_color_t          background         = HB_COLOR (0, 0, 0, 0);
-  unsigned            palette            = 0;
-  hb_map_t           *custom_palette     = nullptr;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ            palette            = 0;
+  hb_map_t           *custom_palette     = ਖਾਲੀ_ਸੂਚਕ;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_ਸਦਿਸ਼_t<hb_transform_t<>>     transform_ਢੇਰ;
+  hb_ਸਦਿਸ਼_t<hb_raster_clip_t>     clip_ਢੇਰ;
+  hb_ਸਦਿਸ਼_t<hb_raster_clip_t>     clip_cache;
+  hb_ਸਦਿਸ਼_t<hb_raster_image_t *>  surface_ਢੇਰ;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
-  hb_vector_t<hb_raster_image_t *>  surface_cache;
-  hb_vector_t<hb_color_stop_t>      scratch_color_stops;
+  hb_ਸਦਿਸ਼_t<hb_raster_image_t *>  surface_cache;
+  hb_ਸਦਿਸ਼_t<hb_color_stop_t>      scratch_color_stops;
 
   /* Internal rasterizer for clip-to-glyph */
-  hb_raster_draw_t *clip_rdr = nullptr;
+  hb_raster_draw_t *clip_rdr = ਖਾਲੀ_ਸੂਚਕ;
 
   /* Two work budgets for the current paint session, both reset by
    * hb_raster_paint_clear(), so per-node costs cannot multiply with the
@@ -143,147 +143,147 @@ struct hb_raster_paint_t
    *    surface once known and is internal (not exposed through the API);
    *    an unlimited outline policy disables it too. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
-  int64_t pixel_remaining = HB_BUDGET_RASTER_PIXELS;
+  int64_t budget_ਬਚਿਆ = HB_BUDGET_GLYPH;
+  int64_t pixel_ਬਚਿਆ = HB_BUDGET_RASTER_PIXELS;
 
   /* Helpers */
 
-  int64_t get_default_pixel_budget () const
+  int64_t get_default_pixel_budget () ਅਚਲ
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    ਵਾਪਸ hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
-		   fixed_extents.width * fixed_extents.height);
+		   fixed_extents.ਚੌੜਾਈ * fixed_extents.ਉਚਾਈ);
   }
 
-  void recharge_budget ()
+  ਖਾਲੀ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_ਬਚਿਆ = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
-    pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+    pixel_ਬਚਿਆ = budget == HB_BUDGET_UNLIMITED ? budget :
+		      (surface_ਢੇਰ.ਲੰਮਾਈ ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
   /* Returns whether the pixel operation should proceed.  Allows a single
    * overshoot past zero; callers skip work once the budget is spent. */
-  bool charge_work (int64_t work)
+  ਤਾਰਕਿਕ charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
-    pixel_remaining -= work;
-    return true;
+    ਜੇ (unlikely (pixel_ਬਚਿਆ < 0)) ਵਾਪਸ ਝੂਠ;
+    pixel_ਬਚਿਆ -= work;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
-  bool precharge_work (int64_t work)
+  ਤਾਰਕਿਕ precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    ਜੇ (unlikely (pixel_ਬਚਿਆ < work))
     {
-      pixel_remaining = -1;
-      return false;
+      pixel_ਬਚਿਆ = -1;
+      ਵਾਪਸ ਝੂਠ;
     }
-    pixel_remaining -= work;
-    return true;
+    pixel_ਬਚਿਆ -= work;
+    ਵਾਪਸ ਸੱਚ;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
-      img = surface_cache.pop ();
-    else
+    ਜੇ (surface_cache.ਲੰਮਾਈ)
+      img = surface_cache.ਕੱਢੋ ();
+    ਨਹੀਂਤਾਂ
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      ਜੇ (unlikely (!img)) ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    ਜੇ (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
     }
     img->clear ();
-    return img;
+    ਵਾਪਸ img;
   }
 
-  void release_surface (hb_raster_image_t *img)
+  ਖਾਲੀ release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    ਜੇ (!surface_cache.ਧੱਕੋ_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
-  hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
+  hb_raster_clip_t acquire_clip (ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਬਿਨਾਨਿਸ਼ਾਨੀ h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
-      clip = clip_cache.pop ();
-    clip.width = w;
-    clip.height = h;
+    ਜੇ (clip_cache.ਲੰਮਾਈ)
+      clip = clip_cache.ਕੱਢੋ ();
+    clip.ਚੌੜਾਈ = w;
+    clip.ਉਚਾਈ = h;
     clip.stride = (w + 3u) & ~3u;
-    clip.is_rect = false;
+    clip.is_rect = ਝੂਠ;
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    ਵਾਪਸ clip;
   }
 
-  void release_clip (hb_raster_clip_t &&clip)
+  ਖਾਲੀ release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    ਜੇ (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
-  void release_all_clips ()
+  ਖਾਲੀ release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    ਜਦੋਂ (clip_ਢੇਰ.ਲੰਮਾਈ)
+      release_clip (clip_ਢੇਰ.ਕੱਢੋ ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    ਵਾਪਸ surface_ਢੇਰ.ਲੰਮਾਈ ? surface_ਢੇਰ.ਪੂਛ () : ਖਾਲੀ_ਸੂਚਕ;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    ਵਾਪਸ clip_ਢੇਰ.ਪੂਛ ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    ਜੇ (unlikely (!transform_ਢੇਰ.ਲੰਮਾਈ))
+      ਵਾਪਸ {1, 0, 0, 1, 0, 0};
+    ਵਾਪਸ transform_ਢੇਰ.ਪੂਛ ();
   }
 
-  void apply_scale_factor (hb_transform_t<> &t) const
+  ਖਾਲੀ apply_scale_ਗੁਣਕ (hb_transform_t<> &t) ਅਚਲ
   {
-    t.xx /= x_scale_factor;
-    t.xy /= x_scale_factor;
-    t.x0 /= x_scale_factor;
-    t.yx /= y_scale_factor;
-    t.yy /= y_scale_factor;
-    t.y0 /= y_scale_factor;
+    t.xx /= x_scale_ਗੁਣਕ;
+    t.xy /= x_scale_ਗੁਣਕ;
+    t.x0 /= x_scale_ਗੁਣਕ;
+    t.yx /= y_scale_ਗੁਣਕ;
+    t.yy /= y_scale_ਗੁਣਕ;
+    t.y0 /= y_scale_ਗੁਣਕ;
   }
 
   hb_transform_t<> current_effective_transform ()
   {
     hb_transform_t<> t = current_transform ();
-    apply_scale_factor (t);
-    return t;
+    apply_scale_ਗੁਣਕ (t);
+    ਵਾਪਸ t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  ਤਾਰਕਿਕ fetch_color_stops (hb_color_ਸਤਰ_t *color_ਸਤਰ)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_color_ਸਤਰ_get_color_stops (color_ਸਤਰ, 0, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    ਜੇ (unlikely (!ਗਿਣਤੀ_2 || !scratch_color_stops.resize (ਗਿਣਤੀ_2)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    hb_color_ਸਤਰ_get_color_stops (color_ਸਤਰ, 0, &ਗਿਣਤੀ_2, scratch_color_stops.arrayZ);
+    ਵਾਪਸ ਸੱਚ;
   }
 };
 
 
-#endif /* HB_RASTER_PAINT_HH */
+#ਜੇ_ਅੰਤ /* HB_RASTER_PAINT_HH */

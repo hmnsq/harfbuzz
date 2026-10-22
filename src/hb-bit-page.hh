@@ -25,10 +25,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_PAGE_HH
-#define HB_BIT_PAGE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 
 /* Compiler-assisted vectorization. */
@@ -36,182 +36,182 @@
 /* Type behaving similar to vectorized vars defined using __attribute__((vector_size(...))),
  * basically a fixed-size bitset. We can't use the compiler type because hb_vector_t cannot
  * guarantee alignment requirements. */
-template <typename elt_t, unsigned int byte_size>
-struct hb_vector_size_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ elt_t, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ byte_ਮਾਪ>
+ਬਣਤਰ hb_ਸਦਿਸ਼_ਮਾਪ_t
 {
-  elt_t& operator [] (unsigned int i) { return v[i]; }
-  const elt_t& operator [] (unsigned int i) const { return v[i]; }
+  elt_t& ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) { ਵਾਪਸ v[i]; }
+  ਅਚਲ elt_t& ਸੰਚਾਲਕ [] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i) ਅਚਲ { ਵਾਪਸ v[i]; }
 
-  void init0 ()
+  ਖਾਲੀ init0 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
       v[i] = 0;
   }
-  void init1 ()
+  ਖਾਲੀ init1 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
       v[i] = (elt_t) -1;
   }
 
-  template <typename Op>
-  hb_vector_size_t process (const Op& op) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Op>
+  hb_ਸਦਿਸ਼_ਮਾਪ_t process (ਅਚਲ Op& op) ਅਚਲ
   {
-    hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    hb_ਸਦਿਸ਼_ਮਾਪ_t r;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
       r.v[i] = op (v[i]);
-    return r;
+    ਵਾਪਸ r;
   }
-  template <typename Op>
-  hb_vector_size_t process (const Op& op, const hb_vector_size_t &o) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Op>
+  hb_ਸਦਿਸ਼_ਮਾਪ_t process (ਅਚਲ Op& op, ਅਚਲ hb_ਸਦਿਸ਼_ਮਾਪ_t &o) ਅਚਲ
   {
-    hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    hb_ਸਦਿਸ਼_ਮਾਪ_t r;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
       r.v[i] = op (v[i], o.v[i]);
-    return r;
+    ਵਾਪਸ r;
   }
-  hb_vector_size_t operator | (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_or, o); }
-  hb_vector_size_t operator & (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_and, o); }
-  hb_vector_size_t operator ^ (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_xor, o); }
-  hb_vector_size_t operator ~ () const
-  { return process (hb_bitwise_neg); }
+  hb_ਸਦਿਸ਼_ਮਾਪ_t ਸੰਚਾਲਕ | (ਅਚਲ hb_ਸਦਿਸ਼_ਮਾਪ_t &o) ਅਚਲ
+  { ਵਾਪਸ process (hb_bitwise_or, o); }
+  hb_ਸਦਿਸ਼_ਮਾਪ_t ਸੰਚਾਲਕ & (ਅਚਲ hb_ਸਦਿਸ਼_ਮਾਪ_t &o) ਅਚਲ
+  { ਵਾਪਸ process (hb_bitwise_and, o); }
+  hb_ਸਦਿਸ਼_ਮਾਪ_t ਸੰਚਾਲਕ ^ (ਅਚਲ hb_ਸਦਿਸ਼_ਮਾਪ_t &o) ਅਚਲ
+  { ਵਾਪਸ process (hb_bitwise_xor, o); }
+  hb_ਸਦਿਸ਼_ਮਾਪ_t ਸੰਚਾਲਕ ~ () ਅਚਲ
+  { ਵਾਪਸ process (hb_bitwise_neg); }
 
-  operator bool () const
+  ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i])
-	return true;
-    return false;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
+      ਜੇ (v[i])
+	ਵਾਪਸ ਸੱਚ;
+    ਵਾਪਸ ਝੂਠ;
   }
-  operator unsigned int () const
+  ਸੰਚਾਲਕ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ () ਅਚਲ
   {
-    unsigned int r = 0;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ r = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
       r += hb_popcount (v[i]);
-    return r;
+    ਵਾਪਸ r;
   }
-  bool operator == (const hb_vector_size_t &o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਸਦਿਸ਼_ਮਾਪ_t &o) ਅਚਲ
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i] != o.v[i])
-	return false;
-    return true;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (v); i++)
+      ਜੇ (v[i] != o.v[i])
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  hb_array_t<const elt_t> iter () const
-  { return hb_array (v); }
+  hb_array_t<ਅਚਲ elt_t> iter () ਅਚਲ
+  { ਵਾਪਸ hb_array (v); }
 
-  private:
-  static_assert (0 == byte_size % sizeof (elt_t), "");
-  elt_t v[byte_size / sizeof (elt_t)];
+  ਨਿਜੀ:
+  static_assert (0 == byte_ਮਾਪ % ਆਕਾਰ (elt_t), "");
+  elt_t v[byte_ਮਾਪ / ਆਕਾਰ (elt_t)];
 };
 
 
-struct hb_bit_page_t
+ਬਣਤਰ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t
 {
-  hb_bit_page_t () { init0 (); }
+  hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t () { init0 (); }
 
-  void init0 () { v.init0 (); population = 0; }
-  void init1 () { v.init1 (); population = PAGE_BITS; }
+  ਖਾਲੀ init0 () { v.init0 (); population = 0; }
+  ਖਾਲੀ init1 () { v.init1 (); population = ਪੰਨਾ_ਬਿੱਟ; }
 
-  void dirty () { population = UINT_MAX; }
+  ਖਾਲੀ dirty () { population = UINT_MAX; }
 
-  static inline constexpr unsigned len ()
-  { return ARRAY_LENGTH_CONST (v); }
+  ਸਥਿਰ ਸਤਰਅੰਦਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ len ()
+  { ਵਾਪਸ ARRAY_ਲੰਮਾਈ_CONST (v); }
 
-  operator bool () const { return !is_empty (); }
-  bool is_empty () const
+  ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ !is_empty (); }
+  ਤਾਰਕਿਕ is_empty () ਅਚਲ
   {
-    if (has_population ()) return !population;
-    bool empty = !v;
-    if (empty) population = 0;
-    return empty;
+    ਜੇ (has_population ()) ਵਾਪਸ !population;
+    ਤਾਰਕਿਕ ਖਾਲੀ_ਥਾਵਾਂ_2 = !v;
+    ਜੇ (ਖਾਲੀ_ਥਾਵਾਂ_2) population = 0;
+    ਵਾਪਸ ਖਾਲੀ_ਥਾਵਾਂ_2;
   }
-  uint32_t hash () const
+  uint32_t hash () ਅਚਲ
   {
-    return hb_bytes_t ((const char *) &v, sizeof (v)).hash ();
+    ਵਾਪਸ hb_ਬਾਈਟਾਂ_t ((ਅਚਲ ਅੱਖਰ *) &v, ਆਕਾਰ (v)).hash ();
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); dirty (); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { elt (g) |= bits; dirty (); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); dirty (); }
-  void del_bits (hb_codepoint_t g, uint64_t bits) { elt (g) &= ~bits; dirty (); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  ਖਾਲੀ ਜੋੜੋ (hb_codepoint_t g) { elt (g) |= ਨਕਾਬ (g); dirty (); }
+  ਖਾਲੀ ਜੋੜੋ_ਬਿੱਟ (hb_codepoint_t g, uint64_t ਬਿੱਟ) { elt (g) |= ਬਿੱਟ; dirty (); }
+  ਖਾਲੀ del (hb_codepoint_t g) { elt (g) &= ~ਨਕਾਬ (g); dirty (); }
+  ਖਾਲੀ del_ਬਿੱਟ (hb_codepoint_t g, uint64_t ਬਿੱਟ) { elt (g) &= ~ਬਿੱਟ; dirty (); }
+  ਖਾਲੀ ਸੈੱਟ (hb_codepoint_t g, ਤਾਰਕਿਕ value) { ਜੇ (value) ਜੋੜੋ (g); ਨਹੀਂਤਾਂ del (g); }
+  ਤਾਰਕਿਕ get (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ elt (g) & ਨਕਾਬ (g); }
+  ਤਾਰਕਿਕ may_have (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ [] (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ get (g); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ () (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ get (g); }
+  ਤਾਰਕਿਕ has (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
-  {
-    elt_t *la = &elt (a);
-    elt_t *lb = &elt (b);
-    if (la == lb)
-      *la |= (mask (b) << 1) - mask(a);
-    else if (likely (la < lb))
-    {
-      *la |= ~(mask (a) - 1llu);
-      la++;
-
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
-
-      *lb |= ((mask (b) << 1) - 1llu);
-    }
-    else
-      return;
-    dirty ();
-  }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  ਖਾਲੀ ਜੋੜੋ_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la &= ~((mask (b) << 1llu) - mask(a));
-    else if (likely (la < lb))
+    ਜੇ (la == lb)
+      *la |= (ਨਕਾਬ (b) << 1) - ਨਕਾਬ(a);
+    ਨਹੀਂਤਾਂ ਜੇ (likely (la < lb))
     {
-      *la &= mask (a) - 1;
+      *la |= ~(ਨਕਾਬ (a) - 1llu);
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (ਅੱਖਰ *) lb - (ਅੱਖਰ *) la);
 
-      *lb &= ~((mask (b) << 1) - 1llu);
+      *lb |= ((ਨਕਾਬ (b) << 1) - 1llu);
     }
-    else
-      return;
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ;
     dirty ();
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  ਖਾਲੀ del_range (hb_codepoint_t a, hb_codepoint_t b)
+  {
+    elt_t *la = &elt (a);
+    elt_t *lb = &elt (b);
+    ਜੇ (la == lb)
+      *la &= ~((ਨਕਾਬ (b) << 1llu) - ਨਕਾਬ(a));
+    ਨਹੀਂਤਾਂ ਜੇ (likely (la < lb))
+    {
+      *la &= ਨਕਾਬ (a) - 1;
+      la++;
+
+      hb_memset (la, 0, (ਅੱਖਰ *) lb - (ਅੱਖਰ *) la);
+
+      *lb &= ~((ਨਕਾਬ (b) << 1) - 1llu);
+    }
+    ਨਹੀਂਤਾਂ
+      ਵਾਪਸ;
+    dirty ();
+  }
+  ਖਾਲੀ ਸੈੱਟ_range (hb_codepoint_t a, hb_codepoint_t b, ਤਾਰਕਿਕ v)
+  { ਜੇ (v) ਜੋੜੋ_range (a, b); ਨਹੀਂਤਾਂ del_range (a, b); }
 
 
   // Writes out page values to the array p. Returns the number of values
   // written. At most size codepoints will be written.
-  unsigned int write (uint32_t        base,
-		      unsigned int    start_value,
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲਿਖ (uint32_t        ਅਧਾਰ,
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਸ਼ੁਰੂ_ਮੁੱਲ,
 		      hb_codepoint_t *p,
-		      unsigned int    size) const
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ) ਅਚਲ
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_v = ਸ਼ੁਰੂ_ਮੁੱਲ / ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ = ਸ਼ੁਰੂ_ਮੁੱਲ & ELT_ਨਕਾਬ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ_v; i < len () && ਗਿਣਤੀ_2 < ਮਾਪ; i++)
     {
-      elt_t bits = v[i];
-      uint32_t v_base = base | (i * ELT_BITS);
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      elt_t ਬਿੱਟ = v[i];
+      uint32_t v_ਅਧਾਰ = ਅਧਾਰ | (i * ELT_ਬਿੱਟ);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ; j < ELT_ਬਿੱਟ && ਗਿਣਤੀ_2 < ਮਾਪ; j++)
       {
-	if ((elt_t(1) << j) & bits) {
-	  *p++ = v_base | j;
-	  count++;
+	ਜੇ ((elt_t(1) << j) & ਬਿੱਟ) {
+	  *p++ = v_ਅਧਾਰ | j;
+	  ਗਿਣਤੀ_2++;
 	}
       }
-      start_bit = 0;
+      ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ = 0;
     }
-    return count;
+    ਵਾਪਸ ਗਿਣਤੀ_2;
   }
 
   // Writes out the values NOT in this page to the array p. Returns the
@@ -220,197 +220,197 @@ struct hb_bit_page_t
   // that should be written (if not present in this page). This is used to fill
   // any missing value gaps between this page and the previous page, if any.
   // next_value is updated to one more than the last value present in this page.
-  unsigned int write_inverted (uint32_t        base,
-			       unsigned int    start_value,
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ write_inverted (uint32_t        ਅਧਾਰ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਸ਼ੁਰੂ_ਮੁੱਲ,
 			       hb_codepoint_t *p,
-			       unsigned int    size,
-			       hb_codepoint_t *next_value) const
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ,
+			       hb_codepoint_t *ਅਗਲਾ_ਮੁੱਲ) ਅਚਲ
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_v = ਸ਼ੁਰੂ_ਮੁੱਲ / ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ = ਸ਼ੁਰੂ_ਮੁੱਲ & ELT_ਨਕਾਬ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = ਸ਼ੁਰੂ_v; i < len () && ਗਿਣਤੀ_2 < ਮਾਪ; i++)
     {
-      elt_t bits = v[i];
-      uint32_t v_offset = i * ELT_BITS;
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      elt_t ਬਿੱਟ = v[i];
+      uint32_t v_ਵਿੱਥ = i * ELT_ਬਿੱਟ;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ; j < ELT_ਬਿੱਟ && ਗਿਣਤੀ_2 < ਮਾਪ; j++)
       {
-	if ((elt_t(1) << j) & bits)
+	ਜੇ ((elt_t(1) << j) & ਬਿੱਟ)
 	{
-	  hb_codepoint_t value = base | v_offset | j;
+	  hb_codepoint_t value = ਅਧਾਰ | v_ਵਿੱਥ | j;
 	  // Emit all the missing values from next_value up to value - 1.
-	  for (hb_codepoint_t k = *next_value; k < value && count < size; k++)
+	  ਲਈ (hb_codepoint_t k = *ਅਗਲਾ_ਮੁੱਲ; k < value && ਗਿਣਤੀ_2 < ਮਾਪ; k++)
 	  {
 	    *p++ = k;
-	    count++;
+	    ਗਿਣਤੀ_2++;
 	  }
 	  // Skip over this value;
-	  *next_value = value + 1;
+	  *ਅਗਲਾ_ਮੁੱਲ = value + 1;
 	}
       }
-      start_bit = 0;
+      ਸ਼ੁਰੂ_ਦੋਆਧਾਰੀ_ਅੰਕ = 0;
     }
-    return count;
+    ਵਾਪਸ ਗਿਣਤੀ_2;
   }
 
-  bool operator == (const hb_bit_page_t &other) const { return is_equal (other); }
-  bool is_equal (const hb_bit_page_t &other) const { return v == other.v; }
-  bool intersects (const hb_bit_page_t &other) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &other) ਅਚਲ { ਵਾਪਸ is_equal (other); }
+  ਤਾਰਕਿਕ is_equal (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &other) ਅਚਲ { ਵਾਪਸ v == other.v; }
+  ਤਾਰਕਿਕ intersects (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &other) ਅਚਲ
   {
-    for (unsigned i = 0; i < len (); i++)
-      if (v[i] & other.v[i])
-	return true;
-    return false;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len (); i++)
+      ਜੇ (v[i] & other.v[i])
+	ਵਾਪਸ ਸੱਚ;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool may_intersect (const hb_bit_page_t &other) const
-  { return intersects (other); }
+  ਤਾਰਕਿਕ may_intersect (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &other) ਅਚਲ
+  { ਵਾਪਸ intersects (other); }
 
-  bool operator <= (const hb_bit_page_t &larger_page) const { return is_subset (larger_page); }
-  bool is_subset (const hb_bit_page_t &larger_page) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ <= (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &larger_ਪੰਨਾ) ਅਚਲ { ਵਾਪਸ is_subset (larger_ਪੰਨਾ); }
+  ਤਾਰਕਿਕ is_subset (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &larger_ਪੰਨਾ) ਅਚਲ
   {
-    if (has_population () && larger_page.has_population () &&
-	population > larger_page.population)
-      return false;
+    ਜੇ (has_population () && larger_ਪੰਨਾ.has_population () &&
+	population > larger_ਪੰਨਾ.population)
+      ਵਾਪਸ ਝੂਠ;
 
-    for (unsigned i = 0; i < len (); i++)
-      if (~larger_page.v[i] & v[i])
-	return false;
-    return true;
-  }
-
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned get_population () const
-  {
-    if (has_population ()) return population;
-    return population = v;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < len (); i++)
+      ਜੇ (~larger_ਪੰਨਾ.v[i] & v[i])
+	ਵਾਪਸ ਝੂਠ;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  ਤਾਰਕਿਕ has_population () ਅਚਲ { ਵਾਪਸ population != UINT_MAX; }
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_population () ਅਚਲ
   {
-    unsigned int m = (*codepoint + 1) & MASK;
-    if (!m)
+    ਜੇ (has_population ()) ਵਾਪਸ population;
+    ਵਾਪਸ population = v;
+  }
+
+  ਤਾਰਕਿਕ next (hb_codepoint_t *codepoint) ਅਚਲ
+  {
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ m = (*codepoint + 1) & ਨਕਾਬ_2;
+    ਜੇ (!m)
     {
       *codepoint = INVALID;
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = m / ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = m & ELT_ਨਕਾਬ;
 
-    const elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
-    for (const elt_t *p = &vv; i < len (); p = ((const elt_t *) &v[0]) + (++i))
-      if (*p)
+    ਅਚਲ elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
+    ਲਈ (ਅਚਲ elt_t *p = &vv; i < len (); p = ((ਅਚਲ elt_t *) &v[0]) + (++i))
+      ਜੇ (*p)
       {
-	*codepoint = i * ELT_BITS + elt_get_min (*p);
-	return true;
+	*codepoint = i * ELT_ਬਿੱਟ + elt_get_min (*p);
+	ਵਾਪਸ ਸੱਚ;
       }
 
     *codepoint = INVALID;
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  ਤਾਰਕਿਕ ਪਿਛਲਾ (hb_codepoint_t *codepoint) ਅਚਲ
   {
-    unsigned int m = (*codepoint - 1) & MASK;
-    if (m == MASK)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ m = (*codepoint - 1) & ਨਕਾਬ_2;
+    ਜੇ (m == ਨਕਾਬ_2)
     {
       *codepoint = INVALID;
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = m / ELT_ਬਿੱਟ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = m & ELT_ਨਕਾਬ;
 
     /* Fancy mask to avoid shifting by elt_t bitsize, which is undefined. */
-    const elt_t mask = j < 8 * sizeof (elt_t) - 1 ?
+    ਅਚਲ elt_t ਨਕਾਬ = j < 8 * ਆਕਾਰ (elt_t) - 1 ?
 		       ((elt_t (1) << (j + 1)) - 1) :
 		       (elt_t) -1;
-    const elt_t vv = v[i] & mask;
-    const elt_t *p = &vv;
-    while (true)
+    ਅਚਲ elt_t vv = v[i] & ਨਕਾਬ;
+    ਅਚਲ elt_t *p = &vv;
+    ਜਦੋਂ (ਸੱਚ)
     {
-      if (*p)
+      ਜੇ (*p)
       {
-	*codepoint = i * ELT_BITS + elt_get_max (*p);
-	return true;
+	*codepoint = i * ELT_ਬਿੱਟ + elt_get_max (*p);
+	ਵਾਪਸ ਸੱਚ;
       }
-      if ((int) i <= 0) break;
+      ਜੇ ((ਪੂਰਨ) i <= 0) ਰੋਕੋ;
       p = &v[--i];
     }
 
     *codepoint = INVALID;
-    return false;
+    ਵਾਪਸ ਝੂਠ;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ਅਚਲ
   {
-    for (unsigned int i = 0; i < len (); i++)
-      if (v[i])
-	return i * ELT_BITS + elt_get_min (v[i]);
-    return INVALID;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < len (); i++)
+      ਜੇ (v[i])
+	ਵਾਪਸ i * ELT_ਬਿੱਟ + elt_get_min (v[i]);
+    ਵਾਪਸ INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ਅਚਲ
   {
-    for (int i = len () - 1; i >= 0; i--)
-      if (v[i])
-	return i * ELT_BITS + elt_get_max (v[i]);
-    return INVALID;
+    ਲਈ (ਪੂਰਨ i = len () - 1; i >= 0; i--)
+      ਜੇ (v[i])
+	ਵਾਪਸ i * ELT_ਬਿੱਟ + elt_get_max (v[i]);
+    ਵਾਪਸ INVALID;
   }
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ਬਣਤਰ iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const hb_bit_page_t &s_ = Null (hb_bit_page_t), bool init = true) : s (&s_), v (INVALID)
+    ਸਥਿਰ constexpr ਤਾਰਕਿਕ is_sorted_iterator = ਸੱਚ;
+    iter_t (ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t &s_ = Null (hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t), ਤਾਰਕਿਕ init = ਸੱਚ) : s (&s_), v (INVALID)
     {
-      if (init)
+      ਜੇ (init)
 	v = s->get_min ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () {
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ਅਚਲ { ਵਾਪਸ v; }
+    ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ v != INVALID; }
+    ਖਾਲੀ __next__ () {
        s->next (&v);
     }
-    void __prev__ () { s->previous (&v); }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    ਖਾਲੀ __prev__ () { s->ਪਿਛਲਾ (&v); }
+    iter_t ਸਿਰਾ () ਅਚਲ { ਵਾਪਸ iter_t (*s, ਝੂਠ); }
+    ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ iter_t& o) ਅਚਲ
+    { ਵਾਪਸ v != o.v; }
 
-    protected:
-    const hb_bit_page_t *s;
+    ਸੁਰੱਖਿਅਤ:
+    ਅਚਲ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_ਪੰਨਾ_t *s;
     hb_codepoint_t v;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ਅਚਲ { ਵਾਪਸ iter_t (*ਇਹ); }
+  ਸੰਚਾਲਕ iter_t () ਅਚਲ { ਵਾਪਸ iter (); }
 
-  static constexpr hb_codepoint_t INVALID = HB_SET_VALUE_INVALID;
+  ਸਥਿਰ constexpr hb_codepoint_t INVALID = HB_ਸੈੱਟ_ਮੁੱਲ_INVALID;
 
-  typedef unsigned long long elt_t;
-  static constexpr unsigned PAGE_BITS_LOG_2 = 9; // 512 bits
-  static constexpr unsigned PAGE_BITS = 1 << PAGE_BITS_LOG_2;
-  static_assert (1 << PAGE_BITS_LOG_2 == PAGE_BITS, "");
-  static_assert ((PAGE_BITS & ((PAGE_BITS) - 1)) == 0, "");
-  static constexpr unsigned PAGE_BITMASK = PAGE_BITS - 1;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਲੰਮਾ elt_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੰਨਾ_ਬਿੱਟ_LOG_2 = 9; // 512 bits
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੰਨਾ_ਬਿੱਟ = 1 << ਪੰਨਾ_ਬਿੱਟ_LOG_2;
+  static_assert (1 << ਪੰਨਾ_ਬਿੱਟ_LOG_2 == ਪੰਨਾ_ਬਿੱਟ, "");
+  static_assert ((ਪੰਨਾ_ਬਿੱਟ & ((ਪੰਨਾ_ਬਿੱਟ) - 1)) == 0, "");
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੰਨਾ_BITMASK = ਪੰਨਾ_ਬਿੱਟ - 1;
 
-  static unsigned int elt_get_min (const elt_t &elt) { return hb_ctz (elt); }
-  static unsigned int elt_get_max (const elt_t &elt) { return hb_bit_storage (elt) - 1; }
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ elt_get_min (ਅਚਲ elt_t &elt) { ਵਾਪਸ hb_ctz (elt); }
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ elt_get_max (ਅਚਲ elt_t &elt) { ਵਾਪਸ hb_ਦੋਆਧਾਰੀ_ਅੰਕ_storage (elt) - 1; }
 
-  typedef hb_vector_size_t<elt_t, PAGE_BITS / 8> vector_t;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_ਸਦਿਸ਼_ਮਾਪ_t<elt_t, ਪੰਨਾ_ਬਿੱਟ / 8> ਸਦਿਸ਼_t;
 
-  static constexpr unsigned ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ELT_ਬਿੱਟ = ਆਕਾਰ (elt_t) * 8;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ELT_ਨਕਾਬ = ELT_ਬਿੱਟ - 1;
 
-  static constexpr unsigned BITS = sizeof (vector_t) * 8;
-  static constexpr unsigned MASK = BITS - 1;
-  static_assert ((unsigned) PAGE_BITS == (unsigned) BITS, "");
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਿੱਟ_2 = ਆਕਾਰ (ਸਦਿਸ਼_t) * 8;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ ਨਕਾਬ_2 = ਬਿੱਟ_2 - 1;
+  static_assert ((ਬਿਨਾਨਿਸ਼ਾਨੀ) ਪੰਨਾ_ਬਿੱਟ == (ਬਿਨਾਨਿਸ਼ਾਨੀ) ਬਿੱਟ_2, "");
 
-  elt_t &elt (hb_codepoint_t g) { return v[(g & MASK) / ELT_BITS]; }
-  const elt_t& elt (hb_codepoint_t g) const { return v[(g & MASK) / ELT_BITS]; }
-  static constexpr elt_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  elt_t &elt (hb_codepoint_t g) { ਵਾਪਸ v[(g & ਨਕਾਬ_2) / ELT_ਬਿੱਟ]; }
+  ਅਚਲ elt_t& elt (hb_codepoint_t g) ਅਚਲ { ਵਾਪਸ v[(g & ਨਕਾਬ_2) / ELT_ਬਿੱਟ]; }
+  ਸਥਿਰ constexpr elt_t ਨਕਾਬ (hb_codepoint_t g) { ਵਾਪਸ elt_t (1) << (g & ELT_ਨਕਾਬ); }
 
-  mutable unsigned population;
-  vector_t v;
+  ਬਦਲਣਯੋਗ ਬਿਨਾਨਿਸ਼ਾਨੀ population;
+  ਸਦਿਸ਼_t v;
 };
 
 
-#endif /* HB_BIT_PAGE_HH */
+#ਜੇ_ਅੰਤ /* HB_BIT_PAGE_HH */

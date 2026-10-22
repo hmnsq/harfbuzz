@@ -1,5 +1,5 @@
 
-#line 1 "hb-ot-shaper-myanmar-machine.rl"
+#ਸਤਰ 1 "hb-ot-shaper-myanmar-machine.rl"
 /*
  * Copyright © 2011,2012  Google, Inc.
  *
@@ -26,60 +26,60 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_MYANMAR_MACHINE_HH
-#define HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPER_MYANMAR_MACHINE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
-#define myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
-#define myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
 
-using myanmar_category_t = unsigned;
-using myanmar_position_t = ot_position_t;
+ਵਰਤੋਂ myanmar_category_t = ਬਿਨਾਨਿਸ਼ਾਨੀ;
+ਵਰਤੋਂ myanmar_position_t = ot_position_t;
 
-#define M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
 
-enum myanmar_syllable_type_t {
+ਗਿਣਤੀ myanmar_syllable_type_t {
   myanmar_consonant_syllable,
   myanmar_broken_cluster,
   myanmar_non_myanmar_cluster,
 };
 
 
-#line 51 "hb-ot-shaper-myanmar-machine.hh"
-#define myanmar_syllable_machine_ex_A 9u
-#define myanmar_syllable_machine_ex_As 32u
-#define myanmar_syllable_machine_ex_C 1u
-#define myanmar_syllable_machine_ex_CS 18u
-#define myanmar_syllable_machine_ex_DB 3u
-#define myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
-#define myanmar_syllable_machine_ex_GB 10u
-#define myanmar_syllable_machine_ex_H 4u
-#define myanmar_syllable_machine_ex_IV 2u
-#define myanmar_syllable_machine_ex_MH 35u
-#define myanmar_syllable_machine_ex_ML 41u
-#define myanmar_syllable_machine_ex_MR 36u
-#define myanmar_syllable_machine_ex_MW 37u
-#define myanmar_syllable_machine_ex_MY 38u
-#define myanmar_syllable_machine_ex_PT 39u
-#define myanmar_syllable_machine_ex_Ra 15u
-#define myanmar_syllable_machine_ex_SM 8u
-#define myanmar_syllable_machine_ex_SMPst 57u
-#define myanmar_syllable_machine_ex_VAbv 20u
-#define myanmar_syllable_machine_ex_VBlw 21u
-#define myanmar_syllable_machine_ex_VPre 22u
-#define myanmar_syllable_machine_ex_VPst 23u
-#define myanmar_syllable_machine_ex_VS 40u
-#define myanmar_syllable_machine_ex_ZWJ 6u
-#define myanmar_syllable_machine_ex_ZWNJ 5u
+#ਸਤਰ 51 "hb-ot-shaper-myanmar-machine.hh"
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_A 9u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_As 32u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_C 1u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_CS 18u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_DB 3u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_GB 10u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_H 4u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_IV 2u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_MH 35u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_ML 41u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_MR 36u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_MW 37u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_MY 38u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_PT 39u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_Ra 15u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_SM 8u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_SMPst 57u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_VAbv 20u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_VBlw 21u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_VPre 22u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_VPst 23u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_VS 40u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_ZWJ 6u
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ myanmar_syllable_machine_ex_ZWNJ 5u
 
 
-#line 77 "hb-ot-shaper-myanmar-machine.hh"
-static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
+#ਸਤਰ 77 "hb-ot-shaper-myanmar-machine.hh"
+ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ myanmar_syllable_machine_trans_ਕੁੰਜੀਆਂ[] = {
 	1u, 57u, 3u, 57u, 5u, 57u, 5u, 57u, 3u, 57u, 5u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 5u, 57u, 1u, 15u, 3u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 
@@ -89,7 +89,7 @@ static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
 	3u, 57u, 3u, 57u, 3u, 57u, 1u, 57u, 1u, 15u, 0
 };
 
-static const char _myanmar_syllable_machine_key_spans[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ myanmar_syllable_machine_ਕੁੰਜੀ_spans[] = {
 	57, 55, 53, 53, 55, 53, 55, 55, 
 	55, 55, 55, 53, 15, 55, 55, 55, 
 	55, 55, 55, 55, 55, 55, 55, 55, 
@@ -99,7 +99,7 @@ static const char _myanmar_syllable_machine_key_spans[] = {
 	55, 55, 55, 57, 15
 };
 
-static const short _myanmar_syllable_machine_index_offsets[] = {
+ਸਥਿਰ ਅਚਲ ਛੋਟਾ myanmar_syllable_machine_ਸੂਚਕਾਂਕ_offsets[] = {
 	0, 58, 114, 168, 222, 278, 332, 388, 
 	444, 500, 556, 612, 666, 682, 738, 794, 
 	850, 906, 962, 1018, 1074, 1130, 1186, 1242, 
@@ -109,7 +109,7 @@ static const short _myanmar_syllable_machine_index_offsets[] = {
 	2594, 2650, 2706, 2762, 2820
 };
 
-static const char _myanmar_syllable_machine_indicies[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ _myanmar_syllable_machine_indicies[] = {
 	1, 1, 2, 3, 4, 4, 0, 5, 
 	6, 1, 1, 0, 0, 0, 7, 0, 
 	0, 8, 0, 9, 10, 11, 12, 0, 
@@ -467,7 +467,7 @@ static const char _myanmar_syllable_machine_indicies[] = {
 	60, 60, 1, 60, 0
 };
 
-static const char _myanmar_syllable_machine_trans_targs[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ _myanmar_syllable_machine_trans_targs[] = {
 	0, 1, 25, 35, 0, 26, 30, 49, 
 	52, 37, 38, 39, 29, 41, 42, 44, 
 	45, 46, 27, 48, 43, 26, 0, 2, 
@@ -478,7 +478,7 @@ static const char _myanmar_syllable_machine_trans_targs[] = {
 	40, 47, 50, 51, 0
 };
 
-static const char _myanmar_syllable_machine_trans_actions[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ _myanmar_syllable_machine_trans_actions[] = {
 	3, 0, 0, 0, 4, 5, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 6, 7, 0, 
@@ -489,7 +489,7 @@ static const char _myanmar_syllable_machine_trans_actions[] = {
 	0, 0, 0, 0, 12
 };
 
-static const char _myanmar_syllable_machine_to_state_actions[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ myanmar_syllable_machine_ਮੰਜ਼ਿਲ_state_actions[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -499,7 +499,7 @@ static const char _myanmar_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const char _myanmar_syllable_machine_from_state_actions[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ _myanmar_syllable_machine_from_state_actions[] = {
 	2, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -509,7 +509,7 @@ static const char _myanmar_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const short _myanmar_syllable_machine_eof_trans[] = {
+ਸਥਿਰ ਅਚਲ ਛੋਟਾ _myanmar_syllable_machine_eof_trans[] = {
 	0, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
@@ -519,165 +519,165 @@ static const short _myanmar_syllable_machine_eof_trans[] = {
 	48, 23, 23, 48, 61
 };
 
-static const int myanmar_syllable_machine_start = 0;
-static const int myanmar_syllable_machine_first_final = 0;
-static const int myanmar_syllable_machine_error = -1;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ myanmar_syllable_machine_ਸ਼ੁਰੂ = 0;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ myanmar_syllable_machine_ਪਹਿਲਾ_final = 0;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ myanmar_syllable_machine_error = -1;
 
-static const int myanmar_syllable_machine_en_main = 0;
-
-
-#line 55 "hb-ot-shaper-myanmar-machine.rl"
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ myanmar_syllable_machine_en_main = 0;
 
 
+#ਸਤਰ 55 "hb-ot-shaper-myanmar-machine.rl"
 
-#line 118 "hb-ot-shaper-myanmar-machine.rl"
 
 
-#define found_syllable(syllable_type) \
-  HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+#ਸਤਰ 118 "hb-ot-shaper-myanmar-machine.rl"
+
+
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਮਿਲਿਆ_syllable(syllable_type) \
+  HB_STMT_ਸ਼ੁਰੂ { \
+    ਜੇ (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
-  } HB_STMT_END
+    ਜੇ (syllable_serial == 16) syllable_serial = 1; \
+  } HB_STMT_ਸਿਰਾ
 
-inline void
-find_syllables_myanmar (hb_buffer_t *buffer)
+ਸਤਰਅੰਦਰ ਖਾਲੀ
+ਲੱਭੋ_syllables_myanmar (hb_ਬਫਰ_t *ਬਫਰ)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
-  hb_glyph_info_t *info = buffer->info;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ p, pe, eof, ts, te, act HB_ਅਣਵਰਤਿਆ;
+  ਪੂਰਨ cs;
+  hb_glyph_info_t *info = ਬਫਰ->info;
   
-#line 542 "hb-ot-shaper-myanmar-machine.hh"
+#ਸਤਰ 542 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	cs = myanmar_syllable_machine_start;
+	cs = myanmar_syllable_machine_ਸ਼ੁਰੂ;
 	ts = 0;
 	te = 0;
 	act = 0;
 	}
 
-#line 138 "hb-ot-shaper-myanmar-machine.rl"
+#ਸਤਰ 138 "hb-ot-shaper-myanmar-machine.rl"
 
 
   p = 0;
-  pe = eof = buffer->len;
+  pe = eof = ਬਫਰ->len;
 
-  unsigned int syllable_serial = 1;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ syllable_serial = 1;
   
-#line 554 "hb-ot-shaper-myanmar-machine.hh"
+#ਸਤਰ 554 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	ਪੂਰਨ _slen;
+	ਪੂਰਨ _trans;
+	ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਕੁੰਜੀਆਂ_2;
+	ਅਚਲ ਅੱਖਰ *_inds;
+	ਜੇ ( p == pe )
+		ਜਾਓ _test_eof;
 _resume:
-	switch ( _myanmar_syllable_machine_from_state_actions[cs] ) {
-	case 2:
-#line 1 "NONE"
+	ਚੋਣ ( _myanmar_syllable_machine_from_state_actions[cs] ) {
+	ਹਾਲਤ 2:
+#ਸਤਰ 1 "NONE"
 	{ts = p;}
-	break;
-#line 566 "hb-ot-shaper-myanmar-machine.hh"
+	ਰੋਕੋ;
+#ਸਤਰ 566 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	_keys = _myanmar_syllable_machine_trans_keys + (cs<<1);
-	_inds = _myanmar_syllable_machine_indicies + _myanmar_syllable_machine_index_offsets[cs];
+	ਕੁੰਜੀਆਂ_2 = myanmar_syllable_machine_trans_ਕੁੰਜੀਆਂ + (cs<<1);
+	_inds = _myanmar_syllable_machine_indicies + myanmar_syllable_machine_ਸੂਚਕਾਂਕ_offsets[cs];
 
-	_slen = _myanmar_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].myanmar_category()) &&
-		( info[p].myanmar_category()) <= _keys[1] ?
-		( info[p].myanmar_category()) - _keys[0] : _slen ];
+	_slen = myanmar_syllable_machine_ਕੁੰਜੀ_spans[cs];
+	_trans = _inds[ _slen > 0 && ਕੁੰਜੀਆਂ_2[0] <=( info[p].myanmar_category()) &&
+		( info[p].myanmar_category()) <= ਕੁੰਜੀਆਂ_2[1] ?
+		( info[p].myanmar_category()) - ਕੁੰਜੀਆਂ_2[0] : _slen ];
 
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];
 
-	if ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	ਜੇ ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
+		ਜਾਓ _again;
 
-	switch ( _myanmar_syllable_machine_trans_actions[_trans] ) {
-	case 8:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 4:
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 10:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 3:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 7:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 9:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 12:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 11:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 2:
-	{{p = ((te))-1;} found_syllable (myanmar_non_myanmar_cluster); }
-	break;
-	case 3:
-	{{p = ((te))-1;} found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	ਚੋਣ ( _myanmar_syllable_machine_trans_actions[_trans] ) {
+	ਹਾਲਤ 8:
+#ਸਤਰ 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ਮਿਲਿਆ_syllable (myanmar_consonant_syllable); }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 4:
+#ਸਤਰ 112 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ਮਿਲਿਆ_syllable (myanmar_non_myanmar_cluster); }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 10:
+#ਸਤਰ 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ਮਿਲਿਆ_syllable (myanmar_broken_cluster); ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 3:
+#ਸਤਰ 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ਮਿਲਿਆ_syllable (myanmar_non_myanmar_cluster); }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 7:
+#ਸਤਰ 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ਮਿਲਿਆ_syllable (myanmar_consonant_syllable); }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 9:
+#ਸਤਰ 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ਮਿਲਿਆ_syllable (myanmar_broken_cluster); ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 12:
+#ਸਤਰ 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ਮਿਲਿਆ_syllable (myanmar_non_myanmar_cluster); }}
+	ਰੋਕੋ;
+	ਹਾਲਤ 11:
+#ਸਤਰ 1 "NONE"
+	{	ਚੋਣ( act ) {
+	ਹਾਲਤ 2:
+	{{p = ((te))-1;} ਮਿਲਿਆ_syllable (myanmar_non_myanmar_cluster); }
+	ਰੋਕੋ;
+	ਹਾਲਤ 3:
+	{{p = ((te))-1;} ਮਿਲਿਆ_syllable (myanmar_broken_cluster); ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
+	ਰੋਕੋ;
 	}
 	}
-	break;
-	case 6:
-#line 1 "NONE"
+	ਰੋਕੋ;
+	ਹਾਲਤ 6:
+#ਸਤਰ 1 "NONE"
 	{te = p+1;}
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
+#ਸਤਰ 112 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 2;}
-	break;
-	case 5:
-#line 1 "NONE"
+	ਰੋਕੋ;
+	ਹਾਲਤ 5:
+#ਸਤਰ 1 "NONE"
 	{te = p+1;}
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
+#ਸਤਰ 113 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 3;}
-	break;
-#line 623 "hb-ot-shaper-myanmar-machine.hh"
+	ਰੋਕੋ;
+#ਸਤਰ 623 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
 _again:
-	switch ( _myanmar_syllable_machine_to_state_actions[cs] ) {
-	case 1:
-#line 1 "NONE"
+	ਚੋਣ ( myanmar_syllable_machine_ਮੰਜ਼ਿਲ_state_actions[cs] ) {
+	ਹਾਲਤ 1:
+#ਸਤਰ 1 "NONE"
 	{ts = 0;}
-	break;
-#line 630 "hb-ot-shaper-myanmar-machine.hh"
+	ਰੋਕੋ;
+#ਸਤਰ 630 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	ਜੇ ( ++p != pe )
+		ਜਾਓ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ਜੇ ( p == eof )
 	{
-	if ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
+	ਜੇ ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _myanmar_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		ਜਾਓ _eof_trans;
 	}
 	}
 
 	}
 
-#line 146 "hb-ot-shaper-myanmar-machine.rl"
+#ਸਤਰ 146 "hb-ot-shaper-myanmar-machine.rl"
 
 }
 
-#undef found_syllable
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਮਿਲਿਆ_syllable
 
-#endif /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */

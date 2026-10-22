@@ -22,26 +22,26 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_SHAPER_SYLLABIC_HH
-#define HB_OT_SHAPER_SYLLABIC_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPER_SYLLABIC_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPER_SYLLABIC_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper.hh"
 
 
-HB_INTERNAL bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category = -1,
-				   int dottedcircle_position = -1);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
+hb_syllabic_ਪਾਓ_dotted_circles (hb_font_t *font,
+				   hb_ਬਫਰ_t *ਬਫਰ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ broken_syllable_type,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ dottedcircle_category,
+				   ਪੂਰਨ repha_category = -1,
+				   ਪੂਰਨ dottedcircle_position = -1);
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
+hb_syllabic_clear_var (ਅਚਲ hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
+		       hb_ਬਫਰ_t *ਬਫਰ);
 
 
-#endif /* HB_OT_SHAPER_SYLLABIC_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPER_SYLLABIC_HH */

@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_VAR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
 
-#include "hb-ot-var.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-avar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-fvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-mvar-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.4.2
  **/
 hb_bool_t
-hb_ot_var_has_data (hb_face_t *face)
+hb_ot_var_has_ਅੰਕੜੇ (hb_face_t *face)
 {
-  return face->table.fvar->has_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->has_ਅੰਕੜੇ ();
 }
 
 /**
@@ -76,13 +76,13 @@ hb_ot_var_has_data (hb_face_t *face)
  *
  * Since: 1.4.2
  **/
-unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_var_get_axis_ਗਿਣਤੀ (hb_face_t *face)
 {
-  return face->table.fvar->get_axis_count ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_axis_ਗਿਣਤੀ ();
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
 /**
  * hb_ot_var_get_axes:
  * @face: #hb_face_t to work upon
@@ -97,13 +97,13 @@ hb_ot_var_get_axis_count (hb_face_t *face)
  * Since: 1.4.2
  * Deprecated: 2.2.0: use hb_ot_var_get_axis_infos() instead
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
-		    hb_ot_var_axis_t *axes_array /* OUT */)
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ      ਸ਼ੁਰੂ_ਵਿੱਥ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *axes_ਗਿਣਤੀ /* IN/OUT */,
+		    hb_ot_var_axis_t *axes_array /*ਬਾਹਰਲਾ*/)
 {
-  return face->table.fvar->get_axes_deprecated (start_offset, axes_count, axes_array);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_axes_deprecated (ਸ਼ੁਰੂ_ਵਿੱਥ, axes_ਗਿਣਤੀ, axes_array);
 }
 
 /**
@@ -120,14 +120,14 @@ hb_ot_var_get_axes (hb_face_t        *face,
  * Deprecated: 2.2.0: use hb_ot_var_find_axis_info() instead
  **/
 hb_bool_t
-hb_ot_var_find_axis (hb_face_t        *face,
-		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+hb_ot_var_ਲੱਭੋ_axis (hb_face_t        *face,
+		     hb_ਟੈਗ_t          axis_ਟੈਗ_2,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *axis_ਸੂਚਕਾਂਕ,
 		     hb_ot_var_axis_t *axis_info)
 {
-  return face->table.fvar->find_axis_deprecated (axis_tag, axis_index, axis_info);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->ਲੱਭੋ_axis_deprecated (axis_ਟੈਗ_2, axis_ਸੂਚਕਾਂਕ, axis_info);
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 /**
  * hb_ot_var_get_axis_infos:
@@ -144,13 +144,13 @@ hb_ot_var_find_axis (hb_face_t        *face,
  *
  * Since: 2.2.0
  **/
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */)
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ           ਸ਼ੁਰੂ_ਵਿੱਥ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          *axes_ਗਿਣਤੀ /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*ਬਾਹਰਲਾ*/)
 {
-  return face->table.fvar->get_axis_infos (start_offset, axes_count, axes_array);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_axis_infos (ਸ਼ੁਰੂ_ਵਿੱਥ, axes_ਗਿਣਤੀ, axes_array);
 }
 
 /**
@@ -167,11 +167,11 @@ hb_ot_var_get_axis_infos (hb_face_t             *face,
  * Since: 2.2.0
  **/
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_ਲੱਭੋ_axis_info (hb_face_t             *face,
+			  hb_ਟੈਗ_t               axis_ਟੈਗ_2,
 			  hb_ot_var_axis_info_t *axis_info)
 {
-  return face->table.fvar->find_axis_info (axis_tag, axis_info);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->ਲੱਭੋ_axis_info (axis_ਟੈਗ_2, axis_info);
 }
 
 
@@ -189,10 +189,10 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_var_get_named_instance_ਗਿਣਤੀ (hb_face_t *face)
 {
-  return face->table.fvar->get_instance_count ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_instance_ਗਿਣਤੀ ();
 }
 
 /**
@@ -209,9 +209,9 @@ hb_ot_var_get_named_instance_count (hb_face_t *face)
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index)
+						ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ instance_ਸੂਚਕਾਂਕ)
 {
-  return face->table.fvar->get_instance_subfamily_name_id (instance_index);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_instance_subfamily_name_id (instance_ਸੂਚਕਾਂਕ);
 }
 
 /**
@@ -228,9 +228,9 @@ hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index)
+						ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ instance_ਸੂਚਕਾਂਕ)
 {
-  return face->table.fvar->get_instance_postscript_name_id (instance_index);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_instance_postscript_name_id (instance_ਸੂਚਕਾਂਕ);
 }
 
 /**
@@ -248,13 +248,13 @@ hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */)
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  instance_ਸੂਚਕਾਂਕ,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *coords_ਲੰਮਾਈ, /* IN/OUT */
+					    ਦਸ਼ਮਲਵ        *coords         /*ਬਾਹਰਲਾ*/)
 {
-  return face->table.fvar->get_instance_coords (instance_index, coords_length, coords);
+  ਵਾਪਸ face->ਸਾਰਣੀ.fvar->get_instance_coords (instance_ਸੂਚਕਾਂਕ, coords_ਲੰਮਾਈ, coords);
 }
 
 
@@ -270,29 +270,29 @@ hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
  *
  * Since: 1.4.2
  **/
-void
+ਖਾਲੀ
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length)
+				ਅਚਲ hb_variation_t *variations, /*ਵਿੱਚ*/
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          variations_ਲੰਮਾਈ,
+				ਪੂਰਨ                  *coords, /*ਬਾਹਰਲਾ*/
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          coords_ਲੰਮਾਈ)
 {
-  for (unsigned int i = 0; i < coords_length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < coords_ਲੰਮਾਈ; i++)
     coords[i] = 0;
 
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < variations_length; i++)
+  ਅਚਲ OT::fvar &fvar = *face->ਸਾਰਣੀ.fvar;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < variations_ਲੰਮਾਈ; i++)
   {
     hb_ot_var_axis_info_t info;
-    if (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
-	info.axis_index < coords_length)
-      coords[info.axis_index] = roundf (fvar.normalize_axis_value (info.axis_index, variations[i].value) * 65536.0f);
+    ਜੇ (hb_ot_var_ਲੱਭੋ_axis_info (face, variations[i].ਟੈਗ_2, &info) &&
+	info.axis_ਸੂਚਕਾਂਕ < coords_ਲੰਮਾਈ)
+      coords[info.axis_ਸੂਚਕਾਂਕ] = roundf (fvar.normalize_axis_ਮੁੱਲ (info.axis_ਸੂਚਕਾਂਕ, variations[i].value) * 65536.0f);
   }
 
-  face->table.avar->map_coords_16_16 (coords, coords_length);
+  face->ਸਾਰਣੀ.avar->map_coords_16_16 (coords, coords_ਲੰਮਾਈ);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < coords_ਲੰਮਾਈ; i++)
     coords[i] = (coords[i] + 2) >> 2;
 }
 
@@ -319,22 +319,22 @@ hb_ot_var_normalize_variations (hb_face_t            *face,
  *
  * Since: 1.4.2
  **/
-void
+ਖਾਲੀ
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */)
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ coords_ਲੰਮਾਈ,
+			    ਅਚਲ ਦਸ਼ਮਲਵ *design_coords, /*ਵਿੱਚ*/
+			    ਪੂਰਨ *normalized_coords /*ਬਾਹਰਲਾ*/)
 {
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < coords_length; i++)
-    normalized_coords[i] = roundf (fvar.normalize_axis_value (i, design_coords[i]) * 65536.0f);
+  ਅਚਲ OT::fvar &fvar = *face->ਸਾਰਣੀ.fvar;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < coords_ਲੰਮਾਈ; i++)
+    normalized_coords[i] = roundf (fvar.normalize_axis_ਮੁੱਲ (i, design_coords[i]) * 65536.0f);
 
-  face->table.avar->map_coords_16_16 (normalized_coords, coords_length);
+  face->ਸਾਰਣੀ.avar->map_coords_16_16 (normalized_coords, coords_ਲੰਮਾਈ);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < coords_ਲੰਮਾਈ; i++)
     normalized_coords[i] = (normalized_coords[i] + 2) >> 2;
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

@@ -24,40 +24,40 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_IMAGE_HH
-#define HB_RASTER_IMAGE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_RASTER_IMAGE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_RASTER_IMAGE_HH
 
-#include "hb.hh"
-#include "hb-raster.hh"
-#include "hb-raster.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-raster.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-raster.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-object.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.hh"
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+ਬਣਤਰ hb_raster_image_t
 {
-  hb_object_header_t  header;
+  hb_object_ਸਿਰਲੇਖ_t  ਸਿਰਲੇਖ;
 
-  hb_vector_t<uint8_t> buffer;
+  hb_ਸਦਿਸ਼_t<uint8_t> ਬਫਰ;
   hb_raster_extents_t  extents     = {};
   hb_raster_format_t   format      = HB_RASTER_FORMAT_A8;
 
-  HB_INTERNAL static unsigned bytes_per_pixel (hb_raster_format_t format);
-  HB_INTERNAL bool configure (hb_raster_format_t format, hb_raster_extents_t extents);
-  HB_INTERNAL bool deserialize_from_png (hb_blob_t *png);
-  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () const;
-  HB_INTERNAL void clear ();
-  HB_INTERNAL const uint8_t *get_buffer () const;
-  HB_INTERNAL void composite_from (const hb_raster_image_t *src,
-				   hb_paint_composite_mode_t mode);
+  HB_ਅੰਦਰੂਨੀ ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਾਈਟਾਂ_ਪ੍ਰਤੀ_pixel (hb_raster_format_t format);
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ configure (hb_raster_format_t format, hb_raster_extents_t extents);
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ deserialize_from_png (hb_blob_t *png);
+  HB_ਅੰਦਰੂਨੀ hb_blob_t *serialize_ਮੰਜ਼ਿਲ_png_or_fail () ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ clear ();
+  HB_ਅੰਦਰੂਨੀ ਅਚਲ uint8_t *get_ਬਫਰ () ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ ਸੰਯੁਕਤ_from (ਅਚਲ hb_raster_image_t *src,
+				   hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ);
 };
 
 /* Composite src image onto dst. */
-HB_INTERNAL void
-hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
-			   hb_paint_composite_mode_t mode);
+HB_ਅੰਦਰੂਨੀ ਖਾਲੀ
+hb_raster_image_ਸੰਯੁਕਤ (hb_raster_image_t *dst,
+			   ਅਚਲ hb_raster_image_t *src,
+			   hb_paint_ਸੰਯੁਕਤ_ਬਹੁਲਕ_t ਬਹੁਲਕ);
 
 
-#endif /* HB_RASTER_IMAGE_HH */
+#ਜੇ_ਅੰਤ /* HB_RASTER_IMAGE_HH */

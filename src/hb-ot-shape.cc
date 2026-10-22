@@ -26,44 +26,44 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
 
-#ifdef HB_NO_OT_LAYOUT
-#error "Cannot compile 'ot' shaper with HB_NO_OT_LAYOUT."
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_LAYOUT
+#ਗਲਤੀ "Cannot compile 'ot' shaper with HB_NO_OT_LAYOUT."
+#ਜੇ_ਅੰਤ
 
-#include "hb-shaper-impl.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-shaper-impl.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape-fallback.hh"
-#include "hb-ot-shape-normalize.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shape.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shaper.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shape-fallback.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-shape-normalize.hh"
 
-#include "hb-ot-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face.hh"
 
-#include "hb-set.hh"
-#include "hb-unicode.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-unicode.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-stat-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-gdef-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-stat-table.hh"
 
 
-static inline bool
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
 _hb_codepoint_is_regional_indicator (hb_codepoint_t u)
-{ return hb_in_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
+{ ਵਾਪਸ hb_ਵਿੱਚ_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
 
-#ifndef HB_NO_AAT_SHAPE
-static inline bool
-_hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ
+_hb_apply_morx (hb_face_t *face, ਅਚਲ hb_segment_properties_t &props)
 {
   /* https://github.com/harfbuzz/harfbuzz/issues/2124 */
-  return hb_aat_layout_has_substitution (face) &&
+  ਵਾਪਸ hb_aat_layout_has_substitution (face) &&
 	 (HB_DIRECTION_IS_HORIZONTAL (props.direction) || !hb_ot_layout_has_substitution (face));
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 /**
  * SECTION:hb-ot-shape
@@ -75,113 +75,113 @@ _hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
  **/
 
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 hb_ot_shape_collect_features (hb_ot_shape_planner_t          *planner,
-			      const hb_feature_t             *user_features,
-			      unsigned int                    num_user_features);
+			      ਅਚਲ hb_feature_t             *user_features,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ                    ਅੰਕ_user_features);
 
 hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *face,
-					      const hb_segment_properties_t &props) :
+					      ਅਚਲ hb_segment_properties_t &props) :
 						face (face),
 						props (props),
 						map (face, props)
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
 						, aat_map (face, props)
 						, apply_morx (_hb_apply_morx (face, props))
-#endif
+#ਜੇ_ਅੰਤ
 {
   shaper = hb_ot_shaper_categorize (props.script, props.direction, map.chosen_script[0]);
 
-  script_zero_marks = shaper->zero_width_marks != HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE;
+  script_zero_marks = shaper->zero_ਚੌੜਾਈ_marks != HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_NONE;
   script_fallback_position = shaper->fallback_position;
 
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
   /* https://github.com/harfbuzz/harfbuzz/issues/1528 */
-  if (apply_morx && shaper != &_hb_ot_shaper_default)
+  ਜੇ (apply_morx && shaper != &_hb_ot_shaper_default)
     shaper = &_hb_ot_shaper_dumber;
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-void
+ਖਾਲੀ
 hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
-				const hb_ot_shape_plan_key_t &key)
+				ਅਚਲ hb_ot_shape_plan_ਕੁੰਜੀ_t &key)
 {
   plan.props = props;
   plan.shaper = shaper;
   map.compile (plan.map, key);
-#ifndef HB_NO_AAT_SHAPE
-  if (apply_morx)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਜੇ (apply_morx)
     aat_map.compile (plan.aat_map);
-#endif
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  plan.frac_mask = plan.map.get_1_mask (HB_TAG ('f','r','a','c'));
-  plan.numr_mask = plan.map.get_1_mask (HB_TAG ('n','u','m','r'));
-  plan.dnom_mask = plan.map.get_1_mask (HB_TAG ('d','n','o','m'));
-  plan.has_frac = plan.frac_mask || (plan.numr_mask && plan.dnom_mask);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FRACTIONS
+  plan.frac_ਨਕਾਬ = plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('f','r','a','c'));
+  plan.numr_ਨਕਾਬ = plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('n','u','m','r'));
+  plan.dnom_ਨਕਾਬ = plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('d','n','o','m'));
+  plan.has_frac = plan.frac_ਨਕਾਬ || (plan.numr_ਨਕਾਬ && plan.dnom_ਨਕਾਬ);
+#ਜੇ_ਅੰਤ
 
-  plan.rtlm_mask = plan.map.get_1_mask (HB_TAG ('r','t','l','m'));
-  plan.has_vert = !!plan.map.get_1_mask (HB_TAG ('v','e','r','t'));
+  plan.rtlm_ਨਕਾਬ = plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('r','t','l','m'));
+  plan.has_vert = !!plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('v','e','r','t'));
 
-  hb_tag_t kern_tag = HB_DIRECTION_IS_HORIZONTAL (props.direction) ?
-		      HB_TAG ('k','e','r','n') : HB_TAG ('v','k','r','n');
-#ifndef HB_NO_OT_KERN
-  plan.kern_mask = plan.map.get_mask (kern_tag);
-  plan.requested_kerning = !!plan.kern_mask;
-#endif
+  hb_ਟੈਗ_t kern_ਟੈਗ = HB_DIRECTION_IS_HORIZONTAL (props.direction) ?
+		      HB_ਟੈਗ ('k','e','r','n') : HB_ਟੈਗ ('v','k','r','n');
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+  plan.kern_ਨਕਾਬ = plan.map.get_ਨਕਾਬ (kern_ਟੈਗ);
+  plan.requested_kerning = !!plan.kern_ਨਕਾਬ;
+#ਜੇ_ਅੰਤ
 
-  bool has_gpos_kern = plan.map.get_feature_index (1, kern_tag) != HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  bool disable_gpos = plan.shaper->gpos_tag &&
-		      plan.shaper->gpos_tag != plan.map.chosen_script[1];
+  ਤਾਰਕਿਕ has_gpos_kern = plan.map.get_feature_ਸੂਚਕਾਂਕ (1, kern_ਟੈਗ) != HB_OT_LAYOUT_NO_FEATURE_ਸੂਚਕਾਂਕ;
+  ਤਾਰਕਿਕ disable_gpos = plan.shaper->gpos_ਟੈਗ &&
+		      plan.shaper->gpos_ਟੈਗ != plan.map.chosen_script[1];
 
   /*
    * Decide who provides glyph classes. GDEF or Unicode.
    */
 
-  if (!hb_ot_layout_has_glyph_classes (face))
-    plan.fallback_glyph_classes = true;
+  ਜੇ (!hb_ot_layout_has_glyph_classes (face))
+    plan.fallback_glyph_classes = ਸੱਚ;
 
   /*
    * Decide who does substitutions. GSUB, morx, or fallback.
    */
 
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
   plan.apply_morx = apply_morx;
-#endif
+#ਜੇ_ਅੰਤ
 
   /*
    * Decide who does positioning. GPOS, kerx, kern, or fallback.
    */
 
-#ifndef HB_NO_AAT_SHAPE
-  bool has_kerx = hb_aat_layout_has_positioning (face);
-  bool has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
-#endif
-  bool has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
-  if (false)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਤਾਰਕਿਕ has_kerx = hb_aat_layout_has_positioning (face);
+  ਤਾਰਕਿਕ has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
+  ਜੇ (ਝੂਠ)
     {}
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
   /* Prefer GPOS over kerx if GSUB is present;
    * https://github.com/harfbuzz/harfbuzz/issues/3008 */
-  else if (has_kerx && !(has_gsub && has_gpos))
-    plan.apply_kerx = true;
-#endif
-  else if (has_gpos)
-    plan.apply_gpos = true;
+  ਨਹੀਂਤਾਂ ਜੇ (has_kerx && !(has_gsub && has_gpos))
+    plan.apply_kerx = ਸੱਚ;
+#ਜੇ_ਅੰਤ
+  ਨਹੀਂਤਾਂ ਜੇ (has_gpos)
+    plan.apply_gpos = ਸੱਚ;
 
-  if (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
+  ਜੇ (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
   {
-    if (false) {}
-#ifndef HB_NO_AAT_SHAPE
-    else if (has_kerx)
-      plan.apply_kerx = true;
-#endif
-#ifndef HB_NO_OT_KERN
-    else if (hb_ot_layout_has_kerning (face))
+    ਜੇ (ਝੂਠ) {}
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+    ਨਹੀਂਤਾਂ ਜੇ (has_kerx)
+      plan.apply_kerx = ਸੱਚ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+    ਨਹੀਂਤਾਂ ਜੇ (hb_ot_layout_has_kerning (face))
       plan.apply_kern = script_fallback_position; // Not all shapers apply legacy `kern`
-#endif
-    else {}
+#ਜੇ_ਅੰਤ
+    ਨਹੀਂਤਾਂ {}
   }
 
   plan.apply_fallback_kern = script_fallback_position && !(plan.apply_gpos || plan.apply_kerx || plan.apply_kern);
@@ -189,43 +189,43 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
   plan.zero_marks = script_zero_marks &&
 		    !plan.apply_kerx &&
 		    (!plan.apply_kern
-#ifndef HB_NO_OT_KERN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
 		     || !hb_ot_layout_has_machine_kerning (face)
-#endif
+#ਜੇ_ਅੰਤ
 		    );
-  plan.has_gpos_mark = !!plan.map.get_1_mask (HB_TAG ('m','a','r','k'));
+  plan.has_gpos_mark = !!plan.map.get_1_ਨਕਾਬ (HB_ਟੈਗ ('m','a','r','k'));
 
   plan.adjust_mark_positioning_when_zeroing = !plan.apply_gpos &&
 					      !plan.apply_kerx &&
 					      (!plan.apply_kern
-#ifndef HB_NO_OT_KERN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
 					       || !hb_ot_layout_has_cross_kerning (face)
-#endif
+#ਜੇ_ਅੰਤ
 					      );
 
   plan.fallback_mark_positioning = plan.adjust_mark_positioning_when_zeroing &&
 				   script_fallback_position;
 
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
   /* If we're using morx shaping, we cancel mark position adjustment because
      Apple Color Emoji assumes this will NOT be done when forming emoji sequences;
      https://github.com/harfbuzz/harfbuzz/issues/2967. */
-  if (plan.apply_morx)
-    plan.adjust_mark_positioning_when_zeroing = false;
+  ਜੇ (plan.apply_morx)
+    plan.adjust_mark_positioning_when_zeroing = ਝੂਠ;
 
   /* According to Ned, trak is applied by default for "modern fonts", as detected by presence of STAT table. */
-#ifndef HB_NO_STYLE
-  plan.apply_trak = hb_aat_layout_has_tracking (face) && face->table.STAT->has_data ();
-#else
-  plan.apply_trak = false;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_STYLE
+  plan.apply_trak = hb_aat_layout_has_tracking (face) && face->ਸਾਰਣੀ.STAT->has_ਅੰਕੜੇ ();
+#ਨਹੀਂਤਾਂ
+  plan.apply_trak = ਝੂਠ;
+#ਜੇ_ਅੰਤ
 
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-bool
+ਤਾਰਕਿਕ
 hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
-			   const hb_shape_plan_key_t     *key)
+			   ਅਚਲ hb_shape_plan_ਕੁੰਜੀ_t     *key)
 {
   map.init ();
 
@@ -234,147 +234,147 @@ hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
 
   hb_ot_shape_collect_features (&planner,
 				key->user_features,
-				key->num_user_features);
+				key->ਅੰਕ_user_features);
 
-  planner.compile (*this, key->ot);
+  planner.compile (*ਇਹ, key->ot);
 
-  if (shaper->data_create)
+  ਜੇ (shaper->ਅੰਕੜੇ_create)
   {
-    data = shaper->data_create (this);
-    if (unlikely (!data))
+    ਅੰਕੜੇ = shaper->ਅੰਕੜੇ_create (ਇਹ);
+    ਜੇ (unlikely (!ਅੰਕੜੇ))
     {
       map.fini ();
-      return false;
+      ਵਾਪਸ ਝੂਠ;
     }
   }
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
-void
+ਖਾਲੀ
 hb_ot_shape_plan_t::fini ()
 {
-  if (shaper->data_destroy)
-    shaper->data_destroy (const_cast<void *> (data));
+  ਜੇ (shaper->ਅੰਕੜੇ_destroy)
+    shaper->ਅੰਕੜੇ_destroy (const_cast<ਖਾਲੀ *> (ਅੰਕੜੇ));
 
   map.fini ();
 }
 
-void
+ਖਾਲੀ
 hb_ot_shape_plan_t::substitute (hb_font_t   *font,
-				hb_buffer_t *buffer) const
+				hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ
 {
-  map.substitute (this, font, buffer);
+  map.substitute (ਇਹ, font, ਬਫਰ);
 }
 
-void
+ਖਾਲੀ
 hb_ot_shape_plan_t::position (hb_font_t   *font,
-			      hb_buffer_t *buffer) const
+			      hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ
 {
-  if (this->apply_gpos)
-    map.position (this, font, buffer);
-#ifndef HB_NO_AAT_SHAPE
-  else if (this->apply_kerx)
-    hb_aat_layout_position (this, font, buffer);
-#endif
+  ਜੇ (ਇਹ->apply_gpos)
+    map.position (ਇਹ, font, ਬਫਰ);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਨਹੀਂਤਾਂ ਜੇ (ਇਹ->apply_kerx)
+    hb_aat_layout_position (ਇਹ, font, ਬਫਰ);
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_OT_KERN
-  if (this->apply_kern)
-    hb_ot_layout_kern (this, font, buffer);
-#endif
-  else if (this->apply_fallback_kern)
-    _hb_ot_shape_fallback_kern (this, font, buffer);
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+  ਜੇ (ਇਹ->apply_kern)
+    hb_ot_layout_kern (ਇਹ, font, ਬਫਰ);
+#ਜੇ_ਅੰਤ
+  ਨਹੀਂਤਾਂ ਜੇ (ਇਹ->apply_fallback_kern)
+    _hb_ot_shape_fallback_kern (ਇਹ, font, ਬਫਰ);
 
-#ifndef HB_NO_AAT_SHAPE
-  if (this->apply_trak)
-    hb_aat_layout_track (this, font, buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਜੇ (ਇਹ->apply_trak)
+    hb_aat_layout_track (ਇਹ, font, ਬਫਰ);
+#ਜੇ_ਅੰਤ
 }
 
 
-static const hb_ot_map_feature_t
+ਸਥਿਰ ਅਚਲ hb_ot_map_feature_t
 common_features[] =
 {
-  {HB_TAG('a','b','v','m'), F_GLOBAL},
-  {HB_TAG('b','l','w','m'), F_GLOBAL},
-  {HB_TAG('c','c','m','p'), F_GLOBAL},
-  {HB_TAG('l','o','c','l'), F_GLOBAL},
-  {HB_TAG('m','a','r','k'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('m','k','m','k'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('r','l','i','g'), F_GLOBAL},
+  {HB_ਟੈਗ('a','b','v','m'), F_GLOBAL},
+  {HB_ਟੈਗ('b','l','w','m'), F_GLOBAL},
+  {HB_ਟੈਗ('c','c','m','p'), F_GLOBAL},
+  {HB_ਟੈਗ('l','o','c','l'), F_GLOBAL},
+  {HB_ਟੈਗ('m','a','r','k'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ਟੈਗ('m','k','m','k'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ਟੈਗ('r','l','i','g'), F_GLOBAL},
 };
 
 
-static const hb_ot_map_feature_t
+ਸਥਿਰ ਅਚਲ hb_ot_map_feature_t
 horizontal_features[] =
 {
-  {HB_TAG('c','a','l','t'), F_GLOBAL},
-  {HB_TAG('c','l','i','g'), F_GLOBAL},
-  {HB_TAG('c','u','r','s'), F_GLOBAL},
-  {HB_TAG('d','i','s','t'), F_GLOBAL},
-  {HB_TAG('k','e','r','n'), F_GLOBAL_HAS_FALLBACK},
-  {HB_TAG('l','i','g','a'), F_GLOBAL},
-  {HB_TAG('r','c','l','t'), F_GLOBAL},
+  {HB_ਟੈਗ('c','a','l','t'), F_GLOBAL},
+  {HB_ਟੈਗ('c','l','i','g'), F_GLOBAL},
+  {HB_ਟੈਗ('c','u','r','s'), F_GLOBAL},
+  {HB_ਟੈਗ('d','i','s','t'), F_GLOBAL},
+  {HB_ਟੈਗ('k','e','r','n'), F_GLOBAL_HAS_FALLBACK},
+  {HB_ਟੈਗ('l','i','g','a'), F_GLOBAL},
+  {HB_ਟੈਗ('r','c','l','t'), F_GLOBAL},
 };
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
-			      const hb_feature_t    *user_features,
-			      unsigned int           num_user_features)
+			      ਅਚਲ hb_feature_t    *user_features,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ           ਅੰਕ_user_features)
 {
   hb_ot_map_builder_t *map = &planner->map;
 
-  map->is_simple = true;
+  map->is_simple = ਸੱਚ;
 
-  map->enable_feature (HB_TAG('r','v','r','n'));
-  map->add_gsub_pause (nullptr);
+  map->enable_feature (HB_ਟੈਗ('r','v','r','n'));
+  map->ਜੋੜੋ_gsub_pause (ਖਾਲੀ_ਸੂਚਕ);
 
-  switch (planner->props.direction)
+  ਚੋਣ (planner->props.direction)
   {
-    case HB_DIRECTION_LTR:
-      map->enable_feature (HB_TAG ('l','t','r','a'));
-      map->enable_feature (HB_TAG ('l','t','r','m'));
-      break;
-    case HB_DIRECTION_RTL:
-      map->enable_feature (HB_TAG ('r','t','l','a'));
-      map->add_feature (HB_TAG ('r','t','l','m'));
-      break;
-    case HB_DIRECTION_TTB:
-    case HB_DIRECTION_BTT:
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+    ਹਾਲਤ HB_DIRECTION_LTR:
+      map->enable_feature (HB_ਟੈਗ ('l','t','r','a'));
+      map->enable_feature (HB_ਟੈਗ ('l','t','r','m'));
+      ਰੋਕੋ;
+    ਹਾਲਤ HB_DIRECTION_RTL:
+      map->enable_feature (HB_ਟੈਗ ('r','t','l','a'));
+      map->ਜੋੜੋ_feature (HB_ਟੈਗ ('r','t','l','m'));
+      ਰੋਕੋ;
+    ਹਾਲਤ HB_DIRECTION_TTB:
+    ਹਾਲਤ HB_DIRECTION_BTT:
+    ਹਾਲਤ HB_DIRECTION_INVALID:
+    ਮੂਲ:
+      ਰੋਕੋ;
   }
 
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FRACTIONS
   /* Automatic fractions. */
-  map->add_feature (HB_TAG ('f','r','a','c'));
-  map->add_feature (HB_TAG ('n','u','m','r'));
-  map->add_feature (HB_TAG ('d','n','o','m'));
-#endif
+  map->ਜੋੜੋ_feature (HB_ਟੈਗ ('f','r','a','c'));
+  map->ਜੋੜੋ_feature (HB_ਟੈਗ ('n','u','m','r'));
+  map->ਜੋੜੋ_feature (HB_ਟੈਗ ('d','n','o','m'));
+#ਜੇ_ਅੰਤ
 
   /* Random! */
-  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_VALUE);
+  map->enable_feature (HB_ਟੈਗ ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_ਮੁੱਲ);
 
-  map->enable_feature (HB_TAG ('H','a','r','f')); /* Considered required. */
-  map->enable_feature (HB_TAG ('H','A','R','F')); /* Considered discretionary. */
+  map->enable_feature (HB_ਟੈਗ ('H','a','r','f')); /* Considered required. */
+  map->enable_feature (HB_ਟੈਗ ('H','A','R','F')); /* Considered discretionary. */
 
-  if (planner->shaper->collect_features)
+  ਜੇ (planner->shaper->collect_features)
   {
-    map->is_simple = false;
+    map->is_simple = ਝੂਠ;
     planner->shaper->collect_features (planner);
   }
 
-  map->enable_feature (HB_TAG ('B','u','z','z')); /* Considered required. */
-  map->enable_feature (HB_TAG ('B','U','Z','Z')); /* Considered discretionary. */
+  map->enable_feature (HB_ਟੈਗ ('B','u','z','z')); /* Considered required. */
+  map->enable_feature (HB_ਟੈਗ ('B','U','Z','Z')); /* Considered discretionary. */
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (common_features); i++)
-    map->add_feature (common_features[i]);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (common_features); i++)
+    map->ਜੋੜੋ_feature (common_features[i]);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
-    for (unsigned int i = 0; i < ARRAY_LENGTH (horizontal_features); i++)
-      map->add_feature (horizontal_features[i]);
-  else
+  ਜੇ (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ARRAY_ਲੰਮਾਈ (horizontal_features); i++)
+      map->ਜੋੜੋ_feature (horizontal_features[i]);
+  ਨਹੀਂਤਾਂ
   {
     /* We only apply `vert` feature. See:
      * https://github.com/harfbuzz/harfbuzz/commit/d71c0df2d17f4590d5611239577a6cb532c26528
@@ -384,21 +384,21 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
      * matter which script/langsys it is listed (or not) under.
      * See various bugs referenced from:
      * https://github.com/harfbuzz/harfbuzz/issues/63 */
-    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_SEARCH);
+    map->enable_feature (HB_ਟੈਗ ('v','e','r','t'), F_GLOBAL_ਖੋਜ);
   }
 
-  if (num_user_features)
-    map->is_simple = false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  ਜੇ (ਅੰਕ_user_features)
+    map->is_simple = ਝੂਠ;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_user_features; i++)
   {
-    const hb_feature_t *feature = &user_features[i];
-    map->add_feature (feature->tag,
-		      (feature->start == HB_FEATURE_GLOBAL_START &&
-		       feature->end == HB_FEATURE_GLOBAL_END) ?  F_GLOBAL : F_NONE,
+    ਅਚਲ hb_feature_t *feature = &user_features[i];
+    map->ਜੋੜੋ_feature (feature->ਟੈਗ_2,
+		      (feature->ਸ਼ੁਰੂ == HB_FEATURE_GLOBAL_ਸ਼ੁਰੂ &&
+		       feature->ਸਿਰਾ == HB_FEATURE_GLOBAL_ਸਿਰਾ) ?  F_GLOBAL : F_NONE,
 		      feature->value);
   }
 
-  if (planner->shaper->override_features)
+  ਜੇ (planner->shaper->override_features)
     planner->shaper->override_features (planner);
 }
 
@@ -407,16 +407,16 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
  * shaper face data
  */
 
-struct hb_ot_face_data_t {};
+ਬਣਤਰ hb_ot_face_ਅੰਕੜੇ_t {};
 
-hb_ot_face_data_t *
-_hb_ot_shaper_face_data_create (hb_face_t *face)
+hb_ot_face_ਅੰਕੜੇ_t *
+hb_ot_shaper_face_ਅੰਕੜੇ_create (hb_face_t *face)
 {
-  return (hb_ot_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ਵਾਪਸ (hb_ot_face_ਅੰਕੜੇ_t *) HB_SHAPER_ਅੰਕੜੇ_SUCCEEDED;
 }
 
-void
-_hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
+ਖਾਲੀ
+hb_ot_shaper_face_ਅੰਕੜੇ_destroy (hb_ot_face_ਅੰਕੜੇ_t *ਅੰਕੜੇ)
 {
 }
 
@@ -425,21 +425,21 @@ _hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
  * shaper font data
  */
 
-struct hb_ot_font_data_t {
-  OT::hb_scalar_cache_t unused; // Just for alignment
+ਬਣਤਰ hb_ot_font_ਅੰਕੜੇ_t {
+  OT::hb_scalar_cache_t ਅਣਵਰਤਿਆ_2; // Just for alignment
 };
 
-hb_ot_font_data_t *
-_hb_ot_shaper_font_data_create (hb_font_t *font)
+hb_ot_font_ਅੰਕੜੇ_t *
+hb_ot_shaper_font_ਅੰਕੜੇ_create (hb_font_t *font)
 {
-  const OT::ItemVariationStore &var_store = font->face->table.GDEF->table->get_var_store ();
-  return (hb_ot_font_data_t *) var_store.create_cache ();
+  ਅਚਲ OT::ਵਸਤੂ_Variation_Store &var_store = font->face->ਸਾਰਣੀ.GDEF->ਸਾਰਣੀ->get_var_store ();
+  ਵਾਪਸ (hb_ot_font_ਅੰਕੜੇ_t *) var_store.create_cache ();
 }
 
-void
-_hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
+ਖਾਲੀ
+hb_ot_shaper_font_ਅੰਕੜੇ_destroy (hb_ot_font_ਅੰਕੜੇ_t *ਅੰਕੜੇ)
 {
-  OT::ItemVariationStore::destroy_cache ((OT::hb_scalar_cache_t *) data);
+  OT::ਵਸਤੂ_Variation_Store::destroy_cache ((OT::hb_scalar_cache_t *) ਅੰਕੜੇ);
 }
 
 
@@ -447,17 +447,17 @@ _hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
  * shaper
  */
 
-struct hb_ot_shape_context_t
+ਬਣਤਰ hb_ot_shape_context_t
 {
   hb_ot_shape_plan_t *plan;
   hb_font_t *font;
   hb_face_t *face;
-  hb_buffer_t  *buffer;
-  const hb_feature_t *user_features;
-  unsigned int        num_user_features;
+  hb_ਬਫਰ_t  *ਬਫਰ;
+  ਅਚਲ hb_feature_t *user_features;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_user_features;
 
   /* Transient stuff */
-  hb_direction_t target_direction;
+  hb_direction_t ਨਿਸ਼ਾਨਾ_direction;
 };
 
 
@@ -467,9 +467,9 @@ struct hb_ot_shape_context_t
 
 /* Prepare */
 
-static void
-hb_set_unicode_props (hb_buffer_t *buffer,
-		      hb_mask_t    global_mask)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸੈੱਟ_unicode_props (hb_ਬਫਰ_t *ਬਫਰ,
+		      hb_ਨਕਾਬ_t    global_ਨਕਾਬ)
 {
   /* Implement enough of Unicode Graphemes here that shaping
    * in reverse-direction wouldn't break graphemes.  Namely,
@@ -479,54 +479,54 @@ hb_set_unicode_props (hb_buffer_t *buffer,
    *
    * https://www.unicode.org/reports/tr29/#Regex_Definitions
    */
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
-    info[i].mask = global_mask;
-    _hb_glyph_info_set_unicode_props (&info[i], buffer);
+    info[i].ਨਕਾਬ = global_ਨਕਾਬ;
+    hb_glyph_info_ਸੈੱਟ_unicode_props (&info[i], ਬਫਰ);
 
-    if (info[i].codepoint < 0x80)
-      continue;
+    ਜੇ (info[i].codepoint < 0x80)
+      ਜਾਰੀ;
 
-    unsigned gen_cat = _hb_glyph_info_get_general_category (&info[i]);
-    if (FLAG_UNSAFE (gen_cat) &
+    ਬਿਨਾਨਿਸ਼ਾਨੀ gen_cat = _hb_glyph_info_get_general_category (&info[i]);
+    ਜੇ (FLAG_UNSAFE (gen_cat) &
 	(FLAG (HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR)))
-      continue;
+      ਜਾਰੀ;
 
     /* Marks are already set as continuation by the above line.
      * Handle Emoji_Modifier and ZWJ-continuation. */
-    if (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL &&
-		  hb_in_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
+    ਜੇ (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_ਚਿੰਨ੍ਹ &&
+		  hb_ਵਿੱਚ_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
     {
-      _hb_glyph_info_set_continuation (&info[i], buffer);
+      hb_glyph_info_ਸੈੱਟ_continuation (&info[i], ਬਫਰ);
     }
     /* Regional_Indicators are hairy as hell...
      * https://github.com/harfbuzz/harfbuzz/issues/2265 */
-    else if (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
+    ਨਹੀਂਤਾਂ ਜੇ (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
     {
-      if (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
+      ਜੇ (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
 	  !_hb_glyph_info_is_continuation (&info[i - 1]))
-	_hb_glyph_info_set_continuation (&info[i], buffer);
+	hb_glyph_info_ਸੈੱਟ_continuation (&info[i], ਬਫਰ);
     }
-#ifndef HB_NO_EMOJI_SEQUENCES
-    else if (unlikely (_hb_glyph_info_is_zwj (&info[i])))
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_EMOJI_SEQUENCES
+    ਨਹੀਂਤਾਂ ਜੇ (unlikely (_hb_glyph_info_is_zwj (&info[i])))
     {
-      _hb_glyph_info_set_continuation (&info[i], buffer);
-      if (i + 1 < count &&
+      hb_glyph_info_ਸੈੱਟ_continuation (&info[i], ਬਫਰ);
+      ਜੇ (i + 1 < ਗਿਣਤੀ_2 &&
 	  _hb_unicode_is_emoji_Extended_Pictographic (info[i + 1].codepoint))
       {
 	i++;
-	info[i].mask = global_mask;
-	_hb_glyph_info_set_unicode_props (&info[i], buffer);
-	_hb_glyph_info_set_continuation (&info[i], buffer);
+	info[i].ਨਕਾਬ = global_ਨਕਾਬ;
+	hb_glyph_info_ਸੈੱਟ_unicode_props (&info[i], ਬਫਰ);
+	hb_glyph_info_ਸੈੱਟ_continuation (&info[i], ਬਫਰ);
       }
     }
-#endif
+#ਜੇ_ਅੰਤ
     /* Or part of the Other_Grapheme_Extend that is not marks.
      * As of Unicode 15 that is just:
      *
@@ -541,57 +541,57 @@ hb_set_unicode_props (hb_buffer_t *buffer,
      * Katakana ones were requested:
      * https://github.com/harfbuzz/harfbuzz/issues/3844
      */
-    else if (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
-      _hb_glyph_info_set_continuation (&info[i], buffer);
-    else if (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH;
+    ਨਹੀਂਤਾਂ ਜੇ (unlikely (hb_ਵਿੱਚ_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
+      hb_glyph_info_ਸੈੱਟ_continuation (&info[i], ਬਫਰ);
+    ਨਹੀਂਤਾਂ ਜੇ (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
+      ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_FRACTION_SLASH;
   }
 }
 
-static void
-hb_insert_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਪਾਓ_dotted_circle (hb_ਬਫਰ_t *ਬਫਰ, hb_font_t *font)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return;
+  ਜੇ (unlikely (ਬਫਰ->flags & HB_ਬਫਰ_FLAG_DO_NOT_ਪਾਓ_DOTTED_CIRCLE))
+    ਵਾਪਸ;
 
-  if (!(buffer->flags & HB_BUFFER_FLAG_BOT) ||
-      buffer->context_len[0] ||
-      !_hb_glyph_info_is_unicode_mark (&buffer->info[0]))
-    return;
+  ਜੇ (!(ਬਫਰ->flags & HB_ਬਫਰ_FLAG_BOT) ||
+      ਬਫਰ->context_len[0] ||
+      !_hb_glyph_info_is_unicode_mark (&ਬਫਰ->info[0]))
+    ਵਾਪਸ;
 
-  if (!font->has_glyph (0x25CCu))
-    return;
+  ਜੇ (!font->has_glyph (0x25CCu))
+    ਵਾਪਸ;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
-  _hb_glyph_info_set_unicode_props (&dottedcircle, buffer);
+  hb_glyph_info_ਸੈੱਟ_unicode_props (&dottedcircle, ਬਫਰ);
 
-  buffer->clear_output ();
+  ਬਫਰ->clear_output ();
 
-  buffer->idx = 0;
+  ਬਫਰ->idx = 0;
   hb_glyph_info_t info = dottedcircle;
-  info.cluster = buffer->cur().cluster;
-  info.mask = buffer->cur().mask;
-  (void) buffer->output_info (info);
+  info.cluster = ਬਫਰ->cur().cluster;
+  info.ਨਕਾਬ = ਬਫਰ->cur().ਨਕਾਬ;
+  (ਖਾਲੀ) ਬਫਰ->output_info (info);
 
-  buffer->sync ();
+  ਬਫਰ->ਸਮਕਾਲੀ ();
 }
 
-static void
-hb_form_clusters (hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+hb_form_clusters (hb_ਬਫਰ_t *ਬਫਰ)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS))
-    return;
+  ਜੇ (!(ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_CONTINUATIONS))
+    ਵਾਪਸ;
 
-  foreach_grapheme (buffer, start, end)
-    buffer->merge_grapheme_clusters (start, end);
+  foreach_grapheme (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
+    ਬਫਰ->ਮਿਲਾਓ_grapheme_clusters (ਸ਼ੁਰੂ, ਸਿਰਾ);
 }
 
-static void
-hb_ensure_native_direction (hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+hb_ensure_native_direction (hb_ਬਫਰ_t *ਬਫਰ)
 {
-  hb_direction_t direction = buffer->props.direction;
-  hb_direction_t horiz_dir = hb_script_get_horizontal_direction (buffer->props.script);
+  hb_direction_t direction = ਬਫਰ->props.direction;
+  hb_direction_t horiz_dir = hb_script_get_horizontal_direction (ਬਫਰ->props.script);
 
   /* Numeric runs in natively-RTL scripts are actually native-LTR, so we reset
    * the horiz_dir if the run contains at least one decimal-number char, and no
@@ -610,25 +610,25 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    *
    * https://github.com/harfbuzz/harfbuzz/issues/3314
    */
-  if (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
+  ਜੇ (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
   {
-    bool found_number = false, found_letter = false, found_ri = false;
-    const auto* info = buffer->info;
-    const auto count = buffer->len;
-    for (unsigned i = 0; i < count; i++)
+    ਤਾਰਕਿਕ ਮਿਲਿਆ_ਸੰਖਿਆ = ਝੂਠ, ਮਿਲਿਆ_letter = ਝੂਠ, ਮਿਲਿਆ_ri = ਝੂਠ;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ* info = ਬਫਰ->info;
+    ਅਚਲ ਸਵੈਚਾਲਿਤ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      auto gc = _hb_glyph_info_get_general_category (&info[i]);
-      if (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
+      ਸਵੈਚਾਲਿਤ gc = _hb_glyph_info_get_general_category (&info[i]);
+      ਜੇ (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
       {
-	found_letter = true;
-	break;
+	ਮਿਲਿਆ_letter = ਸੱਚ;
+	ਰੋਕੋ;
       }
-      else if (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	found_number = true;
-      else if (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
-	found_ri = true;
+      ਨਹੀਂਤਾਂ ਜੇ (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_ਸੰਖਿਆ)
+	ਮਿਲਿਆ_ਸੰਖਿਆ = ਸੱਚ;
+      ਨਹੀਂਤਾਂ ਜੇ (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
+	ਮਿਲਿਆ_ri = ਸੱਚ;
     }
-    if ((found_number || found_ri) && !found_letter)
+    ਜੇ ((ਮਿਲਿਆ_ਸੰਖਿਆ || ਮਿਲਿਆ_ri) && !ਮਿਲਿਆ_letter)
       horiz_dir = HB_DIRECTION_LTR;
   }
 
@@ -636,13 +636,13 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  ਜੇ ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && HB_DIRECTION_IS_VALID (horiz_dir)) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
   {
-    _hb_ot_layout_reverse_graphemes (buffer);
-    buffer->props.direction = HB_DIRECTION_REVERSE (buffer->props.direction);
+    hb_ot_layout_ਉਲਟ_graphemes (ਬਫਰ);
+    ਬਫਰ->props.direction = HB_DIRECTION_ਉਲਟ (ਬਫਰ->props.direction);
   }
 }
 
@@ -651,213 +651,213 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
  * Substitute
  */
 
-static inline void
-hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_rotate_chars (ਅਚਲ hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
+  hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  if (HB_DIRECTION_IS_BACKWARD (c->target_direction))
+  ਜੇ (HB_DIRECTION_IS_BACKWARD (c->ਨਿਸ਼ਾਨਾ_direction))
   {
-    hb_unicode_funcs_t *unicode = buffer->unicode;
-    hb_mask_t rtlm_mask = c->plan->rtlm_mask;
+    hb_unicode_funcs_t *unicode = ਬਫਰ->unicode;
+    hb_ਨਕਾਬ_t rtlm_ਨਕਾਬ = c->plan->rtlm_ਨਕਾਬ;
 
-    for (unsigned int i = 0; i < count; i++) {
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++) {
       hb_codepoint_t codepoint = unicode->mirroring (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      ਜੇ (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
-      else
-	info[i].mask |= rtlm_mask;
+      ਨਹੀਂਤਾਂ
+	info[i].ਨਕਾਬ |= rtlm_ਨਕਾਬ;
     }
   }
 
-#ifndef HB_NO_VERTICAL
-  if (HB_DIRECTION_IS_VERTICAL (c->target_direction) && !c->plan->has_vert)
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VERTICAL
+  ਜੇ (HB_DIRECTION_IS_VERTICAL (c->ਨਿਸ਼ਾਨਾ_direction) && !c->plan->has_vert)
   {
-    for (unsigned int i = 0; i < count; i++) {
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++) {
       hb_codepoint_t codepoint = hb_unicode_funcs_t::vertical_char_for (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      ਜੇ (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
     }
   }
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-static inline void
-hb_ot_shape_setup_masks_fraction (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_shape_ਤਿਆਰੀ_masks_fraction (ਅਚਲ hb_ot_shape_context_t *c)
 {
-#ifdef HB_NO_OT_SHAPE_FRACTIONS
-  return;
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FRACTIONS
+  ਵਾਪਸ;
+#ਜੇ_ਅੰਤ
 
-  if (!(c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
+  ਜੇ (!(c->ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
       !c->plan->has_frac)
-    return;
+    ਵਾਪਸ;
 
-  hb_buffer_t *buffer = c->buffer;
+  hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
 
-  hb_mask_t pre_mask, post_mask;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
+  hb_ਨਕਾਬ_t pre_ਨਕਾਬ, post_ਨਕਾਬ;
+  ਜੇ (HB_DIRECTION_IS_FORWARD (ਬਫਰ->props.direction))
   {
-    pre_mask = c->plan->numr_mask | c->plan->frac_mask;
-    post_mask = c->plan->frac_mask | c->plan->dnom_mask;
+    pre_ਨਕਾਬ = c->plan->numr_ਨਕਾਬ | c->plan->frac_ਨਕਾਬ;
+    post_ਨਕਾਬ = c->plan->frac_ਨਕਾਬ | c->plan->dnom_ਨਕਾਬ;
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    pre_mask = c->plan->frac_mask | c->plan->dnom_mask;
-    post_mask = c->plan->numr_mask | c->plan->frac_mask;
+    pre_ਨਕਾਬ = c->plan->frac_ਨਕਾਬ | c->plan->dnom_ਨਕਾਬ;
+    post_ਨਕਾਬ = c->plan->numr_ਨਕਾਬ | c->plan->frac_ਨਕਾਬ;
   }
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
-    if (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
+    ਜੇ (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
     {
-      unsigned int start = i, end = i + 1;
-      while (start &&
-	     _hb_glyph_info_get_general_category (&info[start - 1]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	start--;
-      while (end < count &&
-	     _hb_glyph_info_get_general_category (&info[end]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	end++;
-      if (start == i || end == i + 1)
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ = i, ਸਿਰਾ = i + 1;
+      ਜਦੋਂ (ਸ਼ੁਰੂ &&
+	     _hb_glyph_info_get_general_category (&info[ਸ਼ੁਰੂ - 1]) ==
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_ਸੰਖਿਆ)
+	ਸ਼ੁਰੂ--;
+      ਜਦੋਂ (ਸਿਰਾ < ਗਿਣਤੀ_2 &&
+	     _hb_glyph_info_get_general_category (&info[ਸਿਰਾ]) ==
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_ਸੰਖਿਆ)
+	ਸਿਰਾ++;
+      ਜੇ (ਸ਼ੁਰੂ == i || ਸਿਰਾ == i + 1)
       {
-        if (start == i)
-	  buffer->unsafe_to_concat (start, start + 1);
-	if (end == i + 1)
-	  buffer->unsafe_to_concat (end - 1, end);
-	continue;
+        ਜੇ (ਸ਼ੁਰੂ == i)
+	  ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat (ਸ਼ੁਰੂ, ਸ਼ੁਰੂ + 1);
+	ਜੇ (ਸਿਰਾ == i + 1)
+	  ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat (ਸਿਰਾ - 1, ਸਿਰਾ);
+	ਜਾਰੀ;
       }
 
-      buffer->unsafe_to_break (start, end);
+      ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (ਸ਼ੁਰੂ, ਸਿਰਾ);
 
-      for (unsigned int j = start; j < i; j++)
-	info[j].mask |= pre_mask;
-      info[i].mask |= c->plan->frac_mask;
-      for (unsigned int j = i + 1; j < end; j++)
-	info[j].mask |= post_mask;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = ਸ਼ੁਰੂ; j < i; j++)
+	info[j].ਨਕਾਬ |= pre_ਨਕਾਬ;
+      info[i].ਨਕਾਬ |= c->plan->frac_ਨਕਾਬ;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = i + 1; j < ਸਿਰਾ; j++)
+	info[j].ਨਕਾਬ |= post_ਨਕਾਬ;
 
-      i = end - 1;
+      i = ਸਿਰਾ - 1;
     }
   }
 }
 
-static inline void
-hb_ot_shape_setup_masks (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_shape_ਤਿਆਰੀ_masks (ਅਚਲ hb_ot_shape_context_t *c)
 {
   hb_ot_map_t *map = &c->plan->map;
-  hb_buffer_t *buffer = c->buffer;
+  hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
 
-  hb_ot_shape_setup_masks_fraction (c);
+  hb_ot_shape_ਤਿਆਰੀ_masks_fraction (c);
 
-  if (c->plan->shaper->setup_masks)
-    c->plan->shaper->setup_masks (c->plan, buffer, c->font);
+  ਜੇ (c->plan->shaper->ਤਿਆਰੀ_masks)
+    c->plan->shaper->ਤਿਆਰੀ_masks (c->plan, ਬਫਰ, c->font);
 
-  for (unsigned int i = 0; i < c->num_user_features; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < c->ਅੰਕ_user_features; i++)
   {
-    const hb_feature_t *feature = &c->user_features[i];
-    if (!(feature->start == HB_FEATURE_GLOBAL_START && feature->end == HB_FEATURE_GLOBAL_END)) {
-      unsigned int shift;
-      hb_mask_t mask = map->get_mask (feature->tag, &shift);
-      buffer->set_masks (feature->value << shift, mask, feature->start, feature->end);
+    ਅਚਲ hb_feature_t *feature = &c->user_features[i];
+    ਜੇ (!(feature->ਸ਼ੁਰੂ == HB_FEATURE_GLOBAL_ਸ਼ੁਰੂ && feature->ਸਿਰਾ == HB_FEATURE_GLOBAL_ਸਿਰਾ)) {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਖਿਸਕਾਓ;
+      hb_ਨਕਾਬ_t ਨਕਾਬ = map->get_ਨਕਾਬ (feature->ਟੈਗ_2, &ਖਿਸਕਾਓ);
+      ਬਫਰ->ਸੈੱਟ_masks (feature->value << ਖਿਸਕਾਓ, ਨਕਾਬ, feature->ਸ਼ੁਰੂ, feature->ਸਿਰਾ);
     }
   }
 }
 
-static void
-hb_ot_zero_width_default_ignorables (const hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_zero_ਚੌੜਾਈ_default_ignorables (ਅਚਲ hb_ਬਫਰ_t *ਬਫਰ)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES))
-    return;
+  ਜੇ (!(ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+      (ਬਫਰ->flags & HB_ਬਫਰ_FLAG_PRESERVE_DEFAULT_IGNORABLES) ||
+      (ਬਫਰ->flags & HB_ਬਫਰ_FLAG_REMOVE_DEFAULT_IGNORABLES))
+    ਵਾਪਸ;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  unsigned int i = 0;
-  for (i = 0; i < count; i++)
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  hb_glyph_position_t *pos = ਬਫਰ->pos;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0;
+  ਲਈ (i = 0; i < ਗਿਣਤੀ_2; i++)
+    ਜੇ (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
     {
       pos[i].x_advance = pos[i].y_advance = 0;
-      if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-	pos[i].x_offset = 0;
-      else
-        pos[i].y_offset = 0;
+      ਜੇ (HB_DIRECTION_IS_HORIZONTAL (ਬਫਰ->props.direction))
+	pos[i].x_ਵਿੱਥ_2 = 0;
+      ਨਹੀਂਤਾਂ
+        pos[i].y_ਵਿੱਥ_2 = 0;
     }
 }
 
-static void
-hb_ot_deal_with_variation_selectors (hb_buffer_t *buffer)
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_deal_with_variation_selectors (hb_ਬਫਰ_t *ਬਫਰ)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
-	buffer->not_found_variation_selector == HB_CODEPOINT_INVALID)
-    return;
+  ਜੇ (!(ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
+	ਬਫਰ->not_ਮਿਲਿਆ_variation_selector == HB_CODEPOINT_INVALID)
+    ਵਾਪਸ;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  hb_glyph_position_t *pos = ਬਫਰ->pos;
 
-  for (unsigned int i = 0; i < count; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
-    if (_hb_glyph_info_is_variation_selector (&info[i]))
+    ਜੇ (_hb_glyph_info_is_variation_selector (&info[i]))
     {
-      info[i].codepoint = buffer->not_found_variation_selector;
-      pos[i].x_advance = pos[i].y_advance = pos[i].x_offset = pos[i].y_offset = 0;
-      _hb_glyph_info_set_variation_selector (&info[i], false);
+      info[i].codepoint = ਬਫਰ->not_ਮਿਲਿਆ_variation_selector;
+      pos[i].x_advance = pos[i].y_advance = pos[i].x_ਵਿੱਥ_2 = pos[i].y_ਵਿੱਥ_2 = 0;
+      hb_glyph_info_ਸੈੱਟ_variation_selector (&info[i], ਝੂਠ);
     }
   }
 }
 
-static void
-hb_ot_hide_default_ignorables (hb_buffer_t *buffer,
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_hide_default_ignorables (hb_ਬਫਰ_t *ਬਫਰ,
 			       hb_font_t   *font)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
-      (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES))
-    return;
+  ਜੇ (!(ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+      (ਬਫਰ->flags & HB_ਬਫਰ_FLAG_PRESERVE_DEFAULT_IGNORABLES))
+    ਵਾਪਸ;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  hb_codepoint_t invisible = buffer->invisible;
-  if (!(buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
+  hb_codepoint_t invisible = ਬਫਰ->invisible;
+  ਜੇ (!(ਬਫਰ->flags & HB_ਬਫਰ_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
       (invisible || font->get_nominal_glyph (' ', &invisible)))
   {
     /* Replace default-ignorables with a zero-advance invisible glyph. */
-    for (unsigned int i = 0; i < count; i++)
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
     {
-      if (_hb_glyph_info_is_default_ignorable (&info[i]))
+      ਜੇ (_hb_glyph_info_is_default_ignorable (&info[i]))
 	info[i].codepoint = invisible;
     }
   }
-  else
-    buffer->delete_glyphs_inplace (_hb_glyph_info_is_default_ignorable);
+  ਨਹੀਂਤਾਂ
+    ਬਫਰ->delete_glyphs_inplace (_hb_glyph_info_is_default_ignorable);
 }
 
 
-static inline void
-hb_ot_map_glyphs_fast (hb_buffer_t  *buffer)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_map_glyphs_fast (hb_ਬਫਰ_t  *ਬਫਰ)
 {
   /* Normalization process sets up normalizer_glyph_index(), we just copy it. */
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    info[i].codepoint = info[i].normalizer_glyph_index();
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+    info[i].codepoint = info[i].normalizer_glyph_ਸੂਚਕਾਂਕ();
 
-  buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
+  ਬਫਰ->content_type = HB_ਬਫਰ_CONTENT_TYPE_GLYPHS;
 }
 
-static inline void
-hb_synthesize_glyph_classes (hb_buffer_t *buffer)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_synthesize_glyph_classes (hb_ਬਫਰ_t *ਬਫਰ)
 {
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
   {
     hb_ot_layout_glyph_props_flags_t klass;
 
@@ -872,96 +872,96 @@ hb_synthesize_glyph_classes (hb_buffer_t *buffer)
     klass = (_hb_glyph_info_get_general_category (&info[i]) !=
 	     HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK ||
 	     _hb_glyph_info_is_default_ignorable (&info[i])) ?
-	    HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH :
+	    HB_OT_LAYOUT_GLYPH_PROPS_ਅਧਾਰ_GLYPH :
 	    HB_OT_LAYOUT_GLYPH_PROPS_MARK;
-    _hb_glyph_info_set_glyph_props (&info[i], klass);
+    hb_glyph_info_ਸੈੱਟ_glyph_props (&info[i], klass);
   }
 }
 
-static inline void
-hb_ot_substitute_default (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_substitute_default (ਅਚਲ hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
 
   hb_ot_rotate_chars (c);
 
-  HB_BUFFER_ALLOCATE_VAR (buffer, normalizer_glyph_index);
+  HB_ਬਫਰ_ALLOCATE_VAR (ਬਫਰ, normalizer_glyph_ਸੂਚਕਾਂਕ);
 
-  _hb_ot_shape_normalize (c->plan, buffer, c->font);
+  _hb_ot_shape_normalize (c->plan, ਬਫਰ, c->font);
 
-  hb_ot_shape_setup_masks (c);
+  hb_ot_shape_ਤਿਆਰੀ_masks (c);
 
   /* This is unfortunate to go here, but necessary... */
-  if (c->plan->fallback_mark_positioning)
-    _hb_ot_shape_fallback_mark_position_recategorize_marks (c->plan, c->font, buffer);
+  ਜੇ (c->plan->fallback_mark_positioning)
+    _hb_ot_shape_fallback_mark_position_recategorize_marks (c->plan, c->font, ਬਫਰ);
 
-  hb_ot_map_glyphs_fast (buffer);
+  hb_ot_map_glyphs_fast (ਬਫਰ);
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, normalizer_glyph_index);
+  HB_ਬਫਰ_DEALLOCATE_VAR (ਬਫਰ, normalizer_glyph_ਸੂਚਕਾਂਕ);
 }
 
-static inline void
-hb_ot_substitute_plan (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_substitute_plan (ਅਚਲ hb_ot_shape_context_t *c)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_ਬਫਰ_t *ਬਫਰ = c->ਬਫਰ;
 
-#ifndef HB_NO_AAT_SHAPE
-  if (unlikely (c->plan->apply_morx))
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਜੇ (unlikely (c->plan->apply_morx))
   {
-    hb_ot_layout_substitute_start (c->font, buffer);
+    hb_ot_layout_substitute_ਸ਼ੁਰੂ (c->font, ਬਫਰ);
 
-    if (c->plan->fallback_glyph_classes)
-      hb_synthesize_glyph_classes (buffer);
+    ਜੇ (c->plan->fallback_glyph_classes)
+      hb_synthesize_glyph_classes (ਬਫਰ);
 
-    hb_aat_layout_substitute (c->plan, c->font, c->buffer,
-			      c->user_features, c->num_user_features);
+    hb_aat_layout_substitute (c->plan, c->font, c->ਬਫਰ,
+			      c->user_features, c->ਅੰਕ_user_features);
     /* The buffer digest is only used by the OT lookup-apply loop;
      * without GPOS ahead, nothing consumes it. */
-    if (c->plan->apply_gpos)
-      c->buffer->update_digest ();
+    ਜੇ (c->plan->apply_gpos)
+      c->ਬਫਰ->update_digest ();
   }
-  else
-#endif
+  ਨਹੀਂਤਾਂ
+#ਜੇ_ਅੰਤ
   {
-    hb_ot_layout_substitute_start_with_digest (c->font, buffer);
+    hb_ot_layout_substitute_ਸ਼ੁਰੂ_with_digest (c->font, ਬਫਰ);
 
-    if (c->plan->fallback_glyph_classes)
-      hb_synthesize_glyph_classes (buffer);
+    ਜੇ (c->plan->fallback_glyph_classes)
+      hb_synthesize_glyph_classes (ਬਫਰ);
 
-    c->plan->substitute (c->font, buffer);
+    c->plan->substitute (c->font, ਬਫਰ);
   }
 }
 
-static inline void
-hb_ot_substitute_pre (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_substitute_pre (ਅਚਲ hb_ot_shape_context_t *c)
 {
   hb_ot_substitute_default (c);
 
-  _hb_buffer_allocate_gsubgpos_vars (c->buffer);
+  hb_ਬਫਰ_allocate_gsubgpos_vars (c->ਬਫਰ);
 
   hb_ot_substitute_plan (c);
 
-#ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && c->plan->apply_gpos)
-    hb_aat_layout_remove_deleted_glyphs (c->buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਜੇ (c->plan->apply_morx && c->plan->apply_gpos)
+    hb_aat_layout_remove_deleted_glyphs (c->ਬਫਰ);
+#ਜੇ_ਅੰਤ
 }
 
-static inline void
-hb_ot_substitute_post (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_substitute_post (ਅਚਲ hb_ot_shape_context_t *c)
 {
-#ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && !c->plan->apply_gpos)
-    hb_aat_layout_remove_deleted_glyphs (c->buffer);
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਜੇ (c->plan->apply_morx && !c->plan->apply_gpos)
+    hb_aat_layout_remove_deleted_glyphs (c->ਬਫਰ);
+#ਜੇ_ਅੰਤ
 
-  hb_ot_deal_with_variation_selectors (c->buffer);
-  hb_ot_hide_default_ignorables (c->buffer, c->font);
+  hb_ot_deal_with_variation_selectors (c->ਬਫਰ);
+  hb_ot_hide_default_ignorables (c->ਬਫਰ, c->font);
 
-  if (c->plan->shaper->postprocess_glyphs &&
-    c->buffer->message(c->font, "start postprocess-glyphs")) {
-    c->plan->shaper->postprocess_glyphs (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end postprocess-glyphs");
+  ਜੇ (c->plan->shaper->postprocess_glyphs &&
+    c->ਬਫਰ->ਸੁਨੇਹਾ(c->font, "start postprocess-glyphs")) {
+    c->plan->shaper->postprocess_glyphs (c->plan, c->ਬਫਰ, c->font);
+    (ਖਾਲੀ) c->ਬਫਰ->ਸੁਨੇਹਾ(c->font, "end postprocess-glyphs");
   }
 }
 
@@ -970,63 +970,63 @@ hb_ot_substitute_post (const hb_ot_shape_context_t *c)
  * Position
  */
 
-static inline void
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
 adjust_mark_offsets (hb_glyph_position_t *pos)
 {
-  pos->x_offset = hb_saturate_sub (pos->x_offset, pos->x_advance);
-  pos->y_offset = hb_saturate_sub (pos->y_offset, pos->y_advance);
+  pos->x_ਵਿੱਥ_2 = hb_saturate_sub (pos->x_ਵਿੱਥ_2, pos->x_advance);
+  pos->y_ਵਿੱਥ_2 = hb_saturate_sub (pos->y_ਵਿੱਥ_2, pos->y_advance);
 }
 
-static inline void
-zero_mark_width (hb_glyph_position_t *pos)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+zero_mark_ਚੌੜਾਈ (hb_glyph_position_t *pos)
 {
   pos->x_advance = 0;
   pos->y_advance = 0;
 }
 
-static inline void
-zero_mark_widths_by_gdef (hb_buffer_t *buffer, bool adjust_offsets)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+zero_mark_widths_by_gdef (hb_ਬਫਰ_t *ਬਫਰ, ਤਾਰਕਿਕ adjust_offsets)
 {
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_mark (&info[i]))
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+    ਜੇ (_hb_glyph_info_is_mark (&info[i]))
     {
-      if (adjust_offsets)
-	adjust_mark_offsets (&buffer->pos[i]);
-      zero_mark_width (&buffer->pos[i]);
+      ਜੇ (adjust_offsets)
+	adjust_mark_offsets (&ਬਫਰ->pos[i]);
+      zero_mark_ਚੌੜਾਈ (&ਬਫਰ->pos[i]);
     }
 }
 
-static inline void
-hb_ot_position_default (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_position_default (ਅਚਲ hb_ot_shape_context_t *c)
 {
-  hb_direction_t direction = c->buffer->props.direction;
-  unsigned int count = c->buffer->len;
-  hb_glyph_info_t *info = c->buffer->info;
-  hb_glyph_position_t *pos = c->buffer->pos;
+  hb_direction_t direction = c->ਬਫਰ->props.direction;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = c->ਬਫਰ->len;
+  hb_glyph_info_t *info = c->ਬਫਰ->info;
+  hb_glyph_position_t *pos = c->ਬਫਰ->pos;
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  ਜੇ (HB_DIRECTION_IS_HORIZONTAL (direction))
   {
-    c->font->get_glyph_h_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].x_advance, sizeof(pos[0]));
+    c->font->get_glyph_h_advances (ਗਿਣਤੀ_2, &info[0].codepoint, ਆਕਾਰ(info[0]),
+				   &pos[0].x_advance, ਆਕਾਰ(pos[0]));
     // h_origin defaults to zero; only apply it if the font has it.
-    if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-      c->font->subtract_glyph_h_origins (c->buffer);
+    ਜੇ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+      c->font->ਘਟਾਓ_glyph_h_origins (c->ਬਫਰ);
   }
-  else
+  ਨਹੀਂਤਾਂ
   {
-    c->font->get_glyph_v_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].y_advance, sizeof(pos[0]));
+    c->font->get_glyph_v_advances (ਗਿਣਤੀ_2, &info[0].codepoint, ਆਕਾਰ(info[0]),
+				   &pos[0].y_advance, ਆਕਾਰ(pos[0]));
     // v_origin defaults to non-zero; apply even if only fallback is there.
-    c->font->subtract_glyph_v_origins (c->buffer);
+    c->font->ਘਟਾਓ_glyph_v_origins (c->ਬਫਰ);
   }
-  if (c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
-    _hb_ot_shape_fallback_spaces (c->plan, c->font, c->buffer);
+  ਜੇ (c->ਬਫਰ->scratch_flags & HB_ਬਫਰ_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
+    _hb_ot_shape_fallback_spaces (c->plan, c->font, c->ਬਫਰ);
 }
 
-static inline void
-hb_ot_position_plan (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_position_plan (ਅਚਲ hb_ot_shape_context_t *c)
 {
   /* If the font has no GPOS and direction is forward, then when
    * zeroing mark widths, we shift the mark with it, such that the
@@ -1037,106 +1037,106 @@ hb_ot_position_plan (const hb_ot_shape_context_t *c)
    * Note: If fallback positioning happens, we don't care about
    * this as it will be overridden.
    */
-  bool adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
-				     HB_DIRECTION_IS_FORWARD (c->buffer->props.direction);
+  ਤਾਰਕਿਕ adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
+				     HB_DIRECTION_IS_FORWARD (c->ਬਫਰ->props.direction);
 
   /* We change glyph origin to what GPOS expects (horizontal), apply GPOS, change it back. */
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-    c->font->add_glyph_h_origins (c->buffer);
+  ਜੇ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+    c->font->ਜੋੜੋ_glyph_h_origins (c->ਬਫਰ);
 
-  hb_ot_layout_position_start (c->font, c->buffer);
+  hb_ot_layout_position_ਸ਼ੁਰੂ (c->font, c->ਬਫਰ);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  ਜੇ (c->plan->zero_marks)
+    ਚੋਣ (c->plan->shaper->zero_ਚੌੜਾਈ_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
-	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_EARLY:
+	zero_mark_widths_by_gdef (c->ਬਫਰ, adjust_offsets_when_zeroing);
+	ਰੋਕੋ;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
-	break;
+      ਮੂਲ:
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_NONE:
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_LATE:
+	ਰੋਕੋ;
     }
 
-  c->plan->position (c->font, c->buffer);
+  c->plan->position (c->font, c->ਬਫਰ);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  ਜੇ (c->plan->zero_marks)
+    ਚੋਣ (c->plan->shaper->zero_ਚੌੜਾਈ_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
-	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_LATE:
+	zero_mark_widths_by_gdef (c->ਬਫਰ, adjust_offsets_when_zeroing);
+	ਰੋਕੋ;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
-	break;
+      ਮੂਲ:
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_NONE:
+      ਹਾਲਤ HB_OT_SHAPE_ZERO_ਚੌੜਾਈ_MARKS_BY_GDEF_EARLY:
+	ਰੋਕੋ;
     }
 
   /* Finish off.  Has to follow a certain order. */
-  hb_ot_layout_position_finish_advances (c->font, c->buffer);
-  hb_ot_zero_width_default_ignorables (c->buffer);
-  hb_ot_layout_position_finish_offsets (c->font, c->buffer);
+  hb_ot_layout_position_ਅੰਤ_advances (c->font, c->ਬਫਰ);
+  hb_ot_zero_ਚੌੜਾਈ_default_ignorables (c->ਬਫਰ);
+  hb_ot_layout_position_ਅੰਤ_offsets (c->font, c->ਬਫਰ);
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
-    c->font->subtract_glyph_h_origins (c->buffer);
+  ਜੇ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+    c->font->ਘਟਾਓ_glyph_h_origins (c->ਬਫਰ);
 
-  if (c->plan->fallback_mark_positioning)
-    _hb_ot_shape_fallback_mark_position (c->plan, c->font, c->buffer,
+  ਜੇ (c->plan->fallback_mark_positioning)
+    _hb_ot_shape_fallback_mark_position (c->plan, c->font, c->ਬਫਰ,
 					 adjust_offsets_when_zeroing);
 }
 
-static inline void
-hb_ot_position (const hb_ot_shape_context_t *c)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ot_position (ਅਚਲ hb_ot_shape_context_t *c)
 {
-  c->buffer->clear_positions ();
+  c->ਬਫਰ->clear_positions ();
 
   hb_ot_position_default (c);
 
   hb_ot_position_plan (c);
 
-  if (HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction))
-    hb_buffer_reverse (c->buffer);
+  ਜੇ (HB_DIRECTION_IS_BACKWARD (c->ਬਫਰ->props.direction))
+    hb_ਬਫਰ_ਉਲਟ (c->ਬਫਰ);
 
-  _hb_buffer_deallocate_gsubgpos_vars (c->buffer);
+  hb_ਬਫਰ_deallocate_gsubgpos_vars (c->ਬਫਰ);
 }
 
-static inline void
-hb_propagate_flags (hb_buffer_t *buffer)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_propagate_flags (hb_ਬਫਰ_t *ਬਫਰ)
 {
   /* Propagate cluster-level glyph flags to be the same on all cluster glyphs.
    * Simplifies using them. */
 
-  hb_mask_t and_mask = HB_GLYPH_FLAG_DEFINED;
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0)
-    and_mask &= ~HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
+  hb_ਨਕਾਬ_t and_ਨਕਾਬ = HB_GLYPH_FLAG_DEFINED;
+  ਜੇ ((ਬਫਰ->flags & HB_ਬਫਰ_FLAG_PRODUCE_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT) == 0)
+    and_ਨਕਾਬ &= ~HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT;
 
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = ਬਫਰ->info;
 
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+  ਜੇ ((ਬਫਰ->flags & HB_ਬਫਰ_FLAG_PRODUCE_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL) == 0)
   {
-    foreach_cluster (buffer, start, end)
+    foreach_cluster (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
     {
-      if (end - start == 1)
+      ਜੇ (ਸਿਰਾ - ਸ਼ੁਰੂ == 1)
       {
-        info[start].mask &= and_mask;
-	continue;
+        info[ਸ਼ੁਰੂ].ਨਕਾਬ &= and_ਨਕਾਬ;
+	ਜਾਰੀ;
       }
 
-      unsigned int mask = 0;
-      for (unsigned int i = start; i < end; i++)
-	mask |= info[i].mask;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਨਕਾਬ = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+	ਨਕਾਬ |= info[i].ਨਕਾਬ;
 
-      mask &= and_mask;
+      ਨਕਾਬ &= and_ਨਕਾਬ;
 
-      for (unsigned int i = start; i < end; i++)
-	info[i].mask = mask;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+	info[i].ਨਕਾਬ = ਨਕਾਬ;
     }
-    return;
+    ਵਾਪਸ;
   }
 
   /* If we are producing SAFE_TO_INSERT_TATWEEL, then do two things:
@@ -1147,71 +1147,71 @@ hb_propagate_flags (hb_buffer_t *buffer)
    *
    * We couldn't make this interaction earlier. It has to be done this way.
    */
-  foreach_cluster (buffer, start, end)
+  foreach_cluster (ਬਫਰ, ਸ਼ੁਰੂ, ਸਿਰਾ)
   {
-    unsigned int mask = 0;
-    for (unsigned int i = start; i < end; i++)
-      mask |= info[i].mask;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਨਕਾਬ = 0;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+      ਨਕਾਬ |= info[i].ਨਕਾਬ;
 
-    if (mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK)
-      mask &= ~HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL;
-    if (mask & HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL)
-      mask |= HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
+    ਜੇ (ਨਕਾਬ & HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_BREAK)
+      ਨਕਾਬ &= ~HB_GLYPH_FLAG_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL;
+    ਜੇ (ਨਕਾਬ & HB_GLYPH_FLAG_ਸੁਰੱਖਿਅਤ_ਮੰਜ਼ਿਲ_ਪਾਓ_TATWEEL)
+      ਨਕਾਬ |= HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_BREAK | HB_GLYPH_FLAG_UNSAFE_ਮੰਜ਼ਿਲ_CONCAT;
 
-    mask &= and_mask;
+    ਨਕਾਬ &= and_ਨਕਾਬ;
 
-    for (unsigned int i = start; i < end; i++)
-      info[i].mask = mask;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = ਸ਼ੁਰੂ; i < ਸਿਰਾ; i++)
+      info[i].ਨਕਾਬ = ਨਕਾਬ;
   }
 }
 
 /* Pull it all together! */
 
-static void
-hb_ot_shape_internal (hb_ot_shape_context_t *c)
+ਸਥਿਰ ਖਾਲੀ
+hb_ot_shape_ਅੰਦਰੂਨੀ (hb_ot_shape_context_t *c)
 {
   /* Save the original direction, we use it later. */
-  c->target_direction = c->buffer->props.direction;
+  c->ਨਿਸ਼ਾਨਾ_direction = c->ਬਫਰ->props.direction;
 
-  _hb_buffer_allocate_unicode_vars (c->buffer);
+  hb_ਬਫਰ_allocate_unicode_vars (c->ਬਫਰ);
 
-  hb_set_unicode_props (c->buffer, c->plan->map.get_global_mask ());
-  hb_insert_dotted_circle (c->buffer, c->font);
+  hb_ਸੈੱਟ_unicode_props (c->ਬਫਰ, c->plan->map.get_global_ਨਕਾਬ ());
+  hb_ਪਾਓ_dotted_circle (c->ਬਫਰ, c->font);
 
-  hb_form_clusters (c->buffer);
+  hb_form_clusters (c->ਬਫਰ);
 
-  hb_ensure_native_direction (c->buffer);
+  hb_ensure_native_direction (c->ਬਫਰ);
 
-  if (c->plan->shaper->preprocess_text &&
-      c->buffer->message(c->font, "start preprocess-text"))
+  ਜੇ (c->plan->shaper->preprocess_ਪਾਠ &&
+      c->ਬਫਰ->ਸੁਨੇਹਾ(c->font, "start preprocess-text"))
   {
-    c->plan->shaper->preprocess_text (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end preprocess-text");
+    c->plan->shaper->preprocess_ਪਾਠ (c->plan, c->ਬਫਰ, c->font);
+    (ਖਾਲੀ) c->ਬਫਰ->ਸੁਨੇਹਾ(c->font, "end preprocess-text");
   }
 
   hb_ot_substitute_pre (c);
   hb_ot_position (c);
   hb_ot_substitute_post (c);
 
-  hb_propagate_flags (c->buffer);
+  hb_propagate_flags (c->ਬਫਰ);
 
-  _hb_buffer_deallocate_unicode_vars (c->buffer);
+  hb_ਬਫਰ_deallocate_unicode_vars (c->ਬਫਰ);
 
-  c->buffer->props.direction = c->target_direction;
+  c->ਬਫਰ->props.direction = c->ਨਿਸ਼ਾਨਾ_direction;
 }
 
 
 hb_bool_t
 _hb_ot_shape (hb_shape_plan_t    *shape_plan,
 	      hb_font_t          *font,
-	      hb_buffer_t        *buffer,
-	      const hb_feature_t *features,
-	      unsigned int        num_features)
+	      hb_ਬਫਰ_t        *ਬਫਰ,
+	      ਅਚਲ hb_feature_t *features,
+	      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features)
 {
-  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, num_features};
-  hb_ot_shape_internal (&c);
+  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, ਬਫਰ, features, ਅੰਕ_features};
+  hb_ot_shape_ਅੰਦਰੂਨੀ (&c);
 
-  return true;
+  ਵਾਪਸ ਸੱਚ;
 }
 
 
@@ -1226,12 +1226,12 @@ _hb_ot_shape (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void
+ਖਾਲੀ
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
-				  hb_tag_t         table_tag,
-				  hb_set_t        *lookup_indexes /* OUT */)
+				  hb_ਟੈਗ_t         ਸਾਰਣੀ_ਟੈਗ_2,
+				  hb_ਸੈੱਟ_t        *lookup_indexes /*ਬਾਹਰਲਾ*/)
 {
-  shape_plan->ot.collect_lookups (table_tag, lookup_indexes);
+  shape_plan->ot.collect_lookups (ਸਾਰਣੀ_ਟੈਗ_2, lookup_indexes);
 }
 
 
@@ -1249,38 +1249,38 @@ hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
  *
  * Since: 10.3.0
  */
-unsigned int
-hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
-				   hb_tag_t        *tags /* OUT */)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_shape_plan_get_feature_ਟੈਗ_ਸੂਚੀ (hb_shape_plan_t *shape_plan,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     ਸ਼ੁਰੂ_ਵਿੱਥ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    *ਟੈਗ_ਗਿਣਤੀ, /* IN/OUT */
+				   hb_ਟੈਗ_t        *ਟੈਗ_ਸੂਚੀ /*ਬਾਹਰਲਾ*/)
 {
-#ifndef HB_NO_OT_SHAPE
-  return shape_plan->ot.map.get_feature_tags (start_offset, tag_count, tags);
-#else
-  if (tag_count)
-	*tag_count = 0;
-  return 0;
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE
+  ਵਾਪਸ shape_plan->ot.map.get_feature_ਟੈਗ_ਸੂਚੀ (ਸ਼ੁਰੂ_ਵਿੱਥ, ਟੈਗ_ਗਿਣਤੀ, ਟੈਗ_ਸੂਚੀ);
+#ਨਹੀਂਤਾਂ
+  ਜੇ (ਟੈਗ_ਗਿਣਤੀ)
+	*ਟੈਗ_ਗਿਣਤੀ = 0;
+  ਵਾਪਸ 0;
+#ਜੇ_ਅੰਤ
 }
 
 
 /* TODO Move this to hb-ot-shape-normalize, make it do decompose, and make it public. */
-static void
-add_char (hb_font_t          *font,
+ਸਥਿਰ ਖਾਲੀ
+ਜੋੜੋ_char (hb_font_t          *font,
 	  hb_unicode_funcs_t *unicode,
 	  hb_bool_t           mirror,
 	  hb_codepoint_t      u,
-	  hb_set_t           *glyphs)
+	  hb_ਸੈੱਟ_t           *glyphs)
 {
   hb_codepoint_t glyph;
-  if (font->get_nominal_glyph (u, &glyph))
-    glyphs->add (glyph);
-  if (mirror)
+  ਜੇ (font->get_nominal_glyph (u, &glyph))
+    glyphs->ਜੋੜੋ (glyph);
+  ਜੇ (mirror)
   {
     hb_codepoint_t m = unicode->mirroring (u);
-    if (m != u && font->get_nominal_glyph (m, &glyph))
-      glyphs->add (glyph);
+    ਜੇ (m != u && font->get_nominal_glyph (m, &glyph))
+      glyphs->ਜੋੜੋ (glyph);
   }
 }
 
@@ -1299,29 +1299,29 @@ add_char (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
-			    hb_set_t           *glyphs)
+ਖਾਲੀ
+hb_ot_shape_glyphs_ਘੇਰਾ (hb_font_t          *font,
+			    hb_ਬਫਰ_t        *ਬਫਰ,
+			    ਅਚਲ hb_feature_t *features,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ        ਅੰਕ_features,
+			    hb_ਸੈੱਟ_t           *glyphs)
 {
-  const char *shapers[] = {"ot", nullptr};
-  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &buffer->props,
-							     features, num_features, shapers);
+  ਅਚਲ ਅੱਖਰ *shapers[] = {"ot", ਖਾਲੀ_ਸੂਚਕ};
+  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &ਬਫਰ->props,
+							     features, ਅੰਕ_features, shapers);
 
-  bool mirror = hb_script_get_horizontal_direction (buffer->props.script) == HB_DIRECTION_RTL;
+  ਤਾਰਕਿਕ mirror = hb_script_get_horizontal_direction (ਬਫਰ->props.script) == HB_DIRECTION_RTL;
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    add_char (font, buffer->unicode, mirror, info[i].codepoint, glyphs);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+  hb_glyph_info_t *info = ਬਫਰ->info;
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਗਿਣਤੀ_2; i++)
+    ਜੋੜੋ_char (font, ਬਫਰ->unicode, mirror, info[i].codepoint, glyphs);
 
-  hb_set_t *lookups = hb_set_create ();
-  hb_ot_shape_plan_collect_lookups (shape_plan, HB_OT_TAG_GSUB, lookups);
-  hb_ot_layout_lookups_substitute_closure (font->face, lookups, glyphs);
+  hb_ਸੈੱਟ_t *lookups = hb_ਸੈੱਟ_create ();
+  hb_ot_shape_plan_collect_lookups (shape_plan, HB_OT_ਟੈਗ_GSUB, lookups);
+  hb_ot_layout_lookups_substitute_ਘੇਰਾ (font->face, lookups, glyphs);
 
-  hb_set_destroy (lookups);
+  hb_ਸੈੱਟ_destroy (lookups);
 
   hb_shape_plan_destroy (shape_plan);
 }
@@ -1337,10 +1337,10 @@ hb_ot_shape_glyphs_closure (hb_font_t          *font,
  *
  * Since: 13.2.0
  **/
-unsigned int
-hb_ot_shape_get_buffer_format_serial (void)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_shape_get_ਬਫਰ_format_serial (ਖਾਲੀ)
 {
-  return HB_OT_SHAPE_BUFFER_FORMAT_SERIAL;
+  ਵਾਪਸ HB_OT_SHAPE_ਬਫਰ_FORMAT_SERIAL;
 }
 
-#endif
+#ਜੇ_ਅੰਤ

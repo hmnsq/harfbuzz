@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_hlsl =
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ *hb_gpu_ਸ਼ੀਰਸ਼_hlsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

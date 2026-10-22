@@ -22,18 +22,18 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_GDI_H
-#define HB_GDI_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_GDI_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_GDI_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
-#include <windows.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <windows.h>
 
 HB_BEGIN_DECLS
 
 HB_EXTERN hb_face_t *
 hb_gdi_face_create (HFONT hfont);
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_GDI_H */
+#ਜੇ_ਅੰਤ /* HB_GDI_H */

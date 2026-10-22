@@ -24,96 +24,96 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_DRAW_HH
-#define HB_VECTOR_DRAW_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸਦਿਸ਼_DRAW_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸਦਿਸ਼_DRAW_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-buf.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-internal.hh"
 
-struct hb_vector_draw_t
+ਬਣਤਰ hb_ਸਦਿਸ਼_draw_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
-  hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
+  hb_ਸਦਿਸ਼_format_t format = HB_ਸਦਿਸ਼_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
-  hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  ਦਸ਼ਮਲਵ x_scale_ਗੁਣਕ = 1.f;
+  ਦਸ਼ਮਲਵ y_scale_ਗੁਣਕ = 1.f;
+  hb_ਸਦਿਸ਼_extents_t extents = {0, 0, 0, 0};
+  ਤਾਰਕਿਕ has_extents = ਝੂਠ;
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
 
-  hb_vector_buf_t defs;
-  hb_vector_buf_t body;
-  hb_vector_buf_t path;
-  hb_vector_buf_t pdf_extgstate_dict;
-  unsigned pdf_extgstate_count = 0;
+  hb_ਸਦਿਸ਼_buf_t defs;
+  hb_ਸਦਿਸ਼_buf_t body;
+  hb_ਸਦਿਸ਼_buf_t ਰਸਤਾ;
+  hb_ਸਦਿਸ਼_buf_t pdf_extgstate_dict;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ pdf_extgstate_ਗਿਣਤੀ = 0;
 
   /* Cumulative work budget for the current draw session; reset by
    * hb_vector_draw_clear().  Outline traversal and complete path commands
    * charge the same live counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
+  int64_t budget_ਬਚਿਆ = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  ਖਾਲੀ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_ਬਚਿਆ = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  bool begin_path_command ()
+  ਤਾਰਕਿਕ begin_ਰਸਤਾ_command ()
   {
-    return likely (budget_remaining >= 0 && !path.in_error ());
+    ਵਾਪਸ likely (budget_ਬਚਿਆ >= 0 && !ਰਸਤਾ.ਵਿੱਚ_error ());
   }
 
-  void end_path_command ()
+  ਖਾਲੀ ਸਿਰਾ_ਰਸਤਾ_command ()
   {
     /* The serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (unlikely (path.in_error ()))
-      budget_remaining = 0;
+    ਜੇ (unlikely (ਰਸਤਾ.ਵਿੱਚ_error ()))
+      budget_ਬਚਿਆ = 0;
   }
 
-  void set_precision (unsigned p)
+  ਖਾਲੀ ਸੈੱਟ_precision (ਬਿਨਾਨਿਸ਼ਾਨੀ p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     body.precision = p;
-    path.precision = p;
+    ਰਸਤਾ.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
-  hb_blob_t *recycled_blob = nullptr;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ get_precision () ਅਚਲ { ਵਾਪਸ ਰਸਤਾ.precision; }
+  hb_blob_t *recycled_blob = ਖਾਲੀ_ਸੂਚਕ;
 
-  void new_path ()
+  ਖਾਲੀ new_ਰਸਤਾ ()
   {
-    flush_path ();
+    flush_ਰਸਤਾ ();
   }
 
-  void flush_path ()
+  ਖਾਲੀ flush_ਰਸਤਾ ()
   {
-    if (!path.length) return;
-    switch (format)
+    ਜੇ (!ਰਸਤਾ.ਲੰਮਾਈ) ਵਾਪਸ;
+    ਚੋਣ (format)
     {
-      case HB_VECTOR_FORMAT_PDF: flush_path_pdf (); break;
-      case HB_VECTOR_FORMAT_SVG: flush_path_svg (); break;
-      case HB_VECTOR_FORMAT_INVALID: default: break;
+      ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_PDF: flush_ਰਸਤਾ_pdf (); ਰੋਕੋ;
+      ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_SVG: flush_ਰਸਤਾ_svg (); ਰੋਕੋ;
+      ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_INVALID: ਮੂਲ: ਰੋਕੋ;
     }
-    path.shrink (0);
+    ਰਸਤਾ.shrink (0);
   }
 
-  void flush_path_pdf ()
+  ਖਾਲੀ flush_ਰਸਤਾ_pdf ()
   {
-    unsigned a = hb_color_get_alpha (foreground);
-    if (a < 255)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ a = hb_color_get_alpha (foreground);
+    ਜੇ (a < 255)
     {
-      unsigned gs_idx = pdf_extgstate_count++;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ gs_idx = pdf_extgstate_ਗਿਣਤੀ++;
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -121,44 +121,44 @@ struct hb_vector_draw_t
       pdf_extgstate_dict.append_str ("/GS");
       pdf_extgstate_dict.append_unsigned (gs_idx);
       pdf_extgstate_dict.append_str (" << /Type /ExtGState /ca ");
-      pdf_extgstate_dict.append_num (a / 255.f, 4);
+      pdf_extgstate_dict.append_ਅੰਕ (a / 255.f, 4);
       pdf_extgstate_dict.append_str (" >> ");
     }
-    body.append_num (hb_color_get_red (foreground) / 255.f, 4);
+    body.append_ਅੰਕ (hb_color_get_red (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_green (foreground) / 255.f, 4);
+    body.append_ਅੰਕ (hb_color_get_green (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_blue (foreground) / 255.f, 4);
+    body.append_ਅੰਕ (hb_color_get_blue (foreground) / 255.f, 4);
     body.append_str (" rg\n");
-    body.append_len (path.arrayZ, path.length);
+    body.append_len (ਰਸਤਾ.arrayZ, ਰਸਤਾ.ਲੰਮਾਈ);
     body.append_str ("f\n");
   }
 
-  void flush_path_svg ()
+  ਖਾਲੀ flush_ਰਸਤਾ_svg ()
   {
     body.append_str ("<path d=\"");
-    body.append_len (path.arrayZ, path.length);
+    body.append_len (ਰਸਤਾ.arrayZ, ਰਸਤਾ.ਲੰਮਾਈ);
     body.append_str ("\" fill=\"");
-    body.append_svg_color (foreground, true);
+    body.append_svg_color (foreground, ਸੱਚ);
     body.append_str ("\"/>\n");
   }
 
-  void transform_xy (float x, float y, float *tx, float *ty)
+  ਖਾਲੀ transform_xy (ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y, ਦਸ਼ਮਲਵ *tx, ਦਸ਼ਮਲਵ *ty)
   {
-    hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, x, y, tx, ty);
+    hb_ਸਦਿਸ਼_transform_ਬਿੰਦੂ (transform, x_scale_ਗੁਣਕ, y_scale_ਗੁਣਕ, x, y, tx, ty);
   }
 
-  void append_xy (float x, float y, char sep)
+  ਖਾਲੀ append_xy (ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y, ਅੱਖਰ sep)
   {
-    float tx, ty;
+    ਦਸ਼ਮਲਵ tx, ty;
     transform_xy (x, y, &tx, &ty);
-    path.append_num (tx, path.precision);
-    path.append_c (sep);
-    path.append_num (ty, path.precision);
+    ਰਸਤਾ.append_ਅੰਕ (tx, ਰਸਤਾ.precision);
+    ਰਸਤਾ.append_c (sep);
+    ਰਸਤਾ.append_ਅੰਕ (ty, ਰਸਤਾ.precision);
   }
 
-  void append_xy_svg (float x, float y) { append_xy (x, y, ','); }
-  void append_xy_pdf (float x, float y) { append_xy (x, y, ' '); }
+  ਖਾਲੀ append_xy_svg (ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y) { append_xy (x, y, ','); }
+  ਖਾਲੀ append_xy_pdf (ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y) { append_xy (x, y, ' '); }
 };
 
-#endif /* HB_VECTOR_DRAW_HH */
+#ਜੇ_ਅੰਤ /* HB_VECTOR_DRAW_HH */

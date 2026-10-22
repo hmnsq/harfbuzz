@@ -1,123 +1,123 @@
-#ifndef OT_GLYF_GLYF_HELPERS_HH
-#define OT_GLYF_GLYF_HELPERS_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_GLYF_GLYF_HELPERS_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_GLYF_GLYF_HELPERS_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-subset-plan.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../hb-subset-plan.hh"
 
-#include "loca.hh"
-
-
-namespace OT {
-namespace glyf_impl {
+#ਅਨ੍ਤਰ੍ਭਾਵ "loca.hh"
 
 
-template<typename IteratorIn, typename TypeOut,
-	 hb_requires (hb_is_source_of (IteratorIn, unsigned int))>
-static void
-_write_loca (IteratorIn&& it,
-	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-	     bool short_offsets,
-	     TypeOut *dest,
-	     unsigned num_offsets)
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ glyf_impl {
+
+
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator_ਵਿੱਚ, ਕਿਸਮ_ਨਾਂ Type_ਬਾਹਰਲਾ,
+	 hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator_ਵਿੱਚ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ))>
+ਸਥਿਰ ਖਾਲੀ
+_write_loca (Iterator_ਵਿੱਚ&& it,
+	     ਅਚਲ hb_sorted_ਸਦਿਸ਼_t<hb_codepoint_pair_t> new_ਮੰਜ਼ਿਲ_old_gid_list,
+	     ਤਾਰਕਿਕ short_offsets,
+	     Type_ਬਾਹਰਲਾ *dest,
+	     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
-  unsigned offset = 0;
-  TypeOut value;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੱਜਾ_ਖਿਸਕਾਓ = short_offsets ? 1 : 0;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ = 0;
+  Type_ਬਾਹਰਲਾ value;
   value = 0;
   *dest++ = value;
-  hb_codepoint_t last = 0;
-  for (auto _ : new_to_old_gid_list)
+  hb_codepoint_t ਆਖਰੀ = 0;
+  ਲਈ (ਸਵੈਚਾਲਿਤ _ : new_ਮੰਜ਼ਿਲ_old_gid_list)
   {
-    hb_codepoint_t gid = _.first;
-    for (; last < gid; last++)
+    hb_codepoint_t gid = _.ਪਹਿਲਾ;
+    ਲਈ (; ਆਖਰੀ < gid; ਆਖਰੀ++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "loca entry empty offset %u", ਵਿੱਥ);
       *dest++ = value;
     }
 
-    unsigned padded_size = *it++;
-    offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ padded_ਮਾਪ = *it++;
+    ਵਿੱਥ += padded_ਮਾਪ;
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, ਵਿੱਥ, padded_ਮਾਪ);
+    value = ਵਿੱਥ >> ਸੱਜਾ_ਖਿਸਕਾਓ;
     *dest++ = value;
 
-    last++; // Skip over gid
+    ਆਖਰੀ++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs = ਅੰਕ_offsets - 1;
+  ਲਈ (; ਆਖਰੀ < ਅੰਕ_glyphs; ਆਖਰੀ++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "loca entry empty offset %u", ਵਿੱਥ);
     *dest++ = value;
   }
 }
 
-static bool
-_add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਜੋੜੋ_ਸਿਰ_and_ਸੈੱਟ_loca_ਸੰਸਕਰਣ (hb_subset_plan_t *plan, ਤਾਰਕਿਕ use_short_loca)
 {
-  hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
-  hb_blob_destroy (head_blob);
+  hb_blob_t *ਸਿਰ_blob = hb_sanitize_context_t ().reference_ਸਾਰਣੀ<ਸਿਰ_2> (plan->ਸਰੋਤ);
+  hb_blob_t *ਸਿਰ_ਅਭਾਜ_blob = hb_blob_copy_writable_or_fail (ਸਿਰ_blob);
+  hb_blob_destroy (ਸਿਰ_blob);
 
-  if (unlikely (!head_prime_blob))
-    return false;
+  ਜੇ (unlikely (!ਸਿਰ_ਅਭਾਜ_blob))
+    ਵਾਪਸ ਝੂਠ;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
-  if (plan->normalized_coords)
+  ਸਿਰ_2 *ਸਿਰ_ਅਭਾਜ = (ਸਿਰ_2 *) hb_blob_get_ਅੰਕੜੇ_writable (ਸਿਰ_ਅਭਾਜ_blob, ਖਾਲੀ_ਸੂਚਕ);
+  ਸਿਰ_ਅਭਾਜ->ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Loc_Format = use_short_loca ? 0 : 1;
+  ਜੇ (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    ਸਿਰ_ਅਭਾਜ->xMin = plan->ਸਿਰ_maxp_info.xMin;
+    ਸਿਰ_ਅਭਾਜ->xMax = plan->ਸਿਰ_maxp_info.xMax;
+    ਸਿਰ_ਅਭਾਜ->yMin = plan->ਸਿਰ_maxp_info.yMin;
+    ਸਿਰ_ਅਭਾਜ->yMax = plan->ਸਿਰ_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
-    if (plan->head_maxp_info.allXMinIsLsb)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ orig_flag = ਸਿਰ_ਅਭਾਜ->flags;
+    ਜੇ (plan->ਸਿਰ_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
-    else
+    ਨਹੀਂਤਾਂ
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    ਸਿਰ_ਅਭਾਜ->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  ਤਾਰਕਿਕ success = plan->ਜੋੜੋ_ਸਾਰਣੀ (HB_OT_ਟੈਗ_ਸਿਰ, ਸਿਰ_ਅਭਾਜ_blob);
 
-  hb_blob_destroy (head_prime_blob);
-  return success;
+  hb_blob_destroy (ਸਿਰ_ਅਭਾਜ_blob);
+  ਵਾਪਸ success;
 }
 
-template<typename Iterator,
-	 hb_requires (hb_is_source_of (Iterator, unsigned int))>
-static bool
-_add_loca_and_head (hb_subset_context_t *c,
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator,
+	 hb_requires (hb_is_ਸਰੋਤ_ਦਾ (Iterator, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ))>
+ਸਥਿਰ ਤਾਰਕਿਕ
+ਜੋੜੋ_loca_and_ਸਿਰ (hb_subset_context_t *c,
 		    Iterator padded_offsets,
-		    bool use_short_loca,
-		    bool extended)
+		    ਤਾਰਕਿਕ use_short_loca,
+		    ਤਾਰਕਿਕ extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
-  unsigned entry_size = use_short_loca ? 2 : 4;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_offsets = c->plan->ਅੰਕ_output_glyphs () + 1;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਇੰਦਰਾਜ_ਮਾਪ = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  ਅੱਖਰ *loca_ਅਭਾਜ_ਅੰਕੜੇ = (ਅੱਖਰ *) hb_malloc2 (ਅੰਕ_offsets, ਇੰਦਰਾਜ_ਮਾਪ);
 
-  if (unlikely (!loca_prime_data)) return false;
+  ਜੇ (unlikely (!loca_ਅਭਾਜ_ਅੰਕੜੇ)) ਵਾਪਸ ਝੂਠ;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_ਸੁਨੇਹਾ (SUBSET, ਖਾਲੀ_ਸੂਚਕ, "loca entry_size %u num_offsets %u size %u",
+	     ਇੰਦਰਾਜ_ਮਾਪ, ਅੰਕ_offsets, ਇੰਦਰਾਜ_ਮਾਪ * ਅੰਕ_offsets);
 
-  if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
-  else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+  ਜੇ (use_short_loca)
+    _write_loca (padded_offsets, c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list, ਸੱਚ, (HBUINT16 *) loca_ਅਭਾਜ_ਅੰਕੜੇ, ਅੰਕ_offsets);
+  ਨਹੀਂਤਾਂ
+    _write_loca (padded_offsets, c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list, ਝੂਠ, (HBUINT32 *) loca_ਅਭਾਜ_ਅੰਕੜੇ, ਅੰਕ_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
-					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+  hb_blob_t *loca_blob = hb_blob_create (loca_ਅਭਾਜ_ਅੰਕੜੇ,
+					 ਇੰਦਰਾਜ_ਮਾਪ * ਅੰਕ_offsets,
+					 HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_WRITABLE,
+					 loca_ਅਭਾਜ_ਅੰਕੜੇ,
 					 hb_free);
 
-  bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
-	     && _add_head_and_set_loca_version (c->plan, use_short_loca);
+  ਤਾਰਕਿਕ ਨਤੀਜਾ = c->plan->ਜੋੜੋ_ਸਾਰਣੀ (extended ? HB_OT_ਟੈਗ_LOCA : HB_OT_ਟੈਗ_loca, loca_blob)
+	     && ਜੋੜੋ_ਸਿਰ_and_ਸੈੱਟ_loca_ਸੰਸਕਰਣ (c->plan, use_short_loca);
 
   hb_blob_destroy (loca_blob);
-  return result;
+  ਵਾਪਸ ਨਤੀਜਾ;
 }
 
 
@@ -125,4 +125,4 @@ _add_loca_and_head (hb_subset_context_t *c,
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYF_HELPERS_HH */
+#ਜੇ_ਅੰਤ /* OT_GLYF_GLYF_HELPERS_HH */

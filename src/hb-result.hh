@@ -24,486 +24,486 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_RESULT_HH
-#define HB_RESULT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਨਤੀਜਾ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਨਤੀਜਾ_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
-template <typename T>
-struct hb_result_ok_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hb_ਨਤੀਜਾ_ok_t
 {
   T value;
 };
 
-template <>
-struct hb_result_ok_t<void> {};
+ਸਾਂਚਾ <>
+ਬਣਤਰ hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ> {};
 
-template <typename E>
-struct hb_result_err_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ E>
+ਬਣਤਰ hb_ਨਤੀਜਾ_err_t
 {
   E error;
 
-  template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
-  template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ OtherE>
+  constexpr ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_err_t<OtherE>& other) ਅਚਲ { ਵਾਪਸ error == other.error; }
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ OtherE>
+  constexpr ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_err_t<OtherE>& other) ਅਚਲ { ਵਾਪਸ error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ X> ਬਣਤਰ hb_is_ਨਤੀਜਾ_ਟੈਗ : hb_false_type {};
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ X> ਬਣਤਰ hb_is_ਨਤੀਜਾ_ਟੈਗ<hb_ਨਤੀਜਾ_ok_t<X>> : hb_true_type {};
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ X> ਬਣਤਰ hb_is_ਨਤੀਜਾ_ਟੈਗ<hb_ਨਤੀਜਾ_err_t<X>> : hb_true_type {};
 
-template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਸਥਿਰ ਸਤਰਅੰਦਰ constexpr hb_ਨਤੀਜਾ_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  ਵਾਪਸ hb_ਨਤੀਜਾ_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+ਸਥਿਰ ਸਤਰਅੰਦਰ constexpr hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  ਵਾਪਸ hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ>{};
 }
 
-template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ E>
+ਸਥਿਰ ਸਤਰਅੰਦਰ constexpr hb_ਨਤੀਜਾ_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  ਵਾਪਸ hb_ਨਤੀਜਾ_err_t<E&&>{std::forward<E> (e)};
 }
 
-template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ E>
+ਬਣਤਰ HB_NODISCARD_STRUCT hb_ਨਤੀਜਾ_t
 {
-  private:
-  union
+  ਨਿਜੀ:
+  ਸੰਘ
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  ਤਾਰਕਿਕ is_ok_;
 
-  void destroy ()
+  ਖਾਲੀ destroy ()
   {
-    if (is_ok_)
+    ਜੇ (is_ok_)
       val_.~T ();
-    else
+    ਨਹੀਂਤਾਂ
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  ਖਾਲੀ init(ਅਚਲ hb_ਨਤੀਜਾ_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    ਜੇ (is_ok_)
+      ਨਵਾਂ (std::addressof (val_)) T (o.val_);
+    ਨਹੀਂਤਾਂ
+      ਨਵਾਂ (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  ਖਾਲੀ init(hb_ਨਤੀਜਾ_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    ਜੇ (is_ok_)
+      ਨਵਾਂ (std::addressof (val_)) T (std::move (o.val_));
+    ਨਹੀਂਤਾਂ
+      ਨਵਾਂ (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
-  ~hb_result_t ()
+  ਜਨਤਕ:
+  ~hb_ਨਤੀਜਾ_t ()
   {
     destroy ();
   }
 
-  hb_result_t () = delete;
+  hb_ਨਤੀਜਾ_t () = ਮਿਟਾਓ;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_ਨਤੀਜਾ_t (ਅਚਲ hb_ਨਤੀਜਾ_t& o) : is_ok_ (ਝੂਠ)
   {
     init (o);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (ਝੂਠ)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ਨਤੀਜਾ_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_ਨਤੀਜਾ_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ਜੇ (ਇਹ == &o) ਵਾਪਸ *ਇਹ;
+    ਜੇ (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       destroy ();
       init (o);
     }
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
+  hb_ਨਤੀਜਾ_t& ਸੰਚਾਲਕ = (hb_ਨਤੀਜਾ_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ਜੇ (ਇਹ == &o) ਵਾਪਸ *ਇਹ;
+    ਜੇ (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
   // Construct from Ok(...) tag
-  template <typename U,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_ok_t<U>&& o) : is_ok_ (ਸੱਚ)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    ਨਵਾਂ (std::addressof (val_)) T (std::move (o.value));
   }
 
-  template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U,
+            hb_enable_if ((std::is_constructible<T, ਅਚਲ U&>::value))>
+  hb_ਨਤੀਜਾ_t (ਅਚਲ hb_ਨਤੀਜਾ_ok_t<U>& o) : is_ok_ (ਸੱਚ)
   {
-    new (std::addressof (val_)) T (o.value);
+    ਨਵਾਂ (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
-  template <typename F,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_err_t<F>&& e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    ਨਵਾਂ (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F,
+            hb_enable_if ((std::is_constructible<E, ਅਚਲ F&>::value))>
+  hb_ਨਤੀਜਾ_t (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (e.error);
+    ਨਵਾਂ (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
-  template <typename F = E,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_ਨਤੀਜਾ_t (F e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    ਨਵਾਂ (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
-  template <typename U = T,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U = T,
             hb_enable_if ((std::is_constructible<T, U>::value &&
                            !hb_is_same (hb_decay<U>, E) &&
-                           !hb_is_same (hb_decay<U>, hb_result_t) &&
-                           !_hb_is_result_tag<hb_decay<U>>::value &&
+                           !hb_is_same (hb_decay<U>, hb_ਨਤੀਜਾ_t) &&
+                           !hb_is_ਨਤੀਜਾ_ਟੈਗ<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_ਨਤੀਜਾ_t (U&& v) : is_ok_ (ਸੱਚ)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    ਨਵਾਂ (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  ਸਥਿਰ hb_ਨਤੀਜਾ_t from (T&& fallible, E error_ਮੁੱਲ) {
+    ਜੇ (fallible.ਵਿੱਚ_error()) {
+      ਵਾਪਸ Err(error_ਮੁੱਲ);
     }
-    return Ok(fallible);
+    ਵਾਪਸ Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  ਤਾਰਕਿਕ is_ok () ਅਚਲ { ਵਾਪਸ is_ok_; }
+  ਤਾਰਕਿਕ is_err () ਅਚਲ { ਵਾਪਸ !is_ok_; }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { ਪ੍ਰਤਿਜ੍ਞਾ (is_ok_); ਵਾਪਸ val_; }
+  ਅਚਲ T& value () ਅਚਲ & { ਪ੍ਰਤਿਜ੍ਞਾ (is_ok_); ਵਾਪਸ val_; }
+  T value () && { ਪ੍ਰਤਿਜ੍ਞਾ (is_ok_); ਵਾਪਸ std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& ਸੰਚਾਲਕ * () & { ਵਾਪਸ value (); }
+  ਅਚਲ T& ਸੰਚਾਲਕ * () ਅਚਲ & { ਵਾਪਸ value (); }
+  T ਸੰਚਾਲਕ * () && { ਵਾਪਸ std::move (*ਇਹ).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* ਸੰਚਾਲਕ -> () { ਵਾਪਸ std::addressof (value ()); }
+  ਅਚਲ T* ਸੰਚਾਲਕ -> () ਅਚਲ { ਵਾਪਸ std::addressof (value ()); }
 
-  template <typename U>
-  T value_or (U&& default_value) const &
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  T ਮੁੱਲ_or (U&& default_ਮੁੱਲ) ਅਚਲ &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    ਜੇ (is_ok_) ਵਾਪਸ val_;
+    ਵਾਪਸ std::forward<U> (default_ਮੁੱਲ);
   }
 
-  template <typename U>
-  T value_or (U&& default_value) &&
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  T ਮੁੱਲ_or (U&& default_ਮੁੱਲ) &&
   {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    ਜੇ (is_ok_) ਵਾਪਸ std::move (val_);
+    ਵਾਪਸ std::forward<U> (default_ਮੁੱਲ);
   }
 
-  T value_or_default () const &
+  T ਮੁੱਲ_or_default () ਅਚਲ &
   {
-    if (is_ok_) return val_;
-    return T ();
+    ਜੇ (is_ok_) ਵਾਪਸ val_;
+    ਵਾਪਸ T ();
   }
 
-  T value_or_default () &&
+  T ਮੁੱਲ_or_default () &&
   {
-    if (is_ok_) return std::move (val_);
-    return T ();
+    ਜੇ (is_ok_) ਵਾਪਸ std::move (val_);
+    ਵਾਪਸ T ();
   }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  ਅਚਲ E& error () ਅਚਲ & { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ err_; }
+  E& error () & { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ err_; }
+  E error () && { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ std::move (err_); }
 
-  bool operator == (const hb_result_t& o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_t& o) ਅਚਲ
   {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
+    ਜੇ (is_ok_ != o.is_ok_) ਵਾਪਸ ਝੂਠ;
+    ਜੇ (is_ok_) ਵਾਪਸ val_ == o.val_;
+    ਵਾਪਸ err_ == o.err_;
   }
 
-  bool operator != (const hb_result_t& o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_t& o) ਅਚਲ
   {
-    return !(*this == o);
+    ਵਾਪਸ !(*ਇਹ == o);
   }
 
-  template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_ok_t<U>& o) ਅਚਲ
   {
-    return is_ok_ && val_ == o.value;
+    ਵਾਪਸ is_ok_ && val_ == o.value;
   }
 
-  template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_ok_t<U>& o) ਅਚਲ
   {
-    return !(*this == o);
+    ਵਾਪਸ !(*ਇਹ == o);
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) ਅਚਲ
   {
-    return !is_ok_ && err_ == e.error;
+    ਵਾਪਸ !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) ਅਚਲ
   {
-    return !(*this == e);
+    ਵਾਪਸ !(*ਇਹ == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ U&) ਅਚਲ = ਮਿਟਾਓ;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ U&) ਅਚਲ = ਮਿਟਾਓ;
 };
 
 // Partial specialization for void
-template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ E>
+ਬਣਤਰ HB_NODISCARD_STRUCT hb_ਨਤੀਜਾ_t<ਖਾਲੀ, E>
 {
-  private:
-  union
+  ਨਿਜੀ:
+  ਸੰਘ
   {
     E err_;
   };
-  bool is_ok_;
+  ਤਾਰਕਿਕ is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ, ਕਿਸਮ_ਨਾਂ> ਮਿੱਤਰ ਬਣਤਰ hb_ਨਤੀਜਾ_t;
 
-  public:
-  ~hb_result_t ()
+  ਜਨਤਕ:
+  ~hb_ਨਤੀਜਾ_t ()
   {
-    if (!is_ok_)
+    ਜੇ (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_ਨਤੀਜਾ_t () : is_ok_ (ਸੱਚ) {}
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ>) : is_ok_ (ਸੱਚ) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_ਨਤੀਜਾ_t (ਅਚਲ hb_ਨਤੀਜਾ_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    ਜੇ (!is_ok_)
+      ਨਵਾਂ (std::addressof (err_)) E (o.err_);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    ਜੇ (!is_ok_)
+      ਨਵਾਂ (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ਨਤੀਜਾ_t& ਸੰਚਾਲਕ = (ਅਚਲ hb_ਨਤੀਜਾ_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ਜੇ (ਇਹ == &o) ਵਾਪਸ *ਇਹ;
+    ਜੇ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = ਸੱਚ;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      ਨਵਾਂ (std::addressof (err_)) E (o.err_);
+      is_ok_ = ਝੂਠ;
     }
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
+  hb_ਨਤੀਜਾ_t& ਸੰਚਾਲਕ = (hb_ਨਤੀਜਾ_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ਜੇ (ਇਹ == &o) ਵਾਪਸ *ਇਹ;
+    ਜੇ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = ਸੱਚ;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ਨਹੀਂਤਾਂ ਜੇ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      ਨਵਾਂ (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = ਝੂਠ;
     }
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  template <typename F,
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ਨਤੀਜਾ_t (hb_ਨਤੀਜਾ_err_t<F>&& e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    ਨਵਾਂ (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F,
+            hb_enable_if ((std::is_constructible<E, ਅਚਲ F&>::value))>
+  hb_ਨਤੀਜਾ_t (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (e.error);
+    ਨਵਾਂ (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_ਨਤੀਜਾ_t (E e) : is_ok_ (ਝੂਠ)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    ਨਵਾਂ (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
-  template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ V>
+  ਸਥਿਰ hb_ਨਤੀਜਾ_t<ਖਾਲੀ, E> from (ਅਚਲ V& fallible, E error_ਮੁੱਲ) {
+    ਜੇ (fallible.ਵਿੱਚ_error()) {
+      ਵਾਪਸ Err(error_ਮੁੱਲ);
     }
-    return Ok();
+    ਵਾਪਸ Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  ਤਾਰਕਿਕ is_ok () ਅਚਲ { ਵਾਪਸ is_ok_; }
+  ਤਾਰਕਿਕ is_err () ਅਚਲ { ਵਾਪਸ !is_ok_; }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ { ਵਾਪਸ is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  ਅਚਲ E& error () ਅਚਲ & { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ err_; }
+  E& error () & { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ err_; }
+  E error () && { ਪ੍ਰਤਿਜ੍ਞਾ (!is_ok_); ਵਾਪਸ std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  ਖਾਲੀ ਸੰਚਾਲਕ * () & { ਵਾਪਸ; }
+  ਖਾਲੀ ਸੰਚਾਲਕ * () ਅਚਲ & { ਵਾਪਸ; }
+  ਖਾਲੀ ਸੰਚਾਲਕ * () && { ਵਾਪਸ; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_t<ਖਾਲੀ, E>& o) ਅਚਲ
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    ਵਾਪਸ is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_t<ਖਾਲੀ, E>& o) ਅਚਲ
   {
-    return !(*this == o);
+    ਵਾਪਸ !(*ਇਹ == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ>) ਅਚਲ
   {
-    return is_ok_;
+    ਵਾਪਸ is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (hb_ਨਤੀਜਾ_ok_t<ਖਾਲੀ>) ਅਚਲ
   {
-    return !is_ok_;
+    ਵਾਪਸ !is_ok_;
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) ਅਚਲ
   {
-    return !is_ok_ && err_ == e.error;
+    ਵਾਪਸ !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e) ਅਚਲ
   {
-    return !(*this == e);
+    ਵਾਪਸ !(*ਇਹ == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ U&) ਅਚਲ = ਮਿਟਾਓ;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U>
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ U&) ਅਚਲ = ਮਿਟਾਓ;
 };
 
-template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U, ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ E>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_ok_t<U>& o, ਅਚਲ hb_ਨਤੀਜਾ_t<T, E>& r)
 {
-  return r == o;
+  ਵਾਪਸ r == o;
 }
-template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ U, ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ E>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_ok_t<U>& o, ਅਚਲ hb_ਨਤੀਜਾ_t<T, E>& r)
 {
-  return r != o;
+  ਵਾਪਸ r != o;
 }
-template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F, ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ E>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ ਸੰਚਾਲਕ == (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e, ਅਚਲ hb_ਨਤੀਜਾ_t<T, E>& r)
 {
-  return r == e;
+  ਵਾਪਸ r == e;
 }
-template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ F, ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ E>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ hb_ਨਤੀਜਾ_err_t<F>& e, ਅਚਲ hb_ਨਤੀਜਾ_t<T, E>& r)
 {
-  return r != e;
+  ਵਾਪਸ r != e;
 }
 
-#ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ TRY
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TRY(ਵਿਅੰਜਕ)                                                             \
+  ਕਰੋ {                                                                        \
+    ਸਵੈਚਾਲਿਤ _res = (ਵਿਅੰਜਕ);                                                       \
+    ਜੇ (unlikely (!_res.is_ok())) ਵਾਪਸ Err(std::move(_res).error());        \
+  } ਜਦੋਂ (0)
+#ਜੇ_ਅੰਤ
 
-#ifndef TRY_ASSIGN
-#define TRY_ASSIGN(var, ...)                                                  \
-  auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ TRY_ਸੌਂਪੋ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TRY_ਸੌਂਪੋ(var, ...)                                                  \
+  ਸਵੈਚਾਲਿਤ HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
+  ਜੇ (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) ਵਾਪਸ Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
-#endif
+#ਜੇ_ਅੰਤ
 
-#endif /* HB_RESULT_HH */
+#ਜੇ_ਅੰਤ /* HB_RESULT_HH */

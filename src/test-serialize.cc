@@ -23,45 +23,45 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-serialize.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gsubgpos.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "OT/Layout/GPOS/ValueFormat.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-serialize.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-gsubgpos.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-gsub-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "OT/Layout/GPOS/ValueFormat.hh"
 
-using OT::Layout::Common::Coverage;
+ਵਰਤੋਂ OT::Layout::Common::Coverage;
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 test_null_condition ()
 {
-  static const char and_condition[sizeof (OT::Condition)] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ and_condition[ਆਕਾਰ (OT::Condition)] = {
     0, 3, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char or_condition[sizeof (OT::Condition)] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ or_condition[ਆਕਾਰ (OT::Condition)] = {
     0, 4, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char negate_condition[sizeof (OT::Condition)] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ negate_condition[ਆਕਾਰ (OT::Condition)] = {
     0, 5,                        /* format */
     0, 0, 0,                     /* conditionOffset */
   };
 
-  const auto &condition = Null (OT::Condition);
-  const auto &condition_and =
-      *reinterpret_cast<const OT::Condition *> (and_condition);
-  const auto &condition_or =
-      *reinterpret_cast<const OT::Condition *> (or_condition);
-  const auto &condition_negate =
-      *reinterpret_cast<const OT::Condition *> (negate_condition);
-  OT::ItemVarStoreInstancer *instancer = nullptr;
-  hb_set_t var_indices;
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &condition = Null (OT::Condition);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &condition_and =
+      *reinterpret_cast<ਅਚਲ OT::Condition *> (and_condition);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &condition_or =
+      *reinterpret_cast<ਅਚਲ OT::Condition *> (or_condition);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &condition_negate =
+      *reinterpret_cast<ਅਚਲ OT::Condition *> (negate_condition);
+  OT::ਵਸਤੂ_Var_Store_Instancer *instancer = ਖਾਲੀ_ਸੂਚਕ;
+  hb_ਸੈੱਟ_t var_indices;
 
-  hb_always_assert (condition.evaluate (nullptr, 0, instancer));
-  hb_always_assert (condition_and.evaluate (nullptr, 0, instancer));
-  hb_always_assert (condition_or.evaluate (nullptr, 0, instancer));
-  hb_always_assert (!condition_negate.evaluate (nullptr, 0, instancer));
+  hb_always_assert (condition.evaluate (ਖਾਲੀ_ਸੂਚਕ, 0, instancer));
+  hb_always_assert (condition_and.evaluate (ਖਾਲੀ_ਸੂਚਕ, 0, instancer));
+  hb_always_assert (condition_or.evaluate (ਖਾਲੀ_ਸੂਚਕ, 0, instancer));
+  hb_always_assert (!condition_negate.evaluate (ਖਾਲੀ_ਸੂਚਕ, 0, instancer));
 
   hb_always_assert (condition.collect_var_indices (&var_indices));
   hb_always_assert (condition_and.collect_var_indices (&var_indices));
@@ -69,96 +69,96 @@ test_null_condition ()
   hb_always_assert (condition_negate.collect_var_indices (&var_indices));
   hb_always_assert (var_indices.is_empty ());
 
-  char buf[8];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  ਅੱਖਰ buf[8];
+  hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
   hb_map_t varidx_map;
-  static const unsigned char expected[] = {
+  ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ expected[] = {
     0, 2,                        /* format */
     0, 1,                        /* defaultValue */
     0xFF, 0xFF, 0xFF, 0xFF,     /* varIdx */
   };
 
-  auto *copy = s.start_serialize<OT::Condition> ();
+  ਸਵੈਚਾਲਿਤ *copy = s.ਸ਼ੁਰੂ_serialize<OT::Condition> ();
   hb_always_assert (copy->serialize (&s, &condition, varidx_map));
-  s.end_serialize ();
+  s.ਸਿਰਾ_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = s.copy_ਬਾਈਟਾਂ ();
+  hb_always_assert (ਬਾਈਟਾਂ.ਲੰਮਾਈ == ਆਕਾਰ (expected));
+  hb_always_assert (!hb_memcmp (ਬਾਈਟਾਂ.arrayZ, expected, ਆਕਾਰ (expected)));
+  ਬਾਈਟਾਂ.fini ();
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 test_lookup_condition_sharing ()
 {
-  const unsigned feature_count = 10922, lookup_count = 402;
-  const unsigned table_offset = 12 + 6 * feature_count;
-  const unsigned condition_offset = table_offset + 20 + 2 * lookup_count;
-  hb_vector_t<char> data;
-  hb_always_assert (data.resize (condition_offset + 8));
-  hb_memset (data.arrayZ, 0, data.length);
-  auto put16 = [&data] (unsigned offset, unsigned value)
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ feature_ਗਿਣਤੀ_2 = 10922, lookup_ਗਿਣਤੀ = 402;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਾਰਣੀ_ਵਿੱਥ = 12 + 6 * feature_ਗਿਣਤੀ_2;
+  ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ condition_ਵਿੱਥ = ਸਾਰਣੀ_ਵਿੱਥ + 20 + 2 * lookup_ਗਿਣਤੀ;
+  hb_ਸਦਿਸ਼_t<ਅੱਖਰ> ਅੰਕੜੇ;
+  hb_always_assert (ਅੰਕੜੇ.resize (condition_ਵਿੱਥ + 8));
+  hb_memset (ਅੰਕੜੇ.arrayZ, 0, ਅੰਕੜੇ.ਲੰਮਾਈ);
+  ਸਵੈਚਾਲਿਤ put16 = [&ਅੰਕੜੇ] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ, ਬਿਨਾਨਿਸ਼ਾਨੀ value)
   {
-    data[offset] = value >> 8;
-    data[offset + 1] = value;
+    ਅੰਕੜੇ[ਵਿੱਥ] = value >> 8;
+    ਅੰਕੜੇ[ਵਿੱਥ + 1] = value;
   };
-  auto put32 = [&put16] (unsigned offset, unsigned value)
+  ਸਵੈਚਾਲਿਤ put32 = [&put16] (ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ, ਬਿਨਾਨਿਸ਼ਾਨੀ value)
   {
-    put16 (offset, value >> 16);
-    put16 (offset + 2, value);
+    put16 (ਵਿੱਥ, value >> 16);
+    put16 (ਵਿੱਥ + 2, value);
   };
   put32 (0, 0x00010001);
-  put32 (8, feature_count);
-  for (unsigned i = 0; i < feature_count; i++)
+  put32 (8, feature_ਗਿਣਤੀ_2);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < feature_ਗਿਣਤੀ_2; i++)
   {
     put16 (12 + 6 * i, i);
-    put32 (14 + 6 * i, table_offset);
+    put32 (14 + 6 * i, ਸਾਰਣੀ_ਵਿੱਥ);
   }
-  put32 (table_offset, 0x00010000);
-  put32 (table_offset + 6, 1); /* LookupConditionRecord count */
-  put32 (table_offset + 10, condition_offset - table_offset);
-  put32 (table_offset + 14, 18); /* LookupIndexList offset */
-  put16 (table_offset + 18, lookup_count);
-  for (unsigned i = 0; i < lookup_count; i++)
-    put16 (table_offset + 20 + 2 * i, i);
-  put16 (condition_offset, 2); /* Constant true ConditionValue */
-  put16 (condition_offset + 2, 1);
-  put32 (condition_offset + 4, OT::VarIdx::NO_VARIATION);
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ, 0x00010000);
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ + 6, 1); /* LookupConditionRecord count */
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ + 10, condition_ਵਿੱਥ - ਸਾਰਣੀ_ਵਿੱਥ);
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ + 14, 18); /* LookupIndexList offset */
+  put16 (ਸਾਰਣੀ_ਵਿੱਥ + 18, lookup_ਗਿਣਤੀ);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < lookup_ਗਿਣਤੀ; i++)
+    put16 (ਸਾਰਣੀ_ਵਿੱਥ + 20 + 2 * i, i);
+  put16 (condition_ਵਿੱਥ, 2); /* Constant true ConditionValue */
+  put16 (condition_ਵਿੱਥ + 2, 1);
+  put32 (condition_ਵਿੱਥ + 4, OT::VarIdx::NO_VARIATION);
 
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data.arrayZ);
-  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<const int> ());
-  hb_vector_t<unsigned> state;
-  hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
-  hb_always_assert (state.length == 1 && state[0] == condition_offset);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &variations = *reinterpret_cast<ਅਚਲ OT::FeatureVariations *> (ਅੰਕੜੇ.arrayZ);
+  OT::ਵਸਤੂ_Var_Store_Instancer instancer (ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, hb_array_t<ਅਚਲ ਪੂਰਨ> ());
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> state;
+  hb_always_assert (variations.collect_lookup_conditions (ਖਾਲੀ_ਸੂਚਕ, 0, &instancer, &state));
+  hb_always_assert (state.ਲੰਮਾਈ == 1 && state[0] == condition_ਵਿੱਥ);
 
-  for (unsigned feature_index : {0u, feature_count - 1})
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ feature_ਸੂਚਕਾਂਕ : {0u, feature_ਗਿਣਤੀ_2 - 1})
   {
-    hb_set_t lookups;
+    hb_ਸੈੱਟ_t lookups;
     hb_always_assert (variations.get_lookup_variations (
-        feature_index, Null (OT::Feature), state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == lookup_count);
-    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_count - 1);
+        feature_ਸੂਚਕਾਂਕ, Null (OT::Feature), state.as_sorted_array (), &lookups));
+    hb_always_assert (lookups.get_population () == lookup_ਗਿਣਤੀ);
+    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_ਗਿਣਤੀ - 1);
   }
 
   /* Null conditions need no state, even when thousands of records use them. */
-  put32 (table_offset + 10, 0);
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ + 10, 0);
   state.reset ();
-  hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
-  hb_always_assert (!state.length);
-  hb_set_t lookups;
+  hb_always_assert (variations.collect_lookup_conditions (ਖਾਲੀ_ਸੂਚਕ, 0, &instancer, &state));
+  hb_always_assert (!state.ਲੰਮਾਈ);
+  hb_ਸੈੱਟ_t lookups;
   hb_always_assert (variations.get_lookup_variations (
       0, Null (OT::Feature), state.as_sorted_array (), &lookups));
-  hb_always_assert (lookups.get_population () == lookup_count);
+  hb_always_assert (lookups.get_population () == lookup_ਗਿਣਤੀ);
 
-  put32 (table_offset + 10, condition_offset - table_offset);
-  state.set_error (); /* Simulate failure allocating the condition key. */
-  hb_always_assert (!variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
+  put32 (ਸਾਰਣੀ_ਵਿੱਥ + 10, condition_ਵਿੱਥ - ਸਾਰਣੀ_ਵਿੱਥ);
+  state.ਸੈੱਟ_error (); /* Simulate failure allocating the condition key. */
+  hb_always_assert (!variations.collect_lookup_conditions (ਖਾਲੀ_ਸੂਚਕ, 0, &instancer, &state));
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 test_lookup_condition_resolution ()
 {
-  static const char data[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ ਅੰਕੜੇ[] = {
     0, 1, 0, 1, 0, 0, 0, 0,     /* FeatureVariations 1.1, no 1.0 records */
     0, 0, 0, 2,                 /* LookupVariationRecord count */
     0, 0, 0, 0, 0, 24,          /* Feature 0 */
@@ -174,44 +174,44 @@ test_lookup_condition_resolution ()
     0, 1, 0, 1, 0x20, 0, 0x40, 0, /* Axis 1: [0.5, 1] */
     0, 1, 0, 0, 0x20, 0, 0x40, 0, /* Axis 0: [0.5, 1] */
   };
-  static const char feature_data[] = {0, 0, 0, 2, 0, 0, 0, 6};
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data);
-  const auto &feature = *reinterpret_cast<const OT::Feature *> (feature_data);
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ feature_ਅੰਕੜੇ[] = {0, 0, 0, 2, 0, 0, 0, 6};
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &variations = *reinterpret_cast<ਅਚਲ OT::FeatureVariations *> (ਅੰਕੜੇ);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &feature = *reinterpret_cast<ਅਚਲ OT::Feature *> (feature_ਅੰਕੜੇ);
 
-  for (unsigned mask = 0; mask < 4; mask++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਨਕਾਬ = 0; ਨਕਾਬ < 4; ਨਕਾਬ++)
   {
-    int coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
-    OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array (coords));
-    hb_vector_t<unsigned> state;
+    ਪੂਰਨ coords[] = {ਨਕਾਬ & 1 ? 16384 : 0, ਨਕਾਬ & 2 ? 16384 : 0};
+    OT::ਵਸਤੂ_Var_Store_Instancer instancer (ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, hb_array (coords));
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> state;
     hb_always_assert (variations.collect_lookup_conditions (coords, 2, &instancer, &state));
-    unsigned condition_count = !!(mask & 1) + !!(mask & 2);
-    hb_always_assert (state.length == condition_count);
-    if (mask == 3)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ condition_ਗਿਣਤੀ = !!(ਨਕਾਬ & 1) + !!(ਨਕਾਬ & 2);
+    hb_always_assert (state.ਲੰਮਾਈ == condition_ਗਿਣਤੀ);
+    ਜੇ (ਨਕਾਬ == 3)
       hb_always_assert (state[0] == 92 && state[1] == 100);
 
-    hb_set_t lookups;
+    hb_ਸੈੱਟ_t lookups;
     hb_always_assert (variations.get_lookup_variations (
         0, feature, state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == (mask & 1 ? 7 : 5));
+    hb_always_assert (lookups.get_population () == (ਨਕਾਬ & 1 ? 7 : 5));
     hb_always_assert (lookups.has (0) && lookups.has (6));
-    hb_always_assert (lookups.has (4) == !!(mask & 1));
+    hb_always_assert (lookups.has (4) == !!(ਨਕਾਬ & 1));
 
     lookups.clear ();
     hb_always_assert (variations.get_lookup_variations (
         1, feature, state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == (mask == 3 ? 5 : mask ? 3 : 0));
+    hb_always_assert (lookups.get_population () == (ਨਕਾਬ == 3 ? 5 : ਨਕਾਬ ? 3 : 0));
     hb_always_assert (!lookups.has (0) && !lookups.has (6));
-    hb_always_assert (lookups.has (1) == !!(mask & 1));
-    hb_always_assert (lookups.has (5) == !!(mask & 2));
+    hb_always_assert (lookups.has (1) == !!(ਨਕਾਬ & 1));
+    hb_always_assert (lookups.has (5) == !!(ਨਕਾਬ & 2));
     hb_always_assert (!variations.get_lookup_variations (
         2, feature, state.as_sorted_array (), &lookups));
   }
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 test_feature_substitution_params_sanitize ()
 {
-  static const char data[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ ਅੰਕੜੇ[] = {
     0, 1, 0, 1,                 /* GSUB 1.1 */
     0, 14, 0, 16, 0, 28,        /* ScriptList, FeatureList, LookupList */
     0, 0, 0, 30,                /* FeatureVariations */
@@ -228,168 +228,168 @@ test_feature_substitution_params_sanitize ()
     0, 0, 0, 0, 0, 1, 0, 0, 0x41, /* No named parameters, one character */
   };
 
-  hb_blob_t *blob = hb_blob_create (data, sizeof (data),
-				    HB_MEMORY_MODE_READONLY, nullptr, nullptr);
+  hb_blob_t *blob = hb_blob_create (ਅੰਕੜੇ, ਆਕਾਰ (ਅੰਕੜੇ),
+				    HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_READONLY, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
-  hb_always_assert (hb_blob_get_length (blob) == sizeof (data));
+  hb_always_assert (hb_blob_get_ਲੰਮਾਈ (blob) == ਆਕਾਰ (ਅੰਕੜੇ));
   hb_blob_destroy (blob);
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
-  blob = hb_blob_create (data, sizeof (data) - 1,
-			 HB_MEMORY_MODE_READONLY, nullptr, nullptr);
+#ਜੇ !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
+  blob = hb_blob_create (ਅੰਕੜੇ, ਆਕਾਰ (ਅੰਕੜੇ) - 1,
+			 HB_ਸਮ੍ਰਿਤੀ_ਬਹੁਲਕ_READONLY, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
-  hb_always_assert (!hb_blob_get_length (blob));
+  hb_always_assert (!hb_blob_get_ਲੰਮਾਈ (blob));
   hb_blob_destroy (blob);
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-static void
-test_medium_rule ()
+ਸਥਿਰ ਖਾਲੀ
+test_medium_ਨਿਯਮ ()
 {
-  static const char data[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ ਅੰਕੜੇ[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     0, 0, 5,                    /* input glyph */
     0, 1, 0, 2,                 /* LookupRecord */
   };
-  static const char expected[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ expected[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     1, 0, 1,                    /* input glyph */
     0, 1, 0, 3,                 /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::Rule<OT::Layout::MediumTypes> *> (data);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &ਨਿਯਮ_2 = *reinterpret_cast<ਅਚਲ OT::ਨਿਯਮ_3<OT::Layout::MediumTypes> *> (ਅੰਕੜੇ);
 
   hb_map_t glyph_map;
-  glyph_map.set (5, 0x10001);
+  glyph_map.ਸੈੱਟ (5, 0x10001);
   hb_map_t lookup_map;
-  lookup_map.set (2, 3);
+  lookup_map.ਸੈੱਟ (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize ();
-  hb_always_assert (rule.serialize (&s, &glyph_map, &lookup_map));
-  s.end_serialize ();
+  ਅੱਖਰ buf[32];
+  hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
+  s.ਸ਼ੁਰੂ_serialize ();
+  hb_always_assert (ਨਿਯਮ_2.serialize (&s, &glyph_map, &lookup_map));
+  s.ਸਿਰਾ_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = s.copy_ਬਾਈਟਾਂ ();
+  hb_always_assert (ਬਾਈਟਾਂ.ਲੰਮਾਈ == ਆਕਾਰ (expected));
+  hb_always_assert (!hb_memcmp (ਬਾਈਟਾਂ.arrayZ, expected, ਆਕਾਰ (expected)));
+  ਬਾਈਟਾਂ.fini ();
 }
 
-static void
-test_medium_chain_rule ()
+ਸਥਿਰ ਖਾਲੀ
+test_medium_chain_ਨਿਯਮ ()
 {
-  static const char data[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ ਅੰਕੜੇ[] = {
     0, 1, 0, 0, 5,             /* backtrack */
-    0, 2, 0, 0, 6,             /* input */
+    0, 2, 0, 0, 6,             /*ਨਿਵੇਸ਼*/
     0, 1, 0, 0, 7,             /* lookahead */
     0, 1, 0, 0, 0, 2,          /* LookupRecord */
   };
-  static const char expected[] = {
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ expected[] = {
     0, 1, 1, 0, 1,             /* backtrack */
-    0, 2, 1, 0, 2,             /* input */
+    0, 2, 1, 0, 2,             /*ਨਿਵੇਸ਼*/
     0, 1, 1, 0, 3,             /* lookahead */
     0, 1, 0, 0, 0, 3,          /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::ChainRule<OT::Layout::MediumTypes> *> (data);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ &ਨਿਯਮ_2 = *reinterpret_cast<ਅਚਲ OT::Chain_ਨਿਯਮ<OT::Layout::MediumTypes> *> (ਅੰਕੜੇ);
 
   hb_map_t glyph_map;
-  glyph_map.set (5, 0x10001);
-  glyph_map.set (6, 0x10002);
-  glyph_map.set (7, 0x10003);
+  glyph_map.ਸੈੱਟ (5, 0x10001);
+  glyph_map.ਸੈੱਟ (6, 0x10002);
+  glyph_map.ਸੈੱਟ (7, 0x10003);
   hb_map_t lookup_map;
-  lookup_map.set (2, 3);
+  lookup_map.ਸੈੱਟ (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize ();
-  hb_always_assert (rule.serialize (&s, &lookup_map, &glyph_map));
-  s.end_serialize ();
+  ਅੱਖਰ buf[32];
+  hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
+  s.ਸ਼ੁਰੂ_serialize ();
+  hb_always_assert (ਨਿਯਮ_2.serialize (&s, &lookup_map, &glyph_map));
+  s.ਸਿਰਾ_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
-  bytes.fini ();
+  hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = s.copy_ਬਾਈਟਾਂ ();
+  hb_always_assert (ਬਾਈਟਾਂ.ਲੰਮਾਈ == ਆਕਾਰ (expected));
+  hb_always_assert (!hb_memcmp (ਬਾਈਟਾਂ.arrayZ, expected, ਆਕਾਰ (expected)));
+  ਬਾਈਟਾਂ.fini ();
 }
 
-static void
-test_device_only_value ()
+ਸਥਿਰ ਖਾਲੀ
+test_device_only_ਮੁੱਲ ()
 {
-  using namespace OT::Layout::GPOS_impl;
-  static const char data[] = {
+  ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ OT::Layout::GPOS_impl;
+  ਸਥਿਰ ਅਚਲ ਅੱਖਰ ਅੰਕੜੇ[] = {
     0, 2,                      /* Device offset */
-    0, 0, 0, 0, (char) 0x80, 0, /* VariationIndex 0 */
+    0, 0, 0, 0, (ਅੱਖਰ) 0x80, 0, /* VariationIndex 0 */
   };
-  const auto *base = reinterpret_cast<const ValueBase *> (data);
-  const auto *values = reinterpret_cast<const Value *> (data);
-  for (unsigned device = ValueFormat::xPlaDevice;
-       device <= ValueFormat::yAdvDevice; device <<= 1)
-    for (bool partial : {false, true})
+  ਅਚਲ ਸਵੈਚਾਲਿਤ *ਅਧਾਰ = reinterpret_cast<ਅਚਲ ਮੁੱਲ_ਅਧਾਰ *> (ਅੰਕੜੇ);
+  ਅਚਲ ਸਵੈਚਾਲਿਤ *values = reinterpret_cast<ਅਚਲ ਮੁੱਲ *> (ਅੰਕੜੇ);
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ device = ਮੁੱਲ_Format::xPlaDevice;
+       device <= ਮੁੱਲ_Format::yAdvDevice; device <<= 1)
+    ਲਈ (ਤਾਰਕਿਕ partial : {ਝੂਠ, ਸੱਚ})
     {
-      ValueFormat format;
+      ਮੁੱਲ_Format format;
       format = device;
-      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> mapping;
-      mapping.set (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
-      unsigned new_format = format.get_effective_format (values, false, false, base, &mapping);
+      hb_hashmap_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਪੂਰਨ>> mapping;
+      mapping.ਸੈੱਟ (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ new_format = format.get_effective_format (values, ਝੂਠ, ਝੂਠ, ਅਧਾਰ, &mapping);
       hb_always_assert (new_format == (device >> 4 | (partial ? device : 0)));
 
-      char buf[32];
-      hb_serialize_context_t s (buf, sizeof (buf));
-      s.start_serialize ();
-      format.copy_values (&s, new_format, base, values, &mapping);
-      s.end_serialize ();
-      hb_bytes_t bytes = s.copy_bytes ();
-      hb_always_assert (!s.in_error ());
-      hb_always_assert (bytes.length >= OT::HBINT16::static_size);
-      hb_always_assert (*reinterpret_cast<const OT::HBINT16 *> (bytes.arrayZ) == 25);
-      bytes.fini ();
+      ਅੱਖਰ buf[32];
+      hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
+      s.ਸ਼ੁਰੂ_serialize ();
+      format.copy_ਮੁੱਲਾਂ (&s, new_format, ਅਧਾਰ, values, &mapping);
+      s.ਸਿਰਾ_serialize ();
+      hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = s.copy_ਬਾਈਟਾਂ ();
+      hb_always_assert (!s.ਵਿੱਚ_error ());
+      hb_always_assert (ਬਾਈਟਾਂ.ਲੰਮਾਈ >= OT::HBINT16::static_ਮਾਪ);
+      hb_always_assert (*reinterpret_cast<ਅਚਲ OT::HBINT16 *> (ਬਾਈਟਾਂ.arrayZ) == 25);
+      ਬਾਈਟਾਂ.fini ();
     }
 }
 
-static void
+ਸਥਿਰ ਖਾਲੀ
 test_failed_class_mapping ()
 {
-  hb_set_t klasses;
-  klasses.add (1);
-  hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
+  hb_ਸੈੱਟ_t klasses;
+  klasses.ਜੋੜੋ (1);
+  hb_sorted_ਸਦਿਸ਼_t<hb_codepoint_pair_t> glyph_and_klass;
   glyph_and_klass.push (hb_pair (hb_codepoint_t (42), hb_codepoint_t (1)));
   hb_map_t klass_map;
-  klass_map.successful = false; /* Simulate failure allocating the class map. */
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  s.start_serialize<OT::ClassDef> ();
+  klass_map.successful = ਝੂਠ; /* Simulate failure allocating the class map. */
+  ਅੱਖਰ buf[32];
+  hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
+  s.ਸ਼ੁਰੂ_serialize<OT::ClassDef> ();
   hb_always_assert (!OT::ClassDef_remap_and_serialize (
-      &s, klasses, true, glyph_and_klass, &klass_map));
-  hb_always_assert (s.in_error () && !s.only_overflow ());
+      &s, klasses, ਸੱਚ, glyph_and_klass, &klass_map));
+  hb_always_assert (s.ਵਿੱਚ_error () && !s.only_ਉਛਾਲ ());
   hb_always_assert (glyph_and_klass[0].second == 1);
 }
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
   test_null_condition ();
   test_lookup_condition_sharing ();
   test_lookup_condition_resolution ();
   test_feature_substitution_params_sanitize ();
-  test_medium_rule ();
-  test_medium_chain_rule ();
-  test_device_only_value ();
+  test_medium_ਨਿਯਮ ();
+  test_medium_chain_ਨਿਯਮ ();
+  test_device_only_ਮੁੱਲ ();
   test_failed_class_mapping ();
 
-  char buf[16384];
+  ਅੱਖਰ buf[16384];
 
-  hb_serialize_context_t s (buf, sizeof (buf));
+  hb_serialize_context_t s (buf, ਆਕਾਰ (buf));
 
-  hb_sorted_vector_t<hb_codepoint_t> v{1, 2, 5};
+  hb_sorted_ਸਦਿਸ਼_t<hb_codepoint_t> v{1, 2, 5};
 
-  auto c = s.start_serialize<Coverage> ();
+  ਸਵੈਚਾਲਿਤ c = s.ਸ਼ੁਰੂ_serialize<Coverage> ();
 
   c->serialize (&s, hb_iter (v));
 
-  s.end_serialize ();
+  s.ਸਿਰਾ_serialize ();
 
-  hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == 10);
-  bytes.fini ();
+  hb_ਬਾਈਟਾਂ_t ਬਾਈਟਾਂ = s.copy_ਬਾਈਟਾਂ ();
+  hb_always_assert (ਬਾਈਟਾਂ.ਲੰਮਾਈ == 10);
+  ਬਾਈਟਾਂ.fini ();
 
-  return 0;
+  ਵਾਪਸ 0;
 }

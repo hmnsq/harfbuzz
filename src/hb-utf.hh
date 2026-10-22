@@ -24,22 +24,22 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_UTF_HH
-#define HB_UTF_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_UTF_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_UTF_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
 
 
-struct hb_utf8_t
+ਬਣਤਰ hb_utf8_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 4;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint8_t codepoint_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_len = 4;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  next (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸਿਰਾ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
@@ -47,437 +47,437 @@ struct hb_utf8_t
      * Based on ideas from ICU's U8_NEXT.
      * Generates one "replacement" for each ill-formed byte. */
 
-    hb_codepoint_t c = *text++;
+    hb_codepoint_t c = *ਪਾਠ++;
 
-    if (c > 0x7Fu)
+    ਜੇ (c > 0x7Fu)
     {
-      if (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
+      ਜੇ (hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
       {
-	unsigned int t1;
-	if (likely (text < end &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ t1;
+	ਜੇ (likely (ਪਾਠ < ਸਿਰਾ &&
+		    (t1 = ਪਾਠ[0] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x1Fu)<<6) | t1;
-	  text++;
+	  ਪਾਠ++;
 	}
-	else
-	  goto error;
+	ਨਹੀਂਤਾਂ
+	  ਜਾਓ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
+      ਨਹੀਂਤਾਂ ਜੇ (hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
       {
-	unsigned int t1, t2;
-	if (likely (1 < end - text &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
-		    (t2 = text[1] - 0x80u) <= 0x3Fu))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ t1, t2;
+	ਜੇ (likely (1 < ਸਿਰਾ - ਪਾਠ &&
+		    (t1 = ਪਾਠ[0] - 0x80u) <= 0x3Fu &&
+		    (t2 = ਪਾਠ[1] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0xFu)<<12) | (t1<<6) | t2;
-	  if (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
-	    goto error;
-	  text += 2;
+	  ਜੇ (unlikely (c < 0x0800u || hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+	    ਜਾਓ error;
+	  ਪਾਠ += 2;
 	}
-	else
-	  goto error;
+	ਨਹੀਂਤਾਂ
+	  ਜਾਓ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
+      ਨਹੀਂਤਾਂ ਜੇ (hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
       {
-	unsigned int t1, t2, t3;
-	if (likely (2 < end - text &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
-		    (t2 = text[1] - 0x80u) <= 0x3Fu &&
-		    (t3 = text[2] - 0x80u) <= 0x3Fu))
+	ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ t1, t2, t3;
+	ਜੇ (likely (2 < ਸਿਰਾ - ਪਾਠ &&
+		    (t1 = ਪਾਠ[0] - 0x80u) <= 0x3Fu &&
+		    (t2 = ਪਾਠ[1] - 0x80u) <= 0x3Fu &&
+		    (t3 = ਪਾਠ[2] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x7u)<<18) | (t1<<12) | (t2<<6) | t3;
-	  if (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
-	    goto error;
-	  text += 3;
+	  ਜੇ (unlikely (!hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
+	    ਜਾਓ error;
+	  ਪਾਠ += 3;
 	}
-	else
-	  goto error;
+	ਨਹੀਂਤਾਂ
+	  ਜਾਓ error;
       }
-      else
-	goto error;
+      ਨਹੀਂਤਾਂ
+	ਜਾਓ error;
     }
 
     *unicode = c;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
 
   error:
     *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  prev (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸ਼ੁਰੂ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    const codepoint_t *end = text--;
-    while (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
-      text--;
+    ਅਚਲ codepoint_t *ਸਿਰਾ = ਪਾਠ--;
+    ਜਦੋਂ (ਸ਼ੁਰੂ < ਪਾਠ && (*ਪਾਠ & 0xc0) == 0x80 && ਸਿਰਾ - ਪਾਠ < 4)
+      ਪਾਠ--;
 
-    if (likely (next (text, end, unicode, replacement) == end))
-      return text;
+    ਜੇ (likely (next (ਪਾਠ, ਸਿਰਾ, unicode, replacement) == ਸਿਰਾ))
+      ਵਾਪਸ ਪਾਠ;
 
     *unicode = replacement;
-    return end - 1;
+    ਵਾਪਸ ਸਿਰਾ - 1;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
-  { return ::strlen ((const char *) text); }
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  ਲੜੀ_ਲੰਬਾਈ (ਅਚਲ codepoint_t *ਪਾਠ)
+  { ਵਾਪਸ ::ਲੜੀ_ਲੰਬਾਈ ((ਅਚਲ ਅੱਖਰ *) ਪਾਠ); }
 
-  static unsigned int
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
   encode_len (hb_codepoint_t unicode)
   {
-    if (unicode <   0x0080u) return 1;
-    if (unicode <   0x0800u) return 2;
-    if (unicode <  0x10000u) return 3;
-    if (unicode < 0x110000u) return 4;
-    return 3;
+    ਜੇ (unicode <   0x0080u) ਵਾਪਸ 1;
+    ਜੇ (unicode <   0x0800u) ਵਾਪਸ 2;
+    ਜੇ (unicode <  0x10000u) ਵਾਪਸ 3;
+    ਜੇ (unicode < 0x110000u) ਵਾਪਸ 4;
+    ਵਾਪਸ 3;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end,
+  ਸਥਿਰ codepoint_t *
+  encode (codepoint_t *ਪਾਠ,
+	  ਅਚਲ codepoint_t *ਸਿਰਾ,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ਜੇ (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x0080u)
-     *text++ = unicode;
-    else if (unicode < 0x0800u)
+    ਜੇ (unicode < 0x0080u)
+     *ਪਾਠ++ = unicode;
+    ਨਹੀਂਤਾਂ ਜੇ (unicode < 0x0800u)
     {
-      if (end - text >= 2)
+      ਜੇ (ਸਿਰਾ - ਪਾਠ >= 2)
       {
-	*text++ =  0xC0u + (0x1Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*ਪਾਠ++ =  0xC0u + (0x1Fu & (unicode >>  6));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else if (unicode < 0x10000u)
+    ਨਹੀਂਤਾਂ ਜੇ (unicode < 0x10000u)
     {
-      if (end - text >= 3)
+      ਜੇ (ਸਿਰਾ - ਪਾਠ >= 3)
       {
-	*text++ =  0xE0u + (0x0Fu & (unicode >> 12));
-	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*ਪਾਠ++ =  0xE0u + (0x0Fu & (unicode >> 12));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode >>  6));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
-      if (end - text >= 4)
+      ਜੇ (ਸਿਰਾ - ਪਾਠ >= 4)
       {
-	*text++ =  0xF0u + (0x07u & (unicode >> 18));
-	*text++ =  0x80u + (0x3Fu & (unicode >> 12));
-	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*ਪਾਠ++ =  0xF0u + (0x07u & (unicode >> 18));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode >> 12));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode >>  6));
+	*ਪਾਠ++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 };
 
 
-template <typename TCodepoint>
-struct hb_utf16_xe_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ TCodepoint>
+ਬਣਤਰ hb_utf16_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 2, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 2;
+  static_assert (ਆਕਾਰ (TCodepoint) == 2, "");
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ TCodepoint codepoint_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_len = 2;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  next (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸਿਰਾ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *text++;
+    hb_codepoint_t c = *ਪਾਠ++;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    ਜੇ (likely (!hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      ਵਾਪਸ ਪਾਠ;
     }
 
-    if (likely (c <= 0xDBFFu && text < end))
+    ਜੇ (likely (c <= 0xDBFFu && ਪਾਠ < ਸਿਰਾ))
     {
       /* High-surrogate in c */
-      hb_codepoint_t l = *text;
-      if (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
+      hb_codepoint_t l = *ਪਾਠ;
+      ਜੇ (likely (hb_ਵਿੱਚ_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
       {
 	/* Low-surrogate in l */
 	*unicode = (c << 10) + l - ((0xD800u << 10) - 0x10000u + 0xDC00u);
-	 text++;
-	 return text;
+	 ਪਾਠ++;
+	 ਵਾਪਸ ਪਾਠ;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  prev (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸ਼ੁਰੂ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *--text;
+    hb_codepoint_t c = *--ਪਾਠ;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    ਜੇ (likely (!hb_ਵਿੱਚ_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      ਵਾਪਸ ਪਾਠ;
     }
 
-    if (likely (c >= 0xDC00u && start < text))
+    ਜੇ (likely (c >= 0xDC00u && ਸ਼ੁਰੂ < ਪਾਠ))
     {
       /* Low-surrogate in c */
-      hb_codepoint_t h = text[-1];
-      if (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
+      hb_codepoint_t h = ਪਾਠ[-1];
+      ਜੇ (likely (hb_ਵਿੱਚ_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
       {
 	/* High-surrogate in h */
 	*unicode = (h << 10) + c - ((0xD800u << 10) - 0x10000u + 0xDC00u);
-	text--;
-	return text;
+	ਪਾਠ--;
+	ਵਾਪਸ ਪਾਠ;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  ਲੜੀ_ਲੰਬਾਈ (ਅਚਲ codepoint_t *ਪਾਠ)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = 0;
+    ਜਦੋਂ (*ਪਾਠ++) l++;
+    ਵਾਪਸ l;
   }
 
-  static unsigned int
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
   encode_len (hb_codepoint_t unicode)
   {
-    return unicode < 0x10000 ? 1 : 2;
+    ਵਾਪਸ unicode < 0x10000 ? 1 : 2;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end,
+  ਸਥਿਰ codepoint_t *
+  encode (codepoint_t *ਪਾਠ,
+	  ਅਚਲ codepoint_t *ਸਿਰਾ,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ਜੇ (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x10000u)
-     *text++ = unicode;
-    else if (end - text >= 2)
+    ਜੇ (unicode < 0x10000u)
+     *ਪਾਠ++ = unicode;
+    ਨਹੀਂਤਾਂ ਜੇ (ਸਿਰਾ - ਪਾਠ >= 2)
     {
       unicode -= 0x10000u;
-      *text++ =  0xD800u + (unicode >> 10);
-      *text++ =  0xDC00u + (unicode & 0x03FFu);
+      *ਪਾਠ++ =  0xD800u + (unicode >> 10);
+      *ਪਾਠ++ =  0xDC00u + (unicode & 0x03FFu);
     }
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 };
 
-typedef hb_utf16_xe_t<uint16_t> hb_utf16_t;
-typedef hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_utf16_xe_t<uint16_t> hb_utf16_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
 
 
-template <typename TCodepoint, bool validate=true>
-struct hb_utf32_xe_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ TCodepoint, ਤਾਰਕਿਕ validate=ਸੱਚ>
+ਬਣਤਰ hb_utf32_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 4, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 1;
+  static_assert (ਆਕਾਰ (TCodepoint) == 4, "");
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ TCodepoint codepoint_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_len = 1;
 
-  static inline const TCodepoint *
-  next (const TCodepoint *text,
-	const TCodepoint *end HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ TCodepoint *
+  next (ਅਚਲ TCodepoint *ਪਾਠ,
+	ਅਚਲ TCodepoint *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *unicode = *text++;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    hb_codepoint_t c = *unicode = *ਪਾਠ++;
+    ਜੇ (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static inline const TCodepoint *
-  prev (const TCodepoint *text,
-	const TCodepoint *start HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ TCodepoint *
+  prev (ਅਚਲ TCodepoint *ਪਾਠ,
+	ਅਚਲ TCodepoint *ਸ਼ੁਰੂ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *unicode = *--text;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    hb_codepoint_t c = *unicode = *--ਪਾਠ;
+    ਜੇ (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static unsigned int
-  strlen (const TCodepoint *text)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  ਲੜੀ_ਲੰਬਾਈ (ਅਚਲ TCodepoint *ਪਾਠ)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = 0;
+    ਜਦੋਂ (*ਪਾਠ++) l++;
+    ਵਾਪਸ l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  encode_len (hb_codepoint_t unicode HB_ਅਣਵਰਤਿਆ)
   {
-    return 1;
+    ਵਾਪਸ 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ਸਥਿਰ codepoint_t *
+  encode (codepoint_t *ਪਾਠ,
+	  ਅਚਲ codepoint_t *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	  hb_codepoint_t unicode)
   {
-    if (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    ਜੇ (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    *text++ = unicode;
-    return text;
+    *ਪਾਠ++ = unicode;
+    ਵਾਪਸ ਪਾਠ;
   }
 };
 
-typedef hb_utf32_xe_t<uint32_t> hb_utf32_t;
-typedef hb_utf32_xe_t<uint32_t, false> hb_utf32_novalidate_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_utf32_xe_t<uint32_t> hb_utf32_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ hb_utf32_xe_t<uint32_t, ਝੂਠ> hb_utf32_novalidate_t;
 
 
-struct hb_latin1_t
+ਬਣਤਰ hb_latin1_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint8_t codepoint_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  next (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
-	hb_codepoint_t replacement HB_UNUSED)
+	hb_codepoint_t replacement HB_ਅਣਵਰਤਿਆ)
   {
-    *unicode = *text++;
-    return text;
+    *unicode = *ਪਾਠ++;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  prev (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸ਼ੁਰੂ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
-	hb_codepoint_t replacement HB_UNUSED)
+	hb_codepoint_t replacement HB_ਅਣਵਰਤਿਆ)
   {
-    *unicode = *--text;
-    return text;
+    *unicode = *--ਪਾਠ;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  ਲੜੀ_ਲੰਬਾਈ (ਅਚਲ codepoint_t *ਪਾਠ)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = 0;
+    ਜਦੋਂ (*ਪਾਠ++) l++;
+    ਵਾਪਸ l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  encode_len (hb_codepoint_t unicode HB_ਅਣਵਰਤਿਆ)
   {
-    return 1;
+    ਵਾਪਸ 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ਸਥਿਰ codepoint_t *
+  encode (codepoint_t *ਪਾਠ,
+	  ਅਚਲ codepoint_t *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0100u))
+    ਜੇ (unlikely (unicode >= 0x0100u))
       unicode = '?';
-    *text++ = unicode;
-    return text;
+    *ਪਾਠ++ = unicode;
+    ਵਾਪਸ ਪਾਠ;
   }
 };
 
 
-struct hb_ascii_t
+ਬਣਤਰ hb_ascii_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ uint8_t codepoint_t;
+  ਸਥਿਰ constexpr ਬਿਨਾਨਿਸ਼ਾਨੀ max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  next (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    *unicode = *text++;
-    if (*unicode >= 0x0080u)
+    *unicode = *ਪਾਠ++;
+    ਜੇ (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ codepoint_t *
+  prev (ਅਚਲ codepoint_t *ਪਾਠ,
+	ਅਚਲ codepoint_t *ਸ਼ੁਰੂ HB_ਅਣਵਰਤਿਆ,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    *unicode = *--text;
-    if (*unicode >= 0x0080u)
+    *unicode = *--ਪਾਠ;
+    ਜੇ (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    ਵਾਪਸ ਪਾਠ;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  ਲੜੀ_ਲੰਬਾਈ (ਅਚਲ codepoint_t *ਪਾਠ)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ l = 0;
+    ਜਦੋਂ (*ਪਾਠ++) l++;
+    ਵਾਪਸ l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+  encode_len (hb_codepoint_t unicode HB_ਅਣਵਰਤਿਆ)
   {
-    return 1;
+    ਵਾਪਸ 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ਸਥਿਰ codepoint_t *
+  encode (codepoint_t *ਪਾਠ,
+	  ਅਚਲ codepoint_t *ਸਿਰਾ HB_ਅਣਵਰਤਿਆ,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0080u))
+    ਜੇ (unlikely (unicode >= 0x0080u))
       unicode = '?';
-    *text++ = unicode;
-    return text;
+    *ਪਾਠ++ = unicode;
+    ਵਾਪਸ ਪਾਠ;
   }
 };
 
-template <typename utf_t>
-static inline const typename utf_t::codepoint_t *
-hb_utf_offset_to_pointer (const typename utf_t::codepoint_t *start,
-			  const typename utf_t::codepoint_t *text,
-			  unsigned text_len,
-			  signed offset)
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ utf_t>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਅਚਲ ਕਿਸਮ_ਨਾਂ utf_t::codepoint_t *
+hb_utf_ਵਿੱਥ_ਮੰਜ਼ਿਲ_ਸੂਚਕ (ਅਚਲ ਕਿਸਮ_ਨਾਂ utf_t::codepoint_t *ਸ਼ੁਰੂ,
+			  ਅਚਲ ਕਿਸਮ_ਨਾਂ utf_t::codepoint_t *ਪਾਠ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪਾਠ_len,
+			  ਨਿਸ਼ਾਨੀਵਾਲਾ ਵਿੱਥ)
 {
   hb_codepoint_t unicode;
 
-  while (offset-- > 0)
-    start = utf_t::next (start,
-			 text + text_len,
+  ਜਦੋਂ (ਵਿੱਥ-- > 0)
+    ਸ਼ੁਰੂ = utf_t::next (ਸ਼ੁਰੂ,
+			 ਪਾਠ + ਪਾਠ_len,
 			 &unicode,
-			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
+			 HB_ਬਫਰ_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  while (offset++ < 0)
-    start = utf_t::prev (start,
-			 text,
+  ਜਦੋਂ (ਵਿੱਥ++ < 0)
+    ਸ਼ੁਰੂ = utf_t::prev (ਸ਼ੁਰੂ,
+			 ਪਾਠ,
 			 &unicode,
-			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
+			 HB_ਬਫਰ_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  return start;
+  ਵਾਪਸ ਸ਼ੁਰੂ;
 }
 
 
-#endif /* HB_UTF_HH */
+#ਜੇ_ਅੰਤ /* HB_UTF_HH */

@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-set.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-set.hh"
 
 
 /**
@@ -48,15 +48,15 @@
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_create ()
+hb_ਸੈੱਟ_t *
+hb_ਸੈੱਟ_create ()
 {
-  hb_set_t *set;
+  hb_ਸੈੱਟ_t *ਸੈੱਟ;
 
-  if (!(set = hb_object_create<hb_set_t> ()))
-    return hb_set_get_empty ();
+  ਜੇ (!(ਸੈੱਟ = hb_object_create<hb_ਸੈੱਟ_t> ()))
+    ਵਾਪਸ hb_ਸੈੱਟ_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  return set;
+  ਵਾਪਸ ਸੈੱਟ;
 }
 
 /**
@@ -68,10 +68,10 @@ hb_set_create ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_get_empty ()
+hb_ਸੈੱਟ_t *
+hb_ਸੈੱਟ_get_ਖਾਲੀ_ਥਾਵਾਂ ()
 {
-  return const_cast<hb_set_t *> (&Null (hb_set_t));
+  ਵਾਪਸ const_cast<hb_ਸੈੱਟ_t *> (&Null (hb_ਸੈੱਟ_t));
 }
 
 /**
@@ -84,10 +84,10 @@ hb_set_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_reference (hb_set_t *set)
+hb_ਸੈੱਟ_t *
+hb_ਸੈੱਟ_reference (hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return hb_object_reference (set);
+  ਵਾਪਸ hb_object_reference (ਸੈੱਟ);
 }
 
 /**
@@ -100,12 +100,12 @@ hb_set_reference (hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_destroy (hb_set_t *set)
+ਖਾਲੀ
+hb_ਸੈੱਟ_destroy (hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  if (!hb_object_destroy (set)) return;
+  ਜੇ (!hb_object_destroy (ਸੈੱਟ)) ਵਾਪਸ;
 
-  hb_free (set);
+  hb_free (ਸੈੱਟ);
 }
 
 /**
@@ -123,13 +123,13 @@ hb_set_destroy (hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_ਸੈੱਟ_ਸੈੱਟ_user_ਅੰਕੜੇ (hb_ਸੈੱਟ_t           *ਸੈੱਟ,
+		      hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key,
+		      ਖਾਲੀ *              ਅੰਕੜੇ,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (set, key, data, destroy, replace);
+  ਵਾਪਸ hb_object_ਸੈੱਟ_user_ਅੰਕੜੇ (ਸੈੱਟ, key, ਅੰਕੜੇ, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_set_set_user_data (hb_set_t           *set,
  *
  * Since: 0.9.2
  **/
-void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key)
+ਖਾਲੀ *
+hb_ਸੈੱਟ_get_user_ਅੰਕੜੇ (ਅਚਲ hb_ਸੈੱਟ_t     *ਸੈੱਟ,
+		      hb_user_ਅੰਕੜੇ_ਕੁੰਜੀ_t *key)
 {
-  return hb_object_get_user_data (set, key);
+  ਵਾਪਸ hb_object_get_user_ਅੰਕੜੇ (ਸੈੱਟ, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_set_get_user_data (const hb_set_t     *set,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_allocation_successful (const hb_set_t  *set)
+hb_ਸੈੱਟ_ਵੰਡ_successful (ਅਚਲ hb_ਸੈੱਟ_t  *ਸੈੱਟ)
 {
-  return !set->in_error ();
+  ਵਾਪਸ !ਸੈੱਟ->ਵਿੱਚ_error ();
 }
 
 /**
@@ -178,15 +178,15 @@ hb_set_allocation_successful (const hb_set_t  *set)
  *
  * Since: 2.8.2
  **/
-hb_set_t *
-hb_set_copy (const hb_set_t *set)
+hb_ਸੈੱਟ_t *
+hb_ਸੈੱਟ_copy (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  hb_set_t *copy = hb_set_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_set_get_empty ();
+  hb_ਸੈੱਟ_t *copy = hb_ਸੈੱਟ_create ();
+  ਜੇ (unlikely (copy->ਵਿੱਚ_error ()))
+    ਵਾਪਸ hb_ਸੈੱਟ_get_ਖਾਲੀ_ਥਾਵਾਂ ();
 
-  copy->set (*set);
-  return copy;
+  copy->ਸੈੱਟ (*ਸੈੱਟ);
+  ਵਾਪਸ copy;
 }
 
 /**
@@ -197,11 +197,11 @@ hb_set_copy (const hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_clear (hb_set_t *set)
+ਖਾਲੀ
+hb_ਸੈੱਟ_clear (hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
   /* Immutable-safe. */
-  set->clear ();
+  ਸੈੱਟ->clear ();
 }
 
 /**
@@ -215,9 +215,9 @@ hb_set_clear (hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_empty (const hb_set_t *set)
+hb_ਸੈੱਟ_is_ਖਾਲੀ_ਥਾਵਾਂ (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->is_empty ();
+  ਵਾਪਸ ਸੈੱਟ->is_empty ();
 }
 
 /**
@@ -232,10 +232,10 @@ hb_set_is_empty (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_ਸੈੱਟ_has (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
 	    hb_codepoint_t  codepoint)
 {
-  return set->has (codepoint);
+  ਵਾਪਸ ਸੈੱਟ->has (codepoint);
 }
 
 /**
@@ -247,12 +247,12 @@ hb_set_has (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_add (hb_set_t       *set,
+ਖਾਲੀ
+hb_ਸੈੱਟ_ਜੋੜੋ (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->add (codepoint);
+  ਸੈੱਟ->ਜੋੜੋ (codepoint);
 }
 
 /**
@@ -267,15 +267,15 @@ hb_set_add (hb_set_t       *set,
  *
  * Since: 4.1.0
  */
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+HB_EXTERN ਖਾਲੀ
+hb_ਸੈੱਟ_ਜੋੜੋ_sorted_array (hb_ਸੈੱਟ_t             *ਸੈੱਟ,
+		         ਅਚਲ hb_codepoint_t *sorted_codepoints,
+		         ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          ਅੰਕ_codepoints)
 {
   /* Immutable-safe. */
-  set->add_sorted_array (sorted_codepoints,
-		         num_codepoints,
-		         sizeof(hb_codepoint_t));
+  ਸੈੱਟ->ਜੋੜੋ_sorted_array (sorted_codepoints,
+		         ਅੰਕ_codepoints,
+		         ਆਕਾਰ(hb_codepoint_t));
 }
 
 /**
@@ -289,13 +289,13 @@ hb_set_add_sorted_array (hb_set_t             *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+ਖਾਲੀ
+hb_ਸੈੱਟ_ਜੋੜੋ_range (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+		  hb_codepoint_t  ਪਹਿਲਾ,
+		  hb_codepoint_t  ਆਖਰੀ)
 {
   /* Immutable-safe. */
-  set->add_range (first, last);
+  ਸੈੱਟ->ਜੋੜੋ_range (ਪਹਿਲਾ, ਆਖਰੀ);
 }
 
 /**
@@ -307,12 +307,12 @@ hb_set_add_range (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_del (hb_set_t       *set,
+ਖਾਲੀ
+hb_ਸੈੱਟ_del (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->del (codepoint);
+  ਸੈੱਟ->del (codepoint);
 }
 
 /**
@@ -329,13 +329,13 @@ hb_set_del (hb_set_t       *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+ਖਾਲੀ
+hb_ਸੈੱਟ_del_range (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+		  hb_codepoint_t  ਪਹਿਲਾ,
+		  hb_codepoint_t  ਆਖਰੀ)
 {
   /* Immutable-safe. */
-  set->del_range (first, last);
+  ਸੈੱਟ->del_range (ਪਹਿਲਾ, ਆਖਰੀ);
 }
 
 /**
@@ -351,10 +351,10 @@ hb_set_del_range (hb_set_t       *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other)
+hb_ਸੈੱਟ_is_equal (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
+		 ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
-  return set->is_equal (*other);
+  ਵਾਪਸ ਸੈੱਟ->is_equal (*other);
 }
 
 /**
@@ -369,10 +369,10 @@ hb_set_is_equal (const hb_set_t *set,
  * Since: 14.4.0
  **/
 hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other)
+hb_ਸੈੱਟ_intersects (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
+		   ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
-  return set->intersects (*other);
+  ਵਾਪਸ ਸੈੱਟ->intersects (*other);
 }
 
 /**
@@ -386,10 +386,10 @@ hb_set_intersects (const hb_set_t *set,
  *
  * Since: 4.4.0
  **/
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set)
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਸੈੱਟ_hash (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->hash ();
+  ਵਾਪਸ ਸੈੱਟ->hash ();
 }
 
 /**
@@ -404,10 +404,10 @@ hb_set_hash (const hb_set_t *set)
  * Since: 1.8.1
  **/
 hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set)
+hb_ਸੈੱਟ_is_subset (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
+		  ਅਚਲ hb_ਸੈੱਟ_t *larger_ਸੈੱਟ)
 {
-  return set->is_subset (*larger_set);
+  ਵਾਪਸ ਸੈੱਟ->is_subset (*larger_ਸੈੱਟ);
 }
 
 /**
@@ -419,12 +419,12 @@ hb_set_is_subset (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other)
+ਖਾਲੀ
+hb_ਸੈੱਟ_ਸੈੱਟ (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+	    ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
   /* Immutable-safe. */
-  set->set (*other);
+  ਸੈੱਟ->ਸੈੱਟ (*other);
 }
 
 /**
@@ -436,12 +436,12 @@ hb_set_set (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other)
+ਖਾਲੀ
+hb_ਸੈੱਟ_union (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+	      ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
   /* Immutable-safe. */
-  set->union_ (*other);
+  ਸੈੱਟ->union_ (*other);
 }
 
 /**
@@ -453,12 +453,12 @@ hb_set_union (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other)
+ਖਾਲੀ
+hb_ਸੈੱਟ_intersect (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+		  ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
   /* Immutable-safe. */
-  set->intersect (*other);
+  ਸੈੱਟ->intersect (*other);
 }
 
 /**
@@ -470,12 +470,12 @@ hb_set_intersect (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other)
+ਖਾਲੀ
+hb_ਸੈੱਟ_ਘਟਾਓ (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+		 ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
   /* Immutable-safe. */
-  set->subtract (*other);
+  ਸੈੱਟ->ਘਟਾਓ (*other);
 }
 
 /**
@@ -488,12 +488,12 @@ hb_set_subtract (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other)
+ਖਾਲੀ
+hb_ਸੈੱਟ_ਸਮਮਿਤ_difference (hb_ਸੈੱਟ_t       *ਸੈੱਟ,
+			     ਅਚਲ hb_ਸੈੱਟ_t *other)
 {
   /* Immutable-safe. */
-  set->symmetric_difference (*other);
+  ਸੈੱਟ->ਸਮਮਿਤ_difference (*other);
 }
 
 /**
@@ -504,11 +504,11 @@ hb_set_symmetric_difference (hb_set_t       *set,
  *
  * Since: 3.0.0
  **/
-void
-hb_set_invert (hb_set_t *set)
+ਖਾਲੀ
+hb_ਸੈੱਟ_invert (hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
   /* Immutable-safe. */
-  set->invert ();
+  ਸੈੱਟ->invert ();
 }
 
 /**
@@ -522,9 +522,9 @@ hb_set_invert (hb_set_t *set)
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_set_is_inverted (const hb_set_t *set)
+hb_ਸੈੱਟ_is_inverted (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->is_inverted ();
+  ਵਾਪਸ ਸੈੱਟ->is_inverted ();
 }
 
 /**
@@ -537,10 +537,10 @@ hb_set_is_inverted (const hb_set_t *set)
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_set_get_population (const hb_set_t *set)
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਸੈੱਟ_get_population (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->get_population ();
+  ਵਾਪਸ ਸੈੱਟ->get_population ();
 }
 
 /**
@@ -554,9 +554,9 @@ hb_set_get_population (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_min (const hb_set_t *set)
+hb_ਸੈੱਟ_get_min (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->get_min ();
+  ਵਾਪਸ ਸੈੱਟ->get_min ();
 }
 
 /**
@@ -570,9 +570,9 @@ hb_set_get_min (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_max (const hb_set_t *set)
+hb_ਸੈੱਟ_get_max (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ)
 {
-  return set->get_max ();
+  ਵਾਪਸ ਸੈੱਟ->get_max ();
 }
 
 /**
@@ -590,10 +590,10 @@ hb_set_get_max (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_ਸੈੱਟ_ਅਗਲਾ (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
 	     hb_codepoint_t *codepoint)
 {
-  return set->next (codepoint);
+  ਵਾਪਸ ਸੈੱਟ->next (codepoint);
 }
 
 /**
@@ -611,10 +611,10 @@ hb_set_next (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_ਸੈੱਟ_ਪਿਛਲਾ (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
 		 hb_codepoint_t *codepoint)
 {
-  return set->previous (codepoint);
+  ਵਾਪਸ ਸੈੱਟ->ਪਿਛਲਾ (codepoint);
 }
 
 /**
@@ -634,11 +634,11 @@ hb_set_previous (const hb_set_t *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last)
+hb_ਸੈੱਟ_ਅਗਲਾ_range (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
+		   hb_codepoint_t *ਪਹਿਲਾ,
+		   hb_codepoint_t *ਆਖਰੀ)
 {
-  return set->next_range (first, last);
+  ਵਾਪਸ ਸੈੱਟ->ਅਗਲਾ_range (ਪਹਿਲਾ, ਆਖਰੀ);
 }
 
 /**
@@ -658,11 +658,11 @@ hb_set_next_range (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last)
+hb_ਸੈੱਟ_ਪਿਛਲਾ_range (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
+		       hb_codepoint_t *ਪਹਿਲਾ,
+		       hb_codepoint_t *ਆਖਰੀ)
 {
-  return set->previous_range (first, last);
+  ਵਾਪਸ ਸੈੱਟ->ਪਿਛਲਾ_range (ਪਹਿਲਾ, ਆਖਰੀ);
 }
 
 /**
@@ -681,11 +681,11 @@ hb_set_previous_range (const hb_set_t *set,
  *
  * Since: 4.2.0
  **/
-unsigned int
-hb_set_next_many (const hb_set_t *set,
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ਸੈੱਟ_ਅਗਲਾ_many (ਅਚਲ hb_ਸੈੱਟ_t *ਸੈੱਟ,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size)
+		  hb_codepoint_t *ਬਾਹਰਲਾ,
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ    ਮਾਪ)
 {
-  return set->next_many (codepoint, out, size);
+  ਵਾਪਸ ਸੈੱਟ->ਅਗਲਾ_many (codepoint, ਬਾਹਰਲਾ, ਮਾਪ);
 }

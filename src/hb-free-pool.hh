@@ -24,10 +24,10 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FREE_POOL_HH
-#define HB_FREE_POOL_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_FREE_POOL_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_FREE_POOL_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -40,13 +40,13 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਬਿਨਾਨਿਸ਼ਾਨੀ ChunkLen = 32>
+ਬਣਤਰ hb_free_pool_t
 {
-  hb_free_pool_t () : next (nullptr) {}
+  hb_free_pool_t () : next (ਖਾਲੀ_ਸੂਚਕ) {}
   ~hb_free_pool_t ()
   {
-    next = nullptr;
+    next = ਖਾਲੀ_ਸੂਚਕ;
 
     + hb_iter (chunks)
     | hb_apply (hb_free)
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    ਜੇ (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      ਜੇ (unlikely (!chunks.alloc (chunks.ਲੰਮਾਈ + 1))) ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
+      chunk_t *chunk = (chunk_t *) hb_malloc (ਆਕਾਰ (chunk_t));
+      ਜੇ (unlikely (!chunk)) ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,41 +67,41 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, ਆਕਾਰ (T));
 
-    return obj;
+    ਵਾਪਸ obj;
   }
 
-  void release (T* obj)
+  ਖਾਲੀ release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  ਨਿਜੀ:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (ਆਕਾਰ (T) >= ਆਕਾਰ (ਖਾਲੀ *), "");
+  static_assert (alignof (T) % alignof (ਖਾਲੀ *) == 0, "");
 
-  struct chunk_t
+  ਬਣਤਰ chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ARRAY_ਲੰਮਾਈ (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
-      * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
+      * (T**) &arrayZ[ARRAY_ਲੰਮਾਈ (arrayZ) - 1] = ਖਾਲੀ_ਸੂਚਕ;
 
-      return arrayZ;
+      ਵਾਪਸ arrayZ;
     }
 
     T arrayZ[ChunkLen];
   };
 
   T* next;
-  hb_vector_t<chunk_t *> chunks;
+  hb_ਸਦਿਸ਼_t<chunk_t *> chunks;
 };
 
 
-#endif /* HB_FREE_POOL_HH */
+#ਜੇ_ਅੰਤ /* HB_FREE_POOL_HH */

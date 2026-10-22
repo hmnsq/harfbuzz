@@ -24,93 +24,93 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-decycler.hh"
 
-static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+ਸਥਿਰ ਖਾਲੀ
+ਰੁੱਖ_recurse_ਦੁਆਧਾਰੀ (ਬਿਨਾਨਿਸ਼ਾਨੀ value,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ max_ਮੁੱਲ,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  ਜੇ (value >= max_ਮੁੱਲ)
+		ਵਾਪਸ;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ਗੰਢ_t node (decycler);
 
-  bool ret = node.visit (value);
+  ਤਾਰਕਿਕ ret = node.ਦੇਖੋ (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  ਰੁੱਖ_recurse_ਦੁਆਧਾਰੀ (value * 2 + 1, max_ਮੁੱਲ, decycler);
+  ਰੁੱਖ_recurse_ਦੁਆਧਾਰੀ (value * 2 + 2, max_ਮੁੱਲ, decycler);
 }
 
-static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+ਸਥਿਰ ਖਾਲੀ
+ਰੁੱਖ_recurse_tertiary (ਬਿਨਾਨਿਸ਼ਾਨੀ value,
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ max_ਮੁੱਲ,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  ਜੇ (value >= max_ਮੁੱਲ)
+    ਵਾਪਸ;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ਗੰਢ_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 1; i <= 3; i++)
   {
-    bool ret = node.visit (value + i);
+    ਤਾਰਕਿਕ ret = node.ਦੇਖੋ (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    ਰੁੱਖ_recurse_tertiary (value + i, max_ਮੁੱਲ, decycler);
   }
 }
 
-static void
-test_tree ()
+ਸਥਿਰ ਖਾਲੀ
+test_ਰੁੱਖ ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  ਰੁੱਖ_recurse_ਦੁਆਧਾਰੀ (0, 64, decycler);
+  ਰੁੱਖ_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
-cycle_recurse (signed value,
-	       signed cycle_length,
+ਸਥਿਰ ਖਾਲੀ
+ਚੱਕਰ_recurse (ਨਿਸ਼ਾਨੀਵਾਲਾ value,
+	       ਨਿਸ਼ਾਨੀਵਾਲਾ ਚੱਕਰ_ਲੰਮਾਈ,
 	       hb_decycler_t &decycler)
 {
-  hb_always_assert (cycle_length > 0);
+  hb_always_assert (ਚੱਕਰ_ਲੰਮਾਈ > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ਗੰਢ_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  ਜੇ (!node.ਦੇਖੋ (value))
+    ਵਾਪਸ;
 
-  if (value >= cycle_length)
-    value = value % cycle_length;
+  ਜੇ (value >= ਚੱਕਰ_ਲੰਮਾਈ)
+    value = value % ਚੱਕਰ_ਲੰਮਾਈ;
 
-  cycle_recurse (value + 1, cycle_length, decycler);
+  ਚੱਕਰ_recurse (value + 1, ਚੱਕਰ_ਲੰਮਾਈ, decycler);
 }
 
-static void
-test_cycle ()
+ਸਥਿਰ ਖਾਲੀ
+test_ਚੱਕਰ ()
 {
   hb_decycler_t decycler;
-  cycle_recurse (0, 1, decycler);
-  cycle_recurse (0, 2, decycler);
-  cycle_recurse (2, 3, decycler);
-  cycle_recurse (-20, 8, decycler);
+  ਚੱਕਰ_recurse (0, 1, decycler);
+  ਚੱਕਰ_recurse (0, 2, decycler);
+  ਚੱਕਰ_recurse (2, 3, decycler);
+  ਚੱਕਰ_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  test_tree ();
-  test_cycle ();
+  test_ਰੁੱਖ ();
+  test_ਚੱਕਰ ();
 
-  return 0;
+  ਵਾਪਸ 0;
 }
 

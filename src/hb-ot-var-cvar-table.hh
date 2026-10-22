@@ -23,208 +23,208 @@
  *
  */
 
-#ifndef HB_OT_VAR_CVAR_TABLE_HH
-#define HB_OT_VAR_CVAR_TABLE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_CVAR_ਸਾਰਣੀ_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_CVAR_ਸਾਰਣੀ_HH
 
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-fvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-fvar-table.hh"
 
 
-namespace OT {
+ਨਾਮਾਕਾਸ਼ OT {
 /*
  * cvar -- control value table (CVT) Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cvar
  */
-#define HB_OT_TAG_cvar HB_TAG('c','v','a','r')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_cvar HB_ਟੈਗ('c','v','a','r')
 
-struct cvar
+ਬਣਤਰ cvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_cvar;
+  ਸਥਿਰ constexpr hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ = HB_OT_ਟੈਗ_cvar;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  ਤਾਰਕਿਕ sanitize (hb_sanitize_context_t *c) ਅਚਲ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ਇਹ);
+    return_trace (c->check_struct (ਇਹ) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  tupleVariationData.sanitize (c));
+		  likely (ਸੰਸਕਰਣ.major == 1) &&
+		  tuple_Variation_ਅੰਕੜੇ.sanitize (c));
   }
 
-  const TupleVariationData<>* get_tuple_var_data (void) const
-  { return &tupleVariationData; }
+  ਅਚਲ Tuple_Variation_ਅੰਕੜੇ<>* get_tuple_var_ਅੰਕੜੇ (ਖਾਲੀ) ਅਚਲ
+  { ਵਾਪਸ &tuple_Variation_ਅੰਕੜੇ; }
 
-  bool decompile_tuple_variations (unsigned axis_count,
-                                   unsigned point_count,
+  ਤਾਰਕਿਕ decompile_tuple_variations (ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ,
+                                   ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਿੰਦੂ_ਗਿਣਤੀ,
                                    hb_blob_t *blob,
-                                   bool is_gvar,
-                                   const hb_map_t *axes_old_index_tag_map,
-                                   TupleVariationData<>::tuple_variations_t& tuple_variations /* OUT */) const
+                                   ਤਾਰਕਿਕ is_gvar,
+                                   ਅਚਲ hb_map_t *axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map,
+                                   Tuple_Variation_ਅੰਕੜੇ<>::tuple_variations_t& tuple_variations /*ਬਾਹਰਲਾ*/) ਅਚਲ
   {
-    hb_vector_t<unsigned> shared_indices;
-    TupleVariationData<>::tuple_iterator_t iterator;
-    hb_bytes_t var_data_bytes = blob->as_bytes ().sub_array (4);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, this,
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> shared_indices;
+    Tuple_Variation_ਅੰਕੜੇ<>::tuple_iterator_t iterator;
+    hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = blob->as_ਬਾਈਟਾਂ ().sub_array (4);
+    ਜੇ (!Tuple_Variation_ਅੰਕੜੇ<>::get_tuple_iterator (var_ਅੰਕੜੇ_ਬਾਈਟਾਂ, axis_ਗਿਣਤੀ, ਇਹ,
                                                  shared_indices, &iterator))
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 
-    return tupleVariationData.decompile_tuple_variations (point_count, is_gvar, iterator,
-                                                          axes_old_index_tag_map,
+    ਵਾਪਸ tuple_Variation_ਅੰਕੜੇ.decompile_tuple_variations (ਬਿੰਦੂ_ਗਿਣਤੀ, is_gvar, iterator,
+                                                          axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map,
                                                           shared_indices,
-                                                          hb_array<const F2DOT14> (),
+                                                          hb_array<ਅਚਲ F2DOT14> (),
                                                           tuple_variations);
   }
 
-  static bool calculate_cvt_deltas (unsigned axis_count,
-                                    hb_array_t<int> coords,
-                                    unsigned num_cvt_item,
-                                    const TupleVariationData<> *tuple_var_data,
-                                    const void *base,
-                                    unsigned var_data_length,
-                                    hb_vector_t<float>& cvt_deltas /* OUT */)
+  ਸਥਿਰ ਤਾਰਕਿਕ calculate_cvt_deltas (ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ,
+                                    hb_array_t<ਪੂਰਨ> coords,
+                                    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_cvt_ਵਸਤੂ,
+                                    ਅਚਲ Tuple_Variation_ਅੰਕੜੇ<> *tuple_var_ਅੰਕੜੇ,
+                                    ਅਚਲ ਖਾਲੀ *ਅਧਾਰ,
+                                    ਬਿਨਾਨਿਸ਼ਾਨੀ var_ਅੰਕੜੇ_ਲੰਮਾਈ,
+                                    hb_ਸਦਿਸ਼_t<ਦਸ਼ਮਲਵ>& cvt_deltas /*ਬਾਹਰਲਾ*/)
   {
-    if (!coords) return true;
-    hb_vector_t<unsigned> shared_indices;
-    TupleVariationData<>::tuple_iterator_t iterator;
-    hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<const char*> (tuple_var_data), var_data_length);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, base,
+    ਜੇ (!coords) ਵਾਪਸ ਸੱਚ;
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> shared_indices;
+    Tuple_Variation_ਅੰਕੜੇ<>::tuple_iterator_t iterator;
+    hb_ਬਾਈਟਾਂ_t var_ਅੰਕੜੇ_ਬਾਈਟਾਂ = hb_ਬਾਈਟਾਂ_t (reinterpret_cast<ਅਚਲ ਅੱਖਰ*> (tuple_var_ਅੰਕੜੇ), var_ਅੰਕੜੇ_ਲੰਮਾਈ);
+    ਜੇ (!Tuple_Variation_ਅੰਕੜੇ<>::get_tuple_iterator (var_ਅੰਕੜੇ_ਬਾਈਟਾਂ, axis_ਗਿਣਤੀ, ਅਧਾਰ,
                                                  shared_indices, &iterator))
-      return true; /* isn't applied at all */
+      ਵਾਪਸ ਸੱਚ; /* isn't applied at all */
 
-    hb_array_t<const F2DOT14> shared_tuples = hb_array<F2DOT14> ();
-    hb_vector_t<unsigned> private_indices;
-    hb_vector_t<int> unpacked_deltas;
+    hb_array_t<ਅਚਲ F2DOT14> shared_tuples = hb_array<F2DOT14> ();
+    hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਨਿੱਜੀ_indices;
+    hb_ਸਦਿਸ਼_t<ਪੂਰਨ> unpacked_deltas;
 
-    do
+    ਕਰੋ
     {
-      float scalar = iterator.current_tuple->calculate_scalar (coords, axis_count, shared_tuples);
-      if (scalar == 0.f) continue;
-      const HBUINT8 *p = iterator.get_serialized_data ();
-      unsigned int length = iterator.current_tuple->get_data_size ();
-      if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-        return false;
+      ਦਸ਼ਮਲਵ scalar = iterator.current_tuple->calculate_scalar (coords, axis_ਗਿਣਤੀ, shared_tuples);
+      ਜੇ (scalar == 0.f) ਜਾਰੀ;
+      ਅਚਲ HBUINT8 *p = iterator.get_serialized_ਅੰਕੜੇ ();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਲੰਮਾਈ = iterator.current_tuple->get_ਅੰਕੜੇ_ਮਾਪ ();
+      ਜੇ (unlikely (!iterator.var_ਅੰਕੜੇ_ਬਾਈਟਾਂ.check_range (p, ਲੰਮਾਈ)))
+        ਵਾਪਸ ਝੂਠ;
 
-      const HBUINT8 *end = p + length;
+      ਅਚਲ HBUINT8 *ਸਿਰਾ = p + ਲੰਮਾਈ;
 
-      bool has_private_points = iterator.current_tuple->has_private_points ();
-      if (has_private_points &&
-          !TupleVariationData<>::decompile_points (p, private_indices, end))
-        return false;
-      const hb_vector_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+      ਤਾਰਕਿਕ has_ਨਿੱਜੀ_points = iterator.current_tuple->has_ਨਿੱਜੀ_points ();
+      ਜੇ (has_ਨਿੱਜੀ_points &&
+          !Tuple_Variation_ਅੰਕੜੇ<>::decompile_points (p, ਨਿੱਜੀ_indices, ਸਿਰਾ))
+        ਵਾਪਸ ਝੂਠ;
+      ਅਚਲ hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ> &indices = has_ਨਿੱਜੀ_points ? ਨਿੱਜੀ_indices : shared_indices;
 
-      bool apply_to_all = (indices.length == 0);
-      unsigned num_deltas = apply_to_all ? num_cvt_item : indices.length;
-      if (unlikely (!unpacked_deltas.resize_dirty  (num_deltas))) return false;
-      if (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) return false;
+      ਤਾਰਕਿਕ apply_ਮੰਜ਼ਿਲ_all = (indices.ਲੰਮਾਈ == 0);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_deltas = apply_ਮੰਜ਼ਿਲ_all ? ਅੰਕ_cvt_ਵਸਤੂ : indices.ਲੰਮਾਈ;
+      ਜੇ (unlikely (!unpacked_deltas.resize_dirty  (ਅੰਕ_deltas))) ਵਾਪਸ ਝੂਠ;
+      ਜੇ (unlikely (!Tuple_Variation_ਅੰਕੜੇ<>::decompile_deltas (p, unpacked_deltas, ਸਿਰਾ))) ਵਾਪਸ ਝੂਠ;
 
-      for (unsigned int i = 0; i < num_deltas; i++)
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = 0; i < ਅੰਕ_deltas; i++)
       {
-        unsigned int idx = apply_to_all ? i : indices[i];
-        if (unlikely (idx >= num_cvt_item)) continue;
-        if (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
-        else cvt_deltas[idx] += unpacked_deltas[i];
+        ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx = apply_ਮੰਜ਼ਿਲ_all ? i : indices[i];
+        ਜੇ (unlikely (idx >= ਅੰਕ_cvt_ਵਸਤੂ)) ਜਾਰੀ;
+        ਜੇ (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
+        ਨਹੀਂਤਾਂ cvt_deltas[idx] += unpacked_deltas[i];
       }
-    } while (iterator.move_to_next ());
+    } ਜਦੋਂ (iterator.move_ਮੰਜ਼ਿਲ_ਅਗਲਾ ());
 
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
   
-  bool serialize (hb_serialize_context_t *c,
-                  TupleVariationData<>::tuple_variations_t& tuple_variations) const
+  ਤਾਰਕਿਕ serialize (hb_serialize_context_t *c,
+                  Tuple_Variation_ਅੰਕੜੇ<>::tuple_variations_t& tuple_variations) ਅਚਲ
   {
-    TRACE_SERIALIZE (this);
-    if (!tuple_variations) return_trace (false);
-    if (unlikely (!c->embed (version))) return_trace (false);
+    TRACE_SERIALIZE (ਇਹ);
+    ਜੇ (!tuple_variations) return_trace (ਝੂਠ);
+    ਜੇ (unlikely (!c->embed (ਸੰਸਕਰਣ))) return_trace (ਝੂਠ);
 
-    return_trace (tupleVariationData.serialize (c, false, tuple_variations));
+    return_trace (tuple_Variation_ਅੰਕੜੇ.serialize (c, ਝੂਠ, tuple_variations));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  ਤਾਰਕਿਕ subset (hb_subset_context_t *c) ਅਚਲ
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (ਇਹ);
+    ਜੇ (c->plan->all_axes_pinned)
+      return_trace (ਝੂਠ);
 
-    OT::TupleVariationData<>::tuple_variations_t tuple_variations;
-    unsigned axis_count = c->plan->axes_old_index_tag_map.get_population ();
+    OT::Tuple_Variation_ਅੰਕੜੇ<>::tuple_variations_t tuple_variations;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ axis_ਗਿਣਤੀ = c->plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map.get_population ();
 
-    const hb_tag_t cvt = HB_TAG('c','v','t',' ');
-    hb_blob_t *cvt_blob = hb_face_reference_table (c->plan->source, cvt);
-    unsigned point_count = hb_blob_get_length (cvt_blob) / FWORD::static_size;
+    ਅਚਲ hb_ਟੈਗ_t cvt = HB_ਟੈਗ('c','v','t',' ');
+    hb_blob_t *cvt_blob = hb_face_reference_ਸਾਰਣੀ (c->plan->ਸਰੋਤ, cvt);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਬਿੰਦੂ_ਗਿਣਤੀ = hb_blob_get_ਲੰਮਾਈ (cvt_blob) / FWORD::static_ਮਾਪ;
     hb_blob_destroy (cvt_blob);
 
-    if (!decompile_tuple_variations (axis_count, point_count,
-                                     c->source_blob, false,
-                                     &(c->plan->axes_old_index_tag_map),
+    ਜੇ (!decompile_tuple_variations (axis_ਗਿਣਤੀ, ਬਿੰਦੂ_ਗਿਣਤੀ,
+                                     c->ਸਰੋਤ_blob, ਝੂਠ,
+                                     &(c->plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map),
                                      tuple_variations))
-      return_trace (false);
+      return_trace (ਝੂਠ);
 
     optimize_scratch_t scratch;
-    if (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
-      return_trace (false);
+    ਜੇ (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
+      return_trace (ਝੂਠ);
 
-    if (!tuple_variations.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map,
-                                         false /* do not use shared points */))
-      return_trace (false);
+    ਜੇ (!tuple_variations.compile_ਬਾਈਟਾਂ (c->plan->axes_ਸੂਚਕਾਂਕ_map, c->plan->axes_old_ਸੂਚਕਾਂਕ_ਟੈਗ_map,
+                                         ਝੂਠ /* do not use shared points */))
+      return_trace (ਝੂਠ);
 
     return_trace (serialize (c->serializer, tuple_variations));
   }
 
-  static bool add_cvt_and_apply_deltas (hb_subset_plan_t *plan,
-                                        const TupleVariationData<> *tuple_var_data,
-                                        const void *base)
+  ਸਥਿਰ ਤਾਰਕਿਕ ਜੋੜੋ_cvt_and_apply_deltas (hb_subset_plan_t *plan,
+                                        ਅਚਲ Tuple_Variation_ਅੰਕੜੇ<> *tuple_var_ਅੰਕੜੇ,
+                                        ਅਚਲ ਖਾਲੀ *ਅਧਾਰ)
   {
-    const hb_tag_t cvt = HB_TAG('c','v','t',' ');
-    hb_blob_t *cvt_blob = hb_face_reference_table (plan->source, cvt);
-    hb_blob_t *cvt_prime_blob = hb_blob_copy_writable_or_fail (cvt_blob);
+    ਅਚਲ hb_ਟੈਗ_t cvt = HB_ਟੈਗ('c','v','t',' ');
+    hb_blob_t *cvt_blob = hb_face_reference_ਸਾਰਣੀ (plan->ਸਰੋਤ, cvt);
+    hb_blob_t *cvt_ਅਭਾਜ_blob = hb_blob_copy_writable_or_fail (cvt_blob);
     hb_blob_destroy (cvt_blob);
   
-    if (unlikely (!cvt_prime_blob))
-      return false;
+    ਜੇ (unlikely (!cvt_ਅਭਾਜ_blob))
+      ਵਾਪਸ ਝੂਠ;
  
-    unsigned cvt_blob_length = hb_blob_get_length (cvt_prime_blob);
-    unsigned num_cvt_item = cvt_blob_length / FWORD::static_size;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ cvt_blob_ਲੰਮਾਈ = hb_blob_get_ਲੰਮਾਈ (cvt_ਅਭਾਜ_blob);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_cvt_ਵਸਤੂ = cvt_blob_ਲੰਮਾਈ / FWORD::static_ਮਾਪ;
 
-    hb_vector_t<float> cvt_deltas;
-    if (unlikely (!cvt_deltas.resize (num_cvt_item)))
+    hb_ਸਦਿਸ਼_t<ਦਸ਼ਮਲਵ> cvt_deltas;
+    ਜੇ (unlikely (!cvt_deltas.resize (ਅੰਕ_cvt_ਵਸਤੂ)))
     {
-      hb_blob_destroy (cvt_prime_blob);
-      return false;
+      hb_blob_destroy (cvt_ਅਭਾਜ_blob);
+      ਵਾਪਸ ਝੂਠ;
     }
 
     /* Bound the tuple variation data by the actual cvar table length rather
      * than trusting tupleVarCount to walk the headers; an inflated count would
      * otherwise run get_size() off the end of the table. */
-    hb_blob_t *cvar_blob = hb_face_reference_table (plan->source, cvar::tableTag);
-    unsigned cvar_length = hb_blob_get_length (cvar_blob);
+    hb_blob_t *cvar_blob = hb_face_reference_ਸਾਰਣੀ (plan->ਸਰੋਤ, cvar::ਸਾਰਣੀ_ਟੈਗ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ cvar_ਲੰਮਾਈ = hb_blob_get_ਲੰਮਾਈ (cvar_blob);
     hb_blob_destroy (cvar_blob);
-    unsigned var_data_offset = (unsigned) ((const char *) tuple_var_data - (const char *) base);
-    unsigned var_data_length = var_data_offset < cvar_length ? cvar_length - var_data_offset : 0;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ var_ਅੰਕੜੇ_ਵਿੱਥ = (ਬਿਨਾਨਿਸ਼ਾਨੀ) ((ਅਚਲ ਅੱਖਰ *) tuple_var_ਅੰਕੜੇ - (ਅਚਲ ਅੱਖਰ *) ਅਧਾਰ);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ var_ਅੰਕੜੇ_ਲੰਮਾਈ = var_ਅੰਕੜੇ_ਵਿੱਥ < cvar_ਲੰਮਾਈ ? cvar_ਲੰਮਾਈ - var_ਅੰਕੜੇ_ਵਿੱਥ : 0;
 
-    if (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
-                               num_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
+    ਜੇ (!calculate_cvt_deltas (plan->normalized_coords.ਲੰਮਾਈ, plan->normalized_coords.as_array (),
+                               ਅੰਕ_cvt_ਵਸਤੂ, tuple_var_ਅੰਕੜੇ, ਅਧਾਰ, var_ਅੰਕੜੇ_ਲੰਮਾਈ, cvt_deltas))
     {
-      hb_blob_destroy (cvt_prime_blob);
-      return false;
+      hb_blob_destroy (cvt_ਅਭਾਜ_blob);
+      ਵਾਪਸ ਝੂਠ;
     }
 
-    FWORD *cvt_prime = (FWORD *) hb_blob_get_data_writable (cvt_prime_blob, nullptr);
-    for (unsigned i = 0; i < num_cvt_item; i++)
-      cvt_prime[i] += (int) roundf (cvt_deltas[i]);
+    FWORD *cvt_ਅਭਾਜ = (FWORD *) hb_blob_get_ਅੰਕੜੇ_writable (cvt_ਅਭਾਜ_blob, ਖਾਲੀ_ਸੂਚਕ);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < ਅੰਕ_cvt_ਵਸਤੂ; i++)
+      cvt_ਅਭਾਜ[i] += (ਪੂਰਨ) roundf (cvt_deltas[i]);
     
-    bool success = plan->add_table (cvt, cvt_prime_blob);
-    hb_blob_destroy (cvt_prime_blob);
-    return success;
+    ਤਾਰਕਿਕ success = plan->ਜੋੜੋ_ਸਾਰਣੀ (cvt, cvt_ਅਭਾਜ_blob);
+    hb_blob_destroy (cvt_ਅਭਾਜ_blob);
+    ਵਾਪਸ success;
   }
 
-  protected:
-  FixedVersion<>version;		/* Version of the CVT variation table
+  ਸੁਰੱਖਿਅਤ:
+  Fixed_ਸੰਸਕਰਣ<>ਸੰਸਕਰਣ;		/* Version of the CVT variation table
 					 * initially set to 0x00010000u */
-  TupleVariationData<> tupleVariationData; /* TupleVariationDate for cvar table */
-  public:
-  DEFINE_SIZE_MIN (8);
+  Tuple_Variation_ਅੰਕੜੇ<> tuple_Variation_ਅੰਕੜੇ; /* TupleVariationDate for cvar table */
+  ਜਨਤਕ:
+  DEFINE_ਮਾਪ_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_VAR_CVAR_TABLE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_CVAR_TABLE_HH */

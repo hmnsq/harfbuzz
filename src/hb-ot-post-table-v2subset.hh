@@ -23,129 +23,129 @@
  *
  */
 
-#ifndef HB_OT_POST_TABLE_V2SUBSET_HH
-#define HB_OT_POST_TABLE_V2SUBSET_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_POST_ਸਾਰਣੀ_V2_SUBSET_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_POST_ਸਾਰਣੀ_V2_SUBSET_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-post-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-post-table.hh"
 
 /*
  * post -- PostScript
  * https://docs.microsoft.com/en-us/typography/opentype/spec/post
  */
 
-namespace OT {
-template<typename Iterator>
-HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
+ਨਾਮਾਕਾਸ਼ OT {
+ਸਾਂਚਾ<ਕਿਸਮ_ਨਾਂ Iterator>
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ post_V2_ਪੂਛ::serialize (hb_serialize_context_t *c,
                                         Iterator it,
-                                        const void* _post) const
+                                        ਅਚਲ ਖਾਲੀ* _post) ਅਚਲ
 {
-  TRACE_SERIALIZE (this);
-  auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
-                                         | hb_map (hb_second)))
-      return_trace (false);
+  TRACE_SERIALIZE (ਇਹ);
+  ਸਵੈਚਾਲਿਤ *ਬਾਹਰਲਾ = c->ਸ਼ੁਰੂ_embed (ਇਹ);
+  ਜੇ (unlikely (!c->check_success (ਬਾਹਰਲਾ))) return_trace (ਝੂਠ);
+  ਜੇ (!ਬਾਹਰਲਾ->glyph_Name_ਸੂਚਕਾਂਕ.serialize (c, + it
+                                         | hb_map (hb_ਦੂਜਾ)))
+      return_trace (ਝੂਠ);
 
-  hb_set_t copied_indices;
-  for (const auto& _ : + it )
+  hb_ਸੈੱਟ_t copied_indices;
+  ਲਈ (ਅਚਲ ਸਵੈਚਾਲਿਤ& _ : + it )
   {
-    unsigned glyph_id = _.first;
-    unsigned new_index = _.second;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ glyph_id = _.ਪਹਿਲਾ;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਸੂਚਕਾਂਕ = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
-    copied_indices.add (new_index);
+    ਜੇ (new_ਸੂਚਕਾਂਕ < 258) ਜਾਰੀ;
+    ਜੇ (copied_indices.has (new_ਸੂਚਕਾਂਕ)) ਜਾਰੀ;
+    copied_indices.ਜੋੜੋ (new_ਸੂਚਕਾਂਕ);
 
-    hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
-    HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
+    hb_ਬਾਈਟਾਂ_t s = reinterpret_cast<ਅਚਲ post::accelerator_t*> (_post)->ਲੱਭੋ_glyph_name (glyph_id);
+    HBUINT8 *o = c->allocate_ਮਾਪ<HBUINT8> (HBUINT8::static_ਮਾਪ * (s.ਲੰਮਾਈ + 1));
+    ਜੇ (unlikely (!o)) return_trace (ਝੂਠ);
+    ਜੇ (!c->check_ਸੌਂਪੋ (o[0], s.ਲੰਮਾਈ, HB_SERIALIZE_ERROR_INT_ਉਛਾਲ)) return_trace (ਝੂਠ);
+    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_ਮਾਪ * s.ਲੰਮਾਈ);
   }
 
-  return_trace (true);
+  return_trace (ਸੱਚ);
 }
 
-HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ post_V2_ਪੂਛ::subset (hb_subset_context_t *c) ਅਚਲ
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (ਇਹ);
 
-  const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
-  hb_map_t old_new_index_map, old_gid_new_index_map;
-  unsigned i = 0;
+  ਅਚਲ hb_map_t &ਉਲਟ_glyph_map = *c->plan->ਉਲਟ_glyph_map;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_glyphs = c->plan->ਅੰਕ_output_glyphs ();
+  hb_map_t old_new_ਸੂਚਕਾਂਕ_map, old_gid_new_ਸੂਚਕਾਂਕ_map;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0;
 
-  post::accelerator_t _post (c->plan->source);
+  post::accelerator_t _post (c->plan->ਸਰੋਤ);
 
-  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
+  hb_hashmap_t<hb_ਬਾਈਟਾਂ_t, uint32_t, ਸੱਚ> glyph_name_ਮੰਜ਼ਿਲ_new_ਸੂਚਕਾਂਕ;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_ਸੂਚਕਾਂਕ_map.alloc (ਅੰਕ_glyphs);
+  old_gid_new_ਸੂਚਕਾਂਕ_map.alloc (ਅੰਕ_glyphs);
+  glyph_name_ਮੰਜ਼ਿਲ_new_ਸੂਚਕਾਂਕ.alloc (ਅੰਕ_glyphs);
 
-  for (auto _ : c->plan->new_to_old_gid_list)
+  ਲਈ (ਸਵੈਚਾਲਿਤ _ : c->plan->new_ਮੰਜ਼ਿਲ_old_gid_list)
   {
     hb_codepoint_t old_gid = _.second;
-    unsigned old_index = glyphNameIndex[old_gid];
+    ਬਿਨਾਨਿਸ਼ਾਨੀ old_ਸੂਚਕਾਂਕ = glyph_Name_ਸੂਚਕਾਂਕ[old_gid];
 
-    unsigned new_index;
-    const uint32_t *new_index2;
-    if (old_index <= 257)
-      new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
-      new_index = *new_index2;
-    else
+    ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਸੂਚਕਾਂਕ;
+    ਅਚਲ uint32_t *new_index2;
+    ਜੇ (old_ਸੂਚਕਾਂਕ <= 257)
+      new_ਸੂਚਕਾਂਕ = old_ਸੂਚਕਾਂਕ;
+    ਨਹੀਂਤਾਂ ਜੇ (old_new_ਸੂਚਕਾਂਕ_map.has (old_ਸੂਚਕਾਂਕ, &new_index2))
+      new_ਸੂਚਕਾਂਕ = *new_index2;
+    ਨਹੀਂਤਾਂ
     {
-      hb_bytes_t s = _post.find_glyph_name (old_gid);
-      new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      hb_ਬਾਈਟਾਂ_t s = _post.ਲੱਭੋ_glyph_name (old_gid);
+      new_ਸੂਚਕਾਂਕ = glyph_name_ਮੰਜ਼ਿਲ_new_ਸੂਚਕਾਂਕ.get (s);
+      ਜੇ (new_ਸੂਚਕਾਂਕ == (ਬਿਨਾਨਿਸ਼ਾਨੀ)-1)
       {
-        int standard_glyph_index = -1;
-        for (unsigned i = 0; i < format1_names_length; i++)
+        ਪੂਰਨ standard_glyph_ਸੂਚਕਾਂਕ = -1;
+        ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < format1_ਨਾਂ_ਲੰਮਾਈ; i++)
         {
-          if (s == format1_names (i))
+          ਜੇ (s == format1_ਨਾਂ (i))
           {
-            standard_glyph_index = i;
-            break;
+            standard_glyph_ਸੂਚਕਾਂਕ = i;
+            ਰੋਕੋ;
           }
         }
 
-        if (standard_glyph_index == -1)
+        ਜੇ (standard_glyph_ਸੂਚਕਾਂਕ == -1)
         {
-          new_index = 258 + i;
+          new_ਸੂਚਕਾਂਕ = 258 + i;
           i++;
         }
-        else
-        { new_index = standard_glyph_index; }
-        glyph_name_to_new_index.set (s, new_index);
+        ਨਹੀਂਤਾਂ
+        { new_ਸੂਚਕਾਂਕ = standard_glyph_ਸੂਚਕਾਂਕ; }
+        glyph_name_ਮੰਜ਼ਿਲ_new_ਸੂਚਕਾਂਕ.ਸੈੱਟ (s, new_ਸੂਚਕਾਂਕ);
       }
-      old_new_index_map.set (old_index, new_index);
+      old_new_ਸੂਚਕਾਂਕ_map.ਸੈੱਟ (old_ਸੂਚਕਾਂਕ, new_ਸੂਚਕਾਂਕ);
     }
-    old_gid_new_index_map.set (old_gid, new_index);
+    old_gid_new_ਸੂਚਕਾਂਕ_map.ਸੈੱਟ (old_gid, new_ਸੂਚਕਾਂਕ);
   }
 
-  if (old_gid_new_index_map.in_error())
-    return_trace (false);
+  ਜੇ (old_gid_new_ਸੂਚਕਾਂਕ_map.ਵਿੱਚ_error())
+    return_trace (ਝੂਠ);
 
-  auto index_iter =
-  + hb_range (num_glyphs)
-  | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
+  ਸਵੈਚਾਲਿਤ ਸੂਚਕਾਂਕ_iter =
+  + hb_range (ਅੰਕ_glyphs)
+  | hb_map_retains_ਛਾਂਟੀ ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
-                              unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
-                                new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਸੂਚਕਾਂਕ = 0;
+                              ਜੇ (ਉਲਟ_glyph_map.has (new_gid, &old_gid)) {
+                                new_ਸੂਚਕਾਂਕ = old_gid_new_ਸੂਚਕਾਂਕ_map.get (*old_gid);
+                                ਵਾਪਸ hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> (*old_gid, new_ਸੂਚਕਾਂਕ);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              ਵਾਪਸ hb_pair_t<ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ> (new_gid, new_ਸੂਚਕਾਂਕ);
                             })
   ;
 
-  return_trace (serialize (c->serializer, index_iter, &_post));
+  return_trace (serialize (c->serializer, ਸੂਚਕਾਂਕ_iter, &_post));
 }
 
 } /* namespace OT */
-#endif /* HB_OT_POST_TABLE_V2SUBSET_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_POST_TABLE_V2SUBSET_HH */

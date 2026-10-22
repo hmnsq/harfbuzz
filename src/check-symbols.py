@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-import difflib
-import os
-import re
-import shutil
-import subprocess
-import sys
+ਆਯਾਤ difflib
+ਆਯਾਤ os
+ਆਯਾਤ re
+ਆਯਾਤ shutil
+ਆਯਾਤ subprocess
+ਆਯਾਤ sys
 
-from check_helpers import CHECK_SYMBOL_LIBS
+ਤਃ check_helpers ਆਯਾਤ CHECK_ਚਿੰਨ੍ਹ_LIBS
 
 os.environ["LC_ALL"] = "C"  # otherwise 'nm' prints in wrong order
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+ਅਧਾਰ_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 IGNORED_SYMBOLS = [
@@ -51,76 +51,76 @@ IGNORED_SYMBOLS += [
 IGNORED_SYMBOLS = "|".join(IGNORED_SYMBOLS)
 
 nm = os.getenv("NM", shutil.which("nm"))
-if not nm:
-    print("check-symbols.py: 'nm' not found; skipping test")
+ਜੇ ਨਹੀਂ nm:
+    ਛਾਪੋ("check-symbols.py: 'nm' not found; skipping test")
     sys.exit(77)
 
-tested = False
+tested = ਝੂਠ
 stat = 0
 
-for soname in CHECK_SYMBOL_LIBS:
-    for suffix in ["so", "dylib"]:
-        so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+ਲਈ soname ਵਿੱਚ CHECK_ਚਿੰਨ੍ਹ_LIBS:
+    ਲਈ suffix ਵਿੱਚ ["so", "dylib"]:
+        so = os.ਰਸਤਾ.join(builddir, "lib%s.%s" % (soname, suffix))
+        ਜੇ ਨਹੀਂ os.ਰਸਤਾ.exists(so):
+            ਜਾਰੀ
 
         # On macOS, C symbols are prefixed with _
-        symprefix = "_" if suffix == "dylib" else ""
+        symprefix = "_" ਜੇ suffix == "dylib" ਨਹੀਂਤਾਂ ""
 
         EXPORTED_SYMBOLS = [
-            s.split()[2]
-            for s in re.findall(
+            s.ਵੰਡੋ()[2]
+            ਲਈ s ਵਿੱਚ re.findall(
                 r"^.+ [BCDGIRSTWu] .+$",
-                subprocess.check_output(nm.split() + [so]).decode("utf-8"),
+                subprocess.check_output(nm.ਵੰਡੋ() + [so]).decode("utf-8"),
                 re.MULTILINE,
             )
-            if not re.match(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
+            ਜੇ ਨਹੀਂ re.ਮੇਲ(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
         ]
 
-        prefix = (
-            (symprefix + os.path.basename(so))
+        ਅਗੇਤਰ = (
+            (symprefix + os.ਰਸਤਾ.basename(so))
             .replace("libharfbuzz", "hb")
             .replace("-", "_")
-            .split(".")[0]
+            .ਵੰਡੋ(".")[0]
         )
 
-        print("Checking that %s does not expose internal symbols" % so)
+        ਛਾਪੋ("Checking that %s does not expose internal symbols" % so)
         suspicious_symbols = [
-            x for x in EXPORTED_SYMBOLS if not re.match(r"^%s(_|$)" % prefix, x)
+            x ਲਈ x ਵਿੱਚ EXPORTED_SYMBOLS ਜੇ ਨਹੀਂ re.ਮੇਲ(r"^%s(_|$)" % ਅਗੇਤਰ, x)
         ]
         # libharfbuzz-subset also exports hb_subset_depend_* when depend_api is enabled
-        if soname == "harfbuzz-subset":
-            suspicious_symbols = [x for x in suspicious_symbols if not re.match(r"^%shb_subset_depend_" % symprefix, x)]
-        if suspicious_symbols:
-            print("Ouch, internal symbols exposed:", suspicious_symbols)
+        ਜੇ soname == "harfbuzz-subset":
+            suspicious_symbols = [x ਲਈ x ਵਿੱਚ suspicious_symbols ਜੇ ਨਹੀਂ re.ਮੇਲ(r"^%shb_subset_depend_" % symprefix, x)]
+        ਜੇ suspicious_symbols:
+            ਛਾਪੋ("Ouch, internal symbols exposed:", suspicious_symbols)
             stat = 1
 
-        def_path = os.path.join(builddir, soname + ".def")
-        if not os.path.exists(def_path):
-            print("'%s' not found; skipping" % def_path)
-        else:
-            print("Checking that %s has the same symbol list as %s" % (so, def_path))
-            with open(def_path, "r", encoding="utf-8") as f:
-                def_file = f.read()
-            diff_result = list(
+        def_ਰਸਤਾ = os.ਰਸਤਾ.join(builddir, soname + ".def")
+        ਜੇ ਨਹੀਂ os.ਰਸਤਾ.exists(def_ਰਸਤਾ):
+            ਛਾਪੋ("'%s' not found; skipping" % def_ਰਸਤਾ)
+        ਨਹੀਂਤਾਂ:
+            ਛਾਪੋ("Checking that %s has the same symbol list as %s" % (so, def_ਰਸਤਾ))
+            ਨਾਲ open(def_ਰਸਤਾ, "r", encoding="utf-8") ਇਵ f:
+                def_file = f.ਪਠ()
+            diff_ਨਤੀਜਾ = list(
                 difflib.context_diff(
                     def_file.splitlines(),
                     ["EXPORTS"]
-                    + [re.sub("^%shb" % symprefix, "hb", x) for x in EXPORTED_SYMBOLS]
+                    + [re.sub("^%shb" % symprefix, "hb", x) ਲਈ x ਵਿੱਚ EXPORTED_SYMBOLS]
                     +
                     # cheat: copy the last line from the def file!
                     [def_file.splitlines()[-1]],
                 )
             )
 
-            if diff_result:
-                print("\n".join(diff_result))
+            ਜੇ diff_ਨਤੀਜਾ:
+                ਛਾਪੋ("\n".join(diff_ਨਤੀਜਾ))
                 stat = 1
 
-            tested = True
+            tested = ਸੱਚ
 
-if not tested:
-    print("check-symbols.py: no shared libraries found; skipping test")
+ਜੇ ਨਹੀਂ tested:
+    ਛਾਪੋ("check-symbols.py: no shared libraries found; skipping test")
     sys.exit(77)
 
 sys.exit(stat)

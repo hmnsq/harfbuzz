@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ਜੇ !defined(HB_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_VERSION_H
-#define HB_VERSION_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਸੰਸਕਰਣ_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_H
 
-#include "hb-common.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -41,26 +41,26 @@ HB_BEGIN_DECLS
  *
  * The major component of the library version available at compile-time.
  */
-#define HB_VERSION_MAJOR 14
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_MAJOR 14
 /**
  * HB_VERSION_MINOR:
  *
  * The minor component of the library version available at compile-time.
  */
-#define HB_VERSION_MINOR 6
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_MINOR 6
 /**
  * HB_VERSION_MICRO:
  *
  * The micro component of the library version available at compile-time.
  */
-#define HB_VERSION_MICRO 0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_MICRO 0
 
 /**
  * HB_VERSION_STRING:
  *
  * A string literal containing the library version available at compile-time.
  */
-#define HB_VERSION_STRING "14.6.0"
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_STRING "14.6.0"
 
 /**
  * HB_VERSION_ATLEAST:
@@ -71,25 +71,25 @@ HB_BEGIN_DECLS
  * Tests the library version at compile-time against a minimum value,
  * as three integer components.
  */
-#define HB_VERSION_ATLEAST(major,minor,micro) \
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਸੰਸਕਰਣ_ATLEAST(major,minor,micro) \
 	((major)*10000+(minor)*100+(micro) <= \
-	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
+	 HB_ਸੰਸਕਰਣ_MAJOR*10000+HB_ਸੰਸਕਰਣ_MINOR*100+HB_ਸੰਸਕਰਣ_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN ਖਾਲੀ
+hb_ਸੰਸਕਰਣ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *major,
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *minor,
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN ਅਚਲ ਅੱਖਰ *
+hb_ਸੰਸਕਰਣ_string (ਖਾਲੀ);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_ਸੰਸਕਰਣ_atleast (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ major,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ minor,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ micro);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_VERSION_H */
+#ਜੇ_ਅੰਤ /* HB_VERSION_H */

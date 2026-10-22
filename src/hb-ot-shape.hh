@@ -24,186 +24,186 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_HH
-#define HB_OT_SHAPE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_SHAPE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_SHAPE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-ot-map.hh"
-#include "hb-aat-map.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-map.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-map.hh"
 
 
-HB_INTERNAL bool
-_hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
-						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
-						   hb_vector_t<unsigned> *lookup_conditions);
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
+hb_ot_layout_ਸਾਰਣੀ_get_feature_variations_state (hb_face_t             *face,
+						   hb_ਟੈਗ_t               ਸਾਰਣੀ_ਟੈਗ_2,
+						   ਅਚਲ ਪੂਰਨ             *coords,
+						   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ           ਅੰਕ_coords,
+						   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          *variations_ਸੂਚਕਾਂਕ,
+						   hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> *lookup_conditions);
 
-HB_INTERNAL bool
+HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ
 _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
-                                             hb_tag_t table_tag,
-                                             unsigned feature_index,
-                                             unsigned variations_index,
-                                             hb_sorted_array_t<const unsigned> conditions,
-                                             hb_set_t *lookup_indexes);
+                                             hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2,
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ feature_ਸੂਚਕਾਂਕ,
+                                             ਬਿਨਾਨਿਸ਼ਾਨੀ variations_ਸੂਚਕਾਂਕ,
+                                             hb_sorted_array_t<ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ> conditions,
+                                             hb_ਸੈੱਟ_t *lookup_indexes);
 
-struct hb_ot_shape_plan_key_t
+ਬਣਤਰ hb_ot_shape_plan_ਕੁੰਜੀ_t
 {
-  unsigned int variations_index[2];
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ variations_ਸੂਚਕਾਂਕ[2];
   /* Sorted offsets of distinct true conditions within FeatureVariations.
    * Different outcomes may conservatively separate equivalent lookup sets. */
-  hb_vector_t<unsigned> lookup_conditions[2];
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> lookup_conditions[2];
 
-  bool init (hb_face_t *face,
-	     const int *coords,
-	     unsigned   num_coords)
+  ਤਾਰਕਿਕ init (hb_face_t *face,
+	     ਅਚਲ ਪੂਰਨ *coords,
+	     ਬਿਨਾਨਿਸ਼ਾਨੀ   ਅੰਕ_coords)
   {
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
-      if (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ = 0; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ < 2; ਸਾਰਣੀ_ਸੂਚਕਾਂਕ++)
+      ਜੇ (unlikely (!hb_ot_layout_ਸਾਰਣੀ_get_feature_variations_state (
 			face,
-			table_tags[table_index],
+			ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ],
 			coords,
-			num_coords,
-			&variations_index[table_index],
-			&lookup_conditions[table_index])))
+			ਅੰਕ_coords,
+			&variations_ਸੂਚਕਾਂਕ[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ],
+			&lookup_conditions[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ])))
       {
-	for (auto &v : lookup_conditions)
+	ਲਈ (ਸਵੈਚਾਲਿਤ &v : lookup_conditions)
 	  v.fini ();
-	return false;
+	ਵਾਪਸ ਝੂਠ;
       }
-    return true;
+    ਵਾਪਸ ਸੱਚ;
   }
 
-  void fini ()
+  ਖਾਲੀ fini ()
   {
-    for (auto &v : lookup_conditions)
+    ਲਈ (ਸਵੈਚਾਲਿਤ &v : lookup_conditions)
       v.fini ();
   }
 
-  bool get_lookup_variations (hb_face_t *face,
-                              unsigned int table_index,
-			      unsigned int feature_index,
-			      hb_set_t *lookups) const
+  ਤਾਰਕਿਕ get_lookup_variations (hb_face_t *face,
+                              ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ feature_ਸੂਚਕਾਂਕ,
+			      hb_ਸੈੱਟ_t *lookups) ਅਚਲ
   {
-    return _hb_ot_layout_feature_get_lookup_variations (
-	face, table_tags[table_index], feature_index, variations_index[table_index],
-	lookup_conditions[table_index].as_sorted_array (), lookups);
+    ਵਾਪਸ _hb_ot_layout_feature_get_lookup_variations (
+	face, ਸਾਰਣੀ_ਟੈਗ_ਸੂਚੀ[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ], feature_ਸੂਚਕਾਂਕ, variations_ਸੂਚਕਾਂਕ[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ],
+	lookup_conditions[ਸਾਰਣੀ_ਸੂਚਕਾਂਕ].as_sorted_array (), lookups);
   }
 
-  bool equal (const hb_ot_shape_plan_key_t *other)
+  ਤਾਰਕਿਕ equal (ਅਚਲ hb_ot_shape_plan_ਕੁੰਜੀ_t *other)
   {
-    return variations_index[0] == other->variations_index[0] &&
-	   variations_index[1] == other->variations_index[1] &&
+    ਵਾਪਸ variations_ਸੂਚਕਾਂਕ[0] == other->variations_ਸੂਚਕਾਂਕ[0] &&
+	   variations_ਸੂਚਕਾਂਕ[1] == other->variations_ਸੂਚਕਾਂਕ[1] &&
 	   lookup_conditions[0] == other->lookup_conditions[0] &&
 	   lookup_conditions[1] == other->lookup_conditions[1];
   }
 };
 
 
-struct hb_shape_plan_key_t;
+ਬਣਤਰ hb_shape_plan_ਕੁੰਜੀ_t;
 
-struct hb_ot_shape_plan_t
+ਬਣਤਰ hb_ot_shape_plan_t
 {
   ~hb_ot_shape_plan_t () { fini (); }
 
   hb_segment_properties_t props;
-  const struct hb_ot_shaper_t *shaper;
+  ਅਚਲ ਬਣਤਰ hb_ot_shaper_t *shaper;
   hb_ot_map_t map;
   hb_aat_map_t aat_map;
-  const void *data;
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  hb_mask_t frac_mask, numr_mask, dnom_mask;
-#else
-  static constexpr hb_mask_t frac_mask = 0;
-  static constexpr hb_mask_t numr_mask = 0;
-  static constexpr hb_mask_t dnom_mask = 0;
-#endif
-  hb_mask_t rtlm_mask;
-#ifndef HB_NO_OT_KERN
-  hb_mask_t kern_mask;
-#else
-  static constexpr hb_mask_t kern_mask = 0;
-#endif
+  ਅਚਲ ਖਾਲੀ *ਅੰਕੜੇ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FRACTIONS
+  hb_ਨਕਾਬ_t frac_ਨਕਾਬ, numr_ਨਕਾਬ, dnom_ਨਕਾਬ;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr hb_ਨਕਾਬ_t frac_ਨਕਾਬ = 0;
+  ਸਥਿਰ constexpr hb_ਨਕਾਬ_t numr_ਨਕਾਬ = 0;
+  ਸਥਿਰ constexpr hb_ਨਕਾਬ_t dnom_ਨਕਾਬ = 0;
+#ਜੇ_ਅੰਤ
+  hb_ਨਕਾਬ_t rtlm_ਨਕਾਬ;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+  hb_ਨਕਾਬ_t kern_ਨਕਾਬ;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr hb_ਨਕਾਬ_t kern_ਨਕਾਬ = 0;
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_NO_OT_KERN
-  bool requested_kerning : 1;
-#else
-  static constexpr bool requested_kerning = false;
-#endif
-#ifndef HB_NO_OT_SHAPE_FRACTIONS
-  bool has_frac : 1;
-#else
-  static constexpr bool has_frac = false;
-#endif
-  bool has_vert : 1;
-  bool has_gpos_mark : 1;
-  bool zero_marks : 1;
-  bool fallback_glyph_classes : 1;
-  bool fallback_mark_positioning : 1;
-  bool adjust_mark_positioning_when_zeroing : 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+  ਤਾਰਕਿਕ requested_kerning : 1;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ requested_kerning = ਝੂਠ;
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_SHAPE_FRACTIONS
+  ਤਾਰਕਿਕ has_frac : 1;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ has_frac = ਝੂਠ;
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ has_vert : 1;
+  ਤਾਰਕਿਕ has_gpos_mark : 1;
+  ਤਾਰਕਿਕ zero_marks : 1;
+  ਤਾਰਕਿਕ fallback_glyph_classes : 1;
+  ਤਾਰਕਿਕ fallback_mark_positioning : 1;
+  ਤਾਰਕਿਕ adjust_mark_positioning_when_zeroing : 1;
 
-  bool apply_gpos : 1;
-#ifndef HB_NO_OT_KERN
-  bool apply_kern : 1;
-#else
-  static constexpr bool apply_kern = false;
-#endif
-  bool apply_fallback_kern : 1;
-#ifndef HB_NO_AAT_SHAPE
-  bool apply_kerx : 1;
-  bool apply_morx : 1;
-  bool apply_trak : 1;
-#else
-  static constexpr bool apply_kerx = false;
-  static constexpr bool apply_morx = false;
-  static constexpr bool apply_trak = false;
-#endif
+  ਤਾਰਕਿਕ apply_gpos : 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_OT_KERN
+  ਤਾਰਕਿਕ apply_kern : 1;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ apply_kern = ਝੂਠ;
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ apply_fallback_kern : 1;
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
+  ਤਾਰਕਿਕ apply_kerx : 1;
+  ਤਾਰਕਿਕ apply_morx : 1;
+  ਤਾਰਕਿਕ apply_trak : 1;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ apply_kerx = ਝੂਠ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ apply_morx = ਝੂਠ;
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ apply_trak = ਝੂਠ;
+#ਜੇ_ਅੰਤ
 
-  void collect_lookups (hb_tag_t table_tag, hb_set_t *lookups) const
+  ਖਾਲੀ collect_lookups (hb_ਟੈਗ_t ਸਾਰਣੀ_ਟੈਗ_2, hb_ਸੈੱਟ_t *lookups) ਅਚਲ
   {
-    unsigned int table_index;
-    switch (table_tag) {
-      case HB_OT_TAG_GSUB: table_index = 0; break;
-      case HB_OT_TAG_GPOS: table_index = 1; break;
-      default: return;
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸਾਰਣੀ_ਸੂਚਕਾਂਕ;
+    ਚੋਣ (ਸਾਰਣੀ_ਟੈਗ_2) {
+      ਹਾਲਤ HB_OT_ਟੈਗ_GSUB: ਸਾਰਣੀ_ਸੂਚਕਾਂਕ = 0; ਰੋਕੋ;
+      ਹਾਲਤ HB_OT_ਟੈਗ_GPOS: ਸਾਰਣੀ_ਸੂਚਕਾਂਕ = 1; ਰੋਕੋ;
+      ਮੂਲ: ਵਾਪਸ;
     }
-    map.collect_lookups (table_index, lookups);
+    map.collect_lookups (ਸਾਰਣੀ_ਸੂਚਕਾਂਕ, lookups);
   }
 
-  HB_INTERNAL bool init0 (hb_face_t                     *face,
-			  const hb_shape_plan_key_t     *key);
-  HB_INTERNAL void fini ();
+  HB_ਅੰਦਰੂਨੀ ਤਾਰਕਿਕ init0 (hb_face_t                     *face,
+			  ਅਚਲ hb_shape_plan_ਕੁੰਜੀ_t     *key);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ fini ();
 
-  HB_INTERNAL void substitute (hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ substitute (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ;
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ position (hb_font_t *font, hb_ਬਫਰ_t *ਬਫਰ) ਅਚਲ;
 };
 
-struct hb_shape_plan_t;
+ਬਣਤਰ hb_shape_plan_t;
 
-struct hb_ot_shape_planner_t
+ਬਣਤਰ hb_ot_shape_planner_t
 {
   /* In the order that they are filled in. */
   hb_face_t *face;
   hb_segment_properties_t props;
   hb_ot_map_builder_t map;
-#ifndef HB_NO_AAT_SHAPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_AAT_SHAPE
   hb_aat_map_builder_t aat_map;
-  bool apply_morx : 1;
-#else
-  static constexpr bool apply_morx = false;
-#endif
-  bool script_zero_marks : 1;
-  bool script_fallback_position : 1;
-  const struct hb_ot_shaper_t *shaper;
+  ਤਾਰਕਿਕ apply_morx : 1;
+#ਨਹੀਂਤਾਂ
+  ਸਥਿਰ constexpr ਤਾਰਕਿਕ apply_morx = ਝੂਠ;
+#ਜੇ_ਅੰਤ
+  ਤਾਰਕਿਕ script_zero_marks : 1;
+  ਤਾਰਕਿਕ script_fallback_position : 1;
+  ਅਚਲ ਬਣਤਰ hb_ot_shaper_t *shaper;
 
-  HB_INTERNAL hb_ot_shape_planner_t (hb_face_t                     *face,
-				     const hb_segment_properties_t &props);
+  HB_ਅੰਦਰੂਨੀ hb_ot_shape_planner_t (hb_face_t                     *face,
+				     ਅਚਲ hb_segment_properties_t &props);
 
-  HB_INTERNAL void compile (hb_ot_shape_plan_t           &plan,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ compile (hb_ot_shape_plan_t           &plan,
+			    ਅਚਲ hb_ot_shape_plan_ਕੁੰਜੀ_t &key);
 };
 
 
-#endif /* HB_OT_SHAPE_HH */
+#ਜੇ_ਅੰਤ /* HB_OT_SHAPE_HH */

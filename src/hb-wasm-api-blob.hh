@@ -22,29 +22,29 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_BLOB_HH
-#define HB_WASM_API_BLOB_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_BLOB_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_BLOB_HH
 
-#include "hb-wasm-api.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+ਨਾਮਾਕਾਸ਼ hb {
+ਨਾਮਾਕਾਸ਼ wasm {
 
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ਖਾਲੀ, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  ਜੇ (unlikely (!blob))
+    ਵਾਪਸ;
 
-  module_free (blob->data);
+  module_free (blob->ਅੰਕੜੇ);
 
-  blob->data = nullref;
-  blob->length = 0;
+  blob->ਅੰਕੜੇ = nullref;
+  blob->ਲੰਮਾਈ = 0;
 }
 
 
 }}
 
-#endif /* HB_WASM_API_BLOB_HH */
+#ਜੇ_ਅੰਤ /* HB_WASM_API_BLOB_HH */

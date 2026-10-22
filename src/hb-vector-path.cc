@@ -24,217 +24,217 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-geometry.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-machinery.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-path.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-buf.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector-internal.hh"
 
 
 /* ---- SVG path callbacks ---- */
 
-static inline void
-hb_vector_svg_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *s, ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
-  s->path->append_c (',');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->ਰਸਤਾ->append_ਅੰਕ (x / s->x_scale, s->precision);
+  s->ਰਸਤਾ->append_c (',');
+  s->ਰਸਤਾ->append_ਅੰਕ (y / s->y_scale, s->precision);
 }
 
-static void
-hb_vector_svg_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('M');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_c ('M');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_svg_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('L');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_c ('L');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_svg_path_quadratic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-				  float cx, float cy, float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_quadratic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+				  ਦਸ਼ਮਲਵ cx, ਦਸ਼ਮਲਵ cy, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('Q');
-  hb_vector_svg_path_append_xy (s, cx, cy);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_c ('Q');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, cx, cy);
+  s->ਰਸਤਾ->append_c (' ');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_svg_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			      float c1x, float c1y, float c2x, float c2y,
-			      float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			      ਦਸ਼ਮਲਵ c1x, ਦਸ਼ਮਲਵ c1y, ਦਸ਼ਮਲਵ c2x, ਦਸ਼ਮਲਵ c2y,
+			      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('C');
-  hb_vector_svg_path_append_xy (s, c1x, c1y);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, c2x, c2y);
-  s->path->append_c (' ');
-  hb_vector_svg_path_append_xy (s, to_x, to_y);
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_c ('C');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, c1x, c1y);
+  s->ਰਸਤਾ->append_c (' ');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, c2x, c2y);
+  s->ਰਸਤਾ->append_c (' ');
+  hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_svg_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_close_ਰਸਤਾ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_c ('Z');
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_c ('Z');
+  s->ਸਿਰਾ_command ();
 }
 
 
 /* ---- PDF path callbacks ---- */
 
-static inline void
-hb_vector_pdf_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *s, ਦਸ਼ਮਲਵ x, ਦਸ਼ਮਲਵ y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
-  s->path->append_c (' ');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->ਰਸਤਾ->append_ਅੰਕ (x / s->x_scale, s->precision);
+  s->ਰਸਤਾ->append_c (' ');
+  s->ਰਸਤਾ->append_ਅੰਕ (y / s->y_scale, s->precision);
 }
 
-static void
-hb_vector_pdf_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_move_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" m\n");
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਰਸਤਾ->append_str (" m\n");
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_pdf_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			     float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_ਸਤਰ_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			     ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" l\n");
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਰਸਤਾ->append_str (" l\n");
+  s->ਸਿਰਾ_command ();
 }
 
 /* No quadratic_to — the null fallback auto-promotes to cubic. */
 
-static void
-hb_vector_pdf_path_cubic_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
-			      float c1x, float c1y, float c2x, float c2y,
-			      float to_x, float to_y, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_cubic_ਮੰਜ਼ਿਲ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *,
+			      ਦਸ਼ਮਲਵ c1x, ਦਸ਼ਮਲਵ c1y, ਦਸ਼ਮਲਵ c2x, ਦਸ਼ਮਲਵ c2y,
+			      ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_x, ਦਸ਼ਮਲਵ ਮੰਜ਼ਿਲ_y, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  hb_vector_pdf_path_append_xy (s, c1x, c1y);
-  s->path->append_c (' ');
-  hb_vector_pdf_path_append_xy (s, c2x, c2y);
-  s->path->append_c (' ');
-  hb_vector_pdf_path_append_xy (s, to_x, to_y);
-  s->path->append_str (" c\n");
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (s, c1x, c1y);
+  s->ਰਸਤਾ->append_c (' ');
+  hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (s, c2x, c2y);
+  s->ਰਸਤਾ->append_c (' ');
+  hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_append_xy (s, ਮੰਜ਼ਿਲ_x, ਮੰਜ਼ਿਲ_y);
+  s->ਰਸਤਾ->append_str (" c\n");
+  s->ਸਿਰਾ_command ();
 }
 
-static void
-hb_vector_pdf_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *, void *)
+ਸਥਿਰ ਖਾਲੀ
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_close_ਰਸਤਾ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, hb_draw_state_t *, ਖਾਲੀ *)
 {
-  auto *s = (hb_vector_path_sink_t *) draw_data;
-  if (unlikely (!s->begin_command ())) return;
-  s->path->append_str ("h\n");
-  s->end_command ();
+  ਸਵੈਚਾਲਿਤ *s = (hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ;
+  ਜੇ (unlikely (!s->begin_command ())) ਵਾਪਸ;
+  s->ਰਸਤਾ->append_str ("h\n");
+  s->ਸਿਰਾ_command ();
 }
 
-static int64_t *
-hb_vector_path_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ਸਥਿਰ int64_t *
+hb_ਸਦਿਸ਼_ਰਸਤਾ_get_budget_ਬਚਿਆ (hb_draw_funcs_t *, ਖਾਲੀ *draw_ਅੰਕੜੇ, ਖਾਲੀ *)
 {
-  return ((hb_vector_path_sink_t *) draw_data)->budget;
+  ਵਾਪਸ ((hb_ਸਦਿਸ਼_ਰਸਤਾ_sink_t *) draw_ਅੰਕੜੇ)->budget;
 }
 
 
 /* ---- Lazy loaders ---- */
 
-static inline void free_static_vector_svg_path_draw_funcs ();
-static struct hb_vector_svg_path_draw_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_svg_path_draw_funcs_lazy_loader_t>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs ();
+ਸਥਿਰ ਬਣਤਰ hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_svg_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_svg_path_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) hb_vector_svg_path_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_svg_path_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_svg_path_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_move_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_quadratic_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_quadratic_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_quadratic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_cubic_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func (funcs, (hb_draw_close_ਰਸਤਾ_func_t) hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_close_ਰਸਤਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_ਸਦਿਸ਼_ਰਸਤਾ_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_svg_path_draw_funcs);
-    return funcs;
+    hb_atexit (free_static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs);
+    ਵਾਪਸ funcs;
   }
-} static_vector_svg_path_draw_funcs;
+} static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs;
 
-static inline void
-free_static_vector_svg_path_draw_funcs ()
-{ static_vector_svg_path_draw_funcs.free_instance (); }
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+free_static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs ()
+{ static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs.free_instance (); }
 
 hb_draw_funcs_t *
-hb_vector_svg_path_draw_funcs_get ()
-{ return static_vector_svg_path_draw_funcs.get_unconst (); }
+hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_get ()
+{ ਵਾਪਸ static_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs.get_unconst (); }
 
 
-static inline void free_static_vector_pdf_path_draw_funcs ();
-static struct hb_vector_pdf_path_draw_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_pdf_path_draw_funcs_lazy_loader_t>
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ free_static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs ();
+ਸਥਿਰ ਬਣਤਰ hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ਸਥਿਰ hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_pdf_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_pdf_path_line_to, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_move_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_move_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_move_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_ਸਤਰ_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_ਸਤਰ_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_ਸਤਰ_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
     /* No quadratic_to: the null fallback auto-promotes to cubic. */
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_pdf_path_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_pdf_path_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_path_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_ਸੈੱਟ_cubic_ਮੰਜ਼ਿਲ_func (funcs, (hb_draw_cubic_ਮੰਜ਼ਿਲ_func_t) hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_cubic_ਮੰਜ਼ਿਲ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_close_ਰਸਤਾ_func (funcs, (hb_draw_close_ਰਸਤਾ_func_t) hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_close_ਰਸਤਾ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
+    hb_draw_funcs_ਸੈੱਟ_get_budget_ਬਚਿਆ_func (funcs, hb_ਸਦਿਸ਼_ਰਸਤਾ_get_budget_ਬਚਿਆ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_pdf_path_draw_funcs);
-    return funcs;
+    hb_atexit (free_static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs);
+    ਵਾਪਸ funcs;
   }
-} static_vector_pdf_path_draw_funcs;
+} static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs;
 
-static inline void
-free_static_vector_pdf_path_draw_funcs ()
-{ static_vector_pdf_path_draw_funcs.free_instance (); }
-
-hb_draw_funcs_t *
-hb_vector_pdf_path_draw_funcs_get ()
-{ return static_vector_pdf_path_draw_funcs.get_unconst (); }
-
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਖਾਲੀ
+free_static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs ()
+{ static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs.free_instance (); }
 
 hb_draw_funcs_t *
-hb_vector_path_draw_funcs_get (hb_vector_format_t format)
+hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs_get ()
+{ ਵਾਪਸ static_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs.get_unconst (); }
+
+
+hb_draw_funcs_t *
+hb_ਸਦਿਸ਼_ਰਸਤਾ_draw_funcs_get (hb_ਸਦਿਸ਼_format_t format)
 {
-  switch (format)
+  ਚੋਣ (format)
   {
-    case HB_VECTOR_FORMAT_SVG: return hb_vector_svg_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_PDF: return hb_vector_pdf_path_draw_funcs_get ();
-    case HB_VECTOR_FORMAT_INVALID: default: return nullptr;
+    ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_SVG: ਵਾਪਸ hb_ਸਦਿਸ਼_svg_ਰਸਤਾ_draw_funcs_get ();
+    ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_PDF: ਵਾਪਸ hb_ਸਦਿਸ਼_pdf_ਰਸਤਾ_draw_funcs_get ();
+    ਹਾਲਤ HB_ਸਦਿਸ਼_FORMAT_INVALID: ਮੂਲ: ਵਾਪਸ ਖਾਲੀ_ਸੂਚਕ;
   }
 }

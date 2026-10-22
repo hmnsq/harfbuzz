@@ -1,69 +1,69 @@
-#ifndef OT_GLYF_COMPOSITE_ITER_HH
-#define OT_GLYF_COMPOSITE_ITER_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ OT_GLYF_ਸੰਯੁਕਤ_ITER_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ OT_GLYF_ਸੰਯੁਕਤ_ITER_HH
 
 
-#include "../../hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+ਨਾਮਾਕਾਸ਼ OT {
+ਨਾਮਾਕਾਸ਼ glyf_impl {
 
 
-template <typename CompositeGlyphRecord>
-struct composite_iter_tmpl : hb_iter_with_fallback_t<composite_iter_tmpl<CompositeGlyphRecord>,
-						     const CompositeGlyphRecord &>
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ>
+ਬਣਤਰ ਸੰਯੁਕਤ_iter_tmpl : hb_iter_with_fallback_t<ਸੰਯੁਕਤ_iter_tmpl<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ>,
+						     ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ &>
 {
-  typedef const CompositeGlyphRecord *__item_t__;
-  composite_iter_tmpl (hb_bytes_t glyph_, __item_t__ current_, bool extended_) :
-      glyph (glyph_), current (nullptr), current_size (0), extended (extended_)
+  ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ *__item_t__;
+  ਸੰਯੁਕਤ_iter_tmpl (hb_ਬਾਈਟਾਂ_t glyph_, __item_t__ current_, ਤਾਰਕਿਕ extended_) :
+      glyph (glyph_), current (ਖਾਲੀ_ਸੂਚਕ), current_ਮਾਪ (0), extended (extended_)
   {
-    set_current (current_);
+    ਸੈੱਟ_current (current_);
   }
 
-  composite_iter_tmpl () : glyph (hb_bytes_t ()), current (nullptr), current_size (0), extended (false) {}
+  ਸੰਯੁਕਤ_iter_tmpl () : glyph (hb_ਬਾਈਟਾਂ_t ()), current (ਖਾਲੀ_ਸੂਚਕ), current_ਮਾਪ (0), extended (ਝੂਠ) {}
 
-  const CompositeGlyphRecord & __item__ () const { return *current; }
-  bool __more__ () const { return current; }
-  void __next__ ()
+  ਅਚਲ ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ & __item__ () ਅਚਲ { ਵਾਪਸ *current; }
+  ਤਾਰਕਿਕ __more__ () ਅਚਲ { ਵਾਪਸ current; }
+  ਖਾਲੀ __next__ ()
   {
-    if (!current->has_more ()) { current = nullptr; return; }
+    ਜੇ (!current->has_ਹੋਰ ()) { current = ਖਾਲੀ_ਸੂਚਕ; ਵਾਪਸ; }
 
-    set_current (&StructAtOffset<CompositeGlyphRecord> (current, current_size));
+    ਸੈੱਟ_current (&Struct_At_ਵਿੱਥ<ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ> (current, current_ਮਾਪ));
   }
-  composite_iter_tmpl __end__ () const { return composite_iter_tmpl (); }
-  bool operator != (const composite_iter_tmpl& o) const
-  { return current != o.current; }
+  ਸੰਯੁਕਤ_iter_tmpl __end__ () ਅਚਲ { ਵਾਪਸ ਸੰਯੁਕਤ_iter_tmpl (); }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ != (ਅਚਲ ਸੰਯੁਕਤ_iter_tmpl& o) ਅਚਲ
+  { ਵਾਪਸ current != o.current; }
 
 
-  void set_current (__item_t__ current_)
+  ਖਾਲੀ ਸੈੱਟ_current (__item_t__ current_)
   {
-    if (!glyph.check_range (current_, CompositeGlyphRecord::min_size))
+    ਜੇ (!glyph.check_range (current_, ਸੰਯੁਕਤ_Glyph_ਰਿਕਾਰਡ::min_ਮਾਪ))
     {
-      current = nullptr;
-      current_size = 0;
-      return;
+      current = ਖਾਲੀ_ਸੂਚਕ;
+      current_ਮਾਪ = 0;
+      ਵਾਪਸ;
     }
-    unsigned size = current_->get_size (extended);
-    if (!glyph.check_range (current_, size))
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ = current_->get_ਮਾਪ (extended);
+    ਜੇ (!glyph.check_range (current_, ਮਾਪ))
     {
-      current = nullptr;
-      current_size = 0;
-      return;
+      current = ਖਾਲੀ_ਸੂਚਕ;
+      current_ਮਾਪ = 0;
+      ਵਾਪਸ;
     }
 
     current = current_;
-    current_size = size;
+    current_ਮਾਪ = ਮਾਪ;
   }
 
-  private:
-  hb_bytes_t glyph;
+  ਨਿਜੀ:
+  hb_ਬਾਈਟਾਂ_t glyph;
   __item_t__ current;
-  unsigned current_size;
-  bool extended;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ current_ਮਾਪ;
+  ਤਾਰਕਿਕ extended;
 };
 
 
 } /* namespace glyf_impl */
 } /* namespace OT */
 
-#endif /* OT_GLYF_COMPOSITE_ITER_HH */
+#ਜੇ_ਅੰਤ /* OT_GLYF_COMPOSITE_ITER_HH */

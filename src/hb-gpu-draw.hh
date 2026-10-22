@@ -24,57 +24,57 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GPU_DRAW_HH
-#define HB_GPU_DRAW_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_GPU_DRAW_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_GPU_DRAW_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-gpu.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-object.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-vector.hh"
 
-#include <cmath>
-
-
-#define HB_GPU_UNITS_PER_EM 4
+#ਅਨ੍ਤਰ੍ਭਾਵ <cmath>
 
 
-struct hb_gpu_curve_t
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_GPU_UNITS_ਪ੍ਰਤੀ_EM 4
+
+
+ਬਣਤਰ hb_gpu_ਵਕਰ_t
 {
-  double p1x, p1y;
-  double p2x, p2y;
-  double p3x, p3y;
-  bool contour_start;
+  ਦੁੱਗਣਾ p1x, p1y;
+  ਦੁੱਗਣਾ p2x, p2y;
+  ਦੁੱਗਣਾ p3x, p3y;
+  ਤਾਰਕਿਕ contour_ਸ਼ੁਰੂ;
 };
 
-struct hb_gpu_encode_curve_info_t
+ਬਣਤਰ hb_gpu_encode_ਵਕਰ_info_t
 {
-  double min_x, max_x, min_y, max_y;
-  bool is_horizontal;
-  bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  ਦੁੱਗਣਾ min_x, max_x, min_y, max_y;
+  ਤਾਰਕਿਕ is_horizontal;
+  ਤਾਰਕਿਕ is_vertical;
+  ਪੂਰਨ hband_lo, hband_hi;
+  ਪੂਰਨ vband_lo, vband_hi;
 };
 
-struct hb_gpu_encode_scratch_t
+ਬਣਤਰ hb_gpu_encode_scratch_t
 {
-  hb_vector_t<hb_gpu_encode_curve_info_t> curve_infos;
-  hb_vector_t<unsigned> hband_curve_counts;
-  hb_vector_t<unsigned> vband_curve_counts;
-  hb_vector_t<unsigned> hband_offsets;
-  hb_vector_t<unsigned> vband_offsets;
-  hb_vector_t<unsigned> hband_curves;
-  hb_vector_t<unsigned> hband_curves_asc;
-  hb_vector_t<unsigned> vband_curves;
-  hb_vector_t<unsigned> vband_curves_asc;
-  hb_vector_t<unsigned> hband_cursors;
-  hb_vector_t<unsigned> vband_cursors;
-  hb_vector_t<unsigned> curve_texel_offset;
+  hb_ਸਦਿਸ਼_t<hb_gpu_encode_ਵਕਰ_info_t> ਵਕਰ_infos;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> hband_ਵਕਰ_counts;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> vband_ਵਕਰ_counts;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> hband_offsets;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> vband_offsets;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> hband_curves;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> hband_curves_asc;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> vband_curves;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> vband_curves_asc;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> hband_cursors;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> vband_cursors;
+  hb_ਸਦਿਸ਼_t<ਬਿਨਾਨਿਸ਼ਾਨੀ> ਵਕਰ_texel_ਵਿੱਥ;
 
-  void clear ()
+  ਖਾਲੀ clear ()
   {
-    curve_infos.clear ();
-    hband_curve_counts.clear ();
-    vband_curve_counts.clear ();
+    ਵਕਰ_infos.clear ();
+    hband_ਵਕਰ_counts.clear ();
+    vband_ਵਕਰ_counts.clear ();
     hband_offsets.clear ();
     vband_offsets.clear ();
     hband_curves.clear ();
@@ -83,64 +83,64 @@ struct hb_gpu_encode_scratch_t
     vband_curves_asc.clear ();
     hband_cursors.clear ();
     vband_cursors.clear ();
-    curve_texel_offset.clear ();
+    ਵਕਰ_texel_ਵਿੱਥ.clear ();
   }
 };
 
-struct hb_gpu_draw_t
+ਬਣਤਰ hb_gpu_draw_t
 {
-  hb_object_header_t header;
+  hb_object_ਸਿਰਲੇਖ_t ਸਿਰਲੇਖ;
 
   /* Accumulator state */
-  double start_x = 0, start_y = 0;
-  double current_x = 0, current_y = 0;
-  bool need_moveto = true;
-  unsigned num_curves = 0;
-  bool success = true;
+  ਦੁੱਗਣਾ ਸ਼ੁਰੂ_x = 0, ਸ਼ੁਰੂ_y = 0;
+  ਦੁੱਗਣਾ current_x = 0, current_y = 0;
+  ਤਾਰਕਿਕ need_moveto = ਸੱਚ;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੰਕ_curves = 0;
+  ਤਾਰਕਿਕ success = ਸੱਚ;
 
-  hb_vector_t<hb_gpu_curve_t> curves;
+  hb_ਸਦਿਸ਼_t<hb_gpu_ਵਕਰ_t> curves;
 
   /* Extents tracking (updated during accumulation) */
-  double ext_min_x =  HUGE_VAL;
-  double ext_min_y =  HUGE_VAL;
-  double ext_max_x = -HUGE_VAL;
-  double ext_max_y = -HUGE_VAL;
+  ਦੁੱਗਣਾ ext_min_x =  HUGE_VAL;
+  ਦੁੱਗਣਾ ext_min_y =  HUGE_VAL;
+  ਦੁੱਗਣਾ ext_max_x = -HUGE_VAL;
+  ਦੁੱਗਣਾ ext_max_y = -HUGE_VAL;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  ਪੂਰਨ x_scale = 0;
+  ਪੂਰਨ y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
    * and reads the remainder back afterwards, so a whole paint session
    * shares one budget without reaching into this object. */
   int64_t  budget = HB_BUDGET_DEFAULT;
-  int64_t  budget_remaining = HB_BUDGET_GLYPH;
+  int64_t  budget_ਬਚਿਆ = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  ਖਾਲੀ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_ਬਚਿਆ = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  int64_t *get_budget_ਬਚਿਆ ()
+  { ਵਾਪਸ &budget_ਬਚਿਆ; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;
 
   /* Recycled blob for encode output */
-  hb_blob_t *recycled_blob = nullptr;
+  hb_blob_t *recycled_blob = ਖਾਲੀ_ਸੂਚਕ;
 
   /* Internal accumulation methods */
-  HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
-  HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
-  HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
-				 double c2x, double c2y,
-				 double x, double y);
-  HB_INTERNAL void acc_close_path ();
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ acc_move_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ acc_ਸਤਰ_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ acc_conic_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ cx, ਦੁੱਗਣਾ cy, ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ acc_cubic_ਮੰਜ਼ਿਲ (ਦੁੱਗਣਾ c1x, ਦੁੱਗਣਾ c1y,
+				 ਦੁੱਗਣਾ c2x, ਦੁੱਗਣਾ c2y,
+				 ਦੁੱਗਣਾ x, ਦੁੱਗਣਾ y);
+  HB_ਅੰਦਰੂਨੀ ਖਾਲੀ acc_close_ਰਸਤਾ ();
 };
 
 
-#endif /* HB_GPU_DRAW_HH */
+#ਜੇ_ਅੰਤ /* HB_GPU_DRAW_HH */

@@ -22,90 +22,90 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_LIST_HH
-#define HB_WASM_API_LIST_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_WASM_API_LIST_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_WASM_API_LIST_HH
 
-#include "hb-wasm-api.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-wasm-api.hh"
 
 
-#ifdef HB_DEBUG_WASM
-namespace hb { namespace wasm {
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_DEBUG_WASM
+ਨਾਮਾਕਾਸ਼ hb { ਨਾਮਾਕਾਸ਼ wasm {
 
-static void debugprint (HB_WASM_EXEC_ENV char *str)
-{ DEBUG_MSG (WASM, exec_env, "%s", str); }
-static void debugprint1 (HB_WASM_EXEC_ENV char *str, int32_t i1)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d", str, i1); }
-static void debugprint2 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d", str, i1, i2); }
-static void debugprint3 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2, int32_t i3)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d, %d", str, i1, i2, i3); }
-static void debugprint4 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2, int32_t i3, int32_t i4)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d, %d, %d", str, i1, i2, i3, i4); }
+ਸਥਿਰ ਖਾਲੀ debugprint (HB_WASM_EXEC_ENV ਅੱਖਰ *str)
+{ DEBUG_ਸੁਨੇਹਾ (WASM, exec_env, "%s", str); }
+ਸਥਿਰ ਖਾਲੀ debugprint1 (HB_WASM_EXEC_ENV ਅੱਖਰ *str, int32_t i1)
+{ DEBUG_ਸੁਨੇਹਾ (WASM, exec_env, "%s: %d", str, i1); }
+ਸਥਿਰ ਖਾਲੀ debugprint2 (HB_WASM_EXEC_ENV ਅੱਖਰ *str, int32_t i1, int32_t i2)
+{ DEBUG_ਸੁਨੇਹਾ (WASM, exec_env, "%s: %d, %d", str, i1, i2); }
+ਸਥਿਰ ਖਾਲੀ debugprint3 (HB_WASM_EXEC_ENV ਅੱਖਰ *str, int32_t i1, int32_t i2, int32_t i3)
+{ DEBUG_ਸੁਨੇਹਾ (WASM, exec_env, "%s: %d, %d, %d", str, i1, i2, i3); }
+ਸਥਿਰ ਖਾਲੀ debugprint4 (HB_WASM_EXEC_ENV ਅੱਖਰ *str, int32_t i1, int32_t i2, int32_t i3, int32_t i4)
+{ DEBUG_ਸੁਨੇਹਾ (WASM, exec_env, "%s: %d, %d, %d, %d", str, i1, i2, i3, i4); }
 
 }}
-#endif
+#ਜੇ_ਅੰਤ
 
-#define NATIVE_SYMBOL(signature, name) {#name, (void *) hb::wasm::name, signature, NULL}
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NATIVE_ਚਿੰਨ੍ਹ(signature, name) {#name, (ਖਾਲੀ *) hb::wasm::name, signature, ਨਿਰਾ}
 /* Note: the array must be static defined since runtime will keep it after registration.
  * Also not const, because it modifies it (sorts it).
  * https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/doc/export_native_api.md
  *
  * TODO Allocate this lazily in _hb_wasm_init(). */
-static NativeSymbol _hb_wasm_native_symbols[] =
+ਸਥਿਰ Native_ਚਿੰਨ੍ਹ _hb_wasm_native_symbols[] =
 {
   /* common */
-  NATIVE_SYMBOL ("(i)i",	script_get_horizontal_direction),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	script_get_horizontal_direction),
 
   /* blob */
-  NATIVE_SYMBOL ("(i)",		blob_free),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		blob_free),
 
-  /* buffer */
-  NATIVE_SYMBOL ("(i)",		buffer_contents_free),
-  NATIVE_SYMBOL ("(ii)i",	buffer_contents_realloc),
-  NATIVE_SYMBOL ("(ii)i",	buffer_copy_contents),
-  NATIVE_SYMBOL ("(ii)i",	buffer_set_contents),
-  NATIVE_SYMBOL ("(i)i",	buffer_get_direction),
-  NATIVE_SYMBOL ("(i)i",	buffer_get_script),
-  NATIVE_SYMBOL ("(i)",		buffer_reverse),
-  NATIVE_SYMBOL ("(i)",		buffer_reverse_clusters),
+  /*ਬਫਰ*/
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		ਬਫਰ_contents_free),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	ਬਫਰ_contents_realloc),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	ਬਫਰ_copy_contents),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	ਬਫਰ_ਸੈੱਟ_contents),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	ਬਫਰ_get_direction),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	ਬਫਰ_get_script),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		ਬਫਰ_ਉਲਟ),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		ਬਫਰ_ਉਲਟ_clusters),
 
   /* face */
-  NATIVE_SYMBOL ("(ii)i",	face_create),
-  NATIVE_SYMBOL ("(iii)i",	face_copy_table),
-  NATIVE_SYMBOL ("(i)i",	face_get_upem),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	face_create),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)i",	face_copy_ਸਾਰਣੀ),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	face_get_upem),
 
   /* font */
-  NATIVE_SYMBOL ("(i)i",	font_create),
-  NATIVE_SYMBOL ("(i)i",	font_get_face),
-  NATIVE_SYMBOL ("(iii)",	font_get_scale),
-  NATIVE_SYMBOL ("(iii)i",	font_get_glyph),
-  NATIVE_SYMBOL ("(ii)i",	font_get_glyph_h_advance),
-  NATIVE_SYMBOL ("(ii)i",	font_get_glyph_v_advance),
-  NATIVE_SYMBOL ("(iii)i",	font_get_glyph_extents),
-  NATIVE_SYMBOL ("(iiii)",	font_glyph_to_string),
-  NATIVE_SYMBOL ("(iii)i",	font_copy_glyph_outline),
-  NATIVE_SYMBOL ("(ii)i",	font_copy_coords),
-  NATIVE_SYMBOL ("(ii)i",	font_set_coords),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	font_create),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)i",	font_get_face),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)",	font_get_scale),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)i",	font_get_glyph),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	font_get_glyph_h_advance),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	font_get_glyph_v_advance),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)i",	font_get_glyph_extents),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iiii)",	font_glyph_ਮੰਜ਼ਿਲ_string),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)i",	font_copy_glyph_outline),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	font_copy_coords),
+  NATIVE_ਚਿੰਨ੍ਹ ("(ii)i",	font_ਸੈੱਟ_coords),
 
   /* outline */
-  NATIVE_SYMBOL ("(i)",		glyph_outline_free),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		glyph_outline_free),
 
   /* shape */
-  NATIVE_SYMBOL ("(iiii$)i",	shape_with),
-  NATIVE_SYMBOL ("(iii)i",	feature_copy_contents),
-  NATIVE_SYMBOL ("(i)",		features_free),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iiii$)i",	shape_with),
+  NATIVE_ਚਿੰਨ੍ਹ ("(iii)i",	feature_copy_contents),
+  NATIVE_ਚਿੰਨ੍ਹ ("(i)",		features_free),
 
   /* debug */
-#ifdef HB_DEBUG_WASM
-  NATIVE_SYMBOL ("($)",		debugprint),
-  NATIVE_SYMBOL ("($i)",	debugprint1),
-  NATIVE_SYMBOL ("($ii)",	debugprint2),
-  NATIVE_SYMBOL ("($iii)",	debugprint3),
-  NATIVE_SYMBOL ("($iiii)",	debugprint4),
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_DEBUG_WASM
+  NATIVE_ਚਿੰਨ੍ਹ ("($)",		debugprint),
+  NATIVE_ਚਿੰਨ੍ਹ ("($i)",	debugprint1),
+  NATIVE_ਚਿੰਨ੍ਹ ("($ii)",	debugprint2),
+  NATIVE_ਚਿੰਨ੍ਹ ("($iii)",	debugprint3),
+  NATIVE_ਚਿੰਨ੍ਹ ("($iiii)",	debugprint4),
+#ਜੇ_ਅੰਤ
 
 };
-#undef NATIVE_SYMBOL
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ NATIVE_ਚਿੰਨ੍ਹ
 
 
-#endif /* HB_WASM_API_LIST_HH */
+#ਜੇ_ਅੰਤ /* HB_WASM_API_LIST_HH */

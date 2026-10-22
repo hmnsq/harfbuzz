@@ -29,100 +29,100 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MUTEX_HH
-#define HB_MUTEX_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_MUTEX_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MUTEX_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 
 /* mutex */
 
 /* We need external help for these */
 
-#if defined(hb_mutex_impl_init) \
- && defined(hb_mutex_impl_lock) \
+#ਜੇ defined(hb_mutex_impl_init) \
+ && defined(hb_mutex_impl_ਤਾਲਾ) \
  && defined(hb_mutex_impl_unlock) \
- && defined(hb_mutex_impl_finish)
+ && defined(hb_mutex_impl_ਅੰਤ)
 
 /* Defined externally, i.e. in config.h; must have typedef'ed hb_mutex_impl_t as well. */
 
 
-#elif !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && (defined(HAVE_PTHREAD) || defined(__APPLE__))
+#ਜਾਂਜੇ !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && (defined(HAVE_PTHREAD) || defined(__APPLE__))
 
-#include <pthread.h>
-typedef pthread_mutex_t hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)	pthread_mutex_init (M, nullptr)
-#define hb_mutex_impl_lock(M)	pthread_mutex_lock (M)
-#define hb_mutex_impl_unlock(M)	pthread_mutex_unlock (M)
-#define hb_mutex_impl_finish(M)	pthread_mutex_destroy (M)
-
-
-#elif !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && defined(_WIN32)
-
-typedef CRITICAL_SECTION hb_mutex_impl_t;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-#define hb_mutex_impl_init(M)	InitializeCriticalSectionEx (M, 0, 0)
-#else
-#define hb_mutex_impl_init(M)	InitializeCriticalSection (M)
-#endif
-#define hb_mutex_impl_lock(M)	EnterCriticalSection (M)
-#define hb_mutex_impl_unlock(M)	LeaveCriticalSection (M)
-#define hb_mutex_impl_finish(M)	DeleteCriticalSection (M)
+#ਅਨ੍ਤਰ੍ਭਾਵ <pthread.h>
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ pthread_mutex_t hb_mutex_impl_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_init(M)	pthread_mutex_init (M, ਖਾਲੀ_ਸੂਚਕ)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਤਾਲਾ(M)	pthread_mutex_lock (M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_unlock(M)	pthread_mutex_unlock (M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਅੰਤ(M)	pthread_mutex_destroy (M)
 
 
-#elif !defined(HB_NO_MT)
+#ਜਾਂਜੇ !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && defined(_WIN32)
 
-#include <mutex>
-typedef std::mutex              hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)   HB_STMT_START { new (M) hb_mutex_impl_t; } HB_STMT_END
-#define hb_mutex_impl_lock(M)   (M)->lock ()
-#define hb_mutex_impl_unlock(M) (M)->unlock ()
-#define hb_mutex_impl_finish(M) HB_STMT_START { (M)->~hb_mutex_impl_t(); } HB_STMT_END
-
-
-#else /* defined(HB_NO_MT) */
-
-typedef int hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_lock(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_unlock(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_finish(M)	HB_STMT_START {} HB_STMT_END
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ CRITICAL_SECTION hb_mutex_impl_t;
+#ਜੇ !WINAPI_FAMILY_ਹਿੱਸੇ_ਕਰੋ(WINAPI_ਹਿੱਸੇ_ਕਰੋ_DESKTOP) && WINAPI_FAMILY_ਹਿੱਸੇ_ਕਰੋ(WINAPI_ਹਿੱਸੇ_ਕਰੋ_APP)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_init(M)	InitializeCriticalSectionEx (M, 0, 0)
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_init(M)	InitializeCriticalSection (M)
+#ਜੇ_ਅੰਤ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਤਾਲਾ(M)	EnterCriticalSection (M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_unlock(M)	LeaveCriticalSection (M)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਅੰਤ(M)	DeleteCriticalSection (M)
 
 
-#endif
+#ਜਾਂਜੇ !defined(HB_NO_MT)
+
+#ਅਨ੍ਤਰ੍ਭਾਵ <mutex>
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ std::mutex              hb_mutex_impl_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_init(M)   HB_STMT_ਸ਼ੁਰੂ { ਨਵਾਂ (M) hb_mutex_impl_t; } HB_STMT_ਸਿਰਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਤਾਲਾ(M)   (M)->lock ()
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_unlock(M) (M)->unlock ()
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਅੰਤ(M) HB_STMT_ਸ਼ੁਰੂ { (M)->~hb_mutex_impl_t(); } HB_STMT_ਸਿਰਾ
 
 
-struct hb_mutex_t
+#ਨਹੀਂਤਾਂ /* defined(HB_NO_MT) */
+
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਪੂਰਨ hb_mutex_impl_t;
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_init(M)	HB_STMT_ਸ਼ੁਰੂ {} HB_STMT_ਸਿਰਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਤਾਲਾ(M)	HB_STMT_ਸ਼ੁਰੂ {} HB_STMT_ਸਿਰਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_unlock(M)	HB_STMT_ਸ਼ੁਰੂ {} HB_STMT_ਸਿਰਾ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_mutex_impl_ਅੰਤ(M)	HB_STMT_ਸ਼ੁਰੂ {} HB_STMT_ਸਿਰਾ
+
+
+#ਜੇ_ਅੰਤ
+
+
+ਬਣਤਰ hb_mutex_t
 {
   /* Create space for, but do not initialize m. */
-  alignas(hb_mutex_impl_t) char m[sizeof (hb_mutex_impl_t)];
+  alignas(hb_mutex_impl_t) ਅੱਖਰ m[ਆਕਾਰ (hb_mutex_impl_t)];
 
   hb_mutex_t () { init (); }
   ~hb_mutex_t () { fini (); }
-  hb_mutex_t (const hb_mutex_t &) = delete;
-  hb_mutex_t &operator= (const hb_mutex_t &) = delete;
+  hb_mutex_t (ਅਚਲ hb_mutex_t &) = ਮਿਟਾਓ;
+  hb_mutex_t &ਸੰਚਾਲਕ= (ਅਚਲ hb_mutex_t &) = ਮਿਟਾਓ;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  void init   () { hb_mutex_impl_init   ((hb_mutex_impl_t *) m); }
-  void lock   () { hb_mutex_impl_lock   ((hb_mutex_impl_t *) m); }
-  void unlock () { hb_mutex_impl_unlock ((hb_mutex_impl_t *) m); }
-  void fini   () { hb_mutex_impl_finish ((hb_mutex_impl_t *) m); }
-#pragma GCC diagnostic pop
+#ਹਦਾਇਤ GCC diagnostic push
+#ਹਦਾਇਤ GCC diagnostic ignored "-Wcast-align"
+  ਖਾਲੀ init   () { hb_mutex_impl_init   ((hb_mutex_impl_t *) m); }
+  ਖਾਲੀ lock   () { hb_mutex_impl_ਤਾਲਾ   ((hb_mutex_impl_t *) m); }
+  ਖਾਲੀ unlock () { hb_mutex_impl_unlock ((hb_mutex_impl_t *) m); }
+  ਖਾਲੀ fini   () { hb_mutex_impl_ਅੰਤ ((hb_mutex_impl_t *) m); }
+#ਹਦਾਇਤ GCC diagnostic ਕੱਢੋ
 };
 
-struct hb_lock_t
+ਬਣਤਰ hb_ਤਾਲਾ_t
 {
-  hb_lock_t (hb_mutex_t &mutex_) : mutex (&mutex_) { mutex->lock (); }
-  hb_lock_t (hb_mutex_t *mutex_) : mutex (mutex_) { if (mutex) mutex->lock (); }
-  ~hb_lock_t () { if (mutex) mutex->unlock (); }
+  hb_ਤਾਲਾ_t (hb_mutex_t &mutex_) : mutex (&mutex_) { mutex->lock (); }
+  hb_ਤਾਲਾ_t (hb_mutex_t *mutex_) : mutex (mutex_) { ਜੇ (mutex) mutex->lock (); }
+  ~hb_ਤਾਲਾ_t () { ਜੇ (mutex) mutex->unlock (); }
 
-  hb_lock_t (const hb_lock_t &) = delete;
-  hb_lock_t &operator= (const hb_lock_t &) = delete;
+  hb_ਤਾਲਾ_t (ਅਚਲ hb_ਤਾਲਾ_t &) = ਮਿਟਾਓ;
+  hb_ਤਾਲਾ_t &ਸੰਚਾਲਕ= (ਅਚਲ hb_ਤਾਲਾ_t &) = ਮਿਟਾਓ;
 
-  private:
+  ਨਿਜੀ:
   hb_mutex_t *mutex;
 };
 
 
-#endif /* HB_MUTEX_HH */
+#ਜੇ_ਅੰਤ /* HB_MUTEX_HH */

@@ -24,11 +24,11 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_MATH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_MATH
 
-#include "hb-ot-math-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-math-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.3.3
  **/
 hb_bool_t
-hb_ot_math_has_data (hb_face_t *face)
+hb_ot_math_has_ਅੰਕੜੇ (hb_face_t *face)
 {
-  return face->table.MATH->has_data ();
+  ਵਾਪਸ face->ਸਾਰਣੀ.MATH->has_ਅੰਕੜੇ ();
 }
 
 /**
@@ -92,16 +92,16 @@ hb_ot_math_get_constant (hb_font_t *font,
    * apparently Microsoft implementation swaps displayOperatorMinHeight and
    * delimitedSubFormulaMinHeight, so we do the same if we detect Cambria Math
    * with the swapped values. */
-  if ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT ||
-       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT) &&
-      font->face->table.MATH->is_bad_cambria (font))
+  ਜੇ ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ਉਚਾਈ ||
+       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ਉਚਾਈ) &&
+      font->face->ਸਾਰਣੀ.MATH->is_bad_cambria (font))
   {
-    if (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT)
-      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT;
-    else
-      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT;
+    ਜੇ (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ਉਚਾਈ)
+      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ਉਚਾਈ;
+    ਨਹੀਂਤਾਂ
+      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ਉਚਾਈ;
   }
-  return font->face->table.MATH->get_constant(constant, font);
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_constant(constant, font);
 }
 
 /**
@@ -120,7 +120,7 @@ hb_position_t
 hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
 					 hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_italics_correction (glyph, font);
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_glyph_info().get_italics_correction (glyph, font);
 }
 
 /**
@@ -143,10 +143,10 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
  * Since: 1.3.3
  **/
 hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_ਸਿਖਰ_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_top_accent_attachment (glyph, font);
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_glyph_info().get_ਸਿਖਰ_accent_attachment (glyph, font);
 }
 
 /**
@@ -164,7 +164,7 @@ hb_bool_t
 hb_ot_math_is_glyph_extended_shape (hb_face_t *face,
 				    hb_codepoint_t glyph)
 {
-  return face->table.MATH->get_glyph_info().is_extended_shape (glyph);
+  ਵਾਪਸ face->ਸਾਰਣੀ.MATH->get_glyph_info().is_extended_shape (glyph);
 }
 
 /**
@@ -190,11 +190,11 @@ hb_position_t
 hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      hb_position_t correction_height)
+			      hb_position_t correction_ਉਚਾਈ)
 {
-  return font->face->table.MATH->get_glyph_info().get_kerning (glyph,
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_glyph_info().get_kerning (glyph,
 							       kern,
-							       correction_height,
+							       correction_ਉਚਾਈ,
 							       font);
 }
 
@@ -227,18 +227,18 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
  *
  * Since: 3.4.0
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
-			       hb_ot_math_kern_entry_t *kern_entries /* OUT */)
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਵਿੱਥ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *entries_ਗਿਣਤੀ, /* IN/OUT */
+			       hb_ot_math_kern_ਇੰਦਰਾਜ_t *kern_entries /*ਬਾਹਰਲਾ*/)
 {
-  return font->face->table.MATH->get_glyph_info().get_kernings (glyph,
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_glyph_info().get_kernings (glyph,
 								kern,
-								start_offset,
-								entries_count,
+								ਸ਼ੁਰੂ_ਵਿੱਥ,
+								entries_ਗਿਣਤੀ,
 								kern_entries,
 								font);
 }
@@ -266,17 +266,17 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
-			       hb_ot_math_glyph_variant_t *variants /* OUT */)
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਵਿੱਥ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *variants_ਗਿਣਤੀ, /* IN/OUT */
+			       hb_ot_math_glyph_variant_t *variants /*ਬਾਹਰਲਾ*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
-								    start_offset,
-								    variants_count,
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_variants().get_glyph_variants (glyph, direction, font,
+								    ਸ਼ੁਰੂ_ਵਿੱਥ,
+								    variants_ਗਿਣਤੀ,
 								    variants);
 }
 
@@ -302,7 +302,7 @@ hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction)
 {
-  return font->face->table.MATH->get_variants().get_min_connector_overlap (direction, font);
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_variants().get_min_connector_overlap (direction, font);
 }
 
 /**
@@ -330,23 +330,23 @@ hb_ot_math_get_min_connector_overlap (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
-			       hb_ot_math_glyph_part_t *parts, /* OUT */
-			       hb_position_t *italics_correction /* OUT */)
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸ਼ੁਰੂ_ਵਿੱਥ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *parts_ਗਿਣਤੀ, /* IN/OUT */
+			       hb_ot_math_glyph_part_t *parts, /*ਬਾਹਰਲਾ*/
+			       hb_position_t *italics_correction /*ਬਾਹਰਲਾ*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_parts (glyph,
+  ਵਾਪਸ font->face->ਸਾਰਣੀ.MATH->get_variants().get_glyph_parts (glyph,
 								 direction,
 								 font,
-								 start_offset,
-								 parts_count,
+								 ਸ਼ੁਰੂ_ਵਿੱਥ,
+								 parts_ਗਿਣਤੀ,
 								 parts,
 								 italics_correction);
 }
 
 
-#endif
+#ਜੇ_ਅੰਤ

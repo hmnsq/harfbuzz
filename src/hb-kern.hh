@@ -24,121 +24,121 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_KERN_HH
-#define HB_KERN_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_KERN_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
-
-
-namespace OT {
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-open-type.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout-common.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-layout-gpos-table.hh"
 
 
-template <typename Driver>
-struct hb_kern_machine_t
+ਨਾਮਾਕਾਸ਼ OT {
+
+
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ Driver>
+ਬਣਤਰ hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ਅਚਲ Driver &driver_,
+		     ਤਾਰਕਿਕ cross_ਧਾਰਾ_2 = ਝੂਠ) :
 		       driver (driver_),
-		       crossStream (crossStream_) {}
+		       cross_ਧਾਰਾ (cross_ਧਾਰਾ_2) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
-	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+  ਖਾਲੀ kern (hb_font_t   *font,
+	     hb_ਬਫਰ_t *ਬਫਰ,
+	     hb_ਨਕਾਬ_t    kern_ਨਕਾਬ,
+	     ਤਾਰਕਿਕ         scale = ਸੱਚ) ਅਚਲ
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    ਜੇ (!ਬਫਰ->ਸੁਨੇਹਾ (font, "start kern"))
+      ਵਾਪਸ;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
-    c.set_lookup_mask (kern_mask);
-    c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_concat ();
+    OT::hb_ot_apply_context_t c (1, font, ਬਫਰ, hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ());
+    c.ਸੈੱਟ_lookup_ਨਕਾਬ (kern_ਨਕਾਬ);
+    c.ਸੈੱਟ_lookup_props (OT::LookupFlag::IgnoreMarks);
+    ਸਵੈਚਾਲਿਤ &skippy_iter = c.iter_ਨਿਵੇਸ਼;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    ਤਾਰਕਿਕ horizontal = HB_DIRECTION_IS_HORIZONTAL (ਬਫਰ->props.direction);
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਗਿਣਤੀ_2 = ਬਫਰ->len;
+    hb_glyph_info_t *info = ਬਫਰ->info;
+    hb_glyph_position_t *pos = ਬਫਰ->pos;
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ idx = 0; idx < ਗਿਣਤੀ_2;)
     {
-      if (!(info[idx].mask & kern_mask))
+      ਜੇ (!(info[idx].ਨਕਾਬ & kern_ਨਕਾਬ))
       {
 	idx++;
-	continue;
+	ਜਾਰੀ;
       }
 
       skippy_iter.reset_fast (idx);
-      unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      ਬਿਨਾਨਿਸ਼ਾਨੀ unsafe_ਮੰਜ਼ਿਲ;
+      ਜੇ (unlikely (!skippy_iter.next (&unsafe_ਮੰਜ਼ਿਲ)))
       {
-	idx = unsafe_to;
-	continue;
+	idx = unsafe_ਮੰਜ਼ਿਲ;
+	ਜਾਰੀ;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ i = idx;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      ਜੇ (likely (!kern))
+	ਜਾਓ skip;
 
-      if (horizontal)
+      ਜੇ (horizontal)
       {
-	if (scale)
+	ਜੇ (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	ਜੇ (cross_ਧਾਰਾ)
 	{
-	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].y_ਵਿੱਥ_2 = kern;
+	  ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].x_advance = hb_saturate_add (pos[i].x_advance, kern1);
-	  pos[j].x_advance = hb_saturate_add (pos[j].x_advance, kern2);
-	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
+	  pos[i].x_advance = hb_saturate_ਜੋੜੋ (pos[i].x_advance, kern1);
+	  pos[j].x_advance = hb_saturate_ਜੋੜੋ (pos[j].x_advance, kern2);
+	  pos[j].x_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[j].x_ਵਿੱਥ_2, kern2);
 	}
       }
-      else
+      ਨਹੀਂਤਾਂ
       {
-	if (scale)
+	ਜੇ (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	ਜੇ (cross_ਧਾਰਾ)
 	{
-	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].x_ਵਿੱਥ_2 = kern;
+	  ਬਫਰ->scratch_flags |= HB_ਬਫਰ_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	ਨਹੀਂਤਾਂ
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].y_advance = hb_saturate_add (pos[i].y_advance, kern1);
-	  pos[j].y_advance = hb_saturate_add (pos[j].y_advance, kern2);
-	  pos[j].y_offset = hb_saturate_add (pos[j].y_offset, kern2);
+	  pos[i].y_advance = hb_saturate_ਜੋੜੋ (pos[i].y_advance, kern1);
+	  pos[j].y_advance = hb_saturate_ਜੋੜੋ (pos[j].y_advance, kern2);
+	  pos[j].y_ਵਿੱਥ_2 = hb_saturate_ਜੋੜੋ (pos[j].y_ਵਿੱਥ_2, kern2);
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      ਬਫਰ->unsafe_ਮੰਜ਼ਿਲ_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (ਖਾਲੀ) ਬਫਰ->ਸੁਨੇਹਾ (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ਅਚਲ Driver &driver;
+  ਤਾਰਕਿਕ cross_ਧਾਰਾ;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_KERN_HH */
+#ਜੇ_ਅੰਤ /* HB_KERN_HH */

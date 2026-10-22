@@ -1,48 +1,48 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+ਆਯਾਤ os
+ਆਯਾਤ re
+ਆਯਾਤ sys
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+ਅਧਾਰ_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 
-def removeprefix(s):
-    abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+ਪਰਿਭਾਸ਼ਾ removeprefix(s):
+    abs_ਰਸਤਾ = os.ਰਸਤਾ.join(ਅਧਾਰ_srcdir, s)
+    ਵਾਪਸ os.ਰਸਤਾ.relpath(abs_ਰਸਤਾ, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.ਰਸਤਾ.basename(x) ਲਈ x ਵਿੱਚ os.getenv("HBHEADERS", "").ਵੰਡੋ()] ਜਾਂ [
+    x ਲਈ x ਵਿੱਚ os.listdir(".") ਜੇ x.startswith("hb") ਅਤੇ x.endswith(".h")
 ]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) ਲਈ x ਵਿੱਚ os.getenv("HBSOURCES", "").ਵੰਡੋ()] ਜਾਂ [
+    x ਲਈ x ਵਿੱਚ os.listdir(".") ਜੇ x.startswith("hb") ਅਤੇ x.endswith((".cc", ".hh"))
 ]
 
 
 stat = 0
 
-for x in HBHEADERS + HBSOURCES:
-    if not x.endswith("h") or x == "hb-gobject-structs.h":
-        continue
-    print(f"Checking {x}")
-    tag = (
-        x.upper()
+ਲਈ x ਵਿੱਚ HBHEADERS + HBSOURCES:
+    ਜੇ ਨਹੀਂ x.endswith("h") ਜਾਂ x == "hb-gobject-structs.h":
+        ਜਾਰੀ
+    ਛਾਪੋ(f"Checking {x}")
+    ਟੈਗ_2 = (
+        x.ਉੱਤਲਾ()
         .replace(".", "_")
         .replace("-", "_")
-        .replace(os.path.sep, "_")
+        .replace(os.ਰਸਤਾ.sep, "_")
         .replace("/", "_")
     )
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if len(re.findall(tag + r"\b", content)) != 3:
-        print(
+    ਨਾਲ open(x, "r", encoding="utf-8") ਇਵ f:
+        content = f.ਪਠ()
+    ਜੇ ਲੰਬਾਈ(re.findall(ਟੈਗ_2 + r"\b", content)) != 3:
+        ਛਾਪੋ(
             "Ouch, header file %s does not have correct preprocessor guards. Expected: %s"
-            % (x, tag)
+            % (x, ਟੈਗ_2)
         )
         stat = 1
 

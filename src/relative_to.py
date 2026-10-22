@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+ਆਯਾਤ sys
+ਤਃ os ਆਯਾਤ ਰਸਤਾ
 
-print(path.relpath(sys.argv[1], sys.argv[2]))
+ਛਾਪੋ(ਰਸਤਾ.relpath(sys.argv[1], sys.argv[2]))

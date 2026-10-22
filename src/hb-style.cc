@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#ifndef HB_NO_STYLE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_STYLE
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-face.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-avar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-var-fvar-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-stat-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-os2-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-head-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-post-table.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-face.hh"
 
 /**
  * SECTION:hb-style
@@ -43,16 +43,16 @@
  * Functions for fetching style information from fonts.
  **/
 
-static inline float
-_hb_angle_to_ratio (float a)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+hb_angle_ਮੰਜ਼ਿਲ_ਅਨੁਪਾਤ (ਦਸ਼ਮਲਵ a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  ਵਾਪਸ tanf (a * -HB_PI / 180.f);
 }
 
-static inline float
-_hb_ratio_to_angle (float r)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਦਸ਼ਮਲਵ
+hb_ਅਨੁਪਾਤ_ਮੰਜ਼ਿਲ_angle (ਦਸ਼ਮਲਵ r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  ਵਾਪਸ atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -68,67 +68,67 @@ _hb_ratio_to_angle (float r)
  *
  * Since: 3.0.0
  **/
-float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+ਦਸ਼ਮਲਵ
+hb_style_get_ਮੁੱਲ (hb_font_t *font, hb_style_ਟੈਗ_t style_ਟੈਗ)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  ਜੇ (unlikely (style_ਟੈਗ == HB_STYLE_ਟੈਗ_SLANT_ਅਨੁਪਾਤ))
+    ਵਾਪਸ hb_angle_ਮੰਜ਼ਿਲ_ਅਨੁਪਾਤ (hb_style_get_ਮੁੱਲ (font, HB_STYLE_ਟੈਗ_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
-#ifndef HB_NO_VAR
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  ਜੇ (hb_ot_var_ਲੱਭੋ_axis_info (face, style_ਟੈਗ, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    ਜੇ (axis.axis_ਸੂਚਕਾਂਕ < font->ਅੰਕ_coords) ਵਾਪਸ font->design_coords[axis.axis_ਸੂਚਕਾਂਕ];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    ਵਾਪਸ axis.default_ਮੁੱਲ;
   }
-#endif
+#ਜੇ_ਅੰਤ
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  ਜੇ (style_ਟੈਗ == HB_STYLE_ਟੈਗ_OPTICAL_ਮਾਪ && font->ptem)
+    ਵਾਪਸ font->ptem;
 
   /* STAT */
-  float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  ਦਸ਼ਮਲਵ value;
+  ਜੇ (face->ਸਾਰਣੀ.STAT->get_ਮੁੱਲ (style_ਟੈਗ, &value))
+    ਵਾਪਸ value;
 
-  switch ((unsigned) style_tag)
+  ਚੋਣ ((ਬਿਨਾਨਿਸ਼ਾਨੀ) style_ਟੈਗ)
   {
-  case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
-  case HB_STYLE_TAG_OPTICAL_SIZE:
+  ਹਾਲਤ HB_STYLE_ਟੈਗ_ITALIC:
+    ਵਾਪਸ face->ਸਾਰਣੀ.OS2->is_italic () || face->ਸਾਰਣੀ.ਸਿਰ_2->is_italic () ? 1 : 0;
+  ਹਾਲਤ HB_STYLE_ਟੈਗ_OPTICAL_ਮਾਪ:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
-	   ? (float) (lower + upper) / 2.f
-	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਹੇਠਲਾ, design, ਉੱਤਲਾ;
+    ਵਾਪਸ face->ਸਾਰਣੀ.OS2->v5 ().get_optical_ਮਾਪ (&ਹੇਠਲਾ, &ਉੱਤਲਾ)
+	   ? (ਦਸ਼ਮਲਵ) (ਹੇਠਲਾ + ਉੱਤਲਾ) / 2.f
+	   : hb_ot_layout_get_ਮਾਪ_params (face, &design, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ, ਖਾਲੀ_ਸੂਚਕ)
 	   ? design / 10.f
 	   : 12.f;
   }
-  case HB_STYLE_TAG_SLANT_ANGLE:
+  ਹਾਲਤ HB_STYLE_ਟੈਗ_SLANT_ANGLE:
   {
-    float angle = face->table.post->table->italicAngle.to_float ();
+    ਦਸ਼ਮਲਵ angle = face->ਸਾਰਣੀ.post->ਸਾਰਣੀ->italicAngle.ਮੰਜ਼ਿਲ_float ();
 
-    if (font->slant)
-      angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
+    ਜੇ (font->slant)
+      angle = hb_ਅਨੁਪਾਤ_ਮੰਜ਼ਿਲ_angle (font->slant + hb_angle_ਮੰਜ਼ਿਲ_ਅਨੁਪਾਤ (angle));
 
-    return angle;
+    ਵਾਪਸ angle;
   }
-  case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->get_width ()
-	   : (face->table.head->is_condensed () ? 75 :
-	      face->table.head->is_expanded () ? 125 :
+  ਹਾਲਤ HB_STYLE_ਟੈਗ_ਚੌੜਾਈ:
+    ਵਾਪਸ face->ਸਾਰਣੀ.OS2->has_ਅੰਕੜੇ ()
+	   ? face->ਸਾਰਣੀ.OS2->get_ਚੌੜਾਈ ()
+	   : (face->ਸਾਰਣੀ.ਸਿਰ_2->is_condensed () ? 75 :
+	      face->ਸਾਰਣੀ.ਸਿਰ_2->is_expanded () ? 125 :
 	      100);
-  case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->usWeightClass
-	   : (face->table.head->is_bold () ? 700 : 400);
-  default:
-    return 0;
+  ਹਾਲਤ HB_STYLE_ਟੈਗ_ਭਾਰ:
+    ਵਾਪਸ face->ਸਾਰਣੀ.OS2->has_ਅੰਕੜੇ ()
+	   ? face->ਸਾਰਣੀ.OS2->us_ਭਾਰ_Class
+	   : (face->ਸਾਰਣੀ.ਸਿਰ_2->is_bold () ? 700 : 400);
+  ਮੂਲ:
+    ਵਾਪਸ 0;
   }
 }
 
-#endif
+#ਜੇ_ਅੰਤ

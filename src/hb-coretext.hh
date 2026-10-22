@@ -27,103 +27,103 @@
  */
 
 
-#ifndef HB_CORETEXT_HH
-#define HB_CORETEXT_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_CORETEXT_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_CORETEXT_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb-coretext.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-aat-layout.hh"
 
 
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
+HB_ਅੰਦਰੂਨੀ CGFontRef
+create_cg_font (CFArrayRef ct_font_desc_array, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2);
 
-HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+HB_ਅੰਦਰੂਨੀ CGFontRef
+create_cg_font (hb_blob_t *blob, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ ਸੂਚਕਾਂਕ_2);
 
-HB_INTERNAL CGFontRef
+HB_ਅੰਦਰੂਨੀ CGFontRef
 create_cg_font (hb_face_t *face);
 
-HB_INTERNAL CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size);
+HB_ਅੰਦਰੂਨੀ CTFontRef
+create_ct_font (CGFontRef cg_font, CGFloat font_ਮਾਪ);
 
 
-template <typename T>
-struct hb_cf_releaser_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T>
+ਬਣਤਰ hb_cf_releaser_t
 {
-  static void release (T obj)
+  ਸਥਿਰ ਖਾਲੀ release (T obj)
   {
-    if (obj)
+    ਜੇ (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGFontRef>
+ਸਾਂਚਾ <>
+ਬਣਤਰ hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  ਸਥਿਰ ਖਾਲੀ release (CGFontRef obj)
   {
-    if (obj)
+    ਜੇ (obj)
       CGFontRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+ਸਾਂਚਾ <>
+ਬਣਤਰ hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  ਸਥਿਰ ਖਾਲੀ release (CGDataProviderRef obj)
   {
-    if (obj)
+    ਜੇ (obj)
       CGDataProviderRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGPathRef>
+ਸਾਂਚਾ <>
+ਬਣਤਰ hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  ਸਥਿਰ ਖਾਲੀ release (CGPathRef obj)
   {
-    if (obj)
+    ਜੇ (obj)
       CGPathRelease (obj);
   }
 };
 
-template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+ਸਾਂਚਾ <ਕਿਸਮ_ਨਾਂ T, ਕਿਸਮ_ਨਾਂ Releaser = hb_cf_releaser_t<T>>
+ਬਣਤਰ hb_cf_ptr_t
 {
-  using element_type = T;
+  ਵਰਤੋਂ element_type = T;
 
-  constexpr hb_cf_ptr_t () noexcept : p (nullptr) {}
-  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
-  explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
+  constexpr hb_cf_ptr_t () noexcept : p (ਖਾਲੀ_ਸੂਚਕ) {}
+  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (ਖਾਲੀ_ਸੂਚਕ) {}
+  ਸਪਸ਼ਟ hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (ਅਚਲ hb_cf_ptr_t &) = ਮਿਟਾਓ;
+  hb_cf_ptr_t &ਸੰਚਾਲਕ = (ਅਚਲ hb_cf_ptr_t &) = ਮਿਟਾਓ;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
-  hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
+  hb_cf_ptr_t &ਸੰਚਾਲਕ = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
-  hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
+  hb_cf_ptr_t &ਸੰਚਾਲਕ = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    ਵਾਪਸ *ਇਹ;
   }
 
   ~hb_cf_ptr_t ()
   {
     Releaser::release (p);
-    p = nullptr;
+    p = ਖਾਲੀ_ਸੂਚਕ;
   }
 
-  void reset (T new_p = nullptr)
+  ਖਾਲੀ reset (T new_p = ਖਾਲੀ_ਸੂਚਕ)
   {
-    if (p != new_p)
+    ਜੇ (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -134,29 +134,29 @@ struct hb_cf_ptr_t
   T release () noexcept
   {
     T old_p = p;
-    p = nullptr;
-    return old_p;
+    p = ਖਾਲੀ_ਸੂਚਕ;
+    ਵਾਪਸ old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () ਅਚਲ noexcept { ਵਾਪਸ p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  ਸੰਚਾਲਕ T () ਅਚਲ noexcept { ਵਾਪਸ p; }
+  ਸਪਸ਼ਟ ਸੰਚਾਲਕ ਤਾਰਕਿਕ () ਅਚਲ noexcept { ਵਾਪਸ p != ਖਾਲੀ_ਸੂਚਕ; }
+  ਤਾਰਕਿਕ ਸੰਚਾਲਕ ! () ਅਚਲ noexcept { ਵਾਪਸ !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  ਖਾਲੀ swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  ਮਿੱਤਰ ਖਾਲੀ swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  ਨਿਜੀ:
   T p;
 };
 
-#endif /* HB_CORETEXT_HH */
+#ਜੇ_ਅੰਤ /* HB_CORETEXT_HH */

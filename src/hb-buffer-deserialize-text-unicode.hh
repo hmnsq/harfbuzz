@@ -1,5 +1,5 @@
 
-#line 1 "hb-buffer-deserialize-text-unicode.rl"
+#ਸਤਰ 1 "hb-buffer-deserialize-text-unicode.rl"
 /*
  * Copyright © 2013  Google, Inc.
  *
@@ -26,29 +26,29 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
-#define HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_ਬਫਰ_DESERIALIZE_ਪਾਠ_UNICODE_HH
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_ਬਫਰ_DESERIALIZE_ਪਾਠ_UNICODE_HH
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
 
-#line 33 "hb-buffer-deserialize-text-unicode.hh"
-static const unsigned char _deserialize_text_unicode_trans_keys[] = {
+#ਸਤਰ 33 "hb-buffer-deserialize-text-unicode.hh"
+ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ deserialize_ਪਾਠ_unicode_trans_ਕੁੰਜੀਆਂ[] = {
 	0u, 0u, 43u, 102u, 48u, 102u, 48u, 124u, 48u, 57u, 62u, 124u, 48u, 124u, 60u, 117u, 
 	85u, 117u, 85u, 117u, 0
 };
 
-static const char _deserialize_text_unicode_key_spans[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ deserialize_ਪਾਠ_unicode_ਕੁੰਜੀ_spans[] = {
 	0, 60, 55, 77, 10, 63, 77, 58, 
 	33, 33
 };
 
-static const short _deserialize_text_unicode_index_offsets[] = {
+ਸਥਿਰ ਅਚਲ ਛੋਟਾ deserialize_ਪਾਠ_unicode_ਸੂਚਕਾਂਕ_offsets[] = {
 	0, 0, 61, 117, 195, 206, 270, 348, 
 	407, 441
 };
 
-static const char _deserialize_text_unicode_indicies[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ deserialize_ਪਾਠ_unicode_indicies[] = {
 	0, 1, 1, 1, 1, 2, 2, 
 	2, 2, 2, 2, 2, 2, 2, 2, 
 	1, 1, 1, 1, 1, 1, 1, 2, 
@@ -111,146 +111,146 @@ static const char _deserialize_text_unicode_indicies[] = {
 	1, 1, 12, 1, 0
 };
 
-static const char _deserialize_text_unicode_trans_targs[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ deserialize_ਪਾਠ_unicode_trans_targs[] = {
 	2, 0, 3, 3, 4, 9, 5, 6, 
 	9, 6, 8, 1, 1
 };
 
-static const char _deserialize_text_unicode_trans_actions[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ deserialize_ਪਾਠ_unicode_trans_actions[] = {
 	0, 0, 1, 0, 2, 2, 1, 1, 
 	3, 0, 0, 4, 6
 };
 
-static const char _deserialize_text_unicode_eof_actions[] = {
+ਸਥਿਰ ਅਚਲ ਅੱਖਰ deserialize_ਪਾਠ_unicode_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 5
 };
 
-static const int deserialize_text_unicode_start = 7;
-static const int deserialize_text_unicode_first_final = 7;
-static const int deserialize_text_unicode_error = 0;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ deserialize_ਪਾਠ_unicode_ਸ਼ੁਰੂ = 7;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ deserialize_ਪਾਠ_unicode_ਪਹਿਲਾ_final = 7;
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ deserialize_ਪਾਠ_unicode_error = 0;
 
-static const int deserialize_text_unicode_en_main = 7;
-
-
-#line 80 "hb-buffer-deserialize-text-unicode.rl"
+ਸਥਿਰ ਅਚਲ ਪੂਰਨ deserialize_ਪਾਠ_unicode_en_main = 7;
 
 
-static hb_bool_t
-_hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
-				     const char *buf,
-				     unsigned int buf_len,
-				     const char **end_ptr,
+#ਸਤਰ 80 "hb-buffer-deserialize-text-unicode.rl"
+
+
+ਸਥਿਰ hb_bool_t
+hb_ਬਫਰ_deserialize_ਪਾਠ_unicode (hb_ਬਫਰ_t *ਬਫਰ,
+				     ਅਚਲ ਅੱਖਰ *buf,
+				     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ buf_len,
+				     ਅਚਲ ਅੱਖਰ **end_ptr,
 				     hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  ਅਚਲ ਅੱਖਰ *p = buf, *pe = buf + buf_len, *eof = pe;
 
-  const char *tok = nullptr;
-  int cs;
+  ਅਚਲ ਅੱਖਰ *tok = ਖਾਲੀ_ਸੂਚਕ;
+  ਪੂਰਨ cs;
   hb_glyph_info_t info = {0};
-  const hb_glyph_position_t pos = {0};
+  ਅਚਲ hb_glyph_position_t pos = {0};
   
-#line 147 "hb-buffer-deserialize-text-unicode.hh"
+#ਸਤਰ 147 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	cs = deserialize_text_unicode_start;
+	cs = deserialize_ਪਾਠ_unicode_ਸ਼ੁਰੂ;
 	}
 
-#line 150 "hb-buffer-deserialize-text-unicode.hh"
+#ਸਤਰ 150 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	ਪੂਰਨ _slen;
+	ਪੂਰਨ _trans;
+	ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ *ਕੁੰਜੀਆਂ_2;
+	ਅਚਲ ਅੱਖਰ *_inds;
+	ਜੇ ( p == pe )
+		ਜਾਓ _test_eof;
+	ਜੇ ( cs == 0 )
+		ਜਾਓ ਬਾਹਰਲਾ_2;
 _resume:
-	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
-	_inds = _deserialize_text_unicode_indicies + _deserialize_text_unicode_index_offsets[cs];
+	ਕੁੰਜੀਆਂ_2 = deserialize_ਪਾਠ_unicode_trans_ਕੁੰਜੀਆਂ + (cs<<1);
+	_inds = deserialize_ਪਾਠ_unicode_indicies + deserialize_ਪਾਠ_unicode_ਸੂਚਕਾਂਕ_offsets[cs];
 
-	_slen = _deserialize_text_unicode_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_ਪਾਠ_unicode_ਕੁੰਜੀ_spans[cs];
+	_trans = _inds[ _slen > 0 && ਕੁੰਜੀਆਂ_2[0] <=(*p) &&
+		(*p) <= ਕੁੰਜੀਆਂ_2[1] ?
+		(*p) - ਕੁੰਜੀਆਂ_2[0] : _slen ];
 
-	cs = _deserialize_text_unicode_trans_targs[_trans];
+	cs = deserialize_ਪਾਠ_unicode_trans_targs[_trans];
 
-	if ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
-		goto _again;
+	ਜੇ ( deserialize_ਪਾਠ_unicode_trans_actions[_trans] == 0 )
+		ਜਾਓ _again;
 
-	switch ( _deserialize_text_unicode_trans_actions[_trans] ) {
-	case 4:
-#line 38 "hb-buffer-deserialize-text-unicode.rl"
+	ਚੋਣ ( deserialize_ਪਾਠ_unicode_trans_actions[_trans] ) {
+	ਹਾਲਤ 4:
+#ਸਤਰ 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, ਆਕਾਰ (info));
 }
-	break;
-	case 1:
-#line 51 "hb-buffer-deserialize-text-unicode.rl"
+	ਰੋਕੋ;
+	ਹਾਲਤ 1:
+#ਸਤਰ 51 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	tok = p;
 }
-	break;
-	case 2:
-#line 55 "hb-buffer-deserialize-text-unicode.rl"
-	{if (!parse_hex (tok, p, &info.codepoint )) return false; }
-	break;
-	case 3:
-#line 57 "hb-buffer-deserialize-text-unicode.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
-#line 42 "hb-buffer-deserialize-text-unicode.rl"
+	ਰੋਕੋ;
+	ਹਾਲਤ 2:
+#ਸਤਰ 55 "hb-buffer-deserialize-text-unicode.rl"
+	{ਜੇ (!parse_hex (tok, p, &info.codepoint )) ਵਾਪਸ ਝੂਠ; }
+	ਰੋਕੋ;
+	ਹਾਲਤ 3:
+#ਸਤਰ 57 "hb-buffer-deserialize-text-unicode.rl"
+	{ ਜੇ (!parse_uint (tok, p, &info.cluster )) ਵਾਪਸ ਝੂਠ; }
+	ਰੋਕੋ;
+	ਹਾਲਤ 6:
+#ਸਤਰ 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
-	  buffer->pos[buffer->len - 1] = pos;
+	ਬਫਰ->ਜੋੜੋ_info (info);
+	ਜੇ (unlikely (!ਬਫਰ->successful))
+	  ਵਾਪਸ ਝੂਠ;
+	ਜੇ (ਬਫਰ->have_positions)
+	  ਬਫਰ->pos[ਬਫਰ->len - 1] = pos;
 	*end_ptr = p;
 }
-#line 38 "hb-buffer-deserialize-text-unicode.rl"
+#ਸਤਰ 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, ਆਕਾਰ (info));
 }
-	break;
-#line 203 "hb-buffer-deserialize-text-unicode.hh"
+	ਰੋਕੋ;
+#ਸਤਰ 203 "hb-buffer-deserialize-text-unicode.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	ਜੇ ( cs == 0 )
+		ਜਾਓ ਬਾਹਰਲਾ_2;
+	ਜੇ ( ++p != pe )
+		ਜਾਓ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ਜੇ ( p == eof )
 	{
-	switch ( _deserialize_text_unicode_eof_actions[cs] ) {
-	case 5:
-#line 42 "hb-buffer-deserialize-text-unicode.rl"
+	ਚੋਣ ( deserialize_ਪਾਠ_unicode_eof_actions[cs] ) {
+	ਹਾਲਤ 5:
+#ਸਤਰ 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
-	  buffer->pos[buffer->len - 1] = pos;
+	ਬਫਰ->ਜੋੜੋ_info (info);
+	ਜੇ (unlikely (!ਬਫਰ->successful))
+	  ਵਾਪਸ ਝੂਠ;
+	ਜੇ (ਬਫਰ->have_positions)
+	  ਬਫਰ->pos[ਬਫਰ->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-#line 224 "hb-buffer-deserialize-text-unicode.hh"
+	ਰੋਕੋ;
+#ਸਤਰ 224 "hb-buffer-deserialize-text-unicode.hh"
 	}
 	}
 
-	_out: {}
+	ਬਾਹਰਲਾ_2: {}
 	}
 
-#line 98 "hb-buffer-deserialize-text-unicode.rl"
+#ਸਤਰ 98 "hb-buffer-deserialize-text-unicode.rl"
 
 
   *end_ptr = p;
 
-  return p == pe;
+  ਵਾਪਸ p == pe;
 }
 
-#endif /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */
+#ਜੇ_ਅੰਤ /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */

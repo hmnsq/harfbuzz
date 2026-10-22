@@ -24,112 +24,112 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_FREETYPE
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ft.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HB_NO_OPEN
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ hb_blob_create_from_file_or_fail(x)  hb_blob_get_ਖਾਲੀ_ਥਾਵਾਂ ()
+#ਜੇ_ਅੰਤ
 
-int
-main (int argc, char **argv)
+ਪੂਰਨ
+ਮੁੱਖ (ਪੂਰਨ argc, ਅੱਖਰ **argv)
 {
-  bool ret = true;
+  ਤਾਰਕਿਕ ret = ਸੱਚ;
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_NO_ਬਫਰ_SERIALIZE
 
-  hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  hb_ਬਫਰ_serialize_format_t format = HB_ਬਫਰ_SERIALIZE_FORMAT_ਪਾਠ;
+  ਜੇ (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    ਜੇ (!strcmp (argv[1], "--json"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
+      format = HB_ਬਫਰ_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    ਨਹੀਂਤਾਂ ਜੇ (!strcmp (argv[1], "--text"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
+      format = HB_ਬਫਰ_SERIALIZE_FORMAT_ਪਾਠ;
       argc--;
       argv++;
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  ਜੇ (argc < 2)
+    argv[1] = (ਅੱਖਰ *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = ਖਾਲੀ_ਸੂਚਕ;
 
-  unsigned int upem = hb_face_get_upem (face);
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_ਸੈੱਟ_scale (font, upem, upem);
 
-  hb_buffer_t *buf;
-  buf = hb_buffer_create ();
+  hb_ਬਫਰ_t *buf;
+  buf = hb_ਬਫਰ_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  ਅੱਖਰ ਸਤਰ[BUFSIZ], ਬਾਹਰਲਾ[BUFSIZ];
+  ਜਦੋਂ (fgets (ਸਤਰ, ਆਕਾਰ(ਸਤਰ), stdin))
   {
-    hb_buffer_clear_contents (buf);
+    hb_ਬਫਰ_clear_contents (buf);
 
-    while (true)
+    ਜਦੋਂ (ਸੱਚ)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
-	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
-					 p, end - p, &p,
+      ਅਚਲ ਅੱਖਰ *p = ਸਤਰ;
+      ਅਚਲ ਅੱਖਰ *ਸਿਰਾ = p + ਲੜੀ_ਲੰਬਾਈ (p);
+      ਜੇ (p < ਸਿਰਾ && *(ਸਿਰਾ - 1) == '\n')
+	  ਸਿਰਾ--;
+      ਜੇ (!hb_ਬਫਰ_deserialize_glyphs (buf,
+					 p, ਸਿਰਾ - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = ਝੂਠ;
+        ਰੋਕੋ;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      ਜੇ (*p == '\n')
+        ਰੋਕੋ;
+      ਜੇ (p == ਸਤਰ)
       {
-	ret = false;
-	break;
+	ret = ਝੂਠ;
+	ਰੋਕੋ;
       }
 
-      unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      ਬਿਨਾਨਿਸ਼ਾਨੀ len = ਲੜੀ_ਲੰਬਾਈ (p);
+      memmove (ਸਤਰ, p, len);
+      ਜੇ (!fgets (ਸਤਰ + len, ਆਕਾਰ(ਸਤਰ) - len, stdin))
+        ਸਤਰ[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਗਿਣਤੀ_2 = hb_ਬਫਰ_get_ਲੰਮਾਈ (buf);
+    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ = 0; ਵਿੱਥ < ਗਿਣਤੀ_2;)
     {
-      unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      ਬਿਨਾਨਿਸ਼ਾਨੀ len;
+      ਵਿੱਥ += hb_ਬਫਰ_serialize_glyphs (buf, ਵਿੱਥ, ਗਿਣਤੀ_2,
+					    ਬਾਹਰਲਾ, ਆਕਾਰ (ਬਾਹਰਲਾ), &len,
 					    font,
 					    format,
-					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
-      fwrite (out, 1, len, stdout);
+					    HB_ਬਫਰ_SERIALIZE_FLAG_GLYPH_FLAGS);
+      fwrite (ਬਾਹਰਲਾ, 1, len, stdout);
     }
     fputs ("\n", stdout);
   }
 
-  hb_buffer_destroy (buf);
+  hb_ਬਫਰ_destroy (buf);
 
   hb_font_destroy (font);
 
-#endif
+#ਜੇ_ਅੰਤ
 
-  return !ret;
+  ਵਾਪਸ !ret;
 }

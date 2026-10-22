@@ -24,20 +24,20 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_DEPRECATED_H
-#define HB_OT_DEPRECATED_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_DEPRECATED_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_DEPRECATED_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb-ot-name.h"
 
 
 HB_BEGIN_DECLS
 
-#ifndef HB_DISABLE_DEPRECATED
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_DISABLE_DEPRECATED
 
 
 /* https://github.com/harfbuzz/harfbuzz/issues/1734 */
@@ -48,7 +48,7 @@ HB_BEGIN_DECLS
  *
  * Deprecated: 2.5.1
  */
-#define HB_MATH_GLYPH_PART_FLAG_EXTENDER HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_MATH_GLYPH_PART_FLAG_EXTENDER HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER
 
 /* https://github.com/harfbuzz/harfbuzz/pull/3417 */
 /**
@@ -63,35 +63,35 @@ HB_BEGIN_DECLS
  * Since: 1.3.3
  * Deprecated: 3.4.0
  */
-#define HB_OT_MATH_SCRIPT HB_OT_TAG_MATH_SCRIPT
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_MATH_SCRIPT HB_OT_ਟੈਗ_MATH_SCRIPT
 
 
 /* Like hb_ot_layout_table_find_script, but takes zero-terminated array of scripts to test */
-HB_DEPRECATED_FOR (hb_ot_layout_table_select_script)
+HB_DEPRECATED_FOR (hb_ot_layout_ਸਾਰਣੀ_select_script)
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_choose_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index,
-				  hb_tag_t       *chosen_script);
+hb_ot_layout_ਸਾਰਣੀ_ਚੁਣੋ_script (hb_face_t      *face,
+				  hb_ਟੈਗ_t        ਸਾਰਣੀ_ਟੈਗ_2,
+				  ਅਚਲ hb_ਟੈਗ_t *script_ਟੈਗ_ਸੂਚੀ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ   *script_ਸੂਚਕਾਂਕ,
+				  hb_ਟੈਗ_t       *chosen_script);
 
 HB_DEPRECATED_FOR (hb_ot_layout_script_select_language)
 HB_EXTERN hb_bool_t
-hb_ot_layout_script_find_language (hb_face_t    *face,
-				   hb_tag_t      table_tag,
-				   unsigned int  script_index,
-				   hb_tag_t      language_tag,
-				   unsigned int *language_index);
+hb_ot_layout_script_ਲੱਭੋ_language (hb_face_t    *face,
+				   hb_ਟੈਗ_t      ਸਾਰਣੀ_ਟੈਗ_2,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  script_ਸੂਚਕਾਂਕ,
+				   hb_ਟੈਗ_t      language_ਟੈਗ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *language_ਸੂਚਕਾਂਕ);
 
-HB_DEPRECATED_FOR (hb_ot_tags_from_script_and_language)
-HB_EXTERN void
-hb_ot_tags_from_script (hb_script_t  script,
-			hb_tag_t    *script_tag_1,
-			hb_tag_t    *script_tag_2);
+HB_DEPRECATED_FOR (hb_ot_ਟੈਗ_ਸੂਚੀ_from_script_and_language)
+HB_EXTERN ਖਾਲੀ
+hb_ot_ਟੈਗ_ਸੂਚੀ_from_script (hb_script_t  script,
+			hb_ਟੈਗ_t    *script_ਟੈਗ_1,
+			hb_ਟੈਗ_t    *script_ਟੈਗ_2);
 
-HB_DEPRECATED_FOR (hb_ot_tags_from_script_and_language)
-HB_EXTERN hb_tag_t
-hb_ot_tag_from_language (hb_language_t language);
+HB_DEPRECATED_FOR (hb_ot_ਟੈਗ_ਸੂਚੀ_from_script_and_language)
+HB_EXTERN hb_ਟੈਗ_t
+hb_ot_ਟੈਗ_from_language (hb_language_t language);
 
 
 /**
@@ -102,7 +102,7 @@ hb_ot_tag_from_language (hb_language_t language);
  * Since: 1.4.2
  * Deprecated: 2.2.0
  */
-#define HB_OT_VAR_NO_AXIS_INDEX		0xFFFFFFFFu
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_NO_AXIS_ਸੂਚਕਾਂਕ		0xFFFFFFFFu
 
 /**
  * hb_ot_var_axis_t:
@@ -117,31 +117,31 @@ hb_ot_tag_from_language (hb_language_t language);
  * Since: 1.4.2
  * Deprecated: 2.2.0
  */
-typedef struct hb_ot_var_axis_t {
-  hb_tag_t tag;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ot_var_axis_t {
+  hb_ਟੈਗ_t ਟੈਗ_2;
   hb_ot_name_id_t name_id;
-  float min_value;
-  float default_value;
-  float max_value;
+  ਦਸ਼ਮਲਵ min_ਮੁੱਲ;
+  ਦਸ਼ਮਲਵ default_ਮੁੱਲ;
+  ਦਸ਼ਮਲਵ max_ਮੁੱਲ;
 } hb_ot_var_axis_t;
 
 HB_DEPRECATED_FOR (hb_ot_var_get_axis_infos)
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
-		    hb_ot_var_axis_t *axes_array /* OUT */);
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ      ਸ਼ੁਰੂ_ਵਿੱਥ,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *axes_ਗਿਣਤੀ /* IN/OUT */,
+		    hb_ot_var_axis_t *axes_array /*ਬਾਹਰਲਾ*/);
 
-HB_DEPRECATED_FOR (hb_ot_var_find_axis_info)
+HB_DEPRECATED_FOR (hb_ot_var_ਲੱਭੋ_axis_info)
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis (hb_face_t        *face,
-		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+hb_ot_var_ਲੱਭੋ_axis (hb_face_t        *face,
+		     hb_ਟੈਗ_t          axis_ਟੈਗ_2,
+		     ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ     *axis_ਸੂਚਕਾਂਕ,
 		     hb_ot_var_axis_t *axis_info);
 
 
-#endif
+#ਜੇ_ਅੰਤ
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_DEPRECATED_H */
+#ਜੇ_ਅੰਤ /* HB_OT_DEPRECATED_H */

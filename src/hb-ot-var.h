@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ਜੇ !defined(HB_OT_H_ਵਿੱਚ) && !defined(HB_NO_SINGLE_ਸਿਰਲੇਖ_ERROR)
+#ਗਲਤੀ "Include <hb-ot.h> instead."
+#ਜੇ_ਅੰਤ
 
-#ifndef HB_OT_VAR_H
-#define HB_OT_VAR_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ HB_OT_VAR_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_VAR_H
 
-#include "hb.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -40,7 +40,7 @@ HB_BEGIN_DECLS
  *
  * Registered tag for the roman/italic axis.
  */
-#define HB_OT_TAG_VAR_AXIS_ITALIC	HB_TAG('i','t','a','l')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VAR_AXIS_ITALIC	HB_ਟੈਗ('i','t','a','l')
 
 /**
  * HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE:
@@ -48,28 +48,28 @@ HB_BEGIN_DECLS
  * Registered tag for the optical-size axis.
  * <note>Note: The optical-size axis supersedes the OpenType `size` feature.</note>
  */
-#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE	HB_TAG('o','p','s','z')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VAR_AXIS_OPTICAL_ਮਾਪ	HB_ਟੈਗ('o','p','s','z')
 
 /**
  * HB_OT_TAG_VAR_AXIS_SLANT:
  *
  * Registered tag for the slant axis
  */
-#define HB_OT_TAG_VAR_AXIS_SLANT	HB_TAG('s','l','n','t')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VAR_AXIS_SLANT	HB_ਟੈਗ('s','l','n','t')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WIDTH:
  *
  * Registered tag for the width axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WIDTH	HB_TAG('w','d','t','h')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VAR_AXIS_ਚੌੜਾਈ	HB_ਟੈਗ('w','d','t','h')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WEIGHT:
  *
  * Registered tag for the weight axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WEIGHT	HB_TAG('w','g','h','t')
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ HB_OT_ਟੈਗ_VAR_AXIS_ਭਾਰ	HB_ਟੈਗ('w','g','h','t')
 
 
 /*
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  */
 
 HB_EXTERN hb_bool_t
-hb_ot_var_has_data (hb_face_t *face);
+hb_ot_var_has_ਅੰਕੜੇ (hb_face_t *face);
 
 
 /*
@@ -85,8 +85,8 @@ hb_ot_var_has_data (hb_face_t *face);
  */
 
 
-HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_var_get_axis_ਗਿਣਤੀ (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,11 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਗਿਣਤੀ { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_ਮੁੱਲ= HB_ਟੈਗ_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -122,27 +122,27 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
-  hb_tag_t			tag;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ hb_ot_var_axis_info_t {
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ			axis_ਸੂਚਕਾਂਕ;
+  hb_ਟੈਗ_t			ਟੈਗ_2;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  ਦਸ਼ਮਲਵ				min_ਮੁੱਲ;
+  ਦਸ਼ਮਲਵ				default_ਮੁੱਲ;
+  ਦਸ਼ਮਲਵ				max_ਮੁੱਲ;
   /*< private >*/
-  unsigned int			reserved;
+  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ			reserved;
 } hb_ot_var_axis_info_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */);
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ           ਸ਼ੁਰੂ_ਵਿੱਥ,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          *axes_ਗਿਣਤੀ /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*ਬਾਹਰਲਾ*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_ਲੱਭੋ_axis_info (hb_face_t             *face,
+			  hb_ਟੈਗ_t               axis_ਟੈਗ_2,
 			  hb_ot_var_axis_info_t *axis_info);
 
 
@@ -150,42 +150,42 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Named instances.
  */
 
-HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
+hb_ot_var_get_named_instance_ਗਿਣਤੀ (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+						ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ instance_ਸੂਚਕਾਂਕ);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+						ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ instance_ਸੂਚਕਾਂਕ);
 
-HB_EXTERN unsigned int
+HB_EXTERN ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ  instance_ਸੂਚਕਾਂਕ,
+					    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ *coords_ਲੰਮਾਈ, /* IN/OUT */
+					    ਦਸ਼ਮਲਵ        *coords         /*ਬਾਹਰਲਾ*/);
 
 
 /*
  * Conversions.
  */
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+				ਅਚਲ hb_variation_t *variations, /*ਵਿੱਚ*/
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          variations_ਲੰਮਾਈ,
+				ਪੂਰਨ                  *coords, /*ਬਾਹਰਲਾ*/
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ          coords_ਲੰਮਾਈ);
 
-HB_EXTERN void
+HB_EXTERN ਖਾਲੀ
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ coords_ਲੰਮਾਈ,
+			    ਅਚਲ ਦਸ਼ਮਲਵ *design_coords, /*ਵਿੱਚ*/
+			    ਪੂਰਨ *normalized_coords /*ਬਾਹਰਲਾ*/);
 
 
-HB_END_DECLS
+HB_ਸਿਰਾ_DECLS
 
-#endif /* HB_OT_VAR_H */
+#ਜੇ_ਅੰਤ /* HB_OT_VAR_H */
