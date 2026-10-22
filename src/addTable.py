@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-from fontTools.ttLib import TTFont
-from fontTools.ttLib.tables.DefaultTable import DefaultTable
+ta_h fontTools.ttLib import TTFont
+ta_h fontTools.ttLib.tables.DefaultTable import DefaultTable
 
-if len(sys.argv) == 1:
+ถ้า len(sys.argv) == 1:
     print("usage: python addTable.py input.ttf output.ttf Wasm.bin")
     sys.exit(1)
 

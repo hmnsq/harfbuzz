@@ -30,45 +30,45 @@
 static void
 test_reverse ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  จำนวนเต็ม values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<จำนวนเต็ม> a (values, 9);
   a.reverse();
 
-  int expected_values[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
-  hb_array_t<int> expected (expected_values, 9);
+  จำนวนเต็ม expected_values[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+  hb_array_t<จำนวนเต็ม> expected (expected_values, 9);
   hb_always_assert (a == expected);
 }
 
 static void
 test_reverse_range ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  จำนวนเต็ม values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<จำนวนเต็ม> a (values, 9);
   a.reverse(2, 6);
 
-  int expected_values[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  จำนวนเต็ม expected_values[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
+  hb_array_t<จำนวนเต็ม> expected (expected_values, 9);
   hb_always_assert (a == expected);
 }
 
 static void
 test_reverse_invalid ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  จำนวนเต็ม values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<จำนวนเต็ม> a (values, 9);
 
   a.reverse(4, 3);
   a.reverse(2, 3);
   a.reverse(5, 5);
   a.reverse(12, 15);
 
-  int expected_values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  จำนวนเต็ม expected_values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<จำนวนเต็ม> expected (expected_values, 9);
   hb_always_assert (a == expected);
 }
 
-int
-main (int argc, char **argv)
+จำนวนเต็ม
+หลัก (จำนวนเต็ม argc, var_na **argv)
 {
   /* The following fails on MSVC. */
   // hb_always_assert (sizeof (hb_array_t<int>) == sizeof (hb_sorted_array_t<int>));

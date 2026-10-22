@@ -44,16 +44,16 @@ hb_vector_paint_create_or_fail (hb_vector_format_t format)
 {
   switch (format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-    case HB_VECTOR_FORMAT_PDF:
-      break;
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    pak_sa HB_VECTOR_FORMAT_SVG:
+    pak_sa HB_VECTOR_FORMAT_PDF:
+      bha_nga;
+    pak_sa HB_VECTOR_FORMAT_INVALID: default:
+      คืน nullptr;
   }
 
   hb_vector_paint_t *paint = hb_object_create<hb_vector_paint_t> ();
-  if (unlikely (!paint))
-    return nullptr;
+  ถ้า (unlikely (!paint))
+    คืน nullptr;
   paint->format = format;
 
   paint->active_color_glyphs = hb_set_create ();
@@ -62,7 +62,7 @@ hb_vector_paint_create_or_fail (hb_vector_format_t format)
   paint->captured_scratch.alloc (4096);
   paint->color_stops_scratch.alloc (16);
 
-  return paint;
+  คืน paint;
 }
 
 /**
@@ -78,7 +78,7 @@ hb_vector_paint_create_or_fail (hb_vector_format_t format)
 hb_vector_paint_t *
 hb_vector_paint_reference (hb_vector_paint_t *paint)
 {
-  return hb_object_reference (paint);
+  คืน hb_object_reference (paint);
 }
 
 /**
@@ -92,10 +92,10 @@ hb_vector_paint_reference (hb_vector_paint_t *paint)
 void
 hb_vector_paint_destroy (hb_vector_paint_t *paint)
 {
-  if (!hb_object_should_destroy (paint))
-    return;
+  ถ้า (!hb_object_should_destroy (paint))
+    คืน;
 
-  if (paint->format == HB_VECTOR_FORMAT_PDF)
+  ถ้า (paint->format == HB_VECTOR_FORMAT_PDF)
     hb_vector_paint_pdf_free_resources (paint);
   hb_blob_destroy (paint->recycled_blob);
   hb_set_destroy (paint->active_color_glyphs);
@@ -125,7 +125,7 @@ hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace)
 {
-  return hb_object_set_user_data (paint, key, data, destroy, replace);
+  คืน hb_object_set_user_data (paint, key, data, destroy, replace);
 }
 
 /**
@@ -143,7 +143,7 @@ void *
 hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
                                hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (paint, key);
+  คืน hb_object_get_user_data (paint, key);
 }
 
 /**
@@ -189,12 +189,12 @@ hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
                                float *xy, float *yy,
                                float *dx, float *dy)
 {
-  if (xx) *xx = paint->transform.xx;
-  if (yx) *yx = paint->transform.yx;
-  if (xy) *xy = paint->transform.xy;
-  if (yy) *yy = paint->transform.yy;
-  if (dx) *dx = paint->transform.x0;
-  if (dy) *dy = paint->transform.y0;
+  ถ้า (xx) *xx = paint->transform.xx;
+  ถ้า (yx) *yx = paint->transform.yx;
+  ถ้า (xy) *xy = paint->transform.xy;
+  ถ้า (yy) *yy = paint->transform.yy;
+  ถ้า (dx) *dx = paint->transform.x0;
+  ถ้า (dy) *dy = paint->transform.y0;
 }
 
 /**
@@ -231,8 +231,8 @@ hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
                                   float *x_scale_factor,
                                   float *y_scale_factor)
 {
-  if (x_scale_factor) *x_scale_factor = paint->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = paint->y_scale_factor;
+  ถ้า (x_scale_factor) *x_scale_factor = paint->x_scale_factor;
+  ถ้า (y_scale_factor) *y_scale_factor = paint->y_scale_factor;
 }
 
 /**
@@ -248,15 +248,15 @@ void
 hb_vector_paint_set_extents (hb_vector_paint_t *paint,
                              const hb_vector_extents_t *extents)
 {
-  if (!extents)
+  ถ้า (!extents)
   {
     paint->extents = {0, 0, 0, 0};
     paint->has_extents = false;
-    return;
+    คืน;
   }
 
-  if (extents->width == 0.f || extents->height == 0.f)
-    return;
+  ถ้า (extents->width == 0.f || extents->height == 0.f)
+    คืน;
 
   /* Caller-supplied extents are in input-space; divide by
    * scale_factor so they end up in output-space, matching
@@ -274,7 +274,7 @@ hb_vector_paint_set_extents (hb_vector_paint_t *paint,
     fabsf (x1 - x0), fabsf (y1 - y0),
   };
 
-  if (paint->has_extents)
+  ถ้า (paint->has_extents)
   {
     float x0 = hb_min (paint->extents.x, e.x);
     float y0 = hb_min (paint->extents.y, e.y);
@@ -284,7 +284,7 @@ hb_vector_paint_set_extents (hb_vector_paint_t *paint,
 		       e.y + e.height);
     paint->extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  มิฉะนั้น
   {
     paint->extents = e;
     paint->has_extents = true;
@@ -306,12 +306,12 @@ hb_bool_t
 hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
                              hb_vector_extents_t *extents)
 {
-  if (!paint->has_extents)
-    return false;
+  ถ้า (!paint->has_extents)
+    คืน false;
 
-  if (extents)
+  ถ้า (extents)
     *extents = paint->extents;
-  return true;
+  คืน true;
 }
 
 /**
@@ -337,7 +337,7 @@ hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
 						   &paint->extents,
 						   &has_extents);
   paint->has_extents = has_extents;
-  return ret;
+  คืน ret;
 }
 
 /**
@@ -370,7 +370,7 @@ hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
 hb_color_t
 hb_vector_paint_get_foreground (const hb_vector_paint_t *paint)
 {
-  return paint->foreground;
+  คืน paint->foreground;
 }
 
 /**
@@ -405,7 +405,7 @@ hb_vector_paint_set_background (hb_vector_paint_t *paint,
 hb_color_t
 hb_vector_paint_get_background (const hb_vector_paint_t *paint)
 {
-  return paint->background;
+  คืน paint->background;
 }
 
 /**
@@ -419,7 +419,7 @@ hb_vector_paint_get_background (const hb_vector_paint_t *paint)
  */
 void
 hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette)
+                             จำนวนเต็ม palette)
 {
   paint->palette = palette;
 }
@@ -435,10 +435,10 @@ hb_vector_paint_set_palette (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-int
+จำนวนเต็ม
 hb_vector_paint_get_palette (const hb_vector_paint_t *paint)
 {
-  return paint->palette;
+  คืน paint->palette;
 }
 
 /**
@@ -494,7 +494,7 @@ hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint)
 hb_vector_format_t
 hb_vector_paint_get_format (const hb_vector_paint_t *paint)
 {
-  return paint->format;
+  คืน paint->format;
 }
 
 /**
@@ -513,13 +513,13 @@ hb_vector_paint_get_funcs (const hb_vector_paint_t *paint)
 {
   switch (paint ? paint->format : HB_VECTOR_FORMAT_INVALID)
   {
-    case HB_VECTOR_FORMAT_PDF:
-      return hb_vector_paint_pdf_funcs_get ();
-    case HB_VECTOR_FORMAT_SVG:
-      return hb_vector_paint_svg_funcs_get ();
-    case HB_VECTOR_FORMAT_INVALID:
+    pak_sa HB_VECTOR_FORMAT_PDF:
+      คืน hb_vector_paint_pdf_funcs_get ();
+    pak_sa HB_VECTOR_FORMAT_SVG:
+      คืน hb_vector_paint_svg_funcs_get ();
+    pak_sa HB_VECTOR_FORMAT_INVALID:
     default:
-      return nullptr;
+      คืน nullptr;
   }
 }
 
@@ -531,10 +531,10 @@ hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
 			    hb_vector_extents_mode_t extents_mode,
 			    hb_bool_t          fallible)
 {
-  if (extents_mode == HB_VECTOR_EXTENTS_MODE_EXPAND)
+  ถ้า (extents_mode == HB_VECTOR_EXTENTS_MODE_EXPAND)
   {
     hb_glyph_extents_t ge;
-    if (hb_font_get_glyph_extents (font, glyph, &ge))
+    ถ้า (hb_font_get_glyph_extents (font, glyph, &ge))
     {
       hb_bool_t has_extents = paint->has_extents;
       hb_vector_set_glyph_extents_common (paint->transform,
@@ -554,19 +554,19 @@ hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
 			   paint->transform.x0, paint->transform.y0);
 
   hb_bool_t ret = true;
-  if (fallible)
+  ถ้า (fallible)
     ret = hb_font_paint_glyph_or_fail (font, glyph,
 				       funcs, paint,
 				       (unsigned) paint->palette,
 				       paint->foreground);
-  else
+  มิฉะนั้น
     hb_font_paint_glyph (font, glyph,
 			 funcs, paint,
 			 (unsigned) paint->palette,
 			 paint->foreground);
 
   hb_paint_pop_transform (funcs, paint);
-  return ret;
+  คืน ret;
 }
 
 /**
@@ -598,7 +598,7 @@ hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
 			       hb_codepoint_t     glyph,
 			       hb_vector_extents_mode_t extents_mode)
 {
-  return hb_vector_paint_glyph_impl (paint, font, glyph,
+  คืน hb_vector_paint_glyph_impl (paint, font, glyph,
 				     extents_mode, true);
 }
 
@@ -644,16 +644,16 @@ hb_vector_paint_glyph (hb_vector_paint_t *paint,
  */
 void
 hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix)
+                                const var_na *prefix)
 {
-  char *old = paint->id_prefix;
+  var_na *old = paint->id_prefix;
   paint->id_prefix = nullptr;
   paint->id_prefix_length = 0;
-  if (prefix && *prefix)
+  ถ้า (prefix && *prefix)
   {
     unsigned len = strlen (prefix);
-    char *copy = (char *) hb_malloc (len + 1);
-    if (likely (copy))
+    var_na *copy = (var_na *) hb_malloc (len + 1);
+    ถ้า (likely (copy))
     {
       hb_memcpy (copy, prefix, len);
       copy[len] = '\0';
@@ -677,10 +677,10 @@ hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-const char *
+const var_na *
 hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint)
 {
-  return paint->id_prefix ? paint->id_prefix : "";
+  คืน paint->id_prefix ? paint->id_prefix : "";
 }
 
 /**
@@ -713,7 +713,7 @@ hb_vector_paint_set_precision (hb_vector_paint_t *paint,
 unsigned
 hb_vector_paint_get_precision (const hb_vector_paint_t *paint)
 {
-  return paint->get_precision ();
+  คืน paint->get_precision ();
 }
 
 /**
@@ -734,7 +734,7 @@ hb_vector_paint_clear (hb_vector_paint_t *paint)
   paint->extents = {0, 0, 0, 0};
   paint->has_extents = false;
 
-  if (paint->format == HB_VECTOR_FORMAT_PDF)
+  ถ้า (paint->format == HB_VECTOR_FORMAT_PDF)
     hb_vector_paint_pdf_free_resources (paint);
   paint->defs.clear ();
   paint->path.clear ();
@@ -772,14 +772,14 @@ hb_vector_paint_render (hb_vector_paint_t *paint)
   HB_SCOPE_GUARD (hb_vector_paint_clear (paint));
   switch (paint->format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-      return hb_vector_paint_render_svg (paint);
+    pak_sa HB_VECTOR_FORMAT_SVG:
+      คืน hb_vector_paint_render_svg (paint);
 
-    case HB_VECTOR_FORMAT_PDF:
-      return hb_vector_paint_render_pdf (paint);
+    pak_sa HB_VECTOR_FORMAT_PDF:
+      คืน hb_vector_paint_render_pdf (paint);
 
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    pak_sa HB_VECTOR_FORMAT_INVALID: default:
+      คืน nullptr;
   }
 }
 
@@ -827,7 +827,7 @@ hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
 {
   hb_blob_destroy (paint->recycled_blob);
   paint->recycled_blob = nullptr;
-  if (!blob || blob == hb_blob_get_empty ())
-    return;
+  ถ้า (!blob || blob == hb_blob_get_empty ())
+    คืน;
   paint->recycled_blob = blob;
 }

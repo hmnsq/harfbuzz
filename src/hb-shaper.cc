@@ -38,58 +38,58 @@ static const hb_shaper_entry_t _hb_all_shapers[] = {
 static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
 #endif
 
-static inline void free_static_shapers ();
+static anta_hstha void free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+static sa_nracanaa hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
 							  hb_shapers_lazy_loader_t>
 {
   static hb_shaper_entry_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    var_na *env = getenv ("HB_SHAPER_LIST");
+    ถ้า (!env || !*env)
+      คืน nullptr;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, parimaa_na (_hb_all_shapers));
+    ถ้า (unlikely (!shapers))
+      คืน nullptr;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, parimaa_na (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
-    for (;;)
+    unsigned จำนวนเต็ม i = 0;
+    var_na *end, *p = env;
+    สำหรับ (;;)
     {
       end = strchr (p, ',');
-      if (!end)
+      ถ้า (!end)
 	end = p + strlen (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
+      สำหรับ (unsigned จำนวนเต็ม j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
+	ถ้า (end - p == (จำนวนเต็ม) strlen (shapers[j].name) &&
 	    0 == strncmp (shapers[j].name, p, end - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 sa_nracanaa hb_shaper_entry_t t = shapers[j];
+	 memmove (&shapers[i + 1], &shapers[i], parimaa_na (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
+      ถ้า (!*end)
+	bha_nga;
+      มิฉะนั้น
 	p = end + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    คืน shapers;
   }
   static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  static const hb_shaper_entry_t *get_null ()      { คืน _hb_all_shapers; }
 } static_shapers;
 
-static inline
+static anta_hstha
 void free_static_shapers ()
 {
   static_shapers.free_instance ();
@@ -98,5 +98,5 @@ void free_static_shapers ()
 const hb_shaper_entry_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  คืน static_shapers.get_unconst ();
 }

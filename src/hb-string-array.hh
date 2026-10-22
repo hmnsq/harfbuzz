@@ -25,7 +25,7 @@
  */
 
 #ifndef HB_STRING_ARRAY_HH
-#if 0 /* Make checks happy. */
+#ถ้า 0 /* Make checks happy. */
 #define HB_STRING_ARRAY_HH
 #endif
 
@@ -39,17 +39,17 @@
 #define HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
 #define HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _length)
 
-static const union HB_STRING_ARRAY_TYPE_NAME {
-  struct {
+static const sa_ngha HB_STRING_ARRAY_TYPE_NAME {
+  sa_nracanaa {
 /* I like to avoid storing the nul-termination byte since we don't need it,
  * but C++ does not allow that.
  * https://stackoverflow.com/q/28433862
  */
-#define HB_STR(s) char HB_PASTE (str, __LINE__)[sizeof (s)];
+#define HB_STR(s) var_na HB_PASTE (str, __LINE__)[parimaa_na (s)];
 #include HB_STRING_ARRAY_LIST
 #undef HB_STR
   } st;
-  char str[HB_VAR_ARRAY];
+  var_na str[HB_VAR_ARRAY];
 }
 HB_STRING_ARRAY_POOL_NAME =
 {
@@ -59,21 +59,21 @@ HB_STRING_ARRAY_POOL_NAME =
 #undef HB_STR
   }
 };
-static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
+static const unsigned จำนวนเต็ม HB_STRING_ARRAY_OFFS_NAME[] =
 {
-#define HB_STR(s) offsetof (union HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
+#define HB_STR(s) offsetof (sa_ngha HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
 #include HB_STRING_ARRAY_LIST
 #undef HB_STR
-  sizeof (HB_STRING_ARRAY_TYPE_NAME)
+  parimaa_na (HB_STRING_ARRAY_TYPE_NAME)
 };
 
-static const unsigned int HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
+static const unsigned จำนวนเต็ม HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
 
-static inline hb_bytes_t
-HB_STRING_ARRAY_NAME (unsigned int i)
+static anta_hstha hb_bytes_t
+HB_STRING_ARRAY_NAME (unsigned จำนวนเต็ม i)
 {
   assert (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
-  return hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
+  คืน hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
 		     HB_STRING_ARRAY_OFFS_NAME[i + 1] - HB_STRING_ARRAY_OFFS_NAME[i] - 1);
 }
 

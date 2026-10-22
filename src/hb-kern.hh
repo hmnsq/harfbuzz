@@ -36,7 +36,7 @@ namespace OT {
 
 
 template <typename Driver>
-struct hb_kern_machine_t
+sa_nracanaa hb_kern_machine_t
 {
   hb_kern_machine_t (const Driver &driver_,
 		     bool crossStream_ = false) :
@@ -48,8 +48,8 @@ struct hb_kern_machine_t
 	     hb_mask_t    kern_mask,
 	     bool         scale = true) const
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    ถ้า (!buffer->message (font, "start kern"))
+      คืน;
 
     buffer->unsafe_to_concat ();
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
@@ -58,12 +58,12 @@ struct hb_kern_machine_t
     auto &skippy_iter = c.iter_input;
 
     bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    unsigned จำนวนเต็ม count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    สำหรับ (unsigned จำนวนเต็ม idx = 0; idx < count;)
     {
-      if (!(info[idx].mask & kern_mask))
+      ถ้า (!(info[idx].mask & kern_mask))
       {
 	idx++;
 	continue;
@@ -71,32 +71,32 @@ struct hb_kern_machine_t
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      ถ้า (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
 	continue;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned จำนวนเต็ม i = idx;
+      unsigned จำนวนเต็ม j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
+      ถ้า (likely (!kern))
 	goto skip;
 
-      if (horizontal)
+      ถ้า (horizontal)
       {
-	if (scale)
+	ถ้า (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	ถ้า (crossStream)
 	{
 	  pos[j].y_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	มิฉะนั้น
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      มิฉะนั้น
       {
-	if (scale)
+	ถ้า (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	ถ้า (crossStream)
 	{
 	  pos[j].x_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	มิฉะนั้น
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;

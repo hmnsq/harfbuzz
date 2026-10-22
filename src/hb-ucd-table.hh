@@ -2733,34 +2733,34 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^5,2^3,2^1] */
-  return u<1114110u ? (uint8_t)(_hb_ucd_u8[7944u+((_hb_ucd_u8[2176u+_hb_ucd_u16[((_hb_ucd_u8[((((((u)>>1))>>3))>>5)])<<5)+((((((u)>>1))>>3))&31)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  คืน u<1114110u ? (uint8_t)(_hb_ucd_u8[7944u+((_hb_ucd_u8[2176u+_hb_ucd_u16[((_hb_ucd_u8[((((((u)>>1))>>3))>>5)])<<5)+((((((u)>>1))>>3))&31)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[10432u+((_hb_ucd_u8[9308u+((_hb_ucd_u8[8577u+((_hb_ucd_u8[8332u+((((((u)>>2))>>3))>>4)])<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)])<<2)+((u)&3)]) : 0;
+  คืน u<125259u ? (uint8_t)(_hb_ucd_u8[10432u+((_hb_ucd_u8[9308u+((_hb_ucd_u8[8577u+((_hb_ucd_u8[8332u+((((((u)>>2))>>3))>>4)])<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  คืน (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+static anta_hstha int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^4,2^3,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[11624u+_hb_ucd_u8[11272u+((_hb_ucd_u8[11071u+((_hb_ucd_b4(_hb_ucd_u8+10952u,((((((u)>>2))>>3))>>4)))<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)]+((u)&3)]]) : 0;
+  คืน u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[11624u+_hb_ucd_u8[11272u+((_hb_ucd_u8[11071u+((_hb_ucd_b4(_hb_ucd_u8+10952u,((((((u)>>2))>>3))>>4)))<<4)+((((((u)>>2))>>3))&15)])<<3)+((((u)>>2))&7)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^3] */
-  return u<918000u ? (uint8_t)(_hb_ucd_u8[12721u+_hb_ucd_u16[4520u+_hb_ucd_u16[3392u+((_hb_ucd_u8[11824u+((((((u)>>3))>>3))>>4)])<<4)+((((((u)>>3))>>3))&15)]+((((u)>>3))&7)]+((u)&7)]) : 2;
+  คืน u<918000u ? (uint8_t)(_hb_ucd_u8[12721u+_hb_ucd_u16[4520u+_hb_ucd_u16[3392u+((_hb_ucd_u8[11824u+((((((u)>>3))>>3))>>4)])<<4)+((((((u)>>3))>>3))&15)]+((((u)>>3))&7)]+((u)&7)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+static anta_hstha uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[7816u+((_hb_ucd_u8[19095u+((_hb_ucd_u8[18713u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  คืน u<195102u ? (uint16_t)(_hb_ucd_u16[7816u+((_hb_ucd_u8[19095u+((_hb_ucd_u8[18713u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 
@@ -4522,38 +4522,38 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^4,2^3,2^1] */
-  return u<1114110u ? (uint8_t)(_hb_ucd_u8[6600u+((_hb_ucd_u8[832u+_hb_ucd_u16[((_hb_ucd_u8[272u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>4))>>4)])<<4)+((((((((u)>>1))>>3))>>4))&15)])<<4)+((((((u)>>1))>>3))&15)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  คืน u<1114110u ? (uint8_t)(_hb_ucd_u8[6600u+((_hb_ucd_u8[832u+_hb_ucd_u16[((_hb_ucd_u8[272u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>4))>>4)])<<4)+((((((((u)>>1))>>3))>>4))&15)])<<4)+((((((u)>>1))>>3))&15)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^3,2^2,2^2,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[8683u+((_hb_ucd_u8[8084u+((_hb_ucd_u8[7599u+((_hb_ucd_u8[7233u+((_hb_ucd_u8[6988u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
+  คืน u<125259u ? (uint8_t)(_hb_ucd_u8[8683u+((_hb_ucd_u8[8084u+((_hb_ucd_u8[7599u+((_hb_ucd_u8[7233u+((_hb_ucd_u8[6988u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  คืน (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+static anta_hstha int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[9754u+_hb_ucd_u8[9514u+_hb_ucd_u8[9350u+_hb_ucd_u8[9263u+((_hb_ucd_b4(_hb_ucd_u8+9203u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
+  คืน u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[9754u+_hb_ucd_u8[9514u+_hb_ucd_u8[9350u+_hb_ucd_u8[9263u+((_hb_ucd_b4(_hb_ucd_u8+9203u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^2,2^3] */
-  return u<918000u ? (uint8_t)(_hb_ucd_u8[10755u+_hb_ucd_u16[4016u+_hb_ucd_u16[2656u+((_hb_ucd_u8[10179u+((_hb_ucd_u8[9954u+((((((((u)>>3))>>2))>>3))>>4)])<<4)+((((((((u)>>3))>>2))>>3))&15)])<<3)+((((((u)>>3))>>2))&7)]+((((u)>>3))&3)]+((u)&7)]) : 2;
+  คืน u<918000u ? (uint8_t)(_hb_ucd_u8[10755u+_hb_ucd_u16[4016u+_hb_ucd_u16[2656u+((_hb_ucd_u8[10179u+((_hb_ucd_u8[9954u+((((((((u)>>3))>>2))>>3))>>4)])<<4)+((((((((u)>>3))>>2))>>3))&15)])<<3)+((((((u)>>3))>>2))&7)]+((((u)>>3))&3)]+((u)&7)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+static anta_hstha uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[6353u+((_hb_ucd_u8[17129u+((_hb_ucd_u8[16747u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  คืน u<195102u ? (uint16_t)(_hb_ucd_u16[6353u+((_hb_ucd_u8[17129u+((_hb_ucd_u8[16747u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 
-#else
+#มิฉะนั้น
 
 #include <stdint.h>
 
@@ -5846,34 +5846,34 @@ static const int32_t _hb_ucd_palette[39]=
       2016,    2104,    2106,    2108,    2250,    2527,  112883,
 };
 
-static inline uint8_t _hb_ucd_gc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_gc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^3,2^3,2^1] */
-  return u<1114112u ? (uint8_t)(_hb_ucd_u8[5368u+((_hb_ucd_u8[1160u+_hb_ucd_u16[((_hb_ucd_u8[544u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>3))>>4)])<<4)+((((((((u)>>1))>>3))>>3))&15)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
+  คืน u<1114112u ? (uint8_t)(_hb_ucd_u8[5368u+((_hb_ucd_u8[1160u+_hb_ucd_u16[((_hb_ucd_u8[544u+((_hb_ucd_u8[((((((((u)>>1))>>3))>>3))>>4)])<<4)+((((((((u)>>1))>>3))>>3))&15)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : 2;
 }
-static inline uint8_t _hb_ucd_ccc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_ccc (unsigned u)
 {
   /* packtab: [2^8,2^3,2^2,2^2,2^2] */
-  return u<125259u ? (uint8_t)(_hb_ucd_u8[7417u+((_hb_ucd_u8[6818u+((_hb_ucd_u8[6333u+((_hb_ucd_u8[5967u+((_hb_ucd_u8[5722u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
+  คืน u<125259u ? (uint8_t)(_hb_ucd_u8[7417u+((_hb_ucd_u8[6818u+((_hb_ucd_u8[6333u+((_hb_ucd_u8[5967u+((_hb_ucd_u8[5722u+((((((((u)>>2))>>2))>>2))>>3)])<<3)+((((((((u)>>2))>>2))>>2))&7)])<<2)+((((((u)>>2))>>2))&3)])<<2)+((((u)>>2))&3)])<<2)+((u)&3)]) : 0;
 }
-static inline uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
+static anta_hstha uint8_t _hb_ucd_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  คืน (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline int32_t _hb_ucd_bmg (unsigned u)
+static anta_hstha int32_t _hb_ucd_bmg (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^2] palette[39] */
-  return u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[8488u+_hb_ucd_u8[8248u+_hb_ucd_u8[8084u+_hb_ucd_u8[7997u+((_hb_ucd_b4(_hb_ucd_u8+7937u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
+  คืน u<121617u ? (int32_t)(_hb_ucd_palette[_hb_ucd_u8[8488u+_hb_ucd_u8[8248u+_hb_ucd_u8[8084u+_hb_ucd_u8[7997u+((_hb_ucd_b4(_hb_ucd_u8+7937u,((((((((u)>>2))>>2))>>3))>>3)))<<3)+((((((((u)>>2))>>2))>>3))&7)]+((((((u)>>2))>>2))&7)]+((((u)>>2))&3)]+((u)&3)]]) : 0;
 }
-static inline uint8_t _hb_ucd_sc (unsigned u)
+static anta_hstha uint8_t _hb_ucd_sc (unsigned u)
 {
   /* packtab: [2^8,2^4,2^2,2^3,2^2] */
-  return u<918016u ? (uint8_t)(_hb_ucd_u8[12153u+((_hb_ucd_u8[9817u+_hb_ucd_u16[1712u+((_hb_ucd_u8[9137u+((_hb_ucd_u8[8688u+((((((((u)>>2))>>3))>>2))>>4)])<<4)+((((((((u)>>2))>>3))>>2))&15)])<<2)+((((((u)>>2))>>3))&3)]+((((u)>>2))&7)])<<2)+((u)&3)]) : 2;
+  คืน u<918016u ? (uint8_t)(_hb_ucd_u8[12153u+((_hb_ucd_u8[9817u+_hb_ucd_u16[1712u+((_hb_ucd_u8[9137u+((_hb_ucd_u8[8688u+((((((((u)>>2))>>3))>>2))>>4)])<<4)+((((((((u)>>2))>>3))>>2))&15)])<<2)+((((((u)>>2))>>3))&3)]+((((u)>>2))&7)])<<2)+((u)&3)]) : 2;
 }
-static inline uint16_t _hb_ucd_dm (unsigned u)
+static anta_hstha uint16_t _hb_ucd_dm (unsigned u)
 {
   /* packtab: [2^8,2^5,2^4] */
-  return u<195102u ? (uint16_t)(_hb_ucd_u16[2484u+((_hb_ucd_u8[13559u+((_hb_ucd_u8[13177u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
+  คืน u<195102u ? (uint16_t)(_hb_ucd_u16[2484u+((_hb_ucd_u8[13559u+((_hb_ucd_u8[13177u+((((u)>>4))>>5)])<<5)+((((u)>>4))&31)])<<4)+((u)&15)]) : 0;
 }
 
 

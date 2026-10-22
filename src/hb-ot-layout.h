@@ -24,7 +24,7 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ถ้า !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -109,9 +109,9 @@ HB_BEGIN_DECLS
 HB_EXTERN void
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     unsigned จำนวนเต็ม *script_count /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     unsigned จำนวนเต็ม *language_count /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_script_t
@@ -145,7 +145,7 @@ hb_ot_layout_has_glyph_classes (hb_face_t *face);
  * The GDEF classes defined for glyphs.
  *
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED	= 0,
   HB_OT_LAYOUT_GLYPH_CLASS_BASE_GLYPH	= 1,
   HB_OT_LAYOUT_GLYPH_CLASS_LIGATURE	= 2,
@@ -164,20 +164,20 @@ hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
 
 /* Not that useful.  Provides list of attach points for a glyph that a
  * client may want to cache */
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */);
+				unsigned จำนวนเต็ม    start_offset,
+				unsigned จำนวนเต็ม   *point_count /* IN/OUT */,
+				unsigned จำนวนเต็ม   *point_array /* OUT */);
 
 /* Ligature caret positions */
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  unsigned จำนวนเต็ม    start_offset,
+				  unsigned จำนวนเต็ม   *caret_count /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */);
 
 
@@ -210,109 +210,109 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
  */
 #define HB_OT_LAYOUT_NO_VARIATIONS_INDEX	0xFFFFFFFFu
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    unsigned จำนวนเต็ม  start_offset,
+				    unsigned จำนวนเต็ม *script_count /* IN/OUT */,
 				    hb_tag_t     *script_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_find_script (hb_face_t    *face,
 				hb_tag_t      table_tag,
 				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */);
+				unsigned จำนวนเต็ม *script_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
+				  unsigned จำนวนเต็ม    script_count,
 				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index /* OUT */,
+				  unsigned จำนวนเต็ม   *script_index /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     unsigned จำนวนเต็ม  start_offset,
+				     unsigned จำนวนเต็ม *feature_count /* IN/OUT */,
 				     hb_tag_t     *feature_tags /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       unsigned จำนวนเต็ม  script_index,
+				       unsigned จำนวนเต็ม  start_offset,
+				       unsigned จำนวนเต็ม *language_count /* IN/OUT */,
 				       hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned จำนวนเต็ม    script_index,
+				     unsigned จำนวนเต็ม    language_count,
 				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */);
+				     unsigned จำนวนเต็ม   *language_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned จำนวนเต็ม    script_index,
+				     unsigned จำนวนเต็ม    language_count,
 				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
+				     unsigned จำนวนเต็ม   *language_index /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */);
+						  unsigned จำนวนเต็ม  script_index,
+						  unsigned จำนวนเต็ม  language_index,
+						  unsigned จำนวนเต็ม *feature_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
+					    unsigned จำนวนเต็ม  script_index,
+					    unsigned จำนวนเต็ม  language_index,
+					    unsigned จำนวนเต็ม *feature_index /* OUT */,
 					    hb_tag_t     *feature_tag /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */);
+					   unsigned จำนวนเต็ม  script_index,
+					   unsigned จำนวนเต็ม  language_index,
+					   unsigned จำนวนเต็ม  start_offset,
+					   unsigned จำนวนเต็ม *feature_count /* IN/OUT */,
+					   unsigned จำนวนเต็ม *feature_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					unsigned จำนวนเต็ม  script_index,
+					unsigned จำนวนเต็ม  language_index,
+					unsigned จำนวนเต็ม  start_offset,
+					unsigned จำนวนเต็ม *feature_count /* IN/OUT */,
 					hb_tag_t     *feature_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_find_feature (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
+				    unsigned จำนวนเต็ม  script_index,
+				    unsigned จำนวนเต็ม  language_index,
 				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */);
+				    unsigned จำนวนเต็ม *feature_index /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */);
+				  unsigned จำนวนเต็ม  feature_index,
+				  unsigned จำนวนเต็ม  start_offset,
+				  unsigned จำนวนเต็ม *lookup_count /* IN/OUT */,
+				  unsigned จำนวนเต็ม *lookup_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
 				     hb_tag_t      table_tag);
 
@@ -342,7 +342,7 @@ hb_ot_layout_collect_lookups (hb_face_t      *face,
 HB_EXTERN void
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
+				    unsigned จำนวนเต็ม  lookup_index,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
@@ -354,18 +354,18 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */);
+					    const จำนวนเต็ม    *coords,
+					    unsigned จำนวนเต็ม  num_coords,
+					    unsigned จำนวนเต็ม *variations_index /* out */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */);
+						  unsigned จำนวนเต็ม  feature_index,
+						  unsigned จำนวนเต็ม  variations_index,
+						  unsigned จำนวนเต็ม  start_offset,
+						  unsigned จำนวนเต็ม *lookup_count /* IN/OUT */,
+						  unsigned จำนวนเต็ม *lookup_indexes /* OUT */);
 
 
 /*
@@ -391,14 +391,14 @@ hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
+				      unsigned จำนวนเต็ม          lookup_index,
 				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      unsigned จำนวนเต็ม          glyphs_length,
 				      hb_bool_t             zero_context);
 
 HB_EXTERN void
 hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
+					unsigned จำนวนเต็ม  lookup_index,
 					hb_set_t     *glyphs
 					/*TODO , hb_bool_t  inclusive */);
 
@@ -419,11 +419,11 @@ hb_ot_layout_has_positioning (hb_face_t *face);
  * https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+			      unsigned จำนวนเต็ม    *design_size,       /* OUT.  May be NULL */
+			      unsigned จำนวนเต็ม    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */);
+			      unsigned จำนวนเต็ม    *range_start,       /* OUT.  May be NULL */
+			      unsigned จำนวนเต็ม    *range_end          /* OUT.  May be NULL */);
 
 HB_EXTERN hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
@@ -439,20 +439,20 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
 HB_EXTERN hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   unsigned จำนวนเต็ม     feature_index,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
+				   unsigned จำนวนเต็ม    *num_named_parameters /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     unsigned จำนวนเต็ม    feature_index,
+				     unsigned จำนวนเต็ม    start_offset,
+				     unsigned จำนวนเต็ม   *char_count    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -500,7 +500,7 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 2.6.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
   HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
   HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),

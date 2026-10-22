@@ -57,27 +57,27 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
+template <unsigned จำนวนเต็ม key_bits=16,
+	 unsigned จำนวนเต็ม value_bits=8 + 32 - key_bits,
+	 unsigned จำนวนเต็ม cache_bits=8,
 	 bool thread_safe=true>
-struct hb_cache_t
+sa_nracanaa hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
+								     hb_atomic_t<unsigned var_na>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned จำนวนเต็ม>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
+								     unsigned var_na,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned จำนวนเต็ม>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((key_bits + value_bits <= cache_bits + 8 * parimaa_na (item_t)), "");
 
   static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
 
@@ -85,32 +85,32 @@ struct hb_cache_t
 
   void clear ()
   {
-    for (auto &v : values)
+    สำหรับ (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  bool get (unsigned จำนวนเต็ม key, unsigned จำนวนเต็ม *value) const
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned จำนวนเต็ม k = key & ((1u<<cache_bits)-1);
+    unsigned จำนวนเต็ม v = values[k];
+    constexpr unsigned จำนวนเต็ม empty = (1ULL << (8 * parimaa_na (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    ถ้า ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+	((key_bits + value_bits - cache_bits == 8 * parimaa_na (item_t)) && (v == empty)))
+      คืน false;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    คืน true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  void set (unsigned จำนวนเต็ม key, unsigned จำนวนเต็ม value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    ถ้า (unlikely ((key >> key_bits) || (value >> value_bits)))
+      คืน; /* Overflows */
+    unsigned จำนวนเต็ม k = key & ((1u<<cache_bits)-1);
+    unsigned จำนวนเต็ม v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 

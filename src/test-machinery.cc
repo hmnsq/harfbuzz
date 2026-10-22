@@ -25,22 +25,22 @@
 #include "hb.hh"
 #include "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+sa_nracanaa hb_intp_lazy_loader_t : hb_lazy_loader_t<จำนวนเต็ม, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  static จำนวนเต็ม* create () { คืน nullptr; }
+  static void destroy (จำนวนเต็ม* l) {}
+  static จำนวนเต็ม* get_null () { คืน nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+sa_nracanaa hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
+  static void* create () { คืน nullptr; }
   static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  static void* get_null () { คืน nullptr; }
 };
 
-int
-main (int argc, char **argv)
+จำนวนเต็ม
+หลัก (จำนวนเต็ม argc, var_na **argv)
 {
-  return 0;
+  คืน 0;
 }

@@ -34,17 +34,17 @@ test_cache ()
   unsigned keys[] = {0, 1, 255, 256, key_max};
   unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
 
-  for (unsigned key : keys)
+  สำหรับ (unsigned key : keys)
     hb_always_assert (!cache.get (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  สำหรับ (unsigned key : overflow_keys)
+    ถ้า (key > key_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  สำหรับ (unsigned key : keys)
   {
     cache.set (key, 0);
     hb_always_assert (cache.get (key, &value) && value == 0);
@@ -53,8 +53,8 @@ test_cache ()
   cache.set (42, cache.MAX_VALUE);
   hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  สำหรับ (unsigned key : overflow_keys)
+    ถ้า (key > key_max)
     {
       cache.set (key, 0);
       hb_always_assert (!cache.get (key, &value));
@@ -64,7 +64,7 @@ test_cache ()
   hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
 
   cache.clear ();
-  for (unsigned key : keys)
+  สำหรับ (unsigned key : keys)
     hb_always_assert (!cache.get (key, &value));
 }
 
@@ -81,8 +81,8 @@ test_caches ()
   test_cache<24, 16, 8, thread_safe> ();
 }
 
-int
-main (int argc, char **argv)
+จำนวนเต็ม
+หลัก (จำนวนเต็ม argc, var_na **argv)
 {
   test_caches<true> ();
   test_caches<false> ();

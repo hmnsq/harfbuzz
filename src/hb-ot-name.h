@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ถ้า !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -71,7 +71,7 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef enum
+typedef ga_nanaa
 {
   HB_OT_NAME_ID_COPYRIGHT		= 0,
   HB_OT_NAME_ID_FONT_FAMILY		= 1,
@@ -112,7 +112,7 @@ typedef enum
  *
  * Since: 2.0.0
  **/
-typedef unsigned int hb_ot_name_id_t;
+typedef unsigned จำนวนเต็ม hb_ot_name_id_t;
 
 
 /**
@@ -124,7 +124,7 @@ typedef unsigned int hb_ot_name_id_t;
  *
  * Since: 2.1.0
  **/
-typedef struct hb_ot_name_entry_t {
+typedef sa_nracanaa hb_ot_name_entry_t {
   hb_ot_name_id_t name_id;
   /*< private >*/
   hb_var_int_t    var;
@@ -134,28 +134,28 @@ typedef struct hb_ot_name_entry_t {
 
 HB_EXTERN const hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */);
+		       unsigned จำนวนเต็ม *num_entries /* OUT */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */);
+		     unsigned จำนวนเต็ม    *text_size /* IN/OUT */,
+		     var_na            *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned จำนวนเต็ม    *text_size /* IN/OUT */,
 		      uint16_t        *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      unsigned จำนวนเต็ม    *text_size /* IN/OUT */,
 		      uint32_t        *text      /* OUT */);
 
 

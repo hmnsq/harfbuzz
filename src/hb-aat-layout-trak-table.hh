@@ -43,13 +43,13 @@
 namespace AAT {
 
 
-struct TrackTableEntry
+sa_nracanaa TrackTableEntry
 {
-  friend struct TrackData;
+  friend sa_nracanaa TrackData;
 
-  float get_track_value () const { return track.to_float (); }
+  float get_track_value () const { คืน track.to_float (); }
 
-  float interpolate_at (unsigned int idx,
+  float interpolate_at (unsigned จำนวนเต็ม idx,
 			float ptem,
 			const void *base,
 			hb_array_t<const F16DOT16> size_table) const
@@ -58,18 +58,18 @@ struct TrackTableEntry
 
     float s0 = size_table[idx].to_float ();
     float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    จำนวนเต็ม v0 = values[idx];
+    จำนวนเต็ม v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
+    ถ้า (unlikely (s1 < s0))
     { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    ถ้า (unlikely (ptem < s0)) คืน v0;
+    ถ้า (unlikely (ptem > s1)) คืน v1;
+    ถ้า (unlikely (s0 == s1)) คืน (v0 + v1) * 0.5f;
 
     float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    คืน v0 + t * (v1 - v0);
   }
 
   float get_value (float ptem,
@@ -78,43 +78,43 @@ struct TrackTableEntry
   {
     const FWORD *values = (base+valuesZ).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    unsigned จำนวนเต็ม n_sizes = size_table.length;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    ถ้า (!n_sizes) คืน 0.f;
+    ถ้า (n_sizes == 1) คืน values[0];
 
     // At least two entries.
 
     unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
-	break;
+    สำหรับ (i = 0; i < n_sizes; i++)
+      ถ้า (size_table[i].to_float () >= ptem)
+	bha_nga;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    ถ้า (i == 0)       คืน values[0];
+    ถ้า (i == n_sizes) คืน values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    ถ้า (size_table[i].to_float () == ptem) คืน values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    คืน interpolate_at (i - 1, ptem, base, size_table);
   }
 
   public:
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *base,
-		 unsigned int n_sizes) const
+		 unsigned จำนวนเต็ม n_sizes) const
   {
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
 			  (valuesZ.sanitize (c, base, n_sizes))));
   }
 
-  protected:
+  rak_sita:
   F16DOT16	track;		/* Track value for this record. */
   OT::NameID	trackNameID;	/* The 'name' table index for this track.
 				 * (a short word or phrase like "loose"
@@ -127,15 +127,15 @@ struct TrackTableEntry
   DEFINE_SIZE_STATIC (8);
 };
 
-struct TrackData
+sa_nracanaa TrackData
 {
   float get_tracking (const void *base, float ptem, float track = 0.f) const
   {
     unsigned count = nTracks;
     hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    ถ้า (!count) คืน 0.f;
+    ถ้า (count == 1) คืน trackTable[0].get_value (ptem, base, size_table);
 
     // At least two entries.
 
@@ -143,13 +143,13 @@ struct TrackData
     unsigned j = count - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    ขณะ (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    ขณะ (j > 0 && trackTable[j - 1].get_track_value () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    ถ้า (i == j) คืน trackTable[i].get_value (ptem, base, size_table);
 
     // Interpolate.
 
@@ -160,7 +160,7 @@ struct TrackData
 
     float a = trackTable[i].get_value (ptem, base, size_table);
     float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    คืน a + t * (b - a);
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -172,7 +172,7 @@ struct TrackData
 			  trackTable.sanitize (c, nTracks, base, nSizes)));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	nTracks;	/* Number of separate tracks included in this table. */
   HBUINT16	nSizes;		/* Number of point sizes included in this table. */
   NNOffset32To<UnsizedArrayOf<F16DOT16>>
@@ -185,32 +185,32 @@ struct TrackData
   DEFINE_SIZE_ARRAY (8, trackTable);
 };
 
-struct trak
+sa_nracanaa trak
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { คืน version.to_int (); }
 
   hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
   {
     float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    คืน font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
   }
   hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
   {
     float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    คืน font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
   }
   hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
   {
 #ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+    ถ้า (!font->face->table.STAT->has_data ())
+      คืน 0;
+    คืน HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
+#มิฉะนั้น
+    คืน 0;
 #endif
   }
 
@@ -219,20 +219,20 @@ struct trak
     TRACE_APPLY (this);
 
     float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    ถ้า (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
       ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
     }
 
     hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    ถ้า (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     {
       hb_position_t advance_to_add = get_h_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
 	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
     }
-    else
+    มิฉะนั้น
     {
       hb_position_t advance_to_add = get_v_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
@@ -253,7 +253,7 @@ struct trak
 			  vertData.sanitize (c, this, this)));
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the tracking table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the tracking table (set to 0). */

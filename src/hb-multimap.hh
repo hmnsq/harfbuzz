@@ -34,25 +34,25 @@
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+sa_nracanaa hb_multimap_t
 {
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    ถ้า (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      คืน;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ถ้า (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      คืน;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ถ้า (singulars.has (k, &v))
+      คืน hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    ถ้า (multiples.has (k, &m))
+      คืน m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    คืน hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    ถ้า (singulars.in_error () || multiples.in_error ())
+      คืน true;
+    สำหรับ (const auto &m : multiples.values_ref ())
+      ถ้า (m.in_error ())
+        คืน true;
+    คืน false;
   }
 
   void alloc (unsigned size)
@@ -86,7 +86,7 @@ struct hb_multimap_t
     singulars.alloc (size);
   }
 
-  protected:
+  rak_sita:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

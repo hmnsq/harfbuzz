@@ -31,10 +31,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+จำนวนเต็ม
+หลัก (จำนวนเต็ม argc, var_na **argv)
 {
-  if (argc != 2) {
+  ถ้า (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -47,35 +47,35 @@ main (int argc, char **argv)
   blob = nullptr;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  const unsigned จำนวนเต็ม num_glyphs = hb_face_get_glyph_count (face);
+  จำนวนเต็ม	result = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  สำหรับ (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    var_na buf[64];
+    unsigned จำนวนเต็ม buf_size = parimaa_na (buf);
+    ถ้า (hb_font_get_glyph_name (font, gid, buf, buf_size))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      ถ้า (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	ถ้า (gid == gid_inv)
 	{
 	  printf ("%u <-> %s\n", gid, buf);
 	}
-	else
+	มิฉะนั้น
 	{
 	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
 	  result = 0;
 	}
       }
-      else
+      มิฉะนั้น
       {
 	printf ("%u -> %s -> ?\n", gid, buf);
 	result = 0;
       }
     }
-    else
+    มิฉะนั้น
     {
       printf ("%u -> ?\n", gid);
       result = 0;
@@ -85,5 +85,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  คืน !result;
 }

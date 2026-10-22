@@ -24,7 +24,7 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ถ้า !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -66,7 +66,7 @@ HB_BEGIN_DECLS
  *   @HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, however, using that mode
  *   correctly is very tricky.  Use @HB_MEMORY_MODE_READONLY instead.
  **/
-typedef enum {
+typedef ga_nanaa {
   HB_MEMORY_MODE_DUPLICATE,
   HB_MEMORY_MODE_READONLY,
   HB_MEMORY_MODE_WRITABLE,
@@ -81,27 +81,27 @@ typedef enum {
  * a client program and HarfBuzz.
  *
  **/
-typedef struct hb_blob_t hb_blob_t;
+typedef sa_nracanaa hb_blob_t hb_blob_t;
 
 HB_EXTERN hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
+hb_blob_create (const var_na        *data,
+		unsigned จำนวนเต็ม       length,
 		hb_memory_mode_t   mode,
 		void              *user_data,
 		hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+hb_blob_create_or_fail (const var_na        *data,
+			unsigned จำนวนเต็ม       length,
 			hb_memory_mode_t   mode,
 			void              *user_data,
 			hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file (const char *file_name);
+hb_blob_create_from_file (const var_na *file_name);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name);
+hb_blob_create_from_file_or_fail (const var_na *file_name);
 
 /* Always creates with MEMORY_MODE_READONLY.
  * Even if the parent blob is writable, we don't
@@ -111,8 +111,8 @@ hb_blob_create_from_file_or_fail (const char *file_name);
  */
 HB_EXTERN hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length);
+			 unsigned จำนวนเต็ม  offset,
+			 unsigned จำนวนเต็ม  length);
 
 HB_EXTERN hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob);
@@ -146,14 +146,14 @@ HB_EXTERN hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned จำนวนเต็ม
 hb_blob_get_length (hb_blob_t *blob);
 
-HB_EXTERN const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN const var_na *
+hb_blob_get_data (hb_blob_t *blob, unsigned จำนวนเต็ม *length);
 
-HB_EXTERN char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN var_na *
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned จำนวนเต็ม *length);
 
 HB_END_DECLS
 

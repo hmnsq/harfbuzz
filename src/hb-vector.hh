@@ -33,15 +33,15 @@
 #include "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#ถ้า 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#มิฉะนั้น
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
 template <typename Type,
 	  bool sorted=false>
-struct hb_vector_t
+sa_nracanaa hb_vector_t
 {
   static constexpr bool realloc_move = true;
 
@@ -55,7 +55,7 @@ struct hb_vector_t
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
     alloc (lst.size (), true);
-    for (auto&& item : lst)
+    สำหรับ (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
@@ -68,21 +68,21 @@ struct hb_vector_t
   hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ถ้า (unlikely (in_error ())) คืน;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ถ้า (unlikely (in_error ())) คืน;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    ถ้า (unlikely (in_error ())) คืน;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -120,20 +120,20 @@ struct hb_vector_t
   void extend (const Iterable &o, bool exact=false)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    ถ้า (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
+      ถ้า (unlikely (!alloc (length + hb_len (iter), exact)))
+	คืน;
       unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
+      สำหรับ (unsigned i = 0; i < count; i++)
 	push_has_room (*iter++);
     }
-    while (iter)
+    ขณะ (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      ถ้า (unlikely (!alloc (length + 1)))
+        คืน;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
+      สำหรับ (unsigned i = 0; i < room && iter; i++)
 	push_has_room (*iter++);
     }
   }
@@ -148,8 +148,8 @@ struct hb_vector_t
     bool aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    ถ้า (unlikely (in_error ())) คืน;
+    ถ้า (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
@@ -158,8 +158,8 @@ struct hb_vector_t
   { extend (o.as_array (), exact); }
 
   public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
+  จำนวนเต็ม allocated = 0; /* < 0 means allocation failed. */
+  unsigned จำนวนเต็ม length = 0;
   public:
   Type *arrayZ = nullptr;
 
@@ -174,7 +174,7 @@ struct hb_vector_t
 
   void fini ()
   {
-    if (is_owned ())
+    ถ้า (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    ถ้า (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    คืน *this;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    ถ้า (unlikely (in_error ()))
       reset ();
-    return *this;
+    คืน *this;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, จำนวนเต็ม *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    ถ้า (!is_owned ())
+      คืน nullptr;
+    ถ้า (len)
       *len = length;
-    if (allocated_out)
+    ถ้า (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    คืน p;
   }
 
   /* Adopt a previously detached owned buffer. */
   void
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  จำนวนเต็ม allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -236,121 +236,121 @@ struct hb_vector_t
 
   hb_vector_t& operator = (const hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    ถ้า (this == &o) คืน *this;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    ถ้า (unlikely (in_error ())) คืน *this;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    คืน *this;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
     hb_swap (*this, o);
-    return *this;
+    คืน *this;
   }
 
   hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  { คืน hb_bytes_t ((const var_na *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  bool operator == (const hb_vector_t &o) const { คืน as_array () == o.as_array (); }
+  bool operator != (const hb_vector_t &o) const { คืน !(*this == o); }
+  uint32_t hash () const { คืน as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (จำนวนเต็ม i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned จำนวนเต็ม i = (unsigned จำนวนเต็ม) i_;
+    ถ้า (unlikely (i >= length))
+      คืน Crap (Type);
+    คืน arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  const Type& operator [] (จำนวนเต็ม i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned จำนวนเต็ม i = (unsigned จำนวนเต็ม) i_;
+    ถ้า (unlikely (i >= length))
+      คืน Null (Type);
+    คืน arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { คืน (*this)[length - 1]; }
+  const Type& tail () const { คืน (*this)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator bool () const { คืน length; }
+  size_t get_size () const { คืน hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); คืน *this; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { คืน hb_array (arrayZ, length); }
+  c_array_t as_array () const { คืน hb_array (arrayZ, length); }
 
   /* Iterator. */
   typedef c_array_t   iter_t;
   typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { คืน as_array (); }
+  writer_t writer ()       { คืน as_array (); }
+  operator   iter_t () const { คืน   iter (); }
+  operator writer_t ()       { คืน writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () const { คืน arrayZ; }
+  Type *end () const { คืน arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
+  { คืน hb_sorted_array (arrayZ, length); }
   hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { คืน hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { คืน arrayZ; }
+  template <typename T> explicit operator const T * () const { คืน arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned จำนวนเต็ม i) { คืน arrayZ + i; }
+  const Type * operator  + (unsigned จำนวนเต็ม i) const { คืน arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    ถ้า (unlikely (!resize (length + 1)))
+      คืน std::addressof (Crap (Type));
+    คืน std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    ถ้า (unlikely ((จำนวนเต็ม) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      ถ้า (unlikely (in_error ()))
+	คืน std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      ถ้า (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	ถ้า (unlikely (!alloc (length + 1)))
+	  คืน std::addressof (Crap (Type));
+	คืน push_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      ถ้า (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	คืน std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    คืน push_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool push_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    คืน push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -358,25 +358,25 @@ struct hb_vector_t
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    คืน new (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  bool in_storage () const { คืน false; }
   template <typename T, typename... Ts>
   bool in_storage (const T &v, const Ts &...vs) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    คืน (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
   bool is_owned () const
   {
-    return allocated != 0 && allocated != -1;
+    คืน allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
+  bool in_error () const { คืน allocated < 0; }
   void set_error ()
   {
     assert (allocated >= 0);
@@ -389,53 +389,53 @@ struct hb_vector_t
   }
   void ensure_error ()
   {
-    if (!in_error ())
+    ถ้า (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ถ้า (!new_allocated)
     {
-      if (is_owned ())
+      ถ้า (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      คืน nullptr;
     }
-    if (!allocated && arrayZ)
+    ถ้า (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
-      Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
-      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      Type *new_array = (Type *) hb_malloc (new_allocated * parimaa_na (Type));
+      ถ้า (unlikely (!new_array))
+	คืน nullptr;
+      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * parimaa_na (Type));
+      คืน new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    คืน (Type *) hb_realloc (arrayZ, new_allocated * parimaa_na (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    ถ้า (!new_allocated)
     {
-      if (is_owned ())
+      ถ้า (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      คืน nullptr;
     }
-    Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    Type *new_array = (Type *) hb_malloc (new_allocated * parimaa_na (Type));
+    ถ้า (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      สำหรับ (unsigned i = 0; i < length; i++)
       {
 	new (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      ถ้า (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    คืน new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    คืน _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    คืน _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,7 +458,7 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    คืน _realloc (new_allocated);
   }
 
   template <typename T = Type,
@@ -466,7 +466,7 @@ struct hb_vector_t
   void
   grow_vector (unsigned size, hb_priority<0>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * parimaa_na (*arrayZ));
     length = size;
   }
   template <typename T = Type,
@@ -474,7 +474,7 @@ struct hb_vector_t
   void
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
+    สำหรับ (; length < size; length++)
       new (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
@@ -484,7 +484,7 @@ struct hb_vector_t
   void
   grow_vector (unsigned size, hb_priority<1>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * parimaa_na (*arrayZ));
     length = size;
   }
 
@@ -510,7 +510,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    สำหรับ (unsigned i = 0; i < other.length; i++)
       new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
@@ -522,7 +522,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    สำหรับ (unsigned i = 0; i < other.length; i++)
     {
       new (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
@@ -534,11 +534,11 @@ struct hb_vector_t
   shrink_vector (unsigned size)
   {
     assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    ถ้า (!hb_is_trivially_destructible(Type))
     {
       unsigned count = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      ขณะ (count--)
         (--p)->~Type ();
     }
     length = size;
@@ -547,71 +547,71 @@ struct hb_vector_t
   void
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    สำหรับ (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  bool alloc (unsigned จำนวนเต็ม size, bool exact=false)
   {
-    if (unlikely (in_error ()))
-      return false;
+    ถ้า (unlikely (in_error ()))
+      คืน false;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned จำนวนเต็ม new_allocated;
+    ถ้า (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      ถ้า (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	คืน true;
 
       new_allocated = size;
     }
-    else
+    มิฉะนั้น
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      ถ้า (likely (size <= (unsigned) allocated))
+	คืน true;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      ขณะ (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
     bool overflows =
-      (int) in_error () ||
+      (จำนวนเต็ม) in_error () ||
       (new_allocated < size) ||
-      hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
+      hb_unsigned_mul_overflows (new_allocated, parimaa_na (Type));
 
-    if (unlikely (overflows))
+    ถ้า (unlikely (overflows))
     {
       set_error ();
-      return false;
+      คืน false;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    ถ้า (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      ถ้า (new_allocated <= (unsigned) allocated)
+        คืน true; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      คืน false;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    คืน true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  bool alloc_exact (unsigned จำนวนเต็ม size)
   {
-    return alloc (size, true);
+    คืน alloc (size, true);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -622,100 +622,100 @@ struct hb_vector_t
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned จำนวนเต็ม initialize = true)
   {
-    if (allocator)
+    ถ้า (allocator)
     {
       assert (!length && !allocated);
-      arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      arrayZ = (Type *) allocator->alloc (size * parimaa_na (Type), alignof (Type));
+      ถ้า (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	คืน false;
       }
-      if (initialize)
+      ถ้า (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      มิฉะนั้น
 	length = size;
-      return true;
+      คืน true;
     }
-    return resize_full ((int) size, initialize, true);
+    คืน resize_full ((จำนวนเต็ม) size, initialize, true);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    ถ้า (unlikely (!allocate_from_pool (allocator, other.length, false)))
+      คืน false;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    คืน true;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  void shrink_back_to_pool (allocator_t *allocator, จำนวนเต็ม size)
   {
     unsigned orig_length = length;
 
     shrink (size, false);
 
-    if (allocator && !is_owned ())
-      allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
+    ถ้า (allocator && !is_owned ())
+      allocator->discard (arrayZ + length, (orig_length - length) * parimaa_na (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  bool resize_full (จำนวนเต็ม size_, bool initialize, bool exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    ถ้า (unlikely (size_ < 0))
+      คืน false;
+    unsigned จำนวนเต็ม size = (unsigned จำนวนเต็ม) size_;
+    ถ้า (!alloc (size, exact))
+      คืน false;
 
-    if (size > length)
+    ถ้า (size > length)
     {
-      if (initialize)
+      ถ้า (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    มิฉะนั้น ถ้า (size < length)
     {
-      if (initialize)
+      ถ้า (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    คืน true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  bool resize (จำนวนเต็ม size_)
   {
-    return resize_full (size_, true, false);
+    คืน resize_full (size_, true, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  bool resize_dirty (จำนวนเต็ม size_)
   {
-    return resize_full (size_, false, false);
+    คืน resize_full (size_, false, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  bool resize_exact (จำนวนเต็ม size_)
   {
-    return resize_full (size_, true, true);
+    คืน resize_full (size_, true, true);
   }
 
   Type pop ()
   {
-    if (!length) return Null (Type);
+    ถ้า (!length) คืน Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    คืน v;
   }
 
-  void remove_ordered (unsigned int i)
+  void remove_ordered (unsigned จำนวนเต็ม i)
   {
-    if (unlikely (i >= length))
-      return;
+    ถ้า (unlikely (i >= length))
+      คืน;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
@@ -723,25 +723,25 @@ struct hb_vector_t
 
   template <bool Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  void remove_unordered (unsigned จำนวนเต็ม i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    ถ้า (unlikely (i >= length))
+      คืน;
+    ถ้า (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  void shrink (จำนวนเต็ม size_, bool shrink_memory = true)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned จำนวนเต็ม size = size_ < 0 ? 0u : (unsigned จำนวนเต็ม) size_;
+    ถ้า (size >= length)
+      คืน;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    ถ้า (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
@@ -756,29 +756,29 @@ struct hb_vector_t
   /* Unsorted search API. */
   template <typename T>
   Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  { คืน as_array ().lsearch (x, not_found); }
   template <typename T>
   const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  { คืน as_array ().lsearch (x, not_found); }
   template <typename T>
   bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  { คืน as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+  { คืน as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+  { คืน as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  bool bfind (const T &x, unsigned จำนวนเต็ม *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned จำนวนเต็ม to_store = (unsigned จำนวนเต็ม) -1) const
+  { คืน as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>

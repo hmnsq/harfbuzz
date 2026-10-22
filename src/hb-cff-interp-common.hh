@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+extern HB_INTERNAL const unsigned var_na *endchar_str;
 
 namespace CFF {
 
 using namespace OT;
 
-typedef unsigned int op_code_t;
+typedef unsigned จำนวนเต็ม op_code_t;
 
 
 /* === Dict operators === */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+anta_hstha op_code_t Unmake_OpCode_ESC (op_code_t op)  { คืน (op_code_t)(op - OpCode_ESC_Base); }
+anta_hstha bool Is_OpCode_ESC (op_code_t op) { คืน op >= OpCode_ESC_Base; }
+anta_hstha unsigned จำนวนเต็ม OpCode_Size (op_code_t op) { คืน Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -217,57 +217,57 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+sa_nracanaa number_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  void set_int (จำนวนเต็ม v)       { value = v; }
+  bool to_int (จำนวนเต็ม *v) const
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    ถ้า (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      คืน false;
     }
-    *v = (int) value;
-    return true;
+    *v = (จำนวนเต็ม) value;
+    คืน true;
   }
-  int to_int () const
+  จำนวนเต็ม to_int () const
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    จำนวนเต็ม v;
+    ถ้า (likely (to_int (&v))) คืน v;
+    คืน value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
   void set_fixed (int32_t v) { value = v / 65536.0; }
   int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  { คืน (int32_t) hb_clamp (value * 65536.0, (dviguu_na) INT32_MIN, (dviguu_na) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  void set_real (dviguu_na v)   { value = v; }
+  dviguu_na to_real () const    { คืน value; }
 
   bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  { คืน value >= INT16_MIN && value <= INT16_MAX && (dviguu_na) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  bool operator >  (const number_t &n) const { คืน value > n.to_real (); }
+  bool operator <  (const number_t &n) const { คืน n > *this; }
+  bool operator >= (const number_t &n) const { คืน !(*this < n); }
+  bool operator <= (const number_t &n) const { คืน !(*this > n); }
 
   const number_t &operator += (const number_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    คืน *this;
   }
 
-  protected:
-  double value = 0.;
+  rak_sita:
+  dviguu_na value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+sa_nracanaa UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
   hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  { คืน hb_ubytes_t ((const unsigned var_na *) this, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
@@ -276,21 +276,21 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
     TRACE_SERIALIZE (this);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    ถ้า (unlikely (!p)) return_trace (false);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    ถ้า (unlikely (!ip)) return_trace (false);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
   static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  { คืน serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
   static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  { คืน serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -300,40 +300,40 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+sa_nracanaa byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (const hb_ubytes_t &str_, unsigned จำนวนเต็ม offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  void reset (const hb_ubytes_t &str_, unsigned จำนวนเต็ม offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  const unsigned var_na& operator [] (จำนวนเต็ม i) {
+    ถ้า (unlikely ((unsigned จำนวนเต็ม) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      คืน Null (unsigned var_na);
     }
-    return str.arrayZ[get_offset () + i];
+    คืน str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned var_na head_unchecked () const { คืน str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () const { คืน str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned จำนวนเต็ม offset_, unsigned จำนวนเต็ม len_) const
+  { คืน str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  bool avail (unsigned จำนวนเต็ม count=1) const
+  { คืน get_offset () + count <= str.length; }
+  void inc (unsigned จำนวนเต็ม count=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
     set_offset (get_offset () + count);
@@ -342,107 +342,107 @@ struct byte_str_ref_t
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
+  unsigned get_offset () const { คืน str.backwards_length; }
   void set_offset (unsigned offset) { str.backwards_length = offset; }
 
   void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  bool in_error () const { คืน str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () const { คืน str.length; }
 
-  protected:
+  rak_sita:
   hb_ubytes_t       str;
 };
 
 /* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+template <typename ELEM, จำนวนเต็ม LIMIT>
+sa_nracanaa cff_stack_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned จำนวนเต็ม i)
   {
-    if (unlikely (i >= length))
+    ถ้า (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      คืน Crap (ELEM);
     }
-    return arrayZ[i];
+    คืน arrayZ[i];
   }
 
   void push (const ELEM &v)
   {
-    if (likely (length < LIMIT))
+    ถ้า (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    มิฉะนั้น
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    ถ้า (likely (length < LIMIT))
+      คืน arrayZ[length++];
+    มิฉะนั้น
     {
       set_error ();
-      return Crap (ELEM);
+      คืน Crap (ELEM);
     }
   }
 
   ELEM& pop ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    ถ้า (likely (length > 0))
+      คืน arrayZ[--length];
+    มิฉะนั้น
     {
       set_error ();
-      return Crap (ELEM);
+      คืน Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  void pop (unsigned จำนวนเต็ม n)
   {
-    if (likely (length >= n))
+    ถ้า (likely (length >= n))
       length -= n;
-    else
+    มิฉะนั้น
       set_error ();
   }
 
   const ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    ถ้า (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      คืน Null (ELEM);
     }
-    return arrayZ[length - 1];
+    คืน arrayZ[length - 1];
   }
 
   void unpop ()
   {
-    if (likely (length < LIMIT))
+    ถ้า (likely (length < LIMIT))
       length++;
-    else
+    มิฉะนั้น
       set_error ();
   }
 
   void clear () { length = 0; }
 
-  bool in_error () const { return (error); }
+  bool in_error () const { คืน (error); }
   void set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned จำนวนเต็ม get_count () const { คืน length; }
+  bool is_empty () const          { คืน !length; }
 
   hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  { คืน hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
 
   bool error = false;
-  unsigned int length = 0;
+  unsigned จำนวนเต็ม length = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
 template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+sa_nracanaa arg_stack_t : cff_stack_t<ARG, 513>
 {
-  void push_int (int v)
+  void push_int (จำนวนเต็ม v)
   {
     ARG &n = S::push ();
     n.set_int (v);
@@ -454,46 +454,46 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  void push_real (dviguu_na v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& pop_num () { คืน this->pop (); }
 
-  int pop_int ()
+  จำนวนเต็ม pop_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    จำนวนเต็ม v;
+    ถ้า (unlikely (!this->pop ().to_int (&v)))
       S::set_error ();
-    return v;
+    คืน v;
   }
 
-  unsigned int pop_uint ()
+  unsigned จำนวนเต็ม pop_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    จำนวนเต็ม i = pop_int ();
+    ถ้า (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    คืน (unsigned) i;
   }
 
   void push_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    push_int ((จำนวนเต็ม) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
   bool push_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
+    ถ้า (unlikely (!str_ref.avail (4)))
+      คืน false;
     push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    คืน true;
   }
 
   private:
@@ -501,13 +501,13 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+sa_nracanaa op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  const unsigned var_na *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
@@ -515,24 +515,24 @@ struct op_str_t
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+sa_nracanaa op_serializer_t
 {
-  protected:
+  rak_sita:
   bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
   {
     TRACE_SERIALIZE (this);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned var_na *d = c->allocate_size<unsigned var_na> (opstr.length);
+    ถ้า (unlikely (!d)) return_trace (false);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    สำหรับ (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
     return_trace (true);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+sa_nracanaa parsed_values_t
 {
   void init ()
   {
@@ -558,20 +558,20 @@ struct parsed_values_t
 
   bool has_op (op_code_t op) const
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    สำหรับ (const auto& v : values)
+      ถ้า (v.op == op) คืน true;
+    คืน false;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_count () const { คืน values.length; }
+  const VAL &operator [] (unsigned จำนวนเต็ม i) const { คืน values[i]; }
 
-  unsigned int       opStart;
+  unsigned จำนวนเต็ม       opStart;
   hb_vector_t<VAL>   values;
 };
 
 template <typename ARG=number_t>
-struct interp_env_t
+sa_nracanaa interp_env_t
 {
   interp_env_t () {}
   interp_env_t (const hb_ubytes_t &str_)
@@ -579,30 +579,30 @@ struct interp_env_t
     str_ref.reset (str_);
   }
   bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  { คืน str_ref.in_error () || argStack.in_error (); }
 
   void set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    ถ้า (unlikely (!str_ref.avail ()))
+      คืน OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    ถ้า (op == OpCode_escape) {
+      ถ้า (unlikely (!str_ref.avail ()))
+	คืน OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    คืน op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  const ARG& eval_arg (unsigned จำนวนเต็ม i) { คืน argStack[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& pop_arg () { คืน argStack.pop (); }
+  void pop_n_args (unsigned จำนวนเต็ม n) { argStack.pop (n); }
 
   void clear_args () { pop_n_args (argStack.get_count ()); }
 
@@ -615,44 +615,44 @@ struct interp_env_t
 using num_interp_env_t =  interp_env_t<>;
 
 template <typename ARG=number_t>
-struct opset_t
+sa_nracanaa opset_t
 {
   static void process_op (op_code_t op, interp_env_t<ARG>& env)
   {
     switch (op) {
-      case OpCode_shortint:
+      pak_sa OpCode_shortint:
 	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	bha_nga;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
+      pak_sa OpCode_TwoBytePosInt0: pak_sa OpCode_TwoBytePosInt1:
+      pak_sa OpCode_TwoBytePosInt2: pak_sa OpCode_TwoBytePosInt3:
 	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	bha_nga;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
+      pak_sa OpCode_TwoByteNegInt0: pak_sa OpCode_TwoByteNegInt1:
+      pak_sa OpCode_TwoByteNegInt2: pak_sa OpCode_TwoByteNegInt3:
 	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	bha_nga;
 
       default:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	ถ้า (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.argStack.push_int ((จำนวนเต็ม)op - 139);
+	} มิฉะนั้น {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}
-	break;
+	bha_nga;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+sa_nracanaa interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;
