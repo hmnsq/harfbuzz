@@ -24,203 +24,203 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
-#include "../OT/Layout/GSUB/ExtensionSubst.hh"
-#include "../OT/Layout/GSUB/SubstLookupSubTable.hh"
-#include "gsubgpos-context.hh"
-#include "pairpos-graph.hh"
-#include "markbasepos-graph.hh"
-#include "ligature-graph.hh"
+#अन्तर्भाव "graph.hh"
+#अन्तर्भाव "../hb-ot-layout-gsubgpos.hh"
+#अन्तर्भाव "../OT/Layout/GSUB/ExtensionSubst.hh"
+#अन्तर्भाव "../OT/Layout/GSUB/SubstLookupSubTable.hh"
+#अन्तर्भाव "gsubgpos-context.hh"
+#अन्तर्भाव "pairpos-graph.hh"
+#अन्तर्भाव "markbasepos-graph.hh"
+#अन्तर्भाव "ligature-graph.hh"
 
 #ifndef GRAPH_GSUBGPOS_GRAPH_HH
 #define GRAPH_GSUBGPOS_GRAPH_HH
 
-namespace graph {
+नामाकाश graph {
 
-struct Lookup;
+संरचना Lookup;
 
 template<typename T>
-struct ExtensionFormat1 : public OT::ExtensionFormat1<T>
+संरचना ExtensionFormat1 : सार्वजनिक OT::ExtensionFormat1<T>
 {
-  void reset(unsigned type)
+  शून्य reset(unsigned type)
   {
-    this->format = 1;
-    this->extensionLookupType = type;
-    this->extensionOffset = 0;
+    एतत्->format = 1;
+    एतत्->extensionLookupType = type;
+    एतत्->extensionOffset = 0;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (ध्रुव graph_t::vertex_t& vertex) ध्रुव
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::ExtensionFormat1<T>::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < OT::ExtensionFormat1<T>::static_size))
+      प्रत्यागम Err(SANITIZE_FAILURE);
+    प्रत्यागम Ok();
   }
 
-  unsigned get_lookup_type () const
+  unsigned get_lookup_type () ध्रुव
   {
-    return this->extensionLookupType;
+    प्रत्यागम एतत्->extensionLookupType;
   }
 
-  graph_result_t<unsigned> get_subtable_index (graph_t& graph, unsigned this_index) const
+  graph_result_t<unsigned> get_subtable_index (graph_t& graph, unsigned this_index) ध्रुव
   {
-    return graph.index_for_offset (this_index, &this->extensionOffset);
+    प्रत्यागम graph.index_for_offset (this_index, &एतत्->extensionOffset);
   }
 };
 
-struct Lookup : public OT::Lookup
+संरचना Lookup : सार्वजनिक OT::Lookup
 {
-  unsigned number_of_subtables () const
+  unsigned संख्या_of_subtables () ध्रुव
   {
-    return subTable.len;
+    प्रत्यागम subTable.len;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (ध्रुव graph_t::vertex_t& vertex) ध्रुव
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Lookup::min_size)) return Err(SANITIZE_FAILURE);
+    यदि (unlikely (vertex_len < OT::Lookup::min_size)) प्रत्यागम Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < this->get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < एतत्->get_size ())) प्रत्यागम Err(SANITIZE_FAILURE);
+    प्रत्यागम Ok();
   }
 
-  bool is_extension (hb_tag_t table_tag) const
+  तार्किक is_extension (hb_tag_t table_tag) ध्रुव
   {
-    return lookupType == extension_type (table_tag);
+    प्रत्यागम lookupType == extension_type (table_tag);
   }
 
-  bool use_mark_filtering_set () const
+  तार्किक use_mark_filtering_set () ध्रुव
   {
     unsigned flag = lookupFlag;
-    return flag & 0x0010u;
+    प्रत्यागम flag & 0x0010u;
   }
 
-  graph_result_t<void> make_extension (gsubgpos_graph_context_t& c,
+  graph_result_t<शून्य> make_extension (gsubgpos_graph_context_t& c,
                                        unsigned this_index)
   {
     unsigned type = lookupType;
     unsigned ext_type = extension_type (c.table_tag);
-    if (!ext_type || is_extension (c.table_tag))
+    यदि (!ext_type || is_extension (c.table_tag))
     {
       // NOOP
-      return Ok();
+      प्रत्यागम Ok();
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_संदेश (SUBSET_REPACK, nullptr,
                "Promoting lookup type %u (obj %u) to extension.",
                type,
                this_index);
 
     hb_set_t seen;
     hb_vector_t<unsigned> subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    प्रति (unsigned i = 0; i < subTable.len; i++)
     {
       TRY_ASSIGN (unsigned subtable_index, c.graph.index_for_offset (this_index, &subTable[i]));
-      if (seen.has (subtable_index))
-        continue;
+      यदि (seen.has (subtable_index))
+        अनुवर्त;
       seen.add (subtable_index);
       subtables.push (subtable_index);
     }
-    TRY (graph_result_t<void>::from (seen, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (subtables, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (seen, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (subtables, ALLOCATION_FAILURE));
 
-    for (unsigned subtable_index : subtables)
+    प्रति (unsigned subtable_index : subtables)
       TRY (make_subtable_extension (c, this_index, subtable_index));
 
     lookupType = ext_type;
-    return Ok();
+    प्रत्यागम Ok();
   }
 
-  graph_result_t<void> split_subtables_if_needed (gsubgpos_graph_context_t& c,
+  graph_result_t<शून्य> split_subtables_if_needed (gsubgpos_graph_context_t& c,
                                                   unsigned this_index)
   {
     unsigned type = lookupType;
-    bool is_ext = is_extension (c.table_tag);
+    तार्किक is_ext = is_extension (c.table_tag);
 
-    if (c.table_tag != HB_OT_TAG_GPOS && c.table_tag != HB_OT_TAG_GSUB)
-      return Ok();
+    यदि (c.table_tag != HB_OT_TAG_GPOS && c.table_tag != HB_OT_TAG_GSUB)
+      प्रत्यागम Ok();
 
-    if (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-      return Ok();
+    यदि (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+      प्रत्यागम Ok();
 
     hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>> all_new_subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    प्रति (unsigned i = 0; i < subTable.len; i++)
     {
       // This assumes we are working with something like a GSUB/GPOS table, if
       // sanitization fails we ignore and skip splitting for the particular sub table.
       auto idx_res = c.graph.index_for_offset (this_index, &subTable[i]);
-      if (!idx_res.is_ok ()) continue;
+      यदि (!idx_res.is_ok ()) अनुवर्त;
       unsigned subtable_index = *idx_res;
-      if (is_ext) {
+      यदि (is_ext) {
         unsigned ext_subtable_index = subtable_index;
         ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
             (ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*)
             c.graph.object (ext_subtable_index).head;
-        if (!extension || !extension->sanitize (c.graph.vertices_[ext_subtable_index]).is_ok ())
-          continue;
+        यदि (!extension || !extension->sanitize (c.graph.vertices_[ext_subtable_index]).is_ok ())
+          अनुवर्त;
 
         TRY_ASSIGN (subtable_index, extension->get_subtable_index (c.graph, ext_subtable_index));
         type = extension->get_lookup_type ();
-        if (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-          continue;
+        यदि (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+          अनुवर्त;
       }
 
       hb_vector_t<unsigned>* split_result;
-      if (c.split_subtables.has (subtable_index, &split_result))
+      यदि (c.split_subtables.has (subtable_index, &split_result))
       {
-        if (split_result->length == 0)
-          continue;
+        यदि (split_result->length == 0)
+          अनुवर्त;
         all_new_subtables.push (hb_pair(i, *split_result));
-        TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+        TRY (graph_result_t<शून्य>::from (all_new_subtables, ALLOCATION_FAILURE));
       }
-      else
+      अन्यथा
       {
         hb_vector_t<unsigned> new_sub_tables;
 
-        if (c.table_tag == HB_OT_TAG_GPOS) {
-          switch (type)
+        यदि (c.table_tag == HB_OT_TAG_GPOS) {
+          विकल्प (type)
           {
-          case 2:
+          पक्ष 2:
             {
               TRY_ASSIGN (new_sub_tables, split_subtable<PairPos> (c, subtable_index));
-              break;
+              भङ्ग;
             }
-          case 4:
+          पक्ष 4:
             {
               TRY_ASSIGN (new_sub_tables, split_subtable<MarkBasePos> (c, subtable_index));
-              break;
+              भङ्ग;
             }
-          default:
-            break;
+          स्वभाव:
+            भङ्ग;
           }
-        } else if (c.table_tag == HB_OT_TAG_GSUB) {
-          switch (type)
+        } अन्यथा यदि (c.table_tag == HB_OT_TAG_GSUB) {
+          विकल्प (type)
           {
-          case 4:
+          पक्ष 4:
             {
               TRY_ASSIGN (new_sub_tables, split_subtable<graph::LigatureSubst> (c, subtable_index));
-              break;
+              भङ्ग;
             }
-          default:
-            break;
+          स्वभाव:
+            भङ्ग;
           }
         }
 
         c.split_subtables.set (subtable_index, new_sub_tables);
-        TRY (graph_result_t<void>::from (c.split_subtables, ALLOCATION_FAILURE));
-        if (new_sub_tables) {
+        TRY (graph_result_t<शून्य>::from (c.split_subtables, ALLOCATION_FAILURE));
+        यदि (new_sub_tables) {
           all_new_subtables.push (hb_pair (i, std::move (new_sub_tables)));
-          TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+          TRY (graph_result_t<शून्य>::from (all_new_subtables, ALLOCATION_FAILURE));
         }
       }
     }
 
-    if (all_new_subtables) {
+    यदि (all_new_subtables) {
       TRY (add_sub_tables (c, this_index, type, all_new_subtables));
     }
 
-    return Ok();
+    प्रत्यागम Ok();
   }
 
   template<typename T>
@@ -228,38 +228,38 @@ struct Lookup : public OT::Lookup
                                                         unsigned objidx)
   {
     T* sub_table = (T*) c.graph.object (objidx).head;
-    if (!sub_table || !sub_table->sanitize (c.graph.vertices_[objidx]).is_ok ())
-      return Ok(hb_vector_t<unsigned> ());
+    यदि (!sub_table || !sub_table->sanitize (c.graph.vertices_[objidx]).is_ok ())
+      प्रत्यागम Ok(hb_vector_t<unsigned> ());
 
-    return sub_table->split_subtables (c, objidx);
+    प्रत्यागम sub_table->split_subtables (c, objidx);
   }
 
-  graph_result_t<void> add_sub_tables (gsubgpos_graph_context_t& c,
+  graph_result_t<शून्य> add_sub_tables (gsubgpos_graph_context_t& c,
                                        unsigned this_index,
                                        unsigned type,
-                                       const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+                                       ध्रुव hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
   {
-    bool is_ext = is_extension (c.table_tag);
+    तार्किक is_ext = is_extension (c.table_tag);
     auto* v = &c.graph.vertices_[this_index];
     fix_existing_subtable_links (c, this_index, subtable_ids);
 
-    unsigned new_subtable_count = 0;
-    for (const auto& p : subtable_ids)
-      new_subtable_count += p.second.length;
+    unsigned new_subtable_गिनती = 0;
+    प्रति (ध्रुव auto& p : subtable_ids)
+      new_subtable_गिनती += p.second.length;
 
     size_t new_size = v->table_size ()
-                      + new_subtable_count * OT::Offset16::static_size;
-    char* buffer = (char*) hb_calloc (1, new_size);
-    if (unlikely (!buffer)) return Err(ALLOCATION_FAILURE);
+                      + new_subtable_गिनती * OT::Offset16::static_size;
+    वर्ण* buffer = (वर्ण*) hb_calloc (1, new_size);
+    यदि (unlikely (!buffer)) प्रत्यागम Err(ALLOCATION_FAILURE);
     auto res = c.add_buffer (buffer);
-    if (unlikely (!res.is_ok ()))
+    यदि (unlikely (!res.is_ok ()))
     {
       hb_free (buffer);
-      return res;
+      प्रत्यागम res;
     }
     hb_memcpy (buffer, v->obj ().head, v->table_size());
 
-    if (use_mark_filtering_set ())
+    यदि (use_mark_filtering_set ())
       hb_memcpy (buffer + new_size - 2, v->obj ().tail - 2, 2);
 
     v->set_buffer (buffer, buffer + new_size);
@@ -267,26 +267,26 @@ struct Lookup : public OT::Lookup
     Lookup* new_lookup = (Lookup*) buffer;
 
     unsigned shift = 0;
-    new_lookup->subTable.len = subTable.len + new_subtable_count;
-    for (const auto& p : subtable_ids)
+    new_lookup->subTable.len = subTable.len + new_subtable_गिनती;
+    प्रति (ध्रुव auto& p : subtable_ids)
     {
       unsigned offset_index = p.first + shift + 1;
       shift += p.second.length;
 
-      for (unsigned subtable_id : p.second)
+      प्रति (unsigned subtable_id : p.second)
       {
-        if (is_ext)
+        यदि (is_ext)
         {
           TRY_ASSIGN (unsigned ext_id, create_extension_subtable (c, subtable_id, type));
-          TRY(c.graph.vertices_[subtable_id].add_parent (ext_id, false));
+          TRY(c.graph.vertices_[subtable_id].add_parent (ext_id, असत्य));
           subtable_id = ext_id;
           // the reference to v may have changed on adding a node, so reassign it.
           v = &c.graph.vertices_[this_index];
         }
 
         TRY(v->add_real_link(2, subtable_id,
-          (char*) &new_lookup->subTable[offset_index++] - (char*) new_lookup));
-        TRY(c.graph.vertices_[subtable_id].add_parent (this_index, false));
+          (वर्ण*) &new_lookup->subTable[offset_index++] - (वर्ण*) new_lookup));
+        TRY(c.graph.vertices_[subtable_id].add_parent (this_index, असत्य));
       }
     }
 
@@ -296,26 +296,26 @@ struct Lookup : public OT::Lookup
     // The head location of the lookup has changed, invalidating the lookups map entry
     // in the context. Update the map.
     c.lookups.set (this_index, new_lookup);
-    TRY (graph_result_t<void>::from (c.lookups, ALLOCATION_FAILURE));
-    return Ok();
+    TRY (graph_result_t<शून्य>::from (c.lookups, ALLOCATION_FAILURE));
+    प्रत्यागम Ok();
   }
 
-  void fix_existing_subtable_links (gsubgpos_graph_context_t& c,
+  शून्य fix_existing_subtable_links (gsubgpos_graph_context_t& c,
                                     unsigned this_index,
-                                    const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+                                    ध्रुव hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
   {
     auto& v = c.graph.vertices_[this_index];
     unsigned shift = 0;
-    for (const auto& p : subtable_ids)
+    प्रति (ध्रुव auto& p : subtable_ids)
     {
-      unsigned insert_index = p.first + shift;
+      unsigned जोड़ो_index = p.first + shift;
       unsigned pos_offset = p.second.length * OT::Offset16::static_size;
-      unsigned insert_offset = Lookup::min_size + insert_index * OT::Offset16::static_size;
+      unsigned जोड़ो_offset = Lookup::min_size + जोड़ो_index * OT::Offset16::static_size;
       shift += p.second.length;
 
-      for (auto& l : v.all_links_writer ())
+      प्रति (auto& l : v.all_links_writer ())
       {
-        if (l.position > insert_offset) l.position += pos_offset;
+        यदि (l.position > जोड़ो_offset) l.position += pos_offset;
       }
     }
   }
@@ -326,7 +326,7 @@ struct Lookup : public OT::Lookup
   {
     unsigned extension_size = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_size;
 
-    TRY_ASSIGN (unsigned ext_index, c.create_node (extension_size));
+    TRY_ASSIGN (unsigned ext_index, c.create_गाँठ (extension_size));
 
     auto& ext_vertex = c.graph.vertices_[ext_index];
     ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
@@ -336,30 +336,30 @@ struct Lookup : public OT::Lookup
     // Make extension point at the subtable.
     TRY(ext_vertex.add_real_link (4, subtable_index, 4));
 
-    return Ok(ext_index);
+    प्रत्यागम Ok(ext_index);
   }
 
-  graph_result_t<void> make_subtable_extension (gsubgpos_graph_context_t& c,
+  graph_result_t<शून्य> make_subtable_extension (gsubgpos_graph_context_t& c,
                                                 unsigned lookup_index,
                                                 unsigned subtable_index)
   {
     unsigned type = lookupType;
     unsigned ext_index = HB_GRAPH_INVALID;
     unsigned* existing_ext_index = nullptr;
-    if (c.subtable_to_extension.has(subtable_index, &existing_ext_index)) {
+    यदि (c.subtable_to_extension.has(subtable_index, &existing_ext_index)) {
       ext_index = *existing_ext_index;
-    } else {
+    } अन्यथा {
       TRY_ASSIGN (ext_index, create_extension_subtable(c, subtable_index, type));
       c.subtable_to_extension.set(subtable_index, ext_index);
-      TRY (graph_result_t<void>::from (c.subtable_to_extension, ALLOCATION_FAILURE));
+      TRY (graph_result_t<शून्य>::from (c.subtable_to_extension, ALLOCATION_FAILURE));
     }
 
     auto& subtable_vertex = c.graph.vertices_[subtable_index];
     auto& lookup_vertex = c.graph.vertices_[lookup_index];
     unsigned replaced = 0;
-    for (auto& l : lookup_vertex.real_links_writer ())
+    प्रति (auto& l : lookup_vertex.real_links_writer ())
     {
-      if (l.objidx == subtable_index) {
+      यदि (l.objidx == subtable_index) {
         // Change lookup to point at the extension.
         l.objidx = ext_index;
         replaced++;
@@ -368,120 +368,120 @@ struct Lookup : public OT::Lookup
 
     // Make extension point at the subtable.
     auto& ext_vertex = c.graph.vertices_[ext_index];
-    for (unsigned i = 0; i < replaced; i++)
+    प्रति (unsigned i = 0; i < replaced; i++)
     {
       subtable_vertex.remove_parent (lookup_index);
-      TRY(ext_vertex.add_parent (lookup_index, false));
+      TRY(ext_vertex.add_parent (lookup_index, असत्य));
     }
-    if (!existing_ext_index)
-      TRY(subtable_vertex.add_parent (ext_index, false));
+    यदि (!existing_ext_index)
+      TRY(subtable_vertex.add_parent (ext_index, असत्य));
 
-    return Ok();
+    प्रत्यागम Ok();
   }
 
- private:
-  bool is_supported_gsub_type(unsigned type, gsubgpos_graph_context_t& c) const {
-    return (c.table_tag == HB_OT_TAG_GSUB) && (
+ गुप्त:
+  तार्किक is_supported_gsub_type(unsigned type, gsubgpos_graph_context_t& c) ध्रुव {
+    प्रत्यागम (c.table_tag == HB_OT_TAG_GSUB) && (
       type == OT::Layout::GSUB_impl::SubstLookupSubTable::Type::Ligature
     );
   }
 
-  bool is_supported_gpos_type(unsigned type, gsubgpos_graph_context_t& c) const {
-   return (c.table_tag == HB_OT_TAG_GPOS) && (
+  तार्किक is_supported_gpos_type(unsigned type, gsubgpos_graph_context_t& c) ध्रुव {
+   प्रत्यागम (c.table_tag == HB_OT_TAG_GPOS) && (
       type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::Pair ||
       type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::MarkBase
     );
   }
 
-  unsigned extension_type (hb_tag_t table_tag) const
+  unsigned extension_type (hb_tag_t table_tag) ध्रुव
   {
-    switch (table_tag)
+    विकल्प (table_tag)
     {
-    case HB_OT_TAG_GPOS: return 9;
-    case HB_OT_TAG_GSUB: return 7;
-    default: return 0;
+    पक्ष HB_OT_TAG_GPOS: प्रत्यागम 9;
+    पक्ष HB_OT_TAG_GSUB: प्रत्यागम 7;
+    स्वभाव: प्रत्यागम 0;
     }
   }
 };
 
 template <typename T>
-struct LookupList : public OT::LookupList<T>
+संरचना LookupList : सार्वजनिक OT::LookupList<T>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (ध्रुव graph_t::vertex_t& vertex) ध्रुव
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::LookupList<T>::min_size)) return Err(SANITIZE_FAILURE);
+    यदि (unlikely (vertex_len < OT::LookupList<T>::min_size)) प्रत्यागम Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < OT::LookupList<T>::item_size * this->len)) return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (vertex_len < OT::LookupList<T>::item_size * एतत्->len)) प्रत्यागम Err(SANITIZE_FAILURE);
+    प्रत्यागम Ok();
   }
 };
 
-struct GSTAR : public OT::GSUBGPOS
+संरचना GSTAR : सार्वजनिक OT::GSUBGPOS
 {
-  static graph_result_t<const GSTAR*> graph_to_gstar (graph_t& graph)
+  स्थिर graph_result_t<ध्रुव GSTAR*> graph_to_gstar (graph_t& graph)
   {
-    const auto& r = graph.root ();
+    ध्रुव auto& r = graph.मूल ();
 
-    const GSTAR* gstar = (GSTAR*) r.obj ().head;
-    if (unlikely (!gstar)) return Err(INVALID_ARGUMENT);
+    ध्रुव GSTAR* gstar = (GSTAR*) r.obj ().head;
+    यदि (unlikely (!gstar)) प्रत्यागम Err(INVALID_ARGUMENT);
     TRY (gstar->sanitize (r));
     hb_barrier ();
 
-    return gstar;
+    प्रत्यागम gstar;
   }
 
-  const void* get_lookup_list_field_offset () const
+  ध्रुव शून्य* get_lookup_list_field_offset () ध्रुव
   {
-    return OT::GSUBGPOS::get_lookup_list_field_offset ();
+    प्रत्यागम OT::GSUBGPOS::get_lookup_list_field_offset ();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<शून्य> sanitize (ध्रुव graph_t::vertex_t& vertex) ध्रुव
   {
     size_t len = vertex.table_size ();
-    if (unlikely (len < OT::GSUBGPOS::min_size)) return Err(SANITIZE_FAILURE);
+    यदि (unlikely (len < OT::GSUBGPOS::min_size)) प्रत्यागम Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (version.major != 1)) return Err(SANITIZE_FAILURE);
-    if (unlikely (len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    यदि (unlikely (version.major != 1)) प्रत्यागम Err(SANITIZE_FAILURE);
+    यदि (unlikely (len < get_size ())) प्रत्यागम Err(SANITIZE_FAILURE);
+    प्रत्यागम Ok();
   }
 
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  graph_result_t<शून्य> find_lookups (graph_t& graph,
+                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) ध्रुव
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return find_lookups<MediumTypes> (graph, lookups);
+    यदि (version.to_int () >= 0x00010002u && lookupList2)
+      प्रत्यागम find_lookups<MediumTypes> (graph, lookups);
 #endif
     TRY(find_lookups<SmallTypes> (graph, lookups));
-    return Ok();
+    प्रत्यागम Ok();
   }
 
-  graph_result_t<unsigned> get_lookup_list_index (graph_t& graph) const
+  graph_result_t<unsigned> get_lookup_list_index (graph_t& graph) ध्रुव
   {
-    const void* offset = get_lookup_list_field_offset ();
-    if (unlikely (!offset)) return Err(INVALID_ARGUMENT);
-    return graph.index_for_offset (graph.root_idx (), offset);
+    ध्रुव शून्य* offset = get_lookup_list_field_offset ();
+    यदि (unlikely (!offset)) प्रत्यागम Err(INVALID_ARGUMENT);
+    प्रत्यागम graph.index_for_offset (graph.मूल_idx (), offset);
   }
 
   template<typename Types>
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  graph_result_t<शून्य> find_lookups (graph_t& graph,
+                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) ध्रुव
   {
     TRY_ASSIGN (unsigned lookup_list_idx, get_lookup_list_index (graph));
-    const LookupList<Types>* lookupList =
-        (const LookupList<Types>*) graph.object (lookup_list_idx).head;
-    if (unlikely (!lookupList)) return Err(INVALID_ARGUMENT);
+    ध्रुव LookupList<Types>* lookupList =
+        (ध्रुव LookupList<Types>*) graph.object (lookup_list_idx).head;
+    यदि (unlikely (!lookupList)) प्रत्यागम Err(INVALID_ARGUMENT);
     TRY(lookupList->sanitize (graph.vertices_[lookup_list_idx]));
 
-    for (unsigned i = 0; i < lookupList->len; i++)
+    प्रति (unsigned i = 0; i < lookupList->len; i++)
     {
       TRY_ASSIGN (unsigned lookup_idx, graph.index_for_offset (lookup_list_idx, &(lookupList->arrayZ[i])));
       Lookup* lookup = (Lookup*) graph.object (lookup_idx).head;
-      if (!lookup || !lookup->sanitize (graph.vertices_[lookup_idx]).is_ok ()) continue;
+      यदि (!lookup || !lookup->sanitize (graph.vertices_[lookup_idx]).is_ok ()) अनुवर्त;
       lookups.set (lookup_idx, lookup);
     }
-    return Ok();
+    प्रत्यागम Ok();
   }
 };
 

@@ -27,39 +27,39 @@
 #ifndef HB_OT_MATH_TABLE_HH
 #define HB_OT_MATH_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-math.h"
-#include "hb-depend-data.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-ot-layout-common.hh"
+#अन्तर्भाव "hb-ot-layout-gdef-table.hh"
+#अन्तर्भाव "hb-ot-math.h"
+#अन्तर्भाव "hb-depend-data.hh"
 
-namespace OT {
+नामाकाश OT {
 
 
-struct MathValueRecord
+संरचना Math_मूल्य_Record
 {
-  hb_position_t get_x_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
-  hb_position_t get_y_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
+  hb_position_t get_x_मूल्य (hb_font_t *font, ध्रुव शून्य *base) ध्रुव
+  { प्रत्यागम hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
+  hb_position_t get_y_मूल्य (hb_font_t *font, ध्रुव शून्य *base) ध्रुव
+  { प्रत्यागम hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
 
-  const ItemVariationStore &get_var_store (hb_font_t *font, const void *base) const
+  ध्रुव ItemVariationStore &get_var_store (hb_font_t *font, ध्रुव शून्य *base) ध्रुव
   {
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
-    if ((base+deviceTable).is_variation_device ())
-      return font->face->table.GDEF->table->get_var_store ();
+#यदि !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
+    यदि ((base+deviceTable).is_variation_device ())
+      प्रत्यागम font->face->table.GDEF->table->get_var_store ();
 #endif
-    return Null (ItemVariationStore);
+    प्रत्यागम Null (ItemVariationStore);
   }
 
-  MathValueRecord* copy (hb_serialize_context_t *c, const void *base,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  Math_मूल्य_Record* copy (hb_serialize_context_t *c, ध्रुव शून्य *base,
+                         ध्रुव hb_hashmap_t<unsigned, hb_pair_t<unsigned, पूर्णाङ्क>> *variation_map) ध्रुव
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
+    TRACE_SERIALIZE (एतत्);
+    auto *out = c->embed (एतत्);
+    यदि (unlikely (!out)) return_trace (nullptr);
+    hb_pair_t<unsigned, पूर्णाङ्क> *varidx_delta;
+    यदि (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
         !c->check_assign (out->value, (int64_t) value + hb_second (*varidx_delta),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (nullptr);
@@ -68,331 +68,331 @@ struct MathValueRecord
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c, ध्रुव शून्य *base) ध्रुव
   { (base+deviceTable).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, ध्रुव शून्य *base) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, base));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) && deviceTable.sanitize (c, base));
   }
 
-  protected:
+  रक्षित:
   HBINT16		value;		/* The X or Y value in design units */
   Offset16To<Device>	deviceTable;	/* Offset to the device table - from the
 					 * beginning of parent table.  May be NULL.
 					 * Suggested format for device table is 1. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct MathConstants
+संरचना MathConstants
 {
-  friend struct MATH;
+  friend संरचना MATH;
 
   MathConstants* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      ध्रुव hb_hashmap_t<unsigned, hb_pair_t<unsigned, पूर्णाङ्क>> *variation_map) ध्रुव
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (एतत्);
+    auto *out = c->start_embed (एतत्);
 
     HBINT16 *p = c->allocate_size<HBINT16> (HBINT16::static_size * 2);
-    if (unlikely (!p)) return_trace (nullptr);
+    यदि (unlikely (!p)) return_trace (nullptr);
     hb_memcpy (p, percentScaleDown, HBINT16::static_size * 2);
 
     HBUINT16 *m = c->allocate_size<HBUINT16> (HBUINT16::static_size * 2);
-    if (unlikely (!m)) return_trace (nullptr);
+    यदि (unlikely (!m)) return_trace (nullptr);
     hb_memcpy (m, minHeight, HBUINT16::static_size * 2);
 
-    unsigned count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecords[i], this, variation_map))
+    unsigned गिनती = ARRAY_LENGTH (math_मूल्य_Records);
+    प्रति (unsigned i = 0; i < गिनती; i++)
+      यदि (!c->copy (math_मूल्य_Records[i], एतत्, variation_map))
         return_trace (nullptr);
 
-    if (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
+    यदि (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &record : mathValueRecords)
-      record.collect_variation_indices (c, this);
+    प्रति (ध्रुव auto &record : math_मूल्य_Records)
+      record.collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  तार्किक sanitize_math_मूल्य_records (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
 
-    unsigned int count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecords[i].sanitize (c, this))
-	return_trace (false);
+    unsigned पूर्णाङ्क गिनती = ARRAY_LENGTH (math_मूल्य_Records);
+    प्रति (unsigned पूर्णाङ्क i = 0; i < गिनती; i++)
+      यदि (!math_मूल्य_Records[i].sanitize (c, एतत्))
+	return_trace (असत्य);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && sanitize_math_value_records (c));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) && sanitize_math_मूल्य_records (c));
   }
 
-  hb_position_t get_value (hb_ot_math_constant_t constant,
-			   hb_font_t *font) const
+  hb_position_t get_मूल्य (hb_ot_math_constant_t constant,
+			   hb_font_t *font) ध्रुव
   {
-    switch (constant) {
+    विकल्प (constant) {
 
-    case HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
-    case HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
-      return percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
+    पक्ष HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
+      प्रत्यागम percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
 
-    case HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
-    case HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
-      return font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
+    पक्ष HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
+    पक्ष HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
+      प्रत्यागम font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
-    case HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
+    पक्ष HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
+      प्रत्यागम math_मूल्य_Records[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_मूल्य (font, एतत्);
 
-    case HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_MATH_LEADING:
-    case HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX:
-    case HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
+    पक्ष HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
+    पक्ष HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
+    पक्ष HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_अंक_DISPLAY_STYLE_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
+    पक्ष HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_MATH_LEADING:
+    पक्ष HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
+    पक्ष HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
+    पक्ष HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_BOTTOM_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_DISPLAY_STYLE_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_शीर्ष_DISPLAY_STYLE_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_ढेर_शीर्ष_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_STRETCH_ढेर_BOTTOM_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_STRETCH_ढेर_GAP_ABOVE_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_STRETCH_ढेर_GAP_BELOW_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_STRETCH_ढेर_शीर्ष_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
+    पक्ष HB_OT_MATH_CONSTANT_SUBSCRIPT_शीर्ष_MAX:
+    पक्ष HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
+    पक्ष HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
+    पक्ष HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
+    पक्ष HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
+    पक्ष HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
+    पक्ष HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
+    पक्ष HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
+    पक्ष HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
+    पक्ष HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
+      प्रत्यागम math_मूल्य_Records[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_मूल्य (font, एतत्);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
-      return radicalDegreeBottomRaisePercent;
+    पक्ष HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
+      प्रत्यागम radicalDegreeBottomRaisePercent;
 
-    default:
-      return 0;
+    स्वभाव:
+      प्रत्यागम 0;
     }
   }
 
-  protected:
+  रक्षित:
   HBINT16 percentScaleDown[2];
   HBUINT16 minHeight[2];
-  MathValueRecord mathValueRecords[51];
+  Math_मूल्य_Record math_मूल्य_Records[51];
   HBINT16 radicalDegreeBottomRaisePercent;
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (214);
 };
 
-struct MathItalicsCorrectionInfo
+संरचना MathItalicsCorrectionInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, italicsCorrection)
+    + hb_zip (एतत्+coverage, italicsCorrection)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->italicsCorrection, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->italicsCorrection, एतत्, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &entry : hb_zip (this+coverage, italicsCorrection))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    प्रति (ध्रुव auto &entry : hb_zip (एतत्+coverage, italicsCorrection))
+      यदि (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  coverage.sanitize (c, this) &&
-		  italicsCorrection.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  coverage.sanitize (c, एतत्) &&
+		  italicsCorrection.sanitize (c, एतत्));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_मूल्य (hb_codepoint_t glyph,
+			   hb_font_t *font) ध्रुव
   {
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    return italicsCorrection[index].get_x_value (font, this);
+    unsigned पूर्णाङ्क index = (एतत्+coverage).get_coverage (glyph);
+    प्रत्यागम italicsCorrection[index].get_x_मूल्य (font, एतत्);
   }
 
-  protected:
+  रक्षित:
   Offset16To<Coverage>       coverage;		/* Offset to Coverage table -
 						 * from the beginning of
 						 * MathItalicsCorrectionInfo
 						 * table. */
-  Array16Of<MathValueRecord> italicsCorrection;	/* Array of MathValueRecords
+  Array16Of<Math_मूल्य_Record> italicsCorrection;	/* Array of MathValueRecords
 						 * defining italics correction
 						 * values for each
 						 * covered glyph. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (4, italicsCorrection);
 };
 
-struct MathTopAccentAttachment
+संरचना Math_शीर्ष_Accent_Attachment
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+topAccentCoverage, topAccentAttachment)
+    + hb_zip (एतत्+शीर्ष_Accent_Coverage, शीर्ष_Accent_Attachment)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->topAccentAttachment, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->शीर्ष_Accent_Attachment, एतत्, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->topAccentCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    out->शीर्ष_Accent_Coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    प्रति (ध्रुव auto &entry : hb_zip (एतत्+शीर्ष_Accent_Coverage, शीर्ष_Accent_Attachment))
+      यदि (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  topAccentCoverage.sanitize (c, this) &&
-		  topAccentAttachment.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  शीर्ष_Accent_Coverage.sanitize (c, एतत्) &&
+		  शीर्ष_Accent_Attachment.sanitize (c, एतत्));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_मूल्य (hb_codepoint_t glyph,
+			   hb_font_t *font) ध्रुव
   {
-    unsigned int index = (this+topAccentCoverage).get_coverage (glyph);
-    if (index == NOT_COVERED)
-      return font->get_glyph_h_advance (glyph) / 2;
-    return topAccentAttachment[index].get_x_value (font, this);
+    unsigned पूर्णाङ्क index = (एतत्+शीर्ष_Accent_Coverage).get_coverage (glyph);
+    यदि (index == NOT_COVERED)
+      प्रत्यागम font->get_glyph_h_advance (glyph) / 2;
+    प्रत्यागम शीर्ष_Accent_Attachment[index].get_x_मूल्य (font, एतत्);
   }
 
-  protected:
-  Offset16To<Coverage>       topAccentCoverage;   /* Offset to Coverage table -
+  रक्षित:
+  Offset16To<Coverage>       शीर्ष_Accent_Coverage;   /* Offset to Coverage table -
 						 * from the beginning of
 						 * MathTopAccentAttachment
 						 * table. */
-  Array16Of<MathValueRecord> topAccentAttachment; /* Array of MathValueRecords
+  Array16Of<Math_मूल्य_Record> शीर्ष_Accent_Attachment; /* Array of MathValueRecords
 						 * defining top accent
 						 * attachment points for each
 						 * covered glyph. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2, topAccentAttachment);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (2 + 2, शीर्ष_Accent_Attachment);
 };
 
-struct MathKern
+संरचना MathKern
 {
   MathKern* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      ध्रुव hb_hashmap_t<unsigned, hb_pair_t<unsigned, पूर्णाङ्क>> *variation_map) ध्रुव
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (एतत्);
+    auto *out = c->start_embed (एतत्);
 
-    if (unlikely (!c->embed (heightCount))) return_trace (nullptr);
+    यदि (unlikely (!c->embed (height_गिनती))) return_trace (nullptr);
 
-    unsigned count = 2 * heightCount + 1;
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
+    unsigned गिनती = 2 * height_गिनती + 1;
+    प्रति (unsigned i = 0; i < गिनती; i++)
+      यदि (!c->copy (math_मूल्य_Records_Z.arrayZ[i], एतत्, variation_map))
         return_trace (nullptr);
 
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &record : mathValueRecordsZ.as_array (2 * heightCount + 1))
-      record.collect_variation_indices (c, this);
+    प्रति (ध्रुव auto &record : math_मूल्य_Records_Z.as_array (2 * height_गिनती + 1))
+      record.collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  तार्किक sanitize_math_मूल्य_records (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = 2 * heightCount + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (एतत्);
+    unsigned पूर्णाङ्क गिनती = 2 * height_गिनती + 1;
+    प्रति (unsigned पूर्णाङ्क i = 0; i < गिनती; i++)
+      यदि (!math_मूल्य_Records_Z.arrayZ[i].sanitize (c, एतत्)) return_trace (असत्य);
+    return_trace (सत्य);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  hb_barrier () &&
-		  c->check_array (mathValueRecordsZ.arrayZ, 2 * heightCount + 1) &&
-		  sanitize_math_value_records (c));
+		  c->check_array (math_मूल्य_Records_Z.arrayZ, 2 * height_गिनती + 1) &&
+		  sanitize_math_मूल्य_records (c));
   }
 
-  hb_position_t get_value (hb_position_t correction_height, hb_font_t *font) const
+  hb_position_t get_मूल्य (hb_position_t correction_height, hb_font_t *font) ध्रुव
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    int sign = font->y_scale < 0 ? -1 : +1;
+    ध्रुव Math_मूल्य_Record* correctionHeight = math_मूल्य_Records_Z.arrayZ;
+    ध्रुव Math_मूल्य_Record* kern_मूल्य = math_मूल्य_Records_Z.arrayZ + height_गिनती;
+    पूर्णाङ्क sign = font->y_scale < 0 ? -1 : +1;
 
     /* According to OpenType spec (v1.9), except for the boundary cases, the index
      * chosen for kern value should be i such that
@@ -400,55 +400,55 @@ struct MathKern
      * We can use the binary search algorithm of std::upper_bound(). Or, we can
      * use the internal hb_bsearch_impl.
      */
-    unsigned int pos;
-    auto cmp = +[](const void* key, const void* p,
-                   int sign, hb_font_t* font, const MathKern* mathKern) -> int {
+    unsigned पूर्णाङ्क pos;
+    auto cmp = +[](ध्रुव शून्य* key, ध्रुव शून्य* p,
+                   पूर्णाङ्क sign, hb_font_t* font, ध्रुव MathKern* mathKern) -> पूर्णाङ्क {
       hb_position_t a = *(hb_position_t *) key;
-      hb_position_t b = ((MathValueRecord *) p)->get_y_value (font, mathKern);
-      if (a == b) return 0;
-      return sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
+      hb_position_t b = ((Math_मूल्य_Record *) p)->get_y_मूल्य (font, mathKern);
+      यदि (a == b) प्रत्यागम 0;
+      प्रत्यागम sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
     };
-    unsigned int i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
-                                     heightCount, MathValueRecord::static_size,
-                                     cmp, sign, font, this) ? pos + 1 : pos;
-    return kernValue[i].get_x_value (font, this);
+    unsigned पूर्णाङ्क i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
+                                     height_गिनती, Math_मूल्य_Record::static_size,
+                                     cmp, sign, font, एतत्) ? pos + 1 : pos;
+    प्रत्यागम kern_मूल्य[i].get_x_मूल्य (font, एतत्);
   }
 
-  unsigned int get_entries (unsigned int start_offset,
-			    unsigned int *entries_count, /* IN/OUT */
+  unsigned पूर्णाङ्क get_entries (unsigned पूर्णाङ्क start_offset,
+			    unsigned पूर्णाङ्क *entries_गिनती, /* IN/OUT */
 			    hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			    hb_font_t *font) const
+			    hb_font_t *font) ध्रुव
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    const unsigned int entriesCount = heightCount + 1;
+    ध्रुव Math_मूल्य_Record* correctionHeight = math_मूल्य_Records_Z.arrayZ;
+    ध्रुव Math_मूल्य_Record* kern_मूल्य = math_मूल्य_Records_Z.arrayZ + height_गिनती;
+    ध्रुव unsigned पूर्णाङ्क entries_गिनती_2 = height_गिनती + 1;
 
-    if (entries_count && kern_entries)
+    यदि (entries_गिनती && kern_entries)
     {
-      unsigned int start = hb_min (start_offset, entriesCount);
-      unsigned int end = hb_min (start + *entries_count, entriesCount);
-      *entries_count = end - start;
+      unsigned पूर्णाङ्क start = hb_min (start_offset, entries_गिनती_2);
+      unsigned पूर्णाङ्क end = hb_min (start + *entries_गिनती, entries_गिनती_2);
+      *entries_गिनती = end - start;
 
-      for (unsigned int i = 0; i < *entries_count; i++) {
-	unsigned int j = start + i;
+      प्रति (unsigned पूर्णाङ्क i = 0; i < *entries_गिनती; i++) {
+	unsigned पूर्णाङ्क j = start + i;
 
 	hb_position_t max_height;
-	if (j == heightCount) {
+	यदि (j == height_गिनती) {
 	  max_height = INT32_MAX;
-	} else {
-	  max_height = correctionHeight[j].get_y_value (font, this);
+	} अन्यथा {
+	  max_height = correctionHeight[j].get_y_मूल्य (font, एतत्);
 	}
 
-	kern_entries[i] = {max_height, kernValue[j].get_x_value (font, this)};
+	kern_entries[i] = {max_height, kern_मूल्य[j].get_x_मूल्य (font, एतत्)};
       }
     }
-    return entriesCount;
+    प्रत्यागम entries_गिनती_2;
   }
 
-  protected:
-  HBUINT16	heightCount;
-  UnsizedArrayOf<MathValueRecord>
-		mathValueRecordsZ;
+  रक्षित:
+  HBUINT16	height_गिनती;
+  UnsizedArrayOf<Math_मूल्य_Record>
+		math_मूल्य_Records_Z;
 				/* Array of correction heights at
 				 * which the kern value changes.
 				 * Sorted by the height value in
@@ -458,146 +458,146 @@ struct MathKern
 				 * to heights. (heightCount+1 entries).
 				 */
 
-  public:
-  DEFINE_SIZE_ARRAY (2, mathValueRecordsZ);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (2, math_मूल्य_Records_Z);
 };
 
-struct MathKernInfoRecord
+संरचना MathKernInfoRecord
 {
-  MathKernInfoRecord* copy (hb_serialize_context_t *c, const void *base,
-                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  MathKernInfoRecord* copy (hb_serialize_context_t *c, ध्रुव शून्य *base,
+                            ध्रुव hb_hashmap_t<unsigned, hb_pair_t<unsigned, पूर्णाङ्क>> *variation_map) ध्रुव
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (एतत्);
+    auto *out = c->embed (एतत्);
+    यदि (unlikely (!out)) return_trace (nullptr);
 
-    unsigned count = ARRAY_LENGTH (mathKern);
-    for (unsigned i = 0; i < count; i++)
+    unsigned गिनती = ARRAY_LENGTH (mathKern);
+    प्रति (unsigned i = 0; i < गिनती; i++)
       out->mathKern[i].serialize_copy (c, mathKern[i], base, 0, hb_serialize_context_t::Head, variation_map);
 
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c, ध्रुव शून्य *base) ध्रुव
   {
-    for (const auto &offset : mathKern)
+    प्रति (ध्रुव auto &offset : mathKern)
       (base+offset).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, ध्रुव शून्य *base) ध्रुव
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
 
-    unsigned int count = ARRAY_LENGTH (mathKern);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!mathKern[i].sanitize (c, base)))
-	return_trace (false);
+    unsigned पूर्णाङ्क गिनती = ARRAY_LENGTH (mathKern);
+    प्रति (unsigned पूर्णाङ्क i = 0; i < गिनती; i++)
+      यदि (unlikely (!mathKern[i].sanitize (c, base)))
+	return_trace (असत्य);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
   hb_position_t get_kerning (hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
 			     hb_font_t *font,
-			     const void *base) const
+			     ध्रुव शून्य *base) ध्रुव
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern))) return 0;
-    return (base+mathKern[idx]).get_value (correction_height, font);
+    unsigned पूर्णाङ्क idx = kern;
+    यदि (unlikely (idx >= ARRAY_LENGTH (mathKern))) प्रत्यागम 0;
+    प्रत्यागम (base+mathKern[idx]).get_मूल्य (correction_height, font);
   }
 
-  unsigned int get_kernings (hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+  unsigned पूर्णाङ्क get_kernings (hb_ot_math_kern_t kern,
+			     unsigned पूर्णाङ्क start_offset,
+			     unsigned पूर्णाङ्क *entries_गिनती, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font,
-			     const void *base) const
+			     ध्रुव शून्य *base) ध्रुव
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
-      if (entries_count) *entries_count = 0;
-      return 0;
+    unsigned पूर्णाङ्क idx = kern;
+    यदि (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
+      यदि (entries_गिनती) *entries_गिनती = 0;
+      प्रत्यागम 0;
     }
-    return (base+mathKern[idx]).get_entries (start_offset,
-					     entries_count,
+    प्रत्यागम (base+mathKern[idx]).get_entries (start_offset,
+					     entries_गिनती,
 					     kern_entries,
 					     font);
   }
 
-  protected:
+  रक्षित:
   /* Offset to MathKern table for each corner -
    * from the beginning of MathKernInfo table.  May be NULL. */
   Offset16To<MathKern> mathKern[4];
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathKernInfo
+संरचना MathKernInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+mathKernCoverage, mathKernInfoRecords)
+    + hb_zip (एतत्+mathKernCoverage, mathKernInfoRecords)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->mathKernInfoRecords, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->mathKernInfoRecords, एतत्, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->mathKernCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    प्रति (ध्रुव auto &entry : hb_zip (एतत्+mathKernCoverage, mathKernInfoRecords))
+      यदि (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathKernCoverage.sanitize (c, this) &&
-		  mathKernInfoRecords.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  mathKernCoverage.sanitize (c, एतत्) &&
+		  mathKernInfoRecords.sanitize (c, एतत्));
   }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
-			     hb_font_t *font) const
+			     hb_font_t *font) ध्रुव
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
+    unsigned पूर्णाङ्क index = (एतत्+mathKernCoverage).get_coverage (glyph);
+    प्रत्यागम mathKernInfoRecords[index].get_kerning (kern, correction_height, font, एतत्);
   }
 
-  unsigned int get_kernings (hb_codepoint_t glyph,
+  unsigned पूर्णाङ्क get_kernings (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+			     unsigned पूर्णाङ्क start_offset,
+			     unsigned पूर्णाङ्क *entries_गिनती, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			     hb_font_t *font) const
+			     hb_font_t *font) ध्रुव
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kernings (kern,
+    unsigned पूर्णाङ्क index = (एतत्+mathKernCoverage).get_coverage (glyph);
+    प्रत्यागम mathKernInfoRecords[index].get_kernings (kern,
 						    start_offset,
-						    entries_count,
+						    entries_गिनती,
 						    kern_entries,
 						    font,
-						    this);
+						    एतत्);
   }
 
-  protected:
+  रक्षित:
   Offset16To<Coverage>
 		mathKernCoverage;
 				/* Offset to Coverage table -
@@ -611,93 +611,93 @@ struct MathKernInfo
 				 * of subscripts and
 				 * superscripts. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (4, mathKernInfoRecords);
 };
 
-struct MathGlyphInfo
+संरचना MathGlyphInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (एतत्);
+    auto *out = c->serializer->embed (*एतत्);
+    यदि (unlikely (!out)) return_trace (असत्य);
 
-    out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, this);
-    out->mathTopAccentAttachment.serialize_subset (c, mathTopAccentAttachment, this);
+    out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, एतत्);
+    out->math_शीर्ष_Accent_Attachment.serialize_subset (c, math_शीर्ष_Accent_Attachment, एतत्);
 
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ध्रुव hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto it =
-    + hb_iter (this+extendedShapeCoverage)
-    | hb_take (c->plan->source->get_num_glyphs ())
+    + hb_iter (एतत्+extendedShapeCoverage)
+    | hb_take (c->plan->source->get_अंक_glyphs ())
     | hb_filter (glyphset)
     | hb_map_retains_sorting (glyph_map)
     ;
 
-    if (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
-    else out->extendedShapeCoverage = 0;
+    यदि (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
+    अन्यथा out->extendedShapeCoverage = 0;
 
-    out->mathKernInfo.serialize_subset (c, mathKernInfo, this);
-    return_trace (true);
+    out->mathKernInfo.serialize_subset (c, mathKernInfo, एतत्);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    (this+mathItalicsCorrectionInfo).collect_variation_indices (c);
-    (this+mathTopAccentAttachment).collect_variation_indices (c);
-    (this+mathKernInfo).collect_variation_indices (c);
+    (एतत्+mathItalicsCorrectionInfo).collect_variation_indices (c);
+    (एतत्+math_शीर्ष_Accent_Attachment).collect_variation_indices (c);
+    (एतत्+mathKernInfo).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathItalicsCorrectionInfo.sanitize (c, this) &&
-		  mathTopAccentAttachment.sanitize (c, this) &&
-		  extendedShapeCoverage.sanitize (c, this) &&
-		  mathKernInfo.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  mathItalicsCorrectionInfo.sanitize (c, एतत्) &&
+		  math_शीर्ष_Accent_Attachment.sanitize (c, एतत्) &&
+		  extendedShapeCoverage.sanitize (c, एतत्) &&
+		  mathKernInfo.sanitize (c, एतत्));
   }
 
   hb_position_t
-  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
+  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) ध्रुव
+  { प्रत्यागम (एतत्+mathItalicsCorrectionInfo).get_मूल्य (glyph, font); }
 
   hb_position_t
-  get_top_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathTopAccentAttachment).get_value (glyph, font); }
+  get_शीर्ष_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) ध्रुव
+  { प्रत्यागम (एतत्+math_शीर्ष_Accent_Attachment).get_मूल्य (glyph, font); }
 
-  bool is_extended_shape (hb_codepoint_t glyph) const
-  { return (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
+  तार्किक is_extended_shape (hb_codepoint_t glyph) ध्रुव
+  { प्रत्यागम (एतत्+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
-			     hb_font_t *font) const
-  { return (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
+			     hb_font_t *font) ध्रुव
+  { प्रत्यागम (एतत्+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
 
   hb_position_t get_kernings (hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      unsigned int start_offset,
-			      unsigned int *entries_count, /* IN/OUT */
+			      unsigned पूर्णाङ्क start_offset,
+			      unsigned पूर्णाङ्क *entries_गिनती, /* IN/OUT */
 			      hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			      hb_font_t *font) const
-  { return (this+mathKernInfo).get_kernings (glyph,
+			      hb_font_t *font) ध्रुव
+  { प्रत्यागम (एतत्+mathKernInfo).get_kernings (glyph,
 					     kern,
 					     start_offset,
-					     entries_count,
+					     entries_गिनती,
 					     kern_entries,
 					     font); }
 
-  protected:
+  रक्षित:
   /* Offset to MathItalicsCorrectionInfo table -
    * from the beginning of MathGlyphInfo table. */
   Offset16To<MathItalicsCorrectionInfo> mathItalicsCorrectionInfo;
 
   /* Offset to MathTopAccentAttachment table -
    * from the beginning of MathGlyphInfo table. */
-  Offset16To<MathTopAccentAttachment> mathTopAccentAttachment;
+  Offset16To<Math_शीर्ष_Accent_Attachment> math_शीर्ष_Accent_Attachment;
 
   /* Offset to coverage table for Extended Shape glyphs -
    * from the beginning of MathGlyphInfo table. When the left or right glyph of
@@ -710,79 +710,79 @@ struct MathGlyphInfo
     * from the beginning of MathGlyphInfo table. */
   Offset16To<MathKernInfo> mathKernInfo;
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathGlyphVariantRecord
+संरचना MathGlyphVariantRecord
 {
-  friend struct MathGlyphConstruction;
+  friend संरचना MathGlyphConstruction;
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (एतत्);
+    auto *out = c->serializer->embed (एतत्);
+    यदि (unlikely (!out)) return_trace (असत्य);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
+    ध्रुव hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  शून्य depend (hb_depend_data_builder_t *depend_data, unsigned source) ध्रुव
   { depend_data->add_depend(source, HB_OT_TAG_MATH, variantGlyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  शून्य closure_glyphs (hb_set_t *variant_glyphs) ध्रुव
   { variant_glyphs->add (variantGlyph); }
 
-  protected:
+  रक्षित:
   HBGlyphID16 variantGlyph;       /* Glyph ID for the variant. */
   HBUINT16  advanceMeasurement; /* Advance width/height, in design units, of the
 				 * variant, in the direction of requested
 				 * glyph extension. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct PartFlags : HBUINT16
+संरचना PartFlags : HBUINT16
 {
-  enum Flags {
+  गणना Flags {
     Extender	= 0x0001u, /* If set, the part can be skipped or repeated. */
 
     Defined	= 0x0001u, /* All defined flags. */
   };
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (2);
 };
 
-struct MathGlyphPartRecord
+संरचना MathGlyphPartRecord
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (एतत्);
+    auto *out = c->serializer->embed (एतत्);
+    यदि (unlikely (!out)) return_trace (असत्य);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
+    ध्रुव hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  void extract (hb_ot_math_glyph_part_t &out,
+  शून्य extract (hb_ot_math_glyph_part_t &out,
 		int64_t mult,
-		hb_font_t *font) const
+		hb_font_t *font) ध्रुव
   {
     out.glyph			= glyph;
 
@@ -790,21 +790,21 @@ struct MathGlyphPartRecord
     out.end_connector_length	= font->em_mult (endConnectorLength, mult);
     out.full_advance		= font->em_mult (fullAdvance, mult);
 
-    static_assert ((unsigned int) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
-		   (unsigned int) PartFlags::Extender, "");
+    static_assert ((unsigned पूर्णाङ्क) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
+		   (unsigned पूर्णाङ्क) PartFlags::Extender, "");
 
     out.flags = (hb_ot_math_glyph_part_flags_t)
-		(unsigned int)
+		(unsigned पूर्णाङ्क)
 		(partFlags & PartFlags::Defined);
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  शून्य depend (hb_depend_data_builder_t *depend_data, unsigned source) ध्रुव
   { depend_data->add_depend(source, HB_OT_TAG_MATH, glyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  शून्य closure_glyphs (hb_set_t *variant_glyphs) ध्रुव
   { variant_glyphs->add (glyph); }
 
-  protected:
+  रक्षित:
   HBGlyphID16	glyph;		/* Glyph ID for the part. */
   HBUINT16	startConnectorLength;
 				/* Advance width/ height of the straight bar
@@ -821,72 +821,72 @@ struct MathGlyphPartRecord
 				 * In design units. */
   PartFlags	partFlags;	/* Part qualifiers. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (10);
 };
 
-struct MathGlyphAssembly
+संरचना MathGlyphAssembly
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (एतत्);
 
-    if (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
-    if (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
+    यदि (!c->serializer->copy (italicsCorrection, एतत्, &c->plan->layout_variation_idx_delta_map)) return_trace (असत्य);
+    यदि (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (असत्य);
 
-    for (const auto& record : partRecords.iter ())
-      if (!record.subset (c)) return_trace (false);
-    return_trace (true);
+    प्रति (ध्रुव auto& record : partRecords.iter ())
+      यदि (!record.subset (c)) return_trace (असत्य);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    italicsCorrection.collect_variation_indices (c, this);
+    italicsCorrection.collect_variation_indices (c, एतत्);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  italicsCorrection.sanitize (c, this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  italicsCorrection.sanitize (c, एतत्) &&
 		  partRecords.sanitize (c));
   }
 
-  unsigned int get_parts (hb_direction_t direction,
+  unsigned पूर्णाङ्क get_parts (hb_direction_t direction,
 			  hb_font_t *font,
-			  unsigned int start_offset,
-			  unsigned int *parts_count, /* IN/OUT */
+			  unsigned पूर्णाङ्क start_offset,
+			  unsigned पूर्णाङ्क *parts_गिनती, /* IN/OUT */
 			  hb_ot_math_glyph_part_t *parts /* OUT */,
-			  hb_position_t *italics_correction /* OUT */) const
+			  hb_position_t *italics_correction /* OUT */) ध्रुव
   {
-    if (parts_count && parts)
+    यदि (parts_गिनती && parts)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
-			    hb_array (parts, *parts_count)))
+      प्रति (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_गिनती),
+			    hb_array (parts, *parts_गिनती)))
 	_.first.extract (_.second, mult, font);
     }
 
-    if (italics_correction)
-      *italics_correction = italicsCorrection.get_x_value (font, this);
+    यदि (italics_correction)
+      *italics_correction = italicsCorrection.get_x_मूल्य (font, एतत्);
 
-    return partRecords.len;
+    प्रत्यागम partRecords.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  शून्य depend (hb_depend_data_builder_t *depend_data, unsigned source) ध्रुव
   {
-    for (const auto& _ : partRecords.iter ())
+    प्रति (ध्रुव auto& _ : partRecords.iter ())
       _.depend (depend_data, source);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  शून्य closure_glyphs (hb_set_t *variant_glyphs) ध्रुव
   {
-    for (const auto& _ : partRecords.iter ())
+    प्रति (ध्रुव auto& _ : partRecords.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
-  MathValueRecord
+  रक्षित:
+  Math_मूल्य_Record
 		italicsCorrection;
 				/* Italics correction of this
 				 * MathGlyphAssembly. Should not
@@ -896,76 +896,76 @@ struct MathGlyphAssembly
 				 * left to right and bottom to
 				 * top. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (6, partRecords);
 };
 
-struct MathGlyphConstruction
+संरचना MathGlyphConstruction
 {
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (एतत्);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
 
-    out->glyphAssembly.serialize_subset (c, glyphAssembly, this);
+    out->glyphAssembly.serialize_subset (c, glyphAssembly, एतत्);
 
-    if (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    for (const auto& record : mathGlyphVariantRecord.iter ())
-      if (!record.subset (c)) return_trace (false);
+    यदि (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (असत्य);
+    प्रति (ध्रुव auto& record : mathGlyphVariantRecord.iter ())
+      यदि (!record.subset (c)) return_trace (असत्य);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    (this+glyphAssembly).collect_variation_indices (c);
+    (एतत्+glyphAssembly).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  glyphAssembly.sanitize (c, this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  glyphAssembly.sanitize (c, एतत्) &&
 		  mathGlyphVariantRecord.sanitize (c));
   }
 
-  const MathGlyphAssembly &get_assembly () const { return this+glyphAssembly; }
+  ध्रुव MathGlyphAssembly &get_assembly () ध्रुव { प्रत्यागम एतत्+glyphAssembly; }
 
-  unsigned int get_variants (hb_direction_t direction,
+  unsigned पूर्णाङ्क get_variants (hb_direction_t direction,
 			     hb_font_t *font,
-			     unsigned int start_offset,
-			     unsigned int *variants_count, /* IN/OUT */
-			     hb_ot_math_glyph_variant_t *variants /* OUT */) const
+			     unsigned पूर्णाङ्क start_offset,
+			     unsigned पूर्णाङ्क *variants_गिनती, /* IN/OUT */
+			     hb_ot_math_glyph_variant_t *variants /* OUT */) ध्रुव
   {
-    if (variants_count && variants)
+    यदि (variants_गिनती && variants)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
-			    hb_array (variants, *variants_count)))
+      प्रति (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_गिनती),
+			    hb_array (variants, *variants_गिनती)))
 	_.second = {_.first.variantGlyph, font->em_mult (_.first.advanceMeasurement, mult)};
     }
-    return mathGlyphVariantRecord.len;
+    प्रत्यागम mathGlyphVariantRecord.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  शून्य depend (hb_depend_data_builder_t *depend_data, unsigned source) ध्रुव
   {
-    (this+glyphAssembly).depend (depend_data, source);
+    (एतत्+glyphAssembly).depend (depend_data, source);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    प्रति (ध्रुव auto& _ : mathGlyphVariantRecord.iter ())
       _.depend (depend_data, source);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  शून्य closure_glyphs (hb_set_t *variant_glyphs) ध्रुव
   {
-    (this+glyphAssembly).closure_glyphs (variant_glyphs);
+    (एतत्+glyphAssembly).closure_glyphs (variant_glyphs);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    प्रति (ध्रुव auto& _ : mathGlyphVariantRecord.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
+  रक्षित:
   /* Offset to MathGlyphAssembly table for this shape - from the beginning of
      MathGlyphConstruction table.  May be NULL. */
   Offset16To<MathGlyphAssembly>	  glyphAssembly;
@@ -973,82 +973,82 @@ struct MathGlyphConstruction
   /* MathGlyphVariantRecords for alternative variants of the glyphs. */
   Array16Of<MathGlyphVariantRecord> mathGlyphVariantRecord;
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (4, mathGlyphVariantRecord);
 };
 
-struct MathVariants
+संरचना MathVariants
 {
-  void depend (hb_depend_data_builder_t *depend_data) const
+  शून्य depend (hb_depend_data_builder_t *depend_data) ध्रुव
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    ध्रुव hb_array_t<ध्रुव Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_गिनती + horiz_Glyph_गिनती);
 
-    if (vertGlyphCoverage)
+    यदि (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      ध्रुव auto vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_गिनती);
+      + hb_zip (एतत्+vertGlyphCoverage, vert_offsets)
+      | hb_apply ([&] (ध्रुव hb_pair_t<hb_codepoint_t, ध्रुव Offset16To<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
+                    ध्रुव MathGlyphConstruction &mgc = एतत्+_.second;
                     mgc.depend (depend_data, _.first);
                   })
       ;
     }
-    if (horizGlyphCoverage)
+    यदि (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      ध्रुव auto hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_गिनती, horiz_Glyph_गिनती);
+      + hb_zip (एतत्+horizGlyphCoverage, hori_offsets)
+      | hb_apply ([&] (ध्रुव hb_pair_t<hb_codepoint_t, ध्रुव Offset16To<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
+                    ध्रुव MathGlyphConstruction &mgc = एतत्+_.second;
                     mgc.depend (depend_data, _.first);
                   })
       ;
     }
   }
 
-  void closure_glyphs (const hb_set_t *glyph_set,
-                       hb_set_t *variant_glyphs) const
+  शून्य closure_glyphs (ध्रुव hb_set_t *glyph_set,
+                       hb_set_t *variant_glyphs) ध्रुव
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    ध्रुव hb_array_t<ध्रुव Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_गिनती + horiz_Glyph_गिनती);
 
-    if (vertGlyphCoverage)
+    यदि (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
+      ध्रुव auto vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_गिनती);
+      + hb_zip (एतत्+vertGlyphCoverage, vert_offsets)
       | hb_filter (glyph_set, hb_first)
       | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      | hb_map (hb_add (एतत्))
+      | hb_apply ([=] (ध्रुव MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
       ;
     }
 
-    if (horizGlyphCoverage)
+    यदि (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
+      ध्रुव auto hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_गिनती, horiz_Glyph_गिनती);
+      + hb_zip (एतत्+horizGlyphCoverage, hori_offsets)
       | hb_filter (glyph_set, hb_first)
       | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      | hb_map (hb_add (एतत्))
+      | hb_apply ([=] (ध्रुव MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
       ;
     }
   }
 
-  void collect_coverage_and_indices (hb_sorted_vector_t<hb_codepoint_t>& new_coverage,
-                                     const Offset16To<Coverage>& coverage,
+  शून्य collect_coverage_and_indices (hb_sorted_vector_t<hb_codepoint_t>& new_coverage,
+                                     ध्रुव Offset16To<Coverage>& coverage,
                                      unsigned i,
                                      unsigned end_index,
                                      hb_set_t& indices,
-                                     const hb_set_t& glyphset,
-                                     const hb_map_t& glyph_map) const
+                                     ध्रुव hb_set_t& glyphset,
+                                     ध्रुव hb_map_t& glyph_map) ध्रुव
   {
-    if (!coverage) return;
+    यदि (!coverage) प्रत्यागम;
 
-    for (const auto _ : (this+coverage).iter ())
+    प्रति (ध्रुव auto _ : (एतत्+coverage).iter ())
     {
-      if (i >= end_index) return;
-      if (glyphset.has (_))
+      यदि (i >= end_index) प्रत्यागम;
+      यदि (glyphset.has (_))
       {
         unsigned new_gid = glyph_map.get (_);
         new_coverage.push (new_gid);
@@ -1058,120 +1058,120 @@ struct MathVariants
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_cmaped;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = c->plan->_glyphset_cmaped;
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
+    यदि (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (असत्य);
 
     hb_sorted_vector_t<hb_codepoint_t> new_vert_coverage;
     hb_sorted_vector_t<hb_codepoint_t> new_hori_coverage;
     hb_set_t indices;
-    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vertGlyphCount, indices, glyphset, glyph_map);
-    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vertGlyphCount, vertGlyphCount + horizGlyphCount, indices, glyphset, glyph_map);
+    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vert_Glyph_गिनती, indices, glyphset, glyph_map);
+    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vert_Glyph_गिनती, vert_Glyph_गिनती + horiz_Glyph_गिनती, indices, glyphset, glyph_map);
 
-    if (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    if (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    यदि (!c->serializer->check_assign (out->vert_Glyph_गिनती, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (असत्य);
+    यदि (!c->serializer->check_assign (out->horiz_Glyph_गिनती, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (असत्य);
 
-    for (unsigned i : indices.iter ())
+    प्रति (unsigned i : indices.iter ())
     {
       auto *o = c->serializer->embed (glyphConstruction[i]);
-      if (!o) return_trace (false);
-      o->serialize_subset (c, glyphConstruction[i], this);
+      यदि (!o) return_trace (असत्य);
+      o->serialize_subset (c, glyphConstruction[i], एतत्);
     }
 
-    if (new_vert_coverage)
+    यदि (new_vert_coverage)
       out->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
 
-    if (new_hori_coverage)
+    यदि (new_hori_coverage)
     out->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c) ध्रुव
   {
-    for (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
-    for (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
+    प्रति (ध्रुव auto &entry : hb_zip (एतत्+vertGlyphCoverage, glyphConstruction.as_array (vert_Glyph_गिनती)))
+      यदि (c->glyph_set->has (hb_first (entry)))
+        (एतत्+hb_second (entry)).collect_variation_indices (c);
+    प्रति (ध्रुव auto &entry : hb_zip (एतत्+horizGlyphCoverage, glyphConstruction.as_array (vert_Glyph_गिनती + horiz_Glyph_गिनती).sub_array (vert_Glyph_गिनती)))
+      यदि (c->glyph_set->has (hb_first (entry)))
+        (एतत्+hb_second (entry)).collect_variation_indices (c);
   }
 
-  bool sanitize_offsets (hb_sanitize_context_t *c) const
+  तार्किक sanitize_offsets (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = vertGlyphCount + horizGlyphCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (एतत्);
+    unsigned पूर्णाङ्क गिनती = vert_Glyph_गिनती + horiz_Glyph_गिनती;
+    प्रति (unsigned पूर्णाङ्क i = 0; i < गिनती; i++)
+      यदि (!glyphConstruction.arrayZ[i].sanitize (c, एतत्)) return_trace (असत्य);
+    return_trace (सत्य);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  vertGlyphCoverage.sanitize (c, this) &&
-		  horizGlyphCoverage.sanitize (c, this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
+		  vertGlyphCoverage.sanitize (c, एतत्) &&
+		  horizGlyphCoverage.sanitize (c, एतत्) &&
 		  hb_barrier () &&
-		  c->check_array (glyphConstruction.arrayZ, vertGlyphCount + horizGlyphCount) &&
+		  c->check_array (glyphConstruction.arrayZ, vert_Glyph_गिनती + horiz_Glyph_गिनती) &&
 		  sanitize_offsets (c));
   }
 
   hb_position_t get_min_connector_overlap (hb_direction_t direction,
-						  hb_font_t *font) const
-  { return font->em_scale_dir (minConnectorOverlap, direction); }
+						  hb_font_t *font) ध्रुव
+  { प्रत्यागम font->em_scale_dir (minConnectorOverlap, direction); }
 
-  unsigned int get_glyph_variants (hb_codepoint_t glyph,
+  unsigned पूर्णाङ्क get_glyph_variants (hb_codepoint_t glyph,
 				   hb_direction_t direction,
 				   hb_font_t *font,
-				   unsigned int start_offset,
-				   unsigned int *variants_count, /* IN/OUT */
-				   hb_ot_math_glyph_variant_t *variants /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
-	   .get_variants (direction, font, start_offset, variants_count, variants); }
+				   unsigned पूर्णाङ्क start_offset,
+				   unsigned पूर्णाङ्क *variants_गिनती, /* IN/OUT */
+				   hb_ot_math_glyph_variant_t *variants /* OUT */) ध्रुव
+  { प्रत्यागम get_glyph_construction (glyph, direction, font)
+	   .get_variants (direction, font, start_offset, variants_गिनती, variants); }
 
-  unsigned int get_glyph_parts (hb_codepoint_t glyph,
+  unsigned पूर्णाङ्क get_glyph_parts (hb_codepoint_t glyph,
 				hb_direction_t direction,
 				hb_font_t *font,
-				unsigned int start_offset,
-				unsigned int *parts_count, /* IN/OUT */
+				unsigned पूर्णाङ्क start_offset,
+				unsigned पूर्णाङ्क *parts_गिनती, /* IN/OUT */
 				hb_ot_math_glyph_part_t *parts /* OUT */,
-				hb_position_t *italics_correction /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+				hb_position_t *italics_correction /* OUT */) ध्रुव
+  { प्रत्यागम get_glyph_construction (glyph, direction, font)
 	   .get_assembly ()
 	   .get_parts (direction, font,
-		       start_offset, parts_count, parts,
+		       start_offset, parts_गिनती, parts,
 		       italics_correction); }
 
-  private:
-  const MathGlyphConstruction &
+  गुप्त:
+  ध्रुव MathGlyphConstruction &
   get_glyph_construction (hb_codepoint_t glyph,
 			  hb_direction_t direction,
-			  hb_font_t *font HB_UNUSED) const
+			  hb_font_t *font HB_UNUSED) ध्रुव
   {
-    bool vertical = HB_DIRECTION_IS_VERTICAL (direction);
-    unsigned int count = vertical ? vertGlyphCount : horizGlyphCount;
-    const Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
+    तार्किक vertical = HB_DIRECTION_IS_VERTICAL (direction);
+    unsigned पूर्णाङ्क गिनती = vertical ? vert_Glyph_गिनती : horiz_Glyph_गिनती;
+    ध्रुव Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
 						  : horizGlyphCoverage;
 
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    if (unlikely (index >= count)) return Null (MathGlyphConstruction);
+    unsigned पूर्णाङ्क index = (एतत्+coverage).get_coverage (glyph);
+    यदि (unlikely (index >= गिनती)) प्रत्यागम Null (MathGlyphConstruction);
 
-    if (!vertical)
-      index += vertGlyphCount;
+    यदि (!vertical)
+      index += vert_Glyph_गिनती;
 
-    return this+glyphConstruction[index];
+    प्रत्यागम एतत्+glyphConstruction[index];
   }
 
-  protected:
+  रक्षित:
   HBUINT16	minConnectorOverlap;
 				/* Minimum overlap of connecting
 				 * glyphs during glyph construction,
@@ -1184,10 +1184,10 @@ struct MathVariants
 				/* Offset to Coverage table -
 				 * from the beginning of MathVariants
 				 * table. */
-  HBUINT16	vertGlyphCount;	/* Number of glyphs for which
+  HBUINT16	vert_Glyph_गिनती;	/* Number of glyphs for which
 				 * information is provided for
 				 * vertically growing variants. */
-  HBUINT16	horizGlyphCount;/* Number of glyphs for which
+  HBUINT16	horiz_Glyph_गिनती;/* Number of glyphs for which
 				 * information is provided for
 				 * horizontally growing variants. */
 
@@ -1197,7 +1197,7 @@ struct MathVariants
   UnsizedArrayOf<Offset16To<MathGlyphConstruction>>
 			glyphConstruction;
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (10, glyphConstruction);
 };
 
@@ -1207,88 +1207,88 @@ struct MathVariants
  * https://docs.microsoft.com/en-us/typography/opentype/spec/math
  */
 
-struct MATH
+संरचना MATH
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
 
-  bool has_data () const { return version.to_int (); }
+  तार्किक has_data () ध्रुव { प्रत्यागम version.to_int (); }
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  शून्य depend (hb_depend_data_builder_t *depend_data) ध्रुव
   {
-    if (mathVariants)
-      (this+mathVariants).depend (depend_data);
+    यदि (mathVariants)
+      (एतत्+mathVariants).depend (depend_data);
   }
 
-  void closure_glyphs (hb_set_t *glyph_set) const
+  शून्य closure_glyphs (hb_set_t *glyph_set) ध्रुव
   {
-    if (mathVariants)
+    यदि (mathVariants)
     {
       hb_set_t variant_glyphs;
-      (this+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
+      (एतत्+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
       hb_set_union (glyph_set, &variant_glyphs);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (एतत्);
+    auto *out = c->serializer->embed (*एतत्);
+    यदि (unlikely (!out)) return_trace (असत्य);
 
-    out->mathConstants.serialize_copy (c->serializer, mathConstants, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, this);
-    out->mathVariants.serialize_subset (c, mathVariants, this);
-    return_trace (true);
+    out->mathConstants.serialize_copy (c->serializer, mathConstants, एतत्, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
+    out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, एतत्);
+    out->mathVariants.serialize_subset (c, mathVariants, एतत्);
+    return_trace (सत्य);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const hb_set_t *variant_glyph_set) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c, ध्रुव hb_set_t *variant_glyph_set) ध्रुव
   {
-    (this+mathConstants).collect_variation_indices (c);
-    (this+mathGlyphInfo).collect_variation_indices (c);
+    (एतत्+mathConstants).collect_variation_indices (c);
+    (एतत्+mathGlyphInfo).collect_variation_indices (c);
     auto *glyph_set = c->glyph_set;
     c->glyph_set = variant_glyph_set;
-    (this+mathVariants).collect_variation_indices (c);
+    (एतत्+mathVariants).collect_variation_indices (c);
     c->glyph_set = glyph_set;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
     return_trace (version.sanitize (c) &&
 		  likely (version.major == 1) &&
 		  hb_barrier () &&
-		  mathConstants.sanitize (c, this) &&
-		  mathGlyphInfo.sanitize (c, this) &&
-		  mathVariants.sanitize (c, this));
+		  mathConstants.sanitize (c, एतत्) &&
+		  mathGlyphInfo.sanitize (c, एतत्) &&
+		  mathVariants.sanitize (c, एतत्));
   }
 
   // https://github.com/harfbuzz/harfbuzz/issues/4653
-  HB_INTERNAL bool is_bad_cambria (hb_font_t *font) const
+  HB_INTERNAL तार्किक is_bad_cambria (hb_font_t *font) ध्रुव
   {
 #ifndef HB_NO_MATH
-    switch HB_CODEPOINT_ENCODE3 (font->face->table.MATH.get_blob ()->length,
-                                 (this+mathConstants).minHeight[1], // displayOperatorMinHeight
-                                 (this+mathConstants).minHeight[0]) // delimitedSubFormulaMinHeight
+    विकल्प HB_CODEPOINT_ENCODE3 (font->face->table.MATH.get_blob ()->length,
+                                 (एतत्+mathConstants).minHeight[1], // displayOperatorMinHeight
+                                 (एतत्+mathConstants).minHeight[0]) // delimitedSubFormulaMinHeight
     {
       /* sha1sum:ab4a4fe054d23061f3c039493d6f665cfda2ecf5  cambria.ttc
        * sha1sum:086855301bff644f9d8827b88491fcf73a6d4cb9  cambria.ttc
        * sha1sum:b1e5a3feaca2ea3dfcf79ccb377de749ecf60343  cambria.ttc */
-      case HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
-        return true;
+      पक्ष HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
+        प्रत्यागम सत्य;
     }
 #endif
-    return false;
+    प्रत्यागम असत्य;
   }
 
   hb_position_t get_constant (hb_ot_math_constant_t  constant,
-			      hb_font_t		   *font) const
-  { return (this+mathConstants).get_value (constant, font); }
+			      hb_font_t		   *font) ध्रुव
+  { प्रत्यागम (एतत्+mathConstants).get_मूल्य (constant, font); }
 
-  const MathGlyphInfo &get_glyph_info () const { return this+mathGlyphInfo; }
+  ध्रुव MathGlyphInfo &get_glyph_info () ध्रुव { प्रत्यागम एतत्+mathGlyphInfo; }
 
-  const MathVariants &get_variants () const    { return this+mathVariants; }
+  ध्रुव MathVariants &get_variants () ध्रुव    { प्रत्यागम एतत्+mathVariants; }
 
-  protected:
+  रक्षित:
   FixedVersion<>version;	/* Version of the MATH table
 				 * initially set to 0x00010000u */
   Offset16To<MathConstants>
@@ -1298,7 +1298,7 @@ struct MATH
   Offset16To<MathVariants>
 		mathVariants;	/* MathVariants table */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (10);
 };
 
