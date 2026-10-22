@@ -13,7 +13,7 @@ shape (void *shape_plan,
        font_t *font,
        buffer_t *buffer,
        const feature_t *features,
-       uint32_t num_features)
+       uint32_t नुमेरो_features)
 {
   face_t *face = font_get_face (font);
 

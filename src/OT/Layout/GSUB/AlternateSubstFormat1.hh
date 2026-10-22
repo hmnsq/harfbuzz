@@ -61,7 +61,7 @@ struct AlternateSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return;
     + hb_zip (this+coverage, alternateSet)
     | hb_map (hb_second)
     | hb_map (hb_add (this))
@@ -77,20 +77,20 @@ struct AlternateSubstFormat1_2
   unsigned
   get_glyph_alternates (hb_codepoint_t  gid,
                         unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+                        unsigned       *alternate_बिलांग  /* IN/OUT.  May be NULL. */,
                         hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   { return (this+alternateSet[(this+coverage).get_coverage (gid)])
-           .get_alternates (start_offset, alternate_count, alternate_glyphs); }
+           .get_alternates (start_offset, alternate_बिलांग, alternate_glyphs); }
 
   void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
+  collect_glyph_alternates (hb_map_t  *alternate_बिलांग /* IN/OUT */,
 			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
   {
     + hb_iter (alternateSet)
     | hb_map (hb_add (this))
     | hb_zip (this+coverage)
     | hb_apply ([&] (const hb_pair_t<const AlternateSet<Types> &, hb_codepoint_t> _) {
-		  _.first.collect_alternates (_.second, alternate_count, alternate_glyphs);
+		  _.first.collect_alternates (_.second, alternate_बिलांग, alternate_glyphs);
 		})
     ;
   }

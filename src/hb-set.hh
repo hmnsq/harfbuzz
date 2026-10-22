@@ -91,16 +91,16 @@ struct hb_sparseset_t
   bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
+  void add_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { s.add_array (array, बिलांग, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { return s.add_sorted_array (array, बिलांग, stride); }
   template <typename T>
   bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
 
@@ -194,7 +194,7 @@ struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
   { sparseset::operator<< (range); return *this; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_set_t::INVALID == HB_SET_हालागा_INVALID, "");
 
 
 #endif /* HB_SET_HH */

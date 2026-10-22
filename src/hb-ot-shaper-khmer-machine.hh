@@ -67,7 +67,7 @@ enum khmer_syllable_type_t {
 
 
 #line 65 "hb-ot-shaper-khmer-machine.hh"
-static const unsigned char _khmer_syllable_machine_trans_keys[] = {
+static const unsigned char khmer_syllable_machine_trans_मगा_सुसि[] = {
 	5u, 26u, 5u, 26u, 1u, 15u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 
 	5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 1u, 15u, 5u, 26u, 5u, 26u, 
 	5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 5u, 26u, 1u, 27u, 4u, 27u, 1u, 15u, 
@@ -76,7 +76,7 @@ static const unsigned char _khmer_syllable_machine_trans_keys[] = {
 	4u, 27u, 4u, 27u, 5u, 26u, 0
 };
 
-static const char _khmer_syllable_machine_key_spans[] = {
+static const char khmer_syllable_machine_सुसि_spans[] = {
 	22, 22, 15, 22, 22, 22, 22, 22, 
 	22, 22, 22, 22, 22, 15, 22, 22, 
 	22, 22, 22, 22, 22, 27, 24, 15, 
@@ -314,7 +314,7 @@ find_syllables_khmer (hb_buffer_t *buffer)
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const char *_inds;
 	if ( p == pe )
 		goto _test_eof;
@@ -327,13 +327,13 @@ _resume:
 #line 311 "hb-ot-shaper-khmer-machine.hh"
 	}
 
-	_keys = _khmer_syllable_machine_trans_keys + (cs<<1);
+	मगा_सुसि_2 = khmer_syllable_machine_trans_मगा_सुसि + (cs<<1);
 	_inds = _khmer_syllable_machine_indicies + _khmer_syllable_machine_index_offsets[cs];
 
-	_slen = _khmer_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].khmer_category()) &&
-		( info[p].khmer_category()) <= _keys[1] ?
-		( info[p].khmer_category()) - _keys[0] : _slen ];
+	_slen = khmer_syllable_machine_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=( info[p].khmer_category()) &&
+		( info[p].khmer_category()) <= मगा_सुसि_2[1] ?
+		( info[p].khmer_category()) - मगा_सुसि_2[0] : _slen ];
 
 _eof_trans:
 	cs = _khmer_syllable_machine_trans_targs[_trans];

@@ -77,7 +77,7 @@
  * Since: 1.7.7
  **/
 unsigned int
-hb_face_count (hb_blob_t *blob)
+hb_face_बिलांग (hb_blob_t *blob)
 {
   if (unlikely (!blob))
     return 0;
@@ -88,7 +88,7 @@ hb_face_count (hb_blob_t *blob)
   if (unlikely (!ot->sanitize (&c)))
     return 0;
 
-  return ot->get_face_count ();
+  return ot->get_face_बिलांग ();
 }
 
 /*
@@ -143,7 +143,7 @@ hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
   face->user_data = user_data;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->नुमेरो_glyphs = -1;
 
   face->data.init0 (face);
   face->table.init0 (face);
@@ -203,7 +203,7 @@ _hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void
 static unsigned
 _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
 				  unsigned int start_offset,
-				  unsigned int *table_count,
+				  unsigned int *table_बिलांग_2,
 				  hb_tag_t *table_tags,
 				  void *user_data)
 {
@@ -212,7 +212,7 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
   const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
   const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  return ot_face.get_table_tags (start_offset, table_बिलांग_2, table_tags);
 }
 
 
@@ -289,8 +289,8 @@ hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
 			unsigned int  index)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
+  unsigned नुमेरो_faces = hb_face_बिलांग (blob);
+  if (index >= नुमेरो_faces)
     return nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
@@ -579,9 +579,9 @@ hb_face_destroy (hb_face_t *face)
   if (!hb_object_destroy (face)) return;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  for (hb_face_t::plan_बुहोल_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_बुहोल_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
@@ -616,7 +616,7 @@ hb_face_destroy (hb_face_t *face)
  **/
 hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
+		       hb_user_data_सुसि_t *key,
 		       void *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
@@ -638,7 +638,7 @@ hb_face_set_user_data (hb_face_t          *face,
  **/
 void *
 hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+		       hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (face, key);
 }
@@ -723,19 +723,19 @@ hb_face_reference_blob (hb_face_t *face)
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    unsigned total_बिलांग = hb_face_get_table_tags (face, 0, nullptr, nullptr);
+    if (total_बिलांग)
     {
       hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      unsigned बिलांग = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      for (unsigned offset = 0; offset < total_बिलांग; offset += बिलांग)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
+        hb_face_get_table_tags (face, offset, &बिलांग, tags);
+	if (unlikely (!बिलांग))
 	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        for (unsigned i = 0; i < बिलांग; i++)
         {
 	  if (unlikely (!tags[i]))
 	    continue;
@@ -846,13 +846,13 @@ hb_face_get_upem (const hb_face_t *face)
  * Since: 0.9.7
  **/
 void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+hb_face_set_glyph_बिलांग (hb_face_t    *face,
+			 unsigned int  glyph_बिलांग)
 {
   if (hb_object_is_immutable (face))
     return;
 
-  face->num_glyphs = glyph_count;
+  face->नुमेरो_glyphs = glyph_बिलांग;
 }
 
 /**
@@ -866,9 +866,9 @@ hb_face_set_glyph_count (hb_face_t    *face,
  * Since: 0.9.7
  **/
 unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+hb_face_get_glyph_बिलांग (const hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  return face->get_नुमेरो_glyphs ();
 }
 
 /**
@@ -921,17 +921,17 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
 unsigned int
 hb_face_get_table_tags (const hb_face_t *face,
 			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+			unsigned int *table_बिलांग_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
   if (!face->get_table_tags_func)
   {
-    if (table_count)
-      *table_count = 0;
+    if (table_बिलांग_2)
+      *table_बिलांग_2 = 0;
     return 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  return face->get_table_tags_func (face, start_offset, table_बिलांग_2, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -955,7 +955,7 @@ void
 hb_face_collect_unicodes (hb_face_t *face,
 			  hb_set_t  *out)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->table.cmap->collect_unicodes (out, face->get_नुमेरो_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -973,10 +973,10 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
 				       hb_set_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
+  hb_set_t सालानसान_unicodes;
   if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+    unicodes = &सालानसान_unicodes;
+  face->table.cmap->collect_mapping (unicodes, mapping, face->get_नुमेरो_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:

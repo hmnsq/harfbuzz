@@ -12,7 +12,7 @@ shape (void *shape_plan,
        font_t *font,
        buffer_t *buffer,
        const feature_t *features,
-       uint32_t num_features)
+       uint32_t नुमेरो_features)
 {
-  return shape_with (font, buffer, features, num_features, "ot");
+  return shape_with (font, buffer, features, नुमेरो_features, "ot");
 }

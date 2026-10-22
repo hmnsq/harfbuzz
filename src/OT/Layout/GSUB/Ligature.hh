@@ -74,7 +74,7 @@ struct Ligature
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
+    c->पासोक->add_array (component.arrayZ, component.get_length ());
     c->output->add (ligGlyph);
   }
 
@@ -105,13 +105,13 @@ struct Ligature
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    unsigned int बिलांग = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    if (unlikely (!बिलांग)) return_trace (false);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    if (unlikely (बिलांग == 1))
     {
 
       if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
@@ -134,17 +134,17 @@ struct Ligature
       return_trace (true);
     }
 
-    unsigned int total_component_count = 0;
+    unsigned int total_component_बिलांग = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
+    if (unlikely (बिलांग > HB_MAX_CONTEXT_LENGTH)) return false;
     unsigned int match_end = 0;
 
-    if (likely (!match_input (c, count,
+    if (likely (!match_पासोक (c, बिलांग,
                               &component[1],
                               match_glyph,
                               nullptr,
                               &match_end,
-                              &total_component_count)))
+                              &total_component_बिलांग)))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
       return_trace (false);
@@ -161,7 +161,7 @@ struct Ligature
       char *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	c->match_positions[i] += delta;
 	if (i)
@@ -175,11 +175,11 @@ struct Ligature
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
+    ligate_पासोक (c,
+                  बिलांग,
                   match_end,
                   ligGlyph,
-                  total_component_count);
+                  total_component_बिलांग);
 
     if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {

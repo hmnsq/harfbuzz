@@ -100,7 +100,7 @@
 #define VMBlw	USE(VMBlw)
 #define VMPst	USE(VMPst)
 #define VMPre	USE(VMPre)
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 
 
 #ifndef HB_OPTIMIZE_SIZE

@@ -126,13 +126,13 @@ struct hb_depend_edge_t {
  * Key structure for edge deduplication. Combines source glyph with edge record.
  * Uses the record's equality and hash operators for comparison.
  */
-struct hb_depend_edge_key_t {
+struct hb_depend_edge_सुसि_t {
   hb_codepoint_t source;
   hb_depend_edge_t record;
 
-  hb_depend_edge_key_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+  hb_depend_edge_सुसि_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
 
-  hb_depend_edge_key_t (hb_codepoint_t source,
+  hb_depend_edge_सुसि_t (hb_codepoint_t source,
               hb_tag_t table_tag,
               hb_tag_t layout_tag,
               hb_codepoint_t dependent,
@@ -141,7 +141,7 @@ struct hb_depend_edge_key_t {
     : source (source),
       record (table_tag, dependent, layout_tag, ligature_set, context_set, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
 
-  bool operator == (const hb_depend_edge_key_t &o) const
+  bool operator == (const hb_depend_edge_सुसि_t &o) const
   {
     return source == o.source && record == o.record;
   }
@@ -218,7 +218,7 @@ struct hb_depend_data_t
     return nullptr;
   }
 
-  unsigned int get_glyph_entry_count (hb_codepoint_t gid) const
+  unsigned int get_glyph_entry_बिलांग (hb_codepoint_t gid) const
   {
     if (gid < glyph_dependencies.length)
       return glyph_dependencies[gid].dependencies.length;
@@ -244,7 +244,7 @@ struct hb_depend_data_t
     return false;
   }
 
-  void print ()
+  void इलिम्बाग ()
   {
     for (unsigned i = 0; i < glyph_dependencies.length; i++) {
       auto &gd = glyph_dependencies[i];
@@ -297,13 +297,13 @@ struct hb_depend_data_builder_t
   {
     if (set_index >= data.sets.length)
     {
-      DEBUG_MSG (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
+      DEBUG_मेनसाहे (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
                  set_index, data.sets.length - 1);
       return;
     }
     set_to_index.del (data.sets[set_index].get ());
     data.sets[set_index]->clear ();
-    check_success (free_set_list.push_or_fail (set_index));
+    check_success (free_set_list.इतुलाक_or_fail (set_index));
   }
 
   hb_codepoint_t new_set (const hb_set_t &set)
@@ -312,7 +312,7 @@ struct hb_depend_data_builder_t
 
     if (free_set_list.length > 0)
     {
-      set_index = free_set_list.pop ();
+      set_index = free_set_list.आलिसिन ();
       data.sets[set_index]->set (set);
       if (unlikely (data.sets[set_index]->in_error ()))
 	return fail_invalid ();
@@ -329,7 +329,7 @@ struct hb_depend_data_builder_t
 	hb_set_destroy (new_set);
 	return fail_invalid ();
       }
-      if (unlikely (!data.sets.push_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
+      if (unlikely (!data.sets.इतुलाक_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
 	return fail_invalid ();
     }
 
@@ -469,7 +469,7 @@ struct hb_depend_data_builder_t
 
   uint32_t edge_hash (hb_codepoint_t source, const hb_depend_edge_t &record) const
   {
-    hb_depend_edge_key_t key (source, record.table_tag, record.layout_tag,
+    hb_depend_edge_सुसि_t key (source, record.table_tag, record.layout_tag,
 			      record.dependent, record.ligature_set,
 			      record.context_set);
     return key.hash ();
@@ -531,7 +531,7 @@ struct hb_depend_data_builder_t
 
     auto &dependencies = data.glyph_dependencies[source].dependencies;
     unsigned int index = dependencies.length;
-    if (unlikely (!dependencies.push_or_fail (record)))
+    if (unlikely (!dependencies.इतुलाक_or_fail (record)))
       return fail ();
 
     edge_slots[slot] = encode_edge_ref (source, index);
@@ -547,7 +547,7 @@ struct hb_depend_data_builder_t
                           hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
   {
     if (target >= data.glyph_dependencies.length) {
-      DEBUG_MSG (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
+      DEBUG_मेनसाहे (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
                  target, HB_UNTAG(table_tag));
       return false;
     }
@@ -574,14 +574,14 @@ struct hb_depend_data_builder_t
     return any_added;
   }
 
-  bool init_lookup_features (unsigned lookup_count)
+  bool init_lookup_features (unsigned lookup_बिलांग)
   {
-    return check_success (lookup_feature_offsets.resize (lookup_count + 1));
+    return check_success (lookup_feature_offsets.resize (lookup_बिलांग + 1));
   }
 
   bool add_lookup_feature (hb_codepoint_t lookup_index, hb_tag_t feature_tag)
   {
-    if (feature_tag == HB_SET_VALUE_INVALID)
+    if (feature_tag == HB_SET_हालागा_INVALID)
       return true;
 
     if (unlikely (!lookup_feature_offsets.length ||
@@ -589,7 +589,7 @@ struct hb_depend_data_builder_t
       return fail ();
 
     uint64_t entry = ((uint64_t) lookup_index << 32) | feature_tag;
-    return check_success (lookup_features.push_or_fail (entry));
+    return check_success (lookup_features.इतुलाक_or_fail (entry));
   }
 
   bool finish_lookup_features ()
@@ -605,15 +605,15 @@ struct hb_depend_data_builder_t
     lookup_features.shrink (write, false);
 
     unsigned feature_index = 0;
-    unsigned lookup_count = lookup_feature_offsets.length - 1;
-    for (unsigned lookup_index = 0; lookup_index < lookup_count; lookup_index++)
+    unsigned lookup_बिलांग = lookup_feature_offsets.length - 1;
+    for (unsigned lookup_index = 0; lookup_index < lookup_बिलांग; lookup_index++)
     {
       lookup_feature_offsets[lookup_index] = feature_index;
       while (feature_index < lookup_features.length &&
 	     lookup_features[feature_index] >> 32 == lookup_index)
 	feature_index++;
     }
-    lookup_feature_offsets[lookup_count] = feature_index;
+    lookup_feature_offsets[lookup_बिलांग] = feature_index;
     return true;
   }
 

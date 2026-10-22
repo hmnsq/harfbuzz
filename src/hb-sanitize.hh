@@ -130,8 +130,8 @@ struct hb_sanitize_context_t :
         recursion_depth (0),
 	writable (false),
 	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
+	नुमेरो_glyphs (65536),
+	नुमेरो_glyphs_set (false),
 	lazy_some_gpos (false) {}
 
   const char *get_name () { return "SANITIZE"; }
@@ -141,13 +141,13 @@ struct hb_sanitize_context_t :
     return format->sanitize (this) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
+  static return_t default_return_हालागा () { return true; }
+  static return_t no_dispatch_return_हालागा () { return false; }
   bool stop_sublookup_iteration (const return_t r) const { return !r; }
 
-  bool visit_subtables (unsigned count)
+  bool visit_subtables (unsigned बिलांग)
   {
-    max_subtables += count;
+    max_subtables += बिलांग;
     return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
@@ -183,12 +183,12 @@ struct hb_sanitize_context_t :
     this->writable = false;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  void set_नुमेरो_glyphs (unsigned int नुमेरो_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    नुमेरो_glyphs = नुमेरो_glyphs_2;
+    नुमेरो_glyphs_set = true;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned int get_नुमेरो_glyphs () { return नुमेरो_glyphs; }
 
   void set_max_ops (int max_ops_) { max_ops = max_ops_; }
 
@@ -242,7 +242,7 @@ struct hb_sanitize_context_t :
     this->debug_depth = 0;
     this->recursion_depth = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_मेनसाहे_LEVEL (SANITIZE, start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
 		     this->start, this->end,
 		     (unsigned long) (this->end - this->start));
@@ -250,7 +250,7 @@ struct hb_sanitize_context_t :
 
   void end_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_मेनसाहे_LEVEL (SANITIZE, this->start, 0, -1,
 		     "end [%p..%p]",
 		     this->start, this->end);
 
@@ -260,15 +260,15 @@ struct hb_sanitize_context_t :
     this->length = 0;
   }
 
-  bool check_ops(unsigned count)
+  bool check_ops(unsigned बिलांग)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    if (unlikely (this->max_ops < 0 || बिलांग >= (unsigned) this->max_ops))
     {
       this->max_ops = -1;
       return false;
     }
-    this->max_ops -= (int) count;
+    this->max_ops -= (int) बिलांग;
     return true;
   }
 
@@ -283,7 +283,7 @@ struct hb_sanitize_context_t :
 	      (unsigned int) (this->end - p) >= len &&
 	      ((this->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_मेनसाहे_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
@@ -302,7 +302,7 @@ struct hb_sanitize_context_t :
     bool ok = ((uintptr_t) (p - this->start) <= this->length &&
 	       (unsigned int) (this->end - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_मेनसाहे_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
@@ -320,7 +320,7 @@ struct hb_sanitize_context_t :
     const char *p = (const char *) base;
     bool ok = (uintptr_t) (p - this->start) <= this->length;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_मेनसाहे_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
@@ -410,7 +410,7 @@ struct hb_sanitize_context_t :
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_मेनसाहे_FUNC (SANITIZE, start, "start");
 
     start_processing ();
 
@@ -426,7 +426,7 @@ struct hb_sanitize_context_t :
 
     end_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
+    DEBUG_मेनसाहे_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
     if (sane)
     {
       hb_blob_make_immutable (blob);
@@ -442,8 +442,8 @@ struct hb_sanitize_context_t :
   template <typename Type>
   hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
+    if (!नुमेरो_glyphs_set)
+      set_नुमेरो_glyphs (hb_face_get_glyph_बिलांग (face));
     return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
@@ -454,8 +454,8 @@ struct hb_sanitize_context_t :
   int recursion_depth;
   bool writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
+  unsigned int नुमेरो_glyphs;
+  bool  नुमेरो_glyphs_set;
   public:
   bool lazy_some_gpos;
 };

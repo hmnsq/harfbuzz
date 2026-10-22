@@ -107,7 +107,7 @@ struct head
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  magicNumber == 0x5F0F3CF5u);
+		  magic_नुमेरो == 0x5F0F3CF5u);
   }
 
   protected:
@@ -117,7 +117,7 @@ struct head
   HBUINT32	checkSumAdjustment;	/* To compute: set it to 0, sum the
 					 * entire font as HBUINT32, then store
 					 * 0xB1B0AFBAu - sum. */
-  HBUINT32	magicNumber;		/* Set to 0x5F0F3CF5u. */
+  HBUINT32	magic_नुमेरो;		/* Set to 0x5F0F3CF5u. */
   public:
   HBUINT16	flags;			/* Bit 0: Baseline for font at y=0;
 					 * Bit 1: Left sidebearing point at x=0;

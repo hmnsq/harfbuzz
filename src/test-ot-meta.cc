@@ -43,15 +43,15 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned int बिलांग = 0;
 
 #ifndef HB_NO_META
-  count = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
+  बिलांग = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
 
   hb_ot_meta_tag_t *tags = (hb_ot_meta_tag_t *)
-			   malloc (sizeof (hb_ot_meta_tag_t) * count);
-  hb_ot_meta_get_entry_tags (face, 0, &count, tags);
-  for (unsigned i = 0; i < count; ++i)
+			   malloc (sizeof (hb_ot_meta_tag_t) * बिलांग);
+  hb_ot_meta_get_entry_tags (face, 0, &बिलांग, tags);
+  for (unsigned i = 0; i < बिलांग; ++i)
   {
     hb_blob_t *entry = hb_ot_meta_reference_entry (face, tags[i]);
     printf ("%c%c%c%c, size: %u: %.*s\n",
@@ -64,5 +64,5 @@ main (int argc, char **argv)
 
   hb_face_destroy (face);
 
-  return !count;
+  return !बिलांग;
 }

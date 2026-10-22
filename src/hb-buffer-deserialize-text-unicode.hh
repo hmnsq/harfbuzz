@@ -33,12 +33,12 @@
 
 
 #line 33 "hb-buffer-deserialize-text-unicode.hh"
-static const unsigned char _deserialize_text_unicode_trans_keys[] = {
+static const unsigned char deserialize_text_unicode_trans_मगा_सुसि[] = {
 	0u, 0u, 43u, 102u, 48u, 102u, 48u, 124u, 48u, 57u, 62u, 124u, 48u, 124u, 60u, 117u, 
 	85u, 117u, 85u, 117u, 0
 };
 
-static const char _deserialize_text_unicode_key_spans[] = {
+static const char deserialize_text_unicode_सुसि_spans[] = {
 	0, 60, 55, 77, 10, 63, 77, 58, 
 	33, 33
 };
@@ -159,20 +159,20 @@ _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const char *_inds;
 	if ( p == pe )
 		goto _test_eof;
 	if ( cs == 0 )
 		goto _out;
 _resume:
-	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
+	मगा_सुसि_2 = deserialize_text_unicode_trans_मगा_सुसि + (cs<<1);
 	_inds = _deserialize_text_unicode_indicies + _deserialize_text_unicode_index_offsets[cs];
 
-	_slen = _deserialize_text_unicode_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_unicode_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=(*p) &&
+		(*p) <= मगा_सुसि_2[1] ?
+		(*p) - मगा_सुसि_2[0] : _slen ];
 
 	cs = _deserialize_text_unicode_trans_targs[_trans];
 

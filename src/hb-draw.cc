@@ -53,7 +53,7 @@ hb_draw_move_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSE
 		     void *user_data HB_UNUSED) {}
 
 static void
-hb_draw_line_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
+hb_draw_लिन्या_to_nil (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data HB_UNUSED,
 		     hb_draw_state_t *st HB_UNUSED,
 		     float to_x HB_UNUSED, float to_y HB_UNUSED,
 		     void *user_data HB_UNUSED) {}
@@ -135,7 +135,7 @@ _hb_draw_funcs_set_preamble (hb_draw_funcs_t    *dfuncs,
 }
 
 static bool
-_hb_draw_funcs_set_middle (hb_draw_funcs_t   *dfuncs,
+hb_draw_funcs_set_गित्ना (hb_draw_funcs_t   *dfuncs,
 			   void              *user_data,
 			   hb_destroy_func_t  destroy)
 {
@@ -174,7 +174,7 @@ hb_draw_funcs_set_##name##_func (hb_draw_funcs_t	 *dfuncs,		\
   if (dfuncs->destroy && dfuncs->destroy->name)					\
     dfuncs->destroy->name (!dfuncs->user_data ? nullptr : dfuncs->user_data->name); \
 									 \
-  if (!_hb_draw_funcs_set_middle (dfuncs, user_data, destroy))           \
+  if (!hb_draw_funcs_set_गित्ना (dfuncs, user_data, destroy))           \
       return;                                                            \
 									\
   if (func)								\
@@ -308,7 +308,7 @@ hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs)
  **/
 hb_bool_t
 hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
+			     hb_user_data_सुसि_t *key,
 			     void *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
@@ -330,7 +330,7 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
  **/
 void *
 hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key)
+			     hb_user_data_सुसि_t       *key)
 {
   return hb_object_get_user_data (dfuncs, key);
 }
@@ -464,11 +464,11 @@ hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
  * Since: 4.0.0
  **/
 void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_लिन्या_to (hb_draw_funcs_t *dfuncs, void *draw_data,
 		 hb_draw_state_t *st,
 		 float to_x, float to_y)
 {
-  dfuncs->line_to (draw_data, *st,
+  dfuncs->लिन्या_to (draw_data, *st,
 		   to_x, to_y);
 }
 
@@ -571,11 +571,11 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  * Since: 14.2.0
  **/
 void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_लिन्या (hb_draw_funcs_t *dfuncs, void *draw_data,
 	      hb_draw_state_t *st,
 	      float x0, float y0, float w0,
 	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap)
+	      hb_draw_लिन्या_cap_t cap)
 {
   if (std::isnan (w1)) w1 = w0;
   float dx = x1 - x0, dy = y1 - y0;
@@ -591,7 +591,7 @@ hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
   float h1 = 0.5f * w1;
   /* Square caps: extend each endpoint outward along the line
    * tangent by half its local stroke width. */
-  if (cap == HB_DRAW_LINE_CAP_SQUARE)
+  if (cap == HB_DRAW_लिन्या_CAP_SQUARE)
   {
     x0 -= tx * h0; y0 -= ty * h0;
     x1 += tx * h1; y1 += ty * h1;
@@ -603,9 +603,9 @@ hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
   float dx_ = x0 - nx * h0, dy_ = y0 - ny * h0;
 
   hb_draw_move_to   (dfuncs, draw_data, st, ax, ay);
-  hb_draw_line_to   (dfuncs, draw_data, st, bx, by);
-  hb_draw_line_to   (dfuncs, draw_data, st, cx, cy);
-  hb_draw_line_to   (dfuncs, draw_data, st, dx_, dy_);
+  hb_draw_लिन्या_to   (dfuncs, draw_data, st, bx, by);
+  hb_draw_लिन्या_to   (dfuncs, draw_data, st, cx, cy);
+  hb_draw_लिन्या_to   (dfuncs, draw_data, st, dx_, dy_);
   hb_draw_close_path (dfuncs, draw_data, st);
 }
 
@@ -621,15 +621,15 @@ _hb_draw_rect_contour (hb_draw_funcs_t *dfuncs, void *draw_data,
   hb_draw_move_to (dfuncs, draw_data, st, x, y);
   if (ccw)
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x + w, y);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x + w, y + h);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x,     y + h);
   }
   else
   {
-    hb_draw_line_to (dfuncs, draw_data, st, x,     y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y + h);
-    hb_draw_line_to (dfuncs, draw_data, st, x + w, y);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x,     y + h);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x + w, y + h);
+    hb_draw_लिन्या_to (dfuncs, draw_data, st, x + w, y);
   }
   hb_draw_close_path (dfuncs, draw_data, st);
 }
@@ -819,7 +819,7 @@ hb_draw_extents_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_draw_extents_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_draw_extents_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			 void *data,
 			 hb_draw_state_t *st,
 			 float to_x, float to_y,
@@ -869,7 +869,7 @@ static struct hb_draw_extents_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func (funcs, hb_draw_extents_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_draw_extents_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func (funcs, hb_draw_extents_लिन्या_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_draw_extents_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, hb_draw_extents_cubic_to, nullptr, nullptr);
 

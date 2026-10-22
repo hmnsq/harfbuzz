@@ -102,7 +102,7 @@ struct glyf
 
     if (!has_valid_glyf_format (c->plan->source)) {
       // glyf format is unknown don't attempt to subset it.
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_मेनसाहे (SUBSET, nullptr,
                  "unkown glyf format, dropping from subset.");
       return_trace (false);
     }
@@ -154,8 +154,8 @@ struct glyf
 	padded_offsets.push (g.length ());
     }
 
-    auto *glyf_prime = c->serializer->start_embed <glyf> ();
-    bool result = glyf_prime->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
+    auto *glyf_पांगुनाहिन = c->serializer->start_embed <glyf> ();
+    bool result = glyf_पांगुनाहिन->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
     if (c->plan->normalized_coords && !c->plan->pinned_at_default)
       _free_compiled_subset_glyphs (glyphs);
     hb_blob_destroy (source_glyf);
@@ -206,7 +206,7 @@ struct glyf_accelerator_t
   {
     extended = false;
     short_offset = false;
-    num_glyphs = 0;
+    नुमेरो_glyphs = 0;
     loca_table = nullptr;
     glyf_table = nullptr;
 #ifndef HB_NO_VAR
@@ -250,8 +250,8 @@ struct glyf_accelerator_t
     vmtx = face->table.vmtx;
 #endif
 
-    num_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
-    num_glyphs = hb_min (num_glyphs, face->get_num_glyphs ());
+    नुमेरो_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
+    नुमेरो_glyphs = hb_min (नुमेरो_glyphs, face->get_नुमेरो_glyphs ());
   }
   ~glyf_accelerator_t ()
   {
@@ -266,13 +266,13 @@ struct glyf_accelerator_t
     loca_table.destroy ();
   }
 
-  bool has_data () const { return num_glyphs; }
+  bool has_data () const { return नुमेरो_glyphs; }
   bool is_extended () const { return extended; }
 
   void depend (hb_depend_data_builder_t *builder) const
   {
     if (!has_data ()) return;
-    for (hb_codepoint_t gid = 0; gid < get_num_glyphs (); gid++)
+    for (hb_codepoint_t gid = 0; gid < get_नुमेरो_glyphs (); gid++)
     {
       auto glyph = glyph_for_gid (gid);
       for (auto &item : glyph.get_composite_iterator ())
@@ -290,10 +290,10 @@ struct glyf_accelerator_t
 		   hb_scalar_cache_t *gvar_cache = nullptr,
 		   int64_t *budget = nullptr) const
   {
-    if (gid >= num_glyphs) return false;
+    if (gid >= नुमेरो_glyphs) return false;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
+    int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+    if (!budget) budget = &सालानसान_budget;
 
     auto &all_points = scratch.all_points;
     all_points.clear ();
@@ -305,9 +305,9 @@ struct glyf_accelerator_t
     if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.length)))
       return false;
 
-    unsigned count = all_points.length;
-    assert (count >= glyf_impl::PHANTOM_COUNT);
-    count -= glyf_impl::PHANTOM_COUNT;
+    unsigned बिलांग = all_points.length;
+    assert (बिलांग >= glyf_impl::PHANTOM_बिलांग);
+    बिलांग -= glyf_impl::PHANTOM_बिलांग;
 
     if (consumer.is_consuming_contour_points ())
     {
@@ -318,7 +318,7 @@ struct glyf_accelerator_t
 	/* Our path-builder was designed to work with this simple loop.
 	 * But FreeType and CoreText do it differently, so we match those
 	 * with the other, more complicated, code branch below. */
-	for (unsigned i = 0; i < count; i++)
+	for (unsigned i = 0; i < बिलांग; i++)
 	{
 	  consumer.consume_point (points[i]);
 	  if (points[i].is_end_point)
@@ -327,13 +327,13 @@ struct glyf_accelerator_t
       }
       else
       {
-	for (unsigned i = 0; i < count; i++)
+	for (unsigned i = 0; i < बिलांग; i++)
 	{
 	  // Start of a contour.
 	  if (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE)
 	  {
 	    // First point is on-curve. Draw the contour.
-	    for (; i < count; i++)
+	    for (; i < बिलांग; i++)
 	    {
 	      consumer.consume_point (points[i]);
 	      if (points[i].is_end_point)
@@ -348,7 +348,7 @@ struct glyf_accelerator_t
 	    unsigned start = i;
 
 	    // Find end of the contour.
-	    for (; i < count; i++)
+	    for (; i < बिलांग; i++)
 	      if (points[i].is_end_point)
 		break;
 
@@ -359,7 +359,7 @@ struct glyf_accelerator_t
 	    /* Rotating by one control point changes cubic pairing.  Preserve
 	     * the original order when the contour starts and ends off-curve
 	     * with cubic controls, including all-off-curve contours. */
-	    if (likely (end < count) &&
+	    if (likely (end < बिलांग) &&
 		(points[start].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
 		(points[end].flag & (glyf_impl::SimpleGlyph::FLAG_ON_CURVE |
 				    glyf_impl::SimpleGlyph::FLAG_CUBIC)) ==
@@ -367,7 +367,7 @@ struct glyf_accelerator_t
 	      limit++;
 	    else
 #endif
-	    if (likely (end < count))
+	    if (likely (end < बिलांग))
 	      consumer.consume_point (points[end]);
 
 	    for (i = start; i < limit; i++)
@@ -385,8 +385,8 @@ struct glyf_accelerator_t
     /* Where to write phantoms, nullptr if not requested */
     contour_point_t *phantoms = consumer.get_phantoms_sink ();
     if (phantoms)
-      for (unsigned i = 0; i < glyf_impl::PHANTOM_COUNT; ++i)
-	phantoms[i] = all_points.arrayZ[count + i];
+      for (unsigned i = 0; i < glyf_impl::PHANTOM_बिलांग; ++i)
+	phantoms[i] = all_points.arrayZ[बिलांग + i];
 
     return true;
   }
@@ -467,14 +467,14 @@ struct glyf_accelerator_t
 				  hb_glyf_scratch_t &scratch,
 				 hb_scalar_cache_t *gvar_cache = nullptr) const
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    if (unlikely (gid >= नुमेरो_glyphs)) return 0;
 
     bool success = false;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
+    contour_point_t phantoms[glyf_impl::PHANTOM_बिलांग];
     success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->नुमेरो_coords : 0),
 			  scratch, gvar_cache);
     if (unlikely (!success))
     {
@@ -483,8 +483,8 @@ struct glyf_accelerator_t
     }
 
     float result = is_vertical
-		 ? phantoms[glyf_impl::PHANTOM_TOP].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
-		 : phantoms[glyf_impl::PHANTOM_RIGHT].x - phantoms[glyf_impl::PHANTOM_LEFT].x;
+		 ? phantoms[glyf_impl::PHANTOM_इताअस].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
+		 : phantoms[glyf_impl::PHANTOM_कानान].x - phantoms[glyf_impl::PHANTOM_कालिवा].x;
     return hb_clamp (roundf (result), 0.f, (float) UINT_MAX / 2);
   }
 #endif
@@ -495,21 +495,21 @@ struct glyf_accelerator_t
 				  hb_glyf_scratch_t &scratch,
 				  hb_scalar_cache_t *gvar_cache = nullptr) const
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    if (unlikely (gid >= नुमेरो_glyphs)) return 0;
 
     bool success = false;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
+    contour_point_t phantoms[glyf_impl::PHANTOM_बिलांग];
     success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->नुमेरो_coords : 0),
 			  scratch, gvar_cache);
     if (unlikely (!success))
     {
       return font->face->get_upem ();
     }
 
-    return phantoms[glyf_impl::PHANTOM_TOP].y;
+    return phantoms[glyf_impl::PHANTOM_इताअस].y;
   }
 
   public:
@@ -518,7 +518,7 @@ struct glyf_accelerator_t
 		    hb_codepoint_t gid,
 		    hb_glyph_extents_t *extents) const
   { return get_extents_at (font, gid, extents, hb_array (font->coords,
-							 font->has_nonzero_coords ? font->num_coords : 0)); }
+							 font->has_nonzero_coords ? font->नुमेरो_coords : 0)); }
 
   bool get_extents_at (hb_font_t *font,
 		       hb_codepoint_t gid,
@@ -526,7 +526,7 @@ struct glyf_accelerator_t
 		       hb_array_t<const int> coords,
 		       int64_t *budget = nullptr) const
   {
-    if (unlikely (gid >= num_glyphs)) return false;
+    if (unlikely (gid >= नुमेरो_glyphs)) return false;
 
 #ifndef HB_NO_VAR
     if (coords)
@@ -550,7 +550,7 @@ struct glyf_accelerator_t
   const glyf_impl::Glyph
   glyph_for_gid (hb_codepoint_t gid, bool needs_padding_removal = false) const
   {
-    if (unlikely (gid >= num_glyphs)) return glyf_impl::Glyph ();
+    if (unlikely (gid >= नुमेरो_glyphs)) return glyf_impl::Glyph ();
 
     unsigned int start_offset, end_offset;
 
@@ -587,7 +587,7 @@ struct glyf_accelerator_t
 
     bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
 			   hb_array (font->coords,
-				     font->has_nonzero_coords ? font->num_coords : 0),
+				     font->has_nonzero_coords ? font->नुमेरो_coords : 0),
 			   *scratch,
 			   gvar_cache,
 			   budget);
@@ -637,7 +637,7 @@ struct glyf_accelerator_t
     }
   }
 
-  unsigned int get_num_glyphs () const { return num_glyphs; }
+  unsigned int get_नुमेरो_glyphs () const { return नुमेरो_glyphs; }
   hb_blob_t *reference_glyf_table () const
   { return hb_blob_reference (glyf_table.get_blob ()); }
 
@@ -652,7 +652,7 @@ struct glyf_accelerator_t
   private:
   bool extended;
   bool short_offset;
-  unsigned int num_glyphs;
+  unsigned int नुमेरो_glyphs;
   hb_blob_ptr_t<loca> loca_table;
   hb_blob_ptr_t<glyf> glyf_table;
   mutable hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
@@ -737,7 +737,7 @@ glyf::_create_font_for_instancing (const hb_subset_plan_t *plan) const
   {
     hb_variation_t var;
     var.tag = _.first;
-    var.value = _.second.middle;
+    var.value = _.second.गित्ना;
     vars.push (var);
   }
 

@@ -57,7 +57,7 @@ namespace OT {
 template <bool BE,
 	  typename Type,
 	  unsigned int Size = sizeof (Type)>
-struct NumType
+struct नुमेरो_Type
 {
   typedef Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
@@ -66,29 +66,29 @@ struct NumType
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  नुमेरो_Type () = default;
+  explicit constexpr नुमेरो_Type (Type V) : v {V} {}
+  नुमेरो_Type& operator = (Type V) { v = V; return *this; }
 
   operator WideType () const { return v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  bool operator == (const नुमेरो_Type &o) const { return (Type) v == (Type) o.v; }
+  bool operator != (const नुमेरो_Type &o) const { return !(*this == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  नुमेरो_Type& operator += (WideType बिलांग) { *this = *this + बिलांग; return *this; }
+  नुमेरो_Type& operator -= (WideType बिलांग) { *this = *this - बिलांग; return *this; }
+  नुमेरो_Type& operator ++ () { *this += 1; return *this; }
+  नुमेरो_Type& operator -- () { *this -= 1; return *this; }
+  नुमेरो_Type operator ++ (int) { नुमेरो_Type c (*this); ++*this; return c; }
+  नुमेरो_Type operator -- (int) { नुमेरो_Type c (*this); --*this; return c; }
 
   uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
+  HB_INTERNAL static int cmp (const नुमेरो_Type *a, const नुमेरो_Type *b)
   { return b->cmp (*a); }
   HB_INTERNAL static int cmp (const void *a, const void *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    नुमेरो_Type *pa = (नुमेरो_Type *) a;
+    नुमेरो_Type *pb = (नुमेरो_Type *) b;
 
     return pb->cmp (*pa);
   }
@@ -112,29 +112,29 @@ struct NumType
   DEFINE_SIZE_STATIC (Size);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+typedef नुमेरो_Type<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+typedef नुमेरो_Type<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+typedef नुमेरो_Type<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+typedef नुमेरो_Type<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+typedef नुमेरो_Type<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+typedef नुमेरो_Type<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+typedef नुमेरो_Type<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+typedef नुमेरो_Type<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+typedef नुमेरो_Type<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+typedef नुमेरो_Type<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+typedef नुमेरो_Type<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+typedef नुमेरो_Type<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+typedef नुमेरो_Type<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+typedef नुमेरो_Type<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+typedef नुमेरो_Type<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+typedef नुमेरो_Type<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+typedef नुमेरो_Type<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+typedef नुमेरो_Type<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+typedef नुमेरो_Type<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
 struct HBUINT15 : HBUINT16
@@ -461,9 +461,9 @@ struct OffsetTo : Offset<OffsetType, has_null>
     bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
     if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
+      s->add_link (*this, s->आलिसिन_pack ());
     else
-      s->pop_discard ();
+      s->आलिसिन_discard ();
 
     return ret;
   }
@@ -478,9 +478,9 @@ struct OffsetTo : Offset<OffsetType, has_null>
     bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
     if (ret)
-      c->add_link (*this, c->pop_pack ());
+      c->add_link (*this, c->आलिसिन_pack ());
     else
-      c->pop_discard ();
+      c->आलिसिन_discard ();
 
     return ret;
   }
@@ -503,7 +503,7 @@ struct OffsetTo : Offset<OffsetType, has_null>
 
     bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->add_link (*this, c->आलिसिन_pack (), whence, dst_bias);
 
     return ret;
   }
@@ -594,52 +594,52 @@ struct UnsizedArrayOf
   void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  bool serialize (hb_serialize_context_t *c, unsigned int मगा_बागाय_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
+    if (unlikely (!c->extend_size (this, get_size (मगा_बागाय_len), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  bool serialize (hb_serialize_context_t *c, Iterator मगा_बागाय)
   {
     TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    unsigned बिलांग = hb_len (मगा_बागाय);
+    if (unlikely (!serialize (c, बिलांग, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
+    for (unsigned i = 0; i < बिलांग; i++, ++मगा_बागाय)
+      arrayZ[i] = *मगा_बागाय;
     return_trace (true);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned बिलांग) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    if (unlikely (!as_array (बिलांग).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned int बिलांग, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
+    if (unlikely (!sanitize_shallow (c, बिलांग))) return_trace (false);
     if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int बिलांग) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    return_trace (c->check_array (arrayZ, बिलांग));
   }
 
   public:
@@ -674,11 +674,11 @@ struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, Base
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned int बिलांग, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+		   ::sanitize (c, बिलांग, this, std::forward<Ts> (ds)...)));
   }
 };
 
@@ -736,7 +736,7 @@ struct ArrayOf
 
   explicit operator bool () const { return len; }
 
-  void pop () { len--; }
+  void आलिसिन () { len--; }
 
   hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
   hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
@@ -768,25 +768,25 @@ struct ArrayOf
   void qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned मगा_बागाय_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    c->check_assign (len, मगा_बागाय_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
     if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator मगा_बागाय)
   {
     TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    unsigned बिलांग = hb_len (मगा_बागाय);
+    if (unlikely (!serialize (c, बिलांग, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
+    for (unsigned i = 0; i < बिलांग; i++, ++मगा_बागाय)
+      arrayZ[i] = *मगा_बागाय;
     return_trace (true);
   }
 
@@ -820,8 +820,8 @@ struct ArrayOf
     if (unlikely (!sanitize_shallow (c))) return_trace (false);
     if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
@@ -876,8 +876,8 @@ struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
     TRACE_SUBSET (this);
     struct List16OfOffsetTo *out = c->serializer->embed (*this);
     if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = this->len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
     return_trace (true);
   }
@@ -935,25 +935,25 @@ struct HeadlessArrayOf
   const Type *begin () const { return arrayZ; }
   const Type *end () const { return arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int मगा_बागाय_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    c->check_assign (lenP1, मगा_बागाय_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
     if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator मगा_बागाय)
   {
     TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    unsigned बिलांग = hb_len (मगा_बागाय);
+    if (unlikely (!serialize (c, बिलांग, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
+    for (unsigned i = 0; i < बिलांग; i++, ++मगा_बागाय)
+      arrayZ[i] = *मगा_बागाय;
     return_trace (true);
   }
 
@@ -965,8 +965,8 @@ struct HeadlessArrayOf
     if (unlikely (!sanitize_shallow (c))) return_trace (false);
     if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = get_length ();
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
@@ -1020,8 +1020,8 @@ struct ArrayOfM1
     if (unlikely (!sanitize_shallow (c))) return_trace (false);
     if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = lenM1 + 1;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
@@ -1062,18 +1062,18 @@ struct SortedArrayOf : ArrayOf<Type, LenType>
   const Type *begin () const { return this->arrayZ; }
   const Type *end () const { return this->arrayZ + this->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  bool serialize (hb_serialize_context_t *c, unsigned int मगा_बागाय_len)
   {
     TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    bool ret = ArrayOf<Type, LenType>::serialize (c, मगा_बागाय_len);
     return_trace (ret);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  bool serialize (hb_serialize_context_t *c, Iterator मगा_बागाय)
   {
     TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    bool ret = ArrayOf<Type, LenType>::serialize (c, मगा_बागाय);
     return_trace (ret);
   }
 
@@ -1106,7 +1106,7 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
  */
 
 template <typename LenType=HBUINT16>
-struct BinSearchHeader
+struct Bin_हानाप_Header
 {
   operator uint32_t () const { return len; }
 
@@ -1116,21 +1116,21 @@ struct BinSearchHeader
     return_trace (c->check_struct (this));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_हानाप_Header& operator = (unsigned int v)
   {
     len = v;
     assert (len == v);
     entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    हानाप_Range = 16 * (1u << entrySelector);
+    rangeShift = v * 16 > हानाप_Range
+		 ? 16 * v - हानाप_Range
 		 : 0;
     return *this;
   }
 
   protected:
   LenType	len;
-  LenType	searchRange;
+  LenType	हानाप_Range;
   LenType	entrySelector;
   LenType	rangeShift;
 
@@ -1139,10 +1139,10 @@ struct BinSearchHeader
 };
 
 template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+using Bin_हानाप_Array_Of = SortedArrayOf<Type, Bin_हानाप_Header<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+struct Var_Sized_Bin_हानाप_Header
 {
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -1153,7 +1153,7 @@ struct VarSizedBinSearchHeader
 
   HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	हानाप_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
   HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
@@ -1165,11 +1165,11 @@ struct VarSizedBinSearchHeader
 };
 
 template <typename Type>
-struct VarSizedBinSearchArrayOf
+struct Var_Sized_Bin_हानाप_Array_Of
 {
   static constexpr unsigned item_size = Type::static_size;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ASSIGN (Var_Sized_Bin_हानाप_Array_Of);
 
   bool last_is_terminator () const
   {
@@ -1179,10 +1179,10 @@ struct VarSizedBinSearchArrayOf
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
+    const HBUINT16 *मगा_सालिता = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
+    unsigned int बिलांग = Type::Termination_Word_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
+      if (मगा_सालिता[i] != 0xFFFFu)
 	return false;
     return true;
   }
@@ -1214,8 +1214,8 @@ struct VarSizedBinSearchArrayOf
     if (unlikely (!sanitize_shallow (c))) return_trace (false);
     if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = get_length ();
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
@@ -1248,7 +1248,7 @@ struct VarSizedBinSearchArrayOf
   }
 
   protected:
-  VarSizedBinSearchHeader	header;
+  Var_Sized_Bin_हानाप_Header	header;
   UnsizedArrayOf<HBUINT8>	bytesZ;
   public:
   DEFINE_SIZE_ARRAY (10, bytesZ);
@@ -1257,11 +1257,11 @@ struct VarSizedBinSearchArrayOf
 
 /* CFF INDEX */
 
-template <typename COUNT>
+template <typename बिलांग_3>
 struct CFFIndex
 {
   unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  { return offSize * (बिलांग + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
@@ -1322,11 +1322,11 @@ struct CFFIndex
 
     /* serialize CFFIndex header */
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
+    this->बिलांग = hb_len (it);
+    if (!this->बिलांग) return_trace (true);
     if (unlikely (!c->extend (this->offSize))) return_trace (false);
     this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
+    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->बिलांग + 1), false)))
       return_trace (false);
 
     /* serialize indices */
@@ -1421,7 +1421,7 @@ struct CFFIndex
 
   void set_offset_at (unsigned int index, unsigned int offset)
   {
-    assert (index <= count);
+    assert (index <= बिलांग);
 
     unsigned int size = offSize;
     const HBUINT8 *p = offsets;
@@ -1438,7 +1438,7 @@ struct CFFIndex
   private:
   unsigned int offset_at (unsigned int index) const
   {
-    assert (index <= count);
+    assert (index <= बिलांग);
 
     unsigned int size = offSize;
     const HBUINT8 *p = offsets;
@@ -1458,20 +1458,20 @@ struct CFFIndex
 
   hb_ubytes_t operator [] (unsigned int index) const
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    if (unlikely (index >= बिलांग)) return hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
+    if (unlikely (offset1 < offset0 || offset1 > offset_at (बिलांग)))
       return hb_ubytes_t ();
     return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
   size_t get_size () const
   {
-    if (count)
+    if (बिलांग)
       return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
+				       offset_array_size (), offset_at (बिलांग) - 1);
     return min_size;  /* empty CFFIndex contains count only */
   }
 
@@ -1480,69 +1480,69 @@ struct CFFIndex
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
+			  (बिलांग == 0 || /* empty INDEX */
+			   (बिलांग < बिलांग + 1u &&
 			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			    c->check_array (offsets, offSize, बिलांग + 1u) &&
+			    c->check_range (data_base (), offset_at (बिलांग))))));
   }
 
   public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
+  बिलांग_3		बिलांग;		/* Number of object data. Note there are (count+1) offsets */
   private:
   HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
   public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  DEFINE_SIZE_MIN (बिलांग_3::static_size);
 };
 typedef CFFIndex<HBUINT16> CFF1Index;
 typedef CFFIndex<HBUINT32> CFF2Index;
 
 
 /* TupleValues */
-struct TupleValues
+struct Tuple_मगा_हालागा
 {
-  enum packed_value_flag_t
+  enum packed_हालागा_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    मगा_हालागा_ARE_ZEROS     = 0x80,
+    मगा_हालागा_ARE_BYTES     = 0x00,
+    मगा_हालागा_ARE_मगा_सालिता     = 0x40,
+    मगा_हालागा_ARE_LONGS     = 0xC0,
+    मगा_हालागा_SIZE_MASK     = 0xC0,
+    हालागा_RUN_बिलांग_MASK = 0x3F
   };
 
   static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
 				  unsigned char *encoded_bytes /* OUT */)
   {
-    unsigned num_values = values.length;
+    unsigned नुमेरो_मगा_हालागा_3 = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    while (i < नुमेरो_मगा_हालागा_3)
     {
       int val = values.arrayZ[i];
       if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
+        encoded_len += encode_हालागा_run_as_zeroes (i, encoded_bytes + encoded_len, values);
       else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
+        encoded_len += encode_हालागा_run_as_bytes (i, encoded_bytes + encoded_len, values);
       else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
+        encoded_len += encode_हालागा_run_as_मगा_सालिता (i, encoded_bytes + encoded_len, values);
       else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+        encoded_len += encode_हालागा_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
     return encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
+  static unsigned encode_हालागा_run_as_zeroes (unsigned& i,
 					      unsigned char *it,
 					      hb_array_t<const int> values)
   {
-    unsigned num_values = values.length;
+    unsigned नुमेरो_मगा_हालागा_3 = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    while (i < नुमेरो_मगा_हालागा_3 && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
@@ -1550,26 +1550,26 @@ struct TupleValues
 
     while (run_length >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
+      *it++ = char (मगा_हालागा_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
     if (run_length)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = char (मगा_हालागा_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
     return encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
+  static unsigned encode_हालागा_run_as_bytes (unsigned &i,
 					     unsigned char *it,
 					     hb_array_t<const int> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned नुमेरो_मगा_हालागा_3 = values.length;
+    while (i < नुमेरो_मगा_हालागा_3)
     {
       int val = values.arrayZ[i];
       if ((int8_t) val != val)
@@ -1577,7 +1577,7 @@ struct TupleValues
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
+      if (val == 0 && i + 1 < नुमेरो_मगा_हालागा_3 && values.arrayZ[i+1] == 0)
         break;
 
       i++;
@@ -1588,7 +1588,7 @@ struct TupleValues
 
     while (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (मगा_हालागा_ARE_BYTES | 63);
       encoded_len++;
 
       for (unsigned j = 0; j < 64; j++)
@@ -1602,7 +1602,7 @@ struct TupleValues
 
     if (run_length)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (मगा_हालागा_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
       for (unsigned j = 0; j < run_length; j++)
@@ -1613,13 +1613,13 @@ struct TupleValues
     return encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
+  static unsigned encode_हालागा_run_as_मगा_सालिता (unsigned &i,
 					     unsigned char *it,
 					     hb_array_t<const int> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned नुमेरो_मगा_हालागा_3 = values.length;
+    while (i < नुमेरो_मगा_हालागा_3)
     {
       int val = values.arrayZ[i];
 
@@ -1633,7 +1633,7 @@ struct TupleValues
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
       if ((int8_t) val == val &&
-          i + 1 < num_values &&
+          i + 1 < नुमेरो_मगा_हालागा_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
         break;
 
@@ -1644,14 +1644,14 @@ struct TupleValues
     unsigned encoded_len = 0;
     while (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (मगा_हालागा_ARE_मगा_सालिता | 63);
       encoded_len++;
 
       for (unsigned j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t हालागा_val = values.arrayZ[start + j];
+        *it++ = static_cast<char> (हालागा_val >> 8);
+        *it++ = static_cast<char> (हालागा_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1662,13 +1662,13 @@ struct TupleValues
 
     if (run_length)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (मगा_हालागा_ARE_मगा_सालिता | (run_length - 1));
       encoded_len++;
       while (start < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t हालागा_val = values.arrayZ[start++];
+        *it++ = static_cast<char> (हालागा_val >> 8);
+        *it++ = static_cast<char> (हालागा_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1676,13 +1676,13 @@ struct TupleValues
     return encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
+  static unsigned encode_हालागा_run_as_longs (unsigned &i,
 					     unsigned char *it,
 					     hb_array_t<const int> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned नुमेरो_मगा_हालागा_3 = values.length;
+    while (i < नुमेरो_मगा_हालागा_3)
     {
       int val = values.arrayZ[i];
 
@@ -1696,16 +1696,16 @@ struct TupleValues
     unsigned encoded_len = 0;
     while (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (मगा_हालागा_ARE_LONGS | 63);
       encoded_len++;
 
       for (unsigned j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t हालागा_val = values.arrayZ[start + j];
+        *it++ = static_cast<char> (हालागा_val >> 24);
+        *it++ = static_cast<char> (हालागा_val >> 16);
+        *it++ = static_cast<char> (हालागा_val >> 8);
+        *it++ = static_cast<char> (हालागा_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1716,15 +1716,15 @@ struct TupleValues
 
     if (run_length)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (मगा_हालागा_ARE_LONGS | (run_length - 1));
       encoded_len++;
       while (start < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t हालागा_val = values.arrayZ[start++];
+        *it++ = static_cast<char> (हालागा_val >> 24);
+        *it++ = static_cast<char> (हालागा_val >> 16);
+        *it++ = static_cast<char> (हालागा_val >> 8);
+        *it++ = static_cast<char> (हालागा_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1743,33 +1743,33 @@ struct TupleValues
 			 unsigned start = 0)
   {
     unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
+    unsigned बिलांग = consume_all ? UINT_MAX : values.length;
     if (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    while (i < बिलांग)
     {
       if (unlikely (p + 1 > end)) return consume_all;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
+      unsigned run_बिलांग = (control & हालागा_RUN_बिलांग_MASK) + 1;
       if (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
+        if (unlikely (!values.resize_dirty  (values.length + run_बिलांग)))
 	  return false;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      unsigned stop = i + run_बिलांग;
+      if (unlikely (stop > बिलांग)) return false;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      unsigned skip = i < start ? hb_min (start - i, run_बिलांग) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      if ((control & मगा_हालागा_SIZE_MASK) == मगा_हालागा_ARE_ZEROS)
       {
 	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      else if ((control & मगा_हालागा_SIZE_MASK) ==  मगा_हालागा_ARE_मगा_सालिता)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        if (unlikely (p + run_बिलांग * HBINT16::static_size > end)) return false;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
         for (; i + 3 < stop; i += 4)
@@ -1790,9 +1790,9 @@ struct TupleValues
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      else if ((control & मगा_हालागा_SIZE_MASK) ==  मगा_हालागा_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        if (unlikely (p + run_बिलांग * HBINT32::static_size > end)) return false;
 	p += skip * HBINT32::static_size;
         for (; i < stop; i++)
         {
@@ -1800,9 +1800,9 @@ struct TupleValues
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      else if ((control & मगा_हालागा_SIZE_MASK) ==  मगा_हालागा_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        if (unlikely (p + run_बिलांग > end)) return false;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
 	for (; i + 3 < stop; i += 4)
@@ -1822,27 +1822,27 @@ struct TupleValues
 
   static bool skip (const unsigned char *&p /* IN/OUT */,
 		    const unsigned char *end,
-		    unsigned count)
+		    unsigned बिलांग)
   {
     unsigned seen = 0;
-    while (seen < count)
+    while (seen < बिलांग)
     {
       if (unlikely (p >= end)) return false;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      unsigned run_बिलांग = (control & हालागा_RUN_बिलांग_MASK) + 1;
+      if (unlikely (run_बिलांग > बिलांग - seen)) return false;
 
       unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      switch (control & मगा_हालागा_SIZE_MASK)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	case मगा_हालागा_ARE_ZEROS: break;
+	case मगा_हालागा_ARE_BYTES: width = HBINT8::static_size; break;
+	case मगा_हालागा_ARE_मगा_सालिता: width = HBINT16::static_size; break;
+	case मगा_हालागा_ARE_LONGS: width = HBINT32::static_size; break;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      if (unlikely (unsigned (end - p) < run_बिलांग * width)) return false;
+      p += run_बिलांग * width;
+      seen += run_बिलांग;
     }
     return true;
   }
@@ -1851,59 +1851,59 @@ struct TupleValues
   {
     iter_t (const unsigned char *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { if (likely (ensure_run ())) read_हालागा (); }
 
     private:
     const unsigned char *p;
     const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
+    int current_हालागा = 0;
+    signed run_बिलांग = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
     bool ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
+      if (likely (run_बिलांग > 0)) return true;
       return _ensure_run ();
     }
     bool _ensure_run ()
     {
       if (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
+        run_बिलांग = 0;
+        current_हालागा = 0;
 	return false;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
+      run_बिलांग = (control & हालागा_RUN_बिलांग_MASK) + 1;
+      width = control & मगा_हालागा_SIZE_MASK;
       switch (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+        case मगा_हालागा_ARE_ZEROS: width = 0; break;
+	case मगा_हालागा_ARE_BYTES: width = HBINT8::static_size;  break;
+	case मगा_हालागा_ARE_मगा_सालिता: width = HBINT16::static_size; break;
+	case मगा_हालागा_ARE_LONGS: width = HBINT32::static_size; break;
 	default: assert (false);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      if (unlikely (p + run_बिलांग * width > endp))
       {
-	run_count = 0;
-	current_value = 0;
+	run_बिलांग = 0;
+	current_हालागा = 0;
 	return false;
       }
 
       return true;
     }
-    void read_value ()
+    void read_हालागा ()
     {
       switch (width)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        case 0: current_हालागा = 0; break;
+	case 1: current_हालागा = * (const HBINT8  *) p; break;
+	case 2: current_हालागा = * (const HBINT16 *) p; break;
+	case 4: current_हालागा = * (const HBINT32 *) p; break;
       }
       p += width;
     }
@@ -1912,15 +1912,15 @@ struct TupleValues
 
     typedef int __item_t__;
     __item_t__ __item__ () const
-    { return current_value; }
+    { return current_हालागा; }
 
-    bool __more__ () const { return run_count || p < endp; }
+    bool __more__ () const { return run_बिलांग || p < endp; }
     void __next__ ()
     {
-      run_count--;
+      run_बिलांग--;
       if (unlikely (!ensure_run ()))
 	return;
-      read_value ();
+      read_हालागा ();
     }
     void __forward__ (unsigned n)
     {
@@ -1928,17 +1928,17 @@ struct TupleValues
 	return;
       while (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_बिलांग);
+	run_बिलांग -= i;
 	n -= i;
 	p += (i - 1) * width;
 	if (unlikely (!ensure_run ()))
 	  return;
-	read_value ();
+	read_हालागा ();
       }
     }
     bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
+    { return p != o.p || run_बिलांग != o.run_बिलांग; }
     iter_t __end__ () const
     {
       iter_t it (endp, 0);
@@ -1954,13 +1954,13 @@ struct TupleValues
     private:
     const unsigned char *p;
     const unsigned char * const end;
-    signed run_count = 0;
+    signed run_बिलांग = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
     bool ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
+      if (likely (run_बिलांग > 0)) return true;
       return _ensure_run ();
     }
 
@@ -1968,25 +1968,25 @@ struct TupleValues
     {
       if (unlikely (p >= end))
       {
-        run_count = 0;
+        run_बिलांग = 0;
 	return false;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
+      run_बिलांग = (control & हालागा_RUN_बिलांग_MASK) + 1;
+      width = control & मगा_हालागा_SIZE_MASK;
       switch (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+        case मगा_हालागा_ARE_ZEROS: width = 0; break;
+	case मगा_हालागा_ARE_BYTES: width = HBINT8::static_size;  break;
+	case मगा_हालागा_ARE_मगा_सालिता: width = HBINT16::static_size; break;
+	case मगा_हालागा_ARE_LONGS: width = HBINT32::static_size; break;
 	default: assert (false);
       }
 
-      if (unlikely (p + run_count * width > end))
+      if (unlikely (p + run_बिलांग * width > end))
       {
-	run_count = 0;
+	run_बिलांग = 0;
 	return false;
       }
 
@@ -2000,8 +2000,8 @@ struct TupleValues
       {
 	if (unlikely (!ensure_run ()))
 	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_बिलांग);
+	run_बिलांग -= i;
 	n -= i;
 	p += i * width;
       }
@@ -2018,12 +2018,12 @@ struct TupleValues
       {
 	if (unlikely (!ensure_run ()))
 	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
+	unsigned बिलांग = hb_min (n - i, (unsigned) run_बिलांग);
 	switch (width)
 	{
 	  case 0:
 	  {
-	    arrayZ += count;
+	    arrayZ += बिलांग;
 	    break;
 	  }
 	  case 1:
@@ -2031,7 +2031,7 @@ struct TupleValues
 	    const auto *pp = (const HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    for (; j + 3 < बिलांग; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,7 +2039,7 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    for (; j < बिलांग; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
@@ -2050,7 +2050,7 @@ struct TupleValues
 	    const auto *pp = (const HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    for (; j + 3 < बिलांग; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,7 +2058,7 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    for (; j < बिलांग; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
@@ -2067,15 +2067,15 @@ struct TupleValues
 	  case 4:
 	  {
 	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    for (unsigned j = 0; j < बिलांग; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
 	  }
 	  break;
 	}
-	run_count -= count;
-	i += count;
+	run_बिलांग -= बिलांग;
+	i += बिलांग;
       }
     }
 
@@ -2098,16 +2098,16 @@ struct TupleValues
 
 struct TupleList : CFF2Index
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_मगा_हालागा::iter_t operator [] (unsigned i) const
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    return Tuple_मगा_हालागा::iter_t (bytes.arrayZ, bytes.length);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_मगा_हालागा::fetcher_t fetcher (unsigned i) const
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    return Tuple_मगा_हालागा::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 

@@ -81,18 +81,18 @@ typedef struct OpenTypeOffsetTable
 {
   friend struct OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
+  unsigned int get_table_बिलांग () const { return tables.len; }
   const TableRecord& get_table (unsigned int i) const
   { return tables[i]; }
   unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
+			       unsigned int *table_बिलांग_2, /* IN/OUT */
 			       hb_tag_t     *table_tags /* OUT */) const
   {
-    if (table_count && table_tags)
+    if (table_बिलांग_2 && table_tags)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
+      + tables.as_array ().sub_array (start_offset, table_बिलांग_2)
       | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      | hb_sink (hb_array (table_tags, *table_बिलांग_2))
       ;
     }
     return tables.len;
@@ -131,8 +131,8 @@ typedef struct OpenTypeOffsetTable
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    unsigned नुमेरो_मगा_बागाय = hb_len (it);
+    if (unlikely (!tables.serialize (c, नुमेरो_मगा_बागाय))) return_trace (false);
 
     const char *dir_end = (const char *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
@@ -185,7 +185,7 @@ typedef struct OpenTypeOffsetTable
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
       checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      for (unsigned int i = 0; i < नुमेरो_मगा_बागाय; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -205,7 +205,7 @@ typedef struct OpenTypeOffsetTable
 
   protected:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  Bin_हानाप_Array_Of<TableRecord>
 		tables;
   public:
   DEFINE_SIZE_ARRAY (12, tables);
@@ -222,7 +222,7 @@ struct TTCHeaderVersion1
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
+  unsigned int get_face_बिलांग () const { return get_directory_list ().len; }
   const OpenTypeFontFace& get_face (unsigned int i) const
   { return this+get_directory_list ()[i]; }
 
@@ -274,11 +274,11 @@ struct TTCHeader
 
   private:
 
-  unsigned int get_face_count () const
+  unsigned int get_face_बिलांग () const
   {
     switch (u.header.version.major) {
     case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
+    case 1: hb_barrier (); return u.version1.get_face_बिलांग ();
     default:return 0;
     }
   }
@@ -352,14 +352,14 @@ struct ResourceRecord
 
 struct ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned int get_resource_बिलांग () const
+  { return tag == HB_TAG_sfnt ? res_बिलांग_M1 + 1 : 0; }
 
   bool is_sfnt () const { return tag == HB_TAG_sfnt; }
 
   const ResourceRecord& get_resource_record (unsigned int i,
 					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  { return (type_base+resourcesZ).as_array (get_resource_बिलांग ())[i]; }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *type_base,
@@ -369,13 +369,13 @@ struct ResourceTypeRecord
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
+				       get_resource_बिलांग (),
 				       data_base));
   }
 
   protected:
   Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
+  HBUINT16	res_बिलांग_M1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
@@ -385,14 +385,14 @@ struct ResourceTypeRecord
 
 struct ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned int get_face_बिलांग () const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = get_type_बिलांग ();
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
       if (type.is_sfnt ())
-	return type.get_resource_count ();
+	return type.get_resource_बिलांग ();
     }
     return 0;
   }
@@ -400,13 +400,13 @@ struct ResourceMap
   const OpenTypeFontFace& get_face (unsigned int idx,
 				    const void *data_base) const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = get_type_बिलांग ();
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
+      if (type.is_sfnt () && idx < type.get_resource_बिलांग ())
 	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
     }
     return Null (OpenTypeFontFace);
@@ -423,7 +423,7 @@ struct ResourceMap
   }
 
   private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  unsigned int get_type_बिलांग () const { return (this+typeList).lenM1 + 1; }
 
   const ResourceTypeRecord& get_type_record (unsigned int i) const
   { return (this+typeList)[i]; }
@@ -444,8 +444,8 @@ struct ResourceMap
 
 struct ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned int get_face_बिलांग () const
+  { return (this+map).get_face_बिलांग (); }
 
   const OpenTypeFontFace& get_face (unsigned int idx,
 				    unsigned int *base_offset = nullptr) const
@@ -495,15 +495,15 @@ struct OpenTypeFontFile
 
   hb_tag_t get_tag () const { return u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned int get_face_बिलांग () const
   {
     switch (u.tag.v) {
     case CFFTag:	/* All the non-collection tags */
     case TrueTag:
     case Typ1Tag:
     case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
+    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_बिलांग ();
+    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_बिलांग ();
     default:		return 0;
     }
   }
@@ -529,12 +529,12 @@ struct OpenTypeFontFile
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
   bool serialize_single (hb_serialize_context_t *c,
 			 hb_tag_t sfnt_tag,
-			 Iterator items)
+			 Iterator मगा_बागाय)
   {
     TRACE_SERIALIZE (this);
     assert (sfnt_tag != TTCTag);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    return_trace (u.fontFace.serialize (c, sfnt_tag, मगा_बागाय));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const

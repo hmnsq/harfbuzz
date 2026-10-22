@@ -45,12 +45,12 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned int बिलांग = 0;
 
 #ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &बिलांग);
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     printf ("%u	%s	",
 	    entries[i].name_id,
@@ -70,5 +70,5 @@ main (int argc, char **argv)
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  return बिलांग ? 0 : 1;
 }

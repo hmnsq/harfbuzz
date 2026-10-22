@@ -28,35 +28,35 @@
 #include "hb-decycler.hh"
 
 static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+पुनो_recurse_दालावाहान (unsigned value,
+		     unsigned max_हालागा,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
+  if (value >= max_हालागा)
 		return;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_बुहोल_t node (decycler);
 
   bool ret = node.visit (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  पुनो_recurse_दालावाहान (value * 2 + 1, max_हालागा, decycler);
+  पुनो_recurse_दालावाहान (value * 2 + 2, max_हालागा, decycler);
 }
 
 static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+पुनो_recurse_tertiary (unsigned value,
+		       unsigned max_हालागा,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
+  if (value >= max_हालागा)
     return;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_बुहोल_t node (decycler);
 
   value *= 3;
 
@@ -65,16 +65,16 @@ tree_recurse_tertiary (unsigned value,
     bool ret = node.visit (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    पुनो_recurse_tertiary (value + i, max_हालागा, decycler);
   }
 }
 
 static void
-test_tree ()
+test_पुनो ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  पुनो_recurse_दालावाहान (0, 64, decycler);
+  पुनो_recurse_tertiary (0, 1000, decycler);
 }
 
 static void
@@ -84,7 +84,7 @@ cycle_recurse (signed value,
 {
   hb_always_assert (cycle_length > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_बुहोल_t node (decycler);
 
   if (!node.visit (value))
     return;
@@ -108,7 +108,7 @@ test_cycle ()
 int
 main (int argc, char **argv)
 {
-  test_tree ();
+  test_पुनो ();
   test_cycle ();
 
   return 0;

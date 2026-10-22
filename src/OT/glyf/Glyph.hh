@@ -18,11 +18,11 @@ namespace glyf_impl {
 
 enum phantom_point_index_t
 {
-  PHANTOM_LEFT   = 0,
-  PHANTOM_RIGHT  = 1,
-  PHANTOM_TOP    = 2,
+  PHANTOM_कालिवा   = 0,
+  PHANTOM_कानान  = 1,
+  PHANTOM_इताअस    = 2,
   PHANTOM_BOTTOM = 3,
-  PHANTOM_COUNT  = 4
+  PHANTOM_बिलांग  = 4
 };
 
 struct Glyph
@@ -108,8 +108,8 @@ struct Glyph
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    if (unlikely (!points.resize (points.length + PHANTOM_बिलांग))) return false;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_बिलांग, PHANTOM_बिलांग);
     {
       // Duplicated code.
       int lsb = 0;
@@ -128,9 +128,9 @@ struct Glyph
                        - face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
+      phantoms[PHANTOM_कालिवा].x = h_delta;
+      phantoms[PHANTOM_कानान].x = (int) h_adv + h_delta;
+      phantoms[PHANTOM_इताअस].y = v_orig;
       phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
     }
     return true;
@@ -152,24 +152,24 @@ struct Glyph
     }
 
     unsigned len = all_points.length;
-    float leftSideX = all_points[len - 4].x;
-    float rightSideX = all_points[len - 3].x;
-    float topSideY = all_points[len - 2].y;
+    float कालिवा_Side_X = all_points[len - 4].x;
+    float कानान_Side_X = all_points[len - 3].x;
+    float इताअस_Side_Y = all_points[len - 2].y;
     float bottomSideY = all_points[len - 1].y;
 
     uint32_t hash = hb_hash (new_gid);
 
-    signed hori_aw = roundf (rightSideX - leftSideX);
+    signed hori_aw = roundf (कानान_Side_X - कालिवा_Side_X);
     if (hori_aw < 0) hori_aw = 0;
-    int lsb = roundf (xMin - leftSideX);
+    int lsb = roundf (xMin - कालिवा_Side_X);
     plan->hmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) hori_aw, lsb));
     //flag value should be computed using non-empty glyphs
     if (type != EMPTY && lsb != xMin)
       plan->head_maxp_info.allXMinIsLsb = false;
 
-    signed vert_aw = roundf (topSideY - bottomSideY);
+    signed vert_aw = roundf (इताअस_Side_Y - bottomSideY);
     if (vert_aw < 0) vert_aw = 0;
-    int tsb = roundf (topSideY - yMax);
+    int tsb = roundf (इताअस_Side_Y - yMax);
     plan->vmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) vert_aw, tsb));
   }
 
@@ -191,8 +191,8 @@ struct Glyph
       xMin = xMax = all_points[0].x;
       yMin = yMax = all_points[0].y;
 
-      unsigned count = all_points.length - 4;
-      for (unsigned i = 1; i < count; i++)
+      unsigned बिलांग = all_points.length - 4;
+      for (unsigned i = 1; i < बिलांग; i++)
       {
 	float x = all_points[i].x;
 	float y = all_points[i].y;
@@ -227,7 +227,7 @@ struct Glyph
     if (!glyph_header)
       return true;
 
-    glyph_header->numberOfContours = header->numberOfContours;
+    glyph_header->नुमेरो_Of_Contours = header->नुमेरो_Of_Contours;
 
     glyph_header->xMin = rounded_xMin;
     glyph_header->yMin = rounded_yMin;
@@ -296,7 +296,7 @@ struct Glyph
          * Copy them into owned memory like the other compiled glyphs. */
         if (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
             bytes.length >= GlyphHeader::static_size &&
-            header->numberOfContours == 0)
+            header->नुमेरो_Of_Contours == 0)
         {
           SimpleGlyph simple (*header, bytes);
           unsigned length = simple.instructions_length ();
@@ -338,17 +338,17 @@ struct Glyph
 		   hb_array_t<const int> coords = hb_array_t<const int> (),
 		   hb_scalar_cache_t *gvar_cache = nullptr,
 		   unsigned int depth = 0,
-		   unsigned *edge_count = nullptr,
+		   unsigned *edge_बिलांग = nullptr,
 		   int64_t *budget = nullptr) const
   {
     if (unlikely (depth > HB_MAX_NESTING_LEVEL)) return false;
-    unsigned stack_edge_count = 0;
-    if (!edge_count) edge_count = &stack_edge_count;
-    if (unlikely (*edge_count > HB_MAX_GRAPH_EDGE_COUNT)) return false;
-    (*edge_count)++;
+    unsigned सालानसान_edge_बिलांग = 0;
+    if (!edge_बिलांग) edge_बिलांग = &सालानसान_edge_बिलांग;
+    if (unlikely (*edge_बिलांग > HB_MAX_GRAPH_EDGE_बिलांग)) return false;
+    (*edge_बिलांग)++;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
+    int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+    if (!budget) budget = &सालानसान_budget;
     if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) return false;
 
     if (head_maxp_info)
@@ -357,7 +357,7 @@ struct Glyph
     }
 
     if (!coords && font->has_nonzero_coords)
-      coords = hb_array (font->coords, font->num_coords);
+      coords = hb_array (font->coords, font->नुमेरो_coords);
 
     contour_point_vector_t &points = type == SIMPLE ? all_points : scratch.comp_points;
     unsigned old_length = points.length;
@@ -365,9 +365,9 @@ struct Glyph
     switch (type) {
     case SIMPLE:
       if (depth == 0 && head_maxp_info)
-        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->numberOfContours);
+        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->नुमेरो_Of_Contours);
       if (depth > 0 && composite_contours)
-        *composite_contours += (unsigned) header->numberOfContours;
+        *composite_contours += (unsigned) header->नुमेरो_Of_Contours;
       if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
 	return false;
       break;
@@ -391,8 +391,8 @@ struct Glyph
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    if (unlikely (!points.resize (points.length + PHANTOM_बिलांग))) return false;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_बिलांग, PHANTOM_बिलांग);
     {
       // Duplicated code.
       int lsb = 0;
@@ -411,9 +411,9 @@ struct Glyph
                        - font->face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
+      phantoms[PHANTOM_कालिवा].x = h_delta;
+      phantoms[PHANTOM_कानान].x = (int) h_adv + h_delta;
+      phantoms[PHANTOM_इताअस].y = v_orig;
       phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
     }
 
@@ -444,24 +444,24 @@ struct Glyph
     case SIMPLE:
       if (depth == 0 && head_maxp_info)
         head_maxp_info->maxPoints = hb_max (head_maxp_info->maxPoints, all_points.length - old_length - 4);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_कालिवा].x;
       break;
     case COMPOSITE:
     {
-      hb_decycler_node_t decycler_node (scratch.decycler);
+      hb_decycler_बुहोल_t decycler_बुहोल (scratch.decycler);
 
       unsigned int comp_index = 0;
       for (auto &item : get_composite_iterator ())
       {
 	hb_codepoint_t item_gid = item.get_gid (extended);
 
-        if (unlikely (!decycler_node.visit (item_gid)))
+        if (unlikely (!decycler_बुहोल.visit (item_gid)))
 	{
 	  comp_index++;
 	  continue;
 	}
 
-	unsigned old_count = all_points.length;
+	unsigned old_बिलांग = all_points.length;
 
 	if (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
 		      !glyf_accelerator.glyph_for_gid (item_gid)
@@ -478,7 +478,7 @@ struct Glyph
 						    coords,
 						    gvar_cache,
 						    depth + 1,
-						    edge_count,
+						    edge_बिलांग,
 						    budget)))
 	{
 	  points.resize (old_length);
@@ -486,14 +486,14 @@ struct Glyph
 	}
 
 	// points might have been reallocated. Relocate phantoms.
-	phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+	phantoms = points.as_array ().sub_array (points.length - PHANTOM_बिलांग, PHANTOM_बिलांग);
 
-	auto comp_points = all_points.as_array ().sub_array (old_count);
+	auto comp_points = all_points.as_array ().sub_array (old_बिलांग);
 
 	/* Copy phantom points from component if USE_MY_METRICS flag set */
 	if (use_my_metrics && item.is_use_my_metrics ())
-	  for (unsigned int i = 0; i < PHANTOM_COUNT; i++)
-	    phantoms[i] = comp_points[comp_points.length - PHANTOM_COUNT + i];
+	  for (unsigned int i = 0; i < PHANTOM_बिलांग; i++)
+	    phantoms[i] = comp_points[comp_points.length - PHANTOM_बिलांग + i];
 
 	/* Each composite level transforms the whole subtree below it;
 	 * charge that work here so deep nesting is bounded by the budget
@@ -528,7 +528,7 @@ struct Glyph
 	  }
 	}
 
-	all_points.resize (all_points.length - PHANTOM_COUNT);
+	all_points.resize (all_points.length - PHANTOM_बिलांग);
 
 	if (all_points.length > HB_GLYF_MAX_POINTS)
 	{
@@ -547,12 +547,12 @@ struct Glyph
         head_maxp_info->maxComponentElements = hb_max (head_maxp_info->maxComponentElements, comp_index);
       }
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_कालिवा].x;
       points.resize (old_length);
     } break;
     case EMPTY:
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_कालिवा].x;
       points.resize (old_length);
       break;
     }
@@ -600,10 +600,10 @@ struct Glyph
 			   gid (gid_),
 			   extended (extended_)
   {
-    int num_contours = header->numberOfContours;
-    if (unlikely (num_contours == 0)) type = EMPTY;
-    else if (num_contours > 0) type = SIMPLE;
-    else if (num_contours <= -1) type = COMPOSITE;
+    int नुमेरो_contours = header->नुमेरो_Of_Contours;
+    if (unlikely (नुमेरो_contours == 0)) type = EMPTY;
+    else if (नुमेरो_contours > 0) type = SIMPLE;
+    else if (नुमेरो_contours <= -1) type = COMPOSITE;
     else type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
   }
 

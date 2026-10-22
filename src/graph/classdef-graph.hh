@@ -42,7 +42,7 @@ struct ClassDefFormat1_3 : public OT::ClassDefFormat1_3<Types>
     constexpr unsigned min_size = OT::ClassDefFormat1_3<Types>::min_size;
     if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
+    if (unlikely (vertex_len < min_size + this->class_हालागा.get_size () - this->class_हालागा.len.get_size ()))
       return Err(SANITIZE_FAILURE);
     return Ok();
   }
@@ -72,12 +72,12 @@ struct ClassDef : public OT::ClassDef
                                              It glyph_and_class,
                                              unsigned max_size)
   {
-    TRY_ASSIGN (unsigned class_def_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& class_def_prime_vertex = c.graph.vertices_[class_def_prime_id];
-    TRY (make_class_def (c, glyph_and_class, class_def_prime_id, max_size));
+    TRY_ASSIGN (unsigned class_def_पांगुनाहिन_id, c.graph.new_बुहोल (nullptr, nullptr));
+    auto& class_def_पांगुनाहिन_vertex = c.graph.vertices_[class_def_पांगुनाहिन_id];
+    TRY (make_class_def (c, glyph_and_class, class_def_पांगुनाहिन_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, class_def_prime_id, link_position));
-    TRY(class_def_prime_vertex.add_parent (parent_id, false));
+    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, class_def_पांगुनाहिन_id, link_position));
+    TRY(class_def_पांगुनाहिन_vertex.add_parent (parent_id, false));
 
     return Ok();
   }
@@ -170,19 +170,19 @@ struct class_def_size_estimator_t
 
     TRY(estimator.to_result ());
 
-    for (unsigned klass : estimator.glyphs_per_class.keys ())
+    for (unsigned klass : estimator.glyphs_per_class.मगा_सुसि ())
     {
       if (!klass) continue; // class 0 doesn't get encoded.
 
       const hb_set_t& glyphs = estimator.glyphs_per_class.get (klass);
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      hb_codepoint_t start = HB_SET_हालागा_INVALID;
+      hb_codepoint_t end = HB_SET_हालागा_INVALID;
 
-      unsigned count = 0;
+      unsigned बिलांग = 0;
       while (glyphs.next_range (&start, &end))
-        count++;
+        बिलांग++;
 
-      estimator.num_ranges_per_class.set (klass, count);
+      estimator.नुमेरो_ranges_per_class.set (klass, बिलांग);
     }
 
     TRY(estimator.to_result ());
@@ -193,7 +193,7 @@ struct class_def_size_estimator_t
     included_glyphs.clear();
     included_class_def_glyphs.clear();
     included_classes.clear();
-    class_def_range_count = 0;
+    class_def_range_बिलांग = 0;
     class_max = 0;
     coverage_size_val = compute_coverage_size ();
   }
@@ -210,17 +210,17 @@ struct class_def_size_estimator_t
     if (!included_classes.has(klass)) {
       hb_set_t* glyphs = nullptr;
       if (glyphs_per_class.has(klass, &glyphs)) {
-        unsigned num_glyphs = included_glyphs.get_population();
+        unsigned नुमेरो_glyphs = included_glyphs.get_population();
         included_glyphs.union_(*glyphs);
         if (klass)
           included_class_def_glyphs.union_(*glyphs);
-        if (num_glyphs != included_glyphs.get_population())
+        if (नुमेरो_glyphs != included_glyphs.get_population())
           coverage_size_val = compute_coverage_size ();
       }
 
       if (klass)
       {
-        class_def_range_count += num_ranges_per_class.get (klass);
+        class_def_range_बिलांग += नुमेरो_ranges_per_class.get (klass);
         if (glyphs && klass > class_max)
           class_max = klass;
       }
@@ -230,21 +230,21 @@ struct class_def_size_estimator_t
     return class_def_size ();
   }
 
-  unsigned num_glyph_ranges (const hb_set_t &glyphs) const {
-    hb_codepoint_t start = HB_SET_VALUE_INVALID;
-    hb_codepoint_t end = HB_SET_VALUE_INVALID;
+  unsigned नुमेरो_glyph_ranges (const hb_set_t &glyphs) const {
+    hb_codepoint_t start = HB_SET_हालागा_INVALID;
+    hb_codepoint_t end = HB_SET_हालागा_INVALID;
 
-    unsigned count = 0;
+    unsigned बिलांग = 0;
     while (glyphs.next_range (&start, &end)) {
-        count++;
+        बिलांग++;
     }
-    return count;
+    return बिलांग;
   }
 
  private:
   graph_result_t<void> to_result() const
   {
-    TRY (graph_result_t<void>::from (num_ranges_per_class, ALLOCATION_FAILURE));
+    TRY (graph_result_t<void>::from (नुमेरो_ranges_per_class, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (glyphs_per_class, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (included_classes, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (included_glyphs, ALLOCATION_FAILURE));
@@ -258,7 +258,7 @@ struct class_def_size_estimator_t
   }
 
   class_def_size_estimator_t ()
-      : num_ranges_per_class (), glyphs_per_class () {}
+      : नुमेरो_ranges_per_class (), glyphs_per_class () {}
 
   unsigned compute_coverage_size () const
   {
@@ -266,7 +266,7 @@ struct class_def_size_estimator_t
     unsigned coverage_base_size = OT::HBUINT16::static_size + glyph_size;
     unsigned range_size = 3 * glyph_size;
     unsigned format1_size = coverage_base_size + glyph_size * included_glyphs.get_population();
-    unsigned format2_size = coverage_base_size + range_size * num_glyph_ranges (included_glyphs);
+    unsigned format2_size = coverage_base_size + range_size * नुमेरो_glyph_ranges (included_glyphs);
     return hb_min(format1_size, format2_size);
   }
 
@@ -290,23 +290,23 @@ struct class_def_size_estimator_t
 
     if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 6 + 2 * glyph_span);
-    if (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
-      best_size = hb_min (best_size, 4 + 6 * class_def_range_count);
+    if (glyph_max <= 0xFFFFu && class_def_range_बिलांग <= 0xFFFFu && class_max <= 0xFFFFu)
+      best_size = hb_min (best_size, 4 + 6 * class_def_range_बिलांग);
 #ifndef HB_NO_BEYOND_64K
     if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
       best_size = hb_min (best_size, 8 + 3 * glyph_span);
-    if (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
-      best_size = hb_min (best_size, 5 + 8 * class_def_range_count);
+    if (glyph_max <= 0xFFFFFFu && class_def_range_बिलांग <= 0xFFFFFFu && class_max <= 0xFFFFu)
+      best_size = hb_min (best_size, 5 + 8 * class_def_range_बिलांग);
 #endif
     return best_size;
   }
 
-  hb_hashmap_t<unsigned, unsigned> num_ranges_per_class;
+  hb_hashmap_t<unsigned, unsigned> नुमेरो_ranges_per_class;
   hb_hashmap_t<unsigned, hb_set_t> glyphs_per_class;
   hb_set_t included_classes;
   hb_set_t included_glyphs;
   hb_set_t included_class_def_glyphs;
-  unsigned class_def_range_count;
+  unsigned class_def_range_बिलांग;
   unsigned class_max;
   unsigned coverage_size_val;
 };

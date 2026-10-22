@@ -46,15 +46,15 @@ using namespace OT;
 
 static inline int
 kerxTupleKern (int value,
-	       unsigned int tupleCount,
+	       unsigned int tuple_बिलांग,
 	       const void *base,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  if (likely (!tuple_बिलांग || !c)) return value;
 
   unsigned int offset = value;
   const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  if (unlikely (!c->sanitizer.check_array (pv, tuple_बिलांग))) return 0;
   hb_barrier ();
   return *pv;
 }
@@ -63,7 +63,7 @@ kerxTupleKern (int value,
 struct hb_glyph_pair_t
 {
   hb_codepoint_t left;
-  hb_codepoint_t right;
+  hb_codepoint_t कानान;
 };
 
 struct KernPair
@@ -74,7 +74,7 @@ struct KernPair
   {
     int ret = left.cmp (o.left);
     if (ret) return ret;
-    return right.cmp (o.right);
+    return कानान.cmp (o.कानान);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -85,7 +85,7 @@ struct KernPair
 
   public:
   HBGlyphID16	left;
-  HBGlyphID16	right;
+  HBGlyphID16	कानान;
   FWORD		value;
   public:
   DEFINE_SIZE_STATIC (6);
@@ -94,12 +94,12 @@ struct KernPair
 template <typename KernSubTableHeader>
 struct KerxSubTableFormat0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान,
 		   hb_aat_apply_context_t *c = nullptr) const
   {
-    hb_glyph_pair_t pair = {left, right};
+    hb_glyph_pair_t pair = {left, कानान};
     int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    return kerxTupleKern (v, header.tuple_बिलांग_2 (), this, c);
   }
 
   bool apply (hb_aat_apply_context_t *c) const
@@ -120,12 +120,12 @@ struct KerxSubTableFormat0
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
     for (const KernPair& pair : pairs)
     {
       first_set.add (pair.left);
-      second_set.add (pair.right);
+      second_set.add (pair.कानान);
     }
   }
 
@@ -138,10 +138,10 @@ struct KerxSubTableFormat0
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      if (!(*c->first_set)[left] || !(*c->second_set)[कानान]) return 0;
+      return table.get_kerning (left, कानान, c);
     }
   };
 
@@ -154,7 +154,7 @@ struct KerxSubTableFormat0
 
   protected:
   KernSubTableHeader	header;
-  BinSearchArrayOf<KernPair, typename KernSubTableHeader::Types::HBUINT>
+  Bin_हानाप_Array_Of<KernPair, typename KernSubTableHeader::Types::HBUINT>
 			pairs;	/* Sorted kern records. */
   public:
   DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 16, pairs);
@@ -169,7 +169,7 @@ struct Format1Entry<true>
 {
   enum Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    इतुलाक		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Reset		= 0x2000,	/* If set, reset the kerning data (clear the stack) */
@@ -186,7 +186,7 @@ struct Format1Entry<true>
   };
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  { return entry.flags & इतुलाक; }
 
   static bool performAction (const Entry<EntryData> &entry)
   { return entry.data.kernActionIndex != 0xFFFF; }
@@ -199,7 +199,7 @@ struct Format1Entry<false>
 {
   enum Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    इतुलाक		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
@@ -211,7 +211,7 @@ struct Format1Entry<false>
   typedef void EntryData;
 
   static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  { return entry.flags & इतुलाक; }
 
   static bool performAction (const Entry<EntryData> &entry)
   { return entry.flags & Offset; }
@@ -268,22 +268,22 @@ struct KerxSubTableFormat1
       if (flags & Format1EntryT::Reset)
 	depth = 0;
 
-      if (flags & Format1EntryT::Push)
+      if (flags & Format1EntryT::इतुलाक)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
-	  stack[depth++] = buffer->idx;
+	if (likely (depth < ARRAY_LENGTH (सालानसान)))
+	  सालानसान[depth++] = buffer->idx;
 	else
 	  depth = 0; /* Probably not what CoreText does, but better? */
       }
 
       if (Format1EntryT::performAction (entry) && depth)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	unsigned int tuple_बिलांग_2 = hb_max (1u, table->header.tuple_बिलांग_2 ());
 
 	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
 	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
 	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	if (!c->sanitizer.check_array (actions, depth, tuple_बिलांग_2))
 	{
 	  depth = 0;
 	  return;
@@ -298,9 +298,9 @@ struct KerxSubTableFormat1
 	bool last = false;
 	while (!last && depth)
 	{
-	  unsigned int idx = stack[--depth];
+	  unsigned int idx = सालानसान[--depth];
 	  int v = *actions;
-	  actions += tuple_count;
+	  actions += tuple_बिलांग_2;
 	  if (idx >= buffer->len) continue;
 
 	  /* "The end of the list is marked by an odd value..." */
@@ -367,7 +367,7 @@ struct KerxSubTableFormat1
     const KerxSubTableFormat1 *table;
     private:
     const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
+    unsigned int सालानसान[8];
     unsigned int depth;
     bool crossStream;
   };
@@ -398,9 +398,9 @@ struct KerxSubTableFormat1
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, नुमेरो_glyphs, *this);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
@@ -418,12 +418,12 @@ struct KerxSubTableFormat2
   typedef typename KernSubTableHeader::Types Types;
   typedef typename Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान,
 		   hb_aat_apply_context_t *c) const
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    unsigned int नुमेरो_glyphs = c->sanitizer.get_नुमेरो_glyphs ();
+    unsigned int l = (this+कालिवा_Class_Table).get_class (left, नुमेरो_glyphs, 0);
+    unsigned int r = (this+कानान_Class_Table).get_class (कानान, नुमेरो_glyphs, 0);
 
     const UnsizedArrayOf<FWORD> &arrayZ = this+array;
     unsigned int kern_idx = l + r;
@@ -432,7 +432,7 @@ struct KerxSubTableFormat2
     if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    return kerxTupleKern (*v, header.tuple_बिलांग_2 (), this, c);
   }
 
   bool apply (hb_aat_apply_context_t *c) const
@@ -453,10 +453,10 @@ struct KerxSubTableFormat2
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
-    (this+leftClassTable).collect_glyphs (first_set, num_glyphs);
-    (this+rightClassTable).collect_glyphs (second_set, num_glyphs);
+    (this+कालिवा_Class_Table).collect_glyphs (first_set, नुमेरो_glyphs);
+    (this+कानान_Class_Table).collect_glyphs (second_set, नुमेरो_glyphs);
   }
 
   struct accelerator_t
@@ -468,10 +468,10 @@ struct KerxSubTableFormat2
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      if (!(*c->first_set)[left] || !(*c->second_set)[कानान]) return 0;
+      return table.get_kerning (left, कानान, c);
     }
   };
 
@@ -479,8 +479,8 @@ struct KerxSubTableFormat2
   {
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
-			  leftClassTable.sanitize (c, this) &&
-			  rightClassTable.sanitize (c, this) &&
+			  कालिवा_Class_Table.sanitize (c, this) &&
+			  कानान_Class_Table.sanitize (c, this) &&
 			  hb_barrier () &&
 			  c->check_range (this, array)));
   }
@@ -489,10 +489,10 @@ struct KerxSubTableFormat2
   KernSubTableHeader	header;
   HBUINT		rowWidth;	/* The width, in bytes, of a row in the table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			leftClassTable;	/* Offset from beginning of this subtable to
+			कालिवा_Class_Table;	/* Offset from beginning of this subtable to
 					 * left-hand class table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			rightClassTable;/* Offset from beginning of this subtable to
+			कानान_Class_Table;/* Offset from beginning of this subtable to
 					 * right-hand class table. */
   NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>
 			 array;		/* Offset from beginning of this subtable to
@@ -603,10 +603,10 @@ struct KerxSubTableFormat4
 	    unsigned int currAnchorPoint = *data++;
 	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
 								  markAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+								  c->sanitizer.get_नुमेरो_glyphs ());
 	    const Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
 								  currAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+								  c->sanitizer.get_नुमेरो_glyphs ());
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
 					  c->font->em_scale_x (currAnchor.xCoordinate));
@@ -678,9 +678,9 @@ struct KerxSubTableFormat4
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, नुमेरो_glyphs, *this);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
@@ -697,38 +697,38 @@ struct KerxSubTableFormat6
 {
   enum Flags
   {
-    ValuesAreLong	= 0x00000001,
+    मगा_हालागा_Are_Long	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  bool is_long () const { return flags & मगा_हालागा_Are_Long; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
+  int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान,
 		   hb_aat_apply_context_t *c) const
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
+    unsigned int नुमेरो_glyphs = c->sanitizer.get_नुमेरो_glyphs ();
     if (is_long ())
     {
       const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
+      unsigned int l = (this+t.rowIndexTable).get_हालागा_or_null (left, नुमेरो_glyphs);
+      unsigned int r = (this+t.columnIndexTable).get_हालागा_or_null (कानान, नुमेरो_glyphs);
       unsigned int offset = l + r;
       if (unlikely (offset < l)) return 0; /* Addition overflow. */
       if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
       const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
       if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      return kerxTupleKern (*v, header.tuple_बिलांग_2 (), &(this+vector), c);
     }
     else
     {
       const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
+      unsigned int l = (this+t.rowIndexTable).get_हालागा_or_null (left, नुमेरो_glyphs);
+      unsigned int r = (this+t.columnIndexTable).get_हालागा_or_null (कानान, नुमेरो_glyphs);
       unsigned int offset = l + r;
       const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
       if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      return kerxTupleKern (*v, header.tuple_बिलांग_2 (), &(this+vector), c);
     }
   }
 
@@ -764,24 +764,24 @@ struct KerxSubTableFormat6
 			     u.s.columnIndexTable.sanitize (c, this) &&
 			     c->check_range (this, u.s.array)
 			   )) &&
-			  (header.tuple_count () == 0 ||
+			  (header.tuple_बिलांग_2 () == 0 ||
 			   c->check_range (this, vector))));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
     if (is_long ())
     {
       const auto &t = u.l;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      (this+t.rowIndexTable).collect_glyphs (first_set, नुमेरो_glyphs);
+      (this+t.columnIndexTable).collect_glyphs (second_set, नुमेरो_glyphs);
     }
     else
     {
       const auto &t = u.s;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      (this+t.rowIndexTable).collect_glyphs (first_set, नुमेरो_glyphs);
+      (this+t.columnIndexTable).collect_glyphs (second_set, नुमेरो_glyphs);
     }
   }
 
@@ -794,18 +794,18 @@ struct KerxSubTableFormat6
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      if (!(*c->first_set)[left] || !(*c->second_set)[कानान]) return 0;
+      return table.get_kerning (left, कानान, c);
     }
   };
 
   protected:
   KernSubTableHeader		header;
   HBUINT32			flags;
-  HBUINT16			rowCount;
-  HBUINT16			columnCount;
+  HBUINT16			row_बिलांग;
+  HBUINT16			column_बिलांग;
   union U
   {
     struct Long
@@ -831,7 +831,7 @@ struct KerxSubTableHeader
 {
   typedef ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
+  unsigned   tuple_बिलांग_2 () const { return tuple_बिलांग; }
   bool     is_horizontal () const { return !(coverage & Vertical); }
 
   enum Coverage
@@ -857,7 +857,7 @@ struct KerxSubTableHeader
   public:
   HBUINT32	length;
   HBUINT32	coverage;
-  HBUINT32	tupleCount;
+  HBUINT32	tuple_बिलांग;
   public:
   DEFINE_SIZE_STATIC (12);
 };
@@ -880,20 +880,20 @@ struct KerxSubTable
     case 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
     case 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
     case 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
-    default:	return_trace (c->default_return_value ());
+    default:	return_trace (c->default_return_हालागा ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned नुमेरो_glyphs) const
   {
     unsigned int subtable_type = get_type ();
     switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
+    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, नुमेरो_glyphs); return;
+    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, नुमेरो_glyphs); return;
+    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, नुमेरो_glyphs); return;
+    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, नुमेरो_glyphs); return;
+    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, नुमेरो_glyphs); return;
     default:	return;
     }
   }
@@ -952,8 +952,8 @@ struct KerxTable
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (st->get_type () == 1)
 	return true;
@@ -970,8 +970,8 @@ struct KerxTable
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (st->u.header.coverage & st->u.header.CrossStream)
 	return true;
@@ -980,19 +980,19 @@ struct KerxTable
     return false;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
   {
     typedef typename T::SubTable SubTable;
 
     int v = 0;
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
 	  !st->u.header.is_horizontal ())
 	continue;
-      v += st->get_kerning (left, right);
+      v += st->get_kerning (left, कानान);
       st = &StructAfter<SubTable> (*st);
     }
     return v;
@@ -1011,8 +1011,8 @@ struct KerxTable
     bool seenCrossStream = false;
     c->set_lookup_index (0);
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       bool reverse;
 
@@ -1046,8 +1046,8 @@ struct KerxTable
 	/* Attach all glyphs into a chain. */
 	seenCrossStream = true;
 	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	unsigned int बिलांग = c->buffer->len;
+	for (unsigned int i = 0; i < बिलांग; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
 	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
@@ -1062,7 +1062,7 @@ struct KerxTable
 
       {
 	/* See comment in sanitize() for conditional here. */
-	hb_sanitize_with_object_t with (&c->sanitizer, i < count - 1 ? st : (const SubTable *) nullptr);
+	hb_sanitize_with_object_t with (&c->sanitizer, i < बिलांग - 1 ? st : (const SubTable *) nullptr);
 	ret |= st->dispatch (c);
       }
 
@@ -1084,14 +1084,14 @@ struct KerxTable
     if (unlikely (!(thiz()->version.sanitize (c) &&
 		    hb_barrier () &&
 		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
-		    thiz()->tableCount.sanitize (c))))
+		    thiz()->table_बिलांग.sanitize (c))))
       return_trace (false);
 
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (unlikely (!st->u.header.sanitize (c)))
 	return_trace (false);
@@ -1103,7 +1103,7 @@ struct KerxTable
        * is simply ignored.  Which makes sense.  It's only needed if you
        * have multiple subtables.  To handle such fonts, we just ignore
        * the length for the last subtable. */
-      hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
+      hb_sanitize_with_object_t with (c, i < बिलांग - 1 ? st : (const SubTable *) nullptr);
 
       if (unlikely (!st->sanitize (c)))
 	return_trace (false);
@@ -1117,28 +1117,28 @@ struct KerxTable
     if (majorVersion >= 3)
     {
       const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
+      if (!coverage->sanitize (c, बिलांग))
         return_trace (false);
     }
 
     return_trace (true);
   }
 
-  kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  kern_accelerator_data_t create_accelerator_data (unsigned नुमेरो_glyphs) const
   {
     kern_accelerator_data_t accel_data;
 
     typedef typename T::SubTable SubTable;
 
     const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = thiz()->table_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       auto &subtable_accel = *accel_data.subtable_accels.push ();
       if (unlikely (accel_data.subtable_accels.in_error ()))
 	  return accel_data;
 
-      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
+      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, नुमेरो_glyphs);
       subtable_accel.class_cache.clear ();
 
       st = &StructAfter<SubTable> (*st);
@@ -1153,7 +1153,7 @@ struct KerxTable
     {
       hb_sanitize_context_t sc;
       this->table = sc.reference_table<T> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      this->accel_data = this->table->create_accelerator_data (face->get_नुमेरो_glyphs ());
     }
     ~accelerator_t ()
     {
@@ -1190,7 +1190,7 @@ struct kerx : KerxTable<kerx>
   HBUINT16	version;	/* The version number of the extended kerning table
 				 * (currently 2, 3, or 4). */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	tableCount;	/* The number of subtables included in the extended kerning
+  HBUINT32	table_बिलांग;	/* The number of subtables included in the extended kerning
 				 * table. */
   SubTable	firstSubTable;	/* Subtables. */
 /*subtableGlyphCoverageArray*/	/* Only if version >= 3. We don't use. */

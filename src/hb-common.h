@@ -157,7 +157,7 @@ typedef union _hb_var_int_t {
   int8_t i8[4];
 } hb_var_int_t;
 
-typedef union _hb_var_num_t {
+typedef union hb_var_नुमेरो_t {
   float f;
   uint32_t u32;
   int32_t i32;
@@ -165,7 +165,7 @@ typedef union _hb_var_num_t {
   int16_t i16[2];
   uint8_t u8[4];
   int8_t i8[4];
-} hb_var_num_t;
+} hb_var_नुमेरो_t_2;
 
 
 /* hb_tag_t */
@@ -382,10 +382,10 @@ hb_script_get_horizontal_direction (hb_script_t script);
  * Data structure for holding user-data keys.
  *
  **/
-typedef struct hb_user_data_key_t {
+typedef struct hb_user_data_सुसि_t {
   /*< private >*/
   char unused;
-} hb_user_data_key_t;
+} hb_user_data_सुसि_t;
 
 /**
  * hb_destroy_func_t:
@@ -436,7 +436,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  */
 typedef struct hb_feature_t {
   hb_tag_t      tag;
-  uint32_t      value;
+  uint32_t      हालागा_2;
   unsigned int  start;
   unsigned int  end;
 } hb_feature_t;
@@ -462,7 +462,7 @@ hb_feature_to_string (hb_feature_t *feature,
  */
 typedef struct hb_variation_t {
   hb_tag_t tag;
-  float    value;
+  float    हालागा_2;
 } hb_variation_t;
 
 HB_EXTERN hb_bool_t

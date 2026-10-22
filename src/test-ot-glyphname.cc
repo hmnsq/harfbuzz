@@ -47,10 +47,10 @@ main (int argc, char **argv)
   blob = nullptr;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
+  const unsigned int नुमेरो_glyphs = hb_face_get_glyph_बिलांग (face);
   int	result = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  for (hb_codepoint_t gid = 0; gid < नुमेरो_glyphs; gid++)
   {
     char buf[64];
     unsigned int buf_size = sizeof (buf);

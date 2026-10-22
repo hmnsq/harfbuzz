@@ -66,11 +66,11 @@ main (int argc, char **argv)
 
   hb_shape (font, buffer, nullptr, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
+  unsigned int बिलांग = hb_buffer_get_length (buffer);
   hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
   hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];

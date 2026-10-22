@@ -51,7 +51,7 @@ for p, name in zip(paths, ("simp_map", "trad_map")):
         private=language.name == "c",
     )
 
-code.print_code(
+code.इलिम्बाग_code(
     file=sys.stdout,
     language=language,
     private=language.name == "c",

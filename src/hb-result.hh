@@ -218,9 +218,9 @@ struct HB_NODISCARD_STRUCT hb_result_t
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
+  static hb_result_t from (T&& fallible, E error_हालागा) {
     if (fallible.in_error()) {
-      return Err(error_value);
+      return Err(error_हालागा);
     }
     return Ok(fallible);
   }
@@ -241,26 +241,26 @@ struct HB_NODISCARD_STRUCT hb_result_t
   const T* operator -> () const { return std::addressof (value ()); }
 
   template <typename U>
-  T value_or (U&& default_value) const &
+  T हालागा_or (U&& default_हालागा) const &
   {
     if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    return std::forward<U> (default_हालागा);
   }
 
   template <typename U>
-  T value_or (U&& default_value) &&
+  T हालागा_or (U&& default_हालागा) &&
   {
     if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    return std::forward<U> (default_हालागा);
   }
 
-  T value_or_default () const &
+  T हालागा_or_default () const &
   {
     if (is_ok_) return val_;
     return T ();
   }
 
-  T value_or_default () &&
+  T हालागा_or_default () &&
   {
     if (is_ok_) return std::move (val_);
     return T ();
@@ -412,9 +412,9 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
+  static hb_result_t<void, E> from (const V& fallible, E error_हालागा) {
     if (fallible.in_error()) {
-      return Err(error_value);
+      return Err(error_हालागा);
     }
     return Ok();
   }
@@ -492,9 +492,9 @@ static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T
 }
 
 #ifndef TRY
-#define TRY(expr)                                                             \
+#define TRY(पाहायाग)                                                             \
   do {                                                                        \
-    auto _res = (expr);                                                       \
+    auto _res = (पाहायाग);                                                       \
     if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
   } while (0)
 #endif

@@ -97,14 +97,14 @@ hb_gpu_draw_destroy (hb_gpu_draw_t *draw);
 
 HB_EXTERN hb_bool_t
 hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key,
+			     hb_user_data_सुसि_t *सुसि_2,
 			     void               *data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key);
+			     hb_user_data_सुसि_t *सुसि_2);
 
 
 /* Scale */
@@ -199,14 +199,14 @@ hb_gpu_paint_destroy (hb_gpu_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
-			    hb_user_data_key_t *key,
+			    hb_user_data_सुसि_t *सुसि_2,
 			    void               *data,
 			    hb_destroy_func_t   destroy,
 			    hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
-			    hb_user_data_key_t   *key);
+			    hb_user_data_सुसि_t   *सुसि_2);
 
 HB_EXTERN hb_paint_funcs_t *
 hb_gpu_paint_get_funcs (const hb_gpu_paint_t *paint);

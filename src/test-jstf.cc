@@ -55,15 +55,15 @@ main (int argc, char **argv)
       hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
 #ifndef HB_NO_BEYOND_64K
   hb_always_assert (jstf.get_length ());
-  hb_always_assert (jstf->get_script_count () == 1);
+  hb_always_assert (jstf->get_script_बिलांग () == 1);
   hb_always_assert (jstf->get_script_tag (0) == HB_TAG ('a','r','a','b'));
   unsigned index;
   hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
   hb_always_assert (index == 0);
-  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
+  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_बिलांग ());
 #else
   hb_always_assert (jstf.get_length ());
-  hb_always_assert (!jstf->get_script_count ());
+  hb_always_assert (!jstf->get_script_बिलांग ());
 #endif
   jstf.destroy ();
   hb_face_destroy (face);

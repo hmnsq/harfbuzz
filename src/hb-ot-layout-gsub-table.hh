@@ -67,8 +67,8 @@ template <typename context_t>
   if (l.may_have_non_1to1 ())
       covered_seq_indices->add_range (seq_index, end_index);
 
-  hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
+  hb_depend_context_t::recurse_सुसि_t key;
+  if (!c->get_recurse_सुसि (lookup_index, &key))
     return hb_empty_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
@@ -94,9 +94,9 @@ inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_app
   c->set_lookup_index (lookup_index);
   c->set_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
+  uint32_t सालानसान_match_positions[8];
   hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
+  saved_match_positions.set_storage (सालानसान_match_positions);
   hb_swap (c->match_positions, saved_match_positions);
 
   bool ret = false;
@@ -120,15 +120,15 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
 {
   if (!this->table->has_data ()) return;
 
-  unsigned num_features = this->table->get_feature_count ();
-  unsigned num_lookups  = this->table->get_lookup_count ();
+  unsigned नुमेरो_features = this->table->get_feature_बिलांग ();
+  unsigned नुमेरो_lookups  = this->table->get_lookup_बिलांग ();
 
   hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
+  if (!builder->check_success (feature_tags.resize (नुमेरो_features)))
     return;
-  this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
+  this->table->get_feature_tags (0, &नुमेरो_features, feature_tags.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
+  if (!builder->init_lookup_features (नुमेरो_lookups))
     return;
 
   hb_vector_t<hb_tag_t> feature_query_v;
@@ -155,8 +155,8 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
 	return;
 
     auto &fv = this->table->get_feature_variations ();
-    auto fi_count = fv.record_count ();
-    for (unsigned i = 0; i < fi_count; i++)
+    auto fi_बिलांग = fv.record_बिलांग ();
+    for (unsigned i = 0; i < fi_बिलांग; i++)
     {
       lookup_indexes.reset ();
       for (auto feature_index : feature_indexes)
@@ -183,20 +183,20 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
     return;
 
   hb_set_t all_glyphs;
-  all_glyphs.add_range (0, face->get_num_glyphs () - 1);
+  all_glyphs.add_range (0, face->get_नुमेरो_glyphs () - 1);
 
   hb_depend_context_t c (builder, face, &all_glyphs);
 
-  for (unsigned i = 0; i < num_lookups; i++)
+  for (unsigned i = 0; i < नुमेरो_lookups; i++)
   {
     auto features = builder->get_lookup_features (i);
     if (!features)
     {
-      DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+      DEBUG_मेनसाहे_LEVEL (DEPEND, nullptr, 1, 0,
                        "Skipping lookup %u (no features)", i);
       continue;
     }
-    DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+    DEBUG_मेनसाहे_LEVEL (DEPEND, nullptr, 1, 0,
                      "Processing lookup %u with features:", i);
     c.lookup_index = i;
     c.reset_recurse_cache ();

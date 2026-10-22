@@ -56,21 +56,21 @@ hb_coretext_get_nominal_glyph (hb_font_t *font,
 
   UniChar ch[2];
   CGGlyph cg_glyph[2];
-  unsigned count = 0;
+  unsigned बिलांग = 0;
 
   if (unicode <= 0xFFFF)
   {
-    ch[count++] = unicode;
+    ch[बिलांग++] = unicode;
   }
   else if (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[बिलांग++] = (unicode >> 10) + 0xD7C0;
+    ch[बिलांग++] = (unicode & 0x3FF) + 0xDC00;
   }
   else
-    ch[count++] = 0xFFFD;
+    ch[बिलांग++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, बिलांग))
   {
     *glyph = cg_glyph[0];
     return true;
@@ -81,7 +81,7 @@ hb_coretext_get_nominal_glyph (hb_font_t *font,
 static unsigned int
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
 				void *font_data,
-				unsigned int count,
+				unsigned int बिलांग,
 				const hb_codepoint_t *first_unicode,
 				unsigned int unicode_stride,
 				hb_codepoint_t *first_glyph,
@@ -93,7 +93,7 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
   // If any non-BMP codepoint is requested, use the slow path.
   bool slow_path = false;
   auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  for (unsigned i = 0; i < बिलांग; i++)
   {
     if (*unicode > 0xFFFF)
     {
@@ -105,21 +105,21 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
 
   if (unlikely (slow_path))
   {
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
 	return i;
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    return बिलांग;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  for (unsigned i = 0; i < बिलांग; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
+    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) बिलांग - (int) i);
     for (unsigned j = 0; j < c; j++)
     {
       ch[j] = *first_unicode;
@@ -142,7 +142,7 @@ hb_coretext_get_nominal_glyphs (hb_font_t *font,
     }
   }
 
-  return count;
+  return बिलांग;
 }
 
 static hb_bool_t
@@ -157,34 +157,34 @@ hb_coretext_get_variation_glyph (hb_font_t *font,
 
   UniChar ch[4];
   CGGlyph cg_glyph[4];
-  unsigned count = 0;
+  unsigned बिलांग = 0;
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
   if (unicode <= 0xFFFF)
-    ch[count++] = unicode;
+    ch[बिलांग++] = unicode;
   else if (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[बिलांग++] = (unicode >> 10) + 0xD7C0;
+    ch[बिलांग++] = (unicode & 0x3FF) + 0xDC00;
   }
   else
-    ch[count++] = 0xFFFD;
+    ch[बिलांग++] = 0xFFFD;
 
   if (variation_selector <= 0xFFFF)
-    ch[count++] = variation_selector;
+    ch[बिलांग++] = variation_selector;
   else if (variation_selector <= 0x10FFFF)
   {
-    ch[count++] = (variation_selector >> 10) + 0xD7C0;
-    ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
+    ch[बिलांग++] = (variation_selector >> 10) + 0xD7C0;
+    ch[बिलांग++] = (variation_selector & 0x3FF) + 0xDC00;
   }
   else
-    ch[count++] = 0xFFFD;
+    ch[बिलांग++] = 0xFFFD;
 
-  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
+  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, बिलांग);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
+  for (unsigned i = 1; i < बिलांग; i++)
     if (cg_glyph[i])
       return false;
 
@@ -199,7 +199,7 @@ hb_coretext_get_variation_glyph (hb_font_t *font,
 static void
 hb_coretext_get_glyph_h_advances (hb_font_t* font,
 				  void* font_data HB_UNUSED,
-				  unsigned count,
+				  unsigned बिलांग,
 				  const hb_codepoint_t *first_glyph,
 				  unsigned glyph_stride,
 				  hb_position_t *first_advance,
@@ -214,9 +214,9 @@ hb_coretext_get_glyph_h_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  for (unsigned i = 0; i < बिलांग; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
+    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) बिलांग - (int) i);
     for (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
@@ -236,7 +236,7 @@ hb_coretext_get_glyph_h_advances (hb_font_t* font,
 static void
 hb_coretext_get_glyph_v_advances (hb_font_t* font,
 				  void* font_data HB_UNUSED,
-				  unsigned count,
+				  unsigned बिलांग,
 				  const hb_codepoint_t *first_glyph,
 				  unsigned glyph_stride,
 				  hb_position_t *first_advance,
@@ -251,9 +251,9 @@ hb_coretext_get_glyph_v_advances (hb_font_t* font,
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  for (unsigned i = 0; i < बिलांग; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
+    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) बिलांग - (int) i);
     for (unsigned j = 0; j < c; j++)
     {
       cg_glyph[j] = *first_glyph;
@@ -334,7 +334,7 @@ hb_coretext_get_font_h_extents (hb_font_t *font,
 
   metrics->ascender = hb_clamp_to<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
   metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
-  metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
+  metrics->लिन्या_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
   return true;
 }
@@ -351,8 +351,8 @@ ct_apply_func (void *info, const CGPathElement *element)
   case kCGPathElementMoveToPoint:
     draws->move_to (element->points[0].x, element->points[0].y);
     break;
-  case kCGPathElementAddLineToPoint:
-    draws->line_to (element->points[0].x, element->points[0].y);
+  case k_CGPath_Element_Add_लिन्या_To_Point:
+    draws->लिन्या_to (element->points[0].x, element->points[0].y);
     break;
   case kCGPathElementAddQuadCurveToPoint:
     draws->quadratic_to (element->points[0].x, element->points[0].y,

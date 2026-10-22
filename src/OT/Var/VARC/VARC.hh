@@ -26,7 +26,7 @@ namespace OT {
 struct hb_varc_scratch_t
 {
   hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_vector_t<double> axis_मगा_हालागा_2;
   hb_glyf_scratch_t glyf_scratch;
 };
 
@@ -36,8 +36,8 @@ struct hb_varc_context_t
   hb_draw_session_t *draw_session;
   hb_extents_t<> *extents;
   mutable hb_decycler_t decycler;
-  mutable signed edges_left;
-  mutable signed depth_left;
+  mutable signed edges_कालिवा;
+  mutable signed depth_कालिवा;
   /* Renderer-owned live budget, shared by VARC record processing and
    * every leaf loaded from glyf/CFF/CFF2. */
   int64_t &budget;
@@ -52,7 +52,7 @@ struct VarComponent
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
-    AXIS_VALUES_HAVE_VARIATION	= 1u << 2,
+    AXIS_मगा_हालागा_HAVE_VARIATION	= 1u << 2,
     TRANSFORM_HAS_VARIATION	= 1u << 3,
     HAVE_TRANSLATE_X		= 1u << 4,
     HAVE_TRANSLATE_Y		= 1u << 5,
@@ -80,9 +80,9 @@ struct VarComponent
     unsigned axis_indices_index;
     unsigned axis_indices_offset;
     unsigned axis_indices_size;
-    uint32_t axis_values_var_idx;
-    unsigned axis_values_var_offset;
-    unsigned axis_values_var_size;
+    uint32_t axis_मगा_हालागा_var_idx;
+    unsigned axis_मगा_हालागा_var_offset;
+    unsigned axis_मगा_हालागा_var_size;
     uint32_t transform_var_idx;
     unsigned transform_var_offset;
     unsigned transform_var_size;
@@ -101,7 +101,7 @@ struct VarComponent
   HB_INTERNAL static bool decompile_record (const VARC &varc,
 					    hb_ubytes_t record,
 					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
+					    hb_vector_t<double> *axis_मगा_हालागा,
 					    record_t *decoded /* OUT */,
 					    int64_t *budget = nullptr);
 };
@@ -159,13 +159,13 @@ struct VARC
 			 &draw_session,
 			 nullptr,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_बिलांग,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
     return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+			hb_array (font->coords, font->नुमेरो_coords));
   }
 
   bool
@@ -179,13 +179,13 @@ struct VARC
 			 nullptr,
 			 extents,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_बिलांग,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
     return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+			hb_array (font->coords, font->नुमेरो_coords));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const

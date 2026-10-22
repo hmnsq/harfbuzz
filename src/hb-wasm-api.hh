@@ -54,7 +54,7 @@ enum {
   hb_wasm_ref_type_buffer,
 };
 
-HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
+HB_INTERNAL extern hb_user_data_सुसि_t hb_wasm_ref_type_सुसि;
 
 #define nullref 0
 
@@ -64,7 +64,7 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
     (void) wasm_externref_ref2obj (obj##ptr, (void **) &obj); \
     /* Check object type. */ \
     /* This works because all our objects have the same hb_object_t layout. */ \
-    if (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
+    if (unlikely (hb_##obj##_get_user_data (obj, &hb_wasm_ref_type_सुसि) != \
 		  (void *) hb_wasm_ref_type_##obj)) \
       obj = hb_##obj##_get_empty (); \
   } HB_STMT_END
@@ -72,7 +72,7 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
 #define HB_OBJ2REF(obj) \
   uint32_t obj##ref = nullref; \
   HB_STMT_START { \
-    hb_##obj##_set_user_data (obj, &_hb_wasm_ref_type_key, \
+    hb_##obj##_set_user_data (obj, &hb_wasm_ref_type_सुसि, \
 			      (void *) hb_wasm_ref_type_##obj, \
 			      nullptr, false); \
     (void) wasm_externref_obj2ref (module_inst, obj, &obj##ref); \

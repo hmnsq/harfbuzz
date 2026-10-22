@@ -68,7 +68,7 @@ struct hb_paint_context_t :
   const char *get_name () { return "PAINT"; }
   template <typename T>
   return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   const COLR* get_colr_table () const
   { return reinterpret_cast<const COLR *> (base); }
@@ -83,8 +83,8 @@ public:
   ItemVarStoreInstancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  int depth_कालिवा = HB_MAX_NESTING_LEVEL;
+  int edge_बिलांग = HB_MAX_GRAPH_EDGE_बिलांग;
 
   hb_paint_context_t (const void *base_,
 		      hb_paint_funcs_t *funcs_,
@@ -100,7 +100,7 @@ public:
     palette (
 #ifndef HB_NO_COLOR
 	     // https://github.com/harfbuzz/harfbuzz/issues/5116
-	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_count () ? palette_ : 0)
+	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_बिलांग () ? palette_ : 0)
 #endif
     ),
     foreground (foreground_),
@@ -158,18 +158,18 @@ struct hb_colrv1_closure_context_t :
   template <typename T>
   return_t dispatch (const T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
+    if (unlikely (nesting_level_कालिवा == 0))
       return hb_empty_t ();
 
     if (paint_visited (&obj))
       return hb_empty_t ();
 
-    nesting_level_left--;
+    nesting_level_कालिवा--;
     obj.closurev1 (this);
-    nesting_level_left++;
+    nesting_level_कालिवा++;
     return hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   bool paint_visited (const void *paint)
   {
@@ -187,19 +187,19 @@ struct hb_colrv1_closure_context_t :
   void add_glyph (unsigned glyph_id)
   { glyphs->add (glyph_id); }
 
-  void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
+  void add_layer_indices (unsigned first_layer_index, unsigned नुमेरो_of_layers)
   {
-    if (num_of_layers == 0) return;
-    layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
+    if (नुमेरो_of_layers == 0) return;
+    layer_indices->add_range (first_layer_index, first_layer_index + नुमेरो_of_layers - 1);
   }
 
   void add_palette_index (unsigned palette_index)
   { palette_indices->add (palette_index); }
 
-  void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
+  void add_var_idxes (unsigned first_var_idx, unsigned नुमेरो_idxes)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
-    variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
+    if (!नुमेरो_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
+    variation_indices->add_range (first_var_idx, first_var_idx + नुमेरो_idxes - 1);
   }
 
   public:
@@ -209,23 +209,23 @@ struct hb_colrv1_closure_context_t :
   hb_set_t *layer_indices;
   hb_set_t *palette_indices;
   hb_set_t *variation_indices;
-  unsigned num_var_idxes;
-  unsigned nesting_level_left;
+  unsigned नुमेरो_var_idxes;
+  unsigned nesting_level_कालिवा;
 
   hb_colrv1_closure_context_t (const void *base_,
                                hb_set_t *glyphs_,
                                hb_set_t *layer_indices_,
                                hb_set_t *palette_indices_,
                                hb_set_t *variation_indices_,
-                               unsigned num_var_idxes_ = 1,
-                               unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                               unsigned नुमेरो_var_idxes_2 = 1,
+                               unsigned nesting_level_कालिवा_2 = HB_MAX_NESTING_LEVEL) :
                           base (base_),
                           glyphs (glyphs_),
                           layer_indices (layer_indices_),
                           palette_indices (palette_indices_),
                           variation_indices (variation_indices_),
-                          num_var_idxes (num_var_idxes_),
-                          nesting_level_left (nesting_level_left_)
+                          नुमेरो_var_idxes (नुमेरो_var_idxes_2),
+                          nesting_level_कालिवा (nesting_level_कालिवा_2)
   {}
 };
 
@@ -236,18 +236,18 @@ struct hb_colrv1_depend_context_t :
   template <typename T>
   return_t dispatch (const T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
+    if (unlikely (nesting_level_कालिवा == 0))
       return hb_empty_t ();
 
     if (paint_visited (&obj))
       return hb_empty_t ();
 
-    nesting_level_left--;
+    nesting_level_कालिवा--;
     obj.dependv1 (this);
-    nesting_level_left++;
+    nesting_level_कालिवा++;
     return hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   bool paint_visited (const void *paint)
   {
@@ -268,15 +268,15 @@ struct hb_colrv1_depend_context_t :
   const COLR *colr;
   hb_depend_data_builder_t *depend_data;
   hb_set_t visited_paint;
-  unsigned nesting_level_left;
+  unsigned nesting_level_कालिवा;
   hb_codepoint_t source_gid;
 
   hb_colrv1_depend_context_t (const COLR *colr_,
                               hb_depend_data_builder_t *depend_data_,
-                              unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                              unsigned nesting_level_कालिवा_2 = HB_MAX_NESTING_LEVEL) :
                           colr (colr_),
                           depend_data (depend_data_),
-                          nesting_level_left (nesting_level_left_),
+                          nesting_level_कालिवा (nesting_level_कालिवा_2),
                           source_gid (0)
   {}
 };
@@ -325,7 +325,7 @@ struct BaseGlyphRecord
 				 * layer record. There will be
 				 * numLayers consecutive entries
 				 * for this base glyph. */
-  HBUINT16	numLayers;	/* Number of color layers
+  HBUINT16	नुमेरो_Layers;	/* Number of color layers
 				 * associated with this glyph */
   public:
   DEFINE_SIZE_STATIC (6);
@@ -336,7 +336,7 @@ struct Variable
 {
   static constexpr bool is_variable = true;
 
-  const T& get_value () const { return value; }
+  const T& get_हालागा () const { return value; }
 
   Variable<T>* copy (hb_serialize_context_t *c) const
   {
@@ -349,10 +349,10 @@ struct Variable
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
-    c->num_var_idxes = 0;
+    c->नुमेरो_var_idxes = 0;
     // update c->num_var_idxes during value closure
     value.closurev1 (c);
-    c->add_var_idxes (varIdxBase, c->num_var_idxes);
+    c->add_var_idxes (varIdxBase, c->नुमेरो_var_idxes);
   }
 
   bool subset (hb_subset_context_t *c,
@@ -420,7 +420,7 @@ struct NoVariable
 {
   static constexpr bool is_variable = false;
 
-  const T& get_value () const { return value; }
+  const T& get_हालागा () const { return value; }
 
   static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
 
@@ -495,7 +495,7 @@ struct ColorStop
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 2;
+    c->नुमेरो_var_idxes = 2;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -556,7 +556,7 @@ struct Extend : HBUINT8
 };
 
 template <template<typename> class Var>
-struct ColorLine
+struct Color_लिन्या
 {
   void dependv1 (hb_colrv1_depend_context_t * c) const {}
 
@@ -594,33 +594,33 @@ struct ColorLine
   unsigned int
   get_color_stops (hb_paint_context_t *c,
                    unsigned int start,
-		   unsigned int *count,
+		   unsigned int *बिलांग,
 		   hb_color_stop_t *color_stops,
 		   const ItemVarStoreInstancer &instancer) const
   {
     unsigned int len = stops.len;
 
-    if (count && color_stops)
+    if (बिलांग && color_stops)
     {
       unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
+      for (i = 0; i < *बिलांग && start + i < len; i++)
         stops[start + i].get_color_stop (c, &color_stops[i], instancer);
-      *count = i;
+      *बिलांग = i;
     }
 
     return len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
-							  void *color_line_data,
+  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_लिन्या_t *color_लिन्या,
+							  void *color_लिन्या_data,
 							  unsigned int start,
-							  unsigned int *count,
+							  unsigned int *बिलांग,
 							  hb_color_stop_t *color_stops,
 							  void *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
+    const Color_लिन्या *thiz = (const Color_लिन्या *) color_लिन्या_data;
     hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    return thiz->get_color_stops (c, start, बिलांग, color_stops, c->instancer);
   }
 
   hb_paint_extend_t get_extend () const
@@ -634,11 +634,11 @@ struct ColorLine
     }
   }
 
-  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_line_t *color_line,
-							  void *color_line_data,
+  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_लिन्या_t *color_लिन्या,
+							  void *color_लिन्या_data,
 							  void *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
+    const Color_लिन्या *thiz = (const Color_लिन्या *) color_लिन्या_data;
     return thiz->get_extend ();
   }
 
@@ -670,7 +670,7 @@ struct Affine2x3
   void dependv1 (hb_colrv1_depend_context_t* c) const {}
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->num_var_idxes = 6; }
+  { c->नुमेरो_var_idxes = 6; }
 
   bool subset (hb_subset_context_t *c,
                const ItemVarStoreInstancer &instancer,
@@ -699,7 +699,7 @@ struct Affine2x3
   void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
   {
     TRACE_PAINT (this);
-    c->funcs->push_transform (c->data,
+    c->funcs->इतुलाक_transform (c->data,
 			      xx.to_float (c->instancer (varIdxBase, 0)),
 			      yx.to_float (c->instancer (varIdxBase, 1)),
                               xy.to_float (c->instancer (varIdxBase, 2)),
@@ -730,7 +730,7 @@ struct PaintColrLayers
     auto *out = c->serializer->embed (this);
     if (unlikely (!out)) return_trace (false);
 
-    uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
+    uint32_t first_layer_index = नुमेरो_Layers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
     return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
@@ -744,7 +744,7 @@ struct PaintColrLayers
   inline void paint_glyph (hb_paint_context_t *c) const;
 
   HBUINT8	format; /* format = 1 */
-  HBUINT8	numLayers;
+  HBUINT8	नुमेरो_Layers;
   HBUINT32	firstLayerIndex;  /* index into COLRv1::layerList */
   public:
   DEFINE_SIZE_STATIC (6);
@@ -756,7 +756,7 @@ struct PaintSolid
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 1;
+    c->नुमेरो_var_idxes = 1;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -818,8 +818,8 @@ struct PaintLinearGradient
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (this+color_लिन्या_2).closurev1 (c);
+    c->नुमेरो_var_idxes = 6;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -843,22 +843,22 @@ struct PaintLinearGradient
     if (format == 5 && c->plan->all_axes_pinned)
         out->format = 4;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_लिन्या_2.serialize_subset (c, color_लिन्या_2, this, instancer));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    return_trace (c->check_struct (this) && color_लिन्या_2.sanitize (c, this));
   }
 
   void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
   {
     TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    hb_color_लिन्या_t cl = {
+      (void *) &(this+color_लिन्या_2),
+      (this+color_लिन्या_2).static_get_color_stops, c,
+      (this+color_लिन्या_2).static_get_extend, nullptr
     };
 
     c->funcs->linear_gradient (c->data, &cl,
@@ -871,7 +871,7 @@ struct PaintLinearGradient
   }
 
   HBUINT8			format; /* format = 4(noVar) or 5 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintLinearGradient
+  Offset24To<Color_लिन्या<Var>>	color_लिन्या_2; /* Offset (from beginning of PaintLinearGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -891,7 +891,7 @@ struct PaintRadialGradient
   {
     if (c->plan->has_avar2) return false;
     const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    for (unsigned i = 0; i < regions.region_बिलांग; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axes;
       if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
@@ -914,8 +914,8 @@ struct PaintRadialGradient
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (this+color_लिन्या_2).closurev1 (c);
+    c->नुमेरो_var_idxes = 6;
   }
 
   bool subset_nonnegative (hb_subset_context_t *c,
@@ -936,15 +936,15 @@ struct PaintRadialGradient
       out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
       return true;
     };
-    const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
+    const auto &लिन्या = this+color_लिन्या_2;
+    if (source[2] == source[5] || !लिन्या.stops.len) return transparent ();
     struct stop_t { double offset, alpha; unsigned palette, order; };
     hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
+    if (!stops.alloc (लिन्या.stops.len)) return false;
     unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    for (const auto &entry : लिन्या.stops.iter ())
     {
-      const auto &stop = entry.get_value ();
+      const auto &stop = entry.get_हालागा ();
       stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
                    (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
                    stop.paletteIndex, order++});
@@ -965,8 +965,8 @@ struct PaintRadialGradient
         c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
         return false;
       }
-      unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      unsigned कानान = (unsigned) remainder;
+      while (कानान) { unsigned r = lattice % कानान; lattice = कानान; कानान = r; }
     }
     for (unsigned shift = 0; shift < 16; shift++)
     {
@@ -985,34 +985,34 @@ struct PaintRadialGradient
           double difference = source[j + 3] - source[j];
           geometry[j] = source[j] + a * difference;
           geometry[j + 3] = source[j] + (a + b) * difference;
-          double low = j == 2 ? 0 : -32768, high = j == 2 ? 65535 : 32767;
-          fits &= geometry[j] >= low && geometry[j] <= high &&
-                  geometry[j + 3] >= low && geometry[j + 3] <= high;
+          double माबाबा = j == 2 ? 0 : -32768, माताअस = j == 2 ? 65535 : 32767;
+          fits &= geometry[j] >= माबाबा && geometry[j] <= माताअस &&
+                  geometry[j + 3] >= माबाबा && geometry[j + 3] <= माताअस;
         }
         if (!fits) continue;
-        unsigned first = 0, count = stops.length;
+        unsigned first = 0, बिलांग = stops.length;
         double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
         double bias = 0;
         bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        if (लिन्या.extend == Extend::EXTEND_PAD)
         {
           double tip = -geometry[2] / (b * dr);
           if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
             first = dr > 0 ? stops.length - 1 : 0;
-            count = 1; constant = true;
+            बिलांग = 1; constant = true;
           }
         }
         else
         {
           double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
+          if (लिन्या.extend == Extend::EXTEND_REFLECT) period *= 2;
           if (period <= 0) return transparent ();
           double n = ceil ((-2 - min) / period);
           if (n > floor ((32767. / 16384. - max) / period)) continue;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        for (unsigned j = 0; j < बिलांग; j++)
         {
           double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
           fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
@@ -1024,21 +1024,21 @@ struct PaintRadialGradient
         out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
         out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
         c->serializer->push ();
-        auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
-        out_line->extend = line.extend;
-        out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        auto *out_लिन्या = c->serializer->allocate_size<Color_लिन्या<NoVariable>> (3 + बिलांग * ColorStop::static_size);
+        if (!out_लिन्या) { c->serializer->आलिसिन_discard (); return false; }
+        out_लिन्या->extend = लिन्या.extend;
+        out_लिन्या->stops.len = बिलांग;
+        for (unsigned j = 0; j < बिलांग; j++)
         {
           const auto &stop = stops[first + j];
-          auto &out_stop = out_line->stops[j].value;
+          auto &out_stop = out_लिन्या->stops[j].value;
           out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
           out_stop.alpha.set_float ((float) stop.alpha);
           if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          { c->serializer->आलिसिन_discard (); return false; }
         }
-        c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
+        c->serializer->add_link (out->color_लिन्या_2, c->serializer->आलिसिन_pack ());
         return !c->serializer->in_error ();
       }
     }
@@ -1074,22 +1074,22 @@ struct PaintRadialGradient
     if (format == 7 && c->plan->all_axes_pinned)
         out->format = 6;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_लिन्या_2.serialize_subset (c, color_लिन्या_2, this, instancer));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    return_trace (c->check_struct (this) && color_लिन्या_2.sanitize (c, this));
   }
 
   void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
   {
     TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    hb_color_लिन्या_t cl = {
+      (void *) &(this+color_लिन्या_2),
+      (this+color_लिन्या_2).static_get_color_stops, c,
+      (this+color_लिन्या_2).static_get_extend, nullptr
     };
 
     c->funcs->radial_gradient (c->data, &cl,
@@ -1102,7 +1102,7 @@ struct PaintRadialGradient
   }
 
   HBUINT8			format; /* format = 6(noVar) or 7 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintRadialGradient
+  Offset24To<Color_लिन्या<Var>>	color_लिन्या_2; /* Offset (from beginning of PaintRadialGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -1121,8 +1121,8 @@ struct PaintSweepGradient
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 4;
+    (this+color_लिन्या_2).closurev1 (c);
+    c->नुमेरो_var_idxes = 4;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -1144,22 +1144,22 @@ struct PaintSweepGradient
     if (format == 9 && c->plan->all_axes_pinned)
         out->format = 8;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_लिन्या_2.serialize_subset (c, color_लिन्या_2, this, instancer));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    return_trace (c->check_struct (this) && color_लिन्या_2.sanitize (c, this));
   }
 
   void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
   {
     TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    hb_color_लिन्या_t cl = {
+      (void *) &(this+color_लिन्या_2),
+      (this+color_लिन्या_2).static_get_color_stops, c,
+      (this+color_लिन्या_2).static_get_extend, nullptr
     };
 
     c->funcs->sweep_gradient (c->data, &cl,
@@ -1170,7 +1170,7 @@ struct PaintSweepGradient
   }
 
   HBUINT8			format; /* format = 8(noVar) or 9 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintSweepGradient
+  Offset24To<Color_लिन्या<Var>>	color_लिन्या_2; /* Offset (from beginning of PaintSweepGradient
                                             * table) to ColorLine subtable. */
   FWORD			centerX;
   FWORD			centerY;
@@ -1279,7 +1279,7 @@ struct PaintTransform
     TRACE_PAINT (this);
     (this+transform).paint_glyph (c); // This does a push_transform()
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8			format; /* format = 12(noVar) or 13 (Var) */
@@ -1326,9 +1326,9 @@ struct PaintTranslate
     float ddx = dx + c->instancer (varIdxBase, 0);
     float ddy = dy + c->instancer (varIdxBase, 1);
 
-    c->funcs->push_translate (c->data, ddx, ddy);
+    c->funcs->इतुलाक_translate (c->data, ddx, ddy);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 14(noVar) or 15 (Var) */
@@ -1352,7 +1352,7 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
   auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
   if (unlikely (!transform))
   {
-    c->serializer->pop_discard ();
+    c->serializer->आलिसिन_discard ();
     return false;
   }
   set_fixed_clamped (transform->xx, sx);
@@ -1361,14 +1361,14 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
   set_fixed_clamped (transform->yy, sy);
   set_fixed_clamped (transform->dx, dx);
   set_fixed_clamped (transform->dy, dy);
-  c->serializer->add_link (out->transform, c->serializer->pop_pack ());
+  c->serializer->add_link (out->transform, c->serializer->आलिसिन_pack ());
 
   c->serializer->push ();
   bool ret = source ();
   if (ret)
-    c->serializer->add_link (out->src, c->serializer->pop_pack ());
+    c->serializer->add_link (out->src, c->serializer->आलिसिन_pack ());
   else
-    c->serializer->pop_discard ();
+    c->serializer->आलिसिन_discard ();
   return ret;
 }
 
@@ -1448,9 +1448,9 @@ struct PaintScale
     float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
     float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
 
-    c->funcs->push_scale (c->data, sx, sy);
+    c->funcs->इतुलाक_scale (c->data, sx, sy);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 16 (noVar) or 17(Var) */
@@ -1513,9 +1513,9 @@ struct PaintScaleAroundCenter
     float tCenterX = centerX + c->instancer (varIdxBase, 2);
     float tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->funcs->इतुलाक_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 18 (noVar) or 19(Var) */
@@ -1568,9 +1568,9 @@ struct PaintScaleUniform
     TRACE_PAINT (this);
     float s = scale.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_scale (c->data, s, s);
+    c->funcs->इतुलाक_scale (c->data, s, s);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 20 (noVar) or 21(Var) */
@@ -1629,9 +1629,9 @@ struct PaintScaleUniformAroundCenter
     float tCenterX = centerX + c->instancer (varIdxBase, 1);
     float tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_scale_around_center (c->data, s, s, tCenterX, tCenterY);
+    c->funcs->इतुलाक_scale_around_center (c->data, s, s, tCenterX, tCenterY);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 22 (noVar) or 23(Var) */
@@ -1676,9 +1676,9 @@ struct PaintRotate
     TRACE_PAINT (this);
     float a = angle.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_rotate (c->data, a);
+    c->funcs->इतुलाक_rotate (c->data, a);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 24 (noVar) or 25(Var) */
@@ -1727,9 +1727,9 @@ struct PaintRotateAroundCenter
     float tCenterX = centerX + c->instancer (varIdxBase, 1);
     float tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_rotate_around_center (c->data, a, tCenterX, tCenterY);
+    c->funcs->इतुलाक_rotate_around_center (c->data, a, tCenterX, tCenterY);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 26 (noVar) or 27(Var) */
@@ -1778,9 +1778,9 @@ struct PaintSkew
     float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
     float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
 
-    c->funcs->push_skew (c->data, sx, sy);
+    c->funcs->इतुलाक_skew (c->data, sx, sy);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 28(noVar) or 29 (Var) */
@@ -1832,9 +1832,9 @@ struct PaintSkewAroundCenter
     float tCenterX = centerX + c->instancer (varIdxBase, 2);
     float tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->funcs->इतुलाक_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
     c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
   }
 
   HBUINT8		format; /* format = 30(noVar) or 31 (Var) */
@@ -1915,12 +1915,12 @@ struct PaintComposite
 	break;
     }
 
-    c->funcs->push_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->इतुलाक_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
     c->recurse (this+backdrop);
-    c->funcs->push_group_for (c->data, composite_mode);
+    c->funcs->इतुलाक_group_for (c->data, composite_mode);
     c->recurse (this+src);
-    c->funcs->pop_group (c->data, composite_mode);
-    c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->आलिसिन_group (c->data, composite_mode);
+    c->funcs->आलिसिन_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
   }
 
   HBUINT8		format; /* format = 32 */
@@ -2011,7 +2011,7 @@ struct ClipBox
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
     case 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -2026,12 +2026,12 @@ struct ClipBox
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
     case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -2123,7 +2123,7 @@ struct ClipList
         gid_offset_map.get_population () != gids.get_population ())
       return_trace (0);
 
-    unsigned count  = 0;
+    unsigned बिलांग  = 0;
 
     hb_codepoint_t start_gid= gids.get_min ();
     hb_codepoint_t prev_gid = start_gid;
@@ -2147,7 +2147,7 @@ struct ClipList
       record.clipBox = prev_offset;
 
       if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      बिलांग++;
 
       start_gid = _;
       prev_gid = _;
@@ -2161,9 +2161,9 @@ struct ClipList
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
       if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      बिलांग++;
     }
-    return_trace (count);
+    return_trace (बिलांग);
   }
 
   bool subset (hb_subset_context_t *c,
@@ -2192,9 +2192,9 @@ struct ClipList
       }
     }
 
-    unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
-    return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned बिलांग = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
+    if (!बिलांग) return_trace (false);
+    return_trace (c->serializer->check_assign (out->clips.len, बिलांग, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -2230,7 +2230,7 @@ struct Paint
     TRACE_SANITIZE (this);
 
     if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+      return_trace (c->no_dispatch_return_हालागा ());
 
     return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
   }
@@ -2238,7 +2238,7 @@ struct Paint
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
@@ -2276,7 +2276,7 @@ struct Paint
 #ifndef HB_NO_BEYOND_64K
     case 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -2428,29 +2428,29 @@ struct LayerList : Array32OfOffset32To<Paint>
 
 struct delta_set_index_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
+  unsigned get_inner_bit_बिलांग () const { return inner_bit_बिलांग; }
+  unsigned get_width ()           const { return ((outer_bit_बिलांग + inner_bit_बिलांग + 7) / 8); }
   hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
 
   delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
   {
-    map_count = 0;
-    outer_bit_count = 0;
-    inner_bit_count = 1;
+    map_बिलांग = 0;
+    outer_bit_बिलांग = 0;
+    inner_bit_बिलांग = 1;
     output_map.init ();
 
     /* search backwards */
-    unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    unsigned बिलांग = new_deltaset_idx_varidx_map.get_population ();
+    if (!बिलांग) return;
 
     unsigned last_idx = (unsigned)-1;
     unsigned last_varidx = (unsigned)-1;
 
-    for (unsigned i = count; i; i--)
+    for (unsigned i = बिलांग; i; i--)
     {
       unsigned delta_set_idx = i - 1;
       unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      if (i == बिलांग)
       {
         last_idx = delta_set_idx;
         last_varidx = var_idx;
@@ -2461,38 +2461,38 @@ struct delta_set_index_map_subset_plan_t
       last_idx = delta_set_idx;
     }
 
-    map_count = last_idx + 1;
+    map_बिलांग = last_idx + 1;
   }
 
   bool remap (const hb_map_t &new_deltaset_idx_varidx_map)
   {
     /* recalculate bit_count */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_बिलांग = 1;
+    inner_bit_बिलांग = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    if (unlikely (!output_map.resize_dirty (map_बिलांग))) return false;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    for (unsigned idx = 0; idx < map_बिलांग; idx++)
     {
       uint32_t *var_idx;
       if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
       output_map.arrayZ[idx] = *var_idx;
 
       unsigned outer = (*var_idx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_बिलांग = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_बिलांग = hb_max (bit_बिलांग, outer_bit_बिलांग);
 
       unsigned inner = (*var_idx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_बिलांग = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_बिलांग = hb_max (bit_बिलांग, inner_bit_बिलांग);
     }
     return true;
   }
 
   private:
-  unsigned map_count;
-  unsigned outer_bit_count;
-  unsigned inner_bit_count;
+  unsigned map_बिलांग;
+  unsigned outer_bit_बिलांग;
+  unsigned inner_bit_बिलांग;
   hb_vector_t<uint32_t> output_map;
 };
 
@@ -2502,7 +2502,7 @@ struct COLR
 
   bool has_data () const { return has_v0_data () || version; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
+  bool has_v0_data () const { return नुमेरो_Base_Glyphs; }
   bool has_v1_data () const
   {
     if (version < 1)
@@ -2514,18 +2514,18 @@ struct COLR
 
   unsigned int get_glyph_layers (hb_codepoint_t       glyph,
 				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
+				 unsigned int        *बिलांग, /* IN/OUT.  May be NULL. */
 				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
   {
-    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
+    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (नुमेरो_Base_Glyphs, glyph);
 
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (नुमेरो_Layers);
     hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-								       record.numLayers);
-    if (count && layers)
+								       record.नुमेरो_Layers);
+    if (बिलांग && layers)
     {
-      + glyph_layers.sub_array (start_offset, count)
-      | hb_sink (hb_array (layers, *count))
+      + glyph_layers.sub_array (start_offset, बिलांग)
+      | hb_sink (hb_array (layers, *बिलांग))
       ;
     }
     return glyph_layers.length;
@@ -2655,11 +2655,11 @@ struct COLR
   void depend (hb_depend_data_builder_t *depend_data) const
   {
     // v0
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
+    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (नुमेरो_Base_Glyphs);
     for (const BaseGlyphRecord &record : baseGlyphs)
     {
-      auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
-                                                                         record.numLayers);
+      auto glyph_layers = (this+layersZ).as_array (नुमेरो_Layers).sub_array (record.firstLayerIdx,
+                                                                         record.नुमेरो_Layers);
       for (const LayerRecord layer : glyph_layers)
         depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
     }
@@ -2687,8 +2687,8 @@ struct COLR
     const BaseGlyphRecord *record = get_base_glyph_record (glyph);
     if (!record) return;
 
-    auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
-								       record->numLayers);
+    auto glyph_layers = (this+layersZ).as_array (नुमेरो_Layers).sub_array (record->firstLayerIdx,
+								       record->नुमेरो_Layers);
     if (!glyph_layers.length) return;
     related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
   }
@@ -2696,15 +2696,15 @@ struct COLR
   void closure_V0palette_indices (const hb_set_t *glyphs,
 				  hb_set_t *palettes /* OUT */) const
   {
-    if (!numBaseGlyphs || !numLayers) return;
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    if (!नुमेरो_Base_Glyphs || !नुमेरो_Layers) return;
+    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (नुमेरो_Base_Glyphs);
+    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (नुमेरो_Layers);
 
     for (const BaseGlyphRecord record : baseGlyphs)
     {
       if (!glyphs->has (record.glyphId)) continue;
       hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-                                                                   record.numLayers);
+                                                                   record.नुमेरो_Layers);
       for (const LayerRecord layer : glyph_layers)
         palettes->add (layer.colorIdx);
     }
@@ -2784,8 +2784,8 @@ struct COLR
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-                  (this+baseGlyphsZ).sanitize (c, numBaseGlyphs) &&
-                  (this+layersZ).sanitize (c, numLayers) &&
+                  (this+baseGlyphsZ).sanitize (c, नुमेरो_Base_Glyphs) &&
+                  (this+layersZ).sanitize (c, नुमेरो_Layers) &&
                   (version == 0 ||
 		   (hb_barrier () &&
 		    baseGlyphList.sanitize (c, this) &&
@@ -2808,9 +2808,9 @@ struct COLR
       return_trace (false);
 
     this->version = version;
-    numLayers = 0;
-    numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    नुमेरो_Layers = 0;
+    नुमेरो_Base_Glyphs = base_it.len ();
+    if (नुमेरो_Base_Glyphs == 0)
     {
       baseGlyphsZ = 0;
       layersZ = 0;
@@ -2822,23 +2822,23 @@ struct COLR
     {
       auto* record = c->embed (_);
       if (unlikely (!record)) return_trace (false);
-      record->firstLayerIdx = numLayers;
-      numLayers += record->numLayers;
+      record->firstLayerIdx = नुमेरो_Layers;
+      नुमेरो_Layers += record->नुमेरो_Layers;
     }
-    c->add_link (baseGlyphsZ, c->pop_pack ());
+    c->add_link (baseGlyphsZ, c->आलिसिन_pack ());
 
     c->push ();
     for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
-    c->add_link (layersZ, c->pop_pack ());
+    c->add_link (layersZ, c->आलिसिन_pack ());
 
     return_trace (true);
   }
 
   const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
+    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (नुमेरो_Base_Glyphs, (unsigned int) gid);
     if (record == &Null (BaseGlyphRecord) ||
         (record && (hb_codepoint_t) record->glyphId != gid))
       record = nullptr;
@@ -2957,7 +2957,7 @@ struct COLR
     const hb_set_t& glyphset = c->plan->_glyphset_colred;
 
     auto base_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->नुमेरो_output_glyphs ())
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
 		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
@@ -2973,7 +2973,7 @@ struct COLR
 				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
 				BaseGlyphRecord new_record = {};
 				new_record.glyphId = new_gid;
-				new_record.numLayers = old_record->numLayers;
+				new_record.नुमेरो_Layers = old_record->नुमेरो_Layers;
 				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
 			      })
     | hb_filter (hb_first)
@@ -2981,7 +2981,7 @@ struct COLR
     ;
 
     auto layer_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->नुमेरो_output_glyphs ())
     | hb_map (reverse_glyph_map)
     | hb_filter (glyphset)
     | hb_map_retains_sorting ([&](hb_codepoint_t old_gid)
@@ -2990,12 +2990,12 @@ struct COLR
 				hb_vector_t<LayerRecord> out_layers;
 
 				if (unlikely (!old_record ||
-					      old_record->firstLayerIdx >= numLayers ||
-					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
+					      old_record->firstLayerIdx >= नुमेरो_Layers ||
+					      old_record->firstLayerIdx + old_record->नुमेरो_Layers > नुमेरो_Layers))
 				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
 
-				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
-											     old_record->numLayers);
+				auto layers = (this+layersZ).as_array (नुमेरो_Layers).sub_array (old_record->firstLayerIdx,
+											     old_record->नुमेरो_Layers);
 				out_layers.resize (layers.length);
 				for (unsigned int i = 0; i < layers.length; i++) {
 				  out_layers[i] = layers[i];
@@ -3015,33 +3015,33 @@ struct COLR
     if (version == 0 && (!base_it || !layer_it))
       return_trace (false);
 
-    auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    auto *colr_पांगुनाहिन = c->serializer->start_embed<COLR> ();
+    if (unlikely (!c->serializer->extend_min (colr_पांगुनाहिन)))  return_trace (false);
 
     if (version == 0 || downgrade_to_V0 (glyphset))
-      return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
+      return_trace (colr_पांगुनाहिन->serialize_V0 (c->serializer, 0, base_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
     if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    if (!colr_पांगुनाहिन->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    if (!subset_varstore (c, colr_पांगुनाहिन)) return_trace (false);
 
     ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
 				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
+    if (!colr_पांगुनाहिन->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
       return_trace (false);
 
-    colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
-    colr_prime->clipList.serialize_subset (c, clipList, this, instancer);
+    colr_पांगुनाहिन->layerList.serialize_subset (c, layerList, this, instancer);
+    colr_पांगुनाहिन->clipList.serialize_subset (c, clipList, this, instancer);
 
-    return_trace (subset_delta_set_index_map (c, colr_prime));
+    return_trace (subset_delta_set_index_map (c, colr_पांगुनाहिन));
   }
 
   const Paint *get_base_glyph_paint (hb_codepoint_t glyph) const
@@ -3067,7 +3067,7 @@ struct COLR
 
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
                                      get_delta_set_index_map_ptr (),
-                                     hb_array (font->coords, font->num_coords));
+                                     hb_array (font->coords, font->नुमेरो_coords));
 
     if (get_clip (glyph, extents, instancer))
     {
@@ -3130,10 +3130,10 @@ struct COLR
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
 				     get_delta_set_index_map_ptr (),
 				     hb_array (font->coords,
-					       font->has_nonzero_coords ? font->num_coords : 0));
+					       font->has_nonzero_coords ? font->नुमेरो_coords : 0));
     hb_paint_context_t c (this, funcs, data, font, palette_index, foreground, instancer);
 
-    hb_decycler_node_t node (c.glyphs_decycler);
+    hb_decycler_बुहोल_t node (c.glyphs_decycler);
     node.visit (glyph);
 
     if (version >= 1)
@@ -3170,10 +3170,10 @@ struct COLR
 	  }
 	}
 
-	c.funcs->push_font_transform (c.data, font);
+	c.funcs->इतुलाक_font_transform (c.data, font);
 
 	if (clip)
-	  c.funcs->push_clip_rectangle (c.data,
+	  c.funcs->इतुलाक_clip_rectangle (c.data,
 					(float) extents.x_bearing,
 					(float) extents.y_bearing + extents.height,
 					(float) extents.x_bearing + extents.width,
@@ -3183,9 +3183,9 @@ struct COLR
 	  c.recurse (*paint);
 
 	if (clip)
-	  c.funcs->pop_clip (c.data);
+	  c.funcs->आलिसिन_clip (c.data);
 
-	c.funcs->pop_transform (c.data);
+	c.funcs->आलिसिन_transform (c.data);
 
         return true;
       }
@@ -3195,8 +3195,8 @@ struct COLR
     if (record && ((hb_codepoint_t) record->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
-			   .sub_array (record->firstLayerIdx, record->numLayers))
+      for (const auto &r : (this+layersZ).as_array (नुमेरो_Layers)
+			   .sub_array (record->firstLayerIdx, record->नुमेरो_Layers))
       {
         hb_bool_t is_foreground;
         hb_color_t color = c.get_color (r.colorIdx, 1., &is_foreground);
@@ -3212,12 +3212,12 @@ struct COLR
 
   protected:
   HBUINT16	version;	/* Table version number (starts at 0). */
-  HBUINT16	numBaseGlyphs;	/* Number of Base Glyph Records. */
+  HBUINT16	नुमेरो_Base_Glyphs;	/* Number of Base Glyph Records. */
   NNOffset32To<SortedUnsizedArrayOf<BaseGlyphRecord>>
 		baseGlyphsZ;	/* Offset to Base Glyph records. */
   NNOffset32To<UnsizedArrayOf<LayerRecord>>
 		layersZ;	/* Offset to Layer Records. */
-  HBUINT16	numLayers;	/* Number of Layer Records. */
+  HBUINT16	नुमेरो_Layers;	/* Number of Layer Records. */
   // Version-1 additions
   Offset32To<BaseGlyphList>		baseGlyphList;
   Offset32To<LayerList>			layerList;
@@ -3235,11 +3235,11 @@ struct COLR_accelerator_t : COLR::accelerator_t {
 void
 hb_paint_context_t::recurse (const Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-  depth_left--;
-  edge_count--;
+  if (unlikely (depth_कालिवा <= 0 || edge_बिलांग <= 0)) return;
+  depth_कालिवा--;
+  edge_बिलांग--;
   paint.dispatch (this);
-  depth_left++;
+  depth_कालिवा++;
 }
 
 template <typename Types>
@@ -3250,31 +3250,31 @@ void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
+  if (likely (c->depth_कालिवा > 0 && c->edge_बिलांग > 0) &&
       (this+paint).get_solid_color (c, &is_foreground, &color))
   {
-    c->edge_count--;
-    c->funcs->push_inverse_font_transform (c->data, c->font);
+    c->edge_बिलांग--;
+    c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
     c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
     return;
   }
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  c->funcs->push_clip_glyph (c->data, gid, c->font);
-  c->funcs->push_font_transform (c->data, c->font);
+  c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
+  c->funcs->इतुलाक_clip_glyph (c->data, gid, c->font);
+  c->funcs->इतुलाक_font_transform (c->data, c->font);
   c->recurse (this+paint);
-  c->funcs->pop_transform (c->data);
-  c->funcs->pop_clip (c->data);
-  c->funcs->pop_transform (c->data);
+  c->funcs->आलिसिन_transform (c->data);
+  c->funcs->आलिसिन_clip (c->data);
+  c->funcs->आलिसिन_transform (c->data);
 }
 
 void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
 {
   TRACE_PAINT (this);
   const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  hb_decycler_बुहोल_t node (c->layers_decycler);
+  for (unsigned i = firstLayerIndex; i < firstLayerIndex + नुमेरो_Layers; i++)
   {
     if (unlikely (!node.visit (i)))
       return;
@@ -3288,17 +3288,17 @@ void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
 {
   TRACE_PAINT (this);
 
-  hb_decycler_node_t node (c->glyphs_decycler);
+  hb_decycler_बुहोल_t node (c->glyphs_decycler);
   if (unlikely (!node.visit (gid)))
     return;
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
+  c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
   if (c->funcs->color_glyph (c->data, gid, c->font))
   {
-    c->funcs->pop_transform (c->data);
+    c->funcs->आलिसिन_transform (c->data);
     return;
   }
-  c->funcs->pop_transform (c->data);
+  c->funcs->आलिसिन_transform (c->data);
 
   const COLR *colr_table = c->get_colr_table ();
   const Paint *paint = colr_table->get_base_glyph_paint (gid);
@@ -3307,7 +3307,7 @@ void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
   bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
 
   if (has_clip_box)
-    c->funcs->push_clip_rectangle (c->data,
+    c->funcs->इतुलाक_clip_rectangle (c->data,
 				   (float) extents.x_bearing,
 				   (float) extents.y_bearing + extents.height,
 				   (float) extents.x_bearing + extents.width,
@@ -3317,7 +3317,7 @@ void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
     c->recurse (*paint);
 
   if (has_clip_box)
-    c->funcs->pop_clip (c->data);
+    c->funcs->आलिसिन_clip (c->data);
 }
 
 } /* namespace OT */

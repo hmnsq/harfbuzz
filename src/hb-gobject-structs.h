@@ -111,12 +111,12 @@ hb_gobject_color_stop_get_type (void);
 #define HB_GOBJECT_TYPE_COLOR_STOP (hb_gobject_color_stop_get_type ())
 
 HB_EXTERN GType
-hb_gobject_color_line_get_type (void);
-#define HB_GOBJECT_TYPE_COLOR_LINE (hb_gobject_color_line_get_type ())
+hb_gobject_color_लिन्या_get_type (void);
+#define HB_GOBJECT_TYPE_COLOR_लिन्या (hb_gobject_color_लिन्या_get_type ())
 
 HB_EXTERN GType
-hb_gobject_user_data_key_get_type (void);
-#define HB_GOBJECT_TYPE_USER_DATA_KEY (hb_gobject_user_data_key_get_type ())
+hb_gobject_user_data_सुसि_get_type (void);
+#define HB_GOBJECT_TYPE_USER_DATA_सुसि (hb_gobject_user_data_सुसि_get_type ())
 
 HB_EXTERN GType
 hb_gobject_ot_var_axis_info_get_type (void);

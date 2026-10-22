@@ -89,9 +89,9 @@ hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
 			     const char *utf8,
 			     int utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
+			     unsigned int *नुमेरो_glyphs,
 			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
+			     unsigned int *नुमेरो_clusters,
 			     cairo_text_cluster_flags_t *cluster_flags);
 
 HB_END_DECLS

@@ -73,11 +73,11 @@ struct shared_ptr
   static T* get_empty() { return v::get_empty (); }
   T* reference() { return v::reference (p); }
   void destroy() { v::destroy (p); }
-  void set_user_data (hb_user_data_key_t *key,
+  void set_user_data (hb_user_data_सुसि_t *key,
 		      void *value,
 		      hb_destroy_func_t destroy,
 		      hb_bool_t replace) { v::set_user_data (p, key, value, destroy, replace); } 
-  void * get_user_data (hb_user_data_key_t *key) { return v::get_user_data (p, key); }
+  void * get_user_data (hb_user_data_सुसि_t *key) { return v::get_user_data (p, key); }
 
   private:
   T *p;
@@ -123,12 +123,12 @@ template <typename T,
 	  T * (*_reference) (T *),
 	  void (*_destroy) (T *),
 	  hb_bool_t (*_set_user_data) (T *,
-				       hb_user_data_key_t *,
+				       hb_user_data_सुसि_t *,
 				       void *,
 				       hb_destroy_func_t,
 				       hb_bool_t),
 	  void * (*_get_user_data) (const T *,
-				    hb_user_data_key_t *)>
+				    hb_user_data_सुसि_t *)>
 struct vtable_t
 {
   static constexpr auto get_empty = _get_empty;
@@ -163,7 +163,7 @@ HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_empty);
 
 #ifdef HB_SUBSET_H
 
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_पासोक, nullptr);
 HB_DEFINE_VTABLE (subset_plan, nullptr);
 
 #endif

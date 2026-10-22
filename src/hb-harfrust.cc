@@ -98,7 +98,7 @@ _hb_harfrust_shape_plan_create_rs (const void *font_data,
 				   hb_language_t language,
 				   hb_direction_t direction,
 				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   unsigned int        नुमेरो_features);
 
 extern "C" void
 _hb_harfrust_shape_plan_destroy_rs (void *data);
@@ -119,21 +119,21 @@ _hb_harfrust_shape_rs (const void         *font_data,
 		       const hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
 		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       unsigned int        नुमेरो_features);
 
-static hb_user_data_key_t hb_buffer_key = {0};
+static hb_user_data_सुसि_t hb_buffer_सुसि = {0};
 
 hb_bool_t
 _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    unsigned int        नुमेरो_features)
 {
   const hb_harfrust_font_data_t *font_data = font->data.harfrust;
 
 retry_buffer:
-  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
+  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_सुसि);
   if (unlikely (!hr_buffer))
   {
     hr_buffer = _hb_harfrust_buffer_create_rs ();
@@ -141,7 +141,7 @@ retry_buffer:
       return false;
 
     if (!hb_buffer_set_user_data (buffer,
-				  &hb_buffer_key,
+				  &hb_buffer_सुसि,
 				  hr_buffer,
 				  _hb_harfrust_buffer_destroy_rs,
 				  false))
@@ -161,7 +161,7 @@ retry_shape_plan:
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
-						       features, num_features);
+						       features, नुमेरो_features);
     if (hr_shape_plan &&
 	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
     {
@@ -180,7 +180,7 @@ retry_shape_plan:
 				buffer->context[1],
 				buffer->context_len[1],
 				features,
-				num_features);
+				नुमेरो_features);
 }
 
 

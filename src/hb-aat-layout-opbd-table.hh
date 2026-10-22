@@ -45,9 +45,9 @@ struct OpticalBounds
     return_trace (c->check_struct (this));
   }
 
-  FWORD		leftSide;
-  FWORD		topSide;
-  FWORD		rightSide;
+  FWORD		कालिवा_Side;
+  FWORD		इताअस_Side;
+  FWORD		कानान_Side;
   FWORD		bottomSide;
   public:
   DEFINE_SIZE_STATIC (8);
@@ -58,15 +58,15 @@ struct opbdFormat0
   bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
 		   hb_glyph_extents_t *extents, const void *base) const
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
+    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_हालागा (glyph_id, font->face->get_नुमेरो_glyphs ());
     if (!bounds_offset) return false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
     if (extents)
       *extents = {
-	font->em_scale_x (bounds.leftSide),
-	font->em_scale_y (bounds.topSide),
-	font->em_scale_x (bounds.rightSide),
+	font->em_scale_x (bounds.कालिवा_Side),
+	font->em_scale_y (bounds.इताअस_Side),
+	font->em_scale_x (bounds.कानान_Side),
 	font->em_scale_y (bounds.bottomSide)
       };
     return true;
@@ -92,18 +92,18 @@ struct opbdFormat1
   bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
 		   hb_glyph_extents_t *extents, const void *base) const
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
+    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_हालागा (glyph_id, font->face->get_नुमेरो_glyphs ());
     if (!bounds_offset) return false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
-    hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
-	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
+    hb_position_t left = 0, इताअस_2 = 0, कानान = 0, bottom = 0, ignore;
+    if (font->get_glyph_contour_point (glyph_id, bounds.कालिवा_Side, &left, &ignore) ||
+	font->get_glyph_contour_point (glyph_id, bounds.इताअस_Side, &ignore, &इताअस_2) ||
+	font->get_glyph_contour_point (glyph_id, bounds.कानान_Side, &कानान, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
       if (extents)
-	*extents = {left, top, right, bottom};
+	*extents = {left, इताअस_2, कानान, bottom};
       return true;
     }
     return false;

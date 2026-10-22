@@ -151,7 +151,7 @@ main (int argc, char **argv)
   {
     hb_vector_t<std::string> v {"one"};
     v.set_error ();
-    hb_always_assert (!v.push_or_fail (std::move (v[0])));
+    hb_always_assert (!v.इतुलाक_or_fail (std::move (v[0])));
     hb_always_assert (v.length == 1 && v[0] == "one");
   }
 

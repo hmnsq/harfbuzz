@@ -31,7 +31,7 @@
 
 
 HB_INTERNAL bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+hb_syllabic_इसिंगित_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
 				   unsigned int broken_syllable_type,
 				   unsigned int dottedcircle_category,

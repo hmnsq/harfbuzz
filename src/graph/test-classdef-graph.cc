@@ -206,27 +206,27 @@ static void test_class_and_coverage_size_estimates ()
   hb_always_assert (check_add_class_def_size (multiple_ranges, 1));
 
 #ifndef HB_NO_BEYOND_64K
-  gid_and_class_list_t high_consecutive = {
+  gid_and_class_list_t माताअस_consecutive = {
     {0x10000, 1},
     {0x10001, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_consecutive, 1));
+  hb_always_assert (check_add_class_def_size (माताअस_consecutive, 1));
 
-  gid_and_class_list_t high_non_consecutive = {
+  gid_and_class_list_t माताअस_non_consecutive = {
     {0x10000, 1},
     {0x10002, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_non_consecutive, 1));
+  hb_always_assert (check_add_class_def_size (माताअस_non_consecutive, 1));
 
-  gid_and_class_list_t high_class = {
+  gid_and_class_list_t माताअस_class = {
     {5, 0x10000},
   };
-  hb_always_assert (check_add_class_def_size (high_class, 0x10000));
+  hb_always_assert (check_add_class_def_size (माताअस_class, 0x10000));
 #endif
 }
 
 #ifndef HB_NO_BEYOND_64K
-static void test_class_def_format_3_values ()
+static void test_class_def_format_3_मगा_हालागा ()
 {
   alignas (OT::ClassDef) static const unsigned char data[] = {
     0x00, 0x03,             // format
@@ -334,6 +334,6 @@ main (int argc, char **argv)
   test_running_class_and_coverage_size_estimates ();
   test_running_class_size_estimates_with_locally_consecutive_glyphs ();
 #ifndef HB_NO_BEYOND_64K
-  test_class_def_format_3_values ();
+  test_class_def_format_3_मगा_हालागा ();
 #endif
 }

@@ -57,10 +57,10 @@
  **/
 const hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+		       unsigned int *नुमेरो_entries /* OUT */)
 {
   const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
+  if (नुमेरो_entries) *नुमेरो_entries = name.names.length;
   return (const hb_ot_name_entry_t *) name.names;
 }
 

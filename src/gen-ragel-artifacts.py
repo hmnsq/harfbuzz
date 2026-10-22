@@ -13,11 +13,11 @@ if len (sys.argv) < 4:
 
 OUTPUT = sys.argv[2]
 CURRENT_SOURCE_DIR = sys.argv[3]
-INPUT = sys.argv[4]
+पासोक_2 = sys.argv[4]
 
 outdir = os.path.dirname (OUTPUT)
-shutil.copy (INPUT, outdir)
-rl = os.path.basename (INPUT)
+shutil.copy (पासोक_2, outdir)
+rl = os.path.basename (पासोक_2)
 hh = rl.replace ('.rl', '.hh')
 ret = subprocess.Popen (ragel.split() + ['-e', '-F1', '-o', hh, rl], cwd=outdir).wait ()
 if ret:

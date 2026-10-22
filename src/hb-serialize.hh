@@ -78,12 +78,12 @@ struct hb_serialize_context_t
       head = o.head;
       tail = o.tail;
       next = nullptr;
-      real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      real_links.alloc_exact (o.नुमेरो_real_links);
+      for (unsigned i = 0 ; i < o.नुमेरो_real_links; i++)
         real_links.push (o.real_links[i]);
 
-      virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      virtual_links.alloc_exact (o.नुमेरो_virtual_links);
+      for (unsigned i = 0; i < o.नुमेरो_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
@@ -185,8 +185,8 @@ struct hb_serialize_context_t
     char *head;
     char *tail;
     object_t *current; // Just for sanity check
-    unsigned num_real_links;
-    unsigned num_virtual_links;
+    unsigned नुमेरो_real_links;
+    unsigned नुमेरो_virtual_links;
     hb_serialize_error_t errors;
   };
 
@@ -289,7 +289,7 @@ struct hb_serialize_context_t
   __attribute__((returns_nonnull))
   Type *start_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, +1,
+    DEBUG_मेनसाहे_LEVEL (SERIALIZE, this->start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
 		     this->start, this->end,
 		     (unsigned long) (this->end - this->start));
@@ -299,7 +299,7 @@ struct hb_serialize_context_t
   }
   void end_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, -1,
+    DEBUG_मेनसाहे_LEVEL (SERIALIZE, this->start, 0, -1,
 		     "end [%p..%p] serialized %u bytes; %s",
 		     this->start, this->end,
 		     (unsigned) (this->head - this->start),
@@ -323,7 +323,7 @@ struct hb_serialize_context_t
     if (packed.length <= 1)
       return;
 
-    pop_pack (false);
+    आलिसिन_pack (false);
 
     resolve_links ();
   }
@@ -346,7 +346,7 @@ struct hb_serialize_context_t
     }
     return start_embed<Type> ();
   }
-  void pop_discard ()
+  void आलिसिन_discard ()
   {
     object_t *obj = current;
     if (unlikely (!obj)) return;
@@ -365,7 +365,7 @@ struct hb_serialize_context_t
    * so not worth an attempt, or a contiguous table is serialized as
    * multiple consecutive objects in the reverse order so can't be shared.
    */
-  objidx_t pop_pack (bool share=true)
+  objidx_t आलिसिन_pack (bool share=true)
   {
     object_t *obj = current;
     if (unlikely (!obj)) return 0;
@@ -439,8 +439,8 @@ struct hb_serialize_context_t
     assert (snap.current == current);
     if (current)
     {
-      current->real_links.shrink (snap.num_real_links);
-      current->virtual_links.shrink (snap.num_virtual_links);
+      current->real_links.shrink (snap.नुमेरो_real_links);
+      current->virtual_links.shrink (snap.नुमेरो_virtual_links);
     }
     errors = snap.errors;
     revert (snap.head, snap.tail);
@@ -468,7 +468,7 @@ struct hb_serialize_context_t
       assert (!obj->next);
       obj->fini ();
       object_pool.release (obj);
-      packed.pop ();
+      packed.आलिसिन ();
     }
     if (packed.length > 1)
       assert (packed.tail ()->head == tail);

@@ -136,9 +136,9 @@ struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
 };
 
 #ifndef HB_NO_BEYOND_64K
-#define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
+#define HB_DUAL_GET(accel, पाहायाग) ((accel).upper.has_data () ? (accel).upper.पाहायाग : (accel).lower.पाहायाग)
 #else
-#define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
+#define HB_DUAL_GET(accel, पाहायाग) ((accel).lower.पाहायाग)
 #endif
 
 

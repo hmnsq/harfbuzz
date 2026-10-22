@@ -63,9 +63,9 @@ inline bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply
   c->set_lookup_index (lookup_index);
   c->set_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
+  uint32_t सालानसान_match_positions[8];
   hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
+  saved_match_positions.set_storage (सालानसान_match_positions);
   hb_swap (c->match_positions, saved_match_positions);
 
   bool ret = false;

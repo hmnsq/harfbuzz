@@ -93,14 +93,14 @@ struct LigatureSet
   {
     TRACE_APPLY (this);
 
-    unsigned int num_ligs = ligature.len;
+    unsigned int नुमेरो_ligs = ligature.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
+    if (HB_OPTIMIZE_SIZE_VAL || नुमेरो_ligs <= 1)
 #endif
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      for (unsigned int i = 0; i < नुमेरो_ligs; i++)
       {
 	const auto &lig = this+ligature.arrayZ[i];
 	if (lig.apply (c)) return_trace (true);
@@ -141,7 +141,7 @@ struct LigatureSet
       return_trace (false);
     }
     bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    for (unsigned int i = 0; i < नुमेरो_ligs; i++)
     {
       const auto &lig = this+ligature.arrayZ[i];
       if (unlikely (lig.component.lenP1 <= 1) ||
@@ -166,7 +166,7 @@ struct LigatureSet
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<const unsigned int> component_बिलांग_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
@@ -174,12 +174,12 @@ struct LigatureSet
     if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
     for (unsigned int i = 0; i < ligatures.length; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
+      unsigned int component_बिलांग = (unsigned) hb_max ((int) component_बिलांग_list[i] - 1, 0);
       if (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
-                                                      component_list.sub_array (0, component_count))))
+                                                      component_list.sub_array (0, component_बिलांग))))
         return_trace (false);
-      component_list += component_count;
+      component_list += component_बिलांग;
     }
     return_trace (true);
   }

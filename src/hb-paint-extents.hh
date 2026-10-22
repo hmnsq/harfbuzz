@@ -70,19 +70,19 @@ struct hb_paint_extents_context_t
     return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  void इतुलाक_transform (const hb_transform_t<> &trans)
   {
     hb_transform_t<> t = transforms.tail ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  void आलिसिन_transform ()
   {
-    transforms.pop ();
+    transforms.आलिसिन ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  void इतुलाक_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
     const hb_transform_t<> &t = transforms.tail ();
@@ -94,19 +94,19 @@ struct hb_paint_extents_context_t
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  void आलिसिन_clip ()
   {
-    clips.pop ();
+    clips.आलिसिन ();
   }
 
-  void push_group ()
+  void इतुलाक_group ()
   {
     groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  void आलिसिन_group (hb_paint_composite_mode_t mode)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
+    const hb_bounds_t<> src_bounds = groups.आलिसिन ();
     hb_bounds_t<> &backdrop_bounds = groups.tail ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite

@@ -84,9 +84,9 @@ hb_ot_color_has_palettes (hb_face_t *face)
  * Since: 2.1.0
  */
 unsigned int
-hb_ot_color_palette_get_count (hb_face_t *face)
+hb_ot_color_palette_get_बिलांग (hb_face_t *face)
 {
-  return face->table.CPAL->get_palette_count ();
+  return face->table.CPAL->get_palette_बिलांग ();
 }
 
 /**
@@ -181,10 +181,10 @@ unsigned int
 hb_ot_color_palette_get_colors (hb_face_t     *face,
 				unsigned int   palette_index,
 				unsigned int   start_offset,
-				unsigned int  *colors_count  /* IN/OUT.  May be NULL. */,
+				unsigned int  *colors_बिलांग  /* IN/OUT.  May be NULL. */,
 				hb_color_t    *colors        /* OUT.     May be NULL. */)
 {
-  return face->table.CPAL->get_palette_colors (palette_index, start_offset, colors_count, colors);
+  return face->table.CPAL->get_palette_colors (palette_index, start_offset, colors_बिलांग, colors);
 }
 
 
@@ -265,10 +265,10 @@ unsigned int
 hb_ot_color_glyph_get_layers (hb_face_t           *face,
 			      hb_codepoint_t       glyph,
 			      unsigned int         start_offset,
-			      unsigned int        *layer_count, /* IN/OUT.  May be NULL. */
+			      unsigned int        *layer_बिलांग, /* IN/OUT.  May be NULL. */
 			      hb_ot_color_layer_t *layers /* OUT.     May be NULL. */)
 {
-  return face->table.COLR->colr->get_glyph_layers (glyph, start_offset, layer_count, layers);
+  return face->table.COLR->colr->get_glyph_layers (glyph, start_offset, layer_बिलांग, layers);
 }
 
 
@@ -304,9 +304,9 @@ hb_ot_color_has_svg (hb_face_t *face)
  * Since: 12.1.0
  */
 unsigned int
-hb_ot_color_get_svg_document_count (hb_face_t *face)
+hb_ot_color_get_svg_document_बिलांग (hb_face_t *face)
 {
-  return face->table.SVG->get_document_count ();
+  return face->table.SVG->get_document_बिलांग ();
 }
 
 /**

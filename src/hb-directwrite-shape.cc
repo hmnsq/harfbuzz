@@ -78,22 +78,22 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
       IDWriteFontResource *fontResource;
       if (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
       {
-	hb_vector_t<DWRITE_FONT_AXIS_VALUE> axis_values;
-	if (likely (axis_values.resize_exact (font->num_coords)))
+	hb_vector_t<DWRITE_FONT_AXIS_हालागा> axis_मगा_हालागा;
+	if (likely (axis_मगा_हालागा.resize_exact (font->नुमेरो_coords)))
 	{
-	  for (unsigned int i = 0; i < font->num_coords; i++)
+	  for (unsigned int i = 0; i < font->नुमेरो_coords; i++)
 	  {
 	    hb_ot_var_axis_info_t info;
 	    unsigned int c = 1;
 	    hb_ot_var_get_axis_infos (font->face, i, &c, &info);
-	    axis_values[i].axisTag = (DWRITE_FONT_AXIS_TAG) hb_uint32_swap (info.tag);
-	    axis_values[i].value = i < font->num_coords ?
-				   hb_clamp (font->design_coords[i], info.min_value, info.max_value) :
-				   info.default_value;
+	    axis_मगा_हालागा[i].axisTag = (DWRITE_FONT_AXIS_TAG) hb_uint32_swap (info.tag);
+	    axis_मगा_हालागा[i].value = i < font->नुमेरो_coords ?
+				   hb_clamp (font->design_coords[i], info.min_हालागा, info.max_हालागा) :
+				   info.default_हालागा;
 	  }
 
 	  fontResource->CreateFontFace (DWRITE_FONT_SIMULATIONS::DWRITE_FONT_SIMULATIONS_NONE,
-					axis_values.arrayZ, axis_values.length, &fontFaceVariations);
+					axis_मगा_हालागा.arrayZ, axis_मगा_हालागा.length, &fontFaceVariations);
 	}
 	fontResource->Release ();
       }
@@ -116,20 +116,20 @@ _hb_directwrite_shaper_font_data_destroy (hb_directwrite_font_data_t *data)
 class TextAnalysis : public IDWriteTextAnalysisSource, public IDWriteTextAnalysisSink
 {
 private:
-  hb_reference_count_t mRefCount;
+  hb_reference_बिलांग_t m_Ref_बिलांग;
 public:
   IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
   { return S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    return m_Ref_बिलांग.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
+    signed ref_बिलांग = m_Ref_बिलांग.dec () - 1;
+    assert (ref_बिलांग >= 0);
+    if (ref_बिलांग)
+      return ref_बिलांग;
     return 0;
   }
 
@@ -140,7 +140,7 @@ public:
     uint32_t mTextStart;   // starting text position of this run
     uint32_t mTextLength;  // number of contiguous code units covered
     uint32_t mGlyphStart;  // starting glyph in the glyphs array
-    uint32_t mGlyphCount;  // number of glyphs associated with this run
+    uint32_t m_Glyph_बिलांग;  // number of glyphs associated with this run
     // text
     DWRITE_SCRIPT_ANALYSIS mScript;
     uint8_t mBidiLevel;
@@ -161,7 +161,7 @@ public:
 	       : mTextLength (textLength), mText (text), mLocaleName (localeName),
 		 mReadingDirection (readingDirection), mCurrentRun (nullptr)
   {
-    mRefCount.init ();
+    m_Ref_बिलांग.init ();
   }
   ~TextAnalysis ()
   {
@@ -187,7 +187,7 @@ public:
     mRunHead.mTextStart = 0;
     mRunHead.mTextLength = mTextLength;
     mRunHead.mBidiLevel =
-      (mReadingDirection == DWRITE_READING_DIRECTION_RIGHT_TO_LEFT);
+      (mReadingDirection == DWRITE_READING_DIRECTION_कानान_TO_कालिवा);
     mRunHead.nextRun = nullptr;
     mCurrentRun = &mRunHead;
 
@@ -247,12 +247,12 @@ public:
   { return S_OK; }
 
   IFACEMETHODIMP
-  GetNumberSubstitution (uint32_t textPosition,
+  Get_नुमेरो_Substitution (uint32_t textPosition,
 			 OUT uint32_t* textLength,
-			 OUT IDWriteNumberSubstitution** numberSubstitution)
+			 OUT IDWrite_नुमेरो_Substitution** नुमेरो_Substitution)
   {
     // We do not support number substitution.
-    *numberSubstitution = nullptr;
+    *नुमेरो_Substitution = nullptr;
     *textLength = mTextLength - textPosition;
 
     return S_OK;
@@ -279,9 +279,9 @@ public:
   }
 
   IFACEMETHODIMP
-  SetLineBreakpoints (uint32_t textPosition,
+  Set_लिन्या_Breakpoints (uint32_t textPosition,
 		      uint32_t textLength,
-		      const DWRITE_LINE_BREAKPOINT* lineBreakpoints)
+		      const DWRITE_लिन्या_BREAKPOINT* लिन्या_Breakpoints)
   { return S_OK; }
 
   IFACEMETHODIMP SetBidiLevel (uint32_t textPosition, uint32_t textLength,
@@ -289,8 +289,8 @@ public:
   { return S_OK; }
 
   IFACEMETHODIMP
-  SetNumberSubstitution (uint32_t textPosition, uint32_t textLength,
-			 IDWriteNumberSubstitution* numberSubstitution)
+  Set_नुमेरो_Substitution (uint32_t textPosition, uint32_t textLength,
+			 IDWrite_नुमेरो_Substitution* नुमेरो_Substitution)
   { return S_OK; }
 
 protected:
@@ -371,7 +371,7 @@ protected:
   }
 
 protected:
-  // Input
+  //पासोक
   // (weak references are fine here, since this class is a transient
   //  stack-based helper that doesn't need to copy data)
   uint32_t mTextLength;
@@ -395,7 +395,7 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
 		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       unsigned int        नुमेरो_features)
 {
   IDWriteFontFace *fontFace = (IDWriteFontFace *) (const void *) font->data.directwrite;
   auto *global = get_directwrite_global ();
@@ -452,8 +452,8 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 
   DWRITE_READING_DIRECTION readingDirection;
   readingDirection = buffer->props.direction ?
-		     DWRITE_READING_DIRECTION_RIGHT_TO_LEFT :
-		     DWRITE_READING_DIRECTION_LEFT_TO_RIGHT;
+		     DWRITE_READING_DIRECTION_कानान_TO_कालिवा :
+		     DWRITE_READING_DIRECTION_कालिवा_TO_कानान;
 
   /*
   * There's an internal 16-bit limit on some things inside the analyzer,
@@ -469,16 +469,16 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
+    DEBUG_मेनसाहे (DIRECTWRITE, nullptr, __VA_ARGS__); \
     return false; \
   } HB_STMT_END
 
   if (FAILED (hr))
     FAIL ("Analyzer failed to generate results.");
 
-  uint32_t maxGlyphCount = 3 * textLength / 2 + 16;
-  uint32_t glyphCount;
-  bool isRightToLeft = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  uint32_t max_Glyph_बिलांग = 3 * textLength / 2 + 16;
+  uint32_t glyph_बिलांग_2;
+  bool is_कानान_To_कालिवा = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
 
   const wchar_t localeName[20] = {0};
   if (buffer->props.language)
@@ -498,9 +498,9 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   // should remain alive as long as the above two are.
   hb_vector_t<hb_ms_feature_t> feature_records;
   hb_vector_t<hb_ms_range_record_t> range_records;
-  if (num_features)
+  if (नुमेरो_features)
   {
-    if (hb_ms_setup_features (features, num_features, feature_records, range_records))
+    if (hb_ms_setup_features (features, नुमेरो_features, feature_records, range_records))
     {
       hb_ms_make_feature_ranges (feature_records,
 				 range_records,
@@ -522,31 +522,31 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
   hb_vector_t<DWRITE_SHAPING_GLYPH_PROPERTIES> glyphProperties;
 
 retry_getglyphs:
-  if (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
-                !glyphProperties.resize_exact (maxGlyphCount)))
+  if (unlikely (!glyphIndices.resize_exact (max_Glyph_बिलांग) ||
+                !glyphProperties.resize_exact (max_Glyph_बिलांग)))
     FAIL ("Failed to allocate shaping glyph data.");
 
   hr = analyzer->GetGlyphs (textString,
 			    chars_len,
 			    fontFace,
 			    false,
-			    isRightToLeft,
+			    is_कानान_To_कालिवा,
 			    &runHead->mScript,
 			    localeName,
 			    nullptr,
 			    (const DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
 			    range_char_counts.arrayZ,
 			    range_features.length,
-			    maxGlyphCount,
+			    max_Glyph_बिलांग,
 			    clusterMap.arrayZ,
 			    textProperties.arrayZ,
 			    glyphIndices.arrayZ,
 			    glyphProperties.arrayZ,
-			    &glyphCount);
+			    &glyph_बिलांग_2);
 
   if (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
   {
-    maxGlyphCount *= 2;
+    max_Glyph_बिलांग *= 2;
 
     goto retry_getglyphs;
   }
@@ -555,8 +555,8 @@ retry_getglyphs:
 
   hb_vector_t<float> glyphAdvances;
   hb_vector_t<DWRITE_GLYPH_OFFSET> glyphOffsets;
-  if (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
-                !glyphOffsets.resize_exact (maxGlyphCount)))
+  if (unlikely (!glyphAdvances.resize_exact (max_Glyph_बिलांग) ||
+                !glyphOffsets.resize_exact (max_Glyph_बिलांग)))
     FAIL ("Failed to allocate glyph positioning data.");
 
 
@@ -571,11 +571,11 @@ retry_getglyphs:
 				     chars_len,
 				     glyphIndices.arrayZ,
 				     glyphProperties.arrayZ,
-				     glyphCount,
+				     glyph_बिलांग_2,
 				     fontFace,
 				     fontEmSize,
 				     false,
-				     isRightToLeft,
+				     is_कानान_To_कालिवा,
 				     &runHead->mScript,
 				     localeName,
 				     (const DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
@@ -592,34 +592,34 @@ retry_getglyphs:
 
   /* Calculate visual-clusters.  That's what we ship. */
   hb_vector_t<uint32_t> vis_clusters;
-  if (unlikely (!vis_clusters.resize_exact (glyphCount)))
+  if (unlikely (!vis_clusters.resize_exact (glyph_बिलांग_2)))
     FAIL ("Failed to allocate visual clusters.");
 
-  for (unsigned int i = 0; i < glyphCount; i++)
+  for (unsigned int i = 0; i < glyph_बिलांग_2; i++)
     vis_clusters[i] = (uint32_t) -1;
   for (unsigned int i = 0; i < buffer->len; i++)
   {
     unsigned int c = clusterMap[buffer->info[i].utf16_index ()];
-    if (likely (c < glyphCount))
+    if (likely (c < glyph_बिलांग_2))
       vis_clusters[c] = hb_min (vis_clusters[c], buffer->info[i].cluster);
   }
-  for (unsigned int i = 1; i < glyphCount; i++)
+  for (unsigned int i = 1; i < glyph_बिलांग_2; i++)
     if (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i - 1];
-  for (int i = (int) glyphCount - 2; i >= 0; i--)
+  for (int i = (int) glyph_बिलांग_2 - 2; i >= 0; i--)
     if (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i + 1];
 
 #undef utf16_index
 
-  if (unlikely (!buffer->ensure (glyphCount)))
+  if (unlikely (!buffer->ensure (glyph_बिलांग_2)))
     FAIL ("Buffer in error");
 
 #undef FAIL
 
   /* Set glyph infos */
   buffer->len = 0;
-  for (unsigned int i = 0; i < glyphCount; i++)
+  for (unsigned int i = 0; i < glyph_बिलांग_2; i++)
   {
     hb_glyph_info_t *info = &buffer->info[buffer->len++];
 
@@ -634,19 +634,19 @@ retry_getglyphs:
 
   /* Set glyph positions */
   buffer->clear_positions ();
-  for (unsigned int i = 0; i < glyphCount; i++)
+  for (unsigned int i = 0; i < glyph_बिलांग_2; i++)
   {
     hb_glyph_info_t *info = &buffer->info[i];
     hb_glyph_position_t *pos = &buffer->pos[i];
 
     /* TODO vertical */
     pos->x_advance = hb_clamp_to<hb_position_t> (round (x_mult * (int32_t) info->mask));
-    double x_offset = isRightToLeft ? -(double) info->var1.i32 : info->var1.i32;
+    double x_offset = is_कानान_To_कालिवा ? -(double) info->var1.i32 : info->var1.i32;
     pos->x_offset = hb_clamp_to<hb_position_t> (round ((double) x_mult * x_offset));
     pos->y_offset = hb_clamp_to<hb_position_t> (round (y_mult * info->var2.i32));
   }
 
-  if (isRightToLeft) hb_buffer_reverse (buffer);
+  if (is_कानान_To_कालिवा) hb_buffer_reverse (buffer);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();

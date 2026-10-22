@@ -52,27 +52,27 @@ struct hb_paint_bounded_context_t
     return bounded;
   }
 
-  void push_clip ()
+  void इतुलाक_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  void आलिसिन_clip ()
   {
     if (clips == 0) return;
     clips--;
   }
 
-  void push_group ()
+  void इतुलाक_group ()
   {
     groups.push (bounded);
     bounded = true;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  void आलिसिन_group (hb_paint_composite_mode_t mode)
   {
     const bool src_bounded = bounded;
-    bounded = groups.pop ();
+    bounded = groups.आलिसिन ();
     bool &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite

@@ -120,16 +120,16 @@ hb_ot_tag_from_language (hb_language_t language);
 typedef struct hb_ot_var_axis_t {
   hb_tag_t tag;
   hb_ot_name_id_t name_id;
-  float min_value;
-  float default_value;
-  float max_value;
+  float min_हालागा;
+  float default_हालागा;
+  float max_हालागा;
 } hb_ot_var_axis_t;
 
 HB_DEPRECATED_FOR (hb_ot_var_get_axis_infos)
 HB_EXTERN unsigned int
 hb_ot_var_get_axes (hb_face_t        *face,
 		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
+		    unsigned int     *axes_बिलांग /* IN/OUT */,
 		    hb_ot_var_axis_t *axes_array /* OUT */);
 
 HB_DEPRECATED_FOR (hb_ot_var_find_axis_info)

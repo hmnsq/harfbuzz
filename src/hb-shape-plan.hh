@@ -31,15 +31,15 @@
 #include "hb-shaper.hh"
 #include "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+struct hb_shape_plan_सुसि_t
 {
   hb_segment_properties_t  props;
 
   const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  unsigned int             नुमेरो_user_features;
 
 #ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
+  hb_ot_shape_plan_सुसि_t   ot;
 #endif
 
   hb_shape_func_t         *shaper_func;
@@ -49,9 +49,9 @@ struct hb_shape_plan_key_t
 			 hb_face_t                     *face,
 			 const hb_segment_properties_t *props,
 			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
+			 unsigned int                   नुमेरो_user_features,
 			 const int                     *coords,
-			 unsigned int                   num_coords,
+			 unsigned int                   नुमेरो_coords,
 			 const char * const            *shaper_list);
 
   HB_INTERNAL void fini ()
@@ -63,9 +63,9 @@ struct hb_shape_plan_key_t
 #endif
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_INTERNAL bool user_features_match (const hb_shape_plan_सुसि_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_INTERNAL bool equal (const hb_shape_plan_सुसि_t *other);
 };
 
 struct hb_shape_plan_t
@@ -73,7 +73,7 @@ struct hb_shape_plan_t
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
+  hb_shape_plan_सुसि_t key;
 #ifndef HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
 #endif

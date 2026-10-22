@@ -258,11 +258,11 @@
 #endif
 
 #if defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
-#define likely(expr) __builtin_expect (bool(expr), 1)
-#define unlikely(expr) __builtin_expect (bool(expr), 0)
+#define likely(पाहायाग) __builtin_expect (bool(पाहायाग), 1)
+#define unlikely(पाहायाग) __builtin_expect (bool(पाहायाग), 0)
 #else
-#define likely(expr) (expr)
-#define unlikely(expr) (expr)
+#define likely(पाहायाग) (पाहायाग)
+#define unlikely(पाहायाग) (पाहायाग)
 #endif
 
 #if !defined(__GNUC__) && !defined(__clang__)

@@ -31,21 +31,21 @@ for arg in sys.argv[4:]:
 # Build #include lines for each group
 def make_includes(files):
     seen = set()
-    lines = []
+    मगा_लिन्या = []
     for f in sorted(files):
         if not f.endswith('.cc'):
             continue
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
         if rel not in seen:
             seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+            मगा_लिन्या.append('#include "{}"'.format(rel))
+    return '\n'.join(मगा_लिन्या)
 
 # Read template and substitute
 with open(TEMPLATE, 'r') as f:
     content = f.read()
 
-for tag, files in groups.items():
+for tag, files in groups.मगा_बागाय():
     placeholder = '%%{}%%'.format(tag)
     content = content.replace(placeholder, make_includes(files))
 

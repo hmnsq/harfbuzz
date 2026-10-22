@@ -60,23 +60,23 @@ struct AttachList
 {
   unsigned int get_attach_points (hb_codepoint_t glyph_id,
 				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
+				  unsigned int *point_बिलांग /* IN/OUT */,
 				  unsigned int *point_array /* OUT */) const
   {
     unsigned int index = (this+coverage).get_coverage (glyph_id);
     if (index == NOT_COVERED)
     {
-      if (point_count)
-	*point_count = 0;
+      if (point_बिलांग)
+	*point_बिलांग = 0;
       return 0;
     }
 
     const AttachPoint &points = this+attachPoint[index];
 
-    if (point_count && point_array)
+    if (point_बिलांग && point_array)
     {
-      + points.as_array ().sub_array (start_offset, point_count)
-      | hb_sink (hb_array (point_array, *point_count))
+      + points.as_array ().sub_array (start_offset, point_बिलांग)
+      | hb_sink (hb_array (point_array, *point_बिलांग))
       ;
     }
 
@@ -125,9 +125,9 @@ struct AttachList
  * Ligature Caret Table
  */
 
-struct CaretValueFormat1
+struct Caret_हालागा_Format1
 {
-  friend struct CaretValue;
+  friend struct Caret_हालागा;
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
@@ -137,7 +137,7 @@ struct CaretValueFormat1
   }
 
   private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_caret_हालागा (hb_font_t *font, hb_direction_t direction) const
   {
     return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
   }
@@ -149,15 +149,15 @@ struct CaretValueFormat1
   }
 
   protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 1 */
+  HBUINT16	caret_हालागा_Format;	/* Format identifier--format = 1 */
   FWORD		coordinate;		/* X or Y value, in design units */
   public:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct CaretValueFormat2
+struct Caret_हालागा_Format2
 {
-  friend struct CaretValue;
+  friend struct Caret_हालागा;
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
@@ -167,10 +167,10 @@ struct CaretValueFormat2
   }
 
   private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) const
+  hb_position_t get_caret_हालागा (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) const
   {
     hb_position_t x, y;
-    font->get_glyph_contour_point_for_origin (glyph_id, caretValuePoint, direction, &x, &y);
+    font->get_glyph_contour_point_for_origin (glyph_id, caret_हालागा_Point, direction, &x, &y);
     return HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
   }
 
@@ -181,17 +181,17 @@ struct CaretValueFormat2
   }
 
   protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 2 */
-  HBUINT16	caretValuePoint;	/* Contour point index on glyph */
+  HBUINT16	caret_हालागा_Format;	/* Format identifier--format = 2 */
+  HBUINT16	caret_हालागा_Point;	/* Contour point index on glyph */
   public:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct CaretValueFormat3
+struct Caret_हालागा_Format3
 {
-  friend struct CaretValue;
+  friend struct Caret_हालागा;
 
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction,
+  hb_position_t get_caret_हालागा (hb_font_t *font, hb_direction_t direction,
 				 const ItemVariationStore &var_store) const
   {
     return HB_DIRECTION_IS_HORIZONTAL (direction) ?
@@ -203,7 +203,7 @@ struct CaretValueFormat3
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (!c->serializer->embed (caretValueFormat)) return_trace (false);
+    if (!c->serializer->embed (caret_हालागा_Format)) return_trace (false);
     if (!c->serializer->embed (coordinate)) return_trace (false);
 
     unsigned varidx = (this+deviceTable).get_variation_index ();
@@ -218,7 +218,7 @@ struct CaretValueFormat3
       }
 
       if (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        return_trace (c->serializer->check_assign (out->caretValueFormat, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->serializer->check_assign (out->caret_हालागा_Format, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
     }
 
     if (!c->serializer->embed (deviceTable))
@@ -238,7 +238,7 @@ struct CaretValueFormat3
   }
 
   protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 3 */
+  HBUINT16	caret_हालागा_Format;	/* Format identifier--format = 3 */
   FWORD		coordinate;		/* X or Y value, in design units */
   Offset16To<Device>
 		deviceTable;		/* Offset to Device table for X or Y
@@ -248,17 +248,17 @@ struct CaretValueFormat3
   DEFINE_SIZE_STATIC (6);
 };
 
-struct CaretValue
+struct Caret_हालागा
 {
-  hb_position_t get_caret_value (hb_font_t *font,
+  hb_position_t get_caret_हालागा (hb_font_t *font,
 				 hb_direction_t direction,
 				 hb_codepoint_t glyph_id,
 				 const ItemVariationStore &var_store) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_caret_value (font, direction);
-    case 2: hb_barrier (); return u.format2.get_caret_value (font, direction, glyph_id);
-    case 3: hb_barrier (); return u.format3.get_caret_value (font, direction, var_store);
+    case 1: hb_barrier (); return u.format1.get_caret_हालागा (font, direction);
+    case 2: hb_barrier (); return u.format2.get_caret_हालागा (font, direction, glyph_id);
+    case 3: hb_barrier (); return u.format3.get_caret_हालागा (font, direction, var_store);
     default:return 0;
     }
   }
@@ -266,13 +266,13 @@ struct CaretValue
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
     case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
     case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -306,9 +306,9 @@ struct CaretValue
   protected:
   union {
   struct { HBUINT16 v; }	format;		/* Format identifier */
-  CaretValueFormat1	format1;
-  CaretValueFormat2	format2;
-  CaretValueFormat3	format3;
+  Caret_हालागा_Format1	format1;
+  Caret_हालागा_Format2	format2;
+  Caret_हालागा_Format3	format3;
   } u;
   public:
   DEFINE_SIZE_UNION (2, format.v);
@@ -321,15 +321,15 @@ struct LigGlyph
 			   hb_codepoint_t        glyph_id,
 			   const ItemVariationStore &var_store,
 			   unsigned              start_offset,
-			   unsigned             *caret_count /* IN/OUT */,
+			   unsigned             *caret_बिलांग /* IN/OUT */,
 			   hb_position_t        *caret_array /* OUT */) const
   {
-    if (caret_count && caret_array)
+    if (caret_बिलांग && caret_array)
     {
-      + carets.as_array ().sub_array (start_offset, caret_count)
+      + carets.as_array ().sub_array (start_offset, caret_बिलांग)
       | hb_map (hb_add (this))
-      | hb_map ([&] (const CaretValue &value) { return value.get_caret_value (font, direction, glyph_id, var_store); })
-      | hb_sink (hb_array (caret_array, *caret_count))
+      | hb_map ([&] (const Caret_हालागा &value) { return value.get_caret_हालागा (font, direction, glyph_id, var_store); })
+      | hb_sink (hb_array (caret_array, *caret_बिलांग))
       ;
     }
 
@@ -351,7 +351,7 @@ struct LigGlyph
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const Offset16To<CaretValue>& offset : carets.iter ())
+    for (const Offset16To<Caret_हालागा>& offset : carets.iter ())
       (this+offset).collect_variation_indices (c);
   }
 
@@ -362,7 +362,7 @@ struct LigGlyph
   }
 
   protected:
-  Array16OfOffset16To<CaretValue>
+  Array16OfOffset16To<Caret_हालागा>
 		carets;			/* Offset array of CaretValue tables
 					 * --from beginning of LigGlyph table
 					 * --in increasing coordinate order */
@@ -380,18 +380,18 @@ struct LigCaretList
 			       hb_codepoint_t glyph_id,
 			       const ItemVariationStore &var_store,
 			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
+			       unsigned int *caret_बिलांग /* IN/OUT */,
 			       hb_position_t *caret_array /* OUT */) const
   {
     unsigned int index = (this+coverage).get_coverage (glyph_id);
     if (index == NOT_COVERED)
     {
-      if (caret_count)
-	*caret_count = 0;
+      if (caret_बिलांग)
+	*caret_बिलांग = 0;
       return 0;
     }
     const LigGlyph &lig_glyph = this+ligGlyph[index];
-    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
+    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_बिलांग, caret_array);
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -501,12 +501,12 @@ struct MarkGlyphSetsFormat1
       if (offset) res = c->dispatch (this+offset);
       if (!res)
       {
-        c->serializer->pop_discard ();
+        c->serializer->आलिसिन_discard ();
         c->serializer->revert (snap);
         (out->coverage.len)--;
         continue;
       }
-      c->serializer->add_link (*o, c->serializer->pop_pack ());
+      c->serializer->add_link (*o, c->serializer->आलिसिन_pack ());
     }
 
     return_trace (ret && out->coverage.len);
@@ -709,7 +709,7 @@ struct GDEF
 	  remap_varidx_after_instantiation (item_vars.get_varidx_map (),
 					    c->plan->layout_variation_idx_delta_map);
           remap_varidx_after_instantiation (item_vars.get_varidx_map (),
-                                            c->plan->layout_condition_idx_value_map);
+                                            c->plan->layout_condition_idx_हालागा_map);
 	}
       }
       else
@@ -927,24 +927,24 @@ struct GDEF
 
   unsigned int get_attach_points (hb_codepoint_t glyph_id,
 				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
+				  unsigned int *point_बिलांग /* IN/OUT */,
 				  unsigned int *point_array /* OUT */) const
-  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
+  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_बिलांग, point_array); }
 
   unsigned int get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
 			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
+			       unsigned int *caret_बिलांग /* IN/OUT */,
 			       hb_position_t *caret_array /* OUT */) const
   {
 #ifndef HB_NO_BEYOND_64K
     if (version.to_int () >= 0x00010004u && ligCaretList2)
       return (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
-						  start_offset, caret_count, caret_array);
+						  start_offset, caret_बिलांग, caret_array);
 #endif
     return (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
-					       start_offset, caret_count, caret_array);
+					       start_offset, caret_बिलांग, caret_array);
   }
 
   bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
@@ -998,14 +998,14 @@ struct GDEF
 	  for (unsigned i = 0; i < sets.length; i++)
 	  {
 	    auto &bitmap = mark_glyph_set_bitmaps.arrayZ[i];
-	    bitmap.bias = HB_SET_VALUE_INVALID;
+	    bitmap.bias = HB_SET_हालागा_INVALID;
 	    const auto &set = sets.arrayZ[i];
 	    if (unlikely (set.in_error ())) continue;
-	    hb_codepoint_t min_gid = HB_SET_VALUE_INVALID;
-	    hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
+	    hb_codepoint_t min_gid = HB_SET_हालागा_INVALID;
+	    hb_codepoint_t max_gid = HB_SET_हालागा_INVALID;
 	    hb_set_next (&set, &min_gid);
 	    hb_set_previous (&set, &max_gid);
-	    if (max_gid == HB_SET_VALUE_INVALID)
+	    if (max_gid == HB_SET_हालागा_INVALID)
 	      continue;
 	    if (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
 	    {
@@ -1049,7 +1049,7 @@ struct GDEF
 #ifndef HB_NO_GDEF_CACHE
       // We can access arrayZ directly because of sanitize_lookup_props() guarantee.
       const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (likely (bitmap.bias != HB_SET_VALUE_INVALID))
+      if (likely (bitmap.bias != HB_SET_हालागा_INVALID))
       {
 	hb_codepoint_t biased = glyph_id - bitmap.bias;
 	return biased < hb_bit_page_t::PAGE_BITS &&
@@ -1092,7 +1092,7 @@ struct GDEF
       /* Gid of the first bit (not page-aligned) for an exact one-page
        * set, or HB_SET_VALUE_INVALID; then digest is a pre-filter for
        * the table.  The all-zeros state is valid for both members. */
-      hb_codepoint_t bias = HB_SET_VALUE_INVALID;
+      hb_codepoint_t bias = HB_SET_हालागा_INVALID;
       union u_t {
 	u_t () : page () {}
 	hb_bit_page_t page;
@@ -1119,9 +1119,9 @@ struct GDEF
   }
 
   protected:
-  template <typename Key>
+  template <typename सुसि>
   static void remap_varidx_after_instantiation (const hb_map_t& varidx_map,
-                                                hb_hashmap_t<Key, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
+                                                hb_hashmap_t<सुसि, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
   {
     /* varidx_map is empty which means varstore is empty after instantiation,
      * no variations, map all varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX.
@@ -1153,8 +1153,8 @@ struct GDEF
     auto *s = c->serializer;
     s->push ();
     bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
+    if (ret) s->add_link (out, s->आलिसिन_pack ());
+    else s->आलिसिन_discard ();
     return ret;
   }
 

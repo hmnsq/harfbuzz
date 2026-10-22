@@ -253,7 +253,7 @@ hb_font_funcs_set_glyph_v_kerning_func (hb_font_funcs_t *ffuncs,
 
 HB_EXTERN hb_position_t
 hb_font_get_glyph_v_kerning (hb_font_t *font,
-			     hb_codepoint_t top_glyph, hb_codepoint_t bottom_glyph);
+			     hb_codepoint_t इताअस_glyph, hb_codepoint_t bottom_glyph);
 
 
 /**

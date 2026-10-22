@@ -47,9 +47,9 @@
 static void
 svg_dump (hb_face_t *face, unsigned face_index)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  unsigned glyph_बिलांग = hb_face_get_glyph_बिलांग (face);
 
-  for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+  for (unsigned glyph_id = 0; glyph_id < glyph_बिलांग; ++glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_svg (face, glyph_id);
 
@@ -79,13 +79,13 @@ svg_dump (hb_face_t *face, unsigned face_index)
 static void
 png_dump (hb_face_t *face, unsigned face_index)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  unsigned glyph_बिलांग = hb_face_get_glyph_बिलांग (face);
   hb_font_t *font = hb_font_create (face);
 
   /* scans the font for strikes */
   unsigned sample_glyph_id;
   /* we don't care about different strikes for different glyphs at this point */
-  for (sample_glyph_id = 0; sample_glyph_id < glyph_count; ++sample_glyph_id)
+  for (sample_glyph_id = 0; sample_glyph_id < glyph_बिलांग; ++sample_glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
     unsigned blob_length = hb_blob_get_length (blob);
@@ -105,7 +105,7 @@ png_dump (hb_face_t *face, unsigned face_index)
     hb_blob_destroy (blob);
     if (new_blob_length != blob_length)
     {
-      for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+      for (unsigned glyph_id = 0; glyph_id < glyph_बिलांग; ++glyph_id)
       {
 	hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, glyph_id);
 
@@ -148,7 +148,7 @@ move_to (hb_draw_funcs_t *, draw_data_t *draw_data,
 }
 
 static void
-line_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+लिन्या_to (hb_draw_funcs_t *, draw_data_t *draw_data,
 	 hb_draw_state_t *,
 	 float to_x, float to_y,
 	 void *)
@@ -192,30 +192,30 @@ static void
 layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
 {
   hb_face_t *face = hb_font_get_face (font);
-  unsigned palette_count = hb_ot_color_palette_get_count (face);
-  for (unsigned palette = 0; palette < palette_count; ++palette)
+  unsigned palette_बिलांग = hb_ot_color_palette_get_बिलांग (face);
+  for (unsigned palette = 0; palette < palette_बिलांग; ++palette)
   {
-    unsigned num_colors = hb_ot_color_palette_get_colors (face, palette, 0, nullptr, nullptr);
-    if (!num_colors) continue;
+    unsigned नुमेरो_colors = hb_ot_color_palette_get_colors (face, palette, 0, nullptr, nullptr);
+    if (!नुमेरो_colors) continue;
 
-    hb_color_t *colors = (hb_color_t*) calloc (num_colors, sizeof (hb_color_t));
-    hb_ot_color_palette_get_colors (face, palette, 0, &num_colors, colors);
-    if (!num_colors)
+    hb_color_t *colors = (hb_color_t*) calloc (नुमेरो_colors, sizeof (hb_color_t));
+    hb_ot_color_palette_get_colors (face, palette, 0, &नुमेरो_colors, colors);
+    if (!नुमेरो_colors)
     {
       free (colors);
       continue;
     }
 
-    unsigned num_glyphs = hb_face_get_glyph_count (face);
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; ++gid)
+    unsigned नुमेरो_glyphs = hb_face_get_glyph_बिलांग (face);
+    for (hb_codepoint_t gid = 0; gid < नुमेरो_glyphs; ++gid)
     {
-      unsigned num_layers = hb_ot_color_glyph_get_layers (face, gid, 0, nullptr, nullptr);
-      if (!num_layers) continue;
+      unsigned नुमेरो_layers = hb_ot_color_glyph_get_layers (face, gid, 0, nullptr, nullptr);
+      if (!नुमेरो_layers) continue;
 
-      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) malloc (num_layers * sizeof (hb_ot_color_layer_t));
+      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) malloc (नुमेरो_layers * sizeof (hb_ot_color_layer_t));
 
-      hb_ot_color_glyph_get_layers (face, gid, 0, &num_layers, layers);
-      if (num_layers)
+      hb_ot_color_glyph_get_layers (face, gid, 0, &नुमेरो_layers, layers);
+      if (नुमेरो_layers)
       {
 	hb_font_extents_t font_extents;
 	hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
@@ -238,7 +238,7 @@ layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index
 	draw_data.ascender = extents.y_bearing;
 	draw_data.f = f;
 
-	for (unsigned layer = 0; layer < num_layers; ++layer)
+	for (unsigned layer = 0; layer < नुमेरो_layers; ++layer)
 	{
 	  hb_color_t color = 0x000000FF;
 	  if (layers[layer].color_index != 0xFFFF)
@@ -265,8 +265,8 @@ layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index
 static void
 dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
 {
-  unsigned num_glyphs = hb_face_get_glyph_count (hb_font_get_face (font));
-  for (unsigned gid = 0; gid < num_glyphs; ++gid)
+  unsigned नुमेरो_glyphs = hb_face_get_glyph_बिलांग (hb_font_get_face (font));
+  for (unsigned gid = 0; gid < नुमेरो_glyphs; ++gid)
   {
     hb_font_extents_t font_extents;
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
@@ -316,13 +316,13 @@ dump_glyphs (hb_blob_t *blob, const char *font_name)
 
   hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
   hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) move_to, nullptr, nullptr);
-  hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) line_to, nullptr, nullptr);
+  hb_draw_funcs_set_लिन्या_to_func (funcs, (hb_draw_लिन्या_to_func_t) लिन्या_to, nullptr, nullptr);
   hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) quadratic_to, nullptr, nullptr);
   hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) cubic_to, nullptr, nullptr);
   hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) close_path, nullptr, nullptr);
 
-  unsigned num_faces = hb_face_count (blob);
-  for (unsigned face_index = 0; face_index < num_faces; ++face_index)
+  unsigned नुमेरो_faces = hb_face_बिलांग (blob);
+  for (unsigned face_index = 0; face_index < नुमेरो_faces; ++face_index)
   {
     hb_face_t *face = hb_face_create (blob, face_index);
     hb_font_t *font = hb_font_create (face);
@@ -361,7 +361,7 @@ dump_glyphs (hb_blob_t *blob, const char *font_name)
 using namespace OT;
 
 static void
-print_layout_info_using_private_api (hb_blob_t *blob)
+इलिम्बाग_layout_info_using_private_api (hb_blob_t *blob)
 {
   const char *font_data = hb_blob_get_data (blob, nullptr);
   hb_blob_t *font_blob = hb_sanitize_context_t ().sanitize_blob<OpenTypeFontFile> (blob);
@@ -398,19 +398,19 @@ print_layout_info_using_private_api (hb_blob_t *blob)
     break;
   }
 
-  unsigned num_faces = hb_face_count (blob);
-  printf ("%u font(s) found in file\n", num_faces);
-  for (unsigned n_font = 0; n_font < num_faces; ++n_font)
+  unsigned नुमेरो_faces = hb_face_बिलांग (blob);
+  printf ("%u font(s) found in file\n", नुमेरो_faces);
+  for (unsigned n_font = 0; n_font < नुमेरो_faces; ++n_font)
   {
     const OpenTypeFontFace &font = ot.get_face (n_font);
-    printf ("Font %u of %u:\n", n_font, num_faces);
+    printf ("Font %u of %u:\n", n_font, नुमेरो_faces);
 
-    unsigned num_tables = font.get_table_count ();
-    printf ("  %u table(s) found in font\n", num_tables);
-    for (unsigned n_table = 0; n_table < num_tables; ++n_table)
+    unsigned नुमेरो_tables = font.get_table_बिलांग ();
+    printf ("  %u table(s) found in font\n", नुमेरो_tables);
+    for (unsigned n_table = 0; n_table < नुमेरो_tables; ++n_table)
     {
       const OpenTypeTable &table = font.get_table (n_table);
-      printf ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_table, num_tables,
+      printf ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_table, नुमेरो_tables,
 	      (const char *) table.tag,
 	      (unsigned) table.offset,
 	      (unsigned) table.length);
@@ -424,19 +424,19 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 
 	const GSUBGPOS &g = *reinterpret_cast<const GSUBGPOS *> (font_data + table.offset);
 
-	unsigned num_scripts = g.get_script_count ();
-	printf ("    %u script(s) found in table\n", num_scripts);
-	for (unsigned n_script = 0; n_script < num_scripts; ++n_script)
+	unsigned नुमेरो_scripts = g.get_script_बिलांग ();
+	printf ("    %u script(s) found in table\n", नुमेरो_scripts);
+	for (unsigned n_script = 0; n_script < नुमेरो_scripts; ++n_script)
 	{
 	  const Script &script = g.get_script (n_script);
-	  printf ("    Script %2u of %2u: %.4s\n", n_script, num_scripts,
+	  printf ("    Script %2u of %2u: %.4s\n", n_script, नुमेरो_scripts,
 		  (const char *) g.get_script_tag (n_script));
 
 	  if (!script.has_default_lang_sys ())
 	    printf ("      No default language system\n");
-	  int num_langsys = script.get_lang_sys_count ();
-	  printf ("      %d language system(s) found in script\n", num_langsys);
-	  for (int n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < num_langsys; ++n_langsys)
+	  int नुमेरो_langsys = script.get_lang_sys_बिलांग ();
+	  printf ("      %d language system(s) found in script\n", नुमेरो_langsys);
+	  for (int n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < नुमेरो_langsys; ++n_langsys)
 	  {
 	    const LangSys &langsys = n_langsys == -1
 				   ? script.get_default_lang_sys ()
@@ -444,7 +444,7 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 	    if (n_langsys == -1)
 	      printf ("      Default Language System\n");
 	    else
-	      printf ("      Language System %2d of %2d: %.4s\n", n_langsys, num_langsys,
+	      printf ("      Language System %2d of %2d: %.4s\n", n_langsys, नुमेरो_langsys,
 		      (const char *) script.get_lang_sys_tag (n_langsys));
 	    if (!langsys.has_required_feature ())
 	      printf ("        No required feature\n");
@@ -452,38 +452,38 @@ print_layout_info_using_private_api (hb_blob_t *blob)
 	      printf ("        Required feature index: %u\n",
 		      langsys.get_required_feature_index ());
 
-	    unsigned num_features = langsys.get_feature_count ();
-	    printf ("        %u feature(s) found in language system\n", num_features);
-	    for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	    unsigned नुमेरो_features = langsys.get_feature_बिलांग ();
+	    printf ("        %u feature(s) found in language system\n", नुमेरो_features);
+	    for (unsigned n_feature = 0; n_feature < नुमेरो_features; ++n_feature)
 	    {
-	      printf ("        Feature index %2u of %2u: %u\n", n_feature, num_features,
+	      printf ("        Feature index %2u of %2u: %u\n", n_feature, नुमेरो_features,
 		      langsys.get_feature_index (n_feature));
 	    }
 	  }
 	}
 
-	unsigned num_features = g.get_feature_count ();
-	printf ("    %u feature(s) found in table\n", num_features);
-	for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	unsigned नुमेरो_features = g.get_feature_बिलांग ();
+	printf ("    %u feature(s) found in table\n", नुमेरो_features);
+	for (unsigned n_feature = 0; n_feature < नुमेरो_features; ++n_feature)
 	{
 	  const Feature &feature = g.get_feature (n_feature);
-	  unsigned num_lookups = feature.get_lookup_count ();
-	  printf ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, num_features,
+	  unsigned नुमेरो_lookups = feature.get_lookup_बिलांग ();
+	  printf ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, नुमेरो_features,
 		  HB_UNTAG (g.get_feature_tag (n_feature)));
 
-	  printf ("        %u lookup(s) found in feature\n", num_lookups);
-	  for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup) {
-	    printf ("        Lookup index %2u of %2u: %u\n", n_lookup, num_lookups,
+	  printf ("        %u lookup(s) found in feature\n", नुमेरो_lookups);
+	  for (unsigned n_lookup = 0; n_lookup < नुमेरो_lookups; ++n_lookup) {
+	    printf ("        Lookup index %2u of %2u: %u\n", n_lookup, नुमेरो_lookups,
 		    feature.get_lookup_index (n_lookup));
 	  }
 	}
 
-	unsigned num_lookups = g.get_lookup_count ();
-	printf ("    %u lookup(s) found in table\n", num_lookups);
-	for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup)
+	unsigned नुमेरो_lookups = g.get_lookup_बिलांग ();
+	printf ("    %u lookup(s) found in table\n", नुमेरो_lookups);
+	for (unsigned n_lookup = 0; n_lookup < नुमेरो_lookups; ++n_lookup)
 	{
 	  const Lookup &lookup = g.get_lookup (n_lookup);
-	  printf ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, num_lookups,
+	  printf ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, नुमेरो_lookups,
 		  lookup.get_type (), lookup.get_props ());
 	}
 
@@ -528,7 +528,7 @@ main (int argc, char **argv)
   assert (blob);
   printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
 #ifndef MAIN_CC_NO_PRIVATE_API
-  print_layout_info_using_private_api (blob);
+  इलिम्बाग_layout_info_using_private_api (blob);
 #endif
 #if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
   dump_glyphs (blob, argv[1]);

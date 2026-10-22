@@ -40,7 +40,7 @@ typedef struct hb_ms_feature_t {
 
 typedef struct hb_ms_features_t {
   hb_ms_feature_t *features;
-  uint32_t         num_features;
+  uint32_t         नुमेरो_features;
 } hb_ms_features_t;
 
 struct hb_ms_active_feature_t {
@@ -82,7 +82,7 @@ struct hb_ms_range_record_t {
 
 static inline bool
 hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
+		      unsigned int                       नुमेरो_features,
 		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
 		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
 {
@@ -91,7 +91,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
 
   /* Sort features by start/end events. */
   hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  for (unsigned int i = 0; i < नुमेरो_features; i++)
   {
     hb_ms_active_feature_t feature;
     feature.fea.tag_le = hb_uint32_swap (features[i].tag);
@@ -116,7 +116,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
     hb_ms_active_feature_t feature;
     feature.fea.tag_le = 0;
     feature.fea.value = 0;
-    feature.order = num_features + 1;
+    feature.order = नुमेरो_features + 1;
 
     auto *event = feature_events.push ();
     event->index = 0; /* This value does magic. */
@@ -154,7 +154,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
       /* Will convert to pointer after all is ready, since feature_records.array
        * may move as we grow it. */
       range->features.features = reinterpret_cast<hb_ms_feature_t *> (offset);
-      range->features.num_features = feature_records.length - offset;
+      range->features.नुमेरो_features = feature_records.length - offset;
       range->index_first = last_index;
       range->index_last  = event->index - 1;
 
@@ -174,7 +174,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
   }
 
   if (!range_records.length) /* No active feature found. */
-    num_features = 0;
+    नुमेरो_features = 0;
 
   /* Fixup the pointers. */
   for (unsigned int i = 0; i < range_records.length; i++)
@@ -183,7 +183,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
     range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  return !!नुमेरो_features;
 }
 
 static inline void

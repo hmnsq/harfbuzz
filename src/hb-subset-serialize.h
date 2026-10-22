@@ -71,16 +71,16 @@ typedef struct hb_subset_serialize_link_t {
 typedef struct hb_subset_serialize_object_t {
   char *head;
   char *tail;
-  unsigned int num_real_links;
+  unsigned int नुमेरो_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  unsigned int नुमेरो_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 
 HB_EXTERN hb_blob_t *
 hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs);
+                             unsigned                      नुमेरो_hb_objs);
 
 
 HB_END_DECLS

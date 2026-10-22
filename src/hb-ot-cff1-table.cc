@@ -338,7 +338,7 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
+  static void लिन्या (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
   {
     if (!param.is_path_open ())
     {
@@ -370,12 +370,12 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
 {
   static void process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
+    unsigned int  n = env.arg_सालानसान.get_बिलांग ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_सालानसान[n-4];
+    delta.y = env.arg_सालानसान[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_सालानसान[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_सालानसान[n-1].to_int ());
 
     bounds_t  base_bounds, accent_bounds;
     if (likely (!env.in_seac && base && accent
@@ -394,7 +394,7 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
 bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
 {
   bounds.init ();
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  if (unlikely (!cff->is_valid () || (glyph >= cff->नुमेरो_glyphs))) return false;
 
   unsigned int fd = cff->fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*cff->charStrings)[glyph];
@@ -416,8 +416,8 @@ bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph
 
   bounds_t bounds;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+  if (!budget) budget = &सालानसान_budget;
 
   if (!_get_bounds (this, glyph, bounds, false, budget))
     return false;
@@ -468,11 +468,11 @@ struct cff1_path_param_t
     draw_session->move_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
-  void line_to (const point_t &p)
+  void लिन्या_to (const point_t &p)
   {
     point_t point = p;
     if (delta) point.move (*delta);
-    draw_session->line_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
+    draw_session->लिन्या_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
   void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
@@ -506,9 +506,9 @@ struct cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_int
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1)
+  static void लिन्या (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1)
   {
-    param.line_to (pt1);
+    param.लिन्या_to (pt1);
     env.moveto (pt1);
   }
 
@@ -530,12 +530,12 @@ struct cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_pa
     /* End previous path */
     param.end_path ();
 
-    unsigned int n = env.argStack.get_count ();
+    unsigned int n = env.arg_सालानसान.get_बिलांग ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_सालानसान[n-4];
+    delta.y = env.arg_सालानसान[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_सालानसान[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_सालानसान[n-1].to_int ());
 
     if (unlikely (!(!env.in_seac && base && accent
 		    && _get_path (param.cff, param.font, base, *param.draw_session, true, nullptr, env.get_budget ())
@@ -548,7 +548,7 @@ bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoin
 		hb_draw_session_t &draw_session, bool in_seac, point_t *delta,
 		int64_t *budget)
 {
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  if (unlikely (!cff->is_valid () || (glyph >= cff->नुमेरो_glyphs))) return false;
 
   unsigned int fd = cff->fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*cff->charStrings)[glyph];
@@ -571,8 +571,8 @@ bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, h
   return true;
 #endif
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+  if (!budget) budget = &सालानसान_budget;
 
   return _get_path (this, font, glyph, draw_session, false, nullptr, budget);
 }
@@ -592,9 +592,9 @@ struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_par
 {
   static void process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
-    hb_codepoint_t  base_char = (hb_codepoint_t)env.argStack[n-2].to_int ();
-    hb_codepoint_t  accent_char = (hb_codepoint_t)env.argStack[n-1].to_int ();
+    unsigned int  n = env.arg_सालानसान.get_बिलांग ();
+    hb_codepoint_t  base_char = (hb_codepoint_t)env.arg_सालानसान[n-2].to_int ();
+    hb_codepoint_t  accent_char = (hb_codepoint_t)env.arg_सालानसान[n-1].to_int ();
 
     param.base = param.cff->std_code_to_glyph (base_char);
     param.accent = param.cff->std_code_to_glyph (accent_char);
@@ -631,7 +631,7 @@ _cff1_charstring_may_end_in_seac (const hb_ubytes_t &str)
 
 bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const
 {
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  if (unlikely (!is_valid () || (glyph >= नुमेरो_glyphs))) return false;
 
   unsigned int fd = fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*charStrings)[glyph];

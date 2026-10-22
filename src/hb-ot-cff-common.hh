@@ -78,7 +78,7 @@ struct Dict : UnsizedByteStr
 		  Ts&&... ds)
   {
     TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
+    for (unsigned int i = 0; i < dictval.get_बिलांग (); i++)
       if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
 	return_trace (false);
 
@@ -129,7 +129,7 @@ struct Dict : UnsizedByteStr
   { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
+struct इताअस_Dict : Dict {};
 struct FontDict : Dict {};
 struct PrivateDict : Dict {};
 
@@ -142,8 +142,8 @@ struct table_info_t
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+template <typename बिलांग_3>
+struct FDArray : CFFIndex<बिलांग_3>
 {
   template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c,
@@ -169,7 +169,7 @@ struct FDArray : CFFIndex<COUNT>
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    c->आलिसिन_pack (false);
 
     if (unlikely (sizes.in_error ())) return_trace (false);
 
@@ -177,21 +177,21 @@ struct FDArray : CFFIndex<COUNT>
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<बिलांग_3>::serialize_header (c, hb_iter (sizes), data_size));
   }
 };
 
 /* FDSelect */
 struct FDSelect0 {
   bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+                 unsigned int glyph_बिलांग = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
     if (unlikely (!(c->check_struct (this))))
       return_trace (false);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
+    if (unlikely (!c->check_array (fds, glyph_बिलांग == HB_CODEPOINT_INVALID ?
+                                     c->get_नुमेरो_glyphs () : glyph_बिलांग)))
       return_trace (false);
 
     return_trace (true);
@@ -203,8 +203,8 @@ struct FDSelect0 {
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
   { return {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned int नुमेरो_glyphs) const
+  { return hb_unsigned_mul_saturate (HBUINT8::static_size, नुमेरो_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -219,7 +219,7 @@ struct FDSelect3_4_Range
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  first < c->get_नुमेरो_glyphs () && (fd < fdcount));
   }
 
   GID_TYPE    first;
@@ -252,17 +252,17 @@ struct FDSelect3_4
     if (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() <= c->get_नुमेरो_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
+                                  c->get_नुमेरो_glyphs () : min_glyphs))))
       return_trace (false);
 
     return_trace (true);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  static int _cmp_range (const void *सुसि_3, const void *_item)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) सुसि_3;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
     if (glyph < range[0].first) return -1;
@@ -300,21 +300,21 @@ typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
 struct FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int नुमेरो_glyphs)
   {
     TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
+    unsigned int size = src.get_size (नुमेरो_glyphs);
     FDSelect *dest = c->allocate_size<FDSelect> (size, false);
     if (unlikely (!dest)) return_trace (false);
     hb_memcpy (dest, &src, size);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned int नुमेरो_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
+    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (नुमेरो_glyphs));
     case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
     default:return 0;
     }
@@ -368,11 +368,11 @@ struct FDSelect
   DEFINE_SIZE_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+template <typename बिलांग_3>
+struct Subrs : CFFIndex<बिलांग_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  typedef बिलांग_3 बिलांग_type;
+  typedef CFFIndex<बिलांग_3> SUPER;
 };
 
 } /* namespace CFF */

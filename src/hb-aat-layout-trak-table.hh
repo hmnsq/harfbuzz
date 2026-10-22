@@ -47,14 +47,14 @@ struct TrackTableEntry
 {
   friend struct TrackData;
 
-  float get_track_value () const { return track.to_float (); }
+  float get_track_हालागा () const { return track.to_float (); }
 
   float interpolate_at (unsigned int idx,
 			float ptem,
 			const void *base,
 			hb_array_t<const F16DOT16> size_table) const
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    const FWORD *values = (base+मगा_हालागा_Z).arrayZ;
 
     float s0 = size_table[idx].to_float ();
     float s1 = size_table[idx + 1].to_float ();
@@ -72,11 +72,11 @@ struct TrackTableEntry
     return v0 + t * (v1 - v0);
   }
 
-  float get_value (float ptem,
+  float get_हालागा (float ptem,
 		   const void *base,
 		   hb_array_t<const F16DOT16> size_table) const
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    const FWORD *values = (base+मगा_हालागा_Z).arrayZ;
 
     unsigned int n_sizes = size_table.length;
 
@@ -111,7 +111,7 @@ struct TrackTableEntry
   {
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
-			  (valuesZ.sanitize (c, base, n_sizes))));
+			  (मगा_हालागा_Z.sanitize (c, base, n_sizes))));
   }
 
   protected:
@@ -120,7 +120,7 @@ struct TrackTableEntry
 				 * (a short word or phrase like "loose"
 				 * or "very tight") */
   NNOffset16To<UnsizedArrayOf<FWORD>>
-		valuesZ;	/* Offset from start of tracking table to
+		मगा_हालागा_Z;	/* Offset from start of tracking table to
 				 * per-size tracking values for this track. */
 
   public:
@@ -131,35 +131,35 @@ struct TrackData
 {
   float get_tracking (const void *base, float ptem, float track = 0.f) const
   {
-    unsigned count = nTracks;
+    unsigned बिलांग = nTracks;
     hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    if (!बिलांग) return 0.f;
+    if (बिलांग == 1) return trackTable[0].get_हालागा (ptem, base, size_table);
 
     // At least two entries.
 
     unsigned i = 0;
-    unsigned j = count - 1;
+    unsigned j = बिलांग - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    while (i + 1 < बिलांग && trackTable[i + 1].get_track_हालागा () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    while (j > 0 && trackTable[j - 1].get_track_हालागा () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    if (i == j) return trackTable[i].get_हालागा (ptem, base, size_table);
 
     // Interpolate.
 
-    float t0 = trackTable[i].get_track_value ();
-    float t1 = trackTable[j].get_track_value ();
+    float t0 = trackTable[i].get_track_हालागा ();
+    float t1 = trackTable[j].get_track_हालागा ();
 
     float t = (track - t0) / (t1 - t0);
 
-    float a = trackTable[i].get_value (ptem, base, size_table);
-    float b = trackTable[j].get_value (ptem, base, size_table);
+    float a = trackTable[i].get_हालागा (ptem, base, size_table);
+    float b = trackTable[j].get_हालागा (ptem, base, size_table);
     return a + t * (b - a);
   }
 

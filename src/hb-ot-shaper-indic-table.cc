@@ -46,7 +46,7 @@
 #define OT_Repha I_Cat(Repha)
 #define OT_Ra I_Cat(Ra)
 #define OT_CM I_Cat(CM)
-#define OT_Symbol I_Cat(Symbol)
+#define OT_सिम्बोलो I_Cat(सिम्बोलो_2)
 #define OT_CS I_Cat(CS)
 #define OT_SMPst I_Cat(SMPst)
 /* khmer */
@@ -97,7 +97,7 @@ static_assert (OT_VPst == M_Cat(VPst), "");
 #define _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
 #define _OT_SM   OT_SM           /*  50 chars; SM */
 #define _OT_SP   OT_SMPst        /*   6 chars; SMPst */
-#define _OT_S    OT_Symbol       /*  22 chars; Symbol */
+#define _OT_S    OT_सिम्बोलो       /*  22 chars; Symbol */
 #define _OT_V    OT_V            /* 172 chars; V */
 #define _OT_VA   OT_VAbv         /*  18 chars; VAbv */
 #define _OT_VB   OT_VBlw         /*   7 chars; VBlw */
@@ -123,7 +123,7 @@ static_assert (OT_VPst == M_Cat(VPst), "");
 #define _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
 #define _POS_SM  POS_SMVD        /* 130 chars; SMVD */
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 
 #define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
 
@@ -132,7 +132,7 @@ static_assert (OT_VPst == M_Cat(VPst), "");
 
 #include <stdint.h>
 
-static const uint16_t _hb_indic_values[42]=
+static const uint16_t hb_indic_मगा_हालागा[42]=
 {
     _(A,SM),  _(As,X),   _(C,C),  _(CM,C),  _(CS,C),  _(DC,C),  _(GB,C),   _(H,B),
      _(H,T),   _(H,X),   _(M,A),  _(M,AP),  _(M,AS),   _(M,B),  _(M,BS),  _(M,LM),
@@ -235,7 +235,7 @@ static inline uint8_t _hb_indic_get_categories_index (unsigned u)
 uint16_t
 hb_indic_get_categories (hb_codepoint_t u)
 {
-  return _hb_indic_values[_hb_indic_get_categories_index (u)];
+  return hb_indic_मगा_हालागा[_hb_indic_get_categories_index (u)];
 }
 
 #undef _

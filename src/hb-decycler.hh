@@ -82,21 +82,21 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+struct hb_decycler_बुहोल_t;
 
 struct hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend struct hb_decycler_बुहोल_t;
 
   private:
   bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  hb_decycler_बुहोल_t *tortoise = nullptr;
+  hb_decycler_बुहोल_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+struct hb_decycler_बुहोल_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_बुहोल_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
@@ -119,7 +119,7 @@ struct hb_decycler_node_t
     decycler.hare = this;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_बुहोल_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
@@ -137,9 +137,9 @@ struct hb_decycler_node_t
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  bool visit (uintptr_t हालागा_3)
   {
-    value = value_;
+    value = हालागा_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
@@ -155,9 +155,9 @@ struct hb_decycler_node_t
   private:
   union {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
+    hb_decycler_बुहोल_t *next;
   } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+  hb_decycler_बुहोल_t *prev = nullptr;
   uintptr_t value = 0;
 };
 

@@ -276,22 +276,22 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
       hb_swap (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_बिलांग = nullptr /* IN/OUT */) const
   {
-    if (!start_offset && !seg_count)
+    if (!start_offset && !seg_बिलांग)
       return *this;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
+    unsigned int बिलांग = length;
+    if (unlikely (start_offset > बिलांग))
+      बिलांग = 0;
     else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+      बिलांग -= start_offset;
+    if (seg_बिलांग)
+      बिलांग = *seg_बिलांग = hb_min (बिलांग, *seg_बिलांग);
+    return hb_array_t (arrayZ + start_offset, बिलांग);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_बिलांग) const
+  { return sub_array (start_offset, &seg_बिलांग); }
 
   hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
 
@@ -412,10 +412,10 @@ struct hb_sorted_array_t :
   Type *end () const { return this->arrayZ + this->length; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_बिलांग /* IN/OUT */) const
+  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_बिलांग)); }
+  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_बिलांग) const
+  { return sub_array (start_offset, &seg_बिलांग); }
 
   hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
 

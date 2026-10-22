@@ -71,10 +71,10 @@ buffer_verify_monotone (hb_buffer_t *buffer,
 
   bool is_forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned int नुमेरो_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &नुमेरो_glyphs);
 
-  for (unsigned int i = 1; i < num_glyphs; i++)
+  for (unsigned int i = 1; i < नुमेरो_glyphs; i++)
     if (info[i-1].cluster != info[i].cluster &&
 	(info[i-1].cluster < info[i].cluster) != is_forward)
     {
@@ -90,7 +90,7 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
 			       hb_buffer_t  *text_buffer,
 			       hb_font_t          *font,
 			       const hb_feature_t *features,
-			       unsigned int        num_features,
+			       unsigned int        नुमेरो_features,
 			       const char * const *shapers)
 {
   if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
@@ -106,29 +106,29 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
   hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
   hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned int नुमेरो_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &नुमेरो_glyphs);
 
-  unsigned int num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned int नुमेरो_chars;
+  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &नुमेरो_chars);
 
   /* Chop text and shape fragments. */
   bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
   unsigned int start = 0;
-  unsigned int text_start = forward ? 0 : num_chars;
+  unsigned int text_start = forward ? 0 : नुमेरो_chars;
   unsigned int text_end = text_start;
-  for (unsigned int end = 1; end < num_glyphs + 1; end++)
+  for (unsigned int end = 1; end < नुमेरो_glyphs + 1; end++)
   {
-    if (end < num_glyphs &&
+    if (end < नुमेरो_glyphs &&
 	(info[end].cluster == info[end-1].cluster ||
 	 info[end-(forward?0:1)].mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK))
 	continue;
 
     /* Shape segment corresponding to glyphs start..end. */
-    if (end == num_glyphs)
+    if (end == नुमेरो_glyphs)
     {
       if (forward)
-	text_end = num_chars;
+	text_end = नुमेरो_chars;
       else
 	text_start = 0;
     }
@@ -137,7 +137,7 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
       if (forward)
       {
 	unsigned int cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	while (text_end < नुमेरो_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
       else
@@ -161,12 +161,12 @@ buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
     hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
     if (0 < text_start)
       flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-    if (text_end < num_chars)
+    if (text_end < नुमेरो_chars)
       flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
     hb_buffer_set_flags (fragment, flags);
 
     hb_buffer_append (fragment, text_buffer, text_start, text_end);
-    if (!hb_shape_full (font, fragment, features, num_features, shapers) ||
+    if (!hb_shape_full (font, fragment, features, नुमेरो_features, shapers) ||
 	!fragment->successful)
       return true;
     hb_buffer_append (reconstruction, fragment, 0, -1);
@@ -201,7 +201,7 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
 				hb_buffer_t        *text_buffer,
 				hb_font_t          *font,
 				const hb_feature_t *features,
-				unsigned int        num_features,
+				unsigned int        नुमेरो_features,
 				const char * const *shapers)
 {
   if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
@@ -249,11 +249,11 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   hb_buffer_set_segment_properties (fragments[1], &props);
   hb_buffer_set_segment_properties (reconstruction, &props);
 
-  unsigned num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  unsigned नुमेरो_glyphs;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &नुमेरो_glyphs);
 
-  unsigned num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  unsigned नुमेरो_chars;
+  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &नुमेरो_chars);
 
   bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
 
@@ -268,20 +268,20 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
     unsigned start = 0;
     unsigned text_start = 0;
     unsigned text_end = 0;
-    for (unsigned end = 1; end < num_glyphs + 1; end++)
+    for (unsigned end = 1; end < नुमेरो_glyphs + 1; end++)
     {
-      if (end < num_glyphs &&
+      if (end < नुमेरो_glyphs &&
 	  (info[end].cluster == info[end-1].cluster ||
 	   info[end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
 	  continue;
 
       /* Accumulate segment corresponding to glyphs start..end. */
-      if (end == num_glyphs)
-	text_end = num_chars;
+      if (end == नुमेरो_glyphs)
+	text_end = नुमेरो_chars;
       else
       {
 	unsigned cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
+	while (text_end < नुमेरो_chars && text[text_end].cluster < cluster)
 	  text_end++;
       }
       assert (text_start < text_end);
@@ -293,7 +293,7 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
       hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
       if (0 < text_start)
 	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-      if (text_end < num_chars)
+      if (text_end < नुमेरो_chars)
 	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
       hb_buffer_set_flags (fragment, flags);
 #endif
@@ -310,11 +310,11 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   /*
    * Shape the two fragment streams.
    */
-  if (!hb_shape_full (font, fragments[0], features, num_features, shapers) ||
+  if (!hb_shape_full (font, fragments[0], features, नुमेरो_features, shapers) ||
       !fragments[0]->successful)
     return ret;
 
-  if (!hb_shape_full (font, fragments[1], features, num_features, shapers) ||
+  if (!hb_shape_full (font, fragments[1], features, नुमेरो_features, shapers) ||
       !fragments[1]->successful)
     return ret;
 
@@ -330,15 +330,15 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
   {
     unsigned fragment_idx = 0;
     unsigned fragment_start[2] {0, 0};
-    unsigned fragment_num_glyphs[2];
+    unsigned fragment_नुमेरो_glyphs[2];
     hb_glyph_info_t *fragment_info[2];
     for (unsigned i = 0; i < 2; i++)
-      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_num_glyphs[i]);
-    while (fragment_start[0] < fragment_num_glyphs[0] ||
-	   fragment_start[1] < fragment_num_glyphs[1])
+      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_नुमेरो_glyphs[i]);
+    while (fragment_start[0] < fragment_नुमेरो_glyphs[0] ||
+	   fragment_start[1] < fragment_नुमेरो_glyphs[1])
     {
       unsigned fragment_end = fragment_start[fragment_idx] + 1;
-      while (fragment_end < fragment_num_glyphs[fragment_idx] &&
+      while (fragment_end < fragment_नुमेरो_glyphs[fragment_idx] &&
 	     (fragment_info[fragment_idx][fragment_end].cluster == fragment_info[fragment_idx][fragment_end - 1].cluster ||
 	      fragment_info[fragment_idx][fragment_end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
 	fragment_end++;
@@ -380,7 +380,7 @@ bool
 hb_buffer_t::verify (hb_buffer_t        *text_buffer,
 		     hb_font_t          *font,
 		     const hb_feature_t *features,
-		     unsigned int        num_features,
+		     unsigned int        नुमेरो_features,
 		     const char * const *shapers)
 {
   bool ret = true;
@@ -388,11 +388,11 @@ hb_buffer_t::verify (hb_buffer_t        *text_buffer,
   if (!monotone)
     ret = false;
   if (monotone &&
-      !buffer_verify_unsafe_to_break (this, text_buffer, font, features, num_features, shapers))
+      !buffer_verify_unsafe_to_break (this, text_buffer, font, features, नुमेरो_features, shapers))
     ret = false;
   if (monotone &&
       (flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) != 0 &&
-      !buffer_verify_unsafe_to_concat (this, text_buffer, font, features, num_features, shapers))
+      !buffer_verify_unsafe_to_concat (this, text_buffer, font, features, नुमेरो_features, shapers))
     ret = false;
   if (!ret)
   {

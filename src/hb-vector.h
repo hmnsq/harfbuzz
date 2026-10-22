@@ -99,14 +99,14 @@ hb_vector_draw_destroy (hb_vector_draw_t *draw);
 
 HB_EXTERN hb_bool_t
 hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key,
+                              hb_user_data_सुसि_t *सुसि_2,
                               void               *data,
                               hb_destroy_func_t   destroy,
                               hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key);
+                              hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN void
 hb_vector_draw_set_transform (hb_vector_draw_t *draw,
@@ -220,14 +220,14 @@ hb_vector_paint_destroy (hb_vector_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
+                               hb_user_data_सुसि_t *सुसि_2,
                                void               *data,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key);
+                               hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN void
 hb_vector_paint_set_transform (hb_vector_paint_t *paint,

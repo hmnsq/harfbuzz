@@ -43,7 +43,7 @@ HB_BEGIN_DECLS
  *
  * Since: 0.9.21
  */
-#define HB_SET_VALUE_INVALID HB_CODEPOINT_INVALID
+#define HB_SET_हालागा_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_set_t:
@@ -71,14 +71,14 @@ hb_set_destroy (hb_set_t *set);
 
 HB_EXTERN hb_bool_t
 hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
+		      hb_user_data_सुसि_t *सुसि_2,
 		      void *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key);
+		      hb_user_data_सुसि_t *सुसि_2);
 
 
 /* Returns false if allocation has failed before */
@@ -116,7 +116,7 @@ hb_set_add_range (hb_set_t       *set,
 HB_EXTERN void
 hb_set_add_sorted_array (hb_set_t             *set,
 		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints);
+		         unsigned int          नुमेरो_codepoints);
 
 HB_EXTERN void
 hb_set_del (hb_set_t       *set,

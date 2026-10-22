@@ -94,12 +94,12 @@ struct Coverage : public OT::Layout::Common::Coverage
                                             It glyphs,
                                             unsigned max_size)
   {
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
-    TRY (make_coverage (c, glyphs, coverage_prime_id, max_size));
+    TRY_ASSIGN (unsigned coverage_पांगुनाहिन_id, c.graph.new_बुहोल (nullptr, nullptr));
+    auto& coverage_पांगुनाहिन_vertex = c.graph.vertices_[coverage_पांगुनाहिन_id];
+    TRY (make_coverage (c, glyphs, coverage_पांगुनाहिन_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
-    TRY(coverage_prime_vertex.add_parent (parent_id, false));
+    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_पांगुनाहिन_id, link_position));
+    TRY(coverage_पांगुनाहिन_vertex.add_parent (parent_id, false));
 
     return Ok();
   }

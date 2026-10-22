@@ -41,7 +41,7 @@ struct hb_subset_context_t :
        hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
 {
   const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  static return_t default_return_हालागा () { return true; }
 
   private:
   template <typename T, typename ...Ts> auto

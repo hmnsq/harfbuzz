@@ -54,7 +54,7 @@ static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int of
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
   return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 }
 template<typename Type>
 static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
@@ -62,7 +62,7 @@ static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
   return * reinterpret_cast<Type*> ((char *) P + offset);
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 }
 
 /* StructAfter<T>(X) returns the struct T& that is placed after X.
@@ -70,16 +70,16 @@ static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+static inline auto StructAfter(const TObject &X, Ts... मगा_कातविरान) HB_AUTO_RETURN((
+  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (मगा_कातविरान)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
+static inline auto StructAfter(TObject &X, Ts... मगा_कातविरान) HB_AUTO_RETURN((
   sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (मगा_कातविरान)...))
   : *reinterpret_cast<Type*> (0)
 ))
 
@@ -94,17 +94,17 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
 #endif
 
 /* Check _assertion in a method environment */
-#define _DEFINE_INSTANCE_ASSERTION1(_line, _assertion) \
-  void _instance_assertion_on_line_##_line () const \
+#define _DEFINE_INSTANCE_ASSERTION1(लिन्या_2, _assertion) \
+  void instance_assertion_on_लिन्या##_line () const \
   { static_assert ((_assertion), ""); }
-# define _DEFINE_INSTANCE_ASSERTION0(_line, _assertion) _DEFINE_INSTANCE_ASSERTION1 (_line, _assertion)
+# define _DEFINE_INSTANCE_ASSERTION0(लिन्या_2, _assertion) _DEFINE_INSTANCE_ASSERTION1 (लिन्या_2, _assertion)
 # define DEFINE_INSTANCE_ASSERTION(_assertion) _DEFINE_INSTANCE_ASSERTION0 (__LINE__, _assertion)
 
 /* Check that _code compiles in a method environment */
-#define _DEFINE_COMPILES_ASSERTION1(_line, _code) \
-  void _compiles_assertion_on_line_##_line () const \
+#define _DEFINE_COMPILES_ASSERTION1(लिन्या_2, _code) \
+  void compiles_assertion_on_लिन्या##_line () const \
   { _code; }
-# define _DEFINE_COMPILES_ASSERTION0(_line, _code) _DEFINE_COMPILES_ASSERTION1 (_line, _code)
+# define _DEFINE_COMPILES_ASSERTION0(लिन्या_2, _code) _DEFINE_COMPILES_ASSERTION1 (लिन्या_2, _code)
 # define DEFINE_COMPILES_ASSERTION(_code) _DEFINE_COMPILES_ASSERTION0 (__LINE__, _code)
 
 

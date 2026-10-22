@@ -33,14 +33,14 @@ namespace OT {
 namespace Layout {
 namespace Common {
 
-template <typename Types, typename Value = HBUINT16>
+template <typename Types, typename हालागा = HBUINT16>
 struct RangeRecord
 {
   typename Types::HBGlyphID     first;          /* First GlyphID in the range */
   typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  हालागा                         value;          /*हालागा*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_SIZE_STATIC (2 * Types::size + हालागा::static_size);
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -86,10 +86,10 @@ struct RangeRecord
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
 extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+template <typename Spec, typename हालागा>
+struct Null<OT::Layout::Common::RangeRecord<Spec, हालागा>> {
+  static OT::Layout::Common::RangeRecord<Spec, हालागा> const & get_null () {
+    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, हालागा> *> (_hb_Null_OT_RangeRecord);
   }
 };
 

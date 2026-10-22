@@ -115,7 +115,7 @@ HB_EXTERN unsigned int
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
                                 unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
+                                unsigned int *entry_बिलांग, /* IN/OUT */
                                 hb_subset_depend_entry_t *entries /* OUT */);
 
 HB_EXTERN hb_bool_t

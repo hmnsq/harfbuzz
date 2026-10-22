@@ -53,7 +53,7 @@
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
 #define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
+#define OT_बिलांग(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
 					 / (unsigned int)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
 #define OT_DISTANCE(From,To)		((unsigned int) \
@@ -90,18 +90,18 @@
 /* Shorthand. */
 #define G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
+#define OT_UARRAY(Name, मगा_बागाय_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+	OT_UINT16(OT_बिलांग(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
+	मगा_बागाय_2 \
 	OT_LABEL_END
 
-#define OT_UHEADLESSARRAY(Name, Items) \
+#define OT_UHEADLESSARRAY(Name, मगा_बागाय_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+	OT_UINT16(OT_बिलांग(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
+	मगा_बागाय_2 \
 	OT_LABEL_END
 
 
@@ -118,16 +118,16 @@
 	OT_LABEL_END \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
+#define OT_SUBLOOKUP(Name, SubFormat, मगा_बागाय_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	मगा_बागाय_2
 
-#define OT_COVERAGE1(Name, Items) \
+#define OT_COVERAGE1(Name, मगा_बागाय_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(1) \
 	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_UARRAY(Name##Glyphs, OT_LIST(मगा_बागाय_2))
 
 
 /*
@@ -174,11 +174,11 @@
 #define TABLE_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
+#define MANIFEST(मगा_बागाय_2) \
 	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
+	OT_UINT16(OT_बिलांग(manifestData, 6)) \
 	OT_LABEL(manifestData) \
-	Items \
+	मगा_बागाय_2 \
 	OT_LABEL_END
 
 #define MANIFEST_LOOKUP(Tag, Name) \
@@ -310,7 +310,7 @@ OT_TABLE_END
 #undef OT_LABEL_END
 #undef OT_UINT8
 #undef OT_UINT16
-#undef OT_COUNT
+#undef OT_बिलांग
 #undef OT_DISTANCE
 
 #undef OT_LABEL

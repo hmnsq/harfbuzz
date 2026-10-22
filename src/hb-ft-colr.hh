@@ -91,10 +91,10 @@ _hb_ft_unscale_clip_box (hb_font_t *font,
   float xscale = upem / (font->x_scale ? font->x_scale : upem);
   float yscale = upem / (font->y_scale ? font->y_scale : upem);
 
-  *xmin = clip_box->bottom_left.x * xscale;
-  *ymin = clip_box->bottom_left.y * yscale;
-  *xmax = clip_box->top_right.x * xscale;
-  *ymax = clip_box->top_right.y * yscale;
+  *xmin = clip_box->bottom_कालिवा.x * xscale;
+  *ymin = clip_box->bottom_कालिवा.y * yscale;
+  *xmax = clip_box->इताअस_कानान.x * xscale;
+  *ymax = clip_box->इताअस_कानान.y * yscale;
 }
 
 static unsigned
@@ -132,11 +132,11 @@ struct hb_ft_paint_context_t
 
   void recurse (FT_OpaquePaint paint)
   {
-    if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-    depth_left--;
-    edge_count--;
+    if (unlikely (depth_कालिवा <= 0 || edge_बिलांग <= 0)) return;
+    depth_कालिवा--;
+    edge_बिलांग--;
     _hb_ft_paint (this, paint);
-    depth_left++;
+    depth_कालिवा++;
   }
 
   const hb_ft_font_t *ft_font;
@@ -148,31 +148,31 @@ struct hb_ft_paint_context_t
   hb_color_t foreground;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  int depth_कालिवा = HB_MAX_NESTING_LEVEL;
+  int edge_बिलांग = HB_MAX_GRAPH_EDGE_बिलांग;
 };
 
 static unsigned
-_hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
-				   void *color_line_data,
+hb_ft_color_लिन्या_get_color_stops (hb_color_लिन्या_t *color_लिन्या,
+				   void *color_लिन्या_data,
 				   unsigned int start,
-				   unsigned int *count,
+				   unsigned int *बिलांग,
 				   hb_color_stop_t *color_stops,
 				   void *user_data)
 {
-  FT_ColorLine *cl = (FT_ColorLine *) color_line_data;
+  FT_Color_लिन्या *cl = (FT_Color_लिन्या *) color_लिन्या_data;
   hb_ft_paint_context_t *c = (hb_ft_paint_context_t *) user_data;
 
-  if (count && color_stops)
+  if (बिलांग && color_stops)
   {
     FT_ColorStop stop;
     unsigned wrote = 0;
     FT_ColorStopIterator iter = cl->color_stop_iterator;
 
-    if (start >= cl->color_stop_iterator.num_color_stops)
+    if (start >= cl->color_stop_iterator.नुमेरो_color_stops)
     {
-      *count = 0;
-      return cl->color_stop_iterator.num_color_stops;
+      *बिलांग = 0;
+      return cl->color_stop_iterator.नुमेरो_color_stops;
     }
 
     while (cl->color_stop_iterator.current_color_stop < start)
@@ -187,11 +187,11 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
          //
          // reset the iterator for next time
         cl->color_stop_iterator = iter;
-        return cl->color_stop_iterator.num_color_stops;
+        return cl->color_stop_iterator.नुमेरो_color_stops;
       }
     }
 
-    while (wrote < *count &&
+    while (wrote < *बिलांग &&
 	   FT_Get_Colorline_Stops(c->ft_font->ft_face,
 				  &stop,
 				  &cl->color_stop_iterator))
@@ -237,20 +237,20 @@ _hb_ft_color_line_get_color_stops (hb_color_line_t *color_line,
       wrote++;
     }
 
-    *count = wrote;
+    *बिलांग = wrote;
     // reset the iterator for next time
     cl->color_stop_iterator = iter;
   }
 
-  return cl->color_stop_iterator.num_color_stops;
+  return cl->color_stop_iterator.नुमेरो_color_stops;
 }
 
 static hb_paint_extend_t
-_hb_ft_color_line_get_extend (hb_color_line_t *color_line,
-			      void *color_line_data,
+hb_ft_color_लिन्या_get_extend (hb_color_लिन्या_t *color_लिन्या,
+			      void *color_लिन्या_data,
 			      void *user_data)
 {
-  FT_ColorLine *c = (FT_ColorLine *) color_line_data;
+  FT_Color_लिन्या *c = (FT_Color_लिन्या *) color_लिन्या_data;
   switch (c->extend)
   {
     default:
@@ -310,7 +310,7 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
     case FT_COLR_PAINTFORMAT_COLR_LAYERS:
     {
       FT_OpaquePaint other_paint = {0};
-      hb_decycler_node_t node (c->layers_decycler);
+      hb_decycler_बुहोल_t node (c->layers_decycler);
       while (FT_Get_Paint_Layers (ft_face,
 				  &paint.u.colr_layers.layer_iterator,
 				  &other_paint))
@@ -334,10 +334,10 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
     break;
     case FT_COLR_PAINTFORMAT_LINEAR_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_लिन्या_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_लिन्या_get_color_stops, c,
+	hb_ft_color_लिन्या_get_extend, nullptr
       };
 
       c->funcs->linear_gradient (c->data, &cl,
@@ -351,10 +351,10 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
     break;
     case FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_लिन्या_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_लिन्या_get_color_stops, c,
+	hb_ft_color_लिन्या_get_extend, nullptr
       };
 
       c->funcs->radial_gradient (c->data, &cl,
@@ -368,10 +368,10 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
     break;
     case FT_COLR_PAINTFORMAT_SWEEP_GRADIENT:
     {
-      hb_color_line_t cl = {
+      hb_color_लिन्या_t cl = {
 	&paint.u.linear_gradient.colorline,
-	_hb_ft_color_line_get_color_stops, c,
-	_hb_ft_color_line_get_extend, nullptr
+	hb_ft_color_लिन्या_get_color_stops, c,
+	hb_ft_color_लिन्या_get_extend, nullptr
       };
 
       c->funcs->sweep_gradient (c->data, &cl,
@@ -385,7 +385,7 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
     {
       /* Optimize cases that can use a simple fill-glyph operation. */
       FT_COLR_Paint fill;
-      if (likely (c->depth_left > 0 && c->edge_count > 0) &&
+      if (likely (c->depth_कालिवा > 0 && c->edge_बिलांग > 0) &&
 	  FT_Get_Paint (ft_face, paint.u.glyph.paint, &fill) &&
 	  fill.format == FT_COLR_PAINTFORMAT_SOLID)
       {
@@ -393,49 +393,49 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 	hb_color_t color;
 	_hb_ft_get_solid_color (c, fill.u.solid.color, &is_foreground, &color);
 
-	c->edge_count--;
-	c->funcs->push_inverse_font_transform (c->data, c->font);
+	c->edge_बिलांग--;
+	c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
 	c->ft_font->lock.unlock ();
 	c->funcs->fill_glyph (c->data, paint.u.glyph.glyphID, c->font,
 			      is_foreground, color);
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
+	c->funcs->आलिसिन_transform (c->data);
 	break;
       }
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
       c->ft_font->lock.unlock ();
-      c->funcs->push_clip_glyph (c->data, paint.u.glyph.glyphID, c->font);
+      c->funcs->इतुलाक_clip_glyph (c->data, paint.u.glyph.glyphID, c->font);
       c->ft_font->lock.lock ();
-      c->funcs->push_font_transform (c->data, c->font);
+      c->funcs->इतुलाक_font_transform (c->data, c->font);
       c->recurse (paint.u.glyph.paint);
-      c->funcs->pop_transform (c->data);
-      c->funcs->pop_clip (c->data);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
+      c->funcs->आलिसिन_clip (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_COLR_GLYPH:
     {
       hb_codepoint_t gid = paint.u.colr_glyph.glyphID;
 
-      hb_decycler_node_t node (c->glyphs_decycler);
+      hb_decycler_बुहोल_t node (c->glyphs_decycler);
       if (unlikely (!node.visit (gid)))
 	return;
 
-      c->funcs->push_inverse_font_transform (c->data, c->font);
+      c->funcs->इतुलाक_inverse_font_transform (c->data, c->font);
       c->ft_font->lock.unlock ();
       if (c->funcs->color_glyph (c->data, gid, c->font))
       {
 	c->ft_font->lock.lock ();
-	c->funcs->pop_transform (c->data);
+	c->funcs->आलिसिन_transform (c->data);
 	return;
       }
       c->ft_font->lock.lock ();
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
 
       FT_OpaquePaint other_paint = {0};
       if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-				    FT_COLOR_NO_ROOT_TRANSFORM,
+				    FT_COLOR_NO_उगात_TRANSFORM,
 				    &other_paint))
       {
         bool has_clip_box;
@@ -447,19 +447,19 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 	  float xmin, ymin, xmax, ymax;
 	  _hb_ft_unscale_clip_box (c->font, &clip_box,
 				   &xmin, &ymin, &xmax, &ymax);
-	  c->funcs->push_clip_rectangle (c->data, xmin, ymin, xmax, ymax);
+	  c->funcs->इतुलाक_clip_rectangle (c->data, xmin, ymin, xmax, ymax);
 	}
 
 	c->recurse (other_paint);
 
         if (has_clip_box)
-          c->funcs->pop_clip (c->data);
+          c->funcs->आलिसिन_clip (c->data);
       }
     }
     break;
     case FT_COLR_PAINTFORMAT_TRANSFORM:
     {
-      c->funcs->push_transform (c->data,
+      c->funcs->इतुलाक_transform (c->data,
 				paint.u.transform.affine.xx / 65536.f,
 				paint.u.transform.affine.yx / 65536.f,
 				paint.u.transform.affine.xy / 65536.f,
@@ -467,7 +467,7 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
 				paint.u.transform.affine.dx / 65536.f,
 				paint.u.transform.affine.dy / 65536.f);
       c->recurse (paint.u.transform.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_TRANSLATE:
@@ -475,9 +475,9 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
       float dx = paint.u.translate.dx / 65536.f;
       float dy = paint.u.translate.dy / 65536.f;
 
-      c->funcs->push_translate (c->data, dx, dy);
+      c->funcs->इतुलाक_translate (c->data, dx, dy);
       c->recurse (paint.u.translate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_SCALE:
@@ -487,9 +487,9 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
       float sx = paint.u.scale.scale_x / 65536.f;
       float sy = paint.u.scale.scale_y / 65536.f;
 
-      c->funcs->push_scale_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->इतुलाक_scale_around_center (c->data, sx, sy, dx, dy);
       c->recurse (paint.u.scale.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_ROTATE:
@@ -498,9 +498,9 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
       float dy = paint.u.rotate.center_y / 65536.f;
       float a = paint.u.rotate.angle / 65536.f;
 
-      c->funcs->push_rotate_around_center (c->data, a, dx, dy);
+      c->funcs->इतुलाक_rotate_around_center (c->data, a, dx, dy);
       c->recurse (paint.u.rotate.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_SKEW:
@@ -510,19 +510,19 @@ _hb_ft_paint (hb_ft_paint_context_t *c,
       float sx = paint.u.skew.x_skew_angle / 65536.f;
       float sy = paint.u.skew.y_skew_angle / 65536.f;
 
-      c->funcs->push_skew_around_center (c->data, sx, sy, dx, dy);
+      c->funcs->इतुलाक_skew_around_center (c->data, sx, sy, dx, dy);
       c->recurse (paint.u.skew.paint);
-      c->funcs->pop_transform (c->data);
+      c->funcs->आलिसिन_transform (c->data);
     }
     break;
     case FT_COLR_PAINTFORMAT_COMPOSITE:
     {
-      c->funcs->push_group (c->data);
+      c->funcs->इतुलाक_group (c->data);
       c->recurse (paint.u.composite.backdrop_paint);
-      c->funcs->push_group (c->data);
+      c->funcs->इतुलाक_group (c->data);
       c->recurse (paint.u.composite.source_paint);
-      c->funcs->pop_group (c->data, _hb_ft_paint_composite_mode (paint.u.composite.composite_mode));
-      c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+      c->funcs->आलिसिन_group (c->data, _hb_ft_paint_composite_mode (paint.u.composite.composite_mode));
+      c->funcs->आलिसिन_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
     }
     break;
 
@@ -564,18 +564,18 @@ hb_ft_paint_glyph_colr (hb_font_t *font,
   }
 
   auto palette_array = hb_array ((const FT_Color *) palette,
-				 palette ? palette_data.num_palette_entries : 0);
+				 palette ? palette_data.नुमेरो_palette_entries : 0);
 
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
   if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+			        FT_COLOR_NO_उगात_TRANSFORM,
 			        &paint))
   {
     hb_ft_paint_context_t c (ft_font, font,
 			     paint_funcs, paint_data,
 			     palette_array, palette_index, foreground);
-    hb_decycler_node_t node (c.glyphs_decycler);
+    hb_decycler_बुहोल_t node (c.glyphs_decycler);
     node.visit (gid);
 
     FT_ClipBox clip_box;
@@ -588,29 +588,29 @@ hb_ft_paint_glyph_colr (hb_font_t *font,
       hb_ft_paint_context_t ce (ft_font, font,
 			        bounded_funcs, &bounded_data,
 			        palette_array, palette_index, foreground);
-      hb_decycler_node_t node2 (ce.glyphs_decycler);
+      hb_decycler_बुहोल_t node2 (ce.glyphs_decycler);
       node2.visit (gid);
       ce.recurse (paint);
       is_bounded = bounded_data.is_bounded ();
     }
 
-    c.funcs->push_font_transform (c.data, font);
+    c.funcs->इतुलाक_font_transform (c.data, font);
 
     if (clip)
     {
       float xmin, ymin, xmax, ymax;
       _hb_ft_unscale_clip_box (font, &clip_box,
 			       &xmin, &ymin, &xmax, &ymax);
-      c.funcs->push_clip_rectangle (c.data, xmin, ymin, xmax, ymax);
+      c.funcs->इतुलाक_clip_rectangle (c.data, xmin, ymin, xmax, ymax);
     }
 
     if (is_bounded)
       c.recurse (paint);
 
     if (clip)
-      c.funcs->pop_clip (c.data);
+      c.funcs->आलिसिन_clip (c.data);
 
-    c.funcs->pop_transform (c.data);
+    c.funcs->आलिसिन_transform (c.data);
 
     return true;
   }

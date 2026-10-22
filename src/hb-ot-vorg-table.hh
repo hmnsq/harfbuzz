@@ -95,15 +95,15 @@ struct VORGFormat1_2
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    auto *vorg_पांगुनाहिन = c->serializer->start_embed<VORGFormat1_2> ();
+    if (unlikely (!c->serializer->check_success (vorg_पांगुनाहिन))) return_trace (false);
 
     auto it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
     | hb_map ([&] (const VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_SET_हालागा_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
@@ -114,7 +114,7 @@ struct VORGFormat1_2
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
+    vorg_पांगुनाहिन->serialize (c->serializer, it, defaultVertOriginY);
     return_trace (true);
   }
 

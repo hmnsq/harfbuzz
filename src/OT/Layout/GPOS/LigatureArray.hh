@@ -10,11 +10,11 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
                                         const Coverage &coverage,
                                         const void *base,
                                         glyph_data_t offsets,
-                                        unsigned count,
-                                        unsigned class_count,
+                                        unsigned बिलांग,
+                                        unsigned class_बिलांग,
                                         const hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  for (const auto _ : hb_zip (coverage, hb_range (बिलांग)))
   {
     if (!c->glyph_set->has (_.first)) continue;
     hb_barrier ();
@@ -29,7 +29,7 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
     anchors.data = (const char *) matrix + HBUINT16::static_size;
 
     hb_sorted_vector_t<unsigned> indexes;
-    collect_ligature_anchor_indexes (rows, class_count, klass_mapping, indexes);
+    collect_ligature_anchor_indexes (rows, class_बिलांग, klass_mapping, indexes);
     collect_anchor_variation_indices (c, matrix, anchors, indexes.iter ());
   }
 }
@@ -61,18 +61,18 @@ struct LigatureArray :
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
                                   const Coverage &coverage,
-                                  unsigned class_count,
+                                  unsigned class_बिलांग,
                                   const hb_map_t &klass_mapping) const
   {
     collect_ligature_variation_indices (c, coverage, this, this->arrayZ,
-                                        this->len, class_count, klass_mapping);
+                                        this->len, class_बिलांग, klass_mapping);
   }
 
   template <typename Iterator,
             hb_requires (hb_is_iterator (Iterator))>
   bool subset (hb_subset_context_t *c,
                Iterator             coverage,
-               unsigned             class_count,
+               unsigned             class_बिलांग,
                const hb_map_t      *klass_mapping,
                hb_sorted_vector_t<hb_codepoint_t> &new_coverage /* OUT */) const
   {
@@ -87,9 +87,9 @@ struct LigatureArray :
                         | hb_filter (glyph_map, hb_first))
     {
       const LigatureAttach& src = (this + _.second);
-      bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+      bool non_empty = + hb_range (src.rows * class_बिलांग)
+                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_बिलांग); })
+                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_बिलांग, index % class_बिलांग, class_बिलांग); })
                        | hb_any;
 
       if (!non_empty) continue;
@@ -98,8 +98,8 @@ struct LigatureArray :
       if (unlikely (!matrix)) return_trace (false);
 
       auto indexes =
-          + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+          + hb_range (src.rows * class_बिलांग)
+          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_बिलांग); })
           ;
       ret |= matrix->serialize_subset (c,
 				       _.second,

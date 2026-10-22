@@ -19,9 +19,9 @@ _write_loca (IteratorIn&& it,
 	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
 	     bool short_offsets,
 	     TypeOut *dest,
-	     unsigned num_offsets)
+	     unsigned नुमेरो_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
+  unsigned कानान_shift = short_offsets ? 1 : 0;
   unsigned offset = 0;
   TypeOut value;
   value = 0;
@@ -32,22 +32,22 @@ _write_loca (IteratorIn&& it,
     hb_codepoint_t gid = _.first;
     for (; last < gid; last++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_मेनसाहे (SUBSET, nullptr, "loca entry empty offset %u", offset);
       *dest++ = value;
     }
 
     unsigned padded_size = *it++;
     offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    DEBUG_मेनसाहे (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
+    value = offset >> कानान_shift;
     *dest++ = value;
 
     last++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  unsigned नुमेरो_glyphs = नुमेरो_offsets - 1;
+  for (; last < नुमेरो_glyphs; last++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_मेनसाहे (SUBSET, nullptr, "loca entry empty offset %u", offset);
     *dest++ = value;
   }
 }
@@ -56,31 +56,31 @@ static bool
 _add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
 {
   hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
+  hb_blob_t *head_पांगुनाहिन_blob = hb_blob_copy_writable_or_fail (head_blob);
   hb_blob_destroy (head_blob);
 
-  if (unlikely (!head_prime_blob))
+  if (unlikely (!head_पांगुनाहिन_blob))
     return false;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
+  head *head_पांगुनाहिन = (head *) hb_blob_get_data_writable (head_पांगुनाहिन_blob, nullptr);
+  head_पांगुनाहिन->indexToLocFormat = use_short_loca ? 0 : 1;
   if (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    head_पांगुनाहिन->xMin = plan->head_maxp_info.xMin;
+    head_पांगुनाहिन->xMax = plan->head_maxp_info.xMax;
+    head_पांगुनाहिन->yMin = plan->head_maxp_info.yMin;
+    head_पांगुनाहिन->yMax = plan->head_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
+    unsigned orig_flag = head_पांगुनाहिन->flags;
     if (plan->head_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
     else
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    head_पांगुनाहिन->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  bool success = plan->add_table (HB_OT_TAG_head, head_पांगुनाहिन_blob);
 
-  hb_blob_destroy (head_prime_blob);
+  hb_blob_destroy (head_पांगुनाहिन_blob);
   return success;
 }
 
@@ -92,25 +92,25 @@ _add_loca_and_head (hb_subset_context_t *c,
 		    bool use_short_loca,
 		    bool extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
+  unsigned नुमेरो_offsets = c->plan->नुमेरो_output_glyphs () + 1;
   unsigned entry_size = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  char *loca_पांगुनाहिन_data = (char *) hb_malloc2 (नुमेरो_offsets, entry_size);
 
-  if (unlikely (!loca_prime_data)) return false;
+  if (unlikely (!loca_पांगुनाहिन_data)) return false;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_मेनसाहे (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
+	     entry_size, नुमेरो_offsets, entry_size * नुमेरो_offsets);
 
   if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_पांगुनाहिन_data, नुमेरो_offsets);
   else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_पांगुनाहिन_data, नुमेरो_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
+  hb_blob_t *loca_blob = hb_blob_create (loca_पांगुनाहिन_data,
+					 entry_size * नुमेरो_offsets,
 					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+					 loca_पांगुनाहिन_data,
 					 hb_free);
 
   bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)

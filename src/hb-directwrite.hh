@@ -49,13 +49,13 @@ typedef HRESULT (WINAPI *t_DWriteCreateFactory)(
 
 template <typename Type, typename ...Ts>
 static Type *
-hb_directwrite_object_create (Ts&&... args)
+hb_directwrite_object_create (Ts&&... मगा_कातविरान)
 {
   Type *obj = (Type *) hb_calloc (1, sizeof (Type));
   if (unlikely (!obj))
     return nullptr;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  return new (obj) Type (std::forward<Ts> (मगा_कातविरान)...);
 }
 
 template <typename Type>
@@ -72,30 +72,30 @@ hb_directwrite_object_destroy (Type *obj)
 class DWriteFontFileLoader final : public IDWriteFontFileLoader
 {
 private:
-  hb_reference_count_t mRefCount;
+  hb_reference_बिलांग_t m_Ref_बिलांग;
   hb_mutex_t mutex;
   hb_hashmap_t<uint64_t, IDWriteFontFileStream *> mFontStreams;
-  uint64_t mNextFontFileKey = 0;
+  uint64_t m_Next_Font_File_सुसि = 0;
 public:
   DWriteFontFileLoader ()
   {
-    mRefCount.init ();
+    m_Ref_बिलांग.init ();
   }
 
   uint64_t RegisterFontFileStream (IDWriteFontFileStream *fontFileStream)
   {
     fontFileStream->AddRef ();
     hb_lock_t lock {mutex};
-    mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    mFontStreams.set (m_Next_Font_File_सुसि, fontFileStream);
+    return m_Next_Font_File_सुसि++;
   }
-  void UnregisterFontFileStream (uint64_t fontFileKey)
+  void UnregisterFontFileStream (uint64_t font_File_सुसि)
   {
     hb_lock_t lock {mutex};
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_सुसि);
     if (stream)
     {
-      mFontStreams.del (fontFileKey);
+      mFontStreams.del (font_File_सुसि);
       stream->Release ();
     }
   }
@@ -105,28 +105,28 @@ public:
   { return S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    return m_Ref_बिलांग.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
+    signed ref_बिलांग = m_Ref_बिलांग.dec () - 1;
+    assert (ref_बिलांग >= 0);
+    if (ref_बिलांग)
+      return ref_बिलांग;
     hb_directwrite_object_destroy (this);
     return 0;
   }
 
   // IDWriteFontFileLoader methods
   virtual HRESULT STDMETHODCALLTYPE
-  CreateStreamFromKey (void const* fontFileReferenceKey,
-		       uint32_t fontFileReferenceKeySize,
+  Create_Stream_From_सुसि (void const* font_File_Reference_सुसि,
+		       uint32_t font_File_Reference_सुसि_Size,
 		       OUT IDWriteFontFileStream** fontFileStream)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
+    if (font_File_Reference_सुसि_Size != sizeof (uint64_t))
       return E_INVALIDARG;
-    uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
+    uint64_t font_File_सुसि = * (uint64_t *) font_File_Reference_सुसि;
+    IDWriteFontFileStream *stream = mFontStreams.get (font_File_सुसि);
     if (!stream)
       return E_FAIL;
     stream->AddRef ();
@@ -144,13 +144,13 @@ public:
 class DWriteFontFileStream final : public IDWriteFontFileStream
 {
 private:
-  hb_reference_count_t mRefCount;
+  hb_reference_बिलांग_t m_Ref_बिलांग;
   hb_blob_t *mBlob;
   uint8_t *mData;
   unsigned mSize;
   DWriteFontFileLoader *mLoader;
 public:
-  uint64_t fontFileKey;
+  uint64_t font_File_सुसि;
 public:
   DWriteFontFileStream (hb_blob_t *blob);
 
@@ -159,14 +159,14 @@ public:
   { return S_OK; }
   IFACEMETHOD_ (ULONG, AddRef) ()
   {
-    return mRefCount.inc () + 1;
+    return m_Ref_बिलांग.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
+    signed ref_बिलांग = m_Ref_बिलांग.dec () - 1;
+    assert (ref_बिलांग >= 0);
+    if (ref_बिलांग)
+      return ref_बिलांग;
     hb_directwrite_object_destroy (this);
     return 0;
   }

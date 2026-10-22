@@ -255,7 +255,7 @@ HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
 enum glyph_outline_point_type_t
 {
   MOVE_TO,
-  LINE_TO,
+  लिन्या_TO,
   QUADRATIC_TO,
   CUBIC_TO,
 };
@@ -290,7 +290,7 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 typedef struct
 {
   tag_t    tag;
-  uint32_t value;
+  uint32_t हालागा_2;
   uint32_t start;
   uint32_t end;
 } feature_t;
@@ -306,7 +306,7 @@ typedef struct
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
 					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       uint32_t नुमेरो_features,
 					       ptr_d(features_t, output));
 
 HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
@@ -316,7 +316,7 @@ HB_WASM_API (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				  ptr_d(font_t, font),
 				  ptr_d(buffer_t, buffer),
 				  ptr_d(const feature_t, features),
-				  uint32_t num_features,
+				  uint32_t नुमेरो_features,
 				  const char *shaper);
 
 /* Implement these in your shaper. */
@@ -327,7 +327,7 @@ HB_WASM_INTERFACE (bool_t, shape) (ptr_d(void, shape_plan),
 				   ptr_d(font_t, font),
 				   ptr_d(buffer_t, buffer),
 				   ptr_d(const feature_t, features),
-				   uint32_t num_features);
+				   uint32_t नुमेरो_features);
 
 HB_WASM_INTERFACE (void, shape_plan_destroy) (ptr_d(void, shape_plan));
 

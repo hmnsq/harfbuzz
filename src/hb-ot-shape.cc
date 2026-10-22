@@ -78,7 +78,7 @@ _hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
 static void
 hb_ot_shape_collect_features (hb_ot_shape_planner_t          *planner,
 			      const hb_feature_t             *user_features,
-			      unsigned int                    num_user_features);
+			      unsigned int                    नुमेरो_user_features);
 
 hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *face,
 					      const hb_segment_properties_t &props) :
@@ -104,7 +104,7 @@ hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *fac
 
 void
 hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
-				const hb_ot_shape_plan_key_t &key)
+				const hb_ot_shape_plan_सुसि_t &key)
 {
   plan.props = props;
   plan.shaper = shaper;
@@ -225,7 +225,7 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
 
 bool
 hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
-			   const hb_shape_plan_key_t     *key)
+			   const hb_shape_plan_सुसि_t     *key)
 {
   map.init ();
 
@@ -234,7 +234,7 @@ hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
 
   hb_ot_shape_collect_features (&planner,
 				key->user_features,
-				key->num_user_features);
+				key->नुमेरो_user_features);
 
   planner.compile (*this, key->ot);
 
@@ -320,7 +320,7 @@ horizontal_features[] =
 static void
 hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
 			      const hb_feature_t    *user_features,
-			      unsigned int           num_user_features)
+			      unsigned int           नुमेरो_user_features)
 {
   hb_ot_map_builder_t *map = &planner->map;
 
@@ -354,7 +354,7 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
 #endif
 
   /* Random! */
-  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_VALUE);
+  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_हालागा);
 
   map->enable_feature (HB_TAG ('H','a','r','f')); /* Considered required. */
   map->enable_feature (HB_TAG ('H','A','R','F')); /* Considered discretionary. */
@@ -384,12 +384,12 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
      * matter which script/langsys it is listed (or not) under.
      * See various bugs referenced from:
      * https://github.com/harfbuzz/harfbuzz/issues/63 */
-    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_SEARCH);
+    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_हानाप);
   }
 
-  if (num_user_features)
+  if (नुमेरो_user_features)
     map->is_simple = false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  for (unsigned int i = 0; i < नुमेरो_user_features; i++)
   {
     const hb_feature_t *feature = &user_features[i];
     map->add_feature (feature->tag,
@@ -454,7 +454,7 @@ struct hb_ot_shape_context_t
   hb_face_t *face;
   hb_buffer_t  *buffer;
   const hb_feature_t *user_features;
-  unsigned int        num_user_features;
+  unsigned int        नुमेरो_user_features;
 
   /* Transient stuff */
   hb_direction_t target_direction;
@@ -479,9 +479,9 @@ hb_set_unicode_props (hb_buffer_t *buffer,
    *
    * https://www.unicode.org/reports/tr29/#Regex_Definitions
    */
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     info[i].mask = global_mask;
     _hb_glyph_info_set_unicode_props (&info[i], buffer);
@@ -500,7 +500,7 @@ hb_set_unicode_props (hb_buffer_t *buffer,
 
     /* Marks are already set as continuation by the above line.
      * Handle Emoji_Modifier and ZWJ-continuation. */
-    if (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL &&
+    if (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_सिम्बोलो &&
 		  hb_in_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
     {
       _hb_glyph_info_set_continuation (&info[i], buffer);
@@ -517,7 +517,7 @@ hb_set_unicode_props (hb_buffer_t *buffer,
     else if (unlikely (_hb_glyph_info_is_zwj (&info[i])))
     {
       _hb_glyph_info_set_continuation (&info[i], buffer);
-      if (i + 1 < count &&
+      if (i + 1 < बिलांग &&
 	  _hb_unicode_is_emoji_Extended_Pictographic (info[i + 1].codepoint))
       {
 	i++;
@@ -549,9 +549,9 @@ hb_set_unicode_props (hb_buffer_t *buffer,
 }
 
 static void
-hb_insert_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
+hb_इसिंगित_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
+  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_इसिंगित_DOTTED_CIRCLE))
     return;
 
   if (!(buffer->flags & HB_BUFFER_FLAG_BOT) ||
@@ -612,10 +612,10 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    */
   if (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
   {
-    bool found_number = false, found_letter = false, found_ri = false;
+    bool found_नुमेरो = false, found_letter = false, found_ri = false;
     const auto* info = buffer->info;
-    const auto count = buffer->len;
-    for (unsigned i = 0; i < count; i++)
+    const auto बिलांग = buffer->len;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       auto gc = _hb_glyph_info_get_general_category (&info[i]);
       if (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
@@ -623,12 +623,12 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
 	found_letter = true;
 	break;
       }
-      else if (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	found_number = true;
+      else if (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_नुमेरो)
+	found_नुमेरो = true;
       else if (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
 	found_ri = true;
     }
-    if ((found_number || found_ri) && !found_letter)
+    if ((found_नुमेरो || found_ri) && !found_letter)
       horiz_dir = HB_DIRECTION_LTR;
   }
 
@@ -655,7 +655,7 @@ static inline void
 hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
 
   if (HB_DIRECTION_IS_BACKWARD (c->target_direction))
@@ -663,7 +663,7 @@ hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
     hb_unicode_funcs_t *unicode = buffer->unicode;
     hb_mask_t rtlm_mask = c->plan->rtlm_mask;
 
-    for (unsigned int i = 0; i < count; i++) {
+    for (unsigned int i = 0; i < बिलांग; i++) {
       hb_codepoint_t codepoint = unicode->mirroring (info[i].codepoint);
       if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
@@ -675,7 +675,7 @@ hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
 #ifndef HB_NO_VERTICAL
   if (HB_DIRECTION_IS_VERTICAL (c->target_direction) && !c->plan->has_vert)
   {
-    for (unsigned int i = 0; i < count; i++) {
+    for (unsigned int i = 0; i < बिलांग; i++) {
       hb_codepoint_t codepoint = hb_unicode_funcs_t::vertical_char_for (info[i].codepoint);
       if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
@@ -709,20 +709,20 @@ hb_ot_shape_setup_masks_fraction (const hb_ot_shape_context_t *c)
     post_mask = c->plan->numr_mask | c->plan->frac_mask;
   }
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
     {
       unsigned int start = i, end = i + 1;
       while (start &&
 	     _hb_glyph_info_get_general_category (&info[start - 1]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_नुमेरो)
 	start--;
-      while (end < count &&
+      while (end < बिलांग &&
 	     _hb_glyph_info_get_general_category (&info[end]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_नुमेरो)
 	end++;
       if (start == i || end == i + 1)
       {
@@ -757,7 +757,7 @@ hb_ot_shape_setup_masks (const hb_ot_shape_context_t *c)
   if (c->plan->shaper->setup_masks)
     c->plan->shaper->setup_masks (c->plan, buffer, c->font);
 
-  for (unsigned int i = 0; i < c->num_user_features; i++)
+  for (unsigned int i = 0; i < c->नुमेरो_user_features; i++)
   {
     const hb_feature_t *feature = &c->user_features[i];
     if (!(feature->start == HB_FEATURE_GLOBAL_START && feature->end == HB_FEATURE_GLOBAL_END)) {
@@ -776,11 +776,11 @@ hb_ot_zero_width_default_ignorables (const hb_buffer_t *buffer)
       (buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES))
     return;
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
   unsigned int i = 0;
-  for (i = 0; i < count; i++)
+  for (i = 0; i < बिलांग; i++)
     if (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
     {
       pos[i].x_advance = pos[i].y_advance = 0;
@@ -798,11 +798,11 @@ hb_ot_deal_with_variation_selectors (hb_buffer_t *buffer)
 	buffer->not_found_variation_selector == HB_CODEPOINT_INVALID)
     return;
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (_hb_glyph_info_is_variation_selector (&info[i]))
     {
@@ -821,7 +821,7 @@ hb_ot_hide_default_ignorables (hb_buffer_t *buffer,
       (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES))
     return;
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
 
   hb_codepoint_t invisible = buffer->invisible;
@@ -829,7 +829,7 @@ hb_ot_hide_default_ignorables (hb_buffer_t *buffer,
       (invisible || font->get_nominal_glyph (' ', &invisible)))
   {
     /* Replace default-ignorables with a zero-advance invisible glyph. */
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (_hb_glyph_info_is_default_ignorable (&info[i]))
 	info[i].codepoint = invisible;
@@ -844,9 +844,9 @@ static inline void
 hb_ot_map_glyphs_fast (hb_buffer_t  *buffer)
 {
   /* Normalization process sets up normalizer_glyph_index(), we just copy it. */
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     info[i].codepoint = info[i].normalizer_glyph_index();
 
   buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
@@ -855,9 +855,9 @@ hb_ot_map_glyphs_fast (hb_buffer_t  *buffer)
 static inline void
 hb_synthesize_glyph_classes (hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     hb_ot_layout_glyph_props_flags_t klass;
 
@@ -914,7 +914,7 @@ hb_ot_substitute_plan (const hb_ot_shape_context_t *c)
       hb_synthesize_glyph_classes (buffer);
 
     hb_aat_layout_substitute (c->plan, c->font, c->buffer,
-			      c->user_features, c->num_user_features);
+			      c->user_features, c->नुमेरो_user_features);
     /* The buffer digest is only used by the OT lookup-apply loop;
      * without GPOS ahead, nothing consumes it. */
     if (c->plan->apply_gpos)
@@ -987,9 +987,9 @@ zero_mark_width (hb_glyph_position_t *pos)
 static inline void
 zero_mark_widths_by_gdef (hb_buffer_t *buffer, bool adjust_offsets)
 {
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     if (_hb_glyph_info_is_mark (&info[i]))
     {
       if (adjust_offsets)
@@ -1002,13 +1002,13 @@ static inline void
 hb_ot_position_default (const hb_ot_shape_context_t *c)
 {
   hb_direction_t direction = c->buffer->props.direction;
-  unsigned int count = c->buffer->len;
+  unsigned int बिलांग = c->buffer->len;
   hb_glyph_info_t *info = c->buffer->info;
   hb_glyph_position_t *pos = c->buffer->pos;
 
   if (HB_DIRECTION_IS_HORIZONTAL (direction))
   {
-    c->font->get_glyph_h_advances (count, &info[0].codepoint, sizeof(info[0]),
+    c->font->get_glyph_h_advances (बिलांग, &info[0].codepoint, sizeof(info[0]),
 				   &pos[0].x_advance, sizeof(pos[0]));
     // h_origin defaults to zero; only apply it if the font has it.
     if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
@@ -1016,7 +1016,7 @@ hb_ot_position_default (const hb_ot_shape_context_t *c)
   }
   else
   {
-    c->font->get_glyph_v_advances (count, &info[0].codepoint, sizeof(info[0]),
+    c->font->get_glyph_v_advances (बिलांग, &info[0].codepoint, sizeof(info[0]),
 				   &pos[0].y_advance, sizeof(pos[0]));
     // v_origin defaults to non-zero; apply even if only fallback is there.
     c->font->subtract_glyph_v_origins (c->buffer);
@@ -1117,7 +1117,7 @@ hb_propagate_flags (hb_buffer_t *buffer)
 
   hb_glyph_info_t *info = buffer->info;
 
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_इसिंगित_TATWEEL) == 0)
   {
     foreach_cluster (buffer, start, end)
     {
@@ -1154,8 +1154,8 @@ hb_propagate_flags (hb_buffer_t *buffer)
       mask |= info[i].mask;
 
     if (mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK)
-      mask &= ~HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL;
-    if (mask & HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL)
+      mask &= ~HB_GLYPH_FLAG_SAFE_TO_इसिंगित_TATWEEL;
+    if (mask & HB_GLYPH_FLAG_SAFE_TO_इसिंगित_TATWEEL)
       mask |= HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
 
     mask &= and_mask;
@@ -1176,7 +1176,7 @@ hb_ot_shape_internal (hb_ot_shape_context_t *c)
   _hb_buffer_allocate_unicode_vars (c->buffer);
 
   hb_set_unicode_props (c->buffer, c->plan->map.get_global_mask ());
-  hb_insert_dotted_circle (c->buffer, c->font);
+  hb_इसिंगित_dotted_circle (c->buffer, c->font);
 
   hb_form_clusters (c->buffer);
 
@@ -1206,9 +1206,9 @@ _hb_ot_shape (hb_shape_plan_t    *shape_plan,
 	      hb_font_t          *font,
 	      hb_buffer_t        *buffer,
 	      const hb_feature_t *features,
-	      unsigned int        num_features)
+	      unsigned int        नुमेरो_features)
 {
-  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, num_features};
+  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, नुमेरो_features};
   hb_ot_shape_internal (&c);
 
   return true;
@@ -1252,14 +1252,14 @@ hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 unsigned int
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
 				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   unsigned int    *tag_बिलांग, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */)
 {
 #ifndef HB_NO_OT_SHAPE
-  return shape_plan->ot.map.get_feature_tags (start_offset, tag_count, tags);
+  return shape_plan->ot.map.get_feature_tags (start_offset, tag_बिलांग, tags);
 #else
-  if (tag_count)
-	*tag_count = 0;
+  if (tag_बिलांग)
+	*tag_बिलांग = 0;
   return 0;
 #endif
 }
@@ -1303,18 +1303,18 @@ void
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
 			    hb_buffer_t        *buffer,
 			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    unsigned int        नुमेरो_features,
 			    hb_set_t           *glyphs)
 {
   const char *shapers[] = {"ot", nullptr};
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &buffer->props,
-							     features, num_features, shapers);
+							     features, नुमेरो_features, shapers);
 
   bool mirror = hb_script_get_horizontal_direction (buffer->props.script) == HB_DIRECTION_RTL;
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     add_char (font, buffer->unicode, mirror, info[i].codepoint, glyphs);
 
   hb_set_t *lookups = hb_set_create ();

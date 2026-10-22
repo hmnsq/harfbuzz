@@ -81,7 +81,7 @@ struct hb_priority_queue_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  item_t pop_minimum ()
+  item_t आलिसिन_minimum ()
   {
     assert (!is_empty ());
 
@@ -116,12 +116,12 @@ struct hb_priority_queue_t
     return (index - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  static constexpr unsigned कालिवा_child (unsigned index)
   {
     return 2 * index + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  static constexpr unsigned कानान_child (unsigned index)
   {
     return 2 * index + 2;
   }
@@ -132,24 +132,24 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    unsigned left = कालिवा_child (index);
+    unsigned कानान = कानान_child (index);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    bool has_कालिवा = left < heap.length;
+    if (!has_कालिवा)
       // If there's no left, then there's also no right.
       return;
 
-    bool has_right = right < heap.length;
+    bool has_कानान = कानान < heap.length;
     if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
+        && (!has_कानान || heap.arrayZ[index].first <= heap.arrayZ[कानान].first))
       return;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    if (!has_कानान || heap.arrayZ[left].first < heap.arrayZ[कानान].first)
       child = left;
     else
-      child = right;
+      child = कानान;
 
     swap (index, child);
     index = child;

@@ -95,7 +95,7 @@ struct hb_gpu_draw_t
   double start_x = 0, start_y = 0;
   double current_x = 0, current_y = 0;
   bool need_moveto = true;
-  unsigned num_curves = 0;
+  unsigned नुमेरो_curves = 0;
   bool success = true;
 
   hb_vector_t<hb_gpu_curve_t> curves;
@@ -134,7 +134,7 @@ struct hb_gpu_draw_t
 
   /* Internal accumulation methods */
   HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
+  HB_INTERNAL void acc_लिन्या_to (double x, double y);
   HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
   HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
 				 double c2x, double c2y,

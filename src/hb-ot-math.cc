@@ -143,10 +143,10 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
  * Since: 1.3.3
  **/
 hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_इताअस_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_top_accent_attachment (glyph, font);
+  return font->face->table.MATH->get_glyph_info().get_इताअस_accent_attachment (glyph, font);
 }
 
 /**
@@ -232,13 +232,13 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
 			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
+			       unsigned int *entries_बिलांग, /* IN/OUT */
 			       hb_ot_math_kern_entry_t *kern_entries /* OUT */)
 {
   return font->face->table.MATH->get_glyph_info().get_kernings (glyph,
 								kern,
 								start_offset,
-								entries_count,
+								entries_बिलांग,
 								kern_entries,
 								font);
 }
@@ -271,12 +271,12 @@ hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
 			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
+			       unsigned int *variants_बिलांग, /* IN/OUT */
 			       hb_ot_math_glyph_variant_t *variants /* OUT */)
 {
   return font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
 								    start_offset,
-								    variants_count,
+								    variants_बिलांग,
 								    variants);
 }
 
@@ -335,7 +335,7 @@ hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
 			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
+			       unsigned int *parts_बिलांग, /* IN/OUT */
 			       hb_ot_math_glyph_part_t *parts, /* OUT */
 			       hb_position_t *italics_correction /* OUT */)
 {
@@ -343,7 +343,7 @@ hb_ot_math_get_glyph_assembly (hb_font_t *font,
 								 direction,
 								 font,
 								 start_offset,
-								 parts_count,
+								 parts_बिलांग,
 								 parts,
 								 italics_correction);
 }

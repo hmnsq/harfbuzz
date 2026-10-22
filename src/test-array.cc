@@ -34,8 +34,8 @@ test_reverse ()
   hb_array_t<int> a (values, 9);
   a.reverse();
 
-  int expected_values[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
-  hb_array_t<int> expected (expected_values, 9);
+  int expected_मगा_हालागा[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+  hb_array_t<int> expected (expected_मगा_हालागा, 9);
   hb_always_assert (a == expected);
 }
 
@@ -46,8 +46,8 @@ test_reverse_range ()
   hb_array_t<int> a (values, 9);
   a.reverse(2, 6);
 
-  int expected_values[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  int expected_मगा_हालागा[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
+  hb_array_t<int> expected (expected_मगा_हालागा, 9);
   hb_always_assert (a == expected);
 }
 
@@ -62,8 +62,8 @@ test_reverse_invalid ()
   a.reverse(5, 5);
   a.reverse(12, 15);
 
-  int expected_values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  int expected_मगा_हालागा[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<int> expected (expected_मगा_हालागा, 9);
   hb_always_assert (a == expected);
 }
 

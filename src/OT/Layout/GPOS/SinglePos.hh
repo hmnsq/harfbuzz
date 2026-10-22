@@ -26,7 +26,7 @@ struct SinglePos
            hb_requires (hb_is_iterator (Iterator))>
   unsigned get_format (Iterator glyph_val_iter_pairs)
   {
-    hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
+    hb_array_t<const हालागा> first_val_iter = hb_second (*glyph_val_iter_pairs);
 
     for (const auto iter : glyph_val_iter_pairs)
       for (const auto _ : hb_zip (iter.second, first_val_iter))
@@ -39,15 +39,15 @@ struct SinglePos
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
   void serialize (hb_serialize_context_t *c,
-                  const ValueBase* src,
-                  ValueFormat src_format,
+                  const हालागा_Base* src,
+                  हालागा_Format src_format,
                   Iterator glyph_val_iter_pairs,
                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
                   unsigned newFormat)
   {
     if (unlikely (!c->extend_min (u.format.v))) return;
     unsigned format = 2;
-    ValueFormat new_format;
+    हालागा_Format new_format;
     new_format = newFormat;
 
     if (glyph_val_iter_pairs)
@@ -95,7 +95,7 @@ struct SinglePos
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -104,7 +104,7 @@ struct SinglePos
     case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
     case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 };
@@ -113,8 +113,8 @@ struct SinglePos
 template<typename Iterator>
 static void
 SinglePos_serialize (hb_serialize_context_t *c,
-                     const ValueBase *src,
-                     ValueFormat src_format,
+                     const हालागा_Base *src,
+                     हालागा_Format src_format,
                      Iterator it,
                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
                      unsigned new_format)

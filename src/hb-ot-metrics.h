@@ -74,12 +74,12 @@ HB_BEGIN_DECLS
 typedef enum {
   HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER		= HB_TAG ('h','a','s','c'),
   HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER	= HB_TAG ('h','d','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP		= HB_TAG ('h','l','g','p'),
+  HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP		= HB_TAG ('h','l','g','p'),
   HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT	= HB_TAG ('h','c','l','a'),
   HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT	= HB_TAG ('h','c','l','d'),
   HB_OT_METRICS_TAG_VERTICAL_ASCENDER		= HB_TAG ('v','a','s','c'),
   HB_OT_METRICS_TAG_VERTICAL_DESCENDER		= HB_TAG ('v','d','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_LINE_GAP		= HB_TAG ('v','l','g','p'),
+  HB_OT_METRICS_TAG_VERTICAL_लिन्या_GAP		= HB_TAG ('v','l','g','p'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE	= HB_TAG ('h','c','r','s'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN	= HB_TAG ('h','c','r','n'),
   HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET	= HB_TAG ('h','c','o','f'),
@@ -102,7 +102,7 @@ typedef enum {
   HB_OT_METRICS_TAG_UNDERLINE_OFFSET		= HB_TAG ('u','n','d','o'),
 
   /*< private >*/
-  _HB_OT_METRICS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_METRICS_TAG_MAX_हालागा = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_metrics_tag_t;
 
 HB_EXTERN hb_bool_t

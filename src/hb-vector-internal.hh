@@ -37,7 +37,7 @@ struct hb_vector_blob_meta_t
   bool in_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+static hb_user_data_सुसि_t hb_vector_blob_meta_user_data_सुसि;
 
 static inline void
 hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
@@ -90,7 +90,7 @@ hb_buf_blob_from (hb_blob_t **recycled_blob,
   bool reused_blob = blob && blob != hb_blob_get_empty ();
   bool new_meta = false;
   auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
+             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_सुसि)
              : nullptr;
   if (!meta)
   {
@@ -131,7 +131,7 @@ hb_buf_blob_from (hb_blob_t **recycled_blob,
 
   if (new_meta &&
       !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+                              &hb_vector_blob_meta_user_data_सुसि,
                               meta,
                               nullptr,
                               true))
@@ -154,7 +154,7 @@ hb_buf_recover_recycled (hb_blob_t *blob,
   if (!blob)
     return;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
+  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_सुसि);
   if (!meta || meta->transferred || !meta->data)
     return;
 
@@ -239,26 +239,26 @@ hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
   if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
     out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_नुमेरो (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_नुमेरो (-ty / y_scale_factor, precision);
     out->append_str (") scale(1,-1)");
   }
   else
   {
     unsigned sprec = out->scale_precision ();
     out->append_str ("matrix(");
-    out->append_num (xx, sprec);
+    out->append_नुमेरो (xx, sprec);
     out->append_c (',');
-    out->append_num (yx, sprec);
+    out->append_नुमेरो (yx, sprec);
     out->append_c (',');
-    out->append_num (-xy, sprec);
+    out->append_नुमेरो (-xy, sprec);
     out->append_c (',');
-    out->append_num (-yy, sprec);
+    out->append_नुमेरो (-yy, sprec);
     out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_नुमेरो (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_नुमेरो (-ty / y_scale_factor, precision);
     out->append_c (')');
   }
 }

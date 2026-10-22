@@ -203,9 +203,9 @@ setup_masks_use (const hb_ot_shape_plan_t *plan,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     info[i].use_category() = hb_use_get_category (info[i].codepoint);
 }
 
@@ -266,9 +266,9 @@ setup_topographical_masks (const hb_ot_shape_plan_t *plan,
       case use_virama_terminated_cluster:
       case use_sakot_terminated_cluster:
       case use_standard_cluster:
-      case use_number_joiner_terminated_cluster:
+      case use_नुमेरो_joiner_terminated_cluster:
       case use_numeral_cluster:
-      case use_symbol_cluster:
+      case use_सिम्बोलो_cluster:
       case use_broken_cluster:
 
 	bool join = last_form == JOINING_FORM_FINA || last_form == JOINING_FORM_ISOL;
@@ -367,7 +367,7 @@ reorder_syllable_use (hb_buffer_t *buffer, unsigned int start, unsigned int end)
 		  (FLAG (use_virama_terminated_cluster) |
 		   FLAG (use_sakot_terminated_cluster) |
 		   FLAG (use_standard_cluster) |
-		   FLAG (use_symbol_cluster) |
+		   FLAG (use_सिम्बोलो_cluster) |
 		   FLAG (use_broken_cluster) |
 		   0))))
     return;
@@ -452,7 +452,7 @@ reorder_use (const hb_ot_shape_plan_t *plan,
   bool ret = false;
   if (buffer->message (font, "start reordering USE"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    if (hb_syllabic_इसिंगित_dotted_circles (font, buffer,
 					   use_broken_cluster,
 					   USE(B),
 					   USE(R)))

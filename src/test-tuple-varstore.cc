@@ -31,8 +31,8 @@ static void
 test_decompile_cvar ()
 {
   const OT::cvar* cvar_table = reinterpret_cast<const OT::cvar*> (cvar_data);
-  unsigned point_count = 65;
-  unsigned axis_count = 1;
+  unsigned point_बिलांग = 65;
+  unsigned axis_बिलांग = 1;
 
   hb_tag_t axis_tag = HB_TAG ('w', 'g', 'h', 't');
   hb_map_t axis_idx_tag_map;
@@ -46,11 +46,11 @@ test_decompile_cvar ()
 
   unsigned len = sizeof (cvar_data);
   hb_bytes_t var_data_bytes{(const char* ) cvar_data + 4, len - 4};
-  bool result = OT::TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, cvar_table,
+  bool result = OT::TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_बिलांग, cvar_table,
                                                             shared_indices, &iterator);
   hb_always_assert (result);
 
-  result = tuple_var_data->decompile_tuple_variations (point_count, false, iterator, &axis_idx_tag_map,
+  result = tuple_var_data->decompile_tuple_variations (point_बिलांग, false, iterator, &axis_idx_tag_map,
                                                        shared_indices, hb_array<const OT::F2DOT14> (),
                                                        tuple_variations);
 

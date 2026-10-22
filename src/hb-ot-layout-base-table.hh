@@ -201,7 +201,7 @@ struct BaseCoord
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -210,7 +210,7 @@ struct BaseCoord
 #ifndef HB_NO_BEYOND_64K
     case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -384,7 +384,7 @@ struct MinMax
   DEFINE_SIZE_ARRAY (6, featMinMaxRecords);
 };
 
-struct BaseValues
+struct Base_मगा_हालागा
 {
   const BaseCoord &get_base_coord (int baseline_tag_index) const
   {
@@ -486,15 +486,15 @@ struct BaseScript
   }
 
   const BaseCoord &get_base_coord (int baseline_tag_index) const
-  { return (this+baseValues).get_base_coord (baseline_tag_index); }
+  { return (this+base_मगा_हालागा).get_base_coord (baseline_tag_index); }
 
-  bool has_values () const { return baseValues; }
+  bool has_मगा_हालागा () const { return base_मगा_हालागा; }
   bool has_min_max () const { return defaultMinMax || baseLangSysRecords; }
 
   void collect_variation_indices (const hb_subset_plan_t* plan,
                                   hb_set_t& varidx_set /* OUT */) const
   {
-    (this+baseValues).collect_variation_indices (varidx_set);
+    (this+base_मगा_हालागा).collect_variation_indices (varidx_set);
     (this+defaultMinMax).collect_variation_indices (plan, varidx_set);
     
     for (const BaseLangSysRecord& _ : baseLangSysRecords)
@@ -507,7 +507,7 @@ struct BaseScript
     auto *out = c->serializer->start_embed (*this);
     if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
-    bool ret = out->baseValues.serialize_subset (c, baseValues, this);
+    bool ret = out->base_मगा_हालागा.serialize_subset (c, base_मगा_हालागा, this);
     ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, this);
 
     unsigned len = 0;
@@ -530,14 +530,14 @@ struct BaseScript
   {
     TRACE_SANITIZE (this);
     return_trace (likely (c->check_struct (this) &&
-			  baseValues.sanitize (c, this) &&
+			  base_मगा_हालागा.sanitize (c, this) &&
 			  defaultMinMax.sanitize (c, this) &&
 			  baseLangSysRecords.sanitize (c, this)));
   }
 
   protected:
-  Offset16To<BaseValues>
-		baseValues;	/* Offset to BaseValues table, from beginning
+  Offset16To<Base_मगा_हालागा>
+		base_मगा_हालागा;	/* Offset to BaseValues table, from beginning
 				 * of BaseScript table (may be NULL) */
   Offset16To<MinMax>
 		defaultMinMax;	/* Offset to MinMax table, from beginning of
@@ -662,7 +662,7 @@ struct Axis
 		     const BaseCoord **coord) const
   {
     const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_values ())
+    if (!base_script.has_मगा_हालागा ())
     {
       *coord = nullptr;
       return false;

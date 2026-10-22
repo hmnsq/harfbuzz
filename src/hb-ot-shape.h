@@ -40,7 +40,7 @@ HB_EXTERN void
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
 			    hb_buffer_t        *buffer,
 			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    unsigned int        नुमेरो_features,
 			    hb_set_t           *glyphs);
 
 HB_EXTERN void
@@ -51,7 +51,7 @@ hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 HB_EXTERN unsigned int
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
 				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   unsigned int    *tag_बिलांग, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */);
 
 /**

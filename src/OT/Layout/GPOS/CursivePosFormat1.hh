@@ -171,7 +171,7 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
   unsigned int parent = j;
   hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
   hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  if  (!(c->lookup_props & LookupFlag::कानान_To_कालिवा))
   {
     unsigned int k = child;
     child = parent;
@@ -265,7 +265,7 @@ struct CursivePosFormat1_2
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return; }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   { (this+coverage).collect_coverage (digest); }
@@ -282,7 +282,7 @@ struct CursivePosFormat1_2
 	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
     hb_barrier ();
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_पासोक;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_from;
     if (unlikely (!skippy_iter.prev (&unsafe_from)))

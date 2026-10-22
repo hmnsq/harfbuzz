@@ -71,7 +71,7 @@ hb_gobject_##name##_get_type () \
 #define HB_DEFINE_OBJECT_TYPE(name) \
 	HB_DEFINE_BOXED_TYPE (name, hb_##name##_reference, hb_##name##_destroy)
 
-#define HB_DEFINE_VALUE_TYPE(name) \
+#define HB_DEFINE_हालागा_TYPE(name) \
 	static hb_##name##_t *_hb_##name##_reference (const hb_##name##_t *l) \
 	{ \
 	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, sizeof (hb_##name##_t)); \
@@ -93,18 +93,18 @@ HB_DEFINE_OBJECT_TYPE (set)
 HB_DEFINE_OBJECT_TYPE (map)
 HB_DEFINE_OBJECT_TYPE (shape_plan)
 HB_DEFINE_OBJECT_TYPE (unicode_funcs)
-HB_DEFINE_VALUE_TYPE (feature)
-HB_DEFINE_VALUE_TYPE (glyph_info)
-HB_DEFINE_VALUE_TYPE (glyph_position)
-HB_DEFINE_VALUE_TYPE (segment_properties)
-HB_DEFINE_VALUE_TYPE (draw_state)
-HB_DEFINE_VALUE_TYPE (color_stop)
-HB_DEFINE_VALUE_TYPE (color_line)
-HB_DEFINE_VALUE_TYPE (user_data_key)
+HB_DEFINE_हालागा_TYPE (feature)
+HB_DEFINE_हालागा_TYPE (glyph_info)
+HB_DEFINE_हालागा_TYPE (glyph_position)
+HB_DEFINE_हालागा_TYPE (segment_properties)
+HB_DEFINE_हालागा_TYPE (draw_state)
+HB_DEFINE_हालागा_TYPE (color_stop)
+HB_DEFINE_हालागा_TYPE (color_लिन्या)
+HB_DEFINE_हालागा_TYPE (user_data_सुसि)
 
-HB_DEFINE_VALUE_TYPE (ot_var_axis_info)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_variant)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_part)
+HB_DEFINE_हालागा_TYPE (ot_var_axis_info)
+HB_DEFINE_हालागा_TYPE (ot_math_glyph_variant)
+HB_DEFINE_हालागा_TYPE (ot_math_glyph_part)
 
 
 #endif

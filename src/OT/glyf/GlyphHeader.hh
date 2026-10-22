@@ -11,7 +11,7 @@ namespace glyf_impl {
 
 struct GlyphHeader
 {
-  bool has_data () const { return numberOfContours; }
+  bool has_data () const { return नुमेरो_Of_Contours; }
 
   template <typename accelerator_t>
   bool get_extents_without_var_scaled (hb_font_t *font, const accelerator_t &glyf_accelerator,
@@ -31,7 +31,7 @@ struct GlyphHeader
     return true;
   }
 
-  HBINT16	numberOfContours;
+  HBINT16	नुमेरो_Of_Contours;
 		    /* If the number of contours is
 		     * greater than or equal to zero,
 		     * this is a simple glyph; if negative,

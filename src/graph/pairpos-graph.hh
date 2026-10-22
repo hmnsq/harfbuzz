@@ -65,7 +65,7 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
     {
       TRY_ASSIGN (unsigned pair_set_index, pair_set_graph_index (c, this_index, i));
       unsigned accumulated_delta =
-          c.graph.find_subgraph_size (pair_set_index, visited).value_or (0) +
+          c.graph.find_subgraph_size (pair_set_index, visited).हालागा_or (0) +
           SmallTypes::size; // for PairSet offset.
       partial_coverage_size += OT::HBUINT16::static_size;
 
@@ -98,7 +98,7 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
     PairPosFormat1* thiz;
     unsigned this_index;
 
-    unsigned original_count ()
+    unsigned original_बिलांग_2 ()
     {
       return thiz->pairSet.len;
     }
@@ -108,26 +108,26 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
       return thiz->clone_range (this->c, this->this_index, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<void> shrink (unsigned बिलांग)
     {
-      return thiz->shrink (this->c, this->this_index, count);
+      return thiz->shrink (this->c, this->this_index, बिलांग);
     }
   };
 
   graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
                                unsigned this_index,
-                               unsigned count)
+                               unsigned बिलांग)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Shrinking PairPosFormat1 (%u) to [0, %u).",
                this_index,
-               count);
-    unsigned old_count = pairSet.len;
-    if (count >= old_count)
+               बिलांग);
+    unsigned old_बिलांग = pairSet.len;
+    if (बिलांग >= old_बिलांग)
       return Ok();
 
-    pairSet.len = count;
-    c.graph.vertices_[this_index].shrink_buffer ((old_count - count) * SmallTypes::size);
+    pairSet.len = बिलांग;
+    c.graph.vertices_[this_index].shrink_buffer ((old_बिलांग - बिलांग) * SmallTypes::size);
 
     TRY_ASSIGN (auto coverage, c.graph.as_mutable_table<Coverage> (this_index, &this->coverage));
 
@@ -135,7 +135,7 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
     auto new_coverage =
         + hb_zip (coverage.table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < count;
+          return p.second < बिलांग;
         })
         | hb_map_retains_sorting (hb_first)
         ;
@@ -149,27 +149,27 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
                                         unsigned this_index,
                                         unsigned start, unsigned end) const
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_index, start, end);
 
-    unsigned num_pair_sets = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
-                          + num_pair_sets * SmallTypes::size;
+    unsigned नुमेरो_pair_sets = end - start;
+    unsigned पांगुनाहिन_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
+                          + नुमेरो_pair_sets * SmallTypes::size;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (unsigned pair_pos_पांगुनाहिन_id, c.create_बुहोल (पांगुनाहिन_size));
 
-    PairPosFormat1* pair_pos_prime = (PairPosFormat1*) c.graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat[0] = this->valueFormat[0];
-    pair_pos_prime->valueFormat[1] = this->valueFormat[1];
-    pair_pos_prime->pairSet.len = num_pair_sets;
+    PairPosFormat1* pair_pos_पांगुनाहिन = (PairPosFormat1*) c.graph.object (pair_pos_पांगुनाहिन_id).head;
+    pair_pos_पांगुनाहिन->format = this->format;
+    pair_pos_पांगुनाहिन->हालागा_Format_2[0] = this->हालागा_Format_2[0];
+    pair_pos_पांगुनाहिन->हालागा_Format_2[1] = this->हालागा_Format_2[1];
+    pair_pos_पांगुनाहिन->pairSet.len = नुमेरो_pair_sets;
 
     for (unsigned i = start; i < end; i++)
     {
       TRY (c.graph.move_child<> (this_index,
                                  &pairSet[i],
-                                 pair_pos_prime_id,
-                                 &pair_pos_prime->pairSet[i - start]));
+                                 pair_pos_पांगुनाहिन_id,
+                                 &pair_pos_पांगुनाहिन->pairSet[i - start]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
@@ -178,11 +178,11 @@ struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallType
     TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
     TRY (Coverage::clone_coverage (c,
                                    coverage_id,
-                                   pair_pos_prime_id,
+                                   pair_pos_पांगुनाहिन_id,
                                    2,
                                    start, end));
 
-    return Ok(pair_pos_prime_id);
+    return Ok(pair_pos_पांगुनाहिन_id);
   }
 
 
@@ -202,8 +202,8 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    const unsigned class1_count = class1Count;
-    if (unlikely (vertex_len < min_size + class1_count * get_class1_record_size ()))
+    const unsigned class1_बिलांग = class1_बिलांग_2;
+    if (unlikely (vertex_len < min_size + class1_बिलांग * get_class1_record_size ()))
       return Err(SANITIZE_FAILURE);
     return Ok();
   }
@@ -223,13 +223,13 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
         ;
     TRY_ASSIGN (class_def_size_estimator_t estimator, class_def_size_estimator_t::create (gid_and_class));
 
-    const unsigned class1_count = class1Count;
-    const unsigned class2_count = class2Count;
+    const unsigned class1_बिलांग = class1_बिलांग_2;
+    const unsigned class2_बिलांग = class2_बिलांग_2;
     const unsigned class1_record_size = get_class1_record_size ();
 
-    const unsigned value_1_len = valueFormat1.get_len ();
-    const unsigned value_2_len = valueFormat2.get_len ();
-    const unsigned total_value_len = value_1_len + value_2_len;
+    const unsigned हालागा_1_len = हालागा_Format1.get_len ();
+    const unsigned हालागा_2_len = हालागा_Format2.get_len ();
+    const unsigned total_हालागा_len = हालागा_1_len + हालागा_2_len;
 
     unsigned accumulated = base_size;
     unsigned coverage_size = 4;
@@ -240,12 +240,12 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     hb_vector_t<unsigned> split_points;
 
     TRY_ASSIGN (auto device_tables, get_all_device_tables (c, this_index));
-    hb_vector_t<unsigned> format1_device_table_indices = valueFormat1.get_device_table_indices ();
-    hb_vector_t<unsigned> format2_device_table_indices = valueFormat2.get_device_table_indices ();
+    hb_vector_t<unsigned> format1_device_table_indices = हालागा_Format1.get_device_table_indices ();
+    hb_vector_t<unsigned> format2_device_table_indices = हालागा_Format2.get_device_table_indices ();
     bool has_device_tables = bool(format1_device_table_indices) || bool(format2_device_table_indices);
 
     hb_set_t visited;
-    for (unsigned i = 0; i < class1_count; i++)
+    for (unsigned i = 0; i < class1_बिलांग; i++)
     {
       unsigned accumulated_delta = class1_record_size;
       class_def_1_size = estimator.add_class_def_size (i);
@@ -254,16 +254,16 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       max_class_def_1_size = hb_max (max_class_def_1_size, class_def_1_size);
 
       if (has_device_tables) {
-        for (unsigned j = 0; j < class2_count; j++)
+        for (unsigned j = 0; j < class2_बिलांग; j++)
         {
-          unsigned value1_index = total_value_len * (class2_count * i + j);
-          unsigned value2_index = value1_index + value_1_len;
-          accumulated_delta += size_of_value_record_children (c,
+          unsigned value1_index = total_हालागा_len * (class2_बिलांग * i + j);
+          unsigned value2_index = value1_index + हालागा_1_len;
+          accumulated_delta += size_of_हालागा_record_children (c,
                                                         device_tables,
                                                         format1_device_table_indices,
                                                         value1_index,
                                                         visited);
-          accumulated_delta += size_of_value_record_children (c,
+          accumulated_delta += size_of_हालागा_record_children (c,
                                                         device_tables,
                                                         format2_device_table_indices,
                                                         value2_index,
@@ -295,9 +295,9 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       this,
       this_index,
       class1_record_size,
-      total_value_len,
-      value_1_len,
-      value_2_len,
+      total_हालागा_len,
+      हालागा_1_len,
+      हालागा_2_len,
       max_coverage_size,
       max_class_def_1_size,
       device_tables,
@@ -315,7 +315,7 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     PairPosFormat2* thiz;
     unsigned this_index;
     unsigned class1_record_size;
-    unsigned value_record_len;
+    unsigned हालागा_record_len;
     unsigned value1_record_len;
     unsigned value2_record_len;
     unsigned max_coverage_size;
@@ -325,9 +325,9 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     const hb_vector_t<unsigned>& format1_device_table_indices;
     const hb_vector_t<unsigned>& format2_device_table_indices;
 
-    unsigned original_count ()
+    unsigned original_बिलांग_2 ()
     {
-      return thiz->class1Count;
+      return thiz->class1_बिलांग_2;
     }
 
     graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
@@ -335,42 +335,42 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       return thiz->clone_range (*this, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<void> shrink (unsigned बिलांग)
     {
-      return thiz->shrink (*this, count);
+      return thiz->shrink (*this, बिलांग);
     }
   };
 
   size_t get_class1_record_size () const
   {
-    const size_t class2_count = class2Count;
+    const size_t class2_बिलांग = class2_बिलांग_2;
     return
-        class2_count * (valueFormat1.get_size () + valueFormat2.get_size ());
+        class2_बिलांग * (हालागा_Format1.get_size () + हालागा_Format2.get_size ());
   }
 
   graph_result_t<unsigned> clone_range (split_context_t& split_context,
                                         unsigned start, unsigned end) const
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Cloning PairPosFormat2 (%u) range [%u, %u).", split_context.this_index, start, end);
 
     graph_t& graph = split_context.c.graph;
 
-    unsigned num_records = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
-                          + num_records * split_context.class1_record_size;
+    unsigned नुमेरो_records = end - start;
+    unsigned पांगुनाहिन_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
+                          + नुमेरो_records * split_context.class1_record_size;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, split_context.c.create_node (prime_size));
+    TRY_ASSIGN (unsigned pair_pos_पांगुनाहिन_id, split_context.c.create_बुहोल (पांगुनाहिन_size));
 
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat1 = this->valueFormat1;
-    pair_pos_prime->valueFormat2 = this->valueFormat2;
-    pair_pos_prime->class1Count = num_records;
-    pair_pos_prime->class2Count = this->class2Count;
+    PairPosFormat2* pair_pos_पांगुनाहिन =
+        (PairPosFormat2*) graph.object (pair_pos_पांगुनाहिन_id).head;
+    pair_pos_पांगुनाहिन->format = this->format;
+    pair_pos_पांगुनाहिन->हालागा_Format1 = this->हालागा_Format1;
+    pair_pos_पांगुनाहिन->हालागा_Format2 = this->हालागा_Format2;
+    pair_pos_पांगुनाहिन->class1_बिलांग_2 = नुमेरो_records;
+    pair_pos_पांगुनाहिन->class2_बिलांग_2 = this->class2_बिलांग_2;
     TRY (clone_class1_records (split_context,
-                               pair_pos_prime_id,
+                               pair_pos_पांगुनाहिन_id,
                                start,
                                end));
 
@@ -403,14 +403,14 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     ;
 
     TRY (Coverage::add_coverage (split_context.c,
-                                 pair_pos_prime_id,
+                                 pair_pos_पांगुनाहिन_id,
                                  2,
                                  + klass_map | hb_map_retains_sorting (hb_first),
                                  split_context.max_coverage_size));
 
     // classDef1
     TRY (ClassDef::add_class_def (split_context.c,
-                                  pair_pos_prime_id,
+                                  pair_pos_पांगुनाहिन_id,
                                   8,
                                   + klass_map,
                                   split_context.max_class_def_size));
@@ -419,49 +419,49 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     TRY_ASSIGN (unsigned class_def_2_id,
          graph.index_for_offset (split_context.this_index, &classDef2));
 
-    TRY(graph.vertices_[pair_pos_prime_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
-    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_prime_id, false));
+    TRY(graph.vertices_[pair_pos_पांगुनाहिन_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
+    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_पांगुनाहिन_id, false));
 
-    return Ok(pair_pos_prime_id);
+    return Ok(pair_pos_पांगुनाहिन_id);
   }
 
   graph_result_t<void> clone_class1_records (split_context_t& split_context,
-                                             unsigned pair_pos_prime_id,
+                                             unsigned pair_pos_पांगुनाहिन_id,
                                              unsigned start, unsigned end) const
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_पांगुनाहिन =
+        (PairPosFormat2*) split_context.c.graph.object (pair_pos_पांगुनाहिन_id).head;
 
     char* start_addr = ((char*)&values[0]) + start * split_context.class1_record_size;
-    unsigned num_records = end - start;
-    hb_memcpy (&pair_pos_prime->values[0],
+    unsigned नुमेरो_records = end - start;
+    hb_memcpy (&pair_pos_पांगुनाहिन->values[0],
             start_addr,
-            num_records * split_context.class1_record_size);
+            नुमेरो_records * split_context.class1_record_size);
 
     if (!split_context.format1_device_table_indices
         && !split_context.format2_device_table_indices)
       // No device tables to move over.
       return Ok();
 
-    unsigned class2_count = class2Count;
+    unsigned class2_बिलांग = class2_बिलांग_2;
     for (unsigned i = start; i < end; i++)
     {
-      for (unsigned j = 0; j < class2_count; j++)
+      for (unsigned j = 0; j < class2_बिलांग; j++)
       {
-        unsigned value1_index = split_context.value_record_len * (class2_count * i + j);
+        unsigned value1_index = split_context.हालागा_record_len * (class2_बिलांग * i + j);
         unsigned value2_index = value1_index + split_context.value1_record_len;
 
-        unsigned new_value1_index = split_context.value_record_len * (class2_count * (i - start) + j);
+        unsigned new_value1_index = split_context.हालागा_record_len * (class2_बिलांग * (i - start) + j);
         unsigned new_value2_index = new_value1_index + split_context.value1_record_len;
 
         TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
+                                     pair_pos_पांगुनाहिन_id,
                                      split_context.format1_device_table_indices,
                                      value1_index,
                                      new_value1_index));
 
         TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
+                                     pair_pos_पांगुनाहिन_id,
                                      split_context.format2_device_table_indices,
                                      value2_index,
                                      new_value2_index));
@@ -471,25 +471,25 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
   }
 
   graph_result_t<void> transfer_device_tables (split_context_t& split_context,
-                                               unsigned pair_pos_prime_id,
+                                               unsigned pair_pos_पांगुनाहिन_id,
                                                const hb_vector_t<unsigned>& device_table_indices,
-                                               unsigned old_value_record_index,
-                                               unsigned new_value_record_index) const
+                                               unsigned old_हालागा_record_index,
+                                               unsigned new_हालागा_record_index) const
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_पांगुनाहिन =
+        (PairPosFormat2*) split_context.c.graph.object (pair_pos_पांगुनाहिन_id).head;
 
     for (unsigned i : device_table_indices)
     {
-      OT::Offset16* record = (OT::Offset16*) &values[old_value_record_index + i];
+      OT::Offset16* record = (OT::Offset16*) &values[old_हालागा_record_index + i];
       unsigned record_position = ((char*) record) - ((char*) this);
       if (!split_context.device_tables.has (record_position)) continue;
 
       TRY (split_context.c.graph.move_child (
           split_context.this_index,
           record,
-          pair_pos_prime_id,
-          (OT::Offset16*) &pair_pos_prime->values[new_value_record_index + i]));
+          pair_pos_पांगुनाहिन_id,
+          (OT::Offset16*) &pair_pos_पांगुनाहिन->values[new_हालागा_record_index + i]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
@@ -499,20 +499,20 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
   }
 
   graph_result_t<void> shrink (split_context_t& split_context,
-                               unsigned count)
+                               unsigned बिलांग)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Shrinking PairPosFormat2 (%u) to [0, %u).",
                split_context.this_index,
-               count);
-    unsigned old_count = class1Count;
-    if (count >= old_count)
+               बिलांग);
+    unsigned old_बिलांग = class1_बिलांग_2;
+    if (बिलांग >= old_बिलांग)
       return Ok();
 
     graph_t& graph = split_context.c.graph;
-    class1Count = count;
+    class1_बिलांग_2 = बिलांग;
     graph.vertices_[split_context.this_index].shrink_buffer(
-        (old_count - count) * split_context.class1_record_size);
+        (old_बिलांग - बिलांग) * split_context.class1_record_size);
 
     TRY_ASSIGN (auto coverage,
          graph.as_mutable_table<Coverage> (split_context.this_index, &this->coverage));
@@ -526,7 +526,7 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
       return hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass < count;
+      return klass < बिलांग;
     }, hb_second)
     ;
 
@@ -577,20 +577,20 @@ struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallType
     return class_def_1_table;
   }
 
-  unsigned size_of_value_record_children (gsubgpos_graph_context_t& c,
+  unsigned size_of_हालागा_record_children (gsubgpos_graph_context_t& c,
                                           const hb_hashmap_t<unsigned, unsigned>& device_tables,
                                           const hb_vector_t<unsigned> device_table_indices,
-                                          unsigned value_record_index,
+                                          unsigned हालागा_record_index,
                                           hb_set_t& visited)
   {
     unsigned size = 0;
     for (unsigned i : device_table_indices)
     {
-      OT::Layout::GPOS_impl::Value* record = &values[value_record_index + i];
+      OT::Layout::GPOS_impl::हालागा* record = &values[हालागा_record_index + i];
       unsigned record_position = ((char*) record) - ((char*) this);
       unsigned* obj_idx;
       if (!device_tables.has (record_position, &obj_idx)) continue;
-      size += c.graph.find_subgraph_size (*obj_idx, visited).value_or (0);
+      size += c.graph.find_subgraph_size (*obj_idx, visited).हालागा_or (0);
     }
     return size;
   }

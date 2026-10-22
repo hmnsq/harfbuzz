@@ -54,13 +54,13 @@
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL)))
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_DECIMAL_नुमेरो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_LETTER_नुमेरो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_नुमेरो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_CURRENCY_सिम्बोलो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_सिम्बोलो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MATH_सिम्बोलो) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_सिम्बोलो)))
 
 
 /*
@@ -78,7 +78,7 @@ enum hb_arabic_joining_type_t {
   JOINING_TYPE_C		= JOINING_TYPE_D,
   JOINING_GROUP_ALAPH		= 4,
   JOINING_GROUP_DALATH_RISH	= 5,
-  NUM_STATE_MACHINE_COLS	= 6,
+  नुमेरो_STATE_MACHINE_COLS	= 6,
 
   JOINING_TYPE_T = 6,
   JOINING_TYPE_X = 7  /* means: use general-category to choose between U or T. */
@@ -126,7 +126,7 @@ enum arabic_action_t {
 
   NONE,
 
-  ARABIC_NUM_FEATURES = NONE,
+  ARABIC_नुमेरो_FEATURES = NONE,
 
   /* We abuse the same byte for other things... */
   STCH_FIXED,
@@ -137,7 +137,7 @@ static const struct arabic_state_table_entry {
 	uint8_t prev_action;
 	uint8_t curr_action;
 	uint16_t next_state;
-} arabic_state_table[][NUM_STATE_MACHINE_COLS] =
+} arabic_state_table[][नुमेरो_STATE_MACHINE_COLS] =
 {
   /*   jt_U,          jt_L,          jt_R,          jt_D,          jg_ALAPH,      jg_DALATH_RISH */
 
@@ -216,7 +216,7 @@ collect_features_arabic (hb_ot_shape_planner_t *plan)
 
   map->add_gsub_pause (nullptr);
 
-  for (unsigned int i = 0; i < ARABIC_NUM_FEATURES; i++)
+  for (unsigned int i = 0; i < ARABIC_नुमेरो_FEATURES; i++)
   {
     bool has_fallback = plan->props.script == HB_SCRIPT_ARABIC && !FEATURE_IS_SYRIAC (arabic_features[i]);
     map->add_feature (arabic_features[i], F_MANUAL_ZWJ | (has_fallback ? F_HAS_FALLBACK : F_NONE));
@@ -261,7 +261,7 @@ struct arabic_shape_plan_t
    * which is not an OpenType feature, but this simplifies the code by not
    * having to do a "if (... < NONE) ..." and just rely on the fact that
    * mask_array[NONE] == 0. */
-  hb_mask_t mask_array[ARABIC_NUM_FEATURES + 1];
+  hb_mask_t mask_array[ARABIC_नुमेरो_FEATURES + 1];
 
   mutable hb_atomic_t<arabic_fallback_plan_t *> fallback_plan;
 
@@ -278,7 +278,7 @@ data_create_arabic (const hb_ot_shape_plan_t *plan)
 
   arabic_plan->do_fallback = plan->props.script == HB_SCRIPT_ARABIC;
   arabic_plan->has_stch = !!plan->map.get_1_mask (HB_TAG ('s','t','c','h'));
-  for (unsigned int i = 0; i < ARABIC_NUM_FEATURES; i++) {
+  for (unsigned int i = 0; i < ARABIC_नुमेरो_FEATURES; i++) {
     arabic_plan->mask_array[i] = plan->map.get_1_mask (arabic_features[i]);
     arabic_plan->do_fallback = arabic_plan->do_fallback &&
 			       (FEATURE_IS_SYRIAC (arabic_features[i]) ||
@@ -301,7 +301,7 @@ data_destroy_arabic (void *data)
 static void
 arabic_joining (hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   unsigned int prev = UINT_MAX, state = 0;
 
@@ -318,7 +318,7 @@ arabic_joining (hb_buffer_t *buffer)
     break;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     unsigned int this_type = get_joining_type (info[i].codepoint, _hb_glyph_info_get_general_category (&info[i]));
 
@@ -332,7 +332,7 @@ arabic_joining (hb_buffer_t *buffer)
     if (entry->prev_action != NONE && prev != UINT_MAX)
     {
       info[prev].arabic_shaping_action() = entry->prev_action;
-      buffer->safe_to_insert_tatweel (prev, i + 1);
+      buffer->safe_to_इसिंगित_tatweel (prev, i + 1);
     }
     else
     {
@@ -366,7 +366,7 @@ arabic_joining (hb_buffer_t *buffer)
     if (entry->prev_action != NONE && prev != UINT_MAX)
     {
       info[prev].arabic_shaping_action() = entry->prev_action;
-      buffer->safe_to_insert_tatweel (prev, buffer->len);
+      buffer->safe_to_इसिंगित_tatweel (prev, buffer->len);
     }
     else if (2 <= state && state <= 5) /* States that have a possible prev_action. */
     {
@@ -380,9 +380,9 @@ static void
 mongolian_variation_selectors (hb_buffer_t *buffer)
 {
   /* Copy arabic_shaping_action() from base to Mongolian variation selectors. */
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
+  for (unsigned int i = 1; i < बिलांग; i++)
     if (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0x180Bu, 0x180Du, 0x180Fu, 0x180Fu)))
       info[i].arabic_shaping_action() = info[i - 1].arabic_shaping_action();
 }
@@ -398,9 +398,9 @@ setup_masks_arabic_plan (const arabic_shape_plan_t *arabic_plan,
   if (script == HB_SCRIPT_MONGOLIAN)
     mongolian_variation_selectors (buffer);
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     info[i].mask |= arabic_plan->mask_array[info[i].arabic_shaping_action()];
 }
 
@@ -466,9 +466,9 @@ record_stch (const hb_ot_shape_plan_t *plan,
    * are applied before stch, but we assume that they didn't result in
    * anything multiplying into 5 pieces, so it's safe-ish... */
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     if (unlikely (_hb_glyph_info_multiplied (&info[i])))
     {
       unsigned int comp = _hb_glyph_info_get_lig_comp (&info[i]);
@@ -506,12 +506,12 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
 
   for (unsigned int step = MEASURE; step <= CUT; step = step + 1)
   {
-    unsigned int count = buffer->len;
+    unsigned int बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    unsigned int new_len = count + extra_glyphs_needed; // write head during CUT
+    unsigned int new_len = बिलांग + extra_glyphs_needed; // write head during CUT
     unsigned int j = new_len;
-    for (unsigned int i = count; i; i--)
+    for (unsigned int i = बिलांग; i; i--)
     {
       if (!hb_in_range<uint8_t> (info[i - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING))
       {
@@ -563,11 +563,11 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
       }
       i++; // Don't touch i again.
 
-      DEBUG_MSG (ARABIC, nullptr, "%s stretch at (%u,%u,%u)",
+      DEBUG_मेनसाहे (ARABIC, nullptr, "%s stretch at (%u,%u,%u)",
 		 step == MEASURE ? "measuring" : "cutting", context, start, end);
-      DEBUG_MSG (ARABIC, nullptr, "rest of word:    count=%u width %" PRId32, start - context, w_total);
-      DEBUG_MSG (ARABIC, nullptr, "fixed tiles:     count=%d width=%" PRId32, n_fixed, w_fixed);
-      DEBUG_MSG (ARABIC, nullptr, "repeating tiles: count=%d width=%" PRId32, n_repeating, w_repeating);
+      DEBUG_मेनसाहे (ARABIC, nullptr, "rest of word:    count=%u width %" PRId32, start - context, w_total);
+      DEBUG_मेनसाहे (ARABIC, nullptr, "fixed tiles:     count=%d width=%" PRId32, n_fixed, w_fixed);
+      DEBUG_मेनसाहे (ARABIC, nullptr, "repeating tiles: count=%d width=%" PRId32, n_repeating, w_repeating);
 
       static constexpr unsigned STCH_MAX_GLYPHS = 256;
 
@@ -617,7 +617,7 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  extra_glyphs_needed = UINT_MAX;
 	  break;
 	}
-	DEBUG_MSG (ARABIC, nullptr, "will add extra %u copies of repeating tiles", n_copies);
+	DEBUG_मेनसाहे (ARABIC, nullptr, "will add extra %u copies of repeating tiles", n_copies);
       }
       else
       {
@@ -631,7 +631,7 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  if (info[k - 1].arabic_shaping_action() == STCH_REPEATING)
 	    repeat += n_copies;
 
-	  DEBUG_MSG (ARABIC, nullptr, "appending %u copies of glyph %" PRIu32 "; j=%u",
+	  DEBUG_मेनसाहे (ARABIC, nullptr, "appending %u copies of glyph %" PRIu32 "; j=%u",
 		     repeat, info[k - 1].codepoint, j);
 	  pos[k - 1].x_advance = 0;
 	  for (unsigned int n = 0; n < repeat; n++)
@@ -662,7 +662,7 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
     if (step == MEASURE)
     {
       unsigned int total_glyphs = 0;
-      if (unlikely (hb_unsigned_add_overflows (count, extra_glyphs_needed, &total_glyphs) ||
+      if (unlikely (hb_unsigned_add_overflows (बिलांग, extra_glyphs_needed, &total_glyphs) ||
 		    !buffer->ensure (total_glyphs)))
 	break;
     }
@@ -725,15 +725,15 @@ reorder_marks_arabic (const hb_ot_shape_plan_t *plan HB_UNUSED,
 {
   hb_glyph_info_t *info = buffer->info;
 
-  DEBUG_MSG (ARABIC, buffer, "Reordering marks from %u to %u", start, end);
+  DEBUG_मेनसाहे (ARABIC, buffer, "Reordering marks from %u to %u", start, end);
 
   unsigned int i = start;
   for (unsigned int cc = 220; cc <= 230; cc += 10)
   {
-    DEBUG_MSG (ARABIC, buffer, "Looking for %u's starting at %u", cc, i);
+    DEBUG_मेनसाहे (ARABIC, buffer, "Looking for %u's starting at %u", cc, i);
     while (i < end && info_cc(info[i]) < cc)
       i++;
-    DEBUG_MSG (ARABIC, buffer, "Looking for %u's stopped at %u", cc, i);
+    DEBUG_मेनसाहे (ARABIC, buffer, "Looking for %u's stopped at %u", cc, i);
 
     if (i == end)
       break;
@@ -748,10 +748,10 @@ reorder_marks_arabic (const hb_ot_shape_plan_t *plan HB_UNUSED,
     if (i == j)
       continue;
 
-    DEBUG_MSG (ARABIC, buffer, "Found %u's from %u to %u", cc, i, j);
+    DEBUG_मेनसाहे (ARABIC, buffer, "Found %u's from %u to %u", cc, i, j);
 
     /* Shift it! */
-    DEBUG_MSG (ARABIC, buffer, "Shifting %u's: %u %u", cc, i, j);
+    DEBUG_मेनसाहे (ARABIC, buffer, "Shifting %u's: %u %u", cc, i, j);
     hb_glyph_info_t temp[HB_OT_SHAPE_MAX_COMBINING_MARKS];
     assert (j - i <= ARRAY_LENGTH (temp));
     buffer->merge_clusters (start, j);

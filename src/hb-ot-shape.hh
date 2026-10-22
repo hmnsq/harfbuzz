@@ -37,7 +37,7 @@ HB_INTERNAL bool
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
 						   const int             *coords,
-						   unsigned int           num_coords,
+						   unsigned int           नुमेरो_coords,
 						   unsigned int          *variations_index,
 						   hb_vector_t<unsigned> *lookup_conditions);
 
@@ -49,7 +49,7 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
                                              hb_sorted_array_t<const unsigned> conditions,
                                              hb_set_t *lookup_indexes);
 
-struct hb_ot_shape_plan_key_t
+struct hb_ot_shape_plan_सुसि_t
 {
   unsigned int variations_index[2];
   /* Sorted offsets of distinct true conditions within FeatureVariations.
@@ -58,14 +58,14 @@ struct hb_ot_shape_plan_key_t
 
   bool init (hb_face_t *face,
 	     const int *coords,
-	     unsigned   num_coords)
+	     unsigned   नुमेरो_coords)
   {
     for (unsigned int table_index = 0; table_index < 2; table_index++)
       if (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
 			face,
 			table_tags[table_index],
 			coords,
-			num_coords,
+			नुमेरो_coords,
 			&variations_index[table_index],
 			&lookup_conditions[table_index])))
       {
@@ -92,7 +92,7 @@ struct hb_ot_shape_plan_key_t
 	lookup_conditions[table_index].as_sorted_array (), lookups);
   }
 
-  bool equal (const hb_ot_shape_plan_key_t *other)
+  bool equal (const hb_ot_shape_plan_सुसि_t *other)
   {
     return variations_index[0] == other->variations_index[0] &&
 	   variations_index[1] == other->variations_index[1] &&
@@ -102,7 +102,7 @@ struct hb_ot_shape_plan_key_t
 };
 
 
-struct hb_shape_plan_key_t;
+struct hb_shape_plan_सुसि_t;
 
 struct hb_ot_shape_plan_t
 {
@@ -173,7 +173,7 @@ struct hb_ot_shape_plan_t
   }
 
   HB_INTERNAL bool init0 (hb_face_t                     *face,
-			  const hb_shape_plan_key_t     *key);
+			  const hb_shape_plan_सुसि_t     *key);
   HB_INTERNAL void fini ();
 
   HB_INTERNAL void substitute (hb_font_t *font, hb_buffer_t *buffer) const;
@@ -202,7 +202,7 @@ struct hb_ot_shape_planner_t
 				     const hb_segment_properties_t &props);
 
   HB_INTERNAL void compile (hb_ot_shape_plan_t           &plan,
-			    const hb_ot_shape_plan_key_t &key);
+			    const hb_ot_shape_plan_सुसि_t &key);
 };
 
 

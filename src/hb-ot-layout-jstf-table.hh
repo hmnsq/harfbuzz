@@ -147,14 +147,14 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
 template <typename Types>
 struct JstfScript
 {
-  unsigned int get_lang_sys_count () const
+  unsigned int get_lang_sys_बिलांग () const
   { return langSys.len; }
   const Tag& get_lang_sys_tag (unsigned int i) const
   { return langSys.get_tag (i); }
   unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
+				  unsigned int *lang_sys_बिलांग /* IN/OUT */,
 				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
+  { return langSys.get_tags (start_offset, lang_sys_बिलांग, lang_sys_tags); }
   const JstfLangSys& get_lang_sys (unsigned int i) const
   {
     if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
@@ -215,14 +215,14 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
   const Tag& get_tag (unsigned int i) const
   { return (*this)[i].tag; }
   unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
+			 unsigned int *script_बिलांग /* IN/OUT */,
 			 hb_tag_t     *script_tags /* OUT */) const
   {
-    if (script_count)
+    if (script_बिलांग)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
+      + this->as_array ().sub_array (start_offset, script_बिलांग)
       | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      | hb_sink (hb_array (script_tags, *script_बिलांग))
       ;
     }
     return this->len;
@@ -245,7 +245,7 @@ struct JSTF
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned int get_script_बिलांग () const
   {
 #ifndef HB_NO_BEYOND_64K
     if (has_script_list2 ()) return get_script_list2 ().len;
@@ -260,14 +260,14 @@ struct JSTF
     return scriptList.get_tag (i);
   }
   unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
+				unsigned int *script_बिलांग /* IN/OUT */,
 				hb_tag_t     *script_tags /* OUT */) const
   {
 #ifndef HB_NO_BEYOND_64K
     if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+      return get_script_list2 ().get_tags (start_offset, script_बिलांग, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    return scriptList.get_tags (start_offset, script_बिलांग, script_tags);
   }
   template <typename Types>
   const JstfScript<Types>& get_script (unsigned int i) const;

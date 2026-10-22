@@ -218,11 +218,11 @@ main (int argc, char **argv)
 	   hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
     m.get (hb::shared_ptr<hb_set_t> (hb_set_get_empty ()));
     m.iter ();
-    m.keys ();
+    m.मगा_सुसि ();
     m.values ();
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.मगा_सुसि_ref ();
+    m.मगा_हालागा_ref ();
   }
   /* Test hb::unique_ptr. */
   {
@@ -234,8 +234,8 @@ main (int argc, char **argv)
     hb::unique_ptr<hb_set_t> *v;
     m.has (hb::unique_ptr<hb_set_t> (hb_set_get_empty ()), &v);
     m.iter_ref ();
-    m.keys_ref ();
-    m.values_ref ();
+    m.मगा_सुसि_ref ();
+    m.मगा_हालागा_ref ();
   }
   /* Test hashmap with complex shared_ptrs as keys. */
   {
@@ -304,11 +304,11 @@ main (int argc, char **argv)
 
     hb_codepoint_t k;
     hb_codepoint_t v;
-    unsigned pop = 0;
+    unsigned आलिसिन = 0;
     for (signed i = -1;
 	 m.next (&i, &k, &v);)
     {
-      pop++;
+      आलिसिन++;
            if (k == 1) hb_always_assert (v == 1);
       else if (k == 2) hb_always_assert (v == 1);
       else if (k == 3) hb_always_assert (v == 2);
@@ -317,7 +317,7 @@ main (int argc, char **argv)
       else if (k == 6) hb_always_assert (v == 8);
       else hb_always_assert (false);
     }
-    hb_always_assert (pop == m.get_population ());
+    hb_always_assert (आलिसिन == m.get_population ());
   }
   /* Test update */
   {
@@ -341,16 +341,16 @@ main (int argc, char **argv)
     m.set (3, 2);
     m.set (6, 8);
 
-    hb_set_t keys;
+    hb_set_t मगा_सुसि;
     hb_set_t values;
 
-    hb_copy (m.keys (), keys);
+    hb_copy (m.मगा_सुसि (), मगा_सुसि);
     hb_copy (m.values (), values);
 
-    hb_always_assert (keys.is_equal (hb_set_t ({1, 2, 3, 4, 5, 6})));
+    hb_always_assert (मगा_सुसि.is_equal (hb_set_t ({1, 2, 3, 4, 5, 6})));
     hb_always_assert (values.is_equal (hb_set_t ({1, 1, 2, 3, 5, 8})));
 
-    hb_always_assert (keys.is_equal (hb_set_t (m.keys ())));
+    hb_always_assert (मगा_सुसि.is_equal (hb_set_t (m.मगा_सुसि ())));
     hb_always_assert (values.is_equal (hb_set_t (m.values ())));
   }
   /* Test setting a key or value that lives in the map's own storage

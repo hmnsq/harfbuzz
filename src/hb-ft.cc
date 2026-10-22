@@ -93,7 +93,7 @@ static void _hb_ft_face_destroy_static (void *data);
 struct hb_ft_font_t
 {
   int load_flags;
-  bool symbol; /* Whether selected cmap is symbol cmap. */
+  bool सिम्बोलो; /* Whether selected cmap is symbol cmap. */
   bool unref; /* Whether to destroy ft_face when done. */
   bool transform; /* Whether to apply FT_Face's transform. */
   bool static_library; /* Whether ft_face uses static_ft_library. */
@@ -105,14 +105,14 @@ struct hb_ft_font_t
 };
 
 static hb_ft_font_t *
-_hb_ft_font_create (FT_Face ft_face, bool symbol, bool unref, bool static_library)
+_hb_ft_font_create (FT_Face ft_face, bool सिम्बोलो, bool unref, bool static_library)
 {
   hb_ft_font_t *ft_font = (hb_ft_font_t *) hb_calloc (1, sizeof (hb_ft_font_t));
   if (unlikely (!ft_font)) return nullptr;
 
   ft_font->lock.init ();
   ft_font->ft_face = ft_face;
-  ft_font->symbol = symbol;
+  ft_font->सिम्बोलो = सिम्बोलो;
   ft_font->unref = unref;
   ft_font->static_library = static_library;
 
@@ -181,13 +181,13 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 		    font->x_ppem * 72 * 64 / font->x_scale,
 		    font->y_ppem * 72 * 64 / font->y_scale
 #endif
-     ) && ft_face->num_fixed_sizes)
+     ) && ft_face->नुमेरो_fixed_sizes)
   {
 #ifdef HAVE_FT_GET_TRANSFORM
     /* Bitmap font, eg. bitmap color emoji. */
     /* Pick largest size? */
-    int x_scale  = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].x_ppem;
-    int y_scale = ft_face->available_sizes[ft_face->num_fixed_sizes - 1].y_ppem;
+    int x_scale  = ft_face->available_sizes[ft_face->नुमेरो_fixed_sizes - 1].x_ppem;
+    int y_scale = ft_face->available_sizes[ft_face->नुमेरो_fixed_sizes - 1].y_ppem;
     FT_Set_Char_Size (ft_face,
 		      x_scale, y_scale,
 		      0, 0);
@@ -214,18 +214,18 @@ static void _hb_ft_hb_font_changed (hb_font_t *font, FT_Face ft_face)
 #if defined(HAVE_FT_GET_VAR_BLEND_COORDINATES) && !defined(HB_NO_VAR)
   if (font->has_nonzero_coords)
   {
-    unsigned int num_coords;
-    const float *coords = hb_font_get_var_coords_design (font, &num_coords);
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (num_coords, sizeof (FT_Fixed));
+    unsigned int नुमेरो_coords;
+    const float *coords = hb_font_get_var_coords_design (font, &नुमेरो_coords);
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (नुमेरो_coords, sizeof (FT_Fixed));
     if (ft_coords)
     {
-      for (unsigned int i = 0; i < num_coords; i++)
+      for (unsigned int i = 0; i < नुमेरो_coords; i++)
 	  ft_coords[i] = coords[i] * 65536.f;
-      FT_Set_Var_Design_Coordinates (ft_face, num_coords, ft_coords);
+      FT_Set_Var_Design_Coordinates (ft_face, नुमेरो_coords, ft_coords);
       hb_free (ft_coords);
     }
   }
-  else if (font->num_coords)
+  else if (font->नुमेरो_coords)
   {
     // Some old versions of FreeType crash if we
     // call this function on non-variable fonts.
@@ -418,7 +418,7 @@ hb_ft_get_nominal_glyph (hb_font_t *font,
 
   if (unlikely (!g))
   {
-    if (unlikely (ft_font->symbol))
+    if (unlikely (ft_font->सिम्बोलो))
     {
       switch ((unsigned) font->face->table.OS2->get_font_page ()) {
       case OT::OS2::font_page_t::FONT_PAGE_NONE:
@@ -455,7 +455,7 @@ hb_ft_get_nominal_glyph (hb_font_t *font,
 static unsigned int
 hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
 			  void *font_data,
-			  unsigned int count,
+			  unsigned int बिलांग,
 			  const hb_codepoint_t *first_unicode,
 			  unsigned int unicode_stride,
 			  hb_codepoint_t *first_glyph,
@@ -466,7 +466,7 @@ hb_ft_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
   hb_lock_t lock (ft_font->lock);
   unsigned int done;
   for (done = 0;
-       done < count && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
+       done < बिलांग && (*first_glyph = FT_Get_Char_Index (ft_font->ft_face, *first_unicode));
        done++)
   {
     first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
@@ -499,7 +499,7 @@ hb_ft_get_variation_glyph (hb_font_t *font HB_UNUSED,
 
 static void
 hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
+			    unsigned बिलांग,
 			    const hb_codepoint_t *first_glyph,
 			    unsigned glyph_stride,
 			    hb_position_t *first_advance,
@@ -527,7 +527,7 @@ hb_ft_get_glyph_h_advances (hb_font_t* font, void* font_data,
     x_mult = font->x_scale < 0 ? -1 : +1;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     hb_position_t advance;
     hb_codepoint_t glyph = *first_glyph;
@@ -642,8 +642,8 @@ hb_ft_get_glyph_v_origin (hb_font_t *font,
 static hb_position_t
 hb_ft_get_glyph_h_kerning (hb_font_t *font,
 			   void *font_data,
-			   hb_codepoint_t left_glyph,
-			   hb_codepoint_t right_glyph,
+			   hb_codepoint_t कालिवा_glyph,
+			   hb_codepoint_t कानान_glyph,
 			   void *user_data HB_UNUSED)
 {
   const hb_ft_font_t *ft_font = (const hb_ft_font_t *) font_data;
@@ -653,7 +653,7 @@ hb_ft_get_glyph_h_kerning (hb_font_t *font,
   FT_Vector kerningv;
 
   FT_Kerning_Mode mode = font->x_ppem ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
-  if (FT_Get_Kerning (ft_font->ft_face, left_glyph, right_glyph, mode, &kerningv))
+  if (FT_Get_Kerning (ft_font->ft_face, कालिवा_glyph, कानान_glyph, mode, &kerningv))
     return 0;
 
   return hb_clamp_to<hb_position_t> ((int64_t) kerningv.x);
@@ -674,7 +674,7 @@ hb_ft_is_colr_glyph (hb_font_t *font,
   /* COLRv1 */
   FT_OpaquePaint paint = {0};
   if (FT_Get_Color_Glyph_Paint (ft_face, gid,
-			        FT_COLOR_NO_ROOT_TRANSFORM,
+			        FT_COLOR_NO_उगात_TRANSFORM,
 			        &paint))
     return true;
 
@@ -874,7 +874,7 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
     double height = FT_MulFix( ft_face->height, ft_face->size->metrics.y_scale );
     metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
     metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    metrics->लिन्या_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
   }
   else
   {
@@ -884,7 +884,7 @@ hb_ft_get_font_h_extents (hb_font_t *font HB_UNUSED,
     double height = ft_face->size->metrics.height;
     metrics->ascender = hb_clamp_to<hb_position_t> ((double) y_mult * ascender);
     metrics->descender = hb_clamp_to<hb_position_t> ((double) y_mult * descender);
-    metrics->line_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
+    metrics->लिन्या_gap = hb_clamp_to<hb_position_t> ((double) y_mult * (height - (ascender - descender)));
   }
 
   return true;
@@ -902,11 +902,11 @@ _hb_ft_move_to (const FT_Vector *to,
 }
 
 static int
-_hb_ft_line_to (const FT_Vector *to,
+hb_ft_लिन्या_to (const FT_Vector *to,
 		void *arg)
 {
   hb_draw_session_t *drawing = (hb_draw_session_t *) arg;
-  drawing->line_to (to->x, to->y);
+  drawing->लिन्या_to (to->x, to->y);
   return FT_Err_Ok;
 }
 
@@ -956,7 +956,7 @@ hb_ft_draw_glyph_or_fail (hb_font_t *font,
 
   const FT_Outline_Funcs outline_funcs = {
     _hb_ft_move_to,
-    _hb_ft_line_to,
+    hb_ft_लिन्या_to,
     _hb_ft_conic_to,
     _hb_ft_cubic_to,
     0, /* shift */
@@ -1121,9 +1121,9 @@ static void
 _hb_ft_font_set_funcs (hb_font_t *font, FT_Face ft_face, bool unref,
 		       bool static_library = false)
 {
-  bool symbol = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_SYMBOL;
+  bool सिम्बोलो = ft_face->charmap && ft_face->charmap->encoding == FT_ENCODING_MS_सिम्बोलो;
 
-  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, symbol, unref, static_library);
+  hb_ft_font_t *ft_font = _hb_ft_font_create (ft_face, सिम्बोलो, unref, static_library);
   if (unlikely (!ft_font)) return;
 
   hb_font_set_funcs (font,
@@ -1169,7 +1169,7 @@ _hb_ft_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data
 static unsigned
 _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
 		       unsigned int start_offset,
-		       unsigned int *table_count,
+		       unsigned int *table_बिलांग_2,
 		       hb_tag_t *table_tags,
 		       void *user_data)
 {
@@ -1181,24 +1181,24 @@ _hb_ft_get_table_tags (const hb_face_t *face HB_UNUSED,
 		      nullptr,
                       &population);
 
-  if (!table_count)
+  if (!table_बिलांग_2)
     return population;
 
   if (unlikely (start_offset >= population))
   {
-    *table_count = 0;
+    *table_बिलांग_2 = 0;
     return population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
+  unsigned end_offset = start_offset + *table_बिलांग_2;
   if (unlikely (end_offset < start_offset)) /* Overflow. */
   {
-    *table_count = 0;
+    *table_बिलांग_2 = 0;
     return population;
   }
   end_offset = hb_min (end_offset, (unsigned) population);
 
-  *table_count = end_offset - start_offset;
+  *table_बिलांग_2 = end_offset - start_offset;
   if (table_tags)
     for (unsigned i = start_offset; i < end_offset; i++)
     {
@@ -1413,22 +1413,22 @@ hb_ft_font_changed (hb_font_t *font)
   FT_MM_Var *mm_var = nullptr;
   if (!FT_Get_MM_Var (ft_face, &mm_var))
   {
-    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->num_axis, sizeof (FT_Fixed));
-    int *coords = (int *) hb_calloc (mm_var->num_axis, sizeof (int));
+    FT_Fixed *ft_coords = (FT_Fixed *) hb_calloc (mm_var->नुमेरो_axis, sizeof (FT_Fixed));
+    int *coords = (int *) hb_calloc (mm_var->नुमेरो_axis, sizeof (int));
     if (coords && ft_coords)
     {
-      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->num_axis, ft_coords))
+      if (!FT_Get_Var_Blend_Coordinates (ft_face, mm_var->नुमेरो_axis, ft_coords))
       {
 	bool nonzero = false;
 
-	for (unsigned int i = 0; i < mm_var->num_axis; ++i)
+	for (unsigned int i = 0; i < mm_var->नुमेरो_axis; ++i)
 	 {
 	  coords[i] = (ft_coords[i] + 2) >> 2;
 	  nonzero = nonzero || coords[i];
 	 }
 
 	if (nonzero)
-	  hb_font_set_var_coords_normalized (font, coords, mm_var->num_axis);
+	  hb_font_set_var_coords_normalized (font, coords, mm_var->नुमेरो_axis);
 	else
 	  hb_font_set_var_coords_normalized (font, nullptr, 0);
       }
@@ -1598,13 +1598,13 @@ reference_ft_library ()
   FT_Library l = static_ft_library.get_unconst ();
   if (unlikely (FT_Reference_Library (l)))
   {
-    DEBUG_MSG (FT, l, "FT_Reference_Library() failed");
+    DEBUG_मेनसाहे (FT, l, "FT_Reference_Library() failed");
     return nullptr;
   }
   return l;
 }
 
-static hb_user_data_key_t ft_library_key = {0};
+static hb_user_data_सुसि_t ft_library_सुसि = {0};
 
 static void
 _hb_ft_face_destroy_static (void *data)
@@ -1672,7 +1672,7 @@ hb_ft_face_create_from_file_or_fail (const char   *file_name,
   FT_Library ft_library = reference_ft_library ();
   if (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
+    DEBUG_मेनसाहे (FT, ft_library, "reference_ft_library failed");
     return nullptr;
   }
 
@@ -1699,7 +1699,7 @@ hb_ft_face_create_from_file_or_fail (const char   *file_name,
   return face;
 }
 
-static hb_user_data_key_t ft_blob_key = {0};
+static hb_user_data_सुसि_t ft_blob_सुसि = {0};
 
 static void
 _destroy_blob (void *p)
@@ -1731,7 +1731,7 @@ hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
   FT_Library ft_library = reference_ft_library ();
   if (unlikely (!ft_library))
   {
-    DEBUG_MSG (FT, ft_library, "reference_ft_library failed");
+    DEBUG_मेनसाहे (FT, ft_library, "reference_ft_library failed");
     return nullptr;
   }
 
@@ -1762,7 +1762,7 @@ hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
 
   // Hook the blob to the hb_face_t, since FT_Face still needs it.
   hb_blob_reference (blob);
-  if (!hb_face_set_user_data (face, &ft_blob_key, blob, _destroy_blob, true))
+  if (!hb_face_set_user_data (face, &ft_blob_सुसि, blob, _destroy_blob, true))
   {
     hb_blob_destroy (blob);
     hb_face_destroy (face);
@@ -1824,13 +1824,13 @@ hb_ft_font_set_funcs (hb_font_t *font)
   unsigned int blob_length;
   const char *blob_data = hb_blob_get_data (blob, &blob_length);
   if (unlikely (!blob_length))
-    DEBUG_MSG (FT, font, "Font face has empty blob");
+    DEBUG_मेनसाहे (FT, font, "Font face has empty blob");
 
   FT_Library ft_library = reference_ft_library ();
   if (unlikely (!ft_library))
   {
     hb_blob_destroy (blob);
-    DEBUG_MSG (FT, font, "reference_ft_library failed");
+    DEBUG_मेनसाहे (FT, font, "reference_ft_library failed");
     return;
   }
 
@@ -1843,11 +1843,11 @@ hb_ft_font_set_funcs (hb_font_t *font)
   {
     hb_blob_destroy (blob);
     destroy_ft_library (ft_library);
-    DEBUG_MSG (FT, font, "FT_New_Memory_Face() failed");
+    DEBUG_मेनसाहे (FT, font, "FT_New_Memory_Face() failed");
     return;
   }
 
-  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_SYMBOL))
+  if (FT_Select_Charmap (ft_face, FT_ENCODING_MS_सिम्बोलो))
     FT_Select_Charmap (ft_face, FT_ENCODING_UNICODE);
 
   // Hook the blob to the FT_Face
@@ -1855,9 +1855,9 @@ hb_ft_font_set_funcs (hb_font_t *font)
   ft_face->generic.finalizer = _release_blob;
 
   // And the FT_Library to the blob
-  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_key, ft_library, destroy_ft_library, true)))
+  if (unlikely (!hb_blob_set_user_data (blob, &ft_library_सुसि, ft_library, destroy_ft_library, true)))
   {
-    DEBUG_MSG (FT, font, "hb_blob_set_user_data() failed");
+    DEBUG_मेनसाहे (FT, font, "hb_blob_set_user_data() failed");
     _hb_ft_face_destroy_static (ft_face);
     destroy_ft_library (ft_library);
     return;

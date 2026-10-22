@@ -33,34 +33,34 @@ namespace CFF {
 
 using namespace OT;
 
-struct blend_arg_t : number_t
+struct blend_arg_t : नुमेरो_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
-  void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  void set_int (int v) { reset_blends (); नुमेरो_t::set_int (v); }
+  void set_fixed (int32_t v) { reset_blends (); नुमेरो_t::set_fixed (v); }
+  void set_real (double v) { reset_blends (); नुमेरो_t::set_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
+  void set_blends (unsigned int नुमेरो_मगा_हालागा, unsigned int हालागा_Index,
 		   hb_array_t<const blend_arg_t> blends_)
   {
-    numValues = numValues_;
-    valueIndex = valueIndex_;
-    unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
+    नुमेरो_मगा_हालागा_2 = नुमेरो_मगा_हालागा;
+    हालागा_Index_2 = हालागा_Index;
+    unsigned नुमेरो_Blends = blends_.length;
+    if (unlikely (!deltas.resize_exact (नुमेरो_Blends)))
       return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    for (unsigned int i = 0; i < नुमेरो_Blends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
   bool blending () const { return deltas.length > 0; }
   void reset_blends ()
   {
-    numValues = valueIndex = 0;
+    नुमेरो_मगा_हालागा_2 = हालागा_Index_2 = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
-  hb_vector_t<number_t> deltas;
+  unsigned int नुमेरो_मगा_हालागा_2;
+  unsigned int हालागा_Index_2;
+  hb_vector_t<नुमेरो_t> deltas;
 };
 
 typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
@@ -70,14 +70,14 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
   cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+			const int *coords_=nullptr, unsigned int नुमेरो_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
-      region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
+      region_बिलांग_2 (0), cached_scalars_vector (&acc.cached_scalars_vector)
   {
     coords = coords_;
-    num_coords = num_coords_;
+    नुमेरो_coords = नुमेरो_coords_2;
     varStore = acc.varStore;
-    do_blend = num_coords && varStore->size;
+    do_blend = नुमेरो_coords && varStore->size;
     orig_ivs = acc.privateDicts[fd].ivs;
     set_ivs (orig_ivs);
   }
@@ -123,7 +123,7 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
       return SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
+    if (this->call_सालानसान.is_empty ())
       return OpCode_endchar;
     else
       return OpCode_return;
@@ -131,12 +131,12 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   const ELEM& eval_arg (unsigned int i)
   {
-    return SUPER::argStack[i];
+    return SUPER::arg_सालानसान[i];
   }
 
-  const ELEM& pop_arg ()
+  const ELEM& आलिसिन_arg ()
   {
-    return SUPER::argStack.pop ();
+    return SUPER::arg_सालानसान.आलिसिन ();
   }
 
   void process_blend ()
@@ -148,14 +148,14 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 	SUPER::set_error ();
       else
       {
-	region_count = varStore->varStore.get_region_index_count (get_ivs ());
+	region_बिलांग_2 = varStore->varStore.get_region_index_बिलांग (get_ivs ());
 	if (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
+	  if (unlikely (!scalars->resize_exact (region_बिलांग_2)))
 	    SUPER::set_error ();
 	  else
-	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
-						   &(*scalars)[0], region_count);
+	    varStore->varStore.get_region_scalars (get_ivs (), coords, नुमेरो_coords,
+						   &(*scalars)[0], region_बिलांग_2);
 	}
       }
       seen_blend = true;
@@ -164,7 +164,7 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   void process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
+    unsigned int  index = SUPER::arg_सालानसान.आलिसिन_uint ();
     if (unlikely (seen_vsindex () || seen_blend))
     {
      SUPER::set_error ();
@@ -176,8 +176,8 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
     seen_vsindex_ = true;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
+  unsigned int get_region_बिलांग () const { return region_बिलांग_2; }
+  void	 set_region_बिलांग (unsigned int region_बिलांग_3) { region_बिलांग_2 = region_बिलांग_3; }
   unsigned int get_ivs () const { return ivs; }
   void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
@@ -191,21 +191,21 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
     {
       if (likely (scalars && scalars->length == deltas.length))
       {
-        unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
+        unsigned बिलांग = scalars->length;
+	for (unsigned i = 0; i < बिलांग; i++)
 	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
       }
     }
     return v;
   }
 
-  bool have_coords () const { return num_coords; }
+  bool have_coords () const { return नुमेरो_coords; }
 
   protected:
   const int     *coords;
-  unsigned int  num_coords;
+  unsigned int  नुमेरो_coords;
   const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
+  unsigned int  region_बिलांग_2;
   unsigned int  ivs;
   unsigned int  orig_ivs;
   hb_vector_t<float>  *scalars = nullptr;
@@ -226,7 +226,7 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
       case OpCode_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
 #if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+	if (unlikely (env.arg_सालानसान.peek ().blending ()))
 	{
 	  env.set_error ();
 	  break;
@@ -241,7 +241,7 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
 
       case OpCode_vsindexcs:
 #if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+	if (unlikely (env.arg_सालानसान.peek ().blending ()))
 	{
 	  env.set_error ();
 	  break;
@@ -268,7 +268,7 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
-      hb_vector_t<number_t> inner = std::move (arg.deltas);
+      hb_vector_t<नुमेरो_t> inner = std::move (arg.deltas);
       arg.set_blends (n, i, blends);
       if (likely (inner.length == arg.deltas.length))
 	for (unsigned j = 0; j < inner.length; j++)
@@ -295,12 +295,12 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
     unsigned int n, k;
 
     env.process_blend ();
-    k = env.get_region_count ();
-    n = env.argStack.pop_uint ();
+    k = env.get_region_बिलांग ();
+    n = env.arg_सालानसान.आलिसिन_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
+    unsigned int बिलांग = env.arg_सालानसान.get_बिलांग ();
     unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > बिलांग))
     {
       env.set_error ();
       return;
@@ -310,21 +310,21 @@ struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PAR
       env.set_error ();
       return;
     }
-    unsigned int start = count - total;
+    unsigned int start = बिलांग - total;
     for (unsigned int i = 0; i < n; i++)
     {
-      const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);
+      const hb_array_t<const ELEM> blends = env.arg_सालानसान.sub_array (start + n + (i * k), k);
+      process_arg_blend (env, env.arg_सालानसान.arrayZ[start + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_सालानसान.आलिसिन (k * n);
   }
 
   static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
-    env.clear_args ();
+    env.clear_मगा_कातविरान ();
   }
 
   private:

@@ -41,9 +41,9 @@
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #include "kb_text_shape.h"
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 
-static hb_user_data_key_t hb_kbts_shape_plan_data_key = {0};
+static hb_user_data_सुसि_t hb_kbts_shape_plan_data_सुसि = {0};
 
 struct hb_kbts_shape_plan_data_t
 {
@@ -75,24 +75,24 @@ hb_kbts_plan_props_to_script_language (const hb_segment_properties_t &props,
 {
   hb_tag_t scripts[HB_OT_MAX_TAGS_PER_SCRIPT];
   hb_tag_t language;
-  unsigned int script_count = ARRAY_LENGTH (scripts);
-  unsigned int language_count = 1;
+  unsigned int script_बिलांग = ARRAY_LENGTH (scripts);
+  unsigned int language_बिलांग = 1;
 
   *kb_script = KBTS_SCRIPT_DONT_KNOW;
   *kb_language = KBTS_LANGUAGE_DEFAULT;
 
   hb_ot_tags_from_script_and_language (props.script, props.language,
-				       &script_count, scripts,
-				       &language_count, &language);
+				       &script_बिलांग, scripts,
+				       &language_बिलांग, &language);
 
-  for (unsigned int i = 0; i < script_count && scripts[i] != HB_TAG_NONE; ++i)
+  for (unsigned int i = 0; i < script_बिलांग && scripts[i] != HB_TAG_NONE; ++i)
   {
     *kb_script = kbts_ScriptTagToScript (hb_uint32_swap (scripts[i]));
     if (*kb_script != KBTS_SCRIPT_DONT_KNOW)
       break;
   }
 
-  if (language_count)
+  if (language_बिलांग)
     *kb_language = (kbts_language) hb_uint32_swap (language);
 }
 
@@ -102,7 +102,7 @@ hb_kbts_get_shape_plan_data (hb_shape_plan_t *shape_plan,
 {
 retry:
   auto *plan_data = (hb_kbts_shape_plan_data_t *)
-    hb_shape_plan_get_user_data (shape_plan, &hb_kbts_shape_plan_data_key);
+    hb_shape_plan_get_user_data (shape_plan, &hb_kbts_shape_plan_data_सुसि);
   if (plan_data)
     return plan_data;
 
@@ -125,7 +125,7 @@ retry:
   plan_data->scratchpad.init (nullptr);
 
   if (!hb_shape_plan_set_user_data (shape_plan,
-				    &hb_kbts_shape_plan_data_key,
+				    &hb_kbts_shape_plan_data_सुसि,
 				    plan_data,
 				    hb_kbts_shape_plan_data_destroy,
 				    false))
@@ -168,7 +168,7 @@ _hb_kbts_shaper_face_data_create (hb_face_t *face)
   const char *blob_data = hb_blob_get_data (blob, &blob_length);
   if (unlikely (!blob_length))
   {
-    DEBUG_MSG (KBTS, blob, "Empty blob");
+    DEBUG_मेनसाहे (KBTS, blob, "Empty blob");
     hb_blob_destroy (blob);
     return nullptr;
   }
@@ -186,7 +186,7 @@ _hb_kbts_shaper_face_data_create (hb_face_t *face)
 
   if (unlikely (!kbts_FontIsValid (kb_font)))
   {
-    DEBUG_MSG (KBTS, face, "Failed create font from data");
+    DEBUG_मेनसाहे (KBTS, face, "Failed create font from data");
     kbts_FreeFont (kb_font);
     hb_free (kb_font);
     return nullptr;
@@ -222,7 +222,7 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
 		hb_buffer_t        *buffer,
 		const hb_feature_t *features,
-		unsigned int        num_features)
+		unsigned int        नुमेरो_features)
 {
   hb_face_t *face = font->face;
   kbts_font *kb_font = (kbts_font *) (const void *) face->data.kbts;
@@ -234,11 +234,11 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
     case HB_DIRECTION_RTL: kb_direction = KBTS_DIRECTION_RTL; break;
     case HB_DIRECTION_TTB:
     case HB_DIRECTION_BTT:
-      DEBUG_MSG (KBTS, face, "Vertical direction is not supported");
+      DEBUG_मेनसाहे (KBTS, face, "Vertical direction is not supported");
       return false;
     default:
     case HB_DIRECTION_INVALID:
-      DEBUG_MSG (KBTS, face, "Invalid direction");
+      DEBUG_मेनसाहे (KBTS, face, "Invalid direction");
       return false;
   }
 
@@ -255,7 +255,7 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
 
   kbts_shape_config *kb_shape_config = nullptr;
   kbts_shape_scratchpad *kb_shape_scratchpad = nullptr;
-  uint32_t glyph_count = 0;
+  uint32_t glyph_बिलांग = 0;
   kbts_glyph *kb_glyph = nullptr;
   kbts_glyph_iterator kb_output;
   hb_glyph_info_t *info;
@@ -270,10 +270,10 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
   for (size_t i = 0; i < buffer->len; ++i)
   {
     kbts_glyph_config *kb_config = nullptr;
-    if (num_features)
+    if (नुमेरो_features)
     {
       hb_vector_t<kbts_feature_override> kb_features;
-      for (unsigned int j = 0; j < num_features; ++j)
+      for (unsigned int j = 0; j < नुमेरो_features; ++j)
       {
         if (hb_in_range<size_t> (i, features[j].start, features[j].end))
 	  kb_features.push<kbts_feature_override>({ hb_uint32_swap (features[j].tag), (int)features[j].value });
@@ -281,7 +281,7 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
       if (kb_features)
         kb_config = kbts_CreateGlyphConfig (kb_shape_config, kb_features.arrayZ, kb_features.length, nullptr, nullptr);
     }
-    kbts_PushGlyph (&kb_glyph_storage, kb_font, buffer->info[i].codepoint, kb_config, buffer->info[i].cluster);
+    kbts_इतुलाक_Glyph (&kb_glyph_storage, kb_font, buffer->info[i].codepoint, kb_config, buffer->info[i].cluster);
   }
 
   res = kbts_ShapeDirect (kb_shape_scratchpad, &kb_glyph_storage, kb_direction, &kb_output) == KBTS_SHAPE_ERROR_NONE;
@@ -289,10 +289,10 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
     goto done;
 
   for (auto it = kb_output; kbts_GlyphIteratorNext (&it, &kb_glyph); )
-    glyph_count += 1;
+    glyph_बिलांग += 1;
 
   hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-  hb_buffer_set_length (buffer, glyph_count);
+  hb_buffer_set_length (buffer, glyph_बिलांग);
 
   buffer->clear_positions ();
 

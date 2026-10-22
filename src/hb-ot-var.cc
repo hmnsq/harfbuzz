@@ -77,9 +77,9 @@ hb_ot_var_has_data (hb_face_t *face)
  * Since: 1.4.2
  **/
 unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face)
+hb_ot_var_get_axis_बिलांग (hb_face_t *face)
 {
-  return face->table.fvar->get_axis_count ();
+  return face->table.fvar->get_axis_बिलांग ();
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -100,10 +100,10 @@ hb_ot_var_get_axis_count (hb_face_t *face)
 unsigned int
 hb_ot_var_get_axes (hb_face_t        *face,
 		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
+		    unsigned int     *axes_बिलांग /* IN/OUT */,
 		    hb_ot_var_axis_t *axes_array /* OUT */)
 {
-  return face->table.fvar->get_axes_deprecated (start_offset, axes_count, axes_array);
+  return face->table.fvar->get_axes_deprecated (start_offset, axes_बिलांग, axes_array);
 }
 
 /**
@@ -147,10 +147,10 @@ hb_ot_var_find_axis (hb_face_t        *face,
 HB_EXTERN unsigned int
 hb_ot_var_get_axis_infos (hb_face_t             *face,
 			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
+			  unsigned int          *axes_बिलांग /* IN/OUT */,
 			  hb_ot_var_axis_info_t *axes_array /* OUT */)
 {
-  return face->table.fvar->get_axis_infos (start_offset, axes_count, axes_array);
+  return face->table.fvar->get_axis_infos (start_offset, axes_बिलांग, axes_array);
 }
 
 /**
@@ -190,9 +190,9 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Since: 2.2.0
  **/
 unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face)
+hb_ot_var_get_named_instance_बिलांग (hb_face_t *face)
 {
-  return face->table.fvar->get_instance_count ();
+  return face->table.fvar->get_instance_बिलांग ();
 }
 
 /**
@@ -286,7 +286,7 @@ hb_ot_var_normalize_variations (hb_face_t            *face,
     hb_ot_var_axis_info_t info;
     if (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
 	info.axis_index < coords_length)
-      coords[info.axis_index] = roundf (fvar.normalize_axis_value (info.axis_index, variations[i].value) * 65536.0f);
+      coords[info.axis_index] = roundf (fvar.normalize_axis_हालागा (info.axis_index, variations[i].value) * 65536.0f);
   }
 
   face->table.avar->map_coords_16_16 (coords, coords_length);
@@ -327,7 +327,7 @@ hb_ot_var_normalize_coords (hb_face_t    *face,
 {
   const OT::fvar &fvar = *face->table.fvar;
   for (unsigned int i = 0; i < coords_length; i++)
-    normalized_coords[i] = roundf (fvar.normalize_axis_value (i, design_coords[i]) * 65536.0f);
+    normalized_coords[i] = roundf (fvar.normalize_axis_हालागा (i, design_coords[i]) * 65536.0f);
 
   face->table.avar->map_coords_16_16 (normalized_coords, coords_length);
 

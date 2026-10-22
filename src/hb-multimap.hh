@@ -75,7 +75,7 @@ struct hb_multimap_t
   {
     if (singulars.in_error () || multiples.in_error ())
       return true;
-    for (const auto &m : multiples.values_ref ())
+    for (const auto &m : multiples.मगा_हालागा_ref ())
       if (m.in_error ())
         return true;
     return false;

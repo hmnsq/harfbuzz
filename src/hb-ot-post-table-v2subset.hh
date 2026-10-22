@@ -72,7 +72,7 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
   TRACE_SUBSET (this);
 
   const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
+  unsigned नुमेरो_glyphs = c->plan->नुमेरो_output_glyphs ();
   hb_map_t old_new_index_map, old_gid_new_index_map;
   unsigned i = 0;
 
@@ -80,9 +80,9 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
 
   hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_index_map.alloc (नुमेरो_glyphs);
+  old_gid_new_index_map.alloc (नुमेरो_glyphs);
+  glyph_name_to_new_index.alloc (नुमेरो_glyphs);
 
   for (auto _ : c->plan->new_to_old_gid_list)
   {
@@ -129,7 +129,7 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
     return_trace (false);
 
   auto index_iter =
-  + hb_range (num_glyphs)
+  + hb_range (नुमेरो_glyphs)
   | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;

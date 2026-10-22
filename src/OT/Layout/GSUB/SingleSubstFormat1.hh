@@ -39,7 +39,7 @@ void single_subst_depend (hb_depend_context_t *c,
                           const Coverage &coverage,
                           hb_codepoint_t d, hb_codepoint_t mask)
 {
-  unsigned num_glyphs = c->face->get_num_glyphs ();
+  unsigned नुमेरो_glyphs = c->face->get_नुमेरो_glyphs ();
 
   // Filter coverage by active glyphs (like closure does)
   hb_set_t intersection;
@@ -47,7 +47,7 @@ void single_subst_depend (hb_depend_context_t *c,
 
   + hb_iter (intersection)
   | hb_map ([&] (hb_codepoint_t _) { return hb_codepoint_pair_t (_, (_ + d) & mask); })
-  | hb_filter ([num_glyphs] (const hb_codepoint_pair_t &_) { return _.second < num_glyphs; })
+  | hb_filter ([नुमेरो_glyphs] (const hb_codepoint_pair_t &_) { return _.second < नुमेरो_glyphs; })
   | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup(_.first, c->lookup_index, _.second); })
   ;
 }
@@ -58,8 +58,8 @@ void single_subst_closure (hb_closure_context_t *c,
                            hb_codepoint_t d, hb_codepoint_t mask)
 {
   /* Help fuzzer avoid this function as much. */
-  unsigned pop = coverage.get_population ();
-  if (pop >= mask)
+  unsigned आलिसिन = coverage.get_population ();
+  if (आलिसिन >= mask)
     return;
 
   hb_set_t intersection;
@@ -88,7 +88,7 @@ void single_subst_collect_glyphs (hb_collect_glyphs_context_t *c,
                                   const Coverage &coverage,
                                   hb_codepoint_t d, hb_codepoint_t mask)
 {
-  if (unlikely (!coverage.collect_coverage (c->input))) return;
+  if (unlikely (!coverage.collect_coverage (c->पासोक))) return;
 
   + hb_iter (coverage)
   | hb_map ([d, mask] (hb_codepoint_t g) { return (g + d) & mask; })
@@ -159,18 +159,18 @@ struct SingleSubstFormat1_3
   unsigned
   get_glyph_alternates (hb_codepoint_t  glyph_id,
                         unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+                        unsigned       *alternate_बिलांग  /* IN/OUT.  May be NULL. */,
                         hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   {
     unsigned int index = (this+coverage).get_coverage (glyph_id);
     if (likely (index == NOT_COVERED))
     {
-      if (alternate_count)
-        *alternate_count = 0;
+      if (alternate_बिलांग)
+        *alternate_बिलांग = 0;
       return 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    if (alternate_बिलांग && *alternate_बिलांग && alternate_glyphs)
     {
       hb_codepoint_t d = deltaGlyphID;
       hb_codepoint_t mask = get_mask ();
@@ -178,14 +178,14 @@ struct SingleSubstFormat1_3
       glyph_id = (glyph_id + d) & mask;
 
       *alternate_glyphs = glyph_id;
-      *alternate_count = 1;
+      *alternate_बिलांग = 1;
     }
 
     return 1;
   }
 
   void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
+  collect_glyph_alternates (hb_map_t  *alternate_बिलांग /* IN/OUT */,
 			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
   {
     hb_codepoint_t d = deltaGlyphID;
@@ -195,7 +195,7 @@ struct SingleSubstFormat1_3
     | hb_map ([d, mask] (hb_codepoint_t g) { return hb_pair (g, (g + d) & mask); })
     | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+						    alternate_बिलांग, alternate_glyphs); })
     ;
   }
 

@@ -82,12 +82,12 @@ struct post
   bool serialize (hb_serialize_context_t *c, bool glyph_names) const
   {
     TRACE_SERIALIZE (this);
-    post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    post *post_पांगुनाहिन = c->allocate_min<post> ();
+    if (unlikely (!post_पांगुनाहिन))  return_trace (false);
 
-    hb_memcpy (post_prime, this, post::min_size);
+    hb_memcpy (post_पांगुनाहिन, this, post::min_size);
     if (!glyph_names)
-      return_trace (c->check_assign (post_prime->version.major, 3,
+      return_trace (c->check_assign (post_पांगुनाहिन->version.major, 3,
                                      HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
 
     return_trace (true);
@@ -96,7 +96,7 @@ struct post
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    auto *post_prime = c->serializer->start_embed<post> ();
+    auto *post_पांगुनाहिन = c->serializer->start_embed<post> ();
 
     bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
     if (!serialize (c->serializer, glyph_names))
@@ -106,7 +106,7 @@ struct post
     if (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = post_prime;
+      auto *table = post_पांगुनाहिन;
 
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_SIZE,   underlineThickness);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_OFFSET, underlinePosition);
@@ -116,9 +116,9 @@ struct post
     Triple *axis_range;
     if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
     {
-      float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
-        post_prime->italicAngle.set_float (italic_angle);
+      float italic_angle = hb_max (-90.f, hb_min (axis_range->गित्ना, 90.f));
+      if (post_पांगुनाहिन->italicAngle.to_float () != italic_angle)
+        post_पांगुनाहिन->italicAngle.set_float (italic_angle);
     }
 
     if (glyph_names && version.major == 2)
@@ -149,7 +149,7 @@ struct post
       pool = &StructAfter<uint8_t> (v2.glyphNameIndex);
 
       const uint8_t *end = (const uint8_t *) (const void *) table + table_length;
-      index_to_offset.alloc (hb_min (face->get_num_glyphs (), table_length / 8));
+      index_to_offset.alloc (hb_min (face->get_नुमेरो_glyphs (), table_length / 8));
       for (const uint8_t *data = pool;
 	   index_to_offset.length < 65535 && data < end && data + *data < end;
 	   data += 1 + *data)
@@ -176,8 +176,8 @@ struct post
     bool get_glyph_from_name (const char *name, int len,
 			      hb_codepoint_t *glyph) const
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      unsigned int बिलांग = get_glyph_बिलांग ();
+      if (unlikely (!बिलांग)) return false;
 
       if (len < 0) len = strlen (name);
 
@@ -188,14 +188,14 @@ struct post
 
       if (unlikely (!gids))
       {
-	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
+	gids = (uint16_t *) hb_malloc2 (बिलांग, sizeof (gids[0]));
 	if (unlikely (!gids))
 	  return false; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	for (unsigned int i = 0; i < बिलांग; i++)
 	  gids[i] = i;
 	auto thiz = this;
-	hb_array_t<uint16_t> (gids, count)
+	hb_array_t<uint16_t> (gids, बिलांग)
 	  .qsort ([thiz] (const uint16_t &a, const uint16_t &b) {
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
@@ -211,7 +211,7 @@ struct post
       }
 
       hb_bytes_t st (name, len);
-      auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
+      auto* gid = hb_bsearch (st, gids, बिलांग, sizeof (gids[0]), cmp_सुसि, (void *) this);
       if (gid)
       {
 	*glyph = *gid;
@@ -225,7 +225,7 @@ struct post
 
     protected:
 
-    unsigned int get_glyph_count () const
+    unsigned int get_glyph_बिलांग () const
     {
       if (version == 0x00010000)
       {
@@ -242,7 +242,7 @@ struct post
       return 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    static int cmp_सुसि (const void *pk, const void *po, void *arg)
     {
       const accelerator_t *thiz = (const accelerator_t *) arg;
       const hb_bytes_t *key = (const hb_bytes_t *) pk;

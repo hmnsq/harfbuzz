@@ -140,7 +140,7 @@ typedef enum {
   HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT = 6,
   HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT = 7,
   HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN = 8,
-  HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX = 9,
+  HB_OT_MATH_CONSTANT_SUBSCRIPT_इताअस_MAX = 9,
   HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN = 10,
   HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP = 11,
   HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED = 12,
@@ -153,22 +153,22 @@ typedef enum {
   HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN = 19,
   HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN = 20,
   HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN = 21,
-  HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP = 22,
-  HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP = 23,
-  HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN = 24,
-  HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN = 25,
-  HB_OT_MATH_CONSTANT_STACK_GAP_MIN = 26,
-  HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN = 27,
-  HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP = 28,
-  HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN = 29,
-  HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN = 30,
-  HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN = 31,
+  HB_OT_MATH_CONSTANT_सालानसान_इताअस_SHIFT_UP = 22,
+  HB_OT_MATH_CONSTANT_सालानसान_इताअस_DISPLAY_STYLE_SHIFT_UP = 23,
+  HB_OT_MATH_CONSTANT_सालानसान_BOTTOM_SHIFT_DOWN = 24,
+  HB_OT_MATH_CONSTANT_सालानसान_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN = 25,
+  HB_OT_MATH_CONSTANT_सालानसान_GAP_MIN = 26,
+  HB_OT_MATH_CONSTANT_सालानसान_DISPLAY_STYLE_GAP_MIN = 27,
+  HB_OT_MATH_CONSTANT_STRETCH_सालानसान_इताअस_SHIFT_UP = 28,
+  HB_OT_MATH_CONSTANT_STRETCH_सालानसान_BOTTOM_SHIFT_DOWN = 29,
+  HB_OT_MATH_CONSTANT_STRETCH_सालानसान_GAP_ABOVE_MIN = 30,
+  HB_OT_MATH_CONSTANT_STRETCH_सालानसान_GAP_BELOW_MIN = 31,
   HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP = 32,
   HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP = 33,
   HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN = 34,
   HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN = 35,
   HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN = 36,
-  HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN = 37,
+  HB_OT_MATH_CONSTANT_FRACTION_नुमेरो_DISPLAY_STYLE_GAP_MIN = 37,
   HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS = 38,
   HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN = 39,
   HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN = 40,
@@ -202,10 +202,10 @@ typedef enum {
  * Since: 1.3.3
  */
 typedef enum {
-  HB_OT_MATH_KERN_TOP_RIGHT = 0,
-  HB_OT_MATH_KERN_TOP_LEFT = 1,
-  HB_OT_MATH_KERN_BOTTOM_RIGHT = 2,
-  HB_OT_MATH_KERN_BOTTOM_LEFT = 3
+  HB_OT_MATH_KERN_इताअस_कानान = 0,
+  HB_OT_MATH_KERN_इताअस_कालिवा = 1,
+  HB_OT_MATH_KERN_BOTTOM_कानान = 2,
+  HB_OT_MATH_KERN_BOTTOM_कालिवा = 3
 } hb_ot_math_kern_t;
 
 /**
@@ -219,7 +219,7 @@ typedef enum {
  */
 typedef struct {
   hb_position_t max_correction_height;
-  hb_position_t kern_value;
+  hb_position_t kern_हालागा_2;
 } hb_ot_math_kern_entry_t;
 
 /**
@@ -285,7 +285,7 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
 					 hb_codepoint_t glyph);
 
 HB_EXTERN hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_इताअस_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph);
 
 HB_EXTERN hb_bool_t
@@ -303,7 +303,7 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
 			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
+			       unsigned int *entries_बिलांग, /* IN/OUT */
 			       hb_ot_math_kern_entry_t *kern_entries /* OUT */);
 
 HB_EXTERN unsigned int
@@ -311,7 +311,7 @@ hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
 			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
+			       unsigned int *variants_बिलांग, /* IN/OUT */
 			       hb_ot_math_glyph_variant_t *variants /* OUT */);
 
 HB_EXTERN hb_position_t
@@ -323,7 +323,7 @@ hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
 			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
+			       unsigned int *parts_बिलांग, /* IN/OUT */
 			       hb_ot_math_glyph_part_t *parts, /* OUT */
 			       hb_position_t *italics_correction /* OUT */);
 

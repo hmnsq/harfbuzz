@@ -147,20 +147,20 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
 HB_INTERNAL void
 _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
+				 hb_color_लिन्या_t *color_लिन्या,
 				 float x0, float y0,
 				 float x1, float y1,
 				 float x2, float y2);
 
 HB_INTERNAL void
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
+				 hb_color_लिन्या_t *color_लिन्या,
 				 float x0, float y0, float r0,
 				 float x1, float y1, float r1);
 
 HB_INTERNAL void
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
+				hb_color_लिन्या_t *color_लिन्या,
 				float x0, float y0,
 				float start_angle, float end_angle);
 

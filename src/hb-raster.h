@@ -90,14 +90,14 @@ hb_raster_image_destroy (hb_raster_image_t *image);
 
 HB_EXTERN hb_bool_t
 hb_raster_image_set_user_data (hb_raster_image_t  *image,
-			       hb_user_data_key_t *key,
+			       hb_user_data_सुसि_t *सुसि_2,
 			       void               *data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_raster_image_get_user_data (const hb_raster_image_t  *image,
-			       hb_user_data_key_t *key);
+			       hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN hb_bool_t
 hb_raster_image_configure (hb_raster_image_t         *image,
@@ -149,14 +149,14 @@ hb_raster_draw_destroy (hb_raster_draw_t *draw);
 
 HB_EXTERN hb_bool_t
 hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key,
+			      hb_user_data_सुसि_t *सुसि_2,
 			      void               *data,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key);
+			      hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN void
 hb_raster_draw_set_transform (hb_raster_draw_t *draw,
@@ -244,14 +244,14 @@ hb_raster_paint_destroy (hb_raster_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_raster_paint_set_user_data (hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key,
+			       hb_user_data_सुसि_t *सुसि_2,
 			       void               *data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_raster_paint_get_user_data (const hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key);
+			       hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN void
 hb_raster_paint_set_transform (hb_raster_paint_t *paint,

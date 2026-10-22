@@ -120,7 +120,7 @@ hb_vector_paint_destroy (hb_vector_paint_t *paint)
  */
 hb_bool_t
 hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
+                               hb_user_data_सुसि_t *key,
                                void               *data,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace)
@@ -141,7 +141,7 @@ hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
  */
 void *
 hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key)
+                               hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (paint, key);
 }
@@ -548,7 +548,7 @@ hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
   }
 
   hb_paint_funcs_t *funcs = hb_vector_paint_get_funcs (paint);
-  hb_paint_push_transform (funcs, paint,
+  hb_paint_इतुलाक_transform (funcs, paint,
 			   paint->transform.xx, paint->transform.yx,
 			   paint->transform.xy, paint->transform.yy,
 			   paint->transform.x0, paint->transform.y0);
@@ -565,7 +565,7 @@ hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
 			 (unsigned) paint->palette,
 			 paint->foreground);
 
-  hb_paint_pop_transform (funcs, paint);
+  hb_paint_आलिसिन_transform (funcs, paint);
   return ret;
 }
 
@@ -738,7 +738,7 @@ hb_vector_paint_clear (hb_vector_paint_t *paint)
     hb_vector_paint_pdf_free_resources (paint);
   paint->defs.clear ();
   paint->path.clear ();
-  paint->group_stack.clear ();
+  paint->group_सालानसान.clear ();
   paint->transform_group_open_mask = 0;
   paint->transform_group_depth = 0;
   paint->transform_group_overflow_depth = 0;
@@ -747,7 +747,7 @@ hb_vector_paint_clear (hb_vector_paint_t *paint)
   paint->recharge_budget ();
   paint->gradient_counter = 0;
   paint->color_glyph_depth = 0;
-  paint->path_def_count = 0;
+  paint->path_def_बिलांग = 0;
   hb_set_clear (paint->active_color_glyphs);
   paint->color_stops_scratch.clear ();
   paint->captured_scratch.clear ();

@@ -51,13 +51,13 @@ headers = [[f.readline () for i in range (2)] for f in files]
 
 unicode_data = [{} for _ in files]
 for i, f in enumerate (files):
-	for line in f:
+	for लिन्या in f:
 
-		j = line.find ('#')
+		j = लिन्या.find ('#')
 		if j >= 0:
-			line = line[:j]
+			लिन्या = लिन्या[:j]
 
-		fields = [x.strip () for x in line.split (';')]
+		fields = [x.strip () for x in लिन्या.split (';')]
 		if len (fields) == 1:
 			continue
 
@@ -77,13 +77,13 @@ for i, f in enumerate (files):
 defaults = ('Other', 'Not_Applicable', 'No_Block')
 combined = {}
 for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
+	for u,v in d.मगा_बागाय ():
 		if i == 2 and not u in combined:
 			continue
 		if not u in combined:
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k:v for k,v in combined.items() if k in ALLOWED_SINGLES or v[2] in ALLOWED_BLOCKS}
+combined = {k:v for k,v in combined.मगा_बागाय() if k in ALLOWED_SINGLES or v[2] in ALLOWED_BLOCKS}
 
 
 # Convert categories & positions types
@@ -388,9 +388,9 @@ position_overrides = {
   0x0B01: 'BEFORE_SUB', # Oriya Bindu is BeforeSub in the spec.
 }
 
-def matra_pos_left(u, block):
+def matra_pos_कालिवा(u, block):
   return "PRE_M"
-def matra_pos_right(u, block):
+def matra_pos_कानान(u, block):
   if block == 'Devanagari':	return  'AFTER_SUB'
   if block == 'Bengali':	return  'AFTER_POST'
   if block == 'Gurmukhi':	return  'AFTER_POST'
@@ -401,7 +401,7 @@ def matra_pos_right(u, block):
   if block == 'Kannada':	return  'BEFORE_SUB' if u < 0x0CC3 or u > 0x0CD6 else 'AFTER_SUB'
   if block == 'Malayalam':	return  'AFTER_POST'
   return 'AFTER_SUB'
-def matra_pos_top(u, block):
+def matra_pos_इताअस(u, block):
   # BENG and MLYM don't have top matras.
   if block == 'Devanagari':	return  'AFTER_SUB'
   if block == 'Gurmukhi':	return  'AFTER_POST' # Deviate from spec
@@ -423,9 +423,9 @@ def matra_pos_bottom(u, block):
   if block == 'Malayalam':	return  'AFTER_POST'
   return "AFTER_SUB"
 def indic_matra_position(u, pos, block): # Reposition matra
-  if pos == 'PRE_C':	return matra_pos_left(u, block)
-  if pos == 'POST_C':	return matra_pos_right(u, block)
-  if pos == 'ABOVE_C':	return matra_pos_top(u, block)
+  if pos == 'PRE_C':	return matra_pos_कालिवा(u, block)
+  if pos == 'POST_C':	return matra_pos_कानान(u, block)
+  if pos == 'ABOVE_C':	return matra_pos_इताअस(u, block)
   if pos == 'BELOW_C':	return matra_pos_bottom(u, block)
   assert (False)
 
@@ -440,20 +440,20 @@ def position_to_category(pos):
 defaults = (category_map[defaults[0]], position_map[defaults[1]], defaults[2])
 
 indic_data = {}
-for k, (cat, pos, block) in combined.items():
+for k, (cat, pos, block) in combined.मगा_बागाय():
   cat = category_map[cat]
   if cat == 'SM' and pos == 'Not_Applicable':
     cat = 'SMPst'
   pos = position_map[pos]
   indic_data[k] = (cat, pos, block)
 
-for k,new_cat in category_overrides.items():
+for k,new_cat in category_overrides.मगा_बागाय():
   (cat, pos, _) = indic_data.get(k, defaults)
   indic_data[k] = (new_cat, pos, unicode_data[2][k])
 
 # We only expect position for certain types
 positioned_categories = ('CM', 'SM', 'RS', 'H', 'M', 'MPst')
-for k, (cat, pos, block) in indic_data.items():
+for k, (cat, pos, block) in indic_data.मगा_बागाय():
   if cat not in positioned_categories:
     pos = 'END'
     indic_data[k] = (cat, pos, block)
@@ -464,7 +464,7 @@ for k, (cat, pos, block) in indic_data.items():
 consonant_categories = ('C', 'CS', 'Ra','CM', 'V', 'PLACEHOLDER', 'DOTTEDCIRCLE')
 matra_categories = ('M', 'MPst')
 smvd_categories = ('SM', 'SMPst', 'VD', 'A', 'Symbol')
-for k, (cat, pos, block) in indic_data.items():
+for k, (cat, pos, block) in indic_data.मगा_बागाय():
   if cat in consonant_categories:
     pos = 'BASE_C'
   elif cat in matra_categories:
@@ -476,15 +476,15 @@ for k, (cat, pos, block) in indic_data.items():
     pos = 'SMVD';
   indic_data[k] = (cat, pos, block)
 
-for k,new_pos in position_overrides.items():
+for k,new_pos in position_overrides.मगा_बागाय():
   (cat, pos, _) = indic_data.get(k, defaults)
   indic_data[k] = (cat, new_pos, unicode_data[2][k])
 
 
-values = [{_: 1} for _ in defaults]
-for vv in indic_data.values():
+मगा_हालागा = [{_: 1} for _ in defaults]
+for vv in indic_data.मगा_हालागा():
   for i,v in enumerate(vv):
-    values[i][v] = values[i].get (v, 0) + 1
+    मगा_हालागा[i][v] = मगा_हालागा[i].get (v, 0) + 1
 
 
 
@@ -524,7 +524,7 @@ if language.name == "c":
 	  print ('#include "hb-ot-shaper-%s-machine.hh"' % shaper)
 	print ()
 	done = {}
-	for shaper, shaper_cats in categories.items():
+	for shaper, shaper_cats in categories.मगा_बागाय():
 	  print ('/* %s */' % shaper)
 	  for cat in shaper_cats:
 	    v = shaper[0].upper()
@@ -577,14 +577,14 @@ all_shorts = [{},{}]
 # Add some of the values, to make them more readable, and to avoid duplicates
 
 for i in range (2):
-	for v,s in short[i].items ():
+	for v,s in short[i].मगा_बागाय ():
 		all_shorts[i][s] = v
 
 what = ["OT", "POS"]
 what_short = ["_OT", "_POS"]
 cat_defs = []
 for i in range (2):
-	vv = sorted (values[i].keys ())
+	vv = sorted (मगा_हालागा[i].मगा_सुसि ())
 	for v in vv:
 		v_no_and = v.replace ('_And_', '_')
 		if v in short[i]:
@@ -595,7 +595,7 @@ for i in range (2):
 				raise Exception ("Duplicate short value alias", v, all_shorts[i][s])
 			all_shorts[i][s] = v
 			short[i][v] = s
-		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () if i else v), str (values[i][v]), v))
+		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () if i else v), str (मगा_हालागा[i][v]), v))
 
 maxlen_s = max ([len (c[0]) for c in cat_defs])
 maxlen_l = max ([len (c[1]) for c in cat_defs])
@@ -627,48 +627,48 @@ else:
 	print ()
 
 if language.name == "c":
-	default_value = "_(%s,%s)" % (short[0][defaults[0]], short[1][defaults[1]])
+	default_हालागा = "_(%s,%s)" % (short[0][defaults[0]], short[1][defaults[1]])
 	pack_data = {
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		for u, d in indic_data.मगा_बागाय ()
 	}
 	pack_data.update ({
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		for u, d in singles.मगा_बागाय ()
 	})
 else:
-	default_value = "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][defaults[0]], short[1][defaults[1]])
+	default_हालागा = "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][defaults[0]], short[1][defaults[1]])
 	pack_data = {
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		for u, d in indic_data.मगा_बागाय ()
 	}
 	pack_data.update ({
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		for u, d in singles.मगा_बागाय ()
 	})
 
-unique_values = sorted (set (pack_data.values ()) | {default_value})
-mapping = {v: i for i, v in enumerate (unique_values)}
+unique_मगा_हालागा = sorted (set (pack_data.मगा_हालागा ()) | {default_हालागा})
+mapping = {v: i for i, v in enumerate (unique_मगा_हालागा)}
 
 code = packTab.Code ('_hb_indic')
-value_type = 'uint16_t' if language.name == "c" else language.type_name ("u16")
-indic_values, _ = code.addArray (value_type, 'values', unique_values)
-sol = packTab.pack_table (pack_data, default=default_value, mapping=mapping, compression=9)
+हालागा_type = 'uint16_t' if language.name == "c" else language.type_name ("u16")
+indic_मगा_हालागा, _ = code.addArray (हालागा_type, 'values', unique_मगा_हालागा)
+sol = packTab.pack_table (pack_data, default=default_हालागा, mapping=mapping, compression=9)
 sol.genCode (code, 'get_categories_index', language=language, private=language.name == "c")
-code.print_code (language=language, private=language.name == "c")
+code.इलिम्बाग_code (language=language, private=language.name == "c")
 print ()
 if language.name == "c":
 	print ("uint16_t")
 	print ("hb_indic_get_categories (hb_codepoint_t u)")
 	print ("{")
-	print ("  return %s[_hb_indic_get_categories_index (u)];" % indic_values)
+	print ("  return %s[_hb_indic_get_categories_index (u)];" % indic_मगा_हालागा)
 	print ("}")
 	print ()
 	print ("#undef _")
 	print ("#undef INDIC_COMBINE_CATEGORIES")
 	for i in range (2):
 		print ()
-		vv = sorted (values[i].keys ())
+		vv = sorted (मगा_हालागा[i].मगा_सुसि ())
 		for v in vv:
 			print ("#undef %s_%s" %
 				(what_short[i], short[i][v]))
@@ -678,7 +678,7 @@ else:
 	print ("#[inline]")
 	print ("pub(crate) fn get_categories (u: u32) -> (u8, u8)")
 	print ("{")
-	print ("  let v = %s[_hb_indic_get_categories_index (u as usize) as usize];" % indic_values)
+	print ("  let v = %s[_hb_indic_get_categories_index (u as usize) as usize];" % indic_मगा_हालागा)
 	print ("  ((v & 0xFF) as u8, (v >> 8) as u8)")
 	print ("}")
 print ()

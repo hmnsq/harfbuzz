@@ -69,7 +69,7 @@ AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (const hb_ot_shape_plan_t *p
 						       lookup_index (0)
 {
   sanitizer.init (blob);
-  sanitizer.set_num_glyphs (face->get_num_glyphs ());
+  sanitizer.set_नुमेरो_glyphs (face->get_नुमेरो_glyphs ());
   sanitizer.start_processing ();
   sanitizer.set_max_ops (HB_SANITIZE_MAX_OPS_MAX);
 }
@@ -130,15 +130,15 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
   {HB_TAG ('j','p','8','3'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1983_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('j','p','9','0'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1990_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('l','i','g','a'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_OFF},
-  {HB_TAG ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_TAG ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_नुमेरो_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
   {HB_TAG ('m','g','r','k'), HB_AAT_LAYOUT_FEATURE_TYPE_MATHEMATICAL_EXTRAS,     HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_OFF},
   {HB_TAG ('n','l','c','k'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_NLCCHARACTERS,                  (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_TAG ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_नुमेरो_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
   {HB_TAG ('o','r','d','n'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_ORDINALS,                       HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
   {HB_TAG ('p','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_TEXT,          (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('p','c','a','p'), HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_LOWER_CASE},
   {HB_TAG ('p','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
+  {HB_TAG ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_नुमेरो_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
   {HB_TAG ('p','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('q','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_QUARTER_WIDTH_TEXT,             (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('r','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_OFF},
@@ -171,7 +171,7 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
   {HB_TAG ('s','w','s','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_OFF},
   {HB_TAG ('t','i','t','l'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLE_OPTIONS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_TITLING_CAPS,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_STYLE_OPTIONS},
   {HB_TAG ('t','n','a','m'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_NAMES_CHARACTERS,   (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
+  {HB_TAG ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_नुमेरो_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
   {HB_TAG ('t','r','a','d'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_CHARACTERS,         (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('t','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_THIRD_WIDTH_TEXT,               (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('u','n','i','c'), HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE,             (hb_aat_layout_feature_selector_t) 14,                 (hb_aat_layout_feature_selector_t) 15},
@@ -286,13 +286,13 @@ hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
 			  hb_buffer_t *buffer,
 			  const hb_feature_t *features,
-			  unsigned num_features)
+			  unsigned नुमेरो_features)
 {
   hb_aat_map_t map;
-  if (num_features)
+  if (नुमेरो_features)
   {
     hb_aat_map_builder_t builder (font->face, plan->props);
-    for (unsigned i = 0; i < num_features; i++)
+    for (unsigned i = 0; i < नुमेरो_features; i++)
       builder.add_feature (features[i]);
     builder.compile (map);
   }
@@ -305,7 +305,7 @@ hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
       AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
       if (!buffer->message (font, "start table morx")) return;
       c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
-      morx.apply (&c, num_features ? map : plan->aat_map, accel);
+      morx.apply (&c, नुमेरो_features ? map : plan->aat_map, accel);
       accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
       c.buffer_glyph_set = nullptr;
       (void) buffer->message (font, "end table morx");
@@ -320,7 +320,7 @@ hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
     {
       AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
       if (!buffer->message (font, "start table mort")) return;
-      mort.apply (&c, num_features ? map : plan->aat_map, accel);
+      mort.apply (&c, नुमेरो_features ? map : plan->aat_map, accel);
       (void) buffer->message (font, "end table mort");
       return;
     }
@@ -422,10 +422,10 @@ hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
 unsigned int
 hb_aat_layout_get_feature_types (hb_face_t                    *face,
 				 unsigned int                  start_offset,
-				 unsigned int                 *feature_count, /* IN/OUT.  May be NULL. */
+				 unsigned int                 *feature_बिलांग_2, /* IN/OUT.  May be NULL. */
 				 hb_aat_layout_feature_type_t *features       /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_feature_types (start_offset, feature_count, features);
+  return face->table.feat->get_feature_types (start_offset, feature_बिलांग_2, features);
 }
 
 /**
@@ -471,11 +471,11 @@ unsigned int
 hb_aat_layout_feature_type_get_selector_infos (hb_face_t                             *face,
 					       hb_aat_layout_feature_type_t           feature_type,
 					       unsigned int                           start_offset,
-					       unsigned int                          *selector_count, /* IN/OUT.  May be NULL. */
+					       unsigned int                          *selector_बिलांग, /* IN/OUT.  May be NULL. */
 					       hb_aat_layout_feature_selector_info_t *selectors,      /* OUT.     May be NULL. */
 					       unsigned int                          *default_index   /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_selector_infos (feature_type, start_offset, selector_count, selectors, default_index);
+  return face->table.feat->get_selector_infos (feature_type, start_offset, selector_बिलांग, selectors, default_index);
 }
 
 

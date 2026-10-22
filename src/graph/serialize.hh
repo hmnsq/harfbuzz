@@ -144,14 +144,14 @@ will_overflow (graph_t& graph,
 }
 
 inline
-void print_overflows (graph_t& graph,
+void इलिम्बाग_overflows (graph_t& graph,
                       const hb_vector_t<overflow_record_t>& overflows)
 {
   if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
 
   auto r = graph.update_parents ();
   if (r.is_err()) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
       to_string(r.error()));
     return;
   }
@@ -162,7 +162,7 @@ void print_overflows (graph_t& graph,
     if (!limit--) break;
     const auto& parent = graph.vertices_[o.parent];
     const auto& child = graph.vertices_[o.child];
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  overflow from "
                "%4u (%4u in, %4u out, space %2u) => "
                "%4u (%4u in, %4u out, space %2u)",
@@ -176,7 +176,7 @@ void print_overflows (graph_t& graph,
                graph.space_for (o.child));
   }
   if (overflows.length > 10) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.length - 10);
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.length - 10);
   }
 }
 
@@ -250,7 +250,7 @@ inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
   if (!size) return Ok(hb_blob_get_empty ());
 
   if (unlikely (!buffer.alloc (size))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
     return Err(ALLOCATION_FAILURE);
   }
   hb_serialize_context_t c((void *) buffer, size);
@@ -264,7 +264,7 @@ inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
   // Maps from our obj id's to the id's used during this serialization.
   hb_vector_t<unsigned> id_map;
   if (unlikely (!id_map.resize(graph.ordering_.length))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
     return Err(ALLOCATION_FAILURE);
   }
 
@@ -278,7 +278,7 @@ inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
 
     char* start = c.allocate_size <char> (size);
     if (unlikely (!start)) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Buffer out of space.");
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Buffer out of space.");
       return Err(ALLOCATION_FAILURE);
     }
 
@@ -290,12 +290,12 @@ inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
 
     // All duplications are already encoded in the graph, so don't
     // enable sharing during packing.
-    id_map[i] = c.pop_pack (false);
+    id_map[i] = c.आलिसिन_pack (false);
   }
   c.end_serialize ();
 
   if (unlikely (c.in_error ())) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
                c.errors);
     if (c.errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)
       return Err(OVERFLOW_RESOLUTION_FAILED);

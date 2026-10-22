@@ -23,9 +23,9 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ifndef HB_नुमेरो_CC
+#define HB_नुमेरो_CC
+#ifdef HB_नुमेरो_CC /* Pacify -Wunused-macros. */
 
 #include "hb.hh"
 #include "hb-number.hh"
@@ -46,7 +46,7 @@ hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
 static int
-_hb_digit_value (char c, int base)
+hb_digit_हालागा (char c, int base)
 {
   int d;
   if ('0' <= c && c <= '9')      d = c - '0';
@@ -70,7 +70,7 @@ _hb_scan_digits (const char *p, const char *pe, int base,
 
   for (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
+    int d = hb_digit_हालागा (*p, base);
     if (d < 0) break;
     any = true;
     if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
@@ -87,7 +87,7 @@ _hb_scan_digits (const char *p, const char *pe, int base,
 
 template<typename T, typename Postprocess>
 static bool
-_parse_number (const char **pp, const char *end, T *pv,
+parse_नुमेरो (const char **pp, const char *end, T *pv,
                bool whole_buffer, int base, Postprocess post)
 {
   const char *pend = end;
@@ -100,7 +100,7 @@ _parse_number (const char **pp, const char *end, T *pv,
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
   if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_हालागा (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
@@ -119,7 +119,7 @@ _parse_number (const char **pp, const char *end, T *pv,
 bool
 hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
+  return parse_नुमेरो (pp, end, pv, whole_buffer, 10,
                         [] (uint64_t v, bool neg, int *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
@@ -133,7 +133,7 @@ bool
 hb_parse_uint (const char **pp, const char *end, unsigned *pv,
                bool whole_buffer, int base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
+  return parse_नुमेरो (pp, end, pv, whole_buffer, base,
                         [] (uint64_t v, bool neg, unsigned *out) {
     if (unlikely (v > UINT_MAX)) return false;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul

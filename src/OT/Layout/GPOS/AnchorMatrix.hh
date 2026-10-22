@@ -7,14 +7,14 @@ namespace GPOS_impl {
 
 HB_INTERNAL inline
 void collect_ligature_anchor_indexes (unsigned rows,
-                                     unsigned class_count,
+                                     unsigned class_बिलांग,
                                      const hb_map_t &klass_mapping,
                                      hb_sorted_vector_t<unsigned> &indexes)
 {
   for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
+    for (unsigned col = 0; col < class_बिलांग; col++)
       if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+        indexes.push (row * class_बिलांग + col);
 }
 
 HB_INTERNAL inline
@@ -34,22 +34,22 @@ void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c
 HB_INTERNAL inline
 void collect_anchor_indexes (const Coverage &coverage,
                              unsigned rows,
-                             unsigned class_count,
+                             unsigned class_बिलांग,
                              const hb_set_t &glyphset,
                              const hb_map_t &klass_mapping,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
   for (const auto _ : hb_zip (coverage, hb_range (rows)))
     if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
+      for (unsigned col = 0; col < class_बिलांग; col++)
         if (klass_mapping.has (col))
-          indexes.push (_.second * class_count + col);
+          indexes.push (_.second * class_बिलांग + col);
 }
 
 HB_INTERNAL inline
 void collect_subset_anchor_indexes (const Coverage &coverage,
                                     unsigned rows,
-                                    unsigned class_count,
+                                    unsigned class_बिलांग,
                                     glyph_data_t offsets,
                                     const hb_set_t &glyphset,
                                     const hb_map_t &glyph_map,
@@ -62,8 +62,8 @@ void collect_subset_anchor_indexes (const Coverage &coverage,
     if (!glyphset.has (_.first)) continue;
     unsigned row = _.second;
     bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    for (unsigned col = 0; col < class_बिलांग; col++)
+      if (klass_mapping.has (col) && offsets[row * class_बिलांग + col])
       {
         non_empty = true;
         break;
@@ -71,21 +71,21 @@ void collect_subset_anchor_indexes (const Coverage &coverage,
     if (!non_empty) continue;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
+    for (unsigned col = 0; col < class_बिलांग; col++)
       if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+        indexes.push (row * class_बिलांग + col);
   }
 }
 
-template <typename Types, typename RowCount=typename Types::HBUINT>
+template <typename Types, typename Row_बिलांग=typename Types::HBUINT>
 struct AnchorMatrix
 {
-  RowCount      rows;                   /* Number of rows */
+  Row_बिलांग      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
   public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  DEFINE_SIZE_ARRAY (sizeof (Row_बिलांग), matrixZ);
 
   bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
   {
@@ -93,14 +93,14 @@ struct AnchorMatrix
     if (!c->check_struct (this)) return_trace (false);
     hb_barrier ();
     if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    unsigned int बिलांग = rows * cols;
+    if (!c->check_array (matrixZ.arrayZ, बिलांग)) return_trace (false);
 
     if (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!matrixZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
@@ -127,7 +127,7 @@ struct AnchorMatrix
   template <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
   bool subset (hb_subset_context_t *c,
-               unsigned             num_rows,
+               unsigned             नुमेरो_rows,
                Iterator             index_iter) const
   {
     TRACE_SUBSET (this);
@@ -137,7 +137,7 @@ struct AnchorMatrix
     if (!index_iter) return_trace (false);
     if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
-    out->rows = num_rows;
+    out->rows = नुमेरो_rows;
     for (const unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
@@ -148,10 +148,10 @@ struct AnchorMatrix
     return_trace (true);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  bool offset_is_null (unsigned row, unsigned col, unsigned नुमेरो_cols) const
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
-    auto &offset = matrixZ[row * num_cols + col];
+    if (unlikely (row >= rows || col >= नुमेरो_cols)) return true;
+    auto &offset = matrixZ[row * नुमेरो_cols + col];
     return offset.is_null ();
   }
 };

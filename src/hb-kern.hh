@@ -55,13 +55,13 @@ struct hb_kern_machine_t
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
     c.set_lookup_mask (kern_mask);
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    auto &skippy_iter = c.iter_पासोक;
 
     bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    unsigned int बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    for (unsigned int idx = 0; idx < बिलांग;)
     {
       if (!(info[idx].mask & kern_mask))
       {

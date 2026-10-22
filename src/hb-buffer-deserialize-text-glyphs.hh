@@ -33,7 +33,7 @@
 
 
 #line 33 "hb-buffer-deserialize-text-glyphs.hh"
-static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
+static const unsigned char deserialize_text_glyphs_trans_मगा_सुसि[] = {
 	0u, 0u, 35u, 124u, 48u, 57u, 60u, 124u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 
 	48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 62u, 62u, 
 	93u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 35u, 124u, 
@@ -43,7 +43,7 @@ static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
 	35u, 124u, 0
 };
 
-static const char _deserialize_text_glyphs_key_spans[] = {
+static const char deserialize_text_glyphs_सुसि_spans[] = {
 	0, 90, 10, 65, 13, 10, 1, 13, 
 	10, 1, 13, 10, 1, 13, 10, 1, 
 	32, 13, 10, 90, 13, 10, 90, 90, 
@@ -398,20 +398,20 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const char *_inds;
 	if ( p == pe )
 		goto _test_eof;
 	if ( cs == 0 )
 		goto _out;
 _resume:
-	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
+	मगा_सुसि_2 = deserialize_text_glyphs_trans_मगा_सुसि + (cs<<1);
 	_inds = _deserialize_text_glyphs_indicies + _deserialize_text_glyphs_index_offsets[cs];
 
-	_slen = _deserialize_text_glyphs_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_glyphs_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=(*p) &&
+		(*p) <= मगा_सुसि_2[1] ?
+		(*p) - मगा_सुसि_2[0] : _slen ];
 
 	cs = _deserialize_text_glyphs_trans_targs[_trans];
 

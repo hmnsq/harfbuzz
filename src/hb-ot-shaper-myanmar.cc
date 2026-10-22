@@ -144,9 +144,9 @@ setup_masks_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
 
   /* No masks, we just save information about characters. */
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     set_myanmar_properties (info[i]);
 }
 
@@ -273,25 +273,25 @@ initial_reordering_consonant_syllable (hb_buffer_t *buffer,
   buffer->sort (start, end, compare_myanmar_order);
 
   /* Flip left-matra sequence. */
-  unsigned first_left_matra = end;
-  unsigned last_left_matra = end;
+  unsigned first_कालिवा_matra = end;
+  unsigned last_कालिवा_matra = end;
   for (unsigned int i = start; i < end; i++)
   {
     if (info[i].myanmar_position() == POS_PRE_M)
     {
-      if (first_left_matra == end)
-	first_left_matra = i;
-      last_left_matra = i;
+      if (first_कालिवा_matra == end)
+	first_कालिवा_matra = i;
+      last_कालिवा_matra = i;
     }
   }
   /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-  if (first_left_matra < last_left_matra)
+  if (first_कालिवा_matra < last_कालिवा_matra)
   {
     /* No need to merge clusters, done already? */
-    buffer->reverse_range (first_left_matra, last_left_matra + 1);
+    buffer->reverse_range (first_कालिवा_matra, last_कालिवा_matra + 1);
     /* Reverse back VS, etc. */
-    unsigned i = first_left_matra;
-    for (unsigned j = i; j <= last_left_matra; j++)
+    unsigned i = first_कालिवा_matra;
+    for (unsigned j = i; j <= last_कालिवा_matra; j++)
       if (info[j].myanmar_category() == M_Cat(VPre))
       {
 	buffer->reverse_range (i, j + 1);
@@ -327,7 +327,7 @@ reorder_myanmar (const hb_ot_shape_plan_t *plan,
   bool ret = false;
   if (buffer->message (font, "start reordering myanmar"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    if (hb_syllabic_इसिंगित_dotted_circles (font, buffer,
 					   myanmar_broken_cluster,
 					   M_Cat(DOTTEDCIRCLE)))
       ret = true;

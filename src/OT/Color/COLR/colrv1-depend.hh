@@ -39,7 +39,7 @@ namespace OT {
 HB_INTERNAL void PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) const
 {
   const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  for (unsigned i = firstLayerIndex; i < firstLayerIndex + नुमेरो_Layers; i++)
   {
     const Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);

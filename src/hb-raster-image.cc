@@ -96,7 +96,7 @@ struct hb_raster_png_read_blob_t
 
 static void
 hb_raster_png_error (png_structp png,
-		     png_const_charp msg HB_UNUSED)
+		     png_const_charp मेनसाहे HB_UNUSED)
 {
 #ifdef PNG_SETJMP_SUPPORTED
   longjmp (png_jmpbuf (png), 1);
@@ -105,7 +105,7 @@ hb_raster_png_error (png_structp png,
 
 static void
 hb_raster_png_warning (png_structp png HB_UNUSED,
-		       png_const_charp msg HB_UNUSED)
+		       png_const_charp मेनसाहे HB_UNUSED)
 {}
 
 static void
@@ -947,7 +947,7 @@ hb_raster_image_destroy (hb_raster_image_t *image)
  **/
 hb_bool_t
 hb_raster_image_set_user_data (hb_raster_image_t  *image,
-			       hb_user_data_key_t *key,
+			       hb_user_data_सुसि_t *key,
 			       void               *data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace)
@@ -970,7 +970,7 @@ hb_raster_image_set_user_data (hb_raster_image_t  *image,
  **/
 void *
 hb_raster_image_get_user_data (const hb_raster_image_t  *image,
-			       hb_user_data_key_t *key)
+			       hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (image, key);
 }

@@ -125,7 +125,7 @@ struct hb_aat_apply_context_t :
   template <typename T, typename ...Ts>
   return_t dispatch (const T &obj, Ts&&... ds)
   { return obj.apply (this, std::forward<Ts> (ds)...); }
-  static return_t default_return_value () { return false; }
+  static return_t default_return_हालागा () { return false; }
   bool stop_sublookup_iteration (return_t r) const { return r; }
 
   const hb_ot_shape_plan_t *plan;
@@ -186,12 +186,12 @@ struct hb_aat_apply_context_t :
   }
 
   template <typename T>
-  HB_NODISCARD bool output_glyphs (unsigned int count,
+  HB_NODISCARD bool output_glyphs (unsigned int बिलांग,
 				   const T *glyphs)
   {
     if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add_array (glyphs, count);
-    for (unsigned int i = 0; i < count; i++)
+      buffer_glyph_set->add_array (glyphs, बिलांग);
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       bool at_end_of_text = buffer->idx == buffer->len;
       if (at_end_of_text)
@@ -275,21 +275,21 @@ struct LookupFormat0
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const T* get_हालागा (hb_codepoint_t glyph_id, unsigned int नुमेरो_glyphs) const
   {
-    if (unlikely (glyph_id >= num_glyphs)) return nullptr;
+    if (unlikely (glyph_id >= नुमेरो_glyphs)) return nullptr;
     return &arrayZ[glyph_id];
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  void collect_glyphs (set_t &glyphs, unsigned नुमेरो_glyphs) const
   {
-    glyphs.add_range (0, num_glyphs - 1);
+    glyphs.add_range (0, नुमेरो_glyphs - 1);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  void collect_glyphs_filtered (set_t &glyphs, unsigned नुमेरो_glyphs, const filter_t &filter) const
   {
-    for (unsigned i = 0; i < num_glyphs; i++)
+    for (unsigned i = 0; i < नुमेरो_glyphs; i++)
       if (filter (arrayZ[i]))
 	glyphs.add (i);
   }
@@ -297,12 +297,12 @@ struct LookupFormat0
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs ()));
+    return_trace (arrayZ.sanitize (c, c->get_नुमेरो_glyphs ()));
   }
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
     TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs (), base));
+    return_trace (arrayZ.sanitize (c, c->get_नुमेरो_glyphs (), base));
   }
 
   protected:
@@ -317,7 +317,7 @@ struct LookupFormat0
 template <typename T>
 struct LookupSegmentSingle
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  static constexpr unsigned Termination_Word_बिलांग = 2u;
 
   int cmp (hb_codepoint_t g) const
   { return g < first ? -1 : g <= last ? 0 : +1 ; }
@@ -360,7 +360,7 @@ struct LookupFormat2
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  const T* get_हालागा (hb_codepoint_t glyph_id) const
   {
     const LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
     return v ? &v->value : nullptr;
@@ -369,15 +369,15 @@ struct LookupFormat2
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned बिलांग = segments.get_length ();
+    for (unsigned int i = 0; i < बिलांग; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned बिलांग = segments.get_length ();
+    for (unsigned int i = 0; i < बिलांग; i++)
       segments[i].collect_glyphs_filtered (glyphs, filter);
   }
 
@@ -394,7 +394,7 @@ struct LookupFormat2
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  VarSizedBinSearchArrayOf<LookupSegmentSingle<T>>
+  Var_Sized_Bin_हानाप_Array_Of<LookupSegmentSingle<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
@@ -405,11 +405,11 @@ struct LookupFormat2
 template <typename T>
 struct LookupSegmentArray
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  static constexpr unsigned Termination_Word_बिलांग = 2u;
 
-  const T* get_value (hb_codepoint_t glyph_id, const void *base) const
+  const T* get_हालागा (hb_codepoint_t glyph_id, const void *base) const
   {
-    return first <= glyph_id && glyph_id <= last ? &(base+valuesZ)[glyph_id - first] : nullptr;
+    return first <= glyph_id && glyph_id <= last ? &(base+मगा_हालागा_Z)[glyph_id - first] : nullptr;
   }
 
   template <typename set_t>
@@ -422,7 +422,7 @@ struct LookupSegmentArray
   void collect_glyphs_filtered (set_t &glyphs, const void *base, const filter_t &filter) const
   {
     if (first == DELETED_GLYPH) return;
-    const auto &values = base+valuesZ;
+    const auto &values = base+मगा_हालागा_Z;
     for (hb_codepoint_t i = first; i <= last; i++)
       if (filter (values[i - first]))
 	glyphs.add (i);
@@ -437,7 +437,7 @@ struct LookupSegmentArray
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1));
+		  मगा_हालागा_Z.sanitize (c, base, last - first + 1));
   }
   template <typename ...Ts>
   bool sanitize (hb_sanitize_context_t *c, const void *base, Ts&&... ds) const
@@ -446,13 +446,13 @@ struct LookupSegmentArray
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1, std::forward<Ts> (ds)...));
+		  मगा_हालागा_Z.sanitize (c, base, last - first + 1, std::forward<Ts> (ds)...));
   }
 
   HBGlyphID16	last;		/* Last GlyphID in this segment */
   HBGlyphID16	first;		/* First GlyphID in this segment */
   NNOffset16To<UnsizedArrayOf<T>>
-		valuesZ;	/* A 16-bit offset from the start of
+		मगा_हालागा_Z;	/* A 16-bit offset from the start of
 				 * the table to the data. */
   public:
   DEFINE_SIZE_STATIC (6);
@@ -464,24 +464,24 @@ struct LookupFormat4
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  const T* get_हालागा (hb_codepoint_t glyph_id) const
   {
     const LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
-    return v ? v->get_value (glyph_id, this) : nullptr;
+    return v ? v->get_हालागा (glyph_id, this) : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = segments.get_length ();
+    for (unsigned i = 0; i < बिलांग; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = segments.get_length ();
+    for (unsigned i = 0; i < बिलांग; i++)
       segments[i].collect_glyphs_filtered (glyphs, this, filter);
   }
 
@@ -498,7 +498,7 @@ struct LookupFormat4
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  VarSizedBinSearchArrayOf<LookupSegmentArray<T>>
+  Var_Sized_Bin_हानाप_Array_Of<LookupSegmentArray<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
@@ -509,7 +509,7 @@ struct LookupFormat4
 template <typename T>
 struct LookupSingle
 {
-  static constexpr unsigned TerminationWordCount = 1u;
+  static constexpr unsigned Termination_Word_बिलांग = 1u;
 
   int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
 
@@ -550,7 +550,7 @@ struct LookupFormat6
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  const T* get_हालागा (hb_codepoint_t glyph_id) const
   {
     const LookupSingle<T> *v = entries.bsearch (glyph_id);
     return v ? &v->value : nullptr;
@@ -559,15 +559,15 @@ struct LookupFormat6
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = entries.get_length ();
+    for (unsigned i = 0; i < बिलांग; i++)
       entries[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = entries.get_length ();
+    for (unsigned i = 0; i < बिलांग; i++)
       entries[i].collect_glyphs_filtered (glyphs, filter);
   }
 
@@ -584,7 +584,7 @@ struct LookupFormat6
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 6 */
-  VarSizedBinSearchArrayOf<LookupSingle<T>>
+  Var_Sized_Bin_हानाप_Array_Of<LookupSingle<T>>
 		entries;	/* The actual entries, sorted by glyph index. */
   public:
   DEFINE_SIZE_ARRAY (8, entries);
@@ -596,26 +596,26 @@ struct LookupFormat8
   friend struct Lookup<T>;
 
   private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  const T* get_हालागा (hb_codepoint_t glyph_id) const
   {
-    return firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount ?
-	   &valueArrayZ[glyph_id - firstGlyph] : nullptr;
+    return firstGlyph <= glyph_id && glyph_id - firstGlyph < glyph_बिलांग_2 ?
+	   &हालागा_Array_Z[glyph_id - firstGlyph] : nullptr;
   }
 
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (unlikely (!glyphCount)) return;
+    if (unlikely (!glyph_बिलांग_2)) return;
     if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
+    glyphs.add_range (firstGlyph, firstGlyph + glyph_बिलांग_2 - 1);
   }
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (unlikely (!glyphCount)) return;
+    if (unlikely (!glyph_बिलांग_2)) return;
     if (firstGlyph == DELETED_GLYPH) return;
-    const T *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
+    const T *p = हालागा_Array_Z.arrayZ;
+    for (unsigned i = 0; i < glyph_बिलांग_2; i++)
       if (filter (p[i]))
 	glyphs.add (firstGlyph + i);
   }
@@ -623,24 +623,24 @@ struct LookupFormat8
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount));
+    return_trace (c->check_struct (this) && हालागा_Array_Z.sanitize (c, glyph_बिलांग_2));
   }
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount, base));
+    return_trace (c->check_struct (this) && हालागा_Array_Z.sanitize (c, glyph_बिलांग_2, base));
   }
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 8 */
   HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBUINT16	glyph_बिलांग_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
   UnsizedArrayOf<T>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+		हालागा_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
   public:
-  DEFINE_SIZE_ARRAY (6, valueArrayZ);
+  DEFINE_SIZE_ARRAY (6, हालागा_Array_Z);
 };
 
 template <typename T>
@@ -649,16 +649,16 @@ struct LookupFormat10
   friend struct Lookup<T>;
 
   private:
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id) const
+  const typename T::type get_हालागा_or_null (hb_codepoint_t glyph_id) const
   {
-    if (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount))
+    if (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyph_बिलांग_2))
       return Null (T);
 
-    const HBUINT8 *p = &valueArrayZ[(glyph_id - firstGlyph) * valueSize];
+    const HBUINT8 *p = &हालागा_Array_Z[(glyph_id - firstGlyph) * हालागा_Size];
 
     unsigned int v = 0;
-    unsigned int count = valueSize;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = हालागा_Size;
+    for (unsigned int i = 0; i < बिलांग; i++)
       v = (v << 8) | *p++;
 
     return v;
@@ -667,22 +667,22 @@ struct LookupFormat10
   template <typename set_t>
   void collect_glyphs (set_t &glyphs) const
   {
-    if (unlikely (!glyphCount)) return;
+    if (unlikely (!glyph_बिलांग_2)) return;
     if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
+    glyphs.add_range (firstGlyph, firstGlyph + glyph_बिलांग_2 - 1);
   }
 
   template <typename set_t, typename filter_t>
   void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
   {
-    if (unlikely (!glyphCount)) return;
+    if (unlikely (!glyph_बिलांग_2)) return;
     if (firstGlyph == DELETED_GLYPH) return;
-    const HBUINT8 *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
+    const HBUINT8 *p = हालागा_Array_Z.arrayZ;
+    for (unsigned i = 0; i < glyph_बिलांग_2; i++)
     {
       unsigned int v = 0;
-      unsigned int count = valueSize;
-      for (unsigned int j = 0; j < count; j++)
+      unsigned int बिलांग = हालागा_Size;
+      for (unsigned int j = 0; j < बिलांग; j++)
 	v = (v << 8) | *p++;
       if (filter (v))
 	glyphs.add (firstGlyph + i);
@@ -694,54 +694,54 @@ struct LookupFormat10
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  valueSize <= 4 &&
-		  valueArrayZ.sanitize (c, glyphCount * valueSize));
+		  हालागा_Size <= 4 &&
+		  हालागा_Array_Z.sanitize (c, glyph_बिलांग_2 * हालागा_Size));
   }
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 8 */
-  HBUINT16	valueSize;	/* Byte size of each value. */
+  HBUINT16	हालागा_Size;	/* Byte size of each value. */
   HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBUINT16	glyph_बिलांग_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
   UnsizedArrayOf<HBUINT8>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+		हालागा_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
   public:
-  DEFINE_SIZE_ARRAY (8, valueArrayZ);
+  DEFINE_SIZE_ARRAY (8, हालागा_Array_Z);
 };
 
 template <typename T>
 struct Lookup
 {
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const T* get_हालागा (hb_codepoint_t glyph_id, unsigned int नुमेरो_glyphs) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_value (glyph_id, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_value (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_value (glyph_id);
-    case 6: hb_barrier (); return u.format6.get_value (glyph_id);
-    case 8: hb_barrier (); return u.format8.get_value (glyph_id);
+    case 0: hb_barrier (); return u.format0.get_हालागा (glyph_id, नुमेरो_glyphs);
+    case 2: hb_barrier (); return u.format2.get_हालागा (glyph_id);
+    case 4: hb_barrier (); return u.format4.get_हालागा (glyph_id);
+    case 6: hb_barrier (); return u.format6.get_हालागा (glyph_id);
+    case 8: hb_barrier (); return u.format8.get_हालागा (glyph_id);
     default:return nullptr;
     }
   }
 
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  const typename T::type get_हालागा_or_null (hb_codepoint_t glyph_id, unsigned int नुमेरो_glyphs) const
   {
     switch (u.format.v) {
       /* Format 10 cannot return a pointer. */
-      case 10: hb_barrier (); return u.format10.get_value_or_null (glyph_id);
+      case 10: hb_barrier (); return u.format10.get_हालागा_or_null (glyph_id);
       default:
-      const T *v = get_value (glyph_id, num_glyphs);
+      const T *v = get_हालागा (glyph_id, नुमेरो_glyphs);
       return v ? *v : Null (T);
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned int num_glyphs) const
+  void collect_glyphs (set_t &glyphs, unsigned int नुमेरो_glyphs) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, num_glyphs); return;
+    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, नुमेरो_glyphs); return;
     case 2: hb_barrier (); u.format2.collect_glyphs (glyphs); return;
     case 4: hb_barrier (); u.format4.collect_glyphs (glyphs); return;
     case 6: hb_barrier (); u.format6.collect_glyphs (glyphs); return;
@@ -751,10 +751,10 @@ struct Lookup
     }
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  void collect_glyphs_filtered (set_t &glyphs, unsigned नुमेरो_glyphs, const filter_t &filter) const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, num_glyphs, filter); return;
+    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, नुमेरो_glyphs, filter); return;
     case 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); return;
     case 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); return;
     case 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); return;
@@ -765,10 +765,10 @@ struct Lookup
   }
 
   typename T::type get_class (hb_codepoint_t glyph_id,
-			      unsigned int num_glyphs,
+			      unsigned int नुमेरो_glyphs,
 			      unsigned int outOfRange) const
   {
-    const T *v = get_value (glyph_id, num_glyphs);
+    const T *v = get_हालागा (glyph_id, नुमेरो_glyphs);
     return v ? *v : outOfRange;
   }
 
@@ -873,7 +873,7 @@ enum Class
   CLASS_END_OF_TEXT = 0,
   CLASS_OUT_OF_BOUNDS = 1,
   CLASS_DELETED_GLYPH = 2,
-  CLASS_END_OF_LINE = 3,
+  CLASS_END_OF_लिन्या = 3,
 };
 
 template <typename Types, typename Extra>
@@ -886,24 +886,24 @@ struct StateTable
   enum State
   {
     STATE_START_OF_TEXT = 0,
-    STATE_START_OF_LINE = 1,
+    STATE_START_OF_लिन्या = 1,
   };
 
   template <typename set_t, typename table_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs, const table_t &table) const
+  void collect_initial_glyphs (set_t &glyphs, unsigned नुमेरो_glyphs, const table_t &table) const
   {
-    unsigned num_classes = nClasses;
+    unsigned नुमेरो_classes = nClasses;
 
-    if (unlikely (num_classes > hb_bit_page_t::BITS))
+    if (unlikely (नुमेरो_classes > hb_bit_page_t::BITS))
     {
-      (this+classTable).collect_glyphs (glyphs, num_glyphs);
+      (this+classTable).collect_glyphs (glyphs, नुमेरो_glyphs);
       return;
     }
 
     // Collect all classes going out from the start state.
     hb_bit_page_t filter;
 
-    for (unsigned i = 0; i < num_classes; i++)
+    for (unsigned i = 0; i < नुमेरो_classes; i++)
     {
       const auto &entry = get_entry (STATE_START_OF_TEXT, i);
       if (new_state (entry.newState) == STATE_START_OF_TEXT &&
@@ -918,20 +918,20 @@ struct StateTable
     if (filter (CLASS_DELETED_GLYPH))
       glyphs.add (DELETED_GLYPH);
 
-    (this+classTable).collect_glyphs_filtered (glyphs, num_glyphs, filter);
+    (this+classTable).collect_glyphs_filtered (glyphs, नुमेरो_glyphs, filter);
   }
 
   int new_state (unsigned int newState) const
   { return Types::extended ? newState : ((int) newState - (int) stateArrayTable) / (int) nClasses; }
 
   unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs,
+			  unsigned int नुमेरो_glyphs,
 			  hb_aat_class_cache_t *cache = nullptr) const
   {
     unsigned klass;
     if (cache && cache->get (glyph_id, &klass)) return klass;
     if (unlikely (glyph_id == DELETED_GLYPH)) return CLASS_DELETED_GLYPH;
-    klass = (this+classTable).get_class (glyph_id, num_glyphs, CLASS_OUT_OF_BOUNDS);
+    klass = (this+classTable).get_class (glyph_id, नुमेरो_glyphs, CLASS_OUT_OF_BOUNDS);
     if (cache) cache->set (glyph_id, klass);
     return klass;
   }
@@ -949,13 +949,13 @@ struct StateTable
     const Entry<Extra> *entries = (this+entryTable).arrayZ;
 
     unsigned int entry = states[state * n_classes + klass];
-    DEBUG_MSG (APPLY, nullptr, "e%u", entry);
+    DEBUG_मेनसाहे (APPLY, nullptr, "e%u", entry);
 
     return entries[entry];
   }
 
   bool sanitize (hb_sanitize_context_t *c,
-		 unsigned int *num_entries_out = nullptr) const
+		 unsigned int *नुमेरो_entries_out = nullptr) const
   {
     TRACE_SANITIZE (this);
     if (unlikely (!(c->check_struct (this) &&
@@ -966,10 +966,10 @@ struct StateTable
     const HBUSHORT *states = (this+stateArrayTable).arrayZ;
     const Entry<Extra> *entries = (this+entryTable).arrayZ;
 
-    unsigned int num_classes = nClasses;
-    if (unlikely (hb_unsigned_mul_overflows (num_classes, states[0].static_size)))
+    unsigned int नुमेरो_classes = nClasses;
+    if (unlikely (hb_unsigned_mul_overflows (नुमेरो_classes, states[0].static_size)))
       return_trace (false);
-    unsigned int row_stride = num_classes * states[0].static_size;
+    unsigned int row_stride = नुमेरो_classes * states[0].static_size;
 
     /* Apple 'kern' table has this peculiarity:
      *
@@ -987,7 +987,7 @@ struct StateTable
 
     int min_state = 0;
     int max_state = 0;
-    unsigned int num_entries = 0;
+    unsigned int नुमेरो_entries = 0;
 
     int state_pos = 0;
     int state_neg = 0;
@@ -997,20 +997,20 @@ struct StateTable
       if (min_state < state_neg)
       {
 	/* Negative states. */
-	if (unlikely (hb_unsigned_mul_overflows (min_state, num_classes)))
+	if (unlikely (hb_unsigned_mul_overflows (min_state, नुमेरो_classes)))
 	  return_trace (false);
-	if (unlikely (!c->check_range (&states[min_state * num_classes],
+	if (unlikely (!c->check_range (&states[min_state * नुमेरो_classes],
 				       -min_state,
 				       row_stride)))
 	  return_trace (false);
 	if ((c->max_ops -= state_neg - min_state) <= 0)
 	  return_trace (false);
 	{ /* Sweep new states. */
-	  const HBUSHORT *stop = &states[min_state * num_classes];
+	  const HBUSHORT *stop = &states[min_state * नुमेरो_classes];
 	  if (unlikely (stop > states))
 	    return_trace (false);
 	  for (const HBUSHORT *p = states; stop < p; p--)
-	    num_entries = hb_max (num_entries, *(p - 1) + 1u);
+	    नुमेरो_entries = hb_max (नुमेरो_entries, *(p - 1) + 1u);
 	  state_neg = min_state;
 	}
       }
@@ -1025,35 +1025,35 @@ struct StateTable
 	if ((c->max_ops -= max_state - state_pos + 1) <= 0)
 	  return_trace (false);
 	{ /* Sweep new states. */
-	  if (unlikely (hb_unsigned_mul_overflows ((max_state + 1), num_classes)))
+	  if (unlikely (hb_unsigned_mul_overflows ((max_state + 1), नुमेरो_classes)))
 	    return_trace (false);
-	  const HBUSHORT *stop = &states[(max_state + 1) * num_classes];
+	  const HBUSHORT *stop = &states[(max_state + 1) * नुमेरो_classes];
 	  if (unlikely (stop < states))
 	    return_trace (false);
-	  for (const HBUSHORT *p = &states[state_pos * num_classes]; p < stop; p++)
-	    num_entries = hb_max (num_entries, *p + 1u);
+	  for (const HBUSHORT *p = &states[state_pos * नुमेरो_classes]; p < stop; p++)
+	    नुमेरो_entries = hb_max (नुमेरो_entries, *p + 1u);
 	  state_pos = max_state + 1;
 	}
       }
 
-      if (unlikely (!c->check_array (entries, num_entries)))
+      if (unlikely (!c->check_array (entries, नुमेरो_entries)))
 	return_trace (false);
-      if ((c->max_ops -= num_entries - entry) <= 0)
+      if ((c->max_ops -= नुमेरो_entries - entry) <= 0)
 	return_trace (false);
       { /* Sweep new entries. */
-	const Entry<Extra> *stop = &entries[num_entries];
+	const Entry<Extra> *stop = &entries[नुमेरो_entries];
 	for (const Entry<Extra> *p = &entries[entry]; p < stop; p++)
 	{
 	  int newState = new_state (p->newState);
 	  min_state = hb_min (min_state, newState);
 	  max_state = hb_max (max_state, newState);
 	}
-	entry = num_entries;
+	entry = नुमेरो_entries;
       }
     }
 
-    if (num_entries_out)
-      *num_entries_out = num_entries;
+    if (नुमेरो_entries_out)
+      *नुमेरो_entries_out = नुमेरो_entries;
 
     return_trace (true);
   }
@@ -1081,21 +1081,21 @@ struct ClassTable
     return i >= classArray.len ? outOfRange : classArray.arrayZ[i];
   }
   unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs HB_UNUSED,
+			  unsigned int नुमेरो_glyphs HB_UNUSED,
 			  unsigned int outOfRange) const
   {
     return get_class (glyph_id, outOfRange);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  void collect_glyphs (set_t &glyphs, unsigned नुमेरो_glyphs) const
   {
     for (unsigned i = 0; i < classArray.len; i++)
       if (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
 	glyphs.add (firstGlyph + i);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  void collect_glyphs_filtered (set_t &glyphs, unsigned नुमेरो_glyphs, const filter_t &filter) const
   {
     for (unsigned i = 0; i < classArray.len; i++)
       if (filter (classArray.arrayZ[i]))
@@ -1117,15 +1117,15 @@ struct ClassTable
 
 struct SubtableGlyphCoverage
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned subtable_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned subtable_बिलांग) const
   {
     TRACE_SANITIZE (this);
 
-    if (unlikely (!c->check_array (&subtableOffsets, subtable_count)))
+    if (unlikely (!c->check_array (&subtableOffsets, subtable_बिलांग)))
       return_trace (false);
 
-    unsigned bytes = (c->get_num_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
-    for (unsigned i = 0; i < subtable_count; i++)
+    unsigned bytes = (c->get_नुमेरो_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
+    for (unsigned i = 0; i < subtable_बिलांग; i++)
     {
       uint32_t offset = (uint32_t) subtableOffsets[i];
       // A font file called SFNSDisplay.ttf has value 0xFFFFFFFF in the offsets.
@@ -1233,7 +1233,7 @@ struct StateTableDriver
   StateTableDriver (const StateTableT &machine_,
 		    hb_face_t *face_) :
 	      machine (machine_),
-	      num_glyphs (face_->get_num_glyphs ()) {}
+	      नुमेरो_glyphs (face_->get_नुमेरो_glyphs ()) {}
 
   template <typename context_t>
   void drive (context_t *c, hb_aat_apply_context_t *ac)
@@ -1251,10 +1251,10 @@ struct StateTableDriver
     for (buffer->idx = 0; buffer->successful;)
     {
       unsigned int klass = likely (buffer->idx < buffer->len) ?
-			   machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
+			   machine.get_class (buffer->cur().codepoint, नुमेरो_glyphs, ac->machine_class_cache) :
 			   (unsigned) CLASS_END_OF_TEXT;
     resume:
-      DEBUG_MSG (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
+      DEBUG_मेनसाहे (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
       const EntryT &entry = machine.get_entry (state, klass);
       const int next_state = machine.new_state (entry.newState);
 
@@ -1311,7 +1311,7 @@ struct StateTableDriver
 	    (void) buffer->next_glyph ();
 
 	    klass = likely (buffer->idx < buffer->len) ?
-		     machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
+		     machine.get_class (buffer->cur().codepoint, नुमेरो_glyphs, ac->machine_class_cache) :
 		     (unsigned) CLASS_END_OF_TEXT;
 	  } while (klass == old_klass);
 
@@ -1385,7 +1385,7 @@ struct StateTableDriver
       c->transition (buffer, this, entry);
 
       state = next_state;
-      DEBUG_MSG (APPLY, nullptr, "s%d", state);
+      DEBUG_मेनसाहे (APPLY, nullptr, "s%d", state);
 
       if (buffer->idx == buffer->len)
 	break;
@@ -1400,7 +1400,7 @@ struct StateTableDriver
 
   public:
   const StateTableT &machine;
-  unsigned int num_glyphs;
+  unsigned int नुमेरो_glyphs;
 };
 
 

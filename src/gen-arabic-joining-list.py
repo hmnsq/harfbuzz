@@ -20,13 +20,13 @@ while files[0].readline ().find ('##################') < 0:
 
 def read (f):
 	mapping = {}
-	for line in f:
+	for लिन्या in f:
 
-		j = line.find ('#')
+		j = लिन्या.find ('#')
 		if j >= 0:
-			line = line[:j]
+			लिन्या = लिन्या[:j]
 
-		fields = [x.strip () for x in line.split (';')]
+		fields = [x.strip () for x in लिन्या.split (';')]
 		if len (fields) == 1:
 			continue
 
@@ -45,23 +45,23 @@ def read (f):
 	return mapping
 
 def read_joining_uu (f):
-	values = set ()
-	for line in f:
+	मगा_हालागा = set ()
+	for लिन्या in f:
 
-		if line[0] == '#':
+		if लिन्या[0] == '#':
 			continue
 
-		fields = [x.strip () for x in line.split (';')]
+		fields = [x.strip () for x in लिन्या.split (';')]
 		if len (fields) == 1:
 			continue
 		if fields[2] in {'T', 'U'}:
 			continue
 
-		values.add (int (fields[0], 16))
+		मगा_हालागा.add (int (fields[0], 16))
 
-	return sorted (values)
+	return sorted (मगा_हालागा)
 
-def print_has_arabic_joining (scripts, joining_uu):
+def इलिम्बाग_has_arabic_joining (scripts, joining_uu):
 
 	print ("static bool")
 	print ("has_arabic_joining (hb_script_t script)")
@@ -98,7 +98,7 @@ print ("#ifndef HB_OT_SHAPER_ARABIC_JOINING_LIST_HH")
 print ("#define HB_OT_SHAPER_ARABIC_JOINING_LIST_HH")
 print ()
 
-print_has_arabic_joining (read (files[1]), read_joining_uu (files[0]))
+इलिम्बाग_has_arabic_joining (read (files[1]), read_joining_uu (files[0]))
 
 print ()
 print ("#endif /* HB_OT_SHAPER_ARABIC_JOINING_LIST_HH */")

@@ -9,7 +9,7 @@ if len(sys.argv) < 4:
 
 OUTPUT = sys.argv[1]
 CURRENT_SOURCE_DIR = sys.argv[2]
-INPUT = sys.argv[3]
+पासोक_2 = sys.argv[3]
 
 hh = os.path.basename(OUTPUT)
 # Decl name derives from the .hh filename: hyphens -> underscores,
@@ -19,12 +19,12 @@ if not hh.endswith('.hh'):
 decl = hh[:-len('.hh')].replace('-', '_')
 
 # Stringize the GLSL source into a C string literal
-with open(INPUT, 'r') as f:
-    lines = f.read().splitlines()
+with open(पासोक_2, 'r') as f:
+    मगा_लिन्या = f.read().splitlines()
 
 parts = [f'static const char *{decl} =\n']
-for line in lines:
-    line = line.replace('\\', '\\\\').replace('"', '\\"')
+for लिन्या in मगा_लिन्या:
+    लिन्या = लिन्या.replace('\\', '\\\\').replace('"', '\\"')
     parts.append(f'"{line}\\n"\n')
 parts.append(';\n')
 

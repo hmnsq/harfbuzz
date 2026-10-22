@@ -39,10 +39,10 @@ struct hb_bimap_t
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  void alloc (unsigned आलिसिन)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (आलिसिन);
+    back_map.alloc (आलिसिन);
   }
 
   bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
@@ -50,8 +50,8 @@ struct hb_bimap_t
   void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
     if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    if (unlikely (lhs == HB_MAP_हालागा_INVALID)) return;
+    if (unlikely (rhs == HB_MAP_हालागा_INVALID)) { del (lhs); return; }
 
     forw_map.set (lhs, rhs);
     if (unlikely (in_error ())) return;
@@ -88,7 +88,7 @@ struct hb_bimap_t
   hb_map_t  back_map;
 
   public:
-  auto keys () const HB_AUTO_RETURN (+ forw_map.keys())
+  auto मगा_सुसि () const HB_AUTO_RETURN (+ forw_map.मगा_सुसि())
   auto values () const HB_AUTO_RETURN (+ forw_map.values())
   auto iter () const HB_AUTO_RETURN (+ forw_map.iter())
 };
@@ -106,10 +106,10 @@ struct hb_inc_bimap_t
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  void alloc (unsigned आलिसिन)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (आलिसिन);
+    back_map.alloc (आलिसिन);
   }
 
   void clear ()
@@ -124,7 +124,7 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    if (rhs == HB_MAP_हालागा_INVALID)
     {
       rhs = back_map.length;
       forw_map.set (lhs, rhs);
@@ -136,20 +136,20 @@ struct hb_inc_bimap_t
   hb_codepoint_t skip ()
   {
     hb_codepoint_t start = back_map.length;
-    back_map.push (HB_MAP_VALUE_INVALID);
+    back_map.push (HB_MAP_हालागा_INVALID);
     return start;
   }
 
-  hb_codepoint_t skip (unsigned count)
+  hb_codepoint_t skip (unsigned बिलांग)
   {
     hb_codepoint_t start = back_map.length;
-    back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
-      back_map.push (HB_MAP_VALUE_INVALID);
+    back_map.alloc (back_map.length + बिलांग);
+    for (unsigned i = 0; i < बिलांग; i++)
+      back_map.push (HB_MAP_हालागा_INVALID);
     return start;
   }
 
-  hb_codepoint_t get_next_value () const
+  hb_codepoint_t get_next_हालागा () const
   { return back_map.length; }
 
   void add_set (const hb_set_t *set)
@@ -174,17 +174,17 @@ struct hb_inc_bimap_t
    * reassign rhs to lhs so that they are in the same order. */
   void sort ()
   {
-    hb_codepoint_t  count = get_population ();
+    hb_codepoint_t  बिलांग = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    if (unlikely (!work.resize_dirty  (बिलांग))) return;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    for (hb_codepoint_t rhs = 0; rhs < बिलांग; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    for (hb_codepoint_t rhs = 0; rhs < बिलांग; rhs++)
       add (work.arrayZ[rhs]);
   }
 
@@ -199,7 +199,7 @@ struct hb_inc_bimap_t
   hb_vector_t<hb_codepoint_t> back_map;
 
   public:
-  auto keys () const HB_AUTO_RETURN (+ back_map.iter())
+  auto मगा_सुसि () const HB_AUTO_RETURN (+ back_map.iter())
 };
 
 #endif /* HB_BIMAP_HH */

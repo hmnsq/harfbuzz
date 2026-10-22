@@ -77,12 +77,12 @@ struct cff2_instancing_plan_t
     bool alive () const { return alive_; }
 
     /* One value's delta for new region j, from its old per-region deltas. */
-    double transform_delta (unsigned j, hb_array_t<const number_t> deltas) const
+    double transform_delta (unsigned j, hb_array_t<const नुमेरो_t> deltas) const
     {
       const hb_vector_t<float> &col = matrix.arrayZ[j];
       double d = 0.;
-      unsigned count = hb_min (col.length, deltas.length);
-      for (unsigned c = 0; c < count; c++)
+      unsigned बिलांग = hb_min (col.length, deltas.length);
+      for (unsigned c = 0; c < बिलांग; c++)
 	d += (double) col.arrayZ[c] * deltas.arrayZ[c].to_real ();
       return d;
     }
@@ -91,9 +91,9 @@ struct cff2_instancing_plan_t
   hb_vector_t<vardata_transform_t> transforms;  /* per old VarData (vsindex) */
   hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>> new_regions;  /* global region list */
   hb_set_t used_majors;
-  unsigned new_major_count = 0;
+  unsigned new_major_बिलांग = 0;
 
-  bool has_variations () const { return new_major_count; }
+  bool has_variations () const { return new_major_बिलांग; }
 
   const vardata_transform_t *get_transform (unsigned major) const
   { return major < transforms.length ? &transforms.arrayZ[major] : nullptr; }
@@ -109,7 +109,7 @@ struct cff2_instancing_plan_t
     return (t && t->alive ()) ? t->new_major : 0;
   }
 
-  double fold_deltas (unsigned old_ivs, hb_array_t<const number_t> deltas) const
+  double fold_deltas (unsigned old_ivs, hb_array_t<const नुमेरो_t> deltas) const
   {
     const vardata_transform_t *t = get_transform (old_ivs);
     if (unlikely (!t || t->gains.length != deltas.length)) return 0.;
@@ -123,8 +123,8 @@ struct cff2_instancing_plan_t
 	       const hb_subset_plan_t *plan)
   {
     const OT::ItemVariationStore &varStore = cff2VarStore->varStore;
-    unsigned major_count = varStore.get_sub_table_count ();
-    if (!transforms.resize (major_count)) return false;
+    unsigned major_बिलांग = varStore.get_sub_table_बिलांग ();
+    if (!transforms.resize (major_बिलांग)) return false;
 
     if (!varStore.get_region_list ().get_var_regions (plan->axes_old_index_tag_map, orig_regions))
       return false;
@@ -132,10 +132,10 @@ struct cff2_instancing_plan_t
     /* Instance each VarData with identity delta rows; the surviving tuples'
      * delta columns are the old-region → new-region transform. */
     OT::optimize_scratch_t scratch;
-    for (unsigned m = 0; m < major_count; m++)
+    for (unsigned m = 0; m < major_बिलांग; m++)
     {
       const OT::VarData &var_data = varStore.get_sub_table (m);
-      unsigned k = var_data.get_region_index_count ();
+      unsigned k = var_data.get_region_index_बिलांग ();
       vardata_transform_t &t = transforms.arrayZ[m];
 
       if (!t.gains.resize_exact (k)) return false;
@@ -191,7 +191,7 @@ struct cff2_instancing_plan_t
       vardata_transform_t &t = transforms.arrayZ[m];
       t.alive_ = t.matrix.length && used_majors.has (m);
       if (t.alive_)
-	t.new_major = new_major_count++;
+	t.new_major = new_major_बिलांग++;
     }
 
     /* Keys hash by content, so pointers into different owners compare fine. */
@@ -257,8 +257,8 @@ struct cff2_instancing_plan_t
   bool serialize_var_store (hb_serialize_context_t *c,
 			    const hb_vector_t<hb_tag_t> &axis_tags) const
   {
-    unsigned data_count = new_major_count;
-    unsigned header_size = 2 + 4 + 2 + 4 * data_count;
+    unsigned data_बिलांग = new_major_बिलांग;
+    unsigned header_size = 2 + 4 + 2 + 4 * data_बिलांग;
 
     uint64_t offset = header_size;
     hb_vector_t<unsigned> data_offsets;
@@ -268,7 +268,7 @@ struct cff2_instancing_plan_t
       data_offsets.push ((unsigned) offset);
       offset += 6 + 2 * (uint64_t) t.region_indices.length;
     }
-    if (unlikely (data_offsets.in_error () || data_offsets.length != data_count))
+    if (unlikely (data_offsets.in_error () || data_offsets.length != data_बिलांग))
       return false;
     unsigned regions_offset = (unsigned) offset;
     uint64_t total = offset + 4 + (uint64_t) new_regions.length * axis_tags.length * 6;
@@ -283,8 +283,8 @@ struct cff2_instancing_plan_t
     if (unlikely (!header)) return false;
     * (HBUINT16 *) (header + 0) = 1;			/* format */
     * (HBUINT32 *) (header + 2) = regions_offset;
-    * (HBUINT16 *) (header + 6) = data_count;
-    for (unsigned i = 0; i < data_count; i++)
+    * (HBUINT16 *) (header + 6) = data_बिलांग;
+    for (unsigned i = 0; i < data_बिलांग; i++)
       * (HBUINT32 *) (header + 8 + 4 * i) = data_offsets.arrayZ[i];
 
     for (const vardata_transform_t &t : transforms)
@@ -326,7 +326,7 @@ struct cff2_usage_param_t
 
 struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage_param_t, blend_arg_t>
 {
-  static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, cff2_usage_param_t& param)
+  static void flush_मगा_कातविरान_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, cff2_usage_param_t& param)
   {
     bool counts = true;
     switch (op)
@@ -351,14 +351,14 @@ struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage
     }
 
     if (counts)
-      for (unsigned int i = 0; i < env.argStack.get_count (); i++)
-	if (env.argStack[i].blending ())
+      for (unsigned int i = 0; i < env.arg_सालानसान.get_बिलांग (); i++)
+	if (env.arg_सालानसान[i].blending ())
 	{
 	  param.instancing->note_use (env.get_ivs ());
 	  break;
 	}
 
-    env.clear_args ();
+    env.clear_मगा_कातविरान ();
   }
 };
 
@@ -370,16 +370,16 @@ struct cff2_private_dict_usage_opset_t : dict_opset_t
       case OpCode_vsindexdict:
 	env.process_vsindex ();
 	param.ivs = env.get_ivs ();
-	env.clear_args ();
+	env.clear_मगा_कातविरान ();
 	return;
       case OpCode_blenddict:
 	param.instancing->note_use (param.ivs);
-	env.clear_args ();
+	env.clear_मगा_कातविरान ();
 	return;
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	env.clear_args ();
+	if (!env.arg_सालानसान.is_empty ()) return;
+	env.clear_मगा_कातविरान ();
 	return;
     }
   }
@@ -397,7 +397,7 @@ struct cff2_sub_table_info_t : cff_sub_table_info_t
   objidx_t  var_store_link;
 };
 
-struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+struct cff2_इताअस_dict_op_serializer_t : cff_इताअस_dict_op_serializer_t<>
 {
   bool serialize (hb_serialize_context_t *c,
 		  const op_str_t &opstr,
@@ -414,14 +414,14 @@ struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 	  return_trace (true);
 
       default:
-	return_trace (cff_top_dict_op_serializer_t<>::serialize (c, opstr, info));
+	return_trace (cff_इताअस_dict_op_serializer_t<>::serialize (c, opstr, info));
     }
   }
 };
 
 struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatten_param_t, blend_arg_t>
 {
-  static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_मगा_कातविरान_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* Optionally capture command for specialization (before flushing, to preserve args) */
     if (param.commands)
@@ -453,19 +453,19 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       {
 	cs_command_t cmd (op);
 	/* Capture resolved blend values */
-	for (unsigned int i = 0; i < env.argStack.get_count ();)
+	for (unsigned int i = 0; i < env.arg_सालानसान.get_बिलांग ();)
 	{
-	  const blend_arg_t &arg = env.argStack[i];
+	  const blend_arg_t &arg = env.arg_सालानसान[i];
 	  if (arg.blending ())
 	  {
 	    /* For blend args, capture only the resolved default value */
-	    cmd.args.push (arg);
+	    cmd.मगा_कातविरान.push (arg);
 	    /* Skip over the multiple blend values */
-	    i += arg.numValues;
+	    i += arg.नुमेरो_मगा_हालागा_2;
 	  }
 	  else
 	  {
-	    cmd.args.push (arg);
+	    cmd.मगा_कातविरान.push (arg);
 	    i++;
 	  }
 	}
@@ -490,25 +490,25 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       case OpCode_cntrmask:
 	if (param.drop_hints)
 	{
-	  env.clear_args ();
+	  env.clear_मगा_कातविरान ();
 	  return;
 	}
 	HB_FALLTHROUGH;
 
       default:
-	SUPER::flush_args_and_op (op, env, param);
+	SUPER::flush_मगा_कातविरान_and_op (op, env, param);
 	break;
     }
   }
 
-  static void flush_args (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_मगा_कातविरान (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
-    for (unsigned int i = 0; i < env.argStack.get_count ();)
+    for (unsigned int i = 0; i < env.arg_सालानसान.get_बिलांग ();)
     {
-      const blend_arg_t &arg = env.argStack[i];
+      const blend_arg_t &arg = env.arg_सालानसान[i];
       if (arg.blending ())
       {
-	if (unlikely (!((arg.numValues > 0) && (env.argStack.get_count () >= arg.numValues))))
+	if (unlikely (!((arg.नुमेरो_मगा_हालागा_2 > 0) && (env.arg_सालानसान.get_बिलांग () >= arg.नुमेरो_मगा_हालागा_2))))
 	{
 	  env.set_error ();
 	  return;
@@ -517,42 +517,42 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 	  rewrite_blends (arg, i, env, param);
 	else
 	  flatten_blends (arg, i, env, param);
-	i += arg.numValues;
+	i += arg.नुमेरो_मगा_हालागा_2;
       }
       else
       {
 	str_encoder_t  encoder (param.flatStr);
-	encoder.encode_num_cs (arg);
+	encoder.encode_नुमेरो_cs (arg);
 	i++;
       }
     }
-    SUPER::flush_args (env, param);
+    SUPER::flush_मगा_कातविरान (env, param);
   }
 
   static void flatten_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* flatten the default values */
     str_encoder_t  encoder (param.flatStr);
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    for (unsigned int j = 0; j < arg.नुमेरो_मगा_हालागा_2; j++)
     {
-      const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!((arg1.blending () && (arg.numValues == arg1.numValues) && (arg1.valueIndex == j) &&
-	      (arg1.deltas.length == env.get_region_count ())))))
+      const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
+      if (unlikely (!((arg1.blending () && (arg.नुमेरो_मगा_हालागा_2 == arg1.नुमेरो_मगा_हालागा_2) && (arg1.हालागा_Index_2 == j) &&
+	      (arg1.deltas.length == env.get_region_बिलांग ())))))
       {
 	env.set_error ();
 	return;
       }
-      encoder.encode_num_cs (arg1);
+      encoder.encode_नुमेरो_cs (arg1);
     }
     /* flatten deltas for each value */
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    for (unsigned int j = 0; j < arg.नुमेरो_मगा_हालागा_2; j++)
     {
-      const blend_arg_t &arg1 = env.argStack[i + j];
+      const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
       for (unsigned int k = 0; k < arg1.deltas.length; k++)
-	encoder.encode_num_cs (arg1.deltas[k]);
+	encoder.encode_नुमेरो_cs (arg1.deltas[k]);
     }
     /* flatten the number of values followed by blend operator */
-    encoder.encode_int (arg.numValues);
+    encoder.encode_int (arg.नुमेरो_मगा_हालागा_2);
     encoder.encode_op (OpCode_blendcs);
   }
 
@@ -570,12 +570,12 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       return;
     }
 
-    unsigned n = arg.numValues;
+    unsigned n = arg.नुमेरो_मगा_हालागा_2;
     for (unsigned int j = 0; j < n; j++)
     {
-      const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!(arg1.blending () && (arg1.numValues == n) && (arg1.valueIndex == j) &&
-		      (arg1.deltas.length == env.get_region_count ()) &&
+      const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
+      if (unlikely (!(arg1.blending () && (arg1.नुमेरो_मगा_हालागा_2 == n) && (arg1.हालागा_Index_2 == j) &&
+		      (arg1.deltas.length == env.get_region_बिलांग ()) &&
 		      (arg1.deltas.length == t->gains.length))))
       {
 	env.set_error ();
@@ -591,10 +591,10 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       /* All of this VarData's regions died; blends dissolve into statics. */
       for (unsigned int j = 0; j < n; j++)
       {
-	const blend_arg_t &arg1 = env.argStack[i + j];
-	number_t v;
+	const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
+	नुमेरो_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
-	encoder.encode_num_cs (v);
+	encoder.encode_नुमेरो_cs (v);
       }
       return;
     }
@@ -615,19 +615,19 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 
       for (unsigned int j = done; j < done + chunk; j++)
       {
-	const blend_arg_t &arg1 = env.argStack[i + j];
-	number_t v;
+	const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
+	नुमेरो_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
-	encoder.encode_num_cs (v);
+	encoder.encode_नुमेरो_cs (v);
       }
       for (unsigned int j = done; j < done + chunk; j++)
       {
-	const blend_arg_t &arg1 = env.argStack[i + j];
+	const blend_arg_t &arg1 = env.arg_सालानसान[i + j];
 	for (unsigned r = 0; r < k_new; r++)
 	{
-	  number_t v;
+	  नुमेरो_t v;
 	  v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, arg1.deltas.as_array ()))));
-	  encoder.encode_num_cs (v);
+	  encoder.encode_नुमेरो_cs (v);
 	}
       }
       encoder.encode_int (chunk);
@@ -749,8 +749,8 @@ struct cff2_cs_opset_subr_subset_t : cff2_cs_opset_t<cff2_cs_opset_subr_subset_t
   {
     byte_str_ref_t    str_ref = env.str_ref;
     env.call_subr (subrs, type);
-    param.current_parsed_str->add_call_op (op, str_ref, env.context.subr_num);
-    closure->add (env.context.subr_num);
+    param.current_parsed_str->add_call_op (op, str_ref, env.context.subr_नुमेरो_2);
+    closure->add (env.context.subr_नुमेरो_2);
     param.set_current_str (env, true);
   }
 
@@ -768,7 +768,7 @@ struct cff2_subr_subsetter_t : subr_subsetter_t<cff2_subr_subsetter_t, CFF2Subrs
     /* vsindex is inserted at the beginning of the charstring as necessary */
     if (env.seen_vsindex ())
     {
-      number_t  ivs;
+      नुमेरो_t  ivs;
       ivs.set_int ((int)env.get_ivs ());
       charstring.set_prefix (ivs, OpCode_vsindexcs);
     }
@@ -788,26 +788,26 @@ struct cff2_private_blend_encoder_param_t
   {
     if (!seen_blend)
     {
-      region_count = varStore->varStore.get_region_index_count (ivs);
-      if (unlikely (!scalars.resize_exact (region_count)))
+      region_बिलांग_2 = varStore->varStore.get_region_index_बिलांग (ivs);
+      if (unlikely (!scalars.resize_exact (region_बिलांग_2)))
       {
 	if (c) c->err (HB_SERIALIZE_ERROR_OTHER);
 	seen_blend = true;
 	return;
       }
       varStore->varStore.get_region_scalars (ivs, normalized_coords.arrayZ, normalized_coords.length,
-					     &scalars[0], region_count);
+					     &scalars[0], region_बिलांग_2);
       seen_blend = true;
     }
   }
 
-  double blend_deltas (hb_array_t<const number_t> deltas) const
+  double blend_deltas (hb_array_t<const नुमेरो_t> deltas) const
   {
     double v = 0;
     if (likely (scalars.length == deltas.length))
     {
-      unsigned count = scalars.length;
-      for (unsigned i = 0; i < count; i++)
+      unsigned बिलांग = scalars.length;
+      for (unsigned i = 0; i < बिलांग; i++)
 	v += (double) scalars.arrayZ[i] * deltas.arrayZ[i].to_real ();
     }
     return v;
@@ -817,7 +817,7 @@ struct cff2_private_blend_encoder_param_t
   hb_serialize_context_t *c = nullptr;
   bool seen_blend = false;
   unsigned ivs = 0;
-  unsigned region_count = 0;
+  unsigned region_बिलांग_2 = 0;
   hb_vector_t<float> scalars;
   const	 CFF2ItemVariationStore *varStore = nullptr;
   hb_array_t<int> normalized_coords;
@@ -833,8 +833,8 @@ struct cff2_private_blend_encoder_param_t
 struct cff2_private_dict_blend_opset_t : dict_opset_t
 {
   static void process_arg_blend (cff2_private_blend_encoder_param_t& param,
-				 number_t &arg,
-				 const hb_array_t<const number_t> blends,
+				 नुमेरो_t &arg,
+				 const hb_array_t<const नुमेरो_t> blends,
 				 unsigned n, unsigned i)
   {
     arg.set_int (round (arg.to_real () + param.blend_deltas (blends)));
@@ -846,7 +846,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
    * decoded absolutes; keeping the emitted cumulative fold equal to the
    * rounded exact cumulative fold bounds every absolute within ±0.5. */
   static double fold (cff2_private_blend_encoder_param_t& param,
-		      const hb_array_t<const number_t> blends)
+		      const hb_array_t<const नुमेरो_t> blends)
   {
     double f = param.blend_deltas (blends);
     double emit = round (param.fold_exact + f) - param.fold_emitted;
@@ -874,7 +874,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     str_encoder_t encoder (str);
 
     for (unsigned idx = 0; idx < start; idx++)
-      encoder.encode_num_tp (env.argStack[idx]);
+      encoder.encode_नुमेरो_tp (env.arg_सालानसान[idx]);
 
     unsigned k_new = t->alive () ? t->matrix.length : 0;
     if (!k_new)
@@ -884,10 +884,10 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
        * dissolve into statics. */
       for (unsigned j = 0; j < n; j++)
       {
-	const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
-	number_t v;
-	v.set_real (env.argStack[start + j].to_real () + fold (param, blends));
-	encoder.encode_num_tp (v);
+	const hb_array_t<const नुमेरो_t> blends = env.arg_सालानसान.sub_array (start + n + (j * k), k);
+	नुमेरो_t v;
+	v.set_real (env.arg_सालानसान[start + j].to_real () + fold (param, blends));
+	encoder.encode_नुमेरो_tp (v);
       }
     }
     else
@@ -905,19 +905,19 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 
 	for (unsigned j = done; j < done + chunk; j++)
 	{
-	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
-	  number_t v;
-	  v.set_real (env.argStack[start + j].to_real () + fold (param, blends));
-	  encoder.encode_num_tp (v);
+	  const hb_array_t<const नुमेरो_t> blends = env.arg_सालानसान.sub_array (start + n + (j * k), k);
+	  नुमेरो_t v;
+	  v.set_real (env.arg_सालानसान[start + j].to_real () + fold (param, blends));
+	  encoder.encode_नुमेरो_tp (v);
 	}
 	for (unsigned j = done; j < done + chunk; j++)
 	{
-	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
+	  const hb_array_t<const नुमेरो_t> blends = env.arg_सालानसान.sub_array (start + n + (j * k), k);
 	  for (unsigned r = 0; r < k_new; r++)
 	  {
-	    number_t v;
+	    नुमेरो_t v;
 	    v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, blends))));
-	    encoder.encode_num_tp (v);
+	    encoder.encode_नुमेरो_tp (v);
 	  }
 	}
 	encoder.encode_int (chunk);
@@ -929,7 +929,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     auto bytes = str.as_bytes ();
     param.c->embed (&bytes, bytes.length);
 
-    env.clear_args ();
+    env.clear_मगा_कातविरान ();
   }
 
   static void process_blend (cff2_priv_dict_interp_env_t& env, cff2_private_blend_encoder_param_t& param)
@@ -937,21 +937,21 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     unsigned int n, k;
 
     param.process_blend ();
-    k = param.region_count;
-    n = env.argStack.pop_uint ();
+    k = param.region_बिलांग_2;
+    n = env.arg_सालानसान.आलिसिन_uint ();
 
-    unsigned count = env.argStack.get_count ();
+    unsigned बिलांग = env.arg_सालानसान.get_बिलांग ();
     unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > बिलांग))
     {
       env.set_error ();
       return;
     }
 
     /* copy the blend values into blend array of the default values */
-    unsigned int start = count - total;
+    unsigned int start = बिलांग - total;
     /* let an obvious error case fail, but note CFF2 spec doesn't forbid n==0 */
-    if (unlikely (start > count))
+    if (unlikely (start > बिलांग))
     {
       env.set_error ();
       return;
@@ -965,12 +965,12 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 
     for (unsigned int i = 0; i < n; i++)
     {
-      const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (param, env.argStack[start + i], blends, n, i);
+      const hb_array_t<const नुमेरो_t> blends = env.arg_सालानसान.sub_array (start + n + (i * k), k);
+      process_arg_blend (param, env.arg_सालानसान[start + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_सालानसान.आलिसिन (k * n);
   }
 
   static void process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_blend_encoder_param_t& param)
@@ -983,7 +983,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
       case OpCode_BlueFuzz:
       case OpCode_ExpansionFactor:
       case OpCode_LanguageGroup:
-      case OpCode_BlueValues:
+      case Op_Code_Blue_मगा_हालागा:
       case OpCode_OtherBlues:
       case OpCode_FamilyBlues:
       case OpCode_FamilyOtherBlues:
@@ -1007,7 +1007,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 	    param.c->embed (&bytes, bytes.length);
 	  }
 	}
-	env.clear_args ();
+	env.clear_मगा_कातविरान ();
 	return;
       case OpCode_blenddict:
 	process_blend (env, param);
@@ -1015,7 +1015,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	if (!env.arg_सालानसान.is_empty ()) return;
 	break;
     }
 
@@ -1026,16 +1026,16 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     str_buff_t str;
     str_encoder_t encoder (str);
 
-    unsigned count = env.argStack.get_count ();
-    for (unsigned i = 0; i < count; i++)
-      encoder.encode_num_tp (env.argStack[i]);
+    unsigned बिलांग = env.arg_सालानसान.get_बिलांग ();
+    for (unsigned i = 0; i < बिलांग; i++)
+      encoder.encode_नुमेरो_tp (env.arg_सालानसान[i]);
 
     encoder.encode_op (op);
 
     auto bytes = str.as_bytes ();
     param.c->embed (&bytes, bytes.length);
 
-    env.clear_args ();
+    env.clear_मगा_कातविरान ();
     param.fold_exact = param.fold_emitted = 0.;
   }
 };
@@ -1100,8 +1100,8 @@ struct cff2_subset_plan
     hb_codepoint_t old_glyph;
     if (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) return false;
 
-    num_glyphs = plan->num_output_glyphs ();
-    orig_fdcount = acc.fdArray->count;
+    नुमेरो_glyphs = plan->नुमेरो_output_glyphs ();
+    orig_fdcount = acc.fdArray->बिलांग;
 
     drop_hints = plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
     bool instancing_requested = (bool) plan->normalized_coords;
@@ -1136,14 +1136,14 @@ struct cff2_subset_plan
 	/* Pass 1: collect which VarDatas the retained blends reference, so
 	 * unused ones get pruned and the survivors renumbered. */
 	hb_set_t used_fds;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	for (unsigned int i = 0; i < नुमेरो_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
 	  if (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
 	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
+	  if (unlikely (fd >= acc.fd_बिलांग))
 	    return false;
 	  used_fds.add (fd);
 
@@ -1159,8 +1159,8 @@ struct cff2_subset_plan
 	{
 	  cff2_usage_param_t param;
 	  param.instancing = &instancing;
-	  unsigned count = acc.privateDicts[fd].get_count ();
-	  for (unsigned j = 0; j < count; j++)
+	  unsigned बिलांग = acc.privateDicts[fd].get_बिलांग ();
+	  for (unsigned j = 0; j < बिलांग; j++)
 	  {
 	    const op_str_t &opstr = acc.privateDicts[fd][j];
 	    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
@@ -1176,16 +1176,16 @@ struct cff2_subset_plan
 
 	/* Pass 2: like subr_flattener_t, but blends stay symbolic (no coords
 	 * fed to the env) and get rewritten against the instanced store. */
-	if (!subset_charstrings.resize_exact (num_glyphs))
+	if (!subset_charstrings.resize_exact (नुमेरो_glyphs))
 	  return false;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	for (unsigned int i = 0; i < नुमेरो_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
 	  if (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
 	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
+	  if (unlikely (fd >= acc.fd_बिलांग))
 	    return false;
 
 	  cff2_cs_interp_env_t<blend_arg_t> env (str, acc, fd);
@@ -1209,7 +1209,7 @@ struct cff2_subset_plan
       /* Enable command capture if requested (for specialization) */
       if (capture_commands)
       {
-	if (!charstring_commands.resize_exact (num_glyphs))
+	if (!charstring_commands.resize_exact (नुमेरो_glyphs))
 	  return false;
 
 	if (!flattener.flatten (subset_charstrings, &charstring_commands))
@@ -1254,7 +1254,7 @@ struct cff2_subset_plan
       if (unlikely (!hb_plan_subset_cff_fdselect (plan,
 						  orig_fdcount,
 						  *(const FDSelect *)acc.fdSelect,
-						  acc.num_glyphs,
+						  acc.नुमेरो_glyphs,
 						  subset_fdcount,
 						  subset_fdselect_size,
 						  subset_fdselect_format,
@@ -1270,7 +1270,7 @@ struct cff2_subset_plan
 
   cff2_sub_table_info_t info;
 
-  unsigned int    num_glyphs;
+  unsigned int    नुमेरो_glyphs;
   unsigned int    orig_fdcount = 0;
   unsigned int    subset_fdcount = 1;
   unsigned int    subset_fdselect_size = 0;
@@ -1329,7 +1329,7 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
   str_buff_vec_t cff1_charstrings;
   if (unlikely (!cff1_charstrings.resize (plan.subset_charstrings.length)))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
@@ -1357,7 +1357,7 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
       CFF::specialize_commands (commands, 48);  /* maxstack=48 for CFF1 */
       if (unlikely (!CFF::encode_commands (commands, cff1_charstrings[i])))
       {
-        c->pop_discard ();
+        c->आलिसिन_discard ();
         return false;
       }
     }
@@ -1374,9 +1374,9 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
         (cff1_charstrings[i].tail () != 0x0e && cff1_charstrings[i].tail () != 0x0b))
     {
       // Append endchar operator
-      if (unlikely (!cff1_charstrings[i].push_or_fail (0x0e)))
+      if (unlikely (!cff1_charstrings[i].इतुलाक_or_fail (0x0e)))
       {
-        c->pop_discard ();
+        c->आलिसिन_discard ();
         return false;
       }
     }
@@ -1386,25 +1386,25 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
   unsigned total_size = CFF1CharStrings::total_size (cff1_charstrings, &data_size, plan.min_charstrings_off_size);
   if (unlikely (!c->start_zerocopy (total_size)))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
   auto *cs = c->start_embed<CFF1CharStrings> ();
   if (unlikely (!cs->serialize (c, cff1_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
-  plan.info.char_strings_link = c->pop_pack (false);
+  plan.info.char_strings_link = c->आलिसिन_pack (false);
   return true;
 }
 
 /* Serialize CID Charset (format 2 range: gid 0-N -> cid 0-N) */
 static bool
 _serialize_cff1_charset (hb_serialize_context_t *c,
-                         unsigned int num_glyphs,
+                         unsigned int नुमेरो_glyphs,
                          objidx_t &charset_link)
 {
   // For CID fonts, create a simple identity charset
@@ -1414,27 +1414,27 @@ _serialize_cff1_charset (hb_serialize_context_t *c,
   auto *charset = c->start_embed<Charset> ();
   if (unlikely (!charset))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
   // Create a single range for CID 1 to num_glyphs-1
   hb_vector_t<code_pair_t> ranges;
-  if (num_glyphs > 1)
+  if (नुमेरो_glyphs > 1)
   {
     code_pair_t range;
     range.code = 1;  // first CID
-    range.glyph = num_glyphs - 2;  // nLeft (covers glyphs 1 to num_glyphs-1)
+    range.glyph = नुमेरो_glyphs - 2;  // nLeft (covers glyphs 1 to num_glyphs-1)
     ranges.push (range);
   }
 
-  if (unlikely (!charset->serialize (c, 2, num_glyphs, ranges)))
+  if (unlikely (!charset->serialize (c, 2, नुमेरो_glyphs, ranges)))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
-  charset_link = c->pop_pack ();
+  charset_link = c->आलिसिन_pack ();
   return true;
 }
 
@@ -1444,7 +1444,7 @@ namespace CFF {
 bool
 serialize_cff2_to_cff1 (hb_serialize_context_t *c,
                         OT::cff2_subset_plan &plan,
-                        const cff2_top_dict_values_t &cff2_topDict,
+                        const cff2_इताअस_dict_मगा_हालागा_t &cff2_इताअस_Dict,
                         const OT::cff2::accelerator_subset_t &acc)
 {
   TRACE_SERIALIZE (this);
@@ -1467,9 +1467,9 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   {
     // Collect widths from hmtx_map
     hb_vector_t<unsigned> widths;
-    widths.alloc (plan.num_glyphs);
+    widths.alloc (plan.नुमेरो_glyphs);
 
-    for (unsigned gid = 0; gid < plan.num_glyphs; gid++)
+    for (unsigned gid = 0; gid < plan.नुमेरो_glyphs; gid++)
     {
       unsigned width = 0;
       if (plan.hmtx_map->has (gid))
@@ -1500,10 +1500,10 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
       {
         auto *dest = c->push<CFF1Subrs> ();
         if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
-          subrs_link = c->pop_pack (false);
+          subrs_link = c->आलिसिन_pack (false);
         else
         {
-          c->pop_discard ();
+          c->आलिसिन_discard ();
           return_trace (false);
         }
       }
@@ -1526,17 +1526,17 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
         {
           unsigned fd = plan.fdmap[i];
           private_dict_infos[fd].size = c->length ();
-          private_dict_infos[fd].link = c->pop_pack ();
+          private_dict_infos[fd].link = c->आलिसिन_pack ();
         }
         else
         {
-          c->pop_discard ();
+          c->आलिसिन_discard ();
           return_trace (false);
         }
       }
       else
       {
-        c->pop_discard ();
+        c->आलिसिन_discard ();
         return_trace (false);
       }
     }
@@ -1548,17 +1548,17 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     cff_font_dict_op_serializer_t fontSzr;
     auto it =
     + hb_zip (+ hb_iter (acc.fontDicts)
-              | hb_filter ([&] (const cff2_font_dict_values_t &_)
+              | hb_filter ([&] (const cff2_font_dict_मगा_हालागा_t &_)
                 { return plan.fdmap.has (&_ - &acc.fontDicts[0]); }),
               hb_iter (private_dict_infos))
     ;
     // Explicitly specify template parameters: DICTVAL, INFO
-    bool success = fda->serialize<cff2_font_dict_values_t, table_info_t> (c, it, fontSzr);
+    bool success = fda->serialize<cff2_font_dict_मगा_हालागा_t, table_info_t> (c, it, fontSzr);
     if (success)
-      plan.info.fd_array_link = c->pop_pack (false);
+      plan.info.fd_array_link = c->आलिसिन_pack (false);
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
   }
@@ -1569,16 +1569,16 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   if (acc.fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs,
+    if (likely (hb_serialize_cff_fdselect (c, plan.नुमेरो_glyphs,
                                           *(const FDSelect *)acc.fdSelect,
                                           plan.orig_fdcount,
                                           plan.subset_fdselect_format,
                                           plan.subset_fdselect_size,
                                           plan.subset_fdselect_ranges)))
-      plan.info.fd_select.link = c->pop_pack ();
+      plan.info.fd_select.link = c->आलिसिन_pack ();
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
   }
@@ -1593,7 +1593,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     format = 3;
     if (unlikely (!c->embed (format)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
@@ -1602,7 +1602,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     nRanges = 1;
     if (unlikely (!c->embed (nRanges)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
@@ -1612,35 +1612,35 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     range.fd = 0;
     if (unlikely (!c->embed (range)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
     // Sentinel (number of glyphs)
     HBUINT16 sentinel;
-    sentinel = plan.num_glyphs;
+    sentinel = plan.नुमेरो_glyphs;
     if (unlikely (!c->embed (sentinel)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
-    plan.info.fd_select.link = c->pop_pack ();
+    plan.info.fd_select.link = c->आलिसिन_pack ();
   }
 
   // 5. Charset (CID charset for identity mapping)
   objidx_t charset_link;
-  if (!_serialize_cff1_charset (c, plan.num_glyphs, charset_link))
+  if (!_serialize_cff1_charset (c, plan.नुमेरो_glyphs, charset_link))
     return_trace (false);
 
   // 6. Global Subrs
   {
     auto *dest = c->push<CFF1Subrs> ();
     if (likely (dest->serialize (c, plan.subset_globalsubrs)))
-      c->pop_pack (false);
+      c->आलिसिन_pack (false);
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
   }
@@ -1661,10 +1661,10 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Serialize as CFF INDEX
     auto *dest = c->push<CFF1Index> ();
     if (likely (dest->serialize (c, strings)))
-      c->pop_pack (false);
+      c->आलिसिन_pack (false);
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
   }
@@ -1696,13 +1696,13 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   // 10. Top DICT INDEX
   {
     // Serialize the Top DICT data first
-    c->push<TopDict> ();
-    cff1_from_cff2_top_dict_op_serializer_t topSzr;
+    c->push<इताअस_Dict> ();
+    cff1_from_cff2_इताअस_dict_op_serializer_t इताअस_Szr;
 
     // Serialize ROS first
-    if (unlikely (!topSzr.serialize_ros (c)))
+    if (unlikely (!इताअस_Szr.serialize_ros (c)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
@@ -1719,7 +1719,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
       if (encoder.in_error () || !c->embed (bbox_buff.as_bytes ().arrayZ, bbox_buff.length))
       {
-        c->pop_discard ();
+        c->आलिसिन_discard ();
         return_trace (false);
       }
     }
@@ -1727,40 +1727,40 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Serialize charset operator
     if (charset_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_charset, charset_link, whence_t::Absolute)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
     // Serialize FDSelect operator (required for CID-keyed CFF1 fonts)
     if (plan.info.fd_select.link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDSelect, plan.info.fd_select.link, whence_t::Absolute)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
     // Serialize FDArray operator (required for CID-keyed CFF1 fonts)
     if (plan.info.fd_array_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDArray, plan.info.fd_array_link, whence_t::Absolute)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return_trace (false);
     }
 
     // Serialize other operators from CFF2 TopDict
-    for (const auto &opstr : cff2_topDict.values)
+    for (const auto &opstr : cff2_इताअस_Dict.values)
     {
-      if (unlikely (!topSzr.serialize (c, opstr, plan.info)))
+      if (unlikely (!इताअस_Szr.serialize (c, opstr, plan.info)))
       {
-        c->pop_discard ();
+        c->आलिसिन_discard ();
         return_trace (false);
       }
     }
 
-    unsigned top_size = c->length ();
-    c->pop_pack (false);
+    unsigned इताअस_size = c->length ();
+    c->आलिसिन_pack (false);
 
     // Serialize INDEX header
     auto *dest = c->start_embed<CFF1Index> ();
-    if (unlikely (!dest->serialize_header (c, hb_iter (&top_size, 1), top_size)))
+    if (unlikely (!dest->serialize_header (c, hb_iter (&इताअस_size, 1), इताअस_size)))
       return_trace (false);
   }
 
@@ -1783,11 +1783,11 @@ static bool _serialize_cff2_charstrings (hb_serialize_context_t *c,
   auto *cs = c->start_embed<CFF2CharStrings> ();
   if (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return false;
   }
 
-  plan.info.char_strings_link = c->pop_pack (false);
+  plan.info.char_strings_link = c->आलिसिन_pack (false);
   return true;
 }
 
@@ -1817,10 +1817,10 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
       {
 	auto *dest = c->push <CFF2Subrs> ();
 	if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
-	  subrs_link = c->pop_pack (false);
+	  subrs_link = c->आलिसिन_pack (false);
 	else
 	{
-	  c->pop_discard ();
+	  c->आलिसिन_discard ();
 	  return false;
 	}
       }
@@ -1832,11 +1832,11 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
       {
 	unsigned fd = plan.fdmap[i];
 	private_dict_infos[fd].size = c->length ();
-	private_dict_infos[fd].link = c->pop_pack ();
+	private_dict_infos[fd].link = c->आलिसिन_pack ();
       }
       else
       {
-	c->pop_discard ();
+	c->आलिसिन_discard ();
 	return false;
       }
     }
@@ -1846,14 +1846,14 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
   if (fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *(const FDSelect *)fdSelect,
+    if (likely (hb_serialize_cff_fdselect (c, plan.नुमेरो_glyphs, *(const FDSelect *)fdSelect,
 					   plan.orig_fdcount,
 					   plan.subset_fdselect_format, plan.subset_fdselect_size,
 					   plan.subset_fdselect_ranges)))
-      plan.info.fd_select.link = c->pop_pack ();
+      plan.info.fd_select.link = c->आलिसिन_pack ();
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return false;
     }
   }
@@ -1864,16 +1864,16 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
     cff_font_dict_op_serializer_t fontSzr;
     auto it =
     + hb_zip (+ hb_iter (fontDicts)
-	      | hb_filter ([&] (const cff2_font_dict_values_t &_)
+	      | hb_filter ([&] (const cff2_font_dict_मगा_हालागा_t &_)
 		{ return plan.fdmap.has (&_ - &fontDicts[0]); }),
 	      hb_iter (private_dict_infos))
     ;
     if (unlikely (!fda->serialize (c, it, fontSzr)))
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return false;
     }
-    plan.info.fd_array_link = c->pop_pack (false);
+    plan.info.fd_array_link = c->आलिसिन_pack (false);
   }
 
   /* variation store */
@@ -1887,10 +1887,10 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
 	c->push ();
 	if (unlikely (!plan.instancing.serialize_var_store (c, *plan.axis_tags)))
 	{
-	  c->pop_discard ();
+	  c->आलिसिन_discard ();
 	  return false;
 	}
-	plan.info.var_store_link = c->pop_pack (false);
+	plan.info.var_store_link = c->आलिसिन_pack (false);
       }
       /* else: the store emptied; the vstore op gets dropped along with it. */
     }
@@ -1899,10 +1899,10 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
       auto *dest = c->push<CFF2ItemVariationStore> ();
       if (unlikely (!dest->serialize (c, varStore)))
       {
-	c->pop_discard ();
+	c->आलिसिन_discard ();
 	return false;
       }
-      plan.info.var_store_link = c->pop_pack (false);
+      plan.info.var_store_link = c->आलिसिन_pack (false);
     }
   }
 
@@ -1912,14 +1912,14 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
   /* header */
   cff2->version.major = 0x02;
   cff2->version.minor = 0x00;
-  cff2->topDict = OT::cff2::static_size;
+  cff2->इताअस_Dict_2 = OT::cff2::static_size;
 
   /* top dict */
   {
-    TopDict &dict = cff2 + cff2->topDict;
-    cff2_top_dict_op_serializer_t topSzr;
-    if (unlikely (!dict.serialize (c, topDict, topSzr, plan.info))) return false;
-    cff2->topDictSize = c->head - (const char *)&dict;
+    इताअस_Dict &dict = cff2 + cff2->इताअस_Dict_2;
+    cff2_इताअस_dict_op_serializer_t इताअस_Szr;
+    if (unlikely (!dict.serialize (c, इताअस_Dict_2, इताअस_Szr, plan.info))) return false;
+    cff2->इताअस_Dict_Size = c->head - (const char *)&dict;
   }
 
   /* global subrs */
@@ -1941,7 +1941,7 @@ OT::cff2::accelerator_subset_t::subset (hb_subset_context_t *c) const
   {
     // Serialize CFF1 to the subsetter's serializer
     // If we run out of room, returning true will cause subsetter to retry with larger buffer
-    bool result = CFF::serialize_cff2_to_cff1 (c->serializer, cff2_plan, topDict, *this);
+    bool result = CFF::serialize_cff2_to_cff1 (c->serializer, cff2_plan, इताअस_Dict_2, *this);
 
     if (c->serializer->ran_out_of_room ())
       return true; // Subsetter will retry with larger buffer

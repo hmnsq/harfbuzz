@@ -44,7 +44,7 @@ enum thai_consonant_type_t
   RC,
   DC,
   NOT_CONSONANT,
-  NUM_CONSONANT_TYPES = NOT_CONSONANT
+  नुमेरो_CONSONANT_TYPES = NOT_CONSONANT
 };
 
 static thai_consonant_type_t
@@ -68,7 +68,7 @@ enum thai_mark_type_t
   BV,
   T,
   NOT_MARK,
-  NUM_MARK_TYPES = NOT_MARK
+  नुमेरो_MARK_TYPES = NOT_MARK
 };
 
 static thai_mark_type_t
@@ -169,8 +169,8 @@ static const enum thai_above_state_t
   T1, /*     ⣼                   */
   T2, /*        ⣾                */
   T3, /*           ⣿             */
-  NUM_ABOVE_STATES
-} thai_above_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  नुमेरो_ABOVE_STATES
+} thai_above_start_state[नुमेरो_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   T0, /* NC */
   T1, /* AC */
@@ -182,7 +182,7 @@ static const enum thai_above_state_t
 static const struct thai_above_state_machine_edge_t {
   thai_action_t action;
   thai_above_state_t next_state;
-} thai_above_state_machine[NUM_ABOVE_STATES][NUM_MARK_TYPES] =
+} thai_above_state_machine[नुमेरो_ABOVE_STATES][नुमेरो_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*T0*/ {{NOP,T3}, {NOP,T0}, {SD, T3}},
 /*T1*/ {{SL, T2}, {NOP,T1}, {SDL,T2}},
@@ -196,8 +196,8 @@ static const enum thai_below_state_t
   B0, /* No descender */
   B1, /* Removable descender */
   B2, /* Strict descender */
-  NUM_BELOW_STATES
-} thai_below_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  नुमेरो_BELOW_STATES
+} thai_below_start_state[नुमेरो_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   B0, /* NC */
   B0, /* AC */
@@ -209,7 +209,7 @@ static const enum thai_below_state_t
 static const struct thai_below_state_machine_edge_t {
   thai_action_t action;
   thai_below_state_t next_state;
-} thai_below_state_machine[NUM_BELOW_STATES][NUM_MARK_TYPES] =
+} thai_below_state_machine[नुमेरो_BELOW_STATES][नुमेरो_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*B0*/ {{NOP,B0}, {NOP,B2}, {NOP, B0}},
 /*B1*/ {{NOP,B1}, {RD, B2}, {NOP, B1}},
@@ -231,8 +231,8 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
   unsigned int base = 0;
 
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned int बिलांग = buffer->len;
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     thai_mark_type_t mt = get_mark_type (info[i].codepoint);
 
@@ -322,8 +322,8 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 #define IS_ABOVE_BASE_MARK(x) (hb_in_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
 
   buffer->clear_output ();
-  unsigned int count = buffer->len;
-  for (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
+  unsigned int बिलांग = buffer->len;
+  for (buffer->idx = 0; buffer->idx < बिलांग /* No need for: && buffer->successful */;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
     if (likely (!IS_SARA_AM (u)))

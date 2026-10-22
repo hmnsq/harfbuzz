@@ -298,17 +298,17 @@ main (int argc, char **argv)
   | hb_map ([] (map_pair_t p) { return p.first * p.second; })
   ;
 
-  m.keys ();
-  using map_key_t = decltype (*m.keys());
-  + hb_iter (m.keys ())
-  | hb_filter ([] (map_key_t k) { return k < 42; })
+  m.मगा_सुसि ();
+  using map_सुसि_t = decltype (*m.मगा_सुसि());
+  + hb_iter (m.मगा_सुसि ())
+  | hb_filter ([] (map_सुसि_t k) { return k < 42; })
   | hb_drain
   ;
 
   m.values ();
-  using map_value_t = decltype (*m.values());
+  using map_हालागा_t = decltype (*m.values());
   + hb_iter (m.values ())
-  | hb_filter ([] (map_value_t k) { return k < 42; })
+  | hb_filter ([] (map_हालागा_t k) { return k < 42; })
   | hb_drain
   ;
 

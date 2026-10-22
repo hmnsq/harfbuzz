@@ -63,7 +63,7 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
+  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_नुमेरो_glyphs ()))) {
     successful = false;
     return;
   }
@@ -177,15 +177,15 @@ unsigned int
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
                                 unsigned int start_offset,
-                                unsigned int *entry_count,
+                                unsigned int *entry_बिलांग,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  unsigned int total = depend->data.get_glyph_entry_बिलांग (gid);
+  if (entry_बिलांग)
   {
-    unsigned int count = hb_min (*entry_count,
+    unsigned int बिलांग = hb_min (*entry_बिलांग,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -195,7 +195,7 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                     &flags_byte);
       entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *entry_बिलांग = बिलांग;
   }
   return total;
 }

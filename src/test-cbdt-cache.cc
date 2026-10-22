@@ -31,19 +31,19 @@
 #include "OT/Color/CBDT/CBDT.hh"
 
 static unsigned fail_after;
-static unsigned allocation_count;
+static unsigned allocation_बिलांग;
 
 static bool
 fail_allocation ()
 {
-  allocation_count++;
+  allocation_बिलांग++;
   return fail_after && !--fail_after;
 }
 
 extern "C" void *cbdt_test_malloc (size_t size)
 { return fail_allocation () ? nullptr : malloc (size); }
-extern "C" void *cbdt_test_calloc (size_t count, size_t size)
-{ return fail_allocation () ? nullptr : calloc (count, size); }
+extern "C" void *cbdt_test_calloc (size_t बिलांग, size_t size)
+{ return fail_allocation () ? nullptr : calloc (बिलांग, size); }
 extern "C" void *cbdt_test_realloc (void *ptr, size_t size)
 { return fail_allocation () ? nullptr : realloc (ptr, size); }
 extern "C" void cbdt_test_free (void *ptr)
@@ -81,16 +81,16 @@ test_required_allocations (const OT::BitmapSizeTable &strike,
   hb_subset_context_t context (nullptr, plan, &serializer, HB_OT_TAG_CBLC);
   hb_vector_t<char> data;
   fail_after = failure;
-  allocation_count = 0;
+  allocation_बिलांग = 0;
   bool success = strike.subset (&context, cblc, cbdt.arrayZ, cbdt.length,
 			       &data, nullptr);
-  unsigned count = allocation_count;
+  unsigned बिलांग = allocation_बिलांग;
   hb_always_assert (!fail_after);
   /* Required image/offset allocations must fail serialization instead of
    * being mistaken for a strike that can simply be discarded. */
   hb_always_assert (success || serializer.in_error ());
   serializer.end_serialize ();
-  return count;
+  return बिलांग;
 }
 
 int
@@ -101,13 +101,13 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0);
   hb_blob_destroy (blob);
-  hb_subset_input_t *input = hb_subset_input_create_or_fail ();
-  hb_always_assert (input);
-  hb_set_t *unicodes = hb_subset_input_unicode_set (input);
+  hb_subset_पासोक_t *पासोक = hb_subset_पासोक_create_or_fail ();
+  hb_always_assert (पासोक);
+  hb_set_t *unicodes = hb_subset_पासोक_unicode_set (पासोक);
   hb_set_add (unicodes, 0x38);
   hb_set_add (unicodes, 0xAE);
   hb_set_add (unicodes, 0x2049);
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (face, input);
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (face, पासोक);
   hb_always_assert (plan);
 
   hb_blob_ptr_t<OT::CBLC> cblc =
@@ -162,7 +162,7 @@ main (int argc, char **argv)
   cbdt.destroy ();
   cblc.destroy ();
   hb_subset_plan_destroy (plan);
-  hb_subset_input_destroy (input);
+  hb_subset_पासोक_destroy (पासोक);
   hb_face_destroy (face);
   return 0;
 }

@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+typedef struct hb_subset_पासोक_t hb_subset_पासोक_t;
 
 /**
  * hb_subset_plan_t:
@@ -117,7 +117,7 @@ typedef enum { /*< flags >*/
   HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
 #ifdef HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
+  HB_SUBSET_FLAGS_RETAIN_नुमेरो_GLYPHS  =  0x00002000u,
 #endif
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
   HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
@@ -153,96 +153,96 @@ typedef enum {
   HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_पासोक_t *
+hb_subset_पासोक_create_or_fail (void);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_पासोक_t *
+hb_subset_पासोक_reference (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+hb_subset_पासोक_destroy (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
+hb_subset_पासोक_set_user_data (hb_subset_पासोक_t  *पासोक,
+			       hb_user_data_सुसि_t *सुसि_2,
 			       void *		   data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
 HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+hb_subset_पासोक_get_user_data (const hb_subset_पासोक_t *पासोक,
+			       hb_user_data_सुसि_t      *सुसि_2);
 
 HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
+hb_subset_पासोक_keep_everything (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+hb_subset_पासोक_unicode_set (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+hb_subset_पासोक_glyph_set (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+hb_subset_पासोक_set (hb_subset_पासोक_t *पासोक, hb_subset_sets_t set_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_पासोक_old_to_new_glyph_mapping (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_पासोक_get_flags (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+hb_subset_पासोक_set_flags (hb_subset_पासोक_t *पासोक,
+			   unsigned हालागा_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_पासोक_pin_all_axes_to_default (hb_subset_पासोक_t  *पासोक,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_पासोक_pin_axis_to_default (hb_subset_पासोक_t  *पासोक,
 				     hb_face_t          *face,
 				     hb_tag_t            axis_tag);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_पासोक_pin_axis_location (hb_subset_पासोक_t  *पासोक,
 				   hb_face_t          *face,
 				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   float               axis_हालागा);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
+hb_subset_पासोक_get_axis_range (hb_subset_पासोक_t  *पासोक,
 				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+				float              *axis_min_हालागा,
+				float              *axis_max_हालागा,
+				float              *axis_def_हालागा);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_पासोक_set_axis_range (hb_subset_पासोक_t  *पासोक,
 				hb_face_t          *face,
 				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				float               axis_min_हालागा,
+				float               axis_max_हालागा,
+				float               axis_def_हालागा);
 
 HB_EXTERN hb_bool_t
 hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+				  float *axis_min_हालागा,
+				  float *axis_max_हालागा,
+				  float *axis_def_हालागा);
 
 HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
+hb_subset_axis_range_to_string (hb_subset_पासोक_t *पासोक,
 				hb_tag_t axis_tag,
 				char *buf,
 				unsigned size);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_पासोक_to_string_or_fail (hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_पासोक_override_name_table (hb_subset_पासोक_t  *पासोक,
 				     hb_ot_name_id_t     name_id,
 				     unsigned            platform_id,
 				     unsigned            encoding_id,
@@ -272,14 +272,14 @@ HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *source, const hb_subset_पासोक_t *पासोक);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               const hb_subset_पासोक_t   *पासोक);
 
 HB_EXTERN void
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
@@ -299,14 +299,14 @@ hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
 hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
+                              hb_user_data_सुसि_t *सुसि_2,
                               void               *data,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
 HB_EXTERN void *
 hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+                              hb_user_data_सुसि_t     *सुसि_2);
 
 
 HB_END_DECLS
@@ -314,7 +314,7 @@ HB_END_DECLS
 
 #if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_पासोक, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
 #endif

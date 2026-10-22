@@ -37,7 +37,7 @@ HB_WASM_INTERFACE (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				        ptr_d(font_t, font),
 				        ptr_d(buffer_t, buffer),
 				        ptr_d(const feature_t, features),
-				        uint32_t num_features,
+				        uint32_t नुमेरो_features,
 					const char *shaper)
 {
   if (unlikely (0 == strcmp (shaper, "wasm")))
@@ -54,19 +54,19 @@ HB_WASM_INTERFACE (bool_t, shape_with) (HB_WASM_EXEC_ENV
   if (unlikely (!HB_DIRECTION_IS_VALID (buffer->props.direction)))
     return false;
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features && num_features))
+  HB_ARRAY_PARAM (const feature_t, features, नुमेरो_features);
+  if (unlikely (!features && नुमेरो_features))
     return false;
 
   const char * shaper_list[] = {shaper, nullptr};
   return hb_shape_full (font, buffer,
-			(hb_feature_t *) features, num_features,
+			(hb_feature_t *) features, नुमेरो_features,
 			shaper_list);
 }
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
 					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       uint32_t नुमेरो_features,
 					       ptr_d(features_t, output))
 {
   HB_PTR_PARAM (features_t, output);
@@ -74,17 +74,17 @@ HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
     return false;
 
   unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (num_features, sizeof (feature_t), &bytes)))
+  if (unlikely (hb_unsigned_mul_overflows (नुमेरो_features, sizeof (feature_t), &bytes)))
     return false;
 
-  if (!num_features)
+  if (!नुमेरो_features)
   {
     output->length = 0;
     output->features = nullref;
     return true;
   }
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
+  HB_ARRAY_PARAM (const feature_t, features, नुमेरो_features);
   if (unlikely (!features))
     return false;
 
@@ -94,7 +94,7 @@ HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
     return false;
 
   hb_memcpy (dst, features, bytes);
-  output->length = num_features;
+  output->length = नुमेरो_features;
   output->features = dstref;
   return true;
 }

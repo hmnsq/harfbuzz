@@ -54,7 +54,7 @@ recategorize_combining_class (hb_codepoint_t u,
 	case 0x0E4Cu:
 	case 0x0E4Du:
 	case 0x0E4Eu:
-	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_कानान;
 	  break;
 
 	case 0x0EB1u:
@@ -75,7 +75,7 @@ recategorize_combining_class (hb_codepoint_t u,
     } else {
       /* Thai virama is below-right */
       if (u == 0x0E3Au)
-	klass = HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+	klass = HB_UNICODE_COMBINING_CLASS_BELOW_कानान;
     }
   }
 
@@ -101,11 +101,11 @@ recategorize_combining_class (hb_codepoint_t u,
       return HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
 
     case HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+      return HB_UNICODE_COMBINING_CLASS_ABOVE_कानान;
 
     case HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
     case HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT;
+      return HB_UNICODE_COMBINING_CLASS_ABOVE_कालिवा;
 
     case HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
       return HB_UNICODE_COMBINING_CLASS_ABOVE;
@@ -134,10 +134,10 @@ recategorize_combining_class (hb_codepoint_t u,
     /* Thai */
 
     case HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+      return HB_UNICODE_COMBINING_CLASS_BELOW_कानान;
 
     case HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+      return HB_UNICODE_COMBINING_CLASS_ABOVE_कानान;
 
 
     /* Lao */
@@ -174,9 +174,9 @@ _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t
   return;
 #endif
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
       unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
       combining_class = recategorize_combining_class (info[i].codepoint, combining_class);
@@ -254,16 +254,16 @@ position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
 						mark_extents.x_bearing);
       break;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_कालिवा:
+    case HB_UNICODE_COMBINING_CLASS_BELOW_कालिवा:
+    case HB_UNICODE_COMBINING_CLASS_ABOVE_कालिवा:
       /* Left align. */
       pos.x_offset = hb_saturate_sub (base_extents.x_bearing, mark_extents.x_bearing);
       break;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_कानान:
+    case HB_UNICODE_COMBINING_CLASS_BELOW_कानान:
+    case HB_UNICODE_COMBINING_CLASS_ABOVE_कानान:
       /* Right align. */
       pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
 						mark_extents.width - mark_extents.x_bearing);
@@ -274,14 +274,14 @@ position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
   switch (combining_class)
   {
     case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
+    case HB_UNICODE_COMBINING_CLASS_BELOW_कालिवा:
     case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
+    case HB_UNICODE_COMBINING_CLASS_BELOW_कानान:
       /* Add gap, fall-through. */
       base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
+    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_कालिवा:
     case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
       pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing +
 						base_extents.height - mark_extents.y_bearing);
@@ -295,16 +295,16 @@ position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
       break;
 
     case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    case HB_UNICODE_COMBINING_CLASS_ABOVE_कालिवा:
     case HB_UNICODE_COMBINING_CLASS_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    case HB_UNICODE_COMBINING_CLASS_ABOVE_कानान:
       /* Add gap, fall-through. */
       base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, y_gap);
       base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
       HB_FALLTHROUGH;
 
     case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
+    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_कानान:
       pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing -
 						mark_extents.y_bearing - mark_extents.height);
       /* Don't shift down "above" marks too much. */
@@ -352,7 +352,7 @@ position_around_base (const hb_ot_shape_plan_t *plan,
   unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[base]);
   /* Use integer for num_lig_components such that it doesn't convert to unsigned
    * when we divide or multiply by it. */
-  int num_lig_components = _hb_glyph_info_get_lig_num_comps (&buffer->info[base]);
+  int नुमेरो_lig_components = hb_glyph_info_get_lig_नुमेरो_comps (&buffer->info[base]);
 
   hb_position_t x_offset = 0, y_offset = 0;
   if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
@@ -368,12 +368,12 @@ position_around_base (const hb_ot_shape_plan_t *plan,
   for (unsigned int i = base + 1; i < end; i++)
     if (_hb_glyph_info_get_modified_combining_class (&info[i]))
     {
-      if (num_lig_components > 1) {
+      if (नुमेरो_lig_components > 1) {
 	unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
 	int this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
 	/* Conditions for attaching to the last component. */
-	if (!lig_id || lig_id != this_lig_id || this_lig_component >= num_lig_components)
-	  this_lig_component = num_lig_components - 1;
+	if (!lig_id || lig_id != this_lig_id || this_lig_component >= नुमेरो_lig_components)
+	  this_lig_component = नुमेरो_lig_components - 1;
 	if (last_lig_component != this_lig_component)
 	{
 	  last_lig_component = this_lig_component;
@@ -388,12 +388,12 @@ position_around_base (const hb_ot_shape_plan_t *plan,
 	  if (horiz_dir == HB_DIRECTION_LTR)
 	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) this_lig_component * component_extents.width / num_lig_components);
+		(int64_t) this_lig_component * component_extents.width / नुमेरो_lig_components);
 	  else
 	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) (num_lig_components - 1 - this_lig_component) * component_extents.width / num_lig_components);
-	  component_extents.width /= num_lig_components;
+		(int64_t) (नुमेरो_lig_components - 1 - this_lig_component) * component_extents.width / नुमेरो_lig_components);
+	  component_extents.width /= नुमेरो_lig_components;
 	}
       }
 
@@ -482,16 +482,16 @@ _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
   unsigned int start = 0;
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
+  for (unsigned int i = 1; i < बिलांग; i++)
     if (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
 		!_hb_glyph_info_is_hidden (&info[i]) &&
 		!_hb_glyph_info_is_default_ignorable (&info[i]))) {
       position_cluster (plan, font, buffer, start, i, adjust_offsets_when_zeroing);
       start = i;
     }
-  position_cluster (plan, font, buffer, start, count, adjust_offsets_when_zeroing);
+  position_cluster (plan, font, buffer, start, बिलांग, adjust_offsets_when_zeroing);
 
   (void) buffer->message (font, "end fallback mark");
 }
@@ -563,8 +563,8 @@ _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan HB_UNUSED,
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
   bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned int बिलांग = buffer->len;
+  for (unsigned int i = 0; i < बिलांग; i++)
     if (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
     {
       /* If font had no ASCII space and we used the invisible glyph, give it a 1/4 EM default advance. */

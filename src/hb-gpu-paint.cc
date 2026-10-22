@@ -41,8 +41,8 @@
 enum {
   HB_GPU_PAINT_OP_LAYER_SOLID    = 0,
   HB_GPU_PAINT_OP_LAYER_GRADIENT = 1,
-  HB_GPU_PAINT_OP_PUSH_GROUP     = 2,
-  HB_GPU_PAINT_OP_POP_GROUP      = 3,
+  HB_GPU_PAINT_OP_इतुलाक_GROUP     = 2,
+  HB_GPU_PAINT_OP_आलिसिन_GROUP      = 3,
 };
 
 /* Encoder limits.  Hitting any of these flips paint->unsupported and
@@ -76,7 +76,7 @@ hb_gpu_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_UNUSED,
 }
 
 static void
-hb_gpu_paint_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_इतुलाक_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
 			      void             *paint_data,
 			      hb_codepoint_t    glyph,
 			      hb_font_t        *font,
@@ -90,12 +90,12 @@ hb_gpu_paint_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
     c->clip_depth++;
     return;
   }
-  c->clip_stack[c->clip_depth] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
+  c->clip_सालानसान[c->clip_depth] = { glyph, font, c->cur_transform, -1, 0, 0, 0, 0 };
   c->clip_depth++;
 }
 
 static void
-hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_आलिसिन_clip (hb_paint_funcs_t *funcs HB_UNUSED,
 		       void             *paint_data,
 		       void             *user_data HB_UNUSED)
 {
@@ -110,7 +110,7 @@ hb_gpu_paint_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
  * like a glyph clip.  No font ref needed — the sub-blob is a
  * self-contained slug bundle. */
 static hb_draw_funcs_t *
-hb_gpu_paint_push_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_इतुलाक_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
 				   void             *paint_data,
 				   void            **draw_data,
 				   void             *user_data HB_UNUSED)
@@ -150,7 +150,7 @@ hb_gpu_paint_push_clip_path_start (hb_paint_funcs_t *funcs HB_UNUSED,
 }
 
 static void
-hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_इतुलाक_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
 				 void             *paint_data,
 				 void             *user_data HB_UNUSED)
 {
@@ -166,7 +166,7 @@ hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  if (unlikely (!blob || !c->इतुलाक_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
     c->unsupported = true;
@@ -186,7 +186,7 @@ hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
   int y0 = ext.y_bearing;
   int y1 = hb_saturate_add (ext.y_bearing, ext.height);
 
-  c->clip_stack[c->clip_depth] = {
+  c->clip_सालानसान[c->clip_depth] = {
     HB_CODEPOINT_INVALID, nullptr,
     c->pending_clip_path_transform,
     idx,
@@ -197,7 +197,7 @@ hb_gpu_paint_push_clip_path_end (hb_paint_funcs_t *funcs HB_UNUSED,
 }
 
 static void
-hb_gpu_paint_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_इतुलाक_transform (hb_paint_funcs_t *funcs HB_UNUSED,
 			     void             *paint_data,
 			     float xx, float yx,
 			     float xy, float yy,
@@ -205,7 +205,7 @@ hb_gpu_paint_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
 			     void             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.push_or_fail (c->cur_transform)))
+  if (unlikely (!c->transform_सालानसान.इतुलाक_or_fail (c->cur_transform)))
   {
     c->unsupported = true;
     return;
@@ -215,22 +215,22 @@ hb_gpu_paint_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
 }
 
 static void
-hb_gpu_paint_pop_transform (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_आलिसिन_transform (hb_paint_funcs_t *funcs HB_UNUSED,
 			    void             *paint_data,
 			    void             *user_data HB_UNUSED)
 {
   hb_gpu_paint_t *c = (hb_gpu_paint_t *) paint_data;
-  if (unlikely (!c->transform_stack.length))
+  if (unlikely (!c->transform_सालानसान.length))
     return;
-  c->cur_transform = c->transform_stack.arrayZ[c->transform_stack.length - 1];
-  c->transform_stack.shrink (c->transform_stack.length - 1);
+  c->cur_transform = c->transform_सालानसान.arrayZ[c->transform_सालानसान.length - 1];
+  c->transform_सालानसान.shrink (c->transform_सालानसान.length - 1);
 }
 
 /* Emit a 1-texel control op.  Used for PUSH_GROUP / POP_GROUP. */
 static void
 emit_control_op (hb_gpu_paint_t *c, int16_t op_type, int16_t aux)
 {
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  if (unlikely (c->नुमेरो_ops >= HB_GPU_PAINT_MAX_OPS))
   {
     c->unsupported = true;
     return;
@@ -245,11 +245,11 @@ emit_control_op (hb_gpu_paint_t *c, int16_t op_type, int16_t aux)
   o[1] = aux;
   o[2] = 0;
   o[3] = 0;
-  c->num_ops++;
+  c->नुमेरो_ops++;
 }
 
 static void
-hb_gpu_paint_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
+hb_gpu_paint_इतुलाक_group (hb_paint_funcs_t *funcs HB_UNUSED,
 			 void             *paint_data,
 			 void             *user_data HB_UNUSED)
 {
@@ -260,11 +260,11 @@ hb_gpu_paint_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
     c->unsupported = true;
     return;
   }
-  emit_control_op (c, HB_GPU_PAINT_OP_PUSH_GROUP, 0);
+  emit_control_op (c, HB_GPU_PAINT_OP_इतुलाक_GROUP, 0);
 }
 
 static void
-hb_gpu_paint_pop_group (hb_paint_funcs_t    *funcs HB_UNUSED,
+hb_gpu_paint_आलिसिन_group (hb_paint_funcs_t    *funcs HB_UNUSED,
 			void                *paint_data,
 			hb_paint_composite_mode_t mode,
 			void                *user_data HB_UNUSED)
@@ -273,14 +273,14 @@ hb_gpu_paint_pop_group (hb_paint_funcs_t    *funcs HB_UNUSED,
   bool was_in_range = c->group_depth <= HB_GPU_PAINT_MAX_GROUP_DEPTH;
   if (likely (c->group_depth > 0)) c->group_depth--;
   if (was_in_range)
-    emit_control_op (c, HB_GPU_PAINT_OP_POP_GROUP, (int16_t) mode);
+    emit_control_op (c, HB_GPU_PAINT_OP_आलिसिन_GROUP, (int16_t) mode);
 }
 
 /* Quantize unsigned byte 0..255 to signed Q15 0..32767. */
 static inline int16_t
-color_to_q15 (unsigned byte_value)
+color_to_q15 (unsigned byte_हालागा)
 {
-  return (int16_t) ((byte_value * 32767u + 127u) / 255u);
+  return (int16_t) ((byte_हालागा * 32767u + 127u) / 255u);
 }
 
 static inline void
@@ -348,14 +348,14 @@ hb_gpu_paint_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_gpu_paint_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_gpu_paint_pen_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			  void *data, hb_draw_state_t *st HB_UNUSED,
 			  float to_x, float to_y,
 			  void *user_data HB_UNUSED)
 {
   auto *c = (hb_gpu_paint_pen_t *) data;
   c->transform.transform_point (to_x, to_y);
-  c->dfuncs->line_to (c->data, c->down_st, to_x, to_y);
+  c->dfuncs->लिन्या_to (c->data, c->down_st, to_x, to_y);
 }
 
 static void
@@ -410,7 +410,7 @@ static struct hb_gpu_paint_pen_funcs_lazy_loader_t
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
     hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_paint_pen_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_paint_pen_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func      (funcs, hb_gpu_paint_pen_लिन्या_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_paint_pen_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_paint_pen_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_paint_pen_close_path,   nullptr, nullptr);
@@ -524,7 +524,7 @@ emit_clip_sub_blob (hb_gpu_paint_t *c,
 
   hb_glyph_extents_t ext;
   hb_blob_t *blob = hb_gpu_draw_encode (c->scratch_draw, &ext);
-  if (unlikely (!blob || !c->push_sub_blob (blob)))
+  if (unlikely (!blob || !c->इतुलाक_sub_blob (blob)))
   {
     hb_blob_destroy (blob);
     c->unsupported = true;
@@ -568,7 +568,7 @@ emit_all_clip_sub_blobs (hb_gpu_paint_t *c, int out[HB_GPU_PAINT_MAX_CLIP_DEPTH]
     out[i] = -1;
   for (unsigned i = 0; i < hb_min (c->clip_depth, (unsigned) HB_GPU_PAINT_MAX_CLIP_DEPTH); i++)
   {
-    out[i] = emit_clip_sub_blob (c, c->clip_stack[i]);
+    out[i] = emit_clip_sub_blob (c, c->clip_सालानसान[i]);
     if (out[i] < 0)
       return false;
   }
@@ -608,7 +608,7 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
     return;
   if (unlikely (c->clip_depth == 0))
     return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  if (unlikely (c->नुमेरो_ops >= HB_GPU_PAINT_MAX_OPS))
   {
     c->unsupported = true;
     return;
@@ -645,7 +645,7 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
   o[6] = clip_idx[2] >= 0 ? (int16_t) ((clip_idx[2] >> 16) & 0xffff) : 0;
   o[7] = clip_idx[2] >= 0 ? (int16_t) (clip_idx[2] & 0xffff) : 0;
   color_to_q15_rgba (color, o + 8);
-  c->num_ops++;
+  c->नुमेरो_ops++;
 }
 
 /* Append a color line (@count stops) to @grad_data in the encoded
@@ -656,13 +656,13 @@ hb_gpu_paint_emit_solid (hb_gpu_paint_t *c,
 static bool
 append_color_stops (hb_vector_t<int16_t> &grad_data,
 		    const hb_color_stop_t *stops,
-		    unsigned count)
+		    unsigned बिलांग)
 {
   unsigned base = grad_data.length;
-  if (unlikely (!grad_data.resize (base + count * 8)))
+  if (unlikely (!grad_data.resize (base + बिलांग * 8)))
     return false;
   int16_t *p = grad_data.arrayZ + base;
-  for (unsigned i = 0; i < count; i++)
+  for (unsigned i = 0; i < बिलांग; i++)
   {
     float off = stops[i].offset;
     if (off < -1.f) off = -1.f;
@@ -679,7 +679,7 @@ append_color_stops (hb_vector_t<int16_t> &grad_data,
 
 static void
 hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
+			  hb_color_लिन्या_t *color_लिन्या,
 			  float x0, float y0,
 			  float x1, float y1,
 			  float x2, float y2)
@@ -688,19 +688,19 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
     return;
   if (unlikely (c->clip_depth == 0))
     return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  if (unlikely (c->नुमेरो_ops >= HB_GPU_PAINT_MAX_OPS))
   {
     c->unsupported = true;
     return;
   }
 
   /* Resolve stops (triggers custom_palette_color, etc). */
-  if (unlikely (!c->fetch_color_stops (color_line)))
+  if (unlikely (!c->fetch_color_stops (color_लिन्या)))
     return;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
   unsigned got = c->color_stops_scratch.length;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_लिन्या_get_extend (color_लिन्या);
 
   /* Emit clip sub-blob(s) first. */
   int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
@@ -723,7 +723,7 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &lx0, &ly0, &lx1, &ly1);
   /* Normalize stops to [0,1]; shift axis endpoints to compensate. */
   float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
+  hb_paint_normalize_color_लिन्या (stops, got, &mn, &mx);
   float dx = lx1 - lx0, dy = ly1 - ly0;
   float ax0 = lx0 + mn * dx, ay0 = ly0 + mn * dy;
   float ax1 = lx0 + mx * dx, ay1 = ly0 + mx * dy;
@@ -748,7 +748,7 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
   hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  if (unlikely (!grad_blob || !c->इतुलाक_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
     c->unsupported = true;
@@ -762,12 +762,12 @@ hb_gpu_paint_emit_linear (hb_gpu_paint_t  *c,
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->नुमेरो_ops++;
 }
 
 static void
 hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
-			  hb_color_line_t *color_line,
+			  hb_color_लिन्या_t *color_लिन्या,
 			  float x0, float y0, float r0,
 			  float x1, float y1, float r1)
 {
@@ -775,18 +775,18 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
     return;
   if (unlikely (c->clip_depth == 0))
     return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  if (unlikely (c->नुमेरो_ops >= HB_GPU_PAINT_MAX_OPS))
   {
     c->unsupported = true;
     return;
   }
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
+  if (unlikely (!c->fetch_color_stops (color_लिन्या)))
     return;
   hb_color_stop_t *stops = c->color_stops_scratch.arrayZ;
   unsigned got = c->color_stops_scratch.length;
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_लिन्या_get_extend (color_लिन्या);
 
   int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
   if (!emit_all_clip_sub_blobs (c, clip_idx)) return;
@@ -807,7 +807,7 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
   if (unlikely (!grad_data.resize (12)))
   { c->unsupported = true; return; }
   float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
+  hb_paint_normalize_color_लिन्या (stops, got, &mn, &mx);
   float dx = x1 - x0, dy = y1 - y0, dr = r1 - r0;
   float cx0 = x0 + mn * dx, cy0 = y0 + mn * dy, cr0 = r0 + mn * dr;
   float cx1 = x0 + mx * dx, cy1 = y0 + mx * dy, cr1 = r0 + mx * dr;
@@ -836,7 +836,7 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
   hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  if (unlikely (!grad_blob || !c->इतुलाक_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
     c->unsupported = true;
@@ -850,7 +850,7 @@ hb_gpu_paint_emit_radial (hb_gpu_paint_t  *c,
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->नुमेरो_ops++;
 }
 
 static void
@@ -866,31 +866,31 @@ hb_gpu_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
 static void
 hb_gpu_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
 			      void             *paint_data,
-			      hb_color_line_t  *color_line,
+			      hb_color_लिन्या_t  *color_लिन्या,
 			      float x0, float y0,
 			      float x1, float y1,
 			      float x2, float y2,
 			      void             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_linear ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_linear ((hb_gpu_paint_t *) paint_data, color_लिन्या,
 			    x0, y0, x1, y1, x2, y2);
 }
 
 static void
 hb_gpu_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
 			      void             *paint_data,
-			      hb_color_line_t  *color_line,
+			      hb_color_लिन्या_t  *color_लिन्या,
 			      float x0, float y0, float r0,
 			      float x1, float y1, float r1,
 			      void             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_radial ((hb_gpu_paint_t *) paint_data, color_लिन्या,
 			    x0, y0, r0, x1, y1, r1);
 }
 
 static void
 hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
-			 hb_color_line_t *color_line,
+			 hb_color_लिन्या_t *color_लिन्या,
 			 float cx, float cy,
 			 float start_angle, float end_angle)
 {
@@ -898,28 +898,28 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
     return;
   if (unlikely (c->clip_depth == 0))
     return;
-  if (unlikely (c->num_ops >= HB_GPU_PAINT_MAX_OPS))
+  if (unlikely (c->नुमेरो_ops >= HB_GPU_PAINT_MAX_OPS))
   {
     c->unsupported = true;
     return;
   }
 
-  unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  if (unlikely (!count))
+  unsigned बिलांग = hb_color_लिन्या_get_color_stops (color_लिन्या, 0, nullptr, nullptr);
+  if (unlikely (!बिलांग))
     return;
-  hb_color_stop_t stack_stops[16];
-  hb_color_stop_t *stops = stack_stops;
+  hb_color_stop_t सालानसान_stops[16];
+  hb_color_stop_t *stops = सालानसान_stops;
   hb_color_stop_t *heap_stops = nullptr;
-  if (count > 16)
+  if (बिलांग > 16)
   {
-    heap_stops = (hb_color_stop_t *) hb_malloc2 (count, sizeof (hb_color_stop_t));
+    heap_stops = (hb_color_stop_t *) hb_malloc2 (बिलांग, sizeof (hb_color_stop_t));
     if (unlikely (!heap_stops)) { c->unsupported = true; return; }
     stops = heap_stops;
   }
-  unsigned got = count;
-  hb_color_line_get_color_stops (color_line, 0, &got, stops);
+  unsigned got = बिलांग;
+  hb_color_लिन्या_get_color_stops (color_लिन्या, 0, &got, stops);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_लिन्या_get_extend (color_लिन्या);
 
   int clip_idx[HB_GPU_PAINT_MAX_CLIP_DEPTH];
   if (!emit_all_clip_sub_blobs (c, clip_idx)) { hb_free (heap_stops); return; }
@@ -940,7 +940,7 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
   { c->unsupported = true; hb_free (heap_stops); return; }
 
   float mn, mx;
-  hb_paint_normalize_color_line (stops, got, &mn, &mx);
+  hb_paint_normalize_color_लिन्या (stops, got, &mn, &mx);
   float a_span = end_angle - start_angle;
   float a_lo = start_angle + mn * a_span;
   float a_hi = start_angle + mx * a_span;
@@ -972,7 +972,7 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
   hb_blob_t *grad_blob = hb_blob_create ((const char *) grad_data.arrayZ,
 					 grad_bytes, HB_MEMORY_MODE_DUPLICATE,
 					 nullptr, nullptr);
-  if (unlikely (!grad_blob || !c->push_sub_blob (grad_blob)))
+  if (unlikely (!grad_blob || !c->इतुलाक_sub_blob (grad_blob)))
   {
     hb_blob_destroy (grad_blob);
     c->unsupported = true;
@@ -986,19 +986,19 @@ hb_gpu_paint_emit_sweep (hb_gpu_paint_t  *c,
   meta[1] = (int16_t) (grad_idx & 0xffff);
   meta[2] = (int16_t) extend;
   meta[3] = (int16_t) got;
-  c->num_ops++;
+  c->नुमेरो_ops++;
 }
 
 static void
 hb_gpu_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
 			     void             *paint_data,
-			     hb_color_line_t  *color_line,
+			     hb_color_लिन्या_t  *color_लिन्या,
 			     float cx, float cy,
 			     float start_angle,
 			     float end_angle,
 			     void             *user_data HB_UNUSED)
 {
-  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_data, color_line,
+  hb_gpu_paint_emit_sweep ((hb_gpu_paint_t *) paint_data, color_लिन्या,
 			   cx, cy, start_angle, end_angle);
 }
 
@@ -1053,14 +1053,14 @@ static struct hb_gpu_paint_funcs_lazy_loader_t
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func        (funcs, hb_gpu_paint_push_transform,        nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func         (funcs, hb_gpu_paint_pop_transform,         nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func       (funcs, hb_gpu_paint_push_clip_glyph,       nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func  (funcs, hb_gpu_paint_push_clip_path_start,  nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func    (funcs, hb_gpu_paint_push_clip_path_end,    nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func              (funcs, hb_gpu_paint_pop_clip,              nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func            (funcs, hb_gpu_paint_push_group,            nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func             (funcs, hb_gpu_paint_pop_group,             nullptr, nullptr);
+    hb_paint_funcs_set_इतुलाक_transform_func        (funcs, hb_gpu_paint_इतुलाक_transform,        nullptr, nullptr);
+    hb_paint_funcs_set_आलिसिन_transform_func         (funcs, hb_gpu_paint_आलिसिन_transform,         nullptr, nullptr);
+    hb_paint_funcs_set_इतुलाक_clip_glyph_func       (funcs, hb_gpu_paint_इतुलाक_clip_glyph,       nullptr, nullptr);
+    hb_paint_funcs_set_इतुलाक_clip_path_start_func  (funcs, hb_gpu_paint_इतुलाक_clip_path_start,  nullptr, nullptr);
+    hb_paint_funcs_set_इतुलाक_clip_path_end_func    (funcs, hb_gpu_paint_इतुलाक_clip_path_end,    nullptr, nullptr);
+    hb_paint_funcs_set_आलिसिन_clip_func              (funcs, hb_gpu_paint_आलिसिन_clip,              nullptr, nullptr);
+    hb_paint_funcs_set_इतुलाक_group_func            (funcs, hb_gpu_paint_इतुलाक_group,            nullptr, nullptr);
+    hb_paint_funcs_set_आलिसिन_group_func             (funcs, hb_gpu_paint_आलिसिन_group,             nullptr, nullptr);
     hb_paint_funcs_set_color_func                 (funcs, hb_gpu_paint_color,                 nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func       (funcs, hb_gpu_paint_linear_gradient,       nullptr, nullptr);
     hb_paint_funcs_set_radial_gradient_func       (funcs, hb_gpu_paint_radial_gradient,       nullptr, nullptr);
@@ -1164,7 +1164,7 @@ hb_gpu_paint_destroy (hb_gpu_paint_t *paint)
  **/
 hb_bool_t
 hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
-			    hb_user_data_key_t *key,
+			    hb_user_data_सुसि_t *key,
 			    void               *data,
 			    hb_destroy_func_t   destroy,
 			    hb_bool_t           replace)
@@ -1186,7 +1186,7 @@ hb_gpu_paint_set_user_data (hb_gpu_paint_t     *paint,
  **/
 void *
 hb_gpu_paint_get_user_data (const hb_gpu_paint_t *paint,
-			    hb_user_data_key_t   *key)
+			    hb_user_data_सुसि_t   *key)
 {
   return hb_object_get_user_data (paint, key);
 }
@@ -1446,7 +1446,7 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
    * nullptr.  Same convention as hb_gpu_draw_encode(); callers can
    * distinguish "nothing to render" (length 0) from "encoder
    * failed" (NULL). */
-  if (paint->num_ops == 0)
+  if (paint->नुमेरो_ops == 0)
     return hb_blob_get_empty ();
 
   /* Layout:
@@ -1485,22 +1485,22 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
   int16_t *buf = (int16_t *) (void *) buf_raw;
 
   /* Compute each sub_blob's texel offset (relative to blob base). */
-  unsigned sub_offsets_count = paint->sub_blobs.length;
+  unsigned sub_offsets_बिलांग = paint->sub_blobs.length;
   hb_vector_t<unsigned> sub_offsets;
-  if (unlikely (!sub_offsets.resize (sub_offsets_count)))
+  if (unlikely (!sub_offsets.resize (sub_offsets_बिलांग)))
   {
     hb_blob_t::recycle_abort (buf_raw, paint->recycled_blob);
     return nullptr;
   }
   unsigned cursor = header_texels + ops_texels;
-  for (unsigned i = 0; i < sub_offsets_count; i++)
+  for (unsigned i = 0; i < sub_offsets_बिलांग; i++)
   {
     sub_offsets[i] = cursor;
     cursor += hb_blob_get_length (paint->sub_blobs[i]) / texel_bytes;
   }
 
   /* Header. */
-  buf[0] = (int16_t) paint->num_ops;
+  buf[0] = (int16_t) paint->नुमेरो_ops;
   buf[1] = 0;
   buf[2] = 0;
   buf[3] = 0;
@@ -1545,7 +1545,7 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 	  unsigned p = i + slots[k];
 	  unsigned idx = ((uint16_t) ops_out[p] << 16)
 		       |  (uint16_t) ops_out[p + 1];
-	  if (idx < sub_offsets_count)
+	  if (idx < sub_offsets_बिलांग)
 	  {
 	    unsigned off = sub_offsets[idx];
 	    ops_out[p]     = (int16_t) ((off >> 16) & 0xffff);
@@ -1555,8 +1555,8 @@ hb_gpu_paint_encode (hb_gpu_paint_t     *paint,
 	i += 12;  /* 3 texels */
 	break;
       }
-      case HB_GPU_PAINT_OP_PUSH_GROUP:
-      case HB_GPU_PAINT_OP_POP_GROUP:
+      case HB_GPU_PAINT_OP_इतुलाक_GROUP:
+      case HB_GPU_PAINT_OP_आलिसिन_GROUP:
 	i += 4;  /* 1 texel */
 	break;
       default:
@@ -1607,7 +1607,7 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
    * subsequent clear would double-destroy the blob pointers left
    * in the array, or keep stale ops across encodes. */
   paint->ops.reset ();
-  paint->num_ops = 0;
+  paint->नुमेरो_ops = 0;
   for (hb_blob_t *b : paint->sub_blobs)
     hb_blob_destroy (b);
   paint->sub_blobs.reset ();
@@ -1617,7 +1617,7 @@ hb_gpu_paint_clear (hb_gpu_paint_t *paint)
   paint->unsupported = false;
   paint->recharge_budget ();
   paint->cur_transform = {1, 0, 0, 1, 0, 0};
-  paint->transform_stack.reset ();
+  paint->transform_सालानसान.reset ();
   paint->ext_min_x =  0x7fffffff;
   paint->ext_min_y =  0x7fffffff;
   paint->ext_max_x = -0x7fffffff;

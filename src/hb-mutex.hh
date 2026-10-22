@@ -108,7 +108,7 @@ struct hb_mutex_t
   void lock   () { hb_mutex_impl_lock   ((hb_mutex_impl_t *) m); }
   void unlock () { hb_mutex_impl_unlock ((hb_mutex_impl_t *) m); }
   void fini   () { hb_mutex_impl_finish ((hb_mutex_impl_t *) m); }
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 };
 
 struct hb_lock_t

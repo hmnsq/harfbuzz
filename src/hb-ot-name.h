@@ -134,7 +134,7 @@ typedef struct hb_ot_name_entry_t {
 
 HB_EXTERN const hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */);
+		       unsigned int *नुमेरो_entries /* OUT */);
 
 
 HB_EXTERN unsigned int

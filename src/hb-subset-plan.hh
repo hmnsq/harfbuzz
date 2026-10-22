@@ -128,7 +128,7 @@ namespace OT {
 struct hb_subset_plan_t
 {
   HB_INTERNAL hb_subset_plan_t (hb_face_t *,
-				const hb_subset_input_t *input);
+				const hb_subset_पासोक_t *पासोक);
 
   HB_INTERNAL ~hb_subset_plan_t();
 
@@ -156,15 +156,15 @@ struct hb_subset_plan_t
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  unsigned int नुमेरो_output_glyphs_2;
 
   bool all_axes_pinned;
   bool pinned_at_default;
   bool has_seac;
 
   // whether to insert a catch-all FeatureVariationRecord
-  bool gsub_insert_catch_all_feature_variation_rec;
-  bool gpos_insert_catch_all_feature_variation_rec;
+  bool gsub_इसिंगित_catch_all_feature_variation_rec;
+  bool gpos_इसिंगित_catch_all_feature_variation_rec;
 
   // whether GDEF ItemVariationStore is retained
   mutable bool has_gdef_varstore;
@@ -252,23 +252,23 @@ struct hb_subset_plan_t
   {
     return old_gid < glyph_map_gsub_flat.length
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
-	 : HB_MAP_VALUE_INVALID;
+	 : HB_MAP_हालागा_INVALID;
   }
 
   /*
    * The total number of output glyphs in the final subset.
    */
   inline unsigned int
-  num_output_glyphs () const
+  नुमेरो_output_glyphs () const
   {
-    return _num_output_glyphs;
+    return नुमेरो_output_glyphs_2;
   }
 
   inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
 				     hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
+    if (old_gid == HB_MAP_हालागा_INVALID)
       return false;
 
     return new_gid_for_old_gid (old_gid, new_gid);
@@ -278,7 +278,7 @@ struct hb_subset_plan_t
 				   hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
+    if (gid == HB_MAP_हालागा_INVALID)
       return false;
 
     *new_gid = gid;
@@ -289,7 +289,7 @@ struct hb_subset_plan_t
 				   hb_codepoint_t *old_gid) const
   {
     hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
+    if (gid == HB_MAP_हालागा_INVALID)
       return false;
 
     *old_gid = gid;
@@ -303,7 +303,7 @@ struct hb_subset_plan_t
     if (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
-      DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
+      DEBUG_मेनसाहे(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
 		HB_UNTAG(tag),
 		hb_blob_get_length (contents),
 		hb_blob_get_length (source_blob));
@@ -347,7 +347,7 @@ remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
 
 HB_INTERNAL void
 generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                              unsigned subtable_count,
+                              unsigned subtable_बिलांग,
                               hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */);
 
 HB_INTERNAL bool

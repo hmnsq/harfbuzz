@@ -60,21 +60,21 @@ main (int argc, char **argv)
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned बिलांग;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &बिलांग);
+  for (unsigned i = 0; i < बिलांग; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    unsigned alt_बिलांग = 0;
+    for (hb_codepoint_t lookup_index = HB_SET_हालागा_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      if ((alt_बिलांग = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
 								 NULL,
 								 NULL)))
         break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_बिलांग);
   }
 
   hb_set_destroy (lookup_indexes);

@@ -82,7 +82,7 @@ struct graph_t
     (
       hb_concat (
 	hb_iter (&single_parent, single_parent != HB_GRAPH_INVALID),
-	parents.keys_ref ()
+	parents.मगा_सुसि_ref ()
       )
     )
 
@@ -91,9 +91,9 @@ struct graph_t
       obj_.tail = tail;
     }
 
-    void shrink_buffer (size_t count)
+    void shrink_buffer (size_t बिलांग)
     {
-      obj_.tail -= count;
+      obj_.tail -= बिलांग;
     }
 
     auto all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
@@ -162,15 +162,15 @@ struct graph_t
       return has_incoming_virtual_edges_;
     }
 
-    graph_result_t<void> link_positions_valid (unsigned num_objects, bool removed_nil)
+    graph_result_t<void> link_positions_valid (unsigned नुमेरो_objects, bool removed_nil)
     {
       hb_set_t assigned_bytes;
       for (const auto& l : obj_.real_links)
       {
-        if (unlikely (l.objidx >= num_objects
+        if (unlikely (l.objidx >= नुमेरो_objects
             || (removed_nil && !l.objidx)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid object index.");
           return Err(INVALID_ARGUMENT);
         }
@@ -180,21 +180,21 @@ struct graph_t
 
         if (unlikely (l.width < 2 || l.width > 4))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid link width.");
           return Err(INVALID_ARGUMENT);
         }
 
         if (unlikely (end >= table_size ()))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                      "Invalid graph. Link position is out of bounds.");
           return Err(OUT_OF_BOUNDS);
         }
 
         if (unlikely (assigned_bytes.intersects (start, end)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                      "Invalid graph. Found offsets whose positions overlap.");
           return Err(INVALID_ARGUMENT);
         }
@@ -226,7 +226,7 @@ struct graph_t
     {
       if (!(as_bytes () == other.as_bytes ()))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                    "vertex %u [%lu bytes] != %u [%lu bytes], depth = %u",
                    this_index,
                    (unsigned long) table_size (),
@@ -238,7 +238,7 @@ struct graph_t
         auto b = other.as_bytes ();
         while (a || b)
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                      "  0x%x %s 0x%x", (unsigned) *a, (*a == *b) ? "==" : "!=", (unsigned) *b);
           a++;
           b++;
@@ -292,7 +292,7 @@ struct graph_t
       if (HB_DEBUG_SUBSET_REPACK)
        {
 	assert (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
-		(parents.values_ref () | hb_reduce (hb_add, 0)));
+		(parents.मगा_हालागा_ref () | hb_reduce (hb_add, 0)));
        }
       return incoming_edges_;
     }
@@ -302,8 +302,8 @@ struct graph_t
         return single_parent == parent_index ? 1 : 0;
       }
 
-      unsigned* count;
-      return  parents.has(parent_index, &count) ? *count : 0;
+      unsigned* बिलांग;
+      return  parents.has(parent_index, &बिलांग) ? *बिलांग : 0;
     }
 
     void reset_parents ()
@@ -372,7 +372,7 @@ struct graph_t
 
 	if (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.मगा_सुसि ();
 	  parents.reset ();
 	}
       }
@@ -384,8 +384,8 @@ struct graph_t
 
     void remove_real_link_unordered (unsigned child_index, const void* offset)
     {
-      unsigned count = obj_.real_links.length;
-      for (unsigned i = 0; i < count; i++)
+      unsigned बिलांग = obj_.real_links.length;
+      for (unsigned i = 0; i < बिलांग; i++)
       {
         auto& link = obj_.real_links.arrayZ[i];
         if (link.objidx != child_index)
@@ -425,7 +425,7 @@ struct graph_t
 
         if (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.मगा_सुसि ();
 	  parents.reset ();
 	}
       }
@@ -575,28 +575,28 @@ struct graph_t
   {
     if (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "constructing graph: num of objects %u exceeds HB_REPACKER_MAX_VERTICES.",
                  objects.length);
       return Err(LIMIT_EXCEEDED);
     }
 
     graph_t g;
-    g.num_roots_for_space_.push (1);
-    TRY (graph_result_t<void>::from (g.num_roots_for_space_, ALLOCATION_FAILURE));
+    g.नुमेरो_roots_for_space.push (1);
+    TRY (graph_result_t<void>::from (g.नुमेरो_roots_for_space, ALLOCATION_FAILURE));
 
     bool removed_nil = false;
-    const unsigned count = objects.length;
-    g.vertices_.alloc (count);
-    g.ordering_.resize (count);
-    g.ordering_scratch_.alloc (count);
+    const unsigned बिलांग = objects.length;
+    g.vertices_.alloc (बिलांग);
+    g.ordering_.resize (बिलांग);
+    g.ordering_scratch_.alloc (बिलांग);
     TRY (graph_result_t<void>::from (g.vertices_, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (g.ordering_, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
 
     unsigned order = objects.length;
     unsigned skip = 0;
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       // If this graph came from a serialization buffer object 0 is the
       // nil object. We don't need it for our purposes here so drop it.
@@ -604,7 +604,7 @@ struct graph_t
       {
         removed_nil = true;
         order--;
-        g.ordering_.resize (count - 1);
+        g.ordering_.resize (बिलांग - 1);
         skip++;
         continue;
       }
@@ -615,7 +615,7 @@ struct graph_t
       }
       vertex_t* v = g.vertices_.push (std::move (obj));
 
-      TRY (v->link_positions_valid (count, removed_nil));
+      TRY (v->link_positions_valid (बिलांग, removed_nil));
 
       // To start we set the ordering to match the provided objects
       // list. Note: objects are provided to us in reverse order (ie.
@@ -632,7 +632,7 @@ struct graph_t
 
     auto r = g.is_fully_connected();
     if (r.is_err() && r.error() == ORPHANED_NODES) {
-      g.print_orphaned_nodes ();
+      g.इलिम्बाग_orphaned_nodes ();
     }
     TRY(r);
 
@@ -657,10 +657,10 @@ public:
 
   bool operator== (const graph_t& other) const
   {
-    return root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
+    return उगात ().equals (उगात_idx(), other.उगात_idx(), other.उगात (), *this, other, 0);
   }
 
-  void print () const {
+  void इलिम्बाग () const {
     for (unsigned id : ordering_)
     {
       const auto& v = vertices_[id];
@@ -682,12 +682,12 @@ public:
       v.normalize ();
   }
 
-  const vertex_t& root () const
+  const vertex_t& उगात () const
   {
-    return vertices_[root_idx ()];
+    return vertices_[उगात_idx ()];
   }
 
-  unsigned root_idx () const
+  unsigned उगात_idx () const
   {
     // First element of ordering_ is the root.
     // Since the graph is topologically sorted it's safe to
@@ -761,17 +761,17 @@ public:
 
     TRY (update_parents ());
 
-    queue.insert (root ().modified_distance (0), root_idx ());
+    queue.insert (उगात ().modified_distance (0), उगात_idx ());
     unsigned order = 1;
     unsigned pos = 0;
     while (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_id = queue.pop_minimum().second;
+      unsigned next_id = queue.आलिसिन_minimum().second;
 
       if (unlikely (pos >= new_ordering.length)) {
         // We are out of ids. Which means we've visited a node more than once.
         // This graph contains a cycle which is not allowed.
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
+        DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
         return Err(CYCLE_DETECTED);
       }
       new_ordering[pos++] = next_id;
@@ -799,7 +799,7 @@ public:
     hb_swap (ordering_, new_ordering);
 
     if (unlikely (pos != vertices_.length)) {
-      print_orphaned_nodes ();
+      इलिम्बाग_orphaned_nodes ();
       return Err(ORPHANED_NODES);
     }
 
@@ -813,7 +813,7 @@ public:
    */
   graph_result_t<void> find_space_roots (hb_set_t& visited, hb_set_t& roots)
   {
-    unsigned root_index = root_idx ();
+    unsigned उगात_index = उगात_idx ();
     for (unsigned i : ordering_)
     {
       if (visited.has (i)) continue;
@@ -824,7 +824,7 @@ public:
         if (l.is_signed || l.width < 3)
           continue;
 
-        if (i == root_index && l.width == 3)
+        if (i == उगात_index && l.width == 3)
           // Ignore 24bit links from the root node, this skips past the single 24bit
           // pointer to the lookup list.
           continue;
@@ -838,9 +838,9 @@ public:
           hb_set_t sub_roots;
           TRY (find_32bit_roots (l.objidx, sub_roots));
           if (sub_roots) {
-            for (unsigned sub_root_idx : sub_roots) {
-              roots.add (sub_root_idx);
-              TRY (find_subgraph (sub_root_idx, visited));
+            for (unsigned sub_उगात_idx : sub_roots) {
+              roots.add (sub_उगात_idx);
+              TRY (find_subgraph (sub_उगात_idx, visited));
             }
             continue;
           }
@@ -889,14 +889,14 @@ public:
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx].
-  graph_result_t<unsigned> index_for_offset (unsigned node_idx, const void* offset) const
+  graph_result_t<unsigned> index_for_offset (unsigned बुहोल_idx, const void* offset) const
   {
-    if (unlikely (node_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    const auto& node = object (node_idx);
+    if (unlikely (बुहोल_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
+    const auto& node = object (बुहोल_idx);
     if (unlikely (offset < node.head || offset >= node.tail)) return Err(OUT_OF_BOUNDS);
 
-    unsigned count = node.real_links.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = node.real_links.length;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       // Use direct access for increased performance, this is a hot method.
       const auto& link = node.real_links.arrayZ[i];
@@ -912,17 +912,17 @@ public:
   // within object[node_idx]. Ensures that the returned object is safe to mutate.
   // That is, if the original child object is shared by parents other than node_idx
   // it will be duplicated and the duplicate will be returned instead.
-  graph_result_t<unsigned> mutable_index_for_offset (unsigned node_idx, const void* offset)
+  graph_result_t<unsigned> mutable_index_for_offset (unsigned बुहोल_idx, const void* offset)
   {
-    TRY_ASSIGN (unsigned child_idx, index_for_offset (node_idx, offset));
+    TRY_ASSIGN (unsigned child_idx, index_for_offset (बुहोल_idx, offset));
     if (unlikely (child_idx >= vertices_.length))
       return Err(OUT_OF_BOUNDS);
 
     auto& child = vertices_[child_idx];
     for (unsigned p : child.parents_iter ())
     {
-      if (p != node_idx) {
-        return duplicate (node_idx, child_idx, true);
+      if (p != बुहोल_idx) {
+        return duplicate (बुहोल_idx, child_idx, true);
       }
     }
 
@@ -944,9 +944,9 @@ public:
       vertex.space = 0;
       vertex.priority = 0;
     }
-    num_roots_for_space_.resize (1);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    num_roots_for_space_[0] = 1;
+    नुमेरो_roots_for_space.resize (1);
+    TRY (graph_result_t<void>::from (नुमेरो_roots_for_space, ALLOCATION_FAILURE));
+    नुमेरो_roots_for_space[0] = 1;
     distance_invalid = true;
     positions_invalid = true;
 
@@ -962,7 +962,7 @@ public:
 
     while (roots)
     {
-      uint32_t next = HB_SET_VALUE_INVALID;
+      uint32_t next = HB_SET_हालागा_INVALID;
       TRY (graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
       if (!roots.next (&next)) break;
 
@@ -976,19 +976,19 @@ public:
       unsigned next_space = this->next_space ();
       if (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
                  next_space);
         return Err(LIMIT_EXCEEDED);
       }
-      num_roots_for_space_.push (0);
-      TRY(graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
+      नुमेरो_roots_for_space.push (0);
+      TRY(graph_result_t<void>::from (नुमेरो_roots_for_space, ALLOCATION_FAILURE));
 
-      for (unsigned root : connected_roots)
+      for (unsigned उगात : connected_roots)
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", root, next_space);
-        vertices_[root].space = next_space;
-        num_roots_for_space_[next_space] = num_roots_for_space_[next_space] + 1;
+        DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", उगात, next_space);
+        vertices_[उगात].space = next_space;
+        नुमेरो_roots_for_space[next_space] = नुमेरो_roots_for_space[next_space] + 1;
         distance_invalid = true;
         positions_invalid = true;
       }
@@ -1015,15 +1015,15 @@ public:
     // incoming edges to root_idx should be all 32 bit in length so we don't need to de-dup these
     // set the subgraph incoming edge count to match all of root_idx's incoming edges
     hb_set_t parents;
-    for (unsigned root_idx : roots)
+    for (unsigned उगात_idx : roots)
     {
-      if (unlikely (root_idx >= vertices_.length))
+      if (unlikely (उगात_idx >= vertices_.length))
         return Err(OUT_OF_BOUNDS);
-      subgraph.set (root_idx, wide_parents (root_idx, parents));
+      subgraph.set (उगात_idx, wide_parents (उगात_idx, parents));
     }
-    for (unsigned root_idx : roots)
+    for (unsigned उगात_idx : roots)
     {
-      TRY (find_subgraph (root_idx, subgraph));
+      TRY (find_subgraph (उगात_idx, subgraph));
     }
     TRY (graph_result_t<void>::from (subgraph, ALLOCATION_FAILURE));
 
@@ -1049,11 +1049,11 @@ public:
       return Ok(false);
 
     auto new_subgraph =
-        + subgraph.keys ()
-        | hb_map([&] (uint32_t node_idx) {
+        + subgraph.मगा_सुसि ()
+        | hb_map([&] (uint32_t बुहोल_idx) {
           const uint32_t *v;
-          if (index_map.has (node_idx, &v)) return *v;
-          return node_idx;
+          if (index_map.has (बुहोल_idx, &v)) return *v;
+          return बुहोल_idx;
         })
         ;
 
@@ -1092,7 +1092,7 @@ public:
   {
     if (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "traverse_directed_bfs: unexpected start_idx out of bounds.");
       return Err(OUT_OF_BOUNDS);
     }
@@ -1116,22 +1116,22 @@ public:
       unsigned level_end = tail;
       while (head < level_end)
       {
-        unsigned node_idx = queue[head++];
-        const auto& v = vertices_[node_idx];
+        unsigned बुहोल_idx = queue[head++];
+        const auto& v = vertices_[बुहोल_idx];
 
-        unsigned num_real = v.obj().real_links.length;
-        unsigned total_links = num_real + v.obj().virtual_links.length;
+        unsigned नुमेरो_real = v.obj().real_links.length;
+        unsigned total_links = नुमेरो_real + v.obj().virtual_links.length;
 
         for (unsigned i = 0; i < total_links; i++)
         {
           // vertices_ may have re-alloc'd inside an op() call, so reassign the v ref.
-          const auto& v = vertices_[node_idx];
-          const auto& link = (i < num_real)
+          const auto& v = vertices_[बुहोल_idx];
+          const auto& link = (i < नुमेरो_real)
                              ? v.obj().real_links[i]
-                             : v.obj().virtual_links[i - num_real];
+                             : v.obj().virtual_links[i - नुमेरो_real];
           unsigned child_idx = link.objidx;
 
-          if (!visit_edge (node_idx, &link, child_idx, depth + 1))
+          if (!visit_edge (बुहोल_idx, &link, child_idx, depth + 1))
             continue;
 
           if (unlikely (tail >= queue.length))
@@ -1145,18 +1145,18 @@ public:
     return Ok();
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_map_t& subgraph)
+  graph_result_t<void> find_subgraph (unsigned बुहोल_idx, hb_map_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    return traverse_directed_bfs (बुहोल_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
       if (depth == 0) return true;
-      hb_codepoint_t *count;
-      if (subgraph.has (child, &count))
+      hb_codepoint_t *बिलांग;
+      if (subgraph.has (child, &बिलांग))
       {
-        (*count)++;
+        (*बिलांग)++;
         return false;
       }
       subgraph.set (child, 1);
@@ -1164,9 +1164,9 @@ public:
     });
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_set_t& subgraph)
+  graph_result_t<void> find_subgraph (unsigned बुहोल_idx, hb_set_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    return traverse_directed_bfs (बुहोल_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
@@ -1177,10 +1177,10 @@ public:
     });
   }
 
-  graph_result_t<size_t> find_subgraph_size (unsigned node_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
+  graph_result_t<size_t> find_subgraph_size (unsigned बुहोल_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
   {
     size_t size = 0;
-    TRY (traverse_directed_bfs (node_idx, [&] (
+    TRY (traverse_directed_bfs (बुहोल_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
@@ -1199,12 +1199,12 @@ public:
    * Finds the topmost children of 32bit offsets in the subgraph starting
    * at node_idx. Found indices are placed into 'found'.
    */
-  graph_result_t<void> find_32bit_roots (unsigned node_idx, hb_set_t& found)
+  graph_result_t<void> find_32bit_roots (unsigned बुहोल_idx, hb_set_t& found)
   {
     // Note: this specifically requires a BFS based traversal to ensure we don't recurse through
     // a node that is accessible via both 32bit and non-32 bit links.
     hb_set_t visited;
-    return traverse_directed_bfs (node_idx, [&] (
+    return traverse_directed_bfs (बुहोल_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
@@ -1319,10 +1319,10 @@ public:
    * links. index_map is updated with mappings from old id to new id. If a duplication has already
    * been performed for a given index, then it will be skipped.
    */
-  graph_result_t<void> duplicate_subgraph (unsigned node_idx, hb_map_t& index_map)
+  graph_result_t<void> duplicate_subgraph (unsigned बुहोल_idx, hb_map_t& index_map)
   {
     graph_result_t<void> result = Ok();
-    TRY (traverse_directed_bfs (node_idx, [&] (
+    TRY (traverse_directed_bfs (बुहोल_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
@@ -1344,14 +1344,14 @@ public:
   /*
    * Creates a copy of node_idx and returns it's new index.
    */
-  graph_result_t<unsigned> duplicate (unsigned node_idx, bool copy_table = false)
+  graph_result_t<unsigned> duplicate (unsigned बुहोल_idx, bool copy_table = false)
   {
-    if (unlikely (node_idx >= vertices_.length))
+    if (unlikely (बुहोल_idx >= vertices_.length))
       return Err(OUT_OF_BOUNDS);
 
     if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "duplicating node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
       return Err(LIMIT_EXCEEDED);
@@ -1367,7 +1367,7 @@ public:
     ordering_.push (clone_idx);
     TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
 
-    auto& child = vertices_[node_idx];
+    auto& child = vertices_[बुहोल_idx];
 
     unsigned table_size = child.obj().tail - child.obj().head;
     if (copy_table && table_size)
@@ -1436,12 +1436,12 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
                  parent_idx, child_idx);
       return Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
                parent_idx, child_idx);
 
     TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx, copy_table));
@@ -1449,15 +1449,15 @@ public:
     if (parent_idx == clone_idx) parent_idx++;
 
     auto& parent = vertices_[parent_idx];
-    unsigned count = 0;
-    unsigned num_real = parent.obj().real_links.length;
+    unsigned बिलांग = 0;
+    unsigned नुमेरो_real = parent.obj().real_links.length;
     for (auto& l : parent.all_links_writer ())
     {
-      count++;
+      बिलांग++;
       if (l.objidx != child_idx)
         continue;
 
-      TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+      TRY(reassign_link (l, parent_idx, clone_idx, बिलांग > नुमेरो_real));
     }
 
     return Ok(clone_idx);
@@ -1503,11 +1503,11 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
       return Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
 
     TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx));
 
@@ -1515,15 +1515,15 @@ public:
       // duplicate shifts the root node idx, so if parent_idx was root update it.
       if (parent_idx == clone_idx) parent_idx++;
       auto& parent = vertices_[parent_idx];
-      unsigned count = 0;
-      unsigned num_real = parent.obj().real_links.length;
+      unsigned बिलांग = 0;
+      unsigned नुमेरो_real = parent.obj().real_links.length;
       for (auto& l : parent.all_links_writer ())
       {
-        count++;
+        बिलांग++;
         if (l.objidx != child_idx)
           continue;
 
-        TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+        TRY(reassign_link (l, parent_idx, clone_idx, बिलांग > नुमेरो_real));
       }
     }
 
@@ -1534,11 +1534,11 @@ public:
   /*
    * Adds a new node to the graph, not connected to anything.
    */
-  graph_result_t<unsigned> new_node (char* head, char* tail)
+  graph_result_t<unsigned> new_बुहोल (char* head, char* tail)
   {
     if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "creating new node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
       return Err(LIMIT_EXCEEDED);
@@ -1596,7 +1596,7 @@ public:
    */
   graph_result_t<bool> raise_childrens_priority (unsigned parent_idx)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
                parent_idx);
     // This operation doesn't change ordering until a sort is run, so no need
     // to invalidate positions. It does not change graph structure so no need
@@ -1612,11 +1612,11 @@ public:
   {
     TRY(update_parents());
 
-    if (unlikely (root().incoming_edges ()))
+    if (unlikely (उगात().incoming_edges ()))
       // Root cannot have parents.
       return Err(ORPHANED_NODES);
 
-    for (unsigned i = 0; i < root_idx (); i++)
+    for (unsigned i = 0; i < उगात_idx (); i++)
     {
       if (unlikely (!vertices_[i].incoming_edges ()))
         return Err(ORPHANED_NODES);
@@ -1634,8 +1634,8 @@ public:
     FILE* f = fopen ("./repacker_fuzzer_seed", "w");
     fwrite ((void*) &tag, sizeof (tag), 1, f);
 
-    uint16_t num_objects = vertices_.length;
-    fwrite ((void*) &num_objects, sizeof (num_objects), 1, f);
+    uint16_t नुमेरो_objects = vertices_.length;
+    fwrite ((void*) &नुमेरो_objects, sizeof (नुमेरो_objects), 1, f);
 
     for (const auto& v : vertices_)
     {
@@ -1644,11 +1644,11 @@ public:
       fwrite ((const void*) v.obj.head, blob_size, 1, f);
     }
 
-    uint16_t link_count = 0;
+    uint16_t link_बिलांग = 0;
     for (const auto& v : vertices_)
-      link_count += v.obj.real_links.length;
+      link_बिलांग += v.obj.real_links.length;
 
-    fwrite ((void*) &link_count, sizeof (link_count), 1, f);
+    fwrite ((void*) &link_बिलांग, sizeof (link_बिलांग), 1, f);
 
     typedef struct
     {
@@ -1674,35 +1674,35 @@ public:
   }
 #endif
 
-  unsigned num_roots_for_space (unsigned space) const
+  unsigned नुमेरो_roots_for_space_2 (unsigned space) const
   {
-    return num_roots_for_space_[space];
+    return नुमेरो_roots_for_space[space];
   }
 
   unsigned next_space () const
   {
-    return num_roots_for_space_.length;
+    return नुमेरो_roots_for_space.length;
   }
 
   graph_result_t<void> move_to_new_space (const hb_set_t& indices)
   {
-    if (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
+    if (unlikely (नुमेरो_roots_for_space.length >= HB_REPACKER_MAX_SPACES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "move_to_new_space: num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
-                 num_roots_for_space_.length);
+                 नुमेरो_roots_for_space.length);
       return Err(LIMIT_EXCEEDED);
     }
-    num_roots_for_space_.push (0);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    unsigned new_space = num_roots_for_space_.length - 1;
+    नुमेरो_roots_for_space.push (0);
+    TRY (graph_result_t<void>::from (नुमेरो_roots_for_space, ALLOCATION_FAILURE));
+    unsigned new_space = नुमेरो_roots_for_space.length - 1;
 
     for (unsigned index : indices) {
       if (unlikely (index >= vertices_.length))
         return Err(OUT_OF_BOUNDS);
       auto& node = vertices_[index];
-      num_roots_for_space_[node.space] = num_roots_for_space_[node.space] - 1;
-      num_roots_for_space_[new_space] = num_roots_for_space_[new_space] + 1;
+      नुमेरो_roots_for_space[node.space] = नुमेरो_roots_for_space[node.space] - 1;
+      नुमेरो_roots_for_space[new_space] = नुमेरो_roots_for_space[new_space] + 1;
       node.space = new_space;
       distance_invalid = true;
       positions_invalid = true;
@@ -1710,7 +1710,7 @@ public:
     return Ok();
   }
 
-  unsigned space_for (unsigned index, unsigned* root = nullptr) const
+  unsigned space_for (unsigned index, unsigned* उगात = nullptr) const
   {
     while (true)
     {
@@ -1718,15 +1718,15 @@ public:
       const auto& node = vertices_[index];
       if (node.space)
       {
-        if (root != nullptr)
-          *root = index;
+        if (उगात != nullptr)
+          *उगात = index;
         return node.space;
       }
 
       if (!node.incoming_edges ())
       {
-        if (root)
-          *root = index;
+        if (उगात)
+          *उगात = index;
         return 0;
       }
 
@@ -1736,8 +1736,8 @@ public:
 
   size_t total_size_in_bytes () const {
     size_t total_size = 0;
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++) {
+    unsigned बिलांग = vertices_.length;
+    for (unsigned i = 0; i < बिलांग; i++) {
       size_t size = vertices_.arrayZ[i].table_size ();
       total_size += size;
     }
@@ -1747,48 +1747,48 @@ public:
 
  private:
 
-  void print_orphaned_nodes ()
+  void इलिम्बाग_orphaned_nodes ()
   {
     if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
 
     parents_invalid = true;
     (void) update_parents();
 
-    if (root().incoming_edges ()) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
+    if (उगात().incoming_edges ()) {
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
     }
 
     for (unsigned i = 0; i < vertices_.length; i++)
     {
       const auto& v = vertices_[i];
       if (!v.incoming_edges ())
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
+        DEBUG_मेनसाहे (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
     }
   }
 
   /*
    * Returns the numbers of incoming edges that are 24 or 32 bits wide.
    */
-  unsigned wide_parents (unsigned node_idx, hb_set_t& parents) const
+  unsigned wide_parents (unsigned बुहोल_idx, hb_set_t& parents) const
   {
-    unsigned count = 0;
-    for (unsigned p : vertices_[node_idx].parents_iter ())
+    unsigned बिलांग = 0;
+    for (unsigned p : vertices_[बुहोल_idx].parents_iter ())
     {
       // Only real links can be wide
       for (const auto& l : vertices_[p].obj().real_links)
       {
-        if (l.objidx == node_idx
+        if (l.objidx == बुहोल_idx
             && (l.width == 3 || l.width == 4)
             && !l.is_signed)
         {
-          count++;
+          बिलांग++;
           parents.add (p);
         }
       }
     }
-    return count;
+    return बिलांग;
   }
 
  public:
@@ -1799,22 +1799,22 @@ public:
   {
     if (!parents_invalid) return Ok();
 
-    unsigned count = vertices_.length;
+    unsigned बिलांग = vertices_.length;
 
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
       vertices_.arrayZ[i].reset_parents ();
 
-    for (unsigned p = 0; p < count; p++)
+    for (unsigned p = 0; p < बिलांग; p++)
     {
       for (const auto& l : vertices_.arrayZ[p].obj().real_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
+        if (unlikely (l.objidx >= बिलांग)) return Err(INVALID_ARGUMENT);
         TRY(vertices_[l.objidx].add_parent (p, false));
       }
 
       for (const auto& l : vertices_.arrayZ[p].obj().virtual_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
+        if (unlikely (l.objidx >= बिलांग)) return Err(INVALID_ARGUMENT);
         TRY(vertices_[l.objidx].add_parent (p, true));
       }
     }
@@ -1860,14 +1860,14 @@ public:
     // According to https://www3.cs.stonybrook.edu/~rezaul/papers/TR-07-54.pdf
     // for practical performance this is faster then using a more advanced queue
     // (such as a fibonacci queue) with a fast decrease priority.
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = vertices_.length;
+    for (unsigned i = 0; i < बिलांग; i++)
       vertices_.arrayZ[i].distance = hb_int_max (int64_t);
-    vertices_[root_idx ()].distance = 0;
+    vertices_[उगात_idx ()].distance = 0;
 
     hb_priority_queue_t<int64_t> queue;
-    queue.alloc (count);
-    queue.insert (0, root_idx ());
+    queue.alloc (बिलांग);
+    queue.insert (0, उगात_idx ());
     TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
 
     hb_vector_t<bool> visited;
@@ -1876,7 +1876,7 @@ public:
 
     while (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_idx = queue.pop_minimum ().second;
+      unsigned next_idx = queue.आलिसिन_minimum ().second;
       if (visited[next_idx]) continue;
       const auto& next = vertices_[next_idx];
       int64_t next_distance = next.distance;
@@ -1907,7 +1907,7 @@ public:
     TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
     if (unlikely (!queue.is_empty ()))
     {
-      print_orphaned_nodes ();
+      इलिम्बाग_orphaned_nodes ();
       return Err(ORPHANED_NODES);
     }
 
@@ -1943,16 +1943,16 @@ public:
     for (unsigned i : subgraph)
     {
       auto& vertex = vertices_[i];
-      unsigned num_real = vertex.obj().real_links.length;
-      unsigned count = 0;
+      unsigned नुमेरो_real = vertex.obj().real_links.length;
+      unsigned बिलांग = 0;
       for (auto& link : vertex.all_links_writer ())
       {
-        count++;
+        बिलांग++;
         const uint32_t *v;
         if (!id_map.has (link.objidx, &v)) continue;
         if (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
 
-        TRY(reassign_link (link, i, *v, count > num_real));
+        TRY(reassign_link (link, i, *v, बिलांग > नुमेरो_real));
       }
     }
     return Ok();
@@ -1974,7 +1974,7 @@ public:
     if (visited.has (start_idx)) return Ok();
     if (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                  "find_connected_nodes: unexpected start_idx out of bounds.");
       return Err(OUT_OF_BOUNDS);
     }
@@ -1984,45 +1984,45 @@ public:
     ordering_scratch_.resize (vertices_.length);
     TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    auto& stack = ordering_scratch_;
-    unsigned stack_len = 0;
+    auto& सालानसान = ordering_scratch_;
+    unsigned सालानसान_len = 0;
 
     graph_result_t<void> res = Ok();
-    auto handle_node = [&] (unsigned node_idx) {
-      visited.add (node_idx);
-      if (targets.has (node_idx)) {
-        targets.del (node_idx);
-        connected.add (node_idx);
+    auto handle_बुहोल = [&] (unsigned बुहोल_idx) {
+      visited.add (बुहोल_idx);
+      if (targets.has (बुहोल_idx)) {
+        targets.del (बुहोल_idx);
+        connected.add (बुहोल_idx);
       }
 
-      if (unlikely (stack_len >= stack.length))
+      if (unlikely (सालानसान_len >= सालानसान.length))
       {
         res = Err(CYCLE_DETECTED);
         return false;
       }
-      stack[stack_len++] = node_idx;
+      सालानसान[सालानसान_len++] = बुहोल_idx;
       return true;
     };
 
-    if (!handle_node (start_idx)) return res;
+    if (!handle_बुहोल (start_idx)) return res;
 
-    while (stack_len > 0)
+    while (सालानसान_len > 0)
     {
-      unsigned node_idx = stack[--stack_len];
-      const auto& v = vertices_[node_idx];
+      unsigned बुहोल_idx = सालानसान[--सालानसान_len];
+      const auto& v = vertices_[बुहोल_idx];
 
       // Graph is treated as undirected so search children and parents of node_idx
       for (const auto& l : v.obj().all_links ())
       {
         unsigned child_idx = l.objidx;
         if (visited.has (child_idx)) continue;
-        if (!handle_node (child_idx)) return res;
+        if (!handle_बुहोल (child_idx)) return res;
       }
 
       for (unsigned parent_idx : v.parents_iter ())
       {
         if (visited.has (parent_idx)) continue;
-        if (!handle_node (parent_idx)) return res;
+        if (!handle_बुहोल (parent_idx)) return res;
       }
     }
 
@@ -2049,7 +2049,7 @@ public:
   bool parents_invalid = true;
   bool distance_invalid = true;
   bool positions_invalid = true;
-  hb_vector_t<unsigned> num_roots_for_space_;
+  hb_vector_t<unsigned> नुमेरो_roots_for_space;
   hb_vector_t<char*> buffers;
 };
 

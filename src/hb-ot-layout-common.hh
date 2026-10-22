@@ -40,8 +40,8 @@
 using hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
 static_assert (sizeof (hb_ot_layout_mapping_cache_t) == 512, "");
 
-using hb_ot_layout_binary_cache_t = hb_cache_t<14, 1, 8>;
-static_assert (sizeof (hb_ot_layout_binary_cache_t) == 256, "");
+using hb_ot_layout_दालावाहान_cache_t = hb_cache_t<14, 1, 8>;
+static_assert (sizeof (hb_ot_layout_दालावाहान_cache_t) == 256, "");
 
 #include "OT/Layout/Common/Coverage.hh"
 
@@ -96,15 +96,15 @@ struct hb_prune_langsys_context_t
       script_langsys_map (script_langsys_map_),
       duplicate_feature_map (duplicate_feature_map_),
       new_feature_indexes (new_collected_feature_indexes_),
-      script_count (0),langsys_feature_count (0) {}
+      script_बिलांग (0),langsys_feature_बिलांग (0) {}
 
   bool visitScript ()
-  { return script_count++ < HB_MAX_SCRIPTS; }
+  { return script_बिलांग++ < HB_MAX_SCRIPTS; }
 
-  bool visitLangsys (unsigned feature_count)
+  bool visitLangsys (unsigned feature_बिलांग_2)
   {
-    langsys_feature_count += feature_count;
-    return langsys_feature_count < HB_MAX_LANGSYS_FEATURE_COUNT;
+    langsys_feature_बिलांग += feature_बिलांग_2;
+    return langsys_feature_बिलांग < HB_MAX_LANGSYS_FEATURE_बिलांग;
   }
 
   public:
@@ -114,36 +114,36 @@ struct hb_prune_langsys_context_t
   hb_set_t           *new_feature_indexes;
 
   private:
-  unsigned script_count;
-  unsigned langsys_feature_count;
+  unsigned script_बिलांग;
+  unsigned langsys_feature_बिलांग;
 };
 
 struct hb_subset_layout_context_t :
   hb_dispatch_context_t<hb_subset_layout_context_t, hb_empty_t, HB_DEBUG_SUBSET>
 {
   const char *get_name () { return "SUBSET_LAYOUT"; }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   bool visitScript ()
   {
-    return script_count++ < HB_MAX_SCRIPTS;
+    return script_बिलांग++ < HB_MAX_SCRIPTS;
   }
 
   bool visitLangSys ()
   {
-    return langsys_count++ < HB_MAX_LANGSYS;
+    return langsys_बिलांग++ < HB_MAX_LANGSYS;
   }
 
-  bool visitFeatureIndex (int count)
+  bool visitFeatureIndex (int बिलांग)
   {
-    feature_index_count += count;
-    return feature_index_count < HB_MAX_FEATURE_INDICES;
+    feature_index_बिलांग += बिलांग;
+    return feature_index_बिलांग < HB_MAX_FEATURE_INDICES;
   }
 
   bool visitLookupIndex()
   {
-    lookup_index_count++;
-    return lookup_index_count < HB_MAX_LOOKUP_VISIT_COUNT;
+    lookup_index_बिलांग++;
+    return lookup_index_बिलांग < HB_MAX_LOOKUP_VISIT_बिलांग;
   }
 
   hb_subset_context_t *subset_context;
@@ -169,10 +169,10 @@ struct hb_subset_layout_context_t :
 				cur_script_index (0xFFFFu),
 				cur_feature_index (Index::NOT_FOUND_INDEX),
 				cur_feature_var_record_idx (0u),
-				script_count (0),
-				langsys_count (0),
-				feature_index_count (0),
-				lookup_index_count (0)
+				script_बिलांग (0),
+				langsys_बिलांग (0),
+				feature_index_बिलांग (0),
+				lookup_index_बिलांग (0)
   {
     if (tag_ == HB_OT_TAG_GSUB)
     {
@@ -201,10 +201,10 @@ struct hb_subset_layout_context_t :
   }
 
   private:
-  unsigned script_count;
-  unsigned langsys_count;
-  unsigned feature_index_count;
-  unsigned lookup_index_count;
+  unsigned script_बिलांग;
+  unsigned langsys_बिलांग;
+  unsigned feature_index_बिलांग;
+  unsigned lookup_index_बिलांग;
 };
 
 struct ItemVariationStore;
@@ -213,12 +213,12 @@ struct hb_collect_variation_indices_context_t :
 {
   template <typename T>
   return_t dispatch (const T &obj) { obj.collect_variation_indices (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   hb_set_t *layout_variation_indices;
   const hb_set_t *glyph_set;
   const hb_map_t *gpos_lookups;
-  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr;
+  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_मगा_हालागा = nullptr;
 
   hb_collect_variation_indices_context_t (hb_set_t *layout_variation_indices_,
 					  const hb_set_t *glyph_set_,
@@ -245,7 +245,7 @@ struct subset_offset_array_t
     bool ret = o->serialize_subset (subset_context, offset, base);
     if (!ret)
     {
-      out.pop ();
+      out.आलिसिन ();
       subset_context->serializer->revert (snap);
     }
     return ret;
@@ -276,7 +276,7 @@ struct subset_offset_array_arg_t
     bool ret = o->serialize_subset (subset_context, offset, base, arg);
     if (!ret)
     {
-      out.pop ();
+      out.आलिसिन ();
       subset_context->serializer->revert (snap);
     }
     return ret;
@@ -458,13 +458,13 @@ struct IndexArray : Array16Of<Index>
   }
 
   unsigned int get_indexes (unsigned int start_offset,
-			    unsigned int *_count /* IN/OUT */,
+			    unsigned int *बिलांग_2 /* IN/OUT */,
 			    unsigned int *_indexes /* OUT */) const
   {
-    if (_count && _indexes)
+    if (बिलांग_2 && _indexes)
     {
-      + this->as_array ().sub_array (start_offset, _count)
-      | hb_sink (hb_array (_indexes, *_count))
+      + this->as_array ().sub_array (start_offset, बिलांग_2)
+      | hb_sink (hb_array (_indexes, *बिलांग_2))
       ;
     }
     return this->len;
@@ -646,12 +646,12 @@ struct FeatureParamsStylisticSet
 struct FeatureParamsCharacterVariants
 {
   unsigned
-  get_characters (unsigned start_offset, unsigned *char_count, hb_codepoint_t *chars) const
+  get_characters (unsigned start_offset, unsigned *char_बिलांग, hb_codepoint_t *chars) const
   {
-    if (char_count && chars)
+    if (char_बिलांग && chars)
     {
-      + characters.as_array ().sub_array (start_offset, char_count)
-      | hb_sink (hb_array (chars, *char_count))
+      + characters.as_array ().sub_array (start_offset, char_बिलांग)
+      | hb_sink (hb_array (chars, *char_बिलांग))
       ;
     }
     return characters.len;
@@ -666,10 +666,10 @@ struct FeatureParamsCharacterVariants
     if (featUITooltipTextNameID) nameids_to_retain->add (featUITooltipTextNameID);
     if (sampleTextNameID) nameids_to_retain->add (sampleTextNameID);
 
-    if (!firstParamUILabelNameID || !numNamedParameters || numNamedParameters >= 0x7FFF)
+    if (!firstParamUILabelNameID || !नुमेरो_Named_Parameters || नुमेरो_Named_Parameters >= 0x7FFF)
       return;
 
-    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) numNamedParameters - 1;
+    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) नुमेरो_Named_Parameters - 1;
     nameids_to_retain->add_range (firstParamUILabelNameID, last_name_id);
   }
 
@@ -702,7 +702,7 @@ struct FeatureParamsCharacterVariants
 					 * specifies sample text that
 					 * illustrates the effect of this
 					 * feature. (May be NULL.) */
-  HBUINT16	numNamedParameters;	/* Number of named parameters. (May
+  HBUINT16	नुमेरो_Named_Parameters;	/* Number of named parameters. (May
 					 * be zero.) */
   NameID	firstParamUILabelNameID;/* The first ‘name’ table name ID
 					 * used to specify strings for
@@ -802,14 +802,14 @@ struct Record_sanitize_closure_t {
 
 struct Feature
 {
-  unsigned int get_lookup_count () const
+  unsigned int get_lookup_बिलांग () const
   { return lookupIndex.len; }
   hb_tag_t get_lookup_index (unsigned int i) const
   { return lookupIndex[i]; }
   unsigned int get_lookup_indexes (unsigned int start_index,
-				   unsigned int *lookup_count /* IN/OUT */,
+				   unsigned int *lookup_बिलांग /* IN/OUT */,
 				   unsigned int *lookup_tags /* OUT */) const
-  { return lookupIndex.get_indexes (start_index, lookup_count, lookup_tags); }
+  { return lookupIndex.get_indexes (start_index, lookup_बिलांग, lookup_tags); }
   void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
   { lookupIndex.add_indexes_to (lookup_indexes); }
 
@@ -900,9 +900,9 @@ struct Record
     out->offset = 0;
     bool ret = f.subset (c->subset_context, c, &tag);
     if (ret)
-      s->add_link (out->offset, s->pop_pack ());
+      s->add_link (out->offset, s->आलिसिन_pack ());
     else
-      s->pop_discard ();
+      s->आलिसिन_discard ();
 
     return_trace (ret);
   }
@@ -933,14 +933,14 @@ struct RecordArrayOf : SortedArray16Of<Record<Type>>
   const Tag& get_tag (unsigned int i) const
   { return (*this)[i].tag; }
   unsigned int get_tags (unsigned int start_offset,
-                         unsigned int *record_count /* IN/OUT */,
+                         unsigned int *record_बिलांग /* IN/OUT */,
                          hb_tag_t     *record_tags /* OUT */) const
   {
-    if (record_count && record_tags)
+    if (record_बिलांग && record_tags)
     {
-      + this->as_array ().sub_array (start_offset, record_count)
+      + this->as_array ().sub_array (start_offset, record_बिलांग)
       | hb_map (&Record<Type>::tag)
-      | hb_sink (hb_array (record_tags, *record_count))
+      | hb_sink (hb_array (record_tags, *record_बिलांग))
       ;
     }
     return this->len;
@@ -1010,14 +1010,14 @@ typedef RecordListOf<Feature> FeatureList;
 
 struct LangSys
 {
-  unsigned int get_feature_count () const
+  unsigned int get_feature_बिलांग () const
   { return featureIndex.len; }
   hb_tag_t get_feature_index (unsigned int i) const
   { return featureIndex[i]; }
   unsigned int get_feature_indexes (unsigned int start_offset,
-				    unsigned int *feature_count /* IN/OUT */,
+				    unsigned int *feature_बिलांग_2 /* IN/OUT */,
 				    unsigned int *feature_indexes /* OUT */) const
-  { return featureIndex.get_indexes (start_offset, feature_count, feature_indexes); }
+  { return featureIndex.get_indexes (start_offset, feature_बिलांग_2, feature_indexes); }
   void add_feature_indexes_to (hb_set_t *feature_indexes) const
   { featureIndex.add_indexes_to (feature_indexes); }
 
@@ -1066,7 +1066,7 @@ struct LangSys
 
   void collect_features (hb_prune_langsys_context_t *c) const
   {
-    if (!has_required_feature () && !get_feature_count ()) return;
+    if (!has_required_feature () && !get_feature_बिलांग ()) return;
     if (has_required_feature () &&
         c->duplicate_feature_map->has (reqFeatureIndex))
       c->new_feature_indexes->add (get_required_feature_index ());
@@ -1122,14 +1122,14 @@ DECLARE_NULL_NAMESPACE_BYTES (OT, LangSys);
 
 struct Script
 {
-  unsigned int get_lang_sys_count () const
+  unsigned int get_lang_sys_बिलांग () const
   { return langSys.len; }
   const Tag& get_lang_sys_tag (unsigned int i) const
   { return langSys.get_tag (i); }
   unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
+				  unsigned int *lang_sys_बिलांग /* IN/OUT */,
 				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
+  { return langSys.get_tags (start_offset, lang_sys_बिलांग, lang_sys_tags); }
   const LangSys& get_lang_sys (unsigned int i) const
   {
     if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
@@ -1144,7 +1144,7 @@ struct Script
   void prune_langsys (hb_prune_langsys_context_t *c,
                       unsigned script_index) const
   {
-    if (!has_default_lang_sys () && !get_lang_sys_count ()) return;
+    if (!has_default_lang_sys () && !get_lang_sys_बिलांग ()) return;
     if (!c->visitScript ()) return;
 
     if (!c->script_langsys_map->has (script_index))
@@ -1157,14 +1157,14 @@ struct Script
     {
       //only collect features from non-redundant langsys
       const LangSys& d = get_default_lang_sys ();
-      if (c->visitLangsys (d.get_feature_count ())) {
+      if (c->visitLangsys (d.get_feature_बिलांग ())) {
         d.collect_features (c);
       }
 
       for (auto _ : + hb_enumerate (langSys))
       {
         const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
+        if (!c->visitLangsys (l.get_feature_बिलांग ())) continue;
         if (l.compare (d, c->duplicate_feature_map)) continue;
 
         l.collect_features (c);
@@ -1176,7 +1176,7 @@ struct Script
       for (auto _ : + hb_enumerate (langSys))
       {
         const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
+        if (!c->visitLangsys (l.get_feature_बिलांग ())) continue;
         l.collect_features (c);
         c->script_langsys_map->get (script_index)->add (_.first);
       }
@@ -1203,12 +1203,12 @@ struct Script
       bool ret = ls.subset (c, l);
       if (!ret && tag && *tag != HB_TAG ('D', 'F', 'L', 'T'))
       {
-	c->serializer->pop_discard ();
+	c->serializer->आलिसिन_discard ();
 	out->defaultLangSys = 0;
       }
       else
       {
-	c->serializer->add_link (out->defaultLangSys, c->serializer->pop_pack ());
+	c->serializer->add_link (out->defaultLangSys, c->serializer->आलिसिन_pack ());
 	defaultLang = true;
       }
     }
@@ -1274,7 +1274,7 @@ typedef RecordListOfScript ScriptList;
 struct LookupFlag : HBUINT16
 {
   enum Flags {
-    RightToLeft		= 0x0001u,
+    कानान_To_कालिवा		= 0x0001u,
     IgnoreBaseGlyphs	= 0x0002u,
     IgnoreLigatures	= 0x0004u,
     IgnoreMarks		= 0x0008u,
@@ -1294,7 +1294,7 @@ namespace OT {
 
 struct Lookup
 {
-  unsigned int get_subtable_count () const { return subTable.len; }
+  unsigned int get_subtable_बिलांग () const { return subTable.len; }
 
   template <typename TSubTable>
   const Array16OfOffset16To<TSubTable>& get_subtables () const
@@ -1339,25 +1339,25 @@ struct Lookup
   {
     unsigned int lookup_type = get_type ();
     TRACE_DISPATCH (this, lookup_type);
-    unsigned int count = get_subtable_count ();
-    for (unsigned int i = 0; i < count; i++) {
+    unsigned int बिलांग = get_subtable_बिलांग ();
+    for (unsigned int i = 0; i < बिलांग; i++) {
       typename context_t::return_t r = get_subtable<TSubTable> (i).dispatch (c, lookup_type, ds...);
       if (c->stop_sublookup_iteration (r))
 	return_trace (r);
     }
-    return_trace (c->default_return_value ());
+    return_trace (c->default_return_हालागा ());
   }
 
   bool serialize (hb_serialize_context_t *c,
 		  unsigned int lookup_type,
 		  uint32_t lookup_props,
-		  unsigned int num_subtables)
+		  unsigned int नुमेरो_subtables)
   {
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
     lookupType = lookup_type;
     lookupFlag = lookup_props & 0xFFFFu;
-    if (unlikely (!subTable.serialize (c, num_subtables))) return_trace (false);
+    if (unlikely (!subTable.serialize (c, नुमेरो_subtables))) return_trace (false);
     if (lookupFlag & LookupFlag::UseMarkFilteringSet)
     {
       if (unlikely (!c->extend (this))) return_trace (false);
@@ -1422,7 +1422,7 @@ struct Lookup
     if (!(c->check_struct (this) && subTable.sanitize (c))) return_trace (false);
     hb_barrier ();
 
-    unsigned subtables = get_subtable_count ();
+    unsigned subtables = get_subtable_बिलांग ();
     if (unlikely (!c->visit_subtables (subtables))) return_trace (false);
 
     if (lookupFlag & LookupFlag::UseMarkFilteringSet)
@@ -1544,12 +1544,12 @@ struct ClassDefFormat1_3
   private:
   unsigned int get_class (hb_codepoint_t glyph_id) const
   {
-    return classValue[(unsigned int) (glyph_id - startGlyph)];
+    return class_हालागा[(unsigned int) (glyph_id - startGlyph)];
   }
 
   unsigned get_population () const
   {
-    return classValue.len;
+    return class_हालागा.len;
   }
 
   template<typename Iterator,
@@ -1564,7 +1564,7 @@ struct ClassDefFormat1_3
     {
       classFormat = Types::size == 2 ? 1 : 3;
       startGlyph = 0;
-      classValue.len = 0;
+      class_हालागा.len = 0;
       return_trace (true);
     }
 
@@ -1572,14 +1572,14 @@ struct ClassDefFormat1_3
     hb_codepoint_t glyph_max = + it
 			       | hb_map (hb_first)
 			       | hb_reduce (hb_max, 0u);
-    unsigned glyph_count = glyph_max - glyph_min + 1;
+    unsigned glyph_बिलांग = glyph_max - glyph_min + 1;
 
     startGlyph = glyph_min;
-    if (unlikely (!classValue.serialize (c, glyph_count))) return_trace (false);
+    if (unlikely (!class_हालागा.serialize (c, glyph_बिलांग))) return_trace (false);
     for (const hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
     {
       unsigned idx = gid_klass_pair.first - glyph_min;
-      classValue[idx] = gid_klass_pair.second;
+      class_हालागा[idx] = gid_klass_pair.second;
     }
     return_trace (true);
   }
@@ -1596,15 +1596,15 @@ struct ClassDefFormat1_3
     hb_set_t orig_klasses;
 
     hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end   = start + classValue.len;
+    hb_codepoint_t end   = start + class_हालागा.len;
 
     for (const hb_codepoint_t gid : + hb_range (start, end))
     {
       hb_codepoint_t new_gid = c->plan->map_gsub_glyph (gid);
-      if (new_gid == HB_MAP_VALUE_INVALID) continue;
+      if (new_gid == HB_MAP_हालागा_INVALID) continue;
       if (glyph_filter && !glyph_filter->has(gid)) continue;
 
-      unsigned klass = classValue[gid - start];
+      unsigned klass = class_हालागा[gid - start];
       if (!klass) continue;
 
       glyph_and_klass.push (hb_pair (new_gid, klass));
@@ -1614,10 +1614,10 @@ struct ClassDefFormat1_3
     if (use_class_zero)
     {
       const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-      unsigned glyph_count = glyph_filter
+      unsigned glyph_बिलांग = glyph_filter
 			     ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
 			     : glyphset.get_population ();
-      use_class_zero = glyph_count <= glyph_and_klass.length;
+      use_class_zero = glyph_बिलांग <= glyph_and_klass.length;
     }
     if (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
@@ -1631,7 +1631,7 @@ struct ClassDefFormat1_3
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classValue.sanitize (c));
+    return_trace (c->check_struct (this) && class_हालागा.sanitize (c));
   }
 
   unsigned cost () const { return 1; }
@@ -1640,10 +1640,10 @@ struct ClassDefFormat1_3
   bool collect_coverage (set_t *glyphs) const
   {
     unsigned int start = 0;
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = class_हालागा.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
-      if (classValue[i])
+      if (class_हालागा[i])
 	continue;
 
       if (start != i)
@@ -1652,8 +1652,8 @@ struct ClassDefFormat1_3
 
       start = i + 1;
     }
-    if (start != count)
-      if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + count)))
+    if (start != बिलांग)
+      if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + बिलांग)))
 	return false;
 
     return true;
@@ -1662,38 +1662,38 @@ struct ClassDefFormat1_3
   template <typename set_t>
   bool collect_class (set_t *glyphs, unsigned klass) const
   {
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (classValue[i] == klass) glyphs->add (startGlyph + i);
+    unsigned int बिलांग = class_हालागा.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
+      if (class_हालागा[i] == klass) glyphs->add (startGlyph + i);
     return true;
   }
 
   bool intersects (const hb_set_t *glyphs) const
   {
     hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end = startGlyph + classValue.len;
+    hb_codepoint_t end = startGlyph + class_हालागा.len;
     for (hb_codepoint_t iter = startGlyph - 1;
 	 glyphs->next (&iter) && iter < end;)
-      if (classValue[iter - start]) return true;
+      if (class_हालागा[iter - start]) return true;
     return false;
   }
   bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
   {
-    unsigned int count = classValue.len;
+    unsigned int बिलांग = class_हालागा.len;
     if (klass == 0)
     {
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
+      hb_codepoint_t g = HB_SET_हालागा_INVALID;
       if (!glyphs->next (&g)) return false;
       if (g < startGlyph) return true;
-      g = startGlyph + count - 1;
+      g = startGlyph + बिलांग - 1;
       if (glyphs->next (&g)) return true;
       /* Fall through. */
     }
     /* TODO Speed up, using set overlap first? */
     /* TODO(iter) Rewrite as dagger. */
-    const typename Types::HBUINT *arr = classValue.arrayZ;
-    for (unsigned int i = 0; i < count; i++)
+    const typename Types::HBUINT *arr = class_हालागा.arrayZ;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (arr[i] == klass && glyphs->has (startGlyph + i))
 	return true;
     return false;
@@ -1701,33 +1701,33 @@ struct ClassDefFormat1_3
 
   void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
   {
-    unsigned count = classValue.len;
+    unsigned बिलांग = class_हालागा.len;
     if (klass == 0)
     {
       unsigned start_glyph = startGlyph;
-      for (uint32_t g = HB_SET_VALUE_INVALID;
+      for (uint32_t g = HB_SET_हालागा_INVALID;
 	   glyphs->next (&g) && g < start_glyph;)
 	intersect_glyphs->add (g);
 
-      for (uint32_t g = startGlyph + count - 1;
+      for (uint32_t g = startGlyph + बिलांग - 1;
 	   glyphs-> next (&g);)
 	intersect_glyphs->add (g);
 
       return;
     }
 
-    for (unsigned i = 0; i < count; i++)
-      if (classValue[i] == klass && glyphs->has (startGlyph + i))
+    for (unsigned i = 0; i < बिलांग; i++)
+      if (class_हालागा[i] == klass && glyphs->has (startGlyph + i))
 	intersect_glyphs->add (startGlyph + i);
 
 #if 0
     /* The following implementation is faster asymptotically, but slower
      * in practice. */
     unsigned start_glyph = startGlyph;
-    unsigned end_glyph = start_glyph + count;
+    unsigned end_glyph = start_glyph + बिलांग;
     for (unsigned g = startGlyph - 1;
 	 glyphs->next (&g) && g < end_glyph;)
-      if (classValue.arrayZ[g - start_glyph] == klass)
+      if (class_हालागा.arrayZ[g - start_glyph] == klass)
         intersect_glyphs->add (g);
 #endif
   }
@@ -1740,18 +1740,18 @@ struct ClassDefFormat1_3
      * `glyphs` intersects class zero.  Handle it up front: `end_glyph` below
      * underflows when startGlyph is zero, and neither comparison can then be
      * true. */
-    if (!classValue.len)
+    if (!class_हालागा.len)
     {
       intersect_classes->add (0);
       return;
     }
 
-    hb_codepoint_t end_glyph = startGlyph + classValue.len - 1;
+    hb_codepoint_t end_glyph = startGlyph + class_हालागा.len - 1;
     if (glyphs->get_min () < startGlyph ||
         glyphs->get_max () > end_glyph)
       intersect_classes->add (0);
 
-    for (const auto& _ : + hb_enumerate (classValue))
+    for (const auto& _ : + hb_enumerate (class_हालागा))
     {
       hb_codepoint_t g = startGlyph + _.first;
       if (glyphs->has (g))
@@ -1764,9 +1764,9 @@ struct ClassDefFormat1_3
   typename Types::HBGlyphID
 		 startGlyph;	/* First GlyphID of the classValueArray */
   typename Types::template ArrayOf<typename Types::HBUINT>
-		classValue;	/* Array of Class Values--one per GlyphID */
+		class_हालागा;	/* Array of Class Values--one per GlyphID */
   public:
-  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, classValue);
+  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, class_हालागा);
 };
 
 template <typename Types>
@@ -1804,7 +1804,7 @@ struct ClassDefFormat2_4
     }
 
     unsigned unsorted = false;
-    unsigned num_ranges = 1;
+    unsigned नुमेरो_ranges = 1;
     hb_codepoint_t prev_gid = (*it).first;
     unsigned prev_klass = (*it).second;
 
@@ -1830,7 +1830,7 @@ struct ClassDefFormat2_4
 
 	if (unlikely (!record)) break;
 	record->last = prev_gid;
-	num_ranges++;
+	नुमेरो_ranges++;
 
 	range_rec.first = cur_gid;
 	range_rec.last = cur_gid;
@@ -1846,7 +1846,7 @@ struct ClassDefFormat2_4
     if (unlikely (c->in_error ())) return_trace (false);
 
     if (likely (record)) record->last = prev_gid;
-    rangeRecord.len = num_ranges;
+    rangeRecord.len = नुमेरो_ranges;
 
     if (unlikely (unsorted))
       rangeRecord.as_array ().qsort (RangeRecord<Types>::cmp_range);
@@ -1874,7 +1874,7 @@ struct ClassDefFormat2_4
 	unsigned klass = get_class (g);
 	if (!klass) continue;
 	hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	if (new_gid == HB_MAP_VALUE_INVALID) continue;
+	if (new_gid == HB_MAP_हालागा_INVALID) continue;
 	if (glyph_filter && !glyph_filter->has (g)) continue;
 	glyph_and_klass.push (hb_pair (new_gid, klass));
 	orig_klasses.add (klass);
@@ -1882,17 +1882,17 @@ struct ClassDefFormat2_4
     }
     else
     {
-      unsigned num_source_glyphs = c->plan->source->get_num_glyphs ();
+      unsigned नुमेरो_source_glyphs = c->plan->source->get_नुमेरो_glyphs ();
       for (auto &range : rangeRecord)
       {
 	unsigned klass = range.value;
 	if (!klass) continue;
 	hb_codepoint_t start = range.first;
-	hb_codepoint_t end   = hb_min (range.last + 1, num_source_glyphs);
+	hb_codepoint_t end   = hb_min (range.last + 1, नुमेरो_source_glyphs);
 	for (hb_codepoint_t g = start; g < end; g++)
 	{
 	  hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	  if (new_gid == HB_MAP_VALUE_INVALID) continue;
+	  if (new_gid == HB_MAP_हालागा_INVALID) continue;
 	  if (glyph_filter && !glyph_filter->has (g)) continue;
 
 	  glyph_and_klass.push (hb_pair (new_gid, klass));
@@ -1902,10 +1902,10 @@ struct ClassDefFormat2_4
     }
 
     const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-    unsigned glyph_count = glyph_filter
+    unsigned glyph_बिलांग = glyph_filter
                            ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
                            : glyphset.get_population ();
-    use_class_zero = use_class_zero && glyph_count <= glyph_and_klass.length;
+    use_class_zero = use_class_zero && glyph_बिलांग <= glyph_and_klass.length;
     if (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
@@ -1970,8 +1970,8 @@ struct ClassDefFormat2_4
         return !glyphs->is_empty ();
 
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      hb_codepoint_t last = HB_SET_VALUE_INVALID;
+      hb_codepoint_t g = HB_SET_हालागा_INVALID;
+      hb_codepoint_t last = HB_SET_हालागा_INVALID;
       auto it = hb_iter (rangeRecord);
       for (auto &range : it)
       {
@@ -1988,7 +1988,7 @@ struct ClassDefFormat2_4
 	g = range.last;
 	last = g;
       }
-      if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
+      if (g != HB_SET_हालागा_INVALID && glyphs->next (&g))
 	return true;
       /* Fall through. */
     }
@@ -2002,7 +2002,7 @@ struct ClassDefFormat2_4
   {
     if (klass == 0)
     {
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
+      hb_codepoint_t g = HB_SET_हालागा_INVALID;
       for (auto &range : rangeRecord)
       {
 	if (!glyphs->next (&g))
@@ -2022,8 +2022,8 @@ struct ClassDefFormat2_4
       return;
     }
 
-    unsigned count = rangeRecord.len;
-    if (count > glyphs->get_population () * hb_bit_storage (count))
+    unsigned बिलांग = rangeRecord.len;
+    if (बिलांग > glyphs->get_population () * hb_bit_storage (बिलांग))
     {
       for (auto g : *glyphs)
       {
@@ -2060,7 +2060,7 @@ struct ClassDefFormat2_4
       return;
     }
 
-    hb_codepoint_t g = HB_SET_VALUE_INVALID;
+    hb_codepoint_t g = HB_SET_हालागा_INVALID;
     for (auto &range : rangeRecord)
     {
       if (!glyphs->next (&g))
@@ -2072,7 +2072,7 @@ struct ClassDefFormat2_4
       }
       g = range.last;
     }
-    if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
+    if (g != HB_SET_हालागा_INVALID && glyphs->next (&g))
       intersect_classes->add (0);
 
     for (const auto& range : rangeRecord)
@@ -2150,7 +2150,7 @@ struct ClassDef
       hb_codepoint_t glyph_min = (*glyphs).first;
       glyph_max = glyph_min;
 
-      unsigned num_ranges = 1;
+      unsigned नुमेरो_ranges = 1;
       hb_codepoint_t prev_gid = glyph_min;
       unsigned prev_klass = (*glyphs).second;
 
@@ -2163,7 +2163,7 @@ struct ClassDef
         if (cur_gid > glyph_max) glyph_max = cur_gid;
 	if (cur_gid != prev_gid + 1 ||
 	    cur_klass != prev_klass)
-	  num_ranges++;
+	  नुमेरो_ranges++;
 
 	prev_gid = cur_gid;
 	prev_klass = cur_klass;
@@ -2180,14 +2180,14 @@ struct ClassDef
 
       if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
 	consider (1, 6 + (uint64_t) HBUINT16::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFu && num_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (2, 4 + (uint64_t) num_ranges *
+      if (glyph_max <= 0xFFFFu && नुमेरो_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (2, 4 + (uint64_t) नुमेरो_ranges *
 		     (2 * HBGlyphID16::static_size + HBUINT16::static_size));
 #ifndef HB_NO_BEYOND_64K
       if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
 	consider (3, 8 + (uint64_t) HBUINT24::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFFFu && num_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
-	consider (4, 5 + (uint64_t) num_ranges *
+      if (glyph_max <= 0xFFFFFFu && नुमेरो_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
+	consider (4, 5 + (uint64_t) नुमेरो_ranges *
 		     (2 * HBGlyphID24::static_size + HBUINT16::static_size));
 #endif
       if (unlikely (best_size == UINT64_MAX))
@@ -2413,16 +2413,16 @@ struct delta_row_encoding_t
   chars_t chars;
   unsigned width = 0;
   unsigned overhead = 0;
-  hb_vector_t<const hb_vector_t<int>*> items;
+  hb_vector_t<const hb_vector_t<int>*> मगा_बागाय;
 
   delta_row_encoding_t () = default;
-  delta_row_encoding_t (hb_vector_t<const hb_vector_t<int>*> &&rows, unsigned num_cols)
+  delta_row_encoding_t (hb_vector_t<const hb_vector_t<int>*> &&rows, unsigned नुमेरो_cols)
   {
     assert (rows);
 
-    items = std::move (rows);
+    मगा_बागाय = std::move (rows);
 
-    if (unlikely (!chars.resize (num_cols)))
+    if (unlikely (!chars.resize (नुमेरो_cols)))
       return;
 
     calculate_chars ();
@@ -2430,8 +2430,8 @@ struct delta_row_encoding_t
 
   void merge (const delta_row_encoding_t& other)
   {
-    items.alloc (items.length + other.items.length);
-    for (auto &row : other.items)
+    मगा_बागाय.alloc (मगा_बागाय.length + other.मगा_बागाय.length);
+    for (auto &row : other.मगा_बागाय)
       add_row (row);
 
     // Merge chars
@@ -2450,11 +2450,11 @@ struct delta_row_encoding_t
 
   void calculate_chars ()
   {
-    assert (items);
+    assert (मगा_बागाय);
 
-    bool long_words = false;
+    bool long_मगा_सालिता = false;
 
-    for (auto &row : items)
+    for (auto &row : मगा_बागाय)
     {
       assert (row->length == chars.length);
 
@@ -2466,7 +2466,7 @@ struct delta_row_encoding_t
 	  continue;
 	else if (v > 32767 || v < -32768)
 	{
-	  long_words = true;
+	  long_मगा_सालिता = true;
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 4);
 	}
 	else if (v > 127 || v < -128)
@@ -2476,7 +2476,7 @@ struct delta_row_encoding_t
       }
     }
 
-    if (long_words)
+    if (long_मगा_सालिता)
     {
       // Convert 1s to 2s
       for (auto &v : chars)
@@ -2488,21 +2488,21 @@ struct delta_row_encoding_t
   }
 
   bool is_empty () const
-  { return !items; }
+  { return !मगा_बागाय; }
 
   bool in_error () const
-  { return chars.in_error () || items.in_error (); }
+  { return chars.in_error () || मगा_बागाय.in_error (); }
 
-  static inline unsigned get_chars_overhead (unsigned num_columns)
+  static inline unsigned get_chars_overhead (unsigned नुमेरो_columns)
   {
     unsigned c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
-    return c + num_columns * 2;
+    return c + नुमेरो_columns * 2;
   }
 
   unsigned get_gain (unsigned additional_bytes_per_rows = 1) const
   {
-    int count = items.length;
-    return hb_max (0, (int) overhead - count * (int) additional_bytes_per_rows);
+    int बिलांग = मगा_बागाय.length;
+    return hb_max (0, (int) overhead - बिलांग * (int) additional_bytes_per_rows);
   }
 
   int gain_from_merging (const delta_row_encoding_t& other_encoding) const
@@ -2525,15 +2525,15 @@ struct delta_row_encoding_t
     unsigned combined_columns = pair.second;
 
     int combined_gain = (int) overhead + (int) other_encoding.overhead;
-    combined_gain -= (combined_width - (int) width) * items.length;
-    combined_gain -= (combined_width - (int) other_encoding.width) * other_encoding.items.length;
+    combined_gain -= (combined_width - (int) width) * मगा_बागाय.length;
+    combined_gain -= (combined_width - (int) other_encoding.width) * other_encoding.मगा_बागाय.length;
     combined_gain -= get_chars_overhead (combined_columns);
 
     return combined_gain;
   }
 
   bool add_row (const hb_vector_t<int>* row)
-  { return items.push (row); }
+  { return मगा_बागाय.push (row); }
 
   static int cmp (const void *pa, const void *pb)
   {
@@ -2651,22 +2651,22 @@ struct hb_scalar_cache_t
   hb_scalar_cache_t& operator= (const hb_scalar_cache_t&) = delete;
   hb_scalar_cache_t& operator= (hb_scalar_cache_t&&) = delete;
 
-  static hb_scalar_cache_t *create (unsigned int count,
+  static hb_scalar_cache_t *create (unsigned int बिलांग,
 				    hb_scalar_cache_t *scratch_cache = nullptr)
   {
-    if (!count) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    if (!बिलांग) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    if (scratch_cache && count <= STATIC_LENGTH)
+    if (scratch_cache && बिलांग <= STATIC_LENGTH)
     {
-      scratch_cache->length = count;
+      scratch_cache->length = बिलांग;
       scratch_cache->clear ();
       return scratch_cache;
     }
 
-    auto *cache = (hb_scalar_cache_t *) hb_malloc (sizeof (hb_scalar_cache_t) - sizeof (static_values) + sizeof (static_values[0]) * count);
+    auto *cache = (hb_scalar_cache_t *) hb_malloc (sizeof (hb_scalar_cache_t) - sizeof (static_मगा_हालागा) + sizeof (static_मगा_हालागा[0]) * बिलांग);
     if (unlikely (!cache)) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    cache->length = count;
+    cache->length = बिलांग;
     cache->clear ();
 
     return cache;
@@ -2681,7 +2681,7 @@ struct hb_scalar_cache_t
 
   void clear ()
   {
-    auto *values = &static_values[0];
+    auto *values = &static_मगा_हालागा[0];
     unsigned i = 0;
 #ifndef HB_OPTIMIZE_SIZE
     for (; i + 3 < length; i += 4)
@@ -2704,9 +2704,9 @@ struct hb_scalar_cache_t
       *value = 0.f;
       return true;
     }
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    float v = *cached_value;
+    auto *values = &static_मगा_हालागा[0];
+    auto *cached_हालागा = &values[i];
+    float v = *cached_हालागा;
     if (std::isnan (v))
       return false;
     *value = v;
@@ -2717,15 +2717,15 @@ struct hb_scalar_cache_t
   void set (unsigned i, float value)
   {
     if (unlikely (i >= length)) return;
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    *cached_value = value;
+    auto *values = &static_मगा_हालागा[0];
+    auto *cached_हालागा = &values[i];
+    *cached_हालागा = value;
   }
 
   public:
   unsigned length;
   private:
-  mutable hb_atomic_t<float> static_values[STATIC_LENGTH];
+  mutable hb_atomic_t<float> static_मगा_हालागा[STATIC_LENGTH];
 };
 
 struct VarRegionList
@@ -2734,11 +2734,11 @@ struct VarRegionList
   float evaluate_impl (unsigned int region_index,
 		       const int *coords, unsigned int coord_len) const
   {
-    const VarRegionAxis *axes = axesZ.arrayZ + (region_index * axisCount);
+    const VarRegionAxis *axes = axesZ.arrayZ + (region_index * axis_बिलांग_2);
     float v = 1.f;
 
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = axis_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       int coord = i < coord_len ? coords[i] : 0;
       float factor = axes[i].evaluate (coord);
@@ -2759,7 +2759,7 @@ struct VarRegionList
 		  const int *coords, unsigned int coord_len,
 		  hb_scalar_cache_t *cache = nullptr) const
   {
-    if (unlikely (region_index >= regionCount))
+    if (unlikely (region_index >= region_बिलांग))
       return 0.;
 
     float v;
@@ -2778,7 +2778,7 @@ struct VarRegionList
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  axesZ.sanitize (c, axisCount * regionCount));
+		  axesZ.sanitize (c, axis_बिलांग_2 * region_बिलांग));
   }
 
   bool serialize (hb_serialize_context_t *c,
@@ -2786,19 +2786,19 @@ struct VarRegionList
                   const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& regions)
   {
     TRACE_SERIALIZE (this);
-    unsigned axis_count = axis_tags.length;
-    unsigned region_count = regions.length;
-    if (!axis_count || !region_count) return_trace (false);
-    if (unlikely (hb_unsigned_mul_overflows (axis_count * region_count,
+    unsigned axis_बिलांग = axis_tags.length;
+    unsigned region_बिलांग_2 = regions.length;
+    if (!axis_बिलांग || !region_बिलांग_2) return_trace (false);
+    if (unlikely (hb_unsigned_mul_overflows (axis_बिलांग * region_बिलांग_2,
                                              VarRegionAxis::static_size))) return_trace (false);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = axis_count;
-    regionCount = region_count;
+    axis_बिलांग_2 = axis_बिलांग;
+    region_बिलांग = region_बिलांग_2;
 
-    for (unsigned r = 0; r < region_count; r++)
+    for (unsigned r = 0; r < region_बिलांग_2; r++)
     {
       const auto& region = regions[r];
-      for (unsigned i = 0; i < axis_count; i++)
+      for (unsigned i = 0; i < axis_बिलांग; i++)
       {
         hb_tag_t tag = axis_tags.arrayZ[i];
         VarRegionAxis var_region_rec;
@@ -2806,7 +2806,7 @@ struct VarRegionList
         if (region->has (tag, &coords))
         {
           var_region_rec.startCoord.set_float (coords->minimum);
-          var_region_rec.peakCoord.set_float (coords->middle);
+          var_region_rec.peakCoord.set_float (coords->गित्ना);
           var_region_rec.endCoord.set_float (coords->maximum);
         }
         else
@@ -2826,17 +2826,17 @@ struct VarRegionList
   {
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = src->axisCount;
-    regionCount = region_map.get_population ();
-    if (unlikely (hb_unsigned_mul_overflows (axisCount * regionCount,
+    axis_बिलांग_2 = src->axis_बिलांग_2;
+    region_बिलांग = region_map.get_population ();
+    if (unlikely (hb_unsigned_mul_overflows (axis_बिलांग_2 * region_बिलांग,
 					     VarRegionAxis::static_size))) return_trace (false);
     if (unlikely (!c->extend (this))) return_trace (false);
-    unsigned int region_count = src->regionCount;
-    for (unsigned int r = 0; r < regionCount; r++)
+    unsigned int region_बिलांग_2 = src->region_बिलांग;
+    for (unsigned int r = 0; r < region_बिलांग; r++)
     {
       unsigned int backward = region_map.backward (r);
-      if (backward >= region_count) return_trace (false);
-      hb_memcpy (&axesZ[axisCount * r], &src->axesZ[axisCount * backward], VarRegionAxis::static_size * axisCount);
+      if (backward >= region_बिलांग_2) return_trace (false);
+      hb_memcpy (&axesZ[axis_बिलांग_2 * r], &src->axesZ[axis_बिलांग_2 * backward], VarRegionAxis::static_size * axis_बिलांग_2);
     }
 
     return_trace (true);
@@ -2846,9 +2846,9 @@ struct VarRegionList
                        const hb_map_t& axes_old_index_tag_map,
                        hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
   {
-    if (region_index >= regionCount) return false;
-    const VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axisCount);
-    for (unsigned i = 0; i < axisCount; i++)
+    if (region_index >= region_बिलांग) return false;
+    const VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axis_बिलांग_2);
+    for (unsigned i = 0; i < axis_बिलांग_2; i++)
     {
       hb_tag_t *axis_tag;
       if (!axes_old_index_tag_map.has (i, &axis_tag))
@@ -2868,10 +2868,10 @@ struct VarRegionList
   bool get_var_regions (const hb_map_t& axes_old_index_tag_map,
                         hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions /* OUT */) const
   {
-    if (!regions.alloc (regionCount))
+    if (!regions.alloc (region_बिलांग))
       return false;
 
-    for (unsigned i = 0; i < regionCount; i++)
+    for (unsigned i = 0; i < region_बिलांग; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
       if (!get_var_region (i, axes_old_index_tag_map, axis_tuples))
@@ -2884,11 +2884,11 @@ struct VarRegionList
   size_t get_size () const
   { return hb_unsigned_add_saturate (min_size,
 				     hb_unsigned_mul_saturate (VarRegionAxis::static_size,
-							       axisCount, regionCount)); }
+							       axis_बिलांग_2, region_बिलांग)); }
 
   public:
-  HBUINT16	axisCount;
-  HBUINT15	regionCount;
+  HBUINT16	axis_बिलांग_2;
+  HBUINT15	region_बिलांग;
   protected:
   UnsizedArrayOf<VarRegionAxis>
 		axesZ;
@@ -2912,7 +2912,7 @@ _hb_avar2_region_is_dead (const hb_hashmap_t<hb_tag_t, Triple> &axis_tuples,
     if (!reachable_ranges.has (_.first, &range)) continue;
     const Triple &tent = _.second;
     int start = (int) roundf ((float) tent.minimum * 16384.f);
-    int peak  = (int) roundf ((float) tent.middle * 16384.f);
+    int peak  = (int) roundf ((float) tent.गित्ना * 16384.f);
     int end   = (int) roundf ((float) tent.maximum * 16384.f);
     if (!peak) continue;
     if (start > peak || peak > end) continue;
@@ -2935,8 +2935,8 @@ struct SparseVariationRegion
   float evaluate (const int *coords, unsigned int coord_len) const
   {
     float v = 1.f;
-    unsigned int count = axes.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = axes.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       float factor = (this+axes[i]).evaluate (coords, coord_len);
       if (factor == 0.f)
@@ -3032,36 +3032,36 @@ struct SparseVarRegionList
 
 struct VarData
 {
-  unsigned int get_item_count () const
-  { return itemCount; }
+  unsigned int get_item_बिलांग () const
+  { return item_बिलांग; }
 
-  unsigned int get_region_index_count () const
+  unsigned int get_region_index_बिलांग () const
   { return regionIndices.len; }
 
   unsigned get_region_index (unsigned i) const
   { return i >= regionIndices.len ? -1 : regionIndices[i]; }
 
   size_t get_row_size () const
-  { return (wordCount () + regionIndices.len) * (longWords () ? 2 : 1); }
+  { return (word_बिलांग () + regionIndices.len) * (long_मगा_सालिता_2 () ? 2 : 1); }
 
   size_t get_size () const
   { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
 				     regionIndices.get_size (),
-				     hb_unsigned_mul_saturate (itemCount, get_row_size ())); }
+				     hb_unsigned_mul_saturate (item_बिलांग, get_row_size ())); }
 
   template <typename Float = float>
   Float _get_delta (unsigned int inner,
-		    const int *coords, unsigned int coord_count,
+		    const int *coords, unsigned int coord_बिलांग,
 		    const VarRegionList &regions,
 		    hb_scalar_cache_t *cache = nullptr) const
   {
-    if (unlikely (inner >= itemCount))
+    if (unlikely (inner >= item_बिलांग))
       return 0.;
-    bool is_long = longWords ();
-    unsigned int count = regionIndices.len;
-    unsigned word_count = wordCount ();
-    unsigned int scount = is_long ? count : word_count;
-    unsigned int lcount = is_long ? word_count : 0;
+    bool is_long = long_मगा_सालिता_2 ();
+    unsigned int बिलांग = regionIndices.len;
+    unsigned word_बिलांग_2 = word_बिलांग ();
+    unsigned int scount = is_long ? बिलांग : word_बिलांग_2;
+    unsigned int lcount = is_long ? word_बिलांग_2 : 0;
 
     const HBUINT8 *bytes = get_delta_bytes ();
     const HBUINT8 *row = bytes + inner * get_row_size ();
@@ -3072,7 +3072,7 @@ struct VarData
     const HBINT32 *lcursor = reinterpret_cast<const HBINT32 *> (row);
     for (; i < lcount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
+      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_बिलांग, cache);
       if (scalar)
         delta += (Float) scalar * (int) *lcursor;
       lcursor++;
@@ -3080,15 +3080,15 @@ struct VarData
     const HBINT16 *scursor = reinterpret_cast<const HBINT16 *> (lcursor);
     for (; i < scount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
+      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_बिलांग, cache);
       if (scalar)
        delta += (Float) scalar * (int) *scursor;
       scursor++;
     }
     const HBINT8 *bcursor = reinterpret_cast<const HBINT8 *> (scursor);
-    for (; i < count; i++)
+    for (; i < बिलांग; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
+      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_बिलांग, cache);
       if (scalar)
         delta += (Float) scalar * (int) *bcursor;
       bcursor++;
@@ -3100,24 +3100,24 @@ struct VarData
   template <typename Float = float>
   HB_ALWAYS_INLINE
   Float get_delta (unsigned int inner,
-		   const int *coords, unsigned int coord_count,
+		   const int *coords, unsigned int coord_बिलांग,
 		   const VarRegionList &regions,
 		   hb_scalar_cache_t *cache = nullptr) const
   {
-    unsigned int count = regionIndices.len;
-    if (!count) return Float (0); // This is quite common, so optimize it.
-    return _get_delta<Float> (inner, coords, coord_count, regions, cache);
+    unsigned int बिलांग = regionIndices.len;
+    if (!बिलांग) return Float (0); // This is quite common, so optimize it.
+    return _get_delta<Float> (inner, coords, coord_बिलांग, regions, cache);
   }
 
-  void get_region_scalars (const int *coords, unsigned int coord_count,
+  void get_region_scalars (const int *coords, unsigned int coord_बिलांग,
 			   const VarRegionList &regions,
 			   float *scalars /*OUT */,
-			   unsigned int num_scalars) const
+			   unsigned int नुमेरो_scalars) const
   {
-    unsigned count = hb_min (num_scalars, regionIndices.len);
-    for (unsigned int i = 0; i < count; i++)
-      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count);
-    for (unsigned int i = count; i < num_scalars; i++)
+    unsigned बिलांग = hb_min (नुमेरो_scalars, regionIndices.len);
+    for (unsigned int i = 0; i < बिलांग; i++)
+      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_बिलांग);
+    for (unsigned int i = बिलांग; i < नुमेरो_scalars; i++)
       scalars[i] = 0.f;
   }
 
@@ -3127,9 +3127,9 @@ struct VarData
     return_trace (c->check_struct (this) &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  wordCount () <= regionIndices.len &&
+		  word_बिलांग () <= regionIndices.len &&
 		  c->check_range (get_delta_bytes (),
-				  itemCount,
+				  item_बिलांग,
 				  get_row_size ()));
   }
 
@@ -3138,14 +3138,14 @@ struct VarData
                   const hb_vector_t<const hb_vector_t<int>*>& rows)
   {
     TRACE_SERIALIZE (this);
-    unsigned row_count = rows.length;
-    if (!row_count) {
+    unsigned row_बिलांग_2 = rows.length;
+    if (!row_बिलांग_2) {
       // Nothing to serialize, will be empty.
       return false;
     }
 
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!c->check_assign (itemCount, row_count,
+    if (unlikely (!c->check_assign (item_बिलांग, row_बिलांग_2,
                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
       return_trace (false);
 
@@ -3153,20 +3153,20 @@ struct VarData
     int max_threshold = has_long ? +32767 : +127;
     enum delta_size_t { kZero=0, kNonWord, kWord };
     hb_vector_t<delta_size_t> delta_sz;
-    unsigned num_regions = rows[0]->length;
-    if (!delta_sz.resize (num_regions))
+    unsigned नुमेरो_regions = rows[0]->length;
+    if (!delta_sz.resize (नुमेरो_regions))
       return_trace (false);
 
-    unsigned word_count = 0;
-    for (unsigned r = 0; r < num_regions; r++)
+    unsigned word_बिलांग_2 = 0;
+    for (unsigned r = 0; r < नुमेरो_regions; r++)
     {
-      for (unsigned i = 0; i < row_count; i++)
+      for (unsigned i = 0; i < row_बिलांग_2; i++)
       {
         int delta = rows[i]->arrayZ[r];
         if (delta < min_threshold || delta > max_threshold)
         {
           delta_sz[r] = kWord;
-          word_count++;
+          word_बिलांग_2++;
           break;
         }
         else if (delta != 0)
@@ -3178,9 +3178,9 @@ struct VarData
 
     /* reorder regions: words and then non-words*/
     unsigned word_index = 0;
-    unsigned non_word_index = word_count;
+    unsigned non_word_index = word_बिलांग_2;
     hb_map_t ri_map;
-    for (unsigned r = 0; r < num_regions; r++)
+    for (unsigned r = 0; r < नुमेरो_regions; r++)
     {
       if (!delta_sz[r]) continue;
       unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
@@ -3188,13 +3188,13 @@ struct VarData
         return_trace (false);
     }
 
-    wordSizeCount = word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    word_Size_बिलांग = word_बिलांग_2 | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    unsigned ri_count = ri_map.get_population ();
-    regionIndices.len = ri_count;
+    unsigned ri_बिलांग = ri_map.get_population ();
+    regionIndices.len = ri_बिलांग;
     if (unlikely (!c->extend (this))) return_trace (false);
 
-    for (unsigned r = 0; r < ri_count; r++)
+    for (unsigned r = 0; r < ri_बिलांग; r++)
     {
       hb_codepoint_t *idx;
       if (!ri_map.has (r, &idx))
@@ -3204,9 +3204,9 @@ struct VarData
 
     HBUINT8 *delta_bytes = get_delta_bytes ();
     unsigned row_size = get_row_size ();
-    for (unsigned int i = 0; i < row_count; i++)
+    for (unsigned int i = 0; i < row_बिलांग_2; i++)
     {
-      for (unsigned int r = 0; r < ri_count; r++)
+      for (unsigned int r = 0; r < ri_बिलांग; r++)
       {
         int delta = rows[i]->arrayZ[ri_map[r]];
         set_item_delta_fast (i, r, delta, delta_bytes, row_size);
@@ -3223,29 +3223,29 @@ struct VarData
   {
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
-    itemCount = inner_map.get_next_value ();
+    item_बिलांग = inner_map.get_next_हालागा ();
 
     /* Optimize word count */
-    unsigned ri_count = src->regionIndices.len;
+    unsigned ri_बिलांग = src->regionIndices.len;
     enum delta_size_t { kZero=0, kNonWord, kWord };
     hb_vector_t<delta_size_t> delta_sz;
     hb_vector_t<unsigned int> ri_map;	/* maps new index to old index */
-    delta_sz.resize (ri_count);
-    ri_map.resize (ri_count);
-    unsigned int new_word_count = 0;
+    delta_sz.resize (ri_बिलांग);
+    ri_map.resize (ri_बिलांग);
+    unsigned int new_word_बिलांग = 0;
     unsigned int r;
 
     const HBUINT8 *src_delta_bytes = src->get_delta_bytes ();
     unsigned src_row_size = src->get_row_size ();
-    unsigned src_word_count = src->wordCount ();
-    bool     src_long_words = src->longWords ();
+    unsigned src_word_बिलांग = src->word_बिलांग ();
+    bool     src_long_मगा_सालिता = src->long_मगा_सालिता_2 ();
 
     bool has_long = false;
-    if (src_long_words)
+    if (src_long_मगा_सालिता)
     {
-      for (r = 0; r < src_word_count; r++)
+      for (r = 0; r < src_word_बिलांग; r++)
       {
-        for (unsigned old_gid : inner_map.keys())
+        for (unsigned old_gid : inner_map.मगा_सुसि())
 	{
 	  int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
 	  if (delta < -32768 || 32767 < delta)
@@ -3259,20 +3259,20 @@ struct VarData
 
     signed min_threshold = has_long ? -32768 : -128;
     signed max_threshold = has_long ? +32767 : +127;
-    for (r = 0; r < ri_count; r++)
+    for (r = 0; r < ri_बिलांग; r++)
     {
-      bool short_circuit = src_long_words == has_long && src_word_count <= r;
+      bool short_circuit = src_long_मगा_सालिता == has_long && src_word_बिलांग <= r;
 
       delta_sz[r] = kZero;
       if (culled_regions && culled_regions->has (src->regionIndices[r]))
 	continue; /* unreachable region: drop its column */
-      for (unsigned old_gid : inner_map.keys())
+      for (unsigned old_gid : inner_map.मगा_सुसि())
       {
 	int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
 	if (delta < min_threshold || max_threshold < delta)
 	{
 	  delta_sz[r] = kWord;
-	  new_word_count++;
+	  new_word_बिलांग++;
 	  break;
 	}
 	else if (delta != 0)
@@ -3285,32 +3285,32 @@ struct VarData
     }
 
     unsigned int word_index = 0;
-    unsigned int non_word_index = new_word_count;
-    unsigned int new_ri_count = 0;
-    for (r = 0; r < ri_count; r++)
+    unsigned int non_word_index = new_word_बिलांग;
+    unsigned int new_ri_बिलांग = 0;
+    for (r = 0; r < ri_बिलांग; r++)
       if (delta_sz[r])
       {
 	unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
 	ri_map[new_r] = r;
-	new_ri_count++;
+	new_ri_बिलांग++;
       }
 
-    wordSizeCount = new_word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    word_Size_बिलांग = new_word_बिलांग | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    regionIndices.len = new_ri_count;
+    regionIndices.len = new_ri_बिलांग;
 
     if (unlikely (!c->extend (this))) return_trace (false);
 
-    for (r = 0; r < new_ri_count; r++)
+    for (r = 0; r < new_ri_बिलांग; r++)
       regionIndices[r] = region_map[src->regionIndices[ri_map[r]]];
 
     HBUINT8 *delta_bytes = get_delta_bytes ();
     unsigned row_size = get_row_size ();
-    unsigned count = itemCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned बिलांग = item_बिलांग;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       unsigned int old = inner_map.backward (i);
-      for (unsigned int r = 0; r < new_ri_count; r++)
+      for (unsigned int r = 0; r < new_ri_बिलांग; r++)
 	set_item_delta_fast (i, r,
 			     src->get_item_delta_fast (old, ri_map[r],
 						       src_delta_bytes, src_row_size),
@@ -3329,7 +3329,7 @@ struct VarData
     {
       unsigned int region = regionIndices.arrayZ[r];
       if (region_indices.has (region)) continue;
-      for (hb_codepoint_t old_gid : inner_map.keys())
+      for (hb_codepoint_t old_gid : inner_map.मगा_सुसि())
 	if (get_item_delta_fast (old_gid, r, delta_bytes, row_size) != 0)
 	{
 	  region_indices.add (region);
@@ -3350,24 +3350,24 @@ struct VarData
   int32_t get_item_delta_fast (unsigned int item, unsigned int region,
 			       const HBUINT8 *delta_bytes, unsigned row_size) const
   {
-    if (unlikely (item >= itemCount || region >= regionIndices.len)) return 0;
+    if (unlikely (item >= item_बिलांग || region >= regionIndices.len)) return 0;
 
     const HBINT8 *p = (const HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
+    unsigned word_बिलांग_2 = word_बिलांग ();
+    bool is_long = long_मगा_सालिता_2 ();
     if (is_long)
     {
-      if (region < word_count)
+      if (region < word_बिलांग_2)
 	return ((const HBINT32 *) p)[region];
       else
-	return ((const HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count];
+	return ((const HBINT16 *)(p + HBINT32::static_size * word_बिलांग_2))[region - word_बिलांग_2];
     }
     else
     {
-      if (region < word_count)
+      if (region < word_बिलांग_2)
 	return ((const HBINT16 *) p)[region];
       else
-	return (p + HBINT16::static_size * word_count)[region - word_count];
+	return (p + HBINT16::static_size * word_बिलांग_2)[region - word_बिलांग_2];
     }
   }
   int32_t get_item_delta (unsigned int item, unsigned int region) const
@@ -3382,21 +3382,21 @@ struct VarData
 			    HBUINT8 *delta_bytes, unsigned row_size)
   {
     HBINT8 *p = (HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
+    unsigned word_बिलांग_2 = word_बिलांग ();
+    bool is_long = long_मगा_सालिता_2 ();
     if (is_long)
     {
-      if (region < word_count)
+      if (region < word_बिलांग_2)
 	((HBINT32 *) p)[region] = delta;
       else
-	((HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count] = delta;
+	((HBINT16 *)(p + HBINT32::static_size * word_बिलांग_2))[region - word_बिलांग_2] = delta;
     }
     else
     {
-      if (region < word_count)
+      if (region < word_बिलांग_2)
 	((HBINT16 *) p)[region] = delta;
       else
-	(p + HBINT16::static_size * word_count)[region - word_count] = delta;
+	(p + HBINT16::static_size * word_बिलांग_2)[region - word_बिलांग_2] = delta;
     }
   }
   void set_item_delta (unsigned int item, unsigned int region, int32_t delta)
@@ -3406,12 +3406,12 @@ struct VarData
 			 get_row_size ());
   }
 
-  bool longWords () const { return wordSizeCount & 0x8000u /* LONG_WORDS */; }
-  unsigned wordCount () const { return wordSizeCount & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
+  bool long_मगा_सालिता_2 () const { return word_Size_बिलांग & 0x8000u /* LONG_WORDS */; }
+  unsigned word_बिलांग () const { return word_Size_बिलांग & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
 
   protected:
-  HBUINT16		itemCount;
-  HBUINT16		wordSizeCount;
+  HBUINT16		item_बिलांग;
+  HBUINT16		word_Size_बिलांग;
   Array16Of<HBUINT16>	regionIndices;
 /*UnsizedArrayOf<HBUINT8>bytesX;*/
   public:
@@ -3428,20 +3428,20 @@ struct MultiVarData
   { return this+StructAfter<decltype (deltaSetsX)> (regionIndices); }
 
   void get_delta (unsigned int inner,
-		  const int *coords, unsigned int coord_count,
+		  const int *coords, unsigned int coord_बिलांग,
 		  const SparseVarRegionList &regions,
 		  hb_array_t<double> out,
 		  hb_scalar_cache_t *cache = nullptr) const
   {
     auto &deltaSets = get_delta_sets ();
 
-    auto values_iter = deltaSets.fetcher (inner);
-    unsigned regionCount = regionIndices.len;
+    auto मगा_हालागा_iter = deltaSets.fetcher (inner);
+    unsigned region_बिलांग = regionIndices.len;
     unsigned skip = 0;
-    for (unsigned regionIndex = 0; regionIndex < regionCount; regionIndex++)
+    for (unsigned regionIndex = 0; regionIndex < region_बिलांग; regionIndex++)
     {
       float scalar = regions.evaluate (regionIndices.arrayZ[regionIndex],
-				       coords, coord_count,
+				       coords, coord_बिलांग,
 				       cache);
       // We skip lazily. Helps with the tail end.
       if (scalar == 0.0f)
@@ -3450,10 +3450,10 @@ struct MultiVarData
       {
         if (skip)
 	{
-	  values_iter.skip (skip);
+	  मगा_हालागा_iter.skip (skip);
 	  skip = 0;
 	}
-	values_iter.add_to (out, scalar);
+	मगा_हालागा_iter.add_to (out, scalar);
       }
     }
   }
@@ -3469,8 +3469,8 @@ struct MultiVarData
 		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, this));
   }
 
-  unsigned get_item_count () const
-  { return get_delta_sets ().count; }
+  unsigned get_item_बिलांग () const
+  { return get_delta_sets ().बिलांग; }
 
   void collect_region_refs (hb_set_t &region_indices) const
   {
@@ -3484,15 +3484,15 @@ struct MultiVarData
 		  const hb_inc_bimap_t &region_map)
   {
     TRACE_SERIALIZE (this);
-    unsigned region_count = src->regionIndices.len;
+    unsigned region_बिलांग_2 = src->regionIndices.len;
     unsigned header_size = HBUINT8::static_size +
 			   Array16Of<HBUINT16>::min_size +
-			   region_count * HBUINT16::static_size +
+			   region_बिलांग_2 * HBUINT16::static_size +
 			   HBUINT32::static_size;
     if (unlikely (!c->extend_size (this, header_size, false)))
       return_trace (false);
     format = 1;
-    regionIndices.len = region_count;
+    regionIndices.len = region_बिलांग_2;
     for (unsigned i = 0; i < regionIndices.len; i++)
     {
       unsigned old_region = src->regionIndices[i];
@@ -3509,7 +3509,7 @@ struct MultiVarData
     for (unsigned i = 0; i < inner_map.get_population (); i++)
     {
       unsigned old_inner = inner_map.backward (i);
-      if (unlikely (old_inner >= src_delta_sets.count)) return_trace (false);
+      if (unlikely (old_inner >= src_delta_sets.बिलांग)) return_trace (false);
       hb_ubytes_t bytes = static_cast<const CFF2Index &> (src_delta_sets)[old_inner];
       data_size = hb_unsigned_add_saturate (data_size, bytes.length);
       delta_sets.push (bytes);
@@ -3538,7 +3538,7 @@ struct ItemVariationStore
 #ifdef HB_NO_VAR
     return hb_scalar_cache_t::create (0);
 #endif
-    return hb_scalar_cache_t::create ((this+regions).regionCount);
+    return hb_scalar_cache_t::create ((this+regions).region_बिलांग);
   }
 
   static void destroy_cache (hb_scalar_cache_t *cache)
@@ -3549,7 +3549,7 @@ struct ItemVariationStore
   private:
   template <typename Float = float>
   Float get_delta (unsigned int outer, unsigned int inner,
-		   const int *coords, unsigned int coord_count,
+		   const int *coords, unsigned int coord_बिलांग,
 		   hb_scalar_cache_t *cache = nullptr) const
   {
 #ifdef HB_NO_VAR
@@ -3560,7 +3560,7 @@ struct ItemVariationStore
       return Float (0);
 
     return (this+dataSets[outer]).get_delta<Float> (inner,
-					     coords, coord_count,
+					     coords, coord_बिलांग,
 					     this+regions,
 					     cache);
   }
@@ -3575,17 +3575,17 @@ struct ItemVariationStore
     unsigned int outer = index >> 16;
     unsigned int inner = index & 0xFFFF;
     return outer < dataSets.len &&
-	   inner < (this+dataSets[outer]).get_item_count ();
+	   inner < (this+dataSets[outer]).get_item_बिलांग ();
   }
 
   template <typename Float = float>
   Float get_delta (unsigned int index,
-		   const int *coords, unsigned int coord_count,
+		   const int *coords, unsigned int coord_बिलांग,
 		   hb_scalar_cache_t *cache = nullptr) const
   {
     unsigned int outer = index >> 16;
     unsigned int inner = index & 0xFFFF;
-    return get_delta<Float> (outer, inner, coords, coord_count, cache);
+    return get_delta<Float> (outer, inner, coords, coord_बिलांग, cache);
   }
   template <typename Float = float>
   Float get_delta (unsigned int index,
@@ -3627,15 +3627,15 @@ struct ItemVariationStore
     if (!regions.serialize_serialize (c, axis_tags, region_list))
       return_trace (false);
 
-    unsigned num_var_data = vardata_encodings.length;
-    if (!num_var_data) return_trace (false);
-    if (unlikely (!c->check_assign (dataSets.len, num_var_data,
+    unsigned नुमेरो_var_data = vardata_encodings.length;
+    if (!नुमेरो_var_data) return_trace (false);
+    if (unlikely (!c->check_assign (dataSets.len, नुमेरो_var_data,
                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
       return_trace (false);
 
     if (unlikely (!c->extend (dataSets))) return_trace (false);
-    for (unsigned i = 0; i < num_var_data; i++)
-      if (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].items))
+    for (unsigned i = 0; i < नुमेरो_var_data; i++)
+      if (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].मगा_बागाय))
         return_trace (false);
 
     return_trace (true);
@@ -3653,10 +3653,10 @@ struct ItemVariationStore
 
     if (unlikely (!c->extend_min (this))) return_trace (false);
 
-    unsigned int set_count = 0;
+    unsigned int set_बिलांग = 0;
     for (unsigned int i = 0; i < inner_maps.length; i++)
       if (inner_maps[i].get_population ())
-	set_count++;
+	set_बिलांग++;
 
     format = 1;
 
@@ -3669,7 +3669,7 @@ struct ItemVariationStore
     if (region_indices.in_error ())
       return_trace (false);
 
-    region_indices.del_range ((src_regions).regionCount, hb_set_t::INVALID);
+    region_indices.del_range ((src_regions).region_बिलांग, hb_set_t::INVALID);
 
     if (culled_regions)
       region_indices.subtract (*culled_regions);
@@ -3685,7 +3685,7 @@ struct ItemVariationStore
     if (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
       return_trace (false);
 
-    dataSets.len = set_count;
+    dataSets.len = set_बिलांग;
     if (unlikely (!c->extend (dataSets))) return_trace (false);
 
     /* TODO: The following code could be simplified when
@@ -3710,16 +3710,16 @@ struct ItemVariationStore
     if (unlikely (!out)) return_trace (nullptr);
 
     hb_vector_t <hb_inc_bimap_t> inner_maps;
-    unsigned count = dataSets.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = dataSets.len;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_inc_bimap_t *map = inner_maps.push ();
       if (unlikely (!c->propagate_error(inner_maps)))
         return_trace(nullptr);
       auto &data = this+dataSets[i];
 
-      unsigned itemCount = data.get_item_count ();
-      for (unsigned j = 0; j < itemCount; j++)
+      unsigned item_बिलांग = data.get_item_बिलांग ();
+      for (unsigned j = 0; j < item_बिलांग; j++)
 	map->add (j);
     }
 
@@ -3737,8 +3737,8 @@ struct ItemVariationStore
 #ifndef HB_NO_VAR
     if (!reachable_ranges.get_population ()) return true;
     const VarRegionList &region_list = this+regions;
-    unsigned count = region_list.regionCount;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = region_list.region_बिलांग;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
       if (!region_list.get_var_region (i, axes_old_index_tag_map, axis_tuples))
@@ -3759,8 +3759,8 @@ struct ItemVariationStore
     return_trace (false);
 #endif
 
-    ItemVariationStore *varstore_prime = c->serializer->start_embed<ItemVariationStore> ();
-    if (unlikely (!varstore_prime)) return_trace (false);
+    ItemVariationStore *varstore_पांगुनाहिन = c->serializer->start_embed<ItemVariationStore> ();
+    if (unlikely (!varstore_पांगुनाहिन)) return_trace (false);
 
     /* avar2 partial instancing: cull unreachable regions. */
     hb_set_t dead_regions;
@@ -3770,39 +3770,39 @@ struct ItemVariationStore
 				 dead_regions))
 	return_trace (false);
 
-    varstore_prime->serialize (c->serializer, this, inner_maps,
+    varstore_पांगुनाहिन->serialize (c->serializer, this, inner_maps,
 			       dead_regions.get_population () ? &dead_regions : nullptr);
 
     return_trace (
         !c->serializer->in_error()
-        && varstore_prime->dataSets);
+        && varstore_पांगुनाहिन->dataSets);
   }
 
-  unsigned int get_region_index_count (unsigned int major) const
+  unsigned int get_region_index_बिलांग (unsigned int major) const
   {
 #ifdef HB_NO_VAR
     return 0;
 #endif
-    return (this+dataSets[major]).get_region_index_count ();
+    return (this+dataSets[major]).get_region_index_बिलांग ();
   }
 
   void get_region_scalars (unsigned int major,
-			   const int *coords, unsigned int coord_count,
+			   const int *coords, unsigned int coord_बिलांग,
 			   float *scalars /*OUT*/,
-			   unsigned int num_scalars) const
+			   unsigned int नुमेरो_scalars) const
   {
 #ifdef HB_NO_VAR
-    for (unsigned i = 0; i < num_scalars; i++)
+    for (unsigned i = 0; i < नुमेरो_scalars; i++)
       scalars[i] = 0.f;
     return;
 #endif
 
-    (this+dataSets[major]).get_region_scalars (coords, coord_count,
+    (this+dataSets[major]).get_region_scalars (coords, coord_बिलांग,
 					       this+regions,
-					       &scalars[0], num_scalars);
+					       &scalars[0], नुमेरो_scalars);
   }
 
-  unsigned int get_sub_table_count () const
+  unsigned int get_sub_table_बिलांग () const
    {
 #ifdef HB_NO_VAR
      return 0;
@@ -3842,9 +3842,9 @@ struct MultiItemVariationStore
     return hb_scalar_cache_t::create (0);
 #endif
     auto &r = this+regions;
-    unsigned count = r.regions.len;
+    unsigned बिलांग = r.regions.len;
 
-    return hb_scalar_cache_t::create (count, static_cache);
+    return hb_scalar_cache_t::create (बिलांग, static_cache);
   }
 
   static void destroy_cache (hb_scalar_cache_t *cache,
@@ -3855,7 +3855,7 @@ struct MultiItemVariationStore
 
   private:
   void get_delta (unsigned int outer, unsigned int inner,
-		  const int *coords, unsigned int coord_count,
+		  const int *coords, unsigned int coord_बिलांग,
 		  hb_array_t<double> out,
 		  hb_scalar_cache_t *cache = nullptr) const
   {
@@ -3867,7 +3867,7 @@ struct MultiItemVariationStore
       return;
 
     return (this+dataSets[outer]).get_delta (inner,
-					     coords, coord_count,
+					     coords, coord_बिलांग,
 					     this+regions,
 					     out,
 					     cache);
@@ -3875,13 +3875,13 @@ struct MultiItemVariationStore
 
   public:
   void get_delta (unsigned int index,
-		  const int *coords, unsigned int coord_count,
+		  const int *coords, unsigned int coord_बिलांग,
 		  hb_array_t<double> out,
 		  hb_scalar_cache_t *cache = nullptr) const
   {
     unsigned int outer = index >> 16;
     unsigned int inner = index & 0xFFFF;
-    get_delta (outer, inner, coords, coord_count, out, cache);
+    get_delta (outer, inner, coords, coord_बिलांग, out, cache);
   }
   void get_delta (unsigned int index,
 		  hb_array_t<const int> coords,
@@ -3918,7 +3918,7 @@ struct MultiItemVariationStore
       unsigned outer = var_idx >> 16;
       unsigned inner = var_idx & 0xFFFFu;
       if (unlikely (outer >= dataSets.len ||
-		    inner >= (this+dataSets[outer]).get_item_count ()))
+		    inner >= (this+dataSets[outer]).get_item_बिलांग ()))
 	return false;
       (*inner_maps)[outer].add (inner);
     }
@@ -3955,11 +3955,11 @@ struct MultiItemVariationStore
 
     const auto &src_regions = src+src->regions;
     hb_set_t region_indices;
-    unsigned set_count = 0;
+    unsigned set_बिलांग = 0;
     for (unsigned i = 0; i < src->dataSets.len; i++)
     {
       if (!inner_maps[i].get_population ()) continue;
-      set_count++;
+      set_बिलांग++;
       (src+src->dataSets[i]).collect_region_refs (region_indices);
     }
     region_indices.del_range (src_regions.regions.len, hb_set_t::INVALID);
@@ -3969,7 +3969,7 @@ struct MultiItemVariationStore
 		  !regions.serialize_serialize (c, &src_regions, region_map, axis_map)))
       return_trace (false);
 
-    dataSets.len = set_count;
+    dataSets.len = set_बिलांग;
     if (unlikely (!c->extend (dataSets))) return_trace (false);
     unsigned set_index = 0;
     for (unsigned i = 0; i < src->dataSets.len; i++)
@@ -3990,13 +3990,13 @@ struct MultiItemVariationStore
   DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
 };
 
-template <typename MapCountT>
+template <typename Map_बिलांग_T>
 struct DeltaSetIndexMapFormat01
 {
   friend struct DeltaSetIndexMap;
 
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (mapCount, get_width (), min_size); }
+  { return hb_unsigned_mul_add_saturate (map_बिलांग_2, get_width (), min_size); }
 
   private:
   DeltaSetIndexMapFormat01* copy (hb_serialize_context_t *c) const
@@ -4009,16 +4009,16 @@ struct DeltaSetIndexMapFormat01
   bool serialize (hb_serialize_context_t *c, const T &plan)
   {
     unsigned int width = plan.get_width ();
-    unsigned int inner_bit_count = plan.get_inner_bit_count ();
+    unsigned int inner_bit_बिलांग = plan.get_inner_bit_बिलांग ();
     const hb_array_t<const uint32_t> output_map = plan.get_output_map ();
 
     TRACE_SERIALIZE (this);
-    if (unlikely (output_map.length && ((((inner_bit_count-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
+    if (unlikely (output_map.length && ((((inner_bit_बिलांग-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
       return_trace (false);
     if (unlikely (!c->extend_min (this))) return_trace (false);
 
-    entryFormat = ((width-1)<<4)|(inner_bit_count-1);
-    mapCount = output_map.length;
+    entryFormat = ((width-1)<<4)|(inner_bit_बिलांग-1);
+    map_बिलांग_2 = output_map.length;
     HBUINT8 *p = c->allocate_size<HBUINT8> (width * output_map.length);
     if (unlikely (!p)) return_trace (false);
     for (unsigned int i = 0; i < output_map.length; i++)
@@ -4028,7 +4028,7 @@ struct DeltaSetIndexMapFormat01
       {
 	unsigned int outer = v >> 16;
 	unsigned int inner = v & 0xFFFF;
-	unsigned int u = (outer << inner_bit_count) | inner;
+	unsigned int u = (outer << inner_bit_बिलांग) | inner;
 	for (unsigned int w = width; w > 0;)
 	{
 	  p[--w] = u;
@@ -4045,7 +4045,7 @@ struct DeltaSetIndexMapFormat01
   {
     /* If count is zero, pass value unchanged.  This takes
      * care of direct mapping for advance map. */
-    if (!mapCount)
+    if (!map_बिलांग_2)
       return v;
     return _map (v);
   }
@@ -4053,8 +4053,8 @@ struct DeltaSetIndexMapFormat01
   HB_HOT
   uint32_t _map (unsigned int v) const /* Returns 16.16 outer.inner. */
   {
-    if (v >= mapCount)
-      v = mapCount - 1;
+    if (v >= map_बिलांग_2)
+      v = map_बिलांग_2 - 1;
 
     unsigned int u = 0;
     { /* Fetch it. */
@@ -4065,7 +4065,7 @@ struct DeltaSetIndexMapFormat01
     }
 
     { /* Repack it. */
-      unsigned int n = get_inner_bit_count ();
+      unsigned int n = get_inner_bit_बिलांग ();
       unsigned int outer = u >> n;
       unsigned int inner = u & ((1 << n) - 1);
       u = (outer<<16) | inner;
@@ -4074,9 +4074,9 @@ struct DeltaSetIndexMapFormat01
     return u;
   }
 
-  unsigned get_map_count () const       { return mapCount; }
+  unsigned get_map_बिलांग () const       { return map_बिलांग_2; }
   unsigned get_width () const           { return ((entryFormat >> 4) & 3) + 1; }
-  unsigned get_inner_bit_count () const { return (entryFormat & 0xF) + 1; }
+  unsigned get_inner_bit_बिलांग () const { return (entryFormat & 0xF) + 1; }
 
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -4085,7 +4085,7 @@ struct DeltaSetIndexMapFormat01
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
                   c->check_range (mapDataZ.arrayZ,
-                                  mapCount,
+                                  map_बिलांग_2,
                                   get_width ()));
   }
 
@@ -4093,12 +4093,12 @@ struct DeltaSetIndexMapFormat01
   HBUINT8       format;         /* Format identifier--format = 0 */
   HBUINT8       entryFormat;    /* A packed field that describes the compressed
                                  * representation of delta-set indices. */
-  MapCountT     mapCount;       /* The number of mapping entries. */
+  Map_बिलांग_T     map_बिलांग_2;       /* The number of mapping entries. */
   UnsizedArrayOf<HBUINT8>
                 mapDataZ;       /* The delta-set index mapping data. */
 
   public:
-  DEFINE_SIZE_ARRAY (2+MapCountT::static_size, mapDataZ);
+  DEFINE_SIZE_ARRAY (2+Map_बिलांग_T::static_size, mapDataZ);
 };
 
 struct DeltaSetIndexMap
@@ -4125,11 +4125,11 @@ struct DeltaSetIndexMap
     }
   }
 
-  unsigned get_map_count () const
+  unsigned get_map_बिलांग () const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_map_count ();
-    case 1: hb_barrier (); return u.format1.get_map_count ();
+    case 0: hb_barrier (); return u.format0.get_map_बिलांग ();
+    case 1: hb_barrier (); return u.format1.get_map_बिलांग ();
     default:return 0;
     }
   }
@@ -4143,11 +4143,11 @@ struct DeltaSetIndexMap
     }
   }
 
-  unsigned get_inner_bit_count () const
+  unsigned get_inner_bit_बिलांग () const
   {
     switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_inner_bit_count ();
-    case 1: hb_barrier (); return u.format1.get_inner_bit_count ();
+    case 0: hb_barrier (); return u.format0.get_inner_bit_बिलांग ();
+    case 1: hb_barrier (); return u.format1.get_inner_bit_बिलांग ();
     default:return 0;
     }
   }
@@ -4336,10 +4336,10 @@ struct ConditionAxisRange
     if (axes_triple_distances.has (*axis_tag, &triple_dists))
       axis_triple_distances = *triple_dists;
 
-    float normalized_min = renormalizeValue ((double) filterRangeMinValue.to_float (), axis_limit, axis_triple_distances, false);
-    float normalized_max = renormalizeValue ((double) filterRangeMaxValue.to_float (), axis_limit, axis_triple_distances, false);
-    out->filterRangeMinValue.set_float (normalized_min);
-    out->filterRangeMaxValue.set_float (normalized_max);
+    float normalized_min = renormalize_हालागा ((double) filter_Range_Min_हालागा.to_float (), axis_limit, axis_triple_distances, false);
+    float normalized_max = renormalize_हालागा ((double) filter_Range_Max_हालागा.to_float (), axis_limit, axis_triple_distances, false);
+    out->filter_Range_Min_हालागा.set_float (normalized_min);
+    out->filter_Range_Max_हालागा.set_float (normalized_max);
 
     return_trace (c->serializer->check_assign (out->axisIndex, index_map->get (axisIndex),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -4365,11 +4365,11 @@ struct ConditionAxisRange
     }
 
     float axis_min_val = axis_range.minimum;
-    float axis_default_val = axis_range.middle;
+    float axis_default_val = axis_range.गित्ना;
     float axis_max_val = axis_range.maximum;
 
-    float filter_min_val = filterRangeMinValue.to_float ();
-    float filter_max_val = filterRangeMaxValue.to_float ();
+    float filter_min_val = filter_Range_Min_हालागा.to_float ();
+    float filter_max_val = filter_Range_Max_हालागा.to_float ();
 
     if (axis_default_val < filter_min_val ||
         axis_default_val > filter_max_val)
@@ -4388,8 +4388,8 @@ struct ConditionAxisRange
     {
       // add axisIndex->value into the hashmap so we can check if the record is
       // unique with variations
-      uint16_t int_filter_max_val = (uint16_t) filterRangeMaxValue.to_int ();
-      uint16_t int_filter_min_val = (uint16_t) filterRangeMinValue.to_int ();
+      uint16_t int_filter_max_val = (uint16_t) filter_Range_Max_हालागा.to_int ();
+      uint16_t int_filter_min_val = (uint16_t) filter_Range_Min_हालागा.to_int ();
       hb_codepoint_t val = (int_filter_max_val << 16) + int_filter_min_val;
 
       condition_map->set (axisIndex, val);
@@ -4403,7 +4403,7 @@ struct ConditionAxisRange
 		 Instancer *instancer HB_UNUSED) const
   {
     int coord = axisIndex < coord_len ? coords[axisIndex] : 0;
-    return filterRangeMinValue.to_int () <= coord && coord <= filterRangeMaxValue.to_int ();
+    return filter_Range_Min_हालागा.to_int () <= coord && coord <= filter_Range_Max_हालागा.to_int ();
   }
 
   public:
@@ -4416,13 +4416,13 @@ struct ConditionAxisRange
   protected:
   HBUINT16	format;		/* Format identifier--format = 1 */
   HBUINT16	axisIndex;
-  F2DOT14	filterRangeMinValue;
-  F2DOT14	filterRangeMaxValue;
+  F2DOT14	filter_Range_Min_हालागा;
+  F2DOT14	filter_Range_Max_हालागा;
   public:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionValue
+struct Condition_हालागा
 {
   friend struct Condition;
 
@@ -4435,11 +4435,11 @@ struct ConditionValue
     if (varIdx == VarIdx::NO_VARIATION)
       return_trace (true);
 
-    hb_pair_t<unsigned, int> *condition_value;
-    if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) this, &condition_value))
+    hb_pair_t<unsigned, int> *condition_हालागा;
+    if (c->plan->layout_condition_idx_हालागा_map.has ((uintptr_t) this, &condition_हालागा))
     {
-      out->defaultValue = condition_value->second;
-      out->varIdx = condition_value->first;
+      out->default_हालागा_2 = condition_हालागा->second;
+      out->varIdx = condition_हालागा->first;
       return_trace (true);
     }
 
@@ -4448,8 +4448,8 @@ struct ConditionValue
       return_trace (false);
 
     if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		defaultValue + hb_second (*new_varidx_delta),
+		out->default_हालागा_2,
+		default_हालागा_2 + hb_second (*new_varidx_delta),
 		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
       return_trace (false);
     out->varIdx = hb_first (*new_varidx_delta);
@@ -4461,7 +4461,7 @@ struct ConditionValue
   bool evaluate (const int *coords, unsigned int coord_len,
 		 Instancer *instancer) const
   {
-    double value = defaultValue;
+    double value = default_हालागा_2;
     value += instancer->get_condition_delta (varIdx);
     return value > 0;
   }
@@ -4475,7 +4475,7 @@ struct ConditionValue
 
   protected:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  HBINT16	defaultValue;   /* Value at default instance. */
+  HBINT16	default_हालागा_2;   /* Value at default instance. */
   VarIdx	varIdx;		/* Variation index */
   public:
   DEFINE_SIZE_STATIC (8);
@@ -4513,8 +4513,8 @@ struct ConditionAnd
   bool evaluate (const int *coords, unsigned int coord_len,
 		 Instancer *instancer) const
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = conditions.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
 					   coords, coord_len,
 					   instancer))
@@ -4568,8 +4568,8 @@ struct ConditionOr
   bool evaluate (const int *coords, unsigned int coord_len,
 		 Instancer *instancer) const
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = conditions.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
 					  coords, coord_len,
 					  instancer))
@@ -4638,10 +4638,10 @@ struct Condition
 
   static bool serialize_constant (hb_serialize_context_t *c, bool value)
   {
-    auto *out = c->start_embed<ConditionValue> ();
+    auto *out = c->start_embed<Condition_हालागा> ();
     if (unlikely (!out || !c->extend_min (out))) return false;
     out->format = 2;
-    out->defaultValue = value ? 1 : 0;
+    out->default_हालागा_2 = value ? 1 : 0;
     out->varIdx = VarIdx::NO_VARIATION;
     return true;
   }
@@ -4733,7 +4733,7 @@ struct Condition
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_हालागा ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -4741,7 +4741,7 @@ struct Condition
     case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
     case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
     case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    default:return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -4750,14 +4750,14 @@ struct Condition
     TRACE_SANITIZE (this);
 
     if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+      return_trace (c->no_dispatch_return_हालागा ());
 
     return_trace (c->end_recursion (this->dispatch (c)));
   }
 
   bool collect_var_indices (hb_set_t *var_indices,
 			    unsigned depth = HB_MAX_NESTING_LEVEL,
-                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr) const;
+                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_मगा_हालागा = nullptr) const;
 
   bool serialize (hb_serialize_context_t *c,
 		  const Condition *src,
@@ -4773,7 +4773,7 @@ struct Condition
   union {
   struct { HBUINT16 v; }	format;		/* Format identifier */
   ConditionAxisRange	format1;
-  ConditionValue	format2;
+  Condition_हालागा	format2;
   ConditionAnd		format3;
   ConditionOr		format4;
   ConditionNegate	format5;
@@ -4797,7 +4797,7 @@ struct ConditionList
   const Condition& operator[] (unsigned i) const
   { return this+conditions[i]; }
 
-  unsigned get_count () const { return conditions.len; }
+  unsigned get_बिलांग () const { return conditions.len; }
 
   bool serialize (hb_serialize_context_t *c,
 		  const ConditionList *src,
@@ -4834,7 +4834,7 @@ struct ConditionList
 
 inline bool
 Condition::collect_var_indices (hb_set_t *var_indices, unsigned depth,
-                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values) const
+                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_मगा_हालागा) const
 {
   if (unlikely (!depth)) return false;
   switch (u.format.v)
@@ -4846,27 +4846,27 @@ Condition::collect_var_indices (hb_set_t *var_indices, unsigned depth,
       if (u.format2.varIdx != VarIdx::NO_VARIATION)
       {
         var_indices->add (u.format2.varIdx);
-        if (condition_values &&
-            !condition_values->set ((uintptr_t) &u.format2,
-                                    hb_pair (unsigned (u.format2.varIdx), int (u.format2.defaultValue))))
+        if (condition_मगा_हालागा &&
+            !condition_मगा_हालागा->set ((uintptr_t) &u.format2,
+                                    hb_pair (unsigned (u.format2.varIdx), int (u.format2.default_हालागा_2))))
           return false;
       }
       return !var_indices->in_error ();
     case 3:
       for (const auto &offset : u.format3.conditions)
 	if (unlikely (!(&u.format3+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
+							     depth - 1, condition_मगा_हालागा)))
 	  return false;
       return true;
     case 4:
       for (const auto &offset : u.format4.conditions)
 	if (unlikely (!(&u.format4+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
+							     depth - 1, condition_मगा_हालागा)))
 	  return false;
       return true;
     case 5:
       return (&u.format5+u.format5.condition).collect_var_indices (var_indices,
-								  depth - 1, condition_values);
+								  depth - 1, condition_मगा_हालागा);
     default:
       return false;
   }
@@ -4883,10 +4883,10 @@ Condition::serialize (hb_serialize_context_t *c,
   {
     case 0:
     {
-      auto *out = c->start_embed<ConditionValue> ();
+      auto *out = c->start_embed<Condition_हालागा> ();
       if (unlikely (!out || !c->extend_min (out))) return_trace (false);
       out->format = 2;
-      out->defaultValue = 1;
+      out->default_हालागा_2 = 1;
       out->varIdx = VarIdx::NO_VARIATION;
       return_trace (true);
     }
@@ -5000,11 +5000,11 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
     lookup_condition_subset_result_t result =
         condition.subset_lookup_condition (c, depth - 1);
     if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
+      c->serializer->add_link (*offset, c->serializer->आलिसिन_pack ());
     else
     {
-      c->serializer->pop_discard ();
-      out.pop ();
+      c->serializer->आलिसिन_discard ();
+      out.आलिसिन ();
       c->serializer->revert (snap);
     }
     return result;
@@ -5032,13 +5032,13 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
       if (c->plan->axes_location.has (*axis_tag, &normalized_limit))
         axis_limit = *normalized_limit;
 
-      float filter_min = src.filterRangeMinValue.to_float ();
-      float filter_max = src.filterRangeMaxValue.to_float ();
+      float filter_min = src.filter_Range_Min_हालागा.to_float ();
+      float filter_max = src.filter_Range_Max_हालागा.to_float ();
       if (filter_min > filter_max)
         return LOOKUP_CONDITION_SUBSET_FALSE;
       if (axis_limit.is_point ())
-        return filter_min <= axis_limit.middle &&
-	       axis_limit.middle <= filter_max ?
+        return filter_min <= axis_limit.गित्ना &&
+	       axis_limit.गित्ना <= filter_max ?
 	       LOOKUP_CONDITION_SUBSET_TRUE :
 	       LOOKUP_CONDITION_SUBSET_FALSE;
       if (axis_limit.maximum < filter_min ||
@@ -5059,10 +5059,10 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
       if (c->plan->axes_triple_distances.has (*axis_tag, &distances))
         axis_distances = *distances;
 
-      out->filterRangeMinValue.set_float (
-	  renormalizeValue (filter_min, axis_limit, axis_distances, false));
-      out->filterRangeMaxValue.set_float (
-	  renormalizeValue (filter_max, axis_limit, axis_distances, false));
+      out->filter_Range_Min_हालागा.set_float (
+	  renormalize_हालागा (filter_min, axis_limit, axis_distances, false));
+      out->filter_Range_Max_हालागा.set_float (
+	  renormalize_हालागा (filter_max, axis_limit, axis_distances, false));
       if (unlikely (!c->serializer->check_assign (
 		out->axisIndex,
 		c->plan->axes_index_map.get (src.axisIndex),
@@ -5073,7 +5073,7 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
 
     case 2:
     {
-      const ConditionValue &src = u.format2;
+      const Condition_हालागा &src = u.format2;
       auto *out = c->serializer->embed (&src);
       if (unlikely (!out))
         return LOOKUP_CONDITION_SUBSET_ERROR;
@@ -5081,17 +5081,17 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
       if (src.varIdx == VarIdx::NO_VARIATION)
         return c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((int) src.default_हालागा_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      hb_pair_t<unsigned, int> *condition_value;
-      if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) &src, &condition_value))
+      hb_pair_t<unsigned, int> *condition_हालागा;
+      if (c->plan->layout_condition_idx_हालागा_map.has ((uintptr_t) &src, &condition_हालागा))
       {
-        out->defaultValue = condition_value->second;
-        out->varIdx = condition_value->first;
+        out->default_हालागा_2 = condition_हालागा->second;
+        out->varIdx = condition_हालागा->first;
         if (out->varIdx == VarIdx::NO_VARIATION)
-          return out->defaultValue > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+          return out->default_हालागा_2 > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                                         LOOKUP_CONDITION_SUBSET_FALSE;
         return LOOKUP_CONDITION_SUBSET_KEEP;
       }
@@ -5101,7 +5101,7 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
 							&new_varidx_delta))
         return c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((int) src.default_हालागा_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
@@ -5110,17 +5110,17 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
       {
         // Conditions becoming constant depend on the unrounded sign, not
         // the integer delta used to instance positioning values.
-        double value = (int) src.defaultValue +
+        double value = (int) src.default_हालागा_2 +
                       c->plan->layout_variation_delta (src.varIdx);
         return value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                           LOOKUP_CONDITION_SUBSET_FALSE;
       }
 
-      int default_value = (int) src.defaultValue +
+      int default_हालागा = (int) src.default_हालागा_2 +
 			  hb_second (*new_varidx_delta);
       if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		default_value,
+		out->default_हालागा_2,
+		default_हालागा,
 		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return LOOKUP_CONDITION_SUBSET_ERROR;
       out->varIdx = hb_first (*new_varidx_delta);
@@ -5184,11 +5184,11 @@ Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
       if (result == LOOKUP_CONDITION_SUBSET_KEEP)
       {
         c->serializer->add_link (out->condition,
-				 c->serializer->pop_pack ());
+				 c->serializer->आलिसिन_pack ());
         return result;
       }
 
-      c->serializer->pop_discard ();
+      c->serializer->आलिसिन_discard ();
       if (result == LOOKUP_CONDITION_SUBSET_TRUE)
         return LOOKUP_CONDITION_SUBSET_FALSE;
       if (result == LOOKUP_CONDITION_SUBSET_FALSE)
@@ -5206,8 +5206,8 @@ struct ConditionSet
   bool evaluate (const int *coords, unsigned int coord_len,
 		 ItemVarStoreInstancer *instancer) const
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = conditions.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!(this+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
 	return false;
     return true;
@@ -5227,7 +5227,7 @@ struct ConditionSet
     bool should_keep = false;
     /* The range map cannot identify value or boolean expressions uniquely. */
     bool can_deduplicate = true;
-    unsigned num_kept_cond = 0, cond_idx = 0;
+    unsigned नुमेरो_kept_cond = 0, cond_idx = 0;
     for (const auto& offset : conditions)
     {
       const Condition &condition = this+offset;
@@ -5244,7 +5244,7 @@ struct ConditionSet
       {
         should_keep = true;
         cond_set->add (cond_idx);
-        num_kept_cond++;
+        नुमेरो_kept_cond++;
       }
 
       if (ret == KEEP_RECORD_WITH_VAR)
@@ -5255,7 +5255,7 @@ struct ConditionSet
 
     /* Satisfied pinned conditions still terminate first-match processing.
      * Keep their universal record when other axes remain variable. */
-    c->universal = num_kept_cond == 0;
+    c->universal = नुमेरो_kept_cond == 0;
     if (!should_keep && c->all_axes_pinned) return;
 
     //check if condition_set is unique with variations
@@ -5270,20 +5270,20 @@ struct ConditionSet
 
   bool subset (hb_subset_context_t *c,
                hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               bool इसिंगित_catch_all) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (this);
     if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
 
-    if (insert_catch_all) return_trace (true);
+    if (इसिंगित_catch_all) return_trace (true);
 
     hb_set_t *retained_cond_set = nullptr;
     if (l->feature_record_cond_idx_map != nullptr)
       retained_cond_set = l->feature_record_cond_idx_map->get (l->cur_feature_var_record_idx);
 
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = conditions.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (retained_cond_set != nullptr && !retained_cond_set->has (i))
         continue;
@@ -5304,11 +5304,11 @@ struct ConditionSet
                  LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
       if (unlikely (result == LOOKUP_CONDITION_SUBSET_ERROR))
       {
-        c->serializer->pop_discard ();
+        c->serializer->आलिसिन_discard ();
         c->serializer->check_success (false);
         return_trace (false);
       }
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
+      c->serializer->add_link (*offset, c->serializer->आलिसिन_pack ());
     }
 
     return_trace (bool (out->conditions));
@@ -5325,7 +5325,7 @@ struct ConditionSet
     for (const auto &offset : conditions)
       if (unlikely (!(this+offset).collect_var_indices (c->layout_variation_indices,
                                                        HB_MAX_NESTING_LEVEL,
-                                                       c->condition_values)))
+                                                       c->condition_मगा_हालागा)))
 	c->layout_variation_indices->err ();
   }
 
@@ -5381,8 +5381,8 @@ struct FeatureTableSubstitutionRecord
 
     s->push ();
     bool ret = f->subset (c->subset_context, c, tag);
-    if (ret) s->add_link (feature, s->pop_pack ());
-    else s->pop_discard ();
+    if (ret) s->add_link (feature, s->आलिसिन_pack ());
+    else s->आलिसिन_discard ();
 
     return_trace (ret);
   }
@@ -5433,8 +5433,8 @@ struct FeatureTableSubstitution
 
   const Feature *find_substitute (unsigned int feature_index) const
   {
-    unsigned int count = substitutions.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = substitutions.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       const FeatureTableSubstitutionRecord &record = substitutions.arrayZ[i];
       if (record.featureIndex == feature_index)
@@ -5489,7 +5489,7 @@ struct FeatureTableSubstitution
 
   bool subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               bool इसिंगित_catch_all) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
@@ -5498,7 +5498,7 @@ struct FeatureTableSubstitution
     out->version.major = version.major;
     out->version.minor = version.minor;
 
-    if (insert_catch_all)
+    if (इसिंगित_catch_all)
     {
       for (unsigned feature_index : *(l->catch_all_record_feature_idxes))
       {
@@ -5582,7 +5582,7 @@ struct FeatureVariationRecord
   }
 
   bool subset (hb_subset_layout_context_t *c, const void *base,
-               bool insert_catch_all = false) const
+               bool इसिंगित_catch_all = false) const
   {
     TRACE_SUBSET (this);
     auto *out = c->subset_context->serializer->embed (this);
@@ -5590,12 +5590,12 @@ struct FeatureVariationRecord
 
     hb_set_t *retained_conditions = c->feature_record_cond_idx_map ?
         c->feature_record_cond_idx_map->get (c->cur_feature_var_record_idx).get () : nullptr;
-    if (!insert_catch_all && retained_conditions && retained_conditions->is_empty ())
+    if (!इसिंगित_catch_all && retained_conditions && retained_conditions->is_empty ())
       /* A null ConditionSet is the unconditional first-match record. */
       out->conditions = 0;
     else
-      out->conditions.serialize_subset (c->subset_context, conditions, base, c, insert_catch_all);
-    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, insert_catch_all);
+      out->conditions.serialize_subset (c->subset_context, conditions, base, c, इसिंगित_catch_all);
+    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, इसिंगित_catch_all);
 
     return_trace (true);
   }
@@ -5714,7 +5714,7 @@ struct LookupConditionRecord
   {
     if (unlikely (!(base+condition).collect_var_indices (c->layout_variation_indices,
                                                         HB_MAX_NESTING_LEVEL,
-                                                        c->condition_values)))
+                                                        c->condition_मगा_हालागा)))
       c->layout_variation_indices->err ();
   }
 
@@ -5734,10 +5734,10 @@ struct LookupConditionRecord
 					    true);
     if (result != LOOKUP_CONDITION_SUBSET_KEEP)
     {
-      c->serializer->pop_discard ();
+      c->serializer->आलिसिन_discard ();
       return_trace (false);
     }
-    c->serializer->add_link (out->condition, c->serializer->pop_pack ());
+    c->serializer->add_link (out->condition, c->serializer->आलिसिन_pack ());
 
     return_trace (out->lookupIndices.serialize_subset (c, lookupIndices, base, l));
   }
@@ -5936,7 +5936,7 @@ struct FeatureVariations
     return StructAfter<Array32Of<LookupVariationRecord>> (varRecords);
   }
 
-  unsigned record_count () const
+  unsigned record_बिलांग () const
   {
     return varRecords.len;
   }
@@ -5945,8 +5945,8 @@ struct FeatureVariations
 		   unsigned int *index,
 		   ItemVarStoreInstancer *instancer) const
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = varRecords.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       const FeatureVariationRecord &record = varRecords.arrayZ[i];
       if ((this+record.conditions).evaluate (coords, coord_len, instancer))
@@ -6009,8 +6009,8 @@ struct FeatureVariations
 
   void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = varRecords.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       c->cur_record_idx = i;
       varRecords[i].collect_feature_substitutes_with_variations (c, this);
@@ -6031,8 +6031,8 @@ struct FeatureVariations
 			const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
 			hb_set_t       *lookup_indexes /* OUT */) const
   {
-    unsigned count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned बिलांग = varRecords.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (feature_record_cond_idx_map &&
           !feature_record_cond_idx_map->has (i))
@@ -6068,8 +6068,8 @@ struct FeatureVariations
 			 const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
 			 hb_set_t       *feature_indexes /* OUT */) const
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = varRecords.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (feature_record_cond_idx_map != nullptr &&
           !feature_record_cond_idx_map->has (i))
@@ -6125,8 +6125,8 @@ struct FeatureVariations
       }
     }
 
-    unsigned count = (unsigned) (keep_up_to + 1);
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = (unsigned) (keep_up_to + 1);
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       if (l->feature_record_cond_idx_map != nullptr &&
           !l->feature_record_cond_idx_map->has (i))
@@ -6138,8 +6138,8 @@ struct FeatureVariations
 
     if (out->varRecords.len && !l->catch_all_record_feature_idxes->is_empty ())
     {
-      bool insert_catch_all_record = true;
-      subset_record_array (l, &(out->varRecords), this, insert_catch_all_record) (varRecords[0]);
+      bool इसिंगित_catch_all_record = true;
+      subset_record_array (l, &(out->varRecords), this, इसिंगित_catch_all_record) (varRecords[0]);
     }
 
     Array32Of<LookupVariationRecord> *out_lookup_records = nullptr;
@@ -6238,7 +6238,7 @@ struct HintingDevice
 
     unsigned int s = ppem_size - startSize;
 
-    unsigned int byte = deltaValueZ[s >> (4 - f)];
+    unsigned int byte = delta_हालागा_Z[s >> (4 - f)];
     unsigned int bits = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
     unsigned int mask = (0xFFFFu >> (16 - (1 << f)));
 
@@ -6259,9 +6259,9 @@ struct HintingDevice
 					 * 3	Signed 8-bit value, 2 values per uint16
 					 */
   UnsizedArrayOf<HBUINT16>
-		deltaValueZ;		/* Array of compressed data */
+		delta_हालागा_Z;		/* Array of compressed data */
   public:
-  DEFINE_SIZE_ARRAY (6, deltaValueZ);
+  DEFINE_SIZE_ARRAY (6, delta_हालागा_Z);
 };
 
 struct VariationDevice
@@ -6329,7 +6329,7 @@ struct VariationDevice
 		   const ItemVariationStore &store,
 		   hb_scalar_cache_t *store_cache = nullptr) const
   {
-    return store.get_delta (varIdx, font->coords, font->num_coords, store_cache);
+    return store.get_delta (varIdx, font->coords, font->नुमेरो_coords, store_cache);
   }
 
   protected:

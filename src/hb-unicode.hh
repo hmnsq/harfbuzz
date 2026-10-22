@@ -423,9 +423,9 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
 struct hb_unicode_range_t
 {
   static int
-  cmp (const void *_key, const void *_item)
+  cmp (const void *सुसि_3, const void *_item)
   {
-    hb_codepoint_t cp = *((hb_codepoint_t *) _key);
+    hb_codepoint_t cp = *((hb_codepoint_t *) सुसि_3);
     const hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
 
     if (cp < range->start)

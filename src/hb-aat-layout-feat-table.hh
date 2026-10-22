@@ -95,7 +95,7 @@ struct FeatureName
   };
 
   unsigned int get_selector_infos (unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+				   unsigned int                          *selectors_बिलांग, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
 				   unsigned int                          *pdefault_index,  /* OUT.     May be NULL. */
 				   const void *base) const
@@ -114,11 +114,11 @@ struct FeatureName
     if (pdefault_index)
       *pdefault_index = default_index;
 
-    if (selectors_count && selectors)
+    if (selectors_बिलांग && selectors)
     {
-      + settings_table.sub_array (start_offset, selectors_count)
+      + settings_table.sub_array (start_offset, selectors_बिलांग)
       | hb_map ([=] (const SettingName& setting) { return setting.get_info (default_selector); })
-      | hb_sink (hb_array (selectors, *selectors_count))
+      | hb_sink (hb_array (selectors, *selectors_बिलांग))
       ;
     }
     return settings_table.length;
@@ -165,35 +165,35 @@ struct feat
   bool has_data () const { return version.to_int (); }
 
   unsigned int get_feature_types (unsigned int                  start_offset,
-				  unsigned int                 *count,
+				  unsigned int                 *बिलांग,
 				  hb_aat_layout_feature_type_t *features) const
   {
-    if (count && features)
+    if (बिलांग && features)
     {
-      + namesZ.as_array (featureNameCount).sub_array (start_offset, count)
+      + namesZ.as_array (feature_Name_बिलांग).sub_array (start_offset, बिलांग)
       | hb_map (&FeatureName::get_feature_type)
-      | hb_sink (hb_array (features, *count))
+      | hb_sink (hb_array (features, *बिलांग))
       ;
     }
-    return featureNameCount;
+    return feature_Name_बिलांग;
   }
 
   bool exposes_feature (hb_aat_layout_feature_type_t feature_type) const
   { return get_feature (feature_type).has_data (); }
 
   const FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return namesZ.bsearch (featureNameCount, feature_type); }
+  { return namesZ.bsearch (feature_Name_बिलांग, feature_type); }
 
   hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) const
   { return get_feature (feature).get_feature_name_id (); }
 
   unsigned int get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
 				   unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+				   unsigned int                          *selectors_बिलांग, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
 				   unsigned int                          *default_index    /* OUT.     May be NULL. */) const
   {
-    return get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
+    return get_feature (feature_type).get_selector_infos (start_offset, selectors_बिलांग, selectors,
 							  default_index, this);
   }
 
@@ -203,13 +203,13 @@ struct feat
     return_trace (likely (c->check_struct (this) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  namesZ.sanitize (c, featureNameCount, this)));
+			  namesZ.sanitize (c, feature_Name_बिलांग, this)));
   }
 
   protected:
   FixedVersion<>version;	/* Version number of the feature name table
 				 * (0x00010000 for the current version). */
-  HBUINT16	featureNameCount;
+  HBUINT16	feature_Name_बिलांग;
 				/* The number of entries in the feature name array. */
   HBUINT16	reserved1;	/* Reserved (set to zero). */
   HBUINT32	reserved2;	/* Reserved (set to zero). */

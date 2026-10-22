@@ -41,7 +41,7 @@ namespace OT {
 namespace CFF {
 
 // Forward declaration
-struct cff2_top_dict_values_t;
+struct cff2_इताअस_dict_मगा_हालागा_t;
 
 // Default font name for converted CFF1 fonts
 static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
@@ -105,7 +105,7 @@ struct cff1_subset_plan_from_cff2_t
 };
 
 /* CFF1 Top DICT operator serializer that adds ROS and removes CFF2-specific ops */
-struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+struct cff1_from_cff2_इताअस_dict_op_serializer_t : cff_इताअस_dict_op_serializer_t<>
 {
   bool serialize (hb_serialize_context_t *c,
                   const op_str_t &opstr,
@@ -167,7 +167,7 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 HB_INTERNAL bool
 serialize_cff2_to_cff1 (hb_serialize_context_t *c,
                         OT::cff2_subset_plan &plan,
-                        const cff2_top_dict_values_t &cff2_topDict,
+                        const cff2_इताअस_dict_मगा_हालागा_t &cff2_इताअस_Dict,
                         const OT::cff2::accelerator_subset_t &acc);
 
 } /* namespace CFF */

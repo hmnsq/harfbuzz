@@ -38,13 +38,13 @@ struct PosLookup : Lookup
   hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
   {
     if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+      return hb_closure_lookups_context_t::default_return_हालागा ();
 
     c->set_lookup_visited (this_index);
     if (!intersects (c->glyphs))
     {
       c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      return hb_closure_lookups_context_t::default_return_हालागा ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);

@@ -191,27 +191,27 @@ struct hb_bit_page_t
   // Writes out page values to the array p. Returns the number of values
   // written. At most size codepoints will be written.
   unsigned int write (uint32_t        base,
-		      unsigned int    start_value,
+		      unsigned int    start_हालागा,
 		      hb_codepoint_t *p,
 		      unsigned int    size) const
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned int start_v = start_हालागा / ELT_BITS;
+    unsigned int start_bit = start_हालागा & ELT_MASK;
+    unsigned int बिलांग = 0;
+    for (unsigned i = start_v; i < len () && बिलांग < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_base = base | (i * ELT_BITS);
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      for (unsigned int j = start_bit; j < ELT_BITS && बिलांग < size; j++)
       {
 	if ((elt_t(1) << j) & bits) {
 	  *p++ = v_base | j;
-	  count++;
+	  बिलांग++;
 	}
       }
       start_bit = 0;
     }
-    return count;
+    return बिलांग;
   }
 
   // Writes out the values NOT in this page to the array p. Returns the
@@ -221,36 +221,36 @@ struct hb_bit_page_t
   // any missing value gaps between this page and the previous page, if any.
   // next_value is updated to one more than the last value present in this page.
   unsigned int write_inverted (uint32_t        base,
-			       unsigned int    start_value,
+			       unsigned int    start_हालागा,
 			       hb_codepoint_t *p,
 			       unsigned int    size,
-			       hb_codepoint_t *next_value) const
+			       hb_codepoint_t *next_हालागा) const
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    unsigned int start_v = start_हालागा / ELT_BITS;
+    unsigned int start_bit = start_हालागा & ELT_MASK;
+    unsigned int बिलांग = 0;
+    for (unsigned i = start_v; i < len () && बिलांग < size; i++)
     {
       elt_t bits = v[i];
       uint32_t v_offset = i * ELT_BITS;
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      for (unsigned int j = start_bit; j < ELT_BITS && बिलांग < size; j++)
       {
 	if ((elt_t(1) << j) & bits)
 	{
 	  hb_codepoint_t value = base | v_offset | j;
 	  // Emit all the missing values from next_value up to value - 1.
-	  for (hb_codepoint_t k = *next_value; k < value && count < size; k++)
+	  for (hb_codepoint_t k = *next_हालागा; k < value && बिलांग < size; k++)
 	  {
 	    *p++ = k;
-	    count++;
+	    बिलांग++;
 	  }
 	  // Skip over this value;
-	  *next_value = value + 1;
+	  *next_हालागा = value + 1;
 	}
       }
       start_bit = 0;
     }
-    return count;
+    return बिलांग;
   }
 
   bool operator == (const hb_bit_page_t &other) const { return is_equal (other); }
@@ -383,7 +383,7 @@ struct hb_bit_page_t
   iter_t iter () const { return iter_t (*this); }
   operator iter_t () const { return iter (); }
 
-  static constexpr hb_codepoint_t INVALID = HB_SET_VALUE_INVALID;
+  static constexpr hb_codepoint_t INVALID = HB_SET_हालागा_INVALID;
 
   typedef unsigned long long elt_t;
   static constexpr unsigned PAGE_BITS_LOG_2 = 9; // 512 bits

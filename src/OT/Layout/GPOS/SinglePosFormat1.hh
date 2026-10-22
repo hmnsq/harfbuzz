@@ -9,20 +9,20 @@ namespace Layout {
 namespace GPOS_impl {
 
 template <typename Types>
-struct SinglePosFormat1_3 : ValueBase
+struct SinglePosFormat1_3 : हालागा_Base
 {
   protected:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  हालागा_Format   हालागा_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
-  ValueRecord   values;                 /* Defines positioning
+  हालागा_Record   values;                 /* Defines positioning
                                          * value(s)--applied to all glyphs in
                                          * the Coverage table */
   public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size, values);
+  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + हालागा_Format::static_size, values);
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -37,7 +37,7 @@ struct SinglePosFormat1_3 : ValueBase
                    *
                    * Note: This check *must* be right after coverage sanitize. */
                   c->check_ops ((this + coverage).get_population () >> 1) &&
-                  valueFormat.sanitize_value (c, this, values));
+                  हालागा_Format_2.sanitize_हालागा (c, this, values));
 
   }
 
@@ -47,21 +47,21 @@ struct SinglePosFormat1_3 : ValueBase
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    if (!valueFormat.has_device ()) return;
+    if (!हालागा_Format_2.has_device ()) return;
 
     hb_set_t intersection;
     (this+coverage).intersect_set (*c->glyph_set, intersection);
     if (!intersection) return;
 
-    valueFormat.collect_variation_indices (c, this, values.as_array (valueFormat.get_len ()));
+    हालागा_Format_2.collect_variation_indices (c, this, values.as_array (हालागा_Format_2.get_len ()));
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return; }
 
   const Coverage &get_coverage () const { return this+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  हालागा_Format get_हालागा_format () const { return हालागा_Format_2; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
@@ -77,7 +77,7 @@ struct SinglePosFormat1_3 : ValueBase
 			  c->buffer->idx);
     }
 
-    valueFormat.apply_value (c, this, values, buffer->cur_pos());
+    हालागा_Format_2.apply_हालागा (c, this, values, buffer->cur_pos());
 
     if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
@@ -100,7 +100,7 @@ struct SinglePosFormat1_3 : ValueBase
     unsigned int index = (this+coverage).get_coverage  (gid);
     if (likely (index == NOT_COVERED)) return false;
 
-    valueFormat.position_single (font, table_blob, direction, this,
+    हालागा_Format_2.position_single (font, table_blob, direction, this,
                                  values, pos);
     return true;
   }
@@ -108,20 +108,20 @@ struct SinglePosFormat1_3 : ValueBase
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
   void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+                  const हालागा_Base *src,
+                  हालागा_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
+                  हालागा_Format newFormat,
                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
   {
     if (unlikely (!c->extend_min (this))) return;
-    if (unlikely (!c->check_assign (valueFormat,
+    if (unlikely (!c->check_assign (हालागा_Format_2,
                                     newFormat,
                                     HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
 
-    for (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
+    for (const hb_array_t<const हालागा>& _ : + it | hb_map (hb_second))
     {
-      src_format.copy_values (c, newFormat, src,  &_, layout_variation_idx_delta_map);
+      src_format.copy_मगा_हालागा (c, newFormat, src,  &_, layout_variation_idx_delta_map);
       // Only serialize the first entry in the iterator, the rest are assumed to
       // be the same.
       break;
@@ -144,11 +144,11 @@ struct SinglePosFormat1_3 : ValueBase
     hb_set_t intersection;
     (this+coverage).intersect_set (glyphset, intersection);
 
-    unsigned new_format = valueFormat;
+    unsigned new_format = हालागा_Format_2;
 
     if (c->plan->normalized_coords)
     {
-      new_format = valueFormat.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
+      new_format = हालागा_Format_2.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
     else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
@@ -162,7 +162,7 @@ struct SinglePosFormat1_3 : ValueBase
        * subsetting*/
       if (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
-      new_format = valueFormat.get_effective_format (values.arrayZ,
+      new_format = हालागा_Format_2.get_effective_format (values.arrayZ,
                                                      strip, /* strip hints */
                                                      true, /* strip empty */
                                                      this, nullptr);
@@ -171,11 +171,11 @@ struct SinglePosFormat1_3 : ValueBase
     auto it =
     + hb_iter (intersection)
     | hb_map_retains_sorting (glyph_map)
-    | hb_zip (hb_repeat (values.as_array (valueFormat.get_len ())))
+    | hb_zip (hb_repeat (values.as_array (हालागा_Format_2.get_len ())))
     ;
 
     bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    SinglePos_serialize (c->serializer, this, हालागा_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };

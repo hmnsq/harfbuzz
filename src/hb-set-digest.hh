@@ -120,9 +120,9 @@ struct hb_set_digest_t
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void add_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       add (*array);
       array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
@@ -131,9 +131,9 @@ struct hb_set_digest_t
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  bool add_sorted_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
   {
-    add_array (array, count, stride);
+    add_array (array, बिलांग, stride);
     return true;
   }
   template <typename T>

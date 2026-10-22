@@ -116,10 +116,10 @@ struct hb_raster_paint_t
   hb_map_t           *custom_palette     = nullptr;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
+  hb_vector_t<hb_transform_t<>>     transform_सालानसान;
+  hb_vector_t<hb_raster_clip_t>     clip_सालानसान;
   hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_vector_t<hb_raster_image_t *>  surface_सालानसान;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
   hb_vector_t<hb_raster_image_t *>  surface_cache;
@@ -160,7 +160,7 @@ struct hb_raster_paint_t
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
     pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+		      (surface_सालानसान.length ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
@@ -189,7 +189,7 @@ struct hb_raster_paint_t
   {
     hb_raster_image_t *img;
     if (surface_cache.length)
-      img = surface_cache.pop ();
+      img = surface_cache.आलिसिन ();
     else
     {
       img = hb_raster_image_create_or_fail ();
@@ -207,7 +207,7 @@ struct hb_raster_paint_t
 
   void release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    if (!surface_cache.इतुलाक_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
@@ -215,7 +215,7 @@ struct hb_raster_paint_t
   {
     hb_raster_clip_t clip;
     if (clip_cache.length)
-      clip = clip_cache.pop ();
+      clip = clip_cache.आलिसिन ();
     clip.width = w;
     clip.height = h;
     clip.stride = (w + 3u) & ~3u;
@@ -234,25 +234,25 @@ struct hb_raster_paint_t
 
   void release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    while (clip_सालानसान.length)
+      release_clip (clip_सालानसान.आलिसिन ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    return surface_सालानसान.length ? surface_सालानसान.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    return clip_सालानसान.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
+    if (unlikely (!transform_सालानसान.length))
       return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    return transform_सालानसान.tail ();
   }
 
   void apply_scale_factor (hb_transform_t<> &t) const
@@ -272,15 +272,15 @@ struct hb_raster_paint_t
     return t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  bool fetch_color_stops (hb_color_लिन्या_t *color_लिन्या)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    unsigned बिलांग = hb_color_लिन्या_get_color_stops (color_लिन्या, 0, nullptr, nullptr);
+    if (unlikely (!बिलांग || !scratch_color_stops.resize (बिलांग)))
     {
       scratch_color_stops.resize (0);
       return false;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
+    hb_color_लिन्या_get_color_stops (color_लिन्या, 0, &बिलांग, scratch_color_stops.arrayZ);
     return true;
   }
 };

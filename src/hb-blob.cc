@@ -282,7 +282,7 @@ hb_blob_destroy (hb_blob_t *blob)
  **/
 hb_bool_t
 hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
+		       hb_user_data_सुसि_t *key,
 		       void *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
@@ -304,7 +304,7 @@ hb_blob_set_user_data (hb_blob_t          *blob,
  **/
 void *
 hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key)
+		       hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (blob, key);
 }
@@ -427,25 +427,25 @@ hb_blob_t::try_make_writable_inplace_unix ()
 #endif
 
   if ((uintptr_t) -1L == pagesize) {
-    DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
+    DEBUG_मेनसाहे_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
     return false;
   }
-  DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
+  DEBUG_मेनसाहे_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
 
   mask = ~(pagesize-1);
   addr = (const char *) (((uintptr_t) this->data) & mask);
   length = (const char *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
-  DEBUG_MSG_FUNC (BLOB, this,
+  DEBUG_मेनसाहे_FUNC (BLOB, this,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
 		  addr, addr+length, (unsigned long) length);
   if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
-    DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
+    DEBUG_मेनसाहे_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
     return false;
   }
 
   this->mode = HB_MEMORY_MODE_WRITABLE;
 
-  DEBUG_MSG_FUNC (BLOB, this,
+  DEBUG_मेनसाहे_FUNC (BLOB, this,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
 		  addr, addr+length, (unsigned long) length);
   return true;
@@ -457,12 +457,12 @@ hb_blob_t::try_make_writable_inplace_unix ()
 bool
 hb_blob_t::try_make_writable_inplace ()
 {
-  DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
+  DEBUG_मेनसाहे_FUNC (BLOB, this, "making writable inplace\n");
 
   if (this->try_make_writable_inplace_unix ())
     return true;
 
-  DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
+  DEBUG_मेनसाहे_FUNC (BLOB, this, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
   this->mode = HB_MEMORY_MODE_READONLY;
@@ -485,7 +485,7 @@ hb_blob_t::try_make_writable ()
     return true;
 
 
-  DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
+  DEBUG_मेनसाहे_FUNC (BLOB, this, "current data is -> %p\n", this->data);
 
   char *new_data;
 
@@ -493,7 +493,7 @@ hb_blob_t::try_make_writable ()
   if (unlikely (!new_data))
     return false;
 
-  DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
+  DEBUG_मेनसाहे_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
 
   hb_memcpy (new_data, this->data, this->length);
   this->destroy_user_data ();
@@ -522,8 +522,8 @@ hb_blob_t::try_make_writable ()
 #ifdef _WIN32
 # include <windows.h>
 #else
-# ifndef O_BINARY
-#  define O_BINARY 0
+# ifndef O_दालावाहान
+#  define O_दालावाहान 0
 # endif
 #endif
 
@@ -572,7 +572,7 @@ _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
   strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
 	   sizeof (_PATH_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  int fd = open (rsrc_name, O_RDONLY | O_दालावाहान, 0);
   hb_free (rsrc_name);
 
   if (fd != -1)
@@ -623,7 +623,7 @@ _hb_blob_try_mmap (const char *file_name)
   if (unlikely (!file)) return nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
+  int fd = open (file_name, O_RDONLY | O_दालावाहान, 0);
   if (unlikely (fd == -1)) return nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
 
@@ -695,14 +695,14 @@ _hb_blob_try_mmap (const char *file_name)
 #endif
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
+  if (unlikely (fd == INVALID_HANDLE_हालागा)) return nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
 #if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     LARGE_INTEGER length;
     GetFileSizeEx (fd, &length);
-    file->length = length.LowPart;
+    file->length = length.माबाबा_Part;
     file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
   }
 #else

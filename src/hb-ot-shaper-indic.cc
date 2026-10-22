@@ -97,11 +97,11 @@ struct hb_indic_would_substitute_feature_t
   }
 
   bool would_substitute (const hb_codepoint_t *glyphs,
-			 unsigned int          glyphs_count,
+			 unsigned int          glyphs_बिलांग,
 			 hb_face_t            *face) const
   {
     for (const auto &lookup : lookups)
-      if (hb_ot_layout_lookup_would_substitute (face, lookup.index, glyphs, glyphs_count, zero_context))
+      if (hb_ot_layout_lookup_would_substitute (face, lookup.index, glyphs, glyphs_बिलांग, zero_context))
 	return true;
     return false;
   }
@@ -219,7 +219,7 @@ enum {
   _INDIC_PSTS,
   _INDIC_HALN,
 
-  INDIC_NUM_FEATURES,
+  INDIC_नुमेरो_FEATURES,
   INDIC_BASIC_FEATURES = INDIC_INIT, /* Don't forget to update this! */
 };
 
@@ -260,7 +260,7 @@ collect_features_indic (hb_ot_shape_planner_t *plan)
 
   map->add_gsub_pause (final_reordering_indic);
 
-  for (; i < INDIC_NUM_FEATURES; i++)
+  for (; i < INDIC_नुमेरो_FEATURES; i++)
     map->add_feature (indic_features[i]);
 }
 
@@ -304,7 +304,7 @@ struct indic_shape_plan_t
   hb_indic_would_substitute_feature_t pstf;
   hb_indic_would_substitute_feature_t vatu;
 
-  hb_mask_t mask_array[INDIC_NUM_FEATURES];
+  hb_mask_t mask_array[INDIC_नुमेरो_FEATURES];
 };
 
 static void *
@@ -399,9 +399,9 @@ setup_masks_indic (const hb_ot_shape_plan_t *plan HB_UNUSED,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     set_indic_properties (info[i]);
 }
 
@@ -439,9 +439,9 @@ update_consonant_positions_indic (const hb_ot_shape_plan_t *plan,
   if (indic_plan->load_virama_glyph (font, &virama))
   {
     hb_face_t *face = font->face;
-    unsigned int count = buffer->len;
+    unsigned int बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (info[i].indic_position() == POS_BASE_C)
       {
 	hb_codepoint_t consonant = info[i].codepoint;
@@ -738,8 +738,8 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
     hb_stable_sort (info + start, end - start, compare_indic_order);
 
     /* Find base again; also flip left-matra sequence. */
-    unsigned first_left_matra = end;
-    unsigned last_left_matra = end;
+    unsigned first_कालिवा_matra = end;
+    unsigned last_कालिवा_matra = end;
     base = end;
     for (unsigned int i = start; i < end; i++)
     {
@@ -750,19 +750,19 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
       }
       else if (info[i].indic_position() == POS_PRE_M)
       {
-        if (first_left_matra == end)
-	  first_left_matra = i;
-	last_left_matra = i;
+        if (first_कालिवा_matra == end)
+	  first_कालिवा_matra = i;
+	last_कालिवा_matra = i;
       }
     }
     /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-    if (first_left_matra < last_left_matra)
+    if (first_कालिवा_matra < last_कालिवा_matra)
     {
       /* No need to merge clusters, handled later. */
-      buffer->reverse_range (first_left_matra, last_left_matra + 1);
+      buffer->reverse_range (first_कालिवा_matra, last_कालिवा_matra + 1);
       /* Reverse back nuktas, etc. */
-      unsigned i = first_left_matra;
-      for (unsigned j = i; j <= last_left_matra; j++)
+      unsigned i = first_कालिवा_matra;
+      for (unsigned j = i; j <= last_कालिवा_matra; j++)
 	if (FLAG_UNSAFE (info[j].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
 	{
 	  buffer->reverse_range (i, j + 1);
@@ -959,7 +959,7 @@ initial_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
      initial_reordering_standalone_cluster (plan, face, buffer, start, end);
      break;
 
-    case indic_symbol_cluster:
+    case indic_सिम्बोलो_cluster:
     case indic_non_indic_cluster:
       break;
   }
@@ -975,7 +975,7 @@ initial_reordering_indic (const hb_ot_shape_plan_t *plan,
     return ret;
 
   update_consonant_positions_indic (plan, font, buffer);
-  if (hb_syllabic_insert_dotted_circles (font, buffer,
+  if (hb_syllabic_इसिंगित_dotted_circles (font, buffer,
 					 indic_broken_cluster,
 					 I_Cat(DOTTEDCIRCLE),
 					 I_Cat(Repha),
@@ -1440,8 +1440,8 @@ final_reordering_indic (const hb_ot_shape_plan_t *plan,
 			hb_font_t *font HB_UNUSED,
 			hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
-  if (unlikely (!count)) return false;
+  unsigned int बिलांग = buffer->len;
+  if (unlikely (!बिलांग)) return false;
 
   if (buffer->message (font, "start reordering indic final")) {
     foreach_syllable (buffer, start, end)
@@ -1490,7 +1490,7 @@ decompose_indic (const hb_ot_shape_normalize_context_t *c,
     /* case 0x0AC9u  : return false; */
 
     /* Oriya */
-    case 0x0B57u  : *a = no decomp, -> RIGHT; return true;
+    case 0x0B57u  : *a = no decomp, -> कानान_3; return true;
 #endif
   }
 

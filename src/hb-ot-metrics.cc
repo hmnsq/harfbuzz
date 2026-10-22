@@ -65,7 +65,7 @@ _hb_ot_metrics_get_position_common (hb_font_t           *font,
   switch ((unsigned) metrics_tag)
   {
 #ifndef HB_NO_VAR
-#define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords)
+#define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->नुमेरो_coords)
 #else
 #define GET_VAR .0f
 #endif
@@ -88,14 +88,14 @@ _hb_ot_metrics_get_position_common (hb_font_t           *font,
   case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
     return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
 	   GET_HEA_METRIC_Y (hhea, descender);
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoLineGap)) ||
-	   GET_HEA_METRIC_Y (hhea, lineGap);
+  case HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP:
+    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, s_Typo_लिन्या_Gap)) ||
+	   GET_HEA_METRIC_Y (hhea, लिन्या_Gap);
 
 #ifndef HB_NO_VERTICAL
   case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  return GET_HEA_METRIC_X (vhea, ascender);
   case HB_OT_METRICS_TAG_VERTICAL_DESCENDER: return GET_HEA_METRIC_X (vhea, descender);
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:  return GET_HEA_METRIC_X (vhea, lineGap);
+  case HB_OT_METRICS_TAG_VERTICAL_लिन्या_GAP:  return GET_HEA_METRIC_X (vhea, लिन्या_Gap);
 #endif
 
 #undef GET_HEA_METRIC_Y
@@ -114,7 +114,7 @@ _get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
 {
   const OT::GaspRange& range = face->table.gasp->get_gasp_range (metrics_tag - HB_TAG ('g','s','p','0'));
   if (&range == &Null (OT::GaspRange)) return false;
-  if (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  if (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->नुमेरो_coords);
   return true;
 }
 #endif
@@ -124,8 +124,8 @@ _get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
 #define _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA  HB_TAG ('H','a','s','c')
 #define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2  HB_TAG ('O','d','s','c')
 #define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA HB_TAG ('H','d','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2   HB_TAG ('O','l','g','p')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA  HB_TAG ('H','l','g','p')
+#define HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP_OS2   HB_TAG ('O','l','g','p')
+#define HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP_HHEA  HB_TAG ('H','l','g','p')
 
 /**
  * hb_ot_metrics_get_position:
@@ -148,10 +148,10 @@ hb_ot_metrics_get_position (hb_font_t           *font,
   {
   case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
   case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
+  case HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP:
   case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
   case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:           return _hb_ot_metrics_get_position_common (font, metrics_tag, position);
+  case HB_OT_METRICS_TAG_VERTICAL_लिन्या_GAP:           return _hb_ot_metrics_get_position_common (font, metrics_tag, position);
 #ifndef HB_NO_VAR
 #define GET_VAR hb_ot_metrics_get_variation (font, metrics_tag)
 #else
@@ -241,8 +241,8 @@ hb_ot_metrics_get_position (hb_font_t           *font,
   case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   return GET_HEA_METRIC_Y (hhea, ascender);
   case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   return GET_METRIC_Y (OS2, sTypoDescender);
   case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  return GET_HEA_METRIC_Y (hhea, descender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2:    return GET_METRIC_Y (OS2, sTypoLineGap);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA:   return GET_HEA_METRIC_Y (hhea, lineGap);
+  case HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP_OS2:    return GET_METRIC_Y (OS2, s_Typo_लिन्या_Gap);
+  case HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP_HHEA:   return GET_HEA_METRIC_Y (hhea, लिन्या_Gap);
 #undef GET_HEA_METRIC_Y
 #undef GET_HEA_METRIC_X
 #undef GET_METRIC_Y
@@ -304,14 +304,14 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
     *position = font_extents.ascender;
     break;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
+  case HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
-    *position = font_extents.line_gap;
+    *position = font_extents.लिन्या_gap;
     break;
 
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:
+  case HB_OT_METRICS_TAG_VERTICAL_लिन्या_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
-    *position = font_extents.line_gap;
+    *position = font_extents.लिन्या_gap;
     break;
 
   case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
@@ -385,7 +385,7 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
     *position = font->y_scale / 5;
     break;
 
-  case _HB_OT_METRICS_TAG_MAX_VALUE:
+  case HB_OT_METRICS_TAG_MAX_हालागा:
   default:
     *position = 0;
     break;
@@ -408,7 +408,7 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
 float
 hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
 {
-  return font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  return font->face->table.MVAR->get_var (metrics_tag, font->coords, font->नुमेरो_coords);
 }
 
 /**

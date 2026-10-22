@@ -77,14 +77,14 @@ main (int argc, char **argv)
   hb_buffer_t *buf;
   buf = hb_buffer_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  char लिन्या[BUFSIZ], out[BUFSIZ];
+  while (fgets (लिन्या, sizeof(लिन्या), stdin))
   {
     hb_buffer_clear_contents (buf);
 
     while (true)
     {
-      const char *p = line;
+      const char *p = लिन्या;
       const char *end = p + strlen (p);
       if (p < end && *(end - 1) == '\n')
 	  end--;
@@ -99,23 +99,23 @@ main (int argc, char **argv)
 
       if (*p == '\n')
         break;
-      if (p == line)
+      if (p == लिन्या)
       {
 	ret = false;
 	break;
       }
 
       unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      memmove (लिन्या, p, len);
+      if (!fgets (लिन्या + len, sizeof(लिन्या) - len, stdin))
+        लिन्या[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    unsigned बिलांग = hb_buffer_get_length (buf);
+    for (unsigned offset = 0; offset < बिलांग;)
     {
       unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
+      offset += hb_buffer_serialize_glyphs (buf, offset, बिलांग,
 					    out, sizeof (out), &len,
 					    font,
 					    format,

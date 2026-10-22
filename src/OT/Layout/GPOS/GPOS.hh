@@ -54,7 +54,7 @@ struct GPOS : GSUBGPOS
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
+    for (unsigned i = 0; i < GSUBGPOS::get_lookup_बिलांग (); i++)
     {
       if (!c->gpos_lookups->has (i)) continue;
       const PosLookup &l = get_lookup (i);
@@ -149,8 +149,8 @@ propagate_attachment_offsets (hb_glyph_position_t *pos,
 void
 GPOS::position_start (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned int बिलांग = buffer->len;
+  for (unsigned int i = 0; i < बिलांग; i++)
     buffer->pos[i].attach_chain() = buffer->pos[i].attach_type() = 0;
 }
 

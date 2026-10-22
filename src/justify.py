@@ -14,9 +14,9 @@ def move_to_f(funcs, draw_data, st, to_x, to_y, user_data):
     context.move_to(to_x, to_y)
 
 
-def line_to_f(funcs, draw_data, st, to_x, to_y, user_data):
+def लिन्या_to_f(funcs, draw_data, st, to_x, to_y, user_data):
     context = POOL[draw_data]
-    context.line_to(to_x, to_y)
+    context.लिन्या_to(to_x, to_y)
 
 
 def cubic_to_f(
@@ -42,16 +42,16 @@ def close_path_f(funcs, draw_data, st, user_data):
 
 DFUNCS = hb.draw_funcs_create()
 hb.draw_funcs_set_move_to_func(DFUNCS, move_to_f, None)
-hb.draw_funcs_set_line_to_func(DFUNCS, line_to_f, None)
+hb.draw_funcs_set_लिन्या_to_func(DFUNCS, लिन्या_to_f, None)
 hb.draw_funcs_set_cubic_to_func(DFUNCS, cubic_to_f, None)
 hb.draw_funcs_set_close_path_func(DFUNCS, close_path_f, None)
 
 
-def push_transform_f(funcs, paint_data, xx, yx, xy, yy, dx, dy, user_data):
+def इतुलाक_transform_f(funcs, paint_data, xx, yx, xy, yy, dx, dy, user_data):
     raise NotImplementedError
 
 
-def pop_transform_f(funcs, paint_data, user_data):
+def आलिसिन_transform_f(funcs, paint_data, user_data):
     raise NotImplementedError
 
 
@@ -65,14 +65,14 @@ def color_f(funcs, paint_data, is_foreground, color, user_data):
     context.paint()
 
 
-def push_clip_rectangle_f(funcs, paint_data, xmin, ymin, xmax, ymax, user_data):
+def इतुलाक_clip_rectangle_f(funcs, paint_data, xmin, ymin, xmax, ymax, user_data):
     context = POOL[paint_data]
     context.save()
     context.rectangle(xmin, ymin, xmax, ymax)
     context.clip()
 
 
-def push_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
+def इतुलाक_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
     context = POOL[paint_data]
     context.save()
     context.new_path()
@@ -81,34 +81,34 @@ def push_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
     context.clip()
 
 
-def pop_clip_f(funcs, paint_data, user_data):
+def आलिसिन_clip_f(funcs, paint_data, user_data):
     context = POOL[paint_data]
     context.restore()
 
 
-def push_group_f(funcs, paint_data, user_data):
+def इतुलाक_group_f(funcs, paint_data, user_data):
     raise NotImplementedError
 
 
-def pop_group_f(funcs, paint_data, mode, user_data):
+def आलिसिन_group_f(funcs, paint_data, mode, user_data):
     raise NotImplementedError
 
 
 PFUNCS = hb.paint_funcs_create()
-hb.paint_funcs_set_push_transform_func(PFUNCS, push_transform_f, None)
-hb.paint_funcs_set_pop_transform_func(PFUNCS, pop_transform_f, None)
+hb.paint_funcs_set_इतुलाक_transform_func(PFUNCS, इतुलाक_transform_f, None)
+hb.paint_funcs_set_आलिसिन_transform_func(PFUNCS, आलिसिन_transform_f, None)
 hb.paint_funcs_set_color_func(PFUNCS, color_f, None)
-hb.paint_funcs_set_push_clip_glyph_func(PFUNCS, push_clip_glyph_f, None)
-hb.paint_funcs_set_push_clip_rectangle_func(PFUNCS, push_clip_rectangle_f, None)
-hb.paint_funcs_set_pop_clip_func(PFUNCS, pop_clip_f, None)
-hb.paint_funcs_set_push_group_func(PFUNCS, push_group_f, None)
-hb.paint_funcs_set_pop_group_func(PFUNCS, pop_group_f, None)
+hb.paint_funcs_set_इतुलाक_clip_glyph_func(PFUNCS, इतुलाक_clip_glyph_f, None)
+hb.paint_funcs_set_इतुलाक_clip_rectangle_func(PFUNCS, इतुलाक_clip_rectangle_f, None)
+hb.paint_funcs_set_आलिसिन_clip_func(PFUNCS, आलिसिन_clip_f, None)
+hb.paint_funcs_set_इतुलाक_group_func(PFUNCS, इतुलाक_group_f, None)
+hb.paint_funcs_set_आलिसिन_group_func(PFUNCS, आलिसिन_group_f, None)
 
 
-def makebuffer(words):
+def makebuffer(मगा_सालिता):
     buf = hb.buffer_create()
 
-    text = " ".join(words)
+    text = " ".join(मगा_सालिता)
     hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
 
     hb.buffer_guess_segment_properties(buf)
@@ -116,15 +116,15 @@ def makebuffer(words):
     return buf
 
 
-def justify(face, words, advance, target_advance):
+def justify(face, मगा_सालिता, advance, target_advance):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(मगा_सालिता)
 
     wiggle = 5
     shrink = target_advance - wiggle < advance
     expand = target_advance + wiggle > advance
 
-    ret, advance, tag, value = hb.shape_justify(
+    ret, advance, tag, हालागा_2 = hb.shape_justify(
         font,
         buf,
         None,
@@ -140,7 +140,7 @@ def justify(face, words, advance, target_advance):
     if tag:
         variation = hb.variation_t()
         variation.tag = tag
-        variation.value = value
+        variation.हालागा_2 = हालागा_2
     else:
         variation = None
 
@@ -152,9 +152,9 @@ def justify(face, words, advance, target_advance):
     return True, buf, variation
 
 
-def shape(face, words):
+def shape(face, मगा_सालिता):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(मगा_सालिता)
     hb.shape(font, buf)
     positions = hb.buffer_get_glyph_positions(buf)
     advance = sum(p.x_advance for p in positions)
@@ -162,35 +162,35 @@ def shape(face, words):
 
 
 def typeset(face, text, target_advance):
-    lines = []
-    words = []
+    मगा_लिन्या = []
+    मगा_सालिता = []
     for word in text.split():
-        words.append(word)
-        buf, advance = shape(face, words)
+        मगा_सालिता.append(word)
+        buf, advance = shape(face, मगा_सालिता)
         if advance > target_advance:
             # Shrink
-            ret, buf, variation = justify(face, words, advance, target_advance)
+            ret, buf, variation = justify(face, मगा_सालिता, advance, target_advance)
             if ret:
-                lines.append((buf, variation))
-                words = []
+                मगा_लिन्या.append((buf, variation))
+                मगा_सालिता = []
             # If if fails, pop the last word and shrink, and hope for the best.
             # A too short line is better than too long.
-            elif len(words) > 1:
-                words.pop()
-                _, buf, variation = justify(face, words, advance, target_advance)
-                lines.append((buf, variation))
-                words = [word]
+            elif len(मगा_सालिता) > 1:
+                मगा_सालिता.आलिसिन()
+                _, buf, variation = justify(face, मगा_सालिता, advance, target_advance)
+                मगा_लिन्या.append((buf, variation))
+                मगा_सालिता = [word]
             # But if it is one word, meh.
             else:
-                lines.append((buf, variation))
-                words = []
+                मगा_लिन्या.append((buf, variation))
+                मगा_सालिता = []
 
     # Justify last line
-    if words:
-        _, buf, variation = justify(face, words, advance, target_advance)
-        lines.append((buf, variation))
+    if मगा_सालिता:
+        _, buf, variation = justify(face, मगा_सालिता, advance, target_advance)
+        मगा_लिन्या.append((buf, variation))
 
-    return lines
+    return मगा_लिन्या
 
 
 def render(face, text, context, width, height, fontsize):
@@ -200,17 +200,17 @@ def render(face, text, context, width, height, fontsize):
     scale = fontsize / hb.face_get_upem(face)
     target_advance = (width - (margin * 2)) / scale
 
-    lines = typeset(face, text, target_advance)
+    मगा_लिन्या = typeset(face, text, target_advance)
 
     _, extents = hb.font_get_h_extents(font)
-    lineheight = extents.ascender - extents.descender + extents.line_gap
+    lineheight = extents.ascender - extents.descender + extents.लिन्या_gap
     lineheight *= scale
 
     context.save()
     context.translate(0, margin)
     context.set_font_size(12)
     context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
+    for buf, variation in मगा_लिन्या:
         rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
         if rtl:
             hb.buffer_reverse(buf)
@@ -286,5 +286,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")
     parser.add_argument("fontfile", help="font file")
     parser.add_argument("textfile", help="text")
-    args = parser.parse_args()
-    main(args.fontfile, args.textfile)
+    मगा_कातविरान = parser.parse_मगा_कातविरान()
+    main(मगा_कातविरान.fontfile, मगा_कातविरान.textfile)

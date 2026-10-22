@@ -41,23 +41,23 @@ enum cs_type_t {
 
 struct call_context_t
 {
-  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_num_=0)
+  void init (const byte_str_ref_t substr_=byte_str_ref_t (), cs_type_t type_=CSType_CharString, unsigned int subr_नुमेरो=0)
   {
     str_ref = substr_;
     type = type_;
-    subr_num = subr_num_;
+    subr_नुमेरो_2 = subr_नुमेरो;
   }
 
   void fini () {}
 
   byte_str_ref_t  str_ref;
   cs_type_t	  type;
-  unsigned int    subr_num;
+  unsigned int    subr_नुमेरो_2;
 };
 
 /* call stack */
 const unsigned int kMaxCallLimit = 10;
-struct call_stack_t : cff_stack_t<call_context_t, kMaxCallLimit> {};
+struct call_सालानसान_t : cff_सालानसान_t<call_context_t, kMaxCallLimit> {};
 
 template <typename SUBRS>
 struct biased_subrs_t
@@ -65,7 +65,7 @@ struct biased_subrs_t
   void init (const SUBRS *subrs_)
   {
     subrs = subrs_;
-    unsigned int  nSubrs = get_count ();
+    unsigned int  nSubrs = get_बिलांग ();
     if (nSubrs < 1240)
       bias = 107;
     else if (nSubrs < 33900)
@@ -76,12 +76,12 @@ struct biased_subrs_t
 
   void fini () {}
 
-  unsigned int get_count () const { return subrs ? subrs->count : 0; }
+  unsigned int get_बिलांग () const { return subrs ? subrs->बिलांग : 0; }
   unsigned int get_bias () const  { return bias; }
 
   hb_ubytes_t operator [] (unsigned int index) const
   {
-    if (unlikely (!subrs || index >= subrs->count))
+    if (unlikely (!subrs || index >= subrs->बिलांग))
       return hb_ubytes_t ();
     else
       return (*subrs)[index];
@@ -100,13 +100,13 @@ struct point_t
     y.set_int (_y);
   }
 
-  void move_x (const number_t &dx) { x += dx; }
-  void move_y (const number_t &dy) { y += dy; }
-  void move (const number_t &dx, const number_t &dy) { move_x (dx); move_y (dy); }
+  void move_x (const नुमेरो_t &dx) { x += dx; }
+  void move_y (const नुमेरो_t &dy) { y += dy; }
+  void move (const नुमेरो_t &dx, const नुमेरो_t &dy) { move_x (dx); move_y (dy); }
   void move (const point_t &d) { move_x (d.x); move_y (d.y); }
 
-  number_t  x;
-  number_t  y;
+  नुमेरो_t  x;
+  नुमेरो_t  y;
 };
 
 template <typename ARG, typename SUBRS>
@@ -118,8 +118,8 @@ struct cs_interp_env_t : interp_env_t<ARG>
     context.init (str, CSType_CharString);
     seen_moveto = true;
     seen_hintmask = false;
-    hstem_count = 0;
-    vstem_count = 0;
+    hstem_बिलांग = 0;
+    vstem_बिलांग = 0;
     hintmask_size = 0;
     budget = nullptr;
     pt.set_int (0, 0);
@@ -134,35 +134,35 @@ struct cs_interp_env_t : interp_env_t<ARG>
 
   bool in_error () const
   {
-    return callStack.in_error () || SUPER::in_error ();
+    return call_सालानसान.in_error () || SUPER::in_error ();
   }
 
-  bool pop_subr_num (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned int &subr_num)
+  bool आलिसिन_subr_नुमेरो (const biased_subrs_t<SUBRS>& biasedSubrs, unsigned int &subr_नुमेरो_2)
   {
-    subr_num = 0;
-    int n = SUPER::argStack.pop_int ();
+    subr_नुमेरो_2 = 0;
+    int n = SUPER::arg_सालानसान.आलिसिन_int ();
     n += biasedSubrs.get_bias ();
-    if (unlikely ((n < 0) || ((unsigned int)n >= biasedSubrs.get_count ())))
+    if (unlikely ((n < 0) || ((unsigned int)n >= biasedSubrs.get_बिलांग ())))
       return false;
 
-    subr_num = (unsigned int)n;
+    subr_नुमेरो_2 = (unsigned int)n;
     return true;
   }
 
   void call_subr (const biased_subrs_t<SUBRS>& biasedSubrs, cs_type_t type)
   {
-    unsigned int subr_num = 0;
+    unsigned int subr_नुमेरो_2 = 0;
 
-    if (unlikely (!pop_subr_num (biasedSubrs, subr_num)
-		 || callStack.get_count () >= kMaxCallLimit))
+    if (unlikely (!आलिसिन_subr_नुमेरो (biasedSubrs, subr_नुमेरो_2)
+		 || call_सालानसान.get_बिलांग () >= kMaxCallLimit))
     {
       SUPER::set_error ();
       return;
     }
     context.str_ref = SUPER::str_ref;
-    callStack.push (context);
+    call_सालानसान.push (context);
 
-    context.init ( biasedSubrs[subr_num], type, subr_num);
+    context.init ( biasedSubrs[subr_नुमेरो_2], type, subr_नुमेरो_2);
     SUPER::str_ref = context.str_ref;
   }
 
@@ -170,7 +170,7 @@ struct cs_interp_env_t : interp_env_t<ARG>
   {
     if (unlikely (SUPER::str_ref.in_error ()))
       SUPER::set_error ();
-    context = callStack.pop ();
+    context = call_सालानसान.आलिसिन ();
     SUPER::str_ref = context.str_ref;
   }
 
@@ -178,8 +178,8 @@ struct cs_interp_env_t : interp_env_t<ARG>
   {
     if (!seen_hintmask)
     {
-      vstem_count += SUPER::argStack.get_count() / 2;
-      hintmask_size = (hstem_count + vstem_count + 7) >> 3;
+      vstem_बिलांग += SUPER::arg_सालानसान.get_बिलांग() / 2;
+      hintmask_size = (hstem_बिलांग + vstem_बिलांग + 7) >> 3;
       seen_hintmask = true;
     }
   }
@@ -192,8 +192,8 @@ struct cs_interp_env_t : interp_env_t<ARG>
   bool spend_budget (unsigned int cost, unsigned int mult = 1)
   { return !budget || hb_budget_spend (*budget, cost, mult); }
 
-  const number_t &get_x () const { return pt.x; }
-  const number_t &get_y () const { return pt.y; }
+  const नुमेरो_t &get_x () const { return pt.x; }
+  const नुमेरो_t &get_y () const { return pt.y; }
   const point_t &get_pt () const { return pt; }
 
   void moveto (const point_t &pt_ ) { pt = pt_; }
@@ -204,11 +204,11 @@ struct cs_interp_env_t : interp_env_t<ARG>
   bool	  seen_moveto;
   bool	  seen_hintmask;
 
-  unsigned int  hstem_count;
-  unsigned int  vstem_count;
+  unsigned int  hstem_बिलांग;
+  unsigned int  vstem_बिलांग;
   unsigned int  hintmask_size;
   int64_t	*budget;
-  call_stack_t	callStack;
+  call_सालानसान_t	call_सालानसान;
   biased_subrs_t<SUBRS>   globalSubrs;
   biased_subrs_t<SUBRS>   localSubrs;
 
@@ -235,7 +235,7 @@ struct path_procs_null_t
   static void vhcurveto (ENV &env, PARAM& param) {}
   static void hvcurveto (ENV &env, PARAM& param) {}
   static void moveto (ENV &env, PARAM& param, const point_t &pt) {}
-  static void line (ENV &env, PARAM& param, const point_t &pt1) {}
+  static void लिन्या (ENV &env, PARAM& param, const point_t &pt1) {}
   static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3) {}
   static void hflex (ENV &env, PARAM& param) {}
   static void flex (ENV &env, PARAM& param) {}
@@ -256,11 +256,11 @@ struct cs_opset_t : opset_t<ARG>
       case OpCode_endchar:
 	OPSET::check_width (op, env, param);
 	env.set_endchar (true);
-	OPSET::flush_args_and_op (op, env, param);
+	OPSET::flush_मगा_कातविरान_and_op (op, env, param);
 	break;
 
       case OpCode_fixedcs:
-	env.argStack.push_fixed_from_substr (env.str_ref);
+	env.arg_सालानसान.इतुलाक_fixed_from_substr (env.str_ref);
 	break;
 
       case OpCode_callsubr:
@@ -370,14 +370,14 @@ struct cs_opset_t : opset_t<ARG>
 
   static void process_hstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.hstem_count += env.argStack.get_count () / 2;
-    OPSET::flush_args_and_op (op, env, param);
+    env.hstem_बिलांग += env.arg_सालानसान.get_बिलांग () / 2;
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
   static void process_vstem (op_code_t op, ENV &env, PARAM& param)
   {
-    env.vstem_count += env.argStack.get_count () / 2;
-    OPSET::flush_args_and_op (op, env, param);
+    env.vstem_बिलांग += env.arg_सालानसान.get_बिलांग () / 2;
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
   static void process_hintmask (op_code_t op, ENV &env, PARAM& param)
@@ -392,7 +392,7 @@ struct cs_opset_t : opset_t<ARG>
 
   static void process_post_flex (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
   static void check_width (op_code_t op, ENV &env, PARAM& param)
@@ -405,23 +405,23 @@ struct cs_opset_t : opset_t<ARG>
       env.determine_hintmask_size ();
       env.seen_moveto = true;
     }
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
   static void process_post_path (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
-  static void flush_args_and_op (op_code_t op, ENV &env, PARAM& param)
+  static void flush_मगा_कातविरान_and_op (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args (env, param);
+    OPSET::flush_मगा_कातविरान (env, param);
     OPSET::flush_op (op, env, param);
   }
 
-  static void flush_args (ENV &env, PARAM& param)
+  static void flush_मगा_कातविरान (ENV &env, PARAM& param)
   {
-    env.pop_n_args (env.argStack.get_count ());
+    env.आलिसिन_n_मगा_कातविरान (env.arg_सालानसान.get_बिलांग ());
   }
 
   static void flush_op (op_code_t op, ENV &env, PARAM& param)
@@ -430,10 +430,10 @@ struct cs_opset_t : opset_t<ARG>
 
   static void flush_hintmask (op_code_t op, ENV &env, PARAM& param)
   {
-    OPSET::flush_args_and_op (op, env, param);
+    OPSET::flush_मगा_कातविरान_and_op (op, env, param);
   }
 
-  static bool is_number_op (op_code_t op)
+  static bool is_नुमेरो_op (op_code_t op)
   {
     switch (op)
     {
@@ -461,8 +461,8 @@ struct path_procs_t
   static void rmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    const number_t &dy = env.pop_arg ();
-    const number_t &dx = env.pop_arg ();
+    const नुमेरो_t &dy = env.आलिसिन_arg ();
+    const नुमेरो_t &dx = env.आलिसिन_arg ();
     pt1.move (dx, dy);
     PATH::moveto (env, param, pt1);
   }
@@ -470,24 +470,24 @@ struct path_procs_t
   static void hmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_x (env.pop_arg ());
+    pt1.move_x (env.आलिसिन_arg ());
     PATH::moveto (env, param, pt1);
   }
 
   static void vmoveto (ENV &env, PARAM& param)
   {
     point_t pt1 = env.get_pt ();
-    pt1.move_y (env.pop_arg ());
+    pt1.move_y (env.आलिसिन_arg ());
     PATH::moveto (env, param, pt1);
   }
 
   static void rlineto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 2 <= env.argStack.get_count (); i += 2)
+    for (unsigned int i = 0; i + 2 <= env.arg_सालानसान.get_बिलांग (); i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
   }
 
@@ -495,19 +495,19 @@ struct path_procs_t
   {
     point_t pt1;
     unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    for (; i + 2 <= env.arg_सालानसान.get_बिलांग (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
       pt1.move_y (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    if (i < env.arg_सालानसान.get_बिलांग ())
     {
       pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
   }
 
@@ -515,25 +515,25 @@ struct path_procs_t
   {
     point_t pt1;
     unsigned int i = 0;
-    for (; i + 2 <= env.argStack.get_count (); i += 2)
+    for (; i + 2 <= env.arg_सालानसान.get_बिलांग (); i += 2)
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
       pt1.move_x (env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
-    if (i < env.argStack.get_count ())
+    if (i < env.arg_सालानसान.get_बिलांग ())
     {
       pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
   }
 
   static void rrcurveto (ENV &env, PARAM& param)
   {
-    for (unsigned int i = 0; i + 6 <= env.argStack.get_count (); i += 6)
+    for (unsigned int i = 0; i + 6 <= env.arg_सालानसान.get_बिलांग (); i += 6)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
@@ -547,12 +547,12 @@ struct path_procs_t
 
   static void rcurveline (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
+    unsigned int arg_बिलांग = env.arg_सालानसान.get_बिलांग ();
+    if (unlikely (arg_बिलांग < 8))
       return;
 
     unsigned int i = 0;
-    unsigned int curve_limit = arg_count - 2;
+    unsigned int curve_limit = arg_बिलांग - 2;
     for (; i + 6 <= curve_limit; i += 6)
     {
       point_t pt1 = env.get_pt ();
@@ -566,22 +566,22 @@ struct path_procs_t
 
     point_t pt1 = env.get_pt ();
     pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-    PATH::line (env, param, pt1);
+    PATH::लिन्या (env, param, pt1);
   }
 
   static void rlinecurve (ENV &env, PARAM& param)
   {
-    unsigned int arg_count = env.argStack.get_count ();
-    if (unlikely (arg_count < 8))
+    unsigned int arg_बिलांग = env.arg_सालानसान.get_बिलांग ();
+    if (unlikely (arg_बिलांग < 8))
       return;
 
     unsigned int i = 0;
-    unsigned int line_limit = arg_count - 6;
-    for (; i + 2 <= line_limit; i += 2)
+    unsigned int लिन्या_limit = arg_बिलांग - 6;
+    for (; i + 2 <= लिन्या_limit; i += 2)
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (i), env.eval_arg (i+1));
-      PATH::line (env, param, pt1);
+      PATH::लिन्या (env, param, pt1);
     }
 
     point_t pt1 = env.get_pt ();
@@ -597,9 +597,9 @@ struct path_procs_t
   {
     unsigned int i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    if ((env.arg_सालानसान.get_बिलांग () & 1) != 0)
       pt1.move_x (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    for (; i + 4 <= env.arg_सालानसान.get_बिलांग (); i += 4)
     {
       pt1.move_y (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -615,9 +615,9 @@ struct path_procs_t
   {
     unsigned int i = 0;
     point_t pt1 = env.get_pt ();
-    if ((env.argStack.get_count () & 1) != 0)
+    if ((env.arg_सालानसान.get_बिलांग () & 1) != 0)
       pt1.move_y (env.eval_arg (i++));
-    for (; i + 4 <= env.argStack.get_count (); i += 4)
+    for (; i + 4 <= env.arg_सालानसान.get_बिलांग (); i += 4)
     {
       pt1.move_x (env.eval_arg (i));
       point_t pt2 = pt1;
@@ -633,7 +633,7 @@ struct path_procs_t
   {
     point_t pt1, pt2, pt3;
     unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    if ((env.arg_सालानसान.get_बिलांग () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_y (env.eval_arg (i));
@@ -643,7 +643,7 @@ struct path_procs_t
       pt3.move_x (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      for (; i + 8 <= env.arg_सालानसान.get_बिलांग (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -661,13 +661,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      if (i < env.arg_सालानसान.get_बिलांग ())
 	pt3.move_y (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
     else
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      for (; i + 8 <= env.arg_सालानसान.get_बिलांग (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_y (env.eval_arg (i));
@@ -683,7 +683,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	if ((env.arg_सालानसान.get_बिलांग () - i < 16) && ((env.arg_सालानसान.get_बिलांग () & 1) != 0))
 	  pt3.move_x (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -694,7 +694,7 @@ struct path_procs_t
   {
     point_t pt1, pt2, pt3;
     unsigned int i = 0;
-    if ((env.argStack.get_count () % 8) >= 4)
+    if ((env.arg_सालानसान.get_बिलांग () % 8) >= 4)
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (i));
@@ -704,7 +704,7 @@ struct path_procs_t
       pt3.move_y (env.eval_arg (i+3));
       i += 4;
 
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      for (; i + 8 <= env.arg_सालानसान.get_बिलांग (); i += 8)
       {
 	PATH::curve (env, param, pt1, pt2, pt3);
 	pt1 = env.get_pt ();
@@ -722,13 +722,13 @@ struct path_procs_t
 	pt3 = pt2;
 	pt3.move_y (env.eval_arg (i+7));
       }
-      if (i < env.argStack.get_count ())
+      if (i < env.arg_सालानसान.get_बिलांग ())
 	pt3.move_x (env.eval_arg (i));
       PATH::curve (env, param, pt1, pt2, pt3);
     }
     else
     {
-      for (; i + 8 <= env.argStack.get_count (); i += 8)
+      for (; i + 8 <= env.arg_सालानसान.get_बिलांग (); i += 8)
       {
 	pt1 = env.get_pt ();
 	pt1.move_x (env.eval_arg (i));
@@ -744,7 +744,7 @@ struct path_procs_t
 	pt2.move (env.eval_arg (i+5), env.eval_arg (i+6));
 	pt3 = pt2;
 	pt3.move_x (env.eval_arg (i+7));
-	if ((env.argStack.get_count () - i < 16) && ((env.argStack.get_count () & 1) != 0))
+	if ((env.arg_सालानसान.get_बिलांग () - i < 16) && ((env.arg_सालानसान.get_बिलांग () & 1) != 0))
 	  pt3.move_y (env.eval_arg (i+8));
 	PATH::curve (env, param, pt1, pt2, pt3);
       }
@@ -755,7 +755,7 @@ struct path_procs_t
   static void moveto (ENV &env, PARAM& param, const point_t &pt)
   { env.moveto (pt); }
 
-  static void line (ENV &env, PARAM& param, const point_t &pt1)
+  static void लिन्या (ENV &env, PARAM& param, const point_t &pt1)
   { PATH::moveto (env, param, pt1); }
 
   static void curve (ENV &env, PARAM& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
@@ -763,7 +763,7 @@ struct path_procs_t
 
   static void hflex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 7))
+    if (likely (env.arg_सालानसान.get_बिलांग () == 7))
     {
       point_t pt1 = env.get_pt ();
       pt1.move_x (env.eval_arg (0));
@@ -787,7 +787,7 @@ struct path_procs_t
 
   static void flex (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 13))
+    if (likely (env.arg_सालानसान.get_बिलांग () == 13))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -810,7 +810,7 @@ struct path_procs_t
 
   static void hflex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 9))
+    if (likely (env.arg_सालानसान.get_बिलांग () == 9))
     {
       point_t pt1 = env.get_pt ();
       pt1.move (env.eval_arg (0), env.eval_arg (1));
@@ -834,7 +834,7 @@ struct path_procs_t
 
   static void flex1 (ENV &env, PARAM& param)
   {
-    if (likely (env.argStack.get_count () == 11))
+    if (likely (env.arg_सालानसान.get_बिलांग () == 11))
     {
       point_t d;
       for (unsigned int i = 0; i < 10; i += 2)

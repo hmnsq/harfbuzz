@@ -97,8 +97,8 @@ struct CoverageFormat1_3
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
   void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
   {
-    unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = glyphArray.len;
+    for (unsigned i = 0; i < बिलांग; i++)
       if (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }

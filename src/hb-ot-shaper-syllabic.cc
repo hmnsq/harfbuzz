@@ -30,14 +30,14 @@
 
 
 bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+hb_syllabic_इसिंगित_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
 				   unsigned int broken_syllable_type,
 				   unsigned int dottedcircle_category,
 				   int repha_category,
 				   int dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
+  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_इसिंगित_DOTTED_CIRCLE))
     return false;
   if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {

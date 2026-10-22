@@ -89,18 +89,18 @@ struct hb_iter_t
   item_t operator * () { return thiz()->__item__ (); }
   item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
   item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
+  iter_t& operator += (unsigned बिलांग) &  { thiz()->__forward__ (बिलांग); return *thiz(); }
+  iter_t  operator += (unsigned बिलांग) && { thiz()->__forward__ (बिलांग); return *thiz(); }
   iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
   iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
+  iter_t& operator -= (unsigned बिलांग) &  { thiz()->__rewind__ (बिलांग); return *thiz(); }
+  iter_t  operator -= (unsigned बिलांग) && { thiz()->__rewind__ (बिलांग); return *thiz(); }
   iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
   iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
+  iter_t operator + (unsigned बिलांग) const { auto c = thiz()->iter (); c += बिलांग; return c; }
+  friend iter_t operator + (unsigned बिलांग, const iter_t &it) { return it + बिलांग; }
   iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
+  iter_t operator - (unsigned बिलांग) const { auto c = thiz()->iter (); c -= बिलांग; return c; }
   iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
   template <typename T>
   iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
@@ -462,17 +462,17 @@ struct hb_filter_iter_t :
   void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
   void __prev__ ()
   {
-    unsigned count = 0;
+    unsigned बिलांग = 0;
     do
     {
       Iter old = it;
       --it;
       if (!(it != old))
       {
-	it += count;
+	it += बिलांग;
 	return;
       }
-      count++;
+      बिलांग++;
     }
     while (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
@@ -513,7 +513,7 @@ HB_FUNCOBJ (hb_filter);
 template <typename Redu, typename InitT>
 struct hb_reduce_t
 {
-  hb_reduce_t (Redu r, InitT init_value) : r (r), init_value (init_value) {}
+  hb_reduce_t (Redu r, InitT init_हालागा) : r (r), init_हालागा (init_हालागा) {}
 
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter)),
@@ -521,7 +521,7 @@ struct hb_reduce_t
   AccuT
   operator () (Iter it)
   {
-    AccuT value = init_value;
+    AccuT value = init_हालागा;
     for (; it; ++it)
       value = r (value, *it);
     return value;
@@ -529,14 +529,14 @@ struct hb_reduce_t
 
   private:
   Redu r;
-  InitT init_value;
+  InitT init_हालागा;
 };
 struct
 {
   template <typename Redu, typename InitT>
   hb_reduce_t<Redu, InitT>
-  operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  operator () (Redu&& r, InitT init_हालागा) const
+  { return hb_reduce_t<Redu, InitT> (r, init_हालागा); }
 }
 HB_FUNCOBJ (hb_reduce);
 
@@ -867,18 +867,18 @@ struct
 { HB_PARTIALIZE(2);
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, unsigned count) const HB_AUTO_RETURN
-  ( hb_zip (hb_range (count), it) | hb_map_retains_sorting (hb_second) )
+  auto operator () (Iterable&& it, unsigned बिलांग) const HB_AUTO_RETURN
+  ( hb_zip (hb_range (बिलांग), it) | hb_map_retains_sorting (hb_second) )
 
   /* Specialization arrays. */
 
   template <typename Type> inline hb_array_t<Type>
-  operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  operator () (hb_array_t<Type> array, unsigned बिलांग) const
+  { return array.sub_array (0, बिलांग); }
 
   template <typename Type> inline hb_sorted_array_t<Type>
-  operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  operator () (hb_sorted_array_t<Type> array, unsigned बिलांग) const
+  { return array.sub_array (0, बिलांग); }
 }
 HB_FUNCOBJ (hb_take);
 
@@ -886,11 +886,11 @@ struct
 { HB_PARTIALIZE(2);
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  auto operator () (Iter it, unsigned count) const HB_AUTO_RETURN
+  auto operator () (Iter it, unsigned बिलांग) const HB_AUTO_RETURN
   (
-    + hb_iota (it, hb_add (count))
-    | hb_map (hb_take (count))
-    | hb_take ((hb_len (it) + count - 1) / count)
+    + hb_iota (it, hb_add (बिलांग))
+    | hb_map (hb_take (बिलांग))
+    | hb_take ((hb_len (it) + बिलांग - 1) / बिलांग)
   )
 }
 HB_FUNCOBJ (hb_chop);

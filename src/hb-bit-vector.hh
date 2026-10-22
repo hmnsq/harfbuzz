@@ -69,16 +69,16 @@ struct hb_bit_vector_t
 
   // Move
   hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+		: min_v (other.min_v), max_v (other.max_v), बिलांग (other.बिलांग), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
+    other.min_v = other.max_v = other.बिलांग = 0;
     other.elts = nullptr;
   }
   hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
   {
     hb_swap (min_v, other.min_v);
     hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
+    hb_swap (बिलांग, other.बिलांग);
     hb_swap (elts, other.elts);
     return *this;
   }
@@ -88,19 +88,19 @@ struct hb_bit_vector_t
   {
     if (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
+      min_v = max_v = बिलांग = 0;
       return;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
+    unsigned नुमेरो = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
+    elts = (elt_t *) hb_calloc (नुमेरो, sizeof (int_t));
     if (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
+      min_v = max_v = बिलांग = 0;
       return;
     }
 
-    count = max_v - min_v + 1;
+    बिलांग = max_v - min_v + 1;
   }
   ~hb_bit_vector_t ()
   {
@@ -119,7 +119,7 @@ struct hb_bit_vector_t
 
   void add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
+    if (unlikely (!बिलांग || a > b || a < min_v || b > max_v))
       return;
 
     elt_t *la = &elt (a);
@@ -138,7 +138,7 @@ struct hb_bit_vector_t
   }
   void del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
+    if (unlikely (!बिलांग || a > b || a < min_v || b > max_v))
       return;
 
     elt_t *la = &elt (a);
@@ -173,21 +173,21 @@ struct hb_bit_vector_t
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
+    if (unlikely (g >= बिलांग))
       return Crap(elt_t);
     return elts[g / ELT_BITS];
   }
   const elt_t& elt (hb_codepoint_t g) const
   {
     g -= min_v;
-    if (unlikely (g >= count))
+    if (unlikely (g >= बिलांग))
       return Null(elt_t);
     return elts[g / ELT_BITS];
   }
 
   static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
+  hb_codepoint_t min_v = 0, max_v = 0, बिलांग = 0;
   elt_t *elts = nullptr;
 };
 

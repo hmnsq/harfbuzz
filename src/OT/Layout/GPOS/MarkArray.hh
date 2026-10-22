@@ -87,10 +87,10 @@ void collect_mark_variation_indices (hb_collect_variation_indices_context_t *c,
                                     const Coverage &coverage,
                                     const void *base,
                                     glyph_data_t anchors,
-                                    unsigned count,
+                                    unsigned बिलांग,
                                     unsigned record_size)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  for (const auto _ : hb_zip (coverage, hb_range (बिलांग)))
   {
     if (!c->glyph_set->has (_.first)) continue;
     glyph_data_t anchor = anchors;
@@ -125,7 +125,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
   template <typename AnchorMatrixType>
   bool apply (hb_ot_apply_context_t *c,
               unsigned int mark_index, unsigned int glyph_index,
-              const AnchorMatrixType &anchors, unsigned int class_count,
+              const AnchorMatrixType &anchors, unsigned int class_बिलांग,
               unsigned int glyph_pos) const
   {
     TRACE_APPLY (this);
@@ -134,7 +134,7 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 
     const Anchor& mark_anchor = this + record.markAnchor;
     bool found;
-    const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_count, &found);
+    const Anchor& glyph_anchor = anchors.get_anchor (c, glyph_index, mark_class, class_बिलांग, &found);
     /* If this subtable doesn't have an anchor for this base and this class,
      * return false such that the subsequent subtables have a chance at it. */
     if (unlikely (!found)) return_trace (false);
@@ -178,13 +178,13 @@ struct MarkArray : Types::template ArrayOf<MarkRecord<Types>>
 HB_INTERNAL inline
 void Markclass_closure_and_remap_indexes (const Coverage &mark_coverage,
                                     const void *mark_records,
-                                    unsigned count,
+                                    unsigned बिलांग,
                                     unsigned record_size,
                                     const hb_set_t &glyphset,
                                     hb_map_t *klass_mapping)
 {
   hb_set_t orig_classes;
-  for (const auto _ : hb_zip (mark_coverage, hb_range (count)))
+  for (const auto _ : hb_zip (mark_coverage, hb_range (बिलांग)))
     if (glyphset.has (_.first))
     {
       const auto *klass = reinterpret_cast<const HBUINT16 *>

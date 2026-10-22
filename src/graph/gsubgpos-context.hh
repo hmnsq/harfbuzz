@@ -47,7 +47,7 @@ struct gsubgpos_graph_context_t
   hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_result_t<unsigned> create_बुहोल (unsigned size);
 
   graph_result_t<void> add_buffer (char* buffer)
   {
@@ -58,7 +58,7 @@ struct gsubgpos_graph_context_t
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL unsigned नुमेरो_non_ext_subtables ();
 };
 
 }

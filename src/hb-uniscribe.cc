@@ -62,12 +62,12 @@
 typedef HRESULT (WINAPI *SIOT) /*ScriptItemizeOpenType*/(
   const WCHAR *pwcInChars,
   int cInChars,
-  int cMaxItems,
+  int c_Max_मगा_बागाय,
   const SCRIPT_CONTROL *psControl,
   const SCRIPT_STATE *psState,
-  SCRIPT_ITEM *pItems,
+  SCRIPT_ITEM *p_मगा_बागाय,
   OPENTYPE_TAG *pScriptTags,
-  int *pcItems
+  int *pc_मगा_बागाय
 );
 
 typedef HRESULT (WINAPI *SSOT) /*ScriptShapeOpenType*/(
@@ -117,22 +117,22 @@ static HRESULT WINAPI
 hb_ScriptItemizeOpenType(
   const WCHAR *pwcInChars,
   int cInChars,
-  int cMaxItems,
+  int c_Max_मगा_बागाय,
   const SCRIPT_CONTROL *psControl,
   const SCRIPT_STATE *psState,
-  SCRIPT_ITEM *pItems,
+  SCRIPT_ITEM *p_मगा_बागाय,
   OPENTYPE_TAG *pScriptTags,
-  int *pcItems
+  int *pc_मगा_बागाय
 )
 {
 {
   return ScriptItemize (pwcInChars,
 			cInChars,
-			cMaxItems,
+			c_Max_मगा_बागाय,
 			psControl,
 			psState,
-			pItems,
-			pcItems);
+			p_मगा_बागाय,
+			pc_मगा_बागाय);
 }
 }
 
@@ -225,13 +225,13 @@ struct hb_uniscribe_shaper_funcs_t
       this->ScriptItemizeOpenType = (SIOT) GetProcAddress (hinstLib, "ScriptItemizeOpenType");
       this->ScriptShapeOpenType   = (SSOT) GetProcAddress (hinstLib, "ScriptShapeOpenType");
       this->ScriptPlaceOpenType   = (SPOT) GetProcAddress (hinstLib, "ScriptPlaceOpenType");
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
     }
     if (!this->ScriptItemizeOpenType ||
 	!this->ScriptShapeOpenType   ||
 	!this->ScriptPlaceOpenType)
     {
-      DEBUG_MSG (UNISCRIBE, nullptr, "OpenType versions of functions not found; falling back.");
+      DEBUG_मेनसाहे (UNISCRIBE, nullptr, "OpenType versions of functions not found; falling back.");
       this->ScriptItemizeOpenType = hb_ScriptItemizeOpenType;
       this->ScriptShapeOpenType   = hb_ScriptShapeOpenType;
       this->ScriptPlaceOpenType   = hb_ScriptPlaceOpenType;
@@ -357,7 +357,7 @@ _hb_rename_font (hb_blob_t *blob_in, wchar_t *new_name)
 
   OT::name &name = StructAtOffset<OT::name> (new_sfnt_data, name_table_offset);
   name.format = 0;
-  name.count = ARRAY_LENGTH (name_IDs);
+  name.बिलांग = ARRAY_LENGTH (name_IDs);
   name.stringOffset = name.get_size ();
   for (unsigned int i = 0; i < ARRAY_LENGTH (name_IDs); i++)
   {
@@ -380,8 +380,8 @@ _hb_rename_font (hb_blob_t *blob_in, wchar_t *new_name)
 
   /* Adjust name table entry to point to new name table */
   const OT::OpenTypeFontFile &file = * (OT::OpenTypeFontFile *) (new_sfnt_data);
-  unsigned int face_count = file.get_face_count ();
-  for (unsigned int face_index = 0; face_index < face_count; face_index++)
+  unsigned int face_बिलांग = file.get_face_बिलांग ();
+  for (unsigned int face_index = 0; face_index < face_बिलांग; face_index++)
   {
     /* Note: doing multiple edits (ie. TTC) can be unsafe.  There may be
      * toe-stepping.  But we don't really care. */
@@ -423,7 +423,7 @@ _hb_uniscribe_shaper_face_data_create (hb_face_t *face)
 
   hb_blob_t *blob = hb_face_reference_blob (face);
   if (unlikely (!hb_blob_get_length (blob)))
-    DEBUG_MSG (UNISCRIBE, face, "Face has empty blob");
+    DEBUG_मेनसाहे (UNISCRIBE, face, "Face has empty blob");
 
   blob = _hb_rename_font (blob, data->face_name);
   if (unlikely (!blob))
@@ -432,13 +432,13 @@ _hb_uniscribe_shaper_face_data_create (hb_face_t *face)
     return nullptr;
   }
 
-  DWORD num_fonts_installed;
+  DWORD नुमेरो_fonts_installed;
   data->fh = AddFontMemResourceEx ((void *) hb_blob_get_data (blob, nullptr),
 				   hb_blob_get_length (blob),
-				   0, &num_fonts_installed);
+				   0, &नुमेरो_fonts_installed);
   if (unlikely (!data->fh))
   {
-    DEBUG_MSG (UNISCRIBE, face, "Face AddFontMemResourceEx() failed");
+    DEBUG_मेनसाहे (UNISCRIBE, face, "Face AddFontMemResourceEx() failed");
     hb_free (data);
     return nullptr;
   }
@@ -501,20 +501,20 @@ _hb_uniscribe_shaper_font_data_create (hb_font_t *font)
   data->hdc = GetDC (nullptr);
 
   if (unlikely (!populate_log_font (&data->log_font, font, font_size))) {
-    DEBUG_MSG (UNISCRIBE, font, "Font populate_log_font() failed");
+    DEBUG_मेनसाहे (UNISCRIBE, font, "Font populate_log_font() failed");
     _hb_uniscribe_shaper_font_data_destroy (data);
     return nullptr;
   }
 
   data->hfont = CreateFontIndirectW (&data->log_font);
   if (unlikely (!data->hfont)) {
-    DEBUG_MSG (UNISCRIBE, font, "Font CreateFontIndirectW() failed");
+    DEBUG_मेनसाहे (UNISCRIBE, font, "Font CreateFontIndirectW() failed");
     _hb_uniscribe_shaper_font_data_destroy (data);
      return nullptr;
   }
 
   if (!SelectObject (data->hdc, data->hfont)) {
-    DEBUG_MSG (UNISCRIBE, font, "Font SelectObject() failed");
+    DEBUG_मेनसाहे (UNISCRIBE, font, "Font SelectObject() failed");
     _hb_uniscribe_shaper_font_data_destroy (data);
      return nullptr;
   }
@@ -579,7 +579,7 @@ _hb_uniscribe_shape (hb_shape_plan_t    *shape_plan,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
 		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     unsigned int        नुमेरो_features)
 {
   hb_face_t *face = font->face;
   const hb_uniscribe_face_data_t *face_data = face->data.uniscribe;
@@ -588,7 +588,7 @@ _hb_uniscribe_shape (hb_shape_plan_t    *shape_plan,
 
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (UNISCRIBE, nullptr, __VA_ARGS__); \
+    DEBUG_मेनसाहे (UNISCRIBE, nullptr, __VA_ARGS__); \
     return false; \
   } HB_STMT_END
 
@@ -630,7 +630,7 @@ retry:
   ALLOCATE_ARRAY (WORD, log_clusters, chars_len);
   ALLOCATE_ARRAY (SCRIPT_CHARPROP, char_props, chars_len);
 
-  if (num_features)
+  if (नुमेरो_features)
   {
     /* Need log_clusters to assign features. */
     chars_len = 0;
@@ -669,13 +669,13 @@ retry:
 
 #undef ALLOCATE_ARRAY
 
-#define MAX_ITEMS 256
+#define MAX_मगा_बागाय 256
 
-  SCRIPT_ITEM items[MAX_ITEMS + 1];
+  SCRIPT_ITEM मगा_बागाय[MAX_मगा_बागाय + 1];
   SCRIPT_CONTROL bidi_control = {0};
   SCRIPT_STATE bidi_state = {0};
-  ULONG script_tags[MAX_ITEMS];
-  int item_count;
+  ULONG script_tags[MAX_मगा_बागाय];
+  int item_बिलांग_2;
 
   /* MinGW32 doesn't define fMergeNeutralItems, so we bruteforce */
   //bidi_control.fMergeNeutralItems = true;
@@ -686,24 +686,24 @@ retry:
 
   hr = funcs->ScriptItemizeOpenType (pchars,
 				     chars_len,
-				     MAX_ITEMS,
+				     MAX_मगा_बागाय,
 				     &bidi_control,
 				     &bidi_state,
-				     items,
+				     मगा_बागाय,
 				     script_tags,
-				     &item_count);
+				     &item_बिलांग_2);
   if (unlikely (FAILED (hr)))
     FAIL ("ScriptItemizeOpenType() failed: 0x%08lx", (unsigned long) hr);
 
-#undef MAX_ITEMS
+#undef MAX_मगा_बागाय
 
   hb_tag_t lang_tag;
-  unsigned int lang_count = 1;
+  unsigned int lang_बिलांग = 1;
   hb_ot_tags_from_script_and_language (buffer->props.script,
 				       buffer->props.language,
 				       nullptr, nullptr,
-				       &lang_count, &lang_tag);
-  OPENTYPE_TAG language_tag = hb_uint32_swap (lang_count ? lang_tag : HB_TAG_NONE);
+				       &lang_बिलांग, &lang_tag);
+  OPENTYPE_TAG language_tag = hb_uint32_swap (lang_बिलांग ? lang_tag : HB_TAG_NONE);
 
   /*
    * Set up features.
@@ -713,9 +713,9 @@ retry:
   hb_vector_t<hb_ms_feature_t> feature_records;
   hb_vector_t<hb_ms_range_record_t> range_records;
   bool has_features = false;
-  if (num_features)
+  if (नुमेरो_features)
     has_features = hb_ms_setup_features (features,
-					 num_features,
+					 नुमेरो_features,
 					 feature_records,
 					 range_records);
 
@@ -725,10 +725,10 @@ retry:
   unsigned int glyphs_offset = 0;
   unsigned int glyphs_len;
   bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
-  for (int i = 0; i < item_count; i++)
+  for (int i = 0; i < item_बिलांग_2; i++)
   {
-    unsigned int chars_offset = items[i].iCharPos;
-    unsigned int item_chars_len = items[i + 1].iCharPos - chars_offset;
+    unsigned int chars_offset = मगा_बागाय[i].iCharPos;
+    unsigned int item_chars_len = मगा_बागाय[i + 1].iCharPos - chars_offset;
 
     if (has_features)
       hb_ms_make_feature_ranges (feature_records,
@@ -741,12 +741,12 @@ retry:
 
     /* Asking for glyphs in logical order circumvents at least
      * one bug in Uniscribe. */
-    items[i].a.fLogicalOrder = true;
+    मगा_बागाय[i].a.fLogicalOrder = true;
 
   retry_shape:
     hr = funcs->ScriptShapeOpenType (font_data->hdc,
 				     &font_data->script_cache,
-				     &items[i].a,
+				     &मगा_बागाय[i].a,
 				     script_tags[i],
 				     language_tag,
 				     (int *) range_char_counts.arrayZ,
@@ -762,7 +762,7 @@ retry:
 				     glyph_props + glyphs_offset,
 				     (int *) &glyphs_len);
 
-    if (unlikely (items[i].a.fNoGlyphIndex))
+    if (unlikely (मगा_बागाय[i].a.fNoGlyphIndex))
       FAIL ("ScriptShapeOpenType() set fNoGlyphIndex");
     if (unlikely (hr == E_OUTOFMEMORY || hr == E_NOT_SUFFICIENT_BUFFER))
     {
@@ -772,9 +772,9 @@ retry:
     }
     if (unlikely (hr == USP_E_SCRIPT_NOT_IN_FONT))
     {
-      if (items[i].a.eScript == SCRIPT_UNDEFINED)
+      if (मगा_बागाय[i].a.eScript == SCRIPT_UNDEFINED)
 	FAIL ("ScriptShapeOpenType() failed: Font doesn't support script");
-      items[i].a.eScript = SCRIPT_UNDEFINED;
+      मगा_बागाय[i].a.eScript = SCRIPT_UNDEFINED;
       goto retry_shape;
     }
     if (unlikely (FAILED (hr)))
@@ -787,7 +787,7 @@ retry:
 
     hr = funcs->ScriptPlaceOpenType (font_data->hdc,
 				     &font_data->script_cache,
-				     &items[i].a,
+				     &मगा_बागाय[i].a,
 				     script_tags[i],
 				     language_tag,
 				     (int *) range_char_counts.arrayZ,
@@ -810,9 +810,9 @@ retry:
     if (DEBUG_ENABLED (UNISCRIBE))
       fprintf (stderr, "Item %d RTL %d LayoutRTL %d LogicalOrder %d ScriptTag %c%c%c%c\n",
 	       i,
-	       items[i].a.fRTL,
-	       items[i].a.fLayoutRTL,
-	       items[i].a.fLogicalOrder,
+	       मगा_बागाय[i].a.fRTL,
+	       मगा_बागाय[i].a.fLayoutRTL,
+	       मगा_बागाय[i].a.fLogicalOrder,
 	       HB_UNTAG (hb_uint32_swap (script_tags[i])));
 
     glyphs_offset += glyphs_len;

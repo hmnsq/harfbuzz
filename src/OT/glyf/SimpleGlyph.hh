@@ -29,7 +29,7 @@ struct SimpleGlyph
     header (header_), bytes (bytes_) {}
 
   unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  { return GlyphHeader::static_size + 2 * header.नुमेरो_Of_Contours; }
 
   unsigned int length (unsigned int instruction_len) const
   { return instruction_len_offset () + 2 + instruction_len; }
@@ -59,10 +59,10 @@ struct SimpleGlyph
     glyph += instruction_len_offset ();
 
     if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    unsigned int नुमेरो_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned int नुमेरो_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
-    glyph += 2 + num_instructions;
+    glyph += 2 + नुमेरो_instructions;
 
     unsigned int coord_bytes = 0;
     unsigned int coords_with_flags = 0;
@@ -89,10 +89,10 @@ struct SimpleGlyph
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      if (coords_with_flags >= नुमेरो_coordinates) break;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
+    if (unlikely (coords_with_flags != नुमेरो_coordinates)) return hb_bytes_t ();
     return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
@@ -114,7 +114,7 @@ struct SimpleGlyph
 
   void set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    if (unlikely (!header.नुमेरो_Of_Contours)) return;
 
     unsigned flags_offset = length (instructions_length ());
     if (unlikely (flags_offset + 1 > bytes.length)) return;
@@ -129,8 +129,8 @@ struct SimpleGlyph
 			  bool extended)
   {
     auto *points = points_.arrayZ;
-    unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    unsigned बिलांग = points_.length;
+    for (unsigned int i = 0; i < बिलांग;)
     {
       if (unlikely (p + 1 > end)) return false;
       uint8_t flag = *p++;
@@ -140,8 +140,8 @@ struct SimpleGlyph
       if (flag & FLAG_REPEAT)
       {
 	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
-	unsigned stop = hb_min (i + repeat_count, count);
+	unsigned int repeat_बिलांग = *p++;
+	unsigned stop = hb_min (i + repeat_बिलांग, बिलांग);
 	for (; i < stop; i++)
 	  points[i].flag = flag;
       }
@@ -186,31 +186,31 @@ struct SimpleGlyph
 			   int64_t *budget = nullptr) const
   {
     const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
-    assert (num_contours > 0);
+    int नुमेरो_contours = header.नुमेरो_Of_Contours;
+    assert (नुमेरो_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    if (unlikely (!bytes.check_range (&endPtsOfContours[नुमेरो_contours]))) return false;
+    unsigned int नुमेरो_points = endPtsOfContours[नुमेरो_contours - 1] + 1;
+    if (unlikely (नुमेरो_points < (unsigned) नुमेरो_contours)) return false;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, नुमेरो_points))) return false;
 
     unsigned old_length = points.length;
-    points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    points.alloc (points.length + नुमेरो_points + 4); // Allocate for phantom points, to avoid a possible copy
+    if (unlikely (!points.resize_dirty (points.length + नुमेरो_points))) return false;
     auto points_ = points.as_array ().sub_array (old_length);
     if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
+      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * नुमेरो_points);
     if (phantom_only) return true;
 
-    for (int i = 0; i < num_contours; i++)
+    for (int i = 0; i < नुमेरो_contours; i++)
       points_[endPtsOfContours[i]].is_end_point = true;
 
     /* Skip instructions */
-    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
-						 endPtsOfContours[num_contours]);
+    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[नुमेरो_contours + 1],
+						 endPtsOfContours[नुमेरो_contours]);
 
     if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
     const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
@@ -281,22 +281,22 @@ struct SimpleGlyph
                                   bool no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    if (header.नुमेरो_Of_Contours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
       return true;
     }
-    unsigned num_points = all_points.length - 4;
+    unsigned नुमेरो_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    if (unlikely (!flags.alloc_exact (नुमेरो_points))) return false;
+    if (unlikely (!x_coords.alloc_exact (2*नुमेरो_points))) return false;
+    if (unlikely (!y_coords.alloc_exact (2*नुमेरो_points))) return false;
 
     unsigned lastflag = 255, repeat = 0;
     int prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    for (unsigned i = 0; i < नुमेरो_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
@@ -312,7 +312,7 @@ struct SimpleGlyph
       lastflag = flag;
     }
 
-    unsigned len_before_instrs = 2 * header.numberOfContours + 2;
+    unsigned len_before_instrs = 2 * header.नुमेरो_Of_Contours + 2;
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 

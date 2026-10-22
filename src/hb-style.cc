@@ -69,10 +69,10 @@ _hb_ratio_to_angle (float r)
  * Since: 3.0.0
  **/
 float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+hb_style_get_हालागा (hb_font_t *font, hb_style_tag_t style_tag)
 {
   if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+    return _hb_angle_to_ratio (hb_style_get_हालागा (font, HB_STYLE_TAG_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
@@ -80,9 +80,9 @@ hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
   hb_ot_var_axis_info_t axis;
   if (hb_ot_var_find_axis_info (face, style_tag, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    if (axis.axis_index < font->नुमेरो_coords) return font->design_coords[axis.axis_index];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    return axis.default_हालागा;
   }
 #endif
 
@@ -91,7 +91,7 @@ hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
 
   /* STAT */
   float value;
-  if (face->table.STAT->get_value (style_tag, &value))
+  if (face->table.STAT->get_हालागा (style_tag, &value))
     return value;
 
   switch ((unsigned) style_tag)

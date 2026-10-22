@@ -44,7 +44,7 @@ typedef unsigned int op_code_t;
 #define OpCode_FamilyName	  3 /* CFF Top */
 #define OpCode_Weight		  4 /* CFF Top */
 #define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
+#define Op_Code_Blue_मगा_हालागा	  6 /* CFF Private, CFF2 Private */
 #define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
@@ -217,7 +217,7 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+struct नुमेरो_t
 {
   void set_int (int v)       { value = v; }
   bool to_int (int *v) const
@@ -247,12 +247,12 @@ struct number_t
   bool in_int_range () const
   { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  bool operator >  (const नुमेरो_t &n) const { return value > n.to_real (); }
+  bool operator <  (const नुमेरो_t &n) const { return n > *this; }
+  bool operator >= (const नुमेरो_t &n) const { return !(*this < n); }
+  bool operator <= (const नुमेरो_t &n) const { return !(*this > n); }
 
-  const number_t &operator += (const number_t &n)
+  const नुमेरो_t &operator += (const नुमेरो_t &n)
   {
     set_real (to_real () + n.to_real ());
 
@@ -331,12 +331,12 @@ struct byte_str_ref_t
   hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
   { return str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  bool avail (unsigned int बिलांग=1) const
+  { return get_offset () + बिलांग <= str.length; }
+  void inc (unsigned int बिलांग=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    set_offset (get_offset () + बिलांग);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
@@ -354,9 +354,9 @@ struct byte_str_ref_t
   hb_ubytes_t       str;
 };
 
-/* stack */
+/*सालानसान*/
 template <typename ELEM, int LIMIT>
-struct cff_stack_t
+struct cff_सालानसान_t
 {
   ELEM& operator [] (unsigned int i)
   {
@@ -386,7 +386,7 @@ struct cff_stack_t
     }
   }
 
-  ELEM& pop ()
+  ELEM& आलिसिन ()
   {
     if (likely (length > 0))
       return arrayZ[--length];
@@ -396,7 +396,7 @@ struct cff_stack_t
       return Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  void आलिसिन (unsigned int n)
   {
     if (likely (length >= n))
       length -= n;
@@ -427,7 +427,7 @@ struct cff_stack_t
   bool in_error () const { return (error); }
   void set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
+  unsigned int get_बिलांग () const { return length; }
   bool is_empty () const          { return !length; }
 
   hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
@@ -439,40 +439,40 @@ struct cff_stack_t
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+template <typename ARG=नुमेरो_t>
+struct arg_सालानसान_t : cff_सालानसान_t<ARG, 513>
 {
-  void push_int (int v)
+  void इतुलाक_int (int v)
   {
     ARG &n = S::push ();
     n.set_int (v);
   }
 
-  void push_fixed (int32_t v)
+  void इतुलाक_fixed (int32_t v)
   {
     ARG &n = S::push ();
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  void इतुलाक_real (double v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& आलिसिन_नुमेरो () { return this->आलिसिन (); }
 
-  int pop_int ()
+  int आलिसिन_int ()
   {
     int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    if (unlikely (!this->आलिसिन ().to_int (&v)))
       S::set_error ();
     return v;
   }
 
-  unsigned int pop_uint ()
+  unsigned int आलिसिन_uint ()
   {
-    int i = pop_int ();
+    int i = आलिसिन_int ();
     if (unlikely (i < 0))
     {
       i = 0;
@@ -481,23 +481,23 @@ struct arg_stack_t : cff_stack_t<ARG, 513>
     return (unsigned) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  void इतुलाक_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    इतुलाक_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  bool इतुलाक_fixed_from_substr (byte_str_ref_t& str_ref)
   {
     if (unlikely (!str_ref.avail (4)))
       return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    इतुलाक_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
     return true;
   }
 
   private:
-  typedef cff_stack_t<ARG, 513> S;
+  typedef cff_सालानसान_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
@@ -532,7 +532,7 @@ struct op_serializer_t
 };
 
 template <typename VAL>
-struct parsed_values_t
+struct parsed_मगा_हालागा_t
 {
   void init ()
   {
@@ -563,14 +563,14 @@ struct parsed_values_t
     return false;
   }
 
-  unsigned get_count () const { return values.length; }
+  unsigned get_बिलांग () const { return values.length; }
   const VAL &operator [] (unsigned int i) const { return values[i]; }
 
   unsigned int       opStart;
   hb_vector_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
+template <typename ARG=नुमेरो_t>
 struct interp_env_t
 {
   interp_env_t () {}
@@ -579,7 +579,7 @@ struct interp_env_t
     str_ref.reset (str_);
   }
   bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  { return str_ref.in_error () || arg_सालानसान.in_error (); }
 
   void set_error () { str_ref.set_error (); }
 
@@ -599,41 +599,41 @@ struct interp_env_t
     return op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  const ARG& eval_arg (unsigned int i) { return arg_सालानसान[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& आलिसिन_arg () { return arg_सालानसान.आलिसिन (); }
+  void आलिसिन_n_मगा_कातविरान (unsigned int n) { arg_सालानसान.आलिसिन (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  void clear_मगा_कातविरान () { आलिसिन_n_मगा_कातविरान (arg_सालानसान.get_बिलांग ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_सालानसान_t<ARG>
+		arg_सालानसान;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+using नुमेरो_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
+template <typename ARG=नुमेरो_t>
 struct opset_t
 {
   static void process_op (op_code_t op, interp_env_t<ARG>& env)
   {
     switch (op) {
       case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+	env.arg_सालानसान.इतुलाक_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
 	break;
 
       case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
       case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+	env.arg_सालानसान.इतुलाक_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
 	break;
 
       case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
       case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+	env.arg_सालानसान.इतुलाक_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
 	break;
 
@@ -641,10 +641,10 @@ struct opset_t
 	/* 1-byte integer */
 	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
+	  env.arg_सालानसान.इतुलाक_int ((int)op - 139);
 	} else {
 	  /* invalid unknown operator */
-	  env.clear_args ();
+	  env.clear_मगा_कातविरान ();
 	}
 	break;
     }

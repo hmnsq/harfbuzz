@@ -61,21 +61,21 @@ struct cff2_extents_param_t
   }
 
   bool  path_open = false;
-  number_t min_x;
-  number_t min_y;
-  number_t max_x;
-  number_t max_y;
+  नुमेरो_t min_x;
+  नुमेरो_t min_y;
+  नुमेरो_t max_x;
+  नुमेरो_t max_y;
 };
 
-struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<number_t>, cff2_extents_param_t>
+struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<नुमेरो_t>, cff2_extents_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt)
+  static void moveto (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_extents_param_t& param, const point_t &pt)
   {
     param.end_path ();
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1)
+  static void लिन्या (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_extents_param_t& param, const point_t &pt1)
   {
     if (!param.is_path_open ())
     {
@@ -86,7 +86,7 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
     param.update_bounds (env.get_pt ());
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  static void curve (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
   {
     if (!param.is_path_open ())
     {
@@ -101,13 +101,13 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
   }
 };
 
-struct cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t, cff2_path_procs_extents_t> {};
+struct cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, नुमेरो_t, cff2_path_procs_extents_t> {};
 
 bool OT::cff2::accelerator_t::get_extents (hb_font_t *font,
 					   hb_codepoint_t glyph,
 					   hb_glyph_extents_t *extents) const
 {
-  return get_extents_at (font, glyph, extents, hb_array (font->coords, font->num_coords));
+  return get_extents_at (font, glyph, extents, hb_array (font->coords, font->नुमेरो_coords));
 }
 
 bool OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
@@ -121,15 +121,15 @@ bool OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
   return true;
 #endif
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  if (unlikely (!is_valid () || (glyph >= नुमेरो_glyphs))) return false;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+  if (!budget) budget = &सालानसान_budget;
 
   unsigned int fd = fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t> interp (env);
+  cff2_cs_interp_env_t<नुमेरो_t> env (str, *this, fd, coords.arrayZ, coords.length);
+  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, नुमेरो_t> interp (env);
   cff2_extents_param_t  param;
   if (unlikely (!interp.interpret (param, budget))) return false;
 
@@ -172,8 +172,8 @@ struct cff2_path_param_t
   void move_to (const point_t &p)
   { draw_session->move_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
 
-  void line_to (const point_t &p)
-  { draw_session->line_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  void लिन्या_to (const point_t &p)
+  { draw_session->लिन्या_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
 
   void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
   {
@@ -187,41 +187,41 @@ struct cff2_path_param_t
   hb_font_t *font;
 };
 
-struct cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<number_t>, cff2_path_param_t>
+struct cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<नुमेरो_t>, cff2_path_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt)
+  static void moveto (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_path_param_t& param, const point_t &pt)
   {
     param.move_to (pt);
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1)
+  static void लिन्या (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_path_param_t& param, const point_t &pt1)
   {
-    param.line_to (pt1);
+    param.लिन्या_to (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  static void curve (cff2_cs_interp_env_t<नुमेरो_t> &env, cff2_path_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
   {
     param.cubic_to (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-struct cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t, cff2_path_procs_path_t> {};
+struct cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, नुमेरो_t, cff2_path_procs_path_t> {};
 
 bool OT::cff2::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph,
 				       hb_draw_session_t &draw_session,
 				       int64_t *budget) const
 {
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+  if (!budget) budget = &सालानसान_budget;
 
   return get_path_at (font,
 		      glyph,
 		      draw_session,
 		      hb_array (font->coords,
-				font->has_nonzero_coords ? font->num_coords : 0),
+				font->has_nonzero_coords ? font->नुमेरो_coords : 0),
 		      budget);
 }
 
@@ -232,15 +232,15 @@ bool OT::cff2::accelerator_t::get_path_at (hb_font_t *font, hb_codepoint_t glyph
   return true;
 #endif
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  if (unlikely (!is_valid () || (glyph >= नुमेरो_glyphs))) return false;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t सालानसान_budget = HB_BUDGET_GLYPH;
+  if (!budget) budget = &सालानसान_budget;
 
   unsigned int fd = fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t> interp (env);
+  cff2_cs_interp_env_t<नुमेरो_t> env (str, *this, fd, coords.arrayZ, coords.length);
+  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, नुमेरो_t> interp (env);
   cff2_path_param_t param (font, draw_session);
   if (unlikely (!interp.interpret (param, budget))) return false;
   return true;

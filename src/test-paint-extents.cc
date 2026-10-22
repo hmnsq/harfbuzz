@@ -40,7 +40,7 @@ draw_budget_probe (hb_font_t *, void *font_data, hb_codepoint_t,
 
   hb_draw_state_t state = HB_DRAW_STATE_DEFAULT;
   hb_draw_move_to (draw_funcs, draw_data, &state, 10.f, 20.f);
-  hb_draw_line_to (draw_funcs, draw_data, &state, 30.f, 40.f);
+  hb_draw_लिन्या_to (draw_funcs, draw_data, &state, 30.f, 40.f);
   return true;
 }
 
@@ -73,7 +73,7 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
   hb_font_funcs_destroy (font_funcs);
 
   hb_always_assert (hb_paint_set_budget (paint_funcs, &context, 1));
-  hb_paint_push_clip_glyph (paint_funcs, &context, 0, font);
+  hb_paint_इतुलाक_clip_glyph (paint_funcs, &context, 0, font);
   hb_always_assert (probe.observed == 1);
   hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) < 0);
 

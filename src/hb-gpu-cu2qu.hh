@@ -179,7 +179,7 @@ hb_gpu_cubic_to_quadratics (hb_gpu_draw_t *g,
 
   if (depth >= HB_GPU_CU2QU_MAX_DEPTH)
   {
-    g->acc_line_to (c3.x, c3.y);
+    g->acc_लिन्या_to (c3.x, c3.y);
     return;
   }
 

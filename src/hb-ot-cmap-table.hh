@@ -459,7 +459,7 @@ struct CmapSubtableFormat4
       for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
 	hb_codepoint_t gid = cp_to_gid.get (cp);
-	if (gid == HB_MAP_VALUE_INVALID)
+	if (gid == HB_MAP_हालागा_INVALID)
 	  gid = 0;
 	if (gid != cp)
 	{
@@ -527,11 +527,11 @@ struct CmapSubtableFormat4
       return;
     }
 
-    this->segCountX2 = segcount * 2;
+    this->seg_बिलांग_X2 = segcount * 2;
     this->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
-    this->searchRange = 2 * (1u << this->entrySelector);
-    this->rangeShift = segcount * 2 > this->searchRange
-		       ? 2 * segcount - this->searchRange
+    this->हानाप_Range = 2 * (1u << this->entrySelector);
+    this->rangeShift = segcount * 2 > this->हानाप_Range
+		       ? 2 * segcount - this->हानाप_Range
 		       : 0;
   }
 
@@ -548,16 +548,16 @@ struct CmapSubtableFormat4
     void init (const CmapSubtableFormat4 *subtable,
 	       unsigned int              subtable_data_size)
     {
-      segCount = subtable->segCountX2 / 2;
-      endCount = subtable->values.arrayZ;
-      startCount = endCount + segCount + 1;
-      idDelta = startCount + segCount;
-      idRangeOffset = idDelta + segCount;
-      glyphIdArray = idRangeOffset + segCount;
+      seg_बिलांग_2 = subtable->seg_बिलांग_X2 / 2;
+      end_बिलांग = subtable->values.arrayZ;
+      start_बिलांग = end_बिलांग + seg_बिलांग_2 + 1;
+      idDelta = start_बिलांग + seg_बिलांग_2;
+      idRangeOffset = idDelta + seg_बिलांग_2;
+      glyphIdArray = idRangeOffset + seg_बिलांग_2;
 
-      unsigned int values_offset = 16 + 8 * segCount;
-      glyphIdArrayLength = subtable_data_size > values_offset
-			   ? (subtable_data_size - values_offset) / 2
+      unsigned int मगा_हालागा_offset = 16 + 8 * seg_बिलांग_2;
+      glyphIdArrayLength = subtable_data_size > मगा_हालागा_offset
+			   ? (subtable_data_size - मगा_हालागा_offset) / 2
 			   : 0;
     }
 
@@ -576,14 +576,14 @@ struct CmapSubtableFormat4
       };
 
       const HBUINT16 *found = hb_bsearch (codepoint,
-					  this->endCount,
-					  this->segCount,
+					  this->end_बिलांग,
+					  this->seg_बिलांग_2,
 					  sizeof (CustomRange),
 					  _hb_cmp_method<hb_codepoint_t, CustomRange, unsigned>,
-					  this->segCount + 1);
+					  this->seg_बिलांग_2 + 1);
       if (unlikely (!found))
 	return false;
-      unsigned int i = found - endCount;
+      unsigned int i = found - end_बिलांग;
 
       hb_codepoint_t gid;
       unsigned int rangeOffset = this->idRangeOffset[i];
@@ -592,7 +592,7 @@ struct CmapSubtableFormat4
       else
       {
 	/* Somebody has been smoking... */
-	unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
+	unsigned int index = rangeOffset / 2 + (codepoint - this->start_बिलांग[i]) + i - this->seg_बिलांग_2;
 	if (unlikely (index >= this->glyphIdArrayLength))
 	  return false;
 	gid = this->glyphIdArray[index];
@@ -612,13 +612,13 @@ struct CmapSubtableFormat4
 
     void collect_unicodes (hb_set_t *out) const
     {
-      unsigned int count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned int i = 0; i < count; i++)
+      unsigned int बिलांग = this->seg_बिलांग_2;
+      if (बिलांग && this->start_बिलांग[बिलांग - 1] == 0xFFFFu)
+	बिलांग--; /* Skip sentinel segment. */
+      for (unsigned int i = 0; i < बिलांग; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
+	hb_codepoint_t start = this->start_बिलांग[i];
+	hb_codepoint_t end = this->end_बिलांग[i];
 	unsigned int rangeOffset = this->idRangeOffset[i];
         out->add_range(start, end);
 	if (rangeOffset == 0)
@@ -634,7 +634,7 @@ struct CmapSubtableFormat4
 	{
 	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
+	    unsigned int index = rangeOffset / 2 + (codepoint - this->start_बिलांग[i]) + i - this->seg_बिलांग_2;
 	    if (unlikely (index >= this->glyphIdArrayLength))
             {
               out->del_range (codepoint, end);
@@ -653,13 +653,13 @@ struct CmapSubtableFormat4
     {
       // TODO(grieger): optimize similar to collect_unicodes
       // (ie. use add_range())
-      unsigned count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned i = 0; i < count; i++)
+      unsigned बिलांग = this->seg_बिलांग_2;
+      if (बिलांग && this->start_बिलांग[बिलांग - 1] == 0xFFFFu)
+	बिलांग--; /* Skip sentinel segment. */
+      for (unsigned i = 0; i < बिलांग; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
+	hb_codepoint_t start = this->start_बिलांग[i];
+	hb_codepoint_t end = this->end_बिलांग[i];
 	unsigned rangeOffset = this->idRangeOffset[i];
 	if (rangeOffset == 0)
 	{
@@ -676,7 +676,7 @@ struct CmapSubtableFormat4
 	{
 	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
+	    unsigned index = rangeOffset / 2 + (codepoint - this->start_बिलांग[i]) + i - this->seg_बिलांग_2;
 	    if (unlikely (index >= this->glyphIdArrayLength))
 	      break;
 	    hb_codepoint_t gid = this->glyphIdArray[index];
@@ -690,12 +690,12 @@ struct CmapSubtableFormat4
       }
     }
 
-    const HBUINT16 *endCount;
-    const HBUINT16 *startCount;
+    const HBUINT16 *end_बिलांग;
+    const HBUINT16 *start_बिलांग;
     const HBUINT16 *idDelta;
     const HBUINT16 *idRangeOffset;
     const HBUINT16 *glyphIdArray;
-    unsigned int segCount;
+    unsigned int seg_बिलांग_2;
     unsigned int glyphIdArrayLength;
   };
 
@@ -737,7 +737,7 @@ struct CmapSubtableFormat4
       return_trace (false);
     hb_barrier ();
 
-    return_trace (c->check_range (values, 2 + 4 * segCountX2));
+    return_trace (c->check_range (values, 2 + 4 * seg_बिलांग_X2));
   }
 
   protected:
@@ -745,20 +745,20 @@ struct CmapSubtableFormat4
   HBUINT16	length;		/* This is the length in bytes of the
 				 * subtable. */
   HBUINT16	language;	/* Ignore. */
-  HBUINT16	segCountX2;	/* 2 x segCount. */
-  HBUINT16	searchRange;	/* 2 * (2**floor(log2(segCount))) */
+  HBUINT16	seg_बिलांग_X2;	/* 2 x segCount. */
+  HBUINT16	हानाप_Range;	/* 2 * (2**floor(log2(segCount))) */
   HBUINT16	entrySelector;	/* log2(searchRange/2) */
   HBUINT16	rangeShift;	/* 2 x segCount - searchRange */
 
   UnsizedArrayOf<HBUINT16>
 		values;
 #if 0
-  HBUINT16	endCount[segCount];	/* End characterCode for each segment,
+  HBUINT16	end_बिलांग[seg_बिलांग_2];	/* End characterCode for each segment,
 					 * last=0xFFFFu. */
   HBUINT16	reservedPad;		/* Set to 0. */
-  HBUINT16	startCount[segCount];	/* Start character code for each segment. */
-  HBINT16		idDelta[segCount];	/* Delta for all character codes in segment. */
-  HBUINT16	idRangeOffset[segCount];/* Offsets into glyphIdArray or 0 */
+  HBUINT16	start_बिलांग[seg_बिलांग_2];	/* Start character code for each segment. */
+  HBINT16		idDelta[seg_बिलांग_2];	/* Delta for all character codes in segment. */
+  HBUINT16	idRangeOffset[seg_बिलांग_2];/* Offsets into glyphIdArray or 0 */
   UnsizedArrayOf<HBUINT16>
 		glyphIdArray;	/* Glyph index array (arbitrary length) */
 #endif
@@ -819,8 +819,8 @@ struct CmapSubtableTrimmed
   void collect_unicodes (hb_set_t *out) const
   {
     hb_codepoint_t start = startCharCode;
-    unsigned int count = glyphIdArray.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = glyphIdArray.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (glyphIdArray[i])
 	out->add (start + i);
   }
@@ -829,8 +829,8 @@ struct CmapSubtableTrimmed
 			hb_map_t *mapping /* OUT */) const
   {
     hb_codepoint_t start_cp = startCharCode;
-    unsigned count = glyphIdArray.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = glyphIdArray.len;
+    for (unsigned i = 0; i < बिलांग; i++)
       if (glyphIdArray[i])
       {
 	hb_codepoint_t unicode = start_cp + i;
@@ -880,7 +880,7 @@ struct CmapSubtableLongSegmented
     return language;
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  void collect_unicodes (hb_set_t *out, unsigned int नुमेरो_glyphs) const
   {
     for (unsigned int i = 0; i < this->groups.len; i++)
     {
@@ -895,9 +895,9 @@ struct CmapSubtableLongSegmented
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      if (unlikely ((unsigned int) gid >= नुमेरो_glyphs)) continue;
+      if (unlikely ((unsigned int) (gid + end - start) >= नुमेरो_glyphs))
+	end = start + (hb_codepoint_t) नुमेरो_glyphs - gid;
 
       out->add_range (start, hb_min (end, 0x10FFFFu));
     }
@@ -905,11 +905,11 @@ struct CmapSubtableLongSegmented
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs) const
+			unsigned नुमेरो_glyphs) const
   {
     hb_codepoint_t last_end = 0;
-    unsigned count = this->groups.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = this->groups.len;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_codepoint_t start = this->groups.arrayZ[i].startCharCode;
       hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups.arrayZ[i].endCharCode,
@@ -924,13 +924,13 @@ struct CmapSubtableLongSegmented
       hb_codepoint_t gid = this->groups.arrayZ[i].glyphID;
       if (!gid)
       {
-        if (T::formatNumber == 13) continue;
+        if (T::format_नुमेरो == 13) continue;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      if (unlikely ((unsigned int) gid >= नुमेरो_glyphs)) continue;
+      if (unlikely ((unsigned int) (gid + end - start) >= नुमेरो_glyphs))
+	end = start + (hb_codepoint_t) नुमेरो_glyphs - gid;
 
       mapping->alloc (mapping->get_population () + end - start + 1);
 
@@ -963,7 +963,7 @@ struct CmapSubtableLongSegmented
 struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 {
   static constexpr int increment = 1;
-  static constexpr int formatNumber = 12;
+  static constexpr int format_नुमेरो = 12;
 
   static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
 					 hb_codepoint_t u)
@@ -1038,7 +1038,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 struct CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
 {
   static constexpr int increment = 0;
-  static constexpr int formatNumber = 13;
+  static constexpr int format_नुमेरो = 13;
 
   static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
 					 hb_codepoint_t u HB_UNUSED)
@@ -1052,12 +1052,12 @@ typedef enum
   GLYPH_VARIANT_USE_DEFAULT = 2
 } glyph_variant_t;
 
-struct UnicodeValueRange
+struct Unicode_हालागा_Range
 {
   int cmp (const hb_codepoint_t &codepoint) const
   {
-    if (codepoint < startUnicodeValue) return -1;
-    if (codepoint > startUnicodeValue + additionalCount) return +1;
+    if (codepoint < start_Unicode_हालागा) return -1;
+    if (codepoint > start_Unicode_हालागा + additional_बिलांग) return +1;
     return 0;
   }
 
@@ -1067,22 +1067,22 @@ struct UnicodeValueRange
     return_trace (c->check_struct (this));
   }
 
-  HBUINT24	startUnicodeValue;	/* First value in this range. */
-  HBUINT8	additionalCount;	/* Number of additional values in this
+  HBUINT24	start_Unicode_हालागा;	/* First value in this range. */
+  HBUINT8	additional_बिलांग;	/* Number of additional values in this
 					 * range. */
   public:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
+struct DefaultUVS : SortedArray32Of<Unicode_हालागा_Range>
 {
   void collect_unicodes (hb_set_t *out) const
   {
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
-      hb_codepoint_t first = arrayZ[i].startUnicodeValue;
-      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additionalCount),
+      hb_codepoint_t first = arrayZ[i].start_Unicode_हालागा;
+      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additional_बिलांग),
 				    (hb_codepoint_t) HB_UNICODE_MAX);
       out->add_range (first, last);
     }
@@ -1101,71 +1101,71 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
 
     if (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
     {
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      hb_codepoint_t start = HB_SET_हालागा_INVALID;
+      hb_codepoint_t end = HB_SET_हालागा_INVALID;
 
       for (auto u : *unicodes)
       {
         if (!as_array ().bsearch (u))
 	  continue;
-	if (start == HB_SET_VALUE_INVALID)
+	if (start == HB_SET_हालागा_INVALID)
 	{
 	  start = u;
 	  end = start - 1;
 	}
 	if (end + 1 != u || end - start == 255)
         {
-	  UnicodeValueRange rec;
-	  rec.startUnicodeValue = start;
-	  rec.additionalCount = end - start;
-	  c->copy<UnicodeValueRange> (rec);
+	  Unicode_हालागा_Range rec;
+	  rec.start_Unicode_हालागा = start;
+	  rec.additional_बिलांग = end - start;
+	  c->copy<Unicode_हालागा_Range> (rec);
 	  start = u;
 	}
 	end = u;
       }
-      if (start != HB_SET_VALUE_INVALID)
+      if (start != HB_SET_हालागा_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = start;
-	rec.additionalCount = end - start;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_हालागा_Range rec;
+	rec.start_Unicode_हालागा = start;
+	rec.additional_बिलांग = end - start;
+	c->copy<Unicode_हालागा_Range> (rec);
       }
 
     }
     else
     {
-      hb_codepoint_t lastCode = HB_SET_VALUE_INVALID;
-      int count = -1;
+      hb_codepoint_t lastCode = HB_SET_हालागा_INVALID;
+      int बिलांग = -1;
 
-      for (const UnicodeValueRange& _ : *this)
+      for (const Unicode_हालागा_Range& _ : *this)
       {
-	hb_codepoint_t curEntry = (hb_codepoint_t) (_.startUnicodeValue - 1);
-	hb_codepoint_t end = curEntry + _.additionalCount + 2;
+	hb_codepoint_t curEntry = (hb_codepoint_t) (_.start_Unicode_हालागा - 1);
+	hb_codepoint_t end = curEntry + _.additional_बिलांग + 2;
 
 	for (; unicodes->next (&curEntry) && curEntry < end;)
 	{
-	  count += 1;
-	  if (lastCode == HB_SET_VALUE_INVALID)
+	  बिलांग += 1;
+	  if (lastCode == HB_SET_हालागा_INVALID)
 	    lastCode = curEntry;
-	  else if (lastCode + count != curEntry || count > 255)
+	  else if (lastCode + बिलांग != curEntry || बिलांग > 255)
 	  {
-	    UnicodeValueRange rec;
-	    rec.startUnicodeValue = lastCode;
-	    rec.additionalCount = count - 1;
-	    c->copy<UnicodeValueRange> (rec);
+	    Unicode_हालागा_Range rec;
+	    rec.start_Unicode_हालागा = lastCode;
+	    rec.additional_बिलांग = बिलांग - 1;
+	    c->copy<Unicode_हालागा_Range> (rec);
 
 	    lastCode = curEntry;
-	    count = 0;
+	    बिलांग = 0;
 	  }
 	}
       }
 
-      if (lastCode != HB_MAP_VALUE_INVALID)
+      if (lastCode != HB_MAP_हालागा_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = lastCode;
-	rec.additionalCount = count;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_हालागा_Range rec;
+	rec.start_Unicode_हालागा = lastCode;
+	rec.additional_बिलांग = बिलांग;
+	c->copy<Unicode_हालागा_Range> (rec);
       }
     }
 
@@ -1177,7 +1177,7 @@ struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
     else
     {
       if (unlikely (!c->check_assign (out->len,
-                                      (c->length () - init_len) / UnicodeValueRange::static_size,
+                                      (c->length () - init_len) / Unicode_हालागा_Range::static_size,
                                       HB_SERIALIZE_ERROR_INT_OVERFLOW))) return nullptr;
       return out;
     }
@@ -1193,7 +1193,7 @@ struct UVSMapping
   using GlyphID = typename Types::HBGlyphID;
 
   int cmp (const hb_codepoint_t &codepoint) const
-  { return unicodeValue.cmp (codepoint); }
+  { return unicode_हालागा.cmp (codepoint); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -1201,7 +1201,7 @@ struct UVSMapping
     return_trace (c->check_struct (this));
   }
 
-  HBUINT24	unicodeValue;	/* Base Unicode value of the UVS */
+  HBUINT24	unicode_हालागा;	/* Base Unicode value of the UVS */
   GlyphID
 		glyphID;	/* Glyph ID of the UVS. */
   public:
@@ -1216,7 +1216,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
   void collect_unicodes (hb_set_t *out) const
   {
     for (const auto& a : this->as_array ())
-      out->add (a.unicodeValue);
+      out->add (a.unicode_हालागा);
   }
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
@@ -1224,7 +1224,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
   {
     for (const auto& a : this->as_array ())
     {
-      hb_codepoint_t unicode = a.unicodeValue;
+      hb_codepoint_t unicode = a.unicode_हालागा;
       hb_codepoint_t glyphid = a.glyphID;
       unicodes->add (unicode);
       mapping->set (unicode, glyphid);
@@ -1235,7 +1235,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
 		       hb_set_t            *glyphset) const
   {
     + this->as_array ()
-    | hb_filter (unicodes, &Mapping::unicodeValue)
+    | hb_filter (unicodes, &Mapping::unicode_हालागा)
     | hb_map (&Mapping::glyphID)
     | hb_sink (glyphset)
     ;
@@ -1251,7 +1251,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
     + this->as_array ()
     | hb_filter ([&] (const Mapping& _)
 		 {
-		   return unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
+		   return unicodes->has (_.unicode_हालागा) || glyphs_requested->has (_.glyphID);
 		 })
     ;
 
@@ -1264,7 +1264,7 @@ struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
     for (const Mapping& _ : it)
     {
       Mapping mapping;
-      mapping.unicodeValue = _.unicodeValue;
+      mapping.unicode_हालागा = _.unicode_हालागा;
       mapping.glyphID = glyph_map->get (_.glyphID);
       c->copy<Mapping> (mapping);
     }
@@ -1352,8 +1352,8 @@ struct VariationSelectorRecord
     {
       c->push ();
       if (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
-	non_default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+	non_default_uvs_objidx = c->आलिसिन_pack ();
+      else c->आलिसिन_discard ();
     }
 
     unsigned default_uvs_objidx = 0;
@@ -1361,8 +1361,8 @@ struct VariationSelectorRecord
     {
       c->push ();
       if (c->copy (base+defaultUVS, unicodes))
-	default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+	default_uvs_objidx = c->आलिसिन_pack ();
+      else c->आलिसिन_discard ();
     }
 
 
@@ -1384,7 +1384,7 @@ struct VariationSelectorRecord
 template <typename Types>
 struct CmapSubtableFormat14_15
 {
-  static constexpr unsigned format_value = Types::size == 2 ? 14 : 15;
+  static constexpr unsigned format_हालागा = Types::size == 2 ? 14 : 15;
   using Record = VariationSelectorRecord<Types>;
   using NonDefault = NonDefaultUVS<Types>;
 
@@ -1413,7 +1413,7 @@ struct CmapSubtableFormat14_15
     const char* init_tail = c->tail;
 
     if (unlikely (!c->extend_min (this))) return;
-    this->format = format_value;
+    this->format = format_हालागा;
 
     auto src_tbl = reinterpret_cast<const CmapSubtableFormat14_15*> (base);
 
@@ -1611,7 +1611,7 @@ struct CmapSubtable
     }
   }
   void collect_unicodes (hb_set_t *out,
-			 unsigned int num_glyphs = UINT_MAX,
+			 unsigned int नुमेरो_glyphs = UINT_MAX,
 			 unsigned int subtable_data_size = 0) const
   {
     switch (u.format.v) {
@@ -1623,8 +1623,8 @@ struct CmapSubtable
 			    return;
     case  6: hb_barrier (); u.format6 .collect_unicodes (out); return;
     case 10: hb_barrier (); u.format10.collect_unicodes (out); return;
-    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); return;
+    case 12: hb_barrier (); u.format12.collect_unicodes (out, नुमेरो_glyphs); return;
+    case 13: hb_barrier (); u.format13.collect_unicodes (out, नुमेरो_glyphs); return;
     case 14:
     default: return;
     }
@@ -1632,7 +1632,7 @@ struct CmapSubtable
 
   void collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs = UINT_MAX,
+			unsigned नुमेरो_glyphs = UINT_MAX,
 			unsigned int subtable_data_size = 0) const
   {
     switch (u.format.v) {
@@ -1644,8 +1644,8 @@ struct CmapSubtable
 			    return;
     case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); return;
     case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); return;
-    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); return;
+    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, नुमेरो_glyphs); return;
+    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, नुमेरो_glyphs); return;
     case 14:
     default: return;
     }
@@ -1767,8 +1767,8 @@ struct EncodingRecord
       CmapSubtable *cmapsubtable = c->push<CmapSubtable> ();
       unsigned origin_length = c->length ();
       cmapsubtable->serialize (c, it, format, plan, &(base+subtable));
-      if (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
-      else c->pop_discard ();
+      if (c->length () > origin_length && !c->in_error()) *objidx = c->आलिसिन_pack ();
+      else c->आलिसिन_discard ();
     }
 
     if (*objidx == 0)
@@ -1879,7 +1879,7 @@ struct SubtableUnicodesCache {
 };
 
 static inline uint16_t
-_hb_symbol_pua_map (unsigned codepoint)
+hb_सिम्बोलो_pua_map (unsigned codepoint)
 {
   if (codepoint <= 0x00FFu)
   {
@@ -2074,7 +2074,7 @@ struct cmap
   {
     TRACE_SUBSET (this);
 
-    cmap *cmap_prime = c->serializer->start_embed<cmap> ();
+    cmap *cmap_पांगुनाहिन = c->serializer->start_embed<cmap> ();
 
     auto encodingrec_iter =
     + hb_iter (encodingRecord)
@@ -2106,10 +2106,10 @@ struct cmap
     auto it =
     + c->plan->unicode_to_new_gid_list.iter ()
     | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return (_.second != HB_MAP_VALUE_INVALID); })
+		 { return (_.second != HB_MAP_हालागा_INVALID); })
     ;
 
-    return_trace (cmap_prime->serialize (c->serializer,
+    return_trace (cmap_पांगुनाहिन->serialize (c->serializer,
                                          it,
                                          encodingrec_iter,
                                          this,
@@ -2118,11 +2118,11 @@ struct cmap
 					 c->source_blob->length));
   }
 
-  const CmapSubtable *find_best_subtable (bool *symbol = nullptr,
+  const CmapSubtable *find_best_subtable (bool *सिम्बोलो = nullptr,
 					  bool *mac = nullptr,
 					  bool *macroman = nullptr) const
   {
-    if (symbol) *symbol = false;
+    if (सिम्बोलो) *सिम्बोलो = false;
     if (mac) *mac = false;
     if (macroman) *macroman = false;
 
@@ -2133,7 +2133,7 @@ struct cmap
      * https://github.com/harfbuzz/harfbuzz/issues/1918 */
     if ((subtable = this->find_subtable (3, 0)))
     {
-      if (symbol) *symbol = true;
+      if (सिम्बोलो) *सिम्बोलो = true;
       return subtable;
     }
 
@@ -2178,8 +2178,8 @@ struct cmap
       if (!this->table.get_length ())
 	return;
 
-      bool symbol, mac, macroman;
-      this->subtable = table->find_best_subtable (&symbol, &mac, &macroman);
+      bool सिम्बोलो, mac, macroman;
+      this->subtable = table->find_best_subtable (&सिम्बोलो, &mac, &macroman);
       this->subtable_uvs = &Null (CmapSubtable);
       {
 	const CmapSubtable *st = table->find_variation_selector_subtable ();
@@ -2207,27 +2207,27 @@ struct cmap
 	this->get_glyph_data = &this->format4_accel;
 	this->get_glyph_funcZ = func;
       };
-      if (unlikely (symbol))
+      if (unlikely (सिम्बोलो))
       {
 	switch ((unsigned) face->table.OS2->get_font_page ()) {
 	case OS2::font_page_t::FONT_PAGE_NONE:
 	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_symbol_pua_map>);
+	    set_format4_getter (get_glyph_from_सिम्बोलो<CmapSubtableFormat4::accelerator_t, hb_सिम्बोलो_pua_map>);
 	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_symbol_pua_map>;
+	    this->get_glyph_funcZ = get_glyph_from_सिम्बोलो<CmapSubtable, hb_सिम्बोलो_pua_map>;
 	  break;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
 	case OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
 	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
+	    set_format4_getter (get_glyph_from_सिम्बोलो<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
 	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_simp_map>;
+	    this->get_glyph_funcZ = get_glyph_from_सिम्बोलो<CmapSubtable, _hb_arabic_pua_simp_map>;
 	  break;
 	case OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
 	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
+	    set_format4_getter (get_glyph_from_सिम्बोलो<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
 	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_trad_map>;
+	    this->get_glyph_funcZ = get_glyph_from_सिम्बोलो<CmapSubtable, _hb_arabic_pua_trad_map>;
 	  break;
 #endif
 	default:
@@ -2312,7 +2312,7 @@ struct cmap
       return _cached_get (unicode, glyph);
     }
 
-    unsigned int get_nominal_glyphs (unsigned int count,
+    unsigned int get_nominal_glyphs (unsigned int बिलांग,
 				     const hb_codepoint_t *first_unicode,
 				     unsigned int unicode_stride,
 				     hb_codepoint_t *first_glyph,
@@ -2322,7 +2322,7 @@ struct cmap
 
       unsigned int done;
       for (done = 0;
-	   done < count && _cached_get (*first_unicode, first_glyph);
+	   done < बिलांग && _cached_get (*first_unicode, first_glyph);
 	   done++)
       {
 	first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
@@ -2356,11 +2356,11 @@ struct cmap
 
     bool has_data () const { return table.get_length (); }
 
-    void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
-    { subtable->collect_unicodes (out, num_glyphs, get_subtable_data_size (subtable)); }
+    void collect_unicodes (hb_set_t *out, unsigned int नुमेरो_glyphs) const
+    { subtable->collect_unicodes (out, नुमेरो_glyphs, get_subtable_data_size (subtable)); }
     void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			  unsigned num_glyphs = UINT_MAX) const
-    { subtable->collect_mapping (unicodes, mapping, num_glyphs, get_subtable_data_size (subtable)); }
+			  unsigned नुमेरो_glyphs = UINT_MAX) const
+    { subtable->collect_mapping (unicodes, mapping, नुमेरो_glyphs, get_subtable_data_size (subtable)); }
     void collect_variation_selectors (hb_set_t *out) const
     { subtable_uvs->collect_variation_selectors (out); }
     void collect_variation_unicodes (hb_codepoint_t variation_selector,
@@ -2383,7 +2383,7 @@ struct cmap
     }
 
     template <typename Type, hb_pua_remap_func_t remap>
-    HB_INTERNAL static bool get_glyph_from_symbol (const void *obj,
+    HB_INTERNAL static bool get_glyph_from_सिम्बोलो (const void *obj,
 						   hb_codepoint_t codepoint,
 						   hb_codepoint_t *glyph)
     {
@@ -2540,20 +2540,20 @@ struct cmap_accelerator_t
 	   base.get_nominal_glyph (unicode, glyph);
   }
 
-  unsigned int get_nominal_glyphs (unsigned int count,
+  unsigned int get_nominal_glyphs (unsigned int बिलांग,
 				   const hb_codepoint_t *first_unicode,
 				   unsigned int unicode_stride,
 				   hb_codepoint_t *first_glyph,
 				   unsigned int glyph_stride) const
   {
     if (likely (!dmap.has_data ()))
-      return base.get_nominal_glyphs (count,
+      return base.get_nominal_glyphs (बिलांग,
 				      first_unicode, unicode_stride,
 				      first_glyph, glyph_stride);
 
     unsigned int done;
     for (done = 0;
-	 done < count && get_nominal_glyph (*first_unicode, first_glyph);
+	 done < बिलांग && get_nominal_glyph (*first_unicode, first_glyph);
 	 done++)
     {
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
@@ -2582,17 +2582,17 @@ struct cmap_accelerator_t
     return get_nominal_glyph (unicode, glyph);
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  void collect_unicodes (hb_set_t *out, unsigned int नुमेरो_glyphs) const
   {
-    base.collect_unicodes (out, num_glyphs);
-    dmap.collect_unicodes (out, num_glyphs);
+    base.collect_unicodes (out, नुमेरो_glyphs);
+    dmap.collect_unicodes (out, नुमेरो_glyphs);
   }
 
   void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			unsigned num_glyphs = UINT_MAX) const
+			unsigned नुमेरो_glyphs = UINT_MAX) const
   {
-    base.collect_mapping (unicodes, mapping, num_glyphs);
-    dmap.collect_mapping (unicodes, mapping, num_glyphs);
+    base.collect_mapping (unicodes, mapping, नुमेरो_glyphs);
+    dmap.collect_mapping (unicodes, mapping, नुमेरो_glyphs);
   }
 
   void collect_variation_selectors (hb_set_t *out) const

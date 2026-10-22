@@ -50,7 +50,7 @@ struct hb_face_t
 
   unsigned int index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
-  mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
+  mutable hb_atomic_t<unsigned> नुमेरो_glyphs;/* Number of glyphs. */
 
   hb_reference_table_func_t  reference_table_func;
   void                      *user_data;
@@ -64,13 +64,13 @@ struct hb_face_t
   hb_ot_face_t table;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  struct plan_बुहोल_t
   {
     hb_shape_plan_t *shape_plan;
-    plan_node_t *next;
+    plan_बुहोल_t *next;
   };
 #ifndef HB_NO_SHAPER
-  hb_atomic_t<plan_node_t *> shape_plans;
+  hb_atomic_t<plan_बुहोल_t *> shape_plans;
 #endif
 
   hb_blob_t *reference_table (hb_tag_t tag) const
@@ -97,17 +97,17 @@ struct hb_face_t
     return ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned int get_नुमेरो_glyphs () const
   {
-    unsigned int ret = num_glyphs;
+    unsigned int ret = नुमेरो_glyphs;
     if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
+      return load_नुमेरो_glyphs ();
     return ret;
   }
 
   private:
   HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  HB_INTERNAL unsigned int load_नुमेरो_glyphs () const;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

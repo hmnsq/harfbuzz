@@ -56,13 +56,13 @@ _hb_subset_table_try (const TableType *table,
 
 
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
+  DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
              HB_UNTAG (c->table_tag), buf_size);
 
   if (unlikely (buf_size > c->source_blob->length * 256 ||
 		!buf->alloc_exact (buf_size)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
+    DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
                HB_UNTAG (c->table_tag), buf_size);
     return needed;
   }
@@ -76,7 +76,7 @@ _hb_subset_estimate_table_size (hb_subset_plan_t *plan,
 				unsigned table_len,
 				hb_tag_t table_tag)
 {
-  unsigned src_glyphs = plan->source->get_num_glyphs ();
+  unsigned src_glyphs = plan->source->get_नुमेरो_glyphs ();
   unsigned dst_glyphs = plan->glyphset ()->get_population ();
 
   unsigned bulk = 8192;
@@ -120,7 +120,7 @@ _hb_subset_repack (hb_tag_t tag, const hb_serialize_context_t& c)
 
   if (unlikely (!result))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
+    DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
                HB_UNTAG (tag));
     return nullptr;
   }
@@ -145,18 +145,18 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
   hb_blob_t *blob = source_blob.get_blob();
   if (unlikely (!blob || !blob->data))
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_मेनसाहे (SUBSET, nullptr,
                "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (tag));
     _hb_do_destroy (source_blob, hb_prioritize);
     return false;
   }
 
   unsigned buf_size = _hb_subset_estimate_table_size (plan, blob->length, TableType::tableTag);
-  DEBUG_MSG (SUBSET, nullptr,
+  DEBUG_मेनसाहे (SUBSET, nullptr,
              "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_size);
   if (unlikely (!buf.alloc (buf_size)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
+    DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
     _hb_do_destroy (source_blob, hb_prioritize);
     return false;
   }
@@ -171,13 +171,13 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
 
   if (serializer.in_error () && !serializer.only_offset_overflow ())
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
+    DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
     return false;
   }
 
   if (!needed)
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
+    DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
     return true;
   }
 
@@ -185,14 +185,14 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
   hb_blob_t *dest_blob = _hb_subset_repack (tag, serializer);
   if (dest_blob)
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_मेनसाहे (SUBSET, nullptr,
                "OT::%c%c%c%c final subset table size: %u bytes.",
                HB_UNTAG (tag), dest_blob->length);
     result = plan->add_table (tag, dest_blob);
     hb_blob_destroy (dest_blob);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
+  DEBUG_मेनसाहे (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
              HB_UNTAG (tag), result ? "success" : "FAILED!");
   return result;
 }

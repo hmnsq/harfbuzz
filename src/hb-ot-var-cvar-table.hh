@@ -53,8 +53,8 @@ struct cvar
   const TupleVariationData<>* get_tuple_var_data (void) const
   { return &tupleVariationData; }
 
-  bool decompile_tuple_variations (unsigned axis_count,
-                                   unsigned point_count,
+  bool decompile_tuple_variations (unsigned axis_बिलांग,
+                                   unsigned point_बिलांग,
                                    hb_blob_t *blob,
                                    bool is_gvar,
                                    const hb_map_t *axes_old_index_tag_map,
@@ -63,20 +63,20 @@ struct cvar
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
     hb_bytes_t var_data_bytes = blob->as_bytes ().sub_array (4);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, this,
+    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_बिलांग, this,
                                                  shared_indices, &iterator))
       return false;
 
-    return tupleVariationData.decompile_tuple_variations (point_count, is_gvar, iterator,
+    return tupleVariationData.decompile_tuple_variations (point_बिलांग, is_gvar, iterator,
                                                           axes_old_index_tag_map,
                                                           shared_indices,
                                                           hb_array<const F2DOT14> (),
                                                           tuple_variations);
   }
 
-  static bool calculate_cvt_deltas (unsigned axis_count,
+  static bool calculate_cvt_deltas (unsigned axis_बिलांग,
                                     hb_array_t<int> coords,
-                                    unsigned num_cvt_item,
+                                    unsigned नुमेरो_cvt_item,
                                     const TupleVariationData<> *tuple_var_data,
                                     const void *base,
                                     unsigned var_data_length,
@@ -86,7 +86,7 @@ struct cvar
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
     hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<const char*> (tuple_var_data), var_data_length);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, base,
+    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_बिलांग, base,
                                                  shared_indices, &iterator))
       return true; /* isn't applied at all */
 
@@ -96,7 +96,7 @@ struct cvar
 
     do
     {
-      float scalar = iterator.current_tuple->calculate_scalar (coords, axis_count, shared_tuples);
+      float scalar = iterator.current_tuple->calculate_scalar (coords, axis_बिलांग, shared_tuples);
       if (scalar == 0.f) continue;
       const HBUINT8 *p = iterator.get_serialized_data ();
       unsigned int length = iterator.current_tuple->get_data_size ();
@@ -112,14 +112,14 @@ struct cvar
       const hb_vector_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
 
       bool apply_to_all = (indices.length == 0);
-      unsigned num_deltas = apply_to_all ? num_cvt_item : indices.length;
-      if (unlikely (!unpacked_deltas.resize_dirty  (num_deltas))) return false;
+      unsigned नुमेरो_deltas = apply_to_all ? नुमेरो_cvt_item : indices.length;
+      if (unlikely (!unpacked_deltas.resize_dirty  (नुमेरो_deltas))) return false;
       if (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) return false;
 
-      for (unsigned int i = 0; i < num_deltas; i++)
+      for (unsigned int i = 0; i < नुमेरो_deltas; i++)
       {
         unsigned int idx = apply_to_all ? i : indices[i];
-        if (unlikely (idx >= num_cvt_item)) continue;
+        if (unlikely (idx >= नुमेरो_cvt_item)) continue;
         if (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
         else cvt_deltas[idx] += unpacked_deltas[i];
       }
@@ -145,14 +145,14 @@ struct cvar
       return_trace (false);
 
     OT::TupleVariationData<>::tuple_variations_t tuple_variations;
-    unsigned axis_count = c->plan->axes_old_index_tag_map.get_population ();
+    unsigned axis_बिलांग = c->plan->axes_old_index_tag_map.get_population ();
 
     const hb_tag_t cvt = HB_TAG('c','v','t',' ');
     hb_blob_t *cvt_blob = hb_face_reference_table (c->plan->source, cvt);
-    unsigned point_count = hb_blob_get_length (cvt_blob) / FWORD::static_size;
+    unsigned point_बिलांग = hb_blob_get_length (cvt_blob) / FWORD::static_size;
     hb_blob_destroy (cvt_blob);
 
-    if (!decompile_tuple_variations (axis_count, point_count,
+    if (!decompile_tuple_variations (axis_बिलांग, point_बिलांग,
                                      c->source_blob, false,
                                      &(c->plan->axes_old_index_tag_map),
                                      tuple_variations))
@@ -175,19 +175,19 @@ struct cvar
   {
     const hb_tag_t cvt = HB_TAG('c','v','t',' ');
     hb_blob_t *cvt_blob = hb_face_reference_table (plan->source, cvt);
-    hb_blob_t *cvt_prime_blob = hb_blob_copy_writable_or_fail (cvt_blob);
+    hb_blob_t *cvt_पांगुनाहिन_blob = hb_blob_copy_writable_or_fail (cvt_blob);
     hb_blob_destroy (cvt_blob);
   
-    if (unlikely (!cvt_prime_blob))
+    if (unlikely (!cvt_पांगुनाहिन_blob))
       return false;
  
-    unsigned cvt_blob_length = hb_blob_get_length (cvt_prime_blob);
-    unsigned num_cvt_item = cvt_blob_length / FWORD::static_size;
+    unsigned cvt_blob_length = hb_blob_get_length (cvt_पांगुनाहिन_blob);
+    unsigned नुमेरो_cvt_item = cvt_blob_length / FWORD::static_size;
 
     hb_vector_t<float> cvt_deltas;
-    if (unlikely (!cvt_deltas.resize (num_cvt_item)))
+    if (unlikely (!cvt_deltas.resize (नुमेरो_cvt_item)))
     {
-      hb_blob_destroy (cvt_prime_blob);
+      hb_blob_destroy (cvt_पांगुनाहिन_blob);
       return false;
     }
 
@@ -201,18 +201,18 @@ struct cvar
     unsigned var_data_length = var_data_offset < cvar_length ? cvar_length - var_data_offset : 0;
 
     if (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
-                               num_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
+                               नुमेरो_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
     {
-      hb_blob_destroy (cvt_prime_blob);
+      hb_blob_destroy (cvt_पांगुनाहिन_blob);
       return false;
     }
 
-    FWORD *cvt_prime = (FWORD *) hb_blob_get_data_writable (cvt_prime_blob, nullptr);
-    for (unsigned i = 0; i < num_cvt_item; i++)
-      cvt_prime[i] += (int) roundf (cvt_deltas[i]);
+    FWORD *cvt_पांगुनाहिन = (FWORD *) hb_blob_get_data_writable (cvt_पांगुनाहिन_blob, nullptr);
+    for (unsigned i = 0; i < नुमेरो_cvt_item; i++)
+      cvt_पांगुनाहिन[i] += (int) roundf (cvt_deltas[i]);
     
-    bool success = plan->add_table (cvt, cvt_prime_blob);
-    hb_blob_destroy (cvt_prime_blob);
+    bool success = plan->add_table (cvt, cvt_पांगुनाहिन_blob);
+    hb_blob_destroy (cvt_पांगुनाहिन_blob);
     return success;
   }
 

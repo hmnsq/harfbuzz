@@ -47,22 +47,22 @@ using namespace CFF;
 
 bool
 hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			     unsigned int fdCount,
+			     unsigned int fd_बिलांग,
 			     const FDSelect &src, /* IN */
-			     unsigned int src_num_glyphs,
-			     unsigned int &subset_fd_count /* OUT */,
+			     unsigned int src_नुमेरो_glyphs,
+			     unsigned int &subset_fd_बिलांग /* OUT */,
 			     unsigned int &subset_fdselect_size /* OUT */,
 			     unsigned int &subset_fdselect_format /* OUT */,
 			     hb_vector_t<code_pair_t> &fdselect_ranges /* OUT */,
 			     hb_inc_bimap_t &fdmap /* OUT */)
 {
-  subset_fd_count = 0;
+  subset_fd_बिलांग = 0;
   subset_fdselect_size = 0;
   subset_fdselect_format = 0;
-  unsigned int num_ranges = 0;
+  unsigned int नुमेरो_ranges = 0;
 
-  unsigned int subset_num_glyphs = plan->num_output_glyphs ();
-  if (subset_num_glyphs == 0)
+  unsigned int subset_नुमेरो_glyphs = plan->नुमेरो_output_glyphs ();
+  if (subset_नुमेरो_glyphs == 0)
     return true;
 
   {
@@ -71,7 +71,7 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
     hb_codepoint_t prev_fd = CFF_UNDEF_CODE;
     auto it = hb_iter (plan->new_to_old_gid_list);
     auto _ = *it;
-    for (hb_codepoint_t gid = 0; gid < subset_num_glyphs; gid++)
+    for (hb_codepoint_t gid = 0; gid < subset_नुमेरो_glyphs; gid++)
     {
       hb_codepoint_t old_glyph;
       if (gid == _.first)
@@ -86,17 +86,17 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
       }
       /* FDSelect may only cover the CharStrings glyphs; see subset_get_fd (). */
       hb_pair_t<unsigned, hb_codepoint_t> fd_range =
-	likely (old_glyph < src_num_glyphs) ?
+	likely (old_glyph < src_नुमेरो_glyphs) ?
 	src.get_fd_range (old_glyph) :
 	hb_pair_t<unsigned, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
-      if (old_glyph < src_num_glyphs)
-	fd_range.second = hb_min (fd_range.second, src_num_glyphs);
+      if (old_glyph < src_नुमेरो_glyphs)
+	fd_range.second = hb_min (fd_range.second, src_नुमेरो_glyphs);
       unsigned fd = fd_range.first;
 
       if (fd != prev_fd)
       {
 	set.add (fd);
-	num_ranges++;
+	नुमेरो_ranges++;
 	prev_fd = fd;
 	fdselect_ranges.push (code_pair_t { fd, gid });
 
@@ -105,11 +105,11 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
       }
     }
 
-    subset_fd_count = set.get_population ();
-    if (subset_fd_count == fdCount)
+    subset_fd_बिलांग = set.get_population ();
+    if (subset_fd_बिलांग == fd_बिलांग)
     {
       /* all font dicts belong to the subset. no need to subset FDSelect & FDArray */
-      fdmap.identity (fdCount);
+      fdmap.identity (fd_बिलांग);
     }
     else
     {
@@ -119,7 +119,7 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
       hb_codepoint_t fd = CFF_UNDEF_CODE;
       while (set.next (&fd))
 	fdmap.add (fd);
-      if (unlikely (fdmap.get_population () != subset_fd_count))
+      if (unlikely (fdmap.get_population () != subset_fd_बिलांग))
 	return false;
     }
 
@@ -129,19 +129,19 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
   }
 
   /* determine which FDSelect format is most compact */
-  if (subset_fd_count > 0xFF)
+  if (subset_fd_बिलांग > 0xFF)
   {
     if (unlikely (src.format != 4))
       return false;
     subset_fdselect_format = 4;
-    subset_fdselect_size = FDSelect::min_size + FDSelect4::min_size + FDSelect4_Range::static_size * num_ranges + HBUINT32::static_size;
+    subset_fdselect_size = FDSelect::min_size + FDSelect4::min_size + FDSelect4_Range::static_size * नुमेरो_ranges + HBUINT32::static_size;
   }
   else
   {
 #if CFF_SERIALIZE_FDSELECT_0
-    unsigned int format0_size = FDSelect::min_size + FDSelect0::min_size + HBUINT8::static_size * subset_num_glyphs;
+    unsigned int format0_size = FDSelect::min_size + FDSelect0::min_size + HBUINT8::static_size * subset_नुमेरो_glyphs;
 #endif
-    unsigned int format3_size = FDSelect::min_size + FDSelect3::min_size + FDSelect3_Range::static_size * num_ranges + HBUINT16::static_size;
+    unsigned int format3_size = FDSelect::min_size + FDSelect3::min_size + FDSelect3_Range::static_size * नुमेरो_ranges + HBUINT16::static_size;
 
 #if CFF_SERIALIZE_FDSELECT_0
     if (format0_size <= format3_size)
@@ -163,7 +163,7 @@ hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
 template <typename FDSELECT3_4>
 static inline bool
 serialize_fdselect_3_4 (hb_serialize_context_t *c,
-			const unsigned int num_glyphs,
+			const unsigned int नुमेरो_glyphs,
 			const FDSelect &src,
 			unsigned int size,
 			const hb_vector_t<code_pair_t> &fdselect_ranges)
@@ -177,16 +177,16 @@ serialize_fdselect_3_4 (hb_serialize_context_t *c,
     p->ranges[i].first = fdselect_ranges[i].glyph;
     p->ranges[i].fd = fdselect_ranges[i].code;
   }
-  p->sentinel () = num_glyphs;
+  p->sentinel () = नुमेरो_glyphs;
   return_trace (true);
 }
 
 /* Serialize a subset FDSelect format planned above. */
 bool
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			   const unsigned int num_glyphs,
+			   const unsigned int नुमेरो_glyphs,
 			   const FDSelect &src,
-			   unsigned int fd_count,
+			   unsigned int fd_बिलांग_2,
 			   unsigned int fdselect_format,
 			   unsigned int size,
 			   const hb_vector_t<code_pair_t> &fdselect_ranges)
@@ -206,7 +206,7 @@ hb_serialize_cff_fdselect (hb_serialize_context_t *c,
     if (unlikely (!p)) return_trace (false);
     unsigned int range_index = 0;
     unsigned int fd = fdselect_ranges[range_index++].code;
-    for (unsigned int i = 0; i < num_glyphs; i++)
+    for (unsigned int i = 0; i < नुमेरो_glyphs; i++)
     {
       if ((range_index < fdselect_ranges.len) &&
 	  (i >= fdselect_ranges[range_index].glyph))
@@ -220,11 +220,11 @@ hb_serialize_cff_fdselect (hb_serialize_context_t *c,
 #endif /* CFF_SERIALIZE_FDSELECT_0 */
 
   case 3:
-    return serialize_fdselect_3_4<FDSelect3> (c, num_glyphs, src,
+    return serialize_fdselect_3_4<FDSelect3> (c, नुमेरो_glyphs, src,
 					      size, fdselect_ranges);
 
   case 4:
-    return serialize_fdselect_3_4<FDSelect4> (c, num_glyphs, src,
+    return serialize_fdselect_3_4<FDSelect4> (c, नुमेरो_glyphs, src,
 					      size, fdselect_ranges);
 
   default:

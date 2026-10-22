@@ -124,7 +124,7 @@ hb_map_destroy (hb_map_t *map)
  **/
 hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
+		      hb_user_data_सुसि_t *key,
 		      void *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
@@ -146,7 +146,7 @@ hb_map_set_user_data (hb_map_t           *map,
  **/
 void *
 hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key)
+		      hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (map, key);
 }
@@ -396,10 +396,10 @@ hb_map_next (const hb_map_t *map,
  * Since: 7.0.0
  **/
 void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys)
+hb_map_मगा_सुसि (const hb_map_t *map,
+	     hb_set_t *मगा_सुसि)
 {
-  hb_copy (map->keys() , *keys);
+  hb_copy (map->मगा_सुसि() , *मगा_सुसि);
 }
 
 /**
@@ -412,7 +412,7 @@ hb_map_keys (const hb_map_t *map,
  * Since: 7.0.0
  **/
 void
-hb_map_values (const hb_map_t *map,
+hb_map_मगा_हालागा (const hb_map_t *map,
 	       hb_set_t *values)
 {
   hb_copy (map->values() , *values);

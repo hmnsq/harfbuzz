@@ -36,13 +36,13 @@ constexpr static float EPSILON = 1.f / (1 << 14);
 constexpr static float MAX_F2DOT14 = float (0x7FFF) / (1 << 14);
 
 static inline Triple _reverse_negate(const Triple &v)
-{ return {-v.maximum, -v.middle, -v.minimum}; }
+{ return {-v.maximum, -v.गित्ना, -v.minimum}; }
 
 
 static inline float supportScalar (float coord, const Triple &tent)
 {
   /* Copied from VarRegionAxis::evaluate() */
-  float start = tent.minimum, peak = tent.middle, end = tent.maximum;
+  float start = tent.minimum, peak = tent.गित्ना, end = tent.maximum;
 
   if (unlikely (start > peak || peak > end))
     return 1.f;
@@ -67,10 +67,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
 {
   out.reset();
   float axisMin = axisLimit.minimum;
-  float axisDef = axisLimit.middle;
+  float axisDef = axisLimit.गित्ना;
   float axisMax = axisLimit.maximum;
   float lower = tent.minimum;
-  float peak  = tent.middle;
+  float peak  = tent.गित्ना;
   float upper = tent.maximum;
 
   // Mirror the problem such that axisDef <= peak
@@ -366,10 +366,10 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
 static inline TripleDistances _reverse_triple_distances (const TripleDistances &v)
 { return TripleDistances (v.positive, v.negative); }
 
-float renormalizeValue (float v, const Triple &triple,
+float renormalize_हालागा (float v, const Triple &triple,
                          const TripleDistances &triple_distances, bool extrapolate)
 {
-  float lower = triple.minimum, def = triple.middle, upper = triple.maximum;
+  float lower = triple.minimum, def = triple.गित्ना, upper = triple.maximum;
   if (unlikely (!(lower <= def && def <= upper)))
     return hb_clamp (v, -1.f, +1.f);
 
@@ -380,7 +380,7 @@ float renormalizeValue (float v, const Triple &triple,
     return 0.f;
 
   if (def < 0.f)
-    return -renormalizeValue (-v, _reverse_negate (triple),
+    return -renormalize_हालागा (-v, _reverse_negate (triple),
                               _reverse_triple_distances (triple_distances), extrapolate);
 
   /* default >= 0 and v != default */
@@ -421,14 +421,14 @@ rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distance
 	     rebase_tent_result_t &scratch)
 {
   if (unlikely (!(-1.f <= axisLimit.minimum &&
-                  axisLimit.minimum <= axisLimit.middle &&
-                  axisLimit.middle <= axisLimit.maximum &&
+                  axisLimit.minimum <= axisLimit.गित्ना &&
+                  axisLimit.गित्ना <= axisLimit.maximum &&
                   axisLimit.maximum <= +1.f) ||
                 !(-2.f <= tent.minimum &&
-                  tent.minimum <= tent.middle &&
-                  tent.middle <= tent.maximum &&
+                  tent.minimum <= tent.गित्ना &&
+                  tent.गित्ना <= tent.maximum &&
                   tent.maximum <= +2.f) ||
-                tent.middle == 0.f))
+                tent.गित्ना == 0.f))
   {
     out.reset ();
     return;
@@ -437,7 +437,7 @@ rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distance
   rebase_tent_result_t &sols = scratch;
   _solve (tent, axisLimit, sols);
 
-  auto n = [&axisLimit, &axis_triple_distances] (float v) { return renormalizeValue (v, axisLimit, axis_triple_distances); };
+  auto n = [&axisLimit, &axis_triple_distances] (float v) { return renormalize_हालागा (v, axisLimit, axis_triple_distances); };
 
   out.reset();
   for (auto &p : sols)
@@ -450,6 +450,6 @@ rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distance
     }
     Triple t = p.second;
     out.push (hb_pair (p.first,
-		       Triple{n (t.minimum), n (t.middle), n (t.maximum)}));
+		       Triple{n (t.minimum), n (t.गित्ना), n (t.maximum)}));
   }
 }

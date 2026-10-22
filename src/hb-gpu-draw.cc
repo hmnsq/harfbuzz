@@ -55,20 +55,20 @@ acc_emit (hb_gpu_draw_t *g,
   if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
     return;
 
-  if (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
+  if (unlikely (g->नुमेरो_curves >= HB_GPU_DRAW_MAX_CURVES))
   {
     g->success = false;
     return;
   }
 
   hb_gpu_curve_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_start};
-  if (unlikely (!g->curves.push_or_fail (c)))
+  if (unlikely (!g->curves.इतुलाक_or_fail (c)))
   {
     g->success = false;
     return;
   }
 
-  g->num_curves++;
+  g->नुमेरो_curves++;
   g->current_x = p3x;
   g->current_y = p3y;
 
@@ -108,7 +108,7 @@ hb_gpu_draw_t::acc_move_to (double x, double y)
 }
 
 void
-hb_gpu_draw_t::acc_line_to (double x, double y)
+hb_gpu_draw_t::acc_लिन्या_to (double x, double y)
 {
   if (unlikely (!success))
     return;
@@ -133,7 +133,7 @@ hb_gpu_draw_t::acc_close_path ()
 
   if (!need_moveto &&
       (current_x != start_x || current_y != start_y))
-    acc_line_to (start_x, start_y);
+    acc_लिन्या_to (start_x, start_y);
 }
 
 
@@ -164,7 +164,7 @@ hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
     if (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
 	cross2 * cross2 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE)
     {
-      acc_line_to (x, y);
+      acc_लिन्या_to (x, y);
       return;
     }
   }
@@ -191,14 +191,14 @@ hb_gpu_draw_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_gpu_draw_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_gpu_draw_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		     void *data,
 		     hb_draw_state_t *st HB_UNUSED,
 		     float to_x, float to_y,
 		     void *user_data HB_UNUSED)
 {
   hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_line_to ((double) to_x, (double) to_y);
+  g->acc_लिन्या_to ((double) to_x, (double) to_y);
 }
 
 static void
@@ -270,7 +270,7 @@ static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_g
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_draw_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_draw_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func      (funcs, hb_gpu_draw_लिन्या_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_draw_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_draw_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_draw_close_path,   nullptr, nullptr);
@@ -387,7 +387,7 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
 			  hb_glyph_extents_t *extents)
 {
   if (unlikely (!draw->success) ||
-      draw->num_curves == 0 ||
+      draw->नुमेरो_curves == 0 ||
       draw->ext_min_x == HUGE_VAL)
   {
     extents->x_bearing = 0;
@@ -460,9 +460,9 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     return nullptr;
 
   const hb_gpu_curve_t *curves = draw->curves.arrayZ;
-  unsigned num_curves = draw->curves.length;
+  unsigned नुमेरो_curves = draw->curves.length;
 
-  if (num_curves == 0)
+  if (नुमेरो_curves == 0)
     return hb_blob_get_empty ();
 
   hb_gpu_encode_scratch_t &s = draw->scratch;
@@ -481,7 +481,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   s.curve_texel_offset.reset_if_error ();
 
   /* Compute per-curve info and extents */
-  if (unlikely (!s.curve_infos.resize (num_curves)))
+  if (unlikely (!s.curve_infos.resize (नुमेरो_curves)))
     return nullptr;
 
   /* Validate the extents fit in i16 before quantizing: the casts in
@@ -504,37 +504,37 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   double max_x = dequantize (max_x_q);
   double max_y = dequantize (max_y_q);
 
-  for (unsigned i = 0; i < num_curves; i++)
+  for (unsigned i = 0; i < नुमेरो_curves; i++)
     s.curve_infos.arrayZ[i] = encode_curve_info (&curves[i]);
 
   /* Choose number of bands (capped at 16 per Slug paper) */
-  unsigned num_hbands = hb_min (num_curves, 16u);
-  unsigned num_vbands = hb_min (num_curves, 16u);
-  num_hbands = hb_max (num_hbands, 1u);
-  num_vbands = hb_max (num_vbands, 1u);
+  unsigned नुमेरो_hbands = hb_min (नुमेरो_curves, 16u);
+  unsigned नुमेरो_vbands = hb_min (नुमेरो_curves, 16u);
+  नुमेरो_hbands = hb_max (नुमेरो_hbands, 1u);
+  नुमेरो_vbands = hb_max (नुमेरो_vbands, 1u);
 
   double height = max_y - min_y;
   double width  = max_x - min_x;
 
-  if (height <= 0) num_hbands = 1;
-  if (width  <= 0) num_vbands = 1;
+  if (height <= 0) नुमेरो_hbands = 1;
+  if (width  <= 0) नुमेरो_vbands = 1;
 
-  double hband_size = height / num_hbands;
-  double vband_size = width  / num_vbands;
+  double hband_size = height / नुमेरो_hbands;
+  double vband_size = width  / नुमेरो_vbands;
 
   /* The shader recomputes the band index from the fragment position in
    * float32, this code does it in double.  Widen the band range of each
    * curve by a hair so the two cannot disagree at a band boundary. */
   static const double BAND_EPSILON = 1.0 / 1024;
 
-  if (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
-		!s.vband_curve_counts.resize (num_vbands)))
+  if (unlikely (!s.hband_curve_counts.resize (नुमेरो_hbands) ||
+		!s.vband_curve_counts.resize (नुमेरो_vbands)))
     return nullptr;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
+  for (unsigned b = 0; b < नुमेरो_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
+  for (unsigned b = 0; b < नुमेरो_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  for (unsigned i = 0; i < नुमेरो_curves; i++)
   {
     hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
@@ -544,7 +544,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 	info.hband_lo = (int) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
 	info.hband_hi = (int) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
 	info.hband_lo = hb_max (info.hband_lo, 0);
-	info.hband_hi = hb_min (info.hband_hi, (int) num_hbands - 1);
+	info.hband_hi = hb_min (info.hband_hi, (int) नुमेरो_hbands - 1);
 	for (int b = info.hband_lo; b <= info.hband_hi; b++)
 	  s.hband_curve_counts.arrayZ[b]++;
       } else {
@@ -560,7 +560,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 	info.vband_lo = (int) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
 	info.vband_hi = (int) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
 	info.vband_lo = hb_max (info.vband_lo, 0);
-	info.vband_hi = hb_min (info.vband_hi, (int) num_vbands - 1);
+	info.vband_hi = hb_min (info.vband_hi, (int) नुमेरो_vbands - 1);
 	for (int b = info.vband_lo; b <= info.vband_hi; b++)
 	  s.vband_curve_counts.arrayZ[b]++;
       } else {
@@ -571,14 +571,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     }
   }
 
-  if (unlikely (!s.hband_offsets.resize (num_hbands) ||
-		!s.vband_offsets.resize (num_vbands)))
+  if (unlikely (!s.hband_offsets.resize (नुमेरो_hbands) ||
+		!s.vband_offsets.resize (नुमेरो_vbands)))
     return nullptr;
 
   unsigned total_hband_indices = 0;
   unsigned total_vband_indices = 0;
 
-  for (unsigned b = 0; b < num_hbands; b++) {
+  for (unsigned b = 0; b < नुमेरो_hbands; b++) {
     s.hband_offsets.arrayZ[b] = total_hband_indices;
     if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
 					     s.hband_curve_counts.arrayZ[b],
@@ -586,7 +586,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       return nullptr;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++) {
+  for (unsigned b = 0; b < नुमेरो_vbands; b++) {
     s.vband_offsets.arrayZ[b] = total_vband_indices;
     if (unlikely (hb_unsigned_add_overflows (total_vband_indices,
 					     s.vband_curve_counts.arrayZ[b],
@@ -599,14 +599,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 		!s.hband_curves_asc.resize (total_hband_indices) ||
 		!s.vband_curves.resize (total_vband_indices) ||
 		!s.vband_curves_asc.resize (total_vband_indices) ||
-		!s.hband_cursors.resize (num_hbands) ||
-		!s.vband_cursors.resize (num_vbands)))
+		!s.hband_cursors.resize (नुमेरो_hbands) ||
+		!s.vband_cursors.resize (नुमेरो_vbands)))
     return nullptr;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
+  for (unsigned b = 0; b < नुमेरो_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
+  for (unsigned b = 0; b < नुमेरो_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
 
-  for (unsigned i = 0; i < num_curves; i++)
+  for (unsigned i = 0; i < नुमेरो_curves; i++)
   {
     const hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
@@ -626,32 +626,32 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   /* Sort: descending by max, ascending by min */
   const hb_gpu_encode_curve_info_t *infos = s.curve_infos.arrayZ;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  for (unsigned b = 0; b < नुमेरो_hbands; b++)
   {
     unsigned off = s.hband_offsets.arrayZ[b];
-    unsigned count = s.hband_curve_counts.arrayZ[b];
-    s.hband_curves.as_array ().sub_array (off, count)
+    unsigned बिलांग = s.hband_curve_counts.arrayZ[b];
+    s.hband_curves.as_array ().sub_array (off, बिलांग)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_x, bv = infos[b].max_x;
 	return (av < bv) - (av > bv);
       });
-    s.hband_curves_asc.as_array ().sub_array (off, count)
+    s.hband_curves_asc.as_array ().sub_array (off, बिलांग)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_x, bv = infos[b].min_x;
 	return (av > bv) - (av < bv);
       });
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  for (unsigned b = 0; b < नुमेरो_vbands; b++)
   {
     unsigned off = s.vband_offsets.arrayZ[b];
-    unsigned count = s.vband_curve_counts.arrayZ[b];
-    s.vband_curves.as_array ().sub_array (off, count)
+    unsigned बिलांग = s.vband_curve_counts.arrayZ[b];
+    s.vband_curves.as_array ().sub_array (off, बिलांग)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_y, bv = infos[b].max_y;
 	return (av < bv) - (av > bv);
       });
-    s.vband_curves_asc.as_array ().sub_array (off, count)
+    s.vband_curves_asc.as_array ().sub_array (off, बिलांग)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_y, bv = infos[b].min_y;
 	return (av > bv) - (av < bv);
@@ -670,14 +670,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
   unsigned header_len = 2;
 
-  unsigned num_contour_breaks = 0;
-  for (unsigned i = 0; i + 1 < num_curves; i++)
+  unsigned नुमेरो_contour_breaks = 0;
+  for (unsigned i = 0; i + 1 < नुमेरो_curves; i++)
     if (curves[i + 1].contour_start)
-      num_contour_breaks++;
+      नुमेरो_contour_breaks++;
 
   unsigned curve_data_len;
-  if (unlikely (hb_unsigned_add_overflows (num_curves,
-					   num_contour_breaks,
+  if (unlikely (hb_unsigned_add_overflows (नुमेरो_curves,
+					   नुमेरो_contour_breaks,
 					   &curve_data_len) ||
 		hb_unsigned_add_overflows (curve_data_len,
 					   1,
@@ -685,8 +685,8 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     return nullptr;
 
   unsigned band_headers_len;
-  if (unlikely (hb_unsigned_add_overflows (num_hbands,
-					   num_vbands,
+  if (unlikely (hb_unsigned_add_overflows (नुमेरो_hbands,
+					   नुमेरो_vbands,
 					   &band_headers_len)))
     return nullptr;
 
@@ -737,13 +737,13 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   buf[0].g = min_y_q;
   buf[0].b = max_x_q;
   buf[0].a = max_y_q;
-  buf[1].r = (int16_t) num_hbands;
-  buf[1].g = (int16_t) num_vbands;
+  buf[1].r = (int16_t) नुमेरो_hbands;
+  buf[1].g = (int16_t) नुमेरो_vbands;
   buf[1].b = (int16_t) hb_clamp (draw->x_scale, -32768, 32767);
   buf[1].a = (int16_t) hb_clamp (draw->y_scale, -32768, 32767);
 
   /* Pack curve data with shared endpoints */
-  if (unlikely (!s.curve_texel_offset.resize (num_curves)))
+  if (unlikely (!s.curve_texel_offset.resize (नुमेरो_curves)))
   {
     hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
     return nullptr;
@@ -751,7 +751,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
   unsigned texel = curve_data_offset;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  for (unsigned i = 0; i < नुमेरो_curves; i++)
   {
     bool contour_start = curves[i].contour_start;
 
@@ -766,7 +766,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       s.curve_texel_offset.arrayZ[i] = texel - 1;
     }
 
-    bool has_next = i + 1 < num_curves &&
+    bool has_next = i + 1 < नुमेरो_curves &&
 		    !curves[i + 1].contour_start;
 
     buf[texel].r = quantize (curves[i].p3x);
@@ -784,7 +784,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   /* Pack band headers and curve indices */
   unsigned index_offset = header_len + band_headers_len;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  for (unsigned b = 0; b < नुमेरो_hbands; b++)
   {
     int16_t hband_split;
     {
@@ -792,14 +792,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned n = s.hband_curve_counts.arrayZ[b];
       unsigned best_worst = n;
       double best_split = (min_x + max_x) * 0.5;
-      unsigned left_count = n;
+      unsigned कालिवा_बिलांग = n;
       for (unsigned ci = 0; ci < n; ci++) {
 	double split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + left_count - 1]].min_x > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
+	unsigned कानान_बिलांग = ci + 1;
+	while (कालिवा_बिलांग &&
+	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + कालिवा_बिलांग - 1]].min_x > split)
+	  कालिवा_बिलांग--;
+	unsigned worst = hb_max (कानान_बिलांग, कालिवा_बिलांग);
 	if (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
@@ -834,7 +834,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     buf[hdr].a = hband_split;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  for (unsigned b = 0; b < नुमेरो_vbands; b++)
   {
     int16_t vband_split;
     {
@@ -842,14 +842,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned n = s.vband_curve_counts.arrayZ[b];
       unsigned best_worst = n;
       double best_split = (min_y + max_y) * 0.5;
-      unsigned left_count = n;
+      unsigned कालिवा_बिलांग = n;
       for (unsigned ci = 0; ci < n; ci++) {
 	double split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + left_count - 1]].min_y > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
+	unsigned कानान_बिलांग = ci + 1;
+	while (कालिवा_बिलांग &&
+	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + कालिवा_बिलांग - 1]].min_y > split)
+	  कालिवा_बिलांग--;
+	unsigned worst = hb_max (कानान_बिलांग, कालिवा_बिलांग);
 	if (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
@@ -858,7 +858,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       vband_split = quantize (best_split);
     }
 
-    unsigned hdr = header_len + num_hbands + b;
+    unsigned hdr = header_len + नुमेरो_hbands + b;
     unsigned desc_off = index_offset;
 
     for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
@@ -964,7 +964,7 @@ hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
  **/
 hb_bool_t
 hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key,
+			     hb_user_data_सुसि_t *key,
 			     void               *data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
@@ -986,7 +986,7 @@ hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
  **/
 void *
 hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key)
+			     hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (draw, key);
 }
@@ -1119,7 +1119,7 @@ hb_gpu_draw_clear (hb_gpu_draw_t *draw)
   draw->start_x = draw->start_y = 0;
   draw->current_x = draw->current_y = 0;
   draw->need_moveto = true;
-  draw->num_curves = 0;
+  draw->नुमेरो_curves = 0;
   draw->success = true;
   draw->curves.reset ();
 

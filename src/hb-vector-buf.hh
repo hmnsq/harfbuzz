@@ -98,7 +98,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
   {
     if (unlikely (would_overflow (1)))
       return false;
-    return push_or_fail (ch);
+    return इतुलाक_or_fail (ch);
   }
 
   bool append_str (const char *s)
@@ -118,10 +118,10 @@ struct hb_vector_buf_t : hb_vector_t<char>
     return append_len (tmp, 2);
   }
 
-  void append_num (float v)
-  { append_num (v, precision); }
+  void append_नुमेरो (float v)
+  { append_नुमेरो (v, precision); }
 
-  void append_num (float v, unsigned p)
+  void append_नुमेरो (float v, unsigned p)
   {
     if (p > 12) p = 12;
 
@@ -235,7 +235,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
     if (with_alpha && a != 255)
     {
       append_str ("\" fill-opacity=\"");
-      append_num (a / 255.f, 4);
+      append_नुमेरो (a / 255.f, 4);
     }
   }
 

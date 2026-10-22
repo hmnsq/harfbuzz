@@ -154,20 +154,20 @@ hb_ot_layout_position_finish_offsets (hb_font_t    *font,
 /* Loop over syllables. Based on foreach_cluster(). */
 #define foreach_syllable(buffer, start, end) \
   for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? _hb_next_syllable (buffer, 0) : 0; \
-       start < _count; \
+       बिलांग_2 = buffer->len, \
+       start = 0, end = बिलांग_2 ? _hb_next_syllable (buffer, 0) : 0; \
+       start < बिलांग_2; \
        start = end, end = _hb_next_syllable (buffer, start))
 
 static inline unsigned int
 _hb_next_syllable (hb_buffer_t *buffer, unsigned int start)
 {
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = start + hb_min (buffer->len - start,
+  unsigned int बिलांग = start + hb_min (buffer->len - start,
 				       (unsigned) HB_MAX_SYLLABLE_LENGTH);
 
   unsigned int syllable = info[start].syllable();
-  while (++start < count && syllable == info[start].syllable())
+  while (++start < बिलांग && syllable == info[start].syllable())
     ;
 
   return start;
@@ -463,9 +463,9 @@ _hb_glyph_info_clear_lig_props (hb_glyph_info_t *info)
 static inline void
 _hb_glyph_info_set_lig_props_for_ligature (hb_glyph_info_t *info,
 					   unsigned int lig_id,
-					   unsigned int lig_num_comps)
+					   unsigned int lig_नुमेरो_comps)
 {
-  info->lig_props() = (lig_id << 5) | IS_LIG_BASE | (lig_num_comps & 0x0F);
+  info->lig_props() = (lig_id << 5) | IS_LIG_BASE | (lig_नुमेरो_comps & 0x0F);
 }
 
 static inline void
@@ -504,7 +504,7 @@ _hb_glyph_info_get_lig_comp (const hb_glyph_info_t *info)
 }
 
 static inline unsigned int
-_hb_glyph_info_get_lig_num_comps (const hb_glyph_info_t *info)
+hb_glyph_info_get_lig_नुमेरो_comps (const hb_glyph_info_t *info)
 {
   if ((info->glyph_props() & HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE) &&
       _hb_glyph_info_ligated_internal (info))
@@ -573,7 +573,7 @@ _hb_glyph_info_multiplied (const hb_glyph_info_t *info)
 }
 
 static inline unsigned int
-_hb_glyph_info_get_lig_num_comps_in_ligation (const hb_glyph_info_t *info)
+hb_glyph_info_get_lig_नुमेरो_comps_in_ligation (const hb_glyph_info_t *info)
 {
   /* When a glyph is decomposed by a MultipleSubst and its pieces later become
    * components of a ligature, the pieces belong to the same ligature component
@@ -583,7 +583,7 @@ _hb_glyph_info_get_lig_num_comps_in_ligation (const hb_glyph_info_t *info)
   if (_hb_glyph_info_multiplied (info) &&
       _hb_glyph_info_get_lig_comp (info))
     return 0;
-  return _hb_glyph_info_get_lig_num_comps (info);
+  return hb_glyph_info_get_lig_नुमेरो_comps (info);
 }
 
 static inline bool
@@ -611,8 +611,8 @@ _hb_clear_substitution_flags (const hb_ot_shape_plan_t *plan HB_UNUSED,
 			      hb_buffer_t *buffer)
 {
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned int बिलांग = buffer->len;
+  for (unsigned int i = 0; i < बिलांग; i++)
     _hb_glyph_info_clear_substituted (&info[i]);
   return false;
 }
@@ -667,14 +667,14 @@ _hb_buffer_assert_gsubgpos_vars (hb_buffer_t *buffer)
 static inline void
 _hb_collect_glyph_alternates_add (hb_codepoint_t from,
 				  hb_codepoint_t to,
-				  hb_map_t *alternate_count,
+				  hb_map_t *alternate_बिलांग,
 				  hb_map_t *alternate_glyphs)
 {
   hb_codepoint_t zero = 0;
   hb_codepoint_t *i = &zero;
-  alternate_count->has (from, &i);
+  alternate_बिलांग->has (from, &i);
   alternate_glyphs->set (from | (*i << 24), to);
-  alternate_count->set (from, *i + 1);
+  alternate_बिलांग->set (from, *i + 1);
 }
 
 

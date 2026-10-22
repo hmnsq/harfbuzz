@@ -34,7 +34,7 @@
 
 #define HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
   HB_DRAW_FUNC_IMPLEMENT (move_to) \
-  HB_DRAW_FUNC_IMPLEMENT (line_to) \
+  HB_DRAW_FUNC_IMPLEMENT (लिन्या_to) \
   HB_DRAW_FUNC_IMPLEMENT (quadratic_to) \
   HB_DRAW_FUNC_IMPLEMENT (cubic_to) \
   HB_DRAW_FUNC_IMPLEMENT (close_path) \
@@ -70,11 +70,11 @@ struct hb_draw_funcs_t
   { func.move_to (this, draw_data, &st,
 		  to_x, to_y,
 		  !user_data ? nullptr : user_data->move_to); }
-  void emit_line_to (void *draw_data, hb_draw_state_t &st,
+  void emit_लिन्या_to (void *draw_data, hb_draw_state_t &st,
 		     float to_x, float to_y)
-  { func.line_to (this, draw_data, &st,
+  { func.लिन्या_to (this, draw_data, &st,
 		  to_x, to_y,
-		  !user_data ? nullptr : user_data->line_to); }
+		  !user_data ? nullptr : user_data->लिन्या_to); }
   void emit_quadratic_to (void *draw_data, hb_draw_state_t &st,
 			  float control_x, float control_y,
 			  float to_x, float to_y)
@@ -123,12 +123,12 @@ struct hb_draw_funcs_t
 
   void
   HB_ALWAYS_INLINE
-  line_to (void *draw_data, hb_draw_state_t &st,
+  लिन्या_to (void *draw_data, hb_draw_state_t &st,
 	   float to_x, float to_y)
   {
     if (unlikely (!st.path_open)) start_path (draw_data, st);
 
-    emit_line_to (draw_data, st, to_x, to_y);
+    emit_लिन्या_to (draw_data, st, to_x, to_y);
 
     st.current_x = to_x;
     st.current_y = to_y;
@@ -170,7 +170,7 @@ struct hb_draw_funcs_t
     if (likely (st.path_open))
     {
       if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
-	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
+	emit_लिन्या_to (draw_data, st, st.path_start_x, st.path_start_y);
       emit_close_path (draw_data, st);
     }
     st.path_open = false;
@@ -209,9 +209,9 @@ struct hb_draw_session_t
 		    to_x, to_y);
   }
   HB_ALWAYS_INLINE
-  void line_to (float to_x, float to_y)
+  void लिन्या_to (float to_x, float to_y)
   {
-    funcs->line_to (draw_data, st,
+    funcs->लिन्या_to (draw_data, st,
 		    to_x, to_y);
   }
   void

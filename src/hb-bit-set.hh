@@ -83,15 +83,15 @@ struct hb_bit_set_t
   void err () { if (successful) successful = false; } /* TODO Remove */
   bool in_error () const { return !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  bool resize (unsigned int बिलांग, bool clear = true, bool exact_size = false)
   {
     if (unlikely (!successful)) return false;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
+    if (pages.length < बिलांग && (unsigned) pages.allocated < बिलांग && बिलांग <= 2)
       exact_size = true; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    if (unlikely (!pages.resize_full (बिलांग, clear, exact_size) ||
+	!page_map.resize_full (बिलांग, clear, false)))
     {
       pages.resize_full (page_map.length, clear, exact_size);
       successful = false;
@@ -128,8 +128,8 @@ struct hb_bit_set_t
   }
   bool is_empty () const
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = pages.length;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!pages[i].is_empty ())
 	return false;
     return true;
@@ -204,17 +204,17 @@ struct hb_bit_set_t
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
     return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
   }
 
   template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void set_array (bool v, const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
   {
     if (unlikely (!successful)) return;
-    if (!count) return;
+    if (!बिलांग) return;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    while (बिलांग)
     {
       unsigned int m = get_major (g);
       page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
@@ -226,35 +226,35 @@ struct hb_bit_set_t
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	बिलांग--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      while (बिलांग && (g = *array, start <= g && g < end));
     }
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
+  void add_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { set_array (true, array, बिलांग, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
 
   template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
+  void del_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { set_array (false, array, बिलांग, stride); }
   template <typename T>
   void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  bool set_sorted_array (bool v, const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
   {
     if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    if (unlikely (!बिलांग)) return true;
     dirty ();
     hb_codepoint_t g = *array;
     hb_codepoint_t last_g = g;
-    while (count)
+    while (बिलांग)
     {
       unsigned int m = get_major (g);
       page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
@@ -270,22 +270,22 @@ struct hb_bit_set_t
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	बिलांग--;
       }
-      while (count && (g = *array, g < end));
+      while (बिलांग && (g = *array, g < end));
     }
     return true;
   }
 
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { return set_sorted_array (true, array, बिलांग, stride); }
   template <typename T>
   bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
 
   template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
+  bool del_sorted_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { return set_sorted_array (false, array, बिलांग, stride); }
   template <typename T>
   bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
 
@@ -417,8 +417,8 @@ struct hb_bit_set_t
   void set (const hb_bit_set_t &other, bool exact_size = false)
   {
     if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
+    unsigned int बिलांग = other.pages.length;
+    if (unlikely (!resize  (बिलांग, false, exact_size)))
       return;
     population = other.population;
 
@@ -540,7 +540,7 @@ struct hb_bit_set_t
   public:
 
   void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
+		 bool passthru_कालिवा, bool passthru_कानान,
 		 const hb_bit_set_t &other,
 		 hb_vector_t<unsigned> *workspace = nullptr)
   {
@@ -552,7 +552,7 @@ struct hb_bit_set_t
     unsigned int nb = other.pages.length;
     unsigned int next_page = na;
 
-    unsigned int count = 0, newCount = 0;
+    unsigned int बिलांग = 0, new_बिलांग = 0;
     unsigned int a = 0, b = 0;
     unsigned int write_index = 0;
 
@@ -560,7 +560,7 @@ struct hb_bit_set_t
     // before attempting to rewrite the page map.
     hb_vector_t<unsigned> local_workspace;
     hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    if (!passthru_कालिवा)
     {
       bool allocated = workspace ? compact_workspace.resize (pages.length)
 				 : allocate_compact_workspace (compact_workspace);
@@ -575,7 +575,7 @@ struct hb_bit_set_t
     {
       if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	if (!passthru_कालिवा)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
@@ -586,39 +586,39 @@ struct hb_bit_set_t
 	  write_index++;
 	}
 
-	count++;
+	बिलांग++;
 	a++;
 	b++;
       }
       else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	if (passthru_कालिवा)
+	  बिलांग++;
 	a++;
       }
       else
       {
-	if (passthru_right)
-	  count++;
+	if (passthru_कानान)
+	  बिलांग++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    if (passthru_कालिवा)
+      बिलांग += na - a;
+    if (passthru_कानान)
+      बिलांग += nb - b;
 
-    if (!passthru_left)
+    if (!passthru_कालिवा)
     {
       na  = write_index;
       next_page = write_index;
       compact (compact_workspace, write_index);
     }
 
-    if (unlikely (!resize (count)))
+    if (unlikely (!resize (बिलांग)))
       return;
 
-    newCount = count;
+    new_बिलांग = बिलांग;
 
     /* Process in-place backward. */
     a = na;
@@ -629,50 +629,50 @@ struct hb_bit_set_t
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	बिलांग--;
+	page_map.arrayZ[बिलांग] = page_map.arrayZ[a];
+	page_at (बिलांग).v = op (page_at (a).v, other.page_at (b).v);
+	page_at (बिलांग).dirty ();
       }
       else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	if (passthru_कालिवा)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  बिलांग--;
+	  page_map.arrayZ[बिलांग] = page_map.arrayZ[a];
 	}
       }
       else
       {
 	b--;
-	if (passthru_right)
+	if (passthru_कानान)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  बिलांग--;
+	  page_map.arrayZ[बिलांग].major = other.page_map.arrayZ[b].major;
+	  page_map.arrayZ[बिलांग].index = next_page++;
+	  page_at (बिलांग) = other.page_at (b);
 	}
       }
     }
-    if (passthru_left)
+    if (passthru_कालिवा)
       while (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	बिलांग--;
+	page_map.arrayZ[बिलांग] = page_map.arrayZ[a];
       }
-    if (passthru_right)
+    if (passthru_कानान)
       while (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	बिलांग--;
+	page_map.arrayZ[बिलांग].major = other.page_map.arrayZ[b].major;
+	page_map.arrayZ[बिलांग].index = next_page++;
+	page_at (बिलांग) = other.page_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    assert (!बिलांग);
+    resize (new_बिलांग);
   }
   template <typename Op>
   static hb_bit_page_t::vector_t
@@ -957,7 +957,7 @@ struct hb_bit_set_t
   {
     // By default, start at the first bit of the first page of values.
     unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
+    unsigned int start_page_हालागा = 0;
     if (unlikely (codepoint != INVALID))
     {
       const auto* page_map_array = page_map.arrayZ;
@@ -972,12 +972,12 @@ struct hb_bit_set_t
       start_page = i;
       if (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_हालागा = page_remainder (codepoint + 1);
+        if (unlikely (start_page_हालागा == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_हालागा = 0;
         }
       }
     }
@@ -986,10 +986,10 @@ struct hb_bit_set_t
     for (unsigned int i = start_page; i < page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
+      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_हालागा, out, size);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_हालागा = 0;
     }
     return initial_size - size;
   }
@@ -1001,7 +1001,7 @@ struct hb_bit_set_t
     unsigned int initial_size = size;
     // By default, start at the first bit of the first page of values.
     unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
+    unsigned int start_page_हालागा = 0;
     if (unlikely (codepoint != INVALID))
     {
       const auto* page_map_array = page_map.arrayZ;
@@ -1024,27 +1024,27 @@ struct hb_bit_set_t
       start_page = i;
       if (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_हालागा = page_remainder (codepoint + 1);
+        if (unlikely (start_page_हालागा == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_हालागा = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
+    hb_codepoint_t next_हालागा = codepoint + 1;
     for (unsigned int i=start_page; i<page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
+      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_हालागा, out, size, &next_हालागा);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_हालागा = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
+    while (next_हालागा < HB_SET_हालागा_INVALID && size) {
+      *out++ = next_हालागा++;
       size--;
     }
     return initial_size - size;
@@ -1056,13 +1056,13 @@ struct hb_bit_set_t
     if (has_population ())
       return population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    unsigned int आलिसिन = 0;
+    unsigned int बिलांग = pages.length;
+    for (unsigned int i = 0; i < बिलांग; i++)
+      आलिसिन += pages[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = आलिसिन;
+    return आलिसिन;
   }
   bool get_singleton (hb_codepoint_t *codepoint) const
   {
@@ -1099,8 +1099,8 @@ struct hb_bit_set_t
   }
   hb_codepoint_t get_min () const
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = pages.length;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       const auto& map = page_map.arrayZ[i];
       const auto& page = pages.arrayZ[map.index];
@@ -1112,8 +1112,8 @@ struct hb_bit_set_t
   }
   hb_codepoint_t get_max () const
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    unsigned बिलांग = pages.length;
+    for (signed i = बिलांग - 1; i >= 0; i--)
     {
       const auto& map = page_map.arrayZ[(unsigned) i];
       const auto& page = pages.arrayZ[map.index];

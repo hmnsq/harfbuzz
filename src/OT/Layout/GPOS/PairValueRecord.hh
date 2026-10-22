@@ -8,26 +8,26 @@ namespace Layout {
 namespace GPOS_impl {
 
 
-struct pair_value_record_context_t
+struct pair_हालागा_record_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
+  const हालागा_Base     *base;
+  const हालागा_Format   *हालागा_Formats;
+  const हालागा_Format   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
   const hb_map_t      *glyph_map;
   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  void copy_मगा_हालागा (hb_serialize_context_t *s, const हालागा *values) const
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    हालागा_Formats[0].copy_मगा_हालागा (s, newFormats[0], base, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    हालागा_Formats[1].copy_मगा_हालागा (s, newFormats[1], base, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
 template <typename Types>
-struct PairValueRecord
+struct Pair_हालागा_Record
 {
   template <typename Types2>
   friend struct PairSet;
@@ -37,7 +37,7 @@ struct PairValueRecord
 	        secondGlyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  हालागा_Record   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
   public:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
@@ -46,7 +46,7 @@ struct PairValueRecord
   { return secondGlyph.cmp (k); }
 
   bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+               pair_हालागा_record_context_t *closure) const
   {
     TRACE_SERIALIZE (this);
     auto *s = c->serializer;
@@ -55,24 +55,24 @@ struct PairValueRecord
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
-    closure->copy_values (s, values);
+    closure->copy_मगा_हालागा (s, values);
 
     return_trace (true);
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+                                  const हालागा_Format *हालागा_Formats,
+                                  const हालागा_Base *base) const
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    unsigned record1_len = हालागा_Formats[0].get_len ();
+    unsigned record2_len = हालागा_Formats[1].get_len ();
+    const hb_array_t<const हालागा> मगा_हालागा_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    if (हालागा_Formats[0].has_device ())
+      हालागा_Formats[0].collect_variation_indices (c, base, मगा_हालागा_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    if (हालागा_Formats[1].has_device ())
+      हालागा_Formats[1].collect_variation_indices (c, base, मगा_हालागा_array.sub_array (record1_len, record2_len));
   }
 
   bool intersects (const hb_set_t& glyphset) const
@@ -80,12 +80,12 @@ struct PairValueRecord
     return glyphset.has(secondGlyph);
   }
 
-  const Value* get_values_1 () const
+  const हालागा* get_मगा_हालागा_1 () const
   {
     return &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  const हालागा* get_मगा_हालागा_2 (हालागा_Format format1) const
   {
     return &values[format1.get_len ()];
   }

@@ -30,7 +30,7 @@
 static inline bool approx (Triple a, Triple b)
 {
   return abs (a.minimum - b.minimum) < 0.000001f &&
-         abs (a.middle - b.middle) < 0.000001f &&
+         abs (a.गित्ना - b.गित्ना) < 0.000001f &&
          abs (a.maximum - b.maximum) < 0.000001f;
 }
 
@@ -85,7 +85,7 @@ main (int argc, char **argv)
   {
     /* malformed triple should not abort in renormalization */
     Triple malformed_range (0.4f, 0.2f, 0.3f);
-    float normalized = renormalizeValue (0.25f, malformed_range, default_axis_distances, true);
+    float normalized = renormalize_हालागा (0.25f, malformed_range, default_axis_distances, true);
     hb_always_assert (approx (normalized, 0.25f));
   }
 

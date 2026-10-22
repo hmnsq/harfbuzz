@@ -50,7 +50,7 @@ struct SubstLookup : Lookup
   hb_closure_context_t::return_t closure (hb_closure_context_t *c, unsigned int this_index) const
   {
     if (!c->should_visit_lookup (this_index))
-      return hb_closure_context_t::default_return_value ();
+      return hb_closure_context_t::default_return_हालागा ();
 
     c->set_recurse_func (dispatch_closure_recurse_func);
 
@@ -70,13 +70,13 @@ struct SubstLookup : Lookup
   hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
   {
     if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+      return hb_closure_lookups_context_t::default_return_हालागा ();
 
     c->set_lookup_visited (this_index);
     if (!intersects (c->glyphs))
     {
       c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      return hb_closure_lookups_context_t::default_return_हालागा ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
@@ -118,10 +118,10 @@ struct SubstLookup : Lookup
     if (unlikely (!Lookup::serialize (c, SubTable::Single, lookup_props, 1))) return_trace (false);
     if (c->push<SubTable> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->आलिसिन_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return_trace (false);
   }
 
@@ -136,10 +136,10 @@ struct SubstLookup : Lookup
     if (c->push<SubTable> ()->u.multiple.
         serialize (c, it))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->आलिसिन_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return_trace (false);
   }
 
@@ -159,10 +159,10 @@ struct SubstLookup : Lookup
                    alternate_len_list,
                    alternate_glyphs_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->आलिसिन_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return_trace (false);
   }
 
@@ -170,9 +170,9 @@ struct SubstLookup : Lookup
   bool serialize_ligature (hb_serialize_context_t *c,
                            uint32_t lookup_props,
                            hb_sorted_array_t<GlyphID> first_glyphs,
-                           hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                           hb_array_t<const unsigned int> ligature_per_first_glyph_बिलांग_list,
                            hb_array_t<GlyphID> ligatures_list,
-                           hb_array_t<const unsigned int> component_count_list,
+                           hb_array_t<const unsigned int> component_बिलांग_list,
                            hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
@@ -180,15 +180,15 @@ struct SubstLookup : Lookup
     if (c->push<SubTable> ()->u.ligature.
         serialize (c,
                    first_glyphs,
-                   ligature_per_first_glyph_count_list,
+                   ligature_per_first_glyph_बिलांग_list,
                    ligatures_list,
-                   component_count_list,
+                   component_बिलांग_list,
                    component_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->आलिसिन_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->आलिसिन_discard ();
     return_trace (false);
   }
 

@@ -88,17 +88,17 @@ DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
 {
   auto *global = get_directwrite_global ();
   mLoader = global->fontFileLoader;
-  mRefCount.init ();
+  m_Ref_बिलांग.init ();
   mLoader->AddRef ();
   hb_blob_make_immutable (blob);
   mBlob = hb_blob_reference (blob);
   mData = (uint8_t *) hb_blob_get_data (blob, &mSize);
-  fontFileKey = mLoader->RegisterFontFileStream (this);
+  font_File_सुसि = mLoader->RegisterFontFileStream (this);
 }
 
 DWriteFontFileStream::~DWriteFontFileStream()
 {
-  mLoader->UnregisterFontFileStream (fontFileKey);
+  mLoader->UnregisterFontFileStream (font_File_सुसि);
   mLoader->Release ();
   hb_blob_destroy (mBlob);
 }
@@ -108,7 +108,7 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 {
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
+    DEBUG_मेनसाहे (DIRECTWRITE, nullptr, __VA_ARGS__); \
     return nullptr; \
   } HB_STMT_END
 
@@ -121,7 +121,7 @@ dw_face_create (hb_blob_t *blob, unsigned index)
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->font_File_सुसि, sizeof (fontFileStream->font_File_सुसि),
 								  global->fontFileLoader, &fontFile);
 
   fontFileStream->Release ();
@@ -132,8 +132,8 @@ dw_face_create (hb_blob_t *blob, unsigned index)
   BOOL isSupported;
   DWRITE_FONT_FILE_TYPE fileType;
   DWRITE_FONT_FACE_TYPE faceType;
-  uint32_t numberOfFaces;
-  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
+  uint32_t नुमेरो_Of_Faces;
+  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &नुमेरो_Of_Faces);
   if (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
@@ -166,22 +166,22 @@ _hb_directwrite_table_data_release (void *data)
 static hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
-  UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
+  UINT32 file_बिलांग;
+  if (FAILED (dw_face->GetFiles(&file_बिलांग, NULL)))
     return nullptr;
 
   hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
+  if (unlikely (!files.resize_exact (file_बिलांग)))
     return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
+  if (FAILED (dw_face->GetFiles(&file_बिलांग, files.arrayZ)))
     return nullptr;
 
   hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  for (UINT32 i = 0; i < file_बिलांग; i++)
   {
-    LPCVOID reference_key;
-    UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
+    LPCVOID reference_सुसि;
+    UINT32 reference_सुसि_size;
+    if (FAILED (files[i]->Get_Reference_सुसि(&reference_सुसि, &reference_सुसि_size)))
       continue;
 
     IDWriteFontFileLoader *loader;
@@ -189,7 +189,7 @@ _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
       continue;
     
     IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    if (FAILED (loader->Create_Stream_From_सुसि (reference_सुसि, reference_सुसि_size, &stream)))
     {
       loader->Release ();
       continue;
@@ -275,7 +275,7 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
 					       _hb_directwrite_face_release);
 
   hb_face_set_index (face, dw_face->GetIndex ());
-  hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
+  hb_face_set_glyph_बिलांग (face, dw_face->Get_Glyph_बिलांग ());
 
   return face;
 }
@@ -408,15 +408,15 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   {
     if (dw_face5->HasVariations ())
     {
-      hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
-      uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
-	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
+      hb_vector_t<DWRITE_FONT_AXIS_हालागा> values;
+      uint32_t बिलांग = dw_face5->Get_Font_Axis_हालागा_बिलांग ();
+      if (likely (values.resize_exact (बिलांग)) &&
+	  SUCCEEDED (dw_face5->Get_Font_Axis_मगा_हालागा (values.arrayZ, बिलांग)))
       {
 	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	if (likely (vars.resize_exact (बिलांग)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  for (uint32_t i = 0; i < बिलांग; ++i)
 	  {
 	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
 	    float value = values[i].value;

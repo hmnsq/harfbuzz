@@ -310,7 +310,7 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
   bool might_short_circuit = always_short_circuit ||
 			     (mode != HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED &&
 			      mode != HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);
-  unsigned int count;
+  unsigned int बिलांग;
 
   /* We do a fairly straightforward yet custom normalization process in three
    * separate rounds: decompose, reorder, recompose (if desired).  Currently
@@ -325,16 +325,16 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
   if (buffer->message (font, "start decompose"))
   {
     buffer->clear_output ();
-    count = buffer->len;
+    बिलांग = buffer->len;
     buffer->idx = 0;
     do
     {
       unsigned int end;
-      for (end = buffer->idx + 1; end < count; end++)
+      for (end = buffer->idx + 1; end < बिलांग; end++)
 	if (_hb_glyph_info_is_unicode_mark (&buffer->info[end]))
 	  break;
 
-      if (end < count)
+      if (end < बिलांग)
 	end--; /* Leave one base for the marks to cluster with. */
 
       /* From idx to end are simple clusters. */
@@ -350,20 +350,20 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
       while (buffer->idx < end && buffer->successful)
 	decompose_current_character (&c, might_short_circuit);
 
-      if (buffer->idx == count || !buffer->successful)
+      if (buffer->idx == बिलांग || !buffer->successful)
 	break;
 
       all_simple = false;
 
       /* Find all the marks now. */
-      for (end = buffer->idx + 1; end < count; end++)
+      for (end = buffer->idx + 1; end < बिलांग; end++)
 	if (!_hb_glyph_info_is_unicode_mark(&buffer->info[end]))
 	  break;
 
       /* idx to end is one non-simple cluster. */
       decompose_multi_char_cluster (&c, end, always_short_circuit);
     }
-    while (buffer->idx < count && buffer->successful);
+    while (buffer->idx < बिलांग && buffer->successful);
     buffer->sync ();
     (void) buffer->message (font, "end decompose");
   }
@@ -373,15 +373,15 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   if (!all_simple && buffer->message(font, "start reorder"))
   {
-    count = buffer->len;
+    बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
 	continue;
 
       unsigned int end;
-      for (end = i + 1; end < count; end++)
+      for (end = i + 1; end < बिलांग; end++)
 	if (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
 	  break;
 
@@ -406,9 +406,9 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
      * If it did NOT, then make it skippable.
      * https://github.com/harfbuzz/harfbuzz/issues/554
      */
-    unsigned count = buffer->len;
+    unsigned बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i + 1 < count; i++)
+    for (unsigned int i = 1; i + 1 < बिलांग; i++)
       if (info[i].codepoint == 0x034Fu/*CGJ*/ &&
 	  (info_cc(info[i+1]) == 0 || info_cc(info[i-1]) <= info_cc(info[i+1])))
       {
@@ -429,10 +429,10 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
      * ccc=0 chars with their previous Starter. */
 
     buffer->clear_output ();
-    count = buffer->len;
+    बिलांग = buffer->len;
     unsigned int starter = 0;
     (void) buffer->next_glyph ();
-    while (buffer->idx < count /* No need for: && buffer->successful */)
+    while (buffer->idx < बिलांग /* No need for: && buffer->successful */)
     {
       hb_codepoint_t composed, glyph;
       if (/* We don't try to compose a non-mark character with it's preceding starter.

@@ -12,14 +12,14 @@ template <typename Types>
 struct PairPosFormat1_3
 {
   using PairSet = GPOS_impl::PairSet<Types>;
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_हालागा_Record = GPOS_impl::Pair_हालागा_Record<Types>;
 
   protected:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat[2];         /* [0] Defines the types of data in
+  हालागा_Format   हालागा_Format_2[2];         /* [0] Defines the types of data in
                                          * ValueRecord1--for the first glyph
                                          * in the pair--may be zero (0) */
                                         /* [1] Defines the types of data in
@@ -29,7 +29,7 @@ struct PairPosFormat1_3
                 pairSet;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
   public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
+  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * हालागा_Format::static_size + Types::HBUINT::static_size, pairSet);
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -38,11 +38,11 @@ struct PairPosFormat1_3
     if (!c->check_struct (this)) return_trace (false);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
+    unsigned int len1 = हालागा_Format_2[0].get_len ();
+    unsigned int len2 = हालागा_Format_2[1].get_len ();
     typename PairSet::sanitize_closure_t closure =
     {
-      valueFormat,
+      हालागा_Format_2,
       len1,
       PairSet::get_size (len1, len2)
     };
@@ -59,7 +59,7 @@ struct PairPosFormat1_3
       for (hb_codepoint_t g : glyphs->iter ())
       {
 	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
+	if ((this+pairSet[i]).intersects (glyphs, हालागा_Format_2))
 	  return true;
       }
       return false;
@@ -70,7 +70,7 @@ struct PairPosFormat1_3
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
     | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+              { return (this+_).intersects (glyphs, हालागा_Format_2); })
     | hb_any
     ;
   }
@@ -78,7 +78,7 @@ struct PairPosFormat1_3
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    if ((!हालागा_Format_2[0].has_device ()) && (!हालागा_Format_2[1].has_device ())) return;
 
     auto it =
     + hb_zip (this+coverage, pairSet)
@@ -89,23 +89,23 @@ struct PairPosFormat1_3
     if (!it) return;
     + it
     | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, हालागा_Format_2); })
     ;
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return;
+    unsigned int बिलांग = pairSet.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
+      (this+pairSet[i]).collect_glyphs (c, हालागा_Format_2);
   }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   {
-    unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    unsigned बिलांग = pairSet.len;
+    for (unsigned i = 0; i < बिलांग; i++)
+      (this+pairSet[i]).collect_second_glyphs (digest, हालागा_Format_2);
   }
 
   const Coverage &get_coverage () const { return this+coverage; }
@@ -117,18 +117,18 @@ struct PairPosFormat1_3
   };
   void *external_cache_create () const
   {
-    unsigned count = pairSet.len;
+    unsigned बिलांग = pairSet.len;
     unsigned size = sizeof (external_cache_t) -
 		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
+		    बिलांग * sizeof (hb_set_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
     if (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], हालागा_Format_2);
       }
     }
     return cache;
@@ -148,7 +148,7 @@ struct PairPosFormat1_3
 #endif
     if (index == NOT_COVERED) return_trace (false);
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_पासोक;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_to;
     if (unlikely (!skippy_iter.next (&unsafe_to)))
@@ -167,7 +167,7 @@ struct PairPosFormat1_3
     }
 #endif
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((this+pairSet[index]).apply (c, हालागा_Format_2, skippy_iter.idx));
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -181,14 +181,14 @@ struct PairPosFormat1_3
     if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
+    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (हालागा_Format_2[0], हालागा_Format_2[1]);
 
     if (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_हालागा_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
     else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
@@ -202,11 +202,11 @@ struct PairPosFormat1_3
        * subsetting*/
       if (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      newFormats = compute_effective_हालागा_formats (glyphset, strip, true);
     }
 
-    out->valueFormat[0] = newFormats.first;
-    out->valueFormat[1] = newFormats.second;
+    out->हालागा_Format_2[0] = newFormats.first;
+    out->हालागा_Format_2[1] = newFormats.second;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
 
@@ -217,10 +217,10 @@ struct PairPosFormat1_3
                    auto snap = c->serializer->snapshot ();
                    auto *o = out->pairSet.serialize_append (c->serializer);
                    if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
+                   bool ret = o->serialize_subset (c, _, this, हालागा_Format_2, out->हालागा_Format_2);
                    if (!ret)
                    {
-                     out->pairSet.pop ();
+                     out->pairSet.आलिसिन ();
                      c->serializer->revert (snap);
                    }
                    return ret;
@@ -237,7 +237,7 @@ struct PairPosFormat1_3
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
+  hb_pair_t<unsigned, unsigned> compute_effective_हालागा_formats (const hb_set_t& glyphset,
                                                                  bool strip_hints, bool strip_empty,
                                                                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
   {
@@ -250,13 +250,13 @@ struct PairPosFormat1_3
 	)
     {
       const PairSet& set = (this + _);
-      auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
-          glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
+      auto formats = set.get_मगा_हालागा_view (हालागा_Format_2).compute_effective_हालागा_formats (
+          glyphset, हालागा_Format_2, strip_hints, strip_empty, varidx_delta_map);
       format1 |= formats.first;
       format2 |= formats.second;
 
       if (!varidx_delta_map &&
-          format1 == valueFormat[0] && format2 == valueFormat[1])
+          format1 == हालागा_Format_2[0] && format2 == हालागा_Format_2[1])
         break;
     }
 

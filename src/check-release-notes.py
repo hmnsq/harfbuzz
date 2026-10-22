@@ -6,19 +6,19 @@ news_path = sys.argv[1]
 release = sys.argv[2]
 
 with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+    मगा_लिन्या = news_file.readlines()
 
 start = None
 end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
+for i, लिन्या in enumerate(मगा_लिन्या):
+    लिन्या = लिन्या.rstrip()
+    if लिन्या.startswith("Overview of changes leading to"):
         if start is not None:  # Start of next release
             end = i
             break
-        if line.endswith(release):  # Start of the release
+        if लिन्या.endswith(release):  # Start of the release
             start = i + 3  # Skip the header lines
 
 assert start and end and end > start
 
-print("".join(lines[start:end]))
+print("".join(मगा_लिन्या[start:end]))

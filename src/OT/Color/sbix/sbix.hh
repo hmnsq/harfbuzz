@@ -79,14 +79,14 @@ struct SBIXGlyph
 
 struct SBIXStrike
 {
-  static size_t get_size (unsigned num_glyphs)
-  { return min_size + num_glyphs * HBUINT32::static_size; }
+  static size_t get_size (unsigned नुमेरो_glyphs)
+  { return min_size + नुमेरो_glyphs * HBUINT32::static_size; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
-		  imageOffsetsZ.sanitize_shallow (c, c->get_num_glyphs () + 1));
+		  imageOffsetsZ.sanitize_shallow (c, c->get_नुमेरो_glyphs () + 1));
   }
 
   hb_blob_t *get_glyph_blob (unsigned int  glyph_id,
@@ -94,18 +94,18 @@ struct SBIXStrike
 			     hb_tag_t      file_type,
 			     int          *x_offset,
 			     int          *y_offset,
-			     unsigned int  num_glyphs,
+			     unsigned int  नुमेरो_glyphs,
 			     unsigned int *strike_ppem) const
   {
     if (unlikely (!ppem)) return hb_blob_get_empty (); /* To get Null() object out of the way. */
 
-    unsigned int retry_count = 8;
+    unsigned int retry_बिलांग = 8;
     unsigned int sbix_len = sbix_blob->length;
     unsigned int strike_offset = (const char *) this - (const char *) sbix_blob->data;
     assert (strike_offset < sbix_len);
 
   retry:
-    if (unlikely (glyph_id >= num_glyphs ||
+    if (unlikely (glyph_id >= नुमेरो_glyphs ||
 		  imageOffsetsZ[glyph_id + 1] <= imageOffsetsZ[glyph_id] ||
 		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_size ||
 		  (unsigned int) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_offset))
@@ -121,7 +121,7 @@ struct SBIXStrike
       if (glyph_length >= 2)
       {
 	glyph_id = *((HBUINT16 *) &glyph->data);
-	if (retry_count--)
+	if (retry_बिलांग--)
 	  goto retry;
       }
       return hb_blob_get_empty ();
@@ -139,18 +139,18 @@ struct SBIXStrike
   bool subset (hb_subset_context_t *c, unsigned int available_len) const
   {
     TRACE_SUBSET (this);
-    unsigned int num_output_glyphs = c->plan->num_output_glyphs ();
+    unsigned int नुमेरो_output_glyphs = c->plan->नुमेरो_output_glyphs ();
 
     auto* out = c->serializer->start_embed<SBIXStrike> ();
     auto snap = c->serializer->snapshot ();
-    if (unlikely (!c->serializer->extend (out, num_output_glyphs + 1))) return_trace (false);
+    if (unlikely (!c->serializer->extend (out, नुमेरो_output_glyphs + 1))) return_trace (false);
     out->ppem = ppem;
     out->resolution = resolution;
     HBUINT32 head;
-    head = get_size (num_output_glyphs + 1);
+    head = get_size (नुमेरो_output_glyphs + 1);
 
     bool has_glyphs = false;
-    for (unsigned new_gid = 0; new_gid < num_output_glyphs; new_gid++)
+    for (unsigned new_gid = 0; new_gid < नुमेरो_output_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
       if (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
@@ -172,7 +172,7 @@ struct SBIXStrike
       head += delta;
     }
     if (has_glyphs)
-      out->imageOffsetsZ[num_output_glyphs] = head;
+      out->imageOffsetsZ[नुमेरो_output_glyphs] = head;
     else
       c->serializer->revert (snap);
     return_trace (has_glyphs);
@@ -203,7 +203,7 @@ struct sbix
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<sbix> (face);
-      num_glyphs = face->get_num_glyphs ();
+      नुमेरो_glyphs = face->get_नुमेरो_glyphs ();
     }
     ~accelerator_t () { table.destroy (); }
 
@@ -227,7 +227,7 @@ struct sbix
       return choose_strike (font).get_glyph_blob (glyph_id, table.get_blob (),
 						  HB_TAG ('p','n','g',' '),
 						  x_offset, y_offset,
-						  num_glyphs, available_ppem);
+						  नुमेरो_glyphs, available_ppem);
     }
 
     bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
@@ -266,8 +266,8 @@ struct sbix
 
     const SBIXStrike &choose_strike (hb_font_t *font) const
     {
-      unsigned count = table->strikes.len;
-      if (unlikely (!count))
+      unsigned बिलांग = table->strikes.len;
+      if (unlikely (!बिलांग))
 	return Null (SBIXStrike);
 
       unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
@@ -277,7 +277,7 @@ struct sbix
       unsigned int best_i = 0;
       unsigned int best_ppem = table->get_strike (0).ppem;
 
-      for (unsigned int i = 1; i < count; i++)
+      for (unsigned int i = 1; i < बिलांग; i++)
       {
 	unsigned int ppem = (table->get_strike (i)).ppem;
 	if ((requested_ppem <= ppem && ppem < best_ppem) ||
@@ -362,7 +362,7 @@ struct sbix
     private:
     hb_blob_ptr_t<sbix> table;
 
-    unsigned int num_glyphs;
+    unsigned int नुमेरो_glyphs;
   };
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -402,13 +402,13 @@ struct sbix
       bool ret = add_strike (c, i);
       if (!ret)
       {
-	c->serializer->pop_discard ();
-	out->pop ();
+	c->serializer->आलिसिन_discard ();
+	out->आलिसिन ();
 	c->serializer->revert (snap);
       }
       else
       {
-	objidxs.push (c->serializer->pop_pack ());
+	objidxs.push (c->serializer->आलिसिन_pack ());
 	new_strikes.push (o);
       }
     }

@@ -204,13 +204,13 @@ done:
 }
 
 bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+hb_buffer_t::make_room_for (unsigned int नुमेरो_in,
+			    unsigned int नुमेरो_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  if (unlikely (!ensure (out_len + नुमेरो_out))) return false;
 
   if (out_info == info &&
-      out_len + num_out > idx + num_in)
+      out_len + नुमेरो_out > idx + नुमेरो_in)
   {
     assert (have_output);
 
@@ -222,10 +222,10 @@ hb_buffer_t::make_room_for (unsigned int num_in,
 }
 
 bool
-hb_buffer_t::shift_forward (unsigned int count)
+hb_buffer_t::shift_forward (unsigned int बिलांग)
 {
   assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  if (unlikely (!ensure (len + बिलांग))) return false;
 
   max_ops -= len - idx;
   if (unlikely (max_ops < 0))
@@ -234,8 +234,8 @@ hb_buffer_t::shift_forward (unsigned int count)
     return false;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + बिलांग, info + idx, (len - idx) * sizeof (info[0]));
+  if (idx + बिलांग > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,10 +243,10 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + बिलांग - len) * sizeof (info[0]));
   }
-  len += count;
-  idx += count;
+  len += बिलांग;
+  idx += बिलांग;
 
   return true;
 }
@@ -481,24 +481,24 @@ hb_buffer_t::move_to (unsigned int i)
 
   if (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned int बिलांग = i - out_len;
+    if (unlikely (!make_room_for (बिलांग, बिलांग))) return false;
 
-    max_ops -= count;
+    max_ops -= बिलांग;
     if (unlikely (max_ops < 0))
     {
       successful = false;
       return false;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (out_info + out_len, info + idx, बिलांग * sizeof (out_info[0]));
+    idx += बिलांग;
+    out_len += बिलांग;
   }
   else if (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned int बिलांग = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,20 +507,20 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    if (unlikely (idx < बिलांग && !shift_forward (बिलांग - idx))) return false;
 
-    assert (idx >= count);
+    assert (idx >= बिलांग);
 
-    max_ops -= count;
+    max_ops -= बिलांग;
     if (unlikely (max_ops < 0))
     {
       successful = false;
       return false;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= बिलांग;
+    out_len -= बिलांग;
+    memmove (info + idx, out_info + out_len, बिलांग * sizeof (out_info[0]));
   }
 
   return true;
@@ -543,16 +543,16 @@ hb_buffer_t::set_masks (hb_mask_t    value,
   if (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int count = len;
+  unsigned int बिलांग = len;
 
   if (cluster_start == 0 && cluster_end == (unsigned int) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
     return;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
@@ -660,8 +660,8 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
   unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned int बिलांग = len;
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (filter (&info[i]))
     {
@@ -669,7 +669,7 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
        * Same logic as delete_glyph(), but for in-place removal. */
 
       unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
+      if (i + 1 < बिलांग && cluster == info[i + 1].cluster)
 	continue; /* Cluster survives; do nothing. */
 
       if (j)
@@ -685,7 +685,7 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
 	continue;
       }
 
-      if (i + 1 < count)
+      if (i + 1 < बिलांग)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
       continue;
@@ -910,7 +910,7 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  **/
 hb_bool_t
 hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
+			 hb_user_data_सुसि_t *key,
 			 void *              data,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
@@ -932,7 +932,7 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  **/
 void *
 hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+			 hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (buffer, key);
 }
@@ -2236,9 +2236,9 @@ hb_buffer_diff (hb_buffer_t *buffer,
   hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
   bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned int बिलांग = reference->len;
 
-  if (buffer->len != count)
+  if (buffer->len != बिलांग)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
@@ -2246,7 +2246,7 @@ hb_buffer_diff (hb_buffer_t *buffer,
      */
     const hb_glyph_info_t *info = reference->info;
     unsigned int i;
-    for (i = 0; i < count; i++)
+    for (i = 0; i < बिलांग; i++)
     {
       if (contains && info[i].codepoint == dottedcircle_glyph)
 	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
@@ -2257,12 +2257,12 @@ hb_buffer_diff (hb_buffer_t *buffer,
     return hb_buffer_diff_flags_t (result);
   }
 
-  if (!count)
+  if (!बिलांग)
     return hb_buffer_diff_flags_t (result);
 
   const hb_glyph_info_t *buf_info = buffer->info;
   const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (buf_info->codepoint != ref_info->codepoint)
       result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
@@ -2288,7 +2288,7 @@ hb_buffer_diff (hb_buffer_t *buffer,
     assert (buffer->have_positions);
     const hb_glyph_position_t *buf_pos = buffer->pos;
     const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||

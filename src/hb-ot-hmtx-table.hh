@@ -75,7 +75,7 @@ struct hmtxvmtx
   { return T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
 
   bool subset_update_header (hb_subset_context_t *c,
-			     unsigned int num_hmetrics,
+			     unsigned int नुमेरो_hmetrics,
 			     const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
 			     const hb_vector_t<unsigned> &bounds_vec) const
   {
@@ -89,7 +89,7 @@ struct hmtxvmtx
 
     unsigned int length;
     H *table = (H *) hb_blob_get_data (dest_blob, &length);
-    c->serializer->check_assign (table->numberOfLongMetrics, num_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+    c->serializer->check_assign (table->नुमेरो_Of_Long_Metrics, नुमेरो_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
 #ifndef HB_NO_VAR
     if (c->plan->normalized_coords)
@@ -146,7 +146,7 @@ struct hmtxvmtx
         if (OS2.has_data () &&
             table->ascender == OS2.sTypoAscender &&
             table->descender == OS2.sTypoDescender &&
-            table->lineGap == OS2.sTypoLineGap)
+            table->लिन्या_Gap == OS2.s_Typo_लिन्या_Gap)
         {
           table->ascender = static_cast<int> (roundf (OS2.sTypoAscender +
                                                       MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,
@@ -156,8 +156,8 @@ struct hmtxvmtx
                                                        MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,
                                                                      c->plan->normalized_coords.arrayZ,
                                                                      c->plan->normalized_coords.length)));
-          table->lineGap = static_cast<int> (roundf (OS2.sTypoLineGap +
-                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,
+          table->लिन्या_Gap = static_cast<int> (roundf (OS2.s_Typo_लिन्या_Gap +
+                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP,
                                                                    c->plan->normalized_coords.arrayZ,
                                                                    c->plan->normalized_coords.length)));
         }
@@ -176,21 +176,21 @@ struct hmtxvmtx
   void serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_long_metrics,
-                  unsigned total_num_metrics)
+		  unsigned नुमेरो_long_metrics,
+                  unsigned total_नुमेरो_metrics)
   {
-    LongMetric* long_metrics = c->allocate_size<LongMetric> (num_long_metrics * LongMetric::static_size);
-    FWORD* short_metrics = c->allocate_size<FWORD> ((total_num_metrics - num_long_metrics) * FWORD::static_size);
+    LongMetric* long_metrics = c->allocate_size<LongMetric> (नुमेरो_long_metrics * LongMetric::static_size);
+    FWORD* short_metrics = c->allocate_size<FWORD> ((total_नुमेरो_metrics - नुमेरो_long_metrics) * FWORD::static_size);
     if (!long_metrics || !short_metrics) return;
 
-    short_metrics -= num_long_metrics;
+    short_metrics -= नुमेरो_long_metrics;
 
     for (auto _ : new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       auto mtx = *it++;
 
-      if (gid < num_long_metrics)
+      if (gid < नुमेरो_long_metrics)
       {
 	LongMetric& lm = long_metrics[gid];
 	lm.advance = mtx.first;
@@ -205,10 +205,10 @@ struct hmtxvmtx
   {
     TRACE_SUBSET (this);
 
-    auto *table_prime = c->serializer->start_embed <T> ();
+    auto *table_पांगुनाहिन = c->serializer->start_embed <T> ();
 
     accelerator_t _mtx (c->plan->source);
-    unsigned num_long_metrics;
+    unsigned नुमेरो_long_metrics;
     const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map = get_mtx_map (c->plan);
     {
       /* Determine num_long_metrics to encode. */
@@ -216,12 +216,12 @@ struct hmtxvmtx
 
       // TODO Don't consider retaingid holes here.
 
-      num_long_metrics = hb_min (plan->num_output_glyphs (), H::long_metric_count_max ());
-      unsigned int last_advance = get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 1, _mtx);
-      while (num_long_metrics > 1 &&
-	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 2, _mtx))
+      नुमेरो_long_metrics = hb_min (plan->नुमेरो_output_glyphs (), H::long_metric_बिलांग_max ());
+      unsigned int last_advance = get_new_gid_advance_unscaled (plan, mtx_map, नुमेरो_long_metrics - 1, _mtx);
+      while (नुमेरो_long_metrics > 1 &&
+	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, नुमेरो_long_metrics - 2, _mtx))
       {
-	num_long_metrics--;
+	नुमेरो_long_metrics--;
       }
     }
 
@@ -243,17 +243,17 @@ struct hmtxvmtx
 	      })
     ;
 
-    table_prime->serialize (c->serializer,
+    table_पांगुनाहिन->serialize (c->serializer,
 			    it,
 			    c->plan->new_to_old_gid_list,
-			    num_long_metrics,
-			    c->plan->num_output_glyphs ());
+			    नुमेरो_long_metrics,
+			    c->plan->नुमेरो_output_glyphs ());
 
     if (unlikely (c->serializer->in_error ()))
       return_trace (false);
 
     // Amend header num hmetrics
-    if (unlikely (!subset_update_header (c, num_long_metrics, mtx_map,
+    if (unlikely (!subset_update_header (c, नुमेरो_long_metrics, mtx_map,
                                          T::is_horizontal ? c->plan->bounds_width_vec : c->plan->bounds_height_vec)))
       return_trace (false);
 
@@ -265,10 +265,10 @@ struct hmtxvmtx
     friend struct hmtxvmtx;
 
     accelerator_t (hb_face_t *face) :
-      accelerator_t (face, T::tableTag, get_num_long_metrics (face))
+      accelerator_t (face, T::tableTag, get_नुमेरो_long_metrics (face))
     {}
 
-    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned num_long_metrics_)
+    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned नुमेरो_long_metrics_2)
     {
       table = hb_sanitize_context_t ().reference_table<hmtxvmtx> (face, tableTag);
       var_table = hb_sanitize_context_t ().reference_table<V> (face, T::variationsTag);
@@ -281,28 +281,28 @@ struct hmtxvmtx
       if (len & 1)
         len--;
 
-      num_long_metrics = num_long_metrics_;
-      if (unlikely (num_long_metrics > len / 4))
-	num_long_metrics = len / 4;
-      len -= num_long_metrics * 4;
+      नुमेरो_long_metrics = नुमेरो_long_metrics_2;
+      if (unlikely (नुमेरो_long_metrics > len / 4))
+	नुमेरो_long_metrics = len / 4;
+      len -= नुमेरो_long_metrics * 4;
 
-      num_bearings = face->table.maxp->get_num_glyphs ();
+      नुमेरो_bearings = face->table.maxp->get_नुमेरो_glyphs ();
 
-      if (unlikely (num_bearings < num_long_metrics))
-        num_bearings = num_long_metrics;
-      if (unlikely ((num_bearings - num_long_metrics) * 2 > len))
-        num_bearings = num_long_metrics + len / 2;
-      len -= (num_bearings - num_long_metrics) * 2;
+      if (unlikely (नुमेरो_bearings < नुमेरो_long_metrics))
+        नुमेरो_bearings = नुमेरो_long_metrics;
+      if (unlikely ((नुमेरो_bearings - नुमेरो_long_metrics) * 2 > len))
+        नुमेरो_bearings = नुमेरो_long_metrics + len / 2;
+      len -= (नुमेरो_bearings - नुमेरो_long_metrics) * 2;
 
       /* We MUST set num_bearings to zero if num_long_metrics is zero.
        * Our get_advance() depends on that. */
-      if (unlikely (!num_long_metrics))
-	num_bearings = num_long_metrics = 0;
+      if (unlikely (!नुमेरो_long_metrics))
+	नुमेरो_bearings = नुमेरो_long_metrics = 0;
 
-      num_advances = num_bearings + len / 2;
-      num_glyphs = face->get_num_glyphs ();
-      if (num_glyphs < num_advances)
-        num_glyphs = num_advances;
+      नुमेरो_advances = नुमेरो_bearings + len / 2;
+      नुमेरो_glyphs = face->get_नुमेरो_glyphs ();
+      if (नुमेरो_glyphs < नुमेरो_advances)
+        नुमेरो_glyphs = नुमेरो_advances;
     }
     ~accelerator_t ()
     {
@@ -310,35 +310,35 @@ struct hmtxvmtx
       var_table.destroy ();
     }
 
-    bool has_data () const { return (bool) num_bearings; }
+    bool has_data () const { return (bool) नुमेरो_bearings; }
 
     void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
 						   int *lsb) const
     {
-      if (glyph < num_long_metrics)
+      if (glyph < नुमेरो_long_metrics)
       {
 	*lsb = table->longMetricZ[glyph].sb;
 	return;
       }
 
-      if (unlikely (glyph >= num_bearings))
+      if (unlikely (glyph >= नुमेरो_bearings))
       {
         *lsb = 0;
 	return;
       }
 
-      const FWORD *bearings = (const FWORD *) &table->longMetricZ[num_long_metrics];
-      *lsb = bearings[glyph - num_long_metrics];
+      const FWORD *bearings = (const FWORD *) &table->longMetricZ[नुमेरो_long_metrics];
+      *lsb = bearings[glyph - नुमेरो_long_metrics];
     }
 
     unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
     {
-      if (glyph < num_bearings)
-	return table->longMetricZ[hb_min (glyph, (uint32_t) num_long_metrics - 1)].advance;
+      if (glyph < नुमेरो_bearings)
+	return table->longMetricZ[hb_min (glyph, (uint32_t) नुमेरो_long_metrics - 1)].advance;
 
       /* If num_advances is zero, it means we don't have the metrics table
        * for this direction: return default advance. */
-      if (unlikely (!num_advances))
+      if (unlikely (!नुमेरो_advances))
 	return default_advance;
 
       return 0;
@@ -351,17 +351,17 @@ struct hmtxvmtx
     {
       unsigned int advance = get_advance_without_var_unscaled (glyph);
       return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								      font->coords, font->num_coords,
+								      font->coords, font->नुमेरो_coords,
 								      store_cache)));
     }
 #endif
 
     protected:
     // 0 <= num_long_metrics <= num_bearings <= num_advances <= num_glyphs
-    unsigned num_long_metrics;
-    unsigned num_bearings;
-    unsigned num_advances;
-    unsigned num_glyphs;
+    unsigned नुमेरो_long_metrics;
+    unsigned नुमेरो_bearings;
+    unsigned नुमेरो_advances;
+    unsigned नुमेरो_glyphs;
 
     unsigned int default_advance;
 
@@ -370,10 +370,10 @@ struct hmtxvmtx
     hb_blob_ptr_t<V> var_table;
 
     private:
-    static unsigned get_num_long_metrics (hb_face_t *face)
+    static unsigned get_नुमेरो_long_metrics (hb_face_t *face)
     {
       hb_blob_ptr_t<H> hea = hb_sanitize_context_t ().reference_table<H> (face);
-      unsigned ret = hea->numberOfLongMetrics;
+      unsigned ret = hea->नुमेरो_Of_Long_Metrics;
       hea.destroy ();
       return ret;
     }
@@ -478,7 +478,7 @@ struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
   {
     unsigned int advance = get_advance_without_var_unscaled (glyph);
     return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+								    font->coords, font->नुमेरो_coords,
 								    store_cache)));
   }
 #endif
@@ -519,7 +519,7 @@ struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
   {
     unsigned int advance = get_advance_without_var_unscaled (glyph);
     return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+								    font->coords, font->नुमेरो_coords,
 								    store_cache)));
   }
 #endif

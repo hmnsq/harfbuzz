@@ -34,7 +34,7 @@
 #include "hb-multimap.hh"
 #include "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+extern HB_INTERNAL hb_user_data_सुसि_t hb_subset_accelerator_user_data_सुसि;
 
 namespace CFF {
 struct cff_subset_accelerator_t;
@@ -48,9 +48,9 @@ struct cff2_subset_accelerator_t;
 
 struct hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  static hb_user_data_सुसि_t* user_data_सुसि()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    return &hb_subset_accelerator_user_data_सुसि;
   }
 
   static hb_subset_accelerator_t* create(hb_face_t *source,

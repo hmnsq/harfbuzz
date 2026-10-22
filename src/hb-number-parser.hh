@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#ifndef HB_नुमेरो_PARSER_HH
+#define HB_नुमेरो_PARSER_HH
 
 #include "hb.hh"
 
@@ -61,25 +61,25 @@ struct _hb_fraction
     if (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++बिलांग;
     }
     else if (drop < 0) drop = digit;
     else if (digit != 0) sticky = true;
   }
 
-  double get_value () const
+  double get_हालागा () const
   {
     double result = fraction;
     // Round-to-nearest-even using the recorded tail
     if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
       result += 1;
-    return result / _pow10 (count);
+    return result / _pow10 (बिलांग);
   }
 
-  bool is_empty () const { return !count; }
+  bool is_empty () const { return !बिलांग; }
 
 private:
-  unsigned count = 0;
+  unsigned बिलांग = 0;
   double fraction = 0;
   int drop = -1; // drop is the first digit we couldn't accumulate
   bool sticky = false; // sticky is set when any later digit was nonzero.
@@ -140,7 +140,7 @@ hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
+    if (!frac.is_empty ()) value += frac.get_हालागा ();
     else if (!has_int)
     {
       // Nothing could be parsed

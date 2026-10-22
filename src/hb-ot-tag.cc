@@ -137,11 +137,11 @@ hb_ot_tags_from_script (hb_script_t  script,
 			hb_tag_t    *script_tag_1,
 			hb_tag_t    *script_tag_2)
 {
-  unsigned int count = 2;
+  unsigned int बिलांग = 2;
   hb_tag_t tags[2];
-  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &count, tags, nullptr, nullptr);
-  *script_tag_1 = count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *script_tag_2 = count > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &बिलांग, tags, nullptr, nullptr);
+  *script_tag_1 = बिलांग > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
+  *script_tag_2 = बिलांग > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
 }
 #endif
 
@@ -155,7 +155,7 @@ hb_ot_tags_from_script (hb_script_t  script,
 
 static void
 hb_ot_all_tags_from_script (hb_script_t   script,
-			    unsigned int *count /* IN/OUT */,
+			    unsigned int *बिलांग /* IN/OUT */,
 			    hb_tag_t     *tags /* OUT */)
 {
   unsigned int i = 0;
@@ -166,18 +166,18 @@ hb_ot_all_tags_from_script (hb_script_t   script,
     /* HB_SCRIPT_MYANMAR maps to 'mym2', but there is no 'mym3'. */
     if (new_tag != HB_TAG('m','y','m','2'))
       tags[i++] = new_tag | '3';
-    if (*count > i)
+    if (*बिलांग > i)
       tags[i++] = new_tag;
   }
 
-  if (*count > i)
+  if (*बिलांग > i)
   {
     hb_tag_t old_tag = hb_ot_old_tag_from_script (script);
     if (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
       tags[i++] = old_tag;
   }
 
-  *count = i;
+  *बिलांग = i;
 }
 
 /**
@@ -276,7 +276,7 @@ struct LangTagRange
 {
   hb_tag_t language;
   uint16_t offset;
-  uint8_t count;
+  uint8_t बिलांग;
 
   int cmp (hb_tag_t a) const
   {
@@ -311,23 +311,23 @@ struct LangTagRange
 hb_tag_t
 hb_ot_tag_from_language (hb_language_t language)
 {
-  unsigned int count = 1;
+  unsigned int बिलांग = 1;
   hb_tag_t tags[1];
-  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &count, tags);
-  return count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &बिलांग, tags);
+  return बिलांग > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
 }
 #endif
 
 static void
 hb_ot_tags_from_language (const char   *lang_str,
 			  const char   *limit,
-			  unsigned int *count,
+			  unsigned int *बिलांग,
 			  hb_tag_t     *tags)
 {
 
 #ifndef HB_NO_LANGUAGE_LONG
   /* Check for matches of multiple subtags. */
-  if (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
+  if (hb_ot_tags_from_complex_language (lang_str, limit, बिलांग, tags))
     return;
 #endif
 
@@ -365,13 +365,13 @@ hb_ot_tags_from_language (const char   *lang_str,
 	       ot_languages2[tag_idx].language == ot_languages2[tag_idx - 1].language)
 	  tag_idx--;
 	for (i = 0;
-	     i < *count &&
+	     i < *बिलांग &&
 	     tag_idx + i < ARRAY_LENGTH (ot_languages2) &&
 	     ot_languages2[tag_idx + i].tag != HB_TAG_NONE &&
 	     ot_languages2[tag_idx + i].language == ot_languages2[tag_idx].language;
 	     i++)
 	  tags[i] = ot_languages2[tag_idx + i].tag;
-	*count = i;
+	*बिलांग = i;
 	return;
       }
     }
@@ -386,13 +386,13 @@ hb_ot_tags_from_language (const char   *lang_str,
 	  hb_sorted_array (ot_languages3).bfind (lang_tag, &tag_idx))
       {
 	last_tag_idx_3 = tag_idx;
-	if (*count)
+	if (*बिलांग)
 	{
 	  tags[0] = ot_languages3[tag_idx].tag;
-	  *count = 1;
+	  *बिलांग = 1;
 	}
 	else
-	  *count = 0;
+	  *बिलांग = 0;
 	return;
       }
 
@@ -406,21 +406,21 @@ hb_ot_tags_from_language (const char   *lang_str,
 	last_tag_idx_3_multi = multi_tag_idx;
 	const LangTagRange &range = ot_languages3_multi[multi_tag_idx];
 	unsigned int i;
-	for (i = 0; i < *count && i < range.count; i++)
-	  tags[i] = ot_languages3_multi_values[range.offset + i];
-	*count = i;
+	for (i = 0; i < *बिलांग && i < range.बिलांग; i++)
+	  tags[i] = ot_languages3_multi_मगा_हालागा[range.offset + i];
+	*बिलांग = i;
 	return;
       }
 
       if (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
       {
-	*count = 0;
+	*बिलांग = 0;
 	return;
       }
 
       /* Assume it's ISO-639-3 and upper-case and use it. */
       tags[0] = lang_tag & ~0x20202000u;
-      *count = 1;
+      *बिलांग = 1;
       return;
     }
 #endif
@@ -432,17 +432,17 @@ hb_ot_tags_from_language (const char   *lang_str,
   if (s - lang_str == 3) {
     /* Assume it's ISO-639-3 and upper-case and use it. */
     tags[0] = hb_tag_from_string (lang_str, s - lang_str) & ~0x20202000u;
-    *count = 1;
+    *बिलांग = 1;
     return;
   }
 #endif
 
-  *count = 0;
+  *बिलांग = 0;
 }
 
 static bool
 parse_private_use_subtag (const char     *private_use_subtag,
-			  unsigned int   *count,
+			  unsigned int   *बिलांग,
 			  hb_tag_t       *tags,
 			  const char     *prefix,
 			  unsigned char (*normalize) (unsigned char))
@@ -451,7 +451,7 @@ parse_private_use_subtag (const char     *private_use_subtag,
   return false;
 #endif
 
-  if (!(private_use_subtag && count && tags && *count)) return false;
+  if (!(private_use_subtag && बिलांग && tags && *बिलांग)) return false;
 
   const char *s = strstr (private_use_subtag, prefix);
   if (!s) return false;
@@ -482,7 +482,7 @@ parse_private_use_subtag (const char     *private_use_subtag,
   tags[0] = HB_TAG (tag[0], tag[1], tag[2], tag[3]);
   if ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
     tags[0] ^= ~0xDFDFDFDF;
-  *count = 1;
+  *बिलांग = 1;
   return true;
 }
 
@@ -506,17 +506,17 @@ parse_private_use_subtag (const char     *private_use_subtag,
 void
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     unsigned int *script_बिलांग /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     unsigned int *language_बिलांग /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */)
 {
   bool needs_script = true;
 
   if (language == HB_LANGUAGE_INVALID)
   {
-    if (language_count && language_tags && *language_count)
-      *language_count = 0;
+    if (language_बिलांग && language_tags && *language_बिलांग)
+      *language_बिलांग = 0;
   }
   else
   {
@@ -550,15 +550,15 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
 	limit = s;
     }
 
-    needs_script = !parse_private_use_subtag (private_use_subtag, script_count, script_tags, "-hbsc", TOLOWER);
-    needs_language = !parse_private_use_subtag (private_use_subtag, language_count, language_tags, "-hbot", TOUPPER);
+    needs_script = !parse_private_use_subtag (private_use_subtag, script_बिलांग, script_tags, "-hbsc", TOLOWER);
+    needs_language = !parse_private_use_subtag (private_use_subtag, language_बिलांग, language_tags, "-hbot", TOUPPER);
 
-    if (needs_language && language_count && language_tags && *language_count)
-      hb_ot_tags_from_language (lang_str, limit, language_count, language_tags);
+    if (needs_language && language_बिलांग && language_tags && *language_बिलांग)
+      hb_ot_tags_from_language (lang_str, limit, language_बिलांग, language_tags);
   }
 
-  if (needs_script && script_count && script_tags && *script_count)
-    hb_ot_all_tags_from_script (script, script_count, script_tags);
+  if (needs_script && script_बिलांग && script_tags && *script_बिलांग)
+    hb_ot_all_tags_from_script (script, script_बिलांग, script_tags);
 }
 
 /**
@@ -603,8 +603,8 @@ hb_ot_tag_to_language (hb_tag_t tag)
       return hb_language_from_string (buf, 3);
     }
   for (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
-    for (unsigned int j = 0; j < ot_languages3_multi[i].count; j++)
-      if (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
+    for (unsigned int j = 0; j < ot_languages3_multi[i].बिलांग; j++)
+      if (ot_languages3_multi_मगा_हालागा[ot_languages3_multi[i].offset + j] == tag)
       {
 	hb_tag_to_string (ot_languages3_multi[i].language, buf);
 	return hb_language_from_string (buf, 3);
@@ -660,16 +660,16 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
     *script = script_out;
   if (language)
   {
-    unsigned int script_count = 1;
+    unsigned int script_बिलांग = 1;
     hb_tag_t primary_script_tag[1];
     hb_ot_tags_from_script_and_language (script_out,
 					 HB_LANGUAGE_INVALID,
-					 &script_count,
+					 &script_बिलांग,
 					 primary_script_tag,
 					 nullptr, nullptr);
     *language = hb_ot_tag_to_language (language_tag);
     const char *lang_str = *language ? hb_language_to_string (*language) : nullptr;
-    if (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
+    if (lang_str && (script_बिलांग == 0 || primary_script_tag[0] != script_tag))
     {
       unsigned char *buf;
       size_t len = strlen (lang_str);

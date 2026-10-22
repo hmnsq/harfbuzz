@@ -45,15 +45,15 @@
 template <typename item_t, typename lock_t>
 struct hb_lockable_set_t
 {
-  hb_vector_t<item_t> items;
+  hb_vector_t<item_t> मगा_बागाय;
 
-  void init () { items.init (); }
+  void init () { मगा_बागाय.init (); }
 
   template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  item_t *replace_or_इसिंगित (T v, lock_t &l, bool replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
+    item_t *item = मगा_बागाय.lsearch (v);
     if (item) {
       if (replace) {
 	item_t old = *item;
@@ -66,22 +66,22 @@ struct hb_lockable_set_t
 	l.unlock ();
       }
     } else {
-      item = items.push (v);
+      item = मगा_बागाय.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    return मगा_बागाय.in_error () ? nullptr : item;
   }
 
   template <typename T>
   void remove (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
+    item_t *item = मगा_बागाय.lsearch (v);
     if (item)
     {
       item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      *item = std::move (मगा_बागाय.tail ());
+      मगा_बागाय.आलिसिन ();
       l.unlock ();
       old.fini ();
     } else {
@@ -93,7 +93,7 @@ struct hb_lockable_set_t
   bool find (T v, item_t *i, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
+    item_t *item = मगा_बागाय.lsearch (v);
     if (item)
       *i = *item;
     l.unlock ();
@@ -101,12 +101,12 @@ struct hb_lockable_set_t
   }
 
   template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  item_t *find_or_इसिंगित (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
+    item_t *item = मगा_बागाय.find (v);
     if (!item) {
-      item = items.push (v);
+      item = मगा_बागाय.push (v);
     }
     l.unlock ();
     return item;
@@ -114,22 +114,22 @@ struct hb_lockable_set_t
 
   void fini (lock_t &l)
   {
-    if (!items.length)
+    if (!मगा_बागाय.length)
     {
       /* No need to lock. */
-      items.fini ();
+      मगा_बागाय.fini ();
       return;
     }
     l.lock ();
-    while (items.length)
+    while (मगा_बागाय.length)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      item_t old = मगा_बागाय.tail ();
+      मगा_बागाय.आलिसिन ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    मगा_बागाय.fini ();
     l.unlock ();
   }
 
@@ -140,18 +140,18 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+struct hb_reference_बिलांग_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<int> ref_बिलांग_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  void init (int v = 1) { ref_बिलांग_2 = v; }
+  int get_relaxed () const { return ref_बिलांग_2; }
+  int inc () const { return ref_बिलांग_2.inc (); }
+  int dec () const { return ref_बिलांग_2.dec (); }
+  void fini () { ref_बिलांग_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  bool is_inert () const { return !ref_बिलांग_2; }
+  bool is_valid () const { return ref_बिलांग_2 > 0; }
 };
 
 
@@ -160,24 +160,24 @@ struct hb_reference_count_t
 struct hb_user_data_array_t
 {
   struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
+    hb_user_data_सुसि_t *key;
     void *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
+    bool operator == (const hb_user_data_सुसि_t *other_सुसि) const { return key == other_सुसि; }
     bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
 
     void fini () { if (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> मगा_बागाय;
 
-  void init () { lock.init (); items.init (); }
+  void init () { lock.init (); मगा_बागाय.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  void fini () { मगा_बागाय.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
+  bool set (hb_user_data_सुसि_t *key,
 	    void *              data,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
@@ -187,21 +187,21 @@ struct hb_user_data_array_t
 
     if (replace) {
       if (!data && !destroy) {
-	items.remove (key, lock);
+	मगा_बागाय.remove (key, lock);
 	return true;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    bool ret = !!मगा_बागाय.replace_or_इसिंगित (item, lock, (bool) replace);
 
     return ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  void *get (hb_user_data_सुसि_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    return मगा_बागाय.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -212,11 +212,11 @@ struct hb_user_data_array_t
 
 struct hb_object_header_t
 {
-  hb_reference_count_t ref_count;
+  hb_reference_बिलांग_t ref_बिलांग_2;
   mutable hb_atomic_t<bool> writable = false;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  bool is_inert () const { return !ref_बिलांग_2.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -228,10 +228,10 @@ struct hb_object_header_t
 template <typename Type>
 static inline void hb_object_trace (const Type *obj, const char *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_मेनसाहे (OBJECT, (void *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->header.ref_बिलांग_2.get_relaxed () : 0);
 }
 
 template <typename Type, typename ...Ts>
@@ -252,14 +252,14 @@ static inline Type *hb_object_create (Ts... ds)
 template <typename Type>
 static inline void hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
+  obj->header.ref_बिलांग_2.init ();
   obj->header.writable = true;
   obj->header.user_data.init ();
 }
 template <typename Type>
 static inline bool hb_object_is_valid (const Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  return likely (obj->header.ref_बिलांग_2.is_valid ());
 }
 template <typename Type>
 static inline bool hb_object_is_immutable (const Type *obj)
@@ -280,7 +280,7 @@ static inline Type *hb_object_reference (Type *obj)
   if (unlikely (!obj || obj->header.is_inert ()))
     return obj;
   assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
+  obj->header.ref_बिलांग_2.inc ();
   return obj;
 }
 template <typename Type>
@@ -290,7 +290,7 @@ static inline bool hb_object_should_destroy (Type *obj)
   if (unlikely (!obj || obj->header.is_inert ()))
     return false;
   assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
+  if (obj->header.ref_बिलांग_2.dec () != 1)
     return false;
   return true;
 }
@@ -316,7 +316,7 @@ static inline bool hb_object_destroy (Type *obj)
 template <typename Type>
 static inline void hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
+  obj->header.ref_बिलांग_2.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
   if (user_data)
   {
@@ -327,7 +327,7 @@ static inline void hb_object_fini (Type *obj)
 }
 template <typename Type>
 static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
+					    hb_user_data_सुसि_t *key,
 					    void *              data,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
@@ -357,7 +357,7 @@ retry:
 
 template <typename Type>
 static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+					     hb_user_data_सुसि_t *key)
 {
   if (unlikely (!obj || obj->header.is_inert ()))
     return nullptr;

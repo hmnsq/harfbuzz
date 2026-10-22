@@ -48,8 +48,8 @@ struct index_map_subset_plan_t
 	     const hb_subset_plan_t  *plan,
 	     bool bypass_empty = true)
   {
-    map_count = 0;
-    full_map_count = plan->new_to_old_gid_list.length ?
+    map_बिलांग = 0;
+    full_map_बिलांग = plan->new_to_old_gid_list.length ?
 		     plan->new_to_old_gid_list.tail ().first + 1 : 0;
     /* Only the advance mapping may be dropped in favor of implicit
      * glyph-id indexing (for the others a null offset means no deltas),
@@ -58,7 +58,7 @@ struct index_map_subset_plan_t
     max_inners.init ();
     output_map.init ();
 
-    if (bypass_empty && (!index_map || !index_map->get_map_count ())) return;
+    if (bypass_empty && (!index_map || !index_map->get_map_बिलांग ())) return;
 
     unsigned int	last_val = (unsigned int)-1;
     hb_codepoint_t	last_gid = HB_CODEPOINT_INVALID;
@@ -68,14 +68,14 @@ struct index_map_subset_plan_t
 
     /* Search backwards for a map value different from the last map value */
     auto &new_to_old_gid_list = plan->new_to_old_gid_list;
-    unsigned count = new_to_old_gid_list.length;
+    unsigned बिलांग = new_to_old_gid_list.length;
     if (!index_map)
     {
-      map_count = new_to_old_gid_list.tail ().first + 1;
+      map_बिलांग = new_to_old_gid_list.tail ().first + 1;
     }
     else
     {
-      for (unsigned j = count; j; j--)
+      for (unsigned j = बिलांग; j; j--)
       {
         hb_codepoint_t gid = new_to_old_gid_list.arrayZ[j - 1].first;
         hb_codepoint_t old_gid = new_to_old_gid_list.arrayZ[j - 1].second;
@@ -94,13 +94,13 @@ struct index_map_subset_plan_t
       }
   
       if (unlikely (last_gid == (hb_codepoint_t)-1)) return;
-      map_count = last_gid + 1;
+      map_बिलांग = last_gid + 1;
     }
 
     for (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
-      if (gid >= map_count) break;
+      if (gid >= map_बिलांग) break;
 
       hb_codepoint_t old_gid = _.second;
       unsigned int v = index_map ? index_map->map (old_gid): old_gid;
@@ -119,34 +119,34 @@ struct index_map_subset_plan_t
     output_map.fini ();
   }
 
-  void remap (const DeltaSetIndexMap *input_map,
+  void remap (const DeltaSetIndexMap *पासोक_map,
 	      const hb_inc_bimap_t &outer_map,
 	      const hb_vector_t<hb_inc_bimap_t> &inner_maps,
 	      const hb_subset_plan_t *plan)
   {
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_बिलांग = 1;
+    inner_bit_बिलांग = 1;
 
     for (unsigned int i = 0; i < max_inners.length; i++)
     {
       if (inner_maps[i].get_population () == 0) continue;
-      unsigned int bit_count = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
-      if (bit_count > inner_bit_count) inner_bit_count = bit_count;
+      unsigned int bit_बिलांग = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
+      if (bit_बिलांग > inner_bit_बिलांग) inner_bit_बिलांग = bit_बिलांग;
     }
 
-    if (unlikely (!output_map.resize (map_count))) return;
+    if (unlikely (!output_map.resize (map_बिलांग))) return;
     for (const auto &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
       hb_codepoint_t old_gid = _.second;
 
-      if (unlikely (new_gid >= map_count)) break;
+      if (unlikely (new_gid >= map_बिलांग)) break;
 
-      uint32_t v = input_map? input_map->map (old_gid) : old_gid;
+      uint32_t v = पासोक_map? पासोक_map->map (old_gid) : old_gid;
       unsigned outer = v >> 16;
       unsigned new_outer = outer_map[outer];
-      unsigned bit_count = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_बिलांग = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
+      outer_bit_बिलांग = hb_max (bit_बिलांग, outer_bit_बिलांग);
 
       output_map.arrayZ[new_gid] = (new_outer << 16) | (inner_maps[outer][v & 0xFFFF]);
     }
@@ -156,13 +156,13 @@ struct index_map_subset_plan_t
                                   const hb_map_t& varidx_map)
   {
     /* recalculate bit_count after remapping */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_बिलांग = 1;
+    inner_bit_बिलांग = 1;
 
     for (const auto &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
-      if (unlikely (new_gid >= map_count)) break;
+      if (unlikely (new_gid >= map_बिलांग)) break;
 
       uint32_t v = output_map.arrayZ[new_gid];
       uint32_t *new_varidx;
@@ -172,24 +172,24 @@ struct index_map_subset_plan_t
       output_map.arrayZ[new_gid] = *new_varidx;
 
       unsigned outer = (*new_varidx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_बिलांग = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_बिलांग = hb_max (bit_बिलांग, outer_bit_बिलांग);
 
       unsigned inner = (*new_varidx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_बिलांग = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_बिलांग = hb_max (bit_बिलांग, inner_bit_बिलांग);
     }
     return true;
   }
 
-  unsigned int get_inner_bit_count () const { return inner_bit_count; }
-  unsigned int get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  unsigned int get_map_count ()       const { return map_count; }
+  unsigned int get_inner_bit_बिलांग () const { return inner_bit_बिलांग; }
+  unsigned int get_width ()           const { return ((outer_bit_बिलांग + inner_bit_बिलांग + 7) / 8); }
+  unsigned int get_map_बिलांग ()       const { return map_बिलांग; }
 
   size_t get_size () const
   {
-    if (!map_count) return 0;
-    return hb_unsigned_mul_add_saturate (get_width (), map_count,
+    if (!map_बिलांग) return 0;
+    return hb_unsigned_mul_add_saturate (get_width (), map_बिलांग,
 					 DeltaSetIndexMap::min_size);
   }
 
@@ -200,20 +200,20 @@ struct index_map_subset_plan_t
      * glyph is equivalent to implicit glyph-id indexing; drop it.  A
      * truncated map doesn't qualify: glyphs past its end share its last
      * value, not their own ids. */
-    if (!can_drop_to_implicit || map_count != full_map_count) return false;
-    for (unsigned i = 0; i < map_count; i++)
+    if (!can_drop_to_implicit || map_बिलांग != full_map_बिलांग) return false;
+    for (unsigned i = 0; i < map_बिलांग; i++)
       if (output_map.arrayZ[i] != i) return false;
     return true;
   }
   hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
 
   protected:
-  unsigned int map_count;
-  unsigned int full_map_count;
+  unsigned int map_बिलांग;
+  unsigned int full_map_बिलांग;
   bool can_drop_to_implicit;
   hb_vector_t<unsigned int> max_inners;
-  unsigned int outer_bit_count;
-  unsigned int inner_bit_count;
+  unsigned int outer_bit_बिलांग;
+  unsigned int inner_bit_बिलांग;
   hb_vector_t<uint32_t> output_map;
 };
 
@@ -229,12 +229,12 @@ struct hvarvvar_subset_plan_t
     index_map_plans.resize (index_maps.length);
 
     var_store = &_var_store;
-    inner_sets.resize (var_store->get_sub_table_count ());
+    inner_sets.resize (var_store->get_sub_table_बिलांग ());
     for (unsigned int i = 0; i < inner_sets.length; i++)
       inner_sets[i] = hb_set_create ();
     adv_set = hb_set_create ();
 
-    inner_maps.resize (var_store->get_sub_table_count ());
+    inner_maps.resize (var_store->get_sub_table_बिलांग ());
 
     if (unlikely (!index_map_plans.length || !inner_sets.length || !inner_maps.length)) return;
 
@@ -434,7 +434,7 @@ struct HVARVVAR
 
   HB_ALWAYS_INLINE
   float get_advance_delta_unscaled (hb_codepoint_t  glyph,
-				    const int *coords, unsigned int coord_count,
+				    const int *coords, unsigned int coord_बिलांग,
 				    hb_scalar_cache_t *store_cache = nullptr) const
   {
     /* Implicit mapping uses outer index zero and the glyph id as the
@@ -442,7 +442,7 @@ struct HVARVVAR
     if (!advMap && glyph > 0xFFFFu) return 0.f;
     uint32_t varidx = (this+advMap).map (glyph);
     return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+				      coords, coord_बिलांग,
 				      store_cache);
   }
 
@@ -489,7 +489,7 @@ struct VVAR : HVARVVAR {
     TRACE_SERIALIZE (this);
     if (unlikely (!HVARVVAR::serialize_index_maps (c, im_plans)))
       return_trace (false);
-    if (!im_plans[index_map_subset_plan_t::VORG_INDEX].get_map_count ())
+    if (!im_plans[index_map_subset_plan_t::VORG_INDEX].get_map_बिलांग ())
       vorgMap = 0;
     else if (unlikely (!vorgMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::VORG_INDEX])))
       return_trace (false);
@@ -501,13 +501,13 @@ struct VVAR : HVARVVAR {
 
   HB_ALWAYS_INLINE
   float get_vorg_delta_unscaled (hb_codepoint_t glyph,
-				 const int *coords, unsigned int coord_count,
+				 const int *coords, unsigned int coord_बिलांग,
 				 hb_scalar_cache_t *store_cache = nullptr) const
   {
     if (!vorgMap) return 0.f;
     uint32_t varidx = (this+vorgMap).map (glyph);
     return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+				      coords, coord_बिलांग,
 				      store_cache);
   }
 

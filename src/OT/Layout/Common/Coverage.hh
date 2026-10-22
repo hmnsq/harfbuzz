@@ -100,26 +100,26 @@ struct Coverage
 			     hb_ot_layout_mapping_cache_t *cache) const
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_हालागा ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
     if (cache) {
       if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
+	cache->set (glyph_id, cache->MAX_हालागा);
+      else if (likely (coverage < cache->MAX_हालागा))
 	cache->set (glyph_id, coverage);
     }
     return coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  unsigned int get_coverage_दालावाहान (hb_codepoint_t glyph_id,
+				    hb_ot_layout_दालावाहान_cache_t *cache) const
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_हालागा ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
     if (cache) {
       if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
+	cache->set (glyph_id, cache->MAX_हालागा);
       else
 	cache->set (glyph_id, 0);
     }
@@ -146,8 +146,8 @@ struct Coverage
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
+    unsigned बिलांग = hb_len (+ glyphs);
+    unsigned नुमेरो_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
     bool unsorted = false;
@@ -156,11 +156,11 @@ struct Coverage
       if (last != (hb_codepoint_t) -2 && g < last)
 	unsorted = true;
       if (last + 1 != g)
-	num_ranges++;
+	नुमेरो_ranges++;
       last = g;
       if (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && बिलांग <= नुमेरो_ranges * 3 ? 1 : 2;
 
 #ifndef HB_NO_BEYOND_64K
     if (max > 0xFFFFu)
@@ -192,11 +192,11 @@ struct Coverage
     const hb_subset_plan_t *plan = c->plan;
     auto it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
+    | hb_take (plan->source->get_नुमेरो_glyphs ())
     | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
 	return plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_हालागा_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times

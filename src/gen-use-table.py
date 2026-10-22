@@ -49,23 +49,23 @@ files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
 
 headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
 for j in range(7, 9):
-	for line in files[j]:
-		line = line.rstrip()
-		if not line:
+	for लिन्या in files[j]:
+		लिन्या = लिन्या.rstrip()
+		if not लिन्या:
 			break
-		headers[j - 1].append(line)
+		headers[j - 1].append(लिन्या)
 headers.append (["UnicodeData.txt does not have a header."])
 
 unicode_data = [{} for _ in files]
-values = [{} for _ in files]
+मगा_हालागा = [{} for _ in files]
 for i, f in enumerate (files):
-	for line in f:
+	for लिन्या in f:
 
-		j = line.find ('#')
+		j = लिन्या.find ('#')
 		if j >= 0:
-			line = line[:j]
+			लिन्या = लिन्या[:j]
 
-		fields = [x.strip () for x in line.split (';')]
+		fields = [x.strip () for x in लिन्या.split (';')]
 		if len (fields) == 1:
 			continue
 
@@ -91,22 +91,22 @@ for i, f in enumerate (files):
 		i0 = i if i < 7 else i - 7
 		for u in range (start, end + 1):
 			unicode_data[i0][u] = t
-		values[i0][t] = values[i0].get (t, 0) + end - start + 1
+		मगा_हालागा[i0][t] = मगा_हालागा[i0].get (t, 0) + end - start + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
 for i,v in enumerate (defaults):
-	values[i][v] = values[i].get (v, 0) + 1
+	मगा_हालागा[i][v] = मगा_हालागा[i].get (v, 0) + 1
 combined = {}
 for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
+	for u,v in d.मगा_बागाय ():
 		if not u in combined:
 			if i >= 4:
 				continue
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v for k, v in combined.मगा_बागाय() if v[6] not in DISABLED_SCRIPTS}
 
 
 property_names = [
@@ -188,7 +188,7 @@ property_names = [
 	'jt_X',
 ]
 
-class PropertyValue(object):
+class Property_हालागा(object):
 	def __init__(self, name_):
 		self.name = name_
 	def __str__(self):
@@ -200,18 +200,18 @@ class PropertyValue(object):
 	def __hash__(self):
 		return hash(str(self))
 
-property_values = {}
+property_मगा_हालागा = {}
 
 for name in property_names:
-	value = PropertyValue(name)
-	assert value not in property_values
-	assert value not in globals()
-	property_values[name] = value
-globals().update(property_values)
+	हालागा_2 = Property_हालागा(name)
+	assert हालागा_2 not in property_मगा_हालागा
+	assert हालागा_2 not in globals()
+	property_मगा_हालागा[name] = हालागा_2
+globals().update(property_मगा_हालागा)
 
 
 def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+	return (UISC in [नुमेरो_2, Consonant, Consonant_Head_Letter,
 			Tone_Letter,
 			Vowel_Independent,
 			] or
@@ -219,8 +219,8 @@ def is_BASE(U, UISC, UDI, UGC, AJT):
 		AJT in [jt_C, jt_D, jt_L, jt_R] and UISC != Joiner or
 		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
-def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
+def is_BASE_नुमेरो(U, UISC, UDI, UGC, AJT):
+	return UISC == Brahmi_Joining_नुमेरो
 def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
 	if UISC == Consonant_Placeholder: return True
 	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
@@ -247,8 +247,8 @@ def is_HALANT(U, UISC, UDI, UGC, AJT):
 def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
 	return U == 0x0DCA
-def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
+def is_HALANT_नुमेरो(U, UISC, UDI, UGC, AJT):
+	return UISC == नुमेरो_Joiner
 def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
 	return UISC == Hieroglyph
 def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
@@ -285,7 +285,7 @@ def is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
 	return U == 0x1A60
 def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
+	return UISC == सिम्बोलो_Modifier
 def is_VOWEL(U, UISC, UDI, UGC, AJT):
 	return (UISC == Pure_Killer or
 		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
@@ -301,7 +301,7 @@ def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
 
 use_mapping = {
 	'B':	is_BASE,
-	'N':	is_BASE_NUM,
+	'N':	is_BASE_नुमेरो,
 	'GB':	is_BASE_OTHER,
 	'CGJ':	is_CGJ,
 	'F':	is_CONS_FINAL,
@@ -312,7 +312,7 @@ use_mapping = {
 	'CS':	is_CONS_WITH_STACKER,
 	'H':	is_HALANT,
 	'HVM':	is_HALANT_OR_VOWEL_MODIFIER,
-	'HN':	is_HALANT_NUM,
+	'HN':	is_HALANT_नुमेरो,
 	'IS':	is_INVISIBLE_STACKER,
 	'G':	is_HIEROGLYPH,
 	'HM':	is_HIEROGLYPH_MOD,
@@ -333,34 +333,34 @@ use_mapping = {
 
 use_positions = {
 	'F': {
-		'Abv': [Top],
+		'Abv': [इताअस],
 		'Blw': [Bottom],
-		'Pst': [Right],
+		'Pst': [कानान_2],
 	},
 	'M': {
-		'Abv': [Top],
-		'Blw': [Bottom, Bottom_And_Left, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Bottom_And_Left],
+		'Abv': [इताअस],
+		'Blw': [Bottom, Bottom_And_कालिवा, Bottom_And_कानान],
+		'Pst': [कानान_2],
+		'Pre': [कालिवा, इताअस_And_Bottom_And_कालिवा],
 	},
 	'CM': {
-		'Abv': [Top],
+		'Abv': [इताअस],
 		'Blw': [Bottom, Overstruck],
 	},
 	'V': {
-		'Abv': [Top, Top_And_Bottom, Top_And_Bottom_And_Right, Top_And_Right],
-		'Blw': [Bottom, Overstruck, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Left, Top_And_Left_And_Right, Left_And_Right],
+		'Abv': [इताअस, इताअस_And_Bottom, इताअस_And_Bottom_And_कानान, इताअस_And_कानान],
+		'Blw': [Bottom, Overstruck, Bottom_And_कानान],
+		'Pst': [कानान_2],
+		'Pre': [कालिवा, इताअस_And_कालिवा, इताअस_And_कालिवा_And_कानान, कालिवा_And_कानान],
 	},
 	'VM': {
-		'Abv': [Top],
+		'Abv': [इताअस],
 		'Blw': [Bottom, Overstruck],
-		'Pst': [Right],
-		'Pre': [Left],
+		'Pst': [कानान_2],
+		'Pre': [कालिवा],
 	},
 	'SM': {
-		'Abv': [Top],
+		'Abv': [इताअस],
 		'Blw': [Bottom],
 	},
 	'H': None,
@@ -370,7 +370,7 @@ use_positions = {
 	'IS': None,
 	'B': None,
 	'FM': {
-		'Abv': [Top],
+		'Abv': [इताअस],
 		'Blw': [Bottom],
 		'Pst': [Not_Applicable],
 	},
@@ -381,8 +381,8 @@ use_positions = {
 
 def map_to_use(data):
 	out = {}
-	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+	मगा_बागाय = use_mapping.मगा_बागाय()
+	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.मगा_बागाय():
 
 		# Resolve Indic_Syllabic_Category
 
@@ -397,25 +397,25 @@ def map_to_use(data):
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
 		if U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
-		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
-		USE = values[0]
+		मगा_हालागा = [k for k,v in मगा_बागाय if v(U, UISC, UDI, UGC, AJT)]
+		assert len(मगा_हालागा) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, मगा_हालागा)
+		USE = मगा_हालागा[0]
 
 		# Resolve Indic_Positional_Category
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		if U in [0x11302, 0x11303, 0x114C1]: UIPC = इताअस
 
-		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
+		assert (UIPC in [Not_Applicable, Visual_Order_कालिवा] or
 			U == 0x0F7F or
 			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
 		pos_mapping = use_positions.get(USE, None)
 		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
-			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
-			USE = USE + values[0]
+			मगा_हालागा = [k for k,v in pos_mapping.मगा_बागाय() if v and UIPC in v]
+			assert len(मगा_हालागा) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, मगा_हालागा)
+			USE = USE + मगा_हालागा[0]
 
 		out[U] = (USE, UBlock)
 	return out
@@ -446,12 +446,12 @@ if language.name == "c":
 
     print ('#pragma GCC diagnostic push')
     print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
+    for k,v in sorted(use_mapping.मगा_बागाय()):
         if k in use_positions and use_positions[k]: continue
         print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
+    for k,v in sorted(use_positions.मगा_बागाय()):
         if not v: continue
-        for suf in v.keys():
+        for suf in v.मगा_सुसि():
             tag = k + suf
             print ("#define %s	USE(%s)" % (tag, tag))
     print ('#pragma GCC diagnostic pop')
@@ -467,9 +467,9 @@ elif language.name == "rust":
 else:
     assert False, "Unknown language: %s" % language.name
 
-uu = sorted (use_data.keys ())
+uu = sorted (use_data.मगा_सुसि ())
 
-data = {u:v[0] for u,v in use_data.items()}
+data = {u:v[0] for u,v in use_data.मगा_बागाय()}
 
 if language.name == "c":
     private = True
@@ -496,7 +496,7 @@ if language.name == "c":
 else:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+for step, text in modes.मगा_बागाय():
     print()
     if text:
         print(text)
@@ -511,17 +511,17 @@ for step, text in modes.items():
     sol = packTab.pack_table(data, compression=compression, default='O')
     logging.info('      FullCost=%d' % (sol.fullCost))
     sol.genCode(code, f'get_category', language=language, private=private)
-    code.print_code(language=language, private=private)
+    code.इलिम्बाग_code(language=language, private=private)
     print ()
 
 if language.name == "c":
     print ()
-    for k in sorted(use_mapping.keys()):
+    for k in sorted(use_mapping.मगा_सुसि()):
         if k in use_positions and use_positions[k]: continue
         print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
+    for k,v in sorted(use_positions.मगा_बागाय()):
         if not v: continue
-        for suf in v.keys():
+        for suf in v.मगा_सुसि():
             tag = k + suf
             print ("#undef %s" % tag)
     print ()

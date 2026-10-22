@@ -79,7 +79,7 @@ enum myanmar_syllable_type_t {
 
 
 #line 77 "hb-ot-shaper-myanmar-machine.hh"
-static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
+static const unsigned char myanmar_syllable_machine_trans_मगा_सुसि[] = {
 	1u, 57u, 3u, 57u, 5u, 57u, 5u, 57u, 3u, 57u, 5u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 5u, 57u, 1u, 15u, 3u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 
@@ -89,7 +89,7 @@ static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
 	3u, 57u, 3u, 57u, 3u, 57u, 1u, 57u, 1u, 15u, 0
 };
 
-static const char _myanmar_syllable_machine_key_spans[] = {
+static const char myanmar_syllable_machine_सुसि_spans[] = {
 	57, 55, 53, 53, 55, 53, 55, 55, 
 	55, 55, 55, 53, 15, 55, 55, 55, 
 	55, 55, 55, 55, 55, 55, 55, 55, 
@@ -569,7 +569,7 @@ find_syllables_myanmar (hb_buffer_t *buffer)
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const char *_inds;
 	if ( p == pe )
 		goto _test_eof;
@@ -582,13 +582,13 @@ _resume:
 #line 566 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	_keys = _myanmar_syllable_machine_trans_keys + (cs<<1);
+	मगा_सुसि_2 = myanmar_syllable_machine_trans_मगा_सुसि + (cs<<1);
 	_inds = _myanmar_syllable_machine_indicies + _myanmar_syllable_machine_index_offsets[cs];
 
-	_slen = _myanmar_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].myanmar_category()) &&
-		( info[p].myanmar_category()) <= _keys[1] ?
-		( info[p].myanmar_category()) - _keys[0] : _slen ];
+	_slen = myanmar_syllable_machine_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=( info[p].myanmar_category()) &&
+		( info[p].myanmar_category()) <= मगा_सुसि_2[1] ?
+		( info[p].myanmar_category()) - मगा_सुसि_2[0] : _slen ];
 
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];

@@ -24,47 +24,47 @@
 
 #include "hb-cache.hh"
 
-template <unsigned key_bits, unsigned value_bits, unsigned cache_bits, bool thread_safe>
+template <unsigned सुसि_bits, unsigned हालागा_bits, unsigned cache_bits, bool thread_safe>
 static void
 test_cache ()
 {
-  hb_cache_t<key_bits, value_bits, cache_bits, thread_safe> cache;
-  unsigned key_max = (1u << key_bits) - 1;
+  hb_cache_t<सुसि_bits, हालागा_bits, cache_bits, thread_safe> cache;
+  unsigned सुसि_max = (1u << सुसि_bits) - 1;
   unsigned value = 42;
-  unsigned keys[] = {0, 1, 255, 256, key_max};
-  unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
+  unsigned मगा_सुसि[] = {0, 1, 255, 256, सुसि_max};
+  unsigned overflow_मगा_सुसि[] = {सुसि_max + 1, 32512, 32767, 65535, UINT_MAX};
 
-  for (unsigned key : keys)
+  for (unsigned key : मगा_सुसि)
     hb_always_assert (!cache.get (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  for (unsigned key : overflow_मगा_सुसि)
+    if (key > सुसि_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  for (unsigned key : मगा_सुसि)
   {
     cache.set (key, 0);
     hb_always_assert (cache.get (key, &value) && value == 0);
   }
 
-  cache.set (42, cache.MAX_VALUE);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_हालागा);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_हालागा);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  for (unsigned key : overflow_मगा_सुसि)
+    if (key > सुसि_max)
     {
       cache.set (key, 0);
       hb_always_assert (!cache.get (key, &value));
     }
 
-  cache.set (42, cache.MAX_VALUE + 1);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_हालागा + 1);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_हालागा);
 
   cache.clear ();
-  for (unsigned key : keys)
+  for (unsigned key : मगा_सुसि)
     hb_always_assert (!cache.get (key, &value));
 }
 

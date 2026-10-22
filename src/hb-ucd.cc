@@ -108,17 +108,17 @@ _hb_ucd_compose_hangul (hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab)
 }
 
 static int
-_cmp_pair (const void *_key, const void *_item)
+_cmp_pair (const void *सुसि_3, const void *_item)
 {
-  uint64_t& a = * (uint64_t*) _key;
+  uint64_t& a = * (uint64_t*) सुसि_3;
   uint64_t b = (* (uint64_t*) _item) & HB_CODEPOINT_ENCODE3(0x1FFFFFu, 0x1FFFFFu, 0);
 
   return a < b ? -1 : a > b ? +1 : 0;
 }
 static int
-_cmp_pair_11_7_14 (const void *_key, const void *_item)
+_cmp_pair_11_7_14 (const void *सुसि_3, const void *_item)
 {
-  uint32_t& a = * (uint32_t*) _key;
+  uint32_t& a = * (uint32_t*) सुसि_3;
   uint32_t b = (* (uint32_t*) _item) & HB_CODEPOINT_ENCODE3_11_7_14(0x1FFFFFu, 0x1FFFFFu, 0);
 
   return a < b ? -1 : a > b ? +1 : 0;

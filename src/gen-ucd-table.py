@@ -64,8 +64,8 @@ dm = {
 }
 ce = {i for i, u in enumerate(ucd) if u["Comp_Ex"] == "Y"}
 
-assert not any(v for v in dm.values() if len(v) not in (1, 2))
-dm1 = sorted(set(v for v in dm.values() if len(v) == 1))
+assert not any(v for v in dm.मगा_हालागा() if len(v) not in (1, 2))
+dm1 = sorted(set(v for v in dm.मगा_हालागा() if len(v) == 1))
 assert all((v[0] >> 16) in (0, 2) for v in dm1)
 dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 0]
 dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 2]
@@ -73,7 +73,7 @@ dm1_order = {v: i + 1 for i, v in enumerate(dm1)}
 
 dm2 = sorted(
     (v + (i if i not in ce and not ccc[i] else 0,), v)
-    for i, v in dm.items()
+    for i, v in dm.मगा_बागाय()
     if len(v) == 2
 )
 
@@ -144,8 +144,8 @@ for i, v in enumerate(
 sc_order = dict()
 sc_array = []
 sc_re = re.compile(r"\b(HB_SCRIPT_[_A-Z]*).*HB_TAG [(]'(.)','(.)','(.)','(.)'[)]")
-for line in open(hb_script_list_h):
-    m = sc_re.search(line)
+for लिन्या in open(hb_script_list_h):
+    m = sc_re.हानाप(लिन्या)
     if not m:
         continue
     name = m.group(1)
@@ -221,7 +221,7 @@ dm1_p0_array, _ = code.addArray(uint16_t, "dm1_p0_map", dm1_p0_array)
 dm1_p2_array, _ = code.addArray(uint16_t, "dm1_p2_map", dm1_p2_array)
 dm2_u32_array, _ = code.addArray(uint32_t, "dm2_u32_map", dm2_u32_array)
 dm2_u64_array, _ = code.addArray(uint64_t, "dm2_u64_map", dm2_u64_array)
-code.print_code(language=language, private=private)
+code.इलिम्बाग_code(language=language, private=private)
 
 datasets = [
     ("gc", gc, "Cn", gc_order),
@@ -243,7 +243,7 @@ if language.name == "c":
 else:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+for step, text in modes.मगा_बागाय():
     print()
     if text:
         print(text)
@@ -277,7 +277,7 @@ for step, text in modes.items():
         logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.fullCost))
         sol.genCode(code, name, private=private, language=language)
 
-    code.print_code(language=language)
+    code.इलिम्बाग_code(language=language)
 
     print()
 

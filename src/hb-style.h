@@ -69,12 +69,12 @@ typedef enum
   HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
 
   /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_STYLE_TAG_MAX_हालागा	= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_style_tag_t;
 
 
 HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+hb_style_get_हालागा (hb_font_t *font, hb_style_tag_t style_tag);
 
 HB_END_DECLS
 

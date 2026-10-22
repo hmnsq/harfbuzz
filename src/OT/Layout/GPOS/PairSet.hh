@@ -9,12 +9,12 @@ namespace GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+struct pair_set_मगा_हालागा_t
 {
-  const ValueBase *base;
+  const हालागा_Base *base;
   glyph_data_t glyphs;
-  const Value *values;
-  unsigned count;
+  const हालागा *values;
+  unsigned बिलांग;
   unsigned record_size;
 
   unsigned get_glyph (unsigned i) const
@@ -24,56 +24,56 @@ struct pair_set_values_t
     return glyph[0];
   }
 
-  const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  const हालागा *get_मगा_हालागा (unsigned i) const
+  { return reinterpret_cast<const हालागा *> ((const char *) values + i * record_size); }
 
   hb_pair_t<unsigned, unsigned>
-  compute_effective_value_formats (const hb_set_t &glyphset,
-                                   const ValueFormat valueFormats[2],
+  compute_effective_हालागा_formats (const hb_set_t &glyphset,
+                                   const हालागा_Format हालागा_Formats[2],
                                    bool strip_hints, bool strip_empty,
                                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
   {
-    unsigned len1 = valueFormats[0].get_len ();
+    unsigned len1 = हालागा_Formats[0].get_len ();
     unsigned format1 = 0, format2 = 0;
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       if (!glyphset.has (get_glyph (i))) continue;
-      const Value *v = get_values (i);
-      format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
-      format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
+      const हालागा *v = get_मगा_हालागा (i);
+      format1 |= हालागा_Formats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
+      format2 |= हालागा_Formats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
     }
     return hb_pair (format1, format2);
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat valueFormats[2]) const
+                                  const हालागा_Format हालागा_Formats[2]) const
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned len1 = हालागा_Formats[0].get_len ();
+    unsigned len2 = हालागा_Formats[1].get_len ();
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       if (!c->glyph_set->has (get_glyph (i))) continue;
-      const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
-        valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
-        valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
+      const hb_array_t<const हालागा> v = hb_array (get_मगा_हालागा (i), len1 + len2);
+      if (हालागा_Formats[0].has_device ())
+        हालागा_Formats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
+      if (हालागा_Formats[1].has_device ())
+        हालागा_Formats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
     }
   }
 };
 
 template <typename Types>
-struct PairSet : ValueBase
+struct PairSet : हालागा_Base
 {
   template <typename Types2>
   friend struct PairPosFormat1_3;
 
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_हालागा_Record = GPOS_impl::Pair_हालागा_Record<Types>;
 
   protected:
   typename Types::HBUINT
                         len;    /* Number of PairValueRecords */
-  PairValueRecord       firstPairValueRecord;
+  Pair_हालागा_Record       first_Pair_हालागा_Record;
                                 /* Array of PairValueRecords--ordered
                                  * by GlyphID of the second glyph */
   public:
@@ -81,18 +81,18 @@ struct PairSet : ValueBase
 
   static size_t get_size (unsigned len1, unsigned len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    return Types::HBGlyphID::static_size + हालागा::static_size * (len1 + len2);
   }
-  static size_t get_size (const ValueFormat valueFormats[2])
+  static size_t get_size (const हालागा_Format हालागा_Formats[2])
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
+    unsigned len1 = हालागा_Formats[0].get_len ();
+    unsigned len2 = हालागा_Formats[1].get_len ();
     return get_size (len1, len2);
   }
 
   struct sanitize_closure_t
   {
-    const ValueFormat *valueFormats;
+    const हालागा_Format *हालागा_Formats;
     unsigned int len1; /* valueFormats[0].get_len() */
     size_t stride; /* bytes */
   };
@@ -102,76 +102,76 @@ struct PairSet : ValueBase
     TRACE_SANITIZE (this);
     if (!(c->check_struct (this) &&
 	  hb_barrier () &&
-          c->check_range (&firstPairValueRecord,
+          c->check_range (&first_Pair_हालागा_Record,
                           len,
                           closure->stride))) return_trace (false);
     hb_barrier ();
 
-    unsigned int count = len;
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned int बिलांग = len;
+    const Pair_हालागा_Record *record = &first_Pair_हालागा_Record;
     return_trace (c->lazy_some_gpos ||
-		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
-                   closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride)));
+		  (closure->हालागा_Formats[0].sanitize_मगा_हालागा_stride_unsafe (c, this, &record->values[0], बिलांग, closure->stride) &&
+                   closure->हालागा_Formats[1].sanitize_मगा_हालागा_stride_unsafe (c, this, &record->values[closure->len1], बिलांग, closure->stride)));
   }
 
   bool intersects (const hb_set_t *glyphs,
-                   const ValueFormat *valueFormats) const
+                   const हालागा_Format *हालागा_Formats) const
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (हालागा_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    const Pair_हालागा_Record *record = &first_Pair_हालागा_Record;
+    unsigned int बिलांग = len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (glyphs->has (record->secondGlyph))
         return true;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      record = &StructAtOffset<const Pair_हालागा_Record> (record, record_size);
     }
     return false;
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c,
-                       const ValueFormat *valueFormats) const
+                       const हालागा_Format *हालागा_Formats) const
   {
-    unsigned record_size = get_size (valueFormats);
+    unsigned record_size = get_size (हालागा_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    c->input->add_array (&record->secondGlyph, len, record_size);
+    const Pair_हालागा_Record *record = &first_Pair_हालागा_Record;
+    c->पासोक->add_array (&record->secondGlyph, len, record_size);
   }
 
   template <typename set_t>
   void collect_second_glyphs (set_t *glyphs,
-			      const ValueFormat *valueFormats) const
+			      const हालागा_Format *हालागा_Formats) const
   {
-    unsigned record_size = get_size (valueFormats);
-    const PairValueRecord *record = &firstPairValueRecord;
+    unsigned record_size = get_size (हालागा_Formats);
+    const Pair_हालागा_Record *record = &first_Pair_हालागा_Record;
     glyphs->add_array (&record->secondGlyph, len, record_size);
   }
 
-  pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
+  pair_set_मगा_हालागा_t get_मगा_हालागा_view (const हालागा_Format हालागा_Formats[2]) const
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
-            (unsigned) len, (unsigned) get_size (valueFormats)};
+    return {this, &first_Pair_हालागा_Record.secondGlyph, &first_Pair_हालागा_Record.values[0],
+            (unsigned) len, (unsigned) get_size (हालागा_Formats)};
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats) const
+                                  const हालागा_Format *हालागा_Formats) const
   {
-    get_values_view (valueFormats).collect_variation_indices (c, valueFormats);
+    get_मगा_हालागा_view (हालागा_Formats).collect_variation_indices (c, हालागा_Formats);
   }
 
   bool apply (hb_ot_apply_context_t *c,
-              const ValueFormat *valueFormats,
+              const हालागा_Format *हालागा_Formats,
               unsigned int pos) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
+    unsigned int len1 = हालागा_Formats[0].get_len ();
+    unsigned int len2 = हालागा_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
-                                                &firstPairValueRecord,
+    const Pair_हालागा_Record *record = hb_bsearch (buffer->info[pos].codepoint,
+                                                &first_Pair_हालागा_Record,
                                                 (unsigned) len,
                                                 record_size);
     if (record)
@@ -183,8 +183,8 @@ struct PairSet : ValueBase
 			    c->buffer->idx, pos);
       }
 
-      bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
-      bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
+      bool applied_first = len1 && हालागा_Formats[0].apply_हालागा (c, this, &record->values[0], buffer->cur_pos());
+      bool applied_second = len2 && हालागा_Formats[1].apply_हालागा (c, this, &record->values[len1], buffer->pos[pos]);
 
       if (applied_first || applied_second)
 	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
@@ -223,8 +223,8 @@ struct PairSet : ValueBase
   }
 
   bool subset (hb_subset_context_t *c,
-               const ValueFormat valueFormats[2],
-               const ValueFormat newFormats[2]) const
+               const हालागा_Format हालागा_Formats[2],
+               const हालागा_Format newFormats[2]) const
   {
     TRACE_SUBSET (this);
     auto snap = c->serializer->snapshot ();
@@ -236,32 +236,32 @@ struct PairSet : ValueBase
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
+    unsigned len1 = हालागा_Formats[0].get_len ();
+    unsigned len2 = हालागा_Formats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
-    pair_value_record_context_t context =
+    pair_हालागा_record_context_t context =
     {
       this,
-      valueFormats,
+      हालागा_Formats,
       newFormats,
       len1,
       &glyph_map,
       &c->plan->layout_variation_idx_delta_map
     };
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned count = len, num = 0;
-    for (unsigned i = 0; i < count; i++)
+    const Pair_हालागा_Record *record = &first_Pair_हालागा_Record;
+    unsigned बिलांग = len, नुमेरो = 0;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       if (glyphset.has (record->secondGlyph)
-         && record->subset (c, &context)) num++;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+         && record->subset (c, &context)) नुमेरो++;
+      record = &StructAtOffset<const Pair_हालागा_Record> (record, record_size);
     }
 
-    out->len = num;
-    if (!num) c->serializer->revert (snap);
-    return_trace (num);
+    out->len = नुमेरो;
+    if (!नुमेरो) c->serializer->revert (snap);
+    return_trace (नुमेरो);
   }
 };
 

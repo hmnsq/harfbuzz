@@ -63,7 +63,7 @@ typedef enum {
   HB_OT_BITS_TAG_CODE_PAGE_RANGE_2	= HB_TAG ('c','p','r','2'),
 
   /*< private >*/
-  _HB_OT_BITS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_BITS_TAG_MAX_हालागा = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_bits_tag_t;
 
 
@@ -83,18 +83,18 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 typedef enum {
-  HB_OT_NUMBER_TAG_FONT_X_MIN		= HB_TAG ('x','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_Y_MIN		= HB_TAG ('y','m','i','n'),
-  HB_OT_NUMBER_TAG_FONT_X_MAX		= HB_TAG ('x','m','a','x'),
-  HB_OT_NUMBER_TAG_FONT_Y_MAX		= HB_TAG ('y','m','a','x'),
+  HB_OT_नुमेरो_TAG_FONT_X_MIN		= HB_TAG ('x','m','i','n'),
+  HB_OT_नुमेरो_TAG_FONT_Y_MIN		= HB_TAG ('y','m','i','n'),
+  HB_OT_नुमेरो_TAG_FONT_X_MAX		= HB_TAG ('x','m','a','x'),
+  HB_OT_नुमेरो_TAG_FONT_Y_MAX		= HB_TAG ('y','m','a','x'),
 
   /*< private >*/
-  _HB_OT_NUMBER_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_number_tag_t;
+  HB_OT_नुमेरो_TAG_MAX_हालागा = HB_TAG_MAX_SIGNED /*< skip >*/
+} hb_ot_नुमेरो_tag_t;
 
 HB_EXTERN int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag);
+hb_ot_fetch_नुमेरो (hb_face_t          *face,
+		  hb_ot_नुमेरो_tag_t  tag);
 
 HB_END_DECLS
 

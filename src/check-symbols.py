@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from check_helpers import CHECK_SYMBOL_LIBS
+from check_helpers import CHECK_सिम्बोलो_LIBS
 
 os.environ["LC_ALL"] = "C"  # otherwise 'nm' prints in wrong order
 
@@ -58,7 +58,7 @@ if not nm:
 tested = False
 stat = 0
 
-for soname in CHECK_SYMBOL_LIBS:
+for soname in CHECK_सिम्बोलो_LIBS:
     for suffix in ["so", "dylib"]:
         so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
         if not os.path.exists(so):

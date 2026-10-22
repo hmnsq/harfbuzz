@@ -89,15 +89,15 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag)
+hb_ot_fetch_नुमेरो (hb_face_t          *face,
+		  hb_ot_नुमेरो_tag_t  tag)
 {
   switch ((unsigned) tag)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
+  case HB_OT_नुमेरो_TAG_FONT_X_MIN: return face->table.head->xMin;
+  case HB_OT_नुमेरो_TAG_FONT_Y_MIN: return face->table.head->yMin;
+  case HB_OT_नुमेरो_TAG_FONT_X_MAX: return face->table.head->xMax;
+  case HB_OT_नुमेरो_TAG_FONT_Y_MAX: return face->table.head->yMax;
   default:		       return 0;
   }
 }

@@ -23,8 +23,8 @@ hb.ot_font_set_funcs (font)
 
 buf = hb.buffer_create ()
 class Debugger (object):
-	def message (self, buf, font, msg, data, _x_what_is_this):
-		print (msg)
+	def message (self, buf, font, मेनसाहे, data, _x_what_is_this):
+		print (मेनसाहे)
 		return True
 debugger = Debugger ()
 hb.buffer_set_message_func (buf, debugger.message, 1, 0)

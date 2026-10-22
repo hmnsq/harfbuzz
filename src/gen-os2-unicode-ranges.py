@@ -12,18 +12,18 @@ import sys
 print ("""static OS2Range _hb_os2_unicode_ranges[] =
 {""")
 
-args = sys.argv[1:]
-input_file = args[0]
+मगा_कातविरान = sys.argv[1:]
+पासोक_file = मगा_कातविरान[0]
 
-with open (input_file, mode="r", encoding="utf-8") as f:
+with open (पासोक_file, mode="r", encoding="utf-8") as f:
 
   all_ranges = []
   current_bit = 0
   while True:
-    line = f.readline().strip()
-    if not line:
+    लिन्या = f.readline().strip()
+    if not लिन्या:
       break
-    fields = re.split(r'\t+', line)
+    fields = re.split(r'\t+', लिन्या)
     if len(fields) == 3:
       current_bit = fields[0]
       fields = fields[1:]
@@ -38,7 +38,7 @@ with open (input_file, mode="r", encoding="utf-8") as f:
     v = tuple((int(ranges[0], 16), int(ranges[1], 16), int(current_bit), name))
     all_ranges.append(v)
 
-all_ranges = sorted(all_ranges, key=lambda t: t[0])
+all_ranges = sorted(all_ranges, सुसि_2=lambda t: t[0])
 
 for ranges in all_ranges:
   start = ("0x%X" % ranges[0]).rjust(8)

@@ -47,7 +47,7 @@ enum indic_syllable_type_t {
   indic_consonant_syllable,
   indic_vowel_syllable,
   indic_standalone_cluster,
-  indic_symbol_cluster,
+  indic_सिम्बोलो_cluster,
   indic_broken_cluster,
   indic_non_indic_cluster,
 };
@@ -69,7 +69,7 @@ enum indic_syllable_type_t {
 #define indic_syllable_machine_ex_Repha 14u
 #define indic_syllable_machine_ex_SM 8u
 #define indic_syllable_machine_ex_SMPst 57u
-#define indic_syllable_machine_ex_Symbol 17u
+#define indic_syllable_machine_ex_सिम्बोलो 17u
 #define indic_syllable_machine_ex_V 2u
 #define indic_syllable_machine_ex_VD 9u
 #define indic_syllable_machine_ex_X 0u
@@ -78,7 +78,7 @@ enum indic_syllable_type_t {
 
 
 #line 76 "hb-ot-shaper-indic-machine.hh"
-static const unsigned char _indic_syllable_machine_trans_keys[] = {
+static const unsigned char indic_syllable_machine_trans_मगा_सुसि[] = {
 	8u, 57u, 4u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 4u, 57u, 
 	8u, 57u, 5u, 57u, 5u, 57u, 13u, 13u, 4u, 57u, 4u, 57u, 4u, 57u, 8u, 57u, 
@@ -99,7 +99,7 @@ static const unsigned char _indic_syllable_machine_trans_keys[] = {
 	5u, 9u, 1u, 15u, 0
 };
 
-static const char _indic_syllable_machine_key_spans[] = {
+static const char indic_syllable_machine_सुसि_spans[] = {
 	50, 54, 53, 53, 1, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 54, 
 	50, 53, 53, 1, 54, 54, 54, 50, 
@@ -1146,7 +1146,7 @@ find_syllables_indic (hb_buffer_t *buffer)
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const unsigned char *_inds;
 	if ( p == pe )
 		goto _test_eof;
@@ -1159,13 +1159,13 @@ _resume:
 #line 1143 "hb-ot-shaper-indic-machine.hh"
 	}
 
-	_keys = _indic_syllable_machine_trans_keys + (cs<<1);
+	मगा_सुसि_2 = indic_syllable_machine_trans_मगा_सुसि + (cs<<1);
 	_inds = _indic_syllable_machine_indicies + _indic_syllable_machine_index_offsets[cs];
 
-	_slen = _indic_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].indic_category()) &&
-		( info[p].indic_category()) <= _keys[1] ?
-		( info[p].indic_category()) - _keys[0] : _slen ];
+	_slen = indic_syllable_machine_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=( info[p].indic_category()) &&
+		( info[p].indic_category()) <= मगा_सुसि_2[1] ?
+		( info[p].indic_category()) - मगा_सुसि_2[0] : _slen ];
 
 _eof_trans:
 	cs = _indic_syllable_machine_trans_targs[_trans];
@@ -1196,7 +1196,7 @@ _eof_trans:
 	break;
 	case 20:
 #line 114 "hb-ot-shaper-indic-machine.rl"
-	{te = p;p--;{ found_syllable (indic_symbol_cluster); }}
+	{te = p;p--;{ found_syllable (indic_सिम्बोलो_cluster); }}
 	break;
 	case 16:
 #line 116 "hb-ot-shaper-indic-machine.rl"
@@ -1220,7 +1220,7 @@ _eof_trans:
 	break;
 	case 8:
 #line 114 "hb-ot-shaper-indic-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (indic_symbol_cluster); }}
+	{{p = ((te))-1;}{ found_syllable (indic_सिम्बोलो_cluster); }}
 	break;
 	case 4:
 #line 116 "hb-ot-shaper-indic-machine.rl"

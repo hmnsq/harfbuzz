@@ -262,7 +262,7 @@ struct ContextualSubtable
 	if (entry.data.markIndex != 0xFFFF)
 	{
 	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
-	  replacement = lookup.get_value (buffer->info[mark].codepoint, driver->num_glyphs);
+	  replacement = lookup.get_हालागा (buffer->info[mark].codepoint, driver->नुमेरो_glyphs);
 	}
       }
       else
@@ -292,7 +292,7 @@ struct ContextualSubtable
 	if (entry.data.currentIndex != 0xFFFF)
 	{
 	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
-	  replacement = lookup.get_value (buffer->info[idx].codepoint, driver->num_glyphs);
+	  replacement = lookup.get_हालागा (buffer->info[idx].codepoint, driver->नुमेरो_glyphs);
 	}
       }
       else
@@ -348,27 +348,27 @@ struct ContextualSubtable
   {
     TRACE_SANITIZE (this);
 
-    unsigned int num_entries = 0;
-    if (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
+    unsigned int नुमेरो_entries = 0;
+    if (unlikely (!machine.sanitize (c, &नुमेरो_entries))) return_trace (false);
     hb_barrier ();
 
     if (!Types::extended)
       return_trace (substitutionTables.sanitize (c, this, 0));
 
-    unsigned int num_lookups = 0;
+    unsigned int नुमेरो_lookups = 0;
 
     const Entry<EntryData> *entries = machine.get_entries ();
-    for (unsigned int i = 0; i < num_entries; i++)
+    for (unsigned int i = 0; i < नुमेरो_entries; i++)
     {
       const EntryData &data = entries[i].data;
 
       if (data.markIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.markIndex);
+	नुमेरो_lookups = hb_max (नुमेरो_lookups, 1u + data.markIndex);
       if (data.currentIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.currentIndex);
+	नुमेरो_lookups = hb_max (नुमेरो_lookups, 1u + data.currentIndex);
     }
 
-    return_trace (substitutionTables.sanitize (c, this, num_lookups));
+    return_trace (substitutionTables.sanitize (c, this, नुमेरो_lookups));
   }
 
   public:
@@ -497,7 +497,7 @@ struct LigatureSubtable
 		     StateTableDriver<Types, EntryData, Flags> *driver,
 		     const Entry<EntryData> &entry)
     {
-      DEBUG_MSG (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
+      DEBUG_मेनसाहे (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
       if (entry.flags & LigatureEntryT::SetComponent)
       {
 	/* Never mark same index twice, in case DontAdvance was used... */
@@ -505,12 +505,12 @@ struct LigatureSubtable
 	  match_length--;
 
 	match_positions[match_length++ % ARRAY_LENGTH (match_positions)] = buffer->out_len;
-	DEBUG_MSG (APPLY, nullptr, "Set component at %u", buffer->out_len);
+	DEBUG_मेनसाहे (APPLY, nullptr, "Set component at %u", buffer->out_len);
       }
 
       if (LigatureEntryT::performAction (entry))
       {
-	DEBUG_MSG (APPLY, nullptr, "Perform action with %u", match_length);
+	DEBUG_मेनसाहे (APPLY, nullptr, "Perform action with %u", match_length);
 	unsigned int end = buffer->out_len;
 
 	if (unlikely (!match_length))
@@ -532,12 +532,12 @@ struct LigatureSubtable
 	  if (unlikely (!cursor))
 	  {
 	    /* Stack underflow.  Clear the stack. */
-	    DEBUG_MSG (APPLY, nullptr, "Stack underflow");
+	    DEBUG_मेनसाहे (APPLY, nullptr, "Stack underflow");
 	    match_length = 0;
 	    break;
 	  }
 
-	  DEBUG_MSG (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
+	  DEBUG_मेनसाहे (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
 	  if (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) return;
 
 	  if (unlikely (!actionData->sanitize (&c->sanitizer))) break;
@@ -555,7 +555,7 @@ struct LigatureSubtable
 	  hb_barrier ();
 	  ligature_idx += componentData;
 
-	  DEBUG_MSG (APPLY, nullptr, "Action store %d last %d",
+	  DEBUG_मेनसाहे (APPLY, nullptr, "Action store %d last %d",
 		     bool (action & LigActionStore),
 		     bool (action & LigActionLast));
 	  if (action & (LigActionStore | LigActionLast))
@@ -566,14 +566,14 @@ struct LigatureSubtable
 	    hb_barrier ();
 	    hb_codepoint_t lig = ligatureData;
 
-	    DEBUG_MSG (APPLY, nullptr, "Produced ligature %u", lig);
+	    DEBUG_मेनसाहे (APPLY, nullptr, "Produced ligature %u", lig);
 	    if (unlikely (!c->replace_glyph (lig))) return;
 
 	    unsigned int lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
 	    /* Now go and delete all subsequent components. */
 	    while (match_length - 1u > cursor)
 	    {
-	      DEBUG_MSG (APPLY, nullptr, "Skipping ligature component");
+	      DEBUG_मेनसाहे (APPLY, nullptr, "Skipping ligature component");
 	      if (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) return;
 	      if (!c->delete_glyph ()) return;
 	    }
@@ -645,13 +645,13 @@ struct NoncontextualSubtable
     TRACE_APPLY (this);
 
     bool ret = false;
-    unsigned int num_glyphs = c->face->get_num_glyphs ();
+    unsigned int नुमेरो_glyphs = c->face->get_नुमेरो_glyphs ();
 
     hb_glyph_info_t *info = c->buffer->info;
-    unsigned int count = c->buffer->len;
+    unsigned int बिलांग = c->buffer->len;
     // If there's only one range, we already checked the flag.
     auto *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       /* This block copied from StateTableDriver::drive. Keep in sync. */
       if (unlikely (last_range))
@@ -670,7 +670,7 @@ struct NoncontextualSubtable
 	  continue;
       }
 
-      const HBGlyphID16 *replacement = substitute.get_value (info[i].codepoint, num_glyphs);
+      const HBGlyphID16 *replacement = substitute.get_हालागा (info[i].codepoint, नुमेरो_glyphs);
       if (replacement)
       {
 	c->replace_glyph_inplace (i, *replacement);
@@ -682,9 +682,9 @@ struct NoncontextualSubtable
   }
 
   template <typename set_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  void collect_initial_glyphs (set_t &glyphs, unsigned नुमेरो_glyphs) const
   {
-    substitute.collect_glyphs (glyphs, num_glyphs);
+    substitute.collect_glyphs (glyphs, नुमेरो_glyphs);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -706,12 +706,12 @@ struct InsertionSubtable
 
   struct EntryData
   {
-    HBUINT16	currentInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	current_इसिंगित_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the currentInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    HBUINT16	markedInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	marked_इसिंगित_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the markedInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
@@ -750,18 +750,18 @@ struct InsertionSubtable
 				       * split-vowel-like insertion, either before or
 				       * after the marked glyph (depending on the state
 				       * of the markedInsertBefore flag). */
-    CurrentInsertBefore= 0x0800,      /* If set, specifies that insertions are to be made
+    Current_इसिंगित_Before= 0x0800,      /* If set, specifies that insertions are to be made
 				       * to the left of the current glyph. If clear,
 				       * they're made to the right of the current glyph. */
-    MarkedInsertBefore= 0x0400,	      /* If set, specifies that insertions are to be
+    Marked_इसिंगित_Before= 0x0400,	      /* If set, specifies that insertions are to be
 				       * made to the left of the marked glyph. If clear,
 				       * they're made to the right of the marked glyph. */
-    CurrentInsertCount= 0x3E0,	      /* This 5-bit field is treated as a count of the
+    Current_इसिंगित_बिलांग= 0x3E0,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the current
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * current location is 31 glyphs. */
-    MarkedInsertCount= 0x001F,	      /* This 5-bit field is treated as a count of the
+    Marked_इसिंगित_बिलांग= 0x001F,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the marked
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
@@ -774,8 +774,8 @@ struct InsertionSubtable
   }
   bool is_actionable (const Entry<EntryData> &entry) const
   {
-    return (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
-	   (entry.data.currentInsertIndex != 0xFFFF ||entry.data.markedInsertIndex != 0xFFFF);
+    return (entry.flags & (Current_इसिंगित_बिलांग | Marked_इसिंगित_बिलांग)) &&
+	   (entry.data.current_इसिंगित_Index != 0xFFFF ||entry.data.marked_इसिंगित_Index != 0xFFFF);
   }
 
   struct driver_context_t
@@ -799,16 +799,16 @@ struct InsertionSubtable
 
       unsigned mark_loc = buffer->out_len;
 
-      if (entry.data.markedInsertIndex != 0xFFFF)
+      if (entry.data.marked_इसिंगित_Index != 0xFFFF)
       {
-	unsigned int count = (flags & MarkedInsertCount);
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.markedInsertIndex;
+	unsigned int बिलांग = (flags & Marked_इसिंगित_बिलांग);
+	if (unlikely ((buffer->max_ops -= बिलांग) <= 0)) return;
+	unsigned int start = entry.data.marked_इसिंगित_Index;
 	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	if (unlikely (!c->sanitizer.check_array (glyphs, बिलांग))) बिलांग = 0;
 	hb_barrier ();
 
-	bool before = flags & MarkedInsertBefore;
+	bool before = flags & Marked_इसिंगित_Before;
 
 	unsigned int end = buffer->out_len;
 	if (unlikely (!buffer->move_to (mark))) return;
@@ -816,12 +816,12 @@ struct InsertionSubtable
 	if (buffer->idx < buffer->len && !before)
 	  if (unlikely (!buffer->copy_glyph ())) return;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
+	if (unlikely (!c->output_glyphs (बिलांग, glyphs))) return;
 	ret = true;
 	if (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
-	if (unlikely (!buffer->move_to (end + count))) return;
+	if (unlikely (!buffer->move_to (end + बिलांग))) return;
 
 	buffer->unsafe_to_break_from_outbuffer (mark, hb_min (buffer->idx + 1, buffer->len));
       }
@@ -829,23 +829,23 @@ struct InsertionSubtable
       if (flags & SetMark)
 	mark = mark_loc;
 
-      if (entry.data.currentInsertIndex != 0xFFFF)
+      if (entry.data.current_इसिंगित_Index != 0xFFFF)
       {
-	unsigned int count = (flags & CurrentInsertCount) >> 5;
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.currentInsertIndex;
+	unsigned int बिलांग = (flags & Current_इसिंगित_बिलांग) >> 5;
+	if (unlikely ((buffer->max_ops -= बिलांग) <= 0)) return;
+	unsigned int start = entry.data.current_इसिंगित_Index;
 	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	if (unlikely (!c->sanitizer.check_array (glyphs, बिलांग))) बिलांग = 0;
 	hb_barrier ();
 
-	bool before = flags & CurrentInsertBefore;
+	bool before = flags & Current_इसिंगित_Before;
 
 	unsigned int end = buffer->out_len;
 
 	if (buffer->idx < buffer->len && !before)
 	  if (unlikely (!buffer->copy_glyph ())) return;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
+	if (unlikely (!c->output_glyphs (बिलांग, glyphs))) return;
 	ret = true;
 	if (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
@@ -865,7 +865,7 @@ struct InsertionSubtable
 	 *
 	 * https://github.com/harfbuzz/harfbuzz/issues/1224#issuecomment-427691417
 	 */
-	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) return;
+	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + बिलांग))) return;
       }
     }
 
@@ -946,22 +946,22 @@ struct hb_accelerate_subtables_context_t :
     mutable hb_aat_class_cache_t class_cache;
 
     template <typename T>
-    auto init_ (const T &obj_, unsigned num_glyphs, hb_priority<1>) HB_AUTO_RETURN
+    auto init_ (const T &obj_, unsigned नुमेरो_glyphs, hb_priority<1>) HB_AUTO_RETURN
     (
-      obj_.machine.collect_initial_glyphs (glyph_set, num_glyphs, obj_)
+      obj_.machine.collect_initial_glyphs (glyph_set, नुमेरो_glyphs, obj_)
     )
 
     template <typename T>
-    void init_ (const T &obj_, unsigned num_glyphs, hb_priority<0>)
+    void init_ (const T &obj_, unsigned नुमेरो_glyphs, hb_priority<0>)
     {
-      obj_.collect_initial_glyphs (glyph_set, num_glyphs);
+      obj_.collect_initial_glyphs (glyph_set, नुमेरो_glyphs);
     }
 
     template <typename T>
-    void init (const T &obj_, unsigned num_glyphs)
+    void init (const T &obj_, unsigned नुमेरो_glyphs)
     {
       glyph_set.init ();
-      init_ (obj_, num_glyphs, hb_prioritize);
+      init_ (obj_, नुमेरो_glyphs, hb_prioritize);
       class_cache.clear ();
     }
 
@@ -978,32 +978,32 @@ struct hb_accelerate_subtables_context_t :
   {
     hb_applicable_t *entry = &array[i++];
 
-    entry->init (obj, num_glyphs);
+    entry->init (obj, नुमेरो_glyphs);
 
     return hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_हालागा () { return hb_empty_t (); }
 
   bool stop_sublookup_iteration (return_t r) const { return false; }
 
-  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned num_glyphs_) :
+  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned नुमेरो_glyphs_2) :
 				     hb_dispatch_context_t<hb_accelerate_subtables_context_t> (),
-				     array (array_), num_glyphs (num_glyphs_) {}
+				     array (array_), नुमेरो_glyphs (नुमेरो_glyphs_2) {}
 
   hb_applicable_t *array;
-  unsigned num_glyphs;
+  unsigned नुमेरो_glyphs;
   unsigned i = 0;
 };
 
 struct hb_aat_layout_chain_accelerator_t
 {
   template <typename TChain>
-  static hb_aat_layout_chain_accelerator_t *create (const TChain &chain, unsigned num_glyphs)
+  static hb_aat_layout_chain_accelerator_t *create (const TChain &chain, unsigned नुमेरो_glyphs)
   {
-    unsigned count = chain.get_subtable_count ();
+    unsigned बिलांग = chain.get_subtable_बिलांग ();
 
     unsigned product;
-    if (unlikely (hb_unsigned_mul_overflows (count,
+    if (unlikely (hb_unsigned_mul_overflows (बिलांग,
         sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
       return nullptr;
 
@@ -1022,9 +1022,9 @@ struct hb_aat_layout_chain_accelerator_t
     if (unlikely (!thiz))
       return nullptr;
 
-    thiz->count = count;
+    thiz->बिलांग = बिलांग;
 
-    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, num_glyphs);
+    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, नुमेरो_glyphs);
     chain.dispatch (&c_accelerate_subtables);
 
     return thiz;
@@ -1032,11 +1032,11 @@ struct hb_aat_layout_chain_accelerator_t
 
   void destroy ()
   {
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
       subtables[i].fini ();
   }
 
-  unsigned count;
+  unsigned बिलांग;
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
@@ -1087,7 +1087,7 @@ struct ChainSubtable
     case Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
     case Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
     case Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
-    default:			return_trace (c->default_return_value ());
+    default:			return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -1133,14 +1133,14 @@ struct Chain
 {
   typedef typename Types::HBUINT HBUINT;
 
-  unsigned get_subtable_count () const { return subtableCount; }
+  unsigned get_subtable_बिलांग () const { return subtable_बिलांग_2; }
 
   hb_mask_t compile_flags (const hb_aat_map_builder_t *map) const
   {
     hb_mask_t flags = defaultFlags;
     {
-      unsigned int count = featureCount;
-      for (unsigned i = 0; i < count; i++)
+      unsigned int बिलांग = feature_बिलांग;
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	const Feature &feature = featureZ[i];
 	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned int) feature.featureType;
@@ -1178,9 +1178,9 @@ struct Chain
   void apply (hb_aat_apply_context_t *c,
 	      const hb_aat_layout_chain_accelerator_t *accel) const
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_बिलांग));
+    unsigned int बिलांग = subtable_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       bool reverse;
 
@@ -1263,16 +1263,16 @@ struct Chain
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_बिलांग));
+    unsigned int बिलांग = subtable_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       typename context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
       if (c->stop_sublookup_iteration (ret))
 	return ret;
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
-    return c->default_return_value ();
+    return c->default_return_हालागा ();
   }
 
   bool sanitize (hb_sanitize_context_t *c, unsigned int version) const
@@ -1284,12 +1284,12 @@ struct Chain
 	  c->check_range (this, length)))
       return_trace (false);
 
-    if (!c->check_array (featureZ.arrayZ, featureCount))
+    if (!c->check_array (featureZ.arrayZ, feature_बिलांग))
       return_trace (false);
 
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_बिलांग));
+    unsigned int बिलांग = subtable_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (!subtable->sanitize (c))
 	return_trace (false);
@@ -1300,7 +1300,7 @@ struct Chain
     if (version >= 3)
     {
       const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) subtable;
-      if (!coverage->sanitize (c, count))
+      if (!coverage->sanitize (c, बिलांग))
         return_trace (false);
     }
 
@@ -1310,8 +1310,8 @@ struct Chain
   protected:
   HBUINT32	defaultFlags;	/* The default specification for subtables. */
   HBUINT32	length;		/* Total byte count, including this header. */
-  HBUINT	featureCount;	/* Number of feature subtable entries. */
-  HBUINT	subtableCount;	/* The number of subtables in the chain. */
+  HBUINT	feature_बिलांग;	/* Number of feature subtable entries. */
+  HBUINT	subtable_बिलांग_2;	/* The number of subtables in the chain. */
 
   UnsizedArrayOf<Feature>	featureZ;	/* Features. */
 /*ChainSubtable	firstSubtable;*//* Subtables. */
@@ -1346,19 +1346,19 @@ struct mortmorx
         this->table = hb_blob_get_empty ();
       }
 
-      this->chain_count = table->get_chain_count ();
+      this->chain_बिलांग = table->get_chain_बिलांग ();
 
-      this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_count, sizeof (*accels));
+      this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_बिलांग, sizeof (*accels));
       if (unlikely (!this->accels))
       {
-	this->chain_count = 0;
+	this->chain_बिलांग = 0;
 	this->table.destroy ();
 	this->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->chain_count; i++)
+      for (unsigned int i = 0; i < this->chain_बिलांग; i++)
       {
 	if (this->accels[i])
 	  this->accels[i]->destroy ();
@@ -1371,15 +1371,15 @@ struct mortmorx
     hb_blob_t *get_blob () const { return table.get_blob (); }
 
     template <typename Chain>
-    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned num_glyphs) const
+    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned नुमेरो_glyphs) const
     {
-      if (unlikely (chain_index >= chain_count)) return nullptr;
+      if (unlikely (chain_index >= chain_बिलांग)) return nullptr;
 
     retry:
       auto *accel = accels[chain_index].get_acquire ();
       if (unlikely (!accel))
       {
-	accel = hb_aat_layout_chain_accelerator_t::create (chain, num_glyphs);
+	accel = hb_aat_layout_chain_accelerator_t::create (chain, नुमेरो_glyphs);
 	if (unlikely (!accel))
 	  return nullptr;
 
@@ -1394,7 +1394,7 @@ struct mortmorx
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int chain_count;
+    unsigned int chain_बिलांग;
     hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *accels;
     hb_aat_scratch_t scratch;
   };
@@ -1404,10 +1404,10 @@ struct mortmorx
 		      hb_aat_map_t *map) const
   {
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    if (unlikely (!map->chain_flags.resize (count)))
+    unsigned int बिलांग = chain_बिलांग_2;
+    if (unlikely (!map->chain_flags.resize (बिलांग)))
       return;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       map->chain_flags[i].push (hb_aat_map_t::range_flags_t {chain->compile_flags (mapper),
 							     mapper->range_first,
@@ -1416,9 +1416,9 @@ struct mortmorx
     }
   }
 
-  unsigned get_chain_count () const
+  unsigned get_chain_बिलांग () const
   {
-    return chainCount;
+    return chain_बिलांग_2;
   }
   void apply (hb_aat_apply_context_t *c,
 	      const hb_aat_map_t &map,
@@ -1432,10 +1432,10 @@ struct mortmorx
 
     c->set_lookup_index (0);
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = chain_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
-      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_num_glyphs ());
+      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_नुमेरो_glyphs ());
       c->range_flags = &map.chain_flags[i];
       chain->apply (c, chain_accel);
       if (unlikely (!c->buffer->successful)) return;
@@ -1449,12 +1449,12 @@ struct mortmorx
     if (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  version &&
-	  chainCount.sanitize (c)))
+	  chain_बिलांग_2.sanitize (c)))
       return_trace (false);
 
     const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = chain_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       if (!chain->sanitize (c, version))
 	return_trace (false);
@@ -1469,7 +1469,7 @@ struct mortmorx
   HBUINT16	version;	/* Version number of the glyph metamorphosis table.
 				 * 1, 2, or 3. */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	chainCount;	/* Number of metamorphosis chains contained in this
+  HBUINT32	chain_बिलांग_2;	/* Number of metamorphosis chains contained in this
 				 * table. */
   Chain<Types>	firstChain;	/* Chains. */
 

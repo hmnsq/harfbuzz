@@ -75,7 +75,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     if (!split_points)
       return Ok(hb_vector_t<unsigned> ());
 
-    TRY_ASSIGN (unsigned total_ligas, total_number_ligas(c, this_index));
+    TRY_ASSIGN (unsigned total_ligas, total_नुमेरो_ligas(c, this_index));
     TRY_ASSIGN (hb_vector_t<unsigned> counts, liga_counts(c, this_index));
     split_context_t split_context {
       c,
@@ -88,7 +88,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
   }
 
  private:
-  graph_result_t<unsigned> total_number_ligas(gsubgpos_graph_context_t& c, unsigned this_index) const {
+  graph_result_t<unsigned> total_नुमेरो_ligas(gsubgpos_graph_context_t& c, unsigned this_index) const {
     unsigned total = 0;
     for (unsigned i = 0; i < ligatureSet.len; i++)
     {
@@ -181,12 +181,12 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     gsubgpos_graph_context_t& c;
     LigatureSubstFormat1* thiz;
     unsigned this_index;
-    unsigned original_count_;
+    unsigned original_बिलांग;
     hb_vector_t<unsigned> liga_counts;
 
-    unsigned original_count ()
+    unsigned original_बिलांग_2 ()
     {
-      return original_count_;
+      return original_बिलांग;
     }
 
     graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
@@ -194,30 +194,30 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       return thiz->clone_range (c, this_index, liga_counts, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<void> shrink (unsigned बिलांग)
     {
-      return thiz->shrink (c, this_index, original_count(), liga_counts, count);
+      return thiz->shrink (c, this_index, original_बिलांग_2(), liga_counts, बिलांग);
     }
   };
 
-  graph_result_t<hb_pair_t<unsigned, LigatureSet*>> new_liga_set(gsubgpos_graph_context_t& c, unsigned count) const {
-    unsigned prime_size = OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size
-                          + count * SmallTypes::size;
+  graph_result_t<hb_pair_t<unsigned, LigatureSet*>> new_liga_set(gsubgpos_graph_context_t& c, unsigned बिलांग) const {
+    unsigned पांगुनाहिन_size = OT::Layout::GSUB_impl::LigatureSet<SmallTypes>::min_size
+                          + बिलांग * SmallTypes::size;
 
-    TRY_ASSIGN (unsigned prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (unsigned पांगुनाहिन_id, c.create_बुहोल (पांगुनाहिन_size));
 
-    LigatureSet* prime = (LigatureSet*) c.graph.object (prime_id).head;
-    prime->ligature.len = count;
-    return Ok(hb_pair(prime_id, prime));
+    LigatureSet* पांगुनाहिन = (LigatureSet*) c.graph.object (पांगुनाहिन_id).head;
+    पांगुनाहिन->ligature.len = बिलांग;
+    return Ok(hb_pair(पांगुनाहिन_id, पांगुनाहिन));
   }
 
-  void clear_virtual_links (gsubgpos_graph_context_t& c, unsigned node_index) const
+  void clear_virtual_links (gsubgpos_graph_context_t& c, unsigned बुहोल_index) const
   {
-    auto& v  = c.graph.vertices_[node_index];
+    auto& v  = c.graph.vertices_[बुहोल_index];
     for (const auto& l : v.obj ().virtual_links)
     {
       auto& child = c.graph.vertices_[l.objidx];
-      child.remove_parent(node_index);
+      child.remove_parent(बुहोल_index);
     }
     v.clear_virtual_links ();
   }
@@ -271,46 +271,46 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
                                         hb_vector_t<unsigned> liga_counts,
                                         unsigned start, unsigned end) const
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Cloning LigatureSubstFormat1 (%u) range [%u, %u).", this_index, start, end);
 
     // Create an oversized new liga subst, we'll adjust the size down later. We don't know
     // the final size until we process it but we also need it to exist while we're processing
     // so that nodes can be moved to it as needed.
-    unsigned prime_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size
+    unsigned पांगुनाहिन_size = OT::Layout::GSUB_impl::LigatureSubstFormat1_2<SmallTypes>::min_size
                           + ligatureSet.get_size() - ligatureSet.len.get_size();
 
-    TRY_ASSIGN (unsigned liga_subst_prime_id, c.create_node (prime_size));
+    TRY_ASSIGN (unsigned liga_subst_पांगुनाहिन_id, c.create_बुहोल (पांगुनाहिन_size));
 
-    LigatureSubstFormat1* liga_subst_prime = (LigatureSubstFormat1*) c.graph.object (liga_subst_prime_id).head;
-    liga_subst_prime->format = this->format;
-    liga_subst_prime->ligatureSet.len = this->ligatureSet.len;
+    LigatureSubstFormat1* liga_subst_पांगुनाहिन = (LigatureSubstFormat1*) c.graph.object (liga_subst_पांगुनाहिन_id).head;
+    liga_subst_पांगुनाहिन->format = this->format;
+    liga_subst_पांगुनाहिन->ligatureSet.len = this->ligatureSet.len;
 
     // Create a place holder coverage prime id since we need to add virtual links to it while
     // generating liga and liga sets. Afterwards it will be updated to have the correct coverage.
     TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.duplicate(coverage_id));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
+    TRY_ASSIGN (unsigned coverage_पांगुनाहिन_id, c.graph.duplicate(coverage_id));
+    auto& coverage_पांगुनाहिन_vertex = c.graph.vertices_[coverage_पांगुनाहिन_id];
 
-    TRY(c.graph.vertices_[liga_subst_prime_id].add_real_link (SmallTypes::size, coverage_prime_id, 2));
-    TRY(coverage_prime_vertex.add_parent (liga_subst_prime_id, false));
+    TRY(c.graph.vertices_[liga_subst_पांगुनाहिन_id].add_real_link (SmallTypes::size, coverage_पांगुनाहिन_id, 2));
+    TRY(coverage_पांगुनाहिन_vertex.add_parent (liga_subst_पांगुनाहिन_id, false));
 
     // Locate all liga sets with ligas between start and end.
     // Clone or move them as needed.
-    unsigned count = 0;
-    unsigned liga_set_count = 0;
+    unsigned बिलांग = 0;
+    unsigned liga_set_बिलांग = 0;
     unsigned liga_set_start = HB_GRAPH_INVALID;
     unsigned liga_set_end = 0; // inclusive
     for (unsigned i = 0; i < liga_counts.length; i++)
     {
-      unsigned num_ligas = liga_counts[i];
+      unsigned नुमेरो_ligas = liga_counts[i];
 
-      unsigned current_start = count;
-      unsigned current_end = count + num_ligas;
+      unsigned current_start = बिलांग;
+      unsigned current_end = बिलांग + नुमेरो_ligas;
 
       if (current_start >= end || start >= current_end) {
         // No intersection, so just skip
-        count += num_ligas;
+        बिलांग += नुमेरो_ligas;
         continue;
       }
 
@@ -319,80 +319,80 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
       unsigned liga_set_index = liga_set.index;
       // Bounds may need to be adjusted if some ligas have been previously removed.
       hb_pair_t<unsigned, unsigned> liga_bounds = current_liga_set_bounds(c, liga_set_index, liga_set.vertex->obj ());
-      current_start = hb_max(count + liga_bounds.first, current_start);
-      current_end = hb_min(count + liga_bounds.second, current_end);
+      current_start = hb_max(बिलांग + liga_bounds.first, current_start);
+      current_end = hb_min(बिलांग + liga_bounds.second, current_end);
 
-      unsigned liga_set_prime_id;
+      unsigned liga_set_पांगुनाहिन_id;
       if (current_start >= start && current_end <= end) {
         // This liga set is fully contined within [start, end)
         // We can move the entire ligaset to the new liga subset object.
         liga_set_end = i;
         if (i < liga_set_start) liga_set_start = i;
-        TRY_ASSIGN (liga_set_prime_id, c.graph.move_child<> (this_index,
+        TRY_ASSIGN (liga_set_पांगुनाहिन_id, c.graph.move_child<> (this_index,
                               &ligatureSet[i],
-                              liga_subst_prime_id,
-                              &liga_subst_prime->ligatureSet[liga_set_count++]));
+                              liga_subst_पांगुनाहिन_id,
+                              &liga_subst_पांगुनाहिन->ligatureSet[liga_set_बिलांग++]));
         compact_liga_set (c, liga_set.table, liga_set.vertex);
       }
       else
       {
         // This liga set partially overlaps [start, end). We'll need to create
         // a new liga set sub table and move the intersecting ligas to it.
-        unsigned start_index = hb_max(start, current_start) - count;
-        unsigned end_index = hb_min(end, current_end) - count;
-        unsigned liga_count = end_index - start_index;
-        TRY_ASSIGN (auto result, new_liga_set(c, liga_count));
-        liga_set_prime_id = result.first;
+        unsigned start_index = hb_max(start, current_start) - बिलांग;
+        unsigned end_index = hb_min(end, current_end) - बिलांग;
+        unsigned liga_बिलांग = end_index - start_index;
+        TRY_ASSIGN (auto result, new_liga_set(c, liga_बिलांग));
+        liga_set_पांगुनाहिन_id = result.first;
 
         TRY (c.graph.move_children<OT::Offset16>(
           liga_set_index,
           2 + start_index * 2,
           2 + end_index * 2,
-          liga_set_prime_id,
+          liga_set_पांगुनाहिन_id,
           2));
 
         liga_set_end = i;
         if (i < liga_set_start) liga_set_start = i;
-        TRY (c.graph.add_link(&liga_subst_prime->ligatureSet[liga_set_count++], liga_subst_prime_id, liga_set_prime_id));
+        TRY (c.graph.add_link(&liga_subst_पांगुनाहिन->ligatureSet[liga_set_बिलांग++], liga_subst_पांगुनाहिन_id, liga_set_पांगुनाहिन_id));
       }
 
       // The new liga and all children set needs to have a virtual link to the new coverage table:
-      const auto& liga_set_prime = c.graph.vertices_[liga_set_prime_id].obj ();
-      clear_virtual_links(c, liga_set_prime_id);
-      TRY(add_virtual_link(c, liga_set_prime_id, coverage_prime_id));
-      for (const auto& l : liga_set_prime.real_links) {
+      const auto& liga_set_पांगुनाहिन = c.graph.vertices_[liga_set_पांगुनाहिन_id].obj ();
+      clear_virtual_links(c, liga_set_पांगुनाहिन_id);
+      TRY(add_virtual_link(c, liga_set_पांगुनाहिन_id, coverage_पांगुनाहिन_id));
+      for (const auto& l : liga_set_पांगुनाहिन.real_links) {
         clear_virtual_links(c, l.objidx);
-        TRY(add_virtual_link(c, l.objidx, coverage_prime_id));
+        TRY(add_virtual_link(c, l.objidx, coverage_पांगुनाहिन_id));
       }
 
-      count += num_ligas;
+      बिलांग += नुमेरो_ligas;
     }
 
-    c.graph.vertices_[liga_subst_prime_id].shrink_buffer ((liga_subst_prime->ligatureSet.len - liga_set_count) * SmallTypes::size);
-    liga_subst_prime->ligatureSet.len = liga_set_count;
+    c.graph.vertices_[liga_subst_पांगुनाहिन_id].shrink_buffer ((liga_subst_पांगुनाहिन->ligatureSet.len - liga_set_बिलांग) * SmallTypes::size);
+    liga_subst_पांगुनाहिन->ligatureSet.len = liga_set_बिलांग;
 
     TRY (Coverage::filter_coverage (c,
-                                    coverage_prime_id,
+                                    coverage_पांगुनाहिन_id,
                                     liga_set_start, liga_set_end + 1));
 
-    return Ok(liga_subst_prime_id);
+    return Ok(liga_subst_पांगुनाहिन_id);
   }
 
   graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
                                unsigned this_index,
-                               unsigned old_count,
+                               unsigned old_बिलांग,
                                hb_vector_t<unsigned> liga_counts,
-                               unsigned count)
+                               unsigned बिलांग)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "  Shrinking LigatureSubstFormat1 (%u) to [0, %u).",
                this_index,
-               count);
-    if (count >= old_count)
+               बिलांग);
+    if (बिलांग >= old_बिलांग)
       return Ok();
 
     hb_set_t retained_indices;
-    unsigned new_liga_set_count = 0;
+    unsigned new_liga_set_बिलांग = 0;
     for (unsigned i = 0; i < liga_counts.length; i++)
     {
       TRY_ASSIGN (auto liga_set, c.graph.as_mutable_table<LigatureSet>(this_index, &ligatureSet[i]));
@@ -413,23 +413,23 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
         }
       }
 
-      unsigned num_ligas = liga_counts[i];
-      if (num_ligas >= count) {
+      unsigned नुमेरो_ligas = liga_counts[i];
+      if (नुमेरो_ligas >= बिलांग) {
         // drop the trailing liga's from this set and all subsequent liga sets
-        unsigned num_ligas_to_remove = num_ligas - count;
-        new_liga_set_count = i + 1;
-        c.graph.vertices_[liga_set.index].shrink_buffer (num_ligas_to_remove * SmallTypes::size);
-        liga_set.table->ligature.len = count;
+        unsigned नुमेरो_ligas_to_remove = नुमेरो_ligas - बिलांग;
+        new_liga_set_बिलांग = i + 1;
+        c.graph.vertices_[liga_set.index].shrink_buffer (नुमेरो_ligas_to_remove * SmallTypes::size);
+        liga_set.table->ligature.len = बिलांग;
         break;
       } else {
-        count -= num_ligas;
+        बिलांग -= नुमेरो_ligas;
       }
     }
 
     // Adjust liga set array
     auto& this_vertex = c.graph.vertices_[this_index];
-    this_vertex.shrink_buffer ((ligatureSet.len - new_liga_set_count) * SmallTypes::size);
-    ligatureSet.len = new_liga_set_count;
+    this_vertex.shrink_buffer ((ligatureSet.len - new_liga_set_बिलांग) * SmallTypes::size);
+    ligatureSet.len = new_liga_set_बिलांग;
 
     // Coverage matches the number of liga sets so rebuild as needed
     TRY_ASSIGN (unsigned coverage_idx, c.graph.index_for_offset (this_index, &this->coverage));
@@ -449,7 +449,7 @@ struct LigatureSubstFormat1 : public OT::Layout::GSUB_impl::LigatureSubstFormat1
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < new_liga_set_count;
+          return p.second < new_liga_set_बिलांग;
         })
         | hb_map_retains_sorting (hb_first)
         ;

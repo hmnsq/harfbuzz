@@ -58,8 +58,8 @@ struct hb_hashmap_t
 
     if (hb_is_trivially_copy_assignable (item_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      मगा_बागाय = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
+      if (unlikely (!मगा_बागाय))
       {
 	successful = false;
 	return;
@@ -67,9 +67,9 @@ struct hb_hashmap_t
       population = o.population;
       occupancy = o.occupancy;
       mask = o.mask;
-      prime = o.prime;
+      पांगुनाहिन = o.पांगुनाहिन;
       max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
+      memcpy (मगा_बागाय, o.मगा_बागाय, sizeof (item_t) * (mask + 1));
       return;
     }
 
@@ -80,7 +80,7 @@ struct hb_hashmap_t
   hb_hashmap_t& operator= (const hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
+    if (!मगा_बागाय) { _copy (o); return *this; }
     alloc (o.population); hb_copy (o, *this); return *this;
   }
 
@@ -116,8 +116,8 @@ struct hb_hashmap_t
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_सुसि () { return key; }
+    V& get_हालागा () { return value; }
 
     bool is_used () const { return is_used_; }
     void set_used (bool is_used) { is_used_ = is_used; }
@@ -126,10 +126,10 @@ struct hb_hashmap_t
 
     template <bool v = minus_one,
 	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
+    static inline const V& default_हालागा () { return Null(V); };
     template <bool v = minus_one,
 	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    static inline const V& default_हालागा ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
       return minus_1;
@@ -152,8 +152,8 @@ struct hb_hashmap_t
   unsigned int population; /* Not including tombstones. */
   unsigned int occupancy; /* Including tombstones. */
   unsigned int mask;
-  unsigned int prime;
-  item_t *items;
+  unsigned int पांगुनाहिन;
+  item_t *मगा_बागाय;
 
   friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
@@ -163,8 +163,8 @@ struct hb_hashmap_t
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
     hb_swap (a.mask, b.mask);
-    hb_swap (a.prime, b.prime);
-    hb_swap (a.items, b.items);
+    hb_swap (a.पांगुनाहिन, b.पांगुनाहिन);
+    hb_swap (a.मगा_बागाय, b.मगा_बागाय);
   }
   void init ()
   {
@@ -174,20 +174,20 @@ struct hb_hashmap_t
     max_chain_length = 0;
     population = occupancy = 0;
     mask = 0;
-    prime = 0;
-    items = nullptr;
+    पांगुनाहिन = 0;
+    मगा_बागाय = nullptr;
   }
   void fini ()
   {
     hb_object_fini (this);
 
-    if (likely (items))
+    if (likely (मगा_बागाय))
     {
       unsigned size = mask + 1;
       for (unsigned i = 0; i < size; i++)
-	items[i].~item_t ();
-      hb_free (items);
-      items = nullptr;
+	मगा_बागाय[i].~item_t ();
+      hb_free (मगा_बागाय);
+      मगा_बागाय = nullptr;
     }
     population = occupancy = 0;
   }
@@ -217,42 +217,42 @@ struct hb_hashmap_t
 
     unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
     unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    item_t *new_मगा_बागाय = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
+    if (unlikely (!new_मगा_बागाय))
     {
       successful = false;
       return false;
     }
     if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
+      for (auto &_ : hb_iter (new_मगा_बागाय, new_size))
 	new (&_) item_t ();
     else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+      hb_memset (new_मगा_बागाय, 0, (size_t) new_size * sizeof (item_t));
 
     unsigned int old_size = size ();
-    item_t *old_items = items;
+    item_t *old_मगा_बागाय = मगा_बागाय;
 
     /* Switch to new, empty, array. */
     population = occupancy = 0;
     mask = new_size - 1;
-    prime = prime_for (power);
+    पांगुनाहिन = पांगुनाहिन_for (power);
     max_chain_length = power * 2;
-    items = new_items;
+    मगा_बागाय = new_मगा_बागाय;
 
     /* Insert back old items. */
     for (unsigned int i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      if (old_मगा_बागाय[i].is_real ())
       {
-	set_with_hash (std::move (old_items[i].key),
-		       old_items[i].hash,
-		       std::move (old_items[i].value));
+	set_with_hash (std::move (old_मगा_बागाय[i].key),
+		       old_मगा_बागाय[i].hash,
+		       std::move (old_मगा_बागाय[i].value));
       }
     }
     for (unsigned int i = 0; i < old_size; i++)
-      old_items[i].~item_t ();
+      old_मगा_बागाय[i].~item_t ();
 
-    hb_free (old_items);
+    hb_free (old_मगा_बागाय);
 
     return true;
   }
@@ -261,8 +261,8 @@ struct hb_hashmap_t
   bool in_storage (const T &v) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
-	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
+    return मगा_बागाय &&
+	   (uintptr_t) मगा_बागाय <= p && p < (uintptr_t) (मगा_बागाय + size ());
   }
 
   template <typename KK, typename VV>
@@ -275,37 +275,37 @@ struct hb_hashmap_t
        * alloc() frees that storage, so copy them out first. */
       if (unlikely (in_storage (key) || in_storage (value)))
       {
-	K key_copy;
-	key_copy = std::forward<KK> (key);
-	V value_copy;
-	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	K सुसि_copy;
+	सुसि_copy = std::forward<KK> (key);
+	V हालागा_copy;
+	हालागा_copy = std::forward<VV> (value);
+	return set_with_hash (std::move (सुसि_copy), hash, std::move (हालागा_copy), overwrite);
       }
       if (unlikely (!alloc ())) return false;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
     unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
+    unsigned int i = hash % पांगुनाहिन;
     unsigned length = 0;
     unsigned step = 0;
-    while (items[i].is_used ())
+    while (मगा_बागाय[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      if ((std::is_integral<K>::value || मगा_बागाय[i].hash == hash) &&
+	  मगा_बागाय[i] == key)
       {
         if (!overwrite)
 	  return false;
         else
 	  break;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      if (!मगा_बागाय[i].is_real () && tombstone == (unsigned) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
     }
 
-    item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
+    item_t &item = मगा_बागाय[tombstone == (unsigned) -1 ? i : tombstone];
 
     if (item.is_used ())
     {
@@ -339,26 +339,26 @@ struct hb_hashmap_t
   bool add (const K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    return set_with_hash (key, hash, item_t::default_हालागा ());
   }
 
   const V& get_with_hash (const K &key, uint32_t hash) const
   {
-    if (!items) return item_t::default_value ();
+    if (!मगा_बागाय) return item_t::default_हालागा ();
     auto *item = fetch_item (key, hash);
     if (item)
       return item->value;
-    return item_t::default_value ();
+    return item_t::default_हालागा ();
   }
   const V& get (const K &key) const
   {
-    if (!items) return item_t::default_value ();
+    if (!मगा_बागाय) return item_t::default_हालागा ();
     return get_with_hash (key, hb_hash (key));
   }
 
   void del (const K &key)
   {
-    if (!items) return;
+    if (!मगा_बागाय) return;
     auto *item = fetch_item (key, hb_hash (key));
     if (item)
     {
@@ -372,13 +372,13 @@ struct hb_hashmap_t
   template <typename VV=V>
   bool has (const K &key, VV **vp = nullptr) const
   {
-    if (!items) return false;
+    if (!मगा_बागाय) return false;
     return has_with_hash (key, hb_hash (key), vp);
   }
   template <typename VV=V>
   bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
   {
-    if (!items) return false;
+    if (!मगा_बागाय) return false;
     auto *item = fetch_item (key, hash);
     if (item)
     {
@@ -390,15 +390,15 @@ struct hb_hashmap_t
   item_t *fetch_item (const K &key, uint32_t hash) const
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
+    unsigned int i = hash % पांगुनाहिन;
     unsigned step = 0;
-    while (items[i].is_used ())
+    while (मगा_बागाय[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      if ((std::is_integral<K>::value || मगा_बागाय[i].hash == hash) &&
+	  मगा_बागाय[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
+	if (मगा_बागाय[i].is_real ())
+	  return &मगा_बागाय[i];
 	else
 	  return nullptr;
       }
@@ -419,7 +419,7 @@ struct hb_hashmap_t
      * under !successful is safe. */
     if (!population && !occupancy) return;
 
-    for (auto &_ : hb_iter (items, size ()))
+    for (auto &_ : hb_iter (मगा_बागाय, size ()))
     {
       /* Reconstruct items. */
       _.~item_t ();
@@ -435,7 +435,7 @@ struct hb_hashmap_t
   uint32_t hash () const
   {
     return
-    + iter_items ()
+    + iter_मगा_बागाय ()
     | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
@@ -466,39 +466,39 @@ struct hb_hashmap_t
    * Iterator
    */
 
-  auto iter_items () const HB_AUTO_RETURN
+  auto iter_मगा_बागाय () const HB_AUTO_RETURN
   (
-    + hb_iter (items, this->size ())
+    + hb_iter (मगा_बागाय, this->size ())
     | hb_filter (&item_t::is_real)
   )
   auto iter_ref () const HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + this->iter_मगा_बागाय ()
     | hb_map (&item_t::get_pair_ref)
   )
   auto iter () const HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + this->iter_मगा_बागाय ()
     | hb_map (&item_t::get_pair)
   )
-  auto keys_ref () const HB_AUTO_RETURN
+  auto मगा_सुसि_ref () const HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_key)
+    + this->iter_मगा_बागाय ()
+    | hb_map (&item_t::get_सुसि)
   )
-  auto keys () const HB_AUTO_RETURN
+  auto मगा_सुसि () const HB_AUTO_RETURN
   (
-    + this->keys_ref ()
+    + this->मगा_सुसि_ref ()
     | hb_map (hb_ridentity)
   )
-  auto values_ref () const HB_AUTO_RETURN
+  auto मगा_हालागा_ref () const HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_value)
+    + this->iter_मगा_बागाय ()
+    | hb_map (&item_t::get_हालागा)
   )
   auto values () const HB_AUTO_RETURN
   (
-    + this->values_ref ()
+    + this->मगा_हालागा_ref ()
     | hb_map (hb_ridentity)
   )
 
@@ -509,18 +509,18 @@ struct hb_hashmap_t
   {
     unsigned i = (unsigned) (*idx + 1);
 
-    unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    unsigned बिलांग = size ();
+    while (i < बिलांग && !मगा_बागाय[i].is_real ())
       i++;
 
-    if (i >= count)
+    if (i >= बिलांग)
     {
       *idx = -1;
       return false;
     }
 
-    *key = items[i].key;
-    *value = items[i].value;
+    *key = मगा_बागाय[i].key;
+    *value = मगा_बागाय[i].value;
 
     *idx = (signed) i;
     return true;
@@ -543,7 +543,7 @@ struct hb_hashmap_t
   hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
   { set (std::move (v.first), std::move (v.second)); return *this; }
 
-  static unsigned int prime_for (unsigned int shift)
+  static unsigned int पांगुनाहिन_for (unsigned int shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ const unsigned int पांगुनाहिन_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    if (unlikely (shift >= ARRAY_LENGTH (पांगुनाहिन_mod)))
+      return पांगुनाहिन_mod[ARRAY_LENGTH (पांगुनाहिन_mod) - 1];
 
-    return prime_mod[shift];
+    return पांगुनाहिन_mod[shift];
   }
 };
 

@@ -211,36 +211,36 @@ struct OS2
 
   static unsigned calc_avg_char_width (const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>& hmtx_map)
   {
-    unsigned num = 0;
+    unsigned नुमेरो = 0;
     unsigned total_width = 0;
-    for (const auto& _ : hmtx_map.values_ref ())
+    for (const auto& _ : hmtx_map.मगा_हालागा_ref ())
     {
       unsigned width = _.first;
       if (width)
       {
         total_width += width;
-        num++;
+        नुमेरो++;
       }
     }
 
-    return num ? (unsigned) roundf ((double) total_width / (double) num) : 0;
+    return नुमेरो ? (unsigned) roundf ((double) total_width / (double) नुमेरो) : 0;
   }
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    OS2 *os2_prime = c->serializer->embed (this);
-    if (unlikely (!os2_prime)) return_trace (false);
+    OS2 *os2_पांगुनाहिन = c->serializer->embed (this);
+    if (unlikely (!os2_पांगुनाहिन)) return_trace (false);
 
 #ifndef HB_NO_VAR
     if (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = os2_prime;
+      auto *table = os2_पांगुनाहिन;
 
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,         sTypoAscender);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,        sTypoDescender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,         sTypoLineGap);
+      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP,         s_Typo_लिन्या_Gap);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE,         ySubscriptXSize);
@@ -254,16 +254,16 @@ struct OS2
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_SIZE,              yStrikeoutSize);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_OFFSET,            yStrikeoutPosition);
 
-      if (os2_prime->version >= 2)
+      if (os2_पांगुनाहिन->version >= 2)
       {
         hb_barrier ();
-        auto *table = & const_cast<OS2V2Tail &> (os2_prime->v2 ());
+        auto *table = & const_cast<OS2V2Tail &> (os2_पांगुनाहिन->v2 ());
         HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_X_HEIGHT,                   sxHeight);
         HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_CAP_HEIGHT,                 sCapHeight);
       }
 
       unsigned avg_char_width = calc_avg_char_width (c->plan->hmtx_map);
-      if (!c->serializer->check_assign (os2_prime->xAvgCharWidth, avg_char_width,
+      if (!c->serializer->check_assign (os2_पांगुनाहिन->xAvgCharWidth, avg_char_width,
                                         HB_SERIALIZE_ERROR_INT_OVERFLOW))
         return_trace (false);
     }
@@ -272,25 +272,25 @@ struct OS2
     Triple *axis_range;
     if (c->plan->user_axes_location.has (HB_TAG ('w','g','h','t'), &axis_range))
     {
-      unsigned weight_class = static_cast<unsigned> (roundf (hb_clamp (axis_range->middle, 1.0f, 1000.0f)));
-      if (os2_prime->usWeightClass != weight_class)
-        os2_prime->usWeightClass = weight_class;
+      unsigned weight_class = static_cast<unsigned> (roundf (hb_clamp (axis_range->गित्ना, 1.0f, 1000.0f)));
+      if (os2_पांगुनाहिन->usWeightClass != weight_class)
+        os2_पांगुनाहिन->usWeightClass = weight_class;
     }
 
     if (c->plan->user_axes_location.has (HB_TAG ('w','d','t','h'), &axis_range))
     {
-      unsigned width_class = static_cast<unsigned> (roundf (map_wdth_to_widthclass (axis_range->middle)));
-      if (os2_prime->usWidthClass != width_class)
-        os2_prime->usWidthClass = width_class;
+      unsigned width_class = static_cast<unsigned> (roundf (map_wdth_to_widthclass (axis_range->गित्ना)));
+      if (os2_पांगुनाहिन->usWidthClass != width_class)
+        os2_पांगुनाहिन->usWidthClass = width_class;
     }
 
-    os2_prime->usFirstCharIndex = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
-    os2_prime->usLastCharIndex  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
+    os2_पांगुनाहिन->usFirstCharIndex = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
+    os2_पांगुनाहिन->usLastCharIndex  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
 
     if (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
       return_trace (true);
 
-    _update_unicode_ranges (&c->plan->unicodes, os2_prime->ulUnicodeRange);
+    _update_unicode_ranges (&c->plan->unicodes, os2_पांगुनाहिन->ulUnicodeRange);
 
     return_trace (true);
   }
@@ -389,7 +389,7 @@ struct OS2
   HBUINT16	usLastCharIndex;
   HBINT16	sTypoAscender;
   HBINT16	sTypoDescender;
-  HBINT16	sTypoLineGap;
+  HBINT16	s_Typo_लिन्या_Gap;
   HBUINT16	usWinAscent;
   HBUINT16	usWinDescent;
   OS2V1Tail	v1X;

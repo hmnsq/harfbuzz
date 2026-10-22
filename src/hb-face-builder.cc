@@ -95,8 +95,8 @@ static hb_blob_t *
 _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  unsigned int table_बिलांग_2 = data->tables.get_population ();
+  unsigned int face_length = table_बिलांग_2 * 16 + 12;
 
   for (auto info : data->tables.values())
     face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
@@ -156,7 +156,7 @@ _hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void 
 static unsigned
 _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
 				 unsigned int start_offset,
-				 unsigned int *table_count,
+				 unsigned int *table_बिलांग_2,
 				 hb_tag_t *table_tags,
 				 void *user_data)
 {
@@ -164,18 +164,18 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
 
   unsigned population = data->tables.get_population ();
 
-  if (!table_count)
+  if (!table_बिलांग_2)
     return population;
 
   if (unlikely (start_offset >= population))
   {
-    *table_count = 0;
+    *table_बिलांग_2 = 0;
     return population;
   }
 
   // Sort the tags.
   hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
+  data->tables.मगा_सुसि () | hb_sink (sorted_tags);
   if (unlikely (sorted_tags.in_error ()))
   {
     // Not much to do...
@@ -184,10 +184,10 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
     return (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
+  auto array = sorted_tags.as_array ().sub_array (start_offset, table_बिलांग_2);
   if (table_tags)
   {
-    auto out = hb_array (table_tags, *table_count);
+    auto out = hb_array (table_tags, *table_बिलांग_2);
 
     + array.iter ()
     | hb_sink (out)
@@ -244,7 +244,7 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
   if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
     return false;
 
-  if (tag == HB_MAP_VALUE_INVALID)
+  if (tag == HB_MAP_हालागा_INVALID)
     return false;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
@@ -282,7 +282,7 @@ hb_face_builder_sort_tables (hb_face_t *face,
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
+  for (auto& info : data->tables.मगा_हालागा_ref())
     info.order = (unsigned) -1;
 
   signed order = 0;

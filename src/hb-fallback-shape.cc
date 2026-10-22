@@ -73,7 +73,7 @@ _hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features HB_UNUSED,
-		    unsigned int        num_features HB_UNUSED)
+		    unsigned int        नुमेरो_features HB_UNUSED)
 {
   hb_codepoint_t space;
   bool has_space = (bool) font->get_nominal_glyph (' ', &space);
@@ -82,10 +82,10 @@ _hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 
   hb_direction_t direction = buffer->props.direction;
   hb_unicode_funcs_t *unicode = buffer->unicode;
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
       info[i].codepoint = space;

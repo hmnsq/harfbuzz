@@ -118,7 +118,7 @@ struct path_builder_t
       else
       {
 	if (is_on_curve)
-	  draw_session->line_to (p.x, p.y);
+	  draw_session->लिन्या_to (p.x, p.y);
 	else
 	  last_offcurve = p;
       }
@@ -165,7 +165,7 @@ struct path_builder_t
 				   first_oncurve.x, first_oncurve.y);
     }
     else if (first_oncurve)
-      draw_session->line_to (first_oncurve.x, first_oncurve.y);
+      draw_session->लिन्या_to (first_oncurve.x, first_oncurve.y);
     else if (first_offcurve2)
     {
       /* A contour with just two cubic controls closes at their midpoint. */

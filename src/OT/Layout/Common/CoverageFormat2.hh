@@ -81,19 +81,19 @@ struct CoverageFormat2_4
     TRACE_SERIALIZE (this);
     if (unlikely (!c->extend_min (this))) return_trace (false);
 
-    unsigned num_ranges = 0;
+    unsigned नुमेरो_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     for (auto g: glyphs)
     {
       if (last + 1 != g)
-        num_ranges++;
+        नुमेरो_ranges++;
       last = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    if (unlikely (!rangeRecord.serialize (c, नुमेरो_ranges))) return_trace (false);
+    if (!नुमेरो_ranges) return_trace (true);
 
-    unsigned count = 0;
+    unsigned बिलांग = 0;
     unsigned range = (unsigned) -1;
     last = (hb_codepoint_t) -2;
     unsigned unsorted = false;
@@ -106,11 +106,11 @@ struct CoverageFormat2_4
 
         range++;
         rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        rangeRecord.arrayZ[range].value = बिलांग;
       }
       rangeRecord.arrayZ[range].last = g;
       last = g;
-      count++;
+      बिलांग++;
     }
 
     if (unlikely (unsorted))
@@ -166,7 +166,7 @@ struct CoverageFormat2_4
         break;
       last = range.last;
       hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
+      cursor = cursor ? cursor - 1 : HB_SET_हालागा_INVALID;
       uint64_t bits;
       while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
       {

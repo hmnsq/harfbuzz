@@ -57,7 +57,7 @@ hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 static unsigned int
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
 				   void *font_data HB_UNUSED,
-				   unsigned int count,
+				   unsigned int बिलांग,
 				   const hb_codepoint_t *first_unicode,
 				   unsigned int unicode_stride,
 				   hb_codepoint_t *first_glyph,
@@ -66,12 +66,12 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
 {
   IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  for (unsigned i = 0; i < बिलांग;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, बिलांग - i);
 
     for (unsigned j = 0; j < n; j++)
     {
@@ -93,7 +93,7 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
     i += n;
   }
 
-  return count;
+  return बिलांग;
 }
 
 static hb_bool_t
@@ -109,7 +109,7 @@ hb_directwrite_get_font_h_extents (hb_font_t *font,
 
   metrics->ascender = hb_directwrite_scale_y (font, dw_metrics.ascent);
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
-  metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
+  metrics->लिन्या_gap = hb_directwrite_scale_y (font, dw_metrics.लिन्या_Gap);
 
   return true;
 }
@@ -117,7 +117,7 @@ hb_directwrite_get_font_h_extents (hb_font_t *font,
 static void
 hb_directwrite_get_glyph_h_advances (hb_font_t* font,
 				     void* font_data HB_UNUSED,
-				     unsigned count,
+				     unsigned बिलांग,
 				     const hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
@@ -130,14 +130,14 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
   dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
   assert (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  unsigned int नुमेरो_glyphs = font->face->get_नुमेरो_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  for (unsigned i = 0; i < बिलांग;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, बिलांग - i);
 
     for (unsigned j = 0; j < n; j++)
     {
@@ -149,7 +149,7 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
     for (unsigned j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
-      auto advance = gids[j] < num_glyphs ? advances[j] : 0;
+      auto advance = gids[j] < नुमेरो_glyphs ? advances[j] : 0;
       *first_advance = hb_directwrite_scale_x (font, advance);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
@@ -163,7 +163,7 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
 static void
 hb_directwrite_get_glyph_v_advances (hb_font_t* font,
 				     void* font_data HB_UNUSED,
-				     unsigned count,
+				     unsigned बिलांग,
 				     const hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
@@ -176,12 +176,12 @@ hb_directwrite_get_glyph_v_advances (hb_font_t* font,
   dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
   assert (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  for (unsigned i = 0; i < बिलांग;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, बिलांग - i);
 
     for (unsigned j = 0; j < n; j++)
     {
@@ -238,13 +238,13 @@ hb_directwrite_get_glyph_extents (hb_font_t *font,
   if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
     return false;
 
-  int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
-  int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
+  int64_t कानान = (int64_t) metrics.advanceWidth - metrics.कानान_Side_Bearing;
+  int64_t इताअस_2 = (int64_t) metrics.verticalOriginY - metrics.इताअस_Side_Bearing;
   int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advanceHeight + metrics.bottomSideBearing;
 
-  extents->x_bearing = hb_directwrite_scale_x (font, metrics.leftSideBearing);
-  extents->y_bearing = hb_directwrite_scale_y (font, top);
-  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, right), extents->x_bearing);
+  extents->x_bearing = hb_directwrite_scale_x (font, metrics.कालिवा_Side_Bearing);
+  extents->y_bearing = hb_directwrite_scale_y (font, इताअस_2);
+  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, कानान), extents->x_bearing);
   extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
@@ -278,18 +278,18 @@ public:
     drawing.move_to (font->em_scalef_x (startPoint.x), -(float) font->em_scalef_y (startPoint.y));
   }
 
-  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
+  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziers_बिलांग) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
+    for (unsigned i = 0; i < beziers_बिलांग; ++i)
       drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
 			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
 			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
   }
 
-  void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
+  void STDMETHODCALLTYPE Add_मगा_लिन्या(const D2D1_POINT_2F *points, UINT points_बिलांग) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
-      drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
+    for (unsigned i = 0; i < points_बिलांग; ++i)
+      drawing.लिन्या_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
   }
 
   void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override

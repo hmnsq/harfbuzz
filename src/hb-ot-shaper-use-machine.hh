@@ -44,9 +44,9 @@ enum use_syllable_type_t {
   use_virama_terminated_cluster,
   use_sakot_terminated_cluster,
   use_standard_cluster,
-  use_number_joiner_terminated_cluster,
+  use_नुमेरो_joiner_terminated_cluster,
   use_numeral_cluster,
-  use_symbol_cluster,
+  use_सिम्बोलो_cluster,
   use_hieroglyph_cluster,
   use_broken_cluster,
   use_non_cluster,
@@ -101,7 +101,7 @@ enum use_syllable_type_t {
 
 
 #line 99 "hb-ot-shaper-use-machine.hh"
-static const unsigned char _use_syllable_machine_trans_keys[] = {
+static const unsigned char use_syllable_machine_trans_मगा_सुसि[] = {
 	49u, 51u, 0u, 56u, 11u, 56u, 11u, 56u, 1u, 53u, 14u, 48u, 14u, 47u, 14u, 47u, 
 	14u, 47u, 14u, 46u, 14u, 46u, 14u, 14u, 14u, 48u, 14u, 48u, 14u, 48u, 1u, 14u, 
 	14u, 48u, 14u, 53u, 14u, 53u, 14u, 53u, 14u, 53u, 12u, 53u, 14u, 53u, 12u, 53u, 
@@ -120,7 +120,7 @@ static const unsigned char _use_syllable_machine_trans_keys[] = {
 	14u, 42u, 1u, 5u, 14u, 55u, 14u, 51u, 14u, 52u, 14u, 54u, 11u, 56u, 0
 };
 
-static const char _use_syllable_machine_key_spans[] = {
+static const char use_syllable_machine_सुसि_spans[] = {
 	3, 57, 46, 46, 53, 35, 34, 34, 
 	34, 33, 33, 1, 35, 35, 35, 14, 
 	35, 40, 40, 40, 40, 42, 40, 42, 
@@ -946,7 +946,7 @@ find_syllables_use (hb_buffer_t *buffer)
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const unsigned char *_inds;
 	if ( p == pe )
 		goto _test_eof;
@@ -959,13 +959,13 @@ _resume:
 #line 943 "hb-ot-shaper-use-machine.hh"
 	}
 
-	_keys = _use_syllable_machine_trans_keys + (cs<<1);
+	मगा_सुसि_2 = use_syllable_machine_trans_मगा_सुसि + (cs<<1);
 	_inds = _use_syllable_machine_indicies + _use_syllable_machine_index_offsets[cs];
 
-	_slen = _use_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( (*p).second.second.use_category()) &&
-		( (*p).second.second.use_category()) <= _keys[1] ?
-		( (*p).second.second.use_category()) - _keys[0] : _slen ];
+	_slen = use_syllable_machine_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=( (*p).second.second.use_category()) &&
+		( (*p).second.second.use_category()) <= मगा_सुसि_2[1] ?
+		( (*p).second.second.use_category()) - मगा_सुसि_2[0] : _slen ];
 
 _eof_trans:
 	cs = _use_syllable_machine_trans_targs[_trans];
@@ -992,7 +992,7 @@ _eof_trans:
 	break;
 	case 20:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_number_joiner_terminated_cluster); }}
+	{te = p+1;{ found_syllable (use_नुमेरो_joiner_terminated_cluster); }}
 	break;
 	case 18:
 #line 177 "hb-ot-shaper-use-machine.rl"
@@ -1000,7 +1000,7 @@ _eof_trans:
 	break;
 	case 10:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_symbol_cluster); }}
+	{te = p+1;{ found_syllable (use_सिम्बोलो_cluster); }}
 	break;
 	case 25:
 #line 179 "hb-ot-shaper-use-machine.rl"
@@ -1028,7 +1028,7 @@ _eof_trans:
 	break;
 	case 19:
 #line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_number_joiner_terminated_cluster); }}
+	{te = p;p--;{ found_syllable (use_नुमेरो_joiner_terminated_cluster); }}
 	break;
 	case 17:
 #line 177 "hb-ot-shaper-use-machine.rl"
@@ -1036,7 +1036,7 @@ _eof_trans:
 	break;
 	case 9:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_symbol_cluster); }}
+	{te = p;p--;{ found_syllable (use_सिम्बोलो_cluster); }}
 	break;
 	case 24:
 #line 179 "hb-ot-shaper-use-machine.rl"
@@ -1052,7 +1052,7 @@ _eof_trans:
 	break;
 	case 1:
 #line 178 "hb-ot-shaper-use-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (use_symbol_cluster); }}
+	{{p = ((te))-1;}{ found_syllable (use_सिम्बोलो_cluster); }}
 	break;
 	case 22:
 #line 1 "NONE"

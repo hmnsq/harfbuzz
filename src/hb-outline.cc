@@ -53,9 +53,9 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 			   p1.x, p1.y);
 	}
 	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	case hb_outline_point_t::type_t::लिन्या_TO:
 	{
-	  pen->line_to (pen_data, st,
+	  pen->लिन्या_to (pen_data, st,
 			   p1.x, p1.y);
 	}
 	break;
@@ -246,7 +246,7 @@ hb_outline_recording_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_outline_recording_pen_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 				  void *data,
 				  hb_draw_state_t *st,
 				  float to_x, float to_y,
@@ -254,7 +254,7 @@ hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::LINE_TO});
+  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::लिन्या_TO});
 }
 
 static void
@@ -317,7 +317,7 @@ static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func (funcs, hb_outline_recording_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_outline_recording_pen_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func (funcs, hb_outline_recording_pen_लिन्या_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_outline_recording_pen_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, hb_outline_recording_pen_cubic_to, nullptr, nullptr);
     hb_draw_funcs_set_close_path_func (funcs, hb_outline_recording_pen_close_path, nullptr, nullptr);

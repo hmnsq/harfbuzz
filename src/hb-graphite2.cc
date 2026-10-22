@@ -217,9 +217,9 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 
 struct hb_graphite2_cluster_t {
   unsigned int base_char;
-  unsigned int num_chars;
+  unsigned int नुमेरो_chars;
   unsigned int base_glyph;
-  unsigned int num_glyphs;
+  unsigned int नुमेरो_glyphs;
   unsigned int cluster;
   hb_position_t advance;
 };
@@ -234,7 +234,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
 		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     unsigned int        नुमेरो_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
@@ -244,11 +244,11 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   int lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  for (unsigned int i = 0; i < नुमेरो_features; i++)
   {
     const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
     if (fref)
-      gr_fref_set_feature_value (fref, features[i].value, feats);
+      gr_fref_set_feature_हालागा (fref, features[i].value, feats);
   }
 
   hb_direction_t direction = buffer->props.direction;
@@ -290,18 +290,18 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
     return false;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
+  unsigned int glyph_बिलांग = gr_seg_n_slots (seg);
+  if (unlikely (!glyph_बिलांग)) {
     if (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
     return true;
   }
 
-  (void) buffer->ensure (glyph_count);
+  (void) buffer->ensure (glyph_बिलांग);
   scratch = buffer->get_scratch_buffer (&scratch_size);
   while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
-	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
+	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_बिलांग, sizeof (*scratch))) > scratch_size)
   {
     if (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
@@ -322,7 +322,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   } while (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
-  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
+  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_बिलांग);
 
 #undef ALLOCATE_ARRAY
 
@@ -362,20 +362,20 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
     pg++;
     while (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].नुमेरो_chars += clusters[ci].नुमेरो_chars;
+      clusters[ci-1].नुमेरो_glyphs += clusters[ci].नुमेरो_glyphs;
       clusters[ci-1].advance = hb_saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    if (gr_slot_can_इसिंगित_before (is) && clusters[ci].नुमेरो_chars && before >= clusters[ci].base_char + clusters[ci].नुमेरो_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].नुमेरो_chars;
       c->cluster = buffer->info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->नुमेरो_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
+      c->नुमेरो_glyphs = 0;
       if (HB_DIRECTION_IS_BACKWARD (direction))
       {
 	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
@@ -392,10 +392,10 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].नुमेरो_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    if (clusters[ci].base_char + clusters[ci].नुमेरो_chars < after + 1)
+	clusters[ci].नुमेरो_chars = after + 1 - clusters[ci].base_char;
   }
 
   if (HB_DIRECTION_IS_BACKWARD (direction))
@@ -407,7 +407,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 
   for (unsigned int i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    for (unsigned int j = 0; j < clusters[i].नुमेरो_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -418,11 +418,11 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       info->var2.u32 = i;                       // Graphite cluster index
     }
   }
-  buffer->len = glyph_count;
+  buffer->len = glyph_बिलांग;
 
   for (unsigned int i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
-			    clusters[i].base_glyph + clusters[i].num_glyphs);
+			    clusters[i].base_glyph + clusters[i].नुमेरो_glyphs);
 
   /* Positioning. */
   unsigned int curr_gr_cluster = UINT_MAX;

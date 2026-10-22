@@ -158,16 +158,16 @@ static void _collect_layout_indices (hb_subset_plan_t     *plan,
                                      hb_set_t& catch_all_record_feature_idxes, /* OUT */
                                      hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map /* OUT */)
 {
-  unsigned num_features = table.get_feature_count ();
+  unsigned नुमेरो_features = table.get_feature_बिलांग ();
   hb_vector_t<hb_tag_t> features;
-  if (!plan->check_success (features.resize (num_features))) return;
-  table.get_feature_tags (0, &num_features, features.arrayZ);
+  if (!plan->check_success (features.resize (नुमेरो_features))) return;
+  table.get_feature_tags (0, &नुमेरो_features, features.arrayZ);
   bool retain_all_features = !_filter_tag_list (&features, &plan->layout_features);
 
-  unsigned num_scripts = table.get_script_count ();
+  unsigned नुमेरो_scripts = table.get_script_बिलांग ();
   hb_vector_t<hb_tag_t> scripts;
-  if (!plan->check_success (scripts.resize (num_scripts))) return;
-  table.get_script_tags (0, &num_scripts, scripts.arrayZ);
+  if (!plan->check_success (scripts.resize (नुमेरो_scripts))) return;
+  table.get_script_tags (0, &नुमेरो_scripts, scripts.arrayZ);
   bool retain_all_scripts = !_filter_tag_list (&scripts, &plan->layout_scripts);
 
   if (!plan->check_success (!features.in_error ()) || !features
@@ -302,7 +302,7 @@ _GSUBGPOS_find_duplicate_features (const OT::GSUBGPOS &g,
   for (unsigned i : feature_indices->iter ())
   {
     hb_tag_t t = g.get_feature_tag (i);
-    if (t == HB_MAP_VALUE_INVALID) continue;
+    if (t == HB_MAP_हालागा_INVALID) continue;
     if (!unique_features.has (t))
     {
       if (unlikely (!unique_features.set (t, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
@@ -457,7 +457,7 @@ _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
 #ifndef HB_NO_VAR
   // Populate alternate parameter tags after deduplication. Before this point
   // the map contains only catch-all features and also controls their retention.
-  if (table->get_feature_variations ().record_count ())
+  if (table->get_feature_variations ().record_बिलांग ())
     for (auto p : *features_w_duplicates)
     {
       const OT::Feature& f = table->get_feature (p.first);
@@ -548,7 +548,7 @@ collect_layout_variation_indices (hb_subset_plan_t* plan)
                                                 &plan->_glyphset_gsub,
                                                 &plan->gpos_lookups);
   if (plan->normalized_coords && !plan->all_axes_pinned)
-    c.condition_values = &plan->layout_condition_values;
+    c.condition_मगा_हालागा = &plan->layout_condition_मगा_हालागा;
   gdef->collect_variation_indices (&c);
 
   if (hb_ot_layout_has_substitution (plan->source))
@@ -577,9 +577,9 @@ collect_layout_variation_indices (hb_subset_plan_t* plan)
                            plan->all_axes_pinned,
                            plan->layout_variation_idx_delta_map);
 
-  unsigned subtable_count = gdef->get_var_store ().get_sub_table_count ();
-  generate_varstore_inner_maps (varidx_set, subtable_count, plan->gdef_varstore_inner_maps);
-  plan->check_success (!plan->layout_condition_values.in_error ());
+  unsigned subtable_बिलांग = gdef->get_var_store ().get_sub_table_बिलांग ();
+  generate_varstore_inner_maps (varidx_set, subtable_बिलांग, plan->gdef_varstore_inner_maps);
+  plan->check_success (!plan->layout_condition_मगा_हालागा.in_error ());
 
   gdef.destroy ();
   gsub.destroy ();

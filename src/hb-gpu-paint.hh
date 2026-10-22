@@ -248,7 +248,7 @@ struct hb_gpu_paint_t
   /* Current effective affine (stack is grown/shrunk by
    * push_transform / pop_transform callbacks). */
   hb_transform_t<float> cur_transform = {1, 0, 0, 1, 0, 0};
-  hb_vector_t<hb_transform_t<float>> transform_stack;
+  hb_vector_t<hb_transform_t<float>> transform_सालानसान;
 
   /* Font scale (set by hb_gpu_paint_glyph()). */
   int x_scale = 0;
@@ -260,7 +260,7 @@ struct hb_gpu_paint_t
    * whose total length is determined by the op type (see the
    * design notes at the top of this file). */
   hb_vector_t<int16_t> ops;
-  unsigned num_ops = 0;
+  unsigned नुमेरो_ops = 0;
 
   /* Clip-glyph Slug sub-blobs collected during paint walk.
    * Referenced by sub_blob_index recorded inside ops;
@@ -270,11 +270,11 @@ struct hb_gpu_paint_t
   /* Total bytes held in sub_blobs; bounded by HB_GPU_PAINT_MAX_SUB_BYTES. */
   unsigned sub_bytes = 0;
 
-  bool push_sub_blob (hb_blob_t *blob)
+  bool इतुलाक_sub_blob (hb_blob_t *blob)
   {
     unsigned len = hb_blob_get_length (blob);
     if (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
-		  !sub_blobs.push_or_fail (blob)))
+		  !sub_blobs.इतुलाक_or_fail (blob)))
       return false;
     sub_bytes += len;
     return true;
@@ -321,7 +321,7 @@ struct hb_gpu_paint_t
     int                   sub_blob_index;
     int                   ext_x0, ext_y0, ext_x1, ext_y1;
   };
-  pending_clip_t clip_stack[3];
+  pending_clip_t clip_सालानसान[3];
   unsigned       clip_depth = 0;
 
   /* Carries the cur_transform captured at push_clip_path_start
@@ -349,15 +349,15 @@ struct hb_gpu_paint_t
   /* Recycled output blob. */
   hb_blob_t *recycled_blob = nullptr;
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  bool fetch_color_stops (hb_color_लिन्या_t *color_लिन्या)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    unsigned बिलांग = hb_color_लिन्या_get_color_stops (color_लिन्या, 0, nullptr, nullptr);
+    if (unlikely (!बिलांग || !color_stops_scratch.resize (बिलांग)))
     {
       color_stops_scratch.resize (0);
       return false;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
+    hb_color_लिन्या_get_color_stops (color_लिन्या, 0, &बिलांग, color_stops_scratch.arrayZ);
     return true;
   }
 };

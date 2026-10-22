@@ -15,8 +15,8 @@ struct CompositeGlyphRecord
   protected:
   enum composite_glyph_flag_t
   {
-    ARG_1_AND_2_ARE_WORDS	= 0x0001,
-    ARGS_ARE_XY_VALUES		= 0x0002,
+    ARG_1_AND_2_ARE_मगा_सालिता	= 0x0001,
+    मगा_कातविरान_ARE_XY_मगा_हालागा		= 0x0002,
     ROUND_XY_TO_GRID		= 0x0004,
     WE_HAVE_A_SCALE		= 0x0008,
     MORE_COMPONENTS		= 0x0020,
@@ -41,7 +41,7 @@ struct CompositeGlyphRecord
     if (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
 #endif
     /* arg1 and 2 are int16 */
-    if (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
+    if (flags & ARG_1_AND_2_ARE_मगा_सालिता) size += 4;
     /* arg1 and 2 are int8 */
     else size += 2;
 
@@ -65,7 +65,7 @@ struct CompositeGlyphRecord
 
   bool has_more ()          const { return   flags & MORE_COMPONENTS; }
   bool is_use_my_metrics () const { return   flags & USE_MY_METRICS; }
-  bool is_anchored ()       const { return !(flags & ARGS_ARE_XY_VALUES); }
+  bool is_anchored ()       const { return !(flags & मगा_कातविरान_ARE_XY_मगा_हालागा); }
   void get_anchor_points (unsigned int &point1, unsigned int &point2, bool extended) const
   {
     const auto *p = &StructAfter<const HBUINT8> (flags);
@@ -75,7 +75,7 @@ struct CompositeGlyphRecord
     else
 #endif
       p += HBGlyphID16::static_size;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    if (flags & ARG_1_AND_2_ARE_मगा_सालिता)
     {
       point1 = ((const HBUINT16 *) p)[0];
       point2 = ((const HBUINT16 *) p)[1];
@@ -162,7 +162,7 @@ struct CompositeGlyphRecord
 
     unsigned len = get_size (extended);
     unsigned len_before_val = (const char *)p - (const char *)this;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    if (flags & ARG_1_AND_2_ARE_मगा_सालिता)
     {
       // no overflow, copy value
       hb_memcpy (out, this, len);
@@ -190,16 +190,16 @@ struct CompositeGlyphRecord
         
         //update flags
         CompositeGlyphRecord *o = reinterpret_cast<CompositeGlyphRecord *> (out);
-        o->flags = flags | ARG_1_AND_2_ARE_WORDS;
+        o->flags = flags | ARG_1_AND_2_ARE_मगा_सालिता;
         out += len_before_val;
 
-        HBINT16 new_value;
-        new_value = new_x;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
+        HBINT16 new_हालागा;
+        new_हालागा = new_x;
+        hb_memcpy (out, &new_हालागा, HBINT16::static_size);
         out += HBINT16::static_size;
 
-        new_value = new_y;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
+        new_हालागा = new_y;
+        hb_memcpy (out, &new_हालागा, HBINT16::static_size);
         out += HBINT16::static_size;
 
         hb_memcpy (out, p+2, len - len_before_val - 2);
@@ -227,7 +227,7 @@ struct CompositeGlyphRecord
 #endif
       p += HBGlyphID16::static_size;
     int tx, ty;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    if (flags & ARG_1_AND_2_ARE_मगा_सालिता)
     {
       tx = *(const HBINT16 *) p;
       p += HBINT16::static_size;
@@ -373,7 +373,7 @@ struct CompositeGlyph
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
     if (source_bytes.length <= GlyphHeader::static_size ||
-        header.numberOfContours != -1)
+        header.नुमेरो_Of_Contours != -1)
     {
       dest_bytes = hb_bytes_t ();
       return true;

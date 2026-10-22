@@ -40,7 +40,7 @@ HB_BEGIN_DECLS
 
 
 HB_EXTERN unsigned int
-hb_face_count (hb_blob_t *blob);
+hb_face_बिलांग (hb_blob_t *blob);
 
 
 /*
@@ -118,14 +118,14 @@ hb_face_destroy (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
+		       hb_user_data_सुसि_t *सुसि_2,
 		       void *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key);
+		       hb_user_data_सुसि_t *सुसि_2);
 
 HB_EXTERN void
 hb_face_make_immutable (hb_face_t *face);
@@ -156,11 +156,11 @@ HB_EXTERN unsigned int
 hb_face_get_upem (const hb_face_t *face);
 
 HB_EXTERN void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count);
+hb_face_set_glyph_बिलांग (hb_face_t    *face,
+			 unsigned int  glyph_बिलांग);
 
 HB_EXTERN unsigned int
-hb_face_get_glyph_count (const hb_face_t *face);
+hb_face_get_glyph_बिलांग (const hb_face_t *face);
 
 
 /**
@@ -180,7 +180,7 @@ hb_face_get_glyph_count (const hb_face_t *face);
  */
 typedef unsigned int (*hb_get_table_tags_func_t) (const hb_face_t *face,
 						  unsigned int  start_offset,
-						  unsigned int *table_count, /* IN/OUT */
+						  unsigned int *table_बिलांग_2, /* IN/OUT */
 						  hb_tag_t     *table_tags /* OUT */,
 						  void         *user_data);
 
@@ -193,7 +193,7 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
 HB_EXTERN unsigned int
 hb_face_get_table_tags (const hb_face_t *face,
 			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+			unsigned int *table_बिलांग_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */);
 
 

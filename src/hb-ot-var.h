@@ -86,7 +86,7 @@ hb_ot_var_has_data (hb_face_t *face);
 
 
 HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+hb_ot_var_get_axis_बिलांग (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -100,7 +100,7 @@ typedef enum { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_हालागा= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -127,9 +127,9 @@ typedef struct hb_ot_var_axis_info_t {
   hb_tag_t			tag;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  float				min_हालागा;
+  float				default_हालागा;
+  float				max_हालागा;
   /*< private >*/
   unsigned int			reserved;
 } hb_ot_var_axis_info_t;
@@ -137,7 +137,7 @@ typedef struct hb_ot_var_axis_info_t {
 HB_EXTERN unsigned int
 hb_ot_var_get_axis_infos (hb_face_t             *face,
 			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
+			  unsigned int          *axes_बिलांग /* IN/OUT */,
 			  hb_ot_var_axis_info_t *axes_array /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -151,7 +151,7 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  */
 
 HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+hb_ot_var_get_named_instance_बिलांग (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,

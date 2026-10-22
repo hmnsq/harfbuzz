@@ -64,7 +64,7 @@ shape (void *shape_plan,
        font_t *font,
        buffer_t *buffer,
        const feature_t *features,
-       uint32_t num_features)
+       uint32_t नुमेरो_features)
 {
   face_t *face = font_get_face (font);
   gr_face *grface = (gr_face *) shape_plan;
@@ -111,18 +111,18 @@ shape (void *shape_plan,
   if (!seg)
     return false;
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
+  unsigned int glyph_बिलांग = gr_seg_n_slots (seg);
 
   struct cluster_t {
     unsigned int base_char;
-    unsigned int num_chars;
+    unsigned int नुमेरो_chars;
     unsigned int base_glyph;
-    unsigned int num_glyphs;
+    unsigned int नुमेरो_glyphs;
     unsigned int cluster;
     int32_t advance;
   };
 
-  length = glyph_count;
+  length = glyph_बिलांग;
   if (!buffer_contents_realloc (&contents, length))
     return false;
   cluster_t *clusters = (cluster_t *) malloc (length * sizeof (cluster_t));
@@ -159,20 +159,20 @@ shape (void *shape_plan,
     pg++;
     while (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].नुमेरो_chars += clusters[ci].नुमेरो_chars;
+      clusters[ci-1].नुमेरो_glyphs += clusters[ci].नुमेरो_glyphs;
       clusters[ci-1].advance = saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    if (gr_slot_can_इसिंगित_before (is) && clusters[ci].नुमेरो_chars && before >= clusters[ci].base_char + clusters[ci].नुमेरो_chars)
     {
       cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].नुमेरो_chars;
       c->cluster = contents.info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->नुमेरो_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
+      c->नुमेरो_glyphs = 0;
       if (DIRECTION_IS_BACKWARD (direction))
       {
 	c->advance = clamp_position ((double) curradv - (double) (gr_slot_origin_X(is) * xscale));
@@ -188,10 +188,10 @@ shape (void *shape_plan,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].नुमेरो_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    if (clusters[ci].base_char + clusters[ci].नुमेरो_chars < after + 1)
+	clusters[ci].नुमेरो_chars = after + 1 - clusters[ci].base_char;
   }
 
   if (DIRECTION_IS_BACKWARD (direction))
@@ -203,7 +203,7 @@ shape (void *shape_plan,
 
   for (unsigned int i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    for (unsigned int j = 0; j < clusters[i].नुमेरो_glyphs; ++j)
     {
       glyph_info_t *info = &contents.info[clusters[i].base_glyph + j];
       info->codepoint = gids[clusters[i].base_glyph + j];
@@ -211,7 +211,7 @@ shape (void *shape_plan,
       info->var1 = (unsigned) clusters[i].advance;     // all glyphs in the cluster get the same advance
     }
   }
-  contents.length = glyph_count;
+  contents.length = glyph_बिलांग;
 
   /* Positioning. */
   unsigned int currclus = 0xFFFFFFFF;
@@ -263,7 +263,7 @@ shape (void *shape_plan,
   free (clusters);
   free (gids);
 
-  bool ret = glyph_count;
+  bool ret = glyph_बिलांग;
 
   return ret;
 }

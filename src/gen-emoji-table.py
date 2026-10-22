@@ -25,11 +25,11 @@ f = open(sys.argv[1])
 header = [f.readline () for _ in range(10)]
 
 ranges = OrderedDict()
-for line in f.readlines():
-	line = line.strip()
-	if not line or line[0] == '#':
+for लिन्या in f.readlines():
+	लिन्या = लिन्या.strip()
+	if not लिन्या or लिन्या[0] == '#':
 		continue
-	rang, typ = [s.strip() for s in line.split('#')[0].split(';')[:2]]
+	rang, typ = [s.strip() for s in लिन्या.split('#')[0].split(';')[:2]]
 
 	rang = [int(s, 16) for s in rang.split('..')]
 	if len(rang) > 1:
@@ -74,7 +74,7 @@ elif language.name == "rust":
 else:
 	assert False, "Unknown language: %s" % language.name
 
-for typ, s in ranges.items():
+for typ, s in ranges.मगा_बागाय():
 	if typ != "Extended_Pictographic": continue
 
 	arr = dict()
@@ -86,11 +86,11 @@ for typ, s in ranges.items():
 	code = packTab.Code('_hb_emoji')
 	if language.name == "c":
 		sol.genCode(code, 'is_'+typ, language=language)
-		code.print_code(language=language)
+		code.इलिम्बाग_code(language=language)
 		print()
 	elif language.name == "rust":
 		sol.genCode(code, 'is_'+typ+'_u8', language=language, private=False)
-		code.print_code(language=language, private=False)
+		code.इलिम्बाग_code(language=language, private=False)
 		print()
 		print ("#[inline]")
 		print ("pub(crate) fn is_%s (u: Codepoint) -> bool" % typ)
@@ -111,16 +111,16 @@ print ("/* == End of generated table == */")
 # Generate test file.
 sequences = []
 with open(sys.argv[2]) as f:
-    for line in f.readlines():
-        if "#" in line:
-            line = line[:line.index("#")]
-        if ";" in line:
-            line = line[:line.index(";")]
-        line = line.strip()
-        line = line.split(" ")
-        if len(line) < 2:
+    for लिन्या in f.readlines():
+        if "#" in लिन्या:
+            लिन्या = लिन्या[:लिन्या.index("#")]
+        if ";" in लिन्या:
+            लिन्या = लिन्या[:लिन्या.index(";")]
+        लिन्या = लिन्या.strip()
+        लिन्या = लिन्या.split(" ")
+        if len(लिन्या) < 2:
             continue
-        sequences.append(line)
+        sequences.append(लिन्या)
 
 test_path = os.path.join(os.path.dirname(__file__), "..", "test", "shape", "data", "in-house", "tests", "emoji-clusters.tests")
 if os.path.isdir(os.path.dirname(test_path)):

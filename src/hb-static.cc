@@ -70,16 +70,16 @@ const unsigned char *endchar_str = static_endchar_str;
 /* hb_face_t */
 
 static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+load_नुमेरो_glyphs_from_maxp (const hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  return face->table.maxp->get_नुमेरो_glyphs ();
 }
 
 unsigned int
-hb_face_t::load_num_glyphs () const
+hb_face_t::load_नुमेरो_glyphs () const
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  नुमेरो_glyphs = load_नुमेरो_glyphs_from_maxp (this);
+  return नुमेरो_glyphs;
 }
 
 unsigned int

@@ -91,9 +91,9 @@ test_null_condition ()
 static void
 test_lookup_condition_sharing ()
 {
-  const unsigned feature_count = 10922, lookup_count = 402;
-  const unsigned table_offset = 12 + 6 * feature_count;
-  const unsigned condition_offset = table_offset + 20 + 2 * lookup_count;
+  const unsigned feature_बिलांग_2 = 10922, lookup_बिलांग = 402;
+  const unsigned table_offset = 12 + 6 * feature_बिलांग_2;
+  const unsigned condition_offset = table_offset + 20 + 2 * lookup_बिलांग;
   hb_vector_t<char> data;
   hb_always_assert (data.resize (condition_offset + 8));
   hb_memset (data.arrayZ, 0, data.length);
@@ -108,8 +108,8 @@ test_lookup_condition_sharing ()
     put16 (offset + 2, value);
   };
   put32 (0, 0x00010001);
-  put32 (8, feature_count);
-  for (unsigned i = 0; i < feature_count; i++)
+  put32 (8, feature_बिलांग_2);
+  for (unsigned i = 0; i < feature_बिलांग_2; i++)
   {
     put16 (12 + 6 * i, i);
     put32 (14 + 6 * i, table_offset);
@@ -118,8 +118,8 @@ test_lookup_condition_sharing ()
   put32 (table_offset + 6, 1); /* LookupConditionRecord count */
   put32 (table_offset + 10, condition_offset - table_offset);
   put32 (table_offset + 14, 18); /* LookupIndexList offset */
-  put16 (table_offset + 18, lookup_count);
-  for (unsigned i = 0; i < lookup_count; i++)
+  put16 (table_offset + 18, lookup_बिलांग);
+  for (unsigned i = 0; i < lookup_बिलांग; i++)
     put16 (table_offset + 20 + 2 * i, i);
   put16 (condition_offset, 2); /* Constant true ConditionValue */
   put16 (condition_offset + 2, 1);
@@ -131,13 +131,13 @@ test_lookup_condition_sharing ()
   hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
   hb_always_assert (state.length == 1 && state[0] == condition_offset);
 
-  for (unsigned feature_index : {0u, feature_count - 1})
+  for (unsigned feature_index : {0u, feature_बिलांग_2 - 1})
   {
     hb_set_t lookups;
     hb_always_assert (variations.get_lookup_variations (
         feature_index, Null (OT::Feature), state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == lookup_count);
-    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_count - 1);
+    hb_always_assert (lookups.get_population () == lookup_बिलांग);
+    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_बिलांग - 1);
   }
 
   /* Null conditions need no state, even when thousands of records use them. */
@@ -148,7 +148,7 @@ test_lookup_condition_sharing ()
   hb_set_t lookups;
   hb_always_assert (variations.get_lookup_variations (
       0, Null (OT::Feature), state.as_sorted_array (), &lookups));
-  hb_always_assert (lookups.get_population () == lookup_count);
+  hb_always_assert (lookups.get_population () == lookup_बिलांग);
 
   put32 (table_offset + 10, condition_offset - table_offset);
   state.set_error (); /* Simulate failure allocating the condition key. */
@@ -184,8 +184,8 @@ test_lookup_condition_resolution ()
     OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array (coords));
     hb_vector_t<unsigned> state;
     hb_always_assert (variations.collect_lookup_conditions (coords, 2, &instancer, &state));
-    unsigned condition_count = !!(mask & 1) + !!(mask & 2);
-    hb_always_assert (state.length == condition_count);
+    unsigned condition_बिलांग = !!(mask & 1) + !!(mask & 2);
+    hb_always_assert (state.length == condition_बिलांग);
     if (mask == 3)
       hb_always_assert (state[0] == 92 && state[1] == 100);
 
@@ -280,13 +280,13 @@ test_medium_chain_rule ()
 {
   static const char data[] = {
     0, 1, 0, 0, 5,             /* backtrack */
-    0, 2, 0, 0, 6,             /* input */
+    0, 2, 0, 0, 6,             /*पासोक*/
     0, 1, 0, 0, 7,             /* lookahead */
     0, 1, 0, 0, 0, 2,          /* LookupRecord */
   };
   static const char expected[] = {
     0, 1, 1, 0, 1,             /* backtrack */
-    0, 2, 1, 0, 2,             /* input */
+    0, 2, 1, 0, 2,             /*पासोक*/
     0, 1, 1, 0, 3,             /* lookahead */
     0, 1, 0, 0, 0, 3,          /* LookupRecord */
   };
@@ -312,20 +312,20 @@ test_medium_chain_rule ()
 }
 
 static void
-test_device_only_value ()
+test_device_only_हालागा ()
 {
   using namespace OT::Layout::GPOS_impl;
   static const char data[] = {
     0, 2,                      /* Device offset */
     0, 0, 0, 0, (char) 0x80, 0, /* VariationIndex 0 */
   };
-  const auto *base = reinterpret_cast<const ValueBase *> (data);
-  const auto *values = reinterpret_cast<const Value *> (data);
-  for (unsigned device = ValueFormat::xPlaDevice;
-       device <= ValueFormat::yAdvDevice; device <<= 1)
+  const auto *base = reinterpret_cast<const हालागा_Base *> (data);
+  const auto *values = reinterpret_cast<const हालागा *> (data);
+  for (unsigned device = हालागा_Format::xPlaDevice;
+       device <= हालागा_Format::yAdvDevice; device <<= 1)
     for (bool partial : {false, true})
     {
-      ValueFormat format;
+      हालागा_Format format;
       format = device;
       hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> mapping;
       mapping.set (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
@@ -335,7 +335,7 @@ test_device_only_value ()
       char buf[32];
       hb_serialize_context_t s (buf, sizeof (buf));
       s.start_serialize ();
-      format.copy_values (&s, new_format, base, values, &mapping);
+      format.copy_मगा_हालागा (&s, new_format, base, values, &mapping);
       s.end_serialize ();
       hb_bytes_t bytes = s.copy_bytes ();
       hb_always_assert (!s.in_error ());
@@ -372,7 +372,7 @@ main (int argc, char **argv)
   test_feature_substitution_params_sanitize ();
   test_medium_rule ();
   test_medium_chain_rule ();
-  test_device_only_value ();
+  test_device_only_हालागा ();
   test_failed_class_mapping ();
 
   char buf[16384];

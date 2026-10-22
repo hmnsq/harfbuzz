@@ -350,7 +350,7 @@ hb_ot_get_nominal_glyph (hb_font_t *font HB_UNUSED,
 static unsigned int
 hb_ot_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
 			  void *font_data,
-			  unsigned int count,
+			  unsigned int बिलांग,
 			  const hb_codepoint_t *first_unicode,
 			  unsigned int unicode_stride,
 			  hb_codepoint_t *first_glyph,
@@ -359,7 +359,7 @@ hb_ot_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
 {
   const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
   const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_nominal_glyphs (count,
+  return ot_face->cmap->get_nominal_glyphs (बिलांग,
 					    first_unicode, unicode_stride,
 					    first_glyph, glyph_stride);
 }
@@ -380,7 +380,7 @@ hb_ot_get_variation_glyph (hb_font_t *font HB_UNUSED,
 
 static void
 hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
+			    unsigned बिलांग,
 			    const hb_codepoint_t *first_glyph,
 			    unsigned glyph_stride,
 			    hb_position_t *first_advance,
@@ -397,7 +397,7 @@ hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
   {
     hb_position_t advance = font->face->get_upem () / 2;
     advance = font->em_scale_x (advance);
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       *first_advance = advance;
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -413,7 +413,7 @@ hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
   {
 #endif
     // Just plain htmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       *first_advance = font->em_scale_x (hmtx.get_advance_without_var_unscaled (*first_glyph));
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
@@ -440,7 +440,7 @@ hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
     const OT::ItemVariationStore &varStore = &HVAR + HVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->h.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_position_t v;
       unsigned cv;
@@ -473,7 +473,7 @@ hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_position_t v;
       unsigned cv;
@@ -504,7 +504,7 @@ hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
 #ifndef HB_NO_VERTICAL
 static void
 hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
+			    unsigned बिलांग,
 			    const hb_codepoint_t *first_glyph,
 			    unsigned glyph_stride,
 			    hb_position_t *first_advance,
@@ -522,7 +522,7 @@ hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
     hb_font_extents_t font_extents;
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t advance = font_extents.descender - font_extents.ascender;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       *first_advance = advance;
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -538,7 +538,7 @@ hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
   {
 #endif
     // Just plain vtmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       *first_advance = font->em_scale_y (- (int) vmtx.get_advance_without_var_unscaled (*first_glyph));
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
@@ -565,7 +565,7 @@ hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
     const OT::ItemVariationStore &varStore = &VVAR + VVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->v.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_position_t v;
       unsigned cv;
@@ -598,7 +598,7 @@ hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_position_t v;
       unsigned cv;
@@ -632,7 +632,7 @@ HB_HOT
 static hb_bool_t
 hb_ot_get_glyph_v_origins (hb_font_t *font,
 			   void *font_data,
-			   unsigned int count,
+			   unsigned int बिलांग,
 			   const hb_codepoint_t *first_glyph,
 			   unsigned glyph_stride,
 			   hb_position_t *first_x,
@@ -647,10 +647,10 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
   ot_font->check_serial (font);
 
   /* First, set all the x values to half the advance width. */
-  font->get_glyph_h_advances (count,
+  font->get_glyph_h_advances (बिलांग,
 			      first_glyph, glyph_stride,
 			      first_x, x_stride);
-  for (unsigned i = 0; i < count; i++)
+  for (unsigned i = 0; i < बिलांग; i++)
   {
     *first_x /= 2;
     first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
@@ -671,7 +671,7 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
     if (!font->has_nonzero_coords)
 #endif
     {
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	hb_position_t origin;
 	unsigned cv;
@@ -695,7 +695,7 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
       const OT::VVAR &VVAR = *ot_face->vmtx->var_table;
       const auto &varStore = &VVAR + VVAR.varStore;
       auto *varStore_cache = ot_font->v_origin.acquire_varStore_cache (varStore);
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	hb_position_t origin;
 	unsigned cv;
@@ -705,7 +705,7 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
 	{
 	  origin = font->em_scalef_y (VORG.get_y_origin (*first_glyph) +
 				      VVAR.get_vorg_delta_unscaled (*first_glyph,
-								    font->coords, font->num_coords,
+								    font->coords, font->नुमेरो_coords,
 								    varStore_cache));
 	  origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
 	}
@@ -741,7 +741,7 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
 					nullptr;
 #endif
 
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_position_t origin;
       unsigned cv;
@@ -776,7 +776,7 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t font_advance = font_extents.ascender - font_extents.descender;
 
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_position_t origin;
       unsigned cv;
@@ -879,7 +879,7 @@ hb_ot_get_font_h_extents (hb_font_t *font,
 {
   return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER, &metrics->ascender) &&
 	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP, &metrics->line_gap);
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_लिन्या_GAP, &metrics->लिन्या_gap);
 }
 
 #ifndef HB_NO_VERTICAL
@@ -891,7 +891,7 @@ hb_ot_get_font_v_extents (hb_font_t *font,
 {
   return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_ASCENDER, &metrics->ascender) &&
 	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_LINE_GAP, &metrics->line_gap);
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_लिन्या_GAP, &metrics->लिन्या_gap);
 }
 #endif
 
@@ -908,7 +908,7 @@ hb_ot_draw_glyph_or_fail (hb_font_t *font,
 
   OT::hb_scalar_cache_t *gvar_cache = nullptr;
 #ifndef HB_NO_VAR
-  if (font->num_coords)
+  if (font->नुमेरो_coords)
   {
     ot_font->check_serial (font);
     gvar_cache = ot_font->draw.acquire_gvar_cache (*ot_font->ot_face->gvar);

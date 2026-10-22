@@ -59,13 +59,13 @@ static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
 {
   static const char ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
+    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_बिलांग, sizeof (const char *));
     if (unlikely (!shaper_list))
       return nullptr;
 
     const hb_shaper_entry_t *shapers = _hb_shapers_get ();
     unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    for (i = 0; i < HB_SHAPERS_बिलांग; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
@@ -127,7 +127,7 @@ hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
+	       unsigned int        नुमेरो_features,
 	       const char * const *shaper_list)
 {
   if (unlikely (!buffer->len))
@@ -143,11 +143,11 @@ hb_shape_full (hb_font_t          *font,
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+							      features, नुमेरो_features,
+							      font->coords, font->has_nonzero_coords ? font->नुमेरो_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, नुमेरो_features);
 
   hb_shape_plan_destroy (shape_plan);
 
@@ -158,7 +158,7 @@ hb_shape_full (hb_font_t          *font,
 	    && !buffer->verify (text_buffer,
 				font,
 				features,
-				num_features,
+				नुमेरो_features,
 				shaper_list))
       res = false;
     hb_buffer_destroy (text_buffer);
@@ -189,9 +189,9 @@ void
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
 	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  unsigned int         नुमेरो_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_full (font, buffer, features, नुमेरो_features, nullptr);
 }
 
 
@@ -203,12 +203,12 @@ buffer_advance (hb_buffer_t *buffer)
 {
   float a = 0;
   auto *pos = buffer->pos;
-  unsigned count = buffer->len;
+  unsigned बिलांग = buffer->len;
   if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
       a += pos[i].x_advance;
   else
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
       a += pos[i].y_advance;
   return a;
 }
@@ -259,13 +259,13 @@ hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
 		  const hb_feature_t *features,
-		  unsigned int        num_features,
+		  unsigned int        नुमेरो_features,
 		  const char * const *shaper_list,
 		  float               min_target_advance,
 		  float               max_target_advance,
 		  float              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  float              *var_हालागा /* OUT */)
 {
   // TODO Negative font scales?
 
@@ -273,9 +273,9 @@ hb_shape_justify (hb_font_t          *font,
   if (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
+    *var_हालागा = 0.0f;
     return hb_shape_full (font, buffer,
-			  features, num_features,
+			  features, नुमेरो_features,
 			  shaper_list);
   }
 
@@ -302,9 +302,9 @@ hb_shape_justify (hb_font_t          *font,
   if (!tag)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
+    *var_हालागा = 0.0f;
     if (hb_shape_full (font, buffer,
-		       features, num_features,
+		       features, नुमेरो_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
@@ -326,9 +326,9 @@ hb_shape_justify (hb_font_t          *font,
   /* If default advance was not provided to us, calculate it. */
   if (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
+    hb_font_set_variation (font, tag, axis_info.default_हालागा);
     if (!hb_shape_full (font, buffer,
-			features, num_features,
+			features, नुमेरो_features,
 			shaper_list))
       return false;
     *advance = buffer_advance (buffer);
@@ -340,7 +340,7 @@ hb_shape_justify (hb_font_t          *font,
   if (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
+    *var_हालागा = 0.0f;
     return true;
   }
 
@@ -350,15 +350,15 @@ hb_shape_justify (hb_font_t          *font,
   {
     /* Need to expand. */
     ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    a = (double) axis_info.default_हालागा;
+    b = (double) axis_info.max_हालागा;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) b);
     reset_buffer (buffer, text);
     if (!hb_shape_full (font, buffer,
-			features, num_features,
+			features, नुमेरो_features,
 			shaper_list))
       return false;
     yb = (double) buffer_advance (buffer);
@@ -366,7 +366,7 @@ hb_shape_justify (hb_font_t          *font,
      * there's nothing to solve for. Just return it. */
     if (yb <= (double) max_target_advance)
     {
-      *var_value = (float) b;
+      *var_हालागा = (float) b;
       *advance = (float) yb;
       return true;
     }
@@ -375,15 +375,15 @@ hb_shape_justify (hb_font_t          *font,
   {
     /* Need to shrink. */
     yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    a = (double) axis_info.min_हालागा;
+    b = (double) axis_info.default_हालागा;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) a);
     reset_buffer (buffer, text);
     if (!hb_shape_full (font, buffer,
-			features, num_features,
+			features, नुमेरो_features,
 			shaper_list))
       return false;
     ya = (double) buffer_advance (buffer);
@@ -391,7 +391,7 @@ hb_shape_justify (hb_font_t          *font,
      * there's nothing to solve for. Just return it. */
     if (ya >= (double) min_target_advance)
     {
-      *var_value = (float) a;
+      *var_हालागा = (float) a;
       *advance = (float) ya;
       return true;
     }
@@ -408,7 +408,7 @@ hb_shape_justify (hb_font_t          *font,
     hb_font_set_variation (font, tag, (float) x);
     reset_buffer (buffer, text);
     if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+				  features, नुमेरो_features,
 				  shaper_list)))
     {
       failed = true;
@@ -416,7 +416,7 @@ hb_shape_justify (hb_font_t          *font,
     }
 
     double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+    DEBUG_मेनसाहे (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
 	       (double) min_target_advance, (double) max_target_advance);
     return w;
@@ -432,7 +432,7 @@ hb_shape_justify (hb_font_t          *font,
   if (failed)
     return false;
 
-  *var_value = (float) itp;
+  *var_हालागा = (float) itp;
   *advance = (float) y;
 
   return true;

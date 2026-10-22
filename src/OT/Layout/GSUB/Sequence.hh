@@ -41,11 +41,11 @@ struct Sequence
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = substitute.len;
+    unsigned int बिलांग = substitute.len;
 
     /* Special-case to make it in-place and not consider this
      * as a "multiplied" substitution. */
-    if (unlikely (count == 1))
+    if (unlikely (बिलांग == 1))
     {
       if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
@@ -68,7 +68,7 @@ struct Sequence
     }
     /* Spec disallows this, but Uniscribe allows it.
      * https://github.com/harfbuzz/harfbuzz/issues/253 */
-    else if (unlikely (count == 0))
+    else if (unlikely (बिलांग == 0))
     {
       if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
@@ -103,7 +103,7 @@ struct Sequence
                          HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH : 0;
     unsigned lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
 
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       /* If is attached to a ligature, don't disturb that.
        * https://github.com/harfbuzz/harfbuzz/issues/3069 */
@@ -120,7 +120,7 @@ struct Sequence
       char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
       char *p = buf;
 
-      for (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
+      for (unsigned i = c->buffer->idx - बिलांग; i < c->buffer->idx; i++)
       {
 	if (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
 	  *p++ = ',';

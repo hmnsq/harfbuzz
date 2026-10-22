@@ -76,7 +76,7 @@ enum {
   _KHMER_BLWS,
   _KHMER_PSTS,
 
-  KHMER_NUM_FEATURES,
+  KHMER_नुमेरो_FEATURES,
   KHMER_BASIC_FEATURES = _KHMER_PRES, /* Don't forget to update this! */
 };
 
@@ -127,7 +127,7 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
+  for (; i < KHMER_नुमेरो_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 }
 
@@ -147,7 +147,7 @@ override_features_khmer (hb_ot_shape_planner_t *plan)
 
 struct khmer_shape_plan_t
 {
-  hb_mask_t mask_array[KHMER_NUM_FEATURES];
+  hb_mask_t mask_array[KHMER_नुमेरो_FEATURES];
 };
 
 static void *
@@ -180,9 +180,9 @@ setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
     set_khmer_properties (info[i]);
 }
 
@@ -221,7 +221,7 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
       info[i].mask  |= mask;
   }
 
-  unsigned int num_coengs = 0;
+  unsigned int नुमेरो_coengs = 0;
   for (unsigned int i = start + 1; i < end; i++)
   {
     /* """
@@ -236,9 +236,9 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    if (info[i].khmer_category() == K_Cat(H) && नुमेरो_coengs <= 2 && i + 1 < end)
     {
-      num_coengs++;
+      नुमेरो_coengs++;
 
       if (info[i + 1].khmer_category() == K_Cat(Ra))
       {
@@ -263,7 +263,7 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	  for (unsigned int j = i + 2; j < end; j++)
 	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
 
-	num_coengs = 2; /* Done. */
+	नुमेरो_coengs = 2; /* Done. */
       }
     }
 
@@ -306,7 +306,7 @@ reorder_khmer (const hb_ot_shape_plan_t *plan,
   bool ret = false;
   if (buffer->message (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    if (hb_syllabic_इसिंगित_dotted_circles (font, buffer,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
 					   (unsigned) -1))

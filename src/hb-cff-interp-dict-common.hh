@@ -39,40 +39,40 @@ struct dict_val_t : op_str_t
   void fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+typedef dict_val_t नुमेरो_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> struct dict_मगा_हालागा_t : parsed_मगा_हालागा_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+struct इताअस_dict_मगा_हालागा_t : dict_मगा_हालागा_t<OPSTR>
 {
   void init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_मगा_हालागा_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  void fini () { dict_मगा_हालागा_t<OPSTR>::fini (); }
 
   int  charStringsOffset;
   int  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+struct dict_opset_t : opset_t<नुमेरो_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  static void process_op (op_code_t op, interp_env_t<नुमेरो_t>& env)
   {
     switch (op) {
       case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
+	env.arg_सालानसान.इतुलाक_longint_from_substr (env.str_ref);
 	break;
 
       case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
+	env.arg_सालानसान.इतुलाक_real (parse_bcd (env.str_ref));
 	break;
 
       default:
-	opset_t<number_t>::process_op (op, env);
+	opset_t<नुमेरो_t>::process_op (op, env);
 	break;
     }
   }
@@ -86,7 +86,7 @@ struct dict_opset_t : opset_t<number_t>
 
     char buf[32] = {0};
     unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    for (unsigned i = 0, बिलांग = 0; बिलांग < ARRAY_LENGTH (buf); ++i, ++बिलांग)
     {
       unsigned nibble;
       if (!(i & 1))
@@ -105,18 +105,18 @@ struct dict_opset_t : opset_t<number_t>
       {
 	const char *p = buf;
 	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
+	if (unlikely (!hb_parse_double (&p, p + बिलांग, &pv, true/* whole buffer */)))
 	  break;
 	return pv;
       }
       else
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
+	buf[बिलांग] = "0123456789.EE?-?"[nibble];
 	if (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++बिलांग;
+	  if (unlikely (बिलांग == ARRAY_LENGTH (buf))) break;
+	  buf[बिलांग] = '-';
 	}
       }
     }
@@ -129,7 +129,7 @@ struct dict_opset_t : opset_t<number_t>
   {
     switch (op)
     {
-      case OpCode_BlueValues:
+      case Op_Code_Blue_मगा_हालागा:
       case OpCode_OtherBlues:
       case OpCode_FamilyBlues:
       case OpCode_FamilyOtherBlues:
@@ -151,21 +151,21 @@ struct dict_opset_t : opset_t<number_t>
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+struct इताअस_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  static void process_op (op_code_t op, interp_env_t<नुमेरो_t>& env, इताअस_dict_मगा_हालागा_t<VAL> & dictval)
   {
     switch (op) {
       case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
-	env.clear_args ();
+	dictval.charStringsOffset = env.arg_सालानसान.आलिसिन_int ();
+	env.clear_मगा_कातविरान ();
 	break;
       case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
-	env.clear_args ();
+	dictval.FDArrayOffset = env.arg_सालानसान.आलिसिन_int ();
+	env.clear_मगा_कातविरान ();
 	break;
       case OpCode_FontMatrix:
-	env.clear_args ();
+	env.clear_मगा_कातविरान ();
 	break;
       default:
 	dict_opset_t::process_op (op, env);
@@ -174,7 +174,7 @@ struct top_dict_opset_t : dict_opset_t
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
+template <typename OPSET, typename PARAM, typename ENV=नुमेरो_interp_env_t>
 struct dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}

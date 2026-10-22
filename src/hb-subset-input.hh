@@ -24,8 +24,8 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ifndef HB_SUBSET_पासोक_HH
+#define HB_SUBSET_पासोक_HH
 
 
 #include "hb.hh"
@@ -81,11 +81,11 @@ typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+struct hb_subset_पासोक_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_पासोक_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_पासोक_t ()
   {
     sets.~sets_t ();
 
@@ -125,7 +125,7 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  inline unsigned नुमेरो_sets () const
   {
     return sizeof (set_ptrs) / sizeof (hb_set_t*);
   }
@@ -137,7 +137,7 @@ struct hb_subset_input_t
 
   bool in_error () const
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    for (unsigned i = 0; i < नुमेरो_sets (); i++)
     {
       if (unlikely (set_ptrs[i]->in_error ()))
         return true;

@@ -124,9 +124,9 @@ struct hb_vector_t
     {
       if (unlikely (!alloc (length + hb_len (iter), exact)))
 	return;
-      unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
-	push_has_room (*iter++);
+      unsigned बिलांग = hb_len (iter);
+      for (unsigned i = 0; i < बिलांग; i++)
+	इतुलाक_has_room (*iter++);
     }
     while (iter)
     {
@@ -134,7 +134,7 @@ struct hb_vector_t
         return;
       unsigned room = allocated - length;
       for (unsigned i = 0; i < room && iter; i++)
-	push_has_room (*iter++);
+	इतुलाक_has_room (*iter++);
     }
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -319,9 +319,9 @@ struct hb_vector_t
       return std::addressof (Crap (Type));
     return std::addressof (arrayZ[length - 1]);
   }
-  template <typename... Args>
+  template <typename... मगा_कातविरान_2>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  Type *push (Args&&... args)
+  Type *push (मगा_कातविरान_2&&... मगा_कातविरान)
   {
     if (unlikely ((int) length >= allocated))
     {
@@ -330,12 +330,12 @@ struct hb_vector_t
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      if (unlikely (in_storage (मगा_कातविरान...)))
       {
-	Type copy (std::forward<Args> (args)...);
+	Type copy (std::forward<मगा_कातविरान_2> (मगा_कातविरान)...);
 	if (unlikely (!alloc (length + 1)))
 	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	return इतुलाक_has_room (std::move (copy));
       }
       if (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
@@ -344,21 +344,21 @@ struct hb_vector_t
 	return std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    return इतुलाक_has_room (std::forward<मगा_कातविरान_2> (मगा_कातविरान)...);
   }
-  template <typename... Args>
+  template <typename... मगा_कातविरान_2>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool push_or_fail (Args&&... args)
+  bool इतुलाक_or_fail (मगा_कातविरान_2&&... मगा_कातविरान)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    return push (std::forward<मगा_कातविरान_2> (मगा_कातविरान)...) != std::addressof (Crap (Type));
   }
-  template <typename... Args>
+  template <typename... मगा_कातविरान_2>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  Type *push_has_room (Args&&... args)
+  Type *इतुलाक_has_room (मगा_कातविरान_2&&... मगा_कातविरान)
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    return new (p) Type (std::forward<मगा_कातविरान_2> (मगा_कातविरान)...);
   }
 
   bool in_storage () const { return false; }
@@ -536,9 +536,9 @@ struct hb_vector_t
     assert (size <= length);
     if (!hb_is_trivially_destructible(Type))
     {
-      unsigned count = length - size;
+      unsigned बिलांग = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      while (बिलांग--)
         (--p)->~Type ();
     }
     length = size;
@@ -703,7 +703,7 @@ struct hb_vector_t
     return resize_full (size_, true, true);
   }
 
-  Type pop ()
+  Type आलिसिन ()
   {
     if (!length) return Null (Type);
     Type v (std::move (arrayZ[length - 1]));

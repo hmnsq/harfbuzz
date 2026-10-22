@@ -45,19 +45,19 @@ namespace OT {
 template <typename KernSubTableHeader>
 struct KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
   {
-    hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
-    hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
-    hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
-    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
+    hb_array_t<const FWORD> kern_हालागा = kern_हालागा_Z.as_array (kern_हालागा_बिलांग);
+    hb_array_t<const HBUINT8> कालिवा_Class = StructAfter<const UnsizedArrayOf<HBUINT8>> (kern_हालागा).as_array (glyph_बिलांग_2);
+    hb_array_t<const HBUINT8> कानान_Class = StructAfter<const UnsizedArrayOf<HBUINT8>> (कालिवा_Class).as_array (glyph_बिलांग_2);
+    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (कानान_Class).as_array (कालिवा_Class_बिलांग * कानान_Class_बिलांग);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
+    unsigned int कालिवा_C = कालिवा_Class[left];
+    unsigned int कानान_C = कानान_Class[कानान];
+    if (unlikely (कालिवा_C >= कालिवा_Class_बिलांग || कानान_C >= कानान_Class_बिलांग))
       return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned int i = कालिवा_C * कानान_Class_बिलांग + कानान_C;
+    return kern_हालागा[kernIndex[i]];
   }
 
   bool apply (AAT::hb_aat_apply_context_t *c) const
@@ -81,46 +81,46 @@ struct KernSubTableFormat3
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
-				  glyphCount * 2 +
-				  leftClassCount * rightClassCount));
+		  c->check_range (kern_हालागा_Z,
+				  kern_हालागा_बिलांग * sizeof (FWORD) +
+				  glyph_बिलांग_2 * 2 +
+				  कालिवा_Class_बिलांग * कानान_Class_बिलांग));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &कालिवा_set, set_t &कानान_set, unsigned नुमेरो_glyphs) const
   {
-    if (likely (glyphCount))
+    if (likely (glyph_बिलांग_2))
     {
-      left_set.add_range (0, num_glyphs - 1);
-      right_set.add_range (0, num_glyphs - 1);
+      कालिवा_set.add_range (0, नुमेरो_glyphs - 1);
+      कानान_set.add_range (0, नुमेरो_glyphs - 1);
     }
   }
 
   protected:
   KernSubTableHeader
 		header;
-  HBUINT16	glyphCount;	/* The number of glyphs in this font. */
-  HBUINT8	kernValueCount;	/* The number of kerning values. */
-  HBUINT8	leftClassCount;	/* The number of left-hand classes. */
-  HBUINT8	rightClassCount;/* The number of right-hand classes. */
+  HBUINT16	glyph_बिलांग_2;	/* The number of glyphs in this font. */
+  HBUINT8	kern_हालागा_बिलांग;	/* The number of kerning values. */
+  HBUINT8	कालिवा_Class_बिलांग;	/* The number of left-hand classes. */
+  HBUINT8	कानान_Class_बिलांग;/* The number of right-hand classes. */
   HBUINT8	flags;		/* Set to zero (reserved for future use). */
   UnsizedArrayOf<FWORD>
-		kernValueZ;	/* The kerning values.
+		kern_हालागा_Z;	/* The kerning values.
 				 * Length kernValueCount. */
 #if 0
   UnsizedArrayOf<HBUINT8>
-		leftClass;	/* The left-hand classes.
+		कालिवा_Class;	/* The left-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>
-		rightClass;	/* The right-hand classes.
+		कानान_Class;	/* The right-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>kernIndex;
 				/* The indices into the kernValue array.
 				 * Length leftClassCount * rightClassCount */
 #endif
   public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kernValueZ);
+  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kern_हालागा_Z);
 };
 
 template <typename KernSubTableHeader>
@@ -129,11 +129,11 @@ struct KernSubTable
   size_t get_size () const { return u.header.length; }
   unsigned int get_type () const { return u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  int get_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
   {
     switch (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
+    case 0: hb_barrier (); return u.format0.get_kerning (left, कानान);
     default:return 0;
     }
   }
@@ -152,22 +152,22 @@ struct KernSubTable
 #ifndef HB_NO_AAT_SHAPE
     case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    default:	return_trace (c->default_return_हालागा ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  void collect_glyphs (set_t &कालिवा_set, set_t &कानान_set, unsigned नुमेरो_glyphs) const
   {
     unsigned int subtable_type = get_type ();
     switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 0:	hb_barrier (); u.format0.collect_glyphs (कालिवा_set, कानान_set, नुमेरो_glyphs); return;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 1:	hb_barrier (); u.format1.collect_glyphs (कालिवा_set, कानान_set, नुमेरो_glyphs); return;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 2:	hb_barrier (); u.format2.collect_glyphs (कालिवा_set, कानान_set, नुमेरो_glyphs); return;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    case 3:	hb_barrier (); u.format3.collect_glyphs (कालिवा_set, कानान_set, नुमेरो_glyphs); return;
 #endif
     default:	return;
     }
@@ -206,7 +206,7 @@ struct KernOTSubTableHeader
   static constexpr bool apple = false;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
+  unsigned   tuple_बिलांग_2 () const { return 0; }
   bool     is_horizontal () const { return (coverage & Horizontal); }
 
   enum Coverage
@@ -249,7 +249,7 @@ struct KernOT : AAT::KerxTable<KernOT>
 
   protected:
   HBUINT16	version;	/* Version--0x0000u */
-  HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT16	table_बिलांग;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
   public:
   DEFINE_SIZE_MIN (4);
@@ -261,7 +261,7 @@ struct KernAATSubTableHeader
   static constexpr bool apple = true;
   typedef AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
+  unsigned   tuple_बिलांग_2 () const { return 0; }
   bool     is_horizontal () const { return !(coverage & Vertical); }
 
   enum Coverage
@@ -304,7 +304,7 @@ struct KernAAT : AAT::KerxTable<KernAAT>
 
   protected:
   HBUINT32	version;	/* Version--0x00010000u */
-  HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT32	table_बिलांग;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
   public:
   DEFINE_SIZE_MIN (8);
@@ -339,12 +339,12 @@ struct kern
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t कानान) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    case 0: hb_barrier (); return u.ot.get_h_kerning (left, कानान);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    case 1: hb_barrier (); return u.aat.get_h_kerning (left, कानान);
 #endif
     default:return 0;
     }
@@ -364,7 +364,7 @@ struct kern
 #ifndef HB_NO_AAT_SHAPE
     case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    default:	return_trace (c->default_return_हालागा ());
     }
   }
 
@@ -376,12 +376,12 @@ struct kern
     return_trace (dispatch (c));
   }
 
-  AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  AAT::kern_accelerator_data_t create_accelerator_data (unsigned नुमेरो_glyphs) const
   {
     switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    case 0: hb_barrier (); return u.ot.create_accelerator_data (नुमेरो_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    case 1: hb_barrier (); return u.aat.create_accelerator_data (नुमेरो_glyphs);
 #endif
     default:return AAT::kern_accelerator_data_t ();
     }
@@ -393,7 +393,7 @@ struct kern
     {
       hb_sanitize_context_t sc;
       this->table = sc.reference_table<kern> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      this->accel_data = this->table->create_accelerator_data (face->get_नुमेरो_glyphs ());
     }
     ~accelerator_t ()
     {

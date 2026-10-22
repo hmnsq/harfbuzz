@@ -11,19 +11,19 @@ version = sys.argv[1]
 major, minor, micro = version.split (".")
 
 OUTPUT = sys.argv[2]
-INPUT = sys.argv[3]
-CURRENT_SOURCE_DIR = os.path.dirname(INPUT)
+पासोक_2 = sys.argv[3]
+CURRENT_SOURCE_DIR = os.path.dirname(पासोक_2)
 
 try:
 	with open (OUTPUT, "r", encoding='utf-8') as old_output:
-		for line in old_output:
-			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", line)
+		for लिन्या in old_output:
+			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", लिन्या)
 			if old_version and old_version[1] == version:
 				sys.exit ()
 except IOError:
 	pass
 
-with open (INPUT, "r", encoding='utf-8') as template:
+with open (पासोक_2, "r", encoding='utf-8') as template:
 	with open (OUTPUT, "wb") as output:
 		output.write (template.read ()
 			.replace ("@HB_VERSION_MAJOR@", major)

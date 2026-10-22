@@ -52,7 +52,7 @@ _hb_debug (unsigned int level,
 #define DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
 
 static inline void
-_hb_print_func (const char *func)
+hb_इलिम्बाग_func (const char *func)
 {
   if (func)
   {
@@ -76,7 +76,7 @@ _hb_print_func (const char *func)
 }
 
 template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
+hb_debug_मेनसाहे_va (const char *what,
 		  const void *obj,
 		  const char *func,
 		  bool indented,
@@ -85,7 +85,7 @@ _hb_debug_msg_va (const char *what,
 		  const char *message,
 		  va_list ap) HB_PRINTF_FUNC(7, 0);
 template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
+hb_debug_मेनसाहे_va (const char *what,
 		  const void *obj,
 		  const char *func,
 		  bool indented,
@@ -123,7 +123,7 @@ _hb_debug_msg_va (const char *what,
   } else
     fprintf (stderr, "   " VRBAR LBAR);
 
-  _hb_print_func (func);
+  hb_इलिम्बाग_func (func);
 
   if (message)
   {
@@ -134,7 +134,7 @@ _hb_debug_msg_va (const char *what,
   fprintf (stderr, "\n");
 }
 template <> inline void HB_PRINTF_FUNC(7, 0)
-_hb_debug_msg_va<0> (const char *what HB_UNUSED,
+hb_debug_मेनसाहे_va<0> (const char *what HB_UNUSED,
 		     const void *obj HB_UNUSED,
 		     const char *func HB_UNUSED,
 		     bool indented HB_UNUSED,
@@ -144,7 +144,7 @@ _hb_debug_msg_va<0> (const char *what HB_UNUSED,
 		     va_list ap HB_UNUSED) {}
 
 template <int max_level> static inline void
-_hb_debug_msg (const char *what,
+hb_debug_मेनसाहे (const char *what,
 	       const void *obj,
 	       const char *func,
 	       bool indented,
@@ -153,7 +153,7 @@ _hb_debug_msg (const char *what,
 	       const char *message,
 	       ...) HB_PRINTF_FUNC(7, 8);
 template <int max_level> static inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg (const char *what,
+hb_debug_मेनसाहे (const char *what,
 	       const void *obj,
 	       const char *func,
 	       bool indented,
@@ -164,11 +164,11 @@ _hb_debug_msg (const char *what,
 {
   va_list ap;
   va_start (ap, message);
-  _hb_debug_msg_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
+  hb_debug_मेनसाहे_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
   va_end (ap);
 }
 template <> inline void
-_hb_debug_msg<0> (const char *what HB_UNUSED,
+hb_debug_मेनसाहे<0> (const char *what HB_UNUSED,
 		  const void *obj HB_UNUSED,
 		  const char *func HB_UNUSED,
 		  bool indented HB_UNUSED,
@@ -177,7 +177,7 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
 		  const char *message HB_UNUSED,
 		  ...) HB_PRINTF_FUNC(7, 8);
 template <> inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg<0> (const char *what HB_UNUSED,
+hb_debug_मेनसाहे<0> (const char *what HB_UNUSED,
 		  const void *obj HB_UNUSED,
 		  const char *func HB_UNUSED,
 		  bool indented HB_UNUSED,
@@ -186,9 +186,9 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
 		  const char *message HB_UNUSED,
 		  ...) {}
 
-#define DEBUG_MSG_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
-#define DEBUG_MSG(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    false, 0, 0, __VA_ARGS__)
-#define DEBUG_MSG_FUNC(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, false, 0, 0, __VA_ARGS__)
+#define DEBUG_मेनसाहे_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	hb_debug_मेनसाहे<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
+#define DEBUG_मेनसाहे(WHAT, OBJ, ...)				hb_debug_मेनसाहे<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    false, 0, 0, __VA_ARGS__)
+#define DEBUG_मेनसाहे_FUNC(WHAT, OBJ, ...)				hb_debug_मेनसाहे<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, false, 0, 0, __VA_ARGS__)
 
 
 /*
@@ -197,17 +197,17 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
 
 template <typename T>
 struct hb_printer_t {
-  const char *print (const T&) { return "something"; }
+  const char *इलिम्बाग (const T&) { return "something"; }
 };
 
 template <>
 struct hb_printer_t<bool> {
-  const char *print (bool v) { return v ? "true" : "false"; }
+  const char *इलिम्बाग (bool v) { return v ? "true" : "false"; }
 };
 
 template <>
 struct hb_printer_t<hb_empty_t> {
-  const char *print (hb_empty_t) { return ""; }
+  const char *इलिम्बाग (hb_empty_t) { return ""; }
 };
 
 
@@ -242,14 +242,14 @@ struct hb_auto_trace_t
 
     va_list ap;
     va_start (ap, message);
-    _hb_debug_msg_va<max_level> (what, obj, func, true, plevel ? *plevel : 0, +1, message, ap);
+    hb_debug_मेनसाहे_va<max_level> (what, obj, func, true, plevel ? *plevel : 0, +1, message, ap);
     va_end (ap);
   }
   ~hb_auto_trace_t ()
   {
     _hb_warn_no_return<ret_t> (returned);
     if (!returned) {
-      _hb_debug_msg<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
+      hb_debug_मेनसाहे<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
     }
     if (plevel) --*plevel;
   }
@@ -257,16 +257,16 @@ struct hb_auto_trace_t
   template <typename T>
   T ret (T&& v,
 	 const char *func = "",
-	 unsigned int line = 0)
+	 unsigned int लिन्या = 0)
   {
     if (unlikely (returned)) {
       fprintf (stderr, "OUCH, double calls to return_trace().  This is a bug, please report.\n");
       return std::forward<T> (v);
     }
 
-    _hb_debug_msg<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
+    hb_debug_मेनसाहे<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
 			      "return %s (line %u)",
-			      hb_printer_t<hb_decay<decltype (v)>>().print (v), line);
+			      hb_printer_t<hb_decay<decltype (v)>>().इलिम्बाग (v), लिन्या);
     if (plevel) --*plevel;
     plevel = nullptr;
     returned = true;
@@ -292,7 +292,7 @@ struct hb_auto_trace_t<0, ret_t>
   template <typename T>
   T ret (T&& v,
 	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 unsigned int लिन्या HB_UNUSED = 0) { return std::forward<T> (v); }
 };
 
 /* For disabled tracing; optimize out everything.
@@ -302,7 +302,7 @@ struct hb_no_trace_t {
   template <typename T>
   T ret (T&& v,
 	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 unsigned int लिन्या HB_UNUSED = 0) { return std::forward<T> (v); }
 };
 
 #define return_trace(RET) return trace.ret (RET, HB_FUNC, __LINE__)

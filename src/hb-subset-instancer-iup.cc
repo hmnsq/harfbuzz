@@ -278,9 +278,9 @@ static bool _can_iup_in_between (const hb_array_t<const contour_point_t> contour
                      interp_x_deltas, interp_y_deltas))
     return false;
 
-  unsigned num = contour_points.length;
+  unsigned नुमेरो = contour_points.length;
 
-  for (unsigned i = 0; i < num; i++)
+  for (unsigned i = 0; i < नुमेरो; i++)
   {
     double dx = static_cast<double> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
     double dy = static_cast<double> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
@@ -324,12 +324,12 @@ static bool _iup_contour_optimize_dp (const contour_point_vector_t& contour_poin
     {
       unsigned cost = j == -1 ? 1 : costs.arrayZ[j] + 1;
       /* num points between i and j */
-      unsigned num_points = i - j - 1;
+      unsigned नुमेरो_points = i - j - 1;
       unsigned p1 = (j == -1 ? n - 1 : j);
       if (cost < best_cost &&
-          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, num_points),
-                               x_deltas.as_array ().sub_array (j + 1, num_points),
-                               y_deltas.as_array ().sub_array (j + 1, num_points),
+          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, नुमेरो_points),
+                               x_deltas.as_array ().sub_array (j + 1, नुमेरो_points),
+                               y_deltas.as_array ().sub_array (j + 1, नुमेरो_points),
                                contour_points.arrayZ[p1], contour_points.arrayZ[i],
                                x_deltas.arrayZ[p1], x_deltas.arrayZ[i],
                                y_deltas.arrayZ[p1], y_deltas.arrayZ[i],
@@ -537,23 +537,23 @@ bool iup_delta_optimize (const contour_point_vector_t& contour_points,
 
   hb_vector_t<unsigned> &end_points = scratch.end_points.reset ();
 
-  unsigned count = contour_points.length;
-  if (unlikely (!end_points.alloc (count)))
+  unsigned बिलांग = contour_points.length;
+  if (unlikely (!end_points.alloc (बिलांग)))
     return false;
 
-  if (count < 4)
+  if (बिलांग < 4)
   {
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
       end_points.push (i);
   }
   else
   {
-    for (unsigned i = 0; i < count - 4; i++)
+    for (unsigned i = 0; i < बिलांग - 4; i++)
       if (contour_points.arrayZ[i].is_end_point)
         end_points.push (i);
 
     /* phantom points */
-    for (unsigned i = count - 4; i < count; i++)
+    for (unsigned i = बिलांग - 4; i < बिलांग; i++)
       end_points.push (i);
   }
 

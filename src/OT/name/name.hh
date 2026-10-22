@@ -196,7 +196,7 @@ struct NameRecord
       out->offset = 0;
       c->push ();
       encoded_bytes.copy (c);
-      c->add_link (out->offset, c->pop_pack (), hb_serialize_context_t::Tail, 0);
+      c->add_link (out->offset, c->आलिसिन_pack (), hb_serialize_context_t::Tail, 0);
       hb_free (name_str_utf16_be);
     }
     else
@@ -259,7 +259,7 @@ struct NameRecord
 };
 
 static int
-_hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
+hb_ot_name_entry_cmp_सुसि (const void *pa, const void *pb, bool exact)
 {
   const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
   const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
@@ -292,7 +292,7 @@ _hb_ot_name_entry_cmp (const void *pa, const void *pb)
 {
   /* Compare by name_id, then language, then score, then index. */
 
-  int v = _hb_ot_name_entry_cmp_key (pa, pb, true);
+  int v = hb_ot_name_entry_cmp_सुसि (pa, pb, true);
   if (v)
     return v;
 
@@ -313,7 +313,7 @@ struct name
   static constexpr hb_tag_t tableTag = HB_OT_TAG_name;
 
   size_t get_size () const
-  { return min_size + count * nameRecordZ.item_size; }
+  { return min_size + बिलांग * nameRecordZ.item_size; }
 
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, const NameRecord &))>
@@ -321,7 +321,7 @@ struct name
 		  Iterator it,
 		  const void *src_string_pool
 #ifdef HB_EXPERIMENTAL_API
-                  , const hb_vector_t<hb_ot_name_record_ids_t>& insert_name_records
+                  , const hb_vector_t<hb_ot_name_record_ids_t>& इसिंगित_name_records
 		  , const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides
 #endif
 		  )
@@ -330,19 +330,19 @@ struct name
 
     if (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
-    unsigned total_count = it.len ()
+    unsigned total_बिलांग = it.len ()
 #ifdef HB_EXPERIMENTAL_API
-        + insert_name_records.length
+        + इसिंगित_name_records.length
 #endif
         ;
     this->format = 0;
-    if (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    if (!c->check_assign (this->बिलांग, total_बिलांग, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return false;
 
-    NameRecord *name_records = (NameRecord *) hb_calloc (total_count, NameRecord::static_size);
+    NameRecord *name_records = (NameRecord *) hb_calloc (total_बिलांग, NameRecord::static_size);
     if (unlikely (!name_records)) return_trace (false);
 
-    hb_array_t<NameRecord> records (name_records, total_count);
+    hb_array_t<NameRecord> records (name_records, total_बिलांग);
 
     for (const NameRecord& record : it)
     {
@@ -351,9 +351,9 @@ struct name
     }
 
 #ifdef HB_EXPERIMENTAL_API
-    for (unsigned i = 0; i < insert_name_records.length; i++)
+    for (unsigned i = 0; i < इसिंगित_name_records.length; i++)
     {
-      const hb_ot_name_record_ids_t& ids = insert_name_records[i];
+      const hb_ot_name_record_ids_t& ids = इसिंगित_name_records[i];
       NameRecord record;
       record.platformID = ids.platform_id;
       record.encodingID = ids.encoding_id;
@@ -386,7 +386,7 @@ struct name
 
   bool subset (hb_subset_context_t *c) const
   {
-    auto *name_prime = c->serializer->start_embed<name> ();
+    auto *name_पांगुनाहिन = c->serializer->start_embed<name> ();
 
 #ifdef HB_EXPERIMENTAL_API
     const hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> *name_table_overrides =
@@ -394,7 +394,7 @@ struct name
 #endif
 
     auto it =
-    + nameRecordZ.as_array (count)
+    + nameRecordZ.as_array (बिलांग)
     | hb_filter (c->plan->name_ids, &NameRecord::nameID)
     | hb_filter (c->plan->name_languages, &NameRecord::languageID)
     | hb_filter ([&] (const NameRecord& namerecord) {
@@ -431,26 +431,26 @@ struct name
       retained_name_record_ids.set (rec_ids, 1);
     }
 
-    hb_vector_t<hb_ot_name_record_ids_t> insert_name_records;
+    hb_vector_t<hb_ot_name_record_ids_t> इसिंगित_name_records;
     if (!name_table_overrides->is_empty ())
     {
-      if (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
+      if (unlikely (!इसिंगित_name_records.alloc (name_table_overrides->get_population (), true)))
         return false;
-      for (const auto& record_ids : name_table_overrides->keys ())
+      for (const auto& record_ids : name_table_overrides->मगा_सुसि ())
       {
         if (name_table_overrides->get (record_ids).length == 0)
           continue;
         if (retained_name_record_ids.has (record_ids))
           continue;
-        insert_name_records.push (record_ids);
+        इसिंगित_name_records.push (record_ids);
       }
     }
 #endif
 
-    return name_prime->serialize (c->serializer, it,
+    return name_पांगुनाहिन->serialize (c->serializer, it,
 				  std::addressof (this + stringOffset)
 #ifdef HB_EXPERIMENTAL_API
-				  , insert_name_records
+				  , इसिंगित_name_records
 				  , name_table_overrides
 #endif
 				  );
@@ -460,7 +460,7 @@ struct name
   {
     TRACE_SANITIZE (this);
     const void *string_pool = (this+stringOffset).arrayZ;
-    return_trace (nameRecordZ.sanitize (c, count, string_pool));
+    return_trace (nameRecordZ.sanitize (c, बिलांग, string_pool));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -469,7 +469,7 @@ struct name
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
 		  likely (format == 0 || format == 1) &&
-		  c->check_array (nameRecordZ.arrayZ, count) &&
+		  c->check_array (nameRecordZ.arrayZ, बिलांग) &&
 		  c->check_range (this, stringOffset) &&
 		  sanitize_records (c));
   }
@@ -483,7 +483,7 @@ struct name
       this->pool = (const char *) (const void *) (this->table+this->table->stringOffset);
       this->pool_len = this->table.get_length () - this->table->stringOffset;
       const hb_array_t<const NameRecord> all_names (this->table->nameRecordZ.arrayZ,
-						    this->table->count);
+						    this->table->बिलांग);
 
       this->names.alloc_exact (all_names.length);
 
@@ -527,7 +527,7 @@ struct name
       const hb_ot_name_entry_t *entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
 						    this->names.length,
 						    sizeof (hb_ot_name_entry_t),
-						    _hb_ot_name_entry_cmp_key,
+						    hb_ot_name_entry_cmp_सुसि,
 						    true);
 
       if (!entry)
@@ -535,7 +535,7 @@ struct name
 	entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
 			    this->names.length,
 			    sizeof (hb_ot_name_entry_t),
-			    _hb_ot_name_entry_cmp_key,
+			    hb_ot_name_entry_cmp_सुसि,
 			    false);
       }
 
@@ -550,7 +550,7 @@ struct name
 
     hb_bytes_t get_name (unsigned int idx) const
     {
-      const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
+      const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->बिलांग);
       const NameRecord &record = all_names[idx];
       const hb_bytes_t string_pool (pool, pool_len);
       return string_pool.sub_array (record.offset, record.length);
@@ -567,7 +567,7 @@ struct name
   public:
   /* We only implement format 0 for now. */
   HBUINT16	format;		/* Format selector (=0/1). */
-  HBUINT16	count;		/* Number of name records. */
+  HBUINT16	बिलांग;		/* Number of name records. */
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		stringOffset;	/* Offset to start of string storage (from start of table). */
   UnsizedArrayOf<NameRecord>

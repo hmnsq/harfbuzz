@@ -46,13 +46,13 @@ struct Triple
 {
   Triple () = default;
 
-  Triple (float minimum_, float middle_, float maximum_) :
-    minimum (minimum_), middle (middle_), maximum (maximum_) {}
+  Triple (float minimum_, float गित्ना_2, float maximum_) :
+    minimum (minimum_), गित्ना (गित्ना_2), maximum (maximum_) {}
 
   bool operator == (const Triple &o) const
   {
     return minimum == o.minimum &&
-	   middle  == o.middle  &&
+	   गित्ना  == o.गित्ना  &&
 	   maximum == o.maximum;
   }
 
@@ -60,7 +60,7 @@ struct Triple
   { return !(*this == o); }
 
   bool is_point () const
-  { return minimum == middle && middle == maximum; }
+  { return minimum == गित्ना && गित्ना == maximum; }
 
   bool contains (float point) const
   { return minimum <= point && point <= maximum; }
@@ -72,7 +72,7 @@ struct Triple
     current = current ^ hb_hash (minimum);
     current = current * 16777619;
 
-    current = current ^ hb_hash (middle);
+    current = current ^ hb_hash (गित्ना);
     current = current * 16777619;
 
     current = current ^ hb_hash (maximum);
@@ -81,7 +81,7 @@ struct Triple
   }
 
   float minimum = 0;
-  float middle = 0;
+  float गित्ना = 0;
   float maximum = 0;
 };
 
@@ -91,7 +91,7 @@ using rebase_tent_result_t = hb_vector_t<rebase_tent_result_item_t>;
 /* renormalize a normalized value v to the range of an axis,
  * considering the prenormalized distances as well as the new axis limits.
  * Ported from fonttools */
-HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
+HB_INTERNAL float renormalize_हालागा (float v, const Triple &triple,
                                     const TripleDistances &triple_distances,
                                     bool extrapolate = true);
 /* Given a tuple (lower,peak,upper) "tent" and new axis limits

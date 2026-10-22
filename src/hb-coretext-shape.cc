@@ -42,7 +42,7 @@ _hb_coretext_shaper_face_data_create (hb_face_t *face)
 
   if (unlikely (!cg_font))
   {
-    DEBUG_MSG (CORETEXT, face, "CGFont creation failed..");
+    DEBUG_मेनसाहे (CORETEXT, face, "CGFont creation failed..");
     return nullptr;
   }
 
@@ -70,42 +70,42 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 
   if (unlikely (!ct_font))
   {
-    DEBUG_MSG (CORETEXT, font, "CGFont creation failed..");
+    DEBUG_मेनसाहे (CORETEXT, font, "CGFont creation failed..");
     return nullptr;
   }
 
-  if (font->num_coords)
+  if (font->नुमेरो_coords)
   {
     hb_cf_ptr_t<CFMutableDictionaryRef> variations (
       CFDictionaryCreateMutable (kCFAllocatorDefault,
-				 font->num_coords,
-				 &kCFTypeDictionaryKeyCallBacks,
-				 &kCFTypeDictionaryValueCallBacks));
+				 font->नुमेरो_coords,
+				 &k_CFType_Dictionary_सुसि_Call_Backs,
+				 &k_CFType_Dictionary_हालागा_Call_Backs));
 
-    unsigned count = font->num_coords;
-    for (unsigned i = 0; i < count; i++)
+    unsigned बिलांग = font->नुमेरो_coords;
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       hb_ot_var_axis_info_t info;
       unsigned int c = 1;
       hb_ot_var_get_axis_infos (font->face, i, &c, &info);
 
-      float v = hb_clamp (font->design_coords[i], info.min_value, info.max_value);
+      float v = hb_clamp (font->design_coords[i], info.min_हालागा, info.max_हालागा);
 
-      hb_cf_ptr_t<CFNumberRef> tag_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &info.tag));
-      hb_cf_ptr_t<CFNumberRef> value_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberFloatType, &v));
-      if (variations && tag_number && value_number)
-	CFDictionarySetValue (variations, tag_number, value_number);
+      hb_cf_ptr_t<CFNumberRef> tag_नुमेरो (CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &info.tag));
+      hb_cf_ptr_t<CFNumberRef> हालागा_नुमेरो (CFNumberCreate (kCFAllocatorDefault, kCFNumberFloatType, &v));
+      if (variations && tag_नुमेरो && हालागा_नुमेरो)
+	CFDictionary_Set_हालागा (variations, tag_नुमेरो, हालागा_नुमेरो);
     }
 
-    const void *keys[] = { kCTFontVariationAttribute };
+    const void *मगा_सुसि[] = { kCTFontVariationAttribute };
     const void *values[] = { variations.get () };
     hb_cf_ptr_t<CFDictionaryRef> attributes (
       variations ? CFDictionaryCreate (kCFAllocatorDefault,
-				       keys,
+				       मगा_सुसि,
 				       values,
 				       1,
-				       &kCFTypeDictionaryKeyCallBacks,
-				       &kCFTypeDictionaryValueCallBacks) : nullptr);
+				       &k_CFType_Dictionary_सुसि_Call_Backs,
+				       &k_CFType_Dictionary_हालागा_Call_Backs) : nullptr);
 
     hb_cf_ptr_t<CTFontDescriptorRef> varDesc (attributes ? CTFontDescriptorCreateWithAttributes (attributes) : nullptr);
     hb_cf_ptr_t<CTFontRef> new_ct_font (varDesc ? CTFontCreateCopyWithAttributes (ct_font, 0, nullptr, varDesc) : nullptr);
@@ -175,7 +175,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    unsigned int        नुमेरो_features)
 {
   hb_face_t *face = font->face;
   CGFontRef cg_font = (CGFontRef) (const void *) face->data.coretext;
@@ -195,9 +195,9 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
   if (HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (buffer->cluster_level))
   {
     hb_unicode_funcs_t *unicode = buffer->unicode;
-    unsigned int count = buffer->len;
+    unsigned int बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i < count; i++)
+    for (unsigned int i = 1; i < बिलांग; i++)
       if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (unicode->general_category (info[i].codepoint)))
 	buffer->merge_grapheme_clusters (i - 1, i + 1);
   }
@@ -208,11 +208,11 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
    * Set up features.
    * (copied + modified from code from hb-uniscribe.cc)
    */
-  if (num_features)
+  if (नुमेरो_features)
   {
     /* Sort features by start/end events. */
     hb_vector_t<feature_event_t> feature_events;
-    for (unsigned int i = 0; i < num_features; i++)
+    for (unsigned int i = 0; i < नुमेरो_features; i++)
     {
       active_feature_t feature;
 
@@ -247,7 +247,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
       active_feature_t feature;
       feature.rec.feature = HB_TAG_NONE;
       feature.rec.setting = 0;
-      feature.order = num_features + 1;
+      feature.order = नुमेरो_features + 1;
 
       feature_event_t *event = feature_events.push ();
       event->index = 0; /* This value does magic. */
@@ -276,9 +276,9 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	  for (unsigned int j = 0; j < active_features.length; j++)
 	  {
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101000
-	    CFStringRef keys[] = {
-	      kCTFontFeatureTypeIdentifierKey,
-	      kCTFontFeatureSelectorIdentifierKey
+	    CFStringRef मगा_सुसि[] = {
+	      k_CTFont_Feature_Type_Identifier_सुसि,
+	      k_CTFont_Feature_Selector_Identifier_सुसि
 	    };
 	    CFNumberRef values[] = {
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.feature),
@@ -286,26 +286,26 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	    };
 #else
 	    char tag[5] = {HB_UNTAG (active_features[j].rec.feature)};
-	    CFTypeRef keys[] = {
+	    CFTypeRef मगा_सुसि[] = {
 	      kCTFontOpenTypeFeatureTag,
-	      kCTFontOpenTypeFeatureValue
+	      k_CTFont_Open_Type_Feature_हालागा
 	    };
 	    CFTypeRef values[] = {
 	      CFStringCreateWithCString (kCFAllocatorDefault, tag, kCFStringEncodingASCII),
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.setting)
 	    };
 #endif
-	    static_assert ((ARRAY_LENGTH_CONST (keys) == ARRAY_LENGTH_CONST (values)), "");
+	    static_assert ((ARRAY_LENGTH_CONST (मगा_सुसि) == ARRAY_LENGTH_CONST (values)), "");
 	    CFDictionaryRef dict = CFDictionaryCreate (kCFAllocatorDefault,
-						       (const void **) keys,
+						       (const void **) मगा_सुसि,
 						       (const void **) values,
-						       ARRAY_LENGTH (keys),
-						       &kCFTypeDictionaryKeyCallBacks,
-						       &kCFTypeDictionaryValueCallBacks);
+						       ARRAY_LENGTH (मगा_सुसि),
+						       &k_CFType_Dictionary_सुसि_Call_Backs,
+						       &k_CFType_Dictionary_हालागा_Call_Backs);
 	    for (unsigned int i = 0; i < ARRAY_LENGTH (values); i++)
 	      CFRelease (values[i]);
 
-	    CFArrayAppendValue (features_array, dict);
+	    CFArray_Append_हालागा (features_array, dict);
 	    CFRelease (dict);
 
 	  }
@@ -314,8 +314,8 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 							   (const void **) &kCTFontFeatureSettingsAttribute,
 							   (const void **) &features_array,
 							   1,
-							   &kCFTypeDictionaryKeyCallBacks,
-							   &kCFTypeDictionaryValueCallBacks);
+							   &k_CFType_Dictionary_सुसि_Call_Backs,
+							   &k_CFType_Dictionary_हालागा_Call_Backs);
 	  CFRelease (features_array);
 
 	  CTFontDescriptorRef font_desc = CTFontDescriptorCreateWithAttributes (attributes);
@@ -389,27 +389,27 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (CORETEXT, nullptr, __VA_ARGS__); \
+    DEBUG_मेनसाहे (CORETEXT, nullptr, __VA_ARGS__); \
     ret = false; \
     goto fail; \
   } HB_STMT_END
 
   bool ret = true;
   CFStringRef string_ref = nullptr;
-  CTLineRef line = nullptr;
+  CTLineRef लिन्या = nullptr;
 
   if (false)
   {
 resize_and_retry:
-    DEBUG_MSG (CORETEXT, buffer, "Buffer resize");
+    DEBUG_मेनसाहे (CORETEXT, buffer, "Buffer resize");
     /* string_ref uses the scratch-buffer for backing store, and line references
      * string_ref (via attr_string).  We must release those before resizing buffer. */
     assert (string_ref);
-    assert (line);
+    assert (लिन्या);
     CFRelease (string_ref);
-    CFRelease (line);
+    CFRelease (लिन्या);
     string_ref = nullptr;
-    line = nullptr;
+    लिन्या = nullptr;
 
     /* Get previous start-of-scratch-area, that we use later for readjusting
      * our existing scratch arrays. */
@@ -473,7 +473,7 @@ resize_and_retry:
       CFAttributedStringSetAttribute (attr_string, CFRangeMake (0, chars_len),
 				      kCTFontAttributeName, ct_font);
 
-      if (num_features && range_records.length)
+      if (नुमेरो_features && range_records.length)
       {
 	unsigned int start = 0;
 	range_record_t *last_range = &range_records[0];
@@ -503,11 +503,11 @@ resize_and_retry:
        *
        * Note: once kern is disabled, reenabling it doesn't currently seem to work in CoreText.
        */
-      if (num_features)
+      if (नुमेरो_features)
       {
 	unsigned int zeroint = 0;
 	CFNumberRef zero = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &zeroint);
-	for (unsigned int i = 0; i < num_features; i++)
+	for (unsigned int i = 0; i < नुमेरो_features; i++)
 	{
 	  const hb_feature_t &feature = features[i];
 	  if (feature.tag == HB_TAG('k','e','r','n') &&
@@ -525,17 +525,17 @@ resize_and_retry:
       }
 
       int level = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
-      CFNumberRef level_number = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &level);
+      CFNumberRef level_नुमेरो = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &level);
 #if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
       extern const CFStringRef kCTTypesetterOptionForcedEmbeddingLevel;
 #endif
       CFDictionaryRef options = CFDictionaryCreate (kCFAllocatorDefault,
 						    (const void **) &kCTTypesetterOptionForcedEmbeddingLevel,
-						    (const void **) &level_number,
+						    (const void **) &level_नुमेरो,
 						    1,
-						    &kCFTypeDictionaryKeyCallBacks,
-						    &kCFTypeDictionaryValueCallBacks);
-      CFRelease (level_number);
+						    &k_CFType_Dictionary_सुसि_Call_Backs,
+						    &k_CFType_Dictionary_हालागा_Call_Backs);
+      CFRelease (level_नुमेरो);
       if (unlikely (!options))
       {
 	CFRelease (attr_string);
@@ -548,15 +548,15 @@ resize_and_retry:
       if (unlikely (!typesetter))
 	FAIL ("CTTypesetterCreateWithAttributedStringAndOptions failed");
 
-      line = CTTypesetterCreateLine (typesetter, CFRangeMake(0, 0));
+      लिन्या = CTTypesetter_Create_लिन्या (typesetter, CFRangeMake(0, 0));
       CFRelease (typesetter);
-      if (unlikely (!line))
+      if (unlikely (!लिन्या))
 	FAIL ("CTTypesetterCreateLine failed");
     }
 
-    CFArrayRef glyph_runs = CTLineGetGlyphRuns (line);
-    unsigned int num_runs = CFArrayGetCount (glyph_runs);
-    DEBUG_MSG (CORETEXT, nullptr, "Num runs: %u", num_runs);
+    CFArrayRef glyph_runs = CTLineGetGlyphRuns (लिन्या);
+    unsigned int नुमेरो_runs = CFArray_Get_बिलांग (glyph_runs);
+    DEBUG_मेनसाहे (CORETEXT, nullptr, "Num runs: %u", नुमेरो_runs);
 
     buffer->len = 0;
     uint32_t status_or = 0;
@@ -568,23 +568,23 @@ resize_and_retry:
      */
     if (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
     {
-      advances_so_far -= CTLineGetTrailingWhitespaceWidth (line);
+      advances_so_far -= CTLineGetTrailingWhitespaceWidth (लिन्या);
       if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  advances_so_far = -advances_so_far;
     }
 
     const CFRange range_all = CFRangeMake (0, 0);
 
-    for (unsigned int i = 0; i < num_runs; i++)
+    for (unsigned int i = 0; i < नुमेरो_runs; i++)
     {
-      CTRunRef run = static_cast<CTRunRef>(CFArrayGetValueAtIndex (glyph_runs, i));
+      CTRunRef run = static_cast<CTRunRef>(CFArray_Get_हालागा_At_Index (glyph_runs, i));
       CTRunStatus run_status = CTRunGetStatus (run);
       status_or  |= run_status;
-      DEBUG_MSG (CORETEXT, run, "CTRunStatus: %x", run_status);
+      DEBUG_मेनसाहे (CORETEXT, run, "CTRunStatus: %x", run_status);
       CGFloat run_advance = CTRunGetTypographicBounds (run, range_all, nullptr, nullptr, nullptr);
       if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  run_advance = -run_advance;
-      DEBUG_MSG (CORETEXT, run, "Run advance: %g", (double) run_advance);
+      DEBUG_मेनसाहे (CORETEXT, run, "Run advance: %g", (double) run_advance);
 
       /* CoreText does automatic font fallback (AKA "cascading") for  characters
        * not supported by the requested font, and provides no way to turn it off,
@@ -593,7 +593,7 @@ resize_and_retry:
        * indices from a different font.
        */
       CFDictionaryRef attributes = CTRunGetAttributes (run);
-      CTFontRef run_ct_font = static_cast<CTFontRef>(CFDictionaryGetValue (attributes, kCTFontAttributeName));
+      CTFontRef run_ct_font = static_cast<CTFontRef>(CFDictionary_Get_हालागा (attributes, kCTFontAttributeName));
       if (!CFEqual (run_ct_font, ct_font))
       {
 	/* The run doesn't use our main font instance.  We have to figure out
@@ -635,8 +635,8 @@ resize_and_retry:
 	}
 	if (!matched)
 	{
-	  hb_cf_ptr_t<CFStringRef> font_ps_name (CTFontCopyName (ct_font, kCTFontPostScriptNameKey));
-	  hb_cf_ptr_t<CFStringRef> run_ps_name (CTFontCopyName (run_ct_font, kCTFontPostScriptNameKey));
+	  hb_cf_ptr_t<CFStringRef> font_ps_name (CTFontCopyName (ct_font, k_CTFont_Post_Script_Name_सुसि));
+	  hb_cf_ptr_t<CFStringRef> run_ps_name (CTFontCopyName (run_ct_font, k_CTFont_Post_Script_Name_सुसि));
 	  if (font_ps_name && run_ps_name)
 	  {
 	    if (CFStringCompare (run_ps_name, font_ps_name, 0) == kCFCompareEqualTo)
@@ -646,7 +646,7 @@ resize_and_retry:
 	if (!matched)
 	{
 	  CFRange range = CTRunGetStringRange (run);
-	  DEBUG_MSG (CORETEXT, run, "Run used fallback font: %ld..%ld",
+	  DEBUG_मेनसाहे (CORETEXT, run, "Run used fallback font: %ld..%ld",
 		     range.location, range.location + range.length);
 	  if (!buffer->ensure_inplace (buffer->len + range.length))
 	    goto resize_and_retry;
@@ -693,11 +693,11 @@ resize_and_retry:
 	}
       }
 
-      unsigned int num_glyphs = CTRunGetGlyphCount (run);
-      if (num_glyphs == 0)
+      unsigned int नुमेरो_glyphs = CTRun_Get_Glyph_बिलांग (run);
+      if (नुमेरो_glyphs == 0)
 	continue;
 
-      if (!buffer->ensure_inplace (buffer->len + num_glyphs))
+      if (!buffer->ensure_inplace (buffer->len + नुमेरो_glyphs))
 	goto resize_and_retry;
 
       hb_glyph_info_t *run_info = buffer->info + buffer->len;
@@ -722,18 +722,18 @@ resize_and_retry:
 	SCRATCH_SAVE();
 	const CGGlyph* glyphs = USE_PTR ? CTRunGetGlyphsPtr (run) : nullptr;
 	if (!glyphs) {
-	  ALLOCATE_ARRAY (CGGlyph, glyph_buf, num_glyphs, goto resize_and_retry);
+	  ALLOCATE_ARRAY (CGGlyph, glyph_buf, नुमेरो_glyphs, goto resize_and_retry);
 	  CTRunGetGlyphs (run, range_all, glyph_buf);
 	  glyphs = glyph_buf;
 	}
 	const CFIndex* string_indices = USE_PTR ? CTRunGetStringIndicesPtr (run) : nullptr;
 	if (!string_indices) {
-	  ALLOCATE_ARRAY (CFIndex, index_buf, num_glyphs, goto resize_and_retry);
+	  ALLOCATE_ARRAY (CFIndex, index_buf, नुमेरो_glyphs, goto resize_and_retry);
 	  CTRunGetStringIndices (run, range_all, index_buf);
 	  string_indices = index_buf;
 	}
 	hb_glyph_info_t *info = run_info;
-	for (unsigned int j = 0; j < num_glyphs; j++)
+	for (unsigned int j = 0; j < नुमेरो_glyphs; j++)
 	{
 	  info->codepoint = glyphs[j];
 	  info->cluster = log_clusters[string_indices[j]];
@@ -750,7 +750,7 @@ resize_and_retry:
 	SCRATCH_SAVE();
 	const CGPoint* positions = USE_PTR ? CTRunGetPositionsPtr (run) : nullptr;
 	if (!positions) {
-	  ALLOCATE_ARRAY (CGPoint, position_buf, num_glyphs, goto resize_and_retry);
+	  ALLOCATE_ARRAY (CGPoint, position_buf, नुमेरो_glyphs, goto resize_and_retry);
 	  CTRunGetPositions (run, range_all, position_buf);
 	  positions = position_buf;
 	}
@@ -759,10 +759,10 @@ resize_and_retry:
 	{
 	  hb_position_t x_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].x - advances_so_far) * x_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  for (unsigned int j = 0; j < नुमेरो_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    if (likely (j + 1 < नुमेरो_glyphs))
 	      advance = positions[j + 1].x - positions[j].x;
 	    else /* last glyph */
 	      advance = run_advance - (positions[j].x - positions[0].x);
@@ -777,10 +777,10 @@ resize_and_retry:
 	{
 	  hb_position_t y_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].y - advances_so_far) * y_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  for (unsigned int j = 0; j < नुमेरो_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    if (likely (j + 1 < नुमेरो_glyphs))
 	      advance = positions[j + 1].y - positions[j].y;
 	    else /* last glyph */
 	      advance = run_advance - (positions[j].y - positions[0].y);
@@ -799,16 +799,16 @@ resize_and_retry:
 #undef USE_PTR
 #undef ALLOCATE_ARRAY
 
-      buffer->len += num_glyphs;
+      buffer->len += नुमेरो_glyphs;
     }
 
     buffer->clear_positions ();
 
-    unsigned int count = buffer->len;
+    unsigned int बिलांग = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
     if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-      for (unsigned int i = 0; i < count; i++)
+      for (unsigned int i = 0; i < बिलांग; i++)
       {
 	pos->x_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -817,7 +817,7 @@ resize_and_retry:
 	info++; pos++;
       }
     else
-      for (unsigned int i = 0; i < count; i++)
+      for (unsigned int i = 0; i < बिलांग; i++)
       {
 	pos->y_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -836,14 +836,14 @@ resize_and_retry:
      * This does *not* mean we'll form the same clusters as Uniscribe
      * or the native OT backend, only that the cluster indices will be
      * monotonic in the output buffer. */
-    if (count > 1 && (status_or & kCTRunStatusNonMonotonic) &&
+    if (बिलांग > 1 && (status_or & kCTRunStatusNonMonotonic) &&
 	HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
     {
       hb_glyph_info_t *info = buffer->info;
       if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
       {
-	unsigned int cluster = info[count - 1].cluster;
-	for (unsigned int i = count - 1; i > 0; i--)
+	unsigned int cluster = info[बिलांग - 1].cluster;
+	for (unsigned int i = बिलांग - 1; i > 0; i--)
 	{
 	  cluster = hb_min (cluster, info[i - 1].cluster);
 	  info[i - 1].cluster = cluster;
@@ -852,7 +852,7 @@ resize_and_retry:
       else
       {
 	unsigned int cluster = info[0].cluster;
-	for (unsigned int i = 1; i < count; i++)
+	for (unsigned int i = 1; i < बिलांग; i++)
 	{
 	  cluster = hb_min (cluster, info[i].cluster);
 	  info[i].cluster = cluster;
@@ -873,8 +873,8 @@ resize_and_retry:
 fail:
   if (string_ref)
     CFRelease (string_ref);
-  if (line)
-    CFRelease (line);
+  if (लिन्या)
+    CFRelease (लिन्या);
 
   for (unsigned int i = 0; i < range_records.length; i++)
     if (range_records[i].font)

@@ -20,7 +20,7 @@ struct MarkMarkPosFormat1_2
                 mark2Coverage;          /* Offset to Combining Mark2 Coverage
                                          * table--from beginning of MarkMarkPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
+  HBUINT16      class_बिलांग_2;             /* Number of defined mark classes */
   typename Types::template LOffsetTo<MarkArray<Types>>
                 mark1Array;             /* Offset to Mark1Array table--from
                                          * beginning of MarkMarkPos subtable */
@@ -38,7 +38,7 @@ struct MarkMarkPosFormat1_2
                   mark2Coverage.sanitize (c, this) &&
                   mark1Array.sanitize (c, this) &&
 		  hb_barrier () &&
-                  mark2Array.sanitize (c, this, (unsigned int) classCount));
+                  mark2Array.sanitize (c, this, (unsigned int) class_बिलांग_2));
   }
 
   bool intersects (const hb_set_t *glyphs) const
@@ -58,15 +58,15 @@ struct MarkMarkPosFormat1_2
 
     hb_sorted_vector_t<unsigned> mark2_indexes;
     collect_anchor_indexes (this+mark2Coverage, (this+mark2Array).rows,
-                            classCount, *c->glyph_set, klass_mapping,
+                            class_बिलांग_2, *c->glyph_set, klass_mapping,
                             mark2_indexes);
     (this+mark2Array).collect_variation_indices (c, mark2_indexes.iter ());
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+mark1Coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+mark2Coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+mark1Coverage).collect_coverage (c->पासोक))) return;
+    if (unlikely (!(this+mark2Coverage).collect_coverage (c->पासोक))) return;
   }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
@@ -82,7 +82,7 @@ struct MarkMarkPosFormat1_2
     if (likely (mark1_index == NOT_COVERED)) return_trace (false);
 
     /* now we search backwards for a suitable mark glyph until a non-mark glyph */
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_पासोक;
     skippy_iter.reset_fast (buffer->idx);
     skippy_iter.set_lookup_props (c->lookup_props & ~(uint32_t)LookupFlag::IgnoreFlags);
     unsigned unsafe_from;
@@ -132,7 +132,7 @@ struct MarkMarkPosFormat1_2
       return_trace (false);
     }
 
-    return_trace ((this+mark1Array).apply (c, mark1_index, mark2_index, this+mark2Array, classCount, j));
+    return_trace ((this+mark1Array).apply (c, mark1_index, mark2_index, this+mark2Array, class_बिलांग_2, j));
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -149,7 +149,7 @@ struct MarkMarkPosFormat1_2
     Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, glyphset, &klass_mapping);
 
     if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    out->class_बिलांग_2 = klass_mapping.get_population ();
 
     auto mark1_iter =
     + hb_zip (this+mark1Coverage, this+mark1Array)
@@ -175,7 +175,7 @@ struct MarkMarkPosFormat1_2
     hb_sorted_vector_t<unsigned> mark2_indexes;
     const auto &mark2_array = this+mark2Array;
     collect_subset_anchor_indexes (this+mark2Coverage, mark2_array.rows,
-                                   classCount, mark2_array.matrixZ.arrayZ,
+                                   class_बिलांग_2, mark2_array.matrixZ.arrayZ,
                                    glyphset, glyph_map, klass_mapping,
                                    new_coverage, mark2_indexes);
 

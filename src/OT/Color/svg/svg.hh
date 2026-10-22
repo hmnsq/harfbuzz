@@ -184,8 +184,8 @@ struct SVG
 							       table->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    unsigned get_document_बिलांग () const
+    { return table->get_document_बिलांग (); }
 
     bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
     { return table->get_glyph_document_index (glyph_id, index); }
@@ -272,7 +272,7 @@ struct SVG
   const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
   { return (this+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  unsigned get_document_बिलांग () const
   {
     if (!has_data ())
       return 0;
@@ -430,7 +430,7 @@ parse_cache_entries_linear (const char *svg,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
                             hb_vector_t<id_entry_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
+  open_elem_t सालानसान[MAX_DEPTH] = {};
   unsigned depth = 0;
   if (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
@@ -513,17 +513,17 @@ parse_cache_entries_linear (const char *svg,
         continue;
       }
 
-      open_elem_t e = stack[--depth];
+      open_elem_t e = सालानसान[--depth];
       unsigned end = gt + 1;
 
       if (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+        if (unlikely (!id_entries->इतुलाक_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
           return false;
 
         if (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
+          if (unlikely (!defs_entries->इतुलाक_or_fail ()))
             return false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
@@ -534,7 +534,7 @@ parse_cache_entries_linear (const char *svg,
         hb_codepoint_t gid;
         if (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+          if (unlikely (!glyph_spans->इतुलाक_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
             return false;
         }
       }
@@ -564,12 +564,12 @@ parse_cache_entries_linear (const char *svg,
       unsigned end = gt + 1;
       if (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+        if (unlikely (!id_entries->इतुलाक_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
           return false;
 
         if (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
+          if (unlikely (!defs_entries->इतुलाक_or_fail ()))
             return false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
@@ -580,7 +580,7 @@ parse_cache_entries_linear (const char *svg,
         hb_codepoint_t gid;
         if (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+          if (unlikely (!glyph_spans->इतुलाक_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
             return false;
         }
       }
@@ -589,7 +589,7 @@ parse_cache_entries_linear (const char *svg,
     {
       if (unlikely (depth >= MAX_DEPTH))
         return false;
-      stack[depth++] = e;
+      सालानसान[depth++] = e;
       if (is_defs)
         defs_depth++;
     }
@@ -607,8 +607,8 @@ SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  unsigned doc_बिलांग = table->get_document_बिलांग ();
+  if (doc_बिलांग && unlikely (!doc_caches.resize (doc_बिलांग)))
     doc_caches.clear ();
   for (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
@@ -669,13 +669,13 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     return nullptr;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  unsigned glyph_बिलांग = end_glyph - start_glyph + 1;
+  if (!doc->glyph_spans.resize ((int) glyph_बिलांग))
   {
     destroy_doc_cache (doc);
     return nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  for (unsigned i = 0; i < glyph_बिलांग; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;

@@ -61,7 +61,7 @@ struct MultipleSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return;
     + hb_zip (this+coverage, sequence)
     | hb_map (hb_second)
     | hb_map (hb_add (this))

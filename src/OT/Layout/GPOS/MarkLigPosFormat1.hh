@@ -20,7 +20,7 @@ struct MarkLigPosFormat1_2
                 ligatureCoverage;       /* Offset to Ligature Coverage
                                          * table--from beginning of MarkLigPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
+  HBUINT16      class_बिलांग_2;             /* Number of defined mark classes */
   typename Types::template LOffsetTo<MarkArray<Types>>
                 markArray;              /* Offset to MarkArray table--from
                                          * beginning of MarkLigPos subtable */
@@ -37,7 +37,7 @@ struct MarkLigPosFormat1_2
                   markCoverage.sanitize (c, this) &&
                   ligatureCoverage.sanitize (c, this) &&
                   markArray.sanitize (c, this) &&
-                  ligatureArray.sanitize (c, this, (unsigned int) classCount));
+                  ligatureArray.sanitize (c, this, (unsigned int) class_बिलांग_2));
   }
 
   bool intersects (const hb_set_t *glyphs) const
@@ -56,13 +56,13 @@ struct MarkLigPosFormat1_2
     Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
 
     (this+ligatureArray).collect_variation_indices (c, this+ligatureCoverage,
-                                                   classCount, klass_mapping);
+                                                   class_बिलांग_2, klass_mapping);
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+markCoverage).collect_coverage (c->पासोक))) return;
+    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->पासोक))) return;
   }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
@@ -90,7 +90,7 @@ struct MarkLigPosFormat1_2
 
     /* Now we search backwards for a non-mark glyph */
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_पासोक;
     skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
 
     if (c->last_base_until > buffer->idx)
@@ -138,8 +138,8 @@ struct MarkLigPosFormat1_2
     const AnchorMatrix<Types, HBUINT16>& lig_attach = lig_array[lig_index];
 
     /* Find component to attach to */
-    unsigned int comp_count = lig_attach.rows;
-    if (unlikely (!comp_count))
+    unsigned int comp_बिलांग = lig_attach.rows;
+    if (unlikely (!comp_बिलांग))
     {
       buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
       return_trace (false);
@@ -154,11 +154,11 @@ struct MarkLigPosFormat1_2
     unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
     unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
     if (lig_id && lig_id == mark_id && mark_comp > 0)
-      comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
+      comp_index = hb_min (comp_बिलांग, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
     else
-      comp_index = comp_count - 1;
+      comp_index = comp_बिलांग - 1;
 
-    return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, idx));
+    return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, class_बिलांग_2, idx));
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -175,7 +175,7 @@ struct MarkLigPosFormat1_2
     Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
 
     if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    out->class_बिलांग_2 = klass_mapping.get_population ();
 
     auto mark_iter =
     + hb_zip (this+markCoverage, hb_range ((unsigned) (this+markArray).len))
@@ -199,7 +199,7 @@ struct MarkLigPosFormat1_2
     hb_sorted_vector_t<hb_codepoint_t> new_lig_coverage;
     if (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
 					      hb_iter (this+ligatureCoverage),
-					      classCount, &klass_mapping, new_lig_coverage))
+					      class_बिलांग_2, &klass_mapping, new_lig_coverage))
       return_trace (false);
 
     return_trace (out->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));

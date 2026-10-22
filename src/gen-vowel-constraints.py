@@ -33,11 +33,11 @@ with open (sys.argv[2], encoding='utf-8') as f:
 	scripts_header = [f.readline () for i in range (2)]
 	scripts = {}
 	script_order = {}
-	for line in f:
-		j = line.find ('#')
+	for लिन्या in f:
+		j = लिन्या.find ('#')
 		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
+			लिन्या = लिन्या[:j]
+		fields = [x.strip () for x in लिन्या.split (';')]
 		if len (fields) == 1:
 			continue
 		uu = fields[0].split ('..')
@@ -115,9 +115,9 @@ class ConstraintSet (object):
 			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
 			s.append ('{}{{\n'.format (indent))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			for first, rest in sorted (self._c.मगा_बागाय ()):
 				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
+			for body, labels in sorted (cases.मगा_बागाय (), सुसि_2=lambda b_ls: sorted (b_ls[1])[0]):
 				for i, cp in enumerate (sorted (labels)):
 					if i % 4 == 0:
 						s.append (self._indent (depth + 1))
@@ -155,10 +155,10 @@ class ConstraintSet (object):
 		else:
 			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			for first, rest in sorted (self._c.मगा_बागाय ()):
 				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
+			मगा_बागाय = sorted (cases.मगा_बागाय (), सुसि_2=lambda b_ls: sorted (b_ls[1])[0])
+			for ii, (body, labels) in enumerate (मगा_बागाय):
 				for i, cp in enumerate (sorted (labels)):
 					if i == len (labels) - 1:
 						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
@@ -166,7 +166,7 @@ class ConstraintSet (object):
 						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				if ii == len (मगा_बागाय) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
 		return ''.join (s)
@@ -175,15 +175,15 @@ constraints = {}
 with open (sys.argv[1], encoding='utf-8') as f:
 	constraints_header = []
 	while True:
-		line = f.readline ().strip ()
-		if line == '#':
+		लिन्या = f.readline ().strip ()
+		if लिन्या == '#':
 			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
+		constraints_header.append(लिन्या)
+	for लिन्या in f:
+		j = लिन्या.find ('#')
 		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
+			लिन्या = लिन्या[:j]
+		constraint = [int (cp, 16) for cp in लिन्या.split (';')[0].split ()]
 		if not constraint: continue
 		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
@@ -229,7 +229,7 @@ if output_rust:
 	print ('    buffer.clear_output();')
 	print ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	for script, constraints in sorted (constraints.मगा_बागाय (), सुसि_2=lambda s_c: script_order[s_c[0]]):
 		print ('        Some(script::{}) => {{'.format (script.upper ()))
 		print ('            buffer.idx = 0;')
 		print ('            while buffer.idx + 1 < buffer.len {')
@@ -254,11 +254,11 @@ else:
 	print (' *')
 	print (' * on files with these headers:')
 	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
+	for लिन्या in constraints_header:
+		print (' * %s' % लिन्या.strip ())
 	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
+	for लिन्या in scripts_header:
+		print (' * %s' % लिन्या.strip ())
 	print (' */')
 	print ()
 	print ('#include "hb.hh"')
@@ -303,7 +303,7 @@ else:
 	print ('  switch ((unsigned) buffer->props.script)')
 	print ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	for script, constraints in sorted (constraints.मगा_बागाय (), सुसि_2=lambda s_c: script_order[s_c[0]]):
 		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
 		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
 		print ('      {')

@@ -40,11 +40,11 @@ test_scalar_cache_precision ()
   };
   const unsigned counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  for (unsigned बिलांग : counts)
   {
-    auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
-    hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    auto *cache = OT::hb_scalar_cache_t::create (बिलांग, &scratch_cache);
+    hb_always_assert (cache->length == बिलांग);
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       float value;
       float scalar = scalars[i % ARRAY_LENGTH (scalars)];
@@ -54,7 +54,7 @@ test_scalar_cache_precision ()
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    for (unsigned i = 0; i < बिलांग; i++)
     {
       float value;
       hb_always_assert (!cache->get (i, &value));
@@ -136,7 +136,7 @@ test_item_variations_overflow ()
   hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
   OT::item_variations_t item_vars;
   unsigned old_varidx = 0;
-  const unsigned total_count = 0xFFFFu * 2u;
+  const unsigned total_बिलांग = 0xFFFFu * 2u;
 
   const unsigned counts[] = {
     128u,                 /* 0..127: 1-byte deltas */
@@ -149,7 +149,7 @@ test_item_variations_overflow ()
     32768
   };
 
-  hb_always_assert (row_storage.alloc (total_count));
+  hb_always_assert (row_storage.alloc (total_बिलांग));
 
   for (unsigned bucket = 0; bucket < 3; bucket++)
   {
@@ -183,10 +183,10 @@ test_item_variations_overflow ()
 
   const auto& encodings = item_vars.get_vardata_encodings ();
   hb_always_assert (encodings.length == 4);
-  hb_always_assert (encodings[0].items.length == 128u);
-  hb_always_assert (encodings[1].items.length == 32768u - 128u);
-  hb_always_assert (encodings[2].items.length == 0xFFFFu);
-  hb_always_assert (encodings[3].items.length == 32767u);
+  hb_always_assert (encodings[0].मगा_बागाय.length == 128u);
+  hb_always_assert (encodings[1].मगा_बागाय.length == 32768u - 128u);
+  hb_always_assert (encodings[2].मगा_बागाय.length == 0xFFFFu);
+  hb_always_assert (encodings[3].मगा_बागाय.length == 32767u);
 
   const hb_map_t& varidx_map = item_vars.get_varidx_map ();
   hb_always_assert (varidx_map.get (0) == 0);
@@ -275,7 +275,7 @@ test_accumulated_delta_widths ()
     {
       hb_always_assert (item_vars.as_item_varstore ());
       hb_always_assert (item_vars.has_long_word ());
-      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].items[0])[0] == 2 * delta);
+      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].मगा_बागाय[0])[0] == 2 * delta);
     }
   }
 }

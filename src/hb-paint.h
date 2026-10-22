@@ -180,7 +180,7 @@ hb_paint_funcs_destroy (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
 hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t *key,
+			      hb_user_data_सुसि_t *सुसि_2,
 			      void *              data,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace);
@@ -188,7 +188,7 @@ hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
 
 HB_EXTERN void *
 hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t       *key);
+			      hb_user_data_सुसि_t       *सुसि_2);
 
 HB_EXTERN void
 hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs);
@@ -227,7 +227,7 @@ hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_transform_func_t) (hb_paint_funcs_t *funcs,
                                                 void *paint_data,
                                                 float xx, float yx,
                                                 float xy, float yy,
@@ -246,7 +246,7 @@ typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_आलिसिन_transform_func_t) (hb_paint_funcs_t *funcs,
                                                void *paint_data,
                                                void *user_data);
 
@@ -317,7 +317,7 @@ typedef void (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
                                                  void *paint_data,
                                                  hb_codepoint_t glyph,
                                                  hb_font_t *font,
@@ -345,7 +345,7 @@ typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
                                                      void *paint_data,
                                                      float xmin, float ymin,
                                                      float xmax, float ymax,
@@ -375,7 +375,7 @@ typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_funcs_t *funcs,
+typedef hb_draw_funcs_t * (*hb_paint_इतुलाक_clip_path_start_func_t) (hb_paint_funcs_t *funcs,
                                                                    void             *paint_data,
                                                                    void            **draw_data,
                                                                    void             *user_data);
@@ -394,7 +394,7 @@ typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_func
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
                                                     void             *paint_data,
                                                     void             *user_data);
 
@@ -411,7 +411,7 @@ typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_आलिसिन_clip_func_t) (hb_paint_funcs_t *funcs,
                                           void *paint_data,
                                           void *user_data);
 
@@ -568,7 +568,7 @@ typedef enum {
   HB_PAINT_EXTEND_REFLECT
 } hb_paint_extend_t;
 
-typedef struct hb_color_line_t hb_color_line_t;
+typedef struct hb_color_लिन्या_t hb_color_लिन्या_t;
 
 /**
  * hb_color_line_get_color_stops_func_t:
@@ -586,10 +586,10 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
+typedef unsigned int (*hb_color_लिन्या_get_color_stops_func_t) (hb_color_लिन्या_t *color_लिन्या,
+							      void *color_लिन्या_data,
 							      unsigned int start,
-							      unsigned int *count,
+							      unsigned int *बिलांग,
 							      hb_color_stop_t *color_stops,
 							      void *user_data);
 
@@ -605,8 +605,8 @@ typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
+typedef hb_paint_extend_t (*hb_color_लिन्या_get_extend_func_t) (hb_color_लिन्या_t *color_लिन्या,
+							      void *color_लिन्या_data,
 							      void *user_data);
 
 /**
@@ -616,13 +616,13 @@ typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-struct hb_color_line_t {
+struct hb_color_लिन्या_t {
   void *data;
 
-  hb_color_line_get_color_stops_func_t get_color_stops;
+  hb_color_लिन्या_get_color_stops_func_t get_color_stops;
   void *get_color_stops_user_data;
 
-  hb_color_line_get_extend_func_t get_extend;
+  hb_color_लिन्या_get_extend_func_t get_extend;
   void *get_extend_user_data;
 
   void *reserved0;
@@ -636,13 +636,13 @@ struct hb_color_line_t {
 };
 
 HB_EXTERN unsigned int
-hb_color_line_get_color_stops (hb_color_line_t *color_line,
+hb_color_लिन्या_get_color_stops (hb_color_लिन्या_t *color_लिन्या,
                                unsigned int start,
-                               unsigned int *count,
+                               unsigned int *बिलांग,
                                hb_color_stop_t *color_stops);
 
 HB_EXTERN hb_paint_extend_t
-hb_color_line_get_extend (hb_color_line_t *color_line);
+hb_color_लिन्या_get_extend (hb_color_लिन्या_t *color_लिन्या);
 
 /**
  * hb_paint_linear_gradient_func_t:
@@ -674,7 +674,7 @@ hb_color_line_get_extend (hb_color_line_t *color_line);
  */
 typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
                                                  void *paint_data,
-                                                 hb_color_line_t *color_line,
+                                                 hb_color_लिन्या_t *color_लिन्या,
                                                  float x0, float y0,
                                                  float x1, float y1,
                                                  float x2, float y2,
@@ -710,7 +710,7 @@ typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
  */
 typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
                                                  void *paint_data,
-                                                 hb_color_line_t *color_line,
+                                                 hb_color_लिन्या_t *color_लिन्या,
                                                  float x0, float y0, float r0,
                                                  float x1, float y1, float r1,
                                                  void *user_data);
@@ -743,7 +743,7 @@ typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
  */
 typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
                                                  void *paint_data,
-                                                 hb_color_line_t *color_line,
+                                                 hb_color_लिन्या_t *color_लिन्या,
                                                  float x0, float y0,
                                                  float start_angle,
                                                  float end_angle,
@@ -863,7 +863,7 @@ typedef enum {
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_group_func_t) (hb_paint_funcs_t *funcs,
                                             void *paint_data,
                                             void *user_data);
 
@@ -884,7 +884,7 @@ typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_इतुलाक_group_for_func_t) (hb_paint_funcs_t *funcs,
                                                 void *paint_data,
                                                 hb_paint_composite_mode_t mode,
                                                 void *user_data);
@@ -906,7 +906,7 @@ typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
+typedef void (*hb_paint_आलिसिन_group_func_t) (hb_paint_funcs_t *funcs,
                                            void *paint_data,
                                            hb_paint_composite_mode_t mode,
                                            void *user_data);
@@ -953,8 +953,8 @@ typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *fun
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_transform_func_t  func,
+hb_paint_funcs_set_इतुलाक_transform_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_इतुलाक_transform_func_t  func,
                                         void                           *user_data,
                                         hb_destroy_func_t               destroy);
 
@@ -970,8 +970,8 @@ hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
-                                       hb_paint_pop_transform_func_t  func,
+hb_paint_funcs_set_आलिसिन_transform_func (hb_paint_funcs_t              *funcs,
+                                       hb_paint_आलिसिन_transform_func_t  func,
                                        void                          *user_data,
                                        hb_destroy_func_t              destroy);
 
@@ -1021,8 +1021,8 @@ hb_paint_funcs_set_fill_glyph_func (hb_paint_funcs_t           *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_push_clip_glyph_func_t  func,
+hb_paint_funcs_set_इतुलाक_clip_glyph_func (hb_paint_funcs_t                *funcs,
+                                         hb_paint_इतुलाक_clip_glyph_func_t  func,
                                          void                            *user_data,
                                          hb_destroy_func_t                destroy);
 
@@ -1038,8 +1038,8 @@ hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
-                                             hb_paint_push_clip_rectangle_func_t  func,
+hb_paint_funcs_set_इतुलाक_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
+                                             hb_paint_इतुलाक_clip_rectangle_func_t  func,
                                              void                                *user_data,
                                              hb_destroy_func_t                    destroy);
 
@@ -1055,8 +1055,8 @@ hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                   
  * Since: 14.2.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                     *funcs,
-                                              hb_paint_push_clip_path_start_func_t  func,
+hb_paint_funcs_set_इतुलाक_clip_path_start_func (hb_paint_funcs_t                     *funcs,
+                                              hb_paint_इतुलाक_clip_path_start_func_t  func,
                                               void                                 *user_data,
                                               hb_destroy_func_t                     destroy);
 
@@ -1072,8 +1072,8 @@ hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                  
  * Since: 14.2.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *funcs,
-                                            hb_paint_push_clip_path_end_func_t  func,
+hb_paint_funcs_set_इतुलाक_clip_path_end_func (hb_paint_funcs_t                   *funcs,
+                                            hb_paint_इतुलाक_clip_path_end_func_t  func,
                                             void                               *user_data,
                                             hb_destroy_func_t                   destroy);
 
@@ -1089,8 +1089,8 @@ hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
-                                  hb_paint_pop_clip_func_t  func,
+hb_paint_funcs_set_आलिसिन_clip_func (hb_paint_funcs_t         *funcs,
+                                  hb_paint_आलिसिन_clip_func_t  func,
                                   void                     *user_data,
                                   hb_destroy_func_t         destroy);
 
@@ -1191,8 +1191,8 @@ hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
-                                    hb_paint_push_group_func_t  func,
+hb_paint_funcs_set_इतुलाक_group_func (hb_paint_funcs_t           *funcs,
+                                    hb_paint_इतुलाक_group_func_t  func,
                                     void                       *user_data,
                                     hb_destroy_func_t           destroy);
 
@@ -1208,8 +1208,8 @@ hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
  * Since: 14.2.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_group_for_func_t  func,
+hb_paint_funcs_set_इतुलाक_group_for_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_इतुलाक_group_for_func_t  func,
                                         void                           *user_data,
                                         hb_destroy_func_t               destroy);
 
@@ -1225,8 +1225,8 @@ hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
-                                   hb_paint_pop_group_func_t  func,
+hb_paint_funcs_set_आलिसिन_group_func (hb_paint_funcs_t          *funcs,
+                                   hb_paint_आलिसिन_group_func_t  func,
                                    void                       *user_data,
                                    hb_destroy_func_t           destroy);
 
@@ -1251,21 +1251,21 @@ hb_paint_funcs_set_custom_palette_color_func (hb_paint_funcs_t                  
  */
 
 HB_EXTERN void
-hb_paint_push_transform (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_transform (hb_paint_funcs_t *funcs, void *paint_data,
                          float xx, float yx,
                          float xy, float yy,
                          float dx, float dy);
 
 HB_EXTERN void
-hb_paint_push_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
                               const hb_font_t *font);
 
 HB_EXTERN void
-hb_paint_push_inverse_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_inverse_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
                                       const hb_font_t *font);
 
 HB_EXTERN void
-hb_paint_pop_transform (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_आलिसिन_transform (hb_paint_funcs_t *funcs, void *paint_data);
 
 HB_EXTERN hb_bool_t
 hb_paint_color_glyph (hb_paint_funcs_t *funcs, void *paint_data,
@@ -1280,26 +1280,26 @@ hb_paint_fill_glyph (hb_paint_funcs_t *funcs, void *paint_data,
                      hb_color_t color);
 
 HB_EXTERN void
-hb_paint_push_clip_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_clip_glyph (hb_paint_funcs_t *funcs, void *paint_data,
                           hb_codepoint_t glyph,
                           hb_font_t *font);
 
 HB_EXTERN void
-hb_paint_push_clip_rectangle (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_clip_rectangle (hb_paint_funcs_t *funcs, void *paint_data,
                               float xmin, float ymin,
                               float xmax, float ymax);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_paint_push_clip_path_start (hb_paint_funcs_t  *funcs,
+hb_paint_इतुलाक_clip_path_start (hb_paint_funcs_t  *funcs,
                                void              *paint_data,
                                void             **draw_data);
 
 HB_EXTERN void
-hb_paint_push_clip_path_end (hb_paint_funcs_t *funcs,
+hb_paint_इतुलाक_clip_path_end (hb_paint_funcs_t *funcs,
                              void             *paint_data);
 
 HB_EXTERN void
-hb_paint_pop_clip (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_आलिसिन_clip (hb_paint_funcs_t *funcs, void *paint_data);
 
 HB_EXTERN void
 hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
@@ -1317,14 +1317,14 @@ hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
 
 HB_EXTERN void
 hb_paint_linear_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
+                          hb_color_लिन्या_t *color_लिन्या,
                           float x0, float y0,
                           float x1, float y1,
                           float x2, float y2);
 
 HB_EXTERN void
 hb_paint_radial_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
+                          hb_color_लिन्या_t *color_लिन्या,
                           float x0, float y0,
                           float r0,
                           float x1, float y1,
@@ -1332,19 +1332,19 @@ hb_paint_radial_gradient (hb_paint_funcs_t *funcs, void *paint_data,
 
 HB_EXTERN void
 hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                         hb_color_line_t *color_line,
+                         hb_color_लिन्या_t *color_लिन्या,
                          float x0, float y0,
                          float start_angle, float end_angle);
 
 HB_EXTERN void
-hb_paint_push_group (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_इतुलाक_group (hb_paint_funcs_t *funcs, void *paint_data);
 
 HB_EXTERN void
-hb_paint_push_group_for (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_इतुलाक_group_for (hb_paint_funcs_t *funcs, void *paint_data,
                          hb_paint_composite_mode_t mode);
 
 HB_EXTERN void
-hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_आलिसिन_group (hb_paint_funcs_t *funcs, void *paint_data,
                     hb_paint_composite_mode_t mode);
 
 HB_EXTERN hb_bool_t
@@ -1370,7 +1370,7 @@ hb_paint_reduce_linear_anchors (float x0, float y0,
                                 float *xx1, float *yy1);
 
 HB_EXTERN void
-hb_paint_normalize_color_line (hb_color_stop_t *stops,
+hb_paint_normalize_color_लिन्या (hb_color_stop_t *stops,
                                unsigned int     len,
                                float           *min,
                                float           *max);

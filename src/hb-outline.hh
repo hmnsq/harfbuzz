@@ -35,7 +35,7 @@ struct hb_outline_point_t
   enum class type_t
   {
     MOVE_TO,
-    LINE_TO,
+    लिन्या_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };

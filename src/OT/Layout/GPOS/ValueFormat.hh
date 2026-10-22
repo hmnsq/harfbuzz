@@ -7,13 +7,13 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-typedef HBUINT16 Value;
+typedef HBUINT16 हालागा;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+struct हालागा_Base {}; // Dummy base class tag for OffsetTo<Value> bases.
 
-typedef UnsizedArrayOf<Value> ValueRecord;
+typedef UnsizedArrayOf<हालागा> हालागा_Record;
 
-struct ValueFormat : HBUINT16
+struct हालागा_Format : HBUINT16
 {
   enum Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
@@ -56,7 +56,7 @@ struct ValueFormat : HBUINT16
                                          * PosTable (may be NULL) */
 #endif
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  नुमेरो_Type& operator = (uint16_t i) { v = i; return *this; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
@@ -64,7 +64,7 @@ struct ValueFormat : HBUINT16
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
   unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  size_t get_size () const { return get_len () * हालागा::static_size; }
 
   hb_vector_t<unsigned> get_device_table_indices () const {
     unsigned i = 0;
@@ -84,9 +84,9 @@ struct ValueFormat : HBUINT16
     return result;
   }
 
-  bool apply_value (hb_ot_apply_context_t *c,
-                    const ValueBase       *base,
-                    const Value           *values,
+  bool apply_हालागा (hb_ot_apply_context_t *c,
+                    const हालागा_Base       *base,
+                    const हालागा           *values,
                     hb_glyph_position_t   &glyph_pos) const
   {
     bool ret = false;
@@ -160,8 +160,8 @@ struct ValueFormat : HBUINT16
   void position_single (hb_font_t *font,
                         hb_blob_t *table_blob,
                         hb_direction_t direction,
-                        const ValueBase *base,
-                        const Value *values,
+                        const हालागा_Base *base,
+                        const हालागा *values,
                         hb_glyph_position_t &pos) const
   {
     /* This is ugly... */
@@ -169,10 +169,10 @@ struct ValueFormat : HBUINT16
     buffer.props.direction = direction;
     hb_ot_apply_context_t c (1, font, &buffer, table_blob);
 
-    apply_value (&c, base, values, pos);
+    apply_हालागा (&c, base, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
+  unsigned int get_effective_format (const हालागा *values, bool strip_hints, bool strip_empty, const हालागा_Base *base,
                                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
   {
     unsigned int format = *this;
@@ -202,20 +202,20 @@ struct ValueFormat : HBUINT16
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
+  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const हालागा_Base *base,
                                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
     unsigned int new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
+    for (const hb_array_t<const हालागा>& values : it)
       new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
 
     return new_format;
   }
 
-  void copy_values (hb_serialize_context_t *c,
+  void copy_मगा_हालागा (hb_serialize_context_t *c,
                     unsigned int new_format,
-                    const ValueBase *base,
-                    const Value *values,
+                    const हालागा_Base *base,
+                    const हालागा *values,
                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
   {
     unsigned int format = *this;
@@ -223,46 +223,46 @@ struct ValueFormat : HBUINT16
 
     HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
     if ((format | new_format) & xPlacement)
-      x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
+      x_placement = copy_हालागा (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (हालागा));
     if ((format | new_format) & yPlacement)
-      y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
+      y_placement = copy_हालागा (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (हालागा));
     if ((format | new_format) & xAdvance)
-      x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
+      x_adv = copy_हालागा (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (हालागा));
     if ((format | new_format) & yAdvance)
-      y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
+      y_adv = copy_हालागा (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (हालागा));
 
     if (!has_device ())
       return;
 
     if (format & xPlaDevice)
     {
-      add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_हालागा (x_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
     if (format & yPlaDevice)
     {
-      add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_हालागा (y_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
     if (format & xAdvDevice)
     {
-      add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_हालागा (x_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
     if (format & yAdvDevice)
     {
-      add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_हालागा (y_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
     }
   }
 
-  HBINT16* copy_value (hb_serialize_context_t *c,
+  HBINT16* copy_हालागा (hb_serialize_context_t *c,
                        unsigned int new_format,
                        Flags flag,
-                       Value value) const
+                       हालागा value) const
   {
     // Filter by new format.
     if (!(new_format & flag)) return nullptr;
@@ -270,8 +270,8 @@ struct ValueFormat : HBUINT16
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueBase *base,
-                                  const hb_array_t<const Value>& values) const
+                                  const हालागा_Base *base,
+                                  const hb_array_t<const हालागा>& values) const
   {
     unsigned format = *this;
     unsigned i = 0;
@@ -285,19 +285,19 @@ struct ValueFormat : HBUINT16
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    if (format & हालागा_Format::yPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    if (format & हालागा_Format::xAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    if (format & हालागा_Format::yAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
@@ -305,7 +305,7 @@ struct ValueFormat : HBUINT16
   }
 
   private:
-  bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  bool sanitize_हालागा_devices (hb_sanitize_context_t *c, const हालागा_Base *base, const हालागा *values) const
   {
     unsigned int format = *this;
 
@@ -322,17 +322,17 @@ struct ValueFormat : HBUINT16
     return true;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  static inline Offset16To<Device, हालागा_Base>& get_device (हालागा* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    return *static_cast<Offset16To<Device, हालागा_Base> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  static inline const Offset16To<Device, हालागा_Base>& get_device (const हालागा* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    return *static_cast<const Offset16To<Device, हालागा_Base> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
+  static inline const Device& get_device (const हालागा* value,
 					  bool *worked,
-					  const ValueBase *base,
+					  const हालागा_Base *base,
 					  hb_sanitize_context_t &c)
   {
     if (worked) *worked |= bool (*value);
@@ -345,13 +345,13 @@ struct ValueFormat : HBUINT16
     return base + offset;
   }
 
-  void add_delta_to_value (HBINT16 *value,
-                           const ValueBase *base,
-                           const Value *src_value,
+  void add_delta_to_हालागा (HBINT16 *value,
+                           const हालागा_Base *base,
+                           const हालागा *src_हालागा,
                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
   {
     if (!value) return;
-    unsigned varidx = (base + get_device (src_value)).get_variation_index ();
+    unsigned varidx = (base + get_device (src_हालागा)).get_variation_index ();
     hb_pair_t<unsigned, int> *varidx_delta;
     if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
 
@@ -359,34 +359,34 @@ struct ValueFormat : HBUINT16
   }
 
   bool copy_device (hb_serialize_context_t *c,
-                    const ValueBase *base,
-                    const Value *src_value,
+                    const हालागा_Base *base,
+                    const हालागा *src_हालागा,
                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
                     unsigned int new_format, Flags flag) const
   {
     // Filter by new format.
     if (!(new_format & flag)) return true;
 
-    Value       *dst_value = c->copy (*src_value);
+    हालागा       *dst_हालागा = c->copy (*src_हालागा);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    if (!dst_हालागा) return false;
+    if (*dst_हालागा == 0) return true;
 
-    *dst_value = 0;
+    *dst_हालागा = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    if ((base + get_device (src_हालागा)).copy (c, layout_variation_idx_delta_map))
     {
-      c->add_link (*dst_value, c->pop_pack ());
+      c->add_link (*dst_हालागा, c->आलिसिन_pack ());
       return true;
     }
     else
     {
-      c->pop_discard ();
+      c->आलिसिन_discard ();
       return false;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  static inline const HBINT16& get_short (const हालागा* value, bool *worked=nullptr)
   {
     if (worked) *worked |= bool (*value);
     return *reinterpret_cast<const HBINT16 *> (value);
@@ -400,7 +400,7 @@ struct ValueFormat : HBUINT16
     return (format & devices) != 0;
   }
 
-  bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  bool sanitize_हालागा (hb_sanitize_context_t *c, const हालागा_Base *base, const हालागा *values) const
   {
     TRACE_SANITIZE (this);
 
@@ -409,34 +409,34 @@ struct ValueFormat : HBUINT16
     if (c->lazy_some_gpos)
       return_trace (true);
 
-    return_trace (!has_device () || sanitize_value_devices (c, base, values));
+    return_trace (!has_device () || sanitize_हालागा_devices (c, base, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  bool sanitize_मगा_हालागा (hb_sanitize_context_t *c, const हालागा_Base *base, const हालागा *values, unsigned int बिलांग) const
   {
     TRACE_SANITIZE (this);
     unsigned size = get_size ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    if (!c->check_range (values, बिलांग, size)) return_trace (false);
 
     if (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
-    return_trace (sanitize_values_stride_unsafe (c, base, values, count, size));
+    return_trace (sanitize_मगा_हालागा_stride_unsafe (c, base, values, बिलांग, size));
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  bool sanitize_मगा_हालागा_stride_unsafe (hb_sanitize_context_t *c, const हालागा_Base *base, const हालागा *values, unsigned int बिलांग, unsigned int stride) const
   {
     TRACE_SANITIZE (this);
 
     if (!has_device ()) return_trace (true);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
+    for (unsigned int i = 0; i < बिलांग; i++) {
+      if (!sanitize_हालागा_devices (c, base, values))
         return_trace (false);
-      values = &StructAtOffset<const Value> (values, stride);
+      values = &StructAtOffset<const हालागा> (values, stride);
     }
 
     return_trace (true);
@@ -444,14 +444,14 @@ struct ValueFormat : HBUINT16
 
  private:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  void should_drop (हालागा value, Flags flag, unsigned int* format) const
   {
     if (value) return;
     *format = *format & ~flag;
   }
 
-  void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
+  void update_var_flag (const हालागा* value, Flags flag,
+                        unsigned int* format, const हालागा_Base *base,
                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
   {
     if (*value)

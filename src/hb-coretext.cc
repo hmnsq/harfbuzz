@@ -75,58 +75,58 @@ _hb_cg_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data
 static unsigned
 _hb_cg_get_table_tags (const hb_face_t *face HB_UNUSED,
 		       unsigned int start_offset,
-		       unsigned int *table_count,
+		       unsigned int *table_बिलांग_2,
 		       hb_tag_t *table_tags,
 		       void *user_data)
 {
   CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
   if (unlikely (!cg_font))
   {
-    if (table_count)
-      *table_count = 0;
+    if (table_बिलांग_2)
+      *table_बिलांग_2 = 0;
     return 0;
   }
 
   hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_SIZE));
   if (unlikely (!ct_font))
   {
-    if (table_count)
-      *table_count = 0;
+    if (table_बिलांग_2)
+      *table_बिलांग_2 = 0;
     return 0;
   }
 
   hb_cf_ptr_t<CFArrayRef> arr (CTFontCopyAvailableTables (ct_font, kCTFontTableOptionNoOptions));
   if (unlikely (!arr))
   {
-    if (table_count)
-      *table_count = 0;
+    if (table_बिलांग_2)
+      *table_बिलांग_2 = 0;
     return 0;
   }
 
-  unsigned population = (unsigned) CFArrayGetCount (arr);
+  unsigned population = (unsigned) CFArray_Get_बिलांग (arr);
 
-  if (!table_count)
+  if (!table_बिलांग_2)
     return population;
 
   if (unlikely (start_offset >= population))
   {
-    *table_count = 0;
+    *table_बिलांग_2 = 0;
     return population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
+  unsigned end_offset = start_offset + *table_बिलांग_2;
   if (unlikely (end_offset < start_offset))
   {
-    *table_count = 0;
+    *table_बिलांग_2 = 0;
     return population;
   }
   end_offset = hb_min (end_offset, (unsigned) population);
 
-  *table_count = end_offset - start_offset;
+  *table_बिलांग_2 = end_offset - start_offset;
   if (table_tags)
     for (unsigned i = start_offset; i < end_offset; i++)
     {
-      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArrayGetValueAtIndex (arr, i);
+      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArray_Get_हालागा_At_Index (arr, i);
       table_tags[i - start_offset] = tag;
     }
 
@@ -156,14 +156,14 @@ get_last_resort_font_desc ()
   if (unlikely (!cascade_list))
     return nullptr;
 
-  const void *keys[] = { kCTFontCascadeListAttribute };
+  const void *मगा_सुसि[] = { kCTFontCascadeListAttribute };
   const void *values[] = { cascade_list.get () };
   hb_cf_ptr_t<CFDictionaryRef> attributes (CFDictionaryCreate (kCFAllocatorDefault,
-							       keys,
+							       मगा_सुसि,
 							       values,
 							       1,
-							       &kCFTypeDictionaryKeyCallBacks,
-							       &kCFTypeDictionaryValueCallBacks));
+							       &k_CFType_Dictionary_सुसि_Call_Backs,
+							       &k_CFType_Dictionary_हालागा_Call_Backs));
   if (unlikely (!attributes))
     return nullptr;
 
@@ -193,8 +193,8 @@ create_cg_font (CFArrayRef ct_font_desc_array, unsigned int named_instance_index
   }
   else
     named_instance_index--;
-  auto ct_font_desc = (CFArrayGetCount (desc_array) > (CFIndex) named_instance_index) ?
-		      (CTFontDescriptorRef) CFArrayGetValueAtIndex (desc_array, (CFIndex) named_instance_index) : nullptr;
+  auto ct_font_desc = (CFArray_Get_बिलांग (desc_array) > (CFIndex) named_instance_index) ?
+		      (CTFontDescriptorRef) CFArray_Get_हालागा_At_Index (desc_array, (CFIndex) named_instance_index) : nullptr;
   if (unlikely (!ct_font_desc))
     return nullptr;
 
@@ -212,14 +212,14 @@ create_cg_font (hb_blob_t *blob, unsigned int index)
   unsigned int blob_length;
   const char *blob_data = hb_blob_get_data (blob, &blob_length);
   if (unlikely (!blob_length))
-    DEBUG_MSG (CORETEXT, blob, "Empty blob");
+    DEBUG_मेनसाहे (CORETEXT, blob, "Empty blob");
 
   unsigned ttc_index = index & 0xFFFF;
   unsigned named_instance_index = index >> 16;
 
   if (ttc_index != 0)
   {
-    DEBUG_MSG (CORETEXT, blob, "TTC index %u not supported", ttc_index);
+    DEBUG_मेनसाहे (CORETEXT, blob, "TTC index %u not supported", ttc_index);
     return nullptr; // CoreText does not support TTCs
   }
 
@@ -253,7 +253,7 @@ create_cg_font (hb_blob_t *blob, unsigned int index)
   }
   CGFontRef cg_font = CGFontCreateWithDataProvider (provider);
   if (unlikely (!cg_font))
-    DEBUG_MSG (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
+    DEBUG_मेनसाहे (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
   return cg_font;
 }
 
@@ -313,7 +313,7 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
     ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_size, nullptr, nullptr));
 
   if (unlikely (!ct_font)) {
-    DEBUG_MSG (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
+    DEBUG_मेनसाहे (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
     return nullptr;
   }
 
@@ -327,7 +327,7 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   if (&CTGetCoreTextVersion != nullptr && CTGetCoreTextVersion() < 0x00070000) {
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
     hb_cf_ptr_t<CFStringRef> fontName (CTFontCopyPostScriptName (ct_font));
     bool isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == kCFCompareEqualTo;
     if (!isEmojiFont)
@@ -379,14 +379,14 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 	if (!original_url || !new_url || CFEqual (original_url, new_url)) {
 	  ct_font = std::move (new_ct_font);
 	} else {
-	  DEBUG_MSG (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
+	  DEBUG_मेनसाहे (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
 	}
       }
       else
-	DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+	DEBUG_मेनसाहे (CORETEXT, ct_font, "Font copy with empty cascade list failed");
     }
     else
-      DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+      DEBUG_मेनसाहे (CORETEXT, ct_font, "Font copy with empty cascade list failed");
   }
 
   return ct_font.release ();
@@ -439,7 +439,7 @@ hb_coretext_face_create_from_file_or_fail (const char   *file_name,
 
   if (ttc_index != 0)
   {
-    DEBUG_MSG (CORETEXT, nullptr, "TTC index %u not supported", ttc_index);
+    DEBUG_मेनसाहे (CORETEXT, nullptr, "TTC index %u not supported", ttc_index);
     return nullptr; // CoreText does not support TTCs
   }
 
@@ -565,20 +565,20 @@ hb_coretext_font_create (CTFontRef ct_font)
   {
 
     hb_vector_t<hb_variation_t> vars;
-    hb_vector_t<CFTypeRef> keys;
+    hb_vector_t<CFTypeRef> मगा_सुसि;
     hb_vector_t<CFTypeRef> values;
 
-    CFIndex count = CFDictionaryGetCount (variations);
-    if (likely (vars.alloc_exact (count) && keys.resize_exact (count) && values.resize_exact (count)))
+    CFIndex बिलांग = CFDictionary_Get_बिलांग (variations);
+    if (likely (vars.alloc_exact (बिलांग) && मगा_सुसि.resize_exact (बिलांग) && values.resize_exact (बिलांग)))
     {
       // Fetch them one by one and collect in a vector of our own.
-      CFDictionaryGetKeysAndValues (variations, keys.arrayZ, values.arrayZ);
-      for (CFIndex i = 0; i < count; i++)
+      CFDictionary_Get_मगा_सुसि_And_मगा_हालागा (variations, मगा_सुसि.arrayZ, values.arrayZ);
+      for (CFIndex i = 0; i < बिलांग; i++)
       {
 	int tag;
 	float value;
-	CFNumberGetValue ((CFNumberRef) keys.arrayZ[i], kCFNumberIntType, &tag);
-	CFNumberGetValue ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
+	CFNumber_Get_हालागा ((CFNumberRef) मगा_सुसि.arrayZ[i], kCFNumberIntType, &tag);
+	CFNumber_Get_हालागा ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
 
 	hb_variation_t var = {(hb_tag_t) tag, value};
 	vars.push (var);

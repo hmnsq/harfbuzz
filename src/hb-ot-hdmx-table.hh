@@ -41,8 +41,8 @@ namespace OT {
 
 struct DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  static size_t get_size (unsigned बिलांग)
+  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (बिलांग, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -50,11 +50,11 @@ struct DeviceRecord
 		  unsigned pixelSize,
 		  Iterator it,
 		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  unsigned नुमेरो_glyphs)
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    if (unlikely (!c->extend (this, नुमेरो_glyphs)))  return_trace (false);
 
     this->pixelSize = pixelSize;
     this->maxWidth =
@@ -88,7 +88,7 @@ struct hdmx
   static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  { return hb_unsigned_mul_add_saturate (नुमेरो_Records, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
@@ -96,18 +96,18 @@ struct hdmx
 		  unsigned version,
 		  Iterator it,
 		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  unsigned नुमेरो_glyphs)
   {
     TRACE_SERIALIZE (this);
 
     if (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
     this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    this->नुमेरो_Records = it.len ();
+    this->sizeDeviceRecord = DeviceRecord::get_size (नुमेरो_glyphs);
 
     for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, नुमेरो_glyphs);
 
     return_trace (c->successful ());
   }
@@ -117,34 +117,34 @@ struct hdmx
   {
     TRACE_SUBSET (this);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_पांगुनाहिन = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned नुमेरो_पासोक_glyphs = get_नुमेरो_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) नुमेरो_Records)
+    | hb_map ([c, नुमेरो_पासोक_glyphs, this] (unsigned _)
 	{
 	  const DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
 					   _ * sizeDeviceRecord);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([नुमेरो_पासोक_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			return device_record->widthsZ.as_array (नुमेरो_पासोक_glyphs) [_.second];
 		      })
 	    ;
 	  return hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_पांगुनाहिन->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
+			   c->plan->नुमेरो_output_glyphs ());
     return_trace (true);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_नुमेरो_glyphs () const
   {
     return sizeDeviceRecord - DeviceRecord::min_size;
   }
@@ -154,15 +154,15 @@ struct hdmx
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
+		  !hb_unsigned_mul_overflows (नुमेरो_Records, sizeDeviceRecord) &&
+                  min_size + नुमेरो_Records * sizeDeviceRecord > नुमेरो_Records * sizeDeviceRecord &&
 		  sizeDeviceRecord >= DeviceRecord::min_size &&
 		  c->check_range (this, get_size ()));
   }
 
   protected:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
+  HBUINT16	नुमेरो_Records;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;

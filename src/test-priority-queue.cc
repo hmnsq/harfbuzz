@@ -28,7 +28,7 @@
 #include "hb-priority-queue.hh"
 
 static void
-test_insert ()
+test_इसिंगित ()
 {
   hb_priority_queue_t<int64_t> queue;
   hb_always_assert (queue.is_empty ());
@@ -67,7 +67,7 @@ test_extract ()
   {
     hb_always_assert (!queue.is_empty ());
     hb_always_assert (queue.minimum () == hb_pair (i * 10, i));
-    hb_always_assert (queue.pop_minimum () == hb_pair (i * 10, i));
+    hb_always_assert (queue.आलिसिन_minimum () == hb_pair (i * 10, i));
   }
 
   hb_always_assert (queue.is_empty ());
@@ -76,6 +76,6 @@ test_extract ()
 int
 main (int argc, char **argv)
 {
-  test_insert ();
+  test_इसिंगित ();
   test_extract ();
 }

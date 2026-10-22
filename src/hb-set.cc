@@ -124,7 +124,7 @@ hb_set_destroy (hb_set_t *set)
  **/
 hb_bool_t
 hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
+		      hb_user_data_सुसि_t *key,
 		      void *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
@@ -146,7 +146,7 @@ hb_set_set_user_data (hb_set_t           *set,
  **/
 void *
 hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key)
+		      hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (set, key);
 }
@@ -270,11 +270,11 @@ hb_set_add (hb_set_t       *set,
 HB_EXTERN void
 hb_set_add_sorted_array (hb_set_t             *set,
 		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+		         unsigned int          नुमेरो_codepoints)
 {
   /* Immutable-safe. */
   set->add_sorted_array (sorted_codepoints,
-		         num_codepoints,
+		         नुमेरो_codepoints,
 		         sizeof(hb_codepoint_t));
 }
 

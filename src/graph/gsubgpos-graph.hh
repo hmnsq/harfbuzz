@@ -71,7 +71,7 @@ struct ExtensionFormat1 : public OT::ExtensionFormat1<T>
 
 struct Lookup : public OT::Lookup
 {
-  unsigned number_of_subtables () const
+  unsigned नुमेरो_of_subtables () const
   {
     return subTable.len;
   }
@@ -107,7 +107,7 @@ struct Lookup : public OT::Lookup
       return Ok();
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_मेनसाहे (SUBSET_REPACK, nullptr,
                "Promoting lookup type %u (obj %u) to extension.",
                type,
                this_index);
@@ -243,12 +243,12 @@ struct Lookup : public OT::Lookup
     auto* v = &c.graph.vertices_[this_index];
     fix_existing_subtable_links (c, this_index, subtable_ids);
 
-    unsigned new_subtable_count = 0;
+    unsigned new_subtable_बिलांग = 0;
     for (const auto& p : subtable_ids)
-      new_subtable_count += p.second.length;
+      new_subtable_बिलांग += p.second.length;
 
     size_t new_size = v->table_size ()
-                      + new_subtable_count * OT::Offset16::static_size;
+                      + new_subtable_बिलांग * OT::Offset16::static_size;
     char* buffer = (char*) hb_calloc (1, new_size);
     if (unlikely (!buffer)) return Err(ALLOCATION_FAILURE);
     auto res = c.add_buffer (buffer);
@@ -267,7 +267,7 @@ struct Lookup : public OT::Lookup
     Lookup* new_lookup = (Lookup*) buffer;
 
     unsigned shift = 0;
-    new_lookup->subTable.len = subTable.len + new_subtable_count;
+    new_lookup->subTable.len = subTable.len + new_subtable_बिलांग;
     for (const auto& p : subtable_ids)
     {
       unsigned offset_index = p.first + shift + 1;
@@ -308,14 +308,14 @@ struct Lookup : public OT::Lookup
     unsigned shift = 0;
     for (const auto& p : subtable_ids)
     {
-      unsigned insert_index = p.first + shift;
+      unsigned इसिंगित_index = p.first + shift;
       unsigned pos_offset = p.second.length * OT::Offset16::static_size;
-      unsigned insert_offset = Lookup::min_size + insert_index * OT::Offset16::static_size;
+      unsigned इसिंगित_offset = Lookup::min_size + इसिंगित_index * OT::Offset16::static_size;
       shift += p.second.length;
 
       for (auto& l : v.all_links_writer ())
       {
-        if (l.position > insert_offset) l.position += pos_offset;
+        if (l.position > इसिंगित_offset) l.position += pos_offset;
       }
     }
   }
@@ -326,7 +326,7 @@ struct Lookup : public OT::Lookup
   {
     unsigned extension_size = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_size;
 
-    TRY_ASSIGN (unsigned ext_index, c.create_node (extension_size));
+    TRY_ASSIGN (unsigned ext_index, c.create_बुहोल (extension_size));
 
     auto& ext_vertex = c.graph.vertices_[ext_index];
     ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
@@ -421,7 +421,7 @@ struct GSTAR : public OT::GSUBGPOS
 {
   static graph_result_t<const GSTAR*> graph_to_gstar (graph_t& graph)
   {
-    const auto& r = graph.root ();
+    const auto& r = graph.उगात ();
 
     const GSTAR* gstar = (GSTAR*) r.obj ().head;
     if (unlikely (!gstar)) return Err(INVALID_ARGUMENT);
@@ -461,7 +461,7 @@ struct GSTAR : public OT::GSUBGPOS
   {
     const void* offset = get_lookup_list_field_offset ();
     if (unlikely (!offset)) return Err(INVALID_ARGUMENT);
-    return graph.index_for_offset (graph.root_idx (), offset);
+    return graph.index_for_offset (graph.उगात_idx (), offset);
   }
 
   template<typename Types>

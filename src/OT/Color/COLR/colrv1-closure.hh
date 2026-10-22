@@ -38,9 +38,9 @@ namespace OT {
 
 HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
+  c->add_layer_indices (firstLayerIndex, नुमेरो_Layers);
   const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  for (unsigned i = firstLayerIndex; i < firstLayerIndex + नुमेरो_Layers; i++)
   {
     const Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);
@@ -75,55 +75,55 @@ HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c)
 HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  c->नुमेरो_var_idxes = 2;
 }
 
 HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  c->नुमेरो_var_idxes = 2;
 }
 
 HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  c->नुमेरो_var_idxes = 4;
 }
 
 HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  c->नुमेरो_var_idxes = 1;
 }
 
 HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  c->नुमेरो_var_idxes = 3;
 }
 
 HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  c->नुमेरो_var_idxes = 1;
 }
 
 HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  c->नुमेरो_var_idxes = 3;
 }
 
 HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  c->नुमेरो_var_idxes = 2;
 }
 
 HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
 {
   (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  c->नुमेरो_var_idxes = 4;
 }
 
 HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const

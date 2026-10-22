@@ -149,7 +149,7 @@ struct DuctileGlyphAction
   F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_हालागा; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
   F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
@@ -224,7 +224,7 @@ struct PostcompensationActionChain
     hb_barrier ();
 
     unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
       if (unlikely (!subrecord.sanitize (c))) return_trace (false);
@@ -235,7 +235,7 @@ struct PostcompensationActionChain
   }
 
   protected:
-  HBUINT32	count;
+  HBUINT32	बिलांग;
 
   public:
   DEFINE_SIZE_STATIC (4);

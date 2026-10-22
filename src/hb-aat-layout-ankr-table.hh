@@ -62,9 +62,9 @@ struct ankr
 
   const Anchor &get_anchor (hb_codepoint_t glyph_id,
 			    unsigned int i,
-			    unsigned int num_glyphs) const
+			    unsigned int नुमेरो_glyphs) const
   {
-    const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
+    const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_हालागा (glyph_id, नुमेरो_glyphs);
     if (!offset)
       return Null (Anchor);
     const GlyphAnchors &anchors = &(this+anchorData) + *offset;

@@ -273,9 +273,9 @@ _hb_ot_layout_set_glyph_props (hb_font_t *font,
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
   const auto &gdef = *font->face->table.GDEF;
-  unsigned int count = buffer->len;
+  unsigned int बिलांग = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned int i = 0; i < बिलांग; i++)
   {
     if (SetDigest)
       buffer->digest.add (info[i].codepoint);
@@ -362,12 +362,12 @@ unsigned int
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
 				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
+				unsigned int   *point_बिलांग /* IN/OUT */,
 				unsigned int   *point_array /* OUT */)
 {
   return face->table.GDEF->table->get_attach_points (glyph,
 						     start_offset,
-						     point_count,
+						     point_बिलांग,
 						     point_array);
 }
 /**
@@ -398,10 +398,10 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
 				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  unsigned int   *caret_बिलांग /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */)
 {
-  return font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_count, caret_array);
+  return font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_बिलांग, caret_array);
 }
 #endif
 
@@ -461,12 +461,12 @@ unsigned int
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
 				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    unsigned int *script_बिलांग /* IN/OUT */,
 				    hb_tag_t     *script_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_script_tags (start_offset, script_count, script_tags);
+  return g.get_script_tags (start_offset, script_बिलांग, script_tags);
 }
 
 #define HB_OT_TAG_LATIN_SCRIPT		HB_TAG ('l', 'a', 't', 'n')
@@ -563,7 +563,7 @@ hb_ot_layout_table_choose_script (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
+				  unsigned int    script_बिलांग,
 				  const hb_tag_t *script_tags,
 				  unsigned int   *script_index  /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */)
@@ -572,7 +572,7 @@ hb_ot_layout_table_select_script (hb_face_t      *face,
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   unsigned int i;
 
-  for (i = 0; i < script_count; i++)
+  for (i = 0; i < script_बिलांग; i++)
   {
     if (g.find_script_index (script_tags[i], script_index))
     {
@@ -633,12 +633,12 @@ unsigned int
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
 				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     unsigned int *feature_बिलांग_2 /* IN/OUT */,
 				     hb_tag_t     *feature_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_feature_tags (start_offset, feature_count, feature_tags);
+  return g.get_feature_tags (start_offset, feature_बिलांग_2, feature_tags);
 }
 
 
@@ -666,8 +666,8 @@ hb_ot_layout_table_find_feature (hb_face_t    *face,
   static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  unsigned int num_features = g.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  unsigned int नुमेरो_features = g.get_feature_बिलांग ();
+  for (unsigned int i = 0; i < नुमेरो_features; i++)
   {
     if (feature_tag == g.get_feature_tag (i)) {
       if (feature_index) *feature_index = i;
@@ -703,12 +703,12 @@ hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
 				       unsigned int  script_index,
 				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       unsigned int *language_बिलांग /* IN/OUT */,
 				       hb_tag_t     *language_tags  /* OUT */)
 {
   const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
 
-  return s.get_lang_sys_tags (start_offset, language_count, language_tags);
+  return s.get_lang_sys_tags (start_offset, language_बिलांग, language_tags);
 }
 
 
@@ -772,7 +772,7 @@ hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned int    language_बिलांग,
 				     const hb_tag_t *language_tags,
 				     unsigned int   *language_index /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */)
@@ -781,7 +781,7 @@ hb_ot_layout_script_select_language2 (hb_face_t      *face,
   const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
   unsigned int i;
 
-  for (i = 0; i < language_count; i++)
+  for (i = 0; i < language_बिलांग; i++)
   {
     if (s.find_lang_sys_index (language_tags[i], language_index))
     {
@@ -830,13 +830,13 @@ hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned int    language_बिलांग,
 				     const hb_tag_t *language_tags,
 				     unsigned int   *language_index /* OUT */)
 {
   return hb_ot_layout_script_select_language2 (face, table_tag,
 					       script_index,
-					       language_count, language_tags,
+					       language_बिलांग, language_tags,
 					       language_index, nullptr);
 }
 
@@ -933,13 +933,13 @@ hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   unsigned int  script_index,
 					   unsigned int  language_index,
 					   unsigned int  start_offset,
-					   unsigned int *feature_count   /* IN/OUT */,
+					   unsigned int *feature_बिलांग_2   /* IN/OUT */,
 					   unsigned int *feature_indexes /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  return l.get_feature_indexes (start_offset, feature_count, feature_indexes);
+  return l.get_feature_indexes (start_offset, feature_बिलांग_2, feature_indexes);
 }
 
 
@@ -969,18 +969,18 @@ hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					unsigned int  script_index,
 					unsigned int  language_index,
 					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					unsigned int *feature_बिलांग_2 /* IN/OUT */,
 					hb_tag_t     *feature_tags  /* OUT */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
   static_assert ((sizeof (unsigned int) == sizeof (hb_tag_t)), "");
-  unsigned int ret = l.get_feature_indexes (start_offset, feature_count, (unsigned int *) feature_tags);
+  unsigned int ret = l.get_feature_indexes (start_offset, feature_बिलांग_2, (unsigned int *) feature_tags);
 
-  if (feature_count && feature_tags) {
-    unsigned int count = *feature_count;
-    for (unsigned int i = 0; i < count; i++)
+  if (feature_बिलांग_2 && feature_tags) {
+    unsigned int बिलांग = *feature_बिलांग_2;
+    for (unsigned int i = 0; i < बिलांग; i++)
       feature_tags[i] = g.get_feature_tag ((unsigned int) feature_tags[i]);
   }
 
@@ -1017,8 +1017,8 @@ hb_ot_layout_language_find_feature (hb_face_t    *face,
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  unsigned int num_features = l.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++) {
+  unsigned int नुमेरो_features = l.get_feature_बिलांग ();
+  for (unsigned int i = 0; i < नुमेरो_features; i++) {
     unsigned int f_index = l.get_feature_index (i);
 
     if (feature_tag == g.get_feature_tag (f_index)) {
@@ -1055,7 +1055,7 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
 				  unsigned int  feature_index,
 				  unsigned int  start_offset,
-				  unsigned int *lookup_count   /* IN/OUT */,
+				  unsigned int *lookup_बिलांग   /* IN/OUT */,
 				  unsigned int *lookup_indexes /* OUT */)
 {
   return hb_ot_layout_feature_with_variations_get_lookups (face,
@@ -1063,7 +1063,7 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 							   feature_index,
 							   HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
 							   start_offset,
-							   lookup_count,
+							   lookup_बिलांग,
 							   lookup_indexes);
 }
 
@@ -1081,10 +1081,10 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
  * Since: 0.9.22
  **/
 unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
+hb_ot_layout_table_get_lookup_बिलांग (hb_face_t    *face,
 				     hb_tag_t      table_tag)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_count ();
+  return get_gsubgpos_table (face, table_tag).get_lookup_बिलांग ();
 }
 
 
@@ -1098,7 +1098,7 @@ struct hb_collect_features_context_t
     : g (get_gsubgpos_table (face, table_tag)),
       feature_indices (feature_indices_),
       has_feature_filter (false),
-      script_count (0),langsys_count (0), feature_index_count (0)
+      script_बिलांग (0),langsys_बिलांग (0), feature_index_बिलांग (0)
   {
     compute_feature_filter (features);
   }
@@ -1116,7 +1116,7 @@ struct hb_collect_features_context_t
     for (; *features; features++)
       features_set.add (*features);
 
-    for (unsigned i = 0; i < g.get_feature_count (); i++)
+    for (unsigned i = 0; i < g.get_feature_बिलांग (); i++)
     {
       hb_tag_t tag = g.get_feature_tag (i);
       if (features_set.has (tag))
@@ -1129,10 +1129,10 @@ struct hb_collect_features_context_t
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
     if (unlikely (!s.has_default_lang_sys () &&
-		  !s.get_lang_sys_count ()))
+		  !s.get_lang_sys_बिलांग ()))
       return true;
 
-    if (script_count++ > HB_MAX_SCRIPTS)
+    if (script_बिलांग++ > HB_MAX_SCRIPTS)
       return true;
 
     return visited (s, visited_script);
@@ -1142,19 +1142,19 @@ struct hb_collect_features_context_t
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
     if (unlikely (!l.has_required_feature () &&
-		  !l.get_feature_count ()))
+		  !l.get_feature_बिलांग ()))
       return true;
 
-    if (langsys_count++ > HB_MAX_LANGSYS)
+    if (langsys_बिलांग++ > HB_MAX_LANGSYS)
       return true;
 
     return visited (l, visited_langsys);
   }
 
-  bool visited_feature_indices (unsigned count)
+  bool visited_feature_indices (unsigned बिलांग)
   {
-    feature_index_count += count;
-    return feature_index_count > HB_MAX_FEATURE_INDICES;
+    feature_index_बिलांग += बिलांग;
+    return feature_index_बिलांग > HB_MAX_FEATURE_INDICES;
   }
 
   private:
@@ -1178,9 +1178,9 @@ struct hb_collect_features_context_t
   private:
   hb_set_t visited_script;
   hb_set_t visited_langsys;
-  unsigned int script_count;
-  unsigned int langsys_count;
-  unsigned int feature_index_count;
+  unsigned int script_बिलांग;
+  unsigned int langsys_बिलांग;
+  unsigned int feature_index_बिलांग;
 };
 
 static void
@@ -1202,8 +1202,8 @@ langsys_collect_features (hb_collect_features_context_t *c,
   else
   {
     if (c->feature_indices_filter.is_empty()) return;
-    unsigned int num_features = l.get_feature_count ();
-    for (unsigned int i = 0; i < num_features; i++)
+    unsigned int नुमेरो_features = l.get_feature_बिलांग ();
+    for (unsigned int i = 0; i < नुमेरो_features; i++)
     {
       unsigned int feature_index = l.get_feature_index (i);
       if (!c->feature_indices_filter.has (feature_index)) continue;
@@ -1229,8 +1229,8 @@ script_collect_features (hb_collect_features_context_t *c,
 				s.get_default_lang_sys ());
 
 
-    unsigned int count = s.get_lang_sys_count ();
-    for (unsigned int language_index = 0; language_index < count; language_index++)
+    unsigned int बिलांग = s.get_lang_sys_बिलांग ();
+    for (unsigned int language_index = 0; language_index < बिलांग; language_index++)
       langsys_collect_features (c,
 				s.get_lang_sys (language_index));
   }
@@ -1280,8 +1280,8 @@ hb_ot_layout_collect_features (hb_face_t      *face,
   if (!scripts)
   {
     /* All scripts. */
-    unsigned int count = c.g.get_script_count ();
-    for (unsigned int script_index = 0; script_index < count; script_index++)
+    unsigned int बिलांग = c.g.get_script_बिलांग ();
+    for (unsigned int script_index = 0; script_index < बिलांग; script_index++)
       script_collect_features (&c,
 			       c.g.get_script (script_index),
 			       languages);
@@ -1322,20 +1322,20 @@ hb_ot_layout_collect_features_map (hb_face_t      *face,
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
 
-  unsigned int count = l.get_feature_indexes (0, nullptr, nullptr);
-  feature_map->alloc (count);
+  unsigned int बिलांग = l.get_feature_indexes (0, nullptr, nullptr);
+  feature_map->alloc (बिलांग);
 
   /* Loop in reverse, such that earlier entries win. That emulates
    * a linear search, which seems to be what other implementations do.
    * We found that with arialuni_t.ttf, the "ur" language system has
    * duplicate features, and the earlier ones work but not later ones.
    */
-  for (unsigned int i = count; i; i--)
+  for (unsigned int i = बिलांग; i; i--)
   {
     unsigned feature_index = 0;
-    unsigned feature_count = 1;
-    l.get_feature_indexes (i - 1, &feature_count, &feature_index);
-    if (!feature_count)
+    unsigned feature_बिलांग_2 = 1;
+    l.get_feature_indexes (i - 1, &feature_बिलांग_2, &feature_index);
+    if (!feature_बिलांग_2)
       break;
     hb_tag_t feature_tag = g.get_feature_tag (feature_index);
     feature_map->set (feature_tag, feature_index);
@@ -1404,13 +1404,13 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
 				    unsigned int  lookup_index,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
+				    hb_set_t     *glyphs_पासोक,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */)
 {
   OT::hb_collect_glyphs_context_t c (face,
 				     glyphs_before,
-				     glyphs_input,
+				     glyphs_पासोक,
 				     glyphs_after,
 				     glyphs_output);
 
@@ -1439,7 +1439,7 @@ bool
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
 						   const int             *coords,
-						   unsigned int           num_coords,
+						   unsigned int           नुमेरो_coords,
 						   unsigned int          *variations_index,
 						   hb_vector_t<unsigned> *lookup_conditions)
 {
@@ -1447,10 +1447,10 @@ _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
   const OT::GDEF &gdef = *face->table.GDEF->table;
 
   auto instancer = OT::ItemVarStoreInstancer (&gdef.get_var_store (), nullptr,
-					      hb_array (coords, num_coords));
+					      hb_array (coords, नुमेरो_coords));
 
   return g.get_feature_variations_state (coords,
-					 num_coords,
+					 नुमेरो_coords,
 					 variations_index,
 					 &instancer,
 					 lookup_conditions);
@@ -1489,16 +1489,16 @@ hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
 					    const int    *coords,
-					    unsigned int  num_coords,
+					    unsigned int  नुमेरो_coords,
 					    unsigned int *variations_index /* out */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   const OT::GDEF &gdef = *face->table.GDEF->table;
 
   auto instancer = OT::ItemVarStoreInstancer(&gdef.get_var_store(), nullptr,
-					     hb_array (coords, num_coords));
+					     hb_array (coords, नुमेरो_coords));
 
-  return g.find_variations_index (coords, num_coords, variations_index, &instancer);
+  return g.find_variations_index (coords, नुमेरो_coords, variations_index, &instancer);
 }
 
 
@@ -1528,7 +1528,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  unsigned int  feature_index,
 						  unsigned int  variations_index,
 						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
+						  unsigned int *lookup_बिलांग /* IN/OUT */,
 						  unsigned int *lookup_indexes /* OUT */)
 {
   static_assert ((OT::FeatureVariations::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_VARIATIONS_INDEX), "");
@@ -1536,7 +1536,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 
   const OT::Feature &f = g.get_feature_variation (feature_index, variations_index);
 
-  return f.get_lookup_indexes (start_offset, lookup_count, lookup_indexes);
+  return f.get_lookup_indexes (start_offset, lookup_बिलांग, lookup_indexes);
 }
 
 
@@ -1587,7 +1587,7 @@ hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
 				      hb_bool_t             zero_context)
 {
   auto &gsub = face->table.GSUB;
-  if (unlikely (lookup_index >= gsub->lookup_count)) return false;
+  if (unlikely (lookup_index >= gsub->lookup_बिलांग)) return false;
   OT::hb_would_apply_context_t c (face, glyphs, glyphs_length, (bool) zero_context);
 
   const OT::SubstLookup& l = gsub->table->get_lookup (lookup_index);
@@ -1636,9 +1636,9 @@ hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
 					unsigned int  lookup_index,
 					hb_set_t     *glyphs /* OUT */)
 {
-  hb_map_t done_lookups_glyph_count;
+  hb_map_t done_lookups_glyph_बिलांग;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
+  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_बिलांग, &done_lookups_glyph_set);
 
   const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
 
@@ -1661,16 +1661,16 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
 					 const hb_set_t *lookups,
 					 hb_set_t       *glyphs /* OUT */)
 {
-  hb_map_t done_lookups_glyph_count;
+  hb_map_t done_lookups_glyph_बिलांग;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
+  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_बिलांग, &done_lookups_glyph_set);
   const GSUB& gsub = *face->table.GSUB->table;
 
-  unsigned int iteration_count = 0;
+  unsigned int iteration_बिलांग = 0;
   unsigned int glyphs_length;
   do
   {
-    c.reset_lookup_visit_count ();
+    c.reset_lookup_visit_बिलांग ();
     glyphs_length = glyphs->get_population ();
     if (lookups)
     {
@@ -1679,10 +1679,10 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
     }
     else
     {
-      for (unsigned int i = 0; i < gsub.get_lookup_count (); i++)
+      for (unsigned int i = 0; i < gsub.get_lookup_बिलांग (); i++)
 	gsub.get_lookup (i).closure (&c, i);
     }
-  } while (iteration_count++ <= HB_CLOSURE_MAX_STAGES &&
+  } while (iteration_बिलांग++ <= HB_CLOSURE_MAX_STAGES &&
 	   glyphs_length != glyphs->get_population ());
 }
 
@@ -1785,8 +1785,8 @@ hb_ot_layout_get_size_params (hb_face_t       *face,
   const GPOS &gpos = *face->table.GPOS->table;
   const hb_tag_t tag = HB_TAG ('s','i','z','e');
 
-  unsigned int num_features = gpos.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  unsigned int नुमेरो_features = gpos.get_feature_बिलांग ();
+  for (unsigned int i = 0; i < नुमेरो_features; i++)
   {
     if (tag == gpos.get_feature_tag (i))
     {
@@ -1847,7 +1847,7 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_ot_name_id_t *label_id,             /* OUT.  May be NULL */
 				   hb_ot_name_id_t *tooltip_id,           /* OUT.  May be NULL */
 				   hb_ot_name_id_t *sample_id,            /* OUT.  May be NULL */
-				   unsigned int    *num_named_parameters, /* OUT.  May be NULL */
+				   unsigned int    *नुमेरो_named_parameters, /* OUT.  May be NULL */
 				   hb_ot_name_id_t *first_param_id        /* OUT.  May be NULL */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
@@ -1866,7 +1866,7 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
       // ssXX features don't have the rest
       if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
       if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-      if (num_named_parameters) *num_named_parameters = 0;
+      if (नुमेरो_named_parameters) *नुमेरो_named_parameters = 0;
       if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
       return true;
     }
@@ -1877,7 +1877,7 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
       if (label_id) *label_id = cv_params.featUILableNameID;
       if (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
       if (sample_id) *sample_id = cv_params.sampleTextNameID;
-      if (num_named_parameters) *num_named_parameters = cv_params.numNamedParameters;
+      if (नुमेरो_named_parameters) *नुमेरो_named_parameters = cv_params.नुमेरो_Named_Parameters;
       if (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
       return true;
     }
@@ -1886,7 +1886,7 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
   if (label_id) *label_id = HB_OT_NAME_ID_INVALID;
   if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
   if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-  if (num_named_parameters) *num_named_parameters = 0;
+  if (नुमेरो_named_parameters) *नुमेरो_named_parameters = 0;
   if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
   return false;
 }
@@ -1914,14 +1914,14 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    feature_index,
 				     unsigned int    start_offset,
-				     unsigned int   *char_count, /* IN/OUT.  May be NULL */
+				     unsigned int   *char_बिलांग, /* IN/OUT.  May be NULL */
 				     hb_codepoint_t *characters  /* OUT.     May be NULL */)
 {
   const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
   return g.get_feature (feature_index)
 	  .get_feature_params ()
 	  .get_character_variants_params(g.get_feature_tag (feature_index))
-	  .get_characters (start_offset, char_count, characters);
+	  .get_characters (start_offset, char_बिलांग, characters);
 }
 #endif
 
@@ -2156,17 +2156,17 @@ choose_base_tags (hb_script_t    script,
 		  hb_tag_t      *language_tag)
 {
   hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
-  unsigned script_count = ARRAY_LENGTH (script_tags);
+  unsigned script_बिलांग = ARRAY_LENGTH (script_tags);
 
   hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
-  unsigned language_count = ARRAY_LENGTH (language_tags);
+  unsigned language_बिलांग = ARRAY_LENGTH (language_tags);
 
   hb_ot_tags_from_script_and_language (script, language,
-				       &script_count, script_tags,
-				       &language_count, language_tags);
+				       &script_बिलांग, script_tags,
+				       &language_बिलांग, language_tags);
 
-  *script_tag = script_count ? script_tags[script_count - 1] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *language_tag = language_count ? language_tags[language_count - 1] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  *script_tag = script_बिलांग ? script_tags[script_बिलांग - 1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  *language_tag = language_बिलांग ? language_tags[language_बिलांग - 1] : HB_OT_TAG_DEFAULT_LANGUAGE;
 }
 
 /**
@@ -2205,7 +2205,7 @@ hb_ot_layout_get_font_extents (hb_font_t         *font,
     {
       extents->ascender  = max;
       extents->descender = min;
-      extents->line_gap  = 0;
+      extents->लिन्या_gap  = 0;
     }
     return true;
   }
@@ -2321,7 +2321,7 @@ hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
     /* Unicode-18.0 additions */
     case HB_SCRIPT_JURCHEN:
     case HB_SCRIPT_SEAL:
-      return HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT;
+      return HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_कालिवा;
 
     default:
       return HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
@@ -2451,36 +2451,36 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
     }
     break;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT:
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT:
+  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_इताअस_OR_कानान:
+  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_कालिवा:
     {
-      hb_position_t embox_top, embox_bottom;
+      hb_position_t embox_इताअस, embox_bottom;
 
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_इताअस_OR_कानान,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &embox_top);
+					       &embox_इताअस);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_कालिवा,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &embox_bottom);
 
-      if (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT)
-	*coord = hb_saturate_add (embox_top,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_top) / 10));
+      if (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_इताअस_OR_कानान)
+	*coord = hb_saturate_add (embox_इताअस,
+				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_इताअस) / 10));
       else
 	*coord = hb_saturate_add (embox_bottom,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_top - embox_bottom) / 10));
+				  hb_clamp_to<hb_position_t> (((int64_t) embox_इताअस - embox_bottom) / 10));
     }
     break;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT:
+  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_इताअस_OR_कानान:
     if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_कालिवा,
 				   direction,
 				   script_tag,
 				   language_tag,
@@ -2495,9 +2495,9 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
     }
     break;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT:
+  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_कालिवा:
     if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_इताअस_OR_कानान,
 				   direction,
 				   script_tag,
 				   language_tag,
@@ -2571,45 +2571,45 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 
   case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t इताअस_2, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_इताअस_OR_कानान,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &top);
+					       &इताअस_2);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_कालिवा,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_to<hb_position_t> (((int64_t) इताअस_2 + bottom) / 2);
 
     }
     break;
 
   case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t इताअस_2, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_इताअस_OR_कानान,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &top);
+					       &इताअस_2);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_कालिवा,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_to<hb_position_t> (((int64_t) इताअस_2 + bottom) / 2);
 
     }
     break;
 
-  case _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE:
+  case HB_OT_LAYOUT_BASELINE_TAG_MAX_हालागा:
   default:
     *coord = 0;
     break;
@@ -2658,7 +2658,7 @@ hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
 struct hb_get_glyph_alternates_dispatch_t :
        hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, unsigned>
 {
-  static return_t default_return_value () { return 0; }
+  static return_t default_return_हालागा () { return 0; }
   bool stop_sublookup_iteration (return_t r) const { return r; }
 
   private:
@@ -2667,7 +2667,7 @@ struct hb_get_glyph_alternates_dispatch_t :
   ( obj.get_glyph_alternates (std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
   _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
+  ( default_return_हालागा () )
   public:
   template <typename T, typename ...Ts> auto
   dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
@@ -2697,20 +2697,20 @@ hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
 					  unsigned        lookup_index,
 					  hb_codepoint_t  glyph,
 					  unsigned        start_offset,
-					  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+					  unsigned       *alternate_बिलांग  /* IN/OUT.  May be NULL. */,
 					  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */)
 {
   hb_get_glyph_alternates_dispatch_t c;
   const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  auto ret = lookup.dispatch (&c, glyph, start_offset, alternate_count, alternate_glyphs);
-  if (!ret && alternate_count) *alternate_count = 0;
+  auto ret = lookup.dispatch (&c, glyph, start_offset, alternate_बिलांग, alternate_glyphs);
+  if (!ret && alternate_बिलांग) *alternate_बिलांग = 0;
   return ret;
 }
 
 struct hb_collect_glyph_alternates_dispatch_t :
        hb_dispatch_context_t<hb_collect_glyph_alternates_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
+  static return_t default_return_हालागा () { return false; }
   bool stop_sublookup_iteration (return_t r) const { return false; }
 
   private:
@@ -2719,7 +2719,7 @@ struct hb_collect_glyph_alternates_dispatch_t :
   ( (obj.collect_glyph_alternates (std::forward<Ts> (ds)...), true) )
   template <typename T, typename ...Ts> auto
   _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
+  ( default_return_हालागा () )
   public:
   template <typename T, typename ...Ts> auto
   dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
@@ -2758,18 +2758,18 @@ struct hb_collect_glyph_alternates_dispatch_t :
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
 					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      hb_map_t  *alternate_बिलांग /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */)
 {
   hb_collect_glyph_alternates_dispatch_t c;
   const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  return lookup.dispatch (&c, alternate_count, alternate_glyphs);
+  return lookup.dispatch (&c, alternate_बिलांग, alternate_glyphs);
 }
 
 struct hb_position_single_dispatch_t :
        hb_dispatch_context_t<hb_position_single_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
+  static return_t default_return_हालागा () { return false; }
   bool stop_sublookup_iteration (return_t r) const { return r; }
 
   private:
@@ -2778,7 +2778,7 @@ struct hb_position_single_dispatch_t :
   ( obj.position_single (std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
   _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
+  ( default_return_हालागा () )
   public:
   template <typename T, typename ...Ts> auto
   dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN

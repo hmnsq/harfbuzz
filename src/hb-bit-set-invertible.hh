@@ -119,16 +119,16 @@ struct hb_bit_set_invertible_t
   { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
+  void add_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { inverted ? s.del_array (array, बिलांग, stride) : s.add_array (array, बिलांग, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned int बिलांग, unsigned int stride=sizeof(T))
+  { return inverted ? s.del_sorted_array (array, बिलांग, stride) : s.add_sorted_array (array, बिलांग, stride); }
   template <typename T>
   bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
 

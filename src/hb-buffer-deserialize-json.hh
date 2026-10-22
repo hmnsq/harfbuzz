@@ -33,7 +33,7 @@
 
 
 #line 33 "hb-buffer-deserialize-json.hh"
-static const unsigned char _deserialize_json_trans_keys[] = {
+static const unsigned char deserialize_json_trans_मगा_सुसि[] = {
 	0u, 0u, 9u, 34u, 97u, 121u, 120u, 121u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 9u, 93u, 9u, 125u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 108u, 108u, 34u, 34u, 9u, 58u, 9u, 57u, 9u, 125u, 9u, 125u, 
@@ -45,7 +45,7 @@ static const unsigned char _deserialize_json_trans_keys[] = {
 	0
 };
 
-static const char _deserialize_json_key_spans[] = {
+static const char deserialize_json_सुसि_spans[] = {
 	0, 26, 25, 2, 1, 50, 49, 10, 
 	117, 117, 85, 117, 1, 50, 49, 10, 
 	117, 117, 1, 1, 50, 49, 117, 117, 
@@ -606,20 +606,20 @@ _hb_buffer_deserialize_json (hb_buffer_t *buffer,
 	{
 	int _slen;
 	int _trans;
-	const unsigned char *_keys;
+	const unsigned char *मगा_सुसि_2;
 	const char *_inds;
 	if ( p == pe )
 		goto _test_eof;
 	if ( cs == 0 )
 		goto _out;
 _resume:
-	_keys = _deserialize_json_trans_keys + (cs<<1);
+	मगा_सुसि_2 = deserialize_json_trans_मगा_सुसि + (cs<<1);
 	_inds = _deserialize_json_indicies + _deserialize_json_index_offsets[cs];
 
-	_slen = _deserialize_json_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_json_सुसि_spans[cs];
+	_trans = _inds[ _slen > 0 && मगा_सुसि_2[0] <=(*p) &&
+		(*p) <= मगा_सुसि_2[1] ?
+		(*p) - मगा_सुसि_2[0] : _slen ];
 
 	cs = _deserialize_json_trans_targs[_trans];
 

@@ -52,7 +52,7 @@ struct hb_vector_draw_t
   hb_vector_buf_t body;
   hb_vector_buf_t path;
   hb_vector_buf_t pdf_extgstate_dict;
-  unsigned pdf_extgstate_count = 0;
+  unsigned pdf_extgstate_बिलांग = 0;
 
   /* Cumulative work budget for the current draw session; reset by
    * hb_vector_draw_clear().  Outline traversal and complete path commands
@@ -113,7 +113,7 @@ struct hb_vector_draw_t
     unsigned a = hb_color_get_alpha (foreground);
     if (a < 255)
     {
-      unsigned gs_idx = pdf_extgstate_count++;
+      unsigned gs_idx = pdf_extgstate_बिलांग++;
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -121,14 +121,14 @@ struct hb_vector_draw_t
       pdf_extgstate_dict.append_str ("/GS");
       pdf_extgstate_dict.append_unsigned (gs_idx);
       pdf_extgstate_dict.append_str (" << /Type /ExtGState /ca ");
-      pdf_extgstate_dict.append_num (a / 255.f, 4);
+      pdf_extgstate_dict.append_नुमेरो (a / 255.f, 4);
       pdf_extgstate_dict.append_str (" >> ");
     }
-    body.append_num (hb_color_get_red (foreground) / 255.f, 4);
+    body.append_नुमेरो (hb_color_get_red (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_green (foreground) / 255.f, 4);
+    body.append_नुमेरो (hb_color_get_green (foreground) / 255.f, 4);
     body.append_c (' ');
-    body.append_num (hb_color_get_blue (foreground) / 255.f, 4);
+    body.append_नुमेरो (hb_color_get_blue (foreground) / 255.f, 4);
     body.append_str (" rg\n");
     body.append_len (path.arrayZ, path.length);
     body.append_str ("f\n");
@@ -152,9 +152,9 @@ struct hb_vector_draw_t
   {
     float tx, ty;
     transform_xy (x, y, &tx, &ty);
-    path.append_num (tx, path.precision);
+    path.append_नुमेरो (tx, path.precision);
     path.append_c (sep);
-    path.append_num (ty, path.precision);
+    path.append_नुमेरो (ty, path.precision);
   }
 
   void append_xy_svg (float x, float y) { append_xy (x, y, ','); }

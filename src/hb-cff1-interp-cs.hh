@@ -35,11 +35,11 @@ using namespace OT;
 
 typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+struct cff1_cs_interp_env_t : cs_interp_env_t<नुमेरो_t, CFF1Subrs>
 {
   template <typename ACC>
   cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+			const int *coords_=nullptr, unsigned int नुमेरो_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
     processed_width = false;
@@ -50,11 +50,11 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 
   void set_width (bool has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    if (likely (!processed_width && (SUPER::arg_सालानसान.get_बिलांग () > 0)))
     {
       if (has_width_)
       {
-	width = SUPER::argStack[0];
+	width = SUPER::arg_सालानसान[0];
 	has_width = true;
 	arg_start = 1;
       }
@@ -62,10 +62,10 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
     processed_width = true;
   }
 
-  void clear_args ()
+  void clear_मगा_कातविरान ()
   {
     arg_start = 0;
-    SUPER::clear_args ();
+    SUPER::clear_मगा_कातविरान ();
   }
 
   void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
@@ -73,15 +73,15 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
   bool	  processed_width;
   bool	  has_width;
   unsigned int  arg_start;
-  number_t	width;
+  नुमेरो_t	width;
   bool	  in_seac;
 
   private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  typedef cs_interp_env_t<नुमेरो_t, CFF1Subrs> SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+struct cff1_cs_opset_t : cs_opset_t<नुमेरो_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
@@ -90,16 +90,16 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
   {
     switch (op) {
       case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
+	SUPER::flush_मगा_कातविरान_and_op (op, env, param);
 	break;
 
       case OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	if (env.arg_सालानसान.get_बिलांग () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
+	OPSET::flush_मगा_कातविरान_and_op (op, env, param);
 	env.set_endchar (true);
 	break;
 
@@ -122,14 +122,14 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
 	case OpCode_vstemhm:
 	case OpCode_hintmask:
 	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
+	  has_width = ((env.arg_सालानसान.get_बिलांग () & 1) != 0);
 	  break;
 	case OpCode_hmoveto:
 	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
+	  has_width = (env.arg_सालानसान.get_बिलांग () > 1);
 	  break;
 	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
+	  has_width = (env.arg_सालानसान.get_बिलांग () > 2);
 	  break;
 	default:
 	  return;
@@ -142,14 +142,14 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  static void flush_मगा_कातविरान (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_मगा_कातविरान (env, param);
+    env.clear_मगा_कातविरान ();  /* pop off width */
   }
 
   private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  typedef cs_opset_t<नुमेरो_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM>

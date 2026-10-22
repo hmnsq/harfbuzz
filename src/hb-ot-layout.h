@@ -109,9 +109,9 @@ HB_BEGIN_DECLS
 HB_EXTERN void
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     unsigned int *script_बिलांग /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     unsigned int *language_बिलांग /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_script_t
@@ -168,7 +168,7 @@ HB_EXTERN unsigned int
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
 				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
+				unsigned int   *point_बिलांग /* IN/OUT */,
 				unsigned int   *point_array /* OUT */);
 
 /* Ligature caret positions */
@@ -177,7 +177,7 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
 				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  unsigned int   *caret_बिलांग /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */);
 
 
@@ -214,7 +214,7 @@ HB_EXTERN unsigned int
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
 				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    unsigned int *script_बिलांग /* IN/OUT */,
 				    hb_tag_t     *script_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -226,7 +226,7 @@ hb_ot_layout_table_find_script (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
+				  unsigned int    script_बिलांग,
 				  const hb_tag_t *script_tags,
 				  unsigned int   *script_index /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */);
@@ -235,7 +235,7 @@ HB_EXTERN unsigned int
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
 				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     unsigned int *feature_बिलांग_2 /* IN/OUT */,
 				     hb_tag_t     *feature_tags /* OUT */);
 
 HB_EXTERN unsigned int
@@ -243,14 +243,14 @@ hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
 				       unsigned int  script_index,
 				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       unsigned int *language_बिलांग /* IN/OUT */,
 				       hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned int    language_बिलांग,
 				     const hb_tag_t *language_tags,
 				     unsigned int   *language_index /* OUT */);
 
@@ -258,7 +258,7 @@ HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    script_index,
-				     unsigned int    language_count,
+				     unsigned int    language_बिलांग,
 				     const hb_tag_t *language_tags,
 				     unsigned int   *language_index /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */);
@@ -284,7 +284,7 @@ hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   unsigned int  script_index,
 					   unsigned int  language_index,
 					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
+					   unsigned int *feature_बिलांग_2 /* IN/OUT */,
 					   unsigned int *feature_indexes /* OUT */);
 
 HB_EXTERN unsigned int
@@ -293,7 +293,7 @@ hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					unsigned int  script_index,
 					unsigned int  language_index,
 					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					unsigned int *feature_बिलांग_2 /* IN/OUT */,
 					hb_tag_t     *feature_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -309,11 +309,11 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
 				  unsigned int  feature_index,
 				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
+				  unsigned int *lookup_बिलांग /* IN/OUT */,
 				  unsigned int *lookup_indexes /* OUT */);
 
 HB_EXTERN unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
+hb_ot_layout_table_get_lookup_बिलांग (hb_face_t    *face,
 				     hb_tag_t      table_tag);
 
 HB_EXTERN void
@@ -344,7 +344,7 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
 				    unsigned int  lookup_index,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
+				    hb_set_t     *glyphs_पासोक,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */);
 
@@ -355,7 +355,7 @@ HB_EXTERN hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
 					    const int    *coords,
-					    unsigned int  num_coords,
+					    unsigned int  नुमेरो_coords,
 					    unsigned int *variations_index /* out */);
 
 HB_EXTERN unsigned int
@@ -364,7 +364,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  unsigned int  feature_index,
 						  unsigned int  variations_index,
 						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
+						  unsigned int *lookup_बिलांग /* IN/OUT */,
 						  unsigned int *lookup_indexes /* OUT */);
 
 
@@ -380,13 +380,13 @@ hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
 					  unsigned        lookup_index,
 					  hb_codepoint_t  glyph,
 					  unsigned        start_offset,
-					  unsigned       *alternate_count /* IN/OUT */,
+					  unsigned       *alternate_बिलांग /* IN/OUT */,
 					  hb_codepoint_t *alternate_glyphs /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
 					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      hb_map_t  *alternate_बिलांग /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */);
 
 HB_EXTERN hb_bool_t
@@ -443,7 +443,7 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
+				   unsigned int    *नुमेरो_named_parameters /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
 
 
@@ -452,7 +452,7 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
 				     unsigned int    feature_index,
 				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     unsigned int   *char_बिलांग    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -503,16 +503,16 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
 typedef enum {
   HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
   HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT	= HB_TAG ('i','c','f','t'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_कालिवा	= HB_TAG ('i','c','f','b'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_इताअस_OR_कानान	= HB_TAG ('i','c','f','t'),
   HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL		= HB_TAG ('I','c','f','c'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT	= HB_TAG ('i','d','e','o'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT	= HB_TAG ('i','d','t','p'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_कालिवा	= HB_TAG ('i','d','e','o'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_इताअस_OR_कानान	= HB_TAG ('i','d','t','p'),
   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL		= HB_TAG ('I','d','c','e'),
   HB_OT_LAYOUT_BASELINE_TAG_MATH			= HB_TAG ('m','a','t','h'),
 
   /*< private >*/
-  _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_LAYOUT_BASELINE_TAG_MAX_हालागा = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_layout_baseline_tag_t;
 
 HB_EXTERN hb_ot_layout_baseline_tag_t

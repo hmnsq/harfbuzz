@@ -56,13 +56,13 @@ typedef struct hb_draw_state_t {
   float current_y;
 
   /*< private >*/
-  hb_var_num_t   reserved1;
-  hb_var_num_t   reserved2;
-  hb_var_num_t   reserved3;
-  hb_var_num_t   reserved4;
-  hb_var_num_t   reserved5;
-  hb_var_num_t   reserved6;
-  hb_var_num_t   reserved7;
+  hb_var_नुमेरो_t_2   reserved1;
+  hb_var_नुमेरो_t_2   reserved2;
+  hb_var_नुमेरो_t_2   reserved3;
+  hb_var_नुमेरो_t_2   reserved4;
+  hb_var_नुमेरो_t_2   reserved5;
+  hb_var_नुमेरो_t_2   reserved6;
+  hb_var_नुमेरो_t_2   reserved7;
 } hb_draw_state_t;
 
 /**
@@ -124,7 +124,7 @@ typedef void (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_line_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+typedef void (*hb_draw_लिन्या_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
 					hb_draw_state_t *st,
 					float to_x, float to_y,
 					void *user_data);
@@ -278,8 +278,8 @@ hb_draw_funcs_set_move_to_func (hb_draw_funcs_t        *dfuncs,
  * Since: 4.0.0
  **/
 HB_EXTERN void
-hb_draw_funcs_set_line_to_func (hb_draw_funcs_t        *dfuncs,
-				hb_draw_line_to_func_t  func,
+hb_draw_funcs_set_लिन्या_to_func (hb_draw_funcs_t        *dfuncs,
+				hb_draw_लिन्या_to_func_t  func,
 				void *user_data, hb_destroy_func_t destroy);
 
 /**
@@ -393,7 +393,7 @@ hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
 hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
+			     hb_user_data_सुसि_t *सुसि_2,
 			     void *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
@@ -401,7 +401,7 @@ hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
 
 HB_EXTERN void *
 hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key);
+			     hb_user_data_सुसि_t       *सुसि_2);
 
 HB_EXTERN void
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs);
@@ -426,7 +426,7 @@ hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
 		 float to_x, float to_y);
 
 HB_EXTERN void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_लिन्या_to (hb_draw_funcs_t *dfuncs, void *draw_data,
 		 hb_draw_state_t *st,
 		 float to_x, float to_y);
 
@@ -474,16 +474,16 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  * Since: 14.2.0
  **/
 typedef enum {
-  HB_DRAW_LINE_CAP_BUTT   = 0,
-  HB_DRAW_LINE_CAP_SQUARE = 1,
-} hb_draw_line_cap_t;
+  HB_DRAW_लिन्या_CAP_BUTT   = 0,
+  HB_DRAW_लिन्या_CAP_SQUARE = 1,
+} hb_draw_लिन्या_cap_t;
 
 HB_EXTERN void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_लिन्या (hb_draw_funcs_t *dfuncs, void *draw_data,
 	      hb_draw_state_t *st,
 	      float x0, float y0, float w0,
 	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap);
+	      hb_draw_लिन्या_cap_t cap);
 
 HB_EXTERN void
 hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,

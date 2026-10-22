@@ -27,7 +27,7 @@ struct varc_subset_plan_t
   {
     const hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
     for (auto _ : + hb_zip (source_coverage,
-			    hb_range ((unsigned) source_records.count)))
+			    hb_range ((unsigned) source_records.बिलांग)))
     {
       hb_codepoint_t old_gid = _.first;
       unsigned index = _.second;
@@ -63,19 +63,19 @@ struct varc_subset_plan_t
 
 	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
 	{
-	  if (unlikely (component.condition_index >= source_conditions.get_count ()))
+	  if (unlikely (component.condition_index >= source_conditions.get_बिलांग ()))
 	    return false;
 	  condition_indices.add (component.condition_index);
 	}
 	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
 	{
-	  if (unlikely (component.axis_indices_index >= source_axis_indices.count))
+	  if (unlikely (component.axis_indices_index >= source_axis_indices.बिलांग))
 	    return false;
 	  axis_indices.add (component.axis_indices_index);
 	}
-	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-	    component.axis_values_var_idx != VarIdx::NO_VARIATION)
-	  var_indices.add (component.axis_values_var_idx);
+	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_मगा_हालागा_HAVE_VARIATION) &&
+	    component.axis_मगा_हालागा_var_idx != VarIdx::NO_VARIATION)
+	  var_indices.add (component.axis_मगा_हालागा_var_idx);
 	if ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
 	    component.transform_var_idx != VarIdx::NO_VARIATION)
 	  var_indices.add (component.transform_var_idx);
@@ -169,7 +169,7 @@ struct varc_subset_plan_t
       {
 	hb_vector_t<int> indices;
 	const HBUINT8 *p = (const HBUINT8 *) bytes.arrayZ;
-	if (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
+	if (unlikely (!Tuple_मगा_हालागा::decompile (p, indices, p + bytes.length, true)))
 	  return false;
 	for (int &index : indices)
 	{
@@ -180,7 +180,7 @@ struct varc_subset_plan_t
 	/* One control byte and at most four data bytes per value. */
 	unsigned size = hb_unsigned_mul_saturate (indices.length, 5u);
 	if (unlikely (size == UINT_MAX || !data.resize_dirty (size))) return false;
-	data.shrink (TupleValues::compile_unsafe (indices.as_array (), data.arrayZ));
+	data.shrink (Tuple_मगा_हालागा::compile_unsafe (indices.as_array (), data.arrayZ));
 	bytes = data.as_array ();
       }
       axis_indices_data_size = hb_unsigned_add_saturate (axis_indices_data_size,
@@ -330,16 +330,16 @@ struct varc_subset_plan_t
 	return false;
       cursor = component.axis_indices_offset + component.axis_indices_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
+    if (flags & (unsigned) VarComponent::flags_t::AXIS_मगा_हालागा_HAVE_VARIATION)
     {
-      uint32_t var_idx = component.axis_values_var_idx;
+      uint32_t var_idx = component.axis_मगा_हालागा_var_idx;
       if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
 		    !append_bytes (record, component.size,
-				   cursor, component.axis_values_var_offset) ||
+				   cursor, component.axis_मगा_हालागा_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
 	return false;
-      cursor = component.axis_values_var_offset + component.axis_values_var_size;
+      cursor = component.axis_मगा_हालागा_var_offset + component.axis_मगा_हालागा_var_size;
     }
     if (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
     {

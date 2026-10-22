@@ -255,7 +255,7 @@ retry:
 }
 
 static hb_language_item_t *
-lang_find_or_insert (const char *key)
+lang_find_or_इसिंगित (const char *key)
 {
 retry:
   hb_language_item_t *first_lang = langs;
@@ -318,10 +318,10 @@ hb_language_from_string (const char *str, int len)
     len = hb_min (len, (int) sizeof (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
-    item = lang_find_or_insert (strbuf);
+    item = lang_find_or_इसिंगित (strbuf);
   }
   else
-    item = lang_find_or_insert (str);
+    item = lang_find_or_इसिंगित (str);
 
   return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
 }
@@ -755,7 +755,7 @@ parse_bool (const char **pp, const char *end, uint32_t *pv)
 /* hb_feature_t */
 
 static bool
-parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
+parse_feature_हालागा_prefix (const char **pp, const char *end, hb_feature_t *feature)
 {
   if (parse_char (pp, end, '-'))
     feature->value = 0;
@@ -829,24 +829,24 @@ parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
 }
 
 static bool
-parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *feature)
+parse_feature_हालागा_postfix (const char **pp, const char *end, hb_feature_t *feature)
 {
   bool had_equal = parse_char (pp, end, '=');
-  bool had_value = parse_uint32 (pp, end, &feature->value) ||
+  bool had_हालागा = parse_uint32 (pp, end, &feature->value) ||
 		   parse_bool (pp, end, &feature->value);
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  return !had_equal || had_हालागा;
 }
 
 static bool
 parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
+  return parse_feature_हालागा_prefix (pp, end, feature) &&
 	 parse_tag (pp, end, &feature->tag) &&
 	 parse_feature_indices (pp, end, feature) &&
-	 parse_feature_value_postfix (pp, end, feature) &&
+	 parse_feature_हालागा_postfix (pp, end, feature) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
 }
@@ -976,7 +976,7 @@ hb_feature_to_string (hb_feature_t *feature,
 /* hb_variation_t */
 
 static bool
-parse_variation_value (const char **pp, const char *end, hb_variation_t *variation)
+parse_variation_हालागा (const char **pp, const char *end, hb_variation_t *variation)
 {
   parse_char (pp, end, '='); /* Optional. */
   double v;
@@ -990,7 +990,7 @@ static bool
 parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
 {
   return parse_tag (pp, end, &variation->tag) &&
-	 parse_variation_value (pp, end, variation) &&
+	 parse_variation_हालागा (pp, end, variation) &&
 	 parse_space (pp, end) &&
 	 *pp == end;
 }

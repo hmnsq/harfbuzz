@@ -148,17 +148,17 @@ struct hb_buffer_t
 
   HB_NODISCARD bool in_error () const { return !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  void allocate_var (unsigned int start, unsigned int बिलांग)
   {
-    unsigned int end = start + count;
+    unsigned int end = start + बिलांग;
     assert (end <= 8);
     unsigned int bits = (1u<<end) - (1u<<start);
     assert (0 == (allocated_var_bits & bits));
     allocated_var_bits |= bits;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  bool try_allocate_var (unsigned int start, unsigned int बिलांग)
   {
-    unsigned int end = start + count;
+    unsigned int end = start + बिलांग;
     assert (end <= 8);
     unsigned int bits = (1u<<end) - (1u<<start);
     if (allocated_var_bits & bits)
@@ -166,17 +166,17 @@ struct hb_buffer_t
     allocated_var_bits |= bits;
     return true;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  void deallocate_var (unsigned int start, unsigned int बिलांग)
   {
-    unsigned int end = start + count;
+    unsigned int end = start + बिलांग;
     assert (end <= 8);
     unsigned int bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
     allocated_var_bits &= ~bits;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  void assert_var (unsigned int start, unsigned int बिलांग)
   {
-    unsigned int end = start + count;
+    unsigned int end = start + बिलांग;
     assert (end <= 8);
     HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
@@ -225,7 +225,7 @@ struct hb_buffer_t
   bool verify (hb_buffer_t        *text_buffer,
 	       hb_font_t          *font,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
+	       unsigned int        नुमेरो_features,
 	       const char * const *shapers)
 #ifndef HB_NO_BUFFER_VERIFY
   ;
@@ -300,28 +300,28 @@ struct hb_buffer_t
   HB_INTERNAL void clear_positions ();
 
   template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
+  HB_NODISCARD bool replace_glyphs (unsigned int नुमेरो_in,
+				    unsigned int नुमेरो_out,
 				    const T *glyph_data)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    if (unlikely (!make_room_for (नुमेरो_in, नुमेरो_out))) return false;
 
-    assert (idx + num_in <= len);
+    assert (idx + नुमेरो_in <= len);
 
-    merge_clusters (idx, idx + num_in);
+    merge_clusters (idx, idx + नुमेरो_in);
 
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
     hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    for (unsigned int i = 0; i < नुमेरो_out; i++)
     {
       *pinfo = orig_info;
       pinfo->codepoint = glyph_data[i];
       pinfo++;
     }
 
-    idx  += num_in;
-    out_len += num_out;
+    idx  += नुमेरो_in;
+    out_len += नुमेरो_out;
     return true;
   }
 
@@ -509,14 +509,14 @@ struct hb_buffer_t
 		      start, end,
 		      true);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  void safe_to_इसिंगित_tatweel (unsigned int start = 0, unsigned int end = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_इसिंगित_TATWEEL) == 0)
     {
       unsafe_to_break (start, end);
       return;
     }
-    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
+    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_इसिंगित_TATWEEL,
 		      start, end,
 		      true);
   }
@@ -601,8 +601,8 @@ struct hb_buffer_t
     return true;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int नुमेरो_in, unsigned int नुमेरो_out);
+  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int बिलांग);
 
   typedef long scratch_buffer_t;
   HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
@@ -712,9 +712,9 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 #define foreach_group(buffer, start, end, group_func) \
   for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
-       start < _count; \
+       बिलांग_2 = buffer->len, \
+       start = 0, end = बिलांग_2 ? buffer->group_end (0, group_func) : 0; \
+       start < बिलांग_2; \
        start = end, end = buffer->group_end (start, group_func))
 
 #define foreach_cluster(buffer, start, end) \

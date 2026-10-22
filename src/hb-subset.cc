@@ -62,7 +62,7 @@
  */
 
 
-hb_user_data_key_t _hb_subset_accelerator_user_data_key = {};
+hb_user_data_सुसि_t hb_subset_accelerator_user_data_सुसि = {};
 
 
 /*
@@ -158,12 +158,12 @@ static bool _table_is_empty (const hb_face_t *face, hb_tag_t tag)
 static unsigned int
 _get_table_tags (const hb_subset_plan_t* plan,
                  unsigned int  start_offset,
-                 unsigned int *table_count, /* IN/OUT */
+                 unsigned int *table_बिलांग_2, /* IN/OUT */
                  hb_tag_t     *table_tags /* OUT */)
 {
-  unsigned num_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
-  if (num_tables)
-    return hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
+  unsigned नुमेरो_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
+  if (नुमेरो_tables)
+    return hb_face_get_table_tags (plan->source, start_offset, table_बिलांग_2, table_tags);
 
   // If face has 0 tables associated with it, assume that it was built from
   // hb_face_create_tables and thus is unable to list its tables. Fallback to
@@ -183,12 +183,12 @@ _get_table_tags (const hb_subset_plan_t* plan,
 
   it += start_offset;
 
-  unsigned num_written = 0;
-  while (bool (it) && num_written < *table_count)
-    table_tags[num_written++] = *it++;
+  unsigned नुमेरो_written = 0;
+  while (bool (it) && नुमेरो_written < *table_बिलांग_2)
+    table_tags[नुमेरो_written++] = *it++;
 
-  *table_count = num_written;
-  return num_written;
+  *table_बिलांग_2 = नुमेरो_written;
+  return नुमेरो_written;
 }
 
 
@@ -204,13 +204,13 @@ _is_table_present (hb_face_t *source, hb_tag_t tag)
   }
 
   hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
-  while (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
+  unsigned offset = 0, नुमेरो_tables = ARRAY_LENGTH (table_tags);
+  while (((void) hb_face_get_table_tags (source, offset, &नुमेरो_tables, table_tags), नुमेरो_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    for (unsigned i = 0; i < नुमेरो_tables; ++i)
       if (table_tags[i] == tag)
 	return true;
-    offset += num_tables;
+    offset += नुमेरो_tables;
   }
   return false;
 }
@@ -312,7 +312,7 @@ _subset_table (hb_subset_plan_t *plan,
     return _hb_subset_table_passthrough (plan, tag);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
+  DEBUG_मेनसाहे (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
 
   bool success;
   if (_hb_subset_table_layout (plan, buf, tag, &success) ||
@@ -384,7 +384,7 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
   accel->destroy_cmap_cache = OT::SubtableUnicodesCache::destroy;
 
   if (!hb_face_set_user_data(face,
-                             hb_subset_accelerator_t::user_data_key(),
+                             hb_subset_accelerator_t::user_data_सुसि(),
                              accel,
                              hb_subset_accelerator_t::destroy,
                              true))
@@ -402,17 +402,17 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
  * Since: 2.9.0
  **/
 hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
+hb_subset_or_fail (hb_face_t *source, const hb_subset_पासोक_t *पासोक)
 {
-  if (unlikely (!input || !source)) return nullptr;
+  if (unlikely (!पासोक || !source)) return nullptr;
 
-  if (unlikely (!source->get_num_glyphs ()))
+  if (unlikely (!source->get_नुमेरो_glyphs ()))
   {
-    DEBUG_MSG (SUBSET, nullptr, "No glyphs in source font.");
+    DEBUG_मेनसाहे (SUBSET, nullptr, "No glyphs in source font.");
     return nullptr;
   }
 
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, input);
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, पासोक);
   if (unlikely (!plan)) {
     return nullptr;
   }
@@ -443,19 +443,19 @@ hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
   }
 
   hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
+  unsigned offset = 0, नुमेरो_tables = ARRAY_LENGTH (table_tags);
 
   hb_set_t subsetted_tags, pending_subset_tags;
-  while (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
+  while (((void) _get_table_tags (plan, offset, &नुमेरो_tables, table_tags), नुमेरो_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    for (unsigned i = 0; i < नुमेरो_tables; ++i)
     {
       hb_tag_t tag = table_tags[i];
       if (_should_drop_table (plan, tag)) continue;
       pending_subset_tags.add (tag);
     }
 
-    offset += num_tables;
+    offset += नुमेरो_tables;
   }
 
   bool success = true;
@@ -497,7 +497,7 @@ hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 
       if (!made_changes)
       {
-	DEBUG_MSG (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
+	DEBUG_मेनसाहे (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
 	success = false;
 	goto end;
       }

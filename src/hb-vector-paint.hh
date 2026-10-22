@@ -58,7 +58,7 @@ struct hb_vector_paint_t
 
   hb_vector_buf_t defs;
   hb_vector_buf_t path;
-  hb_vector_t<hb_vector_buf_t> group_stack;
+  hb_vector_t<hb_vector_buf_t> group_सालानसान;
   uint64_t transform_group_open_mask = 0;
   unsigned transform_group_depth = 0;
   unsigned transform_group_overflow_depth = 0;
@@ -76,13 +76,13 @@ struct hb_vector_paint_t
   hb_vector_path_sink_t clip_path_sink = {nullptr, 0, 1.f, 1.f, nullptr};
   unsigned gradient_counter = 0;
   unsigned color_glyph_depth = 0;
-  unsigned path_def_count = 0;
+  unsigned path_def_बिलांग = 0;
   hb_set_t *active_color_glyphs = nullptr;
   hb_vector_t<hb_color_stop_t> color_stops_scratch;
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { return group_सालानसान.tail (); }
 
   void recharge_budget ()
   {
@@ -93,15 +93,15 @@ struct hb_vector_paint_t
   float sx (float v) const { return v / x_scale_factor; }
   float sy (float v) const { return v / y_scale_factor; }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  bool fetch_color_stops (hb_color_लिन्या_t *color_लिन्या)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    unsigned बिलांग = hb_color_लिन्या_get_color_stops (color_लिन्या, 0, nullptr, nullptr);
+    if (unlikely (!बिलांग || !color_stops_scratch.resize (बिलांग)))
     {
       color_stops_scratch.resize (0);
       return false;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
+    hb_color_लिन्या_get_color_stops (color_लिन्या, 0, &बिलांग, color_stops_scratch.arrayZ);
     return true;
   }
 
@@ -116,15 +116,15 @@ struct hb_vector_paint_t
 
   bool ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
-             !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
+    if (group_सालानसान.length)
+      return !group_सालानसान.in_error () &&
+             !group_सालानसान.tail ().in_error ();
+    if (unlikely (!group_सालानसान.इतुलाक_or_fail ()))
       return false;
-    group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    group_सालानसान.tail ().alloc (4096);
+    if (unlikely (group_सालानसान.tail ().in_error ()))
     {
-      group_stack.pop ();
+      group_सालानसान.आलिसिन ();
       return false;
     }
     return true;

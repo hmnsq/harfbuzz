@@ -32,7 +32,7 @@ bool
 VarComponent::decompile_record (const VARC &varc,
 				hb_ubytes_t total_record,
 				hb_vector_t<unsigned> *axis_indices,
-				hb_vector_t<double> *axis_values,
+				hb_vector_t<double> *axis_मगा_हालागा,
 				record_t *decoded,
 				int64_t *budget)
 {
@@ -41,7 +41,7 @@ VarComponent::decompile_record (const VARC &varc,
   const unsigned char *end = start + total_record.length;
 
   if (axis_indices) axis_indices->clear ();
-  if (axis_values) axis_values->clear ();
+  if (axis_मगा_हालागा) axis_मगा_हालागा->clear ();
 
 #define READ_UINT32VAR(name) \
   HB_STMT_START { \
@@ -86,34 +86,34 @@ VarComponent::decompile_record (const VARC &varc,
   if (decoded->flags & (unsigned) flags_t::HAVE_AXES)
   {
     READ_UINT32VAR_FIELD (decoded->axis_indices_index, axis_indices);
-    unsigned axis_count;
+    unsigned axis_बिलांग;
     if (axis_indices)
     {
       axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
       if (unlikely (axis_indices->in_error ())) return false;
-      axis_count = axis_indices->length;
+      axis_बिलांग = axis_indices->length;
     }
     else
-      axis_count = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-    if (unlikely (budget && axis_count &&
-		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_count)))
+      axis_बिलांग = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
+    if (unlikely (budget && axis_बिलांग &&
+		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_बिलांग)))
       return false;
-    if (axis_values)
+    if (axis_मगा_हालागा)
     {
-      if (unlikely (!axis_values->resize (axis_count))) return false;
+      if (unlikely (!axis_मगा_हालागा->resize (axis_बिलांग))) return false;
       const HBUINT8 *p = (const HBUINT8 *) record;
-      if (unlikely (!TupleValues::decompile (p, *axis_values,
+      if (unlikely (!Tuple_मगा_हालागा::decompile (p, *axis_मगा_हालागा,
 					    (const HBUINT8 *) end)))
 	return false;
       record = (const unsigned char *) p;
     }
-    else if (unlikely (!TupleValues::skip (record, end, axis_count)))
+    else if (unlikely (!Tuple_मगा_हालागा::skip (record, end, axis_बिलांग)))
       return false;
   }
 
-  decoded->axis_values_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->axis_values_var_idx, axis_values_var);
+  decoded->axis_मगा_हालागा_var_idx = VarIdx::NO_VARIATION;
+  if (decoded->flags & (unsigned) flags_t::AXIS_मगा_हालागा_HAVE_VARIATION)
+    READ_UINT32VAR_FIELD (decoded->axis_मगा_हालागा_var_idx, axis_मगा_हालागा_var);
 
   decoded->transform_var_idx = VarIdx::NO_VARIATION;
   if (decoded->flags & (unsigned) flags_t::TRANSFORM_HAS_VARIATION)
@@ -190,7 +190,7 @@ VARC::depend (hb_depend_data_builder_t *depend_data) const
 {
   const CFF2Index &records = this+glyphRecords;
   for (auto _ : + hb_zip (this+coverage,
-			  hb_range ((unsigned) records.count)))
+			  hb_range ((unsigned) records.बिलांग)))
   {
     hb_codepoint_t gid = _.first;
     hb_ubytes_t record = records[_.second];
@@ -236,7 +236,7 @@ hb_transforming_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_transforming_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_transforming_pen_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			     void *data,
 			     hb_draw_state_t *st,
 			     float to_x, float to_y,
@@ -246,7 +246,7 @@ hb_transforming_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 
   c->transform.transform_point (to_x, to_y);
 
-  c->dfuncs->line_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->लिन्या_to (c->data, *c->st, to_x, to_y);
 }
 
 static void
@@ -309,7 +309,7 @@ static struct hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loade
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func (funcs, hb_transforming_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_transforming_pen_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func (funcs, hb_transforming_pen_लिन्या_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_transforming_pen_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, hb_transforming_pen_cubic_to, nullptr, nullptr);
     hb_draw_funcs_set_close_path_func (funcs, hb_transforming_pen_close_path, nullptr, nullptr);
@@ -351,10 +351,10 @@ VarComponent::get_path_at (const hb_varc_context_t &c,
   auto &varStore = &VARC+VARC.varStore;
 
   auto &axisIndices = c.scratch.axisIndices;
-  auto &axisValues = c.scratch.axisValues;
+  auto &axis_मगा_हालागा_2 = c.scratch.axis_मगा_हालागा_2;
   record_t component;
   if (unlikely (!decompile_record (VARC, total_record,
-				   &axisIndices, &axisValues, &component,
+				   &axisIndices, &axis_मगा_हालागा_2, &component,
 				   &c.budget)))
     return hb_ubytes_t ();
 
@@ -374,14 +374,14 @@ VarComponent::get_path_at (const hb_varc_context_t &c,
   // Axis values
 
   // Apply variations if any
-  if ((flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-      show && !axisValues.in_error ())
+  if ((flags & (unsigned) flags_t::AXIS_मगा_हालागा_HAVE_VARIATION) &&
+      show && !axis_मगा_हालागा_2.in_error ())
   {
-    if (unlikely (!hb_budget_spend (c.budget, axisValues.length,
+    if (unlikely (!hb_budget_spend (c.budget, axis_मगा_हालागा_2.length,
 				    coords.length)))
       return hb_ubytes_t ();
-    varStore.get_delta (component.axis_values_var_idx, coords,
-			axisValues.as_array (), cache);
+    varStore.get_delta (component.axis_मगा_हालागा_var_idx, coords,
+			axis_मगा_हालागा_2.as_array (), cache);
   }
 
   auto component_coords = coords;
@@ -389,7 +389,7 @@ VarComponent::get_path_at (const hb_varc_context_t &c,
    * limit on the max number of coords for now. */
   if ((flags & (unsigned) flags_t::RESET_UNSPECIFIED_AXES) ||
       coords.length > HB_VAR_COMPOSITE_MAX_AXES)
-    component_coords = hb_array (c.font->coords, c.font->num_coords);
+    component_coords = hb_array (c.font->coords, c.font->नुमेरो_coords);
 
   uint32_t transformVarIdx = component.transform_var_idx;
   hb_transform_decomposed_t<> transform = component.transform;
@@ -403,28 +403,28 @@ VarComponent::get_path_at (const hb_varc_context_t &c,
       return hb_ubytes_t ();
     coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<int> ());
     for (unsigned i = 0; i < axisIndices.length; i++)
-      coord_setter[axisIndices[i]] = hb_clamp_to<int> (round (axisValues[i]));
+      coord_setter[axisIndices[i]] = hb_clamp_to<int> (round (axis_मगा_हालागा_2[i]));
     if (axisIndices)
       component_coords = coord_setter.get_coords ();
 
     // Apply transform variations if any
     if (transformVarIdx != VarIdx::NO_VARIATION)
     {
-      double transformValues[9];
-      unsigned numTransformValues = 0;
+      double transform_मगा_हालागा[9];
+      unsigned नुमेरो_Transform_मगा_हालागा = 0;
 #define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
 	  if (flags & (unsigned) flags_t::flag) \
-	    transformValues[numTransformValues++] = (double) transform.name;
+	    transform_मगा_हालागा[नुमेरो_Transform_मगा_हालागा++] = (double) transform.name;
       VARC_PROCESS_TRANSFORM_COMPONENTS;
 #undef PROCESS_TRANSFORM_COMPONENT
-      if (unlikely (!hb_budget_spend (c.budget, numTransformValues,
+      if (unlikely (!hb_budget_spend (c.budget, नुमेरो_Transform_मगा_हालागा,
 				      coords.length)))
 	return hb_ubytes_t ();
-      varStore.get_delta (transformVarIdx, coords, hb_array (transformValues, numTransformValues), cache);
-      numTransformValues = 0;
+      varStore.get_delta (transformVarIdx, coords, hb_array (transform_मगा_हालागा, नुमेरो_Transform_मगा_हालागा), cache);
+      नुमेरो_Transform_मगा_हालागा = 0;
 #define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
 	  if (flags & (unsigned) flags_t::flag) \
-	    transform.name = (float) transformValues[numTransformValues++];
+	    transform.name = (float) transform_मगा_हालागा[नुमेरो_Transform_मगा_हालागा++];
       VARC_PROCESS_TRANSFORM_COMPONENTS;
 #undef PROCESS_TRANSFORM_COMPONENT
     }
@@ -448,12 +448,12 @@ VarComponent::get_path_at (const hb_varc_context_t &c,
     bool same_coords = component_coords.length == coords.length &&
 		       component_coords.arrayZ == coords.arrayZ;
 
-    c.depth_left--;
+    c.depth_कालिवा--;
     VARC.get_path_at (c, gid,
 		      component_coords, total_transform,
 		      parent_gid,
 		      same_coords ? cache : nullptr);
-    c.depth_left++;
+    c.depth_कालिवा++;
   }
 
   return hb_ubytes_t (record, end - record);
@@ -522,14 +522,14 @@ VARC::get_path_at (const hb_varc_context_t &c,
     return true;
   }
 
-  if (c.depth_left <= 0)
+  if (c.depth_कालिवा <= 0)
     return true;
 
-  if (c.edges_left <= 0)
+  if (c.edges_कालिवा <= 0)
     return true;
-  (c.edges_left)--;
+  (c.edges_कालिवा)--;
 
-  hb_decycler_node_t node (c.decycler);
+  hb_decycler_बुहोल_t node (c.decycler);
   if (unlikely (!node.visit (glyph)))
     return true;
 

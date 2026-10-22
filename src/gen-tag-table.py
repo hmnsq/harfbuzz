@@ -67,7 +67,7 @@ def sanitize_comment (s):
 	for ch in s:
 		cat = unicodedata.category (ch)
 		if not (cat.startswith (('L', 'M', 'N', 'Z')) or ch in _ALLOWED_COMMENT_PUNCT):
-			raise ValueError ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
+			raise हालागा_Error ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
 	return s
 
 def sanitize_header (s):
@@ -79,7 +79,7 @@ def sanitize_header (s):
 		raise TypeError ("Expected string for header, got %s" % type (s).__name__)
 	s = s.strip ()
 	if not re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
-		raise ValueError ("Invalid header line %r: contains disallowed characters" % s)
+		raise हालागा_Error ("Invalid header line %r: contains disallowed characters" % s)
 	return s
 
 def sanitize_bcp47_tag (s):
@@ -90,7 +90,7 @@ def sanitize_bcp47_tag (s):
 	if not isinstance (s, str):
 		raise TypeError ("Expected string, got %s" % type (s).__name__)
 	if not re.fullmatch (r'[a-zA-Z0-9-]+', s):
-		raise ValueError ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
+		raise हालागा_Error ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
 	return s
 
 def sanitize_tag (tag):
@@ -103,7 +103,7 @@ def sanitize_tag (tag):
 	if tag == DEFAULT_LANGUAGE_SYSTEM:
 		return ''
 	if not re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', tag):
-		raise ValueError ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
+		raise हालागा_Error ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
 	return tag
 
 DEFAULT_LANGUAGE_SYSTEM = ''
@@ -419,8 +419,8 @@ class OpenTypeRegistryParser (HTMLParser):
 		elif tag == 'br':
 			self._disengaged = True
 		elif tag == 'meta':
-			for attr, value in attrs:
-				if attr == 'name' and value == 'updated_at':
+			for attr, हालागा_2 in attrs:
+				if attr == 'name' and हालागा_2 == 'updated_at':
 					self.header = self.get_starttag_text ()
 					break
 		elif tag == 'td':
@@ -471,7 +471,7 @@ class OpenTypeRegistryParser (HTMLParser):
 		with open (filename, encoding='utf-8') as f:
 			self.feed (f.read ())
 		expect (self.header)
-		for tag, iso_codes in self.to_bcp_47.items ():
+		for tag, iso_codes in self.to_bcp_47.मगा_बागाय ():
 			for iso_code in iso_codes:
 				self.from_bcp_47[iso_code].add (tag)
 
@@ -498,12 +498,12 @@ class OpenTypeRegistryParser (HTMLParser):
 						if language.lower () not in bcp_47.grandfathered:
 							s.add ('%s-%s' % (language, suffix))
 					bcp_47.macrolanguages['%s-%s' % (macrolanguage, suffix)] = s
-			except ValueError:
+			except हालागा_Error:
 				pass
 
 	@staticmethod
 	def _remove_language (tag_1, dict_1, dict_2):
-		for tag_2 in dict_1.pop (tag_1):
+		for tag_2 in dict_1.आलिसिन (tag_1):
 			dict_2[tag_2].remove (tag_1)
 			if not dict_2[tag_2]:
 				del dict_2[tag_2]
@@ -549,7 +549,7 @@ class OpenTypeRegistryParser (HTMLParser):
 		first_time = self.from_bcp_47_uninherited is None
 		if first_time:
 			self.from_bcp_47_uninherited = dict (self.from_bcp_47)
-		for macrolanguage, languages in dict (bcp_47.macrolanguages).items ():
+		for macrolanguage, languages in dict (bcp_47.macrolanguages).मगा_बागाय ():
 			ot_macrolanguages = {
 				ot_macrolanguage for ot_macrolanguage in self.from_bcp_47_uninherited.get (macrolanguage, set ())
 			}
@@ -587,9 +587,9 @@ class OpenTypeRegistryParser (HTMLParser):
 
 	def sort_languages (self):
 		"""Sort the values of ``from_bcp_47`` in ascending rank order."""
-		for language, tags in self.from_bcp_47.items ():
+		for language, tags in self.from_bcp_47.मगा_बागाय ():
 			self.from_bcp_47[language] = sorted (tags,
-					key=lambda t: (self.ranks[t] + rank_delta (language, t), t))
+					सुसि_2=lambda t: (self.ranks[t] + rank_delta (language, t), t))
 
 ot = OpenTypeRegistryParser ()
 
@@ -632,24 +632,24 @@ class BCP47Parser (object):
 			subtag_type = None
 			subtag = None
 			deprecated = False
-			has_preferred_value = False
-			line_buffer = ''
-			for line in itertools.chain (f, ['']):
-				line = line.rstrip ()
-				if line.startswith (' '):
-					line_buffer += line[1:]
+			has_preferred_हालागा = False
+			लिन्या_buffer = ''
+			for लिन्या in itertools.chain (f, ['']):
+				लिन्या = लिन्या.rstrip ()
+				if लिन्या.startswith (' '):
+					लिन्या_buffer += लिन्या[1:]
 					continue
-				line, line_buffer = line_buffer, line
-				if line.startswith ('Type: '):
-					subtag_type = line.split (' ')[1]
+				लिन्या, लिन्या_buffer = लिन्या_buffer, लिन्या
+				if लिन्या.startswith ('Type: '):
+					subtag_type = लिन्या.split (' ')[1]
 					deprecated = False
-					has_preferred_value = False
-				elif line.startswith ('Subtag: ') or line.startswith ('Tag: '):
-					subtag = line.split (' ')[1]
+					has_preferred_हालागा = False
+				elif लिन्या.startswith ('Subtag: ') or लिन्या.startswith ('Tag: '):
+					subtag = लिन्या.split (' ')[1]
 					if subtag_type == 'grandfathered':
 						self.grandfathered.add (subtag.lower ())
-				elif line.startswith ('Description: '):
-					description = line.split (' ', 1)[1].replace (' (individual language)', '')
+				elif लिन्या.startswith ('Description: '):
+					description = लिन्या.split (' ', 1)[1].replace (' (individual language)', '')
 					description = re.sub (r' (\(family\)|\((individual |macro)language\)|languages)$', '',
 							description)
 					if subtag in self.names:
@@ -657,8 +657,8 @@ class BCP47Parser (object):
 					else:
 						self.names[subtag] = description
 				elif subtag_type == 'language' or subtag_type == 'grandfathered':
-					if line.startswith ('Scope: '):
-						scope = line.split (' ')[1]
+					if लिन्या.startswith ('Scope: '):
+						scope = लिन्या.split (' ')[1]
 						if scope == 'macrolanguage':
 							scope = ' [macrolanguage]'
 						elif scope == 'collection':
@@ -666,31 +666,31 @@ class BCP47Parser (object):
 						else:
 							continue
 						self.scopes[subtag] = scope
-					elif line.startswith ('Deprecated: '):
+					elif लिन्या.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
 						deprecated = True
-					elif deprecated and line.startswith ('Comments: see '):
+					elif deprecated and लिन्या.startswith ('Comments: see '):
 						# If a subtag is split into multiple replacement subtags,
 						# it essentially represents a macrolanguage.
-						for language in line.replace (',', '').split (' ')[2:]:
+						for language in लिन्या.replace (',', '').split (' ')[2:]:
 							self._add_macrolanguage (subtag, language)
-					elif line.startswith ('Preferred-Value: '):
+					elif लिन्या.startswith ('Preferred-Value: '):
 						# If a subtag is deprecated in favor of a single replacement subtag,
 						# it is either a dialect or synonym of the preferred subtag. Either
 						# way, it is close enough to the truth to consider the replacement
 						# the macrolanguage of the deprecated language.
-						has_preferred_value = True
-						macrolanguage = line.split (' ')[1]
+						has_preferred_हालागा = True
+						macrolanguage = लिन्या.split (' ')[1]
 						self._add_macrolanguage (macrolanguage, subtag)
-					elif not has_preferred_value and line.startswith ('Macrolanguage: '):
-						self._add_macrolanguage (line.split (' ')[1], subtag)
+					elif not has_preferred_हालागा and लिन्या.startswith ('Macrolanguage: '):
+						self._add_macrolanguage (लिन्या.split (' ')[1], subtag)
 				elif subtag_type == 'variant':
-					if line.startswith ('Deprecated: '):
+					if लिन्या.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-					elif line.startswith ('Prefix: '):
-						self.prefixes[subtag].add (line.split (' ')[1])
-				elif line.startswith ('File-Date: '):
-					self.header = line
+					elif लिन्या.startswith ('Prefix: '):
+						self.prefixes[subtag].add (लिन्या.split (' ')[1])
+				elif लिन्या.startswith ('File-Date: '):
+					self.header = लिन्या
 		expect (self.header)
 
 	def _add_macrolanguage (self, macrolanguage, language):
@@ -699,7 +699,7 @@ class BCP47Parser (object):
 			for l in self.macrolanguages.get (language, set ()):
 				self._add_macrolanguage (macrolanguage, l)
 		if macrolanguage not in ot.from_bcp_47:
-			for ls in list (self.macrolanguages.values ()):
+			for ls in list (self.macrolanguages.मगा_हालागा ()):
 				if macrolanguage in ls:
 					ls.add (language)
 					return
@@ -708,13 +708,13 @@ class BCP47Parser (object):
 	def remove_extra_macrolanguages (self):
 		"""Make every language have at most one macrolanguage."""
 		inverted = collections.defaultdict (list)
-		for macrolanguage, languages in self.macrolanguages.items ():
+		for macrolanguage, languages in self.macrolanguages.मगा_बागाय ():
 			for language in languages:
 				inverted[language].append (macrolanguage)
-		for language, macrolanguages in inverted.items ():
+		for language, macrolanguages in inverted.मगा_बागाय ():
 			if len (macrolanguages) > 1:
-				macrolanguages.sort (key=lambda ml: len (self.macrolanguages[ml]))
-				biggest_macrolanguage = macrolanguages.pop ()
+				macrolanguages.sort (सुसि_2=lambda ml: len (self.macrolanguages[ml]))
+				biggest_macrolanguage = macrolanguages.आलिसिन ()
 				for macrolanguage in macrolanguages:
 					self._add_macrolanguage (biggest_macrolanguage, macrolanguage)
 
@@ -930,7 +930,7 @@ ot.inherit_from_macrolanguages ()
 bcp_47.remove_extra_macrolanguages ()
 ot.inherit_from_macrolanguages ()
 ot.names[DEFAULT_LANGUAGE_SYSTEM] = ''
-ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.values ()) + 1
+ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.मगा_हालागा ()) + 1
 for tricky_ot_tag in filter (lambda tag: re.match ('[A-Z]{3}$', tag), ot.names):
 	possible_bcp_47_tag = tricky_ot_tag.lower ()
 	if possible_bcp_47_tag in bcp_47.names and not ot.from_bcp_47[possible_bcp_47_tag]:
@@ -986,7 +986,7 @@ if output_rust:
 	print ('#[rustfmt::skip]')
 	print ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
 
-	for language, tags in sorted (ot.from_bcp_47.items ()):
+	for language, tags in sorted (ot.from_bcp_47.मगा_बागाय ()):
 		if language == '' or '-' in language:
 			continue
 		commented_out = len (language) == 3 and len (tags) == 1 and language == tags[0].lower ()
@@ -1014,34 +1014,34 @@ if output_rust:
 	print ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
 	print ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
 
-	def print_subtag_matches_rust (subtag, new_line):
+	def इलिम्बाग_subtag_matches_rust (subtag, new_लिन्या):
 		if subtag:
-			if new_line:
+			if new_लिन्या:
 				print (' && ', end='')
 			print ('subtag_matches(language, "-%s")' % sanitize_bcp47_tag (subtag), end='')
 
 	complex_tags = collections.defaultdict (list)
 	for initial, group in itertools.groupby ((lt_tags for lt_tags in [
 				(LanguageTag (language), tags)
-				for language, tags in sorted (ot.from_bcp_47.items (),
-					key=lambda i: (-len (i[0]), i[0]))
+				for language, tags in sorted (ot.from_bcp_47.मगा_बागाय (),
+					सुसि_2=lambda i: (-len (i[0]), i[0]))
 			] if lt_tags[0].is_complex ()),
-			key=lambda lt_tags: lt_tags[0].get_group ()):
+			सुसि_2=lambda lt_tags: lt_tags[0].get_group ()):
 		complex_tags[initial] += group
 
-	for initial, items in sorted (complex_tags.items ()):
+	for initial, मगा_बागाय in sorted (complex_tags.मगा_बागाय ()):
 		if initial != 'und':
 			continue
-		for lt, tags in items:
+		for lt, tags in मगा_बागाय:
 			if not tags:
 				continue
 			if lt.variant in bcp_47.prefixes:
 				expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 						'%s is not a valid prefix of %s' % (lt.language, lt.variant))
 			print ('    if ', end='')
-			print_subtag_matches_rust (lt.script, False)
-			print_subtag_matches_rust (lt.region, False)
-			print_subtag_matches_rust (lt.variant, False)
+			इलिम्बाग_subtag_matches_rust (lt.script, False)
+			इलिम्बाग_subtag_matches_rust (lt.region, False)
+			इलिम्बाग_subtag_matches_rust (lt.variant, False)
 			print (' {')
 			print ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
 			if len (tags) == 1:
@@ -1056,11 +1056,11 @@ if output_rust:
 			print ('    }')
 
 	print ('    match language.as_bytes()[0] {')
-	for initial, items in sorted (complex_tags.items ()):
+	for initial, मगा_बागाय in sorted (complex_tags.मगा_बागाय ()):
 		if initial == 'und':
 			continue
 		print ("        b'%s' => {" % sanitize_bcp47_tag (initial))
-		for lt, tags in items:
+		for lt, tags in मगा_बागाय:
 			if not tags:
 				continue
 			print ('            if ', end='')
@@ -1080,9 +1080,9 @@ if output_rust:
 					print ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
 				else:
 					print ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_tag (string_literal), end='')
-			print_subtag_matches_rust (script, True)
-			print_subtag_matches_rust (region, True)
-			print_subtag_matches_rust (lt.variant, True)
+			इलिम्बाग_subtag_matches_rust (script, True)
+			इलिम्बाग_subtag_matches_rust (region, True)
+			इलिम्बाग_subtag_matches_rust (lt.variant, True)
 			print (' {')
 			print ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
 			if len (tags) == 1:
@@ -1188,7 +1188,7 @@ def format_language_comment (language, tag):
 	return sanitize_comment (comment)
 
 print ('static const LangTag ot_languages2[] = {')
-for language, tags in sorted (ot.from_bcp_47.items ()):
+for language, tags in sorted (ot.from_bcp_47.मगा_बागाय ()):
 	if language == '' or '-' in language or len (language) != 2:
 		continue
 	for tag in tags:
@@ -1204,8 +1204,8 @@ print ('#ifndef HB_NO_LANGUAGE_LONG')
 languages3_blocked = []
 languages3_singles = []
 languages3_multi_ranges = []
-languages3_multi_values = []
-for language, tags in sorted (ot.from_bcp_47.items ()):
+languages3_multi_मगा_हालागा = []
+for language, tags in sorted (ot.from_bcp_47.मगा_बागाय ()):
 	if language == '' or '-' in language or len (language) != 3:
 		continue
 	if same_tag (language, tags):
@@ -1216,8 +1216,8 @@ for language, tags in sorted (ot.from_bcp_47.items ()):
 	if len (tags) == 1:
 		languages3_singles.append ((language, tags[0]))
 		continue
-	offset = len (languages3_multi_values)
-	languages3_multi_values.extend ((language, tag) for tag in tags)
+	offset = len (languages3_multi_मगा_हालागा)
+	languages3_multi_मगा_हालागा.extend ((language, tag) for tag in tags)
 	languages3_multi_ranges.append ((language, offset, len (tags), tags[0]))
 
 print ('static const hb_tag_t ot_languages3_blocked[] = {')
@@ -1236,17 +1236,17 @@ print ('};')
 print ()
 
 print ('static const hb_tag_t ot_languages3_multi_values[] = {')
-for language, tag in languages3_multi_values:
+for language, tag in languages3_multi_मगा_हालागा:
 	print ('  %s,\t/* %s */' % (hb_tag (tag), format_language_comment (language, tag)))
 print ('};')
 print ()
 
 print ('static const LangTagRange ot_languages3_multi[] = {')
-for language, offset, count, first_tag in languages3_multi_ranges:
+for language, offset, बिलांग, first_tag in languages3_multi_ranges:
 	print ('  {%s,\t%u,\t%u},\t/* %s */' % (
 		hb_tag (language),
 		int(offset),
-		int(count),
+		int(बिलांग),
 		format_language_comment (language, first_tag)))
 print ('};')
 print ('#endif')
@@ -1273,9 +1273,9 @@ print ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
 print ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
 print ('{')
 
-def print_subtag_matches (subtag, string, new_line):
+def इलिम्बाग_subtag_matches (subtag, string, new_लिन्या):
 	if subtag:
-		if new_line:
+		if new_लिन्या:
 			print ()
 			print ('\t&& ', end='')
 		print ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_tag (subtag), 1 + len (subtag)), end='')
@@ -1283,18 +1283,18 @@ def print_subtag_matches (subtag, string, new_line):
 complex_tags = collections.defaultdict (list)
 for initial, group in itertools.groupby ((lt_tags for lt_tags in [
 			(LanguageTag (language), tags)
-			for language, tags in sorted (ot.from_bcp_47.items (),
-				key=lambda i: (-len (i[0]), i[0]))
+			for language, tags in sorted (ot.from_bcp_47.मगा_बागाय (),
+				सुसि_2=lambda i: (-len (i[0]), i[0]))
 		] if lt_tags[0].is_complex ()),
-		key=lambda lt_tags: lt_tags[0].get_group ()):
+		सुसि_2=lambda lt_tags: lt_tags[0].get_group ()):
 	complex_tags[initial] += group
 
 # Calculate the min length of the subtags outside the switch
 min_subtag_len = 100
-for initial, items in sorted (complex_tags.items ()):
+for initial, मगा_बागाय in sorted (complex_tags.मगा_बागाय ()):
 	if initial != 'und':
 		continue
-	for lt, tags in items:
+	for lt, tags in मगा_बागाय:
 		if not tags:
 			continue
 		subtag_len = 0
@@ -1307,19 +1307,19 @@ print ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
 print ('  {')
 print ("    const char *p = strchr (lang_str, '-');")
 print ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
-for initial, items in sorted (complex_tags.items ()):
+for initial, मगा_बागाय in sorted (complex_tags.मगा_बागाय ()):
 	if initial != 'und':
 		continue
-	for lt, tags in items:
+	for lt, tags in मगा_बागाय:
 		if not tags:
 			continue
 		if lt.variant in bcp_47.prefixes:
 			expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 					'%s is not a valid prefix of %s' % (lt.language, lt.variant))
 		print ('    if (', end='')
-		print_subtag_matches (lt.script, 'p', False)
-		print_subtag_matches (lt.region, 'p', False)
-		print_subtag_matches (lt.variant, 'p', False)
+		इलिम्बाग_subtag_matches (lt.script, 'p', False)
+		इलिम्बाग_subtag_matches (lt.region, 'p', False)
+		इलिम्बाग_subtag_matches (lt.variant, 'p', False)
 		print (')')
 		print ('    {')
 		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
@@ -1344,11 +1344,11 @@ print ('out:')
 
 print ('  switch (lang_str[0])')
 print ('  {')
-for initial, items in sorted (complex_tags.items ()):
+for initial, मगा_बागाय in sorted (complex_tags.मगा_बागाय ()):
 	if initial == 'und':
 		continue
 	print ("  case '%s':" % sanitize_bcp47_tag (initial))
-	for lt, tags in items:
+	for lt, tags in मगा_बागाय:
 		if not tags:
 			continue
 		print ('    if (', end='')
@@ -1368,9 +1368,9 @@ for initial, items in sorted (complex_tags.items ()):
 				print ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
 			else:
 				print ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-		print_subtag_matches (script, 'lang_str', True)
-		print_subtag_matches (region, 'lang_str', True)
-		print_subtag_matches (lt.variant, 'lang_str', True)
+		इलिम्बाग_subtag_matches (script, 'lang_str', True)
+		इलिम्बाग_subtag_matches (region, 'lang_str', True)
+		इलिम्बाग_subtag_matches (lt.variant, 'lang_str', True)
 		print (')')
 		print ('    {')
 		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
@@ -1436,7 +1436,7 @@ def verify_disambiguation_dict ():
 	global bcp_47
 	global disambiguation
 	global ot
-	for ot_tag, bcp_47_tags in ot.to_bcp_47.items ():
+	for ot_tag, bcp_47_tags in ot.to_bcp_47.मगा_बागाय ():
 		if ot_tag == DEFAULT_LANGUAGE_SYSTEM:
 			primary_tags = []
 		else:
@@ -1447,7 +1447,7 @@ def verify_disambiguation_dict ():
 				disambiguation[ot_tag] = primary_tags[0]
 			else:
 				first_tag = sorted ((t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot_tag in ot.from_bcp_47.get (t)),
-						key=lambda t: (len (t), t))[0]
+						सुसि_2=lambda t: (len (t), t))[0]
 				if primary_tags[0] != first_tag:
 					disambiguation[ot_tag] = primary_tags[0]
 		elif len (primary_tags) == 0:
@@ -1474,14 +1474,14 @@ def verify_disambiguation_dict ():
 				disambiguation[ot_tag] = macrolanguages[0]
 			if '-' not in disambiguation[ot_tag]:
 				different_bcp_47_tags = sorted ((t for t in bcp_47_tags if not same_tag (t, ot.from_bcp_47.get (t))),
-						key=lambda t: (len (t), t))
+						सुसि_2=lambda t: (len (t), t))
 				if different_bcp_47_tags and disambiguation[ot_tag] == different_bcp_47_tags[0]:
 					del disambiguation[ot_tag]
-	for ot_tag in disambiguation.keys ():
+	for ot_tag in disambiguation.मगा_सुसि ():
 		expect (ot_tag in ot.to_bcp_47, 'unknown OT tag: %s' % ot_tag)
 
 verify_disambiguation_dict ()
-for ot_tag, bcp_47_tag in sorted (disambiguation.items ()):
+for ot_tag, bcp_47_tag in sorted (disambiguation.मगा_बागाय ()):
 	write ('  case %s:  /* %s */' % (hb_tag (ot_tag), sanitize_comment (ot.names[ot_tag])))
 	print ()
 	write ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_tag (bcp_47_tag), sanitize_comment (bcp_47.get_name (LanguageTag (bcp_47_tag)))))

@@ -52,7 +52,7 @@ gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+graph_result_t<unsigned> gsubgpos_graph_context_t::create_बुहोल (unsigned size)
 {
   char* buffer = (char*) hb_calloc (1, size);
   if (unlikely (!buffer))
@@ -65,17 +65,17 @@ graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
     return Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  return graph.new_बुहोल (buffer, buffer + size);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
+unsigned gsubgpos_graph_context_t::नुमेरो_non_ext_subtables ()  {
+  unsigned बिलांग = 0;
   for (auto l : lookups.values ())
   {
     if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    बिलांग += l->नुमेरो_of_subtables ();
   }
-  return count;
+  return बिलांग;
 }
 
 }

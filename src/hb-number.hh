@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#ifndef HB_नुमेरो_HH
+#define HB_नुमेरो_HH
 
 HB_INTERNAL bool
 hb_parse_int (const char **pp, const char *end, int *pv,

@@ -48,10 +48,10 @@ namespace OT {
 template <typename T, typename Types>
 struct _hea
 {
-  using LongMetricCount = typename Types::HBLUINT;
+  using Long_Metric_बिलांग = typename Types::HBLUINT;
 
-  static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  static constexpr unsigned long_metric_बिलांग_max ()
+  { return Long_Metric_बिलांग::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
   bool has_data () const { return version.major; }
 
@@ -67,7 +67,7 @@ struct _hea
   FixedVersion<>version;	/* 0x00010000u for version 1.0. */
   FWORD		ascender;	/* Typographic ascent. */
   FWORD		descender;	/* Typographic descent. */
-  FWORD		lineGap;	/* Typographic line gap. */
+  FWORD		लिन्या_Gap;	/* Typographic line gap. */
   UFWORD	advanceMax;	/* Maximum advance width/height value in
 				 * metrics table. */
   FWORD		minLeadingBearing;
@@ -93,8 +93,8 @@ struct _hea
   HBINT16	reserved3;	/* Set to 0. */
   HBINT16	reserved4;	/* Set to 0. */
   HBINT16	metricDataFormat;/* 0 for current format. */
-  LongMetricCount
-		numberOfLongMetrics;
+  Long_Metric_बिलांग
+		नुमेरो_Of_Long_Metrics;
 				/* Number of LongMetric entries in metric
 				 * table. */
   public:

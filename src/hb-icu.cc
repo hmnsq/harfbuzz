@@ -47,7 +47,7 @@
 #include <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
+#if U_ICU_VERSION_MAJOR_नुमेरो < 65 && (defined(__GNUC__) || defined(__clang__))
 #define HB_ICU_EXTRA_SEMI_IGNORED
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #endif
@@ -124,7 +124,7 @@ hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
 				 void               *user_data HB_UNUSED)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  switch (u_get_Int_Property_हालागा(unicode, UCHAR_GENERAL_CATEGORY))
   {
   case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
@@ -138,12 +138,12 @@ hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
   case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  case U_DECIMAL_DIGIT_नुमेरो:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_नुमेरो;
+  case U_LETTER_नुमेरो:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_नुमेरो;
+  case U_OTHER_नुमेरो:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_नुमेरो;
 
   case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
+  case U_लिन्या_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_लिन्या_SEPARATOR;
   case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
   case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
@@ -158,10 +158,10 @@ hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
   case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  case U_MATH_सिम्बोलो:			return HB_UNICODE_GENERAL_CATEGORY_MATH_सिम्बोलो;
+  case U_CURRENCY_सिम्बोलो:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_सिम्बोलो;
+  case U_MODIFIER_सिम्बोलो:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_सिम्बोलो;
+  case U_OTHER_सिम्बोलो:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_सिम्बोलो;
 
   case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
   case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
@@ -221,7 +221,7 @@ hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				    ARRAY_LENGTH (decomposed), &icu_err);
   if (U_FAILURE (icu_err) || len < 0) return false;
 
-  len = u_countChar32 (decomposed, len);
+  len = u_बिलांग_Char32 (decomposed, len);
   if (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
@@ -288,6 +288,6 @@ hb_icu_get_unicode_funcs ()
   return static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 
 #endif

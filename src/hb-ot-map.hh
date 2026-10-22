@@ -33,7 +33,7 @@
 
 
 #define HB_OT_MAP_MAX_BITS 8u
-#define HB_OT_MAP_MAX_VALUE ((1u << HB_OT_MAP_MAX_BITS) - 1u)
+#define HB_OT_MAP_MAX_हालागा ((1u << HB_OT_MAP_MAX_BITS) - 1u)
 
 struct hb_ot_shape_plan_t;
 
@@ -167,7 +167,7 @@ struct hb_ot_map_t
   HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
   HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
   HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
+					     unsigned int *tag_बिलांग, /* IN/OUT */
 					     hb_tag_t     *tags /* OUT */) const;
 
   public:
@@ -193,7 +193,7 @@ enum hb_ot_map_feature_flags_t
   F_MANUAL_JOINERS	= F_MANUAL_ZWNJ | F_MANUAL_ZWJ,
   F_GLOBAL_MANUAL_JOINERS= F_GLOBAL | F_MANUAL_JOINERS,
   F_GLOBAL_HAS_FALLBACK = F_GLOBAL | F_HAS_FALLBACK,
-  F_GLOBAL_SEARCH	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
+  F_GLOBAL_हानाप	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
   F_RANDOM		= 0x0020u, /* Randomly select a glyph from an AlternateSubstFormat1 subtable. */
   F_PER_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
 };
@@ -206,7 +206,7 @@ struct hb_ot_map_feature_t
   hb_ot_map_feature_flags_t flags;
 };
 
-struct hb_ot_shape_plan_key_t;
+struct hb_ot_shape_plan_सुसि_t;
 
 struct hb_ot_map_builder_t
 {
@@ -240,14 +240,14 @@ struct hb_ot_map_builder_t
   { add_pause (1, pause_func); }
 
   HB_INTERNAL void compile (hb_ot_map_t                  &m,
-			    const hb_ot_shape_plan_key_t &key);
+			    const hb_ot_shape_plan_सुसि_t &key);
 
   private:
 
   HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
 				unsigned int  table_index,
 				unsigned int  feature_index,
-				const hb_ot_shape_plan_key_t &key,
+				const hb_ot_shape_plan_सुसि_t &key,
 				hb_mask_t     mask,
 				bool          auto_zwnj = true,
 				bool          auto_zwj = true,
@@ -258,9 +258,9 @@ struct hb_ot_map_builder_t
   struct feature_info_t {
     hb_tag_t tag;
     unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+    unsigned int max_हालागा;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
+    unsigned int default_हालागा; /* for non-global features, what should the unset glyphs take */
     unsigned int stage[2]; /* GSUB/GPOS */
 
     HB_INTERNAL static int cmp (const void *pa, const void *pb)

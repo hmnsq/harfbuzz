@@ -34,7 +34,7 @@ typedef hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
 				   hb_font_t          *font,
 				   hb_buffer_t        *buffer,
 				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   unsigned int        नुमेरो_features);
 
 #define HB_SHAPER_IMPLEMENT(name) \
 	extern "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
@@ -62,8 +62,8 @@ enum hb_shaper_order_t
       HB_SHAPER_ORDER (Shaper),
 #include "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
-  _HB_SHAPERS_COUNT_PLUS_ONE,
-  HB_SHAPERS_COUNT = _HB_SHAPERS_COUNT_PLUS_ONE - 1,
+  HB_SHAPERS_बिलांग_PLUS_ONE,
+  HB_SHAPERS_बिलांग = HB_SHAPERS_बिलांग_PLUS_ONE - 1,
 };
 
 template <enum hb_shaper_order_t order, typename Object> struct hb_shaper_object_data_type_t;

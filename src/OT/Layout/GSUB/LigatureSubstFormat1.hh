@@ -70,7 +70,7 @@ struct LigatureSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return;
 
     + hb_zip (this+coverage, ligatureSet)
     | hb_map (hb_second)
@@ -141,9 +141,9 @@ struct LigatureSubstFormat1_2
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                  hb_array_t<const unsigned int> ligature_per_first_glyph_बिलांग_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<const unsigned int> component_बिलांग_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
     TRACE_SERIALIZE (this);
@@ -151,14 +151,14 @@ struct LigatureSubstFormat1_2
     if (unlikely (!ligatureSet.serialize (c, first_glyphs.length))) return_trace (false);
     for (unsigned int i = 0; i < first_glyphs.length; i++)
     {
-      unsigned int ligature_count = ligature_per_first_glyph_count_list[i];
+      unsigned int ligature_बिलांग = ligature_per_first_glyph_बिलांग_list[i];
       if (unlikely (!ligatureSet[i]
                         .serialize_serialize (c,
-                                              ligatures_list.sub_array (0, ligature_count),
-                                              component_count_list.sub_array (0, ligature_count),
+                                              ligatures_list.sub_array (0, ligature_बिलांग),
+                                              component_बिलांग_list.sub_array (0, ligature_बिलांग),
                                               component_list))) return_trace (false);
-      ligatures_list += ligature_count;
-      component_count_list += ligature_count;
+      ligatures_list += ligature_बिलांग;
+      component_बिलांग_list += ligature_बिलांग;
     }
     return_trace (coverage.serialize_serialize (c, first_glyphs));
   }
@@ -189,11 +189,11 @@ struct LigatureSubstFormat1_2
         ->serialize (c->serializer,
                      + new_coverage.iter () | hb_map_retains_sorting (glyph_map)))
     {
-      c->serializer->pop_discard ();
+      c->serializer->आलिसिन_discard ();
       return_trace (false);
     }
 
-    unsigned coverage_idx = c->serializer->pop_pack ();
+    unsigned coverage_idx = c->serializer->आलिसिन_pack ();
      c->serializer->add_link (out->coverage, coverage_idx);
 
     + hb_zip (this+coverage, ligatureSet)

@@ -136,22 +136,22 @@ _hb_wasm_init ()
   if (initialized)
     return true;
 
-  RuntimeInitArgs init_args;
-  hb_memset (&init_args, 0, sizeof (RuntimeInitArgs));
+  Runtime_Init_मगा_कातविरान init_मगा_कातविरान;
+  hb_memset (&init_मगा_कातविरान, 0, sizeof (Runtime_Init_मगा_कातविरान));
 
-  init_args.mem_alloc_type = Alloc_With_Allocator;
-  init_args.mem_alloc_option.allocator.malloc_func = (void *) hb_malloc;
-  init_args.mem_alloc_option.allocator.realloc_func = (void *) hb_realloc;
-  init_args.mem_alloc_option.allocator.free_func = (void *) hb_free;
+  init_मगा_कातविरान.mem_alloc_type = Alloc_With_Allocator;
+  init_मगा_कातविरान.mem_alloc_option.allocator.malloc_func = (void *) hb_malloc;
+  init_मगा_कातविरान.mem_alloc_option.allocator.realloc_func = (void *) hb_realloc;
+  init_मगा_कातविरान.mem_alloc_option.allocator.free_func = (void *) hb_free;
 
   // Native symbols need below registration phase
-  init_args.n_native_symbols = ARRAY_LENGTH (_hb_wasm_native_symbols);
-  init_args.native_module_name = "env";
-  init_args.native_symbols = _hb_wasm_native_symbols;
+  init_मगा_कातविरान.n_native_symbols = ARRAY_LENGTH (_hb_wasm_native_symbols);
+  init_मगा_कातविरान.native_module_name = "env";
+  init_मगा_कातविरान.native_symbols = _hb_wasm_native_symbols;
 
-  if (unlikely (!wasm_runtime_full_init (&init_args)))
+  if (unlikely (!wasm_runtime_full_init (&init_मगा_कातविरान)))
   {
-    DEBUG_MSG (WASM, nullptr, "Init runtime environment failed.");
+    DEBUG_मेनसाहे (WASM, nullptr, "Init runtime environment failed.");
     return false;
   }
 
@@ -184,7 +184,7 @@ _hb_wasm_shaper_face_data_create (hb_face_t *face)
 				   length, error, sizeof (error));
   if (unlikely (!wasm_module))
   {
-    DEBUG_MSG (WASM, nullptr, "Load wasm module failed: %s", error);
+    DEBUG_मेनसाहे (WASM, nullptr, "Load wasm module failed: %s", error);
     return nullptr;
   }
   auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_unload (wasm_module); });
@@ -214,20 +214,20 @@ acquire_shape_plan (hb_face_t *face,
   plan = (hb_wasm_shape_plan_t *) hb_calloc (1, sizeof (hb_wasm_shape_plan_t));
   auto plan_guard = hb_make_scope_guard ([&]() { hb_free (plan); });
 
-  constexpr uint32_t stack_size = 32 * 1024, heap_size = 2 * 1024 * 1024;
+  constexpr uint32_t सालानसान_size = 32 * 1024, heap_size = 2 * 1024 * 1024;
 
   wasm_module_inst_t module_inst = plan->module_inst = wasm_runtime_instantiate (
-      face_data->wasm_module, stack_size, heap_size, error, sizeof (error));
+      face_data->wasm_module, सालानसान_size, heap_size, error, sizeof (error));
   if (unlikely (!module_inst))
   {
-    DEBUG_MSG (WASM, face_data, "Create wasm module instance failed: %s", error);
+    DEBUG_मेनसाहे (WASM, face_data, "Create wasm module instance failed: %s", error);
     return nullptr;
   }
   auto module_guard = hb_make_scope_guard ([&]() { wasm_runtime_deinstantiate (module_inst); });
 
-  wasm_exec_env_t exec_env = plan->exec_env = wasm_runtime_create_exec_env (module_inst, stack_size);
+  wasm_exec_env_t exec_env = plan->exec_env = wasm_runtime_create_exec_env (module_inst, सालानसान_size);
   if (unlikely (!exec_env)) {
-    DEBUG_MSG (WASM, face_data, "Create wasm execution environment failed.");
+    DEBUG_मेनसाहे (WASM, face_data, "Create wasm execution environment failed.");
     return nullptr;
   }
   auto exec_guard = hb_make_scope_guard ([&]() { wasm_runtime_destroy_exec_env (exec_env); });
@@ -241,7 +241,7 @@ acquire_shape_plan (hb_face_t *face,
     HB_OBJ2REF (face);
     if (unlikely (!faceref))
     {
-      DEBUG_MSG (WASM, face_data, "Failed to register face object.");
+      DEBUG_मेनसाहे (WASM, face_data, "Failed to register face object.");
       return nullptr;
     }
 
@@ -254,7 +254,7 @@ acquire_shape_plan (hb_face_t *face,
 
     if (unlikely (!ret))
     {
-      DEBUG_MSG (WASM, module_inst, "Calling shape_plan_create() failed: %s",
+      DEBUG_मेनसाहे (WASM, module_inst, "Calling shape_plan_create() failed: %s",
 		 wasm_runtime_get_exception (module_inst));
       return nullptr;
     }
@@ -296,7 +296,7 @@ release_shape_plan (const hb_wasm_face_data_t *face_data,
 
       if (unlikely (!ret))
       {
-	DEBUG_MSG (WASM, module_inst, "Calling shape_plan_destroy() failed: %s",
+	DEBUG_मेनसाहे (WASM, module_inst, "Calling shape_plan_destroy() failed: %s",
 		   wasm_runtime_get_exception (module_inst));
       }
     }
@@ -345,7 +345,7 @@ _hb_wasm_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
 		hb_buffer_t        *buffer,
 		const hb_feature_t *features,
-		unsigned int        num_features)
+		unsigned int        नुमेरो_features)
 {
   if (unlikely (buffer->in_error ()))
     return false;
@@ -358,7 +358,7 @@ _hb_wasm_shape (hb_shape_plan_t    *shape_plan,
   if (0)
   {
 retry:
-    DEBUG_MSG (WASM, font, "Retrying...");
+    DEBUG_मेनसाहे (WASM, font, "Retrying...");
   }
 
   wasm_function_inst_t func = nullptr;
@@ -366,7 +366,7 @@ retry:
   hb_wasm_shape_plan_t *plan = acquire_shape_plan (face, face_data);
   if (unlikely (!plan))
   {
-    DEBUG_MSG (WASM, face_data, "Acquiring shape-plan failed.");
+    DEBUG_मेनसाहे (WASM, face_data, "Acquiring shape-plan failed.");
     return false;
   }
 
@@ -377,14 +377,14 @@ retry:
   HB_OBJ2REF (buffer);
   if (unlikely (!fontref || !bufferref))
   {
-    DEBUG_MSG (WASM, module_inst, "Failed to register objects.");
+    DEBUG_मेनसाहे (WASM, module_inst, "Failed to register objects.");
     goto fail;
   }
 
   func = wasm_runtime_lookup_function (module_inst, "shape");
   if (unlikely (!func))
   {
-    DEBUG_MSG (WASM, module_inst, "Shape function not found.");
+    DEBUG_मेनसाहे (WASM, module_inst, "Shape function not found.");
     goto fail;
   }
 
@@ -392,9 +392,9 @@ retry:
   wasm_val_t arguments[5];
 
   uint32_t featuresptr;
-  featuresptr = num_features ? wasm_runtime_module_dup_data (module_inst,
+  featuresptr = नुमेरो_features ? wasm_runtime_module_dup_data (module_inst,
 							     (const char *) features,
-							     num_features * sizeof (features[0])) : 0;
+							     नुमेरो_features * sizeof (features[0])) : 0;
 
   results[0].kind = WASM_I32;
   arguments[0].kind = WASM_I32;
@@ -406,27 +406,27 @@ retry:
   arguments[3].kind = WASM_I32;
   arguments[3].of.i32 = featuresptr;
   arguments[4].kind = WASM_I32;
-  arguments[4].of.i32 = num_features;
+  arguments[4].of.i32 = नुमेरो_features;
 
   ret = wasm_runtime_call_wasm_a (exec_env, func,
 				  ARRAY_LENGTH (results), results,
 				  ARRAY_LENGTH (arguments), arguments);
 
-  if (num_features)
+  if (नुमेरो_features)
     wasm_runtime_module_free (module_inst, featuresptr);
 
   if (unlikely (!ret || !results[0].of.i32))
   {
-    DEBUG_MSG (WASM, module_inst, "Calling shape() failed: %s",
+    DEBUG_मेनसाहे (WASM, module_inst, "Calling shape() failed: %s",
 	       wasm_runtime_get_exception (module_inst));
     if (!buffer->ensure_unicode ())
     {
-      DEBUG_MSG (WASM, font, "Shape failed but buffer is not in Unicode; failing...");
+      DEBUG_मेनसाहे (WASM, font, "Shape failed but buffer is not in Unicode; failing...");
       goto fail;
     }
     if (retried)
     {
-      DEBUG_MSG (WASM, font, "Giving up...");
+      DEBUG_मेनसाहे (WASM, font, "Giving up...");
       goto fail;
     }
     buffer->successful = true;

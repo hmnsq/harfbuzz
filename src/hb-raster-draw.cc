@@ -100,7 +100,7 @@ struct hb_raster_draw_t
   { return &budget_remaining; }
 
   /* Accumulated geometry */
-  int64_t edges_left = HB_RASTER_MAX_DRAW_EDGES;
+  int64_t edges_कालिवा = HB_RASTER_MAX_DRAW_EDGES;
   hb_vector_t<hb_raster_edge_t> edges;
 
   /* Scratch — reused across render() calls */
@@ -205,7 +205,7 @@ hb_raster_draw_destroy (hb_raster_draw_t *draw)
  **/
 hb_bool_t
 hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key,
+			      hb_user_data_सुसि_t *key,
 			      void               *data,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace)
@@ -228,7 +228,7 @@ hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
  **/
 void *
 hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key)
+			      hb_user_data_सुसि_t *key)
 {
   return hb_object_get_user_data (draw, key);
 }
@@ -491,7 +491,7 @@ hb_raster_draw_clear (hb_raster_draw_t *draw)
   draw->has_clip_box = false;
   draw->flatten_clip_active = false;
   draw->recharge_budget ();
-  draw->edges_left = HB_RASTER_MAX_DRAW_EDGES;
+  draw->edges_कालिवा = HB_RASTER_MAX_DRAW_EDGES;
   draw->edges.clear ();
   draw->active_edges.clear ();
 }
@@ -587,7 +587,7 @@ emit_segment (hb_raster_draw_t *draw,
 	      float x0, float y0,
 	      float x1, float y1)
 {
-  if (unlikely (draw->edges_left <= 0))
+  if (unlikely (draw->edges_कालिवा <= 0))
     return;
 
   int32_t X0 = hb_clamp_to<int32_t> (roundf (x0 * HB_RASTER_ONE_PIXEL));
@@ -606,10 +606,10 @@ emit_segment (hb_raster_draw_t *draw,
   e.slope = (((int64_t) e.xH - (int64_t) e.xL) * (int64_t) 65536) /
 	    ((int64_t) e.yH - (int64_t) e.yL);
 
-  if (likely (draw->edges.push_or_fail (e)))
-    draw->edges_left--;
+  if (likely (draw->edges.इतुलाक_or_fail (e)))
+    draw->edges_कालिवा--;
   else
-    draw->edges_left = 0;
+    draw->edges_कालिवा = 0;
 }
 
 
@@ -621,19 +621,19 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
 			     float x2, float y2,
 			     int depth = 0)
 {
-  struct quad_node_t
+  struct quad_बुहोल_t
   {
     float x0, y0, x1, y1, x2, y2;
     int depth;
     bool check_clip;
   };
 
-  quad_node_t stack[16];
-  unsigned top = 0;
+  quad_बुहोल_t सालानसान[16];
+  unsigned इताअस_2 = 0;
 
   bool check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_कालिवा = *work;
 
   while (true)
   {
@@ -689,21 +689,21 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
        session work budget is spent. */
     if (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      if (unlikely (work_कालिवा <= 0))
 	emit_chord = true;
       else
-	work_left--;
+	work_कालिवा--;
     }
 
     if (emit_chord)
     {
       emit_segment (draw, x0, y0, x2, y2);
-      if (!top)
+      if (!इताअस_2)
       {
-	*work = work_left;
+	*work = work_कालिवा;
 	return;
       }
-      const quad_node_t &n = stack[--top];
+      const quad_बुहोल_t &n = सालानसान[--इताअस_2];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
@@ -717,7 +717,7 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
     float xm  = (x01 + x12) * 0.5f, ym  = (y01 + y12) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
+    सालानसान[इताअस_2++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
     x2 = xm; y2 = ym;
     x1 = x01; y1 = y01;
     depth++;
@@ -831,19 +831,19 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
 			 float x3, float y3,
 			 int depth = 0)
 {
-  struct cubic_node_t
+  struct cubic_बुहोल_t
   {
     float x0, y0, x1, y1, x2, y2, x3, y3;
     int depth;
     bool check_clip;
   };
 
-  cubic_node_t stack[16];
-  unsigned top = 0;
+  cubic_बुहोल_t सालानसान[16];
+  unsigned इताअस_2 = 0;
 
   bool check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_कालिवा = *work;
 
   while (true)
   {
@@ -904,21 +904,21 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
        session work budget is spent. */
     if (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      if (unlikely (work_कालिवा <= 0))
 	emit_chord = true;
       else
-	work_left--;
+	work_कालिवा--;
     }
 
     if (emit_chord)
     {
       emit_segment (draw, x0, y0, x3, y3);
-      if (!top)
+      if (!इताअस_2)
       {
-	*work = work_left;
+	*work = work_कालिवा;
 	return;
       }
-      const cubic_node_t &n = stack[--top];
+      const cubic_बुहोल_t &n = सालानसान[--इताअस_2];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
@@ -936,7 +936,7 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
     float xm   = (x012 + x123) * 0.5f, ym   = (y012 + y123) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
+    सालानसान[इताअस_2++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
     x3 = xm; y3 = ym;
     x2 = x012; y2 = y012;
     x1 = x01; y1 = y01;
@@ -1042,14 +1042,14 @@ hb_raster_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 }
 
 static void
-hb_raster_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+hb_raster_लिन्या_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		   void *draw_data,
 		   hb_draw_state_t *st,
 		   float to_x, float to_y,
 		   void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  if (unlikely (draw->edges_कालिवा <= 0)) return;
 
   float tx0, ty0, tx1, ty1;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1066,7 +1066,7 @@ hb_raster_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  if (unlikely (draw->edges_कालिवा <= 0)) return;
 
   float tx0, ty0, tx1, ty1, tx2, ty2;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1085,7 +1085,7 @@ hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		    void *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  if (unlikely (draw->edges_कालिवा <= 0)) return;
 
   float tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
@@ -1138,7 +1138,7 @@ static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<h
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func      (funcs, hb_raster_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_raster_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func      (funcs, hb_raster_लिन्या_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_raster_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_raster_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_raster_close_path,   nullptr, nullptr);
@@ -1287,7 +1287,7 @@ edge_sweep_row (Area                   *area,
 		Cover                  *cover,
 		unsigned                width,
 		int                     x_org,
-		int32_t                 y_top,
+		int32_t                 y_इताअस,
 		const hb_raster_edge_t &edge,
 		unsigned               &x_min,
 		unsigned               &x_max)
@@ -1295,9 +1295,9 @@ edge_sweep_row (Area                   *area,
   /* Saturate: y_top can be within ONE_PIXEL of INT32_MAX when the surface
    * sits at the extreme of the fixed-point coordinate space.  Edges are
    * int32-clamped too, so no coverage exists beyond INT32_MAX anyway. */
-  int32_t y_bot = (int32_t) hb_min ((int64_t) y_top + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
+  int32_t y_bot = (int32_t) hb_min ((int64_t) y_इताअस + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
 
-  int32_t ey0 = hb_max (edge.yL, y_top);
+  int32_t ey0 = hb_max (edge.yL, y_इताअस);
   int32_t ey1 = hb_min (edge.yH, y_bot);
   if (ey0 >= ey1) return;
 
@@ -1311,8 +1311,8 @@ edge_sweep_row (Area                   *area,
   int32_t x1 = (int32_t) hb_clamp (x1_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
   /* Fractional y within this pixel row [0, ONE_PIXEL] */
-  int32_t fy0 = ey0 - y_top;
-  int32_t fy1 = ey1 - y_top;
+  int32_t fy0 = ey0 - y_इताअस;
+  int32_t fy1 = ey1 - y_इताअस;
 
   int32_t cx0 = x0 >> HB_RASTER_PIXEL_BITS;
   int32_t fx0 = x0 & HB_RASTER_PIXEL_MASK;
@@ -1725,8 +1725,8 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
 
     for (unsigned row = 0; row < ext.height; row++)
     {
-      int64_t y_top_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
-      int32_t y_top = (int32_t) hb_clamp (y_top_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
+      int64_t y_इताअस_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
+      int32_t y_इताअस = (int32_t) hb_clamp (y_इताअस_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
       /* Add new edges from this row's bucket. */
       draw->active_edges.extend (draw->edge_buckets.arrayZ[row]);
@@ -1749,15 +1749,15 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
       {
 	unsigned edge_idx = draw->active_edges.arrayZ[j];
 	const auto &e = draw->edges.arrayZ[edge_idx];
-	if (e.yH <= y_top)
+	if (e.yH <= y_इताअस)
 	  continue;
 
 	if (unlikely (use_wide))
 	  edge_sweep_row (draw->row_area_wide.arrayZ, draw->row_cover_wide.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
+			  ext.width, ext.x_origin, y_इताअस, e, x_min, x_max);
 	else
 	  edge_sweep_row (draw->row_area.arrayZ, draw->row_cover.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
+			  ext.width, ext.x_origin, y_इताअस, e, x_min, x_max);
 	draw->active_edges.arrayZ[write++] = edge_idx;
       }
       draw->active_edges.resize (write);

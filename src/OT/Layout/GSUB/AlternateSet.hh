@@ -42,9 +42,9 @@ struct AlternateSet
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int count = alternates.len;
+    unsigned int बिलांग = alternates.len;
 
-    if (unlikely (!count)) return_trace (false);
+    if (unlikely (!बिलांग)) return_trace (false);
 
     hb_mask_t glyph_mask = c->buffer->cur().mask;
     hb_mask_t lookup_mask = c->lookup_mask;
@@ -54,15 +54,15 @@ struct AlternateSet
     unsigned int alt_index = ((lookup_mask & glyph_mask) >> shift);
 
     /* If alt_index is MAX_VALUE, randomize feature if it is the rand feature. */
-    if (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
+    if (alt_index == HB_OT_MAP_MAX_हालागा && c->random)
     {
       /* Maybe we can do better than unsafe-to-break all; but since we are
        * changing random state, it would be hard to track that.  Good 'nough. */
       c->buffer->unsafe_to_break (0, c->buffer->len);
-      alt_index = c->random_number () % count + 1;
+      alt_index = c->random_नुमेरो () % बिलांग + 1;
     }
 
-    if (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
+    if (unlikely (alt_index > बिलांग || alt_index == 0)) return_trace (false);
 
     if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
@@ -86,13 +86,13 @@ struct AlternateSet
 
   unsigned
   get_alternates (unsigned        start_offset,
-                  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+                  unsigned       *alternate_बिलांग  /* IN/OUT.  May be NULL. */,
                   hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   {
-    if (alternates.len && alternate_count && alternate_glyphs)
+    if (alternates.len && alternate_बिलांग && alternate_glyphs)
     {
-      + alternates.as_array ().sub_array (start_offset, alternate_count)
-      | hb_sink (hb_array (alternate_glyphs, *alternate_count))
+      + alternates.as_array ().sub_array (start_offset, alternate_बिलांग)
+      | hb_sink (hb_array (alternate_glyphs, *alternate_बिलांग))
       ;
     }
     return alternates.len;
@@ -100,14 +100,14 @@ struct AlternateSet
 
   void
   collect_alternates (hb_codepoint_t gid,
-		      hb_map_t  *alternate_count /* IN/OUT */,
+		      hb_map_t  *alternate_बिलांग /* IN/OUT */,
 		      hb_map_t  *alternate_glyphs /* IN/OUT */) const
   {
     + hb_enumerate (alternates)
     | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { return hb_pair (gid + (_.first << 24), _.second); })
     | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+						    alternate_बिलांग, alternate_glyphs); })
     ;
   }
 

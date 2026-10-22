@@ -38,9 +38,9 @@
 static inline void
 hb_vector_svg_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
+  s->path->append_नुमेरो (x / s->x_scale, s->precision);
   s->path->append_c (',');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->path->append_नुमेरो (y / s->y_scale, s->precision);
 }
 
 static void
@@ -55,7 +55,7 @@ hb_vector_svg_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 }
 
 static void
-hb_vector_svg_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
+hb_vector_svg_path_लिन्या_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
@@ -109,9 +109,9 @@ hb_vector_svg_path_close_path (hb_draw_funcs_t *, void *draw_data, hb_draw_state
 static inline void
 hb_vector_pdf_path_append_xy (hb_vector_path_sink_t *s, float x, float y)
 {
-  s->path->append_num (x / s->x_scale, s->precision);
+  s->path->append_नुमेरो (x / s->x_scale, s->precision);
   s->path->append_c (' ');
-  s->path->append_num (y / s->y_scale, s->precision);
+  s->path->append_नुमेरो (y / s->y_scale, s->precision);
 }
 
 static void
@@ -126,7 +126,7 @@ hb_vector_pdf_path_move_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t 
 }
 
 static void
-hb_vector_pdf_path_line_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
+hb_vector_pdf_path_लिन्या_to (hb_draw_funcs_t *, void *draw_data, hb_draw_state_t *,
 			     float to_x, float to_y, void *)
 {
   auto *s = (hb_vector_path_sink_t *) draw_data;
@@ -180,7 +180,7 @@ static struct hb_vector_svg_path_draw_funcs_lazy_loader_t
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
     hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_svg_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_svg_path_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func (funcs, (hb_draw_लिन्या_to_func_t) hb_vector_svg_path_लिन्या_to, nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) hb_vector_svg_path_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_svg_path_cubic_to, nullptr, nullptr);
     hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_svg_path_close_path, nullptr, nullptr);
@@ -208,7 +208,7 @@ static struct hb_vector_pdf_path_draw_funcs_lazy_loader_t
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
     hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_pdf_path_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_pdf_path_line_to, nullptr, nullptr);
+    hb_draw_funcs_set_लिन्या_to_func (funcs, (hb_draw_लिन्या_to_func_t) hb_vector_pdf_path_लिन्या_to, nullptr, nullptr);
     /* No quadratic_to: the null fallback auto-promotes to cubic. */
     hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_pdf_path_cubic_to, nullptr, nullptr);
     hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_pdf_path_close_path, nullptr, nullptr);

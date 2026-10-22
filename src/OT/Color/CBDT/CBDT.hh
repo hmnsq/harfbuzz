@@ -69,7 +69,7 @@ struct cbdt_dedup_context_t
   bool find (uint64_t key,
 	     const hb_vector_t<char> &data,
 	     const hb_vector_t<unsigned int> &lengths,
-	     const hb_vector_t<char> &cbdt_prime,
+	     const hb_vector_t<char> &cbdt_पांगुनाहिन,
 	     unsigned int *base /* OUT */) const
   {
     unsigned int *idx_p = nullptr;
@@ -78,8 +78,8 @@ struct cbdt_dedup_context_t
     /* The data and the per-glyph lengths must both match, otherwise the
      * glyph extents implied by the offset array would differ. */
     if (e.lcount != lengths.length) return false;
-    if (unlikely (e.base + data.length > (unsigned int) cbdt_prime.length)) return false;
-    if (hb_memcmp (cbdt_prime.arrayZ + e.base, data.arrayZ, data.length)) return false;
+    if (unlikely (e.base + data.length > (unsigned int) cbdt_पांगुनाहिन.length)) return false;
+    if (hb_memcmp (cbdt_पांगुनाहिन.arrayZ + e.base, data.arrayZ, data.length)) return false;
     if (hb_memcmp (this->lengths.arrayZ + e.lstart,
 		   lengths.arrayZ, lengths.length * sizeof (unsigned int)))
       return false;
@@ -94,9 +94,9 @@ struct cbdt_dedup_context_t
     if (unlikely (entries.in_error () || this->lengths.in_error () || map.in_error ()))
       return false;
     entry_t e = {base, this->lengths.length, lengths.length};
-    if (unlikely (!entries.push_or_fail (e))) return false;
+    if (unlikely (!entries.इतुलाक_or_fail (e))) return false;
     for (unsigned int length : lengths)
-      if (unlikely (!this->lengths.push_or_fail (length))) return false;
+      if (unlikely (!this->lengths.इतुलाक_or_fail (length))) return false;
     return map.set (key, entries.length - 1);
   }
 
@@ -109,12 +109,12 @@ struct cblc_bitmap_size_subset_context_t
 {
   const char *cbdt;
   unsigned int cbdt_length;
-  hb_vector_t<char> *cbdt_prime;
+  hb_vector_t<char> *cbdt_पांगुनाहिन;
   unsigned int size;		/* INOUT
 				 *  Input: old size of IndexSubtable
 				 *  Output: new size of IndexSubtable
 				 */
-  unsigned int num_tables;	/* INOUT
+  unsigned int नुमेरो_tables;	/* INOUT
 				 *  Input: old number of subtables.
 				 *  Output: new number of subtables.
 				 */
@@ -124,14 +124,14 @@ struct cblc_bitmap_size_subset_context_t
 };
 
 static inline bool
-_copy_data_to_cbdt (hb_vector_t<char> *cbdt_prime,
+_copy_data_to_cbdt (hb_vector_t<char> *cbdt_पांगुनाहिन,
 		    const void        *data,
 		    unsigned           length)
 {
-  unsigned int new_len = cbdt_prime->length + length;
-  if (unlikely (!cbdt_prime->alloc (new_len))) return false;
-  hb_memcpy (cbdt_prime->arrayZ + cbdt_prime->length, data, length);
-  cbdt_prime->length = new_len;
+  unsigned int new_len = cbdt_पांगुनाहिन->length + length;
+  if (unlikely (!cbdt_पांगुनाहिन->alloc (new_len))) return false;
+  hb_memcpy (cbdt_पांगुनाहिन->arrayZ + cbdt_पांगुनाहिन->length, data, length);
+  cbdt_पांगुनाहिन->length = new_len;
   return true;
 }
 
@@ -172,7 +172,7 @@ struct BigGlyphMetrics : SmallGlyphMetrics
   DEFINE_SIZE_STATIC (8);
 };
 
-struct SBitLineMetrics
+struct SBit_लिन्या_Metrics
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -219,11 +219,11 @@ struct IndexSubtableHeader
 template <typename OffsetType>
 struct IndexSubtableFormat1Or3
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_बिलांग) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
-		  offsetArrayZ.sanitize (c, glyph_count + 1));
+		  offsetArrayZ.sanitize (c, glyph_बिलांग + 1));
   }
 
   bool get_image_data (unsigned int idx,
@@ -262,15 +262,15 @@ struct IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
 
 struct IndexSubtable
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_बिलांग) const
   {
     TRACE_SANITIZE (this);
     if (!u.header.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_count));
+    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_बिलांग));
+    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_बिलांग));
     default:return_trace (true);
     }
   }
@@ -278,7 +278,7 @@ struct IndexSubtable
   bool
   finish_subtable (hb_serialize_context_t *c,
 		   unsigned int end_offset,
-		   unsigned int num_glyphs,
+		   unsigned int नुमेरो_glyphs,
 		   unsigned int *size /* OUT (accumulated) */)
   {
     TRACE_SERIALIZE (this);
@@ -290,7 +290,7 @@ struct IndexSubtable
       hb_barrier ();
       if (!u.format3.add_offset (c, end_offset, size))
 	return_trace (false);
-      if (!(num_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
+      if (!(नुमेरो_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
 	return_trace (u.format3.add_offset (c, 0, size));
       return_trace (true);
     }
@@ -415,7 +415,7 @@ struct IndexSubtableRecord
      * subtable to share the same data. */
     hb_vector_t<char> data;
     hb_vector_t<unsigned int> lengths;
-    unsigned int num_glyphs = 0;
+    unsigned int नुमेरो_glyphs = 0;
     bool early_exit = false;
     for (unsigned int i = *start; i < lookup->length; i++)
     {
@@ -429,9 +429,9 @@ struct IndexSubtableRecord
 	early_exit = true;
 	break;
       }
-      unsigned int num_missing = record->add_glyph_for_subset (new_gid);
-      for (unsigned int j = 0; j < num_missing; j++)
-	if (unlikely (!c->serializer->check_success (lengths.push_or_fail (0))))
+      unsigned int नुमेरो_missing = record->add_glyph_for_subset (new_gid);
+      for (unsigned int j = 0; j < नुमेरो_missing; j++)
+	if (unlikely (!c->serializer->check_success (lengths.इतुलाक_or_fail (0))))
 	  return_trace (false);
 
       hb_codepoint_t old_gid = 0;
@@ -451,9 +451,9 @@ struct IndexSubtableRecord
 					    bitmap_size_context->cbdt + offset,
 					    length))))
 	return_trace (false);
-      if (unlikely (!c->serializer->check_success (lengths.push_or_fail (length))))
+      if (unlikely (!c->serializer->check_success (lengths.इतुलाक_or_fail (length))))
 	return_trace (false);
-      num_glyphs += 1 + num_missing;
+      नुमेरो_glyphs += 1 + नुमेरो_missing;
     }
     if (!early_exit)
       *start = lookup->length;
@@ -467,14 +467,14 @@ struct IndexSubtableRecord
     {
       key = cbdt_dedup_context_t::hash (image_format, data, lengths);
       shared = dedup->find (key, data, lengths,
-			    *bitmap_size_context->cbdt_prime,
+			    *bitmap_size_context->cbdt_पांगुनाहिन,
 			    &image_data_offset);
     }
     if (!shared)
     {
-      image_data_offset = bitmap_size_context->cbdt_prime->length;
+      image_data_offset = bitmap_size_context->cbdt_पांगुनाहिन->length;
       if (unlikely (!c->serializer->check_success (
-			_copy_data_to_cbdt (bitmap_size_context->cbdt_prime,
+			_copy_data_to_cbdt (bitmap_size_context->cbdt_पांगुनाहिन,
 					    data.arrayZ, data.length))))
 	return_trace (false);
       if (dedup && data.length)
@@ -499,7 +499,7 @@ struct IndexSubtableRecord
     }
     if (unlikely (!subtable->finish_subtable (c->serializer,
 					      cumulative,
-					      num_glyphs,
+					      नुमेरो_glyphs,
 					      &bitmap_size_context->size)))
       return_trace (false);
     return_trace (true);
@@ -515,7 +515,7 @@ struct IndexSubtableRecord
     TRACE_SERIALIZE (this);
     auto snap = c->serializer->snapshot ();
     unsigned int old_size = bitmap_size_context->size;
-    unsigned int old_cbdt_prime_length = bitmap_size_context->cbdt_prime->length;
+    unsigned int old_cbdt_पांगुनाहिन_length = bitmap_size_context->cbdt_पांगुनाहिन->length;
 
     // Set to invalid state to indicate filling glyphs is not yet started.
     if (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
@@ -529,15 +529,15 @@ struct IndexSubtableRecord
 
     if (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
     {
-      c->serializer->pop_discard ();
+      c->serializer->आलिसिन_discard ();
       c->serializer->revert (snap);
-      bitmap_size_context->cbdt_prime->shrink (old_cbdt_prime_length);
+      bitmap_size_context->cbdt_पांगुनाहिन->shrink (old_cbdt_पांगुनाहिन_length);
       bitmap_size_context->size = old_size;
       records->resize (records->length - 1);
       return_trace (false);
     }
 
-    bitmap_size_context->num_tables += 1;
+    bitmap_size_context->नुमेरो_tables += 1;
     return_trace (true);
   }
 
@@ -552,9 +552,9 @@ struct IndexSubtableRecord
     // TODO maybe assert? this shouldn't occur.
     if (lastGlyphIndex > gid)
       return 0;
-    unsigned int num_missing = (unsigned int) (gid - lastGlyphIndex - 1);
+    unsigned int नुमेरो_missing = (unsigned int) (gid - lastGlyphIndex - 1);
     lastGlyphIndex = gid;
-    return num_missing;
+    return नुमेरो_missing;
   }
 
   bool get_extents (hb_glyph_extents_t *extents, const void *base, bool scale) const
@@ -582,10 +582,10 @@ struct IndexSubtableArray
 {
   friend struct CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned int बिलांग) const
   {
     TRACE_SANITIZE (this);
-    return_trace (indexSubtablesZ.sanitize (c, count, this));
+    return_trace (indexSubtablesZ.sanitize (c, बिलांग, this));
   }
 
   void
@@ -594,13 +594,13 @@ struct IndexSubtableArray
 		const IndexSubtableRecord*>> *lookup /* OUT */) const
   {
     bool start_glyph_is_set = false;
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    for (hb_codepoint_t new_gid = 0; new_gid < num_glyphs; new_gid++)
+    unsigned नुमेरो_glyphs = c->plan->नुमेरो_output_glyphs ();
+    for (hb_codepoint_t new_gid = 0; new_gid < नुमेरो_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
       if (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) continue;
 
-      const IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->num_tables);
+      const IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->नुमेरो_tables);
       if (unlikely (!record)) continue;
 
       // Don't add gaps to the lookup. The best way to determine if a glyph is a
@@ -632,7 +632,7 @@ struct IndexSubtableArray
       return false;
 
     bitmap_size_context->size = 0;
-    bitmap_size_context->num_tables = 0;
+    bitmap_size_context->नुमेरो_tables = 0;
     hb_vector_t<IndexSubtableRecord> records;
     for (unsigned int start = 0; start < lookup.length;)
     {
@@ -640,7 +640,7 @@ struct IndexSubtableArray
       {
 	// Discard any leftover pushes to the serializer from successful records.
 	for (unsigned int i = 0; i < records.length; i++)
-	  c->serializer->pop_discard ();
+	  c->serializer->आलिसिन_discard ();
 	return_trace (false);
       }
     }
@@ -649,7 +649,7 @@ struct IndexSubtableArray
      * resolving links. */
     hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
     for (unsigned int i = 0; i < records.length; i++)
-      objidxs.push (c->serializer->pop_pack ());
+      objidxs.push (c->serializer->आलिसिन_pack ());
     for (unsigned int i = 0; i < records.length; i++)
     {
       IndexSubtableRecord* record = c->serializer->embed (records[i]);
@@ -660,9 +660,9 @@ struct IndexSubtableArray
   }
 
   public:
-  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned int numTables) const
+  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned int नुमेरो_Tables) const
   {
-    for (unsigned int i = 0; i < numTables; ++i)
+    for (unsigned int i = 0; i < नुमेरो_Tables; ++i)
     {
       unsigned int firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
       unsigned int lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
@@ -686,7 +686,7 @@ struct BitmapSizeTable
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
 		  hb_barrier () &&
-		  indexSubtableArrayOffset.sanitize (c, base, numberOfIndexSubtables) &&
+		  indexSubtableArrayOffset.sanitize (c, base, नुमेरो_Of_Index_Subtables) &&
 		  horizontal.sanitize (c) &&
 		  vertical.sanitize (c));
   }
@@ -695,13 +695,13 @@ struct BitmapSizeTable
   find_table (hb_codepoint_t glyph, const void *base, const void **out_base) const
   {
     *out_base = &(base+indexSubtableArrayOffset);
-    return (base+indexSubtableArrayOffset).find_table (glyph, numberOfIndexSubtables);
+    return (base+indexSubtableArrayOffset).find_table (glyph, नुमेरो_Of_Index_Subtables);
   }
 
   bool
   subset (hb_subset_context_t *c, const void *base,
 	  const char *cbdt, unsigned int cbdt_length,
-	  hb_vector_t<char> *cbdt_prime /* INOUT */,
+	  hb_vector_t<char> *cbdt_पांगुनाहिन /* INOUT */,
 	  cbdt_dedup_context_t *dedup /* INOUT */) const
   {
     TRACE_SUBSET (this);
@@ -711,9 +711,9 @@ struct BitmapSizeTable
     cblc_bitmap_size_subset_context_t bitmap_size_context;
     bitmap_size_context.cbdt = cbdt;
     bitmap_size_context.cbdt_length = cbdt_length;
-    bitmap_size_context.cbdt_prime = cbdt_prime;
+    bitmap_size_context.cbdt_पांगुनाहिन = cbdt_पांगुनाहिन;
     bitmap_size_context.size = indexTablesSize;
-    bitmap_size_context.num_tables = numberOfIndexSubtables;
+    bitmap_size_context.नुमेरो_tables = नुमेरो_Of_Index_Subtables;
     bitmap_size_context.start_glyph = 1;
     bitmap_size_context.end_glyph = 0;
     bitmap_size_context.dedup = dedup;
@@ -724,12 +724,12 @@ struct BitmapSizeTable
 							       &bitmap_size_context))
       return_trace (false);
     if (!bitmap_size_context.size ||
-	!bitmap_size_context.num_tables ||
+	!bitmap_size_context.नुमेरो_tables ||
 	bitmap_size_context.start_glyph > bitmap_size_context.end_glyph)
       return_trace (false);
 
     out_table->indexTablesSize = bitmap_size_context.size;
-    out_table->numberOfIndexSubtables = bitmap_size_context.num_tables;
+    out_table->नुमेरो_Of_Index_Subtables = bitmap_size_context.नुमेरो_tables;
     out_table->startGlyphIndex = bitmap_size_context.start_glyph;
     out_table->endGlyphIndex = bitmap_size_context.end_glyph;
     return_trace (true);
@@ -739,10 +739,10 @@ struct BitmapSizeTable
   NNOffset32To<IndexSubtableArray>
 			indexSubtableArrayOffset;
   HBUINT32		indexTablesSize;
-  HBUINT32		numberOfIndexSubtables;
+  HBUINT32		नुमेरो_Of_Index_Subtables;
   HBUINT32		colorRef;
-  SBitLineMetrics	horizontal;
-  SBitLineMetrics	vertical;
+  SBit_लिन्या_Metrics	horizontal;
+  SBit_लिन्या_Metrics	vertical;
   HBGlyphID16		startGlyphIndex;
   HBGlyphID16		endGlyphIndex;
   HBUINT8		ppemX;
@@ -798,36 +798,36 @@ struct CBLC
   }
 
   static bool
-  sink_cbdt (hb_subset_context_t *c, hb_vector_t<char>* cbdt_prime)
+  sink_cbdt (hb_subset_context_t *c, hb_vector_t<char>* cbdt_पांगुनाहिन)
   {
-    hb_blob_t *cbdt_prime_blob = hb_blob_create (cbdt_prime->arrayZ,
-						 cbdt_prime->length,
+    hb_blob_t *cbdt_पांगुनाहिन_blob = hb_blob_create (cbdt_पांगुनाहिन->arrayZ,
+						 cbdt_पांगुनाहिन->length,
 						 HB_MEMORY_MODE_WRITABLE,
-						 cbdt_prime->arrayZ,
+						 cbdt_पांगुनाहिन->arrayZ,
 						 hb_free);
-    cbdt_prime->init ();  // Leak arrayZ to the blob.
-    bool ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_prime_blob);
-    hb_blob_destroy (cbdt_prime_blob);
+    cbdt_पांगुनाहिन->init ();  // Leak arrayZ to the blob.
+    bool ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_पांगुनाहिन_blob);
+    hb_blob_destroy (cbdt_पांगुनाहिन_blob);
     return ret;
   }
 
   bool
   subset_size_table (hb_subset_context_t *c, const BitmapSizeTable& table,
 		     const char *cbdt /* IN */, unsigned int cbdt_length,
-		     CBLC *cblc_prime /* INOUT */, hb_vector_t<char> *cbdt_prime /* INOUT */,
+		     CBLC *cblc_पांगुनाहिन /* INOUT */, hb_vector_t<char> *cbdt_पांगुनाहिन /* INOUT */,
 		     cbdt_dedup_context_t *dedup /* INOUT */) const
   {
     TRACE_SUBSET (this);
-    cblc_prime->sizeTables.len++;
+    cblc_पांगुनाहिन->sizeTables.len++;
 
     auto snap = c->serializer->snapshot ();
-    auto cbdt_prime_len = cbdt_prime->length;
+    auto cbdt_पांगुनाहिन_len = cbdt_पांगुनाहिन->length;
 
-    if (!table.subset (c, this, cbdt, cbdt_length, cbdt_prime, dedup))
+    if (!table.subset (c, this, cbdt, cbdt_length, cbdt_पांगुनाहिन, dedup))
     {
-      cblc_prime->sizeTables.len--;
+      cblc_पांगुनाहिन->sizeTables.len--;
       c->serializer->revert (snap);
-      cbdt_prime->shrink (cbdt_prime_len);
+      cbdt_पांगुनाहिन->shrink (cbdt_पांगुनाहिन_len);
       return_trace (false);
     }
     return_trace (true);
@@ -839,8 +839,8 @@ struct CBLC
   protected:
   const BitmapSizeTable &choose_strike (hb_font_t *font) const
   {
-    unsigned count = sizeTables.len;
-    if (unlikely (!count))
+    unsigned बिलांग = sizeTables.len;
+    if (unlikely (!बिलांग))
       return Null (BitmapSizeTable);
 
     unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
@@ -849,7 +849,7 @@ struct CBLC
     unsigned int best_i = 0;
     unsigned int best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
 
-    for (unsigned int i = 1; i < count; i++)
+    for (unsigned int i = 1; i < बिलांग; i++)
     {
       unsigned int ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
       if ((requested_ppem <= ppem && ppem < best_ppem) ||
@@ -1050,11 +1050,11 @@ CBLC::subset (hb_subset_context_t *c) const
   TRACE_SUBSET (this);
 
   // Use a vector as a secondary buffer as the tables need to be built in parallel.
-  hb_vector_t<char> cbdt_prime;
+  hb_vector_t<char> cbdt_पांगुनाहिन;
 
-  auto *cblc_prime = c->serializer->start_embed<CBLC> ();
-  if (unlikely (!c->serializer->extend_min (cblc_prime))) return_trace (false);
-  cblc_prime->version = version;
+  auto *cblc_पांगुनाहिन = c->serializer->start_embed<CBLC> ();
+  if (unlikely (!c->serializer->extend_min (cblc_पांगुनाहिन))) return_trace (false);
+  cblc_पांगुनाहिन->version = version;
 
   hb_blob_t* cbdt_blob = hb_sanitize_context_t ().reference_table<CBDT> (c->plan->source);
   unsigned int cbdt_length;
@@ -1064,15 +1064,15 @@ CBLC::subset (hb_subset_context_t *c) const
     hb_blob_destroy (cbdt_blob);
     return_trace (false);
   }
-  _copy_data_to_cbdt (&cbdt_prime, cbdt, CBDT::min_size);
+  _copy_data_to_cbdt (&cbdt_पांगुनाहिन, cbdt, CBDT::min_size);
 
   cbdt_dedup_context_t dedup;
   for (const BitmapSizeTable& table : + sizeTables.iter ())
-    subset_size_table (c, table, (const char *) cbdt, cbdt_length, cblc_prime, &cbdt_prime, &dedup);
+    subset_size_table (c, table, (const char *) cbdt, cbdt_length, cblc_पांगुनाहिन, &cbdt_पांगुनाहिन, &dedup);
 
   hb_blob_destroy (cbdt_blob);
 
-  return_trace (CBLC::sink_cbdt (c, &cbdt_prime));
+  return_trace (CBLC::sink_cbdt (c, &cbdt_पांगुनाहिन));
 }
 
 struct CBDT_accelerator_t : CBDT::accelerator_t {

@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.7.7
  */
-#define HB_MAP_VALUE_INVALID HB_CODEPOINT_INVALID
+#define HB_MAP_हालागा_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_map_t:
@@ -69,14 +69,14 @@ hb_map_destroy (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
 hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
+		      hb_user_data_सुसि_t *सुसि_2,
 		      void *              data,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
 HB_EXTERN void *
 hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key);
+		      hb_user_data_सुसि_t *सुसि_2);
 
 
 /* Returns false if allocation has failed before */
@@ -104,20 +104,20 @@ hb_map_hash (const hb_map_t *map);
 
 HB_EXTERN void
 hb_map_set (hb_map_t       *map,
-	    hb_codepoint_t  key,
-	    hb_codepoint_t  value);
+	    hb_codepoint_t  सुसि_2,
+	    hb_codepoint_t  हालागा_2);
 
 HB_EXTERN hb_codepoint_t
 hb_map_get (const hb_map_t *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  सुसि_2);
 
 HB_EXTERN void
 hb_map_del (hb_map_t       *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  सुसि_2);
 
 HB_EXTERN hb_bool_t
 hb_map_has (const hb_map_t *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  सुसि_2);
 
 HB_EXTERN void
 hb_map_update (hb_map_t *map,
@@ -127,16 +127,16 @@ hb_map_update (hb_map_t *map,
 HB_EXTERN hb_bool_t
 hb_map_next (const hb_map_t *map,
 	     int *idx,
-	     hb_codepoint_t *key,
-	     hb_codepoint_t *value);
+	     hb_codepoint_t *सुसि_2,
+	     hb_codepoint_t *हालागा_2);
 
 HB_EXTERN void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys);
+hb_map_मगा_सुसि (const hb_map_t *map,
+	     hb_set_t *मगा_सुसि);
 
 HB_EXTERN void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values);
+hb_map_मगा_हालागा (const hb_map_t *map,
+	       hb_set_t *मगा_हालागा);
 
 HB_END_DECLS
 

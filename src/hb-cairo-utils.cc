@@ -86,7 +86,7 @@ hb_cairo_read_blob (void *closure,
 }
 #endif
 
-static const cairo_user_data_key_t *_hb_cairo_surface_blob_user_data_key = {0};
+static const cairo_user_data_सुसि_t *hb_cairo_surface_blob_user_data_सुसि = {0};
 
 static void
 _hb_cairo_destroy_blob (void *p)
@@ -166,8 +166,8 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
       if (!data)
         return false;
 
-      unsigned count = width * height * 4;
-      for (unsigned i = 0; i < count; i += 4)
+      unsigned बिलांग = width * height * 4;
+      for (unsigned i = 0; i < बिलांग; i += 4)
       {
         unsigned char b;
 	b = data[i];
@@ -188,7 +188,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 						   width * 4);
 
     cairo_surface_set_user_data (surface,
-				 _hb_cairo_surface_blob_user_data_key,
+				 hb_cairo_surface_blob_user_data_सुसि,
 				 hb_blob_reference (blob),
 				 _hb_cairo_destroy_blob);
   }
@@ -227,22 +227,22 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
 static bool
 _hb_cairo_get_color_stops (hb_cairo_context_t *c,
-			   hb_color_line_t *color_line,
-			   unsigned *count,
+			   hb_color_लिन्या_t *color_लिन्या,
+			   unsigned *बिलांग,
 			   hb_color_stop_t **stops)
 {
-  unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
+  unsigned len = hb_color_लिन्या_get_color_stops (color_लिन्या, 0, nullptr, nullptr);
   bool allocated = false;
   if (unlikely (!len))
     return false;
-  if (len > *count)
+  if (len > *बिलांग)
   {
     *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
     if (unlikely (!*stops))
       return false;
     allocated = true;
   }
-  hb_color_line_get_color_stops (color_line, 0, &len, *stops);
+  hb_color_लिन्या_get_color_stops (color_लिन्या, 0, &len, *stops);
   if (unlikely (!len))
   {
     if (allocated)
@@ -266,13 +266,13 @@ _hb_cairo_get_color_stops (hb_cairo_context_t *c,
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
-  *count = len;
+  *बिलांग = len;
   return true;
 }
 
 void
 _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
+				 hb_color_लिन्या_t *color_लिन्या,
 				 float x0, float y0,
 				 float x1, float y1,
 				 float x2, float y2)
@@ -287,9 +287,9 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   float min, max;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+  if (unlikely (!_hb_cairo_get_color_stops (c, color_लिन्या, &len, &stops)))
     return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  hb_paint_normalize_color_लिन्या (stops, len, &min, &max);
 
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
 
@@ -299,7 +299,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   yyy1 = yy0 + max * (yy1 - yy0);
 
   pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_लिन्या_get_extend (color_लिन्या)));
   for (unsigned int i = 0; i < len; i++)
     {
       double r, g, b, a;
@@ -321,7 +321,7 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
 void
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
+				 hb_color_लिन्या_t *color_लिन्या,
 				 float x0, float y0, float r0,
 				 float x1, float y1, float r1)
 {
@@ -335,9 +335,9 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   float rr0, rr1;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+  if (unlikely (!_hb_cairo_get_color_stops (c, color_लिन्या, &len, &stops)))
     return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  hb_paint_normalize_color_लिन्या (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
   yy0 = y0 + min * (y1 - y0);
@@ -347,7 +347,7 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   rr1 = r0 + max * (r1 - r0);
 
   pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_लिन्या_get_extend (color_लिन्या)));
 
   for (unsigned int i = 0; i < len; i++)
     {
@@ -453,12 +453,12 @@ _hb_cairo_add_patch (cairo_pattern_t *pattern, hb_cairo_point_t *center, hb_cair
 {
   cairo_mesh_pattern_begin_patch (pattern);
   cairo_mesh_pattern_move_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_line_to (pattern, (double) p->p0.x, (double) p->p0.y);
+  cairo_mesh_pattern_लिन्या_to (pattern, (double) p->p0.x, (double) p->p0.y);
   cairo_mesh_pattern_curve_to (pattern,
                                (double) p->c0.x, (double) p->c0.y,
                                (double) p->c1.x, (double) p->c1.y,
                                (double) p->p1.x, (double) p->p1.y);
-  cairo_mesh_pattern_line_to (pattern, (double) center->x, (double) center->y);
+  cairo_mesh_pattern_लिन्या_to (pattern, (double) center->x, (double) center->y);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 0,
                                             (double) p->color0.r,
                                             (double) p->color0.g,
@@ -491,17 +491,17 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
 				       cairo_pattern_t *pattern)
 {
   hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
+  int नुमेरो_splits;
   hb_cairo_point_t p0;
   hb_cairo_color_t color0, color1;
 
-  num_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
+  नुमेरो_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
   p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  for (int a = 0; a < नुमेरो_splits; a++)
     {
-      float k = (a + 1.) / num_splits;
+      float k = (a + 1.) / नुमेरो_splits;
       float angle1;
       hb_cairo_point_t p1;
       hb_cairo_point_t A, U;
@@ -585,7 +585,7 @@ _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
 
 void
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
+				hb_color_लिन्या_t *color_लिन्या,
 				float cx, float cy,
 				float start_angle,
 				float end_angle)
@@ -600,7 +600,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
   float max_x, max_y, radius;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
+  if (unlikely (!_hb_cairo_get_color_stops (c, color_लिन्या, &len, &stops)))
     return;
 
   hb_array_t<hb_color_stop_t> (stops, len)
@@ -613,7 +613,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
   max_y = (float) hb_max ((y1 - (double) cy) * (y1 - (double) cy), (y2 - (double) cy) * (y2 - (double) cy));
   radius = sqrtf (max_x + max_y);
 
-  extend = hb_cairo_extend (hb_color_line_get_extend (color_line));
+  extend = hb_cairo_extend (hb_color_लिन्या_get_extend (color_लिन्या));
   pattern = cairo_pattern_create_mesh ();
 
   _hb_cairo_add_sweep_gradient_patches (stops, len, extend, cx, cy,

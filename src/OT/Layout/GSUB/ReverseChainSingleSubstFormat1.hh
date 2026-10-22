@@ -52,15 +52,15 @@ struct ReverseChainSingleSubstFormat1_2
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
 
-    unsigned int count;
+    unsigned int बिलांग;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    बिलांग = backtrack.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!(this+backtrack[i]).intersects (glyphs))
         return false;
 
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    बिलांग = lookahead.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (!(this+lookahead[i]).intersects (glyphs))
         return false;
 
@@ -83,8 +83,8 @@ struct ReverseChainSingleSubstFormat1_2
     hb_set_t context_glyphs;
 
     /* Add glyphs from backtrack coverages */
-    unsigned int count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned int बिलांग = backtrack.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_set_t back_glyphs;
       (this+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
@@ -100,8 +100,8 @@ struct ReverseChainSingleSubstFormat1_2
     }
 
     /* Add glyphs from lookahead coverages */
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    बिलांग = lookahead.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
     {
       hb_set_t look_glyphs;
       (this+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
@@ -158,21 +158,21 @@ struct ReverseChainSingleSubstFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    if (unlikely (!(this+coverage).collect_coverage (c->पासोक))) return;
 
-    unsigned int count;
+    unsigned int बिलांग;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    बिलांग = backtrack.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) return;
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    बिलांग = lookahead.len;
+    for (unsigned int i = 0; i < बिलांग; i++)
       if (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) return;
 
     const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
-    count = substitute.len;
+    बिलांग = substitute.len;
     c->output->add_array (substitute.arrayZ, substitute.len);
   }
 
@@ -187,7 +187,7 @@ struct ReverseChainSingleSubstFormat1_2
     unsigned int index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
     if (index == NOT_COVERED) return_trace (false);
 
-    if (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
+    if (unlikely (c->nesting_level_कालिवा != HB_MAX_NESTING_LEVEL))
       return_trace (false); /* No chaining to this type */
 
     const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);

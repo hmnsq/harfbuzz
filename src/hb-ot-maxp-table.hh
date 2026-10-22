@@ -60,7 +60,7 @@ struct maxpV1Tail
   HBUINT16 maxStorage;		  /* Number of Storage Area locations. */
   HBUINT16 maxFunctionDefs;	  /* Number of FDEFs, equal to the highest function number + 1. */
   HBUINT16 maxInstructionDefs;	  /* Number of IDEFs. */
-  HBUINT16 maxStackElements;	  /* Maximum stack depth. (This includes Font and CVT
+  HBUINT16 max_सालानसान_Elements;	  /* Maximum stack depth. (This includes Font and CVT
 				   * Programs, as well as the instructions for each glyph.) */
   HBUINT16 maxSizeOfInstructions; /* Maximum byte count for glyph instructions. */
   HBUINT16 maxComponentElements;  /* Maximum number of components referenced at
@@ -74,11 +74,11 @@ struct maxpV1Tail
 template <typename Types>
 struct maxp_MAXP
 {
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  unsigned int get_नुमेरो_glyphs () const { return नुमेरो_Glyphs; }
 
-  void set_num_glyphs (unsigned int count)
+  void set_नुमेरो_glyphs (unsigned int बिलांग)
   {
-    numGlyphs = count;
+    नुमेरो_Glyphs = बिलांग;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -98,12 +98,12 @@ struct maxp_MAXP
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    maxp_MAXP *maxp_prime = c->serializer->embed (this);
-    if (unlikely (!maxp_prime)) return_trace (false);
+    maxp_MAXP *maxp_पांगुनाहिन = c->serializer->embed (this);
+    if (unlikely (!maxp_पांगुनाहिन)) return_trace (false);
 
-    maxp_prime->numGlyphs = hb_min (c->plan->num_output_glyphs (),
+    maxp_पांगुनाहिन->नुमेरो_Glyphs = hb_min (c->plan->नुमेरो_output_glyphs (),
 				    (1u << (8 * Types::size)) - 1);
-    if (maxp_prime->version.major == 1)
+    if (maxp_पांगुनाहिन->version.major == 1)
     {
       hb_barrier ();
       const maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*this);
@@ -137,7 +137,7 @@ struct maxp_MAXP
     dest_v1->maxStorage = 0;
     dest_v1->maxFunctionDefs = 0;
     dest_v1->maxInstructionDefs = 0;
-    dest_v1->maxStackElements = 0;
+    dest_v1->max_सालानसान_Elements = 0;
     dest_v1->maxSizeOfInstructions = 0;
   }
 
@@ -145,7 +145,7 @@ struct maxp_MAXP
   FixedVersion<>version;/* Version of the maxp table (0.5 or 1.0),
 			 * 0x00005000u or 0x00010000u. */
   typename Types::HBUINT
-		numGlyphs;
+		नुमेरो_Glyphs;
 			/* The number of glyphs in the font. */
 /*maxpV1Tail	v1Tail[HB_VAR_ARRAY]; */
   public:
@@ -167,7 +167,7 @@ struct maxp_accelerator_t
   maxp_accelerator_t ()
   {
     blob = hb_blob_get_empty ();
-    numGlyphs = 0;
+    नुमेरो_Glyphs = 0;
   }
 
   maxp_accelerator_t (hb_face_t *face) : maxp_accelerator_t ()
@@ -182,7 +182,7 @@ struct maxp_accelerator_t
 
   ~maxp_accelerator_t () { hb_blob_destroy (blob); }
 
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  unsigned int get_नुमेरो_glyphs () const { return नुमेरो_Glyphs; }
   hb_blob_t *get_blob () const { return blob; }
 
   private:
@@ -190,20 +190,20 @@ struct maxp_accelerator_t
   bool init_table (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    c.set_num_glyphs (0);
+    c.set_नुमेरो_glyphs (0);
     hb_blob_ptr_t<Table> table = c.reference_table<Table> (face);
     bool ret = table.get_length ();
     if (ret)
     {
       blob = hb_blob_reference (table.get_blob ());
-      numGlyphs = table->get_num_glyphs ();
+      नुमेरो_Glyphs = table->get_नुमेरो_glyphs ();
     }
     table.destroy ();
     return ret;
   }
 
   hb_blob_t *blob;
-  unsigned int numGlyphs;
+  unsigned int नुमेरो_Glyphs;
 };
 
 

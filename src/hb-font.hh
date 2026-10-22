@@ -144,7 +144,7 @@ struct hb_font_t
   /* Font variation coordinates. */
   unsigned int instance_index;
   bool has_nonzero_coords;
-  unsigned int num_coords;
+  unsigned int नुमेरो_coords;
   int *coords;
   float *design_coords;
 
@@ -328,14 +328,14 @@ struct hb_font_t
 				       unicode, glyph,
 				       !klass->user_data ? nullptr : klass->user_data->nominal_glyph);
   }
-  unsigned int get_nominal_glyphs (unsigned int count,
+  unsigned int get_nominal_glyphs (unsigned int बिलांग,
 				   const hb_codepoint_t *first_unicode,
 				   unsigned int unicode_stride,
 				   hb_codepoint_t *first_glyph,
 				   unsigned int glyph_stride)
   {
     return klass->get.f.nominal_glyphs (this, user_data,
-					count,
+					बिलांग,
 					first_unicode, unicode_stride,
 					first_glyph, glyph_stride,
 					!klass->user_data ? nullptr : klass->user_data->nominal_glyphs);
@@ -385,7 +385,7 @@ struct hb_font_t
     return advance;
   }
 
-  void get_glyph_h_advances (unsigned int count,
+  void get_glyph_h_advances (unsigned int बिलांग,
 			     const hb_codepoint_t *first_glyph,
 			     unsigned int glyph_stride,
 			     hb_position_t *first_advance,
@@ -393,7 +393,7 @@ struct hb_font_t
 			     bool synthetic = true)
   {
     klass->get.f.glyph_h_advances (this, user_data,
-				   count,
+				   बिलांग,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
 				   !klass->user_data ? nullptr : klass->user_data->glyph_h_advances);
@@ -402,7 +402,7 @@ struct hb_font_t
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
-      for (unsigned int i = 0; i < count; i++)
+      for (unsigned int i = 0; i < बिलांग; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -410,7 +410,7 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_v_advances (unsigned int count,
+  void get_glyph_v_advances (unsigned int बिलांग,
 			     const hb_codepoint_t *first_glyph,
 			     unsigned int glyph_stride,
 			     hb_position_t *first_advance,
@@ -418,7 +418,7 @@ struct hb_font_t
 			     bool synthetic = true)
   {
     klass->get.f.glyph_v_advances (this, user_data,
-				   count,
+				   बिलांग,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
 				   !klass->user_data ? nullptr : klass->user_data->glyph_v_advances);
@@ -427,7 +427,7 @@ struct hb_font_t
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
-      for (unsigned int i = 0; i < count; i++)
+      for (unsigned int i = 0; i < बिलांग; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -483,7 +483,7 @@ struct hb_font_t
     return ret;
   }
 
-  hb_bool_t get_glyph_h_origins (unsigned int count,
+  hb_bool_t get_glyph_h_origins (unsigned int बिलांग,
 				 const hb_codepoint_t *first_glyph,
 				 unsigned int glyph_stride,
 				 hb_position_t *first_x,
@@ -494,7 +494,7 @@ struct hb_font_t
 
   {
     bool ret = klass->get.f.glyph_h_origins (this, user_data,
-					     count,
+					     बिलांग,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
 					     !klass->user_data ? nullptr : klass->user_data->glyph_h_origins);
@@ -503,7 +503,7 @@ struct hb_font_t
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
@@ -521,7 +521,7 @@ struct hb_font_t
     return ret;
   }
 
-  hb_bool_t get_glyph_v_origins (unsigned int count,
+  hb_bool_t get_glyph_v_origins (unsigned int बिलांग,
 				 const hb_codepoint_t *first_glyph,
 				 unsigned int glyph_stride,
 				 hb_position_t *first_x,
@@ -532,7 +532,7 @@ struct hb_font_t
 
   {
     bool ret = klass->get.f.glyph_v_origins (this, user_data,
-					     count,
+					     बिलांग,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
 					     !klass->user_data ? nullptr : klass->user_data->glyph_v_origins);
@@ -541,7 +541,7 @@ struct hb_font_t
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      for (unsigned i = 0; i < बिलांग; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
@@ -559,26 +559,26 @@ struct hb_font_t
     return ret;
   }
 
-  hb_position_t get_glyph_h_kerning (hb_codepoint_t left_glyph,
-				     hb_codepoint_t right_glyph)
+  hb_position_t get_glyph_h_kerning (hb_codepoint_t कालिवा_glyph,
+				     hb_codepoint_t कानान_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
     return 0;
 #else
     return klass->get.f.glyph_h_kerning (this, user_data,
-					 left_glyph, right_glyph,
+					 कालिवा_glyph, कानान_glyph,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_h_kerning);
 #endif
   }
 
-  hb_position_t get_glyph_v_kerning (hb_codepoint_t top_glyph,
+  hb_position_t get_glyph_v_kerning (hb_codepoint_t इताअस_glyph,
 				     hb_codepoint_t bottom_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
     return 0;
 #else
     return klass->get.f.glyph_v_kerning (this, user_data,
-					 top_glyph, bottom_glyph,
+					 इताअस_glyph, bottom_glyph,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_v_kerning);
 #endif
   }
@@ -755,7 +755,7 @@ struct hb_font_t
 #ifndef HB_NO_PAINT
     /* Slant */
     if (synthetic && slant_xy)
-      hb_paint_push_transform (paint_funcs, paint_data,
+      hb_paint_इतुलाक_transform (paint_funcs, paint_data,
 			       1.f, 0.f,
 			       slant_xy, 1.f,
 			       0.f, 0.f);
@@ -767,7 +767,7 @@ struct hb_font_t
 						 !klass->user_data ? nullptr : klass->user_data->paint_glyph_or_fail);
 
     if (synthetic && slant_xy)
-      hb_paint_pop_transform (paint_funcs, paint_data);
+      hb_paint_आलिसिन_transform (paint_funcs, paint_data);
 
     return ret;
 #endif
@@ -788,7 +788,7 @@ struct hb_font_t
     {
       extents->ascender = y_scale * .8;
       extents->descender = extents->ascender - y_scale;
-      extents->line_gap = 0;
+      extents->लिन्या_gap = 0;
     }
   }
   void get_v_extents_with_fallback (hb_font_extents_t *extents)
@@ -797,7 +797,7 @@ struct hb_font_t
     {
       extents->ascender = x_scale / 2;
       extents->descender = extents->ascender - x_scale;
-      extents->line_gap = 0;
+      extents->लिन्या_gap = 0;
     }
   }
 
@@ -821,16 +821,16 @@ struct hb_font_t
       *y = get_glyph_v_advance (glyph);
   }
   void get_glyph_advances_for_direction (hb_direction_t direction,
-					 unsigned int count,
+					 unsigned int बिलांग,
 					 const hb_codepoint_t *first_glyph,
 					 unsigned glyph_stride,
 					 hb_position_t *first_advance,
 					 unsigned advance_stride)
   {
     if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
-      get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+      get_glyph_h_advances (बिलांग, first_glyph, glyph_stride, first_advance, advance_stride);
     else
-      get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+      get_glyph_v_advances (बिलांग, first_glyph, glyph_stride, first_advance, advance_stride);
   }
 
   void apply_offset (hb_position_t *x, hb_position_t *y,
@@ -873,10 +873,10 @@ struct hb_font_t
     struct { hb_position_t x, y; } origins[32];
 
     unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned int बिलांग = buf->len;
+    while (offset < बिलांग)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
+      unsigned n = hb_min (बिलांग - offset, ARRAY_LENGTH (origins));
       if (!get_glyph_h_origins (n,
 				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
 				&origins[0].x, sizeof (origins[0]),
@@ -937,10 +937,10 @@ struct hb_font_t
     struct { hb_position_t x, y; } origins[32];
 
     unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned int बिलांग = buf->len;
+    while (offset < बिलांग)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
+      unsigned n = hb_min (बिलांग - offset, ARRAY_LENGTH (origins));
       if (!get_glyph_v_origins (n,
 				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
 				&origins[0].x, sizeof (origins[0]),

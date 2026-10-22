@@ -6,9 +6,9 @@ import argparse
 parser = argparse.ArgumentParser ()
 parser.add_argument ('input')
 parser.add_argument ('output')
-args = parser.parse_args ()
+मगा_कातविरान = parser.parse_मगा_कातविरान ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
+with open (मगा_कातविरान.पासोक, 'r') as inp, open (मगा_कातविरान.output, 'w') as out:
     for l in inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
