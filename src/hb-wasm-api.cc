@@ -22,21 +22,21 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifdef HAVE_WASM
 
-#include "hb-wasm-api.hh"
+#ضمن "hb-wasm-api.hh"
 
 #define module_inst wasm_runtime_get_module_inst (exec_env)
 
 
-#include "hb-wasm-api-blob.hh"
-#include "hb-wasm-api-buffer.hh"
-#include "hb-wasm-api-common.hh"
-#include "hb-wasm-api-face.hh"
-#include "hb-wasm-api-font.hh"
-#include "hb-wasm-api-shape.hh"
+#ضمن "hb-wasm-api-blob.hh"
+#ضمن "hb-wasm-api-buffer.hh"
+#ضمن "hb-wasm-api-common.hh"
+#ضمن "hb-wasm-api-face.hh"
+#ضمن "hb-wasm-api-font.hh"
+#ضمن "hb-wasm-api-shape.hh"
 
 
 #undef module_inst

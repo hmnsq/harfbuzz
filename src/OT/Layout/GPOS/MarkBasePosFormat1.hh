@@ -1,16 +1,16 @@
 #ifndef OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_MARKBASEPOSFORMAT1_HH
 
-#include "MarkArray.hh"
+#ضمن "MarkArray.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 template <typename Types>
-struct MarkBasePosFormat1_2
+بنية MarkBasePosFormat1_2
 {
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 markCoverage;           /* Offset to MarkCoverage table--from
@@ -26,60 +26,60 @@ struct MarkBasePosFormat1_2
                 baseArray;              /* Offset to BaseArray table--from
                                          * beginning of MarkBasePos subtable */
 
-  public:
+  عام:
   DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
 
-    bool sanitize (hb_sanitize_context_t *c) const
+    منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  markCoverage.sanitize (c, this) &&
-                  baseCoverage.sanitize (c, this) &&
-                  markArray.sanitize (c, this) &&
-                  baseArray.sanitize (c, this, (unsigned int) classCount));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+                  markCoverage.sanitize (c, هذا) &&
+                  baseCoverage.sanitize (c, هذا) &&
+                  markArray.sanitize (c, هذا) &&
+                  baseArray.sanitize (c, هذا, (unsigned صحيح) classCount));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    return (this+markCoverage).intersects (glyphs) &&
-           (this+baseCoverage).intersects (glyphs);
+    أرجع (هذا+markCoverage).intersects (glyphs) &&
+           (هذا+baseCoverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+markArray).collect_variation_indices (c, this+markCoverage);
+    (هذا+markArray).collect_variation_indices (c, هذا+markCoverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
+    Markclass_closure_and_remap_indexes (هذا+markCoverage, هذا+markArray, *c->glyph_set, &klass_mapping);
 
     hb_sorted_vector_t<unsigned> base_indexes;
-    collect_anchor_indexes (this+baseCoverage, (this+baseArray).rows,
+    collect_anchor_indexes (هذا+baseCoverage, (هذا+baseArray).rows,
                             classCount, *c->glyph_set, klass_mapping,
                             base_indexes);
-    (this+baseArray).collect_variation_indices (c, base_indexes.iter ());
+    (هذا+baseArray).collect_variation_indices (c, base_indexes.iter ());
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+baseCoverage).collect_coverage (c->input))) return;
+    𐡄𐡍 (unlikely (!(هذا+markCoverage).collect_coverage (c->input))) أرجع;
+    𐡄𐡍 (unlikely (!(هذا+baseCoverage).collect_coverage (c->input))) أرجع;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+baseCoverage).collect_coverage (digest); }
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
+  { (هذا+baseCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  ثابت Coverage &get_coverage () ثابت { أرجع هذا+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  ساكن مضمن منطقي accept (hb_buffer_t *buffer, unsigned idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence.
      * https://github.com/harfbuzz/harfbuzz/issues/740
      * Reject others...
      * ...but stop if we find a mark in the MultipleSubst sequence:
      * https://github.com/harfbuzz/harfbuzz/issues/1020 */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
+    أرجع !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
 	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]) ||
 	   (idx == 0 ||
 	    _hb_glyph_info_is_mark (&buffer->info[idx - 1]) ||
@@ -91,12 +91,12 @@ struct MarkBasePosFormat1_2
 	    );
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    unsigned صحيح mark_index = (هذا+markCoverage).get_coverage  (buffer->cur().codepoint);
+    𐡄𐡍 (likely (mark_index == NOT_COVERED)) return_trace (خطأ);
 
     /* Now we search backwards for a non-mark glyph.
      * We don't use skippy_iter.prev() to avoid O(n^2) behavior. */
@@ -104,33 +104,33 @@ struct MarkBasePosFormat1_2
     auto &skippy_iter = c->iter_input;
     skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    𐡄𐡍 (c->last_base_until > buffer->idx)
     {
       c->last_base_until = 0;
       c->last_base = -1;
     }
     unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    لكل (j = buffer->idx; j > c->last_base_until; j--)
     {
       auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      𐡄𐡍 (match == skippy_iter.MATCH)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
-	    NOT_COVERED == (this+baseCoverage).get_coverage  (buffer->info[j - 1].codepoint))
+	𐡄𐡍 (!accept (buffer, j - 1) &&
+	    NOT_COVERED == (هذا+baseCoverage).get_coverage  (buffer->info[j - 1].codepoint))
 	  match = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      𐡄𐡍 (match == skippy_iter.MATCH)
       {
 	c->last_base = (signed) j - 1;
-	break;
+	اكسر;
       }
     }
     c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    𐡄𐡍 (c->last_base == -1)
     {
       buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
-      return_trace (false);
+      return_trace (خطأ);
     }
 
     unsigned idx = (unsigned) c->last_base;
@@ -138,34 +138,34 @@ struct MarkBasePosFormat1_2
     /* Checking that matched glyph is actually a base glyph by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_base_glyph (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int base_index = (this+baseCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (base_index == NOT_COVERED)
+    unsigned صحيح base_index = (هذا+baseCoverage).get_coverage  (buffer->info[idx].codepoint);
+    𐡄𐡍 (base_index == NOT_COVERED)
     {
       buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (خطأ);
     }
 
-    return_trace ((this+markArray).apply (c, mark_index, base_index, this+baseArray, classCount, idx));
+    return_trace ((هذا+markArray).apply (c, mark_index, base_index, هذا+baseArray, classCount, idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    𐡄𐡍 (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+    Markclass_closure_and_remap_indexes (هذا+markCoverage, هذا+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
+    𐡄𐡍 (!klass_mapping.get_population ()) return_trace (خطأ);
     out->classCount = klass_mapping.get_population ();
 
     auto mark_iter =
-    + hb_zip (this+markCoverage, this+markArray)
+    + hb_zip (هذا+markCoverage, هذا+markArray)
     | hb_filter (glyphset, hb_first)
     ;
 
@@ -176,27 +176,27 @@ struct MarkBasePosFormat1_2
     | hb_sink (new_coverage)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    𐡄𐡍 (!out->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (خطأ);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
-						    (this+markCoverage).iter (),
+    𐡄𐡍 (unlikely (!out->markArray.serialize_subset (c, markArray, هذا,
+						    (هذا+markCoverage).iter (),
 						    &klass_mapping)))
-      return_trace (false);
+      return_trace (خطأ);
 
     new_coverage.reset ();
     hb_sorted_vector_t<unsigned> base_indexes;
-    const auto &base_array = this+baseArray;
-    collect_subset_anchor_indexes (this+baseCoverage, base_array.rows,
+    ثابت auto &base_array = هذا+baseArray;
+    collect_subset_anchor_indexes (هذا+baseCoverage, base_array.rows,
                                    classCount, base_array.matrixZ.arrayZ,
                                    glyphset, glyph_map, klass_mapping,
                                    new_coverage, base_indexes);
 
-    if (!new_coverage) return_trace (false);
-    if (!out->baseCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    𐡄𐡍 (!new_coverage) return_trace (خطأ);
+    𐡄𐡍 (!out->baseCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (خطأ);
 
-    return_trace (out->baseArray.serialize_subset (c, baseArray, this,
+    return_trace (out->baseArray.serialize_subset (c, baseArray, هذا,
 						   new_coverage.length,
 						   base_indexes.iter ()));
   }

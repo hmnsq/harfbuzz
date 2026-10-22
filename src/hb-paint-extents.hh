@@ -25,17 +25,17 @@
 #ifndef HB_PAINT_EXTENTS_HH
 #define HB_PAINT_EXTENTS_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#ضمن "hb.hh"
+#ضمن "hb-paint.h"
 
-#include "hb-geometry.hh"
+#ضمن "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+تعريفنوع بنية  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+بنية hb_paint_extents_context_t
 {
-  void clear ()
+  فراغ clear ()
   {
     transforms.clear ();
     clips.clear ();
@@ -43,10 +43,10 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    𐡄𐡍 (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
-      budget_initialized = true;
+      budget_initialized = 𐡒𐡔𐡈;
     }
     recharge_budget ();
 
@@ -62,30 +62,30 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    أرجع groups.tail().extents;
   }
 
-  bool is_bounded ()
+  منطقي is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    أرجع groups.tail().status != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  فراغ push_transform (ثابت hb_transform_t<> &trans)
   {
     hb_transform_t<> t = transforms.tail ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  فراغ pop_transform ()
   {
     transforms.pop ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  فراغ push_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
-    const hb_transform_t<> &t = transforms.tail ();
+    ثابت hb_transform_t<> &t = transforms.tail ();
     t.transform_extents (extents);
 
     auto bounds = hb_bounds_t<> {extents};
@@ -94,47 +94,47 @@ struct hb_paint_extents_context_t
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  فراغ pop_clip ()
   {
     clips.pop ();
   }
 
-  void push_group ()
+  فراغ push_group ()
   {
     groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  فراغ pop_group (hb_paint_composite_mode_t mode)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
+    ثابت hb_bounds_t<> src_bounds = groups.pop ();
     hb_bounds_t<> &backdrop_bounds = groups.tail ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    بدل ((صحيح) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
+      حالة HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+	اكسر;
+      حالة HB_PAINT_COMPOSITE_MODE_SRC:
+      حالة HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	اكسر;
+      حالة HB_PAINT_COMPOSITE_MODE_DEST:
+      حالة HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	اكسر;
+      حالة HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      حالة HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounds.intersect (src_bounds);
-	break;
-      default:
+	اكسر;
+      افتراضي:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	اكسر;
      }
   }
 
-  void paint ()
+  فراغ paint ()
   {
-    const hb_bounds_t<> &clip = clips.tail ();
+    ثابت hb_bounds_t<> &clip = clips.tail ();
     hb_bounds_t<> &group = groups.tail ();
 
     group.union_ (clip);
@@ -144,16 +144,16 @@ struct hb_paint_extents_context_t
    * Outline traversal and consumed segments charge the same live
    * counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  bool budget_initialized = true;
+  منطقي budget_initialized = 𐡒𐡔𐡈;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
+  محمي:
   hb_vector_t<hb_transform_t<>> transforms;
   hb_vector_t<hb_bounds_t<>> clips;
   hb_vector_t<hb_bounds_t<>> groups;

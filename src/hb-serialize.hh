@@ -31,18 +31,18 @@
 #ifndef HB_SERIALIZE_HH
 #define HB_SERIALIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-map.hh"
-#include "hb-free-pool.hh"
+#ضمن "hb.hh"
+#ضمن "hb-blob.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-free-pool.hh"
 
-#include "hb-subset-serialize.h"
+#ضمن "hb-subset-serialize.h"
 
 /*
  * Serialize
  */
 
-enum hb_serialize_error_t {
+تعداد hb_serialize_error_t {
   HB_SERIALIZE_ERROR_NONE =            0x00000000u,
   HB_SERIALIZE_ERROR_OTHER =           0x00000001u,
   HB_SERIALIZE_ERROR_OFFSET_OVERFLOW = 0x00000002u,
@@ -52,11 +52,11 @@ enum hb_serialize_error_t {
 };
 HB_MARK_AS_FLAG_T (hb_serialize_error_t);
 
-struct hb_serialize_context_t
+بنية hb_serialize_context_t
 {
-  typedef unsigned objidx_t;
+  تعريفنوع unsigned objidx_t;
 
-  enum whence_t {
+  تعداد whence_t {
      Head,	/* Relative to the current object head (default). */
      Tail,	/* Relative to the current object tail after packed. */
      Absolute	/* Absolute: from the start of the serialize buffer. */
@@ -64,42 +64,42 @@ struct hb_serialize_context_t
 
 
 
-  struct object_t
+  بنية object_t
   {
-    void fini () {
+    فراغ fini () {
       real_links.fini ();
       virtual_links.fini ();
     }
 
-    object_t () = default;
+    object_t () = افتراضي;
 
-    object_t (const hb_subset_serialize_object_t &o)
+    object_t (ثابت hb_subset_serialize_object_t &o)
     {
       head = o.head;
       tail = o.tail;
       next = nullptr;
       real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      لكل (unsigned i = 0 ; i < o.num_real_links; i++)
         real_links.push (o.real_links[i]);
 
       virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      لكل (unsigned i = 0; i < o.num_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
-    bool in_error () const
+    منطقي in_error () ثابت
     {
-      return real_links.in_error() || virtual_links.in_error();
+      أرجع real_links.in_error() || virtual_links.in_error();
     }
 
-    bool add_virtual_link (objidx_t objidx)
+    منطقي add_virtual_link (objidx_t objidx)
     {
-      if (!objidx)
-        return false;
+      𐡄𐡍 (!objidx)
+        أرجع خطأ;
 
       auto& link = *virtual_links.push ();
-      if (virtual_links.in_error ())
-        return false;
+      𐡄𐡍 (virtual_links.in_error ())
+        أرجع خطأ;
 
       link.objidx = objidx;
       // Remaining fields were previously zero'd by push():
@@ -109,10 +109,10 @@ struct hb_serialize_context_t
       // link.position = 0;
       // link.bias = 0;
 
-      return true;
+      أرجع 𐡒𐡔𐡈;
     }
 
-    friend void swap (object_t& a, object_t& b) noexcept
+    friend فراغ swap (object_t& a, object_t& b) noexcept
     {
       hb_swap (a.head, b.head);
       hb_swap (a.tail, b.tail);
@@ -121,24 +121,24 @@ struct hb_serialize_context_t
       hb_swap (a.virtual_links, b.virtual_links);
     }
 
-    bool operator == (const object_t &o) const
+    منطقي operator == (ثابت object_t &o) ثابت
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return (tail - head == o.tail - o.head)
+      أرجع (tail - head == o.tail - o.head)
 	  && (real_links.length == o.real_links.length)
 	  && 0 == hb_memcmp (head, o.head, tail - head)
 	  && real_links.as_bytes () == o.real_links.as_bytes ();
     }
-    uint32_t hash () const
+    uint32_t hash () ثابت
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
+      أرجع hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
           real_links.as_bytes ().hash ();
     }
 
-    struct link_t
+    بنية link_t
     {
       unsigned width: 3;
       unsigned is_signed: 1;
@@ -147,9 +147,9 @@ struct hb_serialize_context_t
       unsigned position;
       objidx_t objidx;
 
-      link_t () = default;
+      link_t () = افتراضي;
 
-      link_t (const hb_subset_serialize_link_t &o)
+      link_t (ثابت hb_subset_serialize_link_t &o)
       {
         width = o.width;
         is_signed = 0;
@@ -159,31 +159,31 @@ struct hb_serialize_context_t
         objidx = o.objidx;
       }
 
-      HB_INTERNAL static int cmp (const void* a, const void* b)
+      HB_INTERNAL ساكن صحيح cmp (ثابت فراغ* a, ثابت فراغ* b)
       {
-        int cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
-        if (cmp) return cmp;
+        صحيح cmp = ((ثابت link_t*)a)->position - ((ثابت link_t*)b)->position;
+        𐡄𐡍 (cmp) أرجع cmp;
 
-        return ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
+        أرجع ((ثابت link_t*)a)->objidx - ((ثابت link_t*)b)->objidx;
       }
     };
 
-    char *head;
-    char *tail;
+    حرف *head;
+    حرف *tail;
     hb_vector_t<link_t> real_links;
     hb_vector_t<link_t> virtual_links;
     object_t *next;
 
-    auto all_links () const HB_AUTO_RETURN
+    auto all_links () ثابت HB_AUTO_RETURN
         (( hb_concat (real_links, virtual_links) ));
     auto all_links_writer () HB_AUTO_RETURN
         (( hb_concat (real_links.writer (), virtual_links.writer ()) ));
   };
 
-  struct snapshot_t
+  بنية snapshot_t
   {
-    char *head;
-    char *tail;
+    حرف *head;
+    حرف *tail;
     object_t *current; // Just for sanity check
     unsigned num_real_links;
     unsigned num_virtual_links;
@@ -192,7 +192,7 @@ struct hb_serialize_context_t
 
   snapshot_t snapshot ()
   {
-    return snapshot_t {
+    أرجع snapshot_t {
       head, tail, current,
       current ? current->real_links.length : 0,
       current ? current->virtual_links.length : 0,
@@ -200,20 +200,20 @@ struct hb_serialize_context_t
      };
   }
 
-  hb_serialize_context_t (void *start_, size_t size) :
-    start ((char *) start_),
+  hb_serialize_context_t (فراغ *start_, size_t size) :
+    start ((حرف *) start_),
     end (start + size),
     current (nullptr)
   { reset (); }
   ~hb_serialize_context_t () { fini (); }
 
-  void fini ()
+  فراغ fini ()
   {
-    for (object_t *_ : ++hb_iter (packed)) _->fini ();
+    لكل (object_t *_ : ++hb_iter (packed)) _->fini ();
     packed.fini ();
-    this->packed_map.fini ();
+    هذا->packed_map.fini ();
 
-    while (current)
+    طالما (current)
     {
       auto *_ = current;
       current = current->next;
@@ -221,138 +221,138 @@ struct hb_serialize_context_t
     }
   }
 
-  bool in_error () const { return bool (errors); }
+  منطقي in_error () ثابت { أرجع منطقي (errors); }
 
-  bool successful () const { return !bool (errors); }
+  منطقي successful () ثابت { أرجع !منطقي (errors); }
 
-  HB_NODISCARD bool ran_out_of_room () const { return errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
-  HB_NODISCARD bool offset_overflow () const { return errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_offset_overflow () const { return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_overflow () const
+  HB_NODISCARD منطقي ran_out_of_room () ثابت { أرجع errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
+  HB_NODISCARD منطقي offset_overflow () ثابت { أرجع errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD منطقي only_offset_overflow () ثابت { أرجع errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD منطقي only_overflow () ثابت
   {
-    return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
+    أرجع errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_INT_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_ARRAY_OVERFLOW;
   }
 
-  void reset (void *start_, size_t size)
+  فراغ reset (فراغ *start_, size_t size)
   {
-    start = (char*) start_;
+    start = (حرف*) start_;
     end = start + size;
     reset ();
     current = nullptr;
   }
 
-  void reset ()
+  فراغ reset ()
   {
-    this->errors = HB_SERIALIZE_ERROR_NONE;
-    this->head = this->start;
-    this->tail = this->end;
-    this->zerocopy = nullptr;
-    this->debug_depth = 0;
+    هذا->errors = HB_SERIALIZE_ERROR_NONE;
+    هذا->head = هذا->start;
+    هذا->tail = هذا->end;
+    هذا->zerocopy = nullptr;
+    هذا->debug_depth = 0;
 
     fini ();
-    this->packed.push (nullptr);
-    this->packed_map.init ();
+    هذا->packed.push (nullptr);
+    هذا->packed_map.init ();
   }
 
-  bool check_success (bool success,
+  منطقي check_success (منطقي success,
                       hb_serialize_error_t err_type = HB_SERIALIZE_ERROR_OTHER)
   {
-    return successful ()
+    أرجع successful ()
         && (success || err (err_type));
   }
 
   template <typename T1, typename T2>
-  bool check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
+  منطقي check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
   {
-    if ((long long) v1 != (long long) v2)
+    𐡄𐡍 ((long long) v1 != (long long) v2)
     {
-      return err (err_type);
+      أرجع err (err_type);
     }
-    return true;
+    أرجع 𐡒𐡔𐡈;
   }
 
   template <typename T1, typename T2>
-  bool check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
-  { return check_equal (v1 = v2, v2, err_type); }
+  منطقي check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
+  { أرجع check_equal (v1 = v2, v2, err_type); }
 
-  template <typename T> bool propagate_error (T &&obj)
-  { return check_success (!hb_deref (obj).in_error ()); }
+  template <typename T> منطقي propagate_error (T &&obj)
+  { أرجع check_success (!hb_deref (obj).in_error ()); }
 
-  template <typename T1, typename... Ts> bool propagate_error (T1 &&o1, Ts&&... os)
-  { return propagate_error (std::forward<T1> (o1)) &&
+  template <typename T1, typename... Ts> منطقي propagate_error (T1 &&o1, Ts&&... os)
+  { أرجع propagate_error (std::forward<T1> (o1)) &&
 	   propagate_error (std::forward<Ts> (os)...); }
 
   /* To be called around main operation. */
-  template <typename Type=char>
+  template <typename Type=حرف>
   __attribute__((returns_nonnull))
   Type *start_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, +1,
+    DEBUG_MSG_LEVEL (SERIALIZE, هذا->start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     هذا->start, هذا->end,
+		     (unsigned long) (هذا->end - هذا->start));
 
-    assert (!current);
-    return push<Type> ();
+    أكد (!current);
+    أرجع push<Type> ();
   }
-  void end_serialize ()
+  فراغ end_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, -1,
+    DEBUG_MSG_LEVEL (SERIALIZE, هذا->start, 0, -1,
 		     "end [%p..%p] serialized %u bytes; %s",
-		     this->start, this->end,
-		     (unsigned) (this->head - this->start),
+		     هذا->start, هذا->end,
+		     (unsigned) (هذا->head - هذا->start),
 		     successful () ? "successful" : "UNSUCCESSFUL");
 
     propagate_error (packed, packed_map);
 
-    if (unlikely (!current)) return;
-    if (unlikely (in_error()))
+    𐡄𐡍 (unlikely (!current)) أرجع;
+    𐡄𐡍 (unlikely (in_error()))
     {
       // Offset overflows that occur before link resolution cannot be handled
       // by repacking, so set a more general error.
-      if (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
-      return;
+      𐡄𐡍 (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
+      أرجع;
     }
 
-    assert (!current->next);
+    أكد (!current->next);
 
     /* Only "pack" if there exist other objects... Otherwise, don't bother.
      * Saves a move. */
-    if (packed.length <= 1)
-      return;
+    𐡄𐡍 (packed.length <= 1)
+      أرجع;
 
-    pop_pack (false);
+    pop_pack (خطأ);
 
     resolve_links ();
   }
 
-  template <typename Type = void>
+  template <typename Type = فراغ>
   __attribute__((returns_nonnull))
   Type *push ()
   {
-    if (unlikely (in_error ())) return start_embed<Type> ();
+    𐡄𐡍 (unlikely (in_error ())) أرجع start_embed<Type> ();
 
     object_t *obj = object_pool.alloc ();
-    if (unlikely (!obj))
-      check_success (false);
-    else
+    𐡄𐡍 (unlikely (!obj))
+      check_success (خطأ);
+    وإلا
     {
       obj->head = head;
       obj->tail = tail;
       obj->next = current;
       current = obj;
     }
-    return start_embed<Type> ();
+    أرجع start_embed<Type> ();
   }
-  void pop_discard ()
+  فراغ pop_discard ()
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return;
+    𐡄𐡍 (unlikely (!obj)) أرجع;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error() && !only_overflow ())) return;
+    𐡄𐡍 (unlikely (in_error() && !only_overflow ())) أرجع;
 
     current = current->next;
     revert (zerocopy ? zerocopy : obj->head, obj->tail);
@@ -365,49 +365,49 @@ struct hb_serialize_context_t
    * so not worth an attempt, or a contiguous table is serialized as
    * multiple consecutive objects in the reverse order so can't be shared.
    */
-  objidx_t pop_pack (bool share=true)
+  objidx_t pop_pack (منطقي share=𐡒𐡔𐡈)
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return 0;
+    𐡄𐡍 (unlikely (!obj)) أرجع 0;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error()  && !only_overflow ())) return 0;
+    𐡄𐡍 (unlikely (in_error()  && !only_overflow ())) أرجع 0;
 
     current = current->next;
     obj->tail = head;
     obj->next = nullptr;
-    assert (obj->head <= obj->tail);
+    أكد (obj->head <= obj->tail);
     unsigned len = obj->tail - obj->head;
     head = zerocopy ? zerocopy : obj->head; /* Rewind head. */
-    bool was_zerocopy = zerocopy;
+    منطقي was_zerocopy = zerocopy;
     zerocopy = nullptr;
 
-    if (!len)
+    𐡄𐡍 (!len)
     {
-      assert (!obj->real_links.length);
-      assert (!obj->virtual_links.length);
-      return 0;
+      أكد (!obj->real_links.length);
+      أكد (!obj->virtual_links.length);
+      أرجع 0;
     }
 
     objidx_t objidx;
     uint32_t hash = 0;
-    if (share)
+    𐡄𐡍 (share)
     {
       hash = hb_hash (obj);
       objidx = packed_map.get_with_hash (obj, hash);
-      if (objidx)
+      𐡄𐡍 (objidx)
       {
         merge_virtual_links (obj, objidx);
 	obj->fini ();
         object_pool.release (obj);
-	return objidx;
+	أرجع objidx;
       }
     }
 
     tail -= len;
-    if (was_zerocopy)
-      assert (tail == obj->head);
-    else
+    𐡄𐡍 (was_zerocopy)
+      أكد (tail == obj->head);
+    وإلا
       memmove (tail, obj->head, len);
 
     obj->head = tail;
@@ -415,29 +415,29 @@ struct hb_serialize_context_t
 
     packed.push (obj);
 
-    if (unlikely (!propagate_error (packed)))
+    𐡄𐡍 (unlikely (!propagate_error (packed)))
     {
       /* Obj wasn't successfully added to packed, so clean it up otherwise its
        * links will be leaked. When we use constructor/destructors properly, we
        * can remove these. */
       obj->fini ();
-      return 0;
+      أرجع 0;
     }
 
     objidx = packed.length - 1;
 
-    if (share) packed_map.set_with_hash (obj, hash, objidx);
+    𐡄𐡍 (share) packed_map.set_with_hash (obj, hash, objidx);
     propagate_error (packed_map);
 
-    return objidx;
+    أرجع objidx;
   }
 
-  void revert (snapshot_t snap)
+  فراغ revert (snapshot_t snap)
   {
     // Overflows that happened after the snapshot will be erased by the revert.
-    if (unlikely (in_error () && !only_overflow ())) return;
-    assert (snap.current == current);
-    if (current)
+    𐡄𐡍 (unlikely (in_error () && !only_overflow ())) أرجع;
+    أكد (snap.current == current);
+    𐡄𐡍 (current)
     {
       current->real_links.shrink (snap.num_real_links);
       current->virtual_links.shrink (snap.num_virtual_links);
@@ -446,32 +446,32 @@ struct hb_serialize_context_t
     revert (snap.head, snap.tail);
   }
 
-  void revert (char *snap_head,
-	       char *snap_tail)
+  فراغ revert (حرف *snap_head,
+	       حرف *snap_tail)
   {
-    if (unlikely (in_error ())) return;
-    assert (snap_head <= head);
-    assert (tail <= snap_tail);
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
+    أكد (snap_head <= head);
+    أكد (tail <= snap_tail);
     head = snap_head;
     tail = snap_tail;
     discard_stale_objects ();
   }
 
-  void discard_stale_objects ()
+  فراغ discard_stale_objects ()
   {
-    if (unlikely (in_error ())) return;
-    while (packed.length > 1 &&
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
+    طالما (packed.length > 1 &&
 	   packed.tail ()->head < tail)
     {
       object_t *obj = packed.tail ();
       packed_map.del (obj);
-      assert (!obj->next);
+      أكد (!obj->next);
       obj->fini ();
       object_pool.release (obj);
       packed.pop ();
     }
-    if (packed.length > 1)
-      assert (packed.tail ()->head == tail);
+    𐡄𐡍 (packed.length > 1)
+      أكد (packed.tail ()->head == tail);
   }
 
   // Adds a virtual link from the current object to objidx. A virtual link is not associated with
@@ -482,28 +482,28 @@ struct hb_serialize_context_t
   // This is useful in certain situations where there needs to be a specific ordering in the
   // final serialization. Such as when platform bugs require certain orderings, or to provide
   //  guidance to the repacker for better offset overflow resolution.
-  void add_virtual_link (objidx_t objidx)
+  فراغ add_virtual_link (objidx_t objidx)
   {
-    if (unlikely (in_error ())) return;
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
 
-    if (!objidx)
-      return;
+    𐡄𐡍 (!objidx)
+      أرجع;
 
-    assert (current);
+    أكد (current);
 
-    if (!current->add_virtual_link(objidx))
+    𐡄𐡍 (!current->add_virtual_link(objidx))
       err (HB_SERIALIZE_ERROR_OTHER);
   }
 
-  objidx_t last_added_child_index() const {
-    if (unlikely (in_error ())) return (objidx_t) -1;
+  objidx_t last_added_child_index() ثابت {
+    𐡄𐡍 (unlikely (in_error ())) أرجع (objidx_t) -1;
 
-    assert (current);
-    if (!bool(current->real_links)) {
-      return (objidx_t) -1;
+    أكد (current);
+    𐡄𐡍 (!منطقي(current->real_links)) {
+      أرجع (objidx_t) -1;
     }
 
-    return current->real_links[current->real_links.length - 1].objidx;
+    أرجع current->real_links[current->real_links.length - 1].objidx;
   }
 
   // For the current object ensure that the sub-table bytes for child objidx are always placed
@@ -511,16 +511,16 @@ struct hb_serialize_context_t
   // repacker will not move the target subtable before the other children
   // (by adding virtual links). It is up to the caller to ensure the initial serialization
   // order is correct.
-  void repack_last(objidx_t objidx) {
-    if (unlikely (in_error ())) return;
+  فراغ repack_last(objidx_t objidx) {
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
 
-    if (!objidx)
-      return;
+    𐡄𐡍 (!objidx)
+      أرجع;
 
-    assert (current);
-    for (auto& l : current->real_links) {
-      if (l.objidx == objidx) {
-        continue;
+    أكد (current);
+    لكل (auto& l : current->real_links) {
+      𐡄𐡍 (l.objidx == objidx) {
+        استمر;
       }
 
       packed[l.objidx]->add_virtual_link(objidx);
@@ -528,25 +528,25 @@ struct hb_serialize_context_t
   }
 
   template <typename T>
-  void add_link (T &ofs, objidx_t objidx,
+  فراغ add_link (T &ofs, objidx_t objidx,
 		 whence_t whence = Head,
 		 unsigned bias = 0)
   {
-    if (unlikely (in_error ())) return;
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
 
-    if (!objidx)
-      return;
+    𐡄𐡍 (!objidx)
+      أرجع;
 
-    assert (current);
-    assert (current->head <= (const char *) &ofs);
+    أكد (current);
+    أكد (current->head <= (ثابت حرف *) &ofs);
 
     auto& link = *current->real_links.push ();
-    if (current->real_links.in_error ())
+    𐡄𐡍 (current->real_links.in_error ())
       err (HB_SERIALIZE_ERROR_OTHER);
 
-    link.width = sizeof (T);
+    link.width = حجم (T);
     link.objidx = objidx;
-    if (unlikely (!sizeof (T)))
+    𐡄𐡍 (unlikely (!حجم (T)))
     {
       // This link is not associated with an actual offset and exists merely to enforce
       // an ordering constraint.
@@ -554,268 +554,268 @@ struct hb_serialize_context_t
       link.whence = 0;
       link.position = 0;
       link.bias = 0;
-      return;
+      أرجع;
     }
 
     link.is_signed = std::is_signed<hb_unwrap_type (T)>::value;
     link.whence = (unsigned) whence;
-    link.position = (const char *) &ofs - current->head;
+    link.position = (ثابت حرف *) &ofs - current->head;
     link.bias = bias;
   }
 
-  unsigned to_bias (const void *base) const
+  unsigned to_bias (ثابت فراغ *base) ثابت
   {
-    if (unlikely (in_error ())) return 0;
-    if (!base) return 0;
-    assert (current);
-    assert (current->head <= (const char *) base);
-    return (const char *) base - current->head;
+    𐡄𐡍 (unlikely (in_error ())) أرجع 0;
+    𐡄𐡍 (!base) أرجع 0;
+    أكد (current);
+    أكد (current->head <= (ثابت حرف *) base);
+    أرجع (ثابت حرف *) base - current->head;
   }
 
-  void resolve_links ()
+  فراغ resolve_links ()
   {
-    if (unlikely (in_error ())) return;
+    𐡄𐡍 (unlikely (in_error ())) أرجع;
 
-    assert (!current);
-    assert (packed.length > 1);
+    أكد (!current);
+    أكد (packed.length > 1);
 
-    for (const object_t* parent : ++hb_iter (packed))
-      for (const object_t::link_t &link : parent->real_links)
+    لكل (ثابت object_t* parent : ++hb_iter (packed))
+      لكل (ثابت object_t::link_t &link : parent->real_links)
       {
-	const object_t* child = packed[link.objidx];
-	if (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); return; }
+	ثابت object_t* child = packed[link.objidx];
+	𐡄𐡍 (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); أرجع; }
 	unsigned offset = 0;
-	switch ((whence_t) link.whence) {
-	case Head:     offset = child->head - parent->head; break;
-	case Tail:     offset = child->head - parent->tail; break;
-	case Absolute: offset = (head - start) + (child->head - tail); break;
+	بدل ((whence_t) link.whence) {
+	حالة Head:     offset = child->head - parent->head; اكسر;
+	حالة Tail:     offset = child->head - parent->tail; اكسر;
+	حالة Absolute: offset = (head - start) + (child->head - tail); اكسر;
 	}
 
-	assert (offset >= link.bias);
+	أكد (offset >= link.bias);
 	offset -= link.bias;
-	if (link.is_signed)
+	𐡄𐡍 (link.is_signed)
 	{
-	  assert (link.width == 2 || link.width == 4);
-	  if (link.width == 4)
+	  أكد (link.width == 2 || link.width == 4);
+	  𐡄𐡍 (link.width == 4)
 	    assign_offset<int32_t> (parent, link, offset);
-	  else
+	  وإلا
 	    assign_offset<int16_t> (parent, link, offset);
 	}
-	else
+	وإلا
 	{
-	  assert (link.width == 2 || link.width == 3 || link.width == 4);
-	  if (link.width == 4)
+	  أكد (link.width == 2 || link.width == 3 || link.width == 4);
+	  𐡄𐡍 (link.width == 4)
 	    assign_offset<uint32_t> (parent, link, offset);
-	  else if (link.width == 3)
+	  وإلا 𐡄𐡍 (link.width == 3)
 	    assign_offset<uint32_t, 3> (parent, link, offset);
-	  else
+	  وإلا
 	    assign_offset<uint16_t> (parent, link, offset);
 	}
       }
   }
 
-  unsigned int length () const
+  unsigned صحيح length () ثابت
   {
-    if (unlikely (!current)) return 0;
-    return this->head - current->head;
+    𐡄𐡍 (unlikely (!current)) أرجع 0;
+    أرجع هذا->head - current->head;
   }
 
-  void align (unsigned int alignment)
+  فراغ align (unsigned صحيح alignment)
   {
-    unsigned int l = length () % alignment;
-    if (l)
-      (void) allocate_size<void> (alignment - l);
+    unsigned صحيح l = length () % alignment;
+    𐡄𐡍 (l)
+      (فراغ) allocate_size<فراغ> (alignment - l);
   }
 
-  template <typename Type = void>
+  template <typename Type = فراغ>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type *obj HB_UNUSED = nullptr) const
-  { return reinterpret_cast<Type *> (this->head); }
+  Type *start_embed (ثابت Type *obj HB_UNUSED = nullptr) ثابت
+  { أرجع reinterpret_cast<Type *> (هذا->head); }
   template <typename Type>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type &obj) const
-  { return start_embed (std::addressof (obj)); }
+  Type *start_embed (ثابت Type &obj) ثابت
+  { أرجع start_embed (std::addressof (obj)); }
 
-  bool err (hb_serialize_error_t err_type)
+  منطقي err (hb_serialize_error_t err_type)
   {
-    return !bool ((errors = (errors | err_type)));
+    أرجع !منطقي ((errors = (errors | err_type)));
   }
 
-  bool start_zerocopy (size_t size)
+  منطقي start_zerocopy (size_t size)
   {
-    if (unlikely (in_error ())) return false;
+    𐡄𐡍 (unlikely (in_error ())) أرجع خطأ;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    𐡄𐡍 (unlikely (size > INT_MAX || هذا->tail - هذا->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return false;
+      أرجع خطأ;
     }
 
-    assert (!this->zerocopy);
-    this->zerocopy = this->head;
+    أكد (!هذا->zerocopy);
+    هذا->zerocopy = هذا->head;
 
-    assert (this->current->head == this->head);
-    this->current->head = this->current->tail = this->head = this->tail - size;
-    return true;
+    أكد (هذا->current->head == هذا->head);
+    هذا->current->head = هذا->current->tail = هذا->head = هذا->tail - size;
+    أرجع 𐡒𐡔𐡈;
   }
 
   template <typename Type>
   HB_NODISCARD
-  Type *allocate_size (size_t size, bool clear = true)
+  Type *allocate_size (size_t size, منطقي clear = 𐡒𐡔𐡈)
   {
-    if (unlikely (in_error ())) return nullptr;
+    𐡄𐡍 (unlikely (in_error ())) أرجع nullptr;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    𐡄𐡍 (unlikely (size > INT_MAX || هذا->tail - هذا->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return nullptr;
+      أرجع nullptr;
     }
-    if (clear)
-      hb_memset (this->head, 0, size);
-    char *ret = this->head;
-    this->head += size;
-    return reinterpret_cast<Type *> (ret);
+    𐡄𐡍 (clear)
+      hb_memset (هذا->head, 0, size);
+    حرف *ret = هذا->head;
+    هذا->head += size;
+    أرجع reinterpret_cast<Type *> (ret);
   }
 
   template <typename Type>
   Type *allocate_min ()
-  { return this->allocate_size<Type> (Type::min_size); }
+  { أرجع هذا->allocate_size<Type> (Type::min_size); }
 
   template <typename Type>
   HB_NODISCARD
-  Type *embed (const Type *obj)
+  Type *embed (ثابت Type *obj)
   {
     size_t size = obj->get_size ();
-    Type *ret = this->allocate_size<Type> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = هذا->allocate_size<Type> (size, خطأ);
+    𐡄𐡍 (unlikely (!ret)) أرجع nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    أرجع ret;
   }
   template <typename Type>
   HB_NODISCARD
-  Type *embed (const Type &obj)
-  { return embed (std::addressof (obj)); }
-  char *embed (const char *obj, unsigned size)
+  Type *embed (ثابت Type &obj)
+  { أرجع embed (std::addressof (obj)); }
+  حرف *embed (ثابت حرف *obj, unsigned size)
   {
-    char *ret = this->allocate_size<char> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    حرف *ret = هذا->allocate_size<حرف> (size, خطأ);
+    𐡄𐡍 (unlikely (!ret)) أرجع nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    أرجع ret;
   }
 
   template <typename Type, typename ...Ts> auto
-  _copy (const Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
-  (Type *, src.copy (this, std::forward<Ts> (ds)...))
+  _copy (ثابت Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
+  (Type *, src.copy (هذا, std::forward<Ts> (ds)...))
 
   template <typename Type> auto
-  _copy (const Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
+  _copy (ثابت Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
   {
-    Type *ret = this->allocate_size<Type> (sizeof (Type));
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = هذا->allocate_size<Type> (حجم (Type));
+    𐡄𐡍 (unlikely (!ret)) أرجع nullptr;
     *ret = src;
-    return ret;
+    أرجع ret;
   }
 
   /* Like embed, but active: calls obj.operator=() or obj.copy() to transfer data
    * instead of hb_memcpy(). */
   template <typename Type, typename ...Ts>
-  Type *copy (const Type &src, Ts&&... ds)
-  { return _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
+  Type *copy (ثابت Type &src, Ts&&... ds)
+  { أرجع _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
   template <typename Type, typename ...Ts>
-  Type *copy (const Type *src, Ts&&... ds)
-  { return copy (*src, std::forward<Ts> (ds)...); }
+  Type *copy (ثابت Type *src, Ts&&... ds)
+  { أرجع copy (*src, std::forward<Ts> (ds)...); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator)),
 	   typename ...Ts>
-  void copy_all (Iterator it, Ts&&... ds)
-  { for (decltype (*it) _ : it) copy (_, ds...); }
+  فراغ copy_all (Iterator it, Ts&&... ds)
+  { لكل (decltype (*it) _ : it) copy (_, ds...); }
 
   template <typename Type>
-  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); return *this; }
+  hb_serialize_context_t& operator << (ثابت Type &obj) & { embed (obj); أرجع *هذا; }
 
   template <typename Type>
-  Type *extend_size (Type *obj, size_t size, bool clear = true)
+  Type *extend_size (Type *obj, size_t size, منطقي clear = 𐡒𐡔𐡈)
   {
-    if (unlikely (in_error ())) return nullptr;
-    if (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); return nullptr; }
+    𐡄𐡍 (unlikely (in_error ())) أرجع nullptr;
+    𐡄𐡍 (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); أرجع nullptr; }
 
-    assert (this->start <= (char *) obj);
-    assert ((char *) obj <= this->head);
-    assert ((size_t) (this->head - (char *) obj) <= size);
-    if (unlikely (((char *) obj + size < (char *) obj) ||
-		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) return nullptr;
-    return reinterpret_cast<Type *> (obj);
+    أكد (هذا->start <= (حرف *) obj);
+    أكد ((حرف *) obj <= هذا->head);
+    أكد ((size_t) (هذا->head - (حرف *) obj) <= size);
+    𐡄𐡍 (unlikely (((حرف *) obj + size < (حرف *) obj) ||
+		  !هذا->allocate_size<Type> (((حرف *) obj) + size - هذا->head, clear))) أرجع nullptr;
+    أرجع reinterpret_cast<Type *> (obj);
   }
   template <typename Type>
-  Type *extend_size (Type &obj, size_t size, bool clear = true)
-  { return extend_size (std::addressof (obj), size, clear); }
+  Type *extend_size (Type &obj, size_t size, منطقي clear = 𐡒𐡔𐡈)
+  { أرجع extend_size (std::addressof (obj), size, clear); }
 
   template <typename Type>
-  Type *extend_min (Type *obj) { return extend_size (obj, obj->min_size); }
+  Type *extend_min (Type *obj) { أرجع extend_size (obj, obj->min_size); }
   template <typename Type>
-  Type *extend_min (Type &obj) { return extend_min (std::addressof (obj)); }
+  Type *extend_min (Type &obj) { أرجع extend_min (std::addressof (obj)); }
 
   template <typename Type, typename ...Ts>
   Type *extend (Type *obj, Ts&&... ds)
-  { return extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
+  { أرجع extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
   template <typename Type, typename ...Ts>
   Type *extend (Type &obj, Ts&&... ds)
-  { return extend (std::addressof (obj), std::forward<Ts> (ds)...); }
+  { أرجع extend (std::addressof (obj), std::forward<Ts> (ds)...); }
 
   /* Output routines. */
-  hb_bytes_t copy_bytes () const
+  hb_bytes_t copy_bytes () ثابت
   {
-    assert (successful ());
+    أكد (successful ());
     /* Copy both items from head side and tail side... */
-    unsigned int len = (this->head - this->start)
-		     + (this->end  - this->tail);
+    unsigned صحيح len = (هذا->head - هذا->start)
+		     + (هذا->end  - هذا->tail);
 
     // If len is zero don't hb_malloc as the memory won't get properly
     // cleaned up later.
-    if (!len) return hb_bytes_t ();
+    𐡄𐡍 (!len) أرجع hb_bytes_t ();
 
-    char *p = (char *) hb_malloc (len);
-    if (unlikely (!p)) return hb_bytes_t ();
+    حرف *p = (حرف *) hb_malloc (len);
+    𐡄𐡍 (unlikely (!p)) أرجع hb_bytes_t ();
 
-    hb_memcpy (p, this->start, this->head - this->start);
-    hb_memcpy (p + (this->head - this->start), this->tail, this->end - this->tail);
-    return hb_bytes_t (p, len);
+    hb_memcpy (p, هذا->start, هذا->head - هذا->start);
+    hb_memcpy (p + (هذا->head - هذا->start), هذا->tail, هذا->end - هذا->tail);
+    أرجع hb_bytes_t (p, len);
   }
   template <typename Type>
-  Type *copy () const
-  { return reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
-  hb_blob_t *copy_blob () const
+  Type *copy () ثابت
+  { أرجع reinterpret_cast<Type *> ((حرف *) copy_bytes ().arrayZ); }
+  hb_blob_t *copy_blob () ثابت
   {
     hb_bytes_t b = copy_bytes ();
-    return hb_blob_create (b.arrayZ, b.length,
+    أرجع hb_blob_create (b.arrayZ, b.length,
 			   HB_MEMORY_MODE_WRITABLE,
-			   (char *) b.arrayZ, hb_free);
+			   (حرف *) b.arrayZ, hb_free);
   }
 
-  const hb_vector_t<object_t *>& object_graph() const
-  { return packed; }
+  ثابت hb_vector_t<object_t *>& object_graph() ثابت
+  { أرجع packed; }
 
-  private:
-  template <typename T, unsigned Size = sizeof (T)>
-  void assign_offset (const object_t* parent, const object_t::link_t &link, unsigned offset)
+  خاص:
+  template <typename T, unsigned Size = حجم (T)>
+  فراغ assign_offset (ثابت object_t* parent, ثابت object_t::link_t &link, unsigned offset)
   {
     // XXX We should stop assuming big-endian!
-    auto &off = * ((HBInt<true, T, Size> *) (parent->head + link.position));
-    assert (0 == off);
+    auto &off = * ((HBInt<𐡒𐡔𐡈, T, Size> *) (parent->head + link.position));
+    أكد (0 == off);
     check_assign (off, offset, HB_SERIALIZE_ERROR_OFFSET_OVERFLOW);
   }
 
-  public:
-  char *start, *head, *tail, *end, *zerocopy;
-  unsigned int debug_depth;
+  عام:
+  حرف *start, *head, *tail, *end, *zerocopy;
+  unsigned صحيح debug_depth;
   hb_serialize_error_t errors;
 
-  private:
+  خاص:
 
-  void merge_virtual_links (const object_t* from, objidx_t to_idx) {
+  فراغ merge_virtual_links (ثابت object_t* from, objidx_t to_idx) {
     object_t* to = packed[to_idx];
-    for (const auto& l : from->virtual_links) {
+    لكل (ثابت auto& l : from->virtual_links) {
       to->virtual_links.push (l);
     }
   }
@@ -830,7 +830,7 @@ struct hb_serialize_context_t
   hb_vector_t<object_t *> packed;
 
   /* Map view of packed objects. */
-  hb_hashmap_t<const object_t *, objidx_t> packed_map;
+  hb_hashmap_t<ثابت object_t *, objidx_t> packed_map;
 };
 
 #endif /* HB_SERIALIZE_HH */

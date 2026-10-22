@@ -1,20 +1,20 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 
-#include "PairSet.hh"
+#ضمن "PairSet.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
 template <typename Types>
-struct PairPosFormat1_3
+بنية PairPosFormat1_3
 {
   using PairSet = GPOS_impl::PairSet<Types>;
   using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
 
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -28,18 +28,18 @@ struct PairPosFormat1_3
   typename Types::template ArrayOf<typename Types::template OffsetTo<PairSet>>
                 pairSet;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    if (!c->check_struct (this)) return_trace (false);
+    𐡄𐡍 (!c->check_struct (هذا)) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
+    unsigned صحيح len1 = valueFormat[0].get_len ();
+    unsigned صحيح len2 = valueFormat[1].get_len ();
     typename PairSet::sanitize_closure_t closure =
     {
       valueFormat,
@@ -47,162 +47,162 @@ struct PairPosFormat1_3
       PairSet::get_size (len1, len2)
     };
 
-    return_trace (coverage.sanitize (c, this) && pairSet.sanitize (c, this, &closure));
+    return_trace (coverage.sanitize (c, هذا) && pairSet.sanitize (c, هذا, &closure));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    auto &cov = this+coverage;
+    auto &cov = هذا+coverage;
 
-    if (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
+    𐡄𐡍 (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
     {
-      for (hb_codepoint_t g : glyphs->iter ())
+      لكل (hb_codepoint_t g : glyphs->iter ())
       {
 	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
-	  return true;
+	𐡄𐡍 ((هذا+pairSet[i]).intersects (glyphs, valueFormat))
+	  أرجع 𐡒𐡔𐡈;
       }
-      return false;
+      أرجع خطأ;
     }
 
-    return
+    أرجع
     + hb_zip (cov, pairSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+    | hb_map ([glyphs, هذا] (ثابت typename Types::template OffsetTo<PairSet> &_)
+              { أرجع (هذا+_).intersects (glyphs, valueFormat); })
     | hb_any
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ closure_lookups (hb_closure_lookups_context_t *c) ثابت {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    𐡄𐡍 ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) أرجع;
 
     auto it =
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (هذا+coverage, pairSet)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
     ;
 
-    if (!it) return;
+    𐡄𐡍 (!it) أرجع;
     + it
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_map (hb_add (هذا))
+    | hb_apply ([&] (ثابت PairSet& _) { _.collect_variation_indices (c, valueFormat); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    𐡄𐡍 (unlikely (!(هذا+coverage).collect_coverage (c->input))) أرجع;
+    unsigned صحيح count = pairSet.len;
+    لكل (unsigned صحيح i = 0; i < count; i++)
+      (هذا+pairSet[i]).collect_glyphs (c, valueFormat);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_second_glyphs (hb_set_digest_t *digest) ثابت
   {
     unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    لكل (unsigned i = 0; i < count; i++)
+      (هذا+pairSet[i]).collect_second_glyphs (digest, valueFormat);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { أرجع هذا+coverage; }
 
-  struct external_cache_t
+  بنية external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_set_digest_t pair_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  فراغ *external_cache_create () ثابت
   {
     unsigned count = pairSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
+    unsigned size = حجم (external_cache_t) -
+		    HB_VAR_ARRAY * حجم (hb_set_digest_t) +
+		    count * حجم (hb_set_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    𐡄𐡍 (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      لكل (unsigned i = 0; i < count; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(هذا+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
       }
     }
-    return cache;
+    أرجع cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  منطقي apply (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
     hb_buffer_t *buffer = c->buffer;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    unsigned صحيح index = (هذا+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#وإلا
+    unsigned صحيح index = (هذا+coverage).get_coverage  (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    𐡄𐡍 (index == NOT_COVERED) return_trace (خطأ);
 
     auto &skippy_iter = c->iter_input;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    𐡄𐡍 (unlikely (!skippy_iter.next (&unsafe_to)))
     {
       buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      return_trace (خطأ);
     }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (cache &&
+    𐡄𐡍 (cache &&
 	index < pairSet.len &&
 	!cache->pair_sets[index].may_have (buffer->info[skippy_iter.idx].codepoint))
     {
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      return_trace (خطأ);
     }
 #endif
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((هذا+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*هذا);
+    𐡄𐡍 (unlikely (!c->serializer->extend_min (out))) return_trace (خطأ);
     out->format = format;
 
     hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
 
-    if (c->plan->normalized_coords)
+    𐡄𐡍 (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_value_formats (glyphset, خطأ, خطأ, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    وإلا 𐡄𐡍 (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      منطقي has_fvar = (blob != hb_blob_get_empty ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      منطقي strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      𐡄𐡍 (has_fvar && !c->plan->has_gdef_varstore)
+        strip = 𐡒𐡔𐡈;
+      newFormats = compute_effective_value_formats (glyphset, strip, 𐡒𐡔𐡈);
     }
 
     out->valueFormat[0] = newFormats.first;
@@ -210,20 +210,20 @@ struct PairPosFormat1_3
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
 
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (هذا+coverage, pairSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter ([this, c, out] (const typename Types::template OffsetTo<PairSet>& _)
+    | hb_filter ([هذا, c, out] (ثابت typename Types::template OffsetTo<PairSet>& _)
                  {
                    auto snap = c->serializer->snapshot ();
                    auto *o = out->pairSet.serialize_append (c->serializer);
-                   if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
-                   if (!ret)
+                   𐡄𐡍 (unlikely (!o)) أرجع خطأ;
+                   منطقي ret = o->serialize_subset (c, _, هذا, valueFormat, out->valueFormat);
+                   𐡄𐡍 (!ret)
                    {
                      out->pairSet.pop ();
                      c->serializer->revert (snap);
                    }
-                   return ret;
+                   أرجع ret;
                  },
                  hb_second)
     | hb_map (hb_first)
@@ -233,34 +233,34 @@ struct PairPosFormat1_3
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
 
-    return_trace (bool (new_coverage));
+    return_trace (منطقي (new_coverage));
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
-                                                                 bool strip_hints, bool strip_empty,
-                                                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (ثابت hb_set_t& glyphset,
+                                                                 منطقي strip_hints, منطقي strip_empty,
+                                                                 ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحيح>> *varidx_delta_map = nullptr) ثابت
   {
     unsigned format1 = 0;
     unsigned format2 = 0;
-    for (const auto & _ :
-	  + hb_zip (this+coverage, pairSet)
+    لكل (ثابت auto & _ :
+	  + hb_zip (هذا+coverage, pairSet)
 	  | hb_filter (glyphset, hb_first)
 	  | hb_map (hb_second)
 	)
     {
-      const PairSet& set = (this + _);
+      ثابت PairSet& set = (هذا + _);
       auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
           glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
       format1 |= formats.first;
       format2 |= formats.second;
 
-      if (!varidx_delta_map &&
+      𐡄𐡍 (!varidx_delta_map &&
           format1 == valueFormat[0] && format2 == valueFormat[1])
-        break;
+        اكسر;
     }
 
-    return hb_pair (format1, format2);
+    أرجع hb_pair (format1, format2);
   }
 };
 

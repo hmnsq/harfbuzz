@@ -25,49 +25,49 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifndef HB_NO_OUTLINE
 
-#include "hb-outline.hh"
+#ضمن "hb-outline.hh"
 
-#include "hb-machinery.hh"
+#ضمن "hb-machinery.hh"
 
 
-void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
+فراغ hb_outline_t::replay (hb_draw_funcs_t *pen, فراغ *pen_data) ثابت
 {
   hb_draw_state_t st = HB_DRAW_STATE_DEFAULT;
 
   unsigned first = 0;
-  for (unsigned contour : contours)
+  لكل (unsigned contour : contours)
   {
     auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    طالما (it)
     {
       hb_outline_point_t p1 = *it++;
-      switch (p1.type)
+      بدل (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	حالة hb_outline_point_t::type_t::MOVE_TO:
 	{
 	  pen->move_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	اكسر;
+	حالة hb_outline_point_t::type_t::LINE_TO:
 	{
 	  pen->line_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	اكسر;
+	حالة hb_outline_point_t::type_t::QUADRATIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  pen->quadratic_to (pen_data, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	اكسر;
+	حالة hb_outline_point_t::type_t::CUBIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  hb_outline_point_t p3 = *it++;
@@ -76,7 +76,7 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	اكسر;
       }
     }
     pen->close_path (pen_data, st);
@@ -84,28 +84,28 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
   }
 }
 
-void hb_outline_t::translate (float dx, float dy)
+فراغ hb_outline_t::translate (عائم dx, عائم dy)
 {
-  for (auto &p : points)
+  لكل (auto &p : points)
   {
     p.x += dx;
     p.y += dy;
   }
 }
 
-void hb_outline_t::slant (float slant_xy)
+فراغ hb_outline_t::slant (عائم slant_xy)
 {
-  for (auto &p : points)
+  لكل (auto &p : points)
     p.x += slant_xy * p.y;
 }
 
-float hb_outline_t::control_area () const
+عائم hb_outline_t::control_area () ثابت
 {
-  float a = 0;
+  عائم a = 0;
   unsigned first = 0;
-  for (unsigned contour : contours)
+  لكل (unsigned contour : contours)
   {
-    for (unsigned i = first; i < contour; i++)
+    لكل (unsigned i = first; i < contour; i++)
     {
       unsigned j = i + 1 < contour ? i + 1 : first;
 
@@ -116,60 +116,60 @@ float hb_outline_t::control_area () const
 
     first = contour;
   }
-  return a * .5f;
+  أرجع a * .5f;
 }
 
-void hb_outline_t::embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift)
+فراغ hb_outline_t::embolden (عائم x_strength, عائم y_strength,
+			     عائم x_shift, عائم y_shift)
 {
   /* This function is a straight port of FreeType's FT_Outline_EmboldenXY.
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  𐡄𐡍 (!x_strength && !y_strength) أرجع;
+  𐡄𐡍 (!points) أرجع;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
 
-  bool orientation_negative = control_area () < 0;
+  منطقي orientation_negative = control_area () < 0;
 
   signed first = 0;
-  for (unsigned c = 0; c < contours.length; c++)
+  لكل (unsigned c = 0; c < contours.length; c++)
   {
     hb_outline_vector_t in, out, anchor, shift;
-    float l_in, l_out, l_anchor = 0, l, q, d;
+    عائم l_in, l_out, l_anchor = 0, l, q, d;
 
     l_in = 0;
-    signed last = (int) contours[c] - 1;
+    signed last = (صحيح) contours[c] - 1;
 
     /* pacify compiler */
     in.x = in.y = anchor.x = anchor.y = 0;
 
     /* Counter j cycles though the points; counter i advances only  */
     /* when points are moved; anchor k marks the first moved point. */
-    for ( signed i = last, j = first, k = -1;
+    لكل ( signed i = last, j = first, k = -1;
 	  j != i && i != k;
 	  j = j < last ? j + 1 : first )
     {
-      if ( j != k )
+      𐡄𐡍 ( j != k )
       {
 	out.x = points[j].x - points[i].x;
 	out.y = points[j].y - points[i].y;
 	l_out = out.normalize_len ();
 
-	if ( l_out == 0 )
-	  continue;
+	𐡄𐡍 ( l_out == 0 )
+	  استمر;
       }
-      else
+      وإلا
       {
 	out   = anchor;
 	l_out = l_anchor;
       }
 
-      if ( l_in != 0 )
+      𐡄𐡍 ( l_in != 0 )
       {
-	if ( k < 0 )
+	𐡄𐡍 ( k < 0 )
 	{
 	  k        = i;
 	  anchor   = in;
@@ -179,7 +179,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	d = in.x * out.x + in.y * out.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	𐡄𐡍 ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
@@ -187,34 +187,34 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  shift.x = in.y + out.y;
 	  shift.y = in.x + out.x;
 
-	  if ( orientation_negative )
+	  𐡄𐡍 ( orientation_negative )
 	    shift.x = -shift.x;
-	  else
+	  وإلا
 	    shift.y = -shift.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
 	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  𐡄𐡍 ( orientation_negative )
 	    q = -q;
 
 	  l = hb_min (l_in, l_out);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
+	  𐡄𐡍 (x_strength * q <= l * d)
 	    shift.x = shift.x * x_strength / d;
-	  else
+	  وإلا
 	    shift.x = shift.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
+	  𐡄𐡍 (y_strength * q <= l * d)
 	    shift.y = shift.y * y_strength / d;
-	  else
+	  وإلا
 	    shift.y = shift.y * l / q;
 	}
-	else
+	وإلا
 	  shift.x = shift.y = 0;
 
-	for ( ;
+	لكل ( ;
 	      i != j;
 	      i = i < last ? i + 1 : first )
 	{
@@ -222,7 +222,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  points[i].y += y_shift + shift.y;
 	}
       }
-      else
+      وإلا
 	i = j;
 
       in   = out;
@@ -233,37 +233,37 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
   }
 }
 
-static void
+ساكن فراغ
 hb_outline_recording_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+				  فراغ *data,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  عائم to_x, عائم to_y,
+				  فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::MOVE_TO});
 }
 
-static void
+ساكن فراغ
 hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+				  فراغ *data,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  عائم to_x, عائم to_y,
+				  فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::LINE_TO});
 }
 
-static void
+ساكن فراغ
 hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				       void *data,
+				       فراغ *data,
 				       hb_draw_state_t *st,
-				       float control_x, float control_y,
-				       float to_x, float to_y,
-				       void *user_data HB_UNUSED)
+				       عائم control_x, عائم control_y,
+				       عائم to_x, عائم to_y,
+				       فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
@@ -271,14 +271,14 @@ hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::QUADRATIC_TO});
 }
 
-static void
+ساكن فراغ
 hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				   void *data,
+				   فراغ *data,
 				   hb_draw_state_t *st,
-				   float control1_x, float control1_y,
-				   float control2_x, float control2_y,
-				   float to_x, float to_y,
-				   void *user_data HB_UNUSED)
+				   عائم control1_x, عائم control1_y,
+				   عائم control2_x, عائم control2_y,
+				   عائم to_x, عائم to_y,
+				   فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
@@ -287,32 +287,32 @@ hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::CUBIC_TO});
 }
 
-static void
+ساكن فراغ
 hb_outline_recording_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				     void *data,
+				     فراغ *data,
 				     hb_draw_state_t *st,
-				     void *user_data HB_UNUSED)
+				     فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
   c->contours.push (c->points.length);
 }
 
-static int64_t *
+ساكن int64_t *
 hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
-					       void *data,
-					       void *user_data HB_UNUSED)
+					       فراغ *data,
+					       فراغ *user_data HB_UNUSED)
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  return c->budget_remaining;
+  أرجع c->budget_remaining;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+ساكن مضمن فراغ free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+ساكن بنية hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساكن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
@@ -327,12 +327,12 @@ static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
-void free_static_outline_recording_pen_funcs ()
+ساكن مضمن
+فراغ free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
 }
@@ -340,7 +340,7 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  أرجع static_outline_recording_pen_funcs.get_unconst ();
 }
 
 

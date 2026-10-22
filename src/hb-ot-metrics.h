@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#𐡄𐡍 !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_METRICS_H
 #define HB_OT_METRICS_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#ضمن "hb.h"
+#ضمن "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -71,7 +71,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+تعريفنوع تعداد {
   HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER		= HB_TAG ('h','a','s','c'),
   HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER	= HB_TAG ('h','d','s','c'),
   HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP		= HB_TAG ('h','l','g','p'),
@@ -110,12 +110,12 @@ hb_ot_metrics_get_position (hb_font_t           *font,
 			    hb_ot_metrics_tag_t  metrics_tag,
 			    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
 					  hb_ot_metrics_tag_t  metrics_tag,
 					  hb_position_t       *position     /* OUT */);
 
-HB_EXTERN float
+HB_EXTERN عائم
 hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
 
 HB_EXTERN hb_position_t

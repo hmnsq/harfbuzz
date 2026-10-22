@@ -2,10 +2,10 @@
 #define OT_GLYF_LOCA_HH
 
 
-#include "../../hb-open-type.hh"
+#ضمن "../../hb-open-type.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
 /*
@@ -15,23 +15,23 @@ namespace OT {
 #define HB_OT_TAG_loca HB_TAG('l','o','c','a')
 #define HB_OT_TAG_LOCA HB_TAG('L','O','C','A')
 
-struct loca
+بنية loca
 {
-  friend struct glyf;
-  friend struct glyf_accelerator_t;
+  friend بنية glyf;
+  friend بنية glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  منطقي sanitize (hb_sanitize_context_t *c HB_UNUSED) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (true);
+    TRACE_SANITIZE (هذا);
+    return_trace (𐡒𐡔𐡈);
   }
 
-  protected:
+  محمي:
   UnsizedArrayOf<HBUINT8>
 		dataZ;	/* Location data. */
-  public:
+  عام:
   DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */

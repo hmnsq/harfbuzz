@@ -27,120 +27,120 @@
 #define HB_NUMBER_CC
 #ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#ضمن "hb.hh"
+#ضمن "hb-number.hh"
+#ضمن "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+منطقي
+hb_parse_double (ثابت حرف **pp, ثابت حرف *end, مزدوج *pv, منطقي whole_buffer)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  ثابت حرف *pend = end;
+  مزدوج value = hb_strtod (*pp, &pend);
+  𐡄𐡍 (unlikely (*pp == pend)) أرجع خطأ;
+  𐡄𐡍 (unlikely (whole_buffer && end != pend)) أرجع خطأ;
   *pv = value;
   *pp = pend;
-  return true;
+  أرجع 𐡒𐡔𐡈;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+ساكن صحيح
+_hb_digit_value (حرف c, صحيح base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  صحيح d;
+  𐡄𐡍 ('0' <= c && c <= '9')      d = c - '0';
+  وإلا 𐡄𐡍 ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  وإلا 𐡄𐡍 ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  وإلا أرجع -1;
+  أرجع d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+ساكن ثابت حرف *
+_hb_scan_digits (ثابت حرف *p, ثابت حرف *pe, صحيح base,
+                 uint64_t *value, منطقي *overflow, منطقي *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  ثابت uint64_t cutoff = UINT64_MAX / (unsigned) base;
+  ثابت uint64_t cutlim = UINT64_MAX % (unsigned) base;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  منطقي ov = خطأ, any = خطأ;
 
-  for (; p < pe; p++)
+  لكل (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
+    صحيح d = _hb_digit_value (*p, base);
+    𐡄𐡍 (d < 0) اكسر;
+    any = 𐡒𐡔𐡈;
+    𐡄𐡍 (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = 𐡒𐡔𐡈;
+    وإلا
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  أرجع p;
 }
 
 template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+ساكن منطقي
+_parse_number (ثابت حرف **pp, ثابت حرف *end, T *pv,
+               منطقي whole_buffer, صحيح base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  ثابت حرف *pend = end;
+  ثابت حرف *p = *pp;
+  منطقي neg = خطأ, any = خطأ, overflow = خطأ;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  طالما (p < pend && ISSPACE (*p)) p++;
+  𐡄𐡍 (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
+  𐡄𐡍 (base == 16 && p + 2 < pend && p[0] == '0' &&
       (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  𐡄𐡍 (unlikely (!any || overflow)) أرجع خطأ;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  𐡄𐡍 (unlikely (!post (v, neg, &out))) أرجع خطأ;
+  𐡄𐡍 (unlikely (whole_buffer && p != pend)) أرجع خطأ;
 
   *pv = out;
   *pp = p;
-  return true;
+  أرجع 𐡒𐡔𐡈;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+منطقي
+hb_parse_int (ثابت حرف **pp, ثابت حرف *end, صحيح *pv, منطقي whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  أرجع _parse_number (pp, end, pv, whole_buffer, 10,
+                        [] (uint64_t v, منطقي neg, صحيح *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    𐡄𐡍 (unlikely (v > limit)) أرجع خطأ;
+    *out = (صحيح) (neg ? -(int64_t) v : (int64_t) v);
+    أرجع 𐡒𐡔𐡈;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+منطقي
+hb_parse_uint (ثابت حرف **pp, ثابت حرف *end, unsigned *pv,
+               منطقي whole_buffer, صحيح base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  أرجع _parse_number (pp, end, pv, whole_buffer, base,
+                        [] (uint64_t v, منطقي neg, unsigned *out) {
+    𐡄𐡍 (unlikely (v > UINT_MAX)) أرجع خطأ;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    أرجع 𐡒𐡔𐡈;
   });
 }
 

@@ -27,20 +27,20 @@
 #ifndef GRAPH_SPLIT_HELPERS_HH
 #define GRAPH_SPLIT_HELPERS_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق graph {
 
 template<typename Context>
 HB_INTERNAL
 graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+                                                              ثابت hb_vector_t<unsigned>& split_points)
 {
   hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  𐡄𐡍 (!split_points)
+    أرجع Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  لكل (unsigned i = 0; i < split_points.length; i++)
   {
     unsigned start = split_points[i];
     unsigned end = (i < split_points.length - 1)
@@ -48,12 +48,12 @@ graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_con
                    : split_context.original_count ();
     TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (graph_result_t<فراغ>::from (new_objects, ALLOCATION_FAILURE));
   }
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  أرجع Ok(new_objects);
 }
 
 }

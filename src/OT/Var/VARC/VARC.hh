@@ -1,18 +1,18 @@
 #ifndef OT_VAR_VARC_VARC_HH
 #define OT_VAR_VARC_VARC_HH
 
-#include "../../../hb-decycler.hh"
-#include "../../../hb-geometry.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-glyf-table.hh"
-#include "../../../hb-ot-cff2-table.hh"
-#include "../../../hb-ot-cff1-table.hh"
+#ضمن "../../../hb-decycler.hh"
+#ضمن "../../../hb-geometry.hh"
+#ضمن "../../../hb-ot-layout-common.hh"
+#ضمن "../../../hb-ot-glyf-table.hh"
+#ضمن "../../../hb-ot-cff2-table.hh"
+#ضمن "../../../hb-ot-cff1-table.hh"
 
-#include "coord-setter.hh"
+#ضمن "coord-setter.hh"
 
-struct hb_depend_data_builder_t;
+بنية hb_depend_data_builder_t;
 
-namespace OT {
+نطاق OT {
 
 //namespace Var {
 
@@ -23,14 +23,14 @@ namespace OT {
 
 #ifndef HB_NO_VAR_COMPOSITES
 
-struct hb_varc_scratch_t
+بنية hb_varc_scratch_t
 {
   hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_vector_t<مزدوج> axisValues;
   hb_glyf_scratch_t glyf_scratch;
 };
 
-struct hb_varc_context_t
+بنية hb_varc_context_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
@@ -44,11 +44,11 @@ struct hb_varc_context_t
   hb_varc_scratch_t &scratch;
 };
 
-struct VARC;
+بنية VARC;
 
-struct VarComponent
+بنية VarComponent
 {
-  enum class flags_t : uint32_t
+  تعداد صنف flags_t : uint32_t
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
@@ -68,7 +68,7 @@ struct VarComponent
     RESERVED_MASK		= ~((1u << 15) - 1),
   };
 
-  struct record_t
+  بنية record_t
   {
     uint32_t flags;
     hb_codepoint_t gid;
@@ -91,34 +91,34 @@ struct VarComponent
   };
 
   HB_INTERNAL hb_ubytes_t
-  get_path_at (const hb_varc_context_t &c,
+  get_path_at (ثابت hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ثابت صحيح> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
-	       hb_scalar_cache_t *cache = nullptr) const;
+	       hb_scalar_cache_t *cache = nullptr) ثابت;
 
-  HB_INTERNAL static bool decompile_record (const VARC &varc,
+  HB_INTERNAL ساكن منطقي decompile_record (ثابت VARC &varc,
 					    hb_ubytes_t record,
 					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
+					    hb_vector_t<مزدوج> *axis_values,
 					    record_t *decoded /* OUT */,
 					    int64_t *budget = nullptr);
 };
 
-struct VarCompositeGlyph
+بنية VarCompositeGlyph
 {
-  static void
-  get_path_at (const hb_varc_context_t &c,
+  ساكن فراغ
+  get_path_at (ثابت hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ثابت صحيح> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    طالما (record)
     {
-      const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
+      ثابت VarComponent &comp = * (ثابت VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
 				 gid,
 				 coords, transform,
@@ -130,29 +130,29 @@ struct VarCompositeGlyph
 
 HB_MARK_AS_FLAG_T (VarComponent::flags_t);
 
-struct VARC
+بنية VARC
 {
-  friend struct VarComponent;
+  friend بنية VarComponent;
 
-  static constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
+  ساكن constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
 
-  HB_INTERNAL bool
-  get_path_at (const hb_varc_context_t &c,
+  HB_INTERNAL منطقي
+  get_path_at (ثابت hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<ثابت صحيح> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
-	       hb_scalar_cache_t *parent_cache = nullptr) const;
+	       hb_scalar_cache_t *parent_cache = nullptr) ثابت;
 
-  HB_INTERNAL bool closure_glyphs (hb_set_t *glyphset) const;
-  HB_INTERNAL void depend (hb_depend_data_builder_t *depend_data) const;
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_INTERNAL منطقي closure_glyphs (hb_set_t *glyphset) ثابت;
+  HB_INTERNAL فراغ depend (hb_depend_data_builder_t *depend_data) ثابت;
+  HB_INTERNAL منطقي subset (hb_subset_context_t *c) ثابت;
 
-  bool
+  منطقي
   get_path (hb_font_t *font,
 	    hb_codepoint_t gid,
 	    hb_draw_session_t &draw_session,
-	    hb_varc_scratch_t &scratch) const
+	    hb_varc_scratch_t &scratch) ثابت
   {
     int64_t &budget = draw_session.get_budget ();
     hb_varc_context_t c {font,
@@ -164,15 +164,15 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    أرجع get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
-  bool
+  منطقي
   get_extents (hb_font_t *font,
 	       hb_codepoint_t gid,
 	       hb_extents_t<> *extents,
-	       hb_varc_scratch_t &scratch) const
+	       hb_varc_scratch_t &scratch) ثابت
   {
     int64_t budget = HB_BUDGET_GLYPH;
     hb_varc_context_t c {font,
@@ -184,26 +184,26 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    أرجع get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  coverage.sanitize (c, this) &&
-		  varStore.sanitize (c, this) &&
-		  conditionList.sanitize (c, this) &&
-		  axisIndicesList.sanitize (c, this) &&
-		  glyphRecords.sanitize (c, this));
+		  coverage.sanitize (c, هذا) &&
+		  varStore.sanitize (c, هذا) &&
+		  conditionList.sanitize (c, هذا) &&
+		  axisIndicesList.sanitize (c, هذا) &&
+		  glyphRecords.sanitize (c, هذا));
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    friend struct VarComponent;
+    friend بنية VarComponent;
 
     accelerator_t (hb_face_t *face)
     {
@@ -212,7 +212,7 @@ struct VARC
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      𐡄𐡍 (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,100 +221,100 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    منطقي has_data () ثابت { أرجع table->has_data (); }
 
-    bool
-    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
+    منطقي
+    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) ثابت
     {
-      if (!table->has_data ()) return false;
+      𐡄𐡍 (!table->has_data ()) أرجع خطأ;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_path (font, gid, draw_session, *scratch);
+      𐡄𐡍 (unlikely (!scratch)) أرجع 𐡒𐡔𐡈;
+      منطقي ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      أرجع ret;
     }
 
-    bool closure_glyphs (hb_set_t *glyphset) const
+    منطقي closure_glyphs (hb_set_t *glyphset) ثابت
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      𐡄𐡍 (table->has_data ())
+	أرجع table->closure_glyphs (glyphset);
+      أرجع 𐡒𐡔𐡈;
     }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    فراغ depend (hb_depend_data_builder_t *depend_data) ثابت
     {
-      if (table->has_data ())
+      𐡄𐡍 (table->has_data ())
 	table->depend (depend_data);
     }
 
-    bool
+    منطقي
     get_extents (hb_font_t *font,
 		 hb_codepoint_t gid,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) ثابت
     {
 #ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+      𐡄𐡍 (!table->has_data ()) أرجع خطأ;
 
       hb_extents_t<> f_extents;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_extents (font, gid, &f_extents, *scratch);
+      𐡄𐡍 (unlikely (!scratch)) أرجع 𐡒𐡔𐡈;
+      منطقي ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      𐡄𐡍 (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
+      أرجع ret;
+#وإلا
+      أرجع خطأ;
 #endif
     }
 
-    private:
+    خاص:
 
-    hb_varc_scratch_t *acquire_scratch () const
+    hb_varc_scratch_t *acquire_scratch () ثابت
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      𐡄𐡍 (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_varc_scratch_t *) hb_calloc (1, حجم (hb_varc_scratch_t));
+	𐡄𐡍 (unlikely (!scratch))
+	  أرجع nullptr;
       }
 
-      return scratch;
+      أرجع scratch;
     }
-    void release_scratch (hb_varc_scratch_t *scratch) const
+    فراغ release_scratch (hb_varc_scratch_t *scratch) ثابت
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      𐡄𐡍 (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    private:
+    خاص:
     hb_blob_ptr_t<VARC> table;
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  منطقي has_data () ثابت { أرجع version.major != 0; }
 
-  protected:
+  محمي:
   FixedVersion<> version; /* Version identifier */
   Offset32To<Coverage> coverage;
   Offset32To<MultiItemVariationStore> varStore;
   Offset32To<ConditionList> conditionList;
   Offset32To<TupleList> axisIndicesList;
   Offset32To<CFF2Index/*Of<VarCompositeGlyph>*/> glyphRecords;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (24);
 };
 
-struct VARC_accelerator_t : VARC::accelerator_t {
+بنية VARC_accelerator_t : VARC::accelerator_t {
   VARC_accelerator_t (hb_face_t *face) : VARC::accelerator_t (face) {}
 };
 

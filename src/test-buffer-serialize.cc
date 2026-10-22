@@ -24,35 +24,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#ضمن "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+صحيح
+main (صحيح argc, حرف **argv)
 {
-  bool ret = true;
+  منطقي ret = 𐡒𐡔𐡈;
 
 #ifndef HB_NO_BUFFER_SERIALIZE
 
   hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  𐡄𐡍 (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    𐡄𐡍 (!strcmp (argv[1], "--json"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    وإلا 𐡄𐡍 (!strcmp (argv[1], "--text"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
       argc--;
@@ -60,8 +60,8 @@ main (int argc, char **argv)
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  𐡄𐡍 (argc < 2)
+    argv[1] = (حرف *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
@@ -69,7 +69,7 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned صحيح upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
   hb_font_set_scale (font, upem, upem);
@@ -77,46 +77,46 @@ main (int argc, char **argv)
   hb_buffer_t *buf;
   buf = hb_buffer_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  حرف line[BUFSIZ], out[BUFSIZ];
+  طالما (fgets (line, حجم(line), stdin))
   {
     hb_buffer_clear_contents (buf);
 
-    while (true)
+    طالما (𐡒𐡔𐡈)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
+      ثابت حرف *p = line;
+      ثابت حرف *end = p + strlen (p);
+      𐡄𐡍 (p < end && *(end - 1) == '\n')
 	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
+      𐡄𐡍 (!hb_buffer_deserialize_glyphs (buf,
 					 p, end - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = خطأ;
+        اكسر;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      𐡄𐡍 (*p == '\n')
+        اكسر;
+      𐡄𐡍 (p == line)
       {
-	ret = false;
-	break;
+	ret = خطأ;
+	اكسر;
       }
 
       unsigned len = strlen (p);
       memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
+      𐡄𐡍 (!fgets (line + len, حجم(line) - len, stdin))
         line[len] = '\0';
     }
 
     unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    لكل (unsigned offset = 0; offset < count;)
     {
       unsigned len;
       offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+					    out, حجم (out), &len,
 					    font,
 					    format,
 					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
@@ -131,5 +131,5 @@ main (int argc, char **argv)
 
 #endif
 
-  return !ret;
+  أرجع !ret;
 }

@@ -1,18 +1,18 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOS_HH
 #define OT_LAYOUT_GPOS_PAIRPOS_HH
 
-#include "PairPosFormat1.hh"
-#include "PairPosFormat2.hh"
+#ضمن "PairPosFormat1.hh"
+#ضمن "PairPosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct PairPos
+بنية PairPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;         /* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;         /* Format identifier */
   PairPosFormat1_3<SmallTypes>	format1;
   PairPosFormat2_4<SmallTypes>	format2;
 #ifndef HB_NO_BEYOND_64K
@@ -21,20 +21,20 @@ struct PairPos
 #endif
   } u;
 
-  public:
+  عام:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    𐡄𐡍 (unlikely (!c->may_dispatch (هذا, &u.format.v))) أرجع c->no_dispatch_return_value ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالة 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    حالة 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    افتراضي:return_trace (c->default_return_value ());
     }
   }
 };

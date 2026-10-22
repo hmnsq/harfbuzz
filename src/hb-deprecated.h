@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#𐡄𐡍 !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_DEPRECATED_H
 #define HB_DEPRECATED_H
 
-#include "hb-common.h"
-#include "hb-unicode.h"
-#include "hb-font.h"
-#include "hb-set.h"
+#ضمن "hb-common.h"
+#ضمن "hb-unicode.h"
+#ضمن "hb-font.h"
+#ضمن "hb-set.h"
 
 
 /**
@@ -97,16 +97,16 @@ HB_BEGIN_DECLS
  * Deprecated: 1.2.3
  *
  **/
-typedef hb_bool_t (*hb_font_get_glyph_func_t) (hb_font_t *font, void *font_data,
+تعريفنوع hb_bool_t (*hb_font_get_glyph_func_t) (hb_font_t *font, فراغ *font_data,
 					       hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 					       hb_codepoint_t *glyph,
-					       void *user_data);
+					       فراغ *user_data);
 
 HB_DEPRECATED_FOR (hb_font_funcs_set_nominal_glyph_func and hb_font_funcs_set_variation_glyph_func)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
 			      hb_font_get_glyph_func_t func,
-			      void *user_data, hb_destroy_func_t destroy);
+			      فراغ *user_data, hb_destroy_func_t destroy);
 
 /* https://github.com/harfbuzz/harfbuzz/pull/4207 */
 /**
@@ -128,9 +128,9 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
+تعريفنوع unsigned صحيح			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_funcs_set_eastasian_width_func:
@@ -144,10 +144,10 @@ typedef unsigned int			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t 
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED void
+HB_EXTERN HB_DEPRECATED فراغ
 hb_unicode_funcs_set_eastasian_width_func (hb_unicode_funcs_t *ufuncs,
 					   hb_unicode_eastasian_width_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_eastasian_width:
@@ -159,7 +159,7 @@ hb_unicode_funcs_set_eastasian_width_func (hb_unicode_funcs_t *ufuncs,
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED unsigned صحيح
 hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
 			    hb_codepoint_t unicode);
 
@@ -184,10 +184,10 @@ hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
+تعريفنوع unsigned صحيح			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
 											 hb_codepoint_t      u,
 											 hb_codepoint_t     *decomposed,
-											 void               *user_data);
+											 فراغ               *user_data);
 
 /**
  * HB_UNICODE_MAX_DECOMPOSITION_LEN:
@@ -212,12 +212,12 @@ typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED void
+HB_EXTERN HB_DEPRECATED فراغ
 hb_unicode_funcs_set_decompose_compatibility_func (hb_unicode_funcs_t *ufuncs,
 						   hb_unicode_decompose_compatibility_func_t func,
-						   void *user_data, hb_destroy_func_t destroy);
+						   فراغ *user_data, hb_destroy_func_t destroy);
 
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED unsigned صحيح
 hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
 				    hb_codepoint_t      u,
 				    hb_codepoint_t     *decomposed);
@@ -232,7 +232,7 @@ hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
  * the specified font, for vertical text segments.
  *
  **/
-typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
+تعريفنوع hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
 
 /**
  * hb_font_funcs_set_glyph_v_kerning_func:
@@ -246,10 +246,10 @@ typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_funcs_set_glyph_v_kerning_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_v_kerning_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					فراغ *user_data, hb_destroy_func_t destroy);
 
 HB_EXTERN hb_position_t
 hb_font_get_glyph_v_kerning (hb_font_t *font,
@@ -270,10 +270,10 @@ hb_font_get_glyph_v_kerning (hb_font_t *font,
  * Since: 4.0.0
  * Deprecated: 7.0.0: Use #hb_font_draw_glyph_func_t instead
  **/
-typedef void (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, void *font_data,
+تعريفنوع فراغ (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, فراغ *font_data,
 						hb_codepoint_t glyph,
-						hb_draw_funcs_t *draw_funcs, void *draw_data,
-						void *user_data);
+						hb_draw_funcs_t *draw_funcs, فراغ *draw_data,
+						فراغ *user_data);
 
 /**
  * hb_font_draw_glyph_func_t:
@@ -289,10 +289,10 @@ typedef void (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, void *font_data
  * Since: 7.0.0
  * Deprecated: 11.2.0: Use hb_font_draw_glyph_func_or_fail_t instead.
  **/
-typedef void (*hb_font_draw_glyph_func_t) (hb_font_t *font, void *font_data,
+تعريفنوع فراغ (*hb_font_draw_glyph_func_t) (hb_font_t *font, فراغ *font_data,
                                            hb_codepoint_t glyph,
-                                           hb_draw_funcs_t *draw_funcs, void *draw_data,
-                                           void *user_data);
+                                           hb_draw_funcs_t *draw_funcs, فراغ *draw_data,
+                                           فراغ *user_data);
 
 /**
  * hb_font_paint_glyph_func_t:
@@ -310,12 +310,12 @@ typedef void (*hb_font_draw_glyph_func_t) (hb_font_t *font, void *font_data,
  * Since: 7.0.0
  * Deprecated: 11.2.0: Use hb_font_paint_glyph_or_fail_func_t instead.
  */
-typedef hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, void *font_data,
+تعريفنوع hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, فراغ *font_data,
 						 hb_codepoint_t glyph,
-						 hb_paint_funcs_t *paint_funcs, void *paint_data,
-						 unsigned int palette_index,
+						 hb_paint_funcs_t *paint_funcs, فراغ *paint_data,
+						 unsigned صحيح palette_index,
 						 hb_color_t foreground,
-						 void *user_data);
+						 فراغ *user_data);
 
 /**
  * hb_font_funcs_set_glyph_shape_func:
@@ -331,10 +331,10 @@ typedef hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, void *font_dat
  * Deprecated: 7.0.0: Use hb_font_funcs_set_draw_glyph_func() instead
  **/
 HB_DEPRECATED_FOR (hb_font_funcs_set_draw_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t *ffuncs,
 				    hb_font_get_glyph_shape_func_t func,
-				    void *user_data, hb_destroy_func_t destroy);
+				    فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_draw_glyph_func:
@@ -349,10 +349,10 @@ hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t *ffuncs,
  * Deprecated: 11.2.0: Use hb_font_funcs_set_draw_glyph_or_fail_func instead.
  **/
 HB_DEPRECATED_FOR (hb_font_funcs_set_draw_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t *ffuncs,
                                    hb_font_draw_glyph_func_t func,
-                                   void *user_data, hb_destroy_func_t destroy);
+                                   فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_paint_glyph_func:
@@ -367,16 +367,16 @@ hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t *ffuncs,
  * Deprecated: 11.2.0: Use hb_font_funcs_set_paint_glyph_or_fail_func() instead.
  */
 HB_DEPRECATED_FOR (hb_font_funcs_set_paint_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t *ffuncs,
                                     hb_font_paint_glyph_func_t func,
-                                    void *user_data, hb_destroy_func_t destroy);
+                                    فراغ *user_data, hb_destroy_func_t destroy);
 
 HB_DEPRECATED_FOR (hb_font_draw_glyph_or_fail)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_get_glyph_shape (hb_font_t *font,
 			 hb_codepoint_t glyph,
-			 hb_draw_funcs_t *dfuncs, void *draw_data);
+			 hb_draw_funcs_t *dfuncs, فراغ *draw_data);
 
 
 /**
@@ -389,7 +389,7 @@ hb_font_get_glyph_shape (hb_font_t *font,
 #define HB_AAT_LAYOUT_FEATURE_TYPE_CURISVE_CONNECTION HB_AAT_LAYOUT_FEATURE_TYPE_CURSIVE_CONNECTION
 
 HB_DEPRECATED_FOR (hb_font_create)
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_set_face (hb_font_t *font,
 		  hb_face_t *face);
 
