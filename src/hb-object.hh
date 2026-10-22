@@ -29,107 +29,107 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OBJECT_HH
-#define HB_OBJECT_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OBJECT_HH
+#وصف_ڪريو HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-atomic.hh"
+#ضمن "hb-mutex.hh"
+#ضمن "hb-vector.hh"
 
 
 /*
  * Lockable set
  */
 
-template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+سانچو <قسم_نالو شي_t, قسم_نالو تالو_t>
+بنية hb_lockable_سيٽ_t
 {
-  hb_vector_t<item_t> items;
+  hb_ويڪٽر_t<شي_t> شيون;
 
-  void init () { items.init (); }
+  فراغ init () { شيون.init (); }
 
-  template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  سانچو <قسم_نالو T>
+  شي_t *replace_or_وجهو (T v, تالو_t &l, منطقي replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
-	item_t old = *item;
-	*item = v;
+    شي_t *شي = شيون.lsearch (v);
+    إذا (شي) {
+      إذا (replace) {
+	شي_t old = *شي;
+	*شي = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
-	item = nullptr;
+      وإلا {
+	شي = خالي_اشارو;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } وإلا {
+      شي = شيون.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    أرجع شيون.اندريون_error () ? خالي_اشارو : شي;
   }
 
-  template <typename T>
-  void remove (T v, lock_t &l)
+  سانچو <قسم_نالو T>
+  فراغ remove (T v, تالو_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    شي_t *شي = شيون.lsearch (v);
+    إذا (شي)
     {
-      item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      شي_t old = *شي;
+      *شي = std::move (شيون.پڇ ());
+      شيون.ڪڍو ();
       l.unlock ();
       old.fini ();
-    } else {
+    } وإلا {
       l.unlock ();
     }
   }
 
-  template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  سانچو <قسم_نالو T>
+  منطقي find (T v, شي_t *i, تالو_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
-      *i = *item;
+    شي_t *شي = شيون.lsearch (v);
+    إذا (شي)
+      *i = *شي;
     l.unlock ();
-    return !!item;
+    أرجع !!شي;
   }
 
-  template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  سانچو <قسم_نالو T>
+  شي_t *ڳوليو_or_وجهو (T v, تالو_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    شي_t *شي = شيون.find (v);
+    إذا (!شي) {
+      شي = شيون.push (v);
     }
     l.unlock ();
-    return item;
+    أرجع شي;
   }
 
-  void fini (lock_t &l)
+  فراغ fini (تالو_t &l)
   {
-    if (!items.length)
+    إذا (!شيون.ڊيگهائي)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      شيون.fini ();
+      أرجع;
     }
     l.lock ();
-    while (items.length)
+    طالما (شيون.ڊيگهائي)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      شي_t old = شيون.پڇ ();
+      شيون.ڪڍو ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    شيون.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+بنية hb_reference_ڳڻپ_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  بدلجندڙ hb_atomic_t<صحيح> ref_ڳڻپ_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  فراغ init (صحيح v = 1) { ref_ڳڻپ_2 = v; }
+  صحيح get_relaxed () ثابت { أرجع ref_ڳڻپ_2; }
+  صحيح inc () ثابت { أرجع ref_ڳڻپ_2.inc (); }
+  صحيح dec () ثابت { أرجع ref_ڳڻپ_2.dec (); }
+  فراغ fini () { ref_ڳڻپ_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  منطقي is_inert () ثابت { أرجع !ref_ڳڻپ_2; }
+  منطقي is_valid () ثابت { أرجع ref_ڳڻپ_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+بنية hb_user_معلومات_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  بنية hb_user_معلومات_شي_t {
+    hb_user_معلومات_ڪنجي_t *key;
+    فراغ *معلومات;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    منطقي عامل == (ثابت hb_user_معلومات_ڪنجي_t *other_ڪنجي) ثابت { أرجع key == other_ڪنجي; }
+    منطقي عامل == (ثابت hb_user_معلومات_شي_t &other) ثابت { أرجع key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    فراغ fini () { إذا (destroy) destroy (معلومات); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_سيٽ_t<hb_user_معلومات_شي_t, hb_mutex_t> شيون;
 
-  void init () { lock.init (); items.init (); }
+  فراغ init () { lock.init (); شيون.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  فراغ fini () { شيون.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  منطقي سيٽ (hb_user_معلومات_ڪنجي_t *key,
+	    فراغ *              معلومات,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    إذا (!key)
+      أرجع خطأ;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    إذا (replace) {
+      إذا (!معلومات && !destroy) {
+	شيون.remove (key, lock);
+	أرجع سچ;
       }
     }
-    hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    hb_user_معلومات_شي_t شي = {key, معلومات, destroy};
+    منطقي ret = !!شيون.replace_or_وجهو (شي, lock, (منطقي) replace);
 
-    return ret;
+    أرجع ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  فراغ *get (hb_user_معلومات_ڪنجي_t *key)
   {
-    hb_user_data_item_t item = {nullptr, nullptr, nullptr};
+    hb_user_معلومات_شي_t شي = {خالي_اشارو, خالي_اشارو, خالي_اشارو};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    أرجع شيون.find (key, &شي, lock) ? شي.معلومات : خالي_اشارو;
   }
 };
 
@@ -210,163 +210,163 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+بنية hb_object_سرو_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
-  hb_atomic_t<hb_user_data_array_t *> user_data;
+  hb_reference_ڳڻپ_t ref_ڳڻپ_2;
+  بدلجندڙ hb_atomic_t<منطقي> writable = خطأ;
+  hb_atomic_t<hb_user_معلومات_array_t *> user_معلومات;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  منطقي is_inert () ثابت { أرجع !ref_ڳڻپ_2.get_relaxed (); }
 };
-#define HB_OBJECT_HEADER_STATIC {}
+#وصف_ڪريو HB_OBJECT_سرو_STATIC {}
 
 
 /*
  * Object
  */
 
-template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_trace (ثابت Type *obj, ثابت حرف *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_نياپو (OBJECT, (فراغ *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->سرو.ref_ڳڻپ_2.get_relaxed () : 0);
 }
 
-template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+سانچو <قسم_نالو Type, قسم_نالو ...Ts>
+ساكن مضمن Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, حجم (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  إذا (unlikely (!obj))
+    أرجع obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  جديد (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  أرجع obj;
 }
-template <typename Type>
-static inline void hb_object_init (Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
-  obj->header.user_data.init ();
+  obj->سرو.ref_ڳڻپ_2.init ();
+  obj->سرو.writable = سچ;
+  obj->سرو.user_معلومات.init ();
 }
-template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن منطقي hb_object_is_valid (ثابت Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  أرجع likely (obj->سرو.ref_ڳڻپ_2.is_valid ());
 }
-template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن منطقي hb_object_is_immutable (ثابت Type *obj)
 {
-  return !obj->header.writable;
+  أرجع !obj->سرو.writable;
 }
-template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_make_immutable (ثابت Type *obj)
 {
-  obj->header.writable = false;
+  obj->سرو.writable = خطأ;
 }
-template <typename Type>
-static inline void hb_object_fini (Type *obj);
-template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
-{
-  hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
-}
-template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_fini (Type *obj);
+سانچو <قسم_نالو Type>
+ساكن مضمن Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  إذا (unlikely (!obj || obj->سرو.is_inert ()))
+    أرجع obj;
+  أكد (hb_object_is_valid (obj));
+  obj->سرو.ref_ڳڻپ_2.inc ();
+  أرجع obj;
+}
+سانچو <قسم_نالو Type>
+ساكن مضمن منطقي hb_object_should_destroy (Type *obj)
+{
+  hb_object_trace (obj, HB_FUNC);
+  إذا (unlikely (!obj || obj->سرو.is_inert ()))
+    أرجع خطأ;
+  أكد (hb_object_is_valid (obj));
+  إذا (obj->سرو.ref_ڳڻپ_2.dec () != 1)
+    أرجع خطأ;
+  أرجع سچ;
 }
 
-template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  إذا (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
-template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن منطقي hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  إذا (!hb_object_should_destroy (obj))
+    أرجع خطأ;
 
   hb_object_actually_destroy (obj);
-  return true;
+  أرجع سچ;
 }
-template <typename Type>
-static inline void hb_object_fini (Type *obj)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  obj->سرو.ref_ڳڻپ_2.fini (); /* Do this before user_data */
+  hb_user_معلومات_array_t *user_معلومات = obj->سرو.user_معلومات.get_acquire ();
+  إذا (user_معلومات)
   {
-    user_data->fini ();
-    hb_free (user_data);
-    obj->header.user_data.set_relaxed (nullptr);
+    user_معلومات->fini ();
+    hb_free (user_معلومات);
+    obj->سرو.user_معلومات.سيٽ_relaxed (خالي_اشارو);
   }
 }
-template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+سانچو <قسم_نالو Type>
+ساكن مضمن منطقي hb_object_سيٽ_user_معلومات (Type               *obj,
+					    hb_user_معلومات_ڪنجي_t *key,
+					    فراغ *              معلومات,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  إذا (unlikely (!obj || obj->سرو.is_inert ()))
+    أرجع خطأ;
+  أكد (hb_object_is_valid (obj));
 
 retry:
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  hb_user_معلومات_array_t *user_معلومات = obj->سرو.user_معلومات.get_acquire ();
+  إذا (unlikely (!user_معلومات))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
-    user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    user_معلومات = (hb_user_معلومات_array_t *) hb_calloc (1, حجم (hb_user_معلومات_array_t));
+    إذا (unlikely (!user_معلومات))
+      أرجع خطأ;
+    user_معلومات->init ();
+    إذا (unlikely (!obj->سرو.user_معلومات.cmpexch (خالي_اشارو, user_معلومات)))
     {
-      user_data->fini ();
-      hb_free (user_data);
-      goto retry;
+      user_معلومات->fini ();
+      hb_free (user_معلومات);
+      اذهب retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  أرجع user_معلومات->سيٽ (key, معلومات, destroy, replace);
 }
 
-template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+سانچو <قسم_نالو Type>
+ساكن مضمن فراغ *hb_object_get_user_معلومات (Type               *obj,
+					     hb_user_معلومات_ڪنجي_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  إذا (unlikely (!obj || obj->سرو.is_inert ()))
+    أرجع خالي_اشارو;
+  أكد (hb_object_is_valid (obj));
+  hb_user_معلومات_array_t *user_معلومات = obj->سرو.user_معلومات.get_acquire ();
+  إذا (!user_معلومات)
+    أرجع خالي_اشارو;
+  أرجع user_معلومات->get (key);
 }
 
 
-#endif /* HB_OBJECT_HH */
+#جيڪڏهن_پورو /* HB_OBJECT_HH */

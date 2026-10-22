@@ -2,21 +2,21 @@
 
 "usage: gen-def.py harfbuzz.def hb.h [hb-blob.h hb-buffer.h ...]"
 
-import os, re, sys
+استورد os, re, sys
 
-if len (sys.argv) < 3:
+إذا ڊيگهه (sys.argv) < 3:
 	sys.exit(__doc__)
 
 output_file = sys.argv[1]
-header_paths = sys.argv[2:]
+سرو_paths = sys.argv[2:]
 
-headers_content = []
-for h in header_paths:
-	if h.endswith (".h"):
-		with open (h, encoding='utf-8') as f: headers_content.append (f.read ())
+سرا_content = []
+لكل h في سرو_paths:
+	إذا h.endswith (".h"):
+		سان open (h, encoding='utf-8') كـ f: سرا_content.append (f.اقرأ ())
 
-symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (headers_content), re.M))
-if '--experimental-api' not in sys.argv:
+symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (سرا_content), re.M))
+إذا '--experimental-api' ليس في sys.argv:
 	# Move these to harfbuzz-sections.txt when got stable
 	experimental_symbols = \
 """hb_shape_justify
@@ -31,11 +31,11 @@ hb_subset_depend_lookup_glyph
 hb_subset_depend_lookup_set
 hb_subset_depend_destroy
 """.splitlines ()
-	symbols = [x for x in symbols if x not in experimental_symbols]
+	symbols = [x لكل x في symbols إذا x ليس في experimental_symbols]
 symbols = "\n".join (symbols)
 
-result = symbols if os.getenv ('PLAIN_LIST', '') else """EXPORTS
+نتيجو = symbols إذا os.getenv ('PLAIN_LIST', '') وإلا """EXPORTS
 %s
 LIBRARY lib%s-0.dll""" % (symbols, output_file.replace ('src/', '').replace ('.def', ''))
 
-with open (output_file, "w") as f: f.write (result)
+سان open (output_file, "w") كـ f: f.اكتب (نتيجو)

@@ -24,50 +24,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_LIST_HH
-#define HB_SHAPER_LIST_HH
-#endif /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
+#جيڪڏهن_وصف_نه_ٿيل HB_SHAPER_LIST_HH
+#وصف_ڪريو HB_SHAPER_LIST_HH
+#جيڪڏهن_پورو /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_NO_SHAPER
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_SHAPER
 
 
 /* v--- Add new shapers in the right place here. */
 
-#ifdef HAVE_WASM
+#جيڪڏهن_وصف_ٿيل HAVE_WASM
 /* Only picks up fonts that have a "Wasm" table. */
 HB_SHAPER_IMPLEMENT (wasm)
-#endif
+#جيڪڏهن_پورو
 
-#ifdef HAVE_GRAPHITE2
+#جيڪڏهن_وصف_ٿيل HAVE_GRAPHITE2
 /* Only picks up fonts that have a "Silf" table. */
 HB_SHAPER_IMPLEMENT (graphite2)
-#endif
+#جيڪڏهن_پورو
 
-#ifndef HB_NO_OT_SHAPE
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_OT_SHAPE
 HB_SHAPER_IMPLEMENT (ot) /* <--- This is our main shaper. */
-#endif
+#جيڪڏهن_پورو
 
-#ifdef HAVE_UNISCRIBE
+#جيڪڏهن_وصف_ٿيل HAVE_UNISCRIBE
 HB_SHAPER_IMPLEMENT (uniscribe)
-#endif
-#ifdef HAVE_DIRECTWRITE
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_ٿيل HAVE_DIRECTWRITE
 HB_SHAPER_IMPLEMENT (directwrite)
-#endif
-#ifdef HAVE_CORETEXT
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_ٿيل HAVE_CORETEXT
 HB_SHAPER_IMPLEMENT (coretext)
-#endif
+#جيڪڏهن_پورو
 
-#ifdef HAVE_HARFRUST
+#جيڪڏهن_وصف_ٿيل HAVE_HARFRUST
 HB_SHAPER_IMPLEMENT (harfrust)
-#endif
+#جيڪڏهن_پورو
 
-#ifdef HAVE_KBTS
+#جيڪڏهن_وصف_ٿيل HAVE_KBTS
 HB_SHAPER_IMPLEMENT (kbts)
-#endif
+#جيڪڏهن_پورو
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_FALLBACK_SHAPE
 HB_SHAPER_IMPLEMENT (fallback) /* <--- This should be last. */
-#endif
+#جيڪڏهن_پورو
 
 
-#endif
+#جيڪڏهن_پورو

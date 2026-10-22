@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_اندريون) && !defined(HB_NO_SINGLE_سرو_ERROR)
+#غلطي "Include <hb.h> instead."
+#جيڪڏهن_پورو
 
-#ifndef HB_SHAPE_PLAN_H
-#define HB_SHAPE_PLAN_H
+#جيڪڏهن_وصف_نه_ٿيل HB_SHAPE_PLAN_H
+#وصف_ڪريو HB_SHAPE_PLAN_H
 
-#include "hb-common.h"
-#include "hb-font.h"
+#ضمن "hb-common.h"
+#ضمن "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -50,73 +50,73 @@ HB_BEGIN_DECLS
  * etc.).
  *
  **/
-typedef struct hb_shape_plan_t hb_shape_plan_t;
+تعريفنوع بنية hb_shape_plan_t hb_shape_plan_t;
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list);
+		      ثابت hb_segment_properties_t *props,
+		      ثابت hb_feature_t            *user_features,
+		      بنانشان صحيح                   انگ_user_features,
+		      ثابت حرف * ثابت            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list);
+			     ثابت hb_segment_properties_t *props,
+			     ثابت hb_feature_t            *user_features,
+			     بنانشان صحيح                   انگ_user_features,
+			     ثابت حرف * ثابت            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list);
+		       ثابت hb_segment_properties_t *props,
+		       ثابت hb_feature_t            *user_features,
+		       بنانشان صحيح                   انگ_user_features,
+		       ثابت صحيح                     *coords,
+		       بنانشان صحيح                   انگ_coords,
+		       ثابت حرف * ثابت            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list);
+			      ثابت hb_segment_properties_t *props,
+			      ثابت hb_feature_t            *user_features,
+			      بنانشان صحيح                   انگ_user_features,
+			      ثابت صحيح                     *coords,
+			      بنانشان صحيح                   انگ_coords,
+			      ثابت حرف * ثابت            *shaper_list);
 
 
 HB_EXTERN hb_shape_plan_t *
-hb_shape_plan_get_empty (void);
+hb_shape_plan_get_خالي_جايون (فراغ);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan);
 
 HB_EXTERN hb_bool_t
-hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_shape_plan_سيٽ_user_معلومات (hb_shape_plan_t    *shape_plan,
+			     hb_user_معلومات_ڪنجي_t *ڪنجي_2,
+			     فراغ *              معلومات,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key);
+HB_EXTERN فراغ *
+hb_shape_plan_get_user_معلومات (ثابت hb_shape_plan_t *shape_plan,
+			     hb_user_معلومات_ڪنجي_t    *ڪنجي_2);
 
 
 HB_EXTERN hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       hb_بفر_t        *بفر,
+		       ثابت hb_feature_t *features,
+		       بنانشان صحيح        انگ_features);
 
-HB_EXTERN const char *
+HB_EXTERN ثابت حرف *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan);
 
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_SHAPE_PLAN_H */
+#جيڪڏهن_پورو /* HB_SHAPE_PLAN_H */

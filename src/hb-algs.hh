@@ -26,30 +26,30 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ALGS_HH
-#define HB_ALGS_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_ALGS_HH
+#وصف_ڪريو HB_ALGS_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
-#include "hb-number.hh"
+#ضمن "hb.hh"
+#ضمن "hb-meta.hh"
+#ضمن "hb-null.hh"
+#ضمن "hb-number.hh"
 
-#include <algorithm>
-#include <initializer_list>
-#include <functional>
-#include <new>
+#ضمن <algorithm>
+#ضمن <initializer_list>
+#ضمن <functional>
+#ضمن <new>
 
-static HB_ALWAYS_INLINE void *
-hb_malloc2 (size_t nmemb, size_t size)
+ساكن HB_ALWAYS_INLINE فراغ *
+hb_malloc2 (size_t nmemb, size_t سائيز)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_malloc (nmemb * size);
+  إذا (سائيز && nmemb > SIZE_MAX / سائيز) أرجع خالي_اشارو;
+  أرجع hb_malloc (nmemb * سائيز);
 }
-static HB_ALWAYS_INLINE void *
-hb_realloc2 (void *ptr, size_t nmemb, size_t size)
+ساكن HB_ALWAYS_INLINE فراغ *
+hb_realloc2 (فراغ *ptr, size_t nmemb, size_t سائيز)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_realloc (ptr, nmemb * size);
+  إذا (سائيز && nmemb > SIZE_MAX / سائيز) أرجع خالي_اشارو;
+  أرجع hb_realloc (ptr, nmemb * سائيز);
 }
 
 /*
@@ -63,31 +63,31 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
  *
  * For MSVC warnings, see: https://github.com/harfbuzz/harfbuzz/pull/163
  */
-#ifdef _MSC_VER
+#جيڪڏهن_وصف_ٿيل _MSC_VER
 # pragma warning(disable:4200)
 # pragma warning(disable:4800)
-#endif
-#define HB_MARK_AS_FLAG_T(T) \
-	extern "C++" { \
-	  static inline constexpr T operator | (T l, T r) { return T ((unsigned) l | (unsigned) r); } \
-	  static inline constexpr T operator & (T l, T r) { return T ((unsigned) l & (unsigned) r); } \
-	  static inline constexpr T operator ^ (T l, T r) { return T ((unsigned) l ^ (unsigned) r); } \
-	  static inline constexpr unsigned operator ~ (T r) { return (~(unsigned) r); } \
-	  static inline T& operator |= (T &l, T r) { l = l | r; return l; } \
-	  static inline T& operator &= (T& l, T r) { l = l & r; return l; } \
-	  static inline T& operator ^= (T& l, T r) { l = l ^ r; return l; } \
+#جيڪڏهن_پورو
+#وصف_ڪريو HB_MARK_AS_FLAG_T(T) \
+	خارجي "C++" { \
+	  ساكن مضمن constexpr T عامل | (T l, T r) { أرجع T ((بنانشان) l | (بنانشان) r); } \
+	  ساكن مضمن constexpr T عامل & (T l, T r) { أرجع T ((بنانشان) l & (بنانشان) r); } \
+	  ساكن مضمن constexpr T عامل ^ (T l, T r) { أرجع T ((بنانشان) l ^ (بنانشان) r); } \
+	  ساكن مضمن constexpr بنانشان عامل ~ (T r) { أرجع (~(بنانشان) r); } \
+	  ساكن مضمن T& عامل |= (T &l, T r) { l = l | r; أرجع l; } \
+	  ساكن مضمن T& عامل &= (T& l, T r) { l = l & r; أرجع l; } \
+	  ساكن مضمن T& عامل ^= (T& l, T r) { l = l ^ r; أرجع l; } \
 	} \
-	static_assert (true, "")
+	static_assert (سچ, "")
 
 /* Useful for set-operations on small enums.
  * For example, for testing "x ∈ {x1, x2, x3}" use:
  * (FLAG_UNSAFE(x) & (FLAG(x1) | FLAG(x2) | FLAG(x3)))
  */
-#define FLAG(x) (static_assert_expr ((unsigned)(x) < 32) + (((uint32_t) 1U) << (unsigned)(x)))
-#define FLAG_UNSAFE(x) ((unsigned)(x) < 32 ? (((uint32_t) 1U) << (unsigned)(x)) : 0)
-#define FLAG_RANGE(x,y) (static_assert_expr ((x) < (y)) + FLAG(y+1) - FLAG(x))
-#define FLAG64(x) (static_assert_expr ((unsigned)(x) < 64) + (((uint64_t) 1ULL) << (unsigned)(x)))
-#define FLAG64_UNSAFE(x) ((unsigned)(x) < 64 ? (((uint64_t) 1ULL) << (unsigned)(x)) : 0)
+#وصف_ڪريو FLAG(x) (static_assert_اظهار ((بنانشان)(x) < 32) + (((uint32_t) 1U) << (بنانشان)(x)))
+#وصف_ڪريو FLAG_UNSAFE(x) ((بنانشان)(x) < 32 ? (((uint32_t) 1U) << (بنانشان)(x)) : 0)
+#وصف_ڪريو FLAG_RANGE(x,y) (static_assert_اظهار ((x) < (y)) + FLAG(y+1) - FLAG(x))
+#وصف_ڪريو FLAG64(x) (static_assert_اظهار ((بنانشان)(x) < 64) + (((uint64_t) 1ULL) << (بنانشان)(x)))
+#وصف_ڪريو FLAG64_UNSAFE(x) ((بنانشان)(x) < 64 ? (((uint64_t) 1ULL) << (بنانشان)(x)) : 0)
 
 
 /*
@@ -96,163 +96,163 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 
 
 /* Endian swap, used in Windows related backends */
-static inline constexpr uint16_t hb_uint16_swap (uint16_t v)
-{ return (v >> 8) | (v << 8); }
-static inline constexpr uint32_t hb_uint32_swap (uint32_t v)
-{ return (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
+ساكن مضمن constexpr uint16_t hb_uint16_مٽا_سٽا (uint16_t v)
+{ أرجع (v >> 8) | (v << 8); }
+ساكن مضمن constexpr uint32_t hb_uint32_مٽا_سٽا (uint32_t v)
+{ أرجع (hb_uint16_مٽا_سٽا (v) << 16) | hb_uint16_مٽا_سٽا (v >> 16); }
 
-template <typename Type>
-struct __attribute__((packed)) hb_packed_t
+سانچو <قسم_نالو Type>
+بنية __attribute__((packed)) hb_packed_t
 {
-  hb_packed_t () = default;
+  hb_packed_t () = افتراضي;
   constexpr hb_packed_t (Type V) : v (V) {}
-  operator Type () const { return v; }
-  hb_packed_t & operator = (Type V) { v = V; return *this; }
+  عامل Type () ثابت { أرجع v; }
+  hb_packed_t & عامل = (Type V) { v = V; أرجع *هذا; }
 
-  private:
+  خاص:
   Type v;
 };
 
-#ifndef HB_FAST_NUM_ACCESS
+#جيڪڏهن_وصف_نه_ٿيل HB_FAST_انگ_ACCESS
 
-#if defined(__OPTIMIZE__) && \
+#إذا defined(__OPTIMIZE__) && \
     defined(__BYTE_ORDER) && \
     (__BYTE_ORDER == __BIG_ENDIAN || \
      (__BYTE_ORDER == __LITTLE_ENDIAN && \
       hb_has_builtin(__builtin_bswap16) && \
       hb_has_builtin(__builtin_bswap32) && \
       hb_has_builtin(__builtin_bswap64)))
-#define HB_FAST_NUM_ACCESS 1
-#else
-#define HB_FAST_NUM_ACCESS 0
-#endif
+#وصف_ڪريو HB_FAST_انگ_ACCESS 1
+#وإلا
+#وصف_ڪريو HB_FAST_انگ_ACCESS 0
+#جيڪڏهن_پورو
 
 // https://github.com/harfbuzz/harfbuzz/issues/5456
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
-#undef HB_FAST_NUM_ACCESS
-#define HB_FAST_NUM_ACCESS 0
-#endif
+#إذا defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
+#وصف_رد HB_FAST_انگ_ACCESS
+#وصف_ڪريو HB_FAST_انگ_ACCESS 0
+#جيڪڏهن_پورو
 
-#endif
+#جيڪڏهن_پورو
 
-template <bool BE, typename Type, int Bytes = sizeof (Type)>
-struct HBInt;
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 1>
+سانچو <منطقي BE, قسم_نالو Type, صحيح بائيٽون_3 = حجم (Type)>
+بنية HBInt;
+سانچو <منطقي BE, قسم_نالو Type>
+بنية HBInt<BE, Type, 1>
 {
-  public:
-  HBInt () = default;
+  عام:
+  HBInt () = افتراضي;
   constexpr HBInt (Type V) : v {uint8_t (V)} {}
-  constexpr operator Type () const { return v; }
-  private: uint8_t v;
+  constexpr عامل Type () ثابت { أرجع v; }
+  خاص: uint8_t v;
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 2>
+سانچو <منطقي BE, قسم_نالو Type>
+بنية HBInt<BE, Type, 2>
 {
-  public:
-  HBInt () = default;
+  عام:
+  HBInt () = افتراضي;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#إذا HB_FAST_انگ_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    إذا (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint16_t> *) v) = V;
-    else
+    وإلا
       *((hb_packed_t<uint16_t> *) v) = __builtin_bswap16 (V);
   }
-#else
+#وإلا
     : v {BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >>  8) & 0xFF)} {}
-#endif
+#جيڪڏهن_پورو
 
-  constexpr operator Type () const
+  constexpr عامل Type () ثابت
   {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint16_t) *((const hb_packed_t<uint16_t> *) v)
+#إذا HB_FAST_انگ_ACCESS
+    أرجع (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint16_t) *((ثابت hb_packed_t<uint16_t> *) v)
     :
-      __builtin_bswap16 ((uint16_t) *((const hb_packed_t<uint16_t> *) v))
+      __builtin_bswap16 ((uint16_t) *((ثابت hb_packed_t<uint16_t> *) v))
     ;
-#else
-    return (BE ? (v[0] <<  8) : (v[0]      ))
+#وإلا
+    أرجع (BE ? (v[0] <<  8) : (v[0]      ))
 	 + (BE ? (v[1]      ) : (v[1] <<  8));
-#endif
+#جيڪڏهن_پورو
   }
-  private: uint8_t v[2];
+  خاص: uint8_t v[2];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 3>
+سانچو <منطقي BE, قسم_نالو Type>
+بنية HBInt<BE, Type, 3>
 {
   static_assert (!std::is_signed<Type>::value, "");
-  public:
-  HBInt () = default;
+  عام:
+  HBInt () = افتراضي;
   constexpr HBInt (Type V) : v {BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 				BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 				BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V      ) & 0xFF)} {}
 
-  constexpr operator Type () const { return (BE ? (v[0] << 16) : (v[0]      ))
+  constexpr عامل Type () ثابت { أرجع (BE ? (v[0] << 16) : (v[0]      ))
 					  + (BE ? (v[1] <<  8) : (v[1] <<  8))
 					  + (BE ? (v[2]      ) : (v[2] << 16)); }
-  private: uint8_t v[3];
+  خاص: uint8_t v[3];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 4>
+سانچو <منطقي BE, قسم_نالو Type>
+بنية HBInt<BE, Type, 4>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  سانچو <منطقي, قسم_نالو, صحيح>
+  دوست بنية HBFloat;
 
-  public:
-  HBInt () = default;
+  عام:
+  HBInt () = افتراضي;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#إذا HB_FAST_انگ_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    إذا (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint32_t> *) v) = V;
-    else
+    وإلا
       *((hb_packed_t<uint32_t> *) v) = __builtin_bswap32 (V);
   }
-#else
+#وإلا
     : v {BE ? uint8_t ((V >> 24) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 24) & 0xFF)} {}
-#endif
+#جيڪڏهن_پورو
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint32_t) *((const hb_packed_t<uint32_t> *) v)
+  constexpr عامل Type () ثابت {
+#إذا HB_FAST_انگ_ACCESS
+    أرجع (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint32_t) *((ثابت hb_packed_t<uint32_t> *) v)
     :
-      __builtin_bswap32 ((uint32_t) *((const hb_packed_t<uint32_t> *) v))
+      __builtin_bswap32 ((uint32_t) *((ثابت hb_packed_t<uint32_t> *) v))
     ;
-#else
-    return (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
+#وإلا
+    أرجع (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
 	 + (BE ? (uint32_t (v[1]) << 16) : (uint32_t (v[1]) <<  8))
 	 + (BE ? (uint32_t (v[2]) <<  8) : (uint32_t (v[2]) << 16))
 	 + (BE ? (uint32_t (v[3])      ) : (uint32_t (v[3]) << 24));
-#endif
+#جيڪڏهن_پورو
   }
-  private: uint8_t v[4];
+  خاص: uint8_t v[4];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 8>
+سانچو <منطقي BE, قسم_نالو Type>
+بنية HBInt<BE, Type, 8>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  سانچو <منطقي, قسم_نالو, صحيح>
+  دوست بنية HBFloat;
 
-  public:
-  HBInt () = default;
+  عام:
+  HBInt () = افتراضي;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#إذا HB_FAST_انگ_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    إذا (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint64_t> *) v) = V;
-    else
+    وإلا
       *((hb_packed_t<uint64_t> *) v) = __builtin_bswap64 (V);
   }
-#else
+#وإلا
     : v {BE ? uint8_t ((V >> 56) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 48) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >> 40) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
@@ -261,17 +261,17 @@ struct HBInt<BE, Type, 8>
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >> 40) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 48) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 56) & 0xFF)} {}
-#endif
+#جيڪڏهن_پورو
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint64_t) *((const hb_packed_t<uint64_t> *) v)
+  constexpr عامل Type () ثابت {
+#إذا HB_FAST_انگ_ACCESS
+    أرجع (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint64_t) *((ثابت hb_packed_t<uint64_t> *) v)
     :
-      __builtin_bswap64 ((uint64_t) *((const hb_packed_t<uint64_t> *) v))
+      __builtin_bswap64 ((uint64_t) *((ثابت hb_packed_t<uint64_t> *) v))
     ;
-#else
-    return (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
+#وإلا
+    أرجع (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
 	 + (BE ? (uint64_t (v[1]) << 48) : (uint64_t (v[1]) <<  8))
 	 + (BE ? (uint64_t (v[2]) << 40) : (uint64_t (v[2]) << 16))
 	 + (BE ? (uint64_t (v[3]) << 32) : (uint64_t (v[3]) << 24))
@@ -279,141 +279,141 @@ struct HBInt<BE, Type, 8>
 	 + (BE ? (uint64_t (v[5]) << 16) : (uint64_t (v[5]) << 40))
 	 + (BE ? (uint64_t (v[6]) <<  8) : (uint64_t (v[6]) << 48))
 	 + (BE ? (uint64_t (v[7])      ) : (uint64_t (v[7]) << 56));
-#endif
+#جيڪڏهن_پورو
   }
-  private: uint8_t v[8];
+  خاص: uint8_t v[8];
 };
 
 /* Floats. */
 
-template <bool BE, typename Type, int Bytes>
-struct HBFloat
+سانچو <منطقي BE, قسم_نالو Type, صحيح بائيٽون_3>
+بنية HBFloat
 {
-  using IntType = typename std::conditional<Bytes == 4, uint32_t, uint64_t>::type;
+  استعمال IntType = قسم_نالو std::conditional<بائيٽون_3 == 4, uint32_t, uint64_t>::type;
 
-  public:
-  HBFloat () = default;
+  عام:
+  HBFloat () = افتراضي;
 
   HBFloat (Type V)
   {
-#if HB_FAST_NUM_ACCESS
+#إذا HB_FAST_انگ_ACCESS
     {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+	      إذا (BE == (__BYTE_ORDER == __BIG_ENDIAN))
 	      {
 	        *((hb_packed_t<Type> *) v) = V;
-	        return;
+	        أرجع;
 	      }
 	    }
-#endif
+#جيڪڏهن_پورو
 
-    union {
+    اتحاد {
       hb_packed_t<Type> f;
       hb_packed_t<IntType> i;
     } u = {{V}};
 
-    const HBInt<BE, IntType> I = (IntType) u.i;
-    for (unsigned i = 0; i < Bytes; i++)
+    ثابت HBInt<BE, IntType> I = (IntType) u.i;
+    لكل (بنانشان i = 0; i < بائيٽون_3; i++)
       v[i] = I.v[i];
   }
 
-  /* c++14 constexpr */ operator Type () const
+  /* c++14 constexpr */ عامل Type () ثابت
   {
-#if HB_FAST_NUM_ACCESS
+#إذا HB_FAST_انگ_ACCESS
 	    {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
-		return (Type) *((const hb_packed_t<Type> *) v);
+	      إذا (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+		أرجع (Type) *((ثابت hb_packed_t<Type> *) v);
 	    }
-#endif
+#جيڪڏهن_پورو
 
     HBInt<BE, IntType> I;
-    for (unsigned i = 0; i < Bytes; i++)
+    لكل (بنانشان i = 0; i < بائيٽون_3; i++)
       I.v[i] = v[i];
 
-    union {
+    اتحاد {
       hb_packed_t<IntType> i;
       hb_packed_t<Type> f;
     } u = {{I}};
 
-    return (Type) u.f;
+    أرجع (Type) u.f;
   }
-  private: uint8_t v[Bytes];
+  خاص: uint8_t v[بائيٽون_3];
 };
 
 
 /* We want our rounding towards +infinity. */
-static inline double
-_hb_roundf (double x) { return floor (x + .5); }
+ساكن مضمن مزدوج
+_hb_roundf (مزدوج x) { أرجع floor (x + .5); }
 
-static inline float
-_hb_roundf (float x) { return floor ((double) x + .5); }
+ساكن مضمن عائم
+_hb_roundf (عائم x) { أرجع floor ((مزدوج) x + .5); }
 
-#define roundf(x) _hb_roundf(x)
+#وصف_ڪريو roundf(x) _hb_roundf(x)
 
-static inline void
-hb_sincos (float rotation, float &s, float &c)
+ساكن مضمن فراغ
+hb_sincos (عائم rotation, عائم &s, عائم &c)
 {
-#ifdef HAVE_SINCOSF
+#جيڪڏهن_وصف_ٿيل HAVE_SINCOSF
   sincosf (rotation, &s, &c);
-#else
+#وإلا
   c = cosf (rotation);
   s = sinf (rotation);
-#endif
+#جيڪڏهن_پورو
 }
-static inline void
-hb_sincos (double rotation, double &s, double &c)
+ساكن مضمن فراغ
+hb_sincos (مزدوج rotation, مزدوج &s, مزدوج &c)
 {
-#ifdef HAVE_SINCOS
+#جيڪڏهن_وصف_ٿيل HAVE_SINCOS
   sincos (rotation, &s, &c);
-#else
-  c = cos (rotation);
-  s = sin (rotation);
-#endif
+#وإلا
+  c = جيب_تمام (rotation);
+  s = جيب (rotation);
+#جيڪڏهن_پورو
 }
 
 
 /* Encodes three unsigned integers in one 64-bit number.  If the inputs have more than 21 bits,
  * values will be truncated / overlap, and might not decode exactly. */
-#define HB_CODEPOINT_ENCODE3(x,y,z) (((uint64_t) (x) << 42) | ((uint64_t) (y) << 21) | (uint64_t) (z))
-#define HB_CODEPOINT_DECODE3_1(v) ((hb_codepoint_t) ((v) >> 42))
-#define HB_CODEPOINT_DECODE3_2(v) ((hb_codepoint_t) ((v) >> 21) & 0x1FFFFFu)
-#define HB_CODEPOINT_DECODE3_3(v) ((hb_codepoint_t) (v) & 0x1FFFFFu)
+#وصف_ڪريو HB_CODEPOINT_ENCODE3(x,y,z) (((uint64_t) (x) << 42) | ((uint64_t) (y) << 21) | (uint64_t) (z))
+#وصف_ڪريو HB_CODEPOINT_DECODE3_1(v) ((hb_codepoint_t) ((v) >> 42))
+#وصف_ڪريو HB_CODEPOINT_DECODE3_2(v) ((hb_codepoint_t) ((v) >> 21) & 0x1FFFFFu)
+#وصف_ڪريو HB_CODEPOINT_DECODE3_3(v) ((hb_codepoint_t) (v) & 0x1FFFFFu)
 
 /* Custom encoding used by hb-ucd. */
-#define HB_CODEPOINT_ENCODE3_11_7_14(x,y,z) (((uint32_t) ((x) & 0x07FFu) << 21) | (((uint32_t) (y) & 0x007Fu) << 14) | (uint32_t) ((z) & 0x3FFFu))
-#define HB_CODEPOINT_DECODE3_11_7_14_1(v) ((hb_codepoint_t) ((v) >> 21))
-#define HB_CODEPOINT_DECODE3_11_7_14_2(v) ((hb_codepoint_t) (((v) >> 14) & 0x007Fu) | 0x0300)
-#define HB_CODEPOINT_DECODE3_11_7_14_3(v) ((hb_codepoint_t) (v) & 0x3FFFu)
+#وصف_ڪريو HB_CODEPOINT_ENCODE3_11_7_14(x,y,z) (((uint32_t) ((x) & 0x07FFu) << 21) | (((uint32_t) (y) & 0x007Fu) << 14) | (uint32_t) ((z) & 0x3FFFu))
+#وصف_ڪريو HB_CODEPOINT_DECODE3_11_7_14_1(v) ((hb_codepoint_t) ((v) >> 21))
+#وصف_ڪريو HB_CODEPOINT_DECODE3_11_7_14_2(v) ((hb_codepoint_t) (((v) >> 14) & 0x007Fu) | 0x0300)
+#وصف_ڪريو HB_CODEPOINT_DECODE3_11_7_14_3(v) ((hb_codepoint_t) (v) & 0x3FFFu)
 
 
-struct
+بنية
 {
   /* Note.  This is dangerous in that if it's passed an rvalue, it returns rvalue-reference. */
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN ( std::forward<T> (v) )
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (T&& v) ثابت HB_AUTO_RETURN ( std::forward<T> (v) )
 }
-HB_FUNCOBJ (hb_identity);
-struct
+HB_FUNCOBJ (hb_سڃاڻپ_عنصر);
+بنية
 {
   /* Like identity(), but only retains lvalue-references.  Rvalues are returned as rvalues. */
-  template <typename T> constexpr T&
-  operator () (T& v) const { return v; }
+  سانچو <قسم_نالو T> constexpr T&
+  عامل () (T& v) ثابت { أرجع v; }
 
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  سانچو <قسم_نالو T> constexpr hb_remove_reference<T>
+  عامل () (T&& v) ثابت { أرجع v; }
 }
 HB_FUNCOBJ (hb_lidentity);
-struct
+بنية
 {
   /* Like identity(), but always returns rvalue. */
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  سانچو <قسم_نالو T> constexpr hb_remove_reference<T>
+  عامل () (T&& v) ثابت { أرجع v; }
 }
 HB_FUNCOBJ (hb_ridentity);
 
-struct
+بنية
 {
-  template <typename T> constexpr bool
-  operator () (T&& v) const { return bool (std::forward<T> (v)); }
+  سانچو <قسم_نالو T> constexpr منطقي
+  عامل () (T&& v) ثابت { أرجع منطقي (std::forward<T> (v)); }
 }
 HB_FUNCOBJ (hb_bool);
 
@@ -446,38 +446,38 @@ HB_FUNCOBJ (hb_bool);
 
 // Compression function for Merkle-Damgard construction.
 // This function is generated using the framework provided.
-#define fasthash_mix(h) (					\
-			(void) ((h) ^= (h) >> 23),		\
-			(void) ((h) *= 0x2127599bf4325c37ULL),	\
+#وصف_ڪريو fasthash_mix(h) (					\
+			(فراغ) ((h) ^= (h) >> 23),		\
+			(فراغ) ((h) *= 0x2127599bf4325c37ULL),	\
 			(h) ^= (h) >> 47)
 
-static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
+ساكن مضمن uint64_t fasthash64(ثابت فراغ *buf, size_t len, uint64_t ٻج)
 {
-	struct __attribute__((packed)) packed_uint64_t { uint64_t v; };
-	const uint64_t    m = 0x880355f21e6d1965ULL;
-	const packed_uint64_t *pos = (const packed_uint64_t *)buf;
-	const packed_uint64_t *end = pos + (len / 8);
-	const unsigned char *pos2;
-	uint64_t h = seed ^ (len * m);
+	بنية __attribute__((packed)) packed_uint64_t { uint64_t v; };
+	ثابت uint64_t    m = 0x880355f21e6d1965ULL;
+	ثابت packed_uint64_t *pos = (ثابت packed_uint64_t *)buf;
+	ثابت packed_uint64_t *پڇاڙي = pos + (len / 8);
+	ثابت بنانشان حرف *pos2;
+	uint64_t h = ٻج ^ (len * m);
 	uint64_t v;
 
-#ifndef HB_OPTIMIZE_SIZE
-	if (((uintptr_t) pos & 7) == 0)
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
+	إذا (((uintptr_t) pos & 7) == 0)
 	{
-	  while (pos != end)
+	  طالما (pos != پڇاڙي)
 	  {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-	    v  = * (const uint64_t *) (pos++);
-#pragma GCC diagnostic pop
+#هدايت GCC diagnostic push
+#هدايت GCC diagnostic ignored "-Wcast-align"
+	    v  = * (ثابت uint64_t *) (pos++);
+#هدايت GCC diagnostic ڪڍو
 	    h ^= fasthash_mix(v);
 	    h *= m;
 	  }
 	}
-	else
-#endif
+	وإلا
+#جيڪڏهن_پورو
 	{
-	  while (pos != end)
+	  طالما (pos != پڇاڙي)
 	  {
 	    v  = pos++->v;
 	    h ^= fasthash_mix(v);
@@ -485,90 +485,90 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 	  }
 	}
 
-	pos2 = (const unsigned char*)pos;
+	pos2 = (ثابت بنانشان حرف*)pos;
 	v = 0;
 
-	switch (len & 7) {
-	case 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
-	case 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
-	case 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
-	case 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
-	case 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
-	case 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
-	case 1: v ^= (uint64_t)pos2[0];
+	بدل (len & 7) {
+	حالة 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
+	حالة 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
+	حالة 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
+	حالة 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
+	حالة 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
+	حالة 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
+	حالة 1: v ^= (uint64_t)pos2[0];
 		h ^= fasthash_mix(v);
 		h *= m;
 	}
 
-	return fasthash_mix(h);
+	أرجع fasthash_mix(h);
 }
 
-static inline uint32_t fasthash32(const void *buf, size_t len, uint32_t seed)
+ساكن مضمن uint32_t fasthash32(ثابت فراغ *buf, size_t len, uint32_t ٻج)
 {
 	// the following trick converts the 64-bit hashcode to Fermat
 	// residue, which shall retain information from both the higher
 	// and lower parts of hashcode.
-        uint64_t h = fasthash64(buf, len, seed);
-	return h - (h >> 32);
+        uint64_t h = fasthash64(buf, len, ٻج);
+	أرجع h - (h >> 32);
 }
 
-struct
+بنية
 {
-  private:
+  خاص:
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<2>) const HB_RETURN (uint32_t, hb_deref (v).hash ())
+  سانچو <قسم_نالو T> constexpr خودڪار
+  impl (ثابت T& v, hb_ترجيح<2>) ثابت HB_RETURN (uint32_t, hb_deref (v).hash ())
 
   // Horrible: std:hash() of integers seems to be identity in gcc / clang?!
   // https://github.com/harfbuzz/harfbuzz/pull/4228
   //
   // For performance characteristics see:
   // https://github.com/harfbuzz/harfbuzz/pull/4228#issuecomment-1565079537
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) <= sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) > sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
+  سانچو <قسم_نالو T,
+	    hb_enable_if (std::is_integral<T>::value && حجم (T) <= حجم (uint32_t))> constexpr خودڪار
+  impl (ثابت T& v, hb_ترجيح<1>) ثابت HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
+  سانچو <قسم_نالو T,
+	    hb_enable_if (std::is_integral<T>::value && حجم (T) > حجم (uint32_t))> constexpr خودڪار
+  impl (ثابت T& v, hb_ترجيح<1>) ثابت HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
 
-  template <typename T,
-	    hb_enable_if (std::is_floating_point<T>::value)> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, fasthash32 (std::addressof (v), sizeof (T), 0xf437ffe6))
+  سانچو <قسم_نالو T,
+	    hb_enable_if (std::is_floating_point<T>::value)> constexpr خودڪار
+  impl (ثابت T& v, hb_ترجيح<1>) ثابت HB_RETURN (uint32_t, fasthash32 (std::addressof (v), حجم (T), 0xf437ffe6))
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<0>) const HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
+  سانچو <قسم_نالو T> constexpr خودڪار
+  impl (ثابت T& v, hb_ترجيح<0>) ثابت HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
 
-  public:
+  عام:
 
-  template <typename T> constexpr auto
-  operator () (const T& v) const HB_RETURN (uint32_t, impl (v, hb_prioritize))
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T& v) ثابت HB_RETURN (uint32_t, impl (v, hb_prioritize))
 }
 HB_FUNCOBJ (hb_hash);
 
 
-struct
+بنية
 {
-  private:
+  خاص:
 
   /* Pointer-to-member-function. */
-  template <typename Appl, typename T, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<2>, T &&v, Ts&&... ds) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Appl, قسم_نالو T, قسم_نالو ...Ts> خودڪار
+  impl (Appl&& a, hb_ترجيح<2>, T &&v, Ts&&... ds) ثابت HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v)).*std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
   /* Pointer-to-member. */
-  template <typename Appl, typename T> auto
-  impl (Appl&& a, hb_priority<1>, T &&v) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Appl, قسم_نالو T> خودڪار
+  impl (Appl&& a, hb_ترجيح<1>, T &&v) ثابت HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v))).*std::forward<Appl> (a))
 
   /* Operator(). */
-  template <typename Appl, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<0>, Ts&&... ds) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Appl, قسم_نالو ...Ts> خودڪار
+  impl (Appl&& a, hb_ترجيح<0>, Ts&&... ds) ثابت HB_AUTO_RETURN
   (hb_deref (std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
-  public:
+  عام:
 
-  template <typename Appl, typename ...Ts> auto
-  operator () (Appl&& a, Ts&&... ds) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Appl, قسم_نالو ...Ts> خودڪار
+  عامل () (Appl&& a, Ts&&... ds) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<Appl> (a),
 	  hb_prioritize,
@@ -577,44 +577,44 @@ struct
 }
 HB_FUNCOBJ (hb_invoke);
 
-template <unsigned Pos, typename Appl, typename V>
-struct hb_partial_t
+سانچو <بنانشان Pos, قسم_نالو Appl, قسم_نالو V>
+بنية hb_partial_t
 {
   hb_partial_t (Appl a, V v) : a (a), v (v) {}
 
   static_assert (Pos > 0, "");
 
-  template <typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 1)> auto
-  operator () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  سانچو <قسم_نالو ...Ts,
+	    بنانشان P = Pos,
+	    hb_enable_if (P == 1)> خودڪار
+  عامل () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 						   hb_declval (V),
 						   hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    أرجع hb_invoke (std::forward<Appl> (a),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
-  template <typename T0, typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 2)> auto
-  operator () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  سانچو <قسم_نالو T0, قسم_نالو ...Ts,
+	    بنانشان P = Pos,
+	    hb_enable_if (P == 2)> خودڪار
+  عامل () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 							    hb_declval (T0),
 							    hb_declval (V),
 							    hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    أرجع hb_invoke (std::forward<Appl> (a),
 		      std::forward<T0> (d0),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
 
-  private:
+  خاص:
   hb_reference_wrapper<Appl> a;
   V v;
 };
-template <unsigned Pos=1, typename Appl, typename V>
-auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
+سانچو <بنانشان Pos=1, قسم_نالو Appl, قسم_نالو V>
+خودڪار hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
 (( hb_partial_t<Pos, Appl, V> (a, v) ))
 
 /* The following, HB_PARTIALIZE, macro uses a particular corner-case
@@ -635,44 +635,44 @@ auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
  * to be deduced as the same type with this particular compiler, and seem
  * to be fine as default code path as well.
  */
-#ifdef _MSC_VER
+#جيڪڏهن_وصف_ٿيل _MSC_VER
 /* https://github.com/harfbuzz/harfbuzz/issues/1730 */ \
-#define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  decltype(auto) operator () (_T&& _v) const \
-  { return hb_partial<Pos> (this, std::forward<_T> (_v)); } \
-  static_assert (true, "")
-#else
+#وصف_ڪريو HB_PARTIALIZE(Pos) \
+  سانچو <قسم_نالو _T> \
+  decltype(خودڪار) عامل () (_T&& _v) ثابت \
+  { أرجع hb_partial<Pos> (هذا, std::forward<_T> (_v)); } \
+  static_assert (سچ, "")
+#وإلا
 /* https://github.com/harfbuzz/harfbuzz/issues/1724 */
-#define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  auto operator () (_T&& _v) const HB_AUTO_RETURN \
-  (hb_partial<Pos> (+this, std::forward<_T> (_v))) \
-  static_assert (true, "")
-#endif
+#وصف_ڪريو HB_PARTIALIZE(Pos) \
+  سانچو <قسم_نالو _T> \
+  خودڪار عامل () (_T&& _v) ثابت HB_AUTO_RETURN \
+  (hb_partial<Pos> (+هذا, std::forward<_T> (_v))) \
+  static_assert (سچ, "")
+#جيڪڏهن_پورو
 
 
-struct
+بنية
 {
-  private:
+  خاص:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  impl (Pred&& p, Val &&v, hb_ترجيح<1>) ثابت HB_AUTO_RETURN
   (
     hb_deref (std::forward<Pred> (p)).has (std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  impl (Pred&& p, Val &&v, hb_ترجيح<0>) ثابت HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Pred> (p),
 	       std::forward<Val> (v))
   )
 
-  public:
+  عام:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  عامل () (Pred&& p, Val &&v) ثابت HB_RETURN (منطقي,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
@@ -680,61 +680,61 @@ struct
 }
 HB_FUNCOBJ (hb_has);
 
-struct
+بنية
 {
-  private:
+  خاص:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  impl (Pred&& p, Val &&v, hb_ترجيح<1>) ثابت HB_AUTO_RETURN
   (
     hb_has (std::forward<Pred> (p),
 	    std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  impl (Pred&& p, Val &&v, hb_ترجيح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<Pred> (p) == std::forward<Val> (v)
   )
 
-  public:
+  عام:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  سانچو <قسم_نالو Pred, قسم_نالو Val> خودڪار
+  عامل () (Pred&& p, Val &&v) ثابت HB_RETURN (منطقي,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
   )
 }
-HB_FUNCOBJ (hb_match);
+HB_FUNCOBJ (hb_ميلاپ);
 
-struct
+بنية
 {
-  private:
+  خاص:
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<2>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Proj, قسم_نالو Val> خودڪار
+  impl (Proj&& f, Val &&v, hb_ترجيح<2>) ثابت HB_AUTO_RETURN
   (
     hb_deref (std::forward<Proj> (f)).get (std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Proj, قسم_نالو Val> خودڪار
+  impl (Proj&& f, Val &&v, hb_ترجيح<1>) ثابت HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Proj> (f),
 	       std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Proj, قسم_نالو Val> خودڪار
+  impl (Proj&& f, Val &&v, hb_ترجيح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<Proj> (f)[std::forward<Val> (v)]
   )
 
-  public:
+  عام:
 
-  template <typename Proj, typename Val> auto
-  operator () (Proj&& f, Val &&v) const HB_AUTO_RETURN
+  سانچو <قسم_نالو Proj, قسم_نالو Val> خودڪار
+  عامل () (Proj&& f, Val &&v) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<Proj> (f),
 	  std::forward<Val> (v),
@@ -743,38 +743,38 @@ struct
 }
 HB_FUNCOBJ (hb_get);
 
-struct
+بنية
 {
-  private:
+  خاص:
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<3>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T1, قسم_نالو T2> خودڪار
+  impl (T1&& v1, T2 &&v2, hb_ترجيح<3>) ثابت HB_AUTO_RETURN
   (
     std::forward<T2> (v2).cmp (std::forward<T1> (v1)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<2>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T1, قسم_نالو T2> خودڪار
+  impl (T1&& v1, T2 &&v2, hb_ترجيح<2>) ثابت HB_AUTO_RETURN
   (
     std::forward<T1> (v1).cmp (std::forward<T2> (v2)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<1>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T1, قسم_نالو T2> خودڪار
+  impl (T1&& v1, T2 &&v2, hb_ترجيح<1>) ثابت HB_AUTO_RETURN
   (
     std::forward<T1> (v1) == std::forward<T2> (v2)
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<0>) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T1, قسم_نالو T2> خودڪار
+  impl (T1&& v1, T2 &&v2, hb_ترجيح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<T2> (v2) == std::forward<T1> (v1)
   )
 
-  public:
+  عام:
 
-  template <typename T1, typename T2> auto
-  operator () (T1&& v1, T2 &&v2) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T1, قسم_نالو T2> خودڪار
+  عامل () (T1&& v1, T2 &&v2) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<T1> (v1),
 	  std::forward<T2> (v2),
@@ -783,197 +783,197 @@ struct
 }
 HB_FUNCOBJ (hb_equal);
 
-struct
+بنية
 {
-  template <typename T> void
-  operator () (T& a, T& b) const
+  سانچو <قسم_نالو T> فراغ
+  عامل () (T& a, T& b) ثابت
   {
-    using std::swap; // allow ADL
+    استعمال std::swap; // allow ADL
     swap (a, b);
   }
 }
-HB_FUNCOBJ (hb_swap);
+HB_FUNCOBJ (hb_مٽا_سٽا);
 
 
-template <typename T1, typename T2>
-struct hb_pair_t
+سانچو <قسم_نالو T1, قسم_نالو T2>
+بنية hb_pair_t
 {
-  typedef T1 first_t;
-  typedef T2 second_t;
-  typedef hb_pair_t<T1, T2> pair_t;
+  تعريفنوع T1 پهريون_t;
+  تعريفنوع T2 ٻيو_t;
+  تعريفنوع hb_pair_t<T1, T2> pair_t;
 
-  template <typename U1 = T1, typename U2 = T2,
+  سانچو <قسم_نالو U1 = T1, قسم_نالو U2 = T2,
 	    hb_enable_if (std::is_default_constructible<U1>::value &&
 			  std::is_default_constructible<U2>::value)>
-  hb_pair_t () : first (), second () {}
-  hb_pair_t (T1 a, T2 b) : first (std::forward<T1> (a)), second (std::forward<T2> (b)) {}
+  hb_pair_t () : پهريون (), second () {}
+  hb_pair_t (T1 a, T2 b) : پهريون (std::forward<T1> (a)), second (std::forward<T2> (b)) {}
 
-  template <typename Q1, typename Q2,
+  سانچو <قسم_نالو Q1, قسم_نالو Q2,
 	    hb_enable_if (hb_is_convertible (T1, Q1) &&
 			  hb_is_convertible (T2, Q2))>
-  operator hb_pair_t<Q1, Q2> () { return hb_pair_t<Q1, Q2> (first, second); }
+  عامل hb_pair_t<Q1, Q2> () { أرجع hb_pair_t<Q1, Q2> (پهريون, second); }
 
-  hb_pair_t<T1, T2> reverse () const
-  { return hb_pair_t<T1, T2> (second, first); }
+  hb_pair_t<T1, T2> reverse () ثابت
+  { أرجع hb_pair_t<T1, T2> (second, پهريون); }
 
-  bool operator == (const pair_t& o) const { return first == o.first && second == o.second; }
-  bool operator != (const pair_t& o) const { return !(*this == o); }
-  bool operator < (const pair_t& o) const { return first < o.first || (first == o.first && second < o.second); }
-  bool operator >= (const pair_t& o) const { return !(*this < o); }
-  bool operator > (const pair_t& o) const { return first > o.first || (first == o.first && second > o.second); }
-  bool operator <= (const pair_t& o) const { return !(*this > o); }
+  منطقي عامل == (ثابت pair_t& o) ثابت { أرجع پهريون == o.پهريون && second == o.second; }
+  منطقي عامل != (ثابت pair_t& o) ثابت { أرجع !(*هذا == o); }
+  منطقي عامل < (ثابت pair_t& o) ثابت { أرجع پهريون < o.پهريون || (پهريون == o.پهريون && second < o.second); }
+  منطقي عامل >= (ثابت pair_t& o) ثابت { أرجع !(*هذا < o); }
+  منطقي عامل > (ثابت pair_t& o) ثابت { أرجع پهريون > o.پهريون || (پهريون == o.پهريون && second > o.second); }
+  منطقي عامل <= (ثابت pair_t& o) ثابت { أرجع !(*هذا > o); }
 
-  static int cmp (const void *pa, const void *pb)
+  ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
   {
     pair_t *a = (pair_t *) pa;
     pair_t *b = (pair_t *) pb;
 
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->second < b->second) return -1;
-    if (a->second > b->second) return +1;
-    return 0;
+    إذا (a->پهريون < b->پهريون) أرجع -1;
+    إذا (a->پهريون > b->پهريون) أرجع +1;
+    إذا (a->second < b->second) أرجع -1;
+    إذا (a->second > b->second) أرجع +1;
+    أرجع 0;
   }
 
-  friend void swap (hb_pair_t& a, hb_pair_t& b) noexcept
+  دوست فراغ swap (hb_pair_t& a, hb_pair_t& b) noexcept
   {
-    hb_swap (a.first, b.first);
-    hb_swap (a.second, b.second);
+    hb_مٽا_سٽا (a.پهريون, b.پهريون);
+    hb_مٽا_سٽا (a.second, b.second);
   }
 
 
-  T1 first;
+  T1 پهريون;
   T2 second;
 };
-template <typename T1, typename T2> static inline hb_pair_t<T1, T2>
-hb_pair (T1&& a, T2&& b) { return hb_pair_t<T1, T2> (a, b); }
+سانچو <قسم_نالو T1, قسم_نالو T2> ساكن مضمن hb_pair_t<T1, T2>
+hb_pair (T1&& a, T2&& b) { أرجع hb_pair_t<T1, T2> (a, b); }
 
-typedef hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
+تعريفنوع hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
 
-struct
+بنية
 {
-  template <typename Pair> constexpr typename Pair::first_t
-  operator () (const Pair& pair) const { return pair.first; }
+  سانچو <قسم_نالو Pair> constexpr قسم_نالو Pair::پهريون_t
+  عامل () (ثابت Pair& pair) ثابت { أرجع pair.پهريون; }
 }
-HB_FUNCOBJ (hb_first);
+HB_FUNCOBJ (hb_پهريون);
 
-struct
+بنية
 {
-  template <typename Pair> constexpr typename Pair::second_t
-  operator () (const Pair& pair) const { return pair.second; }
+  سانچو <قسم_نالو Pair> constexpr قسم_نالو Pair::ٻيو_t
+  عامل () (ثابت Pair& pair) ثابت { أرجع pair.second; }
 }
-HB_FUNCOBJ (hb_second);
+HB_FUNCOBJ (hb_ٻيو);
 
 /* Note.  In min/max impl, we can use hb_type_identity<T> for second argument.
  * However, that would silently convert between different-signedness integers.
  * Instead we accept two different types, such that compiler can err if
  * comparing integers of different signedness. */
-struct
+بنية
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (T&& a, T2&& b) ثابت HB_AUTO_RETURN
   (a <= b ? a : b)
 }
 HB_FUNCOBJ (hb_min);
-struct
+بنية
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (T&& a, T2&& b) ثابت HB_AUTO_RETURN
   (a >= b ? a : b)
 }
 HB_FUNCOBJ (hb_max);
-struct
+بنية
 {
-  template <typename T, typename T2, typename T3> constexpr auto
-  operator () (T&& x, T2&& min, T3&& max) const HB_AUTO_RETURN
+  سانچو <قسم_نالو T, قسم_نالو T2, قسم_نالو T3> constexpr خودڪار
+  عامل () (T&& x, T2&& min, T3&& max) ثابت HB_AUTO_RETURN
   (hb_min (hb_max (std::forward<T> (x), std::forward<T2> (min)), std::forward<T3> (max)))
 }
 HB_FUNCOBJ (hb_clamp);
 
 /* Signed saturating arithmetic. */
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_saturate_add (T a, T b)
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
+hb_saturate_جوڙيو (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_add_overflow)
-  T result;
-  if (likely (!__builtin_add_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+#إذا hb_has_builtin(__builtin_add_overflow)
+  T نتيجو;
+  إذا (likely (!__builtin_add_overflow (a, b, &نتيجو)))
+    أرجع نتيجو;
+#وإلا
+  إذا (b > 0)
   {
-    if (likely (a <= hb_int_max (T) - b))
-      return a + b;
+    إذا (likely (a <= hb_int_max (T) - b))
+      أرجع a + b;
   }
-  else if (likely (a >= hb_int_min (T) - b))
-    return a + b;
-#endif
+  وإلا إذا (likely (a >= hb_int_min (T) - b))
+    أرجع a + b;
+#جيڪڏهن_پورو
 
-  return a < 0 ? hb_int_min (T) : hb_int_max (T);
+  أرجع a < 0 ? hb_int_min (T) : hb_int_max (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
 hb_saturate_sub (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_sub_overflow)
-  T result;
-  if (likely (!__builtin_sub_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+#إذا hb_has_builtin(__builtin_sub_overflow)
+  T نتيجو;
+  إذا (likely (!__builtin_sub_overflow (a, b, &نتيجو)))
+    أرجع نتيجو;
+#وإلا
+  إذا (b > 0)
   {
-    if (likely (a >= hb_int_min (T) + b))
-      return a - b;
+    إذا (likely (a >= hb_int_min (T) + b))
+      أرجع a - b;
   }
-  else if (likely (a <= hb_int_max (T) + b))
-    return a - b;
-#endif
+  وإلا إذا (likely (a <= hb_int_max (T) + b))
+    أرجع a - b;
+#جيڪڏهن_پورو
 
-  return b < 0 ? hb_int_max (T) : hb_int_min (T);
+  أرجع b < 0 ? hb_int_max (T) : hb_int_min (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
 hb_saturate_neg (T a)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return hb_saturate_sub ((T) 0, a);
+  أرجع hb_saturate_sub ((T) 0, a);
 }
 
 /* Convert a floating-point value to integer type T, saturating to T's
  * range instead of relying on the undefined behavior of an out-of-range
  * float-to-int conversion.  NaN saturates to the minimum of T. */
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (double v)
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
+hb_clamp_منزل (مزدوج v)
 {
-  return (T) hb_clamp (v,
-		       (double) hb_int_min (T),
-		       (double) hb_int_max (T));
+  أرجع (T) hb_clamp (v,
+		       (مزدوج) hb_int_min (T),
+		       (مزدوج) hb_int_max (T));
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (float v)
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
+hb_clamp_منزل (عائم v)
 {
   /* Widen explicitly: float cannot represent all integer bounds exactly,
    * so the clamp itself is done in double. */
-  return hb_clamp_to<T> ((double) v);
+  أرجع hb_clamp_منزل<T> ((مزدوج) v);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (int64_t v)
+سانچو <قسم_نالو T>
+ساكن HB_ALWAYS_INLINE T
+hb_clamp_منزل (int64_t v)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return (T) hb_clamp (v,
+  أرجع (T) hb_clamp (v,
 		       (int64_t) hb_int_min (T),
 		       (int64_t) hb_int_max (T));
 }
@@ -983,216 +983,216 @@ hb_clamp_to (int64_t v)
  */
 
 /* Return the number of 1 bits in a uint8_t; faster than hb_popcount() */
-static inline unsigned
+ساكن مضمن بنانشان
 hb_popcount8 (uint8_t v)
 {
-  static const uint8_t popcount4[16] = {
+  ساكن ثابت uint8_t popcount4[16] = {
     0, 1, 1, 2, 1, 2, 2, 3,
     1, 2, 2, 3, 2, 3, 3, 4
   };
-  return popcount4[v & 0xF] + popcount4[v >> 4];
+  أرجع popcount4[v & 0xF] + popcount4[v >> 4];
 }
 
 /* Return the number of 1 bits in v. */
-template <typename T>
-static inline unsigned int
+سانچو <قسم_نالو T>
+ساكن مضمن بنانشان صحيح
 hb_popcount (T v)
 {
-#if hb_has_builtin(__builtin_popcount)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_popcount (v);
-#endif
+#إذا hb_has_builtin(__builtin_popcount)
+  إذا (حجم (T) <= حجم (بنانشان صحيح))
+    أرجع __builtin_popcount (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_popcountl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_popcountl (v);
-#endif
+#إذا hb_has_builtin(__builtin_popcountl)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو))
+    أرجع __builtin_popcountl (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_popcountll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_popcountll (v);
-#endif
+#إذا hb_has_builtin(__builtin_popcountll)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو ڊگهو))
+    أرجع __builtin_popcountll (v);
+#جيڪڏهن_پورو
 
-  if (sizeof (T) <= 4)
+  إذا (حجم (T) <= 4)
   {
     /* "HACKMEM 169" */
     uint32_t y;
     y = (v >> 1) &033333333333;
     y = v - y - ((y >>1) & 033333333333);
-    return (((y + (y >> 3)) & 030707070707) % 077);
+    أرجع (((y + (y >> 3)) & 030707070707) % 077);
   }
 
-  if (sizeof (T) == 8)
+  إذا (حجم (T) == 8)
   {
     uint64_t y = (uint64_t) v;
     y -= ((y >> 1) & 0x5555555555555555ull);
     y = (y & 0x3333333333333333ull) + (y >> 2 & 0x3333333333333333ull);
-    return ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
+    أرجع ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
   }
 
-  if (sizeof (T) == 16)
+  إذا (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
+    بنانشان صحيح سرڪايو = 64;
+    أرجع hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> سرڪايو));
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  أرجع 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of bits needed to store number */
-template <typename T>
-static inline unsigned int
-hb_bit_storage (T v)
+سانچو <قسم_نالو T>
+ساكن مضمن بنانشان صحيح
+hb_ٻٽو_انگ_storage (T v)
 {
-  if (unlikely (!v)) return 0;
+  إذا (unlikely (!v)) أرجع 0;
 
-#if hb_has_builtin(__builtin_clz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return sizeof (unsigned int) * 8 - __builtin_clz (v);
-#endif
+#إذا hb_has_builtin(__builtin_clz)
+  إذا (حجم (T) <= حجم (بنانشان صحيح))
+    أرجع حجم (بنانشان صحيح) * 8 - __builtin_clz (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_clzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return sizeof (unsigned long) * 8 - __builtin_clzl (v);
-#endif
+#إذا hb_has_builtin(__builtin_clzl)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو))
+    أرجع حجم (بنانشان ڊگهو) * 8 - __builtin_clzl (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_clzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return sizeof (unsigned long long) * 8 - __builtin_clzll (v);
-#endif
+#إذا hb_has_builtin(__builtin_clzll)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو ڊگهو))
+    أرجع حجم (بنانشان ڊگهو ڊگهو) * 8 - __builtin_clzll (v);
+#جيڪڏهن_پورو
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#إذا (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  إذا (حجم (T) <= حجم (بنانشان صحيح))
   {
-    unsigned long where;
-    _BitScanReverse (&where, v);
-    return 1 + where;
+    بنانشان ڊگهو where;
+    ٻٽو_انگ_جاچ_ابتو (&where, v);
+    أرجع 1 + where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# إذا defined(_WIN64)
+  إذا (حجم (T) <= 8)
   {
-    unsigned long where;
-    _BitScanReverse64 (&where, v);
-    return 1 + where;
+    بنانشان ڊگهو where;
+    ٻٽو_انگ_جاچ_Reverse64 (&where, v);
+    أرجع 1 + where;
   }
 # endif
-#endif
+#جيڪڏهن_پورو
 
-  if (sizeof (T) <= 4)
+  إذا (حجم (T) <= 4)
   {
     /* "bithacks" */
-    const unsigned int b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
-    const unsigned int S[] = {1, 2, 4, 8, 16};
-    unsigned int r = 0;
-    for (int i = 4; i >= 0; i--)
-      if (v & b[i])
+    ثابت بنانشان صحيح b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
+    ثابت بنانشان صحيح S[] = {1, 2, 4, 8, 16};
+    بنانشان صحيح r = 0;
+    لكل (صحيح i = 4; i >= 0; i--)
+      إذا (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    أرجع r + 1;
   }
-  if (sizeof (T) <= 8)
+  إذا (حجم (T) <= 8)
   {
     /* "bithacks" */
-    const uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
-    const unsigned int S[] = {1, 2, 4, 8, 16, 32};
-    unsigned int r = 0;
-    for (int i = 5; i >= 0; i--)
-      if (v & b[i])
+    ثابت uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
+    ثابت بنانشان صحيح S[] = {1, 2, 4, 8, 16, 32};
+    بنانشان صحيح r = 0;
+    لكل (صحيح i = 5; i >= 0; i--)
+      إذا (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    أرجع r + 1;
   }
-  if (sizeof (T) == 16)
+  إذا (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
-			  hb_bit_storage<uint64_t> ((uint64_t) v);
+    بنانشان صحيح سرڪايو = 64;
+    أرجع (v >> سرڪايو) ? hb_ٻٽو_انگ_storage<uint64_t> ((uint64_t) (v >> سرڪايو)) + سرڪايو :
+			  hb_ٻٽو_انگ_storage<uint64_t> ((uint64_t) v);
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  أرجع 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of zero bits in the least significant side of v */
-template <typename T>
-static inline unsigned int
+سانچو <قسم_نالو T>
+ساكن مضمن بنانشان صحيح
 hb_ctz (T v)
 {
-  if (unlikely (!v)) return 8 * sizeof (T);
+  إذا (unlikely (!v)) أرجع 8 * حجم (T);
 
-#if hb_has_builtin(__builtin_ctz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_ctz (v);
-#endif
+#إذا hb_has_builtin(__builtin_ctz)
+  إذا (حجم (T) <= حجم (بنانشان صحيح))
+    أرجع __builtin_ctz (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_ctzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_ctzl (v);
-#endif
+#إذا hb_has_builtin(__builtin_ctzl)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو))
+    أرجع __builtin_ctzl (v);
+#جيڪڏهن_پورو
 
-#if hb_has_builtin(__builtin_ctzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_ctzll (v);
-#endif
+#إذا hb_has_builtin(__builtin_ctzll)
+  إذا (حجم (T) <= حجم (بنانشان ڊگهو ڊگهو))
+    أرجع __builtin_ctzll (v);
+#جيڪڏهن_پورو
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#إذا (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  إذا (حجم (T) <= حجم (بنانشان صحيح))
   {
-    unsigned long where;
-    _BitScanForward (&where, v);
-    return where;
+    بنانشان ڊگهو where;
+    ٻٽو_انگ_جاچ_Forward (&where, v);
+    أرجع where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# إذا defined(_WIN64)
+  إذا (حجم (T) <= 8)
   {
-    unsigned long where;
-    _BitScanForward64 (&where, v);
-    return where;
+    بنانشان ڊگهو where;
+    ٻٽو_انگ_جاچ_Forward64 (&where, v);
+    أرجع where;
   }
 # endif
-#endif
+#جيڪڏهن_پورو
 
-  if (sizeof (T) <= 4)
+  إذا (حجم (T) <= 4)
   {
     /* "bithacks" */
-    unsigned int c = 32;
+    بنانشان صحيح c = 32;
     v &= - (int32_t) v;
-    if (v) c--;
-    if (v & 0x0000FFFF) c -= 16;
-    if (v & 0x00FF00FF) c -= 8;
-    if (v & 0x0F0F0F0F) c -= 4;
-    if (v & 0x33333333) c -= 2;
-    if (v & 0x55555555) c -= 1;
-    return c;
+    إذا (v) c--;
+    إذا (v & 0x0000FFFF) c -= 16;
+    إذا (v & 0x00FF00FF) c -= 8;
+    إذا (v & 0x0F0F0F0F) c -= 4;
+    إذا (v & 0x33333333) c -= 2;
+    إذا (v & 0x55555555) c -= 1;
+    أرجع c;
   }
-  if (sizeof (T) <= 8)
+  إذا (حجم (T) <= 8)
   {
     /* "bithacks" */
-    unsigned int c = 64;
+    بنانشان صحيح c = 64;
     v &= - (int64_t) (v);
-    if (v) c--;
-    if (v & 0x00000000FFFFFFFFULL) c -= 32;
-    if (v & 0x0000FFFF0000FFFFULL) c -= 16;
-    if (v & 0x00FF00FF00FF00FFULL) c -= 8;
-    if (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
-    if (v & 0x3333333333333333ULL) c -= 2;
-    if (v & 0x5555555555555555ULL) c -= 1;
-    return c;
+    إذا (v) c--;
+    إذا (v & 0x00000000FFFFFFFFULL) c -= 32;
+    إذا (v & 0x0000FFFF0000FFFFULL) c -= 16;
+    إذا (v & 0x00FF00FF00FF00FFULL) c -= 8;
+    إذا (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
+    إذا (v & 0x3333333333333333ULL) c -= 2;
+    إذا (v & 0x5555555555555555ULL) c -= 1;
+    أرجع c;
   }
-  if (sizeof (T) == 16)
+  إذا (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
-			  hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift;
+    بنانشان صحيح سرڪايو = 64;
+    أرجع (uint64_t) v ? hb_ٻٽو_انگ_storage<uint64_t> ((uint64_t) v) :
+			  hb_ٻٽو_انگ_storage<uint64_t> ((uint64_t) (v >> سرڪايو)) + سرڪايو;
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  أرجع 0; /* Shut up stupid compiler. */
 }
 
 
@@ -1201,84 +1201,84 @@ hb_ctz (T v)
  */
 
 /* ASCII tag/character handling */
-static inline bool ISALPHA (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
-static inline bool ISALNUM (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
-static inline bool ISSPACE (unsigned char c)
-{ return c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
-static inline unsigned char TOUPPER (unsigned char c)
-{ return (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
-static inline unsigned char TOLOWER (unsigned char c)
-{ return (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
-static inline bool ISHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
-static inline unsigned char TOHEX (uint8_t c)
-{ return (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
-static inline uint8_t FROMHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
+ساكن مضمن منطقي ISALPHA (بنانشان حرف c)
+{ أرجع (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+ساكن مضمن منطقي ISALNUM (بنانشان حرف c)
+{ أرجع (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
+ساكن مضمن منطقي ISSPACE (بنانشان حرف c)
+{ أرجع c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
+ساكن مضمن بنانشان حرف TOUPPER (بنانشان حرف c)
+{ أرجع (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
+ساكن مضمن بنانشان حرف TOLOWER (بنانشان حرف c)
+{ أرجع (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
+ساكن مضمن منطقي ISHEX (بنانشان حرف c)
+{ أرجع (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
+ساكن مضمن بنانشان حرف TOHEX (uint8_t c)
+{ أرجع (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
+ساكن مضمن uint8_t FROMHEX (بنانشان حرف c)
+{ أرجع (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
 
-static inline unsigned int DIV_CEIL (const unsigned int a, unsigned int b)
-{ return (a + (b - 1)) / b; }
+ساكن مضمن بنانشان صحيح DIV_CEIL (ثابت بنانشان صحيح a, بنانشان صحيح b)
+{ أرجع (a + (b - 1)) / b; }
 
 
-#undef  ARRAY_LENGTH
-template <typename Type, unsigned int n>
-static inline unsigned int ARRAY_LENGTH (const Type (&)[n]) { return n; }
+#وصف_رد  ARRAY_ڊيگهائي
+سانچو <قسم_نالو Type, بنانشان صحيح n>
+ساكن مضمن بنانشان صحيح ARRAY_ڊيگهائي (ثابت Type (&)[n]) { أرجع n; }
 /* A const version, but does not detect erratically being called on pointers. */
-#define ARRAY_LENGTH_CONST(__array) ((signed int) (sizeof (__array) / sizeof (__array[0])))
+#وصف_ڪريو ARRAY_ڊيگهائي_CONST(__array) ((نشانوارو صحيح) (حجم (__array) / حجم (__array[0])))
 
 
-static inline void *
-hb_memcpy (void *__restrict dst, const void *__restrict src, size_t len)
+ساكن مضمن فراغ *
+hb_memcpy (فراغ *__restrict dst, ثابت فراغ *__restrict src, size_t len)
 {
   /* It's illegal to pass 0 as size to memcpy. */
-  if (unlikely (!len)) return dst;
-  return memcpy (dst, src, len);
+  إذا (unlikely (!len)) أرجع dst;
+  أرجع يادگيري_نقل (dst, src, len);
 }
 
-static inline int
-hb_memcmp (const void *a, const void *b, unsigned int len)
+ساكن مضمن صحيح
+hb_memcmp (ثابت فراغ *a, ثابت فراغ *b, بنانشان صحيح len)
 {
   /* It's illegal to pass NULL to memcmp(), even if len is zero.
    * So, wrap it.
    * https://sourceware.org/bugzilla/show_bug.cgi?id=23878 */
-  if (unlikely (!len)) return 0;
-  return memcmp (a, b, len);
+  إذا (unlikely (!len)) أرجع 0;
+  أرجع memcmp (a, b, len);
 }
 
-static inline void *
-hb_memset (void *s, int c, unsigned int n)
+ساكن مضمن فراغ *
+hb_memset (فراغ *s, صحيح c, بنانشان صحيح n)
 {
   /* It's illegal to pass NULL to memset(), even if n is zero. */
-  if (unlikely (!n)) return s;
-  return memset (s, c, n);
+  إذا (unlikely (!n)) أرجع s;
+  أرجع memset (s, c, n);
 }
 
-static inline unsigned int
-hb_ceil_to_4 (unsigned int v)
+ساكن مضمن بنانشان صحيح
+hb_ceil_منزل_4 (بنانشان صحيح v)
 {
-  return ((v - 1) | 3) + 1;
+  أرجع ((v - 1) | 3) + 1;
 }
 
-template <typename T> static inline bool
-hb_in_range (T u, T lo, T hi)
+سانچو <قسم_نالو T> ساكن مضمن منطقي
+hb_اندريون_range (T u, T lo, T hi)
 {
   static_assert (!std::is_signed<T>::value, "");
 
   /* The casts below are important as if T is smaller than int,
    * the subtract results will become a signed int! */
-  return (T)(u - lo) <= (T)(hi - lo);
+  أرجع (T)(u - lo) <= (T)(hi - lo);
 }
-template <typename T> static inline bool
-hb_in_ranges (T u, T lo1, T hi1)
+سانچو <قسم_نالو T> ساكن مضمن منطقي
+hb_اندريون_ranges (T u, T lo1, T hi1)
 {
-  return hb_in_range (u, lo1, hi1);
+  أرجع hb_اندريون_range (u, lo1, hi1);
 }
-template <typename T, typename ...Ts> static inline bool
-hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
+سانچو <قسم_نالو T, قسم_نالو ...Ts> ساكن مضمن منطقي
+hb_اندريون_ranges (T u, T lo1, T hi1, Ts... ds)
 {
-  return hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
+  أرجع hb_اندريون_range<T> (u, lo1, hi1) || hb_اندريون_ranges<T> (u, ds...);
 }
 
 
@@ -1286,34 +1286,34 @@ hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
  * Overflow checking.
  */
 
-static inline bool
-hb_unsigned_mul_overflows (unsigned int count, unsigned int size, unsigned *result = nullptr)
+ساكن مضمن منطقي
+hb_unsigned_mul_overflows (بنانشان صحيح ڳڻپ, بنانشان صحيح سائيز, بنانشان *نتيجو = خالي_اشارو)
 {
-#if hb_has_builtin(__builtin_mul_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_mul_overflow (count, size, result);
-#endif
+#إذا hb_has_builtin(__builtin_mul_overflow)
+  بنانشان ڍير_نتيجو;
+  إذا (!نتيجو)
+    نتيجو = &ڍير_نتيجو;
+  أرجع __builtin_mul_overflow (ڳڻپ, سائيز, نتيجو);
+#جيڪڏهن_پورو
 
-  if (result)
-    *result = count * size;
-  return (size > 0) && (count >= ((unsigned int) -1) / size);
+  إذا (نتيجو)
+    *نتيجو = ڳڻپ * سائيز;
+  أرجع (سائيز > 0) && (ڳڻپ >= ((بنانشان صحيح) -1) / سائيز);
 }
 
-static inline bool
-hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nullptr)
+ساكن مضمن منطقي
+hb_unsigned_جوڙيو_overflows (بنانشان صحيح a, بنانشان صحيح b, بنانشان *نتيجو = خالي_اشارو)
 {
-#if hb_has_builtin(__builtin_add_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_add_overflow (a, b, result);
-#endif
+#إذا hb_has_builtin(__builtin_add_overflow)
+  بنانشان ڍير_نتيجو;
+  إذا (!نتيجو)
+    نتيجو = &ڍير_نتيجو;
+  أرجع __builtin_add_overflow (a, b, نتيجو);
+#جيڪڏهن_پورو
 
-  if (result)
-    *result = a + b;
-  return b > (unsigned int) -1 - a;
+  إذا (نتيجو)
+    *نتيجو = a + b;
+  أرجع b > (بنانشان صحيح) -1 - a;
 }
 
 /* Saturating arithmetic on size_t.  On platforms where size_t is wider than
@@ -1323,142 +1323,142 @@ hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nu
  * unsigned int), they saturate to SIZE_MAX so sanitize/serialize callers
  * naturally reject the resulting size as out-of-range. */
 
-static inline size_t
+ساكن مضمن size_t
 hb_unsigned_mul_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a * b;
-#if hb_has_builtin(__builtin_mul_overflow)
-  size_t result;
-  if (__builtin_mul_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > 0 && a > ((size_t) -1) / b) return (size_t) -1;
-  return a * b;
-#endif
+  إذا (حجم (size_t) > حجم (بنانشان صحيح))
+    أرجع a * b;
+#إذا hb_has_builtin(__builtin_mul_overflow)
+  size_t نتيجو;
+  إذا (__builtin_mul_overflow (a, b, &نتيجو))
+    أرجع (size_t) -1;
+  أرجع نتيجو;
+#وإلا
+  إذا (b > 0 && a > ((size_t) -1) / b) أرجع (size_t) -1;
+  أرجع a * b;
+#جيڪڏهن_پورو
 }
 
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b)
+ساكن مضمن size_t
+hb_unsigned_جوڙيو_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a + b;
-#if hb_has_builtin(__builtin_add_overflow)
-  size_t result;
-  if (__builtin_add_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > ((size_t) -1) - a) return (size_t) -1;
-  return a + b;
-#endif
+  إذا (حجم (size_t) > حجم (بنانشان صحيح))
+    أرجع a + b;
+#إذا hb_has_builtin(__builtin_add_overflow)
+  size_t نتيجو;
+  إذا (__builtin_add_overflow (a, b, &نتيجو))
+    أرجع (size_t) -1;
+  أرجع نتيجو;
+#وإلا
+  إذا (b > ((size_t) -1) - a) أرجع (size_t) -1;
+  أرجع a + b;
+#جيڪڏهن_پورو
 }
 
 /* Variadic forms: fold left across all arguments. */
-template <typename ...Ts>
-static inline size_t
+سانچو <قسم_نالو ...Ts>
+ساكن مضمن size_t
 hb_unsigned_mul_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
+{ أرجع hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
 
-template <typename ...Ts>
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
+سانچو <قسم_نالو ...Ts>
+ساكن مضمن size_t
+hb_unsigned_جوڙيو_saturate (size_t a, size_t b, size_t c, Ts... rest)
+{ أرجع hb_unsigned_جوڙيو_saturate (hb_unsigned_جوڙيو_saturate (a, b), c, rest...); }
 
 /* Saturating mul-add: a * b + c.  Covers the dominant get_size() pattern
  * `count * static_size + min_size`. */
-static inline size_t
-hb_unsigned_mul_add_saturate (size_t a, size_t b, size_t c)
-{ return hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
+ساكن مضمن size_t
+hb_unsigned_mul_جوڙيو_saturate (size_t a, size_t b, size_t c)
+{ أرجع hb_unsigned_جوڙيو_saturate (hb_unsigned_mul_saturate (a, b), c); }
 
 
 /*
  * Sort and search.
  */
 
-template <typename K, typename V, typename ...Ts>
-static int
-_hb_cmp_method (const void *pkey, const void *pval, Ts... ds)
+سانچو <قسم_نالو K, قسم_نالو V, قسم_نالو ...Ts>
+ساكن صحيح
+hb_cmp_طريقو (ثابت فراغ *pkey, ثابت فراغ *pval, Ts... ds)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  ثابت K& key = * (ثابت K*) pkey;
+  ثابت V& val = * (ثابت V*) pval;
 
-  return val.cmp (key, ds...);
+  أرجع val.cmp (key, ds...);
 }
 
-template <typename K, typename V>
-static int
-_hb_cmp_operator (const void *pkey, const void *pval)
+سانچو <قسم_نالو K, قسم_نالو V>
+ساكن صحيح
+_hb_cmp_operator (ثابت فراغ *pkey, ثابت فراغ *pval)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  ثابت K& key = * (ثابت K*) pkey;
+  ثابت V& val = * (ثابت V*) pval;
 
-  if (key < val) return -1;
-  if (key > val) return  1;
-  return 0;
+  إذا (key < val) أرجع -1;
+  إذا (key > val) أرجع  1;
+  أرجع 0;
 }
 
-template <typename V, typename K, typename ...Ts>
+سانچو <قسم_نالو V, قسم_نالو K, قسم_نالو ...Ts>
 HB_HOT
-static inline bool
-hb_bsearch_impl (unsigned *pos, /* Out */
-		 const K& key,
-		 V* base, size_t nmemb, size_t stride,
-		 int (*compar)(const void *_key, const void *_item, Ts... _ds),
+ساكن مضمن منطقي
+hb_bsearch_impl (بنانشان *pos, /* Out */
+		 ثابت K& key,
+		 V* بنياد, size_t nmemb, size_t stride,
+		 صحيح (*compar)(ثابت فراغ *ڪنجي_3, ثابت فراغ *شي_2, Ts... _ds),
 		 Ts... ds)
 {
   /* This is our *only* bsearch implementation. */
 
-  int min = 0, max = (int) nmemb - 1;
-  while (min <= max)
+  صحيح min = 0, max = (صحيح) nmemb - 1;
+  طالما (min <= max)
   {
-    int mid = ((unsigned int) min + (unsigned int) max) / 2;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    V* p = (V*) (((const char *) base) + (mid * stride));
-#pragma GCC diagnostic pop
-    int c = compar ((const void *) std::addressof (key), (const void *) p, ds...);
-    if (c < 0)
+    صحيح mid = ((بنانشان صحيح) min + (بنانشان صحيح) max) / 2;
+#هدايت GCC diagnostic push
+#هدايت GCC diagnostic ignored "-Wcast-align"
+    V* p = (V*) (((ثابت حرف *) بنياد) + (mid * stride));
+#هدايت GCC diagnostic ڪڍو
+    صحيح c = compar ((ثابت فراغ *) std::addressof (key), (ثابت فراغ *) p, ds...);
+    إذا (c < 0)
       max = mid - 1;
-    else if (c > 0)
+    وإلا إذا (c > 0)
       min = mid + 1;
-    else
+    وإلا
     {
       *pos = mid;
-      return true;
+      أرجع سچ;
     }
   }
   *pos = min;
-  return false;
+  أرجع خطأ;
 }
 
-template <typename V, typename K>
-static inline V*
-hb_bsearch (const K& key, V* base,
-	    size_t nmemb, size_t stride = sizeof (V),
-	    int (*compar)(const void *_key, const void *_item) = _hb_cmp_method<K, V>)
+سانچو <قسم_نالو V, قسم_نالو K>
+ساكن مضمن V*
+hb_bsearch (ثابت K& key, V* بنياد,
+	    size_t nmemb, size_t stride = حجم (V),
+	    صحيح (*compar)(ثابت فراغ *ڪنجي_3, ثابت فراغ *شي_2) = hb_cmp_طريقو<K, V>)
 {
-  unsigned pos;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  بنانشان pos;
+#هدايت GCC diagnostic push
+#هدايت GCC diagnostic ignored "-Wcast-align"
+  أرجع hb_bsearch_impl (&pos, key, بنياد, nmemb, stride, compar) ?
+	 (V*) (((ثابت حرف *) بنياد) + (pos * stride)) : خالي_اشارو;
+#هدايت GCC diagnostic ڪڍو
 }
-template <typename V, typename K, typename ...Ts>
-static inline V*
-hb_bsearch (const K& key, V* base,
+سانچو <قسم_نالو V, قسم_نالو K, قسم_نالو ...Ts>
+ساكن مضمن V*
+hb_bsearch (ثابت K& key, V* بنياد,
 	    size_t nmemb, size_t stride,
-	    int (*compar)(const void *_key, const void *_item, Ts... _ds),
+	    صحيح (*compar)(ثابت فراغ *ڪنجي_3, ثابت فراغ *شي_2, Ts... _ds),
 	    Ts... ds)
 {
-  unsigned pos;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  بنانشان pos;
+#هدايت GCC diagnostic push
+#هدايت GCC diagnostic ignored "-Wcast-align"
+  أرجع hb_bsearch_impl (&pos, key, بنياد, nmemb, stride, compar, ds...) ?
+	 (V*) (((ثابت حرف *) بنياد) + (pos * stride)) : خالي_اشارو;
+#هدايت GCC diagnostic ڪڍو
 }
 
 
@@ -1478,232 +1478,232 @@ hb_bsearch (const K& key, V* base,
  * uses for std::sort.
  *
  * Not stable; equivalent values may be swapped. */
-template <typename T, typename Compar>
-static inline void
-hb_qsort_loop (T *base, size_t nel, Compar compar)
+سانچو <قسم_نالو T, قسم_نالو Compar>
+ساكن مضمن فراغ
+hb_qsort_loop (T *بنياد, size_t nel, Compar compar)
 {
-  while (nel > 24)
+  طالما (nel > 24)
   {
-    T *last = base + nel - 1;
-    T *mid = base + nel / 2;
+    T *آخري = بنياد + nel - 1;
+    T *mid = بنياد + nel / 2;
 
     /* Median-of-three pivot, parked at last-1. */
-    if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
-    if (compar (*mid, *last) > 0)
+    إذا (compar (*بنياد, *mid) > 0) hb_مٽا_سٽا (*بنياد, *mid);
+    إذا (compar (*mid, *آخري) > 0)
     {
-      hb_swap (*mid, *last);
-      if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+      hb_مٽا_سٽا (*mid, *آخري);
+      إذا (compar (*بنياد, *mid) > 0) hb_مٽا_سٽا (*بنياد, *mid);
     }
-    hb_swap (*mid, *(last - 1));
-    T &pivot = *(last - 1);
+    hb_مٽا_سٽا (*mid, *(آخري - 1));
+    T &محور = *(آخري - 1);
 
     /* Two-way Hoare partition.  Inner loops are unguarded:
      * median-of-three left *base <= pivot and *last >= pivot,
      * which act as sentinels. */
-    T *i = base, *j = last - 1;
-    while (true)
+    T *i = بنياد, *j = آخري - 1;
+    طالما (سچ)
     {
-      while (compar (*++i, pivot) < 0) {}
-      while (compar (*--j, pivot) > 0) {}
-      if (i >= j) break;
-      hb_swap (*i, *j);
+      طالما (compar (*++i, محور) < 0) {}
+      طالما (compar (*--j, محور) > 0) {}
+      إذا (i >= j) اكسر;
+      hb_مٽا_سٽا (*i, *j);
     }
-    hb_swap (*i, *(last - 1));
+    hb_مٽا_سٽا (*i, *(آخري - 1));
 
     /* Recurse on smaller side, loop on larger — bounds stack
      * depth at O(log n). */
-    size_t left  = (size_t) (i - base);
-    size_t right = nel - left - 1;
-    if (left < right)
+    size_t کاٻي  = (size_t) (i - بنياد);
+    size_t ساڄي = nel - کاٻي - 1;
+    إذا (کاٻي < ساڄي)
     {
-      hb_qsort_loop (base, left, compar);
-      base = i + 1;
-      nel  = right;
+      hb_qsort_loop (بنياد, کاٻي, compar);
+      بنياد = i + 1;
+      nel  = ساڄي;
     }
-    else
+    وإلا
     {
-      hb_qsort_loop (i + 1, right, compar);
-      nel  = left;
+      hb_qsort_loop (i + 1, ساڄي, compar);
+      nel  = کاٻي;
     }
   }
 }
 
-template <typename T, typename Compar>
-static inline void
-hb_qsort_inline (T *base, size_t nel, Compar compar)
+سانچو <قسم_نالو T, قسم_نالو Compar>
+ساكن مضمن فراغ
+hb_qsort_inline (T *بنياد, size_t nel, Compar compar)
 {
-  hb_qsort_loop (base, nel, compar);
+  hb_qsort_loop (بنياد, nel, compar);
 
   /* Single final insertion sort over the whole array.  After
    * the partitioning loop, every element is within the threshold
    * of its sorted position, so this pass is O(n * threshold). */
-  T *end = base + nel;
-  for (T *pi = base + 1; pi < end; pi++)
-    for (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
-      hb_swap (pj[-1], pj[0]);
+  T *پڇاڙي = بنياد + nel;
+  لكل (T *pi = بنياد + 1; pi < پڇاڙي; pi++)
+    لكل (T *pj = pi; pj > بنياد && compar (pj[-1], pj[0]) > 0; pj--)
+      hb_مٽا_سٽا (pj[-1], pj[0]);
 }
 
-static inline void
-hb_qsort (void *base, size_t nel, size_t width,
-	  int (*compar)(const void *_a, const void *_b))
+ساكن مضمن فراغ
+hb_qsort (فراغ *بنياد, size_t nel, size_t ويڪر,
+	  صحيح (*compar)(ثابت فراغ *_a, ثابت فراغ *_b))
 {
-  qsort (base, nel, width, compar);
+  qsort (بنياد, nel, ويڪر, compar);
 }
 
 
 
 
-template <typename T, typename T2, typename T3 = int> static inline void
-hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *), T3 *array2 = nullptr)
+سانچو <قسم_نالو T, قسم_نالو T2, قسم_نالو T3 = صحيح> ساكن مضمن فراغ
+hb_stable_ترتيب_ڏيو (T *array, بنانشان صحيح len, صحيح(*compar)(ثابت T2 *, ثابت T2 *), T3 *array2 = خالي_اشارو)
 {
   static_assert (hb_is_trivially_copy_assignable (T), "");
   static_assert (hb_is_trivially_copy_assignable (T3), "");
 
-  for (unsigned int i = 1; i < len; i++)
+  لكل (بنانشان صحيح i = 1; i < len; i++)
   {
-    unsigned int j = i;
-    while (j && compar (&array[j - 1], &array[i]) > 0)
+    بنانشان صحيح j = i;
+    طالما (j && compar (&array[j - 1], &array[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    إذا (i == j)
+      استمر;
     /* Move item i to occupy place for item j, shift what's in between. */
     {
       T t = array[i];
-      memmove (&array[j + 1], &array[j], (i - j) * sizeof (T));
+      memmove (&array[j + 1], &array[j], (i - j) * حجم (T));
       array[j] = t;
     }
-    if (array2)
+    إذا (array2)
     {
       T3 t = array2[i];
-      memmove (&array2[j + 1], &array2[j], (i - j) * sizeof (T3));
+      memmove (&array2[j + 1], &array2[j], (i - j) * حجم (T3));
       array2[j] = t;
     }
   }
 }
 
-static inline hb_bool_t
-hb_codepoint_parse (const char *s, unsigned int len, int base, hb_codepoint_t *out)
+ساكن مضمن hb_bool_t
+hb_codepoint_parse (ثابت حرف *s, بنانشان صحيح len, صحيح بنياد, hb_codepoint_t *ٻاهريون)
 {
-  unsigned int v;
-  const char *p = s;
-  const char *end = p + len;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, base)))
-    return false;
+  بنانشان صحيح v;
+  ثابت حرف *p = s;
+  ثابت حرف *پڇاڙي = p + len;
+  إذا (unlikely (!hb_parse_uint (&p, پڇاڙي, &v, سچ/* whole buffer */, بنياد)))
+    أرجع خطأ;
 
-  *out = v;
-  return true;
+  *ٻاهريون = v;
+  أرجع سچ;
 }
 
 
 /* Operators. */
 
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a & b)
 }
 HB_FUNCOBJ (hb_bitwise_and);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a | b)
 }
 HB_FUNCOBJ (hb_bitwise_or);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a ^ b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a ^ b)
 }
 HB_FUNCOBJ (hb_bitwise_xor);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a & b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (~a & b)
 }
 HB_FUNCOBJ (hb_bitwise_lt);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & ~b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a & ~b)
 }
 HB_FUNCOBJ (hb_bitwise_gt); // aka sub
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a | b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (~a | b)
 }
 HB_FUNCOBJ (hb_bitwise_le);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | ~b)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a | ~b)
 }
 HB_FUNCOBJ (hb_bitwise_ge);
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (~a)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (~a)
 }
 HB_FUNCOBJ (hb_bitwise_neg);
 
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a + b)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a + b)
 }
-HB_FUNCOBJ (hb_add);
-struct
+HB_FUNCOBJ (hb_جوڙيو);
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a - b)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a - b)
 }
 HB_FUNCOBJ (hb_sub);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (b - a)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (b - a)
 }
 HB_FUNCOBJ (hb_rsub);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a * b)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a * b)
 }
 HB_FUNCOBJ (hb_mul);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a / b)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a / b)
 }
 HB_FUNCOBJ (hb_div);
-struct
+بنية
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a % b)
+  سانچو <قسم_نالو T, قسم_نالو T2> constexpr خودڪار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a % b)
 }
 HB_FUNCOBJ (hb_mod);
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (+a)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (+a)
 }
 HB_FUNCOBJ (hb_pos);
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (-a)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (-a)
 }
 HB_FUNCOBJ (hb_neg);
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (++a)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (T &a) ثابت HB_AUTO_RETURN (++a)
 }
 HB_FUNCOBJ (hb_inc);
-struct
+بنية
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (--a)
+  سانچو <قسم_نالو T> constexpr خودڪار
+  عامل () (T &a) ثابت HB_AUTO_RETURN (--a)
 }
 HB_FUNCOBJ (hb_dec);
 
@@ -1718,59 +1718,59 @@ HB_FUNCOBJ (hb_dec);
  * https://docs.rs/kurbo/0.8.1/kurbo/common/fn.solve_itp.html
  * https://github.com/linebender/kurbo/blob/fd839c25ea0c98576c7ce5789305822675a89938/src/common.rs#L162-L248
  */
-template <typename func_t>
-double solve_itp (func_t f,
-		  double a, double b,
-		  double epsilon,
-		  double min_y, double max_y,
-		  double &ya, double &yb, double &y)
+سانچو <قسم_نالو func_t>
+مزدوج solve_itp (func_t f,
+		  مزدوج a, مزدوج b,
+		  مزدوج epsilon,
+		  مزدوج min_y, مزدوج max_y,
+		  مزدوج &ya, مزدوج &yb, مزدوج &y)
 {
   // Guard against degenerate interval
-  if (b - a <= 0.0)
+  إذا (b - a <= 0.0)
   {
     y = ya;
-    return a;
+    أرجع a;
   }
 
-  unsigned n1_2 = (unsigned) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
-  const unsigned n0 = 1; // Hardwired
-  const double k1 = 0.2 / (b - a); // Hardwired.
-  unsigned nmax = n0 + n1_2;
-  double scaled_epsilon = epsilon * double (1llu << nmax);
-  double _2_epsilon = 2.0 * epsilon;
-  while (b - a > _2_epsilon)
+  بنانشان n1_2 = (بنانشان) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
+  ثابت بنانشان n0 = 1; // Hardwired
+  ثابت مزدوج k1 = 0.2 / (b - a); // Hardwired.
+  بنانشان nmax = n0 + n1_2;
+  مزدوج scaled_epsilon = epsilon * مزدوج (1llu << nmax);
+  مزدوج _2_epsilon = 2.0 * epsilon;
+  طالما (b - a > _2_epsilon)
   {
-    double x1_2 = 0.5 * (a + b);
-    double r = scaled_epsilon - 0.5 * (b - a);
+    مزدوج x1_2 = 0.5 * (a + b);
+    مزدوج r = scaled_epsilon - 0.5 * (b - a);
     // Guard against yb == ya to prevent division by zero
-    double xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
-    double sigma = x1_2 - xf;
-    double b_a = b - a;
+    مزدوج xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
+    مزدوج sigma = x1_2 - xf;
+    مزدوج b_a = b - a;
     // This has k2 = 2 hardwired for efficiency.
-    double b_a_k2 = b_a * b_a;
-    double delta = k1 * b_a_k2;
-    int sigma_sign = sigma >= 0 ? +1 : -1;
-    double xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
-    double xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
-    double yitp = f (xitp);
-    if (yitp > max_y)
+    مزدوج b_a_k2 = b_a * b_a;
+    مزدوج delta = k1 * b_a_k2;
+    صحيح sigma_sign = sigma >= 0 ? +1 : -1;
+    مزدوج xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
+    مزدوج xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
+    مزدوج yitp = f (xitp);
+    إذا (yitp > max_y)
     {
       b = xitp;
       yb = yitp;
     }
-    else if (yitp < min_y)
+    وإلا إذا (yitp < min_y)
     {
       a = xitp;
       ya = yitp;
     }
-    else
+    وإلا
     {
       y = yitp;
-      return xitp;
+      أرجع xitp;
     }
     scaled_epsilon *= 0.5;
   }
-  return 0.5 * (a + b);
+  أرجع 0.5 * (a + b);
 }
 
 
@@ -1789,36 +1789,36 @@ double solve_itp (func_t f,
  *   ... multiple fallible operations ...
  *   return true;  // buf freed automatically on any return path
  */
-template <typename F>
-struct hb_scope_guard_t
+سانچو <قسم_نالو F>
+بنية hb_scope_guard_t
 {
-  explicit hb_scope_guard_t (F &&f) : f (std::move (f)), active (true) {}
+  واضح hb_scope_guard_t (F &&f) : f (std::move (f)), سرگرم (سچ) {}
   hb_scope_guard_t (hb_scope_guard_t &&o) noexcept
-    : f (std::move (o.f)), active (o.active) { o.active = false; }
-  hb_scope_guard_t (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (hb_scope_guard_t &&) = delete;
-  ~hb_scope_guard_t () { if (active) f (); }
+    : f (std::move (o.f)), سرگرم (o.سرگرم) { o.سرگرم = خطأ; }
+  hb_scope_guard_t (ثابت hb_scope_guard_t &) = ميٽيو;
+  hb_scope_guard_t &عامل= (ثابت hb_scope_guard_t &) = ميٽيو;
+  hb_scope_guard_t &عامل= (hb_scope_guard_t &&) = ميٽيو;
+  ~hb_scope_guard_t () { إذا (سرگرم) f (); }
 
   /* Release: dismiss the guard so the cleanup does NOT run.  Use
    * when transferring ownership out of the scope. */
-  void release () { active = false; }
+  فراغ release () { سرگرم = خطأ; }
 
-  private:
+  خاص:
   F f;
-  bool active;
+  منطقي سرگرم;
 };
 
-template <typename F>
-static inline hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
-{ return hb_scope_guard_t<F> (std::forward<F> (f)); }
+سانچو <قسم_نالو F>
+ساكن مضمن hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
+{ أرجع hb_scope_guard_t<F> (std::forward<F> (f)); }
 
-#define HB_SCOPE_GUARD_NAME_(line) hb_scope_guard_##line
-#define HB_SCOPE_GUARD_NAME(line) HB_SCOPE_GUARD_NAME_(line)
-#define HB_SCOPE_GUARD(stmt) \
-  auto HB_SCOPE_GUARD_NAME(__LINE__) = \
+#وصف_ڪريو HB_SCOPE_GUARD_NAME_(سٽ) hb_scope_guard_##سٽ
+#وصف_ڪريو HB_SCOPE_GUARD_NAME(سٽ) HB_SCOPE_GUARD_NAME_(سٽ)
+#وصف_ڪريو HB_SCOPE_GUARD(stmt) \
+  خودڪار HB_SCOPE_GUARD_NAME(__LINE__) = \
     hb_make_scope_guard ([&]() { stmt; }); \
-  (void) HB_SCOPE_GUARD_NAME(__LINE__)
+  (فراغ) HB_SCOPE_GUARD_NAME(__LINE__)
 
 
-#endif /* HB_ALGS_HH */
+#جيڪڏهن_پورو /* HB_ALGS_HH */

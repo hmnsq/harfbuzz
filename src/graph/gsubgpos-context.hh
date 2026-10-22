@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#جيڪڏهن_وصف_نه_ٿيل گراف_GSUBGPOS_CONTEXT_HH
+#وصف_ڪريو گراف_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نطاق گراف {
 
-struct Lookup;
+بنية Lookup;
 
-struct gsubgpos_graph_context_t
+بنية gsubgpos_گراف_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_اندروني ساكن گراف_نتيجو_t<gsubgpos_گراف_context_t> create (hb_ٽيگ_t جدول_ٽيگ_3,
+                                                                      گراف_t& گراف_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_ٽيگ_t جدول_ٽيگ_2;
+  گراف_t& گراف;
+  بنانشان lookup_list_اشاريو;
+  hb_hashmap_t<بنانشان, گراف::Lookup*> lookups;
+  hb_hashmap_t<بنانشان, بنانشان> subtable_منزل_extension;
+  hb_hashmap_t<بنانشان, hb_ويڪٽر_t<بنانشان>> ورهايو_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_اندروني گراف_نتيجو_t<بنانشان> create_ڳنڍ (بنانشان سائيز);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  گراف_نتيجو_t<فراغ> جوڙيو_بفر (حرف* بفر)
   {
-    return graph.add_buffer (buffer);
+    أرجع گراف.جوڙيو_بفر (بفر);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ خاص:
+  HB_اندروني gsubgpos_گراف_context_t (hb_ٽيگ_t جدول_ٽيگ_3,
+                                        گراف_t& گراف_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_اندروني بنانشان انگ_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#جيڪڏهن_پورو  // GRAPH_GSUBGPOS_CONTEXT

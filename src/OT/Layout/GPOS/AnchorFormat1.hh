@@ -1,40 +1,40 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#وصف_ڪريو OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct AnchorFormat1
+بنية AnchorFormat1
 {
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_سائيز_STATIC (6);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  فراغ get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_اڻ_استعمال_ٿيل,
+                   عائم *x, عائم *y) ثابت
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
   }
 
-  AnchorFormat1* copy (hb_serialize_context_t *c) const
+  AnchorFormat1* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    AnchorFormat1* out = c->embed<AnchorFormat1> (this);
-    if (!out) return_trace (out);
-    out->format = 1;
-    return_trace (out);
+    TRACE_SERIALIZE (هذا);
+    AnchorFormat1* ٻاهريون = c->embed<AnchorFormat1> (هذا);
+    إذا (!ٻاهريون) return_trace (ٻاهريون);
+    ٻاهريون->format = 1;
+    return_trace (ٻاهريون);
   }
 };
 
@@ -43,4 +43,4 @@ struct AnchorFormat1
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#جيڪڏهن_پورو  // OT_LAYOUT_GPOS_ANCHORFORMAT1_HH

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+استورد sys
+من os استورد رستو
 
-print(path.relpath(sys.argv[1], sys.argv[2]))
+ڇاپيو(رستو.relpath(sys.argv[1], sys.argv[2]))

@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_glsl =
+ساكن ثابت حرف *hb_gpu_راس_glsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

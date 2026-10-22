@@ -27,101 +27,101 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_HH
-#define HB_BUFFER_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_HH
+#وصف_ڪريو HB_بفر_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-set-digest.hh"
+#ضمن "hb.hh"
+#ضمن "hb-unicode.hh"
+#ضمن "hb-set-digest.hh"
 
 
-static_assert ((sizeof (hb_glyph_info_t) == 20), "");
-static_assert ((sizeof (hb_glyph_info_t) == sizeof (hb_glyph_position_t)), "");
+static_assert ((حجم (hb_glyph_info_t) == 20), "");
+static_assert ((حجم (hb_glyph_info_t) == حجم (hb_glyph_position_t)), "");
 
 HB_MARK_AS_FLAG_T (hb_glyph_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_serialize_flags_t);
-HB_MARK_AS_FLAG_T (hb_buffer_diff_flags_t);
+HB_MARK_AS_FLAG_T (hb_بفر_flags_t);
+HB_MARK_AS_FLAG_T (hb_بفر_serialize_flags_t);
+HB_MARK_AS_FLAG_T (hb_بفر_diff_flags_t);
 
-enum hb_buffer_scratch_flags_t {
-  HB_BUFFER_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK		= 0x00000004u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT		= 0x00000008u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_CGJ			= 0x00000010u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE		= 0x00000020u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK= 0x00000040u,
-  HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS		= 0x00000080u,
+تعداد hb_بفر_scratch_flags_t {
+  HB_بفر_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
+  HB_بفر_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
+  HB_بفر_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
+  HB_بفر_SCRATCH_FLAG_HAS_SPACE_FALLBACK		= 0x00000004u,
+  HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT		= 0x00000008u,
+  HB_بفر_SCRATCH_FLAG_HAS_CGJ			= 0x00000010u,
+  HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE		= 0x00000020u,
+  HB_بفر_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK= 0x00000040u,
+  HB_بفر_SCRATCH_FLAG_HAS_CONTINUATIONS		= 0x00000080u,
 
   /* Reserved for shapers' internal use. */
-  HB_BUFFER_SCRATCH_FLAG_SHAPER0			= 0x01000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER1			= 0x02000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER2			= 0x04000000u,
-  HB_BUFFER_SCRATCH_FLAG_SHAPER3			= 0x08000000u,
+  HB_بفر_SCRATCH_FLAG_SHAPER0			= 0x01000000u,
+  HB_بفر_SCRATCH_FLAG_SHAPER1			= 0x02000000u,
+  HB_بفر_SCRATCH_FLAG_SHAPER2			= 0x04000000u,
+  HB_بفر_SCRATCH_FLAG_SHAPER3			= 0x08000000u,
 };
-HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
+HB_MARK_AS_FLAG_T (hb_بفر_scratch_flags_t);
 
 
 /*
  * hb_buffer_t
  */
 
-struct hb_buffer_t
+بنية hb_بفر_t
 {
-  hb_object_header_t header;
+  hb_object_سرو_t سرو;
 
   /*
    * Information about how the text in the buffer should be treated.
    */
 
   hb_unicode_funcs_t *unicode; /* Unicode functions */
-  hb_buffer_flags_t flags; /* BOT / EOT / etc. */
-  hb_buffer_cluster_level_t cluster_level;
+  hb_بفر_flags_t flags; /* BOT / EOT / etc. */
+  hb_بفر_cluster_level_t cluster_level;
   hb_codepoint_t replacement; /* U+FFFD or something else. */
   hb_codepoint_t invisible; /* 0 or something else. */
-  hb_codepoint_t not_found; /* 0 or something else. */
-  hb_codepoint_t not_found_variation_selector; /* HB_CODEPOINT_INVALID or something else. */
+  hb_codepoint_t not_مليو; /* 0 or something else. */
+  hb_codepoint_t not_مليو_variation_selector; /* HB_CODEPOINT_INVALID or something else. */
 
   /*
    * Buffer contents
    */
 
-  hb_buffer_content_type_t content_type;
+  hb_بفر_content_type_t content_type;
   hb_segment_properties_t props; /* Script, language, direction */
 
-  bool successful; /* Allocations successful */
-  bool have_output; /* Whether we have an output buffer going on */
-  bool have_positions; /* Whether we have positions */
+  منطقي successful; /* Allocations successful */
+  منطقي have_output; /* Whether we have an output buffer going on */
+  منطقي have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  بنانشان صحيح idx; /* Cursor into ->info and ->pos arrays */
+  بنانشان صحيح len; /* Length of ->info and ->pos arrays */
+  بنانشان صحيح ٻاهريون_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  بنانشان صحيح allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
-  hb_glyph_info_t     *out_info;
+  hb_glyph_info_t     *ٻاهريون_info;
   hb_glyph_position_t *pos;
 
   /* Text before / after the main buffer contents.
    * Always in Unicode, and ordered outward.
    * Index 0 is for "pre-context", 1 for "post-context". */
-  static constexpr unsigned CONTEXT_LENGTH = 5u;
-  hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  ساكن constexpr بنانشان CONTEXT_ڊيگهائي = 5u;
+  hb_codepoint_t context[2][CONTEXT_ڊيگهائي];
+  بنانشان صحيح context_len[2];
 
-  hb_set_digest_t digest; /* Manually updated sometimes */
+  hb_سيٽ_digest_t digest; /* Manually updated sometimes */
 
   /*
    * Managed by enter / leave
    */
 
-  uint8_t allocated_var_bits;
+  uint8_t allocated_var_بٽ;
   uint8_t serial;
   uint32_t random_state;
-  hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  hb_بفر_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
+  بنانشان صحيح max_len; /* Maximum allowed len. */
+  صحيح max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -129,605 +129,605 @@ struct hb_buffer_t
    * Messaging callback
    */
 
-#ifndef HB_NO_BUFFER_MESSAGE
-  typedef void (*changed_func_t) (hb_buffer_t *buffer, void *user_data);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_بفر_پيغام
+  تعريفنوع فراغ (*بدليو_func_t) (hb_بفر_t *بفر, فراغ *user_معلومات);
 
-  hb_buffer_message_func_t message_func;
-  void *message_data;
-  hb_destroy_func_t message_destroy;
-  changed_func_t changed_func;
-  void *changed_data;
-  unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
-  static constexpr unsigned message_depth = 0u;
-#endif
+  hb_بفر_پيغام_func_t پيغام_func;
+  فراغ *پيغام_معلومات;
+  hb_destroy_func_t پيغام_destroy;
+  بدليو_func_t بدليو_func;
+  فراغ *بدليو_معلومات;
+  بنانشان پيغام_اونهائي; /* How deeply are we inside a message callback? */
+#وإلا
+  ساكن constexpr بنانشان پيغام_اونهائي = 0u;
+#جيڪڏهن_پورو
 
 
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD منطقي اندريون_error () ثابت { أرجع !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  فراغ allocate_var (بنانشان صحيح شروعات, بنانشان صحيح ڳڻپ)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (0 == (allocated_var_bits & bits));
-    allocated_var_bits |= bits;
+    بنانشان صحيح پڇاڙي = شروعات + ڳڻپ;
+    أكد (پڇاڙي <= 8);
+    بنانشان صحيح بٽ = (1u<<پڇاڙي) - (1u<<شروعات);
+    أكد (0 == (allocated_var_بٽ & بٽ));
+    allocated_var_بٽ |= بٽ;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  منطقي try_allocate_var (بنانشان صحيح شروعات, بنانشان صحيح ڳڻپ)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
-    allocated_var_bits |= bits;
-    return true;
+    بنانشان صحيح پڇاڙي = شروعات + ڳڻپ;
+    أكد (پڇاڙي <= 8);
+    بنانشان صحيح بٽ = (1u<<پڇاڙي) - (1u<<شروعات);
+    إذا (allocated_var_بٽ & بٽ)
+      أرجع خطأ;
+    allocated_var_بٽ |= بٽ;
+    أرجع سچ;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  فراغ deallocate_var (بنانشان صحيح شروعات, بنانشان صحيح ڳڻپ)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
-    allocated_var_bits &= ~bits;
+    بنانشان صحيح پڇاڙي = شروعات + ڳڻپ;
+    أكد (پڇاڙي <= 8);
+    بنانشان صحيح بٽ = (1u<<پڇاڙي) - (1u<<شروعات);
+    أكد (بٽ == (allocated_var_بٽ & بٽ));
+    allocated_var_بٽ &= ~بٽ;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  فراغ assert_var (بنانشان صحيح شروعات, بنانشان صحيح ڳڻپ)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    بنانشان صحيح پڇاڙي = شروعات + ڳڻپ;
+    أكد (پڇاڙي <= 8);
+    HB_اڻ_استعمال_ٿيل بنانشان صحيح بٽ = (1u<<پڇاڙي) - (1u<<شروعات);
+    أكد (بٽ == (allocated_var_بٽ & بٽ));
   }
-  void deallocate_var_all ()
+  فراغ deallocate_var_all ()
   {
-    allocated_var_bits = 0;
+    allocated_var_بٽ = 0;
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (بنانشان صحيح i = 0) { أرجع info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (بنانشان صحيح i = 0) ثابت { أرجع info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (بنانشان صحيح i = 0) { أرجع pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (بنانشان صحيح i = 0) ثابت { أرجع pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { أرجع ٻاهريون_info[ٻاهريون_len ? ٻاهريون_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () ثابت { أرجع ٻاهريون_info[ٻاهريون_len ? ٻاهريون_len - 1 : 0]; }
 
-  template <typename set_t>
-  void collect_codepoints (set_t &d) const
-  { d.clear (); d.add_array (&info[0].codepoint, len, sizeof (info[0])); }
+  سانچو <قسم_نالو سيٽ_t>
+  فراغ collect_codepoints (سيٽ_t &d) ثابت
+  { d.clear (); d.جوڙيو_array (&info[0].codepoint, len, حجم (info[0])); }
 
-  void update_digest ()
+  فراغ update_digest ()
   {
-    digest = hb_set_digest_t ();
+    digest = hb_سيٽ_digest_t ();
     collect_codepoints (digest);
   }
 
-  HB_INTERNAL void similar (const hb_buffer_t &src);
-  HB_INTERNAL void reset ();
-  HB_INTERNAL void clear ();
+  HB_اندروني فراغ similar (ثابت hb_بفر_t &src);
+  HB_اندروني فراغ reset ();
+  HB_اندروني فراغ clear ();
 
   /* Called around shape() */
-  HB_INTERNAL void enter ();
-  HB_INTERNAL void leave ();
+  HB_اندروني فراغ enter ();
+  HB_اندروني فراغ leave ();
 
-#ifndef HB_NO_BUFFER_VERIFY
-  HB_INTERNAL
-#endif
-  bool verify (hb_buffer_t        *text_buffer,
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_بفر_VERIFY
+  HB_اندروني
+#جيڪڏهن_پورو
+  منطقي verify (hb_بفر_t        *متن_بفر,
 	       hb_font_t          *font,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shapers)
-#ifndef HB_NO_BUFFER_VERIFY
+	       ثابت hb_feature_t *features,
+	       بنانشان صحيح        انگ_features,
+	       ثابت حرف * ثابت *shapers)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_بفر_VERIFY
   ;
-#else
-  { return true; }
-#endif
+#وإلا
+  { أرجع سچ; }
+#جيڪڏهن_پورو
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  بنانشان صحيح backtrack_len () ثابت { أرجع have_output ? ٻاهريون_len : idx; }
+  بنانشان صحيح lookahead_len () ثابت { أرجع len - idx; }
+  uint8_t ايندڙ_serial () { أرجع ++serial ? serial : ++serial; }
 
-  HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
-  HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
-  HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
-				     const hb_glyph_position_t &glyph_pos);
+  HB_اندروني فراغ جوڙيو (hb_codepoint_t  codepoint,
+			بنانشان صحيح    cluster);
+  HB_اندروني فراغ جوڙيو_info (ثابت hb_glyph_info_t &glyph_info);
+  HB_اندروني فراغ جوڙيو_info_and_pos (ثابت hb_glyph_info_t &glyph_info,
+				     ثابت hb_glyph_position_t &glyph_pos);
 
-  void reverse_range (unsigned start, unsigned end)
+  فراغ ابتو_range (بنانشان شروعات, بنانشان پڇاڙي)
   {
-    hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
-      hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
+    hb_array_t<hb_glyph_info_t> (info, len).reverse (شروعات, پڇاڙي);
+    إذا (have_positions)
+      hb_array_t<hb_glyph_position_t> (pos, len).reverse (شروعات, پڇاڙي);
   }
-  void reverse () { reverse_range (0, len); }
+  فراغ reverse () { ابتو_range (0, len); }
 
-  template <typename FuncType>
-  void reverse_groups (const FuncType& group,
-		       bool merge_clusters = false)
+  سانچو <قسم_نالو FuncType>
+  فراغ ابتو_groups (ثابت FuncType& گروهه,
+		       منطقي ملايو_clusters = خطأ)
   {
-    if (unlikely (!len))
-      return;
+    إذا (unlikely (!len))
+      أرجع;
 
-    unsigned start = 0;
-    unsigned i;
-    for (i = 1; i < len; i++)
+    بنانشان شروعات = 0;
+    بنانشان i;
+    لكل (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      إذا (!گروهه (info[i - 1], info[i]))
       {
-	if (merge_clusters)
-	  this->merge_clusters (start, i);
-	reverse_range (start, i);
-	start = i;
+	إذا (ملايو_clusters)
+	  هذا->ملايو_clusters (شروعات, i);
+	ابتو_range (شروعات, i);
+	شروعات = i;
       }
     }
-    if (merge_clusters)
-      this->merge_clusters (start, i);
-    reverse_range (start, i);
+    إذا (ملايو_clusters)
+      هذا->ملايو_clusters (شروعات, i);
+    ابتو_range (شروعات, i);
 
     reverse ();
   }
 
-  template <typename FuncType>
-  unsigned group_end (unsigned start, const FuncType& group) const
+  سانچو <قسم_نالو FuncType>
+  بنانشان گروهه_پڇاڙي (بنانشان شروعات, ثابت FuncType& گروهه) ثابت
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    طالما (++شروعات < len && گروهه (info[شروعات - 1], info[شروعات]))
       ;
 
-    return start;
+    أرجع شروعات;
   }
 
-  static bool _cluster_group_func (const hb_glyph_info_t& a,
-				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  ساكن منطقي cluster_گروهه_func (ثابت hb_glyph_info_t& a,
+				   ثابت hb_glyph_info_t& b)
+  { أرجع a.cluster == b.cluster; }
 
-  void reverse_clusters () { reverse_groups (_cluster_group_func); }
+  فراغ ابتو_clusters () { ابتو_groups (cluster_گروهه_func); }
 
-  HB_INTERNAL void guess_segment_properties ();
+  HB_اندروني فراغ guess_segment_properties ();
 
-  HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
-  HB_INTERNAL void clear_output ();
-  HB_INTERNAL void clear_positions ();
+  HB_اندروني منطقي متزامن ();
+  HB_اندروني صحيح sync_so_far ();
+  HB_اندروني فراغ clear_output ();
+  HB_اندروني فراغ clear_positions ();
 
-  template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
-				    const T *glyph_data)
+  سانچو <قسم_نالو T>
+  HB_NODISCARD منطقي replace_glyphs (بنانشان صحيح انگ_اندريون,
+				    بنانشان صحيح انگ_ٻاهريون,
+				    ثابت T *glyph_معلومات)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    إذا (unlikely (!make_گنجائش_for (انگ_اندريون, انگ_ٻاهريون))) أرجع خطأ;
 
-    assert (idx + num_in <= len);
+    أكد (idx + انگ_اندريون <= len);
 
-    merge_clusters (idx, idx + num_in);
+    ملايو_clusters (idx, idx + انگ_اندريون);
 
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
-    hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    hb_glyph_info_t *pinfo = &ٻاهريون_info[ٻاهريون_len];
+    لكل (بنانشان صحيح i = 0; i < انگ_ٻاهريون; i++)
     {
       *pinfo = orig_info;
-      pinfo->codepoint = glyph_data[i];
+      pinfo->codepoint = glyph_معلومات[i];
       pinfo++;
     }
 
-    idx  += num_in;
-    out_len += num_out;
-    return true;
+    idx  += انگ_اندريون;
+    ٻاهريون_len += انگ_ٻاهريون;
+    أرجع سچ;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  HB_NODISCARD منطقي replace_glyph (hb_codepoint_t glyph_اشاريو)
+  { أرجع replace_glyphs (1, 1, &glyph_اشاريو); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
-  HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  HB_NODISCARD منطقي output_glyph (hb_codepoint_t glyph_اشاريو)
+  { أرجع replace_glyphs (0, 1, &glyph_اشاريو); }
 
-  HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
+  HB_NODISCARD منطقي output_info (ثابت hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    إذا (unlikely (!make_گنجائش_for (0, 1))) أرجع خطأ;
 
-    out_info[out_len] = glyph_info;
+    ٻاهريون_info[ٻاهريون_len] = glyph_info;
 
-    out_len++;
-    return true;
+    ٻاهريون_len++;
+    أرجع سچ;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
-  HB_NODISCARD bool copy_glyph ()
+  HB_NODISCARD منطقي copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    أرجع output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyph ()
+  HB_NODISCARD منطقي ايندڙ_glyph ()
   {
-    if (have_output)
+    إذا (have_output)
     {
-      if (out_info != info || out_len != idx)
+      إذا (ٻاهريون_info != info || ٻاهريون_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
-	out_info[out_len] = info[idx];
+	إذا (unlikely (!ensure (ٻاهريون_len + 1))) أرجع خطأ;
+	ٻاهريون_info[ٻاهريون_len] = info[idx];
       }
-      out_len++;
+      ٻاهريون_len++;
     }
 
     idx++;
-    return true;
+    أرجع سچ;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD منطقي ايندڙ_glyphs (بنانشان صحيح n)
   {
-    if (have_output)
+    إذا (have_output)
     {
-      if (out_info != info || out_len != idx)
+      إذا (ٻاهريون_info != info || ٻاهريون_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
-	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
+	إذا (unlikely (!ensure (ٻاهريون_len + n))) أرجع خطأ;
+	memmove (ٻاهريون_info + ٻاهريون_len, info + idx, n * حجم (ٻاهريون_info[0]));
       }
-      out_len += n;
+      ٻاهريون_len += n;
     }
 
     idx += n;
-    return true;
+    أرجع سچ;
   }
   /* Advance idx without copying to output. */
-  void skip_glyph () { idx++; }
-  void add_masks (hb_mask_t mask)
+  فراغ skip_glyph () { idx++; }
+  فراغ جوڙيو_masks (hb_نقاب_t نقاب)
   {
-    for (unsigned int j = 0; j < len; j++)
-      info[j].mask |= mask;
+    لكل (بنانشان صحيح j = 0; j < len; j++)
+      info[j].نقاب |= نقاب;
   }
-  HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+  HB_اندروني فراغ سيٽ_masks (hb_نقاب_t value, hb_نقاب_t نقاب,
+			      بنانشان صحيح cluster_شروعات, بنانشان صحيح cluster_پڇاڙي);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  فراغ ملايو_clusters (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    إذا (پڇاڙي - شروعات < 2)
+      أرجع;
+    إذا (!HB_بفر_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_منزل_break (شروعات, پڇاڙي);
+      أرجع;
     }
-    merge_clusters_impl (start, end);
+    ملايو_clusters_impl (شروعات, پڇاڙي);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  فراغ ملايو_grapheme_clusters (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    إذا (پڇاڙي - شروعات < 2)
+      أرجع;
+    إذا (!HB_بفر_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_منزل_break (شروعات, پڇاڙي);
+      أرجع;
     }
-    merge_clusters_impl (start, end);
+    ملايو_clusters_impl (شروعات, پڇاڙي);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_اندروني فراغ ملايو_clusters_impl (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي);
+  فراغ ملايو_ٻاهريون_clusters (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
-    merge_out_clusters_impl (start, end);
+    إذا (پڇاڙي - شروعات < 2)
+      أرجع;
+    إذا (!HB_بفر_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      أرجع;
+    ملايو_ٻاهريون_clusters_impl (شروعات, پڇاڙي);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  فراغ ملايو_ٻاهريون_grapheme_clusters (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
-    merge_out_clusters_impl (start, end);
+    إذا (پڇاڙي - شروعات < 2)
+      أرجع;
+    إذا (!HB_بفر_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      أرجع;
+    ملايو_ٻاهريون_clusters_impl (شروعات, پڇاڙي);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_اندروني فراغ ملايو_ٻاهريون_clusters_impl (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي);
   /* Merge clusters for deleting current glyph, and skip it. */
-  HB_INTERNAL void delete_glyph ();
-  HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
+  HB_اندروني فراغ delete_glyph ();
+  HB_اندروني فراغ delete_glyphs_inplace (منطقي (*filter) (ثابت hb_glyph_info_t *info));
 
 
 
   /* Adds glyph flags in mask to infos with clusters between start and end.
    * The start index will be from out-buffer if from_out_buffer is true.
    * If interior is true, then the cluster having the minimum value is skipped. */
-  void _set_glyph_flags_impl (hb_mask_t mask,
-			      unsigned start,
-			      unsigned end,
-			      bool interior,
-			      bool from_out_buffer)
+  فراغ سيٽ_glyph_flags_impl (hb_نقاب_t نقاب,
+			      بنانشان شروعات,
+			      بنانشان پڇاڙي,
+			      منطقي interior,
+			      منطقي from_ٻاهريون_بفر)
   {
-    if (!from_out_buffer || !have_output)
+    إذا (!from_ٻاهريون_بفر || !have_output)
     {
-      if (!interior)
+      إذا (!interior)
       {
-	for (unsigned i = start; i < end; i++)
-	  info[i].mask |= mask;
+	لكل (بنانشان i = شروعات; i < پڇاڙي; i++)
+	  info[i].نقاب |= نقاب;
       }
-      else
+      وإلا
       {
-	unsigned cluster = _infos_find_min_cluster (info, start, end);
-	_infos_set_glyph_flags (info, start, end, cluster, mask);
+	بنانشان cluster = infos_ڳوليو_min_cluster (info, شروعات, پڇاڙي);
+	infos_سيٽ_glyph_flags (info, شروعات, پڇاڙي, cluster, نقاب);
       }
     }
-    else
+    وإلا
     {
-      assert (start <= out_len);
-      assert (idx <= end);
+      أكد (شروعات <= ٻاهريون_len);
+      أكد (idx <= پڇاڙي);
 
-      if (!interior)
+      إذا (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
-	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
-	  info[i].mask |= mask;
+	لكل (بنانشان i = شروعات; i < ٻاهريون_len; i++)
+	  ٻاهريون_info[i].نقاب |= نقاب;
+	لكل (بنانشان i = idx; i < پڇاڙي; i++)
+	  info[i].نقاب |= نقاب;
       }
-      else
+      وإلا
       {
-	unsigned cluster = _infos_find_min_cluster (info, idx, end);
-	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
+	بنانشان cluster = infos_ڳوليو_min_cluster (info, idx, پڇاڙي);
+	cluster = infos_ڳوليو_min_cluster (ٻاهريون_info, شروعات, ٻاهريون_len, cluster);
 
-	_infos_set_glyph_flags (out_info, start, out_len, cluster, mask);
-	_infos_set_glyph_flags (info, idx, end, cluster, mask);
+	infos_سيٽ_glyph_flags (ٻاهريون_info, شروعات, ٻاهريون_len, cluster, نقاب);
+	infos_سيٽ_glyph_flags (info, idx, پڇاڙي, cluster, نقاب);
       }
     }
   }
 
   HB_ALWAYS_INLINE
-  void _set_glyph_flags (hb_mask_t mask,
-			 unsigned start = 0,
-			 unsigned end = (unsigned) -1,
-			 bool interior = false,
-			 bool from_out_buffer = false)
+  فراغ سيٽ_glyph_flags (hb_نقاب_t نقاب,
+			 بنانشان شروعات = 0,
+			 بنانشان پڇاڙي = (بنانشان) -1,
+			 منطقي interior = خطأ,
+			 منطقي from_ٻاهريون_بفر = خطأ)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    إذا (unlikely (پڇاڙي != (بنانشان) -1 && پڇاڙي - شروعات > 255))
+      أرجع;
 
-    end = hb_min (end, len);
+    پڇاڙي = hb_min (پڇاڙي, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    إذا (interior && !from_ٻاهريون_بفر && پڇاڙي - شروعات < 2)
+      أرجع;
 
-    _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
+    سيٽ_glyph_flags_impl (نقاب, شروعات, پڇاڙي, interior, from_ٻاهريون_بفر);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_منزل_break (بنانشان صحيح شروعات = 0, بنانشان صحيح پڇاڙي = -1)
   {
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      true);
+    سيٽ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_منزل_BREAK | HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT,
+		      شروعات, پڇاڙي,
+		      سچ);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  فراغ محفوظ_منزل_وجهو_tatweel (بنانشان صحيح شروعات = 0, بنانشان صحيح پڇاڙي = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    إذا ((flags & HB_بفر_FLAG_PRODUCE_محفوظ_منزل_وجهو_TATWEEL) == 0)
     {
-      unsafe_to_break (start, end);
-      return;
+      unsafe_منزل_break (شروعات, پڇاڙي);
+      أرجع;
     }
-    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
-		      start, end,
-		      true);
+    سيٽ_glyph_flags (HB_GLYPH_FLAG_محفوظ_منزل_وجهو_TATWEEL,
+		      شروعات, پڇاڙي,
+		      سچ);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
   HB_ALWAYS_INLINE
-#endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+#جيڪڏهن_پورو
+  فراغ unsafe_منزل_concat (بنانشان صحيح شروعات = 0, بنانشان صحيح پڇاڙي = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      false);
+    إذا (likely ((flags & HB_بفر_FLAG_PRODUCE_UNSAFE_منزل_CONCAT) == 0))
+      أرجع;
+    سيٽ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT,
+		      شروعات, پڇاڙي,
+		      خطأ);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  فراغ unsafe_منزل_break_from_outbuffer (بنانشان صحيح شروعات = 0, بنانشان صحيح پڇاڙي = -1)
   {
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      true, true);
+    سيٽ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_منزل_BREAK | HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT,
+		      شروعات, پڇاڙي,
+		      سچ, سچ);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
   HB_ALWAYS_INLINE
-#endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+#جيڪڏهن_پورو
+  فراغ unsafe_منزل_concat_from_outbuffer (بنانشان صحيح شروعات = 0, بنانشان صحيح پڇاڙي = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
-    _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
-		      start, end,
-		      false, true);
+    إذا (likely ((flags & HB_بفر_FLAG_PRODUCE_UNSAFE_منزل_CONCAT) == 0))
+      أرجع;
+    سيٽ_glyph_flags (HB_GLYPH_FLAG_UNSAFE_منزل_CONCAT,
+		      شروعات, پڇاڙي,
+		      خطأ, سچ);
   }
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_اندروني منطقي move_منزل (بنانشان صحيح i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_اندروني منطقي enlarge (بنانشان صحيح سائيز);
 
-  HB_NODISCARD bool resize (unsigned length)
+  HB_NODISCARD منطقي resize (بنانشان ڊيگهائي)
   {
-    assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
-    len = length;
-    return true;
+    أكد (!have_output);
+    إذا (unlikely (!ensure (ڊيگهائي))) أرجع خطأ;
+    len = ڊيگهائي;
+    أرجع سچ;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD منطقي ensure (بنانشان صحيح سائيز)
+  { أرجع likely (!سائيز || سائيز < allocated) ? سچ : enlarge (سائيز); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD منطقي ensure_inplace (بنانشان صحيح سائيز)
+  { أرجع likely (!سائيز || سائيز < allocated); }
 
-  void assert_glyphs ()
+  فراغ assert_glyphs ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
-	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
+    أكد ((content_type == HB_بفر_CONTENT_TYPE_GLYPHS) ||
+	    (!len && (content_type == HB_بفر_CONTENT_TYPE_INVALID)));
   }
-  void assert_unicode ()
+  فراغ assert_unicode ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
-	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
+    أكد ((content_type == HB_بفر_CONTENT_TYPE_UNICODE) ||
+	    (!len && (content_type == HB_بفر_CONTENT_TYPE_INVALID)));
   }
-  HB_NODISCARD bool ensure_glyphs ()
+  HB_NODISCARD منطقي ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    إذا (unlikely (content_type != HB_بفر_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
-      content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
+      إذا (content_type != HB_بفر_CONTENT_TYPE_INVALID)
+	أرجع خطأ;
+      أكد (len == 0);
+      content_type = HB_بفر_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    أرجع سچ;
   }
-  HB_NODISCARD bool ensure_unicode ()
+  HB_NODISCARD منطقي ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    إذا (unlikely (content_type != HB_بفر_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
-      content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
+      إذا (content_type != HB_بفر_CONTENT_TYPE_INVALID)
+	أرجع خطأ;
+      أكد (len == 0);
+      content_type = HB_بفر_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    أرجع سچ;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_اندروني منطقي make_گنجائش_for (بنانشان صحيح انگ_اندريون, بنانشان صحيح انگ_ٻاهريون);
+  HB_NODISCARD HB_اندروني منطقي سرڪايو_forward (بنانشان صحيح ڳڻپ);
 
-  typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  تعريفنوع ڊگهو scratch_بفر_t;
+  HB_اندروني scratch_بفر_t *get_scratch_بفر (بنانشان صحيح *سائيز);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  فراغ clear_context (بنانشان صحيح side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_اندروني فراغ sort (بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي, صحيح(*compar)(ثابت hb_glyph_info_t *, ثابت hb_glyph_info_t *));
 
-  bool messaging ()
+  منطقي messaging ()
   {
-#ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_بفر_پيغام
+    أرجع خطأ;
+#وإلا
+    أرجع unlikely (پيغام_func);
+#جيڪڏهن_پورو
   }
-  bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
+  منطقي پيغام (hb_font_t *font, ثابت حرف *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
-#ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+#جيڪڏهن_وصف_ٿيل HB_NO_بفر_پيغام
+    أرجع سچ;
+#وإلا
+    إذا (likely (!messaging ()))
+      أرجع سچ;
 
     va_list ap;
-    va_start (ap, fmt);
-    bool ret = message_impl (font, fmt, ap);
-    va_end (ap);
+    va_شروعات (ap, fmt);
+    منطقي ret = پيغام_impl (font, fmt, ap);
+    va_پڇاڙي (ap);
 
-    return ret;
-#endif
+    أرجع ret;
+#جيڪڏهن_پورو
   }
-  HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
-  HB_INTERNAL void changed ();
+  HB_اندروني منطقي پيغام_impl (hb_font_t *font, ثابت حرف *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
+  HB_اندروني فراغ بدليو ();
 
-  static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  ساكن فراغ
+  سيٽ_cluster (hb_glyph_info_t &inf, بنانشان صحيح cluster, بنانشان صحيح نقاب = 0)
   {
-    if (inf.cluster != cluster)
-      inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
+    إذا (inf.cluster != cluster)
+      inf.نقاب = (inf.نقاب & ~HB_GLYPH_FLAG_DEFINED) | (نقاب & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
-  void
-  _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
-			  hb_mask_t mask)
+  فراغ
+  infos_سيٽ_glyph_flags (hb_glyph_info_t *infos,
+			  بنانشان صحيح شروعات, بنانشان صحيح پڇاڙي,
+			  بنانشان صحيح cluster,
+			  hb_نقاب_t نقاب)
   {
-    if (unlikely (start == end))
-      return;
+    إذا (unlikely (شروعات == پڇاڙي))
+      أرجع;
 
-    max_ops -= end - start;
-    if (unlikely (max_ops < 0))
-      successful = false;
+    max_ops -= پڇاڙي - شروعات;
+    إذا (unlikely (max_ops < 0))
+      successful = خطأ;
 
-    unsigned cluster_first = infos[start].cluster;
-    unsigned cluster_last = infos[end - 1].cluster;
+    بنانشان cluster_پهريون = infos[شروعات].cluster;
+    بنانشان cluster_آخري = infos[پڇاڙي - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
-	(cluster != cluster_first && cluster != cluster_last))
+    إذا (cluster_level == HB_بفر_CLUSTER_LEVEL_CHARACTERS ||
+	(cluster != cluster_پهريون && cluster != cluster_آخري))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
-	  infos[i].mask |= mask;
-      return;
+      لكل (بنانشان صحيح i = شروعات; i < پڇاڙي; i++)
+	إذا (cluster != infos[i].cluster)
+	  infos[i].نقاب |= نقاب;
+      أرجع;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    إذا (cluster == cluster_پهريون)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
-	infos[i - 1].mask |= mask;
+      لكل (بنانشان صحيح i = پڇاڙي; شروعات < i && infos[i - 1].cluster != cluster_پهريون; i--)
+	infos[i - 1].نقاب |= نقاب;
     }
-    else /* cluster == cluster_last */
+    وإلا /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
-	infos[i].mask |= mask;
+      لكل (بنانشان صحيح i = شروعات; i < پڇاڙي && infos[i].cluster != cluster_آخري; i++)
+	infos[i].نقاب |= نقاب;
     }
   }
-  unsigned
-  _infos_find_min_cluster (const hb_glyph_info_t *infos,
-			   unsigned start, unsigned end,
-			   unsigned cluster = UINT_MAX)
+  بنانشان
+  infos_ڳوليو_min_cluster (ثابت hb_glyph_info_t *infos,
+			   بنانشان شروعات, بنانشان پڇاڙي,
+			   بنانشان cluster = UINT_MAX)
   {
-    if (unlikely (start == end))
-      return cluster;
+    إذا (unlikely (شروعات == پڇاڙي))
+      أرجع cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    إذا (cluster_level == HB_بفر_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      لكل (بنانشان صحيح i = شروعات; i < پڇاڙي; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      أرجع cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    أرجع hb_min (cluster, hb_min (infos[شروعات].cluster, infos[پڇاڙي - 1].cluster));
   }
 
-  void clear_glyph_flags (hb_mask_t mask = 0)
+  فراغ clear_glyph_flags (hb_نقاب_t نقاب = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
-      info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
+    لكل (بنانشان صحيح i = 0; i < len; i++)
+      info[i].نقاب = (info[i].نقاب & ~HB_GLYPH_FLAG_DEFINED) | (نقاب & HB_GLYPH_FLAG_DEFINED);
   }
 };
-DECLARE_NULL_INSTANCE (hb_buffer_t);
+DECLARE_NULL_INSTANCE (hb_بفر_t);
 
 
-#define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
-       start < _count; \
-       start = end, end = buffer->group_end (start, group_func))
+#وصف_ڪريو foreach_گروهه(بفر, شروعات, پڇاڙي, گروهه_func) \
+  لكل (بنانشان صحيح \
+       ڳڻپ_2 = بفر->len, \
+       شروعات = 0, پڇاڙي = ڳڻپ_2 ? بفر->گروهه_پڇاڙي (0, گروهه_func) : 0; \
+       شروعات < ڳڻپ_2; \
+       شروعات = پڇاڙي, پڇاڙي = بفر->گروهه_پڇاڙي (شروعات, گروهه_func))
 
-#define foreach_cluster(buffer, start, end) \
-	foreach_group (buffer, start, end, hb_buffer_t::_cluster_group_func)
+#وصف_ڪريو foreach_cluster(بفر, شروعات, پڇاڙي) \
+	foreach_گروهه (بفر, شروعات, پڇاڙي, hb_بفر_t::cluster_گروهه_func)
 
 
-#define HB_BUFFER_XALLOCATE_VAR(b, func, var) \
+#وصف_ڪريو HB_بفر_XALLOCATE_VAR(b, func, var) \
   b->func (offsetof (hb_glyph_info_t, var) - offsetof(hb_glyph_info_t, var1), \
-	   sizeof (b->info[0].var))
-#define HB_BUFFER_ALLOCATE_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, allocate_var,     var ())
-#define HB_BUFFER_TRY_ALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, try_allocate_var, var ())
-#define HB_BUFFER_DEALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, deallocate_var,   var ())
-#define HB_BUFFER_ASSERT_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, assert_var,       var ())
+	   حجم (b->info[0].var))
+#وصف_ڪريو HB_بفر_ALLOCATE_VAR(b, var)		HB_بفر_XALLOCATE_VAR (b, allocate_var,     var ())
+#وصف_ڪريو HB_بفر_TRY_ALLOCATE_VAR(b, var)	HB_بفر_XALLOCATE_VAR (b, try_allocate_var, var ())
+#وصف_ڪريو HB_بفر_DEALLOCATE_VAR(b, var)	HB_بفر_XALLOCATE_VAR (b, deallocate_var,   var ())
+#وصف_ڪريو HB_بفر_ASSERT_VAR(b, var)		HB_بفر_XALLOCATE_VAR (b, assert_var,       var ())
 
 
-#endif /* HB_BUFFER_HH */
+#جيڪڏهن_پورو /* HB_BUFFER_HH */

@@ -22,63 +22,63 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_GASP_TABLE_HH
-#define HB_OT_GASP_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_GASP_جدول_HH
+#وصف_ڪريو HB_OT_GASP_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-hhea-table.hh"
+#ضمن "hb-ot-os2-table.hh"
+#ضمن "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gasp
  */
-#define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
+#وصف_ڪريو HB_OT_ٽيگ_gasp HB_ٽيگ('g','a','s','p')
 
 
-namespace OT {
+نطاق OT {
 
-struct GaspRange
+بنية GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
+  عام:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  DEFINE_سائيز_STATIC (4);
 };
 
-struct gasp
+بنية gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  ثابت GaspRange &get_gasp_range (بنانشان صحيح i) ثابت
+  { أرجع gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
-  HBUINT16	version;	/* Version number (set to 1) */
-  Array16Of<GaspRange>
+  محمي:
+  HBUINT16	نسخو;	/* Version number (set to 1) */
+  Array16_جو<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
-  DEFINE_SIZE_ARRAY (4, gaspRanges);
+  عام:
+  DEFINE_سائيز_ARRAY (4, gaspRanges);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_GASP_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_GASP_TABLE_HH */

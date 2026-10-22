@@ -24,25 +24,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#جيڪڏهن_وصف_ٿيل HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#جيڪڏهن_پورو
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_OPEN
+#وصف_ڪريو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالي_جايون ()
+#جيڪڏهن_پورو
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  if (argc != 4 && argc != 5) {
+  إذا (argc != 4 && argc != 5) {
     fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
-    exit (1);
+    ٻاهر_نڪرو (1);
   }
 
   /* Create the face */
@@ -50,18 +50,18 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالي_اشارو;
 
   hb_font_t *font = hb_font_create (face);
-#ifdef HAVE_FREETYPE
-  hb_ft_font_set_funcs (font);
-#endif
+#جيڪڏهن_وصف_ٿيل HAVE_FREETYPE
+  hb_ft_font_سيٽ_funcs (font);
+#جيڪڏهن_پورو
 
-  unsigned int len = argc - 3;
+  بنانشان صحيح len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  إذا (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    أرجع 2;
+  أرجع !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], خالي_اشارو, 0), glyphs, len, خطأ);
 }

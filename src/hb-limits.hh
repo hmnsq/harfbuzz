@@ -22,122 +22,122 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_LIMITS_HH
-#define HB_LIMITS_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_LIMITS_HH
+#وصف_ڪريو HB_LIMITS_HH
 
-#include "hb.hh"
-
-
-#ifndef HB_BUFFER_MAX_LEN_FACTOR
-#define HB_BUFFER_MAX_LEN_FACTOR 256
-#endif
-#ifndef HB_BUFFER_MAX_LEN_MIN
-#define HB_BUFFER_MAX_LEN_MIN 65536
-#endif
-#ifndef HB_BUFFER_MAX_LEN_DEFAULT
-#define HB_BUFFER_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
-#endif
-
-#ifndef HB_BUFFER_MAX_OPS_FACTOR
-#define HB_BUFFER_MAX_OPS_FACTOR 4096
-#endif
-#ifndef HB_BUFFER_MAX_OPS_MIN
-#define HB_BUFFER_MAX_OPS_MIN 65536
-#endif
-#ifndef HB_BUFFER_MAX_OPS_DEFAULT
-#define HB_BUFFER_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
-#endif
+#ضمن "hb.hh"
 
 
-#ifndef HB_MAX_NESTING_LEVEL
-#define HB_MAX_NESTING_LEVEL 64
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_LEN_ضرب_ڪندڙ
+#وصف_ڪريو HB_بفر_MAX_LEN_ضرب_ڪندڙ 256
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_LEN_MIN
+#وصف_ڪريو HB_بفر_MAX_LEN_MIN 65536
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_LEN_DEFAULT
+#وصف_ڪريو HB_بفر_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_OPS_ضرب_ڪندڙ
+#وصف_ڪريو HB_بفر_MAX_OPS_ضرب_ڪندڙ 4096
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_OPS_MIN
+#وصف_ڪريو HB_بفر_MAX_OPS_MIN 65536
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_MAX_OPS_DEFAULT
+#وصف_ڪريو HB_بفر_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
+#جيڪڏهن_پورو
 
 
-#ifndef HB_MAX_CONTEXT_LENGTH
-#define HB_MAX_CONTEXT_LENGTH 64
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_NESTING_LEVEL
+#وصف_ڪريو HB_MAX_NESTING_LEVEL 64
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_SYLLABLE_LENGTH
-#define HB_MAX_SYLLABLE_LENGTH 64
-#endif
 
-#ifndef HB_CLOSURE_MAX_STAGES
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_CONTEXT_ڊيگهائي
+#وصف_ڪريو HB_MAX_CONTEXT_ڊيگهائي 64
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_SYLLABLE_ڊيگهائي
+#وصف_ڪريو HB_MAX_SYLLABLE_ڊيگهائي 64
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل HB_گهيرو_MAX_STAGES
 /*
  * The maximum number of times a lookup can be applied during shaping.
  * Used to limit the number of iterations of the closure algorithm.
  * This must be larger than the number of times add_gsub_pause() is
  * called in a collect_features call of any shaper.
  */
-#define HB_CLOSURE_MAX_STAGES 12
-#endif
+#وصف_ڪريو HB_گهيرو_MAX_STAGES 12
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_SCRIPTS
-#define HB_MAX_SCRIPTS 500
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_SCRIPTS
+#وصف_ڪريو HB_MAX_SCRIPTS 500
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_LANGSYS
-#define HB_MAX_LANGSYS 2000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_LANGSYS
+#وصف_ڪريو HB_MAX_LANGSYS 2000
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_LANGSYS_FEATURE_COUNT
-#define HB_MAX_LANGSYS_FEATURE_COUNT 50000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_LANGSYS_FEATURE_ڳڻپ
+#وصف_ڪريو HB_MAX_LANGSYS_FEATURE_ڳڻپ 50000
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_FEATURE_INDICES
-#define HB_MAX_FEATURE_INDICES 8000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_FEATURE_INDICES
+#وصف_ڪريو HB_MAX_FEATURE_INDICES 8000
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_LOOKUP_VISIT_COUNT
-#define HB_MAX_LOOKUP_VISIT_COUNT 35000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_LOOKUP_گهمو_ڳڻپ
+#وصف_ڪريو HB_MAX_LOOKUP_گهمو_ڳڻپ 35000
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_GRAPH_EDGE_COUNT
-#define HB_MAX_GRAPH_EDGE_COUNT 16384
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_گراف_ڪنارو_ڳڻپ
+#وصف_ڪريو HB_MAX_گراف_ڪنارو_ڳڻپ 16384
+#جيڪڏهن_پورو
 
-#ifndef HB_VAR_COMPOSITE_MAX_AXES
-#define HB_VAR_COMPOSITE_MAX_AXES 4096
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_VAR_مرکب_MAX_AXES
+#وصف_ڪريو HB_VAR_مرکب_MAX_AXES 4096
+#جيڪڏهن_پورو
 
-#ifndef HB_GLYF_MAX_POINTS
-#define HB_GLYF_MAX_POINTS 200000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_GLYF_MAX_POINTS
+#وصف_ڪريو HB_GLYF_MAX_POINTS 200000
+#جيڪڏهن_پورو
 
-#ifndef HB_CFF_MAX_OPS
-#define HB_CFF_MAX_OPS 200000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_CFF_MAX_OPS
+#وصف_ڪريو HB_CFF_MAX_OPS 200000
+#جيڪڏهن_پورو
 
-#ifndef HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH
-#define HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH 64
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_MAX_مرکب_OPERATIONS_في_GLYPH
+#وصف_ڪريو HB_MAX_مرکب_OPERATIONS_في_GLYPH 64
+#جيڪڏهن_پورو
 
-#ifndef HB_SVG_MAX_PATH_SEGMENTS
-#define HB_SVG_MAX_PATH_SEGMENTS 262144
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_SVG_MAX_رستو_SEGMENTS
+#وصف_ڪريو HB_SVG_MAX_رستو_SEGMENTS 262144
+#جيڪڏهن_پورو
 
-#ifndef HB_GPU_DRAW_MAX_CURVES
-#define HB_GPU_DRAW_MAX_CURVES 65536
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_GPU_DRAW_MAX_CURVES
+#وصف_ڪريو HB_GPU_DRAW_MAX_CURVES 65536
+#جيڪڏهن_پورو
 
 /* Total bytes of sub-blobs (gradient color stops, clip outlines) in one
  * hb_gpu_paint_t walk; exceeding it makes the paint unsupported. */
-#ifndef HB_GPU_PAINT_MAX_SUB_BYTES
-#define HB_GPU_PAINT_MAX_SUB_BYTES ((unsigned) 64 << 20)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_GPU_PAINT_MAX_SUB_بائيٽون
+#وصف_ڪريو HB_GPU_PAINT_MAX_SUB_بائيٽون ((بنانشان) 64 << 20)
+#جيڪڏهن_پورو
 
 /* Tiles emitted by one hb_paint_sweep_gradient_tiles() call.  Also
  * sets the angular resolution (2π over this) below which a repeating
  * color line is filled with its average color instead of tiled;
  * a repeat/reflect color line whose stops span a tiny angle could
  * otherwise emit millions of patches while covering 0..2π. */
-#ifndef HB_PAINT_MAX_SWEEP_TILES
-#define HB_PAINT_MAX_SWEEP_TILES 4096
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_PAINT_MAX_SWEEP_TILES
+#وصف_ڪريو HB_PAINT_MAX_SWEEP_TILES 4096
+#جيڪڏهن_پورو
 
-#ifndef HB_SVG_MAX_DOCUMENT_SIZE
-#define HB_SVG_MAX_DOCUMENT_SIZE ((size_t) 16 << 20)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_SVG_MAX_DOCUMENT_سائيز
+#وصف_ڪريو HB_SVG_MAX_DOCUMENT_سائيز ((size_t) 16 << 20)
+#جيڪڏهن_پورو
 
 /* Maximum size of one serialized vector document (SVG or PDF) produced by
  * the vector backends.  Bounds output that is not outline-derived -- most
@@ -145,21 +145,21 @@
  * which the outline work budget cannot see.  vector is one glyph per
  * context, so a flat cap suffices.  Unsigned (not size_t like the SVG-table
  * limit above) to match hb_vector_buf_t's unsigned length arithmetic. */
-#ifndef HB_VECTOR_MAX_DOCUMENT_SIZE
-#define HB_VECTOR_MAX_DOCUMENT_SIZE ((unsigned) 16 << 20)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_ويڪٽر_MAX_DOCUMENT_سائيز
+#وصف_ڪريو HB_ويڪٽر_MAX_DOCUMENT_سائيز ((بنانشان) 16 << 20)
+#جيڪڏهن_پورو
 
-#ifndef HB_RASTER_MAX_BUFFER_SIZE
-#define HB_RASTER_MAX_BUFFER_SIZE ((size_t) 1 << 30)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_RASTER_MAX_بفر_سائيز
+#وصف_ڪريو HB_RASTER_MAX_بفر_سائيز ((size_t) 1 << 30)
+#جيڪڏهن_پورو
 
 /* Maximum surface dimension (pixels per side) when extents are derived
  * from font data (glyph extents or accumulated outline bounds).  Bounds
  * attacker-controlled allocations; extents set explicitly through
  * hb_raster_{draw,paint}_set_extents() are not limited. */
-#ifndef HB_RASTER_MAX_AUTO_DIMENSION
-#define HB_RASTER_MAX_AUTO_DIMENSION 4096
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_RASTER_MAX_AUTO_DIMENSION
+#وصف_ڪريو HB_RASTER_MAX_AUTO_DIMENSION 4096
+#جيڪڏهن_پورو
 
 /*
  * Cumulative work budgets.
@@ -177,62 +177,62 @@
 
 /* Fixed relative weights.  Keep the value in the name so charge sites are
  * easy to audit; tune the common session cap, not these values. */
-#define HB_BUDGET_1	1u
-#define HB_BUDGET_2	2u
-#define HB_BUDGET_4	4u
-#define HB_BUDGET_8	8u
-#define HB_BUDGET_16	16u
-#define HB_BUDGET_32	32u
-#define HB_BUDGET_64	64u
-#define HB_BUDGET_128	128u
-#define HB_BUDGET_256	256u
-#define HB_BUDGET_512	512u
-#define HB_BUDGET_1024	1024u
+#وصف_ڪريو HB_BUDGET_1	1u
+#وصف_ڪريو HB_BUDGET_2	2u
+#وصف_ڪريو HB_BUDGET_4	4u
+#وصف_ڪريو HB_BUDGET_8	8u
+#وصف_ڪريو HB_BUDGET_16	16u
+#وصف_ڪريو HB_BUDGET_32	32u
+#وصف_ڪريو HB_BUDGET_64	64u
+#وصف_ڪريو HB_BUDGET_128	128u
+#وصف_ڪريو HB_BUDGET_256	256u
+#وصف_ڪريو HB_BUDGET_512	512u
+#وصف_ڪريو HB_BUDGET_1024	1024u
 
 /* The common finite default for one top-level glyph rendering session.
  * Nested outline and paint work shares the same live counter. */
-#ifndef HB_BUDGET_GLYPH
-#define HB_BUDGET_GLYPH ((int64_t) 1 << 24)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_BUDGET_GLYPH
+#وصف_ڪريو HB_BUDGET_GLYPH ((int64_t) 1 << 24)
+#جيڪڏهن_پورو
 
 /* Precharge COST * MULT.  Callers bound COST and MULT structurally, and live
  * budgets are concrete non-negative values when a session starts. */
-static HB_ALWAYS_INLINE bool
-hb_budget_spend (int64_t &budget, unsigned int cost, unsigned int mult = 1)
+ساكن HB_ALWAYS_INLINE منطقي
+hb_budget_spend (int64_t &budget, بنانشان صحيح لاڳت, بنانشان صحيح mult = 1)
 {
-  budget -= (int64_t) cost * mult;
-  return budget >= 0;
+  budget -= (int64_t) لاڳت * mult;
+  أرجع budget >= 0;
 }
 
 /* The flat pixel-work floor for one raster paint session.  Pixel and
  * outline work use separate live counters, so keep this independent of
  * the common outline budget above. */
-#ifndef HB_BUDGET_RASTER_PIXELS
-#define HB_BUDGET_RASTER_PIXELS ((int64_t) 1 << 26)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_BUDGET_RASTER_PIXELS
+#وصف_ڪريو HB_BUDGET_RASTER_PIXELS ((int64_t) 1 << 26)
+#جيڪڏهن_پورو
 
 /* Very large raster surfaces still get a few full-surface operations. */
-#ifndef HB_BUDGET_RASTER_PAINT_PASSES
-#define HB_BUDGET_RASTER_PAINT_PASSES 4
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_BUDGET_RASTER_PAINT_PASSES
+#وصف_ڪريو HB_BUDGET_RASTER_PAINT_PASSES 4
+#جيڪڏهن_پورو
 
 /* One raster draw session, in accumulated non-horizontal edges. */
-#ifndef HB_RASTER_MAX_DRAW_EDGES
-#define HB_RASTER_MAX_DRAW_EDGES ((int64_t) 1 << 20)
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_RASTER_MAX_DRAW_ڪنارا
+#وصف_ڪريو HB_RASTER_MAX_DRAW_ڪنارا ((int64_t) 1 << 20)
+#جيڪڏهن_پورو
 
 
-#ifndef HB_REPACKER_MAX_ITERATIONS
-#define HB_REPACKER_MAX_ITERATIONS 500
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_REPACKER_MAX_ITERATIONS
+#وصف_ڪريو HB_REPACKER_MAX_ITERATIONS 500
+#جيڪڏهن_پورو
 
-#ifndef HB_REPACKER_MAX_VERTICES
-#define HB_REPACKER_MAX_VERTICES 800000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_REPACKER_MAX_VERTICES
+#وصف_ڪريو HB_REPACKER_MAX_VERTICES 800000
+#جيڪڏهن_پورو
 
-#ifndef HB_REPACKER_MAX_SPACES
-#define HB_REPACKER_MAX_SPACES 8000
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_REPACKER_MAX_SPACES
+#وصف_ڪريو HB_REPACKER_MAX_SPACES 8000
+#جيڪڏهن_پورو
 
 
-#endif /* HB_LIMITS_HH */
+#جيڪڏهن_پورو /* HB_LIMITS_HH */

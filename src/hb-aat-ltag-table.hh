@@ -22,74 +22,74 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LTAG_TABLE_HH
-#define HB_AAT_LTAG_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_AAT_LTAG_جدول_HH
+#وصف_ڪريو HB_AAT_LTAG_جدول_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ltag.html
  */
-#define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
+#وصف_ڪريو HB_AAT_ٽيگ_ltag HB_ٽيگ('l','t','a','g')
 
 
-namespace AAT {
+نطاق AAT {
 
-using namespace OT;
+استعمال نطاق OT;
 
 
-struct FTStringRange
+بنية FTStringRange
 {
-  friend struct ltag;
+  دوست بنية ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  (base+tag).sanitize (c, length));
+		  (بنياد+ٽيگ_2).sanitize (c, ڊيگهائي));
   }
 
-  protected:
-  NNOffset16To<UnsizedArrayOf<HBUINT8>>
-		tag;		/* Offset from the start of the table to
+  محمي:
+  NNOffset16_منزل<Unsized_Array_جو<HBUINT8>>
+		ٽيگ_2;		/* Offset from the start of the table to
 				 * the beginning of the string */
-  HBUINT16	length;		/* String length (in bytes) */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  HBUINT16	ڊيگهائي;		/* String length (in bytes) */
+  عام:
+  DEFINE_سائيز_STATIC (4);
 };
 
-struct ltag
+بنية ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_AAT_ٽيگ_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (بنانشان صحيح i) ثابت
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
-				    range.length);
+    ثابت FTStringRange &range = ٽيگ_Ranges[i];
+    أرجع hb_language_from_string ((ثابت حرف *) (هذا+range.ٽيگ_2).arrayZ,
+				    range.ڊيگهائي);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  نسخو >= 1 &&
+			  ٽيگ_Ranges.sanitize (c, هذا)));
   }
 
-  protected:
-  HBUINT32	version;	/* Table version; currently 1 */
+  محمي:
+  HBUINT32	نسخو;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
-  Array32Of<FTStringRange>
-		tagRanges;	/* Range for each tag's string */
-  public:
-  DEFINE_SIZE_ARRAY (12, tagRanges);
+  Array32_جو<FTStringRange>
+		ٽيگ_Ranges;	/* Range for each tag's string */
+  عام:
+  DEFINE_سائيز_ARRAY (12, ٽيگ_Ranges);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LTAG_TABLE_HH */
+#جيڪڏهن_پورو /* HB_AAT_LTAG_TABLE_HH */

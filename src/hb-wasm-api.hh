@@ -22,94 +22,94 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_HH
-#define HB_WASM_API_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_WASM_API_HH
+#وصف_ڪريو HB_WASM_API_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include <wasm_export.h>
+#ضمن <wasm_export.h>
 
-#define HB_WASM_BEGIN_DECLS namespace hb { namespace wasm {
-#define HB_WASM_END_DECLS }}
+#وصف_ڪريو HB_WASM_BEGIN_DECLS نطاق hb { نطاق wasm {
+#وصف_ڪريو HB_WASM_پڇاڙي_DECLS }}
 
-#define HB_WASM_API(ret_t, name) HB_INTERNAL ret_t name
-#define HB_WASM_API_COMPOUND(ret_t, name) HB_INTERNAL void name
+#وصف_ڪريو HB_WASM_API(ret_t, name) HB_اندروني ret_t name
+#وصف_ڪريو HB_WASM_API_COMPOUND(ret_t, name) HB_اندروني فراغ name
 
-#define HB_WASM_EXEC_ENV wasm_exec_env_t exec_env,
-#define HB_WASM_EXEC_ENV_COMPOUND wasm_exec_env_t exec_env, ptr_t() retptr,
+#وصف_ڪريو HB_WASM_EXEC_ENV wasm_exec_env_t exec_env,
+#وصف_ڪريو HB_WASM_EXEC_ENV_COMPOUND wasm_exec_env_t exec_env, ptr_t() retptr,
 
-#define ptr_t(type_t) uint32_t
-#define ptr_d(type_t, name) uint32_t name##ptr
+#وصف_ڪريو ptr_t(type_t) uint32_t
+#وصف_ڪريو ptr_d(type_t, name) uint32_t name##ptr
 
-#include "hb-wasm-api.h"
+#ضمن "hb-wasm-api.h"
 
-#undef HB_WASM_BEGIN_DECLS
-#undef HB_WASM_END_DECLS
+#وصف_رد HB_WASM_BEGIN_DECLS
+#وصف_رد HB_WASM_پڇاڙي_DECLS
 
 
-enum {
+تعداد {
   hb_wasm_ref_type_none,
   hb_wasm_ref_type_face,
   hb_wasm_ref_type_font,
-  hb_wasm_ref_type_buffer,
+  hb_wasm_ref_type_بفر,
 };
 
-HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
+HB_اندروني خارجي hb_user_معلومات_ڪنجي_t hb_wasm_ref_type_ڪنجي;
 
-#define nullref 0
+#وصف_ڪريو nullref 0
 
-#define HB_REF2OBJ(obj) \
-  hb_##obj##_t *obj = nullptr; \
-  HB_STMT_START { \
-    (void) wasm_externref_ref2obj (obj##ptr, (void **) &obj); \
+#وصف_ڪريو HB_REF2OBJ(obj) \
+  hb_##obj##_t *obj = خالي_اشارو; \
+  HB_STMT_شروعات { \
+    (فراغ) wasm_externref_ref2obj (obj##ptr, (فراغ **) &obj); \
     /* Check object type. */ \
     /* This works because all our objects have the same hb_object_t layout. */ \
-    if (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
-		  (void *) hb_wasm_ref_type_##obj)) \
+    إذا (unlikely (hb_##obj##_get_user_data (obj, &hb_wasm_ref_type_ڪنجي) != \
+		  (فراغ *) hb_wasm_ref_type_##obj)) \
       obj = hb_##obj##_get_empty (); \
-  } HB_STMT_END
+  } HB_STMT_پڇاڙي
 
-#define HB_OBJ2REF(obj) \
+#وصف_ڪريو HB_OBJ2REF(obj) \
   uint32_t obj##ref = nullref; \
-  HB_STMT_START { \
-    hb_##obj##_set_user_data (obj, &_hb_wasm_ref_type_key, \
-			      (void *) hb_wasm_ref_type_##obj, \
-			      nullptr, false); \
-    (void) wasm_externref_obj2ref (module_inst, obj, &obj##ref); \
-  } HB_STMT_END
+  HB_STMT_شروعات { \
+    hb_##obj##_set_user_data (obj, &hb_wasm_ref_type_ڪنجي, \
+			      (فراغ *) hb_wasm_ref_type_##obj, \
+			      خالي_اشارو, خطأ); \
+    (فراغ) wasm_externref_obj2ref (module_inst, obj, &obj##ref); \
+  } HB_STMT_پڇاڙي
 
-#define HB_RETURN_STRUCT(type, name) \
-  type *_name_ptr = nullptr; \
+#وصف_ڪريو HB_RETURN_STRUCT(type, name) \
+  type *_name_ptr = خالي_اشارو; \
   { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						retptr, sizeof (type)))) \
-      _name_ptr = (type *) wasm_runtime_addr_app_to_native (module_inst, retptr); \
-    if (unlikely (!_name_ptr)) \
-      return; \
+    إذا (likely (wasm_runtime_validate_app_addr (module_inst, \
+						retptr, حجم (type)))) \
+      _name_ptr = (type *) wasm_runtime_addr_app_منزل_native (module_inst, retptr); \
+    إذا (unlikely (!_name_ptr)) \
+      أرجع; \
   } \
   type &name = *_name_ptr
 
-#define HB_PTR_PARAM(type, name) \
-  type *name = nullptr; \
-  HB_STMT_START { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, sizeof (type)))) \
-      name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
-  } HB_STMT_END
+#وصف_ڪريو HB_PTR_PARAM(type, name) \
+  type *name = خالي_اشارو; \
+  HB_STMT_شروعات { \
+    إذا (likely (wasm_runtime_validate_app_addr (module_inst, \
+						name##ptr, حجم (type)))) \
+      name = (type *) wasm_runtime_addr_app_منزل_native (module_inst, name##ptr); \
+  } HB_STMT_پڇاڙي
 
-#define HB_ARRAY_PARAM(type, name, length) \
-  type *name = nullptr; \
-  HB_STMT_START { \
-    if (likely (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
+#وصف_ڪريو HB_ARRAY_PARAM(type, name, ڊيگهائي) \
+  type *name = خالي_اشارو; \
+  HB_STMT_شروعات { \
+    إذا (likely (!hb_unsigned_mul_overflows (ڊيگهائي, حجم (type)) && \
 		wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, length * sizeof (type)))) \
-      name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
-  } HB_STMT_END
+						name##ptr, ڊيگهائي * حجم (type)))) \
+      name = (type *) wasm_runtime_addr_app_منزل_native (module_inst, name##ptr); \
+  } HB_STMT_پڇاڙي
 
-#define HB_ARRAY_APP2NATIVE(type, name, length) \
-    ((type *) (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
-	       validate_app_addr (name, (length) * sizeof (type)) ? \
-	       addr_app_to_native (name) : nullptr))
+#وصف_ڪريو HB_ARRAY_APP2NATIVE(type, name, ڊيگهائي) \
+    ((type *) (!hb_unsigned_mul_overflows (ڊيگهائي, حجم (type)) && \
+	       validate_app_addr (name, (ڊيگهائي) * حجم (type)) ? \
+	       addr_app_منزل_native (name) : خالي_اشارو))
 
 
-#endif /* HB_WASM_API_HH */
+#جيڪڏهن_پورو /* HB_WASM_API_HH */

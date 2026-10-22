@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_اندريون) && !defined(HB_NO_SINGLE_سرو_ERROR)
+#غلطي "Include <hb.h> instead."
+#جيڪڏهن_پورو
 
-#ifndef HB_VERSION_H
-#define HB_VERSION_H
+#جيڪڏهن_وصف_نه_ٿيل HB_نسخو_H
+#وصف_ڪريو HB_نسخو_H
 
-#include "hb-common.h"
+#ضمن "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -41,26 +41,26 @@ HB_BEGIN_DECLS
  *
  * The major component of the library version available at compile-time.
  */
-#define HB_VERSION_MAJOR 14
+#وصف_ڪريو HB_نسخو_MAJOR 14
 /**
  * HB_VERSION_MINOR:
  *
  * The minor component of the library version available at compile-time.
  */
-#define HB_VERSION_MINOR 6
+#وصف_ڪريو HB_نسخو_MINOR 6
 /**
  * HB_VERSION_MICRO:
  *
  * The micro component of the library version available at compile-time.
  */
-#define HB_VERSION_MICRO 0
+#وصف_ڪريو HB_نسخو_MICRO 0
 
 /**
  * HB_VERSION_STRING:
  *
  * A string literal containing the library version available at compile-time.
  */
-#define HB_VERSION_STRING "14.6.0"
+#وصف_ڪريو HB_نسخو_STRING "14.6.0"
 
 /**
  * HB_VERSION_ATLEAST:
@@ -71,25 +71,25 @@ HB_BEGIN_DECLS
  * Tests the library version at compile-time against a minimum value,
  * as three integer components.
  */
-#define HB_VERSION_ATLEAST(major,minor,micro) \
+#وصف_ڪريو HB_نسخو_ATLEAST(major,minor,micro) \
 	((major)*10000+(minor)*100+(micro) <= \
-	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
+	 HB_نسخو_MAJOR*10000+HB_نسخو_MINOR*100+HB_نسخو_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN فراغ
+hb_نسخو (بنانشان صحيح *major,
+	    بنانشان صحيح *minor,
+	    بنانشان صحيح *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN ثابت حرف *
+hb_نسخو_string (فراغ);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_نسخو_atleast (بنانشان صحيح major,
+		    بنانشان صحيح minor,
+		    بنانشان صحيح micro);
 
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_VERSION_H */
+#جيڪڏهن_پورو /* HB_VERSION_H */

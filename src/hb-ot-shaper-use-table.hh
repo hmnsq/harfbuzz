@@ -47,67 +47,67 @@
  * UnicodeData.txt does not have a header.
  */
 
-#ifndef HB_OT_SHAPER_USE_TABLE_HH
-#define HB_OT_SHAPER_USE_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_SHAPER_USE_جدول_HH
+#وصف_ڪريو HB_OT_SHAPER_USE_جدول_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shaper-use-machine.hh"
+#ضمن "hb-ot-shaper-use-machine.hh"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-macros"
-#define B	USE(B)	/* BASE */
-#define CGJ	USE(CGJ)	/* CGJ */
-#define CS	USE(CS)	/* CONS_WITH_STACKER */
-#define G	USE(G)	/* HIEROGLYPH */
-#define GB	USE(GB)	/* BASE_OTHER */
-#define H	USE(H)	/* HALANT */
-#define HM	USE(HM)	/* HIEROGLYPH_MOD */
-#define HN	USE(HN)	/* HALANT_NUM */
-#define HR	USE(HR)	/* HIEROGLYPH_MIRROR */
-#define HVM	USE(HVM)	/* HALANT_OR_VOWEL_MODIFIER */
-#define IS	USE(IS)	/* INVISIBLE_STACKER */
-#define J	USE(J)	/* HIEROGLYPH_JOINER */
-#define N	USE(N)	/* BASE_NUM */
-#define O	USE(O)	/* OTHER */
-#define R	USE(R)	/* REPHA */
-#define RK	USE(RK)	/* REORDERING_KILLER */
-#define SB	USE(SB)	/* HIEROGLYPH_SEGMENT_BEGIN */
-#define SE	USE(SE)	/* HIEROGLYPH_SEGMENT_END */
-#define SUB	USE(SUB)	/* CONS_SUB */
-#define Sk	USE(Sk)	/* SAKOT */
-#define WJ	USE(WJ)	/* Word_Joiner */
-#define ZWNJ	USE(ZWNJ)	/* ZWNJ */
-#define CMAbv	USE(CMAbv)
-#define CMBlw	USE(CMBlw)
-#define FAbv	USE(FAbv)
-#define FBlw	USE(FBlw)
-#define FPst	USE(FPst)
-#define FMAbv	USE(FMAbv)
-#define FMBlw	USE(FMBlw)
-#define FMPst	USE(FMPst)
-#define MAbv	USE(MAbv)
-#define MBlw	USE(MBlw)
-#define MPst	USE(MPst)
-#define MPre	USE(MPre)
-#define SMAbv	USE(SMAbv)
-#define SMBlw	USE(SMBlw)
-#define VAbv	USE(VAbv)
-#define VBlw	USE(VBlw)
-#define VPst	USE(VPst)
-#define VPre	USE(VPre)
-#define VMAbv	USE(VMAbv)
-#define VMBlw	USE(VMBlw)
-#define VMPst	USE(VMPst)
-#define VMPre	USE(VMPre)
-#pragma GCC diagnostic pop
+#هدايت GCC diagnostic push
+#هدايت GCC diagnostic ignored "-Wunused-macros"
+#وصف_ڪريو B	USE(B)	/* BASE */
+#وصف_ڪريو CGJ	USE(CGJ)	/* CGJ */
+#وصف_ڪريو CS	USE(CS)	/* CONS_WITH_STACKER */
+#وصف_ڪريو G	USE(G)	/* HIEROGLYPH */
+#وصف_ڪريو GB	USE(GB)	/* BASE_OTHER */
+#وصف_ڪريو H	USE(H)	/* HALANT */
+#وصف_ڪريو HM	USE(HM)	/* HIEROGLYPH_MOD */
+#وصف_ڪريو HN	USE(HN)	/* HALANT_NUM */
+#وصف_ڪريو HR	USE(HR)	/* HIEROGLYPH_MIRROR */
+#وصف_ڪريو HVM	USE(HVM)	/* HALANT_OR_VOWEL_MODIFIER */
+#وصف_ڪريو IS	USE(IS)	/* INVISIBLE_STACKER */
+#وصف_ڪريو J	USE(J)	/* HIEROGLYPH_JOINER */
+#وصف_ڪريو N	USE(N)	/* BASE_NUM */
+#وصف_ڪريو O	USE(O)	/* OTHER */
+#وصف_ڪريو R	USE(R)	/* REPHA */
+#وصف_ڪريو RK	USE(RK)	/* REORDERING_KILLER */
+#وصف_ڪريو SB	USE(SB)	/* HIEROGLYPH_SEGMENT_BEGIN */
+#وصف_ڪريو SE	USE(SE)	/* HIEROGLYPH_SEGMENT_END */
+#وصف_ڪريو SUB	USE(SUB)	/* CONS_SUB */
+#وصف_ڪريو Sk	USE(Sk)	/* SAKOT */
+#وصف_ڪريو WJ	USE(WJ)	/* Word_Joiner */
+#وصف_ڪريو ZWNJ	USE(ZWNJ)	/* ZWNJ */
+#وصف_ڪريو CMAbv	USE(CMAbv)
+#وصف_ڪريو CMBlw	USE(CMBlw)
+#وصف_ڪريو FAbv	USE(FAbv)
+#وصف_ڪريو FBlw	USE(FBlw)
+#وصف_ڪريو FPst	USE(FPst)
+#وصف_ڪريو FMAbv	USE(FMAbv)
+#وصف_ڪريو FMBlw	USE(FMBlw)
+#وصف_ڪريو FMPst	USE(FMPst)
+#وصف_ڪريو MAbv	USE(MAbv)
+#وصف_ڪريو MBlw	USE(MBlw)
+#وصف_ڪريو MPst	USE(MPst)
+#وصف_ڪريو MPre	USE(MPre)
+#وصف_ڪريو SMAbv	USE(SMAbv)
+#وصف_ڪريو SMBlw	USE(SMBlw)
+#وصف_ڪريو VAbv	USE(VAbv)
+#وصف_ڪريو VBlw	USE(VBlw)
+#وصف_ڪريو VPst	USE(VPst)
+#وصف_ڪريو VPre	USE(VPre)
+#وصف_ڪريو VMAbv	USE(VMAbv)
+#وصف_ڪريو VMBlw	USE(VMBlw)
+#وصف_ڪريو VMPst	USE(VMPst)
+#وصف_ڪريو VMPre	USE(VMPre)
+#هدايت GCC diagnostic ڪڍو
 
 
-#ifndef HB_OPTIMIZE_SIZE
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t hb_use_u8[3359]=
+ساكن ثابت uint8_t hb_use_u8[3359]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -320,7 +320,7 @@ static const uint8_t hb_use_u8[3359]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[864]=
+ساكن ثابت uint16_t hb_use_u16[864]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   8,   8,   8,   8,   8,   8,   8,   8,
     16,  16,  16,  16,  16,  16,  16,  16,  24,  24,  24,  24,  24,  24,  24,  24,
@@ -378,22 +378,22 @@ static const uint16_t hb_use_u16[864]=
     40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t hb_use_b4 (ثابت uint8_t* a, بنانشان i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  أرجع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+ساكن مضمن uint8_t hb_use_get_category (بنانشان u)
 {
   /* packtab: [2^4,2^5,2^3,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  أرجع u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 
-#else
+#وإلا
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint8_t hb_use_u8[3679]=
+ساكن ثابت uint8_t hb_use_u8[3679]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -626,7 +626,7 @@ static const uint8_t hb_use_u8[3679]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[492]=
+ساكن ثابت uint16_t hb_use_u16[492]=
 {
      0,   0,   8,   8,  16,  16,  24,  24,  40,  40,   0,  24,  32,   0,   0, 120,
    136,  24,  56,   0, 168,  24, 240,  24, 272,  32, 280, 288,   0, 296, 304,   0,
@@ -661,65 +661,65 @@ static const uint16_t hb_use_u16[492]=
   2304,   0,2312,  32,2320,  32,2328, 104,2336,  32,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t hb_use_b4 (ثابت uint8_t* a, بنانشان i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  أرجع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+ساكن مضمن uint8_t hb_use_get_category (بنانشان u)
 {
   /* packtab: [2^4,2^4,2^3,2^1,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  أرجع u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 
-#endif
+#جيڪڏهن_پورو
 
 
-#undef B
-#undef CGJ
-#undef CS
-#undef G
-#undef GB
-#undef H
-#undef HM
-#undef HN
-#undef HR
-#undef HVM
-#undef IS
-#undef J
-#undef N
-#undef O
-#undef R
-#undef RK
-#undef SB
-#undef SE
-#undef SUB
-#undef Sk
-#undef WJ
-#undef ZWNJ
-#undef CMAbv
-#undef CMBlw
-#undef FAbv
-#undef FBlw
-#undef FPst
-#undef FMAbv
-#undef FMBlw
-#undef FMPst
-#undef MAbv
-#undef MBlw
-#undef MPst
-#undef MPre
-#undef SMAbv
-#undef SMBlw
-#undef VAbv
-#undef VBlw
-#undef VPst
-#undef VPre
-#undef VMAbv
-#undef VMBlw
-#undef VMPst
-#undef VMPre
+#وصف_رد B
+#وصف_رد CGJ
+#وصف_رد CS
+#وصف_رد G
+#وصف_رد GB
+#وصف_رد H
+#وصف_رد HM
+#وصف_رد HN
+#وصف_رد HR
+#وصف_رد HVM
+#وصف_رد IS
+#وصف_رد J
+#وصف_رد N
+#وصف_رد O
+#وصف_رد R
+#وصف_رد RK
+#وصف_رد SB
+#وصف_رد SE
+#وصف_رد SUB
+#وصف_رد Sk
+#وصف_رد WJ
+#وصف_رد ZWNJ
+#وصف_رد CMAbv
+#وصف_رد CMBlw
+#وصف_رد FAbv
+#وصف_رد FBlw
+#وصف_رد FPst
+#وصف_رد FMAbv
+#وصف_رد FMBlw
+#وصف_رد FMPst
+#وصف_رد MAbv
+#وصف_رد MBlw
+#وصف_رد MPst
+#وصف_رد MPre
+#وصف_رد SMAbv
+#وصف_رد SMBlw
+#وصف_رد VAbv
+#وصف_رد VBlw
+#وصف_رد VPst
+#وصف_رد VPre
+#وصف_رد VMAbv
+#وصف_رد VMBlw
+#وصف_رد VMPst
+#وصف_رد VMPre
 
 
-#endif /* HB_OT_SHAPER_USE_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_SHAPER_USE_TABLE_HH */
 /* == End of generated table == */

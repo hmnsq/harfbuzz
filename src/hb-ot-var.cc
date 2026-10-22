@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_VAR
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
 
-#include "hb-ot-var.h"
+#ضمن "hb-ot-var.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ضمن "hb-ot-var-avar-table.hh"
+#ضمن "hb-ot-var-fvar-table.hh"
+#ضمن "hb-ot-var-mvar-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.4.2
  **/
 hb_bool_t
-hb_ot_var_has_data (hb_face_t *face)
+hb_ot_var_has_معلومات (hb_face_t *face)
 {
-  return face->table.fvar->has_data ();
+  أرجع face->جدول.fvar->has_معلومات ();
 }
 
 /**
@@ -76,13 +76,13 @@ hb_ot_var_has_data (hb_face_t *face)
  *
  * Since: 1.4.2
  **/
-unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face)
+بنانشان صحيح
+hb_ot_var_get_axis_ڳڻپ (hb_face_t *face)
 {
-  return face->table.fvar->get_axis_count ();
+  أرجع face->جدول.fvar->get_axis_ڳڻپ ();
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#جيڪڏهن_وصف_نه_ٿيل HB_DISABLE_DEPRECATED
 /**
  * hb_ot_var_get_axes:
  * @face: #hb_face_t to work upon
@@ -97,13 +97,13 @@ hb_ot_var_get_axis_count (hb_face_t *face)
  * Since: 1.4.2
  * Deprecated: 2.2.0: use hb_ot_var_get_axis_infos() instead
  **/
-unsigned int
+بنانشان صحيح
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
-		    hb_ot_var_axis_t *axes_array /* OUT */)
+		    بنانشان صحيح      شروعات_وٿي,
+		    بنانشان صحيح     *axes_ڳڻپ /* IN/OUT */,
+		    hb_ot_var_axis_t *axes_array /*ٻاهريون*/)
 {
-  return face->table.fvar->get_axes_deprecated (start_offset, axes_count, axes_array);
+  أرجع face->جدول.fvar->get_axes_deprecated (شروعات_وٿي, axes_ڳڻپ, axes_array);
 }
 
 /**
@@ -120,14 +120,14 @@ hb_ot_var_get_axes (hb_face_t        *face,
  * Deprecated: 2.2.0: use hb_ot_var_find_axis_info() instead
  **/
 hb_bool_t
-hb_ot_var_find_axis (hb_face_t        *face,
-		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+hb_ot_var_ڳوليو_axis (hb_face_t        *face,
+		     hb_ٽيگ_t          axis_ٽيگ_2,
+		     بنانشان صحيح     *axis_اشاريو,
 		     hb_ot_var_axis_t *axis_info)
 {
-  return face->table.fvar->find_axis_deprecated (axis_tag, axis_index, axis_info);
+  أرجع face->جدول.fvar->ڳوليو_axis_deprecated (axis_ٽيگ_2, axis_اشاريو, axis_info);
 }
-#endif
+#جيڪڏهن_پورو
 
 /**
  * hb_ot_var_get_axis_infos:
@@ -144,13 +144,13 @@ hb_ot_var_find_axis (hb_face_t        *face,
  *
  * Since: 2.2.0
  **/
-HB_EXTERN unsigned int
+HB_EXTERN بنانشان صحيح
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */)
+			  بنانشان صحيح           شروعات_وٿي,
+			  بنانشان صحيح          *axes_ڳڻپ /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*ٻاهريون*/)
 {
-  return face->table.fvar->get_axis_infos (start_offset, axes_count, axes_array);
+  أرجع face->جدول.fvar->get_axis_infos (شروعات_وٿي, axes_ڳڻپ, axes_array);
 }
 
 /**
@@ -167,11 +167,11 @@ hb_ot_var_get_axis_infos (hb_face_t             *face,
  * Since: 2.2.0
  **/
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_ڳوليو_axis_info (hb_face_t             *face,
+			  hb_ٽيگ_t               axis_ٽيگ_2,
 			  hb_ot_var_axis_info_t *axis_info)
 {
-  return face->table.fvar->find_axis_info (axis_tag, axis_info);
+  أرجع face->جدول.fvar->ڳوليو_axis_info (axis_ٽيگ_2, axis_info);
 }
 
 
@@ -189,10 +189,10 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face)
+بنانشان صحيح
+hb_ot_var_get_named_instance_ڳڻپ (hb_face_t *face)
 {
-  return face->table.fvar->get_instance_count ();
+  أرجع face->جدول.fvar->get_instance_ڳڻپ ();
 }
 
 /**
@@ -209,9 +209,9 @@ hb_ot_var_get_named_instance_count (hb_face_t *face)
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index)
+						بنانشان صحيح instance_اشاريو)
 {
-  return face->table.fvar->get_instance_subfamily_name_id (instance_index);
+  أرجع face->جدول.fvar->get_instance_subfamily_name_id (instance_اشاريو);
 }
 
 /**
@@ -228,9 +228,9 @@ hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index)
+						بنانشان صحيح instance_اشاريو)
 {
-  return face->table.fvar->get_instance_postscript_name_id (instance_index);
+  أرجع face->جدول.fvar->get_instance_postscript_name_id (instance_اشاريو);
 }
 
 /**
@@ -248,13 +248,13 @@ hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
+بنانشان صحيح
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */)
+					    بنانشان صحيح  instance_اشاريو,
+					    بنانشان صحيح *coords_ڊيگهائي, /* IN/OUT */
+					    عائم        *coords         /*ٻاهريون*/)
 {
-  return face->table.fvar->get_instance_coords (instance_index, coords_length, coords);
+  أرجع face->جدول.fvar->get_instance_coords (instance_اشاريو, coords_ڊيگهائي, coords);
 }
 
 
@@ -270,29 +270,29 @@ hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
  *
  * Since: 1.4.2
  **/
-void
+فراغ
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length)
+				ثابت hb_variation_t *variations, /*اندريون*/
+				بنانشان صحيح          variations_ڊيگهائي,
+				صحيح                  *coords, /*ٻاهريون*/
+				بنانشان صحيح          coords_ڊيگهائي)
 {
-  for (unsigned int i = 0; i < coords_length; i++)
+  لكل (بنانشان صحيح i = 0; i < coords_ڊيگهائي; i++)
     coords[i] = 0;
 
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < variations_length; i++)
+  ثابت OT::fvar &fvar = *face->جدول.fvar;
+  لكل (بنانشان صحيح i = 0; i < variations_ڊيگهائي; i++)
   {
     hb_ot_var_axis_info_t info;
-    if (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
-	info.axis_index < coords_length)
-      coords[info.axis_index] = roundf (fvar.normalize_axis_value (info.axis_index, variations[i].value) * 65536.0f);
+    إذا (hb_ot_var_ڳوليو_axis_info (face, variations[i].ٽيگ_2, &info) &&
+	info.axis_اشاريو < coords_ڊيگهائي)
+      coords[info.axis_اشاريو] = roundf (fvar.normalize_axis_قدر (info.axis_اشاريو, variations[i].value) * 65536.0f);
   }
 
-  face->table.avar->map_coords_16_16 (coords, coords_length);
+  face->جدول.avar->map_coords_16_16 (coords, coords_ڊيگهائي);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  لكل (بنانشان i = 0; i < coords_ڊيگهائي; i++)
     coords[i] = (coords[i] + 2) >> 2;
 }
 
@@ -319,22 +319,22 @@ hb_ot_var_normalize_variations (hb_face_t            *face,
  *
  * Since: 1.4.2
  **/
-void
+فراغ
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */)
+			    بنانشان صحيح coords_ڊيگهائي,
+			    ثابت عائم *design_coords, /*اندريون*/
+			    صحيح *normalized_coords /*ٻاهريون*/)
 {
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < coords_length; i++)
-    normalized_coords[i] = roundf (fvar.normalize_axis_value (i, design_coords[i]) * 65536.0f);
+  ثابت OT::fvar &fvar = *face->جدول.fvar;
+  لكل (بنانشان صحيح i = 0; i < coords_ڊيگهائي; i++)
+    normalized_coords[i] = roundf (fvar.normalize_axis_قدر (i, design_coords[i]) * 65536.0f);
 
-  face->table.avar->map_coords_16_16 (normalized_coords, coords_length);
+  face->جدول.avar->map_coords_16_16 (normalized_coords, coords_ڊيگهائي);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  لكل (بنانشان i = 0; i < coords_ڊيگهائي; i++)
     normalized_coords[i] = (normalized_coords[i] + 2) >> 2;
 }
 
 
-#endif
+#جيڪڏهن_پورو

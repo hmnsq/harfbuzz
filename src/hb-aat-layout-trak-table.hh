@@ -25,251 +25,251 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_TRAK_TABLE_HH
-#define HB_AAT_LAYOUT_TRAK_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_AAT_LAYOUT_TRAK_جدول_HH
+#وصف_ڪريو HB_AAT_LAYOUT_TRAK_جدول_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-stat-table.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-ot-layout.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-stat-table.hh"
 
 /*
  * trak -- Tracking
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6trak.html
  */
-#define HB_AAT_TAG_trak HB_TAG('t','r','a','k')
+#وصف_ڪريو HB_AAT_ٽيگ_trak HB_ٽيگ('t','r','a','k')
 
 
-namespace AAT {
+نطاق AAT {
 
 
-struct TrackTableEntry
+بنية Track_جدول_داخلا
 {
-  friend struct TrackData;
+  دوست بنية Track_معلومات;
 
-  float get_track_value () const { return track.to_float (); }
+  عائم get_track_قدر () ثابت { أرجع track.منزل_float (); }
 
-  float interpolate_at (unsigned int idx,
-			float ptem,
-			const void *base,
-			hb_array_t<const F16DOT16> size_table) const
+  عائم interpolate_at (بنانشان صحيح idx,
+			عائم ptem,
+			ثابت فراغ *بنياد,
+			hb_array_t<ثابت F16DOT16> سائيز_جدول) ثابت
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    ثابت FWORD *values = (بنياد+قدرون_Z).arrayZ;
 
-    float s0 = size_table[idx].to_float ();
-    float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    عائم s0 = سائيز_جدول[idx].منزل_float ();
+    عائم s1 = سائيز_جدول[idx + 1].منزل_float ();
+    صحيح v0 = values[idx];
+    صحيح v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
-    { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    إذا (unlikely (s1 < s0))
+    { hb_مٽا_سٽا (s0, s1); hb_مٽا_سٽا (v0, v1); }
+    إذا (unlikely (ptem < s0)) أرجع v0;
+    إذا (unlikely (ptem > s1)) أرجع v1;
+    إذا (unlikely (s0 == s1)) أرجع (v0 + v1) * 0.5f;
 
-    float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    عائم t = (ptem - s0) / (s1 - s0);
+    أرجع v0 + t * (v1 - v0);
   }
 
-  float get_value (float ptem,
-		   const void *base,
-		   hb_array_t<const F16DOT16> size_table) const
+  عائم get_قدر (عائم ptem,
+		   ثابت فراغ *بنياد,
+		   hb_array_t<ثابت F16DOT16> سائيز_جدول) ثابت
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    ثابت FWORD *values = (بنياد+قدرون_Z).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    بنانشان صحيح n_sizes = سائيز_جدول.ڊيگهائي;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    إذا (!n_sizes) أرجع 0.f;
+    إذا (n_sizes == 1) أرجع values[0];
 
     // At least two entries.
 
-    unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
-	break;
+    بنانشان i;
+    لكل (i = 0; i < n_sizes; i++)
+      إذا (سائيز_جدول[i].منزل_float () >= ptem)
+	اكسر;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    إذا (i == 0)       أرجع values[0];
+    إذا (i == n_sizes) أرجع values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    إذا (سائيز_جدول[i].منزل_float () == ptem) أرجع values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    أرجع interpolate_at (i - 1, ptem, بنياد, سائيز_جدول);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int n_sizes) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت فراغ *بنياد,
+		 بنانشان صحيح n_sizes) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (valuesZ.sanitize (c, base, n_sizes))));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
+			  (قدرون_Z.sanitize (c, بنياد, n_sizes))));
   }
 
-  protected:
+  محمي:
   F16DOT16	track;		/* Track value for this record. */
   OT::NameID	trackNameID;	/* The 'name' table index for this track.
 				 * (a short word or phrase like "loose"
 				 * or "very tight") */
-  NNOffset16To<UnsizedArrayOf<FWORD>>
-		valuesZ;	/* Offset from start of tracking table to
+  NNOffset16_منزل<Unsized_Array_جو<FWORD>>
+		قدرون_Z;	/* Offset from start of tracking table to
 				 * per-size tracking values for this track. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct TrackData
+بنية Track_معلومات
 {
-  float get_tracking (const void *base, float ptem, float track = 0.f) const
+  عائم get_tracking (ثابت فراغ *بنياد, عائم ptem, عائم track = 0.f) ثابت
   {
-    unsigned count = nTracks;
-    hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
+    بنانشان ڳڻپ = nTracks;
+    hb_array_t<ثابت F16DOT16> سائيز_جدول = (بنياد+سائيز_جدول_2).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    إذا (!ڳڻپ) أرجع 0.f;
+    إذا (ڳڻپ == 1) أرجع track_جدول[0].get_قدر (ptem, بنياد, سائيز_جدول);
 
     // At least two entries.
 
-    unsigned i = 0;
-    unsigned j = count - 1;
+    بنانشان i = 0;
+    بنانشان j = ڳڻپ - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    طالما (i + 1 < ڳڻپ && track_جدول[i + 1].get_track_قدر () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    طالما (j > 0 && track_جدول[j - 1].get_track_قدر () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    إذا (i == j) أرجع track_جدول[i].get_قدر (ptem, بنياد, سائيز_جدول);
 
     // Interpolate.
 
-    float t0 = trackTable[i].get_track_value ();
-    float t1 = trackTable[j].get_track_value ();
+    عائم t0 = track_جدول[i].get_track_قدر ();
+    عائم t1 = track_جدول[j].get_track_قدر ();
 
-    float t = (track - t0) / (t1 - t0);
+    عائم t = (track - t0) / (t1 - t0);
 
-    float a = trackTable[i].get_value (ptem, base, size_table);
-    float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    عائم a = track_جدول[i].get_قدر (ptem, بنياد, سائيز_جدول);
+    عائم b = track_جدول[j].get_قدر (ptem, بنياد, سائيز_جدول);
+    أرجع a + t * (b - a);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  sizeTable.sanitize (c, base, nSizes) &&
-			  trackTable.sanitize (c, nTracks, base, nSizes)));
+			  سائيز_جدول_2.sanitize (c, بنياد, nSizes) &&
+			  track_جدول.sanitize (c, nTracks, بنياد, nSizes)));
   }
 
-  protected:
+  محمي:
   HBUINT16	nTracks;	/* Number of separate tracks included in this table. */
   HBUINT16	nSizes;		/* Number of point sizes included in this table. */
-  NNOffset32To<UnsizedArrayOf<F16DOT16>>
-		sizeTable;	/* Offset from start of the tracking table to
+  NNOffset32_منزل<Unsized_Array_جو<F16DOT16>>
+		سائيز_جدول_2;	/* Offset from start of the tracking table to
 				 * Array[nSizes] of size values.. */
-  UnsizedArrayOf<TrackTableEntry>
-		trackTable;	/* Array[nTracks] of TrackTableEntry records. */
+  Unsized_Array_جو<Track_جدول_داخلا>
+		track_جدول;	/* Array[nTracks] of TrackTableEntry records. */
 
-  public:
-  DEFINE_SIZE_ARRAY (8, trackTable);
+  عام:
+  DEFINE_سائيز_ARRAY (8, track_جدول);
 };
 
-struct trak
+بنية trak
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_AAT_ٽيگ_trak;
 
-  bool has_data () const { return version.to_int (); }
+  منطقي has_معلومات () ثابت { أرجع نسخو.منزل_int (); }
 
-  hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_h_tracking (hb_font_t *font, عائم track = 0.f) ثابت
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    عائم ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_سائيز;
+    أرجع font->em_scalef_x ((هذا+horiz_معلومات).get_tracking (هذا, ptem, track));
   }
-  hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_v_tracking (hb_font_t *font, عائم track = 0.f) ثابت
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    عائم ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_سائيز;
+    أرجع font->em_scalef_y ((هذا+vert_معلومات).get_tracking (هذا, ptem, track));
   }
-  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
+  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, عائم track = 0.f) ثابت
   {
-#ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_STYLE
+    إذا (!font->face->جدول.STAT->has_معلومات ())
+      أرجع 0;
+    أرجع HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
-#endif
+#وإلا
+    أرجع 0;
+#جيڪڏهن_پورو
   }
 
-  bool apply (hb_aat_apply_context_t *c, float track = 0.f) const
+  منطقي apply (hb_aat_apply_context_t *c, عائم track = 0.f) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    عائم ptem = c->font->ptem;
+    إذا (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-      ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
+      ptem = HB_CORETEXT_DEFAULT_FONT_سائيز;
     }
 
-    hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    hb_بفر_t *بفر = c->بفر;
+    إذا (HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction))
     {
-      hb_position_t advance_to_add = get_h_tracking (c->font, track);
-      foreach_grapheme (buffer, start, end)
-	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
+      hb_position_t advance_منزل_جوڙيو = get_h_tracking (c->font, track);
+      foreach_grapheme (بفر, شروعات, پڇاڙي)
+	بفر->pos[شروعات].x_advance = hb_saturate_جوڙيو (بفر->pos[شروعات].x_advance, advance_منزل_جوڙيو);
     }
-    else
+    وإلا
     {
-      hb_position_t advance_to_add = get_v_tracking (c->font, track);
-      foreach_grapheme (buffer, start, end)
-	buffer->pos[start].y_advance = hb_saturate_add (buffer->pos[start].y_advance, advance_to_add);
+      hb_position_t advance_منزل_جوڙيو = get_v_tracking (c->font, track);
+      foreach_grapheme (بفر, شروعات, پڇاڙي)
+	بفر->pos[شروعات].y_advance = hb_saturate_جوڙيو (بفر->pos[شروعات].y_advance, advance_منزل_جوڙيو);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  نسخو.major == 1 &&
+			  horiz_معلومات.sanitize (c, هذا, هذا) &&
+			  vert_معلومات.sanitize (c, هذا, هذا)));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the tracking table
+  محمي:
+  Fixed_نسخو<>نسخو;	/* Version of the tracking table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the tracking table (set to 0). */
-  Offset16To<TrackData>
-		horizData;	/* Offset from start of tracking table to TrackData
+  Offset16_منزل<Track_معلومات>
+		horiz_معلومات;	/* Offset from start of tracking table to TrackData
 				 * for horizontal text (or 0 if none). */
-  Offset16To<TrackData>
-		vertData;	/* Offset from start of tracking table to TrackData
+  Offset16_منزل<Track_معلومات>
+		vert_معلومات;	/* Offset from start of tracking table to TrackData
 				 * for vertical text (or 0 if none). */
   HBUINT16	reserved;	/* Reserved. Set to 0. */
 
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عام:
+  DEFINE_سائيز_STATIC (12);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_TRAK_TABLE_HH */
+#جيڪڏهن_پورو /* HB_AAT_LAYOUT_TRAK_TABLE_HH */

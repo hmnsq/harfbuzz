@@ -1,14 +1,14 @@
-#ifndef OT_LAYOUT_GPOS_CONTEXTPOS_HH
-#define OT_LAYOUT_GPOS_CONTEXTPOS_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GPOS_CONTEXTPOS_HH
+#وصف_ڪريو OT_LAYOUT_GPOS_CONTEXTPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct ContextPos : Context {};
+بنية ContextPos : Context {};
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CONTEXTPOS_HH */
+#جيڪڏهن_پورو /* OT_LAYOUT_GPOS_CONTEXTPOS_HH */

@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
 
-import sys
-import array
-import gi
-gi.require_version('HarfBuzz', '0.0')
-from gi.repository import HarfBuzz as hb
-from gi.repository import GLib
+استورد sys
+استورد array
+استورد gi
+gi.require_نسخو('HarfBuzz', '0.0')
+من gi.repository استورد HarfBuzz كـ hb
+من gi.repository استورد GLib
 
-fontdata = open (sys.argv[1], 'rb').read ()
-text = sys.argv[2]
+fontdata = open (sys.argv[1], 'rb').اقرأ ()
+متن = sys.argv[2]
 # Need to create GLib.Bytes explicitly until this bug is fixed:
 # https://bugzilla.gnome.org/show_bug.cgi?id=729541
-blob = hb.glib_blob_create (GLib.Bytes.new (fontdata))
+blob = hb.glib_blob_create (GLib.بائيٽون_3.جديد (fontdata))
 face = hb.face_create (blob, 0)
-del blob
+هٽايو blob
 font = hb.font_create (face)
 upem = hb.face_get_upem (face)
-del face
-hb.font_set_scale (font, upem, upem)
+هٽايو face
+hb.font_سيٽ_scale (font, upem, upem)
 #hb.ft_font_set_funcs (font)
-hb.ot_font_set_funcs (font)
+hb.ot_font_سيٽ_funcs (font)
 
-buf = hb.buffer_create ()
-class Debugger (object):
-	def message (self, buf, font, msg, data, _x_what_is_this):
-		print (msg)
-		return True
+buf = hb.بفر_create ()
+صنف Debugger (object):
+	وصف پيغام (self, buf, font, نياپو, معلومات, _x_what_is_this):
+		ڇاپيو (نياپو)
+		أرجع سچ
 debugger = Debugger ()
-hb.buffer_set_message_func (buf, debugger.message, 1, 0)
+hb.بفر_سيٽ_پيغام_func (buf, debugger.پيغام, 1, 0)
 
 ##
 ## Add text to buffer
@@ -41,25 +41,25 @@ hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 # hb.buffer_add_utf8 (buf, text.encode('utf-8'), 0, -1)
 # Otherwise, then following handles both narrow and wide
 # Python builds (the first item in the array is BOM, so we skip it):
-if sys.maxunicode == 0x10FFFF:
-	hb.buffer_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
-else:
-	hb.buffer_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
+إذا sys.maxunicode == 0x10FFFF:
+	hb.بفر_جوڙيو_utf32 (buf, array.array ('I', متن.encode ('utf-32'))[1:], 0, -1)
+وإلا:
+	hb.بفر_جوڙيو_utf16 (buf, array.array ('H', متن.encode ('utf-16'))[1:], 0, -1)
 
 
-hb.buffer_guess_segment_properties (buf)
+hb.بفر_guess_segment_properties (buf)
 
 hb.shape (font, buf, [])
-del font
+هٽايو font
 
-infos = hb.buffer_get_glyph_infos (buf)
-positions = hb.buffer_get_glyph_positions (buf)
+infos = hb.بفر_get_glyph_infos (buf)
+positions = hb.بفر_get_glyph_positions (buf)
 
-for info, pos in zip (infos, positions):
+لكل info, pos في zip (infos, positions):
 	gid = info.codepoint
 	cluster = info.cluster
 	x_advance = pos.x_advance
-	x_offset = pos.x_offset
-	y_offset = pos.y_offset
+	x_وٿي_2 = pos.x_وٿي_2
+	y_وٿي_2 = pos.y_وٿي_2
 
-	print ("gid%d=%d@%d,%d+%d" % (gid, cluster, x_advance, x_offset, y_offset))
+	ڇاپيو ("gid%d=%d@%d,%d+%d" % (gid, cluster, x_advance, x_وٿي_2, y_وٿي_2))

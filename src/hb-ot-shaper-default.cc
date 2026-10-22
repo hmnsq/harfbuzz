@@ -24,52 +24,52 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#ضمن "hb-ot-shaper.hh"
 
 
-const hb_ot_shaper_t _hb_ot_shaper_default =
+ثابت hb_ot_shaper_t _hb_ot_shaper_default =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  true, /* fallback_position */
+  خالي_اشارو, /* collect_features */
+  خالي_اشارو, /* override_features */
+  خالي_اشارو, /* data_create */
+  خالي_اشارو, /* data_destroy */
+  خالي_اشارو, /* preprocess_text */
+  خالي_اشارو, /* postprocess_glyphs */
+  خالي_اشارو, /* decompose */
+  خالي_اشارو, /* compose */
+  خالي_اشارو, /* setup_masks */
+  خالي_اشارو, /* reorder_marks */
+  HB_ٽيگ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_گهڻائي_DEFAULT,
+  HB_OT_SHAPE_ZERO_ويڪر_MARKS_BY_GDEF_LATE,
+  سچ, /* fallback_position */
 };
 
-#ifndef HB_NO_AAT_SHAPE
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_AAT_SHAPE
 /* Same as default but no mark advance zeroing / fallback positioning.
  * Dumbest shaper ever, basically. */
-const hb_ot_shaper_t _hb_ot_shaper_dumber =
+ثابت hb_ot_shaper_t _hb_ot_shaper_dumber =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  خالي_اشارو, /* collect_features */
+  خالي_اشارو, /* override_features */
+  خالي_اشارو, /* data_create */
+  خالي_اشارو, /* data_destroy */
+  خالي_اشارو, /* preprocess_text */
+  خالي_اشارو, /* postprocess_glyphs */
+  خالي_اشارو, /* decompose */
+  خالي_اشارو, /* compose */
+  خالي_اشارو, /* setup_masks */
+  خالي_اشارو, /* reorder_marks */
+  HB_ٽيگ_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_گهڻائي_DEFAULT,
+  HB_OT_SHAPE_ZERO_ويڪر_MARKS_NONE,
+  خطأ, /* fallback_position */
 };
-#endif
+#جيڪڏهن_پورو
 
 
-#endif
+#جيڪڏهن_پورو

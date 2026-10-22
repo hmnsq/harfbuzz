@@ -24,12 +24,12 @@
  * Red Hat Author(s): Matthias Clasen
  */
 
-#ifndef HB_CAIRO_H
-#define HB_CAIRO_H
+#جيڪڏهن_وصف_نه_ٿيل HB_CAIRO_H
+#وصف_ڪريو HB_CAIRO_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include <cairo.h>
+#ضمن <cairo.h>
 
 HB_BEGIN_DECLS
 
@@ -59,41 +59,41 @@ hb_cairo_font_face_get_face (cairo_font_face_t *font_face);
  *
  * Since: 7.0.0
  */
-typedef hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
+تعريفنوع hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
 						  cairo_scaled_font_t *scaled_font,
-						  void *user_data);
+						  فراغ *user_معلومات);
 
-HB_EXTERN void
-hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
+HB_EXTERN فراغ
+hb_cairo_font_face_سيٽ_font_init_func (cairo_font_face_t *font_face,
 				       hb_cairo_font_init_func_t func,
-				       void *user_data,
+				       فراغ *user_معلومات,
 				       hb_destroy_func_t destroy);
 
 HB_EXTERN hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font);
 
-HB_EXTERN void
-hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor);
+HB_EXTERN فراغ
+hb_cairo_font_face_سيٽ_scale_ضرب_ڪندڙ (cairo_font_face_t *font_face,
+				     بنانشان صحيح scale_ضرب_ڪندڙ);
 
-HB_EXTERN unsigned int
-hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face);
+HB_EXTERN بنانشان صحيح
+hb_cairo_font_face_get_scale_ضرب_ڪندڙ (cairo_font_face_t *font_face);
 
-HB_EXTERN void
-hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
+HB_EXTERN فراغ
+hb_cairo_glyphs_from_بفر (hb_بفر_t *بفر,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     مزدوج x_scale_ضرب_ڪندڙ,
+			     مزدوج y_scale_ضرب_ڪندڙ,
+			     مزدوج x,
+			     مزدوج y,
+			     ثابت حرف *utf8,
+			     صحيح utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
-			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
-			     cairo_text_cluster_flags_t *cluster_flags);
+			     بنانشان صحيح *انگ_glyphs,
+			     cairo_متن_cluster_t **clusters,
+			     بنانشان صحيح *انگ_clusters,
+			     cairo_متن_cluster_flags_t *cluster_flags);
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_CAIRO_H */
+#جيڪڏهن_پورو /* HB_CAIRO_H */

@@ -24,28 +24,28 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "../hb-set.hh"
-#include "../hb-priority-queue.hh"
-#include "../hb-serialize.hh"
-#include "graph-result.hh"
+#ضمن "../hb-set.hh"
+#ضمن "../hb-priority-queue.hh"
+#ضمن "../hb-serialize.hh"
+#ضمن "graph-result.hh"
 
-#ifndef GRAPH_GRAPH_HH
-#define GRAPH_GRAPH_HH
+#جيڪڏهن_وصف_نه_ٿيل گراف_گراف_HH
+#وصف_ڪريو گراف_گراف_HH
 
-#define HB_GRAPH_INVALID ((unsigned) -1)
+#وصف_ڪريو HB_گراف_INVALID ((بنانشان) -1)
 
-namespace graph {
+نطاق گراف {
 
 /**
  * Represents a serialized table in the form of a graph.
  * Provides methods for modifying and reordering the graph.
  */
-struct graph_t
+بنية گراف_t
 {
   // TODO(garretrieger): experiment with using scratch vector for visited sets instead of allocating
   // a new hb_set_t each time.
 
-  struct vertex_t
+  بنية راس_t
   {
     // TODO(garretrieger): have vertex_t gaurantee that head/tail are non null and head < tail
     // so downstream users don't need to constantly check that.
@@ -58,508 +58,508 @@ struct graph_t
     // downstream users.
 
     int64_t distance = 0 ;
-    unsigned space = 0 ;
-    unsigned start = 0;
-    unsigned end = 0;
-    unsigned priority = 0;
+    بنانشان space = 0 ;
+    بنانشان شروعات = 0;
+    بنانشان پڇاڙي = 0;
+    بنانشان ترجيح = 0;
 
-    private:
+    خاص:
     hb_serialize_context_t::object_t obj_;
-    unsigned incoming_edges_ = 0;
-    unsigned single_parent = HB_GRAPH_INVALID;
-    bool has_incoming_virtual_edges_ = false;
-    hb_hashmap_t<unsigned, unsigned> parents;
-    hb_set_t virtual_parents;
-    public:
+    بنانشان incoming_ڪنارا = 0;
+    بنانشان single_والد = HB_گراف_INVALID;
+    منطقي has_incoming_virtual_ڪنارا = خطأ;
+    hb_hashmap_t<بنانشان, بنانشان> parents;
+    hb_سيٽ_t virtual_parents;
+    عام:
 
-    vertex_t ()
+    راس_t ()
     {}
 
-    explicit vertex_t(const hb_serialize_context_t::object_t& obj) : obj_(obj)
+    واضح راس_t(ثابت hb_serialize_context_t::object_t& obj) : obj_(obj)
     {}
 
-    auto parents_iter () const HB_AUTO_RETURN
+    خودڪار parents_iter () ثابت HB_AUTO_RETURN
     (
       hb_concat (
-	hb_iter (&single_parent, single_parent != HB_GRAPH_INVALID),
-	parents.keys_ref ()
+	hb_iter (&single_والد, single_والد != HB_گراف_INVALID),
+	parents.ڪنجيون_ref ()
       )
     )
 
-    void set_buffer (char* head, char* tail) {
-      obj_.head = head;
-      obj_.tail = tail;
+    فراغ سيٽ_بفر (حرف* سر_2, حرف* پڇ) {
+      obj_.سر_2 = سر_2;
+      obj_.پڇ = پڇ;
     }
 
-    void shrink_buffer (size_t count)
+    فراغ shrink_بفر (size_t ڳڻپ)
     {
-      obj_.tail -= count;
+      obj_.پڇ -= ڳڻپ;
     }
 
-    auto all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
-    auto real_links_writer () HB_AUTO_RETURN (( obj_.real_links.writer() ));
-    auto virtual_links_writer () HB_AUTO_RETURN (( obj_.virtual_links.writer() ));
+    خودڪار all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
+    خودڪار real_links_writer () HB_AUTO_RETURN (( obj_.real_links.writer() ));
+    خودڪار virtual_links_writer () HB_AUTO_RETURN (( obj_.virtual_links.writer() ));
 
-    void sort_real_links () {
+    فراغ ترتيب_ڏيو_real_links () {
       obj_.real_links.qsort ();
     }
 
-    graph_result_t<void> add_real_link (unsigned width, unsigned obj_idx, unsigned position) {
-      auto* link = obj_.real_links.push ();
-      TRY (graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE));
-      link->width = width;
+    گراف_نتيجو_t<فراغ> جوڙيو_real_link (بنانشان ويڪر, بنانشان obj_idx, بنانشان position) {
+      خودڪار* link = obj_.real_links.push ();
+      TRY (گراف_نتيجو_t<فراغ>::from (obj_.real_links, ورهاست_FAILURE));
+      link->ويڪر = ويڪر;
       link->objidx = obj_idx;
       link->position = position;
-      return Ok();
+      أرجع Ok();
     }
 
-    graph_result_t<void> add_virtual_link (unsigned obj_idx) {
-      auto* link = obj_.virtual_links.push ();
-      TRY (graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE));
+    گراف_نتيجو_t<فراغ> جوڙيو_virtual_link (بنانشان obj_idx) {
+      خودڪار* link = obj_.virtual_links.push ();
+      TRY (گراف_نتيجو_t<فراغ>::from (obj_.virtual_links, ورهاست_FAILURE));
       link->objidx = obj_idx;
-      return Ok();
+      أرجع Ok();
     }
 
-    graph_result_t<void> add_real_link (const hb_serialize_context_t::object_t::link_t& link)
+    گراف_نتيجو_t<فراغ> جوڙيو_real_link (ثابت hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.real_links.push (link);
-      return graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE);
+      أرجع گراف_نتيجو_t<فراغ>::from (obj_.real_links, ورهاست_FAILURE);
     }
 
-    graph_result_t<void> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
+    گراف_نتيجو_t<فراغ> سيٽ_real_links (hb_ويڪٽر_t<hb_serialize_context_t::object_t::link_t>&& links)
     {
-      TRY(graph_result_t<void>::from (links, ALLOCATION_FAILURE));
+      TRY(گراف_نتيجو_t<فراغ>::from (links, ورهاست_FAILURE));
       obj_.real_links = links;
-      return Ok();
+      أرجع Ok();
     }
 
-    void clear_real_links ()
+    فراغ clear_real_links ()
     {
       obj_.real_links.reset();
     }
 
-    void clear_virtual_links ()
+    فراغ clear_virtual_links ()
     {
       obj_.virtual_links.reset();
     }
 
-    graph_result_t<void> add_virtual_link (const hb_serialize_context_t::object_t::link_t& link)
+    گراف_نتيجو_t<فراغ> جوڙيو_virtual_link (ثابت hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.virtual_links.push (link);
-      return graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE);
+      أرجع گراف_نتيجو_t<فراغ>::from (obj_.virtual_links, ورهاست_FAILURE);
     }
 
-    const hb_serialize_context_t::object_t& obj() const { return obj_; }
+    ثابت hb_serialize_context_t::object_t& obj() ثابت { أرجع obj_; }
 
-    template<typename T>
-    T as () const
+    سانچو<قسم_نالو T>
+    T as () ثابت
     {
-      return reinterpret_cast<T> (obj_.head);
+      أرجع reinterpret_cast<T> (obj_.سر_2);
     }
 
-    bool has_incoming_virtual_edges () const
+    منطقي has_incoming_virtual_ڪنارا_2 () ثابت
     {
-      return has_incoming_virtual_edges_;
+      أرجع has_incoming_virtual_ڪنارا;
     }
 
-    graph_result_t<void> link_positions_valid (unsigned num_objects, bool removed_nil)
+    گراف_نتيجو_t<فراغ> link_positions_valid (بنانشان انگ_objects, منطقي removed_nil)
     {
-      hb_set_t assigned_bytes;
-      for (const auto& l : obj_.real_links)
+      hb_سيٽ_t assigned_بائيٽون;
+      لكل (ثابت خودڪار& l : obj_.real_links)
       {
-        if (unlikely (l.objidx >= num_objects
+        إذا (unlikely (l.objidx >= انگ_objects
             || (removed_nil && !l.objidx)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                      "Invalid graph. Invalid object index.");
-          return Err(INVALID_ARGUMENT);
+          أرجع Err(INVALID_دليل);
         }
 
-        unsigned start = l.position;
-        unsigned end = start + l.width - 1;
+        بنانشان شروعات = l.position;
+        بنانشان پڇاڙي = شروعات + l.ويڪر - 1;
 
-        if (unlikely (l.width < 2 || l.width > 4))
+        إذا (unlikely (l.ويڪر < 2 || l.ويڪر > 4))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                      "Invalid graph. Invalid link width.");
-          return Err(INVALID_ARGUMENT);
+          أرجع Err(INVALID_دليل);
         }
 
-        if (unlikely (end >= table_size ()))
+        إذا (unlikely (پڇاڙي >= جدول_سائيز ()))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                      "Invalid graph. Link position is out of bounds.");
-          return Err(OUT_OF_BOUNDS);
+          أرجع Err(ٻاهريون_جو_BOUNDS);
         }
 
-        if (unlikely (assigned_bytes.intersects (start, end)))
+        إذا (unlikely (assigned_بائيٽون.intersects (شروعات, پڇاڙي)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                      "Invalid graph. Found offsets whose positions overlap.");
-          return Err(INVALID_ARGUMENT);
+          أرجع Err(INVALID_دليل);
         }
 
-        assigned_bytes.add_range (start, end);
+        assigned_بائيٽون.جوڙيو_range (شروعات, پڇاڙي);
       }
 
-      return graph_result_t<void>::from (assigned_bytes, ALLOCATION_FAILURE);
+      أرجع گراف_نتيجو_t<فراغ>::from (assigned_بائيٽون, ورهاست_FAILURE);
     }
 
-    void normalize ()
+    فراغ normalize ()
     {
       obj_.real_links.qsort ();
-      for (const auto& l : obj_.real_links)
+      لكل (ثابت خودڪار& l : obj_.real_links)
       {
-        for (unsigned i = 0; i < l.width; i++)
+        لكل (بنانشان i = 0; i < l.ويڪر; i++)
         {
-          obj_.head[l.position + i] = 0;
+          obj_.سر_2[l.position + i] = 0;
         }
       }
     }
 
-    bool equals (unsigned this_index,
-                 unsigned other_index,
-                 const vertex_t& other,
-                 const graph_t& graph,
-                 const graph_t& other_graph,
-                 unsigned depth) const
+    منطقي equals (بنانشان this_اشاريو,
+                 بنانشان other_اشاريو,
+                 ثابت راس_t& other,
+                 ثابت گراف_t& گراف,
+                 ثابت گراف_t& other_گراف,
+                 بنانشان اونهائي) ثابت
     {
-      if (!(as_bytes () == other.as_bytes ()))
+      إذا (!(as_بائيٽون () == other.as_بائيٽون ()))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                    "vertex %u [%lu bytes] != %u [%lu bytes], depth = %u",
-                   this_index,
-                   (unsigned long) table_size (),
-                   other_index,
-                   (unsigned long) other.table_size (),
-                   depth);
+                   this_اشاريو,
+                   (بنانشان ڊگهو) جدول_سائيز (),
+                   other_اشاريو,
+                   (بنانشان ڊگهو) other.جدول_سائيز (),
+                   اونهائي);
 
-        auto a = as_bytes ();
-        auto b = other.as_bytes ();
-        while (a || b)
+        خودڪار a = as_بائيٽون ();
+        خودڪار b = other.as_بائيٽون ();
+        طالما (a || b)
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
-                     "  0x%x %s 0x%x", (unsigned) *a, (*a == *b) ? "==" : "!=", (unsigned) *b);
+          DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
+                     "  0x%x %s 0x%x", (بنانشان) *a, (*a == *b) ? "==" : "!=", (بنانشان) *b);
           a++;
           b++;
         }
-        return false;
+        أرجع خطأ;
       }
 
-      return links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
+      أرجع links_equal (obj_.real_links, other.obj_.real_links, گراف, other_گراف, اونهائي);
     }
 
-    hb_bytes_t as_bytes () const
+    hb_بائيٽون_t as_بائيٽون () ثابت
     {
-      return hb_bytes_t (obj_.head, table_size ());
+      أرجع hb_بائيٽون_t (obj_.سر_2, جدول_سائيز ());
     }
 
-    friend void swap (vertex_t& a, vertex_t& b)
+    دوست فراغ swap (راس_t& a, راس_t& b)
     {
-      hb_swap (a.obj_, b.obj_);
-      hb_swap (a.distance, b.distance);
-      hb_swap (a.space, b.space);
-      hb_swap (a.single_parent, b.single_parent);
-      hb_swap (a.parents, b.parents);
-      hb_swap (a.virtual_parents, b.virtual_parents);
-      hb_swap (a.incoming_edges_, b.incoming_edges_);
-      hb_swap (a.has_incoming_virtual_edges_, b.has_incoming_virtual_edges_);
-      hb_swap (a.start, b.start);
-      hb_swap (a.end, b.end);
-      hb_swap (a.priority, b.priority);
+      hb_مٽا_سٽا (a.obj_, b.obj_);
+      hb_مٽا_سٽا (a.distance, b.distance);
+      hb_مٽا_سٽا (a.space, b.space);
+      hb_مٽا_سٽا (a.single_والد, b.single_والد);
+      hb_مٽا_سٽا (a.parents, b.parents);
+      hb_مٽا_سٽا (a.virtual_parents, b.virtual_parents);
+      hb_مٽا_سٽا (a.incoming_ڪنارا, b.incoming_ڪنارا);
+      hb_مٽا_سٽا (a.has_incoming_virtual_ڪنارا, b.has_incoming_virtual_ڪنارا);
+      hb_مٽا_سٽا (a.شروعات, b.شروعات);
+      hb_مٽا_سٽا (a.پڇاڙي, b.پڇاڙي);
+      hb_مٽا_سٽا (a.ترجيح, b.ترجيح);
     }
 
-    graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-    position_to_index_map () const
+    گراف_نتيجو_t<hb_hashmap_t<بنانشان, بنانشان>>
+    position_منزل_اشاريو_map () ثابت
     {
-      hb_hashmap_t<unsigned, unsigned> result;
+      hb_hashmap_t<بنانشان, بنانشان> نتيجو;
 
-      result.alloc (obj_.real_links.length);
-      for (const auto& l : obj_.real_links) {
-        result.set (l.position, l.objidx);
+      نتيجو.alloc (obj_.real_links.ڊيگهائي);
+      لكل (ثابت خودڪار& l : obj_.real_links) {
+        نتيجو.سيٽ (l.position, l.objidx);
       }
 
-      return graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
+      أرجع گراف_نتيجو_t<hb_hashmap_t<بنانشان, بنانشان>>::from (std::move(نتيجو), ورهاست_FAILURE);
     }
 
-    bool is_shared () const
+    منطقي is_shared () ثابت
     {
-      return parents.get_population () > virtual_parents.get_population () + 1;
+      أرجع parents.get_population () > virtual_parents.get_population () + 1;
     }
 
-    unsigned incoming_edges () const
+    بنانشان incoming_ڪنارا_2 () ثابت
     {
-      if (HB_DEBUG_SUBSET_REPACK)
+      إذا (HB_DEBUG_SUBSET_REPACK)
        {
-	assert (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
-		(parents.values_ref () | hb_reduce (hb_add, 0)));
+	أكد (incoming_ڪنارا == (single_والد != HB_گراف_INVALID) +
+		(parents.قدرون_ref () | hb_reduce (hb_جوڙيو, 0)));
        }
-      return incoming_edges_;
+      أرجع incoming_ڪنارا;
     }
 
-    unsigned incoming_edges_from_parent (unsigned parent_index) const {
-      if (single_parent != HB_GRAPH_INVALID) {
-        return single_parent == parent_index ? 1 : 0;
+    بنانشان incoming_ڪنارا_from_والد (بنانشان والد_اشاريو) ثابت {
+      إذا (single_والد != HB_گراف_INVALID) {
+        أرجع single_والد == والد_اشاريو ? 1 : 0;
       }
 
-      unsigned* count;
-      return  parents.has(parent_index, &count) ? *count : 0;
+      بنانشان* ڳڻپ;
+      أرجع  parents.has(والد_اشاريو, &ڳڻپ) ? *ڳڻپ : 0;
     }
 
-    void reset_parents ()
+    فراغ reset_parents ()
     {
-      incoming_edges_ = 0;
-      has_incoming_virtual_edges_ = false;
-      single_parent = HB_GRAPH_INVALID;
+      incoming_ڪنارا = 0;
+      has_incoming_virtual_ڪنارا = خطأ;
+      single_والد = HB_گراف_INVALID;
       parents.reset ();
       virtual_parents.reset ();
     }
 
-    graph_result_t<void> add_parent (unsigned parent_index, bool is_virtual)
+    گراف_نتيجو_t<فراغ> جوڙيو_والد (بنانشان والد_اشاريو, منطقي is_virtual)
     {
-      assert (parent_index != HB_GRAPH_INVALID);
-      has_incoming_virtual_edges_ |= is_virtual;
-      if (is_virtual)
-        virtual_parents.add (parent_index);
+      أكد (والد_اشاريو != HB_گراف_INVALID);
+      has_incoming_virtual_ڪنارا |= is_virtual;
+      إذا (is_virtual)
+        virtual_parents.جوڙيو (والد_اشاريو);
 
-      if (incoming_edges_ == 0)
+      إذا (incoming_ڪنارا == 0)
       {
-	single_parent = parent_index;
-	incoming_edges_ = 1;
-	return to_result();
+	single_والد = والد_اشاريو;
+	incoming_ڪنارا = 1;
+	أرجع منزل_نتيجو();
       }
-      else if (single_parent != HB_GRAPH_INVALID)
+      وإلا إذا (single_والد != HB_گراف_INVALID)
       {
-        assert (incoming_edges_ == 1);
-	if (!parents.set (single_parent, 1))
-	  return to_result ();
-	single_parent = HB_GRAPH_INVALID;
+        أكد (incoming_ڪنارا == 1);
+	إذا (!parents.سيٽ (single_والد, 1))
+	  أرجع منزل_نتيجو ();
+	single_والد = HB_گراف_INVALID;
       }
 
-      unsigned *v;
-      if (parents.has (parent_index, &v))
+      بنانشان *v;
+      إذا (parents.has (والد_اشاريو, &v))
       {
         (*v)++;
-	incoming_edges_++;
+	incoming_ڪنارا++;
       }
-      else if (parents.set (parent_index, 1))
-	incoming_edges_++;
+      وإلا إذا (parents.سيٽ (والد_اشاريو, 1))
+	incoming_ڪنارا++;
 
-      return to_result();
+      أرجع منزل_نتيجو();
     }
 
-    void remove_parent (unsigned parent_index)
+    فراغ remove_والد (بنانشان والد_اشاريو)
     {
-      if (parent_index == single_parent)
+      إذا (والد_اشاريو == single_والد)
       {
-	single_parent = HB_GRAPH_INVALID;
-	incoming_edges_--;
+	single_والد = HB_گراف_INVALID;
+	incoming_ڪنارا--;
 	virtual_parents.reset ();
-	return;
+	أرجع;
       }
 
-      unsigned *v;
-      if (parents.has (parent_index, &v))
+      بنانشان *v;
+      إذا (parents.has (والد_اشاريو, &v))
       {
-	incoming_edges_--;
-	if (*v > 1)
+	incoming_ڪنارا--;
+	إذا (*v > 1)
 	  (*v)--;
-	else
+	وإلا
         {
-	  parents.del (parent_index);
-          virtual_parents.del (parent_index);
+	  parents.del (والد_اشاريو);
+          virtual_parents.del (والد_اشاريو);
         }
 
-	if (incoming_edges_ == 1)
+	إذا (incoming_ڪنارا == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_والد = *parents.ڪنجيون ();
 	  parents.reset ();
 	}
       }
     }
 
-    void remove_real_link_unordered (unsigned link_array_index) {
-      obj_.real_links.remove_unordered (link_array_index);
+    فراغ remove_real_link_unordered (بنانشان link_array_اشاريو) {
+      obj_.real_links.remove_unordered (link_array_اشاريو);
     }
 
-    void remove_real_link_unordered (unsigned child_index, const void* offset)
+    فراغ remove_real_link_unordered (بنانشان ٻار_اشاريو, ثابت فراغ* وٿي)
     {
-      unsigned count = obj_.real_links.length;
-      for (unsigned i = 0; i < count; i++)
+      بنانشان ڳڻپ = obj_.real_links.ڊيگهائي;
+      لكل (بنانشان i = 0; i < ڳڻپ; i++)
       {
-        auto& link = obj_.real_links.arrayZ[i];
-        if (link.objidx != child_index)
-          continue;
+        خودڪار& link = obj_.real_links.arrayZ[i];
+        إذا (link.objidx != ٻار_اشاريو)
+          استمر;
 
-        if ((obj_.head + link.position) != offset)
-          continue;
+        إذا ((obj_.سر_2 + link.position) != وٿي)
+          استمر;
 
         obj_.real_links.remove_unordered (i);
-        return;
+        أرجع;
       }
     }
 
-    graph_result_t<void> remap_parent (unsigned old_index, unsigned new_index)
+    گراف_نتيجو_t<فراغ> remap_والد (بنانشان old_اشاريو, بنانشان new_اشاريو)
     {
-      if (single_parent != HB_GRAPH_INVALID)
+      إذا (single_والد != HB_گراف_INVALID)
       {
-        if (single_parent == old_index)
+        إذا (single_والد == old_اشاريو)
         {
-	  single_parent = new_index;
-          if (virtual_parents.has (old_index))
+	  single_والد = new_اشاريو;
+          إذا (virtual_parents.has (old_اشاريو))
           {
-            virtual_parents.del (old_index);
-            virtual_parents.add (new_index);
+            virtual_parents.del (old_اشاريو);
+            virtual_parents.جوڙيو (new_اشاريو);
           }
         }
-        return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+        أرجع گراف_نتيجو_t<فراغ>::from(virtual_parents, ورهاست_FAILURE);
       }
 
-      const unsigned *pv;
-      if (parents.has (old_index, &pv))
+      ثابت بنانشان *pv;
+      إذا (parents.has (old_اشاريو, &pv))
       {
-        unsigned v = *pv;
-	if (!parents.set (new_index, v))
-          incoming_edges_ -= v;
-	parents.del (old_index);
+        بنانشان v = *pv;
+	إذا (!parents.سيٽ (new_اشاريو, v))
+          incoming_ڪنارا -= v;
+	parents.del (old_اشاريو);
 
-        if (incoming_edges_ == 1)
+        إذا (incoming_ڪنارا == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_والد = *parents.ڪنجيون ();
 	  parents.reset ();
 	}
       }
 
-      if (virtual_parents.has (old_index))
+      إذا (virtual_parents.has (old_اشاريو))
       {
-        virtual_parents.del (old_index);
-        virtual_parents.add (new_index);
+        virtual_parents.del (old_اشاريو);
+        virtual_parents.جوڙيو (new_اشاريو);
       }
 
-      return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+      أرجع گراف_نتيجو_t<فراغ>::from(virtual_parents, ورهاست_FAILURE);
     }
 
-    bool is_leaf () const
+    منطقي is_پن () ثابت
     {
-      return !obj_.real_links.length && !obj_.virtual_links.length;
+      أرجع !obj_.real_links.ڊيگهائي && !obj_.virtual_links.ڊيگهائي;
     }
 
-    bool raise_priority ()
+    منطقي raise_ترجيح ()
     {
-      if (has_max_priority ()) return false;
-      priority++;
-      return true;
+      إذا (has_max_ترجيح ()) أرجع خطأ;
+      ترجيح++;
+      أرجع سچ;
     }
 
-    bool give_max_priority ()
+    منطقي give_max_ترجيح ()
     {
-      bool result = false;
-      while (!has_max_priority()) {
-        result = true;
-        priority++;
+      منطقي نتيجو = خطأ;
+      طالما (!has_max_ترجيح()) {
+        نتيجو = سچ;
+        ترجيح++;
       }
-      return result;
+      أرجع نتيجو;
     }
 
-    bool has_max_priority () const {
-      return priority >= 3;
+    منطقي has_max_ترجيح () ثابت {
+      أرجع ترجيح >= 3;
     }
 
-    size_t table_size () const {
-      return obj_.tail - obj_.head;
+    size_t جدول_سائيز () ثابت {
+      أرجع obj_.پڇ - obj_.سر_2;
     }
 
-    int64_t modified_distance (unsigned order) const
+    int64_t modified_مفاصلو (بنانشان ترتيب) ثابت
     {
       // TODO(garretrieger): once priority is high enough, should try
       // setting distance = 0 which will force to sort immediately after
       // it's parent where possible.
 
-      int64_t modified_distance =
-          hb_clamp (distance + distance_modifier (), (int64_t) 0,
+      int64_t modified_مفاصلو =
+          hb_clamp (distance + مفاصلو_modifier (), (int64_t) 0,
                     hb_int_max (int64_t) >> 18);
-      if (has_max_priority ()) {
-        modified_distance = 0;
+      إذا (has_max_ترجيح ()) {
+        modified_مفاصلو = 0;
       }
-      return (modified_distance << 18) | (0x003FFFF & order);
+      أرجع (modified_مفاصلو << 18) | (0x003FFFF & ترتيب);
     }
 
-    int64_t distance_modifier () const
+    int64_t مفاصلو_modifier () ثابت
     {
-      if (!priority) return 0;
-      int64_t table_size = obj_.tail - obj_.head;
+      إذا (!ترجيح) أرجع 0;
+      int64_t جدول_سائيز = obj_.پڇ - obj_.سر_2;
 
-      if (priority == 1)
-        return -table_size / 2;
+      إذا (ترجيح == 1)
+        أرجع -جدول_سائيز / 2;
 
-      return -table_size;
+      أرجع -جدول_سائيز;
     }
 
-   private:
-    graph_result_t<void> to_result() const {
-      if (unlikely (
-        parents.in_error() || virtual_parents.in_error() ||
-        obj_.real_links.in_error() || obj_.virtual_links.in_error()))
-        return Err(ALLOCATION_FAILURE);
-      return Ok();
+   خاص:
+    گراف_نتيجو_t<فراغ> منزل_نتيجو() ثابت {
+      إذا (unlikely (
+        parents.اندريون_error() || virtual_parents.اندريون_error() ||
+        obj_.real_links.اندريون_error() || obj_.virtual_links.اندريون_error()))
+        أرجع Err(ورهاست_FAILURE);
+      أرجع Ok();
     }
 
-    bool links_equal (const hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
-                      const hb_vector_t<hb_serialize_context_t::object_t::link_t>& other_links,
-                      const graph_t& graph,
-                      const graph_t& other_graph,
-                      unsigned depth) const
+    منطقي links_equal (ثابت hb_ويڪٽر_t<hb_serialize_context_t::object_t::link_t>& this_links,
+                      ثابت hb_ويڪٽر_t<hb_serialize_context_t::object_t::link_t>& other_links,
+                      ثابت گراف_t& گراف,
+                      ثابت گراف_t& other_گراف,
+                      بنانشان اونهائي) ثابت
     {
-      auto a = this_links.iter ();
-      auto b = other_links.iter ();
+      خودڪار a = this_links.iter ();
+      خودڪار b = other_links.iter ();
 
-      while (a && b)
+      طالما (a && b)
       {
-        const auto& link_a = *a;
-        const auto& link_b = *b;
+        ثابت خودڪار& link_a = *a;
+        ثابت خودڪار& link_b = *b;
 
-        if (link_a.width != link_b.width ||
+        إذا (link_a.ويڪر != link_b.ويڪر ||
             link_a.is_signed != link_b.is_signed ||
             link_a.whence != link_b.whence ||
             link_a.position != link_b.position ||
             link_a.bias != link_b.bias)
-          return false;
+          أرجع خطأ;
 
-        if (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
-                other_graph.vertices_[link_b.objidx], graph, other_graph, depth + 1))
-          return false;
+        إذا (!گراف.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
+                other_گراف.vertices_[link_b.objidx], گراف, other_گراف, اونهائي + 1))
+          أرجع خطأ;
 
         a++;
         b++;
       }
 
-      if (bool (a) != bool (b))
-        return false;
+      إذا (منطقي (a) != منطقي (b))
+        أرجع خطأ;
 
-      return true;
+      أرجع سچ;
     }
   };
 
-  enum vertex_mutability_t
+  تعداد راس_mutability_t
   {
     Immutable,
     Mutable
   };
 
-  template <typename T, vertex_mutability_t mutability = Mutable>
-  struct vertex_and_table_t
+  سانچو <قسم_نالو T, راس_mutability_t mutability = Mutable>
+  بنية راس_and_جدول_t
   {
-    vertex_and_table_t () : index (0), vertex (nullptr), table (nullptr)
+    راس_and_جدول_t () : اشاريو_2 (0), راس (خالي_اشارو), جدول (خالي_اشارو)
     {}
 
-    template <vertex_mutability_t other_mutability>
-    vertex_and_table_t (const vertex_and_table_t<T, other_mutability>& o)
-      : index (o.index), vertex (o.vertex), table (o.table)
+    سانچو <راس_mutability_t other_mutability>
+    راس_and_جدول_t (ثابت راس_and_جدول_t<T, other_mutability>& o)
+      : اشاريو_2 (o.اشاريو_2), راس (o.راس), جدول (o.جدول)
     {}
 
-    unsigned index;
-    typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type vertex;
-    typename std::conditional<mutability == Immutable, const T*, T*>::type table;
+    بنانشان اشاريو_2;
+    قسم_نالو std::conditional<mutability == Immutable, ثابت راس_t*, راس_t*>::type راس;
+    قسم_نالو std::conditional<mutability == Immutable, ثابت T*, T*>::type جدول;
 
   };
 
@@ -570,165 +570,165 @@ struct graph_t
    * the 'packed' object stack used internally in the
    * serializer
    */
-  template<typename T>
-  static graph_result_t<graph_t> create (const T& objects)
+  سانچو<قسم_نالو T>
+  ساكن گراف_نتيجو_t<گراف_t> create (ثابت T& objects)
   {
-    if (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
+    إذا (unlikely (objects.ڊيگهائي > HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "constructing graph: num of objects %u exceeds HB_REPACKER_MAX_VERTICES.",
-                 objects.length);
-      return Err(LIMIT_EXCEEDED);
+                 objects.ڊيگهائي);
+      أرجع Err(حد_بندي_EXCEEDED);
     }
 
-    graph_t g;
-    g.num_roots_for_space_.push (1);
-    TRY (graph_result_t<void>::from (g.num_roots_for_space_, ALLOCATION_FAILURE));
+    گراف_t g;
+    g.انگ_roots_for_space.push (1);
+    TRY (گراف_نتيجو_t<فراغ>::from (g.انگ_roots_for_space, ورهاست_FAILURE));
 
-    bool removed_nil = false;
-    const unsigned count = objects.length;
-    g.vertices_.alloc (count);
-    g.ordering_.resize (count);
-    g.ordering_scratch_.alloc (count);
-    TRY (graph_result_t<void>::from (g.vertices_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
+    منطقي removed_nil = خطأ;
+    ثابت بنانشان ڳڻپ = objects.ڊيگهائي;
+    g.vertices_.alloc (ڳڻپ);
+    g.ordering_.resize (ڳڻپ);
+    g.ordering_scratch_.alloc (ڳڻپ);
+    TRY (گراف_نتيجو_t<فراغ>::from (g.vertices_, ورهاست_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (g.ordering_, ورهاست_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (g.ordering_scratch_, ورهاست_FAILURE));
 
-    unsigned order = objects.length;
-    unsigned skip = 0;
-    for (unsigned i = 0; i < count; i++)
+    بنانشان ترتيب = objects.ڊيگهائي;
+    بنانشان skip = 0;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
       // If this graph came from a serialization buffer object 0 is the
       // nil object. We don't need it for our purposes here so drop it.
-      if (i == 0 && !objects.arrayZ[i])
+      إذا (i == 0 && !objects.arrayZ[i])
       {
-        removed_nil = true;
-        order--;
-        g.ordering_.resize (count - 1);
+        removed_nil = سچ;
+        ترتيب--;
+        g.ordering_.resize (ڳڻپ - 1);
         skip++;
-        continue;
+        استمر;
       }
 
       hb_serialize_context_t::object_t obj (*objects.arrayZ[i]);
-      if (unlikely (obj.in_error ())) {
-        return Err(ALLOCATION_FAILURE);
+      إذا (unlikely (obj.اندريون_error ())) {
+        أرجع Err(ورهاست_FAILURE);
       }
-      vertex_t* v = g.vertices_.push (std::move (obj));
+      راس_t* v = g.vertices_.push (std::move (obj));
 
-      TRY (v->link_positions_valid (count, removed_nil));
+      TRY (v->link_positions_valid (ڳڻپ, removed_nil));
 
       // To start we set the ordering to match the provided objects
       // list. Note: objects are provided to us in reverse order (ie.
       // the last object is the root).
-      unsigned obj_idx = i - skip;
-      g.ordering_[--order] = obj_idx;
+      بنانشان obj_idx = i - skip;
+      g.ordering_[--ترتيب] = obj_idx;
 
-      if (!removed_nil) continue;
+      إذا (!removed_nil) استمر;
       // Fix indices to account for removed nil object.
-      for (auto& l : v->all_links_writer ()) {
+      لكل (خودڪار& l : v->all_links_writer ()) {
         l.objidx--;
       }
     }
 
-    auto r = g.is_fully_connected();
-    if (r.is_err() && r.error() == ORPHANED_NODES) {
+    خودڪار r = g.is_fully_connected();
+    إذا (r.is_err() && r.error() == ORPHANED_NODES) {
       g.print_orphaned_nodes ();
     }
     TRY(r);
 
-    return Ok (std::move (g));
+    أرجع Ok (std::move (g));
   }
 
-  graph_t (const graph_t&) = delete;
-  graph_t& operator = (const graph_t&) = delete;
-  graph_t (graph_t&&) = default;
-  graph_t& operator = (graph_t&&) = default;
+  گراف_t (ثابت گراف_t&) = ميٽيو;
+  گراف_t& عامل = (ثابت گراف_t&) = ميٽيو;
+  گراف_t (گراف_t&&) = افتراضي;
+  گراف_t& عامل = (گراف_t&&) = افتراضي;
 
-  ~graph_t ()
+  ~گراف_t ()
   {
-    for (char* b : buffers)
+    لكل (حرف* b : buffers)
       hb_free (b);
   }
 
-private:
-  graph_t () = default;
+خاص:
+  گراف_t () = افتراضي;
 
-public:
+عام:
 
-  bool operator== (const graph_t& other) const
+  منطقي عامل== (ثابت گراف_t& other) ثابت
   {
-    return root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
+    أرجع پاڙ ().equals (پاڙ_idx(), other.پاڙ_idx(), other.پاڙ (), *هذا, other, 0);
   }
 
-  void print () const {
-    for (unsigned id : ordering_)
+  فراغ print () ثابت {
+    لكل (بنانشان id : ordering_)
     {
-      const auto& v = vertices_[id];
-      printf("%u: %u [", id, (unsigned int)v.table_size());
-      for (const auto &l : v.obj().real_links) {
-        printf("%u, ", l.objidx);
+      ثابت خودڪار& v = vertices_[id];
+      لکو("%u: %u [", id, (بنانشان صحيح)v.جدول_سائيز());
+      لكل (ثابت خودڪار &l : v.obj().real_links) {
+        لکو("%u, ", l.objidx);
       }
-      for (const auto &l : v.obj().virtual_links) {
-        printf("v%u, ", l.objidx);
+      لكل (ثابت خودڪار &l : v.obj().virtual_links) {
+        لکو("v%u, ", l.objidx);
       }
-      printf("]\n");
+      لکو("]\n");
     }
   }
 
   // Sorts links of all objects in a consistent manner and zeroes all offsets.
-  void normalize ()
+  فراغ normalize ()
   {
-    for (auto& v : vertices_.writer ())
+    لكل (خودڪار& v : vertices_.writer ())
       v.normalize ();
   }
 
-  const vertex_t& root () const
+  ثابت راس_t& پاڙ () ثابت
   {
-    return vertices_[root_idx ()];
+    أرجع vertices_[پاڙ_idx ()];
   }
 
-  unsigned root_idx () const
+  بنانشان پاڙ_idx () ثابت
   {
     // First element of ordering_ is the root.
     // Since the graph is topologically sorted it's safe to
     // assume the first object has no incoming edges.
-    return ordering_[0];
+    أرجع ordering_[0];
   }
 
-  const hb_serialize_context_t::object_t& object (unsigned i) const
+  ثابت hb_serialize_context_t::object_t& object (بنانشان i) ثابت
   {
-    return vertices_[i].obj();
+    أرجع vertices_[i].obj();
   }
 
-  graph_result_t<void> add_buffer (char* buffer)
+  گراف_نتيجو_t<فراغ> جوڙيو_بفر (حرف* بفر)
   {
-    buffers.push (buffer);
-    return graph_result_t<void>::from (buffers, ALLOCATION_FAILURE);
+    buffers.push (بفر);
+    أرجع گراف_نتيجو_t<فراغ>::from (buffers, ورهاست_FAILURE);
   }
 
   /*
    * Adds a 16 bit link from parent_id to child_id
    */
-  template<typename T>
-  graph_result_t<void> add_link (T* offset,
-                                 unsigned parent_id,
-                                 unsigned child_id)
+  سانچو<قسم_نالو T>
+  گراف_نتيجو_t<فراغ> جوڙيو_link (T* وٿي,
+                                 بنانشان والد_id,
+                                 بنانشان ٻار_id)
   {
-    if (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
-    auto& v = vertices_[parent_id];
-    TRY(v.add_real_link(2, child_id, (char*) offset - (char*) v.obj().head));
-    return vertices_[child_id].add_parent (parent_id, false);
+    إذا (unlikely (والد_id >= vertices_.ڊيگهائي || ٻار_id >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
+    خودڪار& v = vertices_[والد_id];
+    TRY(v.جوڙيو_real_link(2, ٻار_id, (حرف*) وٿي - (حرف*) v.obj().سر_2));
+    أرجع vertices_[ٻار_id].جوڙيو_والد (والد_id, خطأ);
   }
 
   /*
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node if positions are marked as invalid.
    */
-  graph_result_t<void> sort_shortest_distance_if_needed ()
+  گراف_نتيجو_t<فراغ> ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو_if_needed ()
   {
-    if (!positions_invalid) return Ok();
-    return sort_shortest_distance ();
+    إذا (!positions_invalid) أرجع Ok();
+    أرجع ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو ();
   }
 
 
@@ -736,74 +736,74 @@ public:
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node.
    */
-  graph_result_t<void> sort_shortest_distance ()
+  گراف_نتيجو_t<فراغ> ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو ()
   {
-    positions_invalid = true;
+    positions_invalid = سچ;
 
-    if (vertices_.length <= 1) {
+    إذا (vertices_.ڊيگهائي <= 1) {
       // Graph of 1 or less doesn't need sorting.
-      return Ok();
+      أرجع Ok();
     }
 
     TRY (update_distances ());
 
-    hb_priority_queue_t<int64_t> queue;
-    queue.alloc (vertices_.length);
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    hb_ترجيح_قطار_t<int64_t> قطار;
+    قطار.alloc (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (قطار, ورهاست_FAILURE));
 
-    hb_vector_t<unsigned> &new_ordering = ordering_scratch_;
-    new_ordering.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    hb_ويڪٽر_t<بنانشان> &new_ordering = ordering_scratch_;
+    new_ordering.resize (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (new_ordering, ورهاست_FAILURE));
 
-    hb_vector_t<unsigned> removed_edges;
-    removed_edges.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (removed_edges, ALLOCATION_FAILURE));
+    hb_ويڪٽر_t<بنانشان> removed_ڪنارا;
+    removed_ڪنارا.resize (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (removed_ڪنارا, ورهاست_FAILURE));
 
     TRY (update_parents ());
 
-    queue.insert (root ().modified_distance (0), root_idx ());
-    unsigned order = 1;
-    unsigned pos = 0;
-    while (!queue.in_error () && !queue.is_empty ())
+    قطار.insert (پاڙ ().modified_مفاصلو (0), پاڙ_idx ());
+    بنانشان ترتيب = 1;
+    بنانشان pos = 0;
+    طالما (!قطار.اندريون_error () && !قطار.is_empty ())
     {
-      unsigned next_id = queue.pop_minimum().second;
+      بنانشان ايندڙ_id = قطار.ڪڍو_minimum().second;
 
-      if (unlikely (pos >= new_ordering.length)) {
+      إذا (unlikely (pos >= new_ordering.ڊيگهائي)) {
         // We are out of ids. Which means we've visited a node more than once.
         // This graph contains a cycle which is not allowed.
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
-        return Err(CYCLE_DETECTED);
+        DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "Invalid graph. Contains cycle.");
+        أرجع Err(چڪر_DETECTED);
       }
-      new_ordering[pos++] = next_id;
-      const vertex_t& next = vertices_[next_id];
+      new_ordering[pos++] = ايندڙ_id;
+      ثابت راس_t& next = vertices_[ايندڙ_id];
 
-      for (const auto& link : next.obj().all_links ()) {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
-        removed_edges[link.objidx]++;
-        const auto& v = vertices_[link.objidx];
-        if (!(v.incoming_edges () - removed_edges[link.objidx]))
+      لكل (ثابت خودڪار& link : next.obj().all_links ()) {
+        إذا (unlikely (link.objidx >= vertices_.ڊيگهائي))
+          أرجع Err(ٻاهريون_جو_BOUNDS);
+        removed_ڪنارا[link.objidx]++;
+        ثابت خودڪار& v = vertices_[link.objidx];
+        إذا (!(v.incoming_ڪنارا_2 () - removed_ڪنارا[link.objidx]))
           // Add the order that the links were encountered to the priority.
           // This ensures that ties between priorities objects are broken in a consistent
           // way. More specifically this is set up so that if a set of objects have the same
           // distance they'll be added to the topological order in the order that they are
           // referenced from the parent object.
-          queue.insert (v.modified_distance (order++),
+          قطار.insert (v.modified_مفاصلو (ترتيب++),
                         link.objidx);
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (قطار, ورهاست_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (new_ordering, ورهاست_FAILURE));
 
-    hb_swap (ordering_, new_ordering);
+    hb_مٽا_سٽا (ordering_, new_ordering);
 
-    if (unlikely (pos != vertices_.length)) {
+    إذا (unlikely (pos != vertices_.ڊيگهائي)) {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      أرجع Err(ORPHANED_NODES);
     }
 
-    return Ok();
+    أرجع Ok();
   }
 
   /*
@@ -811,122 +811,122 @@ public:
    * More specifically this looks for the top most 24 bit or 32 bit links in the graph.
    * Some special casing is done that is specific to the layout of GSUB/GPOS tables.
    */
-  graph_result_t<void> find_space_roots (hb_set_t& visited, hb_set_t& roots)
+  گراف_نتيجو_t<فراغ> ڳوليو_space_roots (hb_سيٽ_t& گهميل, hb_سيٽ_t& roots)
   {
-    unsigned root_index = root_idx ();
-    for (unsigned i : ordering_)
+    بنانشان پاڙ_اشاريو = پاڙ_idx ();
+    لكل (بنانشان i : ordering_)
     {
-      if (visited.has (i)) continue;
+      إذا (گهميل.has (i)) استمر;
 
       // Only real links can form 32 bit spaces
-      for (const auto& l : vertices_[i].obj().real_links)
+      لكل (ثابت خودڪار& l : vertices_[i].obj().real_links)
       {
-        if (l.is_signed || l.width < 3)
-          continue;
+        إذا (l.is_signed || l.ويڪر < 3)
+          استمر;
 
-        if (i == root_index && l.width == 3)
+        إذا (i == پاڙ_اشاريو && l.ويڪر == 3)
           // Ignore 24bit links from the root node, this skips past the single 24bit
           // pointer to the lookup list.
-          continue;
+          استمر;
 
-        if (l.width >= 3)
+        إذا (l.ويڪر >= 3)
         {
           // A wide offset forms a root, unless there are 32-bit offsets somewhere
           // in its subgraph, then those become the roots instead. This is to make sure
           // that extension subtables beneath a 24-bit lookup and lookups beneath a
           // 32-bit lookup list become the spaces instead of their enclosing lists.
-          hb_set_t sub_roots;
-          TRY (find_32bit_roots (l.objidx, sub_roots));
-          if (sub_roots) {
-            for (unsigned sub_root_idx : sub_roots) {
-              roots.add (sub_root_idx);
-              TRY (find_subgraph (sub_root_idx, visited));
+          hb_سيٽ_t sub_roots;
+          TRY (ڳوليو_32bit_roots (l.objidx, sub_roots));
+          إذا (sub_roots) {
+            لكل (بنانشان sub_پاڙ_idx : sub_roots) {
+              roots.جوڙيو (sub_پاڙ_idx);
+              TRY (ڳوليو_subgraph (sub_پاڙ_idx, گهميل));
             }
-            continue;
+            استمر;
           }
         }
 
-        roots.add (l.objidx);
-        TRY (find_subgraph (l.objidx, visited));
+        roots.جوڙيو (l.objidx);
+        TRY (ڳوليو_subgraph (l.objidx, گهميل));
       }
     }
 
-    TRY(graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY(graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-    return Ok();
+    TRY(گراف_نتيجو_t<فراغ>::from (گهميل, ورهاست_FAILURE));
+    TRY(گراف_نتيجو_t<فراغ>::from (roots, ورهاست_FAILURE));
+    أرجع Ok();
   }
 
-  template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Immutable>> as_table (unsigned parent, const void* offset, Ts... ds)
+  سانچو <قسم_نالو T, قسم_نالو ...Ts>
+  گراف_نتيجو_t<راس_and_جدول_t<T, Immutable>> as_جدول (بنانشان والد, ثابت فراغ* وٿي, Ts... ds)
   {
-    TRY_ASSIGN (unsigned idx, index_for_offset (parent, offset));
-    return as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
+    TRY_سونپيو (بنانشان idx, اشاريو_for_وٿي (والد, وٿي));
+    أرجع as_جدول_from_اشاريو<T, Immutable> (idx, std::forward<Ts>(ds)...);
   }
 
-  template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (unsigned parent, const void* offset, Ts... ds)
+  سانچو <قسم_نالو T, قسم_نالو ...Ts>
+  گراف_نتيجو_t<راس_and_جدول_t<T, Mutable>> as_mutable_جدول (بنانشان والد, ثابت فراغ* وٿي, Ts... ds)
   {
-    TRY_ASSIGN (auto idx, mutable_index_for_offset (parent, offset));
-    return as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
+    TRY_سونپيو (خودڪار idx, mutable_اشاريو_for_وٿي (والد, وٿي));
+    أرجع as_جدول_from_اشاريو<T, Mutable> (idx, std::forward<Ts>(ds)...);
   }
 
-  template <typename T, vertex_mutability_t mutability = Mutable, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, mutability>> as_table_from_index (unsigned index, Ts... ds)
+  سانچو <قسم_نالو T, راس_mutability_t mutability = Mutable, قسم_نالو ...Ts>
+  گراف_نتيجو_t<راس_and_جدول_t<T, mutability>> as_جدول_from_اشاريو (بنانشان اشاريو_2, Ts... ds)
   {
-    if (unlikely (index >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (اشاريو_2 >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    vertex_and_table_t<T, mutability> r;
-    r.vertex = (typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type) &vertices_[index];
-    r.table = r.vertex->template as<typename std::conditional<mutability == Immutable, const T*, T*>::type> ();
-    r.index = index;
-    if (unlikely (!r.table))
-      return Err(INVALID_ARGUMENT);
+    راس_and_جدول_t<T, mutability> r;
+    r.راس = (قسم_نالو std::conditional<mutability == Immutable, ثابت راس_t*, راس_t*>::type) &vertices_[اشاريو_2];
+    r.جدول = r.راس->سانچو as<قسم_نالو std::conditional<mutability == Immutable, ثابت T*, T*>::type> ();
+    r.اشاريو_2 = اشاريو_2;
+    إذا (unlikely (!r.جدول))
+      أرجع Err(INVALID_دليل);
 
-    TRY(r.table->sanitize (*(r.vertex), std::forward<Ts>(ds)...));
-    return r;
+    TRY(r.جدول->sanitize (*(r.راس), std::forward<Ts>(ds)...));
+    أرجع r;
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx].
-  graph_result_t<unsigned> index_for_offset (unsigned node_idx, const void* offset) const
+  گراف_نتيجو_t<بنانشان> اشاريو_for_وٿي (بنانشان ڳنڍ_idx, ثابت فراغ* وٿي) ثابت
   {
-    if (unlikely (node_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    const auto& node = object (node_idx);
-    if (unlikely (offset < node.head || offset >= node.tail)) return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (ڳنڍ_idx >= vertices_.ڊيگهائي)) أرجع Err(ٻاهريون_جو_BOUNDS);
+    ثابت خودڪار& node = object (ڳنڍ_idx);
+    إذا (unlikely (وٿي < node.سر_2 || وٿي >= node.پڇ)) أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    unsigned count = node.real_links.length;
-    for (unsigned i = 0; i < count; i++)
+    بنانشان ڳڻپ = node.real_links.ڊيگهائي;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
       // Use direct access for increased performance, this is a hot method.
-      const auto& link = node.real_links.arrayZ[i];
-      if (offset != node.head + link.position)
-        continue;
-      return Ok(link.objidx);
+      ثابت خودڪار& link = node.real_links.arrayZ[i];
+      إذا (وٿي != node.سر_2 + link.position)
+        استمر;
+      أرجع Ok(link.objidx);
     }
 
-    return Err(INVALID_ARGUMENT);
+    أرجع Err(INVALID_دليل);
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx]. Ensures that the returned object is safe to mutate.
   // That is, if the original child object is shared by parents other than node_idx
   // it will be duplicated and the duplicate will be returned instead.
-  graph_result_t<unsigned> mutable_index_for_offset (unsigned node_idx, const void* offset)
+  گراف_نتيجو_t<بنانشان> mutable_اشاريو_for_وٿي (بنانشان ڳنڍ_idx, ثابت فراغ* وٿي)
   {
-    TRY_ASSIGN (unsigned child_idx, index_for_offset (node_idx, offset));
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    TRY_سونپيو (بنانشان ٻار_idx, اشاريو_for_وٿي (ڳنڍ_idx, وٿي));
+    إذا (unlikely (ٻار_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    auto& child = vertices_[child_idx];
-    for (unsigned p : child.parents_iter ())
+    خودڪار& ٻار = vertices_[ٻار_idx];
+    لكل (بنانشان p : ٻار.parents_iter ())
     {
-      if (p != node_idx) {
-        return duplicate (node_idx, child_idx, true);
+      إذا (p != ڳنڍ_idx) {
+        أرجع duplicate (ڳنڍ_idx, ٻار_idx, سچ);
       }
     }
 
-    return Ok(child_idx);
+    أرجع Ok(ٻار_idx);
   }
 
 
@@ -935,69 +935,69 @@ public:
    * Currently, this is implemented specifically tailored to the structure of a GPOS/GSUB
    * (including with 24bit offsets) table.
    */
-  graph_result_t<bool> assign_spaces ()
+  گراف_نتيجو_t<منطقي> سونپيو_spaces ()
   {
     TRY (update_parents ());
 
-    for (auto& vertex : vertices_.writer ())
+    لكل (خودڪار& راس : vertices_.writer ())
     {
-      vertex.space = 0;
-      vertex.priority = 0;
+      راس.space = 0;
+      راس.ترجيح = 0;
     }
-    num_roots_for_space_.resize (1);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    num_roots_for_space_[0] = 1;
-    distance_invalid = true;
-    positions_invalid = true;
+    انگ_roots_for_space.resize (1);
+    TRY (گراف_نتيجو_t<فراغ>::from (انگ_roots_for_space, ورهاست_FAILURE));
+    انگ_roots_for_space[0] = 1;
+    مفاصلو_invalid = سچ;
+    positions_invalid = سچ;
 
-    hb_set_t visited;
-    hb_set_t roots;
-    TRY (find_space_roots (visited, roots));
+    hb_سيٽ_t گهميل;
+    hb_سيٽ_t roots;
+    TRY (ڳوليو_space_roots (گهميل, roots));
 
     // Mark everything not in the subgraphs of the roots as visited. This prevents
     // subgraphs from being connected via nodes not in those subgraphs.
-    visited.invert ();
+    گهميل.invert ();
 
-    if (!roots) return Ok(false);
+    إذا (!roots) أرجع Ok(خطأ);
 
-    while (roots)
+    طالما (roots)
     {
-      uint32_t next = HB_SET_VALUE_INVALID;
-      TRY (graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-      if (!roots.next (&next)) break;
+      uint32_t next = HB_سيٽ_قدر_INVALID;
+      TRY (گراف_نتيجو_t<فراغ>::from (roots, ورهاست_FAILURE));
+      إذا (!roots.next (&next)) اكسر;
 
-      hb_set_t connected_roots;
-      TRY (find_connected_nodes (next, roots, visited, connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      hb_سيٽ_t connected_roots;
+      TRY (ڳوليو_connected_nodes (next, roots, گهميل, connected_roots));
+      TRY (گراف_نتيجو_t<فراغ>::from (connected_roots, ورهاست_FAILURE));
 
       TRY (isolate_subgraph (connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      TRY (گراف_نتيجو_t<فراغ>::from (connected_roots, ورهاست_FAILURE));
 
-      unsigned next_space = this->next_space ();
-      if (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
+      بنانشان ايندڙ_space = هذا->ايندڙ_space ();
+      إذا (unlikely (ايندڙ_space >= HB_REPACKER_MAX_SPACES))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
-                 next_space);
-        return Err(LIMIT_EXCEEDED);
+                 ايندڙ_space);
+        أرجع Err(حد_بندي_EXCEEDED);
       }
-      num_roots_for_space_.push (0);
-      TRY(graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
+      انگ_roots_for_space.push (0);
+      TRY(گراف_نتيجو_t<فراغ>::from (انگ_roots_for_space, ورهاست_FAILURE));
 
-      for (unsigned root : connected_roots)
+      لكل (بنانشان پاڙ : connected_roots)
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", root, next_space);
-        vertices_[root].space = next_space;
-        num_roots_for_space_[next_space] = num_roots_for_space_[next_space] + 1;
-        distance_invalid = true;
-        positions_invalid = true;
+        DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "Subgraph %u gets space %u", پاڙ, ايندڙ_space);
+        vertices_[پاڙ].space = ايندڙ_space;
+        انگ_roots_for_space[ايندڙ_space] = انگ_roots_for_space[ايندڙ_space] + 1;
+        مفاصلو_invalid = سچ;
+        positions_invalid = سچ;
       }
 
       // TODO(grieger): special case for GSUB/GPOS use extension promotions to move 16 bit space
       //                into the 32 bit space as needed, instead of using isolation.
     }
 
-    return Ok(true);
+    أرجع Ok(سچ);
   }
 
   /*
@@ -1007,71 +1007,71 @@ public:
    *
    * Indices stored in roots will be updated if any of the roots are duplicated to new indices.
    */
-  graph_result_t<bool> isolate_subgraph (hb_set_t& roots)
+  گراف_نتيجو_t<منطقي> isolate_subgraph (hb_سيٽ_t& roots)
   {
     TRY(update_parents ());
     hb_map_t subgraph;
 
     // incoming edges to root_idx should be all 32 bit in length so we don't need to de-dup these
     // set the subgraph incoming edge count to match all of root_idx's incoming edges
-    hb_set_t parents;
-    for (unsigned root_idx : roots)
+    hb_سيٽ_t parents;
+    لكل (بنانشان پاڙ_idx : roots)
     {
-      if (unlikely (root_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      subgraph.set (root_idx, wide_parents (root_idx, parents));
+      إذا (unlikely (پاڙ_idx >= vertices_.ڊيگهائي))
+        أرجع Err(ٻاهريون_جو_BOUNDS);
+      subgraph.سيٽ (پاڙ_idx, wide_parents (پاڙ_idx, parents));
     }
-    for (unsigned root_idx : roots)
+    لكل (بنانشان پاڙ_idx : roots)
     {
-      TRY (find_subgraph (root_idx, subgraph));
+      TRY (ڳوليو_subgraph (پاڙ_idx, subgraph));
     }
-    TRY (graph_result_t<void>::from (subgraph, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (subgraph, ورهاست_FAILURE));
 
-    hb_map_t index_map;
-    bool made_changes = false;
-    for (auto entry : subgraph.iter ())
+    hb_map_t اشاريو_map;
+    منطقي made_changes = خطأ;
+    لكل (خودڪار داخلا : subgraph.iter ())
     {
-      assert (entry.first < vertices_.length);
-      const auto& node = vertices_[entry.first];
-      unsigned subgraph_incoming_edges = entry.second;
+      أكد (داخلا.پهريون < vertices_.ڊيگهائي);
+      ثابت خودڪار& node = vertices_[داخلا.پهريون];
+      بنانشان subgraph_incoming_ڪنارا = داخلا.second;
 
-      if (subgraph_incoming_edges < node.incoming_edges ())
+      إذا (subgraph_incoming_ڪنارا < node.incoming_ڪنارا_2 ())
       {
         // Only  de-dup objects with incoming links from outside the subgraph.
-        made_changes = true;
-        TRY (duplicate_subgraph (entry.first, index_map));
+        made_changes = سچ;
+        TRY (duplicate_subgraph (داخلا.پهريون, اشاريو_map));
       }
     }
 
-    TRY (graph_result_t<void>::from (index_map, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (اشاريو_map, ورهاست_FAILURE));
 
-    if (!made_changes)
-      return Ok(false);
+    إذا (!made_changes)
+      أرجع Ok(خطأ);
 
-    auto new_subgraph =
-        + subgraph.keys ()
-        | hb_map([&] (uint32_t node_idx) {
-          const uint32_t *v;
-          if (index_map.has (node_idx, &v)) return *v;
-          return node_idx;
+    خودڪار new_subgraph =
+        + subgraph.ڪنجيون ()
+        | hb_map([&] (uint32_t ڳنڍ_idx) {
+          ثابت uint32_t *v;
+          إذا (اشاريو_map.has (ڳنڍ_idx, &v)) أرجع *v;
+          أرجع ڳنڍ_idx;
         })
         ;
 
-    TRY(remap_obj_indices (index_map, new_subgraph));
-    TRY(remap_obj_indices (index_map, parents.iter (), true));
+    TRY(remap_obj_indices (اشاريو_map, new_subgraph));
+    TRY(remap_obj_indices (اشاريو_map, parents.iter (), سچ));
 
     // Update roots set with new indices as needed.
-    for (auto next : roots)
+    لكل (خودڪار next : roots)
     {
-      const uint32_t *v;
-      if (index_map.has (next, &v))
+      ثابت uint32_t *v;
+      إذا (اشاريو_map.has (next, &v))
       {
         roots.del (next);
-        roots.add (*v);
+        roots.جوڙيو (*v);
       }
     }
 
-    return Ok(true);
+    أرجع Ok(سچ);
   }
 
   // BFS graph traversal starting at start_idx.
@@ -1087,143 +1087,143 @@ public:
   //
   // This traversal does not use a visited set internally, it is the responsibility of visit_edge
   // to track and filter visited nodes if required for the particular traversal.
-  template <typename VisitEdgeFunc>
-  graph_result_t<void> traverse_directed_bfs (unsigned start_idx, VisitEdgeFunc&& visit_edge)
+  سانچو <قسم_نالو گهمو_ڪنارو_Func>
+  گراف_نتيجو_t<فراغ> traverse_directed_bfs (بنانشان شروعات_idx, گهمو_ڪنارو_Func&& گهمو_ڪنارو)
   {
-    if (unlikely (start_idx >= vertices_.length))
+    إذا (unlikely (شروعات_idx >= vertices_.ڊيگهائي))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "traverse_directed_bfs: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      أرجع Err(ٻاهريون_جو_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a queue for BFS.
-    ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    ordering_scratch_.resize (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (ordering_scratch_, ورهاست_FAILURE));
 
-    if (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
-      return Ok();
+    إذا (!گهمو_ڪنارو (HB_CODEPOINT_INVALID, خالي_اشارو, شروعات_idx, 0))
+      أرجع Ok();
 
-    unsigned head = 0;
-    unsigned tail = 0;
-    auto& queue = ordering_scratch_;
-    queue[tail++] = start_idx;
+    بنانشان سر_2 = 0;
+    بنانشان پڇ = 0;
+    خودڪار& قطار = ordering_scratch_;
+    قطار[پڇ++] = شروعات_idx;
 
-    unsigned depth = 0;
-    while (head < tail)
+    بنانشان اونهائي = 0;
+    طالما (سر_2 < پڇ)
     {
-      unsigned level_end = tail;
-      while (head < level_end)
+      بنانشان level_پڇاڙي = پڇ;
+      طالما (سر_2 < level_پڇاڙي)
       {
-        unsigned node_idx = queue[head++];
-        const auto& v = vertices_[node_idx];
+        بنانشان ڳنڍ_idx = قطار[سر_2++];
+        ثابت خودڪار& v = vertices_[ڳنڍ_idx];
 
-        unsigned num_real = v.obj().real_links.length;
-        unsigned total_links = num_real + v.obj().virtual_links.length;
+        بنانشان انگ_real = v.obj().real_links.ڊيگهائي;
+        بنانشان ڪل_links = انگ_real + v.obj().virtual_links.ڊيگهائي;
 
-        for (unsigned i = 0; i < total_links; i++)
+        لكل (بنانشان i = 0; i < ڪل_links; i++)
         {
           // vertices_ may have re-alloc'd inside an op() call, so reassign the v ref.
-          const auto& v = vertices_[node_idx];
-          const auto& link = (i < num_real)
+          ثابت خودڪار& v = vertices_[ڳنڍ_idx];
+          ثابت خودڪار& link = (i < انگ_real)
                              ? v.obj().real_links[i]
-                             : v.obj().virtual_links[i - num_real];
-          unsigned child_idx = link.objidx;
+                             : v.obj().virtual_links[i - انگ_real];
+          بنانشان ٻار_idx = link.objidx;
 
-          if (!visit_edge (node_idx, &link, child_idx, depth + 1))
-            continue;
+          إذا (!گهمو_ڪنارو (ڳنڍ_idx, &link, ٻار_idx, اونهائي + 1))
+            استمر;
 
-          if (unlikely (tail >= queue.length))
-            return Err(CYCLE_DETECTED);
+          إذا (unlikely (پڇ >= قطار.ڊيگهائي))
+            أرجع Err(چڪر_DETECTED);
 
-          queue[tail++] = child_idx;
+          قطار[پڇ++] = ٻار_idx;
         }
       }
-      depth++;
+      اونهائي++;
     }
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_map_t& subgraph)
+  گراف_نتيجو_t<فراغ> ڳوليو_subgraph (بنانشان ڳنڍ_idx, hb_map_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (depth == 0) return true;
-      hb_codepoint_t *count;
-      if (subgraph.has (child, &count))
+    أرجع traverse_directed_bfs (ڳنڍ_idx, [&] (
+      بنانشان والد,
+      ثابت hb_serialize_context_t::object_t::link_t* link,
+      بنانشان ٻار,
+      بنانشان اونهائي) {
+      إذا (اونهائي == 0) أرجع سچ;
+      hb_codepoint_t *ڳڻپ;
+      إذا (subgraph.has (ٻار, &ڳڻپ))
       {
-        (*count)++;
-        return false;
+        (*ڳڻپ)++;
+        أرجع خطأ;
       }
-      subgraph.set (child, 1);
-      return true;
+      subgraph.سيٽ (ٻار, 1);
+      أرجع سچ;
     });
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_set_t& subgraph)
+  گراف_نتيجو_t<فراغ> ڳوليو_subgraph (بنانشان ڳنڍ_idx, hb_سيٽ_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (subgraph.has (child)) return false;
-      subgraph.add (child);
-      return true;
+    أرجع traverse_directed_bfs (ڳنڍ_idx, [&] (
+      بنانشان والد,
+      ثابت hb_serialize_context_t::object_t::link_t* link,
+      بنانشان ٻار,
+      بنانشان اونهائي) {
+      إذا (subgraph.has (ٻار)) أرجع خطأ;
+      subgraph.جوڙيو (ٻار);
+      أرجع سچ;
     });
   }
 
-  graph_result_t<size_t> find_subgraph_size (unsigned node_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
+  گراف_نتيجو_t<size_t> ڳوليو_subgraph_سائيز (بنانشان ڳنڍ_idx, hb_سيٽ_t& subgraph, بنانشان max_اونهائي = HB_گراف_INVALID)
   {
-    size_t size = 0;
-    TRY (traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (subgraph.has (child)) return false;
-      subgraph.add (child);
+    size_t سائيز = 0;
+    TRY (traverse_directed_bfs (ڳنڍ_idx, [&] (
+      بنانشان والد,
+      ثابت hb_serialize_context_t::object_t::link_t* link,
+      بنانشان ٻار,
+      بنانشان اونهائي) {
+      إذا (subgraph.has (ٻار)) أرجع خطأ;
+      subgraph.جوڙيو (ٻار);
 
-      const auto& o = vertices_[child].obj();
-      size += o.tail - o.head;
-      return depth < max_depth;
+      ثابت خودڪار& o = vertices_[ٻار].obj();
+      سائيز += o.پڇ - o.سر_2;
+      أرجع اونهائي < max_اونهائي;
     }));
-    return Ok(size);
+    أرجع Ok(سائيز);
   }
 
   /*
    * Finds the topmost children of 32bit offsets in the subgraph starting
    * at node_idx. Found indices are placed into 'found'.
    */
-  graph_result_t<void> find_32bit_roots (unsigned node_idx, hb_set_t& found)
+  گراف_نتيجو_t<فراغ> ڳوليو_32bit_roots (بنانشان ڳنڍ_idx, hb_سيٽ_t& مليو)
   {
     // Note: this specifically requires a BFS based traversal to ensure we don't recurse through
     // a node that is accessible via both 32bit and non-32 bit links.
-    hb_set_t visited;
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned _) {
+    hb_سيٽ_t گهميل;
+    أرجع traverse_directed_bfs (ڳنڍ_idx, [&] (
+      بنانشان والد,
+      ثابت hb_serialize_context_t::object_t::link_t* link,
+      بنانشان ٻار,
+      بنانشان _) {
 
-      if (link && found.has(parent))
+      إذا (link && مليو.has(والد))
         // Don't traverse from something that's already marked as a root.
-        return false;
+        أرجع خطأ;
 
-      if (link && !link->is_signed && link->width == 4)
+      إذا (link && !link->is_signed && link->ويڪر == 4)
       {
-        found.add (link->objidx);
-        visited.add (link->objidx);
-        return false;
+        مليو.جوڙيو (link->objidx);
+        گهميل.جوڙيو (link->objidx);
+        أرجع خطأ;
       }
 
-      if (visited.has (child)) return false;
-      visited.add (child);
-      return true;
+      إذا (گهميل.has (ٻار)) أرجع خطأ;
+      گهميل.جوڙيو (ٻار);
+      أرجع سچ;
     });
   }
 
@@ -1233,36 +1233,36 @@ public:
    *
    * Returns the id of the child node that was moved.
    */
-  template<typename O>
-  graph_result_t<unsigned> move_child (unsigned old_parent_idx,
-                                       const O* old_offset,
-                                       unsigned new_parent_idx,
-                                       const O* new_offset)
+  سانچو<قسم_نالو O>
+  گراف_نتيجو_t<بنانشان> move_ٻار (بنانشان old_والد_idx,
+                                       ثابت O* old_وٿي,
+                                       بنانشان new_والد_idx,
+                                       ثابت O* new_وٿي)
   {
-    distance_invalid = true;
-    positions_invalid = true;
+    مفاصلو_invalid = سچ;
+    positions_invalid = سچ;
 
-    if (unlikely (old_parent_idx >= vertices_.length ||
-                  new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (old_والد_idx >= vertices_.ڊيگهائي ||
+                  new_والد_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    auto& old_v = vertices_[old_parent_idx];
-    auto& new_v = vertices_[new_parent_idx];
+    خودڪار& old_v = vertices_[old_والد_idx];
+    خودڪار& new_v = vertices_[new_والد_idx];
 
-    TRY_ASSIGN (unsigned child_id, index_for_offset (old_parent_idx,
-                                                     old_offset));
-    if (unlikely (child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    TRY_سونپيو (بنانشان ٻار_id, اشاريو_for_وٿي (old_والد_idx,
+                                                     old_وٿي));
+    إذا (unlikely (ٻار_id >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    TRY(new_v.add_real_link(O::static_size, child_id, (const char*) new_offset - (const char*) new_v.obj().head));
+    TRY(new_v.جوڙيو_real_link(O::static_سائيز, ٻار_id, (ثابت حرف*) new_وٿي - (ثابت حرف*) new_v.obj().سر_2));
 
-    auto& child = vertices_[child_id];
-    TRY(child.add_parent (new_parent_idx, false));
+    خودڪار& ٻار = vertices_[ٻار_id];
+    TRY(ٻار.جوڙيو_والد (new_والد_idx, خطأ));
 
-    old_v.remove_real_link_unordered (child_id, old_offset);
-    child.remove_parent (old_parent_idx);
+    old_v.remove_real_link_unordered (ٻار_id, old_وٿي);
+    ٻار.remove_والد (old_والد_idx);
 
-    return Ok(child_id);
+    أرجع Ok(ٻار_id);
   }
 
   /*
@@ -1271,47 +1271,47 @@ public:
    * to the new parent. Links are placed serially in the new
    * parent starting at new_pos_start.
    */
-  template<typename O>
-  graph_result_t<void> move_children (unsigned old_parent_idx,
-                                      unsigned old_pos_start,
-                                      unsigned old_pos_end,
-                                      unsigned new_parent_idx,
-                                      unsigned new_pos_start)
+  سانچو<قسم_نالو O>
+  گراف_نتيجو_t<فراغ> move_children (بنانشان old_والد_idx,
+                                      بنانشان old_pos_شروعات,
+                                      بنانشان old_pos_پڇاڙي,
+                                      بنانشان new_والد_idx,
+                                      بنانشان new_pos_شروعات)
   {
-    if (unlikely (old_parent_idx >= vertices_.length ||
-                  new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (old_والد_idx >= vertices_.ڊيگهائي ||
+                  new_والد_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    distance_invalid = true;
-    positions_invalid = true;
+    مفاصلو_invalid = سچ;
+    positions_invalid = سچ;
 
-    auto& old_v = vertices_[old_parent_idx];
-    auto& new_v = vertices_[new_parent_idx];
+    خودڪار& old_v = vertices_[old_والد_idx];
+    خودڪار& new_v = vertices_[new_والد_idx];
 
-    hb_vector_t<hb_serialize_context_t::object_t::link_t> old_links;
-    for (const auto& l : old_v.obj().real_links)
+    hb_ويڪٽر_t<hb_serialize_context_t::object_t::link_t> old_links;
+    لكل (ثابت خودڪار& l : old_v.obj().real_links)
     {
-      if (l.position < old_pos_start || l.position >= old_pos_end)
+      إذا (l.position < old_pos_شروعات || l.position >= old_pos_پڇاڙي)
       {
         old_links.push (l);
-        continue;
+        استمر;
       }
 
-      unsigned array_pos = l.position - old_pos_start;
+      بنانشان array_pos = l.position - old_pos_شروعات;
 
-      unsigned child_id = l.objidx;
-      if (unlikely (child_id >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      بنانشان ٻار_id = l.objidx;
+      إذا (unlikely (ٻار_id >= vertices_.ڊيگهائي))
+        أرجع Err(ٻاهريون_جو_BOUNDS);
 
-      TRY(new_v.add_real_link(O::static_size, child_id, new_pos_start + array_pos));
+      TRY(new_v.جوڙيو_real_link(O::static_سائيز, ٻار_id, new_pos_شروعات + array_pos));
 
-      auto& child = vertices_[child_id];
-      TRY(child.add_parent (new_parent_idx, false));
-      child.remove_parent (old_parent_idx);
+      خودڪار& ٻار = vertices_[ٻار_id];
+      TRY(ٻار.جوڙيو_والد (new_والد_idx, خطأ));
+      ٻار.remove_والد (old_والد_idx);
     }
 
-    TRY (graph_result_t<void>::from (old_links, ALLOCATION_FAILURE));
-    return old_v.set_real_links(std::move (old_links));
+    TRY (گراف_نتيجو_t<فراغ>::from (old_links, ورهاست_FAILURE));
+    أرجع old_v.سيٽ_real_links(std::move (old_links));
   }
 
   /*
@@ -1319,92 +1319,92 @@ public:
    * links. index_map is updated with mappings from old id to new id. If a duplication has already
    * been performed for a given index, then it will be skipped.
    */
-  graph_result_t<void> duplicate_subgraph (unsigned node_idx, hb_map_t& index_map)
+  گراف_نتيجو_t<فراغ> duplicate_subgraph (بنانشان ڳنڍ_idx, hb_map_t& اشاريو_map)
   {
-    graph_result_t<void> result = Ok();
-    TRY (traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned _) {
-      if (result.is_err () || index_map.has (child)) return false;
-      auto r = duplicate (child);
-      if (unlikely (r.is_err ()))
+    گراف_نتيجو_t<فراغ> نتيجو = Ok();
+    TRY (traverse_directed_bfs (ڳنڍ_idx, [&] (
+      بنانشان والد,
+      ثابت hb_serialize_context_t::object_t::link_t* link,
+      بنانشان ٻار,
+      بنانشان _) {
+      إذا (نتيجو.is_err () || اشاريو_map.has (ٻار)) أرجع خطأ;
+      خودڪار r = duplicate (ٻار);
+      إذا (unlikely (r.is_err ()))
       {
-        result = Err(r.error ());
-        return false;
+        نتيجو = Err(r.error ());
+        أرجع خطأ;
       }
-      index_map.set (child, *r);
-      return true;
+      اشاريو_map.سيٽ (ٻار, *r);
+      أرجع سچ;
     }));
 
-    return graph_result_t<void>::from(index_map, ALLOCATION_FAILURE);
+    أرجع گراف_نتيجو_t<فراغ>::from(اشاريو_map, ورهاست_FAILURE);
   }
 
   /*
    * Creates a copy of node_idx and returns it's new index.
    */
-  graph_result_t<unsigned> duplicate (unsigned node_idx, bool copy_table = false)
+  گراف_نتيجو_t<بنانشان> duplicate (بنانشان ڳنڍ_idx, منطقي copy_جدول = خطأ)
   {
-    if (unlikely (node_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (ڳنڍ_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    إذا (unlikely (vertices_.ڊيگهائي >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "duplicating node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
-                 vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+                 vertices_.ڊيگهائي);
+      أرجع Err(حد_بندي_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = سچ;
+    مفاصلو_invalid = سچ;
 
-    auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    خودڪار* clone = vertices_.push ();
+    TRY (گراف_نتيجو_t<فراغ>::from (vertices_, ورهاست_FAILURE));
 
-    unsigned clone_idx = vertices_.length - 1;
+    بنانشان clone_idx = vertices_.ڊيگهائي - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (ordering_, ورهاست_FAILURE));
 
-    auto& child = vertices_[node_idx];
+    خودڪار& ٻار = vertices_[ڳنڍ_idx];
 
-    unsigned table_size = child.obj().tail - child.obj().head;
-    if (copy_table && table_size)
+    بنانشان جدول_سائيز = ٻار.obj().پڇ - ٻار.obj().سر_2;
+    إذا (copy_جدول && جدول_سائيز)
     {
-      char* buffer = (char*) hb_malloc (table_size);
-      if (unlikely (!buffer))
-        return Err(ALLOCATION_FAILURE);
-      auto res = add_buffer (buffer);
-      if (unlikely (res.is_err ()))
+      حرف* بفر = (حرف*) hb_malloc (جدول_سائيز);
+      إذا (unlikely (!بفر))
+        أرجع Err(ورهاست_FAILURE);
+      خودڪار res = جوڙيو_بفر (بفر);
+      إذا (unlikely (res.is_err ()))
       {
-        hb_free (buffer);
-        return Err(res.error ());
+        hb_free (بفر);
+        أرجع Err(res.error ());
       }
-      hb_memcpy (buffer, child.obj().head, table_size);
-      clone->set_buffer(buffer, buffer + table_size);
+      hb_memcpy (بفر, ٻار.obj().سر_2, جدول_سائيز);
+      clone->سيٽ_بفر(بفر, بفر + جدول_سائيز);
     }
-    else
+    وإلا
     {
-      clone->set_buffer(child.obj().head, child.obj().tail);
+      clone->سيٽ_بفر(ٻار.obj().سر_2, ٻار.obj().پڇ);
     }
-    clone->distance = child.distance;
-    clone->space = child.space;
+    clone->distance = ٻار.distance;
+    clone->space = ٻار.space;
     clone->reset_parents ();
 
-    for (const auto& l : child.obj().real_links)
+    لكل (ثابت خودڪار& l : ٻار.obj().real_links)
     {
-      TRY(clone->add_real_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, false));
+      TRY(clone->جوڙيو_real_link (l));
+      TRY(vertices_[l.objidx].جوڙيو_والد (clone_idx, خطأ));
     }
 
-    for (const auto& l : child.obj().virtual_links)
+    لكل (ثابت خودڪار& l : ٻار.obj().virtual_links)
     {
-      TRY(clone->add_virtual_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, true));
+      TRY(clone->جوڙيو_virtual_link (l));
+      TRY(vertices_[l.objidx].جوڙيو_والد (clone_idx, سچ));
     }
 
-    return Ok(clone_idx);
+    أرجع Ok(clone_idx);
   }
 
   /*
@@ -1417,17 +1417,17 @@ public:
    * If the child_idx only has incoming edges from parent_idx,
    * duplication isn't possible and this will return an error.
    */
-  graph_result_t<unsigned> duplicate (unsigned parent_idx, unsigned child_idx, bool copy_table = false)
+  گراف_نتيجو_t<بنانشان> duplicate (بنانشان والد_idx, بنانشان ٻار_idx, منطقي copy_جدول = خطأ)
   {
-    if (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (والد_idx >= vertices_.ڊيگهائي || ٻار_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
-    unsigned links_to_child = child.incoming_edges_from_parent (parent_idx);
+    ثابت خودڪار& ٻار = vertices_[ٻار_idx];
+    بنانشان links_منزل_ٻار = ٻار.incoming_ڪنارا_from_والد (والد_idx);
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    إذا (unlikely (ٻار.incoming_ڪنارا_2 () <= links_منزل_ٻار || ٻار.has_incoming_virtual_ڪنارا_2 ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1436,31 +1436,31 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
-                 parent_idx, child_idx);
-      return Err(INVALID_ARGUMENT);
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "  Not duplicating %u => %u",
+                 والد_idx, ٻار_idx);
+      أرجع Err(INVALID_دليل);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
-               parent_idx, child_idx);
+    DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "  Duplicating %u => %u",
+               والد_idx, ٻار_idx);
 
-    TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx, copy_table));
+    TRY_سونپيو (بنانشان clone_idx, duplicate (ٻار_idx, copy_جدول));
     // duplicate shifts the root node idx, so if parent_idx was root update it.
-    if (parent_idx == clone_idx) parent_idx++;
+    إذا (والد_idx == clone_idx) والد_idx++;
 
-    auto& parent = vertices_[parent_idx];
-    unsigned count = 0;
-    unsigned num_real = parent.obj().real_links.length;
-    for (auto& l : parent.all_links_writer ())
+    خودڪار& والد = vertices_[والد_idx];
+    بنانشان ڳڻپ = 0;
+    بنانشان انگ_real = والد.obj().real_links.ڊيگهائي;
+    لكل (خودڪار& l : والد.all_links_writer ())
     {
-      count++;
-      if (l.objidx != child_idx)
-        continue;
+      ڳڻپ++;
+      إذا (l.objidx != ٻار_idx)
+        استمر;
 
-      TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+      TRY(reassign_link (l, والد_idx, clone_idx, ڳڻپ > انگ_real));
     }
 
-    return Ok(clone_idx);
+    أرجع Ok(clone_idx);
   }
 
   /*
@@ -1474,27 +1474,27 @@ public:
    * duplication isn't possible or duplication fails and this will
    * return an error.
    */
-  graph_result_t<unsigned> duplicate (const hb_set_t* parents, unsigned child_idx)
+  گراف_نتيجو_t<بنانشان> duplicate (ثابت hb_سيٽ_t* parents, بنانشان ٻار_idx)
   {
-    if (unlikely (!parents || parents->is_empty ()))
-      return Err(INVALID_ARGUMENT);
+    إذا (unlikely (!parents || parents->is_empty ()))
+      أرجع Err(INVALID_دليل);
 
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (ٻار_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
-    unsigned links_to_child = 0;
-    unsigned last_parent = parents->get_max ();
-    unsigned first_parent = parents->get_min ();
-    for (unsigned parent_idx : *parents) {
-      if (unlikely (parent_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      links_to_child += child.incoming_edges_from_parent (parent_idx);
+    ثابت خودڪار& ٻار = vertices_[ٻار_idx];
+    بنانشان links_منزل_ٻار = 0;
+    بنانشان آخري_والد = parents->get_max ();
+    بنانشان پهريون_والد = parents->get_min ();
+    لكل (بنانشان والد_idx : *parents) {
+      إذا (unlikely (والد_idx >= vertices_.ڊيگهائي))
+        أرجع Err(ٻاهريون_جو_BOUNDS);
+      links_منزل_ٻار += ٻار.incoming_ڪنارا_from_والد (والد_idx);
     }
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    إذا (unlikely (ٻار.incoming_ڪنارا_2 () <= links_منزل_ٻار || ٻار.has_incoming_virtual_ڪنارا_2 ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1503,62 +1503,62 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
-      return Err(INVALID_ARGUMENT);
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "  Not duplicating %u, ..., %u => %u", پهريون_والد, آخري_والد, ٻار_idx);
+      أرجع Err(INVALID_دليل);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+    DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "  Duplicating %u, ..., %u => %u", پهريون_والد, آخري_والد, ٻار_idx);
 
-    TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx));
+    TRY_سونپيو (بنانشان clone_idx, duplicate (ٻار_idx));
 
-    for (unsigned parent_idx : *parents) {
+    لكل (بنانشان والد_idx : *parents) {
       // duplicate shifts the root node idx, so if parent_idx was root update it.
-      if (parent_idx == clone_idx) parent_idx++;
-      auto& parent = vertices_[parent_idx];
-      unsigned count = 0;
-      unsigned num_real = parent.obj().real_links.length;
-      for (auto& l : parent.all_links_writer ())
+      إذا (والد_idx == clone_idx) والد_idx++;
+      خودڪار& والد = vertices_[والد_idx];
+      بنانشان ڳڻپ = 0;
+      بنانشان انگ_real = والد.obj().real_links.ڊيگهائي;
+      لكل (خودڪار& l : والد.all_links_writer ())
       {
-        count++;
-        if (l.objidx != child_idx)
-          continue;
+        ڳڻپ++;
+        إذا (l.objidx != ٻار_idx)
+          استمر;
 
-        TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+        TRY(reassign_link (l, والد_idx, clone_idx, ڳڻپ > انگ_real));
       }
     }
 
-    return Ok(clone_idx);
+    أرجع Ok(clone_idx);
   }
 
 
   /*
    * Adds a new node to the graph, not connected to anything.
    */
-  graph_result_t<unsigned> new_node (char* head, char* tail)
+  گراف_نتيجو_t<بنانشان> new_ڳنڍ (حرف* سر_2, حرف* پڇ)
   {
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    إذا (unlikely (vertices_.ڊيگهائي >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "creating new node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
-                 vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+                 vertices_.ڊيگهائي);
+      أرجع Err(حد_بندي_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = سچ;
+    مفاصلو_invalid = سچ;
 
-    auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    خودڪار* clone = vertices_.push ();
+    TRY (گراف_نتيجو_t<فراغ>::from (vertices_, ورهاست_FAILURE));
 
-    unsigned clone_idx = vertices_.length - 1;
+    بنانشان clone_idx = vertices_.ڊيگهائي - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (ordering_, ورهاست_FAILURE));
 
-    clone->set_buffer (head, tail);
+    clone->سيٽ_بفر (سر_2, پڇ);
     clone->distance = 0;
     clone->space = 0;
 
-    return Ok(clone_idx);
+    أرجع Ok(clone_idx);
   }
 
   /*
@@ -1567,288 +1567,288 @@ public:
    * Returns the index of the newly created child.
    *
    */
-  graph_result_t<unsigned> remap_child (unsigned parent_idx, unsigned old_child_idx)
+  گراف_نتيجو_t<بنانشان> remap_ٻار (بنانشان والد_idx, بنانشان old_ٻار_idx)
   {
-    if (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    إذا (unlikely (والد_idx >= vertices_.ڊيگهائي || old_ٻار_idx >= vertices_.ڊيگهائي))
+      أرجع Err(ٻاهريون_جو_BOUNDS);
 
-    TRY_ASSIGN (unsigned new_child_idx, duplicate (old_child_idx));
+    TRY_سونپيو (بنانشان new_ٻار_idx, duplicate (old_ٻار_idx));
 
-    auto& parent = vertices_[parent_idx];
-    for (auto& l : parent.real_links_writer ())
+    خودڪار& والد = vertices_[والد_idx];
+    لكل (خودڪار& l : والد.real_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, false));
+      إذا (l.objidx != old_ٻار_idx)
+        استمر;
+      TRY(reassign_link (l, والد_idx, new_ٻار_idx, خطأ));
     }
 
-    for (auto& l : parent.virtual_links_writer ())
+    لكل (خودڪار& l : والد.virtual_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, true));
+      إذا (l.objidx != old_ٻار_idx)
+        استمر;
+      TRY(reassign_link (l, والد_idx, new_ٻار_idx, سچ));
     }
-    return Ok(new_child_idx);
+    أرجع Ok(new_ٻار_idx);
   }
 
   /*
    * Raises the sorting priority of all children.
    */
-  graph_result_t<bool> raise_childrens_priority (unsigned parent_idx)
+  گراف_نتيجو_t<منطقي> raise_childrens_ترجيح (بنانشان والد_idx)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
-               parent_idx);
+    DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "  Raising priority of all children of %u",
+               والد_idx);
     // This operation doesn't change ordering until a sort is run, so no need
     // to invalidate positions. It does not change graph structure so no need
     // to update distances or edge counts.
-    if (unlikely (parent_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    bool made_change = false;
-    for (auto& l : vertices_[parent_idx].all_links_writer ())
-      made_change |= vertices_[l.objidx].raise_priority ();
-    return Ok(made_change);
+    إذا (unlikely (والد_idx >= vertices_.ڊيگهائي)) أرجع Err(ٻاهريون_جو_BOUNDS);
+    منطقي made_change = خطأ;
+    لكل (خودڪار& l : vertices_[والد_idx].all_links_writer ())
+      made_change |= vertices_[l.objidx].raise_ترجيح ();
+    أرجع Ok(made_change);
   }
 
-  graph_result_t<void> is_fully_connected ()
+  گراف_نتيجو_t<فراغ> is_fully_connected ()
   {
     TRY(update_parents());
 
-    if (unlikely (root().incoming_edges ()))
+    إذا (unlikely (پاڙ().incoming_ڪنارا_2 ()))
       // Root cannot have parents.
-      return Err(ORPHANED_NODES);
+      أرجع Err(ORPHANED_NODES);
 
-    for (unsigned i = 0; i < root_idx (); i++)
+    لكل (بنانشان i = 0; i < پاڙ_idx (); i++)
     {
-      if (unlikely (!vertices_[i].incoming_edges ()))
-        return Err(ORPHANED_NODES);
+      إذا (unlikely (!vertices_[i].incoming_ڪنارا_2 ()))
+        أرجع Err(ORPHANED_NODES);
     }
-    return Ok();
+    أرجع Ok();
   }
 
-#if 0
+#إذا 0
   /*
    * Saves the current graph to a packed binary format which the repacker fuzzer takes
    * as a seed.
    */
-  void save_fuzzer_seed (hb_tag_t tag) const
+  فراغ save_fuzzer_ٻج (hb_ٽيگ_t ٽيگ_2) ثابت
   {
     FILE* f = fopen ("./repacker_fuzzer_seed", "w");
-    fwrite ((void*) &tag, sizeof (tag), 1, f);
+    fwrite ((فراغ*) &ٽيگ_2, حجم (ٽيگ_2), 1, f);
 
-    uint16_t num_objects = vertices_.length;
-    fwrite ((void*) &num_objects, sizeof (num_objects), 1, f);
+    uint16_t انگ_objects = vertices_.ڊيگهائي;
+    fwrite ((فراغ*) &انگ_objects, حجم (انگ_objects), 1, f);
 
-    for (const auto& v : vertices_)
+    لكل (ثابت خودڪار& v : vertices_)
     {
-      uint16_t blob_size = v.table_size ();
-      fwrite ((void*) &blob_size, sizeof (blob_size), 1, f);
-      fwrite ((const void*) v.obj.head, blob_size, 1, f);
+      uint16_t blob_سائيز = v.جدول_سائيز ();
+      fwrite ((فراغ*) &blob_سائيز, حجم (blob_سائيز), 1, f);
+      fwrite ((ثابت فراغ*) v.obj.سر_2, blob_سائيز, 1, f);
     }
 
-    uint16_t link_count = 0;
-    for (const auto& v : vertices_)
-      link_count += v.obj.real_links.length;
+    uint16_t link_ڳڻپ = 0;
+    لكل (ثابت خودڪار& v : vertices_)
+      link_ڳڻپ += v.obj.real_links.ڊيگهائي;
 
-    fwrite ((void*) &link_count, sizeof (link_count), 1, f);
+    fwrite ((فراغ*) &link_ڳڻپ, حجم (link_ڳڻپ), 1, f);
 
-    typedef struct
+    تعريفنوع بنية
     {
-      uint16_t parent;
-      uint16_t child;
+      uint16_t والد;
+      uint16_t ٻار;
       uint16_t position;
-      uint8_t width;
+      uint8_t ويڪر;
     } link_t;
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    لكل (بنانشان i = 0; i < vertices_.ڊيگهائي; i++)
     {
-      for (const auto& l : vertices_[i].obj.real_links)
+      لكل (ثابت خودڪار& l : vertices_[i].obj.real_links)
       {
         link_t link {
           (uint16_t) i, (uint16_t) l.objidx,
-          (uint16_t) l.position, (uint8_t) l.width
+          (uint16_t) l.position, (uint8_t) l.ويڪر
         };
-        fwrite ((void*) &link, sizeof (link), 1, f);
+        fwrite ((فراغ*) &link, حجم (link), 1, f);
       }
     }
 
     fclose (f);
   }
-#endif
+#جيڪڏهن_پورو
 
-  unsigned num_roots_for_space (unsigned space) const
+  بنانشان انگ_roots_for_space_2 (بنانشان space) ثابت
   {
-    return num_roots_for_space_[space];
+    أرجع انگ_roots_for_space[space];
   }
 
-  unsigned next_space () const
+  بنانشان ايندڙ_space () ثابت
   {
-    return num_roots_for_space_.length;
+    أرجع انگ_roots_for_space.ڊيگهائي;
   }
 
-  graph_result_t<void> move_to_new_space (const hb_set_t& indices)
+  گراف_نتيجو_t<فراغ> move_منزل_new_space (ثابت hb_سيٽ_t& indices)
   {
-    if (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
+    إذا (unlikely (انگ_roots_for_space.ڊيگهائي >= HB_REPACKER_MAX_SPACES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "move_to_new_space: num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
-                 num_roots_for_space_.length);
-      return Err(LIMIT_EXCEEDED);
+                 انگ_roots_for_space.ڊيگهائي);
+      أرجع Err(حد_بندي_EXCEEDED);
     }
-    num_roots_for_space_.push (0);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    unsigned new_space = num_roots_for_space_.length - 1;
+    انگ_roots_for_space.push (0);
+    TRY (گراف_نتيجو_t<فراغ>::from (انگ_roots_for_space, ورهاست_FAILURE));
+    بنانشان new_space = انگ_roots_for_space.ڊيگهائي - 1;
 
-    for (unsigned index : indices) {
-      if (unlikely (index >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      auto& node = vertices_[index];
-      num_roots_for_space_[node.space] = num_roots_for_space_[node.space] - 1;
-      num_roots_for_space_[new_space] = num_roots_for_space_[new_space] + 1;
+    لكل (بنانشان اشاريو_2 : indices) {
+      إذا (unlikely (اشاريو_2 >= vertices_.ڊيگهائي))
+        أرجع Err(ٻاهريون_جو_BOUNDS);
+      خودڪار& node = vertices_[اشاريو_2];
+      انگ_roots_for_space[node.space] = انگ_roots_for_space[node.space] - 1;
+      انگ_roots_for_space[new_space] = انگ_roots_for_space[new_space] + 1;
       node.space = new_space;
-      distance_invalid = true;
-      positions_invalid = true;
+      مفاصلو_invalid = سچ;
+      positions_invalid = سچ;
     }
-    return Ok();
+    أرجع Ok();
   }
 
-  unsigned space_for (unsigned index, unsigned* root = nullptr) const
+  بنانشان space_for (بنانشان اشاريو_2, بنانشان* پاڙ = خالي_اشارو) ثابت
   {
-    while (true)
+    طالما (سچ)
     {
-      assert (index < vertices_.length);
-      const auto& node = vertices_[index];
-      if (node.space)
+      أكد (اشاريو_2 < vertices_.ڊيگهائي);
+      ثابت خودڪار& node = vertices_[اشاريو_2];
+      إذا (node.space)
       {
-        if (root != nullptr)
-          *root = index;
-        return node.space;
+        إذا (پاڙ != خالي_اشارو)
+          *پاڙ = اشاريو_2;
+        أرجع node.space;
       }
 
-      if (!node.incoming_edges ())
+      إذا (!node.incoming_ڪنارا_2 ())
       {
-        if (root)
-          *root = index;
-        return 0;
+        إذا (پاڙ)
+          *پاڙ = اشاريو_2;
+        أرجع 0;
       }
 
-      index = *node.parents_iter ();
+      اشاريو_2 = *node.parents_iter ();
     }
   }
 
-  size_t total_size_in_bytes () const {
-    size_t total_size = 0;
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++) {
-      size_t size = vertices_.arrayZ[i].table_size ();
-      total_size += size;
+  size_t ڪل_سائيز_اندريون_بائيٽون () ثابت {
+    size_t ڪل_سائيز = 0;
+    بنانشان ڳڻپ = vertices_.ڊيگهائي;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++) {
+      size_t سائيز = vertices_.arrayZ[i].جدول_سائيز ();
+      ڪل_سائيز += سائيز;
     }
-    return total_size;
+    أرجع ڪل_سائيز;
   }
 
 
- private:
+ خاص:
 
-  void print_orphaned_nodes ()
+  فراغ print_orphaned_nodes ()
   {
-    if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+    إذا (!DEBUG_ENABLED(SUBSET_REPACK)) أرجع;
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
+    DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "Graph is not fully connected.");
 
-    parents_invalid = true;
-    (void) update_parents();
+    parents_invalid = سچ;
+    (فراغ) update_parents();
 
-    if (root().incoming_edges ()) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
+    إذا (پاڙ().incoming_ڪنارا_2 ()) {
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "Root node has incoming edges.");
     }
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    لكل (بنانشان i = 0; i < vertices_.ڊيگهائي; i++)
     {
-      const auto& v = vertices_[i];
-      if (!v.incoming_edges ())
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
+      ثابت خودڪار& v = vertices_[i];
+      إذا (!v.incoming_ڪنارا_2 ())
+        DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو, "Node %u is orphaned.", i);
     }
   }
 
   /*
    * Returns the numbers of incoming edges that are 24 or 32 bits wide.
    */
-  unsigned wide_parents (unsigned node_idx, hb_set_t& parents) const
+  بنانشان wide_parents (بنانشان ڳنڍ_idx, hb_سيٽ_t& parents) ثابت
   {
-    unsigned count = 0;
-    for (unsigned p : vertices_[node_idx].parents_iter ())
+    بنانشان ڳڻپ = 0;
+    لكل (بنانشان p : vertices_[ڳنڍ_idx].parents_iter ())
     {
       // Only real links can be wide
-      for (const auto& l : vertices_[p].obj().real_links)
+      لكل (ثابت خودڪار& l : vertices_[p].obj().real_links)
       {
-        if (l.objidx == node_idx
-            && (l.width == 3 || l.width == 4)
+        إذا (l.objidx == ڳنڍ_idx
+            && (l.ويڪر == 3 || l.ويڪر == 4)
             && !l.is_signed)
         {
-          count++;
-          parents.add (p);
+          ڳڻپ++;
+          parents.جوڙيو (p);
         }
       }
     }
-    return count;
+    أرجع ڳڻپ;
   }
 
- public:
+ عام:
   /*
    * Creates a map from objid to # of incoming edges.
    */
-  graph_result_t<void> update_parents ()
+  گراف_نتيجو_t<فراغ> update_parents ()
   {
-    if (!parents_invalid) return Ok();
+    إذا (!parents_invalid) أرجع Ok();
 
-    unsigned count = vertices_.length;
+    بنانشان ڳڻپ = vertices_.ڊيگهائي;
 
-    for (unsigned i = 0; i < count; i++)
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
       vertices_.arrayZ[i].reset_parents ();
 
-    for (unsigned p = 0; p < count; p++)
+    لكل (بنانشان p = 0; p < ڳڻپ; p++)
     {
-      for (const auto& l : vertices_.arrayZ[p].obj().real_links)
+      لكل (ثابت خودڪار& l : vertices_.arrayZ[p].obj().real_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, false));
+        إذا (unlikely (l.objidx >= ڳڻپ)) أرجع Err(INVALID_دليل);
+        TRY(vertices_[l.objidx].جوڙيو_والد (p, خطأ));
       }
 
-      for (const auto& l : vertices_.arrayZ[p].obj().virtual_links)
+      لكل (ثابت خودڪار& l : vertices_.arrayZ[p].obj().virtual_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, true));
+        إذا (unlikely (l.objidx >= ڳڻپ)) أرجع Err(INVALID_دليل);
+        TRY(vertices_[l.objidx].جوڙيو_والد (p, سچ));
       }
     }
 
-    parents_invalid = false;
-    return Ok();
+    parents_invalid = خطأ;
+    أرجع Ok();
   }
 
   /*
    * compute the serialized start and end positions for each vertex.
    */
-  void update_positions ()
+  فراغ update_positions ()
   {
-    if (!positions_invalid) return;
+    إذا (!positions_invalid) أرجع;
 
-    unsigned current_pos = 0;
-    for (unsigned i : ordering_)
+    بنانشان current_pos = 0;
+    لكل (بنانشان i : ordering_)
     {
-      auto& v = vertices_[i];
-      v.start = current_pos;
-      current_pos += v.obj().tail - v.obj().head;
-      v.end = current_pos;
+      خودڪار& v = vertices_[i];
+      v.شروعات = current_pos;
+      current_pos += v.obj().پڇ - v.obj().سر_2;
+      v.پڇاڙي = current_pos;
     }
 
-    positions_invalid = false;
+    positions_invalid = خطأ;
   }
 
   /*
    * Finds the distance to each object in the graph
    * from the initial node.
    */
-  graph_result_t<void> update_distances ()
+  گراف_نتيجو_t<فراغ> update_distances ()
   {
-    if (!distance_invalid) return Ok();
+    إذا (!مفاصلو_invalid) أرجع Ok();
 
     // Uses Dijkstra's algorithm to find all of the shortest distances.
     // https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
@@ -1860,102 +1860,102 @@ public:
     // According to https://www3.cs.stonybrook.edu/~rezaul/papers/TR-07-54.pdf
     // for practical performance this is faster then using a more advanced queue
     // (such as a fibonacci queue) with a fast decrease priority.
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++)
+    بنانشان ڳڻپ = vertices_.ڊيگهائي;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
       vertices_.arrayZ[i].distance = hb_int_max (int64_t);
-    vertices_[root_idx ()].distance = 0;
+    vertices_[پاڙ_idx ()].distance = 0;
 
-    hb_priority_queue_t<int64_t> queue;
-    queue.alloc (count);
-    queue.insert (0, root_idx ());
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    hb_ترجيح_قطار_t<int64_t> قطار;
+    قطار.alloc (ڳڻپ);
+    قطار.insert (0, پاڙ_idx ());
+    TRY (گراف_نتيجو_t<فراغ>::from (قطار, ورهاست_FAILURE));
 
-    hb_vector_t<bool> visited;
-    visited.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
+    hb_ويڪٽر_t<منطقي> گهميل;
+    گهميل.resize (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (گهميل, ورهاست_FAILURE));
 
-    while (!queue.in_error () && !queue.is_empty ())
+    طالما (!قطار.اندريون_error () && !قطار.is_empty ())
     {
-      unsigned next_idx = queue.pop_minimum ().second;
-      if (visited[next_idx]) continue;
-      const auto& next = vertices_[next_idx];
-      int64_t next_distance = next.distance;
-      visited[next_idx] = true;
+      بنانشان ايندڙ_idx = قطار.ڪڍو_minimum ().second;
+      إذا (گهميل[ايندڙ_idx]) استمر;
+      ثابت خودڪار& next = vertices_[ايندڙ_idx];
+      int64_t ايندڙ_مفاصلو = next.distance;
+      گهميل[ايندڙ_idx] = سچ;
 
-      for (const auto& link : next.obj().all_links ())
+      لكل (ثابت خودڪار& link : next.obj().all_links ())
       {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+        إذا (unlikely (link.objidx >= vertices_.ڊيگهائي))
+          أرجع Err(ٻاهريون_جو_BOUNDS);
 
-        if (visited[link.objidx]) continue;
+        إذا (گهميل[link.objidx]) استمر;
 
-        auto& child_v = vertices_.arrayZ[link.objidx];
-        const auto& child = child_v.obj ();
-        unsigned link_width = link.width ? link.width : 4; // treat virtual offsets as 32 bits wide
-        int64_t child_weight = (child.tail - child.head) +
-                               ((int64_t) 1 << (link_width * 8)) * (child_v.space + 1);
-        int64_t child_distance = next_distance + child_weight;
+        خودڪار& ٻار_v = vertices_.arrayZ[link.objidx];
+        ثابت خودڪار& ٻار = ٻار_v.obj ();
+        بنانشان link_ويڪر = link.ويڪر ? link.ويڪر : 4; // treat virtual offsets as 32 bits wide
+        int64_t ٻار_وزن = (ٻار.پڇ - ٻار.سر_2) +
+                               ((int64_t) 1 << (link_ويڪر * 8)) * (ٻار_v.space + 1);
+        int64_t ٻار_مفاصلو = ايندڙ_مفاصلو + ٻار_وزن;
 
-        if (child_distance < child_v.distance)
+        إذا (ٻار_مفاصلو < ٻار_v.distance)
         {
-          child_v.distance = child_distance;
-          queue.insert (child_distance, link.objidx);
+          ٻار_v.distance = ٻار_مفاصلو;
+          قطار.insert (ٻار_مفاصلو, link.objidx);
         }
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    if (unlikely (!queue.is_empty ()))
+    TRY (گراف_نتيجو_t<فراغ>::from (قطار, ورهاست_FAILURE));
+    إذا (unlikely (!قطار.is_empty ()))
     {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      أرجع Err(ORPHANED_NODES);
     }
 
-    distance_invalid = false;
-    return Ok();
+    مفاصلو_invalid = خطأ;
+    أرجع Ok();
   }
 
- private:
+ خاص:
   /*
    * Updates a link in the graph to point to a different object. Corrects the
    * parents vector on the previous and new child nodes.
    */
-  graph_result_t<void> reassign_link (hb_serialize_context_t::object_t::link_t& link,
-                      unsigned parent_idx,
-                      unsigned new_idx,
-                      bool is_virtual)
+  گراف_نتيجو_t<فراغ> reassign_link (hb_serialize_context_t::object_t::link_t& link,
+                      بنانشان والد_idx,
+                      بنانشان new_idx,
+                      منطقي is_virtual)
   {
-    unsigned old_idx = link.objidx;
+    بنانشان old_idx = link.objidx;
     link.objidx = new_idx;
-    vertices_[old_idx].remove_parent (parent_idx);
-    return vertices_[new_idx].add_parent (parent_idx, is_virtual);
+    vertices_[old_idx].remove_والد (والد_idx);
+    أرجع vertices_[new_idx].جوڙيو_والد (والد_idx, is_virtual);
   }
 
   /*
    * Updates all objidx's in all links using the provided mapping. Corrects incoming edge counts.
    */
-  template<typename Iterator, hb_requires (hb_is_iterator (Iterator))>
-  graph_result_t<void> remap_obj_indices (const hb_map_t& id_map,
+  سانچو<قسم_نالو Iterator, hb_requires (hb_is_iterator (Iterator))>
+  گراف_نتيجو_t<فراغ> remap_obj_indices (ثابت hb_map_t& id_map,
                                           Iterator subgraph,
-                                          bool only_wide = false)
+                                          منطقي only_wide = خطأ)
   {
-    if (!id_map) return Ok();
-    for (unsigned i : subgraph)
+    إذا (!id_map) أرجع Ok();
+    لكل (بنانشان i : subgraph)
     {
-      auto& vertex = vertices_[i];
-      unsigned num_real = vertex.obj().real_links.length;
-      unsigned count = 0;
-      for (auto& link : vertex.all_links_writer ())
+      خودڪار& راس = vertices_[i];
+      بنانشان انگ_real = راس.obj().real_links.ڊيگهائي;
+      بنانشان ڳڻپ = 0;
+      لكل (خودڪار& link : راس.all_links_writer ())
       {
-        count++;
-        const uint32_t *v;
-        if (!id_map.has (link.objidx, &v)) continue;
-        if (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
+        ڳڻپ++;
+        ثابت uint32_t *v;
+        إذا (!id_map.has (link.objidx, &v)) استمر;
+        إذا (only_wide && (link.is_signed || (link.ويڪر != 4 && link.ويڪر != 3))) استمر;
 
-        TRY(reassign_link (link, i, *v, count > num_real));
+        TRY(reassign_link (link, i, *v, ڳڻپ > انگ_real));
       }
     }
-    return Ok();
+    أرجع Ok();
   }
 
   /*
@@ -1965,76 +1965,76 @@ public:
    * Connected targets will be added to connected and removed from targets. All visited nodes
    * will be added to visited.
    */
-  graph_result_t<void> find_connected_nodes (unsigned start_idx,
-                                             hb_set_t& targets,
-                                             hb_set_t& visited,
-                                             hb_set_t& connected)
+  گراف_نتيجو_t<فراغ> ڳوليو_connected_nodes (بنانشان شروعات_idx,
+                                             hb_سيٽ_t& targets,
+                                             hb_سيٽ_t& گهميل,
+                                             hb_سيٽ_t& connected)
   {
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    if (visited.has (start_idx)) return Ok();
-    if (unlikely (start_idx >= vertices_.length))
+    TRY (گراف_نتيجو_t<فراغ>::from (گهميل, ورهاست_FAILURE));
+    إذا (گهميل.has (شروعات_idx)) أرجع Ok();
+    إذا (unlikely (شروعات_idx >= vertices_.ڊيگهائي))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_نياپو (SUBSET_REPACK, خالي_اشارو,
                  "find_connected_nodes: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      أرجع Err(ٻاهريون_جو_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a stack for DFS.
-    ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    ordering_scratch_.resize (vertices_.ڊيگهائي);
+    TRY (گراف_نتيجو_t<فراغ>::from (ordering_scratch_, ورهاست_FAILURE));
 
-    auto& stack = ordering_scratch_;
-    unsigned stack_len = 0;
+    خودڪار& ڍير = ordering_scratch_;
+    بنانشان ڍير_len = 0;
 
-    graph_result_t<void> res = Ok();
-    auto handle_node = [&] (unsigned node_idx) {
-      visited.add (node_idx);
-      if (targets.has (node_idx)) {
-        targets.del (node_idx);
-        connected.add (node_idx);
+    گراف_نتيجو_t<فراغ> res = Ok();
+    خودڪار handle_ڳنڍ = [&] (بنانشان ڳنڍ_idx) {
+      گهميل.جوڙيو (ڳنڍ_idx);
+      إذا (targets.has (ڳنڍ_idx)) {
+        targets.del (ڳنڍ_idx);
+        connected.جوڙيو (ڳنڍ_idx);
       }
 
-      if (unlikely (stack_len >= stack.length))
+      إذا (unlikely (ڍير_len >= ڍير.ڊيگهائي))
       {
-        res = Err(CYCLE_DETECTED);
-        return false;
+        res = Err(چڪر_DETECTED);
+        أرجع خطأ;
       }
-      stack[stack_len++] = node_idx;
-      return true;
+      ڍير[ڍير_len++] = ڳنڍ_idx;
+      أرجع سچ;
     };
 
-    if (!handle_node (start_idx)) return res;
+    إذا (!handle_ڳنڍ (شروعات_idx)) أرجع res;
 
-    while (stack_len > 0)
+    طالما (ڍير_len > 0)
     {
-      unsigned node_idx = stack[--stack_len];
-      const auto& v = vertices_[node_idx];
+      بنانشان ڳنڍ_idx = ڍير[--ڍير_len];
+      ثابت خودڪار& v = vertices_[ڳنڍ_idx];
 
       // Graph is treated as undirected so search children and parents of node_idx
-      for (const auto& l : v.obj().all_links ())
+      لكل (ثابت خودڪار& l : v.obj().all_links ())
       {
-        unsigned child_idx = l.objidx;
-        if (visited.has (child_idx)) continue;
-        if (!handle_node (child_idx)) return res;
+        بنانشان ٻار_idx = l.objidx;
+        إذا (گهميل.has (ٻار_idx)) استمر;
+        إذا (!handle_ڳنڍ (ٻار_idx)) أرجع res;
       }
 
-      for (unsigned parent_idx : v.parents_iter ())
+      لكل (بنانشان والد_idx : v.parents_iter ())
       {
-        if (visited.has (parent_idx)) continue;
-        if (!handle_node (parent_idx)) return res;
+        إذا (گهميل.has (والد_idx)) استمر;
+        إذا (!handle_ڳنڍ (والد_idx)) أرجع res;
       }
     }
 
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (connected, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (گهميل, ورهاست_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (connected, ورهاست_FAILURE));
 
-    return Ok();
+    أرجع Ok();
   }
 
- public:
+ عام:
   // TODO(garretrieger): make private, will need to move most of offset overflow code into graph.
-  hb_vector_t<vertex_t> vertices_;
+  hb_ويڪٽر_t<راس_t> vertices_;
 
   // Specifies the current topological ordering of this graph
   //
@@ -2042,17 +2042,17 @@ public:
   //
   // specifies that the 'pos'th spot is filled by the object
   // given by obj index.
-  hb_vector_t<unsigned> ordering_;
-  hb_vector_t<unsigned> ordering_scratch_;
+  hb_ويڪٽر_t<بنانشان> ordering_;
+  hb_ويڪٽر_t<بنانشان> ordering_scratch_;
 
- private:
-  bool parents_invalid = true;
-  bool distance_invalid = true;
-  bool positions_invalid = true;
-  hb_vector_t<unsigned> num_roots_for_space_;
-  hb_vector_t<char*> buffers;
+ خاص:
+  منطقي parents_invalid = سچ;
+  منطقي مفاصلو_invalid = سچ;
+  منطقي positions_invalid = سچ;
+  hb_ويڪٽر_t<بنانشان> انگ_roots_for_space;
+  hb_ويڪٽر_t<حرف*> buffers;
 };
 
 }
 
-#endif  // GRAPH_GRAPH_HH
+#جيڪڏهن_پورو  // GRAPH_GRAPH_HH

@@ -14,36 +14,36 @@
  * # Date: 2026-06-29, 15:25:26 GMT
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-vowel-constraints.hh"
+#ضمن "hb-ot-shaper-vowel-constraints.hh"
 
-static void
-_output_dotted_circle (hb_buffer_t *buffer)
+ساكن فراغ
+_output_dotted_circle (hb_بفر_t *بفر)
 {
-  (void) buffer->output_glyph (0x25CCu);
-  _hb_glyph_info_clear_continuation (&buffer->prev());
+  (فراغ) بفر->output_glyph (0x25CCu);
+  _hb_glyph_info_clear_continuation (&بفر->prev());
 }
 
-static void
-_output_with_dotted_circle (hb_buffer_t *buffer)
+ساكن فراغ
+_output_with_dotted_circle (hb_بفر_t *بفر)
 {
-  _output_dotted_circle (buffer);
-  (void) buffer->next_glyph ();
+  _output_dotted_circle (بفر);
+  (فراغ) بفر->ايندڙ_glyph ();
 }
 
-void
-_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
-				       hb_buffer_t              *buffer,
-				       hb_font_t                *font HB_UNUSED)
+فراغ
+hb_preprocess_متن_vowel_constraints (ثابت hb_ot_shape_plan_t *plan HB_اڻ_استعمال_ٿيل,
+				       hb_بفر_t              *بفر,
+				       hb_font_t                *font HB_اڻ_استعمال_ٿيل)
 {
-#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
-#endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+#جيڪڏهن_وصف_ٿيل HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
+  أرجع;
+#جيڪڏهن_پورو
+  إذا (بفر->flags & HB_بفر_FLAG_DO_NOT_وجهو_DOTTED_CIRCLE)
+    أرجع;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -51,427 +51,427 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    *
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
-  buffer->clear_output ();
-  unsigned int count = buffer->len;
-  switch ((unsigned) buffer->props.script)
+  بفر->clear_output ();
+  بنانشان صحيح ڳڻپ = بفر->len;
+  بدل ((بنانشان) بفر->props.script)
   {
-    case HB_SCRIPT_DEVANAGARI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_DEVANAGARI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0905u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0905u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x093Bu: case 0x093Eu: case 0x0945u:
-	      case 0x0946u: case 0x0949u: case 0x094Au: case 0x094Bu:
-	      case 0x094Cu: case 0x094Fu: case 0x0956u: case 0x0957u:
-		matched = true;
-		break;
+	      حالة 0x093Au: حالة 0x093Bu: حالة 0x093Eu: حالة 0x0945u:
+	      حالة 0x0946u: حالة 0x0949u: حالة 0x094Au: حالة 0x094Bu:
+	      حالة 0x094Cu: حالة 0x094Fu: حالة 0x0956u: حالة 0x0957u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0906u:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x0906u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x0945u: case 0x0946u: case 0x0947u:
-	      case 0x0948u:
-		matched = true;
-		break;
+	      حالة 0x093Au: حالة 0x0945u: حالة 0x0946u: حالة 0x0947u:
+	      حالة 0x0948u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0909u:
-	    matched = 0x0941u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x090Fu:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x0909u:
+	    matched = 0x0941u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x090Fu:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0945u: case 0x0946u: case 0x0947u:
-		matched = true;
-		break;
+	      حالة 0x0945u: حالة 0x0946u: حالة 0x0947u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
-		buffer->idx + 2 < count &&
-		0x0907u == buffer->cur (2).codepoint)
+	    اكسر;
+	  حالة 0x0930u:
+	    إذا (0x094Du == بفر->cur (1).codepoint &&
+		بفر->idx + 2 < ڳڻپ &&
+		0x0907u == بفر->cur (2).codepoint)
 	    {
-	      (void) buffer->next_glyph ();
-	      matched = true;
+	      (فراغ) بفر->ايندڙ_glyph ();
+	      matched = سچ;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_BENGALI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_BENGALI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0985u:
-	    matched = 0x09BEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Bu:
-	    matched = 0x09C3u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Cu:
-	    matched = 0x09E2u == buffer->cur (1).codepoint;
-	    break;
+	  حالة 0x0985u:
+	    matched = 0x09BEu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x098Bu:
+	    matched = 0x09C3u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x098Cu:
+	    matched = 0x09E2u == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_GURMUKHI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_GURMUKHI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0A05u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0A05u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0A3Eu: case 0x0A48u: case 0x0A4Cu:
-		matched = true;
-		break;
+	      حالة 0x0A3Eu: حالة 0x0A48u: حالة 0x0A4Cu:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0A72u:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x0A72u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0A3Fu: case 0x0A40u: case 0x0A47u:
-		matched = true;
-		break;
+	      حالة 0x0A3Fu: حالة 0x0A40u: حالة 0x0A47u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0A73u:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x0A73u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0A41u: case 0x0A42u: case 0x0A4Bu:
-		matched = true;
-		break;
+	      حالة 0x0A41u: حالة 0x0A42u: حالة 0x0A4Bu:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_GUJARATI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_GUJARATI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0A85u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0A85u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0ABEu: case 0x0AC5u: case 0x0AC7u: case 0x0AC8u:
-	      case 0x0AC9u: case 0x0ACBu: case 0x0ACCu:
-		matched = true;
-		break;
+	      حالة 0x0ABEu: حالة 0x0AC5u: حالة 0x0AC7u: حالة 0x0AC8u:
+	      حالة 0x0AC9u: حالة 0x0ACBu: حالة 0x0ACCu:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0AC5u:
-	    matched = 0x0ABEu == buffer->cur (1).codepoint;
-	    break;
+	    اكسر;
+	  حالة 0x0AC5u:
+	    matched = 0x0ABEu == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_ORIYA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_ORIYA:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0B05u:
-	    matched = 0x0B3Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0B0Fu: case 0x0B13u:
-	    matched = 0x0B57u == buffer->cur (1).codepoint;
-	    break;
+	  حالة 0x0B05u:
+	    matched = 0x0B3Eu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0B0Fu: حالة 0x0B13u:
+	    matched = 0x0B57u == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_TAMIL:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_TAMIL:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
-	    0x0BC2u == buffer->cur (1).codepoint)
+	منطقي matched = خطأ;
+	إذا (0x0B85u == بفر->cur ().codepoint &&
+	    0x0BC2u == بفر->cur (1).codepoint)
 	{
-	  matched = true;
+	  matched = سچ;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_TELUGU:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_TELUGU:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0C12u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0C12u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0C4Cu: case 0x0C55u:
-		matched = true;
-		break;
+	      حالة 0x0C4Cu: حالة 0x0C55u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0C3Fu: case 0x0C46u: case 0x0C4Au:
-	    matched = 0x0C55u == buffer->cur (1).codepoint;
-	    break;
+	    اكسر;
+	  حالة 0x0C3Fu: حالة 0x0C46u: حالة 0x0C4Au:
+	    matched = 0x0C55u == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_KANNADA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_KANNADA:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0C89u: case 0x0C8Bu:
-	    matched = 0x0CBEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0C92u:
-	    matched = 0x0CCCu == buffer->cur (1).codepoint;
-	    break;
+	  حالة 0x0C89u: حالة 0x0C8Bu:
+	    matched = 0x0CBEu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0C92u:
+	    matched = 0x0CCCu == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_MALAYALAM:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_MALAYALAM:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0D07u: case 0x0D09u:
-	    matched = 0x0D57u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D0Eu:
-	    matched = 0x0D46u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D12u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0D07u: حالة 0x0D09u:
+	    matched = 0x0D57u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0D0Eu:
+	    matched = 0x0D46u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0D12u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0D3Eu: case 0x0D57u:
-		matched = true;
-		break;
+	      حالة 0x0D3Eu: حالة 0x0D57u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_SINHALA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_SINHALA:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x0D85u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x0D85u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0DCFu: case 0x0DD0u: case 0x0DD1u:
-		matched = true;
-		break;
+	      حالة 0x0DCFu: حالة 0x0DD0u: حالة 0x0DD1u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x0D8Bu: case 0x0D8Fu: case 0x0D94u:
-	    matched = 0x0DDFu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D8Du:
-	    matched = 0x0DD8u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D91u:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x0D8Bu: حالة 0x0D8Fu: حالة 0x0D94u:
+	    matched = 0x0DDFu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0D8Du:
+	    matched = 0x0DD8u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x0D91u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x0DCAu: case 0x0DD9u: case 0x0DDAu: case 0x0DDCu:
-	      case 0x0DDDu: case 0x0DDEu:
-		matched = true;
-		break;
+	      حالة 0x0DCAu: حالة 0x0DD9u: حالة 0x0DDAu: حالة 0x0DDCu:
+	      حالة 0x0DDDu: حالة 0x0DDEu:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_BRAHMI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_BRAHMI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x11005u:
-	    matched = 0x11038u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Bu:
-	    matched = 0x1103Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Fu:
-	    matched = 0x11042u == buffer->cur (1).codepoint;
-	    break;
+	  حالة 0x11005u:
+	    matched = 0x11038u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x1100Bu:
+	    matched = 0x1103Eu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x1100Fu:
+	    matched = 0x11042u == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_KHOJKI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_KHOJKI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x11200u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x11200u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x1122Cu: case 0x11231u: case 0x11233u:
-		matched = true;
-		break;
+	      حالة 0x1122Cu: حالة 0x11231u: حالة 0x11233u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x11206u:
-	    matched = 0x1122Cu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1122Cu:
-	    switch (buffer->cur (1).codepoint)
+	    اكسر;
+	  حالة 0x11206u:
+	    matched = 0x1122Cu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x1122Cu:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x11230u: case 0x11231u:
-		matched = true;
-		break;
+	      حالة 0x11230u: حالة 0x11231u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x11240u:
-	    matched = 0x1122Eu == buffer->cur (1).codepoint;
-	    break;
+	    اكسر;
+	  حالة 0x11240u:
+	    matched = 0x1122Eu == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_KHUDAWADI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_KHUDAWADI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x112B0u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x112B0u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x112E0u: case 0x112E5u: case 0x112E6u: case 0x112E7u:
-	      case 0x112E8u:
-		matched = true;
-		break;
+	      حالة 0x112E0u: حالة 0x112E5u: حالة 0x112E6u: حالة 0x112E7u:
+	      حالة 0x112E8u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_TIRHUTA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_TIRHUTA:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x11481u:
-	    matched = 0x114B0u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1148Bu: case 0x1148Du:
-	    matched = 0x114BAu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x114AAu:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x11481u:
+	    matched = 0x114B0u == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x1148Bu: حالة 0x1148Du:
+	    matched = 0x114BAu == بفر->cur (1).codepoint;
+	    اكسر;
+	  حالة 0x114AAu:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x114B5u: case 0x114B6u:
-		matched = true;
-		break;
+	      حالة 0x114B5u: حالة 0x114B6u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_MODI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_MODI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x11600u: case 0x11601u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x11600u: حالة 0x11601u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x11639u: case 0x1163Au:
-		matched = true;
-		break;
+	      حالة 0x11639u: حالة 0x1163Au:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    case HB_SCRIPT_TAKRI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    حالة HB_SCRIPT_TAKRI:
+      لكل (بفر->idx = 0; بفر->idx + 1 < ڳڻپ && بفر->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	منطقي matched = خطأ;
+	بدل (بفر->cur ().codepoint)
 	{
-	  case 0x11680u:
-	    switch (buffer->cur (1).codepoint)
+	  حالة 0x11680u:
+	    بدل (بفر->cur (1).codepoint)
 	    {
-	      case 0x116ADu: case 0x116B4u: case 0x116B5u:
-		matched = true;
-		break;
+	      حالة 0x116ADu: حالة 0x116B4u: حالة 0x116B5u:
+		matched = سچ;
+		اكسر;
 	    }
-	    break;
-	  case 0x11686u:
-	    matched = 0x116B2u == buffer->cur (1).codepoint;
-	    break;
+	    اكسر;
+	  حالة 0x11686u:
+	    matched = 0x116B2u == بفر->cur (1).codepoint;
+	    اكسر;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(فراغ) بفر->ايندڙ_glyph ();
+	إذا (matched) _output_with_dotted_circle (بفر);
       }
-      break;
+      اكسر;
 
-    default:
-      break;
+    افتراضي:
+      اكسر;
   }
-  buffer->sync ();
+  بفر->متزامن ();
 }
 
 
-#endif
+#جيڪڏهن_پورو
 /* == End of generated functions == */

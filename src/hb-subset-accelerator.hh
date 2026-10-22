@@ -24,55 +24,55 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_SUBSET_ACCELERATOR_HH
-#define HB_SUBSET_ACCELERATOR_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_SUBSET_ACCELERATOR_HH
+#وصف_ڪريو HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-multimap.hh"
+#ضمن "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+خارجي HB_اندروني hb_user_معلومات_ڪنجي_t hb_subset_accelerator_user_معلومات_ڪنجي;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+نطاق CFF {
+بنية cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+نطاق OT {
+بنية SubtableUnicodesCache;
+بنية cff1_subset_accelerator_t;
+بنية cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+بنية hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  ساكن hb_user_معلومات_ڪنجي_t* user_معلومات_ڪنجي()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    أرجع &hb_subset_accelerator_user_معلومات_ڪنجي;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  ساكن hb_subset_accelerator_t* create(hb_face_t *ذريعو,
+					 ثابت hb_map_t& unicode_منزل_gid,
+					 ثابت hb_سيٽ_t& unicodes_,
+					 منطقي has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, حجم(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    إذا (unlikely (!accel)) أرجع accel;
 
-    new (accel) hb_subset_accelerator_t (source,
-					 unicode_to_gid_,
+    جديد (accel) hb_subset_accelerator_t (ذريعو,
+					 unicode_منزل_gid,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    أرجع accel;
   }
 
-  static void destroy (void* p)
+  ساكن فراغ destroy (فراغ* p)
   {
-    if (!p) return;
+    إذا (!p) أرجع;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -81,61 +81,61 @@ struct hb_subset_accelerator_t
     hb_free (accel);
   }
 
-  hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
-    unicode_to_gid(unicode_to_gid_),
+  hb_subset_accelerator_t (hb_face_t *ذريعو,
+			   ثابت hb_map_t& unicode_منزل_gid,
+			   ثابت hb_سيٽ_t& unicodes_,
+			   منطقي has_seac_) :
+    unicode_منزل_gid_2(unicode_منزل_gid),
     unicodes(unicodes_),
-    cmap_cache(nullptr),
-    destroy_cmap_cache(nullptr),
+    cmap_cache(خالي_اشارو),
+    destroy_cmap_cache(خالي_اشارو),
     has_seac(has_seac_),
-    source(hb_face_reference (source))
+    ذريعو(hb_face_reference (ذريعو))
   {
-    gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    gid_منزل_unicodes.alloc (unicode_منزل_gid_2.get_population ());
+    لكل (ثابت خودڪار &_ : unicode_منزل_gid_2)
     {
-      auto unicode = _.first;
-      auto gid = _.second;
-      gid_to_unicodes.add (gid, unicode);
+      خودڪار unicode = _.پهريون;
+      خودڪار gid = _.second;
+      gid_منزل_unicodes.جوڙيو (gid, unicode);
     }
   }
 
-  HB_INTERNAL ~hb_subset_accelerator_t ();
+  HB_اندروني ~hb_subset_accelerator_t ();
 
   // Generic
 
-  mutable hb_mutex_t sanitized_table_cache_lock;
-  mutable hb_hashmap_t<hb_tag_t, hb::unique_ptr<hb_blob_t>> sanitized_table_cache;
+  بدلجندڙ hb_mutex_t sanitized_جدول_cache_تالو;
+  بدلجندڙ hb_hashmap_t<hb_ٽيگ_t, hb::unique_ptr<hb_blob_t>> sanitized_جدول_cache;
 
-  hb_map_t unicode_to_gid;
-  hb_multimap_t gid_to_unicodes;
-  hb_set_t unicodes;
+  hb_map_t unicode_منزل_gid_2;
+  hb_multimap_t gid_منزل_unicodes;
+  hb_سيٽ_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  ثابت OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  منطقي has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  منطقي اندريون_error () ثابت
   {
-    return unicode_to_gid.in_error () ||
-	   gid_to_unicodes.in_error () ||
-	   unicodes.in_error () ||
-	   sanitized_table_cache.in_error ();
+    أرجع unicode_منزل_gid_2.اندريون_error () ||
+	   gid_منزل_unicodes.اندريون_error () ||
+	   unicodes.اندريون_error () ||
+	   sanitized_جدول_cache.اندريون_error ();
   }
 
-  hb_face_t *source;
-#ifndef HB_NO_SUBSET_CFF
+  hb_face_t *ذريعو;
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_SUBSET_CFF
   // These have to be immediately after source:
-  mutable hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
-  mutable hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
-#endif
+  بدلجندڙ hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
+  بدلجندڙ hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
+#جيڪڏهن_پورو
 };
 
 
-#endif /* HB_SUBSET_ACCELERATOR_HH */
+#جيڪڏهن_پورو /* HB_SUBSET_ACCELERATOR_HH */

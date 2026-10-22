@@ -25,208 +25,208 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MS_FEATURE_RANGES_HH
-#define HB_MS_FEATURE_RANGES_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_MS_FEATURE_RANGES_HH
+#وصف_ڪريو HB_MS_FEATURE_RANGES_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /* Variations of this code exist in hb-coretext-shape.cc as well
  * as hb-aat-map.cc... */
 
-typedef struct hb_ms_feature_t {
-  uint32_t tag_le;
+تعريفنوع بنية hb_ms_feature_t {
+  uint32_t ٽيگ_le;
   uint32_t value;
 } hb_ms_feature_t;
 
-typedef struct hb_ms_features_t {
+تعريفنوع بنية hb_ms_features_t {
   hb_ms_feature_t *features;
-  uint32_t         num_features;
+  uint32_t         انگ_features;
 } hb_ms_features_t;
 
-struct hb_ms_active_feature_t {
+بنية hb_ms_سرگرم_feature_t {
   hb_ms_feature_t fea;
-  unsigned int order;
+  بنانشان صحيح ترتيب;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-    const auto *a = (const hb_ms_active_feature_t *) pa;
-    const auto *b = (const hb_ms_active_feature_t *) pb;
-    return a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
-	   a->order < b->order ? -1 : a->order > b->order ? 1 :
+  HB_اندروني ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb) {
+    ثابت خودڪار *a = (ثابت hb_ms_سرگرم_feature_t *) pa;
+    ثابت خودڪار *b = (ثابت hb_ms_سرگرم_feature_t *) pb;
+    أرجع a->fea.ٽيگ_le < b->fea.ٽيگ_le ? -1 : a->fea.ٽيگ_le > b->fea.ٽيگ_le ? 1 :
+	   a->ترتيب < b->ترتيب ? -1 : a->ترتيب > b->ترتيب ? 1 :
 	   a->fea.value < b->fea.value ? -1 : a->fea.value > b->fea.value ? 1 :
 	   0;
   }
-  bool operator== (const hb_ms_active_feature_t& f) const
-  { return cmp (this, &f) == 0; }
+  منطقي عامل== (ثابت hb_ms_سرگرم_feature_t& f) ثابت
+  { أرجع cmp (هذا, &f) == 0; }
 };
 
-struct hb_ms_feature_event_t {
-  unsigned int index;
-  bool start;
-  hb_ms_active_feature_t feature;
+بنية hb_ms_feature_event_t {
+  بنانشان صحيح اشاريو_2;
+  منطقي شروعات;
+  hb_ms_سرگرم_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_اندروني ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
   {
-    const auto *a = (const hb_ms_feature_event_t *) pa;
-    const auto *b = (const hb_ms_feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
-	   a->start < b->start ? -1 : a->start > b->start ? 1 :
-	   hb_ms_active_feature_t::cmp (&a->feature, &b->feature);
+    ثابت خودڪار *a = (ثابت hb_ms_feature_event_t *) pa;
+    ثابت خودڪار *b = (ثابت hb_ms_feature_event_t *) pb;
+    أرجع a->اشاريو_2 < b->اشاريو_2 ? -1 : a->اشاريو_2 > b->اشاريو_2 ? 1 :
+	   a->شروعات < b->شروعات ? -1 : a->شروعات > b->شروعات ? 1 :
+	   hb_ms_سرگرم_feature_t::cmp (&a->feature, &b->feature);
   }
 };
 
-struct hb_ms_range_record_t {
+بنية hb_ms_range_رڪارڊ_t {
   hb_ms_features_t features;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  بنانشان صحيح اشاريو_پهريون; /* == start */
+  بنانشان صحيح اشاريو_آخري;  /* == end - 1 */
 };
 
-static inline bool
-hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
-		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
-		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
+ساكن مضمن منطقي
+hb_ms_تياري_features (ثابت hb_feature_t                *features,
+		      بنانشان صحيح                       انگ_features,
+		      hb_ويڪٽر_t<hb_ms_feature_t>      &feature_رڪارڊون, /*ٻاهريون*/
+		      hb_ويڪٽر_t<hb_ms_range_رڪارڊ_t> &range_رڪارڊون /*ٻاهريون*/)
 {
-  feature_records.clear ();
-  range_records.clear ();
+  feature_رڪارڊون.clear ();
+  range_رڪارڊون.clear ();
 
   /* Sort features by start/end events. */
-  hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  hb_ويڪٽر_t<hb_ms_feature_event_t> feature_events;
+  لكل (بنانشان صحيح i = 0; i < انگ_features; i++)
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = hb_uint32_swap (features[i].tag);
+    hb_ms_سرگرم_feature_t feature;
+    feature.fea.ٽيگ_le = hb_uint32_مٽا_سٽا (features[i].ٽيگ_2);
     feature.fea.value = features[i].value;
-    feature.order = i;
+    feature.ترتيب = i;
 
     hb_ms_feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = features[i].start;
-    event->start = true;
+    event->اشاريو_2 = features[i].شروعات;
+    event->شروعات = سچ;
     event->feature = feature;
 
     event = feature_events.push ();
-    event->index = features[i].end;
-    event->start = false;
+    event->اشاريو_2 = features[i].پڇاڙي;
+    event->شروعات = خطأ;
     event->feature = feature;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = 0;
+    hb_ms_سرگرم_feature_t feature;
+    feature.fea.ٽيگ_le = 0;
     feature.fea.value = 0;
-    feature.order = num_features + 1;
+    feature.ترتيب = انگ_features + 1;
 
-    auto *event = feature_events.push ();
-    event->index = 0; /* This value does magic. */
-    event->start = false;
+    خودڪار *event = feature_events.push ();
+    event->اشاريو_2 = 0; /* This value does magic. */
+    event->شروعات = خطأ;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
-  hb_vector_t<hb_ms_active_feature_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  hb_ويڪٽر_t<hb_ms_سرگرم_feature_t> سرگرم_features;
+  بنانشان صحيح آخري_اشاريو = 0;
+  لكل (بنانشان صحيح i = 0; i < feature_events.ڊيگهائي; i++)
   {
-    auto *event = &feature_events[i];
+    خودڪار *event = &feature_events[i];
 
-    if (event->index != last_index)
+    إذا (event->اشاريو_2 != آخري_اشاريو)
     {
       /* Save a snapshot of active features and the range. */
-      auto *range = range_records.push ();
-      auto offset = feature_records.length;
+      خودڪار *range = range_رڪارڊون.push ();
+      خودڪار وٿي = feature_رڪارڊون.ڊيگهائي;
 
-      active_features.qsort ();
-      for (unsigned int j = 0; j < active_features.length; j++)
+      سرگرم_features.qsort ();
+      لكل (بنانشان صحيح j = 0; j < سرگرم_features.ڊيگهائي; j++)
       {
-        if (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
+        إذا (!j || سرگرم_features[j].fea.ٽيگ_le != feature_رڪارڊون[feature_رڪارڊون.ڊيگهائي - 1].ٽيگ_le)
         {
-          feature_records.push (active_features[j].fea);
+          feature_رڪارڊون.push (سرگرم_features[j].fea);
         }
-        else
+        وإلا
         {
           /* Overrides value for existing feature. */
-          feature_records[feature_records.length - 1].value = active_features[j].fea.value;
+          feature_رڪارڊون[feature_رڪارڊون.ڊيگهائي - 1].value = سرگرم_features[j].fea.value;
         }
       }
 
       /* Will convert to pointer after all is ready, since feature_records.array
        * may move as we grow it. */
-      range->features.features = reinterpret_cast<hb_ms_feature_t *> (offset);
-      range->features.num_features = feature_records.length - offset;
-      range->index_first = last_index;
-      range->index_last  = event->index - 1;
+      range->features.features = reinterpret_cast<hb_ms_feature_t *> (وٿي);
+      range->features.انگ_features = feature_رڪارڊون.ڊيگهائي - وٿي;
+      range->اشاريو_پهريون = آخري_اشاريو;
+      range->اشاريو_آخري  = event->اشاريو_2 - 1;
 
-      last_index = event->index;
+      آخري_اشاريو = event->اشاريو_2;
     }
 
-    if (event->start)
+    إذا (event->شروعات)
     {
-      active_features.push (event->feature);
+      سرگرم_features.push (event->feature);
     }
-    else
+    وإلا
     {
-      auto *feature = active_features.lsearch (event->feature);
-      if (feature)
-        active_features.remove_ordered (feature - active_features.arrayZ);
+      خودڪار *feature = سرگرم_features.lsearch (event->feature);
+      إذا (feature)
+        سرگرم_features.remove_ordered (feature - سرگرم_features.arrayZ);
     }
   }
 
-  if (!range_records.length) /* No active feature found. */
-    num_features = 0;
+  إذا (!range_رڪارڊون.ڊيگهائي) /* No active feature found. */
+    انگ_features = 0;
 
   /* Fixup the pointers. */
-  for (unsigned int i = 0; i < range_records.length; i++)
+  لكل (بنانشان صحيح i = 0; i < range_رڪارڊون.ڊيگهائي; i++)
   {
-    auto *range = &range_records[i];
-    range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
+    خودڪار *range = &range_رڪارڊون[i];
+    range->features.features = (hb_ms_feature_t *) feature_رڪارڊون + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  أرجع !!انگ_features;
 }
 
-static inline void
-hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
-			   hb_vector_t<hb_ms_range_record_t> &range_records,
-			   unsigned int                       chars_offset,
-			   unsigned int                       chars_len,
+ساكن مضمن فراغ
+hb_ms_make_feature_ranges (hb_ويڪٽر_t<hb_ms_feature_t>      &feature_رڪارڊون,
+			   hb_ويڪٽر_t<hb_ms_range_رڪارڊ_t> &range_رڪارڊون,
+			   بنانشان صحيح                       chars_وٿي,
+			   بنانشان صحيح                       chars_len,
 			   uint16_t                          *log_clusters,
-			   hb_vector_t<hb_ms_features_t*>    &range_features, /* OUT */
-			   hb_vector_t<uint32_t>             &range_counts /* OUT */)
+			   hb_ويڪٽر_t<hb_ms_features_t*>    &range_features, /*ٻاهريون*/
+			   hb_ويڪٽر_t<uint32_t>             &range_counts /*ٻاهريون*/)
 {
   range_features.clear ();
   range_counts.clear ();
 
-  auto *last_range = &range_records[0];
-  for (unsigned int i = chars_offset; i < chars_len; i++)
+  خودڪار *آخري_range = &range_رڪارڊون[0];
+  لكل (بنانشان صحيح i = chars_وٿي; i < chars_len; i++)
   {
-    auto *range = last_range;
-    while (log_clusters[i] < range->index_first)
+    خودڪار *range = آخري_range;
+    طالما (log_clusters[i] < range->اشاريو_پهريون)
       range--;
-    while (log_clusters[i] > range->index_last)
+    طالما (log_clusters[i] > range->اشاريو_آخري)
       range++;
-    if (!range_features.length ||
-        &range->features != range_features[range_features.length - 1])
+    إذا (!range_features.ڊيگهائي ||
+        &range->features != range_features[range_features.ڊيگهائي - 1])
     {
-      auto **features = range_features.push ();
-      auto *c = range_counts.push ();
-      if (unlikely (!features || !c))
+      خودڪار **features = range_features.push ();
+      خودڪار *c = range_counts.push ();
+      إذا (unlikely (!features || !c))
       {
         range_features.clear ();
         range_counts.clear ();
-        break;
+        اكسر;
       }
       *features = &range->features;
       *c = 1;
     }
-    else
+    وإلا
     {
-      range_counts[range_counts.length - 1]++;
+      range_counts[range_counts.ڊيگهائي - 1]++;
     }
 
-    last_range = range;
+    آخري_range = range;
   }
 }
 
-#endif /* HB_MS_FEATURE_RANGES_HH */
+#جيڪڏهن_پورو /* HB_MS_FEATURE_RANGES_HH */

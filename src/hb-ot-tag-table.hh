@@ -10,1595 +10,1595 @@
  * File-Date: 2026-09-17
  */
 
-#ifndef HB_OT_TAG_TABLE_HH
-#define HB_OT_TAG_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_ٽيگ_جدول_HH
+#وصف_ڪريو HB_OT_ٽيگ_جدول_HH
 
-static const LangTag ot_languages2[] = {
-  {HB_TAG('a','a',' ',' '),	HB_TAG('A','F','R',' ')},	/* Afar */
-  {HB_TAG('a','b',' ',' '),	HB_TAG('A','B','K',' ')},	/* Abkhazian */
-  {HB_TAG('a','f',' ',' '),	HB_TAG('A','F','K',' ')},	/* Afrikaans */
-  {HB_TAG('a','k',' ',' '),	HB_TAG('A','K','A',' ')},	/* Akan [macrolanguage] */
-  {HB_TAG('a','m',' ',' '),	HB_TAG('A','M','H',' ')},	/* Amharic */
-  {HB_TAG('a','n',' ',' '),	HB_TAG('A','R','G',' ')},	/* Aragonese */
-  {HB_TAG('a','r',' ',' '),	HB_TAG('A','R','A',' ')},	/* Arabic [macrolanguage] */
-  {HB_TAG('a','s',' ',' '),	HB_TAG('A','S','M',' ')},	/* Assamese */
-  {HB_TAG('a','v',' ',' '),	HB_TAG('A','V','R',' ')},	/* Avaric -> Avar */
-  {HB_TAG('a','y',' ',' '),	HB_TAG('A','Y','M',' ')},	/* Aymara [macrolanguage] */
-  {HB_TAG('a','z',' ',' '),	HB_TAG('A','Z','E',' ')},	/* Azerbaijani [macrolanguage] */
-  {HB_TAG('b','a',' ',' '),	HB_TAG('B','S','H',' ')},	/* Bashkir */
-  {HB_TAG('b','e',' ',' '),	HB_TAG('B','E','L',' ')},	/* Belarusian */
-  {HB_TAG('b','g',' ',' '),	HB_TAG('B','G','R',' ')},	/* Bulgarian */
-  {HB_TAG('b','i',' ',' '),	HB_TAG('B','I','S',' ')},	/* Bislama */
-  {HB_TAG('b','i',' ',' '),	HB_TAG('C','P','P',' ')},	/* Bislama -> Creoles */
-  {HB_TAG('b','m',' ',' '),	HB_TAG('B','M','B',' ')},	/* Bambara (Bamanankan) */
-  {HB_TAG('b','n',' ',' '),	HB_TAG('B','E','N',' ')},	/* Bangla */
-  {HB_TAG('b','o',' ',' '),	HB_TAG('T','I','B',' ')},	/* Tibetan */
-  {HB_TAG('b','r',' ',' '),	HB_TAG('B','R','E',' ')},	/* Breton */
-  {HB_TAG('b','s',' ',' '),	HB_TAG('B','O','S',' ')},	/* Bosnian */
-  {HB_TAG('c','a',' ',' '),	HB_TAG('C','A','T',' ')},	/* Catalan */
-  {HB_TAG('c','e',' ',' '),	HB_TAG('C','H','E',' ')},	/* Chechen */
-  {HB_TAG('c','h',' ',' '),	HB_TAG('C','H','A',' ')},	/* Chamorro */
-  {HB_TAG('c','o',' ',' '),	HB_TAG('C','O','S',' ')},	/* Corsican */
-  {HB_TAG('c','r',' ',' '),	HB_TAG('C','R','E',' ')},	/* Cree [macrolanguage] */
-  {HB_TAG('c','s',' ',' '),	HB_TAG('C','S','Y',' ')},	/* Czech */
-  {HB_TAG('c','u',' ',' '),	HB_TAG('C','S','L',' ')},	/* Church Slavonic */
-  {HB_TAG('c','v',' ',' '),	HB_TAG('C','H','U',' ')},	/* Chuvash */
-  {HB_TAG('c','y',' ',' '),	HB_TAG('W','E','L',' ')},	/* Welsh */
-  {HB_TAG('d','a',' ',' '),	HB_TAG('D','A','N',' ')},	/* Danish */
-  {HB_TAG('d','e',' ',' '),	HB_TAG('D','E','U',' ')},	/* German */
-  {HB_TAG('d','v',' ',' '),	HB_TAG('D','I','V',' ')},	/* Divehi (Dhivehi, Maldivian) */
-  {HB_TAG('d','v',' ',' '),	HB_TAG('D','H','V',' ')},	/* Divehi (Dhivehi, Maldivian) (deprecated) */
-  {HB_TAG('d','z',' ',' '),	HB_TAG('D','Z','N',' ')},	/* Dzongkha */
-  {HB_TAG('e','e',' ',' '),	HB_TAG('E','W','E',' ')},	/* Ewe */
-  {HB_TAG('e','l',' ',' '),	HB_TAG('E','L','L',' ')},	/* Modern Greek (1453-) -> Greek */
-  {HB_TAG('e','n',' ',' '),	HB_TAG('E','N','G',' ')},	/* English */
-  {HB_TAG('e','o',' ',' '),	HB_TAG('N','T','O',' ')},	/* Esperanto */
-  {HB_TAG('e','s',' ',' '),	HB_TAG('E','S','P',' ')},	/* Spanish */
-  {HB_TAG('e','t',' ',' '),	HB_TAG('E','T','I',' ')},	/* Estonian [macrolanguage] */
-  {HB_TAG('e','u',' ',' '),	HB_TAG('E','U','Q',' ')},	/* Basque */
-  {HB_TAG('f','a',' ',' '),	HB_TAG('F','A','R',' ')},	/* Persian [macrolanguage] */
-  {HB_TAG('f','f',' ',' '),	HB_TAG('F','U','L',' ')},	/* Fulah [macrolanguage] */
-  {HB_TAG('f','i',' ',' '),	HB_TAG('F','I','N',' ')},	/* Finnish */
-  {HB_TAG('f','j',' ',' '),	HB_TAG('F','J','I',' ')},	/* Fijian */
-  {HB_TAG('f','o',' ',' '),	HB_TAG('F','O','S',' ')},	/* Faroese */
-  {HB_TAG('f','r',' ',' '),	HB_TAG('F','R','A',' ')},	/* French */
-  {HB_TAG('f','y',' ',' '),	HB_TAG('F','R','I',' ')},	/* Western Frisian -> Frisian */
-  {HB_TAG('g','a',' ',' '),	HB_TAG('I','R','I',' ')},	/* Irish */
-  {HB_TAG('g','a',' ',' '),	HB_TAG('I','R','T',' ')},	/* Irish -> Irish Traditional */
-  {HB_TAG('g','d',' ',' '),	HB_TAG('G','A','E',' ')},	/* Scottish Gaelic */
-  {HB_TAG('g','l',' ',' '),	HB_TAG('G','A','L',' ')},	/* Galician */
-  {HB_TAG('g','n',' ',' '),	HB_TAG('G','U','A',' ')},	/* Guarani [macrolanguage] */
-  {HB_TAG('g','u',' ',' '),	HB_TAG('G','U','J',' ')},	/* Gujarati */
-  {HB_TAG('g','v',' ',' '),	HB_TAG('M','N','X',' ')},	/* Manx */
-  {HB_TAG('h','a',' ',' '),	HB_TAG('H','A','U',' ')},	/* Hausa */
-  {HB_TAG('h','e',' ',' '),	HB_TAG('I','W','R',' ')},	/* Hebrew */
-  {HB_TAG('h','i',' ',' '),	HB_TAG('H','I','N',' ')},	/* Hindi */
-  {HB_TAG('h','o',' ',' '),	HB_TAG('H','M','O',' ')},	/* Hiri Motu */
-  {HB_TAG('h','o',' ',' '),	HB_TAG('C','P','P',' ')},	/* Hiri Motu -> Creoles */
-  {HB_TAG('h','r',' ',' '),	HB_TAG('H','R','V',' ')},	/* Croatian */
-  {HB_TAG('h','t',' ',' '),	HB_TAG('H','A','I',' ')},	/* Haitian (Haitian Creole) */
-  {HB_TAG('h','t',' ',' '),	HB_TAG('C','P','P',' ')},	/* Haitian -> Creoles */
-  {HB_TAG('h','u',' ',' '),	HB_TAG('H','U','N',' ')},	/* Hungarian */
-  {HB_TAG('h','y',' ',' '),	HB_TAG('H','Y','E','0')},	/* Armenian -> Armenian East */
-  {HB_TAG('h','y',' ',' '),	HB_TAG('H','Y','E',' ')},	/* Armenian */
-  {HB_TAG('h','z',' ',' '),	HB_TAG('H','E','R',' ')},	/* Herero */
-  {HB_TAG('i','a',' ',' '),	HB_TAG('I','N','A',' ')},	/* Interlingua (IALA) */
-  {HB_TAG('i','d',' ',' '),	HB_TAG('I','N','D',' ')},	/* Indonesian */
-  {HB_TAG('i','d',' ',' '),	HB_TAG('M','L','Y',' ')},	/* Indonesian -> Malay */
-  {HB_TAG('i','e',' ',' '),	HB_TAG('I','L','E',' ')},	/* Interlingue */
-  {HB_TAG('i','g',' ',' '),	HB_TAG('I','B','O',' ')},	/* Igbo */
-  {HB_TAG('i','i',' ',' '),	HB_TAG('Y','I','M',' ')},	/* Sichuan Yi -> Yi Modern */
-  {HB_TAG('i','k',' ',' '),	HB_TAG('I','P','K',' ')},	/* Inupiaq [macrolanguage] -> Inupiat */
-  {HB_TAG('i','n',' ',' '),	HB_TAG('I','N','D',' ')},	/* Indonesian (retired code) */
-  {HB_TAG('i','n',' ',' '),	HB_TAG('M','L','Y',' ')},	/* Indonesian (retired code) -> Malay */
-  {HB_TAG('i','o',' ',' '),	HB_TAG('I','D','O',' ')},	/* Ido */
-  {HB_TAG('i','s',' ',' '),	HB_TAG('I','S','L',' ')},	/* Icelandic */
-  {HB_TAG('i','t',' ',' '),	HB_TAG('I','T','A',' ')},	/* Italian */
-  {HB_TAG('i','u',' ',' '),	HB_TAG('I','N','U',' ')},	/* Inuktitut [macrolanguage] */
-  {HB_TAG('i','u',' ',' '),	HB_TAG('I','N','U','K')},	/* Inuktitut [macrolanguage] -> Nunavik Inuktitut */
-  {HB_TAG('i','w',' ',' '),	HB_TAG('I','W','R',' ')},	/* Hebrew (retired code) */
-  {HB_TAG('j','a',' ',' '),	HB_TAG('J','A','N',' ')},	/* Japanese */
-  {HB_TAG('j','i',' ',' '),	HB_TAG('J','I','I',' ')},	/* Yiddish (retired code) */
-  {HB_TAG('j','v',' ',' '),	HB_TAG('J','A','V',' ')},	/* Javanese */
-  {HB_TAG('j','w',' ',' '),	HB_TAG('J','A','V',' ')},	/* Javanese (retired code) */
-  {HB_TAG('k','a',' ',' '),	HB_TAG('K','A','T',' ')},	/* Georgian */
-  {HB_TAG('k','g',' ',' '),	HB_TAG('K','O','N','0')},	/* Kongo [macrolanguage] */
-  {HB_TAG('k','i',' ',' '),	HB_TAG('K','I','K',' ')},	/* Kikuyu (Gikuyu) */
-  {HB_TAG('k','j',' ',' '),	HB_TAG('K','U','A',' ')},	/* Kuanyama */
-  {HB_TAG('k','k',' ',' '),	HB_TAG('K','A','Z',' ')},	/* Kazakh */
-  {HB_TAG('k','l',' ',' '),	HB_TAG('G','R','N',' ')},	/* Greenlandic */
-  {HB_TAG('k','m',' ',' '),	HB_TAG('K','H','M',' ')},	/* Khmer */
-  {HB_TAG('k','n',' ',' '),	HB_TAG('K','A','N',' ')},	/* Kannada */
-  {HB_TAG('k','o',' ',' '),	HB_TAG('K','O','R',' ')},	/* Korean */
-  {HB_TAG('k','o',' ',' '),	HB_TAG('K','O','H',' ')},	/* Korean -> Korean Old Hangul */
-  {HB_TAG('k','r',' ',' '),	HB_TAG('K','N','R',' ')},	/* Kanuri [macrolanguage] */
-  {HB_TAG('k','s',' ',' '),	HB_TAG('K','S','H',' ')},	/* Kashmiri */
-  {HB_TAG('k','u',' ',' '),	HB_TAG('K','U','R',' ')},	/* Kurdish [macrolanguage] */
-  {HB_TAG('k','v',' ',' '),	HB_TAG('K','O','M',' ')},	/* Komi [macrolanguage] */
-  {HB_TAG('k','w',' ',' '),	HB_TAG('C','O','R',' ')},	/* Cornish */
-  {HB_TAG('k','y',' ',' '),	HB_TAG('K','I','R',' ')},	/* Kirghiz (Kyrgyz) */
-  {HB_TAG('l','a',' ',' '),	HB_TAG('L','A','T',' ')},	/* Latin */
-  {HB_TAG('l','b',' ',' '),	HB_TAG('L','T','Z',' ')},	/* Luxembourgish */
-  {HB_TAG('l','g',' ',' '),	HB_TAG('L','U','G',' ')},	/* Ganda */
-  {HB_TAG('l','i',' ',' '),	HB_TAG('L','I','M',' ')},	/* Limburgish */
-  {HB_TAG('l','n',' ',' '),	HB_TAG('L','I','N',' ')},	/* Lingala */
-  {HB_TAG('l','o',' ',' '),	HB_TAG('L','A','O',' ')},	/* Lao */
-  {HB_TAG('l','t',' ',' '),	HB_TAG('L','T','H',' ')},	/* Lithuanian */
-  {HB_TAG('l','u',' ',' '),	HB_TAG('L','U','B',' ')},	/* Luba-Katanga */
-  {HB_TAG('l','v',' ',' '),	HB_TAG('L','V','I',' ')},	/* Latvian [macrolanguage] */
-  {HB_TAG('m','g',' ',' '),	HB_TAG('M','L','G',' ')},	/* Malagasy [macrolanguage] */
-  {HB_TAG('m','h',' ',' '),	HB_TAG('M','A','H',' ')},	/* Marshallese */
-  {HB_TAG('m','i',' ',' '),	HB_TAG('M','R','I',' ')},	/* Maori */
-  {HB_TAG('m','k',' ',' '),	HB_TAG('M','K','D',' ')},	/* Macedonian */
-  {HB_TAG('m','l',' ',' '),	HB_TAG('M','A','L',' ')},	/* Malayalam -> Malayalam Traditional */
-  {HB_TAG('m','l',' ',' '),	HB_TAG('M','L','R',' ')},	/* Malayalam -> Malayalam Reformed */
-  {HB_TAG('m','n',' ',' '),	HB_TAG('M','N','G',' ')},	/* Mongolian [macrolanguage] */
-  {HB_TAG('m','o',' ',' '),	HB_TAG('M','O','L',' ')},	/* Moldavian (retired code) */
-  {HB_TAG('m','o',' ',' '),	HB_TAG('R','O','M',' ')},	/* Moldavian (retired code) -> Romanian */
-  {HB_TAG('m','r',' ',' '),	HB_TAG('M','A','R',' ')},	/* Marathi */
-  {HB_TAG('m','s',' ',' '),	HB_TAG('M','L','Y',' ')},	/* Malay [macrolanguage] */
-  {HB_TAG('m','t',' ',' '),	HB_TAG('M','T','S',' ')},	/* Maltese */
-  {HB_TAG('m','y',' ',' '),	HB_TAG('B','R','M',' ')},	/* Burmese */
-  {HB_TAG('n','a',' ',' '),	HB_TAG('N','A','U',' ')},	/* Nauru -> Nauruan */
-  {HB_TAG('n','b',' ',' '),	HB_TAG('N','O','R',' ')},	/* Norwegian Bokmål -> Norwegian */
-  {HB_TAG('n','d',' ',' '),	HB_TAG('N','D','B',' ')},	/* North Ndebele -> Ndebele */
-  {HB_TAG('n','e',' ',' '),	HB_TAG('N','E','P',' ')},	/* Nepali [macrolanguage] */
-  {HB_TAG('n','g',' ',' '),	HB_TAG('N','D','G',' ')},	/* Ndonga */
-  {HB_TAG('n','l',' ',' '),	HB_TAG('N','L','D',' ')},	/* Dutch */
-  {HB_TAG('n','n',' ',' '),	HB_TAG('N','Y','N',' ')},	/* Norwegian Nynorsk (Nynorsk, Norwegian) */
-  {HB_TAG('n','o',' ',' '),	HB_TAG('N','O','R',' ')},	/* Norwegian [macrolanguage] */
-  {HB_TAG('n','r',' ',' '),	HB_TAG('N','D','B',' ')},	/* South Ndebele -> Ndebele */
-  {HB_TAG('n','v',' ',' '),	HB_TAG('N','A','V',' ')},	/* Navajo */
-  {HB_TAG('n','v',' ',' '),	HB_TAG('A','T','H',' ')},	/* Navajo -> Athapaskan */
-  {HB_TAG('n','y',' ',' '),	HB_TAG('C','H','I',' ')},	/* Chichewa (Chewa, Nyanja) */
-  {HB_TAG('o','c',' ',' '),	HB_TAG('O','C','I',' ')},	/* Occitan (post 1500) */
-  {HB_TAG('o','j',' ',' '),	HB_TAG('O','J','B',' ')},	/* Ojibwa [macrolanguage] -> Ojibway */
-  {HB_TAG('o','m',' ',' '),	HB_TAG('O','R','O',' ')},	/* Oromo [macrolanguage] */
-  {HB_TAG('o','r',' ',' '),	HB_TAG('O','R','I',' ')},	/* Odia [macrolanguage] */
-  {HB_TAG('o','s',' ',' '),	HB_TAG('O','S','S',' ')},	/* Ossetian */
-  {HB_TAG('p','a',' ',' '),	HB_TAG('P','A','N',' ')},	/* Punjabi */
-  {HB_TAG('p','i',' ',' '),	HB_TAG('P','A','L',' ')},	/* Pali */
-  {HB_TAG('p','l',' ',' '),	HB_TAG('P','L','K',' ')},	/* Polish */
-  {HB_TAG('p','s',' ',' '),	HB_TAG('P','A','S',' ')},	/* Pashto [macrolanguage] */
-  {HB_TAG('p','t',' ',' '),	HB_TAG('P','T','G',' ')},	/* Portuguese */
-  {HB_TAG('q','u',' ',' '),	HB_TAG('Q','U','Z',' ')},	/* Quechua [macrolanguage] */
-  {HB_TAG('r','m',' ',' '),	HB_TAG('R','M','S',' ')},	/* Romansh */
-  {HB_TAG('r','n',' ',' '),	HB_TAG('R','U','N',' ')},	/* Rundi */
-  {HB_TAG('r','o',' ',' '),	HB_TAG('R','O','M',' ')},	/* Romanian */
-  {HB_TAG('r','u',' ',' '),	HB_TAG('R','U','S',' ')},	/* Russian */
-  {HB_TAG('r','w',' ',' '),	HB_TAG('R','U','A',' ')},	/* Kinyarwanda */
-  {HB_TAG('s','a',' ',' '),	HB_TAG('S','A','N',' ')},	/* Sanskrit [macrolanguage] */
-  {HB_TAG('s','c',' ',' '),	HB_TAG('S','R','D',' ')},	/* Sardinian [macrolanguage] */
-  {HB_TAG('s','d',' ',' '),	HB_TAG('S','N','D',' ')},	/* Sindhi */
-  {HB_TAG('s','e',' ',' '),	HB_TAG('N','S','M',' ')},	/* Northern Sami */
-  {HB_TAG('s','g',' ',' '),	HB_TAG('S','G','O',' ')},	/* Sango */
-  {HB_TAG('s','h',' ',' '),	HB_TAG('B','O','S',' ')},	/* Serbo-Croatian [macrolanguage] -> Bosnian */
-  {HB_TAG('s','h',' ',' '),	HB_TAG('H','R','V',' ')},	/* Serbo-Croatian [macrolanguage] -> Croatian */
-  {HB_TAG('s','h',' ',' '),	HB_TAG('S','R','B',' ')},	/* Serbo-Croatian [macrolanguage] -> Serbian */
-  {HB_TAG('s','i',' ',' '),	HB_TAG('S','N','H',' ')},	/* Sinhala (Sinhalese) */
-  {HB_TAG('s','k',' ',' '),	HB_TAG('S','K','Y',' ')},	/* Slovak */
-  {HB_TAG('s','l',' ',' '),	HB_TAG('S','L','V',' ')},	/* Slovenian */
-  {HB_TAG('s','m',' ',' '),	HB_TAG('S','M','O',' ')},	/* Samoan */
-  {HB_TAG('s','n',' ',' '),	HB_TAG('S','N','A','0')},	/* Shona */
-  {HB_TAG('s','o',' ',' '),	HB_TAG('S','M','L',' ')},	/* Somali */
-  {HB_TAG('s','q',' ',' '),	HB_TAG('S','Q','I',' ')},	/* Albanian [macrolanguage] */
-  {HB_TAG('s','r',' ',' '),	HB_TAG('S','R','B',' ')},	/* Serbian */
-  {HB_TAG('s','s',' ',' '),	HB_TAG('S','W','Z',' ')},	/* Swati */
-  {HB_TAG('s','t',' ',' '),	HB_TAG('S','O','T',' ')},	/* Southern Sotho */
-  {HB_TAG('s','u',' ',' '),	HB_TAG('S','U','N',' ')},	/* Sundanese */
-  {HB_TAG('s','v',' ',' '),	HB_TAG('S','V','E',' ')},	/* Swedish */
-  {HB_TAG('s','w',' ',' '),	HB_TAG('S','W','K',' ')},	/* Swahili [macrolanguage] */
-  {HB_TAG('t','a',' ',' '),	HB_TAG('T','A','M',' ')},	/* Tamil */
-  {HB_TAG('t','e',' ',' '),	HB_TAG('T','E','L',' ')},	/* Telugu */
-  {HB_TAG('t','g',' ',' '),	HB_TAG('T','A','J',' ')},	/* Tajik -> Tajiki */
-  {HB_TAG('t','h',' ',' '),	HB_TAG('T','H','A',' ')},	/* Thai */
-  {HB_TAG('t','i',' ',' '),	HB_TAG('T','G','Y',' ')},	/* Tigrinya */
-  {HB_TAG('t','k',' ',' '),	HB_TAG('T','K','M',' ')},	/* Turkmen */
-  {HB_TAG('t','l',' ',' '),	HB_TAG('T','G','L',' ')},	/* Tagalog */
-  {HB_TAG('t','n',' ',' '),	HB_TAG('T','N','A',' ')},	/* Tswana */
-  {HB_TAG('t','o',' ',' '),	HB_TAG('T','G','N',' ')},	/* Tonga (Tonga Islands) -> Tongan */
-  {HB_TAG('t','r',' ',' '),	HB_TAG('T','R','K',' ')},	/* Turkish */
-  {HB_TAG('t','s',' ',' '),	HB_TAG('T','S','G',' ')},	/* Tsonga */
-  {HB_TAG('t','t',' ',' '),	HB_TAG('T','A','T',' ')},	/* Tatar */
-  {HB_TAG('t','w',' ',' '),	HB_TAG('T','W','I',' ')},	/* Twi */
-  {HB_TAG('t','w',' ',' '),	HB_TAG('A','K','A',' ')},	/* Twi -> Akan */
-  {HB_TAG('t','y',' ',' '),	HB_TAG('T','H','T',' ')},	/* Tahitian */
-  {HB_TAG('u','g',' ',' '),	HB_TAG('U','Y','G',' ')},	/* Uyghur */
-  {HB_TAG('u','k',' ',' '),	HB_TAG('U','K','R',' ')},	/* Ukrainian */
-  {HB_TAG('u','r',' ',' '),	HB_TAG('U','R','D',' ')},	/* Urdu */
-  {HB_TAG('u','z',' ',' '),	HB_TAG('U','Z','B',' ')},	/* Uzbek [macrolanguage] */
-  {HB_TAG('v','e',' ',' '),	HB_TAG('V','E','N',' ')},	/* Venda */
-  {HB_TAG('v','i',' ',' '),	HB_TAG('V','I','T',' ')},	/* Vietnamese */
-  {HB_TAG('v','o',' ',' '),	HB_TAG('V','O','L',' ')},	/* Volapük */
-  {HB_TAG('w','a',' ',' '),	HB_TAG('W','L','N',' ')},	/* Walloon */
-  {HB_TAG('w','o',' ',' '),	HB_TAG('W','L','F',' ')},	/* Wolof */
-  {HB_TAG('x','h',' ',' '),	HB_TAG('X','H','S',' ')},	/* Xhosa */
-  {HB_TAG('y','i',' ',' '),	HB_TAG('J','I','I',' ')},	/* Yiddish [macrolanguage] */
-  {HB_TAG('y','o',' ',' '),	HB_TAG('Y','B','A',' ')},	/* Yoruba */
-  {HB_TAG('z','a',' ',' '),	HB_TAG('Z','H','A',' ')},	/* Zhuang [macrolanguage] */
-  {HB_TAG('z','h',' ',' '),	HB_TAG('Z','H','S',' ')},	/* Chinese, Simplified [macrolanguage] */
-  {HB_TAG('z','u',' ',' '),	HB_TAG('Z','U','L',' ')},	/* Zulu */
+ساكن ثابت Lang_ٽيگ ot_languages2[] = {
+  {HB_ٽيگ('a','a',' ',' '),	HB_ٽيگ('A','F','R',' ')},	/* Afar */
+  {HB_ٽيگ('a','b',' ',' '),	HB_ٽيگ('A','B','K',' ')},	/* Abkhazian */
+  {HB_ٽيگ('a','f',' ',' '),	HB_ٽيگ('A','F','K',' ')},	/* Afrikaans */
+  {HB_ٽيگ('a','k',' ',' '),	HB_ٽيگ('A','K','A',' ')},	/* Akan [macrolanguage] */
+  {HB_ٽيگ('a','m',' ',' '),	HB_ٽيگ('A','M','H',' ')},	/* Amharic */
+  {HB_ٽيگ('a','n',' ',' '),	HB_ٽيگ('A','R','G',' ')},	/* Aragonese */
+  {HB_ٽيگ('a','r',' ',' '),	HB_ٽيگ('A','R','A',' ')},	/* Arabic [macrolanguage] */
+  {HB_ٽيگ('a','s',' ',' '),	HB_ٽيگ('A','S','M',' ')},	/* Assamese */
+  {HB_ٽيگ('a','v',' ',' '),	HB_ٽيگ('A','V','R',' ')},	/* Avaric -> Avar */
+  {HB_ٽيگ('a','y',' ',' '),	HB_ٽيگ('A','Y','M',' ')},	/* Aymara [macrolanguage] */
+  {HB_ٽيگ('a','z',' ',' '),	HB_ٽيگ('A','Z','E',' ')},	/* Azerbaijani [macrolanguage] */
+  {HB_ٽيگ('b','a',' ',' '),	HB_ٽيگ('B','S','H',' ')},	/* Bashkir */
+  {HB_ٽيگ('b','e',' ',' '),	HB_ٽيگ('B','E','L',' ')},	/* Belarusian */
+  {HB_ٽيگ('b','g',' ',' '),	HB_ٽيگ('B','G','R',' ')},	/* Bulgarian */
+  {HB_ٽيگ('b','i',' ',' '),	HB_ٽيگ('B','I','S',' ')},	/* Bislama */
+  {HB_ٽيگ('b','i',' ',' '),	HB_ٽيگ('C','P','P',' ')},	/* Bislama -> Creoles */
+  {HB_ٽيگ('b','m',' ',' '),	HB_ٽيگ('B','M','B',' ')},	/* Bambara (Bamanankan) */
+  {HB_ٽيگ('b','n',' ',' '),	HB_ٽيگ('B','E','N',' ')},	/* Bangla */
+  {HB_ٽيگ('b','o',' ',' '),	HB_ٽيگ('T','I','B',' ')},	/* Tibetan */
+  {HB_ٽيگ('b','r',' ',' '),	HB_ٽيگ('B','R','E',' ')},	/* Breton */
+  {HB_ٽيگ('b','s',' ',' '),	HB_ٽيگ('B','O','S',' ')},	/* Bosnian */
+  {HB_ٽيگ('c','a',' ',' '),	HB_ٽيگ('C','A','T',' ')},	/*ڪيٽالان*/
+  {HB_ٽيگ('c','e',' ',' '),	HB_ٽيگ('C','H','E',' ')},	/* Chechen */
+  {HB_ٽيگ('c','h',' ',' '),	HB_ٽيگ('C','H','A',' ')},	/* Chamorro */
+  {HB_ٽيگ('c','o',' ',' '),	HB_ٽيگ('C','O','S',' ')},	/* Corsican */
+  {HB_ٽيگ('c','r',' ',' '),	HB_ٽيگ('C','R','E',' ')},	/* Cree [macrolanguage] */
+  {HB_ٽيگ('c','s',' ',' '),	HB_ٽيگ('C','S','Y',' ')},	/* Czech */
+  {HB_ٽيگ('c','u',' ',' '),	HB_ٽيگ('C','S','L',' ')},	/* Church Slavonic */
+  {HB_ٽيگ('c','v',' ',' '),	HB_ٽيگ('C','H','U',' ')},	/* Chuvash */
+  {HB_ٽيگ('c','y',' ',' '),	HB_ٽيگ('W','E','L',' ')},	/* Welsh */
+  {HB_ٽيگ('d','a',' ',' '),	HB_ٽيگ('D','A','N',' ')},	/* Danish */
+  {HB_ٽيگ('d','e',' ',' '),	HB_ٽيگ('D','E','U',' ')},	/* German */
+  {HB_ٽيگ('d','v',' ',' '),	HB_ٽيگ('D','I','V',' ')},	/* Divehi (Dhivehi, Maldivian) */
+  {HB_ٽيگ('d','v',' ',' '),	HB_ٽيگ('D','H','V',' ')},	/* Divehi (Dhivehi, Maldivian) (deprecated) */
+  {HB_ٽيگ('d','z',' ',' '),	HB_ٽيگ('D','Z','N',' ')},	/* Dzongkha */
+  {HB_ٽيگ('e','e',' ',' '),	HB_ٽيگ('E','W','E',' ')},	/* Ewe */
+  {HB_ٽيگ('e','l',' ',' '),	HB_ٽيگ('E','L','L',' ')},	/* Modern Greek (1453-) -> Greek */
+  {HB_ٽيگ('e','n',' ',' '),	HB_ٽيگ('E','N','G',' ')},	/* English */
+  {HB_ٽيگ('e','o',' ',' '),	HB_ٽيگ('N','T','O',' ')},	/* Esperanto */
+  {HB_ٽيگ('e','s',' ',' '),	HB_ٽيگ('E','S','P',' ')},	/* Spanish */
+  {HB_ٽيگ('e','t',' ',' '),	HB_ٽيگ('E','T','I',' ')},	/* Estonian [macrolanguage] */
+  {HB_ٽيگ('e','u',' ',' '),	HB_ٽيگ('E','U','Q',' ')},	/* Basque */
+  {HB_ٽيگ('f','a',' ',' '),	HB_ٽيگ('F','A','R',' ')},	/* Persian [macrolanguage] */
+  {HB_ٽيگ('f','f',' ',' '),	HB_ٽيگ('F','U','L',' ')},	/* Fulah [macrolanguage] */
+  {HB_ٽيگ('f','i',' ',' '),	HB_ٽيگ('F','I','N',' ')},	/* Finnish */
+  {HB_ٽيگ('f','j',' ',' '),	HB_ٽيگ('F','J','I',' ')},	/* Fijian */
+  {HB_ٽيگ('f','o',' ',' '),	HB_ٽيگ('F','O','S',' ')},	/* Faroese */
+  {HB_ٽيگ('f','r',' ',' '),	HB_ٽيگ('F','R','A',' ')},	/* French */
+  {HB_ٽيگ('f','y',' ',' '),	HB_ٽيگ('F','R','I',' ')},	/* Western Frisian -> Frisian */
+  {HB_ٽيگ('g','a',' ',' '),	HB_ٽيگ('I','R','I',' ')},	/* Irish */
+  {HB_ٽيگ('g','a',' ',' '),	HB_ٽيگ('I','R','T',' ')},	/* Irish -> Irish Traditional */
+  {HB_ٽيگ('g','d',' ',' '),	HB_ٽيگ('G','A','E',' ')},	/* Scottish Gaelic */
+  {HB_ٽيگ('g','l',' ',' '),	HB_ٽيگ('G','A','L',' ')},	/* Galician */
+  {HB_ٽيگ('g','n',' ',' '),	HB_ٽيگ('G','U','A',' ')},	/* Guarani [macrolanguage] */
+  {HB_ٽيگ('g','u',' ',' '),	HB_ٽيگ('G','U','J',' ')},	/* Gujarati */
+  {HB_ٽيگ('g','v',' ',' '),	HB_ٽيگ('M','N','X',' ')},	/* Manx */
+  {HB_ٽيگ('h','a',' ',' '),	HB_ٽيگ('H','A','U',' ')},	/* Hausa */
+  {HB_ٽيگ('h','e',' ',' '),	HB_ٽيگ('I','W','R',' ')},	/* Hebrew */
+  {HB_ٽيگ('h','i',' ',' '),	HB_ٽيگ('H','I','N',' ')},	/* Hindi */
+  {HB_ٽيگ('h','o',' ',' '),	HB_ٽيگ('H','M','O',' ')},	/* Hiri Motu */
+  {HB_ٽيگ('h','o',' ',' '),	HB_ٽيگ('C','P','P',' ')},	/* Hiri Motu -> Creoles */
+  {HB_ٽيگ('h','r',' ',' '),	HB_ٽيگ('H','R','V',' ')},	/* Croatian */
+  {HB_ٽيگ('h','t',' ',' '),	HB_ٽيگ('H','A','I',' ')},	/* Haitian (Haitian Creole) */
+  {HB_ٽيگ('h','t',' ',' '),	HB_ٽيگ('C','P','P',' ')},	/* Haitian -> Creoles */
+  {HB_ٽيگ('h','u',' ',' '),	HB_ٽيگ('H','U','N',' ')},	/* Hungarian */
+  {HB_ٽيگ('h','y',' ',' '),	HB_ٽيگ('H','Y','E','0')},	/* Armenian -> Armenian East */
+  {HB_ٽيگ('h','y',' ',' '),	HB_ٽيگ('H','Y','E',' ')},	/* Armenian */
+  {HB_ٽيگ('h','z',' ',' '),	HB_ٽيگ('H','E','R',' ')},	/* Herero */
+  {HB_ٽيگ('i','a',' ',' '),	HB_ٽيگ('I','N','A',' ')},	/* Interlingua (IALA) */
+  {HB_ٽيگ('i','d',' ',' '),	HB_ٽيگ('I','N','D',' ')},	/* Indonesian */
+  {HB_ٽيگ('i','d',' ',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Indonesian -> Malay */
+  {HB_ٽيگ('i','e',' ',' '),	HB_ٽيگ('I','L','E',' ')},	/* Interlingue */
+  {HB_ٽيگ('i','g',' ',' '),	HB_ٽيگ('I','B','O',' ')},	/* Igbo */
+  {HB_ٽيگ('i','i',' ',' '),	HB_ٽيگ('Y','I','M',' ')},	/* Sichuan Yi -> Yi Modern */
+  {HB_ٽيگ('i','k',' ',' '),	HB_ٽيگ('I','P','K',' ')},	/* Inupiaq [macrolanguage] -> Inupiat */
+  {HB_ٽيگ('i','n',' ',' '),	HB_ٽيگ('I','N','D',' ')},	/* Indonesian (retired code) */
+  {HB_ٽيگ('i','n',' ',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Indonesian (retired code) -> Malay */
+  {HB_ٽيگ('i','o',' ',' '),	HB_ٽيگ('I','D','O',' ')},	/* Ido */
+  {HB_ٽيگ('i','s',' ',' '),	HB_ٽيگ('I','S','L',' ')},	/* Icelandic */
+  {HB_ٽيگ('i','t',' ',' '),	HB_ٽيگ('I','T','A',' ')},	/* Italian */
+  {HB_ٽيگ('i','u',' ',' '),	HB_ٽيگ('I','N','U',' ')},	/* Inuktitut [macrolanguage] */
+  {HB_ٽيگ('i','u',' ',' '),	HB_ٽيگ('I','N','U','K')},	/* Inuktitut [macrolanguage] -> Nunavik Inuktitut */
+  {HB_ٽيگ('i','w',' ',' '),	HB_ٽيگ('I','W','R',' ')},	/* Hebrew (retired code) */
+  {HB_ٽيگ('j','a',' ',' '),	HB_ٽيگ('J','A','N',' ')},	/* Japanese */
+  {HB_ٽيگ('j','i',' ',' '),	HB_ٽيگ('J','I','I',' ')},	/* Yiddish (retired code) */
+  {HB_ٽيگ('j','v',' ',' '),	HB_ٽيگ('J','A','V',' ')},	/* Javanese */
+  {HB_ٽيگ('j','w',' ',' '),	HB_ٽيگ('J','A','V',' ')},	/* Javanese (retired code) */
+  {HB_ٽيگ('k','a',' ',' '),	HB_ٽيگ('K','A','T',' ')},	/* Georgian */
+  {HB_ٽيگ('k','g',' ',' '),	HB_ٽيگ('K','O','N','0')},	/* Kongo [macrolanguage] */
+  {HB_ٽيگ('k','i',' ',' '),	HB_ٽيگ('K','I','K',' ')},	/* Kikuyu (Gikuyu) */
+  {HB_ٽيگ('k','j',' ',' '),	HB_ٽيگ('K','U','A',' ')},	/* Kuanyama */
+  {HB_ٽيگ('k','k',' ',' '),	HB_ٽيگ('K','A','Z',' ')},	/* Kazakh */
+  {HB_ٽيگ('k','l',' ',' '),	HB_ٽيگ('G','R','N',' ')},	/* Greenlandic */
+  {HB_ٽيگ('k','m',' ',' '),	HB_ٽيگ('K','H','M',' ')},	/* Khmer */
+  {HB_ٽيگ('k','n',' ',' '),	HB_ٽيگ('K','A','N',' ')},	/* Kannada */
+  {HB_ٽيگ('k','o',' ',' '),	HB_ٽيگ('K','O','R',' ')},	/* Korean */
+  {HB_ٽيگ('k','o',' ',' '),	HB_ٽيگ('K','O','H',' ')},	/* Korean -> Korean Old Hangul */
+  {HB_ٽيگ('k','r',' ',' '),	HB_ٽيگ('K','N','R',' ')},	/* Kanuri [macrolanguage] */
+  {HB_ٽيگ('k','s',' ',' '),	HB_ٽيگ('K','S','H',' ')},	/* Kashmiri */
+  {HB_ٽيگ('k','u',' ',' '),	HB_ٽيگ('K','U','R',' ')},	/* Kurdish [macrolanguage] */
+  {HB_ٽيگ('k','v',' ',' '),	HB_ٽيگ('K','O','M',' ')},	/* Komi [macrolanguage] */
+  {HB_ٽيگ('k','w',' ',' '),	HB_ٽيگ('C','O','R',' ')},	/* Cornish */
+  {HB_ٽيگ('k','y',' ',' '),	HB_ٽيگ('K','I','R',' ')},	/* Kirghiz (Kyrgyz) */
+  {HB_ٽيگ('l','a',' ',' '),	HB_ٽيگ('L','A','T',' ')},	/* Latin */
+  {HB_ٽيگ('l','b',' ',' '),	HB_ٽيگ('L','T','Z',' ')},	/* Luxembourgish */
+  {HB_ٽيگ('l','g',' ',' '),	HB_ٽيگ('L','U','G',' ')},	/* Ganda */
+  {HB_ٽيگ('l','i',' ',' '),	HB_ٽيگ('L','I','M',' ')},	/* Limburgish */
+  {HB_ٽيگ('l','n',' ',' '),	HB_ٽيگ('L','I','N',' ')},	/* Lingala */
+  {HB_ٽيگ('l','o',' ',' '),	HB_ٽيگ('L','A','O',' ')},	/* Lao */
+  {HB_ٽيگ('l','t',' ',' '),	HB_ٽيگ('L','T','H',' ')},	/* Lithuanian */
+  {HB_ٽيگ('l','u',' ',' '),	HB_ٽيگ('L','U','B',' ')},	/* Luba-Katanga */
+  {HB_ٽيگ('l','v',' ',' '),	HB_ٽيگ('L','V','I',' ')},	/* Latvian [macrolanguage] */
+  {HB_ٽيگ('m','g',' ',' '),	HB_ٽيگ('M','L','G',' ')},	/* Malagasy [macrolanguage] */
+  {HB_ٽيگ('m','h',' ',' '),	HB_ٽيگ('M','A','H',' ')},	/* Marshallese */
+  {HB_ٽيگ('m','i',' ',' '),	HB_ٽيگ('M','R','I',' ')},	/* Maori */
+  {HB_ٽيگ('m','k',' ',' '),	HB_ٽيگ('M','K','D',' ')},	/* Macedonian */
+  {HB_ٽيگ('m','l',' ',' '),	HB_ٽيگ('M','A','L',' ')},	/* Malayalam -> Malayalam Traditional */
+  {HB_ٽيگ('m','l',' ',' '),	HB_ٽيگ('M','L','R',' ')},	/* Malayalam -> Malayalam Reformed */
+  {HB_ٽيگ('m','n',' ',' '),	HB_ٽيگ('M','N','G',' ')},	/* Mongolian [macrolanguage] */
+  {HB_ٽيگ('m','o',' ',' '),	HB_ٽيگ('M','O','L',' ')},	/* Moldavian (retired code) */
+  {HB_ٽيگ('m','o',' ',' '),	HB_ٽيگ('R','O','M',' ')},	/* Moldavian (retired code) -> Romanian */
+  {HB_ٽيگ('m','r',' ',' '),	HB_ٽيگ('M','A','R',' ')},	/* Marathi */
+  {HB_ٽيگ('m','s',' ',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Malay [macrolanguage] */
+  {HB_ٽيگ('m','t',' ',' '),	HB_ٽيگ('M','T','S',' ')},	/* Maltese */
+  {HB_ٽيگ('m','y',' ',' '),	HB_ٽيگ('B','R','M',' ')},	/* Burmese */
+  {HB_ٽيگ('n','a',' ',' '),	HB_ٽيگ('N','A','U',' ')},	/* Nauru -> Nauruan */
+  {HB_ٽيگ('n','b',' ',' '),	HB_ٽيگ('N','O','R',' ')},	/* Norwegian Bokmål -> Norwegian */
+  {HB_ٽيگ('n','d',' ',' '),	HB_ٽيگ('N','D','B',' ')},	/* North Ndebele -> Ndebele */
+  {HB_ٽيگ('n','e',' ',' '),	HB_ٽيگ('N','E','P',' ')},	/* Nepali [macrolanguage] */
+  {HB_ٽيگ('n','g',' ',' '),	HB_ٽيگ('N','D','G',' ')},	/* Ndonga */
+  {HB_ٽيگ('n','l',' ',' '),	HB_ٽيگ('N','L','D',' ')},	/* Dutch */
+  {HB_ٽيگ('n','n',' ',' '),	HB_ٽيگ('N','Y','N',' ')},	/* Norwegian Nynorsk (Nynorsk, Norwegian) */
+  {HB_ٽيگ('n','o',' ',' '),	HB_ٽيگ('N','O','R',' ')},	/* Norwegian [macrolanguage] */
+  {HB_ٽيگ('n','r',' ',' '),	HB_ٽيگ('N','D','B',' ')},	/* South Ndebele -> Ndebele */
+  {HB_ٽيگ('n','v',' ',' '),	HB_ٽيگ('N','A','V',' ')},	/* Navajo */
+  {HB_ٽيگ('n','v',' ',' '),	HB_ٽيگ('A','T','H',' ')},	/* Navajo -> Athapaskan */
+  {HB_ٽيگ('n','y',' ',' '),	HB_ٽيگ('C','H','I',' ')},	/* Chichewa (Chewa, Nyanja) */
+  {HB_ٽيگ('o','c',' ',' '),	HB_ٽيگ('O','C','I',' ')},	/* Occitan (post 1500) */
+  {HB_ٽيگ('o','j',' ',' '),	HB_ٽيگ('O','J','B',' ')},	/* Ojibwa [macrolanguage] -> Ojibway */
+  {HB_ٽيگ('o','m',' ',' '),	HB_ٽيگ('O','R','O',' ')},	/* Oromo [macrolanguage] */
+  {HB_ٽيگ('o','r',' ',' '),	HB_ٽيگ('O','R','I',' ')},	/* Odia [macrolanguage] */
+  {HB_ٽيگ('o','s',' ',' '),	HB_ٽيگ('O','S','S',' ')},	/* Ossetian */
+  {HB_ٽيگ('p','a',' ',' '),	HB_ٽيگ('P','A','N',' ')},	/* Punjabi */
+  {HB_ٽيگ('p','i',' ',' '),	HB_ٽيگ('P','A','L',' ')},	/* Pali */
+  {HB_ٽيگ('p','l',' ',' '),	HB_ٽيگ('P','L','K',' ')},	/* Polish */
+  {HB_ٽيگ('p','s',' ',' '),	HB_ٽيگ('P','A','S',' ')},	/* Pashto [macrolanguage] */
+  {HB_ٽيگ('p','t',' ',' '),	HB_ٽيگ('P','T','G',' ')},	/* Portuguese */
+  {HB_ٽيگ('q','u',' ',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Quechua [macrolanguage] */
+  {HB_ٽيگ('r','m',' ',' '),	HB_ٽيگ('R','M','S',' ')},	/* Romansh */
+  {HB_ٽيگ('r','n',' ',' '),	HB_ٽيگ('R','U','N',' ')},	/* Rundi */
+  {HB_ٽيگ('r','o',' ',' '),	HB_ٽيگ('R','O','M',' ')},	/* Romanian */
+  {HB_ٽيگ('r','u',' ',' '),	HB_ٽيگ('R','U','S',' ')},	/* Russian */
+  {HB_ٽيگ('r','w',' ',' '),	HB_ٽيگ('R','U','A',' ')},	/* Kinyarwanda */
+  {HB_ٽيگ('s','a',' ',' '),	HB_ٽيگ('S','A','N',' ')},	/* Sanskrit [macrolanguage] */
+  {HB_ٽيگ('s','c',' ',' '),	HB_ٽيگ('S','R','D',' ')},	/* Sardinian [macrolanguage] */
+  {HB_ٽيگ('s','d',' ',' '),	HB_ٽيگ('S','N','D',' ')},	/* Sindhi */
+  {HB_ٽيگ('s','e',' ',' '),	HB_ٽيگ('N','S','M',' ')},	/* Northern Sami */
+  {HB_ٽيگ('s','g',' ',' '),	HB_ٽيگ('S','G','O',' ')},	/* Sango */
+  {HB_ٽيگ('s','h',' ',' '),	HB_ٽيگ('B','O','S',' ')},	/* Serbo-Croatian [macrolanguage] -> Bosnian */
+  {HB_ٽيگ('s','h',' ',' '),	HB_ٽيگ('H','R','V',' ')},	/* Serbo-Croatian [macrolanguage] -> Croatian */
+  {HB_ٽيگ('s','h',' ',' '),	HB_ٽيگ('S','R','B',' ')},	/* Serbo-Croatian [macrolanguage] -> Serbian */
+  {HB_ٽيگ('s','i',' ',' '),	HB_ٽيگ('S','N','H',' ')},	/* Sinhala (Sinhalese) */
+  {HB_ٽيگ('s','k',' ',' '),	HB_ٽيگ('S','K','Y',' ')},	/* Slovak */
+  {HB_ٽيگ('s','l',' ',' '),	HB_ٽيگ('S','L','V',' ')},	/* Slovenian */
+  {HB_ٽيگ('s','m',' ',' '),	HB_ٽيگ('S','M','O',' ')},	/* Samoan */
+  {HB_ٽيگ('s','n',' ',' '),	HB_ٽيگ('S','N','A','0')},	/* Shona */
+  {HB_ٽيگ('s','o',' ',' '),	HB_ٽيگ('S','M','L',' ')},	/* Somali */
+  {HB_ٽيگ('s','q',' ',' '),	HB_ٽيگ('S','Q','I',' ')},	/* Albanian [macrolanguage] */
+  {HB_ٽيگ('s','r',' ',' '),	HB_ٽيگ('S','R','B',' ')},	/* Serbian */
+  {HB_ٽيگ('s','s',' ',' '),	HB_ٽيگ('S','W','Z',' ')},	/* Swati */
+  {HB_ٽيگ('s','t',' ',' '),	HB_ٽيگ('S','O','T',' ')},	/* Southern Sotho */
+  {HB_ٽيگ('s','u',' ',' '),	HB_ٽيگ('S','U','N',' ')},	/* Sundanese */
+  {HB_ٽيگ('s','v',' ',' '),	HB_ٽيگ('S','V','E',' ')},	/* Swedish */
+  {HB_ٽيگ('s','w',' ',' '),	HB_ٽيگ('S','W','K',' ')},	/* Swahili [macrolanguage] */
+  {HB_ٽيگ('t','a',' ',' '),	HB_ٽيگ('T','A','M',' ')},	/* Tamil */
+  {HB_ٽيگ('t','e',' ',' '),	HB_ٽيگ('T','E','L',' ')},	/* Telugu */
+  {HB_ٽيگ('t','g',' ',' '),	HB_ٽيگ('T','A','J',' ')},	/* Tajik -> Tajiki */
+  {HB_ٽيگ('t','h',' ',' '),	HB_ٽيگ('T','H','A',' ')},	/* Thai */
+  {HB_ٽيگ('t','i',' ',' '),	HB_ٽيگ('T','G','Y',' ')},	/* Tigrinya */
+  {HB_ٽيگ('t','k',' ',' '),	HB_ٽيگ('T','K','M',' ')},	/* Turkmen */
+  {HB_ٽيگ('t','l',' ',' '),	HB_ٽيگ('T','G','L',' ')},	/* Tagalog */
+  {HB_ٽيگ('t','n',' ',' '),	HB_ٽيگ('T','N','A',' ')},	/* Tswana */
+  {HB_ٽيگ('t','o',' ',' '),	HB_ٽيگ('T','G','N',' ')},	/* Tonga (Tonga Islands) -> Tongan */
+  {HB_ٽيگ('t','r',' ',' '),	HB_ٽيگ('T','R','K',' ')},	/* Turkish */
+  {HB_ٽيگ('t','s',' ',' '),	HB_ٽيگ('T','S','G',' ')},	/* Tsonga */
+  {HB_ٽيگ('t','t',' ',' '),	HB_ٽيگ('T','A','T',' ')},	/* Tatar */
+  {HB_ٽيگ('t','w',' ',' '),	HB_ٽيگ('T','W','I',' ')},	/* Twi */
+  {HB_ٽيگ('t','w',' ',' '),	HB_ٽيگ('A','K','A',' ')},	/* Twi -> Akan */
+  {HB_ٽيگ('t','y',' ',' '),	HB_ٽيگ('T','H','T',' ')},	/* Tahitian */
+  {HB_ٽيگ('u','g',' ',' '),	HB_ٽيگ('U','Y','G',' ')},	/* Uyghur */
+  {HB_ٽيگ('u','k',' ',' '),	HB_ٽيگ('U','K','R',' ')},	/* Ukrainian */
+  {HB_ٽيگ('u','r',' ',' '),	HB_ٽيگ('U','R','D',' ')},	/* Urdu */
+  {HB_ٽيگ('u','z',' ',' '),	HB_ٽيگ('U','Z','B',' ')},	/* Uzbek [macrolanguage] */
+  {HB_ٽيگ('v','e',' ',' '),	HB_ٽيگ('V','E','N',' ')},	/* Venda */
+  {HB_ٽيگ('v','i',' ',' '),	HB_ٽيگ('V','I','T',' ')},	/* Vietnamese */
+  {HB_ٽيگ('v','o',' ',' '),	HB_ٽيگ('V','O','L',' ')},	/* Volapük */
+  {HB_ٽيگ('w','a',' ',' '),	HB_ٽيگ('W','L','N',' ')},	/* Walloon */
+  {HB_ٽيگ('w','o',' ',' '),	HB_ٽيگ('W','L','F',' ')},	/* Wolof */
+  {HB_ٽيگ('x','h',' ',' '),	HB_ٽيگ('X','H','S',' ')},	/* Xhosa */
+  {HB_ٽيگ('y','i',' ',' '),	HB_ٽيگ('J','I','I',' ')},	/* Yiddish [macrolanguage] */
+  {HB_ٽيگ('y','o',' ',' '),	HB_ٽيگ('Y','B','A',' ')},	/* Yoruba */
+  {HB_ٽيگ('z','a',' ',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Zhuang [macrolanguage] */
+  {HB_ٽيگ('z','h',' ',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Chinese, Simplified [macrolanguage] */
+  {HB_ٽيگ('z','u',' ',' '),	HB_ٽيگ('Z','U','L',' ')},	/* Zulu */
 };
 
-#ifndef HB_NO_LANGUAGE_LONG
-static const hb_tag_t ot_languages3_blocked[] = {
-  HB_TAG('a','b','a',' '),	/* Abé != Abaza */
-  HB_TAG('a','f','k',' '),	/* Nanubae != Afrikaans */
-  HB_TAG('a','g','w',' '),	/* Kahua != Agaw */
-  HB_TAG('a','r','i',' '),	/* Arikara != Aari */
-  HB_TAG('a','r','k',' '),	/* Arikapú != Rakhine */
-  HB_TAG('b','a','g',' '),	/* Tuki != Baghelkhandi */
-  HB_TAG('b','a','u',' '),	/* Bada (Nigeria) != Baulé */
-  HB_TAG('b','b','r',' '),	/* Girawa != Berber */
-  HB_TAG('b','c','h',' '),	/* Bariai != Bench */
-  HB_TAG('b','i','l',' '),	/* Bile != Bilen */
-  HB_TAG('b','k','f',' '),	/* Beeke != Blackfoot */
-  HB_TAG('b','l','i',' '),	/* Bolia != Baluchi */
-  HB_TAG('b','l','t',' '),	/* Tai Dam != Balti */
-  HB_TAG('b','m','b',' '),	/* Bembe != Bambara (Bamanankan) */
-  HB_TAG('b','m','l',' '),	/* Bomboli != Bamileke */
-  HB_TAG('b','r','i',' '),	/* Mokpwe != Braj Bhasha */
-  HB_TAG('b','r','m',' '),	/* Barambu != Burmese */
-  HB_TAG('b','s','h',' '),	/* Kati != Bashkir */
-  HB_TAG('b','t','i',' '),	/* Burate != Beti */
-  HB_TAG('c','h','g',' '),	/* Chagatai != Chaha Gurage */
-  HB_TAG('c','h','h',' '),	/* Chinook != Chattisgarhi */
-  HB_TAG('c','r','r',' '),	/* Carolina Algonquian != Carrier */
-  HB_TAG('c','r','t',' '),	/* Iyojwa'ja Chorote != Crimean Tatar */
-  HB_TAG('c','s','l',' '),	/* Chinese Sign Language != Church Slavonic */
-  HB_TAG('d','h','v',' '),	/* Dehu != Divehi (Dhivehi, Maldivian) (deprecated) */
-  HB_TAG('d','n','k',' '),	/* Dengka != Dinka */
-  HB_TAG('d','r','i',' '),	/* C'Lela != Dari */
-  HB_TAG('d','u','n',' '),	/* Dusun Deyah != Dungan */
-  HB_TAG('d','z','n',' '),	/* Dzando != Dzongkha */
-  HB_TAG('e','c','r',' '),	/* Eteocretan != Eastern Cree */
-  HB_TAG('e','u','q',' '),	/* Basque [collection] != Basque */
-  HB_TAG('f','a','r',' '),	/* Fataleka != Persian */
-  HB_TAG('f','o','s',' '),	/* Siraya != Faroese */
-  HB_TAG('g','a','d',' '),	/* Gaddang != Ga */
-  HB_TAG('g','a','e',' '),	/* Guarequena != Scottish Gaelic */
-  HB_TAG('g','a','l',' '),	/* Galolen != Galician */
-  HB_TAG('g','a','r',' '),	/* Galeya != Garshuni */
-  HB_TAG('g','a','w',' '),	/* Nobonob != Garhwali */
-  HB_TAG('g','m','z',' '),	/* Mgbolizhia != Gumuz */
-  HB_TAG('g','r','o',' '),	/* Groma != Garo */
-  HB_TAG('g','u','a',' '),	/* Shiki != Guarani */
-  HB_TAG('h','a','l',' '),	/* Halang != Halam (Falam Chin) */
-  HB_TAG('h','b','n',' '),	/* Heiban != Hammer-Banna */
-  HB_TAG('i','r','i',' '),	/* Rigwe != Irish */
-  HB_TAG('i','s','m',' '),	/* Masimasi != Inari Sami */
-  HB_TAG('j','a','n',' '),	/* Jandai != Japanese */
-  HB_TAG('j','i','i',' '),	/* Jiiddu != Yiddish */
-  HB_TAG('j','u','d',' '),	/* Worodougou != Ladino */
-  HB_TAG('j','u','l',' '),	/* Jirel != Jula */
-  HB_TAG('k','a','c',' '),	/* Kachin != Kachchi */
-  HB_TAG('k','e','b',' '),	/* Kélé != Kebena */
-  HB_TAG('k','g','e',' '),	/* Komering != Khutsuri Georgian */
-  HB_TAG('k','h','n',' '),	/* Khandesi != Khamti Shan (Microsoft fonts) */
-  HB_TAG('k','h','s',' '),	/* Kasua != Khanty-Shurishkar */
-  HB_TAG('k','h','v',' '),	/* Khvarshi != Khanty-Vakhi */
-  HB_TAG('k','i','s',' '),	/* Kis != Kisii */
-  HB_TAG('k','k','n',' '),	/* Kon Keu != Kokni */
-  HB_TAG('k','l','m',' '),	/* Migum != Kalmyk */
-  HB_TAG('k','m','n',' '),	/* Awtuw != Kumaoni */
-  HB_TAG('k','m','o',' '),	/* Kwoma != Komo */
-  HB_TAG('k','m','s',' '),	/* Kamasau != Komso */
-  HB_TAG('k','n','r',' '),	/* Kaningra != Kanuri */
-  HB_TAG('k','o','d',' '),	/* Kodi != Kodagu */
-  HB_TAG('k','o','h',' '),	/* Koyo != Korean Old Hangul */
-  HB_TAG('k','o','p',' '),	/* Waube != Komi-Permyak */
-  HB_TAG('k','o','z',' '),	/* Korak != Komi-Zyrian */
-  HB_TAG('k','p','l',' '),	/* Kpala != Kpelle */
-  HB_TAG('k','r','k',' '),	/* Kerek != Karakalpak */
-  HB_TAG('k','r','m',' '),	/* Krim (retired code) != Karaim */
-  HB_TAG('k','r','n',' '),	/* Sapo != Karen */
-  HB_TAG('k','s','i',' '),	/* Krisa != Khasi */
-  HB_TAG('k','s','m',' '),	/* Kumba != Kildin Sami */
-  HB_TAG('k','u','i',' '),	/* Kuikúro-Kalapálo != Kui */
-  HB_TAG('k','u','l',' '),	/* Kulere != Kulvi */
-  HB_TAG('k','u','y',' '),	/* Kuuku-Ya'u != Kuy */
-  HB_TAG('k','y','k',' '),	/* Kamayo != Koryak */
-  HB_TAG('l','a','h',' '),	/* Lahnda [macrolanguage] != Lahuli */
-  HB_TAG('l','a','k',' '),	/* Laka (Nigeria) (retired code) != Lak */
-  HB_TAG('l','a','m',' '),	/* Lamba != Lambani */
-  HB_TAG('l','a','z',' '),	/* Aribwatsa != Laz */
-  HB_TAG('l','d','k',' '),	/* Leelau != Ladakhi */
-  HB_TAG('l','m','a',' '),	/* East Limba != Low Mari */
-  HB_TAG('l','m','b',' '),	/* Merei != Limbu */
-  HB_TAG('l','m','w',' '),	/* Lake Miwok != Lomwe */
-  HB_TAG('l','s','b',' '),	/* Burundian Sign Language != Lower Sorbian */
-  HB_TAG('l','t','h',' '),	/* Thur != Lithuanian */
-  HB_TAG('l','v','i',' '),	/* Lavi != Latvian */
-  HB_TAG('m','a','j',' '),	/* Jalapa De Díaz Mazatec != Majang */
-  HB_TAG('m','a','p',' '),	/* Austronesian [collection] != Mapudungun */
-  HB_TAG('m','a','w',' '),	/* Mampruli != Marwari */
-  HB_TAG('m','b','n',' '),	/* Macaguán != Mbundu */
-  HB_TAG('m','c','h',' '),	/* Maquiritari != Manchu */
-  HB_TAG('m','c','r',' '),	/* Menya != Moose Cree */
-  HB_TAG('m','d','e',' '),	/* Maba (Chad) != Mende */
-  HB_TAG('m','i','z',' '),	/* Coatzospan Mixtec != Mizo */
-  HB_TAG('m','k','r',' '),	/* Malas != Makasar */
-  HB_TAG('m','l','e',' '),	/* Manambu != Male */
-  HB_TAG('m','l','n',' '),	/* Malango != Malinke */
-  HB_TAG('m','l','r',' '),	/* Vame != Malayalam Reformed */
-  HB_TAG('m','n','d',' '),	/* Mondé != Mandinka */
-  HB_TAG('m','n','g',' '),	/* Eastern Mnong != Mongolian */
-  HB_TAG('m','n','x',' '),	/* Manikion != Manx */
-  HB_TAG('m','o','k',' '),	/* Morori != Moksha */
-  HB_TAG('m','o','r',' '),	/* Moro != Moroccan */
-  HB_TAG('m','t','h',' '),	/* Munggui != Maithili */
-  HB_TAG('m','t','s',' '),	/* Yora != Maltese */
-  HB_TAG('m','u','n',' '),	/* Munda [collection] != Mundari */
-  HB_TAG('n','a','s',' '),	/* Naasioi != Naskapi */
-  HB_TAG('n','c','r',' '),	/* Ncane != N-Cree */
-  HB_TAG('n','d','b',' '),	/* Kenswei Nsei != Ndebele */
-  HB_TAG('n','d','g',' '),	/* Ndengereko != Ndonga */
-  HB_TAG('n','g','r',' '),	/* Engdewu != Nagari */
-  HB_TAG('n','i','s',' '),	/* Nimi != Nisi */
-  HB_TAG('n','k','o',' '),	/* Nkonya != N’Ko */
-  HB_TAG('n','s','m',' '),	/* Sumi Naga != Northern Sami */
-  HB_TAG('n','t','o',' '),	/* Ntomba != Esperanto */
-  HB_TAG('o','r','o',' '),	/* Orokolo != Oromo */
-  HB_TAG('p','a','a',' '),	/* Papuan [collection] != Palestinian Aramaic */
-  HB_TAG('p','a','l',' '),	/* Pahlavi != Pali */
-  HB_TAG('p','a','s',' '),	/* Papasena != Pashto */
-  HB_TAG('p','i','l',' '),	/* Yom != Filipino */
-  HB_TAG('p','l','k',' '),	/* Kohistani Shina != Polish */
-  HB_TAG('r','m','s',' '),	/* Romanian Sign Language != Romansh */
-  HB_TAG('s','a','d',' '),	/* Sandawe != Sadri */
-  HB_TAG('s','a','y',' '),	/* Saya != Sayisi */
-  HB_TAG('s','g','o',' '),	/* Songa (retired code) != Sango */
-  HB_TAG('s','i','b',' '),	/* Sebop != Sibe */
-  HB_TAG('s','i','g',' '),	/* Paasaal != Silte Gurage */
-  HB_TAG('s','k','s',' '),	/* Maia != Skolt Sami */
-  HB_TAG('s','k','y',' '),	/* Sikaiana != Slovak */
-  HB_TAG('s','l','a',' '),	/* Slavic [collection] != Slavey */
-  HB_TAG('s','m','l',' '),	/* Central Sama != Somali */
-  HB_TAG('s','n','h',' '),	/* Shinabo (retired code) != Sinhala (Sinhalese) */
-  HB_TAG('s','o','g',' '),	/* Sogdian != Sodo Gurage */
-  HB_TAG('s','r','b',' '),	/* Sora != Serbian */
-  HB_TAG('s','r','k',' '),	/* Serudung Murut != Saraiki */
-  HB_TAG('s','s','l',' '),	/* Western Sisaala != South Slavey */
-  HB_TAG('s','s','m',' '),	/* Semnam != Southern Sami */
-  HB_TAG('s','u','r',' '),	/* Mwaghavul != Suri */
-  HB_TAG('s','v','e',' '),	/* Serili != Swedish */
-  HB_TAG('s','w','k',' '),	/* Malawi Sena != Swahili */
-  HB_TAG('t','a','j',' '),	/* Eastern Tamang != Tajiki */
-  HB_TAG('t','g','n',' '),	/* Tandaganon != Tongan */
-  HB_TAG('t','g','r',' '),	/* Tareng != Tigre */
-  HB_TAG('t','g','y',' '),	/* Togoyo != Tigrinya */
-  HB_TAG('t','k','m',' '),	/* Takelma != Turkmen */
-  HB_TAG('t','m','n',' '),	/* Taman (Indonesia) != Temne */
-  HB_TAG('t','n','a',' '),	/* Tacana != Tswana */
-  HB_TAG('t','n','e',' '),	/* Tinoc Kallahan (retired code) != Tundra Enets */
-  HB_TAG('t','n','g',' '),	/* Tobanga != Tonga */
-  HB_TAG('t','r','k',' '),	/* Turkic [collection] != Turkish */
-  HB_TAG('t','s','g',' '),	/* Tausug != Tsonga */
-  HB_TAG('t','u','a',' '),	/* Wiarumus != Turoyo Aramaic */
-  HB_TAG('t','u','l',' '),	/* Tula != Tulu */
-  HB_TAG('t','u','v',' '),	/* Turkana != Tuvin */
-  HB_TAG('v','i','t',' '),	/* Viti != Vietnamese */
-  HB_TAG('w','a','g',' '),	/* Wa'ema != Wagdi */
-  HB_TAG('x','b','d',' '),	/* Bindal != Lü */
-  HB_TAG('y','a','k',' '),	/* Yakama != Sakha */
-  HB_TAG('y','b','a',' '),	/* Yala != Yoruba */
-  HB_TAG('y','i','m',' '),	/* Yimchungru Naga != Yi Modern */
-  HB_TAG('z','n','d',' '),	/* Zande [collection] != Zande */
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_LANGUAGE_LONG
+ساكن ثابت hb_ٽيگ_t ot_languages3_blocked[] = {
+  HB_ٽيگ('a','b','a',' '),	/* Abé != Abaza */
+  HB_ٽيگ('a','f','k',' '),	/* Nanubae != Afrikaans */
+  HB_ٽيگ('a','g','w',' '),	/* Kahua != Agaw */
+  HB_ٽيگ('a','r','i',' '),	/* Arikara != Aari */
+  HB_ٽيگ('a','r','k',' '),	/* Arikapú != Rakhine */
+  HB_ٽيگ('b','a','g',' '),	/* Tuki != Baghelkhandi */
+  HB_ٽيگ('b','a','u',' '),	/* Bada (Nigeria) != Baulé */
+  HB_ٽيگ('b','b','r',' '),	/* Girawa != Berber */
+  HB_ٽيگ('b','c','h',' '),	/* Bariai != Bench */
+  HB_ٽيگ('b','i','l',' '),	/* Bile != Bilen */
+  HB_ٽيگ('b','k','f',' '),	/* Beeke != Blackfoot */
+  HB_ٽيگ('b','l','i',' '),	/* Bolia != Baluchi */
+  HB_ٽيگ('b','l','t',' '),	/* Tai Dam != Balti */
+  HB_ٽيگ('b','m','b',' '),	/* Bembe != Bambara (Bamanankan) */
+  HB_ٽيگ('b','m','l',' '),	/* Bomboli != Bamileke */
+  HB_ٽيگ('b','r','i',' '),	/* Mokpwe != Braj Bhasha */
+  HB_ٽيگ('b','r','m',' '),	/* Barambu != Burmese */
+  HB_ٽيگ('b','s','h',' '),	/* Kati != Bashkir */
+  HB_ٽيگ('b','t','i',' '),	/* Burate != Beti */
+  HB_ٽيگ('c','h','g',' '),	/* Chagatai != Chaha Gurage */
+  HB_ٽيگ('c','h','h',' '),	/* Chinook != Chattisgarhi */
+  HB_ٽيگ('c','r','r',' '),	/* Carolina Algonquian != Carrier */
+  HB_ٽيگ('c','r','t',' '),	/* Iyojwa'ja Chorote != Crimean Tatar */
+  HB_ٽيگ('c','s','l',' '),	/* Chinese Sign Language != Church Slavonic */
+  HB_ٽيگ('d','h','v',' '),	/* Dehu != Divehi (Dhivehi, Maldivian) (deprecated) */
+  HB_ٽيگ('d','n','k',' '),	/* Dengka != Dinka */
+  HB_ٽيگ('d','r','i',' '),	/* C'Lela != Dari */
+  HB_ٽيگ('d','u','n',' '),	/* Dusun Deyah != Dungan */
+  HB_ٽيگ('d','z','n',' '),	/* Dzando != Dzongkha */
+  HB_ٽيگ('e','c','r',' '),	/* Eteocretan != Eastern Cree */
+  HB_ٽيگ('e','u','q',' '),	/* Basque [collection] != Basque */
+  HB_ٽيگ('f','a','r',' '),	/* Fataleka != Persian */
+  HB_ٽيگ('f','o','s',' '),	/* Siraya != Faroese */
+  HB_ٽيگ('g','a','d',' '),	/* Gaddang != Ga */
+  HB_ٽيگ('g','a','e',' '),	/* Guarequena != Scottish Gaelic */
+  HB_ٽيگ('g','a','l',' '),	/* Galolen != Galician */
+  HB_ٽيگ('g','a','r',' '),	/* Galeya != Garshuni */
+  HB_ٽيگ('g','a','w',' '),	/* Nobonob != Garhwali */
+  HB_ٽيگ('g','m','z',' '),	/* Mgbolizhia != Gumuz */
+  HB_ٽيگ('g','r','o',' '),	/* Groma != Garo */
+  HB_ٽيگ('g','u','a',' '),	/* Shiki != Guarani */
+  HB_ٽيگ('h','a','l',' '),	/* Halang != Halam (Falam Chin) */
+  HB_ٽيگ('h','b','n',' '),	/* Heiban != Hammer-Banna */
+  HB_ٽيگ('i','r','i',' '),	/* Rigwe != Irish */
+  HB_ٽيگ('i','s','m',' '),	/* Masimasi != Inari Sami */
+  HB_ٽيگ('j','a','n',' '),	/* Jandai != Japanese */
+  HB_ٽيگ('j','i','i',' '),	/* Jiiddu != Yiddish */
+  HB_ٽيگ('j','u','d',' '),	/* Worodougou != Ladino */
+  HB_ٽيگ('j','u','l',' '),	/* Jirel != Jula */
+  HB_ٽيگ('k','a','c',' '),	/* Kachin != Kachchi */
+  HB_ٽيگ('k','e','b',' '),	/* Kélé != Kebena */
+  HB_ٽيگ('k','g','e',' '),	/* Komering != Khutsuri Georgian */
+  HB_ٽيگ('k','h','n',' '),	/* Khandesi != Khamti Shan (Microsoft fonts) */
+  HB_ٽيگ('k','h','s',' '),	/* Kasua != Khanty-Shurishkar */
+  HB_ٽيگ('k','h','v',' '),	/* Khvarshi != Khanty-Vakhi */
+  HB_ٽيگ('k','i','s',' '),	/* Kis != Kisii */
+  HB_ٽيگ('k','k','n',' '),	/* Kon Keu != Kokni */
+  HB_ٽيگ('k','l','m',' '),	/* Migum != Kalmyk */
+  HB_ٽيگ('k','m','n',' '),	/* Awtuw != Kumaoni */
+  HB_ٽيگ('k','m','o',' '),	/* Kwoma != Komo */
+  HB_ٽيگ('k','m','s',' '),	/* Kamasau != Komso */
+  HB_ٽيگ('k','n','r',' '),	/* Kaningra != Kanuri */
+  HB_ٽيگ('k','o','d',' '),	/* Kodi != Kodagu */
+  HB_ٽيگ('k','o','h',' '),	/* Koyo != Korean Old Hangul */
+  HB_ٽيگ('k','o','p',' '),	/* Waube != Komi-Permyak */
+  HB_ٽيگ('k','o','z',' '),	/* Korak != Komi-Zyrian */
+  HB_ٽيگ('k','p','l',' '),	/* Kpala != Kpelle */
+  HB_ٽيگ('k','r','k',' '),	/* Kerek != Karakalpak */
+  HB_ٽيگ('k','r','m',' '),	/* Krim (retired code) != Karaim */
+  HB_ٽيگ('k','r','n',' '),	/* Sapo != Karen */
+  HB_ٽيگ('k','s','i',' '),	/* Krisa != Khasi */
+  HB_ٽيگ('k','s','m',' '),	/* Kumba != Kildin Sami */
+  HB_ٽيگ('k','u','i',' '),	/* Kuikúro-Kalapálo != Kui */
+  HB_ٽيگ('k','u','l',' '),	/* Kulere != Kulvi */
+  HB_ٽيگ('k','u','y',' '),	/* Kuuku-Ya'u != Kuy */
+  HB_ٽيگ('k','y','k',' '),	/* Kamayo != Koryak */
+  HB_ٽيگ('l','a','h',' '),	/* Lahnda [macrolanguage] != Lahuli */
+  HB_ٽيگ('l','a','k',' '),	/* Laka (Nigeria) (retired code) != Lak */
+  HB_ٽيگ('l','a','m',' '),	/* Lamba != Lambani */
+  HB_ٽيگ('l','a','z',' '),	/* Aribwatsa != Laz */
+  HB_ٽيگ('l','d','k',' '),	/* Leelau != Ladakhi */
+  HB_ٽيگ('l','m','a',' '),	/* East Limba != Low Mari */
+  HB_ٽيگ('l','m','b',' '),	/* Merei != Limbu */
+  HB_ٽيگ('l','m','w',' '),	/* Lake Miwok != Lomwe */
+  HB_ٽيگ('l','s','b',' '),	/* Burundian Sign Language != Lower Sorbian */
+  HB_ٽيگ('l','t','h',' '),	/* Thur != Lithuanian */
+  HB_ٽيگ('l','v','i',' '),	/* Lavi != Latvian */
+  HB_ٽيگ('m','a','j',' '),	/* Jalapa De Díaz Mazatec != Majang */
+  HB_ٽيگ('m','a','p',' '),	/* Austronesian [collection] != Mapudungun */
+  HB_ٽيگ('m','a','w',' '),	/* Mampruli != Marwari */
+  HB_ٽيگ('m','b','n',' '),	/* Macaguán != Mbundu */
+  HB_ٽيگ('m','c','h',' '),	/* Maquiritari != Manchu */
+  HB_ٽيگ('m','c','r',' '),	/* Menya != Moose Cree */
+  HB_ٽيگ('m','d','e',' '),	/* Maba (Chad) != Mende */
+  HB_ٽيگ('m','i','z',' '),	/* Coatzospan Mixtec != Mizo */
+  HB_ٽيگ('m','k','r',' '),	/* Malas != Makasar */
+  HB_ٽيگ('m','l','e',' '),	/* Manambu != Male */
+  HB_ٽيگ('m','l','n',' '),	/* Malango != Malinke */
+  HB_ٽيگ('m','l','r',' '),	/* Vame != Malayalam Reformed */
+  HB_ٽيگ('m','n','d',' '),	/* Mondé != Mandinka */
+  HB_ٽيگ('m','n','g',' '),	/* Eastern Mnong != Mongolian */
+  HB_ٽيگ('m','n','x',' '),	/* Manikion != Manx */
+  HB_ٽيگ('m','o','k',' '),	/* Morori != Moksha */
+  HB_ٽيگ('m','o','r',' '),	/* Moro != Moroccan */
+  HB_ٽيگ('m','t','h',' '),	/* Munggui != Maithili */
+  HB_ٽيگ('m','t','s',' '),	/* Yora != Maltese */
+  HB_ٽيگ('m','u','n',' '),	/* Munda [collection] != Mundari */
+  HB_ٽيگ('n','a','s',' '),	/* Naasioi != Naskapi */
+  HB_ٽيگ('n','c','r',' '),	/* Ncane != N-Cree */
+  HB_ٽيگ('n','d','b',' '),	/* Kenswei Nsei != Ndebele */
+  HB_ٽيگ('n','d','g',' '),	/* Ndengereko != Ndonga */
+  HB_ٽيگ('n','g','r',' '),	/* Engdewu != Nagari */
+  HB_ٽيگ('n','i','s',' '),	/* Nimi != Nisi */
+  HB_ٽيگ('n','k','o',' '),	/* Nkonya != N’Ko */
+  HB_ٽيگ('n','s','m',' '),	/* Sumi Naga != Northern Sami */
+  HB_ٽيگ('n','t','o',' '),	/* Ntomba != Esperanto */
+  HB_ٽيگ('o','r','o',' '),	/* Orokolo != Oromo */
+  HB_ٽيگ('p','a','a',' '),	/* Papuan [collection] != Palestinian Aramaic */
+  HB_ٽيگ('p','a','l',' '),	/* Pahlavi != Pali */
+  HB_ٽيگ('p','a','s',' '),	/* Papasena != Pashto */
+  HB_ٽيگ('p','i','l',' '),	/* Yom != Filipino */
+  HB_ٽيگ('p','l','k',' '),	/* Kohistani Shina != Polish */
+  HB_ٽيگ('r','m','s',' '),	/* Romanian Sign Language != Romansh */
+  HB_ٽيگ('s','a','d',' '),	/* Sandawe != Sadri */
+  HB_ٽيگ('s','a','y',' '),	/* Saya != Sayisi */
+  HB_ٽيگ('s','g','o',' '),	/* Songa (retired code) != Sango */
+  HB_ٽيگ('s','i','b',' '),	/* Sebop != Sibe */
+  HB_ٽيگ('s','i','g',' '),	/* Paasaal != Silte Gurage */
+  HB_ٽيگ('s','k','s',' '),	/* Maia != Skolt Sami */
+  HB_ٽيگ('s','k','y',' '),	/* Sikaiana != Slovak */
+  HB_ٽيگ('s','l','a',' '),	/* Slavic [collection] != Slavey */
+  HB_ٽيگ('s','m','l',' '),	/* Central Sama != Somali */
+  HB_ٽيگ('s','n','h',' '),	/* Shinabo (retired code) != Sinhala (Sinhalese) */
+  HB_ٽيگ('s','o','g',' '),	/* Sogdian != Sodo Gurage */
+  HB_ٽيگ('s','r','b',' '),	/* Sora != Serbian */
+  HB_ٽيگ('s','r','k',' '),	/* Serudung Murut != Saraiki */
+  HB_ٽيگ('s','s','l',' '),	/* Western Sisaala != South Slavey */
+  HB_ٽيگ('s','s','m',' '),	/* Semnam != Southern Sami */
+  HB_ٽيگ('s','u','r',' '),	/* Mwaghavul != Suri */
+  HB_ٽيگ('s','v','e',' '),	/* Serili != Swedish */
+  HB_ٽيگ('s','w','k',' '),	/* Malawi Sena != Swahili */
+  HB_ٽيگ('t','a','j',' '),	/* Eastern Tamang != Tajiki */
+  HB_ٽيگ('t','g','n',' '),	/* Tandaganon != Tongan */
+  HB_ٽيگ('t','g','r',' '),	/* Tareng != Tigre */
+  HB_ٽيگ('t','g','y',' '),	/* Togoyo != Tigrinya */
+  HB_ٽيگ('t','k','m',' '),	/* Takelma != Turkmen */
+  HB_ٽيگ('t','m','n',' '),	/* Taman (Indonesia) != Temne */
+  HB_ٽيگ('t','n','a',' '),	/* Tacana != Tswana */
+  HB_ٽيگ('t','n','e',' '),	/* Tinoc Kallahan (retired code) != Tundra Enets */
+  HB_ٽيگ('t','n','g',' '),	/* Tobanga != Tonga */
+  HB_ٽيگ('t','r','k',' '),	/* Turkic [collection] != Turkish */
+  HB_ٽيگ('t','s','g',' '),	/* Tausug != Tsonga */
+  HB_ٽيگ('t','u','a',' '),	/* Wiarumus != Turoyo Aramaic */
+  HB_ٽيگ('t','u','l',' '),	/* Tula != Tulu */
+  HB_ٽيگ('t','u','v',' '),	/* Turkana != Tuvin */
+  HB_ٽيگ('v','i','t',' '),	/* Viti != Vietnamese */
+  HB_ٽيگ('w','a','g',' '),	/* Wa'ema != Wagdi */
+  HB_ٽيگ('x','b','d',' '),	/* Bindal != Lü */
+  HB_ٽيگ('y','a','k',' '),	/* Yakama != Sakha */
+  HB_ٽيگ('y','b','a',' '),	/* Yala != Yoruba */
+  HB_ٽيگ('y','i','m',' '),	/* Yimchungru Naga != Yi Modern */
+  HB_ٽيگ('z','n','d',' '),	/* Zande [collection] != Zande */
 };
 
-static const LangTag ot_languages3[] = {
-  {HB_TAG('a','a','e',' '),	HB_TAG('S','Q','I',' ')},	/* Arbëreshë Albanian -> Albanian */
-  {HB_TAG('a','a','o',' '),	HB_TAG('A','R','A',' ')},	/* Algerian Saharan Arabic -> Arabic */
-  {HB_TAG('a','a','t',' '),	HB_TAG('S','Q','I',' ')},	/* Arvanitika Albanian -> Albanian */
-  {HB_TAG('a','b','h',' '),	HB_TAG('A','R','A',' ')},	/* Tajiki Arabic -> Arabic */
-  {HB_TAG('a','b','q',' '),	HB_TAG('A','B','A',' ')},	/* Abaza */
-  {HB_TAG('a','b','s',' '),	HB_TAG('C','P','P',' ')},	/* Ambonese Malay -> Creoles */
-  {HB_TAG('a','b','v',' '),	HB_TAG('A','R','A',' ')},	/* Baharna Arabic -> Arabic */
-  {HB_TAG('a','c','m',' '),	HB_TAG('A','R','A',' ')},	/* Mesopotamian Arabic -> Arabic */
-  {HB_TAG('a','c','q',' '),	HB_TAG('A','R','A',' ')},	/* Ta'izzi-Adeni Arabic -> Arabic */
-  {HB_TAG('a','c','w',' '),	HB_TAG('A','R','A',' ')},	/* Hijazi Arabic -> Arabic */
-  {HB_TAG('a','c','x',' '),	HB_TAG('A','R','A',' ')},	/* Omani Arabic -> Arabic */
-  {HB_TAG('a','d','a',' '),	HB_TAG('D','N','G',' ')},	/* Adangme -> Dangme */
-  {HB_TAG('a','d','f',' '),	HB_TAG('A','R','A',' ')},	/* Dhofari Arabic -> Arabic */
-  {HB_TAG('a','d','p',' '),	HB_TAG('D','Z','N',' ')},	/* Adap (retired code) -> Dzongkha */
-  {HB_TAG('a','e','b',' '),	HB_TAG('A','R','A',' ')},	/* Tunisian Arabic -> Arabic */
-  {HB_TAG('a','e','c',' '),	HB_TAG('A','R','A',' ')},	/* Saidi Arabic -> Arabic */
-  {HB_TAG('a','f','b',' '),	HB_TAG('A','R','A',' ')},	/* Gulf Arabic -> Arabic */
-  {HB_TAG('a','f','s',' '),	HB_TAG('C','P','P',' ')},	/* Afro-Seminole Creole -> Creoles */
-  {HB_TAG('a','g','u',' '),	HB_TAG('M','Y','N',' ')},	/* Aguacateco -> Mayan */
-  {HB_TAG('a','h','g',' '),	HB_TAG('A','G','W',' ')},	/* Qimant -> Agaw */
-  {HB_TAG('a','h','t',' '),	HB_TAG('A','T','H',' ')},	/* Ahtena -> Athapaskan */
-  {HB_TAG('a','i','g',' '),	HB_TAG('C','P','P',' ')},	/* Antigua and Barbuda Creole English -> Creoles */
-  {HB_TAG('a','i','w',' '),	HB_TAG('A','R','I',' ')},	/* Aari */
-  {HB_TAG('a','j','p',' '),	HB_TAG('A','R','A',' ')},	/* South Levantine Arabic (retired code) -> Arabic */
-  {HB_TAG('a','j','t',' '),	HB_TAG('A','R','A',' ')},	/* Judeo-Tunisian Arabic (retired code) -> Arabic */
-  {HB_TAG('a','l','n',' '),	HB_TAG('S','Q','I',' ')},	/* Gheg Albanian -> Albanian */
-  {HB_TAG('a','l','s',' '),	HB_TAG('S','Q','I',' ')},	/* Tosk Albanian -> Albanian */
-  {HB_TAG('a','m','f',' '),	HB_TAG('H','B','N',' ')},	/* Hamer-Banna -> Hammer-Banna */
-  {HB_TAG('a','m','w',' '),	HB_TAG('S','Y','R',' ')},	/* Western Neo-Aramaic -> Syriac */
-  {HB_TAG('a','o','a',' '),	HB_TAG('C','P','P',' ')},	/* Angolar -> Creoles */
-  {HB_TAG('a','p','a',' '),	HB_TAG('A','T','H',' ')},	/* Apache [collection] -> Athapaskan */
-  {HB_TAG('a','p','c',' '),	HB_TAG('A','R','A',' ')},	/* Levantine Arabic -> Arabic */
-  {HB_TAG('a','p','d',' '),	HB_TAG('A','R','A',' ')},	/* Sudanese Arabic -> Arabic */
-  {HB_TAG('a','p','j',' '),	HB_TAG('A','T','H',' ')},	/* Jicarilla Apache -> Athapaskan */
-  {HB_TAG('a','p','k',' '),	HB_TAG('A','T','H',' ')},	/* Kiowa Apache -> Athapaskan */
-  {HB_TAG('a','p','l',' '),	HB_TAG('A','T','H',' ')},	/* Lipan Apache -> Athapaskan */
-  {HB_TAG('a','p','m',' '),	HB_TAG('A','T','H',' ')},	/* Mescalero-Chiricahua Apache -> Athapaskan */
-  {HB_TAG('a','p','w',' '),	HB_TAG('A','T','H',' ')},	/* Western Apache -> Athapaskan */
-  {HB_TAG('a','r','b',' '),	HB_TAG('A','R','A',' ')},	/* Standard Arabic -> Arabic */
-  {HB_TAG('a','r','n',' '),	HB_TAG('M','A','P',' ')},	/* Mapudungun */
-  {HB_TAG('a','r','q',' '),	HB_TAG('A','R','A',' ')},	/* Algerian Arabic -> Arabic */
-  {HB_TAG('a','r','s',' '),	HB_TAG('A','R','A',' ')},	/* Najdi Arabic -> Arabic */
-  {HB_TAG('a','r','z',' '),	HB_TAG('A','R','A',' ')},	/* Egyptian Arabic -> Arabic */
-  {HB_TAG('a','t','j',' '),	HB_TAG('R','C','R',' ')},	/* Atikamekw -> R-Cree */
-  {HB_TAG('a','t','v',' '),	HB_TAG('A','L','T',' ')},	/* Northern Altai -> Altai */
-  {HB_TAG('a','u','j',' '),	HB_TAG('B','B','R',' ')},	/* Awjilah -> Berber */
-  {HB_TAG('a','u','z',' '),	HB_TAG('A','R','A',' ')},	/* Uzbeki Arabic -> Arabic */
-  {HB_TAG('a','v','l',' '),	HB_TAG('A','R','A',' ')},	/* Eastern Egyptian Bedawi Arabic -> Arabic */
-  {HB_TAG('a','y','c',' '),	HB_TAG('A','Y','M',' ')},	/* Southern Aymara -> Aymara */
-  {HB_TAG('a','y','h',' '),	HB_TAG('A','R','A',' ')},	/* Hadrami Arabic -> Arabic */
-  {HB_TAG('a','y','l',' '),	HB_TAG('A','R','A',' ')},	/* Libyan Arabic -> Arabic */
-  {HB_TAG('a','y','n',' '),	HB_TAG('A','R','A',' ')},	/* Sanaani Arabic -> Arabic */
-  {HB_TAG('a','y','p',' '),	HB_TAG('A','R','A',' ')},	/* North Mesopotamian Arabic -> Arabic */
-  {HB_TAG('a','y','r',' '),	HB_TAG('A','Y','M',' ')},	/* Central Aymara -> Aymara */
-  {HB_TAG('a','z','d',' '),	HB_TAG('N','A','H',' ')},	/* Eastern Durango Nahuatl -> Nahuatl */
-  {HB_TAG('a','z','j',' '),	HB_TAG('A','Z','E',' ')},	/* North Azerbaijani -> Azerbaijani */
-  {HB_TAG('a','z','n',' '),	HB_TAG('N','A','H',' ')},	/* Western Durango Nahuatl -> Nahuatl */
-  {HB_TAG('a','z','z',' '),	HB_TAG('N','A','H',' ')},	/* Highland Puebla Nahuatl -> Nahuatl */
-  {HB_TAG('b','a','d',' '),	HB_TAG('B','A','D','0')},	/* Banda [collection] */
-  {HB_TAG('b','a','h',' '),	HB_TAG('C','P','P',' ')},	/* Bahamas Creole English -> Creoles */
-  {HB_TAG('b','a','i',' '),	HB_TAG('B','M','L',' ')},	/* Bamileke [collection] */
-  {HB_TAG('b','a','l',' '),	HB_TAG('B','L','I',' ')},	/* Baluchi [macrolanguage] */
-  {HB_TAG('b','b','j',' '),	HB_TAG('B','M','L',' ')},	/* Ghomálá' -> Bamileke */
-  {HB_TAG('b','b','p',' '),	HB_TAG('B','A','D','0')},	/* West Central Banda -> Banda */
-  {HB_TAG('b','b','z',' '),	HB_TAG('A','R','A',' ')},	/* Babalia Creole Arabic (retired code) -> Arabic */
-  {HB_TAG('b','c','c',' '),	HB_TAG('B','L','I',' ')},	/* Southern Balochi -> Baluchi */
-  {HB_TAG('b','c','i',' '),	HB_TAG('B','A','U',' ')},	/* Baoulé -> Baulé */
-  {HB_TAG('b','c','l',' '),	HB_TAG('B','I','K',' ')},	/* Central Bikol -> Bikol */
-  {HB_TAG('b','c','q',' '),	HB_TAG('B','C','H',' ')},	/* Bench */
-  {HB_TAG('b','c','r',' '),	HB_TAG('A','T','H',' ')},	/* Babine -> Athapaskan */
-  {HB_TAG('b','e','a',' '),	HB_TAG('A','T','H',' ')},	/* Beaver -> Athapaskan */
-  {HB_TAG('b','e','b',' '),	HB_TAG('B','T','I',' ')},	/* Bebele -> Beti */
-  {HB_TAG('b','e','r',' '),	HB_TAG('B','B','R',' ')},	/* Berber [collection] */
-  {HB_TAG('b','e','w',' '),	HB_TAG('C','P','P',' ')},	/* Betawi -> Creoles */
-  {HB_TAG('b','f','l',' '),	HB_TAG('B','A','D','0')},	/* Banda-Ndélé -> Banda */
-  {HB_TAG('b','f','q',' '),	HB_TAG('B','A','D',' ')},	/* Badaga */
-  {HB_TAG('b','f','t',' '),	HB_TAG('B','L','T',' ')},	/* Balti */
-  {HB_TAG('b','f','u',' '),	HB_TAG('L','A','H',' ')},	/* Gahri -> Lahuli */
-  {HB_TAG('b','f','y',' '),	HB_TAG('B','A','G',' ')},	/* Bagheli -> Baghelkhandi */
-  {HB_TAG('b','g','n',' '),	HB_TAG('B','L','I',' ')},	/* Western Balochi -> Baluchi */
-  {HB_TAG('b','g','p',' '),	HB_TAG('B','L','I',' ')},	/* Eastern Balochi -> Baluchi */
-  {HB_TAG('b','g','r',' '),	HB_TAG('Q','I','N',' ')},	/* Bawm Chin -> Chin */
-  {HB_TAG('b','h','b',' '),	HB_TAG('B','H','I',' ')},	/* Bhili */
-  {HB_TAG('b','h','k',' '),	HB_TAG('B','I','K',' ')},	/* Albay Bicolano (retired code) -> Bikol */
-  {HB_TAG('b','h','r',' '),	HB_TAG('M','L','G',' ')},	/* Bara Malagasy -> Malagasy */
-  {HB_TAG('b','i','n',' '),	HB_TAG('E','D','O',' ')},	/* Edo */
-  {HB_TAG('b','i','u',' '),	HB_TAG('Q','I','N',' ')},	/* Biete -> Chin */
-  {HB_TAG('b','j','n',' '),	HB_TAG('M','L','Y',' ')},	/* Banjar -> Malay */
-  {HB_TAG('b','j','o',' '),	HB_TAG('B','A','D','0')},	/* Mid-Southern Banda -> Banda */
-  {HB_TAG('b','j','q',' '),	HB_TAG('M','L','G',' ')},	/* Southern Betsimisaraka Malagasy (retired code) -> Malagasy */
-  {HB_TAG('b','j','s',' '),	HB_TAG('C','P','P',' ')},	/* Bajan -> Creoles */
-  {HB_TAG('b','j','t',' '),	HB_TAG('B','L','N',' ')},	/* Balanta-Ganja -> Balante */
-  {HB_TAG('b','k','o',' '),	HB_TAG('B','M','L',' ')},	/* Kwa' -> Bamileke */
-  {HB_TAG('b','l','a',' '),	HB_TAG('B','K','F',' ')},	/* Siksika -> Blackfoot */
-  {HB_TAG('b','l','e',' '),	HB_TAG('B','L','N',' ')},	/* Balanta-Kentohe -> Balante */
-  {HB_TAG('b','l','g',' '),	HB_TAG('I','B','A',' ')},	/* Balau (retired code) -> Iban */
-  {HB_TAG('b','l','n',' '),	HB_TAG('B','I','K',' ')},	/* Southern Catanduanes Bikol -> Bikol */
-  {HB_TAG('b','m','m',' '),	HB_TAG('M','L','G',' ')},	/* Northern Betsimisaraka Malagasy -> Malagasy */
-  {HB_TAG('b','p','d',' '),	HB_TAG('B','A','D','0')},	/* Banda-Banda -> Banda */
-  {HB_TAG('b','p','l',' '),	HB_TAG('C','P','P',' ')},	/* Broome Pearling Lugger Pidgin -> Creoles */
-  {HB_TAG('b','p','q',' '),	HB_TAG('C','P','P',' ')},	/* Banda Malay -> Creoles */
-  {HB_TAG('b','q','i',' '),	HB_TAG('L','R','C',' ')},	/* Bakhtiari -> Luri */
-  {HB_TAG('b','q','k',' '),	HB_TAG('B','A','D','0')},	/* Banda-Mbrès -> Banda */
-  {HB_TAG('b','r','a',' '),	HB_TAG('B','R','I',' ')},	/* Braj -> Braj Bhasha */
-  {HB_TAG('b','r','c',' '),	HB_TAG('C','P','P',' ')},	/* Berbice Creole Dutch -> Creoles */
-  {HB_TAG('b','t','b',' '),	HB_TAG('B','T','I',' ')},	/* Beti (Cameroon) (retired code) */
-  {HB_TAG('b','t','j',' '),	HB_TAG('M','L','Y',' ')},	/* Bacanese Malay -> Malay */
-  {HB_TAG('b','t','o',' '),	HB_TAG('B','I','K',' ')},	/* Rinconada Bikol -> Bikol */
-  {HB_TAG('b','u','m',' '),	HB_TAG('B','T','I',' ')},	/* Bulu (Cameroon) -> Beti */
-  {HB_TAG('b','v','e',' '),	HB_TAG('M','L','Y',' ')},	/* Berau Malay -> Malay */
-  {HB_TAG('b','v','u',' '),	HB_TAG('M','L','Y',' ')},	/* Bukit Malay -> Malay */
-  {HB_TAG('b','w','e',' '),	HB_TAG('K','R','N',' ')},	/* Bwe Karen -> Karen */
-  {HB_TAG('b','x','k',' '),	HB_TAG('L','U','H',' ')},	/* Bukusu -> Luyia */
-  {HB_TAG('b','x','o',' '),	HB_TAG('C','P','P',' ')},	/* Barikanchi -> Creoles */
-  {HB_TAG('b','x','p',' '),	HB_TAG('B','T','I',' ')},	/* Bebil -> Beti */
-  {HB_TAG('b','x','r',' '),	HB_TAG('R','B','U',' ')},	/* Russia Buriat -> Russian Buriat */
-  {HB_TAG('b','y','n',' '),	HB_TAG('B','I','L',' ')},	/* Bilin -> Bilen */
-  {HB_TAG('b','z','c',' '),	HB_TAG('M','L','G',' ')},	/* Southern Betsimisaraka Malagasy -> Malagasy */
-  {HB_TAG('b','z','j',' '),	HB_TAG('C','P','P',' ')},	/* Belize Kriol English -> Creoles */
-  {HB_TAG('b','z','k',' '),	HB_TAG('C','P','P',' ')},	/* Nicaragua Creole English -> Creoles */
-  {HB_TAG('c','a','a',' '),	HB_TAG('M','Y','N',' ')},	/* Chortí -> Mayan */
-  {HB_TAG('c','a','c',' '),	HB_TAG('M','Y','N',' ')},	/* Chuj -> Mayan */
-  {HB_TAG('c','b','l',' '),	HB_TAG('Q','I','N',' ')},	/* Bualkhaw Chin -> Chin */
-  {HB_TAG('c','c','l',' '),	HB_TAG('C','P','P',' ')},	/* Cutchi-Swahili -> Creoles */
-  {HB_TAG('c','c','m',' '),	HB_TAG('C','P','P',' ')},	/* Malaccan Creole Malay -> Creoles */
-  {HB_TAG('c','c','o',' '),	HB_TAG('C','C','H','N')},	/* Comaltepec Chinantec -> Chinantec */
-  {HB_TAG('c','c','q',' '),	HB_TAG('A','R','K',' ')},	/* Chaungtha (retired code) -> Rakhine */
-  {HB_TAG('c','d','o',' '),	HB_TAG('Z','H','S',' ')},	/* Min Dong Chinese -> Chinese, Simplified */
-  {HB_TAG('c','e','k',' '),	HB_TAG('Q','I','N',' ')},	/* Eastern Khumi Chin -> Chin */
-  {HB_TAG('c','e','y',' '),	HB_TAG('Q','I','N',' ')},	/* Laoktu Chin -> Chin */
-  {HB_TAG('c','h','f',' '),	HB_TAG('M','Y','N',' ')},	/* Tabasco Chontal -> Mayan */
-  {HB_TAG('c','h','j',' '),	HB_TAG('C','C','H','N')},	/* Ojitlán Chinantec -> Chinantec */
-  {HB_TAG('c','h','k',' '),	HB_TAG('C','H','K','0')},	/* Chuukese */
-  {HB_TAG('c','h','n',' '),	HB_TAG('C','P','P',' ')},	/* Chinook jargon -> Creoles */
-  {HB_TAG('c','h','q',' '),	HB_TAG('C','C','H','N')},	/* Quiotepec Chinantec -> Chinantec */
-  {HB_TAG('c','h','z',' '),	HB_TAG('C','C','H','N')},	/* Ozumacín Chinantec -> Chinantec */
-  {HB_TAG('c','i','w',' '),	HB_TAG('O','J','B',' ')},	/* Chippewa -> Ojibway */
-  {HB_TAG('c','j','y',' '),	HB_TAG('Z','H','S',' ')},	/* Jinyu Chinese -> Chinese, Simplified */
-  {HB_TAG('c','k','a',' '),	HB_TAG('Q','I','N',' ')},	/* Khumi Awa Chin (retired code) -> Chin */
-  {HB_TAG('c','k','b',' '),	HB_TAG('K','U','R',' ')},	/* Central Kurdish -> Kurdish */
-  {HB_TAG('c','k','n',' '),	HB_TAG('Q','I','N',' ')},	/* Kaang Chin -> Chin */
-  {HB_TAG('c','k','s',' '),	HB_TAG('C','P','P',' ')},	/* Tayo -> Creoles */
-  {HB_TAG('c','k','t',' '),	HB_TAG('C','H','K',' ')},	/* Chukot -> Chukchi */
-  {HB_TAG('c','k','z',' '),	HB_TAG('M','Y','N',' ')},	/* Cakchiquel-Quiché Mixed Language -> Mayan */
-  {HB_TAG('c','l','c',' '),	HB_TAG('A','T','H',' ')},	/* Chilcotin -> Athapaskan */
-  {HB_TAG('c','l','d',' '),	HB_TAG('S','Y','R',' ')},	/* Chaldean Neo-Aramaic -> Syriac */
-  {HB_TAG('c','l','e',' '),	HB_TAG('C','C','H','N')},	/* Lealao Chinantec -> Chinantec */
-  {HB_TAG('c','l','j',' '),	HB_TAG('Q','I','N',' ')},	/* Laitu Chin -> Chin */
-  {HB_TAG('c','l','s',' '),	HB_TAG('S','A','N',' ')},	/* Classical Sanskrit -> Sanskrit */
-  {HB_TAG('c','l','t',' '),	HB_TAG('Q','I','N',' ')},	/* Lautu Chin -> Chin */
-  {HB_TAG('c','m','n',' '),	HB_TAG('Z','H','S',' ')},	/* Mandarin Chinese -> Chinese, Simplified */
-  {HB_TAG('c','m','r',' '),	HB_TAG('Q','I','N',' ')},	/* Mro-Khimi Chin -> Chin */
-  {HB_TAG('c','n','b',' '),	HB_TAG('Q','I','N',' ')},	/* Chinbon Chin -> Chin */
-  {HB_TAG('c','n','h',' '),	HB_TAG('Q','I','N',' ')},	/* Hakha Chin -> Chin */
-  {HB_TAG('c','n','k',' '),	HB_TAG('Q','I','N',' ')},	/* Khumi Chin -> Chin */
-  {HB_TAG('c','n','l',' '),	HB_TAG('C','C','H','N')},	/* Lalana Chinantec -> Chinantec */
-  {HB_TAG('c','n','p',' '),	HB_TAG('Z','H','S',' ')},	/* Northern Ping Chinese -> Chinese, Simplified */
-  {HB_TAG('c','n','r',' '),	HB_TAG('S','R','B',' ')},	/* Montenegrin -> Serbian */
-  {HB_TAG('c','n','t',' '),	HB_TAG('C','C','H','N')},	/* Tepetotutla Chinantec -> Chinantec */
-  {HB_TAG('c','n','u',' '),	HB_TAG('B','B','R',' ')},	/* Chenoua -> Berber */
-  {HB_TAG('c','n','w',' '),	HB_TAG('Q','I','N',' ')},	/* Ngawn Chin -> Chin */
-  {HB_TAG('c','o','a',' '),	HB_TAG('M','L','Y',' ')},	/* Cocos Islands Malay -> Malay */
-  {HB_TAG('c','o','b',' '),	HB_TAG('M','Y','N',' ')},	/* Chicomuceltec -> Mayan */
-  {HB_TAG('c','o','q',' '),	HB_TAG('A','T','H',' ')},	/* Coquille -> Athapaskan */
-  {HB_TAG('c','p','a',' '),	HB_TAG('C','C','H','N')},	/* Palantla Chinantec -> Chinantec */
-  {HB_TAG('c','p','e',' '),	HB_TAG('C','P','P',' ')},	/* English-based creoles and pidgins [collection] -> Creoles */
-  {HB_TAG('c','p','f',' '),	HB_TAG('C','P','P',' ')},	/* French-based creoles and pidgins [collection] -> Creoles */
-  {HB_TAG('c','p','i',' '),	HB_TAG('C','P','P',' ')},	/* Chinese Pidgin English -> Creoles */
-  {HB_TAG('c','p','x',' '),	HB_TAG('Z','H','S',' ')},	/* Pu-Xian Chinese -> Chinese, Simplified */
-  {HB_TAG('c','q','d',' '),	HB_TAG('H','M','N',' ')},	/* Chuanqiandian Cluster Miao -> Hmong */
-  {HB_TAG('c','r','h',' '),	HB_TAG('C','R','T',' ')},	/* Crimean Tatar */
-  {HB_TAG('c','r','i',' '),	HB_TAG('C','P','P',' ')},	/* Sãotomense -> Creoles */
-  {HB_TAG('c','r','p',' '),	HB_TAG('C','P','P',' ')},	/* Creoles and pidgins [collection] -> Creoles */
-  {HB_TAG('c','r','s',' '),	HB_TAG('C','P','P',' ')},	/* Seselwa Creole French -> Creoles */
-  {HB_TAG('c','s','a',' '),	HB_TAG('C','C','H','N')},	/* Chiltepec Chinantec -> Chinantec */
-  {HB_TAG('c','s','h',' '),	HB_TAG('Q','I','N',' ')},	/* Asho Chin -> Chin */
-  {HB_TAG('c','s','j',' '),	HB_TAG('Q','I','N',' ')},	/* Songlai Chin -> Chin */
-  {HB_TAG('c','s','o',' '),	HB_TAG('C','C','H','N')},	/* Sochiapam Chinantec -> Chinantec */
-  {HB_TAG('c','s','p',' '),	HB_TAG('Z','H','S',' ')},	/* Southern Ping Chinese -> Chinese, Simplified */
-  {HB_TAG('c','s','v',' '),	HB_TAG('Q','I','N',' ')},	/* Sumtu Chin -> Chin */
-  {HB_TAG('c','s','y',' '),	HB_TAG('Q','I','N',' ')},	/* Siyin Chin -> Chin */
-  {HB_TAG('c','t','c',' '),	HB_TAG('A','T','H',' ')},	/* Chetco -> Athapaskan */
-  {HB_TAG('c','t','d',' '),	HB_TAG('Q','I','N',' ')},	/* Tedim Chin -> Chin */
-  {HB_TAG('c','t','e',' '),	HB_TAG('C','C','H','N')},	/* Tepinapa Chinantec -> Chinantec */
-  {HB_TAG('c','t','h',' '),	HB_TAG('Q','I','N',' ')},	/* Thaiphum Chin -> Chin */
-  {HB_TAG('c','t','l',' '),	HB_TAG('C','C','H','N')},	/* Tlacoatzintepec Chinantec -> Chinantec */
-  {HB_TAG('c','t','s',' '),	HB_TAG('B','I','K',' ')},	/* Northern Catanduanes Bikol -> Bikol */
-  {HB_TAG('c','t','u',' '),	HB_TAG('M','Y','N',' ')},	/* Chol -> Mayan */
-  {HB_TAG('c','u','c',' '),	HB_TAG('C','C','H','N')},	/* Usila Chinantec -> Chinantec */
-  {HB_TAG('c','v','n',' '),	HB_TAG('C','C','H','N')},	/* Valle Nacional Chinantec -> Chinantec */
-  {HB_TAG('c','z','h',' '),	HB_TAG('Z','H','S',' ')},	/* Huizhou Chinese -> Chinese, Simplified */
-  {HB_TAG('c','z','o',' '),	HB_TAG('Z','H','S',' ')},	/* Min Zhong Chinese -> Chinese, Simplified */
-  {HB_TAG('c','z','t',' '),	HB_TAG('Q','I','N',' ')},	/* Zotung Chin -> Chin */
-  {HB_TAG('d','a','o',' '),	HB_TAG('Q','I','N',' ')},	/* Daai Chin -> Chin */
-  {HB_TAG('d','a','p',' '),	HB_TAG('N','I','S',' ')},	/* Nisi (India) (retired code) */
-  {HB_TAG('d','c','r',' '),	HB_TAG('C','P','P',' ')},	/* Negerhollands -> Creoles */
-  {HB_TAG('d','e','p',' '),	HB_TAG('C','P','P',' ')},	/* Pidgin Delaware -> Creoles */
-  {HB_TAG('d','g','r',' '),	HB_TAG('A','T','H',' ')},	/* Tlicho -> Athapaskan */
-  {HB_TAG('d','h','d',' '),	HB_TAG('M','A','W',' ')},	/* Dhundari -> Marwari */
-  {HB_TAG('d','i','b',' '),	HB_TAG('D','N','K',' ')},	/* South Central Dinka -> Dinka */
-  {HB_TAG('d','i','k',' '),	HB_TAG('D','N','K',' ')},	/* Southwestern Dinka -> Dinka */
-  {HB_TAG('d','i','n',' '),	HB_TAG('D','N','K',' ')},	/* Dinka [macrolanguage] */
-  {HB_TAG('d','i','p',' '),	HB_TAG('D','N','K',' ')},	/* Northeastern Dinka -> Dinka */
-  {HB_TAG('d','i','w',' '),	HB_TAG('D','N','K',' ')},	/* Northwestern Dinka -> Dinka */
-  {HB_TAG('d','j','e',' '),	HB_TAG('D','J','R',' ')},	/* Zarma */
-  {HB_TAG('d','j','k',' '),	HB_TAG('C','P','P',' ')},	/* Eastern Maroon Creole -> Creoles */
-  {HB_TAG('d','j','r',' '),	HB_TAG('D','J','R','0')},	/* Djambarrpuyngu */
-  {HB_TAG('d','k','s',' '),	HB_TAG('D','N','K',' ')},	/* Southeastern Dinka -> Dinka */
-  {HB_TAG('d','n','g',' '),	HB_TAG('D','U','N',' ')},	/* Dungan */
-  {HB_TAG('d','o','i',' '),	HB_TAG('D','G','R',' ')},	/* Dogri (macrolanguage) [macrolanguage] */
-  {HB_TAG('d','r','h',' '),	HB_TAG('M','N','G',' ')},	/* Darkhat (retired code) -> Mongolian */
-  {HB_TAG('d','s','b',' '),	HB_TAG('L','S','B',' ')},	/* Lower Sorbian */
-  {HB_TAG('d','t','y',' '),	HB_TAG('N','E','P',' ')},	/* Dotyali -> Nepali */
-  {HB_TAG('d','u','p',' '),	HB_TAG('M','L','Y',' ')},	/* Duano -> Malay */
-  {HB_TAG('d','w','k',' '),	HB_TAG('K','U','I',' ')},	/* Dawik Kui -> Kui */
-  {HB_TAG('d','w','u',' '),	HB_TAG('D','U','J',' ')},	/* Dhuwal */
-  {HB_TAG('d','w','y',' '),	HB_TAG('D','U','J',' ')},	/* Dhuwaya -> Dhuwal */
-  {HB_TAG('d','y','u',' '),	HB_TAG('J','U','L',' ')},	/* Dyula -> Jula */
-  {HB_TAG('e','k','k',' '),	HB_TAG('E','T','I',' ')},	/* Standard Estonian -> Estonian */
-  {HB_TAG('e','k','y',' '),	HB_TAG('K','R','N',' ')},	/* Eastern Kayah -> Karen */
-  {HB_TAG('e','m','y',' '),	HB_TAG('M','Y','N',' ')},	/* Epigraphic Mayan -> Mayan */
-  {HB_TAG('e','n','b',' '),	HB_TAG('K','A','L',' ')},	/* Markweeta -> Kalenjin */
-  {HB_TAG('e','n','f',' '),	HB_TAG('F','N','E',' ')},	/* Forest Enets */
-  {HB_TAG('e','n','h',' '),	HB_TAG('T','N','E',' ')},	/* Tundra Enets */
-  {HB_TAG('e','s','g',' '),	HB_TAG('G','O','N',' ')},	/* Aheri Gondi -> Gondi */
-  {HB_TAG('e','s','i',' '),	HB_TAG('I','P','K',' ')},	/* North Alaskan Inupiatun -> Inupiat */
-  {HB_TAG('e','s','k',' '),	HB_TAG('I','P','K',' ')},	/* Northwest Alaska Inupiatun -> Inupiat */
-  {HB_TAG('e','t','o',' '),	HB_TAG('B','T','I',' ')},	/* Eton (Cameroon) -> Beti */
-  {HB_TAG('e','v','e',' '),	HB_TAG('E','V','N',' ')},	/* Even */
-  {HB_TAG('e','v','n',' '),	HB_TAG('E','V','K',' ')},	/* Evenki */
-  {HB_TAG('e','w','o',' '),	HB_TAG('B','T','I',' ')},	/* Ewondo -> Beti */
-  {HB_TAG('e','y','o',' '),	HB_TAG('K','A','L',' ')},	/* Keiyo -> Kalenjin */
-  {HB_TAG('f','a','b',' '),	HB_TAG('C','P','P',' ')},	/* Fa d'Ambu -> Creoles */
-  {HB_TAG('f','b','l',' '),	HB_TAG('B','I','K',' ')},	/* West Albay Bikol -> Bikol */
-  {HB_TAG('f','f','m',' '),	HB_TAG('F','U','L',' ')},	/* Maasina Fulfulde -> Fulah */
-  {HB_TAG('f','i','l',' '),	HB_TAG('P','I','L',' ')},	/* Filipino */
-  {HB_TAG('f','n','g',' '),	HB_TAG('C','P','P',' ')},	/* Fanagalo -> Creoles */
-  {HB_TAG('f','p','e',' '),	HB_TAG('C','P','P',' ')},	/* Fernando Po Creole English -> Creoles */
-  {HB_TAG('f','u','b',' '),	HB_TAG('F','U','L',' ')},	/* Adamawa Fulfulde -> Fulah */
-  {HB_TAG('f','u','c',' '),	HB_TAG('F','U','L',' ')},	/* Pulaar -> Fulah */
-  {HB_TAG('f','u','e',' '),	HB_TAG('F','U','L',' ')},	/* Borgu Fulfulde -> Fulah */
-  {HB_TAG('f','u','h',' '),	HB_TAG('F','U','L',' ')},	/* Western Niger Fulfulde -> Fulah */
-  {HB_TAG('f','u','i',' '),	HB_TAG('F','U','L',' ')},	/* Bagirmi Fulfulde -> Fulah */
-  {HB_TAG('f','u','q',' '),	HB_TAG('F','U','L',' ')},	/* Central-Eastern Niger Fulfulde -> Fulah */
-  {HB_TAG('f','u','r',' '),	HB_TAG('F','R','L',' ')},	/* Friulian */
-  {HB_TAG('g','a','a',' '),	HB_TAG('G','A','D',' ')},	/* Ga */
-  {HB_TAG('g','a','c',' '),	HB_TAG('C','P','P',' ')},	/* Mixed Great Andamanese -> Creoles */
-  {HB_TAG('g','a','n',' '),	HB_TAG('Z','H','S',' ')},	/* Gan Chinese -> Chinese, Simplified */
-  {HB_TAG('g','a','x',' '),	HB_TAG('O','R','O',' ')},	/* Borana-Arsi-Guji Oromo -> Oromo */
-  {HB_TAG('g','a','z',' '),	HB_TAG('O','R','O',' ')},	/* West Central Oromo -> Oromo */
-  {HB_TAG('g','b','m',' '),	HB_TAG('G','A','W',' ')},	/* Garhwali */
-  {HB_TAG('g','c','e',' '),	HB_TAG('A','T','H',' ')},	/* Galice -> Athapaskan */
-  {HB_TAG('g','c','f',' '),	HB_TAG('C','P','P',' ')},	/* Guadeloupean Creole French -> Creoles */
-  {HB_TAG('g','c','l',' '),	HB_TAG('C','P','P',' ')},	/* Grenadian Creole English -> Creoles */
-  {HB_TAG('g','c','r',' '),	HB_TAG('C','P','P',' ')},	/* Guianese Creole French -> Creoles */
-  {HB_TAG('g','d','a',' '),	HB_TAG('R','A','J',' ')},	/* Gade Lohar -> Rajasthani */
-  {HB_TAG('g','g','o',' '),	HB_TAG('G','O','N',' ')},	/* Southern Gondi (retired code) -> Gondi */
-  {HB_TAG('g','h','a',' '),	HB_TAG('B','B','R',' ')},	/* Ghadamès -> Berber */
-  {HB_TAG('g','h','c',' '),	HB_TAG('I','R','T',' ')},	/* Hiberno-Scottish Gaelic -> Irish Traditional */
-  {HB_TAG('g','h','k',' '),	HB_TAG('K','R','N',' ')},	/* Geko Karen -> Karen */
-  {HB_TAG('g','h','o',' '),	HB_TAG('B','B','R',' ')},	/* Ghomara -> Berber */
-  {HB_TAG('g','i','b',' '),	HB_TAG('C','P','P',' ')},	/* Gibanawa -> Creoles */
-  {HB_TAG('g','i','l',' '),	HB_TAG('G','I','L','0')},	/* Kiribati (Gilbertese) */
-  {HB_TAG('g','j','u',' '),	HB_TAG('R','A','J',' ')},	/* Gujari -> Rajasthani */
-  {HB_TAG('g','l','d',' '),	HB_TAG('N','A','N',' ')},	/* Nanai */
-  {HB_TAG('g','n','b',' '),	HB_TAG('Q','I','N',' ')},	/* Gangte -> Chin */
-  {HB_TAG('g','n','o',' '),	HB_TAG('G','O','N',' ')},	/* Northern Gondi -> Gondi */
-  {HB_TAG('g','n','w',' '),	HB_TAG('G','U','A',' ')},	/* Western Bolivian Guaraní -> Guarani */
-  {HB_TAG('g','o','m',' '),	HB_TAG('K','O','K',' ')},	/* Goan Konkani -> Konkani */
-  {HB_TAG('g','o','q',' '),	HB_TAG('C','P','P',' ')},	/* Gorap -> Creoles */
-  {HB_TAG('g','o','x',' '),	HB_TAG('B','A','D','0')},	/* Gobu -> Banda */
-  {HB_TAG('g','p','e',' '),	HB_TAG('C','P','P',' ')},	/* Ghanaian Pidgin English -> Creoles */
-  {HB_TAG('g','r','r',' '),	HB_TAG('B','B','R',' ')},	/* Taznatit -> Berber */
-  {HB_TAG('g','r','t',' '),	HB_TAG('G','R','O',' ')},	/* Garo */
-  {HB_TAG('g','r','u',' '),	HB_TAG('S','O','G',' ')},	/* Kistane -> Sodo Gurage */
-  {HB_TAG('g','s','w',' '),	HB_TAG('A','L','S',' ')},	/* Alsatian */
-  {HB_TAG('g','u','g',' '),	HB_TAG('G','U','A',' ')},	/* Paraguayan Guaraní -> Guarani */
-  {HB_TAG('g','u','i',' '),	HB_TAG('G','U','A',' ')},	/* Eastern Bolivian Guaraní -> Guarani */
-  {HB_TAG('g','u','k',' '),	HB_TAG('G','M','Z',' ')},	/* Gumuz */
-  {HB_TAG('g','u','l',' '),	HB_TAG('C','P','P',' ')},	/* Sea Island Creole English -> Creoles */
-  {HB_TAG('g','u','n',' '),	HB_TAG('G','U','A',' ')},	/* Mbyá Guaraní -> Guarani */
-  {HB_TAG('g','w','i',' '),	HB_TAG('A','T','H',' ')},	/* Gwichʼin -> Athapaskan */
-  {HB_TAG('g','y','n',' '),	HB_TAG('C','P','P',' ')},	/* Guyanese Creole English -> Creoles */
-  {HB_TAG('h','a','a',' '),	HB_TAG('A','T','H',' ')},	/* Hän -> Athapaskan */
-  {HB_TAG('h','a','e',' '),	HB_TAG('O','R','O',' ')},	/* Eastern Oromo -> Oromo */
-  {HB_TAG('h','a','i',' '),	HB_TAG('H','A','I','0')},	/* Haida [macrolanguage] */
-  {HB_TAG('h','a','k',' '),	HB_TAG('Z','H','S',' ')},	/* Hakka Chinese -> Chinese, Simplified */
-  {HB_TAG('h','a','r',' '),	HB_TAG('H','R','I',' ')},	/* Harari */
-  {HB_TAG('h','a','x',' '),	HB_TAG('H','A','I','0')},	/* Southern Haida -> Haida */
-  {HB_TAG('h','c','a',' '),	HB_TAG('C','P','P',' ')},	/* Andaman Creole Hindi -> Creoles */
-  {HB_TAG('h','d','n',' '),	HB_TAG('H','A','I','0')},	/* Northern Haida -> Haida */
-  {HB_TAG('h','e','a',' '),	HB_TAG('H','M','N',' ')},	/* Northern Qiandong Miao -> Hmong */
-  {HB_TAG('h','j','i',' '),	HB_TAG('M','L','Y',' ')},	/* Haji -> Malay */
-  {HB_TAG('h','l','t',' '),	HB_TAG('Q','I','N',' ')},	/* Matu Chin -> Chin */
-  {HB_TAG('h','m','a',' '),	HB_TAG('H','M','N',' ')},	/* Southern Mashan Hmong -> Hmong */
-  {HB_TAG('h','m','c',' '),	HB_TAG('H','M','N',' ')},	/* Central Huishui Hmong -> Hmong */
-  {HB_TAG('h','m','e',' '),	HB_TAG('H','M','N',' ')},	/* Eastern Huishui Hmong -> Hmong */
-  {HB_TAG('h','m','g',' '),	HB_TAG('H','M','N',' ')},	/* Southwestern Guiyang Hmong -> Hmong */
-  {HB_TAG('h','m','h',' '),	HB_TAG('H','M','N',' ')},	/* Southwestern Huishui Hmong -> Hmong */
-  {HB_TAG('h','m','i',' '),	HB_TAG('H','M','N',' ')},	/* Northern Huishui Hmong -> Hmong */
-  {HB_TAG('h','m','j',' '),	HB_TAG('H','M','N',' ')},	/* Ge -> Hmong */
-  {HB_TAG('h','m','l',' '),	HB_TAG('H','M','N',' ')},	/* Luopohe Hmong -> Hmong */
-  {HB_TAG('h','m','m',' '),	HB_TAG('H','M','N',' ')},	/* Central Mashan Hmong -> Hmong */
-  {HB_TAG('h','m','p',' '),	HB_TAG('H','M','N',' ')},	/* Northern Mashan Hmong -> Hmong */
-  {HB_TAG('h','m','q',' '),	HB_TAG('H','M','N',' ')},	/* Eastern Qiandong Miao -> Hmong */
-  {HB_TAG('h','m','r',' '),	HB_TAG('Q','I','N',' ')},	/* Hmar -> Chin */
-  {HB_TAG('h','m','s',' '),	HB_TAG('H','M','N',' ')},	/* Southern Qiandong Miao -> Hmong */
-  {HB_TAG('h','m','w',' '),	HB_TAG('H','M','N',' ')},	/* Western Mashan Hmong -> Hmong */
-  {HB_TAG('h','m','y',' '),	HB_TAG('H','M','N',' ')},	/* Southern Guiyang Hmong -> Hmong */
-  {HB_TAG('h','n','e',' '),	HB_TAG('C','H','H',' ')},	/* Chhattisgarhi -> Chattisgarhi */
-  {HB_TAG('h','n','j',' '),	HB_TAG('H','M','N',' ')},	/* Hmong Njua -> Hmong */
-  {HB_TAG('h','n','m',' '),	HB_TAG('Z','H','S',' ')},	/* Hainanese -> Chinese, Simplified */
-  {HB_TAG('h','n','o',' '),	HB_TAG('H','N','D',' ')},	/* Northern Hindko -> Hindko */
-  {HB_TAG('h','o','c',' '),	HB_TAG('H','O',' ',' ')},	/* Ho */
-  {HB_TAG('h','o','i',' '),	HB_TAG('A','T','H',' ')},	/* Holikachuk -> Athapaskan */
-  {HB_TAG('h','r','a',' '),	HB_TAG('Q','I','N',' ')},	/* Hrangkhol -> Chin */
-  {HB_TAG('h','r','m',' '),	HB_TAG('H','M','N',' ')},	/* Horned Miao -> Hmong */
-  {HB_TAG('h','s','b',' '),	HB_TAG('U','S','B',' ')},	/* Upper Sorbian */
-  {HB_TAG('h','s','n',' '),	HB_TAG('Z','H','S',' ')},	/* Xiang Chinese -> Chinese, Simplified */
-  {HB_TAG('h','u','j',' '),	HB_TAG('H','M','N',' ')},	/* Northern Guiyang Hmong -> Hmong */
-  {HB_TAG('h','u','p',' '),	HB_TAG('A','T','H',' ')},	/* Hupa -> Athapaskan */
-  {HB_TAG('h','u','s',' '),	HB_TAG('M','Y','N',' ')},	/* Huastec -> Mayan */
-  {HB_TAG('h','w','c',' '),	HB_TAG('C','P','P',' ')},	/* Hawai'i Creole English -> Creoles */
-  {HB_TAG('h','y','w',' '),	HB_TAG('H','Y','E',' ')},	/* Western Armenian -> Armenian */
-  {HB_TAG('i','b','y',' '),	HB_TAG('I','J','O',' ')},	/* Ibani -> Ijo */
-  {HB_TAG('i','c','r',' '),	HB_TAG('C','P','P',' ')},	/* Islander Creole English -> Creoles */
-  {HB_TAG('i','d','a',' '),	HB_TAG('L','U','H',' ')},	/* Idakho-Isukha-Tiriki -> Luyia */
-  {HB_TAG('i','d','b',' '),	HB_TAG('C','P','P',' ')},	/* Indo-Portuguese -> Creoles */
-  {HB_TAG('i','g','b',' '),	HB_TAG('E','B','I',' ')},	/* Ebira */
-  {HB_TAG('i','h','b',' '),	HB_TAG('C','P','P',' ')},	/* Iha Based Pidgin -> Creoles */
-  {HB_TAG('i','j','c',' '),	HB_TAG('I','J','O',' ')},	/* Izon -> Ijo */
-  {HB_TAG('i','j','e',' '),	HB_TAG('I','J','O',' ')},	/* Biseni -> Ijo */
-  {HB_TAG('i','j','n',' '),	HB_TAG('I','J','O',' ')},	/* Kalabari -> Ijo */
-  {HB_TAG('i','j','s',' '),	HB_TAG('I','J','O',' ')},	/* Southeast Ijo -> Ijo */
-  {HB_TAG('i','k','t',' '),	HB_TAG('I','N','U',' ')},	/* Inuinnaqtun -> Inuktitut */
-  {HB_TAG('i','n','g',' '),	HB_TAG('A','T','H',' ')},	/* Degexit'an -> Athapaskan */
-  {HB_TAG('i','n','h',' '),	HB_TAG('I','N','G',' ')},	/* Ingush */
-  {HB_TAG('i','t','z',' '),	HB_TAG('M','Y','N',' ')},	/* Itzá -> Mayan */
-  {HB_TAG('i','x','l',' '),	HB_TAG('M','Y','N',' ')},	/* Ixil -> Mayan */
-  {HB_TAG('j','a','c',' '),	HB_TAG('M','Y','N',' ')},	/* Popti' -> Mayan */
-  {HB_TAG('j','a','k',' '),	HB_TAG('M','L','Y',' ')},	/* Jakun -> Malay */
-  {HB_TAG('j','a','x',' '),	HB_TAG('M','L','Y',' ')},	/* Jambi Malay -> Malay */
-  {HB_TAG('j','b','e',' '),	HB_TAG('B','B','R',' ')},	/* Judeo-Berber -> Berber */
-  {HB_TAG('j','b','n',' '),	HB_TAG('B','B','R',' ')},	/* Nafusi -> Berber */
-  {HB_TAG('j','g','o',' '),	HB_TAG('B','M','L',' ')},	/* Ngomba -> Bamileke */
-  {HB_TAG('j','k','m',' '),	HB_TAG('K','R','N',' ')},	/* Mobwa Karen -> Karen */
-  {HB_TAG('j','k','p',' '),	HB_TAG('K','R','N',' ')},	/* Paku Karen -> Karen */
-  {HB_TAG('j','v','d',' '),	HB_TAG('C','P','P',' ')},	/* Javindo -> Creoles */
-  {HB_TAG('k','a','a',' '),	HB_TAG('K','R','K',' ')},	/* Karakalpak */
-  {HB_TAG('k','a','m',' '),	HB_TAG('K','M','B',' ')},	/* Kamba (Kenya) */
-  {HB_TAG('k','a','r',' '),	HB_TAG('K','R','N',' ')},	/* Karen [collection] */
-  {HB_TAG('k','b','d',' '),	HB_TAG('K','A','B',' ')},	/* Kabardian */
-  {HB_TAG('k','b','y',' '),	HB_TAG('K','N','R',' ')},	/* Manga Kanuri -> Kanuri */
-  {HB_TAG('k','c','n',' '),	HB_TAG('C','P','P',' ')},	/* Nubi -> Creoles */
-  {HB_TAG('k','d','r',' '),	HB_TAG('K','R','M',' ')},	/* Karaim */
-  {HB_TAG('k','d','t',' '),	HB_TAG('K','U','Y',' ')},	/* Kuy */
-  {HB_TAG('k','e','x',' '),	HB_TAG('K','K','N',' ')},	/* Kukna -> Kokni */
-  {HB_TAG('k','f','a',' '),	HB_TAG('K','O','D',' ')},	/* Kodava -> Kodagu */
-  {HB_TAG('k','f','r',' '),	HB_TAG('K','A','C',' ')},	/* Kachhi -> Kachchi */
-  {HB_TAG('k','f','x',' '),	HB_TAG('K','U','L',' ')},	/* Kullu Pahari -> Kulvi */
-  {HB_TAG('k','f','y',' '),	HB_TAG('K','M','N',' ')},	/* Kumaoni */
-  {HB_TAG('k','h','a',' '),	HB_TAG('K','S','I',' ')},	/* Khasi */
-  {HB_TAG('k','h','b',' '),	HB_TAG('X','B','D',' ')},	/* Lü */
-  {HB_TAG('k','h','k',' '),	HB_TAG('M','N','G',' ')},	/* Halh Mongolian -> Mongolian */
-  {HB_TAG('k','j','b',' '),	HB_TAG('M','Y','N',' ')},	/* Q'anjob'al -> Mayan */
-  {HB_TAG('k','j','h',' '),	HB_TAG('K','H','A',' ')},	/* Khakas -> Khakass */
-  {HB_TAG('k','j','t',' '),	HB_TAG('K','R','N',' ')},	/* Phrae Pwo Karen -> Karen */
-  {HB_TAG('k','k','z',' '),	HB_TAG('A','T','H',' ')},	/* Kaska -> Athapaskan */
-  {HB_TAG('k','l','n',' '),	HB_TAG('K','A','L',' ')},	/* Kalenjin [macrolanguage] */
-  {HB_TAG('k','m','b',' '),	HB_TAG('M','B','N',' ')},	/* Kimbundu -> Mbundu */
-  {HB_TAG('k','m','r',' '),	HB_TAG('K','U','R',' ')},	/* Northern Kurdish -> Kurdish */
-  {HB_TAG('k','m','v',' '),	HB_TAG('C','P','P',' ')},	/* Karipúna Creole French -> Creoles */
-  {HB_TAG('k','m','w',' '),	HB_TAG('K','M','O',' ')},	/* Komo (Democratic Republic of Congo) */
-  {HB_TAG('k','n','c',' '),	HB_TAG('K','N','R',' ')},	/* Central Kanuri -> Kanuri */
-  {HB_TAG('k','n','g',' '),	HB_TAG('K','O','N','0')},	/* Koongo -> Kongo */
-  {HB_TAG('k','n','j',' '),	HB_TAG('M','Y','N',' ')},	/* Western Kanjobal -> Mayan */
-  {HB_TAG('k','n','n',' '),	HB_TAG('K','O','K',' ')},	/* Konkani */
-  {HB_TAG('k','o','y',' '),	HB_TAG('A','T','H',' ')},	/* Koyukon -> Athapaskan */
-  {HB_TAG('k','p','e',' '),	HB_TAG('K','P','L',' ')},	/* Kpelle [macrolanguage] */
-  {HB_TAG('k','p','p',' '),	HB_TAG('K','R','N',' ')},	/* Paku Karen (retired code) -> Karen */
-  {HB_TAG('k','p','y',' '),	HB_TAG('K','Y','K',' ')},	/* Koryak */
-  {HB_TAG('k','q','s',' '),	HB_TAG('K','I','S',' ')},	/* Northern Kissi -> Kisii */
-  {HB_TAG('k','q','y',' '),	HB_TAG('K','R','T',' ')},	/* Koorete */
-  {HB_TAG('k','r','t',' '),	HB_TAG('K','N','R',' ')},	/* Tumari Kanuri -> Kanuri */
-  {HB_TAG('k','r','u',' '),	HB_TAG('K','U','U',' ')},	/* Kurukh */
-  {HB_TAG('k','s','h',' '),	HB_TAG('K','S','H','0')},	/* Kölsch -> Ripuarian */
-  {HB_TAG('k','s','s',' '),	HB_TAG('K','I','S',' ')},	/* Southern Kisi -> Kisii */
-  {HB_TAG('k','t','b',' '),	HB_TAG('K','E','B',' ')},	/* Kambaata -> Kebena */
-  {HB_TAG('k','t','u',' '),	HB_TAG('K','O','N',' ')},	/* Kituba (Democratic Republic of Congo) -> Kikongo */
-  {HB_TAG('k','t','w',' '),	HB_TAG('A','T','H',' ')},	/* Kato -> Athapaskan */
-  {HB_TAG('k','u','u',' '),	HB_TAG('A','T','H',' ')},	/* Upper Kuskokwim -> Athapaskan */
-  {HB_TAG('k','u','w',' '),	HB_TAG('B','A','D','0')},	/* Kpagua -> Banda */
-  {HB_TAG('k','v','b',' '),	HB_TAG('M','L','Y',' ')},	/* Kubu -> Malay */
-  {HB_TAG('k','v','l',' '),	HB_TAG('K','R','N',' ')},	/* Kayaw -> Karen */
-  {HB_TAG('k','v','r',' '),	HB_TAG('M','L','Y',' ')},	/* Kerinci -> Malay */
-  {HB_TAG('k','v','t',' '),	HB_TAG('K','R','N',' ')},	/* Lahta Karen -> Karen */
-  {HB_TAG('k','v','u',' '),	HB_TAG('K','R','N',' ')},	/* Yinbaw Karen -> Karen */
-  {HB_TAG('k','v','y',' '),	HB_TAG('K','R','N',' ')},	/* Yintale Karen -> Karen */
-  {HB_TAG('k','w','w',' '),	HB_TAG('C','P','P',' ')},	/* Kwinti -> Creoles */
-  {HB_TAG('k','w','y',' '),	HB_TAG('K','O','N','0')},	/* San Salvador Kongo -> Kongo */
-  {HB_TAG('k','x','c',' '),	HB_TAG('K','M','S',' ')},	/* Konso -> Komso */
-  {HB_TAG('k','x','d',' '),	HB_TAG('M','L','Y',' ')},	/* Brunei -> Malay */
-  {HB_TAG('k','x','f',' '),	HB_TAG('K','R','N',' ')},	/* Manumanaw Karen -> Karen */
-  {HB_TAG('k','x','k',' '),	HB_TAG('K','R','N',' ')},	/* Zayein Karen -> Karen */
-  {HB_TAG('k','x','l',' '),	HB_TAG('K','U','U',' ')},	/* Nepali Kurux (retired code) -> Kurukh */
-  {HB_TAG('k','x','u',' '),	HB_TAG('K','U','I',' ')},	/* Kui (India) (retired code) */
-  {HB_TAG('l','a','c',' '),	HB_TAG('M','Y','N',' ')},	/* Lacandon -> Mayan */
-  {HB_TAG('l','a','d',' '),	HB_TAG('J','U','D',' ')},	/* Ladino */
-  {HB_TAG('l','b','e',' '),	HB_TAG('L','A','K',' ')},	/* Lak */
-  {HB_TAG('l','b','j',' '),	HB_TAG('L','D','K',' ')},	/* Ladakhi */
-  {HB_TAG('l','b','l',' '),	HB_TAG('B','I','K',' ')},	/* Libon Bikol -> Bikol */
-  {HB_TAG('l','c','e',' '),	HB_TAG('M','L','Y',' ')},	/* Loncong -> Malay */
-  {HB_TAG('l','c','f',' '),	HB_TAG('M','L','Y',' ')},	/* Lubu -> Malay */
-  {HB_TAG('l','d','i',' '),	HB_TAG('K','O','N','0')},	/* Laari -> Kongo */
-  {HB_TAG('l','i','f',' '),	HB_TAG('L','M','B',' ')},	/* Limbu */
-  {HB_TAG('l','i','r',' '),	HB_TAG('C','P','P',' ')},	/* Liberian English -> Creoles */
-  {HB_TAG('l','i','w',' '),	HB_TAG('M','L','Y',' ')},	/* Col -> Malay */
-  {HB_TAG('l','i','y',' '),	HB_TAG('B','A','D','0')},	/* Banda-Bambari -> Banda */
-  {HB_TAG('l','k','b',' '),	HB_TAG('L','U','H',' ')},	/* Kabras -> Luyia */
-  {HB_TAG('l','k','o',' '),	HB_TAG('L','U','H',' ')},	/* Khayo -> Luyia */
-  {HB_TAG('l','k','s',' '),	HB_TAG('L','U','H',' ')},	/* Kisa -> Luyia */
-  {HB_TAG('l','l','d',' '),	HB_TAG('L','A','D',' ')},	/* Ladin */
-  {HB_TAG('l','m','n',' '),	HB_TAG('L','A','M',' ')},	/* Lambadi -> Lambani */
-  {HB_TAG('l','n','a',' '),	HB_TAG('B','A','D','0')},	/* Langbashe -> Banda */
-  {HB_TAG('l','n','l',' '),	HB_TAG('B','A','D','0')},	/* South Central Banda -> Banda */
-  {HB_TAG('l','o','u',' '),	HB_TAG('C','P','P',' ')},	/* Louisiana Creole -> Creoles */
-  {HB_TAG('l','r','i',' '),	HB_TAG('L','U','H',' ')},	/* Marachi -> Luyia */
-  {HB_TAG('l','r','m',' '),	HB_TAG('L','U','H',' ')},	/* Marama -> Luyia */
-  {HB_TAG('l','r','t',' '),	HB_TAG('C','P','P',' ')},	/* Larantuka Malay -> Creoles */
-  {HB_TAG('l','s','m',' '),	HB_TAG('L','U','H',' ')},	/* Saamia -> Luyia */
-  {HB_TAG('l','t','g',' '),	HB_TAG('L','V','I',' ')},	/* Latgalian -> Latvian */
-  {HB_TAG('l','t','o',' '),	HB_TAG('L','U','H',' ')},	/* Tsotso -> Luyia */
-  {HB_TAG('l','t','s',' '),	HB_TAG('L','U','H',' ')},	/* Tachoni -> Luyia */
-  {HB_TAG('l','u','h',' '),	HB_TAG('Z','H','S',' ')},	/* Leizhou Chinese -> Chinese, Simplified */
-  {HB_TAG('l','u','y',' '),	HB_TAG('L','U','H',' ')},	/* Luyia [macrolanguage] */
-  {HB_TAG('l','u','z',' '),	HB_TAG('L','R','C',' ')},	/* Southern Luri -> Luri */
-  {HB_TAG('l','v','s',' '),	HB_TAG('L','V','I',' ')},	/* Standard Latvian -> Latvian */
-  {HB_TAG('l','w','g',' '),	HB_TAG('L','U','H',' ')},	/* Wanga -> Luyia */
-  {HB_TAG('l','z','h',' '),	HB_TAG('Z','H','T',' ')},	/* Literary Chinese -> Chinese, Traditional */
-  {HB_TAG('l','z','z',' '),	HB_TAG('L','A','Z',' ')},	/* Laz */
-  {HB_TAG('m','a','i',' '),	HB_TAG('M','T','H',' ')},	/* Maithili */
-  {HB_TAG('m','a','k',' '),	HB_TAG('M','K','R',' ')},	/* Makasar */
-  {HB_TAG('m','a','n',' '),	HB_TAG('M','N','K',' ')},	/* Mandingo [macrolanguage] -> Maninka */
-  {HB_TAG('m','b','f',' '),	HB_TAG('C','P','P',' ')},	/* Baba Malay -> Creoles */
-  {HB_TAG('m','c','m',' '),	HB_TAG('C','P','P',' ')},	/* Malaccan Creole Portuguese -> Creoles */
-  {HB_TAG('m','c','t',' '),	HB_TAG('B','T','I',' ')},	/* Mengisa -> Beti */
-  {HB_TAG('m','d','f',' '),	HB_TAG('M','O','K',' ')},	/* Moksha */
-  {HB_TAG('m','d','y',' '),	HB_TAG('M','L','E',' ')},	/* Male */
-  {HB_TAG('m','e','n',' '),	HB_TAG('M','D','E',' ')},	/* Mende (Sierra Leone) */
-  {HB_TAG('m','e','o',' '),	HB_TAG('M','L','Y',' ')},	/* Kedah Malay -> Malay */
-  {HB_TAG('m','f','b',' '),	HB_TAG('M','L','Y',' ')},	/* Bangka -> Malay */
-  {HB_TAG('m','f','p',' '),	HB_TAG('C','P','P',' ')},	/* Makassar Malay -> Creoles */
-  {HB_TAG('m','g','a',' '),	HB_TAG('S','G','A',' ')},	/* Middle Irish (900-1200) -> Old Irish */
-  {HB_TAG('m','h','c',' '),	HB_TAG('M','Y','N',' ')},	/* Mocho -> Mayan */
-  {HB_TAG('m','h','r',' '),	HB_TAG('L','M','A',' ')},	/* Eastern Mari -> Low Mari */
-  {HB_TAG('m','h','v',' '),	HB_TAG('A','R','K',' ')},	/* Arakanese (retired code) -> Rakhine */
-  {HB_TAG('m','k','n',' '),	HB_TAG('C','P','P',' ')},	/* Kupang Malay -> Creoles */
-  {HB_TAG('m','k','u',' '),	HB_TAG('M','N','K',' ')},	/* Konyanka Maninka -> Maninka */
-  {HB_TAG('m','m','r',' '),	HB_TAG('H','M','N',' ')},	/* Western Xiangxi Miao -> Hmong */
-  {HB_TAG('m','n','c',' '),	HB_TAG('M','C','H',' ')},	/* Manchu */
-  {HB_TAG('m','n','h',' '),	HB_TAG('B','A','D','0')},	/* Mono (Democratic Republic of Congo) -> Banda */
-  {HB_TAG('m','n','p',' '),	HB_TAG('Z','H','S',' ')},	/* Min Bei Chinese -> Chinese, Simplified */
-  {HB_TAG('m','n','s',' '),	HB_TAG('M','A','N',' ')},	/* Mansi */
-  {HB_TAG('m','o','d',' '),	HB_TAG('C','P','P',' ')},	/* Mobilian -> Creoles */
-  {HB_TAG('m','o','p',' '),	HB_TAG('M','Y','N',' ')},	/* Mopán Maya -> Mayan */
-  {HB_TAG('m','p','e',' '),	HB_TAG('M','A','J',' ')},	/* Majang */
-  {HB_TAG('m','q','g',' '),	HB_TAG('M','L','Y',' ')},	/* Kota Bangun Kutai Malay -> Malay */
-  {HB_TAG('m','r','h',' '),	HB_TAG('Q','I','N',' ')},	/* Mara -> Chin */
-  {HB_TAG('m','r','j',' '),	HB_TAG('H','M','A',' ')},	/* Western Mari -> High Mari */
-  {HB_TAG('m','s','c',' '),	HB_TAG('M','N','K',' ')},	/* Sankaran Maninka -> Maninka */
-  {HB_TAG('m','s','h',' '),	HB_TAG('M','L','G',' ')},	/* Masikoro Malagasy -> Malagasy */
-  {HB_TAG('m','t','r',' '),	HB_TAG('M','A','W',' ')},	/* Mewari -> Marwari */
-  {HB_TAG('m','u','d',' '),	HB_TAG('C','P','P',' ')},	/* Mednyj Aleut -> Creoles */
-  {HB_TAG('m','u','i',' '),	HB_TAG('M','L','Y',' ')},	/* Musi -> Malay */
-  {HB_TAG('m','u','p',' '),	HB_TAG('R','A','J',' ')},	/* Malvi -> Rajasthani */
-  {HB_TAG('m','u','q',' '),	HB_TAG('H','M','N',' ')},	/* Eastern Xiangxi Miao -> Hmong */
-  {HB_TAG('m','v','b',' '),	HB_TAG('A','T','H',' ')},	/* Mattole -> Athapaskan */
-  {HB_TAG('m','v','e',' '),	HB_TAG('M','A','W',' ')},	/* Marwari (Pakistan) */
-  {HB_TAG('m','v','f',' '),	HB_TAG('M','N','G',' ')},	/* Peripheral Mongolian -> Mongolian */
-  {HB_TAG('m','w','k',' '),	HB_TAG('M','N','K',' ')},	/* Kita Maninkakan -> Maninka */
-  {HB_TAG('m','w','q',' '),	HB_TAG('Q','I','N',' ')},	/* Mün Chin -> Chin */
-  {HB_TAG('m','w','r',' '),	HB_TAG('M','A','W',' ')},	/* Marwari [macrolanguage] */
-  {HB_TAG('m','y','m',' '),	HB_TAG('M','E','N',' ')},	/* Me’en */
-  {HB_TAG('m','y','q',' '),	HB_TAG('M','N','K',' ')},	/* Forest Maninka (retired code) -> Maninka */
-  {HB_TAG('m','y','v',' '),	HB_TAG('E','R','Z',' ')},	/* Erzya */
-  {HB_TAG('m','z','b',' '),	HB_TAG('B','B','R',' ')},	/* Tumzabt -> Berber */
-  {HB_TAG('m','z','s',' '),	HB_TAG('C','P','P',' ')},	/* Macanese -> Creoles */
-  {HB_TAG('n','a','n',' '),	HB_TAG('Z','H','S',' ')},	/* Min Nan Chinese -> Chinese, Simplified */
-  {HB_TAG('n','a','z',' '),	HB_TAG('N','A','H',' ')},	/* Coatepec Nahuatl -> Nahuatl */
-  {HB_TAG('n','c','h',' '),	HB_TAG('N','A','H',' ')},	/* Central Huasteca Nahuatl -> Nahuatl */
-  {HB_TAG('n','c','i',' '),	HB_TAG('N','A','H',' ')},	/* Classical Nahuatl -> Nahuatl */
-  {HB_TAG('n','c','j',' '),	HB_TAG('N','A','H',' ')},	/* Northern Puebla Nahuatl -> Nahuatl */
-  {HB_TAG('n','c','l',' '),	HB_TAG('N','A','H',' ')},	/* Michoacán Nahuatl -> Nahuatl */
-  {HB_TAG('n','c','x',' '),	HB_TAG('N','A','H',' ')},	/* Central Puebla Nahuatl -> Nahuatl */
-  {HB_TAG('n','e','f',' '),	HB_TAG('C','P','P',' ')},	/* Nefamese -> Creoles */
-  {HB_TAG('n','g','l',' '),	HB_TAG('L','M','W',' ')},	/* Lomwe */
-  {HB_TAG('n','g','m',' '),	HB_TAG('C','P','P',' ')},	/* Ngatik Men's Creole -> Creoles */
-  {HB_TAG('n','g','o',' '),	HB_TAG('S','X','T',' ')},	/* Ngoni (retired code) -> Sutu */
-  {HB_TAG('n','g','u',' '),	HB_TAG('N','A','H',' ')},	/* Guerrero Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','c',' '),	HB_TAG('N','A','H',' ')},	/* Tabasco Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','d',' '),	HB_TAG('G','U','A',' ')},	/* Chiripá -> Guarani */
-  {HB_TAG('n','h','e',' '),	HB_TAG('N','A','H',' ')},	/* Eastern Huasteca Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','g',' '),	HB_TAG('N','A','H',' ')},	/* Tetelcingo Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','i',' '),	HB_TAG('N','A','H',' ')},	/* Zacatlán-Ahuacatlán-Tepetzintla Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','k',' '),	HB_TAG('N','A','H',' ')},	/* Isthmus-Cosoleacaque Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','m',' '),	HB_TAG('N','A','H',' ')},	/* Morelos Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','n',' '),	HB_TAG('N','A','H',' ')},	/* Central Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','p',' '),	HB_TAG('N','A','H',' ')},	/* Isthmus-Pajapan Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','q',' '),	HB_TAG('N','A','H',' ')},	/* Huaxcaleca Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','t',' '),	HB_TAG('N','A','H',' ')},	/* Ometepec Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','v',' '),	HB_TAG('N','A','H',' ')},	/* Temascaltepec Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','w',' '),	HB_TAG('N','A','H',' ')},	/* Western Huasteca Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','x',' '),	HB_TAG('N','A','H',' ')},	/* Isthmus-Mecayapan Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','y',' '),	HB_TAG('N','A','H',' ')},	/* Northern Oaxaca Nahuatl -> Nahuatl */
-  {HB_TAG('n','h','z',' '),	HB_TAG('N','A','H',' ')},	/* Santa María La Alta Nahuatl -> Nahuatl */
-  {HB_TAG('n','i','q',' '),	HB_TAG('K','A','L',' ')},	/* Nandi -> Kalenjin */
-  {HB_TAG('n','i','v',' '),	HB_TAG('G','I','L',' ')},	/* Gilyak */
-  {HB_TAG('n','j','t',' '),	HB_TAG('C','P','P',' ')},	/* Ndyuka-Trio Pidgin -> Creoles */
-  {HB_TAG('n','j','z',' '),	HB_TAG('N','I','S',' ')},	/* Nyishi -> Nisi */
-  {HB_TAG('n','k','x',' '),	HB_TAG('I','J','O',' ')},	/* Nkoroo -> Ijo */
-  {HB_TAG('n','l','a',' '),	HB_TAG('B','M','L',' ')},	/* Ngombale -> Bamileke */
-  {HB_TAG('n','l','e',' '),	HB_TAG('L','U','H',' ')},	/* East Nyala -> Luyia */
-  {HB_TAG('n','l','n',' '),	HB_TAG('N','A','H',' ')},	/* Durango Nahuatl (retired code) -> Nahuatl */
-  {HB_TAG('n','l','v',' '),	HB_TAG('N','A','H',' ')},	/* Orizaba Nahuatl -> Nahuatl */
-  {HB_TAG('n','n','h',' '),	HB_TAG('B','M','L',' ')},	/* Ngiemboon -> Bamileke */
-  {HB_TAG('n','n','z',' '),	HB_TAG('B','M','L',' ')},	/* Nda'nda' -> Bamileke */
-  {HB_TAG('n','o','d',' '),	HB_TAG('N','T','A',' ')},	/* Northern Thai -> Northern Tai */
-  {HB_TAG('n','p','i',' '),	HB_TAG('N','E','P',' ')},	/* Nepali */
-  {HB_TAG('n','p','l',' '),	HB_TAG('N','A','H',' ')},	/* Southeastern Puebla Nahuatl -> Nahuatl */
-  {HB_TAG('n','q','o',' '),	HB_TAG('N','K','O',' ')},	/* N’Ko */
-  {HB_TAG('n','s','k',' '),	HB_TAG('N','A','S',' ')},	/* Naskapi */
-  {HB_TAG('n','s','u',' '),	HB_TAG('N','A','H',' ')},	/* Sierra Negra Nahuatl -> Nahuatl */
-  {HB_TAG('n','u','e',' '),	HB_TAG('B','A','D','0')},	/* Ngundu -> Banda */
-  {HB_TAG('n','u','u',' '),	HB_TAG('B','A','D','0')},	/* Ngbundu -> Banda */
-  {HB_TAG('n','u','z',' '),	HB_TAG('N','A','H',' ')},	/* Tlamacazapa Nahuatl -> Nahuatl */
-  {HB_TAG('n','w','e',' '),	HB_TAG('B','M','L',' ')},	/* Ngwe -> Bamileke */
-  {HB_TAG('n','y','d',' '),	HB_TAG('L','U','H',' ')},	/* Nyore -> Luyia */
-  {HB_TAG('n','y','n',' '),	HB_TAG('N','K','L',' ')},	/* Nyankole */
-  {HB_TAG('o','j','c',' '),	HB_TAG('O','J','B',' ')},	/* Central Ojibwa -> Ojibway */
-  {HB_TAG('o','j','g',' '),	HB_TAG('O','J','B',' ')},	/* Eastern Ojibwa -> Ojibway */
-  {HB_TAG('o','j','w',' '),	HB_TAG('O','J','B',' ')},	/* Western Ojibwa -> Ojibway */
-  {HB_TAG('o','k','d',' '),	HB_TAG('I','J','O',' ')},	/* Okodia -> Ijo */
-  {HB_TAG('o','k','i',' '),	HB_TAG('K','A','L',' ')},	/* Okiek -> Kalenjin */
-  {HB_TAG('o','k','m',' '),	HB_TAG('K','O','H',' ')},	/* Middle Korean (10th-16th cent.) -> Korean Old Hangul */
-  {HB_TAG('o','k','r',' '),	HB_TAG('I','J','O',' ')},	/* Kirike -> Ijo */
-  {HB_TAG('o','n','x',' '),	HB_TAG('C','P','P',' ')},	/* Onin Based Pidgin -> Creoles */
-  {HB_TAG('o','o','r',' '),	HB_TAG('C','P','P',' ')},	/* Oorlams -> Creoles */
-  {HB_TAG('o','r','c',' '),	HB_TAG('O','R','O',' ')},	/* Orma -> Oromo */
-  {HB_TAG('o','r','n',' '),	HB_TAG('M','L','Y',' ')},	/* Orang Kanaq -> Malay */
-  {HB_TAG('o','r','r',' '),	HB_TAG('I','J','O',' ')},	/* Oruma -> Ijo */
-  {HB_TAG('o','r','s',' '),	HB_TAG('M','L','Y',' ')},	/* Orang Seletar -> Malay */
-  {HB_TAG('o','r','y',' '),	HB_TAG('O','R','I',' ')},	/* Odia */
-  {HB_TAG('o','t','w',' '),	HB_TAG('O','J','B',' ')},	/* Ottawa -> Ojibway */
-  {HB_TAG('o','u','a',' '),	HB_TAG('B','B','R',' ')},	/* Tagargrent -> Berber */
-  {HB_TAG('p','b','t',' '),	HB_TAG('P','A','S',' ')},	/* Southern Pashto -> Pashto */
-  {HB_TAG('p','b','u',' '),	HB_TAG('P','A','S',' ')},	/* Northern Pashto -> Pashto */
-  {HB_TAG('p','c','e',' '),	HB_TAG('P','L','G',' ')},	/* Ruching Palaung -> Palaung */
-  {HB_TAG('p','c','k',' '),	HB_TAG('Q','I','N',' ')},	/* Paite Chin -> Chin */
-  {HB_TAG('p','c','m',' '),	HB_TAG('C','P','P',' ')},	/* Nigerian Pidgin -> Creoles */
-  {HB_TAG('p','d','u',' '),	HB_TAG('K','R','N',' ')},	/* Kayan -> Karen */
-  {HB_TAG('p','e','a',' '),	HB_TAG('C','P','P',' ')},	/* Peranakan Indonesian -> Creoles */
-  {HB_TAG('p','e','l',' '),	HB_TAG('M','L','Y',' ')},	/* Pekal -> Malay */
-  {HB_TAG('p','e','s',' '),	HB_TAG('F','A','R',' ')},	/* Iranian Persian -> Persian */
-  {HB_TAG('p','e','y',' '),	HB_TAG('C','P','P',' ')},	/* Petjo -> Creoles */
-  {HB_TAG('p','i','s',' '),	HB_TAG('C','P','P',' ')},	/* Pijin -> Creoles */
-  {HB_TAG('p','k','h',' '),	HB_TAG('Q','I','N',' ')},	/* Pankhu -> Chin */
-  {HB_TAG('p','k','o',' '),	HB_TAG('K','A','L',' ')},	/* Pökoot -> Kalenjin */
-  {HB_TAG('p','l','g',' '),	HB_TAG('P','L','G','0')},	/* Pilagá */
-  {HB_TAG('p','l','l',' '),	HB_TAG('P','L','G',' ')},	/* Shwe Palaung -> Palaung */
-  {HB_TAG('p','l','n',' '),	HB_TAG('C','P','P',' ')},	/* Palenquero -> Creoles */
-  {HB_TAG('p','l','p',' '),	HB_TAG('P','A','P',' ')},	/* Palpa (retired code) */
-  {HB_TAG('p','l','t',' '),	HB_TAG('M','L','G',' ')},	/* Plateau Malagasy -> Malagasy */
-  {HB_TAG('p','m','l',' '),	HB_TAG('C','P','P',' ')},	/* Lingua Franca -> Creoles */
-  {HB_TAG('p','m','y',' '),	HB_TAG('C','P','P',' ')},	/* Papuan Malay -> Creoles */
-  {HB_TAG('p','o','c',' '),	HB_TAG('M','Y','N',' ')},	/* Poqomam -> Mayan */
-  {HB_TAG('p','o','v',' '),	HB_TAG('C','P','P',' ')},	/* Upper Guinea Crioulo -> Creoles */
-  {HB_TAG('p','p','a',' '),	HB_TAG('B','A','G',' ')},	/* Pao (retired code) -> Baghelkhandi */
-  {HB_TAG('p','r','e',' '),	HB_TAG('C','P','P',' ')},	/* Principense -> Creoles */
-  {HB_TAG('p','r','p',' '),	HB_TAG('G','U','J',' ')},	/* Parsi (retired code) -> Gujarati */
-  {HB_TAG('p','s','e',' '),	HB_TAG('M','L','Y',' ')},	/* Central Malay -> Malay */
-  {HB_TAG('p','s','t',' '),	HB_TAG('P','A','S',' ')},	/* Central Pashto -> Pashto */
-  {HB_TAG('p','u','b',' '),	HB_TAG('Q','I','N',' ')},	/* Purum -> Chin */
-  {HB_TAG('p','u','z',' '),	HB_TAG('Q','I','N',' ')},	/* Purum Naga (retired code) -> Chin */
-  {HB_TAG('p','w','w',' '),	HB_TAG('K','R','N',' ')},	/* Pwo Northern Karen -> Karen */
-  {HB_TAG('q','u','f',' '),	HB_TAG('Q','U','Z',' ')},	/* Lambayeque Quechua -> Quechua */
-  {HB_TAG('q','u','k',' '),	HB_TAG('Q','U','Z',' ')},	/* Chachapoyas Quechua -> Quechua */
-  {HB_TAG('q','u','m',' '),	HB_TAG('M','Y','N',' ')},	/* Sipacapense -> Mayan */
-  {HB_TAG('q','u','v',' '),	HB_TAG('M','Y','N',' ')},	/* Sacapulteco -> Mayan */
-  {HB_TAG('q','u','y',' '),	HB_TAG('Q','U','Z',' ')},	/* Ayacucho Quechua -> Quechua */
-  {HB_TAG('q','v','c',' '),	HB_TAG('Q','U','Z',' ')},	/* Cajamarca Quechua -> Quechua */
-  {HB_TAG('q','v','e',' '),	HB_TAG('Q','U','Z',' ')},	/* Eastern Apurímac Quechua -> Quechua */
-  {HB_TAG('q','v','s',' '),	HB_TAG('Q','U','Z',' ')},	/* San Martín Quechua -> Quechua */
-  {HB_TAG('q','w','c',' '),	HB_TAG('Q','U','Z',' ')},	/* Classical Quechua -> Quechua */
-  {HB_TAG('q','w','t',' '),	HB_TAG('A','T','H',' ')},	/* Kwalhioqua-Tlatskanai -> Athapaskan */
-  {HB_TAG('q','x','p',' '),	HB_TAG('Q','U','Z',' ')},	/* Puno Quechua -> Quechua */
-  {HB_TAG('q','x','u',' '),	HB_TAG('Q','U','Z',' ')},	/* Arequipa-La Unión Quechua -> Quechua */
-  {HB_TAG('r','a','g',' '),	HB_TAG('L','U','H',' ')},	/* Logooli -> Luyia */
-  {HB_TAG('r','a','l',' '),	HB_TAG('Q','I','N',' ')},	/* Ralte -> Chin */
-  {HB_TAG('r','b','b',' '),	HB_TAG('P','L','G',' ')},	/* Rumai Palaung -> Palaung */
-  {HB_TAG('r','b','l',' '),	HB_TAG('B','I','K',' ')},	/* Miraya Bikol -> Bikol */
-  {HB_TAG('r','c','f',' '),	HB_TAG('C','P','P',' ')},	/* Réunion Creole French -> Creoles */
-  {HB_TAG('r','k','i',' '),	HB_TAG('A','R','K',' ')},	/* Rakhine */
-  {HB_TAG('r','m','c',' '),	HB_TAG('R','O','Y',' ')},	/* Carpathian Romani -> Romany */
-  {HB_TAG('r','m','f',' '),	HB_TAG('R','O','Y',' ')},	/* Kalo Finnish Romani -> Romany */
-  {HB_TAG('r','m','l',' '),	HB_TAG('R','O','Y',' ')},	/* Baltic Romani -> Romany */
-  {HB_TAG('r','m','n',' '),	HB_TAG('R','O','Y',' ')},	/* Balkan Romani -> Romany */
-  {HB_TAG('r','m','o',' '),	HB_TAG('R','O','Y',' ')},	/* Sinte Romani -> Romany */
-  {HB_TAG('r','m','w',' '),	HB_TAG('R','O','Y',' ')},	/* Welsh Romani -> Romany */
-  {HB_TAG('r','m','z',' '),	HB_TAG('A','R','K',' ')},	/* Marma -> Rakhine */
-  {HB_TAG('r','o','m',' '),	HB_TAG('R','O','Y',' ')},	/* Romany [macrolanguage] */
-  {HB_TAG('r','o','p',' '),	HB_TAG('C','P','P',' ')},	/* Kriol -> Creoles */
-  {HB_TAG('r','t','c',' '),	HB_TAG('Q','I','N',' ')},	/* Rungtu Chin -> Chin */
-  {HB_TAG('r','u','e',' '),	HB_TAG('R','S','Y',' ')},	/* Rusyn */
-  {HB_TAG('r','w','r',' '),	HB_TAG('M','A','W',' ')},	/* Marwari (India) */
-  {HB_TAG('s','a','h',' '),	HB_TAG('Y','A','K',' ')},	/* Yakut -> Sakha */
-  {HB_TAG('s','a','m',' '),	HB_TAG('P','A','A',' ')},	/* Samaritan Aramaic -> Palestinian Aramaic */
-  {HB_TAG('s','c','f',' '),	HB_TAG('C','P','P',' ')},	/* San Miguel Creole French -> Creoles */
-  {HB_TAG('s','c','h',' '),	HB_TAG('Q','I','N',' ')},	/* Sakachep -> Chin */
-  {HB_TAG('s','c','i',' '),	HB_TAG('C','P','P',' ')},	/* Sri Lankan Creole Malay -> Creoles */
-  {HB_TAG('s','c','k',' '),	HB_TAG('S','A','D',' ')},	/* Sadri */
-  {HB_TAG('s','d','c',' '),	HB_TAG('S','R','D',' ')},	/* Sassarese Sardinian -> Sardinian */
-  {HB_TAG('s','d','h',' '),	HB_TAG('K','U','R',' ')},	/* Southern Kurdish -> Kurdish */
-  {HB_TAG('s','d','n',' '),	HB_TAG('S','R','D',' ')},	/* Gallurese Sardinian -> Sardinian */
-  {HB_TAG('s','d','s',' '),	HB_TAG('B','B','R',' ')},	/* Sened -> Berber */
-  {HB_TAG('s','e','h',' '),	HB_TAG('S','N','A',' ')},	/* Sena */
-  {HB_TAG('s','e','k',' '),	HB_TAG('A','T','H',' ')},	/* Sekani -> Athapaskan */
-  {HB_TAG('s','e','z',' '),	HB_TAG('Q','I','N',' ')},	/* Senthang Chin -> Chin */
-  {HB_TAG('s','g','c',' '),	HB_TAG('K','A','L',' ')},	/* Kipsigis -> Kalenjin */
-  {HB_TAG('s','g','w',' '),	HB_TAG('C','H','G',' ')},	/* Sebat Bet Gurage -> Chaha Gurage */
-  {HB_TAG('s','h','l',' '),	HB_TAG('Q','I','N',' ')},	/* Shendu (retired code) -> Chin */
-  {HB_TAG('s','h','u',' '),	HB_TAG('A','R','A',' ')},	/* Chadian Arabic -> Arabic */
-  {HB_TAG('s','h','y',' '),	HB_TAG('B','B','R',' ')},	/* Tachawit -> Berber */
-  {HB_TAG('s','i','z',' '),	HB_TAG('B','B','R',' ')},	/* Siwi -> Berber */
-  {HB_TAG('s','j','c',' '),	HB_TAG('Z','H','S',' ')},	/* Shaojiang Chinese -> Chinese, Simplified */
-  {HB_TAG('s','j','d',' '),	HB_TAG('K','S','M',' ')},	/* Kildin Sami */
-  {HB_TAG('s','j','o',' '),	HB_TAG('S','I','B',' ')},	/* Xibe -> Sibe */
-  {HB_TAG('s','j','s',' '),	HB_TAG('B','B','R',' ')},	/* Senhaja De Srair -> Berber */
-  {HB_TAG('s','k','g',' '),	HB_TAG('M','L','G',' ')},	/* Sakalava Malagasy -> Malagasy */
-  {HB_TAG('s','k','r',' '),	HB_TAG('S','R','K',' ')},	/* Saraiki */
-  {HB_TAG('s','k','w',' '),	HB_TAG('C','P','P',' ')},	/* Skepi Creole Dutch -> Creoles */
-  {HB_TAG('s','m','a',' '),	HB_TAG('S','S','M',' ')},	/* Southern Sami */
-  {HB_TAG('s','m','d',' '),	HB_TAG('M','B','N',' ')},	/* Sama (retired code) -> Mbundu */
-  {HB_TAG('s','m','j',' '),	HB_TAG('L','S','M',' ')},	/* Lule Sami */
-  {HB_TAG('s','m','n',' '),	HB_TAG('I','S','M',' ')},	/* Inari Sami */
-  {HB_TAG('s','m','s',' '),	HB_TAG('S','K','S',' ')},	/* Skolt Sami */
-  {HB_TAG('s','m','t',' '),	HB_TAG('Q','I','N',' ')},	/* Simte -> Chin */
-  {HB_TAG('s','n','b',' '),	HB_TAG('I','B','A',' ')},	/* Sebuyau (retired code) -> Iban */
-  {HB_TAG('s','p','v',' '),	HB_TAG('O','R','I',' ')},	/* Sambalpuri -> Odia */
-  {HB_TAG('s','p','y',' '),	HB_TAG('K','A','L',' ')},	/* Sabaot -> Kalenjin */
-  {HB_TAG('s','r','c',' '),	HB_TAG('S','R','D',' ')},	/* Logudorese Sardinian -> Sardinian */
-  {HB_TAG('s','r','m',' '),	HB_TAG('C','P','P',' ')},	/* Saramaccan -> Creoles */
-  {HB_TAG('s','r','n',' '),	HB_TAG('C','P','P',' ')},	/* Sranan Tongo -> Creoles */
-  {HB_TAG('s','r','o',' '),	HB_TAG('S','R','D',' ')},	/* Campidanese Sardinian -> Sardinian */
-  {HB_TAG('s','r','s',' '),	HB_TAG('A','T','H',' ')},	/* Tsuut'ina -> Athapaskan */
-  {HB_TAG('s','s','h',' '),	HB_TAG('A','R','A',' ')},	/* Shihhi Arabic -> Arabic */
-  {HB_TAG('s','t','a',' '),	HB_TAG('C','P','P',' ')},	/* Settla -> Creoles */
-  {HB_TAG('s','t','v',' '),	HB_TAG('S','I','G',' ')},	/* Silt'e -> Silte Gurage */
-  {HB_TAG('s','u','q',' '),	HB_TAG('S','U','R',' ')},	/* Suri */
-  {HB_TAG('s','v','c',' '),	HB_TAG('C','P','P',' ')},	/* Vincentian Creole English -> Creoles */
-  {HB_TAG('s','w','b',' '),	HB_TAG('C','M','R',' ')},	/* Maore Comorian -> Comorian */
-  {HB_TAG('s','w','c',' '),	HB_TAG('S','W','K',' ')},	/* Congo Swahili -> Swahili */
-  {HB_TAG('s','w','h',' '),	HB_TAG('S','W','K',' ')},	/* Swahili */
-  {HB_TAG('s','w','n',' '),	HB_TAG('B','B','R',' ')},	/* Sawknah -> Berber */
-  {HB_TAG('s','w','v',' '),	HB_TAG('M','A','W',' ')},	/* Shekhawati -> Marwari */
-  {HB_TAG('s','y','c',' '),	HB_TAG('S','Y','R',' ')},	/* Classical Syriac -> Syriac */
-  {HB_TAG('t','a','a',' '),	HB_TAG('A','T','H',' ')},	/* Lower Tanana -> Athapaskan */
-  {HB_TAG('t','a','s',' '),	HB_TAG('C','P','P',' ')},	/* Tay Boi -> Creoles */
-  {HB_TAG('t','a','u',' '),	HB_TAG('A','T','H',' ')},	/* Upper Tanana -> Athapaskan */
-  {HB_TAG('t','c','b',' '),	HB_TAG('A','T','H',' ')},	/* Tanacross -> Athapaskan */
-  {HB_TAG('t','c','e',' '),	HB_TAG('A','T','H',' ')},	/* Southern Tutchone -> Athapaskan */
-  {HB_TAG('t','c','h',' '),	HB_TAG('C','P','P',' ')},	/* Turks And Caicos Creole English -> Creoles */
-  {HB_TAG('t','c','p',' '),	HB_TAG('Q','I','N',' ')},	/* Tawr Chin -> Chin */
-  {HB_TAG('t','c','s',' '),	HB_TAG('C','P','P',' ')},	/* Torres Strait Creole -> Creoles */
-  {HB_TAG('t','c','y',' '),	HB_TAG('T','U','L',' ')},	/* Tulu */
-  {HB_TAG('t','c','z',' '),	HB_TAG('Q','I','N',' ')},	/* Thado Chin -> Chin */
-  {HB_TAG('t','d','x',' '),	HB_TAG('M','L','G',' ')},	/* Tandroy-Mahafaly Malagasy -> Malagasy */
-  {HB_TAG('t','e','c',' '),	HB_TAG('K','A','L',' ')},	/* Terik -> Kalenjin */
-  {HB_TAG('t','e','m',' '),	HB_TAG('T','M','N',' ')},	/* Timne -> Temne */
-  {HB_TAG('t','e','z',' '),	HB_TAG('B','B','R',' ')},	/* Tetserret -> Berber */
-  {HB_TAG('t','f','n',' '),	HB_TAG('A','T','H',' ')},	/* Tanaina -> Athapaskan */
-  {HB_TAG('t','g','h',' '),	HB_TAG('C','P','P',' ')},	/* Tobagonian Creole English -> Creoles */
-  {HB_TAG('t','g','j',' '),	HB_TAG('N','I','S',' ')},	/* Tagin -> Nisi */
-  {HB_TAG('t','g','x',' '),	HB_TAG('A','T','H',' ')},	/* Tagish -> Athapaskan */
-  {HB_TAG('t','h','t',' '),	HB_TAG('A','T','H',' ')},	/* Tahltan -> Athapaskan */
-  {HB_TAG('t','i','a',' '),	HB_TAG('B','B','R',' ')},	/* Tidikelt Tamazight -> Berber */
-  {HB_TAG('t','i','g',' '),	HB_TAG('T','G','R',' ')},	/* Tigre */
-  {HB_TAG('t','j','o',' '),	HB_TAG('B','B','R',' ')},	/* Temacine Tamazight -> Berber */
-  {HB_TAG('t','k','g',' '),	HB_TAG('M','L','G',' ')},	/* Tesaka Malagasy -> Malagasy */
-  {HB_TAG('t','m','g',' '),	HB_TAG('C','P','P',' ')},	/* Ternateño -> Creoles */
-  {HB_TAG('t','m','w',' '),	HB_TAG('M','L','Y',' ')},	/* Temuan -> Malay */
-  {HB_TAG('t','o','d',' '),	HB_TAG('T','O','D','0')},	/* Toma */
-  {HB_TAG('t','o','i',' '),	HB_TAG('T','N','G',' ')},	/* Tonga (Zambia) */
-  {HB_TAG('t','o','j',' '),	HB_TAG('M','Y','N',' ')},	/* Tojolabal -> Mayan */
-  {HB_TAG('t','o','l',' '),	HB_TAG('A','T','H',' ')},	/* Tolowa -> Athapaskan */
-  {HB_TAG('t','o','r',' '),	HB_TAG('B','A','D','0')},	/* Togbo-Vara Banda -> Banda */
-  {HB_TAG('t','r','f',' '),	HB_TAG('C','P','P',' ')},	/* Trinidadian Creole English -> Creoles */
-  {HB_TAG('t','t','c',' '),	HB_TAG('M','Y','N',' ')},	/* Tektiteko -> Mayan */
-  {HB_TAG('t','t','m',' '),	HB_TAG('A','T','H',' ')},	/* Northern Tutchone -> Athapaskan */
-  {HB_TAG('t','u','u',' '),	HB_TAG('A','T','H',' ')},	/* Tututni -> Athapaskan */
-  {HB_TAG('t','u','y',' '),	HB_TAG('K','A','L',' ')},	/* Tugen -> Kalenjin */
-  {HB_TAG('t','v','y',' '),	HB_TAG('C','P','P',' ')},	/* Timor Pidgin -> Creoles */
-  {HB_TAG('t','x','c',' '),	HB_TAG('A','T','H',' ')},	/* Tsetsaut -> Athapaskan */
-  {HB_TAG('t','x','y',' '),	HB_TAG('M','L','G',' ')},	/* Tanosy Malagasy -> Malagasy */
-  {HB_TAG('t','y','v',' '),	HB_TAG('T','U','V',' ')},	/* Tuvinian -> Tuvin */
-  {HB_TAG('t','z','h',' '),	HB_TAG('M','Y','N',' ')},	/* Tzeltal -> Mayan */
-  {HB_TAG('t','z','j',' '),	HB_TAG('M','Y','N',' ')},	/* Tz'utujil -> Mayan */
-  {HB_TAG('u','b','l',' '),	HB_TAG('B','I','K',' ')},	/* Buhi'non Bikol -> Bikol */
-  {HB_TAG('u','k','i',' '),	HB_TAG('K','U','I',' ')},	/* Kui (India) */
-  {HB_TAG('u','l','n',' '),	HB_TAG('C','P','P',' ')},	/* Unserdeutsch -> Creoles */
-  {HB_TAG('u','n','r',' '),	HB_TAG('M','U','N',' ')},	/* Mundari */
-  {HB_TAG('u','r','k',' '),	HB_TAG('M','L','Y',' ')},	/* Urak Lawoi' -> Malay */
-  {HB_TAG('u','s','p',' '),	HB_TAG('M','Y','N',' ')},	/* Uspanteco -> Mayan */
-  {HB_TAG('u','z','n',' '),	HB_TAG('U','Z','B',' ')},	/* Northern Uzbek -> Uzbek */
-  {HB_TAG('u','z','s',' '),	HB_TAG('U','Z','B',' ')},	/* Southern Uzbek -> Uzbek */
-  {HB_TAG('v','a','p',' '),	HB_TAG('Q','I','N',' ')},	/* Vaiphei -> Chin */
-  {HB_TAG('v','i','c',' '),	HB_TAG('C','P','P',' ')},	/* Virgin Islands Creole English -> Creoles */
-  {HB_TAG('v','k','k',' '),	HB_TAG('M','L','Y',' ')},	/* Kaur -> Malay */
-  {HB_TAG('v','k','p',' '),	HB_TAG('C','P','P',' ')},	/* Korlai Creole Portuguese -> Creoles */
-  {HB_TAG('v','k','t',' '),	HB_TAG('M','L','Y',' ')},	/* Tenggarong Kutai Malay -> Malay */
-  {HB_TAG('v','l','s',' '),	HB_TAG('F','L','E',' ')},	/* Vlaams -> Dutch (Flemish) */
-  {HB_TAG('v','m','w',' '),	HB_TAG('M','A','K',' ')},	/* Makhuwa */
-  {HB_TAG('v','s','n',' '),	HB_TAG('S','A','N',' ')},	/* Vedic Sanskrit -> Sanskrit */
-  {HB_TAG('w','b','m',' '),	HB_TAG('W','A',' ',' ')},	/* Wa */
-  {HB_TAG('w','e','a',' '),	HB_TAG('K','R','N',' ')},	/* Wewaw -> Karen */
-  {HB_TAG('w','e','s',' '),	HB_TAG('C','P','P',' ')},	/* Cameroon Pidgin -> Creoles */
-  {HB_TAG('w','e','u',' '),	HB_TAG('Q','I','N',' ')},	/* Rawngtu Chin -> Chin */
-  {HB_TAG('w','l','c',' '),	HB_TAG('C','M','R',' ')},	/* Mwali Comorian -> Comorian */
-  {HB_TAG('w','l','e',' '),	HB_TAG('S','I','G',' ')},	/* Wolane -> Silte Gurage */
-  {HB_TAG('w','l','k',' '),	HB_TAG('A','T','H',' ')},	/* Wailaki -> Athapaskan */
-  {HB_TAG('w','n','i',' '),	HB_TAG('C','M','R',' ')},	/* Ndzwani Comorian -> Comorian */
-  {HB_TAG('w','r','y',' '),	HB_TAG('M','A','W',' ')},	/* Merwari -> Marwari */
-  {HB_TAG('w','s','g',' '),	HB_TAG('G','O','N',' ')},	/* Adilabad Gondi -> Gondi */
-  {HB_TAG('w','u','u',' '),	HB_TAG('Z','H','S',' ')},	/* Wu Chinese -> Chinese, Simplified */
-  {HB_TAG('x','a','n',' '),	HB_TAG('S','E','K',' ')},	/* Xamtanga -> Sekota */
-  {HB_TAG('x','m','g',' '),	HB_TAG('B','M','L',' ')},	/* Mengaka -> Bamileke */
-  {HB_TAG('x','m','v',' '),	HB_TAG('M','L','G',' ')},	/* Antankarana Malagasy -> Malagasy */
-  {HB_TAG('x','m','w',' '),	HB_TAG('M','L','G',' ')},	/* Tsimihety Malagasy -> Malagasy */
-  {HB_TAG('x','n','j',' '),	HB_TAG('S','X','T',' ')},	/* Ngoni (Tanzania) -> Sutu */
-  {HB_TAG('x','n','q',' '),	HB_TAG('S','X','T',' ')},	/* Ngoni (Mozambique) -> Sutu */
-  {HB_TAG('x','n','r',' '),	HB_TAG('D','G','R',' ')},	/* Kangri -> Dogri (macrolanguage) */
-  {HB_TAG('x','s','t',' '),	HB_TAG('S','I','G',' ')},	/* Silt'e (retired code) -> Silte Gurage */
-  {HB_TAG('x','u','p',' '),	HB_TAG('A','T','H',' ')},	/* Upper Umpqua -> Athapaskan */
-  {HB_TAG('x','w','o',' '),	HB_TAG('T','O','D',' ')},	/* Written Oirat -> Todo */
-  {HB_TAG('y','a','j',' '),	HB_TAG('B','A','D','0')},	/* Banda-Yangere -> Banda */
-  {HB_TAG('y','b','b',' '),	HB_TAG('B','M','L',' ')},	/* Yemba -> Bamileke */
-  {HB_TAG('y','b','d',' '),	HB_TAG('A','R','K',' ')},	/* Yangbye (retired code) -> Rakhine */
-  {HB_TAG('y','c','r',' '),	HB_TAG('C','P','P',' ')},	/* Yilan Creole -> Creoles */
-  {HB_TAG('y','d','d',' '),	HB_TAG('J','I','I',' ')},	/* Eastern Yiddish -> Yiddish */
-  {HB_TAG('y','i','h',' '),	HB_TAG('J','I','I',' ')},	/* Western Yiddish -> Yiddish */
-  {HB_TAG('y','o','s',' '),	HB_TAG('Q','I','N',' ')},	/* Yos (retired code) -> Chin */
-  {HB_TAG('y','u','a',' '),	HB_TAG('M','Y','N',' ')},	/* Yucateco -> Mayan */
-  {HB_TAG('y','u','e',' '),	HB_TAG('Z','H','H',' ')},	/* Yue Chinese -> Chinese, Traditional, Hong Kong SAR */
-  {HB_TAG('z','c','h',' '),	HB_TAG('Z','H','A',' ')},	/* Central Hongshuihe Zhuang -> Zhuang */
-  {HB_TAG('z','d','j',' '),	HB_TAG('C','M','R',' ')},	/* Ngazidja Comorian -> Comorian */
-  {HB_TAG('z','e','h',' '),	HB_TAG('Z','H','A',' ')},	/* Eastern Hongshuihe Zhuang -> Zhuang */
-  {HB_TAG('z','e','n',' '),	HB_TAG('B','B','R',' ')},	/* Zenaga -> Berber */
-  {HB_TAG('z','g','b',' '),	HB_TAG('Z','H','A',' ')},	/* Guibei Zhuang -> Zhuang */
-  {HB_TAG('z','g','m',' '),	HB_TAG('Z','H','A',' ')},	/* Minz Zhuang -> Zhuang */
-  {HB_TAG('z','g','n',' '),	HB_TAG('Z','H','A',' ')},	/* Guibian Zhuang -> Zhuang */
-  {HB_TAG('z','h','d',' '),	HB_TAG('Z','H','A',' ')},	/* Dai Zhuang -> Zhuang */
-  {HB_TAG('z','h','n',' '),	HB_TAG('Z','H','A',' ')},	/* Nong Zhuang -> Zhuang */
-  {HB_TAG('z','k','b',' '),	HB_TAG('K','H','A',' ')},	/* Koibal (retired code) -> Khakass */
-  {HB_TAG('z','l','j',' '),	HB_TAG('Z','H','A',' ')},	/* Liujiang Zhuang -> Zhuang */
-  {HB_TAG('z','l','m',' '),	HB_TAG('M','L','Y',' ')},	/* Malay */
-  {HB_TAG('z','l','n',' '),	HB_TAG('Z','H','A',' ')},	/* Lianshan Zhuang -> Zhuang */
-  {HB_TAG('z','l','q',' '),	HB_TAG('Z','H','A',' ')},	/* Liuqian Zhuang -> Zhuang */
-  {HB_TAG('z','m','i',' '),	HB_TAG('M','L','Y',' ')},	/* Negeri Sembilan Malay -> Malay */
-  {HB_TAG('z','m','z',' '),	HB_TAG('B','A','D','0')},	/* Mbandja -> Banda */
-  {HB_TAG('z','n','e',' '),	HB_TAG('Z','N','D',' ')},	/* Zande */
-  {HB_TAG('z','o','m',' '),	HB_TAG('Q','I','N',' ')},	/* Zou -> Chin */
-  {HB_TAG('z','q','e',' '),	HB_TAG('Z','H','A',' ')},	/* Qiubei Zhuang -> Zhuang */
-  {HB_TAG('z','s','m',' '),	HB_TAG('M','L','Y',' ')},	/* Standard Malay -> Malay */
-  {HB_TAG('z','u','m',' '),	HB_TAG('L','R','C',' ')},	/* Kumzari -> Luri */
-  {HB_TAG('z','y','b',' '),	HB_TAG('Z','H','A',' ')},	/* Yongbei Zhuang -> Zhuang */
-  {HB_TAG('z','y','g',' '),	HB_TAG('Z','H','A',' ')},	/* Yang Zhuang -> Zhuang */
-  {HB_TAG('z','y','j',' '),	HB_TAG('Z','H','A',' ')},	/* Youjiang Zhuang -> Zhuang */
-  {HB_TAG('z','y','n',' '),	HB_TAG('Z','H','A',' ')},	/* Yongnan Zhuang -> Zhuang */
-  {HB_TAG('z','y','p',' '),	HB_TAG('Q','I','N',' ')},	/* Zyphe Chin -> Chin */
-  {HB_TAG('z','z','j',' '),	HB_TAG('Z','H','A',' ')},	/* Zuojiang Zhuang -> Zhuang */
+ساكن ثابت Lang_ٽيگ ot_languages3[] = {
+  {HB_ٽيگ('a','a','e',' '),	HB_ٽيگ('S','Q','I',' ')},	/* Arbëreshë Albanian -> Albanian */
+  {HB_ٽيگ('a','a','o',' '),	HB_ٽيگ('A','R','A',' ')},	/* Algerian Saharan Arabic -> Arabic */
+  {HB_ٽيگ('a','a','t',' '),	HB_ٽيگ('S','Q','I',' ')},	/* Arvanitika Albanian -> Albanian */
+  {HB_ٽيگ('a','b','h',' '),	HB_ٽيگ('A','R','A',' ')},	/* Tajiki Arabic -> Arabic */
+  {HB_ٽيگ('a','b','q',' '),	HB_ٽيگ('A','B','A',' ')},	/* Abaza */
+  {HB_ٽيگ('a','b','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Ambonese Malay -> Creoles */
+  {HB_ٽيگ('a','b','v',' '),	HB_ٽيگ('A','R','A',' ')},	/* Baharna Arabic -> Arabic */
+  {HB_ٽيگ('a','c','m',' '),	HB_ٽيگ('A','R','A',' ')},	/* Mesopotamian Arabic -> Arabic */
+  {HB_ٽيگ('a','c','q',' '),	HB_ٽيگ('A','R','A',' ')},	/* Ta'izzi-Adeni Arabic -> Arabic */
+  {HB_ٽيگ('a','c','w',' '),	HB_ٽيگ('A','R','A',' ')},	/* Hijazi Arabic -> Arabic */
+  {HB_ٽيگ('a','c','x',' '),	HB_ٽيگ('A','R','A',' ')},	/* Omani Arabic -> Arabic */
+  {HB_ٽيگ('a','d','a',' '),	HB_ٽيگ('D','N','G',' ')},	/* Adangme -> Dangme */
+  {HB_ٽيگ('a','d','f',' '),	HB_ٽيگ('A','R','A',' ')},	/* Dhofari Arabic -> Arabic */
+  {HB_ٽيگ('a','d','p',' '),	HB_ٽيگ('D','Z','N',' ')},	/* Adap (retired code) -> Dzongkha */
+  {HB_ٽيگ('a','e','b',' '),	HB_ٽيگ('A','R','A',' ')},	/* Tunisian Arabic -> Arabic */
+  {HB_ٽيگ('a','e','c',' '),	HB_ٽيگ('A','R','A',' ')},	/* Saidi Arabic -> Arabic */
+  {HB_ٽيگ('a','f','b',' '),	HB_ٽيگ('A','R','A',' ')},	/* Gulf Arabic -> Arabic */
+  {HB_ٽيگ('a','f','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Afro-Seminole Creole -> Creoles */
+  {HB_ٽيگ('a','g','u',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Aguacateco -> Mayan */
+  {HB_ٽيگ('a','h','g',' '),	HB_ٽيگ('A','G','W',' ')},	/* Qimant -> Agaw */
+  {HB_ٽيگ('a','h','t',' '),	HB_ٽيگ('A','T','H',' ')},	/* Ahtena -> Athapaskan */
+  {HB_ٽيگ('a','i','g',' '),	HB_ٽيگ('C','P','P',' ')},	/* Antigua and Barbuda Creole English -> Creoles */
+  {HB_ٽيگ('a','i','w',' '),	HB_ٽيگ('A','R','I',' ')},	/* Aari */
+  {HB_ٽيگ('a','j','p',' '),	HB_ٽيگ('A','R','A',' ')},	/* South Levantine Arabic (retired code) -> Arabic */
+  {HB_ٽيگ('a','j','t',' '),	HB_ٽيگ('A','R','A',' ')},	/* Judeo-Tunisian Arabic (retired code) -> Arabic */
+  {HB_ٽيگ('a','l','n',' '),	HB_ٽيگ('S','Q','I',' ')},	/* Gheg Albanian -> Albanian */
+  {HB_ٽيگ('a','l','s',' '),	HB_ٽيگ('S','Q','I',' ')},	/* Tosk Albanian -> Albanian */
+  {HB_ٽيگ('a','m','f',' '),	HB_ٽيگ('H','B','N',' ')},	/* Hamer-Banna -> Hammer-Banna */
+  {HB_ٽيگ('a','m','w',' '),	HB_ٽيگ('S','Y','R',' ')},	/* Western Neo-Aramaic -> Syriac */
+  {HB_ٽيگ('a','o','a',' '),	HB_ٽيگ('C','P','P',' ')},	/* Angolar -> Creoles */
+  {HB_ٽيگ('a','p','a',' '),	HB_ٽيگ('A','T','H',' ')},	/* Apache [collection] -> Athapaskan */
+  {HB_ٽيگ('a','p','c',' '),	HB_ٽيگ('A','R','A',' ')},	/* Levantine Arabic -> Arabic */
+  {HB_ٽيگ('a','p','d',' '),	HB_ٽيگ('A','R','A',' ')},	/* Sudanese Arabic -> Arabic */
+  {HB_ٽيگ('a','p','j',' '),	HB_ٽيگ('A','T','H',' ')},	/* Jicarilla Apache -> Athapaskan */
+  {HB_ٽيگ('a','p','k',' '),	HB_ٽيگ('A','T','H',' ')},	/* Kiowa Apache -> Athapaskan */
+  {HB_ٽيگ('a','p','l',' '),	HB_ٽيگ('A','T','H',' ')},	/* Lipan Apache -> Athapaskan */
+  {HB_ٽيگ('a','p','m',' '),	HB_ٽيگ('A','T','H',' ')},	/* Mescalero-Chiricahua Apache -> Athapaskan */
+  {HB_ٽيگ('a','p','w',' '),	HB_ٽيگ('A','T','H',' ')},	/* Western Apache -> Athapaskan */
+  {HB_ٽيگ('a','r','b',' '),	HB_ٽيگ('A','R','A',' ')},	/* Standard Arabic -> Arabic */
+  {HB_ٽيگ('a','r','n',' '),	HB_ٽيگ('M','A','P',' ')},	/* Mapudungun */
+  {HB_ٽيگ('a','r','q',' '),	HB_ٽيگ('A','R','A',' ')},	/* Algerian Arabic -> Arabic */
+  {HB_ٽيگ('a','r','s',' '),	HB_ٽيگ('A','R','A',' ')},	/* Najdi Arabic -> Arabic */
+  {HB_ٽيگ('a','r','z',' '),	HB_ٽيگ('A','R','A',' ')},	/* Egyptian Arabic -> Arabic */
+  {HB_ٽيگ('a','t','j',' '),	HB_ٽيگ('R','C','R',' ')},	/* Atikamekw -> R-Cree */
+  {HB_ٽيگ('a','t','v',' '),	HB_ٽيگ('A','L','T',' ')},	/* Northern Altai -> Altai */
+  {HB_ٽيگ('a','u','j',' '),	HB_ٽيگ('B','B','R',' ')},	/* Awjilah -> Berber */
+  {HB_ٽيگ('a','u','z',' '),	HB_ٽيگ('A','R','A',' ')},	/* Uzbeki Arabic -> Arabic */
+  {HB_ٽيگ('a','v','l',' '),	HB_ٽيگ('A','R','A',' ')},	/* Eastern Egyptian Bedawi Arabic -> Arabic */
+  {HB_ٽيگ('a','y','c',' '),	HB_ٽيگ('A','Y','M',' ')},	/* Southern Aymara -> Aymara */
+  {HB_ٽيگ('a','y','h',' '),	HB_ٽيگ('A','R','A',' ')},	/* Hadrami Arabic -> Arabic */
+  {HB_ٽيگ('a','y','l',' '),	HB_ٽيگ('A','R','A',' ')},	/* Libyan Arabic -> Arabic */
+  {HB_ٽيگ('a','y','n',' '),	HB_ٽيگ('A','R','A',' ')},	/* Sanaani Arabic -> Arabic */
+  {HB_ٽيگ('a','y','p',' '),	HB_ٽيگ('A','R','A',' ')},	/* North Mesopotamian Arabic -> Arabic */
+  {HB_ٽيگ('a','y','r',' '),	HB_ٽيگ('A','Y','M',' ')},	/* Central Aymara -> Aymara */
+  {HB_ٽيگ('a','z','d',' '),	HB_ٽيگ('N','A','H',' ')},	/* Eastern Durango Nahuatl -> Nahuatl */
+  {HB_ٽيگ('a','z','j',' '),	HB_ٽيگ('A','Z','E',' ')},	/* North Azerbaijani -> Azerbaijani */
+  {HB_ٽيگ('a','z','n',' '),	HB_ٽيگ('N','A','H',' ')},	/* Western Durango Nahuatl -> Nahuatl */
+  {HB_ٽيگ('a','z','z',' '),	HB_ٽيگ('N','A','H',' ')},	/* Highland Puebla Nahuatl -> Nahuatl */
+  {HB_ٽيگ('b','a','d',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda [collection] */
+  {HB_ٽيگ('b','a','h',' '),	HB_ٽيگ('C','P','P',' ')},	/* Bahamas Creole English -> Creoles */
+  {HB_ٽيگ('b','a','i',' '),	HB_ٽيگ('B','M','L',' ')},	/* Bamileke [collection] */
+  {HB_ٽيگ('b','a','l',' '),	HB_ٽيگ('B','L','I',' ')},	/* Baluchi [macrolanguage] */
+  {HB_ٽيگ('b','b','j',' '),	HB_ٽيگ('B','M','L',' ')},	/* Ghomálá' -> Bamileke */
+  {HB_ٽيگ('b','b','p',' '),	HB_ٽيگ('B','A','D','0')},	/* West Central Banda -> Banda */
+  {HB_ٽيگ('b','b','z',' '),	HB_ٽيگ('A','R','A',' ')},	/* Babalia Creole Arabic (retired code) -> Arabic */
+  {HB_ٽيگ('b','c','c',' '),	HB_ٽيگ('B','L','I',' ')},	/* Southern Balochi -> Baluchi */
+  {HB_ٽيگ('b','c','i',' '),	HB_ٽيگ('B','A','U',' ')},	/* Baoulé -> Baulé */
+  {HB_ٽيگ('b','c','l',' '),	HB_ٽيگ('B','I','K',' ')},	/* Central Bikol -> Bikol */
+  {HB_ٽيگ('b','c','q',' '),	HB_ٽيگ('B','C','H',' ')},	/* Bench */
+  {HB_ٽيگ('b','c','r',' '),	HB_ٽيگ('A','T','H',' ')},	/* Babine -> Athapaskan */
+  {HB_ٽيگ('b','e','a',' '),	HB_ٽيگ('A','T','H',' ')},	/* Beaver -> Athapaskan */
+  {HB_ٽيگ('b','e','b',' '),	HB_ٽيگ('B','T','I',' ')},	/* Bebele -> Beti */
+  {HB_ٽيگ('b','e','r',' '),	HB_ٽيگ('B','B','R',' ')},	/* Berber [collection] */
+  {HB_ٽيگ('b','e','w',' '),	HB_ٽيگ('C','P','P',' ')},	/* Betawi -> Creoles */
+  {HB_ٽيگ('b','f','l',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda-Ndélé -> Banda */
+  {HB_ٽيگ('b','f','q',' '),	HB_ٽيگ('B','A','D',' ')},	/* Badaga */
+  {HB_ٽيگ('b','f','t',' '),	HB_ٽيگ('B','L','T',' ')},	/* Balti */
+  {HB_ٽيگ('b','f','u',' '),	HB_ٽيگ('L','A','H',' ')},	/* Gahri -> Lahuli */
+  {HB_ٽيگ('b','f','y',' '),	HB_ٽيگ('B','A','G',' ')},	/* Bagheli -> Baghelkhandi */
+  {HB_ٽيگ('b','g','n',' '),	HB_ٽيگ('B','L','I',' ')},	/* Western Balochi -> Baluchi */
+  {HB_ٽيگ('b','g','p',' '),	HB_ٽيگ('B','L','I',' ')},	/* Eastern Balochi -> Baluchi */
+  {HB_ٽيگ('b','g','r',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Bawm Chin -> Chin */
+  {HB_ٽيگ('b','h','b',' '),	HB_ٽيگ('B','H','I',' ')},	/* Bhili */
+  {HB_ٽيگ('b','h','k',' '),	HB_ٽيگ('B','I','K',' ')},	/* Albay Bicolano (retired code) -> Bikol */
+  {HB_ٽيگ('b','h','r',' '),	HB_ٽيگ('M','L','G',' ')},	/* Bara Malagasy -> Malagasy */
+  {HB_ٽيگ('b','i','n',' '),	HB_ٽيگ('E','D','O',' ')},	/* Edo */
+  {HB_ٽيگ('b','i','u',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Biete -> Chin */
+  {HB_ٽيگ('b','j','n',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Banjar -> Malay */
+  {HB_ٽيگ('b','j','o',' '),	HB_ٽيگ('B','A','D','0')},	/* Mid-Southern Banda -> Banda */
+  {HB_ٽيگ('b','j','q',' '),	HB_ٽيگ('M','L','G',' ')},	/* Southern Betsimisaraka Malagasy (retired code) -> Malagasy */
+  {HB_ٽيگ('b','j','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Bajan -> Creoles */
+  {HB_ٽيگ('b','j','t',' '),	HB_ٽيگ('B','L','N',' ')},	/* Balanta-Ganja -> Balante */
+  {HB_ٽيگ('b','k','o',' '),	HB_ٽيگ('B','M','L',' ')},	/* Kwa' -> Bamileke */
+  {HB_ٽيگ('b','l','a',' '),	HB_ٽيگ('B','K','F',' ')},	/* Siksika -> Blackfoot */
+  {HB_ٽيگ('b','l','e',' '),	HB_ٽيگ('B','L','N',' ')},	/* Balanta-Kentohe -> Balante */
+  {HB_ٽيگ('b','l','g',' '),	HB_ٽيگ('I','B','A',' ')},	/* Balau (retired code) -> Iban */
+  {HB_ٽيگ('b','l','n',' '),	HB_ٽيگ('B','I','K',' ')},	/* Southern Catanduanes Bikol -> Bikol */
+  {HB_ٽيگ('b','m','m',' '),	HB_ٽيگ('M','L','G',' ')},	/* Northern Betsimisaraka Malagasy -> Malagasy */
+  {HB_ٽيگ('b','p','d',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda-Banda -> Banda */
+  {HB_ٽيگ('b','p','l',' '),	HB_ٽيگ('C','P','P',' ')},	/* Broome Pearling Lugger Pidgin -> Creoles */
+  {HB_ٽيگ('b','p','q',' '),	HB_ٽيگ('C','P','P',' ')},	/* Banda Malay -> Creoles */
+  {HB_ٽيگ('b','q','i',' '),	HB_ٽيگ('L','R','C',' ')},	/* Bakhtiari -> Luri */
+  {HB_ٽيگ('b','q','k',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda-Mbrès -> Banda */
+  {HB_ٽيگ('b','r','a',' '),	HB_ٽيگ('B','R','I',' ')},	/* Braj -> Braj Bhasha */
+  {HB_ٽيگ('b','r','c',' '),	HB_ٽيگ('C','P','P',' ')},	/* Berbice Creole Dutch -> Creoles */
+  {HB_ٽيگ('b','t','b',' '),	HB_ٽيگ('B','T','I',' ')},	/* Beti (Cameroon) (retired code) */
+  {HB_ٽيگ('b','t','j',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Bacanese Malay -> Malay */
+  {HB_ٽيگ('b','t','o',' '),	HB_ٽيگ('B','I','K',' ')},	/* Rinconada Bikol -> Bikol */
+  {HB_ٽيگ('b','u','m',' '),	HB_ٽيگ('B','T','I',' ')},	/* Bulu (Cameroon) -> Beti */
+  {HB_ٽيگ('b','v','e',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Berau Malay -> Malay */
+  {HB_ٽيگ('b','v','u',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Bukit Malay -> Malay */
+  {HB_ٽيگ('b','w','e',' '),	HB_ٽيگ('K','R','N',' ')},	/* Bwe Karen -> Karen */
+  {HB_ٽيگ('b','x','k',' '),	HB_ٽيگ('L','U','H',' ')},	/* Bukusu -> Luyia */
+  {HB_ٽيگ('b','x','o',' '),	HB_ٽيگ('C','P','P',' ')},	/* Barikanchi -> Creoles */
+  {HB_ٽيگ('b','x','p',' '),	HB_ٽيگ('B','T','I',' ')},	/* Bebil -> Beti */
+  {HB_ٽيگ('b','x','r',' '),	HB_ٽيگ('R','B','U',' ')},	/* Russia Buriat -> Russian Buriat */
+  {HB_ٽيگ('b','y','n',' '),	HB_ٽيگ('B','I','L',' ')},	/* Bilin -> Bilen */
+  {HB_ٽيگ('b','z','c',' '),	HB_ٽيگ('M','L','G',' ')},	/* Southern Betsimisaraka Malagasy -> Malagasy */
+  {HB_ٽيگ('b','z','j',' '),	HB_ٽيگ('C','P','P',' ')},	/* Belize Kriol English -> Creoles */
+  {HB_ٽيگ('b','z','k',' '),	HB_ٽيگ('C','P','P',' ')},	/* Nicaragua Creole English -> Creoles */
+  {HB_ٽيگ('c','a','a',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Chortí -> Mayan */
+  {HB_ٽيگ('c','a','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Chuj -> Mayan */
+  {HB_ٽيگ('c','b','l',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Bualkhaw Chin -> Chin */
+  {HB_ٽيگ('c','c','l',' '),	HB_ٽيگ('C','P','P',' ')},	/* Cutchi-Swahili -> Creoles */
+  {HB_ٽيگ('c','c','m',' '),	HB_ٽيگ('C','P','P',' ')},	/* Malaccan Creole Malay -> Creoles */
+  {HB_ٽيگ('c','c','o',' '),	HB_ٽيگ('C','C','H','N')},	/* Comaltepec Chinantec -> Chinantec */
+  {HB_ٽيگ('c','c','q',' '),	HB_ٽيگ('A','R','K',' ')},	/* Chaungtha (retired code) -> Rakhine */
+  {HB_ٽيگ('c','d','o',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Min Dong Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','e','k',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Eastern Khumi Chin -> Chin */
+  {HB_ٽيگ('c','e','y',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Laoktu Chin -> Chin */
+  {HB_ٽيگ('c','h','f',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Tabasco Chontal -> Mayan */
+  {HB_ٽيگ('c','h','j',' '),	HB_ٽيگ('C','C','H','N')},	/* Ojitlán Chinantec -> Chinantec */
+  {HB_ٽيگ('c','h','k',' '),	HB_ٽيگ('C','H','K','0')},	/* Chuukese */
+  {HB_ٽيگ('c','h','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Chinook jargon -> Creoles */
+  {HB_ٽيگ('c','h','q',' '),	HB_ٽيگ('C','C','H','N')},	/* Quiotepec Chinantec -> Chinantec */
+  {HB_ٽيگ('c','h','z',' '),	HB_ٽيگ('C','C','H','N')},	/* Ozumacín Chinantec -> Chinantec */
+  {HB_ٽيگ('c','i','w',' '),	HB_ٽيگ('O','J','B',' ')},	/* Chippewa -> Ojibway */
+  {HB_ٽيگ('c','j','y',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Jinyu Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','k','a',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Khumi Awa Chin (retired code) -> Chin */
+  {HB_ٽيگ('c','k','b',' '),	HB_ٽيگ('K','U','R',' ')},	/* Central Kurdish -> Kurdish */
+  {HB_ٽيگ('c','k','n',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Kaang Chin -> Chin */
+  {HB_ٽيگ('c','k','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Tayo -> Creoles */
+  {HB_ٽيگ('c','k','t',' '),	HB_ٽيگ('C','H','K',' ')},	/* Chukot -> Chukchi */
+  {HB_ٽيگ('c','k','z',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Cakchiquel-Quiché Mixed Language -> Mayan */
+  {HB_ٽيگ('c','l','c',' '),	HB_ٽيگ('A','T','H',' ')},	/* Chilcotin -> Athapaskan */
+  {HB_ٽيگ('c','l','d',' '),	HB_ٽيگ('S','Y','R',' ')},	/* Chaldean Neo-Aramaic -> Syriac */
+  {HB_ٽيگ('c','l','e',' '),	HB_ٽيگ('C','C','H','N')},	/* Lealao Chinantec -> Chinantec */
+  {HB_ٽيگ('c','l','j',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Laitu Chin -> Chin */
+  {HB_ٽيگ('c','l','s',' '),	HB_ٽيگ('S','A','N',' ')},	/* Classical Sanskrit -> Sanskrit */
+  {HB_ٽيگ('c','l','t',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Lautu Chin -> Chin */
+  {HB_ٽيگ('c','m','n',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Mandarin Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','m','r',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Mro-Khimi Chin -> Chin */
+  {HB_ٽيگ('c','n','b',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Chinbon Chin -> Chin */
+  {HB_ٽيگ('c','n','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Hakha Chin -> Chin */
+  {HB_ٽيگ('c','n','k',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Khumi Chin -> Chin */
+  {HB_ٽيگ('c','n','l',' '),	HB_ٽيگ('C','C','H','N')},	/* Lalana Chinantec -> Chinantec */
+  {HB_ٽيگ('c','n','p',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Northern Ping Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','n','r',' '),	HB_ٽيگ('S','R','B',' ')},	/* Montenegrin -> Serbian */
+  {HB_ٽيگ('c','n','t',' '),	HB_ٽيگ('C','C','H','N')},	/* Tepetotutla Chinantec -> Chinantec */
+  {HB_ٽيگ('c','n','u',' '),	HB_ٽيگ('B','B','R',' ')},	/* Chenoua -> Berber */
+  {HB_ٽيگ('c','n','w',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Ngawn Chin -> Chin */
+  {HB_ٽيگ('c','o','a',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Cocos Islands Malay -> Malay */
+  {HB_ٽيگ('c','o','b',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Chicomuceltec -> Mayan */
+  {HB_ٽيگ('c','o','q',' '),	HB_ٽيگ('A','T','H',' ')},	/* Coquille -> Athapaskan */
+  {HB_ٽيگ('c','p','a',' '),	HB_ٽيگ('C','C','H','N')},	/* Palantla Chinantec -> Chinantec */
+  {HB_ٽيگ('c','p','e',' '),	HB_ٽيگ('C','P','P',' ')},	/* English-based creoles and pidgins [collection] -> Creoles */
+  {HB_ٽيگ('c','p','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* French-based creoles and pidgins [collection] -> Creoles */
+  {HB_ٽيگ('c','p','i',' '),	HB_ٽيگ('C','P','P',' ')},	/* Chinese Pidgin English -> Creoles */
+  {HB_ٽيگ('c','p','x',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Pu-Xian Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','q','d',' '),	HB_ٽيگ('H','M','N',' ')},	/* Chuanqiandian Cluster Miao -> Hmong */
+  {HB_ٽيگ('c','r','h',' '),	HB_ٽيگ('C','R','T',' ')},	/* Crimean Tatar */
+  {HB_ٽيگ('c','r','i',' '),	HB_ٽيگ('C','P','P',' ')},	/* Sãotomense -> Creoles */
+  {HB_ٽيگ('c','r','p',' '),	HB_ٽيگ('C','P','P',' ')},	/* Creoles and pidgins [collection] -> Creoles */
+  {HB_ٽيگ('c','r','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Seselwa Creole French -> Creoles */
+  {HB_ٽيگ('c','s','a',' '),	HB_ٽيگ('C','C','H','N')},	/* Chiltepec Chinantec -> Chinantec */
+  {HB_ٽيگ('c','s','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Asho Chin -> Chin */
+  {HB_ٽيگ('c','s','j',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Songlai Chin -> Chin */
+  {HB_ٽيگ('c','s','o',' '),	HB_ٽيگ('C','C','H','N')},	/* Sochiapam Chinantec -> Chinantec */
+  {HB_ٽيگ('c','s','p',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Southern Ping Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','s','v',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Sumtu Chin -> Chin */
+  {HB_ٽيگ('c','s','y',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Siyin Chin -> Chin */
+  {HB_ٽيگ('c','t','c',' '),	HB_ٽيگ('A','T','H',' ')},	/* Chetco -> Athapaskan */
+  {HB_ٽيگ('c','t','d',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Tedim Chin -> Chin */
+  {HB_ٽيگ('c','t','e',' '),	HB_ٽيگ('C','C','H','N')},	/* Tepinapa Chinantec -> Chinantec */
+  {HB_ٽيگ('c','t','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Thaiphum Chin -> Chin */
+  {HB_ٽيگ('c','t','l',' '),	HB_ٽيگ('C','C','H','N')},	/* Tlacoatzintepec Chinantec -> Chinantec */
+  {HB_ٽيگ('c','t','s',' '),	HB_ٽيگ('B','I','K',' ')},	/* Northern Catanduanes Bikol -> Bikol */
+  {HB_ٽيگ('c','t','u',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Chol -> Mayan */
+  {HB_ٽيگ('c','u','c',' '),	HB_ٽيگ('C','C','H','N')},	/* Usila Chinantec -> Chinantec */
+  {HB_ٽيگ('c','v','n',' '),	HB_ٽيگ('C','C','H','N')},	/* Valle Nacional Chinantec -> Chinantec */
+  {HB_ٽيگ('c','z','h',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Huizhou Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','z','o',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Min Zhong Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('c','z','t',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Zotung Chin -> Chin */
+  {HB_ٽيگ('d','a','o',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Daai Chin -> Chin */
+  {HB_ٽيگ('d','a','p',' '),	HB_ٽيگ('N','I','S',' ')},	/* Nisi (India) (retired code) */
+  {HB_ٽيگ('d','c','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Negerhollands -> Creoles */
+  {HB_ٽيگ('d','e','p',' '),	HB_ٽيگ('C','P','P',' ')},	/* Pidgin Delaware -> Creoles */
+  {HB_ٽيگ('d','g','r',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tlicho -> Athapaskan */
+  {HB_ٽيگ('d','h','d',' '),	HB_ٽيگ('M','A','W',' ')},	/* Dhundari -> Marwari */
+  {HB_ٽيگ('d','i','b',' '),	HB_ٽيگ('D','N','K',' ')},	/* South Central Dinka -> Dinka */
+  {HB_ٽيگ('d','i','k',' '),	HB_ٽيگ('D','N','K',' ')},	/* Southwestern Dinka -> Dinka */
+  {HB_ٽيگ('d','i','n',' '),	HB_ٽيگ('D','N','K',' ')},	/* Dinka [macrolanguage] */
+  {HB_ٽيگ('d','i','p',' '),	HB_ٽيگ('D','N','K',' ')},	/* Northeastern Dinka -> Dinka */
+  {HB_ٽيگ('d','i','w',' '),	HB_ٽيگ('D','N','K',' ')},	/* Northwestern Dinka -> Dinka */
+  {HB_ٽيگ('d','j','e',' '),	HB_ٽيگ('D','J','R',' ')},	/* Zarma */
+  {HB_ٽيگ('d','j','k',' '),	HB_ٽيگ('C','P','P',' ')},	/* Eastern Maroon Creole -> Creoles */
+  {HB_ٽيگ('d','j','r',' '),	HB_ٽيگ('D','J','R','0')},	/* Djambarrpuyngu */
+  {HB_ٽيگ('d','k','s',' '),	HB_ٽيگ('D','N','K',' ')},	/* Southeastern Dinka -> Dinka */
+  {HB_ٽيگ('d','n','g',' '),	HB_ٽيگ('D','U','N',' ')},	/* Dungan */
+  {HB_ٽيگ('d','o','i',' '),	HB_ٽيگ('D','G','R',' ')},	/* Dogri (macrolanguage) [macrolanguage] */
+  {HB_ٽيگ('d','r','h',' '),	HB_ٽيگ('M','N','G',' ')},	/* Darkhat (retired code) -> Mongolian */
+  {HB_ٽيگ('d','s','b',' '),	HB_ٽيگ('L','S','B',' ')},	/* Lower Sorbian */
+  {HB_ٽيگ('d','t','y',' '),	HB_ٽيگ('N','E','P',' ')},	/* Dotyali -> Nepali */
+  {HB_ٽيگ('d','u','p',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Duano -> Malay */
+  {HB_ٽيگ('d','w','k',' '),	HB_ٽيگ('K','U','I',' ')},	/* Dawik Kui -> Kui */
+  {HB_ٽيگ('d','w','u',' '),	HB_ٽيگ('D','U','J',' ')},	/* Dhuwal */
+  {HB_ٽيگ('d','w','y',' '),	HB_ٽيگ('D','U','J',' ')},	/* Dhuwaya -> Dhuwal */
+  {HB_ٽيگ('d','y','u',' '),	HB_ٽيگ('J','U','L',' ')},	/* Dyula -> Jula */
+  {HB_ٽيگ('e','k','k',' '),	HB_ٽيگ('E','T','I',' ')},	/* Standard Estonian -> Estonian */
+  {HB_ٽيگ('e','k','y',' '),	HB_ٽيگ('K','R','N',' ')},	/* Eastern Kayah -> Karen */
+  {HB_ٽيگ('e','m','y',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Epigraphic Mayan -> Mayan */
+  {HB_ٽيگ('e','n','b',' '),	HB_ٽيگ('K','A','L',' ')},	/* Markweeta -> Kalenjin */
+  {HB_ٽيگ('e','n','f',' '),	HB_ٽيگ('F','N','E',' ')},	/* Forest Enets */
+  {HB_ٽيگ('e','n','h',' '),	HB_ٽيگ('T','N','E',' ')},	/* Tundra Enets */
+  {HB_ٽيگ('e','s','g',' '),	HB_ٽيگ('G','O','N',' ')},	/* Aheri Gondi -> Gondi */
+  {HB_ٽيگ('e','s','i',' '),	HB_ٽيگ('I','P','K',' ')},	/* North Alaskan Inupiatun -> Inupiat */
+  {HB_ٽيگ('e','s','k',' '),	HB_ٽيگ('I','P','K',' ')},	/* Northwest Alaska Inupiatun -> Inupiat */
+  {HB_ٽيگ('e','t','o',' '),	HB_ٽيگ('B','T','I',' ')},	/* Eton (Cameroon) -> Beti */
+  {HB_ٽيگ('e','v','e',' '),	HB_ٽيگ('E','V','N',' ')},	/* Even */
+  {HB_ٽيگ('e','v','n',' '),	HB_ٽيگ('E','V','K',' ')},	/* Evenki */
+  {HB_ٽيگ('e','w','o',' '),	HB_ٽيگ('B','T','I',' ')},	/* Ewondo -> Beti */
+  {HB_ٽيگ('e','y','o',' '),	HB_ٽيگ('K','A','L',' ')},	/* Keiyo -> Kalenjin */
+  {HB_ٽيگ('f','a','b',' '),	HB_ٽيگ('C','P','P',' ')},	/* Fa d'Ambu -> Creoles */
+  {HB_ٽيگ('f','b','l',' '),	HB_ٽيگ('B','I','K',' ')},	/* West Albay Bikol -> Bikol */
+  {HB_ٽيگ('f','f','m',' '),	HB_ٽيگ('F','U','L',' ')},	/* Maasina Fulfulde -> Fulah */
+  {HB_ٽيگ('f','i','l',' '),	HB_ٽيگ('P','I','L',' ')},	/* Filipino */
+  {HB_ٽيگ('f','n','g',' '),	HB_ٽيگ('C','P','P',' ')},	/* Fanagalo -> Creoles */
+  {HB_ٽيگ('f','p','e',' '),	HB_ٽيگ('C','P','P',' ')},	/* Fernando Po Creole English -> Creoles */
+  {HB_ٽيگ('f','u','b',' '),	HB_ٽيگ('F','U','L',' ')},	/* Adamawa Fulfulde -> Fulah */
+  {HB_ٽيگ('f','u','c',' '),	HB_ٽيگ('F','U','L',' ')},	/* Pulaar -> Fulah */
+  {HB_ٽيگ('f','u','e',' '),	HB_ٽيگ('F','U','L',' ')},	/* Borgu Fulfulde -> Fulah */
+  {HB_ٽيگ('f','u','h',' '),	HB_ٽيگ('F','U','L',' ')},	/* Western Niger Fulfulde -> Fulah */
+  {HB_ٽيگ('f','u','i',' '),	HB_ٽيگ('F','U','L',' ')},	/* Bagirmi Fulfulde -> Fulah */
+  {HB_ٽيگ('f','u','q',' '),	HB_ٽيگ('F','U','L',' ')},	/* Central-Eastern Niger Fulfulde -> Fulah */
+  {HB_ٽيگ('f','u','r',' '),	HB_ٽيگ('F','R','L',' ')},	/* Friulian */
+  {HB_ٽيگ('g','a','a',' '),	HB_ٽيگ('G','A','D',' ')},	/* Ga */
+  {HB_ٽيگ('g','a','c',' '),	HB_ٽيگ('C','P','P',' ')},	/* Mixed Great Andamanese -> Creoles */
+  {HB_ٽيگ('g','a','n',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Gan Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('g','a','x',' '),	HB_ٽيگ('O','R','O',' ')},	/* Borana-Arsi-Guji Oromo -> Oromo */
+  {HB_ٽيگ('g','a','z',' '),	HB_ٽيگ('O','R','O',' ')},	/* West Central Oromo -> Oromo */
+  {HB_ٽيگ('g','b','m',' '),	HB_ٽيگ('G','A','W',' ')},	/* Garhwali */
+  {HB_ٽيگ('g','c','e',' '),	HB_ٽيگ('A','T','H',' ')},	/* Galice -> Athapaskan */
+  {HB_ٽيگ('g','c','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* Guadeloupean Creole French -> Creoles */
+  {HB_ٽيگ('g','c','l',' '),	HB_ٽيگ('C','P','P',' ')},	/* Grenadian Creole English -> Creoles */
+  {HB_ٽيگ('g','c','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Guianese Creole French -> Creoles */
+  {HB_ٽيگ('g','d','a',' '),	HB_ٽيگ('R','A','J',' ')},	/* Gade Lohar -> Rajasthani */
+  {HB_ٽيگ('g','g','o',' '),	HB_ٽيگ('G','O','N',' ')},	/* Southern Gondi (retired code) -> Gondi */
+  {HB_ٽيگ('g','h','a',' '),	HB_ٽيگ('B','B','R',' ')},	/* Ghadamès -> Berber */
+  {HB_ٽيگ('g','h','c',' '),	HB_ٽيگ('I','R','T',' ')},	/* Hiberno-Scottish Gaelic -> Irish Traditional */
+  {HB_ٽيگ('g','h','k',' '),	HB_ٽيگ('K','R','N',' ')},	/* Geko Karen -> Karen */
+  {HB_ٽيگ('g','h','o',' '),	HB_ٽيگ('B','B','R',' ')},	/* Ghomara -> Berber */
+  {HB_ٽيگ('g','i','b',' '),	HB_ٽيگ('C','P','P',' ')},	/* Gibanawa -> Creoles */
+  {HB_ٽيگ('g','i','l',' '),	HB_ٽيگ('G','I','L','0')},	/* Kiribati (Gilbertese) */
+  {HB_ٽيگ('g','j','u',' '),	HB_ٽيگ('R','A','J',' ')},	/* Gujari -> Rajasthani */
+  {HB_ٽيگ('g','l','d',' '),	HB_ٽيگ('N','A','N',' ')},	/* Nanai */
+  {HB_ٽيگ('g','n','b',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Gangte -> Chin */
+  {HB_ٽيگ('g','n','o',' '),	HB_ٽيگ('G','O','N',' ')},	/* Northern Gondi -> Gondi */
+  {HB_ٽيگ('g','n','w',' '),	HB_ٽيگ('G','U','A',' ')},	/* Western Bolivian Guaraní -> Guarani */
+  {HB_ٽيگ('g','o','m',' '),	HB_ٽيگ('K','O','K',' ')},	/* Goan Konkani -> Konkani */
+  {HB_ٽيگ('g','o','q',' '),	HB_ٽيگ('C','P','P',' ')},	/* Gorap -> Creoles */
+  {HB_ٽيگ('g','o','x',' '),	HB_ٽيگ('B','A','D','0')},	/* Gobu -> Banda */
+  {HB_ٽيگ('g','p','e',' '),	HB_ٽيگ('C','P','P',' ')},	/* Ghanaian Pidgin English -> Creoles */
+  {HB_ٽيگ('g','r','r',' '),	HB_ٽيگ('B','B','R',' ')},	/* Taznatit -> Berber */
+  {HB_ٽيگ('g','r','t',' '),	HB_ٽيگ('G','R','O',' ')},	/* Garo */
+  {HB_ٽيگ('g','r','u',' '),	HB_ٽيگ('S','O','G',' ')},	/* Kistane -> Sodo Gurage */
+  {HB_ٽيگ('g','s','w',' '),	HB_ٽيگ('A','L','S',' ')},	/* Alsatian */
+  {HB_ٽيگ('g','u','g',' '),	HB_ٽيگ('G','U','A',' ')},	/* Paraguayan Guaraní -> Guarani */
+  {HB_ٽيگ('g','u','i',' '),	HB_ٽيگ('G','U','A',' ')},	/* Eastern Bolivian Guaraní -> Guarani */
+  {HB_ٽيگ('g','u','k',' '),	HB_ٽيگ('G','M','Z',' ')},	/* Gumuz */
+  {HB_ٽيگ('g','u','l',' '),	HB_ٽيگ('C','P','P',' ')},	/* Sea Island Creole English -> Creoles */
+  {HB_ٽيگ('g','u','n',' '),	HB_ٽيگ('G','U','A',' ')},	/* Mbyá Guaraní -> Guarani */
+  {HB_ٽيگ('g','w','i',' '),	HB_ٽيگ('A','T','H',' ')},	/* Gwichʼin -> Athapaskan */
+  {HB_ٽيگ('g','y','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Guyanese Creole English -> Creoles */
+  {HB_ٽيگ('h','a','a',' '),	HB_ٽيگ('A','T','H',' ')},	/* Hän -> Athapaskan */
+  {HB_ٽيگ('h','a','e',' '),	HB_ٽيگ('O','R','O',' ')},	/* Eastern Oromo -> Oromo */
+  {HB_ٽيگ('h','a','i',' '),	HB_ٽيگ('H','A','I','0')},	/* Haida [macrolanguage] */
+  {HB_ٽيگ('h','a','k',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Hakka Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('h','a','r',' '),	HB_ٽيگ('H','R','I',' ')},	/* Harari */
+  {HB_ٽيگ('h','a','x',' '),	HB_ٽيگ('H','A','I','0')},	/* Southern Haida -> Haida */
+  {HB_ٽيگ('h','c','a',' '),	HB_ٽيگ('C','P','P',' ')},	/* Andaman Creole Hindi -> Creoles */
+  {HB_ٽيگ('h','d','n',' '),	HB_ٽيگ('H','A','I','0')},	/* Northern Haida -> Haida */
+  {HB_ٽيگ('h','e','a',' '),	HB_ٽيگ('H','M','N',' ')},	/* Northern Qiandong Miao -> Hmong */
+  {HB_ٽيگ('h','j','i',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Haji -> Malay */
+  {HB_ٽيگ('h','l','t',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Matu Chin -> Chin */
+  {HB_ٽيگ('h','m','a',' '),	HB_ٽيگ('H','M','N',' ')},	/* Southern Mashan Hmong -> Hmong */
+  {HB_ٽيگ('h','m','c',' '),	HB_ٽيگ('H','M','N',' ')},	/* Central Huishui Hmong -> Hmong */
+  {HB_ٽيگ('h','m','e',' '),	HB_ٽيگ('H','M','N',' ')},	/* Eastern Huishui Hmong -> Hmong */
+  {HB_ٽيگ('h','m','g',' '),	HB_ٽيگ('H','M','N',' ')},	/* Southwestern Guiyang Hmong -> Hmong */
+  {HB_ٽيگ('h','m','h',' '),	HB_ٽيگ('H','M','N',' ')},	/* Southwestern Huishui Hmong -> Hmong */
+  {HB_ٽيگ('h','m','i',' '),	HB_ٽيگ('H','M','N',' ')},	/* Northern Huishui Hmong -> Hmong */
+  {HB_ٽيگ('h','m','j',' '),	HB_ٽيگ('H','M','N',' ')},	/* Ge -> Hmong */
+  {HB_ٽيگ('h','m','l',' '),	HB_ٽيگ('H','M','N',' ')},	/* Luopohe Hmong -> Hmong */
+  {HB_ٽيگ('h','m','m',' '),	HB_ٽيگ('H','M','N',' ')},	/* Central Mashan Hmong -> Hmong */
+  {HB_ٽيگ('h','m','p',' '),	HB_ٽيگ('H','M','N',' ')},	/* Northern Mashan Hmong -> Hmong */
+  {HB_ٽيگ('h','m','q',' '),	HB_ٽيگ('H','M','N',' ')},	/* Eastern Qiandong Miao -> Hmong */
+  {HB_ٽيگ('h','m','r',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Hmar -> Chin */
+  {HB_ٽيگ('h','m','s',' '),	HB_ٽيگ('H','M','N',' ')},	/* Southern Qiandong Miao -> Hmong */
+  {HB_ٽيگ('h','m','w',' '),	HB_ٽيگ('H','M','N',' ')},	/* Western Mashan Hmong -> Hmong */
+  {HB_ٽيگ('h','m','y',' '),	HB_ٽيگ('H','M','N',' ')},	/* Southern Guiyang Hmong -> Hmong */
+  {HB_ٽيگ('h','n','e',' '),	HB_ٽيگ('C','H','H',' ')},	/* Chhattisgarhi -> Chattisgarhi */
+  {HB_ٽيگ('h','n','j',' '),	HB_ٽيگ('H','M','N',' ')},	/* Hmong Njua -> Hmong */
+  {HB_ٽيگ('h','n','m',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Hainanese -> Chinese, Simplified */
+  {HB_ٽيگ('h','n','o',' '),	HB_ٽيگ('H','N','D',' ')},	/* Northern Hindko -> Hindko */
+  {HB_ٽيگ('h','o','c',' '),	HB_ٽيگ('H','O',' ',' ')},	/* Ho */
+  {HB_ٽيگ('h','o','i',' '),	HB_ٽيگ('A','T','H',' ')},	/* Holikachuk -> Athapaskan */
+  {HB_ٽيگ('h','r','a',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Hrangkhol -> Chin */
+  {HB_ٽيگ('h','r','m',' '),	HB_ٽيگ('H','M','N',' ')},	/* Horned Miao -> Hmong */
+  {HB_ٽيگ('h','s','b',' '),	HB_ٽيگ('U','S','B',' ')},	/* Upper Sorbian */
+  {HB_ٽيگ('h','s','n',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Xiang Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('h','u','j',' '),	HB_ٽيگ('H','M','N',' ')},	/* Northern Guiyang Hmong -> Hmong */
+  {HB_ٽيگ('h','u','p',' '),	HB_ٽيگ('A','T','H',' ')},	/* Hupa -> Athapaskan */
+  {HB_ٽيگ('h','u','s',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Huastec -> Mayan */
+  {HB_ٽيگ('h','w','c',' '),	HB_ٽيگ('C','P','P',' ')},	/* Hawai'i Creole English -> Creoles */
+  {HB_ٽيگ('h','y','w',' '),	HB_ٽيگ('H','Y','E',' ')},	/* Western Armenian -> Armenian */
+  {HB_ٽيگ('i','b','y',' '),	HB_ٽيگ('I','J','O',' ')},	/* Ibani -> Ijo */
+  {HB_ٽيگ('i','c','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Islander Creole English -> Creoles */
+  {HB_ٽيگ('i','d','a',' '),	HB_ٽيگ('L','U','H',' ')},	/* Idakho-Isukha-Tiriki -> Luyia */
+  {HB_ٽيگ('i','d','b',' '),	HB_ٽيگ('C','P','P',' ')},	/* Indo-Portuguese -> Creoles */
+  {HB_ٽيگ('i','g','b',' '),	HB_ٽيگ('E','B','I',' ')},	/* Ebira */
+  {HB_ٽيگ('i','h','b',' '),	HB_ٽيگ('C','P','P',' ')},	/* Iha Based Pidgin -> Creoles */
+  {HB_ٽيگ('i','j','c',' '),	HB_ٽيگ('I','J','O',' ')},	/* Izon -> Ijo */
+  {HB_ٽيگ('i','j','e',' '),	HB_ٽيگ('I','J','O',' ')},	/* Biseni -> Ijo */
+  {HB_ٽيگ('i','j','n',' '),	HB_ٽيگ('I','J','O',' ')},	/* Kalabari -> Ijo */
+  {HB_ٽيگ('i','j','s',' '),	HB_ٽيگ('I','J','O',' ')},	/* Southeast Ijo -> Ijo */
+  {HB_ٽيگ('i','k','t',' '),	HB_ٽيگ('I','N','U',' ')},	/* Inuinnaqtun -> Inuktitut */
+  {HB_ٽيگ('i','n','g',' '),	HB_ٽيگ('A','T','H',' ')},	/* Degexit'an -> Athapaskan */
+  {HB_ٽيگ('i','n','h',' '),	HB_ٽيگ('I','N','G',' ')},	/* Ingush */
+  {HB_ٽيگ('i','t','z',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Itzá -> Mayan */
+  {HB_ٽيگ('i','x','l',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Ixil -> Mayan */
+  {HB_ٽيگ('j','a','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Popti' -> Mayan */
+  {HB_ٽيگ('j','a','k',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Jakun -> Malay */
+  {HB_ٽيگ('j','a','x',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Jambi Malay -> Malay */
+  {HB_ٽيگ('j','b','e',' '),	HB_ٽيگ('B','B','R',' ')},	/* Judeo-Berber -> Berber */
+  {HB_ٽيگ('j','b','n',' '),	HB_ٽيگ('B','B','R',' ')},	/* Nafusi -> Berber */
+  {HB_ٽيگ('j','g','o',' '),	HB_ٽيگ('B','M','L',' ')},	/* Ngomba -> Bamileke */
+  {HB_ٽيگ('j','k','m',' '),	HB_ٽيگ('K','R','N',' ')},	/* Mobwa Karen -> Karen */
+  {HB_ٽيگ('j','k','p',' '),	HB_ٽيگ('K','R','N',' ')},	/* Paku Karen -> Karen */
+  {HB_ٽيگ('j','v','d',' '),	HB_ٽيگ('C','P','P',' ')},	/* Javindo -> Creoles */
+  {HB_ٽيگ('k','a','a',' '),	HB_ٽيگ('K','R','K',' ')},	/* Karakalpak */
+  {HB_ٽيگ('k','a','m',' '),	HB_ٽيگ('K','M','B',' ')},	/* Kamba (Kenya) */
+  {HB_ٽيگ('k','a','r',' '),	HB_ٽيگ('K','R','N',' ')},	/* Karen [collection] */
+  {HB_ٽيگ('k','b','d',' '),	HB_ٽيگ('K','A','B',' ')},	/* Kabardian */
+  {HB_ٽيگ('k','b','y',' '),	HB_ٽيگ('K','N','R',' ')},	/* Manga Kanuri -> Kanuri */
+  {HB_ٽيگ('k','c','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Nubi -> Creoles */
+  {HB_ٽيگ('k','d','r',' '),	HB_ٽيگ('K','R','M',' ')},	/* Karaim */
+  {HB_ٽيگ('k','d','t',' '),	HB_ٽيگ('K','U','Y',' ')},	/* Kuy */
+  {HB_ٽيگ('k','e','x',' '),	HB_ٽيگ('K','K','N',' ')},	/* Kukna -> Kokni */
+  {HB_ٽيگ('k','f','a',' '),	HB_ٽيگ('K','O','D',' ')},	/* Kodava -> Kodagu */
+  {HB_ٽيگ('k','f','r',' '),	HB_ٽيگ('K','A','C',' ')},	/* Kachhi -> Kachchi */
+  {HB_ٽيگ('k','f','x',' '),	HB_ٽيگ('K','U','L',' ')},	/* Kullu Pahari -> Kulvi */
+  {HB_ٽيگ('k','f','y',' '),	HB_ٽيگ('K','M','N',' ')},	/* Kumaoni */
+  {HB_ٽيگ('k','h','a',' '),	HB_ٽيگ('K','S','I',' ')},	/* Khasi */
+  {HB_ٽيگ('k','h','b',' '),	HB_ٽيگ('X','B','D',' ')},	/* Lü */
+  {HB_ٽيگ('k','h','k',' '),	HB_ٽيگ('M','N','G',' ')},	/* Halh Mongolian -> Mongolian */
+  {HB_ٽيگ('k','j','b',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Q'anjob'al -> Mayan */
+  {HB_ٽيگ('k','j','h',' '),	HB_ٽيگ('K','H','A',' ')},	/* Khakas -> Khakass */
+  {HB_ٽيگ('k','j','t',' '),	HB_ٽيگ('K','R','N',' ')},	/* Phrae Pwo Karen -> Karen */
+  {HB_ٽيگ('k','k','z',' '),	HB_ٽيگ('A','T','H',' ')},	/* Kaska -> Athapaskan */
+  {HB_ٽيگ('k','l','n',' '),	HB_ٽيگ('K','A','L',' ')},	/* Kalenjin [macrolanguage] */
+  {HB_ٽيگ('k','m','b',' '),	HB_ٽيگ('M','B','N',' ')},	/* Kimbundu -> Mbundu */
+  {HB_ٽيگ('k','m','r',' '),	HB_ٽيگ('K','U','R',' ')},	/* Northern Kurdish -> Kurdish */
+  {HB_ٽيگ('k','m','v',' '),	HB_ٽيگ('C','P','P',' ')},	/* Karipúna Creole French -> Creoles */
+  {HB_ٽيگ('k','m','w',' '),	HB_ٽيگ('K','M','O',' ')},	/* Komo (Democratic Republic of Congo) */
+  {HB_ٽيگ('k','n','c',' '),	HB_ٽيگ('K','N','R',' ')},	/* Central Kanuri -> Kanuri */
+  {HB_ٽيگ('k','n','g',' '),	HB_ٽيگ('K','O','N','0')},	/* Koongo -> Kongo */
+  {HB_ٽيگ('k','n','j',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Western Kanjobal -> Mayan */
+  {HB_ٽيگ('k','n','n',' '),	HB_ٽيگ('K','O','K',' ')},	/* Konkani */
+  {HB_ٽيگ('k','o','y',' '),	HB_ٽيگ('A','T','H',' ')},	/* Koyukon -> Athapaskan */
+  {HB_ٽيگ('k','p','e',' '),	HB_ٽيگ('K','P','L',' ')},	/* Kpelle [macrolanguage] */
+  {HB_ٽيگ('k','p','p',' '),	HB_ٽيگ('K','R','N',' ')},	/* Paku Karen (retired code) -> Karen */
+  {HB_ٽيگ('k','p','y',' '),	HB_ٽيگ('K','Y','K',' ')},	/* Koryak */
+  {HB_ٽيگ('k','q','s',' '),	HB_ٽيگ('K','I','S',' ')},	/* Northern Kissi -> Kisii */
+  {HB_ٽيگ('k','q','y',' '),	HB_ٽيگ('K','R','T',' ')},	/* Koorete */
+  {HB_ٽيگ('k','r','t',' '),	HB_ٽيگ('K','N','R',' ')},	/* Tumari Kanuri -> Kanuri */
+  {HB_ٽيگ('k','r','u',' '),	HB_ٽيگ('K','U','U',' ')},	/* Kurukh */
+  {HB_ٽيگ('k','s','h',' '),	HB_ٽيگ('K','S','H','0')},	/* Kölsch -> Ripuarian */
+  {HB_ٽيگ('k','s','s',' '),	HB_ٽيگ('K','I','S',' ')},	/* Southern Kisi -> Kisii */
+  {HB_ٽيگ('k','t','b',' '),	HB_ٽيگ('K','E','B',' ')},	/* Kambaata -> Kebena */
+  {HB_ٽيگ('k','t','u',' '),	HB_ٽيگ('K','O','N',' ')},	/* Kituba (Democratic Republic of Congo) -> Kikongo */
+  {HB_ٽيگ('k','t','w',' '),	HB_ٽيگ('A','T','H',' ')},	/* Kato -> Athapaskan */
+  {HB_ٽيگ('k','u','u',' '),	HB_ٽيگ('A','T','H',' ')},	/* Upper Kuskokwim -> Athapaskan */
+  {HB_ٽيگ('k','u','w',' '),	HB_ٽيگ('B','A','D','0')},	/* Kpagua -> Banda */
+  {HB_ٽيگ('k','v','b',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Kubu -> Malay */
+  {HB_ٽيگ('k','v','l',' '),	HB_ٽيگ('K','R','N',' ')},	/* Kayaw -> Karen */
+  {HB_ٽيگ('k','v','r',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Kerinci -> Malay */
+  {HB_ٽيگ('k','v','t',' '),	HB_ٽيگ('K','R','N',' ')},	/* Lahta Karen -> Karen */
+  {HB_ٽيگ('k','v','u',' '),	HB_ٽيگ('K','R','N',' ')},	/* Yinbaw Karen -> Karen */
+  {HB_ٽيگ('k','v','y',' '),	HB_ٽيگ('K','R','N',' ')},	/* Yintale Karen -> Karen */
+  {HB_ٽيگ('k','w','w',' '),	HB_ٽيگ('C','P','P',' ')},	/* Kwinti -> Creoles */
+  {HB_ٽيگ('k','w','y',' '),	HB_ٽيگ('K','O','N','0')},	/* San Salvador Kongo -> Kongo */
+  {HB_ٽيگ('k','x','c',' '),	HB_ٽيگ('K','M','S',' ')},	/* Konso -> Komso */
+  {HB_ٽيگ('k','x','d',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Brunei -> Malay */
+  {HB_ٽيگ('k','x','f',' '),	HB_ٽيگ('K','R','N',' ')},	/* Manumanaw Karen -> Karen */
+  {HB_ٽيگ('k','x','k',' '),	HB_ٽيگ('K','R','N',' ')},	/* Zayein Karen -> Karen */
+  {HB_ٽيگ('k','x','l',' '),	HB_ٽيگ('K','U','U',' ')},	/* Nepali Kurux (retired code) -> Kurukh */
+  {HB_ٽيگ('k','x','u',' '),	HB_ٽيگ('K','U','I',' ')},	/* Kui (India) (retired code) */
+  {HB_ٽيگ('l','a','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Lacandon -> Mayan */
+  {HB_ٽيگ('l','a','d',' '),	HB_ٽيگ('J','U','D',' ')},	/* Ladino */
+  {HB_ٽيگ('l','b','e',' '),	HB_ٽيگ('L','A','K',' ')},	/* Lak */
+  {HB_ٽيگ('l','b','j',' '),	HB_ٽيگ('L','D','K',' ')},	/* Ladakhi */
+  {HB_ٽيگ('l','b','l',' '),	HB_ٽيگ('B','I','K',' ')},	/* Libon Bikol -> Bikol */
+  {HB_ٽيگ('l','c','e',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Loncong -> Malay */
+  {HB_ٽيگ('l','c','f',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Lubu -> Malay */
+  {HB_ٽيگ('l','d','i',' '),	HB_ٽيگ('K','O','N','0')},	/* Laari -> Kongo */
+  {HB_ٽيگ('l','i','f',' '),	HB_ٽيگ('L','M','B',' ')},	/* Limbu */
+  {HB_ٽيگ('l','i','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Liberian English -> Creoles */
+  {HB_ٽيگ('l','i','w',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Col -> Malay */
+  {HB_ٽيگ('l','i','y',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda-Bambari -> Banda */
+  {HB_ٽيگ('l','k','b',' '),	HB_ٽيگ('L','U','H',' ')},	/* Kabras -> Luyia */
+  {HB_ٽيگ('l','k','o',' '),	HB_ٽيگ('L','U','H',' ')},	/* Khayo -> Luyia */
+  {HB_ٽيگ('l','k','s',' '),	HB_ٽيگ('L','U','H',' ')},	/* Kisa -> Luyia */
+  {HB_ٽيگ('l','l','d',' '),	HB_ٽيگ('L','A','D',' ')},	/* Ladin */
+  {HB_ٽيگ('l','m','n',' '),	HB_ٽيگ('L','A','M',' ')},	/* Lambadi -> Lambani */
+  {HB_ٽيگ('l','n','a',' '),	HB_ٽيگ('B','A','D','0')},	/* Langbashe -> Banda */
+  {HB_ٽيگ('l','n','l',' '),	HB_ٽيگ('B','A','D','0')},	/* South Central Banda -> Banda */
+  {HB_ٽيگ('l','o','u',' '),	HB_ٽيگ('C','P','P',' ')},	/* Louisiana Creole -> Creoles */
+  {HB_ٽيگ('l','r','i',' '),	HB_ٽيگ('L','U','H',' ')},	/* Marachi -> Luyia */
+  {HB_ٽيگ('l','r','m',' '),	HB_ٽيگ('L','U','H',' ')},	/* Marama -> Luyia */
+  {HB_ٽيگ('l','r','t',' '),	HB_ٽيگ('C','P','P',' ')},	/* Larantuka Malay -> Creoles */
+  {HB_ٽيگ('l','s','m',' '),	HB_ٽيگ('L','U','H',' ')},	/* Saamia -> Luyia */
+  {HB_ٽيگ('l','t','g',' '),	HB_ٽيگ('L','V','I',' ')},	/* Latgalian -> Latvian */
+  {HB_ٽيگ('l','t','o',' '),	HB_ٽيگ('L','U','H',' ')},	/* Tsotso -> Luyia */
+  {HB_ٽيگ('l','t','s',' '),	HB_ٽيگ('L','U','H',' ')},	/* Tachoni -> Luyia */
+  {HB_ٽيگ('l','u','h',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Leizhou Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('l','u','y',' '),	HB_ٽيگ('L','U','H',' ')},	/* Luyia [macrolanguage] */
+  {HB_ٽيگ('l','u','z',' '),	HB_ٽيگ('L','R','C',' ')},	/* Southern Luri -> Luri */
+  {HB_ٽيگ('l','v','s',' '),	HB_ٽيگ('L','V','I',' ')},	/* Standard Latvian -> Latvian */
+  {HB_ٽيگ('l','w','g',' '),	HB_ٽيگ('L','U','H',' ')},	/* Wanga -> Luyia */
+  {HB_ٽيگ('l','z','h',' '),	HB_ٽيگ('Z','H','T',' ')},	/* Literary Chinese -> Chinese, Traditional */
+  {HB_ٽيگ('l','z','z',' '),	HB_ٽيگ('L','A','Z',' ')},	/* Laz */
+  {HB_ٽيگ('m','a','i',' '),	HB_ٽيگ('M','T','H',' ')},	/* Maithili */
+  {HB_ٽيگ('m','a','k',' '),	HB_ٽيگ('M','K','R',' ')},	/* Makasar */
+  {HB_ٽيگ('m','a','n',' '),	HB_ٽيگ('M','N','K',' ')},	/* Mandingo [macrolanguage] -> Maninka */
+  {HB_ٽيگ('m','b','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* Baba Malay -> Creoles */
+  {HB_ٽيگ('m','c','m',' '),	HB_ٽيگ('C','P','P',' ')},	/* Malaccan Creole Portuguese -> Creoles */
+  {HB_ٽيگ('m','c','t',' '),	HB_ٽيگ('B','T','I',' ')},	/* Mengisa -> Beti */
+  {HB_ٽيگ('m','d','f',' '),	HB_ٽيگ('M','O','K',' ')},	/* Moksha */
+  {HB_ٽيگ('m','d','y',' '),	HB_ٽيگ('M','L','E',' ')},	/* Male */
+  {HB_ٽيگ('m','e','n',' '),	HB_ٽيگ('M','D','E',' ')},	/* Mende (Sierra Leone) */
+  {HB_ٽيگ('m','e','o',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Kedah Malay -> Malay */
+  {HB_ٽيگ('m','f','b',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Bangka -> Malay */
+  {HB_ٽيگ('m','f','p',' '),	HB_ٽيگ('C','P','P',' ')},	/* Makassar Malay -> Creoles */
+  {HB_ٽيگ('m','g','a',' '),	HB_ٽيگ('S','G','A',' ')},	/* Middle Irish (900-1200) -> Old Irish */
+  {HB_ٽيگ('m','h','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Mocho -> Mayan */
+  {HB_ٽيگ('m','h','r',' '),	HB_ٽيگ('L','M','A',' ')},	/* Eastern Mari -> Low Mari */
+  {HB_ٽيگ('m','h','v',' '),	HB_ٽيگ('A','R','K',' ')},	/* Arakanese (retired code) -> Rakhine */
+  {HB_ٽيگ('m','k','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Kupang Malay -> Creoles */
+  {HB_ٽيگ('m','k','u',' '),	HB_ٽيگ('M','N','K',' ')},	/* Konyanka Maninka -> Maninka */
+  {HB_ٽيگ('m','m','r',' '),	HB_ٽيگ('H','M','N',' ')},	/* Western Xiangxi Miao -> Hmong */
+  {HB_ٽيگ('m','n','c',' '),	HB_ٽيگ('M','C','H',' ')},	/* Manchu */
+  {HB_ٽيگ('m','n','h',' '),	HB_ٽيگ('B','A','D','0')},	/* Mono (Democratic Republic of Congo) -> Banda */
+  {HB_ٽيگ('m','n','p',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Min Bei Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('m','n','s',' '),	HB_ٽيگ('M','A','N',' ')},	/* Mansi */
+  {HB_ٽيگ('m','o','d',' '),	HB_ٽيگ('C','P','P',' ')},	/* Mobilian -> Creoles */
+  {HB_ٽيگ('m','o','p',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Mopán Maya -> Mayan */
+  {HB_ٽيگ('m','p','e',' '),	HB_ٽيگ('M','A','J',' ')},	/* Majang */
+  {HB_ٽيگ('m','q','g',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Kota Bangun Kutai Malay -> Malay */
+  {HB_ٽيگ('m','r','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Mara -> Chin */
+  {HB_ٽيگ('m','r','j',' '),	HB_ٽيگ('H','M','A',' ')},	/* Western Mari -> High Mari */
+  {HB_ٽيگ('m','s','c',' '),	HB_ٽيگ('M','N','K',' ')},	/* Sankaran Maninka -> Maninka */
+  {HB_ٽيگ('m','s','h',' '),	HB_ٽيگ('M','L','G',' ')},	/* Masikoro Malagasy -> Malagasy */
+  {HB_ٽيگ('m','t','r',' '),	HB_ٽيگ('M','A','W',' ')},	/* Mewari -> Marwari */
+  {HB_ٽيگ('m','u','d',' '),	HB_ٽيگ('C','P','P',' ')},	/* Mednyj Aleut -> Creoles */
+  {HB_ٽيگ('m','u','i',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Musi -> Malay */
+  {HB_ٽيگ('m','u','p',' '),	HB_ٽيگ('R','A','J',' ')},	/* Malvi -> Rajasthani */
+  {HB_ٽيگ('m','u','q',' '),	HB_ٽيگ('H','M','N',' ')},	/* Eastern Xiangxi Miao -> Hmong */
+  {HB_ٽيگ('m','v','b',' '),	HB_ٽيگ('A','T','H',' ')},	/* Mattole -> Athapaskan */
+  {HB_ٽيگ('m','v','e',' '),	HB_ٽيگ('M','A','W',' ')},	/* Marwari (Pakistan) */
+  {HB_ٽيگ('m','v','f',' '),	HB_ٽيگ('M','N','G',' ')},	/* Peripheral Mongolian -> Mongolian */
+  {HB_ٽيگ('m','w','k',' '),	HB_ٽيگ('M','N','K',' ')},	/* Kita Maninkakan -> Maninka */
+  {HB_ٽيگ('m','w','q',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Mün Chin -> Chin */
+  {HB_ٽيگ('m','w','r',' '),	HB_ٽيگ('M','A','W',' ')},	/* Marwari [macrolanguage] */
+  {HB_ٽيگ('m','y','m',' '),	HB_ٽيگ('M','E','N',' ')},	/* Me’en */
+  {HB_ٽيگ('m','y','q',' '),	HB_ٽيگ('M','N','K',' ')},	/* Forest Maninka (retired code) -> Maninka */
+  {HB_ٽيگ('m','y','v',' '),	HB_ٽيگ('E','R','Z',' ')},	/* Erzya */
+  {HB_ٽيگ('m','z','b',' '),	HB_ٽيگ('B','B','R',' ')},	/* Tumzabt -> Berber */
+  {HB_ٽيگ('m','z','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Macanese -> Creoles */
+  {HB_ٽيگ('n','a','n',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Min Nan Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('n','a','z',' '),	HB_ٽيگ('N','A','H',' ')},	/* Coatepec Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','c','h',' '),	HB_ٽيگ('N','A','H',' ')},	/* Central Huasteca Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','c','i',' '),	HB_ٽيگ('N','A','H',' ')},	/* Classical Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','c','j',' '),	HB_ٽيگ('N','A','H',' ')},	/* Northern Puebla Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','c','l',' '),	HB_ٽيگ('N','A','H',' ')},	/* Michoacán Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','c','x',' '),	HB_ٽيگ('N','A','H',' ')},	/* Central Puebla Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','e','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* Nefamese -> Creoles */
+  {HB_ٽيگ('n','g','l',' '),	HB_ٽيگ('L','M','W',' ')},	/* Lomwe */
+  {HB_ٽيگ('n','g','m',' '),	HB_ٽيگ('C','P','P',' ')},	/* Ngatik Men's Creole -> Creoles */
+  {HB_ٽيگ('n','g','o',' '),	HB_ٽيگ('S','X','T',' ')},	/* Ngoni (retired code) -> Sutu */
+  {HB_ٽيگ('n','g','u',' '),	HB_ٽيگ('N','A','H',' ')},	/* Guerrero Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','c',' '),	HB_ٽيگ('N','A','H',' ')},	/* Tabasco Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','d',' '),	HB_ٽيگ('G','U','A',' ')},	/* Chiripá -> Guarani */
+  {HB_ٽيگ('n','h','e',' '),	HB_ٽيگ('N','A','H',' ')},	/* Eastern Huasteca Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','g',' '),	HB_ٽيگ('N','A','H',' ')},	/* Tetelcingo Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','i',' '),	HB_ٽيگ('N','A','H',' ')},	/* Zacatlán-Ahuacatlán-Tepetzintla Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','k',' '),	HB_ٽيگ('N','A','H',' ')},	/* Isthmus-Cosoleacaque Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','m',' '),	HB_ٽيگ('N','A','H',' ')},	/* Morelos Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','n',' '),	HB_ٽيگ('N','A','H',' ')},	/* Central Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','p',' '),	HB_ٽيگ('N','A','H',' ')},	/* Isthmus-Pajapan Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','q',' '),	HB_ٽيگ('N','A','H',' ')},	/* Huaxcaleca Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','t',' '),	HB_ٽيگ('N','A','H',' ')},	/* Ometepec Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','v',' '),	HB_ٽيگ('N','A','H',' ')},	/* Temascaltepec Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','w',' '),	HB_ٽيگ('N','A','H',' ')},	/* Western Huasteca Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','x',' '),	HB_ٽيگ('N','A','H',' ')},	/* Isthmus-Mecayapan Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','y',' '),	HB_ٽيگ('N','A','H',' ')},	/* Northern Oaxaca Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','h','z',' '),	HB_ٽيگ('N','A','H',' ')},	/* Santa María La Alta Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','i','q',' '),	HB_ٽيگ('K','A','L',' ')},	/* Nandi -> Kalenjin */
+  {HB_ٽيگ('n','i','v',' '),	HB_ٽيگ('G','I','L',' ')},	/* Gilyak */
+  {HB_ٽيگ('n','j','t',' '),	HB_ٽيگ('C','P','P',' ')},	/* Ndyuka-Trio Pidgin -> Creoles */
+  {HB_ٽيگ('n','j','z',' '),	HB_ٽيگ('N','I','S',' ')},	/* Nyishi -> Nisi */
+  {HB_ٽيگ('n','k','x',' '),	HB_ٽيگ('I','J','O',' ')},	/* Nkoroo -> Ijo */
+  {HB_ٽيگ('n','l','a',' '),	HB_ٽيگ('B','M','L',' ')},	/* Ngombale -> Bamileke */
+  {HB_ٽيگ('n','l','e',' '),	HB_ٽيگ('L','U','H',' ')},	/* East Nyala -> Luyia */
+  {HB_ٽيگ('n','l','n',' '),	HB_ٽيگ('N','A','H',' ')},	/* Durango Nahuatl (retired code) -> Nahuatl */
+  {HB_ٽيگ('n','l','v',' '),	HB_ٽيگ('N','A','H',' ')},	/* Orizaba Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','n','h',' '),	HB_ٽيگ('B','M','L',' ')},	/* Ngiemboon -> Bamileke */
+  {HB_ٽيگ('n','n','z',' '),	HB_ٽيگ('B','M','L',' ')},	/* Nda'nda' -> Bamileke */
+  {HB_ٽيگ('n','o','d',' '),	HB_ٽيگ('N','T','A',' ')},	/* Northern Thai -> Northern Tai */
+  {HB_ٽيگ('n','p','i',' '),	HB_ٽيگ('N','E','P',' ')},	/* Nepali */
+  {HB_ٽيگ('n','p','l',' '),	HB_ٽيگ('N','A','H',' ')},	/* Southeastern Puebla Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','q','o',' '),	HB_ٽيگ('N','K','O',' ')},	/* N’Ko */
+  {HB_ٽيگ('n','s','k',' '),	HB_ٽيگ('N','A','S',' ')},	/* Naskapi */
+  {HB_ٽيگ('n','s','u',' '),	HB_ٽيگ('N','A','H',' ')},	/* Sierra Negra Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','u','e',' '),	HB_ٽيگ('B','A','D','0')},	/* Ngundu -> Banda */
+  {HB_ٽيگ('n','u','u',' '),	HB_ٽيگ('B','A','D','0')},	/* Ngbundu -> Banda */
+  {HB_ٽيگ('n','u','z',' '),	HB_ٽيگ('N','A','H',' ')},	/* Tlamacazapa Nahuatl -> Nahuatl */
+  {HB_ٽيگ('n','w','e',' '),	HB_ٽيگ('B','M','L',' ')},	/* Ngwe -> Bamileke */
+  {HB_ٽيگ('n','y','d',' '),	HB_ٽيگ('L','U','H',' ')},	/* Nyore -> Luyia */
+  {HB_ٽيگ('n','y','n',' '),	HB_ٽيگ('N','K','L',' ')},	/* Nyankole */
+  {HB_ٽيگ('o','j','c',' '),	HB_ٽيگ('O','J','B',' ')},	/* Central Ojibwa -> Ojibway */
+  {HB_ٽيگ('o','j','g',' '),	HB_ٽيگ('O','J','B',' ')},	/* Eastern Ojibwa -> Ojibway */
+  {HB_ٽيگ('o','j','w',' '),	HB_ٽيگ('O','J','B',' ')},	/* Western Ojibwa -> Ojibway */
+  {HB_ٽيگ('o','k','d',' '),	HB_ٽيگ('I','J','O',' ')},	/* Okodia -> Ijo */
+  {HB_ٽيگ('o','k','i',' '),	HB_ٽيگ('K','A','L',' ')},	/* Okiek -> Kalenjin */
+  {HB_ٽيگ('o','k','m',' '),	HB_ٽيگ('K','O','H',' ')},	/* Middle Korean (10th-16th cent.) -> Korean Old Hangul */
+  {HB_ٽيگ('o','k','r',' '),	HB_ٽيگ('I','J','O',' ')},	/* Kirike -> Ijo */
+  {HB_ٽيگ('o','n','x',' '),	HB_ٽيگ('C','P','P',' ')},	/* Onin Based Pidgin -> Creoles */
+  {HB_ٽيگ('o','o','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Oorlams -> Creoles */
+  {HB_ٽيگ('o','r','c',' '),	HB_ٽيگ('O','R','O',' ')},	/* Orma -> Oromo */
+  {HB_ٽيگ('o','r','n',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Orang Kanaq -> Malay */
+  {HB_ٽيگ('o','r','r',' '),	HB_ٽيگ('I','J','O',' ')},	/* Oruma -> Ijo */
+  {HB_ٽيگ('o','r','s',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Orang Seletar -> Malay */
+  {HB_ٽيگ('o','r','y',' '),	HB_ٽيگ('O','R','I',' ')},	/* Odia */
+  {HB_ٽيگ('o','t','w',' '),	HB_ٽيگ('O','J','B',' ')},	/* Ottawa -> Ojibway */
+  {HB_ٽيگ('o','u','a',' '),	HB_ٽيگ('B','B','R',' ')},	/* Tagargrent -> Berber */
+  {HB_ٽيگ('p','b','t',' '),	HB_ٽيگ('P','A','S',' ')},	/* Southern Pashto -> Pashto */
+  {HB_ٽيگ('p','b','u',' '),	HB_ٽيگ('P','A','S',' ')},	/* Northern Pashto -> Pashto */
+  {HB_ٽيگ('p','c','e',' '),	HB_ٽيگ('P','L','G',' ')},	/* Ruching Palaung -> Palaung */
+  {HB_ٽيگ('p','c','k',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Paite Chin -> Chin */
+  {HB_ٽيگ('p','c','m',' '),	HB_ٽيگ('C','P','P',' ')},	/* Nigerian Pidgin -> Creoles */
+  {HB_ٽيگ('p','d','u',' '),	HB_ٽيگ('K','R','N',' ')},	/* Kayan -> Karen */
+  {HB_ٽيگ('p','e','a',' '),	HB_ٽيگ('C','P','P',' ')},	/* Peranakan Indonesian -> Creoles */
+  {HB_ٽيگ('p','e','l',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Pekal -> Malay */
+  {HB_ٽيگ('p','e','s',' '),	HB_ٽيگ('F','A','R',' ')},	/* Iranian Persian -> Persian */
+  {HB_ٽيگ('p','e','y',' '),	HB_ٽيگ('C','P','P',' ')},	/* Petjo -> Creoles */
+  {HB_ٽيگ('p','i','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Pijin -> Creoles */
+  {HB_ٽيگ('p','k','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Pankhu -> Chin */
+  {HB_ٽيگ('p','k','o',' '),	HB_ٽيگ('K','A','L',' ')},	/* Pökoot -> Kalenjin */
+  {HB_ٽيگ('p','l','g',' '),	HB_ٽيگ('P','L','G','0')},	/* Pilagá */
+  {HB_ٽيگ('p','l','l',' '),	HB_ٽيگ('P','L','G',' ')},	/* Shwe Palaung -> Palaung */
+  {HB_ٽيگ('p','l','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Palenquero -> Creoles */
+  {HB_ٽيگ('p','l','p',' '),	HB_ٽيگ('P','A','P',' ')},	/* Palpa (retired code) */
+  {HB_ٽيگ('p','l','t',' '),	HB_ٽيگ('M','L','G',' ')},	/* Plateau Malagasy -> Malagasy */
+  {HB_ٽيگ('p','m','l',' '),	HB_ٽيگ('C','P','P',' ')},	/* Lingua Franca -> Creoles */
+  {HB_ٽيگ('p','m','y',' '),	HB_ٽيگ('C','P','P',' ')},	/* Papuan Malay -> Creoles */
+  {HB_ٽيگ('p','o','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Poqomam -> Mayan */
+  {HB_ٽيگ('p','o','v',' '),	HB_ٽيگ('C','P','P',' ')},	/* Upper Guinea Crioulo -> Creoles */
+  {HB_ٽيگ('p','p','a',' '),	HB_ٽيگ('B','A','G',' ')},	/* Pao (retired code) -> Baghelkhandi */
+  {HB_ٽيگ('p','r','e',' '),	HB_ٽيگ('C','P','P',' ')},	/* Principense -> Creoles */
+  {HB_ٽيگ('p','r','p',' '),	HB_ٽيگ('G','U','J',' ')},	/* Parsi (retired code) -> Gujarati */
+  {HB_ٽيگ('p','s','e',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Central Malay -> Malay */
+  {HB_ٽيگ('p','s','t',' '),	HB_ٽيگ('P','A','S',' ')},	/* Central Pashto -> Pashto */
+  {HB_ٽيگ('p','u','b',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Purum -> Chin */
+  {HB_ٽيگ('p','u','z',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Purum Naga (retired code) -> Chin */
+  {HB_ٽيگ('p','w','w',' '),	HB_ٽيگ('K','R','N',' ')},	/* Pwo Northern Karen -> Karen */
+  {HB_ٽيگ('q','u','f',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Lambayeque Quechua -> Quechua */
+  {HB_ٽيگ('q','u','k',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Chachapoyas Quechua -> Quechua */
+  {HB_ٽيگ('q','u','m',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Sipacapense -> Mayan */
+  {HB_ٽيگ('q','u','v',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Sacapulteco -> Mayan */
+  {HB_ٽيگ('q','u','y',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Ayacucho Quechua -> Quechua */
+  {HB_ٽيگ('q','v','c',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Cajamarca Quechua -> Quechua */
+  {HB_ٽيگ('q','v','e',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Eastern Apurímac Quechua -> Quechua */
+  {HB_ٽيگ('q','v','s',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* San Martín Quechua -> Quechua */
+  {HB_ٽيگ('q','w','c',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Classical Quechua -> Quechua */
+  {HB_ٽيگ('q','w','t',' '),	HB_ٽيگ('A','T','H',' ')},	/* Kwalhioqua-Tlatskanai -> Athapaskan */
+  {HB_ٽيگ('q','x','p',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Puno Quechua -> Quechua */
+  {HB_ٽيگ('q','x','u',' '),	HB_ٽيگ('Q','U','Z',' ')},	/* Arequipa-La Unión Quechua -> Quechua */
+  {HB_ٽيگ('r','a','g',' '),	HB_ٽيگ('L','U','H',' ')},	/* Logooli -> Luyia */
+  {HB_ٽيگ('r','a','l',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Ralte -> Chin */
+  {HB_ٽيگ('r','b','b',' '),	HB_ٽيگ('P','L','G',' ')},	/* Rumai Palaung -> Palaung */
+  {HB_ٽيگ('r','b','l',' '),	HB_ٽيگ('B','I','K',' ')},	/* Miraya Bikol -> Bikol */
+  {HB_ٽيگ('r','c','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* Réunion Creole French -> Creoles */
+  {HB_ٽيگ('r','k','i',' '),	HB_ٽيگ('A','R','K',' ')},	/* Rakhine */
+  {HB_ٽيگ('r','m','c',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Carpathian Romani -> Romany */
+  {HB_ٽيگ('r','m','f',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Kalo Finnish Romani -> Romany */
+  {HB_ٽيگ('r','m','l',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Baltic Romani -> Romany */
+  {HB_ٽيگ('r','m','n',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Balkan Romani -> Romany */
+  {HB_ٽيگ('r','m','o',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Sinte Romani -> Romany */
+  {HB_ٽيگ('r','m','w',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Welsh Romani -> Romany */
+  {HB_ٽيگ('r','m','z',' '),	HB_ٽيگ('A','R','K',' ')},	/* Marma -> Rakhine */
+  {HB_ٽيگ('r','o','m',' '),	HB_ٽيگ('R','O','Y',' ')},	/* Romany [macrolanguage] */
+  {HB_ٽيگ('r','o','p',' '),	HB_ٽيگ('C','P','P',' ')},	/* Kriol -> Creoles */
+  {HB_ٽيگ('r','t','c',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Rungtu Chin -> Chin */
+  {HB_ٽيگ('r','u','e',' '),	HB_ٽيگ('R','S','Y',' ')},	/* Rusyn */
+  {HB_ٽيگ('r','w','r',' '),	HB_ٽيگ('M','A','W',' ')},	/* Marwari (India) */
+  {HB_ٽيگ('s','a','h',' '),	HB_ٽيگ('Y','A','K',' ')},	/* Yakut -> Sakha */
+  {HB_ٽيگ('s','a','m',' '),	HB_ٽيگ('P','A','A',' ')},	/* Samaritan Aramaic -> Palestinian Aramaic */
+  {HB_ٽيگ('s','c','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* San Miguel Creole French -> Creoles */
+  {HB_ٽيگ('s','c','h',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Sakachep -> Chin */
+  {HB_ٽيگ('s','c','i',' '),	HB_ٽيگ('C','P','P',' ')},	/* Sri Lankan Creole Malay -> Creoles */
+  {HB_ٽيگ('s','c','k',' '),	HB_ٽيگ('S','A','D',' ')},	/* Sadri */
+  {HB_ٽيگ('s','d','c',' '),	HB_ٽيگ('S','R','D',' ')},	/* Sassarese Sardinian -> Sardinian */
+  {HB_ٽيگ('s','d','h',' '),	HB_ٽيگ('K','U','R',' ')},	/* Southern Kurdish -> Kurdish */
+  {HB_ٽيگ('s','d','n',' '),	HB_ٽيگ('S','R','D',' ')},	/* Gallurese Sardinian -> Sardinian */
+  {HB_ٽيگ('s','d','s',' '),	HB_ٽيگ('B','B','R',' ')},	/* Sened -> Berber */
+  {HB_ٽيگ('s','e','h',' '),	HB_ٽيگ('S','N','A',' ')},	/* Sena */
+  {HB_ٽيگ('s','e','k',' '),	HB_ٽيگ('A','T','H',' ')},	/* Sekani -> Athapaskan */
+  {HB_ٽيگ('s','e','z',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Senthang Chin -> Chin */
+  {HB_ٽيگ('s','g','c',' '),	HB_ٽيگ('K','A','L',' ')},	/* Kipsigis -> Kalenjin */
+  {HB_ٽيگ('s','g','w',' '),	HB_ٽيگ('C','H','G',' ')},	/* Sebat Bet Gurage -> Chaha Gurage */
+  {HB_ٽيگ('s','h','l',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Shendu (retired code) -> Chin */
+  {HB_ٽيگ('s','h','u',' '),	HB_ٽيگ('A','R','A',' ')},	/* Chadian Arabic -> Arabic */
+  {HB_ٽيگ('s','h','y',' '),	HB_ٽيگ('B','B','R',' ')},	/* Tachawit -> Berber */
+  {HB_ٽيگ('s','i','z',' '),	HB_ٽيگ('B','B','R',' ')},	/* Siwi -> Berber */
+  {HB_ٽيگ('s','j','c',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Shaojiang Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('s','j','d',' '),	HB_ٽيگ('K','S','M',' ')},	/* Kildin Sami */
+  {HB_ٽيگ('s','j','o',' '),	HB_ٽيگ('S','I','B',' ')},	/* Xibe -> Sibe */
+  {HB_ٽيگ('s','j','s',' '),	HB_ٽيگ('B','B','R',' ')},	/* Senhaja De Srair -> Berber */
+  {HB_ٽيگ('s','k','g',' '),	HB_ٽيگ('M','L','G',' ')},	/* Sakalava Malagasy -> Malagasy */
+  {HB_ٽيگ('s','k','r',' '),	HB_ٽيگ('S','R','K',' ')},	/* Saraiki */
+  {HB_ٽيگ('s','k','w',' '),	HB_ٽيگ('C','P','P',' ')},	/* Skepi Creole Dutch -> Creoles */
+  {HB_ٽيگ('s','m','a',' '),	HB_ٽيگ('S','S','M',' ')},	/* Southern Sami */
+  {HB_ٽيگ('s','m','d',' '),	HB_ٽيگ('M','B','N',' ')},	/* Sama (retired code) -> Mbundu */
+  {HB_ٽيگ('s','m','j',' '),	HB_ٽيگ('L','S','M',' ')},	/* Lule Sami */
+  {HB_ٽيگ('s','m','n',' '),	HB_ٽيگ('I','S','M',' ')},	/* Inari Sami */
+  {HB_ٽيگ('s','m','s',' '),	HB_ٽيگ('S','K','S',' ')},	/* Skolt Sami */
+  {HB_ٽيگ('s','m','t',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Simte -> Chin */
+  {HB_ٽيگ('s','n','b',' '),	HB_ٽيگ('I','B','A',' ')},	/* Sebuyau (retired code) -> Iban */
+  {HB_ٽيگ('s','p','v',' '),	HB_ٽيگ('O','R','I',' ')},	/* Sambalpuri -> Odia */
+  {HB_ٽيگ('s','p','y',' '),	HB_ٽيگ('K','A','L',' ')},	/* Sabaot -> Kalenjin */
+  {HB_ٽيگ('s','r','c',' '),	HB_ٽيگ('S','R','D',' ')},	/* Logudorese Sardinian -> Sardinian */
+  {HB_ٽيگ('s','r','m',' '),	HB_ٽيگ('C','P','P',' ')},	/* Saramaccan -> Creoles */
+  {HB_ٽيگ('s','r','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Sranan Tongo -> Creoles */
+  {HB_ٽيگ('s','r','o',' '),	HB_ٽيگ('S','R','D',' ')},	/* Campidanese Sardinian -> Sardinian */
+  {HB_ٽيگ('s','r','s',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tsuut'ina -> Athapaskan */
+  {HB_ٽيگ('s','s','h',' '),	HB_ٽيگ('A','R','A',' ')},	/* Shihhi Arabic -> Arabic */
+  {HB_ٽيگ('s','t','a',' '),	HB_ٽيگ('C','P','P',' ')},	/* Settla -> Creoles */
+  {HB_ٽيگ('s','t','v',' '),	HB_ٽيگ('S','I','G',' ')},	/* Silt'e -> Silte Gurage */
+  {HB_ٽيگ('s','u','q',' '),	HB_ٽيگ('S','U','R',' ')},	/* Suri */
+  {HB_ٽيگ('s','v','c',' '),	HB_ٽيگ('C','P','P',' ')},	/* Vincentian Creole English -> Creoles */
+  {HB_ٽيگ('s','w','b',' '),	HB_ٽيگ('C','M','R',' ')},	/* Maore Comorian -> Comorian */
+  {HB_ٽيگ('s','w','c',' '),	HB_ٽيگ('S','W','K',' ')},	/* Congo Swahili -> Swahili */
+  {HB_ٽيگ('s','w','h',' '),	HB_ٽيگ('S','W','K',' ')},	/* Swahili */
+  {HB_ٽيگ('s','w','n',' '),	HB_ٽيگ('B','B','R',' ')},	/* Sawknah -> Berber */
+  {HB_ٽيگ('s','w','v',' '),	HB_ٽيگ('M','A','W',' ')},	/* Shekhawati -> Marwari */
+  {HB_ٽيگ('s','y','c',' '),	HB_ٽيگ('S','Y','R',' ')},	/* Classical Syriac -> Syriac */
+  {HB_ٽيگ('t','a','a',' '),	HB_ٽيگ('A','T','H',' ')},	/* Lower Tanana -> Athapaskan */
+  {HB_ٽيگ('t','a','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Tay Boi -> Creoles */
+  {HB_ٽيگ('t','a','u',' '),	HB_ٽيگ('A','T','H',' ')},	/* Upper Tanana -> Athapaskan */
+  {HB_ٽيگ('t','c','b',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tanacross -> Athapaskan */
+  {HB_ٽيگ('t','c','e',' '),	HB_ٽيگ('A','T','H',' ')},	/* Southern Tutchone -> Athapaskan */
+  {HB_ٽيگ('t','c','h',' '),	HB_ٽيگ('C','P','P',' ')},	/* Turks And Caicos Creole English -> Creoles */
+  {HB_ٽيگ('t','c','p',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Tawr Chin -> Chin */
+  {HB_ٽيگ('t','c','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Torres Strait Creole -> Creoles */
+  {HB_ٽيگ('t','c','y',' '),	HB_ٽيگ('T','U','L',' ')},	/* Tulu */
+  {HB_ٽيگ('t','c','z',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Thado Chin -> Chin */
+  {HB_ٽيگ('t','d','x',' '),	HB_ٽيگ('M','L','G',' ')},	/* Tandroy-Mahafaly Malagasy -> Malagasy */
+  {HB_ٽيگ('t','e','c',' '),	HB_ٽيگ('K','A','L',' ')},	/* Terik -> Kalenjin */
+  {HB_ٽيگ('t','e','m',' '),	HB_ٽيگ('T','M','N',' ')},	/* Timne -> Temne */
+  {HB_ٽيگ('t','e','z',' '),	HB_ٽيگ('B','B','R',' ')},	/* Tetserret -> Berber */
+  {HB_ٽيگ('t','f','n',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tanaina -> Athapaskan */
+  {HB_ٽيگ('t','g','h',' '),	HB_ٽيگ('C','P','P',' ')},	/* Tobagonian Creole English -> Creoles */
+  {HB_ٽيگ('t','g','j',' '),	HB_ٽيگ('N','I','S',' ')},	/* Tagin -> Nisi */
+  {HB_ٽيگ('t','g','x',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tagish -> Athapaskan */
+  {HB_ٽيگ('t','h','t',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tahltan -> Athapaskan */
+  {HB_ٽيگ('t','i','a',' '),	HB_ٽيگ('B','B','R',' ')},	/* Tidikelt Tamazight -> Berber */
+  {HB_ٽيگ('t','i','g',' '),	HB_ٽيگ('T','G','R',' ')},	/* Tigre */
+  {HB_ٽيگ('t','j','o',' '),	HB_ٽيگ('B','B','R',' ')},	/* Temacine Tamazight -> Berber */
+  {HB_ٽيگ('t','k','g',' '),	HB_ٽيگ('M','L','G',' ')},	/* Tesaka Malagasy -> Malagasy */
+  {HB_ٽيگ('t','m','g',' '),	HB_ٽيگ('C','P','P',' ')},	/* Ternateño -> Creoles */
+  {HB_ٽيگ('t','m','w',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Temuan -> Malay */
+  {HB_ٽيگ('t','o','d',' '),	HB_ٽيگ('T','O','D','0')},	/* Toma */
+  {HB_ٽيگ('t','o','i',' '),	HB_ٽيگ('T','N','G',' ')},	/* Tonga (Zambia) */
+  {HB_ٽيگ('t','o','j',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Tojolabal -> Mayan */
+  {HB_ٽيگ('t','o','l',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tolowa -> Athapaskan */
+  {HB_ٽيگ('t','o','r',' '),	HB_ٽيگ('B','A','D','0')},	/* Togbo-Vara Banda -> Banda */
+  {HB_ٽيگ('t','r','f',' '),	HB_ٽيگ('C','P','P',' ')},	/* Trinidadian Creole English -> Creoles */
+  {HB_ٽيگ('t','t','c',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Tektiteko -> Mayan */
+  {HB_ٽيگ('t','t','m',' '),	HB_ٽيگ('A','T','H',' ')},	/* Northern Tutchone -> Athapaskan */
+  {HB_ٽيگ('t','u','u',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tututni -> Athapaskan */
+  {HB_ٽيگ('t','u','y',' '),	HB_ٽيگ('K','A','L',' ')},	/* Tugen -> Kalenjin */
+  {HB_ٽيگ('t','v','y',' '),	HB_ٽيگ('C','P','P',' ')},	/* Timor Pidgin -> Creoles */
+  {HB_ٽيگ('t','x','c',' '),	HB_ٽيگ('A','T','H',' ')},	/* Tsetsaut -> Athapaskan */
+  {HB_ٽيگ('t','x','y',' '),	HB_ٽيگ('M','L','G',' ')},	/* Tanosy Malagasy -> Malagasy */
+  {HB_ٽيگ('t','y','v',' '),	HB_ٽيگ('T','U','V',' ')},	/* Tuvinian -> Tuvin */
+  {HB_ٽيگ('t','z','h',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Tzeltal -> Mayan */
+  {HB_ٽيگ('t','z','j',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Tz'utujil -> Mayan */
+  {HB_ٽيگ('u','b','l',' '),	HB_ٽيگ('B','I','K',' ')},	/* Buhi'non Bikol -> Bikol */
+  {HB_ٽيگ('u','k','i',' '),	HB_ٽيگ('K','U','I',' ')},	/* Kui (India) */
+  {HB_ٽيگ('u','l','n',' '),	HB_ٽيگ('C','P','P',' ')},	/* Unserdeutsch -> Creoles */
+  {HB_ٽيگ('u','n','r',' '),	HB_ٽيگ('M','U','N',' ')},	/* Mundari */
+  {HB_ٽيگ('u','r','k',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Urak Lawoi' -> Malay */
+  {HB_ٽيگ('u','s','p',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Uspanteco -> Mayan */
+  {HB_ٽيگ('u','z','n',' '),	HB_ٽيگ('U','Z','B',' ')},	/* Northern Uzbek -> Uzbek */
+  {HB_ٽيگ('u','z','s',' '),	HB_ٽيگ('U','Z','B',' ')},	/* Southern Uzbek -> Uzbek */
+  {HB_ٽيگ('v','a','p',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Vaiphei -> Chin */
+  {HB_ٽيگ('v','i','c',' '),	HB_ٽيگ('C','P','P',' ')},	/* Virgin Islands Creole English -> Creoles */
+  {HB_ٽيگ('v','k','k',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Kaur -> Malay */
+  {HB_ٽيگ('v','k','p',' '),	HB_ٽيگ('C','P','P',' ')},	/* Korlai Creole Portuguese -> Creoles */
+  {HB_ٽيگ('v','k','t',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Tenggarong Kutai Malay -> Malay */
+  {HB_ٽيگ('v','l','s',' '),	HB_ٽيگ('F','L','E',' ')},	/* Vlaams -> Dutch (Flemish) */
+  {HB_ٽيگ('v','m','w',' '),	HB_ٽيگ('M','A','K',' ')},	/* Makhuwa */
+  {HB_ٽيگ('v','s','n',' '),	HB_ٽيگ('S','A','N',' ')},	/* Vedic Sanskrit -> Sanskrit */
+  {HB_ٽيگ('w','b','m',' '),	HB_ٽيگ('W','A',' ',' ')},	/* Wa */
+  {HB_ٽيگ('w','e','a',' '),	HB_ٽيگ('K','R','N',' ')},	/* Wewaw -> Karen */
+  {HB_ٽيگ('w','e','s',' '),	HB_ٽيگ('C','P','P',' ')},	/* Cameroon Pidgin -> Creoles */
+  {HB_ٽيگ('w','e','u',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Rawngtu Chin -> Chin */
+  {HB_ٽيگ('w','l','c',' '),	HB_ٽيگ('C','M','R',' ')},	/* Mwali Comorian -> Comorian */
+  {HB_ٽيگ('w','l','e',' '),	HB_ٽيگ('S','I','G',' ')},	/* Wolane -> Silte Gurage */
+  {HB_ٽيگ('w','l','k',' '),	HB_ٽيگ('A','T','H',' ')},	/* Wailaki -> Athapaskan */
+  {HB_ٽيگ('w','n','i',' '),	HB_ٽيگ('C','M','R',' ')},	/* Ndzwani Comorian -> Comorian */
+  {HB_ٽيگ('w','r','y',' '),	HB_ٽيگ('M','A','W',' ')},	/* Merwari -> Marwari */
+  {HB_ٽيگ('w','s','g',' '),	HB_ٽيگ('G','O','N',' ')},	/* Adilabad Gondi -> Gondi */
+  {HB_ٽيگ('w','u','u',' '),	HB_ٽيگ('Z','H','S',' ')},	/* Wu Chinese -> Chinese, Simplified */
+  {HB_ٽيگ('x','a','n',' '),	HB_ٽيگ('S','E','K',' ')},	/* Xamtanga -> Sekota */
+  {HB_ٽيگ('x','m','g',' '),	HB_ٽيگ('B','M','L',' ')},	/* Mengaka -> Bamileke */
+  {HB_ٽيگ('x','m','v',' '),	HB_ٽيگ('M','L','G',' ')},	/* Antankarana Malagasy -> Malagasy */
+  {HB_ٽيگ('x','m','w',' '),	HB_ٽيگ('M','L','G',' ')},	/* Tsimihety Malagasy -> Malagasy */
+  {HB_ٽيگ('x','n','j',' '),	HB_ٽيگ('S','X','T',' ')},	/* Ngoni (Tanzania) -> Sutu */
+  {HB_ٽيگ('x','n','q',' '),	HB_ٽيگ('S','X','T',' ')},	/* Ngoni (Mozambique) -> Sutu */
+  {HB_ٽيگ('x','n','r',' '),	HB_ٽيگ('D','G','R',' ')},	/* Kangri -> Dogri (macrolanguage) */
+  {HB_ٽيگ('x','s','t',' '),	HB_ٽيگ('S','I','G',' ')},	/* Silt'e (retired code) -> Silte Gurage */
+  {HB_ٽيگ('x','u','p',' '),	HB_ٽيگ('A','T','H',' ')},	/* Upper Umpqua -> Athapaskan */
+  {HB_ٽيگ('x','w','o',' '),	HB_ٽيگ('T','O','D',' ')},	/* Written Oirat -> Todo */
+  {HB_ٽيگ('y','a','j',' '),	HB_ٽيگ('B','A','D','0')},	/* Banda-Yangere -> Banda */
+  {HB_ٽيگ('y','b','b',' '),	HB_ٽيگ('B','M','L',' ')},	/* Yemba -> Bamileke */
+  {HB_ٽيگ('y','b','d',' '),	HB_ٽيگ('A','R','K',' ')},	/* Yangbye (retired code) -> Rakhine */
+  {HB_ٽيگ('y','c','r',' '),	HB_ٽيگ('C','P','P',' ')},	/* Yilan Creole -> Creoles */
+  {HB_ٽيگ('y','d','d',' '),	HB_ٽيگ('J','I','I',' ')},	/* Eastern Yiddish -> Yiddish */
+  {HB_ٽيگ('y','i','h',' '),	HB_ٽيگ('J','I','I',' ')},	/* Western Yiddish -> Yiddish */
+  {HB_ٽيگ('y','o','s',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Yos (retired code) -> Chin */
+  {HB_ٽيگ('y','u','a',' '),	HB_ٽيگ('M','Y','N',' ')},	/* Yucateco -> Mayan */
+  {HB_ٽيگ('y','u','e',' '),	HB_ٽيگ('Z','H','H',' ')},	/* Yue Chinese -> Chinese, Traditional, Hong Kong SAR */
+  {HB_ٽيگ('z','c','h',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Central Hongshuihe Zhuang -> Zhuang */
+  {HB_ٽيگ('z','d','j',' '),	HB_ٽيگ('C','M','R',' ')},	/* Ngazidja Comorian -> Comorian */
+  {HB_ٽيگ('z','e','h',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Eastern Hongshuihe Zhuang -> Zhuang */
+  {HB_ٽيگ('z','e','n',' '),	HB_ٽيگ('B','B','R',' ')},	/* Zenaga -> Berber */
+  {HB_ٽيگ('z','g','b',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Guibei Zhuang -> Zhuang */
+  {HB_ٽيگ('z','g','m',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Minz Zhuang -> Zhuang */
+  {HB_ٽيگ('z','g','n',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Guibian Zhuang -> Zhuang */
+  {HB_ٽيگ('z','h','d',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Dai Zhuang -> Zhuang */
+  {HB_ٽيگ('z','h','n',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Nong Zhuang -> Zhuang */
+  {HB_ٽيگ('z','k','b',' '),	HB_ٽيگ('K','H','A',' ')},	/* Koibal (retired code) -> Khakass */
+  {HB_ٽيگ('z','l','j',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Liujiang Zhuang -> Zhuang */
+  {HB_ٽيگ('z','l','m',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Malay */
+  {HB_ٽيگ('z','l','n',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Lianshan Zhuang -> Zhuang */
+  {HB_ٽيگ('z','l','q',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Liuqian Zhuang -> Zhuang */
+  {HB_ٽيگ('z','m','i',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Negeri Sembilan Malay -> Malay */
+  {HB_ٽيگ('z','m','z',' '),	HB_ٽيگ('B','A','D','0')},	/* Mbandja -> Banda */
+  {HB_ٽيگ('z','n','e',' '),	HB_ٽيگ('Z','N','D',' ')},	/* Zande */
+  {HB_ٽيگ('z','o','m',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Zou -> Chin */
+  {HB_ٽيگ('z','q','e',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Qiubei Zhuang -> Zhuang */
+  {HB_ٽيگ('z','s','m',' '),	HB_ٽيگ('M','L','Y',' ')},	/* Standard Malay -> Malay */
+  {HB_ٽيگ('z','u','m',' '),	HB_ٽيگ('L','R','C',' ')},	/* Kumzari -> Luri */
+  {HB_ٽيگ('z','y','b',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Yongbei Zhuang -> Zhuang */
+  {HB_ٽيگ('z','y','g',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Yang Zhuang -> Zhuang */
+  {HB_ٽيگ('z','y','j',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Youjiang Zhuang -> Zhuang */
+  {HB_ٽيگ('z','y','n',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Yongnan Zhuang -> Zhuang */
+  {HB_ٽيگ('z','y','p',' '),	HB_ٽيگ('Q','I','N',' ')},	/* Zyphe Chin -> Chin */
+  {HB_ٽيگ('z','z','j',' '),	HB_ٽيگ('Z','H','A',' ')},	/* Zuojiang Zhuang -> Zhuang */
 };
 
-static const hb_tag_t ot_languages3_multi_values[] = {
-  HB_TAG('F','A','N',' '),	/* Saint Lucian Creole French -> French Antillean */
-  HB_TAG('C','P','P',' '),	/* Saint Lucian Creole French -> Creoles */
-  HB_TAG('A','C','R',' '),	/* Achi */
-  HB_TAG('M','Y','N',' '),	/* Achi -> Mayan */
-  HB_TAG('A','C','Y',' '),	/* Cypriot Arabic */
-  HB_TAG('A','R','A',' '),	/* Cypriot Arabic -> Arabic */
-  HB_TAG('S','W','A',' '),	/* Assyrian Neo-Aramaic -> Swadaya Aramaic */
-  HB_TAG('S','Y','R',' '),	/* Assyrian Neo-Aramaic -> Syriac */
-  HB_TAG('A','K','B',' '),	/* Batak Angkola */
-  HB_TAG('B','T','K',' '),	/* Batak Angkola -> Batak */
-  HB_TAG('M','O','R',' '),	/* Moroccan Arabic -> Moroccan */
-  HB_TAG('A','R','A',' '),	/* Moroccan Arabic -> Arabic */
-  HB_TAG('A','Z','B',' '),	/* South Azerbaijani -> Torki */
-  HB_TAG('A','Z','E',' '),	/* South Azerbaijani -> Azerbaijani */
-  HB_TAG('B','B','C',' '),	/* Batak Toba */
-  HB_TAG('B','T','K',' '),	/* Batak Toba -> Batak */
-  HB_TAG('B','G','Q',' '),	/* Bagri */
-  HB_TAG('R','A','J',' '),	/* Bagri -> Rajasthani */
-  HB_TAG('B','L','K',' '),	/* Pa’o Karen */
-  HB_TAG('K','R','N',' '),	/* Pa'o Karen -> Karen */
-  HB_TAG('B','T','D',' '),	/* Batak Dairi (Pakpak) */
-  HB_TAG('B','T','K',' '),	/* Batak Dairi -> Batak */
-  HB_TAG('B','T','M',' '),	/* Batak Mandailing */
-  HB_TAG('B','T','K',' '),	/* Batak Mandailing -> Batak */
-  HB_TAG('B','T','S',' '),	/* Batak Simalungun */
-  HB_TAG('B','T','K',' '),	/* Batak Simalungun -> Batak */
-  HB_TAG('B','T','X',' '),	/* Batak Karo */
-  HB_TAG('B','T','K',' '),	/* Batak Karo -> Batak */
-  HB_TAG('B','T','Z',' '),	/* Batak Alas-Kluet */
-  HB_TAG('B','T','K',' '),	/* Batak Alas-Kluet -> Batak */
-  HB_TAG('B','Y','V',' '),	/* Medumba */
-  HB_TAG('B','M','L',' '),	/* Medumba -> Bamileke */
-  HB_TAG('C','R','R',' '),	/* Southern Carrier -> Carrier */
-  HB_TAG('A','T','H',' '),	/* Southern Carrier -> Athapaskan */
-  HB_TAG('C','A','K',' '),	/* Kaqchikel */
-  HB_TAG('M','Y','N',' '),	/* Kaqchikel -> Mayan */
-  HB_TAG('C','B','K',' '),	/* Chavacano -> Zamboanga Chavacano */
-  HB_TAG('C','P','P',' '),	/* Chavacano -> Creoles */
-  HB_TAG('H','A','L',' '),	/* Halam (Falam Chin) */
-  HB_TAG('Q','I','N',' '),	/* Falam Chin -> Chin */
-  HB_TAG('H','M','A',' '),	/* Mari (Russia) [macrolanguage] -> High Mari */
-  HB_TAG('L','M','A',' '),	/* Mari (Russia) [macrolanguage] -> Low Mari */
-  HB_TAG('C','H','P',' '),	/* Chipewyan */
-  HB_TAG('S','A','Y',' '),	/* Chipewyan -> Sayisi */
-  HB_TAG('A','T','H',' '),	/* Chipewyan -> Athapaskan */
-  HB_TAG('Q','U','H',' '),	/* Chilean Quechua (retired code) -> Quechua (Bolivia) */
-  HB_TAG('Q','U','Z',' '),	/* Chilean Quechua (retired code) -> Quechua */
-  HB_TAG('E','C','R',' '),	/* Southern East Cree -> Eastern Cree */
-  HB_TAG('Y','C','R',' '),	/* Southern East Cree -> Y-Cree */
-  HB_TAG('C','R','E',' '),	/* Southern East Cree -> Cree */
-  HB_TAG('W','C','R',' '),	/* Plains Cree -> West-Cree */
-  HB_TAG('Y','C','R',' '),	/* Plains Cree -> Y-Cree */
-  HB_TAG('C','R','E',' '),	/* Plains Cree -> Cree */
-  HB_TAG('E','C','R',' '),	/* Northern East Cree -> Eastern Cree */
-  HB_TAG('Y','C','R',' '),	/* Northern East Cree -> Y-Cree */
-  HB_TAG('C','R','E',' '),	/* Northern East Cree -> Cree */
-  HB_TAG('M','C','R',' '),	/* Moose Cree */
-  HB_TAG('L','C','R',' '),	/* Moose Cree -> L-Cree */
-  HB_TAG('C','R','E',' '),	/* Moose Cree -> Cree */
-  HB_TAG('C','R','R',' '),	/* Carrier */
-  HB_TAG('A','T','H',' '),	/* Carrier -> Athapaskan */
-  HB_TAG('N','C','R',' '),	/* Swampy Cree -> N-Cree */
-  HB_TAG('N','H','C',' '),	/* Swampy Cree -> Norway House Cree */
-  HB_TAG('C','R','E',' '),	/* Swampy Cree -> Cree */
-  HB_TAG('D','C','R',' '),	/* Woods Cree */
-  HB_TAG('T','C','R',' '),	/* Woods Cree -> TH-Cree */
-  HB_TAG('C','R','E',' '),	/* Woods Cree -> Cree */
-  HB_TAG('S','L','A',' '),	/* Slavey [macrolanguage] */
-  HB_TAG('A','T','H',' '),	/* Slavey [macrolanguage] -> Athapaskan */
-  HB_TAG('D','G','O',' '),	/* Dogri (individual language) */
-  HB_TAG('D','G','R',' '),	/* Dogri (macrolanguage) */
-  HB_TAG('D','I','Q',' '),	/* Dimli */
-  HB_TAG('Z','Z','A',' '),	/* Dimli -> Zazaki */
-  HB_TAG('D','R','I',' '),	/* Darwazi (retired code) -> Dari */
-  HB_TAG('F','A','R',' '),	/* Darwazi (retired code) -> Persian */
-  HB_TAG('E','M','K',' '),	/* Eastern Maninkakan */
-  HB_TAG('M','N','K',' '),	/* Eastern Maninkakan -> Maninka */
-  HB_TAG('F','A','N','0'),	/* Fang (Equatorial Guinea) */
-  HB_TAG('B','T','I',' '),	/* Fang (Equatorial Guinea) -> Beti */
-  HB_TAG('F','A','T',' '),	/* Fanti */
-  HB_TAG('A','K','A',' '),	/* Fanti -> Akan */
-  HB_TAG('H','A','L',' '),	/* Halam (Falam Chin) (retired code) */
-  HB_TAG('Q','I','N',' '),	/* Falam Chin (retired code) -> Chin */
-  HB_TAG('F','M','P',' '),	/* Fe’fe’ */
-  HB_TAG('B','M','L',' '),	/* Fe'fe' -> Bamileke */
-  HB_TAG('F','T','A',' '),	/* Pular -> Futa */
-  HB_TAG('F','U','L',' '),	/* Pular -> Fulah */
-  HB_TAG('F','U','V',' '),	/* Nigerian Fulfulde */
-  HB_TAG('F','U','L',' '),	/* Nigerian Fulfulde -> Fulah */
-  HB_TAG('G','K','P',' '),	/* Guinea Kpelle -> Kpelle (Guinea) */
-  HB_TAG('K','P','L',' '),	/* Guinea Kpelle -> Kpelle */
-  HB_TAG('H','M','D',' '),	/* Large Flowery Miao -> A-Hmao */
-  HB_TAG('H','M','N',' '),	/* Large Flowery Miao -> Hmong */
-  HB_TAG('H','M','Z',' '),	/* Hmong Shua -> Hmong Shuat */
-  HB_TAG('H','M','N',' '),	/* Hmong Shua -> Hmong */
-  HB_TAG('H','A','R',' '),	/* Hadothi -> Harauti */
-  HB_TAG('R','A','J',' '),	/* Hadothi -> Rajasthani */
-  HB_TAG('I','N','U',' '),	/* Eastern Canadian Inuktitut -> Inuktitut */
-  HB_TAG('I','N','U','K'),	/* Eastern Canadian Inuktitut -> Nunavik Inuktitut */
-  HB_TAG('J','A','M',' '),	/* Jamaican Creole English -> Jamaican Creole */
-  HB_TAG('C','P','P',' '),	/* Jamaican Creole English -> Creoles */
-  HB_TAG('K','A','B','0'),	/* Kabyle */
-  HB_TAG('B','B','R',' '),	/* Kabyle -> Berber */
-  HB_TAG('K','H','K',' '),	/* Khanty -> Khanty-Kazim */
-  HB_TAG('K','H','S',' '),	/* Khanty -> Khanty-Shurishkar */
-  HB_TAG('K','H','V',' '),	/* Khanty -> Khanty-Vakhi */
-  HB_TAG('K','E','A',' '),	/* Kabuverdianu (Crioulo) */
-  HB_TAG('C','P','P',' '),	/* Kabuverdianu -> Creoles */
-  HB_TAG('K','E','K',' '),	/* Kekchi */
-  HB_TAG('M','Y','N',' '),	/* Kekchí -> Mayan */
-  HB_TAG('K','H','T',' '),	/* Khamti -> Khamti Shan */
-  HB_TAG('K','H','N',' '),	/* Khamti -> Khamti Shan (Microsoft fonts) */
-  HB_TAG('K','I','U',' '),	/* Kirmanjki */
-  HB_TAG('Z','Z','A',' '),	/* Kirmanjki -> Zazaki */
-  HB_TAG('K','J','P',' '),	/* Pwo Eastern Karen -> Eastern Pwo Karen */
-  HB_TAG('K','R','N',' '),	/* Pwo Eastern Karen -> Karen */
-  HB_TAG('K','O','P',' '),	/* Komi-Permyak */
-  HB_TAG('K','O','M',' '),	/* Komi-Permyak -> Komi */
-  HB_TAG('K','O','Z',' '),	/* Komi-Zyrian */
-  HB_TAG('K','O','M',' '),	/* Komi-Zyrian -> Komi */
-  HB_TAG('K','A','R',' '),	/* Karachay-Balkar -> Karachay */
-  HB_TAG('B','A','L',' '),	/* Karachay-Balkar -> Balkar */
-  HB_TAG('K','R','I',' '),	/* Krio */
-  HB_TAG('C','P','P',' '),	/* Krio -> Creoles */
-  HB_TAG('K','S','W',' '),	/* S’gaw Karen */
-  HB_TAG('K','R','N',' '),	/* S'gaw Karen -> Karen */
-  HB_TAG('K','V','Q',' '),	/* Geba Karen */
-  HB_TAG('K','R','N',' '),	/* Geba Karen -> Karen */
-  HB_TAG('K','Y','U',' '),	/* Western Kayah */
-  HB_TAG('K','R','N',' '),	/* Western Kayah -> Karen */
-  HB_TAG('M','I','Z',' '),	/* Lushai -> Mizo */
-  HB_TAG('Q','I','N',' '),	/* Lushai -> Chin */
-  HB_TAG('M','A','M',' '),	/* Mam */
-  HB_TAG('M','Y','N',' '),	/* Mam -> Mayan */
-  HB_TAG('M','L','Y',' '),	/* North Moluccan Malay -> Malay */
-  HB_TAG('C','P','P',' '),	/* North Moluccan Malay -> Creoles */
-  HB_TAG('M','F','A',' '),	/* Pattani Malay */
-  HB_TAG('M','L','Y',' '),	/* Pattani Malay -> Malay */
-  HB_TAG('M','F','E',' '),	/* Morisyen */
-  HB_TAG('C','P','P',' '),	/* Morisyen -> Creoles */
-  HB_TAG('M','I','N',' '),	/* Minangkabau */
-  HB_TAG('M','L','Y',' '),	/* Minangkabau -> Malay */
-  HB_TAG('M','L','N',' '),	/* Western Maninkakan -> Malinke */
-  HB_TAG('M','N','K',' '),	/* Western Maninkakan -> Maninka */
-  HB_TAG('M','N','D',' '),	/* Mandinka */
-  HB_TAG('M','N','K',' '),	/* Mandinka -> Maninka */
-  HB_TAG('M','O','N',' '),	/* Mon */
-  HB_TAG('M','O','N','T'),	/* Mon -> Thailand Mon */
-  HB_TAG('M','L','Y',' '),	/* Sabah Malay -> Malay */
-  HB_TAG('C','P','P',' '),	/* Sabah Malay -> Creoles */
-  HB_TAG('M','W','W',' '),	/* Hmong Daw */
-  HB_TAG('H','M','N',' '),	/* Hmong Daw -> Hmong */
-  HB_TAG('N','A','G',' '),	/* Naga Pidgin -> Naga-Assamese */
-  HB_TAG('C','P','P',' '),	/* Naga Pidgin -> Creoles */
-  HB_TAG('O','C','R',' '),	/* Severn Ojibwa -> Oji-Cree */
-  HB_TAG('O','J','B',' '),	/* Severn Ojibwa -> Ojibway */
-  HB_TAG('P','A','P','0'),	/* Papiamento -> Papiamentu */
-  HB_TAG('C','P','P',' '),	/* Papiamento -> Creoles */
-  HB_TAG('A','R','A',' '),	/* Sudanese Creole Arabic -> Arabic */
-  HB_TAG('C','P','P',' '),	/* Sudanese Creole Arabic -> Creoles */
-  HB_TAG('P','I','H',' '),	/* Pitcairn-Norfolk -> Norfolk */
-  HB_TAG('C','P','P',' '),	/* Pitcairn-Norfolk -> Creoles */
-  HB_TAG('P','O','H',' '),	/* Poqomchi' -> Pocomchi */
-  HB_TAG('M','Y','N',' '),	/* Poqomchi' -> Mayan */
-  HB_TAG('D','R','I',' '),	/* Dari */
-  HB_TAG('F','A','R',' '),	/* Dari -> Persian */
-  HB_TAG('P','W','O',' '),	/* Pwo Western Karen -> Western Pwo Karen */
-  HB_TAG('K','R','N',' '),	/* Pwo Western Karen -> Karen */
-  HB_TAG('Q','W','H',' '),	/* Huallaga Huánuco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Huallaga Huánuco Quechua -> Quechua */
-  HB_TAG('Q','U','C',' '),	/* K’iche’ */
-  HB_TAG('M','Y','N',' '),	/* K'iche' -> Mayan */
-  HB_TAG('Q','V','I',' '),	/* Calderón Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Calderón Highland Quichua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Chimborazo Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Chimborazo Highland Quichua -> Quechua */
-  HB_TAG('Q','U','H',' '),	/* South Bolivian Quechua -> Quechua (Bolivia) */
-  HB_TAG('Q','U','Z',' '),	/* South Bolivian Quechua -> Quechua */
-  HB_TAG('Q','U','H',' '),	/* North Bolivian Quechua -> Quechua (Bolivia) */
-  HB_TAG('Q','U','Z',' '),	/* North Bolivian Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Southern Pastaza Quechua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Southern Pastaza Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Yanahuanca Pasco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Yanahuanca Pasco Quechua -> Quechua */
-  HB_TAG('Q','U','H',' '),	/* Santiago del Estero Quichua -> Quechua (Bolivia) */
-  HB_TAG('Q','U','Z',' '),	/* Santiago del Estero Quichua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Tena Lowland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Tena Lowland Quichua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Yauyos Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Yauyos Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Ambo-Pasco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Ambo-Pasco Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Imbabura Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Imbabura Highland Quichua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Loja Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Loja Highland Quichua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Cajatambo North Lima Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Cajatambo North Lima Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* North Junín Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* North Junín Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Napo Lowland Quechua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Napo Lowland Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Pacaraos Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Pacaraos Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Huaylla Wanca Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Huaylla Wanca Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Northern Pastaza Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Northern Pastaza Quichua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Corongo Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Corongo Ancash Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Huaylas Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Huaylas Ancash Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Sihuas Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Sihuas Ancash Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Chiquián Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Chiquián Ancash Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Chincha Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Chincha Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Panao Huánuco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Panao Huánuco Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Salasaca Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Salasaca Highland Quichua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Northern Conchucos Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Northern Conchucos Ancash Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Southern Conchucos Ancash Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Southern Conchucos Ancash Quechua -> Quechua */
-  HB_TAG('Q','V','I',' '),	/* Cañar Highland Quichua -> Quechua (Ecuador) */
-  HB_TAG('Q','U','Z',' '),	/* Cañar Highland Quichua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Santa Ana de Tusi Pasco Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Santa Ana de Tusi Pasco Quechua -> Quechua */
-  HB_TAG('Q','W','H',' '),	/* Jauja Wanca Quechua -> Quechua (Peru) */
-  HB_TAG('Q','U','Z',' '),	/* Jauja Wanca Quechua -> Quechua */
-  HB_TAG('R','I','F',' '),	/* Tarifit */
-  HB_TAG('B','B','R',' '),	/* Tarifit -> Berber */
-  HB_TAG('R','M','Y',' '),	/* Vlax Romani */
-  HB_TAG('R','O','Y',' '),	/* Vlax Romani -> Romany */
-  HB_TAG('S','C','S',' '),	/* North Slavey */
-  HB_TAG('S','L','A',' '),	/* North Slavey -> Slavey */
-  HB_TAG('A','T','H',' '),	/* North Slavey -> Athapaskan */
-  HB_TAG('S','F','M',' '),	/* Small Flowery Miao */
-  HB_TAG('H','M','N',' '),	/* Small Flowery Miao -> Hmong */
-  HB_TAG('S','H','I',' '),	/* Tachelhit */
-  HB_TAG('B','B','R',' '),	/* Tachelhit -> Berber */
-  HB_TAG('T','A','Q',' '),	/* Tamasheq */
-  HB_TAG('T','M','H',' '),	/* Tamasheq -> Tamashek */
-  HB_TAG('B','B','R',' '),	/* Tamasheq -> Berber */
-  HB_TAG('T','H','V',' '),	/* Tahaggart Tamahaq */
-  HB_TAG('T','M','H',' '),	/* Tahaggart Tamahaq -> Tamashek */
-  HB_TAG('B','B','R',' '),	/* Tahaggart Tamahaq -> Berber */
-  HB_TAG('T','H','Z',' '),	/* Tayart Tamajeq */
-  HB_TAG('T','M','H',' '),	/* Tayart Tamajeq -> Tamashek */
-  HB_TAG('B','B','R',' '),	/* Tayart Tamajeq -> Berber */
-  HB_TAG('T','M','H',' '),	/* Tamashek [macrolanguage] */
-  HB_TAG('B','B','R',' '),	/* Tamashek [macrolanguage] -> Berber */
-  HB_TAG('D','R','I',' '),	/* Tangshewi (retired code) -> Dari */
-  HB_TAG('F','A','R',' '),	/* Tangshewi (retired code) -> Persian */
-  HB_TAG('T','P','I',' '),	/* Tok Pisin */
-  HB_TAG('C','P','P',' '),	/* Tok Pisin -> Creoles */
-  HB_TAG('T','U','A',' '),	/* Turoyo -> Turoyo Aramaic */
-  HB_TAG('S','Y','R',' '),	/* Turoyo -> Syriac */
-  HB_TAG('T','T','Q',' '),	/* Tawallammat Tamajaq */
-  HB_TAG('T','M','H',' '),	/* Tawallammat Tamajaq -> Tamashek */
-  HB_TAG('B','B','R',' '),	/* Tawallammat Tamajaq -> Berber */
-  HB_TAG('T','Z','M',' '),	/* Central Atlas Tamazight -> Tamazight */
-  HB_TAG('B','B','R',' '),	/* Central Atlas Tamazight -> Berber */
-  HB_TAG('T','Z','O',' '),	/* Tzotzil */
-  HB_TAG('M','Y','N',' '),	/* Tzotzil -> Mayan */
-  HB_TAG('V','R','O',' '),	/* Võro */
-  HB_TAG('E','T','I',' '),	/* Võro -> Estonian */
-  HB_TAG('W','A','G',' '),	/* Wagdi */
-  HB_TAG('R','A','J',' '),	/* Wagdi -> Rajasthani */
-  HB_TAG('W','D','T',' '),	/* Wyandot (retired code) -> Wendat */
-  HB_TAG('W','Y','N',' '),	/* Wyandot (retired code) */
-  HB_TAG('K','L','M',' '),	/* Kalmyk */
-  HB_TAG('T','O','D',' '),	/* Kalmyk -> Todo */
-  HB_TAG('M','L','Y',' '),	/* Manado Malay -> Malay */
-  HB_TAG('C','P','P',' '),	/* Manado Malay -> Creoles */
-  HB_TAG('X','P','E',' '),	/* Liberia Kpelle -> Kpelle (Liberia) */
-  HB_TAG('K','P','L',' '),	/* Liberia Kpelle -> Kpelle */
-  HB_TAG('S','S','L',' '),	/* South Slavey */
-  HB_TAG('S','L','A',' '),	/* South Slavey -> Slavey */
-  HB_TAG('A','T','H',' '),	/* South Slavey -> Athapaskan */
-  HB_TAG('Z','G','H',' '),	/* Standard Moroccan Tamazight */
-  HB_TAG('B','B','R',' '),	/* Standard Moroccan Tamazight -> Berber */
+ساكن ثابت hb_ٽيگ_t ot_languages3_multi_قدرون[] = {
+  HB_ٽيگ('F','A','N',' '),	/* Saint Lucian Creole French -> French Antillean */
+  HB_ٽيگ('C','P','P',' '),	/* Saint Lucian Creole French -> Creoles */
+  HB_ٽيگ('A','C','R',' '),	/* Achi */
+  HB_ٽيگ('M','Y','N',' '),	/* Achi -> Mayan */
+  HB_ٽيگ('A','C','Y',' '),	/* Cypriot Arabic */
+  HB_ٽيگ('A','R','A',' '),	/* Cypriot Arabic -> Arabic */
+  HB_ٽيگ('S','W','A',' '),	/* Assyrian Neo-Aramaic -> Swadaya Aramaic */
+  HB_ٽيگ('S','Y','R',' '),	/* Assyrian Neo-Aramaic -> Syriac */
+  HB_ٽيگ('A','K','B',' '),	/* Batak Angkola */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Angkola -> Batak */
+  HB_ٽيگ('M','O','R',' '),	/* Moroccan Arabic -> Moroccan */
+  HB_ٽيگ('A','R','A',' '),	/* Moroccan Arabic -> Arabic */
+  HB_ٽيگ('A','Z','B',' '),	/* South Azerbaijani -> Torki */
+  HB_ٽيگ('A','Z','E',' '),	/* South Azerbaijani -> Azerbaijani */
+  HB_ٽيگ('B','B','C',' '),	/* Batak Toba */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Toba -> Batak */
+  HB_ٽيگ('B','G','Q',' '),	/* Bagri */
+  HB_ٽيگ('R','A','J',' '),	/* Bagri -> Rajasthani */
+  HB_ٽيگ('B','L','K',' '),	/* Pa’o Karen */
+  HB_ٽيگ('K','R','N',' '),	/* Pa'o Karen -> Karen */
+  HB_ٽيگ('B','T','D',' '),	/* Batak Dairi (Pakpak) */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Dairi -> Batak */
+  HB_ٽيگ('B','T','M',' '),	/* Batak Mandailing */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Mandailing -> Batak */
+  HB_ٽيگ('B','T','S',' '),	/* Batak Simalungun */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Simalungun -> Batak */
+  HB_ٽيگ('B','T','X',' '),	/* Batak Karo */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Karo -> Batak */
+  HB_ٽيگ('B','T','Z',' '),	/* Batak Alas-Kluet */
+  HB_ٽيگ('B','T','K',' '),	/* Batak Alas-Kluet -> Batak */
+  HB_ٽيگ('B','Y','V',' '),	/* Medumba */
+  HB_ٽيگ('B','M','L',' '),	/* Medumba -> Bamileke */
+  HB_ٽيگ('C','R','R',' '),	/* Southern Carrier -> Carrier */
+  HB_ٽيگ('A','T','H',' '),	/* Southern Carrier -> Athapaskan */
+  HB_ٽيگ('C','A','K',' '),	/* Kaqchikel */
+  HB_ٽيگ('M','Y','N',' '),	/* Kaqchikel -> Mayan */
+  HB_ٽيگ('C','B','K',' '),	/* Chavacano -> Zamboanga Chavacano */
+  HB_ٽيگ('C','P','P',' '),	/* Chavacano -> Creoles */
+  HB_ٽيگ('H','A','L',' '),	/* Halam (Falam Chin) */
+  HB_ٽيگ('Q','I','N',' '),	/* Falam Chin -> Chin */
+  HB_ٽيگ('H','M','A',' '),	/* Mari (Russia) [macrolanguage] -> High Mari */
+  HB_ٽيگ('L','M','A',' '),	/* Mari (Russia) [macrolanguage] -> Low Mari */
+  HB_ٽيگ('C','H','P',' '),	/* Chipewyan */
+  HB_ٽيگ('S','A','Y',' '),	/* Chipewyan -> Sayisi */
+  HB_ٽيگ('A','T','H',' '),	/* Chipewyan -> Athapaskan */
+  HB_ٽيگ('Q','U','H',' '),	/* Chilean Quechua (retired code) -> Quechua (Bolivia) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Chilean Quechua (retired code) -> Quechua */
+  HB_ٽيگ('E','C','R',' '),	/* Southern East Cree -> Eastern Cree */
+  HB_ٽيگ('Y','C','R',' '),	/* Southern East Cree -> Y-Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Southern East Cree -> Cree */
+  HB_ٽيگ('W','C','R',' '),	/* Plains Cree -> West-Cree */
+  HB_ٽيگ('Y','C','R',' '),	/* Plains Cree -> Y-Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Plains Cree -> Cree */
+  HB_ٽيگ('E','C','R',' '),	/* Northern East Cree -> Eastern Cree */
+  HB_ٽيگ('Y','C','R',' '),	/* Northern East Cree -> Y-Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Northern East Cree -> Cree */
+  HB_ٽيگ('M','C','R',' '),	/* Moose Cree */
+  HB_ٽيگ('L','C','R',' '),	/* Moose Cree -> L-Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Moose Cree -> Cree */
+  HB_ٽيگ('C','R','R',' '),	/* Carrier */
+  HB_ٽيگ('A','T','H',' '),	/* Carrier -> Athapaskan */
+  HB_ٽيگ('N','C','R',' '),	/* Swampy Cree -> N-Cree */
+  HB_ٽيگ('N','H','C',' '),	/* Swampy Cree -> Norway House Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Swampy Cree -> Cree */
+  HB_ٽيگ('D','C','R',' '),	/* Woods Cree */
+  HB_ٽيگ('T','C','R',' '),	/* Woods Cree -> TH-Cree */
+  HB_ٽيگ('C','R','E',' '),	/* Woods Cree -> Cree */
+  HB_ٽيگ('S','L','A',' '),	/* Slavey [macrolanguage] */
+  HB_ٽيگ('A','T','H',' '),	/* Slavey [macrolanguage] -> Athapaskan */
+  HB_ٽيگ('D','G','O',' '),	/* Dogri (individual language) */
+  HB_ٽيگ('D','G','R',' '),	/* Dogri (macrolanguage) */
+  HB_ٽيگ('D','I','Q',' '),	/* Dimli */
+  HB_ٽيگ('Z','Z','A',' '),	/* Dimli -> Zazaki */
+  HB_ٽيگ('D','R','I',' '),	/* Darwazi (retired code) -> Dari */
+  HB_ٽيگ('F','A','R',' '),	/* Darwazi (retired code) -> Persian */
+  HB_ٽيگ('E','M','K',' '),	/* Eastern Maninkakan */
+  HB_ٽيگ('M','N','K',' '),	/* Eastern Maninkakan -> Maninka */
+  HB_ٽيگ('F','A','N','0'),	/* Fang (Equatorial Guinea) */
+  HB_ٽيگ('B','T','I',' '),	/* Fang (Equatorial Guinea) -> Beti */
+  HB_ٽيگ('F','A','T',' '),	/* Fanti */
+  HB_ٽيگ('A','K','A',' '),	/* Fanti -> Akan */
+  HB_ٽيگ('H','A','L',' '),	/* Halam (Falam Chin) (retired code) */
+  HB_ٽيگ('Q','I','N',' '),	/* Falam Chin (retired code) -> Chin */
+  HB_ٽيگ('F','M','P',' '),	/* Fe’fe’ */
+  HB_ٽيگ('B','M','L',' '),	/* Fe'fe' -> Bamileke */
+  HB_ٽيگ('F','T','A',' '),	/* Pular -> Futa */
+  HB_ٽيگ('F','U','L',' '),	/* Pular -> Fulah */
+  HB_ٽيگ('F','U','V',' '),	/* Nigerian Fulfulde */
+  HB_ٽيگ('F','U','L',' '),	/* Nigerian Fulfulde -> Fulah */
+  HB_ٽيگ('G','K','P',' '),	/* Guinea Kpelle -> Kpelle (Guinea) */
+  HB_ٽيگ('K','P','L',' '),	/* Guinea Kpelle -> Kpelle */
+  HB_ٽيگ('H','M','D',' '),	/* Large Flowery Miao -> A-Hmao */
+  HB_ٽيگ('H','M','N',' '),	/* Large Flowery Miao -> Hmong */
+  HB_ٽيگ('H','M','Z',' '),	/* Hmong Shua -> Hmong Shuat */
+  HB_ٽيگ('H','M','N',' '),	/* Hmong Shua -> Hmong */
+  HB_ٽيگ('H','A','R',' '),	/* Hadothi -> Harauti */
+  HB_ٽيگ('R','A','J',' '),	/* Hadothi -> Rajasthani */
+  HB_ٽيگ('I','N','U',' '),	/* Eastern Canadian Inuktitut -> Inuktitut */
+  HB_ٽيگ('I','N','U','K'),	/* Eastern Canadian Inuktitut -> Nunavik Inuktitut */
+  HB_ٽيگ('J','A','M',' '),	/* Jamaican Creole English -> Jamaican Creole */
+  HB_ٽيگ('C','P','P',' '),	/* Jamaican Creole English -> Creoles */
+  HB_ٽيگ('K','A','B','0'),	/* Kabyle */
+  HB_ٽيگ('B','B','R',' '),	/* Kabyle -> Berber */
+  HB_ٽيگ('K','H','K',' '),	/* Khanty -> Khanty-Kazim */
+  HB_ٽيگ('K','H','S',' '),	/* Khanty -> Khanty-Shurishkar */
+  HB_ٽيگ('K','H','V',' '),	/* Khanty -> Khanty-Vakhi */
+  HB_ٽيگ('K','E','A',' '),	/* Kabuverdianu (Crioulo) */
+  HB_ٽيگ('C','P','P',' '),	/* Kabuverdianu -> Creoles */
+  HB_ٽيگ('K','E','K',' '),	/* Kekchi */
+  HB_ٽيگ('M','Y','N',' '),	/* Kekchí -> Mayan */
+  HB_ٽيگ('K','H','T',' '),	/* Khamti -> Khamti Shan */
+  HB_ٽيگ('K','H','N',' '),	/* Khamti -> Khamti Shan (Microsoft fonts) */
+  HB_ٽيگ('K','I','U',' '),	/* Kirmanjki */
+  HB_ٽيگ('Z','Z','A',' '),	/* Kirmanjki -> Zazaki */
+  HB_ٽيگ('K','J','P',' '),	/* Pwo Eastern Karen -> Eastern Pwo Karen */
+  HB_ٽيگ('K','R','N',' '),	/* Pwo Eastern Karen -> Karen */
+  HB_ٽيگ('K','O','P',' '),	/* Komi-Permyak */
+  HB_ٽيگ('K','O','M',' '),	/* Komi-Permyak -> Komi */
+  HB_ٽيگ('K','O','Z',' '),	/* Komi-Zyrian */
+  HB_ٽيگ('K','O','M',' '),	/* Komi-Zyrian -> Komi */
+  HB_ٽيگ('K','A','R',' '),	/* Karachay-Balkar -> Karachay */
+  HB_ٽيگ('B','A','L',' '),	/* Karachay-Balkar -> Balkar */
+  HB_ٽيگ('K','R','I',' '),	/* Krio */
+  HB_ٽيگ('C','P','P',' '),	/* Krio -> Creoles */
+  HB_ٽيگ('K','S','W',' '),	/* S’gaw Karen */
+  HB_ٽيگ('K','R','N',' '),	/* S'gaw Karen -> Karen */
+  HB_ٽيگ('K','V','Q',' '),	/* Geba Karen */
+  HB_ٽيگ('K','R','N',' '),	/* Geba Karen -> Karen */
+  HB_ٽيگ('K','Y','U',' '),	/* Western Kayah */
+  HB_ٽيگ('K','R','N',' '),	/* Western Kayah -> Karen */
+  HB_ٽيگ('M','I','Z',' '),	/* Lushai -> Mizo */
+  HB_ٽيگ('Q','I','N',' '),	/* Lushai -> Chin */
+  HB_ٽيگ('M','A','M',' '),	/* Mam */
+  HB_ٽيگ('M','Y','N',' '),	/* Mam -> Mayan */
+  HB_ٽيگ('M','L','Y',' '),	/* North Moluccan Malay -> Malay */
+  HB_ٽيگ('C','P','P',' '),	/* North Moluccan Malay -> Creoles */
+  HB_ٽيگ('M','F','A',' '),	/* Pattani Malay */
+  HB_ٽيگ('M','L','Y',' '),	/* Pattani Malay -> Malay */
+  HB_ٽيگ('M','F','E',' '),	/* Morisyen */
+  HB_ٽيگ('C','P','P',' '),	/* Morisyen -> Creoles */
+  HB_ٽيگ('M','I','N',' '),	/* Minangkabau */
+  HB_ٽيگ('M','L','Y',' '),	/* Minangkabau -> Malay */
+  HB_ٽيگ('M','L','N',' '),	/* Western Maninkakan -> Malinke */
+  HB_ٽيگ('M','N','K',' '),	/* Western Maninkakan -> Maninka */
+  HB_ٽيگ('M','N','D',' '),	/* Mandinka */
+  HB_ٽيگ('M','N','K',' '),	/* Mandinka -> Maninka */
+  HB_ٽيگ('M','O','N',' '),	/* Mon */
+  HB_ٽيگ('M','O','N','T'),	/* Mon -> Thailand Mon */
+  HB_ٽيگ('M','L','Y',' '),	/* Sabah Malay -> Malay */
+  HB_ٽيگ('C','P','P',' '),	/* Sabah Malay -> Creoles */
+  HB_ٽيگ('M','W','W',' '),	/* Hmong Daw */
+  HB_ٽيگ('H','M','N',' '),	/* Hmong Daw -> Hmong */
+  HB_ٽيگ('N','A','G',' '),	/* Naga Pidgin -> Naga-Assamese */
+  HB_ٽيگ('C','P','P',' '),	/* Naga Pidgin -> Creoles */
+  HB_ٽيگ('O','C','R',' '),	/* Severn Ojibwa -> Oji-Cree */
+  HB_ٽيگ('O','J','B',' '),	/* Severn Ojibwa -> Ojibway */
+  HB_ٽيگ('P','A','P','0'),	/* Papiamento -> Papiamentu */
+  HB_ٽيگ('C','P','P',' '),	/* Papiamento -> Creoles */
+  HB_ٽيگ('A','R','A',' '),	/* Sudanese Creole Arabic -> Arabic */
+  HB_ٽيگ('C','P','P',' '),	/* Sudanese Creole Arabic -> Creoles */
+  HB_ٽيگ('P','I','H',' '),	/* Pitcairn-Norfolk -> Norfolk */
+  HB_ٽيگ('C','P','P',' '),	/* Pitcairn-Norfolk -> Creoles */
+  HB_ٽيگ('P','O','H',' '),	/* Poqomchi' -> Pocomchi */
+  HB_ٽيگ('M','Y','N',' '),	/* Poqomchi' -> Mayan */
+  HB_ٽيگ('D','R','I',' '),	/* Dari */
+  HB_ٽيگ('F','A','R',' '),	/* Dari -> Persian */
+  HB_ٽيگ('P','W','O',' '),	/* Pwo Western Karen -> Western Pwo Karen */
+  HB_ٽيگ('K','R','N',' '),	/* Pwo Western Karen -> Karen */
+  HB_ٽيگ('Q','W','H',' '),	/* Huallaga Huánuco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Huallaga Huánuco Quechua -> Quechua */
+  HB_ٽيگ('Q','U','C',' '),	/* K’iche’ */
+  HB_ٽيگ('M','Y','N',' '),	/* K'iche' -> Mayan */
+  HB_ٽيگ('Q','V','I',' '),	/* Calderón Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Calderón Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Chimborazo Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Chimborazo Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','U','H',' '),	/* South Bolivian Quechua -> Quechua (Bolivia) */
+  HB_ٽيگ('Q','U','Z',' '),	/* South Bolivian Quechua -> Quechua */
+  HB_ٽيگ('Q','U','H',' '),	/* North Bolivian Quechua -> Quechua (Bolivia) */
+  HB_ٽيگ('Q','U','Z',' '),	/* North Bolivian Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Southern Pastaza Quechua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Southern Pastaza Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Yanahuanca Pasco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Yanahuanca Pasco Quechua -> Quechua */
+  HB_ٽيگ('Q','U','H',' '),	/* Santiago del Estero Quichua -> Quechua (Bolivia) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Santiago del Estero Quichua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Tena Lowland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Tena Lowland Quichua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Yauyos Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Yauyos Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Ambo-Pasco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Ambo-Pasco Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Imbabura Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Imbabura Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Loja Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Loja Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Cajatambo North Lima Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Cajatambo North Lima Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* North Junín Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* North Junín Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Napo Lowland Quechua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Napo Lowland Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Pacaraos Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Pacaraos Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Huaylla Wanca Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Huaylla Wanca Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Northern Pastaza Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Northern Pastaza Quichua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Corongo Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Corongo Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Huaylas Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Huaylas Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Sihuas Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Sihuas Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Chiquián Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Chiquián Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Chincha Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Chincha Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Panao Huánuco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Panao Huánuco Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Salasaca Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Salasaca Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Northern Conchucos Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Northern Conchucos Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Southern Conchucos Ancash Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Southern Conchucos Ancash Quechua -> Quechua */
+  HB_ٽيگ('Q','V','I',' '),	/* Cañar Highland Quichua -> Quechua (Ecuador) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Cañar Highland Quichua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Santa Ana de Tusi Pasco Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Santa Ana de Tusi Pasco Quechua -> Quechua */
+  HB_ٽيگ('Q','W','H',' '),	/* Jauja Wanca Quechua -> Quechua (Peru) */
+  HB_ٽيگ('Q','U','Z',' '),	/* Jauja Wanca Quechua -> Quechua */
+  HB_ٽيگ('R','I','F',' '),	/* Tarifit */
+  HB_ٽيگ('B','B','R',' '),	/* Tarifit -> Berber */
+  HB_ٽيگ('R','M','Y',' '),	/* Vlax Romani */
+  HB_ٽيگ('R','O','Y',' '),	/* Vlax Romani -> Romany */
+  HB_ٽيگ('S','C','S',' '),	/* North Slavey */
+  HB_ٽيگ('S','L','A',' '),	/* North Slavey -> Slavey */
+  HB_ٽيگ('A','T','H',' '),	/* North Slavey -> Athapaskan */
+  HB_ٽيگ('S','F','M',' '),	/* Small Flowery Miao */
+  HB_ٽيگ('H','M','N',' '),	/* Small Flowery Miao -> Hmong */
+  HB_ٽيگ('S','H','I',' '),	/* Tachelhit */
+  HB_ٽيگ('B','B','R',' '),	/* Tachelhit -> Berber */
+  HB_ٽيگ('T','A','Q',' '),	/* Tamasheq */
+  HB_ٽيگ('T','M','H',' '),	/* Tamasheq -> Tamashek */
+  HB_ٽيگ('B','B','R',' '),	/* Tamasheq -> Berber */
+  HB_ٽيگ('T','H','V',' '),	/* Tahaggart Tamahaq */
+  HB_ٽيگ('T','M','H',' '),	/* Tahaggart Tamahaq -> Tamashek */
+  HB_ٽيگ('B','B','R',' '),	/* Tahaggart Tamahaq -> Berber */
+  HB_ٽيگ('T','H','Z',' '),	/* Tayart Tamajeq */
+  HB_ٽيگ('T','M','H',' '),	/* Tayart Tamajeq -> Tamashek */
+  HB_ٽيگ('B','B','R',' '),	/* Tayart Tamajeq -> Berber */
+  HB_ٽيگ('T','M','H',' '),	/* Tamashek [macrolanguage] */
+  HB_ٽيگ('B','B','R',' '),	/* Tamashek [macrolanguage] -> Berber */
+  HB_ٽيگ('D','R','I',' '),	/* Tangshewi (retired code) -> Dari */
+  HB_ٽيگ('F','A','R',' '),	/* Tangshewi (retired code) -> Persian */
+  HB_ٽيگ('T','P','I',' '),	/* Tok Pisin */
+  HB_ٽيگ('C','P','P',' '),	/* Tok Pisin -> Creoles */
+  HB_ٽيگ('T','U','A',' '),	/* Turoyo -> Turoyo Aramaic */
+  HB_ٽيگ('S','Y','R',' '),	/* Turoyo -> Syriac */
+  HB_ٽيگ('T','T','Q',' '),	/* Tawallammat Tamajaq */
+  HB_ٽيگ('T','M','H',' '),	/* Tawallammat Tamajaq -> Tamashek */
+  HB_ٽيگ('B','B','R',' '),	/* Tawallammat Tamajaq -> Berber */
+  HB_ٽيگ('T','Z','M',' '),	/* Central Atlas Tamazight -> Tamazight */
+  HB_ٽيگ('B','B','R',' '),	/* Central Atlas Tamazight -> Berber */
+  HB_ٽيگ('T','Z','O',' '),	/* Tzotzil */
+  HB_ٽيگ('M','Y','N',' '),	/* Tzotzil -> Mayan */
+  HB_ٽيگ('V','R','O',' '),	/* Võro */
+  HB_ٽيگ('E','T','I',' '),	/* Võro -> Estonian */
+  HB_ٽيگ('W','A','G',' '),	/* Wagdi */
+  HB_ٽيگ('R','A','J',' '),	/* Wagdi -> Rajasthani */
+  HB_ٽيگ('W','D','T',' '),	/* Wyandot (retired code) -> Wendat */
+  HB_ٽيگ('W','Y','N',' '),	/* Wyandot (retired code) */
+  HB_ٽيگ('K','L','M',' '),	/* Kalmyk */
+  HB_ٽيگ('T','O','D',' '),	/* Kalmyk -> Todo */
+  HB_ٽيگ('M','L','Y',' '),	/* Manado Malay -> Malay */
+  HB_ٽيگ('C','P','P',' '),	/* Manado Malay -> Creoles */
+  HB_ٽيگ('X','P','E',' '),	/* Liberia Kpelle -> Kpelle (Liberia) */
+  HB_ٽيگ('K','P','L',' '),	/* Liberia Kpelle -> Kpelle */
+  HB_ٽيگ('S','S','L',' '),	/* South Slavey */
+  HB_ٽيگ('S','L','A',' '),	/* South Slavey -> Slavey */
+  HB_ٽيگ('A','T','H',' '),	/* South Slavey -> Athapaskan */
+  HB_ٽيگ('Z','G','H',' '),	/* Standard Moroccan Tamazight */
+  HB_ٽيگ('B','B','R',' '),	/* Standard Moroccan Tamazight -> Berber */
 };
 
-static const LangTagRange ot_languages3_multi[] = {
-  {HB_TAG('a','c','f',' '),	0,	2},	/* Saint Lucian Creole French -> French Antillean */
-  {HB_TAG('a','c','r',' '),	2,	2},	/* Achi */
-  {HB_TAG('a','c','y',' '),	4,	2},	/* Cypriot Arabic */
-  {HB_TAG('a','i','i',' '),	6,	2},	/* Assyrian Neo-Aramaic -> Swadaya Aramaic */
-  {HB_TAG('a','k','b',' '),	8,	2},	/* Batak Angkola */
-  {HB_TAG('a','r','y',' '),	10,	2},	/* Moroccan Arabic -> Moroccan */
-  {HB_TAG('a','z','b',' '),	12,	2},	/* South Azerbaijani -> Torki */
-  {HB_TAG('b','b','c',' '),	14,	2},	/* Batak Toba */
-  {HB_TAG('b','g','q',' '),	16,	2},	/* Bagri */
-  {HB_TAG('b','l','k',' '),	18,	2},	/* Pa’o Karen */
-  {HB_TAG('b','t','d',' '),	20,	2},	/* Batak Dairi (Pakpak) */
-  {HB_TAG('b','t','m',' '),	22,	2},	/* Batak Mandailing */
-  {HB_TAG('b','t','s',' '),	24,	2},	/* Batak Simalungun */
-  {HB_TAG('b','t','x',' '),	26,	2},	/* Batak Karo */
-  {HB_TAG('b','t','z',' '),	28,	2},	/* Batak Alas-Kluet */
-  {HB_TAG('b','y','v',' '),	30,	2},	/* Medumba */
-  {HB_TAG('c','a','f',' '),	32,	2},	/* Southern Carrier -> Carrier */
-  {HB_TAG('c','a','k',' '),	34,	2},	/* Kaqchikel */
-  {HB_TAG('c','b','k',' '),	36,	2},	/* Chavacano -> Zamboanga Chavacano */
-  {HB_TAG('c','f','m',' '),	38,	2},	/* Halam (Falam Chin) */
-  {HB_TAG('c','h','m',' '),	40,	2},	/* Mari (Russia) [macrolanguage] -> High Mari */
-  {HB_TAG('c','h','p',' '),	42,	3},	/* Chipewyan */
-  {HB_TAG('c','q','u',' '),	45,	2},	/* Chilean Quechua (retired code) -> Quechua (Bolivia) */
-  {HB_TAG('c','r','j',' '),	47,	3},	/* Southern East Cree -> Eastern Cree */
-  {HB_TAG('c','r','k',' '),	50,	3},	/* Plains Cree -> West-Cree */
-  {HB_TAG('c','r','l',' '),	53,	3},	/* Northern East Cree -> Eastern Cree */
-  {HB_TAG('c','r','m',' '),	56,	3},	/* Moose Cree */
-  {HB_TAG('c','r','x',' '),	59,	2},	/* Carrier */
-  {HB_TAG('c','s','w',' '),	61,	3},	/* Swampy Cree -> N-Cree */
-  {HB_TAG('c','w','d',' '),	64,	3},	/* Woods Cree */
-  {HB_TAG('d','e','n',' '),	67,	2},	/* Slavey [macrolanguage] */
-  {HB_TAG('d','g','o',' '),	69,	2},	/* Dogri (individual language) */
-  {HB_TAG('d','i','q',' '),	71,	2},	/* Dimli */
-  {HB_TAG('d','r','w',' '),	73,	2},	/* Darwazi (retired code) -> Dari */
-  {HB_TAG('e','m','k',' '),	75,	2},	/* Eastern Maninkakan */
-  {HB_TAG('f','a','n',' '),	77,	2},	/* Fang (Equatorial Guinea) */
-  {HB_TAG('f','a','t',' '),	79,	2},	/* Fanti */
-  {HB_TAG('f','l','m',' '),	81,	2},	/* Halam (Falam Chin) (retired code) */
-  {HB_TAG('f','m','p',' '),	83,	2},	/* Fe’fe’ */
-  {HB_TAG('f','u','f',' '),	85,	2},	/* Pular -> Futa */
-  {HB_TAG('f','u','v',' '),	87,	2},	/* Nigerian Fulfulde */
-  {HB_TAG('g','k','p',' '),	89,	2},	/* Guinea Kpelle -> Kpelle (Guinea) */
-  {HB_TAG('h','m','d',' '),	91,	2},	/* Large Flowery Miao -> A-Hmao */
-  {HB_TAG('h','m','z',' '),	93,	2},	/* Hmong Shua -> Hmong Shuat */
-  {HB_TAG('h','o','j',' '),	95,	2},	/* Hadothi -> Harauti */
-  {HB_TAG('i','k','e',' '),	97,	2},	/* Eastern Canadian Inuktitut -> Inuktitut */
-  {HB_TAG('j','a','m',' '),	99,	2},	/* Jamaican Creole English -> Jamaican Creole */
-  {HB_TAG('k','a','b',' '),	101,	2},	/* Kabyle */
-  {HB_TAG('k','c','a',' '),	103,	3},	/* Khanty -> Khanty-Kazim */
-  {HB_TAG('k','e','a',' '),	106,	2},	/* Kabuverdianu (Crioulo) */
-  {HB_TAG('k','e','k',' '),	108,	2},	/* Kekchi */
-  {HB_TAG('k','h','t',' '),	110,	2},	/* Khamti -> Khamti Shan */
-  {HB_TAG('k','i','u',' '),	112,	2},	/* Kirmanjki */
-  {HB_TAG('k','j','p',' '),	114,	2},	/* Pwo Eastern Karen -> Eastern Pwo Karen */
-  {HB_TAG('k','o','i',' '),	116,	2},	/* Komi-Permyak */
-  {HB_TAG('k','p','v',' '),	118,	2},	/* Komi-Zyrian */
-  {HB_TAG('k','r','c',' '),	120,	2},	/* Karachay-Balkar -> Karachay */
-  {HB_TAG('k','r','i',' '),	122,	2},	/* Krio */
-  {HB_TAG('k','s','w',' '),	124,	2},	/* S’gaw Karen */
-  {HB_TAG('k','v','q',' '),	126,	2},	/* Geba Karen */
-  {HB_TAG('k','y','u',' '),	128,	2},	/* Western Kayah */
-  {HB_TAG('l','u','s',' '),	130,	2},	/* Lushai -> Mizo */
-  {HB_TAG('m','a','m',' '),	132,	2},	/* Mam */
-  {HB_TAG('m','a','x',' '),	134,	2},	/* North Moluccan Malay -> Malay */
-  {HB_TAG('m','f','a',' '),	136,	2},	/* Pattani Malay */
-  {HB_TAG('m','f','e',' '),	138,	2},	/* Morisyen */
-  {HB_TAG('m','i','n',' '),	140,	2},	/* Minangkabau */
-  {HB_TAG('m','l','q',' '),	142,	2},	/* Western Maninkakan -> Malinke */
-  {HB_TAG('m','n','k',' '),	144,	2},	/* Mandinka */
-  {HB_TAG('m','n','w',' '),	146,	2},	/* Mon */
-  {HB_TAG('m','s','i',' '),	148,	2},	/* Sabah Malay -> Malay */
-  {HB_TAG('m','w','w',' '),	150,	2},	/* Hmong Daw */
-  {HB_TAG('n','a','g',' '),	152,	2},	/* Naga Pidgin -> Naga-Assamese */
-  {HB_TAG('o','j','s',' '),	154,	2},	/* Severn Ojibwa -> Oji-Cree */
-  {HB_TAG('p','a','p',' '),	156,	2},	/* Papiamento -> Papiamentu */
-  {HB_TAG('p','g','a',' '),	158,	2},	/* Sudanese Creole Arabic -> Arabic */
-  {HB_TAG('p','i','h',' '),	160,	2},	/* Pitcairn-Norfolk -> Norfolk */
-  {HB_TAG('p','o','h',' '),	162,	2},	/* Poqomchi' -> Pocomchi */
-  {HB_TAG('p','r','s',' '),	164,	2},	/* Dari */
-  {HB_TAG('p','w','o',' '),	166,	2},	/* Pwo Western Karen -> Western Pwo Karen */
-  {HB_TAG('q','u','b',' '),	168,	2},	/* Huallaga Huánuco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','u','c',' '),	170,	2},	/* K’iche’ */
-  {HB_TAG('q','u','d',' '),	172,	2},	/* Calderón Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','u','g',' '),	174,	2},	/* Chimborazo Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','u','h',' '),	176,	2},	/* South Bolivian Quechua -> Quechua (Bolivia) */
-  {HB_TAG('q','u','l',' '),	178,	2},	/* North Bolivian Quechua -> Quechua (Bolivia) */
-  {HB_TAG('q','u','p',' '),	180,	2},	/* Southern Pastaza Quechua -> Quechua (Ecuador) */
-  {HB_TAG('q','u','r',' '),	182,	2},	/* Yanahuanca Pasco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','u','s',' '),	184,	2},	/* Santiago del Estero Quichua -> Quechua (Bolivia) */
-  {HB_TAG('q','u','w',' '),	186,	2},	/* Tena Lowland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','u','x',' '),	188,	2},	/* Yauyos Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','a',' '),	190,	2},	/* Ambo-Pasco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','h',' '),	192,	2},	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','i',' '),	194,	2},	/* Imbabura Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','v','j',' '),	196,	2},	/* Loja Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','v','l',' '),	198,	2},	/* Cajatambo North Lima Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','m',' '),	200,	2},	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','n',' '),	202,	2},	/* North Junín Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','o',' '),	204,	2},	/* Napo Lowland Quechua -> Quechua (Ecuador) */
-  {HB_TAG('q','v','p',' '),	206,	2},	/* Pacaraos Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','w',' '),	208,	2},	/* Huaylla Wanca Quechua -> Quechua (Peru) */
-  {HB_TAG('q','v','z',' '),	210,	2},	/* Northern Pastaza Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','w','a',' '),	212,	2},	/* Corongo Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','w','h',' '),	214,	2},	/* Huaylas Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','w','s',' '),	216,	2},	/* Sihuas Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','a',' '),	218,	2},	/* Chiquián Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','c',' '),	220,	2},	/* Chincha Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','h',' '),	222,	2},	/* Panao Huánuco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','l',' '),	224,	2},	/* Salasaca Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','x','n',' '),	226,	2},	/* Northern Conchucos Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','o',' '),	228,	2},	/* Southern Conchucos Ancash Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','r',' '),	230,	2},	/* Cañar Highland Quichua -> Quechua (Ecuador) */
-  {HB_TAG('q','x','t',' '),	232,	2},	/* Santa Ana de Tusi Pasco Quechua -> Quechua (Peru) */
-  {HB_TAG('q','x','w',' '),	234,	2},	/* Jauja Wanca Quechua -> Quechua (Peru) */
-  {HB_TAG('r','i','f',' '),	236,	2},	/* Tarifit */
-  {HB_TAG('r','m','y',' '),	238,	2},	/* Vlax Romani */
-  {HB_TAG('s','c','s',' '),	240,	3},	/* North Slavey */
-  {HB_TAG('s','f','m',' '),	243,	2},	/* Small Flowery Miao */
-  {HB_TAG('s','h','i',' '),	245,	2},	/* Tachelhit */
-  {HB_TAG('t','a','q',' '),	247,	3},	/* Tamasheq */
-  {HB_TAG('t','h','v',' '),	250,	3},	/* Tahaggart Tamahaq */
-  {HB_TAG('t','h','z',' '),	253,	3},	/* Tayart Tamajeq */
-  {HB_TAG('t','m','h',' '),	256,	2},	/* Tamashek [macrolanguage] */
-  {HB_TAG('t','n','f',' '),	258,	2},	/* Tangshewi (retired code) -> Dari */
-  {HB_TAG('t','p','i',' '),	260,	2},	/* Tok Pisin */
-  {HB_TAG('t','r','u',' '),	262,	2},	/* Turoyo -> Turoyo Aramaic */
-  {HB_TAG('t','t','q',' '),	264,	3},	/* Tawallammat Tamajaq */
-  {HB_TAG('t','z','m',' '),	267,	2},	/* Central Atlas Tamazight -> Tamazight */
-  {HB_TAG('t','z','o',' '),	269,	2},	/* Tzotzil */
-  {HB_TAG('v','r','o',' '),	271,	2},	/* Võro */
-  {HB_TAG('w','b','r',' '),	273,	2},	/* Wagdi */
-  {HB_TAG('w','y','a',' '),	275,	2},	/* Wyandot (retired code) -> Wendat */
-  {HB_TAG('x','a','l',' '),	277,	2},	/* Kalmyk */
-  {HB_TAG('x','m','m',' '),	279,	2},	/* Manado Malay -> Malay */
-  {HB_TAG('x','p','e',' '),	281,	2},	/* Liberia Kpelle -> Kpelle (Liberia) */
-  {HB_TAG('x','s','l',' '),	283,	3},	/* South Slavey */
-  {HB_TAG('z','g','h',' '),	286,	2},	/* Standard Moroccan Tamazight */
+ساكن ثابت Lang_ٽيگ_Range ot_languages3_multi[] = {
+  {HB_ٽيگ('a','c','f',' '),	0,	2},	/* Saint Lucian Creole French -> French Antillean */
+  {HB_ٽيگ('a','c','r',' '),	2,	2},	/* Achi */
+  {HB_ٽيگ('a','c','y',' '),	4,	2},	/* Cypriot Arabic */
+  {HB_ٽيگ('a','i','i',' '),	6,	2},	/* Assyrian Neo-Aramaic -> Swadaya Aramaic */
+  {HB_ٽيگ('a','k','b',' '),	8,	2},	/* Batak Angkola */
+  {HB_ٽيگ('a','r','y',' '),	10,	2},	/* Moroccan Arabic -> Moroccan */
+  {HB_ٽيگ('a','z','b',' '),	12,	2},	/* South Azerbaijani -> Torki */
+  {HB_ٽيگ('b','b','c',' '),	14,	2},	/* Batak Toba */
+  {HB_ٽيگ('b','g','q',' '),	16,	2},	/* Bagri */
+  {HB_ٽيگ('b','l','k',' '),	18,	2},	/* Pa’o Karen */
+  {HB_ٽيگ('b','t','d',' '),	20,	2},	/* Batak Dairi (Pakpak) */
+  {HB_ٽيگ('b','t','m',' '),	22,	2},	/* Batak Mandailing */
+  {HB_ٽيگ('b','t','s',' '),	24,	2},	/* Batak Simalungun */
+  {HB_ٽيگ('b','t','x',' '),	26,	2},	/* Batak Karo */
+  {HB_ٽيگ('b','t','z',' '),	28,	2},	/* Batak Alas-Kluet */
+  {HB_ٽيگ('b','y','v',' '),	30,	2},	/* Medumba */
+  {HB_ٽيگ('c','a','f',' '),	32,	2},	/* Southern Carrier -> Carrier */
+  {HB_ٽيگ('c','a','k',' '),	34,	2},	/* Kaqchikel */
+  {HB_ٽيگ('c','b','k',' '),	36,	2},	/* Chavacano -> Zamboanga Chavacano */
+  {HB_ٽيگ('c','f','m',' '),	38,	2},	/* Halam (Falam Chin) */
+  {HB_ٽيگ('c','h','m',' '),	40,	2},	/* Mari (Russia) [macrolanguage] -> High Mari */
+  {HB_ٽيگ('c','h','p',' '),	42,	3},	/* Chipewyan */
+  {HB_ٽيگ('c','q','u',' '),	45,	2},	/* Chilean Quechua (retired code) -> Quechua (Bolivia) */
+  {HB_ٽيگ('c','r','j',' '),	47,	3},	/* Southern East Cree -> Eastern Cree */
+  {HB_ٽيگ('c','r','k',' '),	50,	3},	/* Plains Cree -> West-Cree */
+  {HB_ٽيگ('c','r','l',' '),	53,	3},	/* Northern East Cree -> Eastern Cree */
+  {HB_ٽيگ('c','r','m',' '),	56,	3},	/* Moose Cree */
+  {HB_ٽيگ('c','r','x',' '),	59,	2},	/* Carrier */
+  {HB_ٽيگ('c','s','w',' '),	61,	3},	/* Swampy Cree -> N-Cree */
+  {HB_ٽيگ('c','w','d',' '),	64,	3},	/* Woods Cree */
+  {HB_ٽيگ('d','e','n',' '),	67,	2},	/* Slavey [macrolanguage] */
+  {HB_ٽيگ('d','g','o',' '),	69,	2},	/* Dogri (individual language) */
+  {HB_ٽيگ('d','i','q',' '),	71,	2},	/* Dimli */
+  {HB_ٽيگ('d','r','w',' '),	73,	2},	/* Darwazi (retired code) -> Dari */
+  {HB_ٽيگ('e','m','k',' '),	75,	2},	/* Eastern Maninkakan */
+  {HB_ٽيگ('f','a','n',' '),	77,	2},	/* Fang (Equatorial Guinea) */
+  {HB_ٽيگ('f','a','t',' '),	79,	2},	/* Fanti */
+  {HB_ٽيگ('f','l','m',' '),	81,	2},	/* Halam (Falam Chin) (retired code) */
+  {HB_ٽيگ('f','m','p',' '),	83,	2},	/* Fe’fe’ */
+  {HB_ٽيگ('f','u','f',' '),	85,	2},	/* Pular -> Futa */
+  {HB_ٽيگ('f','u','v',' '),	87,	2},	/* Nigerian Fulfulde */
+  {HB_ٽيگ('g','k','p',' '),	89,	2},	/* Guinea Kpelle -> Kpelle (Guinea) */
+  {HB_ٽيگ('h','m','d',' '),	91,	2},	/* Large Flowery Miao -> A-Hmao */
+  {HB_ٽيگ('h','m','z',' '),	93,	2},	/* Hmong Shua -> Hmong Shuat */
+  {HB_ٽيگ('h','o','j',' '),	95,	2},	/* Hadothi -> Harauti */
+  {HB_ٽيگ('i','k','e',' '),	97,	2},	/* Eastern Canadian Inuktitut -> Inuktitut */
+  {HB_ٽيگ('j','a','m',' '),	99,	2},	/* Jamaican Creole English -> Jamaican Creole */
+  {HB_ٽيگ('k','a','b',' '),	101,	2},	/* Kabyle */
+  {HB_ٽيگ('k','c','a',' '),	103,	3},	/* Khanty -> Khanty-Kazim */
+  {HB_ٽيگ('k','e','a',' '),	106,	2},	/* Kabuverdianu (Crioulo) */
+  {HB_ٽيگ('k','e','k',' '),	108,	2},	/* Kekchi */
+  {HB_ٽيگ('k','h','t',' '),	110,	2},	/* Khamti -> Khamti Shan */
+  {HB_ٽيگ('k','i','u',' '),	112,	2},	/* Kirmanjki */
+  {HB_ٽيگ('k','j','p',' '),	114,	2},	/* Pwo Eastern Karen -> Eastern Pwo Karen */
+  {HB_ٽيگ('k','o','i',' '),	116,	2},	/* Komi-Permyak */
+  {HB_ٽيگ('k','p','v',' '),	118,	2},	/* Komi-Zyrian */
+  {HB_ٽيگ('k','r','c',' '),	120,	2},	/* Karachay-Balkar -> Karachay */
+  {HB_ٽيگ('k','r','i',' '),	122,	2},	/* Krio */
+  {HB_ٽيگ('k','s','w',' '),	124,	2},	/* S’gaw Karen */
+  {HB_ٽيگ('k','v','q',' '),	126,	2},	/* Geba Karen */
+  {HB_ٽيگ('k','y','u',' '),	128,	2},	/* Western Kayah */
+  {HB_ٽيگ('l','u','s',' '),	130,	2},	/* Lushai -> Mizo */
+  {HB_ٽيگ('m','a','m',' '),	132,	2},	/* Mam */
+  {HB_ٽيگ('m','a','x',' '),	134,	2},	/* North Moluccan Malay -> Malay */
+  {HB_ٽيگ('m','f','a',' '),	136,	2},	/* Pattani Malay */
+  {HB_ٽيگ('m','f','e',' '),	138,	2},	/* Morisyen */
+  {HB_ٽيگ('m','i','n',' '),	140,	2},	/* Minangkabau */
+  {HB_ٽيگ('m','l','q',' '),	142,	2},	/* Western Maninkakan -> Malinke */
+  {HB_ٽيگ('m','n','k',' '),	144,	2},	/* Mandinka */
+  {HB_ٽيگ('m','n','w',' '),	146,	2},	/* Mon */
+  {HB_ٽيگ('m','s','i',' '),	148,	2},	/* Sabah Malay -> Malay */
+  {HB_ٽيگ('m','w','w',' '),	150,	2},	/* Hmong Daw */
+  {HB_ٽيگ('n','a','g',' '),	152,	2},	/* Naga Pidgin -> Naga-Assamese */
+  {HB_ٽيگ('o','j','s',' '),	154,	2},	/* Severn Ojibwa -> Oji-Cree */
+  {HB_ٽيگ('p','a','p',' '),	156,	2},	/* Papiamento -> Papiamentu */
+  {HB_ٽيگ('p','g','a',' '),	158,	2},	/* Sudanese Creole Arabic -> Arabic */
+  {HB_ٽيگ('p','i','h',' '),	160,	2},	/* Pitcairn-Norfolk -> Norfolk */
+  {HB_ٽيگ('p','o','h',' '),	162,	2},	/* Poqomchi' -> Pocomchi */
+  {HB_ٽيگ('p','r','s',' '),	164,	2},	/* Dari */
+  {HB_ٽيگ('p','w','o',' '),	166,	2},	/* Pwo Western Karen -> Western Pwo Karen */
+  {HB_ٽيگ('q','u','b',' '),	168,	2},	/* Huallaga Huánuco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','u','c',' '),	170,	2},	/* K’iche’ */
+  {HB_ٽيگ('q','u','d',' '),	172,	2},	/* Calderón Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','u','g',' '),	174,	2},	/* Chimborazo Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','u','h',' '),	176,	2},	/* South Bolivian Quechua -> Quechua (Bolivia) */
+  {HB_ٽيگ('q','u','l',' '),	178,	2},	/* North Bolivian Quechua -> Quechua (Bolivia) */
+  {HB_ٽيگ('q','u','p',' '),	180,	2},	/* Southern Pastaza Quechua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','u','r',' '),	182,	2},	/* Yanahuanca Pasco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','u','s',' '),	184,	2},	/* Santiago del Estero Quichua -> Quechua (Bolivia) */
+  {HB_ٽيگ('q','u','w',' '),	186,	2},	/* Tena Lowland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','u','x',' '),	188,	2},	/* Yauyos Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','a',' '),	190,	2},	/* Ambo-Pasco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','h',' '),	192,	2},	/* Huamalíes-Dos de Mayo Huánuco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','i',' '),	194,	2},	/* Imbabura Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','v','j',' '),	196,	2},	/* Loja Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','v','l',' '),	198,	2},	/* Cajatambo North Lima Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','m',' '),	200,	2},	/* Margos-Yarowilca-Lauricocha Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','n',' '),	202,	2},	/* North Junín Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','o',' '),	204,	2},	/* Napo Lowland Quechua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','v','p',' '),	206,	2},	/* Pacaraos Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','w',' '),	208,	2},	/* Huaylla Wanca Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','v','z',' '),	210,	2},	/* Northern Pastaza Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','w','a',' '),	212,	2},	/* Corongo Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','w','h',' '),	214,	2},	/* Huaylas Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','w','s',' '),	216,	2},	/* Sihuas Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','a',' '),	218,	2},	/* Chiquián Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','c',' '),	220,	2},	/* Chincha Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','h',' '),	222,	2},	/* Panao Huánuco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','l',' '),	224,	2},	/* Salasaca Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','x','n',' '),	226,	2},	/* Northern Conchucos Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','o',' '),	228,	2},	/* Southern Conchucos Ancash Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','r',' '),	230,	2},	/* Cañar Highland Quichua -> Quechua (Ecuador) */
+  {HB_ٽيگ('q','x','t',' '),	232,	2},	/* Santa Ana de Tusi Pasco Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('q','x','w',' '),	234,	2},	/* Jauja Wanca Quechua -> Quechua (Peru) */
+  {HB_ٽيگ('r','i','f',' '),	236,	2},	/* Tarifit */
+  {HB_ٽيگ('r','m','y',' '),	238,	2},	/* Vlax Romani */
+  {HB_ٽيگ('s','c','s',' '),	240,	3},	/* North Slavey */
+  {HB_ٽيگ('s','f','m',' '),	243,	2},	/* Small Flowery Miao */
+  {HB_ٽيگ('s','h','i',' '),	245,	2},	/* Tachelhit */
+  {HB_ٽيگ('t','a','q',' '),	247,	3},	/* Tamasheq */
+  {HB_ٽيگ('t','h','v',' '),	250,	3},	/* Tahaggart Tamahaq */
+  {HB_ٽيگ('t','h','z',' '),	253,	3},	/* Tayart Tamajeq */
+  {HB_ٽيگ('t','m','h',' '),	256,	2},	/* Tamashek [macrolanguage] */
+  {HB_ٽيگ('t','n','f',' '),	258,	2},	/* Tangshewi (retired code) -> Dari */
+  {HB_ٽيگ('t','p','i',' '),	260,	2},	/* Tok Pisin */
+  {HB_ٽيگ('t','r','u',' '),	262,	2},	/* Turoyo -> Turoyo Aramaic */
+  {HB_ٽيگ('t','t','q',' '),	264,	3},	/* Tawallammat Tamajaq */
+  {HB_ٽيگ('t','z','m',' '),	267,	2},	/* Central Atlas Tamazight -> Tamazight */
+  {HB_ٽيگ('t','z','o',' '),	269,	2},	/* Tzotzil */
+  {HB_ٽيگ('v','r','o',' '),	271,	2},	/* Võro */
+  {HB_ٽيگ('w','b','r',' '),	273,	2},	/* Wagdi */
+  {HB_ٽيگ('w','y','a',' '),	275,	2},	/* Wyandot (retired code) -> Wendat */
+  {HB_ٽيگ('x','a','l',' '),	277,	2},	/* Kalmyk */
+  {HB_ٽيگ('x','m','m',' '),	279,	2},	/* Manado Malay -> Malay */
+  {HB_ٽيگ('x','p','e',' '),	281,	2},	/* Liberia Kpelle -> Kpelle (Liberia) */
+  {HB_ٽيگ('x','s','l',' '),	283,	3},	/* South Slavey */
+  {HB_ٽيگ('z','g','h',' '),	286,	2},	/* Standard Moroccan Tamazight */
 };
-#endif
+#جيڪڏهن_پورو
 
 /**
  * hb_ot_tags_from_complex_language:
@@ -1614,1375 +1614,1375 @@ static const LangTagRange ot_languages3_multi[] = {
  *
  * Return value: Whether any language systems were retrieved.
  **/
-static inline bool
-hb_ot_tags_from_complex_language (const char   *lang_str,
-				  const char   *limit,
-				  unsigned int *count /* IN/OUT */,
-				  hb_tag_t     *tags /* OUT */)
+ساكن مضمن منطقي
+hb_ot_ٽيگ_فهرست_from_complex_language (ثابت حرف   *lang_str,
+				  ثابت حرف   *حد_بندي,
+				  بنانشان صحيح *ڳڻپ /* IN/OUT */,
+				  hb_ٽيگ_t     *ٽيگ_فهرست /*ٻاهريون*/)
 {
-  if (limit - lang_str >= 7)
+  إذا (حد_بندي - lang_str >= 7)
   {
-    const char *p = strchr (lang_str, '-');
-    if (!p || p >= limit || limit - p < 5) goto out;
-    if (subtag_matches (p, limit, "-fonnapa", 8))
+    ثابت حرف *p = strchr (lang_str, '-');
+    إذا (!p || p >= حد_بندي || حد_بندي - p < 5) اذهب ٻاهريون;
+    إذا (subtag_matches (p, حد_بندي, "-fonnapa", 8))
     {
       /* Undetermined; North American Phonetic Alphabet */
-      tags[0] = HB_TAG('A','P','P','H');  /* Phonetic transcription—Americanist conventions */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('A','P','P','H');  /* Phonetic transcription—Americanist conventions */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-polyton", 8))
+    إذا (subtag_matches (p, حد_بندي, "-polyton", 8))
     {
       /* Modern Greek (1453-); Polytonic Greek */
-      tags[0] = HB_TAG('P','G','R',' ');  /* Polytonic Greek */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('P','G','R',' ');  /* Polytonic Greek */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-arevmda", 8))
+    إذا (subtag_matches (p, حد_بندي, "-arevmda", 8))
     {
       /* Armenian; Western Armenian (retired code) */
-      tags[0] = HB_TAG('H','Y','E',' ');  /* Armenian */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('H','Y','E',' ');  /* Armenian */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-provenc", 8))
+    إذا (subtag_matches (p, حد_بندي, "-provenc", 8))
     {
       /* Occitan (post 1500); Provençal */
-      tags[0] = HB_TAG('P','R','O',' ');  /* Provençal / Old Provençal */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('P','R','O',' ');  /* Provençal / Old Provençal */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-fonipa", 7))
+    إذا (subtag_matches (p, حد_بندي, "-fonipa", 7))
     {
       /* Undetermined; International Phonetic Alphabet */
-      tags[0] = HB_TAG('I','P','P','H');  /* Phonetic transcription—IPA conventions */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('I','P','P','H');  /* Phonetic transcription—IPA conventions */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-fonupa", 7))
+    إذا (subtag_matches (p, حد_بندي, "-fonupa", 7))
     {
       /* Undetermined; Uralic Phonetic Alphabet */
-      tags[0] = HB_TAG('U','P','P','H');  /* Uralic Phonetic Alphabet */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('U','P','P','H');  /* Uralic Phonetic Alphabet */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-geok", 5))
+    إذا (subtag_matches (p, حد_بندي, "-geok", 5))
     {
       /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
-      tags[0] = HB_TAG('K','G','E',' ');  /* Khutsuri Georgian */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('K','G','E',' ');  /* Khutsuri Georgian */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-syre", 5))
+    إذا (subtag_matches (p, حد_بندي, "-syre", 5))
     {
       /* Undetermined; Syriac (Estrangelo variant) */
-      tags[0] = HB_TAG('S','Y','R','E');  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('S','Y','R','E');  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-syrj", 5))
+    إذا (subtag_matches (p, حد_بندي, "-syrj", 5))
     {
       /* Undetermined; Syriac (Western variant) */
-      tags[0] = HB_TAG('S','Y','R','J');  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('S','Y','R','J');  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (subtag_matches (p, limit, "-syrn", 5))
+    إذا (subtag_matches (p, حد_بندي, "-syrn", 5))
     {
       /* Undetermined; Syriac (Eastern variant) */
-      tags[0] = HB_TAG('S','Y','R','N');  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('S','Y','R','N');  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
   }
-out:
-  switch (lang_str[0])
+ٻاهريون:
+  بدل (lang_str[0])
   {
-  case 'a':
-    if (0 == strcmp (&lang_str[1], "rt-lojban"))
+  حالة 'a':
+    إذا (0 == strcmp (&lang_str[1], "rt-lojban"))
     {
       /* Lojban (retired code) */
-      tags[0] = HB_TAG('J','B','O',' ');  /* Lojban */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('J','B','O',' ');  /* Lojban */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'c':
-    if (lang_matches (&lang_str[1], limit, "do-hant-hk", 10))
+    اكسر;
+  حالة 'c':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "do-hant-hk", 10))
     {
       /* Min Dong Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "do-hant-mo", 10))
     {
       /* Min Dong Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jy-hant-hk", 10))
     {
       /* Jinyu Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jy-hant-mo", 10))
     {
       /* Jinyu Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "mn-hant-hk", 10))
     {
       /* Mandarin Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "mn-hant-mo", 10))
     {
       /* Mandarin Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant-hk", 10))
     {
       /* Northern Ping Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant-mo", 10))
     {
       /* Northern Ping Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "px-hant-hk", 10))
     {
       /* Pu-Xian Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "px-hant-mo", 10))
     {
       /* Pu-Xian Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sp-hant-hk", 10))
     {
       /* Southern Ping Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sp-hant-mo", 10))
     {
       /* Southern Ping Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zh-hant-hk", 10))
     {
       /* Huizhou Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zh-hant-mo", 10))
     {
       /* Huizhou Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zo-hant-hk", 10))
     {
       /* Min Zhong Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zo-hant-mo", 10))
     {
       /* Min Zhong Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "do-hans", 7))
     {
       /* Min Dong Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "do-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "do-hant", 7))
     {
       /* Min Dong Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jy-hans", 7))
     {
       /* Jinyu Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jy-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jy-hant", 7))
     {
       /* Jinyu Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "mn-hans", 7))
     {
       /* Mandarin Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "mn-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "mn-hant", 7))
     {
       /* Mandarin Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hans", 7))
     {
       /* Northern Ping Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant", 7))
     {
       /* Northern Ping Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "px-hans", 7))
     {
       /* Pu-Xian Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "px-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "px-hant", 7))
     {
       /* Pu-Xian Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sp-hans", 7))
     {
       /* Southern Ping Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sp-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sp-hant", 7))
     {
       /* Southern Ping Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zh-hans", 7))
     {
       /* Huizhou Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zh-hant", 7))
     {
       /* Huizhou Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zo-hans", 7))
     {
       /* Min Zhong Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zo-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zo-hant", 7))
     {
       /* Min Zhong Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "do-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Min Dong Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "do-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Min Dong Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "do-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "do-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Min Dong Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jy-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Jinyu Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jy-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Jinyu Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jy-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jy-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Jinyu Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "mn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Mandarin Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "mn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Mandarin Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "mn-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "mn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Mandarin Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Northern Ping Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Northern Ping Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Northern Ping Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "px-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Pu-Xian Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "px-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Pu-Xian Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "px-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "px-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Pu-Xian Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sp-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Southern Ping Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sp-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Southern Ping Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sp-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sp-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Southern Ping Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Huizhou Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Huizhou Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zh-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Huizhou Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zo-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Min Zhong Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zo-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Min Zhong Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "zo-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "zo-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Min Zhong Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'g':
-    if (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
+    اكسر;
+  حالة 'g':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant-hk", 10))
     {
       /* Gan Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant-mo", 10))
     {
       /* Gan Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hans", 7))
     {
       /* Gan Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant", 7))
     {
       /* Gan Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "a-latg", 6))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "a-latg", 6))
     {
       /* Irish; Latin (Gaelic variant) */
-      tags[0] = HB_TAG('I','R','T',' ');  /* Irish Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('I','R','T',' ');  /* Irish Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Gan Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Gan Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Gan Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'h':
-    if (lang_matches (&lang_str[1], limit, "ak-hant-hk", 10))
+    اكسر;
+  حالة 'h':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "ak-hant-hk", 10))
     {
       /* Hakka Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "ak-hant-mo", 10))
     {
       /* Hakka Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "nm-hant-hk", 10))
     {
       /* Hainanese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "nm-hant-mo", 10))
     {
       /* Hainanese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant-hk", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sn-hant-hk", 10))
     {
       /* Xiang Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sn-hant-mo", 10))
     {
       /* Xiang Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "ak-hans", 7))
     {
       /* Hakka Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "ak-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "ak-hant", 7))
     {
       /* Hakka Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "nm-hans", 7))
     {
       /* Hainanese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "nm-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "nm-hant", 7))
     {
       /* Hainanese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sn-hans", 7))
     {
       /* Xiang Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "sn-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "sn-hant", 7))
     {
       /* Xiang Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "ak-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Hakka Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "ak-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Hakka Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "ak-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "ak-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Hakka Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "nm-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Hainanese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "nm-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Hainanese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "nm-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "nm-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Hainanese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Xiang Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Xiang Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "sn-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "sn-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Xiang Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'i':
-    if (0 == strcmp (&lang_str[1], "-navajo"))
+    اكسر;
+  حالة 'i':
+    إذا (0 == strcmp (&lang_str[1], "-navajo"))
     {
       /* Navajo (retired code) */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('N','A','V',' '),  /* Navajo */
-	HB_TAG('A','T','H',' '),  /* Athapaskan */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('N','A','V',' '),  /* Navajo */
+	HB_ٽيگ('A','T','H',' '),  /* Athapaskan */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "-hak"))
+    إذا (0 == strcmp (&lang_str[1], "-hak"))
     {
       /* Hakka (retired code) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "-lux"))
+    إذا (0 == strcmp (&lang_str[1], "-lux"))
     {
       /* Luxembourgish (retired code) */
-      tags[0] = HB_TAG('L','T','Z',' ');  /* Luxembourgish */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('L','T','Z',' ');  /* Luxembourgish */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'l':
-    if (lang_matches (&lang_str[1], limit, "uh-hant-hk", 10))
+    اكسر;
+  حالة 'l':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uh-hant-hk", 10))
     {
       /* Leizhou Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uh-hant-mo", 10))
     {
       /* Leizhou Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uh-hans", 7))
     {
       /* Leizhou Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uh-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uh-hant", 7))
     {
       /* Leizhou Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "zh-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "zh-hans", 7))
     {
       /* Literary Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Leizhou Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Leizhou Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uh-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uh-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Leizhou Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'm':
-    if (lang_matches (&lang_str[1], limit, "np-hant-hk", 10))
+    اكسر;
+  حالة 'm':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant-hk", 10))
     {
       /* Min Bei Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant-mo", 10))
     {
       /* Min Bei Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hans", 7))
     {
       /* Min Bei Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "np-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "np-hant", 7))
     {
       /* Min Bei Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Min Bei Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Min Bei Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "np-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "np-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Min Bei Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "nw-", 3)
-	&& subtag_matches (lang_str, limit, "-th", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "nw-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-th", 3))
     {
       /* Mon; Thailand */
-      tags[0] = HB_TAG('M','O','N','T');  /* Thailand Mon */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('M','O','N','T');  /* Thailand Mon */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'n':
-    if (lang_matches (&lang_str[1], limit, "an-hant-hk", 10))
+    اكسر;
+  حالة 'n':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant-hk", 10))
     {
       /* Min Nan Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant-mo", 10))
     {
       /* Min Nan Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hans", 7))
     {
       /* Min Nan Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "an-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "an-hant", 7))
     {
       /* Min Nan Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Min Nan Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Min Nan Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "an-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "an-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Min Nan Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "o-bok"))
+    إذا (0 == strcmp (&lang_str[1], "o-bok"))
     {
       /* Norwegian Bokmal (retired code) */
-      tags[0] = HB_TAG('N','O','R',' ');  /* Norwegian */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('N','O','R',' ');  /* Norwegian */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "o-nyn"))
+    إذا (0 == strcmp (&lang_str[1], "o-nyn"))
     {
       /* Norwegian Nynorsk (retired code) */
-      tags[0] = HB_TAG('N','Y','N',' ');  /* Norwegian Nynorsk (Nynorsk, Norwegian) */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('N','Y','N',' ');  /* Norwegian Nynorsk (Nynorsk, Norwegian) */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'r':
-    if (0 == strncmp (&lang_str[1], "o-", 2)
-	&& subtag_matches (lang_str, limit, "-md", 3))
+    اكسر;
+  حالة 'r':
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "o-", 2)
+	&& subtag_matches (lang_str, حد_بندي, "-md", 3))
     {
       /* Romanian; Moldova */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('M','O','L',' '),  /* Moldavian */
-	HB_TAG('R','O','M',' '),  /* Romanian */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('M','O','L',' '),  /* Moldavian */
+	HB_ٽيگ('R','O','M',' '),  /* Romanian */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    break;
-  case 's':
-    if (lang_matches (&lang_str[1], limit, "jc-hant-hk", 10))
+    اكسر;
+  حالة 's':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jc-hant-hk", 10))
     {
       /* Shaojiang Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jc-hant-mo", 10))
     {
       /* Shaojiang Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jc-hans", 7))
     {
       /* Shaojiang Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "jc-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "jc-hant", 7))
     {
       /* Shaojiang Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jc-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Shaojiang Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jc-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Shaojiang Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "jc-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "jc-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Shaojiang Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'w':
-    if (lang_matches (&lang_str[1], limit, "uu-hant-hk", 10))
+    اكسر;
+  حالة 'w':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uu-hant-hk", 10))
     {
       /* Wu Chinese; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hant-mo", 10))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uu-hant-mo", 10))
     {
       /* Wu Chinese; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hans", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uu-hans", 7))
     {
       /* Wu Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "uu-hant", 7))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "uu-hant", 7))
     {
       /* Wu Chinese; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uu-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Wu Chinese; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uu-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Wu Chinese; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "uu-", 3)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "uu-", 3)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Wu Chinese; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'y':
-    if (lang_matches (&lang_str[1], limit, "ue-hans", 7))
+    اكسر;
+  حالة 'y':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "ue-hans", 7))
     {
       /* Yue Chinese; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
-  case 'z':
-    if (lang_matches (&lang_str[1], limit, "h-hant-hk", 9))
+    اكسر;
+  حالة 'z':
+    إذا (lang_matches (&lang_str[1], حد_بندي, "h-hant-hk", 9))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant); Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hant-mo", 9))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "h-hant-mo", 9))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant); Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "h-min-nan"))
+    إذا (0 == strcmp (&lang_str[1], "h-min-nan"))
     {
       /* Minnan, Hokkien, Amoy, Taiwanese, Southern Min, Southern Fujian, Hoklo, Southern Fukien, Ho-lo (retired code) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hans", 6))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "h-hans", 6))
     {
       /* Chinese [macrolanguage]; Han (Simplified variant) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (lang_matches (&lang_str[1], limit, "h-hant", 6))
+    إذا (lang_matches (&lang_str[1], حد_بندي, "h-hant", 6))
     {
       /* Chinese [macrolanguage]; Han (Traditional variant) */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strcmp (&lang_str[1], "h-min"))
+    إذا (0 == strcmp (&lang_str[1], "h-min"))
     {
       /* Min, Fuzhou, Hokkien, Amoy, or Taiwanese (retired code) */
-      tags[0] = HB_TAG('Z','H','S',' ');  /* Chinese, Simplified */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','S',' ');  /* Chinese, Simplified */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
-	&& subtag_matches (lang_str, limit, "-hk", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "h-", 2)
+	&& subtag_matches (lang_str, حد_بندي, "-hk", 3))
     {
       /* Chinese [macrolanguage]; Hong Kong */
-      tags[0] = HB_TAG('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','H',' ');  /* Chinese, Traditional, Hong Kong SAR */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
-	&& subtag_matches (lang_str, limit, "-mo", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "h-", 2)
+	&& subtag_matches (lang_str, حد_بندي, "-mo", 3))
     {
       /* Chinese [macrolanguage]; Macao */
-      unsigned int i;
-      hb_tag_t possible_tags[] = {
-	HB_TAG('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
-	HB_TAG('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
+      بنانشان صحيح i;
+      hb_ٽيگ_t possible_ٽيگ_فهرست[] = {
+	HB_ٽيگ('Z','H','T','M'),  /* Chinese, Traditional, Macao SAR */
+	HB_ٽيگ('Z','H','H',' '),  /* Chinese, Traditional, Hong Kong SAR */
       };
-      for (i = 0; i < 2 && i < *count; i++)
-	tags[i] = possible_tags[i];
-      *count = i;
-      return true;
+      لكل (i = 0; i < 2 && i < *ڳڻپ; i++)
+	ٽيگ_فهرست[i] = possible_ٽيگ_فهرست[i];
+      *ڳڻپ = i;
+      أرجع سچ;
     }
-    if (0 == strncmp (&lang_str[1], "h-", 2)
-	&& subtag_matches (lang_str, limit, "-tw", 3))
+    إذا (0 == لڙي_ڀيٽ (&lang_str[1], "h-", 2)
+	&& subtag_matches (lang_str, حد_بندي, "-tw", 3))
     {
       /* Chinese [macrolanguage]; Taiwan, Province of China */
-      tags[0] = HB_TAG('Z','H','T',' ');  /* Chinese, Traditional */
-      *count = 1;
-      return true;
+      ٽيگ_فهرست[0] = HB_ٽيگ('Z','H','T',' ');  /* Chinese, Traditional */
+      *ڳڻپ = 1;
+      أرجع سچ;
     }
-    break;
+    اكسر;
   }
-  return false;
+  أرجع خطأ;
 }
 
 /**
@@ -2998,146 +2998,146 @@ out:
  * Return value: The #hb_language_t corresponding to the BCP 47 language tag,
  * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.
  **/
-static inline hb_language_t
-hb_ot_ambiguous_tag_to_language (hb_tag_t tag)
+ساكن مضمن hb_language_t
+hb_ot_ambiguous_ٽيگ_منزل_language (hb_ٽيگ_t ٽيگ_2)
 {
-  switch (tag)
+  بدل (ٽيگ_2)
   {
-  case HB_TAG('A','L','T',' '):  /* Altai */
-    return hb_language_from_string ("alt", -1);  /* Southern Altai */
-  case HB_TAG('A','P','P','H'):  /* Phonetic transcription—Americanist conventions */
-    return hb_language_from_string ("und-fonnapa", -1);  /* Undetermined; North American Phonetic Alphabet */
-  case HB_TAG('A','R','K',' '):  /* Rakhine */
-    return hb_language_from_string ("rki", -1);  /* Rakhine */
-  case HB_TAG('A','T','H',' '):  /* Athapaskan */
-    return hb_language_from_string ("ath", -1);  /* Athapascan [collection] */
-  case HB_TAG('B','B','R',' '):  /* Berber */
-    return hb_language_from_string ("ber", -1);  /* Berber [collection] */
-  case HB_TAG('B','I','K',' '):  /* Bikol */
-    return hb_language_from_string ("bik", -1);  /* Bikol [macrolanguage] */
-  case HB_TAG('B','T','K',' '):  /* Batak */
-    return hb_language_from_string ("btk", -1);  /* Batak [collection] */
-  case HB_TAG('C','P','P',' '):  /* Creoles */
-    return hb_language_from_string ("crp", -1);  /* Creoles and pidgins [collection] */
-  case HB_TAG('C','R','R',' '):  /* Carrier */
-    return hb_language_from_string ("crx", -1);  /* Carrier */
-  case HB_TAG('D','G','R',' '):  /* Dogri (macrolanguage) */
-    return hb_language_from_string ("doi", -1);  /* Dogri [macrolanguage] */
-  case HB_TAG('D','N','K',' '):  /* Dinka */
-    return hb_language_from_string ("din", -1);  /* Dinka [macrolanguage] */
-  case HB_TAG('D','R','I',' '):  /* Dari */
-    return hb_language_from_string ("prs", -1);  /* Dari */
-  case HB_TAG('G','O','N',' '):  /* Gondi */
-    return hb_language_from_string ("gon", -1);  /* Gondi [macrolanguage] */
-  case HB_TAG('H','M','A',' '):  /* High Mari */
-    return hb_language_from_string ("mrj", -1);  /* Western Mari */
-  case HB_TAG('H','M','N',' '):  /* Hmong */
-    return hb_language_from_string ("hmn", -1);  /* Hmong [macrolanguage] */
-  case HB_TAG('H','N','D',' '):  /* Hindko */
-    return hb_language_from_string ("hnd", -1);  /* Southern Hindko */
-  case HB_TAG('H','Y','E',' '):  /* Armenian */
-    return hb_language_from_string ("hyw", -1);  /* Western Armenian */
-  case HB_TAG('I','B','A',' '):  /* Iban */
-    return hb_language_from_string ("iba", -1);  /* Iban */
-  case HB_TAG('I','J','O',' '):  /* Ijo */
-    return hb_language_from_string ("ijo", -1);  /* Ijo [collection] */
-  case HB_TAG('I','P','P','H'):  /* Phonetic transcription—IPA conventions */
-    return hb_language_from_string ("und-fonipa", -1);  /* Undetermined; International Phonetic Alphabet */
-  case HB_TAG('I','R','T',' '):  /* Irish Traditional */
-    return hb_language_from_string ("ghc", -1);  /* Hiberno-Scottish Gaelic */
-  case HB_TAG('J','I','I',' '):  /* Yiddish */
-    return hb_language_from_string ("yi", -1);  /* Yiddish [macrolanguage] */
-  case HB_TAG('K','A','L',' '):  /* Kalenjin */
-    return hb_language_from_string ("kln", -1);  /* Kalenjin [macrolanguage] */
-  case HB_TAG('K','G','E',' '):  /* Khutsuri Georgian */
-    return hb_language_from_string ("und-Geok", -1);  /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
-  case HB_TAG('K','O','H',' '):  /* Korean Old Hangul */
-    return hb_language_from_string ("okm", -1);  /* Middle Korean (10th-16th cent.) */
-  case HB_TAG('K','O','K',' '):  /* Konkani */
-    return hb_language_from_string ("kok", -1);  /* Konkani [macrolanguage] */
-  case HB_TAG('K','P','L',' '):  /* Kpelle */
-    return hb_language_from_string ("kpe", -1);  /* Kpelle [macrolanguage] */
-  case HB_TAG('K','R','N',' '):  /* Karen */
-    return hb_language_from_string ("kar", -1);  /* Karen [collection] */
-  case HB_TAG('K','U','I',' '):  /* Kui */
-    return hb_language_from_string ("uki", -1);  /* Kui (India) */
-  case HB_TAG('L','M','A',' '):  /* Low Mari */
-    return hb_language_from_string ("mhr", -1);  /* Eastern Mari */
-  case HB_TAG('L','U','H',' '):  /* Luyia */
-    return hb_language_from_string ("luy", -1);  /* Luyia [macrolanguage] */
-  case HB_TAG('M','A','W',' '):  /* Marwari */
-    return hb_language_from_string ("mwr", -1);  /* Marwari [macrolanguage] */
-  case HB_TAG('M','L','Y',' '):  /* Malay */
-    return hb_language_from_string ("ms", -1);  /* Malay [macrolanguage] */
-  case HB_TAG('M','N','K',' '):  /* Maninka */
-    return hb_language_from_string ("man", -1);  /* Mandingo [macrolanguage] */
-  case HB_TAG('M','O','L',' '):  /* Moldavian */
-    return hb_language_from_string ("ro-MD", -1);  /* Romanian; Moldova */
-  case HB_TAG('M','O','N','T'):  /* Thailand Mon */
-    return hb_language_from_string ("mnw-TH", -1);  /* Mon; Thailand */
-  case HB_TAG('M','Y','N',' '):  /* Mayan */
-    return hb_language_from_string ("myn", -1);  /* Mayan [collection] */
-  case HB_TAG('N','A','H',' '):  /* Nahuatl */
-    return hb_language_from_string ("nah", -1);  /* Nahuatl [collection] */
-  case HB_TAG('N','I','S',' '):  /* Nisi */
-    return hb_language_from_string ("njz", -1);  /* Nyishi */
-  case HB_TAG('N','O','R',' '):  /* Norwegian */
-    return hb_language_from_string ("no", -1);  /* Norwegian [macrolanguage] */
-  case HB_TAG('P','G','R',' '):  /* Polytonic Greek */
-    return hb_language_from_string ("el-polyton", -1);  /* Modern Greek (1453-); Polytonic Greek */
-  case HB_TAG('P','R','O',' '):  /* Provençal / Old Provençal */
-    return hb_language_from_string ("pro", -1);  /* Old Provençal (to 1500) */
-  case HB_TAG('Q','U','H',' '):  /* Quechua (Bolivia) */
-    return hb_language_from_string ("quh", -1);  /* South Bolivian Quechua */
-  case HB_TAG('Q','V','I',' '):  /* Quechua (Ecuador) */
-    return hb_language_from_string ("qvi", -1);  /* Imbabura Highland Quichua */
-  case HB_TAG('Q','W','H',' '):  /* Quechua (Peru) */
-    return hb_language_from_string ("qwh", -1);  /* Huaylas Ancash Quechua */
-  case HB_TAG('R','A','J',' '):  /* Rajasthani */
-    return hb_language_from_string ("raj", -1);  /* Rajasthani [macrolanguage] */
-  case HB_TAG('R','O','M',' '):  /* Romanian */
-    return hb_language_from_string ("ro", -1);  /* Romanian */
-  case HB_TAG('R','O','Y',' '):  /* Romany */
-    return hb_language_from_string ("rom", -1);  /* Romany [macrolanguage] */
-  case HB_TAG('S','G','A',' '):  /* Old Irish */
-    return hb_language_from_string ("sga", -1);  /* Old Irish (to 900) */
-  case HB_TAG('S','R','B',' '):  /* Serbian */
-    return hb_language_from_string ("sr", -1);  /* Serbian */
-  case HB_TAG('S','X','T',' '):  /* Sutu */
-    return hb_language_from_string ("xnj", -1);  /* Ngoni (Tanzania) */
-  case HB_TAG('S','Y','R',' '):  /* Syriac */
-    return hb_language_from_string ("syr", -1);  /* Syriac [macrolanguage] */
-  case HB_TAG('S','Y','R','E'):  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
-    return hb_language_from_string ("und-Syre", -1);  /* Undetermined; Syriac (Estrangelo variant) */
-  case HB_TAG('S','Y','R','J'):  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
-    return hb_language_from_string ("und-Syrj", -1);  /* Undetermined; Syriac (Western variant) */
-  case HB_TAG('S','Y','R','N'):  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
-    return hb_language_from_string ("und-Syrn", -1);  /* Undetermined; Syriac (Eastern variant) */
-  case HB_TAG('T','M','H',' '):  /* Tamashek */
-    return hb_language_from_string ("tmh", -1);  /* Tamashek [macrolanguage] */
-  case HB_TAG('T','O','D',' '):  /* Todo */
-    return hb_language_from_string ("xwo", -1);  /* Written Oirat */
-  case HB_TAG('U','P','P','H'):  /* Uralic Phonetic Alphabet */
-    return hb_language_from_string ("und-fonupa", -1);  /* Undetermined; Uralic Phonetic Alphabet */
-  case HB_TAG('W','D','T',' '):  /* Wendat */
-    return hb_language_from_string ("wdt", -1);  /* Wendat */
-  case HB_TAG('W','Y','N',' '):  /* Wyandot */
-    return hb_language_from_string ("wyn", -1);  /* Wyandot */
-  case HB_TAG('Z','H','H',' '):  /* Chinese, Traditional, Hong Kong SAR */
-    return hb_language_from_string ("zh-HK", -1);  /* Chinese [macrolanguage]; Hong Kong */
-  case HB_TAG('Z','H','S',' '):  /* Chinese, Simplified */
-    return hb_language_from_string ("zh-Hans", -1);  /* Chinese [macrolanguage]; Han (Simplified variant) */
-  case HB_TAG('Z','H','T',' '):  /* Chinese, Traditional */
-    return hb_language_from_string ("zh-Hant", -1);  /* Chinese [macrolanguage]; Han (Traditional variant) */
-  case HB_TAG('Z','H','T','M'):  /* Chinese, Traditional, Macao SAR */
-    return hb_language_from_string ("zh-MO", -1);  /* Chinese [macrolanguage]; Macao */
-  case HB_TAG('Z','Z','A',' '):  /* Zazaki */
-    return hb_language_from_string ("zza", -1);  /* Zaza [macrolanguage] */
-  default:
-    return HB_LANGUAGE_INVALID;
+  حالة HB_ٽيگ('A','L','T',' '):  /* Altai */
+    أرجع hb_language_from_string ("alt", -1);  /* Southern Altai */
+  حالة HB_ٽيگ('A','P','P','H'):  /* Phonetic transcription—Americanist conventions */
+    أرجع hb_language_from_string ("und-fonnapa", -1);  /* Undetermined; North American Phonetic Alphabet */
+  حالة HB_ٽيگ('A','R','K',' '):  /* Rakhine */
+    أرجع hb_language_from_string ("rki", -1);  /* Rakhine */
+  حالة HB_ٽيگ('A','T','H',' '):  /* Athapaskan */
+    أرجع hb_language_from_string ("ath", -1);  /* Athapascan [collection] */
+  حالة HB_ٽيگ('B','B','R',' '):  /* Berber */
+    أرجع hb_language_from_string ("ber", -1);  /* Berber [collection] */
+  حالة HB_ٽيگ('B','I','K',' '):  /* Bikol */
+    أرجع hb_language_from_string ("bik", -1);  /* Bikol [macrolanguage] */
+  حالة HB_ٽيگ('B','T','K',' '):  /* Batak */
+    أرجع hb_language_from_string ("btk", -1);  /* Batak [collection] */
+  حالة HB_ٽيگ('C','P','P',' '):  /* Creoles */
+    أرجع hb_language_from_string ("crp", -1);  /* Creoles and pidgins [collection] */
+  حالة HB_ٽيگ('C','R','R',' '):  /* Carrier */
+    أرجع hb_language_from_string ("crx", -1);  /* Carrier */
+  حالة HB_ٽيگ('D','G','R',' '):  /* Dogri (macrolanguage) */
+    أرجع hb_language_from_string ("doi", -1);  /* Dogri [macrolanguage] */
+  حالة HB_ٽيگ('D','N','K',' '):  /* Dinka */
+    أرجع hb_language_from_string ("din", -1);  /* Dinka [macrolanguage] */
+  حالة HB_ٽيگ('D','R','I',' '):  /* Dari */
+    أرجع hb_language_from_string ("prs", -1);  /* Dari */
+  حالة HB_ٽيگ('G','O','N',' '):  /* Gondi */
+    أرجع hb_language_from_string ("gon", -1);  /* Gondi [macrolanguage] */
+  حالة HB_ٽيگ('H','M','A',' '):  /* High Mari */
+    أرجع hb_language_from_string ("mrj", -1);  /* Western Mari */
+  حالة HB_ٽيگ('H','M','N',' '):  /* Hmong */
+    أرجع hb_language_from_string ("hmn", -1);  /* Hmong [macrolanguage] */
+  حالة HB_ٽيگ('H','N','D',' '):  /* Hindko */
+    أرجع hb_language_from_string ("hnd", -1);  /* Southern Hindko */
+  حالة HB_ٽيگ('H','Y','E',' '):  /* Armenian */
+    أرجع hb_language_from_string ("hyw", -1);  /* Western Armenian */
+  حالة HB_ٽيگ('I','B','A',' '):  /* Iban */
+    أرجع hb_language_from_string ("iba", -1);  /* Iban */
+  حالة HB_ٽيگ('I','J','O',' '):  /* Ijo */
+    أرجع hb_language_from_string ("ijo", -1);  /* Ijo [collection] */
+  حالة HB_ٽيگ('I','P','P','H'):  /* Phonetic transcription—IPA conventions */
+    أرجع hb_language_from_string ("und-fonipa", -1);  /* Undetermined; International Phonetic Alphabet */
+  حالة HB_ٽيگ('I','R','T',' '):  /* Irish Traditional */
+    أرجع hb_language_from_string ("ghc", -1);  /* Hiberno-Scottish Gaelic */
+  حالة HB_ٽيگ('J','I','I',' '):  /* Yiddish */
+    أرجع hb_language_from_string ("yi", -1);  /* Yiddish [macrolanguage] */
+  حالة HB_ٽيگ('K','A','L',' '):  /* Kalenjin */
+    أرجع hb_language_from_string ("kln", -1);  /* Kalenjin [macrolanguage] */
+  حالة HB_ٽيگ('K','G','E',' '):  /* Khutsuri Georgian */
+    أرجع hb_language_from_string ("und-Geok", -1);  /* Undetermined; Khutsuri (Asomtavruli and Nuskhuri) */
+  حالة HB_ٽيگ('K','O','H',' '):  /* Korean Old Hangul */
+    أرجع hb_language_from_string ("okm", -1);  /* Middle Korean (10th-16th cent.) */
+  حالة HB_ٽيگ('K','O','K',' '):  /* Konkani */
+    أرجع hb_language_from_string ("kok", -1);  /* Konkani [macrolanguage] */
+  حالة HB_ٽيگ('K','P','L',' '):  /* Kpelle */
+    أرجع hb_language_from_string ("kpe", -1);  /* Kpelle [macrolanguage] */
+  حالة HB_ٽيگ('K','R','N',' '):  /* Karen */
+    أرجع hb_language_from_string ("kar", -1);  /* Karen [collection] */
+  حالة HB_ٽيگ('K','U','I',' '):  /* Kui */
+    أرجع hb_language_from_string ("uki", -1);  /* Kui (India) */
+  حالة HB_ٽيگ('L','M','A',' '):  /* Low Mari */
+    أرجع hb_language_from_string ("mhr", -1);  /* Eastern Mari */
+  حالة HB_ٽيگ('L','U','H',' '):  /* Luyia */
+    أرجع hb_language_from_string ("luy", -1);  /* Luyia [macrolanguage] */
+  حالة HB_ٽيگ('M','A','W',' '):  /* Marwari */
+    أرجع hb_language_from_string ("mwr", -1);  /* Marwari [macrolanguage] */
+  حالة HB_ٽيگ('M','L','Y',' '):  /* Malay */
+    أرجع hb_language_from_string ("ms", -1);  /* Malay [macrolanguage] */
+  حالة HB_ٽيگ('M','N','K',' '):  /* Maninka */
+    أرجع hb_language_from_string ("man", -1);  /* Mandingo [macrolanguage] */
+  حالة HB_ٽيگ('M','O','L',' '):  /* Moldavian */
+    أرجع hb_language_from_string ("ro-MD", -1);  /* Romanian; Moldova */
+  حالة HB_ٽيگ('M','O','N','T'):  /* Thailand Mon */
+    أرجع hb_language_from_string ("mnw-TH", -1);  /* Mon; Thailand */
+  حالة HB_ٽيگ('M','Y','N',' '):  /* Mayan */
+    أرجع hb_language_from_string ("myn", -1);  /* Mayan [collection] */
+  حالة HB_ٽيگ('N','A','H',' '):  /* Nahuatl */
+    أرجع hb_language_from_string ("nah", -1);  /* Nahuatl [collection] */
+  حالة HB_ٽيگ('N','I','S',' '):  /* Nisi */
+    أرجع hb_language_from_string ("njz", -1);  /* Nyishi */
+  حالة HB_ٽيگ('N','O','R',' '):  /* Norwegian */
+    أرجع hb_language_from_string ("no", -1);  /* Norwegian [macrolanguage] */
+  حالة HB_ٽيگ('P','G','R',' '):  /* Polytonic Greek */
+    أرجع hb_language_from_string ("el-polyton", -1);  /* Modern Greek (1453-); Polytonic Greek */
+  حالة HB_ٽيگ('P','R','O',' '):  /* Provençal / Old Provençal */
+    أرجع hb_language_from_string ("pro", -1);  /* Old Provençal (to 1500) */
+  حالة HB_ٽيگ('Q','U','H',' '):  /* Quechua (Bolivia) */
+    أرجع hb_language_from_string ("quh", -1);  /* South Bolivian Quechua */
+  حالة HB_ٽيگ('Q','V','I',' '):  /* Quechua (Ecuador) */
+    أرجع hb_language_from_string ("qvi", -1);  /* Imbabura Highland Quichua */
+  حالة HB_ٽيگ('Q','W','H',' '):  /* Quechua (Peru) */
+    أرجع hb_language_from_string ("qwh", -1);  /* Huaylas Ancash Quechua */
+  حالة HB_ٽيگ('R','A','J',' '):  /* Rajasthani */
+    أرجع hb_language_from_string ("raj", -1);  /* Rajasthani [macrolanguage] */
+  حالة HB_ٽيگ('R','O','M',' '):  /* Romanian */
+    أرجع hb_language_from_string ("ro", -1);  /* Romanian */
+  حالة HB_ٽيگ('R','O','Y',' '):  /* Romany */
+    أرجع hb_language_from_string ("rom", -1);  /* Romany [macrolanguage] */
+  حالة HB_ٽيگ('S','G','A',' '):  /* Old Irish */
+    أرجع hb_language_from_string ("sga", -1);  /* Old Irish (to 900) */
+  حالة HB_ٽيگ('S','R','B',' '):  /* Serbian */
+    أرجع hb_language_from_string ("sr", -1);  /* Serbian */
+  حالة HB_ٽيگ('S','X','T',' '):  /* Sutu */
+    أرجع hb_language_from_string ("xnj", -1);  /* Ngoni (Tanzania) */
+  حالة HB_ٽيگ('S','Y','R',' '):  /* Syriac */
+    أرجع hb_language_from_string ("syr", -1);  /* Syriac [macrolanguage] */
+  حالة HB_ٽيگ('S','Y','R','E'):  /* Syriac, Estrangela script-variant (equivalent to ISO 15924 'Syre') */
+    أرجع hb_language_from_string ("und-Syre", -1);  /* Undetermined; Syriac (Estrangelo variant) */
+  حالة HB_ٽيگ('S','Y','R','J'):  /* Syriac, Western script-variant (equivalent to ISO 15924 'Syrj') */
+    أرجع hb_language_from_string ("und-Syrj", -1);  /* Undetermined; Syriac (Western variant) */
+  حالة HB_ٽيگ('S','Y','R','N'):  /* Syriac, Eastern script-variant (equivalent to ISO 15924 'Syrn') */
+    أرجع hb_language_from_string ("und-Syrn", -1);  /* Undetermined; Syriac (Eastern variant) */
+  حالة HB_ٽيگ('T','M','H',' '):  /* Tamashek */
+    أرجع hb_language_from_string ("tmh", -1);  /* Tamashek [macrolanguage] */
+  حالة HB_ٽيگ('T','O','D',' '):  /* Todo */
+    أرجع hb_language_from_string ("xwo", -1);  /* Written Oirat */
+  حالة HB_ٽيگ('U','P','P','H'):  /* Uralic Phonetic Alphabet */
+    أرجع hb_language_from_string ("und-fonupa", -1);  /* Undetermined; Uralic Phonetic Alphabet */
+  حالة HB_ٽيگ('W','D','T',' '):  /* Wendat */
+    أرجع hb_language_from_string ("wdt", -1);  /* Wendat */
+  حالة HB_ٽيگ('W','Y','N',' '):  /* Wyandot */
+    أرجع hb_language_from_string ("wyn", -1);  /* Wyandot */
+  حالة HB_ٽيگ('Z','H','H',' '):  /* Chinese, Traditional, Hong Kong SAR */
+    أرجع hb_language_from_string ("zh-HK", -1);  /* Chinese [macrolanguage]; Hong Kong */
+  حالة HB_ٽيگ('Z','H','S',' '):  /* Chinese, Simplified */
+    أرجع hb_language_from_string ("zh-Hans", -1);  /* Chinese [macrolanguage]; Han (Simplified variant) */
+  حالة HB_ٽيگ('Z','H','T',' '):  /* Chinese, Traditional */
+    أرجع hb_language_from_string ("zh-Hant", -1);  /* Chinese [macrolanguage]; Han (Traditional variant) */
+  حالة HB_ٽيگ('Z','H','T','M'):  /* Chinese, Traditional, Macao SAR */
+    أرجع hb_language_from_string ("zh-MO", -1);  /* Chinese [macrolanguage]; Macao */
+  حالة HB_ٽيگ('Z','Z','A',' '):  /* Zazaki */
+    أرجع hb_language_from_string ("zza", -1);  /* Zaza [macrolanguage] */
+  افتراضي:
+    أرجع HB_LANGUAGE_INVALID;
   }
 }
 
-#endif /* HB_OT_TAG_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_TAG_TABLE_HH */
 
 /* == End of generated table == */

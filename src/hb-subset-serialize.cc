@@ -23,10 +23,10 @@
  *
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset-serialize.h"
-#include "hb-repacker.hh"
+#ضمن "hb-subset-serialize.h"
+#ضمن "hb-repacker.hh"
 
 /**
  * hb_subset_serialize_or_fail:
@@ -43,15 +43,15 @@
  * Since: 10.2.0
  **/
 HB_EXTERN hb_blob_t *
-hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
+hb_subset_serialize_or_fail (hb_ٽيگ_t                      جدول_ٽيگ_2,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs)
+                             بنانشان                      انگ_hb_objs)
 {
-  hb_vector_t<const hb_subset_serialize_object_t *> packed;
-  packed.alloc (num_hb_objs + 1);
-  packed.push (nullptr);
-  for (unsigned i = 0 ; i < num_hb_objs ; i++)
+  hb_ويڪٽر_t<ثابت hb_subset_serialize_object_t *> packed;
+  packed.alloc (انگ_hb_objs + 1);
+  packed.push (خالي_اشارو);
+  لكل (بنانشان i = 0 ; i < انگ_hb_objs ; i++)
     packed.push (&(hb_objects[i]));
 
-  return hb_resolve_overflows (packed, table_tag, 20, true);
+  أرجع hb_resolve_overflows (packed, جدول_ٽيگ_2, 20, سچ);
 }

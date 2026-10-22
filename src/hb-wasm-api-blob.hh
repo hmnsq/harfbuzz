@@ -22,29 +22,29 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_BLOB_HH
-#define HB_WASM_API_BLOB_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_WASM_API_BLOB_HH
+#وصف_ڪريو HB_WASM_API_BLOB_HH
 
-#include "hb-wasm-api.hh"
+#ضمن "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+نطاق hb {
+نطاق wasm {
 
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (فراغ, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  إذا (unlikely (!blob))
+    أرجع;
 
-  module_free (blob->data);
+  module_free (blob->معلومات);
 
-  blob->data = nullref;
-  blob->length = 0;
+  blob->معلومات = nullref;
+  blob->ڊيگهائي = 0;
 }
 
 
 }}
 
-#endif /* HB_WASM_API_BLOB_HH */
+#جيڪڏهن_پورو /* HB_WASM_API_BLOB_HH */

@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod, Roderick Sheeter
  */
 
-#ifndef HB_OT_HMTX_TABLE_HH
-#define HB_OT_HMTX_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_HMTX_جدول_HH
+#وصف_ڪريو HB_OT_HMTX_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
-#include "hb-ot-metrics.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-dual.hh"
+#ضمن "hb-ot-maxp-table.hh"
+#ضمن "hb-ot-hhea-table.hh"
+#ضمن "hb-ot-os2-table.hh"
+#ضمن "hb-ot-var-hvar-table.hh"
+#ضمن "hb-ot-var-mvar-table.hh"
+#ضمن "hb-ot-metrics.hh"
 
 /*
  * hmtx -- Horizontal Metrics
@@ -42,361 +42,361 @@
  * vmtx -- Vertical Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/vmtx
  */
-#define HB_OT_TAG_hmtx HB_TAG('h','m','t','x')
-#define HB_OT_TAG_HMTX HB_TAG('H','M','T','X')
-#define HB_OT_TAG_vmtx HB_TAG('v','m','t','x')
-#define HB_OT_TAG_VMTX HB_TAG('V','M','T','X')
+#وصف_ڪريو HB_OT_ٽيگ_hmtx HB_ٽيگ('h','m','t','x')
+#وصف_ڪريو HB_OT_ٽيگ_HMTX HB_ٽيگ('H','M','T','X')
+#وصف_ڪريو HB_OT_ٽيگ_vmtx HB_ٽيگ('v','m','t','x')
+#وصف_ڪريو HB_OT_ٽيگ_VMTX HB_ٽيگ('V','M','T','X')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct LongMetric
+بنية LongMetric
 {
   UFWORD	advance; /* Advance width/height. */
   FWORD		sb; /* Leading (left/top) side bearing. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  DEFINE_سائيز_STATIC (4);
 };
 
 
-template <typename T/*Data table type*/, typename H/*Header table type*/, typename V/*Var table type*/>
-struct hmtxvmtx
+سانچو <قسم_نالو T/*Data table type*/, قسم_نالو H/*Header table type*/, قسم_نالو V/*Var table type*/>
+بنية hmtxvmtx
 {
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  منطقي sanitize (hb_sanitize_context_t *c HB_اڻ_استعمال_ٿيل) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* We don't check for anything specific here.  The users of the
      * struct do all the hard work... */
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>* get_mtx_map (const hb_subset_plan_t *plan) const
-  { return T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
+  ثابت hb_hashmap_t<hb_codepoint_t, hb_pair_t<بنانشان, صحيح>>* get_mtx_map (ثابت hb_subset_plan_t *plan) ثابت
+  { أرجع T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
 
-  bool subset_update_header (hb_subset_context_t *c,
-			     unsigned int num_hmetrics,
-			     const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
-			     const hb_vector_t<unsigned> &bounds_vec) const
+  منطقي subset_update_سرو (hb_subset_context_t *c,
+			     بنانشان صحيح انگ_hmetrics,
+			     ثابت hb_hashmap_t<hb_codepoint_t, hb_pair_t<بنانشان, صحيح>> *mtx_map,
+			     ثابت hb_ويڪٽر_t<بنانشان> &bounds_vec) ثابت
   {
-    hb_blob_t *src_blob = hb_sanitize_context_t ().reference_table<H> (c->plan->source, H::tableTag);
+    hb_blob_t *src_blob = hb_sanitize_context_t ().reference_جدول<H> (c->plan->ذريعو, H::جدول_ٽيگ);
     hb_blob_t *dest_blob = hb_blob_copy_writable_or_fail (src_blob);
     hb_blob_destroy (src_blob);
 
-    if (unlikely (!dest_blob)) {
-      return false;
+    إذا (unlikely (!dest_blob)) {
+      أرجع خطأ;
     }
 
-    unsigned int length;
-    H *table = (H *) hb_blob_get_data (dest_blob, &length);
-    c->serializer->check_assign (table->numberOfLongMetrics, num_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+    بنانشان صحيح ڊيگهائي;
+    H *جدول = (H *) hb_blob_get_معلومات (dest_blob, &ڊيگهائي);
+    c->serializer->check_سونپيو (جدول->عدد_جو_Long_Metrics, انگ_hmetrics, HB_SERIALIZE_ERROR_INT_حد_کان_مٿي);
 
-#ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    إذا (c->plan->normalized_coords)
     {
-      auto &MVAR = *c->plan->source->table.MVAR;
-      if (T::is_horizontal)
+      خودڪار &MVAR = *c->plan->ذريعو->جدول.MVAR;
+      إذا (T::is_horizontal)
       {
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE,   caretSlopeRise);
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN,    caretSlopeRun);
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET, caretOffset);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_RISE,   caret_لاهي_Rise);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_لاڳيتو,    caret_لاهي_لاڳيتو);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_وٿي, caret_وٿي);
       }
-      else
+      وإلا
       {
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RISE,     caretSlopeRise);
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RUN,      caretSlopeRun);
-	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET,   caretOffset);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_VERTICAL_CARET_RISE,     caret_لاهي_Rise);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_VERTICAL_CARET_لاڳيتو,      caret_لاهي_لاڳيتو);
+	HB_جوڙيو_MVAR_VAR (HB_OT_METRICS_ٽيگ_VERTICAL_CARET_وٿي,   caret_وٿي);
       }
 
-      bool empty = true;
-      int min_lsb = 0x7FFF;
-      int min_rsb = 0x7FFF;
-      int max_extent = -0x7FFF;
-      unsigned max_adv = 0;
-      for (const auto _ : *mtx_map)
+      منطقي خالي_جايون_2 = سچ;
+      صحيح min_lsb = 0x7FFF;
+      صحيح min_rsb = 0x7FFF;
+      صحيح max_extent = -0x7FFF;
+      بنانشان max_adv = 0;
+      لكل (ثابت خودڪار _ : *mtx_map)
       {
-        hb_codepoint_t gid = _.first;
-        unsigned adv = _.second.first;
-        int lsb = _.second.second;
+        hb_codepoint_t gid = _.پهريون;
+        بنانشان adv = _.second.پهريون;
+        صحيح lsb = _.second.second;
         max_adv = hb_max (max_adv, adv);
 
-        if (bounds_vec[gid] != 0xFFFFFFFF)
+        إذا (bounds_vec[gid] != 0xFFFFFFFF)
         {
-	  empty = false;
-          unsigned bound_width = bounds_vec[gid];
-          int rsb = adv - lsb - bound_width;
-          int extent = lsb + bound_width;
+	  خالي_جايون_2 = خطأ;
+          بنانشان bound_ويڪر = bounds_vec[gid];
+          صحيح rsb = adv - lsb - bound_ويڪر;
+          صحيح extent = lsb + bound_ويڪر;
           min_lsb = hb_min (min_lsb, lsb);
           min_rsb = hb_min (min_rsb, rsb);
           max_extent = hb_max (max_extent, extent);
         }
       }
 
-      table->advanceMax = max_adv;
-      if (!empty)
+      جدول->advanceMax = max_adv;
+      إذا (!خالي_جايون_2)
       {
-        table->minLeadingBearing = min_lsb;
-        table->minTrailingBearing = min_rsb;
-        table->maxExtent = max_extent;
+        جدول->minLeadingBearing = min_lsb;
+        جدول->minTrailingBearing = min_rsb;
+        جدول->maxExtent = max_extent;
       }
 
-      if (T::is_horizontal)
+      إذا (T::is_horizontal)
       {
-        const auto &OS2 = *c->plan->source->table.OS2;
-        if (OS2.has_data () &&
-            table->ascender == OS2.sTypoAscender &&
-            table->descender == OS2.sTypoDescender &&
-            table->lineGap == OS2.sTypoLineGap)
+        ثابت خودڪار &OS2 = *c->plan->ذريعو->جدول.OS2;
+        إذا (OS2.has_معلومات () &&
+            جدول->ascender == OS2.sTypoAscender &&
+            جدول->descender == OS2.sTypoDescender &&
+            جدول->سٽ_Gap == OS2.s_Typo_سٽ_Gap)
         {
-          table->ascender = static_cast<int> (roundf (OS2.sTypoAscender +
-                                                      MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,
+          جدول->ascender = static_cast<صحيح> (roundf (OS2.sTypoAscender +
+                                                      MVAR.get_var (HB_OT_METRICS_ٽيگ_HORIZONTAL_ASCENDER,
                                                                     c->plan->normalized_coords.arrayZ,
-                                                                    c->plan->normalized_coords.length)));
-          table->descender = static_cast<int> (roundf (OS2.sTypoDescender +
-                                                       MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,
+                                                                    c->plan->normalized_coords.ڊيگهائي)));
+          جدول->descender = static_cast<صحيح> (roundf (OS2.sTypoDescender +
+                                                       MVAR.get_var (HB_OT_METRICS_ٽيگ_HORIZONTAL_DESCENDER,
                                                                      c->plan->normalized_coords.arrayZ,
-                                                                     c->plan->normalized_coords.length)));
-          table->lineGap = static_cast<int> (roundf (OS2.sTypoLineGap +
-                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,
+                                                                     c->plan->normalized_coords.ڊيگهائي)));
+          جدول->سٽ_Gap = static_cast<صحيح> (roundf (OS2.s_Typo_سٽ_Gap +
+                                                     MVAR.get_var (HB_OT_METRICS_ٽيگ_HORIZONTAL_سٽ_GAP,
                                                                    c->plan->normalized_coords.arrayZ,
-                                                                   c->plan->normalized_coords.length)));
+                                                                   c->plan->normalized_coords.ڊيگهائي)));
         }
       }
     }
-#endif
+#جيڪڏهن_پورو
 
-    bool result = c->plan->add_table (H::tableTag, dest_blob);
+    منطقي نتيجو = c->plan->جوڙيو_جدول (H::جدول_ٽيگ, dest_blob);
     hb_blob_destroy (dest_blob);
 
-    return result;
+    أرجع نتيجو;
   }
 
-  template<typename Iterator,
+  سانچو<قسم_نالو Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  فراغ serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_long_metrics,
-                  unsigned total_num_metrics)
+		  hb_array_t<ثابت hb_codepoint_pair_t> new_منزل_old_gid_list,
+		  بنانشان انگ_long_metrics,
+                  بنانشان ڪل_انگ_metrics)
   {
-    LongMetric* long_metrics = c->allocate_size<LongMetric> (num_long_metrics * LongMetric::static_size);
-    FWORD* short_metrics = c->allocate_size<FWORD> ((total_num_metrics - num_long_metrics) * FWORD::static_size);
-    if (!long_metrics || !short_metrics) return;
+    LongMetric* long_metrics = c->allocate_سائيز<LongMetric> (انگ_long_metrics * LongMetric::static_سائيز);
+    FWORD* short_metrics = c->allocate_سائيز<FWORD> ((ڪل_انگ_metrics - انگ_long_metrics) * FWORD::static_سائيز);
+    إذا (!long_metrics || !short_metrics) أرجع;
 
-    short_metrics -= num_long_metrics;
+    short_metrics -= انگ_long_metrics;
 
-    for (auto _ : new_to_old_gid_list)
+    لكل (خودڪار _ : new_منزل_old_gid_list)
     {
-      hb_codepoint_t gid = _.first;
-      auto mtx = *it++;
+      hb_codepoint_t gid = _.پهريون;
+      خودڪار mtx = *it++;
 
-      if (gid < num_long_metrics)
+      إذا (gid < انگ_long_metrics)
       {
 	LongMetric& lm = long_metrics[gid];
-	lm.advance = mtx.first;
+	lm.advance = mtx.پهريون;
 	lm.sb = mtx.second;
       }
-      else
+      وإلا
         short_metrics[gid] = mtx.second;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *table_prime = c->serializer->start_embed <T> ();
+    خودڪار *جدول_مفرد = c->serializer->شروعات_embed <T> ();
 
-    accelerator_t _mtx (c->plan->source);
-    unsigned num_long_metrics;
-    const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map = get_mtx_map (c->plan);
+    accelerator_t _mtx (c->plan->ذريعو);
+    بنانشان انگ_long_metrics;
+    ثابت hb_hashmap_t<hb_codepoint_t, hb_pair_t<بنانشان, صحيح>> *mtx_map = get_mtx_map (c->plan);
     {
       /* Determine num_long_metrics to encode. */
-      auto& plan = c->plan;
+      خودڪار& plan = c->plan;
 
       // TODO Don't consider retaingid holes here.
 
-      num_long_metrics = hb_min (plan->num_output_glyphs (), H::long_metric_count_max ());
-      unsigned int last_advance = get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 1, _mtx);
-      while (num_long_metrics > 1 &&
-	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 2, _mtx))
+      انگ_long_metrics = hb_min (plan->انگ_output_glyphs (), H::long_metric_ڳڻپ_max ());
+      بنانشان صحيح آخري_advance = get_new_gid_advance_unscaled (plan, mtx_map, انگ_long_metrics - 1, _mtx);
+      طالما (انگ_long_metrics > 1 &&
+	     آخري_advance == get_new_gid_advance_unscaled (plan, mtx_map, انگ_long_metrics - 2, _mtx))
       {
-	num_long_metrics--;
+	انگ_long_metrics--;
       }
     }
 
-    auto it =
-    + hb_iter (c->plan->new_to_old_gid_list)
+    خودڪار it =
+    + hb_iter (c->plan->new_منزل_old_gid_list)
     | hb_map ([&_mtx, mtx_map] (hb_codepoint_pair_t _)
 	      {
-		hb_codepoint_t new_gid = _.first;
+		hb_codepoint_t new_gid = _.پهريون;
 		hb_codepoint_t old_gid = _.second;
 
-		hb_pair_t<unsigned, int> *v = nullptr;
-		if (!mtx_map->has (new_gid, &v))
+		hb_pair_t<بنانشان, صحيح> *v = خالي_اشارو;
+		إذا (!mtx_map->has (new_gid, &v))
 		{
-		  int lsb = 0;
+		  صحيح lsb = 0;
 		  _mtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
-		  return hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
+		  أرجع hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
 		}
-		return *v;
+		أرجع *v;
 	      })
     ;
 
-    table_prime->serialize (c->serializer,
+    جدول_مفرد->serialize (c->serializer,
 			    it,
-			    c->plan->new_to_old_gid_list,
-			    num_long_metrics,
-			    c->plan->num_output_glyphs ());
+			    c->plan->new_منزل_old_gid_list,
+			    انگ_long_metrics,
+			    c->plan->انگ_output_glyphs ());
 
-    if (unlikely (c->serializer->in_error ()))
-      return_trace (false);
+    إذا (unlikely (c->serializer->اندريون_error ()))
+      return_trace (خطأ);
 
     // Amend header num hmetrics
-    if (unlikely (!subset_update_header (c, num_long_metrics, mtx_map,
-                                         T::is_horizontal ? c->plan->bounds_width_vec : c->plan->bounds_height_vec)))
-      return_trace (false);
+    إذا (unlikely (!subset_update_سرو (c, انگ_long_metrics, mtx_map,
+                                         T::is_horizontal ? c->plan->bounds_ويڪر_vec : c->plan->bounds_اوچائي_vec)))
+      return_trace (خطأ);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    friend struct hmtxvmtx;
+    دوست بنية hmtxvmtx;
 
     accelerator_t (hb_face_t *face) :
-      accelerator_t (face, T::tableTag, get_num_long_metrics (face))
+      accelerator_t (face, T::جدول_ٽيگ, get_انگ_long_metrics (face))
     {}
 
-    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned num_long_metrics_)
+    accelerator_t (hb_face_t *face, hb_ٽيگ_t جدول_ٽيگ, بنانشان انگ_long_metrics_2)
     {
-      table = hb_sanitize_context_t ().reference_table<hmtxvmtx> (face, tableTag);
-      var_table = hb_sanitize_context_t ().reference_table<V> (face, T::variationsTag);
+      جدول = hb_sanitize_context_t ().reference_جدول<hmtxvmtx> (face, جدول_ٽيگ);
+      var_جدول = hb_sanitize_context_t ().reference_جدول<V> (face, T::variations_ٽيگ);
 
       default_advance = T::is_horizontal ? hb_face_get_upem (face) / 2 : hb_face_get_upem (face);
 
       /* Populate count variables and sort them out as we go */
 
-      unsigned int len = table.get_length ();
-      if (len & 1)
+      بنانشان صحيح len = جدول.get_ڊيگهائي ();
+      إذا (len & 1)
         len--;
 
-      num_long_metrics = num_long_metrics_;
-      if (unlikely (num_long_metrics > len / 4))
-	num_long_metrics = len / 4;
-      len -= num_long_metrics * 4;
+      انگ_long_metrics = انگ_long_metrics_2;
+      إذا (unlikely (انگ_long_metrics > len / 4))
+	انگ_long_metrics = len / 4;
+      len -= انگ_long_metrics * 4;
 
-      num_bearings = face->table.maxp->get_num_glyphs ();
+      انگ_bearings = face->جدول.maxp->get_انگ_glyphs ();
 
-      if (unlikely (num_bearings < num_long_metrics))
-        num_bearings = num_long_metrics;
-      if (unlikely ((num_bearings - num_long_metrics) * 2 > len))
-        num_bearings = num_long_metrics + len / 2;
-      len -= (num_bearings - num_long_metrics) * 2;
+      إذا (unlikely (انگ_bearings < انگ_long_metrics))
+        انگ_bearings = انگ_long_metrics;
+      إذا (unlikely ((انگ_bearings - انگ_long_metrics) * 2 > len))
+        انگ_bearings = انگ_long_metrics + len / 2;
+      len -= (انگ_bearings - انگ_long_metrics) * 2;
 
       /* We MUST set num_bearings to zero if num_long_metrics is zero.
        * Our get_advance() depends on that. */
-      if (unlikely (!num_long_metrics))
-	num_bearings = num_long_metrics = 0;
+      إذا (unlikely (!انگ_long_metrics))
+	انگ_bearings = انگ_long_metrics = 0;
 
-      num_advances = num_bearings + len / 2;
-      num_glyphs = face->get_num_glyphs ();
-      if (num_glyphs < num_advances)
-        num_glyphs = num_advances;
+      انگ_advances = انگ_bearings + len / 2;
+      انگ_glyphs = face->get_انگ_glyphs ();
+      إذا (انگ_glyphs < انگ_advances)
+        انگ_glyphs = انگ_advances;
     }
     ~accelerator_t ()
     {
-      table.destroy ();
-      var_table.destroy ();
+      جدول.destroy ();
+      var_جدول.destroy ();
     }
 
-    bool has_data () const { return (bool) num_bearings; }
+    منطقي has_معلومات () ثابت { أرجع (منطقي) انگ_bearings; }
 
-    void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						   int *lsb) const
+    فراغ get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						   صحيح *lsb) ثابت
     {
-      if (glyph < num_long_metrics)
+      إذا (glyph < انگ_long_metrics)
       {
-	*lsb = table->longMetricZ[glyph].sb;
-	return;
+	*lsb = جدول->longMetricZ[glyph].sb;
+	أرجع;
       }
 
-      if (unlikely (glyph >= num_bearings))
+      إذا (unlikely (glyph >= انگ_bearings))
       {
         *lsb = 0;
-	return;
+	أرجع;
       }
 
-      const FWORD *bearings = (const FWORD *) &table->longMetricZ[num_long_metrics];
-      *lsb = bearings[glyph - num_long_metrics];
+      ثابت FWORD *bearings = (ثابت FWORD *) &جدول->longMetricZ[انگ_long_metrics];
+      *lsb = bearings[glyph - انگ_long_metrics];
     }
 
-    unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+    بنانشان صحيح get_advance_without_var_unscaled (hb_codepoint_t glyph) ثابت
     {
-      if (glyph < num_bearings)
-	return table->longMetricZ[hb_min (glyph, (uint32_t) num_long_metrics - 1)].advance;
+      إذا (glyph < انگ_bearings)
+	أرجع جدول->longMetricZ[hb_min (glyph, (uint32_t) انگ_long_metrics - 1)].advance;
 
       /* If num_advances is zero, it means we don't have the metrics table
        * for this direction: return default advance. */
-      if (unlikely (!num_advances))
-	return default_advance;
+      إذا (unlikely (!انگ_advances))
+	أرجع default_advance;
 
-      return 0;
+      أرجع 0;
     }
 
-#ifndef HB_NO_VAR
-    unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    بنانشان get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					    hb_font_t         *font,
-					    hb_scalar_cache_t *store_cache = nullptr) const
+					    hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
     {
-      unsigned int advance = get_advance_without_var_unscaled (glyph);
-      return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								      font->coords, font->num_coords,
+      بنانشان صحيح advance = get_advance_without_var_unscaled (glyph);
+      أرجع hb_clamp_منزل<بنانشان> (advance + roundf (var_جدول->get_advance_delta_unscaled (glyph,
+								      font->coords, font->انگ_coords,
 								      store_cache)));
     }
-#endif
+#جيڪڏهن_پورو
 
-    protected:
+    محمي:
     // 0 <= num_long_metrics <= num_bearings <= num_advances <= num_glyphs
-    unsigned num_long_metrics;
-    unsigned num_bearings;
-    unsigned num_advances;
-    unsigned num_glyphs;
+    بنانشان انگ_long_metrics;
+    بنانشان انگ_bearings;
+    بنانشان انگ_advances;
+    بنانشان انگ_glyphs;
 
-    unsigned int default_advance;
+    بنانشان صحيح default_advance;
 
-    public:
-    hb_blob_ptr_t<hmtxvmtx> table;
-    hb_blob_ptr_t<V> var_table;
+    عام:
+    hb_blob_ptr_t<hmtxvmtx> جدول;
+    hb_blob_ptr_t<V> var_جدول;
 
-    private:
-    static unsigned get_num_long_metrics (hb_face_t *face)
+    خاص:
+    ساكن بنانشان get_انگ_long_metrics (hb_face_t *face)
     {
-      hb_blob_ptr_t<H> hea = hb_sanitize_context_t ().reference_table<H> (face);
-      unsigned ret = hea->numberOfLongMetrics;
+      hb_blob_ptr_t<H> hea = hb_sanitize_context_t ().reference_جدول<H> (face);
+      بنانشان ret = hea->عدد_جو_Long_Metrics;
       hea.destroy ();
-      return ret;
+      أرجع ret;
     }
   };
 
   /* get advance: when no variations, call get_advance_without_var_unscaled.
    * when there're variations, get advance value from mtx_map in subset_plan*/
-  unsigned get_new_gid_advance_unscaled (const hb_subset_plan_t *plan,
-                                         const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
-                                         unsigned new_gid,
-                                         const accelerator_t &_mtx) const
+  بنانشان get_new_gid_advance_unscaled (ثابت hb_subset_plan_t *plan,
+                                         ثابت hb_hashmap_t<hb_codepoint_t, hb_pair_t<بنانشان, صحيح>> *mtx_map,
+                                         بنانشان new_gid,
+                                         ثابت accelerator_t &_mtx) ثابت
   {
-    if (mtx_map->is_empty ())
+    إذا (mtx_map->is_empty ())
     {
       hb_codepoint_t old_gid = 0;
-      return plan->old_gid_for_new_gid (new_gid, &old_gid) ?
+      أرجع plan->old_gid_for_new_gid (new_gid, &old_gid) ?
              _mtx.get_advance_without_var_unscaled (old_gid) : 0;
     }
-    return mtx_map->get (new_gid).first;
+    أرجع mtx_map->get (new_gid).پهريون;
   }
 
-  protected:
-  UnsizedArrayOf<LongMetric>
+  محمي:
+  Unsized_Array_جو<LongMetric>
 		longMetricZ;	/* Paired advance width and leading
 				 * bearing values for each glyph. The
 				 * value numOfHMetrics comes from
@@ -421,118 +421,118 @@ struct hmtxvmtx
 				 * values for each glyph. */
 /*UnsizedArrayOf<UFWORD>advancesX;*/
 				/* TODO Document. */
-  public:
-  DEFINE_SIZE_ARRAY (0, longMetricZ);
+  عام:
+  DEFINE_سائيز_ARRAY (0, longMetricZ);
 };
 
-struct hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+بنية hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_hmtx;
+  ساكن constexpr hb_ٽيگ_t variations_ٽيگ = HB_OT_ٽيگ_HVAR;
+  ساكن constexpr منطقي is_horizontal = سچ;
 };
-struct HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+بنية HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_HMTX;
+  ساكن constexpr hb_ٽيگ_t variations_ٽيگ = HB_OT_ٽيگ_HVAR;
+  ساكن constexpr منطقي is_horizontal = سچ;
 };
-struct vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+بنية vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_vmtx;
+  ساكن constexpr hb_ٽيگ_t variations_ٽيگ = HB_OT_ٽيگ_VVAR;
+  ساكن constexpr منطقي is_horizontal = خطأ;
 };
-struct VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+بنية VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_VMTX;
+  ساكن constexpr hb_ٽيگ_t variations_ٽيگ = HB_OT_ٽيگ_VVAR;
+  ساكن constexpr منطقي is_horizontal = خطأ;
 };
 
-struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
+بنية hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
 						  HMTX::accelerator_t>
 {
   hmtx_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<hmtx::accelerator_t, HMTX::accelerator_t> (face)
   {
-    var_table = hb_sanitize_context_t ().reference_table<HVAR> (face);
+    var_جدول = hb_sanitize_context_t ().reference_جدول<HVAR> (face);
   }
 
   ~hmtx_accelerator_t ()
   {
-    var_table.destroy ();
+    var_جدول.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  فراغ get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 صحيح *lsb) ثابت
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*هذا, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  بنانشان صحيح get_advance_without_var_unscaled (hb_codepoint_t glyph) ثابت
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    أرجع HB_DUAL_GET (*هذا, get_advance_without_var_unscaled (glyph));
   }
 
-#ifndef HB_NO_VAR
-  unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+  بنانشان get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    بنانشان صحيح advance = get_advance_without_var_unscaled (glyph);
+    أرجع hb_clamp_منزل<بنانشان> (advance + roundf (var_جدول->get_advance_delta_unscaled (glyph,
+								    font->coords, font->انگ_coords,
 								    store_cache)));
   }
-#endif
+#جيڪڏهن_پورو
 
-  hb_blob_ptr_t<HVAR> var_table;
+  hb_blob_ptr_t<HVAR> var_جدول;
 };
 
-#ifndef HB_NO_VERTICAL
-struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VERTICAL
+بنية vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
 						  VMTX::accelerator_t>
 {
   vmtx_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<vmtx::accelerator_t, VMTX::accelerator_t> (face)
   {
-    var_table = hb_sanitize_context_t ().reference_table<VVAR> (face);
+    var_جدول = hb_sanitize_context_t ().reference_جدول<VVAR> (face);
   }
 
   ~vmtx_accelerator_t ()
   {
-    var_table.destroy ();
+    var_جدول.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  فراغ get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 صحيح *lsb) ثابت
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*هذا, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  بنانشان صحيح get_advance_without_var_unscaled (hb_codepoint_t glyph) ثابت
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    أرجع HB_DUAL_GET (*هذا, get_advance_without_var_unscaled (glyph));
   }
 
-#ifndef HB_NO_VAR
-  unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+  بنانشان get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    بنانشان صحيح advance = get_advance_without_var_unscaled (glyph);
+    أرجع hb_clamp_منزل<بنانشان> (advance + roundf (var_جدول->get_advance_delta_unscaled (glyph,
+								    font->coords, font->انگ_coords,
 								    store_cache)));
   }
-#endif
+#جيڪڏهن_پورو
 
-  hb_blob_ptr_t<VVAR> var_table;
+  hb_blob_ptr_t<VVAR> var_جدول;
 };
-#else
-struct vmtx_accelerator_t : vmtx::accelerator_t {
+#وإلا
+بنية vmtx_accelerator_t : vmtx::accelerator_t {
   vmtx_accelerator_t (hb_face_t *face) : vmtx::accelerator_t (face) {}
 };
-#endif
+#جيڪڏهن_پورو
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HMTX_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_HMTX_TABLE_HH */

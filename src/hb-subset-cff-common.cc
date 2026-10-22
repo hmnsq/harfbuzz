@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_SUBSET_CFF
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff-common.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#ضمن "hb-ot-cff-common.hh"
+#ضمن "hb-ot-cff2-table.hh"
+#ضمن "hb-subset-cff-common.hh"
 
 /* Disable FDSelect format 0 for compatibility with fonttools which doesn't seem choose it.
  * Rarely any/much smaller than format 3 anyway. */
-#define CFF_SERIALIZE_FDSELECT_0  0
+#وصف_ڪريو CFF_SERIALIZE_FDSELECT_0  0
 
-using namespace CFF;
+استعمال نطاق CFF;
 
 
 /* Determine an optimal FDSelect format according to a provided plan.
@@ -45,192 +45,192 @@ using namespace CFF;
  * along with a font index remapping table
  */
 
-bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			     unsigned int fdCount,
-			     const FDSelect &src, /* IN */
-			     unsigned int src_num_glyphs,
-			     unsigned int &subset_fd_count /* OUT */,
-			     unsigned int &subset_fdselect_size /* OUT */,
-			     unsigned int &subset_fdselect_format /* OUT */,
-			     hb_vector_t<code_pair_t> &fdselect_ranges /* OUT */,
-			     hb_inc_bimap_t &fdmap /* OUT */)
+منطقي
+hb_plan_subset_cff_fdselect (ثابت hb_subset_plan_t *plan,
+			     بنانشان صحيح fd_ڳڻپ,
+			     ثابت FDSelect &src, /*اندريون*/
+			     بنانشان صحيح src_انگ_glyphs,
+			     بنانشان صحيح &subset_fd_ڳڻپ /*ٻاهريون*/,
+			     بنانشان صحيح &subset_fdselect_سائيز /*ٻاهريون*/,
+			     بنانشان صحيح &subset_fdselect_format /*ٻاهريون*/,
+			     hb_ويڪٽر_t<ڪوڊ_pair_t> &fdselect_ranges /*ٻاهريون*/,
+			     hb_inc_bimap_t &fdmap /*ٻاهريون*/)
 {
-  subset_fd_count = 0;
-  subset_fdselect_size = 0;
+  subset_fd_ڳڻپ = 0;
+  subset_fdselect_سائيز = 0;
   subset_fdselect_format = 0;
-  unsigned int num_ranges = 0;
+  بنانشان صحيح انگ_ranges = 0;
 
-  unsigned int subset_num_glyphs = plan->num_output_glyphs ();
-  if (subset_num_glyphs == 0)
-    return true;
+  بنانشان صحيح subset_انگ_glyphs = plan->انگ_output_glyphs ();
+  إذا (subset_انگ_glyphs == 0)
+    أرجع سچ;
 
   {
     /* use hb_set to determine the subset of font dicts */
-    hb_set_t set;
-    hb_codepoint_t prev_fd = CFF_UNDEF_CODE;
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    auto _ = *it;
-    for (hb_codepoint_t gid = 0; gid < subset_num_glyphs; gid++)
+    hb_سيٽ_t سيٽ;
+    hb_codepoint_t prev_fd = CFF_UNDEF_ڪوڊ;
+    خودڪار it = hb_iter (plan->new_منزل_old_gid_list);
+    خودڪار _ = *it;
+    لكل (hb_codepoint_t gid = 0; gid < subset_انگ_glyphs; gid++)
     {
       hb_codepoint_t old_glyph;
-      if (gid == _.first)
+      إذا (gid == _.پهريون)
       {
 	old_glyph = _.second;
 	_ = *++it;
       }
-      else
+      وإلا
       {
 	/* fonttools retains FDSelect & font dicts for missing glyphs. do the same */
 	old_glyph = gid;
       }
       /* FDSelect may only cover the CharStrings glyphs; see subset_get_fd (). */
-      hb_pair_t<unsigned, hb_codepoint_t> fd_range =
-	likely (old_glyph < src_num_glyphs) ?
+      hb_pair_t<بنانشان, hb_codepoint_t> fd_range =
+	likely (old_glyph < src_انگ_glyphs) ?
 	src.get_fd_range (old_glyph) :
-	hb_pair_t<unsigned, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
-      if (old_glyph < src_num_glyphs)
-	fd_range.second = hb_min (fd_range.second, src_num_glyphs);
-      unsigned fd = fd_range.first;
+	hb_pair_t<بنانشان, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
+      إذا (old_glyph < src_انگ_glyphs)
+	fd_range.second = hb_min (fd_range.second, src_انگ_glyphs);
+      بنانشان fd = fd_range.پهريون;
 
-      if (fd != prev_fd)
+      إذا (fd != prev_fd)
       {
-	set.add (fd);
-	num_ranges++;
+	سيٽ.جوڙيو (fd);
+	انگ_ranges++;
 	prev_fd = fd;
-	fdselect_ranges.push (code_pair_t { fd, gid });
+	fdselect_ranges.push (ڪوڊ_pair_t { fd, gid });
 
-	if (gid == old_glyph)
-	  gid = hb_min (_.first - 1, fd_range.second - 1);
+	إذا (gid == old_glyph)
+	  gid = hb_min (_.پهريون - 1, fd_range.second - 1);
       }
     }
 
-    subset_fd_count = set.get_population ();
-    if (subset_fd_count == fdCount)
+    subset_fd_ڳڻپ = سيٽ.get_population ();
+    إذا (subset_fd_ڳڻپ == fd_ڳڻپ)
     {
       /* all font dicts belong to the subset. no need to subset FDSelect & FDArray */
-      fdmap.identity (fdCount);
+      fdmap.سڃاڻپ_عنصر (fd_ڳڻپ);
     }
-    else
+    وإلا
     {
       /* create a fdmap */
       fdmap.reset ();
 
-      hb_codepoint_t fd = CFF_UNDEF_CODE;
-      while (set.next (&fd))
-	fdmap.add (fd);
-      if (unlikely (fdmap.get_population () != subset_fd_count))
-	return false;
+      hb_codepoint_t fd = CFF_UNDEF_ڪوڊ;
+      طالما (سيٽ.next (&fd))
+	fdmap.جوڙيو (fd);
+      إذا (unlikely (fdmap.get_population () != subset_fd_ڳڻپ))
+	أرجع خطأ;
     }
 
     /* update each font dict index stored as "code" in fdselect_ranges */
-    for (unsigned int i = 0; i < fdselect_ranges.length; i++)
-      fdselect_ranges[i].code = fdmap[fdselect_ranges[i].code];
+    لكل (بنانشان صحيح i = 0; i < fdselect_ranges.ڊيگهائي; i++)
+      fdselect_ranges[i].ڪوڊ = fdmap[fdselect_ranges[i].ڪوڊ];
   }
 
   /* determine which FDSelect format is most compact */
-  if (subset_fd_count > 0xFF)
+  إذا (subset_fd_ڳڻپ > 0xFF)
   {
-    if (unlikely (src.format != 4))
-      return false;
+    إذا (unlikely (src.format != 4))
+      أرجع خطأ;
     subset_fdselect_format = 4;
-    subset_fdselect_size = FDSelect::min_size + FDSelect4::min_size + FDSelect4_Range::static_size * num_ranges + HBUINT32::static_size;
+    subset_fdselect_سائيز = FDSelect::min_سائيز + FDSelect4::min_سائيز + FDSelect4_Range::static_سائيز * انگ_ranges + HBUINT32::static_سائيز;
   }
-  else
+  وإلا
   {
-#if CFF_SERIALIZE_FDSELECT_0
-    unsigned int format0_size = FDSelect::min_size + FDSelect0::min_size + HBUINT8::static_size * subset_num_glyphs;
-#endif
-    unsigned int format3_size = FDSelect::min_size + FDSelect3::min_size + FDSelect3_Range::static_size * num_ranges + HBUINT16::static_size;
+#إذا CFF_SERIALIZE_FDSELECT_0
+    بنانشان صحيح format0_سائيز = FDSelect::min_سائيز + FDSelect0::min_سائيز + HBUINT8::static_سائيز * subset_انگ_glyphs;
+#جيڪڏهن_پورو
+    بنانشان صحيح format3_سائيز = FDSelect::min_سائيز + FDSelect3::min_سائيز + FDSelect3_Range::static_سائيز * انگ_ranges + HBUINT16::static_سائيز;
 
-#if CFF_SERIALIZE_FDSELECT_0
-    if (format0_size <= format3_size)
+#إذا CFF_SERIALIZE_FDSELECT_0
+    إذا (format0_سائيز <= format3_سائيز)
     {
       // subset_fdselect_format = 0;
-      subset_fdselect_size = format0_size;
+      subset_fdselect_سائيز = format0_سائيز;
     }
-    else
-#endif
+    وإلا
+#جيڪڏهن_پورو
     {
       subset_fdselect_format = 3;
-      subset_fdselect_size = format3_size;
+      subset_fdselect_سائيز = format3_سائيز;
     }
   }
 
-  return true;
+  أرجع سچ;
 }
 
-template <typename FDSELECT3_4>
-static inline bool
+سانچو <قسم_نالو FDSELECT3_4>
+ساكن مضمن منطقي
 serialize_fdselect_3_4 (hb_serialize_context_t *c,
-			const unsigned int num_glyphs,
-			const FDSelect &src,
-			unsigned int size,
-			const hb_vector_t<code_pair_t> &fdselect_ranges)
+			ثابت بنانشان صحيح انگ_glyphs,
+			ثابت FDSelect &src,
+			بنانشان صحيح سائيز,
+			ثابت hb_ويڪٽر_t<ڪوڊ_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
-  FDSELECT3_4 *p = c->allocate_size<FDSELECT3_4> (size);
-  if (unlikely (!p)) return_trace (false);
-  p->nRanges () = fdselect_ranges.length;
-  for (unsigned int i = 0; i < fdselect_ranges.length; i++)
+  TRACE_SERIALIZE (هذا);
+  FDSELECT3_4 *p = c->allocate_سائيز<FDSELECT3_4> (سائيز);
+  إذا (unlikely (!p)) return_trace (خطأ);
+  p->nRanges () = fdselect_ranges.ڊيگهائي;
+  لكل (بنانشان صحيح i = 0; i < fdselect_ranges.ڊيگهائي; i++)
   {
-    p->ranges[i].first = fdselect_ranges[i].glyph;
-    p->ranges[i].fd = fdselect_ranges[i].code;
+    p->ranges[i].پهريون = fdselect_ranges[i].glyph;
+    p->ranges[i].fd = fdselect_ranges[i].ڪوڊ;
   }
-  p->sentinel () = num_glyphs;
-  return_trace (true);
+  p->sentinel () = انگ_glyphs;
+  return_trace (سچ);
 }
 
 /* Serialize a subset FDSelect format planned above. */
-bool
+منطقي
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			   const unsigned int num_glyphs,
-			   const FDSelect &src,
-			   unsigned int fd_count,
-			   unsigned int fdselect_format,
-			   unsigned int size,
-			   const hb_vector_t<code_pair_t> &fdselect_ranges)
+			   ثابت بنانشان صحيح انگ_glyphs,
+			   ثابت FDSelect &src,
+			   بنانشان صحيح fd_ڳڻپ_2,
+			   بنانشان صحيح fdselect_format,
+			   بنانشان صحيح سائيز,
+			   ثابت hb_ويڪٽر_t<ڪوڊ_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
+  TRACE_SERIALIZE (هذا);
   FDSelect *p = c->allocate_min<FDSelect> ();
-  if (unlikely (!p)) return_trace (false);
+  إذا (unlikely (!p)) return_trace (خطأ);
   p->format = fdselect_format;
-  size -= FDSelect::min_size;
+  سائيز -= FDSelect::min_سائيز;
 
-  switch (fdselect_format)
+  بدل (fdselect_format)
   {
-#if CFF_SERIALIZE_FDSELECT_0
-  case 0:
+#إذا CFF_SERIALIZE_FDSELECT_0
+  حالة 0:
   {
-    FDSelect0 *p = c->allocate_size<FDSelect0> (size);
-    if (unlikely (!p)) return_trace (false);
-    unsigned int range_index = 0;
-    unsigned int fd = fdselect_ranges[range_index++].code;
-    for (unsigned int i = 0; i < num_glyphs; i++)
+    FDSelect0 *p = c->allocate_سائيز<FDSelect0> (سائيز);
+    إذا (unlikely (!p)) return_trace (خطأ);
+    بنانشان صحيح range_اشاريو = 0;
+    بنانشان صحيح fd = fdselect_ranges[range_اشاريو++].ڪوڊ;
+    لكل (بنانشان صحيح i = 0; i < انگ_glyphs; i++)
     {
-      if ((range_index < fdselect_ranges.len) &&
-	  (i >= fdselect_ranges[range_index].glyph))
+      إذا ((range_اشاريو < fdselect_ranges.len) &&
+	  (i >= fdselect_ranges[range_اشاريو].glyph))
       {
-	fd = fdselect_ranges[range_index++].code;
+	fd = fdselect_ranges[range_اشاريو++].ڪوڊ;
       }
       p->fds[i] = fd;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
-#endif /* CFF_SERIALIZE_FDSELECT_0 */
+#جيڪڏهن_پورو /* CFF_SERIALIZE_FDSELECT_0 */
 
-  case 3:
-    return serialize_fdselect_3_4<FDSelect3> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  حالة 3:
+    أرجع serialize_fdselect_3_4<FDSelect3> (c, انگ_glyphs, src,
+					      سائيز, fdselect_ranges);
 
-  case 4:
-    return serialize_fdselect_3_4<FDSelect4> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  حالة 4:
+    أرجع serialize_fdselect_3_4<FDSelect4> (c, انگ_glyphs, src,
+					      سائيز, fdselect_ranges);
 
-  default:
-    return_trace (false);
+  افتراضي:
+    return_trace (خطأ);
   }
 }
 
 
-#endif
+#جيڪڏهن_پورو

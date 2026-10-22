@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_NAME
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_NAME
 
-#include "hb-ot-name-table.hh"
+#ضمن "hb-ot-name-table.hh"
 
-#include "hb-utf.hh"
+#ضمن "hb-utf.hh"
 
 
 /**
@@ -55,48 +55,48 @@
  * Returns: (transfer none) (array length=num_entries): Array of available name entries.
  * Since: 2.1.0
  **/
-const hb_ot_name_entry_t *
-hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+ثابت hb_ot_name_داخلا_t *
+hb_ot_name_list_نالا (hb_face_t    *face,
+		       بنانشان صحيح *انگ_entries /*ٻاهريون*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  ثابت OT::name_accelerator_t &name = *face->جدول.name;
+  إذا (انگ_entries) *انگ_entries = name.نالا.ڊيگهائي;
+  أرجع (ثابت hb_ot_name_داخلا_t *) name.نالا;
 }
 
-template <typename utf_t>
-static inline unsigned int
+سانچو <قسم_نالو utf_t>
+ساكن مضمن بنانشان صحيح
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
-		    typename utf_t::codepoint_t *text /* OUT */)
+		    بنانشان صحيح    *متن_سائيز /* IN/OUT */,
+		    قسم_نالو utf_t::codepoint_t *متن /*ٻاهريون*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
+  ثابت OT::name_accelerator_t &name = *face->جدول.name;
 
-  if (!language)
+  إذا (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  بنانشان صحيح ويڪر;
+  صحيح idx = name.get_اشاريو (name_id, language, &ويڪر);
+  إذا (idx != -1)
   {
-    hb_bytes_t bytes = name.get_name (idx);
+    hb_بائيٽون_t بائيٽون = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    إذا (ويڪر == 2) /* UTF16-BE */
+      أرجع OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (بائيٽون, متن_سائيز, متن);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    إذا (ويڪر == 1) /* ASCII */
+      أرجع OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (بائيٽون, متن_سائيز, متن);
   }
 
-  if (text_size)
+  إذا (متن_سائيز)
   {
-    if (*text_size)
-      *text = 0;
-    *text_size = 0;
+    إذا (*متن_سائيز)
+      *متن = 0;
+    *متن_سائيز = 0;
   }
-  return 0;
+  أرجع 0;
 }
 
 /**
@@ -116,15 +116,15 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+بنانشان صحيح
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */)
+		     بنانشان صحيح    *متن_سائيز /* IN/OUT */,
+		     حرف            *متن      /*ٻاهريون*/)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
-					(hb_utf8_t::codepoint_t *) text);
+  أرجع hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, متن_سائيز,
+					(hb_utf8_t::codepoint_t *) متن);
 }
 
 /**
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+بنانشان صحيح
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint16_t        *text      /* OUT */)
+		      بنانشان صحيح    *متن_سائيز /* IN/OUT */,
+		      uint16_t        *متن      /*ٻاهريون*/)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  أرجع hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, متن_سائيز, متن);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+بنانشان صحيح
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint32_t        *text      /* OUT */)
+		      بنانشان صحيح    *متن_سائيز /* IN/OUT */,
+		      uint32_t        *متن      /*ٻاهريون*/)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  أرجع hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, متن_سائيز, متن);
 }
 
-#endif
+#جيڪڏهن_پورو

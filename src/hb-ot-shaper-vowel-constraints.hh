@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH
-#define HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH
+#وصف_ڪريو HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#ضمن "hb-ot-shaper.hh"
 
-HB_INTERNAL void
-_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan,
-				       hb_buffer_t              *buffer,
+HB_اندروني فراغ
+hb_preprocess_متن_vowel_constraints (ثابت hb_ot_shape_plan_t *plan,
+				       hb_بفر_t              *بفر,
 				       hb_font_t                *font);
 
-#endif /* HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH */
+#جيڪڏهن_پورو /* HB_OT_SHAPER_VOWEL_CONSTRAINTS_HH */

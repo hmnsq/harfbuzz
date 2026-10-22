@@ -24,14 +24,14 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_SUBSET_DEPEND_H
-#define HB_SUBSET_DEPEND_H
+#جيڪڏهن_وصف_نه_ٿيل HB_SUBSET_DEPEND_H
+#وصف_ڪريو HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-subset.h> instead."
-#endif
+#إذا !defined(HB_SUBSET_H_اندريون) && !defined(HB_NO_SINGLE_سرو_ERROR)
+#غلطي "Include <hb-subset.h> instead."
+#جيڪڏهن_پورو
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -62,15 +62,15 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  */
-typedef enum { /*< flags >*/
-  HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
-} hb_subset_depend_edge_flags_t;
-#define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
+تعريفنوع تعداد { /*< flags >*/
+  HB_SUBSET_DEPEND_ڪنارو_FLAG_NONE                   = 0x00u,
+  HB_SUBSET_DEPEND_ڪنارو_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
+  HB_SUBSET_DEPEND_ڪنارو_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
+} hb_subset_depend_ڪنارو_flags_t;
+#وصف_ڪريو HB_SUBSET_DEPEND_ڪنارو_FLAGS_T_DEFINED
 /* HB_MARK_AS_FLAG_T is applied in hb-depend-data.hh (internal header only) */
 
-#ifndef HB_NO_SUBSET_DEPEND
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_t:
@@ -81,7 +81,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 14.3.0
  */
-typedef struct hb_subset_depend_t hb_subset_depend_t;
+تعريفنوع بنية hb_subset_depend_t hb_subset_depend_t;
 
 /**
  * hb_subset_depend_entry_t:
@@ -99,35 +99,35 @@ typedef struct hb_subset_depend_t hb_subset_depend_t;
  *
  * Since: 14.3.0
  */
-typedef struct {
-  hb_tag_t table_tag;
+تعريفنوع بنية {
+  hb_ٽيگ_t جدول_ٽيگ_2;
   hb_codepoint_t dependent;
-  hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set_index;
-  hb_codepoint_t context_set_index;
-  hb_subset_depend_edge_flags_t flags;
-} hb_subset_depend_entry_t;
+  hb_ٽيگ_t layout_ٽيگ;
+  hb_codepoint_t ligature_سيٽ_اشاريو;
+  hb_codepoint_t context_سيٽ_اشاريو;
+  hb_subset_depend_ڪنارو_flags_t flags;
+} hb_subset_depend_داخلا_t;
 
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN بنانشان صحيح
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
-                                hb_subset_depend_entry_t *entries /* OUT */);
+                                بنانشان صحيح شروعات_وٿي,
+                                بنانشان صحيح *داخلا_ڳڻپ, /* IN/OUT */
+                                hb_subset_depend_داخلا_t *entries /*ٻاهريون*/);
 
 HB_EXTERN hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend,
-                              hb_codepoint_t index,
-                              hb_set_t *out /* OUT */);
+hb_subset_depend_lookup_سيٽ (hb_subset_depend_t *depend,
+                              hb_codepoint_t اشاريو_2,
+                              hb_سيٽ_t *ٻاهريون /*ٻاهريون*/);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_subset_depend_destroy (hb_subset_depend_t *depend);
 
-#endif
+#جيڪڏهن_پورو
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_SUBSET_DEPEND_H */
+#جيڪڏهن_پورو /* HB_SUBSET_DEPEND_H */

@@ -24,83 +24,83 @@
  * Google Author(s): Garret Rieger
  */
 
-#include <cstdint>
-#include <string>
+#ضمن <cstdint>
+#ضمن <string>
 
-#include "hb-repacker.hh"
-#include "hb-open-type.hh"
-#include "graph/serialize.hh"
+#ضمن "hb-repacker.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "graph/serialize.hh"
 
-static void extend (const char* value,
-                    unsigned len,
+ساكن فراغ extend (ثابت حرف* value,
+                    بنانشان len,
                     hb_serialize_context_t* c)
 {
-  char* obj = c->allocate_size<char> (len);
+  حرف* obj = c->allocate_سائيز<حرف> (len);
   hb_memcpy (obj, value, len);
 }
 
-static void start_object(const char* tag,
-                         unsigned len,
+ساكن فراغ شروعات_object(ثابت حرف* ٽيگ_2,
+                         بنانشان len,
                          hb_serialize_context_t* c)
 {
   c->push ();
-  extend (tag, len, c);
+  extend (ٽيگ_2, len, c);
 }
 
-static unsigned add_object(const char* tag,
-                           unsigned len,
+ساكن بنانشان جوڙيو_object(ثابت حرف* ٽيگ_2,
+                           بنانشان len,
                            hb_serialize_context_t* c,
-                           bool shared = false)
+                           منطقي shared = خطأ)
 {
-  start_object (tag, len, c);
-  return c->pop_pack (shared);
+  شروعات_object (ٽيگ_2, len, c);
+  أرجع c->ڪڍو_pack (shared);
 }
 
 
-static void add_offset (unsigned id,
+ساكن فراغ جوڙيو_وٿي (بنانشان id,
                         hb_serialize_context_t* c)
 {
-  OT::Offset16* offset = c->start_embed<OT::Offset16> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset16* وٿي = c->شروعات_embed<OT::Offset16> ();
+  c->extend_min (وٿي);
+  c->جوڙيو_link (*وٿي, id);
 }
 
-static void add_24_offset (unsigned id,
+ساكن فراغ جوڙيو_24_وٿي (بنانشان id,
                            hb_serialize_context_t* c)
 {
-  OT::Offset24* offset = c->start_embed<OT::Offset24> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset24* وٿي = c->شروعات_embed<OT::Offset24> ();
+  c->extend_min (وٿي);
+  c->جوڙيو_link (*وٿي, id);
 }
 
-static void add_wide_offset (unsigned id,
+ساكن فراغ جوڙيو_wide_وٿي (بنانشان id,
                              hb_serialize_context_t* c)
 {
-  OT::Offset32* offset = c->start_embed<OT::Offset32> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset32* وٿي = c->شروعات_embed<OT::Offset32> ();
+  c->extend_min (وٿي);
+  c->جوڙيو_link (*وٿي, id);
 }
 
-static void add_gsubgpos_header (unsigned lookup_list,
+ساكن فراغ جوڙيو_gsubgpos_سرو (بنانشان lookup_list,
                                  hb_serialize_context_t* c)
 {
-  char header[] = {
+  حرف سرو[] = {
     0, 1, // major
     0, 0, // minor
     0, 0, // script list
     0, 0, // feature list
   };
 
-  start_object (header, 8, c);
-  add_offset (lookup_list, c);
-  c->pop_pack (false);
+  شروعات_object (سرو, 8, c);
+  جوڙيو_وٿي (lookup_list, c);
+  c->ڪڍو_pack (خطأ);
 }
 
-static void add_gsubgpos_header_1_2 (unsigned lookup_list,
+ساكن فراغ جوڙيو_gsubgpos_سرو_1_2 (بنانشان lookup_list,
                                      hb_serialize_context_t* c)
 {
-  char header[] = {
-    0, 1, 0, 2, // version
+  حرف سرو[] = {
+    0, 1, 0, 2, //نسخو
     0, 0, // script list
     0, 0, // feature list
     0, 0, // lookup list
@@ -109,451 +109,451 @@ static void add_gsubgpos_header_1_2 (unsigned lookup_list,
     0, 0, 0, 0, // feature list 2
   };
 
-  start_object (header, sizeof (header), c);
-  add_wide_offset (lookup_list, c);
-  c->pop_pack (false);
+  شروعات_object (سرو, حجم (سرو), c);
+  جوڙيو_wide_وٿي (lookup_list, c);
+  c->ڪڍو_pack (خطأ);
 }
 
-static unsigned add_lookup_list (const unsigned* lookups,
-                                 char count,
+ساكن بنانشان جوڙيو_lookup_list (ثابت بنانشان* lookups,
+                                 حرف ڳڻپ,
                                  hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object  ((char *) &lookup_count, 2, c);
+  حرف lookup_ڳڻپ[] = {0, ڳڻپ};
+  شروعات_object  ((حرف *) &lookup_ڳڻپ, 2, c);
 
-  for (int i = 0; i < count; i++)
-    add_offset (lookups[i], c);
+  لكل (صحيح i = 0; i < ڳڻپ; i++)
+    جوڙيو_وٿي (lookups[i], c);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static unsigned add_lookup_list_1_2 (const unsigned* lookups,
-                                     char count,
+ساكن بنانشان جوڙيو_lookup_list_1_2 (ثابت بنانشان* lookups,
+                                     حرف ڳڻپ,
                                      hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object ((char *) &lookup_count, 2, c);
+  حرف lookup_ڳڻپ[] = {0, ڳڻپ};
+  شروعات_object ((حرف *) &lookup_ڳڻپ, 2, c);
 
-  for (int i = 0; i < count; i++)
-    add_wide_offset (lookups[i], c);
+  لكل (صحيح i = 0; i < ڳڻپ; i++)
+    جوڙيو_wide_وٿي (lookups[i], c);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static void start_lookup (int8_t type,
-                          int8_t num_subtables,
+ساكن فراغ شروعات_lookup (int8_t type,
+                          int8_t انگ_subtables,
                           hb_serialize_context_t* c)
 {
-  char lookup[] = {
-    0, (char)type, // type
-    0, (char)2, // flag
-    0, (char)num_subtables, // num subtables
+  حرف lookup[] = {
+    0, (حرف)type, // type
+    0, (حرف)2, // flag
+    0, (حرف)انگ_subtables, // num subtables
   };
 
-  start_object (lookup, 6, c);
+  شروعات_object (lookup, 6, c);
 }
 
-static unsigned finish_lookup (hb_serialize_context_t* c)
+ساكن بنانشان پڄاڻي_lookup (hb_serialize_context_t* c)
 {
-  char filter[] = {0, 0};
+  حرف filter[] = {0, 0};
   extend (filter, 2, c);
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static unsigned add_extension (unsigned child,
+ساكن بنانشان جوڙيو_extension (بنانشان ٻار,
                                uint8_t type,
                                hb_serialize_context_t* c)
 {
-  char ext[] = {
+  حرف ext[] = {
     0, 1,
-    0, (char) type,
+    0, (حرف) type,
   };
 
-  start_object (ext, 4, c);
-  add_wide_offset (child, c);
+  شروعات_object (ext, 4, c);
+  جوڙيو_wide_وٿي (ٻار, c);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 
 }
 
 // Adds coverage table fro [start, end]
-static unsigned add_coverage (unsigned start, unsigned end,
+ساكن بنانشان جوڙيو_coverage (بنانشان شروعات, بنانشان پڇاڙي,
                               hb_serialize_context_t* c,
-                              bool shared = false)
+                              منطقي shared = خطأ)
 {
-  if (end - start == 0) {
+  إذا (پڇاڙي - شروعات == 0) {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 1, // count
+      0, 1, //ڳڻپ
 
-      (uint8_t) ((start >> 8) & 0xFF),
-      (uint8_t) (start & 0xFF), // glyph[0]
+      (uint8_t) ((شروعات >> 8) & 0xFF),
+      (uint8_t) (شروعات & 0xFF), // glyph[0]
     };
-    return add_object ((char*) coverage, 6, c, shared);
+    أرجع جوڙيو_object ((حرف*) coverage, 6, c, shared);
   }
 
-  if (end - start == 1)
+  إذا (پڇاڙي - شروعات == 1)
   {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 2, // count
+      0, 2, //ڳڻپ
 
-      (uint8_t) ((start >> 8) & 0xFF),
-      (uint8_t) (start & 0xFF), // glyph[0]
+      (uint8_t) ((شروعات >> 8) & 0xFF),
+      (uint8_t) (شروعات & 0xFF), // glyph[0]
 
-      (uint8_t) ((end >> 8) & 0xFF),
-      (uint8_t) (end & 0xFF), // glyph[1]
+      (uint8_t) ((پڇاڙي >> 8) & 0xFF),
+      (uint8_t) (پڇاڙي & 0xFF), // glyph[1]
     };
-    return add_object ((char*) coverage, 8, c, shared);
+    أرجع جوڙيو_object ((حرف*) coverage, 8, c, shared);
   }
 
   uint8_t coverage[] = {
     0, 2, // format
     0, 1, // range count
 
-    (uint8_t) ((start >> 8) & 0xFF),
-    (uint8_t) (start & 0xFF), // start
+    (uint8_t) ((شروعات >> 8) & 0xFF),
+    (uint8_t) (شروعات & 0xFF), //شروعات
 
-    (uint8_t) ((end >> 8) & 0xFF),
-    (uint8_t) (end & 0xFF), // end
+    (uint8_t) ((پڇاڙي >> 8) & 0xFF),
+    (uint8_t) (پڇاڙي & 0xFF), //پڇاڙي
 
     0, 0,
   };
-  return add_object ((char*) coverage, 10, c, shared);
+  أرجع جوڙيو_object ((حرف*) coverage, 10, c, shared);
 }
 
 
-template<typename It>
-static unsigned add_coverage (It it,
+سانچو<قسم_نالو It>
+ساكن بنانشان جوڙيو_coverage (It it,
                               hb_serialize_context_t* c)
 {
   c->push ();
   OT::Layout::Common::Coverage_serialize (c, it);
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
 // Adds a class that maps glyphs from [start_glyph, end_glyph)
 // to classes 1...n
-static unsigned add_class_def (uint16_t start_glyph,
-                               uint16_t end_glyph,
+ساكن بنانشان جوڙيو_class_def (uint16_t شروعات_glyph,
+                               uint16_t پڇاڙي_glyph,
                                hb_serialize_context_t* c)
 {
-  unsigned count = end_glyph - start_glyph;
-  uint8_t header[] = {
+  بنانشان ڳڻپ = پڇاڙي_glyph - شروعات_glyph;
+  uint8_t سرو[] = {
     0, 1, // format
 
-    (uint8_t) ((start_glyph >> 8) & 0xFF),
-    (uint8_t) (start_glyph & 0xFF), // start_glyph
+    (uint8_t) ((شروعات_glyph >> 8) & 0xFF),
+    (uint8_t) (شروعات_glyph & 0xFF), // start_glyph
 
-    (uint8_t) ((count >> 8) & 0xFF),
-    (uint8_t) (count & 0xFF), // count
+    (uint8_t) ((ڳڻپ >> 8) & 0xFF),
+    (uint8_t) (ڳڻپ & 0xFF), //ڳڻپ
   };
 
-  start_object ((char*) header, 6, c);
-  for (uint16_t i = 1; i <= count; i++)
+  شروعات_object ((حرف*) سرو, 6, c);
+  لكل (uint16_t i = 1; i <= ڳڻپ; i++)
   {
-    uint8_t class_value[] = {
+    uint8_t class_قدر_2[] = {
       (uint8_t) ((i >> 8) & 0xFF),
-      (uint8_t) (i & 0xFF), // count
+      (uint8_t) (i & 0xFF), //ڳڻپ
     };
-    extend ((char*) class_value, 2, c);
+    extend ((حرف*) class_قدر_2, 2, c);
   }
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static unsigned add_pair_pos_1 (unsigned* pair_sets,
-                                char count,
-                                unsigned coverage,
+ساكن بنانشان جوڙيو_pair_pos_1 (بنانشان* pair_sets,
+                                حرف ڳڻپ,
+                                بنانشان coverage,
                                 hb_serialize_context_t* c)
 {
-  char format[] = {
+  حرف format[] = {
     0, 1
   };
 
-  start_object (format, 2, c);
-  add_offset (coverage, c);
+  شروعات_object (format, 2, c);
+  جوڙيو_وٿي (coverage, c);
 
-  char value_format[] = {
+  حرف قدر_format[] = {
     0, 0,
     0, 0,
-    0, count,
+    0, ڳڻپ,
   };
-  extend (value_format, 6, c);
+  extend (قدر_format, 6, c);
 
-  for (char i = 0; i < count; i++)
-    add_offset (pair_sets[(unsigned) i], c);
+  لكل (حرف i = 0; i < ڳڻپ; i++)
+    جوڙيو_وٿي (pair_sets[(بنانشان) i], c);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static void add_liga_set_header (char liga_count,
+ساكن فراغ جوڙيو_liga_سيٽ_سرو (حرف liga_ڳڻپ,
                                  hb_serialize_context_t* c)
 {
-  uint8_t liga_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_count >> 8)),
-    (uint8_t) (0xFF & liga_count),
+  uint8_t liga_ڳڻپ_بائيٽون[] = {
+    (uint8_t) (0xFF & (liga_ڳڻپ >> 8)),
+    (uint8_t) (0xFF & liga_ڳڻپ),
   };
 
-  start_object ((const char*) liga_count_bytes, 2, c);
+  شروعات_object ((ثابت حرف*) liga_ڳڻپ_بائيٽون, 2, c);
 }
 
-static void add_liga_header (unsigned coverage, unsigned liga_set_count, hb_serialize_context_t* c)
+ساكن فراغ جوڙيو_liga_سرو (بنانشان coverage, بنانشان liga_سيٽ_ڳڻپ, hb_serialize_context_t* c)
 {
   uint8_t format[] = {0, 1};
-  start_object ((const char*) format, 2, c);
-  add_offset(coverage, c);
+  شروعات_object ((ثابت حرف*) format, 2, c);
+  جوڙيو_وٿي(coverage, c);
 
-  uint8_t liga_set_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_set_count >> 8)),
-    (uint8_t) (0xFF & liga_set_count),
+  uint8_t liga_سيٽ_ڳڻپ_بائيٽون[] = {
+    (uint8_t) (0xFF & (liga_سيٽ_ڳڻپ >> 8)),
+    (uint8_t) (0xFF & liga_سيٽ_ڳڻپ),
   };
 
-  extend((const char *) liga_set_count_bytes, 2, c);
+  extend((ثابت حرف *) liga_سيٽ_ڳڻپ_بائيٽون, 2, c);
 }
 
-static unsigned add_pair_pos_2 (unsigned starting_class,
-                                unsigned coverage,
-                                unsigned class_def_1, uint16_t class_def_1_count,
-                                unsigned class_def_2, uint16_t class_def_2_count,
-                                unsigned* device_tables,
+ساكن بنانشان جوڙيو_pair_pos_2 (بنانشان starting_class,
+                                بنانشان coverage,
+                                بنانشان class_def_1, uint16_t class_def_1_ڳڻپ,
+                                بنانشان class_def_2, uint16_t class_def_2_ڳڻپ,
+                                بنانشان* device_tables,
                                 hb_serialize_context_t* c)
 {
   uint8_t format[] = {
     0, 2
   };
 
-  start_object ((char*) format, 2, c);
-  add_offset (coverage, c);
+  شروعات_object ((حرف*) format, 2, c);
+  جوڙيو_وٿي (coverage, c);
 
-  unsigned num_values = 4;
+  بنانشان انگ_قدرون_3 = 4;
   uint8_t format1 = 0x01 | 0x02 | 0x08;
   uint8_t format2 = 0x04;
-  if (device_tables) {
+  إذا (device_tables) {
     format2 |= 0x20;
-    num_values += 1;
+    انگ_قدرون_3 += 1;
   }
-  uint8_t value_format[] = {
+  uint8_t قدر_format[] = {
     0, format1,
     0, format2,
   };
 
-  extend ((char*) value_format, 4, c);
+  extend ((حرف*) قدر_format, 4, c);
 
-  add_offset (class_def_1, c);
-  add_offset (class_def_2, c);
+  جوڙيو_وٿي (class_def_1, c);
+  جوڙيو_وٿي (class_def_2, c);
 
   uint8_t class_counts[] = {
-    (uint8_t) ((class_def_1_count >> 8) & 0xFF),
-    (uint8_t) (class_def_1_count & 0xFF),
-    (uint8_t) ((class_def_2_count >> 8) & 0xFF),
-    (uint8_t) (class_def_2_count & 0xFF),
+    (uint8_t) ((class_def_1_ڳڻپ >> 8) & 0xFF),
+    (uint8_t) (class_def_1_ڳڻپ & 0xFF),
+    (uint8_t) ((class_def_2_ڳڻپ >> 8) & 0xFF),
+    (uint8_t) (class_def_2_ڳڻپ & 0xFF),
   };
-  extend ((char*) class_counts, 4, c);
+  extend ((حرف*) class_counts, 4, c);
 
-  unsigned num_bytes_per_record = class_def_2_count * num_values * 2;
-  uint8_t* record = (uint8_t*) calloc (1, num_bytes_per_record);
-  int device_index = 0;
-  for (uint16_t i = 0; i < class_def_1_count; i++)
+  بنانشان انگ_بائيٽون_في_رڪارڊ = class_def_2_ڳڻپ * انگ_قدرون_3 * 2;
+  uint8_t* رڪارڊ = (uint8_t*) صفر_يادگيري_ڏيو (1, انگ_بائيٽون_في_رڪارڊ);
+  صحيح device_اشاريو = 0;
+  لكل (uint16_t i = 0; i < class_def_1_ڳڻپ; i++)
   {
 
-    for (uint16_t j = 0; j < class_def_2_count; j++)
+    لكل (uint16_t j = 0; j < class_def_2_ڳڻپ; j++)
     {
-      for (int k = 0; k < 4; k++) {
+      لكل (صحيح k = 0; k < 4; k++) {
         uint8_t value[] = {
           (uint8_t) (i + starting_class),
           (uint8_t) (i + starting_class),
         };
-        extend ((char*) value, 2, c);
+        extend ((حرف*) value, 2, c);
       }
 
-      if (device_tables) {
-        add_offset (device_tables[device_index++], c);
+      إذا (device_tables) {
+        جوڙيو_وٿي (device_tables[device_اشاريو++], c);
       }
     }
   }
-  free (record);
+  حرر (رڪارڊ);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
-                                     unsigned base_coverage,
-                                     unsigned mark_array,
-                                     unsigned base_array,
-                                     unsigned class_count,
+ساكن بنانشان جوڙيو_mark_بنياد_pos_1 (بنانشان mark_coverage,
+                                     بنانشان بنياد_coverage,
+                                     بنانشان mark_array,
+                                     بنانشان بنياد_array,
+                                     بنانشان class_ڳڻپ,
                                      hb_serialize_context_t* c)
 {
   uint8_t format[] = {
     0, 1
   };
 
-  start_object ((char*) format, 2, c);
-  add_offset (mark_coverage, c);
-  add_offset (base_coverage, c);
+  شروعات_object ((حرف*) format, 2, c);
+  جوڙيو_وٿي (mark_coverage, c);
+  جوڙيو_وٿي (بنياد_coverage, c);
 
-  uint8_t count[] = {
-    (uint8_t) ((class_count >> 8) & 0xFF),
-    (uint8_t) (class_count & 0xFF),
+  uint8_t ڳڻپ[] = {
+    (uint8_t) ((class_ڳڻپ >> 8) & 0xFF),
+    (uint8_t) (class_ڳڻپ & 0xFF),
   };
-  extend ((char*) count, 2, c);
+  extend ((حرف*) ڳڻپ, 2, c);
 
-  add_offset (mark_array, c);
-  add_offset (base_array, c);
+  جوڙيو_وٿي (mark_array, c);
+  جوڙيو_وٿي (بنياد_array, c);
 
-  return c->pop_pack (false);
+  أرجع c->ڪڍو_pack (خطأ);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-struct MarkBasePosBuffers
+سانچو<صحيح mark_ڳڻپ,
+    صحيح class_ڳڻپ,
+    صحيح بنياد_ڳڻپ,
+    صحيح جدول_ڳڻپ_2>
+بنية Mark_بنياد_Pos_Buffers
 {
-  unsigned base_anchors[class_count * base_count];
-  unsigned mark_anchors[mark_count];
-  uint8_t anchor_buffers[class_count * base_count + 100];
-  uint8_t class_buffer[class_count * 2];
+  بنانشان بنياد_anchors[class_ڳڻپ * بنياد_ڳڻپ];
+  بنانشان mark_anchors[mark_ڳڻپ];
+  uint8_t anchor_buffers[class_ڳڻپ * بنياد_ڳڻپ + 100];
+  uint8_t class_بفر[class_ڳڻپ * 2];
 
-  MarkBasePosBuffers(hb_serialize_context_t* c)
+  Mark_بنياد_Pos_Buffers(hb_serialize_context_t* c)
   {
-    for (unsigned i = 0; i < sizeof(anchor_buffers) / 2; i++)
+    لكل (بنانشان i = 0; i < حجم(anchor_buffers) / 2; i++)
     {
       OT::HBUINT16* value = (OT::HBUINT16*) (&anchor_buffers[2*i]);
       *value = i;
     }
 
-    for (unsigned i = 0; i < class_count * base_count; i++)
+    لكل (بنانشان i = 0; i < class_ڳڻپ * بنياد_ڳڻپ; i++)
     {
-      base_anchors[i] = add_object ((char*) &anchor_buffers[i], 100, c);
-      if (i < class_count) {
-        class_buffer[i*2] = (uint8_t) ((i >> 8) & 0xFF);
-        class_buffer[i*2 + 1] = (uint8_t) (i & 0xFF);
+      بنياد_anchors[i] = جوڙيو_object ((حرف*) &anchor_buffers[i], 100, c);
+      إذا (i < class_ڳڻپ) {
+        class_بفر[i*2] = (uint8_t) ((i >> 8) & 0xFF);
+        class_بفر[i*2 + 1] = (uint8_t) (i & 0xFF);
       }
     }
 
-    for (unsigned i = 0; i < mark_count; i++)
+    لكل (بنانشان i = 0; i < mark_ڳڻپ; i++)
     {
-      mark_anchors[i] = add_object ((char*) &anchor_buffers[i], 4, c);
+      mark_anchors[i] = جوڙيو_object ((حرف*) &anchor_buffers[i], 4, c);
     }
   }
 
-  unsigned create_mark_base_pos_1 (unsigned table_index, hb_serialize_context_t* c)
+  بنانشان create_mark_بنياد_pos_1 (بنانشان جدول_اشاريو, hb_serialize_context_t* c)
   {
-    unsigned class_per_table = class_count / table_count;
-    unsigned mark_per_class = mark_count / class_count;
-    unsigned start_class = class_per_table * table_index;
-    unsigned end_class = class_per_table * (table_index + 1) - 1;
+    بنانشان class_في_جدول = class_ڳڻپ / جدول_ڳڻپ_2;
+    بنانشان mark_في_class = mark_ڳڻپ / class_ڳڻپ;
+    بنانشان شروعات_class = class_في_جدول * جدول_اشاريو;
+    بنانشان پڇاڙي_class = class_في_جدول * (جدول_اشاريو + 1) - 1;
 
     // baseArray
-    uint8_t base_count_buffer[] = {
-      (uint8_t) ((base_count >> 8) & 0xFF),
-      (uint8_t) (base_count & 0xFF),
+    uint8_t بنياد_ڳڻپ_بفر[] = {
+      (uint8_t) ((بنياد_ڳڻپ >> 8) & 0xFF),
+      (uint8_t) (بنياد_ڳڻپ & 0xFF),
 
     };
-    start_object ((char*) base_count_buffer, 2, c);
-    for (unsigned base = 0; base < base_count; base++)
+    شروعات_object ((حرف*) بنياد_ڳڻپ_بفر, 2, c);
+    لكل (بنانشان بنياد = 0; بنياد < بنياد_ڳڻپ; بنياد++)
     {
-      for (unsigned klass = start_class; klass <= end_class; klass++)
+      لكل (بنانشان klass = شروعات_class; klass <= پڇاڙي_class; klass++)
       {
-        unsigned i = base * class_count + klass;
-        add_offset (base_anchors[i], c);
+        بنانشان i = بنياد * class_ڳڻپ + klass;
+        جوڙيو_وٿي (بنياد_anchors[i], c);
       }
     }
-    unsigned base_array = c->pop_pack (false);
+    بنانشان بنياد_array = c->ڪڍو_pack (خطأ);
 
     // markArray
-    unsigned num_marks = class_per_table * mark_per_class;
-    uint8_t mark_count_buffer[] = {
-      (uint8_t) ((num_marks >> 8) & 0xFF),
-      (uint8_t) (num_marks & 0xFF),
+    بنانشان انگ_marks = class_في_جدول * mark_في_class;
+    uint8_t mark_ڳڻپ_بفر[] = {
+      (uint8_t) ((انگ_marks >> 8) & 0xFF),
+      (uint8_t) (انگ_marks & 0xFF),
     };
-    start_object ((char*) mark_count_buffer, 2, c);
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    شروعات_object ((حرف*) mark_ڳڻپ_بفر, 2, c);
+    لكل (بنانشان mark = 0; mark < mark_ڳڻپ; mark++)
     {
-      unsigned klass = mark % class_count;
-      if (klass < start_class || klass > end_class) continue;
-      klass -= start_class;
+      بنانشان klass = mark % class_ڳڻپ;
+      إذا (klass < شروعات_class || klass > پڇاڙي_class) استمر;
+      klass -= شروعات_class;
 
-      extend ((char*) &class_buffer[2 * klass], 2, c);
-      add_offset (mark_anchors[mark], c);
+      extend ((حرف*) &class_بفر[2 * klass], 2, c);
+      جوڙيو_وٿي (mark_anchors[mark], c);
     }
-    unsigned mark_array = c->pop_pack (false);
+    بنانشان mark_array = c->ڪڍو_pack (خطأ);
 
     // markCoverage
-    auto it =
-        + hb_range ((hb_codepoint_t) mark_count)
+    خودڪار it =
+        + hb_range ((hb_codepoint_t) mark_ڳڻپ)
         | hb_filter ([&] (hb_codepoint_t mark) {
-          unsigned klass = mark % class_count;
-          return klass >= class_per_table * table_index &&
-              klass < class_per_table * (table_index + 1);
+          بنانشان klass = mark % class_ڳڻپ;
+          أرجع klass >= class_في_جدول * جدول_اشاريو &&
+              klass < class_في_جدول * (جدول_اشاريو + 1);
         })
         ;
-    unsigned mark_coverage = add_coverage (it, c);
+    بنانشان mark_coverage = جوڙيو_coverage (it, c);
 
     // baseCoverage
-    unsigned base_coverage = add_coverage (10, 10 + base_count - 1, c);
+    بنانشان بنياد_coverage = جوڙيو_coverage (10, 10 + بنياد_ڳڻپ - 1, c);
 
-    return add_mark_base_pos_1 (mark_coverage,
-                                base_coverage,
+    أرجع جوڙيو_mark_بنياد_pos_1 (mark_coverage,
+                                بنياد_coverage,
                                 mark_array,
-                                base_array,
-                                class_per_table,
+                                بنياد_array,
+                                class_في_جدول,
                                 c);
   }
 };
 
-static void run_resolve_overflow_test (const char* name,
+ساكن فراغ لاڳيتو_resolve_حد_کان_مٿي_test (ثابت حرف* name,
                                        hb_serialize_context_t& overflowing,
                                        hb_serialize_context_t& expected,
-                                       unsigned num_iterations = 0,
-                                       bool recalculate_extensions = false,
-                                       hb_tag_t tag = HB_TAG ('G', 'S', 'U', 'B'),
-                                       bool check_binary_equivalence = false)
+                                       بنانشان انگ_iterations = 0,
+                                       منطقي recalculate_extensions = خطأ,
+                                       hb_ٽيگ_t ٽيگ_2 = HB_ٽيگ ('G', 'S', 'U', 'B'),
+                                       منطقي check_ٻٽو_equivalence = خطأ)
 {
-  printf (">>> Testing overflowing resolution for %s\n",
+  لکو (">>> Testing overflowing resolution for %s\n",
           name);
 
-  graph_t graph = graph_t::create (overflowing.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (overflowing.object_گراف ()).value ();
 
-  graph_t expected_graph = graph_t::create (expected.object_graph ()).value ();
-  if (graph::will_overflow (expected_graph).value ())
+  گراف_t expected_گراف = گراف_t::create (expected.object_گراف ()).value ();
+  إذا (گراف::will_حد_کان_مٿي (expected_گراف).value ())
   {
-    if (check_binary_equivalence) {
-      printf("when binary equivalence checking is enabled, the expected graph cannot overflow.");
-      hb_always_assert(!check_binary_equivalence);
+    إذا (check_ٻٽو_equivalence) {
+      لکو("when binary equivalence checking is enabled, the expected graph cannot overflow.");
+      hb_always_assert(!check_ٻٽو_equivalence);
     }
-    hb_always_assert (expected_graph.assign_spaces ().is_ok ());
-    hb_always_assert (expected_graph.sort_shortest_distance ().is_ok ());
+    hb_always_assert (expected_گراف.سونپيو_spaces ().is_ok ());
+    hb_always_assert (expected_گراف.ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو ().is_ok ());
   }
 
   // Check that overflow resolution succeeds
-  hb_always_assert (overflowing.offset_overflow ());
-  auto r = hb_resolve_graph_overflows (tag,
-                                      num_iterations,
+  hb_always_assert (overflowing.وٿي_حد_کان_مٿي ());
+  خودڪار r = hb_resolve_گراف_overflows (ٽيگ_2,
+                                      انگ_iterations,
                                       recalculate_extensions,
-                                      graph);
-  if (r.is_err())
-    printf("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", graph::to_string(r.error()));
+                                      گراف);
+  إذا (r.is_err())
+    لکو("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", گراف::to_string(r.error()));
   hb_always_assert (r.is_ok());
 
   // Check the graphs can be serialized.
-  hb_blob_t* out1 = graph::serialize (graph).value ();
+  hb_blob_t* out1 = گراف::serialize (گراف).value ();
   hb_always_assert (out1);
-  hb_blob_t* out2 = graph::serialize (expected_graph).value ();
+  hb_blob_t* out2 = گراف::serialize (expected_گراف).value ();
   hb_always_assert (out2);
-  if (check_binary_equivalence) {
-    unsigned l1, l2;
-    const char* d1 = hb_blob_get_data(out1, &l1);
-    const char* d2 = hb_blob_get_data(out2, &l2);
+  إذا (check_ٻٽو_equivalence) {
+    بنانشان l1, l2;
+    ثابت حرف* d1 = hb_blob_get_معلومات(out1, &l1);
+    ثابت حرف* d2 = hb_blob_get_معلومات(out2, &l2);
 
-    bool match = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
-    if (!match) {
-      printf("## Result:\n");
-      graph.print();
-      printf("## Expected:\n");
-      expected_graph.print();
-      hb_always_assert(match);
+    منطقي ميلاپ = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
+    إذا (!ميلاپ) {
+      لکو("## Result:\n");
+      گراف.print();
+      لکو("## Expected:\n");
+      expected_گراف.print();
+      hb_always_assert(ميلاپ);
     }
   }
 
@@ -561,2360 +561,2360 @@ static void run_resolve_overflow_test (const char* name,
   hb_blob_destroy (out2);
 
   // Check the graphs are equivalent
-  graph.normalize ();
-  expected_graph.normalize ();
-  if (!(graph == expected_graph)) {
-    printf("## Expected:\n");
-    expected_graph.print();
-    printf("## Result:\n");
-    graph.print();
+  گراف.normalize ();
+  expected_گراف.normalize ();
+  إذا (!(گراف == expected_گراف)) {
+    لکو("## Expected:\n");
+    expected_گراف.print();
+    لکو("## Result:\n");
+    گراف.print();
   }
-  hb_always_assert (graph == expected_graph);
+  hb_always_assert (گراف == expected_گراف);
 }
 
-static void add_virtual_offset (unsigned id,
+ساكن فراغ جوڙيو_virtual_وٿي (بنانشان id,
                                 hb_serialize_context_t* c)
 {
-  c->add_virtual_link (id);
+  c->جوڙيو_virtual_link (id);
 }
 
-static void
+ساكن فراغ
 populate_serializer_simple (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_1 = add_object ("ghi", 3, c);
-  unsigned obj_2 = add_object ("def", 3, c);
+  بنانشان obj_1 = جوڙيو_object ("ghi", 3, c);
+  بنانشان obj_2 = جوڙيو_object ("def", 3, c);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  شروعات_object ("abc", 3, c);
+  جوڙيو_وٿي (obj_2, c);
+  جوڙيو_وٿي (obj_1, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_virtual (hb_serialize_context_t* c, bool with_overflow)
+ساكن فراغ
+populate_serializer_virtual (hb_serialize_context_t* c, منطقي with_حد_کان_مٿي)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_4, obj_5;
-  if (with_overflow) {
-    obj_5 = add_object("55555", 5, c);
-    obj_4 = add_object(large_string.c_str(), 50000, c);
-  } else {
-    obj_4 = add_object(large_string.c_str(), 50000, c);
-    obj_5 = add_object("55555", 5, c);
+  بنانشان obj_4, obj_5;
+  إذا (with_حد_کان_مٿي) {
+    obj_5 = جوڙيو_object("55555", 5, c);
+    obj_4 = جوڙيو_object(large_string.c_str(), 50000, c);
+  } وإلا {
+    obj_4 = جوڙيو_object(large_string.c_str(), 50000, c);
+    obj_5 = جوڙيو_object("55555", 5, c);
   }
 
-  start_object(large_string.c_str(), 20000, c);
-  add_offset(obj_5, c);
-  unsigned obj_3 = c->pop_pack(false);
+  شروعات_object(large_string.c_str(), 20000, c);
+  جوڙيو_وٿي(obj_5, c);
+  بنانشان obj_3 = c->ڪڍو_pack(خطأ);
 
-  start_object("2", 2, c);
-  add_virtual_offset(obj_5, c);
-  unsigned obj_2 = c->pop_pack(false);
+  شروعات_object("2", 2, c);
+  جوڙيو_virtual_وٿي(obj_5, c);
+  بنانشان obj_2 = c->ڪڍو_pack(خطأ);
 
   // obj 1
-  start_object("1", 1, c);
-  add_offset(obj_2, c);
-  add_offset(obj_3, c);
-  add_offset(obj_4, c);
-  c->pop_pack(false);
+  شروعات_object("1", 1, c);
+  جوڙيو_وٿي(obj_2, c);
+  جوڙيو_وٿي(obj_3, c);
+  جوڙيو_وٿي(obj_4, c);
+  c->ڪڍو_pack(خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_overflow (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_حد_کان_مٿي (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_1 = add_object (large_string.c_str(), 10000, c);
-  unsigned obj_2 = add_object (large_string.c_str(), 20000, c);
-  unsigned obj_3 = add_object (large_string.c_str(), 50000, c);
+  بنانشان obj_1 = جوڙيو_object (large_string.c_str(), 10000, c);
+  بنانشان obj_2 = جوڙيو_object (large_string.c_str(), 20000, c);
+  بنانشان obj_3 = جوڙيو_object (large_string.c_str(), 50000, c);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  شروعات_object ("abc", 3, c);
+  جوڙيو_وٿي (obj_3, c);
+  جوڙيو_وٿي (obj_2, c);
+  جوڙيو_وٿي (obj_1, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_priority_overflow (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_ترجيح_حد_کان_مٿي (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
-  unsigned obj_d = add_object ("d", 1, c);
+  بنانشان obj_e = جوڙيو_object ("e", 1, c);
+  بنانشان obj_d = جوڙيو_object ("d", 1, c);
 
-  start_object (large_string.c_str (), 50000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 50000, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 20000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 20000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_priority_overflow_expected (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_ترجيح_حد_کان_مٿي_expected (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
+  بنانشان obj_e = جوڙيو_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 50000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 50000, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_d = add_object ("d", 1, c);
+  بنانشان obj_d = جوڙيو_object ("d", 1, c);
 
-  start_object (large_string.c_str (), 20000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 20000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
 
-static void
-populate_serializer_with_dedup_overflow (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_dedup_حد_کان_مٿي (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_1 = add_object ("def", 3, c);
+  بنانشان obj_1 = جوڙيو_object ("def", 3, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_1, c);
-  unsigned obj_2 = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_1, c);
+  بنانشان obj_2 = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 10000, c);
+  جوڙيو_وٿي (obj_2, c);
+  جوڙيو_وٿي (obj_1, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_multiple_dedup_overflow (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_گڻو_dedup_حد_کان_مٿي (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned leaf = add_object("def", 3, c);
+  بنانشان پن = جوڙيو_object("def", 3, c);
 
-  constexpr unsigned num_mid_nodes = 20;
-  unsigned mid_nodes[num_mid_nodes];
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
-    start_object(large_string.c_str(), 10000 + i, c);
-    add_offset(leaf, c);
-    mid_nodes[i] = c->pop_pack(false);
+  constexpr بنانشان انگ_mid_nodes = 20;
+  بنانشان mid_nodes[انگ_mid_nodes];
+  لكل (بنانشان i = 0; i < انگ_mid_nodes; i++) {
+    شروعات_object(large_string.c_str(), 10000 + i, c);
+    جوڙيو_وٿي(پن, c);
+    mid_nodes[i] = c->ڪڍو_pack(خطأ);
   }
 
-  start_object("abc", 3, c);
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
-    add_wide_offset(mid_nodes[i], c);
+  شروعات_object("abc", 3, c);
+  لكل (بنانشان i = 0; i < انگ_mid_nodes; i++) {
+    جوڙيو_wide_وٿي(mid_nodes[i], c);
   }
-  c->pop_pack(false);
+  c->ڪڍو_pack(خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_isolation_حد_کان_مٿي (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_4 = add_object ("4", 1, c);
+  بنانشان obj_4 = جوڙيو_object ("4", 1, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_4, c);
+  بنانشان obj_3 = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_4, c);
-  unsigned obj_2 = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 10000, c);
+  جوڙيو_وٿي (obj_4, c);
+  بنانشان obj_2 = c->ڪڍو_pack (خطأ);
 
-  start_object ("1", 1, c);
-  add_wide_offset (obj_3, c);
-  add_offset (obj_2, c);
-  c->pop_pack (false);
+  شروعات_object ("1", 1, c);
+  جوڙيو_wide_وٿي (obj_3, c);
+  جوڙيو_وٿي (obj_2, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_complex (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_isolation_حد_کان_مٿي_complex (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object ("e", 1, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("d", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d, c);
-  unsigned obj_h = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_h = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_c, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_c, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 10000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_g = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 11000, c);
-  add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 11000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_i = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_offset (obj_g, c);
-  add_offset (obj_i, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_وٿي (obj_g, c);
+  جوڙيو_وٿي (obj_i, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_complex_expected (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_isolation_حد_کان_مٿي_complex_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
 
   // space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  بنانشان obj_f_مفرد = جوڙيو_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  شروعات_object ("e", 1, c);
+  جوڙيو_وٿي (obj_f_مفرد, c);
+  بنانشان obj_e_مفرد = c->ڪڍو_pack (خطأ);
 
-  start_object ("d", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_e_مفرد, c);
+  بنانشان obj_d_مفرد = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_h = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_d_مفرد, c);
+  بنانشان obj_h = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e_مفرد, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_c, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_c, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
   // space 0
 
-  unsigned obj_f = add_object ("f", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object ("e", 1, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
 
-  start_object ("d", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 11000, c);
-  add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 11000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_i = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 10000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_g = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_offset (obj_g, c);
-  add_offset (obj_i, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_وٿي (obj_g, c);
+  جوڙيو_وٿي (obj_i, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_spaces (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_isolation_حد_کان_مٿي_spaces (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_d = add_object ("f", 1, c);
-  unsigned obj_e = add_object ("f", 1, c);
+  بنانشان obj_d = جوڙيو_object ("f", 1, c);
+  بنانشان obj_e = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack ();
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack ();
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack ();
+  شروعات_object (large_string.c_str(), 60000, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack ();
 
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack ();
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  c->ڪڍو_pack ();
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overflow)
+ساكن فراغ
+populate_serializer_with_repack_آخري (hb_serialize_context_t* c, منطقي with_حد_کان_مٿي)
 {
   std::string large_string(70000, 'c');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
   c->push();
 
   // Obj E
-  unsigned obj_e_1, obj_e_2;
-  if (with_overflow) {
-    obj_e_1 = add_object("a", 1, c);
+  بنانشان obj_e_1, obj_e_2;
+  إذا (with_حد_کان_مٿي) {
+    obj_e_1 = جوڙيو_object("a", 1, c);
     obj_e_2 = obj_e_1;
-  } else {
-    obj_e_2 = add_object("a", 1, c);
+  } وإلا {
+    obj_e_2 = جوڙيو_object("a", 1, c);
   }
 
   // Obj D
   c->push();
-  add_offset(obj_e_2, c);
+  جوڙيو_وٿي(obj_e_2, c);
   extend(large_string.c_str(), 30000, c);
-  unsigned obj_d = c->pop_pack(false);
+  بنانشان obj_d = c->ڪڍو_pack(خطأ);
 
-  add_offset(obj_d, c);
-  hb_always_assert(c->last_added_child_index() == obj_d);
+  جوڙيو_وٿي(obj_d, c);
+  hb_always_assert(c->آخري_added_ٻار_اشاريو() == obj_d);
 
-  if (!with_overflow) {
-    obj_e_1 = add_object("a", 1, c);
+  إذا (!with_حد_کان_مٿي) {
+    obj_e_1 = جوڙيو_object("a", 1, c);
   }
 
   // Obj C
   c->push();
-  add_offset(obj_e_1, c);
+  جوڙيو_وٿي(obj_e_1, c);
   extend(large_string.c_str(), 40000, c);
-  unsigned obj_c = c->pop_pack(false);
+  بنانشان obj_c = c->ڪڍو_pack(خطأ);
 
-  add_offset(obj_c, c);
+  جوڙيو_وٿي(obj_c, c);
 
   // Obj B
-  unsigned obj_b = add_object("b", 1, c);
-  add_offset(obj_b, c);
+  بنانشان obj_b = جوڙيو_object("b", 1, c);
+  جوڙيو_وٿي(obj_b, c);
 
   // Obj A
-  c->repack_last(obj_d);
-  c->pop_pack(false);
+  c->repack_آخري(obj_d);
+  c->ڪڍو_pack(خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
+ساكن فراغ
+populate_serializer_spaces (hb_serialize_context_t* c, منطقي with_حد_کان_مٿي)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_i;
+  بنانشان obj_i;
 
-  if (with_overflow)
-    obj_i = add_object ("i", 1, c);
+  إذا (with_حد_کان_مٿي)
+    obj_i = جوڙيو_object ("i", 1, c);
 
   // Space 2
-  unsigned obj_h = add_object ("h", 1, c);
+  بنانشان obj_h = جوڙيو_object ("h", 1, c);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_h, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 30000, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
   // Space 1
-  if (!with_overflow)
-    obj_i = add_object ("i", 1, c);
+  إذا (!with_حد_کان_مٿي)
+    obj_i = جوڙيو_object ("i", 1, c);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_i, c);
-  unsigned obj_g = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 30000, c);
+  جوڙيو_وٿي (obj_i, c);
+  بنانشان obj_g = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_i, c);
-  unsigned obj_f = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 30000, c);
+  جوڙيو_وٿي (obj_i, c);
+  بنانشان obj_f = c->ڪڍو_pack (خطأ);
 
-  start_object ("d", 1, c);
-  add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_g, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  جوڙيو_wide_وٿي (obj_d, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_spaces_16bit_connection (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_g = add_object ("g", 1, c);
-  unsigned obj_h = add_object ("h", 1, c);
+  بنانشان obj_g = جوڙيو_object ("g", 1, c);
+  بنانشان obj_h = جوڙيو_object ("h", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_g, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_h, c);
-  unsigned obj_f = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_f = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("d", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  جوڙيو_wide_وٿي (obj_d, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_spaces_16bit_connection_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_g_prime = add_object ("g", 1, c);
+  بنانشان obj_g_مفرد = جوڙيو_object ("g", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_g_مفرد, c);
+  بنانشان obj_e_مفرد = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e_مفرد, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_h_prime = add_object ("h", 1, c);
+  بنانشان obj_h_مفرد = جوڙيو_object ("h", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_h_prime, c);
-  unsigned obj_f = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_h_مفرد, c);
+  بنانشان obj_f = c->ڪڍو_pack (خطأ);
 
-  start_object ("d", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object ("d", 1, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_g = add_object ("g", 1, c);
+  بنانشان obj_g = جوڙيو_object ("g", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_g, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_h = add_object ("h", 1, c);
+  بنانشان obj_h = جوڙيو_object ("h", 1, c);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  جوڙيو_وٿي (obj_h, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  جوڙيو_wide_وٿي (obj_d, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize ();
+  c->پڇاڙي_serialize ();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_short_and_wide_subgraph_پاڙ (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
+  بنانشان obj_e = جوڙيو_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_c, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_c, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_c, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_c, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  جوڙيو_wide_وٿي (obj_d, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root_expected (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_short_and_wide_subgraph_پاڙ_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_e_prime = add_object ("e", 1, c);
+  بنانشان obj_e_مفرد = جوڙيو_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c_prime = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_e_مفرد, c);
+  بنانشان obj_c_مفرد = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_c_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_c_مفرد, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_e = add_object ("e", 1, c);
+  بنانشان obj_e = جوڙيو_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
 
-  start_object ("b", 1, c);
-  add_offset (obj_c, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_c, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c_prime, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c_مفرد, c);
+  جوڙيو_wide_وٿي (obj_d, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces (hb_serialize_context_t* c)
-{
-  // Overflow needs to be resolved by splitting the single space
-  std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
-
-  unsigned obj_f = add_object ("f", 1, c);
-
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
-
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
-
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
-
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
-
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
-
-  c->end_serialize();
-}
-
-static void
-populate_serializer_with_split_spaces_2 (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_ورهايو_spaces (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces_expected (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_ورهايو_spaces_2 (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
-
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  unsigned obj_f = add_object ("f", 1, c);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
-
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_ورهايو_spaces_expected (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
+
+  بنانشان obj_f_مفرد = جوڙيو_object ("f", 1, c);
+
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f_مفرد, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
+
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
+
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
+
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
+
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
+
+  شروعات_object ("a", 1, c);
+  جوڙيو_wide_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
+
+  c->پڇاڙي_serialize();
+}
+
+ساكن فراغ
+populate_serializer_with_ورهايو_spaces_expected_2 (hb_serialize_context_t* c)
+{
+  // Overflow needs to be resolved by splitting the single space
+
+  std::string large_string(70000, 'a');
+  c->شروعات_serialize<حرف> ();
 
   // Space 2
 
-  unsigned obj_f_double_prime = add_object ("f", 1, c);
+  بنانشان obj_f_double_مفرد = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_double_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f_double_مفرد, c);
+  بنانشان obj_d_مفرد = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_b_prime = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d_مفرد, c);
+  بنانشان obj_b_مفرد = c->ڪڍو_pack (خطأ);
 
   // Space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  بنانشان obj_f_مفرد = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f_مفرد, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
   // Space 0
 
-  unsigned obj_f = add_object ("f", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str(), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  // Root
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_b_prime, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  //پاڙ
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_wide_وٿي (obj_b_مفرد, c);
+  جوڙيو_wide_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_complex_2 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_5 = add_object ("mn", 2, c);
+  بنانشان obj_5 = جوڙيو_object ("mn", 2, c);
 
-  unsigned obj_4 = add_object ("jkl", 3, c);
+  بنانشان obj_4 = جوڙيو_object ("jkl", 3, c);
 
-  start_object ("ghi", 3, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  شروعات_object ("ghi", 3, c);
+  جوڙيو_وٿي (obj_4, c);
+  بنانشان obj_3 = c->ڪڍو_pack (خطأ);
 
-  start_object ("def", 3, c);
-  add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  شروعات_object ("def", 3, c);
+  جوڙيو_وٿي (obj_3, c);
+  بنانشان obj_2 = c->ڪڍو_pack (خطأ);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_4, c);
-  add_offset (obj_5, c);
-  c->pop_pack (false);
+  شروعات_object ("abc", 3, c);
+  جوڙيو_وٿي (obj_2, c);
+  جوڙيو_وٿي (obj_4, c);
+  جوڙيو_وٿي (obj_5, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_complex_3 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_6 = add_object ("opqrst", 6, c);
+  بنانشان obj_6 = جوڙيو_object ("opqrst", 6, c);
 
-  unsigned obj_5 = add_object ("mn", 2, c);
+  بنانشان obj_5 = جوڙيو_object ("mn", 2, c);
 
-  start_object ("jkl", 3, c);
-  add_offset (obj_6, c);
-  unsigned obj_4 = c->pop_pack (false);
+  شروعات_object ("jkl", 3, c);
+  جوڙيو_وٿي (obj_6, c);
+  بنانشان obj_4 = c->ڪڍو_pack (خطأ);
 
-  start_object ("ghi", 3, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  شروعات_object ("ghi", 3, c);
+  جوڙيو_وٿي (obj_4, c);
+  بنانشان obj_3 = c->ڪڍو_pack (خطأ);
 
-  start_object ("def", 3, c);
-  add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  شروعات_object ("def", 3, c);
+  جوڙيو_وٿي (obj_3, c);
+  بنانشان obj_2 = c->ڪڍو_pack (خطأ);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_4, c);
-  add_offset (obj_5, c);
-  c->pop_pack (false);
+  شروعات_object ("abc", 3, c);
+  جوڙيو_وٿي (obj_2, c);
+  جوڙيو_وٿي (obj_4, c);
+  جوڙيو_وٿي (obj_5, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_virtual_link (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_d = add_object ("d", 1, c);
+  بنانشان obj_d = جوڙيو_object ("d", 1, c);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_وٿي (obj_d, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("e", 1, c);
-  add_virtual_offset (obj_b, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object ("e", 1, c);
+  جوڙيو_virtual_وٿي (obj_b, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object ("c", 1, c);
+  جوڙيو_وٿي (obj_e, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_وٿي (obj_b, c);
+  جوڙيو_وٿي (obj_c, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_24_and_32_ٻٽو_انگ_offsets (hb_serialize_context_t* c)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
-  unsigned obj_g = add_object ("g", 1, c);
-  unsigned obj_j = add_object ("j", 1, c);
-  unsigned obj_k = add_object ("k", 1, c);
+  بنانشان obj_f = جوڙيو_object ("f", 1, c);
+  بنانشان obj_g = جوڙيو_object ("g", 1, c);
+  بنانشان obj_j = جوڙيو_object ("j", 1, c);
+  بنانشان obj_k = جوڙيو_object ("k", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_f, c);
+  بنانشان obj_c = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_g, c);
+  بنانشان obj_d = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_j, c);
-  unsigned obj_h = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_j, c);
+  بنانشان obj_h = c->ڪڍو_pack (خطأ);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_k, c);
-  unsigned obj_i = c->pop_pack (false);
+  شروعات_object (large_string.c_str (), 40000, c);
+  جوڙيو_وٿي (obj_k, c);
+  بنانشان obj_i = c->ڪڍو_pack (خطأ);
 
-  start_object ("e", 1, c);
-  add_wide_offset (obj_h, c);
-  add_wide_offset (obj_i, c);
-  unsigned obj_e = c->pop_pack (false);
+  شروعات_object ("e", 1, c);
+  جوڙيو_wide_وٿي (obj_h, c);
+  جوڙيو_wide_وٿي (obj_i, c);
+  بنانشان obj_e = c->ڪڍو_pack (خطأ);
 
-  start_object ("b", 1, c);
-  add_24_offset (obj_c, c);
-  add_24_offset (obj_d, c);
-  add_24_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  شروعات_object ("b", 1, c);
+  جوڙيو_24_وٿي (obj_c, c);
+  جوڙيو_24_وٿي (obj_d, c);
+  جوڙيو_24_وٿي (obj_e, c);
+  بنانشان obj_b = c->ڪڍو_pack (خطأ);
 
-  start_object ("a", 1, c);
-  add_24_offset (obj_b, c);
-  c->pop_pack (false);
+  شروعات_object ("a", 1, c);
+  جوڙيو_24_وٿي (obj_b, c);
+  c->ڪڍو_pack (خطأ);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
+ساكن فراغ
 populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
-                                              int num_extensions = 0,
-                                              bool shared_subtables = false,
-                                              bool version_1_2 = false)
+                                              صحيح انگ_extensions = 0,
+                                              منطقي shared_subtables = خطأ,
+                                              منطقي نسخو_1_2 = خطأ)
 {
-  constexpr int num_lookups = 5;
-  constexpr int num_subtables = num_lookups * 2;
-  unsigned int lookups[num_lookups];
-  unsigned int subtables[num_subtables];
-  unsigned int extensions[num_subtables];
+  constexpr صحيح انگ_lookups = 5;
+  constexpr صحيح انگ_subtables = انگ_lookups * 2;
+  بنانشان صحيح lookups[انگ_lookups];
+  بنانشان صحيح subtables[انگ_subtables];
+  بنانشان صحيح extensions[انگ_subtables];
 
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
 
-  for (int i = num_subtables - 1; i >= 0; i--)
-    subtables[i] = add_object(large_string.c_str (), 15000 + i, c);
+  لكل (صحيح i = انگ_subtables - 1; i >= 0; i--)
+    subtables[i] = جوڙيو_object(large_string.c_str (), 15000 + i, c);
 
-  for (int i = num_subtables - 1;
-       i >= (num_lookups - num_extensions) * 2;
+  لكل (صحيح i = انگ_subtables - 1;
+       i >= (انگ_lookups - انگ_extensions) * 2;
        i--)
   {
-    extensions[i] = add_extension (subtables[i], 5, c);
+    extensions[i] = جوڙيو_extension (subtables[i], 5, c);
   }
 
-  for (int i = num_lookups - 1; i >= 0; i--)
+  لكل (صحيح i = انگ_lookups - 1; i >= 0; i--)
   {
-    bool is_ext = (i >= (num_lookups - num_extensions));
+    منطقي is_ext = (i >= (انگ_lookups - انگ_extensions));
 
-    start_lookup (is_ext ? (char) 7 : (char) 5,
+    شروعات_lookup (is_ext ? (حرف) 7 : (حرف) 5,
                   shared_subtables && i > 2 ? 3 : 2,
                   c);
 
-    if (is_ext) {
-      if (shared_subtables && i > 2) {
-        add_offset (extensions[i * 2 - 1], c);
+    إذا (is_ext) {
+      إذا (shared_subtables && i > 2) {
+        جوڙيو_وٿي (extensions[i * 2 - 1], c);
       }
-      add_offset (extensions[i * 2], c);
-      add_offset (extensions[i * 2 + 1], c);
-    } else {
-      if (shared_subtables && i > 2) {
-        add_offset (subtables[i * 2 - 1], c);
+      جوڙيو_وٿي (extensions[i * 2], c);
+      جوڙيو_وٿي (extensions[i * 2 + 1], c);
+    } وإلا {
+      إذا (shared_subtables && i > 2) {
+        جوڙيو_وٿي (subtables[i * 2 - 1], c);
       }
-      add_offset (subtables[i * 2], c);
-      add_offset (subtables[i * 2 + 1], c);
+      جوڙيو_وٿي (subtables[i * 2], c);
+      جوڙيو_وٿي (subtables[i * 2 + 1], c);
     }
 
-    lookups[i] = finish_lookup (c);
+    lookups[i] = پڄاڻي_lookup (c);
   }
 
-  unsigned lookup_list = version_1_2
-                         ? add_lookup_list_1_2 (lookups, num_lookups, c)
-                         : add_lookup_list (lookups, num_lookups, c);
+  بنانشان lookup_list = نسخو_1_2
+                         ? جوڙيو_lookup_list_1_2 (lookups, انگ_lookups, c)
+                         : جوڙيو_lookup_list (lookups, انگ_lookups, c);
 
-  if (version_1_2)
-    add_gsubgpos_header_1_2 (lookup_list, c);
-  else
-    add_gsubgpos_header (lookup_list, c);
+  إذا (نسخو_1_2)
+    جوڙيو_gsubgpos_سرو_1_2 (lookup_list, c);
+  وإلا
+    جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-template<int num_pair_pos_1, int num_pair_set>
-static void
+سانچو<صحيح انگ_pair_pos_1, صحيح انگ_pair_سيٽ>
+ساكن فراغ
 populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
-                                           bool as_extension = false)
+                                           منطقي as_extension = خطأ)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  constexpr int total_pair_set = num_pair_pos_1 * num_pair_set;
-  unsigned pair_set[total_pair_set];
-  unsigned coverage[num_pair_pos_1];
-  unsigned pair_pos_1[num_pair_pos_1];
+  constexpr صحيح ڪل_pair_سيٽ = انگ_pair_pos_1 * انگ_pair_سيٽ;
+  بنانشان pair_سيٽ_2[ڪل_pair_سيٽ];
+  بنانشان coverage[انگ_pair_pos_1];
+  بنانشان pair_pos_1[انگ_pair_pos_1];
 
-  for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+  لكل (صحيح i = انگ_pair_pos_1 - 1; i >= 0; i--)
   {
-    for (int j = (i + 1) * num_pair_set - 1; j >= i * num_pair_set; j--)
-      pair_set[j] = add_object (large_string.c_str (), 30000 + j, c);
+    لكل (صحيح j = (i + 1) * انگ_pair_سيٽ - 1; j >= i * انگ_pair_سيٽ; j--)
+      pair_سيٽ_2[j] = جوڙيو_object (large_string.c_str (), 30000 + j, c);
 
-    coverage[i] = add_coverage (i * num_pair_set,
-                                (i + 1) * num_pair_set - 1, c);
+    coverage[i] = جوڙيو_coverage (i * انگ_pair_سيٽ,
+                                (i + 1) * انگ_pair_سيٽ - 1, c);
 
-    pair_pos_1[i] = add_pair_pos_1 (&pair_set[i * num_pair_set],
-                                    num_pair_set,
+    pair_pos_1[i] = جوڙيو_pair_pos_1 (&pair_سيٽ_2[i * انگ_pair_سيٽ],
+                                    انگ_pair_سيٽ,
                                     coverage[i],
                                     c);
   }
 
-  unsigned pair_pos_2 = add_object (large_string.c_str(), 200, c);
+  بنانشان pair_pos_2 = جوڙيو_object (large_string.c_str(), 200, c);
 
-  if (as_extension) {
-    pair_pos_2 = add_extension (pair_pos_2, 2, c);
-    for (int i = num_pair_pos_1 - 1; i >= 0; i--)
-      pair_pos_1[i] = add_extension (pair_pos_1[i], 2, c);
+  إذا (as_extension) {
+    pair_pos_2 = جوڙيو_extension (pair_pos_2, 2, c);
+    لكل (صحيح i = انگ_pair_pos_1 - 1; i >= 0; i--)
+      pair_pos_1[i] = جوڙيو_extension (pair_pos_1[i], 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_1, c);
+  شروعات_lookup (as_extension ? 9 : 2, 1 + انگ_pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_1; i++)
-    add_offset (pair_pos_1[i], c);
-  add_offset (pair_pos_2, c);
+  لكل (صحيح i = 0; i < انگ_pair_pos_1; i++)
+    جوڙيو_وٿي (pair_pos_1[i], c);
+  جوڙيو_وٿي (pair_pos_2, c);
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-template<int num_pair_pos_2, int num_class_1, int num_class_2>
-static void
+سانچو<صحيح انگ_pair_pos_2, صحيح انگ_class_1, صحيح انگ_class_2>
+ساكن فراغ
 populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
-                                           bool as_extension = false,
-                                           bool with_device_tables = false,
-                                           bool extra_table = true)
+                                           منطقي as_extension = خطأ,
+                                           منطقي with_device_tables = خطأ,
+                                           منطقي extra_جدول = سچ)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned coverage[num_pair_pos_2];
-  unsigned class_def_1[num_pair_pos_2];
-  unsigned class_def_2[num_pair_pos_2];
-  unsigned pair_pos_2[num_pair_pos_2];
+  بنانشان coverage[انگ_pair_pos_2];
+  بنانشان class_def_1[انگ_pair_pos_2];
+  بنانشان class_def_2[انگ_pair_pos_2];
+  بنانشان pair_pos_2[انگ_pair_pos_2];
 
-  unsigned* device_tables = (unsigned*) calloc (num_pair_pos_2 * num_class_1 * num_class_2,
-                                                sizeof(unsigned));
+  بنانشان* device_tables = (بنانشان*) صفر_يادگيري_ڏيو (انگ_pair_pos_2 * انگ_class_1 * انگ_class_2,
+                                                حجم(بنانشان));
 
   // Total glyphs = num_class_1 * num_pair_pos_2
-  for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  لكل (صحيح i = انگ_pair_pos_2 - 1; i >= 0; i--)
   {
-    unsigned start_glyph = 5 + i * num_class_1;
-    if (num_class_2 >= num_class_1)
+    بنانشان شروعات_glyph = 5 + i * انگ_class_1;
+    إذا (انگ_class_2 >= انگ_class_1)
     {
-      class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
-      class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+      class_def_2[i] = جوڙيو_class_def (11,
+                                      10 + انگ_class_2, c);
+      class_def_1[i] = جوڙيو_class_def (شروعات_glyph + 1,
+                                      شروعات_glyph + انگ_class_1,
                                       c);
-    } else {
-      class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+    } وإلا {
+      class_def_1[i] = جوڙيو_class_def (شروعات_glyph + 1,
+                                      شروعات_glyph + انگ_class_1,
                                       c);
-      class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
+      class_def_2[i] = جوڙيو_class_def (11,
+                                      10 + انگ_class_2, c);
     }
 
-    coverage[i] = add_coverage (start_glyph,
-                                start_glyph + num_class_1 - 1,
+    coverage[i] = جوڙيو_coverage (شروعات_glyph,
+                                شروعات_glyph + انگ_class_1 - 1,
                                 c);
 
-    if (with_device_tables)
+    إذا (with_device_tables)
     {
-      for(int j = (i + 1) * num_class_1 * num_class_2 - 1;
-          j >= i * num_class_1 * num_class_2;
+      لكل(صحيح j = (i + 1) * انگ_class_1 * انگ_class_2 - 1;
+          j >= i * انگ_class_1 * انگ_class_2;
           j--)
       {
-        uint8_t table[] = {
+        uint8_t جدول[] = {
           (uint8_t) ((j >> 8) & 0xFF),
           (uint8_t) (j & 0xFF),
         };
-        device_tables[j] = add_object ((char*) table, 2, c);
+        device_tables[j] = جوڙيو_object ((حرف*) جدول, 2, c);
       }
     }
 
-    pair_pos_2[i] = add_pair_pos_2 (1 + i * num_class_1,
+    pair_pos_2[i] = جوڙيو_pair_pos_2 (1 + i * انگ_class_1,
                                     coverage[i],
-                                    class_def_1[i], num_class_1,
-                                    class_def_2[i], num_class_2,
+                                    class_def_1[i], انگ_class_1,
+                                    class_def_2[i], انگ_class_2,
                                     with_device_tables
-                                    ? &device_tables[i * num_class_1 * num_class_2]
-                                    : nullptr,
+                                    ? &device_tables[i * انگ_class_1 * انگ_class_2]
+                                    : خالي_اشارو,
                                     c);
   }
 
 
-  unsigned pair_pos_1 = 0;
-  if (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
+  بنانشان pair_pos_1 = 0;
+  إذا (extra_جدول) pair_pos_1 = جوڙيو_object (large_string.c_str(), 100000, c);
 
-  if (as_extension) {
-    for (int i = num_pair_pos_2 - 1; i >= 0; i--)
-      pair_pos_2[i] = add_extension (pair_pos_2[i], 2, c);
+  إذا (as_extension) {
+    لكل (صحيح i = انگ_pair_pos_2 - 1; i >= 0; i--)
+      pair_pos_2[i] = جوڙيو_extension (pair_pos_2[i], 2, c);
 
-    if (extra_table)
-      pair_pos_1 = add_extension (pair_pos_1, 2, c);
+    إذا (extra_جدول)
+      pair_pos_1 = جوڙيو_extension (pair_pos_1, 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_2, c);
+  شروعات_lookup (as_extension ? 9 : 2, 1 + انگ_pair_pos_2, c);
 
-  if (extra_table)
-    add_offset (pair_pos_1, c);
+  إذا (extra_جدول)
+    جوڙيو_وٿي (pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_2; i++)
-    add_offset (pair_pos_2[i], c);
+  لكل (صحيح i = 0; i < انگ_pair_pos_2; i++)
+    جوڙيو_وٿي (pair_pos_2[i], c);
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 
-  free (device_tables);
+  حرر (device_tables);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-static void
-populate_serializer_with_large_mark_base_pos_1 (hb_serialize_context_t* c)
+سانچو<صحيح mark_ڳڻپ,
+    صحيح class_ڳڻپ,
+    صحيح بنياد_ڳڻپ,
+    صحيح جدول_ڳڻپ_2>
+ساكن فراغ
+populate_serializer_with_large_mark_بنياد_pos_1 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  MarkBasePosBuffers<mark_count, class_count, base_count, table_count> buffers (c);
+  Mark_بنياد_Pos_Buffers<mark_ڳڻپ, class_ڳڻپ, بنياد_ڳڻپ, جدول_ڳڻپ_2> buffers (c);
 
-  unsigned mark_base_pos[table_count];
-  for (unsigned i = 0; i < table_count; i++)
-    mark_base_pos[i] = buffers.create_mark_base_pos_1 (i, c);
+  بنانشان mark_بنياد_pos[جدول_ڳڻپ_2];
+  لكل (بنانشان i = 0; i < جدول_ڳڻپ_2; i++)
+    mark_بنياد_pos[i] = buffers.create_mark_بنياد_pos_1 (i, c);
 
-  for (int i = 0; i < table_count; i++)
-    mark_base_pos[i] = add_extension (mark_base_pos[i], 4, c);
+  لكل (صحيح i = 0; i < جدول_ڳڻپ_2; i++)
+    mark_بنياد_pos[i] = جوڙيو_extension (mark_بنياد_pos[i], 4, c);
 
-  start_lookup (9, table_count, c);
+  شروعات_lookup (9, جدول_ڳڻپ_2, c);
 
-  for (int i = 0; i < table_count; i++)
-    add_offset (mark_base_pos[i], c);
+  لكل (صحيح i = 0; i < جدول_ڳڻپ_2; i++)
+    جوڙيو_وٿي (mark_بنياد_pos[i], c);
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-template<unsigned LigSubstCount,
-         unsigned LigaSetCount,
-         unsigned LigaPerSetCount,
-         unsigned LigaSize>
-static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
-                                                    bool sequential_liga_sets,
-                                                    bool shared,
-                                                    unsigned *liga_subst_id,
-                                                    bool unique_lig_str = false)
+سانچو<بنانشان Lig_Subst_ڳڻپ,
+         بنانشان Liga_سيٽ_ڳڻپ,
+         بنانشان Liga_في_سيٽ_ڳڻپ,
+         بنانشان Liga_سائيز>
+ساكن فراغ populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
+                                                    منطقي sequential_liga_sets,
+                                                    منطقي shared,
+                                                    بنانشان *liga_subst_id,
+                                                    منطقي unique_lig_str = خطأ)
 {
-  char ch = 'a';
+  حرف ch = 'a';
 
-  unsigned liga[LigaSetCount * LigaPerSetCount];
-  unsigned liga_set[LigaSetCount];
-  for (unsigned l = 0; l < LigSubstCount; l++) {
-    unsigned coverage_start = 0;
-    unsigned coverage_end = LigaSetCount - 1;
-    if (sequential_liga_sets) {
-      coverage_start = l * LigaSetCount;
-      coverage_end = (l + 1) * LigaSetCount - 1;
+  بنانشان liga[Liga_سيٽ_ڳڻپ * Liga_في_سيٽ_ڳڻپ];
+  بنانشان liga_سيٽ[Liga_سيٽ_ڳڻپ];
+  لكل (بنانشان l = 0; l < Lig_Subst_ڳڻپ; l++) {
+    بنانشان coverage_شروعات = 0;
+    بنانشان coverage_پڇاڙي = Liga_سيٽ_ڳڻپ - 1;
+    إذا (sequential_liga_sets) {
+      coverage_شروعات = l * Liga_سيٽ_ڳڻپ;
+      coverage_پڇاڙي = (l + 1) * Liga_سيٽ_ڳڻپ - 1;
     }
-    unsigned coverage = add_coverage(coverage_start, coverage_end, c, shared);
+    بنانشان coverage = جوڙيو_coverage(coverage_شروعات, coverage_پڇاڙي, c, shared);
 
-    for (unsigned i = 0; i < LigaSetCount; i++) {
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+    لكل (بنانشان i = 0; i < Liga_سيٽ_ڳڻپ; i++) {
+      لكل (بنانشان j = 0; j < Liga_في_سيٽ_ڳڻپ; j++)
       {
         std::string large_string(100000, ch);
-        start_object (large_string.c_str(), LigaSize, c);
-        if (unique_lig_str)
+        شروعات_object (large_string.c_str(), Liga_سائيز, c);
+        إذا (unique_lig_str)
           ch += 1;
-        add_virtual_offset(coverage, c);
-        liga[i * LigaPerSetCount + j] = c->pop_pack (shared);
+        جوڙيو_virtual_وٿي(coverage, c);
+        liga[i * Liga_في_سيٽ_ڳڻپ + j] = c->ڪڍو_pack (shared);
       }
 
-      add_liga_set_header(LigaPerSetCount, c);
-      add_virtual_offset(coverage, c);
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+      جوڙيو_liga_سيٽ_سرو(Liga_في_سيٽ_ڳڻپ, c);
+      جوڙيو_virtual_وٿي(coverage, c);
+      لكل (بنانشان j = 0; j < Liga_في_سيٽ_ڳڻپ; j++)
       {
-        add_offset(liga[i * LigaPerSetCount + j], c);
+        جوڙيو_وٿي(liga[i * Liga_في_سيٽ_ڳڻپ + j], c);
       }
 
-      liga_set[i] = c->pop_pack(shared);
+      liga_سيٽ[i] = c->ڪڍو_pack(shared);
     }
 
-    add_liga_header(coverage, LigaSetCount, c);
-    for (unsigned i = 0; i < LigaSetCount; i++)
+    جوڙيو_liga_سرو(coverage, Liga_سيٽ_ڳڻپ, c);
+    لكل (بنانشان i = 0; i < Liga_سيٽ_ڳڻپ; i++)
     {
-      add_offset(liga_set[i], c);
+      جوڙيو_وٿي(liga_سيٽ[i], c);
     }
 
-    liga_subst_id[l] = c->pop_pack(shared);
+    liga_subst_id[l] = c->ڪڍو_pack(shared);
   }
 
-  for (unsigned l = 0; l < LigSubstCount; l++) {
-    liga_subst_id[l] = add_extension(liga_subst_id[l], 4, c);
+  لكل (بنانشان l = 0; l < Lig_Subst_ڳڻپ; l++) {
+    liga_subst_id[l] = جوڙيو_extension(liga_subst_id[l], 4, c);
   }
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
-populate_serializer_with_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+سانچو<بنانشان liga_subst_ڳڻپ,
+         بنانشان liga_سيٽ_ڳڻپ,
+         بنانشان liga_في_سيٽ_ڳڻپ,
+         بنانشان liga_سائيز>
+ساكن فراغ
+populate_serializer_with_large_liga (hb_serialize_context_t* c, منطقي sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned liga_subst[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, false, liga_subst);
+  بنانشان liga_subst[liga_subst_ڳڻپ];
+  populate_serializer_with_large_ligsubst<liga_subst_ڳڻپ, liga_سيٽ_ڳڻپ, liga_في_سيٽ_ڳڻپ, liga_سائيز>(c, sequential_liga_sets, خطأ, liga_subst);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  شروعات_lookup (7, liga_subst_ڳڻپ, c);
+  لكل (بنانشان l = 0; l < liga_subst_ڳڻپ; l++) {
+    جوڙيو_وٿي(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void
-populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_context_t* c)
+ساكن فراغ
+populate_serializer_with_large_liga_overlapping_clone_نتيجو (hb_serialize_context_t* c)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  constexpr unsigned liga_size = 30000;
+  constexpr بنانشان liga_سائيز = 30000;
 
-  unsigned liga[6];
-  unsigned liga_subst[3];
-  unsigned liga_set[2];
+  بنانشان liga[6];
+  بنانشان liga_subst[3];
+  بنانشان liga_سيٽ[2];
 
   // LigaSubst 3
-  unsigned coverage = add_coverage(1, 1, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  بنانشان coverage = جوڙيو_coverage(1, 1, c);
+  لكل (صحيح i = 1; i >= 0; i--) {
+    شروعات_object (large_string.c_str(), liga_سائيز, c);
+    جوڙيو_virtual_وٿي(coverage, c);
+    liga[i] = c->ڪڍو_pack (خطأ);
   }
 
-  add_liga_set_header(2, c);
-  add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
-    add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  جوڙيو_liga_سيٽ_سرو(2, c);
+  جوڙيو_virtual_وٿي(coverage, c);
+  لكل (بنانشان i = 0; i < 2; i++)
+    جوڙيو_وٿي(liga[i], c);
+  liga_سيٽ[0] = c->ڪڍو_pack(خطأ);
 
-  add_liga_header(coverage, 1, c);
-  add_offset(liga_set[0], c);
-  liga_subst[2] = c->pop_pack(false);
+  جوڙيو_liga_سرو(coverage, 1, c);
+  جوڙيو_وٿي(liga_سيٽ[0], c);
+  liga_subst[2] = c->ڪڍو_pack(خطأ);
 
   // LigaSubst 2
-  coverage = add_coverage(0, 1, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  coverage = جوڙيو_coverage(0, 1, c);
+  لكل (صحيح i = 1; i >= 0; i--) {
+    شروعات_object (large_string.c_str(), liga_سائيز, c);
+    جوڙيو_virtual_وٿي(coverage, c);
+    liga[i] = c->ڪڍو_pack (خطأ);
   }
 
-  add_liga_set_header(1, c);
-  add_virtual_offset(coverage, c);
-  add_offset(liga[1], c);
-  liga_set[1] = c->pop_pack(false);
+  جوڙيو_liga_سيٽ_سرو(1, c);
+  جوڙيو_virtual_وٿي(coverage, c);
+  جوڙيو_وٿي(liga[1], c);
+  liga_سيٽ[1] = c->ڪڍو_pack(خطأ);
 
-  add_liga_set_header(1, c);
-  add_virtual_offset(coverage, c);
-  add_offset(liga[0], c);
-  liga_set[0] = c->pop_pack(false);
+  جوڙيو_liga_سيٽ_سرو(1, c);
+  جوڙيو_virtual_وٿي(coverage, c);
+  جوڙيو_وٿي(liga[0], c);
+  liga_سيٽ[0] = c->ڪڍو_pack(خطأ);
 
-  add_liga_header(coverage, 2, c);
-  add_offset(liga_set[0], c);
-  add_offset(liga_set[1], c);
-  liga_subst[1] = c->pop_pack(false);
+  جوڙيو_liga_سرو(coverage, 2, c);
+  جوڙيو_وٿي(liga_سيٽ[0], c);
+  جوڙيو_وٿي(liga_سيٽ[1], c);
+  liga_subst[1] = c->ڪڍو_pack(خطأ);
 
   // LigaSubst 1
-  coverage = add_coverage(0, 0, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  coverage = جوڙيو_coverage(0, 0, c);
+  لكل (صحيح i = 1; i >= 0; i--) {
+    شروعات_object (large_string.c_str(), liga_سائيز, c);
+    جوڙيو_virtual_وٿي(coverage, c);
+    liga[i] = c->ڪڍو_pack (خطأ);
   }
 
-  add_liga_set_header(2, c);
-  add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
-    add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  جوڙيو_liga_سيٽ_سرو(2, c);
+  جوڙيو_virtual_وٿي(coverage, c);
+  لكل (بنانشان i = 0; i < 2; i++)
+    جوڙيو_وٿي(liga[i], c);
+  liga_سيٽ[0] = c->ڪڍو_pack(خطأ);
 
-  add_liga_header(coverage, 1, c);
-  add_offset(liga_set[0], c);
-  liga_subst[0] = c->pop_pack(false);
+  جوڙيو_liga_سرو(coverage, 1, c);
+  جوڙيو_وٿي(liga_سيٽ[0], c);
+  liga_subst[0] = c->ڪڍو_pack(خطأ);
 
-  for (int l = 2; l >= 0; l--) {
-    liga_subst[l] = add_extension(liga_subst[l], 4, c);
+  لكل (صحيح l = 2; l >= 0; l--) {
+    liga_subst[l] = جوڙيو_extension(liga_subst[l], 4, c);
   }
 
-  start_lookup (7, 3, c);
-  for (unsigned l = 0; l < 3; l++) {
-    add_offset(liga_subst[l], c);
+  شروعات_lookup (7, 3, c);
+  لكل (بنانشان l = 0; l < 3; l++) {
+    جوڙيو_وٿي(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
-populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+سانچو<بنانشان liga_subst_ڳڻپ,
+         بنانشان liga_سيٽ_ڳڻپ,
+         بنانشان liga_في_سيٽ_ڳڻپ,
+         بنانشان liga_سائيز>
+ساكن فراغ
+populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, منطقي sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned lookups[2];
+  بنانشان lookups[2];
   // Lookup
   // LigSubst: shared with another Lookup table, needs splitting
-  unsigned liga_subst_idx[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, liga_subst_idx, true);
+  بنانشان liga_subst_idx[liga_subst_ڳڻپ];
+  populate_serializer_with_large_ligsubst<liga_subst_ڳڻپ, liga_سيٽ_ڳڻپ, liga_في_سيٽ_ڳڻپ, liga_سائيز>(c, sequential_liga_sets, سچ, liga_subst_idx, سچ);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
-    add_offset(liga_subst_idx[l], c);
+  شروعات_lookup (7, liga_subst_ڳڻپ, c);
+  لكل (بنانشان l = 0; l < liga_subst_ڳڻپ; l++) {
+    جوڙيو_وٿي(liga_subst_idx[l], c);
   }
 
-  lookups[0] = finish_lookup (c);
+  lookups[0] = پڄاڻي_lookup (c);
 
   // Lookup with 2 LigSubst tables
-  unsigned liga_subst[liga_subst_count + 1];
+  بنانشان liga_subst[liga_subst_ڳڻپ + 1];
   // LigSubst: small one, not shared, no split
-  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, false, liga_subst);
+  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, خطأ, liga_subst);
 
   // LigSubst: shared, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_ڳڻپ, liga_سيٽ_ڳڻپ, liga_في_سيٽ_ڳڻپ, liga_سائيز>(c, sequential_liga_sets, سچ, &liga_subst[1], سچ);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  شروعات_lookup (7, liga_subst_ڳڻپ + 1, c);
+  لكل (بنانشان l = 0; l <= liga_subst_ڳڻپ; l++) {
+    جوڙيو_وٿي(liga_subst[l], c);
   }
 
-  lookups[1] = finish_lookup (c);
+  lookups[1] = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (lookups, 2, c);
-  add_gsubgpos_header (lookup_list, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (lookups, 2, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
+سانچو<بنانشان liga_subst_ڳڻپ,
+         بنانشان liga_سيٽ_ڳڻپ,
+         بنانشان liga_في_سيٽ_ڳڻپ,
+         بنانشان liga_سائيز>
+ساكن فراغ
 populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->شروعات_serialize<حرف> ();
 
-  unsigned liga_subst[liga_subst_count + 1];
+  بنانشان liga_subst[liga_subst_ڳڻپ + 1];
   // LigSubst: small one, no split, coverage shared
-  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, true, true, liga_subst, true);
+  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, سچ, سچ, liga_subst, سچ);
 
   // LigSubst: shared coverage, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, true, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_ڳڻپ, liga_سيٽ_ڳڻپ, liga_في_سيٽ_ڳڻپ, liga_سائيز>(c, سچ, سچ, &liga_subst[1], سچ);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  شروعات_lookup (7, liga_subst_ڳڻپ + 1, c);
+  لكل (بنانشان l = 0; l <= liga_subst_ڳڻپ; l++) {
+    جوڙيو_وٿي(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  بنانشان lookup = پڄاڻي_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
-  add_gsubgpos_header (lookup_list, c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, c);
+  جوڙيو_gsubgpos_سرو (lookup_list, c);
 
-  c->end_serialize();
+  c->پڇاڙي_serialize();
 }
 
-static void test_sort_shortest ()
+ساكن فراغ test_ترتيب_ڏيو_سڀ_کان_ٿورو ()
 {
-  size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
-  hb_serialize_context_t a (buffer_a, buffer_size);
-  hb_serialize_context_t e (buffer_e, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر_a = يادگيري_ڏيو (بفر_سائيز);
+  فراغ* بفر_e = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t a (بفر_a, بفر_سائيز);
+  hb_serialize_context_t e (بفر_e, بفر_سائيز);
   populate_serializer_complex_2 (&a);
 
-  graph_t graph = graph_t::create (a.object_graph ()).value ();
-  hb_always_assert (graph.sort_shortest_distance ().is_ok());
-  graph.normalize();
+  گراف_t گراف = گراف_t::create (a.object_گراف ()).value ();
+  hb_always_assert (گراف.ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو ().is_ok());
+  گراف.normalize();
 
   // Expected graph
-  e.start_serialize();
-  unsigned jkl = add_object ("jkl", 3, &e);
+  e.شروعات_serialize();
+  بنانشان jkl = جوڙيو_object ("jkl", 3, &e);
 
-  start_object("ghi", 3, &e);
-  add_offset(jkl, &e);
-  unsigned ghi = e.pop_pack(false);
+  شروعات_object("ghi", 3, &e);
+  جوڙيو_وٿي(jkl, &e);
+  بنانشان ghi = e.ڪڍو_pack(خطأ);
 
-  start_object("def", 3, &e);
-  add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  شروعات_object("def", 3, &e);
+  جوڙيو_وٿي(ghi, &e);
+  بنانشان def = e.ڪڍو_pack(خطأ);
 
-  unsigned mn = add_object("mn", 2, &e);
+  بنانشان mn = جوڙيو_object("mn", 2, &e);
 
-  start_object ("abc", 3, &e);
-  add_offset (def, &e);
-  add_offset (jkl, &e);
-  add_offset (mn, &e);
-  e.pop_pack (false);
-  e.end_serialize();
+  شروعات_object ("abc", 3, &e);
+  جوڙيو_وٿي (def, &e);
+  جوڙيو_وٿي (jkl, &e);
+  جوڙيو_وٿي (mn, &e);
+  e.ڪڍو_pack (خطأ);
+  e.پڇاڙي_serialize();
 
-  graph_t expected = graph_t::create (e.object_graph ()).value ();
+  گراف_t expected = گراف_t::create (e.object_گراف ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  أكد(expected == گراف);
 
-  free (buffer_a);
-  free (buffer_e);
+  حرر (بفر_a);
+  حرر (بفر_e);
 }
 
-static void test_duplicate_leaf ()
+ساكن فراغ test_duplicate_پن ()
 {
-  size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
-  hb_serialize_context_t a (buffer_a, buffer_size);
-  hb_serialize_context_t e (buffer_e, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر_a = يادگيري_ڏيو (بفر_سائيز);
+  فراغ* بفر_e = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t a (بفر_a, بفر_سائيز);
+  hb_serialize_context_t e (بفر_e, بفر_سائيز);
   populate_serializer_complex_2 (&a);
 
-  graph_t graph = graph_t::create (a.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (4, 1, false).is_ok ());
-  graph.normalize();
+  گراف_t گراف = گراف_t::create (a.object_گراف ()).value ();
+  hb_always_assert (گراف.duplicate (4, 1, خطأ).is_ok ());
+  گراف.normalize();
 
-  e.start_serialize();
-  unsigned mn = add_object("mn", 2, &e);
-  unsigned jkl_2 = add_object("jkl", 3, &e);
+  e.شروعات_serialize();
+  بنانشان mn = جوڙيو_object("mn", 2, &e);
+  بنانشان jkl_2 = جوڙيو_object("jkl", 3, &e);
 
-  start_object("ghi", 3, &e);
-  add_offset(jkl_2, &e);
-  unsigned ghi = e.pop_pack(false);
+  شروعات_object("ghi", 3, &e);
+  جوڙيو_وٿي(jkl_2, &e);
+  بنانشان ghi = e.ڪڍو_pack(خطأ);
 
-  start_object("def", 3, &e);
-  add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  شروعات_object("def", 3, &e);
+  جوڙيو_وٿي(ghi, &e);
+  بنانشان def = e.ڪڍو_pack(خطأ);
 
-  unsigned jkl_1 = add_object("jkl", 3, &e);
+  بنانشان jkl_1 = جوڙيو_object("jkl", 3, &e);
 
-  start_object("abc", 3, &e);
-  add_offset(def, &e);
-  add_offset(jkl_1, &e);
-  add_offset(mn, &e);
-  e.pop_pack(false);
+  شروعات_object("abc", 3, &e);
+  جوڙيو_وٿي(def, &e);
+  جوڙيو_وٿي(jkl_1, &e);
+  جوڙيو_وٿي(mn, &e);
+  e.ڪڍو_pack(خطأ);
 
-  graph_t expected = graph_t::create (e.object_graph ()).value ();
+  گراف_t expected = گراف_t::create (e.object_گراف ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  أكد(expected == گراف);
 
-  free (buffer_a);
-  free (buffer_e);
+  حرر (بفر_a);
+  حرر (بفر_e);
 }
 
-static void test_duplicate_interior ()
+ساكن فراغ test_duplicate_interior ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_complex_3 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (3, 2, false).is_ok ());
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
+  hb_always_assert (گراف.duplicate (3, 2, خطأ).is_ok ());
 
-  hb_always_assert(strncmp (graph.object (6).head, "jkl", 3) == 0);
-  hb_always_assert(graph.object (6).real_links.length == 1);
-  hb_always_assert(graph.object (6).real_links[0].objidx == 0);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (6).سر_2, "jkl", 3) == 0);
+  hb_always_assert(گراف.object (6).real_links.ڊيگهائي == 1);
+  hb_always_assert(گراف.object (6).real_links[0].objidx == 0);
 
-  hb_always_assert(strncmp (graph.object (5).head, "abc", 3) == 0);
-  hb_always_assert(graph.object (5).real_links.length == 3);
-  hb_always_assert(graph.object (5).real_links[0].objidx == 4);
-  hb_always_assert(graph.object (5).real_links[1].objidx == 2);
-  hb_always_assert(graph.object (5).real_links[2].objidx == 1);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (5).سر_2, "abc", 3) == 0);
+  hb_always_assert(گراف.object (5).real_links.ڊيگهائي == 3);
+  hb_always_assert(گراف.object (5).real_links[0].objidx == 4);
+  hb_always_assert(گراف.object (5).real_links[1].objidx == 2);
+  hb_always_assert(گراف.object (5).real_links[2].objidx == 1);
 
-  hb_always_assert(strncmp (graph.object (4).head, "def", 3) == 0);
-  hb_always_assert(graph.object (4).real_links.length == 1);
-  hb_always_assert(graph.object (4).real_links[0].objidx == 3);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (4).سر_2, "def", 3) == 0);
+  hb_always_assert(گراف.object (4).real_links.ڊيگهائي == 1);
+  hb_always_assert(گراف.object (4).real_links[0].objidx == 3);
 
-  hb_always_assert(strncmp (graph.object (3).head, "ghi", 3) == 0);
-  hb_always_assert(graph.object (3).real_links.length == 1);
-  hb_always_assert(graph.object (3).real_links[0].objidx == 6);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (3).سر_2, "ghi", 3) == 0);
+  hb_always_assert(گراف.object (3).real_links.ڊيگهائي == 1);
+  hb_always_assert(گراف.object (3).real_links[0].objidx == 6);
 
-  hb_always_assert(strncmp (graph.object (2).head, "jkl", 3) == 0);
-  hb_always_assert(graph.object (2).real_links.length == 1);
-  hb_always_assert(graph.object (2).real_links[0].objidx == 0);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (2).سر_2, "jkl", 3) == 0);
+  hb_always_assert(گراف.object (2).real_links.ڊيگهائي == 1);
+  hb_always_assert(گراف.object (2).real_links[0].objidx == 0);
 
-  hb_always_assert(strncmp (graph.object (1).head, "mn", 2) == 0);
-  hb_always_assert(graph.object (1).real_links.length == 0);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (1).سر_2, "mn", 2) == 0);
+  hb_always_assert(گراف.object (1).real_links.ڊيگهائي == 0);
 
-  hb_always_assert(strncmp (graph.object (0).head, "opqrst", 6) == 0);
-  hb_always_assert(graph.object (0).real_links.length == 0);
+  hb_always_assert(لڙي_ڀيٽ (گراف.object (0).سر_2, "opqrst", 6) == 0);
+  hb_always_assert(گراف.object (0).real_links.ڊيگهائي == 0);
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void
+ساكن فراغ
 test_serialize ()
 {
-  size_t buffer_size = 100;
-  void* buffer_1 = malloc (buffer_size);
-  hb_serialize_context_t c1 (buffer_1, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر_1 = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c1 (بفر_1, بفر_سائيز);
   populate_serializer_simple (&c1);
-  hb_bytes_t expected = c1.copy_bytes ();
+  hb_بائيٽون_t expected = c1.copy_بائيٽون ();
 
-  graph_t graph = graph_t::create (c1.object_graph ()).value ();
-  hb_blob_t* out = graph::serialize (graph).value ();
-  free (buffer_1);
+  گراف_t گراف = گراف_t::create (c1.object_گراف ()).value ();
+  hb_blob_t* ٻاهريون = گراف::serialize (گراف).value ();
+  حرر (بفر_1);
 
-  hb_bytes_t actual = out->as_bytes ();
+  hb_بائيٽون_t actual = ٻاهريون->as_بائيٽون ();
   hb_always_assert (actual == expected);
   expected.fini ();
-  hb_blob_destroy (out);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_will_overflow_1 ()
+ساكن فراغ test_will_حد_کان_مٿي_1 ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
 
   populate_serializer_complex_2 (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (!graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (!گراف::will_حد_کان_مٿي (گراف, خالي_اشارو).value ());
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void test_will_overflow_2 ()
+ساكن فراغ test_will_حد_کان_مٿي_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (گراف::will_حد_کان_مٿي (گراف, خالي_اشارو).value ());
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void test_will_overflow_3 ()
+ساكن فراغ test_will_حد_کان_مٿي_3 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_dedup_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (گراف::will_حد_کان_مٿي (گراف, خالي_اشارو).value ());
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void test_resolve_overflows_via_sort ()
+ساكن فراغ test_resolve_overflows_ذريعي_ترتيب_ڏيو ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (80000 + 3 + 3 * 2));
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ_NONE);
+  hb_always_assert (ٻاهريون);
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
+  hb_always_assert (نتيجو.ڊيگهائي == (80000 + 3 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_overflows_via_duplication ()
+ساكن فراغ test_resolve_overflows_ذريعي_duplication ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_dedup_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (10000 + 2 * 2 + 60000 + 2 + 3 * 2));
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ_NONE);
+  hb_always_assert (ٻاهريون);
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
+  hb_always_assert (نتيجو.ڊيگهائي == (10000 + 2 * 2 + 60000 + 2 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_overflows_via_multiple_duplications ()
+ساكن فراغ test_resolve_overflows_ذريعي_گڻو_duplications ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_multiple_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 300000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_گڻو_dedup_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE, 5);
-  hb_always_assert (out);
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ_NONE, 5);
+  hb_always_assert (ٻاهريون);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_overflows_via_space_assignment ()
+ساكن فراغ test_resolve_overflows_ذريعي_space_assignment ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_spaces (&c, true);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_spaces (&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_spaces (&e, false);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_spaces (&e, خطأ);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_space_assignment",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_space_assignment",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_isolation ()
+ساكن فراغ test_resolve_overflows_ذريعي_isolation ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_isolation_حد_کان_مٿي (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (1 + 10000 + 60000 + 1 + 1
+  hb_always_assert (c.وٿي_حد_کان_مٿي ());
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (ٻاهريون);
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
+  hb_always_assert (نتيجو.ڊيگهائي == (1 + 10000 + 60000 + 1 + 1
                             + 4 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_overflows_via_isolation_with_recursive_duplication ()
+ساكن فراغ test_resolve_overflows_ذريعي_isolation_with_recursive_duplication ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_complex (&c);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_isolation_حد_کان_مٿي_complex (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_complex_expected (&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_isolation_حد_کان_مٿي_complex_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolation_with_recursive_duplication",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_isolation_with_recursive_duplication",
                              c,
                              e);
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space ()
+ساكن فراغ test_resolve_overflows_ذريعي_isolating_16bit_space ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_spaces_16bit_connection (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
   populate_serializer_spaces_16bit_connection_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolating_16bit_space",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_isolating_16bit_space",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space_2 ()
+ساكن فراغ test_resolve_overflows_ذريعي_isolating_16bit_space_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root (&c);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_short_and_wide_subgraph_پاڙ (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root_expected (&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_short_and_wide_subgraph_پاڙ_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolating_16bit_space_2",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_isolating_16bit_space_2",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_isolation_spaces ()
+ساكن فراغ test_resolve_overflows_ذريعي_isolation_spaces ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_spaces (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_isolation_حد_کان_مٿي_spaces (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
+  hb_always_assert (c.وٿي_حد_کان_مٿي ());
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (ٻاهريون);
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
 
-  unsigned expected_length = 3 + 2 * 60000; // objects
-  expected_length += 2 * 4 + 2 * 2; // links
-  hb_always_assert (result.length == expected_length);
+  بنانشان expected_ڊيگهائي = 3 + 2 * 60000; // objects
+  expected_ڊيگهائي += 2 * 4 + 2 * 2; // links
+  hb_always_assert (نتيجو.ڊيگهائي == expected_ڊيگهائي);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_mixed_overflows_via_isolation_spaces ()
+ساكن فراغ test_resolve_mixed_overflows_ذريعي_isolation_spaces ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_24_and_32_bit_offsets (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_24_and_32_ٻٽو_انگ_offsets (&c);
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
+  hb_always_assert (c.وٿي_حد_کان_مٿي ());
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (ٻاهريون);
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
 
-  unsigned expected_length =
+  بنانشان expected_ڊيگهائي =
       // Objects
       7 +
       4 * 40000;
 
-  expected_length +=
+  expected_ڊيگهائي +=
       // Links
       2 * 4 +  // 32
       4 * 3 +  // 24
       4 * 2;   // 16
 
-  hb_always_assert (result.length == expected_length);
+  hb_always_assert (نتيجو.ڊيگهائي == expected_ڊيگهائي);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void test_resolve_with_extension_promotion ()
+ساكن فراغ test_resolve_with_extension_promotion ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_with_extension_promotion (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
   populate_serializer_with_extension_promotion (&e, 3);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_extension_promotion",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             سچ);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_shared_extension_promotion ()
+ساكن فراغ test_resolve_with_shared_extension_promotion ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, true);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_extension_promotion (&c, 0, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_extension_promotion (&e, 3, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_extension_promotion",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             سچ);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-#ifndef HB_NO_BEYOND_64K
-static void test_resolve_with_extension_promotion_1_2 ()
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+ساكن فراغ test_resolve_with_extension_promotion_1_2 ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, false, true);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_extension_promotion (&c, 0, خطأ, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, false, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_extension_promotion (&e, 3, خطأ, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion_1_2",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_extension_promotion_1_2",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             سچ);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
-#endif
+#جيڪڏهن_پورو
 
-static void test_resolve_with_repeated_extension_promotion ()
+ساكن فراغ test_resolve_with_repeated_extension_promotion ()
 {
-  size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 1000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
 
-  c.start_serialize<char> ();
-  unsigned subtable = add_object ("subt", 4, &c);
-  start_lookup (5, 2, &c);
-  add_offset (subtable, &c);
-  add_offset (subtable, &c);
-  unsigned lookup = finish_lookup (&c);
-  unsigned lookup_list = add_lookup_list (&lookup, 1, &c);
-  add_gsubgpos_header (lookup_list, &c);
-  c.end_serialize ();
+  c.شروعات_serialize<حرف> ();
+  بنانشان subtable = جوڙيو_object ("subt", 4, &c);
+  شروعات_lookup (5, 2, &c);
+  جوڙيو_وٿي (subtable, &c);
+  جوڙيو_وٿي (subtable, &c);
+  بنانشان lookup = پڄاڻي_lookup (&c);
+  بنانشان lookup_list = جوڙيو_lookup_list (&lookup, 1, &c);
+  جوڙيو_gsubgpos_سرو (lookup_list, &c);
+  c.پڇاڙي_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
-  auto context = graph::gsubgpos_graph_context_t::create (HB_TAG ('G', 'S', 'U', 'B'),
-                                                          graph).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
+  خودڪار context = گراف::gsubgpos_گراف_context_t::create (HB_ٽيگ ('G', 'S', 'U', 'B'),
+                                                          گراف).value ();
   hb_always_assert (context.lookups.get_population () == 1);
-  unsigned lookup_index = *context.lookups.keys ();
-  graph::Lookup* lookup_table = context.lookups.get (lookup_index);
-  hb_always_assert (lookup_table->make_extension (context, lookup_index).is_ok ());
+  بنانشان lookup_اشاريو = *context.lookups.ڪنجيون ();
+  گراف::Lookup* lookup_جدول_2 = context.lookups.get (lookup_اشاريو);
+  hb_always_assert (lookup_جدول_2->make_extension (context, lookup_اشاريو).is_ok ());
 
-  const auto& lookup_vertex = graph.vertices_[lookup_index];
-  hb_always_assert (lookup_vertex.obj ().real_links.length == 2);
-  unsigned extension_index = lookup_vertex.obj ().real_links[0].objidx;
-  hb_always_assert (lookup_vertex.obj ().real_links[1].objidx == extension_index);
+  ثابت خودڪار& lookup_راس = گراف.vertices_[lookup_اشاريو];
+  hb_always_assert (lookup_راس.obj ().real_links.ڊيگهائي == 2);
+  بنانشان extension_اشاريو = lookup_راس.obj ().real_links[0].objidx;
+  hb_always_assert (lookup_راس.obj ().real_links[1].objidx == extension_اشاريو);
 
-  auto* extension = graph.vertices_[extension_index].as<
-      graph::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
-  unsigned promoted_subtable = extension->get_subtable_index (graph, extension_index).value ();
-  hb_always_assert (graph.vertices_[promoted_subtable].table_size () == 4);
-  hb_always_assert (graph.update_parents ().is_ok ());
-  hb_always_assert (graph.vertices_[extension_index].incoming_edges () == 2);
-  hb_always_assert (graph.vertices_[promoted_subtable].incoming_edges () == 1);
+  خودڪار* extension = گراف.vertices_[extension_اشاريو].as<
+      گراف::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
+  بنانشان promoted_subtable = extension->get_subtable_اشاريو (گراف, extension_اشاريو).value ();
+  hb_always_assert (گراف.vertices_[promoted_subtable].جدول_سائيز () == 4);
+  hb_always_assert (گراف.update_parents ().is_ok ());
+  hb_always_assert (گراف.vertices_[extension_اشاريو].incoming_ڪنارا_2 () == 2);
+  hb_always_assert (گراف.vertices_[promoted_subtable].incoming_ڪنارا_2 () == 1);
 
-  hb_blob_t* out = graph::serialize (graph).value ();
-  hb_blob_destroy (out);
-  free (buffer);
+  hb_blob_t* ٻاهريون = گراف::serialize (گراف).value ();
+  hb_blob_destroy (ٻاهريون);
+  حرر (بفر);
 }
 
-static void test_resolve_with_basic_pair_pos_1_split ()
+ساكن فراغ test_resolve_with_basic_pair_pos_1_ورهايو ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_with_large_pair_pos_1 <1, 4>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_1_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_basic_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_extension_pair_pos_1_split ()
+ساكن فراغ test_resolve_with_extension_pair_pos_1_ورهايو ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, true);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_pair_pos_1_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_extension_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_basic_pair_pos_2_split ()
+ساكن فراغ test_resolve_with_basic_pair_pos_2_ورهايو ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 300000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_with_large_pair_pos_2 <1, 4, 3000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_2_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_basic_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_close_to_limit_pair_pos_2_split ()
+ساكن فراغ test_resolve_with_close_منزل_حد_بندي_pair_pos_2_ورهايو ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, true, false, false);
+  size_t بفر_سائيز = 300000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, سچ, خطأ, خطأ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, true, false, false);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, سچ, خطأ, خطأ);
 
-  run_resolve_overflow_test ("test_resolve_with_close_to_limit_pair_pos_2_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_close_to_limit_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_pair_pos_2_split_with_device_tables ()
+ساكن فراغ test_resolve_with_pair_pos_2_ورهايو_with_device_tables ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, false, true);
+  size_t بفر_سائيز = 300000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, خطأ, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, true, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, سچ, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_pair_pos_2_split_with_device_tables",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_pair_pos_2_split_with_device_tables",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_basic_mark_base_pos_1_split ()
+ساكن فراغ test_resolve_with_basic_mark_بنياد_pos_1_ورهايو ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 1>(&c);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_mark_بنياد_pos_1 <40, 10, 110, 1>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 2>(&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_mark_بنياد_pos_1 <40, 10, 110, 2>(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_mark_base_pos_1_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_basic_mark_base_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'P', 'O', 'S'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_basic_liga_split ()
+ساكن فراغ test_resolve_with_basic_liga_ورهايو ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, false);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, خطأ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, false);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, خطأ);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_liga_split",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_basic_liga_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'S', 'U', 'B'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_liga_split_move ()
+ساكن فراغ test_resolve_with_liga_ورهايو_move ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, true);
+  size_t بفر_سائيز = 400000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_move",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_liga_split_move",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'S', 'U', 'B'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_liga_split_overlapping_clone ()
+ساكن فراغ test_resolve_with_liga_ورهايو_overlapping_clone ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, true);
+  size_t بفر_سائيز = 400000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga_overlapping_clone_result(&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_large_liga_overlapping_clone_نتيجو(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_overlapping_clone",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_liga_split_overlapping_clone",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'S', 'U', 'B'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_liga_split_shared_table ()
+ساكن فراغ test_resolve_with_liga_ورهايو_shared_جدول ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, true);
+  size_t بفر_سائيز = 400000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, true);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, سچ);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_shared_table",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_liga_split_shared_table",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'S', 'U', 'B'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_with_liga_split_shared_coverage ()
+ساكن فراغ test_resolve_with_liga_ورهايو_shared_coverage ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 400000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_with_liga_shared_coverage<1, 6, 2, 16000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
   populate_serializer_with_liga_shared_coverage<3, 2, 2, 16000>(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_shared_coverage",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_with_liga_split_shared_coverage",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             سچ,
+                             HB_ٽيگ('G', 'S', 'U', 'B'));
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_splitting_spaces ()
+ساكن فراغ test_resolve_overflows_ذريعي_splitting_spaces ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_split_spaces (&c);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_ورهايو_spaces (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_split_spaces_expected (&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_ورهايو_spaces_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_splitting_spaces",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_splitting_spaces",
                              c,
                              e,
                              1);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 
 }
 
-static void test_resolve_overflows_via_splitting_spaces_2 ()
+ساكن فراغ test_resolve_overflows_ذريعي_splitting_spaces_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_split_spaces_2 (&c);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_ورهايو_spaces_2 (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_split_spaces_expected_2 (&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_ورهايو_spaces_expected_2 (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_splitting_spaces_2",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_splitting_spaces_2",
                              c,
                              e,
                              1);
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void test_resolve_overflows_via_priority ()
+ساكن فراغ test_resolve_overflows_ذريعي_ترجيح ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_priority_overflow (&c);
+  size_t بفر_سائيز = 160000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_ترجيح_حد_کان_مٿي (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_priority_overflow_expected (&e);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_ترجيح_حد_کان_مٿي_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_priority",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_resolve_overflows_via_priority",
                              c,
                              e,
                              3);
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
 
-static void test_virtual_link ()
+ساكن فراغ test_virtual_link ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_virtual_link (&c);
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
+  hb_blob_t* ٻاهريون = hb_resolve_overflows (c.object_گراف (), HB_ٽيگ_NONE);
+  hb_always_assert (ٻاهريون);
 
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == 5 + 4 * 2);
-  hb_always_assert (result[0]  == 'a');
-  hb_always_assert (result[5]  == 'c');
-  hb_always_assert (result[8]  == 'e');
-  hb_always_assert (result[9]  == 'b');
-  hb_always_assert (result[12] == 'd');
+  hb_بائيٽون_t نتيجو = ٻاهريون->as_بائيٽون ();
+  hb_always_assert (نتيجو.ڊيگهائي == 5 + 4 * 2);
+  hb_always_assert (نتيجو[0]  == 'a');
+  hb_always_assert (نتيجو[5]  == 'c');
+  hb_always_assert (نتيجو[8]  == 'e');
+  hb_always_assert (نتيجو[9]  == 'b');
+  hb_always_assert (نتيجو[12] == 'd');
 
-  free (buffer);
-  hb_blob_destroy (out);
+  حرر (بفر);
+  hb_blob_destroy (ٻاهريون);
 }
 
-static void
-test_shared_node_with_virtual_links ()
+ساكن فراغ
+test_shared_ڳنڍ_with_virtual_links ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
 
-  c.start_serialize<char> ();
+  c.شروعات_serialize<حرف> ();
 
-  unsigned obj_b = add_object ("b", 1, &c);
-  unsigned obj_c = add_object ("c", 1, &c);
+  بنانشان obj_b = جوڙيو_object ("b", 1, &c);
+  بنانشان obj_c = جوڙيو_object ("c", 1, &c);
 
-  start_object ("d", 1, &c);
-  add_virtual_offset (obj_b, &c);
-  unsigned obj_d_1 = c.pop_pack ();
+  شروعات_object ("d", 1, &c);
+  جوڙيو_virtual_وٿي (obj_b, &c);
+  بنانشان obj_d_1 = c.ڪڍو_pack ();
 
-  start_object ("d", 1, &c);
-  add_virtual_offset (obj_c, &c);
-  unsigned obj_d_2 = c.pop_pack ();
+  شروعات_object ("d", 1, &c);
+  جوڙيو_virtual_وٿي (obj_c, &c);
+  بنانشان obj_d_2 = c.ڪڍو_pack ();
 
   hb_always_assert (obj_d_1 == obj_d_2);
 
-  start_object ("a", 1, &c);
-  add_offset (obj_b, &c);
-  add_offset (obj_c, &c);
-  add_offset (obj_d_1, &c);
-  add_offset (obj_d_2, &c);
-  c.pop_pack ();
-  c.end_serialize ();
+  شروعات_object ("a", 1, &c);
+  جوڙيو_وٿي (obj_b, &c);
+  جوڙيو_وٿي (obj_c, &c);
+  جوڙيو_وٿي (obj_d_1, &c);
+  جوڙيو_وٿي (obj_d_2, &c);
+  c.ڪڍو_pack ();
+  c.پڇاڙي_serialize ();
 
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links.length == 2);
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[0].objidx == obj_b);
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[1].objidx == obj_c);
-  free(buffer);
+  hb_always_assert(c.object_گراف() [obj_d_1]->virtual_links.ڊيگهائي == 2);
+  hb_always_assert(c.object_گراف() [obj_d_1]->virtual_links[0].objidx == obj_b);
+  hb_always_assert(c.object_گراف() [obj_d_1]->virtual_links[1].objidx == obj_c);
+  حرر(بفر);
 }
 
-static void
-test_repack_last ()
+ساكن فراغ
+test_repack_آخري ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_repack_last (&c, true);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_with_repack_آخري (&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_repack_last (&e, false);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_with_repack_آخري (&e, خطأ);
 
-  run_resolve_overflow_test ("test_repack_last",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_repack_last",
                              c,
                              e,
                              20,
-                             false,
-                             HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             خطأ,
+                             HB_ٽيگ('a', 'b', 'c', 'd'),
+                             سچ);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void
+ساكن فراغ
 test_dont_duplicate_virtual ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_virtual (&c, true);
+  size_t بفر_سائيز = 200000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (بفر);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
+  populate_serializer_virtual (&c, سچ);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_virtual (&e, false);
+  فراغ* expected_بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_always_assert (expected_بفر);
+  hb_serialize_context_t e (expected_بفر, بفر_سائيز);
+  populate_serializer_virtual (&e, خطأ);
 
-  run_resolve_overflow_test ("test_dont_duplicate_virtual",
+  لاڳيتو_resolve_حد_کان_مٿي_test ("test_dont_duplicate_virtual",
                              c,
                              e,
                              20,
-                             false,
-                             HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             خطأ,
+                             HB_ٽيگ('a', 'b', 'c', 'd'),
+                             سچ);
 
-  free (buffer);
-  free (expected_buffer);
+  حرر (بفر);
+  حرر (expected_بفر);
 }
 
-static void
-test_deep_graph_traversal ()
+ساكن فراغ
+test_deep_گراف_traversal ()
 {
-  size_t buffer_size = 1000000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 1000000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
 
-  c.start_serialize ();
-  unsigned prev = add_object ("leaf", 4, &c);
-  for (unsigned i = 0; i < 2000; i++)
+  c.شروعات_serialize ();
+  بنانشان prev = جوڙيو_object ("leaf", 4, &c);
+  لكل (بنانشان i = 0; i < 2000; i++)
   {
-    start_object ("node", 4, &c);
-    add_offset (prev, &c);
-    prev = c.pop_pack (false);
+    شروعات_object ("node", 4, &c);
+    جوڙيو_وٿي (prev, &c);
+    prev = c.ڪڍو_pack (خطأ);
   }
-  c.end_serialize ();
+  c.پڇاڙي_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
   // Test find_subgraph (set)
-  hb_set_t visited_set;
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), visited_set).is_ok ());
-  hb_always_assert (visited_set.get_population () == 2001);
+  hb_سيٽ_t گهميل_سيٽ;
+  hb_always_assert (گراف.ڳوليو_subgraph (گراف.پاڙ_idx (), گهميل_سيٽ).is_ok ());
+  hb_always_assert (گهميل_سيٽ.get_population () == 2001);
 
   // Test find_subgraph_size
-  hb_set_t size_set;
-  size_t sz = graph.find_subgraph_size (graph.root_idx (), size_set).value ();
+  hb_سيٽ_t سائيز_سيٽ;
+  size_t sz = گراف.ڳوليو_subgraph_سائيز (گراف.پاڙ_idx (), سائيز_سيٽ).value ();
   hb_always_assert (sz == 4 + 2000 * 6);
 
   // Test find_subgraph (map)
   hb_map_t map;
-  map.set (graph.root_idx (), 1);
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), map).is_ok ());
+  map.سيٽ (گراف.پاڙ_idx (), 1);
+  hb_always_assert (گراف.ڳوليو_subgraph (گراف.پاڙ_idx (), map).is_ok ());
   hb_always_assert (map.get_population () == 2001);
 
   // Test assign_spaces (which exercises find_connected_nodes and find_space_roots)
-  hb_always_assert (graph.assign_spaces ().is_ok ());
+  hb_always_assert (گراف.سونپيو_spaces ().is_ok ());
 
   // Test duplicate_subgraph
-  hb_map_t index_map;
-  hb_always_assert (graph.duplicate_subgraph (graph.root_idx (), index_map).is_ok ());
-  hb_always_assert (index_map.get_population () == 2001);
+  hb_map_t اشاريو_map;
+  hb_always_assert (گراف.duplicate_subgraph (گراف.پاڙ_idx (), اشاريو_map).is_ok ());
+  hb_always_assert (اشاريو_map.get_population () == 2001);
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void
+ساكن فراغ
 test_32bit_roots_traversal ()
 {
-  size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 1000;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
 
-  c.start_serialize ();
-  unsigned leaf1 = add_object ("l1", 2, &c);
-  unsigned leaf2 = add_object ("l2", 2, &c);
+  c.شروعات_serialize ();
+  بنانشان leaf1 = جوڙيو_object ("l1", 2, &c);
+  بنانشان leaf2 = جوڙيو_object ("l2", 2, &c);
 
-  start_object ("mid", 3, &c);
-  add_wide_offset (leaf1, &c);
-  unsigned mid = c.pop_pack (false);
+  شروعات_object ("mid", 3, &c);
+  جوڙيو_wide_وٿي (leaf1, &c);
+  بنانشان mid = c.ڪڍو_pack (خطأ);
 
-  start_object ("root", 4, &c);
-  add_offset (mid, &c);
-  add_wide_offset (leaf2, &c);
-  c.pop_pack (false);
-  c.end_serialize ();
+  شروعات_object ("root", 4, &c);
+  جوڙيو_وٿي (mid, &c);
+  جوڙيو_wide_وٿي (leaf2, &c);
+  c.ڪڍو_pack (خطأ);
+  c.پڇاڙي_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
-  hb_set_t roots;
-  hb_always_assert (graph.find_32bit_roots (graph.root_idx (), roots).is_ok ());
+  hb_سيٽ_t roots;
+  hb_always_assert (گراف.ڳوليو_32bit_roots (گراف.پاڙ_idx (), roots).is_ok ());
   hb_always_assert (roots.has (leaf1 - 1));
   hb_always_assert (roots.has (leaf2 - 1));
   hb_always_assert (!roots.has (mid - 1));
   hb_always_assert (roots.get_population () == 2);
 
-  free (buffer);
+  حرر (بفر);
 
   // Test case where DFS fails but BFS succeeds:
   // root -16-> a
@@ -2925,125 +2925,125 @@ test_32bit_roots_traversal ()
   // and consider b a root. However, b should not be a root since it's not a top level 32 bit link.
   // BFS will handle this correctly by discovering a as a top level root and then avoiding further
   // exploring it.
-  buffer_size = 1000;
-  buffer = malloc (buffer_size);
-  hb_serialize_context_t c2 (buffer, buffer_size);
+  بفر_سائيز = 1000;
+  بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c2 (بفر, بفر_سائيز);
 
-  c2.start_serialize ();
-  unsigned b = add_object ("b", 1, &c2);
+  c2.شروعات_serialize ();
+  بنانشان b = جوڙيو_object ("b", 1, &c2);
 
-  start_object ("a", 1, &c2);
-  add_wide_offset (b, &c2);
-  unsigned a = c2.pop_pack (false);
+  شروعات_object ("a", 1, &c2);
+  جوڙيو_wide_وٿي (b, &c2);
+  بنانشان a = c2.ڪڍو_pack (خطأ);
 
-  start_object ("r", 1, &c2);
-  add_offset (a, &c2);
-  add_wide_offset (a, &c2);
-  c2.pop_pack (false);
+  شروعات_object ("r", 1, &c2);
+  جوڙيو_وٿي (a, &c2);
+  جوڙيو_wide_وٿي (a, &c2);
+  c2.ڪڍو_pack (خطأ);
 
-  c2.end_serialize ();
+  c2.پڇاڙي_serialize ();
 
-  graph_t graph2 = graph_t::create (c2.object_graph ()).value ();
+  گراف_t graph2 = گراف_t::create (c2.object_گراف ()).value ();
 
-  hb_set_t roots2;
-  hb_always_assert (graph2.find_32bit_roots (graph2.root_idx (), roots2).is_ok ());
+  hb_سيٽ_t roots2;
+  hb_always_assert (graph2.ڳوليو_32bit_roots (graph2.پاڙ_idx (), roots2).is_ok ());
   hb_always_assert (roots2.get_population () == 1);
   hb_always_assert (roots2.has (a - 1));
   hb_always_assert (!roots2.has (b - 1));
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void test_invalid_link_objidx ()
+ساكن فراغ test_invalid_link_objidx ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_complex_2 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
   // Poison a link to point to (unsigned) -1
-  auto links = graph.vertices_[graph.root_idx ()].real_links_writer();
-  links->objidx = (unsigned) -1;
+  خودڪار links = گراف.vertices_[گراف.پاڙ_idx ()].real_links_writer();
+  links->objidx = (بنانشان) -1;
 
   // Running Dijkstra / shortest distance sorting must not crash or OOB access,
   // and must return an error.
-  hb_always_assert (!graph.sort_shortest_distance ().is_ok ());
+  hb_always_assert (!گراف.ترتيب_ڏيو_سڀ_کان_ٿورو_مفاصلو ().is_ok ());
 
-  free (buffer);
+  حرر (بفر);
 }
 
-static void test_invalid_link_add_and_move ()
+ساكن فراغ test_invalid_link_جوڙيو_and_move ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t بفر_سائيز = 100;
+  فراغ* بفر = يادگيري_ڏيو (بفر_سائيز);
+  hb_serialize_context_t c (بفر, بفر_سائيز);
   populate_serializer_complex_2 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  گراف_t گراف = گراف_t::create (c.object_گراف ()).value ();
 
   // add_link with out-of-bounds child
   OT::Offset16 dummy;
-  hb_always_assert (!graph.add_link (&dummy, 0, (unsigned) -1).is_ok ());
+  hb_always_assert (!گراف.جوڙيو_link (&dummy, 0, (بنانشان) -1).is_ok ());
 
   // move_child with non-existent offset
-  auto res = graph.move_child (0, &dummy, 1, &dummy);
+  خودڪار res = گراف.move_ٻار (0, &dummy, 1, &dummy);
   hb_always_assert (!res.is_ok ());
 
-  free (buffer);
+  حرر (بفر);
 }
 
 // TODO(garretrieger): update will_overflow tests to check the overflows array.
 // TODO(garretrieger): add tests for priority raising.
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
   test_invalid_link_objidx ();
-  test_invalid_link_add_and_move ();
+  test_invalid_link_جوڙيو_and_move ();
   test_serialize ();
-  test_sort_shortest ();
-  test_will_overflow_1 ();
-  test_will_overflow_2 ();
-  test_will_overflow_3 ();
-  test_resolve_overflows_via_sort ();
-  test_resolve_overflows_via_duplication ();
-  test_resolve_overflows_via_multiple_duplications ();
-  test_resolve_overflows_via_priority ();
-  test_resolve_overflows_via_space_assignment ();
-  test_resolve_overflows_via_isolation ();
-  test_resolve_overflows_via_isolation_with_recursive_duplication ();
-  test_resolve_overflows_via_isolation_spaces ();
-  test_resolve_overflows_via_isolating_16bit_space ();
-  test_resolve_overflows_via_isolating_16bit_space_2 ();
-  test_resolve_overflows_via_splitting_spaces ();
-  test_resolve_overflows_via_splitting_spaces_2 ();
-  test_resolve_mixed_overflows_via_isolation_spaces ();
-  test_duplicate_leaf ();
+  test_ترتيب_ڏيو_سڀ_کان_ٿورو ();
+  test_will_حد_کان_مٿي_1 ();
+  test_will_حد_کان_مٿي_2 ();
+  test_will_حد_کان_مٿي_3 ();
+  test_resolve_overflows_ذريعي_ترتيب_ڏيو ();
+  test_resolve_overflows_ذريعي_duplication ();
+  test_resolve_overflows_ذريعي_گڻو_duplications ();
+  test_resolve_overflows_ذريعي_ترجيح ();
+  test_resolve_overflows_ذريعي_space_assignment ();
+  test_resolve_overflows_ذريعي_isolation ();
+  test_resolve_overflows_ذريعي_isolation_with_recursive_duplication ();
+  test_resolve_overflows_ذريعي_isolation_spaces ();
+  test_resolve_overflows_ذريعي_isolating_16bit_space ();
+  test_resolve_overflows_ذريعي_isolating_16bit_space_2 ();
+  test_resolve_overflows_ذريعي_splitting_spaces ();
+  test_resolve_overflows_ذريعي_splitting_spaces_2 ();
+  test_resolve_mixed_overflows_ذريعي_isolation_spaces ();
+  test_duplicate_پن ();
   test_duplicate_interior ();
   test_virtual_link ();
-  test_repack_last();
-  test_shared_node_with_virtual_links ();
+  test_repack_آخري();
+  test_shared_ڳنڍ_with_virtual_links ();
   test_resolve_with_extension_promotion ();
   test_resolve_with_shared_extension_promotion ();
-#ifndef HB_NO_BEYOND_64K
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
   test_resolve_with_extension_promotion_1_2 ();
-#endif
+#جيڪڏهن_پورو
   test_resolve_with_repeated_extension_promotion ();
-  test_resolve_with_basic_pair_pos_1_split ();
-  test_resolve_with_extension_pair_pos_1_split ();
-  test_resolve_with_basic_pair_pos_2_split ();
-  test_resolve_with_pair_pos_2_split_with_device_tables ();
-  test_resolve_with_close_to_limit_pair_pos_2_split ();
-  test_resolve_with_basic_mark_base_pos_1_split ();
-  test_resolve_with_basic_liga_split ();
-  test_resolve_with_liga_split_move ();
+  test_resolve_with_basic_pair_pos_1_ورهايو ();
+  test_resolve_with_extension_pair_pos_1_ورهايو ();
+  test_resolve_with_basic_pair_pos_2_ورهايو ();
+  test_resolve_with_pair_pos_2_ورهايو_with_device_tables ();
+  test_resolve_with_close_منزل_حد_بندي_pair_pos_2_ورهايو ();
+  test_resolve_with_basic_mark_بنياد_pos_1_ورهايو ();
+  test_resolve_with_basic_liga_ورهايو ();
+  test_resolve_with_liga_ورهايو_move ();
   test_dont_duplicate_virtual ();
-  test_resolve_with_liga_split_overlapping_clone ();
-  test_resolve_with_liga_split_shared_table ();
-  test_resolve_with_liga_split_shared_coverage ();
-  test_deep_graph_traversal ();
+  test_resolve_with_liga_ورهايو_overlapping_clone ();
+  test_resolve_with_liga_ورهايو_shared_جدول ();
+  test_resolve_with_liga_ورهايو_shared_coverage ();
+  test_deep_گراف_traversal ();
   test_32bit_roots_traversal ();
 
   // TODO(grieger): have run overflow tests compare graph equality not final packed binary.

@@ -22,78 +22,78 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_ANKR_TABLE_HH
-#define HB_AAT_LAYOUT_ANKR_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_AAT_LAYOUT_ANKR_جدول_HH
+#وصف_ڪريو HB_AAT_LAYOUT_ANKR_جدول_HH
 
-#include "hb-aat-layout-common.hh"
+#ضمن "hb-aat-layout-common.hh"
 
 /*
  * ankr -- Anchor Point
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ankr.html
  */
-#define HB_AAT_TAG_ankr HB_TAG('a','n','k','r')
+#وصف_ڪريو HB_AAT_ٽيگ_ankr HB_ٽيگ('a','n','k','r')
 
 
-namespace AAT {
+نطاق AAT {
 
-using namespace OT;
+استعمال نطاق OT;
 
 
-struct Anchor
+بنية Anchor
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  public:
+  عام:
   FWORD		xCoordinate;
   FWORD		yCoordinate;
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  DEFINE_سائيز_STATIC (4);
 };
 
-typedef Array32Of<Anchor> GlyphAnchors;
+تعريفنوع Array32_جو<Anchor> GlyphAnchors;
 
-struct ankr
+بنية ankr
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ankr;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_AAT_ٽيگ_ankr;
 
-  const Anchor &get_anchor (hb_codepoint_t glyph_id,
-			    unsigned int i,
-			    unsigned int num_glyphs) const
+  ثابت Anchor &get_anchor (hb_codepoint_t glyph_id,
+			    بنانشان صحيح i,
+			    بنانشان صحيح انگ_glyphs) ثابت
   {
-    const NNOffset16To<GlyphAnchors> *offset = (this+lookupTable).get_value (glyph_id, num_glyphs);
-    if (!offset)
-      return Null (Anchor);
-    const GlyphAnchors &anchors = &(this+anchorData) + *offset;
-    return anchors[i];
+    ثابت NNOffset16_منزل<GlyphAnchors> *وٿي = (هذا+lookup_جدول).get_قدر (glyph_id, انگ_glyphs);
+    إذا (!وٿي)
+      أرجع Null (Anchor);
+    ثابت GlyphAnchors &anchors = &(هذا+anchor_معلومات) + *وٿي;
+    أرجع anchors[i];
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  version == 0 &&
-			  c->check_range (this, anchorData) &&
-			  lookupTable.sanitize (c, this, &(this+anchorData))));
+			  نسخو == 0 &&
+			  c->check_range (هذا, anchor_معلومات) &&
+			  lookup_جدول.sanitize (c, هذا, &(هذا+anchor_معلومات))));
   }
 
-  protected:
-  HBUINT16	version;	/* Version number (set to zero) */
+  محمي:
+  HBUINT16	نسخو;	/* Version number (set to zero) */
   HBUINT16	flags;		/* Flags (currently unused; set to zero) */
-  Offset32To<Lookup<NNOffset16To<GlyphAnchors>>>
-		lookupTable;	/* Offset to the table's lookup table */
-  NNOffset32To<HBUINT8>
-		anchorData;	/* Offset to the glyph data table */
+  Offset32_منزل<Lookup<NNOffset16_منزل<GlyphAnchors>>>
+		lookup_جدول;	/* Offset to the table's lookup table */
+  NNOffset32_منزل<HBUINT8>
+		anchor_معلومات;	/* Offset to the glyph data table */
 
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عام:
+  DEFINE_سائيز_STATIC (12);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_ANKR_TABLE_HH */
+#جيڪڏهن_پورو /* HB_AAT_LAYOUT_ANKR_TABLE_HH */

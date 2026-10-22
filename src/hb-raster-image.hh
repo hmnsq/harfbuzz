@@ -24,40 +24,40 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_IMAGE_HH
-#define HB_RASTER_IMAGE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_RASTER_IMAGE_HH
+#وصف_ڪريو HB_RASTER_IMAGE_HH
 
-#include "hb.hh"
-#include "hb-raster.hh"
-#include "hb-raster.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-raster.hh"
+#ضمن "hb-raster.h"
+#ضمن "hb-object.hh"
+#ضمن "hb-vector.hh"
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+بنية hb_raster_image_t
 {
-  hb_object_header_t  header;
+  hb_object_سرو_t  سرو;
 
-  hb_vector_t<uint8_t> buffer;
+  hb_ويڪٽر_t<uint8_t> بفر;
   hb_raster_extents_t  extents     = {};
   hb_raster_format_t   format      = HB_RASTER_FORMAT_A8;
 
-  HB_INTERNAL static unsigned bytes_per_pixel (hb_raster_format_t format);
-  HB_INTERNAL bool configure (hb_raster_format_t format, hb_raster_extents_t extents);
-  HB_INTERNAL bool deserialize_from_png (hb_blob_t *png);
-  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () const;
-  HB_INTERNAL void clear ();
-  HB_INTERNAL const uint8_t *get_buffer () const;
-  HB_INTERNAL void composite_from (const hb_raster_image_t *src,
-				   hb_paint_composite_mode_t mode);
+  HB_اندروني ساكن بنانشان بائيٽون_في_pixel (hb_raster_format_t format);
+  HB_اندروني منطقي configure (hb_raster_format_t format, hb_raster_extents_t extents);
+  HB_اندروني منطقي deserialize_from_png (hb_blob_t *png);
+  HB_اندروني hb_blob_t *serialize_منزل_png_or_fail () ثابت;
+  HB_اندروني فراغ clear ();
+  HB_اندروني ثابت uint8_t *get_بفر () ثابت;
+  HB_اندروني فراغ مرکب_from (ثابت hb_raster_image_t *src,
+				   hb_paint_مرکب_گهڻائي_t گهڻائي);
 };
 
 /* Composite src image onto dst. */
-HB_INTERNAL void
-hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
-			   hb_paint_composite_mode_t mode);
+HB_اندروني فراغ
+hb_raster_image_مرکب (hb_raster_image_t *dst,
+			   ثابت hb_raster_image_t *src,
+			   hb_paint_مرکب_گهڻائي_t گهڻائي);
 
 
-#endif /* HB_RASTER_IMAGE_HH */
+#جيڪڏهن_پورو /* HB_RASTER_IMAGE_HH */

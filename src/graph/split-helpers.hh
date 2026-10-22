@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#جيڪڏهن_وصف_نه_ٿيل گراف_ورهايو_HELPERS_HH
+#وصف_ڪريو گراف_ورهايو_HELPERS_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق گراف {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+سانچو<قسم_نالو Context>
+HB_اندروني
+گراف_نتيجو_t<hb_ويڪٽر_t<بنانشان>> actuate_subtable_ورهايو (Context& ورهايو_context,
+                                                              ثابت hb_ويڪٽر_t<بنانشان>& ورهايو_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_ويڪٽر_t<بنانشان> new_objects;
+  إذا (!ورهايو_points)
+    أرجع Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  لكل (بنانشان i = 0; i < ورهايو_points.ڊيگهائي; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    بنانشان شروعات = ورهايو_points[i];
+    بنانشان پڇاڙي = (i < ورهايو_points.ڊيگهائي - 1)
+                   ? ورهايو_points[i + 1]
+                   : ورهايو_context.original_ڳڻپ_2 ();
+    TRY_سونپيو (بنانشان id, ورهايو_context.clone_range (شروعات, پڇاڙي));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (گراف_نتيجو_t<فراغ>::from (new_objects, ورهاست_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (ورهايو_context.shrink (ورهايو_points[0]));
 
-  return Ok(new_objects);
+  أرجع Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#جيڪڏهن_پورو  // GRAPH_SPLIT_HELPERS_HH

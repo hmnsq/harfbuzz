@@ -26,186 +26,186 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GSUB_TABLE_HH
-#define HB_OT_LAYOUT_GSUB_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_LAYOUT_GSUB_جدول_HH
+#وصف_ڪريو HB_OT_LAYOUT_GSUB_جدول_HH
 
-#include "OT/Layout/GSUB/GSUB.hh"
+#ضمن "OT/Layout/GSUB/GSUB.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
 // TODO(garretrieger): Move into the new layout directory.
 /* Out-of-class implementation for methods recursing */
 
-#ifndef HB_NO_OT_LAYOUT
-/*static*/ inline bool ExtensionSubst::is_reverse () const
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_OT_LAYOUT
+/*static*/ مضمن منطقي ExtensionSubst::is_ابتو () ثابت
 {
-  return SubstLookup::lookup_type_is_reverse (get_type ());
+  أرجع SubstLookup::lookup_type_is_ابتو (get_type ());
 }
-template <typename context_t>
-/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+سانچو <قسم_نالو context_t>
+/*static*/ قسم_نالو context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, بنانشان صحيح lookup_اشاريو)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
-}
-
-/*static*/ typename hb_closure_context_t::return_t SubstLookup::closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
-{
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  if (l.may_have_non_1to1 ())
-      hb_set_add_range (covered_seq_indices, seq_index, end_index);
-  return l.dispatch (c);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاريو);
+  أرجع l.dispatch (c);
 }
 
-/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+/*static*/ قسم_نالو hb_گهيرو_context_t::return_t SubstLookup::گهيرو_glyphs_recurse_func (hb_گهيرو_context_t *c, بنانشان lookup_اشاريو, hb_سيٽ_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاريو);
+  إذا (l.may_have_non_1to1 ())
+      hb_سيٽ_جوڙيو_range (covered_seq_indices, seq_اشاريو, پڇاڙي_اشاريو);
+  أرجع l.dispatch (c);
+}
+
+/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, بنانشان lookup_اشاريو, hb_ٻٽو_انگ_صفحو_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو)
+{
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاريو);
   /* After a non-1-to-1 lookup (expansion/contraction), subsequent lookups in the same
    * contextual rule see all glyphs, not position-specific ones. This matches closure behavior.
    * Mark sequence positions as covered so later lookups use the full glyph set. */
-  if (l.may_have_non_1to1 ())
-      covered_seq_indices->add_range (seq_index, end_index);
+  إذا (l.may_have_non_1to1 ())
+      covered_seq_indices->جوڙيو_range (seq_اشاريو, پڇاڙي_اشاريو);
 
-  hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
-    return hb_empty_t ();
+  hb_depend_context_t::recurse_ڪنجي_t key;
+  إذا (!c->get_recurse_ڪنجي (lookup_اشاريو, &key))
+    أرجع hb_خالي_جايون_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
-  c->finish_recurse (key);
-  return ret;
+  c->پڄاڻي_recurse (key);
+  أرجع ret;
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-SubstLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+سانچو <>
+مضمن hb_گهيرو_lookups_context_t::return_t
+SubstLookup::dispatch_recurse_func<hb_گهيرو_lookups_context_t> (hb_گهيرو_lookups_context_t *c, بنانشان this_اشاريو)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (this_اشاريو);
+  أرجع l.گهيرو_lookups (c, this_اشاريو);
 }
 
-template <>
-inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+سانچو <>
+مضمن منطقي SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, بنانشان صحيح lookup_اشاريو)
 {
-  auto *gsub = c->face->table.GSUB.get_relaxed ();
-  const SubstLookup &l = gsub->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
-  c->set_lookup_props (l.get_props ());
+  خودڪار *gsub = c->face->جدول.GSUB.get_relaxed ();
+  ثابت SubstLookup &l = gsub->جدول->get_lookup (lookup_اشاريو);
+  بنانشان صحيح saved_lookup_props = c->lookup_props;
+  بنانشان صحيح saved_lookup_اشاريو = c->lookup_اشاريو;
+  c->سيٽ_lookup_اشاريو (lookup_اشاريو);
+  c->سيٽ_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
-  hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
-  hb_swap (c->match_positions, saved_match_positions);
+  uint32_t ڍير_ميلاپ_positions[8];
+  hb_ويڪٽر_t<uint32_t> saved_ميلاپ_positions;
+  saved_ميلاپ_positions.سيٽ_storage (ڍير_ميلاپ_positions);
+  hb_مٽا_سٽا (c->ميلاپ_positions, saved_ميلاپ_positions);
 
-  bool ret = false;
-  auto *accel = gsub->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  منطقي ret = خطأ;
+  خودڪار *accel = gsub->get_accel (lookup_اشاريو);
+  ret = accel && accel->apply (c, خطأ);
 
-  c->set_lookup_index (saved_lookup_index);
-  c->set_lookup_props (saved_lookup_props);
+  c->سيٽ_lookup_اشاريو (saved_lookup_اشاريو);
+  c->سيٽ_lookup_props (saved_lookup_props);
 
-  hb_swap (c->match_positions, saved_match_positions);
+  hb_مٽا_سٽا (c->ميلاپ_positions, saved_ميلاپ_positions);
 
-  return ret;
+  أرجع ret;
 }
-#endif
+#جيڪڏهن_پورو
 
 } /* namespace GSUB_impl */
 } /* namespace Layout */
 
-inline void
-GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) const
+مضمن فراغ
+GSUB_accelerator_t::depend (hb_depend_معلومات_builder_t *builder, hb_face_t *face) ثابت
 {
-  if (!this->table->has_data ()) return;
+  إذا (!هذا->جدول->has_معلومات ()) أرجع;
 
-  unsigned num_features = this->table->get_feature_count ();
-  unsigned num_lookups  = this->table->get_lookup_count ();
+  بنانشان انگ_features = هذا->جدول->get_feature_ڳڻپ ();
+  بنانشان انگ_lookups  = هذا->جدول->get_lookup_ڳڻپ ();
 
-  hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
-    return;
-  this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
+  hb_ويڪٽر_t<hb_ٽيگ_t> feature_ٽيگ_فهرست;
+  إذا (!builder->check_success (feature_ٽيگ_فهرست.resize (انگ_features)))
+    أرجع;
+  هذا->جدول->get_feature_ٽيگ_فهرست (0, &انگ_features, feature_ٽيگ_فهرست.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
-    return;
+  إذا (!builder->init_lookup_features (انگ_lookups))
+    أرجع;
 
-  hb_vector_t<hb_tag_t> feature_query_v;
+  hb_ويڪٽر_t<hb_ٽيگ_t> feature_query_v;
   feature_query_v.resize (2);
   feature_query_v[1] = 0;
 
-  hb_set_t seen_features;
-  hb_set_t feature_indexes, lookup_indexes;
+  hb_سيٽ_t ڏٺل_features;
+  hb_سيٽ_t feature_indexes, lookup_indexes;
 
-  for (auto ft : feature_tags)
+  لكل (خودڪار ft : feature_ٽيگ_فهرست)
   {
-    if (seen_features.has (ft)) continue;
-    seen_features.add (ft);
+    إذا (ڏٺل_features.has (ft)) استمر;
+    ڏٺل_features.جوڙيو (ft);
     feature_query_v[0] = ft;
     feature_indexes.reset ();
-    hb_ot_layout_collect_features (face, HB_OT_TAG_GSUB, nullptr, nullptr,
+    hb_ot_layout_collect_features (face, HB_OT_ٽيگ_GSUB, خالي_اشارو, خالي_اشارو,
                                    feature_query_v.arrayZ, &feature_indexes);
     lookup_indexes.reset ();
-    for (auto feature_index : feature_indexes)
-      this->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
+    لكل (خودڪار feature_اشاريو : feature_indexes)
+      هذا->جدول->get_feature (feature_اشاريو).جوڙيو_lookup_indexes_منزل (&lookup_indexes);
 
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+    لكل (خودڪار lookup_اشاريو : lookup_indexes)
+      إذا (unlikely (!builder->جوڙيو_lookup_feature (lookup_اشاريو, ft)))
+	أرجع;
 
-    auto &fv = this->table->get_feature_variations ();
-    auto fi_count = fv.record_count ();
-    for (unsigned i = 0; i < fi_count; i++)
+    خودڪار &fv = هذا->جدول->get_feature_variations ();
+    خودڪار fi_ڳڻپ = fv.رڪارڊ_ڳڻپ ();
+    لكل (بنانشان i = 0; i < fi_ڳڻپ; i++)
     {
       lookup_indexes.reset ();
-      for (auto feature_index : feature_indexes)
+      لكل (خودڪار feature_اشاريو : feature_indexes)
       {
-	auto feature_ptr = fv.find_substitute (i, feature_index);
-	if (feature_ptr != nullptr)
-	  feature_ptr->add_lookup_indexes_to (&lookup_indexes);
+	خودڪار feature_ptr = fv.ڳوليو_substitute (i, feature_اشاريو);
+	إذا (feature_ptr != خالي_اشارو)
+	  feature_ptr->جوڙيو_lookup_indexes_منزل (&lookup_indexes);
       }
-      for (auto lookup_index : lookup_indexes)
-	if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	  return;
+      لكل (خودڪار lookup_اشاريو : lookup_indexes)
+	إذا (unlikely (!builder->جوڙيو_lookup_feature (lookup_اشاريو, ft)))
+	  أرجع;
     }
 
-#ifndef HB_NO_VAR
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
     lookup_indexes.reset ();
     fv.collect_lookup_variation_lookups (&feature_indexes, &lookup_indexes);
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
-#endif
+    لكل (خودڪار lookup_اشاريو : lookup_indexes)
+      إذا (unlikely (!builder->جوڙيو_lookup_feature (lookup_اشاريو, ft)))
+	أرجع;
+#جيڪڏهن_پورو
   }
 
-  if (unlikely (!builder->finish_lookup_features ()))
-    return;
+  إذا (unlikely (!builder->پڄاڻي_lookup_features ()))
+    أرجع;
 
-  hb_set_t all_glyphs;
-  all_glyphs.add_range (0, face->get_num_glyphs () - 1);
+  hb_سيٽ_t all_glyphs;
+  all_glyphs.جوڙيو_range (0, face->get_انگ_glyphs () - 1);
 
   hb_depend_context_t c (builder, face, &all_glyphs);
 
-  for (unsigned i = 0; i < num_lookups; i++)
+  لكل (بنانشان i = 0; i < انگ_lookups; i++)
   {
-    auto features = builder->get_lookup_features (i);
-    if (!features)
+    خودڪار features = builder->get_lookup_features (i);
+    إذا (!features)
     {
-      DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+      DEBUG_نياپو_LEVEL (DEPEND, خالي_اشارو, 1, 0,
                        "Skipping lookup %u (no features)", i);
-      continue;
+      استمر;
     }
-    DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+    DEBUG_نياپو_LEVEL (DEPEND, خالي_اشارو, 1, 0,
                      "Processing lookup %u with features:", i);
-    c.lookup_index = i;
+    c.lookup_اشاريو = i;
     c.reset_recurse_cache ();
-    c.lookups_seen.clear ();
-    c.lookups_seen.add (i);  /* Seed for A→B→A cycle detection in recurse(). */
-    this->table->get_lookup (i).depend (&c);
+    c.lookups_ڏٺل.clear ();
+    c.lookups_ڏٺل.جوڙيو (i);  /* Seed for A→B→A cycle detection in recurse(). */
+    هذا->جدول->get_lookup (i).depend (&c);
   }
 }
 
 } /* namespace OT */
 
-#endif /* HB_OT_LAYOUT_GSUB_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_LAYOUT_GSUB_TABLE_HH */

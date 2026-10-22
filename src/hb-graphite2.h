@@ -23,12 +23,12 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_GRAPHITE2_H
-#define HB_GRAPHITE2_H
+#جيڪڏهن_وصف_نه_ٿيل HB_GRAPHITE2_H
+#وصف_ڪريو HB_GRAPHITE2_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include <graphite2/Font.h>
+#ضمن <graphite2/Font.h>
 
 HB_BEGIN_DECLS
 
@@ -41,21 +41,21 @@ HB_BEGIN_DECLS
  * For more information, see http://graphite.sil.org/
  *
  **/
-#define HB_GRAPHITE2_TAG_SILF HB_TAG('S','i','l','f')
+#وصف_ڪريو HB_GRAPHITE2_ٽيگ_SILF HB_ٽيگ('S','i','l','f')
 
 
 HB_EXTERN gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face);
 
-#ifndef HB_DISABLE_DEPRECATED
+#جيڪڏهن_وصف_نه_ٿيل HB_DISABLE_DEPRECATED
 
 HB_DEPRECATED_FOR (hb_graphite2_face_get_gr_face)
 HB_EXTERN gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font);
 
-#endif
+#جيڪڏهن_پورو
 
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_GRAPHITE2_H */
+#جيڪڏهن_پورو /* HB_GRAPHITE2_H */

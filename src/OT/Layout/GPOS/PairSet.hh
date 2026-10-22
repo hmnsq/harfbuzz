@@ -1,267 +1,267 @@
-#ifndef OT_LAYOUT_GPOS_PAIRSET_HH
-#define OT_LAYOUT_GPOS_PAIRSET_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GPOS_PAIRSET_HH
+#وصف_ڪريو OT_LAYOUT_GPOS_PAIRSET_HH
 
-#include "PairValueRecord.hh"
+#ضمن "PairValueRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+بنية pair_سيٽ_قدرون_t
 {
-  const ValueBase *base;
-  glyph_data_t glyphs;
-  const Value *values;
-  unsigned count;
-  unsigned record_size;
+  ثابت قدر_بنياد *بنياد;
+  glyph_معلومات_t glyphs;
+  ثابت قدر *values;
+  بنانشان ڳڻپ;
+  بنانشان رڪارڊ_سائيز;
 
-  unsigned get_glyph (unsigned i) const
+  بنانشان get_glyph (بنانشان i) ثابت
   {
-    glyph_data_t glyph = glyphs;
-    glyph.data = (const char *) glyph.data + i * record_size;
-    return glyph[0];
+    glyph_معلومات_t glyph = glyphs;
+    glyph.معلومات = (ثابت حرف *) glyph.معلومات + i * رڪارڊ_سائيز;
+    أرجع glyph[0];
   }
 
-  const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  ثابت قدر *get_قدرون (بنانشان i) ثابت
+  { أرجع reinterpret_cast<ثابت قدر *> ((ثابت حرف *) values + i * رڪارڊ_سائيز); }
 
-  hb_pair_t<unsigned, unsigned>
-  compute_effective_value_formats (const hb_set_t &glyphset,
-                                   const ValueFormat valueFormats[2],
-                                   bool strip_hints, bool strip_empty,
-                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  hb_pair_t<بنانشان, بنانشان>
+  compute_effective_قدر_formats (ثابت hb_سيٽ_t &glyphset,
+                                   ثابت قدر_Format قدر_Formats[2],
+                                   منطقي strip_hints, منطقي strip_خالي_جايون,
+                                   ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *varidx_delta_map) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned format1 = 0, format2 = 0;
-    for (unsigned i = 0; i < count; i++)
+    بنانشان len1 = قدر_Formats[0].get_len ();
+    بنانشان format1 = 0, format2 = 0;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
-      if (!glyphset.has (get_glyph (i))) continue;
-      const Value *v = get_values (i);
-      format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
-      format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
+      إذا (!glyphset.has (get_glyph (i))) استمر;
+      ثابت قدر *v = get_قدرون (i);
+      format1 |= قدر_Formats[0].get_effective_format (v, strip_hints, strip_خالي_جايون, بنياد, varidx_delta_map);
+      format2 |= قدر_Formats[1].get_effective_format (v + len1, strip_hints, strip_خالي_جايون, بنياد, varidx_delta_map);
     }
-    return hb_pair (format1, format2);
+    أرجع hb_pair (format1, format2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat valueFormats[2]) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت قدر_Format قدر_Formats[2]) ثابت
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    for (unsigned i = 0; i < count; i++)
+    بنانشان len1 = قدر_Formats[0].get_len ();
+    بنانشان len2 = قدر_Formats[1].get_len ();
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
-      if (!c->glyph_set->has (get_glyph (i))) continue;
-      const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
-        valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
-        valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
+      إذا (!c->glyph_سيٽ->has (get_glyph (i))) استمر;
+      ثابت hb_array_t<ثابت قدر> v = hb_array (get_قدرون (i), len1 + len2);
+      إذا (قدر_Formats[0].has_device ())
+        قدر_Formats[0].collect_variation_indices (c, بنياد, v.sub_array (0, len1));
+      إذا (قدر_Formats[1].has_device ())
+        قدر_Formats[1].collect_variation_indices (c, بنياد, v.sub_array (len1, len2));
     }
   }
 };
 
-template <typename Types>
-struct PairSet : ValueBase
+سانچو <قسم_نالو Types>
+بنية Pair_سيٽ : قدر_بنياد
 {
-  template <typename Types2>
-  friend struct PairPosFormat1_3;
+  سانچو <قسم_نالو Types2>
+  دوست بنية PairPosFormat1_3;
 
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  استعمال Pair_قدر_رڪارڊ = GPOS_impl::Pair_قدر_رڪارڊ<Types>;
 
-  protected:
-  typename Types::HBUINT
+  محمي:
+  قسم_نالو Types::HBUINT
                         len;    /* Number of PairValueRecords */
-  PairValueRecord       firstPairValueRecord;
+  Pair_قدر_رڪارڊ       پهريون_Pair_قدر_رڪارڊ;
                                 /* Array of PairValueRecords--ordered
                                  * by GlyphID of the second glyph */
-  public:
-  DEFINE_SIZE_MIN (Types::HBUINT::static_size);
+  عام:
+  DEFINE_سائيز_MIN (Types::HBUINT::static_سائيز);
 
-  static size_t get_size (unsigned len1, unsigned len2)
+  ساكن size_t get_سائيز (بنانشان len1, بنانشان len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    أرجع Types::HBGlyphID::static_سائيز + قدر::static_سائيز * (len1 + len2);
   }
-  static size_t get_size (const ValueFormat valueFormats[2])
+  ساكن size_t get_سائيز (ثابت قدر_Format قدر_Formats[2])
   {
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    return get_size (len1, len2);
+    بنانشان len1 = قدر_Formats[0].get_len ();
+    بنانشان len2 = قدر_Formats[1].get_len ();
+    أرجع get_سائيز (len1, len2);
   }
 
-  struct sanitize_closure_t
+  بنية sanitize_گهيرو_t
   {
-    const ValueFormat *valueFormats;
-    unsigned int len1; /* valueFormats[0].get_len() */
-    size_t stride; /* bytes */
+    ثابت قدر_Format *قدر_Formats;
+    بنانشان صحيح len1; /* valueFormats[0].get_len() */
+    size_t stride; /*بائيٽون*/
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت sanitize_گهيرو_t *گهيرو) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    إذا (!(c->check_struct (هذا) &&
 	  hb_barrier () &&
-          c->check_range (&firstPairValueRecord,
+          c->check_range (&پهريون_Pair_قدر_رڪارڊ,
                           len,
-                          closure->stride))) return_trace (false);
+                          گهيرو->stride))) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned int count = len;
-    const PairValueRecord *record = &firstPairValueRecord;
+    بنانشان صحيح ڳڻپ = len;
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = &پهريون_Pair_قدر_رڪارڊ;
     return_trace (c->lazy_some_gpos ||
-		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
-                   closure->valueFormats[1].sanitize_values_stride_unsafe (c, this, &record->values[closure->len1], count, closure->stride)));
+		  (گهيرو->قدر_Formats[0].sanitize_قدرون_stride_unsafe (c, هذا, &رڪارڊ->values[0], ڳڻپ, گهيرو->stride) &&
+                   گهيرو->قدر_Formats[1].sanitize_قدرون_stride_unsafe (c, هذا, &رڪارڊ->values[گهيرو->len1], ڳڻپ, گهيرو->stride)));
   }
 
-  bool intersects (const hb_set_t *glyphs,
-                   const ValueFormat *valueFormats) const
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs,
+                   ثابت قدر_Format *قدر_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    بنانشان رڪارڊ_سائيز = get_سائيز (قدر_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = &پهريون_Pair_قدر_رڪارڊ;
+    بنانشان صحيح ڳڻپ = len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      if (glyphs->has (record->secondGlyph))
-        return true;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphs->has (رڪارڊ->ٻيو_Glyph))
+        أرجع سچ;
+      رڪارڊ = &Struct_At_وٿي<ثابت Pair_قدر_رڪارڊ> (رڪارڊ, رڪارڊ_سائيز);
     }
-    return false;
+    أرجع خطأ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-                       const ValueFormat *valueFormats) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c,
+                       ثابت قدر_Format *قدر_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
+    بنانشان رڪارڊ_سائيز = get_سائيز (قدر_Formats);
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    c->input->add_array (&record->secondGlyph, len, record_size);
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = &پهريون_Pair_قدر_رڪارڊ;
+    c->داخلا_2->جوڙيو_array (&رڪارڊ->ٻيو_Glyph, len, رڪارڊ_سائيز);
   }
 
-  template <typename set_t>
-  void collect_second_glyphs (set_t *glyphs,
-			      const ValueFormat *valueFormats) const
+  سانچو <قسم_نالو سيٽ_t>
+  فراغ collect_ٻيو_glyphs (سيٽ_t *glyphs,
+			      ثابت قدر_Format *قدر_Formats) ثابت
   {
-    unsigned record_size = get_size (valueFormats);
-    const PairValueRecord *record = &firstPairValueRecord;
-    glyphs->add_array (&record->secondGlyph, len, record_size);
+    بنانشان رڪارڊ_سائيز = get_سائيز (قدر_Formats);
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = &پهريون_Pair_قدر_رڪارڊ;
+    glyphs->جوڙيو_array (&رڪارڊ->ٻيو_Glyph, len, رڪارڊ_سائيز);
   }
 
-  pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
+  pair_سيٽ_قدرون_t get_قدرون_view (ثابت قدر_Format قدر_Formats[2]) ثابت
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
-            (unsigned) len, (unsigned) get_size (valueFormats)};
+    أرجع {هذا, &پهريون_Pair_قدر_رڪارڊ.ٻيو_Glyph, &پهريون_Pair_قدر_رڪارڊ.values[0],
+            (بنانشان) len, (بنانشان) get_سائيز (قدر_Formats)};
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت قدر_Format *قدر_Formats) ثابت
   {
-    get_values_view (valueFormats).collect_variation_indices (c, valueFormats);
+    get_قدرون_view (قدر_Formats).collect_variation_indices (c, قدر_Formats);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-              const ValueFormat *valueFormats,
-              unsigned int pos) const
+  منطقي apply (hb_ot_apply_context_t *c,
+              ثابت قدر_Format *قدر_Formats,
+              بنانشان صحيح pos) ثابت
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
-    unsigned record_size = get_size (len1, len2);
+    TRACE_APPLY (هذا);
+    hb_بفر_t *بفر = c->بفر;
+    بنانشان صحيح len1 = قدر_Formats[0].get_len ();
+    بنانشان صحيح len2 = قدر_Formats[1].get_len ();
+    بنانشان رڪارڊ_سائيز = get_سائيز (len1, len2);
 
-    const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
-                                                &firstPairValueRecord,
-                                                (unsigned) len,
-                                                record_size);
-    if (record)
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = hb_bsearch (بفر->info[pos].codepoint,
+                                                &پهريون_Pair_قدر_رڪارڊ,
+                                                (بنانشان) len,
+                                                رڪارڊ_سائيز);
+    إذا (رڪارڊ)
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پيغام (c->font,
 			    "try kerning glyphs at %u,%u",
-			    c->buffer->idx, pos);
+			    c->بفر->idx, pos);
       }
 
-      bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
-      bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
+      منطقي applied_پهريون = len1 && قدر_Formats[0].apply_قدر (c, هذا, &رڪارڊ->values[0], بفر->cur_pos());
+      منطقي applied_ٻيو = len2 && قدر_Formats[1].apply_قدر (c, هذا, &رڪارڊ->values[len1], بفر->pos[pos]);
 
-      if (applied_first || applied_second)
-	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (applied_پهريون || applied_ٻيو)
+	إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
 	{
-	  c->buffer->message (c->font,
+	  c->بفر->پيغام (c->font,
 			      "kerned glyphs at %u,%u",
-			      c->buffer->idx, pos);
+			      c->بفر->idx, pos);
 	}
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پيغام (c->font,
 			    "tried kerning glyphs at %u,%u",
-			    c->buffer->idx, pos);
+			    c->بفر->idx, pos);
       }
 
-      if (applied_first || applied_second)
-        buffer->unsafe_to_break (buffer->idx, pos + 1);
-      else
+      إذا (applied_پهريون || applied_ٻيو)
+        بفر->unsafe_منزل_break (بفر->idx, pos + 1);
+      وإلا
         /* Even a zero-valued pair record is a concat hazard. */
-        buffer->unsafe_to_concat (buffer->idx, pos + 1);
+        بفر->unsafe_منزل_concat (بفر->idx, pos + 1);
 
-      if (len2)
+      إذا (len2)
       {
 	pos++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
       // https://github.com/harfbuzz/harfbuzz/issues/3888#issuecomment-1326781116
-      buffer->unsafe_to_break (buffer->idx, pos + 1);
+      بفر->unsafe_منزل_break (بفر->idx, pos + 1);
       }
 
-      buffer->idx = pos;
-      return_trace (true);
+      بفر->idx = pos;
+      return_trace (سچ);
     }
-    buffer->unsafe_to_concat (buffer->idx, pos + 1);
-    return_trace (false);
+    بفر->unsafe_منزل_concat (بفر->idx, pos + 1);
+    return_trace (خطأ);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ValueFormat valueFormats[2],
-               const ValueFormat newFormats[2]) const
+  منطقي subset (hb_subset_context_t *c,
+               ثابت قدر_Format قدر_Formats[2],
+               ثابت قدر_Format newFormats[2]) ثابت
   {
-    TRACE_SUBSET (this);
-    auto snap = c->serializer->snapshot ();
+    TRACE_SUBSET (هذا);
+    خودڪار snap = c->serializer->snapshot ();
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->len = 0;
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
+    ٻاهريون->len = 0;
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_سيٽ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned len1 = valueFormats[0].get_len ();
-    unsigned len2 = valueFormats[1].get_len ();
-    unsigned record_size = get_size (len1, len2);
+    بنانشان len1 = قدر_Formats[0].get_len ();
+    بنانشان len2 = قدر_Formats[1].get_len ();
+    بنانشان رڪارڊ_سائيز = get_سائيز (len1, len2);
 
-    pair_value_record_context_t context =
+    pair_قدر_رڪارڊ_context_t context =
     {
-      this,
-      valueFormats,
+      هذا,
+      قدر_Formats,
       newFormats,
       len1,
       &glyph_map,
       &c->plan->layout_variation_idx_delta_map
     };
 
-    const PairValueRecord *record = &firstPairValueRecord;
-    unsigned count = len, num = 0;
-    for (unsigned i = 0; i < count; i++)
+    ثابت Pair_قدر_رڪارڊ *رڪارڊ = &پهريون_Pair_قدر_رڪارڊ;
+    بنانشان ڳڻپ = len, انگ = 0;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
-      if (glyphset.has (record->secondGlyph)
-         && record->subset (c, &context)) num++;
-      record = &StructAtOffset<const PairValueRecord> (record, record_size);
+      إذا (glyphset.has (رڪارڊ->ٻيو_Glyph)
+         && رڪارڊ->subset (c, &context)) انگ++;
+      رڪارڊ = &Struct_At_وٿي<ثابت Pair_قدر_رڪارڊ> (رڪارڊ, رڪارڊ_سائيز);
     }
 
-    out->len = num;
-    if (!num) c->serializer->revert (snap);
-    return_trace (num);
+    ٻاهريون->len = انگ;
+    إذا (!انگ) c->serializer->revert (snap);
+    return_trace (انگ);
   }
 };
 
@@ -270,4 +270,4 @@ struct PairSet : ValueBase
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRSET_HH
+#جيڪڏهن_پورو  // OT_LAYOUT_GPOS_PAIRSET_HH

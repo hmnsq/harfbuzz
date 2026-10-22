@@ -23,138 +23,138 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_CFF1_INTERP_CS_HH
+#وصف_ڪريو HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+استعمال نطاق OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+تعريفنوع biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+بنية cff1_cs_interp_env_t : cs_interp_env_t<عدد_t, CFF1Subrs>
 {
-  template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
+  سانچو <قسم_نالو ACC>
+  cff1_cs_interp_env_t (ثابت hb_ubytes_t &str, ACC &acc, بنانشان صحيح fd,
+			ثابت صحيح *coords_=خالي_اشارو, بنانشان صحيح انگ_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.ذاتي_Dicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
-    arg_start = 0;
-    in_seac = false;
+    processed_ويڪر = خطأ;
+    has_ويڪر = خطأ;
+    arg_شروعات = 0;
+    اندريون_seac = خطأ;
   }
 
-  void set_width (bool has_width_)
+  فراغ سيٽ_ويڪر (منطقي has_ويڪر_2)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    إذا (likely (!processed_ويڪر && (SUPER::arg_ڍير.get_ڳڻپ () > 0)))
     {
-      if (has_width_)
+      إذا (has_ويڪر_2)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
-	arg_start = 1;
+	ويڪر = SUPER::arg_ڍير[0];
+	has_ويڪر = سچ;
+	arg_شروعات = 1;
       }
     }
-    processed_width = true;
+    processed_ويڪر = سچ;
   }
 
-  void clear_args ()
+  فراغ clear_دليلون ()
   {
-    arg_start = 0;
-    SUPER::clear_args ();
+    arg_شروعات = 0;
+    SUPER::clear_دليلون ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  فراغ سيٽ_اندريون_seac (منطقي اندريون_seac_2) { اندريون_seac = اندريون_seac_2; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  منطقي	  processed_ويڪر;
+  منطقي	  has_ويڪر;
+  بنانشان صحيح  arg_شروعات;
+  عدد_t	ويڪر;
+  منطقي	  اندريون_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  خاص:
+  تعريفنوع cs_interp_env_t<عدد_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+سانچو <قسم_نالو OPSET, قسم_نالو PARAM, قسم_نالو رستو_3=رستو_procs_null_t<cff1_cs_interp_env_t, PARAM>>
+بنية cff1_cs_opset_t : cs_opset_t<عدد_t, OPSET, cff1_cs_interp_env_t, PARAM, رستو_3>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_op (op_ڪوڊ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
-	break;
+    بدل (op) {
+      حالة Op_ڪوڊ_dotsection:
+	SUPER::flush_دليلون_and_op (op, env, param);
+	اكسر;
 
-      case OpCode_endchar:
-	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+      حالة Op_ڪوڊ_endchar:
+	OPSET::check_ويڪر (op, env, param);
+	إذا (env.arg_ڍير.get_ڳڻپ () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	OPSET::flush_دليلون_and_op (op, env, param);
+	env.سيٽ_endchar (سچ);
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ check_ويڪر (op_ڪوڊ_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    إذا (!env.processed_ويڪر)
     {
-      bool  has_width = false;
-      switch (op)
+      منطقي  has_ويڪر = خطأ;
+      بدل (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	حالة Op_ڪوڊ_endchar:
+	حالة Op_ڪوڊ_hstem:
+	حالة Op_ڪوڊ_hstemhm:
+	حالة Op_ڪوڊ_vstem:
+	حالة Op_ڪوڊ_vstemhm:
+	حالة Op_ڪوڊ_hintmask:
+	حالة Op_ڪوڊ_cntrmask:
+	  has_ويڪر = ((env.arg_ڍير.get_ڳڻپ () & 1) != 0);
+	  اكسر;
+	حالة Op_ڪوڊ_hmoveto:
+	حالة Op_ڪوڊ_vmoveto:
+	  has_ويڪر = (env.arg_ڍير.get_ڳڻپ () > 1);
+	  اكسر;
+	حالة Op_ڪوڊ_rmoveto:
+	  has_ويڪر = (env.arg_ڍير.get_ڳڻپ () > 2);
+	  اكسر;
+	افتراضي:
+	  أرجع;
       }
-      env.set_width (has_width);
+      env.سيٽ_ويڪر (has_ويڪر);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ flush_دليلون (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_دليلون (env, param);
+    env.clear_دليلون ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  خاص:
+  تعريفنوع cs_opset_t<عدد_t, OPSET, cff1_cs_interp_env_t, PARAM, رستو_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+سانچو <قسم_نالو OPSET, قسم_نالو PARAM>
+استعمال cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#جيڪڏهن_پورو /* HB_CFF1_INTERP_CS_HH */

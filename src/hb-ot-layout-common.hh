@@ -26,266 +26,266 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_COMMON_HH
-#define HB_OT_LAYOUT_COMMON_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_LAYOUT_COMMON_HH
+#وصف_ڪريو HB_OT_LAYOUT_COMMON_HH
 
-#include "hb.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-set.hh"
-#include "hb-bimap.hh"
-#include "hb-cache.hh"
-#include "hb-ot-dual.hh"
+#ضمن "hb.hh"
+#ضمن "hb-ot-layout.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-set.hh"
+#ضمن "hb-bimap.hh"
+#ضمن "hb-cache.hh"
+#ضمن "hb-ot-dual.hh"
 
-using hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
-static_assert (sizeof (hb_ot_layout_mapping_cache_t) == 512, "");
+استعمال hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
+static_assert (حجم (hb_ot_layout_mapping_cache_t) == 512, "");
 
-using hb_ot_layout_binary_cache_t = hb_cache_t<14, 1, 8>;
-static_assert (sizeof (hb_ot_layout_binary_cache_t) == 256, "");
+استعمال hb_ot_layout_ٻٽو_cache_t = hb_cache_t<14, 1, 8>;
+static_assert (حجم (hb_ot_layout_ٻٽو_cache_t) == 256, "");
 
-#include "OT/Layout/Common/Coverage.hh"
+#ضمن "OT/Layout/Common/Coverage.hh"
 
 // TODO(garretrieger): cleanup these after migration.
-using OT::Layout::Common::Coverage;
-using OT::Layout::Common::RangeRecord;
-using OT::Layout::SmallTypes;
-using OT::Layout::MediumTypes;
+استعمال OT::Layout::Common::Coverage;
+استعمال OT::Layout::Common::Range_رڪارڊ;
+استعمال OT::Layout::SmallTypes;
+استعمال OT::Layout::MediumTypes;
 
 
-namespace OT {
+نطاق OT {
 
-template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+سانچو<قسم_نالو Iterator>
+ساكن مضمن منطقي ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it);
 
-static bool ClassDef_remap_and_serialize (
+ساكن منطقي ClassDef_remap_and_serialize (
     hb_serialize_context_t *c,
-    const hb_set_t &klasses,
-    bool use_class_zero,
-    hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
+    ثابت hb_سيٽ_t &klasses,
+    منطقي use_class_zero,
+    hb_sorted_ويڪٽر_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
     hb_map_t *klass_map /*IN/OUT*/);
 
-struct ItemVarStoreInstancer;
+بنية شي_Var_Store_Instancer;
 
-struct hb_collect_feature_substitutes_with_var_context_t
+بنية hb_collect_feature_substitutes_with_var_context_t
 {
-  const hb_map_t *axes_index_tag_map;
-  const hb_hashmap_t<hb_tag_t, Triple> *axes_location;
-  hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *record_cond_idx_map;
-  hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
-  hb_set_t& catch_all_record_feature_idxes;
+  ثابت hb_map_t *axes_اشاريو_ٽيگ_map;
+  ثابت hb_hashmap_t<hb_ٽيگ_t, Triple> *axes_location;
+  hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *رڪارڊ_cond_idx_map;
+  hb_hashmap_t<بنانشان, ثابت Feature*> *feature_substitutes_map;
+  hb_سيٽ_t& catch_all_رڪارڊ_feature_idxes;
 
   // not stored in subset_plan
-  hb_set_t *feature_indices;
-  bool apply;
-  bool variation_applied;
-  bool universal;
-  unsigned cur_record_idx;
-  hb_hashmap_t<hb::shared_ptr<hb_map_t>, unsigned> *conditionset_map;
-  ItemVarStoreInstancer *instancer;
-  bool all_axes_pinned;
+  hb_سيٽ_t *feature_indices;
+  منطقي apply;
+  منطقي variation_applied;
+  منطقي universal;
+  بنانشان cur_رڪارڊ_idx;
+  hb_hashmap_t<hb::shared_ptr<hb_map_t>, بنانشان> *conditionset_map;
+  شي_Var_Store_Instancer *instancer;
+  منطقي all_axes_pinned;
 };
 
-struct hb_prune_langsys_context_t
+بنية hb_prune_langsys_context_t
 {
-  hb_prune_langsys_context_t (const void         *table_,
-                              hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map_,
-                              const hb_map_t     *duplicate_feature_map_,
-                              hb_set_t           *new_collected_feature_indexes_)
-      :table (table_),
+  hb_prune_langsys_context_t (ثابت فراغ         *جدول_2,
+                              hb_hashmap_t<بنانشان, hb::unique_ptr<hb_سيٽ_t>> *script_langsys_map_,
+                              ثابت hb_map_t     *duplicate_feature_map_,
+                              hb_سيٽ_t           *new_collected_feature_indexes_)
+      :جدول (جدول_2),
       script_langsys_map (script_langsys_map_),
       duplicate_feature_map (duplicate_feature_map_),
       new_feature_indexes (new_collected_feature_indexes_),
-      script_count (0),langsys_feature_count (0) {}
+      script_ڳڻپ (0),langsys_feature_ڳڻپ (0) {}
 
-  bool visitScript ()
-  { return script_count++ < HB_MAX_SCRIPTS; }
+  منطقي گهمو_Script ()
+  { أرجع script_ڳڻپ++ < HB_MAX_SCRIPTS; }
 
-  bool visitLangsys (unsigned feature_count)
+  منطقي گهمو_Langsys (بنانشان feature_ڳڻپ_2)
   {
-    langsys_feature_count += feature_count;
-    return langsys_feature_count < HB_MAX_LANGSYS_FEATURE_COUNT;
+    langsys_feature_ڳڻپ += feature_ڳڻپ_2;
+    أرجع langsys_feature_ڳڻپ < HB_MAX_LANGSYS_FEATURE_ڳڻپ;
   }
 
-  public:
-  const void *table;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t     *duplicate_feature_map;
-  hb_set_t           *new_feature_indexes;
+  عام:
+  ثابت فراغ *جدول;
+  hb_hashmap_t<بنانشان, hb::unique_ptr<hb_سيٽ_t>> *script_langsys_map;
+  ثابت hb_map_t     *duplicate_feature_map;
+  hb_سيٽ_t           *new_feature_indexes;
 
-  private:
-  unsigned script_count;
-  unsigned langsys_feature_count;
+  خاص:
+  بنانشان script_ڳڻپ;
+  بنانشان langsys_feature_ڳڻپ;
 };
 
-struct hb_subset_layout_context_t :
-  hb_dispatch_context_t<hb_subset_layout_context_t, hb_empty_t, HB_DEBUG_SUBSET>
+بنية hb_subset_layout_context_t :
+  hb_dispatch_context_t<hb_subset_layout_context_t, hb_خالي_جايون_t, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET_LAYOUT"; }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ثابت حرف *get_name () { أرجع "SUBSET_LAYOUT"; }
+  ساكن return_t default_return_قدر () { أرجع hb_خالي_جايون_t (); }
 
-  bool visitScript ()
+  منطقي گهمو_Script ()
   {
-    return script_count++ < HB_MAX_SCRIPTS;
+    أرجع script_ڳڻپ++ < HB_MAX_SCRIPTS;
   }
 
-  bool visitLangSys ()
+  منطقي گهمو_Lang_Sys ()
   {
-    return langsys_count++ < HB_MAX_LANGSYS;
+    أرجع langsys_ڳڻپ++ < HB_MAX_LANGSYS;
   }
 
-  bool visitFeatureIndex (int count)
+  منطقي گهمو_Feature_اشاريو (صحيح ڳڻپ)
   {
-    feature_index_count += count;
-    return feature_index_count < HB_MAX_FEATURE_INDICES;
+    feature_اشاريو_ڳڻپ += ڳڻپ;
+    أرجع feature_اشاريو_ڳڻپ < HB_MAX_FEATURE_INDICES;
   }
 
-  bool visitLookupIndex()
+  منطقي گهمو_Lookup_اشاريو()
   {
-    lookup_index_count++;
-    return lookup_index_count < HB_MAX_LOOKUP_VISIT_COUNT;
+    lookup_اشاريو_ڳڻپ++;
+    أرجع lookup_اشاريو_ڳڻپ < HB_MAX_LOOKUP_گهمو_ڳڻپ;
   }
 
   hb_subset_context_t *subset_context;
-  const hb_tag_t table_tag;
-  const hb_map_t *lookup_index_map;
-  const hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t *feature_index_map;
-  const hb_map_t *feature_map_w_duplicates;
-  const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
-  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations;
-  hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map;
-  const hb_set_t *catch_all_record_feature_idxes;
-  const hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>> *feature_idx_tag_map;
+  ثابت hb_ٽيگ_t جدول_ٽيگ_2;
+  ثابت hb_map_t *lookup_اشاريو_map;
+  ثابت hb_hashmap_t<بنانشان, hb::unique_ptr<hb_سيٽ_t>> *script_langsys_map;
+  ثابت hb_map_t *feature_اشاريو_map;
+  ثابت hb_map_t *feature_map_w_duplicates;
+  ثابت hb_hashmap_t<بنانشان, ثابت Feature*> *feature_substitutes_map;
+  ثابت hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *lookup_variations;
+  hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *feature_رڪارڊ_cond_idx_map;
+  ثابت hb_سيٽ_t *catch_all_رڪارڊ_feature_idxes;
+  ثابت hb_hashmap_t<بنانشان, hb_pair_t<ثابت فراغ*, ثابت فراغ*>> *feature_idx_ٽيگ_map;
 
-  unsigned cur_script_index;
-  unsigned cur_feature_index;
-  unsigned cur_feature_var_record_idx;
+  بنانشان cur_script_اشاريو;
+  بنانشان cur_feature_اشاريو;
+  بنانشان cur_feature_var_رڪارڊ_idx;
 
   hb_subset_layout_context_t (hb_subset_context_t *c_,
-			      hb_tag_t tag_) :
+			      hb_ٽيگ_t ٽيگ_4) :
 				subset_context (c_),
-				table_tag (tag_),
-				cur_script_index (0xFFFFu),
-				cur_feature_index (Index::NOT_FOUND_INDEX),
-				cur_feature_var_record_idx (0u),
-				script_count (0),
-				langsys_count (0),
-				feature_index_count (0),
-				lookup_index_count (0)
+				جدول_ٽيگ_2 (ٽيگ_4),
+				cur_script_اشاريو (0xFFFFu),
+				cur_feature_اشاريو (اشاريو::NOT_مليو_اشاريو),
+				cur_feature_var_رڪارڊ_idx (0u),
+				script_ڳڻپ (0),
+				langsys_ڳڻپ (0),
+				feature_اشاريو_ڳڻپ (0),
+				lookup_اشاريو_ڳڻپ (0)
   {
-    if (tag_ == HB_OT_TAG_GSUB)
+    إذا (ٽيگ_4 == HB_OT_ٽيگ_GSUB)
     {
-      lookup_index_map = &c_->plan->gsub_lookups;
+      lookup_اشاريو_map = &c_->plan->gsub_lookups;
       script_langsys_map = &c_->plan->gsub_langsys;
-      feature_index_map = &c_->plan->gsub_features;
+      feature_اشاريو_map = &c_->plan->gsub_features;
       feature_map_w_duplicates = &c_->plan->gsub_features_w_duplicates;
       feature_substitutes_map = &c_->plan->gsub_feature_substitutes_map;
       lookup_variations = &c_->plan->gsub_lookup_variations;
-      feature_record_cond_idx_map = c_->plan->user_axes_location.is_empty () ? nullptr : &c_->plan->gsub_feature_record_cond_idx_map;
-      catch_all_record_feature_idxes = &c_->plan->gsub_old_features;
-      feature_idx_tag_map = &c_->plan->gsub_old_feature_idx_tag_map;
+      feature_رڪارڊ_cond_idx_map = c_->plan->user_axes_location.is_empty () ? خالي_اشارو : &c_->plan->gsub_feature_رڪارڊ_cond_idx_map;
+      catch_all_رڪارڊ_feature_idxes = &c_->plan->gsub_old_features;
+      feature_idx_ٽيگ_map = &c_->plan->gsub_old_feature_idx_ٽيگ_map;
     }
-    else
+    وإلا
     {
-      lookup_index_map = &c_->plan->gpos_lookups;
+      lookup_اشاريو_map = &c_->plan->gpos_lookups;
       script_langsys_map = &c_->plan->gpos_langsys;
-      feature_index_map = &c_->plan->gpos_features;
+      feature_اشاريو_map = &c_->plan->gpos_features;
       feature_map_w_duplicates = &c_->plan->gpos_features_w_duplicates;
       feature_substitutes_map = &c_->plan->gpos_feature_substitutes_map;
       lookup_variations = &c_->plan->gpos_lookup_variations;
-      feature_record_cond_idx_map = c_->plan->user_axes_location.is_empty () ? nullptr : &c_->plan->gpos_feature_record_cond_idx_map;
-      catch_all_record_feature_idxes = &c_->plan->gpos_old_features;
-      feature_idx_tag_map = &c_->plan->gpos_old_feature_idx_tag_map;
+      feature_رڪارڊ_cond_idx_map = c_->plan->user_axes_location.is_empty () ? خالي_اشارو : &c_->plan->gpos_feature_رڪارڊ_cond_idx_map;
+      catch_all_رڪارڊ_feature_idxes = &c_->plan->gpos_old_features;
+      feature_idx_ٽيگ_map = &c_->plan->gpos_old_feature_idx_ٽيگ_map;
     }
   }
 
-  private:
-  unsigned script_count;
-  unsigned langsys_count;
-  unsigned feature_index_count;
-  unsigned lookup_index_count;
+  خاص:
+  بنانشان script_ڳڻپ;
+  بنانشان langsys_ڳڻپ;
+  بنانشان feature_اشاريو_ڳڻپ;
+  بنانشان lookup_اشاريو_ڳڻپ;
 };
 
-struct ItemVariationStore;
-struct hb_collect_variation_indices_context_t :
+بنية شي_Variation_Store;
+بنية hb_collect_variation_indices_context_t :
        hb_dispatch_context_t<hb_collect_variation_indices_context_t>
 {
-  template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_variation_indices (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  سانچو <قسم_نالو T>
+  return_t dispatch (ثابت T &obj) { obj.collect_variation_indices (هذا); أرجع hb_خالي_جايون_t (); }
+  ساكن return_t default_return_قدر () { أرجع hb_خالي_جايون_t (); }
 
-  hb_set_t *layout_variation_indices;
-  const hb_set_t *glyph_set;
-  const hb_map_t *gpos_lookups;
-  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr;
+  hb_سيٽ_t *layout_variation_indices;
+  ثابت hb_سيٽ_t *glyph_سيٽ;
+  ثابت hb_map_t *gpos_lookups;
+  hb_hashmap_t<uintptr_t, hb_pair_t<بنانشان, صحيح>> *condition_قدرون = خالي_اشارو;
 
-  hb_collect_variation_indices_context_t (hb_set_t *layout_variation_indices_,
-					  const hb_set_t *glyph_set_,
-					  const hb_map_t *gpos_lookups_) :
+  hb_collect_variation_indices_context_t (hb_سيٽ_t *layout_variation_indices_,
+					  ثابت hb_سيٽ_t *glyph_سيٽ_2,
+					  ثابت hb_map_t *gpos_lookups_) :
 					layout_variation_indices (layout_variation_indices_),
-					glyph_set (glyph_set_),
+					glyph_سيٽ (glyph_سيٽ_2),
 					gpos_lookups (gpos_lookups_) {}
 };
 
-template<typename OutputArray>
-struct subset_offset_array_t
+سانچو<قسم_نالو OutputArray>
+بنية subset_وٿي_array_t
 {
-  subset_offset_array_t (hb_subset_context_t *subset_context_,
-			 OutputArray& out_,
-			 const void *base_) : subset_context (subset_context_),
-					      out (out_), base (base_) {}
+  subset_وٿي_array_t (hb_subset_context_t *subset_context_,
+			 OutputArray& ٻاهريون_4,
+			 ثابت فراغ *بنياد_2) : subset_context (subset_context_),
+					      ٻاهريون (ٻاهريون_4), بنياد (بنياد_2) {}
 
-  template <typename T>
-  bool operator () (T&& offset)
+  سانچو <قسم_نالو T>
+  منطقي عامل () (T&& وٿي)
   {
-    auto snap = subset_context->serializer->snapshot ();
-    auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base);
-    if (!ret)
+    خودڪار snap = subset_context->serializer->snapshot ();
+    خودڪار *o = ٻاهريون.serialize_append (subset_context->serializer);
+    إذا (unlikely (!o)) أرجع خطأ;
+    منطقي ret = o->serialize_subset (subset_context, وٿي, بنياد);
+    إذا (!ret)
     {
-      out.pop ();
+      ٻاهريون.ڪڍو ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    أرجع ret;
   }
 
-  private:
+  خاص:
   hb_subset_context_t *subset_context;
-  OutputArray &out;
-  const void *base;
+  OutputArray &ٻاهريون;
+  ثابت فراغ *بنياد;
 };
 
 
-template<typename OutputArray, typename Arg>
-struct subset_offset_array_arg_t
+سانچو<قسم_نالو OutputArray, قسم_نالو Arg>
+بنية subset_وٿي_array_arg_t
 {
-  subset_offset_array_arg_t (hb_subset_context_t *subset_context_,
-			     OutputArray& out_,
-			     const void *base_,
-			     Arg &&arg_) : subset_context (subset_context_), out (out_),
-					  base (base_), arg (arg_) {}
+  subset_وٿي_array_arg_t (hb_subset_context_t *subset_context_,
+			     OutputArray& ٻاهريون_4,
+			     ثابت فراغ *بنياد_2,
+			     Arg &&arg_) : subset_context (subset_context_), ٻاهريون (ٻاهريون_4),
+					  بنياد (بنياد_2), arg (arg_) {}
 
-  template <typename T>
-  bool operator () (T&& offset)
+  سانچو <قسم_نالو T>
+  منطقي عامل () (T&& وٿي)
   {
-    auto snap = subset_context->serializer->snapshot ();
-    auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base, arg);
-    if (!ret)
+    خودڪار snap = subset_context->serializer->snapshot ();
+    خودڪار *o = ٻاهريون.serialize_append (subset_context->serializer);
+    إذا (unlikely (!o)) أرجع خطأ;
+    منطقي ret = o->serialize_subset (subset_context, وٿي, بنياد, arg);
+    إذا (!ret)
     {
-      out.pop ();
+      ٻاهريون.ڪڍو ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    أرجع ret;
   }
 
-  private:
+  خاص:
   hb_subset_context_t *subset_context;
-  OutputArray &out;
-  const void *base;
+  OutputArray &ٻاهريون;
+  ثابت فراغ *بنياد;
   Arg &&arg;
 };
 
@@ -294,68 +294,68 @@ struct subset_offset_array_arg_t
  * and discards the offset in the array if the subset operation results in an empty
  * thing.
  */
-struct
+بنية
 {
-  template<typename OutputArray>
-  subset_offset_array_t<OutputArray>
-  operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base) const
-  { return subset_offset_array_t<OutputArray> (subset_context, out, base); }
+  سانچو<قسم_نالو OutputArray>
+  subset_وٿي_array_t<OutputArray>
+  عامل () (hb_subset_context_t *subset_context, OutputArray& ٻاهريون,
+	       ثابت فراغ *بنياد) ثابت
+  { أرجع subset_وٿي_array_t<OutputArray> (subset_context, ٻاهريون, بنياد); }
 
   /* Variant with one extra argument passed to serialize_subset */
-  template<typename OutputArray, typename Arg>
-  subset_offset_array_arg_t<OutputArray, Arg>
-  operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base, Arg &&arg) const
-  { return subset_offset_array_arg_t<OutputArray, Arg> (subset_context, out, base, arg); }
+  سانچو<قسم_نالو OutputArray, قسم_نالو Arg>
+  subset_وٿي_array_arg_t<OutputArray, Arg>
+  عامل () (hb_subset_context_t *subset_context, OutputArray& ٻاهريون,
+	       ثابت فراغ *بنياد, Arg &&arg) ثابت
+  { أرجع subset_وٿي_array_arg_t<OutputArray, Arg> (subset_context, ٻاهريون, بنياد, arg); }
 }
-HB_FUNCOBJ (subset_offset_array);
+HB_FUNCOBJ (subset_وٿي_array);
 
-template<typename OutputArray>
-struct subset_record_array_t
+سانچو<قسم_نالو OutputArray>
+بنية subset_رڪارڊ_array_t
 {
-  subset_record_array_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			 const void *base_) : subset_layout_context (c_),
-					      out (out_), base (base_) {}
+  subset_رڪارڊ_array_t (hb_subset_layout_context_t *c_, OutputArray* ٻاهريون_4,
+			 ثابت فراغ *بنياد_2) : subset_layout_context (c_),
+					      ٻاهريون (ٻاهريون_4), بنياد (بنياد_2) {}
 
-  template <typename T>
-  void
-  operator () (T&& record)
+  سانچو <قسم_نالو T>
+  فراغ
+  عامل () (T&& رڪارڊ)
   {
-    auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    خودڪار snap = subset_layout_context->subset_context->serializer->snapshot ();
+    منطقي ret = رڪارڊ.subset (subset_layout_context, بنياد);
+    إذا (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    وإلا ٻاهريون->len++;
   }
 
-  private:
+  خاص:
   hb_subset_layout_context_t *subset_layout_context;
-  OutputArray *out;
-  const void *base;
+  OutputArray *ٻاهريون;
+  ثابت فراغ *بنياد;
 };
 
-template<typename OutputArray, typename Arg>
-struct subset_record_array_arg_t
+سانچو<قسم_نالو OutputArray, قسم_نالو Arg>
+بنية subset_رڪارڊ_array_arg_t
 {
-  subset_record_array_arg_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			     const void *base_,
+  subset_رڪارڊ_array_arg_t (hb_subset_layout_context_t *c_, OutputArray* ٻاهريون_4,
+			     ثابت فراغ *بنياد_2,
 			     Arg &&arg_) : subset_layout_context (c_),
-					   out (out_), base (base_), arg (arg_) {}
+					   ٻاهريون (ٻاهريون_4), بنياد (بنياد_2), arg (arg_) {}
 
-  template <typename T>
-  void
-  operator () (T&& record)
+  سانچو <قسم_نالو T>
+  فراغ
+  عامل () (T&& رڪارڊ)
   {
-    auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base, arg);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    خودڪار snap = subset_layout_context->subset_context->serializer->snapshot ();
+    منطقي ret = رڪارڊ.subset (subset_layout_context, بنياد, arg);
+    إذا (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    وإلا ٻاهريون->len++;
   }
 
-  private:
+  خاص:
   hb_subset_layout_context_t *subset_layout_context;
-  OutputArray *out;
-  const void *base;
+  OutputArray *ٻاهريون;
+  ثابت فراغ *بنياد;
   Arg &&arg;
 };
 
@@ -363,63 +363,63 @@ struct subset_record_array_arg_t
  * Helper to subset a RecordList/record array. Subsets each Record in the array and
  * discards the record if the subset operation returns false.
  */
-struct
+بنية
 {
-  template<typename OutputArray>
-  subset_record_array_t<OutputArray>
-  operator () (hb_subset_layout_context_t *c, OutputArray* out,
-	       const void *base) const
-  { return subset_record_array_t<OutputArray> (c, out, base); }
+  سانچو<قسم_نالو OutputArray>
+  subset_رڪارڊ_array_t<OutputArray>
+  عامل () (hb_subset_layout_context_t *c, OutputArray* ٻاهريون,
+	       ثابت فراغ *بنياد) ثابت
+  { أرجع subset_رڪارڊ_array_t<OutputArray> (c, ٻاهريون, بنياد); }
 
   /* Variant with one extra argument passed to subset */
-  template<typename OutputArray, typename Arg>
-  subset_record_array_arg_t<OutputArray, Arg>
-  operator () (hb_subset_layout_context_t *c, OutputArray* out,
-               const void *base, Arg &&arg) const
-  { return subset_record_array_arg_t<OutputArray, Arg> (c, out, base, arg); }
+  سانچو<قسم_نالو OutputArray, قسم_نالو Arg>
+  subset_رڪارڊ_array_arg_t<OutputArray, Arg>
+  عامل () (hb_subset_layout_context_t *c, OutputArray* ٻاهريون,
+               ثابت فراغ *بنياد, Arg &&arg) ثابت
+  { أرجع subset_رڪارڊ_array_arg_t<OutputArray, Arg> (c, ٻاهريون, بنياد, arg); }
 }
-HB_FUNCOBJ (subset_record_array);
+HB_FUNCOBJ (subset_رڪارڊ_array);
 
 
-template<typename OutputArray>
-struct serialize_math_record_array_t
+سانچو<قسم_نالو OutputArray>
+بنية serialize_math_رڪارڊ_array_t
 {
-  serialize_math_record_array_t (hb_serialize_context_t *serialize_context_,
-                         OutputArray& out_,
-                         const void *base_,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map_) :
+  serialize_math_رڪارڊ_array_t (hb_serialize_context_t *serialize_context_,
+                         OutputArray& ٻاهريون_4,
+                         ثابت فراغ *بنياد_2,
+                         ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *variation_map_) :
                                               serialize_context (serialize_context_),
-                                              out (out_), base (base_), variation_map (variation_map_) {}
+                                              ٻاهريون (ٻاهريون_4), بنياد (بنياد_2), variation_map (variation_map_) {}
 
-  template <typename T>
-  bool operator () (T&& record)
+  سانچو <قسم_نالو T>
+  منطقي عامل () (T&& رڪارڊ)
   {
-    if (!serialize_context->copy (record, base, variation_map)) return false;
-    out.len++;
-    return true;
+    إذا (!serialize_context->copy (رڪارڊ, بنياد, variation_map)) أرجع خطأ;
+    ٻاهريون.len++;
+    أرجع سچ;
   }
 
-  private:
+  خاص:
   hb_serialize_context_t *serialize_context;
-  OutputArray &out;
-  const void *base;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map;
+  OutputArray &ٻاهريون;
+  ثابت فراغ *بنياد;
+  ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *variation_map;
 };
 
 /*
  * Helper to serialize an array of MATH records.
  */
-struct
+بنية
 {
-  template<typename OutputArray>
-  serialize_math_record_array_t<OutputArray>
-  operator () (hb_serialize_context_t *serialize_context, OutputArray& out,
-               const void *base,
-               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
-  { return serialize_math_record_array_t<OutputArray> (serialize_context, out, base, variation_map); }
+  سانچو<قسم_نالو OutputArray>
+  serialize_math_رڪارڊ_array_t<OutputArray>
+  عامل () (hb_serialize_context_t *serialize_context, OutputArray& ٻاهريون,
+               ثابت فراغ *بنياد,
+               ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *variation_map) ثابت
+  { أرجع serialize_math_رڪارڊ_array_t<OutputArray> (serialize_context, ٻاهريون, بنياد, variation_map); }
 
 }
-HB_FUNCOBJ (serialize_math_record_array);
+HB_FUNCOBJ (serialize_math_رڪارڊ_array);
 
 /*
  *
@@ -432,58 +432,58 @@ HB_FUNCOBJ (serialize_math_record_array);
  * Script, ScriptList, LangSys, Feature, FeatureList, Lookup, LookupList
  */
 
-struct IndexArray : Array16Of<Index>
+بنية اشاريو_Array : Array16_جو<اشاريو>
 {
-  bool intersects (const hb_map_t *indexes) const
-  { return hb_any (*this, indexes); }
+  منطقي intersects (ثابت hb_map_t *indexes) ثابت
+  { أرجع hb_any (*هذا, indexes); }
 
-  template <typename Iterator,
+  سانچو <قسم_نالو Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  فراغ serialize (hb_serialize_context_t *c,
 		  hb_subset_layout_context_t *l,
 		  Iterator it)
   {
-    if (!it) return;
-    if (unlikely (!c->extend_min ((*this)))) return;
+    إذا (!it) أرجع;
+    إذا (unlikely (!c->extend_min ((*هذا)))) أرجع;
 
-    for (const auto _ : it)
+    لكل (ثابت خودڪار _ : it)
     {
-      if (!l->visitLookupIndex()) break;
+      إذا (!l->گهمو_Lookup_اشاريو()) اكسر;
 
-      Index i;
+      اشاريو i;
       i = _;
       c->copy (i);
-      this->len++;
+      هذا->len++;
     }
   }
 
-  unsigned int get_indexes (unsigned int start_offset,
-			    unsigned int *_count /* IN/OUT */,
-			    unsigned int *_indexes /* OUT */) const
+  بنانشان صحيح get_indexes (بنانشان صحيح شروعات_وٿي,
+			    بنانشان صحيح *ڳڻپ_2 /* IN/OUT */,
+			    بنانشان صحيح *_indexes /*ٻاهريون*/) ثابت
   {
-    if (_count && _indexes)
+    إذا (ڳڻپ_2 && _indexes)
     {
-      + this->as_array ().sub_array (start_offset, _count)
-      | hb_sink (hb_array (_indexes, *_count))
+      + هذا->as_array ().sub_array (شروعات_وٿي, ڳڻپ_2)
+      | hb_sink (hb_array (_indexes, *ڳڻپ_2))
       ;
     }
-    return this->len;
+    أرجع هذا->len;
   }
 
-  void add_indexes_to (hb_set_t* output /* OUT */) const
+  فراغ جوڙيو_indexes_منزل (hb_سيٽ_t* output /*ٻاهريون*/) ثابت
   {
-    output->add_array (as_array ());
+    output->جوڙيو_array (as_array ());
   }
 };
 
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
-struct FeatureParamsSize
+بنية Feature_Params_سائيز
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا))) return_trace (خطأ);
     hb_barrier ();
 
     /* This subtable has some "history", if you will.  Some earlier versions of
@@ -535,32 +535,32 @@ struct FeatureParamsSize
      *     passes test.
      */
 
-    if (!designSize)
-      return_trace (false);
-    else if (subfamilyID == 0 &&
+    إذا (!design_سائيز)
+      return_trace (خطأ);
+    وإلا إذا (subfamilyID == 0 &&
 	     subfamilyNameID == 0 &&
-	     rangeStart == 0 &&
-	     rangeEnd == 0)
-      return_trace (true);
-    else if (designSize < rangeStart ||
-	     designSize > rangeEnd ||
+	     range_شروعات == 0 &&
+	     range_پڇاڙي == 0)
+      return_trace (سچ);
+    وإلا إذا (design_سائيز < range_شروعات ||
+	     design_سائيز > range_پڇاڙي ||
 	     subfamilyNameID < 256 ||
 	     subfamilyNameID > 32767)
-      return_trace (false);
-    else
-      return_trace (true);
+      return_trace (خطأ);
+    وإلا
+      return_trace (سچ);
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
-  { nameids_to_retain->add (subfamilyNameID); }
+  فراغ collect_name_ids (hb_سيٽ_t *nameids_منزل_retain /*ٻاهريون*/) ثابت
+  { nameids_منزل_retain->جوڙيو (subfamilyNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (هذا);
+    return_trace ((منطقي) c->serializer->embed (*هذا));
   }
 
-  HBUINT16	designSize;	/* Represents the design size in 720/inch
+  HBUINT16	design_سائيز;	/* Represents the design size in 720/inch
 				 * units (decipoints).  The design size entry
 				 * must be non-zero.  When there is a design
 				 * size but no recommended size range, the
@@ -589,37 +589,37 @@ struct FeatureParamsSize
 				 * subfamily in a menu.  Applications will
 				 * choose the appropriate version based on
 				 * their selection criteria. */
-  HBUINT16	rangeStart;	/* Large end of the recommended usage range
+  HBUINT16	range_شروعات;	/* Large end of the recommended usage range
 				 * (inclusive), stored in 720/inch units
 				 * (decipoints). */
-  HBUINT16	rangeEnd;	/* Small end of the recommended usage range
+  HBUINT16	range_پڇاڙي;	/* Small end of the recommended usage range
 				   (exclusive), stored in 720/inch units
 				 * (decipoints). */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عام:
+  DEFINE_سائيز_STATIC (10);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#ssxx */
-struct FeatureParamsStylisticSet
+بنية Feature_Params_Stylistic_سيٽ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     /* Right now minorVersion is at zero.  Which means, any table supports
      * the uiNameID field. */
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (هذا));
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
-  { nameids_to_retain->add (uiNameID); }
+  فراغ collect_name_ids (hb_سيٽ_t *nameids_منزل_retain /*ٻاهريون*/) ثابت
+  { nameids_منزل_retain->جوڙيو (uiNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (هذا);
+    return_trace ((منطقي) c->serializer->embed (*هذا));
   }
 
-  HBUINT16	version;	/* (set to 0): This corresponds to a “minor”
+  HBUINT16	نسخو;	/* (set to 0): This corresponds to a “minor”
 				 * version number. Additional data may be
 				 * added to the end of this Feature Parameters
 				 * table in the future. */
@@ -638,51 +638,51 @@ struct FeatureParamsStylisticSet
 				 * fallback. The string should be kept to a
 				 * minimal length to fit comfortably with
 				 * different application interfaces. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عام:
+  DEFINE_سائيز_STATIC (4);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_ae#cv01-cv99 */
-struct FeatureParamsCharacterVariants
+بنية FeatureParamsCharacterVariants
 {
-  unsigned
-  get_characters (unsigned start_offset, unsigned *char_count, hb_codepoint_t *chars) const
+  بنانشان
+  get_characters (بنانشان شروعات_وٿي, بنانشان *char_ڳڻپ, hb_codepoint_t *chars) ثابت
   {
-    if (char_count && chars)
+    إذا (char_ڳڻپ && chars)
     {
-      + characters.as_array ().sub_array (start_offset, char_count)
-      | hb_sink (hb_array (chars, *char_count))
+      + characters.as_array ().sub_array (شروعات_وٿي, char_ڳڻپ)
+      | hb_sink (hb_array (chars, *char_ڳڻپ))
       ;
     }
-    return characters.len;
+    أرجع characters.len;
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (characters.len, HBUINT24::static_size, min_size); }
+  size_t get_سائيز () ثابت
+  { أرجع hb_unsigned_mul_جوڙيو_saturate (characters.len, HBUINT24::static_سائيز, min_سائيز); }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
+  فراغ collect_name_ids (hb_سيٽ_t *nameids_منزل_retain /*ٻاهريون*/) ثابت
   {
-    if (featUILableNameID) nameids_to_retain->add (featUILableNameID);
-    if (featUITooltipTextNameID) nameids_to_retain->add (featUITooltipTextNameID);
-    if (sampleTextNameID) nameids_to_retain->add (sampleTextNameID);
+    إذا (featUILableNameID) nameids_منزل_retain->جوڙيو (featUILableNameID);
+    إذا (feat_UITooltip_متن_Name_ID) nameids_منزل_retain->جوڙيو (feat_UITooltip_متن_Name_ID);
+    إذا (sample_متن_Name_ID) nameids_منزل_retain->جوڙيو (sample_متن_Name_ID);
 
-    if (!firstParamUILabelNameID || !numNamedParameters || numNamedParameters >= 0x7FFF)
-      return;
+    إذا (!پهريون_Param_UILabel_Name_ID || !انگ_Named_Parameters || انگ_Named_Parameters >= 0x7FFF)
+      أرجع;
 
-    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) numNamedParameters - 1;
-    nameids_to_retain->add_range (firstParamUILabelNameID, last_name_id);
+    بنانشان آخري_name_id = (بنانشان) پهريون_Param_UILabel_Name_ID + (بنانشان) انگ_Named_Parameters - 1;
+    nameids_منزل_retain->جوڙيو_range (پهريون_Param_UILabel_Name_ID, آخري_name_id);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (هذا);
+    return_trace ((منطقي) c->serializer->embed (*هذا));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  characters.sanitize (c));
   }
 
@@ -692,717 +692,717 @@ struct FeatureParamsCharacterVariants
 					 * for multiple languages) for a
 					 * user-interface label for this
 					 * feature. (May be NULL.) */
-  NameID	featUITooltipTextNameID;/* The ‘name’ table name ID that
+  NameID	feat_UITooltip_متن_Name_ID;/* The ‘name’ table name ID that
 					 * specifies a string (or strings,
 					 * for multiple languages) that an
 					 * application can use for tooltip
 					 * text for this feature. (May be
 					 * nullptr.) */
-  NameID	sampleTextNameID;	/* The ‘name’ table name ID that
+  NameID	sample_متن_Name_ID;	/* The ‘name’ table name ID that
 					 * specifies sample text that
 					 * illustrates the effect of this
 					 * feature. (May be NULL.) */
-  HBUINT16	numNamedParameters;	/* Number of named parameters. (May
+  HBUINT16	انگ_Named_Parameters;	/* Number of named parameters. (May
 					 * be zero.) */
-  NameID	firstParamUILabelNameID;/* The first ‘name’ table name ID
+  NameID	پهريون_Param_UILabel_Name_ID;/* The first ‘name’ table name ID
 					 * used to specify strings for
 					 * user-interface labels for the
 					 * feature parameters. (Must be zero
 					 * if numParameters is zero.) */
-  Array16Of<HBUINT24>
+  Array16_جو<HBUINT24>
 		characters;		/* Array of the Unicode Scalar Value
 					 * of the characters for which this
 					 * feature provides glyph variants.
 					 * (May be zero.) */
-  public:
-  DEFINE_SIZE_ARRAY (14, characters);
+  عام:
+  DEFINE_سائيز_ARRAY (14, characters);
 };
 
-struct FeatureParams
+بنية FeatureParams
 {
-  bool sanitize (hb_sanitize_context_t *c, hb_tag_t tag) const
+  منطقي sanitize (hb_sanitize_context_t *c, hb_ٽيگ_t ٽيگ_2) ثابت
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return true;
-#endif
-    TRACE_SANITIZE (this);
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return_trace (u.size.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return_trace (u.stylisticSet.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+#جيڪڏهن_وصف_ٿيل HB_NO_LAYOUT_FEATURE_PARAMS
+    أرجع سچ;
+#جيڪڏهن_پورو
+    TRACE_SANITIZE (هذا);
+    إذا (ٽيگ_2 == HB_ٽيگ ('s','i','z','e') && hb_barrier ())
+      return_trace (u.سائيز.sanitize (c));
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('s','s','\0','\0')) /* ssXX */
+      return_trace (u.stylistic_سيٽ.sanitize (c));
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.sanitize (c));
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  فراغ collect_name_ids (hb_ٽيگ_t ٽيگ_2, hb_سيٽ_t *nameids_منزل_retain /*ٻاهريون*/) ثابت
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return;
-#endif
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return (u.size.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return (u.stylisticSet.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return (u.characterVariants.collect_name_ids (nameids_to_retain));
+#جيڪڏهن_وصف_ٿيل HB_NO_LAYOUT_FEATURE_PARAMS
+    أرجع;
+#جيڪڏهن_پورو
+    إذا (ٽيگ_2 == HB_ٽيگ ('s','i','z','e') && hb_barrier ())
+      أرجع (u.سائيز.collect_name_ids (nameids_منزل_retain));
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('s','s','\0','\0')) /* ssXX */
+      أرجع (u.stylistic_سيٽ.collect_name_ids (nameids_منزل_retain));
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('c','v','\0','\0')) /* cvXX */
+      أرجع (u.characterVariants.collect_name_ids (nameids_منزل_retain));
   }
 
-  bool subset (hb_subset_context_t *c, const Tag* tag) const
+  منطقي subset (hb_subset_context_t *c, ثابت ٽيگ* ٽيگ_2) ثابت
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return false;
-#endif
-    TRACE_SUBSET (this);
-    if (!tag) return_trace (false);
-    if (*tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return_trace (u.size.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return_trace (u.stylisticSet.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+#جيڪڏهن_وصف_ٿيل HB_NO_LAYOUT_FEATURE_PARAMS
+    أرجع خطأ;
+#جيڪڏهن_پورو
+    TRACE_SUBSET (هذا);
+    إذا (!ٽيگ_2) return_trace (خطأ);
+    إذا (*ٽيگ_2 == HB_ٽيگ ('s','i','z','e') && hb_barrier ())
+      return_trace (u.سائيز.subset (c));
+    إذا ((*ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('s','s','\0','\0')) /* ssXX */
+      return_trace (u.stylistic_سيٽ.subset (c));
+    إذا ((*ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.subset (c));
-    return_trace (false);
+    return_trace (خطأ);
   }
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  const FeatureParamsSize& get_size_params (hb_tag_t tag) const
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_LAYOUT_FEATURE_PARAMS
+  ثابت Feature_Params_سائيز& get_سائيز_params (hb_ٽيگ_t ٽيگ_2) ثابت
   {
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return u.size;
-    return Null (FeatureParamsSize);
+    إذا (ٽيگ_2 == HB_ٽيگ ('s','i','z','e') && hb_barrier ())
+      أرجع u.سائيز;
+    أرجع Null (Feature_Params_سائيز);
   }
-  const FeatureParamsStylisticSet& get_stylistic_set_params (hb_tag_t tag) const
+  ثابت Feature_Params_Stylistic_سيٽ& get_stylistic_سيٽ_params (hb_ٽيگ_t ٽيگ_2) ثابت
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return u.stylisticSet;
-    return Null (FeatureParamsStylisticSet);
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('s','s','\0','\0')) /* ssXX */
+      أرجع u.stylistic_سيٽ;
+    أرجع Null (Feature_Params_Stylistic_سيٽ);
   }
-  const FeatureParamsCharacterVariants& get_character_variants_params (hb_tag_t tag) const
+  ثابت FeatureParamsCharacterVariants& get_character_variants_params (hb_ٽيگ_t ٽيگ_2) ثابت
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return u.characterVariants;
-    return Null (FeatureParamsCharacterVariants);
+    إذا ((ٽيگ_2 & 0xFFFF0000u) == HB_ٽيگ ('c','v','\0','\0')) /* cvXX */
+      أرجع u.characterVariants;
+    أرجع Null (FeatureParamsCharacterVariants);
   }
-#endif
+#جيڪڏهن_پورو
 
-  private:
-  union {
-  FeatureParamsSize			size;
-  FeatureParamsStylisticSet		stylisticSet;
+  خاص:
+  اتحاد {
+  Feature_Params_سائيز			سائيز;
+  Feature_Params_Stylistic_سيٽ		stylistic_سيٽ;
   FeatureParamsCharacterVariants	characterVariants;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  عام:
+  DEFINE_سائيز_MIN (0);
 };
 
-struct Record_sanitize_closure_t {
-  hb_tag_t tag;
-  const void *list_base;
+بنية رڪارڊ_sanitize_گهيرو_t {
+  hb_ٽيگ_t ٽيگ_2;
+  ثابت فراغ *list_بنياد;
 };
 
-struct Feature
+بنية Feature
 {
-  unsigned int get_lookup_count () const
-  { return lookupIndex.len; }
-  hb_tag_t get_lookup_index (unsigned int i) const
-  { return lookupIndex[i]; }
-  unsigned int get_lookup_indexes (unsigned int start_index,
-				   unsigned int *lookup_count /* IN/OUT */,
-				   unsigned int *lookup_tags /* OUT */) const
-  { return lookupIndex.get_indexes (start_index, lookup_count, lookup_tags); }
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
-  { lookupIndex.add_indexes_to (lookup_indexes); }
+  بنانشان صحيح get_lookup_ڳڻپ () ثابت
+  { أرجع lookup_اشاريو_2.len; }
+  hb_ٽيگ_t get_lookup_اشاريو (بنانشان صحيح i) ثابت
+  { أرجع lookup_اشاريو_2[i]; }
+  بنانشان صحيح get_lookup_indexes (بنانشان صحيح شروعات_اشاريو,
+				   بنانشان صحيح *lookup_ڳڻپ /* IN/OUT */,
+				   بنانشان صحيح *lookup_ٽيگ_فهرست /*ٻاهريون*/) ثابت
+  { أرجع lookup_اشاريو_2.get_indexes (شروعات_اشاريو, lookup_ڳڻپ, lookup_ٽيگ_فهرست); }
+  فراغ جوڙيو_lookup_indexes_منزل (hb_سيٽ_t *lookup_indexes) ثابت
+  { lookup_اشاريو_2.جوڙيو_indexes_منزل (lookup_indexes); }
 
-  const FeatureParams &get_feature_params () const
-  { return this+featureParams; }
+  ثابت FeatureParams &get_feature_params () ثابت
+  { أرجع هذا+featureParams; }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndex.intersects (lookup_indexes); }
+  منطقي intersects_lookup_indexes (ثابت hb_map_t *lookup_indexes) ثابت
+  { أرجع lookup_اشاريو_2.intersects (lookup_indexes); }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  فراغ collect_name_ids (hb_ٽيگ_t ٽيگ_2, hb_سيٽ_t *nameids_منزل_retain /*ٻاهريون*/) ثابت
   {
-    if (featureParams)
-      get_feature_params ().collect_name_ids (tag, nameids_to_retain);
+    إذا (featureParams)
+      get_feature_params ().collect_name_ids (ٽيگ_2, nameids_منزل_retain);
   }
 
-  bool subset (hb_subset_context_t         *c,
+  منطقي subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag = nullptr) const
+	       ثابت ٽيگ                   *ٽيگ_2 = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    out->featureParams.serialize_subset (c, featureParams, this, tag);
+    ٻاهريون->featureParams.serialize_subset (c, featureParams, هذا, ٽيگ_2);
 
-    hb::shared_ptr<hb_set_t> *lookup_variations;
-    if (l->cur_feature_index != Index::NOT_FOUND_INDEX &&
-	l->lookup_variations->has (l->cur_feature_index, &lookup_variations))
+    hb::shared_ptr<hb_سيٽ_t> *lookup_variations;
+    إذا (l->cur_feature_اشاريو != اشاريو::NOT_مليو_اشاريو &&
+	l->lookup_variations->has (l->cur_feature_اشاريو, &lookup_variations))
     {
-      auto it =
+      خودڪار it =
       + hb_iter (**lookup_variations)
-      | hb_filter (l->lookup_index_map)
-      | hb_map (l->lookup_index_map)
+      | hb_filter (l->lookup_اشاريو_map)
+      | hb_map (l->lookup_اشاريو_map)
       ;
-      out->lookupIndex.serialize (c->serializer, l, it);
+      ٻاهريون->lookup_اشاريو_2.serialize (c->serializer, l, it);
     }
-    else
+    وإلا
     {
-      auto it =
-      + hb_iter (lookupIndex)
-      | hb_filter (l->lookup_index_map)
-      | hb_map (l->lookup_index_map)
+      خودڪار it =
+      + hb_iter (lookup_اشاريو_2)
+      | hb_filter (l->lookup_اشاريو_map)
+      | hb_map (l->lookup_اشاريو_map)
       ;
-      out->lookupIndex.serialize (c->serializer, l, it);
+      ٻاهريون->lookup_اشاريو_2.serialize (c->serializer, l, it);
     }
     // The decision to keep or drop this feature is already made before we get here
     // so always retain it.
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t *closure = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت رڪارڊ_sanitize_گهيرو_t *گهيرو = خالي_اشارو) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  featureParams.sanitize (c, this, closure ? closure->tag : HB_TAG_NONE) &&
-		  lookupIndex.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  featureParams.sanitize (c, هذا, گهيرو ? گهيرو->ٽيگ_2 : HB_ٽيگ_NONE) &&
+		  lookup_اشاريو_2.sanitize (c));
   }
 
-  Offset16To<FeatureParams>
+  Offset16_منزل<FeatureParams>
 		 featureParams;	/* Offset to Feature Parameters table (if one
 				 * has been defined for the feature), relative
 				 * to the beginning of the Feature Table; = Null
 				 * if not required */
-  IndexArray	 lookupIndex;	/* Array of LookupList indices */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (4, lookupIndex);
+  اشاريو_Array	 lookup_اشاريو_2;	/* Array of LookupList indices */
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (4, lookup_اشاريو_2);
 };
 
-template <typename Type>
-struct Record
+سانچو <قسم_نالو Type>
+بنية رڪارڊ_2
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  صحيح cmp (hb_ٽيگ_t a) ثابت { أرجع ٽيگ_2.cmp (a); }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base, const void *f_sub = nullptr) const
+  منطقي subset (hb_subset_layout_context_t *c, ثابت فراغ *بنياد, ثابت فراغ *f_sub = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->subset_context->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    if (!f_sub)
-      return_trace (out->offset.serialize_subset (c->subset_context, offset, base, c, &tag));
+    إذا (!f_sub)
+      return_trace (ٻاهريون->وٿي.serialize_subset (c->subset_context, وٿي, بنياد, c, &ٽيگ_2));
 
-    const Feature& f = *reinterpret_cast<const Feature *> (f_sub);
-    auto *s = c->subset_context->serializer;
+    ثابت Feature& f = *reinterpret_cast<ثابت Feature *> (f_sub);
+    خودڪار *s = c->subset_context->serializer;
     s->push ();
 
-    out->offset = 0;
-    bool ret = f.subset (c->subset_context, c, &tag);
-    if (ret)
-      s->add_link (out->offset, s->pop_pack ());
-    else
-      s->pop_discard ();
+    ٻاهريون->وٿي = 0;
+    منطقي ret = f.subset (c->subset_context, c, &ٽيگ_2);
+    إذا (ret)
+      s->جوڙيو_link (ٻاهريون->وٿي, s->ڪڍو_pack ());
+    وإلا
+      s->ڪڍو_discard ();
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, base, &closure));
+    TRACE_SANITIZE (هذا);
+    ثابت رڪارڊ_sanitize_گهيرو_t گهيرو = {ٽيگ_2, بنياد};
+    return_trace (c->check_struct (هذا) &&
+		  وٿي.sanitize (c, بنياد, &گهيرو));
   }
 
-  Tag           tag;            /* 4-byte Tag identifier */
-  Offset16To<Type>
-                offset;         /* Offset from beginning of object holding
+  ٽيگ           ٽيگ_2;            /* 4-byte Tag identifier */
+  Offset16_منزل<Type>
+                وٿي;         /* Offset from beginning of object holding
                                  * the Record */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
 
-template <typename Type>
-struct RecordArrayOf : SortedArray16Of<Record<Type>>
+سانچو <قسم_نالو Type>
+بنية رڪارڊ_Array_جو : Sorted_Array16_جو<رڪارڊ_2<Type>>
 {
-  const Offset16To<Type>& get_offset (unsigned int i) const
-  { return (*this)[i].offset; }
-  Offset16To<Type>& get_offset (unsigned int i)
-  { return (*this)[i].offset; }
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-                         unsigned int *record_count /* IN/OUT */,
-                         hb_tag_t     *record_tags /* OUT */) const
+  ثابت Offset16_منزل<Type>& get_وٿي (بنانشان صحيح i) ثابت
+  { أرجع (*هذا)[i].وٿي; }
+  Offset16_منزل<Type>& get_وٿي (بنانشان صحيح i)
+  { أرجع (*هذا)[i].وٿي; }
+  ثابت ٽيگ& get_ٽيگ (بنانشان صحيح i) ثابت
+  { أرجع (*هذا)[i].ٽيگ_2; }
+  بنانشان صحيح get_ٽيگ_فهرست (بنانشان صحيح شروعات_وٿي,
+                         بنانشان صحيح *رڪارڊ_ڳڻپ /* IN/OUT */,
+                         hb_ٽيگ_t     *رڪارڊ_ٽيگ_فهرست /*ٻاهريون*/) ثابت
   {
-    if (record_count && record_tags)
+    إذا (رڪارڊ_ڳڻپ && رڪارڊ_ٽيگ_فهرست)
     {
-      + this->as_array ().sub_array (start_offset, record_count)
-      | hb_map (&Record<Type>::tag)
-      | hb_sink (hb_array (record_tags, *record_count))
+      + هذا->as_array ().sub_array (شروعات_وٿي, رڪارڊ_ڳڻپ)
+      | hb_map (&رڪارڊ_2<Type>::ٽيگ_2)
+      | hb_sink (hb_array (رڪارڊ_ٽيگ_فهرست, *رڪارڊ_ڳڻپ))
       ;
     }
-    return this->len;
+    أرجع هذا->len;
   }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  منطقي ڳوليو_اشاريو (hb_ٽيگ_t ٽيگ_2, بنانشان صحيح *اشاريو_2) ثابت
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    أرجع هذا->bfind (ٽيگ_2, اشاريو_2, HB_NOT_مليو_STORE, اشاريو::NOT_مليو_اشاريو);
   }
 };
 
-template <typename Type>
-struct RecordListOf : RecordArrayOf<Type>
+سانچو <قسم_نالو Type>
+بنية رڪارڊ_List_جو : رڪارڊ_Array_جو<Type>
 {
-  const Type& operator [] (unsigned int i) const
-  { return this+this->get_offset (i); }
+  ثابت Type& عامل [] (بنانشان صحيح i) ثابت
+  { أرجع هذا+هذا->get_وٿي (i); }
 
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    + this->iter ()
-    | hb_apply (subset_record_array (l, out, this))
+    + هذا->iter ()
+    | hb_apply (subset_رڪارڊ_array (l, ٻاهريون, هذا))
     ;
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (RecordArrayOf<Type>::sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (رڪارڊ_Array_جو<Type>::sanitize (c, هذا));
   }
 };
 
-struct RecordListOfFeature : RecordListOf<Feature>
+بنية رڪارڊ_List_جو_Feature : رڪارڊ_List_جو<Feature>
 {
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    + hb_enumerate (*this)
-    | hb_filter (l->feature_index_map, hb_first)
-    | hb_apply ([l, out, this] (const hb_pair_t<unsigned, const Record<Feature>&>& _)
+    + hb_enumerate (*هذا)
+    | hb_filter (l->feature_اشاريو_map, hb_پهريون)
+    | hb_apply ([l, ٻاهريون, هذا] (ثابت hb_pair_t<بنانشان, ثابت رڪارڊ_2<Feature>&>& _)
                 {
-                  const Feature *f_sub = nullptr;
-                  const Feature **f = nullptr;
-                  if (l->feature_substitutes_map->has (_.first, &f))
+                  ثابت Feature *f_sub = خالي_اشارو;
+                  ثابت Feature **f = خالي_اشارو;
+                  إذا (l->feature_substitutes_map->has (_.پهريون, &f))
                     f_sub = *f;
 
-                  l->cur_feature_index = _.first;
-                  subset_record_array (l, out, this, f_sub) (_.second);
-                  l->cur_feature_index = Index::NOT_FOUND_INDEX;
+                  l->cur_feature_اشاريو = _.پهريون;
+                  subset_رڪارڊ_array (l, ٻاهريون, هذا, f_sub) (_.second);
+                  l->cur_feature_اشاريو = اشاريو::NOT_مليو_اشاريو;
                 })
     ;
 
-    return_trace (true);
+    return_trace (سچ);
   }
 };
 
-typedef RecordListOf<Feature> FeatureList;
+تعريفنوع رڪارڊ_List_جو<Feature> FeatureList;
 
 
-struct LangSys
+بنية LangSys
 {
-  unsigned int get_feature_count () const
-  { return featureIndex.len; }
-  hb_tag_t get_feature_index (unsigned int i) const
-  { return featureIndex[i]; }
-  unsigned int get_feature_indexes (unsigned int start_offset,
-				    unsigned int *feature_count /* IN/OUT */,
-				    unsigned int *feature_indexes /* OUT */) const
-  { return featureIndex.get_indexes (start_offset, feature_count, feature_indexes); }
-  void add_feature_indexes_to (hb_set_t *feature_indexes) const
-  { featureIndex.add_indexes_to (feature_indexes); }
+  بنانشان صحيح get_feature_ڳڻپ () ثابت
+  { أرجع feature_اشاريو_2.len; }
+  hb_ٽيگ_t get_feature_اشاريو (بنانشان صحيح i) ثابت
+  { أرجع feature_اشاريو_2[i]; }
+  بنانشان صحيح get_feature_indexes (بنانشان صحيح شروعات_وٿي,
+				    بنانشان صحيح *feature_ڳڻپ_2 /* IN/OUT */,
+				    بنانشان صحيح *feature_indexes /*ٻاهريون*/) ثابت
+  { أرجع feature_اشاريو_2.get_indexes (شروعات_وٿي, feature_ڳڻپ_2, feature_indexes); }
+  فراغ جوڙيو_feature_indexes_منزل (hb_سيٽ_t *feature_indexes) ثابت
+  { feature_اشاريو_2.جوڙيو_indexes_منزل (feature_indexes); }
 
-  bool has_required_feature () const { return reqFeatureIndex != 0xFFFFu; }
-  unsigned int get_required_feature_index () const
+  منطقي has_required_feature () ثابت { أرجع req_Feature_اشاريو != 0xFFFFu; }
+  بنانشان صحيح get_required_feature_اشاريو () ثابت
   {
-    if (reqFeatureIndex == 0xFFFFu)
-      return Index::NOT_FOUND_INDEX;
-   return reqFeatureIndex;
+    إذا (req_Feature_اشاريو == 0xFFFFu)
+      أرجع اشاريو::NOT_مليو_اشاريو;
+   أرجع req_Feature_اشاريو;
   }
 
-  LangSys* copy (hb_serialize_context_t *c) const
+  LangSys* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (هذا);
+    return_trace (c->embed (*هذا));
   }
 
-  bool compare (const LangSys& o, const hb_map_t *feature_index_map) const
+  منطقي compare (ثابت LangSys& o, ثابت hb_map_t *feature_اشاريو_map) ثابت
   {
-    if (reqFeatureIndex != o.reqFeatureIndex)
-      return false;
+    إذا (req_Feature_اشاريو != o.req_Feature_اشاريو)
+      أرجع خطأ;
 
-    auto iter =
-    + hb_iter (featureIndex)
-    | hb_filter (feature_index_map)
-    | hb_map (feature_index_map)
+    خودڪار iter =
+    + hb_iter (feature_اشاريو_2)
+    | hb_filter (feature_اشاريو_map)
+    | hb_map (feature_اشاريو_map)
     ;
 
-    auto o_iter =
-    + hb_iter (o.featureIndex)
-    | hb_filter (feature_index_map)
-    | hb_map (feature_index_map)
+    خودڪار o_iter =
+    + hb_iter (o.feature_اشاريو_2)
+    | hb_filter (feature_اشاريو_map)
+    | hb_map (feature_اشاريو_map)
     ;
 
-    for (; iter && o_iter; iter++, o_iter++)
+    لكل (; iter && o_iter; iter++, o_iter++)
     {
-      unsigned a = *iter;
-      unsigned b = *o_iter;
-      if (a != b) return false;
+      بنانشان a = *iter;
+      بنانشان b = *o_iter;
+      إذا (a != b) أرجع خطأ;
     }
 
-    if (iter || o_iter) return false;
+    إذا (iter || o_iter) أرجع خطأ;
 
-    return true;
+    أرجع سچ;
   }
 
-  void collect_features (hb_prune_langsys_context_t *c) const
+  فراغ collect_features (hb_prune_langsys_context_t *c) ثابت
   {
-    if (!has_required_feature () && !get_feature_count ()) return;
-    if (has_required_feature () &&
-        c->duplicate_feature_map->has (reqFeatureIndex))
-      c->new_feature_indexes->add (get_required_feature_index ());
+    إذا (!has_required_feature () && !get_feature_ڳڻپ ()) أرجع;
+    إذا (has_required_feature () &&
+        c->duplicate_feature_map->has (req_Feature_اشاريو))
+      c->new_feature_indexes->جوڙيو (get_required_feature_اشاريو ());
 
-    + hb_iter (featureIndex)
+    + hb_iter (feature_اشاريو_2)
     | hb_filter (c->duplicate_feature_map)
     | hb_sink (c->new_feature_indexes)
     ;
   }
 
-  bool subset (hb_subset_context_t        *c,
+  منطقي subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-	       const Tag                  *tag = nullptr) const
+	       ثابت ٽيگ                  *ٽيگ_2 = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    const uint32_t *v;
-    out->reqFeatureIndex = l->feature_map_w_duplicates->has (reqFeatureIndex, &v) ? *v : 0xFFFFu;
+    ثابت uint32_t *v;
+    ٻاهريون->req_Feature_اشاريو = l->feature_map_w_duplicates->has (req_Feature_اشاريو, &v) ? *v : 0xFFFFu;
 
-    if (!l->visitFeatureIndex (featureIndex.len))
-      return_trace (false);
+    إذا (!l->گهمو_Feature_اشاريو (feature_اشاريو_2.len))
+      return_trace (خطأ);
 
-    auto it =
-    + hb_iter (featureIndex)
+    خودڪار it =
+    + hb_iter (feature_اشاريو_2)
     | hb_filter (l->feature_map_w_duplicates)
     | hb_map (l->feature_map_w_duplicates)
     ;
 
-    bool ret = bool (it);
-    out->featureIndex.serialize (c->serializer, l, it);
+    منطقي ret = منطقي (it);
+    ٻاهريون->feature_اشاريو_2.serialize (c->serializer, l, it);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت رڪارڊ_sanitize_گهيرو_t * = خالي_اشارو) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && featureIndex.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && feature_اشاريو_2.sanitize (c));
   }
 
-  Offset16	lookupOrderZ;	/* = Null (reserved for an offset to a
+  Offset16	lookup_ترتيب_Z;	/* = Null (reserved for an offset to a
 				 * reordering table) */
-  HBUINT16	reqFeatureIndex;/* Index of a feature required for this
+  HBUINT16	req_Feature_اشاريو;/* Index of a feature required for this
 				 * language system--if no required features
 				 * = 0xFFFFu */
-  IndexArray	featureIndex;	/* Array of indices into the FeatureList */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (6, featureIndex);
+  اشاريو_Array	feature_اشاريو_2;	/* Array of indices into the FeatureList */
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (6, feature_اشاريو_2);
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, LangSys);
+DECLARE_NULL_NAMESPACE_بائيٽون (OT, LangSys);
 
-struct Script
+بنية Script
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const LangSys& get_lang_sys (unsigned int i) const
+  بنانشان صحيح get_lang_sys_ڳڻپ () ثابت
+  { أرجع langSys.len; }
+  ثابت ٽيگ& get_lang_sys_ٽيگ (بنانشان صحيح i) ثابت
+  { أرجع langSys.get_ٽيگ (i); }
+  بنانشان صحيح get_lang_sys_ٽيگ_فهرست (بنانشان صحيح شروعات_وٿي,
+				  بنانشان صحيح *lang_sys_ڳڻپ /* IN/OUT */,
+				  hb_ٽيگ_t     *lang_sys_ٽيگ_فهرست /*ٻاهريون*/) ثابت
+  { أرجع langSys.get_ٽيگ_فهرست (شروعات_وٿي, lang_sys_ڳڻپ, lang_sys_ٽيگ_فهرست); }
+  ثابت LangSys& get_lang_sys (بنانشان صحيح i) ثابت
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    إذا (i == اشاريو::NOT_مليو_اشاريو) أرجع get_default_lang_sys ();
+    أرجع هذا+langSys[i].وٿي;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  منطقي ڳوليو_lang_sys_اشاريو (hb_ٽيگ_t ٽيگ_2, بنانشان صحيح *اشاريو_2) ثابت
+  { أرجع langSys.ڳوليو_اشاريو (ٽيگ_2, اشاريو_2); }
 
-  bool has_default_lang_sys () const           { return defaultLangSys != 0; }
-  const LangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  منطقي has_default_lang_sys () ثابت           { أرجع defaultLangSys != 0; }
+  ثابت LangSys& get_default_lang_sys () ثابت { أرجع هذا+defaultLangSys; }
 
-  void prune_langsys (hb_prune_langsys_context_t *c,
-                      unsigned script_index) const
+  فراغ prune_langsys (hb_prune_langsys_context_t *c,
+                      بنانشان script_اشاريو) ثابت
   {
-    if (!has_default_lang_sys () && !get_lang_sys_count ()) return;
-    if (!c->visitScript ()) return;
+    إذا (!has_default_lang_sys () && !get_lang_sys_ڳڻپ ()) أرجع;
+    إذا (!c->گهمو_Script ()) أرجع;
 
-    if (!c->script_langsys_map->has (script_index))
+    إذا (!c->script_langsys_map->has (script_اشاريو))
     {
-      if (unlikely (!c->script_langsys_map->set (script_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	return;
+      إذا (unlikely (!c->script_langsys_map->سيٽ (script_اشاريو, hb::unique_ptr<hb_سيٽ_t> {hb_سيٽ_create ()})))
+	أرجع;
     }
 
-    if (has_default_lang_sys ())
+    إذا (has_default_lang_sys ())
     {
       //only collect features from non-redundant langsys
-      const LangSys& d = get_default_lang_sys ();
-      if (c->visitLangsys (d.get_feature_count ())) {
+      ثابت LangSys& d = get_default_lang_sys ();
+      إذا (c->گهمو_Langsys (d.get_feature_ڳڻپ ())) {
         d.collect_features (c);
       }
 
-      for (auto _ : + hb_enumerate (langSys))
+      لكل (خودڪار _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
-        if (l.compare (d, c->duplicate_feature_map)) continue;
+        ثابت LangSys& l = هذا+_.second.وٿي;
+        إذا (!c->گهمو_Langsys (l.get_feature_ڳڻپ ())) استمر;
+        إذا (l.compare (d, c->duplicate_feature_map)) استمر;
 
         l.collect_features (c);
-        c->script_langsys_map->get (script_index)->add (_.first);
+        c->script_langsys_map->get (script_اشاريو)->جوڙيو (_.پهريون);
       }
     }
-    else
+    وإلا
     {
-      for (auto _ : + hb_enumerate (langSys))
+      لكل (خودڪار _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
+        ثابت LangSys& l = هذا+_.second.وٿي;
+        إذا (!c->گهمو_Langsys (l.get_feature_ڳڻپ ())) استمر;
         l.collect_features (c);
-        c->script_langsys_map->get (script_index)->add (_.first);
+        c->script_langsys_map->get (script_اشاريو)->جوڙيو (_.پهريون);
       }
     }
   }
 
-  bool subset (hb_subset_context_t         *c,
+  منطقي subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag) const
+	       ثابت ٽيگ                   *ٽيگ_2) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!l->visitScript ()) return_trace (false);
-    if (tag && !c->plan->layout_scripts.has (*tag))
-      return false;
+    TRACE_SUBSET (هذا);
+    إذا (!l->گهمو_Script ()) return_trace (خطأ);
+    إذا (ٽيگ_2 && !c->plan->layout_scripts.has (*ٽيگ_2))
+      أرجع خطأ;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    bool defaultLang = false;
-    if (has_default_lang_sys ())
+    منطقي defaultLang = خطأ;
+    إذا (has_default_lang_sys ())
     {
       c->serializer->push ();
-      const LangSys& ls = this+defaultLangSys;
-      bool ret = ls.subset (c, l);
-      if (!ret && tag && *tag != HB_TAG ('D', 'F', 'L', 'T'))
+      ثابت LangSys& ls = هذا+defaultLangSys;
+      منطقي ret = ls.subset (c, l);
+      إذا (!ret && ٽيگ_2 && *ٽيگ_2 != HB_ٽيگ ('D', 'F', 'L', 'T'))
       {
-	c->serializer->pop_discard ();
-	out->defaultLangSys = 0;
+	c->serializer->ڪڍو_discard ();
+	ٻاهريون->defaultLangSys = 0;
       }
-      else
+      وإلا
       {
-	c->serializer->add_link (out->defaultLangSys, c->serializer->pop_pack ());
-	defaultLang = true;
+	c->serializer->جوڙيو_link (ٻاهريون->defaultLangSys, c->serializer->ڪڍو_pack ());
+	defaultLang = سچ;
       }
     }
 
-    const hb_set_t *active_langsys = l->script_langsys_map->get (l->cur_script_index);
-    if (active_langsys)
+    ثابت hb_سيٽ_t *سرگرم_langsys = l->script_langsys_map->get (l->cur_script_اشاريو);
+    إذا (سرگرم_langsys)
     {
       + hb_enumerate (langSys)
-      | hb_filter (active_langsys, hb_first)
-      | hb_map (hb_second)
-      | hb_filter ([=] (const Record<LangSys>& record) {return l->visitLangSys (); })
-      | hb_apply (subset_record_array (l, &(out->langSys), this))
+      | hb_filter (سرگرم_langsys, hb_پهريون)
+      | hb_map (hb_ٻيو)
+      | hb_filter ([=] (ثابت رڪارڊ_2<LangSys>& رڪارڊ) {أرجع l->گهمو_Lang_Sys (); })
+      | hb_apply (subset_رڪارڊ_array (l, &(ٻاهريون->langSys), هذا))
       ;
     }
 
-    return_trace (bool (out->langSys.len) || defaultLang || l->table_tag == HB_OT_TAG_GSUB);
+    return_trace (منطقي (ٻاهريون->langSys.len) || defaultLang || l->جدول_ٽيگ_2 == HB_OT_ٽيگ_GSUB);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت رڪارڊ_sanitize_گهيرو_t * = خالي_اشارو) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (defaultLangSys.sanitize (c, this) && langSys.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (defaultLangSys.sanitize (c, هذا) && langSys.sanitize (c, هذا));
   }
 
-  protected:
-  Offset16To<LangSys>
+  محمي:
+  Offset16_منزل<LangSys>
 		defaultLangSys;	/* Offset to DefaultLangSys table--from
 				 * beginning of Script table--may be Null */
-  RecordArrayOf<LangSys>
+  رڪارڊ_Array_جو<LangSys>
 		langSys;	/* Array of LangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (4, langSys);
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (4, langSys);
 };
 
-struct RecordListOfScript : RecordListOf<Script>
+بنية رڪارڊ_List_جو_Script : رڪارڊ_List_جو<Script>
 {
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    for (auto _ : + hb_enumerate (*this))
+    لكل (خودڪار _ : + hb_enumerate (*هذا))
     {
-      auto snap = c->serializer->snapshot ();
-      l->cur_script_index = _.first;
-      bool ret = _.second.subset (l, this);
-      if (!ret) c->serializer->revert (snap);
-      else out->len++;
+      خودڪار snap = c->serializer->snapshot ();
+      l->cur_script_اشاريو = _.پهريون;
+      منطقي ret = _.second.subset (l, هذا);
+      إذا (!ret) c->serializer->revert (snap);
+      وإلا ٻاهريون->len++;
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 };
 
-typedef RecordListOfScript ScriptList;
+تعريفنوع رڪارڊ_List_جو_Script ScriptList;
 
 
 
-struct LookupFlag : HBUINT16
+بنية LookupFlag : HBUINT16
 {
-  enum Flags {
-    RightToLeft		= 0x0001u,
-    IgnoreBaseGlyphs	= 0x0002u,
+  تعداد Flags {
+    ساڄو_منزل_کاٻو		= 0x0001u,
+    Ignore_بنياد_Glyphs	= 0x0002u,
     IgnoreLigatures	= 0x0004u,
     IgnoreMarks		= 0x0008u,
     IgnoreFlags		= 0x000Eu,
-    UseMarkFilteringSet	= 0x0010u,
+    Use_Mark_Filtering_سيٽ	= 0x0010u,
     Reserved		= 0x00E0u,
     MarkAttachmentType	= 0xFF00u
   };
-  public:
-  DEFINE_SIZE_STATIC (2);
+  عام:
+  DEFINE_سائيز_STATIC (2);
 };
 
 } /* namespace OT */
 /* This has to be outside the namespace. */
 HB_MARK_AS_FLAG_T (OT::LookupFlag::Flags);
-namespace OT {
+نطاق OT {
 
-struct Lookup
+بنية Lookup
 {
-  unsigned int get_subtable_count () const { return subTable.len; }
+  بنانشان صحيح get_subtable_ڳڻپ () ثابت { أرجع sub_جدول.len; }
 
-  template <typename TSubTable>
-  const Array16OfOffset16To<TSubTable>& get_subtables () const
-  { return reinterpret_cast<const Array16OfOffset16To<TSubTable> &> (subTable); }
-  template <typename TSubTable>
-  Array16OfOffset16To<TSubTable>& get_subtables ()
-  { return reinterpret_cast<Array16OfOffset16To<TSubTable> &> (subTable); }
+  سانچو <قسم_نالو TSub_جدول>
+  ثابت Array16_جو_Offset16_منزل<TSub_جدول>& get_subtables () ثابت
+  { أرجع reinterpret_cast<ثابت Array16_جو_Offset16_منزل<TSub_جدول> &> (sub_جدول); }
+  سانچو <قسم_نالو TSub_جدول>
+  Array16_جو_Offset16_منزل<TSub_جدول>& get_subtables ()
+  { أرجع reinterpret_cast<Array16_جو_Offset16_منزل<TSub_جدول> &> (sub_جدول); }
 
-  template <typename TSubTable>
-  const TSubTable& get_subtable (unsigned int i) const
-  { return this+get_subtables<TSubTable> ()[i]; }
-  template <typename TSubTable>
-  TSubTable& get_subtable (unsigned int i)
-  { return this+get_subtables<TSubTable> ()[i]; }
+  سانچو <قسم_نالو TSub_جدول>
+  ثابت TSub_جدول& get_subtable (بنانشان صحيح i) ثابت
+  { أرجع هذا+get_subtables<TSub_جدول> ()[i]; }
+  سانچو <قسم_نالو TSub_جدول>
+  TSub_جدول& get_subtable (بنانشان صحيح i)
+  { أرجع هذا+get_subtables<TSub_جدول> ()[i]; }
 
-  size_t get_size () const
+  size_t get_سائيز () ثابت
   {
-    const HBUINT16 &markFilteringSet = StructAfter<const HBUINT16> (subTable);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
-      return (const char *) &StructAfter<const char> (markFilteringSet) - (const char *) this;
-    return (const char *) &markFilteringSet - (const char *) this;
+    ثابت HBUINT16 &mark_Filtering_سيٽ = StructAfter<ثابت HBUINT16> (sub_جدول);
+    إذا (lookupFlag & LookupFlag::Use_Mark_Filtering_سيٽ)
+      أرجع (ثابت حرف *) &StructAfter<ثابت حرف> (mark_Filtering_سيٽ) - (ثابت حرف *) هذا;
+    أرجع (ثابت حرف *) &mark_Filtering_سيٽ - (ثابت حرف *) هذا;
   }
 
-  unsigned int get_type () const { return lookupType; }
+  بنانشان صحيح get_type () ثابت { أرجع lookupType; }
 
   /* lookup_props is a 32-bit integer where the lower 16-bit is LookupFlag and
    * higher 16-bit is mark-filtering-set if the lookup uses one.
    * Not to be confused with glyph_props which is very similar. */
-  uint32_t get_props () const
+  uint32_t get_props () ثابت
   {
-    unsigned int flag = lookupFlag;
-    if (unlikely (flag & LookupFlag::UseMarkFilteringSet))
+    بنانشان صحيح flag = lookupFlag;
+    إذا (unlikely (flag & LookupFlag::Use_Mark_Filtering_سيٽ))
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      flag += (markFilteringSet << 16);
+      ثابت HBUINT16 &mark_Filtering_سيٽ = StructAfter<HBUINT16> (sub_جدول);
+      flag += (mark_Filtering_سيٽ << 16);
     }
-    return flag;
+    أرجع flag;
   }
 
-  template <typename TSubTable, typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچو <قسم_نالو TSub_جدول, قسم_نالو context_t, قسم_نالو ...Ts>
+  قسم_نالو context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    unsigned int lookup_type = get_type ();
-    TRACE_DISPATCH (this, lookup_type);
-    unsigned int count = get_subtable_count ();
-    for (unsigned int i = 0; i < count; i++) {
-      typename context_t::return_t r = get_subtable<TSubTable> (i).dispatch (c, lookup_type, ds...);
-      if (c->stop_sublookup_iteration (r))
+    بنانشان صحيح lookup_type = get_type ();
+    TRACE_DISPATCH (هذا, lookup_type);
+    بنانشان صحيح ڳڻپ = get_subtable_ڳڻپ ();
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++) {
+      قسم_نالو context_t::return_t r = get_subtable<TSub_جدول> (i).dispatch (c, lookup_type, ds...);
+      إذا (c->stop_sublookup_iteration (r))
 	return_trace (r);
     }
-    return_trace (c->default_return_value ());
+    return_trace (c->default_return_قدر ());
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned int lookup_type,
+  منطقي serialize (hb_serialize_context_t *c,
+		  بنانشان صحيح lookup_type,
 		  uint32_t lookup_props,
-		  unsigned int num_subtables)
+		  بنانشان صحيح انگ_subtables)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
     lookupType = lookup_type;
     lookupFlag = lookup_props & 0xFFFFu;
-    if (unlikely (!subTable.serialize (c, num_subtables))) return_trace (false);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    إذا (unlikely (!sub_جدول.serialize (c, انگ_subtables))) return_trace (خطأ);
+    إذا (lookupFlag & LookupFlag::Use_Mark_Filtering_سيٽ)
     {
-      if (unlikely (!c->extend (this))) return_trace (false);
-      HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      markFilteringSet = lookup_props >> 16;
+      إذا (unlikely (!c->extend (هذا))) return_trace (خطأ);
+      HBUINT16 &mark_Filtering_سيٽ = StructAfter<HBUINT16> (sub_جدول);
+      mark_Filtering_سيٽ = lookup_props >> 16;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename TSubTable>
-  bool subset (hb_subset_context_t *c) const
+  سانچو <قسم_نالو TSub_جدول>
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->lookupType = lookupType;
-    out->lookupFlag = lookupFlag;
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
+    ٻاهريون->lookupType = lookupType;
+    ٻاهريون->lookupFlag = lookupFlag;
 
-    const hb_set_t *glyphset = c->plan->glyphset_gsub ();
-    unsigned int lookup_type = get_type ();
-    + hb_iter (get_subtables <TSubTable> ())
-    | hb_filter ([this, glyphset, lookup_type] (const Offset16To<TSubTable> &_) { return (this+_).intersects (glyphset, lookup_type); })
-    | hb_apply (subset_offset_array (c, out->get_subtables<TSubTable> (), this, lookup_type))
+    ثابت hb_سيٽ_t *glyphset = c->plan->glyphset_gsub ();
+    بنانشان صحيح lookup_type = get_type ();
+    + hb_iter (get_subtables <TSub_جدول> ())
+    | hb_filter ([هذا, glyphset, lookup_type] (ثابت Offset16_منزل<TSub_جدول> &_) { أرجع (هذا+_).intersects (glyphset, lookup_type); })
+    | hb_apply (subset_وٿي_array (c, ٻاهريون->get_subtables<TSub_جدول> (), هذا, lookup_type))
     ;
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    إذا (lookupFlag & LookupFlag::Use_Mark_Filtering_سيٽ)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
+      ثابت HBUINT16 &mark_Filtering_سيٽ = StructAfter<HBUINT16> (sub_جدول);
       hb_codepoint_t *idx;
-      if (!c->plan->used_mark_sets_map.has (markFilteringSet, &idx))
+      إذا (!c->plan->استعمال_ٿيل_mark_sets_map.has (mark_Filtering_سيٽ, &idx))
       {
-        unsigned new_flag = lookupFlag;
-        new_flag &= ~LookupFlag::UseMarkFilteringSet;
+        بنانشان new_flag = lookupFlag;
+        new_flag &= ~LookupFlag::Use_Mark_Filtering_سيٽ;
         // https://github.com/harfbuzz/harfbuzz/issues/5499
         // If we remove UseMarkFilteringSet flag because the set is now empty,
         // we need to add IgnoreMarks flag, otherwise the lookup will not
         // ignore any marks, which changes the behavior.
         new_flag |= LookupFlag::IgnoreMarks;
-        out->lookupFlag = new_flag;
+        ٻاهريون->lookupFlag = new_flag;
       }
-      else
+      وإلا
       {
-        if (unlikely (!c->serializer->extend (out))) return_trace (false);
-        HBUINT16 &outMarkFilteringSet = StructAfter<HBUINT16> (out->subTable);
-        outMarkFilteringSet = *idx;
+        إذا (unlikely (!c->serializer->extend (ٻاهريون))) return_trace (خطأ);
+        HBUINT16 &ٻاهريون_Mark_Filtering_سيٽ = StructAfter<HBUINT16> (ٻاهريون->sub_جدول);
+        ٻاهريون_Mark_Filtering_سيٽ = *idx;
       }
     }
 
@@ -1412,29 +1412,29 @@ struct Lookup
     // Generally we shouldn't end up with an empty lookup as we pre-prune them during the planning
     // phase, but it can happen in rare cases such as when during closure subtable is considered
     // degenerate (see: https://github.com/harfbuzz/harfbuzz/issues/3853)
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename TSubTable>
-  bool sanitize (hb_sanitize_context_t *c) const
+  سانچو <قسم_نالو TSub_جدول>
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) && subTable.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!(c->check_struct (هذا) && sub_جدول.sanitize (c))) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned subtables = get_subtable_count ();
-    if (unlikely (!c->visit_subtables (subtables))) return_trace (false);
+    بنانشان subtables = get_subtable_ڳڻپ ();
+    إذا (unlikely (!c->گهمو_subtables (subtables))) return_trace (خطأ);
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    إذا (lookupFlag & LookupFlag::Use_Mark_Filtering_سيٽ)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      if (!markFilteringSet.sanitize (c)) return_trace (false);
+      ثابت HBUINT16 &mark_Filtering_سيٽ = StructAfter<HBUINT16> (sub_جدول);
+      إذا (!mark_Filtering_سيٽ.sanitize (c)) return_trace (خطأ);
     }
 
-    if (unlikely (!get_subtables<TSubTable> ().sanitize (c, this, get_type ())))
-      return_trace (false);
+    إذا (unlikely (!get_subtables<TSub_جدول> ().sanitize (c, هذا, get_type ())))
+      return_trace (خطأ);
 
-    if (unlikely (get_type () == TSubTable::Extension))
+    إذا (unlikely (get_type () == TSub_جدول::Extension))
     {
       hb_barrier ();
 
@@ -1443,51 +1443,51 @@ struct Lookup
        * itself (but we already checked for that).
        * This is specially important if one has a reverse type!
        */
-      unsigned int type = get_subtable<TSubTable> (0).u.extension.get_type ();
-      for (unsigned int i = 1; i < subtables; i++)
-	if (get_subtable<TSubTable> (i).u.extension.get_type () != type)
-	  return_trace (false);
+      بنانشان صحيح type = get_subtable<TSub_جدول> (0).u.extension.get_type ();
+      لكل (بنانشان صحيح i = 1; i < subtables; i++)
+	إذا (get_subtable<TSub_جدول> (i).u.extension.get_type () != type)
+	  return_trace (خطأ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  protected:
+  محمي:
   HBUINT16	lookupType;		/* Different enumerations for GSUB and GPOS */
   HBUINT16	lookupFlag;		/* Lookup qualifiers */
-  Array16Of<Offset16>
-		subTable;		/* Array of SubTables */
+  Array16_جو<Offset16>
+		sub_جدول;		/* Array of SubTables */
 /*HBUINT16	markFilteringSetX[HB_VAR_ARRAY];*//* Index (base 0) into GDEF mark glyph sets
 					 * structure. This field is only present if bit
 					 * UseMarkFilteringSet of lookup flags is set. */
-  public:
-  DEFINE_SIZE_ARRAY (6, subTable);
+  عام:
+  DEFINE_سائيز_ARRAY (6, sub_جدول);
 };
 
-template <typename Types>
-using LookupList = List16OfOffsetTo<Lookup, typename Types::HBLUINT>;
+سانچو <قسم_نالو Types>
+استعمال LookupList = List16_جو_وٿي_منزل<Lookup, قسم_نالو Types::HBLUINT>;
 
-template <typename TLookup, typename OffsetType>
-struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
+سانچو <قسم_نالو TLookup, قسم_نالو وٿي_Type>
+بنية Lookup_وٿي_List : List16_جو_وٿي_منزل<TLookup, وٿي_Type>
 {
-  bool subset (hb_subset_context_t        *c,
-	       hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t        *c,
+	       hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    + hb_enumerate (*this)
-    | hb_filter (l->lookup_index_map, hb_first)
-    | hb_map (hb_second)
-    | hb_apply (subset_offset_array (c, *out, this))
+    + hb_enumerate (*هذا)
+    | hb_filter (l->lookup_اشاريو_map, hb_پهريون)
+    | hb_map (hb_ٻيو)
+    | hb_apply (subset_وٿي_array (c, *ٻاهريون, هذا))
     ;
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace ((List16OfOffsetTo<TLookup, OffsetType>::sanitize (c, this)));
+    TRACE_SANITIZE (هذا);
+    return_trace ((List16_جو_وٿي_منزل<TLookup, وٿي_Type>::sanitize (c, هذا)));
   }
 };
 
@@ -1497,869 +1497,869 @@ struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
  */
 
 
-static bool ClassDef_remap_and_serialize (hb_serialize_context_t *c,
-					  const hb_set_t &klasses,
-                                          bool use_class_zero,
-                                          hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
+ساكن منطقي ClassDef_remap_and_serialize (hb_serialize_context_t *c,
+					  ثابت hb_سيٽ_t &klasses,
+                                          منطقي use_class_zero,
+                                          hb_sorted_ويڪٽر_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
 					  hb_map_t *klass_map /*IN/OUT*/)
 {
-  if (!klass_map)
-    return ClassDef_serialize (c, glyph_and_klass.iter ());
+  إذا (!klass_map)
+    أرجع ClassDef_serialize (c, glyph_and_klass.iter ());
 
   /* any glyph not assigned a class value falls into Class zero (0),
    * if any glyph assigned to class 0, remapping must start with 0->0*/
-  if (!use_class_zero)
-    klass_map->set (0, 0);
+  إذا (!use_class_zero)
+    klass_map->سيٽ (0, 0);
 
-  unsigned idx = klass_map->has (0) ? 1 : 0;
-  for (const unsigned k: klasses)
+  بنانشان idx = klass_map->has (0) ? 1 : 0;
+  لكل (ثابت بنانشان k: klasses)
   {
-    if (klass_map->has (k)) continue;
-    klass_map->set (k, idx);
+    إذا (klass_map->has (k)) استمر;
+    klass_map->سيٽ (k, idx);
     idx++;
   }
 
 
-  if (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
-    return false;
+  إذا (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
+    أرجع خطأ;
 
-  for (unsigned i = 0; i < glyph_and_klass.length; i++)
+  لكل (بنانشان i = 0; i < glyph_and_klass.ڊيگهائي; i++)
   {
     hb_codepoint_t klass = glyph_and_klass[i].second;
     glyph_and_klass[i].second = klass_map->get (klass);
   }
 
-  return ClassDef_serialize (c, glyph_and_klass.iter ());
+  أرجع ClassDef_serialize (c, glyph_and_klass.iter ());
 }
 
 /*
  * Class Definition Table
  */
 
-template <typename Types>
-struct ClassDefFormat1_3
+سانچو <قسم_نالو Types>
+بنية ClassDefFormat1_3
 {
-  friend struct ClassDef;
+  دوست بنية ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  خاص:
+  بنانشان صحيح get_class (hb_codepoint_t glyph_id) ثابت
   {
-    return classValue[(unsigned int) (glyph_id - startGlyph)];
+    أرجع class_قدر[(بنانشان صحيح) (glyph_id - شروعات_Glyph)];
   }
 
-  unsigned get_population () const
+  بنانشان get_population () ثابت
   {
-    return classValue.len;
+    أرجع class_قدر.len;
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  سانچو<قسم_نالو Iterator,
+	   hb_requires (hb_is_sorted_ذريعو_جو (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    if (unlikely (!it))
+    إذا (unlikely (!it))
     {
-      classFormat = Types::size == 2 ? 1 : 3;
-      startGlyph = 0;
-      classValue.len = 0;
-      return_trace (true);
+      classFormat = Types::سائيز == 2 ? 1 : 3;
+      شروعات_Glyph = 0;
+      class_قدر.len = 0;
+      return_trace (سچ);
     }
 
-    hb_codepoint_t glyph_min = (*it).first;
+    hb_codepoint_t glyph_min = (*it).پهريون;
     hb_codepoint_t glyph_max = + it
-			       | hb_map (hb_first)
+			       | hb_map (hb_پهريون)
 			       | hb_reduce (hb_max, 0u);
-    unsigned glyph_count = glyph_max - glyph_min + 1;
+    بنانشان glyph_ڳڻپ = glyph_max - glyph_min + 1;
 
-    startGlyph = glyph_min;
-    if (unlikely (!classValue.serialize (c, glyph_count))) return_trace (false);
-    for (const hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
+    شروعات_Glyph = glyph_min;
+    إذا (unlikely (!class_قدر.serialize (c, glyph_ڳڻپ))) return_trace (خطأ);
+    لكل (ثابت hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
     {
-      unsigned idx = gid_klass_pair.first - glyph_min;
-      classValue[idx] = gid_klass_pair.second;
+      بنانشان idx = gid_klass_pair.پهريون - glyph_min;
+      class_قدر[idx] = gid_klass_pair.second;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = خالي_اشارو /*OUT*/,
+               منطقي keep_خالي_جايون_جدول = سچ,
+               منطقي use_class_zero = سچ,
+               ثابت Coverage* glyph_filter = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
-    hb_set_t orig_klasses;
+    hb_sorted_ويڪٽر_t<hb_codepoint_pair_t> glyph_and_klass;
+    hb_سيٽ_t orig_klasses;
 
-    hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end   = start + classValue.len;
+    hb_codepoint_t شروعات = شروعات_Glyph;
+    hb_codepoint_t پڇاڙي   = شروعات + class_قدر.len;
 
-    for (const hb_codepoint_t gid : + hb_range (start, end))
+    لكل (ثابت hb_codepoint_t gid : + hb_range (شروعات, پڇاڙي))
     {
       hb_codepoint_t new_gid = c->plan->map_gsub_glyph (gid);
-      if (new_gid == HB_MAP_VALUE_INVALID) continue;
-      if (glyph_filter && !glyph_filter->has(gid)) continue;
+      إذا (new_gid == HB_MAP_قدر_INVALID) استمر;
+      إذا (glyph_filter && !glyph_filter->has(gid)) استمر;
 
-      unsigned klass = classValue[gid - start];
-      if (!klass) continue;
+      بنانشان klass = class_قدر[gid - شروعات];
+      إذا (!klass) استمر;
 
       glyph_and_klass.push (hb_pair (new_gid, klass));
-      orig_klasses.add (klass);
+      orig_klasses.جوڙيو (klass);
     }
 
-    if (use_class_zero)
+    إذا (use_class_zero)
     {
-      const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-      unsigned glyph_count = glyph_filter
+      ثابت hb_سيٽ_t& glyphset = *c->plan->glyphset_gsub ();
+      بنانشان glyph_ڳڻپ = glyph_filter
 			     ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
 			     : glyphset.get_population ();
-      use_class_zero = glyph_count <= glyph_and_klass.length;
+      use_class_zero = glyph_ڳڻپ <= glyph_and_klass.ڊيگهائي;
     }
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    إذا (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (خطأ);
+    return_trace (keep_خالي_جايون_جدول || (منطقي) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classValue.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && class_قدر.sanitize (c));
   }
 
-  unsigned cost () const { return 1; }
+  بنانشان لاڳت () ثابت { أرجع 1; }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_coverage (سيٽ_t *glyphs) ثابت
   {
-    unsigned int start = 0;
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح شروعات = 0;
+    بنانشان صحيح ڳڻپ = class_قدر.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      if (classValue[i])
-	continue;
+      إذا (class_قدر[i])
+	استمر;
 
-      if (start != i)
-	if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + i)))
-	  return false;
+      إذا (شروعات != i)
+	إذا (unlikely (!glyphs->جوڙيو_range (شروعات_Glyph + شروعات, شروعات_Glyph + i)))
+	  أرجع خطأ;
 
-      start = i + 1;
+      شروعات = i + 1;
     }
-    if (start != count)
-      if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + count)))
-	return false;
+    إذا (شروعات != ڳڻپ)
+      إذا (unlikely (!glyphs->جوڙيو_range (شروعات_Glyph + شروعات, شروعات_Glyph + ڳڻپ)))
+	أرجع خطأ;
 
-    return true;
+    أرجع سچ;
   }
 
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned klass) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_class (سيٽ_t *glyphs, بنانشان klass) ثابت
   {
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (classValue[i] == klass) glyphs->add (startGlyph + i);
-    return true;
+    بنانشان صحيح ڳڻپ = class_قدر.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      إذا (class_قدر[i] == klass) glyphs->جوڙيو (شروعات_Glyph + i);
+    أرجع سچ;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
   {
-    hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end = startGlyph + classValue.len;
-    for (hb_codepoint_t iter = startGlyph - 1;
-	 glyphs->next (&iter) && iter < end;)
-      if (classValue[iter - start]) return true;
-    return false;
+    hb_codepoint_t شروعات = شروعات_Glyph;
+    hb_codepoint_t پڇاڙي = شروعات_Glyph + class_قدر.len;
+    لكل (hb_codepoint_t iter = شروعات_Glyph - 1;
+	 glyphs->next (&iter) && iter < پڇاڙي;)
+      إذا (class_قدر[iter - شروعات]) أرجع سچ;
+    أرجع خطأ;
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  منطقي intersects_class (ثابت hb_سيٽ_t *glyphs, بنانشان klass) ثابت
   {
-    unsigned int count = classValue.len;
-    if (klass == 0)
+    بنانشان صحيح ڳڻپ = class_قدر.len;
+    إذا (klass == 0)
     {
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      if (!glyphs->next (&g)) return false;
-      if (g < startGlyph) return true;
-      g = startGlyph + count - 1;
-      if (glyphs->next (&g)) return true;
+      hb_codepoint_t g = HB_سيٽ_قدر_INVALID;
+      إذا (!glyphs->next (&g)) أرجع خطأ;
+      إذا (g < شروعات_Glyph) أرجع سچ;
+      g = شروعات_Glyph + ڳڻپ - 1;
+      إذا (glyphs->next (&g)) أرجع سچ;
       /* Fall through. */
     }
     /* TODO Speed up, using set overlap first? */
     /* TODO(iter) Rewrite as dagger. */
-    const typename Types::HBUINT *arr = classValue.arrayZ;
-    for (unsigned int i = 0; i < count; i++)
-      if (arr[i] == klass && glyphs->has (startGlyph + i))
-	return true;
-    return false;
+    ثابت قسم_نالو Types::HBUINT *arr = class_قدر.arrayZ;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      إذا (arr[i] == klass && glyphs->has (شروعات_Glyph + i))
+	أرجع سچ;
+    أرجع خطأ;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  فراغ intersected_class_glyphs (ثابت hb_سيٽ_t *glyphs, بنانشان klass, hb_سيٽ_t *intersect_glyphs) ثابت
   {
-    unsigned count = classValue.len;
-    if (klass == 0)
+    بنانشان ڳڻپ = class_قدر.len;
+    إذا (klass == 0)
     {
-      unsigned start_glyph = startGlyph;
-      for (uint32_t g = HB_SET_VALUE_INVALID;
-	   glyphs->next (&g) && g < start_glyph;)
-	intersect_glyphs->add (g);
+      بنانشان شروعات_glyph = شروعات_Glyph;
+      لكل (uint32_t g = HB_سيٽ_قدر_INVALID;
+	   glyphs->next (&g) && g < شروعات_glyph;)
+	intersect_glyphs->جوڙيو (g);
 
-      for (uint32_t g = startGlyph + count - 1;
+      لكل (uint32_t g = شروعات_Glyph + ڳڻپ - 1;
 	   glyphs-> next (&g);)
-	intersect_glyphs->add (g);
+	intersect_glyphs->جوڙيو (g);
 
-      return;
+      أرجع;
     }
 
-    for (unsigned i = 0; i < count; i++)
-      if (classValue[i] == klass && glyphs->has (startGlyph + i))
-	intersect_glyphs->add (startGlyph + i);
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
+      إذا (class_قدر[i] == klass && glyphs->has (شروعات_Glyph + i))
+	intersect_glyphs->جوڙيو (شروعات_Glyph + i);
 
-#if 0
+#إذا 0
     /* The following implementation is faster asymptotically, but slower
      * in practice. */
-    unsigned start_glyph = startGlyph;
-    unsigned end_glyph = start_glyph + count;
-    for (unsigned g = startGlyph - 1;
-	 glyphs->next (&g) && g < end_glyph;)
-      if (classValue.arrayZ[g - start_glyph] == klass)
-        intersect_glyphs->add (g);
-#endif
+    بنانشان شروعات_glyph = شروعات_Glyph;
+    بنانشان پڇاڙي_glyph = شروعات_glyph + ڳڻپ;
+    لكل (بنانشان g = شروعات_Glyph - 1;
+	 glyphs->next (&g) && g < پڇاڙي_glyph;)
+      إذا (class_قدر.arrayZ[g - شروعات_glyph] == klass)
+        intersect_glyphs->جوڙيو (g);
+#جيڪڏهن_پورو
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  فراغ intersected_classes (ثابت hb_سيٽ_t *glyphs, hb_سيٽ_t *intersect_classes) ثابت
   {
-    if (glyphs->is_empty ()) return;
+    إذا (glyphs->is_empty ()) أرجع;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: `end_glyph` below
      * underflows when startGlyph is zero, and neither comparison can then be
      * true. */
-    if (!classValue.len)
+    إذا (!class_قدر.len)
     {
-      intersect_classes->add (0);
-      return;
+      intersect_classes->جوڙيو (0);
+      أرجع;
     }
 
-    hb_codepoint_t end_glyph = startGlyph + classValue.len - 1;
-    if (glyphs->get_min () < startGlyph ||
-        glyphs->get_max () > end_glyph)
-      intersect_classes->add (0);
+    hb_codepoint_t پڇاڙي_glyph = شروعات_Glyph + class_قدر.len - 1;
+    إذا (glyphs->get_min () < شروعات_Glyph ||
+        glyphs->get_max () > پڇاڙي_glyph)
+      intersect_classes->جوڙيو (0);
 
-    for (const auto& _ : + hb_enumerate (classValue))
+    لكل (ثابت خودڪار& _ : + hb_enumerate (class_قدر))
     {
-      hb_codepoint_t g = startGlyph + _.first;
-      if (glyphs->has (g))
-        intersect_classes->add (_.second);
+      hb_codepoint_t g = شروعات_Glyph + _.پهريون;
+      إذا (glyphs->has (g))
+        intersect_classes->جوڙيو (_.second);
     }
   }
 
-  protected:
+  محمي:
   HBUINT16	classFormat;	/* Format identifier--format = 1 */
-  typename Types::HBGlyphID
-		 startGlyph;	/* First GlyphID of the classValueArray */
-  typename Types::template ArrayOf<typename Types::HBUINT>
-		classValue;	/* Array of Class Values--one per GlyphID */
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, classValue);
+  قسم_نالو Types::HBGlyphID
+		 شروعات_Glyph;	/* First GlyphID of the classValueArray */
+  قسم_نالو Types::سانچو Array_جو<قسم_نالو Types::HBUINT>
+		class_قدر;	/* Array of Class Values--one per GlyphID */
+  عام:
+  DEFINE_سائيز_ARRAY (2 + 2 * Types::سائيز, class_قدر);
 };
 
-template <typename Types>
-struct ClassDefFormat2_4
+سانچو <قسم_نالو Types>
+بنية ClassDefFormat2_4
 {
-  friend struct ClassDef;
+  دوست بنية ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  خاص:
+  بنانشان صحيح get_class (hb_codepoint_t glyph_id) ثابت
   {
-    return rangeRecord.bsearch (glyph_id).value;
+    أرجع range_رڪارڊ.bsearch (glyph_id).value;
   }
 
-  unsigned get_population () const
+  بنانشان get_population () ثابت
   {
-    typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    قسم_نالو Types::large_int ret = 0;
+    لكل (ثابت خودڪار &r : range_رڪارڊ)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    أرجع ret > UINT_MAX ? UINT_MAX : (بنانشان) ret;
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  سانچو<قسم_نالو Iterator,
+	   hb_requires (hb_is_sorted_ذريعو_جو (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    if (unlikely (!it))
+    إذا (unlikely (!it))
     {
-      classFormat = Types::size == 2 ? 2 : 4;
-      rangeRecord.len = 0;
-      return_trace (true);
+      classFormat = Types::سائيز == 2 ? 2 : 4;
+      range_رڪارڊ.len = 0;
+      return_trace (سچ);
     }
 
-    unsigned unsorted = false;
-    unsigned num_ranges = 1;
-    hb_codepoint_t prev_gid = (*it).first;
-    unsigned prev_klass = (*it).second;
+    بنانشان unsorted = خطأ;
+    بنانشان انگ_ranges = 1;
+    hb_codepoint_t prev_gid = (*it).پهريون;
+    بنانشان prev_klass = (*it).second;
 
-    RangeRecord<Types> range_rec;
-    range_rec.first = prev_gid;
-    range_rec.last = prev_gid;
+    Range_رڪارڊ<Types> range_rec;
+    range_rec.پهريون = prev_gid;
+    range_rec.آخري = prev_gid;
     range_rec.value = prev_klass;
 
-    auto *record = c->copy (range_rec);
-    if (unlikely (!record)) return_trace (false);
+    خودڪار *رڪارڊ = c->copy (range_rec);
+    إذا (unlikely (!رڪارڊ)) return_trace (خطأ);
 
-    for (const auto gid_klass_pair : + (++it))
+    لكل (ثابت خودڪار gid_klass_pair : + (++it))
     {
-      hb_codepoint_t cur_gid = gid_klass_pair.first;
-      unsigned cur_klass = gid_klass_pair.second;
+      hb_codepoint_t cur_gid = gid_klass_pair.پهريون;
+      بنانشان cur_klass = gid_klass_pair.second;
 
-      if (cur_gid != prev_gid + 1 ||
+      إذا (cur_gid != prev_gid + 1 ||
 	  cur_klass != prev_klass)
       {
 
-	if (unlikely (cur_gid < prev_gid))
-	  unsorted = true;
+	إذا (unlikely (cur_gid < prev_gid))
+	  unsorted = سچ;
 
-	if (unlikely (!record)) break;
-	record->last = prev_gid;
-	num_ranges++;
+	إذا (unlikely (!رڪارڊ)) اكسر;
+	رڪارڊ->آخري = prev_gid;
+	انگ_ranges++;
 
-	range_rec.first = cur_gid;
-	range_rec.last = cur_gid;
+	range_rec.پهريون = cur_gid;
+	range_rec.آخري = cur_gid;
 	range_rec.value = cur_klass;
 
-	record = c->copy (range_rec);
+	رڪارڊ = c->copy (range_rec);
       }
 
       prev_klass = cur_klass;
       prev_gid = cur_gid;
     }
 
-    if (unlikely (c->in_error ())) return_trace (false);
+    إذا (unlikely (c->اندريون_error ())) return_trace (خطأ);
 
-    if (likely (record)) record->last = prev_gid;
-    rangeRecord.len = num_ranges;
+    إذا (likely (رڪارڊ)) رڪارڊ->آخري = prev_gid;
+    range_رڪارڊ.len = انگ_ranges;
 
-    if (unlikely (unsorted))
-      rangeRecord.as_array ().qsort (RangeRecord<Types>::cmp_range);
+    إذا (unlikely (unsorted))
+      range_رڪارڊ.as_array ().qsort (Range_رڪارڊ<Types>::cmp_range);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = خالي_اشارو /*OUT*/,
+               منطقي keep_خالي_جايون_جدول = سچ,
+               منطقي use_class_zero = سچ,
+               ثابت Coverage* glyph_filter = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyph_set = *c->plan->glyphset_gsub ();
+    TRACE_SUBSET (هذا);
+    ثابت hb_سيٽ_t &glyph_سيٽ = *c->plan->glyphset_gsub ();
 
-    hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
-    hb_set_t orig_klasses;
+    hb_sorted_ويڪٽر_t<hb_codepoint_pair_t> glyph_and_klass;
+    hb_سيٽ_t orig_klasses;
 
-    if (glyph_set.get_population () * hb_bit_storage ((unsigned) rangeRecord.len)
+    إذا (glyph_سيٽ.get_population () * hb_ٻٽو_انگ_storage ((بنانشان) range_رڪارڊ.len)
 	< get_population ())
     {
-      for (hb_codepoint_t g : glyph_set)
+      لكل (hb_codepoint_t g : glyph_سيٽ)
       {
-	unsigned klass = get_class (g);
-	if (!klass) continue;
+	بنانشان klass = get_class (g);
+	إذا (!klass) استمر;
 	hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	if (glyph_filter && !glyph_filter->has (g)) continue;
+	إذا (new_gid == HB_MAP_قدر_INVALID) استمر;
+	إذا (glyph_filter && !glyph_filter->has (g)) استمر;
 	glyph_and_klass.push (hb_pair (new_gid, klass));
-	orig_klasses.add (klass);
+	orig_klasses.جوڙيو (klass);
       }
     }
-    else
+    وإلا
     {
-      unsigned num_source_glyphs = c->plan->source->get_num_glyphs ();
-      for (auto &range : rangeRecord)
+      بنانشان انگ_ذريعو_glyphs = c->plan->ذريعو->get_انگ_glyphs ();
+      لكل (خودڪار &range : range_رڪارڊ)
       {
-	unsigned klass = range.value;
-	if (!klass) continue;
-	hb_codepoint_t start = range.first;
-	hb_codepoint_t end   = hb_min (range.last + 1, num_source_glyphs);
-	for (hb_codepoint_t g = start; g < end; g++)
+	بنانشان klass = range.value;
+	إذا (!klass) استمر;
+	hb_codepoint_t شروعات = range.پهريون;
+	hb_codepoint_t پڇاڙي   = hb_min (range.آخري + 1, انگ_ذريعو_glyphs);
+	لكل (hb_codepoint_t g = شروعات; g < پڇاڙي; g++)
 	{
 	  hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	  if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	  if (glyph_filter && !glyph_filter->has (g)) continue;
+	  إذا (new_gid == HB_MAP_قدر_INVALID) استمر;
+	  إذا (glyph_filter && !glyph_filter->has (g)) استمر;
 
 	  glyph_and_klass.push (hb_pair (new_gid, klass));
-	  orig_klasses.add (klass);
+	  orig_klasses.جوڙيو (klass);
 	}
       }
     }
 
-    const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-    unsigned glyph_count = glyph_filter
+    ثابت hb_سيٽ_t& glyphset = *c->plan->glyphset_gsub ();
+    بنانشان glyph_ڳڻپ = glyph_filter
                            ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
                            : glyphset.get_population ();
-    use_class_zero = use_class_zero && glyph_count <= glyph_and_klass.length;
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    use_class_zero = use_class_zero && glyph_ڳڻپ <= glyph_and_klass.ڊيگهائي;
+    إذا (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (خطأ);
+    return_trace (keep_خالي_جايون_جدول || (منطقي) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (rangeRecord.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (range_رڪارڊ.sanitize (c));
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  بنانشان لاڳت () ثابت { أرجع hb_ٻٽو_انگ_storage ((بنانشان) range_رڪارڊ.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_coverage (سيٽ_t *glyphs) ثابت
   {
-    for (auto &range : rangeRecord)
-      if (range.value)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
-    return true;
+    لكل (خودڪار &range : range_رڪارڊ)
+      إذا (range.value)
+	إذا (unlikely (!range.collect_coverage (glyphs)))
+	  أرجع خطأ;
+    أرجع سچ;
   }
 
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_class (سيٽ_t *glyphs, بنانشان صحيح klass) ثابت
   {
-    for (auto &range : rangeRecord)
+    لكل (خودڪار &range : range_رڪارڊ)
     {
-      if (range.value == klass)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
+      إذا (range.value == klass)
+	إذا (unlikely (!range.collect_coverage (glyphs)))
+	  أرجع خطأ;
     }
-    return true;
+    أرجع سچ;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    إذا (range_رڪارڊ.len > glyphs->get_population () * hb_ٻٽو_انگ_storage ((بنانشان) range_رڪارڊ.len))
     {
-      for (auto g : *glyphs)
-        if (get_class (g))
-	  return true;
-      return false;
+      لكل (خودڪار g : *glyphs)
+        إذا (get_class (g))
+	  أرجع سچ;
+      أرجع خطأ;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const RangeRecord<Types> &range) { return range.intersects (*glyphs) && range.value; }));
+    أرجع hb_any (+ hb_iter (range_رڪارڊ)
+                   | hb_map ([glyphs] (ثابت Range_رڪارڊ<Types> &range) { أرجع range.intersects (*glyphs) && range.value; }));
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  منطقي intersects_class (ثابت hb_سيٽ_t *glyphs, بنانشان klass) ثابت
   {
-    if (klass == 0)
+    إذا (klass == 0)
     {
       /* An empty ClassDef assigns class zero to every glyph, so it intersects
        * class zero as long as there is any glyph at all.  The loop below is a
        * no-op when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
        * guard after it would then wrongly report no intersection. */
-      if (!rangeRecord.len)
-        return !glyphs->is_empty ();
+      إذا (!range_رڪارڊ.len)
+        أرجع !glyphs->is_empty ();
 
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      hb_codepoint_t last = HB_SET_VALUE_INVALID;
-      auto it = hb_iter (rangeRecord);
-      for (auto &range : it)
+      hb_codepoint_t g = HB_سيٽ_قدر_INVALID;
+      hb_codepoint_t آخري = HB_سيٽ_قدر_INVALID;
+      خودڪار it = hb_iter (range_رڪارڊ);
+      لكل (خودڪار &range : it)
       {
-        if (it->first == last + 1)
+        إذا (it->پهريون == آخري + 1)
 	{
 	  it++;
-	  continue;
+	  استمر;
 	}
 
-	if (!glyphs->next (&g))
-	  break;
-	if (g < range.first)
-	  return true;
-	g = range.last;
-	last = g;
+	إذا (!glyphs->next (&g))
+	  اكسر;
+	إذا (g < range.پهريون)
+	  أرجع سچ;
+	g = range.آخري;
+	آخري = g;
       }
-      if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
-	return true;
+      إذا (g != HB_سيٽ_قدر_INVALID && glyphs->next (&g))
+	أرجع سچ;
       /* Fall through. */
     }
-    for (const auto &range : rangeRecord)
-      if (range.value == klass && range.intersects (*glyphs))
-	return true;
-    return false;
+    لكل (ثابت خودڪار &range : range_رڪارڊ)
+      إذا (range.value == klass && range.intersects (*glyphs))
+	أرجع سچ;
+    أرجع خطأ;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  فراغ intersected_class_glyphs (ثابت hb_سيٽ_t *glyphs, بنانشان klass, hb_سيٽ_t *intersect_glyphs) ثابت
   {
-    if (klass == 0)
+    إذا (klass == 0)
     {
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      for (auto &range : rangeRecord)
+      hb_codepoint_t g = HB_سيٽ_قدر_INVALID;
+      لكل (خودڪار &range : range_رڪارڊ)
       {
-	if (!glyphs->next (&g))
-	  goto done;
-	while (g < range.first)
+	إذا (!glyphs->next (&g))
+	  اذهب پورو;
+	طالما (g < range.پهريون)
 	{
-	  intersect_glyphs->add (g);
-	  if (!glyphs->next (&g))
-	    goto done;
+	  intersect_glyphs->جوڙيو (g);
+	  إذا (!glyphs->next (&g))
+	    اذهب پورو;
         }
-        g = range.last;
+        g = range.آخري;
       }
-      while (glyphs->next (&g))
-	intersect_glyphs->add (g);
-      done:
+      طالما (glyphs->next (&g))
+	intersect_glyphs->جوڙيو (g);
+      پورو:
 
-      return;
+      أرجع;
     }
 
-    unsigned count = rangeRecord.len;
-    if (count > glyphs->get_population () * hb_bit_storage (count))
+    بنانشان ڳڻپ = range_رڪارڊ.len;
+    إذا (ڳڻپ > glyphs->get_population () * hb_ٻٽو_انگ_storage (ڳڻپ))
     {
-      for (auto g : *glyphs)
+      لكل (خودڪار g : *glyphs)
       {
-        unsigned i;
-        if (rangeRecord.as_array ().bfind (g, &i) &&
-	    rangeRecord.arrayZ[i].value == klass)
-	  intersect_glyphs->add (g);
+        بنانشان i;
+        إذا (range_رڪارڊ.as_array ().bfind (g, &i) &&
+	    range_رڪارڊ.arrayZ[i].value == klass)
+	  intersect_glyphs->جوڙيو (g);
       }
-      return;
+      أرجع;
     }
 
-    for (auto &range : rangeRecord)
+    لكل (خودڪار &range : range_رڪارڊ)
     {
-      if (range.value != klass) continue;
+      إذا (range.value != klass) استمر;
 
-      unsigned end = range.last + 1;
-      for (hb_codepoint_t g = range.first - 1;
-	   glyphs->next (&g) && g < end;)
-	intersect_glyphs->add (g);
+      بنانشان پڇاڙي = range.آخري + 1;
+      لكل (hb_codepoint_t g = range.پهريون - 1;
+	   glyphs->next (&g) && g < پڇاڙي;)
+	intersect_glyphs->جوڙيو (g);
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  فراغ intersected_classes (ثابت hb_سيٽ_t *glyphs, hb_سيٽ_t *intersect_classes) ثابت
   {
-    if (glyphs->is_empty ()) return;
+    إذا (glyphs->is_empty ()) أرجع;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: the loops below are
      * no-ops when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
      * guard would then wrongly skip adding class zero. */
-    if (!rangeRecord.len)
+    إذا (!range_رڪارڊ.len)
     {
-      intersect_classes->add (0);
-      return;
+      intersect_classes->جوڙيو (0);
+      أرجع;
     }
 
-    hb_codepoint_t g = HB_SET_VALUE_INVALID;
-    for (auto &range : rangeRecord)
+    hb_codepoint_t g = HB_سيٽ_قدر_INVALID;
+    لكل (خودڪار &range : range_رڪارڊ)
     {
-      if (!glyphs->next (&g))
-        break;
-      if (g < range.first)
+      إذا (!glyphs->next (&g))
+        اكسر;
+      إذا (g < range.پهريون)
       {
-        intersect_classes->add (0);
-        break;
+        intersect_classes->جوڙيو (0);
+        اكسر;
       }
-      g = range.last;
+      g = range.آخري;
     }
-    if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
-      intersect_classes->add (0);
+    إذا (g != HB_سيٽ_قدر_INVALID && glyphs->next (&g))
+      intersect_classes->جوڙيو (0);
 
-    for (const auto& range : rangeRecord)
-      if (range.intersects (*glyphs))
-        intersect_classes->add (range.value);
+    لكل (ثابت خودڪار& range : range_رڪارڊ)
+      إذا (range.intersects (*glyphs))
+        intersect_classes->جوڙيو (range.value);
   }
 
-  protected:
+  محمي:
   HBUINT16	classFormat;	/* Format identifier--format = 2 */
-  typename Types::template SortedArrayOf<RangeRecord<Types>>
-		rangeRecord;	/* Array of glyph ranges--ordered by
+  قسم_نالو Types::سانچو Sorted_Array_جو<Range_رڪارڊ<Types>>
+		range_رڪارڊ;	/* Array of glyph ranges--ordered by
 				 * Start GlyphID */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::size, rangeRecord);
+  عام:
+  DEFINE_سائيز_ARRAY (2 + Types::سائيز, range_رڪارڊ);
 };
 
-struct ClassDef
+بنية ClassDef
 {
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  بنانشان عامل [] (hb_codepoint_t k) ثابت { أرجع get (k); }
+  منطقي has (hb_codepoint_t k) ثابت { أرجع (*هذا)[k]; }
   /* Projection. */
-  hb_codepoint_t operator () (hb_codepoint_t k) const { return get (k); }
+  hb_codepoint_t عامل () (hb_codepoint_t k) ثابت { أرجع get (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_class (k); }
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  بنانشان صحيح get (hb_codepoint_t k) ثابت { أرجع get_class (k); }
+  بنانشان صحيح get_class (hb_codepoint_t glyph_id) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_class (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_class (glyph_id);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_class (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_class (glyph_id);
-#endif
-    default:return 0;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.get_class (glyph_id);
+    حالة 2: hb_barrier (); أرجع u.format2.get_class (glyph_id);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.get_class (glyph_id);
+    حالة 4: hb_barrier (); أرجع u.format4.get_class (glyph_id);
+#جيڪڏهن_پورو
+    افتراضي:أرجع 0;
     }
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  hb_ot_layout_mapping_cache_t *cache) const
+  بنانشان صحيح get_class (hb_codepoint_t glyph_id,
+			  hb_ot_layout_mapping_cache_t *cache) ثابت
   {
-    unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
+    بنانشان klass;
+    إذا (cache && cache->get (glyph_id, &klass)) أرجع klass;
     klass = get_class (glyph_id);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    إذا (cache) cache->سيٽ (glyph_id, klass);
+    أرجع klass;
   }
 
-  unsigned get_population () const
+  بنانشان get_population () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
-#endif
-    default:return NOT_COVERED;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.get_population ();
+    حالة 2: hb_barrier (); أرجع u.format2.get_population ();
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.get_population ();
+    حالة 4: hb_barrier (); أرجع u.format4.get_population ();
+#جيڪڏهن_پورو
+    افتراضي:أرجع NOT_COVERED;
     }
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
+  سانچو<قسم_نالو Iterator,
+	   hb_requires (hb_is_sorted_ذريعو_جو (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    auto glyphs = + it_with_class_zero | hb_filter (hb_second);
+    خودڪار glyphs = + it_with_class_zero | hb_filter (hb_ٻيو);
 
-    unsigned format = 2;
+    بنانشان format = 2;
     hb_codepoint_t glyph_max = 0;
-    unsigned class_max = 0;
-    if (likely (glyphs))
+    بنانشان class_max = 0;
+    إذا (likely (glyphs))
     {
-      hb_codepoint_t glyph_min = (*glyphs).first;
+      hb_codepoint_t glyph_min = (*glyphs).پهريون;
       glyph_max = glyph_min;
 
-      unsigned num_ranges = 1;
+      بنانشان انگ_ranges = 1;
       hb_codepoint_t prev_gid = glyph_min;
-      unsigned prev_klass = (*glyphs).second;
+      بنانشان prev_klass = (*glyphs).second;
 
-      for (const auto gid_klass_pair : + glyphs)
+      لكل (ثابت خودڪار gid_klass_pair : + glyphs)
       {
-	hb_codepoint_t cur_gid = gid_klass_pair.first;
-	unsigned cur_klass = gid_klass_pair.second;
-	if (cur_klass > class_max) class_max = cur_klass;
-	if (cur_gid == glyph_min) continue;
-        if (cur_gid > glyph_max) glyph_max = cur_gid;
-	if (cur_gid != prev_gid + 1 ||
+	hb_codepoint_t cur_gid = gid_klass_pair.پهريون;
+	بنانشان cur_klass = gid_klass_pair.second;
+	إذا (cur_klass > class_max) class_max = cur_klass;
+	إذا (cur_gid == glyph_min) استمر;
+        إذا (cur_gid > glyph_max) glyph_max = cur_gid;
+	إذا (cur_gid != prev_gid + 1 ||
 	    cur_klass != prev_klass)
-	  num_ranges++;
+	  انگ_ranges++;
 
 	prev_gid = cur_gid;
 	prev_klass = cur_klass;
       }
 
-      uint64_t best_size = UINT64_MAX;
-      unsigned glyph_span = glyph_max - glyph_min + 1;
-      auto consider = [&] (unsigned candidate, uint64_t size)
+      uint64_t بهترين_سائيز = UINT64_MAX;
+      بنانشان glyph_وسعت = glyph_max - glyph_min + 1;
+      خودڪار consider = [&] (بنانشان candidate, uint64_t سائيز)
       {
-	if (size >= best_size) return;
-	best_size = size;
+	إذا (سائيز >= بهترين_سائيز) أرجع;
+	بهترين_سائيز = سائيز;
 	format = candidate;
       };
 
-      if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (1, 6 + (uint64_t) HBUINT16::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFu && num_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (2, 4 + (uint64_t) num_ranges *
-		     (2 * HBGlyphID16::static_size + HBUINT16::static_size));
-#ifndef HB_NO_BEYOND_64K
-      if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
-	consider (3, 8 + (uint64_t) HBUINT24::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFFFu && num_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
-	consider (4, 5 + (uint64_t) num_ranges *
-		     (2 * HBGlyphID24::static_size + HBUINT16::static_size));
-#endif
-      if (unlikely (best_size == UINT64_MAX))
+      إذا (glyph_max <= 0xFFFFu && glyph_وسعت <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (1, 6 + (uint64_t) HBUINT16::static_سائيز * glyph_وسعت);
+      إذا (glyph_max <= 0xFFFFu && انگ_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (2, 4 + (uint64_t) انگ_ranges *
+		     (2 * HBGlyphID16::static_سائيز + HBUINT16::static_سائيز));
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+      إذا (glyph_max <= 0xFFFFFFu && glyph_وسعت <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+	consider (3, 8 + (uint64_t) HBUINT24::static_سائيز * glyph_وسعت);
+      إذا (glyph_max <= 0xFFFFFFu && انگ_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
+	consider (4, 5 + (uint64_t) انگ_ranges *
+		     (2 * HBGlyphID24::static_سائيز + HBUINT16::static_سائيز));
+#جيڪڏهن_پورو
+      إذا (unlikely (بهترين_سائيز == UINT64_MAX))
       {
-	c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-	return_trace (false);
+	c->check_success (خطأ, HB_SERIALIZE_ERROR_INT_حد_کان_مٿي);
+	return_trace (خطأ);
       }
     }
 
     u.format.v = format;
 
-    switch (u.format.v)
+    بدل (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-#endif
-    default:return_trace (false);
+    حالة 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_ٻيو)));
+    حالة 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_ٻيو)));
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_ٻيو)));
+    حالة 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_ٻيو)));
+#جيڪڏهن_پورو
+    افتراضي:return_trace (خطأ);
     }
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = خالي_اشارو /*OUT*/,
+               منطقي keep_خالي_جايون_جدول = سچ,
+               منطقي use_class_zero = سچ,
+               ثابت Coverage* glyph_filter = خالي_اشارو) ثابت
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-#endif
-    default:return_trace (false);
+    TRACE_SUBSET (هذا);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_خالي_جايون_جدول, use_class_zero, glyph_filter));
+    حالة 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_خالي_جايون_جدول, use_class_zero, glyph_filter));
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_خالي_جايون_جدول, use_class_zero, glyph_filter));
+    حالة 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_خالي_جايون_جدول, use_class_zero, glyph_filter));
+#جيڪڏهن_پورو
+    افتراضي:return_trace (خطأ);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!u.format.v.sanitize (c)) return_trace (خطأ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-#endif
-    default:return_trace (true);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالة 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    حالة 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+#جيڪڏهن_پورو
+    افتراضي:return_trace (سچ);
     }
   }
 
-  unsigned cost () const
+  بنانشان لاڳت () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
-#endif
-    default:return 0u;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.لاڳت ();
+    حالة 2: hb_barrier (); أرجع u.format2.لاڳت ();
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.لاڳت ();
+    حالة 4: hb_barrier (); أرجع u.format4.لاڳت ();
+#جيڪڏهن_پورو
+    افتراضي:أرجع 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_coverage (سيٽ_t *glyphs) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
-#endif
-    default:return false;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.collect_coverage (glyphs);
+    حالة 2: hb_barrier (); أرجع u.format2.collect_coverage (glyphs);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.collect_coverage (glyphs);
+    حالة 4: hb_barrier (); أرجع u.format4.collect_coverage (glyphs);
+#جيڪڏهن_پورو
+    افتراضي:أرجع خطأ;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  سانچو <قسم_نالو سيٽ_t>
+  منطقي collect_class (سيٽ_t *glyphs, بنانشان صحيح klass) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.collect_class (glyphs, klass);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.collect_class (glyphs, klass);
-#endif
-    default:return false;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.collect_class (glyphs, klass);
+    حالة 2: hb_barrier (); أرجع u.format2.collect_class (glyphs, klass);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.collect_class (glyphs, klass);
+    حالة 4: hb_barrier (); أرجع u.format4.collect_class (glyphs, klass);
+#جيڪڏهن_پورو
+    افتراضي:أرجع خطأ;
     }
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
-#endif
-    default:return false;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.intersects (glyphs);
+    حالة 2: hb_barrier (); أرجع u.format2.intersects (glyphs);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.intersects (glyphs);
+    حالة 4: hb_barrier (); أرجع u.format4.intersects (glyphs);
+#جيڪڏهن_پورو
+    افتراضي:أرجع خطأ;
     }
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned int klass) const
+  منطقي intersects_class (ثابت hb_سيٽ_t *glyphs, بنانشان صحيح klass) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.intersects_class (glyphs, klass);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.intersects_class (glyphs, klass);
-#endif
-    default:return false;
-    }
-  }
-
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
-  {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#endif
-    default:return;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.intersects_class (glyphs, klass);
+    حالة 2: hb_barrier (); أرجع u.format2.intersects_class (glyphs, klass);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.intersects_class (glyphs, klass);
+    حالة 4: hb_barrier (); أرجع u.format4.intersects_class (glyphs, klass);
+#جيڪڏهن_پورو
+    افتراضي:أرجع خطأ;
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  فراغ intersected_class_glyphs (ثابت hb_سيٽ_t *glyphs, بنانشان klass, hb_سيٽ_t *intersect_glyphs) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_classes (glyphs, intersect_classes);
-    case 2: hb_barrier (); return u.format2.intersected_classes (glyphs, intersect_classes);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_classes (glyphs, intersect_classes);
-    case 4: hb_barrier (); return u.format4.intersected_classes (glyphs, intersect_classes);
-#endif
-    default:return;
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    حالة 2: hb_barrier (); أرجع u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    حالة 4: hb_barrier (); أرجع u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+#جيڪڏهن_پورو
+    افتراضي:أرجع;
+    }
+  }
+
+  فراغ intersected_classes (ثابت hb_سيٽ_t *glyphs, hb_سيٽ_t *intersect_classes) ثابت
+  {
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); أرجع u.format1.intersected_classes (glyphs, intersect_classes);
+    حالة 2: hb_barrier (); أرجع u.format2.intersected_classes (glyphs, intersect_classes);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    حالة 3: hb_barrier (); أرجع u.format3.intersected_classes (glyphs, intersect_classes);
+    حالة 4: hb_barrier (); أرجع u.format4.intersected_classes (glyphs, intersect_classes);
+#جيڪڏهن_پورو
+    افتراضي:أرجع;
     }
   }
 
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;		/* Format identifier */
   ClassDefFormat1_3<SmallTypes>	format1;
   ClassDefFormat2_4<SmallTypes>	format2;
-#ifndef HB_NO_BEYOND_64K
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
   ClassDefFormat1_3<MediumTypes>format3;
   ClassDefFormat2_4<MediumTypes>format4;
-#endif
+#جيڪڏهن_پورو
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عام:
+  DEFINE_سائيز_UNION (2, format.v);
 };
 
-template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+سانچو<قسم_نالو Iterator>
+ساكن مضمن منطقي ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it)
-{ return (c->start_embed<ClassDef> ()->serialize (c, it)); }
+{ أرجع (c->شروعات_embed<ClassDef> ()->serialize (c, it)); }
 
 
 /*
@@ -2367,533 +2367,533 @@ static inline bool ClassDef_serialize (hb_serialize_context_t *c,
  */
 
 /* ported from fonttools (class _Encoding) */
-struct delta_row_encoding_t
+بنية delta_صف_encoding_t
 {
   /* each byte represents a region, value is one of 0/1/2/4, which means bytes
    * needed for this region */
-  struct chars_t : hb_vector_t<uint8_t>
+  بنية chars_t : hb_ويڪٽر_t<uint8_t>
   {
-    int cmp (const chars_t& other) const
+    صحيح cmp (ثابت chars_t& other) ثابت
     {
-      return as_array ().cmp (other.as_array ());
+      أرجع as_array ().cmp (other.as_array ());
     }
 
-    hb_pair_t<unsigned, unsigned> get_width ()
+    hb_pair_t<بنانشان, بنانشان> get_ويڪر ()
     {
-      unsigned width = 0;
-      unsigned columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      بنانشان ويڪر = 0;
+      بنانشان columns = 0;
+      لكل (بنانشان i = 0; i < ڊيگهائي; i++)
       {
-	unsigned v = arrayZ[i];
-	width += v;
+	بنانشان v = arrayZ[i];
+	ويڪر += v;
 	columns += (v != 0);
       }
-      return hb_pair (width, columns);
+      أرجع hb_pair (ويڪر, columns);
     }
 
     HB_HOT
-    hb_pair_t<unsigned, unsigned> combine_width (const chars_t& other) const
+    hb_pair_t<بنانشان, بنانشان> combine_ويڪر (ثابت chars_t& other) ثابت
     {
-      unsigned combined_width = 0;
-      unsigned combined_columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      بنانشان combined_ويڪر = 0;
+      بنانشان combined_columns = 0;
+      لكل (بنانشان i = 0; i < ڊيگهائي; i++)
       {
-        unsigned v = hb_max (arrayZ[i], other.arrayZ[i]);
-	combined_width += v;
+        بنانشان v = hb_max (arrayZ[i], other.arrayZ[i]);
+	combined_ويڪر += v;
 	combined_columns += (v != 0);
       }
-      return hb_pair (combined_width, combined_columns);
+      أرجع hb_pair (combined_ويڪر, combined_columns);
     }
   };
 
-  hb_pair_t<unsigned, unsigned> combine_width (const delta_row_encoding_t& other_encoding) const { return chars.combine_width (other_encoding.chars); }
+  hb_pair_t<بنانشان, بنانشان> combine_ويڪر (ثابت delta_صف_encoding_t& other_encoding) ثابت { أرجع chars.combine_ويڪر (other_encoding.chars); }
 
   // Actual data
 
   chars_t chars;
-  unsigned width = 0;
-  unsigned overhead = 0;
-  hb_vector_t<const hb_vector_t<int>*> items;
+  بنانشان ويڪر = 0;
+  بنانشان overhead = 0;
+  hb_ويڪٽر_t<ثابت hb_ويڪٽر_t<صحيح>*> شيون;
 
-  delta_row_encoding_t () = default;
-  delta_row_encoding_t (hb_vector_t<const hb_vector_t<int>*> &&rows, unsigned num_cols)
+  delta_صف_encoding_t () = افتراضي;
+  delta_صف_encoding_t (hb_ويڪٽر_t<ثابت hb_ويڪٽر_t<صحيح>*> &&صفون, بنانشان انگ_کانن_ڳڻپ)
   {
-    assert (rows);
+    أكد (صفون);
 
-    items = std::move (rows);
+    شيون = std::move (صفون);
 
-    if (unlikely (!chars.resize (num_cols)))
-      return;
+    إذا (unlikely (!chars.resize (انگ_کانن_ڳڻپ)))
+      أرجع;
 
     calculate_chars ();
   }
 
-  void merge (const delta_row_encoding_t& other)
+  فراغ ملايو (ثابت delta_صف_encoding_t& other)
   {
-    items.alloc (items.length + other.items.length);
-    for (auto &row : other.items)
-      add_row (row);
+    شيون.alloc (شيون.ڊيگهائي + other.شيون.ڊيگهائي);
+    لكل (خودڪار &صف : other.شيون)
+      جوڙيو_صف (صف);
 
     // Merge chars
-    assert (chars.length == other.chars.length);
-    for (unsigned i = 0; i < chars.length; i++)
+    أكد (chars.ڊيگهائي == other.chars.ڊيگهائي);
+    لكل (بنانشان i = 0; i < chars.ڊيگهائي; i++)
       chars.arrayZ[i] = hb_max (chars.arrayZ[i], other.chars.arrayZ[i]);
-    chars_changed ();
+    chars_بدليو ();
   }
 
-  void chars_changed ()
+  فراغ chars_بدليو ()
   {
-    auto _ = chars.get_width ();
-    width = _.first;
+    خودڪار _ = chars.get_ويڪر ();
+    ويڪر = _.پهريون;
     overhead = get_chars_overhead (_.second);
   }
 
-  void calculate_chars ()
+  فراغ calculate_chars ()
   {
-    assert (items);
+    أكد (شيون);
 
-    bool long_words = false;
+    منطقي long_لفظ = خطأ;
 
-    for (auto &row : items)
+    لكل (خودڪار &صف : شيون)
     {
-      assert (row->length == chars.length);
+      أكد (صف->ڊيگهائي == chars.ڊيگهائي);
 
       /* 0/1/2 byte encoding */
-      for (unsigned i = 0; i < row->length; i++)
+      لكل (بنانشان i = 0; i < صف->ڊيگهائي; i++)
       {
-	int v =  row->arrayZ[i];
-	if (v == 0)
-	  continue;
-	else if (v > 32767 || v < -32768)
+	صحيح v =  صف->arrayZ[i];
+	إذا (v == 0)
+	  استمر;
+	وإلا إذا (v > 32767 || v < -32768)
 	{
-	  long_words = true;
+	  long_لفظ = سچ;
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 4);
 	}
-	else if (v > 127 || v < -128)
+	وإلا إذا (v > 127 || v < -128)
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 2);
-	else
+	وإلا
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 1);
       }
     }
 
-    if (long_words)
+    إذا (long_لفظ)
     {
       // Convert 1s to 2s
-      for (auto &v : chars)
-	if (v == 1)
+      لكل (خودڪار &v : chars)
+	إذا (v == 1)
 	  v = 2;
     }
 
-    chars_changed ();
+    chars_بدليو ();
   }
 
-  bool is_empty () const
-  { return !items; }
+  منطقي is_empty () ثابت
+  { أرجع !شيون; }
 
-  bool in_error () const
-  { return chars.in_error () || items.in_error (); }
+  منطقي اندريون_error () ثابت
+  { أرجع chars.اندريون_error () || شيون.اندريون_error (); }
 
-  static inline unsigned get_chars_overhead (unsigned num_columns)
+  ساكن مضمن بنانشان get_chars_overhead (بنانشان انگ_columns)
   {
-    unsigned c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
-    return c + num_columns * 2;
+    بنانشان c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
+    أرجع c + انگ_columns * 2;
   }
 
-  unsigned get_gain (unsigned additional_bytes_per_rows = 1) const
+  بنانشان get_gain (بنانشان additional_بائيٽون_في_صفون = 1) ثابت
   {
-    int count = items.length;
-    return hb_max (0, (int) overhead - count * (int) additional_bytes_per_rows);
+    صحيح ڳڻپ = شيون.ڊيگهائي;
+    أرجع hb_max (0, (صحيح) overhead - ڳڻپ * (صحيح) additional_بائيٽون_في_صفون);
   }
 
-  int gain_from_merging (const delta_row_encoding_t& other_encoding) const
+  صحيح gain_from_merging (ثابت delta_صف_encoding_t& other_encoding) ثابت
   {
     // Back of the envelope calculations to reject early.
-    signed additional_bytes_per_rows = other_encoding.width - width;
-    if (additional_bytes_per_rows > 0)
+    نشانوارو additional_بائيٽون_في_صفون = other_encoding.ويڪر - ويڪر;
+    إذا (additional_بائيٽون_في_صفون > 0)
     {
-      if (get_gain (additional_bytes_per_rows) == 0)
-        return 0;
+      إذا (get_gain (additional_بائيٽون_في_صفون) == 0)
+        أرجع 0;
     }
-    else
+    وإلا
     {
-      if (other_encoding.get_gain (-additional_bytes_per_rows) == 0)
-	return 0;
+      إذا (other_encoding.get_gain (-additional_بائيٽون_في_صفون) == 0)
+	أرجع 0;
     }
 
-    auto pair = combine_width (other_encoding);
-    unsigned combined_width = pair.first;
-    unsigned combined_columns = pair.second;
+    خودڪار pair = combine_ويڪر (other_encoding);
+    بنانشان combined_ويڪر = pair.پهريون;
+    بنانشان combined_columns = pair.second;
 
-    int combined_gain = (int) overhead + (int) other_encoding.overhead;
-    combined_gain -= (combined_width - (int) width) * items.length;
-    combined_gain -= (combined_width - (int) other_encoding.width) * other_encoding.items.length;
+    صحيح combined_gain = (صحيح) overhead + (صحيح) other_encoding.overhead;
+    combined_gain -= (combined_ويڪر - (صحيح) ويڪر) * شيون.ڊيگهائي;
+    combined_gain -= (combined_ويڪر - (صحيح) other_encoding.ويڪر) * other_encoding.شيون.ڊيگهائي;
     combined_gain -= get_chars_overhead (combined_columns);
 
-    return combined_gain;
+    أرجع combined_gain;
   }
 
-  bool add_row (const hb_vector_t<int>* row)
-  { return items.push (row); }
+  منطقي جوڙيو_صف (ثابت hb_ويڪٽر_t<صحيح>* صف)
+  { أرجع شيون.push (صف); }
 
-  static int cmp (const void *pa, const void *pb)
+  ساكن صحيح cmp (ثابت فراغ *pa, ثابت فراغ *pb)
   {
-    const delta_row_encoding_t *a = (const delta_row_encoding_t *)pa;
-    const delta_row_encoding_t *b = (const delta_row_encoding_t *)pb;
+    ثابت delta_صف_encoding_t *a = (ثابت delta_صف_encoding_t *)pa;
+    ثابت delta_صف_encoding_t *b = (ثابت delta_صف_encoding_t *)pb;
 
-    if (a->width != b->width)
-      return (int) a->width - (int) b->width;
+    إذا (a->ويڪر != b->ويڪر)
+      أرجع (صحيح) a->ويڪر - (صحيح) b->ويڪر;
 
-    return b->chars.cmp (a->chars);
+    أرجع b->chars.cmp (a->chars);
   }
 };
 
-struct VarRegionAxis
+بنية VarRegionAxis
 {
-  float evaluate (int coord) const
+  عائم evaluate (صحيح coord) ثابت
   {
-    int peak = peakCoord.to_int ();
-    if (peak == 0 || coord == peak)
-      return 1.f;
-    else if (coord == 0) // Faster
-      return 0.f;
+    صحيح peak = peakCoord.منزل_int ();
+    إذا (peak == 0 || coord == peak)
+      أرجع 1.f;
+    وإلا إذا (coord == 0) // Faster
+      أرجع 0.f;
 
-    int start = startCoord.to_int (), end = endCoord.to_int ();
+    صحيح شروعات = شروعات_Coord.منزل_int (), پڇاڙي = پڇاڙي_Coord.منزل_int ();
 
     /* TODO Move these to sanitize(). */
-    if (unlikely (start > peak || peak > end))
-      return 1.f;
-    if (unlikely (start < 0 && end > 0))
-      return 1.f;
+    إذا (unlikely (شروعات > peak || peak > پڇاڙي))
+      أرجع 1.f;
+    إذا (unlikely (شروعات < 0 && پڇاڙي > 0))
+      أرجع 1.f;
 
-    if (coord <= start || end <= coord)
-      return 0.f;
+    إذا (coord <= شروعات || پڇاڙي <= coord)
+      أرجع 0.f;
 
     /* Interpolate */
-    if (coord < peak)
-      return float (coord - start) / (peak - start);
-    else
-      return float (end - coord) / (end - peak);
+    إذا (coord < peak)
+      أرجع عائم (coord - شروعات) / (peak - شروعات);
+    وإلا
+      أرجع عائم (پڇاڙي - coord) / (پڇاڙي - peak);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  منطقي serialize (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (هذا);
+    return_trace (c->embed (هذا));
   }
 
-  public:
-  F2DOT14	startCoord;
+  عام:
+  F2DOT14	شروعات_Coord;
   F2DOT14	peakCoord;
-  F2DOT14	endCoord;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  F2DOT14	پڇاڙي_Coord;
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
-struct SparseVarRegionAxis
+بنية SparseVarRegionAxis
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  عائم evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len) ثابت
   {
-    unsigned i = axisIndex;
-    int coord = i < coord_len ? coords[i] : 0;
-    return axis.evaluate (coord);
+    بنانشان i = axis_اشاريو_2;
+    صحيح coord = i < coord_len ? coords[i] : 0;
+    أرجع axis.evaluate (coord);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionAxis *src,
-		  const hb_map_t *axis_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت SparseVarRegionAxis *src,
+		  ثابت hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (src);
-    if (unlikely (!out)) return_trace (false);
-    if (axis_map)
+    TRACE_SERIALIZE (هذا);
+    خودڪار *ٻاهريون = c->embed (src);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
+    إذا (axis_map)
     {
-      if (unlikely (!axis_map->has (out->axisIndex)))
+      إذا (unlikely (!axis_map->has (ٻاهريون->axis_اشاريو_2)))
       {
 	c->err (HB_SERIALIZE_ERROR_OTHER);
-	return_trace (false);
+	return_trace (خطأ);
       }
-      if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
-				    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	return_trace (false);
+      إذا (unlikely (!c->check_سونپيو (ٻاهريون->axis_اشاريو_2, axis_map->get (ٻاهريون->axis_اشاريو_2),
+				    HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+	return_trace (خطأ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  public:
-  HBUINT16 axisIndex;
+  عام:
+  HBUINT16 axis_اشاريو_2;
   VarRegionAxis axis;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct hb_scalar_cache_t
+بنية hb_scalar_cache_t
 {
-  private:
-  static constexpr unsigned STATIC_LENGTH = 128;
-  static constexpr float INVALID = NAN;
+  خاص:
+  ساكن constexpr بنانشان STATIC_ڊيگهائي = 128;
+  ساكن constexpr عائم INVALID = NAN;
 
-  public:
+  عام:
   hb_scalar_cache_t () {}
 
-  hb_scalar_cache_t (const hb_scalar_cache_t&) = delete;
-  hb_scalar_cache_t (hb_scalar_cache_t&&) = delete;
-  hb_scalar_cache_t& operator= (const hb_scalar_cache_t&) = delete;
-  hb_scalar_cache_t& operator= (hb_scalar_cache_t&&) = delete;
+  hb_scalar_cache_t (ثابت hb_scalar_cache_t&) = ميٽيو;
+  hb_scalar_cache_t (hb_scalar_cache_t&&) = ميٽيو;
+  hb_scalar_cache_t& عامل= (ثابت hb_scalar_cache_t&) = ميٽيو;
+  hb_scalar_cache_t& عامل= (hb_scalar_cache_t&&) = ميٽيو;
 
-  static hb_scalar_cache_t *create (unsigned int count,
-				    hb_scalar_cache_t *scratch_cache = nullptr)
+  ساكن hb_scalar_cache_t *create (بنانشان صحيح ڳڻپ,
+				    hb_scalar_cache_t *scratch_cache = خالي_اشارو)
   {
-    if (!count) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    إذا (!ڳڻپ) أرجع (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    if (scratch_cache && count <= STATIC_LENGTH)
+    إذا (scratch_cache && ڳڻپ <= STATIC_ڊيگهائي)
     {
-      scratch_cache->length = count;
+      scratch_cache->ڊيگهائي = ڳڻپ;
       scratch_cache->clear ();
-      return scratch_cache;
+      أرجع scratch_cache;
     }
 
-    auto *cache = (hb_scalar_cache_t *) hb_malloc (sizeof (hb_scalar_cache_t) - sizeof (static_values) + sizeof (static_values[0]) * count);
-    if (unlikely (!cache)) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    خودڪار *cache = (hb_scalar_cache_t *) hb_malloc (حجم (hb_scalar_cache_t) - حجم (static_قدرون) + حجم (static_قدرون[0]) * ڳڻپ);
+    إذا (unlikely (!cache)) أرجع (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    cache->length = count;
+    cache->ڊيگهائي = ڳڻپ;
     cache->clear ();
 
-    return cache;
+    أرجع cache;
   }
 
-  static void destroy (hb_scalar_cache_t *cache,
-		       hb_scalar_cache_t *scratch_cache = nullptr)
+  ساكن فراغ destroy (hb_scalar_cache_t *cache,
+		       hb_scalar_cache_t *scratch_cache = خالي_اشارو)
   {
-    if (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
+    إذا (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
       hb_free (cache);
   }
 
-  void clear ()
+  فراغ clear ()
   {
-    auto *values = &static_values[0];
-    unsigned i = 0;
-#ifndef HB_OPTIMIZE_SIZE
-    for (; i + 3 < length; i += 4)
+    خودڪار *values = &static_قدرون[0];
+    بنانشان i = 0;
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
+    لكل (; i + 3 < ڊيگهائي; i += 4)
     {
       values[i + 0] = INVALID;
       values[i + 1] = INVALID;
       values[i + 2] = INVALID;
       values[i + 3] = INVALID;
     }
-#endif
-    for (; i < length; i++)
+#جيڪڏهن_پورو
+    لكل (; i < ڊيگهائي; i++)
       values[i] = INVALID;
   }
 
   HB_ALWAYS_INLINE
-  bool get (unsigned i, float *value) const
+  منطقي get (بنانشان i, عائم *value) ثابت
   {
-    if (unlikely (i >= length))
+    إذا (unlikely (i >= ڊيگهائي))
     {
       *value = 0.f;
-      return true;
+      أرجع سچ;
     }
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    float v = *cached_value;
-    if (std::isnan (v))
-      return false;
+    خودڪار *values = &static_قدرون[0];
+    خودڪار *cached_قدر = &values[i];
+    عائم v = *cached_قدر;
+    إذا (std::isnan (v))
+      أرجع خطأ;
     *value = v;
-    return true;
+    أرجع سچ;
   }
 
   HB_ALWAYS_INLINE
-  void set (unsigned i, float value)
+  فراغ سيٽ (بنانشان i, عائم value)
   {
-    if (unlikely (i >= length)) return;
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    *cached_value = value;
+    إذا (unlikely (i >= ڊيگهائي)) أرجع;
+    خودڪار *values = &static_قدرون[0];
+    خودڪار *cached_قدر = &values[i];
+    *cached_قدر = value;
   }
 
-  public:
-  unsigned length;
-  private:
-  mutable hb_atomic_t<float> static_values[STATIC_LENGTH];
+  عام:
+  بنانشان ڊيگهائي;
+  خاص:
+  بدلجندڙ hb_atomic_t<عائم> static_قدرون[STATIC_ڊيگهائي];
 };
 
-struct VarRegionList
+بنية VarRegionList
 {
-  private:
-  float evaluate_impl (unsigned int region_index,
-		       const int *coords, unsigned int coord_len) const
+  خاص:
+  عائم evaluate_impl (بنانشان صحيح region_اشاريو,
+		       ثابت صحيح *coords, بنانشان صحيح coord_len) ثابت
   {
-    const VarRegionAxis *axes = axesZ.arrayZ + (region_index * axisCount);
-    float v = 1.f;
+    ثابت VarRegionAxis *axes = axesZ.arrayZ + (region_اشاريو * axis_ڳڻپ_2);
+    عائم v = 1.f;
 
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = axis_ڳڻپ_2;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      int coord = i < coord_len ? coords[i] : 0;
-      float factor = axes[i].evaluate (coord);
-      if (factor == 0.f)
+      صحيح coord = i < coord_len ? coords[i] : 0;
+      عائم ضرب_ڪندڙ = axes[i].evaluate (coord);
+      إذا (ضرب_ڪندڙ == 0.f)
       {
 	v = 0.f;
-	break;
+	اكسر;
       }
-      v *= factor;
+      v *= ضرب_ڪندڙ;
     }
 
-    return v;
+    أرجع v;
   }
 
-  public:
+  عام:
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  عائم evaluate (بنانشان صحيح region_اشاريو,
+		  ثابت صحيح *coords, بنانشان صحيح coord_len,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    if (unlikely (region_index >= regionCount))
-      return 0.;
+    إذا (unlikely (region_اشاريو >= region_ڳڻپ))
+      أرجع 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    عائم v;
+    إذا (cache && cache->get (region_اشاريو, &v))
+      أرجع v;
 
-    v = evaluate_impl (region_index, coords, coord_len);
+    v = evaluate_impl (region_اشاريو, coords, coord_len);
 
-    if (cache)
-      cache->set (region_index, v);
-    return v;
+    إذا (cache)
+      cache->سيٽ (region_اشاريو, v);
+    أرجع v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  axesZ.sanitize (c, axisCount * regionCount));
+		  axesZ.sanitize (c, axis_ڳڻپ_2 * region_ڳڻپ));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& regions)
+  منطقي serialize (hb_serialize_context_t *c,
+                  ثابت hb_ويڪٽر_t<hb_ٽيگ_t>& axis_ٽيگ_فهرست,
+                  ثابت hb_ويڪٽر_t<ثابت hb_hashmap_t<hb_ٽيگ_t, Triple>*>& regions)
   {
-    TRACE_SERIALIZE (this);
-    unsigned axis_count = axis_tags.length;
-    unsigned region_count = regions.length;
-    if (!axis_count || !region_count) return_trace (false);
-    if (unlikely (hb_unsigned_mul_overflows (axis_count * region_count,
-                                             VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = axis_count;
-    regionCount = region_count;
+    TRACE_SERIALIZE (هذا);
+    بنانشان axis_ڳڻپ = axis_ٽيگ_فهرست.ڊيگهائي;
+    بنانشان region_ڳڻپ_2 = regions.ڊيگهائي;
+    إذا (!axis_ڳڻپ || !region_ڳڻپ_2) return_trace (خطأ);
+    إذا (unlikely (hb_unsigned_mul_overflows (axis_ڳڻپ * region_ڳڻپ_2,
+                                             VarRegionAxis::static_سائيز))) return_trace (خطأ);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    axis_ڳڻپ_2 = axis_ڳڻپ;
+    region_ڳڻپ = region_ڳڻپ_2;
 
-    for (unsigned r = 0; r < region_count; r++)
+    لكل (بنانشان r = 0; r < region_ڳڻپ_2; r++)
     {
-      const auto& region = regions[r];
-      for (unsigned i = 0; i < axis_count; i++)
+      ثابت خودڪار& region = regions[r];
+      لكل (بنانشان i = 0; i < axis_ڳڻپ; i++)
       {
-        hb_tag_t tag = axis_tags.arrayZ[i];
+        hb_ٽيگ_t ٽيگ_2 = axis_ٽيگ_فهرست.arrayZ[i];
         VarRegionAxis var_region_rec;
         Triple *coords;
-        if (region->has (tag, &coords))
+        إذا (region->has (ٽيگ_2, &coords))
         {
-          var_region_rec.startCoord.set_float (coords->minimum);
-          var_region_rec.peakCoord.set_float (coords->middle);
-          var_region_rec.endCoord.set_float (coords->maximum);
+          var_region_rec.شروعات_Coord.سيٽ_float (coords->minimum);
+          var_region_rec.peakCoord.سيٽ_float (coords->وچ);
+          var_region_rec.پڇاڙي_Coord.سيٽ_float (coords->وڌ_کان_وڌ);
         }
-        else
+        وإلا
         {
-          var_region_rec.startCoord.set_int (0);
-          var_region_rec.peakCoord.set_int (0);
-          var_region_rec.endCoord.set_int (0);
+          var_region_rec.شروعات_Coord.سيٽ_int (0);
+          var_region_rec.peakCoord.سيٽ_int (0);
+          var_region_rec.پڇاڙي_Coord.سيٽ_int (0);
         }
-        if (!var_region_rec.serialize (c))
-          return_trace (false);
+        إذا (!var_region_rec.serialize (c))
+          return_trace (خطأ);
       }
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool serialize (hb_serialize_context_t *c, const VarRegionList *src, const hb_inc_bimap_t &region_map)
+  منطقي serialize (hb_serialize_context_t *c, ثابت VarRegionList *src, ثابت hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = src->axisCount;
-    regionCount = region_map.get_population ();
-    if (unlikely (hb_unsigned_mul_overflows (axisCount * regionCount,
-					     VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend (this))) return_trace (false);
-    unsigned int region_count = src->regionCount;
-    for (unsigned int r = 0; r < regionCount; r++)
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    axis_ڳڻپ_2 = src->axis_ڳڻپ_2;
+    region_ڳڻپ = region_map.get_population ();
+    إذا (unlikely (hb_unsigned_mul_overflows (axis_ڳڻپ_2 * region_ڳڻپ,
+					     VarRegionAxis::static_سائيز))) return_trace (خطأ);
+    إذا (unlikely (!c->extend (هذا))) return_trace (خطأ);
+    بنانشان صحيح region_ڳڻپ_2 = src->region_ڳڻپ;
+    لكل (بنانشان صحيح r = 0; r < region_ڳڻپ; r++)
     {
-      unsigned int backward = region_map.backward (r);
-      if (backward >= region_count) return_trace (false);
-      hb_memcpy (&axesZ[axisCount * r], &src->axesZ[axisCount * backward], VarRegionAxis::static_size * axisCount);
+      بنانشان صحيح backward = region_map.backward (r);
+      إذا (backward >= region_ڳڻپ_2) return_trace (خطأ);
+      hb_memcpy (&axesZ[axis_ڳڻپ_2 * r], &src->axesZ[axis_ڳڻپ_2 * backward], VarRegionAxis::static_سائيز * axis_ڳڻپ_2);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool get_var_region (unsigned region_index,
-                       const hb_map_t& axes_old_index_tag_map,
-                       hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
+  منطقي get_var_region (بنانشان region_اشاريو,
+                       ثابت hb_map_t& axes_old_اشاريو_ٽيگ_map,
+                       hb_hashmap_t<hb_ٽيگ_t, Triple>& axis_tuples /*ٻاهريون*/) ثابت
   {
-    if (region_index >= regionCount) return false;
-    const VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axisCount);
-    for (unsigned i = 0; i < axisCount; i++)
+    إذا (region_اشاريو >= region_ڳڻپ) أرجع خطأ;
+    ثابت VarRegionAxis* axis_region = axesZ.arrayZ + (region_اشاريو * axis_ڳڻپ_2);
+    لكل (بنانشان i = 0; i < axis_ڳڻپ_2; i++)
     {
-      hb_tag_t *axis_tag;
-      if (!axes_old_index_tag_map.has (i, &axis_tag))
-        return false;
+      hb_ٽيگ_t *axis_ٽيگ_2;
+      إذا (!axes_old_اشاريو_ٽيگ_map.has (i, &axis_ٽيگ_2))
+        أرجع خطأ;
 
-      float min_val = axis_region->startCoord.to_float ();
-      float def_val = axis_region->peakCoord.to_float ();
-      float max_val = axis_region->endCoord.to_float ();
+      عائم min_val = axis_region->شروعات_Coord.منزل_float ();
+      عائم def_val = axis_region->peakCoord.منزل_float ();
+      عائم max_val = axis_region->پڇاڙي_Coord.منزل_float ();
 
-      if (def_val != 0.f)
-        axis_tuples.set (*axis_tag, Triple ((double) min_val, (double) def_val, (double) max_val));
+      إذا (def_val != 0.f)
+        axis_tuples.سيٽ (*axis_ٽيگ_2, Triple ((مزدوج) min_val, (مزدوج) def_val, (مزدوج) max_val));
       axis_region++;
     }
-    return !axis_tuples.in_error ();
+    أرجع !axis_tuples.اندريون_error ();
   }
 
-  bool get_var_regions (const hb_map_t& axes_old_index_tag_map,
-                        hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions /* OUT */) const
+  منطقي get_var_regions (ثابت hb_map_t& axes_old_اشاريو_ٽيگ_map,
+                        hb_ويڪٽر_t<hb_hashmap_t<hb_ٽيگ_t, Triple>>& regions /*ٻاهريون*/) ثابت
   {
-    if (!regions.alloc (regionCount))
-      return false;
+    إذا (!regions.alloc (region_ڳڻپ))
+      أرجع خطأ;
 
-    for (unsigned i = 0; i < regionCount; i++)
+    لكل (بنانشان i = 0; i < region_ڳڻپ; i++)
     {
-      hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!get_var_region (i, axes_old_index_tag_map, axis_tuples))
-        return false;
+      hb_hashmap_t<hb_ٽيگ_t, Triple> axis_tuples;
+      إذا (!get_var_region (i, axes_old_اشاريو_ٽيگ_map, axis_tuples))
+        أرجع خطأ;
       regions.push (std::move (axis_tuples));
     }
-    return !regions.in_error ();
+    أرجع !regions.اندريون_error ();
   }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size,
-				     hb_unsigned_mul_saturate (VarRegionAxis::static_size,
-							       axisCount, regionCount)); }
+  size_t get_سائيز () ثابت
+  { أرجع hb_unsigned_جوڙيو_saturate (min_سائيز,
+				     hb_unsigned_mul_saturate (VarRegionAxis::static_سائيز,
+							       axis_ڳڻپ_2, region_ڳڻپ)); }
 
-  public:
-  HBUINT16	axisCount;
-  HBUINT15	regionCount;
-  protected:
-  UnsizedArrayOf<VarRegionAxis>
+  عام:
+  HBUINT16	axis_ڳڻپ_2;
+  HBUINT15	region_ڳڻپ;
+  محمي:
+  Unsized_Array_جو<VarRegionAxis>
 		axesZ;
-  public:
-  DEFINE_SIZE_ARRAY (4, axesZ);
+  عام:
+  DEFINE_سائيز_ARRAY (4, axesZ);
 };
 
 /* Whether a variation region is unreachable given per-axis reachable
@@ -2902,1377 +2902,1377 @@ struct VarRegionList
  * if some axis's tent evaluates to zero over the axis's entire reachable
  * range. Mirrors the runtime evaluation: invalid tents evaluate as
  * constant 1 and never kill a region. */
-static inline bool
-_hb_avar2_region_is_dead (const hb_hashmap_t<hb_tag_t, Triple> &axis_tuples,
-			  const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
+ساكن مضمن منطقي
+_hb_avar2_region_is_dead (ثابت hb_hashmap_t<hb_ٽيگ_t, Triple> &axis_tuples,
+			  ثابت hb_hashmap_t<hb_ٽيگ_t, Triple> &reachable_ranges)
 {
-  for (auto _ : axis_tuples)
+  لكل (خودڪار _ : axis_tuples)
   {
     Triple *range;
-    if (!reachable_ranges.has (_.first, &range)) continue;
-    const Triple &tent = _.second;
-    int start = (int) roundf ((float) tent.minimum * 16384.f);
-    int peak  = (int) roundf ((float) tent.middle * 16384.f);
-    int end   = (int) roundf ((float) tent.maximum * 16384.f);
-    if (!peak) continue;
-    if (start > peak || peak > end) continue;
-    if (start < 0 && end > 0) continue;
-    int lo = (int) roundf ((float) range->minimum * 16384.f);
-    int hi = (int) roundf ((float) range->maximum * 16384.f);
+    إذا (!reachable_ranges.has (_.پهريون, &range)) استمر;
+    ثابت Triple &tent = _.second;
+    صحيح شروعات = (صحيح) roundf ((عائم) tent.minimum * 16384.f);
+    صحيح peak  = (صحيح) roundf ((عائم) tent.وچ * 16384.f);
+    صحيح پڇاڙي   = (صحيح) roundf ((عائم) tent.وڌ_کان_وڌ * 16384.f);
+    إذا (!peak) استمر;
+    إذا (شروعات > peak || peak > پڇاڙي) استمر;
+    إذا (شروعات < 0 && پڇاڙي > 0) استمر;
+    صحيح lo = (صحيح) roundf ((عائم) range->minimum * 16384.f);
+    صحيح hi = (صحيح) roundf ((عائم) range->وڌ_کان_وڌ * 16384.f);
     /* Strict comparisons: the scalar is 1 (not 0) at v == peak, so a tent
      * whose peak sits exactly on the range boundary is still live there.
      * (Reachable ranges are padded by one F2Dot14 unit at their producer,
      * which already covers this; strictness keeps the predicate correct on
      * its own terms.) */
-    if (hi < start || lo > end)
-      return true;
+    إذا (hi < شروعات || lo > پڇاڙي)
+      أرجع سچ;
   }
-  return false;
+  أرجع خطأ;
 }
 
-struct SparseVariationRegion
+بنية SparseVariationRegion
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  عائم evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len) ثابت
   {
-    float v = 1.f;
-    unsigned int count = axes.len;
-    for (unsigned int i = 0; i < count; i++)
+    عائم v = 1.f;
+    بنانشان صحيح ڳڻپ = axes.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      float factor = (this+axes[i]).evaluate (coords, coord_len);
-      if (factor == 0.f)
-	return 0.;
-      v *= factor;
+      عائم ضرب_ڪندڙ = (هذا+axes[i]).evaluate (coords, coord_len);
+      إذا (ضرب_ڪندڙ == 0.f)
+	أرجع 0.;
+      v *= ضرب_ڪندڙ;
     }
-    return v;
+    أرجع v;
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVariationRegion *src,
-		  const hb_map_t *axis_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت SparseVariationRegion *src,
+		  ثابت hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!axes.serialize (c, (unsigned) src->axes.len))) return_trace (false);
-    for (unsigned i = 0; i < axes.len; i++)
-      if (unlikely (src->axes[i].is_null () ||
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!axes.serialize (c, (بنانشان) src->axes.len))) return_trace (خطأ);
+    لكل (بنانشان i = 0; i < axes.len; i++)
+      إذا (unlikely (src->axes[i].is_null () ||
 		    !axes[i].serialize_serialize (c, &(src+src->axes[i]), axis_map)))
-	return_trace (false);
-    return_trace (true);
+	return_trace (خطأ);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (axes.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (axes.sanitize (c, هذا));
   }
 
-  protected:
-  Array16Of<Offset32To<SparseVarRegionAxis>> axes;
-  public:
-  DEFINE_SIZE_ARRAY (2, axes);
+  محمي:
+  Array16_جو<Offset32_منزل<SparseVarRegionAxis>> axes;
+  عام:
+  DEFINE_سائيز_ARRAY (2, axes);
 };
 
-struct SparseVarRegionList
+بنية SparseVarRegionList
 {
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  عائم evaluate (بنانشان صحيح region_اشاريو,
+		  ثابت صحيح *coords, بنانشان صحيح coord_len,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    if (unlikely (region_index >= regions.len))
-      return 0.;
+    إذا (unlikely (region_اشاريو >= regions.len))
+      أرجع 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    عائم v;
+    إذا (cache && cache->get (region_اشاريو, &v))
+      أرجع v;
 
-    const SparseVariationRegion &region = this+regions[region_index];
+    ثابت SparseVariationRegion &region = هذا+regions[region_اشاريو];
 
     v = region.evaluate (coords, coord_len);
-    if (cache)
-      cache->set (region_index, v);
+    إذا (cache)
+      cache->سيٽ (region_اشاريو, v);
 
-    return v;
+    أرجع v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (regions.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (regions.sanitize (c, هذا));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionList *src,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_map_t *axis_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت SparseVarRegionList *src,
+		  ثابت hb_inc_bimap_t &region_map,
+		  ثابت hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
     regions.len = region_map.get_population ();
-    if (unlikely (!c->extend (regions))) return_trace (false);
+    إذا (unlikely (!c->extend (regions))) return_trace (خطأ);
 
-    for (unsigned i = 0; i < regions.len; i++)
+    لكل (بنانشان i = 0; i < regions.len; i++)
     {
-      unsigned old_index = region_map.backward (i);
-      if (unlikely (old_index >= src->regions.len ||
+      بنانشان old_اشاريو = region_map.backward (i);
+      إذا (unlikely (old_اشاريو >= src->regions.len ||
 		    !regions[i].serialize_serialize (c,
-					     &(src+src->regions[old_index]),
+					     &(src+src->regions[old_اشاريو]),
 					     axis_map)))
-	return_trace (false);
+	return_trace (خطأ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  public:
-  Array32Of<Offset32To<SparseVariationRegion>>
+  عام:
+  Array32_جو<Offset32_منزل<SparseVariationRegion>>
 		regions;
-  public:
-  DEFINE_SIZE_ARRAY (4, regions);
+  عام:
+  DEFINE_سائيز_ARRAY (4, regions);
 };
 
 
-struct VarData
+بنية Var_معلومات
 {
-  unsigned int get_item_count () const
-  { return itemCount; }
+  بنانشان صحيح get_شي_ڳڻپ () ثابت
+  { أرجع شي_ڳڻپ; }
 
-  unsigned int get_region_index_count () const
-  { return regionIndices.len; }
+  بنانشان صحيح get_region_اشاريو_ڳڻپ () ثابت
+  { أرجع regionIndices.len; }
 
-  unsigned get_region_index (unsigned i) const
-  { return i >= regionIndices.len ? -1 : regionIndices[i]; }
+  بنانشان get_region_اشاريو (بنانشان i) ثابت
+  { أرجع i >= regionIndices.len ? -1 : regionIndices[i]; }
 
-  size_t get_row_size () const
-  { return (wordCount () + regionIndices.len) * (longWords () ? 2 : 1); }
+  size_t get_صف_سائيز () ثابت
+  { أرجع (لفظ_ڳڻپ () + regionIndices.len) * (long_لفظ_2 () ? 2 : 1); }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
-				     regionIndices.get_size (),
-				     hb_unsigned_mul_saturate (itemCount, get_row_size ())); }
+  size_t get_سائيز () ثابت
+  { أرجع hb_unsigned_جوڙيو_saturate (min_سائيز - regionIndices.min_سائيز,
+				     regionIndices.get_سائيز (),
+				     hb_unsigned_mul_saturate (شي_ڳڻپ, get_صف_سائيز ())); }
 
-  template <typename Float = float>
-  Float _get_delta (unsigned int inner,
-		    const int *coords, unsigned int coord_count,
-		    const VarRegionList &regions,
-		    hb_scalar_cache_t *cache = nullptr) const
+  سانچو <قسم_نالو Float = عائم>
+  Float _get_delta (بنانشان صحيح inner,
+		    ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		    ثابت VarRegionList &regions,
+		    hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    if (unlikely (inner >= itemCount))
-      return 0.;
-    bool is_long = longWords ();
-    unsigned int count = regionIndices.len;
-    unsigned word_count = wordCount ();
-    unsigned int scount = is_long ? count : word_count;
-    unsigned int lcount = is_long ? word_count : 0;
+    إذا (unlikely (inner >= شي_ڳڻپ))
+      أرجع 0.;
+    منطقي is_long = long_لفظ_2 ();
+    بنانشان صحيح ڳڻپ = regionIndices.len;
+    بنانشان لفظ_ڳڻپ_2 = لفظ_ڳڻپ ();
+    بنانشان صحيح scount = is_long ? ڳڻپ : لفظ_ڳڻپ_2;
+    بنانشان صحيح lcount = is_long ? لفظ_ڳڻپ_2 : 0;
 
-    const HBUINT8 *bytes = get_delta_bytes ();
-    const HBUINT8 *row = bytes + inner * get_row_size ();
+    ثابت HBUINT8 *بائيٽون = get_delta_بائيٽون ();
+    ثابت HBUINT8 *صف = بائيٽون + inner * get_صف_سائيز ();
 
     Float delta = 0;
-    unsigned int i = 0;
+    بنانشان صحيح i = 0;
 
-    const HBINT32 *lcursor = reinterpret_cast<const HBINT32 *> (row);
-    for (; i < lcount; i++)
+    ثابت HBINT32 *lcursor = reinterpret_cast<ثابت HBINT32 *> (صف);
+    لكل (; i < lcount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *lcursor;
+      عائم scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_ڳڻپ, cache);
+      إذا (scalar)
+        delta += (Float) scalar * (صحيح) *lcursor;
       lcursor++;
     }
-    const HBINT16 *scursor = reinterpret_cast<const HBINT16 *> (lcursor);
-    for (; i < scount; i++)
+    ثابت HBINT16 *scursor = reinterpret_cast<ثابت HBINT16 *> (lcursor);
+    لكل (; i < scount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-       delta += (Float) scalar * (int) *scursor;
+      عائم scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_ڳڻپ, cache);
+      إذا (scalar)
+       delta += (Float) scalar * (صحيح) *scursor;
       scursor++;
     }
-    const HBINT8 *bcursor = reinterpret_cast<const HBINT8 *> (scursor);
-    for (; i < count; i++)
+    ثابت HBINT8 *bcursor = reinterpret_cast<ثابت HBINT8 *> (scursor);
+    لكل (; i < ڳڻپ; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *bcursor;
+      عائم scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_ڳڻپ, cache);
+      إذا (scalar)
+        delta += (Float) scalar * (صحيح) *bcursor;
       bcursor++;
     }
 
-    return delta;
+    أرجع delta;
   }
 
-  template <typename Float = float>
+  سانچو <قسم_نالو Float = عائم>
   HB_ALWAYS_INLINE
-  Float get_delta (unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   const VarRegionList &regions,
-		   hb_scalar_cache_t *cache = nullptr) const
+  Float get_delta (بنانشان صحيح inner,
+		   ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		   ثابت VarRegionList &regions,
+		   hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    unsigned int count = regionIndices.len;
-    if (!count) return Float (0); // This is quite common, so optimize it.
-    return _get_delta<Float> (inner, coords, coord_count, regions, cache);
+    بنانشان صحيح ڳڻپ = regionIndices.len;
+    إذا (!ڳڻپ) أرجع Float (0); // This is quite common, so optimize it.
+    أرجع _get_delta<Float> (inner, coords, coord_ڳڻپ, regions, cache);
   }
 
-  void get_region_scalars (const int *coords, unsigned int coord_count,
-			   const VarRegionList &regions,
-			   float *scalars /*OUT */,
-			   unsigned int num_scalars) const
+  فراغ get_region_scalars (ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+			   ثابت VarRegionList &regions,
+			   عائم *scalars /*OUT */,
+			   بنانشان صحيح انگ_scalars) ثابت
   {
-    unsigned count = hb_min (num_scalars, regionIndices.len);
-    for (unsigned int i = 0; i < count; i++)
-      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count);
-    for (unsigned int i = count; i < num_scalars; i++)
+    بنانشان ڳڻپ = hb_min (انگ_scalars, regionIndices.len);
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_ڳڻپ);
+    لكل (بنانشان صحيح i = ڳڻپ; i < انگ_scalars; i++)
       scalars[i] = 0.f;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  wordCount () <= regionIndices.len &&
-		  c->check_range (get_delta_bytes (),
-				  itemCount,
-				  get_row_size ()));
+		  لفظ_ڳڻپ () <= regionIndices.len &&
+		  c->check_range (get_delta_بائيٽون (),
+				  شي_ڳڻپ,
+				  get_صف_سائيز ()));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<const hb_vector_t<int>*>& rows)
+  منطقي serialize (hb_serialize_context_t *c,
+                  منطقي has_long,
+                  ثابت hb_ويڪٽر_t<ثابت hb_ويڪٽر_t<صحيح>*>& صفون)
   {
-    TRACE_SERIALIZE (this);
-    unsigned row_count = rows.length;
-    if (!row_count) {
+    TRACE_SERIALIZE (هذا);
+    بنانشان صف_ڳڻپ_3 = صفون.ڊيگهائي;
+    إذا (!صف_ڳڻپ_3) {
       // Nothing to serialize, will be empty.
-      return false;
+      أرجع خطأ;
     }
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!c->check_assign (itemCount, row_count,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    إذا (unlikely (!c->check_سونپيو (شي_ڳڻپ, صف_ڳڻپ_3,
+                                    HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+      return_trace (خطأ);
 
-    int min_threshold = has_long ? -32768 : -128;
-    int max_threshold = has_long ? +32767 : +127;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
-    hb_vector_t<delta_size_t> delta_sz;
-    unsigned num_regions = rows[0]->length;
-    if (!delta_sz.resize (num_regions))
-      return_trace (false);
+    صحيح min_حد = has_long ? -32768 : -128;
+    صحيح max_حد = has_long ? +32767 : +127;
+    تعداد delta_سائيز_t { kZero=0, k_Non_لفظ, k_لفظ };
+    hb_ويڪٽر_t<delta_سائيز_t> delta_sz;
+    بنانشان انگ_regions = صفون[0]->ڊيگهائي;
+    إذا (!delta_sz.resize (انگ_regions))
+      return_trace (خطأ);
 
-    unsigned word_count = 0;
-    for (unsigned r = 0; r < num_regions; r++)
+    بنانشان لفظ_ڳڻپ_2 = 0;
+    لكل (بنانشان r = 0; r < انگ_regions; r++)
     {
-      for (unsigned i = 0; i < row_count; i++)
+      لكل (بنانشان i = 0; i < صف_ڳڻپ_3; i++)
       {
-        int delta = rows[i]->arrayZ[r];
-        if (delta < min_threshold || delta > max_threshold)
+        صحيح delta = صفون[i]->arrayZ[r];
+        إذا (delta < min_حد || delta > max_حد)
         {
-          delta_sz[r] = kWord;
-          word_count++;
-          break;
+          delta_sz[r] = k_لفظ;
+          لفظ_ڳڻپ_2++;
+          اكسر;
         }
-        else if (delta != 0)
+        وإلا إذا (delta != 0)
         {
-          delta_sz[r] = kNonWord;
+          delta_sz[r] = k_Non_لفظ;
         }
       }
     }
 
     /* reorder regions: words and then non-words*/
-    unsigned word_index = 0;
-    unsigned non_word_index = word_count;
+    بنانشان لفظ_اشاريو = 0;
+    بنانشان non_لفظ_اشاريو = لفظ_ڳڻپ_2;
     hb_map_t ri_map;
-    for (unsigned r = 0; r < num_regions; r++)
+    لكل (بنانشان r = 0; r < انگ_regions; r++)
     {
-      if (!delta_sz[r]) continue;
-      unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
-      if (!ri_map.set (new_r, r))
-        return_trace (false);
+      إذا (!delta_sz[r]) استمر;
+      بنانشان new_r = (delta_sz[r] == k_لفظ)? لفظ_اشاريو++ : non_لفظ_اشاريو++;
+      إذا (!ri_map.سيٽ (new_r, r))
+        return_trace (خطأ);
     }
 
-    wordSizeCount = word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    لفظ_سائيز_ڳڻپ = لفظ_ڳڻپ_2 | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    unsigned ri_count = ri_map.get_population ();
-    regionIndices.len = ri_count;
-    if (unlikely (!c->extend (this))) return_trace (false);
+    بنانشان ri_ڳڻپ = ri_map.get_population ();
+    regionIndices.len = ri_ڳڻپ;
+    إذا (unlikely (!c->extend (هذا))) return_trace (خطأ);
 
-    for (unsigned r = 0; r < ri_count; r++)
+    لكل (بنانشان r = 0; r < ri_ڳڻپ; r++)
     {
       hb_codepoint_t *idx;
-      if (!ri_map.has (r, &idx))
-        return_trace (false);
+      إذا (!ri_map.has (r, &idx))
+        return_trace (خطأ);
       regionIndices[r] = *idx;
     }
 
-    HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
-    for (unsigned int i = 0; i < row_count; i++)
+    HBUINT8 *delta_بائيٽون = get_delta_بائيٽون ();
+    بنانشان صف_سائيز = get_صف_سائيز ();
+    لكل (بنانشان صحيح i = 0; i < صف_ڳڻپ_3; i++)
     {
-      for (unsigned int r = 0; r < ri_count; r++)
+      لكل (بنانشان صحيح r = 0; r < ri_ڳڻپ; r++)
       {
-        int delta = rows[i]->arrayZ[ri_map[r]];
-        set_item_delta_fast (i, r, delta, delta_bytes, row_size);
+        صحيح delta = صفون[i]->arrayZ[ri_map[r]];
+        سيٽ_شي_delta_fast (i, r, delta, delta_بائيٽون, صف_سائيز);
       }
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const VarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_set_t *culled_regions = nullptr)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت Var_معلومات *src,
+		  ثابت hb_inc_bimap_t &inner_map,
+		  ثابت hb_inc_bimap_t &region_map,
+		  ثابت hb_سيٽ_t *culled_regions = خالي_اشارو)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    itemCount = inner_map.get_next_value ();
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    شي_ڳڻپ = inner_map.get_ايندڙ_قدر ();
 
     /* Optimize word count */
-    unsigned ri_count = src->regionIndices.len;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
-    hb_vector_t<delta_size_t> delta_sz;
-    hb_vector_t<unsigned int> ri_map;	/* maps new index to old index */
-    delta_sz.resize (ri_count);
-    ri_map.resize (ri_count);
-    unsigned int new_word_count = 0;
-    unsigned int r;
+    بنانشان ri_ڳڻپ = src->regionIndices.len;
+    تعداد delta_سائيز_t { kZero=0, k_Non_لفظ, k_لفظ };
+    hb_ويڪٽر_t<delta_سائيز_t> delta_sz;
+    hb_ويڪٽر_t<بنانشان صحيح> ri_map;	/* maps new index to old index */
+    delta_sz.resize (ri_ڳڻپ);
+    ri_map.resize (ri_ڳڻپ);
+    بنانشان صحيح new_لفظ_ڳڻپ = 0;
+    بنانشان صحيح r;
 
-    const HBUINT8 *src_delta_bytes = src->get_delta_bytes ();
-    unsigned src_row_size = src->get_row_size ();
-    unsigned src_word_count = src->wordCount ();
-    bool     src_long_words = src->longWords ();
+    ثابت HBUINT8 *src_delta_بائيٽون = src->get_delta_بائيٽون ();
+    بنانشان src_صف_سائيز = src->get_صف_سائيز ();
+    بنانشان src_لفظ_ڳڻپ = src->لفظ_ڳڻپ ();
+    منطقي     src_long_لفظ = src->long_لفظ_2 ();
 
-    bool has_long = false;
-    if (src_long_words)
+    منطقي has_long = خطأ;
+    إذا (src_long_لفظ)
     {
-      for (r = 0; r < src_word_count; r++)
+      لكل (r = 0; r < src_لفظ_ڳڻپ; r++)
       {
-        for (unsigned old_gid : inner_map.keys())
+        لكل (بنانشان old_gid : inner_map.ڪنجيون())
 	{
-	  int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	  if (delta < -32768 || 32767 < delta)
+	  int32_t delta = src->get_شي_delta_fast (old_gid, r, src_delta_بائيٽون, src_صف_سائيز);
+	  إذا (delta < -32768 || 32767 < delta)
 	  {
-	    has_long = true;
-	    break;
+	    has_long = سچ;
+	    اكسر;
 	  }
         }
       }
     }
 
-    signed min_threshold = has_long ? -32768 : -128;
-    signed max_threshold = has_long ? +32767 : +127;
-    for (r = 0; r < ri_count; r++)
+    نشانوارو min_حد = has_long ? -32768 : -128;
+    نشانوارو max_حد = has_long ? +32767 : +127;
+    لكل (r = 0; r < ri_ڳڻپ; r++)
     {
-      bool short_circuit = src_long_words == has_long && src_word_count <= r;
+      منطقي short_circuit = src_long_لفظ == has_long && src_لفظ_ڳڻپ <= r;
 
       delta_sz[r] = kZero;
-      if (culled_regions && culled_regions->has (src->regionIndices[r]))
-	continue; /* unreachable region: drop its column */
-      for (unsigned old_gid : inner_map.keys())
+      إذا (culled_regions && culled_regions->has (src->regionIndices[r]))
+	استمر; /* unreachable region: drop its column */
+      لكل (بنانشان old_gid : inner_map.ڪنجيون())
       {
-	int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	if (delta < min_threshold || max_threshold < delta)
+	int32_t delta = src->get_شي_delta_fast (old_gid, r, src_delta_بائيٽون, src_صف_سائيز);
+	إذا (delta < min_حد || max_حد < delta)
 	{
-	  delta_sz[r] = kWord;
-	  new_word_count++;
-	  break;
+	  delta_sz[r] = k_لفظ;
+	  new_لفظ_ڳڻپ++;
+	  اكسر;
 	}
-	else if (delta != 0)
+	وإلا إذا (delta != 0)
 	{
-	  delta_sz[r] = kNonWord;
-	  if (short_circuit)
-	    break;
+	  delta_sz[r] = k_Non_لفظ;
+	  إذا (short_circuit)
+	    اكسر;
 	}
       }
     }
 
-    unsigned int word_index = 0;
-    unsigned int non_word_index = new_word_count;
-    unsigned int new_ri_count = 0;
-    for (r = 0; r < ri_count; r++)
-      if (delta_sz[r])
+    بنانشان صحيح لفظ_اشاريو = 0;
+    بنانشان صحيح non_لفظ_اشاريو = new_لفظ_ڳڻپ;
+    بنانشان صحيح new_ri_ڳڻپ = 0;
+    لكل (r = 0; r < ri_ڳڻپ; r++)
+      إذا (delta_sz[r])
       {
-	unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
+	بنانشان new_r = (delta_sz[r] == k_لفظ)? لفظ_اشاريو++ : non_لفظ_اشاريو++;
 	ri_map[new_r] = r;
-	new_ri_count++;
+	new_ri_ڳڻپ++;
       }
 
-    wordSizeCount = new_word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    لفظ_سائيز_ڳڻپ = new_لفظ_ڳڻپ | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    regionIndices.len = new_ri_count;
+    regionIndices.len = new_ri_ڳڻپ;
 
-    if (unlikely (!c->extend (this))) return_trace (false);
+    إذا (unlikely (!c->extend (هذا))) return_trace (خطأ);
 
-    for (r = 0; r < new_ri_count; r++)
+    لكل (r = 0; r < new_ri_ڳڻپ; r++)
       regionIndices[r] = region_map[src->regionIndices[ri_map[r]]];
 
-    HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
-    unsigned count = itemCount;
-    for (unsigned int i = 0; i < count; i++)
+    HBUINT8 *delta_بائيٽون = get_delta_بائيٽون ();
+    بنانشان صف_سائيز = get_صف_سائيز ();
+    بنانشان ڳڻپ = شي_ڳڻپ;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      unsigned int old = inner_map.backward (i);
-      for (unsigned int r = 0; r < new_ri_count; r++)
-	set_item_delta_fast (i, r,
-			     src->get_item_delta_fast (old, ri_map[r],
-						       src_delta_bytes, src_row_size),
-			     delta_bytes, row_size);
+      بنانشان صحيح old = inner_map.backward (i);
+      لكل (بنانشان صحيح r = 0; r < new_ri_ڳڻپ; r++)
+	سيٽ_شي_delta_fast (i, r,
+			     src->get_شي_delta_fast (old, ri_map[r],
+						       src_delta_بائيٽون, src_صف_سائيز),
+			     delta_بائيٽون, صف_سائيز);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  void collect_region_refs (hb_set_t &region_indices, const hb_inc_bimap_t &inner_map) const
+  فراغ collect_region_refs (hb_سيٽ_t &region_indices, ثابت hb_inc_bimap_t &inner_map) ثابت
   {
-    const HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
+    ثابت HBUINT8 *delta_بائيٽون = get_delta_بائيٽون ();
+    بنانشان صف_سائيز = get_صف_سائيز ();
 
-    for (unsigned int r = 0; r < regionIndices.len; r++)
+    لكل (بنانشان صحيح r = 0; r < regionIndices.len; r++)
     {
-      unsigned int region = regionIndices.arrayZ[r];
-      if (region_indices.has (region)) continue;
-      for (hb_codepoint_t old_gid : inner_map.keys())
-	if (get_item_delta_fast (old_gid, r, delta_bytes, row_size) != 0)
+      بنانشان صحيح region = regionIndices.arrayZ[r];
+      إذا (region_indices.has (region)) استمر;
+      لكل (hb_codepoint_t old_gid : inner_map.ڪنجيون())
+	إذا (get_شي_delta_fast (old_gid, r, delta_بائيٽون, صف_سائيز) != 0)
 	{
-	  region_indices.add (region);
-	  break;
+	  region_indices.جوڙيو (region);
+	  اكسر;
 	}
     }
   }
 
-  public:
-  const HBUINT8 *get_delta_bytes () const
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  عام:
+  ثابت HBUINT8 *get_delta_بائيٽون () ثابت
+  { أرجع &StructAfter<HBUINT8> (regionIndices); }
 
-  protected:
-  HBUINT8 *get_delta_bytes ()
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  محمي:
+  HBUINT8 *get_delta_بائيٽون ()
+  { أرجع &StructAfter<HBUINT8> (regionIndices); }
 
-  public:
-  int32_t get_item_delta_fast (unsigned int item, unsigned int region,
-			       const HBUINT8 *delta_bytes, unsigned row_size) const
+  عام:
+  int32_t get_شي_delta_fast (بنانشان صحيح شي, بنانشان صحيح region,
+			       ثابت HBUINT8 *delta_بائيٽون, بنانشان صف_سائيز) ثابت
   {
-    if (unlikely (item >= itemCount || region >= regionIndices.len)) return 0;
+    إذا (unlikely (شي >= شي_ڳڻپ || region >= regionIndices.len)) أرجع 0;
 
-    const HBINT8 *p = (const HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    ثابت HBINT8 *p = (ثابت HBINT8 *) delta_بائيٽون + شي * صف_سائيز;
+    بنانشان لفظ_ڳڻپ_2 = لفظ_ڳڻپ ();
+    منطقي is_long = long_لفظ_2 ();
+    إذا (is_long)
     {
-      if (region < word_count)
-	return ((const HBINT32 *) p)[region];
-      else
-	return ((const HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count];
+      إذا (region < لفظ_ڳڻپ_2)
+	أرجع ((ثابت HBINT32 *) p)[region];
+      وإلا
+	أرجع ((ثابت HBINT16 *)(p + HBINT32::static_سائيز * لفظ_ڳڻپ_2))[region - لفظ_ڳڻپ_2];
     }
-    else
+    وإلا
     {
-      if (region < word_count)
-	return ((const HBINT16 *) p)[region];
-      else
-	return (p + HBINT16::static_size * word_count)[region - word_count];
+      إذا (region < لفظ_ڳڻپ_2)
+	أرجع ((ثابت HBINT16 *) p)[region];
+      وإلا
+	أرجع (p + HBINT16::static_سائيز * لفظ_ڳڻپ_2)[region - لفظ_ڳڻپ_2];
     }
   }
-  int32_t get_item_delta (unsigned int item, unsigned int region) const
+  int32_t get_شي_delta (بنانشان صحيح شي, بنانشان صحيح region) ثابت
   {
-     return get_item_delta_fast (item, region,
-				 get_delta_bytes (),
-				 get_row_size ());
+     أرجع get_شي_delta_fast (شي, region,
+				 get_delta_بائيٽون (),
+				 get_صف_سائيز ());
   }
 
-  protected:
-  void set_item_delta_fast (unsigned int item, unsigned int region, int32_t delta,
-			    HBUINT8 *delta_bytes, unsigned row_size)
+  محمي:
+  فراغ سيٽ_شي_delta_fast (بنانشان صحيح شي, بنانشان صحيح region, int32_t delta,
+			    HBUINT8 *delta_بائيٽون, بنانشان صف_سائيز)
   {
-    HBINT8 *p = (HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    HBINT8 *p = (HBINT8 *) delta_بائيٽون + شي * صف_سائيز;
+    بنانشان لفظ_ڳڻپ_2 = لفظ_ڳڻپ ();
+    منطقي is_long = long_لفظ_2 ();
+    إذا (is_long)
     {
-      if (region < word_count)
+      إذا (region < لفظ_ڳڻپ_2)
 	((HBINT32 *) p)[region] = delta;
-      else
-	((HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count] = delta;
+      وإلا
+	((HBINT16 *)(p + HBINT32::static_سائيز * لفظ_ڳڻپ_2))[region - لفظ_ڳڻپ_2] = delta;
     }
-    else
+    وإلا
     {
-      if (region < word_count)
+      إذا (region < لفظ_ڳڻپ_2)
 	((HBINT16 *) p)[region] = delta;
-      else
-	(p + HBINT16::static_size * word_count)[region - word_count] = delta;
+      وإلا
+	(p + HBINT16::static_سائيز * لفظ_ڳڻپ_2)[region - لفظ_ڳڻپ_2] = delta;
     }
   }
-  void set_item_delta (unsigned int item, unsigned int region, int32_t delta)
+  فراغ سيٽ_شي_delta (بنانشان صحيح شي, بنانشان صحيح region, int32_t delta)
   {
-    set_item_delta_fast (item, region, delta,
-			 get_delta_bytes (),
-			 get_row_size ());
+    سيٽ_شي_delta_fast (شي, region, delta,
+			 get_delta_بائيٽون (),
+			 get_صف_سائيز ());
   }
 
-  bool longWords () const { return wordSizeCount & 0x8000u /* LONG_WORDS */; }
-  unsigned wordCount () const { return wordSizeCount & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
+  منطقي long_لفظ_2 () ثابت { أرجع لفظ_سائيز_ڳڻپ & 0x8000u /* LONG_WORDS */; }
+  بنانشان لفظ_ڳڻپ () ثابت { أرجع لفظ_سائيز_ڳڻپ & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
 
-  protected:
-  HBUINT16		itemCount;
-  HBUINT16		wordSizeCount;
-  Array16Of<HBUINT16>	regionIndices;
+  محمي:
+  HBUINT16		شي_ڳڻپ;
+  HBUINT16		لفظ_سائيز_ڳڻپ;
+  Array16_جو<HBUINT16>	regionIndices;
 /*UnsizedArrayOf<HBUINT8>bytesX;*/
-  public:
-  DEFINE_SIZE_ARRAY (6, regionIndices);
+  عام:
+  DEFINE_سائيز_ARRAY (6, regionIndices);
 };
 
-struct MultiVarData
+بنية Multi_Var_معلومات
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
-				     regionIndices.get_size ()); }
+  size_t get_سائيز () ثابت
+  { أرجع hb_unsigned_جوڙيو_saturate (min_سائيز - regionIndices.min_سائيز,
+				     regionIndices.get_سائيز ()); }
 
-  const TupleList &get_delta_sets () const
-  { return this+StructAfter<decltype (deltaSetsX)> (regionIndices); }
+  ثابت TupleList &get_delta_sets () ثابت
+  { أرجع هذا+StructAfter<decltype (deltaSetsX)> (regionIndices); }
 
-  void get_delta (unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  const SparseVarRegionList &regions,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  فراغ get_delta (بنانشان صحيح inner,
+		  ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		  ثابت SparseVarRegionList &regions,
+		  hb_array_t<مزدوج> ٻاهريون,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    auto &deltaSets = get_delta_sets ();
+    خودڪار &deltaSets = get_delta_sets ();
 
-    auto values_iter = deltaSets.fetcher (inner);
-    unsigned regionCount = regionIndices.len;
-    unsigned skip = 0;
-    for (unsigned regionIndex = 0; regionIndex < regionCount; regionIndex++)
+    خودڪار قدرون_iter = deltaSets.fetcher (inner);
+    بنانشان region_ڳڻپ = regionIndices.len;
+    بنانشان skip = 0;
+    لكل (بنانشان region_اشاريو_2 = 0; region_اشاريو_2 < region_ڳڻپ; region_اشاريو_2++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[regionIndex],
-				       coords, coord_count,
+      عائم scalar = regions.evaluate (regionIndices.arrayZ[region_اشاريو_2],
+				       coords, coord_ڳڻپ,
 				       cache);
       // We skip lazily. Helps with the tail end.
-      if (scalar == 0.0f)
-        skip += out.length;
-      else
+      إذا (scalar == 0.0f)
+        skip += ٻاهريون.ڊيگهائي;
+      وإلا
       {
-        if (skip)
+        إذا (skip)
 	{
-	  values_iter.skip (skip);
+	  قدرون_iter.skip (skip);
 	  skip = 0;
 	}
-	values_iter.add_to (out, scalar);
+	قدرون_iter.جوڙيو_منزل_2 (ٻاهريون, scalar);
       }
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (format.sanitize (c) &&
 		  hb_barrier () &&
 		  format == 1 &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, this));
+		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, هذا));
   }
 
-  unsigned get_item_count () const
-  { return get_delta_sets ().count; }
+  بنانشان get_شي_ڳڻپ () ثابت
+  { أرجع get_delta_sets ().ڳڻپ; }
 
-  void collect_region_refs (hb_set_t &region_indices) const
+  فراغ collect_region_refs (hb_سيٽ_t &region_indices) ثابت
   {
-    for (unsigned region : regionIndices)
-      region_indices.add (region);
+    لكل (بنانشان region : regionIndices)
+      region_indices.جوڙيو (region);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiVarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت Multi_Var_معلومات *src,
+		  ثابت hb_inc_bimap_t &inner_map,
+		  ثابت hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    unsigned region_count = src->regionIndices.len;
-    unsigned header_size = HBUINT8::static_size +
-			   Array16Of<HBUINT16>::min_size +
-			   region_count * HBUINT16::static_size +
-			   HBUINT32::static_size;
-    if (unlikely (!c->extend_size (this, header_size, false)))
-      return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    بنانشان region_ڳڻپ_2 = src->regionIndices.len;
+    بنانشان سرو_سائيز = HBUINT8::static_سائيز +
+			   Array16_جو<HBUINT16>::min_سائيز +
+			   region_ڳڻپ_2 * HBUINT16::static_سائيز +
+			   HBUINT32::static_سائيز;
+    إذا (unlikely (!c->extend_سائيز (هذا, سرو_سائيز, خطأ)))
+      return_trace (خطأ);
     format = 1;
-    regionIndices.len = region_count;
-    for (unsigned i = 0; i < regionIndices.len; i++)
+    regionIndices.len = region_ڳڻپ_2;
+    لكل (بنانشان i = 0; i < regionIndices.len; i++)
     {
-      unsigned old_region = src->regionIndices[i];
-      if (unlikely (!region_map.has (old_region)))
-	return_trace (false);
+      بنانشان old_region = src->regionIndices[i];
+      إذا (unlikely (!region_map.has (old_region)))
+	return_trace (خطأ);
       regionIndices[i] = region_map.get (old_region);
     }
 
-    const auto &src_delta_sets = src->get_delta_sets ();
-    hb_vector_t<hb_ubytes_t> delta_sets;
-    unsigned data_size = 0;
-    if (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
-      return_trace (false);
-    for (unsigned i = 0; i < inner_map.get_population (); i++)
+    ثابت خودڪار &src_delta_sets = src->get_delta_sets ();
+    hb_ويڪٽر_t<hb_ubytes_t> delta_sets;
+    بنانشان معلومات_سائيز = 0;
+    إذا (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
+      return_trace (خطأ);
+    لكل (بنانشان i = 0; i < inner_map.get_population (); i++)
     {
-      unsigned old_inner = inner_map.backward (i);
-      if (unlikely (old_inner >= src_delta_sets.count)) return_trace (false);
-      hb_ubytes_t bytes = static_cast<const CFF2Index &> (src_delta_sets)[old_inner];
-      data_size = hb_unsigned_add_saturate (data_size, bytes.length);
-      delta_sets.push (bytes);
+      بنانشان old_inner = inner_map.backward (i);
+      إذا (unlikely (old_inner >= src_delta_sets.ڳڻپ)) return_trace (خطأ);
+      hb_ubytes_t بائيٽون = static_cast<ثابت CFF2_اشاريو &> (src_delta_sets)[old_inner];
+      معلومات_سائيز = hb_unsigned_جوڙيو_saturate (معلومات_سائيز, بائيٽون.ڊيگهائي);
+      delta_sets.push (بائيٽون);
     }
-    if (unlikely (data_size == UINT_MAX || delta_sets.in_error ()))
-      return_trace (false);
+    إذا (unlikely (معلومات_سائيز == UINT_MAX || delta_sets.اندريون_error ()))
+      return_trace (خطأ);
 
-    auto &out_delta_sets = StructAfter<decltype (deltaSetsX)> (regionIndices);
-    return_trace (out_delta_sets.serialize_serialize (c, delta_sets.iter (), &data_size));
+    خودڪار &ٻاهريون_delta_sets = StructAfter<decltype (deltaSetsX)> (regionIndices);
+    return_trace (ٻاهريون_delta_sets.serialize_serialize (c, delta_sets.iter (), &معلومات_سائيز));
   }
 
-  protected:
+  محمي:
   HBUINT8	      format; // 1
-  Array16Of<HBUINT16> regionIndices;
-  Offset32To<TupleList> deltaSetsX;
-  public:
-  DEFINE_SIZE_MIN (7);
+  Array16_جو<HBUINT16> regionIndices;
+  Offset32_منزل<TupleList> deltaSetsX;
+  عام:
+  DEFINE_سائيز_MIN (7);
 };
 
-struct ItemVariationStore
+بنية شي_Variation_Store
 {
-  friend struct item_variations_t;
+  دوست بنية شي_variations_t;
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () ثابت
   {
-#ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
-#endif
-    return hb_scalar_cache_t::create ((this+regions).regionCount);
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع hb_scalar_cache_t::create (0);
+#جيڪڏهن_پورو
+    أرجع hb_scalar_cache_t::create ((هذا+regions).region_ڳڻپ);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  ساكن فراغ destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  private:
-  template <typename Float = float>
-  Float get_delta (unsigned int outer, unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  خاص:
+  سانچو <قسم_نالو Float = عائم>
+  Float get_delta (بنانشان صحيح outer, بنانشان صحيح inner,
+		   ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		   hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-#ifdef HB_NO_VAR
-    return Float (0);
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع Float (0);
+#جيڪڏهن_پورو
 
-    if (unlikely (outer >= dataSets.len))
-      return Float (0);
+    إذا (unlikely (outer >= معلومات_Sets.len))
+      أرجع Float (0);
 
-    return (this+dataSets[outer]).get_delta<Float> (inner,
-					     coords, coord_count,
-					     this+regions,
+    أرجع (هذا+معلومات_Sets[outer]).get_delta<Float> (inner,
+					     coords, coord_ڳڻپ,
+					     هذا+regions,
 					     cache);
   }
 
-  public:
-  bool has_delta_set (unsigned int index) const
+  عام:
+  منطقي has_delta_سيٽ (بنانشان صحيح اشاريو_2) ثابت
   {
-#ifdef HB_NO_VAR
-    return false;
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع خطأ;
+#جيڪڏهن_پورو
 
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return outer < dataSets.len &&
-	   inner < (this+dataSets[outer]).get_item_count ();
+    بنانشان صحيح outer = اشاريو_2 >> 16;
+    بنانشان صحيح inner = اشاريو_2 & 0xFFFF;
+    أرجع outer < معلومات_Sets.len &&
+	   inner < (هذا+معلومات_Sets[outer]).get_شي_ڳڻپ ();
   }
 
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  سانچو <قسم_نالو Float = عائم>
+  Float get_delta (بنانشان صحيح اشاريو_2,
+		   ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		   hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return get_delta<Float> (outer, inner, coords, coord_count, cache);
+    بنانشان صحيح outer = اشاريو_2 >> 16;
+    بنانشان صحيح inner = اشاريو_2 & 0xFFFF;
+    أرجع get_delta<Float> (outer, inner, coords, coord_ڳڻپ, cache);
   }
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   hb_array_t<const int> coords,
-		   hb_scalar_cache_t *cache = nullptr) const
+  سانچو <قسم_نالو Float = عائم>
+  Float get_delta (بنانشان صحيح اشاريو_2,
+		   hb_array_t<ثابت صحيح> coords,
+		   hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    return get_delta<Float> (index,
-		      coords.arrayZ, coords.length,
+    أرجع get_delta<Float> (اشاريو_2,
+		      coords.arrayZ, coords.ڊيگهائي,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-#ifdef HB_NO_VAR
-    return true;
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع سچ;
+#جيڪڏهن_پورو
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, هذا) &&
+		  معلومات_Sets.sanitize (c, هذا));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& region_list,
-                  const hb_vector_t<delta_row_encoding_t>& vardata_encodings)
+  منطقي serialize (hb_serialize_context_t *c,
+                  منطقي has_long,
+                  ثابت hb_ويڪٽر_t<hb_ٽيگ_t>& axis_ٽيگ_فهرست,
+                  ثابت hb_ويڪٽر_t<ثابت hb_hashmap_t<hb_ٽيگ_t, Triple>*>& region_list,
+                  ثابت hb_ويڪٽر_t<delta_صف_encoding_t>& vardata_encodings)
   {
-    TRACE_SERIALIZE (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    return_trace (خطأ);
+#جيڪڏهن_پورو
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
     format = 1;
-    if (!regions.serialize_serialize (c, axis_tags, region_list))
-      return_trace (false);
+    إذا (!regions.serialize_serialize (c, axis_ٽيگ_فهرست, region_list))
+      return_trace (خطأ);
 
-    unsigned num_var_data = vardata_encodings.length;
-    if (!num_var_data) return_trace (false);
-    if (unlikely (!c->check_assign (dataSets.len, num_var_data,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    بنانشان انگ_var_معلومات = vardata_encodings.ڊيگهائي;
+    إذا (!انگ_var_معلومات) return_trace (خطأ);
+    إذا (unlikely (!c->check_سونپيو (معلومات_Sets.len, انگ_var_معلومات,
+                                    HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+      return_trace (خطأ);
 
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
-    for (unsigned i = 0; i < num_var_data; i++)
-      if (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].items))
-        return_trace (false);
+    إذا (unlikely (!c->extend (معلومات_Sets))) return_trace (خطأ);
+    لكل (بنانشان i = 0; i < انگ_var_معلومات; i++)
+      إذا (!معلومات_Sets[i].serialize_serialize (c, has_long, vardata_encodings[i].شيون))
+        return_trace (خطأ);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ItemVariationStore *src,
-		  const hb_array_t <const hb_inc_bimap_t> &inner_maps,
-		  const hb_set_t *culled_regions = nullptr)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت شي_Variation_Store *src,
+		  ثابت hb_array_t <ثابت hb_inc_bimap_t> &inner_maps,
+		  ثابت hb_سيٽ_t *culled_regions = خالي_اشارو)
   {
-    TRACE_SERIALIZE (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SERIALIZE (هذا);
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    return_trace (خطأ);
+#جيڪڏهن_پورو
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    unsigned int set_count = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
-      if (inner_maps[i].get_population ())
-	set_count++;
+    بنانشان صحيح سيٽ_ڳڻپ = 0;
+    لكل (بنانشان صحيح i = 0; i < inner_maps.ڊيگهائي; i++)
+      إذا (inner_maps[i].get_population ())
+	سيٽ_ڳڻپ++;
 
     format = 1;
 
-    const auto &src_regions = src+src->regions;
+    ثابت خودڪار &src_regions = src+src->regions;
 
-    hb_set_t region_indices;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
-      (src+src->dataSets[i]).collect_region_refs (region_indices, inner_maps[i]);
+    hb_سيٽ_t region_indices;
+    لكل (بنانشان صحيح i = 0; i < inner_maps.ڊيگهائي; i++)
+      (src+src->معلومات_Sets[i]).collect_region_refs (region_indices, inner_maps[i]);
 
-    if (region_indices.in_error ())
-      return_trace (false);
+    إذا (region_indices.اندريون_error ())
+      return_trace (خطأ);
 
-    region_indices.del_range ((src_regions).regionCount, hb_set_t::INVALID);
+    region_indices.del_range ((src_regions).region_ڳڻپ, hb_سيٽ_t::INVALID);
 
-    if (culled_regions)
-      region_indices.subtract (*culled_regions);
+    إذا (culled_regions)
+      region_indices.ڪٽيو (*culled_regions);
 
     /* TODO use constructor when our data-structures support that. */
     hb_inc_bimap_t region_map;
     + hb_iter (region_indices)
-    | hb_apply ([&region_map] (unsigned _) { region_map.add(_); })
+    | hb_apply ([&region_map] (بنانشان _) { region_map.جوڙيو(_); })
     ;
-    if (region_map.in_error())
-      return_trace (false);
+    إذا (region_map.اندريون_error())
+      return_trace (خطأ);
 
-    if (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
-      return_trace (false);
+    إذا (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
+      return_trace (خطأ);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
+    معلومات_Sets.len = سيٽ_ڳڻپ;
+    إذا (unlikely (!c->extend (معلومات_Sets))) return_trace (خطأ);
 
     /* TODO: The following code could be simplified when
      * List16OfOffset16To::subset () can take a custom param to be passed to VarData::serialize () */
-    unsigned int set_index = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
+    بنانشان صحيح سيٽ_اشاريو = 0;
+    لكل (بنانشان صحيح i = 0; i < inner_maps.ڊيگهائي; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++]
-		     .serialize_serialize (c, &(src+src->dataSets[i]), inner_maps[i], region_map,
+      إذا (!inner_maps[i].get_population ()) استمر;
+      إذا (unlikely (!معلومات_Sets[سيٽ_اشاريو++]
+		     .serialize_serialize (c, &(src+src->معلومات_Sets[i]), inner_maps[i], region_map,
 					   culled_regions)))
-	return_trace (false);
+	return_trace (خطأ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  ItemVariationStore *copy (hb_serialize_context_t *c) const
+  شي_Variation_Store *copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (هذا);
+    خودڪار *ٻاهريون = c->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خالي_اشارو);
 
-    hb_vector_t <hb_inc_bimap_t> inner_maps;
-    unsigned count = dataSets.len;
-    for (unsigned i = 0; i < count; i++)
+    hb_ويڪٽر_t <hb_inc_bimap_t> inner_maps;
+    بنانشان ڳڻپ = معلومات_Sets.len;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
       hb_inc_bimap_t *map = inner_maps.push ();
-      if (unlikely (!c->propagate_error(inner_maps)))
-        return_trace(nullptr);
-      auto &data = this+dataSets[i];
+      إذا (unlikely (!c->propagate_error(inner_maps)))
+        return_trace(خالي_اشارو);
+      خودڪار &معلومات = هذا+معلومات_Sets[i];
 
-      unsigned itemCount = data.get_item_count ();
-      for (unsigned j = 0; j < itemCount; j++)
-	map->add (j);
+      بنانشان شي_ڳڻپ = معلومات.get_شي_ڳڻپ ();
+      لكل (بنانشان j = 0; j < شي_ڳڻپ; j++)
+	map->جوڙيو (j);
     }
 
-    if (unlikely (!out->serialize (c, this, inner_maps))) return_trace (nullptr);
+    إذا (unlikely (!ٻاهريون->serialize (c, هذا, inner_maps))) return_trace (خالي_اشارو);
 
-    return_trace (out);
+    return_trace (ٻاهريون);
   }
 
   /* Collect regions that a partial avar2 instance can never reach, per the
    * plan's reachable final-coordinate ranges. */
-  bool collect_dead_regions (const hb_map_t &axes_old_index_tag_map,
-			     const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
-			     hb_set_t &dead_regions /* OUT */) const
+  منطقي collect_dead_regions (ثابت hb_map_t &axes_old_اشاريو_ٽيگ_map,
+			     ثابت hb_hashmap_t<hb_ٽيگ_t, Triple> &reachable_ranges,
+			     hb_سيٽ_t &dead_regions /*ٻاهريون*/) ثابت
   {
-#ifndef HB_NO_VAR
-    if (!reachable_ranges.get_population ()) return true;
-    const VarRegionList &region_list = this+regions;
-    unsigned count = region_list.regionCount;
-    for (unsigned i = 0; i < count; i++)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    إذا (!reachable_ranges.get_population ()) أرجع سچ;
+    ثابت VarRegionList &region_list = هذا+regions;
+    بنانشان ڳڻپ = region_list.region_ڳڻپ;
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
-      hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!region_list.get_var_region (i, axes_old_index_tag_map, axis_tuples))
-	return false;
-      if (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
-	dead_regions.add (i);
+      hb_hashmap_t<hb_ٽيگ_t, Triple> axis_tuples;
+      إذا (!region_list.get_var_region (i, axes_old_اشاريو_ٽيگ_map, axis_tuples))
+	أرجع خطأ;
+      إذا (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
+	dead_regions.جوڙيو (i);
     }
-    return !dead_regions.in_error ();
-#else
-    return true;
-#endif
+    أرجع !dead_regions.اندريون_error ();
+#وإلا
+    أرجع سچ;
+#جيڪڏهن_پورو
   }
 
-  bool subset (hb_subset_context_t *c, const hb_array_t<const hb_inc_bimap_t> &inner_maps) const
+  منطقي subset (hb_subset_context_t *c, ثابت hb_array_t<ثابت hb_inc_bimap_t> &inner_maps) ثابت
   {
-    TRACE_SUBSET (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SUBSET (هذا);
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    return_trace (خطأ);
+#جيڪڏهن_پورو
 
-    ItemVariationStore *varstore_prime = c->serializer->start_embed<ItemVariationStore> ();
-    if (unlikely (!varstore_prime)) return_trace (false);
+    شي_Variation_Store *varstore_مفرد = c->serializer->شروعات_embed<شي_Variation_Store> ();
+    إذا (unlikely (!varstore_مفرد)) return_trace (خطأ);
 
     /* avar2 partial instancing: cull unreachable regions. */
-    hb_set_t dead_regions;
-    if (c->plan->has_avar2)
-      if (!collect_dead_regions (c->plan->axes_old_index_tag_map,
+    hb_سيٽ_t dead_regions;
+    إذا (c->plan->has_avar2)
+      إذا (!collect_dead_regions (c->plan->axes_old_اشاريو_ٽيگ_map,
 				 c->plan->avar2_reachable_ranges,
 				 dead_regions))
-	return_trace (false);
+	return_trace (خطأ);
 
-    varstore_prime->serialize (c->serializer, this, inner_maps,
-			       dead_regions.get_population () ? &dead_regions : nullptr);
+    varstore_مفرد->serialize (c->serializer, هذا, inner_maps,
+			       dead_regions.get_population () ? &dead_regions : خالي_اشارو);
 
     return_trace (
-        !c->serializer->in_error()
-        && varstore_prime->dataSets);
+        !c->serializer->اندريون_error()
+        && varstore_مفرد->معلومات_Sets);
   }
 
-  unsigned int get_region_index_count (unsigned int major) const
+  بنانشان صحيح get_region_اشاريو_ڳڻپ (بنانشان صحيح major) ثابت
   {
-#ifdef HB_NO_VAR
-    return 0;
-#endif
-    return (this+dataSets[major]).get_region_index_count ();
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع 0;
+#جيڪڏهن_پورو
+    أرجع (هذا+معلومات_Sets[major]).get_region_اشاريو_ڳڻپ ();
   }
 
-  void get_region_scalars (unsigned int major,
-			   const int *coords, unsigned int coord_count,
-			   float *scalars /*OUT*/,
-			   unsigned int num_scalars) const
+  فراغ get_region_scalars (بنانشان صحيح major,
+			   ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+			   عائم *scalars /*OUT*/,
+			   بنانشان صحيح انگ_scalars) ثابت
   {
-#ifdef HB_NO_VAR
-    for (unsigned i = 0; i < num_scalars; i++)
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    لكل (بنانشان i = 0; i < انگ_scalars; i++)
       scalars[i] = 0.f;
-    return;
-#endif
+    أرجع;
+#جيڪڏهن_پورو
 
-    (this+dataSets[major]).get_region_scalars (coords, coord_count,
-					       this+regions,
-					       &scalars[0], num_scalars);
+    (هذا+معلومات_Sets[major]).get_region_scalars (coords, coord_ڳڻپ,
+					       هذا+regions,
+					       &scalars[0], انگ_scalars);
   }
 
-  unsigned int get_sub_table_count () const
+  بنانشان صحيح get_sub_جدول_ڳڻپ () ثابت
    {
-#ifdef HB_NO_VAR
-     return 0;
-#endif
-     return dataSets.len;
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+     أرجع 0;
+#جيڪڏهن_پورو
+     أرجع معلومات_Sets.len;
    }
 
-  const VarData& get_sub_table (unsigned i) const
+  ثابت Var_معلومات& get_sub_جدول (بنانشان i) ثابت
   {
-#ifdef HB_NO_VAR
-     return Null (VarData);
-#endif
-     return this+dataSets[i];
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+     أرجع Null (Var_معلومات);
+#جيڪڏهن_پورو
+     أرجع هذا+معلومات_Sets[i];
   }
 
-  const VarRegionList& get_region_list () const
+  ثابت VarRegionList& get_region_list () ثابت
   {
-#ifdef HB_NO_VAR
-     return Null (VarRegionList);
-#endif
-     return this+regions;
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+     أرجع Null (VarRegionList);
+#جيڪڏهن_پورو
+     أرجع هذا+regions;
   }
 
-  protected:
+  محمي:
   HBUINT16				format;
-  Offset32To<VarRegionList>		regions;
-  Array16OfOffset32To<VarData>		dataSets;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
+  Offset32_منزل<VarRegionList>		regions;
+  Array16_جو_Offset32_منزل<Var_معلومات>		معلومات_Sets;
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (8, معلومات_Sets);
 };
 
-struct MultiItemVariationStore
+بنية Multi_شي_Variation_Store
 {
-  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = nullptr) const
+  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = خالي_اشارو) ثابت
   {
-#ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
-#endif
-    auto &r = this+regions;
-    unsigned count = r.regions.len;
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع hb_scalar_cache_t::create (0);
+#جيڪڏهن_پورو
+    خودڪار &r = هذا+regions;
+    بنانشان ڳڻپ = r.regions.len;
 
-    return hb_scalar_cache_t::create (count, static_cache);
+    أرجع hb_scalar_cache_t::create (ڳڻپ, static_cache);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache,
-			     hb_scalar_cache_t *static_cache = nullptr)
+  ساكن فراغ destroy_cache (hb_scalar_cache_t *cache,
+			     hb_scalar_cache_t *static_cache = خالي_اشارو)
   {
     hb_scalar_cache_t::destroy (cache, static_cache);
   }
 
-  private:
-  void get_delta (unsigned int outer, unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  خاص:
+  فراغ get_delta (بنانشان صحيح outer, بنانشان صحيح inner,
+		  ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		  hb_array_t<مزدوج> ٻاهريون,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-#ifdef HB_NO_VAR
-    return;
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع;
+#جيڪڏهن_پورو
 
-    if (unlikely (outer >= dataSets.len))
-      return;
+    إذا (unlikely (outer >= معلومات_Sets.len))
+      أرجع;
 
-    return (this+dataSets[outer]).get_delta (inner,
-					     coords, coord_count,
-					     this+regions,
-					     out,
+    أرجع (هذا+معلومات_Sets[outer]).get_delta (inner,
+					     coords, coord_ڳڻپ,
+					     هذا+regions,
+					     ٻاهريون,
 					     cache);
   }
 
-  public:
-  void get_delta (unsigned int index,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  عام:
+  فراغ get_delta (بنانشان صحيح اشاريو_2,
+		  ثابت صحيح *coords, بنانشان صحيح coord_ڳڻپ,
+		  hb_array_t<مزدوج> ٻاهريون,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    get_delta (outer, inner, coords, coord_count, out, cache);
+    بنانشان صحيح outer = اشاريو_2 >> 16;
+    بنانشان صحيح inner = اشاريو_2 & 0xFFFF;
+    get_delta (outer, inner, coords, coord_ڳڻپ, ٻاهريون, cache);
   }
-  void get_delta (unsigned int index,
-		  hb_array_t<const int> coords,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  فراغ get_delta (بنانشان صحيح اشاريو_2,
+		  hb_array_t<ثابت صحيح> coords,
+		  hb_array_t<مزدوج> ٻاهريون,
+		  hb_scalar_cache_t *cache = خالي_اشارو) ثابت
   {
-    return get_delta (index,
-		      coords.arrayZ, coords.length,
-		      out,
+    أرجع get_delta (اشاريو_2,
+		      coords.arrayZ, coords.ڊيگهائي,
+		      ٻاهريون,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-#ifdef HB_NO_VAR
-    return true;
-#endif
+#جيڪڏهن_وصف_ٿيل HB_NO_VAR
+    أرجع سچ;
+#جيڪڏهن_پورو
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, هذا) &&
+		  معلومات_Sets.sanitize (c, هذا));
   }
 
-  bool create_subset_plan (const hb_set_t &var_indices,
-			   hb_vector_t<hb_inc_bimap_t> *inner_maps,
-			   hb_map_t *varidx_map) const
+  منطقي create_subset_plan (ثابت hb_سيٽ_t &var_indices,
+			   hb_ويڪٽر_t<hb_inc_bimap_t> *inner_maps,
+			   hb_map_t *varidx_map) ثابت
   {
-    if (unlikely (!inner_maps->resize (dataSets.len))) return false;
-    for (hb_codepoint_t var_idx : var_indices)
+    إذا (unlikely (!inner_maps->resize (معلومات_Sets.len))) أرجع خطأ;
+    لكل (hb_codepoint_t var_idx : var_indices)
     {
-      unsigned outer = var_idx >> 16;
-      unsigned inner = var_idx & 0xFFFFu;
-      if (unlikely (outer >= dataSets.len ||
-		    inner >= (this+dataSets[outer]).get_item_count ()))
-	return false;
-      (*inner_maps)[outer].add (inner);
+      بنانشان outer = var_idx >> 16;
+      بنانشان inner = var_idx & 0xFFFFu;
+      إذا (unlikely (outer >= معلومات_Sets.len ||
+		    inner >= (هذا+معلومات_Sets[outer]).get_شي_ڳڻپ ()))
+	أرجع خطأ;
+      (*inner_maps)[outer].جوڙيو (inner);
     }
 
-    unsigned new_outer = 0;
-    for (unsigned outer = 0; outer < inner_maps->length; outer++)
+    بنانشان new_outer = 0;
+    لكل (بنانشان outer = 0; outer < inner_maps->ڊيگهائي; outer++)
     {
-      const hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
-      if (!inner_map.get_population ()) continue;
-      if (unlikely (inner_map.in_error ())) return false;
-      for (unsigned new_inner = 0;
+      ثابت hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
+      إذا (!inner_map.get_population ()) استمر;
+      إذا (unlikely (inner_map.اندريون_error ())) أرجع خطأ;
+      لكل (بنانشان new_inner = 0;
 	   new_inner < inner_map.get_population ();
 	   new_inner++)
       {
-	unsigned old_inner = inner_map.backward (new_inner);
-	varidx_map->set ((outer << 16) | old_inner,
+	بنانشان old_inner = inner_map.backward (new_inner);
+	varidx_map->سيٽ ((outer << 16) | old_inner,
 			(new_outer << 16) | new_inner);
       }
       new_outer++;
     }
-    return !inner_maps->in_error () && !varidx_map->in_error ();
+    أرجع !inner_maps->اندريون_error () && !varidx_map->اندريون_error ();
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiItemVariationStore *src,
-		  const hb_array_t<const hb_inc_bimap_t> &inner_maps,
-		  const hb_map_t *axis_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت Multi_شي_Variation_Store *src,
+		  ثابت hb_array_t<ثابت hb_inc_bimap_t> &inner_maps,
+		  ثابت hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this) ||
-		  inner_maps.length < src->dataSets.len))
-      return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا) ||
+		  inner_maps.ڊيگهائي < src->معلومات_Sets.len))
+      return_trace (خطأ);
     format = 1;
 
-    const auto &src_regions = src+src->regions;
-    hb_set_t region_indices;
-    unsigned set_count = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    ثابت خودڪار &src_regions = src+src->regions;
+    hb_سيٽ_t region_indices;
+    بنانشان سيٽ_ڳڻپ = 0;
+    لكل (بنانشان i = 0; i < src->معلومات_Sets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      set_count++;
-      (src+src->dataSets[i]).collect_region_refs (region_indices);
+      إذا (!inner_maps[i].get_population ()) استمر;
+      سيٽ_ڳڻپ++;
+      (src+src->معلومات_Sets[i]).collect_region_refs (region_indices);
     }
-    region_indices.del_range (src_regions.regions.len, hb_set_t::INVALID);
+    region_indices.del_range (src_regions.regions.len, hb_سيٽ_t::INVALID);
     hb_inc_bimap_t region_map;
-    region_map.add_set (&region_indices);
-    if (unlikely (region_indices.in_error () || region_map.in_error () ||
+    region_map.جوڙيو_سيٽ (&region_indices);
+    إذا (unlikely (region_indices.اندريون_error () || region_map.اندريون_error () ||
 		  !regions.serialize_serialize (c, &src_regions, region_map, axis_map)))
-      return_trace (false);
+      return_trace (خطأ);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
-    unsigned set_index = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    معلومات_Sets.len = سيٽ_ڳڻپ;
+    إذا (unlikely (!c->extend (معلومات_Sets))) return_trace (خطأ);
+    بنانشان سيٽ_اشاريو = 0;
+    لكل (بنانشان i = 0; i < src->معلومات_Sets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++].serialize_serialize (
-			    c, &(src+src->dataSets[i]), inner_maps[i], region_map)))
-	return_trace (false);
+      إذا (!inner_maps[i].get_population ()) استمر;
+      إذا (unlikely (!معلومات_Sets[سيٽ_اشاريو++].serialize_serialize (
+			    c, &(src+src->معلومات_Sets[i]), inner_maps[i], region_map)))
+	return_trace (خطأ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  protected:
+  محمي:
   HBUINT16				format; // 1
-  Offset32To<SparseVarRegionList>	regions;
-  Array16OfOffset32To<MultiVarData>	dataSets;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
+  Offset32_منزل<SparseVarRegionList>	regions;
+  Array16_جو_Offset32_منزل<Multi_Var_معلومات>	معلومات_Sets;
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (8, معلومات_Sets);
 };
 
-template <typename MapCountT>
-struct DeltaSetIndexMapFormat01
+سانچو <قسم_نالو Map_ڳڻپ_T>
+بنية Delta_سيٽ_اشاريو_Map_Format01
 {
-  friend struct DeltaSetIndexMap;
+  دوست بنية Delta_سيٽ_اشاريو_Map;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (mapCount, get_width (), min_size); }
+  size_t get_سائيز () ثابت
+  { أرجع hb_unsigned_mul_جوڙيو_saturate (map_ڳڻپ_2, get_ويڪر (), min_سائيز); }
 
-  private:
-  DeltaSetIndexMapFormat01* copy (hb_serialize_context_t *c) const
+  خاص:
+  Delta_سيٽ_اشاريو_Map_Format01* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (هذا);
+    return_trace (c->embed (هذا));
   }
 
-  template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  سانچو <قسم_نالو T>
+  منطقي serialize (hb_serialize_context_t *c, ثابت T &plan)
   {
-    unsigned int width = plan.get_width ();
-    unsigned int inner_bit_count = plan.get_inner_bit_count ();
-    const hb_array_t<const uint32_t> output_map = plan.get_output_map ();
+    بنانشان صحيح ويڪر = plan.get_ويڪر ();
+    بنانشان صحيح inner_ٻٽو_انگ_ڳڻپ = plan.get_inner_ٻٽو_انگ_ڳڻپ ();
+    ثابت hb_array_t<ثابت uint32_t> output_map = plan.get_output_map ();
 
-    TRACE_SERIALIZE (this);
-    if (unlikely (output_map.length && ((((inner_bit_count-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
-      return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (output_map.ڊيگهائي && ((((inner_ٻٽو_انگ_ڳڻپ-1)&~0xF)!=0) || (((ويڪر-1)&~0x3)!=0))))
+      return_trace (خطأ);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
 
-    entryFormat = ((width-1)<<4)|(inner_bit_count-1);
-    mapCount = output_map.length;
-    HBUINT8 *p = c->allocate_size<HBUINT8> (width * output_map.length);
-    if (unlikely (!p)) return_trace (false);
-    for (unsigned int i = 0; i < output_map.length; i++)
+    داخلا_Format = ((ويڪر-1)<<4)|(inner_ٻٽو_انگ_ڳڻپ-1);
+    map_ڳڻپ_2 = output_map.ڊيگهائي;
+    HBUINT8 *p = c->allocate_سائيز<HBUINT8> (ويڪر * output_map.ڊيگهائي);
+    إذا (unlikely (!p)) return_trace (خطأ);
+    لكل (بنانشان صحيح i = 0; i < output_map.ڊيگهائي; i++)
     {
-      unsigned int v = output_map.arrayZ[i];
-      if (v)
+      بنانشان صحيح v = output_map.arrayZ[i];
+      إذا (v)
       {
-	unsigned int outer = v >> 16;
-	unsigned int inner = v & 0xFFFF;
-	unsigned int u = (outer << inner_bit_count) | inner;
-	for (unsigned int w = width; w > 0;)
+	بنانشان صحيح outer = v >> 16;
+	بنانشان صحيح inner = v & 0xFFFF;
+	بنانشان صحيح u = (outer << inner_ٻٽو_انگ_ڳڻپ) | inner;
+	لكل (بنانشان صحيح w = ويڪر; w > 0;)
 	{
 	  p[--w] = u;
 	  u >>= 8;
 	}
       }
-      p += width;
+      p += ويڪر;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
   HB_ALWAYS_INLINE
-  uint32_t map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t map (بنانشان صحيح v) ثابت /* Returns 16.16 outer.inner. */
   {
     /* If count is zero, pass value unchanged.  This takes
      * care of direct mapping for advance map. */
-    if (!mapCount)
-      return v;
-    return _map (v);
+    إذا (!map_ڳڻپ_2)
+      أرجع v;
+    أرجع _map (v);
   }
 
   HB_HOT
-  uint32_t _map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t _map (بنانشان صحيح v) ثابت /* Returns 16.16 outer.inner. */
   {
-    if (v >= mapCount)
-      v = mapCount - 1;
+    إذا (v >= map_ڳڻپ_2)
+      v = map_ڳڻپ_2 - 1;
 
-    unsigned int u = 0;
+    بنانشان صحيح u = 0;
     { /* Fetch it. */
-      unsigned int w = get_width ();
-      const HBUINT8 *p = mapDataZ.arrayZ + w * v;
-      for (; w; w--)
+      بنانشان صحيح w = get_ويڪر ();
+      ثابت HBUINT8 *p = map_معلومات_Z.arrayZ + w * v;
+      لكل (; w; w--)
         u = (u << 8) + *p++;
     }
 
     { /* Repack it. */
-      unsigned int n = get_inner_bit_count ();
-      unsigned int outer = u >> n;
-      unsigned int inner = u & ((1 << n) - 1);
+      بنانشان صحيح n = get_inner_ٻٽو_انگ_ڳڻپ ();
+      بنانشان صحيح outer = u >> n;
+      بنانشان صحيح inner = u & ((1 << n) - 1);
       u = (outer<<16) | inner;
     }
 
-    return u;
+    أرجع u;
   }
 
-  unsigned get_map_count () const       { return mapCount; }
-  unsigned get_width () const           { return ((entryFormat >> 4) & 3) + 1; }
-  unsigned get_inner_bit_count () const { return (entryFormat & 0xF) + 1; }
+  بنانشان get_map_ڳڻپ () ثابت       { أرجع map_ڳڻپ_2; }
+  بنانشان get_ويڪر () ثابت           { أرجع ((داخلا_Format >> 4) & 3) + 1; }
+  بنانشان get_inner_ٻٽو_انگ_ڳڻپ () ثابت { أرجع (داخلا_Format & 0xF) + 1; }
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-                  c->check_range (mapDataZ.arrayZ,
-                                  mapCount,
-                                  get_width ()));
+                  c->check_range (map_معلومات_Z.arrayZ,
+                                  map_ڳڻپ_2,
+                                  get_ويڪر ()));
   }
 
-  protected:
+  محمي:
   HBUINT8       format;         /* Format identifier--format = 0 */
-  HBUINT8       entryFormat;    /* A packed field that describes the compressed
+  HBUINT8       داخلا_Format;    /* A packed field that describes the compressed
                                  * representation of delta-set indices. */
-  MapCountT     mapCount;       /* The number of mapping entries. */
-  UnsizedArrayOf<HBUINT8>
-                mapDataZ;       /* The delta-set index mapping data. */
+  Map_ڳڻپ_T     map_ڳڻپ_2;       /* The number of mapping entries. */
+  Unsized_Array_جو<HBUINT8>
+                map_معلومات_Z;       /* The delta-set index mapping data. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2+MapCountT::static_size, mapDataZ);
+  عام:
+  DEFINE_سائيز_ARRAY (2+Map_ڳڻپ_T::static_سائيز, map_معلومات_Z);
 };
 
-struct DeltaSetIndexMap
+بنية Delta_سيٽ_اشاريو_Map
 {
-  template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  سانچو <قسم_نالو T>
+  منطقي serialize (hb_serialize_context_t *c, ثابت T &plan)
   {
-    TRACE_SERIALIZE (this);
-    unsigned length = plan.get_output_map ().length;
-    u.format.v = length <= 0xFFFF ? 0 : 1;
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
-    default:return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    بنانشان ڊيگهائي = plan.get_output_map ().ڊيگهائي;
+    u.format.v = ڊيگهائي <= 0xFFFF ? 0 : 1;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
+    حالة 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
+    افتراضي:return_trace (خطأ);
     }
   }
 
-  uint32_t map (unsigned v) const
+  uint32_t map (بنانشان v) ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return (u.format0.map (v));
-    case 1: hb_barrier (); return (u.format1.map (v));
-    default:return v;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); أرجع (u.format0.map (v));
+    حالة 1: hb_barrier (); أرجع (u.format1.map (v));
+    افتراضي:أرجع v;
     }
   }
 
-  unsigned get_map_count () const
+  بنانشان get_map_ڳڻپ () ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_map_count ();
-    case 1: hb_barrier (); return u.format1.get_map_count ();
-    default:return 0;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); أرجع u.format0.get_map_ڳڻپ ();
+    حالة 1: hb_barrier (); أرجع u.format1.get_map_ڳڻپ ();
+    افتراضي:أرجع 0;
     }
   }
 
-  unsigned get_width () const
+  بنانشان get_ويڪر () ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_width ();
-    case 1: hb_barrier (); return u.format1.get_width ();
-    default:return 0;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); أرجع u.format0.get_ويڪر ();
+    حالة 1: hb_barrier (); أرجع u.format1.get_ويڪر ();
+    افتراضي:أرجع 0;
     }
   }
 
-  unsigned get_inner_bit_count () const
+  بنانشان get_inner_ٻٽو_انگ_ڳڻپ () ثابت
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_inner_bit_count ();
-    case 1: hb_barrier (); return u.format1.get_inner_bit_count ();
-    default:return 0;
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); أرجع u.format0.get_inner_ٻٽو_انگ_ڳڻپ ();
+    حالة 1: hb_barrier (); أرجع u.format1.get_inner_ٻٽو_انگ_ڳڻپ ();
+    افتراضي:أرجع 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!u.format.v.sanitize (c)) return_trace (خطأ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); return_trace (u.format0.sanitize (c));
+    حالة 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    افتراضي:return_trace (سچ);
     }
   }
 
-  DeltaSetIndexMap* copy (hb_serialize_context_t *c) const
+  Delta_سيٽ_اشاريو_Map* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format0.copy (c)));
-    case 1: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format1.copy (c)));
-    default:return_trace (nullptr);
+    TRACE_SERIALIZE (هذا);
+    بدل (u.format.v) {
+    حالة 0: hb_barrier (); return_trace (reinterpret_cast<Delta_سيٽ_اشاريو_Map *> (u.format0.copy (c)));
+    حالة 1: hb_barrier (); return_trace (reinterpret_cast<Delta_سيٽ_اشاريو_Map *> (u.format1.copy (c)));
+    افتراضي:return_trace (خالي_اشارو);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }             format;         /* Format identifier */
-  DeltaSetIndexMapFormat01<HBUINT16> format0;
-  DeltaSetIndexMapFormat01<HBUINT32> format1;
+  محمي:
+  اتحاد {
+  بنية { HBUINT8 v; }             format;         /* Format identifier */
+  Delta_سيٽ_اشاريو_Map_Format01<HBUINT16> format0;
+  Delta_سيٽ_اشاريو_Map_Format01<HBUINT32> format1;
   } u;
-  public:
-  DEFINE_SIZE_UNION (1, format.v);
+  عام:
+  DEFINE_سائيز_UNION (1, format.v);
 };
 
 
-struct ItemVarStoreInstancer
+بنية شي_Var_Store_Instancer
 {
-  ItemVarStoreInstancer (const ItemVariationStore *varStore_,
-			 const DeltaSetIndexMap *varIdxMap,
-			 hb_array_t<const int> coords,
-			 hb_scalar_cache_t *cache = nullptr) :
+  شي_Var_Store_Instancer (ثابت شي_Variation_Store *varStore_,
+			 ثابت Delta_سيٽ_اشاريو_Map *varIdxMap,
+			 hb_array_t<ثابت صحيح> coords,
+			 hb_scalar_cache_t *cache = خالي_اشارو) :
     varStore (varStore_), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
-      varStore = &Null(ItemVariationStore);
+    إذا (!varStore)
+      varStore = &Null(شي_Variation_Store);
     /* Like hb_font_t::has_nonzero_coords, treat explicit all-zero coordinates
      * as the default instance, which uses unadjusted values (OFF 7.1). */
-    if (!hb_any (coords))
-      this->coords = {};
+    إذا (!hb_any (coords))
+      هذا->coords = {};
   }
 
-  operator bool () const { return varStore && bool (coords); }
+  عامل منطقي () ثابت { أرجع varStore && منطقي (coords); }
 
-  float operator[] (uint32_t varIdx) const
-  { return (*this) (varIdx); }
+  عائم عامل[] (uint32_t varIdx) ثابت
+  { أرجع (*هذا) (varIdx); }
 
-  float operator() (uint32_t varIdx, unsigned short offset = 0) const
-  { return get_delta (varIdx, offset); }
+  عائم عامل() (uint32_t varIdx, بنانشان ننڍو وٿي = 0) ثابت
+  { أرجع get_delta (varIdx, وٿي); }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return get_delta<double> (varIdx); }
+  مزدوج get_condition_delta (uint32_t varIdx) ثابت
+  { أرجع get_delta<مزدوج> (varIdx); }
 
-  template <typename Float = float>
-  Float get_delta (uint32_t varIdx, unsigned short offset = 0) const
+  سانچو <قسم_نالو Float = عائم>
+  Float get_delta (uint32_t varIdx, بنانشان ننڍو وٿي = 0) ثابت
   {
    /* Ordinary stores do not apply deltas at the default instance. */
-   if (!coords || varIdx == VarIdx::NO_VARIATION)
-     return Float (0);
+   إذا (!coords || varIdx == VarIdx::NO_VARIATION)
+     أرجع Float (0);
 
-    varIdx += offset;
-    if (varIdxMap)
+    varIdx += وٿي;
+    إذا (varIdxMap)
       varIdx = varIdxMap->map (varIdx);
-    return varStore->get_delta<Float> (varIdx, coords, cache);
+    أرجع varStore->get_delta<Float> (varIdx, coords, cache);
   }
 
-  const ItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  ثابت شي_Variation_Store *varStore;
+  ثابت Delta_سيٽ_اشاريو_Map *varIdxMap;
+  hb_array_t<ثابت صحيح> coords;
   hb_scalar_cache_t *cache;
 };
 
-struct MultiItemVarStoreInstancer
+بنية Multi_شي_Var_Store_Instancer
 {
-  MultiItemVarStoreInstancer (const MultiItemVariationStore *varStore,
-			      const DeltaSetIndexMap *varIdxMap,
-			      hb_array_t<const int> coords,
-			      hb_scalar_cache_t *cache = nullptr) :
+  Multi_شي_Var_Store_Instancer (ثابت Multi_شي_Variation_Store *varStore,
+			      ثابت Delta_سيٽ_اشاريو_Map *varIdxMap,
+			      hb_array_t<ثابت صحيح> coords,
+			      hb_scalar_cache_t *cache = خالي_اشارو) :
     varStore (varStore), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
-      varStore = &Null(MultiItemVariationStore);
+    إذا (!varStore)
+      varStore = &Null(Multi_شي_Variation_Store);
   }
 
-  operator bool () const { return varStore; }
+  عامل منطقي () ثابت { أرجع varStore; }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return (double) (*this)[varIdx]; }
+  مزدوج get_condition_delta (uint32_t varIdx) ثابت
+  { أرجع (مزدوج) (*هذا)[varIdx]; }
 
-  double operator[] (uint32_t varIdx) const
+  مزدوج عامل[] (uint32_t varIdx) ثابت
   {
-    double v = 0;
-    (*this) (hb_array (&v, 1), varIdx);
-    return v;
+    مزدوج v = 0;
+    (*هذا) (hb_array (&v, 1), varIdx);
+    أرجع v;
   }
 
-  void operator() (hb_array_t<double> out, uint32_t varIdx, unsigned short offset = 0) const
+  فراغ عامل() (hb_array_t<مزدوج> ٻاهريون, uint32_t varIdx, بنانشان ننڍو وٿي = 0) ثابت
   {
     /* Static VARC fonts can have constant deltas even with empty coordinates. */
-    if (varIdx != VarIdx::NO_VARIATION)
+    إذا (varIdx != VarIdx::NO_VARIATION)
     {
-      varIdx += offset;
-      if (varIdxMap)
+      varIdx += وٿي;
+      إذا (varIdxMap)
 	varIdx = varIdxMap->map (varIdx);
-      varStore->get_delta (varIdx, coords, out, cache);
+      varStore->get_delta (varIdx, coords, ٻاهريون, cache);
     }
-    else
-      for (unsigned i = 0; i < out.length; i++)
-        out.arrayZ[i] = 0.;
+    وإلا
+      لكل (بنانشان i = 0; i < ٻاهريون.ڊيگهائي; i++)
+        ٻاهريون.arrayZ[i] = 0.;
   }
 
-  const MultiItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  ثابت Multi_شي_Variation_Store *varStore;
+  ثابت Delta_سيٽ_اشاريو_Map *varIdxMap;
+  hb_array_t<ثابت صحيح> coords;
   hb_scalar_cache_t *cache;
 };
 
@@ -4280,15 +4280,15 @@ struct MultiItemVarStoreInstancer
 /*
  * Feature Variations
  */
-enum Cond_with_Var_flag_t
+تعداد Cond_with_Var_flag_t
 {
   KEEP_COND_WITH_VAR = 0,
-  KEEP_RECORD_WITH_VAR = 1,
+  KEEP_رڪارڊ_WITH_VAR = 1,
   DROP_COND_WITH_VAR = 2,
-  DROP_RECORD_WITH_VAR = 3,
+  DROP_رڪارڊ_WITH_VAR = 3,
 };
 
-enum lookup_condition_subset_result_t
+تعداد lookup_condition_subset_نتيجو_t
 {
   LOOKUP_CONDITION_SUBSET_ERROR,
   LOOKUP_CONDITION_SUBSET_FALSE,
@@ -4296,1885 +4296,1885 @@ enum lookup_condition_subset_result_t
   LOOKUP_CONDITION_SUBSET_KEEP,
 };
 
-struct Condition;
+بنية Condition;
 
-template <typename Instancer>
-static bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+سانچو <قسم_نالو Instancer>
+ساكن منطقي
+_hb_recurse_condition_evaluate (ثابت بنية Condition &condition,
+				ثابت صحيح *coords,
+				بنانشان صحيح coord_len,
 				Instancer *instancer);
 
-struct ConditionAxisRange
+بنية ConditionAxisRange
 {
-  friend struct Condition;
+  دوست بنية Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    const hb_map_t *index_map = &c->plan->axes_index_map;
-    if (index_map->is_empty ()) return_trace (true);
+    ثابت hb_map_t *اشاريو_map = &c->plan->axes_اشاريو_map;
+    إذا (اشاريو_map->is_empty ()) return_trace (سچ);
 
-    const hb_map_t& axes_old_index_tag_map = c->plan->axes_old_index_tag_map;
-    hb_codepoint_t *axis_tag;
-    if (!axes_old_index_tag_map.has (axisIndex, &axis_tag) ||
-        !index_map->has (axisIndex))
-      return_trace (false);
+    ثابت hb_map_t& axes_old_اشاريو_ٽيگ_map = c->plan->axes_old_اشاريو_ٽيگ_map;
+    hb_codepoint_t *axis_ٽيگ_2;
+    إذا (!axes_old_اشاريو_ٽيگ_map.has (axis_اشاريو_2, &axis_ٽيگ_2) ||
+        !اشاريو_map->has (axis_اشاريو_2))
+      return_trace (خطأ);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location = c->plan->axes_location;
-    Triple axis_limit{-1.0, 0.0, 1.0};
-    Triple *normalized_limit;
-    if (normalized_axes_location.has (*axis_tag, &normalized_limit))
-      axis_limit = *normalized_limit;
+    ثابت hb_hashmap_t<hb_ٽيگ_t, Triple>& normalized_axes_location = c->plan->axes_location;
+    Triple axis_حد_بندي{-1.0, 0.0, 1.0};
+    Triple *normalized_حد_بندي;
+    إذا (normalized_axes_location.has (*axis_ٽيگ_2, &normalized_حد_بندي))
+      axis_حد_بندي = *normalized_حد_بندي;
 
-    const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
+    ثابت hb_hashmap_t<hb_ٽيگ_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
     TripleDistances axis_triple_distances{1.0, 1.0};
     TripleDistances *triple_dists;
-    if (axes_triple_distances.has (*axis_tag, &triple_dists))
+    إذا (axes_triple_distances.has (*axis_ٽيگ_2, &triple_dists))
       axis_triple_distances = *triple_dists;
 
-    float normalized_min = renormalizeValue ((double) filterRangeMinValue.to_float (), axis_limit, axis_triple_distances, false);
-    float normalized_max = renormalizeValue ((double) filterRangeMaxValue.to_float (), axis_limit, axis_triple_distances, false);
-    out->filterRangeMinValue.set_float (normalized_min);
-    out->filterRangeMaxValue.set_float (normalized_max);
+    عائم normalized_min = renormalize_قدر ((مزدوج) filter_Range_Min_قدر.منزل_float (), axis_حد_بندي, axis_triple_distances, خطأ);
+    عائم normalized_max = renormalize_قدر ((مزدوج) filter_Range_Max_قدر.منزل_float (), axis_حد_بندي, axis_triple_distances, خطأ);
+    ٻاهريون->filter_Range_Min_قدر.سيٽ_float (normalized_min);
+    ٻاهريون->filter_Range_Max_قدر.سيٽ_float (normalized_max);
 
-    return_trace (c->serializer->check_assign (out->axisIndex, index_map->get (axisIndex),
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_سونپيو (ٻاهريون->axis_اشاريو_2, اشاريو_map->get (axis_اشاريو_2),
+                                               HB_SERIALIZE_ERROR_INT_حد_کان_مٿي));
   }
 
-  private:
+  خاص:
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                             hb_map_t *condition_map /* OUT */) const
+                                             hb_map_t *condition_map /*ٻاهريون*/) ثابت
   {
     //invalid axis index, drop the entire record
-    if (!c->axes_index_tag_map->has (axisIndex))
-      return DROP_RECORD_WITH_VAR;
+    إذا (!c->axes_اشاريو_ٽيگ_map->has (axis_اشاريو_2))
+      أرجع DROP_رڪارڊ_WITH_VAR;
 
-    hb_tag_t axis_tag = c->axes_index_tag_map->get (axisIndex);
+    hb_ٽيگ_t axis_ٽيگ_2 = c->axes_اشاريو_ٽيگ_map->get (axis_اشاريو_2);
 
     Triple axis_range (-1.0, 0.0, 1.0);
-    Triple *axis_limit;
-    bool axis_set_by_user = false;
-    if (c->axes_location->has (axis_tag, &axis_limit))
+    Triple *axis_حد_بندي;
+    منطقي axis_سيٽ_by_user = خطأ;
+    إذا (c->axes_location->has (axis_ٽيگ_2, &axis_حد_بندي))
     {
-      axis_range = *axis_limit;
-      axis_set_by_user = true;
+      axis_range = *axis_حد_بندي;
+      axis_سيٽ_by_user = سچ;
     }
 
-    float axis_min_val = axis_range.minimum;
-    float axis_default_val = axis_range.middle;
-    float axis_max_val = axis_range.maximum;
+    عائم axis_min_val = axis_range.minimum;
+    عائم axis_default_val = axis_range.وچ;
+    عائم axis_max_val = axis_range.وڌ_کان_وڌ;
 
-    float filter_min_val = filterRangeMinValue.to_float ();
-    float filter_max_val = filterRangeMaxValue.to_float ();
+    عائم filter_min_val = filter_Range_Min_قدر.منزل_float ();
+    عائم filter_max_val = filter_Range_Max_قدر.منزل_float ();
 
-    if (axis_default_val < filter_min_val ||
+    إذا (axis_default_val < filter_min_val ||
         axis_default_val > filter_max_val)
-      c->apply = false;
+      c->apply = خطأ;
 
     //condition not met, drop the entire record
-    if (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
+    إذا (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
         filter_min_val > filter_max_val)
-      return DROP_RECORD_WITH_VAR;
+      أرجع DROP_رڪارڊ_WITH_VAR;
 
     //condition met and axis pinned, drop the condition
-    if (axis_set_by_user && axis_range.is_point ())
-      return DROP_COND_WITH_VAR;
+    إذا (axis_سيٽ_by_user && axis_range.is_نقطو ())
+      أرجع DROP_COND_WITH_VAR;
 
-    if (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
+    إذا (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
     {
       // add axisIndex->value into the hashmap so we can check if the record is
       // unique with variations
-      uint16_t int_filter_max_val = (uint16_t) filterRangeMaxValue.to_int ();
-      uint16_t int_filter_min_val = (uint16_t) filterRangeMinValue.to_int ();
+      uint16_t int_filter_max_val = (uint16_t) filter_Range_Max_قدر.منزل_int ();
+      uint16_t int_filter_min_val = (uint16_t) filter_Range_Min_قدر.منزل_int ();
       hb_codepoint_t val = (int_filter_max_val << 16) + int_filter_min_val;
 
-      condition_map->set (axisIndex, val);
-      return KEEP_COND_WITH_VAR;
+      condition_map->سيٽ (axis_اشاريو_2, val);
+      أرجع KEEP_COND_WITH_VAR;
     }
-    return KEEP_RECORD_WITH_VAR;
+    أرجع KEEP_رڪارڊ_WITH_VAR;
   }
 
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer HB_UNUSED) const
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer HB_اڻ_استعمال_ٿيل) ثابت
   {
-    int coord = axisIndex < coord_len ? coords[axisIndex] : 0;
-    return filterRangeMinValue.to_int () <= coord && coord <= filterRangeMaxValue.to_int ();
+    صحيح coord = axis_اشاريو_2 < coord_len ? coords[axis_اشاريو_2] : 0;
+    أرجع filter_Range_Min_قدر.منزل_int () <= coord && coord <= filter_Range_Max_قدر.منزل_int ();
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 1 */
-  HBUINT16	axisIndex;
-  F2DOT14	filterRangeMinValue;
-  F2DOT14	filterRangeMaxValue;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  HBUINT16	axis_اشاريو_2;
+  F2DOT14	filter_Range_Min_قدر;
+  F2DOT14	filter_Range_Max_قدر;
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct ConditionValue
+بنية Condition_قدر
 {
-  friend struct Condition;
+  دوست بنية Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    if (varIdx == VarIdx::NO_VARIATION)
-      return_trace (true);
+    إذا (varIdx == VarIdx::NO_VARIATION)
+      return_trace (سچ);
 
-    hb_pair_t<unsigned, int> *condition_value;
-    if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) this, &condition_value))
+    hb_pair_t<بنانشان, صحيح> *condition_قدر;
+    إذا (c->plan->layout_condition_idx_قدر_map.has ((uintptr_t) هذا, &condition_قدر))
     {
-      out->defaultValue = condition_value->second;
-      out->varIdx = condition_value->first;
-      return_trace (true);
+      ٻاهريون->default_قدر_2 = condition_قدر->second;
+      ٻاهريون->varIdx = condition_قدر->پهريون;
+      return_trace (سچ);
     }
 
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
-      return_trace (false);
+    hb_pair_t<بنانشان, صحيح> *new_varidx_delta;
+    إذا (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
+      return_trace (خطأ);
 
-    if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		defaultValue + hb_second (*new_varidx_delta),
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
-    out->varIdx = hb_first (*new_varidx_delta);
-    return_trace (true);
+    إذا (unlikely (!c->serializer->check_سونپيو (
+		ٻاهريون->default_قدر_2,
+		default_قدر_2 + hb_ٻيو (*new_varidx_delta),
+		HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+      return_trace (خطأ);
+    ٻاهريون->varIdx = hb_پهريون (*new_varidx_delta);
+    return_trace (سچ);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  خاص:
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
   {
-    double value = defaultValue;
+    مزدوج value = default_قدر_2;
     value += instancer->get_condition_delta (varIdx);
-    return value > 0;
+    أرجع value > 0;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  HBINT16	defaultValue;   /* Value at default instance. */
+  HBINT16	default_قدر_2;   /* Value at default instance. */
   VarIdx	varIdx;		/* Variation index */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct ConditionAnd
+بنية ConditionAnd
 {
-  friend struct Condition;
+  دوست بنية Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+      return_trace (خطأ);
+    ٻاهريون->format = format;
 
-    for (const auto &offset : conditions)
+    لكل (ثابت خودڪار &وٿي : conditions)
     {
-      if (offset.is_null ())
+      إذا (وٿي.is_null ())
       {
-	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
-	*out_offset = 0;
+	خودڪار *ٻاهريون_وٿي = ٻاهريون->conditions.serialize_append (c->serializer);
+	إذا (unlikely (!ٻاهريون_وٿي)) return_trace (خطأ);
+	*ٻاهريون_وٿي = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      وإلا إذا (unlikely (!subset_وٿي_array (c, ٻاهريون->conditions, هذا) (وٿي)))
+	return_trace (خطأ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  خاص:
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    بنانشان صحيح ڳڻپ = conditions.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      إذا (!_hb_recurse_condition_evaluate (هذا+conditions.arrayZ[i],
 					   coords, coord_len,
 					   instancer))
-	return false;
-    return true;
+	أرجع خطأ;
+    أرجع سچ;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (conditions.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 3 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (3, conditions);
+  Array8_جو_Offset24_منزل<بنية Condition>	conditions;
+  عام:
+  DEFINE_سائيز_ARRAY (3, conditions);
 };
 
-struct ConditionOr
+بنية ConditionOr
 {
-  friend struct Condition;
+  دوست بنية Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+      return_trace (خطأ);
+    ٻاهريون->format = format;
 
-    for (const auto &offset : conditions)
+    لكل (ثابت خودڪار &وٿي : conditions)
     {
-      if (offset.is_null ())
+      إذا (وٿي.is_null ())
       {
-	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
-	*out_offset = 0;
+	خودڪار *ٻاهريون_وٿي = ٻاهريون->conditions.serialize_append (c->serializer);
+	إذا (unlikely (!ٻاهريون_وٿي)) return_trace (خطأ);
+	*ٻاهريون_وٿي = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      وإلا إذا (unlikely (!subset_وٿي_array (c, ٻاهريون->conditions, هذا) (وٿي)))
+	return_trace (خطأ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  خاص:
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    بنانشان صحيح ڳڻپ = conditions.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      إذا (_hb_recurse_condition_evaluate (هذا+conditions.arrayZ[i],
 					  coords, coord_len,
 					  instancer))
-	return true;
-    return false;
+	أرجع سچ;
+    أرجع خطأ;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (conditions.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (3, conditions);
+  Array8_جو_Offset24_منزل<بنية Condition>	conditions;
+  عام:
+  DEFINE_سائيز_ARRAY (3, conditions);
 };
 
-struct ConditionNegate
+بنية ConditionNegate
 {
-  friend struct Condition;
+  دوست بنية Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (condition.is_null ())
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
+    إذا (condition.is_null ())
     {
-      out->condition = 0;
-      return_trace (true);
+      ٻاهريون->condition = 0;
+      return_trace (سچ);
     }
-    return_trace (out->condition.serialize_subset (c, condition, this));
+    return_trace (ٻاهريون->condition.serialize_subset (c, condition, هذا));
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  خاص:
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
   {
-    return !_hb_recurse_condition_evaluate (this+condition,
+    أرجع !_hb_recurse_condition_evaluate (هذا+condition,
 					    coords, coord_len,
 					    instancer);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  عام:
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (condition.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (condition.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   HBUINT16	format;		/* Format identifier--format = 5 */
-  Offset24To<struct Condition>	condition;
-  public:
-  DEFINE_SIZE_STATIC (5);
+  Offset24_منزل<بنية Condition>	condition;
+  عام:
+  DEFINE_سائيز_STATIC (5);
 };
 
-struct Condition
+بنية Condition
 {
-  friend struct ConditionSet;
+  دوست بنية Condition_سيٽ;
 
-  static bool serialize_constant (hb_serialize_context_t *c, bool value)
+  ساكن منطقي serialize_constant (hb_serialize_context_t *c, منطقي value)
   {
-    auto *out = c->start_embed<ConditionValue> ();
-    if (unlikely (!out || !c->extend_min (out))) return false;
-    out->format = 2;
-    out->defaultValue = value ? 1 : 0;
-    out->varIdx = VarIdx::NO_VARIATION;
-    return true;
+    خودڪار *ٻاهريون = c->شروعات_embed<Condition_قدر> ();
+    إذا (unlikely (!ٻاهريون || !c->extend_min (ٻاهريون))) أرجع خطأ;
+    ٻاهريون->format = 2;
+    ٻاهريون->default_قدر_2 = value ? 1 : 0;
+    ٻاهريون->varIdx = VarIdx::NO_VARIATION;
+    أرجع سچ;
   }
 
-  lookup_condition_subset_result_t subset_lookup_condition (
+  lookup_condition_subset_نتيجو_t subset_lookup_condition (
 				      hb_subset_context_t *c,
-				      unsigned depth = HB_MAX_NESTING_LEVEL,
-				      bool materialize_true = false) const;
+				      بنانشان اونهائي = HB_MAX_NESTING_LEVEL,
+				      منطقي materialize_true = خطأ) ثابت;
 
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
   {
-    switch (u.format.v) {
+    بدل (u.format.v) {
     /* A null condition offset resolves to the nil Condition, whose reserved
      * format 0 represents the True condition required by the specification. */
-    case 0: return true;
-    case 1: hb_barrier (); return u.format1.evaluate (coords, coord_len, instancer);
-    case 2: hb_barrier (); return u.format2.evaluate (coords, coord_len, instancer);
-    case 3: hb_barrier (); return u.format3.evaluate (coords, coord_len, instancer);
-    case 4: hb_barrier (); return u.format4.evaluate (coords, coord_len, instancer);
-    case 5: hb_barrier (); return u.format5.evaluate (coords, coord_len, instancer);
-    default:return false;
+    حالة 0: أرجع سچ;
+    حالة 1: hb_barrier (); أرجع u.format1.evaluate (coords, coord_len, instancer);
+    حالة 2: hb_barrier (); أرجع u.format2.evaluate (coords, coord_len, instancer);
+    حالة 3: hb_barrier (); أرجع u.format3.evaluate (coords, coord_len, instancer);
+    حالة 4: hb_barrier (); أرجع u.format4.evaluate (coords, coord_len, instancer);
+    حالة 5: hb_barrier (); أرجع u.format5.evaluate (coords, coord_len, instancer);
+    افتراضي:أرجع خطأ;
     }
   }
 
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                             hb_map_t *condition_map /* OUT */,
-                                             unsigned depth = HB_MAX_NESTING_LEVEL) const
+                                             hb_map_t *condition_map /*ٻاهريون*/,
+                                             بنانشان اونهائي = HB_MAX_NESTING_LEVEL) ثابت
   {
-    if (unlikely (!depth))
+    إذا (unlikely (!اونهائي))
     {
-      c->apply = false;
-      return DROP_RECORD_WITH_VAR;
+      c->apply = خطأ;
+      أرجع DROP_رڪارڊ_WITH_VAR;
     }
 
-    switch (u.format.v) {
-    case 0: return KEEP_RECORD_WITH_VAR;
-    case 1: hb_barrier (); return u.format1.keep_with_variations (c, condition_map);
-    case 2: case 3: case 4: case 5: break;
-    default: c->apply = false; return DROP_RECORD_WITH_VAR;
+    بدل (u.format.v) {
+    حالة 0: أرجع KEEP_رڪارڊ_WITH_VAR;
+    حالة 1: hb_barrier (); أرجع u.format1.keep_with_variations (c, condition_map);
+    حالة 2: حالة 3: حالة 4: حالة 5: اكسر;
+    افتراضي: c->apply = خطأ; أرجع DROP_رڪارڊ_WITH_VAR;
     }
 
     hb_barrier ();
-    bool applies = evaluate (c->instancer->coords.arrayZ,
-			     c->instancer->coords.length, c->instancer);
+    منطقي applies = evaluate (c->instancer->coords.arrayZ,
+			     c->instancer->coords.ڊيگهائي, c->instancer);
     c->apply &= applies;
-    if (c->all_axes_pinned)
-      return applies ? DROP_COND_WITH_VAR : DROP_RECORD_WITH_VAR;
+    إذا (c->all_axes_pinned)
+      أرجع applies ? DROP_COND_WITH_VAR : DROP_رڪارڊ_WITH_VAR;
 
-    if (u.format.v == 2)
-      return u.format2.varIdx == VarIdx::NO_VARIATION ||
-             !c->instancer->varStore->has_delta_set (u.format2.varIdx) ?
-             (applies ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR) :
+    إذا (u.format.v == 2)
+      أرجع u.format2.varIdx == VarIdx::NO_VARIATION ||
+             !c->instancer->varStore->has_delta_سيٽ (u.format2.varIdx) ?
+             (applies ? KEEP_رڪارڊ_WITH_VAR : DROP_رڪارڊ_WITH_VAR) :
              KEEP_COND_WITH_VAR;
 
-    auto classify_child = [c, condition_map, depth] (const Condition &child)
+    خودڪار classify_ٻار = [c, condition_map, اونهائي] (ثابت Condition &ٻار)
     {
-      auto child_context = *c;
-      child_context.apply = true;
-      return child.keep_with_variations (&child_context, condition_map, depth - 1);
+      خودڪار ٻار_context = *c;
+      ٻار_context.apply = سچ;
+      أرجع ٻار.keep_with_variations (&ٻار_context, condition_map, اونهائي - 1);
     };
 
-    if (u.format.v == 5)
+    إذا (u.format.v == 5)
     {
-      auto result = classify_child (&u.format5 + u.format5.condition);
-      return result == DROP_RECORD_WITH_VAR ? KEEP_RECORD_WITH_VAR :
-             result == KEEP_COND_WITH_VAR ? KEEP_COND_WITH_VAR :
-             DROP_RECORD_WITH_VAR;
+      خودڪار نتيجو = classify_ٻار (&u.format5 + u.format5.condition);
+      أرجع نتيجو == DROP_رڪارڊ_WITH_VAR ? KEEP_رڪارڊ_WITH_VAR :
+             نتيجو == KEEP_COND_WITH_VAR ? KEEP_COND_WITH_VAR :
+             DROP_رڪارڊ_WITH_VAR;
     }
 
-    bool is_and = u.format.v == 3;
-    bool variable = false;
-    const auto &conditions = is_and ? u.format3.conditions : u.format4.conditions;
-    const void *base = is_and ? (const void *) &u.format3 : (const void *) &u.format4;
-    for (const auto &offset : conditions)
+    منطقي is_and = u.format.v == 3;
+    منطقي variable = خطأ;
+    ثابت خودڪار &conditions = is_and ? u.format3.conditions : u.format4.conditions;
+    ثابت فراغ *بنياد = is_and ? (ثابت فراغ *) &u.format3 : (ثابت فراغ *) &u.format4;
+    لكل (ثابت خودڪار &وٿي : conditions)
     {
-      auto result = classify_child (base + offset);
-      if (is_and && result == DROP_RECORD_WITH_VAR)
-        return DROP_RECORD_WITH_VAR;
-      if (!is_and && (result == DROP_COND_WITH_VAR || result == KEEP_RECORD_WITH_VAR))
-        return KEEP_RECORD_WITH_VAR;
-      variable |= result == KEEP_COND_WITH_VAR;
+      خودڪار نتيجو = classify_ٻار (بنياد + وٿي);
+      إذا (is_and && نتيجو == DROP_رڪارڊ_WITH_VAR)
+        أرجع DROP_رڪارڊ_WITH_VAR;
+      إذا (!is_and && (نتيجو == DROP_COND_WITH_VAR || نتيجو == KEEP_رڪارڊ_WITH_VAR))
+        أرجع KEEP_رڪارڊ_WITH_VAR;
+      variable |= نتيجو == KEEP_COND_WITH_VAR;
     }
-    return variable ? KEEP_COND_WITH_VAR :
-           is_and ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR;
+    أرجع variable ? KEEP_COND_WITH_VAR :
+           is_and ? KEEP_رڪارڊ_WITH_VAR : DROP_رڪارڊ_WITH_VAR;
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچو <قسم_نالو context_t, قسم_نالو ...Ts>
+  قسم_نالو context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) أرجع c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالة 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    حالة 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالة 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    افتراضي:return_trace (c->default_return_قدر ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    إذا (unlikely (!c->check_شروعات_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_قدر ());
 
-    return_trace (c->end_recursion (this->dispatch (c)));
+    return_trace (c->پڇاڙي_recursion (هذا->dispatch (c)));
   }
 
-  bool collect_var_indices (hb_set_t *var_indices,
-			    unsigned depth = HB_MAX_NESTING_LEVEL,
-                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr) const;
+  منطقي collect_var_indices (hb_سيٽ_t *var_indices,
+			    بنانشان اونهائي = HB_MAX_NESTING_LEVEL,
+                            hb_hashmap_t<uintptr_t, hb_pair_t<بنانشان, صحيح>> *condition_قدرون = خالي_اشارو) ثابت;
 
-  bool serialize (hb_serialize_context_t *c,
-		  const Condition *src,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map = nullptr);
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت Condition *src,
+		  ثابت hb_map_t &varidx_map,
+		  ثابت hb_map_t *axis_map = خالي_اشارو);
 
-  private:
-  lookup_condition_subset_result_t subset_lookup_condition_impl (
+  خاص:
+  lookup_condition_subset_نتيجو_t subset_lookup_condition_impl (
 				      hb_subset_context_t *c,
-				      unsigned depth) const;
+				      بنانشان اونهائي) ثابت;
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }	format;		/* Format identifier */
   ConditionAxisRange	format1;
-  ConditionValue	format2;
+  Condition_قدر	format2;
   ConditionAnd		format3;
   ConditionOr		format4;
   ConditionNegate	format5;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عام:
+  DEFINE_سائيز_UNION (2, format.v);
 };
 
-template <typename Instancer>
-bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+سانچو <قسم_نالو Instancer>
+منطقي
+_hb_recurse_condition_evaluate (ثابت بنية Condition &condition,
+				ثابت صحيح *coords,
+				بنانشان صحيح coord_len,
 				Instancer *instancer)
 {
-  return condition.evaluate (coords, coord_len, instancer);
+  أرجع condition.evaluate (coords, coord_len, instancer);
 }
 
-struct ConditionList
+بنية ConditionList
 {
-  const Condition& operator[] (unsigned i) const
-  { return this+conditions[i]; }
+  ثابت Condition& عامل[] (بنانشان i) ثابت
+  { أرجع هذا+conditions[i]; }
 
-  unsigned get_count () const { return conditions.len; }
+  بنانشان get_ڳڻپ () ثابت { أرجع conditions.len; }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ConditionList *src,
-		  const hb_inc_bimap_t &condition_map,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map)
+  منطقي serialize (hb_serialize_context_t *c,
+		  ثابت ConditionList *src,
+		  ثابت hb_inc_bimap_t &condition_map,
+		  ثابت hb_map_t &varidx_map,
+		  ثابت hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
     conditions.len = condition_map.get_population ();
-    if (unlikely (!c->extend (conditions))) return_trace (false);
-    for (unsigned i = 0; i < conditions.len; i++)
+    إذا (unlikely (!c->extend (conditions))) return_trace (خطأ);
+    لكل (بنانشان i = 0; i < conditions.len; i++)
     {
-      unsigned old_index = condition_map.backward (i);
-      if (unlikely (old_index >= src->conditions.len ||
+      بنانشان old_اشاريو = condition_map.backward (i);
+      إذا (unlikely (old_اشاريو >= src->conditions.len ||
 		    !conditions[i].serialize_serialize (
-			c, &(src+src->conditions[old_index]), varidx_map, axis_map)))
-	return_trace (false);
+			c, &(src+src->conditions[old_اشاريو]), varidx_map, axis_map)))
+	return_trace (خطأ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (conditions.sanitize (c, هذا));
   }
 
-  protected:
-  Array32OfOffset32To<Condition> conditions;
-  public:
-  DEFINE_SIZE_ARRAY (4, conditions);
+  محمي:
+  Array32_جو_Offset32_منزل<Condition> conditions;
+  عام:
+  DEFINE_سائيز_ARRAY (4, conditions);
 };
 
-inline bool
-Condition::collect_var_indices (hb_set_t *var_indices, unsigned depth,
-                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values) const
+مضمن منطقي
+Condition::collect_var_indices (hb_سيٽ_t *var_indices, بنانشان اونهائي,
+                               hb_hashmap_t<uintptr_t, hb_pair_t<بنانشان, صحيح>> *condition_قدرون) ثابت
 {
-  if (unlikely (!depth)) return false;
-  switch (u.format.v)
+  إذا (unlikely (!اونهائي)) أرجع خطأ;
+  بدل (u.format.v)
   {
-    case 0:
-    case 1:
-      return true;
-    case 2:
-      if (u.format2.varIdx != VarIdx::NO_VARIATION)
+    حالة 0:
+    حالة 1:
+      أرجع سچ;
+    حالة 2:
+      إذا (u.format2.varIdx != VarIdx::NO_VARIATION)
       {
-        var_indices->add (u.format2.varIdx);
-        if (condition_values &&
-            !condition_values->set ((uintptr_t) &u.format2,
-                                    hb_pair (unsigned (u.format2.varIdx), int (u.format2.defaultValue))))
-          return false;
+        var_indices->جوڙيو (u.format2.varIdx);
+        إذا (condition_قدرون &&
+            !condition_قدرون->سيٽ ((uintptr_t) &u.format2,
+                                    hb_pair (بنانشان (u.format2.varIdx), صحيح (u.format2.default_قدر_2))))
+          أرجع خطأ;
       }
-      return !var_indices->in_error ();
-    case 3:
-      for (const auto &offset : u.format3.conditions)
-	if (unlikely (!(&u.format3+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 4:
-      for (const auto &offset : u.format4.conditions)
-	if (unlikely (!(&u.format4+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 5:
-      return (&u.format5+u.format5.condition).collect_var_indices (var_indices,
-								  depth - 1, condition_values);
-    default:
-      return false;
+      أرجع !var_indices->اندريون_error ();
+    حالة 3:
+      لكل (ثابت خودڪار &وٿي : u.format3.conditions)
+	إذا (unlikely (!(&u.format3+وٿي).collect_var_indices (var_indices,
+							     اونهائي - 1, condition_قدرون)))
+	  أرجع خطأ;
+      أرجع سچ;
+    حالة 4:
+      لكل (ثابت خودڪار &وٿي : u.format4.conditions)
+	إذا (unlikely (!(&u.format4+وٿي).collect_var_indices (var_indices,
+							     اونهائي - 1, condition_قدرون)))
+	  أرجع خطأ;
+      أرجع سچ;
+    حالة 5:
+      أرجع (&u.format5+u.format5.condition).collect_var_indices (var_indices,
+								  اونهائي - 1, condition_قدرون);
+    افتراضي:
+      أرجع خطأ;
   }
 }
 
-inline bool
+مضمن منطقي
 Condition::serialize (hb_serialize_context_t *c,
-		      const Condition *src,
-		      const hb_map_t &varidx_map,
-		      const hb_map_t *axis_map)
+		      ثابت Condition *src,
+		      ثابت hb_map_t &varidx_map,
+		      ثابت hb_map_t *axis_map)
 {
-  TRACE_SERIALIZE (this);
-  switch (src->u.format.v)
+  TRACE_SERIALIZE (هذا);
+  بدل (src->u.format.v)
   {
-    case 0:
+    حالة 0:
     {
-      auto *out = c->start_embed<ConditionValue> ();
-      if (unlikely (!out || !c->extend_min (out))) return_trace (false);
-      out->format = 2;
-      out->defaultValue = 1;
-      out->varIdx = VarIdx::NO_VARIATION;
-      return_trace (true);
+      خودڪار *ٻاهريون = c->شروعات_embed<Condition_قدر> ();
+      إذا (unlikely (!ٻاهريون || !c->extend_min (ٻاهريون))) return_trace (خطأ);
+      ٻاهريون->format = 2;
+      ٻاهريون->default_قدر_2 = 1;
+      ٻاهريون->varIdx = VarIdx::NO_VARIATION;
+      return_trace (سچ);
     }
-    case 1:
+    حالة 1:
     {
-      auto *out = c->embed (&src->u.format1);
-      if (unlikely (!out)) return_trace (false);
-      if (axis_map)
+      خودڪار *ٻاهريون = c->embed (&src->u.format1);
+      إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
+      إذا (axis_map)
       {
-	if (unlikely (!axis_map->has (out->axisIndex)))
+	إذا (unlikely (!axis_map->has (ٻاهريون->axis_اشاريو_2)))
 	{
 	  c->err (HB_SERIALIZE_ERROR_OTHER);
-	  return_trace (false);
+	  return_trace (خطأ);
 	}
-	if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
-				      HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	  return_trace (false);
+	إذا (unlikely (!c->check_سونپيو (ٻاهريون->axis_اشاريو_2, axis_map->get (ٻاهريون->axis_اشاريو_2),
+				      HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+	  return_trace (خطأ);
       }
-      return_trace (true);
+      return_trace (سچ);
     }
-    case 2:
+    حالة 2:
     {
-      auto *out = c->embed (&src->u.format2);
-      if (unlikely (!out ||
+      خودڪار *ٻاهريون = c->embed (&src->u.format2);
+      إذا (unlikely (!ٻاهريون ||
 		    (src->u.format2.varIdx != VarIdx::NO_VARIATION &&
 		     !varidx_map.has (src->u.format2.varIdx))))
-	return_trace (false);
-      out->varIdx = src->u.format2.varIdx == VarIdx::NO_VARIATION ?
+	return_trace (خطأ);
+      ٻاهريون->varIdx = src->u.format2.varIdx == VarIdx::NO_VARIATION ?
 		    src->u.format2.varIdx : varidx_map.get (src->u.format2.varIdx);
-      return_trace (true);
+      return_trace (سچ);
     }
-    case 3:
+    حالة 3:
     {
-      auto *out = c->start_embed<ConditionAnd> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
-      out->format = 3;
-      out->conditions.len = src->u.format3.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      خودڪار *ٻاهريون = c->شروعات_embed<ConditionAnd> ();
+      إذا (unlikely (!c->extend_min (ٻاهريون))) return_trace (خطأ);
+      ٻاهريون->format = 3;
+      ٻاهريون->conditions.len = src->u.format3.conditions.len;
+      إذا (unlikely (!c->extend (ٻاهريون->conditions))) return_trace (خطأ);
+      لكل (بنانشان i = 0; i < ٻاهريون->conditions.len; i++)
+	إذا (unlikely (!ٻاهريون->conditions[i].serialize_serialize (
 			c, &(&src->u.format3+src->u.format3.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (خطأ);
+      return_trace (سچ);
     }
-    case 4:
+    حالة 4:
     {
-      auto *out = c->start_embed<ConditionOr> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
-      out->format = 4;
-      out->conditions.len = src->u.format4.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      خودڪار *ٻاهريون = c->شروعات_embed<ConditionOr> ();
+      إذا (unlikely (!c->extend_min (ٻاهريون))) return_trace (خطأ);
+      ٻاهريون->format = 4;
+      ٻاهريون->conditions.len = src->u.format4.conditions.len;
+      إذا (unlikely (!c->extend (ٻاهريون->conditions))) return_trace (خطأ);
+      لكل (بنانشان i = 0; i < ٻاهريون->conditions.len; i++)
+	إذا (unlikely (!ٻاهريون->conditions[i].serialize_serialize (
 			c, &(&src->u.format4+src->u.format4.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (خطأ);
+      return_trace (سچ);
     }
-    case 5:
+    حالة 5:
     {
-      auto *out = c->embed (&src->u.format5);
-      if (unlikely (!out ||
-		    !out->condition.serialize_serialize (
+      خودڪار *ٻاهريون = c->embed (&src->u.format5);
+      إذا (unlikely (!ٻاهريون ||
+		    !ٻاهريون->condition.serialize_serialize (
 			c, &(&src->u.format5+src->u.format5.condition),
 			varidx_map, axis_map)))
-	return_trace (false);
-      return_trace (true);
+	return_trace (خطأ);
+      return_trace (سچ);
     }
-    default:
-      return_trace (false);
+    افتراضي:
+      return_trace (خطأ);
   }
 }
 
-inline lookup_condition_subset_result_t
+مضمن lookup_condition_subset_نتيجو_t
 Condition::subset_lookup_condition (hb_subset_context_t *c,
-				    unsigned depth,
-				    bool materialize_true) const
+				    بنانشان اونهائي,
+				    منطقي materialize_true) ثابت
 {
-  auto snap = c->serializer->snapshot ();
-  lookup_condition_subset_result_t result =
-      subset_lookup_condition_impl (c, depth);
-  if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-    return result;
+  خودڪار snap = c->serializer->snapshot ();
+  lookup_condition_subset_نتيجو_t نتيجو =
+      subset_lookup_condition_impl (c, اونهائي);
+  إذا (نتيجو == LOOKUP_CONDITION_SUBSET_KEEP)
+    أرجع نتيجو;
 
   c->serializer->revert (snap);
-  if (result != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
-    return result;
+  إذا (نتيجو != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
+    أرجع نتيجو;
 
-  return serialize_constant (c->serializer, true) ?
+  أرجع serialize_constant (c->serializer, سچ) ?
          LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
 }
 
-inline lookup_condition_subset_result_t
+مضمن lookup_condition_subset_نتيجو_t
 Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
-					 unsigned depth) const
+					 بنانشان اونهائي) ثابت
 {
-  if (unlikely (!depth))
-    return LOOKUP_CONDITION_SUBSET_ERROR;
+  إذا (unlikely (!اونهائي))
+    أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
-  auto subset_offset = [c, depth] (Array8OfOffset24To<Condition> &out,
-				   const Condition &condition)
-      -> lookup_condition_subset_result_t
+  خودڪار subset_وٿي = [c, اونهائي] (Array8_جو_Offset24_منزل<Condition> &ٻاهريون,
+				   ثابت Condition &condition)
+      -> lookup_condition_subset_نتيجو_t
   {
-    auto snap = c->serializer->snapshot ();
-    auto *offset = out.serialize_append (c->serializer);
-    if (unlikely (!offset))
-      return LOOKUP_CONDITION_SUBSET_ERROR;
+    خودڪار snap = c->serializer->snapshot ();
+    خودڪار *وٿي = ٻاهريون.serialize_append (c->serializer);
+    إذا (unlikely (!وٿي))
+      أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
     c->serializer->push ();
-    lookup_condition_subset_result_t result =
-        condition.subset_lookup_condition (c, depth - 1);
-    if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
-    else
+    lookup_condition_subset_نتيجو_t نتيجو =
+        condition.subset_lookup_condition (c, اونهائي - 1);
+    إذا (نتيجو == LOOKUP_CONDITION_SUBSET_KEEP)
+      c->serializer->جوڙيو_link (*وٿي, c->serializer->ڪڍو_pack ());
+    وإلا
     {
-      c->serializer->pop_discard ();
-      out.pop ();
+      c->serializer->ڪڍو_discard ();
+      ٻاهريون.ڪڍو ();
       c->serializer->revert (snap);
     }
-    return result;
+    أرجع نتيجو;
   };
 
-  switch (u.format.v)
+  بدل (u.format.v)
   {
-    case 0:
-      return LOOKUP_CONDITION_SUBSET_TRUE;
+    حالة 0:
+      أرجع LOOKUP_CONDITION_SUBSET_TRUE;
 
-    case 1:
+    حالة 1:
     {
-      const ConditionAxisRange &src = u.format1;
-      if (c->plan->user_axes_location.is_empty ())
-        return c->serializer->embed (&src) ?
+      ثابت ConditionAxisRange &src = u.format1;
+      إذا (c->plan->user_axes_location.is_empty ())
+        أرجع c->serializer->embed (&src) ?
                LOOKUP_CONDITION_SUBSET_KEEP :
                LOOKUP_CONDITION_SUBSET_ERROR;
 
-      hb_codepoint_t *axis_tag;
-      if (!c->plan->axes_old_index_tag_map.has (src.axisIndex, &axis_tag))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      hb_codepoint_t *axis_ٽيگ_2;
+      إذا (!c->plan->axes_old_اشاريو_ٽيگ_map.has (src.axis_اشاريو_2, &axis_ٽيگ_2))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
-      Triple axis_limit {-1.f, 0.f, 1.f};
-      Triple *normalized_limit;
-      if (c->plan->axes_location.has (*axis_tag, &normalized_limit))
-        axis_limit = *normalized_limit;
+      Triple axis_حد_بندي {-1.f, 0.f, 1.f};
+      Triple *normalized_حد_بندي;
+      إذا (c->plan->axes_location.has (*axis_ٽيگ_2, &normalized_حد_بندي))
+        axis_حد_بندي = *normalized_حد_بندي;
 
-      float filter_min = src.filterRangeMinValue.to_float ();
-      float filter_max = src.filterRangeMaxValue.to_float ();
-      if (filter_min > filter_max)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.is_point ())
-        return filter_min <= axis_limit.middle &&
-	       axis_limit.middle <= filter_max ?
+      عائم filter_min = src.filter_Range_Min_قدر.منزل_float ();
+      عائم filter_max = src.filter_Range_Max_قدر.منزل_float ();
+      إذا (filter_min > filter_max)
+        أرجع LOOKUP_CONDITION_SUBSET_FALSE;
+      إذا (axis_حد_بندي.is_نقطو ())
+        أرجع filter_min <= axis_حد_بندي.وچ &&
+	       axis_حد_بندي.وچ <= filter_max ?
 	       LOOKUP_CONDITION_SUBSET_TRUE :
 	       LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.maximum < filter_min ||
-	  filter_max < axis_limit.minimum)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (filter_min <= axis_limit.minimum &&
-	  axis_limit.maximum <= filter_max)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      if (!c->plan->axes_index_map.has (src.axisIndex))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      إذا (axis_حد_بندي.وڌ_کان_وڌ < filter_min ||
+	  filter_max < axis_حد_بندي.minimum)
+        أرجع LOOKUP_CONDITION_SUBSET_FALSE;
+      إذا (filter_min <= axis_حد_بندي.minimum &&
+	  axis_حد_بندي.وڌ_کان_وڌ <= filter_max)
+        أرجع LOOKUP_CONDITION_SUBSET_TRUE;
+      إذا (!c->plan->axes_اشاريو_map.has (src.axis_اشاريو_2))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      خودڪار *ٻاهريون = c->serializer->embed (&src);
+      إذا (unlikely (!ٻاهريون))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
       TripleDistances axis_distances {1.f, 1.f};
       TripleDistances *distances;
-      if (c->plan->axes_triple_distances.has (*axis_tag, &distances))
+      إذا (c->plan->axes_triple_distances.has (*axis_ٽيگ_2, &distances))
         axis_distances = *distances;
 
-      out->filterRangeMinValue.set_float (
-	  renormalizeValue (filter_min, axis_limit, axis_distances, false));
-      out->filterRangeMaxValue.set_float (
-	  renormalizeValue (filter_max, axis_limit, axis_distances, false));
-      if (unlikely (!c->serializer->check_assign (
-		out->axisIndex,
-		c->plan->axes_index_map.get (src.axisIndex),
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+      ٻاهريون->filter_Range_Min_قدر.سيٽ_float (
+	  renormalize_قدر (filter_min, axis_حد_بندي, axis_distances, خطأ));
+      ٻاهريون->filter_Range_Max_قدر.سيٽ_float (
+	  renormalize_قدر (filter_max, axis_حد_بندي, axis_distances, خطأ));
+      إذا (unlikely (!c->serializer->check_سونپيو (
+		ٻاهريون->axis_اشاريو_2,
+		c->plan->axes_اشاريو_map.get (src.axis_اشاريو_2),
+		HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
+      أرجع LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 2:
+    حالة 2:
     {
-      const ConditionValue &src = u.format2;
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      ثابت Condition_قدر &src = u.format2;
+      خودڪار *ٻاهريون = c->serializer->embed (&src);
+      إذا (unlikely (!ٻاهريون))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
 
-      if (src.varIdx == VarIdx::NO_VARIATION)
-        return c->plan->user_axes_location.is_empty () ?
+      إذا (src.varIdx == VarIdx::NO_VARIATION)
+        أرجع c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((صحيح) src.default_قدر_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      hb_pair_t<unsigned, int> *condition_value;
-      if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) &src, &condition_value))
+      hb_pair_t<بنانشان, صحيح> *condition_قدر;
+      إذا (c->plan->layout_condition_idx_قدر_map.has ((uintptr_t) &src, &condition_قدر))
       {
-        out->defaultValue = condition_value->second;
-        out->varIdx = condition_value->first;
-        if (out->varIdx == VarIdx::NO_VARIATION)
-          return out->defaultValue > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        ٻاهريون->default_قدر_2 = condition_قدر->second;
+        ٻاهريون->varIdx = condition_قدر->پهريون;
+        إذا (ٻاهريون->varIdx == VarIdx::NO_VARIATION)
+          أرجع ٻاهريون->default_قدر_2 > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                                         LOOKUP_CONDITION_SUBSET_FALSE;
-        return LOOKUP_CONDITION_SUBSET_KEEP;
+        أرجع LOOKUP_CONDITION_SUBSET_KEEP;
       }
 
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
+      hb_pair_t<بنانشان, صحيح> *new_varidx_delta;
+      إذا (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
 							&new_varidx_delta))
-        return c->plan->user_axes_location.is_empty () ?
+        أرجع c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((صحيح) src.default_قدر_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      if (!c->plan->user_axes_location.is_empty () &&
-          hb_first (*new_varidx_delta) == VarIdx::NO_VARIATION)
+      إذا (!c->plan->user_axes_location.is_empty () &&
+          hb_پهريون (*new_varidx_delta) == VarIdx::NO_VARIATION)
       {
         // Conditions becoming constant depend on the unrounded sign, not
         // the integer delta used to instance positioning values.
-        double value = (int) src.defaultValue +
+        مزدوج value = (صحيح) src.default_قدر_2 +
                       c->plan->layout_variation_delta (src.varIdx);
-        return value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        أرجع value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                           LOOKUP_CONDITION_SUBSET_FALSE;
       }
 
-      int default_value = (int) src.defaultValue +
-			  hb_second (*new_varidx_delta);
-      if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		default_value,
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->varIdx = hb_first (*new_varidx_delta);
+      صحيح default_قدر = (صحيح) src.default_قدر_2 +
+			  hb_ٻيو (*new_varidx_delta);
+      إذا (unlikely (!c->serializer->check_سونپيو (
+		ٻاهريون->default_قدر_2,
+		default_قدر,
+		HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
+      ٻاهريون->varIdx = hb_پهريون (*new_varidx_delta);
 
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+      أرجع LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 3:
+    حالة 3:
     {
-      const ConditionAnd &src = u.format3;
-      auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->format = 3;
+      ثابت ConditionAnd &src = u.format3;
+      خودڪار *ٻاهريون = c->serializer->شروعات_embed (&src);
+      إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
+      ٻاهريون->format = 3;
 
-      for (const auto &offset : src.conditions)
+      لكل (ثابت خودڪار &وٿي : src.conditions)
       {
-        lookup_condition_subset_result_t result =
-            subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
-	    result == LOOKUP_CONDITION_SUBSET_FALSE)
-          return result;
+        lookup_condition_subset_نتيجو_t نتيجو =
+            subset_وٿي (ٻاهريون->conditions, &src + وٿي);
+        إذا (نتيجو == LOOKUP_CONDITION_SUBSET_ERROR ||
+	    نتيجو == LOOKUP_CONDITION_SUBSET_FALSE)
+          أرجع نتيجو;
       }
-      return out->conditions ?
+      أرجع ٻاهريون->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_TRUE;
     }
 
-    case 4:
+    حالة 4:
     {
-      const ConditionOr &src = u.format4;
-      auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->format = 4;
+      ثابت ConditionOr &src = u.format4;
+      خودڪار *ٻاهريون = c->serializer->شروعات_embed (&src);
+      إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
+      ٻاهريون->format = 4;
 
-      for (const auto &offset : src.conditions)
+      لكل (ثابت خودڪار &وٿي : src.conditions)
       {
-        lookup_condition_subset_result_t result =
-            subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
-	    result == LOOKUP_CONDITION_SUBSET_TRUE)
-          return result;
+        lookup_condition_subset_نتيجو_t نتيجو =
+            subset_وٿي (ٻاهريون->conditions, &src + وٿي);
+        إذا (نتيجو == LOOKUP_CONDITION_SUBSET_ERROR ||
+	    نتيجو == LOOKUP_CONDITION_SUBSET_TRUE)
+          أرجع نتيجو;
       }
-      return out->conditions ?
+      أرجع ٻاهريون->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_FALSE;
     }
 
-    case 5:
+    حالة 5:
     {
-      const ConditionNegate &src = u.format5;
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->condition = 0;
+      ثابت ConditionNegate &src = u.format5;
+      خودڪار *ٻاهريون = c->serializer->embed (&src);
+      إذا (unlikely (!ٻاهريون))
+        أرجع LOOKUP_CONDITION_SUBSET_ERROR;
+      ٻاهريون->condition = 0;
 
       c->serializer->push ();
-      lookup_condition_subset_result_t result =
-          (&src + src.condition).subset_lookup_condition (c, depth - 1);
-      if (result == LOOKUP_CONDITION_SUBSET_KEEP)
+      lookup_condition_subset_نتيجو_t نتيجو =
+          (&src + src.condition).subset_lookup_condition (c, اونهائي - 1);
+      إذا (نتيجو == LOOKUP_CONDITION_SUBSET_KEEP)
       {
-        c->serializer->add_link (out->condition,
-				 c->serializer->pop_pack ());
-        return result;
+        c->serializer->جوڙيو_link (ٻاهريون->condition,
+				 c->serializer->ڪڍو_pack ());
+        أرجع نتيجو;
       }
 
-      c->serializer->pop_discard ();
-      if (result == LOOKUP_CONDITION_SUBSET_TRUE)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      return result;
+      c->serializer->ڪڍو_discard ();
+      إذا (نتيجو == LOOKUP_CONDITION_SUBSET_TRUE)
+        أرجع LOOKUP_CONDITION_SUBSET_FALSE;
+      إذا (نتيجو == LOOKUP_CONDITION_SUBSET_FALSE)
+        أرجع LOOKUP_CONDITION_SUBSET_TRUE;
+      أرجع نتيجو;
     }
 
-    default:
-      return LOOKUP_CONDITION_SUBSET_FALSE;
+    افتراضي:
+      أرجع LOOKUP_CONDITION_SUBSET_FALSE;
   }
 }
 
-struct ConditionSet
+بنية Condition_سيٽ
 {
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 ItemVarStoreInstancer *instancer) const
+  منطقي evaluate (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		 شي_Var_Store_Instancer *instancer) ثابت
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
-	return false;
-    return true;
+    بنانشان صحيح ڳڻپ = conditions.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
+      إذا (!(هذا+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
+	أرجع خطأ;
+    أرجع سچ;
   }
 
-  void keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  فراغ keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) ثابت
   {
     hb_map_t *condition_map = hb_map_create ();
-    if (unlikely (!condition_map)) return;
+    إذا (unlikely (!condition_map)) أرجع;
     hb::shared_ptr<hb_map_t> p {condition_map};
 
-    hb_set_t *cond_set = hb_set_create ();
-    if (unlikely (!cond_set)) return;
-    hb::shared_ptr<hb_set_t> s {cond_set};
+    hb_سيٽ_t *cond_سيٽ = hb_سيٽ_create ();
+    إذا (unlikely (!cond_سيٽ)) أرجع;
+    hb::shared_ptr<hb_سيٽ_t> s {cond_سيٽ};
 
-    c->apply = true;
-    bool should_keep = false;
+    c->apply = سچ;
+    منطقي should_keep = خطأ;
     /* The range map cannot identify value or boolean expressions uniquely. */
-    bool can_deduplicate = true;
-    unsigned num_kept_cond = 0, cond_idx = 0;
-    for (const auto& offset : conditions)
+    منطقي can_deduplicate = سچ;
+    بنانشان انگ_kept_cond = 0, cond_idx = 0;
+    لكل (ثابت خودڪار& وٿي : conditions)
     {
-      const Condition &condition = this+offset;
+      ثابت Condition &condition = هذا+وٿي;
       can_deduplicate &= condition.u.format.v <= 1;
       Cond_with_Var_flag_t ret = condition.keep_with_variations (c, condition_map);
       // condition is not met or condition out of range, drop the entire record
-      if (ret == DROP_RECORD_WITH_VAR)
+      إذا (ret == DROP_رڪارڊ_WITH_VAR)
       {
-        c->apply = false;
-        return;
+        c->apply = خطأ;
+        أرجع;
       }
 
-      if (ret == KEEP_COND_WITH_VAR)
+      إذا (ret == KEEP_COND_WITH_VAR)
       {
-        should_keep = true;
-        cond_set->add (cond_idx);
-        num_kept_cond++;
+        should_keep = سچ;
+        cond_سيٽ->جوڙيو (cond_idx);
+        انگ_kept_cond++;
       }
 
-      if (ret == KEEP_RECORD_WITH_VAR)
-        should_keep = true;
+      إذا (ret == KEEP_رڪارڊ_WITH_VAR)
+        should_keep = سچ;
 
       cond_idx++;
     }
 
     /* Satisfied pinned conditions still terminate first-match processing.
      * Keep their universal record when other axes remain variable. */
-    c->universal = num_kept_cond == 0;
-    if (!should_keep && c->all_axes_pinned) return;
+    c->universal = انگ_kept_cond == 0;
+    إذا (!should_keep && c->all_axes_pinned) أرجع;
 
     //check if condition_set is unique with variations
-    if (can_deduplicate && c->conditionset_map->has (p))
+    إذا (can_deduplicate && c->conditionset_map->has (p))
       //duplicate found, drop the entire record
-      return;
+      أرجع;
 
-    if (can_deduplicate)
-      c->conditionset_map->set (p, 1);
-    c->record_cond_idx_map->set (c->cur_record_idx, s);
+    إذا (can_deduplicate)
+      c->conditionset_map->سيٽ (p, 1);
+    c->رڪارڊ_cond_idx_map->سيٽ (c->cur_رڪارڊ_idx, s);
   }
 
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
                hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               منطقي وجهو_catch_all) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    if (insert_catch_all) return_trace (true);
+    إذا (وجهو_catch_all) return_trace (سچ);
 
-    hb_set_t *retained_cond_set = nullptr;
-    if (l->feature_record_cond_idx_map != nullptr)
-      retained_cond_set = l->feature_record_cond_idx_map->get (l->cur_feature_var_record_idx);
+    hb_سيٽ_t *retained_cond_سيٽ = خالي_اشارو;
+    إذا (l->feature_رڪارڊ_cond_idx_map != خالي_اشارو)
+      retained_cond_سيٽ = l->feature_رڪارڊ_cond_idx_map->get (l->cur_feature_var_رڪارڊ_idx);
 
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = conditions.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      if (retained_cond_set != nullptr && !retained_cond_set->has (i))
-        continue;
-      const Condition &condition = this+conditions[i];
-      if (condition.u.format.v == 1)
+      إذا (retained_cond_سيٽ != خالي_اشارو && !retained_cond_سيٽ->has (i))
+        استمر;
+      ثابت Condition &condition = هذا+conditions[i];
+      إذا (condition.u.format.v == 1)
       {
-        subset_offset_array (c, out->conditions, this) (conditions[i]);
-        continue;
+        subset_وٿي_array (c, ٻاهريون->conditions, هذا) (conditions[i]);
+        استمر;
       }
 
-      auto *offset = out->conditions.serialize_append (c->serializer);
-      if (unlikely (!offset)) return_trace (false);
+      خودڪار *وٿي = ٻاهريون->conditions.serialize_append (c->serializer);
+      إذا (unlikely (!وٿي)) return_trace (خطأ);
       c->serializer->push ();
-      auto result = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, true);
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
+      خودڪار نتيجو = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, سچ);
+      إذا (نتيجو == LOOKUP_CONDITION_SUBSET_FALSE)
         /* A false condition must not become a null (true) ConditionSet. */
-        result = Condition::serialize_constant (c->serializer, false) ?
+        نتيجو = Condition::serialize_constant (c->serializer, خطأ) ?
                  LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
-      if (unlikely (result == LOOKUP_CONDITION_SUBSET_ERROR))
+      إذا (unlikely (نتيجو == LOOKUP_CONDITION_SUBSET_ERROR))
       {
-        c->serializer->pop_discard ();
-        c->serializer->check_success (false);
-        return_trace (false);
+        c->serializer->ڪڍو_discard ();
+        c->serializer->check_success (خطأ);
+        return_trace (خطأ);
       }
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
+      c->serializer->جوڙيو_link (*وٿي, c->serializer->ڪڍو_pack ());
     }
 
-    return_trace (bool (out->conditions));
+    return_trace (منطقي (ٻاهريون->conditions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (conditions.sanitize (c, هذا));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &offset : conditions)
-      if (unlikely (!(this+offset).collect_var_indices (c->layout_variation_indices,
+    لكل (ثابت خودڪار &وٿي : conditions)
+      إذا (unlikely (!(هذا+وٿي).collect_var_indices (c->layout_variation_indices,
                                                        HB_MAX_NESTING_LEVEL,
-                                                       c->condition_values)))
+                                                       c->condition_قدرون)))
 	c->layout_variation_indices->err ();
   }
 
-  protected:
-  Array16OfOffset32To<Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (2, conditions);
+  محمي:
+  Array16_جو_Offset32_منزل<Condition>	conditions;
+  عام:
+  DEFINE_سائيز_ARRAY (2, conditions);
 };
 
-struct FeatureTableSubstitutionRecord
+بنية Feature_جدول_Substitution_رڪارڊ
 {
-  friend struct FeatureTableSubstitution;
+  دوست بنية Feature_جدول_Substitution;
 
-  void collect_lookups (const void *base, hb_set_t *lookup_indexes /* OUT */) const
+  فراغ collect_lookups (ثابت فراغ *بنياد, hb_سيٽ_t *lookup_indexes /*ٻاهريون*/) ثابت
   {
-    return (base+feature).add_lookup_indexes_to (lookup_indexes);
+    أرجع (بنياد+feature).جوڙيو_lookup_indexes_منزل (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  فراغ گهيرو_features (ثابت فراغ *بنياد,
+			 ثابت hb_map_t *lookup_indexes,
+			 hb_سيٽ_t       *feature_indexes /*ٻاهريون*/) ثابت
   {
-    if ((base+feature).intersects_lookup_indexes (lookup_indexes))
-      feature_indexes->add (featureIndex);
+    إذا ((بنياد+feature).intersects_lookup_indexes (lookup_indexes))
+      feature_indexes->جوڙيو (feature_اشاريو_2);
   }
 
-  void collect_feature_substitutes_with_variations (hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
-                                                    hb_set_t& catch_all_record_feature_idxes,
-                                                    const hb_set_t *feature_indices,
-                                                    const void *base) const
+  فراغ collect_feature_substitutes_with_variations (hb_hashmap_t<بنانشان, ثابت Feature*> *feature_substitutes_map,
+                                                    hb_سيٽ_t& catch_all_رڪارڊ_feature_idxes,
+                                                    ثابت hb_سيٽ_t *feature_indices,
+                                                    ثابت فراغ *بنياد) ثابت
   {
-    if (feature_indices->has (featureIndex))
+    إذا (feature_indices->has (feature_اشاريو_2))
     {
-      feature_substitutes_map->set (featureIndex, &(base+feature));
-      catch_all_record_feature_idxes.add (featureIndex);
+      feature_substitutes_map->سيٽ (feature_اشاريو_2, &(بنياد+feature));
+      catch_all_رڪارڊ_feature_idxes.جوڙيو (feature_اشاريو_2);
     }
   }
 
-  bool serialize (hb_subset_layout_context_t *c,
-                  unsigned feature_index,
-                  const Feature *f, const Tag *tag)
+  منطقي serialize (hb_subset_layout_context_t *c,
+                  بنانشان feature_اشاريو,
+                  ثابت Feature *f, ثابت ٽيگ *ٽيگ_2)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     hb_serialize_context_t *s = c->subset_context->serializer;
-    if (unlikely (!s->extend_min (this))) return_trace (false);
+    إذا (unlikely (!s->extend_min (هذا))) return_trace (خطأ);
 
     uint32_t *new_feature_idx;
-    if (!c->feature_map_w_duplicates->has (feature_index, &new_feature_idx))
-      return_trace (false);
+    إذا (!c->feature_map_w_duplicates->has (feature_اشاريو, &new_feature_idx))
+      return_trace (خطأ);
 
-    if (!s->check_assign (featureIndex, *new_feature_idx, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    إذا (!s->check_سونپيو (feature_اشاريو_2, *new_feature_idx, HB_SERIALIZE_ERROR_INT_حد_کان_مٿي))
+      return_trace (خطأ);
 
     s->push ();
-    bool ret = f->subset (c->subset_context, c, tag);
-    if (ret) s->add_link (feature, s->pop_pack ());
-    else s->pop_discard ();
+    منطقي ret = f->subset (c->subset_context, c, ٽيگ_2);
+    إذا (ret) s->جوڙيو_link (feature, s->ڪڍو_pack ());
+    وإلا s->ڪڍو_discard ();
 
     return_trace (ret);
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base) const
+  منطقي subset (hb_subset_layout_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SUBSET (this);
-    uint32_t *new_feature_index;
-    if (!c->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    uint32_t *new_feature_اشاريو;
+    إذا (!c->feature_map_w_duplicates->has (feature_اشاريو_2, &new_feature_اشاريو))
+      return_trace (خطأ);
 
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    خودڪار *ٻاهريون = c->subset_context->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    out->featureIndex = *new_feature_index;
-    hb_pair_t<const void*, const void*> *original;
-    if (!c->feature_idx_tag_map->has (featureIndex, &original))
-      return_trace (false);
-    const Tag *tag = reinterpret_cast<const Tag*> (original->second);
-    return_trace (out->feature.serialize_subset (c->subset_context, feature, base, c, tag));
+    ٻاهريون->feature_اشاريو_2 = *new_feature_اشاريو;
+    hb_pair_t<ثابت فراغ*, ثابت فراغ*> *original;
+    إذا (!c->feature_idx_ٽيگ_map->has (feature_اشاريو_2, &original))
+      return_trace (خطأ);
+    ثابت ٽيگ *ٽيگ_2 = reinterpret_cast<ثابت ٽيگ*> (original->second);
+    return_trace (ٻاهريون->feature.serialize_subset (c->subset_context, feature, بنياد, c, ٽيگ_2));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد,
+		 ثابت FeatureList *feature_list) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!c->check_struct (هذا))) return_trace (خطأ);
     hb_barrier ();
     /* The substitute is read with the tag of the feature it replaces. */
-    const Record_sanitize_closure_t closure = {feature_list->get_tag (featureIndex), base};
-    return_trace (feature.sanitize (c, base, &closure));
+    ثابت رڪارڊ_sanitize_گهيرو_t گهيرو = {feature_list->get_ٽيگ (feature_اشاريو_2), بنياد};
+    return_trace (feature.sanitize (c, بنياد, &گهيرو));
   }
 
-  protected:
-  HBUINT16		featureIndex;
-  Offset32To<Feature>	feature;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  محمي:
+  HBUINT16		feature_اشاريو_2;
+  Offset32_منزل<Feature>	feature;
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
 
-struct FeatureTableSubstitution
+بنية Feature_جدول_Substitution
 {
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  فراغ collect_feature_indices (hb_سيٽ_t *feature_indices) ثابت
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
-      feature_indices->add (record.featureIndex);
+    لكل (ثابت Feature_جدول_Substitution_رڪارڊ &رڪارڊ : substitutions)
+      feature_indices->جوڙيو (رڪارڊ.feature_اشاريو_2);
   }
 
-  const Feature *find_substitute (unsigned int feature_index) const
+  ثابت Feature *ڳوليو_substitute (بنانشان صحيح feature_اشاريو) ثابت
   {
-    unsigned int count = substitutions.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = substitutions.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      const FeatureTableSubstitutionRecord &record = substitutions.arrayZ[i];
-      if (record.featureIndex == feature_index)
-	return &(this+record.feature);
+      ثابت Feature_جدول_Substitution_رڪارڊ &رڪارڊ = substitutions.arrayZ[i];
+      إذا (رڪارڊ.feature_اشاريو_2 == feature_اشاريو)
+	أرجع &(هذا+رڪارڊ.feature);
     }
-    return nullptr;
+    أرجع خالي_اشارو;
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  فراغ collect_lookups (ثابت hb_سيٽ_t *feature_indexes,
+			hb_سيٽ_t       *lookup_indexes /*ٻاهريون*/) ثابت
   {
     + hb_iter (substitutions)
-    | hb_filter (feature_indexes, &FeatureTableSubstitutionRecord::featureIndex)
-    | hb_apply ([this, lookup_indexes] (const FeatureTableSubstitutionRecord& r)
-		{ r.collect_lookups (this, lookup_indexes); })
+    | hb_filter (feature_indexes, &Feature_جدول_Substitution_رڪارڊ::feature_اشاريو_2)
+    | hb_apply ([هذا, lookup_indexes] (ثابت Feature_جدول_Substitution_رڪارڊ& r)
+		{ r.collect_lookups (هذا, lookup_indexes); })
     ;
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  سانچو <قسم_نالو ٽيگ_Getter>
+  فراغ collect_name_ids (ثابت hb_map_t *feature_اشاريو_map,
+                         ٽيگ_Getter get_ٽيگ,
+                         hb_سيٽ_t *nameids_منزل_retain) ثابت
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
-      if (feature_index_map->has (record.featureIndex))
-        (this+record.feature).collect_name_ids (get_tag (record.featureIndex), nameids_to_retain);
+    لكل (ثابت Feature_جدول_Substitution_رڪارڊ &رڪارڊ : substitutions)
+      إذا (feature_اشاريو_map->has (رڪارڊ.feature_اشاريو_2))
+        (هذا+رڪارڊ.feature).collect_name_ids (get_ٽيگ (رڪارڊ.feature_اشاريو_2), nameids_منزل_retain);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  فراغ گهيرو_features (ثابت hb_map_t *lookup_indexes,
+			 hb_سيٽ_t       *feature_indexes /*ٻاهريون*/) ثابت
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    لكل (ثابت Feature_جدول_Substitution_رڪارڊ& رڪارڊ : substitutions)
+      رڪارڊ.گهيرو_features (هذا, lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const hb_map_t *feature_index_map) const
+  منطقي intersects_features (ثابت hb_map_t *feature_اشاريو_map) ثابت
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
+    لكل (ثابت Feature_جدول_Substitution_رڪارڊ& رڪارڊ : substitutions)
     {
-      if (feature_index_map->has (record.featureIndex)) return true;
+      إذا (feature_اشاريو_map->has (رڪارڊ.feature_اشاريو_2)) أرجع سچ;
     }
-    return false;
+    أرجع خطأ;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  فراغ collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) ثابت
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
-      record.collect_feature_substitutes_with_variations (c->feature_substitutes_map,
-                                                          c->catch_all_record_feature_idxes,
-                                                          c->feature_indices, this);
+    لكل (ثابت Feature_جدول_Substitution_رڪارڊ& رڪارڊ : substitutions)
+      رڪارڊ.collect_feature_substitutes_with_variations (c->feature_substitutes_map,
+                                                          c->catch_all_رڪارڊ_feature_idxes,
+                                                          c->feature_indices, هذا);
   }
 
-  bool subset (hb_subset_context_t        *c,
+  منطقي subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               منطقي وجهو_catch_all) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    ٻاهريون->نسخو.major = نسخو.major;
+    ٻاهريون->نسخو.minor = نسخو.minor;
 
-    if (insert_catch_all)
+    إذا (وجهو_catch_all)
     {
-      for (unsigned feature_index : *(l->catch_all_record_feature_idxes))
+      لكل (بنانشان feature_اشاريو : *(l->catch_all_رڪارڊ_feature_idxes))
       {
-        hb_pair_t<const void*, const void*> *p;
-        if (!l->feature_idx_tag_map->has (feature_index, &p))
-          return_trace (false);
-        auto *o = out->substitutions.serialize_append (c->serializer);
-        if (!o->serialize (l, feature_index,
-                           reinterpret_cast<const Feature*> (p->first),
-                           reinterpret_cast<const Tag*> (p->second)))
-          return_trace (false);
+        hb_pair_t<ثابت فراغ*, ثابت فراغ*> *p;
+        إذا (!l->feature_idx_ٽيگ_map->has (feature_اشاريو, &p))
+          return_trace (خطأ);
+        خودڪار *o = ٻاهريون->substitutions.serialize_append (c->serializer);
+        إذا (!o->serialize (l, feature_اشاريو,
+                           reinterpret_cast<ثابت Feature*> (p->پهريون),
+                           reinterpret_cast<ثابت ٽيگ*> (p->second)))
+          return_trace (خطأ);
       }
-      return_trace (true);
+      return_trace (سچ);
     }
 
     + substitutions.iter ()
-    | hb_apply (subset_record_array (l, &(out->substitutions), this))
+    | hb_apply (subset_رڪارڊ_array (l, &(ٻاهريون->substitutions), هذا))
     ;
 
-    return_trace (bool (out->substitutions));
+    return_trace (منطقي (ٻاهريون->substitutions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت FeatureList *feature_list) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (نسخو.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  substitutions.sanitize (c, this, feature_list));
+		  likely (نسخو.major == 1) &&
+		  substitutions.sanitize (c, هذا, feature_list));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
-  Array16Of<FeatureTableSubstitutionRecord>
+  محمي:
+  Fixed_نسخو<>	نسخو;	/* Version--0x00010000u */
+  Array16_جو<Feature_جدول_Substitution_رڪارڊ>
 			substitutions;
-  public:
-  DEFINE_SIZE_ARRAY (6, substitutions);
+  عام:
+  DEFINE_سائيز_ARRAY (6, substitutions);
 };
 
-struct FeatureVariationRecord
+بنية Feature_Variation_رڪارڊ
 {
-  friend struct FeatureVariations;
+  دوست بنية FeatureVariations;
 
-  void collect_lookups (const void     *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  فراغ collect_lookups (ثابت فراغ     *بنياد,
+			ثابت hb_سيٽ_t *feature_indexes,
+			hb_سيٽ_t       *lookup_indexes /*ٻاهريون*/) ثابت
   {
-    return (base+substitutions).collect_lookups (feature_indexes, lookup_indexes);
+    أرجع (بنياد+substitutions).collect_lookups (feature_indexes, lookup_indexes);
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const void *base,
-                         const hb_map_t *feature_index_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  سانچو <قسم_نالو ٽيگ_Getter>
+  فراغ collect_name_ids (ثابت فراغ *بنياد,
+                         ثابت hb_map_t *feature_اشاريو_map,
+                         ٽيگ_Getter get_ٽيگ,
+                         hb_سيٽ_t *nameids_منزل_retain) ثابت
   {
-    (base+substitutions).collect_name_ids (feature_index_map, get_tag, nameids_to_retain);
+    (بنياد+substitutions).collect_name_ids (feature_اشاريو_map, get_ٽيگ, nameids_منزل_retain);
   }
 
-  void closure_features (const void     *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  فراغ گهيرو_features (ثابت فراغ     *بنياد,
+			 ثابت hb_map_t *lookup_indexes,
+			 hb_سيٽ_t       *feature_indexes /*ٻاهريون*/) ثابت
   {
-    (base+substitutions).closure_features (lookup_indexes, feature_indexes);
+    (بنياد+substitutions).گهيرو_features (lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const void *base, const hb_map_t *feature_index_map) const
+  منطقي intersects_features (ثابت فراغ *بنياد, ثابت hb_map_t *feature_اشاريو_map) ثابت
   {
-    return (base+substitutions).intersects_features (feature_index_map);
+    أرجع (بنياد+substitutions).intersects_features (feature_اشاريو_map);
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                                    const void *base) const
+  فراغ collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
+                                                    ثابت فراغ *بنياد) ثابت
   {
-    (base+conditions).keep_with_variations (c);
-    if (c->apply && !c->variation_applied)
+    (بنياد+conditions).keep_with_variations (c);
+    إذا (c->apply && !c->variation_applied)
     {
-      (base+substitutions).collect_feature_substitutes_with_variations (c);
-      c->variation_applied = true; // set variations only once
+      (بنياد+substitutions).collect_feature_substitutes_with_variations (c);
+      c->variation_applied = سچ; // set variations only once
     }
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base,
-               bool insert_catch_all = false) const
+  منطقي subset (hb_subset_layout_context_t *c, ثابت فراغ *بنياد,
+               منطقي وجهو_catch_all = خطأ) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->subset_context->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    hb_set_t *retained_conditions = c->feature_record_cond_idx_map ?
-        c->feature_record_cond_idx_map->get (c->cur_feature_var_record_idx).get () : nullptr;
-    if (!insert_catch_all && retained_conditions && retained_conditions->is_empty ())
+    hb_سيٽ_t *retained_conditions = c->feature_رڪارڊ_cond_idx_map ?
+        c->feature_رڪارڊ_cond_idx_map->get (c->cur_feature_var_رڪارڊ_idx).get () : خالي_اشارو;
+    إذا (!وجهو_catch_all && retained_conditions && retained_conditions->is_empty ())
       /* A null ConditionSet is the unconditional first-match record. */
-      out->conditions = 0;
-    else
-      out->conditions.serialize_subset (c->subset_context, conditions, base, c, insert_catch_all);
-    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, insert_catch_all);
+      ٻاهريون->conditions = 0;
+    وإلا
+      ٻاهريون->conditions.serialize_subset (c->subset_context, conditions, بنياد, c, وجهو_catch_all);
+    ٻاهريون->substitutions.serialize_subset (c->subset_context, substitutions, بنياد, c, وجهو_catch_all);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد,
+		 ثابت FeatureList *feature_list) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, base) &&
-		  substitutions.sanitize (c, base, feature_list));
+    TRACE_SANITIZE (هذا);
+    return_trace (conditions.sanitize (c, بنياد) &&
+		  substitutions.sanitize (c, بنياد, feature_list));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
-  { (base+conditions).collect_variation_indices (c); }
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  ثابت فراغ *بنياد) ثابت
+  { (بنياد+conditions).collect_variation_indices (c); }
 
-  protected:
-  Offset32To<ConditionSet>
+  محمي:
+  Offset32_منزل<Condition_سيٽ>
 			conditions;
-  Offset32To<FeatureTableSubstitution>
+  Offset32_منزل<Feature_جدول_Substitution>
 			substitutions;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct LookupIndexList
+بنية Lookup_اشاريو_List
 {
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
-  { lookupIndices.add_indexes_to (lookup_indexes); }
+  فراغ جوڙيو_lookup_indexes_منزل (hb_سيٽ_t *lookup_indexes) ثابت
+  { lookupIndices.جوڙيو_indexes_منزل (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndices.intersects (lookup_indexes); }
+  منطقي intersects_lookup_indexes (ثابت hb_map_t *lookup_indexes) ثابت
+  { أرجع lookupIndices.intersects (lookup_indexes); }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+      return_trace (خطأ);
 
-    auto it =
+    خودڪار it =
     + hb_iter (lookupIndices)
-    | hb_filter (l->lookup_index_map)
-    | hb_map (l->lookup_index_map)
+    | hb_filter (l->lookup_اشاريو_map)
+    | hb_map (l->lookup_اشاريو_map)
     ;
-    out->lookupIndices.serialize (c->serializer, l, it);
-    return_trace (bool (out->lookupIndices));
+    ٻاهريون->lookupIndices.serialize (c->serializer, l, it);
+    return_trace (منطقي (ٻاهريون->lookupIndices));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (lookupIndices.sanitize (c));
   }
 
-  protected:
-  IndexArray	lookupIndices;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (2, lookupIndices);
+  محمي:
+  اشاريو_Array	lookupIndices;
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (2, lookupIndices);
 };
 
-struct LookupConditionRecord
+بنية Lookup_Condition_رڪارڊ
 {
-  unsigned get_condition_offset (const void *base, const void *variations) const
-  { return (const char *) &(base+condition) - (const char *) variations; }
+  بنانشان get_condition_وٿي (ثابت فراغ *بنياد, ثابت فراغ *variations) ثابت
+  { أرجع (ثابت حرف *) &(بنياد+condition) - (ثابت حرف *) variations; }
 
-  template <typename Instancer>
-  bool evaluate (const void *base,
-		 const int *coords,
-		 unsigned int coord_len,
-		 Instancer *instancer) const
-  { return (base+condition).evaluate (coords, coord_len, instancer); }
+  سانچو <قسم_نالو Instancer>
+  منطقي evaluate (ثابت فراغ *بنياد,
+		 ثابت صحيح *coords,
+		 بنانشان صحيح coord_len,
+		 Instancer *instancer) ثابت
+  { أرجع (بنياد+condition).evaluate (coords, coord_len, instancer); }
 
-  bool evaluate (const void *base,
-                 const void *variations,
-                 hb_sorted_array_t<const unsigned> conditions) const
+  منطقي evaluate (ثابت فراغ *بنياد,
+                 ثابت فراغ *variations,
+                 hb_sorted_array_t<ثابت بنانشان> conditions) ثابت
   {
-    return !condition || hb_bsearch (get_condition_offset (base, variations),
-                                     conditions.arrayZ, conditions.length,
-                                     sizeof (unsigned),
-                                     _hb_cmp_operator<unsigned, unsigned>);
+    أرجع !condition || hb_bsearch (get_condition_وٿي (بنياد, variations),
+                                     conditions.arrayZ, conditions.ڊيگهائي,
+                                     حجم (بنانشان),
+                                     _hb_cmp_operator<بنانشان, بنانشان>);
   }
 
-  bool collect_condition (const void *base,
-                          const void *variations,
-                          const int *coords,
-                          unsigned int coord_len,
-                          ItemVarStoreInstancer *instancer,
-                          hb_set_t *visited,
-                          hb_vector_t<unsigned> *conditions) const
+  منطقي collect_condition (ثابت فراغ *بنياد,
+                          ثابت فراغ *variations,
+                          ثابت صحيح *coords,
+                          بنانشان صحيح coord_len,
+                          شي_Var_Store_Instancer *instancer,
+                          hb_سيٽ_t *گهميل,
+                          hb_ويڪٽر_t<بنانشان> *conditions) ثابت
   {
     /* Null conditions always apply and need no key state. */
-    if (!condition) return true;
+    إذا (!condition) أرجع سچ;
 
-    unsigned offset = get_condition_offset (base, variations);
-    if (visited->has (offset)) return true;
-    visited->add (offset);
-    if (unlikely (visited->in_error ())) return false;
+    بنانشان وٿي = get_condition_وٿي (بنياد, variations);
+    إذا (گهميل->has (وٿي)) أرجع سچ;
+    گهميل->جوڙيو (وٿي);
+    إذا (unlikely (گهميل->اندريون_error ())) أرجع خطأ;
 
-    if (evaluate (base, coords, coord_len, instancer))
-      conditions->push (offset);
-    return !conditions->in_error ();
+    إذا (evaluate (بنياد, coords, coord_len, instancer))
+      conditions->push (وٿي);
+    أرجع !conditions->اندريون_error ();
   }
 
-  void add_lookup_indexes_to (const void *base,
-			      hb_set_t *lookup_indexes) const
-  { (base+lookupIndices).add_lookup_indexes_to (lookup_indexes); }
+  فراغ جوڙيو_lookup_indexes_منزل (ثابت فراغ *بنياد,
+			      hb_سيٽ_t *lookup_indexes) ثابت
+  { (بنياد+lookupIndices).جوڙيو_lookup_indexes_منزل (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const void *base,
-				   const hb_map_t *lookup_indexes) const
-  { return (base+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
+  منطقي intersects_lookup_indexes (ثابت فراغ *بنياد,
+				   ثابت hb_map_t *lookup_indexes) ثابت
+  { أرجع (بنياد+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  ثابت فراغ *بنياد) ثابت
   {
-    if (unlikely (!(base+condition).collect_var_indices (c->layout_variation_indices,
+    إذا (unlikely (!(بنياد+condition).collect_var_indices (c->layout_variation_indices,
                                                         HB_MAX_NESTING_LEVEL,
-                                                        c->condition_values)))
+                                                        c->condition_قدرون)))
       c->layout_variation_indices->err ();
   }
 
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
 	       hb_subset_layout_context_t *l,
-	       const void *base) const
+	       ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خطأ);
 
-    out->condition = 0;
+    ٻاهريون->condition = 0;
     c->serializer->push ();
-    lookup_condition_subset_result_t result =
-        (base + condition).subset_lookup_condition (c,
+    lookup_condition_subset_نتيجو_t نتيجو =
+        (بنياد + condition).subset_lookup_condition (c,
 					    HB_MAX_NESTING_LEVEL,
-					    true);
-    if (result != LOOKUP_CONDITION_SUBSET_KEEP)
+					    سچ);
+    إذا (نتيجو != LOOKUP_CONDITION_SUBSET_KEEP)
     {
-      c->serializer->pop_discard ();
-      return_trace (false);
+      c->serializer->ڪڍو_discard ();
+      return_trace (خطأ);
     }
-    c->serializer->add_link (out->condition, c->serializer->pop_pack ());
+    c->serializer->جوڙيو_link (ٻاهريون->condition, c->serializer->ڪڍو_pack ());
 
-    return_trace (out->lookupIndices.serialize_subset (c, lookupIndices, base, l));
+    return_trace (ٻاهريون->lookupIndices.serialize_subset (c, lookupIndices, بنياد, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (condition.sanitize (c, base) &&
-		  lookupIndices.sanitize (c, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (condition.sanitize (c, بنياد) &&
+		  lookupIndices.sanitize (c, بنياد));
   }
 
-  protected:
-  Offset32To<Condition>		condition;
-  Offset32To<LookupIndexList>	lookupIndices;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  محمي:
+  Offset32_منزل<Condition>		condition;
+  Offset32_منزل<Lookup_اشاريو_List>	lookupIndices;
+  عام:
+  DEFINE_سائيز_STATIC (8);
 };
 
-struct FeatureLookupsTable
+بنية Feature_Lookups_جدول
 {
-  bool adds_default_lookups () const { return flags & 0x0001u; }
+  منطقي adds_default_lookups () ثابت { أرجع flags & 0x0001u; }
 
-  bool collect_conditions (const void *variations,
-                           const int *coords,
-                           unsigned int coord_len,
-                           ItemVarStoreInstancer *instancer,
-                           hb_set_t *visited,
-                           hb_vector_t<unsigned> *conditions) const
+  منطقي collect_conditions (ثابت فراغ *variations,
+                           ثابت صحيح *coords,
+                           بنانشان صحيح coord_len,
+                           شي_Var_Store_Instancer *instancer,
+                           hb_سيٽ_t *گهميل,
+                           hb_ويڪٽر_t<بنانشان> *conditions) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      if (unlikely (!record.collect_condition (this, variations, coords, coord_len,
-                                               instancer, visited, conditions)))
-	return false;
-    return true;
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      إذا (unlikely (!رڪارڊ.collect_condition (هذا, variations, coords, coord_len,
+                                               instancer, گهميل, conditions)))
+	أرجع خطأ;
+    أرجع سچ;
   }
 
-  void collect_lookups (const void *variations,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  فراغ collect_lookups (ثابت فراغ *variations,
+                       hb_sorted_array_t<ثابت بنانشان> conditions,
+                       hb_سيٽ_t *lookup_indexes) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, variations, conditions))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      إذا (رڪارڊ.evaluate (هذا, variations, conditions))
+	رڪارڊ.جوڙيو_lookup_indexes_منزل (هذا, lookup_indexes);
   }
 
-  template <typename Instancer>
-  void collect_lookups (const int *coords,
-			unsigned int coord_len,
+  سانچو <قسم_نالو Instancer>
+  فراغ collect_lookups (ثابت صحيح *coords,
+			بنانشان صحيح coord_len,
 			Instancer *instancer,
-			hb_set_t *lookup_indexes) const
+			hb_سيٽ_t *lookup_indexes) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, coords, coord_len, instancer))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      إذا (رڪارڊ.evaluate (هذا, coords, coord_len, instancer))
+	رڪارڊ.جوڙيو_lookup_indexes_منزل (هذا, lookup_indexes);
   }
 
-  void collect_lookups (hb_set_t *lookup_indexes) const
+  فراغ collect_lookups (hb_سيٽ_t *lookup_indexes) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      record.add_lookup_indexes_to (this, lookup_indexes);
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      رڪارڊ.جوڙيو_lookup_indexes_منزل (هذا, lookup_indexes);
   }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
+  منطقي intersects_lookup_indexes (ثابت hb_map_t *lookup_indexes) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.intersects_lookup_indexes (this, lookup_indexes))
-	return true;
-    return false;
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      إذا (رڪارڊ.intersects_lookup_indexes (هذا, lookup_indexes))
+	أرجع سچ;
+    أرجع خطأ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const LookupConditionRecord &record : records)
-      record.collect_variation_indices (c, this);
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
+      رڪارڊ.collect_variation_indices (c, هذا);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون)))
+      return_trace (خطأ);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
-    out->flags = flags;
+    ٻاهريون->نسخو.major = نسخو.major;
+    ٻاهريون->نسخو.minor = نسخو.minor;
+    ٻاهريون->flags = flags;
 
-    for (const LookupConditionRecord &record : records)
+    لكل (ثابت Lookup_Condition_رڪارڊ &رڪارڊ : رڪارڊون)
     {
-      auto snap = c->serializer->snapshot ();
-      if (record.subset (c, l, this))
-	out->records.len++;
-      else
+      خودڪار snap = c->serializer->snapshot ();
+      إذا (رڪارڊ.subset (c, l, هذا))
+	ٻاهريون->رڪارڊون.len++;
+      وإلا
 	c->serializer->revert (snap);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (نسخو.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  records.sanitize (c, this));
+		  likely (نسخو.major == 1) &&
+		  رڪارڊون.sanitize (c, هذا));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
+  محمي:
+  Fixed_نسخو<>	نسخو;	/* Version--0x00010000u */
   HBUINT16	flags;
-  Array32Of<LookupConditionRecord>
-		records;
-  public:
-  DEFINE_SIZE_ARRAY (10, records);
+  Array32_جو<Lookup_Condition_رڪارڊ>
+		رڪارڊون;
+  عام:
+  DEFINE_سائيز_ARRAY (10, رڪارڊون);
 };
 
-struct LookupVariationRecord
+بنية Lookup_Variation_رڪارڊ
 {
-  friend struct FeatureVariations;
+  دوست بنية FeatureVariations;
 
-  unsigned get_feature_index () const { return featureIndex; }
+  بنانشان get_feature_اشاريو () ثابت { أرجع feature_اشاريو_2; }
 
-  void collect_lookups (const void *base,
-                       const Feature &feature,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  فراغ collect_lookups (ثابت فراغ *بنياد,
+                       ثابت Feature &feature,
+                       hb_sorted_array_t<ثابت بنانشان> conditions,
+                       hb_سيٽ_t *lookup_indexes) ثابت
   {
-    const FeatureLookupsTable &feature_lookups = base+featureLookups;
-    if (feature_lookups.adds_default_lookups ())
-      feature.add_lookup_indexes_to (lookup_indexes);
-    feature_lookups.collect_lookups (base, conditions, lookup_indexes);
+    ثابت Feature_Lookups_جدول &feature_lookups = بنياد+featureLookups;
+    إذا (feature_lookups.adds_default_lookups ())
+      feature.جوڙيو_lookup_indexes_منزل (lookup_indexes);
+    feature_lookups.collect_lookups (بنياد, conditions, lookup_indexes);
   }
 
-  void collect_lookups (const void *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t *lookup_indexes) const
+  فراغ collect_lookups (ثابت فراغ *بنياد,
+			ثابت hb_سيٽ_t *feature_indexes,
+			hb_سيٽ_t *lookup_indexes) ثابت
   {
-    if (feature_indexes->has (featureIndex))
-      (base+featureLookups).collect_lookups (lookup_indexes);
+    إذا (feature_indexes->has (feature_اشاريو_2))
+      (بنياد+featureLookups).collect_lookups (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t *feature_indexes) const
+  فراغ گهيرو_features (ثابت فراغ *بنياد,
+			 ثابت hb_map_t *lookup_indexes,
+			 hb_سيٽ_t *feature_indexes) ثابت
   {
-    if ((base+featureLookups).intersects_lookup_indexes (lookup_indexes))
-      feature_indexes->add (featureIndex);
+    إذا ((بنياد+featureLookups).intersects_lookup_indexes (lookup_indexes))
+      feature_indexes->جوڙيو (feature_اشاريو_2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
-  { (base+featureLookups).collect_variation_indices (c); }
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  ثابت فراغ *بنياد) ثابت
+  { (بنياد+featureLookups).collect_variation_indices (c); }
 
-  bool subset (hb_subset_layout_context_t *l, const void *base) const
+  منطقي subset (hb_subset_layout_context_t *l, ثابت فراغ *بنياد) ثابت
   {
     hb_subset_context_t *c = l->subset_context;
-    TRACE_SUBSET (this);
-    uint32_t *new_feature_index;
-    if (!l->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    uint32_t *new_feature_اشاريو;
+    إذا (!l->feature_map_w_duplicates->has (feature_اشاريو_2, &new_feature_اشاريو))
+      return_trace (خطأ);
 
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out ||
-		  !c->serializer->check_assign (out->featureIndex,
-						*new_feature_index,
-						HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    خودڪار *ٻاهريون = c->serializer->embed (هذا);
+    إذا (unlikely (!ٻاهريون ||
+		  !c->serializer->check_سونپيو (ٻاهريون->feature_اشاريو_2,
+						*new_feature_اشاريو,
+						HB_SERIALIZE_ERROR_INT_حد_کان_مٿي)))
+      return_trace (خطأ);
 
-    return_trace (out->featureLookups.serialize_subset (c, featureLookups, base, l));
+    return_trace (ٻاهريون->featureLookups.serialize_subset (c, featureLookups, بنياد, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  featureLookups.sanitize (c, base));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  featureLookups.sanitize (c, بنياد));
   }
 
-  protected:
-  HBUINT16			featureIndex;
-  Offset32To<FeatureLookupsTable>	featureLookups;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  محمي:
+  HBUINT16			feature_اشاريو_2;
+  Offset32_منزل<Feature_Lookups_جدول>	featureLookups;
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
 
-struct FeatureVariations
+بنية FeatureVariations
 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFFFFFu;
+  ساكن constexpr بنانشان NOT_مليو_اشاريو = 0xFFFFFFFFu;
 
-  const Array32Of<LookupVariationRecord> &get_lookup_variation_records () const
+  ثابت Array32_جو<Lookup_Variation_رڪارڊ> &get_lookup_variation_رڪارڊون () ثابت
   {
-    if (version.to_int () < 0x00010001u)
-      return Null (Array32Of<LookupVariationRecord>);
-    return StructAfter<Array32Of<LookupVariationRecord>> (varRecords);
+    إذا (نسخو.منزل_int () < 0x00010001u)
+      أرجع Null (Array32_جو<Lookup_Variation_رڪارڊ>);
+    أرجع StructAfter<Array32_جو<Lookup_Variation_رڪارڊ>> (var_رڪارڊون);
   }
 
-  unsigned record_count () const
+  بنانشان رڪارڊ_ڳڻپ () ثابت
   {
-    return varRecords.len;
+    أرجع var_رڪارڊون.len;
   }
 
-  bool find_index (const int *coords, unsigned int coord_len,
-		   unsigned int *index,
-		   ItemVarStoreInstancer *instancer) const
+  منطقي ڳوليو_اشاريو (ثابت صحيح *coords, بنانشان صحيح coord_len,
+		   بنانشان صحيح *اشاريو_2,
+		   شي_Var_Store_Instancer *instancer) ثابت
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = var_رڪارڊون.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      const FeatureVariationRecord &record = varRecords.arrayZ[i];
-      if ((this+record.conditions).evaluate (coords, coord_len, instancer))
+      ثابت Feature_Variation_رڪارڊ &رڪارڊ = var_رڪارڊون.arrayZ[i];
+      إذا ((هذا+رڪارڊ.conditions).evaluate (coords, coord_len, instancer))
       {
-	*index = i;
-	return true;
+	*اشاريو_2 = i;
+	أرجع سچ;
       }
     }
-    *index = NOT_FOUND_INDEX;
-    return false;
+    *اشاريو_2 = NOT_مليو_اشاريو;
+    أرجع خطأ;
   }
 
-  const Feature *find_substitute (unsigned int variations_index,
-				  unsigned int feature_index) const
+  ثابت Feature *ڳوليو_substitute (بنانشان صحيح variations_اشاريو,
+				  بنانشان صحيح feature_اشاريو) ثابت
   {
-    const FeatureVariationRecord &record = varRecords[variations_index];
-    return (this+record.substitutions).find_substitute (feature_index);
+    ثابت Feature_Variation_رڪارڊ &رڪارڊ = var_رڪارڊون[variations_اشاريو];
+    أرجع (هذا+رڪارڊ.substitutions).ڳوليو_substitute (feature_اشاريو);
   }
 
-  bool collect_lookup_conditions (const int *coords,
-                                  unsigned int coord_len,
-                                  ItemVarStoreInstancer *instancer,
-                                  hb_vector_t<unsigned> *state) const
+  منطقي collect_lookup_conditions (ثابت صحيح *coords,
+                                  بنانشان صحيح coord_len,
+                                  شي_Var_Store_Instancer *instancer,
+                                  hb_ويڪٽر_t<بنانشان> *state) ثابت
   {
-    hb_set_t visited_tables, visited_conditions;
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    hb_سيٽ_t گهميل_tables, گهميل_conditions;
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
     {
-      unsigned offset = record.featureLookups;
-      if (visited_tables.has (offset)) continue;
-      visited_tables.add (offset);
-      if (unlikely (visited_tables.in_error ())) return false;
+      بنانشان وٿي = رڪارڊ.featureLookups;
+      إذا (گهميل_tables.has (وٿي)) استمر;
+      گهميل_tables.جوڙيو (وٿي);
+      إذا (unlikely (گهميل_tables.اندريون_error ())) أرجع خطأ;
 
-      const FeatureLookupsTable &feature_lookups = this+record.featureLookups;
-      if (unlikely (!feature_lookups.collect_conditions (this, coords, coord_len,
-                                                         instancer, &visited_conditions,
+      ثابت Feature_Lookups_جدول &feature_lookups = هذا+رڪارڊ.featureLookups;
+      إذا (unlikely (!feature_lookups.collect_conditions (هذا, coords, coord_len,
+                                                         instancer, &گهميل_conditions,
                                                          state)))
-	return false;
+	أرجع خطأ;
     }
 
     /* Key size depends on distinct conditions, not expanded lookup sets.
      * Sorting makes it independent of their first traversal order. */
-    state->qsort (_hb_cmp_operator<unsigned, unsigned>);
-    return true;
+    state->qsort (_hb_cmp_operator<بنانشان, بنانشان>);
+    أرجع سچ;
   }
 
-  bool get_lookup_variations (unsigned feature_index,
-                              const Feature &feature,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+  منطقي get_lookup_variations (بنانشان feature_اشاريو,
+                              ثابت Feature &feature,
+                              hb_sorted_array_t<ثابت بنانشان> conditions,
+                              hb_سيٽ_t *lookup_indexes) ثابت
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
     {
-      if (record.featureIndex != feature_index) continue;
+      إذا (رڪارڊ.feature_اشاريو_2 != feature_اشاريو) استمر;
 
-      record.collect_lookups (this, feature, conditions, lookup_indexes);
-      return true;
+      رڪارڊ.collect_lookups (هذا, feature, conditions, lookup_indexes);
+      أرجع سچ;
     }
-    return false;
+    أرجع خطأ;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  فراغ collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) ثابت
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = var_رڪارڊون.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      c->cur_record_idx = i;
-      varRecords[i].collect_feature_substitutes_with_variations (c, this);
-      if (c->universal)
-        break;
+      c->cur_رڪارڊ_idx = i;
+      var_رڪارڊون[i].collect_feature_substitutes_with_variations (c, هذا);
+      إذا (c->universal)
+        اكسر;
     }
-    if (c->universal || c->record_cond_idx_map->is_empty ())
-      c->catch_all_record_feature_idxes.reset ();
+    إذا (c->universal || c->رڪارڊ_cond_idx_map->is_empty ())
+      c->catch_all_رڪارڊ_feature_idxes.reset ();
   }
 
-  FeatureVariations* copy (hb_serialize_context_t *c) const
+  FeatureVariations* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (هذا);
+    return_trace (c->embed (*هذا));
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  فراغ collect_lookups (ثابت hb_سيٽ_t *feature_indexes,
+			ثابت hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *feature_رڪارڊ_cond_idx_map,
+			hb_سيٽ_t       *lookup_indexes /*ٻاهريون*/) ثابت
   {
-    unsigned count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان ڳڻپ = var_رڪارڊون.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      if (feature_record_cond_idx_map &&
-          !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_lookups (this, feature_indexes, lookup_indexes);
+      إذا (feature_رڪارڊ_cond_idx_map &&
+          !feature_رڪارڊ_cond_idx_map->has (i))
+        استمر;
+      var_رڪارڊون[i].collect_lookups (هذا, feature_indexes, lookup_indexes);
     }
 
     collect_lookup_variation_lookups (feature_indexes, lookup_indexes);
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  سانچو <قسم_نالو ٽيگ_Getter>
+  فراغ collect_name_ids (ثابت hb_map_t *feature_اشاريو_map,
+                         ثابت hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *feature_رڪارڊ_cond_idx_map,
+                         ٽيگ_Getter get_ٽيگ,
+                         hb_سيٽ_t *nameids_منزل_retain) ثابت
   {
-    for (unsigned i = 0; i < varRecords.len; i++)
+    لكل (بنانشان i = 0; i < var_رڪارڊون.len; i++)
     {
-      if (feature_record_cond_idx_map && !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_name_ids (this, feature_index_map, get_tag, nameids_to_retain);
+      إذا (feature_رڪارڊ_cond_idx_map && !feature_رڪارڊ_cond_idx_map->has (i))
+        استمر;
+      var_رڪارڊون[i].collect_name_ids (هذا, feature_اشاريو_map, get_ٽيگ, nameids_منزل_retain);
     }
   }
 
-  void collect_lookup_variation_lookups (const hb_set_t *feature_indexes,
-					 hb_set_t *lookup_indexes /* OUT */) const
+  فراغ collect_lookup_variation_lookups (ثابت hb_سيٽ_t *feature_indexes,
+					 hb_سيٽ_t *lookup_indexes /*ٻاهريون*/) ثابت
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_lookups (this, feature_indexes, lookup_indexes);
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
+      رڪارڊ.collect_lookups (هذا, feature_indexes, lookup_indexes);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  فراغ گهيرو_features (ثابت hb_map_t *lookup_indexes,
+			 ثابت hb_hashmap_t<بنانشان, hb::shared_ptr<hb_سيٽ_t>> *feature_رڪارڊ_cond_idx_map,
+			 hb_سيٽ_t       *feature_indexes /*ٻاهريون*/) ثابت
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    بنانشان صحيح ڳڻپ = var_رڪارڊون.len;
+    لكل (بنانشان صحيح i = 0; i < ڳڻپ; i++)
     {
-      if (feature_record_cond_idx_map != nullptr &&
-          !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].closure_features (this, lookup_indexes, feature_indexes);
+      إذا (feature_رڪارڊ_cond_idx_map != خالي_اشارو &&
+          !feature_رڪارڊ_cond_idx_map->has (i))
+        استمر;
+      var_رڪارڊون[i].گهيرو_features (هذا, lookup_indexes, feature_indexes);
     }
 
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
+      رڪارڊ.گهيرو_features (هذا, lookup_indexes, feature_indexes);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      record.collect_variation_indices (c, this);
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_variation_indices (c, this);
+    لكل (ثابت Feature_Variation_رڪارڊ &رڪارڊ : var_رڪارڊون)
+      رڪارڊ.collect_variation_indices (c, هذا);
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
+      رڪارڊ.collect_variation_indices (c, هذا);
   }
 
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  فراغ collect_feature_indices (hb_سيٽ_t *feature_indices) ثابت
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      (this+record.substitutions).collect_feature_indices (feature_indices);
+    لكل (ثابت Feature_Variation_رڪارڊ &رڪارڊ : var_رڪارڊون)
+      (هذا+رڪارڊ.substitutions).collect_feature_indices (feature_indices);
   }
 
-  bool has_lookup_variations (unsigned feature_index) const
+  منطقي has_lookup_variations (بنانشان feature_اشاريو) ثابت
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    لكل (ثابت Lookup_Variation_رڪارڊ &رڪارڊ : get_lookup_variation_رڪارڊون ())
     {
-      if (record.featureIndex == feature_index)
-	return true;
-      if (record.featureIndex > feature_index)
-	break;
+      إذا (رڪارڊ.feature_اشاريو_2 == feature_اشاريو)
+	أرجع سچ;
+      إذا (رڪارڊ.feature_اشاريو_2 > feature_اشاريو)
+	اكسر;
     }
-    return false;
+    أرجع خطأ;
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  منطقي subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    إذا (unlikely (!ٻاهريون || !c->serializer->extend_min (ٻاهريون))) return_trace (خطأ);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    ٻاهريون->نسخو.major = نسخو.major;
+    ٻاهريون->نسخو.minor = نسخو.minor;
 
-    int keep_up_to = -1;
-    for (int i = varRecords.len - 1; i >= 0; i--) {
-      if (varRecords[i].intersects_features (this, l->feature_map_w_duplicates)) {
-        keep_up_to = i;
-        break;
+    صحيح keep_مٿي_منزل = -1;
+    لكل (صحيح i = var_رڪارڊون.len - 1; i >= 0; i--) {
+      إذا (var_رڪارڊون[i].intersects_features (هذا, l->feature_map_w_duplicates)) {
+        keep_مٿي_منزل = i;
+        اكسر;
       }
     }
 
-    unsigned count = (unsigned) (keep_up_to + 1);
-    for (unsigned i = 0; i < count; i++)
+    بنانشان ڳڻپ = (بنانشان) (keep_مٿي_منزل + 1);
+    لكل (بنانشان i = 0; i < ڳڻپ; i++)
     {
-      if (l->feature_record_cond_idx_map != nullptr &&
-          !l->feature_record_cond_idx_map->has (i))
-        continue;
+      إذا (l->feature_رڪارڊ_cond_idx_map != خالي_اشارو &&
+          !l->feature_رڪارڊ_cond_idx_map->has (i))
+        استمر;
 
-      l->cur_feature_var_record_idx = i;
-      subset_record_array (l, &(out->varRecords), this) (varRecords[i]);
+      l->cur_feature_var_رڪارڊ_idx = i;
+      subset_رڪارڊ_array (l, &(ٻاهريون->var_رڪارڊون), هذا) (var_رڪارڊون[i]);
     }
 
-    if (out->varRecords.len && !l->catch_all_record_feature_idxes->is_empty ())
+    إذا (ٻاهريون->var_رڪارڊون.len && !l->catch_all_رڪارڊ_feature_idxes->is_empty ())
     {
-      bool insert_catch_all_record = true;
-      subset_record_array (l, &(out->varRecords), this, insert_catch_all_record) (varRecords[0]);
+      منطقي وجهو_catch_all_رڪارڊ = سچ;
+      subset_رڪارڊ_array (l, &(ٻاهريون->var_رڪارڊون), هذا, وجهو_catch_all_رڪارڊ) (var_رڪارڊون[0]);
     }
 
-    Array32Of<LookupVariationRecord> *out_lookup_records = nullptr;
-    if (version.minor >= 1)
+    Array32_جو<Lookup_Variation_رڪارڊ> *ٻاهريون_lookup_رڪارڊون = خالي_اشارو;
+    إذا (نسخو.minor >= 1)
     {
-      out_lookup_records = &StructAfter<Array32Of<LookupVariationRecord>> (out->varRecords);
-      if (unlikely (!c->serializer->extend_min (out_lookup_records)))
-	return_trace (false);
+      ٻاهريون_lookup_رڪارڊون = &StructAfter<Array32_جو<Lookup_Variation_رڪارڊ>> (ٻاهريون->var_رڪارڊون);
+      إذا (unlikely (!c->serializer->extend_min (ٻاهريون_lookup_رڪارڊون)))
+	return_trace (خطأ);
 
-      + get_lookup_variation_records ().iter ()
-      | hb_apply (subset_record_array (l, out_lookup_records, this))
+      + get_lookup_variation_رڪارڊون ().iter ()
+      | hb_apply (subset_رڪارڊ_array (l, ٻاهريون_lookup_رڪارڊون, هذا))
       ;
     }
 
-    return_trace (bool (out->varRecords) ||
-		  (out_lookup_records && bool (*out_lookup_records)));
+    return_trace (منطقي (ٻاهريون->var_رڪارڊون) ||
+		  (ٻاهريون_lookup_رڪارڊون && منطقي (*ٻاهريون_lookup_رڪارڊون)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت FeatureList *feature_list) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (نسخو.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  varRecords.sanitize (c, this, feature_list) &&
-		  (version.minor < 1 ||
-		   get_lookup_variation_records ().sanitize (c, this)));
+		  likely (نسخو.major == 1) &&
+		  var_رڪارڊون.sanitize (c, هذا, feature_list) &&
+		  (نسخو.minor < 1 ||
+		   get_lookup_variation_رڪارڊون ().sanitize (c, هذا)));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
-  Array32Of<FeatureVariationRecord>
-			varRecords;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, varRecords);
+  محمي:
+  Fixed_نسخو<>	نسخو;	/* Version--0x00010000u */
+  Array32_جو<Feature_Variation_رڪارڊ>
+			var_رڪارڊون;
+  عام:
+  DEFINE_سائيز_ARRAY_SIZED (8, var_رڪارڊون);
 };
 
 
@@ -6182,348 +6182,348 @@ struct FeatureVariations
  * Device Tables
  */
 
-struct HintingDevice
+بنية HintingDevice
 {
-  friend struct Device;
+  دوست بنية Device;
 
-  private:
+  خاص:
 
-  hb_position_t get_x_delta (hb_font_t *font) const
-  { return get_delta (font->x_ppem, font->x_scale); }
+  hb_position_t get_x_delta (hb_font_t *font) ثابت
+  { أرجع get_delta (font->x_ppem, font->x_scale); }
 
-  hb_position_t get_y_delta (hb_font_t *font) const
-  { return get_delta (font->y_ppem, font->y_scale); }
+  hb_position_t get_y_delta (hb_font_t *font) ثابت
+  { أرجع get_delta (font->y_ppem, font->y_scale); }
 
-  public:
+  عام:
 
-  size_t get_size () const
+  size_t get_سائيز () ثابت
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3 || startSize > endSize)) return 3 * HBUINT16::static_size;
-    return HBUINT16::static_size * (4 + ((endSize - startSize) >> (4 - f)));
+    بنانشان صحيح f = deltaFormat;
+    إذا (unlikely (f < 1 || f > 3 || شروعات_سائيز > پڇاڙي_سائيز)) أرجع 3 * HBUINT16::static_سائيز;
+    أرجع HBUINT16::static_سائيز * (4 + ((پڇاڙي_سائيز - شروعات_سائيز) >> (4 - f)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && c->check_range (this, this->get_size ()));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) && c->check_range (هذا, هذا->get_سائيز ()));
   }
 
-  HintingDevice* copy (hb_serialize_context_t *c) const
+  HintingDevice* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed<HintingDevice> (this));
+    TRACE_SERIALIZE (هذا);
+    return_trace (c->embed<HintingDevice> (هذا));
   }
 
-  private:
+  خاص:
 
-  int get_delta (unsigned int ppem, int scale) const
+  صحيح get_delta (بنانشان صحيح ppem, صحيح scale) ثابت
   {
-    if (!ppem) return 0;
+    إذا (!ppem) أرجع 0;
 
-    int pixels = get_delta_pixels (ppem);
+    صحيح pixels = get_delta_pixels (ppem);
 
-    if (!pixels) return 0;
+    إذا (!pixels) أرجع 0;
 
-    return (int) (pixels * (int64_t) scale / ppem);
+    أرجع (صحيح) (pixels * (int64_t) scale / ppem);
   }
-  int get_delta_pixels (unsigned int ppem_size) const
+  صحيح get_delta_pixels (بنانشان صحيح ppem_سائيز) ثابت
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3))
-      return 0;
+    بنانشان صحيح f = deltaFormat;
+    إذا (unlikely (f < 1 || f > 3))
+      أرجع 0;
 
-    if (ppem_size < startSize || ppem_size > endSize)
-      return 0;
+    إذا (ppem_سائيز < شروعات_سائيز || ppem_سائيز > پڇاڙي_سائيز)
+      أرجع 0;
 
-    unsigned int s = ppem_size - startSize;
+    بنانشان صحيح s = ppem_سائيز - شروعات_سائيز;
 
-    unsigned int byte = deltaValueZ[s >> (4 - f)];
-    unsigned int bits = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
-    unsigned int mask = (0xFFFFu >> (16 - (1 << f)));
+    بنانشان صحيح byte = delta_قدر_Z[s >> (4 - f)];
+    بنانشان صحيح بٽ = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
+    بنانشان صحيح نقاب = (0xFFFFu >> (16 - (1 << f)));
 
-    int delta = bits & mask;
+    صحيح delta = بٽ & نقاب;
 
-    if ((unsigned int) delta >= ((mask + 1) >> 1))
-      delta -= mask + 1;
+    إذا ((بنانشان صحيح) delta >= ((نقاب + 1) >> 1))
+      delta -= نقاب + 1;
 
-    return delta;
+    أرجع delta;
   }
 
-  protected:
-  HBUINT16	startSize;		/* Smallest size to correct--in ppem */
-  HBUINT16	endSize;		/* Largest size to correct--in ppem */
+  محمي:
+  HBUINT16	شروعات_سائيز;		/* Smallest size to correct--in ppem */
+  HBUINT16	پڇاڙي_سائيز;		/* Largest size to correct--in ppem */
   HBUINT16	deltaFormat;		/* Format of DeltaValue array data: 1, 2, or 3
 					 * 1	Signed 2-bit value, 8 values per uint16
 					 * 2	Signed 4-bit value, 4 values per uint16
 					 * 3	Signed 8-bit value, 2 values per uint16
 					 */
-  UnsizedArrayOf<HBUINT16>
-		deltaValueZ;		/* Array of compressed data */
-  public:
-  DEFINE_SIZE_ARRAY (6, deltaValueZ);
+  Unsized_Array_جو<HBUINT16>
+		delta_قدر_Z;		/* Array of compressed data */
+  عام:
+  DEFINE_سائيز_ARRAY (6, delta_قدر_Z);
 };
 
-struct VariationDevice
+بنية VariationDevice
 {
-  friend struct Device;
+  دوست بنية Device;
 
-  private:
+  خاص:
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
+			     ثابت شي_Variation_Store &store,
+			     hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
+  { أرجع !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
 
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
+			     ثابت شي_Variation_Store &store,
+			     hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
+  { أرجع !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
 
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
+  عائم get_x_delta_f (hb_font_t *font,
+		       ثابت شي_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache) ثابت
+  { أرجع !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
+  عائم get_y_delta_f (hb_font_t *font,
+		       ثابت شي_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache) ثابت
+  { أرجع !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
 
   VariationDevice* copy (hb_serialize_context_t *c,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+                         ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *layout_variation_idx_delta_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    if (!layout_variation_idx_delta_map) return_trace (nullptr);
+    TRACE_SERIALIZE (هذا);
+    إذا (!layout_variation_idx_delta_map) return_trace (خالي_اشارو);
 
-    hb_pair_t<unsigned, int> *v;
-    if (!layout_variation_idx_delta_map->has (varIdx, &v))
-      return_trace (nullptr);
+    hb_pair_t<بنانشان, صحيح> *v;
+    إذا (!layout_variation_idx_delta_map->has (varIdx, &v))
+      return_trace (خالي_اشارو);
     /* The varidx was mapped to "no variations" during instancing (e.g. the
      * instantiated row is all zeros). Drop the device instead of emitting one
      * with an out-of-range varidx. */
-    if (hb_first (*v) == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-      return_trace (nullptr);
+    إذا (hb_پهريون (*v) == HB_OT_LAYOUT_NO_VARIATIONS_اشاريو)
+      return_trace (خالي_اشارو);
 
-    c->start_zerocopy (this->static_size);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    c->شروعات_zerocopy (هذا->static_سائيز);
+    خودڪار *ٻاهريون = c->embed (هذا);
+    إذا (unlikely (!ٻاهريون)) return_trace (خالي_اشارو);
 
-    if (!c->check_assign (out->varIdx, hb_first (*v), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (nullptr);
-    return_trace (out);
+    إذا (!c->check_سونپيو (ٻاهريون->varIdx, hb_پهريون (*v), HB_SERIALIZE_ERROR_INT_حد_کان_مٿي))
+      return_trace (خالي_اشارو);
+    return_trace (ٻاهريون);
   }
 
-  void collect_variation_index (hb_collect_variation_indices_context_t *c) const
-  { c->layout_variation_indices->add (varIdx); }
+  فراغ collect_variation_اشاريو (hb_collect_variation_indices_context_t *c) ثابت
+  { c->layout_variation_indices->جوڙيو (varIdx); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  private:
+  خاص:
 
-  float get_delta (hb_font_t *font,
-		   const ItemVariationStore &store,
-		   hb_scalar_cache_t *store_cache = nullptr) const
+  عائم get_delta (hb_font_t *font,
+		   ثابت شي_Variation_Store &store,
+		   hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-    return store.get_delta (varIdx, font->coords, font->num_coords, store_cache);
+    أرجع store.get_delta (varIdx, font->coords, font->انگ_coords, store_cache);
   }
 
-  protected:
+  محمي:
   VarIdx	varIdx;		/* Variation index */
   HBUINT16	deltaFormat;	/* Format identifier for this table: 0x0x8000 */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
 
-struct DeviceHeader
+بنية Device_سرو
 {
-  protected:
+  محمي:
   HBUINT16		reserved1;
   HBUINT16		reserved2;
-  public:
+  عام:
   HBUINT16		format;		/* Format identifier */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عام:
+  DEFINE_سائيز_STATIC (6);
 };
 
-struct Device
+بنية Device
 {
   // Anchors retain fractional coordinates until their difference is rounded.
   // Hinting adjustments and value records keep their integer semantics.
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  عائم get_x_delta_f (hb_font_t *font,
+		       ثابت شي_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-#ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    إذا (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_x_delta_f (font, store, store_cache);
+      أرجع u.variation.get_x_delta_f (font, store, store_cache);
     }
-#endif
-    return get_x_delta (font, store, store_cache);
+#جيڪڏهن_پورو
+    أرجع get_x_delta (font, store, store_cache);
   }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  عائم get_y_delta_f (hb_font_t *font,
+		       ثابت شي_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-#ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    إذا (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_y_delta_f (font, store, store_cache);
+      أرجع u.variation.get_y_delta_f (font, store, store_cache);
     }
-#endif
-    return get_y_delta (font, store, store_cache);
+#جيڪڏهن_پورو
+    أرجع get_y_delta (font, store, store_cache);
   }
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     ثابت شي_Variation_Store &store=Null (شي_Variation_Store),
+			     hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-    switch (u.b.format)
+    بدل (u.b.format)
     {
-#ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_HINTING
+    حالة 1: حالة 2: حالة 3:
       hb_barrier ();
-      return u.hinting.get_x_delta (font);
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+      أرجع u.hinting.get_x_delta (font);
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
-      return u.variation.get_x_delta (font, store, store_cache);
-#endif
-    default:
-      return 0;
+      أرجع u.variation.get_x_delta (font, store, store_cache);
+#جيڪڏهن_پورو
+    افتراضي:
+      أرجع 0;
     }
   }
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     ثابت شي_Variation_Store &store=Null (شي_Variation_Store),
+			     hb_scalar_cache_t *store_cache = خالي_اشارو) ثابت
   {
-    switch (u.b.format)
+    بدل (u.b.format)
     {
-    case 1: case 2: case 3:
-#ifndef HB_NO_HINTING
+    حالة 1: حالة 2: حالة 3:
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_HINTING
       hb_barrier ();
-      return u.hinting.get_y_delta (font);
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+      أرجع u.hinting.get_y_delta (font);
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
-      return u.variation.get_y_delta (font, store, store_cache);
-#endif
-    default:
-      return 0;
+      أرجع u.variation.get_y_delta (font, store, store_cache);
+#جيڪڏهن_پورو
+    افتراضي:
+      أرجع 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.b.format.sanitize (c)) return_trace (false);
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+    TRACE_SANITIZE (هذا);
+    إذا (!u.b.format.sanitize (c)) return_trace (خطأ);
+    بدل (u.b.format) {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_HINTING
+    حالة 1: حالة 2: حالة 3:
       hb_barrier ();
       return_trace (u.hinting.sanitize (c));
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
       return_trace (u.variation.sanitize (c));
-#endif
-    default:
-      return_trace (true);
+#جيڪڏهن_پورو
+    افتراضي:
+      return_trace (سچ);
     }
   }
 
   Device* copy (hb_serialize_context_t *c,
-                const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map=nullptr) const
+                ثابت hb_hashmap_t<بنانشان, hb_pair_t<بنانشان, صحيح>> *layout_variation_idx_delta_map=خالي_اشارو) ثابت
   {
-    TRACE_SERIALIZE (this);
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
+    TRACE_SERIALIZE (هذا);
+    بدل (u.b.format) {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_HINTING
+    حالة 1:
+    حالة 2:
+    حالة 3:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.hinting.copy (c)));
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.variation.copy (c, layout_variation_idx_delta_map)));
-#endif
-    default:
-      return_trace (nullptr);
+#جيڪڏهن_پورو
+    افتراضي:
+      return_trace (خالي_اشارو);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
-      return;
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+    بدل (u.b.format) {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_HINTING
+    حالة 1:
+    حالة 2:
+    حالة 3:
+      أرجع;
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
-      u.variation.collect_variation_index (c);
-      return;
-#endif
-    default:
-      return;
+      u.variation.collect_variation_اشاريو (c);
+      أرجع;
+#جيڪڏهن_پورو
+    افتراضي:
+      أرجع;
     }
   }
 
-  unsigned get_variation_index () const
+  بنانشان get_variation_اشاريو () ثابت
   {
-    switch (u.b.format) {
-#ifndef HB_NO_VAR
-    case 0x8000:
+    بدل (u.b.format) {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
       hb_barrier ();
-      return u.variation.varIdx;
-#endif
-    default:
-      return HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      أرجع u.variation.varIdx;
+#جيڪڏهن_پورو
+    افتراضي:
+      أرجع HB_OT_LAYOUT_NO_VARIATIONS_اشاريو;
     }
   }
 
-  bool is_variation_device () const
+  منطقي is_variation_device () ثابت
   {
-    switch (u.b.format) {
-#ifndef HB_NO_VAR
-    case 0x8000:
-      return true;
-#endif
-    default:
-      return false;
+    بدل (u.b.format) {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
+    حالة 0x8000:
+      أرجع سچ;
+#جيڪڏهن_پورو
+    افتراضي:
+      أرجع خطأ;
     }
   }
 
-  protected:
-  union {
-  DeviceHeader		b;
+  محمي:
+  اتحاد {
+  Device_سرو		b;
   HintingDevice		hinting;
-#ifndef HB_NO_VAR
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
   VariationDevice	variation;
-#endif
+#جيڪڏهن_پورو
   } u;
-  public:
-  DEFINE_SIZE_UNION (6, b);
+  عام:
+  DEFINE_سائيز_UNION (6, b);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_COMMON_HH */
+#جيڪڏهن_پورو /* HB_OT_LAYOUT_COMMON_HH */

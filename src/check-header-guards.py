@@ -1,48 +1,48 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+استورد os
+استورد re
+استورد sys
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+بنياد_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 
-def removeprefix(s):
-    abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+وصف removeprefix(s):
+    abs_رستو = os.رستو.join(بنياد_srcdir, s)
+    أرجع os.رستو.relpath(abs_رستو, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.رستو.basename(x) لكل x في os.getenv("HBHEADERS", "").ورهايو()] أو [
+    x لكل x في os.listdir(".") إذا x.startswith("hb") و x.endswith(".h")
 ]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) لكل x في os.getenv("HBSOURCES", "").ورهايو()] أو [
+    x لكل x في os.listdir(".") إذا x.startswith("hb") و x.endswith((".cc", ".hh"))
 ]
 
 
 stat = 0
 
-for x in HBHEADERS + HBSOURCES:
-    if not x.endswith("h") or x == "hb-gobject-structs.h":
-        continue
-    print(f"Checking {x}")
-    tag = (
-        x.upper()
+لكل x في HBHEADERS + HBSOURCES:
+    إذا ليس x.endswith("h") أو x == "hb-gobject-structs.h":
+        استمر
+    ڇاپيو(f"Checking {x}")
+    ٽيگ_2 = (
+        x.مٿانهون()
         .replace(".", "_")
         .replace("-", "_")
-        .replace(os.path.sep, "_")
+        .replace(os.رستو.sep, "_")
         .replace("/", "_")
     )
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if len(re.findall(tag + r"\b", content)) != 3:
-        print(
+    سان open(x, "r", encoding="utf-8") كـ f:
+        content = f.اقرأ()
+    إذا ڊيگهه(re.findall(ٽيگ_2 + r"\b", content)) != 3:
+        ڇاپيو(
             "Ouch, header file %s does not have correct preprocessor guards. Expected: %s"
-            % (x, tag)
+            % (x, ٽيگ_2)
         )
         stat = 1
 

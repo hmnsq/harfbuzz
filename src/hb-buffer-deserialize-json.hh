@@ -1,5 +1,5 @@
 
-#line 1 "hb-buffer-deserialize-json.rl"
+#سٽ 1 "hb-buffer-deserialize-json.rl"
 /*
  * Copyright © 2013  Google, Inc.
  *
@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_DESERIALIZE_JSON_HH
-#define HB_BUFFER_DESERIALIZE_JSON_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_بفر_DESERIALIZE_JSON_HH
+#وصف_ڪريو HB_بفر_DESERIALIZE_JSON_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
-#line 33 "hb-buffer-deserialize-json.hh"
-static const unsigned char _deserialize_json_trans_keys[] = {
+#سٽ 33 "hb-buffer-deserialize-json.hh"
+ساكن ثابت بنانشان حرف deserialize_json_trans_ڪنجيون[] = {
 	0u, 0u, 9u, 34u, 97u, 121u, 120u, 121u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 9u, 93u, 9u, 125u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 108u, 108u, 34u, 34u, 9u, 58u, 9u, 57u, 9u, 125u, 9u, 125u, 
@@ -45,7 +45,7 @@ static const unsigned char _deserialize_json_trans_keys[] = {
 	0
 };
 
-static const char _deserialize_json_key_spans[] = {
+ساكن ثابت حرف deserialize_json_ڪنجي_spans[] = {
 	0, 26, 25, 2, 1, 50, 49, 10, 
 	117, 117, 85, 117, 1, 50, 49, 10, 
 	117, 117, 1, 1, 50, 49, 117, 117, 
@@ -56,7 +56,7 @@ static const char _deserialize_json_key_spans[] = {
 	1, 50, 49, 117, 1, 115, 115, 115
 };
 
-static const short _deserialize_json_index_offsets[] = {
+ساكن ثابت ننڍو deserialize_json_اشاريو_offsets[] = {
 	0, 0, 27, 53, 56, 58, 109, 159, 
 	170, 288, 406, 492, 610, 612, 663, 713, 
 	724, 842, 960, 962, 964, 1015, 1065, 1183, 
@@ -67,7 +67,7 @@ static const short _deserialize_json_index_offsets[] = {
 	3154, 3156, 3207, 3257, 3375, 3377, 3493, 3609
 };
 
-static const char _deserialize_json_indicies[] = {
+ساكن ثابت حرف _deserialize_json_indicies[] = {
 	0, 0, 0, 0, 0, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
@@ -536,7 +536,7 @@ static const char _deserialize_json_indicies[] = {
 	1, 1, 1, 1, 104, 1, 0
 };
 
-static const char _deserialize_json_trans_targs[] = {
+ساكن ثابت حرف _deserialize_json_trans_targs[] = {
 	1, 0, 2, 3, 18, 24, 37, 43, 
 	51, 56, 60, 4, 12, 5, 6, 7, 
 	8, 11, 8, 11, 9, 1, 10, 9, 
@@ -553,7 +553,7 @@ static const char _deserialize_json_trans_targs[] = {
 	1
 };
 
-static const char _deserialize_json_trans_actions[] = {
+ساكن ثابت حرف _deserialize_json_trans_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 1, 
 	1, 1, 0, 0, 2, 2, 2, 0, 
@@ -570,166 +570,166 @@ static const char _deserialize_json_trans_actions[] = {
 	15
 };
 
-static const int deserialize_json_start = 61;
-static const int deserialize_json_first_final = 61;
-static const int deserialize_json_error = 0;
+ساكن ثابت صحيح deserialize_json_شروعات = 61;
+ساكن ثابت صحيح deserialize_json_پهريون_final = 61;
+ساكن ثابت صحيح deserialize_json_error = 0;
 
-static const int deserialize_json_en_main = 61;
-
-
-#line 115 "hb-buffer-deserialize-json.rl"
+ساكن ثابت صحيح deserialize_json_en_main = 61;
 
 
-static hb_bool_t
-_hb_buffer_deserialize_json (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+#سٽ 115 "hb-buffer-deserialize-json.rl"
+
+
+ساكن hb_bool_t
+hb_بفر_deserialize_json (hb_بفر_t *بفر,
+				    ثابت حرف *buf,
+				    بنانشان صحيح buf_len,
+				    ثابت حرف **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len;
+  ثابت حرف *p = buf, *pe = buf + buf_len;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (فراغ) hb_بفر_get_glyph_positions (بفر, خالي_اشارو);
 
-  const char *tok = nullptr;
-  int cs;
+  ثابت حرف *tok = خالي_اشارو;
+  صحيح cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
-#line 594 "hb-buffer-deserialize-json.hh"
+#سٽ 594 "hb-buffer-deserialize-json.hh"
 	{
-	cs = deserialize_json_start;
+	cs = deserialize_json_شروعات;
 	}
 
-#line 597 "hb-buffer-deserialize-json.hh"
+#سٽ 597 "hb-buffer-deserialize-json.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	صحيح _slen;
+	صحيح _trans;
+	ثابت بنانشان حرف *ڪنجيون_2;
+	ثابت حرف *_inds;
+	إذا ( p == pe )
+		اذهب _test_eof;
+	إذا ( cs == 0 )
+		اذهب ٻاهريون_2;
 _resume:
-	_keys = _deserialize_json_trans_keys + (cs<<1);
-	_inds = _deserialize_json_indicies + _deserialize_json_index_offsets[cs];
+	ڪنجيون_2 = deserialize_json_trans_ڪنجيون + (cs<<1);
+	_inds = _deserialize_json_indicies + deserialize_json_اشاريو_offsets[cs];
 
-	_slen = _deserialize_json_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_json_ڪنجي_spans[cs];
+	_trans = _inds[ _slen > 0 && ڪنجيون_2[0] <=(*p) &&
+		(*p) <= ڪنجيون_2[1] ?
+		(*p) - ڪنجيون_2[0] : _slen ];
 
 	cs = _deserialize_json_trans_targs[_trans];
 
-	if ( _deserialize_json_trans_actions[_trans] == 0 )
-		goto _again;
+	إذا ( _deserialize_json_trans_actions[_trans] == 0 )
+		اذهب _again;
 
-	switch ( _deserialize_json_trans_actions[_trans] ) {
-	case 15:
-#line 38 "hb-buffer-deserialize-json.rl"
+	بدل ( _deserialize_json_trans_actions[_trans] ) {
+	حالة 15:
+#سٽ 38 "hb-buffer-deserialize-json.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
 }
-	break;
-	case 3:
-#line 43 "hb-buffer-deserialize-json.rl"
+	اكسر;
+	حالة 3:
+#سٽ 43 "hb-buffer-deserialize-json.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	buffer->pos[buffer->len - 1] = pos;
+	بفر->جوڙيو_info (info);
+	إذا (unlikely (!بفر->successful))
+	  أرجع خطأ;
+	بفر->pos[بفر->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-	case 1:
-#line 51 "hb-buffer-deserialize-json.rl"
+	اكسر;
+	حالة 1:
+#سٽ 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
-#line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 14:
-#line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-	case 11:
-#line 58 "hb-buffer-deserialize-json.rl"
+	اكسر;
+	حالة 10:
+#سٽ 55 "hb-buffer-deserialize-json.rl"
+	{ إذا (unlikely (!بفر->ensure_glyphs ())) أرجع خطأ; }
+	اكسر;
+	حالة 14:
+#سٽ 56 "hb-buffer-deserialize-json.rl"
+	{ إذا (unlikely (!بفر->ensure_unicode ())) أرجع خطأ; }
+	اكسر;
+	حالة 11:
+#سٽ 58 "hb-buffer-deserialize-json.rl"
 	{
 	/* TODO Unescape \" and \\ if found. */
-	if (!hb_font_glyph_from_string (font,
+	إذا (!hb_font_glyph_from_string (font,
 					tok+1, p - tok - 2, /* Skip "" */
 					&info.codepoint))
-	  return false;
+	  أرجع خطأ;
 }
-	break;
-	case 12:
-#line 66 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.codepoint)) return false; }
-	break;
-	case 5:
-#line 67 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
-#line 68 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 7:
-#line 69 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 2:
-#line 70 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 4:
-#line 71 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 8:
-#line 72 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
-#line 51 "hb-buffer-deserialize-json.rl"
+	اكسر;
+	حالة 12:
+#سٽ 66 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_uint (tok, p, &info.codepoint)) أرجع خطأ; }
+	اكسر;
+	حالة 5:
+#سٽ 67 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_uint (tok, p, &info.cluster )) أرجع خطأ; }
+	اكسر;
+	حالة 6:
+#سٽ 68 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_int  (tok, p, &pos.x_وٿي_2 )) أرجع خطأ; }
+	اكسر;
+	حالة 7:
+#سٽ 69 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_int  (tok, p, &pos.y_وٿي_2 )) أرجع خطأ; }
+	اكسر;
+	حالة 2:
+#سٽ 70 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_int  (tok, p, &pos.x_advance)) أرجع خطأ; }
+	اكسر;
+	حالة 4:
+#سٽ 71 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_int  (tok, p, &pos.y_advance)) أرجع خطأ; }
+	اكسر;
+	حالة 8:
+#سٽ 72 "hb-buffer-deserialize-json.rl"
+	{ إذا (!parse_uint (tok, p, &info.نقاب    )) أرجع خطأ; }
+	اكسر;
+	حالة 9:
+#سٽ 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-#line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 13:
-#line 51 "hb-buffer-deserialize-json.rl"
+#سٽ 55 "hb-buffer-deserialize-json.rl"
+	{ إذا (unlikely (!بفر->ensure_glyphs ())) أرجع خطأ; }
+	اكسر;
+	حالة 13:
+#سٽ 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-#line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-#line 689 "hb-buffer-deserialize-json.hh"
+#سٽ 56 "hb-buffer-deserialize-json.rl"
+	{ إذا (unlikely (!بفر->ensure_unicode ())) أرجع خطأ; }
+	اكسر;
+#سٽ 689 "hb-buffer-deserialize-json.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	إذا ( cs == 0 )
+		اذهب ٻاهريون_2;
+	إذا ( ++p != pe )
+		اذهب _resume;
 	_test_eof: {}
-	_out: {}
+	ٻاهريون_2: {}
 	}
 
-#line 136 "hb-buffer-deserialize-json.rl"
+#سٽ 136 "hb-buffer-deserialize-json.rl"
 
 
   *end_ptr = p;
 
-  return p == pe;
+  أرجع p == pe;
 }
 
-#endif /* HB_BUFFER_DESERIALIZE_JSON_HH */
+#جيڪڏهن_پورو /* HB_BUFFER_DESERIALIZE_JSON_HH */

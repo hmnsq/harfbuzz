@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_اندريون) && !defined(HB_NO_SINGLE_سرو_ERROR)
+#غلطي "Include <hb-ot.h> instead."
+#جيڪڏهن_پورو
 
-#ifndef HB_OT_METRICS_H
-#define HB_OT_METRICS_H
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_METRICS_H
+#وصف_ڪريو HB_OT_METRICS_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#ضمن "hb.h"
+#ضمن "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -71,59 +71,59 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
-  HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER		= HB_TAG ('h','a','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER	= HB_TAG ('h','d','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP		= HB_TAG ('h','l','g','p'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT	= HB_TAG ('h','c','l','a'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT	= HB_TAG ('h','c','l','d'),
-  HB_OT_METRICS_TAG_VERTICAL_ASCENDER		= HB_TAG ('v','a','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_DESCENDER		= HB_TAG ('v','d','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_LINE_GAP		= HB_TAG ('v','l','g','p'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE	= HB_TAG ('h','c','r','s'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN	= HB_TAG ('h','c','r','n'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET	= HB_TAG ('h','c','o','f'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_RISE		= HB_TAG ('v','c','r','s'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_RUN		= HB_TAG ('v','c','r','n'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET	= HB_TAG ('v','c','o','f'),
-  HB_OT_METRICS_TAG_X_HEIGHT			= HB_TAG ('x','h','g','t'),
-  HB_OT_METRICS_TAG_CAP_HEIGHT			= HB_TAG ('c','p','h','t'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE		= HB_TAG ('s','b','x','s'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE		= HB_TAG ('s','b','y','s'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET	= HB_TAG ('s','b','x','o'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET	= HB_TAG ('s','b','y','o'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE	= HB_TAG ('s','p','x','s'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE	= HB_TAG ('s','p','y','s'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET	= HB_TAG ('s','p','x','o'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET	= HB_TAG ('s','p','y','o'),
-  HB_OT_METRICS_TAG_STRIKEOUT_SIZE		= HB_TAG ('s','t','r','s'),
-  HB_OT_METRICS_TAG_STRIKEOUT_OFFSET		= HB_TAG ('s','t','r','o'),
-  HB_OT_METRICS_TAG_UNDERLINE_SIZE		= HB_TAG ('u','n','d','s'),
-  HB_OT_METRICS_TAG_UNDERLINE_OFFSET		= HB_TAG ('u','n','d','o'),
+تعريفنوع تعداد {
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_ASCENDER		= HB_ٽيگ ('h','a','s','c'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_DESCENDER	= HB_ٽيگ ('h','d','s','c'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_سٽ_GAP		= HB_ٽيگ ('h','l','g','p'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_CLIPPING_ASCENT	= HB_ٽيگ ('h','c','l','a'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_CLIPPING_DESCENT	= HB_ٽيگ ('h','c','l','d'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_ASCENDER		= HB_ٽيگ ('v','a','s','c'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_DESCENDER		= HB_ٽيگ ('v','d','s','c'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_سٽ_GAP		= HB_ٽيگ ('v','l','g','p'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_RISE	= HB_ٽيگ ('h','c','r','s'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_لاڳيتو	= HB_ٽيگ ('h','c','r','n'),
+  HB_OT_METRICS_ٽيگ_HORIZONTAL_CARET_وٿي	= HB_ٽيگ ('h','c','o','f'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_CARET_RISE		= HB_ٽيگ ('v','c','r','s'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_CARET_لاڳيتو		= HB_ٽيگ ('v','c','r','n'),
+  HB_OT_METRICS_ٽيگ_VERTICAL_CARET_وٿي	= HB_ٽيگ ('v','c','o','f'),
+  HB_OT_METRICS_ٽيگ_X_اوچائي			= HB_ٽيگ ('x','h','g','t'),
+  HB_OT_METRICS_ٽيگ_CAP_اوچائي			= HB_ٽيگ ('c','p','h','t'),
+  HB_OT_METRICS_ٽيگ_SUBSCRIPT_EM_X_سائيز		= HB_ٽيگ ('s','b','x','s'),
+  HB_OT_METRICS_ٽيگ_SUBSCRIPT_EM_Y_سائيز		= HB_ٽيگ ('s','b','y','s'),
+  HB_OT_METRICS_ٽيگ_SUBSCRIPT_EM_X_وٿي	= HB_ٽيگ ('s','b','x','o'),
+  HB_OT_METRICS_ٽيگ_SUBSCRIPT_EM_Y_وٿي	= HB_ٽيگ ('s','b','y','o'),
+  HB_OT_METRICS_ٽيگ_SUPERSCRIPT_EM_X_سائيز	= HB_ٽيگ ('s','p','x','s'),
+  HB_OT_METRICS_ٽيگ_SUPERSCRIPT_EM_Y_سائيز	= HB_ٽيگ ('s','p','y','s'),
+  HB_OT_METRICS_ٽيگ_SUPERSCRIPT_EM_X_وٿي	= HB_ٽيگ ('s','p','x','o'),
+  HB_OT_METRICS_ٽيگ_SUPERSCRIPT_EM_Y_وٿي	= HB_ٽيگ ('s','p','y','o'),
+  HB_OT_METRICS_ٽيگ_STRIKEOUT_سائيز		= HB_ٽيگ ('s','t','r','s'),
+  HB_OT_METRICS_ٽيگ_STRIKEOUT_وٿي		= HB_ٽيگ ('s','t','r','o'),
+  HB_OT_METRICS_ٽيگ_UNDERLINE_سائيز		= HB_ٽيگ ('u','n','d','s'),
+  HB_OT_METRICS_ٽيگ_UNDERLINE_وٿي		= HB_ٽيگ ('u','n','d','o'),
 
   /*< private >*/
-  _HB_OT_METRICS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_metrics_tag_t;
+  HB_OT_METRICS_ٽيگ_MAX_قدر = HB_ٽيگ_MAX_SIGNED /*< skip >*/
+} hb_ot_metrics_ٽيگ_t;
 
 HB_EXTERN hb_bool_t
 hb_ot_metrics_get_position (hb_font_t           *font,
-			    hb_ot_metrics_tag_t  metrics_tag,
+			    hb_ot_metrics_ٽيگ_t  metrics_ٽيگ,
 			    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
-					  hb_ot_metrics_tag_t  metrics_tag,
-					  hb_position_t       *position     /* OUT */);
+					  hb_ot_metrics_ٽيگ_t  metrics_ٽيگ,
+					  hb_position_t       *position     /*ٻاهريون*/);
 
-HB_EXTERN float
-hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
-
-HB_EXTERN hb_position_t
-hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
+HB_EXTERN عائم
+hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_ٽيگ_t metrics_ٽيگ);
 
 HB_EXTERN hb_position_t
-hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
+hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_ٽيگ_t metrics_ٽيگ);
 
-HB_END_DECLS
+HB_EXTERN hb_position_t
+hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_ٽيگ_t metrics_ٽيگ);
 
-#endif /* HB_OT_METRICS_H */
+HB_پڇاڙي_DECLS
+
+#جيڪڏهن_پورو /* HB_OT_METRICS_H */

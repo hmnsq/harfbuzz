@@ -24,96 +24,96 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
-#define HB_OT_LAYOUT_JSTF_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_LAYOUT_JSTF_جدول_HH
+#وصف_ڪريو HB_OT_LAYOUT_JSTF_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
 /*
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+تعريفنوع اشاريو_Array JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+تعريفنوع List16_جو_Offset16_منزل<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+بنية Jstf_ترجيح
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  shrinkageEnableGSUB.sanitize (c, هذا) &&
+		  shrinkageDisableGSUB.sanitize (c, هذا) &&
+		  shrinkageEnableGPOS.sanitize (c, هذا) &&
+		  shrinkageDisableGPOS.sanitize (c, هذا) &&
+		  shrinkageJstfMax.sanitize (c, هذا) &&
+		  extensionEnableGSUB.sanitize (c, هذا) &&
+		  extensionDisableGSUB.sanitize (c, هذا) &&
+		  extensionEnableGPOS.sanitize (c, هذا) &&
+		  extensionDisableGPOS.sanitize (c, هذا) &&
+		  extensionJstfMax.sanitize (c, هذا));
   }
 
-  protected:
-  Offset16To<JstfModList>
+  محمي:
+  Offset16_منزل<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		shrinkageDisableGSUB;	/* Offset to Shrinkage Disable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		shrinkageEnableGPOS;	/* Offset to Shrinkage Enable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		shrinkageDisableGPOS;	/* Offset to Shrinkage Disable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfMax>
+  Offset16_منزل<JstfMax>
 		shrinkageJstfMax;	/* Offset to Shrinkage JstfMax table--
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		extensionEnableGSUB;	/* Offset to Extension Enable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		extensionDisableGSUB;	/* Offset to Extension Disable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		extensionEnableGPOS;	/* Offset to Extension Enable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_منزل<JstfModList>
 		extensionDisableGPOS;	/* Offset to Extension Disable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfMax>
+  Offset16_منزل<JstfMax>
 		extensionJstfMax;	/* Offset to Extension JstfMax table--
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  عام:
+  DEFINE_سائيز_STATIC (20);
 };
 
 
@@ -121,13 +121,13 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+بنية JstfLangSys : List16_جو_Offset16_منزل<Jstf_ترجيح>
 {
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت رڪارڊ_sanitize_گهيرو_t * = خالي_اشارو) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (List16_جو_Offset16_منزل<Jstf_ترجيح>::sanitize (c));
   }
 };
 
@@ -136,102 +136,102 @@ struct JstfLangSys : List16OfOffset16To<JstfPriority>
  * ExtenderGlyphs -- Extender Glyph Table
  */
 
-template <typename Types>
-using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
+سانچو <قسم_نالو Types>
+استعمال ExtenderGlyphs = Sorted_Array16_جو<قسم_نالو Types::HBGlyphID>;
 
 
 /*
  * JstfScript -- The Justification Table
  */
 
-template <typename Types>
-struct JstfScript
+سانچو <قسم_نالو Types>
+بنية JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  بنانشان صحيح get_lang_sys_ڳڻپ () ثابت
+  { أرجع langSys.len; }
+  ثابت ٽيگ& get_lang_sys_ٽيگ (بنانشان صحيح i) ثابت
+  { أرجع langSys.get_ٽيگ (i); }
+  بنانشان صحيح get_lang_sys_ٽيگ_فهرست (بنانشان صحيح شروعات_وٿي,
+				  بنانشان صحيح *lang_sys_ڳڻپ /* IN/OUT */,
+				  hb_ٽيگ_t     *lang_sys_ٽيگ_فهرست /*ٻاهريون*/) ثابت
+  { أرجع langSys.get_ٽيگ_فهرست (شروعات_وٿي, lang_sys_ڳڻپ, lang_sys_ٽيگ_فهرست); }
+  ثابت JstfLangSys& get_lang_sys (بنانشان صحيح i) ثابت
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    إذا (i == اشاريو::NOT_مليو_اشاريو) أرجع get_default_lang_sys ();
+    أرجع هذا+langSys[i].وٿي;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  منطقي ڳوليو_lang_sys_اشاريو (hb_ٽيگ_t ٽيگ_2, بنانشان صحيح *اشاريو_2) ثابت
+  { أرجع langSys.ڳوليو_اشاريو (ٽيگ_2, اشاريو_2); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  منطقي has_default_lang_sys () ثابت               { أرجع defaultLangSys != 0; }
+  ثابت JstfLangSys& get_default_lang_sys () ثابت { أرجع هذا+defaultLangSys; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت رڪارڊ_sanitize_گهيرو_t * = خالي_اشارو) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (extenderGlyphs.sanitize (c, هذا) &&
+		  defaultLangSys.sanitize (c, هذا) &&
+		  langSys.sanitize (c, هذا));
   }
 
-  protected:
-  typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
+  محمي:
+  قسم_نالو Types::سانچو LOffset_منزل<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
-  typename Types::template LOffsetTo<JstfLangSys>
+  قسم_نالو Types::سانچو LOffset_منزل<JstfLangSys>
 		defaultLangSys;	/* Offset to DefaultJstfLangSys table--from
 				 * beginning of JstfScript table--may be Null */
-  RecordArrayOf<JstfLangSys>
+  رڪارڊ_Array_جو<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
-  DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
+  عام:
+  DEFINE_سائيز_ARRAY (2 * Types::LOffset::static_سائيز + 2, langSys);
 };
 
-template <typename Types>
-struct JstfScriptRecord
+سانچو <قسم_نالو Types>
+بنية Jstf_Script_رڪارڊ
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  صحيح cmp (hb_ٽيگ_t a) ثابت { أرجع ٽيگ_2.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, base, &closure));
+    TRACE_SANITIZE (هذا);
+    ثابت رڪارڊ_sanitize_گهيرو_t گهيرو = {ٽيگ_2, بنياد};
+    return_trace (c->check_struct (هذا) &&
+		  وٿي.sanitize (c, بنياد, &گهيرو));
   }
 
-  Tag		tag;		/* 4-byte JstfScript identification tag */
-  typename Types::template LOffsetTo<JstfScript<Types>>
-		offset;		/* Offset from beginning of JSTF header */
-  public:
-  DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
+  ٽيگ		ٽيگ_2;		/* 4-byte JstfScript identification tag */
+  قسم_نالو Types::سانچو LOffset_منزل<JstfScript<Types>>
+		وٿي;		/* Offset from beginning of JSTF header */
+  عام:
+  DEFINE_سائيز_STATIC (4 + Types::LOffset::static_سائيز);
 };
 
-template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+سانچو <قسم_نالو Types>
+بنية JstfScriptList : Sorted_Array16_جو<Jstf_Script_رڪارڊ<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  ثابت ٽيگ& get_ٽيگ (بنانشان صحيح i) ثابت
+  { أرجع (*هذا)[i].ٽيگ_2; }
+  بنانشان صحيح get_ٽيگ_فهرست (بنانشان صحيح شروعات_وٿي,
+			 بنانشان صحيح *script_ڳڻپ /* IN/OUT */,
+			 hb_ٽيگ_t     *script_ٽيگ_فهرست /*ٻاهريون*/) ثابت
   {
-    if (script_count)
+    إذا (script_ڳڻپ)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
-      | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      + هذا->as_array ().sub_array (شروعات_وٿي, script_ڳڻپ)
+      | hb_map (&Jstf_Script_رڪارڊ<Types>::ٽيگ_2)
+      | hb_sink (hb_array (script_ٽيگ_فهرست, *script_ڳڻپ))
       ;
     }
-    return this->len;
+    أرجع هذا->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  ثابت JstfScript<Types>& get_script (ثابت فراغ *بنياد, بنانشان صحيح i) ثابت
+  { أرجع بنياد+(*هذا)[i].وٿي; }
+  منطقي ڳوليو_اشاريو (hb_ٽيگ_t ٽيگ_2, بنانشان صحيح *اشاريو_2) ثابت
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    أرجع هذا->bfind (ٽيگ_2, اشاريو_2, HB_NOT_مليو_STORE, اشاريو::NOT_مليو_اشاريو);
   }
 };
 
@@ -241,97 +241,97 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+بنية JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_JSTF;
 
-  unsigned int get_script_count () const
+  بنانشان صحيح get_script_ڳڻپ () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
-#endif
-    return scriptList.len;
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().len;
+#جيڪڏهن_پورو
+    أرجع scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  ثابت ٽيگ& get_script_ٽيگ (بنانشان صحيح i) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
-#endif
-    return scriptList.get_tag (i);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().get_ٽيگ (i);
+#جيڪڏهن_پورو
+    أرجع scriptList.get_ٽيگ (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  بنانشان صحيح get_script_ٽيگ_فهرست (بنانشان صحيح شروعات_وٿي,
+				بنانشان صحيح *script_ڳڻپ /* IN/OUT */,
+				hb_ٽيگ_t     *script_ٽيگ_فهرست /*ٻاهريون*/) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
-#endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (has_script_list2 ())
+      أرجع get_script_list2 ().get_ٽيگ_فهرست (شروعات_وٿي, script_ڳڻپ, script_ٽيگ_فهرست);
+#جيڪڏهن_پورو
+    أرجع scriptList.get_ٽيگ_فهرست (شروعات_وٿي, script_ڳڻپ, script_ٽيگ_فهرست);
   }
-  template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  سانچو <قسم_نالو Types>
+  ثابت JstfScript<Types>& get_script (بنانشان صحيح i) ثابت;
+  منطقي ڳوليو_script_اشاريو (hb_ٽيگ_t ٽيگ_2, بنانشان صحيح *اشاريو_2) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
-#endif
-    return scriptList.find_index (tag, index);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().ڳوليو_اشاريو (ٽيگ_2, اشاريو_2);
+#جيڪڏهن_پورو
+    أرجع scriptList.ڳوليو_اشاريو (ٽيگ_2, اشاريو_2);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!نسخو.sanitize (c) ||
 		  !hb_barrier () ||
-		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
-      return_trace (false);
-#ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
-      return_trace (false);
-#endif
-    return_trace (true);
+		  نسخو.major != 1 ||
+		  !scriptList.sanitize (c, هذا)))
+      return_trace (خطأ);
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (unlikely (نسخو.minor >= 1 && !get_script_list2 ().sanitize (c, هذا)))
+      return_trace (خطأ);
+#جيڪڏهن_پورو
+    return_trace (سچ);
   }
 
-  private:
-#ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
-#endif
+  خاص:
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+  منطقي has_script_list2 () ثابت
+  { أرجع نسخو.minor >= 1 && get_script_list2 ().len; }
+  ثابت JstfScriptList<Layout::MediumTypes>& get_script_list2 () ثابت
+  { أرجع StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+#جيڪڏهن_پورو
 
-  protected:
-  FixedVersion<>version;	/* Version of the JSTF table--initially set
+  محمي:
+  Fixed_نسخو<>نسخو;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
 		scriptList;	/* Array of JstfScripts--listed
 				 * alphabetically by ScriptTag */
-#ifndef HB_NO_BEYOND_64K
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
 /*JstfScriptList<Layout::MediumTypes>
 		scriptList2;*//* Array of JstfScript2s--listed
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
-#endif
-  public:
-  DEFINE_SIZE_ARRAY (6, scriptList);
+#جيڪڏهن_پورو
+  عام:
+  DEFINE_سائيز_ARRAY (6, scriptList);
 };
 
-template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+سانچو <>
+مضمن ثابت JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (بنانشان صحيح i) ثابت
+{ أرجع scriptList.get_script (هذا, i); }
 
-#ifndef HB_NO_BEYOND_64K
-template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
-#endif
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+سانچو <>
+مضمن ثابت JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (بنانشان صحيح i) ثابت
+{ أرجع get_script_list2 ().get_script (هذا, i); }
+#جيڪڏهن_پورو
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_JSTF_TABLE_HH */
+#جيڪڏهن_پورو /* HB_OT_LAYOUT_JSTF_TABLE_HH */

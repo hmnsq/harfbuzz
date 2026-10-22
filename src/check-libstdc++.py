@@ -1,46 +1,46 @@
 #!/usr/bin/env python3
 
-import os
-import shutil
-import subprocess
-import sys
+استورد os
+استورد shutil
+استورد subprocess
+استورد sys
 
-from check_helpers import CHECK_LIBSTDCXX_LIBS
+من check_helpers استورد CHECK_LIBSTDCXX_LIBS
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+بنياد_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 ldd = os.getenv("LDD", shutil.which("ldd"))
-if not ldd:
+إذا ليس ldd:
     otool = os.getenv("OTOOL", shutil.which("otool"))
-    if otool:
+    إذا otool:
         ldd = otool + " -L"
-    else:
-        print("check-libstdc++.py: 'ldd' not found; skipping test")
+    وإلا:
+        ڇاپيو("check-libstdc++.py: 'ldd' not found; skipping test")
         sys.exit(77)
 
 stat = 0
-tested = False
+tested = خطأ
 
-for soname in CHECK_LIBSTDCXX_LIBS:
-    for suffix in ["so", "dylib"]:
-        so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+لكل soname في CHECK_LIBSTDCXX_LIBS:
+    لكل suffix في ["so", "dylib"]:
+        so = os.رستو.join(builddir, "lib%s.%s" % (soname, suffix))
+        إذا ليس os.رستو.exists(so):
+            استمر
 
-        print("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
-        ldd_result = subprocess.check_output(ldd.split() + [so])
-        if (b"libstdc++" in ldd_result) or (b"libc++" in ldd_result):
-            print("Ouch, %s is linked to libstdc++ or libc++" % so)
+        ڇاپيو("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
+        ldd_نتيجو = subprocess.check_output(ldd.ورهايو() + [so])
+        إذا (b"libstdc++" في ldd_نتيجو) أو (b"libc++" في ldd_نتيجو):
+            ڇاپيو("Ouch, %s is linked to libstdc++ or libc++" % so)
             stat = 1
 
-        tested = True
+        tested = سچ
 
-if not tested:
-    print("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
+إذا ليس tested:
+    ڇاپيو("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
     sys.exit(77)
 
 sys.exit(stat)

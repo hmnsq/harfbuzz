@@ -1,290 +1,290 @@
 #!/usr/bin/env python3
 
-import gi
+استورد gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, HarfBuzz as hb
+gi.require_نسخو("Gtk", "3.0")
+من gi.repository استورد Gtk, HarfBuzz كـ hb
 
 
 POOL = {}
 
 
-def move_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.move_to(to_x, to_y)
+وصف move_منزل_f(funcs, draw_معلومات, st, منزل_x, منزل_y, user_معلومات):
+    context = POOL[draw_معلومات]
+    context.move_منزل(منزل_x, منزل_y)
 
 
-def line_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.line_to(to_x, to_y)
+وصف سٽ_منزل_f(funcs, draw_معلومات, st, منزل_x, منزل_y, user_معلومات):
+    context = POOL[draw_معلومات]
+    context.سٽ_منزل(منزل_x, منزل_y)
 
 
-def cubic_to_f(
+وصف cubic_منزل_f(
     funcs,
-    draw_data,
+    draw_معلومات,
     st,
     control1_x,
     control1_y,
     control2_x,
     control2_y,
-    to_x,
-    to_y,
-    user_data,
+    منزل_x,
+    منزل_y,
+    user_معلومات,
 ):
-    context = POOL[draw_data]
-    context.curve_to(control1_x, control1_y, control2_x, control2_y, to_x, to_y)
+    context = POOL[draw_معلومات]
+    context.وڪر_منزل(control1_x, control1_y, control2_x, control2_y, منزل_x, منزل_y)
 
 
-def close_path_f(funcs, draw_data, st, user_data):
-    context = POOL[draw_data]
-    context.close_path()
+وصف close_رستو_f(funcs, draw_معلومات, st, user_معلومات):
+    context = POOL[draw_معلومات]
+    context.close_رستو()
 
 
 DFUNCS = hb.draw_funcs_create()
-hb.draw_funcs_set_move_to_func(DFUNCS, move_to_f, None)
-hb.draw_funcs_set_line_to_func(DFUNCS, line_to_f, None)
-hb.draw_funcs_set_cubic_to_func(DFUNCS, cubic_to_f, None)
-hb.draw_funcs_set_close_path_func(DFUNCS, close_path_f, None)
+hb.draw_funcs_سيٽ_move_منزل_func(DFUNCS, move_منزل_f, ڪجهه_نه)
+hb.draw_funcs_سيٽ_سٽ_منزل_func(DFUNCS, سٽ_منزل_f, ڪجهه_نه)
+hb.draw_funcs_سيٽ_cubic_منزل_func(DFUNCS, cubic_منزل_f, ڪجهه_نه)
+hb.draw_funcs_سيٽ_close_رستو_func(DFUNCS, close_رستو_f, ڪجهه_نه)
 
 
-def push_transform_f(funcs, paint_data, xx, yx, xy, yy, dx, dy, user_data):
-    raise NotImplementedError
+وصف ڌڪو_transform_f(funcs, paint_معلومات, xx, yx, xy, yy, dx, dy, user_معلومات):
+    ارفع NotImplementedError
 
 
-def pop_transform_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+وصف ڪڍو_transform_f(funcs, paint_معلومات, user_معلومات):
+    ارفع NotImplementedError
 
 
-def color_f(funcs, paint_data, is_foreground, color, user_data):
-    context = POOL[paint_data]
+وصف color_f(funcs, paint_معلومات, is_foreground, color, user_معلومات):
+    context = POOL[paint_معلومات]
     r = hb.color_get_red(color) / 255
     g = hb.color_get_green(color) / 255
     b = hb.color_get_blue(color) / 255
     a = hb.color_get_alpha(color) / 255
-    context.set_source_rgba(r, g, b, a)
+    context.سيٽ_ذريعو_rgba(r, g, b, a)
     context.paint()
 
 
-def push_clip_rectangle_f(funcs, paint_data, xmin, ymin, xmax, ymax, user_data):
-    context = POOL[paint_data]
+وصف ڌڪو_clip_rectangle_f(funcs, paint_معلومات, xmin, ymin, xmax, ymax, user_معلومات):
+    context = POOL[paint_معلومات]
     context.save()
     context.rectangle(xmin, ymin, xmax, ymax)
     context.clip()
 
 
-def push_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
-    context = POOL[paint_data]
+وصف ڌڪو_clip_glyph_f(funcs, paint_معلومات, glyph, font, user_معلومات):
+    context = POOL[paint_معلومات]
     context.save()
-    context.new_path()
-    hb.font_draw_glyph(font, glyph, DFUNCS, paint_data)
-    context.close_path()
+    context.new_رستو()
+    hb.font_draw_glyph(font, glyph, DFUNCS, paint_معلومات)
+    context.close_رستو()
     context.clip()
 
 
-def pop_clip_f(funcs, paint_data, user_data):
-    context = POOL[paint_data]
+وصف ڪڍو_clip_f(funcs, paint_معلومات, user_معلومات):
+    context = POOL[paint_معلومات]
     context.restore()
 
 
-def push_group_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+وصف ڌڪو_گروهه_f(funcs, paint_معلومات, user_معلومات):
+    ارفع NotImplementedError
 
 
-def pop_group_f(funcs, paint_data, mode, user_data):
-    raise NotImplementedError
+وصف ڪڍو_گروهه_f(funcs, paint_معلومات, گهڻائي, user_معلومات):
+    ارفع NotImplementedError
 
 
 PFUNCS = hb.paint_funcs_create()
-hb.paint_funcs_set_push_transform_func(PFUNCS, push_transform_f, None)
-hb.paint_funcs_set_pop_transform_func(PFUNCS, pop_transform_f, None)
-hb.paint_funcs_set_color_func(PFUNCS, color_f, None)
-hb.paint_funcs_set_push_clip_glyph_func(PFUNCS, push_clip_glyph_f, None)
-hb.paint_funcs_set_push_clip_rectangle_func(PFUNCS, push_clip_rectangle_f, None)
-hb.paint_funcs_set_pop_clip_func(PFUNCS, pop_clip_f, None)
-hb.paint_funcs_set_push_group_func(PFUNCS, push_group_f, None)
-hb.paint_funcs_set_pop_group_func(PFUNCS, pop_group_f, None)
+hb.paint_funcs_سيٽ_ڌڪو_transform_func(PFUNCS, ڌڪو_transform_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڪڍو_transform_func(PFUNCS, ڪڍو_transform_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_color_func(PFUNCS, color_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڌڪو_clip_glyph_func(PFUNCS, ڌڪو_clip_glyph_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڌڪو_clip_rectangle_func(PFUNCS, ڌڪو_clip_rectangle_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڪڍو_clip_func(PFUNCS, ڪڍو_clip_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڌڪو_گروهه_func(PFUNCS, ڌڪو_گروهه_f, ڪجهه_نه)
+hb.paint_funcs_سيٽ_ڪڍو_گروهه_func(PFUNCS, ڪڍو_گروهه_f, ڪجهه_نه)
 
 
-def makebuffer(words):
-    buf = hb.buffer_create()
+وصف makebuffer(لفظ_2):
+    buf = hb.بفر_create()
 
-    text = " ".join(words)
-    hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
+    متن = " ".join(لفظ_2)
+    hb.بفر_جوڙيو_codepoints(buf, [ord(c) لكل c في متن], 0, ڊيگهه(متن))
 
-    hb.buffer_guess_segment_properties(buf)
+    hb.بفر_guess_segment_properties(buf)
 
-    return buf
+    أرجع buf
 
 
-def justify(face, words, advance, target_advance):
+وصف justify(face, لفظ_2, advance, هدف_advance):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(لفظ_2)
 
     wiggle = 5
-    shrink = target_advance - wiggle < advance
-    expand = target_advance + wiggle > advance
+    shrink = هدف_advance - wiggle < advance
+    expand = هدف_advance + wiggle > advance
 
-    ret, advance, tag, value = hb.shape_justify(
+    ret, advance, ٽيگ_2, قدر_2 = hb.shape_justify(
         font,
         buf,
-        None,
-        None,
-        target_advance,
-        target_advance,
+        ڪجهه_نه,
+        ڪجهه_نه,
+        هدف_advance,
+        هدف_advance,
         advance,
     )
 
-    if not ret:
-        return False, buf, None
+    إذا ليس ret:
+        أرجع خطأ, buf, ڪجهه_نه
 
-    if tag:
+    إذا ٽيگ_2:
         variation = hb.variation_t()
-        variation.tag = tag
-        variation.value = value
-    else:
-        variation = None
+        variation.ٽيگ_2 = ٽيگ_2
+        variation.قدر_2 = قدر_2
+    وإلا:
+        variation = ڪجهه_نه
 
-    if shrink and advance > target_advance + wiggle:
-        return False, buf, variation
-    if expand and advance < target_advance - wiggle:
-        return False, buf, variation
+    إذا shrink و advance > هدف_advance + wiggle:
+        أرجع خطأ, buf, variation
+    إذا expand و advance < هدف_advance - wiggle:
+        أرجع خطأ, buf, variation
 
-    return True, buf, variation
+    أرجع سچ, buf, variation
 
 
-def shape(face, words):
+وصف shape(face, لفظ_2):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(لفظ_2)
     hb.shape(font, buf)
-    positions = hb.buffer_get_glyph_positions(buf)
-    advance = sum(p.x_advance for p in positions)
-    return buf, advance
+    positions = hb.بفر_get_glyph_positions(buf)
+    advance = جوڙ(p.x_advance لكل p في positions)
+    أرجع buf, advance
 
 
-def typeset(face, text, target_advance):
-    lines = []
-    words = []
-    for word in text.split():
-        words.append(word)
-        buf, advance = shape(face, words)
-        if advance > target_advance:
+وصف typeset(face, متن, هدف_advance):
+    سٽون = []
+    لفظ_2 = []
+    لكل لفظ_3 في متن.ورهايو():
+        لفظ_2.append(لفظ_3)
+        buf, advance = shape(face, لفظ_2)
+        إذا advance > هدف_advance:
             # Shrink
-            ret, buf, variation = justify(face, words, advance, target_advance)
-            if ret:
-                lines.append((buf, variation))
-                words = []
+            ret, buf, variation = justify(face, لفظ_2, advance, هدف_advance)
+            إذا ret:
+                سٽون.append((buf, variation))
+                لفظ_2 = []
             # If if fails, pop the last word and shrink, and hope for the best.
             # A too short line is better than too long.
-            elif len(words) > 1:
-                words.pop()
-                _, buf, variation = justify(face, words, advance, target_advance)
-                lines.append((buf, variation))
-                words = [word]
+            وإلاإذا ڊيگهه(لفظ_2) > 1:
+                لفظ_2.ڪڍو()
+                _, buf, variation = justify(face, لفظ_2, advance, هدف_advance)
+                سٽون.append((buf, variation))
+                لفظ_2 = [لفظ_3]
             # But if it is one word, meh.
-            else:
-                lines.append((buf, variation))
-                words = []
+            وإلا:
+                سٽون.append((buf, variation))
+                لفظ_2 = []
 
     # Justify last line
-    if words:
-        _, buf, variation = justify(face, words, advance, target_advance)
-        lines.append((buf, variation))
+    إذا لفظ_2:
+        _, buf, variation = justify(face, لفظ_2, advance, هدف_advance)
+        سٽون.append((buf, variation))
 
-    return lines
+    أرجع سٽون
 
 
-def render(face, text, context, width, height, fontsize):
+وصف render(face, متن, context, ويڪر, اوچائي, fontsize):
     font = hb.font_create(face)
 
     margin = fontsize * 2
     scale = fontsize / hb.face_get_upem(face)
-    target_advance = (width - (margin * 2)) / scale
+    هدف_advance = (ويڪر - (margin * 2)) / scale
 
-    lines = typeset(face, text, target_advance)
+    سٽون = typeset(face, متن, هدف_advance)
 
     _, extents = hb.font_get_h_extents(font)
-    lineheight = extents.ascender - extents.descender + extents.line_gap
+    lineheight = extents.ascender - extents.descender + extents.سٽ_gap
     lineheight *= scale
 
     context.save()
     context.translate(0, margin)
-    context.set_font_size(12)
-    context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
-        rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
-        if rtl:
-            hb.buffer_reverse(buf)
-        infos = hb.buffer_get_glyph_infos(buf)
-        positions = hb.buffer_get_glyph_positions(buf)
-        advance = sum(p.x_advance for p in positions)
+    context.سيٽ_font_سائيز(12)
+    context.سيٽ_ذريعو_rgb(1, 0, 0)
+    لكل buf, variation في سٽون:
+        rtl = hb.بفر_get_direction(buf) == hb.direction_t.RTL
+        إذا rtl:
+            hb.بفر_ابتو(buf)
+        infos = hb.بفر_get_glyph_infos(buf)
+        positions = hb.بفر_get_glyph_positions(buf)
+        advance = جوڙ(p.x_advance لكل p في positions)
 
         context.translate(0, lineheight)
         context.save()
 
         context.save()
-        context.move_to(0, -20)
-        if variation:
-            tag = hb.tag_to_string(variation.tag).decode("ascii")
-            context.show_text(f" {tag}={variation.value:g}")
-        context.move_to(0, 0)
-        context.show_text(f" {advance:g}/{target_advance:g}")
+        context.move_منزل(0, -20)
+        إذا variation:
+            ٽيگ_2 = hb.ٽيگ_منزل_string(variation.ٽيگ_2).decode("ascii")
+            context.show_متن(f" {tag}={variation.value:g}")
+        context.move_منزل(0, 0)
+        context.show_متن(f" {advance:g}/{target_advance:g}")
         context.restore()
 
-        if variation:
-            hb.font_set_variations(font, [variation])
+        إذا variation:
+            hb.font_سيٽ_variations(font, [variation])
 
         context.translate(margin, 0)
         context.scale(scale, -scale)
 
-        if rtl:
-            context.translate(target_advance, 0)
+        إذا rtl:
+            context.translate(هدف_advance, 0)
 
-        for info, pos in zip(infos, positions):
-            if rtl:
+        لكل info, pos في zip(infos, positions):
+            إذا rtl:
                 context.translate(-pos.x_advance, pos.y_advance)
             context.save()
-            context.translate(pos.x_offset, pos.y_offset)
+            context.translate(pos.x_وٿي_2, pos.y_وٿي_2)
             hb.font_paint_glyph(font, info.codepoint, PFUNCS, id(context), 0, 0x0000FF)
             context.restore()
-            if not rtl:
+            إذا ليس rtl:
                 context.translate(+pos.x_advance, pos.y_advance)
 
         context.restore()
     context.restore()
 
 
-def main(fontpath, textpath):
+وصف مکيه(fontpath, textpath):
     fontsize = 70
 
     blob = hb.blob_create_from_file(fontpath)
     face = hb.face_create(blob, 0)
 
-    with open(textpath) as f:
-        text = f.read()
+    سان open(textpath) كـ f:
+        متن = f.اقرأ()
 
-    def on_draw(da, context):
-        alloc = da.get_allocation()
+    وصف on_draw(da, context):
+        alloc = da.get_ورهاست()
         POOL[id(context)] = context
-        render(face, text, context, alloc.width, alloc.height, fontsize)
-        del POOL[id(context)]
+        render(face, متن, context, alloc.ويڪر, alloc.اوچائي, fontsize)
+        هٽايو POOL[id(context)]
 
     drawingarea = Gtk.DrawingArea()
     drawingarea.connect("draw", on_draw)
 
-    win = Gtk.Window()
+    win = Gtk.دري()
     win.connect("destroy", Gtk.main_quit)
-    win.set_default_size(1000, 700)
-    win.add(drawingarea)
+    win.سيٽ_default_سائيز(1000, 700)
+    win.جوڙيو(drawingarea)
 
     win.show_all()
-    Gtk.main()
+    Gtk.مکيه()
 
 
-if __name__ == "__main__":
-    import argparse
+إذا __name__ == "__main__":
+    استورد argparse
 
-    parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")
-    parser.add_argument("fontfile", help="font file")
-    parser.add_argument("textfile", help="text")
-    args = parser.parse_args()
-    main(args.fontfile, args.textfile)
+    parser = argparse.دليل_Parser(description="HarfBuzz justification demo.")
+    parser.جوڙيو_دليل("fontfile", help="font file")
+    parser.جوڙيو_دليل("textfile", help="text")
+    دليلون = parser.parse_دليلون()
+    مکيه(دليلون.fontfile, دليلون.textfile)

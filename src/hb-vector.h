@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_H
-#define HB_VECTOR_H
+#جيڪڏهن_وصف_نه_ٿيل HB_ويڪٽر_H
+#وصف_ڪريو HB_ويڪٽر_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -41,11 +41,11 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_FORMAT_INVALID = HB_TAG_NONE,
-  HB_VECTOR_FORMAT_SVG = HB_TAG ('s','v','g',' '),
-  HB_VECTOR_FORMAT_PDF = HB_TAG ('p','d','f',' '),
-} hb_vector_format_t;
+تعريفنوع تعداد {
+  HB_ويڪٽر_FORMAT_INVALID = HB_ٽيگ_NONE,
+  HB_ويڪٽر_FORMAT_SVG = HB_ٽيگ ('s','v','g',' '),
+  HB_ويڪٽر_FORMAT_PDF = HB_ٽيگ ('p','d','f',' '),
+} hb_ويڪٽر_format_t;
 
 /**
  * hb_vector_extents_t:
@@ -58,10 +58,10 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_extents_t {
-  float x, y;
-  float width, height;
-} hb_vector_extents_t;
+تعريفنوع بنية hb_ويڪٽر_extents_t {
+  عائم x, y;
+  عائم ويڪر, اوچائي;
+} hb_ويڪٽر_extents_t;
 
 /**
  * hb_vector_extents_mode_t:
@@ -72,10 +72,10 @@ typedef struct hb_vector_extents_t {
  *
  * Since: 13.0.0
  */
-typedef enum {
-  HB_VECTOR_EXTENTS_MODE_NONE = 0,
-  HB_VECTOR_EXTENTS_MODE_EXPAND = 1,
-} hb_vector_extents_mode_t;
+تعريفنوع تعداد {
+  HB_ويڪٽر_EXTENTS_گهڻائي_NONE = 0,
+  HB_ويڪٽر_EXTENTS_گهڻائي_EXPAND = 1,
+} hb_ويڪٽر_extents_گهڻائي_t;
 
 /* hb_vector_draw_t */
 
@@ -86,115 +86,115 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_draw_t hb_vector_draw_t;
+تعريفنوع بنية hb_ويڪٽر_draw_t hb_ويڪٽر_draw_t;
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_ويڪٽر_draw_t *
+hb_ويڪٽر_draw_create_or_fail (hb_ويڪٽر_format_t format);
 
-HB_EXTERN hb_vector_draw_t *
-hb_vector_draw_reference (hb_vector_draw_t *draw);
+HB_EXTERN hb_ويڪٽر_draw_t *
+hb_ويڪٽر_draw_reference (hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_destroy (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_destroy (hb_ويڪٽر_draw_t *draw);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_ويڪٽر_draw_سيٽ_user_معلومات (hb_ويڪٽر_draw_t   *draw,
+                              hb_user_معلومات_ڪنجي_t *ڪنجي_2,
+                              فراغ               *معلومات,
                               hb_destroy_func_t   destroy,
                               hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_ويڪٽر_draw_get_user_معلومات (ثابت hb_ويڪٽر_draw_t   *draw,
+                              hb_user_معلومات_ڪنجي_t *ڪنجي_2);
 
-HB_EXTERN void
-hb_vector_draw_set_transform (hb_vector_draw_t *draw,
-                              float xx, float yx,
-                              float xy, float yy,
-                              float dx, float dy);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_transform (hb_ويڪٽر_draw_t *draw,
+                              عائم xx, عائم yx,
+                              عائم xy, عائم yy,
+                              عائم dx, عائم dy);
 
-HB_EXTERN void
-hb_vector_draw_get_transform (const hb_vector_draw_t *draw,
-                              float *xx, float *yx,
-                              float *xy, float *yy,
-                              float *dx, float *dy);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_get_transform (ثابت hb_ويڪٽر_draw_t *draw,
+                              عائم *xx, عائم *yx,
+                              عائم *xy, عائم *yy,
+                              عائم *dx, عائم *dy);
 
-HB_EXTERN void
-hb_vector_draw_set_scale_factor (hb_vector_draw_t *draw,
-                                 float x_scale_factor,
-                                 float y_scale_factor);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_scale_ضرب_ڪندڙ (hb_ويڪٽر_draw_t *draw,
+                                 عائم x_scale_ضرب_ڪندڙ,
+                                 عائم y_scale_ضرب_ڪندڙ);
 
-HB_EXTERN void
-hb_vector_draw_get_scale_factor (const hb_vector_draw_t *draw,
-                                 float *x_scale_factor,
-                                 float *y_scale_factor);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_get_scale_ضرب_ڪندڙ (ثابت hb_ويڪٽر_draw_t *draw,
+                                 عائم *x_scale_ضرب_ڪندڙ,
+                                 عائم *y_scale_ضرب_ڪندڙ);
 
-HB_EXTERN void
-hb_vector_draw_set_extents (hb_vector_draw_t *draw,
-                            const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_draw_get_extents (const hb_vector_draw_t *draw,
-                            hb_vector_extents_t *extents);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_extents (hb_ويڪٽر_draw_t *draw,
+                            ثابت hb_ويڪٽر_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_set_glyph_extents (hb_vector_draw_t *draw,
-                                  const hb_glyph_extents_t *glyph_extents);
+hb_ويڪٽر_draw_get_extents (ثابت hb_ويڪٽر_draw_t *draw,
+                            hb_ويڪٽر_extents_t *extents);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_draw_get_format (const hb_vector_draw_t *draw);
+HB_EXTERN hb_bool_t
+hb_ويڪٽر_draw_سيٽ_glyph_extents (hb_ويڪٽر_draw_t *draw,
+                                  ثابت hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN hb_ويڪٽر_format_t
+hb_ويڪٽر_draw_get_format (ثابت hb_ويڪٽر_draw_t *draw);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_vector_draw_get_funcs (const hb_vector_draw_t *draw);
+hb_ويڪٽر_draw_get_funcs (ثابت hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_new_path (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_new_رستو (hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_glyph (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_glyph (hb_ويڪٽر_draw_t *draw,
                       hb_font_t *font,
                       hb_codepoint_t glyph,
-                      hb_vector_extents_mode_t extents_mode);
+                      hb_ويڪٽر_extents_گهڻائي_t extents_گهڻائي);
 
 HB_EXTERN hb_bool_t
-hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
+hb_ويڪٽر_draw_glyph_or_fail (hb_ويڪٽر_draw_t *draw,
                               hb_font_t *font,
                               hb_codepoint_t glyph,
-                              hb_vector_extents_mode_t extents_mode);
+                              hb_ويڪٽر_extents_گهڻائي_t extents_گهڻائي);
 
-HB_EXTERN void
-hb_vector_draw_set_precision (hb_vector_draw_t *draw,
-                             unsigned precision);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_precision (hb_ويڪٽر_draw_t *draw,
+                             بنانشان precision);
 
-HB_EXTERN unsigned
-hb_vector_draw_get_precision (const hb_vector_draw_t *draw);
+HB_EXTERN بنانشان
+hb_ويڪٽر_draw_get_precision (ثابت hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_foreground (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_foreground (hb_ويڪٽر_draw_t *draw,
                                hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_foreground (const hb_vector_draw_t *draw);
+hb_ويڪٽر_draw_get_foreground (ثابت hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_set_background (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_سيٽ_background (hb_ويڪٽر_draw_t *draw,
                                hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_draw_get_background (const hb_vector_draw_t *draw);
+hb_ويڪٽر_draw_get_background (ثابت hb_ويڪٽر_draw_t *draw);
 
 HB_EXTERN hb_blob_t *
-hb_vector_draw_render (hb_vector_draw_t *draw);
+hb_ويڪٽر_draw_render (hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_clear (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_clear (hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_reset (hb_vector_draw_t *draw);
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_reset (hb_ويڪٽر_draw_t *draw);
 
-HB_EXTERN void
-hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
+HB_EXTERN فراغ
+hb_ويڪٽر_draw_recycle_blob (hb_ويڪٽر_draw_t *draw,
                              hb_blob_t *blob);
 
 
@@ -207,144 +207,144 @@ hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-typedef struct hb_vector_paint_t hb_vector_paint_t;
+تعريفنوع بنية hb_ويڪٽر_paint_t hb_ويڪٽر_paint_t;
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_create_or_fail (hb_vector_format_t format);
+HB_EXTERN hb_ويڪٽر_paint_t *
+hb_ويڪٽر_paint_create_or_fail (hb_ويڪٽر_format_t format);
 
-HB_EXTERN hb_vector_paint_t *
-hb_vector_paint_reference (hb_vector_paint_t *paint);
+HB_EXTERN hb_ويڪٽر_paint_t *
+hb_ويڪٽر_paint_reference (hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_destroy (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_destroy (hb_ويڪٽر_paint_t *paint);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
-                               void               *data,
+hb_ويڪٽر_paint_سيٽ_user_معلومات (hb_ويڪٽر_paint_t  *paint,
+                               hb_user_معلومات_ڪنجي_t *ڪنجي_2,
+                               فراغ               *معلومات,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_ويڪٽر_paint_get_user_معلومات (ثابت hb_ويڪٽر_paint_t  *paint,
+                               hb_user_معلومات_ڪنجي_t *ڪنجي_2);
 
-HB_EXTERN void
-hb_vector_paint_set_transform (hb_vector_paint_t *paint,
-                               float xx, float yx,
-                               float xy, float yy,
-                               float dx, float dy);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_transform (hb_ويڪٽر_paint_t *paint,
+                               عائم xx, عائم yx,
+                               عائم xy, عائم yy,
+                               عائم dx, عائم dy);
 
-HB_EXTERN void
-hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
-                               float *xx, float *yx,
-                               float *xy, float *yy,
-                               float *dx, float *dy);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_get_transform (ثابت hb_ويڪٽر_paint_t *paint,
+                               عائم *xx, عائم *yx,
+                               عائم *xy, عائم *yy,
+                               عائم *dx, عائم *dy);
 
-HB_EXTERN void
-hb_vector_paint_set_scale_factor (hb_vector_paint_t *paint,
-                                  float x_scale_factor,
-                                  float y_scale_factor);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_scale_ضرب_ڪندڙ (hb_ويڪٽر_paint_t *paint,
+                                  عائم x_scale_ضرب_ڪندڙ,
+                                  عائم y_scale_ضرب_ڪندڙ);
 
-HB_EXTERN void
-hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
-                                  float *x_scale_factor,
-                                  float *y_scale_factor);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_get_scale_ضرب_ڪندڙ (ثابت hb_ويڪٽر_paint_t *paint,
+                                  عائم *x_scale_ضرب_ڪندڙ,
+                                  عائم *y_scale_ضرب_ڪندڙ);
 
-HB_EXTERN void
-hb_vector_paint_set_extents (hb_vector_paint_t *paint,
-                             const hb_vector_extents_t *extents);
-
-HB_EXTERN hb_bool_t
-hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
-                             hb_vector_extents_t *extents);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_extents (hb_ويڪٽر_paint_t *paint,
+                             ثابت hb_ويڪٽر_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
-                                   const hb_glyph_extents_t *glyph_extents);
+hb_ويڪٽر_paint_get_extents (ثابت hb_ويڪٽر_paint_t *paint,
+                             hb_ويڪٽر_extents_t *extents);
 
-HB_EXTERN void
-hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
+HB_EXTERN hb_bool_t
+hb_ويڪٽر_paint_سيٽ_glyph_extents (hb_ويڪٽر_paint_t *paint,
+                                   ثابت hb_glyph_extents_t *glyph_extents);
+
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_foreground (hb_ويڪٽر_paint_t *paint,
                                 hb_color_t foreground);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_foreground (const hb_vector_paint_t *paint);
+hb_ويڪٽر_paint_get_foreground (ثابت hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_background (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_background (hb_ويڪٽر_paint_t *paint,
                                 hb_color_t background);
 
 HB_EXTERN hb_color_t
-hb_vector_paint_get_background (const hb_vector_paint_t *paint);
+hb_ويڪٽر_paint_get_background (ثابت hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_palette (hb_ويڪٽر_paint_t *paint,
+                             صحيح palette);
 
-HB_EXTERN int
-hb_vector_paint_get_palette (const hb_vector_paint_t *paint);
+HB_EXTERN صحيح
+hb_ويڪٽر_paint_get_palette (ثابت hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_custom_palette_color (hb_vector_paint_t *paint,
-                                          unsigned color_index,
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_custom_palette_color (hb_ويڪٽر_paint_t *paint,
+                                          بنانشان color_اشاريو,
                                           hb_color_t color);
 
-HB_EXTERN void
-hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_clear_custom_palette_colors (hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN hb_vector_format_t
-hb_vector_paint_get_format (const hb_vector_paint_t *paint);
+HB_EXTERN hb_ويڪٽر_format_t
+hb_ويڪٽر_paint_get_format (ثابت hb_ويڪٽر_paint_t *paint);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_vector_paint_get_funcs (const hb_vector_paint_t *paint);
+hb_ويڪٽر_paint_get_funcs (ثابت hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_glyph (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_glyph (hb_ويڪٽر_paint_t *paint,
 		       hb_font_t         *font,
 		       hb_codepoint_t     glyph,
-		       hb_vector_extents_mode_t extents_mode);
+		       hb_ويڪٽر_extents_گهڻائي_t extents_گهڻائي);
 
 HB_EXTERN hb_bool_t
-hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
+hb_ويڪٽر_paint_glyph_or_fail (hb_ويڪٽر_paint_t *paint,
 			       hb_font_t         *font,
 			       hb_codepoint_t     glyph,
-			       hb_vector_extents_mode_t extents_mode);
+			       hb_ويڪٽر_extents_گهڻائي_t extents_گهڻائي);
 
-HB_EXTERN void
-hb_vector_paint_set_precision (hb_vector_paint_t *paint,
-                                   unsigned precision);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_precision (hb_ويڪٽر_paint_t *paint,
+                                   بنانشان precision);
 
-HB_EXTERN unsigned
-hb_vector_paint_get_precision (const hb_vector_paint_t *paint);
+HB_EXTERN بنانشان
+hb_ويڪٽر_paint_get_precision (ثابت hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_سيٽ_svg_اڳياڙي (hb_ويڪٽر_paint_t *paint,
+                                ثابت حرف *اڳياڙي);
 
-HB_EXTERN const char *
-hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint);
+HB_EXTERN ثابت حرف *
+hb_ويڪٽر_paint_get_svg_اڳياڙي (ثابت hb_ويڪٽر_paint_t *paint);
 
 HB_EXTERN hb_blob_t *
-hb_vector_paint_render (hb_vector_paint_t *paint);
+hb_ويڪٽر_paint_render (hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_clear (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_clear (hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_reset (hb_vector_paint_t *paint);
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_reset (hb_ويڪٽر_paint_t *paint);
 
-HB_EXTERN void
-hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
+HB_EXTERN فراغ
+hb_ويڪٽر_paint_recycle_blob (hb_ويڪٽر_paint_t *paint,
                               hb_blob_t *blob);
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#إذا defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (vector_draw,  nullptr);
-HB_DEFINE_VTABLE (vector_paint, nullptr);
+HB_DEFINE_VTABLE (ويڪٽر_draw,  nullptr);
+HB_DEFINE_VTABLE (ويڪٽر_paint, nullptr);
 } // namespace hb
-#endif
+#جيڪڏهن_پورو
 
-#endif /* HB_VECTOR_H */
+#جيڪڏهن_پورو /* HB_VECTOR_H */

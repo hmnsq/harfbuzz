@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#إذا !defined(HB_OT_H_اندريون) && !defined(HB_NO_SINGLE_سرو_ERROR)
+#غلطي "Include <hb-ot.h> instead."
+#جيڪڏهن_پورو
 
-#ifndef HB_OT_META_H
-#define HB_OT_META_H
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_META_H
+#وصف_ڪريو HB_OT_META_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,27 +46,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+تعريفنوع تعداد {
 /*
    HB_OT_META_TAG_APPL		= HB_TAG ('a','p','p','l'),
    HB_OT_META_TAG_BILD		= HB_TAG ('b','i','l','d'),
 */
-  HB_OT_META_TAG_DESIGN_LANGUAGES	= HB_TAG ('d','l','n','g'),
-  HB_OT_META_TAG_SUPPORTED_LANGUAGES	= HB_TAG ('s','l','n','g'),
+  HB_OT_META_ٽيگ_DESIGN_LANGUAGES	= HB_ٽيگ ('d','l','n','g'),
+  HB_OT_META_ٽيگ_SUPPORTED_LANGUAGES	= HB_ٽيگ ('s','l','n','g'),
 
   /*< private >*/
-  _HB_OT_META_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_meta_tag_t;
+  HB_OT_META_ٽيگ_MAX_قدر = HB_ٽيگ_MAX_SIGNED /*< skip >*/
+} hb_ot_meta_ٽيگ_t;
 
-HB_EXTERN unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */);
+HB_EXTERN بنانشان صحيح
+hb_ot_meta_get_داخلا_ٽيگ_فهرست (hb_face_t        *face,
+			   بنانشان صحيح      شروعات_وٿي,
+			   بنانشان صحيح     *entries_ڳڻپ, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ٽيگ_t *entries        /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag);
+hb_ot_meta_reference_داخلا (hb_face_t *face, hb_ot_meta_ٽيگ_t meta_ٽيگ);
 
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#endif /* HB_OT_META_H */
+#جيڪڏهن_پورو /* HB_OT_META_H */

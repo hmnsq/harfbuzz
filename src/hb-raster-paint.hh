@@ -24,109 +24,109 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_PAINT_HH
-#define HB_RASTER_PAINT_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_RASTER_PAINT_HH
+#وصف_ڪريو HB_RASTER_PAINT_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
+#ضمن "hb-raster-image.hh"
+#ضمن "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+بنية hb_raster_clip_t
 {
-  hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
-  unsigned width  = 0;
-  unsigned height = 0;
-  unsigned stride = 0;
+  hb_ويڪٽر_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
+  بنانشان ويڪر  = 0;
+  بنانشان اوچائي = 0;
+  بنانشان stride = 0;
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
-  bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  منطقي is_rect = سچ;
+  صحيح rect_x0 = 0, rect_y0 = 0;
+  صحيح rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
-  unsigned min_x = 0, min_y = 0;
-  unsigned max_x = 0, max_y = 0;
+  بنانشان min_x = 0, min_y = 0;
+  بنانشان max_x = 0, max_y = 0;
 
-  void init_full (unsigned w, unsigned h)
+  فراغ init_ڀريل (بنانشان w, بنانشان h)
   {
-    width = w;
-    height = h;
+    ويڪر = w;
+    اوچائي = h;
     stride = (w + 3u) & ~3u;
-    is_rect = true;
+    is_rect = سچ;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (صحيح) w;
+    rect_y1 = (صحيح) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
     max_y = h;
   }
 
-  void update_bounds_from_rect ()
+  فراغ update_bounds_from_rect ()
   {
-    min_x = (unsigned) hb_max (rect_x0, 0);
-    min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    min_x = (بنانشان) hb_max (rect_x0, 0);
+    min_y = (بنانشان) hb_max (rect_y0, 0);
+    max_x = (بنانشان) hb_max (hb_min (rect_x1, (صحيح) ويڪر), 0);
+    max_y = (بنانشان) hb_max (hb_min (rect_y1, (صحيح) اوچائي), 0);
   }
 
-  uint8_t get_alpha (unsigned x, unsigned y) const
+  uint8_t get_alpha (بنانشان x, بنانشان y) ثابت
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    إذا (is_rect)
+      أرجع ((صحيح) x >= rect_x0 && (صحيح) x < rect_x1 &&
+	      (صحيح) y >= rect_y0 && (صحيح) y < rect_y1) ? 255 : 0;
+    إذا (x >= ويڪر || y >= اوچائي) أرجع 0;
+    إذا (stride < ويڪر) أرجع 0;
+    إذا (اوچائي && stride > (size_t) -1 / اوچائي) أرجع 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    إذا (!alpha.arrayZ || idx >= alpha.ڊيگهائي) أرجع 0;
+    أرجع alpha[idx];
   }
 
-  bool has_valid_alpha_mask () const
+  منطقي has_valid_alpha_نقاب () ثابت
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    إذا (is_rect)
+      أرجع سچ;
+    إذا (!alpha.arrayZ || stride < ويڪر)
+      أرجع خطأ;
+    إذا (اوچائي && stride > (size_t) -1 / اوچائي)
+      أرجع خطأ;
+    أرجع (size_t) stride * اوچائي <= alpha.ڊيگهائي;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+بنية hb_raster_paint_t
 {
-  hb_object_header_t header;
+  hb_object_سرو_t سرو;
 
   /* Configuration */
-  hb_transform_t<>    base_transform     = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor     = 1.f;
-  float               y_scale_factor     = 1.f;
+  hb_transform_t<>    بنياد_transform     = {1, 0, 0, 1, 0, 0};
+  عائم               x_scale_ضرب_ڪندڙ     = 1.f;
+  عائم               y_scale_ضرب_ڪندڙ     = 1.f;
   hb_raster_extents_t fixed_extents      = {};
-  bool                has_extents  = false;
+  منطقي                has_extents  = خطأ;
   hb_color_t          foreground         = HB_COLOR (0, 0, 0, 255);
   hb_color_t          background         = HB_COLOR (0, 0, 0, 0);
-  unsigned            palette            = 0;
-  hb_map_t           *custom_palette     = nullptr;
+  بنانشان            palette            = 0;
+  hb_map_t           *custom_palette     = خالي_اشارو;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_ويڪٽر_t<hb_transform_t<>>     transform_ڍير;
+  hb_ويڪٽر_t<hb_raster_clip_t>     clip_ڍير;
+  hb_ويڪٽر_t<hb_raster_clip_t>     clip_cache;
+  hb_ويڪٽر_t<hb_raster_image_t *>  surface_ڍير;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
-  hb_vector_t<hb_raster_image_t *>  surface_cache;
-  hb_vector_t<hb_color_stop_t>      scratch_color_stops;
+  hb_ويڪٽر_t<hb_raster_image_t *>  surface_cache;
+  hb_ويڪٽر_t<hb_color_stop_t>      scratch_color_stops;
 
   /* Internal rasterizer for clip-to-glyph */
-  hb_raster_draw_t *clip_rdr = nullptr;
+  hb_raster_draw_t *clip_rdr = خالي_اشارو;
 
   /* Two work budgets for the current paint session, both reset by
    * hb_raster_paint_clear(), so per-node costs cannot multiply with the
@@ -143,147 +143,147 @@ struct hb_raster_paint_t
    *    surface once known and is internal (not exposed through the API);
    *    an unlimited outline policy disables it too. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
-  int64_t pixel_remaining = HB_BUDGET_RASTER_PIXELS;
+  int64_t budget_بچيل = HB_BUDGET_GLYPH;
+  int64_t pixel_بچيل = HB_BUDGET_RASTER_PIXELS;
 
   /* Helpers */
 
-  int64_t get_default_pixel_budget () const
+  int64_t get_default_pixel_budget () ثابت
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    أرجع hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
-		   fixed_extents.width * fixed_extents.height);
+		   fixed_extents.ويڪر * fixed_extents.اوچائي);
   }
 
-  void recharge_budget ()
+  فراغ recharge_budget ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_بچيل = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
-    pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+    pixel_بچيل = budget == HB_BUDGET_UNLIMITED ? budget :
+		      (surface_ڍير.ڊيگهائي ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
   /* Returns whether the pixel operation should proceed.  Allows a single
    * overshoot past zero; callers skip work once the budget is spent. */
-  bool charge_work (int64_t work)
+  منطقي charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
-    pixel_remaining -= work;
-    return true;
+    إذا (unlikely (pixel_بچيل < 0)) أرجع خطأ;
+    pixel_بچيل -= work;
+    أرجع سچ;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
-  bool precharge_work (int64_t work)
+  منطقي precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    إذا (unlikely (pixel_بچيل < work))
     {
-      pixel_remaining = -1;
-      return false;
+      pixel_بچيل = -1;
+      أرجع خطأ;
     }
-    pixel_remaining -= work;
-    return true;
+    pixel_بچيل -= work;
+    أرجع سچ;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
-      img = surface_cache.pop ();
-    else
+    إذا (surface_cache.ڊيگهائي)
+      img = surface_cache.ڪڍو ();
+    وإلا
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      إذا (unlikely (!img)) أرجع خالي_اشارو;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    إذا (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      أرجع خالي_اشارو;
     }
     img->clear ();
-    return img;
+    أرجع img;
   }
 
-  void release_surface (hb_raster_image_t *img)
+  فراغ release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    إذا (!surface_cache.ڌڪو_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
-  hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
+  hb_raster_clip_t acquire_clip (بنانشان w, بنانشان h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
-      clip = clip_cache.pop ();
-    clip.width = w;
-    clip.height = h;
+    إذا (clip_cache.ڊيگهائي)
+      clip = clip_cache.ڪڍو ();
+    clip.ويڪر = w;
+    clip.اوچائي = h;
     clip.stride = (w + 3u) & ~3u;
-    clip.is_rect = false;
+    clip.is_rect = خطأ;
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    أرجع clip;
   }
 
-  void release_clip (hb_raster_clip_t &&clip)
+  فراغ release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    إذا (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
-  void release_all_clips ()
+  فراغ release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    طالما (clip_ڍير.ڊيگهائي)
+      release_clip (clip_ڍير.ڪڍو ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    أرجع surface_ڍير.ڊيگهائي ? surface_ڍير.پڇ () : خالي_اشارو;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    أرجع clip_ڍير.پڇ ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    إذا (unlikely (!transform_ڍير.ڊيگهائي))
+      أرجع {1, 0, 0, 1, 0, 0};
+    أرجع transform_ڍير.پڇ ();
   }
 
-  void apply_scale_factor (hb_transform_t<> &t) const
+  فراغ apply_scale_ضرب_ڪندڙ (hb_transform_t<> &t) ثابت
   {
-    t.xx /= x_scale_factor;
-    t.xy /= x_scale_factor;
-    t.x0 /= x_scale_factor;
-    t.yx /= y_scale_factor;
-    t.yy /= y_scale_factor;
-    t.y0 /= y_scale_factor;
+    t.xx /= x_scale_ضرب_ڪندڙ;
+    t.xy /= x_scale_ضرب_ڪندڙ;
+    t.x0 /= x_scale_ضرب_ڪندڙ;
+    t.yx /= y_scale_ضرب_ڪندڙ;
+    t.yy /= y_scale_ضرب_ڪندڙ;
+    t.y0 /= y_scale_ضرب_ڪندڙ;
   }
 
   hb_transform_t<> current_effective_transform ()
   {
     hb_transform_t<> t = current_transform ();
-    apply_scale_factor (t);
-    return t;
+    apply_scale_ضرب_ڪندڙ (t);
+    أرجع t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  منطقي fetch_color_stops (hb_color_سٽ_t *color_سٽ)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    بنانشان ڳڻپ = hb_color_سٽ_get_color_stops (color_سٽ, 0, خالي_اشارو, خالي_اشارو);
+    إذا (unlikely (!ڳڻپ || !scratch_color_stops.resize (ڳڻپ)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      أرجع خطأ;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    hb_color_سٽ_get_color_stops (color_سٽ, 0, &ڳڻپ, scratch_color_stops.arrayZ);
+    أرجع سچ;
   }
 };
 
 
-#endif /* HB_RASTER_PAINT_HH */
+#جيڪڏهن_پورو /* HB_RASTER_PAINT_HH */

@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GOBJECT_H
-#define HB_GOBJECT_H
-#define HB_GOBJECT_H_IN
+#جيڪڏهن_وصف_نه_ٿيل HB_GOBJECT_H
+#وصف_ڪريو HB_GOBJECT_H
+#وصف_ڪريو HB_GOBJECT_H_اندريون
 
-#include "hb.h"
+#ضمن "hb.h"
 
-#include "hb-gobject-enums.h"
-#include "hb-gobject-structs.h"
+#ضمن "hb-gobject-enums.h"
+#ضمن "hb-gobject-structs.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_پڇاڙي_DECLS
 
-#undef HB_GOBJECT_H_IN
-#endif /* HB_GOBJECT_H */
+#وصف_رد HB_GOBJECT_H_اندريون
+#جيڪڏهن_پورو /* HB_GOBJECT_H */

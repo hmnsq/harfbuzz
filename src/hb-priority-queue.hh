@@ -24,11 +24,11 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_PRIORITY_QUEUE_HH
-#define HB_PRIORITY_QUEUE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_ترجيح_قطار_HH
+#وصف_ڪريو HB_ترجيح_قطار_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -42,143 +42,143 @@
  * priority of its children. The heap is stored in an array, with the
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
-template <typename K>
-struct hb_priority_queue_t
+سانچو <قسم_نالو K>
+بنية hb_ترجيح_قطار_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ عام:
+  تعريفنوع hb_pair_t<K, بنانشان> شي_t;
 
- private:
-  hb_vector_t<item_t> heap;
+ خاص:
+  hb_ويڪٽر_t<شي_t> ڍير_2;
 
- public:
+ عام:
 
-  hb_priority_queue_t () = default;
-  hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
+  hb_ترجيح_قطار_t () = افتراضي;
+  hb_ترجيح_قطار_t (hb_ويڪٽر_t<شي_t>&& other) : ڍير_2 (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
-      bubble_down (i);
+    لكل (صحيح i = (ڍير_2.ڊيگهائي / 2) - 1; i >= 0; i--)
+      bubble_هيٺ_ڏانهن (i);
   }
 
-  void reset () { heap.clear (); }
+  فراغ reset () { ڍير_2.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  منطقي اندريون_error () ثابت { أرجع ڍير_2.اندريون_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  منطقي alloc (بنانشان سائيز)
+  { أرجع ڍير_2.alloc (سائيز); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
   HB_ALWAYS_INLINE
-#endif
-  void insert (K priority, unsigned value)
+#جيڪڏهن_پورو
+  فراغ insert (K ترجيح, بنانشان value)
   {
-    heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
-    bubble_up (heap.length - 1);
+    ڍير_2.push (شي_t (ترجيح, value));
+    إذا (unlikely (ڍير_2.اندريون_error ())) أرجع;
+    bubble_مٿي (ڍير_2.ڊيگهائي - 1);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#جيڪڏهن_وصف_نه_ٿيل HB_OPTIMIZE_سائيز
   HB_ALWAYS_INLINE
-#endif
-  item_t pop_minimum ()
+#جيڪڏهن_پورو
+  شي_t ڪڍو_minimum ()
   {
-    assert (!is_empty ());
+    أكد (!is_empty ());
 
-    item_t result = heap.arrayZ[0];
+    شي_t نتيجو = ڍير_2.arrayZ[0];
 
-    heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
-    heap.resize (heap.length - 1);
+    ڍير_2.arrayZ[0] = ڍير_2.arrayZ[ڍير_2.ڊيگهائي - 1];
+    ڍير_2.resize (ڍير_2.ڊيگهائي - 1);
 
-    if (!is_empty ())
-      bubble_down (0);
+    إذا (!is_empty ())
+      bubble_هيٺ_ڏانهن (0);
 
-    return result;
+    أرجع نتيجو;
   }
 
-  const item_t& minimum ()
+  ثابت شي_t& minimum ()
   {
-    return heap[0];
+    أرجع ڍير_2[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  منطقي is_empty () ثابت { أرجع ڍير_2.ڊيگهائي == 0; }
+  واضح عامل منطقي () ثابت { أرجع !is_empty (); }
+  بنانشان صحيح get_population () ثابت { أرجع ڍير_2.ڊيگهائي; }
 
   /* Sink interface. */
-  hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  hb_ترجيح_قطار_t& عامل << (شي_t شي)
+  { insert (شي.پهريون, شي.second); أرجع *هذا; }
 
- private:
+ خاص:
 
-  static constexpr unsigned parent (unsigned index)
+  ساكن constexpr بنانشان والد (بنانشان اشاريو_2)
   {
-    return (index - 1) / 2;
+    أرجع (اشاريو_2 - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  ساكن constexpr بنانشان کاٻو_ٻار (بنانشان اشاريو_2)
   {
-    return 2 * index + 1;
+    أرجع 2 * اشاريو_2 + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  ساكن constexpr بنانشان ساڄو_ٻار (بنانشان اشاريو_2)
   {
-    return 2 * index + 2;
+    أرجع 2 * اشاريو_2 + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  فراغ bubble_هيٺ_ڏانهن (بنانشان اشاريو_2)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (اشاريو_2 < ڍير_2.ڊيگهائي);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    بنانشان کاٻي = کاٻو_ٻار (اشاريو_2);
+    بنانشان ساڄي = ساڄو_ٻار (اشاريو_2);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    منطقي has_کاٻو = کاٻي < ڍير_2.ڊيگهائي;
+    إذا (!has_کاٻو)
       // If there's no left, then there's also no right.
-      return;
+      أرجع;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    منطقي has_ساڄو = ساڄي < ڍير_2.ڊيگهائي;
+    إذا (ڍير_2.arrayZ[اشاريو_2].پهريون <= ڍير_2.arrayZ[کاٻي].پهريون
+        && (!has_ساڄو || ڍير_2.arrayZ[اشاريو_2].پهريون <= ڍير_2.arrayZ[ساڄي].پهريون))
+      أرجع;
 
-    unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
-      child = left;
-    else
-      child = right;
+    بنانشان ٻار;
+    إذا (!has_ساڄو || ڍير_2.arrayZ[کاٻي].پهريون < ڍير_2.arrayZ[ساڄي].پهريون)
+      ٻار = کاٻي;
+    وإلا
+      ٻار = ساڄي;
 
-    swap (index, child);
-    index = child;
-    goto repeat;
+    swap (اشاريو_2, ٻار);
+    اشاريو_2 = ٻار;
+    اذهب repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  فراغ bubble_مٿي (بنانشان اشاريو_2)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (اشاريو_2 < ڍير_2.ڊيگهائي);
 
-    if (index == 0) return;
+    إذا (اشاريو_2 == 0) أرجع;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    بنانشان والد_اشاريو = والد (اشاريو_2);
+    إذا (ڍير_2.arrayZ[والد_اشاريو].پهريون <= ڍير_2.arrayZ[اشاريو_2].پهريون)
+      أرجع;
 
-    swap (index, parent_index);
-    index = parent_index;
-    goto repeat;
+    swap (اشاريو_2, والد_اشاريو);
+    اشاريو_2 = والد_اشاريو;
+    اذهب repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  فراغ swap (بنانشان a, بنانشان b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
-    hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
+    أكد (a < ڍير_2.ڊيگهائي);
+    أكد (b < ڍير_2.ڊيگهائي);
+    hb_مٽا_سٽا (ڍير_2.arrayZ[a], ڍير_2.arrayZ[b]);
   }
 };
 
-#endif /* HB_PRIORITY_QUEUE_HH */
+#جيڪڏهن_پورو /* HB_PRIORITY_QUEUE_HH */

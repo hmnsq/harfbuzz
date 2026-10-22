@@ -22,96 +22,96 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-cff-common.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-cff-specializer.hh"
+#ضمن "hb.hh"
+#ضمن "hb-ot-cff-common.hh"
+#ضمن "hb-subset-cff-common.hh"
+#ضمن "hb-cff-specializer.hh"
 
-static void
-test_specialized_line_geometry ()
+ساكن فراغ
+test_specialized_سٽ_geometry ()
 {
   /* Reconstruct every point after specializing horizontal/vertical line
    * sequences, including repeated directions and merged alternating runs. */
-  for (unsigned n = 1; n <= 8; n++)
-    for (unsigned mask = 0; mask < (1u << n); mask++)
-      for (unsigned maxstack : {4u, 48u})
+  لكل (بنانشان n = 1; n <= 8; n++)
+    لكل (بنانشان نقاب = 0; نقاب < (1u << n); نقاب++)
+      لكل (بنانشان maxstack : {4u, 48u})
       {
-        hb_vector_t<CFF::cs_command_t> commands;
-        for (unsigned i = 0; i < n; i++)
+        hb_ويڪٽر_t<CFF::cs_command_t> commands;
+        لكل (بنانشان i = 0; i < n; i++)
         {
-          bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
-          CFF::cs_command_t cmd (OpCode_rlineto);
-          CFF::number_t dx, dy;
-          dx.set_int (horizontal ? delta : 0);
-          dy.set_int (horizontal ? 0 : delta);
-          cmd.args.push (dx);
-          cmd.args.push (dy);
+          منطقي horizontal = نقاب & (1u << i);
+          صحيح delta = (i & 1) ? -(صحيح) i - 1 : (صحيح) i + 1;
+          CFF::cs_command_t cmd (Op_ڪوڊ_rlineto);
+          CFF::عدد_t dx, dy;
+          dx.سيٽ_int (horizontal ? delta : 0);
+          dy.سيٽ_int (horizontal ? 0 : delta);
+          cmd.دليلون.push (dx);
+          cmd.دليلون.push (dy);
           commands.push (std::move (cmd));
         }
         CFF::specialize_commands (commands, maxstack);
-        for (const auto &cmd : commands)
-          hb_always_assert (cmd.args.length <= maxstack);
+        لكل (ثابت خودڪار &cmd : commands)
+          hb_always_assert (cmd.دليلون.ڊيگهائي <= maxstack);
         CFF::str_buff_t encoded;
         hb_always_assert (CFF::encode_commands (commands, encoded));
         CFF::generalize_commands (commands);
-        hb_always_assert (commands.length == n);
-        int x = 0, y = 0, expected_x = 0, expected_y = 0;
-        for (unsigned i = 0; i < n; i++)
+        hb_always_assert (commands.ڊيگهائي == n);
+        صحيح x = 0, y = 0, expected_x = 0, expected_y = 0;
+        لكل (بنانشان i = 0; i < n; i++)
         {
-          bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
+          منطقي horizontal = نقاب & (1u << i);
+          صحيح delta = (i & 1) ? -(صحيح) i - 1 : (صحيح) i + 1;
           expected_x += horizontal ? delta : 0;
           expected_y += horizontal ? 0 : delta;
-          x += commands[i].args[0].to_int ();
-          y += commands[i].args[1].to_int ();
+          x += commands[i].دليلون[0].منزل_int ();
+          y += commands[i].دليلون[1].منزل_int ();
           hb_always_assert (x == expected_x && y == expected_y);
         }
       }
 }
 
-static void
+ساكن فراغ
 test_specialized_fractional_geometry ()
 {
-  const double deltas[][2] = {
+  ثابت مزدوج deltas[][2] = {
     {0.5, 12}, {-0.5, 12}, {12, 0.5}, {12, -0.5},
     {0.25, -0.75}, {0, 12}, {12, 0},
   };
-  for (CFF::op_code_t op : {OpCode_rmoveto, OpCode_rlineto})
-    for (const auto &delta : deltas)
+  لكل (CFF::op_ڪوڊ_t op : {Op_ڪوڊ_rmoveto, Op_ڪوڊ_rlineto})
+    لكل (ثابت خودڪار &delta : deltas)
     {
-      hb_vector_t<CFF::cs_command_t> commands;
+      hb_ويڪٽر_t<CFF::cs_command_t> commands;
       CFF::cs_command_t cmd (op);
-      CFF::number_t dx, dy;
-      dx.set_real (delta[0]);
-      dy.set_real (delta[1]);
-      cmd.args.push (dx);
-      cmd.args.push (dy);
+      CFF::عدد_t dx, dy;
+      dx.سيٽ_real (delta[0]);
+      dy.سيٽ_real (delta[1]);
+      cmd.دليلون.push (dx);
+      cmd.دليلون.push (dy);
       commands.push (std::move (cmd));
       CFF::specialize_commands (commands);
       CFF::str_buff_t encoded;
       hb_always_assert (CFF::encode_commands (commands, encoded));
       CFF::generalize_commands (commands);
-      hb_always_assert (commands.length == 1);
+      hb_always_assert (commands.ڊيگهائي == 1);
       hb_always_assert (commands[0].op == op);
-      hb_always_assert (commands[0].args.length == 2);
-      hb_always_assert (commands[0].args[0].to_real () == delta[0]);
-      hb_always_assert (commands[0].args[1].to_real () == delta[1]);
+      hb_always_assert (commands[0].دليلون.ڊيگهائي == 2);
+      hb_always_assert (commands[0].دليلون[0].منزل_real () == delta[0]);
+      hb_always_assert (commands[0].دليلون[1].منزل_real () == delta[1]);
     }
 }
 
-template <typename GID, typename FD>
-static void
+سانچو <قسم_نالو GID, قسم_نالو FD>
+ساكن فراغ
 test_fd_select_sentinel ()
 {
-  unsigned char data[3 * GID::static_size + FD::static_size] = {};
-  auto *select = reinterpret_cast<CFF::FDSelect3_4<GID, FD> *> (data);
+  بنانشان حرف معلومات[3 * GID::static_سائيز + FD::static_سائيز] = {};
+  خودڪار *select = reinterpret_cast<CFF::FDSelect3_4<GID, FD> *> (معلومات);
   select->ranges.len = 1;
-  select->ranges.arrayZ[0].first = 0;
+  select->ranges.arrayZ[0].پهريون = 0;
   select->ranges.arrayZ[0].fd = 0;
-  hb_sanitize_context_t c ((const char *) data, (const char *) data + sizeof (data));
-  c.set_num_glyphs (4);
-  c.start_processing ();
+  hb_sanitize_context_t c ((ثابت حرف *) معلومات, (ثابت حرف *) معلومات + حجم (معلومات));
+  c.سيٽ_انگ_glyphs (4);
+  c.شروعات_processing ();
 
   select->sentinel () = 3;
   hb_always_assert (select->sanitize (&c, 1, 3));
@@ -123,13 +123,13 @@ test_fd_select_sentinel ()
   hb_always_assert (!select->sanitize (&c, 1, 3));
   select->sentinel () = 5;
   hb_always_assert (!select->sanitize (&c, 1, 3));
-  c.end_processing ();
+  c.پڇاڙي_processing ();
 }
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  test_specialized_line_geometry ();
+  test_specialized_سٽ_geometry ();
   test_specialized_fractional_geometry ();
   test_fd_select_sentinel<OT::HBUINT16, OT::HBUINT8> ();
   test_fd_select_sentinel<OT::HBUINT32, OT::HBUINT16> ();
@@ -138,13 +138,13 @@ main (int argc, char **argv)
   {
     CFF::str_buff_t buff;
     CFF::str_encoder_t encoder (buff);
-    CFF::number_t number;
-    struct num_tp_test {
-      double input;
-      unsigned length;
-      unsigned char output[7];
+    CFF::عدد_t number;
+    بنية انگ_tp_test {
+      مزدوج داخلا_2;
+      بنانشان ڊيگهائي;
+      بنانشان حرف output[7];
     };
-    struct num_tp_test num_tp_tests[] = {
+    بنية انگ_tp_test انگ_tp_tests[] = {
       { -9.399999999999999, 4, { 0x1E, 0xE9, 0xA4, 0xFF } }, // -9.4
       { 9.399999999999999999, 3, { 0x1E, 0x9A, 0x4F } }, // 9.4
       { 456.8, 4, { 0x1E, 0x45, 0x6A, 0x8F } }, // 456.8
@@ -164,17 +164,17 @@ main (int argc, char **argv)
       { 0.0123, 4, { 0x1E, 0x12, 0x3C, 0x4F } }, // 123E-4
       { -0.0123, 5, { 0x1E, 0xE1, 0x23, 0xC4, 0xFF } }, // -123E-4
     };
-    for (size_t t = 0; t < sizeof num_tp_tests / sizeof num_tp_tests[0]; t++)
+    لكل (size_t t = 0; t < حجم انگ_tp_tests / حجم انگ_tp_tests[0]; t++)
     {
-      struct num_tp_test num_tp_test = num_tp_tests[t];
-      number.set_real (num_tp_test.input);
-      encoder.encode_num_tp (number);
-      hb_always_assert (buff.length == num_tp_test.length);
-      for (unsigned i = 0; i < buff.length; i++)
-	hb_always_assert (buff[i] == num_tp_test.output[i]);
+      بنية انگ_tp_test انگ_tp_test = انگ_tp_tests[t];
+      number.سيٽ_real (انگ_tp_test.داخلا_2);
+      encoder.encode_انگ_tp (number);
+      hb_always_assert (buff.ڊيگهائي == انگ_tp_test.ڊيگهائي);
+      لكل (بنانشان i = 0; i < buff.ڊيگهائي; i++)
+	hb_always_assert (buff[i] == انگ_tp_test.output[i]);
       encoder.reset ();
     }
   }
 
-  return 0;
+  أرجع 0;
 }

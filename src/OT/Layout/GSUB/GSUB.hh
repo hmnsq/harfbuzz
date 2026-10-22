@@ -1,62 +1,62 @@
-#ifndef OT_LAYOUT_GSUB_GSUB_HH
-#define OT_LAYOUT_GSUB_GSUB_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GSUB_GSUB_HH
+#وصف_ڪريو OT_LAYOUT_GSUB_GSUB_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "SubstLookup.hh"
+#ضمن "../../../hb-ot-layout-gsubgpos.hh"
+#ضمن "Common.hh"
+#ضمن "SubstLookup.hh"
 
-namespace OT {
+نطاق OT {
 
-using Layout::GSUB_impl::SubstLookup;
+استعمال Layout::GSUB_impl::SubstLookup;
 
-namespace Layout {
+نطاق Layout {
 
 /*
  * GSUB -- Glyph Substitution
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gsub
  */
 
-struct GSUB : GSUBGPOS
+بنية GSUB : GSUBGPOS
 {
-  using Lookup = SubstLookup;
+  استعمال Lookup = SubstLookup;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  ثابت SubstLookup& get_lookup (بنانشان صحيح i) ثابت
+  { أرجع static_cast<ثابت SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    hb_subset_layout_context_t l (c, جدول_ٽيگ);
+    أرجع GSUBGPOS::subset<SubstLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (GSUBGPOS::sanitize<SubstLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_اندروني منطقي is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ثابت;
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
-  { GSUBGPOS::closure_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
+  فراغ گهيرو_lookups (hb_face_t      *face,
+                        ثابت hb_سيٽ_t *glyphs,
+                        hb_سيٽ_t       *lookup_indexes /* IN/OUT */) ثابت
+  { GSUBGPOS::گهيرو_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GSUB> accelerator_t;
+  تعريفنوع GSUBGPOS::accelerator_t<GSUB> accelerator_t;
 };
 
 
 }
 
-struct GSUB_accelerator_t : Layout::GSUB::accelerator_t {
+بنية GSUB_accelerator_t : Layout::GSUB::accelerator_t {
   GSUB_accelerator_t (hb_face_t *face) : Layout::GSUB::accelerator_t (face) {}
-  HB_INTERNAL void depend (hb_depend_data_builder_t *builder, hb_face_t *face) const;
+  HB_اندروني فراغ depend (hb_depend_معلومات_builder_t *builder, hb_face_t *face) ثابت;
 };
 
 
 }
 
-#endif  /* OT_LAYOUT_GSUB_GSUB_HH */
+#جيڪڏهن_پورو  /* OT_LAYOUT_GSUB_GSUB_HH */

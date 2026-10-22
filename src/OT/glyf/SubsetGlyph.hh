@@ -1,88 +1,88 @@
-#ifndef OT_GLYF_SUBSETGLYPH_HH
-#define OT_GLYF_SUBSETGLYPH_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_GLYF_SUBSETGLYPH_HH
+#وصف_ڪريو OT_GLYF_SUBSETGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#ضمن "../../hb-open-type.hh"
 
 
-namespace OT {
+نطاق OT {
 
-struct glyf_accelerator_t;
+بنية glyf_accelerator_t;
 
-namespace glyf_impl {
+نطاق glyf_impl {
 
 
-struct SubsetGlyph
+بنية SubsetGlyph
 {
   hb_codepoint_t old_gid;
-  Glyph source_glyph;
-  hb_bytes_t dest_start;  /* region of source_glyph to copy first */
-  hb_bytes_t dest_end;    /* region of source_glyph to copy second */
-  bool allocated;
+  Glyph ذريعو_glyph;
+  hb_بائيٽون_t dest_شروعات;  /* region of source_glyph to copy first */
+  hb_بائيٽون_t dest_پڇاڙي;    /* region of source_glyph to copy second */
+  منطقي allocated;
 
-  bool serialize (hb_serialize_context_t *c,
-		  bool use_short_loca,
-		  const hb_subset_plan_t *plan) const
+  منطقي serialize (hb_serialize_context_t *c,
+		  منطقي use_short_loca,
+		  ثابت hb_subset_plan_t *plan) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    hb_bytes_t dest_glyph = dest_start.copy (c);
-    hb_bytes_t end_copy = dest_end.copy (c);
-    if (!end_copy.arrayZ || !dest_glyph.arrayZ) {
-      return false;
+    hb_بائيٽون_t dest_glyph = dest_شروعات.copy (c);
+    hb_بائيٽون_t پڇاڙي_copy = dest_پڇاڙي.copy (c);
+    إذا (!پڇاڙي_copy.arrayZ || !dest_glyph.arrayZ) {
+      أرجع خطأ;
     }
 
-    dest_glyph = hb_bytes_t (&dest_glyph, dest_glyph.length + end_copy.length);
-    unsigned int pad_length = use_short_loca ? padding () : 0;
-    DEBUG_MSG (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
+    dest_glyph = hb_بائيٽون_t (&dest_glyph, dest_glyph.ڊيگهائي + پڇاڙي_copy.ڊيگهائي);
+    بنانشان صحيح pad_ڊيگهائي = use_short_loca ? padding () : 0;
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "serialize %u byte glyph, width %u pad %u", dest_glyph.ڊيگهائي, dest_glyph.ڊيگهائي + pad_ڊيگهائي, pad_ڊيگهائي);
 
     HBUINT8 pad;
     pad = 0;
-    while (pad_length > 0)
+    طالما (pad_ڊيگهائي > 0)
     {
-      (void) c->embed (pad);
-      pad_length--;
+      (فراغ) c->embed (pad);
+      pad_ڊيگهائي--;
     }
 
-    if (unlikely (!dest_glyph.length)) return_trace (true);
+    إذا (unlikely (!dest_glyph.ڊيگهائي)) return_trace (سچ);
 
-    bool extended = source_glyph.is_extended ();
+    منطقي extended = ذريعو_glyph.is_extended ();
 
     /* update components gids. */
-    for (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
+    لكل (خودڪار &_ : Glyph (dest_glyph, old_gid, extended).get_مرکب_iterator ())
     {
       hb_codepoint_t new_gid;
-      if (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
-	const_cast<CompositeGlyphRecord &> (_).set_gid (new_gid, extended);
+      إذا (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
+	const_cast<مرکب_Glyph_رڪارڊ &> (_).سيٽ_gid (new_gid, extended);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (extended)
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+    إذا (extended)
     {
-      auto it = Glyph (dest_glyph, old_gid, extended).get_composite_iterator ();
-      if (it)
+      خودڪار it = Glyph (dest_glyph, old_gid, extended).get_مرکب_iterator ();
+      إذا (it)
       {
 	/* lower GID24 to GID16 in components if possible. */
-	char *p = it ? (char *) &*it : nullptr;
-	char *q = p;
-	const char *end = dest_glyph.arrayZ + dest_glyph.length;
-	while (it)
+	حرف *p = it ? (حرف *) &*it : خالي_اشارو;
+	حرف *q = p;
+	ثابت حرف *پڇاڙي = dest_glyph.arrayZ + dest_glyph.ڊيگهائي;
+	طالما (it)
 	{
-	  auto &rec = const_cast<CompositeGlyphRecord &> (*it);
+	  خودڪار &rec = const_cast<مرکب_Glyph_رڪارڊ &> (*it);
 	  ++it;
 
-	  q += rec.get_size (extended);
+	  q += rec.get_سائيز (extended);
 
-	  rec.lower_gid_24_to_16 ();
+	  rec.هيٺاهون_gid_24_منزل_16 ();
 
-	  unsigned size = rec.get_size (extended);
+	  بنانشان سائيز = rec.get_سائيز (extended);
 
-	  memmove (p, &rec, size);
+	  memmove (p, &rec, سائيز);
 
-	  p += size;
+	  p += سائيز;
 	}
-	memmove (p, q, end - q);
-	p += end - q;
+	memmove (p, q, پڇاڙي - q);
+	p += پڇاڙي - q;
 
 	/* We want to shorten the glyph, but we can't do that without
 	 * updating the length in the loca table, which is already
@@ -93,49 +93,49 @@ struct SubsetGlyph
 	 * Should move the lowering to _populate_subset_glyphs() to
 	 * fix this issue. */
 
-	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, end - p);
-	p += end - p;
-	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (char *) dest_glyph.arrayZ);
+	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, پڇاڙي - p);
+	p += پڇاڙي - p;
+	dest_glyph = hb_بائيٽون_t (dest_glyph.arrayZ, p - (حرف *) dest_glyph.arrayZ);
 
 	// TODO: Padding; & trim serialized bytes.
 	// TODO: Update length in loca. Ugh.
       }
     }
-#endif
+#جيڪڏهن_پورو
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    إذا (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       Glyph (dest_glyph, old_gid, extended).drop_hints ();
 
-    if (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
-      Glyph (dest_glyph, old_gid, extended).set_overlaps_flag ();
+    إذا (plan->flags & HB_SUBSET_FLAGS_سيٽ_OVERLAPS_FLAG)
+      Glyph (dest_glyph, old_gid, extended).سيٽ_overlaps_flag ();
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  منطقي compile_بائيٽون_with_deltas (ثابت hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf)
+                                  ثابت glyf_accelerator_t &glyf)
   {
-    allocated = source_glyph.compile_bytes_with_deltas (plan, font, glyf, dest_start, dest_end);
-    return allocated;
+    allocated = ذريعو_glyph.compile_بائيٽون_with_deltas (plan, font, glyf, dest_شروعات, dest_پڇاڙي);
+    أرجع allocated;
   }
 
-  void free_compiled_bytes ()
+  فراغ free_compiled_بائيٽون ()
   {
-    if (likely (allocated)) {
-      allocated = false;
-      dest_start.fini ();
-      dest_end.fini ();
+    إذا (likely (allocated)) {
+      allocated = خطأ;
+      dest_شروعات.fini ();
+      dest_پڇاڙي.fini ();
     }
   }
 
-  void drop_hints_bytes ()
-  { source_glyph.drop_hints_bytes (dest_start, dest_end); }
+  فراغ drop_hints_بائيٽون ()
+  { ذريعو_glyph.drop_hints_بائيٽون (dest_شروعات, dest_پڇاڙي); }
 
-  unsigned int      length () const { return dest_start.length + dest_end.length; }
+  بنانشان صحيح      ڊيگهائي () ثابت { أرجع dest_شروعات.ڊيگهائي + dest_پڇاڙي.ڊيگهائي; }
   /* pad to 2 to ensure 2-byte loca will be ok */
-  unsigned int     padding () const { return length () % 2; }
-  unsigned int padded_size () const { return length () + padding (); }
+  بنانشان صحيح     padding () ثابت { أرجع ڊيگهائي () % 2; }
+  بنانشان صحيح padded_سائيز () ثابت { أرجع ڊيگهائي () + padding (); }
 };
 
 
@@ -143,4 +143,4 @@ struct SubsetGlyph
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_SUBSETGLYPH_HH */
+#جيڪڏهن_پورو /* OT_GLYF_SUBSETGLYPH_HH */

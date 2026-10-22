@@ -9,61 +9,61 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+استورد os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+إذا ڊيگهه(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
-CURRENT_SOURCE_DIR = sys.argv[2]
+CURRENT_ذريعو_DIR = sys.argv[2]
 TEMPLATE = sys.argv[3]
 
 # Parse --TAG file... groups
 groups = {}
-current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
-        current_tag = arg[2:]
-        groups[current_tag] = []
-    elif current_tag is not None:
-        groups[current_tag].append(arg)
+current_ٽيگ = ڪجهه_نه
+لكل arg في sys.argv[4:]:
+    إذا arg.startswith('--'):
+        current_ٽيگ = arg[2:]
+        groups[current_ٽيگ] = []
+    وإلاإذا current_ٽيگ آهي ليس ڪجهه_نه:
+        groups[current_ٽيگ].append(arg)
 
 # Build #include lines for each group
-def make_includes(files):
-    seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
-        rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
-            seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+وصف make_includes(files):
+    ڏٺل = سيٽ()
+    سٽون = []
+    لكل f في sorted(files):
+        إذا ليس f.endswith('.cc'):
+            استمر
+        rel = pathlib.رستو_2(os.رستو.relpath(os.رستو.abspath(f), CURRENT_ذريعو_DIR)).as_posix()
+        إذا rel ليس في ڏٺل:
+            ڏٺل.جوڙيو(rel)
+            سٽون.append('#include "{}"'.format(rel))
+    أرجع '\n'.join(سٽون)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+سان open(TEMPLATE, 'r') كـ f:
+    content = f.اقرأ()
 
-for tag, files in groups.items():
-    placeholder = '%%{}%%'.format(tag)
+لكل ٽيگ_2, files في groups.شيون():
+    placeholder = '%%{}%%'.format(ٽيگ_2)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+سان open(OUTPUT, 'w') كـ f:
+    f.اكتب(content)
 
 # Copy back to source tree if changed
-baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+baseline = os.رستو.join(CURRENT_ذريعو_DIR, os.رستو.basename(OUTPUT))
+حاول:
+    سان open(baseline, 'r') كـ b:
+        إذا b.اقرأ() == content:
             sys.exit(0)
-except FileNotFoundError:
-    pass
+استثناء File_Not_مليو_Error:
+    لنگهه
 
-try:
+حاول:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+استثناء OSError:
+    استورد filecmp
+    إذا os.رستو.exists(baseline) و ليس filecmp.cmp(OUTPUT, baseline, shallow=خطأ):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

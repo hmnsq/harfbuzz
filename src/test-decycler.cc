@@ -24,93 +24,93 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#ضمن "hb.hh"
+#ضمن "hb-decycler.hh"
 
-static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+ساكن فراغ
+وڻ_recurse_ٻٽو (بنانشان value,
+		     بنانشان max_قدر,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  إذا (value >= max_قدر)
+		أرجع;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ڳنڍ_t node (decycler);
 
-  bool ret = node.visit (value);
+  منطقي ret = node.گهمو (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  وڻ_recurse_ٻٽو (value * 2 + 1, max_قدر, decycler);
+  وڻ_recurse_ٻٽو (value * 2 + 2, max_قدر, decycler);
 }
 
-static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+ساكن فراغ
+وڻ_recurse_tertiary (بنانشان value,
+		       بنانشان max_قدر,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  إذا (value >= max_قدر)
+    أرجع;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ڳنڍ_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  لكل (بنانشان i = 1; i <= 3; i++)
   {
-    bool ret = node.visit (value + i);
+    منطقي ret = node.گهمو (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    وڻ_recurse_tertiary (value + i, max_قدر, decycler);
   }
 }
 
-static void
-test_tree ()
+ساكن فراغ
+test_وڻ ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  وڻ_recurse_ٻٽو (0, 64, decycler);
+  وڻ_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
-cycle_recurse (signed value,
-	       signed cycle_length,
+ساكن فراغ
+چڪر_recurse (نشانوارو value,
+	       نشانوارو چڪر_ڊيگهائي,
 	       hb_decycler_t &decycler)
 {
-  hb_always_assert (cycle_length > 0);
+  hb_always_assert (چڪر_ڊيگهائي > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_ڳنڍ_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  إذا (!node.گهمو (value))
+    أرجع;
 
-  if (value >= cycle_length)
-    value = value % cycle_length;
+  إذا (value >= چڪر_ڊيگهائي)
+    value = value % چڪر_ڊيگهائي;
 
-  cycle_recurse (value + 1, cycle_length, decycler);
+  چڪر_recurse (value + 1, چڪر_ڊيگهائي, decycler);
 }
 
-static void
-test_cycle ()
+ساكن فراغ
+test_چڪر ()
 {
   hb_decycler_t decycler;
-  cycle_recurse (0, 1, decycler);
-  cycle_recurse (0, 2, decycler);
-  cycle_recurse (2, 3, decycler);
-  cycle_recurse (-20, 8, decycler);
+  چڪر_recurse (0, 1, decycler);
+  چڪر_recurse (0, 2, decycler);
+  چڪر_recurse (2, 3, decycler);
+  چڪر_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  test_tree ();
-  test_cycle ();
+  test_وڻ ();
+  test_چڪر ();
 
-  return 0;
+  أرجع 0;
 }
 

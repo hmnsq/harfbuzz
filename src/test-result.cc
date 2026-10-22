@@ -24,137 +24,137 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb-result.hh"
+#ضمن "hb-result.hh"
 
 
 // Track constructor and destructor counts to verify leak-freedom
-static int live_instances = 0;
+ساكن صحيح جيئرو_instances = 0;
 
-enum error_code_t {
+تعداد error_ڪوڊ_t {
   ERR_A,
   ERR_B,
   ERR_C,
 };
 
-template <typename T>
-using result = hb_result_t<T, error_code_t>;
+سانچو <قسم_نالو T>
+استعمال نتيجو = hb_نتيجو_t<T, error_ڪوڊ_t>;
 
-struct resource_t
+بنية resource_t
 {
-  int id;
+  صحيح id;
 
-  explicit resource_t (int id_) : id (id_) { live_instances++; }
-  resource_t (const resource_t& o) : id (o.id) { live_instances++; }
-  resource_t (resource_t&& o) : id (o.id) { o.id = -1; live_instances++; }
-  ~resource_t () { live_instances--; }
+  واضح resource_t (صحيح id_) : id (id_) { جيئرو_instances++; }
+  resource_t (ثابت resource_t& o) : id (o.id) { جيئرو_instances++; }
+  resource_t (resource_t&& o) : id (o.id) { o.id = -1; جيئرو_instances++; }
+  ~resource_t () { جيئرو_instances--; }
 
-  resource_t& operator = (const resource_t& o)
+  resource_t& عامل = (ثابت resource_t& o)
   {
     id = o.id;
-    return *this;
+    أرجع *هذا;
   }
-  resource_t& operator = (resource_t&& o)
+  resource_t& عامل = (resource_t&& o)
   {
     id = o.id;
     o.id = -1;
-    return *this;
+    أرجع *هذا;
   }
 
-  bool operator == (const resource_t& o) const { return id == o.id; }
+  منطقي عامل == (ثابت resource_t& o) ثابت { أرجع id == o.id; }
 };
 
-static result<int> returns_ok (int v)
+ساكن نتيجو<صحيح> returns_ok (صحيح v)
 {
-  return Ok(v);
+  أرجع Ok(v);
 }
 
-static result<int> returns_err (error_code_t e)
+ساكن نتيجو<صحيح> returns_err (error_ڪوڊ_t e)
 {
-  return Err(e);
+  أرجع Err(e);
 }
 
-static result<int> try_callee (bool fail, int v, error_code_t e = ERR_A)
+ساكن نتيجو<صحيح> try_callee (منطقي fail, صحيح v, error_ڪوڊ_t e = ERR_A)
 {
-  if (fail) return Err(e);
-  return Ok(v);
+  إذا (fail) أرجع Err(e);
+  أرجع Ok(v);
 }
 
-static result<void> try_callee_void (bool fail,  error_code_t e)
+ساكن نتيجو<فراغ> try_callee_void (منطقي fail,  error_ڪوڊ_t e)
 {
-  if (fail) return e;
-  return Ok();
+  إذا (fail) أرجع e;
+  أرجع Ok();
 }
 
-static result<int> try_caller (bool fail1, bool fail2)
+ساكن نتيجو<صحيح> try_caller (منطقي fail1, منطقي fail2)
 {
-  TRY_ASSIGN (int index, try_callee (fail1, 10, ERR_A));
-  TRY_ASSIGN (int index2, try_callee (fail2, 20, ERR_B));
-  return Ok(index + index2);
+  TRY_سونپيو (صحيح اشاريو_2, try_callee (fail1, 10, ERR_A));
+  TRY_سونپيو (صحيح index2, try_callee (fail2, 20, ERR_B));
+  أرجع Ok(اشاريو_2 + index2);
 }
 
-static result<void> try_caller_void (bool fail)
+ساكن نتيجو<فراغ> try_caller_void (منطقي fail)
 {
   TRY (try_callee_void (fail, ERR_C));
-  return Ok();
+  أرجع Ok();
 }
 
-static result<float> try_caller_type_change (bool fail)
+ساكن نتيجو<عائم> try_caller_type_change (منطقي fail)
 {
-  TRY_ASSIGN (int index, try_callee (fail, 100, ERR_A));
-  return Ok((float) index * 1.5f);
+  TRY_سونپيو (صحيح اشاريو_2, try_callee (fail, 100, ERR_A));
+  أرجع Ok((عائم) اشاريو_2 * 1.5f);
 }
 
-static result<int> try_assign_existing (bool fail)
+ساكن نتيجو<صحيح> try_سونپيو_existing (منطقي fail)
 {
-  int val = 1;
-  TRY_ASSIGN (val, try_callee (fail, 42, ERR_A));
-  return Ok(val);
+  صحيح val = 1;
+  TRY_سونپيو (val, try_callee (fail, 42, ERR_A));
+  أرجع Ok(val);
 }
 
-static void test_ok_basic ()
+ساكن فراغ test_ok_basic ()
 {
-  result<int> r = returns_ok (42);
+  نتيجو<صحيح> r = returns_ok (42);
   hb_always_assert (r.is_ok ());
   hb_always_assert (!r.is_err ());
-  hb_always_assert ((bool) r);
+  hb_always_assert ((منطقي) r);
   hb_always_assert (r.value () == 42);
   hb_always_assert (*r == 42);
-  hb_always_assert (r.value_or (0) == 42);
-  hb_always_assert (r.value_or_default () == 42);
+  hb_always_assert (r.قدر_or (0) == 42);
+  hb_always_assert (r.قدر_or_default () == 42);
   hb_always_assert (r == Ok(42));
   hb_always_assert (Ok(42) == r);
 }
 
-static void test_err_basic ()
+ساكن فراغ test_err_basic ()
 {
-  result<int> r = returns_err (ERR_A);
+  نتيجو<صحيح> r = returns_err (ERR_A);
   hb_always_assert (!r.is_ok ());
   hb_always_assert (r.is_err ());
   hb_always_assert (!r);
   hb_always_assert (r.error () == ERR_A);
-  hb_always_assert (r.value_or (99) == 99);
-  hb_always_assert (r.value_or_default () == 0);
+  hb_always_assert (r.قدر_or (99) == 99);
+  hb_always_assert (r.قدر_or_default () == 0);
   hb_always_assert (r == Err(ERR_A));
   hb_always_assert (Err(ERR_A) == r);
   hb_always_assert (r != Err(ERR_B));
   hb_always_assert (Err(ERR_B) != r);
 }
 
-static void test_explicit_ok_err ()
+ساكن فراغ test_explicit_ok_err ()
 {
-  result<unsigned> r1 = Ok(100u);
+  نتيجو<بنانشان> r1 = Ok(100u);
   hb_always_assert (r1.is_ok ());
   hb_always_assert (r1.value () == 100u);
 
-  result<unsigned> r2 = Err(ERR_A);
+  نتيجو<بنانشان> r2 = Err(ERR_A);
   hb_always_assert (r2.is_err ());
   hb_always_assert (r2.error () == ERR_A);
 }
 
-static void test_pointers ()
+ساكن فراغ test_اشارا ()
 {
-  int x = 123;
-  result<int*> r = &x;
+  صحيح x = 123;
+  نتيجو<صحيح*> r = &x;
   hb_always_assert (r.is_ok ());
   hb_always_assert (*r == &x);
   hb_always_assert (**r == 123);
@@ -162,18 +162,18 @@ static void test_pointers ()
   hb_always_assert (x == 456);
 }
 
-static void test_void ()
+ساكن فراغ test_void ()
 {
-  result<void> r1 = Ok();
+  نتيجو<فراغ> r1 = Ok();
   hb_always_assert (r1.is_ok ());
   hb_always_assert (!r1.is_err ());
-  hb_always_assert ((bool) r1);
+  hb_always_assert ((منطقي) r1);
   hb_always_assert (r1 == Ok());
   hb_always_assert (r1 != Err(ERR_A));
   hb_always_assert (Ok() == r1);
   hb_always_assert (Err(ERR_A) != r1);
 
-  result<void> r2 = Err(ERR_A);
+  نتيجو<فراغ> r2 = Err(ERR_A);
   hb_always_assert (!r2.is_ok ());
   hb_always_assert (r2.is_err ());
   hb_always_assert (!r2);
@@ -186,463 +186,463 @@ static void test_void ()
   hb_always_assert (Ok() != r2);
 }
 
-static void test_resource_cleanup ()
+ساكن فراغ test_resource_cleanup ()
 {
-  hb_always_assert (live_instances == 0);
+  hb_always_assert (جيئرو_instances == 0);
 
   {
-    result<resource_t> r = resource_t (1);
-    hb_always_assert (live_instances == 1);
+    نتيجو<resource_t> r = resource_t (1);
+    hb_always_assert (جيئرو_instances == 1);
     hb_always_assert (r.value ().id == 1);
   }
-  hb_always_assert (live_instances == 0);
+  hb_always_assert (جيئرو_instances == 0);
 
   {
-    result<resource_t> r1 = resource_t (2);
-    hb_always_assert (live_instances == 1);
-    result<resource_t> r2 = r1;
-    hb_always_assert (live_instances == 2);
-    result<resource_t> r3 = std::move (r1);
-    hb_always_assert (live_instances == 3);
+    نتيجو<resource_t> r1 = resource_t (2);
+    hb_always_assert (جيئرو_instances == 1);
+    نتيجو<resource_t> r2 = r1;
+    hb_always_assert (جيئرو_instances == 2);
+    نتيجو<resource_t> r3 = std::move (r1);
+    hb_always_assert (جيئرو_instances == 3);
   }
-  hb_always_assert (live_instances == 0);
+  hb_always_assert (جيئرو_instances == 0);
 
   {
-    result<resource_t> r = resource_t (3);
-    hb_always_assert (live_instances == 1);
+    نتيجو<resource_t> r = resource_t (3);
+    hb_always_assert (جيئرو_instances == 1);
     r = Err(ERR_A);
-    hb_always_assert (live_instances == 0);
+    hb_always_assert (جيئرو_instances == 0);
     hb_always_assert (r.is_err ());
   }
-  hb_always_assert (live_instances == 0);
+  hb_always_assert (جيئرو_instances == 0);
 }
 
-static void test_try_macro ()
+ساكن فراغ test_try_macro ()
 {
   // Test success path
-  result<int> r_success = try_caller (false, false);
+  نتيجو<صحيح> r_success = try_caller (خطأ, خطأ);
   hb_always_assert (r_success.is_ok ());
   hb_always_assert (r_success.value () == 30);
 
   // Test first failure propagates
-  result<int> r_fail1 = try_caller (true, false);
+  نتيجو<صحيح> r_fail1 = try_caller (سچ, خطأ);
   hb_always_assert (r_fail1.is_err ());
   hb_always_assert (r_fail1.error () == ERR_A);
 
   // Test second failure propagates
-  result<int> r_fail2 = try_caller (false, true);
+  نتيجو<صحيح> r_fail2 = try_caller (خطأ, سچ);
   hb_always_assert (r_fail2.is_err ());
   hb_always_assert (r_fail2.error () == ERR_B);
 
   // Test TRY in void function
-  result<void> v_ok = try_caller_void (false);
+  نتيجو<فراغ> v_ok = try_caller_void (خطأ);
   hb_always_assert (v_ok.is_ok ());
 
-  result<void> v_err = try_caller_void (true);
+  نتيجو<فراغ> v_err = try_caller_void (سچ);
   hb_always_assert (v_err.is_err ());
   hb_always_assert (v_err.error () == ERR_C);
 
   // Test TRY with different return type
-  result<float> f_ok = try_caller_type_change (false);
+  نتيجو<عائم> f_ok = try_caller_type_change (خطأ);
   hb_always_assert (f_ok.is_ok ());
   hb_always_assert (f_ok.value () == 150.0f);
 
-  result<float> f_err = try_caller_type_change (true);
+  نتيجو<عائم> f_err = try_caller_type_change (سچ);
   hb_always_assert (f_err.is_err ());
   hb_always_assert (f_err.error () == ERR_A);
 
   // Test TRY_ASSIGN into existing variable
-  result<int> a_ok = try_assign_existing (false);
+  نتيجو<صحيح> a_ok = try_سونپيو_existing (خطأ);
   hb_always_assert (a_ok.is_ok ());
   hb_always_assert (a_ok.value () == 42);
 
-  result<int> a_err = try_assign_existing (true);
+  نتيجو<صحيح> a_err = try_سونپيو_existing (سچ);
   hb_always_assert (a_err.is_err ());
   hb_always_assert (a_err.error () == ERR_A);
 }
 
-template <typename T, typename U, typename = void>
-struct is_equality_comparable : std::false_type {};
+سانچو <قسم_نالو T, قسم_نالو U, قسم_نالو = فراغ>
+بنية is_equality_comparable : std::false_type {};
 
-template <typename T, typename U>
-struct is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
+سانچو <قسم_نالو T, قسم_نالو U>
+بنية is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
 
-static void test_same_or_convertible_types ()
+ساكن فراغ test_same_or_convertible_types ()
 {
   // Comparisons between result and raw types are disallowed
-  static_assert (!is_equality_comparable<result<int>, int>::value, "");
-  static_assert (!is_equality_comparable<result<int>, int64_t>::value, "");
-  static_assert (!is_equality_comparable<int, result<int>>::value, "");
-  static_assert (!is_equality_comparable<result<int>, error_code_t>::value, "");
-  static_assert (!is_equality_comparable<error_code_t, result<int>>::value, "");
-  static_assert (!is_equality_comparable<result<void>, error_code_t>::value, "");
-  static_assert (is_equality_comparable<result<int>, result<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_ok_t<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_err_t<error_code_t>>::value, "");
+  static_assert (!is_equality_comparable<نتيجو<صحيح>, صحيح>::value, "");
+  static_assert (!is_equality_comparable<نتيجو<صحيح>, int64_t>::value, "");
+  static_assert (!is_equality_comparable<صحيح, نتيجو<صحيح>>::value, "");
+  static_assert (!is_equality_comparable<نتيجو<صحيح>, error_ڪوڊ_t>::value, "");
+  static_assert (!is_equality_comparable<error_ڪوڊ_t, نتيجو<صحيح>>::value, "");
+  static_assert (!is_equality_comparable<نتيجو<فراغ>, error_ڪوڊ_t>::value, "");
+  static_assert (is_equality_comparable<نتيجو<صحيح>, نتيجو<صحيح>>::value, "");
+  static_assert (is_equality_comparable<نتيجو<صحيح>, hb_نتيجو_ok_t<صحيح>>::value, "");
+  static_assert (is_equality_comparable<نتيجو<صحيح>, hb_نتيجو_err_t<error_ڪوڊ_t>>::value, "");
 
   // Types convertible into each other cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int>::value, "");
-  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int64_t>::value, "");
-  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int32_t>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_err_t<int>>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<int64_t, int32_t>, صحيح>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<int64_t, int32_t>, int64_t>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<int64_t, int32_t>, int32_t>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<int64_t, int32_t>, hb_نتيجو_ok_t<صحيح>>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<int64_t, int32_t>, hb_نتيجو_err_t<صحيح>>::value, "");
 
   // Same types cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int, int>, int>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_err_t<int>>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<صحيح, صحيح>, صحيح>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<صحيح, صحيح>, hb_نتيجو_ok_t<صحيح>>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<صحيح, صحيح>, hb_نتيجو_err_t<صحيح>>::value, "");
 
   // Types convertible into each other cannot be directly constructed
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, int>::value, "");
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, error_code_t>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<صحيح, error_ڪوڊ_t>, صحيح>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<صحيح, error_ڪوڊ_t>, error_ڪوڊ_t>::value, "");
 
   // Types not convertible into each other can be directly constructed
-  static_assert (std::is_constructible<hb_result_t<resource_t, error_code_t>, resource_t>::value, "");
-  static_assert (std::is_constructible<hb_result_t<resource_t, error_code_t>, error_code_t>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<resource_t, error_ڪوڊ_t>, resource_t>::value, "");
+  static_assert (std::is_constructible<hb_نتيجو_t<resource_t, error_ڪوڊ_t>, error_ڪوڊ_t>::value, "");
 
-  hb_result_t<int64_t, int32_t> r_ok = Ok(1);
+  hb_نتيجو_t<int64_t, int32_t> r_ok = Ok(1);
   hb_always_assert (r_ok.is_ok ());
   hb_always_assert (r_ok.value () == 1);
 
-  hb_result_t<int64_t, int32_t> r_err = Err(2);
+  hb_نتيجو_t<int64_t, int32_t> r_err = Err(2);
   hb_always_assert (r_err.is_err ());
   hb_always_assert (r_err.error () == 2);
 
-  hb_result_t<int, int> same_ok = Ok(42);
+  hb_نتيجو_t<صحيح, صحيح> same_ok = Ok(42);
   hb_always_assert (same_ok.is_ok ());
   hb_always_assert (same_ok.value () == 42);
 
-  hb_result_t<int, int> same_err = Err(99);
+  hb_نتيجو_t<صحيح, صحيح> same_err = Err(99);
   hb_always_assert (same_err.is_err ());
   hb_always_assert (same_err.error () == 99);
 }
 
-struct any_value_t
+بنية any_قدر_t
 {
-  template <typename X>
-  any_value_t (X&&) {}
+  سانچو <قسم_نالو X>
+  any_قدر_t (X&&) {}
 };
 
-static void test_error_interception() {
+ساكن فراغ test_error_interception() {
   // Checks that U&& constructor does not intercept mismatched error tags as a success value.
-  static_assert (!std::is_constructible<hb_result_t<any_value_t, error_code_t>, hb_result_err_t<const char*>>::value, "");
+  static_assert (!std::is_constructible<hb_نتيجو_t<any_قدر_t, error_ڪوڊ_t>, hb_نتيجو_err_t<ثابت حرف*>>::value, "");
 
-  hb_result_t<any_value_t, error_code_t> r = Err(ERR_A);
+  hb_نتيجو_t<any_قدر_t, error_ڪوڊ_t> r = Err(ERR_A);
   hb_always_assert (r.is_err ());
 
-  hb_result_t<any_value_t, error_code_t> r_ok = Ok(123);
+  hb_نتيجو_t<any_قدر_t, error_ڪوڊ_t> r_ok = Ok(123);
   hb_always_assert (r_ok.is_ok ());
 }
 
-struct move_only_err_t
+بنية move_only_err_t
 {
-  int code;
+  صحيح ڪوڊ;
 
-  explicit move_only_err_t (int c) : code (c) {}
-  move_only_err_t (const move_only_err_t&) = delete;
-  move_only_err_t (move_only_err_t&& o) : code (o.code) { o.code = -1; }
-  move_only_err_t& operator = (const move_only_err_t&) = delete;
-  move_only_err_t& operator = (move_only_err_t&& o) { code = o.code; o.code = -1; return *this; }
-  ~move_only_err_t () = default;
+  واضح move_only_err_t (صحيح c) : ڪوڊ (c) {}
+  move_only_err_t (ثابت move_only_err_t&) = ميٽيو;
+  move_only_err_t (move_only_err_t&& o) : ڪوڊ (o.ڪوڊ) { o.ڪوڊ = -1; }
+  move_only_err_t& عامل = (ثابت move_only_err_t&) = ميٽيو;
+  move_only_err_t& عامل = (move_only_err_t&& o) { ڪوڊ = o.ڪوڊ; o.ڪوڊ = -1; أرجع *هذا; }
+  ~move_only_err_t () = افتراضي;
 
-  bool operator == (const move_only_err_t& o) const { return code == o.code; }
+  منطقي عامل == (ثابت move_only_err_t& o) ثابت { أرجع ڪوڊ == o.ڪوڊ; }
 };
 
-struct move_only_val_t
+بنية move_only_val_t
 {
-  int val;
+  صحيح val;
 
-  explicit move_only_val_t (int v) : val (v) {}
-  move_only_val_t (const move_only_val_t&) = delete;
+  واضح move_only_val_t (صحيح v) : val (v) {}
+  move_only_val_t (ثابت move_only_val_t&) = ميٽيو;
   move_only_val_t (move_only_val_t&& o) : val (o.val) { o.val = -1; }
-  move_only_val_t& operator = (const move_only_val_t&) = delete;
-  move_only_val_t& operator = (move_only_val_t&& o) { val = o.val; o.val = -1; return *this; }
-  ~move_only_val_t () = default;
+  move_only_val_t& عامل = (ثابت move_only_val_t&) = ميٽيو;
+  move_only_val_t& عامل = (move_only_val_t&& o) { val = o.val; o.val = -1; أرجع *هذا; }
+  ~move_only_val_t () = افتراضي;
 
-  bool operator == (const move_only_val_t& o) const { return val == o.val; }
+  منطقي عامل == (ثابت move_only_val_t& o) ثابت { أرجع val == o.val; }
 };
 
-static void test_move_only_types ()
+ساكن فراغ test_move_only_types ()
 {
   // Test hb_result_t<T, move_only_err_t> with Err(...)
   {
-    hb_result_t<int, move_only_err_t> r = Err(move_only_err_t (123));
+    hb_نتيجو_t<صحيح, move_only_err_t> r = Err(move_only_err_t (123));
     hb_always_assert (r.is_err ());
-    hb_always_assert (r.error ().code == 123);
+    hb_always_assert (r.error ().ڪوڊ == 123);
 
     move_only_err_t err = std::move (r).error ();
-    hb_always_assert (err.code == 123);
+    hb_always_assert (err.ڪوڊ == 123);
   }
 
   // Test direct construction from move_only_err_t
   {
-    hb_result_t<int, move_only_err_t> r = move_only_err_t (456);
+    hb_نتيجو_t<صحيح, move_only_err_t> r = move_only_err_t (456);
     hb_always_assert (r.is_err ());
-    hb_always_assert (r.error ().code == 456);
+    hb_always_assert (r.error ().ڪوڊ == 456);
   }
 
   // Test hb_result_t<void, move_only_err_t> with Err(...) and direct construction
   {
-    hb_result_t<void, move_only_err_t> v1 = Err(move_only_err_t (789));
+    hb_نتيجو_t<فراغ, move_only_err_t> v1 = Err(move_only_err_t (789));
     hb_always_assert (v1.is_err ());
-    hb_always_assert (v1.error ().code == 789);
+    hb_always_assert (v1.error ().ڪوڊ == 789);
 
-    hb_result_t<void, move_only_err_t> v2 = move_only_err_t (999);
+    hb_نتيجو_t<فراغ, move_only_err_t> v2 = move_only_err_t (999);
     hb_always_assert (v2.is_err ());
-    hb_always_assert (v2.error ().code == 999);
+    hb_always_assert (v2.error ().ڪوڊ == 999);
   }
 
   // Test value_or with move-only value types
   {
-    hb_result_t<move_only_val_t, error_code_t> r_ok = Ok(move_only_val_t (42));
-    move_only_val_t v = std::move (r_ok).value_or (move_only_val_t (0));
+    hb_نتيجو_t<move_only_val_t, error_ڪوڊ_t> r_ok = Ok(move_only_val_t (42));
+    move_only_val_t v = std::move (r_ok).قدر_or (move_only_val_t (0));
     hb_always_assert (v.val == 42);
 
-    hb_result_t<move_only_val_t, error_code_t> r_err = Err(ERR_A);
-    move_only_val_t v_fallback = std::move (r_err).value_or (move_only_val_t (99));
+    hb_نتيجو_t<move_only_val_t, error_ڪوڊ_t> r_err = Err(ERR_A);
+    move_only_val_t v_fallback = std::move (r_err).قدر_or (move_only_val_t (99));
     hb_always_assert (v_fallback.val == 99);
   }
 }
 
-struct copy_move_counter_t
+بنية copy_move_counter_t
 {
-  static int copy_count;
-  static int move_count;
+  ساكن صحيح copy_ڳڻپ;
+  ساكن صحيح move_ڳڻپ;
 
-  static void reset ()
+  ساكن فراغ reset ()
   {
-    copy_count = 0;
-    move_count = 0;
+    copy_ڳڻپ = 0;
+    move_ڳڻپ = 0;
   }
 
-  int val;
+  صحيح val;
 
-  bool in_error() const {
-    return val == -1;
+  منطقي اندريون_error() ثابت {
+    أرجع val == -1;
   }
 
-  explicit copy_move_counter_t (int v) : val (v) {}
-  copy_move_counter_t (const copy_move_counter_t& o) : val (o.val) { copy_count++; }
-  copy_move_counter_t (copy_move_counter_t&& o) : val (o.val) { o.val = -1; move_count++; }
-  ~copy_move_counter_t () = default;
+  واضح copy_move_counter_t (صحيح v) : val (v) {}
+  copy_move_counter_t (ثابت copy_move_counter_t& o) : val (o.val) { copy_ڳڻپ++; }
+  copy_move_counter_t (copy_move_counter_t&& o) : val (o.val) { o.val = -1; move_ڳڻپ++; }
+  ~copy_move_counter_t () = افتراضي;
 };
 
-int copy_move_counter_t::copy_count = 0;
-int copy_move_counter_t::move_count = 0;
+صحيح copy_move_counter_t::copy_ڳڻپ = 0;
+صحيح copy_move_counter_t::move_ڳڻپ = 0;
 
-static result<copy_move_counter_t> return_tracked_from_local ()
+ساكن نتيجو<copy_move_counter_t> return_tracked_from_local ()
 {
-  copy_move_counter_t out (42);
-  return Ok (std::move (out));
+  copy_move_counter_t ٻاهريون (42);
+  أرجع Ok (std::move (ٻاهريون));
 }
 
-static result<copy_move_counter_t> return_tracked_from_local_with_tag ()
+ساكن نتيجو<copy_move_counter_t> return_tracked_from_local_with_ٽيگ ()
 {
-  copy_move_counter_t out (42);
-  return Ok(out);
+  copy_move_counter_t ٻاهريون (42);
+  أرجع Ok(ٻاهريون);
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local ()
+ساكن hb_نتيجو_t<صحيح, copy_move_counter_t> return_tracked_error_from_local ()
 {
-  copy_move_counter_t out (42);
-  return Err (std::move (out));
+  copy_move_counter_t ٻاهريون (42);
+  أرجع Err (std::move (ٻاهريون));
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local_with_tag ()
+ساكن hb_نتيجو_t<صحيح, copy_move_counter_t> return_tracked_error_from_local_with_ٽيگ ()
 {
-  copy_move_counter_t out (42);
-  return Err(out);
+  copy_move_counter_t ٻاهريون (42);
+  أرجع Err(ٻاهريون);
 }
 
-static result<move_only_val_t> return_move_only_from_local ()
+ساكن نتيجو<move_only_val_t> return_move_only_from_local ()
 {
-  move_only_val_t out (42);
-  return Ok (std::move (out));
+  move_only_val_t ٻاهريون (42);
+  أرجع Ok (std::move (ٻاهريون));
 }
 
-static void test_return_moves_from_local ()
+ساكن فراغ test_return_چالون_from_local ()
 {
   // Verify 0 copies and only moves occur when returning local value directly
   {
     copy_move_counter_t::reset ();
-    result<copy_move_counter_t> r = return_tracked_from_local ();
+    نتيجو<copy_move_counter_t> r = return_tracked_from_local ();
     hb_always_assert (r.is_ok ());
     hb_always_assert (r.value ().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ >= 1);
   }
 
   // Verify 0 copies and only moves occur when returning local value directly
   {
     copy_move_counter_t::reset ();
-    result<copy_move_counter_t> r = return_tracked_from_local_with_tag ();
+    نتيجو<copy_move_counter_t> r = return_tracked_from_local_with_ٽيگ ();
     hb_always_assert (r.is_ok ());
     hb_always_assert (r.value ().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ >= 1);
   }
 
 
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local ();
+    hb_نتيجو_t<صحيح, copy_move_counter_t> r = return_tracked_error_from_local ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ >= 1);
   }
 
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local_with_tag ();
+    hb_نتيجو_t<صحيح, copy_move_counter_t> r = return_tracked_error_from_local_with_ٽيگ ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ >= 1);
   }
 
 
   // Test returning move-only type (statically proves no copy is attempted)
   {
-    result<move_only_val_t> r = return_move_only_from_local ();
+    نتيجو<move_only_val_t> r = return_move_only_from_local ();
     hb_always_assert (r.is_ok ());
     hb_always_assert (r.value ().val == 42);
   }
 }
 
-struct in_error_t {
-  bool successful;
+بنية اندريون_error_t {
+  منطقي successful;
 
-  in_error_t(bool s) : successful(s) {}
+  اندريون_error_t(منطقي s) : successful(s) {}
 
-  bool in_error() const {
-    return !successful;
+  منطقي اندريون_error() ثابت {
+    أرجع !successful;
   }
 };
 
-static void test_from () {
-  in_error_t has_error(false);
-  in_error_t no_error(true);
-  result<void> r = result<void>::from(has_error, ERR_B);
+ساكن فراغ test_from () {
+  اندريون_error_t has_error(خطأ);
+  اندريون_error_t no_error(سچ);
+  نتيجو<فراغ> r = نتيجو<فراغ>::from(has_error, ERR_B);
   hb_always_assert(r.is_err());
   hb_always_assert(r.error() == ERR_B);
-  r = result<void>::from(no_error, ERR_B);
+  r = نتيجو<فراغ>::from(no_error, ERR_B);
   hb_always_assert(!r.is_err());
 }
 
-struct default_constructible_t
+بنية default_constructible_t
 {
-  int val;
+  صحيح val;
 
   default_constructible_t () : val (123) {}
-  explicit default_constructible_t (int v) : val (v) {}
+  واضح default_constructible_t (صحيح v) : val (v) {}
 };
 
-struct move_only_default_t
+بنية move_only_default_t
 {
-  int val;
+  صحيح val;
   move_only_default_t () : val (77) {}
-  explicit move_only_default_t (int v) : val (v) {}
-  move_only_default_t (const move_only_default_t&) = delete;
+  واضح move_only_default_t (صحيح v) : val (v) {}
+  move_only_default_t (ثابت move_only_default_t&) = ميٽيو;
   move_only_default_t (move_only_default_t&& o) : val (o.val) { o.val = -1; }
-  move_only_default_t& operator = (const move_only_default_t&) = delete;
-  move_only_default_t& operator = (move_only_default_t&& o) { val = o.val; o.val = -1; return *this; }
-  ~move_only_default_t () = default;
+  move_only_default_t& عامل = (ثابت move_only_default_t&) = ميٽيو;
+  move_only_default_t& عامل = (move_only_default_t&& o) { val = o.val; o.val = -1; أرجع *هذا; }
+  ~move_only_default_t () = افتراضي;
 };
 
-static void test_value_or_default ()
+ساكن فراغ test_قدر_or_default ()
 {
   // Test const &
   {
-    const result<int> r_ok = Ok(42);
-    hb_always_assert (r_ok.value_or_default () == 42);
+    ثابت نتيجو<صحيح> r_ok = Ok(42);
+    hb_always_assert (r_ok.قدر_or_default () == 42);
 
-    const result<int> r_err = Err(ERR_A);
-    hb_always_assert (r_err.value_or_default () == 0);
+    ثابت نتيجو<صحيح> r_err = Err(ERR_A);
+    hb_always_assert (r_err.قدر_or_default () == 0);
   }
 
   // Test && (rvalues and move)
   {
-    result<int> r_ok = Ok(42);
-    hb_always_assert (std::move (r_ok).value_or_default () == 42);
+    نتيجو<صحيح> r_ok = Ok(42);
+    hb_always_assert (std::move (r_ok).قدر_or_default () == 42);
 
-    result<int> r_err = Err(ERR_A);
-    hb_always_assert (std::move (r_err).value_or_default () == 0);
+    نتيجو<صحيح> r_err = Err(ERR_A);
+    hb_always_assert (std::move (r_err).قدر_or_default () == 0);
   }
 
   // Test custom struct with default constructor
   {
-    result<default_constructible_t> r_ok = default_constructible_t (456);
-    hb_always_assert (r_ok.value_or_default ().val == 456);
+    نتيجو<default_constructible_t> r_ok = default_constructible_t (456);
+    hb_always_assert (r_ok.قدر_or_default ().val == 456);
 
-    result<default_constructible_t> r_err = ERR_A;
-    hb_always_assert (r_err.value_or_default ().val == 123);
+    نتيجو<default_constructible_t> r_err = ERR_A;
+    hb_always_assert (r_err.قدر_or_default ().val == 123);
 
-    hb_always_assert (std::move (r_ok).value_or_default ().val == 456);
-    hb_always_assert (std::move (r_err).value_or_default ().val == 123);
+    hb_always_assert (std::move (r_ok).قدر_or_default ().val == 456);
+    hb_always_assert (std::move (r_err).قدر_or_default ().val == 123);
   }
 
   // Test pointers
   {
-    int x = 10;
-    result<int*> r_ok = &x;
-    hb_always_assert (r_ok.value_or_default () == &x);
+    صحيح x = 10;
+    نتيجو<صحيح*> r_ok = &x;
+    hb_always_assert (r_ok.قدر_or_default () == &x);
 
-    result<int*> r_err = ERR_A;
-    hb_always_assert (r_err.value_or_default () == nullptr);
+    نتيجو<صحيح*> r_err = ERR_A;
+    hb_always_assert (r_err.قدر_or_default () == خالي_اشارو);
   }
 
   // Test move-only types
   {
-    result<move_only_default_t> r_mo_ok = move_only_default_t (88);
-    hb_always_assert (std::move (r_mo_ok).value_or_default ().val == 88);
+    نتيجو<move_only_default_t> r_mo_ok = move_only_default_t (88);
+    hb_always_assert (std::move (r_mo_ok).قدر_or_default ().val == 88);
 
-    result<move_only_default_t> r_mo_err = ERR_A;
-    hb_always_assert (std::move (r_mo_err).value_or_default ().val == 77);
+    نتيجو<move_only_default_t> r_mo_err = ERR_A;
+    hb_always_assert (std::move (r_mo_err).قدر_or_default ().val == 77);
   }
 }
 
-static void test_from_move()
+ساكن فراغ test_from_move()
 {
   {
     copy_move_counter_t::reset();
     copy_move_counter_t ok (24);
-    result<copy_move_counter_t> r_ok = result<copy_move_counter_t>::from(std::move(ok), ERR_B);
+    نتيجو<copy_move_counter_t> r_ok = نتيجو<copy_move_counter_t>::from(std::move(ok), ERR_B);
     hb_always_assert (r_ok.is_ok());
     hb_always_assert (r_ok->val == 24);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count == 1);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ == 1);
   }
 
   {
     copy_move_counter_t::reset();
     copy_move_counter_t fail (-1);
-    result<copy_move_counter_t> r_fail = result<copy_move_counter_t>::from(std::move(fail), ERR_B);
+    نتيجو<copy_move_counter_t> r_fail = نتيجو<copy_move_counter_t>::from(std::move(fail), ERR_B);
     hb_always_assert (r_fail.is_err());
     hb_always_assert (r_fail.error() == ERR_B);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count == 0);
+    hb_always_assert (copy_move_counter_t::copy_ڳڻپ == 0);
+    hb_always_assert (copy_move_counter_t::move_ڳڻپ == 0);
   }
 }
 
-int main ()
+صحيح مکيه ()
 {
   test_ok_basic ();
   test_err_basic ();
   test_explicit_ok_err ();
-  test_pointers ();
+  test_اشارا ();
   test_void ();
   test_resource_cleanup ();
   test_try_macro ();
   test_same_or_convertible_types ();
   test_error_interception ();
   test_move_only_types ();
-  test_return_moves_from_local ();
+  test_return_چالون_from_local ();
   test_from();
-  test_value_or_default ();
+  test_قدر_or_default ();
   test_from_move ();
 
-  return 0;
+  أرجع 0;
 }

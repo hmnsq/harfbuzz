@@ -1,92 +1,92 @@
-#ifndef HB_ZLIB_CC
-#define HB_ZLIB_CC
-#ifdef HB_ZLIB_CC /* Pacify -Wunused-macros. */
+#جيڪڏهن_وصف_نه_ٿيل HB_ZLIB_CC
+#وصف_ڪريو HB_ZLIB_CC
+#جيڪڏهن_وصف_ٿيل HB_ZLIB_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-zlib.hh"
+#ضمن "hb-zlib.hh"
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif
+#جيڪڏهن_وصف_ٿيل HAVE_ZLIB
+#ضمن <zlib.h>
+#جيڪڏهن_پورو
 
 hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len)
+                         بنانشان   max_output_len)
 {
-#ifndef HAVE_ZLIB
-  return nullptr;
-#else
-  unsigned compressed_len = 0;
-  const uint8_t *compressed = (const uint8_t *) hb_blob_get_data (blob, &compressed_len);
-  if (!compressed || !compressed_len)
-    return nullptr;
+#جيڪڏهن_وصف_نه_ٿيل HAVE_ZLIB
+  أرجع خالي_اشارو;
+#وإلا
+  بنانشان compressed_len = 0;
+  ثابت uint8_t *compressed = (ثابت uint8_t *) hb_blob_get_معلومات (blob, &compressed_len);
+  إذا (!compressed || !compressed_len)
+    أرجع خالي_اشارو;
 
-  z_stream stream = {};
-  stream.next_in = (Bytef *) compressed;
-  stream.avail_in = compressed_len;
+  z_وهڪرو وهڪرو = {};
+  وهڪرو.ايندڙ_اندريون = (Bytef *) compressed;
+  وهڪرو.avail_اندريون = compressed_len;
 
-  if (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
-    return nullptr;
-  HB_SCOPE_GUARD (inflateEnd (&stream));
+  إذا (inflateInit2 (&وهڪرو, 16 + MAX_WBITS) != Z_OK)
+    أرجع خالي_اشارو;
+  HB_SCOPE_GUARD (inflate_پڇاڙي (&وهڪرو));
 
-  uint32_t expected_size = 0;
-  hb_gzip_get_uncompressed_size ((const char *) compressed,
+  uint32_t expected_سائيز = 0;
+  hb_gzip_get_uncompressed_سائيز ((ثابت حرف *) compressed,
                                  compressed_len,
-                                 &expected_size);
+                                 &expected_سائيز);
 
-  size_t allocated = hb_min ((size_t) hb_max (expected_size, 4096u),
+  size_t allocated = hb_min ((size_t) hb_max (expected_سائيز, 4096u),
                              (size_t) max_output_len);
-  char *output = (char *) hb_malloc (allocated);
-  if (!output)
-    return nullptr;
-  auto output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
+  حرف *output = (حرف *) hb_malloc (allocated);
+  إذا (!output)
+    أرجع خالي_اشارو;
+  خودڪار output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
 
-  int status = Z_OK;
-  while (true)
+  صحيح حالت = Z_OK;
+  طالما (سچ)
   {
-    size_t produced = (size_t) stream.total_out;
-    if (unlikely (produced >= (size_t) max_output_len))
-      return nullptr;
+    size_t produced = (size_t) وهڪرو.ڪل_ٻاهريون;
+    إذا (unlikely (produced >= (size_t) max_output_len))
+      أرجع خالي_اشارو;
 
-    if (produced == allocated)
+    إذا (produced == allocated)
     {
       size_t new_allocated = hb_min (allocated * 2, (size_t) max_output_len);
-      if (unlikely (new_allocated <= allocated))
-        return nullptr;
+      إذا (unlikely (new_allocated <= allocated))
+        أرجع خالي_اشارو;
 
-      char *new_output = (char *) hb_realloc (output, new_allocated);
-      if (unlikely (!new_output))
-        return nullptr;
+      حرف *new_output = (حرف *) hb_realloc (output, new_allocated);
+      إذا (unlikely (!new_output))
+        أرجع خالي_اشارو;
 
       output = new_output;
       allocated = new_allocated;
     }
 
-    stream.next_out = (Bytef *) output + stream.total_out;
-    stream.avail_out = (uInt) (allocated - (size_t) stream.total_out);
+    وهڪرو.ايندڙ_ٻاهريون = (Bytef *) output + وهڪرو.ڪل_ٻاهريون;
+    وهڪرو.avail_ٻاهريون = (uInt) (allocated - (size_t) وهڪرو.ڪل_ٻاهريون);
 
-    status = inflate (&stream, Z_FINISH);
-    if (status == Z_STREAM_END)
-      break;
+    حالت = inflate (&وهڪرو, Z_پڄاڻي);
+    إذا (حالت == Z_وهڪرو_پڇاڙي)
+      اكسر;
 
-    if ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
-      continue;
+    إذا ((حالت == Z_OK || حالت == Z_BUF_ERROR) && وهڪرو.avail_ٻاهريون == 0)
+      استمر;
 
-    return nullptr;
+    أرجع خالي_اشارو;
   }
 
-  if (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
-    return nullptr;
+  إذا (unlikely ((size_t) وهڪرو.ڪل_ٻاهريون > (size_t) max_output_len))
+    أرجع خالي_اشارو;
 
   output_guard.release ();
-  return hb_blob_create_or_fail (output,
-                                 (unsigned) stream.total_out,
-                                 HB_MEMORY_MODE_WRITABLE,
+  أرجع hb_blob_create_or_fail (output,
+                                 (بنانشان) وهڪرو.ڪل_ٻاهريون,
+                                 HB_يادگيري_گهڻائي_WRITABLE,
                                  output,
                                  hb_free);
-#endif
+#جيڪڏهن_پورو
 }
 
-#endif /* HB_ZLIB_CC pacify */
-#endif /* HB_ZLIB_CC guard */
+#جيڪڏهن_پورو /* HB_ZLIB_CC pacify */
+#جيڪڏهن_پورو /* HB_ZLIB_CC guard */

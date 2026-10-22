@@ -24,121 +24,121 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_KERN_HH
-#define HB_KERN_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_KERN_HH
+#وصف_ڪريو HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
-
-
-namespace OT {
+#ضمن "hb-open-type.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-ot-layout-gpos-table.hh"
 
 
-template <typename Driver>
-struct hb_kern_machine_t
+نطاق OT {
+
+
+سانچو <قسم_نالو Driver>
+بنية hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ثابت Driver &driver_,
+		     منطقي cross_وهڪرو_2 = خطأ) :
 		       driver (driver_),
-		       crossStream (crossStream_) {}
+		       cross_وهڪرو (cross_وهڪرو_2) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
-	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+  فراغ kern (hb_font_t   *font,
+	     hb_بفر_t *بفر,
+	     hb_نقاب_t    kern_نقاب,
+	     منطقي         scale = سچ) ثابت
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    إذا (!بفر->پيغام (font, "start kern"))
+      أرجع;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
-    c.set_lookup_mask (kern_mask);
-    c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    بفر->unsafe_منزل_concat ();
+    OT::hb_ot_apply_context_t c (1, font, بفر, hb_blob_get_خالي_جايون ());
+    c.سيٽ_lookup_نقاب (kern_نقاب);
+    c.سيٽ_lookup_props (OT::LookupFlag::IgnoreMarks);
+    خودڪار &skippy_iter = c.iter_داخلا;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    منطقي horizontal = HB_DIRECTION_IS_HORIZONTAL (بفر->props.direction);
+    بنانشان صحيح ڳڻپ = بفر->len;
+    hb_glyph_info_t *info = بفر->info;
+    hb_glyph_position_t *pos = بفر->pos;
+    لكل (بنانشان صحيح idx = 0; idx < ڳڻپ;)
     {
-      if (!(info[idx].mask & kern_mask))
+      إذا (!(info[idx].نقاب & kern_نقاب))
       {
 	idx++;
-	continue;
+	استمر;
       }
 
       skippy_iter.reset_fast (idx);
-      unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      بنانشان unsafe_منزل;
+      إذا (unlikely (!skippy_iter.next (&unsafe_منزل)))
       {
-	idx = unsafe_to;
-	continue;
+	idx = unsafe_منزل;
+	استمر;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      بنانشان صحيح i = idx;
+      بنانشان صحيح j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      إذا (likely (!kern))
+	اذهب skip;
 
-      if (horizontal)
+      إذا (horizontal)
       {
-	if (scale)
+	إذا (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	إذا (cross_وهڪرو)
 	{
-	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].y_وٿي_2 = kern;
+	  بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	وإلا
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].x_advance = hb_saturate_add (pos[i].x_advance, kern1);
-	  pos[j].x_advance = hb_saturate_add (pos[j].x_advance, kern2);
-	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
+	  pos[i].x_advance = hb_saturate_جوڙيو (pos[i].x_advance, kern1);
+	  pos[j].x_advance = hb_saturate_جوڙيو (pos[j].x_advance, kern2);
+	  pos[j].x_وٿي_2 = hb_saturate_جوڙيو (pos[j].x_وٿي_2, kern2);
 	}
       }
-      else
+      وإلا
       {
-	if (scale)
+	إذا (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	إذا (cross_وهڪرو)
 	{
-	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].x_وٿي_2 = kern;
+	  بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	وإلا
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].y_advance = hb_saturate_add (pos[i].y_advance, kern1);
-	  pos[j].y_advance = hb_saturate_add (pos[j].y_advance, kern2);
-	  pos[j].y_offset = hb_saturate_add (pos[j].y_offset, kern2);
+	  pos[i].y_advance = hb_saturate_جوڙيو (pos[i].y_advance, kern1);
+	  pos[j].y_advance = hb_saturate_جوڙيو (pos[j].y_advance, kern2);
+	  pos[j].y_وٿي_2 = hb_saturate_جوڙيو (pos[j].y_وٿي_2, kern2);
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      بفر->unsafe_منزل_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (فراغ) بفر->پيغام (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ثابت Driver &driver;
+  منطقي cross_وهڪرو;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_KERN_HH */
+#جيڪڏهن_پورو /* HB_KERN_HH */

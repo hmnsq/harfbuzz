@@ -24,61 +24,61 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-iter.hh"
+#ضمن "hb.hh"
+#ضمن "hb-iter.hh"
 
-#include "hb-array.hh"
-#include "hb-set.hh"
-#include "hb-ot-layout-common.hh"
+#ضمن "hb-array.hh"
+#ضمن "hb-set.hh"
+#ضمن "hb-ot-layout-common.hh"
 
-template <typename T>
-struct array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
+سانچو <قسم_نالو T>
+بنية array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
 {
   array_iter_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef T& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  T& __item_at__ (unsigned i) const { return arr[i]; }
-  void __forward__ (unsigned n) { arr += n; }
-  void __rewind__ (unsigned n) { arr -= n; }
-  unsigned __len__ () const { return arr.length; }
-  bool operator != (const array_iter_t& o) { return arr != o.arr; }
+  تعريفنوع T& __item_t__;
+  ساكن constexpr منطقي is_random_access_iterator = سچ;
+  T& __item_at__ (بنانشان i) ثابت { أرجع arr[i]; }
+  فراغ __forward__ (بنانشان n) { arr += n; }
+  فراغ __rewind__ (بنانشان n) { arr -= n; }
+  بنانشان __len__ () ثابت { أرجع arr.ڊيگهائي; }
+  منطقي عامل != (ثابت array_iter_t& o) { أرجع arr != o.arr; }
 
-  private:
+  خاص:
   hb_array_t<T> arr;
 };
 
-template <typename T>
-struct some_array_t
+سانچو <قسم_نالو T>
+بنية some_array_t
 {
   some_array_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef array_iter_t<T> iter_t;
-  array_iter_t<T> iter () { return array_iter_t<T> (arr); }
-  operator array_iter_t<T> () { return iter (); }
-  operator hb_iter_t<array_iter_t<T>> () { return iter (); }
+  تعريفنوع array_iter_t<T> iter_t;
+  array_iter_t<T> iter () { أرجع array_iter_t<T> (arr); }
+  عامل array_iter_t<T> () { أرجع iter (); }
+  عامل hb_iter_t<array_iter_t<T>> () { أرجع iter (); }
 
-  private:
+  خاص:
   hb_array_t<T> arr;
 };
 
 
-template <typename Iter,
+سانچو <قسم_نالو Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+ساكن فراغ
 test_iterator_non_default_constructable (Iter it)
 {
   /* Iterate over a copy of it. */
-  for (auto c = it.iter (); c; c++)
+  لكل (خودڪار c = it.iter (); c; c++)
     *c;
 
   /* Same. */
-  for (auto c = +it; c; c++)
+  لكل (خودڪار c = +it; c; c++)
     *c;
 
   /* Range-based for over a copy. */
-  for (auto _ : +it)
-    (void) _;
+  لكل (خودڪار _ : +it)
+    (فراغ) _;
 
   it += it.len ();
   it = it + 10;
@@ -86,13 +86,13 @@ test_iterator_non_default_constructable (Iter it)
 
   hb_always_assert (*it == it[0]);
 
-  static_assert (true || it.is_random_access_iterator, "");
-  static_assert (true || it.is_sorted_iterator, "");
+  static_assert (سچ || it.is_random_access_iterator, "");
+  static_assert (سچ || it.is_sorted_iterator, "");
 }
 
-template <typename Iter,
+سانچو <قسم_نالو Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+ساكن فراغ
 test_iterator (Iter it)
 {
   Iter default_constructed;
@@ -101,43 +101,43 @@ test_iterator (Iter it)
   test_iterator_non_default_constructable (it);
 }
 
-template <typename Iterable,
+سانچو <قسم_نالو Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static void
-test_iterable (const Iterable &lst = Null (Iterable))
+ساكن فراغ
+test_iterable (ثابت Iterable &lst = Null (Iterable))
 {
-  for (auto _ : lst)
-    (void) _;
+  لكل (خودڪار _ : lst)
+    (فراغ) _;
 
   // Test that can take iterator from.
   test_iterator (lst.iter ());
 }
 
-template <typename It>
-static void check_sequential (It it)
+سانچو <قسم_نالو It>
+ساكن فراغ check_sequential (It it)
 {
-  int i = 1;
-  for (int v : +it) {
+  صحيح i = 1;
+  لكل (صحيح v : +it) {
     hb_always_assert (v == i++);
   }
 }
 
-static void test_concat ()
+ساكن فراغ test_concat ()
 {
-  hb_vector_t<int> a = {1, 2, 3};
-  hb_vector_t<int> b = {4, 5};
+  hb_ويڪٽر_t<صحيح> a = {1, 2, 3};
+  hb_ويڪٽر_t<صحيح> b = {4, 5};
 
-  hb_vector_t<int> c = {};
-  hb_vector_t<int> d = {1, 2, 3, 4, 5};
+  hb_ويڪٽر_t<صحيح> c = {};
+  hb_ويڪٽر_t<صحيح> d = {1, 2, 3, 4, 5};
 
-  auto it1 = hb_concat (a, b);
+  خودڪار it1 = hb_concat (a, b);
   hb_always_assert (it1.len () == 5);
   hb_always_assert (it1.is_random_access_iterator);
-  auto it2 = hb_concat (c, d);
+  خودڪار it2 = hb_concat (c, d);
   hb_always_assert (it2.len () == 5);
-  auto it3 = hb_concat (d, c);
+  خودڪار it3 = hb_concat (d, c);
   hb_always_assert (it3.len () == 5);
-  for (int i = 0; i < 5; i++) {
+  لكل (صحيح i = 0; i < 5; i++) {
     hb_always_assert(it1[i] == i + 1);
     hb_always_assert(it2[i] == i + 1);
     hb_always_assert(it3[i] == i + 1);
@@ -147,7 +147,7 @@ static void test_concat ()
   check_sequential (it2);
   check_sequential (it3);
 
-  auto it4 = +it1;
+  خودڪار it4 = +it1;
   it4 += 0;
   hb_always_assert (*it4 == 1);
 
@@ -165,13 +165,13 @@ static void test_concat ()
   hb_always_assert (!it4);
   hb_always_assert (it4.len () == 0);
 
-  auto it5 = +it1;
+  خودڪار it5 = +it1;
   it5 += 3;
   hb_always_assert (*it5 == 4);
 
-  hb_set_t s_a = {1, 2, 3};
-  hb_set_t s_b = {4, 5};
-  auto it6 = hb_concat (s_a, s_b);
+  hb_سيٽ_t s_a = {1, 2, 3};
+  hb_سيٽ_t s_b = {4, 5};
+  خودڪار it6 = hb_concat (s_a, s_b);
   hb_always_assert (!it6.is_random_access_iterator);
   check_sequential (it6);
   hb_always_assert (it6.len () == 5);
@@ -185,11 +185,11 @@ static void test_concat ()
   hb_always_assert (it6.len () == 2);
 }
 
-static void
+ساكن فراغ
 test_backward_filter ()
 {
-  hb_vector_t<int> V = {2, 4, 5, 7, 8, 9, 10};
-  auto it = hb_iter (V) | hb_filter ([] (int x) { return x % 2 != 0; });
+  hb_ويڪٽر_t<صحيح> V = {2, 4, 5, 7, 8, 9, 10};
+  خودڪار it = hb_iter (V) | hb_filter ([] (صحيح x) { أرجع x % 2 != 0; });
   it += 2;
   hb_always_assert (*it == 9);
   --it;
@@ -200,20 +200,20 @@ test_backward_filter ()
   hb_always_assert (*it == 5);
 }
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  const int src[10] = {};
-  int dst[20];
-  hb_vector_t<int> v;
+  ثابت صحيح src[10] = {};
+  صحيح dst[20];
+  hb_ويڪٽر_t<صحيح> v;
 
-  array_iter_t<const int> s (src); /* Implicit conversion from static array. */
-  array_iter_t<const int> s2 (v); /* Implicit conversion from vector. */
-  array_iter_t<int> t (dst);
+  array_iter_t<ثابت صحيح> s (src); /* Implicit conversion from static array. */
+  array_iter_t<ثابت صحيح> s2 (v); /* Implicit conversion from vector. */
+  array_iter_t<صحيح> t (dst);
 
-  static_assert (array_iter_t<int>::is_random_access_iterator, "");
+  static_assert (array_iter_t<صحيح>::is_random_access_iterator, "");
 
-  some_array_t<const int> a (src);
+  some_array_t<ثابت صحيح> a (src);
 
   s2 = s;
 
@@ -225,22 +225,22 @@ main (int argc, char **argv)
   hb_copy (a.iter (), t);
 
   test_iterable (v);
-  hb_set_t st;
+  hb_سيٽ_t st;
   st << 1 << 15 << 43;
   test_iterable (st);
-  hb_sorted_array_t<int> sa;
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::item_t>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::__item_t__>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, int&>&>(sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>>&>(sa);
-  (void) static_cast<hb_iter_t<hb_array_t<int>, int&>&> (sa);
+  hb_sorted_array_t<صحيح> sa;
+  (فراغ) static_cast<hb_iter_t<hb_sorted_array_t<صحيح>, hb_sorted_array_t<صحيح>::شي_t>&> (sa);
+  (فراغ) static_cast<hb_iter_t<hb_sorted_array_t<صحيح>, hb_sorted_array_t<صحيح>::__item_t__>&> (sa);
+  (فراغ) static_cast<hb_iter_t<hb_sorted_array_t<صحيح>, صحيح&>&>(sa);
+  (فراغ) static_cast<hb_iter_t<hb_sorted_array_t<صحيح>>&>(sa);
+  (فراغ) static_cast<hb_iter_t<hb_array_t<صحيح>, صحيح&>&> (sa);
   test_iterable (sa);
 
-  test_iterable<hb_array_t<int>> ();
-  test_iterable<hb_sorted_array_t<const int>> ();
-  test_iterable<hb_vector_t<float>> ();
-  test_iterable<hb_set_t> ();
-  test_iterable<OT::Array16Of<OT::HBUINT16>> ();
+  test_iterable<hb_array_t<صحيح>> ();
+  test_iterable<hb_sorted_array_t<ثابت صحيح>> ();
+  test_iterable<hb_ويڪٽر_t<عائم>> ();
+  test_iterable<hb_سيٽ_t> ();
+  test_iterable<OT::Array16_جو<OT::HBUINT16>> ();
 
   test_iterator (hb_zip (st, v));
   test_iterator_non_default_constructable (hb_enumerate (st));
@@ -250,18 +250,18 @@ main (int argc, char **argv)
   test_iterator_non_default_constructable (hb_iter (st) | hb_filter ());
   test_iterator_non_default_constructable (hb_iter (st) | hb_map (hb_lidentity));
 
-  hb_always_assert (true == hb_all (st));
-  hb_always_assert (false == hb_all (st, 42u));
-  hb_always_assert (true == hb_any (st));
-  hb_always_assert (false == hb_any (st, 14u));
-  hb_always_assert (true == hb_any (st, 14u, [] (unsigned _) { return _ - 1u; }));
-  hb_always_assert (true == hb_any (st, [] (unsigned _) { return _ == 15u; }));
-  hb_always_assert (true == hb_any (st, 15u));
-  hb_always_assert (false == hb_none (st));
-  hb_always_assert (false == hb_none (st, 15u));
-  hb_always_assert (true == hb_none (st, 17u));
+  hb_always_assert (سچ == hb_all (st));
+  hb_always_assert (خطأ == hb_all (st, 42u));
+  hb_always_assert (سچ == hb_any (st));
+  hb_always_assert (خطأ == hb_any (st, 14u));
+  hb_always_assert (سچ == hb_any (st, 14u, [] (بنانشان _) { أرجع _ - 1u; }));
+  hb_always_assert (سچ == hb_any (st, [] (بنانشان _) { أرجع _ == 15u; }));
+  hb_always_assert (سچ == hb_any (st, 15u));
+  hb_always_assert (خطأ == hb_none (st));
+  hb_always_assert (خطأ == hb_none (st, 15u));
+  hb_always_assert (سچ == hb_none (st, 17u));
 
-  hb_array_t<hb_vector_t<int>> pa;
+  hb_array_t<hb_ويڪٽر_t<صحيح>> pa;
   pa->as_array ();
 
   hb_map_t m;
@@ -276,7 +276,7 @@ main (int argc, char **argv)
   | hb_filter (st)
   | hb_filter (&st)
   | hb_filter (hb_bool)
-  | hb_filter (hb_bool, hb_identity)
+  | hb_filter (hb_bool, hb_سڃاڻپ_عنصر)
   | hb_sink (st)
   ;
 
@@ -289,80 +289,80 @@ main (int argc, char **argv)
   ;
 
   + hb_iter (src)
-  | hb_map ([] (int i) { return 1; })
-  | hb_reduce ([=] (int acc, int value) { return acc; }, 2)
+  | hb_map ([] (صحيح i) { أرجع 1; })
+  | hb_reduce ([=] (صحيح acc, صحيح value) { أرجع acc; }, 2)
   ;
 
-  using map_pair_t = hb_item_type<hb_map_t>;
+  استعمال map_pair_t = hb_شي_type<hb_map_t>;
   + hb_iter (m)
-  | hb_map ([] (map_pair_t p) { return p.first * p.second; })
+  | hb_map ([] (map_pair_t p) { أرجع p.پهريون * p.second; })
   ;
 
-  m.keys ();
-  using map_key_t = decltype (*m.keys());
-  + hb_iter (m.keys ())
-  | hb_filter ([] (map_key_t k) { return k < 42; })
+  m.ڪنجيون ();
+  استعمال map_ڪنجي_t = decltype (*m.ڪنجيون());
+  + hb_iter (m.ڪنجيون ())
+  | hb_filter ([] (map_ڪنجي_t k) { أرجع k < 42; })
   | hb_drain
   ;
 
   m.values ();
-  using map_value_t = decltype (*m.values());
+  استعمال map_قدر_t = decltype (*m.values());
   + hb_iter (m.values ())
-  | hb_filter ([] (map_value_t k) { return k < 42; })
+  | hb_filter ([] (map_قدر_t k) { أرجع k < 42; })
   | hb_drain
   ;
 
-  unsigned int temp1 = 10;
-  unsigned int temp2 = 0;
-  hb_map_t *result =
+  بنانشان صحيح temp1 = 10;
+  بنانشان صحيح temp2 = 0;
+  hb_map_t *نتيجو =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t *
+  | hb_map ([&] (صحيح i) -> hb_سيٽ_t *
 	    {
-	      hb_set_t *set = hb_set_create ();
-	      for (unsigned int i = 0; i < temp1; ++i)
-		hb_set_add (set, i);
+	      hb_سيٽ_t *سيٽ = hb_سيٽ_create ();
+	      لكل (بنانشان صحيح i = 0; i < temp1; ++i)
+		hb_سيٽ_جوڙيو (سيٽ, i);
 	      temp1++;
-	      return set;
+	      أرجع سيٽ;
 	    })
-  | hb_reduce ([&] (hb_map_t *acc, hb_set_t *value) -> hb_map_t *
+  | hb_reduce ([&] (hb_map_t *acc, hb_سيٽ_t *value) -> hb_map_t *
 	       {
-		 hb_map_set (acc, temp2++, hb_set_get_population (value));
+		 hb_map_سيٽ (acc, temp2++, hb_سيٽ_get_population (value));
 		 /* This is not a memory managed language, take care! */
-		 hb_set_destroy (value);
-		 return acc;
+		 hb_سيٽ_destroy (value);
+		 أرجع acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
-  hb_always_assert (hb_map_get (result, 9) == 19);
-  hb_map_destroy (result);
+  hb_always_assert (hb_map_get (نتيجو, 9) == 19);
+  hb_map_destroy (نتيجو);
 
   /* Like above, but passing hb_set_t instead of hb_set_t * */
   temp1 = 10;
   temp2 = 0;
-  result =
+  نتيجو =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t
+  | hb_map ([&] (صحيح i) -> hb_سيٽ_t
 	    {
-	      hb_set_t set;
-	      for (unsigned int i = 0; i < temp1; ++i)
-		hb_set_add (&set, i);
+	      hb_سيٽ_t سيٽ;
+	      لكل (بنانشان صحيح i = 0; i < temp1; ++i)
+		hb_سيٽ_جوڙيو (&سيٽ, i);
 	      temp1++;
-	      return set;
+	      أرجع سيٽ;
 	    })
-  | hb_reduce ([&] (hb_map_t *acc, hb_set_t value) -> hb_map_t *
+  | hb_reduce ([&] (hb_map_t *acc, hb_سيٽ_t value) -> hb_map_t *
 	       {
-		 hb_map_set (acc, temp2++, hb_set_get_population (&value));
-		 return acc;
+		 hb_map_سيٽ (acc, temp2++, hb_سيٽ_get_population (&value));
+		 أرجع acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
-  hb_always_assert (hb_map_get (result, 9) == 19);
-  hb_map_destroy (result);
+  hb_always_assert (hb_map_get (نتيجو, 9) == 19);
+  hb_map_destroy (نتيجو);
 
-  unsigned int temp3 = 0;
+  بنانشان صحيح temp3 = 0;
   + hb_iter(src)
-  | hb_map([&] (int i) { return ++temp3; })
-  | hb_reduce([&] (float acc, int value) { return acc + value; }, 0)
+  | hb_map([&] (صحيح i) { أرجع ++temp3; })
+  | hb_reduce([&] (عائم acc, صحيح value) { أرجع acc + value; }, 0)
   ;
 
   + hb_iter (src)
@@ -370,7 +370,7 @@ main (int argc, char **argv)
   ;
 
   t << 1;
-  long vl;
+  ڊگهو vl;
   s >> vl;
 
   hb_iota ();
@@ -379,7 +379,7 @@ main (int argc, char **argv)
   hb_always_assert ((&vl) + 1 == *++hb_iota (&vl, hb_inc));
   hb_range ();
   hb_repeat (7u);
-  hb_repeat (nullptr);
+  hb_repeat (خالي_اشارو);
   hb_repeat (vl) | hb_chop (3);
   hb_always_assert (hb_len (hb_range (10) | hb_take (3)) == 3);
   hb_always_assert (hb_range (9).len () == 9);
@@ -394,5 +394,5 @@ main (int argc, char **argv)
   test_concat ();
   test_backward_filter ();
 
-  return 0;
+  أرجع 0;
 }

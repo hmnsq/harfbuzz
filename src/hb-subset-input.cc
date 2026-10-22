@@ -24,168 +24,168 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb-subset-instancer-solver.hh"
-#include "hb-subset.hh"
-#include "hb-set.hh"
-#include "hb-utf.hh"
+#ضمن "hb-subset-instancer-solver.hh"
+#ضمن "hb-subset.hh"
+#ضمن "hb-set.hh"
+#ضمن "hb-utf.hh"
 
 
-hb_subset_input_t::hb_subset_input_t ()
+hb_subset_داخلا_t::hb_subset_داخلا_t ()
 {
-  for (auto& set : sets_iter ())
-    set = hb::shared_ptr<hb_set_t> (hb_set_create ());
+  لكل (خودڪار& سيٽ : sets_iter ())
+    سيٽ = hb::shared_ptr<hb_سيٽ_t> (hb_سيٽ_create ());
 
-  if (in_error ())
-    return;
+  إذا (اندريون_error ())
+    أرجع;
 
   flags = HB_SUBSET_FLAGS_DEFAULT;
 
-  hb_set_add_range (sets.name_ids, 0, 6);
-  hb_set_add (sets.name_languages, 0x0409);
+  hb_سيٽ_جوڙيو_range (sets.name_ids, 0, 6);
+  hb_سيٽ_جوڙيو (sets.name_languages, 0x0409);
 
-  hb_tag_t default_drop_tables[] = {
+  hb_ٽيگ_t default_drop_tables[] = {
     // Layout disabled by default
-    HB_TAG ('m', 'o', 'r', 'x'),
-    HB_TAG ('m', 'o', 'r', 't'),
-    HB_TAG ('k', 'e', 'r', 'x'),
-    HB_TAG ('k', 'e', 'r', 'n'),
+    HB_ٽيگ ('m', 'o', 'r', 'x'),
+    HB_ٽيگ ('m', 'o', 'r', 't'),
+    HB_ٽيگ ('k', 'e', 'r', 'x'),
+    HB_ٽيگ ('k', 'e', 'r', 'n'),
 
     // Copied from fontTools:
-    HB_TAG ('J', 'S', 'T', 'F'),
-    HB_TAG ('D', 'S', 'I', 'G'),
-    HB_TAG ('E', 'B', 'D', 'T'),
-    HB_TAG ('E', 'B', 'L', 'C'),
-    HB_TAG ('E', 'B', 'S', 'C'),
-    HB_TAG ('S', 'V', 'G', ' '),
-    HB_TAG ('P', 'C', 'L', 'T'),
-    HB_TAG ('L', 'T', 'S', 'H'),
+    HB_ٽيگ ('J', 'S', 'T', 'F'),
+    HB_ٽيگ ('D', 'S', 'I', 'G'),
+    HB_ٽيگ ('E', 'B', 'D', 'T'),
+    HB_ٽيگ ('E', 'B', 'L', 'C'),
+    HB_ٽيگ ('E', 'B', 'S', 'C'),
+    HB_ٽيگ ('S', 'V', 'G', ' '),
+    HB_ٽيگ ('P', 'C', 'L', 'T'),
+    HB_ٽيگ ('L', 'T', 'S', 'H'),
     // Graphite tables
-    HB_TAG ('F', 'e', 'a', 't'),
-    HB_TAG ('G', 'l', 'a', 't'),
-    HB_TAG ('G', 'l', 'o', 'c'),
-    HB_TAG ('S', 'i', 'l', 'f'),
-    HB_TAG ('S', 'i', 'l', 'l'),
+    HB_ٽيگ ('F', 'e', 'a', 't'),
+    HB_ٽيگ ('G', 'l', 'a', 't'),
+    HB_ٽيگ ('G', 'l', 'o', 'c'),
+    HB_ٽيگ ('S', 'i', 'l', 'f'),
+    HB_ٽيگ ('S', 'i', 'l', 'l'),
   };
-  sets.drop_tables->add_array (default_drop_tables, ARRAY_LENGTH (default_drop_tables));
+  sets.drop_tables->جوڙيو_array (default_drop_tables, ARRAY_ڊيگهائي (default_drop_tables));
 
-  hb_tag_t default_no_subset_tables[] = {
-    HB_TAG ('g', 'a', 's', 'p'),
-    HB_TAG ('f', 'p', 'g', 'm'),
-    HB_TAG ('p', 'r', 'e', 'p'),
-    HB_TAG ('V', 'D', 'M', 'X'),
-    HB_TAG ('D', 'S', 'I', 'G'),
+  hb_ٽيگ_t default_no_subset_tables[] = {
+    HB_ٽيگ ('g', 'a', 's', 'p'),
+    HB_ٽيگ ('f', 'p', 'g', 'm'),
+    HB_ٽيگ ('p', 'r', 'e', 'p'),
+    HB_ٽيگ ('V', 'D', 'M', 'X'),
+    HB_ٽيگ ('D', 'S', 'I', 'G'),
   };
-  sets.no_subset_tables->add_array (default_no_subset_tables,
-					 ARRAY_LENGTH (default_no_subset_tables));
+  sets.no_subset_tables->جوڙيو_array (default_no_subset_tables,
+					 ARRAY_ڊيگهائي (default_no_subset_tables));
 
   //copied from _layout_features_groups in fonttools
-  hb_tag_t default_layout_features[] = {
+  hb_ٽيگ_t default_layout_features[] = {
     // default shaper
     // common
-    HB_TAG ('r', 'v', 'r', 'n'),
-    HB_TAG ('c', 'c', 'm', 'p'),
-    HB_TAG ('l', 'i', 'g', 'a'),
-    HB_TAG ('l', 'o', 'c', 'l'),
-    HB_TAG ('m', 'a', 'r', 'k'),
-    HB_TAG ('m', 'k', 'm', 'k'),
-    HB_TAG ('r', 'l', 'i', 'g'),
+    HB_ٽيگ ('r', 'v', 'r', 'n'),
+    HB_ٽيگ ('c', 'c', 'm', 'p'),
+    HB_ٽيگ ('l', 'i', 'g', 'a'),
+    HB_ٽيگ ('l', 'o', 'c', 'l'),
+    HB_ٽيگ ('m', 'a', 'r', 'k'),
+    HB_ٽيگ ('m', 'k', 'm', 'k'),
+    HB_ٽيگ ('r', 'l', 'i', 'g'),
 
     //fractions
-    HB_TAG ('f', 'r', 'a', 'c'),
-    HB_TAG ('n', 'u', 'm', 'r'),
-    HB_TAG ('d', 'n', 'o', 'm'),
+    HB_ٽيگ ('f', 'r', 'a', 'c'),
+    HB_ٽيگ ('n', 'u', 'm', 'r'),
+    HB_ٽيگ ('d', 'n', 'o', 'm'),
 
     //horizontal
-    HB_TAG ('c', 'a', 'l', 't'),
-    HB_TAG ('c', 'l', 'i', 'g'),
-    HB_TAG ('c', 'u', 'r', 's'),
-    HB_TAG ('k', 'e', 'r', 'n'),
-    HB_TAG ('r', 'c', 'l', 't'),
+    HB_ٽيگ ('c', 'a', 'l', 't'),
+    HB_ٽيگ ('c', 'l', 'i', 'g'),
+    HB_ٽيگ ('c', 'u', 'r', 's'),
+    HB_ٽيگ ('k', 'e', 'r', 'n'),
+    HB_ٽيگ ('r', 'c', 'l', 't'),
 
     //vertical
-    HB_TAG ('v', 'a', 'l', 't'),
-    HB_TAG ('v', 'e', 'r', 't'),
-    HB_TAG ('v', 'k', 'r', 'n'),
-    HB_TAG ('v', 'p', 'a', 'l'),
-    HB_TAG ('v', 'r', 't', '2'),
+    HB_ٽيگ ('v', 'a', 'l', 't'),
+    HB_ٽيگ ('v', 'e', 'r', 't'),
+    HB_ٽيگ ('v', 'k', 'r', 'n'),
+    HB_ٽيگ ('v', 'p', 'a', 'l'),
+    HB_ٽيگ ('v', 'r', 't', '2'),
 
     //ltr
-    HB_TAG ('l', 't', 'r', 'a'),
-    HB_TAG ('l', 't', 'r', 'm'),
+    HB_ٽيگ ('l', 't', 'r', 'a'),
+    HB_ٽيگ ('l', 't', 'r', 'm'),
 
     //rtl
-    HB_TAG ('r', 't', 'l', 'a'),
-    HB_TAG ('r', 't', 'l', 'm'),
+    HB_ٽيگ ('r', 't', 'l', 'a'),
+    HB_ٽيگ ('r', 't', 'l', 'm'),
 
     //random
-    HB_TAG ('r', 'a', 'n', 'd'),
+    HB_ٽيگ ('r', 'a', 'n', 'd'),
 
     //justify
-    HB_TAG ('j', 'a', 'l', 't'), // HarfBuzz doesn't use; others might
+    HB_ٽيگ ('j', 'a', 'l', 't'), // HarfBuzz doesn't use; others might
 
     //East Asian spacing
-    HB_TAG ('c', 'h', 'w', 's'),
-    HB_TAG ('v', 'c', 'h', 'w'),
-    HB_TAG ('h', 'a', 'l', 't'),
-    HB_TAG ('v', 'h', 'a', 'l'),
-    HB_TAG ('p', 'a', 'l', 't'),
+    HB_ٽيگ ('c', 'h', 'w', 's'),
+    HB_ٽيگ ('v', 'c', 'h', 'w'),
+    HB_ٽيگ ('h', 'a', 'l', 't'),
+    HB_ٽيگ ('v', 'h', 'a', 'l'),
+    HB_ٽيگ ('p', 'a', 'l', 't'),
 
-    //private
-    HB_TAG ('H', 'a', 'r', 'f'),
-    HB_TAG ('H', 'A', 'R', 'F'),
-    HB_TAG ('B', 'u', 'z', 'z'),
-    HB_TAG ('B', 'U', 'Z', 'Z'),
+    //ذاتي
+    HB_ٽيگ ('H', 'a', 'r', 'f'),
+    HB_ٽيگ ('H', 'A', 'R', 'F'),
+    HB_ٽيگ ('B', 'u', 'z', 'z'),
+    HB_ٽيگ ('B', 'U', 'Z', 'Z'),
 
     //shapers
 
     //arabic
-    HB_TAG ('i', 'n', 'i', 't'),
-    HB_TAG ('m', 'e', 'd', 'i'),
-    HB_TAG ('f', 'i', 'n', 'a'),
-    HB_TAG ('i', 's', 'o', 'l'),
-    HB_TAG ('m', 'e', 'd', '2'),
-    HB_TAG ('f', 'i', 'n', '2'),
-    HB_TAG ('f', 'i', 'n', '3'),
-    HB_TAG ('c', 's', 'w', 'h'),
-    HB_TAG ('m', 's', 'e', 't'),
-    HB_TAG ('s', 't', 'c', 'h'),
+    HB_ٽيگ ('i', 'n', 'i', 't'),
+    HB_ٽيگ ('m', 'e', 'd', 'i'),
+    HB_ٽيگ ('f', 'i', 'n', 'a'),
+    HB_ٽيگ ('i', 's', 'o', 'l'),
+    HB_ٽيگ ('m', 'e', 'd', '2'),
+    HB_ٽيگ ('f', 'i', 'n', '2'),
+    HB_ٽيگ ('f', 'i', 'n', '3'),
+    HB_ٽيگ ('c', 's', 'w', 'h'),
+    HB_ٽيگ ('m', 's', 'e', 't'),
+    HB_ٽيگ ('s', 't', 'c', 'h'),
 
     //hangul
-    HB_TAG ('l', 'j', 'm', 'o'),
-    HB_TAG ('v', 'j', 'm', 'o'),
-    HB_TAG ('t', 'j', 'm', 'o'),
+    HB_ٽيگ ('l', 'j', 'm', 'o'),
+    HB_ٽيگ ('v', 'j', 'm', 'o'),
+    HB_ٽيگ ('t', 'j', 'm', 'o'),
 
     //tibetan
-    HB_TAG ('a', 'b', 'v', 's'),
-    HB_TAG ('b', 'l', 'w', 's'),
-    HB_TAG ('a', 'b', 'v', 'm'),
-    HB_TAG ('b', 'l', 'w', 'm'),
+    HB_ٽيگ ('a', 'b', 'v', 's'),
+    HB_ٽيگ ('b', 'l', 'w', 's'),
+    HB_ٽيگ ('a', 'b', 'v', 'm'),
+    HB_ٽيگ ('b', 'l', 'w', 'm'),
 
     //indic
-    HB_TAG ('n', 'u', 'k', 't'),
-    HB_TAG ('a', 'k', 'h', 'n'),
-    HB_TAG ('r', 'p', 'h', 'f'),
-    HB_TAG ('r', 'k', 'r', 'f'),
-    HB_TAG ('p', 'r', 'e', 'f'),
-    HB_TAG ('b', 'l', 'w', 'f'),
-    HB_TAG ('h', 'a', 'l', 'f'),
-    HB_TAG ('a', 'b', 'v', 'f'),
-    HB_TAG ('p', 's', 't', 'f'),
-    HB_TAG ('c', 'f', 'a', 'r'),
-    HB_TAG ('v', 'a', 't', 'u'),
-    HB_TAG ('c', 'j', 'c', 't'),
-    HB_TAG ('i', 'n', 'i', 't'),
-    HB_TAG ('p', 'r', 'e', 's'),
-    HB_TAG ('a', 'b', 'v', 's'),
-    HB_TAG ('b', 'l', 'w', 's'),
-    HB_TAG ('p', 's', 't', 's'),
-    HB_TAG ('h', 'a', 'l', 'n'),
-    HB_TAG ('d', 'i', 's', 't'),
-    HB_TAG ('a', 'b', 'v', 'm'),
-    HB_TAG ('b', 'l', 'w', 'm'),
+    HB_ٽيگ ('n', 'u', 'k', 't'),
+    HB_ٽيگ ('a', 'k', 'h', 'n'),
+    HB_ٽيگ ('r', 'p', 'h', 'f'),
+    HB_ٽيگ ('r', 'k', 'r', 'f'),
+    HB_ٽيگ ('p', 'r', 'e', 'f'),
+    HB_ٽيگ ('b', 'l', 'w', 'f'),
+    HB_ٽيگ ('h', 'a', 'l', 'f'),
+    HB_ٽيگ ('a', 'b', 'v', 'f'),
+    HB_ٽيگ ('p', 's', 't', 'f'),
+    HB_ٽيگ ('c', 'f', 'a', 'r'),
+    HB_ٽيگ ('v', 'a', 't', 'u'),
+    HB_ٽيگ ('c', 'j', 'c', 't'),
+    HB_ٽيگ ('i', 'n', 'i', 't'),
+    HB_ٽيگ ('p', 'r', 'e', 's'),
+    HB_ٽيگ ('a', 'b', 'v', 's'),
+    HB_ٽيگ ('b', 'l', 'w', 's'),
+    HB_ٽيگ ('p', 's', 't', 's'),
+    HB_ٽيگ ('h', 'a', 'l', 'n'),
+    HB_ٽيگ ('d', 'i', 's', 't'),
+    HB_ٽيگ ('a', 'b', 'v', 'm'),
+    HB_ٽيگ ('b', 'l', 'w', 'm'),
   };
 
-  sets.layout_features->add_array (default_layout_features, ARRAY_LENGTH (default_layout_features));
+  sets.layout_features->جوڙيو_array (default_layout_features, ARRAY_ڊيگهائي (default_layout_features));
 
   sets.layout_scripts->invert (); // Default to all scripts.
 }
@@ -200,21 +200,21 @@ hb_subset_input_t::hb_subset_input_t ()
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_create_or_fail (void)
+hb_subset_داخلا_t *
+hb_subset_داخلا_create_or_fail (فراغ)
 {
-  hb_subset_input_t *input = hb_object_create<hb_subset_input_t>();
+  hb_subset_داخلا_t *داخلا_2 = hb_object_create<hb_subset_داخلا_t>();
 
-  if (unlikely (!input))
-    return nullptr;
+  إذا (unlikely (!داخلا_2))
+    أرجع خالي_اشارو;
 
-  if (input->in_error ())
+  إذا (داخلا_2->اندريون_error ())
   {
-    hb_subset_input_destroy (input);
-    return nullptr;
+    hb_subset_داخلا_destroy (داخلا_2);
+    أرجع خالي_اشارو;
   }
 
-  return input;
+  أرجع داخلا_2;
 }
 
 /**
@@ -227,10 +227,10 @@ hb_subset_input_create_or_fail (void)
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input)
+hb_subset_داخلا_t *
+hb_subset_داخلا_reference (hb_subset_داخلا_t *داخلا_2)
 {
-  return hb_object_reference (input);
+  أرجع hb_object_reference (داخلا_2);
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_input_reference (hb_subset_input_t *input)
  *
  * Since: 1.8.0
  **/
-void
-hb_subset_input_destroy (hb_subset_input_t *input)
+فراغ
+hb_subset_داخلا_destroy (hb_subset_داخلا_t *داخلا_2)
 {
-  if (!hb_object_destroy (input)) return;
+  إذا (!hb_object_destroy (داخلا_2)) أرجع;
 
-  hb_free (input);
+  hb_free (داخلا_2);
 }
 
 /**
@@ -262,10 +262,10 @@ hb_subset_input_destroy (hb_subset_input_t *input)
  *
  * Since: 1.8.0
  **/
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input)
+HB_EXTERN hb_سيٽ_t *
+hb_subset_داخلا_unicode_سيٽ (hb_subset_داخلا_t *داخلا_2)
 {
-  return input->sets.unicodes;
+  أرجع داخلا_2->sets.unicodes;
 }
 
 /**
@@ -279,10 +279,10 @@ hb_subset_input_unicode_set (hb_subset_input_t *input)
  *
  * Since: 1.8.0
  **/
-HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input)
+HB_EXTERN hb_سيٽ_t *
+hb_subset_داخلا_glyph_سيٽ (hb_subset_داخلا_t *داخلا_2)
 {
-  return input->sets.glyphs;
+  أرجع داخلا_2->sets.glyphs;
 }
 
 /**
@@ -296,10 +296,10 @@ hb_subset_input_glyph_set (hb_subset_input_t *input)
  *
  * Since: 2.9.1
  **/
-HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
+HB_EXTERN hb_سيٽ_t *
+hb_subset_داخلا_سيٽ (hb_subset_داخلا_t *داخلا_2, hb_subset_sets_t سيٽ_type)
 {
-  return input->sets_iter () [set_type];
+  أرجع داخلا_2->sets_iter () [سيٽ_type];
 }
 
 /**
@@ -313,9 +313,9 @@ hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
  * Since: 2.9.0
  **/
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input)
+hb_subset_داخلا_get_flags (hb_subset_داخلا_t *داخلا_2)
 {
-  return (hb_subset_flags_t) input->flags;
+  أرجع (hb_subset_flags_t) داخلا_2->flags;
 }
 
 /**
@@ -328,11 +328,11 @@ hb_subset_input_get_flags (hb_subset_input_t *input)
  *
  * Since: 2.9.0
  **/
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value)
+HB_EXTERN فراغ
+hb_subset_داخلا_سيٽ_flags (hb_subset_داخلا_t *داخلا_2,
+			   بنانشان value)
 {
-  input->flags = (hb_subset_flags_t) value;
+  داخلا_2->flags = (hb_subset_flags_t) value;
 }
 
 /**
@@ -350,13 +350,13 @@ hb_subset_input_set_flags (hb_subset_input_t *input,
  * Since: 2.9.0
  **/
 hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_داخلا_سيٽ_user_معلومات (hb_subset_داخلا_t  *داخلا_2,
+			       hb_user_معلومات_ڪنجي_t *key,
+			       فراغ *		   معلومات,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace)
 {
-  return hb_object_set_user_data (input, key, data, destroy, replace);
+  أرجع hb_object_سيٽ_user_معلومات (داخلا_2, key, معلومات, destroy, replace);
 }
 
 /**
@@ -371,11 +371,11 @@ hb_subset_input_set_user_data (hb_subset_input_t  *input,
  *
  * Since: 2.9.0
  **/
-void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t     *key)
+فراغ *
+hb_subset_داخلا_get_user_معلومات (ثابت hb_subset_داخلا_t *داخلا_2,
+			       hb_user_معلومات_ڪنجي_t     *key)
 {
-  return hb_object_get_user_data (input, key);
+  أرجع hb_object_get_user_معلومات (داخلا_2, key);
 }
 
 /**
@@ -390,35 +390,35 @@ hb_subset_input_get_user_data (const hb_subset_input_t *input,
  *
  * Since: 7.0.0
  */
-void
-hb_subset_input_keep_everything (hb_subset_input_t *input)
+فراغ
+hb_subset_داخلا_keep_everything (hb_subset_داخلا_t *داخلا_2)
 {
-  const hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
-				      HB_SUBSET_SETS_GLYPH_INDEX,
+  ثابت hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
+				      HB_SUBSET_SETS_GLYPH_اشاريو,
 				      HB_SUBSET_SETS_NAME_ID,
 				      HB_SUBSET_SETS_NAME_LANG_ID,
-				      HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
-				      HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG};
+				      HB_SUBSET_SETS_LAYOUT_FEATURE_ٽيگ,
+				      HB_SUBSET_SETS_LAYOUT_SCRIPT_ٽيگ};
 
-  for (auto idx : hb_iter (indices))
+  لكل (خودڪار idx : hb_iter (indices))
   {
-    hb_set_t *set = hb_subset_input_set (input, idx);
-    hb_set_clear (set);
-    hb_set_invert (set);
+    hb_سيٽ_t *سيٽ = hb_subset_داخلا_سيٽ (داخلا_2, idx);
+    hb_سيٽ_clear (سيٽ);
+    hb_سيٽ_invert (سيٽ);
   }
 
   // Don't drop any tables
-  hb_set_clear (hb_subset_input_set (input, HB_SUBSET_SETS_DROP_TABLE_TAG));
+  hb_سيٽ_clear (hb_subset_داخلا_سيٽ (داخلا_2, HB_SUBSET_SETS_DROP_جدول_ٽيگ));
 
-  hb_subset_input_set_flags (input,
+  hb_subset_داخلا_سيٽ_flags (داخلا_2,
 			     HB_SUBSET_FLAGS_NOTDEF_OUTLINE |
-			     HB_SUBSET_FLAGS_GLYPH_NAMES |
+			     HB_SUBSET_FLAGS_GLYPH_نالا |
 			     HB_SUBSET_FLAGS_NAME_LEGACY |
 			     HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES |
                              HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED);
 }
 
-#ifndef HB_NO_VAR
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_VAR
 /**
  * hb_subset_input_pin_all_axes_to_default: (skip)
  * @input: a #hb_subset_input_t object.
@@ -433,29 +433,29 @@ hb_subset_input_keep_everything (hb_subset_input_t *input)
  * Since: 8.3.1
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_داخلا_pin_all_axes_منزل_default (hb_subset_داخلا_t  *داخلا_2,
                                          hb_face_t          *face)
 {
-  unsigned axis_count = hb_ot_var_get_axis_count (face);
-  if (!axis_count) return false;
+  بنانشان axis_ڳڻپ = hb_ot_var_get_axis_ڳڻپ (face);
+  إذا (!axis_ڳڻپ) أرجع خطأ;
 
-  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_count, sizeof (hb_ot_var_axis_info_t));
-  if (unlikely (!axis_infos)) return false;
+  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_ڳڻپ, حجم (hb_ot_var_axis_info_t));
+  إذا (unlikely (!axis_infos)) أرجع خطأ;
 
-  (void) hb_ot_var_get_axis_infos (face, 0, &axis_count, axis_infos);
+  (فراغ) hb_ot_var_get_axis_infos (face, 0, &axis_ڳڻپ, axis_infos);
 
-  for (unsigned i = 0; i < axis_count; i++)
+  لكل (بنانشان i = 0; i < axis_ڳڻپ; i++)
   {
-    hb_tag_t axis_tag = axis_infos[i].tag;
-    double default_val = (double) axis_infos[i].default_value;
-    if (!input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
+    hb_ٽيگ_t axis_ٽيگ_2 = axis_infos[i].ٽيگ_2;
+    مزدوج default_val = (مزدوج) axis_infos[i].default_قدر;
+    إذا (!داخلا_2->axes_location.سيٽ (axis_ٽيگ_2, Triple (default_val, default_val, default_val)))
     {
       hb_free (axis_infos);
-      return false;
+      أرجع خطأ;
     }
   }
   hb_free (axis_infos);
-  return true;
+  أرجع سچ;
 }
 
 /**
@@ -473,16 +473,16 @@ hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_داخلا_pin_axis_منزل_default (hb_subset_داخلا_t  *داخلا_2,
                                      hb_face_t          *face,
-                                     hb_tag_t            axis_tag)
+                                     hb_ٽيگ_t            axis_ٽيگ_2)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  إذا (!hb_ot_var_ڳوليو_axis_info (face, axis_ٽيگ_2, &axis_info))
+    أرجع خطأ;
 
-  double default_val = (double) axis_info.default_value;
-  return input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
+  مزدوج default_val = (مزدوج) axis_info.default_قدر;
+  أرجع داخلا_2->axes_location.سيٽ (axis_ٽيگ_2, Triple (default_val, default_val, default_val));
 }
 
 /**
@@ -501,17 +501,17 @@ hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_داخلا_pin_axis_location (hb_subset_داخلا_t  *داخلا_2,
                                    hb_face_t          *face,
-                                   hb_tag_t            axis_tag,
-                                   float               axis_value)
+                                   hb_ٽيگ_t            axis_ٽيگ_2,
+                                   عائم               axis_قدر)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  إذا (!hb_ot_var_ڳوليو_axis_info (face, axis_ٽيگ_2, &axis_info))
+    أرجع خطأ;
 
-  double val = hb_clamp((double) axis_value, (double) axis_info.min_value, (double) axis_info.max_value);
-  return input->axes_location.set (axis_tag, Triple (val, val, val));
+  مزدوج val = hb_clamp((مزدوج) axis_قدر, (مزدوج) axis_info.min_قدر, (مزدوج) axis_info.max_قدر);
+  أرجع داخلا_2->axes_location.سيٽ (axis_ٽيگ_2, Triple (val, val, val));
 }
 
 /**
@@ -538,28 +538,28 @@ hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_داخلا_سيٽ_axis_range (hb_subset_داخلا_t  *داخلا_2,
                                 hb_face_t          *face,
-                                hb_tag_t            axis_tag,
-                                float               axis_min_value,
-                                float               axis_max_value,
-                                float               axis_def_value)
+                                hb_ٽيگ_t            axis_ٽيگ_2,
+                                عائم               axis_min_قدر,
+                                عائم               axis_max_قدر,
+                                عائم               axis_def_قدر)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  إذا (!hb_ot_var_ڳوليو_axis_info (face, axis_ٽيگ_2, &axis_info))
+    أرجع خطأ;
 
-  float min = !std::isnan(axis_min_value) ? axis_min_value : axis_info.min_value;
-  float max = !std::isnan(axis_max_value) ? axis_max_value : axis_info.max_value;
-  float def = !std::isnan(axis_def_value) ? axis_def_value : axis_info.default_value;
+  عائم min = !std::isnan(axis_min_قدر) ? axis_min_قدر : axis_info.min_قدر;
+  عائم max = !std::isnan(axis_max_قدر) ? axis_max_قدر : axis_info.max_قدر;
+  عائم def = !std::isnan(axis_def_قدر) ? axis_def_قدر : axis_info.default_قدر;
 
-  if (min > max)
-    return false;
+  إذا (min > max)
+    أرجع خطأ;
 
-  float new_min_val = hb_clamp(min, axis_info.min_value, axis_info.max_value);
-  float new_max_val = hb_clamp(max, axis_info.min_value, axis_info.max_value);
-  float new_default_val = hb_clamp(def, new_min_val, new_max_val);
-  return input->axes_location.set (axis_tag, Triple ((double) new_min_val, (double) new_default_val, (double) new_max_val));
+  عائم new_min_val = hb_clamp(min, axis_info.min_قدر, axis_info.max_قدر);
+  عائم new_max_val = hb_clamp(max, axis_info.min_قدر, axis_info.max_قدر);
+  عائم new_default_val = hb_clamp(def, new_min_val, new_max_val);
+  أرجع داخلا_2->axes_location.سيٽ (axis_ٽيگ_2, Triple ((مزدوج) new_min_val, (مزدوج) new_default_val, (مزدوج) new_max_val));
 }
 
 /**
@@ -577,22 +577,22 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
-				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value)
+hb_subset_داخلا_get_axis_range (hb_subset_داخلا_t  *داخلا_2,
+				hb_ٽيگ_t            axis_ٽيگ_2,
+				عائم              *axis_min_قدر,
+				عائم              *axis_max_قدر,
+				عائم              *axis_def_قدر)
 
 {
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return false;
+  إذا (!داخلا_2->axes_location.has(axis_ٽيگ_2, &triple)) {
+    أرجع خطأ;
   }
 
-  *axis_min_value = triple->minimum;
-  *axis_def_value = triple->middle;
-  *axis_max_value = triple->maximum;
-  return true;
+  *axis_min_قدر = triple->minimum;
+  *axis_def_قدر = triple->وچ;
+  *axis_max_قدر = triple->وڌ_کان_وڌ;
+  أرجع سچ;
 }
 
 /**
@@ -618,75 +618,75 @@ hb_subset_input_get_axis_range (hb_subset_input_t  *input,
  * Since: 10.2.0
  */
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-                                  float *axis_min_value,
-                                  float *axis_max_value,
-                                  float *axis_def_value)
+hb_subset_axis_range_from_string (ثابت حرف *str, صحيح len,
+                                  عائم *axis_min_قدر,
+                                  عائم *axis_max_قدر,
+                                  عائم *axis_def_قدر)
 {
-  if (len < 0)
-    len = strlen (str);
+  إذا (len < 0)
+    len = لڙي_ڊيگهه (str);
 
-  const char *end = str + len;
-  const char* part = strpbrk (str, ":");
-  if (!part)
+  ثابت حرف *پڇاڙي = str + len;
+  ثابت حرف* part = strpbrk (str, ":");
+  إذا (!part)
   {
     // Single value.
-    if (strcmp (str, "drop") == 0)
+    إذا (strcmp (str, "drop") == 0)
     {
-      *axis_min_value = NAN;
-      *axis_def_value = NAN;
-      *axis_max_value = NAN;
-      return true;
+      *axis_min_قدر = NAN;
+      *axis_def_قدر = NAN;
+      *axis_max_قدر = NAN;
+      أرجع سچ;
     }
 
-    double v;
-    if (!hb_parse_double (&str, end, &v)) return false;
+    مزدوج v;
+    إذا (!hb_parse_double (&str, پڇاڙي, &v)) أرجع خطأ;
 
-    *axis_min_value = v;
-    *axis_def_value = v;
-    *axis_max_value = v;
-    return true;
+    *axis_min_قدر = v;
+    *axis_def_قدر = v;
+    *axis_max_قدر = v;
+    أرجع سچ;
   }
 
-  float values[3];
-  int count = 0;
-  for (int i = 0; i < 3; i++) {
-    count++;
-    if (!*str || part == str)
+  عائم values[3];
+  صحيح ڳڻپ = 0;
+  لكل (صحيح i = 0; i < 3; i++) {
+    ڳڻپ++;
+    إذا (!*str || part == str)
     {
       values[i] = NAN;
 
-      if (part == NULL) break;
+      إذا (part == عدم) اكسر;
       str = part + 1;
       part = strpbrk (str, ":");
-      continue;
+      استمر;
     }
 
-    double v;
-    const char *piece_end = part ? part : end;
-    if (!hb_parse_double (&str, piece_end, &v)) return false;
+    مزدوج v;
+    ثابت حرف *piece_پڇاڙي = part ? part : پڇاڙي;
+    إذا (!hb_parse_double (&str, piece_پڇاڙي, &v)) أرجع خطأ;
     values[i] = v;
 
-    if (part == NULL) break;
+    إذا (part == عدم) اكسر;
     str = part + 1;
     part = strpbrk (str, ":");
   }
 
-  if (count == 2)
+  إذا (ڳڻپ == 2)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = NAN;
-    *axis_max_value = values[1];
-    return true;
+    *axis_min_قدر = values[0];
+    *axis_def_قدر = NAN;
+    *axis_max_قدر = values[1];
+    أرجع سچ;
   }
-  else if (count == 3)
+  وإلا إذا (ڳڻپ == 3)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = values[1];
-    *axis_max_value = values[2];
-    return true;
+    *axis_min_قدر = values[0];
+    *axis_def_قدر = values[1];
+    *axis_max_قدر = values[2];
+    أرجع سچ;
   }
-  return false;
+  أرجع خطأ;
 }
 
 /**
@@ -702,294 +702,294 @@ hb_subset_axis_range_from_string (const char *str, int len,
  *
  * Since: 10.2.0
  */
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
-                                hb_tag_t axis_tag,
-                                char *buf, unsigned size)
+HB_EXTERN فراغ
+hb_subset_axis_range_منزل_string (hb_subset_داخلا_t *داخلا_2,
+                                hb_ٽيگ_t axis_ٽيگ_2,
+                                حرف *buf, بنانشان سائيز)
 {
-  if (unlikely (!size)) return;
+  إذا (unlikely (!سائيز)) أرجع;
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return;
+  إذا (!داخلا_2->axes_location.has(axis_ٽيگ_2, &triple)) {
+    أرجع;
   }
 
-  char s[128];
-  unsigned len = 0;
+  حرف s[128];
+  بنانشان len = 0;
 
-  hb_locale_t clocale HB_UNUSED;
-  hb_locale_t oldlocale HB_UNUSED;
-  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-  len += hb_max (0, snprintf (s, ARRAY_LENGTH (s) - len, "%g", (double) triple->minimum));
+  hb_locale_t clocale HB_اڻ_استعمال_ٿيل;
+  hb_locale_t oldlocale HB_اڻ_استعمال_ٿيل;
+  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", عدم));
+  len += hb_max (0, snprintf (s, ARRAY_ڊيگهائي (s) - len, "%g", (مزدوج) triple->minimum));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->middle));
+  len += hb_max (0, snprintf (s + len, ARRAY_ڊيگهائي (s) - len, "%g", (مزدوج) triple->وچ));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->maximum));
-  (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+  len += hb_max (0, snprintf (s + len, ARRAY_ڊيگهائي (s) - len, "%g", (مزدوج) triple->وڌ_کان_وڌ));
+  (فراغ) hb_uselocale (((فراغ) freelocale (clocale), oldlocale));
 
-  assert (len < ARRAY_LENGTH (s));
-  len = hb_min (len, size - 1);
+  أكد (len < ARRAY_ڊيگهائي (s));
+  len = hb_min (len, سائيز - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
 }
-#endif
+#جيڪڏهن_پورو
 
-#ifdef HB_EXPERIMENTAL_API
-static void
-_append_arg (hb_vector_t<char> &sb, const char *arg)
+#جيڪڏهن_وصف_ٿيل HB_EXPERIMENTAL_API
+ساكن فراغ
+_append_arg (hb_ويڪٽر_t<حرف> &sb, ثابت حرف *arg)
 {
-  if (sb.in_error ()) return;
-  if (sb.length)
+  إذا (sb.اندريون_error ()) أرجع;
+  إذا (sb.ڊيگهائي)
     sb.push (' ');
-  unsigned len = strlen (arg);
-  sb.extend (hb_bytes_t (arg, len));
+  بنانشان len = لڙي_ڊيگهه (arg);
+  sb.extend (hb_بائيٽون_t (arg, len));
 }
-static void
-_format_number_set (const hb_set_t *set, hb_vector_t<char> &out, unsigned base = 10)
+ساكن فراغ
+format_عدد_سيٽ (ثابت hb_سيٽ_t *سيٽ, hb_ويڪٽر_t<حرف> &ٻاهريون, بنانشان بنياد = 10)
 {
-  assert (base == 10 || base == 16);
-  if (unlikely (base != 10 && base != 16)) return;
+  أكد (بنياد == 10 || بنياد == 16);
+  إذا (unlikely (بنياد != 10 && بنياد != 16)) أرجع;
 
-  hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-  bool first_range = true;
-  while (hb_set_next_range (set, &first, &last))
+  hb_codepoint_t پهريون = HB_سيٽ_قدر_INVALID, آخري = HB_سيٽ_قدر_INVALID;
+  منطقي پهريون_range = سچ;
+  طالما (hb_سيٽ_ايندڙ_range (سيٽ, &پهريون, &آخري))
   {
-    if (!first_range)
-      out.push (',');
-    first_range = false;
+    إذا (!پهريون_range)
+      ٻاهريون.push (',');
+    پهريون_range = خطأ;
 
-    char buf[64];
-    int len;
-    if (first == last)
+    حرف buf[64];
+    صحيح len;
+    إذا (پهريون == آخري)
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X", first);
-      else
-        len = snprintf (buf, sizeof (buf), "%u", first);
+      إذا (بنياد == 16)
+        len = snprintf (buf, حجم (buf), "%X", پهريون);
+      وإلا
+        len = snprintf (buf, حجم (buf), "%u", پهريون);
     }
-    else
+    وإلا
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X-%X", first, last);
-      else
-        len = snprintf (buf, sizeof (buf), "%u-%u", first, last);
+      إذا (بنياد == 16)
+        len = snprintf (buf, حجم (buf), "%X-%X", پهريون, آخري);
+      وإلا
+        len = snprintf (buf, حجم (buf), "%u-%u", پهريون, آخري);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return;
-    out.extend (hb_bytes_t (buf, len));
+    إذا (unlikely (len < 0 || (size_t) len >= حجم (buf))) أرجع;
+    ٻاهريون.extend (hb_بائيٽون_t (buf, len));
   }
 }
 
-static void
-_format_tag (hb_tag_t tag, hb_vector_t<char> &out)
+ساكن فراغ
+format_ٽيگ (hb_ٽيگ_t ٽيگ_2, hb_ويڪٽر_t<حرف> &ٻاهريون)
 {
-  char buf[4];
-  hb_tag_to_string (tag, buf);
+  حرف buf[4];
+  hb_ٽيگ_منزل_string (ٽيگ_2, buf);
 
-  unsigned len = 4;
-  while (len > 0 && buf[len - 1] == ' ')
+  بنانشان len = 4;
+  طالما (len > 0 && buf[len - 1] == ' ')
     len--;
 
-  for (unsigned i = 0; i < len; i++)
+  لكل (بنانشان i = 0; i < len; i++)
   {
-    char c = buf[i];
-    if (!((c >= 'a' && c <= 'z') ||
+    حرف c = buf[i];
+    إذا (!((c >= 'a' && c <= 'z') ||
           (c >= 'A' && c <= 'Z') ||
           (c >= '0' && c <= '9') ||
           c == '-' || c == '_'))
     {
       c = '_';
     }
-    out.push (c);
+    ٻاهريون.push (c);
   }
 }
 
-static void
-_format_tag_set (const hb_set_t *set, hb_vector_t<char> &out)
+ساكن فراغ
+format_ٽيگ_سيٽ (ثابت hb_سيٽ_t *سيٽ, hb_ويڪٽر_t<حرف> &ٻاهريون)
 {
-  bool first_tag = true;
-  for (hb_codepoint_t tag : *set)
+  منطقي پهريون_ٽيگ = سچ;
+  لكل (hb_codepoint_t ٽيگ_2 : *سيٽ)
   {
-    if (!first_tag)
-      out.push (',');
-    first_tag = false;
+    إذا (!پهريون_ٽيگ)
+      ٻاهريون.push (',');
+    پهريون_ٽيگ = خطأ;
 
-    _format_tag (tag, out);
+    format_ٽيگ (ٽيگ_2, ٻاهريون);
   }
 }
 
-static bool
-_is_set_default (const hb_set_t *set, const hb_set_t *default_set)
+ساكن منطقي
+is_سيٽ_default (ثابت hb_سيٽ_t *سيٽ, ثابت hb_سيٽ_t *default_سيٽ)
 {
-  return hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
-         hb_set_is_equal (set, default_set);
+  أرجع hb_سيٽ_is_inverted (سيٽ) == hb_سيٽ_is_inverted (default_سيٽ) &&
+         hb_سيٽ_is_equal (سيٽ, default_سيٽ);
 }
 
-template <typename Formatter>
-static void
-_format_set_arg (const hb_set_t *set,
-                 const char *opt_name,
+سانچو <قسم_نالو Formatter>
+ساكن فراغ
+format_سيٽ_arg (ثابت hb_سيٽ_t *سيٽ,
+                 ثابت حرف *opt_name,
                  Formatter &&formatter,
-                 hb_vector_t<char> &sb)
+                 hb_ويڪٽر_t<حرف> &sb)
 {
-  if (hb_set_is_inverted (set))
+  إذا (hb_سيٽ_is_inverted (سيٽ))
   {
-    hb_set_t *excluded = hb_set_copy (set);
-    hb_set_invert (excluded);
+    hb_سيٽ_t *excluded = hb_سيٽ_copy (سيٽ);
+    hb_سيٽ_invert (excluded);
 
-    hb_vector_t<char> opt;
-    opt.extend (hb_bytes_t ("--", 2));
-    opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
-    opt.extend (hb_bytes_t ("=*", 2));
+    hb_ويڪٽر_t<حرف> opt;
+    opt.extend (hb_بائيٽون_t ("--", 2));
+    opt.extend (hb_بائيٽون_t (opt_name, لڙي_ڊيگهه (opt_name)));
+    opt.extend (hb_بائيٽون_t ("=*", 2));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    إذا (opt.arrayZ) _append_arg (sb, opt.arrayZ);
 
-    if (!hb_set_is_empty (excluded))
+    إذا (!hb_سيٽ_is_خالي_جايون (excluded))
     {
-      hb_vector_t<char> formatted;
+      hb_ويڪٽر_t<حرف> formatted;
       formatter (excluded, formatted);
-      if (formatted.length)
+      إذا (formatted.ڊيگهائي)
       {
-        hb_vector_t<char> opt2;
-        opt2.extend (hb_bytes_t ("--", 2));
-        opt2.extend (hb_bytes_t (opt_name, strlen (opt_name)));
-        opt2.extend (hb_bytes_t ("-=", 2));
+        hb_ويڪٽر_t<حرف> opt2;
+        opt2.extend (hb_بائيٽون_t ("--", 2));
+        opt2.extend (hb_بائيٽون_t (opt_name, لڙي_ڊيگهه (opt_name)));
+        opt2.extend (hb_بائيٽون_t ("-=", 2));
         opt2.extend (formatted.as_array ());
         opt2.push ('\0');
-        if (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
+        إذا (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
       }
     }
-    hb_set_destroy (excluded);
+    hb_سيٽ_destroy (excluded);
   }
-  else if (hb_set_is_empty (set))
+  وإلا إذا (hb_سيٽ_is_خالي_جايون (سيٽ))
   {
-    hb_vector_t<char> opt;
-    opt.extend (hb_bytes_t ("--", 2));
-    opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
-    opt.extend (hb_bytes_t ("-=*", 3));
+    hb_ويڪٽر_t<حرف> opt;
+    opt.extend (hb_بائيٽون_t ("--", 2));
+    opt.extend (hb_بائيٽون_t (opt_name, لڙي_ڊيگهه (opt_name)));
+    opt.extend (hb_بائيٽون_t ("-=*", 3));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    إذا (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  else
+  وإلا
   {
-    hb_vector_t<char> formatted;
-    formatter (set, formatted);
-    if (formatted.length)
+    hb_ويڪٽر_t<حرف> formatted;
+    formatter (سيٽ, formatted);
+    إذا (formatted.ڊيگهائي)
     {
-      hb_vector_t<char> opt;
-      opt.extend (hb_bytes_t ("--", 2));
-      opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
-      opt.extend (hb_bytes_t ("=", 1));
+      hb_ويڪٽر_t<حرف> opt;
+      opt.extend (hb_بائيٽون_t ("--", 2));
+      opt.extend (hb_بائيٽون_t (opt_name, لڙي_ڊيگهه (opt_name)));
+      opt.extend (hb_بائيٽون_t ("=", 1));
       opt.extend (formatted.as_array ());
       opt.push ('\0');
-      if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+      إذا (opt.arrayZ) _append_arg (sb, opt.arrayZ);
     }
   }
 }
 
-static void
-_format_number_set_arg (const hb_set_t *set,
-                        const char *opt_name,
-                        hb_vector_t<char> &sb,
-                        unsigned base = 10)
+ساكن فراغ
+format_عدد_سيٽ_arg (ثابت hb_سيٽ_t *سيٽ,
+                        ثابت حرف *opt_name,
+                        hb_ويڪٽر_t<حرف> &sb,
+                        بنانشان بنياد = 10)
 {
-  _format_set_arg (set, opt_name, [base] (const hb_set_t *s, hb_vector_t<char> &out) {
-    _format_number_set (s, out, base);
+  format_سيٽ_arg (سيٽ, opt_name, [بنياد] (ثابت hb_سيٽ_t *s, hb_ويڪٽر_t<حرف> &ٻاهريون) {
+    format_عدد_سيٽ (s, ٻاهريون, بنياد);
   }, sb);
 }
 
-static void
-_format_tag_set_arg (const hb_set_t *set,
-                     const char *opt_name,
-                     hb_vector_t<char> &sb)
+ساكن فراغ
+format_ٽيگ_سيٽ_arg (ثابت hb_سيٽ_t *سيٽ,
+                     ثابت حرف *opt_name,
+                     hb_ويڪٽر_t<حرف> &sb)
 {
-  _format_set_arg (set, opt_name, _format_tag_set, sb);
+  format_سيٽ_arg (سيٽ, opt_name, format_ٽيگ_سيٽ, sb);
 }
 
-static bool
-_format_glyph_map_arg (const hb_map_t &glyph_map,
-                       hb_vector_t<char> &sb)
+ساكن منطقي
+_format_glyph_map_arg (ثابت hb_map_t &glyph_map,
+                       hb_ويڪٽر_t<حرف> &sb)
 {
-  if (glyph_map.is_empty ())
-    return true;
+  إذا (glyph_map.is_empty ())
+    أرجع سچ;
 
-  hb_set_t keys;
-  hb_map_keys (&glyph_map, &keys);
-  hb_vector_t<char> pairs;
-  bool first = true;
-  for (hb_codepoint_t key : keys)
+  hb_سيٽ_t ڪنجيون;
+  hb_map_ڪنجيون (&glyph_map, &ڪنجيون);
+  hb_ويڪٽر_t<حرف> جوڙا;
+  منطقي پهريون = سچ;
+  لكل (hb_codepoint_t key : ڪنجيون)
   {
-    if (!first)
-      pairs.push (',');
-    first = false;
+    إذا (!پهريون)
+      جوڙا.push (',');
+    پهريون = خطأ;
     hb_codepoint_t val = hb_map_get (&glyph_map, key);
-    char buf[64];
-    int len = snprintf (buf, sizeof (buf), "%u:%u", key, val);
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
-    pairs.extend (hb_bytes_t (buf, len));
+    حرف buf[64];
+    صحيح len = snprintf (buf, حجم (buf), "%u:%u", key, val);
+    إذا (unlikely (len < 0 || (size_t) len >= حجم (buf))) أرجع خطأ;
+    جوڙا.extend (hb_بائيٽون_t (buf, len));
   }
-  if (pairs.length)
+  إذا (جوڙا.ڊيگهائي)
   {
-    hb_vector_t<char> opt;
-    opt.extend (hb_bytes_t ("--gid-map=", 10));
-    opt.extend (pairs.as_array ());
+    hb_ويڪٽر_t<حرف> opt;
+    opt.extend (hb_بائيٽون_t ("--gid-map=", 10));
+    opt.extend (جوڙا.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    إذا (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  أرجع سچ;
 }
 
-static bool
-_format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
-                           hb_vector_t<char> &sb)
+ساكن منطقي
+_format_axes_location_arg (ثابت hb_hashmap_t<hb_ٽيگ_t, Triple> &axes_location,
+                           hb_ويڪٽر_t<حرف> &sb)
 {
-  if (axes_location.is_empty ())
-    return true;
+  إذا (axes_location.is_empty ())
+    أرجع سچ;
 
-  hb_vector_t<hb_tag_t> axis_tags;
-  for (auto tag : axes_location.keys ())
-    axis_tags.push (tag);
-  axis_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) { return a < b ? -1 : a > b ? 1 : 0; });
+  hb_ويڪٽر_t<hb_ٽيگ_t> axis_ٽيگ_فهرست;
+  لكل (خودڪار ٽيگ_2 : axes_location.ڪنجيون ())
+    axis_ٽيگ_فهرست.push (ٽيگ_2);
+  axis_ٽيگ_فهرست.qsort ([] (ثابت hb_ٽيگ_t &a, ثابت hb_ٽيگ_t &b) { أرجع a < b ? -1 : a > b ? 1 : 0; });
 
-  hb_vector_t<char> specs;
-  bool first = true;
-  for (hb_tag_t tag : axis_tags)
+  hb_ويڪٽر_t<حرف> specs;
+  منطقي پهريون = سچ;
+  لكل (hb_ٽيگ_t ٽيگ_2 : axis_ٽيگ_فهرست)
   {
-    Triple triple = axes_location.get (tag);
-    if (!first)
+    Triple triple = axes_location.get (ٽيگ_2);
+    إذا (!پهريون)
       specs.push (',');
-    first = false;
+    پهريون = خطأ;
 
-    hb_vector_t<char> tag_buf;
-    _format_tag (tag, tag_buf);
+    hb_ويڪٽر_t<حرف> ٽيگ_buf;
+    format_ٽيگ (ٽيگ_2, ٽيگ_buf);
 
-    char buf[128];
-    int len;
-    if (triple.minimum == triple.middle && triple.middle == triple.maximum)
+    حرف buf[128];
+    صحيح len;
+    إذا (triple.minimum == triple.وچ && triple.وچ == triple.وڌ_کان_وڌ)
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g", (int) tag_buf.length, tag_buf.arrayZ, (double) triple.middle);
+      len = snprintf (buf, حجم (buf), "%.*s=%g", (صحيح) ٽيگ_buf.ڊيگهائي, ٽيگ_buf.arrayZ, (مزدوج) triple.وچ);
     }
-    else if (std::isnan (triple.minimum) && std::isnan (triple.middle) && std::isnan (triple.maximum))
+    وإلا إذا (std::isnan (triple.minimum) && std::isnan (triple.وچ) && std::isnan (triple.وڌ_کان_وڌ))
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=drop", (int) tag_buf.length, tag_buf.arrayZ);
+      len = snprintf (buf, حجم (buf), "%.*s=drop", (صحيح) ٽيگ_buf.ڊيگهائي, ٽيگ_buf.arrayZ);
     }
-    else
+    وإلا
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g:%g:%g", (int) tag_buf.length, tag_buf.arrayZ,
-                      (double) triple.minimum, (double) triple.middle, (double) triple.maximum);
+      len = snprintf (buf, حجم (buf), "%.*s=%g:%g:%g", (صحيح) ٽيگ_buf.ڊيگهائي, ٽيگ_buf.arrayZ,
+                      (مزدوج) triple.minimum, (مزدوج) triple.وچ, (مزدوج) triple.وڌ_کان_وڌ);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
-    specs.extend (hb_bytes_t (buf, len));
+    إذا (unlikely (len < 0 || (size_t) len >= حجم (buf))) أرجع خطأ;
+    specs.extend (hb_بائيٽون_t (buf, len));
   }
-  if (specs.length)
+  إذا (specs.ڊيگهائي)
   {
-    hb_vector_t<char> opt;
-    opt.extend (hb_bytes_t ("--variations=", 13));
+    hb_ويڪٽر_t<حرف> opt;
+    opt.extend (hb_بائيٽون_t ("--variations=", 13));
     opt.extend (specs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    إذا (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  أرجع سچ;
 }
 
 /**
@@ -1005,103 +1005,103 @@ _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
  * XSince: EXPERIMENTAL
  **/
 hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
+hb_subset_داخلا_منزل_string_or_fail (hb_subset_داخلا_t *داخلا_2)
 {
-  if (unlikely (!input || input->in_error ()))
-    return nullptr;
+  إذا (unlikely (!داخلا_2 || داخلا_2->اندريون_error ()))
+    أرجع خالي_اشارو;
 
-  hb_vector_t<char> sb;
+  hb_ويڪٽر_t<حرف> sb;
 
-  struct flag_option_t {
+  بنية flag_option_t {
     hb_subset_flags_t flag;
-    char option[32];
+    حرف option[32];
   };
-  static const flag_option_t flag_options[] = {
+  ساكن ثابت flag_option_t flag_options[] = {
     { HB_SUBSET_FLAGS_NO_HINTING, "no-hinting" },
     { HB_SUBSET_FLAGS_RETAIN_GIDS, "retain-gids" },
     { HB_SUBSET_FLAGS_DESUBROUTINIZE, "desubroutinize" },
     { HB_SUBSET_FLAGS_NAME_LEGACY, "name-legacy" },
-    { HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG, "set-overlaps-flag" },
+    { HB_SUBSET_FLAGS_سيٽ_OVERLAPS_FLAG, "set-overlaps-flag" },
     { HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED, "passthrough-tables" },
     { HB_SUBSET_FLAGS_NOTDEF_OUTLINE, "notdef-outline" },
-    { HB_SUBSET_FLAGS_GLYPH_NAMES, "glyph-names" },
+    { HB_SUBSET_FLAGS_GLYPH_نالا, "glyph-names" },
     { HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES, "no-prune-unicode-ranges" },
-    { HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE, "no-layout-closure" },
+    { HB_SUBSET_FLAGS_NO_LAYOUT_گهيرو, "no-layout-closure" },
     { HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS, "optimize" },
-    { HB_SUBSET_FLAGS_NO_BIDI_CLOSURE, "no-bidi-closure" },
-#ifdef HB_EXPERIMENTAL_API
+    { HB_SUBSET_FLAGS_NO_BIDI_گهيرو, "no-bidi-closure" },
+#جيڪڏهن_وصف_ٿيل HB_EXPERIMENTAL_API
     { HB_SUBSET_FLAGS_IFTB_REQUIREMENTS, "iftb-requirements" },
-    { HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS, "retain-num-glyphs" },
-#endif
+    { HB_SUBSET_FLAGS_RETAIN_انگ_GLYPHS, "retain-num-glyphs" },
+#جيڪڏهن_پورو
     { HB_SUBSET_FLAGS_DOWNGRADE_CFF2, "downgrade-cff2" },
   };
 
-#ifdef HB_EXPERIMENTAL_API
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 15,
+#جيڪڏهن_وصف_ٿيل HB_EXPERIMENTAL_API
+  static_assert (حجم (flag_options) / حجم (flag_options[0]) == 15,
                  "Check all flags in hb_subset_flags_t are handled here.");
-#else
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 13,
+#وإلا
+  static_assert (حجم (flag_options) / حجم (flag_options[0]) == 13,
                  "Check all flags in hb_subset_flags_t are handled here.");
-#endif
+#جيڪڏهن_پورو
 
-  for (const auto &fo : flag_options)
+  لكل (ثابت خودڪار &fo : flag_options)
   {
-    if (input->flags & fo.flag)
+    إذا (داخلا_2->flags & fo.flag)
     {
-      char buf[36];
-      snprintf (buf, sizeof (buf), "--%s", fo.option);
+      حرف buf[36];
+      snprintf (buf, حجم (buf), "--%s", fo.option);
       _append_arg (sb, buf);
     }
   }
 
-  hb_subset_input_t *default_input = hb_subset_input_create_or_fail ();
-  if (unlikely (!default_input))
-    return nullptr;
+  hb_subset_داخلا_t *default_داخلا = hb_subset_داخلا_create_or_fail ();
+  إذا (unlikely (!default_داخلا))
+    أرجع خالي_اشارو;
 
   // Serialize all sets if they are not equal to their default setting:
-#define PROCESS_NUMBER_SET(field, opt_name, ...) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_number_set_arg (input->sets.field, opt_name, sb, ##__VA_ARGS__)
+#وصف_ڪريو PROCESS_عدد_سيٽ(ميدان, opt_name, ...) \
+  إذا (!is_سيٽ_default (داخلا_2->sets.ميدان, default_داخلا->sets.ميدان)) \
+    format_عدد_سيٽ_arg (داخلا_2->sets.ميدان, opt_name, sb, ##__VA_ARGS__)
 
-#define PROCESS_TAG_SET(field, opt_name) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_tag_set_arg (input->sets.field, opt_name, sb)
+#وصف_ڪريو PROCESS_ٽيگ_سيٽ(ميدان, opt_name) \
+  إذا (!is_سيٽ_default (داخلا_2->sets.ميدان, default_داخلا->sets.ميدان)) \
+    format_ٽيگ_سيٽ_arg (داخلا_2->sets.ميدان, opt_name, sb)
 
-  PROCESS_NUMBER_SET (unicodes, "unicodes", 16);
-  PROCESS_NUMBER_SET (glyphs, "gids");
-  PROCESS_NUMBER_SET (name_ids, "name-IDs");
-  PROCESS_NUMBER_SET (name_languages, "name-languages");
-  PROCESS_TAG_SET (layout_features, "layout-features");
-  PROCESS_TAG_SET (layout_scripts, "layout-scripts");
-  PROCESS_TAG_SET (drop_tables, "drop-tables");
-  PROCESS_TAG_SET (no_subset_tables, "passthrough-tables");
+  PROCESS_عدد_سيٽ (unicodes, "unicodes", 16);
+  PROCESS_عدد_سيٽ (glyphs, "gids");
+  PROCESS_عدد_سيٽ (name_ids, "name-IDs");
+  PROCESS_عدد_سيٽ (name_languages, "name-languages");
+  PROCESS_ٽيگ_سيٽ (layout_features, "layout-features");
+  PROCESS_ٽيگ_سيٽ (layout_scripts, "layout-scripts");
+  PROCESS_ٽيگ_سيٽ (drop_tables, "drop-tables");
+  PROCESS_ٽيگ_سيٽ (no_subset_tables, "passthrough-tables");
 
-#undef PROCESS_NUMBER_SET
-#undef PROCESS_TAG_SET
+#وصف_رد PROCESS_عدد_سيٽ
+#وصف_رد PROCESS_ٽيگ_سيٽ
 
-  hb_subset_input_destroy (default_input);
+  hb_subset_داخلا_destroy (default_داخلا);
 
-  static_assert (sizeof (input->sets) / sizeof (hb_set_t*) == 8,
+  static_assert (حجم (داخلا_2->sets) / حجم (hb_سيٽ_t*) == 8,
                  "Check all sets in hb_subset_input_t::sets_t are handled here.");
 
-  if (unlikely (!_format_glyph_map_arg (input->glyph_map, sb)))
-    return nullptr;
+  إذا (unlikely (!_format_glyph_map_arg (داخلا_2->glyph_map, sb)))
+    أرجع خالي_اشارو;
 
-  if (unlikely (!_format_axes_location_arg (input->axes_location, sb)))
-    return nullptr;
+  إذا (unlikely (!_format_axes_location_arg (داخلا_2->axes_location, sb)))
+    أرجع خالي_اشارو;
 
   sb.push ('\0');
-  if (unlikely (sb.in_error ()))
-    return nullptr;
+  إذا (unlikely (sb.اندريون_error ()))
+    أرجع خالي_اشارو;
 
-  unsigned len = 0;
-  char *buf = sb.steal (&len);
-  if (unlikely (!buf))
-    return nullptr;
+  بنانشان len = 0;
+  حرف *buf = sb.steal (&len);
+  إذا (unlikely (!buf))
+    أرجع خالي_اشارو;
 
-  return hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  أرجع hb_blob_create_or_fail (buf, len, HB_يادگيري_گهڻائي_WRITABLE, buf, hb_free);
 }
-#endif
+#جيڪڏهن_پورو
 
 /**
  * hb_subset_preprocess:
@@ -1125,30 +1125,30 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
  **/
 
 HB_EXTERN hb_face_t *
-hb_subset_preprocess (hb_face_t *source)
+hb_subset_preprocess (hb_face_t *ذريعو)
 {
-  hb_subset_input_t* input = hb_subset_input_create_or_fail ();
-  if (!input)
-    return hb_face_reference (source);
+  hb_subset_داخلا_t* داخلا_2 = hb_subset_داخلا_create_or_fail ();
+  إذا (!داخلا_2)
+    أرجع hb_face_reference (ذريعو);
 
-  hb_subset_input_keep_everything (input);
+  hb_subset_داخلا_keep_everything (داخلا_2);
 
-  input->attach_accelerator_data = true;
+  داخلا_2->attach_accelerator_معلومات = سچ;
 
   // Always use long loca in the preprocessed version. This allows
   // us to store the glyph bytes unpadded which allows the future subset
   // operation to run faster by skipping the trim padding step.
-  input->force_long_loca = true;
+  داخلا_2->force_long_loca = سچ;
 
-  hb_face_t* new_source = hb_subset_or_fail (source, input);
-  hb_subset_input_destroy (input);
+  hb_face_t* new_ذريعو = hb_subset_or_fail (ذريعو, داخلا_2);
+  hb_subset_داخلا_destroy (داخلا_2);
 
-  if (!new_source) {
-    DEBUG_MSG (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
-    return hb_face_reference (source);
+  إذا (!new_ذريعو) {
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "Preprocessing failed due to subset failure.");
+    أرجع hb_face_reference (ذريعو);
   }
 
-  return new_source;
+  أرجع new_ذريعو;
 }
 
 /**
@@ -1177,12 +1177,12 @@ hb_subset_preprocess (hb_face_t *source)
  * Since: 7.3.0
  **/
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
+hb_subset_داخلا_old_منزل_new_glyph_mapping (hb_subset_داخلا_t *داخلا_2)
 {
-  return &input->glyph_map;
+  أرجع &داخلا_2->glyph_map;
 }
 
-#ifdef HB_EXPERIMENTAL_API
+#جيڪڏهن_وصف_ٿيل HB_EXPERIMENTAL_API
 /**
  * hb_subset_input_override_name_table:
  * @input: a #hb_subset_input_t object.
@@ -1203,50 +1203,50 @@ hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_داخلا_override_name_جدول (hb_subset_داخلا_t  *داخلا_2,
                                      hb_ot_name_id_t     name_id,
-                                     unsigned            platform_id,
-                                     unsigned            encoding_id,
-                                     unsigned            language_id,
-                                     const char         *name_str,
-                                     int                 str_len /* -1 means nul-terminated */)
+                                     بنانشان            platform_id,
+                                     بنانشان            encoding_id,
+                                     بنانشان            language_id,
+                                     ثابت حرف         *name_str,
+                                     صحيح                 str_len /* -1 means nul-terminated */)
 {
-  if (!name_str)
+  إذا (!name_str)
   {
     str_len = 0;
   }
-  else if (str_len == -1)
+  وإلا إذا (str_len == -1)
   {
-      str_len = strlen (name_str);
+      str_len = لڙي_ڊيگهه (name_str);
   }
 
-  hb_bytes_t name_bytes (nullptr, 0);
-  if (str_len)
+  hb_بائيٽون_t name_بائيٽون (خالي_اشارو, 0);
+  إذا (str_len)
   {
-    if (platform_id == 1)
+    إذا (platform_id == 1)
     {
-      const uint8_t *src = reinterpret_cast<const uint8_t*> (name_str);
-      const uint8_t *src_end = src + str_len;
+      ثابت uint8_t *src = reinterpret_cast<ثابت uint8_t*> (name_str);
+      ثابت uint8_t *src_پڇاڙي = src + str_len;
 
       hb_codepoint_t unicode;
-      const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
-      while (src < src_end)
+      ثابت hb_codepoint_t replacement = HB_بفر_REPLACEMENT_CODEPOINT_DEFAULT;
+      طالما (src < src_پڇاڙي)
       {
-        src = hb_utf8_t::next (src, src_end, &unicode, replacement);
-        if (unicode >= 0x0080u)
+        src = hb_utf8_t::next (src, src_پڇاڙي, &unicode, replacement);
+        إذا (unicode >= 0x0080u)
         {
           // Non-ascii character detected, ignored...
-          return false;
+          أرجع خطأ;
         }
       }
     }
-    char *override_name = (char *) hb_malloc (str_len);
-    if (unlikely (!override_name)) return false;
+    حرف *override_name = (حرف *) hb_malloc (str_len);
+    إذا (unlikely (!override_name)) أرجع خطأ;
 
     hb_memcpy (override_name, name_str, str_len);
-    name_bytes = hb_bytes_t (override_name, str_len);
+    name_بائيٽون = hb_بائيٽون_t (override_name, str_len);
   }
-  input->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
-  return true;
+  داخلا_2->name_جدول_overrides.سيٽ (hb_ot_name_رڪارڊ_ids_t (platform_id, encoding_id, language_id, name_id), name_بائيٽون);
+  أرجع سچ;
 }
-#endif
+#جيڪڏهن_پورو

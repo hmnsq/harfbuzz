@@ -1,231 +1,231 @@
-#ifndef OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
-#define OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#وصف_ڪريو OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
 
-#include "Common.hh"
-#include "SubstLookupSubTable.hh"
+#ضمن "Common.hh"
+#ضمن "SubstLookupSubTable.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-struct SubstLookup : Lookup
+بنية SubstLookup : Lookup
 {
-  using SubTable = SubstLookupSubTable;
+  استعمال Sub_جدول = Subst_Lookup_Sub_جدول;
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  { أرجع Lookup::sanitize<Sub_جدول> (c); }
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  ثابت Sub_جدول& get_subtable (بنانشان صحيح i) ثابت
+  { أرجع Lookup::get_subtable<Sub_جدول> (i); }
 
-  static inline bool lookup_type_is_reverse (unsigned int lookup_type)
-  { return lookup_type == SubTable::ReverseChainSingle; }
+  ساكن مضمن منطقي lookup_type_is_ابتو (بنانشان صحيح lookup_type)
+  { أرجع lookup_type == Sub_جدول::ابتو_Chain_Single; }
 
-  bool is_reverse () const
+  منطقي is_ابتو () ثابت
   {
-    unsigned int type = get_type ();
-    if (unlikely (type == SubTable::Extension) && hb_barrier ())
-      return get_subtable (0).u.extension.is_reverse ();
-    return lookup_type_is_reverse (type);
+    بنانشان صحيح type = get_type ();
+    إذا (unlikely (type == Sub_جدول::Extension) && hb_barrier ())
+      أرجع get_subtable (0).u.extension.is_ابتو ();
+    أرجع lookup_type_is_ابتو (type);
   }
 
-  bool may_have_non_1to1 () const
+  منطقي may_have_non_1to1 () ثابت
   {
     hb_have_non_1to1_context_t c;
-    return dispatch (&c);
+    أرجع dispatch (&c);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    أرجع dispatch (&c);
   }
 
-  hb_closure_context_t::return_t closure (hb_closure_context_t *c, unsigned int this_index) const
+  hb_گهيرو_context_t::return_t گهيرو (hb_گهيرو_context_t *c, بنانشان صحيح this_اشاريو) ثابت
   {
-    if (!c->should_visit_lookup (this_index))
-      return hb_closure_context_t::default_return_value ();
+    إذا (!c->should_گهمو_lookup (this_اشاريو))
+      أرجع hb_گهيرو_context_t::default_return_قدر ();
 
-    c->set_recurse_func (dispatch_closure_recurse_func);
+    c->سيٽ_recurse_func (dispatch_گهيرو_recurse_func);
 
-    hb_closure_context_t::return_t ret = dispatch (c);
+    hb_گهيرو_context_t::return_t ret = dispatch (c);
 
     c->flush ();
 
-    return ret;
+    أرجع ret;
   }
 
-  void depend (hb_depend_context_t *c) const
+  فراغ depend (hb_depend_context_t *c) ثابت
   {
-    c->set_recurse_func (dispatch_depend_recurse_func);
+    c->سيٽ_recurse_func (dispatch_depend_recurse_func);
     dispatch (c);
   }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_گهيرو_lookups_context_t::return_t گهيرو_lookups (hb_گهيرو_lookups_context_t *c, بنانشان this_اشاريو) ثابت
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    إذا (c->is_lookup_گهميل (this_اشاريو))
+      أرجع hb_گهيرو_lookups_context_t::default_return_قدر ();
 
-    c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    c->سيٽ_lookup_گهميل (this_اشاريو);
+    إذا (!intersects (c->glyphs))
     {
-      c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      c->سيٽ_lookup_inactive (this_اشاريو);
+      أرجع hb_گهيرو_lookups_context_t::default_return_قدر ();
     }
 
-    hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    hb_گهيرو_lookups_context_t::return_t ret = dispatch (c);
+    أرجع ret;
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    c->set_recurse_func (dispatch_recurse_func<hb_collect_glyphs_context_t>);
-    return dispatch (c);
+    c->سيٽ_recurse_func (dispatch_recurse_func<hb_collect_glyphs_context_t>);
+    أرجع dispatch (c);
   }
 
-  template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  سانچو <قسم_نالو سيٽ_t>
+  فراغ collect_coverage (سيٽ_t *glyphs) ثابت
   {
-    hb_collect_coverage_context_t<set_t> c (glyphs);
+    hb_collect_coverage_context_t<سيٽ_t> c (glyphs);
     dispatch (&c);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-                    const hb_ot_layout_lookup_accelerator_t *accel) const
+  منطقي would_apply (hb_would_apply_context_t *c,
+                    ثابت hb_ot_layout_lookup_accelerator_t *accel) ثابت
   {
-    if (unlikely (!c->len)) return false;
-    if (!accel->may_have (c->glyphs[0])) return false;
-      return dispatch (c);
+    إذا (unlikely (!c->len)) أرجع خطأ;
+    إذا (!accel->may_have (c->glyphs[0])) أرجع خطأ;
+      أرجع dispatch (c);
   }
 
-  template<typename Glyphs, typename Substitutes,
-	   hb_requires (hb_is_sorted_source_of (Glyphs,
-						const hb_codepoint_t) &&
-			hb_is_source_of (Substitutes,
-					 const hb_codepoint_t))>
-  bool serialize_single (hb_serialize_context_t *c,
+  سانچو<قسم_نالو Glyphs, قسم_نالو Substitutes,
+	   hb_requires (hb_is_sorted_ذريعو_جو (Glyphs,
+						ثابت hb_codepoint_t) &&
+			hb_is_ذريعو_جو (Substitutes,
+					 ثابت hb_codepoint_t))>
+  منطقي serialize_single (hb_serialize_context_t *c,
                          uint32_t lookup_props,
                          Glyphs glyphs,
                          Substitutes substitutes)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Single, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!Lookup::serialize (c, Sub_جدول::Single, lookup_props, 1))) return_trace (خطأ);
+    إذا (c->push<Sub_جدول> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->جوڙيو_link (get_subtables<Sub_جدول> ()[0], c->ڪڍو_pack ());
+      return_trace (سچ);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->ڪڍو_discard ();
+    return_trace (خطأ);
   }
 
-  template<typename Iterator,
+  سانچو<قسم_نالو Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقي serialize (hb_serialize_context_t *c,
 		  uint32_t lookup_props,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Multiple, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.multiple.
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!Lookup::serialize (c, Sub_جدول::گڻو, lookup_props, 1))) return_trace (خطأ);
+    إذا (c->push<Sub_جدول> ()->u.گڻو_2.
         serialize (c, it))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->جوڙيو_link (get_subtables<Sub_جدول> ()[0], c->ڪڍو_pack ());
+      return_trace (سچ);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->ڪڍو_discard ();
+    return_trace (خطأ);
   }
 
-  template <typename GlyphID>
-  bool serialize_alternate (hb_serialize_context_t *c,
+  سانچو <قسم_نالو GlyphID>
+  منطقي serialize_alternate (hb_serialize_context_t *c,
                             uint32_t lookup_props,
                             hb_sorted_array_t<GlyphID> glyphs,
-                            hb_array_t<const unsigned int> alternate_len_list,
+                            hb_array_t<ثابت بنانشان صحيح> alternate_len_list,
                             hb_array_t<GlyphID> alternate_glyphs_list)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Alternate, lookup_props, 1))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!Lookup::serialize (c, Sub_جدول::Alternate, lookup_props, 1))) return_trace (خطأ);
 
-    if (c->push<SubTable> ()->u.alternate.
+    إذا (c->push<Sub_جدول> ()->u.alternate.
         serialize (c,
                    glyphs,
                    alternate_len_list,
                    alternate_glyphs_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->جوڙيو_link (get_subtables<Sub_جدول> ()[0], c->ڪڍو_pack ());
+      return_trace (سچ);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->ڪڍو_discard ();
+    return_trace (خطأ);
   }
 
-  template <typename GlyphID>
-  bool serialize_ligature (hb_serialize_context_t *c,
+  سانچو <قسم_نالو GlyphID>
+  منطقي serialize_ligature (hb_serialize_context_t *c,
                            uint32_t lookup_props,
-                           hb_sorted_array_t<GlyphID> first_glyphs,
-                           hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                           hb_sorted_array_t<GlyphID> پهريون_glyphs,
+                           hb_array_t<ثابت بنانشان صحيح> ligature_في_پهريون_glyph_ڳڻپ_list,
                            hb_array_t<GlyphID> ligatures_list,
-                           hb_array_t<const unsigned int> component_count_list,
+                           hb_array_t<ثابت بنانشان صحيح> component_ڳڻپ_list,
                            hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Ligature, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.ligature.
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!Lookup::serialize (c, Sub_جدول::Ligature, lookup_props, 1))) return_trace (خطأ);
+    إذا (c->push<Sub_جدول> ()->u.ligature.
         serialize (c,
-                   first_glyphs,
-                   ligature_per_first_glyph_count_list,
+                   پهريون_glyphs,
+                   ligature_في_پهريون_glyph_ڳڻپ_list,
                    ligatures_list,
-                   component_count_list,
+                   component_ڳڻپ_list,
                    component_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->جوڙيو_link (get_subtables<Sub_جدول> ()[0], c->ڪڍو_pack ());
+      return_trace (سچ);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->ڪڍو_discard ();
+    return_trace (خطأ);
   }
 
-  template <typename context_t>
-  static inline typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  سانچو <قسم_نالو context_t>
+  ساكن مضمن قسم_نالو context_t::return_t dispatch_recurse_func (context_t *c, بنانشان صحيح lookup_اشاريو);
 
-  static inline typename hb_closure_context_t::return_t closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  ساكن مضمن قسم_نالو hb_گهيرو_context_t::return_t گهيرو_glyphs_recurse_func (hb_گهيرو_context_t *c, بنانشان lookup_اشاريو, hb_سيٽ_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو);
 
 
-  static inline hb_closure_context_t::return_t dispatch_closure_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  ساكن مضمن hb_گهيرو_context_t::return_t dispatch_گهيرو_recurse_func (hb_گهيرو_context_t *c, بنانشان lookup_اشاريو, hb_سيٽ_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو)
   {
-    if (!c->should_visit_lookup (lookup_index))
-      return hb_empty_t ();
+    إذا (!c->should_گهمو_lookup (lookup_اشاريو))
+      أرجع hb_خالي_جايون_t ();
 
-    hb_closure_context_t::return_t ret = closure_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    hb_گهيرو_context_t::return_t ret = گهيرو_glyphs_recurse_func (c, lookup_اشاريو, covered_seq_indices, seq_اشاريو, پڇاڙي_اشاريو);
 
     /* While in theory we should flush here, it will cause timeouts because a recursive
      * lookup can keep growing the glyph set.  Skip, and outer loop will retry up to
      * HB_CLOSURE_MAX_STAGES time, which should be enough for every realistic font. */
     //c->flush ();
 
-    return ret;
+    أرجع ret;
   }
 
-  static inline hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  ساكن مضمن hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, بنانشان lookup_اشاريو, hb_ٻٽو_انگ_صفحو_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو);
 
-  static inline hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  ساكن مضمن hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, بنانشان lookup_اشاريو, hb_ٻٽو_انگ_صفحو_t *covered_seq_indices, بنانشان seq_اشاريو, بنانشان پڇاڙي_اشاريو)
   {
-    return depend_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    أرجع depend_glyphs_recurse_func (c, lookup_اشاريو, covered_seq_indices, seq_اشاريو, پڇاڙي_اشاريو);
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  سانچو <قسم_نالو context_t, قسم_نالو ...Ts>
+  قسم_نالو context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
+  { أرجع Lookup::dispatch<Sub_جدول> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  منطقي subset (hb_subset_context_t *c) ثابت
+  { أرجع Lookup::subset<Sub_جدول> (c); }
 };
 
 
@@ -233,4 +233,4 @@ struct SubstLookup : Lookup
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */
+#جيڪڏهن_پورو  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */

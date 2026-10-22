@@ -1,227 +1,227 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURE_HH
-#define OT_LAYOUT_GSUB_LIGATURE_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GSUB_LIGATURE_HH
+#وصف_ڪريو OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#ضمن "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-template <typename Types>
-struct Ligature
+سانچو <قسم_نالو Types>
+بنية Ligature
 {
-  public:
-  typename Types::HBGlyphID
+  عام:
+  قسم_نالو Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
-  HeadlessArray16Of<typename Types::HBGlyphID>
+  Headless_Array16_جو<قسم_نالو Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
-  DEFINE_SIZE_ARRAY (Types::size + 2, component);
+  عام:
+  DEFINE_سائيز_ARRAY (Types::سائيز + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
+  { أرجع hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  منطقي intersects_lig_glyph (ثابت hb_سيٽ_t *glyphs) ثابت
+  { أرجع glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ گهيرو (hb_گهيرو_context_t *c) ثابت
   {
-    if (!intersects (c->glyphs)) return;
-    c->output->add (ligGlyph);
+    إذا (!intersects (c->glyphs)) أرجع;
+    c->output->جوڙيو (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  فراغ depend (hb_depend_context_t *c, hb_codepoint_t پهريون) ثابت
   {
     // Build the complete ligature set upfront before adding any edges
-    hb_set_t complete_ligset;
-    complete_ligset.add (first);
+    hb_سيٽ_t complete_ligset;
+    complete_ligset.جوڙيو (پهريون);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    إذا (unlikely (complete_ligset.اندريون_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_معلومات->fail ();
+      أرجع;
     }
 
-    bool ligset_created;
-    hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
+    منطقي ligset_created;
+    hb_codepoint_t ligset_idx = c->depend_معلومات->ڳوليو_or_create_سيٽ (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    إذا (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      أرجع;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    منطقي any_added = خطأ;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        إذا (c->depend_معلومات->جوڙيو_gsub_lookup (gid, c->lookup_اشاريو, ligGlyph, ligset_idx))
+          any_added = سچ;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
-      c->depend_data->discard_set (ligset_idx);
+    إذا (!any_added && ligset_created)
+      c->depend_معلومات->discard_سيٽ (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
-    c->output->add (ligGlyph);
+    c->داخلا_2->جوڙيو_array (component.arrayZ, component.get_ڊيگهائي ());
+    c->output->جوڙيو (ligGlyph);
   }
 
-  template <typename set_t>
-  void collect_second (set_t &s) const
+  سانچو <قسم_نالو سيٽ_t>
+  فراغ collect_ٻيو (سيٽ_t &s) ثابت
   {
-    if (unlikely (!component.get_length ()))
+    إذا (unlikely (!component.get_ڊيگهائي ()))
     {
       // A ligature without any components. Anything matches.
-      s = set_t::full ();
-      return;
+      s = سيٽ_t::ڀريل ();
+      أرجع;
     }
-    s.add (component.arrayZ[0]);
+    s.جوڙيو (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    if (c->len != component.lenP1)
-      return false;
+    إذا (c->len != component.lenP1)
+      أرجع خطأ;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    لكل (بنانشان صحيح i = 1; i < c->len; i++)
+      إذا (likely (c->glyphs[i] != component[i]))
+        أرجع خطأ;
 
-    return true;
+    أرجع سچ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (هذا);
+    بنانشان صحيح ڳڻپ = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    إذا (unlikely (!ڳڻپ)) return_trace (خطأ);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    إذا (unlikely (ڳڻپ == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->بفر->sync_so_far ();
+	c->بفر->پيغام (c->font,
 			    "replacing glyph at %u (ligature substitution)",
-			    c->buffer->idx);
+			    c->بفر->idx);
       }
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پيغام (c->font,
 			    "replaced glyph at %u (ligature substitution)",
-			    c->buffer->idx - 1u);
+			    c->بفر->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (سچ);
     }
 
-    unsigned int total_component_count = 0;
+    بنانشان صحيح ڪل_component_ڳڻپ = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    إذا (unlikely (ڳڻپ > HB_MAX_CONTEXT_ڊيگهائي)) أرجع خطأ;
+    بنانشان صحيح ميلاپ_پڇاڙي = 0;
 
-    if (likely (!match_input (c, count,
+    إذا (likely (!ميلاپ_داخلا (c, ڳڻپ,
                               &component[1],
-                              match_glyph,
-                              nullptr,
-                              &match_end,
-                              &total_component_count)))
+                              ميلاپ_glyph,
+                              خالي_اشارو,
+                              &ميلاپ_پڇاڙي,
+                              &ڪل_component_ڳڻپ)))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      c->بفر->unsafe_منزل_concat (c->بفر->idx, ميلاپ_پڇاڙي);
+      return_trace (خطأ);
     }
 
-    unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    بنانشان pos = 0;
+    إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
     {
-      unsigned delta = c->buffer->sync_so_far ();
+      بنانشان delta = c->بفر->sync_so_far ();
 
-      pos = c->buffer->idx;
+      pos = c->بفر->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      حرف buf[HB_MAX_CONTEXT_ڊيگهائي * 16] = {0};
+      حرف *p = buf;
 
-      match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      ميلاپ_پڇاڙي += delta;
+      لكل (بنانشان i = 0; i < ڳڻپ; i++)
       {
-	c->match_positions[i] += delta;
-	if (i)
+	c->ميلاپ_positions[i] += delta;
+	إذا (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
-	p += strlen(p);
+	snprintf (p, حجم(buf) - (p - buf), "%u", c->ميلاپ_positions[i]);
+	p += لڙي_ڊيگهه(p);
       }
 
-      c->buffer->message (c->font,
+      c->بفر->پيغام (c->font,
 			  "ligating glyphs at %s",
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
-                  match_end,
+    ligate_داخلا (c,
+                  ڳڻپ,
+                  ميلاپ_پڇاڙي,
                   ligGlyph,
-                  total_component_count);
+                  ڪل_component_ڳڻپ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->بفر->sync_so_far ();
+      c->بفر->پيغام (c->font,
 			  "ligated glyph at %u",
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  سانچو <قسم_نالو Iterator,
+            hb_requires (hb_is_ذريعو_جو (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    إذا (unlikely (!component.serialize (c, components))) return_trace (خطأ);
+    return_trace (سچ);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  منطقي subset (hb_subset_context_t *c, بنانشان coverage_idx) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_سيٽ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    إذا (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (خطأ);
     // Ensure Coverage table is always packed after this.
-    c->serializer->add_virtual_link (coverage_idx);
+    c->serializer->جوڙيو_virtual_link (coverage_idx);
 
-    auto it =
+    خودڪار it =
       + hb_iter (component)
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer,
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    return_trace (ٻاهريون->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }
 };
@@ -231,4 +231,4 @@ struct Ligature
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURE_HH */
+#جيڪڏهن_پورو  /* OT_LAYOUT_GSUB_LIGATURE_HH */

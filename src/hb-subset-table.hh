@@ -24,194 +24,194 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_TABLE_HH
-#define HB_SUBSET_TABLE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_SUBSET_جدول_HH
+#وصف_ڪريو HB_SUBSET_جدول_HH
 
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset.hh"
-#include "hb-repacker.hh"
+#ضمن "hb-subset.hh"
+#ضمن "hb-repacker.hh"
 
 
-template<typename TableType>
-static bool
-_hb_subset_table_try (const TableType *table,
-		      hb_vector_t<char>* buf,
-		      hb_subset_context_t* c /* OUT */)
+سانچو<قسم_نالو جدول_Type>
+ساكن منطقي
+hb_subset_جدول_try (ثابت جدول_Type *جدول,
+		      hb_ويڪٽر_t<حرف>* buf,
+		      hb_subset_context_t* c /*ٻاهريون*/)
 {
-  c->serializer->start_serialize ();
-  if (c->serializer->in_error ()) return false;
+  c->serializer->شروعات_serialize ();
+  إذا (c->serializer->اندريون_error ()) أرجع خطأ;
 
-  bool needed = table->subset (c);
-  if (!c->serializer->ran_out_of_room ())
+  منطقي needed = جدول->subset (c);
+  إذا (!c->serializer->ran_ٻاهريون_جو_گنجائش ())
   {
-    c->serializer->end_serialize ();
-    return needed;
+    c->serializer->پڇاڙي_serialize ();
+    أرجع needed;
   }
 
-  unsigned buf_size = buf->allocated;
-  buf_size = buf_size * 2 + 16;
+  بنانشان buf_سائيز = buf->allocated;
+  buf_سائيز = buf_سائيز * 2 + 16;
 
 
 
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
-             HB_UNTAG (c->table_tag), buf_size);
+  DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
+             HB_UNTAG (c->جدول_ٽيگ_2), buf_سائيز);
 
-  if (unlikely (buf_size > c->source_blob->length * 256 ||
-		!buf->alloc_exact (buf_size)))
+  إذا (unlikely (buf_سائيز > c->ذريعو_blob->ڊيگهائي * 256 ||
+		!buf->alloc_exact (buf_سائيز)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
-               HB_UNTAG (c->table_tag), buf_size);
-    return needed;
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c failed to reallocate %u bytes.",
+               HB_UNTAG (c->جدول_ٽيگ_2), buf_سائيز);
+    أرجع needed;
   }
 
   c->serializer->reset (buf->arrayZ, buf->allocated);
-  return _hb_subset_table_try (table, buf, c);
+  أرجع hb_subset_جدول_try (جدول, buf, c);
 }
 
-static HB_UNUSED unsigned
-_hb_subset_estimate_table_size (hb_subset_plan_t *plan,
-				unsigned table_len,
-				hb_tag_t table_tag)
+ساكن HB_اڻ_استعمال_ٿيل بنانشان
+hb_subset_estimate_جدول_سائيز (hb_subset_plan_t *plan,
+				بنانشان جدول_len,
+				hb_ٽيگ_t جدول_ٽيگ_2)
 {
-  unsigned src_glyphs = plan->source->get_num_glyphs ();
-  unsigned dst_glyphs = plan->glyphset ()->get_population ();
+  بنانشان src_glyphs = plan->ذريعو->get_انگ_glyphs ();
+  بنانشان dst_glyphs = plan->glyphset ()->get_population ();
 
-  unsigned bulk = 8192;
+  بنانشان bulk = 8192;
   /* Tables that we want to allocate same space as the source table. For GSUB/GPOS it's
    * because those are expensive to subset, so giving them more room is fine. */
-  bool same_size = table_tag == HB_TAG('G','S','U','B') ||
-		   table_tag == HB_TAG('G','P','O','S') ||
-		   table_tag == HB_TAG('G','D','E','F') ||
-		   table_tag == HB_TAG('n','a','m','e');
+  منطقي same_سائيز = جدول_ٽيگ_2 == HB_ٽيگ('G','S','U','B') ||
+		   جدول_ٽيگ_2 == HB_ٽيگ('G','P','O','S') ||
+		   جدول_ٽيگ_2 == HB_ٽيگ('G','D','E','F') ||
+		   جدول_ٽيگ_2 == HB_ٽيگ('n','a','m','e');
 
-  if (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
+  إذا (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
   {
-    if (table_tag == HB_TAG('C','F','F',' '))
+    إذا (جدول_ٽيگ_2 == HB_ٽيگ('C','F','F',' '))
     {
       /* Add some extra room for the CFF charset. */
       bulk += src_glyphs * 16;
     }
-    else if (table_tag == HB_TAG('C','F','F','2'))
+    وإلا إذا (جدول_ٽيگ_2 == HB_ٽيگ('C','F','F','2'))
     {
       /* Just extra CharString offsets. */
       bulk += src_glyphs * 4;
     }
   }
 
-  if (unlikely (!src_glyphs) || same_size)
-    return bulk + table_len;
+  إذا (unlikely (!src_glyphs) || same_سائيز)
+    أرجع bulk + جدول_len;
 
-  return bulk + (unsigned) (table_len * sqrt ((double) dst_glyphs / src_glyphs));
+  أرجع bulk + (بنانشان) (جدول_len * جذر ((مزدوج) dst_glyphs / src_glyphs));
 }
 
 /*
  * Repack the serialization buffer if any offset overflows exist.
  */
-static HB_UNUSED hb_blob_t*
-_hb_subset_repack (hb_tag_t tag, const hb_serialize_context_t& c)
+ساكن HB_اڻ_استعمال_ٿيل hb_blob_t*
+_hb_subset_repack (hb_ٽيگ_t ٽيگ_2, ثابت hb_serialize_context_t& c)
 {
-  if (!c.offset_overflow ())
-    return c.copy_blob ();
+  إذا (!c.وٿي_حد_کان_مٿي ())
+    أرجع c.copy_blob ();
 
-  hb_blob_t* result = hb_resolve_overflows (c.object_graph (), tag);
+  hb_blob_t* نتيجو = hb_resolve_overflows (c.object_گراف (), ٽيگ_2);
 
-  if (unlikely (!result))
+  إذا (unlikely (!نتيجو))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
-               HB_UNTAG (tag));
-    return nullptr;
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c offset overflow resolution failed.",
+               HB_UNTAG (ٽيگ_2));
+    أرجع خالي_اشارو;
   }
 
-  return result;
+  أرجع نتيجو;
 }
 
-template <typename T>
-static HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (void, t.destroy ())
+سانچو <قسم_نالو T>
+ساكن HB_اڻ_استعمال_ٿيل خودڪار _hb_do_destroy (T &t, hb_ترجيح<1>) HB_RETURN (فراغ, t.destroy ())
 
-template <typename T>
-static HB_UNUSED void _hb_do_destroy (T &t, hb_priority<0>) {}
+سانچو <قسم_نالو T>
+ساكن HB_اڻ_استعمال_ٿيل فراغ _hb_do_destroy (T &t, hb_ترجيح<0>) {}
 
-template<typename TableType>
-static bool
-_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
+سانچو<قسم_نالو جدول_Type>
+ساكن منطقي
+hb_subset_جدول (hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf)
 {
-  auto &&source_blob = plan->source_table<TableType> ();
-  auto *table = source_blob.get ();
+  خودڪار &&ذريعو_blob = plan->ذريعو_جدول<جدول_Type> ();
+  خودڪار *جدول = ذريعو_blob.get ();
 
-  hb_tag_t tag = TableType::tableTag;
-  hb_blob_t *blob = source_blob.get_blob();
-  if (unlikely (!blob || !blob->data))
+  hb_ٽيگ_t ٽيگ_2 = جدول_Type::جدول_ٽيگ;
+  hb_blob_t *blob = ذريعو_blob.get_blob();
+  إذا (unlikely (!blob || !blob->معلومات))
   {
-    DEBUG_MSG (SUBSET, nullptr,
-               "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (tag));
-    _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    DEBUG_نياپو (SUBSET, خالي_اشارو,
+               "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (ٽيگ_2));
+    _hb_do_destroy (ذريعو_blob, hb_prioritize);
+    أرجع خطأ;
   }
 
-  unsigned buf_size = _hb_subset_estimate_table_size (plan, blob->length, TableType::tableTag);
-  DEBUG_MSG (SUBSET, nullptr,
-             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_size);
-  if (unlikely (!buf.alloc (buf_size)))
+  بنانشان buf_سائيز = hb_subset_estimate_جدول_سائيز (plan, blob->ڊيگهائي, جدول_Type::جدول_ٽيگ);
+  DEBUG_نياپو (SUBSET, خالي_اشارو,
+             "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (ٽيگ_2), buf_سائيز);
+  إذا (unlikely (!buf.alloc (buf_سائيز)))
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
-    _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (ٽيگ_2), buf_سائيز);
+    _hb_do_destroy (ذريعو_blob, hb_prioritize);
+    أرجع خطأ;
   }
 
-  bool needed = false;
+  منطقي needed = خطأ;
   hb_serialize_context_t serializer (buf.arrayZ, buf.allocated);
   {
-    hb_subset_context_t c (blob, plan, &serializer, tag);
-    needed = _hb_subset_table_try (table, &buf, &c);
+    hb_subset_context_t c (blob, plan, &serializer, ٽيگ_2);
+    needed = hb_subset_جدول_try (جدول, &buf, &c);
   }
-  _hb_do_destroy (source_blob, hb_prioritize);
+  _hb_do_destroy (ذريعو_blob, hb_prioritize);
 
-  if (serializer.in_error () && !serializer.only_offset_overflow ())
+  إذا (serializer.اندريون_error () && !serializer.only_وٿي_حد_کان_مٿي ())
   {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
-    return false;
-  }
-
-  if (!needed)
-  {
-    DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
-    return true;
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (ٽيگ_2));
+    أرجع خطأ;
   }
 
-  bool result = false;
-  hb_blob_t *dest_blob = _hb_subset_repack (tag, serializer);
-  if (dest_blob)
+  إذا (!needed)
   {
-    DEBUG_MSG (SUBSET, nullptr,
+    DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (ٽيگ_2));
+    أرجع سچ;
+  }
+
+  منطقي نتيجو = خطأ;
+  hb_blob_t *dest_blob = _hb_subset_repack (ٽيگ_2, serializer);
+  إذا (dest_blob)
+  {
+    DEBUG_نياپو (SUBSET, خالي_اشارو,
                "OT::%c%c%c%c final subset table size: %u bytes.",
-               HB_UNTAG (tag), dest_blob->length);
-    result = plan->add_table (tag, dest_blob);
+               HB_UNTAG (ٽيگ_2), dest_blob->ڊيگهائي);
+    نتيجو = plan->جوڙيو_جدول (ٽيگ_2, dest_blob);
     hb_blob_destroy (dest_blob);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
-             HB_UNTAG (tag), result ? "success" : "FAILED!");
-  return result;
+  DEBUG_نياپو (SUBSET, خالي_اشارو, "OT::%c%c%c%c::subset %s",
+             HB_UNTAG (ٽيگ_2), نتيجو ? "success" : "FAILED!");
+  أرجع نتيجو;
 }
 
-static HB_UNUSED bool
-_hb_subset_table_passthrough (hb_subset_plan_t *plan, hb_tag_t tag)
+ساكن HB_اڻ_استعمال_ٿيل منطقي
+hb_subset_جدول_passthrough (hb_subset_plan_t *plan, hb_ٽيگ_t ٽيگ_2)
 {
-  hb_blob_t *source_table = hb_face_reference_table (plan->source, tag);
-  bool result = plan->add_table (tag, source_table);
-  hb_blob_destroy (source_table);
-  return result;
+  hb_blob_t *ذريعو_جدول = hb_face_reference_جدول (plan->ذريعو, ٽيگ_2);
+  منطقي نتيجو = plan->جوڙيو_جدول (ٽيگ_2, ذريعو_جدول);
+  hb_blob_destroy (ذريعو_جدول);
+  أرجع نتيجو;
 }
 
 
-HB_INTERNAL bool _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
+HB_اندروني منطقي hb_subset_جدول_layout	(hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf, hb_ٽيگ_t ٽيگ_2, منطقي *success);
+HB_اندروني منطقي hb_subset_جدول_var		(hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf, hb_ٽيگ_t ٽيگ_2, منطقي *success);
+HB_اندروني منطقي hb_subset_جدول_cff		(hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf, hb_ٽيگ_t ٽيگ_2, منطقي *success);
+HB_اندروني منطقي hb_subset_جدول_color		(hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf, hb_ٽيگ_t ٽيگ_2, منطقي *success);
+HB_اندروني منطقي hb_subset_جدول_other		(hb_subset_plan_t *plan, hb_ويڪٽر_t<حرف> &buf, hb_ٽيگ_t ٽيگ_2, منطقي *success);
 
 
-#endif /* HB_SUBSET_TABLE_HH */
+#جيڪڏهن_پورو /* HB_SUBSET_TABLE_HH */

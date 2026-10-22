@@ -24,63 +24,63 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#ضمن <hb.h>
+#ضمن <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#ضمن <stdlib.h>
+#ضمن <stdio.h>
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  if (argc != 3) {
+  إذا (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
-    exit (1);
+    ٻاهر_نڪرو (1);
   }
 
   /* Create the face */
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالي_اشارو;
 
   hb_font_t *font = hb_font_create (face);
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_بفر_t *بفر = hb_بفر_create ();
 
-  hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
-  hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_بفر_جوڙيو_utf8 (بفر, argv[2], -1, 0, -1);
+  hb_بفر_guess_segment_properties (بفر);
+  hb_shape (font, بفر, عدم, 0);
 
-  hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
-  hb_set_t *lookup_indexes = hb_set_create ();
+  hb_ٽيگ_t features[] = {HB_ٽيگ('a','a','l','t'), HB_ٽيگ_NONE};
+  hb_سيٽ_t *lookup_indexes = hb_سيٽ_create ();
   hb_ot_layout_collect_lookups (face,
-				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				HB_OT_ٽيگ_GSUB,
+				عدم, عدم,
 				features,
 				lookup_indexes);
-  printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
+  لکو ("lookups %u\n", hb_سيٽ_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  بنانشان ڳڻپ;
+  hb_glyph_info_t *info = hb_بفر_get_glyph_infos (بفر, &ڳڻپ);
+  لكل (بنانشان i = 0; i < ڳڻپ; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
-	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
-								 lookup_index,
+    بنانشان alt_ڳڻپ = 0;
+    لكل (hb_codepoint_t lookup_اشاريو = HB_سيٽ_قدر_INVALID;
+	 hb_سيٽ_ايندڙ (lookup_indexes, &lookup_اشاريو);)
+      إذا ((alt_ڳڻپ = hb_ot_layout_lookup_get_glyph_alternates (face,
+								 lookup_اشاريو,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 عدم,
+								 عدم)))
+        اكسر;
+    لکو ("glyph %u alt count %u\n", info[i].codepoint, alt_ڳڻپ);
   }
 
-  hb_set_destroy (lookup_indexes);
-  hb_buffer_destroy (buffer);
+  hb_سيٽ_destroy (lookup_indexes);
+  hb_بفر_destroy (بفر);
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  أرجع 0;
 }

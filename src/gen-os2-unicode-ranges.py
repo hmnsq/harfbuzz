@@ -5,46 +5,46 @@ Input is a tab separated list of unicode ranges from the otspec
 (https://docs.microsoft.com/en-us/typography/opentype/spec/os2#ur).
 """
 
-import re
-import sys
+استورد re
+استورد sys
 
 
-print ("""static OS2Range _hb_os2_unicode_ranges[] =
+ڇاپيو ("""static OS2Range _hb_os2_unicode_ranges[] =
 {""")
 
-args = sys.argv[1:]
-input_file = args[0]
+دليلون = sys.argv[1:]
+داخلا_file = دليلون[0]
 
-with open (input_file, mode="r", encoding="utf-8") as f:
+سان open (داخلا_file, گهڻائي="r", encoding="utf-8") كـ f:
 
   all_ranges = []
-  current_bit = 0
-  while True:
-    line = f.readline().strip()
-    if not line:
-      break
-    fields = re.split(r'\t+', line)
-    if len(fields) == 3:
-      current_bit = fields[0]
+  current_ٻٽو_انگ = 0
+  طالما سچ:
+    سٽ = f.readline().strip()
+    إذا ليس سٽ:
+      اكسر
+    fields = re.ورهايو(r'\t+', سٽ)
+    إذا ڊيگهه(fields) == 3:
+      current_ٻٽو_انگ = fields[0]
       fields = fields[1:]
-    elif len(fields) > 3:
-      raise Exception("bad input :(.")
+    وإلاإذا ڊيگهه(fields) > 3:
+      ارفع Exception("bad input :(.")
 
     name = fields[0]
-    ranges = re.split("-", fields[1])
-    if len(ranges) != 2:
-      raise Exception("bad input :(.")
+    ranges = re.ورهايو("-", fields[1])
+    إذا ڊيگهه(ranges) != 2:
+      ارفع Exception("bad input :(.")
 
-    v = tuple((int(ranges[0], 16), int(ranges[1], 16), int(current_bit), name))
+    v = tuple((صحيح(ranges[0], 16), صحيح(ranges[1], 16), صحيح(current_ٻٽو_انگ), name))
     all_ranges.append(v)
 
-all_ranges = sorted(all_ranges, key=lambda t: t[0])
+all_ranges = sorted(all_ranges, ڪنجي_2=مجهول t: t[0])
 
-for ranges in all_ranges:
-  start = ("0x%X" % ranges[0]).rjust(8)
-  end = ("0x%X" % ranges[1]).rjust(8)
-  bit = ("%s" % ranges[2]).rjust(3)
+لكل ranges في all_ranges:
+  شروعات = ("0x%X" % ranges[0]).rjust(8)
+  پڇاڙي = ("0x%X" % ranges[1]).rjust(8)
+  ٻٽو_انگ = ("%s" % ranges[2]).rjust(3)
 
-  print ("  {%s, %s, %s}, // %s" % (start, end, bit, ranges[3]))
+  ڇاپيو ("  {%s, %s, %s}, // %s" % (شروعات, پڇاڙي, ٻٽو_انگ, ranges[3]))
 
-print ("""};""")
+ڇاپيو ("""};""")

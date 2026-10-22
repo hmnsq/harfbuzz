@@ -22,612 +22,612 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef OT_COLOR_SVG_SVG_HH
-#define OT_COLOR_SVG_SVG_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_COLOR_SVG_SVG_HH
+#وصف_ڪريو OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#ضمن "../../../hb-open-type.hh"
+#ضمن "../../../hb-blob.hh"
+#ضمن "../../../hb-limits.hh"
+#ضمن "../../../hb-map.hh"
+#ضمن "../../../hb-paint.hh"
+#ضمن "../../../hb-zlib.hh"
+#ضمن <ctype.h>
+#ضمن <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
  * https://docs.microsoft.com/en-us/typography/opentype/spec/svg
  */
 
-#define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
+#وصف_ڪريو HB_OT_ٽيگ_SVG HB_ٽيگ('S','V','G',' ')
 
 
-namespace OT {
+نطاق OT {
 
-static inline hb_blob_t *
+ساكن مضمن hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
-                                     unsigned *len)
+                                     ثابت حرف **svg,
+                                     بنانشان *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
-  unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  بنانشان معلومات_len = 0;
+  ثابت حرف *معلومات = hb_blob_get_معلومات (blob, &معلومات_len);
 
-  if (!data || !data_len)
-    goto fail;
+  إذا (!معلومات || !معلومات_len)
+    اذهب fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  إذا (hb_blob_is_gzip (معلومات, معلومات_len))
   {
-    uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
-        unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+    uint32_t expected_سائيز = 0;
+    إذا (hb_gzip_get_uncompressed_سائيز (معلومات, معلومات_len, &expected_سائيز) &&
+        unlikely ((size_t) expected_سائيز > (size_t) HB_SVG_MAX_DOCUMENT_سائيز))
+      اذهب fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
-                                                       HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+                                                       HB_SVG_MAX_DOCUMENT_سائيز);
+    إذا (!uncompressed)
+      اذهب fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
-    data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    معلومات = hb_blob_get_معلومات (blob, &معلومات_len);
+    إذا (!معلومات || !معلومات_len)
+      اذهب fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  إذا (unlikely ((size_t) معلومات_len > (size_t) HB_SVG_MAX_DOCUMENT_سائيز))
+    اذهب fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  إذا (svg) *svg = معلومات;
+  إذا (len) *len = معلومات_len;
+  أرجع blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  إذا (svg) *svg = خالي_اشارو;
+  إذا (len) *len = 0;
+  أرجع خالي_اشارو;
 }
 
-struct SVGDocumentIndexEntry
+بنية SVGDocument_اشاريو_داخلا
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  صحيح cmp (hb_codepoint_t g) ثابت
+  { أرجع g < شروعات_Glyph_ID ? -1 : g > پڇاڙي_Glyph_ID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_شروعات_glyph () ثابت
+  { أرجع شروعات_Glyph_ID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_پڇاڙي_glyph () ثابت
+  { أرجع پڇاڙي_Glyph_ID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, بنانشان صحيح اشاريو_وٿي) ثابت
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
-				    svgDocLength);
+    أرجع hb_blob_create_sub_blob (svg_blob,
+				    اشاريو_وٿي + (بنانشان صحيح) svgDoc,
+				    svg_Doc_ڊيگهائي);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *بنياد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  svgDoc.sanitize (c, base, svgDocLength));
+		  svgDoc.sanitize (c, بنياد, svg_Doc_ڊيگهائي));
   }
 
-  protected:
-  HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
+  محمي:
+  HBUINT16	شروعات_Glyph_ID;	/* The first glyph ID in the range described by
 				 * this index entry. */
-  HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
+  HBUINT16	پڇاڙي_Glyph_ID;	/* The last glyph ID in the range described by
 				 * this index entry. Must be >= startGlyphID. */
-  NNOffset32To<UnsizedArrayOf<HBUINT8>>
+  NNOffset32_منزل<Unsized_Array_جو<HBUINT8>>
 		svgDoc;		/* Offset from the beginning of the SVG Document Index
 				 * to an SVG document. Must be non-zero. */
-  HBUINT32	svgDocLength;	/* Length of the SVG document.
+  HBUINT32	svg_Doc_ڊيگهائي;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عام:
+  DEFINE_سائيز_STATIC (12);
 };
 
-struct SVG
+بنية SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  ساكن constexpr hb_ٽيگ_t جدول_ٽيگ = HB_OT_ٽيگ_SVG;
 
-  struct svg_id_span_t
+  بنية svg_id_وسعت_t
   {
-    const char *p;
-    unsigned len;
+    ثابت حرف *p;
+    بنانشان len;
 
-    bool operator == (const svg_id_span_t &o) const
+    منطقي عامل == (ثابت svg_id_وسعت_t &o) ثابت
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      أرجع len == o.len && !memcmp (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () ثابت
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      لكل (بنانشان i = 0; i < len; i++)
+        h = h * 33u + (بنانشان حرف) p[i];
+      أرجع h;
     }
   };
 
-  struct svg_defs_entry_t
+  بنية svg_defs_داخلا_t
   {
-    svg_id_span_t id;
-    unsigned start;
-    unsigned end;
+    svg_id_وسعت_t id;
+    بنانشان شروعات;
+    بنانشان پڇاڙي;
   };
 
-  struct svg_doc_cache_t
+  بنية svg_doc_cache_t
   {
-    hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
-    unsigned len = 0;
-    hb_vector_t<svg_defs_entry_t> defs_entries;
-    hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
-    hb_codepoint_t end_glyph = HB_CODEPOINT_INVALID;
-    hb_vector_t<hb_pair_t<uint32_t, uint32_t>> glyph_spans;
-    hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
+    hb_blob_t *blob = خالي_اشارو;
+    ثابت حرف *svg = خالي_اشارو;
+    بنانشان len = 0;
+    hb_ويڪٽر_t<svg_defs_داخلا_t> defs_entries;
+    hb_codepoint_t شروعات_glyph = HB_CODEPOINT_INVALID;
+    hb_codepoint_t پڇاڙي_glyph = HB_CODEPOINT_INVALID;
+    hb_ويڪٽر_t<hb_pair_t<uint32_t, uint32_t>> glyph_spans;
+    hb_hashmap_t<svg_id_وسعت_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  منطقي has_معلومات () ثابت { أرجع svgDocEntries; }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) ثابت
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
-							       table->svgDocEntries);
+      أرجع جدول->get_glyph_داخلا (glyph_id).reference_blob (جدول.get_blob (),
+							       جدول->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    بنانشان get_document_ڳڻپ () ثابت
+    { أرجع جدول->get_document_ڳڻپ (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    منطقي get_glyph_document_اشاريو (hb_codepoint_t glyph_id, بنانشان *اشاريو_2) ثابت
+    { أرجع جدول->get_glyph_document_اشاريو (glyph_id, اشاريو_2); }
 
-    bool get_document_glyph_range (unsigned index,
-                                   hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+    منطقي get_document_glyph_range (بنانشان اشاريو_2,
+                                   hb_codepoint_t *شروعات_glyph,
+                                   hb_codepoint_t *پڇاڙي_glyph) ثابت
+    { أرجع جدول->get_document_glyph_range (اشاريو_2, شروعات_glyph, پڇاڙي_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    منطقي has_معلومات () ثابت { أرجع جدول->has_معلومات (); }
 
-    const svg_doc_cache_t *
+    ثابت svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
-                             unsigned len,
-                             unsigned doc_index,
-                             hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             ثابت حرف *svg,
+                             بنانشان len,
+                             بنانشان doc_اشاريو,
+                             hb_codepoint_t شروعات_glyph,
+                             hb_codepoint_t پڇاڙي_glyph) ثابت;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    ثابت حرف *
+    doc_cache_get_svg (ثابت svg_doc_cache_t *doc,
+                       بنانشان *len) ثابت;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    ثابت hb_ويڪٽر_t<svg_defs_داخلا_t> *
+    doc_cache_get_defs_entries (ثابت svg_doc_cache_t *doc) ثابت;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    منطقي
+    doc_cache_get_glyph_وسعت (ثابت svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
-                              unsigned *start,
-                              unsigned *end) const;
+                              بنانشان *شروعات,
+                              بنانشان *پڇاڙي) ثابت;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
-                            svg_id_span_t id,
-                            unsigned *start,
-                            unsigned *end) const;
+    منطقي
+    doc_cache_ڳوليو_id_وسعت (ثابت svg_doc_cache_t *doc,
+                            svg_id_وسعت_t id,
+                            بنانشان *شروعات,
+                            بنانشان *پڇاڙي) ثابت;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
-                            unsigned *start,
-                            unsigned *end) const;
+    منطقي
+    doc_cache_ڳوليو_id_cstr (ثابت svg_doc_cache_t *doc,
+                            ثابت حرف *id,
+                            بنانشان *شروعات,
+                            بنانشان *پڇاڙي) ثابت;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    منطقي paint_glyph (hb_font_t *font HB_اڻ_استعمال_ٿيل, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, فراغ *معلومات) ثابت
     {
-      if (!has_data ())
-        return false;
+      إذا (!has_معلومات ())
+        أرجع خطأ;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      إذا (blob == hb_blob_get_خالي_جايون ())
+        أرجع خطأ;
 
-      bool ret = funcs->image (data,
+      منطقي ret = funcs->image (معلومات,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
 			       0.f,
-			       nullptr);
+			       خالي_اشارو);
 
       hb_blob_destroy (blob);
 
-      return ret;
+      أرجع ret;
     }
 
-    private:
+    خاص:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
-                    unsigned len,
-                    hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    ثابت حرف *svg,
+                    بنانشان len,
+                    hb_codepoint_t شروعات_glyph,
+                    hb_codepoint_t پڇاڙي_glyph) ثابت;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    ساكن فراغ destroy_doc_cache (svg_doc_cache_t *doc);
 
-    hb_blob_ptr_t<SVG> table;
-    mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    hb_blob_ptr_t<SVG> جدول;
+    بدلجندڙ hb_ويڪٽر_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
+    عام:
+    DEFINE_سائيز_STATIC (حجم (hb_blob_ptr_t<SVG>) +
+                        حجم (hb_ويڪٽر_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  ثابت SVGDocument_اشاريو_داخلا &get_glyph_داخلا (hb_codepoint_t glyph_id) ثابت
+  { أرجع (هذا+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  بنانشان get_document_ڳڻپ () ثابت
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    إذا (!has_معلومات ())
+      أرجع 0;
+    أرجع (هذا + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  منطقي get_glyph_document_اشاريو (hb_codepoint_t glyph_id, بنانشان *اشاريو_2) ثابت
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    إذا (!has_معلومات ())
+      أرجع خطأ;
+    أرجع (هذا + svgDocEntries).bfind (glyph_id, اشاريو_2);
   }
 
-  bool get_document_glyph_range (unsigned index,
-                                 hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+  منطقي get_document_glyph_range (بنانشان اشاريو_2,
+                                 hb_codepoint_t *شروعات_glyph,
+                                 hb_codepoint_t *پڇاڙي_glyph) ثابت
   {
-    if (!has_data ())
-      return false;
+    إذا (!has_معلومات ())
+      أرجع خطأ;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    ثابت خودڪار &entries = هذا + svgDocEntries;
+    إذا (اشاريو_2 >= entries.len)
+      أرجع خطأ;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    ثابت خودڪار &داخلا = entries.arrayZ[اشاريو_2];
+    إذا (شروعات_glyph) *شروعات_glyph = داخلا.get_شروعات_glyph ();
+    إذا (پڇاڙي_glyph) *پڇاڙي_glyph = داخلا.get_پڇاڙي_glyph ();
+    أرجع سچ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
+			  (هذا+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version (starting at 0). */
-  Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
+  محمي:
+  HBUINT16	نسخو;	/* Table version (starting at 0). */
+  Offset32_منزل<Sorted_Array16_جو<SVGDocument_اشاريو_داخلا>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عام:
+  DEFINE_سائيز_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+نطاق _hb_svg_cache_impl {
 
-struct glyph_entry_t
+بنية glyph_داخلا_t
 {
   hb_codepoint_t glyph;
-  uint32_t start;
-  uint32_t end;
+  uint32_t شروعات;
+  uint32_t پڇاڙي;
 };
 
-struct id_entry_t
+بنية id_داخلا_t
 {
-  SVG::svg_id_span_t id;
-  uint32_t start;
-  uint32_t end;
+  SVG::svg_id_وسعت_t id;
+  uint32_t شروعات;
+  uint32_t پڇاڙي;
 };
 
-struct open_elem_t
+بنية open_elem_t
 {
-  unsigned start;
-  SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  بنانشان شروعات;
+  SVG::svg_id_وسعت_t id;
+  منطقي اندريون_defs_content;
+  منطقي is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+ساكن ثابت بنانشان MAX_اونهائي = 128;
 
-static inline int
-find_substr (const char *s,
-             unsigned n,
-             unsigned from,
-             const char *needle,
-             unsigned needle_len)
+ساكن مضمن صحيح
+ڳوليو_substr (ثابت حرف *s,
+             بنانشان n,
+             بنانشان from,
+             ثابت حرف *needle,
+             بنانشان needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  إذا (!needle_len || from >= n || needle_len > n)
+    أرجع -1;
+  لكل (بنانشان i = from; i + needle_len <= n; i++)
+    إذا (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      أرجع (صحيح) i;
+  أرجع -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
-                       unsigned tag_start,
-                       unsigned tag_end,
-                       SVG::svg_id_span_t *id)
+ساكن مضمن منطقي
+parse_id_اندريون_شروعات_ٽيگ (ثابت حرف *svg,
+                       بنانشان ٽيگ_شروعات,
+                       بنانشان ٽيگ_پڇاڙي,
+                       SVG::svg_id_وسعت_t *id)
 {
-  unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  بنانشان p = ٽيگ_شروعات;
+  طالما (p + 4 <= ٽيگ_پڇاڙي)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    إذا (!memcmp (svg + p, "id=\"", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      بنانشان b = p + 4;
+      بنانشان e = b;
+      طالما (e < ٽيگ_پڇاڙي && svg[e] != '"') e++;
+      إذا (e <= ٽيگ_پڇاڙي && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        أرجع سچ;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    إذا (!memcmp (svg + p, "id='", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      بنانشان b = p + 4;
+      بنانشان e = b;
+      طالما (e < ٽيگ_پڇاڙي && svg[e] != '\'') e++;
+      إذا (e <= ٽيگ_پڇاڙي && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        أرجع سچ;
       }
     }
     p++;
   }
-  return false;
+  أرجع خطأ;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+ساكن مضمن منطقي
+parse_glyph_id_وسعت (ثابت SVG::svg_id_وسعت_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  إذا (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    أرجع خطأ;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  لكل (بنانشان i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    بنانشان حرف c = (بنانشان حرف) id.p[i];
+    إذا (c < '0' || c > '9')
+      أرجع خطأ;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    إذا (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      أرجع خطأ;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  أرجع سچ;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
-                            unsigned len,
-                            hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
-                            hb_vector_t<glyph_entry_t> *glyph_spans,
-                            hb_vector_t<id_entry_t> *id_entries)
+ساكن مضمن منطقي
+parse_cache_entries_لڪيري (ثابت حرف *svg,
+                            بنانشان len,
+                            hb_ويڪٽر_t<SVG::svg_defs_داخلا_t> *defs_entries,
+                            hb_ويڪٽر_t<glyph_داخلا_t> *glyph_spans,
+                            hb_ويڪٽر_t<id_داخلا_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
-  unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  open_elem_t ڍير[MAX_اونهائي] = {};
+  بنانشان اونهائي = 0;
+  إذا (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    أرجع خطأ;
 
-  unsigned defs_depth = 0;
-  unsigned i = 0;
-  while (i < len)
+  بنانشان defs_اونهائي = 0;
+  بنانشان i = 0;
+  طالما (i < len)
   {
-    if (svg[i] != '<')
+    إذا (svg[i] != '<')
     {
       i++;
-      continue;
+      استمر;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    إذا (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      صحيح cend = ڳوليو_substr (svg, len, i + 4, "-->", 3);
+      إذا (cend < 0) أرجع خطأ;
+      i = (بنانشان) cend + 3;
+      استمر;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    إذا (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      صحيح cend = ڳوليو_substr (svg, len, i + 9, "]]>", 3);
+      إذا (cend < 0) أرجع خطأ;
+      i = (بنانشان) cend + 3;
+      استمر;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    منطقي closing = (i + 1 < len && svg[i + 1] == '/');
+    منطقي special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
-    unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    بنانشان gt = i + 1;
+    حرف quote = 0;
+    طالما (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      حرف c = svg[gt];
+      إذا (quote)
       {
-        if (c == quote) quote = 0;
+        إذا (c == quote) quote = 0;
       }
-      else
+      وإلا
       {
-        if (c == '"' || c == '\'')
+        إذا (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        وإلا إذا (c == '>')
+          اكسر;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    إذا (gt >= len)
+      أرجع خطأ;
 
-    if (special)
+    إذا (special)
     {
       i = gt + 1;
-      continue;
+      استمر;
     }
 
-    unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
-    unsigned name_len = 0;
-    while (p + name_len < gt)
+    بنانشان p = i + (closing ? 2 : 1);
+    طالما (p < gt && خال_آهي ((بنانشان حرف) svg[p])) p++;
+    ثابت حرف *name = svg + p;
+    بنانشان name_len = 0;
+    طالما (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      بنانشان حرف c = (بنانشان حرف) name[name_len];
+      إذا (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        اكسر;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    منطقي is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    إذا (closing)
     {
-      if (!depth)
+      إذا (!اونهائي)
       {
         i = gt + 1;
-        continue;
+        استمر;
       }
 
-      open_elem_t e = stack[--depth];
-      unsigned end = gt + 1;
+      open_elem_t e = ڍير[--اونهائي];
+      بنانشان پڇاڙي = gt + 1;
 
-      if (e.id.len)
+      إذا (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        إذا (unlikely (!id_entries->ڌڪو_or_fail (id_داخلا_t {e.id, (uint32_t) e.شروعات, (uint32_t) پڇاڙي})))
+          أرجع خطأ;
 
-        if (e.in_defs_content)
+        إذا (e.اندريون_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
-          slot.id = e.id;
-          slot.start = e.start;
-          slot.end = end;
+          إذا (unlikely (!defs_entries->ڌڪو_or_fail ()))
+            أرجع خطأ;
+          خودڪار &جڳهه = defs_entries->پڇ ();
+          جڳهه.id = e.id;
+          جڳهه.شروعات = e.شروعات;
+          جڳهه.پڇاڙي = پڇاڙي;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        إذا (parse_glyph_id_وسعت (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          إذا (unlikely (!glyph_spans->ڌڪو_or_fail (glyph_داخلا_t {gid, (uint32_t) e.شروعات, (uint32_t) پڇاڙي})))
+            أرجع خطأ;
         }
       }
 
-      if (e.is_defs && defs_depth)
-        defs_depth--;
+      إذا (e.is_defs && defs_اونهائي)
+        defs_اونهائي--;
 
-      i = end;
-      continue;
+      i = پڇاڙي;
+      استمر;
     }
 
-    SVG::svg_id_span_t id = {};
-    parse_id_in_start_tag (svg, i, gt, &id);
+    SVG::svg_id_وسعت_t id = {};
+    parse_id_اندريون_شروعات_ٽيگ (svg, i, gt, &id);
 
-    unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    بنانشان r = gt;
+    طالما (r > i && خال_آهي ((بنانشان حرف) svg[r - 1])) r--;
+    منطقي self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
-    e.start = i;
+    e.شروعات = i;
     e.id = id;
-    e.in_defs_content = defs_depth > 0;
+    e.اندريون_defs_content = defs_اونهائي > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    إذا (self_closing)
     {
-      unsigned end = gt + 1;
-      if (e.id.len)
+      بنانشان پڇاڙي = gt + 1;
+      إذا (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        إذا (unlikely (!id_entries->ڌڪو_or_fail (id_داخلا_t {e.id, (uint32_t) e.شروعات, (uint32_t) پڇاڙي})))
+          أرجع خطأ;
 
-        if (e.in_defs_content)
+        إذا (e.اندريون_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
-          slot.id = e.id;
-          slot.start = e.start;
-          slot.end = end;
+          إذا (unlikely (!defs_entries->ڌڪو_or_fail ()))
+            أرجع خطأ;
+          خودڪار &جڳهه = defs_entries->پڇ ();
+          جڳهه.id = e.id;
+          جڳهه.شروعات = e.شروعات;
+          جڳهه.پڇاڙي = پڇاڙي;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        إذا (parse_glyph_id_وسعت (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          إذا (unlikely (!glyph_spans->ڌڪو_or_fail (glyph_داخلا_t {gid, (uint32_t) e.شروعات, (uint32_t) پڇاڙي})))
+            أرجع خطأ;
         }
       }
     }
-    else
+    وإلا
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
-        defs_depth++;
+      إذا (unlikely (اونهائي >= MAX_اونهائي))
+        أرجع خطأ;
+      ڍير[اونهائي++] = e;
+      إذا (is_defs)
+        defs_اونهائي++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  أرجع سچ;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+مضمن
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
-  table = hb_sanitize_context_t ().reference_table<SVG> (face);
+  جدول = hb_sanitize_context_t ().reference_جدول<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  بنانشان doc_ڳڻپ = جدول->get_document_ڳڻپ ();
+  إذا (doc_ڳڻپ && unlikely (!doc_caches.resize (doc_ڳڻپ)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
-    doc_caches.arrayZ[i].set_relaxed (nullptr);
+  لكل (بنانشان i = 0; i < doc_caches.ڊيگهائي; i++)
+    doc_caches.arrayZ[i].سيٽ_relaxed (خالي_اشارو);
 }
 
-inline
+مضمن
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  لكل (بنانشان i = 0; i < doc_caches.ڊيگهائي; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
-  table.destroy ();
+  جدول.destroy ();
 }
 
-inline void
+مضمن فراغ
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  إذا (!doc)
+    أرجع;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,54 +635,54 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+مضمن SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
-                                    unsigned len,
-                                    hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    ثابت حرف *svg,
+                                    بنانشان len,
+                                    hb_codepoint_t شروعات_glyph,
+                                    hb_codepoint_t پڇاڙي_glyph) ثابت
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  ساكن ثابت uint32_t INVALID_وسعت = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  خودڪار *doc = (svg_doc_cache_t *) hb_malloc (حجم (svg_doc_cache_t));
+  إذا (!doc)
+    أرجع خالي_اشارو;
 
-  doc->blob = nullptr;
-  doc->svg = nullptr;
+  doc->blob = خالي_اشارو;
+  doc->svg = خالي_اشارو;
   doc->len = 0;
   doc->defs_entries.init ();
-  doc->start_glyph = HB_CODEPOINT_INVALID;
-  doc->end_glyph = HB_CODEPOINT_INVALID;
+  doc->شروعات_glyph = HB_CODEPOINT_INVALID;
+  doc->پڇاڙي_glyph = HB_CODEPOINT_INVALID;
   doc->glyph_spans.init ();
   doc->id_spans.init ();
 
   doc->blob = hb_blob_reference (image);
   doc->svg = svg;
   doc->len = len;
-  doc->start_glyph = start_glyph;
-  doc->end_glyph = end_glyph;
+  doc->شروعات_glyph = شروعات_glyph;
+  doc->پڇاڙي_glyph = پڇاڙي_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  إذا (unlikely (شروعات_glyph == HB_CODEPOINT_INVALID || پڇاڙي_glyph < شروعات_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    أرجع خالي_اشارو;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  بنانشان glyph_ڳڻپ = پڇاڙي_glyph - شروعات_glyph + 1;
+  إذا (!doc->glyph_spans.resize ((صحيح) glyph_ڳڻپ))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    أرجع خالي_اشارو;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
-    doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
+  لكل (بنانشان i = 0; i < glyph_ڳڻپ; i++)
+    doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_وسعت, INVALID_وسعت);
 
-  hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
+  hb_ويڪٽر_t<_hb_svg_cache_impl::glyph_داخلا_t> glyph_spans;
   glyph_spans.init ();
-  hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
+  hb_ويڪٽر_t<_hb_svg_cache_impl::id_داخلا_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  إذا (!_hb_svg_cache_impl::parse_cache_entries_لڪيري (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,140 +690,140 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    أرجع خالي_اشارو;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  لكل (بنانشان i = 0; i < glyph_spans.ڊيگهائي; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
-    doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
+    ثابت خودڪار &وسعت = glyph_spans.arrayZ[i];
+    إذا (unlikely (وسعت.glyph < شروعات_glyph || وسعت.glyph > پڇاڙي_glyph))
+      استمر;
+    doc->glyph_spans.arrayZ[وسعت.glyph - شروعات_glyph] = hb_pair_t<uint32_t, uint32_t> (وسعت.شروعات, وسعت.پڇاڙي);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  لكل (بنانشان i = 0; i < id_entries.ڊيگهائي; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
-    hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    ثابت خودڪار &e = id_entries.arrayZ[i];
+    hb_pair_t<uint32_t, uint32_t> *ٻاهريون = خالي_اشارو;
+    إذا (doc->id_spans.has (e.id, &ٻاهريون))
+      استمر;
+    إذا (unlikely (!doc->id_spans.سيٽ (e.id, hb_pair_t<uint32_t, uint32_t> (e.شروعات, e.پڇاڙي))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      أرجع خالي_اشارو;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  أرجع doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+مضمن ثابت SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
-                                              unsigned len,
-                                              unsigned doc_index,
-                                              hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              ثابت حرف *svg,
+                                              بنانشان len,
+                                              بنانشان doc_اشاريو,
+                                              hb_codepoint_t شروعات_glyph,
+                                              hb_codepoint_t پڇاڙي_glyph) ثابت
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  إذا (doc_اشاريو >= doc_caches.ڊيگهائي)
+    أرجع خالي_اشارو;
 
-  auto &slot = doc_caches.arrayZ[doc_index];
-  auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  خودڪار &جڳهه = doc_caches.arrayZ[doc_اشاريو];
+  خودڪار *doc = جڳهه.get_acquire ();
+  إذا (doc)
+    أرجع doc;
 
-  auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  خودڪار *fresh = make_doc_cache (image, svg, len, شروعات_glyph, پڇاڙي_glyph);
+  إذا (!fresh)
+    أرجع خالي_اشارو;
 
-  auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  خودڪار *expected = (svg_doc_cache_t *) خالي_اشارو;
+  إذا (جڳهه.cmpexch (expected, fresh))
+    أرجع fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  أرجع expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+مضمن ثابت حرف *
+SVG::accelerator_t::doc_cache_get_svg (ثابت svg_doc_cache_t *doc,
+                                       بنانشان *len) ثابت
 {
-  if (!doc)
+  إذا (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    إذا (len) *len = 0;
+    أرجع خالي_اشارو;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  إذا (len) *len = doc->len;
+  أرجع doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+مضمن ثابت hb_ويڪٽر_t<SVG::svg_defs_داخلا_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (ثابت svg_doc_cache_t *doc) ثابت
 {
-  return doc ? &doc->defs_entries : nullptr;
+  أرجع doc ? &doc->defs_entries : خالي_اشارو;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+مضمن منطقي
+SVG::accelerator_t::doc_cache_get_glyph_وسعت (ثابت svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
-                                              unsigned *start,
-                                              unsigned *end) const
+                                              بنانشان *شروعات,
+                                              بنانشان *پڇاڙي) ثابت
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
-      glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+  ساكن ثابت uint32_t INVALID_وسعت = 0xFFFFFFFFu;
+  إذا (!doc || doc->شروعات_glyph == HB_CODEPOINT_INVALID ||
+      glyph < doc->شروعات_glyph || glyph > doc->پڇاڙي_glyph)
+    أرجع خطأ;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  ثابت خودڪار &وسعت = doc->glyph_spans.arrayZ[glyph - doc->شروعات_glyph];
+  إذا (وسعت.پهريون == INVALID_وسعت)
+    أرجع خطأ;
+  إذا (unlikely (وسعت.پهريون > وسعت.second || وسعت.second > doc->len))
+    أرجع خطأ;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  إذا (شروعات) *شروعات = وسعت.پهريون;
+  إذا (پڇاڙي) *پڇاڙي = وسعت.second;
+  أرجع سچ;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
-                                            svg_id_span_t id,
-                                            unsigned *start,
-                                            unsigned *end) const
+مضمن منطقي
+SVG::accelerator_t::doc_cache_ڳوليو_id_وسعت (ثابت svg_doc_cache_t *doc,
+                                            svg_id_وسعت_t id,
+                                            بنانشان *شروعات,
+                                            بنانشان *پڇاڙي) ثابت
 {
-  if (!doc || !id.p || !id.len)
-    return false;
-  hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  إذا (!doc || !id.p || !id.len)
+    أرجع خطأ;
+  hb_pair_t<uint32_t, uint32_t> *وسعت = خالي_اشارو;
+  إذا (!doc->id_spans.has (id, &وسعت))
+    أرجع خطأ;
+  إذا (unlikely (وسعت->پهريون > وسعت->second || وسعت->second > doc->len))
+    أرجع خطأ;
+  إذا (شروعات) *شروعات = وسعت->پهريون;
+  إذا (پڇاڙي) *پڇاڙي = وسعت->second;
+  أرجع سچ;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
-                                            unsigned *start,
-                                            unsigned *end) const
+مضمن منطقي
+SVG::accelerator_t::doc_cache_ڳوليو_id_cstr (ثابت svg_doc_cache_t *doc,
+                                            ثابت حرف *id,
+                                            بنانشان *شروعات,
+                                            بنانشان *پڇاڙي) ثابت
 {
-  if (!id) return false;
-  svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  إذا (!id) أرجع خطأ;
+  svg_id_وسعت_t key = {id, (بنانشان) لڙي_ڊيگهه (id)};
+  أرجع doc_cache_ڳوليو_id_وسعت (doc, key, شروعات, پڇاڙي);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+بنية SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_SVG_SVG_HH */
+#جيڪڏهن_پورو /* OT_COLOR_SVG_SVG_HH */

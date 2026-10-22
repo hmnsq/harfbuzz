@@ -1,140 +1,140 @@
-#ifndef OT_LAYOUT_GSUB_ALTERNATESET_HH
-#define OT_LAYOUT_GSUB_ALTERNATESET_HH
+#جيڪڏهن_وصف_نه_ٿيل OT_LAYOUT_GSUB_ALTERNATESET_HH
+#وصف_ڪريو OT_LAYOUT_GSUB_ALTERNATESET_HH
 
-#include "Common.hh"
+#ضمن "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-template <typename Types>
-struct AlternateSet
+سانچو <قسم_نالو Types>
+بنية Alternate_سيٽ
 {
-  protected:
-  Array16Of<typename Types::HBGlyphID>
+  محمي:
+  Array16_جو<قسم_نالو Types::HBGlyphID>
                 alternates;             /* Array of alternate GlyphIDs--in
                                          * arbitrary order */
-  public:
-  DEFINE_SIZE_ARRAY (2, alternates);
+  عام:
+  DEFINE_سائيز_ARRAY (2, alternates);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (alternates.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_any (alternates, glyphs); }
+  منطقي intersects (ثابت hb_سيٽ_t *glyphs) ثابت
+  { أرجع hb_any (alternates, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
-  { c->output->add_array (alternates.arrayZ, alternates.len); }
+  فراغ گهيرو (hb_گهيرو_context_t *c) ثابت
+  { c->output->جوڙيو_array (alternates.arrayZ, alternates.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  فراغ depend (hb_depend_context_t *c, hb_codepoint_t ذريعو) ثابت
   {
     + hb_iter (alternates)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (ثابت hb_codepoint_t &target) { c->depend_معلومات->جوڙيو_gsub_lookup (ذريعو, c->lookup_اشاريو, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { c->output->add_array (alternates.arrayZ, alternates.len); }
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
+  { c->output->جوڙيو_array (alternates.arrayZ, alternates.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقي apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int count = alternates.len;
+    TRACE_APPLY (هذا);
+    بنانشان صحيح ڳڻپ = alternates.len;
 
-    if (unlikely (!count)) return_trace (false);
+    إذا (unlikely (!ڳڻپ)) return_trace (خطأ);
 
-    hb_mask_t glyph_mask = c->buffer->cur().mask;
-    hb_mask_t lookup_mask = c->lookup_mask;
+    hb_نقاب_t glyph_نقاب = c->بفر->cur().نقاب;
+    hb_نقاب_t lookup_نقاب = c->lookup_نقاب;
 
     /* Note: This breaks badly if two features enabled this lookup together. */
-    unsigned int shift = hb_ctz (lookup_mask);
-    unsigned int alt_index = ((lookup_mask & glyph_mask) >> shift);
+    بنانشان صحيح سرڪايو = hb_ctz (lookup_نقاب);
+    بنانشان صحيح alt_اشاريو = ((lookup_نقاب & glyph_نقاب) >> سرڪايو);
 
     /* If alt_index is MAX_VALUE, randomize feature if it is the rand feature. */
-    if (alt_index == HB_OT_MAP_MAX_VALUE && c->random)
+    إذا (alt_اشاريو == HB_OT_MAP_MAX_قدر && c->random)
     {
       /* Maybe we can do better than unsafe-to-break all; but since we are
        * changing random state, it would be hard to track that.  Good 'nough. */
-      c->buffer->unsafe_to_break (0, c->buffer->len);
-      alt_index = c->random_number () % count + 1;
+      c->بفر->unsafe_منزل_break (0, c->بفر->len);
+      alt_اشاريو = c->random_عدد () % ڳڻپ + 1;
     }
 
-    if (unlikely (alt_index > count || alt_index == 0)) return_trace (false);
+    إذا (unlikely (alt_اشاريو > ڳڻپ || alt_اشاريو == 0)) return_trace (خطأ);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->بفر->sync_so_far ();
+      c->بفر->پيغام (c->font,
 			  "replacing glyph at %u (alternate substitution)",
-			  c->buffer->idx);
+			  c->بفر->idx);
     }
 
-    c->replace_glyph (alternates[alt_index - 1]);
+    c->replace_glyph (alternates[alt_اشاريو - 1]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    إذا (HB_بفر_پيغام_وڌيڪ && c->بفر->messaging ())
     {
-      c->buffer->message (c->font,
+      c->بفر->پيغام (c->font,
 			  "replaced glyph at %u (alternate substitution)",
-			  c->buffer->idx - 1u);
+			  c->بفر->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  unsigned
-  get_alternates (unsigned        start_offset,
-                  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+  بنانشان
+  get_alternates (بنانشان        شروعات_وٿي,
+                  بنانشان       *alternate_ڳڻپ  /* IN/OUT.  May be NULL. */,
+                  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) ثابت
   {
-    if (alternates.len && alternate_count && alternate_glyphs)
+    إذا (alternates.len && alternate_ڳڻپ && alternate_glyphs)
     {
-      + alternates.as_array ().sub_array (start_offset, alternate_count)
-      | hb_sink (hb_array (alternate_glyphs, *alternate_count))
+      + alternates.as_array ().sub_array (شروعات_وٿي, alternate_ڳڻپ)
+      | hb_sink (hb_array (alternate_glyphs, *alternate_ڳڻپ))
       ;
     }
-    return alternates.len;
+    أرجع alternates.len;
   }
 
-  void
+  فراغ
   collect_alternates (hb_codepoint_t gid,
-		      hb_map_t  *alternate_count /* IN/OUT */,
-		      hb_map_t  *alternate_glyphs /* IN/OUT */) const
+		      hb_map_t  *alternate_ڳڻپ /* IN/OUT */,
+		      hb_map_t  *alternate_glyphs /* IN/OUT */) ثابت
   {
     + hb_enumerate (alternates)
-    | hb_map ([gid] (hb_pair_t<unsigned, hb_codepoint_t> _) { return hb_pair (gid + (_.first << 24), _.second); })
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
-		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+    | hb_map ([gid] (hb_pair_t<بنانشان, hb_codepoint_t> _) { أرجع hb_pair (gid + (_.پهريون << 24), _.second); })
+    | hb_apply ([&] (ثابت hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> فراغ
+		{ hb_collect_glyph_alternates_جوڙيو (p.پهريون, p.second,
+						    alternate_ڳڻپ, alternate_glyphs); })
     ;
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  سانچو <قسم_نالو Iterator,
+            hb_requires (hb_is_ذريعو_جو (Iterator, hb_codepoint_t))>
+  منطقي serialize (hb_serialize_context_t *c,
                   Iterator alts)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     return_trace (alternates.serialize (c, alts));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (هذا);
+    ثابت hb_سيٽ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto it =
+    خودڪار it =
       + hb_iter (alternates)
       | hb_filter (glyphset)
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, it) &&
-                  out->alternates);
+    خودڪار *ٻاهريون = c->serializer->شروعات_embed (*هذا);
+    return_trace (ٻاهريون->serialize (c->serializer, it) &&
+                  ٻاهريون->alternates);
   }
 };
 
@@ -143,4 +143,4 @@ struct AlternateSet
 }
 
 
-#endif /* OT_LAYOUT_GSUB_ALTERNATESET_HH */
+#جيڪڏهن_پورو /* OT_LAYOUT_GSUB_ALTERNATESET_HH */

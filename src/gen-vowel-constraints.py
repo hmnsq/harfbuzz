@@ -13,53 +13,53 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+استورد collections
+استورد os
+وصف اكتب (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.بفر.اكتب (s.encode ('utf-8'))
+استورد sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
-	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+إذا ڊيگهه (sys.argv) > 1 و sys.argv[1] == '--rust':
+	هٽايو sys.argv[1]
+	output_rust = سچ
+وإلا:
+	output_rust = خطأ
 
-if len (sys.argv) != 3:
+إذا ڊيگهه (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+سان open (sys.argv[2], encoding='utf-8') كـ f:
+	scripts_سرو = [f.readline () لكل i في سلسلو (2)]
 	scripts = {}
-	script_order = {}
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+	script_ترتيب = {}
+	لكل سٽ في f:
+		j = سٽ.ڳوليو ('#')
+		إذا j >= 0:
+			سٽ = سٽ[:j]
+		fields = [x.strip () لكل x في سٽ.ورهايو (';')]
+		إذا ڊيگهه (fields) == 1:
+			استمر
+		uu = fields[0].ورهايو ('..')
+		شروعات = صحيح (uu[0], 16)
+		إذا ڊيگهه (uu) == 1:
+			پڇاڙي = شروعات
+		وإلا:
+			پڇاڙي = صحيح (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		لكل u في سلسلو (شروعات, پڇاڙي + 1):
 			scripts[u] = script
-		if script not in script_order:
-			script_order[script] = start
+		إذا script ليس في script_ترتيب:
+			script_ترتيب[script] = شروعات
 
-class ConstraintSet (object):
+صنف Constraint_سيٽ (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
 		constraint (List[int]): A prohibited code point sequence.
 
 	"""
-	def __init__ (self, constraint):
+	وصف __init__ (self, constraint):
 		# Either a list or a dictionary. As a list of code points, it
 		# represents a prohibited code point sequence. As a dictionary,
 		# it represents a set of prohibited sequences, where each item
@@ -68,259 +68,259 @@ class ConstraintSet (object):
 		# (ConstraintSets).
 		self._c = constraint
 
-	def add (self, constraint):
+	وصف جوڙيو (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
-		first = constraint[0]
+		إذا ليس constraint:
+			أرجع
+		پهريون = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		إذا isinstance (self._c, list):
+			إذا constraint == self._c[:ڊيگهه (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
-				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
-				self._c[first].add (rest)
-			else:
-				self._c[first] = ConstraintSet (rest)
+			وإلاإذا self._c != constraint[:ڊيگهه (self._c)]:
+				self._c = {self._c[0]: Constraint_سيٽ (self._c[1:])}
+		إذا isinstance (self._c, dict):
+			إذا پهريون في self._c:
+				self._c[پهريون].جوڙيو (rest)
+			وإلا:
+				self._c[پهريون] = Constraint_سيٽ (rest)
 
 	@staticmethod
-	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+	وصف _indent (اونهائي):
+		أرجع ('  ' * اونهائي).replace ('        ', '\t')
 
-	def __str__ (self, index=0, depth=4):
+	وصف __str__ (self, اشاريو_2=0, اونهائي=4):
 		s = []
-		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		indent = self._indent (اونهائي)
+		إذا isinstance (self._c, list):
+			إذا ڊيگهه (self._c) == 0:
+				أكد اشاريو_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
-					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			وإلاإذا ڊيگهه (self._c) == 1:
+				أكد اشاريو_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, ايندڙ (iter (self._c)), اشاريو_2 أو ''))
+			وإلا:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], اشاريو_2 أو ''))
+				إذا اشاريو_2:
+					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (اونهائي + 2), اشاريو_2 + 1))
+				لكل i, cp في enumerate (self._c[1:], شروعات=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (اونهائي + 2), cp, اشاريو_2 + i, ')' إذا i == ڊيگهه (self._c) - 1 وإلا ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
-					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
-				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
+				لكل i في سلسلو (اشاريو_2):
+					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (اونهائي + 1)))
+				s.append ('{}matched = true;\n'.format (self._indent (اونهائي + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		وإلا:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, اشاريو_2 أو ''))
 			s.append ('{}{{\n'.format (indent))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
-						s.append (self._indent (depth + 1))
-					else:
+			cases = collections.defaultdict (سيٽ)
+			لكل پهريون, rest في sorted (self._c.شيون ()):
+				cases[rest.__str__ (اشاريو_2 + 1, اونهائي + 2)].جوڙيو (پهريون)
+			لكل body, labels في sorted (cases.شيون (), ڪنجي_2=مجهول b_ls: sorted (b_ls[1])[0]):
+				لكل i, cp في enumerate (sorted (labels)):
+					إذا i % 4 == 0:
+						s.append (self._indent (اونهائي + 1))
+					وإلا:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' إذا i % 4 == 3 وإلا ''))
+				إذا ڊيگهه (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
-				s.append ('{}break;\n'.format (self._indent (depth + 2)))
+				s.append ('{}break;\n'.format (self._indent (اونهائي + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		أرجع ''.join (s)
 
-	def rust_str (self, index=0):
+	وصف rust_str (self, اشاريو_2=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		إذا isinstance (self._c, list):
+			إذا ڊيگهه (self._c) == 0:
+				أكد اشاريو_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
-				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
-					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			وإلاإذا ڊيگهه (self._c) == 1:
+				أكد اشاريو_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (ايندڙ (iter (self._c)), اشاريو_2))
+			وإلا:
+				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], اشاريو_2))
+				إذا اشاريو_2:
+					s.append ('buffer.idx + {} < buffer.len &&\n'.format (اشاريو_2 + 1))
+				لكل i, cp في enumerate (self._c[1:], شروعات=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, اشاريو_2 + i, '' إذا i == ڊيگهه (self._c) - 1 وإلا ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				لكل i في سلسلو (اشاريو_2 + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
-			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+		وإلا:
+			s.append ('match buffer.cur({}).glyph_id {{\n'.format (اشاريو_2))
+			cases = collections.defaultdict (سيٽ)
+			لكل پهريون, rest في sorted (self._c.شيون ()):
+				cases[rest.rust_str (اشاريو_2 + 1)].جوڙيو (پهريون)
+			شيون = sorted (cases.شيون (), ڪنجي_2=مجهول b_ls: sorted (b_ls[1])[0])
+			لكل ii, (body, labels) في enumerate (شيون):
+				لكل i, cp في enumerate (sorted (labels)):
+					إذا i == ڊيگهه (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' إذا i % 4 == 3 وإلا ''))
+					وإلا:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' إذا i % 4 == 3 وإلا ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				إذا ii == ڊيگهه (شيون) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		أرجع ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
-	constraints_header = []
-	while True:
-		line = f.readline ().strip ()
-		if line == '#':
-			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+سان open (sys.argv[1], encoding='utf-8') كـ f:
+	constraints_سرو = []
+	طالما سچ:
+		سٽ = f.readline ().strip ()
+		إذا سٽ == '#':
+			اكسر
+		constraints_سرو.append(سٽ)
+	لكل سٽ في f:
+		j = سٽ.ڳوليو ('#')
+		إذا j >= 0:
+			سٽ = سٽ[:j]
+		constraint = [صحيح (cp, 16) لكل cp في سٽ.ورهايو (';')[0].ورهايو ()]
+		إذا ليس constraint: استمر
+		أكد 2 <= ڊيگهه (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
-			constraints[script].add (constraint)
-		else:
-			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		إذا script في constraints:
+			constraints[script].جوڙيو (constraint)
+		وإلا:
+			constraints[script] = Constraint_سيٽ (constraint)
+		أكد constraints, 'No constraints found'
 
-print ('/* == Start of generated functions == */')
-if output_rust:
-	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
-	print ()
-	print ('#![allow(clippy::single_match)]')
-	print ()
-	print ('use super::buffer::hb_buffer_t;')
-	print ('use super::script;')
-	print ('use crate::BufferFlags;')
-	print ()
-	print ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    buffer.output_glyph(0x25CC);')
-	print ('    {')
-	print ('        let out_idx = buffer.out_len - 1;')
-	print ('        buffer.out_info_mut()[out_idx].clear_continuation();')
-	print ('    }')
-	print ('}')
-	print ()
-	print ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    output_dotted_circle(buffer);')
-	print ('    buffer.next_glyph();')
-	print ('}')
-	print ()
-	print ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
-	print ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
-	print ('        return;')
-	print ('    }')
-	print ()
-	print ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('    // vowel-sequences that look like another vowel.  Data for each script')
-	print ('    // collected from the USE script development spec.')
-	print ('    //')
-	print ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('    buffer.clear_output();')
-	print ('    match buffer.script {')
+ڇاپيو ('/* == Start of generated functions == */')
+إذا output_rust:
+	ڇاپيو ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
+	ڇاپيو ()
+	ڇاپيو ('#![allow(clippy::single_match)]')
+	ڇاپيو ()
+	ڇاپيو ('use super::buffer::hb_buffer_t;')
+	ڇاپيو ('use super::script;')
+	ڇاپيو ('use crate::BufferFlags;')
+	ڇاپيو ()
+	ڇاپيو ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ڇاپيو ('    buffer.output_glyph(0x25CC);')
+	ڇاپيو ('    {')
+	ڇاپيو ('        let out_idx = buffer.out_len - 1;')
+	ڇاپيو ('        buffer.out_info_mut()[out_idx].clear_continuation();')
+	ڇاپيو ('    }')
+	ڇاپيو ('}')
+	ڇاپيو ()
+	ڇاپيو ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ڇاپيو ('    output_dotted_circle(buffer);')
+	ڇاپيو ('    buffer.next_glyph();')
+	ڇاپيو ('}')
+	ڇاپيو ()
+	ڇاپيو ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
+	ڇاپيو ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
+	ڇاپيو ('        return;')
+	ڇاپيو ('    }')
+	ڇاپيو ()
+	ڇاپيو ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ڇاپيو ('    // vowel-sequences that look like another vowel.  Data for each script')
+	ڇاپيو ('    // collected from the USE script development spec.')
+	ڇاپيو ('    //')
+	ڇاپيو ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ڇاپيو ('    buffer.clear_output();')
+	ڇاپيو ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('        Some(script::{}) => {{'.format (script.upper ()))
-		print ('            buffer.idx = 0;')
-		print ('            while buffer.idx + 1 < buffer.len {')
-		print ('                #[allow(unused_mut)]')
-		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
-		print ('                buffer.next_glyph();')
-		print ('                if matched { output_with_dotted_circle(buffer); }')
-		print ('            }')
-		print ('        }')
-		print ()
+	لكل script, constraints في sorted (constraints.شيون (), ڪنجي_2=مجهول s_c: script_ترتيب[s_c[0]]):
+		ڇاپيو ('        Some(script::{}) => {{'.format (script.مٿانهون ()))
+		ڇاپيو ('            buffer.idx = 0;')
+		ڇاپيو ('            while buffer.idx + 1 < buffer.len {')
+		ڇاپيو ('                #[allow(unused_mut)]')
+		ڇاپيو ('                let mut matched = false;')
+		اكتب (constraints.rust_str ())
+		ڇاپيو ('                buffer.next_glyph();')
+		ڇاپيو ('                if matched { output_with_dotted_circle(buffer); }')
+		ڇاپيو ('            }')
+		ڇاپيو ('        }')
+		ڇاپيو ()
 
-	print ('        _ => {}')
-	print ('    }')
-	print ('    buffer.sync();')
-	print ('}')
-else:
-	print ('/*')
-	print (' * The following functions are generated by running:')
-	print (' *')
-	print (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.path.basename (sys.argv[0]))
-	print (' *')
-	print (' * on files with these headers:')
-	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
-	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
-	print (' */')
-	print ()
-	print ('#include "hb.hh"')
-	print ()
-	print ('#ifndef HB_NO_OT_SHAPE')
-	print ()
-	print ('#include "hb-ot-shaper-vowel-constraints.hh"')
-	print ()
-	print ('static void')
-	print ('_output_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  (void) buffer->output_glyph (0x25CCu);')
-	print ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
-	print ('}')
-	print ()
-	print ('static void')
-	print ('_output_with_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  _output_dotted_circle (buffer);')
-	print ('  (void) buffer->next_glyph ();')
-	print ('}')
-	print ()
-	print ('void')
-	print ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
-	print ('\t\t\t\t       hb_buffer_t              *buffer,')
-	print ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
-	print ('{')
-	print ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
-	print ('  return;')
-	print ('#endif')
-	print ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
-	print ('    return;')
-	print ()
-	print ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('   * vowel-sequences that look like another vowel.  Data for each script')
-	print ('   * collected from the USE script development spec.')
-	print ('   *')
-	print ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('   */')
-	print ('  buffer->clear_output ();')
-	print ('  unsigned int count = buffer->len;')
-	print ('  switch ((unsigned) buffer->props.script)')
-	print ('  {')
+	ڇاپيو ('        _ => {}')
+	ڇاپيو ('    }')
+	ڇاپيو ('    buffer.sync();')
+	ڇاپيو ('}')
+وإلا:
+	ڇاپيو ('/*')
+	ڇاپيو (' * The following functions are generated by running:')
+	ڇاپيو (' *')
+	ڇاپيو (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.رستو.basename (sys.argv[0]))
+	ڇاپيو (' *')
+	ڇاپيو (' * on files with these headers:')
+	ڇاپيو (' *')
+	لكل سٽ في constraints_سرو:
+		ڇاپيو (' * %s' % سٽ.strip ())
+	ڇاپيو (' *')
+	لكل سٽ في scripts_سرو:
+		ڇاپيو (' * %s' % سٽ.strip ())
+	ڇاپيو (' */')
+	ڇاپيو ()
+	ڇاپيو ('#include "hb.hh"')
+	ڇاپيو ()
+	ڇاپيو ('#ifndef HB_NO_OT_SHAPE')
+	ڇاپيو ()
+	ڇاپيو ('#include "hb-ot-shaper-vowel-constraints.hh"')
+	ڇاپيو ()
+	ڇاپيو ('static void')
+	ڇاپيو ('_output_dotted_circle (hb_buffer_t *buffer)')
+	ڇاپيو ('{')
+	ڇاپيو ('  (void) buffer->output_glyph (0x25CCu);')
+	ڇاپيو ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
+	ڇاپيو ('}')
+	ڇاپيو ()
+	ڇاپيو ('static void')
+	ڇاپيو ('_output_with_dotted_circle (hb_buffer_t *buffer)')
+	ڇاپيو ('{')
+	ڇاپيو ('  _output_dotted_circle (buffer);')
+	ڇاپيو ('  (void) buffer->next_glyph ();')
+	ڇاپيو ('}')
+	ڇاپيو ()
+	ڇاپيو ('void')
+	ڇاپيو ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
+	ڇاپيو ('\t\t\t\t       hb_buffer_t              *buffer,')
+	ڇاپيو ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
+	ڇاپيو ('{')
+	ڇاپيو ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
+	ڇاپيو ('  return;')
+	ڇاپيو ('#endif')
+	ڇاپيو ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
+	ڇاپيو ('    return;')
+	ڇاپيو ()
+	ڇاپيو ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ڇاپيو ('   * vowel-sequences that look like another vowel.  Data for each script')
+	ڇاپيو ('   * collected from the USE script development spec.')
+	ڇاپيو ('   *')
+	ڇاپيو ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ڇاپيو ('   */')
+	ڇاپيو ('  buffer->clear_output ();')
+	ڇاپيو ('  unsigned int count = buffer->len;')
+	ڇاپيو ('  switch ((unsigned) buffer->props.script)')
+	ڇاپيو ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
-		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
-		print ('      {')
-		print ('\tbool matched = false;')
-		write (str (constraints))
-		print ('\t(void) buffer->next_glyph ();')
-		print ('\tif (matched) _output_with_dotted_circle (buffer);')
-		print ('      }')
-		print ('      break;')
-		print ()
+	لكل script, constraints في sorted (constraints.شيون (), ڪنجي_2=مجهول s_c: script_ترتيب[s_c[0]]):
+		ڇاپيو ('    case HB_SCRIPT_{}:'.format (script.مٿانهون ()))
+		ڇاپيو ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
+		ڇاپيو ('      {')
+		ڇاپيو ('\tbool matched = false;')
+		اكتب (str (constraints))
+		ڇاپيو ('\t(void) buffer->next_glyph ();')
+		ڇاپيو ('\tif (matched) _output_with_dotted_circle (buffer);')
+		ڇاپيو ('      }')
+		ڇاپيو ('      break;')
+		ڇاپيو ()
 
-	print ('    default:')
-	print ('      break;')
-	print ('  }')
-	print ('  buffer->sync ();')
-	print ('}')
-	print ()
-	print ()
-	print ('#endif')
-print ('/* == End of generated functions == */')
+	ڇاپيو ('    default:')
+	ڇاپيو ('      break;')
+	ڇاپيو ('  }')
+	ڇاپيو ('  buffer->sync ();')
+	ڇاپيو ('}')
+	ڇاپيو ()
+	ڇاپيو ()
+	ڇاپيو ('#endif')
+ڇاپيو ('/* == End of generated functions == */')

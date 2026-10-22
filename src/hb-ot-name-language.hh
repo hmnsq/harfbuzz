@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_NAME_LANGUAGE_HH
-#define HB_OT_NAME_LANGUAGE_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_OT_NAME_LANGUAGE_HH
+#وصف_ڪريو HB_OT_NAME_LANGUAGE_HH
 
-#include "hb.hh"
-
-
-HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code);
-
-HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code);
+#ضمن "hb.hh"
 
 
-#endif /* HB_OT_NAME_LANGUAGE_HH */
+HB_اندروني hb_language_t
+hb_ot_name_language_for_ms_ڪوڊ (بنانشان صحيح ڪوڊ);
+
+HB_اندروني hb_language_t
+hb_ot_name_language_for_mac_ڪوڊ (بنانشان صحيح ڪوڊ);
+
+
+#جيڪڏهن_پورو /* HB_OT_NAME_LANGUAGE_HH */

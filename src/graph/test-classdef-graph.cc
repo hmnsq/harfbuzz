@@ -24,138 +24,138 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-context.hh"
-#include "classdef-graph.hh"
-#include "hb-iter.hh"
-#include "hb-serialize.hh"
+#ضمن "gsubgpos-context.hh"
+#ضمن "classdef-graph.hh"
+#ضمن "hb-iter.hh"
+#ضمن "hb-serialize.hh"
 
-typedef hb_codepoint_pair_t gid_and_class_t;
-typedef hb_vector_t<gid_and_class_t> gid_and_class_list_t;
+تعريفنوع hb_codepoint_pair_t gid_and_class_t;
+تعريفنوع hb_ويڪٽر_t<gid_and_class_t> gid_and_class_list_t;
 
-template<typename It>
-static unsigned actual_class_def_size(It glyph_and_class) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+سانچو<قسم_نالو It>
+ساكن بنانشان actual_class_def_سائيز(It glyph_and_class) {
+  حرف بفر[100];
+  hb_serialize_context_t serializer(بفر, 100);
   OT::ClassDef_serialize (&serializer, glyph_and_class);
-  serializer.end_serialize ();
-  hb_always_assert(!serializer.in_error());
+  serializer.پڇاڙي_serialize ();
+  hb_always_assert(!serializer.اندريون_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  بنانشان سائيز = hb_blob_get_ڊيگهائي(blob);
   hb_blob_destroy(blob);
-  return size;
+  أرجع سائيز;
 }
 
-static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+ساكن بنانشان actual_class_def_سائيز(gid_and_class_list_t consecutive_map, hb_ويڪٽر_t<بنانشان> classes) {
+  خودڪار filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (بنانشان c) {
+      لكل (بنانشان klass : classes) {
+        إذا (c == klass) {
+          أرجع سچ;
         }
       }
-      return false;
-    }, hb_second);
-  return actual_class_def_size(+ filtered_it);
+      أرجع خطأ;
+    }, hb_ٻيو);
+  أرجع actual_class_def_سائيز(+ filtered_it);
 }
 
-template<typename It>
-static unsigned actual_coverage_size(It glyphs) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+سانچو<قسم_نالو It>
+ساكن بنانشان actual_coverage_سائيز(It glyphs) {
+  حرف بفر[100];
+  hb_serialize_context_t serializer(بفر, 100);
   OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
-  serializer.end_serialize ();
-  hb_always_assert(!serializer.in_error());
+  serializer.پڇاڙي_serialize ();
+  hb_always_assert(!serializer.اندريون_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  بنانشان سائيز = hb_blob_get_ڊيگهائي(blob);
   hb_blob_destroy(blob);
-  return size;
+  أرجع سائيز;
 }
 
-static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+ساكن بنانشان actual_coverage_سائيز(gid_and_class_list_t consecutive_map, hb_ويڪٽر_t<بنانشان> classes) {
+  خودڪار filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (بنانشان c) {
+      لكل (بنانشان klass : classes) {
+        إذا (c == klass) {
+          أرجع سچ;
         }
       }
-      return false;
-    }, hb_second);
-  return actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
+      أرجع خطأ;
+    }, hb_ٻيو);
+  أرجع actual_coverage_سائيز(+ filtered_it | hb_map_retains_ترتيب_ڏيڻ(hb_پهريون));
 }
 
-static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
-                                const gid_and_class_list_t& map,
-                                hb_vector_t<unsigned> klasses)
+ساكن منطقي check_coverage_سائيز(گراف::class_def_سائيز_estimator_t& estimator,
+                                ثابت gid_and_class_list_t& map,
+                                hb_ويڪٽر_t<بنانشان> klasses)
 {
-  unsigned result = estimator.coverage_size();
-  unsigned expected = actual_coverage_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated coverage expected size %u but was %u\n", expected, result);
-    return false;
+  بنانشان نتيجو = estimator.coverage_سائيز();
+  بنانشان expected = actual_coverage_سائيز(map, klasses);
+  إذا (نتيجو != expected) {
+    لکو ("FAIL: estimated coverage expected size %u but was %u\n", expected, نتيجو);
+    أرجع خطأ;
   }
-  return true;
+  أرجع سچ;
 }
 
-static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t& estimator,
-					       const gid_and_class_list_t& map,
-					       unsigned klass, hb_vector_t<unsigned> klasses)
+ساكن HB_اڻ_استعمال_ٿيل منطقي check_جوڙيو_class_def_سائيز(گراف::class_def_سائيز_estimator_t& estimator,
+					       ثابت gid_and_class_list_t& map,
+					       بنانشان klass, hb_ويڪٽر_t<بنانشان> klasses)
 {
-  unsigned result = estimator.add_class_def_size(klass);
-  unsigned expected = actual_class_def_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated class def expected size %u but was %u\n", expected, result);
-    return false;
+  بنانشان نتيجو = estimator.جوڙيو_class_def_سائيز(klass);
+  بنانشان expected = actual_class_def_سائيز(map, klasses);
+  إذا (نتيجو != expected) {
+    لکو ("FAIL: estimated class def expected size %u but was %u\n", expected, نتيجو);
+    أرجع خطأ;
   }
 
-  return check_coverage_size(estimator, map, klasses);
+  أرجع check_coverage_سائيز(estimator, map, klasses);
 }
 
-static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list, unsigned klass)
+ساكن HB_اڻ_استعمال_ٿيل منطقي check_جوڙيو_class_def_سائيز (ثابت gid_and_class_list_t& list, بنانشان klass)
 {
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (list.iter ());
+  گراف::class_def_سائيز_estimator_t estimator = *گراف::class_def_سائيز_estimator_t::create (list.iter ());
 
-  unsigned result = estimator.add_class_def_size (klass);
-  auto filtered_it =
+  بنانشان نتيجو = estimator.جوڙيو_class_def_سائيز (klass);
+  خودڪار filtered_it =
     + list.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      return c == klass;
-    }, hb_second);
+    | hb_filter([&] (بنانشان c) {
+      أرجع c == klass;
+    }, hb_ٻيو);
 
-  unsigned expected = actual_class_def_size(filtered_it);
-  if (result != expected)
+  بنانشان expected = actual_class_def_سائيز(filtered_it);
+  إذا (نتيجو != expected)
   {
-    printf ("FAIL: class def expected size %u but was %u\n", expected, result);
-    return false;
+    لکو ("FAIL: class def expected size %u but was %u\n", expected, نتيجو);
+    أرجع خطأ;
   }
 
-  auto cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
-  result = estimator.coverage_size ();
-  expected = actual_coverage_size(cov_it);
-  if (result != expected)
+  خودڪار cov_it = + filtered_it | hb_map_retains_ترتيب_ڏيڻ(hb_پهريون);
+  نتيجو = estimator.coverage_سائيز ();
+  expected = actual_coverage_سائيز(cov_it);
+  إذا (نتيجو != expected)
   {
-    printf ("FAIL: coverage expected size %u but was %u\n", expected, result);
-    return false;
+    لکو ("FAIL: coverage expected size %u but was %u\n", expected, نتيجو);
+    أرجع خطأ;
   }
 
-  return true;
+  أرجع سچ;
 }
 
-static void test_class_and_coverage_size_estimates ()
+ساكن فراغ test_class_and_coverage_سائيز_estimates ()
 {
-  gid_and_class_list_t empty = {
+  gid_and_class_list_t خالي_جايون_2 = {
   };
-  hb_always_assert (check_add_class_def_size (empty, 0));
-  hb_always_assert (check_add_class_def_size (empty, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (خالي_جايون_2, 0));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (خالي_جايون_2, 1));
 
   gid_and_class_list_t class_zero = {
     {5, 0},
   };
-  hb_always_assert (check_add_class_def_size (class_zero, 0));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (class_zero, 0));
 
   gid_and_class_list_t consecutive = {
     {4, 0},
@@ -169,9 +169,9 @@ static void test_class_and_coverage_size_estimates ()
     {10, 2},
     {11, 2},
   };
-  hb_always_assert (check_add_class_def_size (consecutive, 0));
-  hb_always_assert (check_add_class_def_size (consecutive, 1));
-  hb_always_assert (check_add_class_def_size (consecutive, 2));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (consecutive, 0));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (consecutive, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (consecutive, 2));
 
   gid_and_class_list_t non_consecutive = {
     {4, 0},
@@ -185,11 +185,11 @@ static void test_class_and_coverage_size_estimates ()
     {11, 2},
     {13, 2},
   };
-  hb_always_assert (check_add_class_def_size (non_consecutive, 0));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 1));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 2));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (non_consecutive, 0));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (non_consecutive, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (non_consecutive, 2));
 
-  gid_and_class_list_t multiple_ranges = {
+  gid_and_class_list_t گڻو_ranges = {
     {4, 0},
     {5, 0},
 
@@ -202,51 +202,51 @@ static void test_class_and_coverage_size_estimates ()
     {12, 1},
     {13, 1},
   };
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 0));
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (گڻو_ranges, 0));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (گڻو_ranges, 1));
 
-#ifndef HB_NO_BEYOND_64K
-  gid_and_class_list_t high_consecutive = {
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+  gid_and_class_list_t مٿاهون_consecutive = {
     {0x10000, 1},
     {0x10001, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_consecutive, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (مٿاهون_consecutive, 1));
 
-  gid_and_class_list_t high_non_consecutive = {
+  gid_and_class_list_t مٿاهون_non_consecutive = {
     {0x10000, 1},
     {0x10002, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_non_consecutive, 1));
+  hb_always_assert (check_جوڙيو_class_def_سائيز (مٿاهون_non_consecutive, 1));
 
-  gid_and_class_list_t high_class = {
+  gid_and_class_list_t مٿاهون_class = {
     {5, 0x10000},
   };
-  hb_always_assert (check_add_class_def_size (high_class, 0x10000));
-#endif
+  hb_always_assert (check_جوڙيو_class_def_سائيز (مٿاهون_class, 0x10000));
+#جيڪڏهن_پورو
 }
 
-#ifndef HB_NO_BEYOND_64K
-static void test_class_def_format_3_values ()
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+ساكن فراغ test_class_def_format_3_قدرون ()
 {
-  alignas (OT::ClassDef) static const unsigned char data[] = {
+  alignas (OT::ClassDef) ساكن ثابت بنانشان حرف معلومات[] = {
     0x00, 0x03,             // format
     0x00, 0x00, 0x05,       // startGlyphID
     0x00, 0x00, 0x02,       // glyphCount
     0x00, 0x00, 0x01,       // classValue[0]
     0x01, 0x00, 0x00,       // classValue[1]
   };
-  const OT::ClassDef &class_def = *reinterpret_cast<const OT::ClassDef *> (data);
+  ثابت OT::ClassDef &class_def = *reinterpret_cast<ثابت OT::ClassDef *> (معلومات);
 
   hb_always_assert (class_def.get_class (5) == 1);
   hb_always_assert (class_def.get_class (6) == 0x10000u);
 
-  hb_set_t glyphs;
-  glyphs.add (6);
+  hb_سيٽ_t glyphs;
+  glyphs.جوڙيو (6);
   hb_always_assert (class_def.intersects_class (&glyphs, 0x10000u));
 }
-#endif
+#جيڪڏهن_پورو
 
-static void test_running_class_and_coverage_size_estimates () {
+ساكن فراغ test_running_class_and_coverage_سائيز_estimates () {
   // #### With consecutive gids: switches formats ###
   gid_and_class_list_t consecutive_map = {
     // range 1-4 (f1: 8 bytes), (f2: 6 bytes)
@@ -268,15 +268,15 @@ static void test_running_class_and_coverage_size_estimates () {
     {12, 3},
   };
 
-  graph::class_def_size_estimator_t estimator1 = *graph::class_def_size_estimator_t::create (consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {1, 2, 3}));
+  گراف::class_def_سائيز_estimator_t estimator1 = *گراف::class_def_سائيز_estimator_t::create (consecutive_map.iter());
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 1, {1}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 3, {1, 2, 3}));
 
   estimator1.reset();
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 2, {2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator1, consecutive_map, 3, {2, 3}));
 
   // #### With non-consecutive gids: always uses format 2 ###
   gid_and_class_list_t non_consecutive_map = {
@@ -300,40 +300,40 @@ static void test_running_class_and_coverage_size_estimates () {
     {15, 3},
   };
 
-  graph::class_def_size_estimator_t estimator2 = *graph::class_def_size_estimator_t::create (non_consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {1, 2, 3}));
+  گراف::class_def_سائيز_estimator_t estimator2 = *گراف::class_def_سائيز_estimator_t::create (non_consecutive_map.iter());
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator2, non_consecutive_map, 1, {1}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator2, non_consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator2, non_consecutive_map, 3, {1, 2, 3}));
 
   estimator2.reset();
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator2, non_consecutive_map, 2, {2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator2, non_consecutive_map, 3, {2, 3}));
 }
 
-static void test_running_class_size_estimates_with_locally_consecutive_glyphs () {
+ساكن فراغ test_running_class_سائيز_estimates_with_locally_consecutive_glyphs () {
   gid_and_class_list_t map = {
     {1, 1},
     {6, 2},
     {7, 3},
   };
 
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (map.iter());
-  hb_always_assert(check_add_class_def_size(estimator, map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {1, 2, 3}));
+  گراف::class_def_سائيز_estimator_t estimator = *گراف::class_def_سائيز_estimator_t::create (map.iter());
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator, map, 1, {1}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator, map, 2, {1, 2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator, map, 3, {1, 2, 3}));
 
   estimator.reset();
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {2, 3}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator, map, 2, {2}));
+  hb_always_assert(check_جوڙيو_class_def_سائيز(estimator, map, 3, {2, 3}));
 }
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
-  test_class_and_coverage_size_estimates ();
-  test_running_class_and_coverage_size_estimates ();
-  test_running_class_size_estimates_with_locally_consecutive_glyphs ();
-#ifndef HB_NO_BEYOND_64K
-  test_class_def_format_3_values ();
-#endif
+  test_class_and_coverage_سائيز_estimates ();
+  test_running_class_and_coverage_سائيز_estimates ();
+  test_running_class_سائيز_estimates_with_locally_consecutive_glyphs ();
+#جيڪڏهن_وصف_نه_ٿيل HB_NO_BEYOND_64K
+  test_class_def_format_3_قدرون ();
+#جيڪڏهن_پورو
 }

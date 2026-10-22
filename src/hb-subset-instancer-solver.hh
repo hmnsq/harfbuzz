@@ -22,78 +22,78 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_SUBSET_INSTANCER_SOLVER_HH
-#define HB_SUBSET_INSTANCER_SOLVER_HH
+#جيڪڏهن_وصف_نه_ٿيل HB_SUBSET_INSTANCER_SOLVER_HH
+#وصف_ڪريو HB_SUBSET_INSTANCER_SOLVER_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /* pre-normalized distances */
-struct TripleDistances
+بنية TripleDistances
 {
   TripleDistances (): negative (1.f), positive (1.f) {}
-  TripleDistances (float neg_, float pos_): negative (neg_), positive (pos_) {}
-  TripleDistances (float min, float default_, float max)
+  TripleDistances (عائم neg_, عائم pos_): negative (neg_), positive (pos_) {}
+  TripleDistances (عائم min, عائم default_, عائم max)
   {
     negative = default_ - min;
     positive = max - default_;
   }
 
-  float negative;
-  float positive;
+  عائم negative;
+  عائم positive;
 };
 
-struct Triple
+بنية Triple
 {
-  Triple () = default;
+  Triple () = افتراضي;
 
-  Triple (float minimum_, float middle_, float maximum_) :
-    minimum (minimum_), middle (middle_), maximum (maximum_) {}
+  Triple (عائم minimum_, عائم وچ_2, عائم وڌ_کان_وڌ_2) :
+    minimum (minimum_), وچ (وچ_2), وڌ_کان_وڌ (وڌ_کان_وڌ_2) {}
 
-  bool operator == (const Triple &o) const
+  منطقي عامل == (ثابت Triple &o) ثابت
   {
-    return minimum == o.minimum &&
-	   middle  == o.middle  &&
-	   maximum == o.maximum;
+    أرجع minimum == o.minimum &&
+	   وچ  == o.وچ  &&
+	   وڌ_کان_وڌ == o.وڌ_کان_وڌ;
   }
 
-  bool operator != (const Triple o) const
-  { return !(*this == o); }
+  منطقي عامل != (ثابت Triple o) ثابت
+  { أرجع !(*هذا == o); }
 
-  bool is_point () const
-  { return minimum == middle && middle == maximum; }
+  منطقي is_نقطو () ثابت
+  { أرجع minimum == وچ && وچ == وڌ_کان_وڌ; }
 
-  bool contains (float point) const
-  { return minimum <= point && point <= maximum; }
+  منطقي شامل_آهي (عائم نقطو) ثابت
+  { أرجع minimum <= نقطو && نقطو <= وڌ_کان_وڌ; }
 
   /* from hb_array_t hash ()*/
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     uint32_t current = /*cbf29ce4*/0x84222325;
     current = current ^ hb_hash (minimum);
     current = current * 16777619;
 
-    current = current ^ hb_hash (middle);
+    current = current ^ hb_hash (وچ);
     current = current * 16777619;
 
-    current = current ^ hb_hash (maximum);
+    current = current ^ hb_hash (وڌ_کان_وڌ);
     current = current * 16777619;
-    return current;
+    أرجع current;
   }
 
-  float minimum = 0;
-  float middle = 0;
-  float maximum = 0;
+  عائم minimum = 0;
+  عائم وچ = 0;
+  عائم وڌ_کان_وڌ = 0;
 };
 
-using rebase_tent_result_item_t = hb_pair_t<float, Triple>;
-using rebase_tent_result_t = hb_vector_t<rebase_tent_result_item_t>;
+استعمال rebase_tent_نتيجو_شي_t = hb_pair_t<عائم, Triple>;
+استعمال rebase_tent_نتيجو_t = hb_ويڪٽر_t<rebase_tent_نتيجو_شي_t>;
 
 /* renormalize a normalized value v to the range of an axis,
  * considering the prenormalized distances as well as the new axis limits.
  * Ported from fonttools */
-HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
-                                    const TripleDistances &triple_distances,
-                                    bool extrapolate = true);
+HB_اندروني عائم renormalize_قدر (عائم v, ثابت Triple &triple,
+                                    ثابت TripleDistances &triple_distances,
+                                    منطقي extrapolate = سچ);
 /* Given a tuple (lower,peak,upper) "tent" and new axis limits
  * (axisMin,axisDefault,axisMax), solves how to represent the tent
  * under the new axis configuration.  All values are in normalized
@@ -105,10 +105,10 @@ HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
  * If tent value is Triple{}, that is a special deltaset that should
  * be always-enabled (called "gain").
  */
-HB_INTERNAL void rebase_tent (Triple tent,
-			      Triple axisLimit,
+HB_اندروني فراغ rebase_tent (Triple tent,
+			      Triple axis_حد_بندي_2,
 			      TripleDistances axis_triple_distances,
-			      rebase_tent_result_t &out,
-			      rebase_tent_result_t &scratch);
+			      rebase_tent_نتيجو_t &ٻاهريون,
+			      rebase_tent_نتيجو_t &scratch);
 
-#endif /* HB_SUBSET_INSTANCER_SOLVER_HH */
+#جيڪڏهن_پورو /* HB_SUBSET_INSTANCER_SOLVER_HH */

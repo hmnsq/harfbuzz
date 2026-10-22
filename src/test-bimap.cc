@@ -24,36 +24,36 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-bimap.hh"
+#ضمن "hb.hh"
+#ضمن "hb-bimap.hh"
 
-int
-main (int argc, char **argv)
+صحيح
+مکيه (صحيح argc, حرف **argv)
 {
   hb_bimap_t	bm;
 
-  hb_always_assert (bm.is_empty () == true);
-  bm.set (1, 4);
-  bm.set (2, 5);
-  bm.set (3, 6);
+  hb_always_assert (bm.is_empty () == سچ);
+  bm.سيٽ (1, 4);
+  bm.سيٽ (2, 5);
+  bm.سيٽ (3, 6);
   hb_always_assert (bm.get_population () == 3);
-  hb_always_assert (bm.has (1) == true);
-  hb_always_assert (bm.has (4) == false);
+  hb_always_assert (bm.has (1) == سچ);
+  hb_always_assert (bm.has (4) == خطأ);
   hb_always_assert (bm[2] == 5);
   hb_always_assert (bm.backward (6) == 3);
   bm.del (1);
-  hb_always_assert (bm.has (1) == false);
-  hb_always_assert (bm.has (3) == true);
+  hb_always_assert (bm.has (1) == خطأ);
+  hb_always_assert (bm.has (3) == سچ);
   bm.clear ();
   hb_always_assert (bm.get_population () == 0);
 
   hb_inc_bimap_t  ibm;
 
-  hb_always_assert (ibm.add (13) == 0);
-  hb_always_assert (ibm.add (8) == 1);
-  hb_always_assert (ibm.add (10) == 2);
-  hb_always_assert (ibm.add (8) == 1);
-  hb_always_assert (ibm.add (7) == 3);
+  hb_always_assert (ibm.جوڙيو (13) == 0);
+  hb_always_assert (ibm.جوڙيو (8) == 1);
+  hb_always_assert (ibm.جوڙيو (10) == 2);
+  hb_always_assert (ibm.جوڙيو (8) == 1);
+  hb_always_assert (ibm.جوڙيو (7) == 3);
   hb_always_assert (ibm.get_population () == 4);
   hb_always_assert (ibm[7] == 3);
 
@@ -62,7 +62,7 @@ main (int argc, char **argv)
   hb_always_assert (ibm[7] == 0);
   hb_always_assert (ibm[13] == 3);
 
-  ibm.identity (3);
+  ibm.سڃاڻپ_عنصر (3);
   hb_always_assert (ibm.get_population () == 3);
   hb_always_assert (ibm[0] == 0);
   hb_always_assert (ibm[1] == 1);
@@ -70,7 +70,7 @@ main (int argc, char **argv)
   hb_always_assert (ibm.backward (0) == 0);
   hb_always_assert (ibm.backward (1) == 1);
   hb_always_assert (ibm.backward (2) == 2);
-  hb_always_assert (ibm.has (4) == false);
+  hb_always_assert (ibm.has (4) == خطأ);
 
-  return 0;
+  أرجع 0;
 }
