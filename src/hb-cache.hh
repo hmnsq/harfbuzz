@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+template <unsigned صحيح key_bits=16,
+	 unsigned صحيح value_bits=8 + 32 - key_bits,
+	 unsigned صحيح cache_bits=8,
+	 منطقي thread_safe=true>
+بنية hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
+								     hb_atomic_t<unsigned حرف>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned صحيح>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
+								     unsigned حرف,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned صحيح>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((key_bits + value_bits <= cache_bits + 8 * حجم (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  ساكن constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  فراغ clear ()
   {
-    for (auto &v : values)
+    لكل (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  منطقي get (unsigned صحيح key, unsigned صحيح *value) ثابت
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned صحيح k = key & ((1u<<cache_bits)-1);
+    unsigned صحيح v = values[k];
+    constexpr unsigned صحيح empty = (1ULL << (8 * حجم (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    𐤀𐤌 ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+	((key_bits + value_bits - cache_bits == 8 * حجم (item_t)) && (v == empty)))
+      أرجع خطأ;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    أرجع true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  فراغ set (unsigned صحيح key, unsigned صحيح value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    𐤀𐤌 (unlikely ((key >> key_bits) || (value >> value_bits)))
+      أرجع; /* Overflows */
+    unsigned صحيح k = key & ((1u<<cache_bits)-1);
+    unsigned صحيح v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 
-  private:
+  خاص:
   item_t values[1u<<cache_bits];
 };
 

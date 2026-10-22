@@ -28,14 +28,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#𐤀𐤌 !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_UNICODE_H
 #define HB_UNICODE_H
 
-#include "hb-common.h"
+#ضمن "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -88,7 +88,7 @@ HB_BEGIN_DECLS
  **/
 
 /* Unicode Character Database property: General_Category (gc) */
-typedef enum
+تعريفنوع تعداد
 {
   HB_UNICODE_GENERAL_CATEGORY_CONTROL,			/* Cc */
   HB_UNICODE_GENERAL_CATEGORY_FORMAT,			/* Cf */
@@ -190,7 +190,7 @@ typedef enum
  * being returned from hb_unicode_combining_class().</note>
  *
  **/
-typedef enum
+تعريفنوع تعداد
 {
   HB_UNICODE_COMBINING_CLASS_NOT_REORDERED	= 0,
   HB_UNICODE_COMBINING_CLASS_OVERLAY		= 1,
@@ -286,42 +286,42 @@ typedef enum
  * needed, and replace the default by calling the setter for a
  * method.
  **/
-typedef struct hb_unicode_funcs_t hb_unicode_funcs_t;
+تعريفنوع بنية hb_unicode_funcs_t hb_unicode_funcs_t;
 
 
 /*
  * just give me the best implementation you've got there.
  */
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_default (void);
+hb_unicode_funcs_get_default (فراغ);
 
 
 HB_EXTERN hb_unicode_funcs_t *
 hb_unicode_funcs_create (hb_unicode_funcs_t *parent);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_empty (void);
+hb_unicode_funcs_get_empty (فراغ);
 
 HB_EXTERN hb_unicode_funcs_t *
 hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
 hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
 				hb_user_data_key_t *key,
-				void *              data,
+				فراغ *              data,
 				hb_destroy_func_t   destroy,
 				hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
+HB_EXTERN فراغ *
+hb_unicode_funcs_get_user_data (ثابت hb_unicode_funcs_t *ufuncs,
 				hb_user_data_key_t       *key);
 
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
@@ -351,9 +351,9 @@ hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs);
  * Return value: The #hb_unicode_combining_class_t of @unicode
  * 
  **/
-typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_general_category_func_t:
@@ -369,9 +369,9 @@ typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_un
  * Return value: The #hb_unicode_general_category_t of @unicode
  *
  **/
-typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_mirroring_func_t:
@@ -391,9 +391,9 @@ typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_
  * Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
  *
  **/
-typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_script_func_t:
@@ -409,9 +409,9 @@ typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *uf
  * Return value: The #hb_script_t of @unicode
  * 
  **/
-typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_compose_func_t:
@@ -432,11 +432,11 @@ typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` is @a,@b composed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      a,
 										 hb_codepoint_t      b,
 										 hb_codepoint_t     *ab,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /**
  * hb_unicode_decompose_func_t:
@@ -456,11 +456,11 @@ typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` if @ab decomposed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
+تعريفنوع hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      ab,
 										 hb_codepoint_t     *a,
 										 hb_codepoint_t     *b,
-										 void               *user_data);
+										 فراغ               *user_data);
 
 /* func setters */
 
@@ -475,10 +475,10 @@ typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
 					   hb_unicode_combining_class_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_general_category_func:
@@ -491,10 +491,10 @@ hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
 					    hb_unicode_general_category_func_t func,
-					    void *user_data, hb_destroy_func_t destroy);
+					    فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_mirroring_func:
@@ -507,10 +507,10 @@ hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_mirroring_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_script_func:
@@ -523,10 +523,10 @@ hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
 				  hb_unicode_script_func_t func,
-				  void *user_data, hb_destroy_func_t destroy);
+				  فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_compose_func:
@@ -539,10 +539,10 @@ hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
 				   hb_unicode_compose_func_t func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   فراغ *user_data, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_decompose_func:
@@ -555,10 +555,10 @@ hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_unicode_funcs_set_decompose_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_decompose_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     فراغ *user_data, hb_destroy_func_t destroy);
 
 /* accessors */
 

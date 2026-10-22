@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import sys
-from fontTools.ttLib import TTFont
-from fontTools.ttLib.tables.DefaultTable import DefaultTable
+استورد sys
+من fontTools.ttLib استورد TTFont
+من fontTools.ttLib.tables.DefaultTable استورد DefaultTable
 
-if len(sys.argv) == 1:
+𐤀𐤌 len(sys.argv) == 1:
     print("usage: python addTable.py input.ttf output.ttf Wasm.bin")
     sys.exit(1)
 
 font = TTFont(sys.argv[1])
 
 wasm_table = DefaultTable("Wasm")
-wasm_table.data = open(sys.argv[3], "rb").read()
+wasm_table.data = open(sys.argv[3], "rb").اقرأ()
 
 font["Wasm"] = wasm_table
 

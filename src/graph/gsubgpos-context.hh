@@ -24,19 +24,19 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
 
 #ifndef GRAPH_GSUBGPOS_CONTEXT_HH
 #define GRAPH_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نطاق graph {
 
-struct Lookup;
+بنية Lookup;
 
-struct gsubgpos_graph_context_t
+بنية gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL ساكن graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
@@ -49,12 +49,12 @@ struct gsubgpos_graph_context_t
 
   HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<فراغ> add_buffer (حرف* buffer)
   {
-    return graph.add_buffer (buffer);
+    أرجع graph.add_buffer (buffer);
   }
 
- private:
+ خاص:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 

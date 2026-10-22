@@ -26,32 +26,32 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-font.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
-#include "hb-machinery.hh"
+#ضمن "hb-font.hh"
+#ضمن "hb-draw.hh"
+#ضمن "hb-paint.hh"
+#ضمن "hb-machinery.hh"
 
-#include "hb-ot.h"
+#ضمن "hb-ot.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
+#ضمن "hb-ot-var-avar-table.hh"
+#ضمن "hb-ot-var-fvar-table.hh"
 
 #ifndef HB_NO_OT_FONT
-#include "hb-ot.h"
+#ضمن "hb-ot.h"
 #endif
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#ضمن "hb-ft.h"
 #endif
 #ifdef HAVE_FONTATIONS
-#include "hb-fontations.h"
+#ضمن "hb-fontations.h"
 #endif
 #ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
+#ضمن "hb-coretext.h"
 #endif
 #ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
+#ضمن "hb-directwrite.h"
 #endif
 
 
@@ -87,211 +87,211 @@
  * hb_font_funcs_t
  */
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_font_h_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+				فراغ              *font_data HB_UNUSED,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				فراغ              *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, حجم (*extents));
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_font_h_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    فراغ              *font_data HB_UNUSED,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    فراغ              *user_data HB_UNUSED)
 {
-  hb_bool_t ret = font->parent->get_font_h_extents (extents, false);
-  if (ret) {
+  hb_bool_t ret = font->parent->get_font_h_extents (extents, خطأ);
+  𐤀𐤌 (ret) {
     extents->ascender = font->parent_scale_y_distance (extents->ascender);
     extents->descender = font->parent_scale_y_distance (extents->descender);
     extents->line_gap = font->parent_scale_y_distance (extents->line_gap);
   }
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_font_v_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+				فراغ              *font_data HB_UNUSED,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				فراغ              *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, حجم (*extents));
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_font_v_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    فراغ              *font_data HB_UNUSED,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    فراغ              *user_data HB_UNUSED)
 {
-  hb_bool_t ret = font->parent->get_font_v_extents (extents, false);
-  if (ret) {
+  hb_bool_t ret = font->parent->get_font_v_extents (extents, خطأ);
+  𐤀𐤌 (ret) {
     extents->ascender = font->parent_scale_x_distance (extents->ascender);
     extents->descender = font->parent_scale_x_distance (extents->descender);
     extents->line_gap = font->parent_scale_x_distance (extents->line_gap);
   }
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_nominal_glyph_nil (hb_font_t      *font HB_UNUSED,
-			       void           *font_data HB_UNUSED,
+			       فراغ           *font_data HB_UNUSED,
 			       hb_codepoint_t  unicode HB_UNUSED,
 			       hb_codepoint_t *glyph,
-			       void           *user_data HB_UNUSED)
+			       فراغ           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_nominal_glyph_default (hb_font_t      *font,
-				   void           *font_data HB_UNUSED,
+				   فراغ           *font_data HB_UNUSED,
 				   hb_codepoint_t  unicode,
 				   hb_codepoint_t *glyph,
-				   void           *user_data HB_UNUSED)
+				   فراغ           *user_data HB_UNUSED)
 {
-  if (font->has_nominal_glyphs_func_set ())
+  𐤀𐤌 (font->has_nominal_glyphs_func_set ())
   {
-    return font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
+    أرجع font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
   }
-  return font->parent->get_nominal_glyph (unicode, glyph);
+  أرجع font->parent->get_nominal_glyph (unicode, glyph);
 }
 
 #define hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
 
-static unsigned int
+ساكن unsigned صحيح
 hb_font_get_nominal_glyphs_default (hb_font_t            *font,
-				    void                 *font_data HB_UNUSED,
-				    unsigned int          count,
-				    const hb_codepoint_t *first_unicode,
-				    unsigned int          unicode_stride,
+				    فراغ                 *font_data HB_UNUSED,
+				    unsigned صحيح          count,
+				    ثابت hb_codepoint_t *first_unicode,
+				    unsigned صحيح          unicode_stride,
 				    hb_codepoint_t       *first_glyph,
-				    unsigned int          glyph_stride,
-				    void                 *user_data HB_UNUSED)
+				    unsigned صحيح          glyph_stride,
+				    فراغ                 *user_data HB_UNUSED)
 {
-  if (font->has_nominal_glyph_func_set ())
+  𐤀𐤌 (font->has_nominal_glyph_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    لكل (unsigned صحيح i = 0; i < count; i++)
     {
-      if (!font->get_nominal_glyph (*first_unicode, first_glyph))
-	return i;
+      𐤀𐤌 (!font->get_nominal_glyph (*first_unicode, first_glyph))
+	أرجع i;
 
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    أرجع count;
   }
 
-  return font->parent->get_nominal_glyphs (count,
+  أرجع font->parent->get_nominal_glyphs (count,
 					   first_unicode, unicode_stride,
 					   first_glyph, glyph_stride);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_variation_glyph_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
+				 فراغ           *font_data HB_UNUSED,
 				 hb_codepoint_t  unicode HB_UNUSED,
 				 hb_codepoint_t  variation_selector HB_UNUSED,
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_variation_glyph_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  unicode,
 				     hb_codepoint_t  variation_selector,
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  return font->parent->get_variation_glyph (unicode, variation_selector, glyph);
+  أرجع font->parent->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_h_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
+				 فراغ           *font_data HB_UNUSED,
 				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
-  return font->x_scale;
+  أرجع font->x_scale;
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_h_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_advances_func_set ())
+  𐤀𐤌 (font->has_glyph_h_advances_func_set ())
   {
     hb_position_t ret;
-    font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, خطأ);
+    أرجع ret;
   }
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
+  أرجع font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, خطأ));
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_v_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
+				 فراغ           *font_data HB_UNUSED,
 				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
-  return -font->y_scale;
+  أرجع -font->y_scale;
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_v_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_advances_func_set ())
+  𐤀𐤌 (font->has_glyph_v_advances_func_set ())
   {
     hb_position_t ret;
-    font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, خطأ);
+    أرجع ret;
   }
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
+  أرجع font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, خطأ));
 }
 
 #define hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
 
-static void
+ساكن فراغ
 hb_font_get_glyph_h_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      فراغ*                 font_data HB_UNUSED,
+				      unsigned صحيح          count,
+				      ثابت hb_codepoint_t *first_glyph,
+				      unsigned صحيح          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      unsigned صحيح          advance_stride,
+				      فراغ                 *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_advance_func_set ())
+  𐤀𐤌 (font->has_glyph_h_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    لكل (unsigned صحيح i = 0; i < count; i++)
     {
-      *first_advance = font->get_glyph_h_advance (*first_glyph, false);
+      *first_advance = font->get_glyph_h_advance (*first_glyph, خطأ);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    أرجع;
   }
 
   font->parent->get_glyph_h_advances (count,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
-				      false);
-  for (unsigned int i = 0; i < count; i++)
+				      خطأ);
+  لكل (unsigned صحيح i = 0; i < count; i++)
   {
     *first_advance = font->parent_scale_x_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -299,380 +299,380 @@ hb_font_get_glyph_h_advances_default (hb_font_t*            font,
 }
 
 #define hb_font_get_glyph_v_advances_nil hb_font_get_glyph_v_advances_default
-static void
+ساكن فراغ
 hb_font_get_glyph_v_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      فراغ*                 font_data HB_UNUSED,
+				      unsigned صحيح          count,
+				      ثابت hb_codepoint_t *first_glyph,
+				      unsigned صحيح          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      unsigned صحيح          advance_stride,
+				      فراغ                 *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_advance_func_set ())
+  𐤀𐤌 (font->has_glyph_v_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    لكل (unsigned صحيح i = 0; i < count; i++)
     {
-      *first_advance = font->get_glyph_v_advance (*first_glyph, false);
+      *first_advance = font->get_glyph_v_advance (*first_glyph, خطأ);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    أرجع;
   }
 
   font->parent->get_glyph_v_advances (count,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
-				      false);
-  for (unsigned int i = 0; i < count; i++)
+				      خطأ);
+  لكل (unsigned صحيح i = 0; i < count; i++)
   {
     *first_advance = font->parent_scale_y_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
   }
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_h_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
+				فراغ           *font_data HB_UNUSED,
 				hb_codepoint_t  glyph HB_UNUSED,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				فراغ           *user_data HB_UNUSED)
 {
   *x = *y = 0;
-  return true;
+  أرجع true;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_h_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    فراغ           *font_data HB_UNUSED,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    فراغ           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_origins_func_set ())
+  𐤀𐤌 (font->has_glyph_h_origins_func_set ())
   {
-    return font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
+    أرجع font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, خطأ);
   }
   hb_bool_t ret = font->parent->get_glyph_h_origin (glyph, x, y);
-  if (ret)
+  𐤀𐤌 (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_v_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
+				فراغ           *font_data HB_UNUSED,
 				hb_codepoint_t  glyph HB_UNUSED,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				فراغ           *user_data HB_UNUSED)
 {
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_v_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    فراغ           *font_data HB_UNUSED,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    فراغ           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_origins_func_set ())
+  𐤀𐤌 (font->has_glyph_v_origins_func_set ())
   {
-    return font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
+    أرجع font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, خطأ);
   }
   hb_bool_t ret = font->parent->get_glyph_v_origin (glyph, x, y);
-  if (ret)
+  𐤀𐤌 (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  أرجع ret;
 }
 
 #define hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
+				     فراغ *font_data HB_UNUSED,
+				     unsigned صحيح count,
+				     ثابت hb_codepoint_t *first_glyph HB_UNUSED,
 				     unsigned glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
 				     unsigned x_stride,
 				     hb_position_t *first_y,
 				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+				     فراغ *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_origin_func_set ())
+  𐤀𐤌 (font->has_glyph_h_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    لكل (unsigned صحيح i = 0; i < count; i++)
     {
-      ret &= font->get_glyph_h_origin (*first_glyph, first_x, first_y, false);
+      ret &= font->get_glyph_h_origin (*first_glyph, first_x, first_y, خطأ);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    أرجع ret;
   }
 
   hb_bool_t ret = font->parent->get_glyph_h_origins (count,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  𐤀𐤌 (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    لكل (unsigned i = 0; i < count; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  أرجع ret;
 }
 
 #define hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_v_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
+				     فراغ *font_data HB_UNUSED,
+				     unsigned صحيح count,
+				     ثابت hb_codepoint_t *first_glyph HB_UNUSED,
 				     unsigned glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
 				     unsigned x_stride,
 				     hb_position_t *first_y,
 				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+				     فراغ *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_origin_func_set ())
+  𐤀𐤌 (font->has_glyph_v_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    لكل (unsigned صحيح i = 0; i < count; i++)
     {
-      ret &= font->get_glyph_v_origin (*first_glyph, first_x, first_y, false);
+      ret &= font->get_glyph_v_origin (*first_glyph, first_x, first_y, خطأ);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    أرجع ret;
   }
 
   hb_bool_t ret = font->parent->get_glyph_v_origins (count,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  𐤀𐤌 (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    لكل (unsigned i = 0; i < count; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  أرجع ret;
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_h_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
+				 فراغ           *font_data HB_UNUSED,
 				 hb_codepoint_t  left_glyph HB_UNUSED,
 				 hb_codepoint_t  right_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
-  return 0;
+  أرجع 0;
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_h_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  left_glyph,
 				     hb_codepoint_t  right_glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
+  أرجع font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
 }
 
 #ifndef HB_DISABLE_DEPRECATED
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_v_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
+				 فراغ           *font_data HB_UNUSED,
 				 hb_codepoint_t  top_glyph HB_UNUSED,
 				 hb_codepoint_t  bottom_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
-  return 0;
+  أرجع 0;
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_font_get_glyph_v_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  top_glyph,
 				     hb_codepoint_t  bottom_glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
+  أرجع font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
 }
 #endif
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_extents_nil (hb_font_t          *font HB_UNUSED,
-			       void               *font_data HB_UNUSED,
+			       فراغ               *font_data HB_UNUSED,
 			       hb_codepoint_t      glyph HB_UNUSED,
 			       hb_glyph_extents_t *extents,
-			       void               *user_data HB_UNUSED)
+			       فراغ               *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, حجم (*extents));
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_extents_default (hb_font_t          *font,
-				   void               *font_data HB_UNUSED,
+				   فراغ               *font_data HB_UNUSED,
 				   hb_codepoint_t      glyph,
 				   hb_glyph_extents_t *extents,
-				   void               *user_data HB_UNUSED)
+				   فراغ               *user_data HB_UNUSED)
 {
-  hb_bool_t ret = font->parent->get_glyph_extents (glyph, extents, false);
-  if (ret) {
+  hb_bool_t ret = font->parent->get_glyph_extents (glyph, extents, خطأ);
+  𐤀𐤌 (ret) {
     font->parent_scale_position (&extents->x_bearing, &extents->y_bearing);
     font->parent_scale_distance (&extents->width, &extents->height);
   }
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_contour_point_nil (hb_font_t      *font HB_UNUSED,
-				     void           *font_data HB_UNUSED,
+				     فراغ           *font_data HB_UNUSED,
 				     hb_codepoint_t  glyph HB_UNUSED,
-				     unsigned int    point_index HB_UNUSED,
+				     unsigned صحيح    point_index HB_UNUSED,
 				     hb_position_t  *x,
 				     hb_position_t  *y,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
   *x = *y = 0;
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_contour_point_default (hb_font_t      *font,
-					 void           *font_data HB_UNUSED,
+					 فراغ           *font_data HB_UNUSED,
 					 hb_codepoint_t  glyph,
-					 unsigned int    point_index,
+					 unsigned صحيح    point_index,
 					 hb_position_t  *x,
 					 hb_position_t  *y,
-					 void           *user_data HB_UNUSED)
+					 فراغ           *user_data HB_UNUSED)
 {
-  hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_index, x, y, false);
-  if (ret)
+  hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_index, x, y, خطأ);
+  𐤀𐤌 (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  أرجع ret;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_name_nil (hb_font_t      *font HB_UNUSED,
-			    void           *font_data HB_UNUSED,
+			    فراغ           *font_data HB_UNUSED,
 			    hb_codepoint_t  glyph HB_UNUSED,
-			    char           *name,
-			    unsigned int    size,
-			    void           *user_data HB_UNUSED)
+			    حرف           *name,
+			    unsigned صحيح    size,
+			    فراغ           *user_data HB_UNUSED)
 {
-  if (size) *name = '\0';
-  return false;
+  𐤀𐤌 (size) *name = '\0';
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_name_default (hb_font_t      *font,
-				void           *font_data HB_UNUSED,
+				فراغ           *font_data HB_UNUSED,
 				hb_codepoint_t  glyph,
-				char           *name,
-				unsigned int    size,
-				void           *user_data HB_UNUSED)
+				حرف           *name,
+				unsigned صحيح    size,
+				فراغ           *user_data HB_UNUSED)
 {
-  return font->parent->get_glyph_name (glyph, name, size);
+  أرجع font->parent->get_glyph_name (glyph, name, size);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_from_name_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 const char     *name HB_UNUSED,
-				 int             len HB_UNUSED, /* -1 means nul-terminated */
+				 فراغ           *font_data HB_UNUSED,
+				 ثابت حرف     *name HB_UNUSED,
+				 صحيح             len HB_UNUSED, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 فراغ           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_glyph_from_name_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     const char     *name,
-				     int             len, /* -1 means nul-terminated */
+				     فراغ           *font_data HB_UNUSED,
+				     ثابت حرف     *name,
+				     صحيح             len, /* -1 means nul-terminated */
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     فراغ           *user_data HB_UNUSED)
 {
-  return font->parent->get_glyph_from_name (name, len, glyph);
+  أرجع font->parent->get_glyph_from_name (name, len, glyph);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_draw_glyph_or_fail_nil (hb_font_t       *font HB_UNUSED,
-				void            *font_data HB_UNUSED,
+				فراغ            *font_data HB_UNUSED,
 				hb_codepoint_t   glyph,
 				hb_draw_funcs_t *draw_funcs,
-				void            *draw_data,
-				void            *user_data HB_UNUSED)
+				فراغ            *draw_data,
+				فراغ            *user_data HB_UNUSED)
 {
-  return false;
+  أرجع خطأ;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_paint_glyph_or_fail_nil (hb_font_t *font HB_UNUSED,
-				 void *font_data HB_UNUSED,
+				 فراغ *font_data HB_UNUSED,
 				 hb_codepoint_t glyph HB_UNUSED,
 				 hb_paint_funcs_t *paint_funcs HB_UNUSED,
-				 void *paint_data HB_UNUSED,
-				 unsigned int palette HB_UNUSED,
+				 فراغ *paint_data HB_UNUSED,
+				 unsigned صحيح palette HB_UNUSED,
 				 hb_color_t foreground HB_UNUSED,
-				 void *user_data HB_UNUSED)
+				 فراغ *user_data HB_UNUSED)
 {
-  return false;
+  أرجع خطأ;
 }
 
-typedef struct hb_font_draw_glyph_default_adaptor_t {
+تعريفنوع بنية hb_font_draw_glyph_default_adaptor_t {
   hb_draw_funcs_t *draw_funcs;
-  void		  *draw_data;
-  float		   x_scale;
-  float		   y_scale;
+  فراغ		  *draw_data;
+  عائم		   x_scale;
+  عائم		   y_scale;
 } hb_font_draw_glyph_default_adaptor_t;
 
-static void
+ساكن فراغ
 hb_draw_move_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *draw_data,
+			 فراغ *draw_data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 عائم to_x, عائم to_y,
+			 فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  عائم x_scale = adaptor->x_scale;
+  عائم y_scale = adaptor->y_scale;
 
   adaptor->draw_funcs->emit_move_to (adaptor->draw_data, *st,
 				     x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_line_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+ساكن فراغ
+hb_draw_line_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 عائم to_x, عائم to_y,
+			 فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  عائم x_scale = adaptor->x_scale;
+  عائم y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
@@ -681,16 +681,16 @@ hb_draw_line_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
 				     x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+ساكن فراغ
+hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      عائم control_x, عائم control_y,
+			      عائم to_x, عائم to_y,
+			      فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  عائم x_scale = adaptor->x_scale;
+  عائم y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
@@ -700,17 +700,17 @@ hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data
 					  x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+ساكن فراغ
+hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  عائم control1_x, عائم control1_y,
+			  عائم control2_x, عائم control2_y,
+			  عائم to_x, عائم to_y,
+			  فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  عائم x_scale = adaptor->x_scale;
+  عائم y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
@@ -721,42 +721,42 @@ hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
 				      x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_close_path_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+ساكن فراغ
+hb_draw_close_path_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
 			    hb_draw_state_t *st,
-			    void *user_data HB_UNUSED)
+			    فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
 
   adaptor->draw_funcs->emit_close_path (adaptor->draw_data, *st);
 }
 
-static hb_bool_t
-hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+ساكن hb_bool_t
+hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
 			    int64_t budget,
-			    void *user_data HB_UNUSED)
+			    فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
+  أرجع adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
 }
 
-static int64_t
-hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-			    void *user_data HB_UNUSED)
+ساكن int64_t
+hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
+			    فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget (adaptor->draw_data);
+  أرجع adaptor->draw_funcs->get_budget (adaptor->draw_data);
 }
 
-static int64_t *
-hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-				      void *user_data HB_UNUSED)
+ساكن int64_t *
+hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, فراغ *draw_data,
+				      فراغ *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
+  أرجع adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
 }
 
-static const hb_draw_funcs_t _hb_draw_funcs_default = {
+ساكن ثابت hb_draw_funcs_t _hb_draw_funcs_default = {
   HB_OBJECT_HEADER_STATIC,
 
   {
@@ -766,47 +766,47 @@ static const hb_draw_funcs_t _hb_draw_funcs_default = {
   }
 };
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_draw_glyph_or_fail_default (hb_font_t       *font,
-				    void            *font_data HB_UNUSED,
+				    فراغ            *font_data HB_UNUSED,
 				    hb_codepoint_t   glyph,
 				    hb_draw_funcs_t *draw_funcs,
-				    void            *draw_data,
-				    void            *user_data HB_UNUSED)
+				    فراغ            *draw_data,
+				    فراغ            *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t adaptor = {
     draw_funcs,
     draw_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0.f,
-    font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0.f
+    font->parent->x_scale ? (عائم) font->x_scale / (عائم) font->parent->x_scale : 0.f,
+    font->parent->y_scale ? (عائم) font->y_scale / (عائم) font->parent->y_scale : 0.f
   };
 
-  return font->parent->draw_glyph_or_fail (glyph,
+  أرجع font->parent->draw_glyph_or_fail (glyph,
 					   const_cast<hb_draw_funcs_t *> (&_hb_draw_funcs_default),
 					   &adaptor,
-					   false);
+					   خطأ);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_paint_glyph_or_fail_default (hb_font_t *font,
-				     void *font_data,
+				     فراغ *font_data,
 				     hb_codepoint_t glyph,
 				     hb_paint_funcs_t *paint_funcs,
-				     void *paint_data,
-				     unsigned int palette,
+				     فراغ *paint_data,
+				     unsigned صحيح palette,
 				     hb_color_t foreground,
-				     void *user_data)
+				     فراغ *user_data)
 {
   paint_funcs->push_transform (paint_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0, 0,
-    0, font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0,
+    font->parent->x_scale ? (عائم) font->x_scale / (عائم) font->parent->x_scale : 0, 0,
+    0, font->parent->y_scale ? (عائم) font->y_scale / (عائم) font->parent->y_scale : 0,
     0, 0);
 
-  bool ret = font->parent->paint_glyph_or_fail (glyph, paint_funcs, paint_data, palette, foreground);
+  منطقي ret = font->parent->paint_glyph_or_fail (glyph, paint_funcs, paint_data, palette, foreground);
 
   paint_funcs->pop_transform (paint_data);
 
-  return ret;
+  أرجع ret;
 }
 
 DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
@@ -824,7 +824,7 @@ DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
   }
 };
 
-static const hb_font_funcs_t _hb_font_funcs_default = {
+ساكن ثابت hb_font_funcs_t _hb_font_funcs_default = {
   HB_OBJECT_HEADER_STATIC,
 
   nullptr,
@@ -853,12 +853,12 @@ hb_font_funcs_create ()
 {
   hb_font_funcs_t *ffuncs;
 
-  if (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
-    return hb_font_funcs_get_empty ();
+  𐤀𐤌 (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
+    أرجع hb_font_funcs_get_empty ();
 
   ffuncs->get = _hb_font_funcs_default.get;
 
-  return ffuncs;
+  أرجع ffuncs;
 }
 
 /**
@@ -873,7 +873,7 @@ hb_font_funcs_create ()
 hb_font_funcs_t *
 hb_font_funcs_get_empty ()
 {
-  return const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
+  أرجع const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
 }
 
 /**
@@ -889,7 +889,7 @@ hb_font_funcs_get_empty ()
 hb_font_funcs_t *
 hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_reference (ffuncs);
+  أرجع hb_object_reference (ffuncs);
 }
 
 /**
@@ -902,14 +902,14 @@ hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
 {
-  if (!hb_object_destroy (ffuncs)) return;
+  𐤀𐤌 (!hb_object_destroy (ffuncs)) أرجع;
 
-  if (ffuncs->destroy)
+  𐤀𐤌 (ffuncs->destroy)
   {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) if (ffuncs->destroy->name) \
+#define HB_FONT_FUNC_IMPLEMENT(get_,name) 𐤀𐤌 (ffuncs->destroy->name) \
     ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name);
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
@@ -938,11 +938,11 @@ hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
 hb_bool_t
 hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
 			     hb_user_data_key_t *key,
-			     void *              data,
+			     فراغ *              data,
 			     hb_destroy_func_t   destroy /* May be NULL. */,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ffuncs, key, data, destroy, replace);
+  أرجع hb_object_set_user_data (ffuncs, key, data, destroy, replace);
 }
 
 /**
@@ -957,11 +957,11 @@ hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
+فراغ *
+hb_font_funcs_get_user_data (ثابت hb_font_funcs_t *ffuncs,
 			     hb_user_data_key_t    *key)
 {
-  return hb_object_get_user_data (ffuncs, key);
+  أرجع hb_object_get_user_data (ffuncs, key);
 }
 
 
@@ -973,11 +973,11 @@ hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 {
-  if (hb_object_is_immutable (ffuncs))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (ffuncs))
+    أرجع;
 
   hb_object_make_immutable (ffuncs);
 }
@@ -995,101 +995,101 @@ hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 hb_bool_t
 hb_font_funcs_is_immutable (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_is_immutable (ffuncs);
+  أرجع hb_object_is_immutable (ffuncs);
 }
 
 
-static bool
+ساكن منطقي
 _hb_font_funcs_set_preamble (hb_font_funcs_t    *ffuncs,
-			     bool                func_is_null,
-			     void              **user_data,
+			     منطقي                func_is_null,
+			     فراغ              **user_data,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (ffuncs))
+  𐤀𐤌 (hb_object_is_immutable (ffuncs))
   {
-    if (*destroy)
+    𐤀𐤌 (*destroy)
       (*destroy) (*user_data);
-    return false;
+    أرجع خطأ;
   }
 
-  if (func_is_null)
+  𐤀𐤌 (func_is_null)
   {
-    if (*destroy)
+    𐤀𐤌 (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  أرجع true;
 }
 
-static bool
+ساكن منطقي
 _hb_font_funcs_set_middle (hb_font_funcs_t   *ffuncs,
-			   void              *user_data,
+			   فراغ              *user_data,
 			   hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    𐤀𐤌 (destroy) destroy (user_data);
   });
 
-  if (user_data && !ffuncs->user_data)
+  𐤀𐤌 (user_data && !ffuncs->user_data)
   {
-    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, sizeof (*ffuncs->user_data));
-    if (unlikely (!ffuncs->user_data))
-      return false;
+    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, حجم (*ffuncs->user_data));
+    𐤀𐤌 (unlikely (!ffuncs->user_data))
+      أرجع خطأ;
   }
-  if (destroy && !ffuncs->destroy)
+  𐤀𐤌 (destroy && !ffuncs->destroy)
   {
-    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, sizeof (*ffuncs->destroy));
-    if (unlikely (!ffuncs->destroy))
-      return false;
+    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, حجم (*ffuncs->destroy));
+    𐤀𐤌 (unlikely (!ffuncs->destroy))
+      أرجع خطأ;
   }
 
   destroy_guard.release ();
-  return true;
+  أرجع true;
 }
 
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) \
 									 \
-void                                                                     \
+فراغ                                                                     \
 hb_font_funcs_set_##name##_func (hb_font_funcs_t             *ffuncs,    \
 				 hb_font_##get_##name##_func_t func,     \
-				 void                        *user_data, \
+				 فراغ                        *user_data, \
 				 hb_destroy_func_t            destroy)   \
 {                                                                        \
-  if (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  𐤀𐤌 (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
+      أرجع;                                                            \
 									 \
-  if (ffuncs->destroy && ffuncs->destroy->name)                          \
+  𐤀𐤌 (ffuncs->destroy && ffuncs->destroy->name)                          \
     ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name); \
                                                                          \
-  if (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
-      return;                                                            \
+  𐤀𐤌 (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
+      أرجع;                                                            \
 									 \
-  if (func)                                                              \
+  𐤀𐤌 (func)                                                              \
     ffuncs->get.f.name = func;                                           \
-  else                                                                   \
+  وإلا                                                                   \
     ffuncs->get.f.name = hb_font_##get_##name##_default;                   \
 									 \
-  if (ffuncs->user_data)                                                 \
+  𐤀𐤌 (ffuncs->user_data)                                                 \
     ffuncs->user_data->name = user_data;                                 \
-  if (ffuncs->destroy)                                                   \
+  𐤀𐤌 (ffuncs->destroy)                                                   \
     ffuncs->destroy->name = destroy;                                     \
 }
 
 HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
 
-bool
-hb_font_t::has_func_set (unsigned int i)
+منطقي
+hb_font_t::has_func_set (unsigned صحيح i)
 {
-  return this->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
+  أرجع هذا->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
 }
 
-bool
-hb_font_t::has_func (unsigned int i)
+منطقي
+hb_font_t::has_func (unsigned صحيح i)
 {
-  return has_func_set (i) ||
+  أرجع has_func_set (i) ||
 	 (parent && parent != &_hb_Null_hb_font_t && parent->has_func (i));
 }
 
@@ -1111,7 +1111,7 @@ hb_bool_t
 hb_font_get_h_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_h_extents (extents);
+  أرجع font->get_font_h_extents (extents);
 }
 
 /**
@@ -1130,7 +1130,7 @@ hb_bool_t
 hb_font_get_v_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_v_extents (extents);
+  أرجع font->get_font_v_extents (extents);
 }
 
 /**
@@ -1156,9 +1156,9 @@ hb_font_get_glyph (hb_font_t      *font,
 		   hb_codepoint_t  variation_selector,
 		   hb_codepoint_t *glyph)
 {
-  if (unlikely (variation_selector))
-    return font->get_variation_glyph (unicode, variation_selector, glyph);
-  return font->get_nominal_glyph (unicode, glyph);
+  𐤀𐤌 (unlikely (variation_selector))
+    أرجع font->get_variation_glyph (unicode, variation_selector, glyph);
+  أرجع font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1183,7 +1183,7 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
 			   hb_codepoint_t  unicode,
 			   hb_codepoint_t *glyph)
 {
-  return font->get_nominal_glyph (unicode, glyph);
+  أرجع font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1203,15 +1203,15 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
  *
  * Since: 2.6.3
  **/
-unsigned int
+unsigned صحيح
 hb_font_get_nominal_glyphs (hb_font_t *font,
-			    unsigned int count,
-			    const hb_codepoint_t *first_unicode,
-			    unsigned int unicode_stride,
+			    unsigned صحيح count,
+			    ثابت hb_codepoint_t *first_unicode,
+			    unsigned صحيح unicode_stride,
 			    hb_codepoint_t *first_glyph,
-			    unsigned int glyph_stride)
+			    unsigned صحيح glyph_stride)
 {
-  return font->get_nominal_glyphs (count,
+  أرجع font->get_nominal_glyphs (count,
 				   first_unicode, unicode_stride,
 				   first_glyph, glyph_stride);
 }
@@ -1237,7 +1237,7 @@ hb_font_get_variation_glyph (hb_font_t      *font,
 			     hb_codepoint_t  variation_selector,
 			     hb_codepoint_t *glyph)
 {
-  return font->get_variation_glyph (unicode, variation_selector, glyph);
+  أرجع font->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 /**
@@ -1256,7 +1256,7 @@ hb_position_t
 hb_font_get_glyph_h_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_h_advance (glyph);
+  أرجع font->get_glyph_h_advance (glyph);
 }
 
 /**
@@ -1275,7 +1275,7 @@ hb_position_t
 hb_font_get_glyph_v_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_v_advance (glyph);
+  أرجع font->get_glyph_v_advance (glyph);
 }
 
 /**
@@ -1292,10 +1292,10 @@ hb_font_get_glyph_v_advance (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-void
+فراغ
 hb_font_get_glyph_h_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
+			      unsigned صحيح          count,
+			      ثابت hb_codepoint_t *first_glyph,
 			      unsigned              glyph_stride,
 			      hb_position_t        *first_advance,
 			      unsigned              advance_stride)
@@ -1316,10 +1316,10 @@ hb_font_get_glyph_h_advances (hb_font_t*            font,
  *
  * Since: 1.8.6
  **/
-void
+فراغ
 hb_font_get_glyph_v_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
+			      unsigned صحيح          count,
+			      ثابت hb_codepoint_t *first_glyph,
 			      unsigned              glyph_stride,
 			      hb_position_t        *first_advance,
 			      unsigned              advance_stride)
@@ -1347,7 +1347,7 @@ hb_font_get_glyph_h_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_h_origin (glyph, x, y);
+  أرجع font->get_glyph_h_origin (glyph, x, y);
 }
 
 /**
@@ -1370,7 +1370,7 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_v_origin (glyph, x, y);
+  أرجع font->get_glyph_v_origin (glyph, x, y);
 }
 
 /**
@@ -1393,16 +1393,16 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_h_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     unsigned صحيح    count,
+			     ثابت hb_codepoint_t *first_glyph,
+			     unsigned صحيح    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     unsigned صحيح    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     unsigned صحيح    y_stride)
 
 {
-  return font->get_glyph_h_origins (count,
+  أرجع font->get_glyph_h_origins (count,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1428,16 +1428,16 @@ hb_font_get_glyph_h_origins (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_v_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     unsigned صحيح    count,
+			     ثابت hb_codepoint_t *first_glyph,
+			     unsigned صحيح    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     unsigned صحيح    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     unsigned صحيح    y_stride)
 
 {
-  return font->get_glyph_v_origins (count,
+  أرجع font->get_glyph_v_origins (count,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1465,7 +1465,7 @@ hb_font_get_glyph_h_kerning (hb_font_t      *font,
 			     hb_codepoint_t  left_glyph,
 			     hb_codepoint_t  right_glyph)
 {
-  return font->get_glyph_h_kerning (left_glyph, right_glyph);
+  أرجع font->get_glyph_h_kerning (left_glyph, right_glyph);
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -1491,7 +1491,7 @@ hb_font_get_glyph_v_kerning (hb_font_t      *font,
 			     hb_codepoint_t  top_glyph,
 			     hb_codepoint_t  bottom_glyph)
 {
-  return font->get_glyph_v_kerning (top_glyph, bottom_glyph);
+  أرجع font->get_glyph_v_kerning (top_glyph, bottom_glyph);
 }
 #endif
 
@@ -1513,7 +1513,7 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 			   hb_codepoint_t      glyph,
 			   hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents (glyph, extents);
+  أرجع font->get_glyph_extents (glyph, extents);
 }
 
 /**
@@ -1534,11 +1534,11 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point (hb_font_t      *font,
 				 hb_codepoint_t  glyph,
-				 unsigned int    point_index,
+				 unsigned صحيح    point_index,
 				 hb_position_t  *x,
 				 hb_position_t  *y)
 {
-  return font->get_glyph_contour_point (glyph, point_index, x, y);
+  أرجع font->get_glyph_contour_point (glyph, point_index, x, y);
 }
 
 /**
@@ -1560,10 +1560,10 @@ hb_font_get_glyph_contour_point (hb_font_t      *font,
 hb_bool_t
 hb_font_get_glyph_name (hb_font_t      *font,
 			hb_codepoint_t  glyph,
-			char           *name,
-			unsigned int    size)
+			حرف           *name,
+			unsigned صحيح    size)
 {
-  return font->get_glyph_name (glyph, name, size);
+  أرجع font->get_glyph_name (glyph, name, size);
 }
 
 /**
@@ -1583,11 +1583,11 @@ hb_font_get_glyph_name (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_from_name (hb_font_t      *font,
-			     const char     *name,
-			     int             len, /* -1 means nul-terminated */
+			     ثابت حرف     *name,
+			     صحيح             len, /* -1 means nul-terminated */
 			     hb_codepoint_t *glyph)
 {
-  return font->get_glyph_from_name (name, len, glyph);
+  أرجع font->get_glyph_from_name (name, len, glyph);
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -1605,10 +1605,10 @@ hb_font_get_glyph_from_name (hb_font_t      *font,
  * Since: 4.0.0
  * Deprecated: 7.0.0: Use hb_font_draw_glyph() instead
  */
-void
+فراغ
 hb_font_get_glyph_shape (hb_font_t *font,
 		         hb_codepoint_t glyph,
-		         hb_draw_funcs_t *dfuncs, void *draw_data)
+		         hb_draw_funcs_t *dfuncs, فراغ *draw_data)
 {
   hb_font_draw_glyph (font, glyph, dfuncs, draw_data);
 }
@@ -1636,9 +1636,9 @@ hb_font_get_glyph_shape (hb_font_t *font,
 hb_bool_t
 hb_font_draw_glyph_or_fail (hb_font_t *font,
 			    hb_codepoint_t glyph,
-			    hb_draw_funcs_t *dfuncs, void *draw_data)
+			    hb_draw_funcs_t *dfuncs, فراغ *draw_data)
 {
-  return font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
+  أرجع font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
 }
 
 /**
@@ -1674,28 +1674,28 @@ hb_font_draw_glyph_or_fail (hb_font_t *font,
 hb_bool_t
 hb_font_paint_glyph_or_fail (hb_font_t *font,
 			     hb_codepoint_t glyph,
-			     hb_paint_funcs_t *pfuncs, void *paint_data,
-			     unsigned int palette_index,
+			     hb_paint_funcs_t *pfuncs, فراغ *paint_data,
+			     unsigned صحيح palette_index,
 			     hb_color_t foreground)
 {
-  return font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
+  أرجع font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
 }
 
 /* A bit higher-level, and with fallback */
 
-void
+فراغ
 hb_font_t::paint_glyph (hb_codepoint_t glyph,
-			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette,
+			hb_paint_funcs_t *paint_funcs, فراغ *paint_data,
+			unsigned صحيح palette,
 			hb_color_t foreground)
 {
-  if (paint_glyph_or_fail (glyph,
+  𐤀𐤌 (paint_glyph_or_fail (glyph,
 			   paint_funcs, paint_data,
 			   palette, foreground))
-    return;
+    أرجع;
 
   /* Fallback for outline glyph. */
-  paint_funcs->fill_glyph (paint_data, glyph, this, true, foreground);
+  paint_funcs->fill_glyph (paint_data, glyph, هذا, true, foreground);
 }
 
 
@@ -1716,12 +1716,12 @@ hb_font_t::paint_glyph (hb_codepoint_t glyph,
  *
  * Since: 7.0.0
  **/
-void
+فراغ
 hb_font_draw_glyph (hb_font_t *font,
 		    hb_codepoint_t glyph,
-		    hb_draw_funcs_t *dfuncs, void *draw_data)
+		    hb_draw_funcs_t *dfuncs, فراغ *draw_data)
 {
-  (void) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_data);
+  (فراغ) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_data);
 }
 
 /**
@@ -1748,11 +1748,11 @@ hb_font_draw_glyph (hb_font_t *font,
  *
  * Since: 7.0.0
  */
-void
+فراغ
 hb_font_paint_glyph (hb_font_t *font,
                      hb_codepoint_t glyph,
-                     hb_paint_funcs_t *pfuncs, void *paint_data,
-                     unsigned int palette_index,
+                     hb_paint_funcs_t *pfuncs, فراغ *paint_data,
+                     unsigned صحيح palette_index,
                      hb_color_t foreground)
 {
   font->paint_glyph (glyph, pfuncs, paint_data, palette_index, foreground);
@@ -1772,7 +1772,7 @@ hb_font_paint_glyph (hb_font_t *font,
  *
  * Since: 1.1.3
  **/
-void
+فراغ
 hb_font_get_extents_for_direction (hb_font_t         *font,
 				   hb_direction_t     direction,
 				   hb_font_extents_t *extents)
@@ -1795,7 +1795,7 @@ hb_font_get_extents_for_direction (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
 					 hb_codepoint_t  glyph,
 					 hb_direction_t  direction,
@@ -1822,11 +1822,11 @@ hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
 					  hb_direction_t        direction,
-					  unsigned int          count,
-					  const hb_codepoint_t *first_glyph,
+					  unsigned صحيح          count,
+					  ثابت hb_codepoint_t *first_glyph,
 					  unsigned              glyph_stride,
 					  hb_position_t        *first_advance,
 					  unsigned              advance_stride)
@@ -1850,14 +1850,14 @@ hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->get_glyph_origin_for_direction (glyph, direction, x, y);
+  أرجع font->get_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1878,14 +1878,14 @@ hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->add_glyph_origin_for_direction (glyph, direction, x, y);
+  أرجع font->add_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1906,14 +1906,14 @@ hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
 					     hb_codepoint_t  glyph,
 					     hb_direction_t  direction,
 					     hb_position_t  *x,
 					     hb_position_t  *y)
 {
-  return font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
+  أرجع font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1932,7 +1932,7 @@ hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
 					 hb_codepoint_t  first_glyph,
 					 hb_codepoint_t  second_glyph,
@@ -1940,7 +1940,7 @@ hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
 					 hb_position_t  *x,
 					 hb_position_t  *y)
 {
-  return font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
+  أرجع font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
 }
 
 /**
@@ -1967,7 +1967,7 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 				      hb_direction_t      direction,
 				      hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents_for_origin (glyph, direction, extents);
+  أرجع font->get_glyph_extents_for_origin (glyph, direction, extents);
 }
 
 /**
@@ -1993,12 +1993,12 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
 					    hb_codepoint_t  glyph,
-					    unsigned int    point_index,
+					    unsigned صحيح    point_index,
 					    hb_direction_t  direction,
 					    hb_position_t  *x,
 					    hb_position_t  *y)
 {
-  return font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
+  أرجع font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
 }
 
 /**
@@ -2019,11 +2019,11 @@ hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_glyph_to_string (hb_font_t      *font,
 			 hb_codepoint_t  glyph,
-			 char           *s,
-			 unsigned int    size)
+			 حرف           *s,
+			 unsigned صحيح    size)
 {
   font->glyph_to_string (glyph, s, size);
 }
@@ -2046,11 +2046,11 @@ hb_font_glyph_to_string (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_glyph_from_string (hb_font_t      *font,
-			   const char     *s,
-			   int             len,
+			   ثابت حرف     *s,
+			   صحيح             len,
 			   hb_codepoint_t *glyph)
 {
-  return font->glyph_from_string (s, len, glyph);
+  أرجع font->glyph_from_string (s, len, glyph);
 }
 
 
@@ -2070,7 +2070,7 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
 
   1000, /* x_scale */
   1000, /* y_scale */
-  false, /* is_synthetic */
+  خطأ, /* is_synthetic */
   0.f, /* x_embolden */
   0.f, /* y_embolden */
   true, /* embolden_in_place */
@@ -2088,7 +2088,7 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
   0, /* ptem */
 
   HB_FONT_NO_VAR_NAMED_INSTANCE, /* instance_index */
-  false, /* has_nonzero_coords */
+  خطأ, /* has_nonzero_coords */
   0, /* num_coords */
   nullptr, /* coords */
   nullptr, /* design_coords */
@@ -2099,16 +2099,16 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
 };
 
 
-static hb_font_t *
+ساكن hb_font_t *
 _hb_font_create (hb_face_t *face)
 {
   hb_font_t *font;
 
-  if (unlikely (!face))
+  𐤀𐤌 (unlikely (!face))
     face = hb_face_get_empty ();
 
-  if (!(font = hb_object_create<hb_font_t> ()))
-    return hb_font_get_empty ();
+  𐤀𐤌 (!(font = hb_object_create<hb_font_t> ()))
+    أرجع hb_font_get_empty ();
 
   hb_face_make_immutable (face);
   font->parent = hb_font_get_empty ();
@@ -2121,7 +2121,7 @@ _hb_font_create (hb_face_t *face)
   font->x_mult = font->y_mult = 1 << 16;
   font->instance_index = HB_FONT_NO_VAR_NAMED_INSTANCE;
 
-  return font;
+  أرجع font;
 }
 
 /**
@@ -2150,23 +2150,23 @@ hb_font_create (hb_face_t *face)
 
 #ifndef HB_NO_VAR
   // Initialize variations.
-  if (likely (face))
+  𐤀𐤌 (likely (face))
   {
-    if (face->index >> 16)
+    𐤀𐤌 (face->index >> 16)
       hb_font_set_var_named_instance (font, (face->index >> 16) - 1);
-    else
+    وإلا
       hb_font_set_variations (font, nullptr, 0);
   }
 #endif
 
-  return font;
+  أرجع font;
 }
 
-static void
+ساكن فراغ
 _hb_font_adopt_var_coords (hb_font_t *font,
-			   int *coords, /* 2.14 normalized */
-			   float *design_coords,
-			   unsigned int coords_length)
+			   صحيح *coords, /* 2.14 normalized */
+			   عائم *design_coords,
+			   unsigned صحيح coords_length)
 {
   hb_free (font->coords);
   hb_free (font->design_coords);
@@ -2194,13 +2194,13 @@ _hb_font_adopt_var_coords (hb_font_t *font,
 hb_font_t *
 hb_font_create_sub_font (hb_font_t *parent)
 {
-  if (unlikely (!parent))
+  𐤀𐤌 (unlikely (!parent))
     parent = hb_font_get_empty ();
 
   hb_font_t *font = _hb_font_create (parent->face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  𐤀𐤌 (unlikely (hb_object_is_immutable (font)))
+    أرجع font;
 
   font->parent = hb_font_reference (parent);
 
@@ -2214,18 +2214,18 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->y_ppem = parent->y_ppem;
   font->ptem = parent->ptem;
 
-  unsigned int num_coords = parent->num_coords;
-  if (num_coords)
+  unsigned صحيح num_coords = parent->num_coords;
+  𐤀𐤌 (num_coords)
   {
-    int *coords = (int *) hb_calloc (num_coords, sizeof (parent->coords[0]));
-    float *design_coords = (float *) hb_calloc (num_coords, sizeof (parent->design_coords[0]));
-    if (likely (coords && design_coords))
+    صحيح *coords = (صحيح *) hb_calloc (num_coords, حجم (parent->coords[0]));
+    عائم *design_coords = (عائم *) hb_calloc (num_coords, حجم (parent->design_coords[0]));
+    𐤀𐤌 (likely (coords && design_coords))
     {
-      hb_memcpy (coords, parent->coords, num_coords * sizeof (parent->coords[0]));
-      hb_memcpy (design_coords, parent->design_coords, num_coords * sizeof (parent->design_coords[0]));
+      hb_memcpy (coords, parent->coords, num_coords * حجم (parent->coords[0]));
+      hb_memcpy (design_coords, parent->design_coords, num_coords * حجم (parent->design_coords[0]));
       _hb_font_adopt_var_coords (font, coords, design_coords, num_coords);
     }
-    else
+    وإلا
     {
       hb_free (coords);
       hb_free (design_coords);
@@ -2235,7 +2235,7 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->changed ();
   font->serial_coords = font->serial;
 
-  return font;
+  أرجع font;
 }
 
 /**
@@ -2250,7 +2250,7 @@ hb_font_create_sub_font (hb_font_t *parent)
 hb_font_t *
 hb_font_get_empty ()
 {
-  return const_cast<hb_font_t *> (&Null (hb_font_t));
+  أرجع const_cast<hb_font_t *> (&Null (hb_font_t));
 }
 
 /**
@@ -2266,7 +2266,7 @@ hb_font_get_empty ()
 hb_font_t *
 hb_font_reference (hb_font_t *font)
 {
-  return hb_object_reference (font);
+  أرجع hb_object_reference (font);
 }
 
 /**
@@ -2279,14 +2279,14 @@ hb_font_reference (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_destroy (hb_font_t *font)
 {
-  if (!hb_object_destroy (font)) return;
+  𐤀𐤌 (!hb_object_destroy (font)) أرجع;
 
   font->data.fini ();
 
-  if (font->destroy)
+  𐤀𐤌 (font->destroy)
     font->destroy (font->user_data);
 
   hb_font_destroy (font->parent);
@@ -2316,14 +2316,14 @@ hb_font_destroy (hb_font_t *font)
 hb_bool_t
 hb_font_set_user_data (hb_font_t          *font,
 		       hb_user_data_key_t *key,
-		       void *              data,
+		       فراغ *              data,
 		       hb_destroy_func_t   destroy /* May be NULL. */,
 		       hb_bool_t           replace)
 {
-  if (!hb_object_is_immutable (font))
+  𐤀𐤌 (!hb_object_is_immutable (font))
     font->changed ();
 
-  return hb_object_set_user_data (font, key, data, destroy, replace);
+  أرجع hb_object_set_user_data (font, key, data, destroy, replace);
 }
 
 /**
@@ -2338,11 +2338,11 @@ hb_font_set_user_data (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_get_user_data (const hb_font_t    *font,
+فراغ *
+hb_font_get_user_data (ثابت hb_font_t    *font,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (font, key);
+  أرجع hb_object_get_user_data (font, key);
 }
 
 /**
@@ -2353,13 +2353,13 @@ hb_font_get_user_data (const hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_make_immutable (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->parent)
+  𐤀𐤌 (font->parent)
     hb_font_make_immutable (font->parent);
 
   hb_object_make_immutable (font);
@@ -2378,7 +2378,7 @@ hb_font_make_immutable (hb_font_t *font)
 hb_bool_t
 hb_font_is_immutable (hb_font_t *font)
 {
-  return hb_object_is_immutable (font);
+  أرجع hb_object_is_immutable (font);
 }
 
 /**
@@ -2393,10 +2393,10 @@ hb_font_is_immutable (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-unsigned int
+unsigned صحيح
 hb_font_get_serial (hb_font_t *font)
 {
-  return font->serial.get_acquire ();
+  أرجع font->serial.get_acquire ();
 }
 
 /**
@@ -2409,11 +2409,11 @@ hb_font_get_serial (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-void
+فراغ
 hb_font_changed (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
   font->changed ();
 }
@@ -2427,22 +2427,22 @@ hb_font_changed (hb_font_t *font)
  *
  * Since: 1.0.5
  **/
-void
+فراغ
 hb_font_set_parent (hb_font_t *font,
 		    hb_font_t *parent)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (parent == font->parent)
-    return;
+  𐤀𐤌 (parent == font->parent)
+    أرجع;
 
-  if (!parent)
+  𐤀𐤌 (!parent)
     parent = hb_font_get_empty ();
 
-  for (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
-    if (p == font)
-      return; /* Would create a cycle - reject */
+  لكل (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
+    𐤀𐤌 (p == font)
+      أرجع; /* Would create a cycle - reject */
 
   hb_font_t *old = font->parent;
 
@@ -2466,7 +2466,7 @@ hb_font_set_parent (hb_font_t *font,
 hb_font_t *
 hb_font_get_parent (hb_font_t *font)
 {
-  return font->parent;
+  أرجع font->parent;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -2485,17 +2485,17 @@ hb_font_get_parent (hb_font_t *font)
  * Since: 1.4.3
  * XDeprecated: REPLACEME: Use hb_font_create() instead.
  **/
-void
+فراغ
 hb_font_set_face (hb_font_t *font,
 		  hb_face_t *face)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (face == font->face)
-    return;
+  𐤀𐤌 (face == font->face)
+    أرجع;
 
-  if (unlikely (!face))
+  𐤀𐤌 (unlikely (!face))
     face = hb_face_get_empty ();
 
   hb_face_t *old = font->face;
@@ -2528,7 +2528,7 @@ hb_font_set_face (hb_font_t *font,
 hb_face_t *
 hb_font_get_face (hb_font_t *font)
 {
-  return font->face;
+  أرجع font->face;
 }
 
 
@@ -2544,23 +2544,23 @@ hb_font_get_face (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_set_funcs (hb_font_t         *font,
 		   hb_font_funcs_t   *klass,
-		   void              *font_data,
+		   فراغ              *font_data,
 		   hb_destroy_func_t  destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (font))
+  𐤀𐤌 (hb_object_is_immutable (font))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (font_data);
-    return;
+    أرجع;
   }
 
-  if (font->destroy)
+  𐤀𐤌 (font->destroy)
     font->destroy (font->user_data);
 
-  if (!klass)
+  𐤀𐤌 (!klass)
     klass = hb_font_funcs_get_empty ();
 
   hb_font_funcs_reference (klass);
@@ -2583,20 +2583,20 @@ hb_font_set_funcs (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_set_funcs_data (hb_font_t         *font,
-		        void              *font_data,
+		        فراغ              *font_data,
 		        hb_destroy_func_t  destroy /* May be NULL. */)
 {
   /* Destroy user_data? */
-  if (hb_object_is_immutable (font))
+  𐤀𐤌 (hb_object_is_immutable (font))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (font_data);
-    return;
+    أرجع;
   }
 
-  if (font->destroy)
+  𐤀𐤌 (font->destroy)
     font->destroy (font->user_data);
 
   font->user_data = font_data;
@@ -2605,9 +2605,9 @@ hb_font_set_funcs_data (hb_font_t         *font,
   font->changed ();
 }
 
-static const struct supported_font_funcs_t {
-	char name[16];
-	void (*func) (hb_font_t *);
+ساكن ثابت بنية supported_font_funcs_t {
+	حرف name[16];
+	فراغ (*func) (hb_font_t *);
 } supported_font_funcs[] =
 {
 #ifndef HB_NO_OT_FONT
@@ -2627,19 +2627,19 @@ static const struct supported_font_funcs_t {
 #endif
 };
 
-static const char *get_default_funcs_name ()
+ساكن ثابت حرف *get_default_funcs_name ()
 {
-  static hb_atomic_t<const char *> static_funcs_name;
-  const char *name = static_funcs_name.get_acquire ();
-  if (!name)
+  ساكن hb_atomic_t<ثابت حرف *> static_funcs_name;
+  ثابت حرف *name = static_funcs_name.get_acquire ();
+  𐤀𐤌 (!name)
   {
     name = getenv ("HB_FONT_FUNCS");
-    if (!name)
+    𐤀𐤌 (!name)
       name = "";
-    if (!static_funcs_name.cmpexch (nullptr, name))
+    𐤀𐤌 (!static_funcs_name.cmpexch (nullptr, name))
       name = static_funcs_name.get_acquire ();
   }
-  return name;
+  أرجع name;
 }
 
 /**
@@ -2660,69 +2660,69 @@ static const char *get_default_funcs_name ()
  **/
 hb_bool_t
 hb_font_set_funcs_using (hb_font_t  *font,
-			 const char *name)
+			 ثابت حرف *name)
 {
-  if (unlikely (hb_object_is_immutable (font)))
-    return false;
+  𐤀𐤌 (unlikely (hb_object_is_immutable (font)))
+    أرجع خطأ;
 
-  bool retry = false;
+  منطقي retry = خطأ;
 
-  if (!name || !*name)
+  𐤀𐤌 (!name || !*name)
   {
     name = get_default_funcs_name ();
     retry = true;
   }
-  if (name && !*name) name = nullptr;
+  𐤀𐤌 (name && !*name) name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
-    if (!name || strcmp (supported_font_funcs[i].name, name) == 0)
+  لكل (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    𐤀𐤌 (!name || strcmp (supported_font_funcs[i].name, name) == 0)
     {
       supported_font_funcs[i].func (font);
-      if (name || font->klass != hb_font_funcs_get_empty ())
-	return true;
+      𐤀𐤌 (name || font->klass != hb_font_funcs_get_empty ())
+	أرجع true;
     }
 
-  if (retry)
+  𐤀𐤌 (retry)
   {
-    retry = false;
+    retry = خطأ;
     name = nullptr;
-    goto retry;
+    اذهب retry;
   }
 
-  return false;
+  أرجع خطأ;
 }
 
-static inline void free_static_font_funcs_list ();
+ساكن مضمن فراغ free_static_font_funcs_list ();
 
-static const char * const nil_font_funcs_list[] = {nullptr};
+ساكن ثابت حرف * ثابت nil_font_funcs_list[] = {nullptr};
 
-static struct hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+ساكن بنية hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<ثابت حرف *,
 								  hb_font_funcs_list_lazy_loader_t>
 {
-  static const char ** create ()
+  ساكن ثابت حرف ** create ()
   {
-    const char **font_funcs_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), sizeof (const char *));
-    if (unlikely (!font_funcs_list))
-      return nullptr;
+    ثابت حرف **font_funcs_list = (ثابت حرف **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), حجم (ثابت حرف *));
+    𐤀𐤌 (unlikely (!font_funcs_list))
+      أرجع nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    لكل (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
       font_funcs_list[i] = supported_font_funcs[i].name;
     font_funcs_list[i] = nullptr;
 
     hb_atexit (free_static_font_funcs_list);
 
-    return font_funcs_list;
+    أرجع font_funcs_list;
   }
-  static void destroy (const char **l)
+  ساكن فراغ destroy (ثابت حرف **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_font_funcs_list; }
+  ساكن ثابت حرف * ثابت * get_null ()
+  { أرجع nil_font_funcs_list; }
 } static_font_funcs_list;
 
-static inline
-void free_static_font_funcs_list ()
+ساكن مضمن
+فراغ free_static_font_funcs_list ()
 {
   static_font_funcs_list.free_instance ();
 }
@@ -2739,10 +2739,10 @@ void free_static_font_funcs_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+ثابت حرف **
 hb_font_list_funcs ()
 {
-  return static_font_funcs_list.get_unconst ();
+  أرجع static_font_funcs_list.get_unconst ();
 }
 
 /**
@@ -2780,16 +2780,16 @@ hb_font_list_funcs ()
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_set_scale (hb_font_t *font,
-		   int        x_scale,
-		   int        y_scale)
+		   صحيح        x_scale,
+		   صحيح        y_scale)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->x_scale == x_scale && font->y_scale == y_scale)
-    return;
+  𐤀𐤌 (font->x_scale == x_scale && font->y_scale == y_scale)
+    أرجع;
 
   font->x_scale = x_scale;
   font->y_scale = y_scale;
@@ -2807,13 +2807,13 @@ hb_font_set_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_get_scale (hb_font_t *font,
-		   int       *x_scale,
-		   int       *y_scale)
+		   صحيح       *x_scale,
+		   صحيح       *y_scale)
 {
-  if (x_scale) *x_scale = font->x_scale;
-  if (y_scale) *y_scale = font->y_scale;
+  𐤀𐤌 (x_scale) *x_scale = font->x_scale;
+  𐤀𐤌 (y_scale) *y_scale = font->y_scale;
 }
 
 /**
@@ -2830,16 +2830,16 @@ hb_font_get_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_set_ppem (hb_font_t    *font,
-		  unsigned int  x_ppem,
-		  unsigned int  y_ppem)
+		  unsigned صحيح  x_ppem,
+		  unsigned صحيح  y_ppem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
-    return;
+  𐤀𐤌 (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
+    أرجع;
 
   font->x_ppem = x_ppem;
   font->y_ppem = y_ppem;
@@ -2857,13 +2857,13 @@ hb_font_set_ppem (hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_font_get_ppem (hb_font_t    *font,
-		  unsigned int *x_ppem,
-		  unsigned int *y_ppem)
+		  unsigned صحيح *x_ppem,
+		  unsigned صحيح *y_ppem)
 {
-  if (x_ppem) *x_ppem = font->x_ppem;
-  if (y_ppem) *y_ppem = font->y_ppem;
+  𐤀𐤌 (x_ppem) *x_ppem = font->x_ppem;
+  𐤀𐤌 (y_ppem) *y_ppem = font->y_ppem;
 }
 
 /**
@@ -2878,15 +2878,15 @@ hb_font_get_ppem (hb_font_t    *font,
  *
  * Since: 1.6.0
  **/
-void
+فراغ
 hb_font_set_ptem (hb_font_t *font,
-		  float      ptem)
+		  عائم      ptem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->ptem == ptem)
-    return;
+  𐤀𐤌 (font->ptem == ptem)
+    أرجع;
 
   font->ptem = ptem;
 
@@ -2904,10 +2904,10 @@ hb_font_set_ptem (hb_font_t *font,
  *
  * Since: 1.6.0
  **/
-float
+عائم
 hb_font_get_ptem (hb_font_t *font)
 {
-  return font->ptem;
+  أرجع font->ptem;
 }
 
 /**
@@ -2924,7 +2924,7 @@ hb_font_get_ptem (hb_font_t *font)
 hb_bool_t
 hb_font_is_synthetic (hb_font_t *font)
 {
-  return font->is_synthetic;
+  أرجع font->is_synthetic;
 }
 
 /**
@@ -2953,19 +2953,19 @@ hb_font_is_synthetic (hb_font_t *font)
  *
  * Since: 7.0.0
  **/
-void
+فراغ
 hb_font_set_synthetic_bold (hb_font_t *font,
-			    float x_embolden,
-			    float y_embolden,
+			    عائم x_embolden,
+			    عائم y_embolden,
 			    hb_bool_t in_place)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->x_embolden == x_embolden &&
+  𐤀𐤌 (font->x_embolden == x_embolden &&
       font->y_embolden == y_embolden &&
-      font->embolden_in_place == (bool) in_place)
-    return;
+      font->embolden_in_place == (منطقي) in_place)
+    أرجع;
 
   font->x_embolden = x_embolden;
   font->y_embolden = y_embolden;
@@ -2985,15 +2985,15 @@ hb_font_set_synthetic_bold (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-void
+فراغ
 hb_font_get_synthetic_bold (hb_font_t *font,
-			    float *x_embolden,
-			    float *y_embolden,
+			    عائم *x_embolden,
+			    عائم *y_embolden,
 			    hb_bool_t *in_place)
 {
-  if (x_embolden) *x_embolden = font->x_embolden;
-  if (y_embolden) *y_embolden = font->y_embolden;
-  if (in_place) *in_place = font->embolden_in_place;
+  𐤀𐤌 (x_embolden) *x_embolden = font->x_embolden;
+  𐤀𐤌 (y_embolden) *y_embolden = font->y_embolden;
+  𐤀𐤌 (in_place) *in_place = font->embolden_in_place;
 }
 
 /**
@@ -3016,14 +3016,14 @@ hb_font_get_synthetic_bold (hb_font_t *font,
  *
  * Since: 3.3.0
  **/
-HB_EXTERN void
-hb_font_set_synthetic_slant (hb_font_t *font, float slant)
+HB_EXTERN فراغ
+hb_font_set_synthetic_slant (hb_font_t *font, عائم slant)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->slant == slant)
-    return;
+  𐤀𐤌 (font->slant == slant)
+    أرجع;
 
   font->slant = slant;
 
@@ -3040,10 +3040,10 @@ hb_font_set_synthetic_slant (hb_font_t *font, float slant)
  *
  * Since: 3.3.0
  **/
-HB_EXTERN float
+HB_EXTERN عائم
 hb_font_get_synthetic_slant (hb_font_t *font)
 {
-  return font->slant;
+  أرجع font->slant;
 }
 
 #ifndef HB_NO_VAR
@@ -3065,32 +3065,32 @@ hb_font_get_synthetic_slant (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
+فراغ
 hb_font_set_variations (hb_font_t            *font,
-			const hb_variation_t *variations,
-			unsigned int          variations_length)
+			ثابت hb_variation_t *variations,
+			unsigned صحيح          variations_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
+  ثابت OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  ثابت unsigned coords_length = axes.length;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  صحيح *normalized = coords_length ? (صحيح *) hb_calloc (coords_length, حجم (صحيح)) : nullptr;
+  عائم *design_coords = coords_length ? (عائم *) hb_calloc (coords_length, حجم (عائم)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  𐤀𐤌 (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    أرجع;
   }
 
   /* Initialize design coords. */
-  for (unsigned int i = 0; i < coords_length; i++)
+  لكل (unsigned صحيح i = 0; i < coords_length; i++)
     design_coords[i] = axes[i].get_default ();
-  if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+  𐤀𐤌 (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
   {
     unsigned count = coords_length;
     /* This may fail if index is out-of-range;
@@ -3100,12 +3100,12 @@ hb_font_set_variations (hb_font_t            *font,
 						&count, design_coords);
   }
 
-  for (unsigned int i = 0; i < variations_length; i++)
+  لكل (unsigned صحيح i = 0; i < variations_length; i++)
   {
-    const auto tag = variations[i].tag;
-    const auto v = variations[i].value;
-    for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-      if (axes[axis_index].axisTag == tag)
+    ثابت auto tag = variations[i].tag;
+    ثابت auto v = variations[i].value;
+    لكل (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
+      𐤀𐤌 (axes[axis_index].axisTag == tag)
 	design_coords[axis_index] = v;
   }
 
@@ -3127,42 +3127,42 @@ hb_font_set_variations (hb_font_t            *font,
  *
  * Since: 7.1.0
  */
-void
+فراغ
 hb_font_set_variation (hb_font_t *font,
 		       hb_tag_t tag,
-		       float    value)
+		       عائم    value)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
   // TODO Share some of this code with set_variations()
 
-  const OT::fvar &fvar = *font->face->table.fvar;
+  ثابت OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  ثابت unsigned coords_length = axes.length;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  صحيح *normalized = coords_length ? (صحيح *) hb_calloc (coords_length, حجم (صحيح)) : nullptr;
+  عائم *design_coords = coords_length ? (عائم *) hb_calloc (coords_length, حجم (عائم)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  𐤀𐤌 (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    أرجع;
   }
 
   /* Initialize design coords.
    * The font's coords may belong to another face after hb_font_set_face(). */
-  if (font->design_coords && font->num_coords == coords_length)
+  𐤀𐤌 (font->design_coords && font->num_coords == coords_length)
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    لكل (unsigned صحيح i = 0; i < coords_length; i++)
       design_coords[i] = font->design_coords[i];
   }
-  else
+  وإلا
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    لكل (unsigned صحيح i = 0; i < coords_length; i++)
       design_coords[i] = axes[i].get_default ();
-    if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+    𐤀𐤌 (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
     {
       unsigned count = coords_length;
       /* This may fail if index is out-of-range;
@@ -3173,8 +3173,8 @@ hb_font_set_variation (hb_font_t *font,
     }
   }
 
-  for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-    if (axes[axis_index].axisTag == tag)
+  لكل (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
+    𐤀𐤌 (axes[axis_index].axisTag == tag)
       design_coords[axis_index] = value;
 
   hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
@@ -3196,33 +3196,33 @@ hb_font_set_variation (hb_font_t *font,
  *
  * Since: 1.4.2
  */
-void
+فراغ
 hb_font_set_var_coords_design (hb_font_t    *font,
-			       const float  *coords,
-			       unsigned int  input_coords_length)
+			       ثابت عائم  *coords,
+			       unsigned صحيح  input_coords_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
+  ثابت OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  ثابت unsigned coords_length = axes.length;
 
   input_coords_length = hb_min (input_coords_length, coords_length);
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  صحيح *normalized = coords_length ? (صحيح *) hb_calloc (coords_length, حجم (صحيح)) : nullptr;
+  عائم *design_coords = coords_length ? (عائم *) hb_calloc (coords_length, حجم (عائم)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  𐤀𐤌 (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    أرجع;
   }
 
-  if (input_coords_length)
-    hb_memcpy (design_coords, coords, input_coords_length * sizeof (font->design_coords[0]));
+  𐤀𐤌 (input_coords_length)
+    hb_memcpy (design_coords, coords, input_coords_length * حجم (font->design_coords[0]));
   // Fill in the rest with default values
-  for (unsigned int i = input_coords_length; i < coords_length; i++)
+  لكل (unsigned صحيح i = input_coords_length; i < coords_length; i++)
     design_coords[i] = axes[i].get_default ();
 
   hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
@@ -3238,15 +3238,15 @@ hb_font_set_var_coords_design (hb_font_t    *font,
  *
  * Since: 2.6.0
  */
-void
+فراغ
 hb_font_set_var_named_instance (hb_font_t *font,
-				unsigned int instance_index)
+				unsigned صحيح instance_index)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  if (font->instance_index == instance_index)
-    return;
+  𐤀𐤌 (font->instance_index == instance_index)
+    أرجع;
 
   font->instance_index = instance_index;
   hb_font_set_variations (font, nullptr, 0);
@@ -3262,10 +3262,10 @@ hb_font_set_var_named_instance (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-unsigned int
+unsigned صحيح
 hb_font_get_var_named_instance (hb_font_t *font)
 {
-  return font->instance_index;
+  أرجع font->instance_index;
 }
 
 /**
@@ -3285,33 +3285,33 @@ hb_font_get_var_named_instance (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
+فراغ
 hb_font_set_var_coords_normalized (hb_font_t    *font,
-				   const int    *coords, /* 2.14 normalized */
-				   unsigned int  input_coords_length)
+				   ثابت صحيح    *coords, /* 2.14 normalized */
+				   unsigned صحيح  input_coords_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  𐤀𐤌 (hb_object_is_immutable (font))
+    أرجع;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
+  ثابت OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
   unsigned coords_length = axes.length;
 
   input_coords_length = hb_min (input_coords_length, coords_length);
-  int *copy = coords_length ? (int *) hb_calloc (coords_length, sizeof (coords[0])) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (design_coords[0])) : nullptr;
+  صحيح *copy = coords_length ? (صحيح *) hb_calloc (coords_length, حجم (coords[0])) : nullptr;
+  عائم *design_coords = coords_length ? (عائم *) hb_calloc (coords_length, حجم (design_coords[0])) : nullptr;
 
-  if (unlikely (coords_length && !(copy && design_coords)))
+  𐤀𐤌 (unlikely (coords_length && !(copy && design_coords)))
   {
     hb_free (copy);
     hb_free (design_coords);
-    return;
+    أرجع;
   }
 
-  if (input_coords_length)
-    hb_memcpy (copy, coords, input_coords_length * sizeof (coords[0]));
+  𐤀𐤌 (input_coords_length)
+    hb_memcpy (copy, coords, input_coords_length * حجم (coords[0]));
 
-  for (unsigned int i = 0; i < coords_length; ++i)
+  لكل (unsigned صحيح i = 0; i < coords_length; ++i)
     design_coords[i] = NAN;
 
   _hb_font_adopt_var_coords (font, copy, design_coords, coords_length);
@@ -3335,14 +3335,14 @@ hb_font_set_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 1.4.2
  */
-const int *
+ثابت صحيح *
 hb_font_get_var_coords_normalized (hb_font_t    *font,
-				   unsigned int *length)
+				   unsigned صحيح *length)
 {
-  if (length)
+  𐤀𐤌 (length)
     *length = font->num_coords;
 
-  return font->coords;
+  أرجع font->coords;
 }
 
 /**
@@ -3367,14 +3367,14 @@ hb_font_get_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 3.3.0
  */
-const float *
+ثابت عائم *
 hb_font_get_var_coords_design (hb_font_t *font,
-			       unsigned int *length)
+			       unsigned صحيح *length)
 {
-  if (length)
+  𐤀𐤌 (length)
     *length = font->num_coords;
 
-  return font->design_coords;
+  أرجع font->design_coords;
 }
 #endif
 
@@ -3383,83 +3383,83 @@ hb_font_get_var_coords_design (hb_font_t *font,
  * Deprecated get_glyph_func():
  */
 
-struct hb_trampoline_closure_t
+بنية hb_trampoline_closure_t
 {
-  void *user_data;
+  فراغ *user_data;
   hb_destroy_func_t destroy;
-  unsigned int ref_count;
+  unsigned صحيح ref_count;
 };
 
 template <typename FuncType>
-struct hb_trampoline_t
+بنية hb_trampoline_t
 {
   hb_trampoline_closure_t closure; /* Must be first. */
   FuncType func;
 };
 
 template <typename FuncType>
-static hb_trampoline_t<FuncType> *
+ساكن hb_trampoline_t<FuncType> *
 trampoline_create (FuncType           func,
-		   void              *user_data,
+		   فراغ              *user_data,
 		   hb_destroy_func_t  destroy)
 {
-  typedef hb_trampoline_t<FuncType> trampoline_t;
+  تعريفنوع hb_trampoline_t<FuncType> trampoline_t;
 
-  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, sizeof (trampoline_t));
+  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, حجم (trampoline_t));
 
-  if (unlikely (!trampoline))
-    return nullptr;
+  𐤀𐤌 (unlikely (!trampoline))
+    أرجع nullptr;
 
   trampoline->closure.user_data = user_data;
   trampoline->closure.destroy = destroy;
   trampoline->closure.ref_count = 1;
   trampoline->func = func;
 
-  return trampoline;
+  أرجع trampoline;
 }
 
-static void
+ساكن فراغ
 trampoline_reference (hb_trampoline_closure_t *closure)
 {
   closure->ref_count++;
 }
 
-static void
-trampoline_destroy (void *user_data)
+ساكن فراغ
+trampoline_destroy (فراغ *user_data)
 {
   hb_trampoline_closure_t *closure = (hb_trampoline_closure_t *) user_data;
 
-  if (--closure->ref_count)
-    return;
+  𐤀𐤌 (--closure->ref_count)
+    أرجع;
 
-  if (closure->destroy)
+  𐤀𐤌 (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
 
-typedef hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
+تعريفنوع hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_nominal_glyph_trampoline (hb_font_t      *font,
-				      void           *font_data,
+				      فراغ           *font_data,
 				      hb_codepoint_t  unicode,
 				      hb_codepoint_t *glyph,
-				      void           *user_data)
+				      فراغ           *user_data)
 {
   hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
+  أرجع trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
-					void           *font_data,
+					فراغ           *font_data,
 					hb_codepoint_t  unicode,
 					hb_codepoint_t  variation_selector,
 					hb_codepoint_t *glyph,
-					void           *user_data)
+					فراغ           *user_data)
 {
   hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
+  أرجع trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
 }
 
 /**
@@ -3475,27 +3475,27 @@ hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
  * Since: 0.9.2
  * Deprecated: 1.2.3
  **/
-void
+فراغ
 hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 			      hb_font_get_glyph_func_t  func,
-			      void                     *user_data,
+			      فراغ                     *user_data,
 			      hb_destroy_func_t         destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  𐤀𐤌 (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
 
   hb_font_get_glyph_trampoline_t *trampoline;
 
   trampoline = trampoline_create (func, user_data, destroy);
-  if (unlikely (!trampoline))
+  𐤀𐤌 (unlikely (!trampoline))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
 
   /* Since we pass it to two destroying functions. */
@@ -3516,51 +3516,51 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 
 #ifndef HB_DISABLE_DEPRECATED
 
-struct hb_draw_glyph_closure_t
+بنية hb_draw_glyph_closure_t
 {
   hb_font_draw_glyph_func_t func;
-  void *user_data;
+  فراغ *user_data;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_draw_glyph_trampoline (hb_font_t       *font,
-			       void            *font_data,
+			       فراغ            *font_data,
 			       hb_codepoint_t   glyph,
 			       hb_draw_funcs_t *draw_funcs,
-			       void            *draw_data,
-			       void            *user_data)
+			       فراغ            *draw_data,
+			       فراغ            *user_data)
 {
   hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
   closure->func (font, font_data, glyph, draw_funcs, draw_data, closure->user_data);
-  return true;
+  أرجع true;
 }
-static void
-hb_font_draw_glyph_closure_destroy (void *user_data)
+ساكن فراغ
+hb_font_draw_glyph_closure_destroy (فراغ *user_data)
 {
   hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
 
-  if (closure->destroy)
+  𐤀𐤌 (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
-static void
+ساكن فراغ
 _hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
 				    hb_font_draw_glyph_func_t  func,
-				    void                      *user_data,
+				    فراغ                      *user_data,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  𐤀𐤌 (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, sizeof (hb_draw_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, حجم (hb_draw_glyph_closure_t));
+  𐤀𐤌 (unlikely (!closure))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
   closure->func = func;
   closure->user_data = user_data;
@@ -3571,70 +3571,70 @@ _hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
 					     closure,
 					     hb_font_draw_glyph_closure_destroy);
 }
-void
+فراغ
 hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
                                    hb_font_draw_glyph_func_t  func,
-                                   void                      *user_data,
+                                   فراغ                      *user_data,
                                    hb_destroy_func_t          destroy /* May be NULL. */)
 {
   _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
 }
-void
+فراغ
 hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t               *ffuncs,
                                    hb_font_get_glyph_shape_func_t  func,
-                                   void                           *user_data,
+                                   فراغ                           *user_data,
                                    hb_destroy_func_t               destroy /* May be NULL. */)
 {
   _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
 }
 
-struct hb_paint_glyph_closure_t
+بنية hb_paint_glyph_closure_t
 {
   hb_font_paint_glyph_func_t func;
-  void *user_data;
+  فراغ *user_data;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+ساكن hb_bool_t
 hb_font_paint_glyph_trampoline (hb_font_t        *font,
-				void *font_data,
+				فراغ *font_data,
 				hb_codepoint_t glyph,
 				hb_paint_funcs_t *paint_funcs,
-				void *paint_data,
-				unsigned int palette,
+				فراغ *paint_data,
+				unsigned صحيح palette,
 				hb_color_t foreground,
-				void *user_data)
+				فراغ *user_data)
 {
   hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
   closure->func (font, font_data, glyph, paint_funcs, paint_data, palette, foreground, closure->user_data);
-  return true;
+  أرجع true;
 }
-static void
-hb_font_paint_glyph_closure_destroy (void *user_data)
+ساكن فراغ
+hb_font_paint_glyph_closure_destroy (فراغ *user_data)
 {
   hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
 
-  if (closure->destroy)
+  𐤀𐤌 (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
-void
+فراغ
 hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t           *ffuncs,
 				    hb_font_paint_glyph_func_t  func,
-				    void                      *user_data,
+				    فراغ                      *user_data,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  𐤀𐤌 (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, sizeof (hb_paint_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, حجم (hb_paint_glyph_closure_t));
+  𐤀𐤌 (unlikely (!closure))
   {
-    if (destroy)
+    𐤀𐤌 (destroy)
       destroy (user_data);
-    return;
+    أرجع;
   }
   closure->func = func;
   closure->user_data = user_data;

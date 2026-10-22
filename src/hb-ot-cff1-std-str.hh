@@ -25,9 +25,9 @@
  */
 
 #ifndef HB_OT_CFF1_STD_STR_HH
-#if 0 /* Make checks happy. */
+#𐤀𐤌 0 /* Make checks happy. */
 #define HB_OT_CFF1_STD_STR_HH
-#include "hb.hh"
+#ضمن "hb.hh"
 #endif
 
 HB_STR(".notdef")

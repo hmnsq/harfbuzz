@@ -28,26 +28,26 @@
 #define HB_SUBSET_TABLE_HH
 
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-subset.hh"
-#include "hb-repacker.hh"
+#ضمن "hb-subset.hh"
+#ضمن "hb-repacker.hh"
 
 
 template<typename TableType>
-static bool
-_hb_subset_table_try (const TableType *table,
-		      hb_vector_t<char>* buf,
+ساكن منطقي
+_hb_subset_table_try (ثابت TableType *table,
+		      hb_vector_t<حرف>* buf,
 		      hb_subset_context_t* c /* OUT */)
 {
   c->serializer->start_serialize ();
-  if (c->serializer->in_error ()) return false;
+  𐤀𐤌 (c->serializer->in_error ()) أرجع خطأ;
 
-  bool needed = table->subset (c);
-  if (!c->serializer->ran_out_of_room ())
+  منطقي needed = table->subset (c);
+  𐤀𐤌 (!c->serializer->ran_out_of_room ())
   {
     c->serializer->end_serialize ();
-    return needed;
+    أرجع needed;
   }
 
   unsigned buf_size = buf->allocated;
@@ -59,19 +59,19 @@ _hb_subset_table_try (const TableType *table,
   DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c ran out of room; reallocating to %u bytes.",
              HB_UNTAG (c->table_tag), buf_size);
 
-  if (unlikely (buf_size > c->source_blob->length * 256 ||
+  𐤀𐤌 (unlikely (buf_size > c->source_blob->length * 256 ||
 		!buf->alloc_exact (buf_size)))
   {
     DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to reallocate %u bytes.",
                HB_UNTAG (c->table_tag), buf_size);
-    return needed;
+    أرجع needed;
   }
 
   c->serializer->reset (buf->arrayZ, buf->allocated);
-  return _hb_subset_table_try (table, buf, c);
+  أرجع _hb_subset_table_try (table, buf, c);
 }
 
-static HB_UNUSED unsigned
+ساكن HB_UNUSED unsigned
 _hb_subset_estimate_table_size (hb_subset_plan_t *plan,
 				unsigned table_len,
 				hb_tag_t table_tag)
@@ -82,86 +82,86 @@ _hb_subset_estimate_table_size (hb_subset_plan_t *plan,
   unsigned bulk = 8192;
   /* Tables that we want to allocate same space as the source table. For GSUB/GPOS it's
    * because those are expensive to subset, so giving them more room is fine. */
-  bool same_size = table_tag == HB_TAG('G','S','U','B') ||
+  منطقي same_size = table_tag == HB_TAG('G','S','U','B') ||
 		   table_tag == HB_TAG('G','P','O','S') ||
 		   table_tag == HB_TAG('G','D','E','F') ||
 		   table_tag == HB_TAG('n','a','m','e');
 
-  if (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
+  𐤀𐤌 (plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS)
   {
-    if (table_tag == HB_TAG('C','F','F',' '))
+    𐤀𐤌 (table_tag == HB_TAG('C','F','F',' '))
     {
       /* Add some extra room for the CFF charset. */
       bulk += src_glyphs * 16;
     }
-    else if (table_tag == HB_TAG('C','F','F','2'))
+    وإلا 𐤀𐤌 (table_tag == HB_TAG('C','F','F','2'))
     {
       /* Just extra CharString offsets. */
       bulk += src_glyphs * 4;
     }
   }
 
-  if (unlikely (!src_glyphs) || same_size)
-    return bulk + table_len;
+  𐤀𐤌 (unlikely (!src_glyphs) || same_size)
+    أرجع bulk + table_len;
 
-  return bulk + (unsigned) (table_len * sqrt ((double) dst_glyphs / src_glyphs));
+  أرجع bulk + (unsigned) (table_len * sqrt ((مزدوج) dst_glyphs / src_glyphs));
 }
 
 /*
  * Repack the serialization buffer if any offset overflows exist.
  */
-static HB_UNUSED hb_blob_t*
-_hb_subset_repack (hb_tag_t tag, const hb_serialize_context_t& c)
+ساكن HB_UNUSED hb_blob_t*
+_hb_subset_repack (hb_tag_t tag, ثابت hb_serialize_context_t& c)
 {
-  if (!c.offset_overflow ())
-    return c.copy_blob ();
+  𐤀𐤌 (!c.offset_overflow ())
+    أرجع c.copy_blob ();
 
   hb_blob_t* result = hb_resolve_overflows (c.object_graph (), tag);
 
-  if (unlikely (!result))
+  𐤀𐤌 (unlikely (!result))
   {
     DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c offset overflow resolution failed.",
                HB_UNTAG (tag));
-    return nullptr;
+    أرجع nullptr;
   }
 
-  return result;
+  أرجع result;
 }
 
 template <typename T>
-static HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (void, t.destroy ())
+ساكن HB_UNUSED auto _hb_do_destroy (T &t, hb_priority<1>) HB_RETURN (فراغ, t.destroy ())
 
 template <typename T>
-static HB_UNUSED void _hb_do_destroy (T &t, hb_priority<0>) {}
+ساكن HB_UNUSED فراغ _hb_do_destroy (T &t, hb_priority<0>) {}
 
 template<typename TableType>
-static bool
-_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
+ساكن منطقي
+_hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<حرف> &buf)
 {
   auto &&source_blob = plan->source_table<TableType> ();
   auto *table = source_blob.get ();
 
   hb_tag_t tag = TableType::tableTag;
   hb_blob_t *blob = source_blob.get_blob();
-  if (unlikely (!blob || !blob->data))
+  𐤀𐤌 (unlikely (!blob || !blob->data))
   {
     DEBUG_MSG (SUBSET, nullptr,
                "OT::%c%c%c%c::subset sanitize failed on source table.", HB_UNTAG (tag));
     _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    أرجع خطأ;
   }
 
   unsigned buf_size = _hb_subset_estimate_table_size (plan, blob->length, TableType::tableTag);
   DEBUG_MSG (SUBSET, nullptr,
              "OT::%c%c%c%c initial estimated table size: %u bytes.", HB_UNTAG (tag), buf_size);
-  if (unlikely (!buf.alloc (buf_size)))
+  𐤀𐤌 (unlikely (!buf.alloc (buf_size)))
   {
     DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c failed to allocate %u bytes.", HB_UNTAG (tag), buf_size);
     _hb_do_destroy (source_blob, hb_prioritize);
-    return false;
+    أرجع خطأ;
   }
 
-  bool needed = false;
+  منطقي needed = خطأ;
   hb_serialize_context_t serializer (buf.arrayZ, buf.allocated);
   {
     hb_subset_context_t c (blob, plan, &serializer, tag);
@@ -169,21 +169,21 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
   }
   _hb_do_destroy (source_blob, hb_prioritize);
 
-  if (serializer.in_error () && !serializer.only_offset_overflow ())
+  𐤀𐤌 (serializer.in_error () && !serializer.only_offset_overflow ())
   {
     DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset FAILED!", HB_UNTAG (tag));
-    return false;
+    أرجع خطأ;
   }
 
-  if (!needed)
+  𐤀𐤌 (!needed)
   {
     DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset table subsetted to empty.", HB_UNTAG (tag));
-    return true;
+    أرجع true;
   }
 
-  bool result = false;
+  منطقي result = خطأ;
   hb_blob_t *dest_blob = _hb_subset_repack (tag, serializer);
-  if (dest_blob)
+  𐤀𐤌 (dest_blob)
   {
     DEBUG_MSG (SUBSET, nullptr,
                "OT::%c%c%c%c final subset table size: %u bytes.",
@@ -194,24 +194,24 @@ _hb_subset_table (hb_subset_plan_t *plan, hb_vector_t<char> &buf)
 
   DEBUG_MSG (SUBSET, nullptr, "OT::%c%c%c%c::subset %s",
              HB_UNTAG (tag), result ? "success" : "FAILED!");
-  return result;
+  أرجع result;
 }
 
-static HB_UNUSED bool
+ساكن HB_UNUSED منطقي
 _hb_subset_table_passthrough (hb_subset_plan_t *plan, hb_tag_t tag)
 {
   hb_blob_t *source_table = hb_face_reference_table (plan->source, tag);
-  bool result = plan->add_table (tag, source_table);
+  منطقي result = plan->add_table (tag, source_table);
   hb_blob_destroy (source_table);
-  return result;
+  أرجع result;
 }
 
 
-HB_INTERNAL bool _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
-HB_INTERNAL bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success);
+HB_INTERNAL منطقي _hb_subset_table_layout	(hb_subset_plan_t *plan, hb_vector_t<حرف> &buf, hb_tag_t tag, منطقي *success);
+HB_INTERNAL منطقي _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<حرف> &buf, hb_tag_t tag, منطقي *success);
+HB_INTERNAL منطقي _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<حرف> &buf, hb_tag_t tag, منطقي *success);
+HB_INTERNAL منطقي _hb_subset_table_color		(hb_subset_plan_t *plan, hb_vector_t<حرف> &buf, hb_tag_t tag, منطقي *success);
+HB_INTERNAL منطقي _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<حرف> &buf, hb_tag_t tag, منطقي *success);
 
 
 #endif /* HB_SUBSET_TABLE_HH */

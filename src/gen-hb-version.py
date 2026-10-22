@@ -2,9 +2,9 @@
 
 "This tool is intended to be used from meson"
 
-import os, sys, shutil, re
+استورد os, sys, shutil, re
 
-if len (sys.argv) < 4:
+𐤀𐤌 len (sys.argv) < 4:
 	sys.exit(__doc__)
 
 version = sys.argv[1]
@@ -14,18 +14,18 @@ OUTPUT = sys.argv[2]
 INPUT = sys.argv[3]
 CURRENT_SOURCE_DIR = os.path.dirname(INPUT)
 
-try:
-	with open (OUTPUT, "r", encoding='utf-8') as old_output:
-		for line in old_output:
+حاول:
+	with open (OUTPUT, "r", encoding='utf-8') كـ old_output:
+		لكل line في old_output:
 			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", line)
-			if old_version and old_version[1] == version:
+			𐤀𐤌 old_version 𐤅 old_version[1] == version:
 				sys.exit ()
-except IOError:
+استثناء IOError:
 	pass
 
-with open (INPUT, "r", encoding='utf-8') as template:
-	with open (OUTPUT, "wb") as output:
-		output.write (template.read ()
+with open (INPUT, "r", encoding='utf-8') كـ template:
+	with open (OUTPUT, "wb") كـ output:
+		output.اكتب (template.اقرأ ()
 			.replace ("@HB_VERSION_MAJOR@", major)
 			.replace ("@HB_VERSION_MINOR@", minor)
 			.replace ("@HB_VERSION_MICRO@", micro)
@@ -34,7 +34,7 @@ with open (INPUT, "r", encoding='utf-8') as template:
 
 # copy it also to the source tree, but only if it has changed
 baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
-with open(baseline_filename, "rb") as baseline:
-	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+with open(baseline_filename, "rb") كـ baseline:
+	with open(OUTPUT, "rb") كـ generated:
+		𐤀𐤌 baseline.اقرأ() != generated.اقرأ():
 			shutil.copyfile (OUTPUT, baseline_filename)
