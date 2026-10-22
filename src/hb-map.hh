@@ -49,20 +49,20 @@ struct hb_hashmap_t
 
   void _copy (const hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    если (unlikely (!o.successful))
     {
       successful = false;
-      return;
+      вернуть;
     }
-    if (unlikely (!o.mask)) return;
+    если (unlikely (!o.mask)) вернуть;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    если (hb_is_trivially_copy_assignable (item_t))
     {
       items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      если (unlikely (!items))
       {
 	successful = false;
-	return;
+	вернуть;
       }
       population = o.population;
       occupancy = o.occupancy;
@@ -70,7 +70,7 @@ struct hb_hashmap_t
       prime = o.prime;
       max_chain_length = o.max_chain_length;
       memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      вернуть;
     }
 
     alloc (o.population); hb_copy (o, *this);
@@ -80,16 +80,16 @@ struct hb_hashmap_t
   hb_hashmap_t& operator= (const hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    если (!items) { _copy (o); вернуть *this; }
+    alloc (o.population); hb_copy (o, *this); вернуть *this;
   }
 
   hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); вернуть *this; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
-    for (auto&& item : lst)
+    для (auto&& item : lst)
       set (item.first, item.second);
   }
   template <typename Iterable,
@@ -97,7 +97,7 @@ struct hb_hashmap_t
   hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    если (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
     hb_copy (iter, *this);
   }
@@ -116,32 +116,32 @@ struct hb_hashmap_t
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_key () { вернуть key; }
+    V& get_value () { вернуть value; }
 
-    bool is_used () const { return is_used_; }
+    bool is_used () const { вернуть is_used_; }
     void set_used (bool is_used) { is_used_ = is_used; }
     void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    bool is_real () const { вернуть is_real_; }
 
     template <bool v = minus_one,
 	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
+    static inline const V& default_value () { вернуть Null(V); };
     template <bool v = minus_one,
 	      hb_enable_if (v == true)>
     static inline const V& default_value ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      вернуть minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    bool operator == (const K &o) const { вернуть hb_deref (key) == hb_deref (o); }
+    bool operator == (const item_t &o) const { вернуть *this == o.key; }
+    hb_pair_t<K, V> get_pair() const { вернуть hb_pair_t<K, V> (key, value); }
+    hb_pair_t<const K &, V &> get_pair_ref() { вернуть hb_pair_t<const K &, V &> (key, value); }
 
     uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    { вернуть (hash * 31u) + hb_hash (value); }
 
     static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
@@ -149,16 +149,16 @@ struct hb_hashmap_t
   hb_object_header_t header;
   bool successful; /* Allocations successful */
   unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
+  unsigned целое population; /* Not including tombstones. */
+  unsigned целое occupancy; /* Including tombstones. */
+  unsigned целое mask;
+  unsigned целое prime;
   item_t *items;
 
   friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
+    если (unlikely (!a.successful || !b.successful))
+      вернуть;
     hb_swap (a.max_chain_length, b.max_chain_length);
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
@@ -181,10 +181,10 @@ struct hb_hashmap_t
   {
     hb_object_fini (this);
 
-    if (likely (items))
+    если (likely (items))
     {
       unsigned size = mask + 1;
-      for (unsigned i = 0; i < size; i++)
+      для (unsigned i = 0; i < size; i++)
 	items[i].~item_t ();
       hb_free (items);
       items = nullptr;
@@ -196,40 +196,40 @@ struct hb_hashmap_t
   {
     successful = true;
     clear ();
-    return *this;
+    вернуть *this;
   }
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { вернуть !successful; }
 
   bool alloc (unsigned new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    если (unlikely (!successful)) вернуть false;
+    если (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
       successful = false;
-      return false;
+      вернуть false;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    если (new_population != 0 && (new_population + new_population / 2) < mask) вернуть true;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
+    unsigned целое power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
+    unsigned целое new_size = 1u << power;
     item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    если (unlikely (!new_items))
     {
       successful = false;
-      return false;
+      вернуть false;
     }
-    if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
+    если (!item_t::is_trivially_constructible)
+      для (auto &_ : hb_iter (new_items, new_size))
 	new (&_) item_t ();
-    else
+    иначе
       hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
 
-    unsigned int old_size = size ();
+    unsigned целое old_size = size ();
     item_t *old_items = items;
 
     /* Switch to new, empty, array. */
@@ -240,66 +240,66 @@ struct hb_hashmap_t
     items = new_items;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    для (unsigned целое i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      если (old_items[i].is_real ())
       {
 	set_with_hash (std::move (old_items[i].key),
 		       old_items[i].hash,
 		       std::move (old_items[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
+    для (unsigned целое i = 0; i < old_size; i++)
       old_items[i].~item_t ();
 
     hb_free (old_items);
 
-    return true;
+    вернуть true;
   }
 
   template <typename T>
   bool in_storage (const T &v) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
+    вернуть items &&
 	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
   }
 
   template <typename KK, typename VV>
   bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    если (unlikely (!successful)) вернуть false;
+    если (unlikely ((occupancy + occupancy / 2) >= mask))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      если (unlikely (in_storage (key) || in_storage (value)))
       {
 	K key_copy;
 	key_copy = std::forward<KK> (key);
 	V value_copy;
 	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	вернуть set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      если (unlikely (!alloc ())) вернуть false;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
+    unsigned целое tombstone = (unsigned целое) -1;
+    unsigned целое i = hash % prime;
     unsigned length = 0;
     unsigned step = 0;
-    while (items[i].is_used ())
+    пока (items[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
+      если ((std::is_integral<K>::value || items[i].hash == hash) &&
 	  items[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
+        если (!overwrite)
+	  вернуть false;
+        иначе
 	  break;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      если (!items[i].is_real () && tombstone == (unsigned) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
@@ -307,7 +307,7 @@ struct hb_hashmap_t
 
     item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    если (item.is_used ())
     {
       occupancy--;
       population -= item.is_real ();
@@ -322,45 +322,45 @@ struct hb_hashmap_t
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
+    если (unlikely (length > max_chain_length) && occupancy > mask / 8)
       alloc (mask - 8); // This ensures we jump to next larger size
 
-    return true;
+    вернуть true;
   }
 
   template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  bool set (const K &key, VV&& value, bool overwrite = true) { вернуть set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
   template <typename VV>
   bool set (K &&key, VV&& value, bool overwrite = true)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    вернуть set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
   bool add (const K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    вернуть set_with_hash (key, hash, item_t::default_value ());
   }
 
   const V& get_with_hash (const K &key, uint32_t hash) const
   {
-    if (!items) return item_t::default_value ();
+    если (!items) вернуть item_t::default_value ();
     auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    если (item)
+      вернуть item->value;
+    вернуть item_t::default_value ();
   }
   const V& get (const K &key) const
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    если (!items) вернуть item_t::default_value ();
+    вернуть get_with_hash (key, hb_hash (key));
   }
 
   void del (const K &key)
   {
-    if (!items) return;
+    если (!items) вернуть;
     auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    если (item)
     {
       item->set_real (false);
       population--;
@@ -368,48 +368,48 @@ struct hb_hashmap_t
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
+  const V& operator [] (K k) const { вернуть get (k); }
   template <typename VV=V>
   bool has (const K &key, VV **vp = nullptr) const
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    если (!items) вернуть false;
+    вернуть has_with_hash (key, hb_hash (key), vp);
   }
   template <typename VV=V>
   bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
   {
-    if (!items) return false;
+    если (!items) вернуть false;
     auto *item = fetch_item (key, hash);
-    if (item)
+    если (item)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      если (vp) *vp = std::addressof (item->value);
+      вернуть true;
     }
-    return false;
+    вернуть false;
   }
   item_t *fetch_item (const K &key, uint32_t hash) const
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
+    unsigned целое i = hash % prime;
     unsigned step = 0;
-    while (items[i].is_used ())
+    пока (items[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
+      если ((std::is_integral<K>::value || items[i].hash == hash) &&
 	  items[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	если (items[i].is_real ())
+	  вернуть &items[i];
+	иначе
+	  вернуть nullptr;
       }
       i = (i + ++step) & mask;
     }
-    return nullptr;
+    вернуть nullptr;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  const V& operator () (K k) const { вернуть get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  unsigned size () const { вернуть mask ? mask + 1 : 0; }
 
   void clear ()
   {
@@ -417,9 +417,9 @@ struct hb_hashmap_t
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    если (!population && !occupancy) вернуть;
 
-    for (auto &_ : hb_iter (items, size ()))
+    для (auto &_ : hb_iter (items, size ()))
     {
       /* Reconstruct items. */
       _.~item_t ();
@@ -429,35 +429,35 @@ struct hb_hashmap_t
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  bool is_empty () const { вернуть population == 0; }
+  explicit operator bool () const { вернуть !is_empty (); }
 
   uint32_t hash () const
   {
-    return
+    вернуть
     + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    | hb_reduce ([] (uint32_t h, const item_t &_) { вернуть h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
 
   bool is_equal (const hb_hashmap_t &other) const
   {
-    if (population != other.population) return false;
+    если (population != other.population) вернуть false;
 
-    for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+    для (auto pair : iter ())
+      если (other.get (pair.first) != pair.second)
+        вернуть false;
 
-    return true;
+    вернуть true;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  bool operator == (const hb_hashmap_t &other) const { вернуть is_equal (other); }
+  bool operator != (const hb_hashmap_t &other) const { вернуть !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  unsigned целое get_population () const { вернуть population; }
 
   void update (const hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    если (unlikely (!successful)) вернуть;
 
     hb_copy (other, *this);
   }
@@ -503,47 +503,47 @@ struct hb_hashmap_t
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  bool next (целое *idx,
 	     K *key,
 	     V *value) const
   {
     unsigned i = (unsigned) (*idx + 1);
 
     unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    пока (i < count && !items[i].is_real ())
       i++;
 
-    if (i >= count)
+    если (i >= count)
     {
       *idx = -1;
-      return false;
+      вернуть false;
     }
 
     *key = items[i].key;
     *value = items[i].value;
 
     *idx = (signed) i;
-    return true;
+    вернуть true;
   }
 
   /* Sink interface. */
   hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
+  { set (v.first, v.second); вернуть *this; }
   template <typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
   hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
+  { set (v.first, std::move (v.second)); вернуть *this; }
   template <typename K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
   hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
+  { set (std::move (v.first), v.second); вернуть *this; }
   template <typename K2 = K, typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
   hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  { set (std::move (v.first), std::move (v.second)); вернуть *this; }
 
-  static unsigned int prime_for (unsigned int shift)
+  static unsigned целое prime_for (unsigned целое shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ const unsigned целое prime_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    если (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
+      вернуть prime_mod[ARRAY_LENGTH (prime_mod) - 1];
 
-    return prime_mod[shift];
+    вернуть prime_mod[shift];
   }
 };
 

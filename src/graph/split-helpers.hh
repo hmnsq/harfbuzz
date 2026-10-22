@@ -37,10 +37,10 @@ graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_con
                                                               const hb_vector_t<unsigned>& split_points)
 {
   hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  если (!split_points)
+    вернуть Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  для (unsigned i = 0; i < split_points.length; i++)
   {
     unsigned start = split_points[i];
     unsigned end = (i < split_points.length - 1)
@@ -53,7 +53,7 @@ graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_con
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  вернуть Ok(new_objects);
 }
 
 }

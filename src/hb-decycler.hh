@@ -102,16 +102,16 @@ struct hb_decycler_node_t
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    если (!decycler.tortoise)
     {
       // First node.
       assert (decycler.tortoise_awake);
       assert (!decycler.hare);
       decycler.tortoise = decycler.hare = this;
-      return;
+      вернуть;
     }
 
-    if (decycler.tortoise_awake)
+    если (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
     this->prev = decycler.hare;
@@ -127,11 +127,11 @@ struct hb_decycler_node_t
 
     assert (decycler.hare == this);
     decycler.hare = prev;
-    if (prev)
+    если (prev)
       prev->u.decycler = &decycler;
 
     assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    если (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
@@ -143,13 +143,13 @@ struct hb_decycler_node_t
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    если (decycler.tortoise == this)
+      вернуть true; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    если (decycler.tortoise->value == value)
+      вернуть false; // Cycle detected.
 
-    return true;
+    вернуть true;
   }
 
   private:

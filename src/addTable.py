@@ -4,7 +4,7 @@ import sys
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables.DefaultTable import DefaultTable
 
-if len(sys.argv) == 1:
+если len(sys.argv) == 1:
     print("usage: python addTable.py input.ttf output.ttf Wasm.bin")
     sys.exit(1)
 

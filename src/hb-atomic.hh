@@ -47,12 +47,12 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
+#если defined(__ATOMIC_ACQUIRE) // gcc-like
 static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
 #elif !defined(_MSC_VER)
 #include <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
+#иначе
 static inline void _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
@@ -68,24 +68,24 @@ struct hb_atomic_t
   constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); вернуть *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); вернуть *this; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    вернуть *this;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () const { вернуть get_relaxed (); }
 
   void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
   void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  T get_relaxed () const { вернуть v.load (std::memory_order_relaxed); }
+  T get_acquire () const { вернуть v.load (std::memory_order_acquire); }
+  T inc () { вернуть v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { вернуть v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  целое operator++ (целое) { вернуть inc (); }
+  целое operator-- (целое) { вернуть dec (); }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
@@ -106,19 +106,19 @@ struct hb_atomic_t<T *>
 
   void init (T *v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  T *get_relaxed () const { вернуть v.load (std::memory_order_relaxed); }
+  T *get_acquire () const { вернуть v.load (std::memory_order_acquire); }
+  bool cmpexch (T *old, T *new_) { вернуть v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); вернуть *this; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); вернуть *this; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator bool () const { вернуть get_acquire () != nullptr; }
+  T *operator->() const { вернуть get_acquire (); }
   template <typename C>
   operator C * () const
   {
-    return get_acquire ();
+    вернуть get_acquire ();
   }
 
   friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
@@ -131,7 +131,7 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#иначе /* defined(HB_NO_MT) */
 
 template <typename T>
 struct hb_atomic_t
@@ -139,18 +139,18 @@ struct hb_atomic_t
   hb_atomic_t () = default;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); вернуть *this; }
+  operator T () const { вернуть get_relaxed (); }
 
   void set_relaxed (T v_) { v = v_; }
   void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  T get_relaxed () const { вернуть v; }
+  T get_acquire () const { вернуть v; }
+  T inc () { вернуть v++; }
+  T dec () { вернуть v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  целое operator ++ (целое) { вернуть inc (); }
+  целое operator -- (целое) { вернуть dec (); }
 
   T v = 0;
 };
@@ -164,18 +164,18 @@ struct hb_atomic_t<T*>
 
   void init (T* v_ = nullptr) { set_relaxed (v_); }
   void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
+  T *get_relaxed () const { вернуть v; }
+  T *get_acquire () const { вернуть v; }
   bool cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    если (v != old) вернуть false;
     v = new_;
-    return true;
+    вернуть true;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator bool () const { вернуть get_acquire () != nullptr; }
+  T * operator -> () const                    { вернуть get_acquire (); }
+  template <typename C> operator C * () const { вернуть get_acquire (); }
 
   T *v = nullptr;
 };
@@ -186,7 +186,7 @@ struct hb_atomic_t<T*>
 static inline bool hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  вернуть true;
 }
 
 

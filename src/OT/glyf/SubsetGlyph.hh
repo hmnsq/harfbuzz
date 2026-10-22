@@ -28,45 +28,45 @@ struct SubsetGlyph
 
     hb_bytes_t dest_glyph = dest_start.copy (c);
     hb_bytes_t end_copy = dest_end.copy (c);
-    if (!end_copy.arrayZ || !dest_glyph.arrayZ) {
-      return false;
+    если (!end_copy.arrayZ || !dest_glyph.arrayZ) {
+      вернуть false;
     }
 
     dest_glyph = hb_bytes_t (&dest_glyph, dest_glyph.length + end_copy.length);
-    unsigned int pad_length = use_short_loca ? padding () : 0;
+    unsigned целое pad_length = use_short_loca ? padding () : 0;
     DEBUG_MSG (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
 
     HBUINT8 pad;
     pad = 0;
-    while (pad_length > 0)
+    пока (pad_length > 0)
     {
       (void) c->embed (pad);
       pad_length--;
     }
 
-    if (unlikely (!dest_glyph.length)) return_trace (true);
+    если (unlikely (!dest_glyph.length)) return_trace (true);
 
     bool extended = source_glyph.is_extended ();
 
     /* update components gids. */
-    for (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
+    для (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
     {
       hb_codepoint_t new_gid;
-      if (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
+      если (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
 	const_cast<CompositeGlyphRecord &> (_).set_gid (new_gid, extended);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (extended)
+    если (extended)
     {
       auto it = Glyph (dest_glyph, old_gid, extended).get_composite_iterator ();
-      if (it)
+      если (it)
       {
 	/* lower GID24 to GID16 in components if possible. */
 	char *p = it ? (char *) &*it : nullptr;
 	char *q = p;
 	const char *end = dest_glyph.arrayZ + dest_glyph.length;
-	while (it)
+	пока (it)
 	{
 	  auto &rec = const_cast<CompositeGlyphRecord &> (*it);
 	  ++it;
@@ -103,10 +103,10 @@ struct SubsetGlyph
     }
 #endif
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    если (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       Glyph (dest_glyph, old_gid, extended).drop_hints ();
 
-    if (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
+    если (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
       Glyph (dest_glyph, old_gid, extended).set_overlaps_flag ();
 
     return_trace (true);
@@ -117,12 +117,12 @@ struct SubsetGlyph
                                   const glyf_accelerator_t &glyf)
   {
     allocated = source_glyph.compile_bytes_with_deltas (plan, font, glyf, dest_start, dest_end);
-    return allocated;
+    вернуть allocated;
   }
 
   void free_compiled_bytes ()
   {
-    if (likely (allocated)) {
+    если (likely (allocated)) {
       allocated = false;
       dest_start.fini ();
       dest_end.fini ();
@@ -132,10 +132,10 @@ struct SubsetGlyph
   void drop_hints_bytes ()
   { source_glyph.drop_hints_bytes (dest_start, dest_end); }
 
-  unsigned int      length () const { return dest_start.length + dest_end.length; }
+  unsigned целое      length () const { вернуть dest_start.length + dest_end.length; }
   /* pad to 2 to ensure 2-byte loca will be ok */
-  unsigned int     padding () const { return length () % 2; }
-  unsigned int padded_size () const { return length () + padding (); }
+  unsigned целое     padding () const { вернуть length () % 2; }
+  unsigned целое padded_size () const { вернуть length () + padding (); }
 };
 
 

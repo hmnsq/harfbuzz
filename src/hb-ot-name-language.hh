@@ -31,10 +31,10 @@
 
 
 HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_ms_code (unsigned int code);
+_hb_ot_name_language_for_ms_code (unsigned целое code);
 
 HB_INTERNAL hb_language_t
-_hb_ot_name_language_for_mac_code (unsigned int code);
+_hb_ot_name_language_for_mac_code (unsigned целое code);
 
 
 #endif /* HB_OT_NAME_LANGUAGE_HH */

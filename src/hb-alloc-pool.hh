@@ -44,38 +44,38 @@ struct hb_alloc_pool_t
 
   void *alloc (size_t size, unsigned alignment = 2 * sizeof (void *))
   {
-    if (unlikely (chunks.in_error ())) return nullptr;
+    если (unlikely (chunks.in_error ())) вернуть nullptr;
 
     assert (alignment > 0);
     assert (alignment <= 2 * sizeof (void *));
     assert ((alignment & (alignment - 1)) == 0); /* power of two */
 
-    if (size > (ChunkSize) / 4)
+    если (size > (ChunkSize) / 4)
     {
       /* Big chunk, allocate separately.  */
       hb_vector_t<char> chunk;
-      if (unlikely (!chunk.resize (size))) return nullptr;
+      если (unlikely (!chunk.resize (size))) вернуть nullptr;
       void *ret = chunk.arrayZ;
       chunks.push (std::move (chunk));
-      if (chunks.in_error ()) return nullptr;
-      if (chunks.length > 1)
+      если (chunks.in_error ()) вернуть nullptr;
+      если (chunks.length > 1)
       {
         // Bring back the previous last chunk to the end, so that
 	// we can continue to allocate from it.
 	hb_swap (chunks.arrayZ[chunks.length - 1], chunks.arrayZ[chunks.length - 2]);
       }
-      return ret;
+      вернуть ret;
     }
 
     unsigned pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
 
     // Small chunk, allocate from the last chunk.
-    if (current_chunk.length < pad + size)
+    если (current_chunk.length < pad + size)
     {
       chunks.push ();
-      if (unlikely (chunks.in_error ())) return nullptr;
+      если (unlikely (chunks.in_error ())) вернуть nullptr;
       hb_vector_t<char> &chunk = chunks.arrayZ[chunks.length - 1];
-      if (unlikely (!chunk.resize (ChunkSize))) return nullptr;
+      если (unlikely (!chunk.resize (ChunkSize))) вернуть nullptr;
       current_chunk = chunk;
       pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
     }
@@ -85,14 +85,14 @@ struct hb_alloc_pool_t
     assert (current_chunk.length >= size);
     void *ret = current_chunk.arrayZ;
     current_chunk += size;
-    return ret;
+    вернуть ret;
   }
 
   void discard (void *p_, size_t size)
   {
     // Reclaim memory if we can.
     char *p = (char *) p_;
-    if (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
+    если (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
       current_chunk -= size;
   }
 

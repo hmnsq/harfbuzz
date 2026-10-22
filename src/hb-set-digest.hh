@@ -78,37 +78,37 @@ struct hb_set_digest_t
   static constexpr mask_t all = (mask_t) -1;
 
   void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  { для (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
   void clear () { init (); }
 
   static hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    для (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    вернуть d;
   }
 
   void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  { для (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
   bool add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     bool ret;
 
     ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
+    для (unsigned i = 0; i < n; i++)
+      если (masks[i] != all)
 	ret = true;
-    if (!ret) return false;
+    если (!ret) вернуть false;
 
     ret = false;
-    for (unsigned i = 0; i < n; i++)
+    для (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      если ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      иначе
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
@@ -116,13 +116,13 @@ struct hb_set_digest_t
 	ret = true;
       }
     }
-    return ret;
+    вернуть ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void add_array (const T *array, unsigned целое count, unsigned целое stride=sizeof(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    для (unsigned целое i = 0; i < count; i++)
     {
       add (*array);
       array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
@@ -131,39 +131,39 @@ struct hb_set_digest_t
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  bool add_sorted_array (const T *array, unsigned целое count, unsigned целое stride=sizeof(T))
   {
     add_array (array, count, stride);
-    return true;
+    вернуть true;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { вернуть add_sorted_array (&arr, arr.len ()); }
 
   bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  { вернуть may_have (g); }
 
 
   void add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    для (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
   bool may_have (hb_codepoint_t g) const
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    для (unsigned i = 0; i < n; i++)
+      если (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	вернуть false;
+    вернуть true;
   }
 
   bool may_intersect (const hb_set_digest_t &o) const
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    для (unsigned i = 0; i < n; i++)
+      если (!(masks[i] & o.masks[i]))
+	вернуть false;
+    вернуть true;
   }
 
   private:

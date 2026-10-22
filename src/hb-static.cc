@@ -72,22 +72,22 @@ const unsigned char *endchar_str = static_endchar_str;
 static inline unsigned
 load_num_glyphs_from_maxp (const hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  вернуть face->table.maxp->get_num_glyphs ();
 }
 
-unsigned int
+unsigned целое
 hb_face_t::load_num_glyphs () const
 {
   num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  вернуть num_glyphs;
 }
 
-unsigned int
+unsigned целое
 hb_face_t::load_upem () const
 {
-  unsigned int ret = table.head->get_upem ();
+  unsigned целое ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  вернуть ret;
 }
 
 #endif

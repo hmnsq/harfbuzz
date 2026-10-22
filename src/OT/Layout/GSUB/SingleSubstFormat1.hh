@@ -22,16 +22,16 @@ subset_single_subst (hb_subset_context_t *c,
   auto it =
   + hb_iter (intersection)
   | hb_map_retains_sorting ([d, mask] (hb_codepoint_t g) {
-                              return hb_codepoint_pair_t (g,
+                              вернуть hb_codepoint_pair_t (g,
                                                           (g + d) & mask); })
   | hb_filter (glyphset, hb_second)
   | hb_map_retains_sorting ([&] (hb_codepoint_pair_t p) -> hb_codepoint_pair_t
-                            { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+                            { вернуть hb_pair (glyph_map[p.first], glyph_map[p.second]); })
   ;
 
   bool ret = bool (it);
   SingleSubst_serialize (c->serializer, it);
-  return ret;
+  вернуть ret;
 }
 
 HB_INTERNAL inline
@@ -46,8 +46,8 @@ void single_subst_depend (hb_depend_context_t *c,
   coverage.intersect_set (c->parent_active_glyphs (), intersection);
 
   + hb_iter (intersection)
-  | hb_map ([&] (hb_codepoint_t _) { return hb_codepoint_pair_t (_, (_ + d) & mask); })
-  | hb_filter ([num_glyphs] (const hb_codepoint_pair_t &_) { return _.second < num_glyphs; })
+  | hb_map ([&] (hb_codepoint_t _) { вернуть hb_codepoint_pair_t (_, (_ + d) & mask); })
+  | hb_filter ([num_glyphs] (const hb_codepoint_pair_t &_) { вернуть _.second < num_glyphs; })
   | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup(_.first, c->lookup_index, _.second); })
   ;
 }
@@ -59,8 +59,8 @@ void single_subst_closure (hb_closure_context_t *c,
 {
   /* Help fuzzer avoid this function as much. */
   unsigned pop = coverage.get_population ();
-  if (pop >= mask)
-    return;
+  если (pop >= mask)
+    вернуть;
 
   hb_set_t intersection;
   coverage.intersect_set (c->parent_active_glyphs (), intersection);
@@ -72,13 +72,13 @@ void single_subst_closure (hb_closure_context_t *c,
   hb_codepoint_t max_before = intersection.get_max ();
   hb_codepoint_t min_after = (min_before + d) & mask;
   hb_codepoint_t max_after = (max_before + d) & mask;
-  if (intersection.get_population () == max_before - min_before + 1 &&
+  если (intersection.get_population () == max_before - min_before + 1 &&
 	((min_before <= min_after && min_after <= max_before) ||
 	 (min_before <= max_after && max_after <= max_before)))
-    return;
+    вернуть;
 
   + hb_iter (intersection)
-  | hb_map ([d, mask] (hb_codepoint_t g) { return (g + d) & mask; })
+  | hb_map ([d, mask] (hb_codepoint_t g) { вернуть (g + d) & mask; })
   | hb_sink (c->output)
   ;
 }
@@ -88,10 +88,10 @@ void single_subst_collect_glyphs (hb_collect_glyphs_context_t *c,
                                   const Coverage &coverage,
                                   hb_codepoint_t d, hb_codepoint_t mask)
 {
-  if (unlikely (!coverage.collect_coverage (c->input))) return;
+  если (unlikely (!coverage.collect_coverage (c->input))) вернуть;
 
   + hb_iter (coverage)
-  | hb_map ([d, mask] (hb_codepoint_t g) { return (g + d) & mask; })
+  | hb_map ([d, mask] (hb_codepoint_t g) { вернуть (g + d) & mask; })
   | hb_sink (c->output)
   ;
 }
@@ -126,13 +126,13 @@ struct SingleSubstFormat1_3
   }
 
   hb_codepoint_t get_mask () const
-  { return (1 << (8 * Types::size)) - 1; }
+  { вернуть (1 << (8 * Types::size)) - 1; }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { вернуть (this+coverage).intersects (glyphs); }
 
   bool may_have_non_1to1 () const
-  { return false; }
+  { вернуть false; }
 
   void depend (hb_depend_context_t *c) const
   {
@@ -151,10 +151,10 @@ struct SingleSubstFormat1_3
     single_subst_collect_glyphs (c, this+coverage, deltaGlyphID, get_mask ());
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { вернуть this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  { вернуть c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   unsigned
   get_glyph_alternates (hb_codepoint_t  glyph_id,
@@ -162,15 +162,15 @@ struct SingleSubstFormat1_3
                         unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
                         hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    unsigned целое index = (this+coverage).get_coverage (glyph_id);
+    если (likely (index == NOT_COVERED))
     {
-      if (alternate_count)
+      если (alternate_count)
         *alternate_count = 0;
-      return 0;
+      вернуть 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    если (alternate_count && *alternate_count && alternate_glyphs)
     {
       hb_codepoint_t d = deltaGlyphID;
       hb_codepoint_t mask = get_mask ();
@@ -181,7 +181,7 @@ struct SingleSubstFormat1_3
       *alternate_count = 1;
     }
 
-    return 1;
+    вернуть 1;
   }
 
   void
@@ -192,7 +192,7 @@ struct SingleSubstFormat1_3
     hb_codepoint_t mask = get_mask ();
 
     + hb_iter (this+coverage)
-    | hb_map ([d, mask] (hb_codepoint_t g) { return hb_pair (g, (g + d) & mask); })
+    | hb_map ([d, mask] (hb_codepoint_t g) { вернуть hb_pair (g, (g + d) & mask); })
     | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
 						    alternate_count, alternate_glyphs); })
@@ -203,15 +203,15 @@ struct SingleSubstFormat1_3
   {
     TRACE_APPLY (this);
     hb_codepoint_t glyph_id = c->buffer->cur().codepoint;
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned целое index = (this+coverage).get_coverage (glyph_id);
+    если (index == NOT_COVERED) return_trace (false);
 
     hb_codepoint_t d = deltaGlyphID;
     hb_codepoint_t mask = get_mask ();
 
     glyph_id = (glyph_id + d) & mask;
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    если (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -221,7 +221,7 @@ struct SingleSubstFormat1_3
 
     c->replace_glyph (glyph_id);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    если (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "replaced glyph at %u (single substitution)",
@@ -238,8 +238,8 @@ struct SingleSubstFormat1_3
                   unsigned delta)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
+    если (unlikely (!c->extend_min (this))) return_trace (false);
+    если (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
     c->check_assign (deltaGlyphID, delta, HB_SERIALIZE_ERROR_INT_OVERFLOW);
     return_trace (true);
   }

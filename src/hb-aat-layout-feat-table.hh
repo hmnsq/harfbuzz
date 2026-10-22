@@ -41,17 +41,17 @@ struct SettingName
 {
   friend struct FeatureName;
 
-  int cmp (hb_aat_layout_feature_selector_t key) const
-  { return (int) key - (int) setting; }
+  целое cmp (hb_aat_layout_feature_selector_t key) const
+  { вернуть (целое) key - (целое) setting; }
 
   hb_aat_layout_feature_selector_t get_selector () const
-  { return (hb_aat_layout_feature_selector_t) (unsigned) setting; }
+  { вернуть (hb_aat_layout_feature_selector_t) (unsigned) setting; }
 
   hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) const
   {
-    return {
+    вернуть {
       nameIndex,
-      (hb_aat_layout_feature_selector_t) (unsigned int) setting,
+      (hb_aat_layout_feature_selector_t) (unsigned целое) setting,
       default_selector == HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID
 	? (hb_aat_layout_feature_selector_t) (setting + 1)
 	: default_selector,
@@ -77,8 +77,8 @@ struct feat;
 
 struct FeatureName
 {
-  int cmp (hb_aat_layout_feature_type_t key) const
-  { return (int) key - (int) feature; }
+  целое cmp (hb_aat_layout_feature_type_t key) const
+  { вернуть (целое) key - (целое) feature; }
 
   enum {
     Exclusive	= 0x8000,	/* If set, the feature settings are mutually exclusive. */
@@ -94,10 +94,10 @@ struct FeatureName
 				 * as the default. */
   };
 
-  unsigned int get_selector_infos (unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned целое get_selector_infos (unsigned целое                           start_offset,
+				   unsigned целое                          *selectors_count, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *pdefault_index,  /* OUT.     May be NULL. */
+				   unsigned целое                          *pdefault_index,  /* OUT.     May be NULL. */
 				   const void *base) const
   {
     hb_array_t< const SettingName> settings_table = (base+settingTableZ).as_array (nSettings);
@@ -105,34 +105,34 @@ struct FeatureName
     static_assert (Index::NOT_FOUND_INDEX == HB_AAT_LAYOUT_NO_SELECTOR_INDEX, "");
 
     hb_aat_layout_feature_selector_t default_selector = HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID;
-    unsigned int default_index = Index::NOT_FOUND_INDEX;
-    if (featureFlags & Exclusive)
+    unsigned целое default_index = Index::NOT_FOUND_INDEX;
+    если (featureFlags & Exclusive)
     {
       default_index = (featureFlags & NotDefault) ? featureFlags & IndexMask : 0;
       default_selector = settings_table[default_index].get_selector ();
     }
-    if (pdefault_index)
+    если (pdefault_index)
       *pdefault_index = default_index;
 
-    if (selectors_count && selectors)
+    если (selectors_count && selectors)
     {
       + settings_table.sub_array (start_offset, selectors_count)
-      | hb_map ([=] (const SettingName& setting) { return setting.get_info (default_selector); })
+      | hb_map ([=] (const SettingName& setting) { вернуть setting.get_info (default_selector); })
       | hb_sink (hb_array (selectors, *selectors_count))
       ;
     }
-    return settings_table.length;
+    вернуть settings_table.length;
   }
 
   hb_aat_layout_feature_type_t get_feature_type () const
-  { return (hb_aat_layout_feature_type_t) (unsigned int) feature; }
+  { вернуть (hb_aat_layout_feature_type_t) (unsigned целое) feature; }
 
-  hb_ot_name_id_t get_feature_name_id () const { return nameIndex; }
+  hb_ot_name_id_t get_feature_name_id () const { вернуть nameIndex; }
 
-  bool is_exclusive () const { return featureFlags & Exclusive; }
+  bool is_exclusive () const { вернуть featureFlags & Exclusive; }
 
   /* A FeatureName with no settings is meaningless */
-  bool has_data () const { return nSettings; }
+  bool has_data () const { вернуть nSettings; }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -162,38 +162,38 @@ struct feat
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_feat;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { вернуть version.to_int (); }
 
-  unsigned int get_feature_types (unsigned int                  start_offset,
-				  unsigned int                 *count,
+  unsigned целое get_feature_types (unsigned целое                  start_offset,
+				  unsigned целое                 *count,
 				  hb_aat_layout_feature_type_t *features) const
   {
-    if (count && features)
+    если (count && features)
     {
       + namesZ.as_array (featureNameCount).sub_array (start_offset, count)
       | hb_map (&FeatureName::get_feature_type)
       | hb_sink (hb_array (features, *count))
       ;
     }
-    return featureNameCount;
+    вернуть featureNameCount;
   }
 
   bool exposes_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return get_feature (feature_type).has_data (); }
+  { вернуть get_feature (feature_type).has_data (); }
 
   const FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return namesZ.bsearch (featureNameCount, feature_type); }
+  { вернуть namesZ.bsearch (featureNameCount, feature_type); }
 
   hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) const
-  { return get_feature (feature).get_feature_name_id (); }
+  { вернуть get_feature (feature).get_feature_name_id (); }
 
-  unsigned int get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
-				   unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned целое get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
+				   unsigned целое                           start_offset,
+				   unsigned целое                          *selectors_count, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *default_index    /* OUT.     May be NULL. */) const
+				   unsigned целое                          *default_index    /* OUT.     May be NULL. */) const
   {
-    return get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
+    вернуть get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
 							  default_index, this);
   }
 

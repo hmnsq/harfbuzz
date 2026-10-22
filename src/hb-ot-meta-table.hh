@@ -40,12 +40,12 @@ namespace OT {
 
 struct DataMap
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  целое cmp (hb_tag_t a) const { вернуть tag.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_tag_t get_tag () const { вернуть tag; }
 
   hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  { вернуть hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -77,21 +77,21 @@ struct meta
     ~accelerator_t () { table.destroy (); }
 
     hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    { вернуть table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
+    unsigned целое get_entries (unsigned целое      start_offset,
+			      unsigned целое     *count,
 			      hb_ot_meta_tag_t *entries) const
     {
-      if (count && entries)
+      если (count && entries)
       {
 	+ table->dataMaps.as_array ().sub_array (start_offset, count)
 	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
+	| hb_map ([](hb_tag_t tag) { вернуть (hb_ot_meta_tag_t) tag; })
 	| hb_sink (hb_array (entries, *count))
 	;
       }
-      return table->dataMaps.len;
+      вернуть table->dataMaps.len;
     }
 
     private:

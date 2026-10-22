@@ -12,13 +12,13 @@ import sys
 
 import packTab
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+если len(sys.argv) > 1 and sys.argv[1] == "--rust":
 	del sys.argv[1]
 	language = packTab.languages["rust"]
-else:
+иначе:
 	language = packTab.languages["c"]
 
-if len (sys.argv) != 4:
+если len (sys.argv) != 4:
 	sys.exit (__doc__)
 
 ALLOWED_SINGLES = [0x00A0, 0x25CC]
@@ -45,45 +45,45 @@ ALLOWED_BLOCKS = [
 	'Myanmar Extended-C',
 ]
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') для x in sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for f in files]
+headers = [[f.readline () для i in range (2)] для f in files]
 
-unicode_data = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_data = [{} для _ in files]
+для i, f in enumerate (files):
+	для line in f:
 
 		j = line.find ('#')
-		if j >= 0:
+		если j >= 0:
 			line = line[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () для x in line.split (';')]
+		если len (fields) == 1:
 			continue
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = целое (uu[0], 16)
+		если len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		иначе:
+			end = целое (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		для u in range (start, end + 1):
 			unicode_data[i][u] = t
 
 # Merge data into one dict:
 defaults = ('Other', 'Not_Applicable', 'No_Block')
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if i == 2 and not u in combined:
+для i,d in enumerate (unicode_data):
+	для u,v in d.items ():
+		если i == 2 and not u in combined:
 			continue
-		if not u in combined:
+		если not u in combined:
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k:v for k,v in combined.items() if k in ALLOWED_SINGLES or v[2] in ALLOWED_BLOCKS}
+combined = {k:v для k,v in combined.items() если k in ALLOWED_SINGLES or v[2] in ALLOWED_BLOCKS}
 
 
 # Convert categories & positions types
@@ -389,72 +389,72 @@ position_overrides = {
 }
 
 def matra_pos_left(u, block):
-  return "PRE_M"
+  вернуть "PRE_M"
 def matra_pos_right(u, block):
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Bengali':	return  'AFTER_POST'
-  if block == 'Gurmukhi':	return  'AFTER_POST'
-  if block == 'Gujarati':	return  'AFTER_POST'
-  if block == 'Oriya':		return  'AFTER_POST'
-  if block == 'Tamil':		return  'AFTER_POST'
-  if block == 'Telugu':		return  'BEFORE_SUB' if u <= 0x0C42 else 'AFTER_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB' if u < 0x0CC3 or u > 0x0CD6 else 'AFTER_SUB'
-  if block == 'Malayalam':	return  'AFTER_POST'
-  return 'AFTER_SUB'
+  если block == 'Devanagari':	вернуть  'AFTER_SUB'
+  если block == 'Bengali':	вернуть  'AFTER_POST'
+  если block == 'Gurmukhi':	вернуть  'AFTER_POST'
+  если block == 'Gujarati':	вернуть  'AFTER_POST'
+  если block == 'Oriya':		вернуть  'AFTER_POST'
+  если block == 'Tamil':		вернуть  'AFTER_POST'
+  если block == 'Telugu':		вернуть  'BEFORE_SUB' если u <= 0x0C42 иначе 'AFTER_SUB'
+  если block == 'Kannada':	вернуть  'BEFORE_SUB' если u < 0x0CC3 or u > 0x0CD6 иначе 'AFTER_SUB'
+  если block == 'Malayalam':	вернуть  'AFTER_POST'
+  вернуть 'AFTER_SUB'
 def matra_pos_top(u, block):
   # BENG and MLYM don't have top matras.
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Gurmukhi':	return  'AFTER_POST' # Deviate from spec
-  if block == 'Gujarati':	return  'AFTER_SUB'
-  if block == 'Oriya':		return  'AFTER_MAIN'
-  if block == 'Tamil':		return  'AFTER_SUB'
-  if block == 'Telugu':		return  'BEFORE_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB'
-  return 'AFTER_SUB'
+  если block == 'Devanagari':	вернуть  'AFTER_SUB'
+  если block == 'Gurmukhi':	вернуть  'AFTER_POST' # Deviate from spec
+  если block == 'Gujarati':	вернуть  'AFTER_SUB'
+  если block == 'Oriya':		вернуть  'AFTER_MAIN'
+  если block == 'Tamil':		вернуть  'AFTER_SUB'
+  если block == 'Telugu':		вернуть  'BEFORE_SUB'
+  если block == 'Kannada':	вернуть  'BEFORE_SUB'
+  вернуть 'AFTER_SUB'
 def matra_pos_bottom(u, block):
-  if block == 'Devanagari':	return  'AFTER_SUB'
-  if block == 'Bengali':	return  'AFTER_SUB'
-  if block == 'Gurmukhi':	return  'AFTER_POST'
-  if block == 'Gujarati':	return  'AFTER_POST'
-  if block == 'Oriya':		return  'AFTER_SUB'
-  if block == 'Tamil':		return  'AFTER_POST'
-  if block == 'Telugu':		return  'BEFORE_SUB'
-  if block == 'Kannada':	return  'BEFORE_SUB'
-  if block == 'Malayalam':	return  'AFTER_POST'
-  return "AFTER_SUB"
+  если block == 'Devanagari':	вернуть  'AFTER_SUB'
+  если block == 'Bengali':	вернуть  'AFTER_SUB'
+  если block == 'Gurmukhi':	вернуть  'AFTER_POST'
+  если block == 'Gujarati':	вернуть  'AFTER_POST'
+  если block == 'Oriya':		вернуть  'AFTER_SUB'
+  если block == 'Tamil':		вернуть  'AFTER_POST'
+  если block == 'Telugu':		вернуть  'BEFORE_SUB'
+  если block == 'Kannada':	вернуть  'BEFORE_SUB'
+  если block == 'Malayalam':	вернуть  'AFTER_POST'
+  вернуть "AFTER_SUB"
 def indic_matra_position(u, pos, block): # Reposition matra
-  if pos == 'PRE_C':	return matra_pos_left(u, block)
-  if pos == 'POST_C':	return matra_pos_right(u, block)
-  if pos == 'ABOVE_C':	return matra_pos_top(u, block)
-  if pos == 'BELOW_C':	return matra_pos_bottom(u, block)
+  если pos == 'PRE_C':	вернуть matra_pos_left(u, block)
+  если pos == 'POST_C':	вернуть matra_pos_right(u, block)
+  если pos == 'ABOVE_C':	вернуть matra_pos_top(u, block)
+  если pos == 'BELOW_C':	вернуть matra_pos_bottom(u, block)
   assert (False)
 
 def position_to_category(pos):
-  if pos == 'PRE_C':	return 'VPre'
-  if pos == 'ABOVE_C':	return 'VAbv'
-  if pos == 'BELOW_C':	return 'VBlw'
-  if pos == 'POST_C':	return 'VPst'
+  если pos == 'PRE_C':	вернуть 'VPre'
+  если pos == 'ABOVE_C':	вернуть 'VAbv'
+  если pos == 'BELOW_C':	вернуть 'VBlw'
+  если pos == 'POST_C':	вернуть 'VPst'
   assert(False)
 
 
 defaults = (category_map[defaults[0]], position_map[defaults[1]], defaults[2])
 
 indic_data = {}
-for k, (cat, pos, block) in combined.items():
+для k, (cat, pos, block) in combined.items():
   cat = category_map[cat]
-  if cat == 'SM' and pos == 'Not_Applicable':
+  если cat == 'SM' and pos == 'Not_Applicable':
     cat = 'SMPst'
   pos = position_map[pos]
   indic_data[k] = (cat, pos, block)
 
-for k,new_cat in category_overrides.items():
+для k,new_cat in category_overrides.items():
   (cat, pos, _) = indic_data.get(k, defaults)
   indic_data[k] = (new_cat, pos, unicode_data[2][k])
 
 # We only expect position for certain types
 positioned_categories = ('CM', 'SM', 'RS', 'H', 'M', 'MPst')
-for k, (cat, pos, block) in indic_data.items():
-  if cat not in positioned_categories:
+для k, (cat, pos, block) in indic_data.items():
+  если cat not in positioned_categories:
     pos = 'END'
     indic_data[k] = (cat, pos, block)
 
@@ -464,26 +464,26 @@ for k, (cat, pos, block) in indic_data.items():
 consonant_categories = ('C', 'CS', 'Ra','CM', 'V', 'PLACEHOLDER', 'DOTTEDCIRCLE')
 matra_categories = ('M', 'MPst')
 smvd_categories = ('SM', 'SMPst', 'VD', 'A', 'Symbol')
-for k, (cat, pos, block) in indic_data.items():
-  if cat in consonant_categories:
+для k, (cat, pos, block) in indic_data.items():
+  если cat in consonant_categories:
     pos = 'BASE_C'
   elif cat in matra_categories:
-    if block.startswith('Khmer') or block.startswith('Myanmar'):
+    если block.startswith('Khmer') or block.startswith('Myanmar'):
       cat = position_to_category(pos)
-    else:
+    иначе:
       pos = indic_matra_position(k, pos, block)
   elif cat in smvd_categories:
     pos = 'SMVD';
   indic_data[k] = (cat, pos, block)
 
-for k,new_pos in position_overrides.items():
+для k,new_pos in position_overrides.items():
   (cat, pos, _) = indic_data.get(k, defaults)
   indic_data[k] = (cat, new_pos, unicode_data[2][k])
 
 
-values = [{_: 1} for _ in defaults]
-for vv in indic_data.values():
-  for i,v in enumerate(vv):
+values = [{_: 1} для _ in defaults]
+для vv in indic_data.values():
+  для i,v in enumerate(vv):
     values[i][v] = values[i].get (v, 0) + 1
 
 
@@ -491,7 +491,7 @@ for vv in indic_data.values():
 
 # Move the outliers NO-BREAK SPACE and DOTTED CIRCLE out
 singles = {}
-for u in ALLOWED_SINGLES:
+для u in ALLOWED_SINGLES:
 	singles[u] = indic_data[u]
 	del indic_data[u]
 
@@ -500,16 +500,16 @@ print ("/*")
 print (" * The following table is generated by running:")
 print (" *")
 print (" *   ./gen-indic-table.py %sIndicSyllabicCategory.txt IndicPositionalCategory.txt Blocks.txt" %
-		("--rust " if language.name == "rust" else ""))
+		("--rust " если language.name == "rust" иначе ""))
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+для h in headers:
+	для l in h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
-if language.name == "c":
+если language.name == "c":
 	print ('#include "hb.hh"')
 	print ()
 	print ('#ifndef HB_NO_OT_SHAPE')
@@ -520,18 +520,18 @@ if language.name == "c":
 	print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
 	print ()
 
-	for shaper in categories:
+	для shaper in categories:
 	  print ('#include "hb-ot-shaper-%s-machine.hh"' % shaper)
 	print ()
 	done = {}
-	for shaper, shaper_cats in categories.items():
+	для shaper, shaper_cats in categories.items():
 	  print ('/* %s */' % shaper)
-	  for cat in shaper_cats:
+	  для cat in shaper_cats:
 	    v = shaper[0].upper()
-	    if cat not in done:
+	    если cat not in done:
 	      print ("#define OT_%s %s_Cat(%s)" % (cat, v, cat))
 	      done[cat] = v
-	    else:
+	    иначе:
 	      print ('static_assert (OT_%s == %s_Cat(%s), "");' % (cat, v, cat))
 	print ()
 elif language.name == "rust":
@@ -543,7 +543,7 @@ elif language.name == "rust":
 	print ('use super::ot_shaper_indic::ot_category_t::*;')
 	print ('use super::ot_shaper_indic::ot_position_t::*;')
 	print ()
-else:
+иначе:
 	assert False, "Unknown language: %s" % language.name
 
 # Shorten values
@@ -576,41 +576,41 @@ all_shorts = [{},{}]
 
 # Add some of the values, to make them more readable, and to avoid duplicates
 
-for i in range (2):
-	for v,s in short[i].items ():
+для i in range (2):
+	для v,s in short[i].items ():
 		all_shorts[i][s] = v
 
 what = ["OT", "POS"]
 what_short = ["_OT", "_POS"]
 cat_defs = []
-for i in range (2):
+для i in range (2):
 	vv = sorted (values[i].keys ())
-	for v in vv:
+	для v in vv:
 		v_no_and = v.replace ('_And_', '_')
-		if v in short[i]:
+		если v in short[i]:
 			s = short[i][v]
-		else:
-			s = ''.join ([c for c in v_no_and if ord ('A') <= ord (c) <= ord ('Z')])
-			if s in all_shorts[i]:
+		иначе:
+			s = ''.join ([c для c in v_no_and если ord ('A') <= ord (c) <= ord ('Z')])
+			если s in all_shorts[i]:
 				raise Exception ("Duplicate short value alias", v, all_shorts[i][s])
 			all_shorts[i][s] = v
 			short[i][v] = s
-		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () if i else v), str (values[i][v]), v))
+		cat_defs.append ((what_short[i] + '_' + s, what[i] + '_' + (v.upper () если i иначе v), str (values[i][v]), v))
 
-maxlen_s = max ([len (c[0]) for c in cat_defs])
-maxlen_l = max ([len (c[1]) for c in cat_defs])
-maxlen_n = max ([len (c[2]) for c in cat_defs])
-for s in what_short:
+maxlen_s = max ([len (c[0]) для c in cat_defs])
+maxlen_l = max ([len (c[1]) для c in cat_defs])
+maxlen_n = max ([len (c[2]) для c in cat_defs])
+для s in what_short:
 	print ()
-	for c in [c for c in cat_defs if s in c[0]]:
-		if language.name == "c":
+	для c in [c для c in cat_defs если s in c[0]]:
+		если language.name == "c":
 			print ("#define %s %s /* %s chars; %s */" %
 				(c[0].ljust (maxlen_s), c[1].ljust (maxlen_l), c[2].rjust (maxlen_n), c[3]))
-		else:
+		иначе:
 			print ("use %s as %s /* %s chars; %s */" %
 				(c[1].ljust (maxlen_s), (c[0] + ";").ljust (maxlen_l), c[2].rjust (maxlen_n), c[3]))
 print ()
-if language.name == "c":
+если language.name == "c":
 	print ('#pragma GCC diagnostic pop')
 	print ()
 	print ("#define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))")
@@ -618,7 +618,7 @@ if language.name == "c":
 	print ("#define _(S,M) INDIC_COMBINE_CATEGORIES (%s_##S, %s_##M)" % tuple(what_short))
 	print ()
 	print ()
-else:
+иначе:
 	print ("const fn indic_combine_categories (s: u8, m: u8) -> u16")
 	print ("{")
 	print ("  (s as u16) | ((m as u16) << 8)")
@@ -626,38 +626,38 @@ else:
 	print ()
 	print ()
 
-if language.name == "c":
+если language.name == "c":
 	default_value = "_(%s,%s)" % (short[0][defaults[0]], short[1][defaults[1]])
 	pack_data = {
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		для u, d in indic_data.items ()
 	}
 	pack_data.update ({
 		u: "_(%s,%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		для u, d in singles.items ()
 	})
-else:
+иначе:
 	default_value = "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][defaults[0]], short[1][defaults[1]])
 	pack_data = {
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in indic_data.items ()
+		для u, d in indic_data.items ()
 	}
 	pack_data.update ({
 		u: "indic_combine_categories(_OT_%s, _POS_%s)" % (short[0][d[0]], short[1][d[1]])
-		for u, d in singles.items ()
+		для u, d in singles.items ()
 	})
 
 unique_values = sorted (set (pack_data.values ()) | {default_value})
-mapping = {v: i for i, v in enumerate (unique_values)}
+mapping = {v: i для i, v in enumerate (unique_values)}
 
 code = packTab.Code ('_hb_indic')
-value_type = 'uint16_t' if language.name == "c" else language.type_name ("u16")
+value_type = 'uint16_t' если language.name == "c" иначе language.type_name ("u16")
 indic_values, _ = code.addArray (value_type, 'values', unique_values)
 sol = packTab.pack_table (pack_data, default=default_value, mapping=mapping, compression=9)
 sol.genCode (code, 'get_categories_index', language=language, private=language.name == "c")
 code.print_code (language=language, private=language.name == "c")
 print ()
-if language.name == "c":
+если language.name == "c":
 	print ("uint16_t")
 	print ("hb_indic_get_categories (hb_codepoint_t u)")
 	print ("{")
@@ -666,15 +666,15 @@ if language.name == "c":
 	print ()
 	print ("#undef _")
 	print ("#undef INDIC_COMBINE_CATEGORIES")
-	for i in range (2):
+	для i in range (2):
 		print ()
 		vv = sorted (values[i].keys ())
-		for v in vv:
+		для v in vv:
 			print ("#undef %s_%s" %
 				(what_short[i], short[i][v]))
 	print ()
 	print ('#endif')
-else:
+иначе:
 	print ("#[inline]")
 	print ("pub(crate) fn get_categories (u: u32) -> (u8, u8)")
 	print ("{")

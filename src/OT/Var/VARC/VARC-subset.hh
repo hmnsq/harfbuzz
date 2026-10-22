@@ -26,17 +26,17 @@ struct varc_subset_plan_t
   bool collect_glyphs ()
   {
     const hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
-    for (auto _ : + hb_zip (source_coverage,
+    для (auto _ : + hb_zip (source_coverage,
 			    hb_range ((unsigned) source_records.count)))
     {
       hb_codepoint_t old_gid = _.first;
       unsigned index = _.second;
-      if (glyphset.has (old_gid))
+      если (glyphset.has (old_gid))
       {
 	hb_codepoint_t new_gid;
-	if (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
+	если (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
 								 &new_gid)))
-	  return false;
+	  вернуть false;
 	old_indices.push (index);
 	new_gids.push (new_gid);
 	data_size = hb_unsigned_add_saturate (data_size,
@@ -44,39 +44,39 @@ struct varc_subset_plan_t
       }
     }
 
-    return !old_indices.in_error () && !new_gids.in_error () &&
+    вернуть !old_indices.in_error () && !new_gids.in_error () &&
 	   data_size != UINT_MAX;
   }
 
   bool collect_indices ()
   {
-    for (unsigned old_index : old_indices)
+    для (unsigned old_index : old_indices)
     {
       hb_ubytes_t remaining = source_records[old_index];
-      while (remaining)
+      пока (remaining)
       {
 	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (source, remaining,
+	если (unlikely (!VarComponent::decompile_record (source, remaining,
 						       nullptr, nullptr,
 						       &component)))
-	  return false;
+	  вернуть false;
 
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+	если (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
 	{
-	  if (unlikely (component.condition_index >= source_conditions.get_count ()))
-	    return false;
+	  если (unlikely (component.condition_index >= source_conditions.get_count ()))
+	    вернуть false;
 	  condition_indices.add (component.condition_index);
 	}
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+	если (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
 	{
-	  if (unlikely (component.axis_indices_index >= source_axis_indices.count))
-	    return false;
+	  если (unlikely (component.axis_indices_index >= source_axis_indices.count))
+	    вернуть false;
 	  axis_indices.add (component.axis_indices_index);
 	}
-	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
+	если ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
 	    component.axis_values_var_idx != VarIdx::NO_VARIATION)
 	  var_indices.add (component.axis_values_var_idx);
-	if ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
+	если ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
 	    component.transform_var_idx != VarIdx::NO_VARIATION)
 	  var_indices.add (component.transform_var_idx);
 
@@ -84,34 +84,34 @@ struct varc_subset_plan_t
       }
     }
 
-    if (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
+    если (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
 		  var_indices.in_error ()))
-      return false;
+      вернуть false;
 
-    for (hb_codepoint_t condition_index : condition_indices)
-      if (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
-	return false;
+    для (hb_codepoint_t condition_index : condition_indices)
+      если (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
+	вернуть false;
 
-    return true;
+    вернуть true;
   }
 
   bool create_maps ()
   {
     const auto *plan = subset_context->plan;
-    if (!plan->user_axes_location.is_empty ())
+    если (!plan->user_axes_location.is_empty ())
     {
       /* Instancing axes referenced by VARC is not supported. Keep this
        * restriction for avar2 as well; component coordinate overrides
        * and their variation data need special handling. */
       axis_map = &axes_index_map;
-      for (auto _ : plan->axes_index_map)
-	if (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
+      для (auto _ : plan->axes_index_map)
+	если (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
 	  axes_index_map.set (_.first, _.second);
-      if (unlikely (axes_index_map.in_error ())) return false;
+      если (unlikely (axes_index_map.in_error ())) вернуть false;
     }
     condition_map.add_set (&condition_indices);
     axis_indices_map.add_set (&axis_indices);
-    return !condition_map.in_error () && !axis_indices_map.in_error () &&
+    вернуть !condition_map.in_error () && !axis_indices_map.in_error () &&
 	   source_var_store.create_subset_plan (var_indices,
 						&var_inner_maps,
 						&varidx_map);
@@ -119,67 +119,67 @@ struct varc_subset_plan_t
 
   bool compile_records ()
   {
-    if (unlikely (!records.alloc_exact (old_indices.length)))
-      return false;
+    если (unlikely (!records.alloc_exact (old_indices.length)))
+      вернуть false;
 
     bool retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
-    if (retain_gids && auxiliary_indices_unchanged ())
+    если (retain_gids && auxiliary_indices_unchanged ())
     {
       /* The records reference the same indices, so retain them byte-for-byte. */
-      for (unsigned old_index : old_indices)
+      для (unsigned old_index : old_indices)
 	records.push (source_records[old_index]);
     }
-    else
+    иначе
     {
       hb_vector_t<unsigned> record_offsets;
       record_data.alloc (data_size);
-      if (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
-	return false;
+      если (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
+	вернуть false;
 
-      for (unsigned old_index : old_indices)
+      для (unsigned old_index : old_indices)
       {
 	record_offsets.push (record_data.length);
-	if (unlikely (!compile_record (source_records[old_index], retain_gids)))
-	  return false;
+	если (unlikely (!compile_record (source_records[old_index], retain_gids)))
+	  вернуть false;
       }
       record_offsets.push (record_data.length);
 
-      if (unlikely (record_data.in_error () || record_offsets.in_error ()))
-	return false;
-      for (unsigned i = 0; i < old_indices.length; i++)
+      если (unlikely (record_data.in_error () || record_offsets.in_error ()))
+	вернуть false;
+      для (unsigned i = 0; i < old_indices.length; i++)
 	records.push (hb_ubytes_t (record_data.arrayZ + record_offsets[i],
 				  record_offsets[i + 1] - record_offsets[i]));
       data_size = record_data.length;
     }
 
-    return !records.in_error ();
+    вернуть !records.in_error ();
   }
 
   bool select_axis_indices ()
   {
-    if (unlikely (!selected_axis_indices.alloc_exact (
+    если (unlikely (!selected_axis_indices.alloc_exact (
 					  axis_indices_map.get_population ()) ||
 		  (axis_map && !axis_indices_data.resize (
 					  axis_indices_map.get_population ()))))
-      return false;
-    for (unsigned i = 0; i < axis_indices_map.get_population (); i++)
+      вернуть false;
+    для (unsigned i = 0; i < axis_indices_map.get_population (); i++)
     {
       hb_ubytes_t bytes = source_axis_indices[axis_indices_map.backward (i)];
-      if (axis_map)
+      если (axis_map)
       {
-	hb_vector_t<int> indices;
+	hb_vector_t<целое> indices;
 	const HBUINT8 *p = (const HBUINT8 *) bytes.arrayZ;
-	if (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
-	  return false;
-	for (int &index : indices)
+	если (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
+	  вернуть false;
+	для (целое &index : indices)
 	{
-	  if (unlikely (!axis_map->has (index))) return false;
+	  если (unlikely (!axis_map->has (index))) вернуть false;
 	  index = axis_map->get (index);
 	}
 	auto &data = axis_indices_data[i];
 	/* One control byte and at most four data bytes per value. */
 	unsigned size = hb_unsigned_mul_saturate (indices.length, 5u);
-	if (unlikely (size == UINT_MAX || !data.resize_dirty (size))) return false;
+	если (unlikely (size == UINT_MAX || !data.resize_dirty (size))) вернуть false;
 	data.shrink (TupleValues::compile_unsafe (indices.as_array (), data.arrayZ));
 	bytes = data.as_array ();
       }
@@ -188,7 +188,7 @@ struct varc_subset_plan_t
       selected_axis_indices.push (bytes);
     }
 
-    return axis_indices_data_size != UINT_MAX &&
+    вернуть axis_indices_data_size != UINT_MAX &&
 	   !selected_axis_indices.in_error ();
   }
 
@@ -224,16 +224,16 @@ struct varc_subset_plan_t
   private:
   bool auxiliary_indices_unchanged () const
   {
-    for (hb_codepoint_t old_index : condition_indices)
-      if (condition_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : axis_indices)
-      if (axis_indices_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : var_indices)
-      if (varidx_map.get (old_index) != old_index)
-	return false;
-    return true;
+    для (hb_codepoint_t old_index : condition_indices)
+      если (condition_map.get (old_index) != old_index)
+	вернуть false;
+    для (hb_codepoint_t old_index : axis_indices)
+      если (axis_indices_map.get (old_index) != old_index)
+	вернуть false;
+    для (hb_codepoint_t old_index : var_indices)
+      если (varidx_map.get (old_index) != old_index)
+	вернуть false;
+    вернуть true;
   }
 
   bool append_varint (uint32_t value)
@@ -241,11 +241,11 @@ struct varc_subset_plan_t
     unsigned size = HBUINT32VAR::get_size (value);
     unsigned offset = record_data.length;
     unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
+    если (unlikely (new_length == UINT_MAX ||
 		  !record_data.resize_dirty (new_length)))
-      return false;
+      вернуть false;
     HBUINT32VAR::serialize_unsafe (record_data.arrayZ + offset, value);
-    return true;
+    вернуть true;
   }
 
   bool append_bytes (hb_ubytes_t record,
@@ -253,31 +253,31 @@ struct varc_subset_plan_t
 		     unsigned start,
 		     unsigned end)
   {
-    if (unlikely (start > end || end > component_size)) return false;
+    если (unlikely (start > end || end > component_size)) вернуть false;
     unsigned offset = record_data.length;
     unsigned size = end - start;
     unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
+    если (unlikely (new_length == UINT_MAX ||
 		  !record_data.resize_dirty (new_length)))
-      return false;
+      вернуть false;
     hb_memcpy (record_data.arrayZ + offset, record.arrayZ + start, size);
-    return true;
+    вернуть true;
   }
 
   bool compile_record (hb_ubytes_t record, bool retain_gids)
   {
     hb_ubytes_t remaining = record;
-    while (remaining)
+    пока (remaining)
     {
       VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (source, remaining,
+      если (unlikely (!VarComponent::decompile_record (source, remaining,
 						     nullptr, nullptr,
 						     &component) ||
 		    !compile_component (remaining, component, retain_gids)))
-	return false;
+	вернуть false;
       remaining = remaining.sub_array (component.size);
     }
-    return true;
+    вернуть true;
   }
 
   bool compile_component (hb_ubytes_t record,
@@ -285,75 +285,75 @@ struct varc_subset_plan_t
 			  bool retain_gids)
   {
     hb_codepoint_t new_gid = component.gid;
-    if (unlikely ((!retain_gids &&
+    если (unlikely ((!retain_gids &&
 		   !subset_context->plan->new_gid_for_old_gid (component.gid,
 								 &new_gid)) ||
 		  new_gid > 0xFFFFFFu))
-      return false;
+      вернуть false;
 
     uint32_t flags = component.flags;
     unsigned gid_size = component.gid_size;
-    if (new_gid > 0xFFFFu)
+    если (new_gid > 0xFFFFu)
     {
       flags |= (unsigned) VarComponent::flags_t::GID_IS_24BIT;
       gid_size = HBGlyphID24::static_size;
     }
 
-    if (unlikely (!append_varint (flags))) return false;
+    если (unlikely (!append_varint (flags))) вернуть false;
     unsigned gid_offset = record_data.length;
     unsigned gid_end = hb_unsigned_add_saturate (gid_offset, gid_size);
-    if (unlikely (gid_end == UINT_MAX ||
+    если (unlikely (gid_end == UINT_MAX ||
 		  !record_data.resize_dirty (gid_end)))
-      return false;
+      вернуть false;
     unsigned char *out = record_data.arrayZ + gid_offset;
-    if (gid_size == HBGlyphID16::static_size)
+    если (gid_size == HBGlyphID16::static_size)
       * (HBGlyphID16 *) out = new_gid;
-    else
+    иначе
       * (HBGlyphID24 *) out = new_gid;
 
     unsigned cursor = component.gid_offset + component.gid_size;
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+    если (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
     {
-      if (unlikely (!condition_map.has (component.condition_index) ||
+      если (unlikely (!condition_map.has (component.condition_index) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.condition_offset) ||
 		    !append_varint (condition_map.get (component.condition_index))))
-	return false;
+	вернуть false;
       cursor = component.condition_offset + component.condition_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+    если (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
     {
-      if (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
+      если (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.axis_indices_offset) ||
 		    !append_varint (axis_indices_map.get (component.axis_indices_index))))
-	return false;
+	вернуть false;
       cursor = component.axis_indices_offset + component.axis_indices_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
+    если (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
     {
       uint32_t var_idx = component.axis_values_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+      если (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.axis_values_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
+	вернуть false;
       cursor = component.axis_values_var_offset + component.axis_values_var_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
+    если (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
     {
       uint32_t var_idx = component.transform_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+      если (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.transform_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
+	вернуть false;
       cursor = component.transform_var_offset + component.transform_var_size;
     }
 
-    return append_bytes (record, component.size, cursor, component.size);
+    вернуть append_bytes (record, component.size, cursor, component.size);
   }
 };
 
@@ -364,7 +364,7 @@ VARC::subset (hb_subset_context_t *c) const
   auto fail = [&] ()
   {
     c->serializer->err (HB_SERIALIZE_ERROR_OTHER);
-    return false;
+    вернуть false;
   };
 
   const Coverage &source_coverage = this+coverage;
@@ -379,24 +379,24 @@ VARC::subset (hb_subset_context_t *c) const
 				  source_conditions,
 				  source_axis_indices_index,
 				  source_var_store);
-  if (unlikely (!subset_plan.collect_glyphs ()))
+  если (unlikely (!subset_plan.collect_glyphs ()))
     return_trace (fail ());
-  if (!subset_plan.old_indices)
+  если (!subset_plan.old_indices)
     return_trace (false);
-  if (unlikely (!subset_plan.collect_indices () ||
+  если (unlikely (!subset_plan.collect_indices () ||
 		!subset_plan.create_maps () ||
 		!subset_plan.compile_records ()))
     return_trace (fail ());
 
   VARC *out = c->serializer->start_embed<VARC> ();
-  if (unlikely (!out || !c->serializer->extend_min (out)))
+  если (unlikely (!out || !c->serializer->extend_min (out)))
     return_trace (false);
   out->version = version;
 
-  if (unlikely (!subset_plan.select_axis_indices ()))
+  если (unlikely (!subset_plan.select_axis_indices ()))
     return_trace (fail ());
 
-  if (unlikely (!out->coverage.serialize_serialize (c->serializer,
+  если (unlikely (!out->coverage.serialize_serialize (c->serializer,
 						     subset_plan.new_gids.iter ()) ||
 		(subset_plan.condition_map.get_population () &&
 		 !out->conditionList.serialize_serialize (c->serializer,

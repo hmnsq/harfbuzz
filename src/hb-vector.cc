@@ -89,8 +89,8 @@ static struct hb_vector_decimal_point_lazy_loader_t
   static hb_vector_decimal_point_t *create ()
   {
     auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    если (!p)
+      вернуть nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
@@ -99,12 +99,12 @@ static struct hb_vector_decimal_point_lazy_loader_t
     lconv *lc = nullptr;
 #ifdef HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    если (current_locale)
       lc = localeconv_l (current_locale);
 #endif
-    if (!lc)
+    если (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    если (lc && lc->decimal_point && lc->decimal_point[0])
     {
       strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
       p->value[sizeof (p->value) - 1] = '\0';
@@ -112,14 +112,14 @@ static struct hb_vector_decimal_point_lazy_loader_t
 #endif
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    вернуть p;
   }
 
   static void destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
   static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  { вернуть &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
 static inline void
@@ -131,5 +131,5 @@ free_static_svg_decimal_point ()
 const char *
 hb_vector_decimal_point_get (void)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  вернуть static_svg_decimal_point.get_unconst ()->value;
 }

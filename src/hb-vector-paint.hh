@@ -51,7 +51,7 @@ struct hb_vector_paint_t
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  целое palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
   char *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
@@ -82,7 +82,7 @@ struct hb_vector_paint_t
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { вернуть group_stack.tail (); }
 
   void recharge_budget ()
   {
@@ -90,19 +90,19 @@ struct hb_vector_paint_t
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  float sx (float v) const { вернуть v / x_scale_factor; }
+  float sy (float v) const { вернуть v / y_scale_factor; }
 
   bool fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    если (unlikely (!count || !color_stops_scratch.resize (count)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      вернуть false;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    вернуть true;
   }
 
   void set_precision (unsigned p)
@@ -112,22 +112,22 @@ struct hb_vector_paint_t
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () const { вернуть path.precision; }
 
   bool ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
+    если (group_stack.length)
+      вернуть !group_stack.in_error () &&
              !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
+    если (unlikely (!group_stack.push_or_fail ()))
+      вернуть false;
     group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    если (unlikely (group_stack.tail ().in_error ()))
     {
       group_stack.pop ();
-      return false;
+      вернуть false;
     }
-    return true;
+    вернуть true;
   }
 };
 
@@ -138,20 +138,20 @@ hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  вернуть true;
 }
 
 static inline int64_t
 hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  вернуть ((hb_vector_paint_t *) paint_data)->budget;
 }
 
 static inline int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
 					       void *paint_data, void *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  вернуть &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */

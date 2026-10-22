@@ -37,11 +37,11 @@ struct hb_cairo_budget_t
    * owner there lets recursive color-glyph callbacks share one session. */
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
-  unsigned int active = 0;
+  unsigned целое active = 0;
 
   void enter ()
   {
-    if (!active++)
+    если (!active++)
       recharge ();
   }
 
@@ -79,14 +79,14 @@ struct hb_cairo_context_t
   {
     budget->budget = value;
     budget->recharge ();
-    return true;
+    вернуть true;
   }
 
-  int64_t get_budget () const { return budget->budget; }
-  int64_t *get_budget_remaining () { return &budget->budget_remaining; }
+  int64_t get_budget () const { вернуть budget->budget; }
+  int64_t *get_budget_remaining () { вернуть &budget->budget_remaining; }
 
-  bool spend (unsigned int cost, unsigned int mult = 1)
-  { return hb_budget_spend (budget->budget_remaining, cost, mult); }
+  bool spend (unsigned целое cost, unsigned целое mult = 1)
+  { вернуть hb_budget_spend (budget->budget_remaining, cost, mult); }
 
   cairo_scaled_font_t *scaled_font;
   cairo_t *cr;
@@ -99,35 +99,35 @@ _hb_paint_composite_mode_to_cairo (hb_paint_composite_mode_t mode)
 {
   switch (mode)
     {
-    case HB_PAINT_COMPOSITE_MODE_CLEAR: return CAIRO_OPERATOR_CLEAR;
-    case HB_PAINT_COMPOSITE_MODE_SRC: return CAIRO_OPERATOR_SOURCE;
-    case HB_PAINT_COMPOSITE_MODE_DEST: return CAIRO_OPERATOR_DEST;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return CAIRO_OPERATOR_OVER;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: return CAIRO_OPERATOR_DEST_OVER;
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN: return CAIRO_OPERATOR_IN;
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN: return CAIRO_OPERATOR_DEST_IN;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: return CAIRO_OPERATOR_OUT;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: return CAIRO_OPERATOR_DEST_OUT;
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: return CAIRO_OPERATOR_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: return CAIRO_OPERATOR_DEST_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_XOR: return CAIRO_OPERATOR_XOR;
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return CAIRO_OPERATOR_ADD;
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return CAIRO_OPERATOR_SCREEN;
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return CAIRO_OPERATOR_OVERLAY;
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return CAIRO_OPERATOR_DARKEN;
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return CAIRO_OPERATOR_LIGHTEN;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return CAIRO_OPERATOR_COLOR_DODGE;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return CAIRO_OPERATOR_COLOR_BURN;
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return CAIRO_OPERATOR_HARD_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return CAIRO_OPERATOR_SOFT_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return CAIRO_OPERATOR_DIFFERENCE;
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return CAIRO_OPERATOR_EXCLUSION;
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return CAIRO_OPERATOR_MULTIPLY;
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return CAIRO_OPERATOR_HSL_HUE;
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return CAIRO_OPERATOR_HSL_SATURATION;
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return CAIRO_OPERATOR_HSL_COLOR;
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return CAIRO_OPERATOR_HSL_LUMINOSITY;
-    default: return CAIRO_OPERATOR_CLEAR;
+    case HB_PAINT_COMPOSITE_MODE_CLEAR: вернуть CAIRO_OPERATOR_CLEAR;
+    case HB_PAINT_COMPOSITE_MODE_SRC: вернуть CAIRO_OPERATOR_SOURCE;
+    case HB_PAINT_COMPOSITE_MODE_DEST: вернуть CAIRO_OPERATOR_DEST;
+    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: вернуть CAIRO_OPERATOR_OVER;
+    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: вернуть CAIRO_OPERATOR_DEST_OVER;
+    case HB_PAINT_COMPOSITE_MODE_SRC_IN: вернуть CAIRO_OPERATOR_IN;
+    case HB_PAINT_COMPOSITE_MODE_DEST_IN: вернуть CAIRO_OPERATOR_DEST_IN;
+    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: вернуть CAIRO_OPERATOR_OUT;
+    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: вернуть CAIRO_OPERATOR_DEST_OUT;
+    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: вернуть CAIRO_OPERATOR_ATOP;
+    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: вернуть CAIRO_OPERATOR_DEST_ATOP;
+    case HB_PAINT_COMPOSITE_MODE_XOR: вернуть CAIRO_OPERATOR_XOR;
+    case HB_PAINT_COMPOSITE_MODE_PLUS: вернуть CAIRO_OPERATOR_ADD;
+    case HB_PAINT_COMPOSITE_MODE_SCREEN: вернуть CAIRO_OPERATOR_SCREEN;
+    case HB_PAINT_COMPOSITE_MODE_OVERLAY: вернуть CAIRO_OPERATOR_OVERLAY;
+    case HB_PAINT_COMPOSITE_MODE_DARKEN: вернуть CAIRO_OPERATOR_DARKEN;
+    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: вернуть CAIRO_OPERATOR_LIGHTEN;
+    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: вернуть CAIRO_OPERATOR_COLOR_DODGE;
+    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: вернуть CAIRO_OPERATOR_COLOR_BURN;
+    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: вернуть CAIRO_OPERATOR_HARD_LIGHT;
+    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: вернуть CAIRO_OPERATOR_SOFT_LIGHT;
+    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: вернуть CAIRO_OPERATOR_DIFFERENCE;
+    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: вернуть CAIRO_OPERATOR_EXCLUSION;
+    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: вернуть CAIRO_OPERATOR_MULTIPLY;
+    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: вернуть CAIRO_OPERATOR_HSL_HUE;
+    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: вернуть CAIRO_OPERATOR_HSL_SATURATION;
+    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: вернуть CAIRO_OPERATOR_HSL_COLOR;
+    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: вернуть CAIRO_OPERATOR_HSL_LUMINOSITY;
+    default: вернуть CAIRO_OPERATOR_CLEAR;
     }
 }
 

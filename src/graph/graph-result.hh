@@ -45,17 +45,17 @@ enum graph_error_t {
 
 static inline const char* to_string(graph_error_t e) {
   switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
+    case ALLOCATION_FAILURE: вернуть "Memory Allocation Failed";
+    case LIMIT_EXCEEDED: вернуть "Limit Exceeded";
+    case INVALID_ARGUMENT: вернуть "Invalid Argument";
+    case CYCLE_DETECTED: вернуть "Cycle in Graph";
+    case SANITIZE_FAILURE: вернуть "Failed Sanitization";
+    case OUT_OF_BOUNDS: вернуть "Out of Bounds";
+    case ORPHANED_NODES: вернуть "Graph is not fully connected";
+    case OVERFLOW_RESOLUTION_FAILED: вернуть "Overflows are not able to be resolved";
     case UNKNOWN:
     default:
-      return "Unknown Error";
+      вернуть "Unknown Error";
   }
 }
 

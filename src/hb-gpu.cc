@@ -559,24 +559,24 @@ hb_gpu_shader_source (hb_gpu_shader_stage_t stage,
   switch (stage) {
   case HB_GPU_SHADER_STAGE_FRAGMENT:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_fragment_hlsl;
+    case HB_GPU_SHADER_LANG_GLSL: вернуть hb_gpu_fragment_glsl;
+    case HB_GPU_SHADER_LANG_MSL:  вернуть hb_gpu_fragment_msl;
+    case HB_GPU_SHADER_LANG_WGSL: вернуть hb_gpu_fragment_wgsl;
+    case HB_GPU_SHADER_LANG_HLSL: вернуть hb_gpu_fragment_hlsl;
     case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    default: вернуть nullptr;
     }
   case HB_GPU_SHADER_STAGE_VERTEX:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_vertex_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_vertex_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_vertex_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_vertex_hlsl;
+    case HB_GPU_SHADER_LANG_GLSL: вернуть hb_gpu_vertex_glsl;
+    case HB_GPU_SHADER_LANG_MSL:  вернуть hb_gpu_vertex_msl;
+    case HB_GPU_SHADER_LANG_WGSL: вернуть hb_gpu_vertex_wgsl;
+    case HB_GPU_SHADER_LANG_HLSL: вернуть hb_gpu_vertex_hlsl;
     case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    default: вернуть nullptr;
     }
   default:
-    return nullptr;
+    вернуть nullptr;
   }
 }
 

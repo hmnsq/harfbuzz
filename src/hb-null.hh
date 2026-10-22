@@ -112,14 +112,14 @@ struct Null {
   static Type const & get_null ()
   {
     static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
-    return *reinterpret_cast<Type const *> (_hb_NullPool);
+    вернуть *reinterpret_cast<Type const *> (_hb_NullPool);
   }
 };
 template <typename QType>
 struct NullHelper
 {
   typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static const Type & get_null () { return Null<Type>::get_null (); }
+  static const Type & get_null () { вернуть Null<Type>::get_null (); }
 };
 #define Null(Type) NullHelper<Type>::get_null ()
 
@@ -130,7 +130,7 @@ struct NullHelper
 	template <> \
 	struct Null<Namespace::Type> { \
 	  static Namespace::Type const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
+	    вернуть *reinterpret_cast<const Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
 	namespace Namespace { \
@@ -141,7 +141,7 @@ struct NullHelper
 	template <typename Spec> \
 	struct Null<Namespace::Type<Spec>> { \
 	  static Namespace::Type<Spec> const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
+	    вернуть *reinterpret_cast<const Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
 	namespace Namespace { \
@@ -155,7 +155,7 @@ struct NullHelper
 	template <> \
 	struct Null<Type> { \
 	  static Type const & get_null () { \
-	    return _hb_Null_##Type; \
+	    вернуть _hb_Null_##Type; \
 	  } \
 	}; \
 	static_assert (true, "") /* Require semicolon after. */
@@ -177,23 +177,23 @@ static inline Type& Crap () {
   static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
   Type *obj = reinterpret_cast<Type *> (_hb_CrapPool);
   memcpy (reinterpret_cast<void*>(obj), std::addressof (Null (Type)), sizeof (*obj));
-  return *obj;
+  вернуть *obj;
 }
 template <typename QType>
 struct CrapHelper
 {
   typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static Type & get_crap () { return Crap<Type> (); }
+  static Type & get_crap () { вернуть Crap<Type> (); }
 };
 #define Crap(Type) CrapHelper<Type>::get_crap ()
 
 template <typename Type>
 struct CrapOrNullHelper {
-  static Type & get () { return Crap (Type); }
+  static Type & get () { вернуть Crap (Type); }
 };
 template <typename Type>
 struct CrapOrNullHelper<const Type> {
-  static const Type & get () { return Null (Type); }
+  static const Type & get () { вернуть Null (Type); }
 };
 #define CrapOrNull(Type) CrapOrNullHelper<Type>::get ()
 
@@ -208,15 +208,15 @@ struct hb_nonnull_ptr_t
   typedef hb_remove_pointer<P> T;
 
   hb_nonnull_ptr_t (T *v_ = nullptr) : v (v_) {}
-  T * operator = (T *v_)   { return v = v_; }
-  T * operator -> () const { return get (); }
-  T & operator * () const  { return *get (); }
-  T ** operator & () const { return std::addressof (v); }
+  T * operator = (T *v_)   { вернуть v = v_; }
+  T * operator -> () const { вернуть get (); }
+  T & operator * () const  { вернуть *get (); }
+  T ** operator & () const { вернуть std::addressof (v); }
   /* Only auto-cast to const types. */
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  T * get () const { return v ? v : const_cast<T *> (std::addressof (Null (T))); }
-  T * get_raw () const { return v; }
+  template <typename C> operator const C * () const { вернуть get (); }
+  operator const char * () const { вернуть (const char *) get (); }
+  T * get () const { вернуть v ? v : const_cast<T *> (std::addressof (Null (T))); }
+  T * get_raw () const { вернуть v; }
 
   private:
   T *v;

@@ -45,7 +45,7 @@
 #define OT_LABEL_END			];
 #define OT_UINT8(u8)			+1/*byte*/
 #define OT_UINT16(u16)			+2/*bytes*/
-#else
+#иначе
 #undef  OT_MEASURE
 #define OT_TABLE_START			TABLE_NAME = {
 #define OT_TABLE_END			};
@@ -53,10 +53,10 @@
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
 #define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#define OT_COUNT(Name, ItemSize)	((unsigned целое) sizeof(((struct TABLE_NAME*)0)->Name) \
+					 / (unsigned целое)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
+#define OT_DISTANCE(From,To)		((unsigned целое) \
 					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
 					  (char*)(&((struct TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
@@ -338,7 +338,7 @@ OT_TABLE_END
 /*
  * Include a second time to get the table data...
  */
-#if 0
+#если 0
 #include "hb.hh" /* Make check-includes.sh happy. */
 #endif
 #ifdef OT_MEASURE

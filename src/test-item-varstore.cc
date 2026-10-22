@@ -40,11 +40,11 @@ test_scalar_cache_precision ()
   };
   const unsigned counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  для (unsigned count : counts)
   {
     auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
     hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
     {
       float value;
       float scalar = scalars[i % ARRAY_LENGTH (scalars)];
@@ -54,7 +54,7 @@ test_scalar_cache_precision ()
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
     {
       float value;
       hb_always_assert (!cache->get (i, &value));
@@ -102,23 +102,23 @@ test_implicit_advance_mapping ()
   hb_memcpy (data, hvar_data, sizeof (data));
   auto *hvar = reinterpret_cast<OT::HVAR *> (data);
   const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
+  const целое locations[] = {-16384, 0, 16384};
   bool exercised_outer_one = false;
 
-  for (int weight : locations)
-    for (int size : locations)
+  для (целое weight : locations)
+    для (целое size : locations)
     {
-      int coords[] = {weight, size};
+      целое coords[] = {weight, size};
       unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  для (целое weight : locations)
+    для (целое size : locations)
     {
-      int coords[] = {weight, size};
+      целое coords[] = {weight, size};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -132,8 +132,8 @@ test_implicit_advance_mapping ()
 static void
 test_item_variations_overflow ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+  hb_vector_t<hb_vector_t<целое>> row_storage;
+  hb_hashmap_t<unsigned, const hb_vector_t<целое>*> front_mapping;
   OT::item_variations_t item_vars;
   unsigned old_varidx = 0;
   const unsigned total_count = 0xFFFFu * 2u;
@@ -143,7 +143,7 @@ test_item_variations_overflow ()
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  const целое starts[] = {
     0,
     128,
     32768
@@ -151,14 +151,14 @@ test_item_variations_overflow ()
 
   hb_always_assert (row_storage.alloc (total_count));
 
-  for (unsigned bucket = 0; bucket < 3; bucket++)
+  для (unsigned bucket = 0; bucket < 3; bucket++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
+    hb_vector_t<const hb_vector_t<целое>*> rows;
     hb_always_assert (rows.alloc (counts[bucket]));
 
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    для (unsigned i = 0; i < counts[bucket]; i++)
     {
-      hb_vector_t<int> row;
+      hb_vector_t<целое> row;
       hb_always_assert (row.resize (1));
       row[0] = starts[bucket] + i;
       row_storage.push (std::move (row));
@@ -167,9 +167,9 @@ test_item_variations_overflow ()
     hb_always_assert (!row_storage.in_error ());
 
     unsigned base = row_storage.length - counts[bucket];
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    для (unsigned i = 0; i < counts[bucket]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
+      const hb_vector_t<целое> *row = &row_storage.arrayZ[base + i];
       rows.push (row);
       front_mapping.set (old_varidx++, row);
     }
@@ -202,7 +202,7 @@ test_item_variations_overflow ()
 static void
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  const целое deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
   hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
   hb_vector_t<hb_tag_t> axes;
@@ -214,11 +214,11 @@ test_signed_delta_widths ()
   hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  для (целое delta : deltas)
   {
-    hb_vector_t<int> row;
+    hb_vector_t<целое> row;
     row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
+    hb_vector_t<const hb_vector_t<целое> *> rows;
     rows.push (&row);
     hb_vector_t<OT::delta_row_encoding_t> encodings;
     encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
@@ -261,17 +261,17 @@ test_signed_delta_widths ()
 static void
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  const целое deltas[] = {20000, -20000, 1073741824};
+  для (целое delta : deltas)
   {
     OT::item_variations_t item_vars;
     unsigned outer = item_vars.add_vardata (1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
+    если (delta == 1073741824)
       hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    иначе
     {
       hb_always_assert (item_vars.as_item_varstore ());
       hb_always_assert (item_vars.has_long_word ());
@@ -290,10 +290,10 @@ test_condition_delta_precision ()
   hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
+  hb_vector_t<целое> row;
   row.push (16777217);
   row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<const hb_vector_t<целое> *> rows;
   rows.push (&row);
   hb_vector_t<OT::delta_row_encoding_t> encodings;
   encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
@@ -304,7 +304,7 @@ test_condition_delta_precision ()
   s.end_serialize ();
   hb_bytes_t bytes = s.copy_bytes ();
   const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
+  целое coords[] = {16384};
   OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
@@ -319,9 +319,9 @@ test_condition_delta_precision ()
 static void
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
+  hb_vector_t<целое> row;
   row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<const hb_vector_t<целое> *> rows;
   rows.push (&row);
   OT::item_variations_t item_vars;
   hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
@@ -330,13 +330,13 @@ test_failed_encoding ()
   encoding.chars.clear ();
   encoding.chars.set_error ();
   hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
+  hb_hashmap_t<unsigned, const hb_vector_t<целое> *> front_mapping;
   front_mapping.set (0, &row);
   hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+целое
+основной (целое argc, char **argv)
 {
   test_scalar_cache_precision ();
   test_item_variations ();

@@ -25,22 +25,22 @@
 #include "hb.hh"
 #include "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+struct hb_intp_lazy_loader_t : hb_lazy_loader_t<целое, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  static целое* create () { вернуть nullptr; }
+  static void destroy (целое* l) {}
+  static целое* get_null () { вернуть nullptr; }
 };
 
 struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
+  static void* create () { вернуть nullptr; }
   static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  static void* get_null () { вернуть nullptr; }
 };
 
-int
-main (int argc, char **argv)
+целое
+основной (целое argc, char **argv)
 {
-  return 0;
+  вернуть 0;
 }

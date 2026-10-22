@@ -64,7 +64,7 @@ hb_bool_t
 hb_segment_properties_equal (const hb_segment_properties_t *a,
 			     const hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  вернуть a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned целое
 hb_segment_properties_hash (const hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  вернуть ((unsigned целое) p->direction * 31 +
+	  (unsigned целое) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -113,22 +113,22 @@ void
 hb_segment_properties_overlay (hb_segment_properties_t *p,
 			       const hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  если (unlikely (!p || !src))
+    вернуть;
 
-  if (!p->direction)
+  если (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  если (p->direction != src->direction)
+    вернуть;
 
-  if (!p->script)
+  если (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  если (p->script != src->script)
+    вернуть;
 
-  if (!p->language)
+  если (!p->language)
     p->language = src->language;
 }
 
@@ -156,30 +156,30 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 /* Internal API */
 
 bool
-hb_buffer_t::enlarge (unsigned int size)
+hb_buffer_t::enlarge (unsigned целое size)
 {
-  if (unlikely (size > max_len))
+  если (unlikely (size > max_len))
   {
     successful = false;
-    return false;
+    вернуть false;
   }
 
-  if (unlikely (!successful))
-    return false;
+  если (unlikely (!successful))
+    вернуть false;
 
-  unsigned int new_allocated = allocated;
+  unsigned целое new_allocated = allocated;
   hb_glyph_position_t *new_pos = nullptr;
   hb_glyph_info_t *new_info = nullptr;
   bool separate_out = out_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
+  если (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
     goto done;
 
-  while (size >= new_allocated)
+  пока (size >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
   unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
+  если (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
     goto done;
 
   static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
@@ -187,29 +187,29 @@ hb_buffer_t::enlarge (unsigned int size)
   new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
 
 done:
-  if (unlikely (!new_pos || !new_info))
+  если (unlikely (!new_pos || !new_info))
     successful = false;
 
-  if (likely (new_pos))
+  если (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  если (likely (new_info))
     info = new_info;
 
   out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  если (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  вернуть likely (successful);
 }
 
 bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+hb_buffer_t::make_room_for (unsigned целое num_in,
+			    unsigned целое num_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  если (unlikely (!ensure (out_len + num_out))) вернуть false;
 
-  if (out_info == info &&
+  если (out_info == info &&
       out_len + num_out > idx + num_in)
   {
     assert (have_output);
@@ -218,24 +218,24 @@ hb_buffer_t::make_room_for (unsigned int num_in,
     hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
   }
 
-  return true;
+  вернуть true;
 }
 
 bool
-hb_buffer_t::shift_forward (unsigned int count)
+hb_buffer_t::shift_forward (unsigned целое count)
 {
   assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  если (unlikely (!ensure (len + count))) вернуть false;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  если (unlikely (max_ops < 0))
   {
     successful = false;
-    return false;
+    вернуть false;
   }
 
   memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  если (idx + count > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -248,11 +248,11 @@ hb_buffer_t::shift_forward (unsigned int count)
   len += count;
   idx += count;
 
-  return true;
+  вернуть true;
 }
 
 hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_buffer_t::get_scratch_buffer (unsigned целое *size)
 {
   have_output = false;
   have_positions = false;
@@ -262,7 +262,7 @@ hb_buffer_t::get_scratch_buffer (unsigned int *size)
 
   assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
   *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  вернуть (scratch_buffer_t *) (void *) pos;
 }
 
 
@@ -329,11 +329,11 @@ hb_buffer_t::enter ()
   serial = 0;
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
   unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  если (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
   {
     max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  если (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
   {
     max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
   }
@@ -350,11 +350,11 @@ hb_buffer_t::leave ()
 
 void
 hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+		  unsigned целое    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  если (unlikely (!ensure (len + 1))) вернуть;
 
   glyph = &info[len];
 
@@ -369,7 +369,7 @@ hb_buffer_t::add (hb_codepoint_t  codepoint,
 void
 hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  если (unlikely (!ensure (len + 1))) вернуть;
 
   info[len] = glyph_info;
 
@@ -379,7 +379,7 @@ void
 hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
 			       const hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  если (unlikely (!ensure (len + 1))) вернуть;
 
   info[len] = glyph_info;
   assert (have_positions);
@@ -421,10 +421,10 @@ hb_buffer_t::sync ()
 
   assert (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
+  если (unlikely (!successful || !next_glyphs (len - idx)))
     goto reset;
 
-  if (out_info != info)
+  если (out_info != info)
   {
     pos = (hb_glyph_position_t *) info;
     info = out_info;
@@ -438,10 +438,10 @@ reset:
   out_info = info;
   idx = 0;
 
-  return ret;
+  вернуть ret;
 }
 
-int
+целое
 hb_buffer_t::sync_so_far ()
 {
   bool had_output = have_output;
@@ -449,12 +449,12 @@ hb_buffer_t::sync_so_far ()
   unsigned i = idx;
   unsigned old_idx = idx;
 
-  if (sync ())
+  если (sync ())
     idx = out_i;
-  else
+  иначе
     idx = i;
 
-  if (had_output)
+  если (had_output)
   {
     have_output = true;
     out_len = idx;
@@ -462,43 +462,43 @@ hb_buffer_t::sync_so_far ()
 
   assert (idx <= len);
 
-  return idx - old_idx;
+  вернуть idx - old_idx;
 }
 
 bool
-hb_buffer_t::move_to (unsigned int i)
+hb_buffer_t::move_to (unsigned целое i)
 {
-  if (!have_output)
+  если (!have_output)
   {
     assert (i <= len);
     idx = i;
-    return true;
+    вернуть true;
   }
-  if (unlikely (!successful))
-    return false;
+  если (unlikely (!successful))
+    вернуть false;
 
   assert (i <= out_len + (len - idx));
 
-  if (out_len < i)
+  если (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned целое count = i - out_len;
+    если (unlikely (!make_room_for (count, count))) вернуть false;
 
     max_ops -= count;
-    if (unlikely (max_ops < 0))
+    если (unlikely (max_ops < 0))
     {
       successful = false;
-      return false;
+      вернуть false;
     }
 
     memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
     idx += count;
     out_len += count;
   }
-  else if (out_len > i)
+  иначе если (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned целое count = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,15 +507,15 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    если (unlikely (idx < count && !shift_forward (count - idx))) вернуть false;
 
     assert (idx >= count);
 
     max_ops -= count;
-    if (unlikely (max_ops < 0))
+    если (unlikely (max_ops < 0))
     {
       successful = false;
-      return false;
+      вернуть false;
     }
 
     idx -= count;
@@ -523,98 +523,98 @@ hb_buffer_t::move_to (unsigned int i)
     memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
   }
 
-  return true;
+  вернуть true;
 }
 
 
 void
 hb_buffer_t::set_masks (hb_mask_t    value,
 			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+			unsigned целое cluster_start,
+			unsigned целое cluster_end)
 {
-  if (!mask)
-    return;
+  если (!mask)
+    вернуть;
 
   hb_mask_t not_mask = ~mask;
   value &= mask;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
+  если (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int count = len;
+  unsigned целое count = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  если (cluster_start == 0 && cluster_end == (unsigned целое) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    для (unsigned целое i = 0; i < count; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    вернуть;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
+  для (unsigned целое i = 0; i < count; i++)
+    если (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
 
 void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+hb_buffer_t::merge_clusters_impl (unsigned целое start,
+				  unsigned целое end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
+  если (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int cluster = info[start].cluster;
+  unsigned целое cluster = info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  для (unsigned целое i = start + 1; i < end; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
+  если (cluster != info[end - 1].cluster)
+    пока (end < len && info[end - 1].cluster == info[end].cluster)
       end++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
+  если (cluster != info[start].cluster)
+    пока (idx < start && info[start - 1].cluster == info[start].cluster)
       start--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
+  если (idx == start && info[start].cluster != cluster)
+    для (unsigned целое i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
       set_cluster (out_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  для (unsigned целое i = start; i < end; i++)
     set_cluster (info[i], cluster);
 }
 void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+hb_buffer_t::merge_out_clusters_impl (unsigned целое start,
+				      unsigned целое end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
+  если (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int cluster = out_info[start].cluster;
+  unsigned целое cluster = out_info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  для (unsigned целое i = start + 1; i < end; i++)
     cluster = hb_min (cluster, out_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
+  пока (start && out_info[start - 1].cluster == out_info[start].cluster)
     start--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
+  пока (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
     end++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
+  если (end == out_len)
+    для (unsigned целое i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
       set_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  для (unsigned целое i = start; i < end; i++)
     set_cluster (out_info[i], cluster);
 }
 void
@@ -622,28 +622,28 @@ hb_buffer_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+  unsigned целое cluster = info[idx].cluster;
+  если ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
       (out_len && cluster == out_info[out_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
     goto done;
   }
 
-  if (out_len)
+  если (out_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    если (cluster < out_info[out_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
+      unsigned целое mask = info[idx].mask;
+      unsigned целое old_cluster = out_info[out_len - 1].cluster;
+      для (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
 	set_cluster (out_info[i - 1], cluster, mask);
     }
     goto done;
   }
 
-  if (idx + 1 < len)
+  если (idx + 1 < len)
   {
     /* Merge cluster forward. */
     merge_clusters (idx, idx + 2);
@@ -659,39 +659,39 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned целое j = 0;
+  unsigned целое count = len;
+  для (unsigned целое i = 0; i < count; i++)
   {
-    if (filter (&info[i]))
+    если (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
+      unsigned целое cluster = info[i].cluster;
+      если (i + 1 < count && cluster == info[i + 1].cluster)
 	continue; /* Cluster survives; do nothing. */
 
-      if (j)
+      если (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	если (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
+	  unsigned целое mask = info[i].mask;
+	  unsigned целое old_cluster = info[j - 1].cluster;
+	  для (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
 	    set_cluster (info[k - 1], cluster, mask);
 	}
 	continue;
       }
 
-      if (i + 1 < count)
+      если (i + 1 < count)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
       continue;
     }
 
-    if (j != i)
+    если (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -707,10 +707,10 @@ hb_buffer_t::guess_segment_properties ()
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  если (props.script == HB_SCRIPT_INVALID) {
+    для (unsigned целое i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      если (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
@@ -720,14 +720,14 @@ hb_buffer_t::guess_segment_properties ()
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  если (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    если (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  если (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -779,15 +779,15 @@ hb_buffer_create ()
 {
   hb_buffer_t *buffer;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  если (!(buffer = hb_object_create<hb_buffer_t> ()))
+    вернуть hb_buffer_get_empty ();
 
   buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
   buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
 
   buffer->reset ();
 
-  return buffer;
+  вернуть buffer;
 }
 
 /**
@@ -809,7 +809,7 @@ hb_buffer_create_similar (const hb_buffer_t *src)
 
   buffer->similar (*src);
 
-  return buffer;
+  вернуть buffer;
 }
 
 /**
@@ -828,8 +828,8 @@ hb_buffer_create_similar (const hb_buffer_t *src)
 void
 hb_buffer_reset (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->reset ();
 }
@@ -846,7 +846,7 @@ hb_buffer_reset (hb_buffer_t *buffer)
 hb_buffer_t *
 hb_buffer_get_empty ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  вернуть const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
 }
 
 /**
@@ -864,7 +864,7 @@ hb_buffer_get_empty ()
 hb_buffer_t *
 hb_buffer_reference (hb_buffer_t *buffer)
 {
-  return hb_object_reference (buffer);
+  вернуть hb_object_reference (buffer);
 }
 
 /**
@@ -880,14 +880,14 @@ hb_buffer_reference (hb_buffer_t *buffer)
 void
 hb_buffer_destroy (hb_buffer_t *buffer)
 {
-  if (!hb_object_destroy (buffer)) return;
+  если (!hb_object_destroy (buffer)) вернуть;
 
   hb_unicode_funcs_destroy (buffer->unicode);
 
   hb_free (buffer->info);
   hb_free (buffer->pos);
 #ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
+  если (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 #endif
 
@@ -915,7 +915,7 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  вернуть hb_object_set_user_data (buffer, key, data, destroy, replace);
 }
 
 /**
@@ -934,7 +934,7 @@ void *
 hb_buffer_get_user_data (const hb_buffer_t  *buffer,
 			 hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  вернуть hb_object_get_user_data (buffer, key);
 }
 
 
@@ -978,8 +978,8 @@ void
 hb_buffer_set_content_type (hb_buffer_t              *buffer,
 			    hb_buffer_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->content_type = content_type;
 }
@@ -999,7 +999,7 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
 hb_buffer_content_type_t
 hb_buffer_get_content_type (const hb_buffer_t *buffer)
 {
-  return buffer->content_type;
+  вернуть buffer->content_type;
 }
 
 
@@ -1017,10 +1017,10 @@ void
 hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
-  if (!unicode_funcs)
+  если (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
@@ -1041,7 +1041,7 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 hb_unicode_funcs_t *
 hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
 {
-  return buffer->unicode;
+  вернуть buffer->unicode;
 }
 
 /**
@@ -1063,8 +1063,8 @@ void
 hb_buffer_set_direction (hb_buffer_t    *buffer,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->props.direction = direction;
 }
@@ -1083,7 +1083,7 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
 hb_direction_t
 hb_buffer_get_direction (const hb_buffer_t *buffer)
 {
-  return buffer->props.direction;
+  вернуть buffer->props.direction;
 }
 
 /**
@@ -1107,8 +1107,8 @@ void
 hb_buffer_set_script (hb_buffer_t *buffer,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->props.script = script;
 }
@@ -1127,7 +1127,7 @@ hb_buffer_set_script (hb_buffer_t *buffer,
 hb_script_t
 hb_buffer_get_script (const hb_buffer_t *buffer)
 {
-  return buffer->props.script;
+  вернуть buffer->props.script;
 }
 
 /**
@@ -1151,8 +1151,8 @@ void
 hb_buffer_set_language (hb_buffer_t   *buffer,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->props.language = language;
 }
@@ -1171,7 +1171,7 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
 hb_language_t
 hb_buffer_get_language (const hb_buffer_t *buffer)
 {
-  return buffer->props.language;
+  вернуть buffer->props.language;
 }
 
 /**
@@ -1189,8 +1189,8 @@ void
 hb_buffer_set_segment_properties (hb_buffer_t *buffer,
 				  const hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->props = *props;
 }
@@ -1225,8 +1225,8 @@ void
 hb_buffer_set_flags (hb_buffer_t       *buffer,
 		     hb_buffer_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->flags = flags;
 }
@@ -1245,7 +1245,7 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
 hb_buffer_flags_t
 hb_buffer_get_flags (const hb_buffer_t *buffer)
 {
-  return buffer->flags;
+  вернуть buffer->flags;
 }
 
 /**
@@ -1263,8 +1263,8 @@ void
 hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 			     hb_buffer_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->cluster_level = cluster_level;
 }
@@ -1284,7 +1284,7 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 hb_buffer_cluster_level_t
 hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
 {
-  return buffer->cluster_level;
+  вернуть buffer->cluster_level;
 }
 
 
@@ -1304,8 +1304,8 @@ void
 hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->replacement = replacement;
 }
@@ -1325,7 +1325,7 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
 {
-  return buffer->replacement;
+  вернуть buffer->replacement;
 }
 
 
@@ -1345,8 +1345,8 @@ void
 hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->invisible = invisible;
 }
@@ -1365,7 +1365,7 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->invisible;
+  вернуть buffer->invisible;
 }
 
 /**
@@ -1385,8 +1385,8 @@ void
 hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  not_found)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->not_found = not_found;
 }
@@ -1405,7 +1405,7 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->not_found;
+  вернуть buffer->not_found;
 }
 
 /**
@@ -1445,7 +1445,7 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->not_found_variation_selector;
+  вернуть buffer->not_found_variation_selector;
 }
 
 /**
@@ -1469,8 +1469,8 @@ void
 hb_buffer_set_random_state (hb_buffer_t    *buffer,
 			    unsigned        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->random_state = state;
 }
@@ -1489,7 +1489,7 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
 unsigned
 hb_buffer_get_random_state (const hb_buffer_t *buffer)
 {
-  return buffer->random_state;
+  вернуть buffer->random_state;
 }
 
 /**
@@ -1508,8 +1508,8 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
 void
 hb_buffer_clear_contents (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
   buffer->clear ();
 }
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned целое size)
 {
-  return buffer->ensure (size);
+  вернуть buffer->ensure (size);
 }
 
 /**
@@ -1546,7 +1546,7 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
 hb_bool_t
 hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 {
-  return buffer->successful;
+  вернуть buffer->successful;
 }
 
 /**
@@ -1569,7 +1569,7 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 void
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       unsigned целое    cluster)
 {
   buffer->add (codepoint, cluster);
   buffer->clear_context (1);
@@ -1590,31 +1590,31 @@ hb_buffer_add (hb_buffer_t    *buffer,
  **/
 hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+		      unsigned целое  length)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть length == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  если (unlikely (!buffer->ensure (length)))
+    вернуть false;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
+  если (length > buffer->len) {
     hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
+    если (buffer->have_positions)
       hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
   }
 
   buffer->len = length;
 
-  if (!length)
+  если (!length)
   {
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
     buffer->clear_context (0);
   }
   buffer->clear_context (1);
 
-  return true;
+  вернуть true;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned целое
 hb_buffer_get_length (const hb_buffer_t *buffer)
 {
-  return buffer->len;
+  вернуть buffer->len;
 }
 
 /**
@@ -1651,12 +1651,12 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  **/
 hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+			   unsigned целое *length)
 {
-  if (length)
+  если (length)
     *length = buffer->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  вернуть (hb_glyph_info_t *) buffer->info;
 }
 
 /**
@@ -1680,20 +1680,20 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  **/
 hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+			       unsigned целое *length)
 {
-  if (length)
+  если (length)
     *length = buffer->len;
 
-  if (!buffer->have_positions)
+  если (!buffer->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    если (unlikely (buffer->message_depth))
+      вернуть nullptr;
 
     buffer->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  вернуть (hb_glyph_position_t *) buffer->pos;
 }
 
 /**
@@ -1712,7 +1712,7 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer)
 {
-  return buffer->have_positions;
+  вернуть buffer->have_positions;
 }
 
 /**
@@ -1729,7 +1729,7 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
 hb_glyph_flags_t
 (hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  вернуть hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1758,7 +1758,7 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  **/
 void
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+			 unsigned целое start, unsigned целое end)
 {
   buffer->reverse_range (start, end);
 }
@@ -1817,31 +1817,31 @@ template <typename utf_t>
 static inline void
 hb_buffer_add_utf (hb_buffer_t  *buffer,
 		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+		   целое           text_length,
+		   unsigned целое  item_offset,
+		   целое           item_length)
 {
   typedef typename utf_t::codepoint_t T;
   const hb_codepoint_t replacement = buffer->replacement;
 
   buffer->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  если (unlikely (hb_object_is_immutable (buffer)))
+    вернуть;
 
-  if (text_length == -1)
+  если (text_length == -1)
     text_length = utf_t::strlen (text);
 
-  if (item_length == -1)
+  если (item_length == -1)
     item_length = text_length - item_offset;
 
   item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  item_length = hb_clamp (item_length, 0, text_length - (целое) item_offset);
 
-  if (unlikely (item_length < 0 ||
+  если (unlikely (item_length < 0 ||
 		item_length > INT_MAX / 8 ||
 		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+    вернуть;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,13 +1850,13 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  если (!buffer->len && item_offset > 0)
   {
     /* Add pre-context */
     buffer->clear_context (0);
     const T *prev = text + item_offset;
     const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    пока (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
     {
       hb_codepoint_t u;
       prev = utf_t::prev (prev, start, &u, replacement);
@@ -1866,7 +1866,7 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
 
   const T *next = text + item_offset;
   const T *end = next + item_length;
-  while (next < end)
+  пока (next < end)
   {
     hb_codepoint_t u;
     const T *old_next = next;
@@ -1877,7 +1877,7 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
   /* Add post-context */
   buffer->clear_context (1);
   end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  пока (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
   {
     hb_codepoint_t u;
     next = utf_t::next (next, end, &u, replacement);
@@ -1907,9 +1907,9 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
 void
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
 		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+		    целое           text_length,
+		    unsigned целое  item_offset,
+		    целое           item_length)
 {
   hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
 }
@@ -1933,9 +1933,9 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
 void
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     целое             text_length,
+		     unsigned целое    item_offset,
+		     целое             item_length)
 {
   hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1959,9 +1959,9 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 void
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     целое             text_length,
+		     unsigned целое    item_offset,
+		     целое             item_length)
 {
   hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1986,9 +1986,9 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 void
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+		      целое            text_length,
+		      unsigned целое   item_offset,
+		      целое            item_length)
 {
   hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2022,9 +2022,9 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 void
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+			  целое                   text_length,
+			  unsigned целое          item_offset,
+			  целое                   item_length)
 {
   hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2044,8 +2044,8 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 HB_EXTERN void
 hb_buffer_append (hb_buffer_t *buffer,
 		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+		  unsigned целое start,
+		  unsigned целое end)
 {
   assert (!buffer->have_output && !source->have_output);
   assert (buffer->have_positions == source->have_positions ||
@@ -2053,84 +2053,84 @@ hb_buffer_append (hb_buffer_t *buffer,
   assert (buffer->content_type == source->content_type ||
 	  !buffer->len || !source->len);
 
-  if (end > source->len)
+  если (end > source->len)
     end = source->len;
-  if (start > end)
+  если (start > end)
     start = end;
-  if (start == end)
-    return;
+  если (start == end)
+    вернуть;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  если (buffer->len + (end - start) < buffer->len) /* Overflows. */
   {
     buffer->successful = false;
-    return;
+    вернуть;
   }
 
-  unsigned int orig_len = buffer->len;
+  unsigned целое orig_len = buffer->len;
   hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  если (unlikely (!buffer->successful))
+    вернуть;
 
-  if (!orig_len)
+  если (!orig_len)
     buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
+  если (!buffer->have_positions && source->have_positions)
     buffer->clear_positions ();
 
   hb_segment_properties_overlay (&buffer->props, &source->props);
 
   hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
+  если (buffer->have_positions)
     hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  если (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    если (!orig_len && start + source->context_len[0] > 0)
     {
       buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+      пока (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
 	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
+      для (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
 	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
     }
 
     /* post-context */
     buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+    пока (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
       buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
+    для (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
       buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
   }
 }
 
 
-static int
+static целое
 compare_info_codepoint (const hb_glyph_info_t *pa,
 			const hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  вернуть (целое) pb->codepoint - (целое) pa->codepoint;
 }
 
 static inline void
 normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
+			  unsigned целое start,
+			  unsigned целое end,
 			  bool backward)
 {
   hb_glyph_position_t *pos = buffer->pos;
 
   /* Total cluster advance */
   hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  для (unsigned целое i = start; i < end; i++)
   {
     total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
     total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  для (unsigned целое i = start; i < end; i++)
   {
     pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
     pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
@@ -2142,18 +2142,18 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  если (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
     pos[end - 1].x_advance = total_x_advance;
     pos[end - 1].y_advance = total_y_advance;
 
     hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+  } иначе {
     /* Transfer all cluster advance to the first glyph. */
     pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
     pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
+    для (unsigned целое i = start + 1; i < end; i++) {
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
     }
@@ -2186,15 +2186,15 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
 }
 
 void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+hb_buffer_t::sort (unsigned целое start, unsigned целое end, целое(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
 {
   assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  для (unsigned целое i = start + 1; i < end; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    unsigned целое j = i;
+    пока (j > start && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
+    если (i == j)
       continue;
     /* Move item i to occupy place for item j, shift what's in between. */
     merge_clusters (j, i + 1);
@@ -2228,69 +2228,69 @@ hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		unsigned целое position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  если (buffer->content_type != reference->content_type && buffer->len && reference->len)
+    вернуть HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
   hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
   bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned целое count = reference->len;
 
-  if (buffer->len != count)
+  если (buffer->len != count)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
     const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    unsigned целое i;
+    для (i = 0; i < count; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
+      если (contains && info[i].codepoint == dottedcircle_glyph)
 	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
+      если (contains && info[i].codepoint == 0)
 	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     }
     result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    вернуть hb_buffer_diff_flags_t (result);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  если (!count)
+    вернуть hb_buffer_diff_flags_t (result);
 
   const hb_glyph_info_t *buf_info = buffer->info;
   const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  для (unsigned целое i = 0; i < count; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
+    если (buf_info->codepoint != ref_info->codepoint)
       result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
+    если (buf_info->cluster != ref_info->cluster)
       result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
+    если ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
       result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
+    если (contains && ref_info->codepoint == dottedcircle_glyph)
       result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
+    если (contains && ref_info->codepoint == 0)
       result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  если (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
   {
     auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      вернуть diff < 0 ? -diff : diff;
     };
     assert (buffer->have_positions);
     const hb_glyph_position_t *buf_pos = buffer->pos;
     const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    для (unsigned целое i = 0; i < count; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      если (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
 	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
 	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
@@ -2303,7 +2303,7 @@ hb_buffer_diff (hb_buffer_t *buffer,
     }
   }
 
-  return result;
+  вернуть result;
 }
 
 
@@ -2315,14 +2315,14 @@ void
 hb_buffer_t::changed ()
 {
 #ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+  вернуть;
+#иначе
+  если (!message_depth)
+    вернуть;
 
-  if (changed_func)
+  если (changed_func)
     changed_func (this, changed_data);
-  else
+  иначе
     update_digest ();
 #endif
 }
@@ -2347,22 +2347,22 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
 			    hb_buffer_message_func_t func,
 			    void *user_data, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
+  если (unlikely (hb_object_is_immutable (buffer)) ||
       unlikely (buffer->message_depth))
   {
-    if (destroy)
+    если (destroy)
       destroy (user_data);
-    return;
+    вернуть;
   }
 
-  if (buffer->message_destroy)
+  если (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 
-  if (func) {
+  если (func) {
     buffer->message_func = func;
     buffer->message_data = user_data;
     buffer->message_destroy = destroy;
-  } else {
+  } иначе {
     buffer->message_func = nullptr;
     buffer->message_data = nullptr;
     buffer->message_destroy = nullptr;
@@ -2398,6 +2398,6 @@ hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
 
   message_depth--;
 
-  return ret;
+  вернуть ret;
 }
 #endif

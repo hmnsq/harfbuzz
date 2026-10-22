@@ -24,7 +24,7 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#если !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -85,14 +85,14 @@ typedef struct hb_blob_t hb_blob_t;
 
 HB_EXTERN hb_blob_t *
 hb_blob_create (const char        *data,
-		unsigned int       length,
+		unsigned целое       length,
 		hb_memory_mode_t   mode,
 		void              *user_data,
 		hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
 hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+			unsigned целое       length,
 			hb_memory_mode_t   mode,
 			void              *user_data,
 			hb_destroy_func_t  destroy);
@@ -111,8 +111,8 @@ hb_blob_create_from_file_or_fail (const char *file_name);
  */
 HB_EXTERN hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length);
+			 unsigned целое  offset,
+			 unsigned целое  length);
 
 HB_EXTERN hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob);
@@ -146,14 +146,14 @@ HB_EXTERN hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned целое
 hb_blob_get_length (hb_blob_t *blob);
 
 HB_EXTERN const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length);
+hb_blob_get_data (hb_blob_t *blob, unsigned целое *length);
 
 HB_EXTERN char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length);
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned целое *length);
 
 HB_END_DECLS
 

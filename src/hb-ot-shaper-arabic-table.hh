@@ -73,18 +73,18 @@ static const uint8_t _hb_arabic_joining_u8[749]=
 
 static inline uint8_t _hb_arabic_joining_b4 (const uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  вернуть (a[i>>1]>>((i&1)<<2))&15;
 }
 static inline uint8_t _hb_arabic_joining_joining_type (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^3] */
-  return u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
+  вернуть u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
 }
 
-static unsigned int
+static unsigned целое
 joining_type (hb_codepoint_t u)
 {
-  return _hb_arabic_joining_joining_type (u);
+  вернуть _hb_arabic_joining_joining_type (u);
 }
 
 

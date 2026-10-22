@@ -14,8 +14,8 @@ namespace Layout {
 
 static void
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned целое len,
+                              unsigned целое i,
                               hb_direction_t direction,
                               unsigned nesting_level = HB_MAX_NESTING_LEVEL);
 
@@ -30,8 +30,8 @@ struct GPOS : GSUBGPOS
 
   using Lookup = PosLookup;
 
-  const PosLookup& get_lookup (unsigned int i) const
-  { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
+  const PosLookup& get_lookup (unsigned целое i) const
+  { вернуть static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
 
   static inline void position_start (hb_font_t *font, hb_buffer_t *buffer);
   static inline void position_finish_advances (hb_font_t *font, hb_buffer_t *buffer);
@@ -40,7 +40,7 @@ struct GPOS : GSUBGPOS
   bool subset (hb_subset_context_t *c) const
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<PosLookup> (&l);
+    вернуть GSUBGPOS::subset<PosLookup> (&l);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -54,9 +54,9 @@ struct GPOS : GSUBGPOS
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
+    для (unsigned i = 0; i < GSUBGPOS::get_lookup_count (); i++)
     {
-      if (!c->gpos_lookups->has (i)) continue;
+      если (!c->gpos_lookups->has (i)) continue;
       const PosLookup &l = get_lookup (i);
       l.dispatch (c);
     }
@@ -73,72 +73,72 @@ struct GPOS : GSUBGPOS
 
 static void
 propagate_attachment_offsets (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned целое len,
+                              unsigned целое i,
                               hb_direction_t direction,
                               unsigned nesting_level)
 {
   /* Adjusts offsets of attached glyphs (both cursive and mark) to accumulate
    * offset of glyph they are attached to. */
-  int chain = pos[i].attach_chain();
-  int type = pos[i].attach_type();
+  целое chain = pos[i].attach_chain();
+  целое type = pos[i].attach_type();
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned целое j = (целое) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  если (unlikely (j >= len))
+    вернуть;
 
-  if (unlikely (!nesting_level))
-    return;
+  если (unlikely (!nesting_level))
+    вернуть;
 
-  if (pos[j].attach_chain())
+  если (pos[j].attach_chain())
     propagate_attachment_offsets (pos, len, j, direction, nesting_level - 1);
 
   assert (!!(type & GPOS_impl::ATTACH_TYPE_MARK) ^ !!(type & GPOS_impl::ATTACH_TYPE_CURSIVE));
 
-  if (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
+  если (type & GPOS_impl::ATTACH_TYPE_CURSIVE)
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    если (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
-    else
+    иначе
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
   }
-  else /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
+  иначе /*if (type & GPOS_impl::ATTACH_TYPE_MARK)*/
   {
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+    если (HB_DIRECTION_IS_HORIZONTAL (direction))
       pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[j].x_offset);
-    else
+    иначе
       pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[j].y_offset);
 
     // i is the position of the mark; j is the base.
-    if (j < i)
+    если (j < i)
     {
       /* This is the common case: mark follows base.
        * And currently the only way in OpenType. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = j; k < i; k++) {
+      если (HB_DIRECTION_IS_FORWARD (direction))
+	для (unsigned целое k = j; k < i; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = j + 1; k < i + 1; k++) {
+      иначе
+	для (unsigned целое k = j + 1; k < i + 1; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
     }
-    else // j > i
+    иначе // j > i
     {
       /* This can happen with `kerx`: a mark attaching
        * to a base after it in the logical order. */
-      if (HB_DIRECTION_IS_FORWARD (direction))
-	for (unsigned int k = i; k < j; k++) {
+      если (HB_DIRECTION_IS_FORWARD (direction))
+	для (unsigned целое k = i; k < j; k++) {
 	  pos[i].x_offset = hb_saturate_add (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_add (pos[i].y_offset, pos[k].y_advance);
 	}
-      else
-	for (unsigned int k = i + 1; k < j + 1; k++) {
+      иначе
+	для (unsigned целое k = i + 1; k < j + 1; k++) {
 	  pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, pos[k].x_advance);
 	  pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, pos[k].y_advance);
 	}
@@ -149,8 +149,8 @@ propagate_attachment_offsets (hb_glyph_position_t *pos,
 void
 GPOS::position_start (hb_font_t *font HB_UNUSED, hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned целое count = buffer->len;
+  для (unsigned целое i = 0; i < count; i++)
     buffer->pos[i].attach_chain() = buffer->pos[i].attach_type() = 0;
 }
 
@@ -165,34 +165,34 @@ GPOS::position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
 {
   _hb_buffer_assert_gsubgpos_vars (buffer);
 
-  unsigned int len;
+  unsigned целое len;
   hb_glyph_position_t *pos = hb_buffer_get_glyph_positions (buffer, &len);
   hb_direction_t direction = buffer->props.direction;
 
   /* Handle attachments */
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
+  если (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT)
   {
     auto *pos = buffer->pos;
     // https://github.com/harfbuzz/harfbuzz/issues/5514
-    if (HB_DIRECTION_IS_FORWARD (direction))
+    если (HB_DIRECTION_IS_FORWARD (direction))
     {
-      for (unsigned i = 0; i < len; i++)
-	if (pos[i].attach_chain())
+      для (unsigned i = 0; i < len; i++)
+	если (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
-    } else {
-      for (unsigned i = len; i-- > 0; )
-	if (pos[i].attach_chain())
+    } иначе {
+      для (unsigned i = len; i-- > 0; )
+	если (pos[i].attach_chain())
 	  propagate_attachment_offsets (pos, len, i, direction);
     }
   }
 
-  if (unlikely (font->slant_xy) &&
+  если (unlikely (font->slant_xy) &&
       HB_DIRECTION_IS_HORIZONTAL (direction))
   {
     /* Slanting shaping results is only supported for horizontal text,
      * as it gets weird otherwise. */
-    for (unsigned i = 0; i < len; i++)
-      if (unlikely (pos[i].y_offset))
+    для (unsigned i = 0; i < len; i++)
+      если (unlikely (pos[i].y_offset))
         pos[i].x_offset = hb_clamp_to<hb_position_t> ((double) pos[i].x_offset +
 						      (double) roundf (font->slant_xy * pos[i].y_offset));
   }

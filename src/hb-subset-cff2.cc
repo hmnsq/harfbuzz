@@ -74,7 +74,7 @@ struct cff2_instancing_plan_t
     hb_vector_t<unsigned> region_indices;
     unsigned new_major = 0;
     bool alive_ = false;
-    bool alive () const { return alive_; }
+    bool alive () const { вернуть alive_; }
 
     /* One value's delta for new region j, from its old per-region deltas. */
     double transform_delta (unsigned j, hb_array_t<const number_t> deltas) const
@@ -82,9 +82,9 @@ struct cff2_instancing_plan_t
       const hb_vector_t<float> &col = matrix.arrayZ[j];
       double d = 0.;
       unsigned count = hb_min (col.length, deltas.length);
-      for (unsigned c = 0; c < count; c++)
+      для (unsigned c = 0; c < count; c++)
 	d += (double) col.arrayZ[c] * deltas.arrayZ[c].to_real ();
-      return d;
+      вернуть d;
     }
   };
 
@@ -93,10 +93,10 @@ struct cff2_instancing_plan_t
   hb_set_t used_majors;
   unsigned new_major_count = 0;
 
-  bool has_variations () const { return new_major_count; }
+  bool has_variations () const { вернуть new_major_count; }
 
   const vardata_transform_t *get_transform (unsigned major) const
-  { return major < transforms.length ? &transforms.arrayZ[major] : nullptr; }
+  { вернуть major < transforms.length ? &transforms.arrayZ[major] : nullptr; }
 
   /* Record that a retained blend references this VarData. */
   void note_use (unsigned major) { used_majors.add (major); }
@@ -106,17 +106,17 @@ struct cff2_instancing_plan_t
   unsigned remap_ivs (unsigned old_ivs) const
   {
     const vardata_transform_t *t = get_transform (old_ivs);
-    return (t && t->alive ()) ? t->new_major : 0;
+    вернуть (t && t->alive ()) ? t->new_major : 0;
   }
 
   double fold_deltas (unsigned old_ivs, hb_array_t<const number_t> deltas) const
   {
     const vardata_transform_t *t = get_transform (old_ivs);
-    if (unlikely (!t || t->gains.length != deltas.length)) return 0.;
+    если (unlikely (!t || t->gains.length != deltas.length)) вернуть 0.;
     double v = 0.;
-    for (unsigned i = 0; i < deltas.length; i++)
+    для (unsigned i = 0; i < deltas.length; i++)
       v += (double) t->gains.arrayZ[i] * deltas.arrayZ[i].to_real ();
-    return v;
+    вернуть v;
   }
 
   bool create (const CFF2ItemVariationStore *cff2VarStore,
@@ -124,60 +124,60 @@ struct cff2_instancing_plan_t
   {
     const OT::ItemVariationStore &varStore = cff2VarStore->varStore;
     unsigned major_count = varStore.get_sub_table_count ();
-    if (!transforms.resize (major_count)) return false;
+    если (!transforms.resize (major_count)) вернуть false;
 
-    if (!varStore.get_region_list ().get_var_regions (plan->axes_old_index_tag_map, orig_regions))
-      return false;
+    если (!varStore.get_region_list ().get_var_regions (plan->axes_old_index_tag_map, orig_regions))
+      вернуть false;
 
     /* Instance each VarData with identity delta rows; the surviving tuples'
      * delta columns are the old-region → new-region transform. */
     OT::optimize_scratch_t scratch;
-    for (unsigned m = 0; m < major_count; m++)
+    для (unsigned m = 0; m < major_count; m++)
     {
       const OT::VarData &var_data = varStore.get_sub_table (m);
       unsigned k = var_data.get_region_index_count ();
       vardata_transform_t &t = transforms.arrayZ[m];
 
-      if (!t.gains.resize_exact (k)) return false;
+      если (!t.gains.resize_exact (k)) вернуть false;
       varStore.get_region_scalars (m, plan->normalized_coords.arrayZ,
 				   plan->normalized_coords.length,
 				   t.gains.arrayZ, k);
 
       OT::tuple_variations_t tuples;
-      for (unsigned r = 0; r < k; r++)
+      для (unsigned r = 0; r < k; r++)
       {
 	OT::tuple_delta_t tuple;
-	if (!tuple.deltas_x.resize (k) ||
+	если (!tuple.deltas_x.resize (k) ||
 	    !tuple.indices.resize (k))
-	  return false;
-	for (unsigned i = 0; i < k; i++)
+	  вернуть false;
+	для (unsigned i = 0; i < k; i++)
 	  tuple.indices.arrayZ[i] = true;
 	tuple.deltas_x.arrayZ[r] = 1.f;
 	unsigned region_index = var_data.get_region_index (r);
-	if (unlikely (region_index >= orig_regions.length)) return false;
+	если (unlikely (region_index >= orig_regions.length)) вернуть false;
 	tuple.axis_tuples = orig_regions.arrayZ[region_index];
-	if (unlikely (tuple.axis_tuples.in_error ())) return false;
+	если (unlikely (tuple.axis_tuples.in_error ())) вернуть false;
 	tuples.tuple_vars.push (std::move (tuple));
       }
-      if (unlikely (tuples.tuple_vars.in_error ())) return false;
+      если (unlikely (tuples.tuple_vars.in_error ())) вернуть false;
 
-      if (!tuples.instantiate (plan->axes_location, plan->axes_triple_distances, scratch))
-	return false;
+      если (!tuples.instantiate (plan->axes_location, plan->axes_triple_distances, scratch))
+	вернуть false;
 
-      for (auto &tuple : tuples.tuple_vars)
+      для (auto &tuple : tuples.tuple_vars)
       {
-	if (unlikely (tuple.deltas_x.length != k)) return false;
+	если (unlikely (tuple.deltas_x.length != k)) вернуть false;
 	hb_vector_t<float> col;
-	if (unlikely (!col.resize_exact (k))) return false;
-	for (unsigned i = 0; i < k; i++)
+	если (unlikely (!col.resize_exact (k))) вернуть false;
+	для (unsigned i = 0; i < k; i++)
 	  col.arrayZ[i] = tuple.deltas_x.arrayZ[i];
 	t.matrix.push (std::move (col));
 	t.regions.push (std::move (tuple.axis_tuples));
       }
-      if (unlikely (t.matrix.in_error () || t.regions.in_error ())) return false;
+      если (unlikely (t.matrix.in_error () || t.regions.in_error ())) вернуть false;
     }
 
-    return true;
+    вернуть true;
   }
 
   /* Decide which VarDatas survive, number them, and build the new global
@@ -186,69 +186,69 @@ struct cff2_instancing_plan_t
    * rebuildRegions + prune_regions). */
   bool finalize ()
   {
-    for (unsigned m = 0; m < transforms.length; m++)
+    для (unsigned m = 0; m < transforms.length; m++)
     {
       vardata_transform_t &t = transforms.arrayZ[m];
       t.alive_ = t.matrix.length && used_majors.has (m);
-      if (t.alive_)
+      если (t.alive_)
 	t.new_major = new_major_count++;
     }
 
     /* Keys hash by content, so pointers into different owners compare fine. */
     hb_hashmap_t<const hb_hashmap_t<hb_tag_t, Triple>*, unsigned> region_idx_map;
     hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*> region_ptrs;
-    for (const vardata_transform_t &t : transforms)
+    для (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
-	if (!region_idx_map.has (&region))
-	  if (unlikely (!region_idx_map.set (&region, (unsigned) -1)))
-	    return false;
+      если (!t.alive ()) continue;
+      для (const auto &region : t.regions)
+	если (!region_idx_map.has (&region))
+	  если (unlikely (!region_idx_map.set (&region, (unsigned) -1)))
+	    вернуть false;
     }
-    for (const auto &r : orig_regions)
+    для (const auto &r : orig_regions)
     {
       unsigned *idx;
-      if (region_idx_map.has (&r, &idx) && *idx == (unsigned) -1)
+      если (region_idx_map.has (&r, &idx) && *idx == (unsigned) -1)
       {
-	if (unlikely (!region_idx_map.set (&r, region_ptrs.length))) return false;
+	если (unlikely (!region_idx_map.set (&r, region_ptrs.length))) вернуть false;
 	region_ptrs.push (&r);
       }
     }
-    for (const vardata_transform_t &t : transforms)
+    для (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
+      если (!t.alive ()) continue;
+      для (const auto &region : t.regions)
       {
 	unsigned *idx;
-	if (region_idx_map.has (&region, &idx) && *idx == (unsigned) -1)
+	если (region_idx_map.has (&region, &idx) && *idx == (unsigned) -1)
 	{
-	  if (unlikely (!region_idx_map.set (&region, region_ptrs.length))) return false;
+	  если (unlikely (!region_idx_map.set (&region, region_ptrs.length))) вернуть false;
 	  region_ptrs.push (&region);
 	}
       }
     }
-    if (unlikely (region_ptrs.in_error ())) return false;
+    если (unlikely (region_ptrs.in_error ())) вернуть false;
 
-    for (vardata_transform_t &t : transforms)
+    для (vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
-      for (const auto &region : t.regions)
+      если (!t.alive ()) continue;
+      для (const auto &region : t.regions)
       {
 	unsigned *idx;
-	if (unlikely (!region_idx_map.has (&region, &idx))) return false;
+	если (unlikely (!region_idx_map.has (&region, &idx))) вернуть false;
 	t.region_indices.push (*idx);
       }
-      if (unlikely (t.region_indices.in_error ())) return false;
+      если (unlikely (t.region_indices.in_error ())) вернуть false;
     }
 
-    if (!new_regions.resize (region_ptrs.length)) return false;
-    for (unsigned i = 0; i < region_ptrs.length; i++)
+    если (!new_regions.resize (region_ptrs.length)) вернуть false;
+    для (unsigned i = 0; i < region_ptrs.length; i++)
     {
       new_regions.arrayZ[i] = *region_ptrs.arrayZ[i];
-      if (unlikely (new_regions.arrayZ[i].in_error ())) return false;
+      если (unlikely (new_regions.arrayZ[i].in_error ())) вернуть false;
     }
 
-    return true;
+    вернуть true;
   }
 
   /* Serialize the instanced store: a CFF2ItemVariationStore whose VarDatas
@@ -262,50 +262,50 @@ struct cff2_instancing_plan_t
 
     uint64_t offset = header_size;
     hb_vector_t<unsigned> data_offsets;
-    for (const vardata_transform_t &t : transforms)
+    для (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
+      если (!t.alive ()) continue;
       data_offsets.push ((unsigned) offset);
       offset += 6 + 2 * (uint64_t) t.region_indices.length;
     }
-    if (unlikely (data_offsets.in_error () || data_offsets.length != data_count))
-      return false;
+    если (unlikely (data_offsets.in_error () || data_offsets.length != data_count))
+      вернуть false;
     unsigned regions_offset = (unsigned) offset;
     uint64_t total = offset + 4 + (uint64_t) new_regions.length * axis_tags.length * 6;
-    if (unlikely (total > 0xFFFFFFFFu)) return false;
+    если (unlikely (total > 0xFFFFFFFFu)) вернуть false;
 
     HBUINT16 *size_field = c->allocate_size<HBUINT16> (HBUINT16::static_size);
-    if (unlikely (!size_field)) return false;
+    если (unlikely (!size_field)) вернуть false;
     /* OFF 2026 5.3.3.11.2 permits larger stores with length=65535. */
     *size_field = hb_min (total, (uint64_t) 0xFFFFu);
 
     char *header = c->allocate_size<char> (header_size);
-    if (unlikely (!header)) return false;
+    если (unlikely (!header)) вернуть false;
     * (HBUINT16 *) (header + 0) = 1;			/* format */
     * (HBUINT32 *) (header + 2) = regions_offset;
     * (HBUINT16 *) (header + 6) = data_count;
-    for (unsigned i = 0; i < data_count; i++)
+    для (unsigned i = 0; i < data_count; i++)
       * (HBUINT32 *) (header + 8 + 4 * i) = data_offsets.arrayZ[i];
 
-    for (const vardata_transform_t &t : transforms)
+    для (const vardata_transform_t &t : transforms)
     {
-      if (!t.alive ()) continue;
+      если (!t.alive ()) continue;
       unsigned k = t.region_indices.length;
       HBUINT16 *v = (HBUINT16 *) c->allocate_size<char> (6 + 2 * k);
-      if (unlikely (!v)) return false;
+      если (unlikely (!v)) вернуть false;
       v[0] = 0;						/* itemCount */
       v[1] = 0;						/* wordSizeCount */
       v[2] = k;						/* regionIndices.len */
-      for (unsigned j = 0; j < k; j++)
+      для (unsigned j = 0; j < k; j++)
 	v[3 + j] = t.region_indices.arrayZ[j];
     }
 
     hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*> region_ptrs;
-    if (unlikely (!region_ptrs.alloc_exact (new_regions.length))) return false;
-    for (const auto &r : new_regions)
+    если (unlikely (!region_ptrs.alloc_exact (new_regions.length))) вернуть false;
+    для (const auto &r : new_regions)
       region_ptrs.push (&r);
     auto *region_list = c->start_embed<OT::VarRegionList> ();
-    return region_list->serialize (c, axis_tags, region_ptrs);
+    вернуть region_list->serialize (c, axis_tags, region_ptrs);
   }
 
   private:
@@ -342,7 +342,7 @@ struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage
       case OpCode_vstemhm:
       case OpCode_hintmask:
       case OpCode_cntrmask:
-	if (param.drop_hints)
+	если (param.drop_hints)
 	  counts = false;
 	break;
 
@@ -350,9 +350,9 @@ struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage
 	break;
     }
 
-    if (counts)
-      for (unsigned int i = 0; i < env.argStack.get_count (); i++)
-	if (env.argStack[i].blending ())
+    если (counts)
+      для (unsigned целое i = 0; i < env.argStack.get_count (); i++)
+	если (env.argStack[i].blending ())
 	{
 	  param.instancing->note_use (env.get_ivs ());
 	  break;
@@ -371,16 +371,16 @@ struct cff2_private_dict_usage_opset_t : dict_opset_t
 	env.process_vsindex ();
 	param.ivs = env.get_ivs ();
 	env.clear_args ();
-	return;
+	вернуть;
       case OpCode_blenddict:
 	param.instancing->note_use (param.ivs);
 	env.clear_args ();
-	return;
+	вернуть;
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	если (!env.argStack.is_empty ()) вернуть;
 	env.clear_args ();
-	return;
+	вернуть;
     }
   }
 };
@@ -408,9 +408,9 @@ struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     switch (opstr.op)
     {
       case OpCode_vstore:
-        if (info.var_store_link)
+        если (info.var_store_link)
 	  return_trace (FontDict::serialize_link4_op(c, opstr.op, info.var_store_link));
-	else
+	иначе
 	  return_trace (true);
 
       default:
@@ -424,7 +424,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* Optionally capture command for specialization (before flushing, to preserve args) */
-    if (param.commands)
+    если (param.commands)
     {
       bool skip_command = false;
 
@@ -441,7 +441,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 	case OpCode_vstemhm:
 	case OpCode_hintmask:
 	case OpCode_cntrmask:
-	  if (param.drop_hints)
+	  если (param.drop_hints)
 	    skip_command = true;
 	  break;
 
@@ -449,21 +449,21 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 	  break;
       }
 
-      if (!skip_command)
+      если (!skip_command)
       {
 	cs_command_t cmd (op);
 	/* Capture resolved blend values */
-	for (unsigned int i = 0; i < env.argStack.get_count ();)
+	для (unsigned целое i = 0; i < env.argStack.get_count ();)
 	{
 	  const blend_arg_t &arg = env.argStack[i];
-	  if (arg.blending ())
+	  если (arg.blending ())
 	  {
 	    /* For blend args, capture only the resolved default value */
 	    cmd.args.push (arg);
 	    /* Skip over the multiple blend values */
 	    i += arg.numValues;
 	  }
-	  else
+	  иначе
 	  {
 	    cmd.args.push (arg);
 	    i++;
@@ -478,7 +478,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       case OpCode_return:
       case OpCode_endchar:
 	/* dummy opcodes in CFF2. ignore */
-	if (op == OpCode_endchar && param.instancer)
+	если (op == OpCode_endchar && param.instancer)
 	  emit_vsindex_prefix (env, param);
 	break;
 
@@ -488,10 +488,10 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
       case OpCode_vstemhm:
       case OpCode_hintmask:
       case OpCode_cntrmask:
-	if (param.drop_hints)
+	если (param.drop_hints)
 	{
 	  env.clear_args ();
-	  return;
+	  вернуть;
 	}
 	HB_FALLTHROUGH;
 
@@ -503,23 +503,23 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
 
   static void flush_args (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
-    for (unsigned int i = 0; i < env.argStack.get_count ();)
+    для (unsigned целое i = 0; i < env.argStack.get_count ();)
     {
       const blend_arg_t &arg = env.argStack[i];
-      if (arg.blending ())
+      если (arg.blending ())
       {
-	if (unlikely (!((arg.numValues > 0) && (env.argStack.get_count () >= arg.numValues))))
+	если (unlikely (!((arg.numValues > 0) && (env.argStack.get_count () >= arg.numValues))))
 	{
 	  env.set_error ();
-	  return;
+	  вернуть;
 	}
-	if (param.instancer)
+	если (param.instancer)
 	  rewrite_blends (arg, i, env, param);
-	else
+	иначе
 	  flatten_blends (arg, i, env, param);
 	i += arg.numValues;
       }
-      else
+      иначе
       {
 	str_encoder_t  encoder (param.flatStr);
 	encoder.encode_num_cs (arg);
@@ -529,26 +529,26 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     SUPER::flush_args (env, param);
   }
 
-  static void flatten_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flatten_blends (const blend_arg_t &arg, unsigned целое i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* flatten the default values */
     str_encoder_t  encoder (param.flatStr);
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    для (unsigned целое j = 0; j < arg.numValues; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!((arg1.blending () && (arg.numValues == arg1.numValues) && (arg1.valueIndex == j) &&
+      если (unlikely (!((arg1.blending () && (arg.numValues == arg1.numValues) && (arg1.valueIndex == j) &&
 	      (arg1.deltas.length == env.get_region_count ())))))
       {
 	env.set_error ();
-	return;
+	вернуть;
       }
       encoder.encode_num_cs (arg1);
     }
     /* flatten deltas for each value */
-    for (unsigned int j = 0; j < arg.numValues; j++)
+    для (unsigned целое j = 0; j < arg.numValues; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      for (unsigned int k = 0; k < arg1.deltas.length; k++)
+      для (unsigned целое k = 0; k < arg1.deltas.length; k++)
 	encoder.encode_num_cs (arg1.deltas[k]);
     }
     /* flatten the number of values followed by blend operator */
@@ -559,74 +559,74 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   /* Partial instancing: rewrite one blend group against the instanced store.
    * Each value's default absorbs the folded (pinned-away) contribution, and
    * its deltas are mapped onto the new region list. */
-  static void rewrite_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void rewrite_blends (const blend_arg_t &arg, unsigned целое i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     const cff2_instancing_plan_t &instancer = *param.instancer;
     unsigned ivs = env.get_ivs ();
     const cff2_instancing_plan_t::vardata_transform_t *t = instancer.get_transform (ivs);
-    if (unlikely (!t))
+    если (unlikely (!t))
     {
       env.set_error ();
-      return;
+      вернуть;
     }
 
     unsigned n = arg.numValues;
-    for (unsigned int j = 0; j < n; j++)
+    для (unsigned целое j = 0; j < n; j++)
     {
       const blend_arg_t &arg1 = env.argStack[i + j];
-      if (unlikely (!(arg1.blending () && (arg1.numValues == n) && (arg1.valueIndex == j) &&
+      если (unlikely (!(arg1.blending () && (arg1.numValues == n) && (arg1.valueIndex == j) &&
 		      (arg1.deltas.length == env.get_region_count ()) &&
 		      (arg1.deltas.length == t->gains.length))))
       {
 	env.set_error ();
-	return;
+	вернуть;
       }
     }
 
     str_encoder_t encoder (param.flatStr);
     unsigned k_new = t->alive () ? t->matrix.length : 0;
 
-    if (!k_new)
+    если (!k_new)
     {
       /* All of this VarData's regions died; blends dissolve into statics. */
-      for (unsigned int j = 0; j < n; j++)
+      для (unsigned целое j = 0; j < n; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
 	number_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
 	encoder.encode_num_cs (v);
       }
-      return;
+      вернуть;
     }
 
     /* Emit in chunks so the output charstring stays within the argument
      * stack limit: values already emitted for this op, plus this chunk's
      * defaults, deltas and count, must not exceed 513. */
     unsigned done = 0;
-    while (done < n)
+    пока (done < n)
     {
       unsigned avail = 512 > (i + done) ? 512 - (i + done) : 0;
       unsigned chunk = hb_min (avail / (k_new + 1), n - done);
-      if (unlikely (!chunk))
+      если (unlikely (!chunk))
       {
 	env.set_error ();
-	return;
+	вернуть;
       }
 
-      for (unsigned int j = done; j < done + chunk; j++)
+      для (unsigned целое j = done; j < done + chunk; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
 	number_t v;
 	v.set_real (arg1.to_real () + round (instancer.fold_deltas (ivs, arg1.deltas.as_array ())));
 	encoder.encode_num_cs (v);
       }
-      for (unsigned int j = done; j < done + chunk; j++)
+      для (unsigned целое j = done; j < done + chunk; j++)
       {
 	const blend_arg_t &arg1 = env.argStack[i + j];
-	for (unsigned r = 0; r < k_new; r++)
+	для (unsigned r = 0; r < k_new; r++)
 	{
 	  number_t v;
-	  v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, arg1.deltas.as_array ()))));
+	  v.set_int (hb_clamp_to<целое> (round (t->transform_delta (r, arg1.deltas.as_array ()))));
 	  encoder.encode_num_cs (v);
 	}
       }
@@ -641,23 +641,23 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
    * (remapped) ivs differs from its FD's (remapped) private-dict ivs. */
   static void emit_vsindex_prefix (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
-    if (!param.emitted_blend) return;
+    если (!param.emitted_blend) вернуть;
     const cff2_instancing_plan_t &instancer = *param.instancer;
     unsigned new_ivs = instancer.remap_ivs (env.get_ivs ());
     unsigned fd_ivs = instancer.remap_ivs (env.get_orig_ivs ());
-    if (new_ivs == fd_ivs) return;
+    если (new_ivs == fd_ivs) вернуть;
 
     str_buff_t prefix;
     str_encoder_t enc (prefix);
-    enc.encode_int ((int) new_ivs);
+    enc.encode_int ((целое) new_ivs);
     enc.encode_op (OpCode_vsindexcs);
 
     str_buff_t &buf = param.flatStr;
     unsigned old_len = buf.length;
-    if (unlikely (prefix.in_error () || !buf.resize (old_len + prefix.length)))
+    если (unlikely (prefix.in_error () || !buf.resize (old_len + prefix.length)))
     {
       env.set_error ();
-      return;
+      вернуть;
     }
     memmove (buf.arrayZ + prefix.length, buf.arrayZ, old_len);
     hb_memcpy (buf.arrayZ, prefix.arrayZ, prefix.length);
@@ -669,7 +669,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     {
       case OpCode_return:
       case OpCode_endchar:
-	return;
+	вернуть;
       default:
 	str_encoder_t  encoder (param.flatStr);
 	encoder.encode_op (op);
@@ -680,25 +680,25 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   {
     SUPER::flush_hintmask (op, env, param);
     /* Preserve hintmask payload in captured commands for specializer re-encoding. */
-    if (param.commands && !param.drop_hints && param.commands->length > 0)
+    если (param.commands && !param.drop_hints && param.commands->length > 0)
     {
       auto &cmd = param.commands->tail ();
-      if (cmd.op == op)
+      если (cmd.op == op)
       {
         cmd.mask_bytes.resize (env.hintmask_size);
-        if (unlikely (cmd.mask_bytes.in_error ()))
+        если (unlikely (cmd.mask_bytes.in_error ()))
         {
           env.set_error ();
-          return;
+          вернуть;
         }
-        for (unsigned int i = 0; i < env.hintmask_size; i++)
+        для (unsigned целое i = 0; i < env.hintmask_size; i++)
           cmd.mask_bytes[i] = env.str_ref[i];
       }
     }
-    if (!param.drop_hints)
+    если (!param.drop_hints)
     {
       str_encoder_t  encoder (param.flatStr);
-      for (unsigned int i = 0; i < env.hintmask_size; i++)
+      для (unsigned целое i = 0; i < env.hintmask_size; i++)
 	encoder.encode_byte (env.str_ref[i]);
     }
   }
@@ -766,10 +766,10 @@ struct cff2_subr_subsetter_t : subr_subsetter_t<cff2_subr_subsetter_t, CFF2Subrs
   static void complete_parsed_str (cff2_cs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
   {
     /* vsindex is inserted at the beginning of the charstring as necessary */
-    if (env.seen_vsindex ())
+    если (env.seen_vsindex ())
     {
       number_t  ivs;
-      ivs.set_int ((int)env.get_ivs ());
+      ivs.set_int ((целое)env.get_ivs ());
       charstring.set_prefix (ivs, OpCode_vsindexcs);
     }
   }
@@ -779,21 +779,21 @@ struct cff2_private_blend_encoder_param_t
 {
   cff2_private_blend_encoder_param_t (hb_serialize_context_t *c,
 				      const CFF2ItemVariationStore *varStore,
-				      hb_array_t<int> normalized_coords) :
+				      hb_array_t<целое> normalized_coords) :
     c (c), varStore (varStore), normalized_coords (normalized_coords) {}
 
   void init () {}
 
   void process_blend ()
   {
-    if (!seen_blend)
+    если (!seen_blend)
     {
       region_count = varStore->varStore.get_region_index_count (ivs);
-      if (unlikely (!scalars.resize_exact (region_count)))
+      если (unlikely (!scalars.resize_exact (region_count)))
       {
-	if (c) c->err (HB_SERIALIZE_ERROR_OTHER);
+	если (c) c->err (HB_SERIALIZE_ERROR_OTHER);
 	seen_blend = true;
-	return;
+	вернуть;
       }
       varStore->varStore.get_region_scalars (ivs, normalized_coords.arrayZ, normalized_coords.length,
 					     &scalars[0], region_count);
@@ -804,13 +804,13 @@ struct cff2_private_blend_encoder_param_t
   double blend_deltas (hb_array_t<const number_t> deltas) const
   {
     double v = 0;
-    if (likely (scalars.length == deltas.length))
+    если (likely (scalars.length == deltas.length))
     {
       unsigned count = scalars.length;
-      for (unsigned i = 0; i < count; i++)
+      для (unsigned i = 0; i < count; i++)
 	v += (double) scalars.arrayZ[i] * deltas.arrayZ[i].to_real ();
     }
-    return v;
+    вернуть v;
   }
 
 
@@ -820,7 +820,7 @@ struct cff2_private_blend_encoder_param_t
   unsigned region_count = 0;
   hb_vector_t<float> scalars;
   const	 CFF2ItemVariationStore *varStore = nullptr;
-  hb_array_t<int> normalized_coords;
+  hb_array_t<целое> normalized_coords;
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being flattened. */
@@ -852,7 +852,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     double emit = round (param.fold_exact + f) - param.fold_emitted;
     param.fold_exact += f;
     param.fold_emitted += emit;
-    return emit;
+    вернуть emit;
   }
 
   /* Partial instancing: emit the args preceding this blend group, then the
@@ -864,25 +864,25 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
   {
     const cff2_instancing_plan_t &instancer = *param.instancer;
     const cff2_instancing_plan_t::vardata_transform_t *t = instancer.get_transform (param.ivs);
-    if (unlikely (!t || t->gains.length != k))
+    если (unlikely (!t || t->gains.length != k))
     {
       env.set_error ();
-      return;
+      вернуть;
     }
 
     str_buff_t str;
     str_encoder_t encoder (str);
 
-    for (unsigned idx = 0; idx < start; idx++)
+    для (unsigned idx = 0; idx < start; idx++)
       encoder.encode_num_tp (env.argStack[idx]);
 
     unsigned k_new = t->alive () ? t->matrix.length : 0;
-    if (!k_new)
+    если (!k_new)
     {
       /* This VarData died (or is unused by any retained charstring, which
        * can happen for FDs kept only for retain-gids holes); blends
        * dissolve into statics. */
-      for (unsigned j = 0; j < n; j++)
+      для (unsigned j = 0; j < n; j++)
       {
 	const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
 	number_t v;
@@ -890,33 +890,33 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 	encoder.encode_num_tp (v);
       }
     }
-    else
+    иначе
     {
       unsigned done = 0;
-      while (done < n)
+      пока (done < n)
       {
 	unsigned avail = 512 > (start + done) ? 512 - (start + done) : 0;
 	unsigned chunk = hb_min (avail / (k_new + 1), n - done);
-	if (unlikely (!chunk))
+	если (unlikely (!chunk))
 	{
 	  env.set_error ();
-	  return;
+	  вернуть;
 	}
 
-	for (unsigned j = done; j < done + chunk; j++)
+	для (unsigned j = done; j < done + chunk; j++)
 	{
 	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
 	  number_t v;
 	  v.set_real (env.argStack[start + j].to_real () + fold (param, blends));
 	  encoder.encode_num_tp (v);
 	}
-	for (unsigned j = done; j < done + chunk; j++)
+	для (unsigned j = done; j < done + chunk; j++)
 	{
 	  const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (j * k), k);
-	  for (unsigned r = 0; r < k_new; r++)
+	  для (unsigned r = 0; r < k_new; r++)
 	  {
 	    number_t v;
-	    v.set_int (hb_clamp_to<int> (round (t->transform_delta (r, blends))));
+	    v.set_int (hb_clamp_to<целое> (round (t->transform_delta (r, blends))));
 	    encoder.encode_num_tp (v);
 	  }
 	}
@@ -934,36 +934,36 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
 
   static void process_blend (cff2_priv_dict_interp_env_t& env, cff2_private_blend_encoder_param_t& param)
   {
-    unsigned int n, k;
+    unsigned целое n, k;
 
     param.process_blend ();
     k = param.region_count;
     n = env.argStack.pop_uint ();
 
     unsigned count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned целое total;
+    если (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
     {
       env.set_error ();
-      return;
+      вернуть;
     }
 
     /* copy the blend values into blend array of the default values */
-    unsigned int start = count - total;
+    unsigned целое start = count - total;
     /* let an obvious error case fail, but note CFF2 spec doesn't forbid n==0 */
-    if (unlikely (start > count))
+    если (unlikely (start > count))
     {
       env.set_error ();
-      return;
+      вернуть;
     }
 
-    if (param.instancer && k)
+    если (param.instancer && k)
     {
       rewrite_blends (env, param, start, n, k);
-      return;
+      вернуть;
     }
 
-    for (unsigned int i = 0; i < n; i++)
+    для (unsigned целое i = 0; i < n; i++)
     {
       const hb_array_t<const number_t> blends = env.argStack.sub_array (start + n + (i * k), k);
       process_arg_blend (param, env.argStack[start + i], blends, n, i);
@@ -993,33 +993,33 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
       case OpCode_vsindexdict:
 	env.process_vsindex ();
 	param.ivs = env.get_ivs ();
-	if (param.instancer)
+	если (param.instancer)
 	{
 	  /* Re-emit with the remapped vsindex; 0 is the dict default. */
 	  unsigned new_ivs = param.instancer->remap_ivs (param.ivs);
-	  if (new_ivs)
+	  если (new_ivs)
 	  {
 	    str_buff_t str;
 	    str_encoder_t encoder (str);
-	    encoder.encode_int ((int) new_ivs);
+	    encoder.encode_int ((целое) new_ivs);
 	    encoder.encode_op (OpCode_vsindexdict);
 	    auto bytes = str.as_bytes ();
 	    param.c->embed (&bytes, bytes.length);
 	  }
 	}
 	env.clear_args ();
-	return;
+	вернуть;
       case OpCode_blenddict:
 	process_blend (env, param);
-	return;
+	вернуть;
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	если (!env.argStack.is_empty ()) вернуть;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    если (unlikely (env.in_error ())) вернуть;
 
     // Write args then op
 
@@ -1027,7 +1027,7 @@ struct cff2_private_dict_blend_opset_t : dict_opset_t
     str_encoder_t encoder (str);
 
     unsigned count = env.argStack.get_count ();
-    for (unsigned i = 0; i < count; i++)
+    для (unsigned i = 0; i < count; i++)
       encoder.encode_num_tp (env.argStack[i]);
 
     encoder.encode_op (op);
@@ -1044,7 +1044,7 @@ struct cff2_private_dict_op_serializer_t : op_serializer_t
 {
   cff2_private_dict_op_serializer_t (bool desubroutinize_, bool drop_hints_, bool pinned_,
 				     const CFF::CFF2ItemVariationStore* varStore_,
-				     hb_array_t<int> normalized_coords_,
+				     hb_array_t<целое> normalized_coords_,
 				     const cff2_instancing_plan_t *instancer_ = nullptr)
     : desubroutinize (desubroutinize_), drop_hints (drop_hints_), pinned (pinned_),
       param (nullptr, varStore_, normalized_coords_)
@@ -1056,18 +1056,18 @@ struct cff2_private_dict_op_serializer_t : op_serializer_t
   {
     TRACE_SERIALIZE (this);
 
-    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
+    если (drop_hints && dict_opset_t::is_hint_op (opstr.op))
       return_trace (true);
 
-    if (opstr.op == OpCode_Subrs)
+    если (opstr.op == OpCode_Subrs)
     {
-      if (desubroutinize || !subrs_link)
+      если (desubroutinize || !subrs_link)
 	return_trace (true);
-      else
+      иначе
 	return_trace (FontDict::serialize_link2_op (c, opstr.op, subrs_link));
     }
 
-    if (pinned || param.instancer)
+    если (pinned || param.instancer)
     {
       /* Reinterpret opstr and process blends.  The param persists across
        * this dict's opstrs, so that an ivs set by a vsindexdict opstr is
@@ -1098,7 +1098,7 @@ struct cff2_subset_plan
   {
     /* make sure notdef is first */
     hb_codepoint_t old_glyph;
-    if (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) return false;
+    если (!plan->old_gid_for_new_gid (0, &old_glyph) || (old_glyph != 0)) вернуть false;
 
     num_glyphs = plan->num_output_glyphs ();
     orig_fdcount = acc.fdArray->count;
@@ -1115,9 +1115,9 @@ struct cff2_subset_plan
     /* Partial instancing: some axes pinned or limited, others kept. */
     partial_instancing = instancing_requested && !pinned &&
 			 acc.varStore != &Null (CFF2ItemVariationStore);
-    if (partial_instancing &&
+    если (partial_instancing &&
 	unlikely (!instancing.create (acc.varStore, plan)))
-      return false;
+      вернуть false;
     axis_tags = &plan->axis_tags;
 
     /* Enable command capture for CFF2→CFF1 conversion (for specialization) */
@@ -1125,26 +1125,26 @@ struct cff2_subset_plan
 
  #ifdef HB_EXPERIMENTAL_API
     min_charstrings_off_size = (plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS) ? 4 : 0;
- #else
+ #иначе
     min_charstrings_off_size = 0;
  #endif
 
-    if (desubroutinize)
+    если (desubroutinize)
     {
-      if (partial_instancing)
+      если (partial_instancing)
       {
 	/* Pass 1: collect which VarDatas the retained blends reference, so
 	 * unused ones get pruned and the survivors renumbered. */
 	hb_set_t used_fds;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	для (unsigned целое i = 0; i < num_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
-	  if (!plan->old_gid_for_new_gid (i, &glyph))
+	  если (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
-	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
-	    return false;
+	  unsigned целое fd = CFF::subset_get_fd (acc, glyph);
+	  если (unlikely (fd >= acc.fdCount))
+	    вернуть false;
 	  used_fds.add (fd);
 
 	  cff2_cs_interp_env_t<blend_arg_t> env (str, acc, fd);
@@ -1152,41 +1152,41 @@ struct cff2_subset_plan
 	  cff2_usage_param_t param;
 	  param.instancing = &instancing;
 	  param.drop_hints = drop_hints;
-	  if (unlikely (!interp.interpret (param)))
-	    return false;
+	  если (unlikely (!interp.interpret (param)))
+	    вернуть false;
 	}
-	for (unsigned fd : used_fds)
+	для (unsigned fd : used_fds)
 	{
 	  cff2_usage_param_t param;
 	  param.instancing = &instancing;
 	  unsigned count = acc.privateDicts[fd].get_count ();
-	  for (unsigned j = 0; j < count; j++)
+	  для (unsigned j = 0; j < count; j++)
 	  {
 	    const op_str_t &opstr = acc.privateDicts[fd][j];
-	    if (drop_hints && dict_opset_t::is_hint_op (opstr.op))
+	    если (drop_hints && dict_opset_t::is_hint_op (opstr.op))
 	      continue;
 	    cff2_priv_dict_interp_env_t env {hb_ubytes_t (opstr.ptr, opstr.length)};
 	    dict_interpreter_t<cff2_private_dict_usage_opset_t, cff2_usage_param_t, cff2_priv_dict_interp_env_t> interp (env);
-	    if (unlikely (!interp.interpret (param)))
-	      return false;
+	    если (unlikely (!interp.interpret (param)))
+	      вернуть false;
 	  }
 	}
-	if (unlikely (!instancing.finalize ()))
-	  return false;
+	если (unlikely (!instancing.finalize ()))
+	  вернуть false;
 
 	/* Pass 2: like subr_flattener_t, but blends stay symbolic (no coords
 	 * fed to the env) and get rewritten against the instanced store. */
-	if (!subset_charstrings.resize_exact (num_glyphs))
-	  return false;
-	for (unsigned int i = 0; i < num_glyphs; i++)
+	если (!subset_charstrings.resize_exact (num_glyphs))
+	  вернуть false;
+	для (unsigned целое i = 0; i < num_glyphs; i++)
 	{
 	  hb_codepoint_t glyph;
-	  if (!plan->old_gid_for_new_gid (i, &glyph))
+	  если (!plan->old_gid_for_new_gid (i, &glyph))
 	    continue;
 	  const hb_ubytes_t str = (*acc.charStrings)[glyph];
-	  unsigned int fd = CFF::subset_get_fd (acc, glyph);
-	  if (unlikely (fd >= acc.fdCount))
-	    return false;
+	  unsigned целое fd = CFF::subset_get_fd (acc, glyph);
+	  если (unlikely (fd >= acc.fdCount))
+	    вернуть false;
 
 	  cff2_cs_interp_env_t<blend_arg_t> env (str, acc, fd);
 	  cs_interpreter_t<cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_flatten_t, flatten_param_t> interp (env);
@@ -1196,62 +1196,62 @@ struct cff2_subset_plan
 	    plan
 	  };
 	  param.instancer = &instancing;
-	  if (unlikely (!interp.interpret (param)))
-	    return false;
+	  если (unlikely (!interp.interpret (param)))
+	    вернуть false;
 	}
       }
-      else
+      иначе
       {
       /* Flatten global & local subrs */
       subr_flattener_t<const OT::cff2::accelerator_subset_t, cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_flatten_t>
 		    flattener(acc, plan);
 
       /* Enable command capture if requested (for specialization) */
-      if (capture_commands)
+      если (capture_commands)
       {
-	if (!charstring_commands.resize_exact (num_glyphs))
-	  return false;
+	если (!charstring_commands.resize_exact (num_glyphs))
+	  вернуть false;
 
-	if (!flattener.flatten (subset_charstrings, &charstring_commands))
-	  return false;
+	если (!flattener.flatten (subset_charstrings, &charstring_commands))
+	  вернуть false;
       }
-      else
+      иначе
       {
-	if (!flattener.flatten (subset_charstrings))
-	  return false;
+	если (!flattener.flatten (subset_charstrings))
+	  вернуть false;
       }
       }
     }
-    else
+    иначе
     {
       cff2_subr_subsetter_t	subr_subsetter (acc, plan);
 
       /* Subset subrs: collect used subroutines, leaving all unused ones behind */
-      if (!subr_subsetter.subset ())
-	return false;
+      если (!subr_subsetter.subset ())
+	вернуть false;
 
       /* encode charstrings, global subrs, local subrs with new subroutine numbers */
-      if (!subr_subsetter.encode_charstrings (subset_charstrings, !pinned))
-	return false;
+      если (!subr_subsetter.encode_charstrings (subset_charstrings, !pinned))
+	вернуть false;
 
-      if (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
-	return false;
+      если (!subr_subsetter.encode_globalsubrs (subset_globalsubrs))
+	вернуть false;
 
       /* local subrs */
-      if (!subset_localsubrs.resize (orig_fdcount))
-	return false;
-      for (unsigned int fd = 0; fd < orig_fdcount; fd++)
+      если (!subset_localsubrs.resize (orig_fdcount))
+	вернуть false;
+      для (unsigned целое fd = 0; fd < orig_fdcount; fd++)
       {
 	subset_localsubrs[fd].init ();
-	if (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
-	  return false;
+	если (!subr_subsetter.encode_localsubrs (fd, subset_localsubrs[fd]))
+	  вернуть false;
       }
     }
 
     /* FDSelect */
-    if (acc.fdSelect != &Null (CFF2FDSelect))
+    если (acc.fdSelect != &Null (CFF2FDSelect))
     {
-      if (unlikely (!hb_plan_subset_cff_fdselect (plan,
+      если (unlikely (!hb_plan_subset_cff_fdselect (plan,
 						  orig_fdcount,
 						  *(const FDSelect *)acc.fdSelect,
 						  acc.num_glyphs,
@@ -1260,21 +1260,21 @@ struct cff2_subset_plan
 						  subset_fdselect_format,
 						  subset_fdselect_ranges,
 						  fdmap)))
-	return false;
+	вернуть false;
     }
-    else
+    иначе
       fdmap.identity (1);
 
-    return true;
+    вернуть true;
   }
 
   cff2_sub_table_info_t info;
 
-  unsigned int    num_glyphs;
-  unsigned int    orig_fdcount = 0;
-  unsigned int    subset_fdcount = 1;
-  unsigned int    subset_fdselect_size = 0;
-  unsigned int    subset_fdselect_format = 0;
+  unsigned целое    num_glyphs;
+  unsigned целое    orig_fdcount = 0;
+  unsigned целое    subset_fdcount = 1;
+  unsigned целое    subset_fdselect_size = 0;
+  unsigned целое    subset_fdselect_format = 0;
   bool            pinned = false;
   hb_vector_t<code_pair_t>   subset_fdselect_ranges;
 
@@ -1293,9 +1293,9 @@ struct cff2_subset_plan
 
   unsigned  min_charstrings_off_size = 0;
 
-  hb_array_t<int> normalized_coords; // For instantiation
+  hb_array_t<целое> normalized_coords; // For instantiation
   head_maxp_info_t head_maxp_info;  // For FontBBox
-  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *hmtx_map; // For widths
+  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, целое>> *hmtx_map; // For widths
 
   // Width optimization results (for CFF1 conversion)
   unsigned default_width = 0;
@@ -1327,84 +1327,84 @@ _serialize_cff1_charstrings (hb_serialize_context_t *c,
   // 1. Width at the beginning (if != defaultWidthX)
   // 2. endchar at the end
   str_buff_vec_t cff1_charstrings;
-  if (unlikely (!cff1_charstrings.resize (plan.subset_charstrings.length)))
+  если (unlikely (!cff1_charstrings.resize (plan.subset_charstrings.length)))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
-  for (unsigned i = 0; i < plan.subset_charstrings.length; i++)
+  для (unsigned i = 0; i < plan.subset_charstrings.length; i++)
   {
     // Get width for this glyph from hmtx_map
     unsigned width = 0;
-    if (plan.hmtx_map->has (i))
+    если (plan.hmtx_map->has (i))
       width = plan.hmtx_map->get (i).first;
 
     // Encode width if different from default
     str_encoder_t encoder (cff1_charstrings[i]);
-    if (width != default_width)
+    если (width != default_width)
     {
-      int delta = (int) width - (int) nominal_width;
+      целое delta = (целое) width - (целое) nominal_width;
       encoder.encode_int (delta);
     }
 
     // Use specialized commands if available, otherwise use binary
-    if (plan.capture_commands && i < plan.charstring_commands.length &&
+    если (plan.capture_commands && i < plan.charstring_commands.length &&
         plan.charstring_commands[i].length > 0)
     {
       // Specialize and encode commands
       auto &commands = plan.charstring_commands[i];
       CFF::specialize_commands (commands, 48);  /* maxstack=48 for CFF1 */
-      if (unlikely (!CFF::encode_commands (commands, cff1_charstrings[i])))
+      если (unlikely (!CFF::encode_commands (commands, cff1_charstrings[i])))
       {
         c->pop_discard ();
-        return false;
+        вернуть false;
       }
     }
-    else
+    иначе
     {
       // Use binary CharString
       const str_buff_t &cs = plan.subset_charstrings[i];
-      for (unsigned j = 0; j < cs.length; j++)
+      для (unsigned j = 0; j < cs.length; j++)
         cff1_charstrings[i].push (cs[j]);
     }
 
     // Check if it already ends with endchar (0x0e) or return (0x0b)
-    if (cff1_charstrings[i].length == 0 ||
+    если (cff1_charstrings[i].length == 0 ||
         (cff1_charstrings[i].tail () != 0x0e && cff1_charstrings[i].tail () != 0x0b))
     {
       // Append endchar operator
-      if (unlikely (!cff1_charstrings[i].push_or_fail (0x0e)))
+      если (unlikely (!cff1_charstrings[i].push_or_fail (0x0e)))
       {
         c->pop_discard ();
-        return false;
+        вернуть false;
       }
     }
   }
 
   unsigned data_size = 0;
   unsigned total_size = CFF1CharStrings::total_size (cff1_charstrings, &data_size, plan.min_charstrings_off_size);
-  if (unlikely (!c->start_zerocopy (total_size)))
+  если (unlikely (!c->start_zerocopy (total_size)))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
   auto *cs = c->start_embed<CFF1CharStrings> ();
-  if (unlikely (!cs->serialize (c, cff1_charstrings, &data_size, plan.min_charstrings_off_size)))
+  если (unlikely (!cs->serialize (c, cff1_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
   plan.info.char_strings_link = c->pop_pack (false);
-  return true;
+  вернуть true;
 }
 
 /* Serialize CID Charset (format 2 range: gid 0-N -> cid 0-N) */
 static bool
 _serialize_cff1_charset (hb_serialize_context_t *c,
-                         unsigned int num_glyphs,
+                         unsigned целое num_glyphs,
                          objidx_t &charset_link)
 {
   // For CID fonts, create a simple identity charset
@@ -1412,15 +1412,15 @@ _serialize_cff1_charset (hb_serialize_context_t *c,
   c->push ();
 
   auto *charset = c->start_embed<Charset> ();
-  if (unlikely (!charset))
+  если (unlikely (!charset))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
   // Create a single range for CID 1 to num_glyphs-1
   hb_vector_t<code_pair_t> ranges;
-  if (num_glyphs > 1)
+  если (num_glyphs > 1)
   {
     code_pair_t range;
     range.code = 1;  // first CID
@@ -1428,14 +1428,14 @@ _serialize_cff1_charset (hb_serialize_context_t *c,
     ranges.push (range);
   }
 
-  if (unlikely (!charset->serialize (c, 2, num_glyphs, ranges)))
+  если (unlikely (!charset->serialize (c, 2, num_glyphs, ranges)))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
   charset_link = c->pop_pack ();
-  return true;
+  вернуть true;
 }
 
 /* CFF2 to CFF1 serialization */
@@ -1469,10 +1469,10 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     hb_vector_t<unsigned> widths;
     widths.alloc (plan.num_glyphs);
 
-    for (unsigned gid = 0; gid < plan.num_glyphs; gid++)
+    для (unsigned gid = 0; gid < plan.num_glyphs; gid++)
     {
       unsigned width = 0;
-      if (plan.hmtx_map->has (gid))
+      если (plan.hmtx_map->has (gid))
         width = plan.hmtx_map->get (gid).first;
       widths.push (width);
     }
@@ -1482,26 +1482,26 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   }
 
   // 1. CharStrings (with widths prepended)
-  if (!_serialize_cff1_charstrings (c, plan, plan.default_width, plan.nominal_width))
+  если (!_serialize_cff1_charstrings (c, plan, plan.default_width, plan.nominal_width))
     return_trace (false);
 
   // 2. Private DICs & Local Subrs (same as CFF2)
   hb_vector_t<table_info_t> private_dict_infos;
-  if (unlikely (!private_dict_infos.resize (plan.subset_fdcount)))
+  если (unlikely (!private_dict_infos.resize (plan.subset_fdcount)))
     return_trace (false);
 
-  for (int i = (int)acc.privateDicts.length; --i >= 0;)
+  для (целое i = (целое)acc.privateDicts.length; --i >= 0;)
   {
-    if (plan.fdmap.has (i))
+    если (plan.fdmap.has (i))
     {
       objidx_t subrs_link = 0;
 
-      if (plan.subset_localsubrs[i].length > 0)
+      если (plan.subset_localsubrs[i].length > 0)
       {
         auto *dest = c->push<CFF1Subrs> ();
-        if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
+        если (likely (dest->serialize (c, plan.subset_localsubrs[i])))
           subrs_link = c->pop_pack (false);
-        else
+        иначе
         {
           c->pop_discard ();
           return_trace (false);
@@ -1512,7 +1512,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
       // Use the CFF2 Private DICT serializer which instantiates blends when pinned=true
       cff2_private_dict_op_serializer_t privSzr (plan.desubroutinize, plan.drop_hints, plan.pinned,
                                                   acc.varStore, plan.normalized_coords);
-      if (likely (pd->serialize (c, acc.privateDicts[i], privSzr, subrs_link)))
+      если (likely (pd->serialize (c, acc.privateDicts[i], privSzr, subrs_link)))
       {
         // Add defaultWidthX and nominalWidthX for CFF1
         str_buff_t width_ops;
@@ -1522,19 +1522,19 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
         encoder.encode_int (plan.nominal_width);
         encoder.encode_op (OpCode_nominalWidthX);
 
-        if (!encoder.in_error () && c->embed (width_ops.as_bytes ().arrayZ, width_ops.length))
+        если (!encoder.in_error () && c->embed (width_ops.as_bytes ().arrayZ, width_ops.length))
         {
           unsigned fd = plan.fdmap[i];
           private_dict_infos[fd].size = c->length ();
           private_dict_infos[fd].link = c->pop_pack ();
         }
-        else
+        иначе
         {
           c->pop_discard ();
           return_trace (false);
         }
       }
-      else
+      иначе
       {
         c->pop_discard ();
         return_trace (false);
@@ -1549,14 +1549,14 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     auto it =
     + hb_zip (+ hb_iter (acc.fontDicts)
               | hb_filter ([&] (const cff2_font_dict_values_t &_)
-                { return plan.fdmap.has (&_ - &acc.fontDicts[0]); }),
+                { вернуть plan.fdmap.has (&_ - &acc.fontDicts[0]); }),
               hb_iter (private_dict_infos))
     ;
     // Explicitly specify template parameters: DICTVAL, INFO
     bool success = fda->serialize<cff2_font_dict_values_t, table_info_t> (c, it, fontSzr);
-    if (success)
+    если (success)
       plan.info.fd_array_link = c->pop_pack (false);
-    else
+    иначе
     {
       c->pop_discard ();
       return_trace (false);
@@ -1566,23 +1566,23 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
   // 4. FDSelect (required in CFF1 CID-keyed fonts)
   // CFF1 requires FDSelect for all CID-keyed fonts, even with just one FD
   // CFF2 makes it optional when there's only one FD
-  if (acc.fdSelect != &Null (CFF2FDSelect))
+  если (acc.fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs,
+    если (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs,
                                           *(const FDSelect *)acc.fdSelect,
                                           plan.orig_fdcount,
                                           plan.subset_fdselect_format,
                                           plan.subset_fdselect_size,
                                           plan.subset_fdselect_ranges)))
       plan.info.fd_select.link = c->pop_pack ();
-    else
+    иначе
     {
       c->pop_discard ();
       return_trace (false);
     }
   }
-  else
+  иначе
   {
     // Create a range-based FDSelect3 mapping all glyphs to FD 0
     // Format: format(1) + nRanges(2) + range(3) + sentinel(2) = 8 bytes
@@ -1591,7 +1591,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Format byte
     HBUINT8 format;
     format = 3;
-    if (unlikely (!c->embed (format)))
+    если (unlikely (!c->embed (format)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1600,7 +1600,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // nRanges
     HBUINT16 nRanges;
     nRanges = 1;
-    if (unlikely (!c->embed (nRanges)))
+    если (unlikely (!c->embed (nRanges)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1610,7 +1610,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     FDSelect3_Range range;
     range.first = 0;
     range.fd = 0;
-    if (unlikely (!c->embed (range)))
+    если (unlikely (!c->embed (range)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1619,7 +1619,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     // Sentinel (number of glyphs)
     HBUINT16 sentinel;
     sentinel = plan.num_glyphs;
-    if (unlikely (!c->embed (sentinel)))
+    если (unlikely (!c->embed (sentinel)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1630,15 +1630,15 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
   // 5. Charset (CID charset for identity mapping)
   objidx_t charset_link;
-  if (!_serialize_cff1_charset (c, plan.num_glyphs, charset_link))
+  если (!_serialize_cff1_charset (c, plan.num_glyphs, charset_link))
     return_trace (false);
 
   // 6. Global Subrs
   {
     auto *dest = c->push<CFF1Subrs> ();
-    if (likely (dest->serialize (c, plan.subset_globalsubrs)))
+    если (likely (dest->serialize (c, plan.subset_globalsubrs)))
       c->pop_pack (false);
-    else
+    иначе
     {
       c->pop_discard ();
       return_trace (false);
@@ -1660,9 +1660,9 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
     // Serialize as CFF INDEX
     auto *dest = c->push<CFF1Index> ();
-    if (likely (dest->serialize (c, strings)))
+    если (likely (dest->serialize (c, strings)))
       c->pop_pack (false);
-    else
+    иначе
     {
       c->pop_discard ();
       return_trace (false);
@@ -1671,7 +1671,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
   // 8. CFF Header
   OT::cff1 *cff = c->allocate_min<OT::cff1> ();
-  if (unlikely (!cff)) return_trace (false);
+  если (unlikely (!cff)) return_trace (false);
 
   /* header */
   cff->version.major = 0x01;
@@ -1684,12 +1684,12 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     unsigned name_len = strlen (CFF1_DEFAULT_FONT_NAME);
 
     CFF1Index *idx = c->start_embed<CFF1Index> ();
-    if (unlikely (!idx)) return_trace (false);
+    если (unlikely (!idx)) return_trace (false);
 
-    if (unlikely (!idx->serialize_header (c, hb_iter (&name_len, 1), name_len)))
+    если (unlikely (!idx->serialize_header (c, hb_iter (&name_len, 1), name_len)))
       return_trace (false);
 
-    if (unlikely (!c->embed (CFF1_DEFAULT_FONT_NAME, name_len)))
+    если (unlikely (!c->embed (CFF1_DEFAULT_FONT_NAME, name_len)))
       return_trace (false);
   }
 
@@ -1700,7 +1700,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     cff1_from_cff2_top_dict_op_serializer_t topSzr;
 
     // Serialize ROS first
-    if (unlikely (!topSzr.serialize_ros (c)))
+    если (unlikely (!topSzr.serialize_ros (c)))
     {
       c->pop_discard ();
       return_trace (false);
@@ -1717,7 +1717,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
       encoder.encode_int (plan.head_maxp_info.yMax);
       encoder.encode_op (OpCode_FontBBox);
 
-      if (encoder.in_error () || !c->embed (bbox_buff.as_bytes ().arrayZ, bbox_buff.length))
+      если (encoder.in_error () || !c->embed (bbox_buff.as_bytes ().arrayZ, bbox_buff.length))
       {
         c->pop_discard ();
         return_trace (false);
@@ -1725,30 +1725,30 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
     }
 
     // Serialize charset operator
-    if (charset_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_charset, charset_link, whence_t::Absolute)))
+    если (charset_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_charset, charset_link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize FDSelect operator (required for CID-keyed CFF1 fonts)
-    if (plan.info.fd_select.link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDSelect, plan.info.fd_select.link, whence_t::Absolute)))
+    если (plan.info.fd_select.link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDSelect, plan.info.fd_select.link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize FDArray operator (required for CID-keyed CFF1 fonts)
-    if (plan.info.fd_array_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDArray, plan.info.fd_array_link, whence_t::Absolute)))
+    если (plan.info.fd_array_link && unlikely (!FontDict::serialize_link4_op (c, OpCode_FDArray, plan.info.fd_array_link, whence_t::Absolute)))
     {
       c->pop_discard ();
       return_trace (false);
     }
 
     // Serialize other operators from CFF2 TopDict
-    for (const auto &opstr : cff2_topDict.values)
+    для (const auto &opstr : cff2_topDict.values)
     {
-      if (unlikely (!topSzr.serialize (c, opstr, plan.info)))
+      если (unlikely (!topSzr.serialize (c, opstr, plan.info)))
       {
         c->pop_discard ();
         return_trace (false);
@@ -1760,7 +1760,7 @@ serialize_cff2_to_cff1 (hb_serialize_context_t *c,
 
     // Serialize INDEX header
     auto *dest = c->start_embed<CFF1Index> ();
-    if (unlikely (!dest->serialize_header (c, hb_iter (&top_size, 1), top_size)))
+    если (unlikely (!dest->serialize_header (c, hb_iter (&top_size, 1), top_size)))
       return_trace (false);
   }
 
@@ -1777,84 +1777,84 @@ static bool _serialize_cff2_charstrings (hb_serialize_context_t *c,
 
   unsigned data_size = 0;
   unsigned total_size = CFF2CharStrings::total_size (plan.subset_charstrings, &data_size, plan.min_charstrings_off_size);
-  if (unlikely (!c->start_zerocopy (total_size)))
-    return false;
+  если (unlikely (!c->start_zerocopy (total_size)))
+    вернуть false;
 
   auto *cs = c->start_embed<CFF2CharStrings> ();
-  if (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size)))
+  если (unlikely (!cs->serialize (c, plan.subset_charstrings, &data_size, plan.min_charstrings_off_size)))
   {
     c->pop_discard ();
-    return false;
+    вернуть false;
   }
 
   plan.info.char_strings_link = c->pop_pack (false);
-  return true;
+  вернуть true;
 }
 
 bool
 OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
 					   struct cff2_subset_plan &plan,
-					   hb_array_t<int> normalized_coords) const
+					   hb_array_t<целое> normalized_coords) const
 {
   /* push charstrings onto the object stack first which will ensure it packs as the last
      object in the table. Keeping the chastrings last satisfies the requirements for patching
      via IFTB. If this ordering needs to be changed in the future, charstrings should be left
      at the end whenever HB_SUBSET_FLAGS_ITFB_REQUIREMENTS is enabled. */
-  if (!_serialize_cff2_charstrings(c, plan, *this))
-    return false;
+  если (!_serialize_cff2_charstrings(c, plan, *this))
+    вернуть false;
 
   /* private dicts & local subrs */
   hb_vector_t<table_info_t>  private_dict_infos;
-  if (unlikely (!private_dict_infos.resize (plan.subset_fdcount))) return false;
+  если (unlikely (!private_dict_infos.resize (plan.subset_fdcount))) вернуть false;
 
-  for (int i = (int)privateDicts.length; --i >= 0 ;)
+  для (целое i = (целое)privateDicts.length; --i >= 0 ;)
   {
-    if (plan.fdmap.has (i))
+    если (plan.fdmap.has (i))
     {
       objidx_t	subrs_link = 0;
 
-      if (plan.subset_localsubrs[i].length > 0)
+      если (plan.subset_localsubrs[i].length > 0)
       {
 	auto *dest = c->push <CFF2Subrs> ();
-	if (likely (dest->serialize (c, plan.subset_localsubrs[i])))
+	если (likely (dest->serialize (c, plan.subset_localsubrs[i])))
 	  subrs_link = c->pop_pack (false);
-	else
+	иначе
 	{
 	  c->pop_discard ();
-	  return false;
+	  вернуть false;
 	}
       }
       auto *pd = c->push<PrivateDict> ();
       cff2_private_dict_op_serializer_t privSzr (plan.desubroutinize, plan.drop_hints, plan.pinned,
 						 varStore, normalized_coords,
 						 plan.partial_instancing ? &plan.instancing : nullptr);
-      if (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
+      если (likely (pd->serialize (c, privateDicts[i], privSzr, subrs_link)))
       {
 	unsigned fd = plan.fdmap[i];
 	private_dict_infos[fd].size = c->length ();
 	private_dict_infos[fd].link = c->pop_pack ();
       }
-      else
+      иначе
       {
 	c->pop_discard ();
-	return false;
+	вернуть false;
       }
     }
   }
 
   /* FDSelect */
-  if (fdSelect != &Null (CFF2FDSelect))
+  если (fdSelect != &Null (CFF2FDSelect))
   {
     c->push ();
-    if (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *(const FDSelect *)fdSelect,
+    если (likely (hb_serialize_cff_fdselect (c, plan.num_glyphs, *(const FDSelect *)fdSelect,
 					   plan.orig_fdcount,
 					   plan.subset_fdselect_format, plan.subset_fdselect_size,
 					   plan.subset_fdselect_ranges)))
       plan.info.fd_select.link = c->pop_pack ();
-    else
+    иначе
     {
       c->pop_discard ();
-      return false;
+      вернуть false;
     }
   }
 
@@ -1865,49 +1865,49 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
     auto it =
     + hb_zip (+ hb_iter (fontDicts)
 	      | hb_filter ([&] (const cff2_font_dict_values_t &_)
-		{ return plan.fdmap.has (&_ - &fontDicts[0]); }),
+		{ вернуть plan.fdmap.has (&_ - &fontDicts[0]); }),
 	      hb_iter (private_dict_infos))
     ;
-    if (unlikely (!fda->serialize (c, it, fontSzr)))
+    если (unlikely (!fda->serialize (c, it, fontSzr)))
     {
       c->pop_discard ();
-      return false;
+      вернуть false;
     }
     plan.info.fd_array_link = c->pop_pack (false);
   }
 
   /* variation store */
-  if (varStore != &Null (CFF2ItemVariationStore) &&
+  если (varStore != &Null (CFF2ItemVariationStore) &&
       !plan.pinned)
   {
-    if (plan.partial_instancing)
+    если (plan.partial_instancing)
     {
-      if (plan.instancing.has_variations ())
+      если (plan.instancing.has_variations ())
       {
 	c->push ();
-	if (unlikely (!plan.instancing.serialize_var_store (c, *plan.axis_tags)))
+	если (unlikely (!plan.instancing.serialize_var_store (c, *plan.axis_tags)))
 	{
 	  c->pop_discard ();
-	  return false;
+	  вернуть false;
 	}
 	plan.info.var_store_link = c->pop_pack (false);
       }
       /* else: the store emptied; the vstore op gets dropped along with it. */
     }
-    else
+    иначе
     {
       auto *dest = c->push<CFF2ItemVariationStore> ();
-      if (unlikely (!dest->serialize (c, varStore)))
+      если (unlikely (!dest->serialize (c, varStore)))
       {
 	c->pop_discard ();
-	return false;
+	вернуть false;
       }
       plan.info.var_store_link = c->pop_pack (false);
     }
   }
 
   OT::cff2 *cff2 = c->allocate_min<OT::cff2> ();
-  if (unlikely (!cff2)) return false;
+  если (unlikely (!cff2)) вернуть false;
 
   /* header */
   cff2->version.major = 0x02;
@@ -1918,14 +1918,14 @@ OT::cff2::accelerator_subset_t::serialize (hb_serialize_context_t *c,
   {
     TopDict &dict = cff2 + cff2->topDict;
     cff2_top_dict_op_serializer_t topSzr;
-    if (unlikely (!dict.serialize (c, topDict, topSzr, plan.info))) return false;
+    если (unlikely (!dict.serialize (c, topDict, topSzr, plan.info))) вернуть false;
     cff2->topDictSize = c->head - (const char *)&dict;
   }
 
   /* global subrs */
   {
     auto *dest = c->start_embed <CFF2Subrs> ();
-    return dest->serialize (c, plan.subset_globalsubrs);
+    вернуть dest->serialize (c, plan.subset_globalsubrs);
   }
 }
 
@@ -1934,40 +1934,40 @@ OT::cff2::accelerator_subset_t::subset (hb_subset_context_t *c) const
 {
   cff2_subset_plan cff2_plan;
 
-  if (unlikely (!cff2_plan.create (*this, c->plan))) return false;
+  если (unlikely (!cff2_plan.create (*this, c->plan))) вернуть false;
 
   // If instantiating (pinned) and downgrade flag is set, convert to CFF1
-  if (cff2_plan.pinned && (c->plan->flags & HB_SUBSET_FLAGS_DOWNGRADE_CFF2))
+  если (cff2_plan.pinned && (c->plan->flags & HB_SUBSET_FLAGS_DOWNGRADE_CFF2))
   {
     // Serialize CFF1 to the subsetter's serializer
     // If we run out of room, returning true will cause subsetter to retry with larger buffer
     bool result = CFF::serialize_cff2_to_cff1 (c->serializer, cff2_plan, topDict, *this);
 
-    if (c->serializer->ran_out_of_room ())
-      return true; // Subsetter will retry with larger buffer
+    если (c->serializer->ran_out_of_room ())
+      вернуть true; // Subsetter will retry with larger buffer
 
-    if (result && !c->serializer->in_error ())
+    если (result && !c->serializer->in_error ())
     {
       // Success - end serialization to resolve links
       c->serializer->end_serialize ();
 
       // Copy the serialized CFF1 data and add as CFF table
       hb_blob_t *cff_blob = c->serializer->copy_blob ();
-      if (cff_blob)
+      если (cff_blob)
       {
         c->plan->add_table (HB_TAG('C','F','F',' '), cff_blob);
         hb_blob_destroy (cff_blob);
 
         // Return false to signal CFF2 table is not needed
-        return false;
+        вернуть false;
       }
     }
 
     // Conversion failed - don't fall back, fail hard for debugging
-    return false;
+    вернуть false;
   }
 
-  return serialize (c->serializer, cff2_plan,
+  вернуть serialize (c->serializer, cff2_plan,
 		    c->plan->normalized_coords.as_array ());
 }
 

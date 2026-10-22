@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
+unsigned целое
 hb_face_count (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  если (unlikely (!blob))
+    вернуть 0;
 
   hb_sanitize_context_t c (blob);
 
   auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  если (unlikely (!ot->sanitize (&c)))
+    вернуть 0;
 
-  return ot->get_face_count ();
+  вернуть ot->get_face_count ();
 }
 
 /*
@@ -133,10 +133,10 @@ hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
+  если (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
+    если (destroy)
       destroy (user_data);
-    return hb_face_get_empty ();
+    вернуть hb_face_get_empty ();
   }
 
   face->reference_table_func = reference_table_func;
@@ -148,7 +148,7 @@ hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
   face->data.init0 (face);
   face->table.init0 (face);
 
-  return face;
+  вернуть face;
 }
 
 
@@ -158,18 +158,18 @@ typedef struct hb_face_for_data_closure_t {
 } hb_face_for_data_closure_t;
 
 static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned целое index)
 {
   hb_face_for_data_closure_t *closure;
 
   closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  если (unlikely (!closure))
+    вернуть nullptr;
 
   closure->blob = blob;
   closure->index = (uint16_t) (index & 0xFFFFu);
 
-  return closure;
+  вернуть closure;
 }
 
 static void
@@ -186,24 +186,24 @@ _hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  если (tag == HB_TAG_NONE)
+    вернуть hb_blob_reference (data->blob);
 
   const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
+  unsigned целое base_offset;
   const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
 
   const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
 
   hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
 
-  return blob;
+  вернуть blob;
 }
 
 static unsigned
 _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
+				  unsigned целое start_offset,
+				  unsigned целое *table_count,
 				  hb_tag_t *table_tags,
 				  void *user_data)
 {
@@ -212,7 +212,7 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
   const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
   const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  вернуть ot_face.get_table_tags (start_offset, table_count, table_tags);
 }
 
 
@@ -242,21 +242,21 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		unsigned целое  index)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
+  если (unlikely (!blob))
     blob = hb_blob_get_empty ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
   hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
 
-  if (unlikely (!closure))
+  если (unlikely (!closure))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    вернуть hb_face_get_empty ();
   }
 
   face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
@@ -269,7 +269,7 @@ hb_face_create (hb_blob_t    *blob,
 
   face->index = index;
 
-  return face;
+  вернуть face;
 }
 
 /**
@@ -287,17 +287,17 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			unsigned целое  index)
 {
   unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  если (index >= num_faces)
+    вернуть nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  если (hb_object_is_immutable (face))
+    вернуть nullptr;
 
-  return face;
+  вернуть face;
 }
 
 #ifndef HB_NO_OPEN
@@ -316,16 +316,16 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  **/
 HB_EXTERN hb_face_t *
 hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+				  unsigned целое  index)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  если (unlikely (!blob))
+    вернуть nullptr;
 
   hb_face_t *face = hb_face_create_or_fail (blob, index);
   hb_blob_destroy (blob);
 
-  return face;
+  вернуть face;
 }
 
 static const struct supported_face_loaders_t {
@@ -337,7 +337,7 @@ static const struct supported_face_loaders_t {
   {"ot",
 #ifndef HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
+#иначе
    nullptr,
 #endif
    hb_face_create_or_fail
@@ -366,15 +366,15 @@ static const char *get_default_loader_name ()
 {
   static hb_atomic_t<const char *> static_loader_name;
   const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  если (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    если (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    если (!static_loader_name.cmpexch (nullptr, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  вернуть loader_name;
 }
 
 /**
@@ -398,33 +398,33 @@ static const char *get_default_loader_name ()
  **/
 hb_face_t *
 hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
+					unsigned целое  index,
 					const char   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
   bool retry = false;
-  if (!loader_name || !*loader_name)
+  если (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
     retry = true;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  если (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  для (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    если (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      вернуть supported_face_loaders[i].from_file (file_name, index);
   }
 
-  if (retry)
+  если (retry)
   {
     retry = false;
     loader_name = nullptr;
     goto retry;
   }
 
-  return nullptr;
+  вернуть nullptr;
 }
 
 /**
@@ -448,33 +448,33 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
+			      unsigned целое  index,
 			      const char   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
   bool retry = false;
-  if (!loader_name || !*loader_name)
+  если (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
     retry = true;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  если (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  для (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    если (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      вернуть supported_face_loaders[i].from_blob (blob, index);
   }
 
-  if (retry)
+  если (retry)
   {
     retry = false;
     loader_name = nullptr;
     goto retry;
   }
 
-  return nullptr;
+  вернуть nullptr;
 }
 
 static inline void free_static_face_loader_list ();
@@ -487,22 +487,22 @@ static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
   static const char ** create ()
   {
     const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    если (unlikely (!face_loader_list))
+      вернуть nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    для (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
     face_loader_list[i] = nullptr;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    вернуть face_loader_list;
   }
   static void destroy (const char **l)
   { hb_free (l); }
   static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  { вернуть nil_face_loader_list; }
 } static_face_loader_list;
 
 static inline
@@ -526,7 +526,7 @@ void free_static_face_loader_list ()
 const char **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  вернуть static_face_loader_list.get_unconst ();
 }
 #endif
 
@@ -543,7 +543,7 @@ hb_face_list_loaders ()
 hb_face_t *
 hb_face_get_empty ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  вернуть const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  вернуть hb_object_reference (face);
 }
 
 /**
@@ -576,10 +576,10 @@ hb_face_reference (hb_face_t *face)
 void
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  если (!hb_object_destroy (face)) вернуть;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  для (hb_face_t::plan_node_t *node = face->shape_plans; node; )
   {
     hb_face_t::plan_node_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
@@ -591,10 +591,10 @@ hb_face_destroy (hb_face_t *face)
   face->data.fini ();
   face->table.fini ();
 
-  if (face->get_table_tags_destroy)
+  если (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
-  if (face->destroy)
+  если (face->destroy)
     face->destroy (face->user_data);
 
   hb_free (face);
@@ -621,7 +621,7 @@ hb_face_set_user_data (hb_face_t          *face,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  вернуть hb_object_set_user_data (face, key, data, destroy, replace);
 }
 
 /**
@@ -640,7 +640,7 @@ void *
 hb_face_get_user_data (const hb_face_t    *face,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  вернуть hb_object_get_user_data (face, key);
 }
 
 /**
@@ -654,8 +654,8 @@ hb_face_get_user_data (const hb_face_t    *face,
 void
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  если (hb_object_is_immutable (face))
+    вернуть;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  вернуть hb_object_is_immutable (face);
 }
 
 
@@ -694,10 +694,10 @@ hb_blob_t *
 hb_face_reference_table (const hb_face_t *face,
 			 hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  если (unlikely (tag == HB_TAG_NONE))
+    вернуть hb_blob_get_empty ();
 
-  return face->reference_table (tag);
+  вернуть face->reference_table (tag);
 }
 
 /**
@@ -718,26 +718,26 @@ hb_face_reference_blob (hb_face_t *face)
 {
   hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  если (blob == hb_blob_get_empty ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
     unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    если (total_count)
     {
       hb_tag_t tags[64];
       unsigned count = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      для (unsigned offset = 0; offset < total_count; offset += count)
       {
         hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
+	если (unlikely (!count))
 	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        для (unsigned i = 0; i < count; i++)
         {
-	  if (unlikely (!tags[i]))
+	  если (unlikely (!tags[i]))
 	    continue;
 	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
 	  hb_face_builder_add_table (builder, tags[i], table);
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  вернуть blob;
 }
 
 /**
@@ -768,10 +768,10 @@ hb_face_reference_blob (hb_face_t *face)
  **/
 void
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+		   unsigned целое  index)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  если (hb_object_is_immutable (face))
+    вернуть;
 
   face->index = index;
 }
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned целое
 hb_face_get_index (const hb_face_t *face)
 {
-  return face->index;
+  вернуть face->index;
 }
 
 /**
@@ -807,10 +807,10 @@ hb_face_get_index (const hb_face_t *face)
  **/
 void
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+		  unsigned целое  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  если (hb_object_is_immutable (face))
+    вернуть;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned целое
 hb_face_get_upem (const hb_face_t *face)
 {
-  return face->get_upem ();
+  вернуть face->get_upem ();
 }
 
 /**
@@ -847,10 +847,10 @@ hb_face_get_upem (const hb_face_t *face)
  **/
 void
 hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+			 unsigned целое  glyph_count)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  если (hb_object_is_immutable (face))
+    вернуть;
 
   face->num_glyphs = glyph_count;
 }
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned целое
 hb_face_get_glyph_count (const hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  вернуть face->get_num_glyphs ();
 }
 
 /**
@@ -888,14 +888,14 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
 				 void                    *user_data,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  если (hb_object_is_immutable (face))
   {
-    if (destroy)
+    если (destroy)
       destroy (user_data);
-    return;
+    вернуть;
   }
 
-  if (face->get_table_tags_destroy)
+  если (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
   face->get_table_tags_func = func;
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
+unsigned целое
 hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+			unsigned целое  start_offset,
+			unsigned целое *table_count, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
-  if (!face->get_table_tags_func)
+  если (!face->get_table_tags_func)
   {
-    if (table_count)
+    если (table_count)
       *table_count = 0;
-    return 0;
+    вернуть 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  вернуть face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -974,7 +974,7 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_set_t  *unicodes)
 {
   hb_set_t stack_unicodes;
-  if (!unicodes)
+  если (!unicodes)
     unicodes = &stack_unicodes;
   face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
 }

@@ -53,57 +53,57 @@ hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
   unsigned data_len = 0;
   const char *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
+  если (!data || !data_len)
     goto fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  если (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+    если (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
         unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
       goto fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
+    если (!uncompressed)
       goto fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
+    если (!data || !data_len)
       goto fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
+  если (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
     goto fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  если (svg) *svg = data;
+  если (len) *len = data_len;
+  вернуть blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  если (svg) *svg = nullptr;
+  если (len) *len = 0;
+  вернуть nullptr;
 }
 
 struct SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  целое cmp (hb_codepoint_t g) const
+  { вернуть g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
   hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  { вернуть startGlyphID; }
 
   hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  { вернуть endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned целое index_offset) const
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    вернуть hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (unsigned целое) svgDoc,
 				    svgDocLength);
   }
 
@@ -140,15 +140,15 @@ struct SVG
 
     bool operator == (const svg_id_span_t &o) const
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      вернуть len == o.len && !memcmp (p, o.p, len);
     }
 
     uint32_t hash () const
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
+      для (unsigned i = 0; i < len; i++)
         h = h * 33u + (unsigned char) p[i];
-      return h;
+      вернуть h;
     }
   };
 
@@ -171,7 +171,7 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  bool has_data () const { вернуть svgDocEntries; }
 
   struct accelerator_t
   {
@@ -180,22 +180,22 @@ struct SVG
 
     hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      вернуть table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
     unsigned get_document_count () const
-    { return table->get_document_count (); }
+    { вернуть table->get_document_count (); }
 
     bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    { вернуть table->get_glyph_document_index (glyph_id, index); }
 
     bool get_document_glyph_range (unsigned index,
                                    hb_codepoint_t *start_glyph,
                                    hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+    { вернуть table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_data () const { вернуть table->has_data (); }
 
     const svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
@@ -232,13 +232,13 @@ struct SVG
 
     bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
     {
-      if (!has_data ())
-        return false;
+      если (!has_data ())
+        вернуть false;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      если (blob == hb_blob_get_empty ())
+        вернуть false;
 
       bool ret = funcs->image (data,
 			       blob,
@@ -249,7 +249,7 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      вернуть ret;
     }
 
     private:
@@ -270,37 +270,37 @@ struct SVG
   };
 
   const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  { вернуть (this+svgDocEntries).bsearch (glyph_id); }
 
   unsigned get_document_count () const
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    если (!has_data ())
+      вернуть 0;
+    вернуть (this + svgDocEntries).len;
   }
 
   bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    если (!has_data ())
+      вернуть false;
+    вернуть (this + svgDocEntries).bfind (glyph_id, index);
   }
 
   bool get_document_glyph_range (unsigned index,
                                  hb_codepoint_t *start_glyph,
                                  hb_codepoint_t *end_glyph) const
   {
-    if (!has_data ())
-      return false;
+    если (!has_data ())
+      вернуть false;
 
     const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    если (index >= entries.len)
+      вернуть false;
 
     const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    если (start_glyph) *start_glyph = entry.get_start_glyph ();
+    если (end_glyph) *end_glyph = entry.get_end_glyph ();
+    вернуть true;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -347,19 +347,19 @@ struct open_elem_t
 
 static const unsigned MAX_DEPTH = 128;
 
-static inline int
+static inline целое
 find_substr (const char *s,
              unsigned n,
              unsigned from,
              const char *needle,
              unsigned needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  если (!needle_len || from >= n || needle_len > n)
+    вернуть -1;
+  для (unsigned i = from; i + needle_len <= n; i++)
+    если (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      вернуть (целое) i;
+  вернуть -1;
 }
 
 static inline bool
@@ -369,58 +369,58 @@ parse_id_in_start_tag (const char *svg,
                        SVG::svg_id_span_t *id)
 {
   unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  пока (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    если (!memcmp (svg + p, "id=\"", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      пока (e < tag_end && svg[e] != '"') e++;
+      если (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        вернуть true;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    если (!memcmp (svg + p, "id='", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      пока (e < tag_end && svg[e] != '\'') e++;
+      если (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        вернуть true;
       }
     }
     p++;
   }
-  return false;
+  вернуть false;
 }
 
 static inline bool
 parse_glyph_id_span (const SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  если (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    вернуть false;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  для (unsigned i = 5; i < id.len; i++)
   {
     unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    если (c < '0' || c > '9')
+      вернуть false;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    если (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      вернуть false;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  вернуть true;
 }
 
 static inline bool
@@ -432,32 +432,32 @@ parse_cache_entries_linear (const char *svg,
 {
   open_elem_t stack[MAX_DEPTH] = {};
   unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  если (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    вернуть false;
 
   unsigned defs_depth = 0;
   unsigned i = 0;
-  while (i < len)
+  пока (i < len)
   {
-    if (svg[i] != '<')
+    если (svg[i] != '<')
     {
       i++;
       continue;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    если (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
+      целое cend = find_substr (svg, len, i + 4, "-->", 3);
+      если (cend < 0) вернуть false;
       i = (unsigned) cend + 3;
       continue;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    если (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
+      целое cend = find_substr (svg, len, i + 9, "]]>", 3);
+      если (cend < 0) вернуть false;
       i = (unsigned) cend + 3;
       continue;
     }
@@ -467,47 +467,47 @@ parse_cache_entries_linear (const char *svg,
 
     unsigned gt = i + 1;
     char quote = 0;
-    while (gt < len)
+    пока (gt < len)
     {
       char c = svg[gt];
-      if (quote)
+      если (quote)
       {
-        if (c == quote) quote = 0;
+        если (c == quote) quote = 0;
       }
-      else
+      иначе
       {
-        if (c == '"' || c == '\'')
+        если (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
+        иначе если (c == '>')
           break;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    если (gt >= len)
+      вернуть false;
 
-    if (special)
+    если (special)
     {
       i = gt + 1;
       continue;
     }
 
     unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
+    пока (p < gt && isspace ((unsigned char) svg[p])) p++;
     const char *name = svg + p;
     unsigned name_len = 0;
-    while (p + name_len < gt)
+    пока (p + name_len < gt)
     {
       unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+      если (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
         break;
       name_len++;
     }
     bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    если (closing)
     {
-      if (!depth)
+      если (!depth)
       {
         i = gt + 1;
         continue;
@@ -516,15 +516,15 @@ parse_cache_entries_linear (const char *svg,
       open_elem_t e = stack[--depth];
       unsigned end = gt + 1;
 
-      if (e.id.len)
+      если (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        если (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          вернуть false;
 
-        if (e.in_defs_content)
+        если (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          если (unlikely (!defs_entries->push_or_fail ()))
+            вернуть false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -532,14 +532,14 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        если (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          если (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            вернуть false;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      если (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
@@ -550,7 +550,7 @@ parse_cache_entries_linear (const char *svg,
     parse_id_in_start_tag (svg, i, gt, &id);
 
     unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
+    пока (r > i && isspace ((unsigned char) svg[r - 1])) r--;
     bool self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
@@ -559,18 +559,18 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    если (self_closing)
     {
       unsigned end = gt + 1;
-      if (e.id.len)
+      если (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        если (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          вернуть false;
 
-        if (e.in_defs_content)
+        если (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          если (unlikely (!defs_entries->push_or_fail ()))
+            вернуть false;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -578,26 +578,26 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        если (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          если (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            вернуть false;
         }
       }
     }
-    else
+    иначе
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
+      если (unlikely (depth >= MAX_DEPTH))
+        вернуть false;
       stack[depth++] = e;
-      if (is_defs)
+      если (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  вернуть true;
 }
 
 } /* namespace _hb_svg_cache_impl */
@@ -608,16 +608,16 @@ SVG::accelerator_t::accelerator_t (hb_face_t *face)
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
   unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  если (doc_count && unlikely (!doc_caches.resize (doc_count)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  для (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
 inline
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  для (unsigned i = 0; i < doc_caches.length; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
   table.destroy ();
@@ -626,8 +626,8 @@ SVG::accelerator_t::~accelerator_t ()
 inline void
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  если (!doc)
+    вернуть;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -645,8 +645,8 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
   auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  если (!doc)
+    вернуть nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,26 +663,26 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  если (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    вернуть nullptr;
   }
 
   unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  если (!doc->glyph_spans.resize ((целое) glyph_count))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    вернуть nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  для (unsigned i = 0; i < glyph_count; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  если (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,35 +690,35 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    вернуть nullptr;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  для (unsigned i = 0; i < glyph_spans.length; i++)
   {
     const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+    если (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
       continue;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  для (unsigned i = 0; i < id_entries.length; i++)
   {
     const auto &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
+    если (doc->id_spans.has (e.id, &out))
       continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    если (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      вернуть nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  вернуть doc;
 }
 
 inline const SVG::svg_doc_cache_t *
@@ -729,43 +729,43 @@ SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
                                               hb_codepoint_t start_glyph,
                                               hb_codepoint_t end_glyph) const
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  если (doc_index >= doc_caches.length)
+    вернуть nullptr;
 
   auto &slot = doc_caches.arrayZ[doc_index];
   auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  если (doc)
+    вернуть doc;
 
   auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  если (!fresh)
+    вернуть nullptr;
 
   auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  если (slot.cmpexch (expected, fresh))
+    вернуть fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  вернуть expected;
 }
 
 inline const char *
 SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
                                        unsigned *len) const
 {
-  if (!doc)
+  если (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    если (len) *len = 0;
+    вернуть nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  если (len) *len = doc->len;
+  вернуть doc->svg;
 }
 
 inline const hb_vector_t<SVG::svg_defs_entry_t> *
 SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
 {
-  return doc ? &doc->defs_entries : nullptr;
+  вернуть doc ? &doc->defs_entries : nullptr;
 }
 
 inline bool
@@ -775,19 +775,19 @@ SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
                                               unsigned *end) const
 {
   static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  если (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    вернуть false;
 
   const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  если (span.first == INVALID_SPAN)
+    вернуть false;
+  если (unlikely (span.first > span.second || span.second > doc->len))
+    вернуть false;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  если (start) *start = span.first;
+  если (end) *end = span.second;
+  вернуть true;
 }
 
 inline bool
@@ -796,16 +796,16 @@ SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
                                             unsigned *start,
                                             unsigned *end) const
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  если (!doc || !id.p || !id.len)
+    вернуть false;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  если (!doc->id_spans.has (id, &span))
+    вернуть false;
+  если (unlikely (span->first > span->second || span->second > doc->len))
+    вернуть false;
+  если (start) *start = span->first;
+  если (end) *end = span->second;
+  вернуть true;
 }
 
 inline bool
@@ -814,9 +814,9 @@ SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
                                             unsigned *start,
                                             unsigned *end) const
 {
-  if (!id) return false;
+  если (!id) вернуть false;
   svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  вернуть doc_cache_find_id_span (doc, key, start, end);
 }
 
 struct SVG_accelerator_t : SVG::accelerator_t {

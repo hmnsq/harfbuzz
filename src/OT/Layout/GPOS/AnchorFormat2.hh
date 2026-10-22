@@ -30,11 +30,11 @@ struct AnchorFormat2
 #ifdef HB_NO_HINTING
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
-    return;
+    вернуть;
 #endif
 
-    unsigned int x_ppem = font->x_ppem;
-    unsigned int y_ppem = font->y_ppem;
+    unsigned целое x_ppem = font->x_ppem;
+    unsigned целое y_ppem = font->y_ppem;
     hb_position_t cx = 0, cy = 0;
     bool ret;
 

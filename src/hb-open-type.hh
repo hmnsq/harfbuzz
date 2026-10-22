@@ -56,48 +56,48 @@ namespace OT {
 /* Integer types in big-endian order and no alignment requirement */
 template <bool BE,
 	  typename Type,
-	  unsigned int Size = sizeof (Type)>
+	  unsigned целое Size = sizeof (Type)>
 struct NumType
 {
   typedef Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
+  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(целое),
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
   NumType () = default;
   explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  NumType& operator = (Type V) { v = V; вернуть *this; }
 
-  operator WideType () const { return v; }
+  operator WideType () const { вернуть v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  bool operator == (const NumType &o) const { вернуть (Type) v == (Type) o.v; }
+  bool operator != (const NumType &o) const { вернуть !(*this == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  NumType& operator += (WideType count) { *this = *this + count; вернуть *this; }
+  NumType& operator -= (WideType count) { *this = *this - count; вернуть *this; }
+  NumType& operator ++ () { *this += 1; вернуть *this; }
+  NumType& operator -- () { *this -= 1; вернуть *this; }
+  NumType operator ++ (целое) { NumType c (*this); ++*this; вернуть c; }
+  NumType operator -- (целое) { NumType c (*this); --*this; вернуть c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () const { вернуть hb_array ((const char *) &v, sizeof (v)).hash (); }
+  HB_INTERNAL static целое cmp (const NumType *a, const NumType *b)
+  { вернуть b->cmp (*a); }
+  HB_INTERNAL static целое cmp (const void *a, const void *b)
   {
     NumType *pa = (NumType *) a;
     NumType *pb = (NumType *) b;
 
-    return pb->cmp (*pa);
+    вернуть pb->cmp (*pa);
   }
   template <typename Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  целое cmp (Type2 a) const
   {
     Type b = v;
-    return (a > b) - (a < b);
+    вернуть (a > b) - (a < b);
   }
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -140,7 +140,7 @@ typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating poi
 struct HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
+  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); вернуть *this; }
   public:
   DEFINE_SIZE_STATIC (2);
 };
@@ -151,30 +151,30 @@ struct HBUINT32VAR
   size_t get_size () const
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    если (b0 < 0x80)
+      вернуть 1;
+    иначе если (b0 < 0xC0)
+      вернуть 2;
+    иначе если (b0 < 0xE0)
+      вернуть 3;
+    иначе если (b0 < 0xF0)
+      вернуть 4;
+    иначе
+      вернуть 5;
   }
 
   static size_t get_size (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    если (v < 0x80)
+      вернуть 1;
+    иначе если (v < 0x4000)
+      вернуть 2;
+    иначе если (v < 0x200000)
+      вернуть 3;
+    иначе если (v < 0x10000000)
+      вернуть 4;
+    иначе
+      вернуть 5;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -188,43 +188,43 @@ struct HBUINT32VAR
   operator uint32_t () const
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    если (b0 < 0x80)
+      вернуть b0;
+    иначе если (b0 < 0xC0)
+      вернуть ((b0 & 0x3F) << 8) | v[1];
+    иначе если (b0 < 0xE0)
+      вернуть ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    иначе если (b0 < 0xF0)
+      вернуть ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    иначе
+      вернуть (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
   static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
   {
     unsigned len = get_size (v);
     unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    для (unsigned i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    если (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    вернуть len;
   }
 
   static bool serialize (hb_serialize_context_t *c, uint32_t v)
   {
     unsigned len = get_size (v);
     unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    если (unlikely (!buf))
+      вернуть false;
 
     serialize_unsafe (buf, v);
-    return true;
+    вернуть true;
   }
 
   protected:
@@ -251,10 +251,10 @@ struct HBFixed : Type
 
   operator signed () const = delete;
   operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
+  explicit operator float () const { вернуть to_float (); }
+  typename Type::type to_int () const { вернуть Type::v; }
   void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
+  float to_float (float offset = 0) const  { вернуть ((int32_t) Type::v + offset) * mult; }
   void set_float (float f) { Type::v = roundf (f / mult); }
   public:
   DEFINE_SIZE_STATIC (Type::static_size);
@@ -288,10 +288,10 @@ struct LONGDATETIME
  * system, feature, or baseline */
 struct Tag : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); вернуть *this; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
+  operator const char* () const { вернуть reinterpret_cast<const char *> (this); }
+  operator char* ()             { вернуть reinterpret_cast<char *> (this); }
   public:
   DEFINE_SIZE_STATIC (4);
 };
@@ -299,17 +299,17 @@ struct Tag : HBUINT32
 /* Glyph index number, same as uint16 (length = 16 bits) */
 struct HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); вернуть *this; }
 };
 struct HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); вернуть *this; }
 };
 
 /* Script/language-system/feature index */
 struct Index : HBUINT16 {
   static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  Index& operator = (uint16_t i) { HBUINT16::operator= (i); вернуть *this; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
 
@@ -318,7 +318,7 @@ typedef Index NameID;
 struct VarIdx : HBUINT32 {
   static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
   static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); вернуть *this; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 
@@ -326,11 +326,11 @@ DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 template <typename Type, bool has_null=true>
 struct Offset : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  Offset& operator = (typename Type::type i) { Type::operator= (i); вернуть *this; }
 
   typedef Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  bool is_null () const { вернуть has_null && 0 == *this; }
 
   public:
   DEFINE_SIZE_STATIC (sizeof (Type));
@@ -344,7 +344,7 @@ typedef Offset<HBUINT32> Offset32;
 /* CheckSum */
 struct CheckSum : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); вернуть *this; }
 
   /* This is reference implementation from the spec. */
   static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
@@ -353,13 +353,13 @@ struct CheckSum : HBUINT32
     assert (0 == (Length & 3));
     const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
 
-    while (Table < EndPtr)
+    пока (Table < EndPtr)
       Sum += *Table++;
-    return Sum;
+    вернуть Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
+  void set_for_data (const void *data, unsigned целое length)
   { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
 
   public:
@@ -374,7 +374,7 @@ struct CheckSum : HBUINT32
 template <typename FixedType=HBUINT16>
 struct FixedVersion
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t to_int () const { вернуть (major << (sizeof (FixedType) * 8)) + minor; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -397,14 +397,14 @@ struct FixedVersion
 template <typename Type, bool has_null>
 struct _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  static const Type *get_null () { вернуть nullptr; }
+  static Type *get_crap ()       { вернуть nullptr; }
 };
 template <typename Type>
 struct _hb_has_null<Type, true>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  static const Type *get_null () { вернуть &Null (Type); }
+  static       Type *get_crap () { вернуть &Crap (Type); }
 };
 
 template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
@@ -419,31 +419,31 @@ struct OffsetTo : Offset<OffsetType, has_null>
   HB_DELETE_COPY_ASSIGN (OffsetTo);
   OffsetTo () = default;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); вернуть *this; }
 
   const Type& operator () (const void *base) const
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    если (unlikely (this->is_null ())) вернуть *_hb_has_null<Type, has_null>::get_null ();
+    вернуть StructAtOffset<const Type> (base, *this);
   }
   Type& operator () (void *base) const
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    если (unlikely (this->is_null ())) вернуть *_hb_has_null<Type, has_null>::get_crap ();
+    вернуть StructAtOffset<Type> (base, *this);
   }
 
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
+  friend const Type& operator + (const Base &base, const OffsetTo &offset) { вернуть offset ((const void *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
+  friend const Type& operator + (const OffsetTo &offset, const Base &base) { вернуть offset ((const void *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
+  friend Type& operator + (Base &&base, OffsetTo &offset) { вернуть offset ((void *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  friend Type& operator + (OffsetTo &offset, Base &&base) { вернуть offset ((void *) base); }
 
 
   template <typename Base, typename ...Ts>
@@ -451,8 +451,8 @@ struct OffsetTo : Offset<OffsetType, has_null>
 			 const Base *src_base, Ts&&... ds)
   {
     *this = 0;
-    if (src.is_null ())
-      return false;
+    если (src.is_null ())
+      вернуть false;
 
     auto *s = c->serializer;
 
@@ -460,12 +460,12 @@ struct OffsetTo : Offset<OffsetType, has_null>
 
     bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
+    если (ret || !has_null)
       s->add_link (*this, s->pop_pack ());
-    else
+    иначе
       s->pop_discard ();
 
-    return ret;
+    вернуть ret;
   }
 
 
@@ -477,12 +477,12 @@ struct OffsetTo : Offset<OffsetType, has_null>
     Type* obj = c->push<Type> ();
     bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
+    если (ret)
       c->add_link (*this, c->pop_pack ());
-    else
+    иначе
       c->pop_discard ();
 
-    return ret;
+    вернуть ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
@@ -496,8 +496,8 @@ struct OffsetTo : Offset<OffsetType, has_null>
 		       Ts&&... ds)
   {
     *this = 0;
-    if (src.is_null ())
-      return false;
+    если (src.is_null ())
+      вернуть false;
 
     c->push ();
 
@@ -505,20 +505,20 @@ struct OffsetTo : Offset<OffsetType, has_null>
 
     c->add_link (*this, c->pop_pack (), whence, dst_bias);
 
-    return ret;
+    вернуть ret;
   }
 
   bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
 		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  { вернуть serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
 
   bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    если (unlikely (!c->check_struct (this))) return_trace (false);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
+    если (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
     return_trace (true);
   }
 
@@ -560,44 +560,44 @@ struct UnsizedArrayOf
 
   HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
 
-  const Type& operator [] (unsigned int i) const
+  const Type& operator [] (unsigned целое i) const
   {
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& operator [] (unsigned целое i)
   {
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  static size_t get_size (unsigned целое len)
+  { вернуть hb_unsigned_mul_saturate (len, Type::static_size); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  template <typename T> operator T * () { вернуть arrayZ; }
+  template <typename T> operator const T * () const { вернуть arrayZ; }
+  hb_array_t<Type> as_array (unsigned целое len)
+  { вернуть hb_array (arrayZ, len); }
+  hb_array_t<const Type> as_array (unsigned целое len) const
+  { вернуть hb_array (arrayZ, len); }
 
   template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
+  Type &lsearch (unsigned целое len, const T &x, Type &not_found = Crap (Type))
+  { вернуть *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
+  const Type &lsearch (unsigned целое len, const T &x, const Type &not_found = Null (Type)) const
+  { вернуть *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  bool lfind (unsigned целое len, const T &x, unsigned целое *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+	      unsigned целое to_store = (unsigned целое) -1) const
+  { вернуть as_array (len).lfind (x, i, not_found, to_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
+  void qsort (unsigned целое len, unsigned целое start = 0, unsigned целое end = (unsigned целое) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  bool serialize (hb_serialize_context_t *c, unsigned целое items_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
+    если (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
@@ -606,10 +606,10 @@ struct UnsizedArrayOf
   {
     TRACE_SERIALIZE (this);
     unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    если (unlikely (!serialize (c, count, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
+    для (unsigned i = 0; i < count; i++, ++items)
       arrayZ[i] = *items;
     return_trace (true);
   }
@@ -618,25 +618,25 @@ struct UnsizedArrayOf
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    если (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned целое count, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    если (unlikely (!sanitize_shallow (c, count))) return_trace (false);
+    если (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+    для (unsigned целое i = 0; i < count; i++)
+      если (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned целое count) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_array (arrayZ, count));
@@ -656,25 +656,25 @@ using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseT
 template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
 struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
 {
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
+    unsigned целое i = (unsigned целое) i_;
     const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    если (unlikely ((const void *) p < (const void *) this->arrayZ)) вернуть Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    вернуть this+*p;
   }
-  Type& operator [] (int i_)
+  Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
+    unsigned целое i = (unsigned целое) i_;
     const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    если (unlikely ((const void *) p < (const void *) this->arrayZ)) вернуть Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    вернуть this+*p;
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned целое count, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
@@ -686,24 +686,24 @@ struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, Base
 template <typename Type>
 struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (unsigned целое len)
+  { вернуть hb_sorted_array (this->arrayZ, len); }
+  hb_sorted_array_t<const Type> as_array (unsigned целое len) const
+  { вернуть hb_sorted_array (this->arrayZ, len); }
+  operator hb_sorted_array_t<Type> ()             { вернуть as_array (); }
+  operator hb_sorted_array_t<const Type> () const { вернуть as_array (); }
 
   template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
+  Type &bsearch (unsigned целое len, const T &x, Type &not_found = Crap (Type))
+  { вернуть *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
+  const Type &bsearch (unsigned целое len, const T &x, const Type &not_found = Null (Type)) const
+  { вернуть *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  bool bfind (unsigned целое len, const T &x, unsigned целое *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+	      unsigned целое to_store = (unsigned целое) -1) const
+  { вернуть as_array (len).bfind (x, i, not_found, to_store); }
 };
 
 
@@ -716,54 +716,54 @@ struct ArrayOf
 
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
 
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= len)) вернуть Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= len)) вернуть Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
 
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  { вернуть hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
 
-  explicit operator bool () const { return len; }
+  explicit operator bool () const { вернуть len; }
 
   void pop () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { вернуть hb_array (arrayZ, len); }
+  hb_array_t<const Type> as_array () const { вернуть hb_array (arrayZ, len); }
 
   /* Iterator. */
   typedef hb_array_t<const Type>   iter_t;
   typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { вернуть as_array (); }
+  writer_t writer ()       { вернуть as_array (); }
+  operator   iter_t () const { вернуть   iter (); }
+  operator writer_t ()       { вернуть writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  const Type *begin () const { вернуть arrayZ; }
+  const Type *end () const { вернуть arrayZ + len; }
 
   template <typename T>
   Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
+  { вернуть *as_array ().lsearch (x, &not_found); }
   template <typename T>
   const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
+  { вернуть *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
+  bool lfind (const T &x, unsigned целое *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+	      unsigned целое to_store = (unsigned целое) -1) const
+  { вернуть as_array ().lfind (x, i, not_found, to_store); }
 
   void qsort ()
   { as_array ().qsort (); }
@@ -771,9 +771,9 @@ struct ArrayOf
   HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    если (unlikely (!c->extend_min (this))) return_trace (false);
     c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
+    если (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
@@ -782,10 +782,10 @@ struct ArrayOf
   {
     TRACE_SERIALIZE (this);
     unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    если (unlikely (!serialize (c, count, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
+    для (unsigned i = 0; i < count; i++, ++items)
       arrayZ[i] = *items;
     return_trace (true);
   }
@@ -794,7 +794,7 @@ struct ArrayOf
   {
     TRACE_SERIALIZE (this);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    если (unlikely (!len || !c->extend (this)))
     {
       len--;
       return_trace (nullptr);
@@ -806,9 +806,9 @@ struct ArrayOf
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
+    если (unlikely (!c->extend_min (out))) return_trace (nullptr);
     c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
+    если (unlikely (!as_array ().copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
@@ -817,12 +817,12 @@ struct ArrayOf
   bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    если (unlikely (!sanitize_shallow (c))) return_trace (false);
+    если (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+    unsigned целое count = len;
+    для (unsigned целое i = 0; i < count; i++)
+      если (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
@@ -856,28 +856,28 @@ template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUI
 template <typename Type, typename OffsetType>
 struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= this->len)) вернуть Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    вернуть this+this->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  const Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= this->len)) вернуть Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    вернуть this+this->arrayZ[i];
   }
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
+    если (unlikely (!out)) return_trace (false);
+    unsigned целое count = this->len;
+    для (unsigned целое i = 0; i < count; i++)
       out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
     return_trace (true);
   }
@@ -901,46 +901,46 @@ struct HeadlessArrayOf
 
   HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
 
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= lenP1 || !i)) вернуть Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    вернуть arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= lenP1 || !i)) вернуть Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    вернуть arrayZ[i-1];
   }
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  { вернуть hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  unsigned get_length () const { вернуть lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { вернуть hb_array (arrayZ, get_length ()); }
+  hb_array_t<const Type> as_array () const { вернуть hb_array (arrayZ, get_length ()); }
 
   /* Iterator. */
   typedef hb_array_t<const Type>   iter_t;
   typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { вернуть as_array (); }
+  writer_t writer ()       { вернуть as_array (); }
+  operator   iter_t () const { вернуть   iter (); }
+  operator writer_t ()       { вернуть writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  const Type *begin () const { вернуть arrayZ; }
+  const Type *end () const { вернуть arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned целое items_len, bool clear = true)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    если (unlikely (!c->extend_min (this))) return_trace (false);
     c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
+    если (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
     return_trace (true);
   }
   template <typename Iterator,
@@ -949,10 +949,10 @@ struct HeadlessArrayOf
   {
     TRACE_SERIALIZE (this);
     unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    если (unlikely (!serialize (c, count, false))) return_trace (false);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
+    для (unsigned i = 0; i < count; i++, ++items)
       arrayZ[i] = *items;
     return_trace (true);
   }
@@ -962,12 +962,12 @@ struct HeadlessArrayOf
   bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    если (unlikely (!sanitize_shallow (c))) return_trace (false);
+    если (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+    unsigned целое count = get_length ();
+    для (unsigned целое i = 0; i < count; i++)
+      если (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
@@ -995,34 +995,34 @@ struct ArrayOfM1
 {
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
 
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i > lenM1)) вернуть Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i > lenM1)) вернуть Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    вернуть arrayZ[i];
   }
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  { вернуть hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
   bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    если (unlikely (!sanitize_shallow (c))) return_trace (false);
+    если (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+    unsigned целое count = lenM1 + 1;
+    для (unsigned целое i = 0; i < count; i++)
+      если (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
@@ -1047,22 +1047,22 @@ struct ArrayOfM1
 template <typename Type, typename LenType>
 struct SortedArrayOf : ArrayOf<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { вернуть hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<const Type> as_array () const { вернуть hb_sorted_array (this->arrayZ, this->len); }
 
   /* Iterator. */
   typedef hb_sorted_array_t<const Type>   iter_t;
   typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { вернуть as_array (); }
+  writer_t writer ()       { вернуть as_array (); }
+  operator   iter_t () const { вернуть   iter (); }
+  operator writer_t ()       { вернуть writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  const Type *begin () const { вернуть this->arrayZ; }
+  const Type *end () const { вернуть this->arrayZ + this->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  bool serialize (hb_serialize_context_t *c, unsigned целое items_len)
   {
     TRACE_SERIALIZE (this);
     bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
@@ -1086,15 +1086,15 @@ struct SortedArrayOf : ArrayOf<Type, LenType>
 
   template <typename T>
   Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
+  { вернуть *as_array ().bsearch (x, &not_found); }
   template <typename T>
   const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
+  { вернуть *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  bool bfind (const T &x, unsigned целое *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned целое to_store = (unsigned целое) -1) const
+  { вернуть as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
@@ -1108,7 +1108,7 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
 template <typename LenType=HBUINT16>
 struct BinSearchHeader
 {
-  operator uint32_t () const { return len; }
+  operator uint32_t () const { вернуть len; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -1116,7 +1116,7 @@ struct BinSearchHeader
     return_trace (c->check_struct (this));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  BinSearchHeader& operator = (unsigned целое v)
   {
     len = v;
     assert (len == v);
@@ -1125,7 +1125,7 @@ struct BinSearchHeader
     rangeShift = v * 16 > searchRange
 		 ? 16 * v - searchRange
 		 : 0;
-    return *this;
+    вернуть *this;
   }
 
   protected:
@@ -1173,50 +1173,50 @@ struct VarSizedBinSearchArrayOf
 
   bool last_is_terminator () const
   {
-    if (unlikely (!header.nUnits)) return false;
+    если (unlikely (!header.nUnits)) вернуть false;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
     const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    unsigned целое count = Type::TerminationWordCount;
+    для (unsigned целое i = 0; i < count; i++)
+      если (words[i] != 0xFFFFu)
+	вернуть false;
+    вернуть true;
   }
 
-  const Type& operator [] (int i_) const
+  const Type& operator [] (целое i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= get_length ())) вернуть Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    вернуть StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  Type& operator [] (int i_)
+  Type& operator [] (целое i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    unsigned целое i = (unsigned целое) i_;
+    если (unlikely (i >= get_length ())) вернуть Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    вернуть StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
+  unsigned целое get_length () const
+  { вернуть header.nUnits - last_is_terminator (); }
   size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  { вернуть hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
   bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    если (unlikely (!sanitize_shallow (c))) return_trace (false);
+    если (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
+    unsigned целое count = get_length ();
+    для (unsigned целое i = 0; i < count; i++)
+      если (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
 	return_trace (false);
     return_trace (true);
   }
@@ -1225,7 +1225,7 @@ struct VarSizedBinSearchArrayOf
   const Type *bsearch (const T &key) const
   {
     unsigned pos;
-    return hb_bsearch_impl (&pos,
+    вернуть hb_bsearch_impl (&pos,
 			    key,
 			    (const void *) bytesZ,
 			    get_length (),
@@ -1260,8 +1260,8 @@ struct VarSizedBinSearchArrayOf
 template <typename COUNT>
 struct CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  unsigned целое offset_array_size () const
+  { вернуть offSize * (count + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
@@ -1272,24 +1272,24 @@ struct CFFIndex
   {
     TRACE_SERIALIZE (this);
     unsigned data_size;
-    if (p_data_size)
+    если (p_data_size)
       data_size = *p_data_size;
-    else
+    иначе
       total_size (iterable, &data_size);
 
     auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
+    если (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
     unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
+    если (unlikely (!ret)) return_trace (false);
     unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    для (const auto &_ : +it)
     {
       unsigned len = _.length;
 
-      if (!len)
+      если (!len)
 	continue;
 
-      if (unlikely (len > remaining)) {
+      если (unlikely (len > remaining)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
         return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -1297,7 +1297,7 @@ struct CFFIndex
 
       remaining -= len;
 
-      if (len <= 1)
+      если (len <= 1)
       {
 	*ret++ = *_.arrayZ;
 	continue;
@@ -1321,33 +1321,33 @@ struct CFFIndex
     off_size = hb_max(min_off_size, off_size);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    если (unlikely (!c->extend_min (this))) return_trace (false);
     this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
+    если (!this->count) return_trace (true);
+    если (unlikely (!c->extend (this->offSize))) return_trace (false);
     this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
+    если (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
       return_trace (false);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    unsigned целое offset = 1;
+    если (HB_OPTIMIZE_SIZE_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      unsigned целое i = 0;
+      для (const auto &_ : +it)
       {
 	set_offset_at (i++, offset);
 	offset += hb_len_of (_);
       }
       set_offset_at (i, offset);
     }
-    else
+    иначе
       switch (off_size)
       {
 	case 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  для (const auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
@@ -1358,7 +1358,7 @@ struct CFFIndex
 	case 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  для (const auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
@@ -1369,7 +1369,7 @@ struct CFFIndex
 	case 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  для (const auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
@@ -1380,7 +1380,7 @@ struct CFFIndex
 	case 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  для (const auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
@@ -1401,29 +1401,29 @@ struct CFFIndex
   static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
   {
     auto it = + hb_iter (iterable);
-    if (!it)
+    если (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      если (data_size) *data_size = 0;
+      вернуть min_size;
     }
 
     unsigned total = 0;
-    for (const auto &_ : +it)
+    для (const auto &_ : +it)
       total += hb_len_of (_);
 
-    if (data_size) *data_size = total;
+    если (data_size) *data_size = total;
 
     unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    вернуть min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  void set_offset_at (unsigned целое index, unsigned целое offset)
   {
     assert (index <= count);
 
-    unsigned int size = offSize;
+    unsigned целое size = offSize;
     const HBUINT8 *p = offsets;
     switch (size)
     {
@@ -1431,48 +1431,48 @@ struct CFFIndex
       case 2: ((HBUINT16 *) p)[index] = offset; break;
       case 3: ((HBUINT24 *) p)[index] = offset; break;
       case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
+      default: вернуть;
     }
   }
 
   private:
-  unsigned int offset_at (unsigned int index) const
+  unsigned целое offset_at (unsigned целое index) const
   {
     assert (index <= count);
 
-    unsigned int size = offSize;
+    unsigned целое size = offSize;
     const HBUINT8 *p = offsets;
     switch (size)
     {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      case 1: вернуть ((HBUINT8  *) p)[index];
+      case 2: вернуть ((HBUINT16 *) p)[index];
+      case 3: вернуть ((HBUINT24 *) p)[index];
+      case 4: вернуть ((HBUINT32 *) p)[index];
+      default: вернуть 0;
     }
   }
 
   const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
+  { вернуть (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
   public:
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned целое index) const
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    если (unlikely (index >= count)) вернуть hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    если (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
+      вернуть hb_ubytes_t ();
+    вернуть hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
   size_t get_size () const
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
+    если (count)
+      вернуть hb_unsigned_add_saturate (min_size, offSize.static_size,
 				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    вернуть min_size;  /* empty CFFIndex contains count only */
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -1514,70 +1514,70 @@ struct TupleValues
     VALUE_RUN_COUNT_MASK = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
+  static unsigned compile_unsafe (hb_array_t<const целое> values, /* IN */
 				  unsigned char *encoded_bytes /* OUT */)
   {
     unsigned num_values = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    пока (i < num_values)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
+      целое val = values.arrayZ[i];
+      если (val == 0)
         encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
+      иначе если ((int8_t) val == val)
         encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
+      иначе если ((int16_t) val == val)
         encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
+      иначе
         encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
-    return encoded_len;
+    вернуть encoded_len;
   }
 
   static unsigned encode_value_run_as_zeroes (unsigned& i,
 					      unsigned char *it,
-					      hb_array_t<const int> values)
+					      hb_array_t<const целое> values)
   {
     unsigned num_values = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    пока (i < num_values && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
     }
 
-    while (run_length >= 64)
+    пока (run_length >= 64)
     {
       *it++ = char (VALUES_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    если (run_length)
     {
       *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
-    return encoded_len;
+    вернуть encoded_len;
   }
 
   static unsigned encode_value_run_as_bytes (unsigned &i,
 					     unsigned char *it,
-					     hb_array_t<const int> values)
+					     hb_array_t<const целое> values)
   {
     unsigned start = i;
     unsigned num_values = values.length;
-    while (i < num_values)
+    пока (i < num_values)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
+      целое val = values.arrayZ[i];
+      если ((int8_t) val != val)
         break;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
+      если (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
         break;
 
       i++;
@@ -1586,12 +1586,12 @@ struct TupleValues
 
     unsigned encoded_len = 0;
 
-    while (run_length >= 64)
+    пока (run_length >= 64)
     {
       *it++ = (VALUES_ARE_BYTES | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      для (unsigned j = 0; j < 64; j++)
 	it[j] = static_cast<char> (values.arrayZ[start + j]);
       it += 64;
       encoded_len += 64;
@@ -1600,39 +1600,39 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    если (run_length)
     {
       *it++ = (VALUES_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
+      для (unsigned j = 0; j < run_length; j++)
         it[j] = static_cast<char> (values.arrayZ[start + j]);
       encoded_len += run_length;
     }
 
-    return encoded_len;
+    вернуть encoded_len;
   }
 
   static unsigned encode_value_run_as_words (unsigned &i,
 					     unsigned char *it,
-					     hb_array_t<const int> values)
+					     hb_array_t<const целое> values)
   {
     unsigned start = i;
     unsigned num_values = values.length;
-    while (i < num_values)
+    пока (i < num_values)
     {
-      int val = values.arrayZ[i];
+      целое val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
+      если ((int16_t) val != val)
         break;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      если (val == 0) break;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
+      если ((int8_t) val == val &&
           i + 1 < num_values &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
         break;
@@ -1642,12 +1642,12 @@ struct TupleValues
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    пока (run_length >= 64)
     {
       *it++ = (VALUES_ARE_WORDS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      для (unsigned j = 0; j < 64; j++)
       {
         int16_t value_val = values.arrayZ[start + j];
         *it++ = static_cast<char> (value_val >> 8);
@@ -1660,11 +1660,11 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    если (run_length)
     {
       *it++ = (VALUES_ARE_WORDS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      пока (start < i)
       {
         int16_t value_val = values.arrayZ[start++];
         *it++ = static_cast<char> (value_val >> 8);
@@ -1673,20 +1673,20 @@ struct TupleValues
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    вернуть encoded_len;
   }
 
   static unsigned encode_value_run_as_longs (unsigned &i,
 					     unsigned char *it,
-					     hb_array_t<const int> values)
+					     hb_array_t<const целое> values)
   {
     unsigned start = i;
     unsigned num_values = values.length;
-    while (i < num_values)
+    пока (i < num_values)
     {
-      int val = values.arrayZ[i];
+      целое val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
+      если ((int16_t) val == val)
         break;
 
       i++;
@@ -1694,12 +1694,12 @@ struct TupleValues
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    пока (run_length >= 64)
     {
       *it++ = (VALUES_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      для (unsigned j = 0; j < 64; j++)
       {
         int32_t value_val = values.arrayZ[start + j];
         *it++ = static_cast<char> (value_val >> 24);
@@ -1714,11 +1714,11 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    если (run_length)
     {
       *it++ = (VALUES_ARE_LONGS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      пока (start < i)
       {
         int32_t value_val = values.arrayZ[start++];
         *it++ = static_cast<char> (value_val >> 24);
@@ -1729,7 +1729,7 @@ struct TupleValues
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    вернуть encoded_len;
   }
 
   template <typename T>
@@ -1744,35 +1744,35 @@ struct TupleValues
   {
     unsigned i = 0;
     unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
+    если (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    пока (i < count)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
+      если (unlikely (p + 1 > end)) вернуть consume_all;
       unsigned control = *p++;
       unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      если (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        если (unlikely (!values.resize_dirty  (values.length + run_count)))
+	  вернуть false;
       }
       unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      если (unlikely (stop > count)) вернуть false;
 
       unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      если ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
       {
 	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      иначе если ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        если (unlikely (p + run_count * HBINT16::static_size > end)) вернуть false;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        для (; i + 3 < stop; i += 4)
 	{
 	  values.arrayZ[i] = * (const HBINT16 *) p;
 	  p += HBINT16::static_size;
@@ -1784,28 +1784,28 @@ struct TupleValues
 	  p += HBINT16::static_size;
 	}
 #endif
-        for (; i < stop; i++)
+        для (; i < stop; i++)
         {
           values.arrayZ[i] = * (const HBINT16 *) p;
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      иначе если ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        если (unlikely (p + run_count * HBINT32::static_size > end)) вернуть false;
 	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        для (; i < stop; i++)
         {
           values.arrayZ[i] = * (const HBINT32 *) p;
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      иначе если ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        если (unlikely (p + run_count > end)) вернуть false;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+	для (; i + 3 < stop; i += 4)
 	{
 	  values.arrayZ[i] = * (const HBINT8 *) p++;
 	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
@@ -1813,11 +1813,11 @@ struct TupleValues
 	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
 	}
 #endif
-        for (; i < stop; i++)
+        для (; i < stop; i++)
           values.arrayZ[i] = * (const HBINT8 *) p++;
       }
     }
-    return true;
+    вернуть true;
   }
 
   static bool skip (const unsigned char *&p /* IN/OUT */,
@@ -1825,12 +1825,12 @@ struct TupleValues
 		    unsigned count)
   {
     unsigned seen = 0;
-    while (seen < count)
+    пока (seen < count)
     {
-      if (unlikely (p >= end)) return false;
+      если (unlikely (p >= end)) вернуть false;
       unsigned control = *p++;
       unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      если (unlikely (run_count > count - seen)) вернуть false;
 
       unsigned width = 0;
       switch (control & VALUES_SIZE_MASK)
@@ -1840,39 +1840,39 @@ struct TupleValues
 	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
 	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
+      если (unlikely (unsigned (end - p) < run_count * width)) вернуть false;
       p += run_count * width;
       seen += run_count;
     }
-    return true;
+    вернуть true;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  struct iter_t : hb_iter_with_fallback_t<iter_t, целое>
   {
     iter_t (const unsigned char *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { если (likely (ensure_run ())) read_value (); }
 
     private:
     const unsigned char *p;
     const unsigned char * const endp;
-    int current_value = 0;
+    целое current_value = 0;
     signed run_count = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
     bool ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      если (likely (run_count > 0)) вернуть true;
+      вернуть _ensure_run ();
     }
     bool _ensure_run ()
     {
-      if (unlikely (p >= endp))
+      если (unlikely (p >= endp))
       {
         run_count = 0;
         current_value = 0;
-	return false;
+	вернуть false;
       }
 
       unsigned control = *p++;
@@ -1887,14 +1887,14 @@ struct TupleValues
 	default: assert (false);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      если (unlikely (p + run_count * width > endp))
       {
 	run_count = 0;
 	current_value = 0;
-	return false;
+	вернуть false;
       }
 
-      return true;
+      вернуть true;
     }
     void read_value ()
     {
@@ -1910,39 +1910,39 @@ struct TupleValues
 
     public:
 
-    typedef int __item_t__;
+    typedef целое __item_t__;
     __item_t__ __item__ () const
-    { return current_value; }
+    { вернуть current_value; }
 
-    bool __more__ () const { return run_count || p < endp; }
+    bool __more__ () const { вернуть run_count || p < endp; }
     void __next__ ()
     {
       run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
+      если (unlikely (!ensure_run ()))
+	вернуть;
       read_value ();
     }
     void __forward__ (unsigned n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      если (unlikely (!ensure_run ()))
+	вернуть;
+      пока (n)
       {
 	unsigned i = hb_min (n, (unsigned) run_count);
 	run_count -= i;
 	n -= i;
 	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
+	если (unlikely (!ensure_run ()))
+	  вернуть;
 	read_value ();
       }
     }
     bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
+    { вернуть p != o.p || run_count != o.run_count; }
     iter_t __end__ () const
     {
       iter_t it (endp, 0);
-      return it;
+      вернуть it;
     }
   };
 
@@ -1960,16 +1960,16 @@ struct TupleValues
     HB_ALWAYS_INLINE
     bool ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      если (likely (run_count > 0)) вернуть true;
+      вернуть _ensure_run ();
     }
 
     bool _ensure_run ()
     {
-      if (unlikely (p >= end))
+      если (unlikely (p >= end))
       {
         run_count = 0;
-	return false;
+	вернуть false;
       }
 
       unsigned control = *p++;
@@ -1984,22 +1984,22 @@ struct TupleValues
 	default: assert (false);
       }
 
-      if (unlikely (p + run_count * width > end))
+      если (unlikely (p + run_count * width > end))
       {
 	run_count = 0;
-	return false;
+	вернуть false;
       }
 
-      return true;
+      вернуть true;
     }
 
     public:
     void skip (unsigned n)
     {
-      while (n)
+      пока (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
+	если (unlikely (!ensure_run ()))
+	  вернуть;
 	unsigned i = hb_min (n, (unsigned) run_count);
 	run_count -= i;
 	n -= i;
@@ -2014,9 +2014,9 @@ struct TupleValues
       unsigned n = out.length;
       T *arrayZ = out.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      для (unsigned i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
+	если (unlikely (!ensure_run ()))
 	  break;
 	unsigned count = hb_min (n - i, (unsigned) run_count);
 	switch (width)
@@ -2031,7 +2031,7 @@ struct TupleValues
 	    const auto *pp = (const HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    для (; j + 3 < count; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,7 +2039,7 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    для (; j < count; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
@@ -2050,7 +2050,7 @@ struct TupleValues
 	    const auto *pp = (const HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    для (; j + 3 < count; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,7 +2058,7 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    для (; j < count; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
@@ -2067,7 +2067,7 @@ struct TupleValues
 	  case 4:
 	  {
 	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    для (unsigned j = 0; j < count; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
 	    p = (const unsigned char *) pp;
@@ -2087,9 +2087,9 @@ struct TupleValues
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
+      если (false && scale == 1.0f)
         _add_to<false> (out);
-      else
+      иначе
 #endif
         _add_to<true> (out, (T) scale);
     }
@@ -2101,26 +2101,26 @@ struct TupleList : CFF2Index
   TupleValues::iter_t operator [] (unsigned i) const
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    вернуть TupleValues::iter_t (bytes.arrayZ, bytes.length);
   }
 
   TupleValues::fetcher_t fetcher (unsigned i) const
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    вернуть TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
+template <unsigned целое alignment>
 struct Align
 {
   size_t get_size (const void *base) const
   {
     unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    вернуть (alignment - offset) & (alignment - 1);
   }
 
   public:

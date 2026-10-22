@@ -83,10 +83,10 @@ struct post
   {
     TRACE_SERIALIZE (this);
     post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    если (unlikely (!post_prime))  return_trace (false);
 
     hb_memcpy (post_prime, this, post::min_size);
-    if (!glyph_names)
+    если (!glyph_names)
       return_trace (c->check_assign (post_prime->version.major, 3,
                                      HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
 
@@ -99,11 +99,11 @@ struct post
     auto *post_prime = c->serializer->start_embed<post> ();
 
     bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
-    if (!serialize (c->serializer, glyph_names))
+    если (!serialize (c->serializer, glyph_names))
       return_trace (false);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    если (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
       auto *table = post_prime;
@@ -114,14 +114,14 @@ struct post
 #endif
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
+    если (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
     {
       float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
+      если (post_prime->italicAngle.to_float () != italic_angle)
         post_prime->italicAngle.set_float (italic_angle);
     }
 
-    if (glyph_names && version.major == 2)
+    если (glyph_names && version.major == 2)
     {
       hb_barrier ();
       return_trace (v2X.subset (c));
@@ -137,10 +137,10 @@ struct post
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<post> (face);
-      unsigned int table_length = table.get_length ();
+      unsigned целое table_length = table.get_length ();
 
       version = table->version.to_int ();
-      if (version != 0x00020000) return;
+      если (version != 0x00020000) вернуть;
       hb_barrier ();
 
       const postV2Tail &v2 = table->v2X;
@@ -150,7 +150,7 @@ struct post
 
       const uint8_t *end = (const uint8_t *) (const void *) table + table_length;
       index_to_offset.alloc (hb_min (face->get_num_glyphs (), table_length / 8));
-      for (const uint8_t *data = pool;
+      для (const uint8_t *data = pool;
 	   index_to_offset.length < 65535 && data < end && data + *data < end;
 	   data += 1 + *data)
 	index_to_offset.push (data - pool);
@@ -162,37 +162,37 @@ struct post
     }
 
     bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+			 char *buf, unsigned целое buf_len) const
     {
       hb_bytes_t s = find_glyph_name (glyph);
-      if (!s.length) return false;
-      if (!buf_len) return true;
-      unsigned int len = hb_min (buf_len - 1, s.length);
+      если (!s.length) вернуть false;
+      если (!buf_len) вернуть true;
+      unsigned целое len = hb_min (buf_len - 1, s.length);
       strncpy (buf, s.arrayZ, len);
       buf[len] = '\0';
-      return true;
+      вернуть true;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
+    bool get_glyph_from_name (const char *name, целое len,
 			      hb_codepoint_t *glyph) const
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      unsigned целое count = get_glyph_count ();
+      если (unlikely (!count)) вернуть false;
 
-      if (len < 0) len = strlen (name);
+      если (len < 0) len = strlen (name);
 
-      if (unlikely (!len)) return false;
+      если (unlikely (!len)) вернуть false;
 
     retry:
       uint16_t *gids = gids_sorted_by_name.get_acquire ();
 
-      if (unlikely (!gids))
+      если (unlikely (!gids))
       {
 	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
-	if (unlikely (!gids))
-	  return false; /* Anything better?! */
+	если (unlikely (!gids))
+	  вернуть false; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	для (unsigned целое i = 0; i < count; i++)
 	  gids[i] = i;
 	auto thiz = this;
 	hb_array_t<uint16_t> (gids, count)
@@ -200,10 +200,10 @@ struct post
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
 	     * get standard "negative when a < b" ordering. */
-	    return thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
+	    вернуть thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
 	  });
 
-	if (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
+	если (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
 	{
 	  hb_free (gids);
 	  goto retry;
@@ -212,76 +212,76 @@ struct post
 
       hb_bytes_t st (name, len);
       auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
-      if (gid)
+      если (gid)
       {
 	*glyph = *gid;
-	return true;
+	вернуть true;
       }
 
-      return false;
+      вернуть false;
     }
 
     hb_blob_ptr_t<post> table;
 
     protected:
 
-    unsigned int get_glyph_count () const
+    unsigned целое get_glyph_count () const
     {
-      if (version == 0x00010000)
+      если (version == 0x00010000)
       {
         hb_barrier ();
-	return format1_names_length;
+	вернуть format1_names_length;
       }
 
-      if (version == 0x00020000)
+      если (version == 0x00020000)
       {
         hb_barrier ();
-	return glyphNameIndex->len;
+	вернуть glyphNameIndex->len;
       }
 
-      return 0;
+      вернуть 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    static целое cmp_key (const void *pk, const void *po, void *arg)
     {
       const accelerator_t *thiz = (const accelerator_t *) arg;
       const hb_bytes_t *key = (const hb_bytes_t *) pk;
       uint16_t o = * (const uint16_t *) po;
-      return thiz->find_glyph_name (o).cmp (*key);
+      вернуть thiz->find_glyph_name (o).cmp (*key);
     }
 
     hb_bytes_t find_glyph_name (hb_codepoint_t glyph) const
     {
-      if (version == 0x00010000)
+      если (version == 0x00010000)
       {
         hb_barrier ();
-	if (glyph >= format1_names_length)
-	  return hb_bytes_t ();
+	если (glyph >= format1_names_length)
+	  вернуть hb_bytes_t ();
 
-	return format1_names (glyph);
+	вернуть format1_names (glyph);
       }
 
-      if (version != 0x00020000)
-	return hb_bytes_t ();
+      если (version != 0x00020000)
+	вернуть hb_bytes_t ();
       hb_barrier ();
 
-      if (glyph >= glyphNameIndex->len)
-	return hb_bytes_t ();
+      если (glyph >= glyphNameIndex->len)
+	вернуть hb_bytes_t ();
 
-      unsigned int index = glyphNameIndex->arrayZ[glyph];
-      if (index < format1_names_length)
-	return format1_names (index);
+      unsigned целое index = glyphNameIndex->arrayZ[glyph];
+      если (index < format1_names_length)
+	вернуть format1_names (index);
       index -= format1_names_length;
 
-      if (index >= index_to_offset.length)
-	return hb_bytes_t ();
-      unsigned int offset = index_to_offset[index];
+      если (index >= index_to_offset.length)
+	вернуть hb_bytes_t ();
+      unsigned целое offset = index_to_offset[index];
 
       const uint8_t *data = pool + offset;
-      unsigned int name_length = *data;
+      unsigned целое name_length = *data;
       data++;
 
-      return hb_bytes_t ((const char *) data, name_length);
+      вернуть hb_bytes_t ((const char *) data, name_length);
     }
 
     private:
@@ -292,7 +292,7 @@ struct post
     mutable hb_atomic_t<uint16_t *> gids_sorted_by_name;
   };
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { вернуть version.to_int (); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {

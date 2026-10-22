@@ -59,7 +59,7 @@ struct hb_ot_shape_normalize_context_t
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    вернуть (bool) c->unicode->decompose (ab, a, b);
   }
 
   static bool
@@ -68,7 +68,7 @@ struct hb_ot_shape_normalize_context_t
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    вернуть (bool) c->unicode->compose (a, b, ab);
   }
 
   void

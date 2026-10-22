@@ -33,15 +33,15 @@ graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_ta
 {
   gsubgpos_graph_context_t context (table_tag_, graph_);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
+  если (unlikely (table_tag_ != HB_OT_TAG_GPOS
                 && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+    вернуть Err(INVALID_ARGUMENT);
 
   TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
   TRY(gstar->find_lookups (context.graph, context.lookups));
   TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
 
-  return context;
+  вернуть context;
 }
 
 gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
@@ -55,27 +55,27 @@ gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
 graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
 {
   char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  если (unlikely (!buffer))
+    вернуть Err(ALLOCATION_FAILURE);
 
   auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  если (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
     hb_free (buffer);
-    return Err(res.error ());
+    вернуть Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  вернуть graph.new_node (buffer, buffer + size);
 }
 
 unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
   unsigned count = 0;
-  for (auto l : lookups.values ())
+  для (auto l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
+    если (l->is_extension (table_tag)) continue;
     count += l->number_of_subtables ();
   }
-  return count;
+  вернуть count;
 }
 
 }

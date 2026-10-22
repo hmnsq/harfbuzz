@@ -11,48 +11,48 @@ namespace OT {
 
 struct coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const целое> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    если (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (целое));
+    иначе
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  целое& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    если (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      вернуть Crap(целое);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    если (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      если (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        пока (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	вернуть static_coords[idx];
       }
-      else
+      иначе
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    если (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      если (unlikely (!dynamic_coords.resize (idx + 1)))
+	вернуть Crap(целое);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    вернуть dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<целое> get_coords ()
+  { вернуть length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<целое> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  целое static_coords[sizeof (void *) * 8];
 };
 
 
