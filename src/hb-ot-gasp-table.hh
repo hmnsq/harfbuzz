@@ -59,8 +59,8 @@ struct gasp
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  const GaspRange &get_gasp_range (unsigned 整数 i) const
+  { 返回 gaspRanges[i]; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {

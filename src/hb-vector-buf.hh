@@ -56,7 +56,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
    * cap is seen everywhere.  clear() resets the sticky flag so a context
    * reused across renders recovers after one over-cap glyph. */
   bool in_error () const
-  { return hb_vector_t<char>::in_error () || overflowed; }
+  { 返回 hb_vector_t<char>::in_error () || overflowed; }
 
   void clear ()
   {
@@ -65,57 +65,57 @@ struct hb_vector_buf_t : hb_vector_t<char>
   }
 
   unsigned scale_precision () const
-  { return precision < 7 ? 7 : precision; }
+  { 返回 precision < 7 ? 7 : precision; }
 
   bool would_overflow (unsigned add)
   {
-    if (unlikely (in_error ()))
-      return true;
+    如果 (unlikely (in_error ()))
+      返回 true;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
+    如果 (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
 		  new_len > HB_VECTOR_MAX_DOCUMENT_SIZE))
     {
       overflowed = true;
-      return true;
+      返回 true;
     }
-    return false;
+    返回 false;
   }
 
   bool append_len (const char *s, unsigned l)
   {
-    if (unlikely (would_overflow (l)))
-      return false;
+    如果 (unlikely (would_overflow (l)))
+      返回 false;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+    如果 (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
+		  !resize_dirty ((整数) new_len)))
+      返回 false;
     hb_memcpy (arrayZ + old_len, s, l);
-    return true;
+    返回 true;
   }
 
   bool append_c (char ch)
   {
-    if (unlikely (would_overflow (1)))
-      return false;
-    return push_or_fail (ch);
+    如果 (unlikely (would_overflow (1)))
+      返回 false;
+    返回 push_or_fail (ch);
   }
 
   bool append_str (const char *s)
-  { return append_len (s, (unsigned) strlen (s)); }
+  { 返回 append_len (s, (unsigned) strlen (s)); }
 
   bool append_unsigned (unsigned v)
   {
     char tmp[16];
     snprintf (tmp, sizeof (tmp), "%u", v);
-    return append_len (tmp, (unsigned) strlen (tmp));
+    返回 append_len (tmp, (unsigned) strlen (tmp));
   }
 
   bool append_hex_byte (unsigned v)
   {
     char tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
 		   "0123456789ABCDEF"[v & 15]};
-    return append_len (tmp, 2);
+    返回 append_len (tmp, 2);
   }
 
   void append_num (float v)
@@ -123,18 +123,18 @@ struct hb_vector_buf_t : hb_vector_t<char>
 
   void append_num (float v, unsigned p)
   {
-    if (p > 12) p = 12;
+    如果 (p > 12) p = 12;
 
     float rounded_zero_threshold = 0.5f;
-    for (unsigned i = 0; i < p; i++)
+    为 (unsigned i = 0; i < p; i++)
       rounded_zero_threshold *= 0.1f;
-    if (fabsf (v) < rounded_zero_threshold)
+    如果 (fabsf (v) < rounded_zero_threshold)
       v = 0.f;
 
-    if (!(v == v) || !std::isfinite (v))
+    如果 (!(v == v) || !std::isfinite (v))
     {
       append_c ('0');
-      return;
+      返回;
     }
 
     /* Fast path: fixed-point decimal via integer math.  @v has a
@@ -144,17 +144,17 @@ struct hb_vector_buf_t : hb_vector_t<char>
      * the (much slower) printf floating-point formatting and any
      * locale decimal-point fix-up. */
     double scaled = (double) v * _hb_vector_buf_pow10[p];
-    if (likely (fabs (scaled) < 9.0e18))
+    如果 (likely (fabs (scaled) < 9.0e18))
     {
       double fl = floor (scaled);
       double diff = scaled - fl;
       int64_t n = (int64_t) fl;
-      if (diff > 0.5 || (diff == 0.5 && (n & 1)))
+      如果 (diff > 0.5 || (diff == 0.5 && (n & 1)))
 	n++;
 
       uint64_t u = (uint64_t) (n < 0 ? -n : n);
       unsigned frac = p;
-      while (frac && !(u % 10))
+      当 (frac && !(u % 10))
       {
 	u /= 10;
 	frac--;
@@ -168,15 +168,15 @@ struct hb_vector_buf_t : hb_vector_t<char>
       {
 	*--s = (char) ('0' + (char) (u % 10));
 	u /= 10;
-	if (++d == frac)
+	如果 (++d == frac)
 	  *--s = '.';
       }
-      while (u || d < frac + 1);
-      if (v < 0.f)
+      当 (u || d < frac + 1);
+      如果 (v < 0.f)
 	*--s = '-';
 
       append_len (s, (unsigned) (end - s));
-      return;
+      返回;
     }
 
     char fmt[6];
@@ -186,10 +186,10 @@ struct hb_vector_buf_t : hb_vector_t<char>
 
     const char *decimal_point = hb_vector_decimal_point_get ();
 
-    if (decimal_point[0] != '.' || decimal_point[1] != '\0')
+    如果 (decimal_point[0] != '.' || decimal_point[1] != '\0')
     {
       char *dp = strstr (out, decimal_point);
-      if (dp)
+      如果 (dp)
       {
 	unsigned dp_len = (unsigned) strlen (decimal_point);
 	unsigned tail_len = (unsigned) strlen (dp + dp_len);
@@ -199,12 +199,12 @@ struct hb_vector_buf_t : hb_vector_t<char>
     }
 
     char *dot = strchr (out, '.');
-    if (dot)
+    如果 (dot)
     {
       char *end = out + strlen (out) - 1;
-      while (end > dot && *end == '0')
+      当 (end > dot && *end == '0')
 	*end-- = '\0';
-      if (end == dot)
+      如果 (end == dot)
 	*end = '\0';
     }
 
@@ -218,7 +218,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
     unsigned b = hb_color_get_blue (color);
     unsigned a = hb_color_get_alpha (color);
     append_c ('#');
-    if (((r >> 4) == (r & 0xF)) &&
+    如果 (((r >> 4) == (r & 0xF)) &&
 	((g >> 4) == (g & 0xF)) &&
 	((b >> 4) == (b & 0xF)))
     {
@@ -226,13 +226,13 @@ struct hb_vector_buf_t : hb_vector_t<char>
       append_c ("0123456789ABCDEF"[g & 0xF]);
       append_c ("0123456789ABCDEF"[b & 0xF]);
     }
-    else
+    否则
     {
       append_hex_byte (r);
       append_hex_byte (g);
       append_hex_byte (b);
     }
-    if (with_alpha && a != 255)
+    如果 (with_alpha && a != 255)
     {
       append_str ("\" fill-opacity=\"");
       append_num (a / 255.f, 4);
@@ -246,16 +246,16 @@ struct hb_vector_buf_t : hb_vector_t<char>
     unsigned out_len;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
+    如果 (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
 		  would_overflow (out_len) ||
 		  hb_unsigned_add_overflows (old_len, out_len, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+		  !resize_dirty ((整数) new_len)))
+      返回 false;
 
     char *dst = arrayZ + old_len;
     unsigned di = 0;
     unsigned i = 0;
-    while (i + 2 < len)
+    当 (i + 2 < len)
     {
       unsigned v = ((unsigned) data[i] << 16) |
 		   ((unsigned) data[i + 1] << 8) |
@@ -267,10 +267,10 @@ struct hb_vector_buf_t : hb_vector_t<char>
       i += 3;
     }
 
-    if (i < len)
+    如果 (i < len)
     {
       unsigned v = (unsigned) data[i] << 16;
-      if (i + 1 < len)
+      如果 (i + 1 < len)
 	v |= (unsigned) data[i + 1] << 8;
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 18) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 12) & 63];
@@ -278,7 +278,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
       dst[di++] = '=';
     }
 
-    return true;
+    返回 true;
   }
 };
 

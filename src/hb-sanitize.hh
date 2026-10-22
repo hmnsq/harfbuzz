@@ -134,21 +134,21 @@ struct hb_sanitize_context_t :
 	num_glyphs_set (false),
 	lazy_some_gpos (false) {}
 
-  const char *get_name () { return "SANITIZE"; }
+  const char *get_name () { 返回 "SANITIZE"; }
   template <typename T, typename F>
   bool may_dispatch (const T *obj HB_UNUSED, const F *format)
   {
-    return format->sanitize (this) &&
+    返回 format->sanitize (this) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  static return_t default_return_value () { 返回 true; }
+  static return_t no_dispatch_return_value () { 返回 false; }
+  bool stop_sublookup_iteration (const return_t r) const { 返回 !r; }
 
   bool visit_subtables (unsigned count)
   {
     max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    返回 max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
   private:
@@ -167,13 +167,13 @@ struct hb_sanitize_context_t :
   {
     init (b);
 
-    if (blob)
+    如果 (blob)
       start_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
+    如果 (blob)
       end_processing ();
   }
 
@@ -183,29 +183,29 @@ struct hb_sanitize_context_t :
     this->writable = false;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  void set_num_glyphs (unsigned 整数 num_glyphs_)
   {
     num_glyphs = num_glyphs_;
     num_glyphs_set = true;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned 整数 get_num_glyphs () { 返回 num_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  void set_max_ops (整数 max_ops_) { max_ops = max_ops_; }
 
   template <typename T>
   void set_object (const T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    如果 (!obj) 返回;
 
     const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    如果 (unlikely (obj_start < this->start || this->end <= obj_start))
     {
       this->start = this->end = nullptr;
       this->length = 0;
     }
-    else
+    否则
     {
       this->start = obj_start;
       this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
@@ -215,7 +215,7 @@ struct hb_sanitize_context_t :
 
   void reset_object ()
   {
-    if (this->blob)
+    如果 (this->blob)
     {
       this->start = this->blob->data;
       this->end = this->start + this->blob->length;
@@ -226,16 +226,16 @@ struct hb_sanitize_context_t :
 
   void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
   {
-    if (start_)
+    如果 (start_)
     {
       this->start = start_;
       this->end = end_;
     }
     reset_object ();
     unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
+    如果 (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
       this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
+    否则
       this->max_ops = hb_clamp (m,
 				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
 				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
@@ -263,24 +263,24 @@ struct hb_sanitize_context_t :
   bool check_ops(unsigned count)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    如果 (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
     {
       this->max_ops = -1;
-      return false;
+      返回 false;
     }
-    this->max_ops -= (int) count;
-    return true;
+    this->max_ops -= (整数) count;
+    返回 true;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
   bool check_range (const void *base,
-		    unsigned int len) const
+		    unsigned 整数 len) const
   {
     const char *p = (const char *) base;
     bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
+	      (unsigned 整数) (this->end - p) >= len &&
 	      ((this->max_ops -= len) > 0);
 
     DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
@@ -290,17 +290,17 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    返回 likely (ok);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
   bool check_range_fast (const void *base,
-			 unsigned int len) const
+			 unsigned 整数 len) const
   {
     const char *p = (const char *) base;
     bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+	       (unsigned 整数) (this->end - p) >= len);
 
     DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
@@ -309,7 +309,7 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    返回 likely (ok);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
@@ -327,68 +327,68 @@ struct hb_sanitize_context_t :
 		     this->start, this->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    返回 likely (ok);
   }
 
   template <typename T>
   bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+		    unsigned 整数 a,
+		    unsigned 整数 b) const
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
+    返回 !hb_unsigned_mul_overflows (a, b, &m) &&
 	   this->check_range (base, m);
   }
 
   template <typename T>
   bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+		    unsigned 整数 a,
+		    unsigned 整数 b,
+		    unsigned 整数 c) const
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
+    返回 !hb_unsigned_mul_overflows (a, b, &m) &&
 	   this->check_range (base, m, c);
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  bool check_array_sized (const T *base, unsigned 整数 len, unsigned len_size) const
   {
-    if (len_size >= 4)
+    如果 (len_size >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      如果 (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
+	返回 false;
     }
-    else
+    否则
       len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    返回 this->check_range (base, len);
   }
 
   template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  bool check_array (const T *base, unsigned 整数 len) const
   {
-    return this->check_range (base, len, hb_static_size (T));
+    返回 this->check_range (base, len, hb_static_size (T));
   }
 
   template <typename T>
   bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+		    unsigned 整数 a,
+		    unsigned 整数 b) const
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    返回 this->check_range (base, hb_static_size (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  bool check_start_recursion (整数 max_depth)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    如果 (unlikely (recursion_depth >= max_depth)) 返回 false;
+    返回 ++recursion_depth;
   }
 
   bool end_recursion (bool result)
   {
     recursion_depth--;
-    return result;
+    返回 result;
   }
 
   template <typename Type>
@@ -397,10 +397,10 @@ struct hb_sanitize_context_t :
 #endif
   bool check_struct (const Type *obj) const
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    如果 (sizeof (uintptr_t) == sizeof (uint32_t))
+      返回 likely (this->check_range_fast (obj, obj->min_size));
+    否则
+      返回 likely (this->check_point ((const char *) obj + obj->min_size));
   }
 
   template <typename Type>
@@ -414,10 +414,10 @@ struct hb_sanitize_context_t :
 
     start_processing ();
 
-    if (unlikely (!start))
+    如果 (unlikely (!start))
     {
       end_processing ();
-      return blob;
+      返回 blob;
     }
 
     Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
@@ -427,34 +427,34 @@ struct hb_sanitize_context_t :
     end_processing ();
 
     DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    如果 (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      返回 blob;
     }
-    else
+    否则
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      返回 hb_blob_get_empty ();
     }
   }
 
   template <typename Type>
   hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
+    如果 (!num_glyphs_set)
       set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    返回 sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
   const char *start, *end;
   unsigned length;
-  mutable int max_ops, max_subtables;
+  mutable 整数 max_ops, max_subtables;
   private:
-  int recursion_depth;
+  整数 recursion_depth;
   bool writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
+  unsigned 整数 num_glyphs;
   bool  num_glyphs_set;
   public:
   bool lazy_some_gpos;

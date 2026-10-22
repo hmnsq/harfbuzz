@@ -23,18 +23,18 @@ import logging
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+如果 len(sys.argv) > 1 and sys.argv[1] == "--rust":
     del sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+否则:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
 import sys
 
-if len (sys.argv) != 10:
+如果 len (sys.argv) != 10:
 	sys.exit (__doc__)
 
 DISABLED_SCRIPTS = {
@@ -45,40 +45,40 @@ DISABLED_SCRIPTS = {
 	'Thai',
 }
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') 为 x in sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
-for j in range(7, 9):
-	for line in files[j]:
+headers = [[f.readline () 为 i in range (2)] 为 j,f in enumerate(files) 如果 j != 4]
+为 j in range(7, 9):
+	为 line in files[j]:
 		line = line.rstrip()
-		if not line:
+		如果 not line:
 			break
 		headers[j - 1].append(line)
 headers.append (["UnicodeData.txt does not have a header."])
 
-unicode_data = [{} for _ in files]
-values = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_data = [{} 为 _ in files]
+values = [{} 为 _ in files]
+为 i, f in enumerate (files):
+	为 line in f:
 
 		j = line.find ('#')
-		if j >= 0:
+		如果 j >= 0:
 			line = line[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () 为 x in line.split (';')]
+		如果 len (fields) == 1:
 			continue
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = 整数 (uu[0], 16)
+		如果 len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		否则:
+			end = 整数 (uu[1], 16)
 
-		t = fields[1 if i not in [2, 4] else 2]
+		t = fields[1 如果 i not in [2, 4] 否则 2]
 
-		if i == 2:
+		如果 i == 2:
 			t = 'jt_' + t
 		elif i == 3 and t != 'Default_Ignorable_Code_Point':
 			continue
@@ -88,25 +88,25 @@ for i, f in enumerate (files):
 		elif i == 8 and t == 'NA':
 			t = 'Not_Applicable'
 
-		i0 = i if i < 7 else i - 7
-		for u in range (start, end + 1):
+		i0 = i 如果 i < 7 否则 i - 7
+		为 u in range (start, end + 1):
 			unicode_data[i0][u] = t
 		values[i0][t] = values[i0].get (t, 0) + end - start + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
-for i,v in enumerate (defaults):
+为 i,v in enumerate (defaults):
 	values[i][v] = values[i].get (v, 0) + 1
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if not u in combined:
-			if i >= 4:
+为 i,d in enumerate (unicode_data):
+	为 u,v in d.items ():
+		如果 not u in combined:
+			如果 i >= 4:
 				continue
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v 为 k, v in combined.items() 如果 v[6] not in DISABLED_SCRIPTS}
 
 
 property_names = [
@@ -192,17 +192,17 @@ class PropertyValue(object):
 	def __init__(self, name_):
 		self.name = name_
 	def __str__(self):
-		return self.name
+		返回 self.name
 	def __eq__(self, other):
-		return self.name == (other if isinstance(other, str) else other.name)
+		返回 self.name == (other 如果 isinstance(other, str) 否则 other.name)
 	def __ne__(self, other):
-		return not (self == other)
+		返回 not (self == other)
 	def __hash__(self):
-		return hash(str(self))
+		返回 hash(str(self))
 
 property_values = {}
 
-for name in property_names:
+为 name in property_names:
 	value = PropertyValue(name)
 	assert value not in property_values
 	assert value not in globals()
@@ -211,7 +211,7 @@ globals().update(property_values)
 
 
 def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+	返回 (UISC in [Number, Consonant, Consonant_Head_Letter,
 			Tone_Letter,
 			Vowel_Independent,
 			] or
@@ -220,57 +220,57 @@ def is_BASE(U, UISC, UDI, UGC, AJT):
 		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
 def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
+	返回 UISC == Brahmi_Joining_Number
 def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
-	if UISC == Consonant_Placeholder: return True
-	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
+	如果 UISC == Consonant_Placeholder: 返回 True
+	返回 U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
 def is_CGJ(U, UISC, UDI, UGC, AJT):
 	# Also includes VARIATION_SELECTOR and ZWJ
-	return UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
+	返回 UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
 def is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
-	return ((UISC == Consonant_Final and UGC != Lo) or
+	返回 ((UISC == Consonant_Final and UGC != Lo) or
 		UISC == Consonant_Succeeding_Repha)
 def is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Syllable_Modifier
+	返回 UISC == Syllable_Modifier
 def is_CONS_MED(U, UISC, UDI, UGC, AJT):
 	# Consonant_Initial_Postfixed is new in Unicode 11; not in the spec.
-	return (UISC == Consonant_Medial and UGC != Lo or
+	返回 (UISC == Consonant_Medial and UGC != Lo or
 		UISC == Consonant_Initial_Postfixed)
 def is_CONS_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC in [Nukta, Gemination_Mark, Consonant_Killer]
+	返回 UISC in [Nukta, Gemination_Mark, Consonant_Killer]
 def is_CONS_SUB(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_Subjoined and UGC != Lo
+	返回 UISC == Consonant_Subjoined and UGC != Lo
 def is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_With_Stacker
+	返回 UISC == Consonant_With_Stacker
 def is_HALANT(U, UISC, UDI, UGC, AJT):
-	return UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
+	返回 UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
 def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x0DCA
+	返回 U == 0x0DCA
 def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
+	返回 UISC == Number_Joiner
 def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph
+	返回 UISC == Hieroglyph
 def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Joiner
+	返回 UISC == Hieroglyph_Joiner
 def is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Mirror
+	返回 UISC == Hieroglyph_Mirror
 def is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Modifier
+	返回 UISC == Hieroglyph_Modifier
 def is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
+	返回 UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
 def is_HIEROGLYPH_SEGMENT_END(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
+	返回 UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
 def is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return (UISC == Invisible_Stacker
+	返回 (UISC == Invisible_Stacker
 		and not is_SAKOT(U, UISC, UDI, UGC, AJT)
 	)
 def is_ZWNJ(U, UISC, UDI, UGC, AJT):
-	return UISC == Non_Joiner
+	返回 UISC == Non_Joiner
 def is_OTHER(U, UISC, UDI, UGC, AJT):
 	# Also includes BASE_IND and SYM
-	return ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
+	返回 ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
 		and not is_BASE(U, UISC, UDI, UGC, AJT)
 		and not is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
 		and not is_CGJ(U, UISC, UDI, UGC, AJT)
@@ -278,23 +278,23 @@ def is_OTHER(U, UISC, UDI, UGC, AJT):
 		and not is_Word_Joiner(U, UISC, UDI, UGC, AJT)
 	)
 def is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
-	return UISC == Reordering_Killer
+	返回 UISC == Reordering_Killer
 def is_REPHA(U, UISC, UDI, UGC, AJT):
-	return UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
+	返回 UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
 def is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x1A60
+	返回 U == 0x1A60
 def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
+	返回 UISC == Symbol_Modifier
 def is_VOWEL(U, UISC, UDI, UGC, AJT):
-	return (UISC == Pure_Killer or
+	返回 (UISC == Pure_Killer or
 		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
 def is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
+	返回 (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
 		UGC != Lo and UISC == Bindu)
 def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
 	# Also includes Rsv
-	return (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
+	返回 (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
 		and UISC == Other
 		and not is_CGJ(U, UISC, UDI, UGC, AJT)
 	) or UGC == Cn
@@ -382,22 +382,22 @@ use_positions = {
 def map_to_use(data):
 	out = {}
 	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+	为 U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
 
 		# Resolve Indic_Syllabic_Category
 
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
+		如果 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
 
 		# Tibetan:
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
+		如果 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
 
 		# TODO: U+1CED should only be allowed after some of
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
-		if U == 0x1CED: UISC = Tone_Mark
+		如果 U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
+		values = [k 为 k,v in items 如果 v(U, UISC, UDI, UGC, AJT)]
 		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
 		USE = values[0]
 
@@ -405,20 +405,20 @@ def map_to_use(data):
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		如果 U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
 
 		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
 			U == 0x0F7F or
 			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
 		pos_mapping = use_positions.get(USE, None)
-		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
+		如果 pos_mapping:
+			values = [k 为 k,v in pos_mapping.items() 如果 v and UIPC in v]
 			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
 			USE = USE + values[0]
 
 		out[U] = (USE, UBlock)
-	return out
+	返回 out
 
 use_data = map_to_use(combined)
 
@@ -430,12 +430,12 @@ print (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShap
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+为 h in headers:
+	为 l in h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
-if language.name == "c":
+如果 language.name == "c":
     print ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
     print ("#define HB_OT_SHAPER_USE_TABLE_HH")
     print ()
@@ -446,12 +446,12 @@ if language.name == "c":
 
     print ('#pragma GCC diagnostic push')
     print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
-        if k in use_positions and use_positions[k]: continue
+    为 k,v in sorted(use_mapping.items()):
+        如果 k in use_positions and use_positions[k]: continue
         print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    为 k,v in sorted(use_positions.items()):
+        如果 not v: continue
+        为 suf in v.keys():
             tag = k + suf
             print ("#define %s	USE(%s)" % (tag, tag))
     print ('#pragma GCC diagnostic pop')
@@ -464,19 +464,19 @@ elif language.name == "rust":
     print()
     print("use super::ot_shaper_use::category::*;")
     print()
-else:
+否则:
     assert False, "Unknown language: %s" % language.name
 
 uu = sorted (use_data.keys ())
 
-data = {u:v[0] for u,v in use_data.items()}
+data = {u:v[0] 为 u,v in use_data.items()}
 
-if language.name == "c":
+如果 language.name == "c":
     private = True
 elif language.name == "rust":
     private = False
     language.public_function_linkage = "pub(crate)"
-else:
+否则:
     assert False, "Unknown language: %s" % language.name
 
 
@@ -489,19 +489,19 @@ compression_level = {
 }
 
 modes = {}
-if language.name == "c":
+如果 language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#else"
     modes[None] = "#endif"
-else:
+否则:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+为 step, text in modes.items():
     print()
-    if text:
+    如果 text:
         print(text)
         print()
-    if step is None:
+    如果 step is None:
         continue
 
     compression = compression_level[step]
@@ -514,14 +514,14 @@ for step, text in modes.items():
     code.print_code(language=language, private=private)
     print ()
 
-if language.name == "c":
+如果 language.name == "c":
     print ()
-    for k in sorted(use_mapping.keys()):
-        if k in use_positions and use_positions[k]: continue
+    为 k in sorted(use_mapping.keys()):
+        如果 k in use_positions and use_positions[k]: continue
         print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
+    为 k,v in sorted(use_positions.items()):
+        如果 not v: continue
+        为 suf in v.keys():
             tag = k + suf
             print ("#undef %s" % tag)
     print ()
@@ -529,6 +529,6 @@ if language.name == "c":
     print ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
 elif language.name == "rust":
     pass
-else:
+否则:
     assert False, "Unknown language: %s" % language.name
 print ("/* == End of generated table == */")

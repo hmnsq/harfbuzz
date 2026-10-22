@@ -41,7 +41,7 @@ HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
   hb_font_t *font = hb_font_create (face);
 
   HB_OBJ2REF (font);
-  return fontref;
+  返回 fontref;
 }
 
 HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
@@ -52,7 +52,7 @@ HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
   hb_face_t *face = hb_font_get_face (font);
 
   HB_OBJ2REF (face);
-  return faceref;
+  返回 faceref;
 }
 
 HB_WASM_API (void, font_get_scale) (HB_WASM_EXEC_ENV
@@ -77,7 +77,7 @@ HB_WASM_API (codepoint_t, font_get_glyph) (HB_WASM_EXEC_ENV
   codepoint_t glyph;
 
   hb_font_get_glyph (font, unicode, variation_selector, &glyph);
-  return glyph;
+  返回 glyph;
 }
 
 HB_WASM_API (position_t, font_get_glyph_h_advance) (HB_WASM_EXEC_ENV
@@ -85,7 +85,7 @@ HB_WASM_API (position_t, font_get_glyph_h_advance) (HB_WASM_EXEC_ENV
 						    codepoint_t glyph)
 {
   HB_REF2OBJ (font);
-  return hb_font_get_glyph_h_advance (font, glyph);
+  返回 hb_font_get_glyph_h_advance (font, glyph);
 }
 
 HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
@@ -93,7 +93,7 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    codepoint_t glyph)
 {
   HB_REF2OBJ (font);
-  return hb_font_get_glyph_v_advance (font, glyph);
+  返回 hb_font_get_glyph_v_advance (font, glyph);
 }
 
 static_assert (sizeof (glyph_extents_t) == sizeof (hb_glyph_extents_t), "");
@@ -105,10 +105,10 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (glyph_extents_t, extents);
-  if (unlikely (!extents))
-    return false;
+  如果 (unlikely (!extents))
+    返回 false;
 
-  return hb_font_get_glyph_extents (font, glyph,
+  返回 hb_font_get_glyph_extents (font, glyph,
 				    (hb_glyph_extents_t *) extents);
 }
 
@@ -119,8 +119,8 @@ HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_ARRAY_PARAM (char, s, size);
-  if (unlikely (!s))
-    return;
+  如果 (unlikely (!s))
+    返回;
 
   hb_font_glyph_to_string (font, glyph, s, size);
 }
@@ -135,38 +135,38 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (glyph_outline_t, outline);
-  if (unlikely (!outline))
-    return false;
+  如果 (unlikely (!outline))
+    返回 false;
 
   hb_outline_t hb_outline;
   auto *funcs = hb_outline_recording_pen_get_funcs ();
 
   hb_font_draw_glyph (font, glyph, funcs, &hb_outline);
 
-  if (unlikely (hb_outline.points.in_error () ||
+  如果 (unlikely (hb_outline.points.in_error () ||
 		hb_outline.contours.in_error ()))
   {
     outline->n_points = outline->n_contours = 0;
-    return false;
+    返回 false;
   }
 
   // TODO Check two buffers separately
-  if (hb_outline.points.length <= outline->n_points &&
+  如果 (hb_outline.points.length <= outline->n_points &&
       hb_outline.contours.length <= outline->n_contours)
   {
     glyph_outline_point_t *points = HB_ARRAY_APP2NATIVE (glyph_outline_point_t, outline->points, hb_outline.points.length);
     uint32_t *contours = HB_ARRAY_APP2NATIVE (uint32_t, outline->contours, hb_outline.contours.length);
 
-    if (unlikely (!points || !contours))
+    如果 (unlikely (!points || !contours))
     {
       outline->n_points = outline->n_contours = 0;
-      return false;
+      返回 false;
     }
 
     hb_memcpy (points, hb_outline.points.arrayZ, hb_outline.points.get_size ());
     hb_memcpy (contours, hb_outline.contours.arrayZ, hb_outline.contours.get_size ());
 
-    return true;
+    返回 true;
   }
 
   outline->n_points = hb_outline.points.length;
@@ -178,22 +178,22 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 						    (const char *) hb_outline.contours.arrayZ,
 						    hb_outline.contours.get_size ());
 
-  if ((outline->n_points && !outline->points) ||
+  如果 ((outline->n_points && !outline->points) ||
       (outline->n_contours && !outline->contours))
   {
     outline->n_points = outline->n_contours = 0;
-    return false;
+    返回 false;
   }
 
-  return true;
+  返回 true;
 }
 
 HB_WASM_API (void, glyph_outline_free) (HB_WASM_EXEC_ENV
 					ptr_d(glyph_outline_t, outline))
 {
   HB_PTR_PARAM (glyph_outline_t, outline);
-  if (unlikely (!outline))
-    return;
+  如果 (unlikely (!outline))
+    返回;
 
   module_free (outline->points);
   module_free (outline->contours);
@@ -210,35 +210,35 @@ HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (coords_t, coords);
-  if (unlikely (!coords))
-    return false;
+  如果 (unlikely (!coords))
+    返回 false;
 
   unsigned our_length;
-  const int* our_coords = hb_font_get_var_coords_normalized(font, &our_length);
+  const 整数* our_coords = hb_font_get_var_coords_normalized(font, &our_length);
 
-  if (our_length <= coords->length) {
-    int *their_coords = HB_ARRAY_APP2NATIVE (int, coords->coords, our_length);
-    if (unlikely(!their_coords)) {
+  如果 (our_length <= coords->length) {
+    整数 *their_coords = HB_ARRAY_APP2NATIVE (整数, coords->coords, our_length);
+    如果 (unlikely(!their_coords)) {
     	coords->length = 0;
-    	return false;
+    	返回 false;
     }
-		unsigned bytes = our_length * sizeof (int);
+		unsigned bytes = our_length * sizeof (整数);
     hb_memcpy (their_coords, our_coords, bytes);
 
-    return true;
+    返回 true;
   }
 
   module_free (coords->coords);
   coords->length = our_length;
-	unsigned bytes = our_length * sizeof (int);
+	unsigned bytes = our_length * sizeof (整数);
   coords->coords = wasm_runtime_module_dup_data (module_inst, (const char *) our_coords, bytes);
-	if (our_length && !coords->coords)
+	如果 (our_length && !coords->coords)
 	  {
     coords->length = 0;
-    return false;
+    返回 false;
   }
 
-  return true;
+  返回 true;
 }
 
 HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
@@ -247,20 +247,20 @@ HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (coords_t, coords);
-  if (unlikely (!coords))
-    return false;
+  如果 (unlikely (!coords))
+    返回 false;
 
   unsigned length = coords->length;
   unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (int), &bytes)))
-    return false;
+  如果 (unlikely (hb_unsigned_mul_overflows (length, sizeof (整数), &bytes)))
+    返回 false;
 
-  const int *our_coords = (const int *) (validate_app_addr (coords->coords, bytes) ? addr_app_to_native (coords->coords) : nullptr);
-  if (unlikely (!our_coords))
-    return false;
+  const 整数 *our_coords = (const 整数 *) (validate_app_addr (coords->coords, bytes) ? addr_app_to_native (coords->coords) : nullptr);
+  如果 (unlikely (!our_coords))
+    返回 false;
 
   hb_font_set_var_coords_normalized(font, our_coords, length);
-  return true;
+  返回 true;
 }
 
 

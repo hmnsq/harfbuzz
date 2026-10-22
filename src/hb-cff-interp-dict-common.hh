@@ -54,8 +54,8 @@ struct top_dict_values_t : dict_values_t<OPSTR>
   }
   void fini () { dict_values_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  整数  charStringsOffset;
+  整数  FDArrayOffset;
 };
 
 struct dict_opset_t : opset_t<number_t>
@@ -80,49 +80,49 @@ struct dict_opset_t : opset_t<number_t>
   /* Turns CFF's BCD format into strtod understandable string */
   static double parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    如果 (unlikely (str_ref.in_error ())) 返回 .0;
 
     enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
     char buf[32] = {0};
     unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    为 (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
     {
       unsigned nibble;
-      if (!(i & 1))
+      如果 (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	如果 (unlikely (!str_ref.avail ())) break;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      否则
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      如果 (unlikely (nibble == RESERVED)) break;
+      否则 如果 (nibble == END)
       {
 	const char *p = buf;
 	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
+	如果 (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
 	  break;
-	return pv;
+	返回 pv;
       }
-      else
+      否则
       {
 	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	如果 (nibble == EXP_NEG)
 	{
 	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
+	  如果 (unlikely (count == ARRAY_LENGTH (buf))) break;
 	  buf[count] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    返回 .0;
   }
 
   static bool is_hint_op (op_code_t op)
@@ -143,9 +143,9 @@ struct dict_opset_t : opset_t<number_t>
       case OpCode_ForceBold:
       case OpCode_LanguageGroup:
       case OpCode_ExpansionFactor:
-	return true;
+	返回 true;
       default:
-	return false;
+	返回 false;
     }
   }
 };
@@ -182,14 +182,14 @@ struct dict_interpreter_t : interpreter_t<ENV>
   bool interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    当 (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      如果 (unlikely (SUPER::env.in_error ()))
+	返回 false;
     }
 
-    return true;
+    返回 true;
   }
 
   private:

@@ -40,11 +40,11 @@ struct ClassDefFormat1_3 : public OT::ClassDefFormat1_3<Types>
   {
     size_t vertex_len = vertex.table_size();
     constexpr unsigned min_size = OT::ClassDefFormat1_3<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    如果 (unlikely (vertex_len < min_size)) 返回 Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    如果 (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
+      返回 Err(SANITIZE_FAILURE);
+    返回 Ok();
   }
 };
 
@@ -55,11 +55,11 @@ struct ClassDefFormat2_4 : public OT::ClassDefFormat2_4<Types>
   {
     size_t vertex_len = vertex.table_size();
     constexpr unsigned min_size = OT::ClassDefFormat2_4<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    如果 (unlikely (vertex_len < min_size)) 返回 Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->rangeRecord.get_size () - this->rangeRecord.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    如果 (unlikely (vertex_len < min_size + this->rangeRecord.get_size () - this->rangeRecord.len.get_size ()))
+      返回 Err(SANITIZE_FAILURE);
+    返回 Ok();
   }
 };
 
@@ -79,7 +79,7 @@ struct ClassDef : public OT::ClassDef
     TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, class_def_prime_id, link_position));
     TRY(class_def_prime_vertex.add_parent (parent_id, false));
 
-    return Ok();
+    返回 Ok();
   }
 
   template<typename It>
@@ -89,32 +89,32 @@ struct ClassDef : public OT::ClassDef
                                               unsigned max_size)
   {
     char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    如果 (unlikely (!buffer))
+      返回 Err(ALLOCATION_FAILURE);
 
     hb_serialize_context_t serializer (buffer, max_size);
     OT::ClassDef_serialize (&serializer, glyph_and_class);
     serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    如果 (unlikely (serializer.in_error ()))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      返回 Err(ALLOCATION_FAILURE);
     }
 
     hb_bytes_t class_def_copy = serializer.copy_bytes ();
-    if (unlikely (!class_def_copy.arrayZ))
+    如果 (unlikely (!class_def_copy.arrayZ))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      返回 Err(ALLOCATION_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
     auto res = c.add_buffer ((char *) class_def_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    如果 (unlikely (!res.is_ok ()))
     {
       hb_free (buffer);
       hb_free ((char *) class_def_copy.arrayZ);
-      return res;
+      返回 res;
     }
 
 
@@ -123,23 +123,23 @@ struct ClassDef : public OT::ClassDef
     v.set_buffer (head, head + class_def_copy.length);
 
     hb_free (buffer);
-    return Ok();
+    返回 Ok();
   }
 
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < OT::ClassDef::min_size)) return Err(SANITIZE_FAILURE);
+    如果 (unlikely (vertex_len < OT::ClassDef::min_size)) 返回 Err(SANITIZE_FAILURE);
     hb_barrier ();
     switch (u.format.v)
     {
-    case 1: return ((ClassDefFormat1_3<SmallTypes>*)this)->sanitize (vertex);
-    case 2: return ((ClassDefFormat2_4<SmallTypes>*)this)->sanitize (vertex);
+    case 1: 返回 ((ClassDefFormat1_3<SmallTypes>*)this)->sanitize (vertex);
+    case 2: 返回 ((ClassDefFormat2_4<SmallTypes>*)this)->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 3: return ((ClassDefFormat1_3<MediumTypes>*)this)->sanitize (vertex);
-    case 4: return ((ClassDefFormat2_4<MediumTypes>*)this)->sanitize (vertex);
+    case 3: 返回 ((ClassDefFormat1_3<MediumTypes>*)this)->sanitize (vertex);
+    case 4: 返回 ((ClassDefFormat2_4<MediumTypes>*)this)->sanitize (vertex);
 #endif
-    default: return Err(SANITIZE_FAILURE);
+    default: 返回 Err(SANITIZE_FAILURE);
     }
   }
 };
@@ -152,13 +152,13 @@ struct class_def_size_estimator_t
   {
     class_def_size_estimator_t estimator;
     estimator.reset();
-    for (auto p : + glyph_and_class)
+    为 (auto p : + glyph_and_class)
     {
       unsigned gid = p.first;
       unsigned klass = p.second;
 
       hb_set_t* glyphs;
-      if (estimator.glyphs_per_class.has (klass, &glyphs) && glyphs) {
+      如果 (estimator.glyphs_per_class.has (klass, &glyphs) && glyphs) {
         glyphs->add (gid);
         continue;
       }
@@ -170,23 +170,23 @@ struct class_def_size_estimator_t
 
     TRY(estimator.to_result ());
 
-    for (unsigned klass : estimator.glyphs_per_class.keys ())
+    为 (unsigned klass : estimator.glyphs_per_class.keys ())
     {
-      if (!klass) continue; // class 0 doesn't get encoded.
+      如果 (!klass) continue; // class 0 doesn't get encoded.
 
       const hb_set_t& glyphs = estimator.glyphs_per_class.get (klass);
       hb_codepoint_t start = HB_SET_VALUE_INVALID;
       hb_codepoint_t end = HB_SET_VALUE_INVALID;
 
       unsigned count = 0;
-      while (glyphs.next_range (&start, &end))
+      当 (glyphs.next_range (&start, &end))
         count++;
 
       estimator.num_ranges_per_class.set (klass, count);
     }
 
     TRY(estimator.to_result ());
-    return estimator;
+    返回 estimator;
   }
 
   void reset() {
@@ -201,33 +201,33 @@ struct class_def_size_estimator_t
   // Size of coverage for all glyphs added via 'add_class_def_size'.
   unsigned coverage_size () const
   {
-    return coverage_size_val;
+    返回 coverage_size_val;
   }
 
   // Compute the new size of the ClassDef table if all glyphs associated with 'klass' were added.
   unsigned add_class_def_size (unsigned klass)
   {
-    if (!included_classes.has(klass)) {
+    如果 (!included_classes.has(klass)) {
       hb_set_t* glyphs = nullptr;
-      if (glyphs_per_class.has(klass, &glyphs)) {
+      如果 (glyphs_per_class.has(klass, &glyphs)) {
         unsigned num_glyphs = included_glyphs.get_population();
         included_glyphs.union_(*glyphs);
-        if (klass)
+        如果 (klass)
           included_class_def_glyphs.union_(*glyphs);
-        if (num_glyphs != included_glyphs.get_population())
+        如果 (num_glyphs != included_glyphs.get_population())
           coverage_size_val = compute_coverage_size ();
       }
 
-      if (klass)
+      如果 (klass)
       {
         class_def_range_count += num_ranges_per_class.get (klass);
-        if (glyphs && klass > class_max)
+        如果 (glyphs && klass > class_max)
           class_max = klass;
       }
       included_classes.add(klass);
     }
 
-    return class_def_size ();
+    返回 class_def_size ();
   }
 
   unsigned num_glyph_ranges (const hb_set_t &glyphs) const {
@@ -235,10 +235,10 @@ struct class_def_size_estimator_t
     hb_codepoint_t end = HB_SET_VALUE_INVALID;
 
     unsigned count = 0;
-    while (glyphs.next_range (&start, &end)) {
+    当 (glyphs.next_range (&start, &end)) {
         count++;
     }
-    return count;
+    返回 count;
   }
 
  private:
@@ -250,11 +250,11 @@ struct class_def_size_estimator_t
     TRY (graph_result_t<void>::from (included_glyphs, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (included_class_def_glyphs, ALLOCATION_FAILURE));
 
-    for (const hb_set_t& s : glyphs_per_class.values ())
+    为 (const hb_set_t& s : glyphs_per_class.values ())
     {
           TRY (graph_result_t<void>::from (s, ALLOCATION_FAILURE));
     }
-    return Ok();
+    返回 Ok();
   }
 
   class_def_size_estimator_t ()
@@ -267,38 +267,38 @@ struct class_def_size_estimator_t
     unsigned range_size = 3 * glyph_size;
     unsigned format1_size = coverage_base_size + glyph_size * included_glyphs.get_population();
     unsigned format2_size = coverage_base_size + range_size * num_glyph_ranges (included_glyphs);
-    return hb_min(format1_size, format2_size);
+    返回 hb_min(format1_size, format2_size);
   }
 
   unsigned glyph_id_size (const hb_set_t &glyphs) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
-      return OT::Layout::MediumTypes::size;
+    如果 (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
+      返回 OT::Layout::MediumTypes::size;
 #endif
-    return OT::Layout::SmallTypes::size;
+    返回 OT::Layout::SmallTypes::size;
   }
 
   unsigned class_def_size () const
   {
-    if (included_class_def_glyphs.is_empty ())
-      return OT::HBUINT16::static_size + OT::Layout::SmallTypes::size;
+    如果 (included_class_def_glyphs.is_empty ())
+      返回 OT::HBUINT16::static_size + OT::Layout::SmallTypes::size;
 
     unsigned best_size = UINT_MAX;
     hb_codepoint_t glyph_max = included_class_def_glyphs.get_max ();
     unsigned glyph_span = glyph_max - included_class_def_glyphs.get_min () + 1;
 
-    if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
+    如果 (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 6 + 2 * glyph_span);
-    if (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
+    如果 (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 4 + 6 * class_def_range_count);
 #ifndef HB_NO_BEYOND_64K
-    if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+    如果 (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
       best_size = hb_min (best_size, 8 + 3 * glyph_span);
-    if (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
+    如果 (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 5 + 8 * class_def_range_count);
 #endif
-    return best_size;
+    返回 best_size;
   }
 
   hb_hashmap_t<unsigned, unsigned> num_ranges_per_class;

@@ -29,10 +29,10 @@ struct SingleSubstFormat2_4
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { 返回 (this+coverage).intersects (glyphs); }
 
   bool may_have_non_1to1 () const
-  { return false; }
+  { 返回 false; }
 
   void depend (hb_depend_context_t *c) const
   {
@@ -40,17 +40,17 @@ struct SingleSubstFormat2_4
     auto &glyph_set = c->parent_active_glyphs ();
 
     // Filter by active glyphs like closure does
-    if (substitute.len > glyph_set.get_population () * 4)
+    如果 (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      为 (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
+	如果 (i == NOT_COVERED || i >= substitute.len)
 	  continue;
 	c->depend_data->add_gsub_lookup (g, c->lookup_index, substitute.arrayZ[i]);
       }
 
-      return;
+      返回;
     }
 
     + hb_zip (cov, substitute)
@@ -64,17 +64,17 @@ struct SingleSubstFormat2_4
     auto &cov = this+coverage;
     auto &glyph_set = c->parent_active_glyphs ();
 
-    if (substitute.len > glyph_set.get_population () * 4)
+    如果 (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      为 (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
+	如果 (i == NOT_COVERED || i >= substitute.len)
 	  continue;
 	c->output->add (substitute.arrayZ[i]);
       }
 
-      return;
+      返回;
     }
 
     + hb_zip (cov, substitute)
@@ -88,17 +88,17 @@ struct SingleSubstFormat2_4
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    如果 (unlikely (!(this+coverage).collect_coverage (c->input))) 返回;
     + hb_zip (this+coverage, substitute)
     | hb_map (hb_second)
     | hb_sink (c->output)
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { 返回 this+coverage; }
 
   bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  { 返回 c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   unsigned
   get_glyph_alternates (hb_codepoint_t  glyph_id,
@@ -106,15 +106,15 @@ struct SingleSubstFormat2_4
                         unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
                         hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    unsigned 整数 index = (this+coverage).get_coverage (glyph_id);
+    如果 (likely (index == NOT_COVERED))
     {
-      if (alternate_count)
+      如果 (alternate_count)
         *alternate_count = 0;
-      return 0;
+      返回 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    如果 (alternate_count && *alternate_count && alternate_glyphs)
     {
       glyph_id = substitute[index];
 
@@ -122,7 +122,7 @@ struct SingleSubstFormat2_4
       *alternate_count = 1;
     }
 
-    return 1;
+    返回 1;
   }
 
   void
@@ -139,12 +139,12 @@ struct SingleSubstFormat2_4
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned 整数 index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    如果 (index == NOT_COVERED) return_trace (false);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    如果 (unlikely (index >= substitute.len)) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    如果 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -154,7 +154,7 @@ struct SingleSubstFormat2_4
 
     c->replace_glyph (substitute[index]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    如果 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "replaced glyph at %u (single substitution)",
@@ -179,9 +179,9 @@ struct SingleSubstFormat2_4
       + it
       | hb_map_retains_sorting (hb_first)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
+    如果 (unlikely (!c->extend_min (this))) return_trace (false);
+    如果 (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
+    如果 (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
     return_trace (true);
   }
 
@@ -196,7 +196,7 @@ struct SingleSubstFormat2_4
     | hb_filter (glyphset, hb_first)
     | hb_filter (glyphset, hb_second)
     | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+                              { 返回 hb_pair (glyph_map[p.first], glyph_map[p.second]); })
     ;
 
     bool ret = bool (it);

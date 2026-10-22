@@ -60,9 +60,9 @@ typedef enum {
  * Since: 13.0.0
  */
 typedef struct hb_raster_extents_t {
-  int      x_origin, y_origin;
-  unsigned int width, height;
-  unsigned int stride;
+  整数      x_origin, y_origin;
+  unsigned 整数 width, height;
+  unsigned 整数 stride;
 } hb_raster_extents_t;
 
 
@@ -313,7 +313,7 @@ hb_raster_paint_clear_custom_palette_colors (hb_raster_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_raster_paint_set_custom_palette_color (hb_raster_paint_t *paint,
-					  unsigned int       color_index,
+					  unsigned 整数       color_index,
 					  hb_color_t         color);
 
 HB_EXTERN hb_paint_funcs_t *
@@ -346,7 +346,7 @@ hb_raster_paint_recycle_image (hb_raster_paint_t  *paint,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#如果 defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (raster_image, nullptr);
 HB_DEFINE_VTABLE (raster_draw,  nullptr);

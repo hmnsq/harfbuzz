@@ -47,11 +47,11 @@ struct head
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
 
-  unsigned int get_upem () const
+  unsigned 整数 get_upem () const
   {
-    unsigned int upem = unitsPerEm;
+    unsigned 整数 upem = unitsPerEm;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    返回 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
   bool serialize (hb_serialize_context_t *c) const
@@ -64,20 +64,20 @@ struct head
   {
     TRACE_SUBSET (this);
     head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    如果 (unlikely (!out)) return_trace (false);
 
-    if (c->plan->normalized_coords)
+    如果 (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
+      如果 (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
+      如果 (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
+      如果 (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
+      如果 (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
     }
@@ -94,12 +94,12 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  bool is_bold () const      { 返回 macStyle & BOLD; }
+  bool is_italic () const    { 返回 macStyle & ITALIC; }
+  bool is_condensed () const { 返回 macStyle & CONDENSED; }
+  bool is_expanded () const  { 返回 macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  unsigned get_mac_style () const { 返回 macStyle; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {

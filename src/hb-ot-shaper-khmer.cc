@@ -84,7 +84,7 @@ static inline void
 set_khmer_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  unsigned 整数 type = hb_indic_get_categories (u);
 
   info.khmer_category() = (khmer_category_t) (type & 0xFFu);
 }
@@ -120,14 +120,14 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
   map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
   map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
 
-  unsigned int i = 0;
-  for (; i < KHMER_BASIC_FEATURES; i++)
+  unsigned 整数 i = 0;
+  为 (; i < KHMER_BASIC_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
+  为 (; i < KHMER_NUM_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 }
 
@@ -154,14 +154,14 @@ static void *
 data_create_khmer (const hb_ot_shape_plan_t *plan)
 {
   khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, sizeof (khmer_shape_plan_t));
-  if (unlikely (!khmer_plan))
-    return nullptr;
+  如果 (unlikely (!khmer_plan))
+    返回 nullptr;
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
+  为 (unsigned 整数 i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
     khmer_plan->mask_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
 				 0 : plan->map.get_1_mask (khmer_features[i].tag);
 
-  return khmer_plan;
+  返回 khmer_plan;
 }
 
 static void
@@ -180,9 +180,9 @@ setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
+  unsigned 整数 count = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  为 (unsigned 整数 i = 0; i < count; i++)
     set_khmer_properties (info[i]);
 }
 
@@ -195,7 +195,7 @@ setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
   find_syllables_khmer (buffer);
   foreach_syllable (buffer, start, end)
     buffer->unsafe_to_break (start, end);
-  return false;
+  返回 false;
 }
 
 
@@ -206,7 +206,7 @@ static void
 reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 			    hb_face_t *face HB_UNUSED,
 			    hb_buffer_t *buffer,
-			    unsigned int start, unsigned int end)
+			    unsigned 整数 start, unsigned 整数 end)
 {
   const khmer_shape_plan_t *khmer_plan = (const khmer_shape_plan_t *) plan->data;
   hb_glyph_info_t *info = buffer->info;
@@ -217,12 +217,12 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
     hb_mask_t mask = khmer_plan->mask_array[KHMER_BLWF] |
 		     khmer_plan->mask_array[KHMER_ABVF] |
 		     khmer_plan->mask_array[KHMER_PSTF];
-    for (unsigned int i = start + 1; i < end; i++)
+    为 (unsigned 整数 i = start + 1; i < end; i++)
       info[i].mask  |= mask;
   }
 
-  unsigned int num_coengs = 0;
-  for (unsigned int i = start + 1; i < end; i++)
+  unsigned 整数 num_coengs = 0;
+  为 (unsigned 整数 i = start + 1; i < end; i++)
   {
     /* """
      * When a COENG + (Cons | IndV) combination are found (and subscript count
@@ -236,13 +236,13 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    如果 (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
     {
       num_coengs++;
 
-      if (info[i + 1].khmer_category() == K_Cat(Ra))
+      如果 (info[i + 1].khmer_category() == K_Cat(Ra))
       {
-	for (unsigned int j = 0; j < 2; j++)
+	为 (unsigned 整数 j = 0; j < 2; j++)
 	  info[i + j].mask |= khmer_plan->mask_array[KHMER_PREF];
 
 	/* Move the Coeng,Ro sequence to the start. */
@@ -259,8 +259,8 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * U+1784,U+17D2,U+179A,U+17D2,U+1782
 	 * U+1784,U+17D2,U+1782,U+17D2,U+179A
 	 */
-	if (khmer_plan->mask_array[KHMER_CFAR])
-	  for (unsigned int j = i + 2; j < end; j++)
+	如果 (khmer_plan->mask_array[KHMER_CFAR])
+	  为 (unsigned 整数 j = i + 2; j < end; j++)
 	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
 
 	num_coengs = 2; /* Done. */
@@ -268,7 +268,7 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
     }
 
     /* Reorder left matra piece. */
-    else if (info[i].khmer_category() == K_Cat(VPre))
+    否则 如果 (info[i].khmer_category() == K_Cat(VPre))
     {
       /* Move to the start. */
       buffer->merge_clusters (start, i + 1);
@@ -283,7 +283,7 @@ static void
 reorder_syllable_khmer (const hb_ot_shape_plan_t *plan,
 			hb_face_t *face,
 			hb_buffer_t *buffer,
-			unsigned int start, unsigned int end)
+			unsigned 整数 start, unsigned 整数 end)
 {
   khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
   switch (syllable_type)
@@ -304,9 +304,9 @@ reorder_khmer (const hb_ot_shape_plan_t *plan,
 	       hb_buffer_t *buffer)
 {
   bool ret = false;
-  if (buffer->message (font, "start reordering khmer"))
+  如果 (buffer->message (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    如果 (hb_syllabic_insert_dotted_circles (font, buffer,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
 					   (unsigned) -1))
@@ -318,7 +318,7 @@ reorder_khmer (const hb_ot_shape_plan_t *plan,
   }
   HB_BUFFER_DEALLOCATE_VAR (buffer, khmer_category);
 
-  return ret;
+  返回 ret;
 }
 
 
@@ -335,14 +335,14 @@ decompose_khmer (const hb_ot_shape_normalize_context_t *c,
      */
 
     /* Khmer */
-    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; return true;
-    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; return true;
-    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; return true;
-    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; return true;
-    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; return true;
+    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; 返回 true;
+    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; 返回 true;
+    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; 返回 true;
+    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; 返回 true;
+    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; 返回 true;
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  返回 (bool) c->unicode->decompose (ab, a, b);
 }
 
 static bool
@@ -352,10 +352,10 @@ compose_khmer (const hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  如果 (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    返回 false;
 
-  return (bool) c->unicode->compose (a, b, ab);
+  返回 (bool) c->unicode->compose (a, b, ab);
 }
 
 

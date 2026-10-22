@@ -39,27 +39,27 @@ namespace OT {
 struct MathValueRecord
 {
   hb_position_t get_x_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
+  { 返回 hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
   hb_position_t get_y_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
+  { 返回 hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
 
   const ItemVariationStore &get_var_store (hb_font_t *font, const void *base) const
   {
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
-    if ((base+deviceTable).is_variation_device ())
-      return font->face->table.GDEF->table->get_var_store ();
+#如果 !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
+    如果 ((base+deviceTable).is_variation_device ())
+      返回 font->face->table.GDEF->table->get_var_store ();
 #endif
-    return Null (ItemVariationStore);
+    返回 Null (ItemVariationStore);
   }
 
   MathValueRecord* copy (hb_serialize_context_t *c, const void *base,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
+    如果 (unlikely (!out)) return_trace (nullptr);
+    hb_pair_t<unsigned, 整数> *varidx_delta;
+    如果 (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
         !c->check_assign (out->value, (int64_t) value + hb_second (*varidx_delta),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (nullptr);
@@ -92,31 +92,31 @@ struct MathConstants
   friend struct MATH;
 
   MathConstants* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
 
     HBINT16 *p = c->allocate_size<HBINT16> (HBINT16::static_size * 2);
-    if (unlikely (!p)) return_trace (nullptr);
+    如果 (unlikely (!p)) return_trace (nullptr);
     hb_memcpy (p, percentScaleDown, HBINT16::static_size * 2);
 
     HBUINT16 *m = c->allocate_size<HBUINT16> (HBUINT16::static_size * 2);
-    if (unlikely (!m)) return_trace (nullptr);
+    如果 (unlikely (!m)) return_trace (nullptr);
     hb_memcpy (m, minHeight, HBUINT16::static_size * 2);
 
     unsigned count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecords[i], this, variation_map))
+    为 (unsigned i = 0; i < count; i++)
+      如果 (!c->copy (mathValueRecords[i], this, variation_map))
         return_trace (nullptr);
 
-    if (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
+    如果 (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
     return_trace (out);
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &record : mathValueRecords)
+    为 (const auto &record : mathValueRecords)
       record.collect_variation_indices (c, this);
   }
 
@@ -124,9 +124,9 @@ struct MathConstants
   {
     TRACE_SANITIZE (this);
 
-    unsigned int count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecords[i].sanitize (c, this))
+    unsigned 整数 count = ARRAY_LENGTH (mathValueRecords);
+    为 (unsigned 整数 i = 0; i < count; i++)
+      如果 (!mathValueRecords[i].sanitize (c, this))
 	return_trace (false);
 
     return_trace (true);
@@ -145,17 +145,17 @@ struct MathConstants
 
     case HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
     case HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
-      return percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
+      返回 percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
 
     case HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
     case HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
-      return font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
+      返回 font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
 
     case HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
     case HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
     case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
     case HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
+      返回 mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
 
     case HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
     case HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
@@ -204,13 +204,13 @@ struct MathConstants
     case HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
     case HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
     case HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
+      返回 mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
 
     case HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
-      return radicalDegreeBottomRaisePercent;
+      返回 radicalDegreeBottomRaisePercent;
 
     default:
-      return 0;
+      返回 0;
     }
   }
 
@@ -233,7 +233,7 @@ struct MathItalicsCorrectionInfo
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+coverage, italicsCorrection)
@@ -250,8 +250,8 @@ struct MathItalicsCorrectionInfo
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &entry : hb_zip (this+coverage, italicsCorrection))
-      if (c->glyph_set->has (hb_first (entry)))
+    为 (const auto &entry : hb_zip (this+coverage, italicsCorrection))
+      如果 (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -266,8 +266,8 @@ struct MathItalicsCorrectionInfo
   hb_position_t get_value (hb_codepoint_t glyph,
 			   hb_font_t *font) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    return italicsCorrection[index].get_x_value (font, this);
+    unsigned 整数 index = (this+coverage).get_coverage (glyph);
+    返回 italicsCorrection[index].get_x_value (font, this);
   }
 
   protected:
@@ -293,7 +293,7 @@ struct MathTopAccentAttachment
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+topAccentCoverage, topAccentAttachment)
@@ -310,8 +310,8 @@ struct MathTopAccentAttachment
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
-      if (c->glyph_set->has (hb_first (entry)))
+    为 (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
+      如果 (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -326,10 +326,10 @@ struct MathTopAccentAttachment
   hb_position_t get_value (hb_codepoint_t glyph,
 			   hb_font_t *font) const
   {
-    unsigned int index = (this+topAccentCoverage).get_coverage (glyph);
-    if (index == NOT_COVERED)
-      return font->get_glyph_h_advance (glyph) / 2;
-    return topAccentAttachment[index].get_x_value (font, this);
+    unsigned 整数 index = (this+topAccentCoverage).get_coverage (glyph);
+    如果 (index == NOT_COVERED)
+      返回 font->get_glyph_h_advance (glyph) / 2;
+    返回 topAccentAttachment[index].get_x_value (font, this);
   }
 
   protected:
@@ -349,16 +349,16 @@ struct MathTopAccentAttachment
 struct MathKern
 {
   MathKern* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->start_embed (this);
 
-    if (unlikely (!c->embed (heightCount))) return_trace (nullptr);
+    如果 (unlikely (!c->embed (heightCount))) return_trace (nullptr);
 
     unsigned count = 2 * heightCount + 1;
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
+    为 (unsigned i = 0; i < count; i++)
+      如果 (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
         return_trace (nullptr);
 
     return_trace (out);
@@ -366,16 +366,16 @@ struct MathKern
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &record : mathValueRecordsZ.as_array (2 * heightCount + 1))
+    为 (const auto &record : mathValueRecordsZ.as_array (2 * heightCount + 1))
       record.collect_variation_indices (c, this);
   }
 
   bool sanitize_math_value_records (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    unsigned int count = 2 * heightCount + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
+    unsigned 整数 count = 2 * heightCount + 1;
+    为 (unsigned 整数 i = 0; i < count; i++)
+      如果 (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
@@ -392,7 +392,7 @@ struct MathKern
   {
     const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
     const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    int sign = font->y_scale < 0 ? -1 : +1;
+    整数 sign = font->y_scale < 0 ? -1 : +1;
 
     /* According to OpenType spec (v1.9), except for the boundary cases, the index
      * chosen for kern value should be i such that
@@ -400,49 +400,49 @@ struct MathKern
      * We can use the binary search algorithm of std::upper_bound(). Or, we can
      * use the internal hb_bsearch_impl.
      */
-    unsigned int pos;
+    unsigned 整数 pos;
     auto cmp = +[](const void* key, const void* p,
-                   int sign, hb_font_t* font, const MathKern* mathKern) -> int {
+                   整数 sign, hb_font_t* font, const MathKern* mathKern) -> 整数 {
       hb_position_t a = *(hb_position_t *) key;
       hb_position_t b = ((MathValueRecord *) p)->get_y_value (font, mathKern);
-      if (a == b) return 0;
-      return sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
+      如果 (a == b) 返回 0;
+      返回 sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
     };
-    unsigned int i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
+    unsigned 整数 i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
                                      heightCount, MathValueRecord::static_size,
                                      cmp, sign, font, this) ? pos + 1 : pos;
-    return kernValue[i].get_x_value (font, this);
+    返回 kernValue[i].get_x_value (font, this);
   }
 
-  unsigned int get_entries (unsigned int start_offset,
-			    unsigned int *entries_count, /* IN/OUT */
+  unsigned 整数 get_entries (unsigned 整数 start_offset,
+			    unsigned 整数 *entries_count, /* IN/OUT */
 			    hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			    hb_font_t *font) const
   {
     const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
     const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    const unsigned int entriesCount = heightCount + 1;
+    const unsigned 整数 entriesCount = heightCount + 1;
 
-    if (entries_count && kern_entries)
+    如果 (entries_count && kern_entries)
     {
-      unsigned int start = hb_min (start_offset, entriesCount);
-      unsigned int end = hb_min (start + *entries_count, entriesCount);
+      unsigned 整数 start = hb_min (start_offset, entriesCount);
+      unsigned 整数 end = hb_min (start + *entries_count, entriesCount);
       *entries_count = end - start;
 
-      for (unsigned int i = 0; i < *entries_count; i++) {
-	unsigned int j = start + i;
+      为 (unsigned 整数 i = 0; i < *entries_count; i++) {
+	unsigned 整数 j = start + i;
 
 	hb_position_t max_height;
-	if (j == heightCount) {
+	如果 (j == heightCount) {
 	  max_height = INT32_MAX;
-	} else {
+	} 否则 {
 	  max_height = correctionHeight[j].get_y_value (font, this);
 	}
 
 	kern_entries[i] = {max_height, kernValue[j].get_x_value (font, this)};
       }
     }
-    return entriesCount;
+    返回 entriesCount;
   }
 
   protected:
@@ -465,14 +465,14 @@ struct MathKern
 struct MathKernInfoRecord
 {
   MathKernInfoRecord* copy (hb_serialize_context_t *c, const void *base,
-                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *variation_map) const
   {
     TRACE_SERIALIZE (this);
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    如果 (unlikely (!out)) return_trace (nullptr);
 
     unsigned count = ARRAY_LENGTH (mathKern);
-    for (unsigned i = 0; i < count; i++)
+    为 (unsigned i = 0; i < count; i++)
       out->mathKern[i].serialize_copy (c, mathKern[i], base, 0, hb_serialize_context_t::Head, variation_map);
 
     return_trace (out);
@@ -480,7 +480,7 @@ struct MathKernInfoRecord
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
   {
-    for (const auto &offset : mathKern)
+    为 (const auto &offset : mathKern)
       (base+offset).collect_variation_indices (c);
   }
 
@@ -488,9 +488,9 @@ struct MathKernInfoRecord
   {
     TRACE_SANITIZE (this);
 
-    unsigned int count = ARRAY_LENGTH (mathKern);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!mathKern[i].sanitize (c, base)))
+    unsigned 整数 count = ARRAY_LENGTH (mathKern);
+    为 (unsigned 整数 i = 0; i < count; i++)
+      如果 (unlikely (!mathKern[i].sanitize (c, base)))
 	return_trace (false);
 
     return_trace (true);
@@ -501,24 +501,24 @@ struct MathKernInfoRecord
 			     hb_font_t *font,
 			     const void *base) const
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern))) return 0;
-    return (base+mathKern[idx]).get_value (correction_height, font);
+    unsigned 整数 idx = kern;
+    如果 (unlikely (idx >= ARRAY_LENGTH (mathKern))) 返回 0;
+    返回 (base+mathKern[idx]).get_value (correction_height, font);
   }
 
-  unsigned int get_kernings (hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+  unsigned 整数 get_kernings (hb_ot_math_kern_t kern,
+			     unsigned 整数 start_offset,
+			     unsigned 整数 *entries_count, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font,
 			     const void *base) const
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
-      if (entries_count) *entries_count = 0;
-      return 0;
+    unsigned 整数 idx = kern;
+    如果 (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
+      如果 (entries_count) *entries_count = 0;
+      返回 0;
     }
-    return (base+mathKern[idx]).get_entries (start_offset,
+    返回 (base+mathKern[idx]).get_entries (start_offset,
 					     entries_count,
 					     kern_entries,
 					     font);
@@ -542,7 +542,7 @@ struct MathKernInfo
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+mathKernCoverage, mathKernInfoRecords)
@@ -559,8 +559,8 @@ struct MathKernInfo
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
-      if (c->glyph_set->has (hb_first (entry)))
+    为 (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
+      如果 (c->glyph_set->has (hb_first (entry)))
         hb_second (entry).collect_variation_indices (c, this);
   }
 
@@ -577,19 +577,19 @@ struct MathKernInfo
 			     hb_position_t correction_height,
 			     hb_font_t *font) const
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
+    unsigned 整数 index = (this+mathKernCoverage).get_coverage (glyph);
+    返回 mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
   }
 
-  unsigned int get_kernings (hb_codepoint_t glyph,
+  unsigned 整数 get_kernings (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+			     unsigned 整数 start_offset,
+			     unsigned 整数 *entries_count, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font) const
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kernings (kern,
+    unsigned 整数 index = (this+mathKernCoverage).get_coverage (glyph);
+    返回 mathKernInfoRecords[index].get_kernings (kern,
 						    start_offset,
 						    entries_count,
 						    kern_entries,
@@ -621,7 +621,7 @@ struct MathGlyphInfo
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    如果 (unlikely (!out)) return_trace (false);
 
     out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, this);
     out->mathTopAccentAttachment.serialize_subset (c, mathTopAccentAttachment, this);
@@ -636,8 +636,8 @@ struct MathGlyphInfo
     | hb_map_retains_sorting (glyph_map)
     ;
 
-    if (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
-    else out->extendedShapeCoverage = 0;
+    如果 (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
+    否则 out->extendedShapeCoverage = 0;
 
     out->mathKernInfo.serialize_subset (c, mathKernInfo, this);
     return_trace (true);
@@ -662,28 +662,28 @@ struct MathGlyphInfo
 
   hb_position_t
   get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
+  { 返回 (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
 
   hb_position_t
   get_top_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathTopAccentAttachment).get_value (glyph, font); }
+  { 返回 (this+mathTopAccentAttachment).get_value (glyph, font); }
 
   bool is_extended_shape (hb_codepoint_t glyph) const
-  { return (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
+  { 返回 (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
 			     hb_font_t *font) const
-  { return (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
+  { 返回 (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
 
   hb_position_t get_kernings (hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      unsigned int start_offset,
-			      unsigned int *entries_count, /* IN/OUT */
+			      unsigned 整数 start_offset,
+			      unsigned 整数 *entries_count, /* IN/OUT */
 			      hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			      hb_font_t *font) const
-  { return (this+mathKernInfo).get_kernings (glyph,
+  { 返回 (this+mathKernInfo).get_kernings (glyph,
 					     kern,
 					     start_offset,
 					     entries_count,
@@ -722,7 +722,7 @@ struct MathGlyphVariantRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    如果 (unlikely (!out)) return_trace (false);
 
     const hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -768,7 +768,7 @@ struct MathGlyphPartRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    如果 (unlikely (!out)) return_trace (false);
 
     const hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -790,11 +790,11 @@ struct MathGlyphPartRecord
     out.end_connector_length	= font->em_mult (endConnectorLength, mult);
     out.full_advance		= font->em_mult (fullAdvance, mult);
 
-    static_assert ((unsigned int) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
-		   (unsigned int) PartFlags::Extender, "");
+    static_assert ((unsigned 整数) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
+		   (unsigned 整数) PartFlags::Extender, "");
 
     out.flags = (hb_ot_math_glyph_part_flags_t)
-		(unsigned int)
+		(unsigned 整数)
 		(partFlags & PartFlags::Defined);
   }
 
@@ -831,11 +831,11 @@ struct MathGlyphAssembly
   {
     TRACE_SUBSET (this);
 
-    if (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
-    if (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
+    如果 (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
+    如果 (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
 
-    for (const auto& record : partRecords.iter ())
-      if (!record.subset (c)) return_trace (false);
+    为 (const auto& record : partRecords.iter ())
+      如果 (!record.subset (c)) return_trace (false);
     return_trace (true);
   }
 
@@ -852,36 +852,36 @@ struct MathGlyphAssembly
 		  partRecords.sanitize (c));
   }
 
-  unsigned int get_parts (hb_direction_t direction,
+  unsigned 整数 get_parts (hb_direction_t direction,
 			  hb_font_t *font,
-			  unsigned int start_offset,
-			  unsigned int *parts_count, /* IN/OUT */
+			  unsigned 整数 start_offset,
+			  unsigned 整数 *parts_count, /* IN/OUT */
 			  hb_ot_math_glyph_part_t *parts /* OUT */,
 			  hb_position_t *italics_correction /* OUT */) const
   {
-    if (parts_count && parts)
+    如果 (parts_count && parts)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
+      为 (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
 			    hb_array (parts, *parts_count)))
 	_.first.extract (_.second, mult, font);
     }
 
-    if (italics_correction)
+    如果 (italics_correction)
       *italics_correction = italicsCorrection.get_x_value (font, this);
 
-    return partRecords.len;
+    返回 partRecords.len;
   }
 
   void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
   {
-    for (const auto& _ : partRecords.iter ())
+    为 (const auto& _ : partRecords.iter ())
       _.depend (depend_data, source);
   }
 
   void closure_glyphs (hb_set_t *variant_glyphs) const
   {
-    for (const auto& _ : partRecords.iter ())
+    为 (const auto& _ : partRecords.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
@@ -906,14 +906,14 @@ struct MathGlyphConstruction
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     out->glyphAssembly.serialize_subset (c, glyphAssembly, this);
 
-    if (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    如果 (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
-    for (const auto& record : mathGlyphVariantRecord.iter ())
-      if (!record.subset (c)) return_trace (false);
+    为 (const auto& record : mathGlyphVariantRecord.iter ())
+      如果 (!record.subset (c)) return_trace (false);
 
     return_trace (true);
   }
@@ -931,29 +931,29 @@ struct MathGlyphConstruction
 		  mathGlyphVariantRecord.sanitize (c));
   }
 
-  const MathGlyphAssembly &get_assembly () const { return this+glyphAssembly; }
+  const MathGlyphAssembly &get_assembly () const { 返回 this+glyphAssembly; }
 
-  unsigned int get_variants (hb_direction_t direction,
+  unsigned 整数 get_variants (hb_direction_t direction,
 			     hb_font_t *font,
-			     unsigned int start_offset,
-			     unsigned int *variants_count, /* IN/OUT */
+			     unsigned 整数 start_offset,
+			     unsigned 整数 *variants_count, /* IN/OUT */
 			     hb_ot_math_glyph_variant_t *variants /* OUT */) const
   {
-    if (variants_count && variants)
+    如果 (variants_count && variants)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
+      为 (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
 			    hb_array (variants, *variants_count)))
 	_.second = {_.first.variantGlyph, font->em_mult (_.first.advanceMeasurement, mult)};
     }
-    return mathGlyphVariantRecord.len;
+    返回 mathGlyphVariantRecord.len;
   }
 
   void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
   {
     (this+glyphAssembly).depend (depend_data, source);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    为 (const auto& _ : mathGlyphVariantRecord.iter ())
       _.depend (depend_data, source);
   }
 
@@ -961,7 +961,7 @@ struct MathGlyphConstruction
   {
     (this+glyphAssembly).closure_glyphs (variant_glyphs);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    为 (const auto& _ : mathGlyphVariantRecord.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
@@ -983,7 +983,7 @@ struct MathVariants
   {
     const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
 
-    if (vertGlyphCoverage)
+    如果 (vertGlyphCoverage)
     {
       const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
       + hb_zip (this+vertGlyphCoverage, vert_offsets)
@@ -994,7 +994,7 @@ struct MathVariants
                   })
       ;
     }
-    if (horizGlyphCoverage)
+    如果 (horizGlyphCoverage)
     {
       const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
       + hb_zip (this+horizGlyphCoverage, hori_offsets)
@@ -1012,7 +1012,7 @@ struct MathVariants
   {
     const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
 
-    if (vertGlyphCoverage)
+    如果 (vertGlyphCoverage)
     {
       const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
       + hb_zip (this+vertGlyphCoverage, vert_offsets)
@@ -1023,7 +1023,7 @@ struct MathVariants
       ;
     }
 
-    if (horizGlyphCoverage)
+    如果 (horizGlyphCoverage)
     {
       const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
       + hb_zip (this+horizGlyphCoverage, hori_offsets)
@@ -1043,12 +1043,12 @@ struct MathVariants
                                      const hb_set_t& glyphset,
                                      const hb_map_t& glyph_map) const
   {
-    if (!coverage) return;
+    如果 (!coverage) 返回;
 
-    for (const auto _ : (this+coverage).iter ())
+    为 (const auto _ : (this+coverage).iter ())
     {
-      if (i >= end_index) return;
-      if (glyphset.has (_))
+      如果 (i >= end_index) 返回;
+      如果 (glyphset.has (_))
       {
         unsigned new_gid = glyph_map.get (_);
         new_coverage.push (new_gid);
@@ -1065,8 +1065,8 @@ struct MathVariants
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_vert_coverage;
@@ -1075,42 +1075,42 @@ struct MathVariants
     collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vertGlyphCount, indices, glyphset, glyph_map);
     collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vertGlyphCount, vertGlyphCount + horizGlyphCount, indices, glyphset, glyph_map);
 
-    if (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    如果 (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
-    if (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+    如果 (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
-    for (unsigned i : indices.iter ())
+    为 (unsigned i : indices.iter ())
     {
       auto *o = c->serializer->embed (glyphConstruction[i]);
-      if (!o) return_trace (false);
+      如果 (!o) return_trace (false);
       o->serialize_subset (c, glyphConstruction[i], this);
     }
 
-    if (new_vert_coverage)
+    如果 (new_vert_coverage)
       out->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
 
-    if (new_hori_coverage)
+    如果 (new_hori_coverage)
     out->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
     return_trace (true);
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
+    为 (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
+      如果 (c->glyph_set->has (hb_first (entry)))
         (this+hb_second (entry)).collect_variation_indices (c);
-    for (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
+    为 (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
+      如果 (c->glyph_set->has (hb_first (entry)))
         (this+hb_second (entry)).collect_variation_indices (c);
   }
 
   bool sanitize_offsets (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    unsigned int count = vertGlyphCount + horizGlyphCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
+    unsigned 整数 count = vertGlyphCount + horizGlyphCount;
+    为 (unsigned 整数 i = 0; i < count; i++)
+      如果 (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
@@ -1127,25 +1127,25 @@ struct MathVariants
 
   hb_position_t get_min_connector_overlap (hb_direction_t direction,
 						  hb_font_t *font) const
-  { return font->em_scale_dir (minConnectorOverlap, direction); }
+  { 返回 font->em_scale_dir (minConnectorOverlap, direction); }
 
-  unsigned int get_glyph_variants (hb_codepoint_t glyph,
+  unsigned 整数 get_glyph_variants (hb_codepoint_t glyph,
 				   hb_direction_t direction,
 				   hb_font_t *font,
-				   unsigned int start_offset,
-				   unsigned int *variants_count, /* IN/OUT */
+				   unsigned 整数 start_offset,
+				   unsigned 整数 *variants_count, /* IN/OUT */
 				   hb_ot_math_glyph_variant_t *variants /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+  { 返回 get_glyph_construction (glyph, direction, font)
 	   .get_variants (direction, font, start_offset, variants_count, variants); }
 
-  unsigned int get_glyph_parts (hb_codepoint_t glyph,
+  unsigned 整数 get_glyph_parts (hb_codepoint_t glyph,
 				hb_direction_t direction,
 				hb_font_t *font,
-				unsigned int start_offset,
-				unsigned int *parts_count, /* IN/OUT */
+				unsigned 整数 start_offset,
+				unsigned 整数 *parts_count, /* IN/OUT */
 				hb_ot_math_glyph_part_t *parts /* OUT */,
 				hb_position_t *italics_correction /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+  { 返回 get_glyph_construction (glyph, direction, font)
 	   .get_assembly ()
 	   .get_parts (direction, font,
 		       start_offset, parts_count, parts,
@@ -1158,17 +1158,17 @@ struct MathVariants
 			  hb_font_t *font HB_UNUSED) const
   {
     bool vertical = HB_DIRECTION_IS_VERTICAL (direction);
-    unsigned int count = vertical ? vertGlyphCount : horizGlyphCount;
+    unsigned 整数 count = vertical ? vertGlyphCount : horizGlyphCount;
     const Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
 						  : horizGlyphCoverage;
 
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    if (unlikely (index >= count)) return Null (MathGlyphConstruction);
+    unsigned 整数 index = (this+coverage).get_coverage (glyph);
+    如果 (unlikely (index >= count)) 返回 Null (MathGlyphConstruction);
 
-    if (!vertical)
+    如果 (!vertical)
       index += vertGlyphCount;
 
-    return this+glyphConstruction[index];
+    返回 this+glyphConstruction[index];
   }
 
   protected:
@@ -1211,17 +1211,17 @@ struct MATH
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { 返回 version.to_int (); }
 
   void depend (hb_depend_data_builder_t *depend_data) const
   {
-    if (mathVariants)
+    如果 (mathVariants)
       (this+mathVariants).depend (depend_data);
   }
 
   void closure_glyphs (hb_set_t *glyph_set) const
   {
-    if (mathVariants)
+    如果 (mathVariants)
     {
       hb_set_t variant_glyphs;
       (this+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
@@ -1233,7 +1233,7 @@ struct MATH
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    如果 (unlikely (!out)) return_trace (false);
 
     out->mathConstants.serialize_copy (c->serializer, mathConstants, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
     out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, this);
@@ -1274,19 +1274,19 @@ struct MATH
        * sha1sum:086855301bff644f9d8827b88491fcf73a6d4cb9  cambria.ttc
        * sha1sum:b1e5a3feaca2ea3dfcf79ccb377de749ecf60343  cambria.ttc */
       case HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
-        return true;
+        返回 true;
     }
 #endif
-    return false;
+    返回 false;
   }
 
   hb_position_t get_constant (hb_ot_math_constant_t  constant,
 			      hb_font_t		   *font) const
-  { return (this+mathConstants).get_value (constant, font); }
+  { 返回 (this+mathConstants).get_value (constant, font); }
 
-  const MathGlyphInfo &get_glyph_info () const { return this+mathGlyphInfo; }
+  const MathGlyphInfo &get_glyph_info () const { 返回 this+mathGlyphInfo; }
 
-  const MathVariants &get_variants () const    { return this+mathVariants; }
+  const MathVariants &get_variants () const    { 返回 this+mathVariants; }
 
   protected:
   FixedVersion<>version;	/* Version of the MATH table

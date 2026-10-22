@@ -45,26 +45,26 @@ struct hb_bimap_t
     back_map.alloc (pop);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { 返回 forw_map.in_error () || back_map.in_error (); }
 
   void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    如果 (in_error ()) 返回;
+    如果 (unlikely (lhs == HB_MAP_VALUE_INVALID)) 返回;
+    如果 (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); 返回; }
 
     forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    如果 (unlikely (in_error ())) 返回;
 
     back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    如果 (unlikely (in_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { 返回 forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { 返回 back_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { 返回 get (lhs); }
+  bool has (hb_codepoint_t lhs) const { 返回 forw_map.has (lhs); }
 
 
   void del (hb_codepoint_t lhs)
@@ -79,9 +79,9 @@ struct hb_bimap_t
     back_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  bool is_empty () const { 返回 forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned 整数 get_population () const { 返回 forw_map.get_population (); }
 
   protected:
   hb_map_t  forw_map;
@@ -96,9 +96,9 @@ struct hb_bimap_t
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
 struct hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () const { 返回 forw_map.in_error () || back_map.in_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned 整数 get_population () const { 返回 forw_map.get_population (); }
 
   void reset ()
   {
@@ -124,50 +124,50 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    如果 (rhs == HB_MAP_VALUE_INVALID)
     {
       rhs = back_map.length;
       forw_map.set (lhs, rhs);
       back_map.push (lhs);
     }
-    return rhs;
+    返回 rhs;
   }
 
   hb_codepoint_t skip ()
   {
     hb_codepoint_t start = back_map.length;
     back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    返回 start;
   }
 
   hb_codepoint_t skip (unsigned count)
   {
     hb_codepoint_t start = back_map.length;
     back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
+    为 (unsigned i = 0; i < count; i++)
       back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    返回 start;
   }
 
   hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  { 返回 back_map.length; }
 
   void add_set (const hb_set_t *set)
   {
-    for (auto i : *set) add (i);
+    为 (auto i : *set) add (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  bool identity (unsigned 整数 size)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    为 (hb_codepoint_t i = 0; i < size; i++) add (i);
+    返回 !in_error ();
   }
 
   protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  static 整数 cmp_id (const void* a, const void* b)
+  { 返回 (整数)*(const hb_codepoint_t *)a - (整数)*(const hb_codepoint_t *)b; }
 
   public:
   /* Optional: after finished adding all mappings in a random order,
@@ -176,23 +176,23 @@ struct hb_inc_bimap_t
   {
     hb_codepoint_t  count = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    如果 (unlikely (!work.resize_dirty  (count))) 返回;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    为 (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    为 (hb_codepoint_t rhs = 0; rhs < count; rhs++)
       add (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) const { 返回 forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) const { 返回 back_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { 返回 get (lhs); }
+  bool has (hb_codepoint_t lhs) const { 返回 forw_map.has (lhs); }
 
   protected:
   hb_map_t forw_map;

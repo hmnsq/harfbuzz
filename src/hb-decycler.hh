@@ -102,16 +102,16 @@ struct hb_decycler_node_t
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    如果 (!decycler.tortoise)
     {
       // First node.
       assert (decycler.tortoise_awake);
       assert (!decycler.hare);
       decycler.tortoise = decycler.hare = this;
-      return;
+      返回;
     }
 
-    if (decycler.tortoise_awake)
+    如果 (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
     this->prev = decycler.hare;
@@ -127,11 +127,11 @@ struct hb_decycler_node_t
 
     assert (decycler.hare == this);
     decycler.hare = prev;
-    if (prev)
+    如果 (prev)
       prev->u.decycler = &decycler;
 
     assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    如果 (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
@@ -143,13 +143,13 @@ struct hb_decycler_node_t
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    如果 (decycler.tortoise == this)
+      返回 true; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    如果 (decycler.tortoise->value == value)
+      返回 false; // Cycle detected.
 
-    return true;
+    返回 true;
   }
 
   private:

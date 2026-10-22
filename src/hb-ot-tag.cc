@@ -40,84 +40,84 @@ hb_ot_old_tag_from_script (hb_script_t script)
 
   switch ((hb_tag_t) script)
   {
-    case HB_SCRIPT_INVALID:		return HB_OT_TAG_DEFAULT_SCRIPT;
-    case HB_SCRIPT_MATH:		return HB_OT_TAG_MATH_SCRIPT;
+    case HB_SCRIPT_INVALID:		返回 HB_OT_TAG_DEFAULT_SCRIPT;
+    case HB_SCRIPT_MATH:		返回 HB_OT_TAG_MATH_SCRIPT;
 
     /* Hiragana, Katakana, and their collective ISO 15924 script all map to 'kana'. */
-    case HB_SCRIPT_HIRAGANA:		return HB_TAG('k','a','n','a');
+    case HB_SCRIPT_HIRAGANA:		返回 HB_TAG('k','a','n','a');
     case HB_TAG('H','r','k','t'):
-					return HB_TAG('k','a','n','a');
+					返回 HB_TAG('k','a','n','a');
 
     /* Spaces at the end are preserved, unlike ISO 15924 */
-    case HB_SCRIPT_LAO:			return HB_TAG('l','a','o',' ');
-    case HB_SCRIPT_YI:			return HB_TAG('y','i',' ',' ');
+    case HB_SCRIPT_LAO:			返回 HB_TAG('l','a','o',' ');
+    case HB_SCRIPT_YI:			返回 HB_TAG('y','i',' ',' ');
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_NKO:			return HB_TAG('n','k','o',' ');
+    case HB_SCRIPT_NKO:			返回 HB_TAG('n','k','o',' ');
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_VAI:			return HB_TAG('v','a','i',' ');
+    case HB_SCRIPT_VAI:			返回 HB_TAG('v','a','i',' ');
   }
 
   /* Else, just change first char to lowercase and return */
-  return ((hb_tag_t) script) | 0x20000000u;
+  返回 ((hb_tag_t) script) | 0x20000000u;
 }
 
 static hb_script_t
 hb_ot_old_tag_to_script (hb_tag_t tag)
 {
-  if (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
-    return HB_SCRIPT_INVALID;
-  if (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
-    return HB_SCRIPT_MATH;
+  如果 (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
+    返回 HB_SCRIPT_INVALID;
+  如果 (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
+    返回 HB_SCRIPT_MATH;
 
   /* This side of the conversion is fully algorithmic. */
 
   /* Any spaces at the end of the tag are replaced by repeating the last
    * letter.  Eg 'nko ' -> 'Nkoo' */
-  if (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
+  如果 (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
     tag |= (tag >> 8) & 0x0000FF00u; /* Copy second letter to third */
-  if (unlikely ((tag & 0x000000FFu) == 0x00000020u))
+  如果 (unlikely ((tag & 0x000000FFu) == 0x00000020u))
     tag |= (tag >> 8) & 0x000000FFu; /* Copy third letter to fourth */
 
   /* Change first char to uppercase and return */
-  return (hb_script_t) (tag & ~0x20000000u);
+  返回 (hb_script_t) (tag & ~0x20000000u);
 }
 
 static hb_tag_t
 hb_ot_new_tag_from_script (hb_script_t script)
 {
   switch ((hb_tag_t) script) {
-    case HB_SCRIPT_BENGALI:		return HB_TAG('b','n','g','2');
-    case HB_SCRIPT_DEVANAGARI:		return HB_TAG('d','e','v','2');
-    case HB_SCRIPT_GUJARATI:		return HB_TAG('g','j','r','2');
-    case HB_SCRIPT_GURMUKHI:		return HB_TAG('g','u','r','2');
-    case HB_SCRIPT_KANNADA:		return HB_TAG('k','n','d','2');
-    case HB_SCRIPT_MALAYALAM:		return HB_TAG('m','l','m','2');
-    case HB_SCRIPT_ORIYA:		return HB_TAG('o','r','y','2');
-    case HB_SCRIPT_TAMIL:		return HB_TAG('t','m','l','2');
-    case HB_SCRIPT_TELUGU:		return HB_TAG('t','e','l','2');
-    case HB_SCRIPT_MYANMAR:		return HB_TAG('m','y','m','2');
+    case HB_SCRIPT_BENGALI:		返回 HB_TAG('b','n','g','2');
+    case HB_SCRIPT_DEVANAGARI:		返回 HB_TAG('d','e','v','2');
+    case HB_SCRIPT_GUJARATI:		返回 HB_TAG('g','j','r','2');
+    case HB_SCRIPT_GURMUKHI:		返回 HB_TAG('g','u','r','2');
+    case HB_SCRIPT_KANNADA:		返回 HB_TAG('k','n','d','2');
+    case HB_SCRIPT_MALAYALAM:		返回 HB_TAG('m','l','m','2');
+    case HB_SCRIPT_ORIYA:		返回 HB_TAG('o','r','y','2');
+    case HB_SCRIPT_TAMIL:		返回 HB_TAG('t','m','l','2');
+    case HB_SCRIPT_TELUGU:		返回 HB_TAG('t','e','l','2');
+    case HB_SCRIPT_MYANMAR:		返回 HB_TAG('m','y','m','2');
   }
 
-  return HB_OT_TAG_DEFAULT_SCRIPT;
+  返回 HB_OT_TAG_DEFAULT_SCRIPT;
 }
 
 static hb_script_t
 hb_ot_new_tag_to_script (hb_tag_t tag)
 {
   switch (tag) {
-    case HB_TAG('b','n','g','2'):	return HB_SCRIPT_BENGALI;
-    case HB_TAG('d','e','v','2'):	return HB_SCRIPT_DEVANAGARI;
-    case HB_TAG('g','j','r','2'):	return HB_SCRIPT_GUJARATI;
-    case HB_TAG('g','u','r','2'):	return HB_SCRIPT_GURMUKHI;
-    case HB_TAG('k','n','d','2'):	return HB_SCRIPT_KANNADA;
-    case HB_TAG('m','l','m','2'):	return HB_SCRIPT_MALAYALAM;
-    case HB_TAG('o','r','y','2'):	return HB_SCRIPT_ORIYA;
-    case HB_TAG('t','m','l','2'):	return HB_SCRIPT_TAMIL;
-    case HB_TAG('t','e','l','2'):	return HB_SCRIPT_TELUGU;
-    case HB_TAG('m','y','m','2'):	return HB_SCRIPT_MYANMAR;
+    case HB_TAG('b','n','g','2'):	返回 HB_SCRIPT_BENGALI;
+    case HB_TAG('d','e','v','2'):	返回 HB_SCRIPT_DEVANAGARI;
+    case HB_TAG('g','j','r','2'):	返回 HB_SCRIPT_GUJARATI;
+    case HB_TAG('g','u','r','2'):	返回 HB_SCRIPT_GURMUKHI;
+    case HB_TAG('k','n','d','2'):	返回 HB_SCRIPT_KANNADA;
+    case HB_TAG('m','l','m','2'):	返回 HB_SCRIPT_MALAYALAM;
+    case HB_TAG('o','r','y','2'):	返回 HB_SCRIPT_ORIYA;
+    case HB_TAG('t','m','l','2'):	返回 HB_SCRIPT_TAMIL;
+    case HB_TAG('t','e','l','2'):	返回 HB_SCRIPT_TELUGU;
+    case HB_TAG('m','y','m','2'):	返回 HB_SCRIPT_MYANMAR;
   }
 
-  return HB_SCRIPT_UNKNOWN;
+  返回 HB_SCRIPT_UNKNOWN;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -137,7 +137,7 @@ hb_ot_tags_from_script (hb_script_t  script,
 			hb_tag_t    *script_tag_1,
 			hb_tag_t    *script_tag_2)
 {
-  unsigned int count = 2;
+  unsigned 整数 count = 2;
   hb_tag_t tags[2];
   hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &count, tags, nullptr, nullptr);
   *script_tag_1 = count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
@@ -155,25 +155,25 @@ hb_ot_tags_from_script (hb_script_t  script,
 
 static void
 hb_ot_all_tags_from_script (hb_script_t   script,
-			    unsigned int *count /* IN/OUT */,
+			    unsigned 整数 *count /* IN/OUT */,
 			    hb_tag_t     *tags /* OUT */)
 {
-  unsigned int i = 0;
+  unsigned 整数 i = 0;
 
   hb_tag_t new_tag = hb_ot_new_tag_from_script (script);
-  if (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
+  如果 (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
   {
     /* HB_SCRIPT_MYANMAR maps to 'mym2', but there is no 'mym3'. */
-    if (new_tag != HB_TAG('m','y','m','2'))
+    如果 (new_tag != HB_TAG('m','y','m','2'))
       tags[i++] = new_tag | '3';
-    if (*count > i)
+    如果 (*count > i)
       tags[i++] = new_tag;
   }
 
-  if (*count > i)
+  如果 (*count > i)
   {
     hb_tag_t old_tag = hb_ot_old_tag_from_script (script);
-    if (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
+    如果 (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
       tags[i++] = old_tag;
   }
 
@@ -193,10 +193,10 @@ hb_script_t
 hb_ot_tag_to_script (hb_tag_t tag)
 {
   unsigned char digit = tag & 0x000000FFu;
-  if (unlikely (digit == '2' || digit == '3'))
-    return hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
+  如果 (unlikely (digit == '2' || digit == '3'))
+    返回 hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
 
-  return hb_ot_old_tag_to_script (tag);
+  返回 hb_ot_old_tag_to_script (tag);
 }
 
 
@@ -208,17 +208,17 @@ subtag_matches (const char *lang_str,
 		const char *subtag,
 		unsigned    subtag_len)
 {
-  if (likely ((unsigned) (limit - lang_str) < subtag_len))
-    return false;
+  如果 (likely ((unsigned) (limit - lang_str) < subtag_len))
+    返回 false;
 
   do {
     const char *s = strstr (lang_str, subtag);
-    if (!s || s >= limit)
-      return false;
-    if (!ISALNUM (s[subtag_len]))
-      return true;
+    如果 (!s || s >= limit)
+      返回 false;
+    如果 (!ISALNUM (s[subtag_len]))
+      返回 true;
     lang_str = s + subtag_len;
-  } while (true);
+  } 当 (true);
 }
 
 static bool
@@ -229,10 +229,10 @@ lang_matches (const char *lang_str,
 {
   /* Same as hb_language_matches(); duplicated. */
 
-  if (likely ((unsigned) (limit - lang_str) < spec_len))
-    return false;
+  如果 (likely ((unsigned) (limit - lang_str) < spec_len))
+    返回 false;
 
-  return strncmp (lang_str, spec, spec_len) == 0 &&
+  返回 strncmp (lang_str, spec, spec_len) == 0 &&
 	 (lang_str[spec_len] == '\0' || lang_str[spec_len] == '-');
 }
 
@@ -244,19 +244,19 @@ bfind_tag (const hb_tag_t *array,
   unsigned min = 0;
   unsigned max = len;
 
-  while (min < max)
+  当 (min < max)
   {
     unsigned mid = min + (max - min) / 2;
     hb_tag_t val = array[mid];
-    if (key < val)
+    如果 (key < val)
       max = mid;
-    else if (key > val)
+    否则 如果 (key > val)
       min = mid + 1;
-    else
-      return true;
+    否则
+      返回 true;
   }
 
-  return false;
+  返回 false;
 }
 
 struct LangTag
@@ -264,12 +264,12 @@ struct LangTag
   hb_tag_t language;
   hb_tag_t tag;
 
-  int cmp (hb_tag_t a) const
+  整数 cmp (hb_tag_t a) const
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    返回 a < this->language ? -1 : a > this->language ? +1 : 0;
   }
-  int cmp (const LangTag *that) const
-  { return cmp (that->language); }
+  整数 cmp (const LangTag *that) const
+  { 返回 cmp (that->language); }
 };
 
 struct LangTagRange
@@ -278,12 +278,12 @@ struct LangTagRange
   uint16_t offset;
   uint8_t count;
 
-  int cmp (hb_tag_t a) const
+  整数 cmp (hb_tag_t a) const
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    返回 a < this->language ? -1 : a > this->language ? +1 : 0;
   }
-  int cmp (const LangTagRange *that) const
-  { return cmp (that->language); }
+  整数 cmp (const LangTagRange *that) const
+  { 返回 cmp (that->language); }
 };
 
 #include "hb-ot-tag-table.hh"
@@ -311,24 +311,24 @@ struct LangTagRange
 hb_tag_t
 hb_ot_tag_from_language (hb_language_t language)
 {
-  unsigned int count = 1;
+  unsigned 整数 count = 1;
   hb_tag_t tags[1];
   hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &count, tags);
-  return count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  返回 count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
 }
 #endif
 
 static void
 hb_ot_tags_from_language (const char   *lang_str,
 			  const char   *limit,
-			  unsigned int *count,
+			  unsigned 整数 *count,
 			  hb_tag_t     *tags)
 {
 
 #ifndef HB_NO_LANGUAGE_LONG
   /* Check for matches of multiple subtags. */
-  if (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
-    return;
+  如果 (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
+    返回;
 #endif
 
   /* Find a language matching in the first component. */
@@ -337,11 +337,11 @@ hb_ot_tags_from_language (const char   *lang_str,
 #endif
   {
 #ifndef HB_NO_LANGUAGE_LONG
-    if (s && limit - lang_str >= 6)
+    如果 (s && limit - lang_str >= 6)
     {
       const char *extlang_end = strchr (s + 1, '-');
       /* If there is an extended language tag, use it. */
-      if (3 == (extlang_end ? extlang_end - s - 1 : strlen (s + 1)) &&
+      如果 (3 == (extlang_end ? extlang_end - s - 1 : strlen (s + 1)) &&
 	  ISALPHA (s[1]))
 	lang_str = s + 1;
     }
@@ -350,21 +350,21 @@ hb_ot_tags_from_language (const char   *lang_str,
     unsigned first_len = dash ? dash - lang_str : limit - lang_str;
     hb_tag_t lang_tag = hb_tag_from_string (lang_str, first_len);
 
-    if (first_len == 2)
+    如果 (first_len == 2)
     {
       static hb_atomic_t<unsigned> last_tag_idx_2 {0}; /* Poor man's cache. */
       unsigned tag_idx = last_tag_idx_2;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages2) &&
+      如果 (likely (tag_idx < ARRAY_LENGTH (ot_languages2) &&
 		  ot_languages2[tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages2).bfind (lang_tag, &tag_idx))
       {
 	last_tag_idx_2 = tag_idx;
-	unsigned int i;
-	while (tag_idx != 0 &&
+	unsigned 整数 i;
+	当 (tag_idx != 0 &&
 	       ot_languages2[tag_idx].language == ot_languages2[tag_idx - 1].language)
 	  tag_idx--;
-	for (i = 0;
+	为 (i = 0;
 	     i < *count &&
 	     tag_idx + i < ARRAY_LENGTH (ot_languages2) &&
 	     ot_languages2[tag_idx + i].tag != HB_TAG_NONE &&
@@ -372,68 +372,68 @@ hb_ot_tags_from_language (const char   *lang_str,
 	     i++)
 	  tags[i] = ot_languages2[tag_idx + i].tag;
 	*count = i;
-	return;
+	返回;
       }
     }
 #ifndef HB_NO_LANGUAGE_LONG
-    else if (first_len == 3)
+    否则 如果 (first_len == 3)
     {
       static hb_atomic_t<unsigned> last_tag_idx_3 {0}; /* Poor man's cache. */
       unsigned tag_idx = last_tag_idx_3;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages3) &&
+      如果 (likely (tag_idx < ARRAY_LENGTH (ot_languages3) &&
 		  ot_languages3[tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages3).bfind (lang_tag, &tag_idx))
       {
 	last_tag_idx_3 = tag_idx;
-	if (*count)
+	如果 (*count)
 	{
 	  tags[0] = ot_languages3[tag_idx].tag;
 	  *count = 1;
 	}
-	else
+	否则
 	  *count = 0;
-	return;
+	返回;
       }
 
       static hb_atomic_t<unsigned> last_tag_idx_3_multi {0}; /* Poor man's cache. */
       unsigned multi_tag_idx = last_tag_idx_3_multi;
 
-      if (likely (multi_tag_idx < ARRAY_LENGTH (ot_languages3_multi) &&
+      如果 (likely (multi_tag_idx < ARRAY_LENGTH (ot_languages3_multi) &&
 		  ot_languages3_multi[multi_tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages3_multi).bfind (lang_tag, &multi_tag_idx))
       {
 	last_tag_idx_3_multi = multi_tag_idx;
 	const LangTagRange &range = ot_languages3_multi[multi_tag_idx];
-	unsigned int i;
-	for (i = 0; i < *count && i < range.count; i++)
+	unsigned 整数 i;
+	为 (i = 0; i < *count && i < range.count; i++)
 	  tags[i] = ot_languages3_multi_values[range.offset + i];
 	*count = i;
-	return;
+	返回;
       }
 
-      if (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
+      如果 (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
       {
 	*count = 0;
-	return;
+	返回;
       }
 
       /* Assume it's ISO-639-3 and upper-case and use it. */
       tags[0] = lang_tag & ~0x20202000u;
       *count = 1;
-      return;
+      返回;
     }
 #endif
   }
 
 #ifndef HB_NO_LANGUAGE_LONG
-  if (!s)
+  如果 (!s)
     s = lang_str + strlen (lang_str);
-  if (s - lang_str == 3) {
+  如果 (s - lang_str == 3) {
     /* Assume it's ISO-639-3 and upper-case and use it. */
     tags[0] = hb_tag_from_string (lang_str, s - lang_str) & ~0x20202000u;
     *count = 1;
-    return;
+    返回;
   }
 #endif
 
@@ -442,48 +442,48 @@ hb_ot_tags_from_language (const char   *lang_str,
 
 static bool
 parse_private_use_subtag (const char     *private_use_subtag,
-			  unsigned int   *count,
+			  unsigned 整数   *count,
 			  hb_tag_t       *tags,
 			  const char     *prefix,
 			  unsigned char (*normalize) (unsigned char))
 {
 #ifdef HB_NO_LANGUAGE_PRIVATE_SUBTAG
-  return false;
+  返回 false;
 #endif
 
-  if (!(private_use_subtag && count && tags && *count)) return false;
+  如果 (!(private_use_subtag && count && tags && *count)) 返回 false;
 
   const char *s = strstr (private_use_subtag, prefix);
-  if (!s) return false;
+  如果 (!s) 返回 false;
 
   char tag[4];
-  int i;
+  整数 i;
   s += strlen (prefix);
-  if (s[0] == '-') {
+  如果 (s[0] == '-') {
     s += 1;
     char c;
-    for (i = 0; i < 8 && ISHEX (s[i]); i++)
+    为 (i = 0; i < 8 && ISHEX (s[i]); i++)
     {
       c = FROMHEX (s[i]);
-      if (i % 2 == 0)
+      如果 (i % 2 == 0)
 	tag[i / 2] = c << 4;
-      else
+      否则
 	tag[i / 2] += c;
     }
-    if (i != 8) return false;
-  } else {
-    for (i = 0; i < 4 && ISALNUM (s[i]); i++)
+    如果 (i != 8) 返回 false;
+  } 否则 {
+    为 (i = 0; i < 4 && ISALNUM (s[i]); i++)
       tag[i] = normalize (s[i]);
-    if (!i) return false;
+    如果 (!i) 返回 false;
 
-    for (; i < 4; i++)
+    为 (; i < 4; i++)
       tag[i] = ' ';
   }
   tags[0] = HB_TAG (tag[0], tag[1], tag[2], tag[3]);
-  if ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
+  如果 ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
     tags[0] ^= ~0xDFDFDFDF;
   *count = 1;
-  return true;
+  返回 true;
 }
 
 /**
@@ -506,19 +506,19 @@ parse_private_use_subtag (const char     *private_use_subtag,
 void
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     unsigned 整数 *script_count /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     unsigned 整数 *language_count /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */)
 {
   bool needs_script = true;
 
-  if (language == HB_LANGUAGE_INVALID)
+  如果 (language == HB_LANGUAGE_INVALID)
   {
-    if (language_count && language_tags && *language_count)
+    如果 (language_count && language_tags && *language_count)
       *language_count = 0;
   }
-  else
+  否则
   {
     const char *lang_str, *s, *limit, *private_use_subtag;
     bool needs_language;
@@ -526,38 +526,38 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
     lang_str = hb_language_to_string (language);
     limit = nullptr;
     private_use_subtag = nullptr;
-    if (lang_str[0] == 'x' && lang_str[1] == '-')
+    如果 (lang_str[0] == 'x' && lang_str[1] == '-')
     {
       private_use_subtag = lang_str;
-    } else {
-      for (s = lang_str + 1; *s; s++)
+    } 否则 {
+      为 (s = lang_str + 1; *s; s++)
       {
-	if (s[-1] == '-' && s[1] == '-')
+	如果 (s[-1] == '-' && s[1] == '-')
 	{
-	  if (s[0] == 'x')
+	  如果 (s[0] == 'x')
 	  {
 	    private_use_subtag = s;
-	    if (!limit)
+	    如果 (!limit)
 	      limit = s - 1;
 	    break;
-	  } else if (!limit)
+	  } 否则 如果 (!limit)
 	  {
 	    limit = s - 1;
 	  }
 	}
       }
-      if (!limit)
+      如果 (!limit)
 	limit = s;
     }
 
     needs_script = !parse_private_use_subtag (private_use_subtag, script_count, script_tags, "-hbsc", TOLOWER);
     needs_language = !parse_private_use_subtag (private_use_subtag, language_count, language_tags, "-hbot", TOUPPER);
 
-    if (needs_language && language_count && language_tags && *language_count)
+    如果 (needs_language && language_count && language_tags && *language_count)
       hb_ot_tags_from_language (lang_str, limit, language_count, language_tags);
   }
 
-  if (needs_script && script_count && script_tags && *script_count)
+  如果 (needs_script && script_count && script_tags && *script_count)
     hb_ot_all_tags_from_script (script, script_count, script_tags);
 }
 
@@ -575,39 +575,39 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
 hb_language_t
 hb_ot_tag_to_language (hb_tag_t tag)
 {
-  unsigned int i;
+  unsigned 整数 i;
 
-  if (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
-    return nullptr;
+  如果 (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
+    返回 nullptr;
 
 #ifndef HB_NO_LANGUAGE_LONG
   {
     hb_language_t disambiguated_tag = hb_ot_ambiguous_tag_to_language (tag);
-    if (disambiguated_tag != HB_LANGUAGE_INVALID)
-      return disambiguated_tag;
+    如果 (disambiguated_tag != HB_LANGUAGE_INVALID)
+      返回 disambiguated_tag;
   }
 #endif
 
   char buf[4];
-  for (i = 0; i < ARRAY_LENGTH (ot_languages2); i++)
-    if (ot_languages2[i].tag == tag)
+  为 (i = 0; i < ARRAY_LENGTH (ot_languages2); i++)
+    如果 (ot_languages2[i].tag == tag)
     {
       hb_tag_to_string (ot_languages2[i].language, buf);
-      return hb_language_from_string (buf, 2);
+      返回 hb_language_from_string (buf, 2);
     }
 #ifndef HB_NO_LANGUAGE_LONG
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3); i++)
-    if (ot_languages3[i].tag == tag)
+  为 (i = 0; i < ARRAY_LENGTH (ot_languages3); i++)
+    如果 (ot_languages3[i].tag == tag)
     {
       hb_tag_to_string (ot_languages3[i].language, buf);
-      return hb_language_from_string (buf, 3);
+      返回 hb_language_from_string (buf, 3);
     }
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
-    for (unsigned int j = 0; j < ot_languages3_multi[i].count; j++)
-      if (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
+  为 (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
+    为 (unsigned 整数 j = 0; j < ot_languages3_multi[i].count; j++)
+      如果 (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
       {
 	hb_tag_to_string (ot_languages3_multi[i].language, buf);
-	return hb_language_from_string (buf, 3);
+	返回 hb_language_from_string (buf, 3);
       }
 #endif
 
@@ -620,7 +620,7 @@ hb_ot_tag_to_language (hb_tag_t tag)
   {
     char buf[20];
     char *str = buf;
-    if (ISALPHA (tag >> 24)
+    如果 (ISALPHA (tag >> 24)
 	&& ISALPHA ((tag >> 16) & 0xFF)
 	&& ISALPHA ((tag >> 8) & 0xFF)
 	&& (tag & 0xFF) == ' ')
@@ -632,7 +632,7 @@ hb_ot_tag_to_language (hb_tag_t tag)
       str += 4;
     }
     snprintf (str, 16, "x-hbot-%08" PRIx32, tag);
-    return hb_language_from_string (&*buf, -1);
+    返回 hb_language_from_string (&*buf, -1);
   }
 }
 
@@ -656,11 +656,11 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 				   hb_language_t *language /* OUT */)
 {
   hb_script_t script_out = hb_ot_tag_to_script (script_tag);
-  if (script)
+  如果 (script)
     *script = script_out;
-  if (language)
+  如果 (language)
   {
-    unsigned int script_count = 1;
+    unsigned 整数 script_count = 1;
     hb_tag_t primary_script_tag[1];
     hb_ot_tags_from_script_and_language (script_out,
 					 HB_LANGUAGE_INVALID,
@@ -669,20 +669,20 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 					 nullptr, nullptr);
     *language = hb_ot_tag_to_language (language_tag);
     const char *lang_str = *language ? hb_language_to_string (*language) : nullptr;
-    if (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
+    如果 (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
     {
       unsigned char *buf;
       size_t len = strlen (lang_str);
       buf = (unsigned char *) hb_malloc (len + 16);
-      if (unlikely (!buf))
+      如果 (unlikely (!buf))
       {
 	*language = nullptr;
       }
-      else
+      否则
       {
-	int shift;
+	整数 shift;
 	hb_memcpy (buf, lang_str, len);
-	if (lang_str[0] != 'x' || lang_str[1] != '-') {
+	如果 (lang_str[0] != 'x' || lang_str[1] != '-') {
 	  buf[len++] = '-';
 	  buf[len++] = 'x';
 	}
@@ -692,7 +692,7 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 	buf[len++] = 's';
 	buf[len++] = 'c';
 	buf[len++] = '-';
-	for (shift = 28; shift >= 0; shift -= 4)
+	为 (shift = 28; shift >= 0; shift -= 4)
 	  buf[len++] = TOHEX (script_tag >> shift);
 	*language = hb_language_from_string ((char *) buf, len);
 	hb_free (buf);
@@ -705,10 +705,10 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 static inline void
 test_langs_sorted ()
 {
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages2); i++)
+  为 (unsigned 整数 i = 1; i < ARRAY_LENGTH (ot_languages2); i++)
   {
-    int c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
-    if (c > 0)
+    整数 c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
+    如果 (c > 0)
     {
       fprintf (stderr, "ot_languages2 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages2[i-1].language, c, ot_languages2[i].language);
@@ -716,28 +716,28 @@ test_langs_sorted ()
     }
   }
 #ifndef HB_NO_LANGUAGE_LONG
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3); i++)
+  为 (unsigned 整数 i = 1; i < ARRAY_LENGTH (ot_languages3); i++)
   {
-    int c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
-    if (c > 0)
+    整数 c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
+    如果 (c > 0)
     {
       fprintf (stderr, "ot_languages3 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3[i-1].language, c, ot_languages3[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_multi); i++)
+  为 (unsigned 整数 i = 1; i < ARRAY_LENGTH (ot_languages3_multi); i++)
   {
-    int c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
-    if (c > 0)
+    整数 c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
+    如果 (c > 0)
     {
       fprintf (stderr, "ot_languages3_multi not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3_multi[i-1].language, c, ot_languages3_multi[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_blocked); i++)
-    if (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
+  为 (unsigned 整数 i = 1; i < ARRAY_LENGTH (ot_languages3_blocked); i++)
+    如果 (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
     {
       fprintf (stderr, "ot_languages3_blocked not sorted at index %u: %08x < %08x\n",
 	       i, ot_languages3_blocked[i], ot_languages3_blocked[i - 1]);
@@ -746,11 +746,11 @@ test_langs_sorted ()
 #endif
 }
 
-int
-main ()
+整数
+主要 ()
 {
   test_langs_sorted ();
-  return 0;
+  返回 0;
 }
 
 #endif

@@ -55,8 +55,8 @@ hb_cairo_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		  void *user_data HB_UNUSED)
 {
   hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  如果 (unlikely (!c->spend (HB_BUDGET_1)))
+    返回;
 
   cairo_move_to (c->cr, (double) to_x, (double) to_y);
 }
@@ -69,8 +69,8 @@ hb_cairo_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		  void *user_data HB_UNUSED)
 {
   hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  如果 (unlikely (!c->spend (HB_BUDGET_1)))
+    返回;
 
   cairo_line_to (c->cr, (double) to_x, (double) to_y);
 }
@@ -85,8 +85,8 @@ hb_cairo_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		   void *user_data HB_UNUSED)
 {
   hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  如果 (unlikely (!c->spend (HB_BUDGET_1)))
+    返回;
 
   cairo_curve_to (c->cr,
                   (double) control1_x, (double) control1_y,
@@ -101,8 +101,8 @@ hb_cairo_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		     void *user_data HB_UNUSED)
 {
   hb_cairo_context_t *c = (hb_cairo_context_t *) draw_data;
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return;
+  如果 (unlikely (!c->spend (HB_BUDGET_1)))
+    返回;
 
   cairo_close_path (c->cr);
 }
@@ -113,7 +113,7 @@ hb_cairo_draw_set_budget (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			  int64_t budget,
 			  void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) draw_data)->set_budget (budget);
+  返回 ((hb_cairo_context_t *) draw_data)->set_budget (budget);
 }
 
 static int64_t
@@ -121,7 +121,7 @@ hb_cairo_draw_get_budget (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			  void *draw_data,
 			  void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) draw_data)->get_budget ();
+  返回 ((hb_cairo_context_t *) draw_data)->get_budget ();
 }
 
 static int64_t *
@@ -129,7 +129,7 @@ hb_cairo_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
 				    void *draw_data,
 				    void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) draw_data)->get_budget_remaining ();
+  返回 ((hb_cairo_context_t *) draw_data)->get_budget_remaining ();
 }
 
 static inline void free_static_cairo_draw_funcs ();
@@ -152,7 +152,7 @@ static struct hb_cairo_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb
 
     hb_atexit (free_static_cairo_draw_funcs);
 
-    return funcs;
+    返回 funcs;
   }
 } static_cairo_draw_funcs;
 
@@ -165,7 +165,7 @@ void free_static_cairo_draw_funcs ()
 static hb_draw_funcs_t *
 hb_cairo_draw_get_funcs ()
 {
-  return static_cairo_draw_funcs.get_unconst ();
+  返回 static_cairo_draw_funcs.get_unconst ();
 }
 
 
@@ -235,8 +235,8 @@ hb_cairo_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
   hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
   cairo_t *cr = c->cr;
 
-  if (unlikely (!c->spend (HB_BUDGET_1)))
-    return true;
+  如果 (unlikely (!c->spend (HB_BUDGET_1)))
+    返回 true;
 
   cairo_save (cr);
 
@@ -251,7 +251,7 @@ hb_cairo_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
 
   cairo_restore (cr);
 
-  return true;
+  返回 true;
 }
 
 static void
@@ -301,7 +301,7 @@ hb_cairo_push_clip_path_start (hb_paint_funcs_t *pfuncs HB_UNUSED,
   cairo_save (cr);
   cairo_new_path (cr);
   *draw_data = c;
-  return hb_cairo_draw_get_funcs ();
+  返回 hb_cairo_draw_get_funcs ();
 }
 
 static void
@@ -382,7 +382,7 @@ hb_cairo_paint_image (hb_paint_funcs_t *pfuncs HB_UNUSED,
 {
   hb_cairo_context_t *c = (hb_cairo_context_t *) paint_data;
 
-  return _hb_cairo_paint_glyph_image (c, blob, width, height, format, slant, extents);
+  返回 _hb_cairo_paint_glyph_image (c, blob, width, height, format, slant, extents);
 }
 
 static void
@@ -436,7 +436,7 @@ _hb_cairo_destroy_map (void *p)
 static hb_bool_t
 hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
                                      void *paint_data,
-                                     unsigned int color_index,
+                                     unsigned 整数 color_index,
                                      hb_color_t *color,
                                      void *user_data HB_UNUSED)
 {
@@ -448,12 +448,12 @@ hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
 
   hb_map_t *color_cache = c->color_cache;
   hb_codepoint_t *v;
-  if (likely (color_cache && color_cache->has (color_index, &v)))
+  如果 (likely (color_cache && color_cache->has (color_index, &v)))
   {
-    if (*v == HB_DEADBEEF)
-      return false;
+    如果 (*v == HB_DEADBEEF)
+      返回 false;
     *color = *v;
-    return true;
+    返回 true;
   }
 
   cairo_font_options_t *options;
@@ -461,7 +461,7 @@ hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
 
   options = cairo_font_options_create ();
   cairo_get_font_options (cr, options);
-  if (CAIRO_STATUS_SUCCESS ==
+  如果 (CAIRO_STATUS_SUCCESS ==
       cairo_font_options_get_custom_palette_color (options, color_index,
                                                    &red, &green, &blue, &alpha))
   {
@@ -471,21 +471,21 @@ hb_cairo_paint_custom_palette_color (hb_paint_funcs_t *funcs,
 		       round (255 * red),
 		       round (255 * alpha));
 
-    if (likely (color_cache && *color != HB_DEADBEEF))
+    如果 (likely (color_cache && *color != HB_DEADBEEF))
       color_cache->set (color_index, *color);
 
-    return true;
+    返回 true;
   }
   cairo_font_options_destroy (options);
 
-  if (likely (color_cache))
+  如果 (likely (color_cache))
     color_cache->set (color_index, HB_DEADBEEF);
 
 #undef HB_DEADBEEF
 
 #endif
 
-  return false;
+  返回 false;
 }
 
 static hb_bool_t
@@ -494,7 +494,7 @@ hb_cairo_paint_set_budget (hb_paint_funcs_t *pfuncs HB_UNUSED,
 			   int64_t budget,
 			   void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) paint_data)->set_budget (budget);
+  返回 ((hb_cairo_context_t *) paint_data)->set_budget (budget);
 }
 
 static int64_t
@@ -502,7 +502,7 @@ hb_cairo_paint_get_budget (hb_paint_funcs_t *pfuncs HB_UNUSED,
 			   void *paint_data,
 			   void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) paint_data)->get_budget ();
+  返回 ((hb_cairo_context_t *) paint_data)->get_budget ();
 }
 
 static int64_t *
@@ -510,7 +510,7 @@ hb_cairo_paint_get_budget_remaining (hb_paint_funcs_t *pfuncs HB_UNUSED,
 				     void *paint_data,
 				     void *user_data HB_UNUSED)
 {
-  return ((hb_cairo_context_t *) paint_data)->get_budget_remaining ();
+  返回 ((hb_cairo_context_t *) paint_data)->get_budget_remaining ();
 }
 
 static inline void free_static_cairo_paint_funcs ();
@@ -546,7 +546,7 @@ static struct hb_cairo_paint_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<
 
     hb_atexit (free_static_cairo_paint_funcs);
 
-    return funcs;
+    返回 funcs;
   }
 } static_cairo_paint_funcs;
 
@@ -559,7 +559,7 @@ void free_static_cairo_paint_funcs ()
 static hb_paint_funcs_t *
 hb_cairo_paint_get_funcs ()
 {
-  return static_cairo_paint_funcs.get_unconst ();
+  返回 static_cairo_paint_funcs.get_unconst ();
 }
 #endif
 
@@ -590,13 +590,13 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
   hb_font_t *font = (hb_font_t *) cairo_font_face_get_user_data (font_face,
 								 &hb_cairo_font_user_data_key);
 
-  if (!font)
+  如果 (!font)
   {
     hb_face_t *face = (hb_face_t *) cairo_font_face_get_user_data (font_face,
 								   &hb_cairo_face_user_data_key);
     font = hb_font_create (face);
 
-#if !defined(HB_NO_VAR) && CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1,16,0)
+#如果 !defined(HB_NO_VAR) && CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1,16,0)
     cairo_font_options_t *font_options = cairo_font_options_create ();
 
     // Set variations
@@ -604,11 +604,11 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
     const char *variations = cairo_font_options_get_variations (font_options);
     hb_vector_t<hb_variation_t> vars;
     const char *p = variations;
-    while (p && *p)
+    当 (p && *p)
     {
       const char *end = strpbrk ((char *) p, ", ");
       hb_variation_t var;
-      if (hb_variation_from_string (p, end ? end - p : -1, &var))
+      如果 (hb_variation_from_string (p, end ? end - p : -1, &var))
 	vars.push (var);
       p = end ? end + 1 : nullptr;
     }
@@ -619,7 +619,7 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
 
     // Set scale; Note: should NOT set slant, or we'll double-slant.
     unsigned scale_factor = hb_cairo_font_face_get_scale_factor (font_face);
-    if (scale_factor)
+    如果 (scale_factor)
     {
       cairo_matrix_t font_matrix;
       cairo_scaled_font_get_scale_matrix (scaled_font, &font_matrix);
@@ -631,7 +631,7 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
     auto *init_func = (hb_cairo_font_init_func_t)
 		      cairo_font_face_get_user_data (font_face,
 						     &hb_cairo_font_init_func_user_data_key);
-    if (init_func)
+    如果 (init_func)
     {
       void *user_data = cairo_font_face_get_user_data (font_face,
 						       &hb_cairo_font_init_user_data_user_data_key);
@@ -647,17 +647,17 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
 				   hb_cairo_font_destroy);
 
   hb_cairo_budget_t *budget = (hb_cairo_budget_t *) hb_malloc (sizeof (hb_cairo_budget_t));
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
+  如果 (unlikely (!budget))
+    返回 CAIRO_STATUS_NO_MEMORY;
   new (budget) hb_cairo_budget_t ();
   cairo_status_t status = cairo_scaled_font_set_user_data (scaled_font,
 						   &hb_cairo_budget_user_data_key,
 						   budget,
 						   hb_cairo_budget_destroy);
-  if (unlikely (status != CAIRO_STATUS_SUCCESS))
+  如果 (unlikely (status != CAIRO_STATUS_SUCCESS))
   {
     hb_cairo_budget_destroy (budget);
-    return status;
+    返回 status;
   }
 
   hb_position_t x_scale, y_scale;
@@ -672,24 +672,24 @@ hb_cairo_init_scaled_font (cairo_scaled_font_t  *scaled_font,
 
 #ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
   hb_map_t *color_cache = hb_map_create ();
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_scaled_font_set_user_data (scaled_font,
+  如果 (unlikely (CAIRO_STATUS_SUCCESS != cairo_scaled_font_set_user_data (scaled_font,
 									 &color_cache_key,
 									 color_cache,
 									 _hb_cairo_destroy_map)))
     hb_map_destroy (color_cache);
 #endif
 
-  return CAIRO_STATUS_SUCCESS;
+  返回 CAIRO_STATUS_SUCCESS;
 }
 
 static cairo_status_t
 hb_cairo_text_to_glyphs (cairo_scaled_font_t        *scaled_font,
 			 const char	            *utf8,
-			 int		             utf8_len,
+			 整数		             utf8_len,
 			 cairo_glyph_t	           **glyphs,
-			 int		            *num_glyphs,
+			 整数		            *num_glyphs,
 			 cairo_text_cluster_t      **clusters,
-			 int		            *num_clusters,
+			 整数		            *num_clusters,
 			 cairo_text_cluster_flags_t *cluster_flags)
 {
   hb_font_t *font = (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font,
@@ -700,7 +700,7 @@ hb_cairo_text_to_glyphs (cairo_scaled_font_t        *scaled_font,
   hb_buffer_guess_segment_properties (buffer);
   hb_shape (font, buffer, nullptr, 0);
 
-  int x_scale, y_scale;
+  整数 x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
 
   hb_cairo_glyphs_from_buffer (buffer,
@@ -714,7 +714,7 @@ hb_cairo_text_to_glyphs (cairo_scaled_font_t        *scaled_font,
 
   hb_buffer_destroy (buffer);
 
-  return CAIRO_STATUS_SUCCESS;
+  返回 CAIRO_STATUS_SUCCESS;
 }
 
 static cairo_status_t
@@ -727,8 +727,8 @@ hb_cairo_render_glyph (cairo_scaled_font_t  *scaled_font,
 								   &hb_cairo_font_user_data_key);
   hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_data (scaled_font,
 									     &hb_cairo_budget_user_data_key);
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
+  如果 (unlikely (!budget))
+    返回 CAIRO_STATUS_NO_MEMORY;
   hb_cairo_context_t c {scaled_font, cr, nullptr, budget};
 
   hb_position_t x_scale, y_scale;
@@ -737,12 +737,12 @@ hb_cairo_render_glyph (cairo_scaled_font_t  *scaled_font,
   cairo_scale (cr,
 	       +1. / (x_scale ? x_scale : 1),
 	       -1. / (y_scale ? y_scale : 1));
-  if (hb_font_draw_glyph_or_fail (font, glyph, hb_cairo_draw_get_funcs (), &c))
+  如果 (hb_font_draw_glyph_or_fail (font, glyph, hb_cairo_draw_get_funcs (), &c))
     cairo_fill (cr);
 
   // If draw fails, we still return SUCCESS, as we want empty drawing, not
   // setting the cairo object into error.
-  return CAIRO_STATUS_SUCCESS;
+  返回 CAIRO_STATUS_SUCCESS;
 }
 
 #ifdef HAVE_CAIRO_USER_FONT_FACE_SET_RENDER_COLOR_GLYPH_FUNC
@@ -757,10 +757,10 @@ hb_cairo_render_color_glyph (cairo_scaled_font_t  *scaled_font,
 								   &hb_cairo_font_user_data_key);
   hb_cairo_budget_t *budget = (hb_cairo_budget_t *) cairo_scaled_font_get_user_data (scaled_font,
 									     &hb_cairo_budget_user_data_key);
-  if (unlikely (!budget))
-    return CAIRO_STATUS_NO_MEMORY;
+  如果 (unlikely (!budget))
+    返回 CAIRO_STATUS_NO_MEMORY;
 
-  unsigned int palette = 0;
+  unsigned 整数 palette = 0;
 #ifdef CAIRO_COLOR_PALETTE_DEFAULT
   cairo_font_options_t *options = cairo_font_options_create ();
   cairo_scaled_font_get_font_options (scaled_font, options);
@@ -786,7 +786,7 @@ hb_cairo_render_color_glyph (cairo_scaled_font_t  *scaled_font,
    * CAIRO_COLOR_MODE_NO_COLOR on the font options instead. */
   hb_font_paint_glyph (font, glyph, hb_cairo_paint_get_funcs (), &c, palette, color);
 
-  return CAIRO_STATUS_SUCCESS;
+  返回 CAIRO_STATUS_SUCCESS;
 }
 
 #endif
@@ -804,13 +804,13 @@ user_font_face_create (hb_face_t *face)
   cairo_user_font_face_set_render_color_glyph_func (cairo_face, hb_cairo_render_color_glyph);
 #endif
 
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
+  如果 (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
 								       &hb_cairo_face_user_data_key,
 								       (void *) hb_face_reference (face),
 								       hb_cairo_face_destroy)))
     hb_face_destroy (face);
 
-  return cairo_face;
+  返回 cairo_face;
 }
 
 /**
@@ -835,13 +835,13 @@ hb_cairo_font_face_create_for_font (hb_font_t *font)
   auto *hb_face = hb_font_get_face (font);
   auto *cairo_face =  user_font_face_create (hb_face);
 
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
+  如果 (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (cairo_face,
 								       &hb_cairo_font_user_data_key,
 								       (void *) hb_font_reference (font),
 								       hb_cairo_font_destroy)))
     hb_font_destroy (font);
 
-  return cairo_face;
+  返回 cairo_face;
 }
 
 /**
@@ -857,7 +857,7 @@ hb_cairo_font_face_create_for_font (hb_font_t *font)
 hb_font_t *
 hb_cairo_font_face_get_font (cairo_font_face_t *font_face)
 {
-  return (hb_font_t *) cairo_font_face_get_user_data (font_face,
+  返回 (hb_font_t *) cairo_font_face_get_user_data (font_face,
 						      &hb_cairo_font_user_data_key);
 }
 
@@ -877,7 +877,7 @@ hb_cairo_font_face_create_for_face (hb_face_t *face)
 {
   hb_face_make_immutable (face);
 
-  return user_font_face_create (face);
+  返回 user_font_face_create (face);
 }
 
 /**
@@ -893,7 +893,7 @@ hb_cairo_font_face_create_for_face (hb_face_t *face)
 hb_face_t *
 hb_cairo_font_face_get_face (cairo_font_face_t *font_face)
 {
-  return (hb_face_t *) cairo_font_face_get_user_data (font_face,
+  返回 (hb_face_t *) cairo_font_face_get_user_data (font_face,
 						      &hb_cairo_face_user_data_key);
 }
 
@@ -920,7 +920,7 @@ hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
 				 &hb_cairo_font_init_func_user_data_key,
 				 (void *) func,
 				 nullptr);
-  if (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (font_face,
+  如果 (unlikely (CAIRO_STATUS_SUCCESS != cairo_font_face_set_user_data (font_face,
 								       &hb_cairo_font_init_user_data_user_data_key,
 								       (void *) user_data,
 								       destroy)) && destroy)
@@ -946,7 +946,7 @@ hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
 hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font)
 {
-  return (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font, &hb_cairo_font_user_data_key);
+  返回 (hb_font_t *) cairo_scaled_font_get_user_data (scaled_font, &hb_cairo_font_user_data_key);
 }
 
 
@@ -993,7 +993,7 @@ hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font)
  */
 void
 hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor)
+				     unsigned 整数 scale_factor)
 {
   cairo_font_face_set_user_data (font_face,
 				 &hb_cairo_scale_factor_user_data_key,
@@ -1012,10 +1012,10 @@ hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
  *
  * Since: 7.0.0
  */
-unsigned int
+unsigned 整数
 hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face)
 {
-  return (unsigned int) (uintptr_t)
+  返回 (unsigned 整数) (uintptr_t)
 	 cairo_font_face_get_user_data (font_face,
 					&hb_cairo_scale_factor_user_data_key);
 }
@@ -1082,39 +1082,39 @@ hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
 			     double x,
 			     double y,
 			     const char *utf8,
-			     int utf8_len,
+			     整数 utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
+			     unsigned 整数 *num_glyphs,
 			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
+			     unsigned 整数 *num_clusters,
 			     cairo_text_cluster_flags_t *cluster_flags)
 {
-  if (utf8 && utf8_len < 0)
+  如果 (utf8 && utf8_len < 0)
     utf8_len = strlen (utf8);
 
   unsigned orig_num_glyphs = *num_glyphs;
   *num_glyphs = hb_buffer_get_length (buffer);
   hb_glyph_info_t *hb_glyph = hb_buffer_get_glyph_infos (buffer, nullptr);
   hb_glyph_position_t *hb_position = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (orig_num_glyphs < *num_glyphs + 1)
+  如果 (orig_num_glyphs < *num_glyphs + 1)
     *glyphs = cairo_glyph_allocate (*num_glyphs + 1);
 
-  if (clusters && utf8)
+  如果 (clusters && utf8)
   {
     unsigned orig_num_clusters = *num_clusters;
     *num_clusters = *num_glyphs ? 1 : 0;
-    for (unsigned int i = 1; i < *num_glyphs; i++)
-      if (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
+    为 (unsigned 整数 i = 1; i < *num_glyphs; i++)
+      如果 (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
 	(*num_clusters)++;
-    if (orig_num_clusters < *num_clusters)
+    如果 (orig_num_clusters < *num_clusters)
       *clusters = cairo_text_cluster_allocate (*num_clusters);
   }
 
   double x_scale = x_scale_factor ? 1. / x_scale_factor : 0.;
   double y_scale = y_scale_factor ? 1. / y_scale_factor : 0.;
   double hx = 0, hy = 0;
-  int i;
-  for (i = 0; i < (int) *num_glyphs; i++)
+  整数 i;
+  为 (i = 0; i < (整数) *num_glyphs; i++)
   {
     (*glyphs)[i].index = hb_glyph[i].codepoint;
     (*glyphs)[i].x = x + ((double) hb_position->x_offset + hx) * x_scale;
@@ -1128,24 +1128,24 @@ hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
   (*glyphs)[i].x = round (hx * x_scale);
   (*glyphs)[i].y = round (hy * y_scale);
 
-  if (clusters && *num_clusters && utf8)
+  如果 (clusters && *num_clusters && utf8)
   {
     hb_memset ((void *) *clusters, 0, *num_clusters * sizeof ((*clusters)[0]));
     hb_bool_t backward = HB_DIRECTION_IS_BACKWARD (hb_buffer_get_direction (buffer));
     *cluster_flags = backward ? CAIRO_TEXT_CLUSTER_FLAG_BACKWARD : (cairo_text_cluster_flags_t) 0;
-    unsigned int cluster = 0;
+    unsigned 整数 cluster = 0;
     const char *start = utf8, *end;
     (*clusters)[cluster].num_glyphs++;
-    if (backward)
+    如果 (backward)
     {
-      for (i = *num_glyphs - 2; i >= 0; i--)
+      为 (i = *num_glyphs - 2; i >= 0; i--)
       {
-	if (hb_glyph[i].cluster != hb_glyph[i+1].cluster)
+	如果 (hb_glyph[i].cluster != hb_glyph[i+1].cluster)
 	{
 	  assert (hb_glyph[i].cluster > hb_glyph[i+1].cluster);
-	  if (utf8_clusters)
+	  如果 (utf8_clusters)
 	    end = start + hb_glyph[i].cluster - hb_glyph[i+1].cluster;
-	  else
+	  否则
 	    end = (const char *) hb_utf_offset_to_pointer<hb_utf8_t> ((const uint8_t *) start,
 								      (const uint8_t *) utf8, utf8_len,
 								      (signed) (hb_glyph[i].cluster - hb_glyph[i+1].cluster));
@@ -1157,16 +1157,16 @@ hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
       }
       (*clusters)[cluster].num_bytes = utf8 + utf8_len - start;
     }
-    else
+    否则
     {
-      for (i = 1; i < (int) *num_glyphs; i++)
+      为 (i = 1; i < (整数) *num_glyphs; i++)
       {
-	if (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
+	如果 (hb_glyph[i].cluster != hb_glyph[i-1].cluster)
 	{
 	  assert (hb_glyph[i].cluster > hb_glyph[i-1].cluster);
-	  if (utf8_clusters)
+	  如果 (utf8_clusters)
 	    end = start + hb_glyph[i].cluster - hb_glyph[i-1].cluster;
-	  else
+	  否则
 	    end = (const char *) hb_utf_offset_to_pointer<hb_utf8_t> ((const uint8_t *) start,
 								      (const uint8_t *) utf8, utf8_len,
 								      (signed) (hb_glyph[i].cluster - hb_glyph[i-1].cluster));
@@ -1179,7 +1179,7 @@ hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
       (*clusters)[cluster].num_bytes = utf8 + utf8_len - start;
     }
   }
-  else if (num_clusters)
+  否则 如果 (num_clusters)
     *num_clusters = 0;
 }
 

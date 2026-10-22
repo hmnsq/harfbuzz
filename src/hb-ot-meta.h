@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#如果 !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -58,10 +58,10 @@ typedef enum {
   _HB_OT_META_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_meta_tag_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned 整数
 hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
+			   unsigned 整数      start_offset,
+			   unsigned 整数     *entries_count, /* IN/OUT.  May be NULL. */
 			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_blob_t *

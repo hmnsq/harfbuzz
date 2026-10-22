@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#如果 !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -42,7 +42,7 @@
  */
 
 /* Dummy lines to make our checks happy.  */
-#if 0
+#如果 0
 #include "hb-common.h"
 HB_BEGIN_DECLS
 HB_END_DECLS

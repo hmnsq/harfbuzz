@@ -40,26 +40,26 @@ HB_WASM_INTERFACE (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				        uint32_t num_features,
 					const char *shaper)
 {
-  if (unlikely (0 == strcmp (shaper, "wasm")))
-    return false;
+  如果 (unlikely (0 == strcmp (shaper, "wasm")))
+    返回 false;
 
   HB_REF2OBJ (font);
   HB_REF2OBJ (buffer);
 
   /* Pre-conditions that make hb_shape_full() crash should be checked here. */
 
-  if (unlikely (!buffer->ensure_unicode ()))
-    return false;
+  如果 (unlikely (!buffer->ensure_unicode ()))
+    返回 false;
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (buffer->props.direction)))
-    return false;
+  如果 (unlikely (!HB_DIRECTION_IS_VALID (buffer->props.direction)))
+    返回 false;
 
   HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features && num_features))
-    return false;
+  如果 (unlikely (!features && num_features))
+    返回 false;
 
   const char * shaper_list[] = {shaper, nullptr};
-  return hb_shape_full (font, buffer,
+  返回 hb_shape_full (font, buffer,
 			(hb_feature_t *) features, num_features,
 			shaper_list);
 }
@@ -70,41 +70,41 @@ HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
 					       ptr_d(features_t, output))
 {
   HB_PTR_PARAM (features_t, output);
-  if (unlikely (!output))
-    return false;
+  如果 (unlikely (!output))
+    返回 false;
 
   unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (num_features, sizeof (feature_t), &bytes)))
-    return false;
+  如果 (unlikely (hb_unsigned_mul_overflows (num_features, sizeof (feature_t), &bytes)))
+    返回 false;
 
-  if (!num_features)
+  如果 (!num_features)
   {
     output->length = 0;
     output->features = nullref;
-    return true;
+    返回 true;
   }
 
   HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features))
-    return false;
+  如果 (unlikely (!features))
+    返回 false;
 
   feature_t *dst = nullptr;
   uint32_t dstref = module_malloc (bytes, (void **) &dst);
-  if (unlikely (!dstref))
-    return false;
+  如果 (unlikely (!dstref))
+    返回 false;
 
   hb_memcpy (dst, features, bytes);
   output->length = num_features;
   output->features = dstref;
-  return true;
+  返回 true;
 }
 
 HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
 				    ptr_d(features_t, features))
 {
   HB_PTR_PARAM (features_t, features);
-  if (unlikely (!features))
-    return;
+  如果 (unlikely (!features))
+    返回;
 
   module_free (features->features);
   features->features = nullref;

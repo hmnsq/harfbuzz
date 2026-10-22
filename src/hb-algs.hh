@@ -42,14 +42,14 @@
 static HB_ALWAYS_INLINE void *
 hb_malloc2 (size_t nmemb, size_t size)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_malloc (nmemb * size);
+  如果 (size && nmemb > SIZE_MAX / size) 返回 nullptr;
+  返回 hb_malloc (nmemb * size);
 }
 static HB_ALWAYS_INLINE void *
 hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_realloc (ptr, nmemb * size);
+  如果 (size && nmemb > SIZE_MAX / size) 返回 nullptr;
+  返回 hb_realloc (ptr, nmemb * size);
 }
 
 /*
@@ -69,13 +69,13 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 #endif
 #define HB_MARK_AS_FLAG_T(T) \
 	extern "C++" { \
-	  static inline constexpr T operator | (T l, T r) { return T ((unsigned) l | (unsigned) r); } \
-	  static inline constexpr T operator & (T l, T r) { return T ((unsigned) l & (unsigned) r); } \
-	  static inline constexpr T operator ^ (T l, T r) { return T ((unsigned) l ^ (unsigned) r); } \
-	  static inline constexpr unsigned operator ~ (T r) { return (~(unsigned) r); } \
-	  static inline T& operator |= (T &l, T r) { l = l | r; return l; } \
-	  static inline T& operator &= (T& l, T r) { l = l & r; return l; } \
-	  static inline T& operator ^= (T& l, T r) { l = l ^ r; return l; } \
+	  static inline constexpr T operator | (T l, T r) { 返回 T ((unsigned) l | (unsigned) r); } \
+	  static inline constexpr T operator & (T l, T r) { 返回 T ((unsigned) l & (unsigned) r); } \
+	  static inline constexpr T operator ^ (T l, T r) { 返回 T ((unsigned) l ^ (unsigned) r); } \
+	  static inline constexpr unsigned operator ~ (T r) { 返回 (~(unsigned) r); } \
+	  static inline T& operator |= (T &l, T r) { l = l | r; 返回 l; } \
+	  static inline T& operator &= (T& l, T r) { l = l & r; 返回 l; } \
+	  static inline T& operator ^= (T& l, T r) { l = l ^ r; 返回 l; } \
 	} \
 	static_assert (true, "")
 
@@ -97,17 +97,17 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 
 /* Endian swap, used in Windows related backends */
 static inline constexpr uint16_t hb_uint16_swap (uint16_t v)
-{ return (v >> 8) | (v << 8); }
+{ 返回 (v >> 8) | (v << 8); }
 static inline constexpr uint32_t hb_uint32_swap (uint32_t v)
-{ return (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
+{ 返回 (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
 
 template <typename Type>
 struct __attribute__((packed)) hb_packed_t
 {
   hb_packed_t () = default;
   constexpr hb_packed_t (Type V) : v (V) {}
-  operator Type () const { return v; }
-  hb_packed_t & operator = (Type V) { v = V; return *this; }
+  operator Type () const { 返回 v; }
+  hb_packed_t & operator = (Type V) { v = V; 返回 *this; }
 
   private:
   Type v;
@@ -115,7 +115,7 @@ struct __attribute__((packed)) hb_packed_t
 
 #ifndef HB_FAST_NUM_ACCESS
 
-#if defined(__OPTIMIZE__) && \
+#如果 defined(__OPTIMIZE__) && \
     defined(__BYTE_ORDER) && \
     (__BYTE_ORDER == __BIG_ENDIAN || \
      (__BYTE_ORDER == __LITTLE_ENDIAN && \
@@ -123,19 +123,19 @@ struct __attribute__((packed)) hb_packed_t
       hb_has_builtin(__builtin_bswap32) && \
       hb_has_builtin(__builtin_bswap64)))
 #define HB_FAST_NUM_ACCESS 1
-#else
+#否则
 #define HB_FAST_NUM_ACCESS 0
 #endif
 
 // https://github.com/harfbuzz/harfbuzz/issues/5456
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
+#如果 defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
 #undef HB_FAST_NUM_ACCESS
 #define HB_FAST_NUM_ACCESS 0
 #endif
 
 #endif
 
-template <bool BE, typename Type, int Bytes = sizeof (Type)>
+template <bool BE, typename Type, 整数 Bytes = sizeof (Type)>
 struct HBInt;
 template <bool BE, typename Type>
 struct HBInt<BE, Type, 1>
@@ -143,7 +143,7 @@ struct HBInt<BE, Type, 1>
   public:
   HBInt () = default;
   constexpr HBInt (Type V) : v {uint8_t (V)} {}
-  constexpr operator Type () const { return v; }
+  constexpr operator Type () const { 返回 v; }
   private: uint8_t v;
 };
 template <bool BE, typename Type>
@@ -153,28 +153,28 @@ struct HBInt<BE, Type, 2>
   HBInt () = default;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#如果 HB_FAST_NUM_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    如果 (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint16_t> *) v) = V;
-    else
+    否则
       *((hb_packed_t<uint16_t> *) v) = __builtin_bswap16 (V);
   }
-#else
+#否则
     : v {BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >>  8) & 0xFF)} {}
 #endif
 
   constexpr operator Type () const
   {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+#如果 HB_FAST_NUM_ACCESS
+    返回 (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
       (uint16_t) *((const hb_packed_t<uint16_t> *) v)
     :
       __builtin_bswap16 ((uint16_t) *((const hb_packed_t<uint16_t> *) v))
     ;
-#else
-    return (BE ? (v[0] <<  8) : (v[0]      ))
+#否则
+    返回 (BE ? (v[0] <<  8) : (v[0]      ))
 	 + (BE ? (v[1]      ) : (v[1] <<  8));
 #endif
   }
@@ -190,7 +190,7 @@ struct HBInt<BE, Type, 3>
 				BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 				BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V      ) & 0xFF)} {}
 
-  constexpr operator Type () const { return (BE ? (v[0] << 16) : (v[0]      ))
+  constexpr operator Type () const { 返回 (BE ? (v[0] << 16) : (v[0]      ))
 					  + (BE ? (v[1] <<  8) : (v[1] <<  8))
 					  + (BE ? (v[2]      ) : (v[2] << 16)); }
   private: uint8_t v[3];
@@ -198,21 +198,21 @@ struct HBInt<BE, Type, 3>
 template <bool BE, typename Type>
 struct HBInt<BE, Type, 4>
 {
-  template <bool, typename, int>
+  template <bool, typename, 整数>
   friend struct HBFloat;
 
   public:
   HBInt () = default;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#如果 HB_FAST_NUM_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    如果 (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint32_t> *) v) = V;
-    else
+    否则
       *((hb_packed_t<uint32_t> *) v) = __builtin_bswap32 (V);
   }
-#else
+#否则
     : v {BE ? uint8_t ((V >> 24) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
@@ -220,14 +220,14 @@ struct HBInt<BE, Type, 4>
 #endif
 
   constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+#如果 HB_FAST_NUM_ACCESS
+    返回 (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
       (uint32_t) *((const hb_packed_t<uint32_t> *) v)
     :
       __builtin_bswap32 ((uint32_t) *((const hb_packed_t<uint32_t> *) v))
     ;
-#else
-    return (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
+#否则
+    返回 (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
 	 + (BE ? (uint32_t (v[1]) << 16) : (uint32_t (v[1]) <<  8))
 	 + (BE ? (uint32_t (v[2]) <<  8) : (uint32_t (v[2]) << 16))
 	 + (BE ? (uint32_t (v[3])      ) : (uint32_t (v[3]) << 24));
@@ -238,21 +238,21 @@ struct HBInt<BE, Type, 4>
 template <bool BE, typename Type>
 struct HBInt<BE, Type, 8>
 {
-  template <bool, typename, int>
+  template <bool, typename, 整数>
   friend struct HBFloat;
 
   public:
   HBInt () = default;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#如果 HB_FAST_NUM_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    如果 (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint64_t> *) v) = V;
-    else
+    否则
       *((hb_packed_t<uint64_t> *) v) = __builtin_bswap64 (V);
   }
-#else
+#否则
     : v {BE ? uint8_t ((V >> 56) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 48) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >> 40) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
@@ -264,14 +264,14 @@ struct HBInt<BE, Type, 8>
 #endif
 
   constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+#如果 HB_FAST_NUM_ACCESS
+    返回 (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
       (uint64_t) *((const hb_packed_t<uint64_t> *) v)
     :
       __builtin_bswap64 ((uint64_t) *((const hb_packed_t<uint64_t> *) v))
     ;
-#else
-    return (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
+#否则
+    返回 (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
 	 + (BE ? (uint64_t (v[1]) << 48) : (uint64_t (v[1]) <<  8))
 	 + (BE ? (uint64_t (v[2]) << 40) : (uint64_t (v[2]) << 16))
 	 + (BE ? (uint64_t (v[3]) << 32) : (uint64_t (v[3]) << 24))
@@ -286,7 +286,7 @@ struct HBInt<BE, Type, 8>
 
 /* Floats. */
 
-template <bool BE, typename Type, int Bytes>
+template <bool BE, typename Type, 整数 Bytes>
 struct HBFloat
 {
   using IntType = typename std::conditional<Bytes == 4, uint32_t, uint64_t>::type;
@@ -296,12 +296,12 @@ struct HBFloat
 
   HBFloat (Type V)
   {
-#if HB_FAST_NUM_ACCESS
+#如果 HB_FAST_NUM_ACCESS
     {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+	      如果 (BE == (__BYTE_ORDER == __BIG_ENDIAN))
 	      {
 	        *((hb_packed_t<Type> *) v) = V;
-	        return;
+	        返回;
 	      }
 	    }
 #endif
@@ -312,21 +312,21 @@ struct HBFloat
     } u = {{V}};
 
     const HBInt<BE, IntType> I = (IntType) u.i;
-    for (unsigned i = 0; i < Bytes; i++)
+    为 (unsigned i = 0; i < Bytes; i++)
       v[i] = I.v[i];
   }
 
   /* c++14 constexpr */ operator Type () const
   {
-#if HB_FAST_NUM_ACCESS
+#如果 HB_FAST_NUM_ACCESS
 	    {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
-		return (Type) *((const hb_packed_t<Type> *) v);
+	      如果 (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+		返回 (Type) *((const hb_packed_t<Type> *) v);
 	    }
 #endif
 
     HBInt<BE, IntType> I;
-    for (unsigned i = 0; i < Bytes; i++)
+    为 (unsigned i = 0; i < Bytes; i++)
       I.v[i] = v[i];
 
     union {
@@ -334,7 +334,7 @@ struct HBFloat
       hb_packed_t<Type> f;
     } u = {{I}};
 
-    return (Type) u.f;
+    返回 (Type) u.f;
   }
   private: uint8_t v[Bytes];
 };
@@ -342,10 +342,10 @@ struct HBFloat
 
 /* We want our rounding towards +infinity. */
 static inline double
-_hb_roundf (double x) { return floor (x + .5); }
+_hb_roundf (double x) { 返回 floor (x + .5); }
 
 static inline float
-_hb_roundf (float x) { return floor ((double) x + .5); }
+_hb_roundf (float x) { 返回 floor ((double) x + .5); }
 
 #define roundf(x) _hb_roundf(x)
 
@@ -354,7 +354,7 @@ hb_sincos (float rotation, float &s, float &c)
 {
 #ifdef HAVE_SINCOSF
   sincosf (rotation, &s, &c);
-#else
+#否则
   c = cosf (rotation);
   s = sinf (rotation);
 #endif
@@ -364,7 +364,7 @@ hb_sincos (double rotation, double &s, double &c)
 {
 #ifdef HAVE_SINCOS
   sincos (rotation, &s, &c);
-#else
+#否则
   c = cos (rotation);
   s = sin (rotation);
 #endif
@@ -396,24 +396,24 @@ struct
 {
   /* Like identity(), but only retains lvalue-references.  Rvalues are returned as rvalues. */
   template <typename T> constexpr T&
-  operator () (T& v) const { return v; }
+  operator () (T& v) const { 返回 v; }
 
   template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  operator () (T&& v) const { 返回 v; }
 }
 HB_FUNCOBJ (hb_lidentity);
 struct
 {
   /* Like identity(), but always returns rvalue. */
   template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  operator () (T&& v) const { 返回 v; }
 }
 HB_FUNCOBJ (hb_ridentity);
 
 struct
 {
   template <typename T> constexpr bool
-  operator () (T&& v) const { return bool (std::forward<T> (v)); }
+  operator () (T&& v) const { 返回 bool (std::forward<T> (v)); }
 }
 HB_FUNCOBJ (hb_bool);
 
@@ -462,9 +462,9 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 	uint64_t v;
 
 #ifndef HB_OPTIMIZE_SIZE
-	if (((uintptr_t) pos & 7) == 0)
+	如果 (((uintptr_t) pos & 7) == 0)
 	{
-	  while (pos != end)
+	  当 (pos != end)
 	  {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
@@ -474,10 +474,10 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 	    h *= m;
 	  }
 	}
-	else
+	否则
 #endif
 	{
-	  while (pos != end)
+	  当 (pos != end)
 	  {
 	    v  = pos++->v;
 	    h ^= fasthash_mix(v);
@@ -500,7 +500,7 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 		h *= m;
 	}
 
-	return fasthash_mix(h);
+	返回 fasthash_mix(h);
 }
 
 static inline uint32_t fasthash32(const void *buf, size_t len, uint32_t seed)
@@ -509,7 +509,7 @@ static inline uint32_t fasthash32(const void *buf, size_t len, uint32_t seed)
 	// residue, which shall retain information from both the higher
 	// and lower parts of hashcode.
         uint64_t h = fasthash64(buf, len, seed);
-	return h - (h >> 32);
+	返回 h - (h >> 32);
 }
 
 struct
@@ -591,7 +591,7 @@ struct hb_partial_t
 						   hb_declval (V),
 						   hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    返回 hb_invoke (std::forward<Appl> (a),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
@@ -603,7 +603,7 @@ struct hb_partial_t
 							    hb_declval (V),
 							    hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    返回 hb_invoke (std::forward<Appl> (a),
 		      std::forward<T0> (d0),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
@@ -640,9 +640,9 @@ auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
 #define HB_PARTIALIZE(Pos) \
   template <typename _T> \
   decltype(auto) operator () (_T&& _v) const \
-  { return hb_partial<Pos> (this, std::forward<_T> (_v)); } \
+  { 返回 hb_partial<Pos> (this, std::forward<_T> (_v)); } \
   static_assert (true, "")
-#else
+#否则
 /* https://github.com/harfbuzz/harfbuzz/issues/1724 */
 #define HB_PARTIALIZE(Pos) \
   template <typename _T> \
@@ -811,28 +811,28 @@ struct hb_pair_t
   template <typename Q1, typename Q2,
 	    hb_enable_if (hb_is_convertible (T1, Q1) &&
 			  hb_is_convertible (T2, Q2))>
-  operator hb_pair_t<Q1, Q2> () { return hb_pair_t<Q1, Q2> (first, second); }
+  operator hb_pair_t<Q1, Q2> () { 返回 hb_pair_t<Q1, Q2> (first, second); }
 
   hb_pair_t<T1, T2> reverse () const
-  { return hb_pair_t<T1, T2> (second, first); }
+  { 返回 hb_pair_t<T1, T2> (second, first); }
 
-  bool operator == (const pair_t& o) const { return first == o.first && second == o.second; }
-  bool operator != (const pair_t& o) const { return !(*this == o); }
-  bool operator < (const pair_t& o) const { return first < o.first || (first == o.first && second < o.second); }
-  bool operator >= (const pair_t& o) const { return !(*this < o); }
-  bool operator > (const pair_t& o) const { return first > o.first || (first == o.first && second > o.second); }
-  bool operator <= (const pair_t& o) const { return !(*this > o); }
+  bool operator == (const pair_t& o) const { 返回 first == o.first && second == o.second; }
+  bool operator != (const pair_t& o) const { 返回 !(*this == o); }
+  bool operator < (const pair_t& o) const { 返回 first < o.first || (first == o.first && second < o.second); }
+  bool operator >= (const pair_t& o) const { 返回 !(*this < o); }
+  bool operator > (const pair_t& o) const { 返回 first > o.first || (first == o.first && second > o.second); }
+  bool operator <= (const pair_t& o) const { 返回 !(*this > o); }
 
-  static int cmp (const void *pa, const void *pb)
+  static 整数 cmp (const void *pa, const void *pb)
   {
     pair_t *a = (pair_t *) pa;
     pair_t *b = (pair_t *) pb;
 
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->second < b->second) return -1;
-    if (a->second > b->second) return +1;
-    return 0;
+    如果 (a->first < b->first) 返回 -1;
+    如果 (a->first > b->first) 返回 +1;
+    如果 (a->second < b->second) 返回 -1;
+    如果 (a->second > b->second) 返回 +1;
+    返回 0;
   }
 
   friend void swap (hb_pair_t& a, hb_pair_t& b) noexcept
@@ -846,21 +846,21 @@ struct hb_pair_t
   T2 second;
 };
 template <typename T1, typename T2> static inline hb_pair_t<T1, T2>
-hb_pair (T1&& a, T2&& b) { return hb_pair_t<T1, T2> (a, b); }
+hb_pair (T1&& a, T2&& b) { 返回 hb_pair_t<T1, T2> (a, b); }
 
 typedef hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
 
 struct
 {
   template <typename Pair> constexpr typename Pair::first_t
-  operator () (const Pair& pair) const { return pair.first; }
+  operator () (const Pair& pair) const { 返回 pair.first; }
 }
 HB_FUNCOBJ (hb_first);
 
 struct
 {
   template <typename Pair> constexpr typename Pair::second_t
-  operator () (const Pair& pair) const { return pair.second; }
+  operator () (const Pair& pair) const { 返回 pair.second; }
 }
 HB_FUNCOBJ (hb_second);
 
@@ -897,21 +897,21 @@ hb_saturate_add (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_add_overflow)
+#如果 hb_has_builtin(__builtin_add_overflow)
   T result;
-  if (likely (!__builtin_add_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+  如果 (likely (!__builtin_add_overflow (a, b, &result)))
+    返回 result;
+#否则
+  如果 (b > 0)
   {
-    if (likely (a <= hb_int_max (T) - b))
-      return a + b;
+    如果 (likely (a <= hb_int_max (T) - b))
+      返回 a + b;
   }
-  else if (likely (a >= hb_int_min (T) - b))
-    return a + b;
+  否则 如果 (likely (a >= hb_int_min (T) - b))
+    返回 a + b;
 #endif
 
-  return a < 0 ? hb_int_min (T) : hb_int_max (T);
+  返回 a < 0 ? hb_int_min (T) : hb_int_max (T);
 }
 
 template <typename T>
@@ -920,21 +920,21 @@ hb_saturate_sub (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_sub_overflow)
+#如果 hb_has_builtin(__builtin_sub_overflow)
   T result;
-  if (likely (!__builtin_sub_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+  如果 (likely (!__builtin_sub_overflow (a, b, &result)))
+    返回 result;
+#否则
+  如果 (b > 0)
   {
-    if (likely (a >= hb_int_min (T) + b))
-      return a - b;
+    如果 (likely (a >= hb_int_min (T) + b))
+      返回 a - b;
   }
-  else if (likely (a <= hb_int_max (T) + b))
-    return a - b;
+  否则 如果 (likely (a <= hb_int_max (T) + b))
+    返回 a - b;
 #endif
 
-  return b < 0 ? hb_int_max (T) : hb_int_min (T);
+  返回 b < 0 ? hb_int_max (T) : hb_int_min (T);
 }
 
 template <typename T>
@@ -943,7 +943,7 @@ hb_saturate_neg (T a)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return hb_saturate_sub ((T) 0, a);
+  返回 hb_saturate_sub ((T) 0, a);
 }
 
 /* Convert a floating-point value to integer type T, saturating to T's
@@ -953,7 +953,7 @@ template <typename T>
 static HB_ALWAYS_INLINE T
 hb_clamp_to (double v)
 {
-  return (T) hb_clamp (v,
+  返回 (T) hb_clamp (v,
 		       (double) hb_int_min (T),
 		       (double) hb_int_max (T));
 }
@@ -964,7 +964,7 @@ hb_clamp_to (float v)
 {
   /* Widen explicitly: float cannot represent all integer bounds exactly,
    * so the clamp itself is done in double. */
-  return hb_clamp_to<T> ((double) v);
+  返回 hb_clamp_to<T> ((double) v);
 }
 
 template <typename T>
@@ -973,7 +973,7 @@ hb_clamp_to (int64_t v)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return (T) hb_clamp (v,
+  返回 (T) hb_clamp (v,
 		       (int64_t) hb_int_min (T),
 		       (int64_t) hb_int_max (T));
 }
@@ -990,209 +990,209 @@ hb_popcount8 (uint8_t v)
     0, 1, 1, 2, 1, 2, 2, 3,
     1, 2, 2, 3, 2, 3, 3, 4
   };
-  return popcount4[v & 0xF] + popcount4[v >> 4];
+  返回 popcount4[v & 0xF] + popcount4[v >> 4];
 }
 
 /* Return the number of 1 bits in v. */
 template <typename T>
-static inline unsigned int
+static inline unsigned 整数
 hb_popcount (T v)
 {
-#if hb_has_builtin(__builtin_popcount)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_popcount (v);
+#如果 hb_has_builtin(__builtin_popcount)
+  如果 (sizeof (T) <= sizeof (unsigned 整数))
+    返回 __builtin_popcount (v);
 #endif
 
-#if hb_has_builtin(__builtin_popcountl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_popcountl (v);
+#如果 hb_has_builtin(__builtin_popcountl)
+  如果 (sizeof (T) <= sizeof (unsigned long))
+    返回 __builtin_popcountl (v);
 #endif
 
-#if hb_has_builtin(__builtin_popcountll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_popcountll (v);
+#如果 hb_has_builtin(__builtin_popcountll)
+  如果 (sizeof (T) <= sizeof (unsigned long long))
+    返回 __builtin_popcountll (v);
 #endif
 
-  if (sizeof (T) <= 4)
+  如果 (sizeof (T) <= 4)
   {
     /* "HACKMEM 169" */
     uint32_t y;
     y = (v >> 1) &033333333333;
     y = v - y - ((y >>1) & 033333333333);
-    return (((y + (y >> 3)) & 030707070707) % 077);
+    返回 (((y + (y >> 3)) & 030707070707) % 077);
   }
 
-  if (sizeof (T) == 8)
+  如果 (sizeof (T) == 8)
   {
     uint64_t y = (uint64_t) v;
     y -= ((y >> 1) & 0x5555555555555555ull);
     y = (y & 0x3333333333333333ull) + (y >> 2 & 0x3333333333333333ull);
-    return ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
+    返回 ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
   }
 
-  if (sizeof (T) == 16)
+  如果 (sizeof (T) == 16)
   {
-    unsigned int shift = 64;
-    return hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
+    unsigned 整数 shift = 64;
+    返回 hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
   }
 
   assert (0);
-  return 0; /* Shut up stupid compiler. */
+  返回 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of bits needed to store number */
 template <typename T>
-static inline unsigned int
+static inline unsigned 整数
 hb_bit_storage (T v)
 {
-  if (unlikely (!v)) return 0;
+  如果 (unlikely (!v)) 返回 0;
 
-#if hb_has_builtin(__builtin_clz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return sizeof (unsigned int) * 8 - __builtin_clz (v);
+#如果 hb_has_builtin(__builtin_clz)
+  如果 (sizeof (T) <= sizeof (unsigned 整数))
+    返回 sizeof (unsigned 整数) * 8 - __builtin_clz (v);
 #endif
 
-#if hb_has_builtin(__builtin_clzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return sizeof (unsigned long) * 8 - __builtin_clzl (v);
+#如果 hb_has_builtin(__builtin_clzl)
+  如果 (sizeof (T) <= sizeof (unsigned long))
+    返回 sizeof (unsigned long) * 8 - __builtin_clzl (v);
 #endif
 
-#if hb_has_builtin(__builtin_clzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return sizeof (unsigned long long) * 8 - __builtin_clzll (v);
+#如果 hb_has_builtin(__builtin_clzll)
+  如果 (sizeof (T) <= sizeof (unsigned long long))
+    返回 sizeof (unsigned long long) * 8 - __builtin_clzll (v);
 #endif
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#如果 (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  如果 (sizeof (T) <= sizeof (unsigned 整数))
   {
     unsigned long where;
     _BitScanReverse (&where, v);
-    return 1 + where;
+    返回 1 + where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# 如果 defined(_WIN64)
+  如果 (sizeof (T) <= 8)
   {
     unsigned long where;
     _BitScanReverse64 (&where, v);
-    return 1 + where;
+    返回 1 + where;
   }
 # endif
 #endif
 
-  if (sizeof (T) <= 4)
+  如果 (sizeof (T) <= 4)
   {
     /* "bithacks" */
-    const unsigned int b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
-    const unsigned int S[] = {1, 2, 4, 8, 16};
-    unsigned int r = 0;
-    for (int i = 4; i >= 0; i--)
-      if (v & b[i])
+    const unsigned 整数 b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
+    const unsigned 整数 S[] = {1, 2, 4, 8, 16};
+    unsigned 整数 r = 0;
+    为 (整数 i = 4; i >= 0; i--)
+      如果 (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    返回 r + 1;
   }
-  if (sizeof (T) <= 8)
+  如果 (sizeof (T) <= 8)
   {
     /* "bithacks" */
     const uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
-    const unsigned int S[] = {1, 2, 4, 8, 16, 32};
-    unsigned int r = 0;
-    for (int i = 5; i >= 0; i--)
-      if (v & b[i])
+    const unsigned 整数 S[] = {1, 2, 4, 8, 16, 32};
+    unsigned 整数 r = 0;
+    为 (整数 i = 5; i >= 0; i--)
+      如果 (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    返回 r + 1;
   }
-  if (sizeof (T) == 16)
+  如果 (sizeof (T) == 16)
   {
-    unsigned int shift = 64;
-    return (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
+    unsigned 整数 shift = 64;
+    返回 (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
 			  hb_bit_storage<uint64_t> ((uint64_t) v);
   }
 
   assert (0);
-  return 0; /* Shut up stupid compiler. */
+  返回 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of zero bits in the least significant side of v */
 template <typename T>
-static inline unsigned int
+static inline unsigned 整数
 hb_ctz (T v)
 {
-  if (unlikely (!v)) return 8 * sizeof (T);
+  如果 (unlikely (!v)) 返回 8 * sizeof (T);
 
-#if hb_has_builtin(__builtin_ctz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_ctz (v);
+#如果 hb_has_builtin(__builtin_ctz)
+  如果 (sizeof (T) <= sizeof (unsigned 整数))
+    返回 __builtin_ctz (v);
 #endif
 
-#if hb_has_builtin(__builtin_ctzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_ctzl (v);
+#如果 hb_has_builtin(__builtin_ctzl)
+  如果 (sizeof (T) <= sizeof (unsigned long))
+    返回 __builtin_ctzl (v);
 #endif
 
-#if hb_has_builtin(__builtin_ctzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_ctzll (v);
+#如果 hb_has_builtin(__builtin_ctzll)
+  如果 (sizeof (T) <= sizeof (unsigned long long))
+    返回 __builtin_ctzll (v);
 #endif
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#如果 (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  如果 (sizeof (T) <= sizeof (unsigned 整数))
   {
     unsigned long where;
     _BitScanForward (&where, v);
-    return where;
+    返回 where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# 如果 defined(_WIN64)
+  如果 (sizeof (T) <= 8)
   {
     unsigned long where;
     _BitScanForward64 (&where, v);
-    return where;
+    返回 where;
   }
 # endif
 #endif
 
-  if (sizeof (T) <= 4)
+  如果 (sizeof (T) <= 4)
   {
     /* "bithacks" */
-    unsigned int c = 32;
+    unsigned 整数 c = 32;
     v &= - (int32_t) v;
-    if (v) c--;
-    if (v & 0x0000FFFF) c -= 16;
-    if (v & 0x00FF00FF) c -= 8;
-    if (v & 0x0F0F0F0F) c -= 4;
-    if (v & 0x33333333) c -= 2;
-    if (v & 0x55555555) c -= 1;
-    return c;
+    如果 (v) c--;
+    如果 (v & 0x0000FFFF) c -= 16;
+    如果 (v & 0x00FF00FF) c -= 8;
+    如果 (v & 0x0F0F0F0F) c -= 4;
+    如果 (v & 0x33333333) c -= 2;
+    如果 (v & 0x55555555) c -= 1;
+    返回 c;
   }
-  if (sizeof (T) <= 8)
+  如果 (sizeof (T) <= 8)
   {
     /* "bithacks" */
-    unsigned int c = 64;
+    unsigned 整数 c = 64;
     v &= - (int64_t) (v);
-    if (v) c--;
-    if (v & 0x00000000FFFFFFFFULL) c -= 32;
-    if (v & 0x0000FFFF0000FFFFULL) c -= 16;
-    if (v & 0x00FF00FF00FF00FFULL) c -= 8;
-    if (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
-    if (v & 0x3333333333333333ULL) c -= 2;
-    if (v & 0x5555555555555555ULL) c -= 1;
-    return c;
+    如果 (v) c--;
+    如果 (v & 0x00000000FFFFFFFFULL) c -= 32;
+    如果 (v & 0x0000FFFF0000FFFFULL) c -= 16;
+    如果 (v & 0x00FF00FF00FF00FFULL) c -= 8;
+    如果 (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
+    如果 (v & 0x3333333333333333ULL) c -= 2;
+    如果 (v & 0x5555555555555555ULL) c -= 1;
+    返回 c;
   }
-  if (sizeof (T) == 16)
+  如果 (sizeof (T) == 16)
   {
-    unsigned int shift = 64;
-    return (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
+    unsigned 整数 shift = 64;
+    返回 (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
 			  hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift;
   }
 
   assert (0);
-  return 0; /* Shut up stupid compiler. */
+  返回 0; /* Shut up stupid compiler. */
 }
 
 
@@ -1202,63 +1202,63 @@ hb_ctz (T v)
 
 /* ASCII tag/character handling */
 static inline bool ISALPHA (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+{ 返回 (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
 static inline bool ISALNUM (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
+{ 返回 (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
 static inline bool ISSPACE (unsigned char c)
-{ return c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
+{ 返回 c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
 static inline unsigned char TOUPPER (unsigned char c)
-{ return (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
+{ 返回 (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
 static inline unsigned char TOLOWER (unsigned char c)
-{ return (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
+{ 返回 (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
 static inline bool ISHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
+{ 返回 (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
 static inline unsigned char TOHEX (uint8_t c)
-{ return (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
+{ 返回 (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
 static inline uint8_t FROMHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
+{ 返回 (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
 
-static inline unsigned int DIV_CEIL (const unsigned int a, unsigned int b)
-{ return (a + (b - 1)) / b; }
+static inline unsigned 整数 DIV_CEIL (const unsigned 整数 a, unsigned 整数 b)
+{ 返回 (a + (b - 1)) / b; }
 
 
 #undef  ARRAY_LENGTH
-template <typename Type, unsigned int n>
-static inline unsigned int ARRAY_LENGTH (const Type (&)[n]) { return n; }
+template <typename Type, unsigned 整数 n>
+static inline unsigned 整数 ARRAY_LENGTH (const Type (&)[n]) { 返回 n; }
 /* A const version, but does not detect erratically being called on pointers. */
-#define ARRAY_LENGTH_CONST(__array) ((signed int) (sizeof (__array) / sizeof (__array[0])))
+#define ARRAY_LENGTH_CONST(__array) ((signed 整数) (sizeof (__array) / sizeof (__array[0])))
 
 
 static inline void *
 hb_memcpy (void *__restrict dst, const void *__restrict src, size_t len)
 {
   /* It's illegal to pass 0 as size to memcpy. */
-  if (unlikely (!len)) return dst;
-  return memcpy (dst, src, len);
+  如果 (unlikely (!len)) 返回 dst;
+  返回 memcpy (dst, src, len);
 }
 
-static inline int
-hb_memcmp (const void *a, const void *b, unsigned int len)
+static inline 整数
+hb_memcmp (const void *a, const void *b, unsigned 整数 len)
 {
   /* It's illegal to pass NULL to memcmp(), even if len is zero.
    * So, wrap it.
    * https://sourceware.org/bugzilla/show_bug.cgi?id=23878 */
-  if (unlikely (!len)) return 0;
-  return memcmp (a, b, len);
+  如果 (unlikely (!len)) 返回 0;
+  返回 memcmp (a, b, len);
 }
 
 static inline void *
-hb_memset (void *s, int c, unsigned int n)
+hb_memset (void *s, 整数 c, unsigned 整数 n)
 {
   /* It's illegal to pass NULL to memset(), even if n is zero. */
-  if (unlikely (!n)) return s;
-  return memset (s, c, n);
+  如果 (unlikely (!n)) 返回 s;
+  返回 memset (s, c, n);
 }
 
-static inline unsigned int
-hb_ceil_to_4 (unsigned int v)
+static inline unsigned 整数
+hb_ceil_to_4 (unsigned 整数 v)
 {
-  return ((v - 1) | 3) + 1;
+  返回 ((v - 1) | 3) + 1;
 }
 
 template <typename T> static inline bool
@@ -1268,17 +1268,17 @@ hb_in_range (T u, T lo, T hi)
 
   /* The casts below are important as if T is smaller than int,
    * the subtract results will become a signed int! */
-  return (T)(u - lo) <= (T)(hi - lo);
+  返回 (T)(u - lo) <= (T)(hi - lo);
 }
 template <typename T> static inline bool
 hb_in_ranges (T u, T lo1, T hi1)
 {
-  return hb_in_range (u, lo1, hi1);
+  返回 hb_in_range (u, lo1, hi1);
 }
 template <typename T, typename ...Ts> static inline bool
 hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
 {
-  return hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
+  返回 hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
 }
 
 
@@ -1287,33 +1287,33 @@ hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
  */
 
 static inline bool
-hb_unsigned_mul_overflows (unsigned int count, unsigned int size, unsigned *result = nullptr)
+hb_unsigned_mul_overflows (unsigned 整数 count, unsigned 整数 size, unsigned *result = nullptr)
 {
-#if hb_has_builtin(__builtin_mul_overflow)
+#如果 hb_has_builtin(__builtin_mul_overflow)
   unsigned stack_result;
-  if (!result)
+  如果 (!result)
     result = &stack_result;
-  return __builtin_mul_overflow (count, size, result);
+  返回 __builtin_mul_overflow (count, size, result);
 #endif
 
-  if (result)
+  如果 (result)
     *result = count * size;
-  return (size > 0) && (count >= ((unsigned int) -1) / size);
+  返回 (size > 0) && (count >= ((unsigned 整数) -1) / size);
 }
 
 static inline bool
-hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nullptr)
+hb_unsigned_add_overflows (unsigned 整数 a, unsigned 整数 b, unsigned *result = nullptr)
 {
-#if hb_has_builtin(__builtin_add_overflow)
+#如果 hb_has_builtin(__builtin_add_overflow)
   unsigned stack_result;
-  if (!result)
+  如果 (!result)
     result = &stack_result;
-  return __builtin_add_overflow (a, b, result);
+  返回 __builtin_add_overflow (a, b, result);
 #endif
 
-  if (result)
+  如果 (result)
     *result = a + b;
-  return b > (unsigned int) -1 - a;
+  返回 b > (unsigned 整数) -1 - a;
 }
 
 /* Saturating arithmetic on size_t.  On platforms where size_t is wider than
@@ -1326,32 +1326,32 @@ hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nu
 static inline size_t
 hb_unsigned_mul_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a * b;
-#if hb_has_builtin(__builtin_mul_overflow)
+  如果 (sizeof (size_t) > sizeof (unsigned 整数))
+    返回 a * b;
+#如果 hb_has_builtin(__builtin_mul_overflow)
   size_t result;
-  if (__builtin_mul_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > 0 && a > ((size_t) -1) / b) return (size_t) -1;
-  return a * b;
+  如果 (__builtin_mul_overflow (a, b, &result))
+    返回 (size_t) -1;
+  返回 result;
+#否则
+  如果 (b > 0 && a > ((size_t) -1) / b) 返回 (size_t) -1;
+  返回 a * b;
 #endif
 }
 
 static inline size_t
 hb_unsigned_add_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a + b;
-#if hb_has_builtin(__builtin_add_overflow)
+  如果 (sizeof (size_t) > sizeof (unsigned 整数))
+    返回 a + b;
+#如果 hb_has_builtin(__builtin_add_overflow)
   size_t result;
-  if (__builtin_add_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > ((size_t) -1) - a) return (size_t) -1;
-  return a + b;
+  如果 (__builtin_add_overflow (a, b, &result))
+    返回 (size_t) -1;
+  返回 result;
+#否则
+  如果 (b > ((size_t) -1) - a) 返回 (size_t) -1;
+  返回 a + b;
 #endif
 }
 
@@ -1359,18 +1359,18 @@ hb_unsigned_add_saturate (size_t a, size_t b)
 template <typename ...Ts>
 static inline size_t
 hb_unsigned_mul_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
+{ 返回 hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
 
 template <typename ...Ts>
 static inline size_t
 hb_unsigned_add_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
+{ 返回 hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
 
 /* Saturating mul-add: a * b + c.  Covers the dominant get_size() pattern
  * `count * static_size + min_size`. */
 static inline size_t
 hb_unsigned_mul_add_saturate (size_t a, size_t b, size_t c)
-{ return hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
+{ 返回 hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
 
 
 /*
@@ -1378,25 +1378,25 @@ hb_unsigned_mul_add_saturate (size_t a, size_t b, size_t c)
  */
 
 template <typename K, typename V, typename ...Ts>
-static int
+static 整数
 _hb_cmp_method (const void *pkey, const void *pval, Ts... ds)
 {
   const K& key = * (const K*) pkey;
   const V& val = * (const V*) pval;
 
-  return val.cmp (key, ds...);
+  返回 val.cmp (key, ds...);
 }
 
 template <typename K, typename V>
-static int
+static 整数
 _hb_cmp_operator (const void *pkey, const void *pval)
 {
   const K& key = * (const K*) pkey;
   const V& val = * (const V*) pval;
 
-  if (key < val) return -1;
-  if (key > val) return  1;
-  return 0;
+  如果 (key < val) 返回 -1;
+  如果 (key > val) 返回  1;
+  返回 0;
 }
 
 template <typename V, typename K, typename ...Ts>
@@ -1405,44 +1405,44 @@ static inline bool
 hb_bsearch_impl (unsigned *pos, /* Out */
 		 const K& key,
 		 V* base, size_t nmemb, size_t stride,
-		 int (*compar)(const void *_key, const void *_item, Ts... _ds),
+		 整数 (*compar)(const void *_key, const void *_item, Ts... _ds),
 		 Ts... ds)
 {
   /* This is our *only* bsearch implementation. */
 
-  int min = 0, max = (int) nmemb - 1;
-  while (min <= max)
+  整数 min = 0, max = (整数) nmemb - 1;
+  当 (min <= max)
   {
-    int mid = ((unsigned int) min + (unsigned int) max) / 2;
+    整数 mid = ((unsigned 整数) min + (unsigned 整数) max) / 2;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
     V* p = (V*) (((const char *) base) + (mid * stride));
 #pragma GCC diagnostic pop
-    int c = compar ((const void *) std::addressof (key), (const void *) p, ds...);
-    if (c < 0)
+    整数 c = compar ((const void *) std::addressof (key), (const void *) p, ds...);
+    如果 (c < 0)
       max = mid - 1;
-    else if (c > 0)
+    否则 如果 (c > 0)
       min = mid + 1;
-    else
+    否则
     {
       *pos = mid;
-      return true;
+      返回 true;
     }
   }
   *pos = min;
-  return false;
+  返回 false;
 }
 
 template <typename V, typename K>
 static inline V*
 hb_bsearch (const K& key, V* base,
 	    size_t nmemb, size_t stride = sizeof (V),
-	    int (*compar)(const void *_key, const void *_item) = _hb_cmp_method<K, V>)
+	    整数 (*compar)(const void *_key, const void *_item) = _hb_cmp_method<K, V>)
 {
   unsigned pos;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
+  返回 hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
 	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
 #pragma GCC diagnostic pop
 }
@@ -1450,13 +1450,13 @@ template <typename V, typename K, typename ...Ts>
 static inline V*
 hb_bsearch (const K& key, V* base,
 	    size_t nmemb, size_t stride,
-	    int (*compar)(const void *_key, const void *_item, Ts... _ds),
+	    整数 (*compar)(const void *_key, const void *_item, Ts... _ds),
 	    Ts... ds)
 {
   unsigned pos;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
+  返回 hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
 	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
 #pragma GCC diagnostic pop
 }
@@ -1482,17 +1482,17 @@ template <typename T, typename Compar>
 static inline void
 hb_qsort_loop (T *base, size_t nel, Compar compar)
 {
-  while (nel > 24)
+  当 (nel > 24)
   {
     T *last = base + nel - 1;
     T *mid = base + nel / 2;
 
     /* Median-of-three pivot, parked at last-1. */
-    if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
-    if (compar (*mid, *last) > 0)
+    如果 (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+    如果 (compar (*mid, *last) > 0)
     {
       hb_swap (*mid, *last);
-      if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+      如果 (compar (*base, *mid) > 0) hb_swap (*base, *mid);
     }
     hb_swap (*mid, *(last - 1));
     T &pivot = *(last - 1);
@@ -1501,11 +1501,11 @@ hb_qsort_loop (T *base, size_t nel, Compar compar)
      * median-of-three left *base <= pivot and *last >= pivot,
      * which act as sentinels. */
     T *i = base, *j = last - 1;
-    while (true)
+    当 (true)
     {
-      while (compar (*++i, pivot) < 0) {}
-      while (compar (*--j, pivot) > 0) {}
-      if (i >= j) break;
+      当 (compar (*++i, pivot) < 0) {}
+      当 (compar (*--j, pivot) > 0) {}
+      如果 (i >= j) break;
       hb_swap (*i, *j);
     }
     hb_swap (*i, *(last - 1));
@@ -1514,13 +1514,13 @@ hb_qsort_loop (T *base, size_t nel, Compar compar)
      * depth at O(log n). */
     size_t left  = (size_t) (i - base);
     size_t right = nel - left - 1;
-    if (left < right)
+    如果 (left < right)
     {
       hb_qsort_loop (base, left, compar);
       base = i + 1;
       nel  = right;
     }
-    else
+    否则
     {
       hb_qsort_loop (i + 1, right, compar);
       nel  = left;
@@ -1538,14 +1538,14 @@ hb_qsort_inline (T *base, size_t nel, Compar compar)
    * the partitioning loop, every element is within the threshold
    * of its sorted position, so this pass is O(n * threshold). */
   T *end = base + nel;
-  for (T *pi = base + 1; pi < end; pi++)
-    for (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
+  为 (T *pi = base + 1; pi < end; pi++)
+    为 (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
       hb_swap (pj[-1], pj[0]);
 }
 
 static inline void
 hb_qsort (void *base, size_t nel, size_t width,
-	  int (*compar)(const void *_a, const void *_b))
+	  整数 (*compar)(const void *_a, const void *_b))
 {
   qsort (base, nel, width, compar);
 }
@@ -1553,18 +1553,18 @@ hb_qsort (void *base, size_t nel, size_t width,
 
 
 
-template <typename T, typename T2, typename T3 = int> static inline void
-hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *), T3 *array2 = nullptr)
+template <typename T, typename T2, typename T3 = 整数> static inline void
+hb_stable_sort (T *array, unsigned 整数 len, 整数(*compar)(const T2 *, const T2 *), T3 *array2 = nullptr)
 {
   static_assert (hb_is_trivially_copy_assignable (T), "");
   static_assert (hb_is_trivially_copy_assignable (T3), "");
 
-  for (unsigned int i = 1; i < len; i++)
+  为 (unsigned 整数 i = 1; i < len; i++)
   {
-    unsigned int j = i;
-    while (j && compar (&array[j - 1], &array[i]) > 0)
+    unsigned 整数 j = i;
+    当 (j && compar (&array[j - 1], &array[i]) > 0)
       j--;
-    if (i == j)
+    如果 (i == j)
       continue;
     /* Move item i to occupy place for item j, shift what's in between. */
     {
@@ -1572,7 +1572,7 @@ hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *)
       memmove (&array[j + 1], &array[j], (i - j) * sizeof (T));
       array[j] = t;
     }
-    if (array2)
+    如果 (array2)
     {
       T3 t = array2[i];
       memmove (&array2[j + 1], &array2[j], (i - j) * sizeof (T3));
@@ -1582,16 +1582,16 @@ hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *)
 }
 
 static inline hb_bool_t
-hb_codepoint_parse (const char *s, unsigned int len, int base, hb_codepoint_t *out)
+hb_codepoint_parse (const char *s, unsigned 整数 len, 整数 base, hb_codepoint_t *out)
 {
-  unsigned int v;
+  unsigned 整数 v;
   const char *p = s;
   const char *end = p + len;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, base)))
-    return false;
+  如果 (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, base)))
+    返回 false;
 
   *out = v;
-  return true;
+  返回 true;
 }
 
 
@@ -1726,10 +1726,10 @@ double solve_itp (func_t f,
 		  double &ya, double &yb, double &y)
 {
   // Guard against degenerate interval
-  if (b - a <= 0.0)
+  如果 (b - a <= 0.0)
   {
     y = ya;
-    return a;
+    返回 a;
   }
 
   unsigned n1_2 = (unsigned) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
@@ -1738,7 +1738,7 @@ double solve_itp (func_t f,
   unsigned nmax = n0 + n1_2;
   double scaled_epsilon = epsilon * double (1llu << nmax);
   double _2_epsilon = 2.0 * epsilon;
-  while (b - a > _2_epsilon)
+  当 (b - a > _2_epsilon)
   {
     double x1_2 = 0.5 * (a + b);
     double r = scaled_epsilon - 0.5 * (b - a);
@@ -1749,28 +1749,28 @@ double solve_itp (func_t f,
     // This has k2 = 2 hardwired for efficiency.
     double b_a_k2 = b_a * b_a;
     double delta = k1 * b_a_k2;
-    int sigma_sign = sigma >= 0 ? +1 : -1;
+    整数 sigma_sign = sigma >= 0 ? +1 : -1;
     double xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
     double xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
     double yitp = f (xitp);
-    if (yitp > max_y)
+    如果 (yitp > max_y)
     {
       b = xitp;
       yb = yitp;
     }
-    else if (yitp < min_y)
+    否则 如果 (yitp < min_y)
     {
       a = xitp;
       ya = yitp;
     }
-    else
+    否则
     {
       y = yitp;
-      return xitp;
+      返回 xitp;
     }
     scaled_epsilon *= 0.5;
   }
-  return 0.5 * (a + b);
+  返回 0.5 * (a + b);
 }
 
 
@@ -1798,7 +1798,7 @@ struct hb_scope_guard_t
   hb_scope_guard_t (const hb_scope_guard_t &) = delete;
   hb_scope_guard_t &operator= (const hb_scope_guard_t &) = delete;
   hb_scope_guard_t &operator= (hb_scope_guard_t &&) = delete;
-  ~hb_scope_guard_t () { if (active) f (); }
+  ~hb_scope_guard_t () { 如果 (active) f (); }
 
   /* Release: dismiss the guard so the cleanup does NOT run.  Use
    * when transferring ownership out of the scope. */
@@ -1811,7 +1811,7 @@ struct hb_scope_guard_t
 
 template <typename F>
 static inline hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
-{ return hb_scope_guard_t<F> (std::forward<F> (f)); }
+{ 返回 hb_scope_guard_t<F> (std::forward<F> (f)); }
 
 #define HB_SCOPE_GUARD_NAME_(line) hb_scope_guard_##line
 #define HB_SCOPE_GUARD_NAME(line) HB_SCOPE_GUARD_NAME_(line)

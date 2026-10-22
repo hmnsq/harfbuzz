@@ -33,9 +33,9 @@
 #include "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#如果 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#否则
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
@@ -55,7 +55,7 @@ struct hb_vector_t
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
     alloc (lst.size (), true);
-    for (auto&& item : lst)
+    为 (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
@@ -68,21 +68,21 @@ struct hb_vector_t
   hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    如果 (unlikely (in_error ())) 返回;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    如果 (unlikely (in_error ())) 返回;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    如果 (unlikely (in_error ())) 返回;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -120,20 +120,20 @@ struct hb_vector_t
   void extend (const Iterable &o, bool exact=false)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    如果 (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
+      如果 (unlikely (!alloc (length + hb_len (iter), exact)))
+	返回;
       unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
+      为 (unsigned i = 0; i < count; i++)
 	push_has_room (*iter++);
     }
-    while (iter)
+    当 (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      如果 (unlikely (!alloc (length + 1)))
+        返回;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
+      为 (unsigned i = 0; i < room && iter; i++)
 	push_has_room (*iter++);
     }
   }
@@ -148,8 +148,8 @@ struct hb_vector_t
     bool aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    如果 (unlikely (in_error ())) 返回;
+    如果 (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
@@ -158,8 +158,8 @@ struct hb_vector_t
   { extend (o.as_array (), exact); }
 
   public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
+  整数 allocated = 0; /* < 0 means allocation failed. */
+  unsigned 整数 length = 0;
   public:
   Type *arrayZ = nullptr;
 
@@ -174,7 +174,7 @@ struct hb_vector_t
 
   void fini ()
   {
-    if (is_owned ())
+    如果 (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    如果 (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    返回 *this;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    如果 (unlikely (in_error ()))
       reset ();
-    return *this;
+    返回 *this;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, 整数 *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    如果 (!is_owned ())
+      返回 nullptr;
+    如果 (len)
       *len = length;
-    if (allocated_out)
+    如果 (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    返回 p;
   }
 
   /* Adopt a previously detached owned buffer. */
   void
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  整数 allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -236,121 +236,121 @@ struct hb_vector_t
 
   hb_vector_t& operator = (const hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    如果 (this == &o) 返回 *this;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    如果 (unlikely (in_error ())) 返回 *this;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    返回 *this;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
     hb_swap (*this, o);
-    return *this;
+    返回 *this;
   }
 
   hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  { 返回 hb_bytes_t ((const char *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  bool operator == (const hb_vector_t &o) const { 返回 as_array () == o.as_array (); }
+  bool operator != (const hb_vector_t &o) const { 返回 !(*this == o); }
+  uint32_t hash () const { 返回 as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (整数 i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned 整数 i = (unsigned 整数) i_;
+    如果 (unlikely (i >= length))
+      返回 Crap (Type);
+    返回 arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  const Type& operator [] (整数 i_) const
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned 整数 i = (unsigned 整数) i_;
+    如果 (unlikely (i >= length))
+      返回 Null (Type);
+    返回 arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { 返回 (*this)[length - 1]; }
+  const Type& tail () const { 返回 (*this)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator bool () const { 返回 length; }
+  size_t get_size () const { 返回 hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); 返回 *this; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { 返回 hb_array (arrayZ, length); }
+  c_array_t as_array () const { 返回 hb_array (arrayZ, length); }
 
   /* Iterator. */
   typedef c_array_t   iter_t;
   typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+    iter_t   iter () const { 返回 as_array (); }
+  writer_t writer ()       { 返回 as_array (); }
+  operator   iter_t () const { 返回   iter (); }
+  operator writer_t ()       { 返回 writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () const { 返回 arrayZ; }
+  Type *end () const { 返回 arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
+  { 返回 hb_sorted_array (arrayZ, length); }
   hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { 返回 hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { 返回 arrayZ; }
+  template <typename T> explicit operator const T * () const { 返回 arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned 整数 i) { 返回 arrayZ + i; }
+  const Type * operator  + (unsigned 整数 i) const { 返回 arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    如果 (unlikely (!resize (length + 1)))
+      返回 std::addressof (Crap (Type));
+    返回 std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    如果 (unlikely ((整数) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      如果 (unlikely (in_error ()))
+	返回 std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      如果 (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	如果 (unlikely (!alloc (length + 1)))
+	  返回 std::addressof (Crap (Type));
+	返回 push_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      如果 (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	返回 std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    返回 push_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool push_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    返回 push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -358,25 +358,25 @@ struct hb_vector_t
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    返回 new (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  bool in_storage () const { 返回 false; }
   template <typename T, typename... Ts>
   bool in_storage (const T &v, const Ts &...vs) const
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    返回 (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
   bool is_owned () const
   {
-    return allocated != 0 && allocated != -1;
+    返回 allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
+  bool in_error () const { 返回 allocated < 0; }
   void set_error ()
   {
     assert (allocated >= 0);
@@ -389,53 +389,53 @@ struct hb_vector_t
   }
   void ensure_error ()
   {
-    if (!in_error ())
+    如果 (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    如果 (!new_allocated)
     {
-      if (is_owned ())
+      如果 (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      返回 nullptr;
     }
-    if (!allocated && arrayZ)
+    如果 (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
       Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
+      如果 (unlikely (!new_array))
+	返回 nullptr;
       hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      返回 new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    返回 (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    如果 (!new_allocated)
     {
-      if (is_owned ())
+      如果 (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      返回 nullptr;
     }
     Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    如果 (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      为 (unsigned i = 0; i < length; i++)
       {
 	new (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      如果 (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    返回 new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    返回 _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    返回 _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,7 +458,7 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    返回 _realloc (new_allocated);
   }
 
   template <typename T = Type,
@@ -474,7 +474,7 @@ struct hb_vector_t
   void
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
+    为 (; length < size; length++)
       new (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
@@ -510,7 +510,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    为 (unsigned i = 0; i < other.length; i++)
       new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
@@ -522,7 +522,7 @@ struct hb_vector_t
   void
   copy_array (hb_array_t<const Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    为 (unsigned i = 0; i < other.length; i++)
     {
       new (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
@@ -534,11 +534,11 @@ struct hb_vector_t
   shrink_vector (unsigned size)
   {
     assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    如果 (!hb_is_trivially_destructible(Type))
     {
       unsigned count = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      当 (count--)
         (--p)->~Type ();
     }
     length = size;
@@ -547,71 +547,71 @@ struct hb_vector_t
   void
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    为 (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  bool alloc (unsigned 整数 size, bool exact=false)
   {
-    if (unlikely (in_error ()))
-      return false;
+    如果 (unlikely (in_error ()))
+      返回 false;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned 整数 new_allocated;
+    如果 (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      如果 (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	返回 true;
 
       new_allocated = size;
     }
-    else
+    否则
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      如果 (likely (size <= (unsigned) allocated))
+	返回 true;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      当 (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
     bool overflows =
-      (int) in_error () ||
+      (整数) in_error () ||
       (new_allocated < size) ||
       hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
 
-    if (unlikely (overflows))
+    如果 (unlikely (overflows))
     {
       set_error ();
-      return false;
+      返回 false;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    如果 (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      如果 (new_allocated <= (unsigned) allocated)
+        返回 true; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      返回 false;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    返回 true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  bool alloc_exact (unsigned 整数 size)
   {
-    return alloc (size, true);
+    返回 alloc (size, true);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
@@ -622,100 +622,100 @@ struct hb_vector_t
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned 整数 initialize = true)
   {
-    if (allocator)
+    如果 (allocator)
     {
       assert (!length && !allocated);
       arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      如果 (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	返回 false;
       }
-      if (initialize)
+      如果 (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      否则
 	length = size;
-      return true;
+      返回 true;
     }
-    return resize_full ((int) size, initialize, true);
+    返回 resize_full ((整数) size, initialize, true);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    如果 (unlikely (!allocate_from_pool (allocator, other.length, false)))
+      返回 false;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    返回 true;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  void shrink_back_to_pool (allocator_t *allocator, 整数 size)
   {
     unsigned orig_length = length;
 
     shrink (size, false);
 
-    if (allocator && !is_owned ())
+    如果 (allocator && !is_owned ())
       allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  bool resize_full (整数 size_, bool initialize, bool exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    如果 (unlikely (size_ < 0))
+      返回 false;
+    unsigned 整数 size = (unsigned 整数) size_;
+    如果 (!alloc (size, exact))
+      返回 false;
 
-    if (size > length)
+    如果 (size > length)
     {
-      if (initialize)
+      如果 (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    否则 如果 (size < length)
     {
-      if (initialize)
+      如果 (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    返回 true;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  bool resize (整数 size_)
   {
-    return resize_full (size_, true, false);
+    返回 resize_full (size_, true, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  bool resize_dirty (整数 size_)
   {
-    return resize_full (size_, false, false);
+    返回 resize_full (size_, false, false);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  bool resize_exact (整数 size_)
   {
-    return resize_full (size_, true, true);
+    返回 resize_full (size_, true, true);
   }
 
   Type pop ()
   {
-    if (!length) return Null (Type);
+    如果 (!length) 返回 Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    返回 v;
   }
 
-  void remove_ordered (unsigned int i)
+  void remove_ordered (unsigned 整数 i)
   {
-    if (unlikely (i >= length))
-      return;
+    如果 (unlikely (i >= length))
+      返回;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
@@ -723,25 +723,25 @@ struct hb_vector_t
 
   template <bool Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  void remove_unordered (unsigned 整数 i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    如果 (unlikely (i >= length))
+      返回;
+    如果 (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  void shrink (整数 size_, bool shrink_memory = true)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned 整数 size = size_ < 0 ? 0u : (unsigned 整数) size_;
+    如果 (size >= length)
+      返回;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    如果 (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
@@ -756,29 +756,29 @@ struct hb_vector_t
   /* Unsorted search API. */
   template <typename T>
   Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  { 返回 as_array ().lsearch (x, not_found); }
   template <typename T>
   const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  { 返回 as_array ().lsearch (x, not_found); }
   template <typename T>
   bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  { 返回 as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+  { 返回 as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
   const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+  { 返回 as_array ().bsearch (x, not_found); }
   template <typename T,
 	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  bool bfind (const T &x, unsigned 整数 *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned 整数 to_store = (unsigned 整数) -1) const
+  { 返回 as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>

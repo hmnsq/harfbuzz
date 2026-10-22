@@ -43,21 +43,21 @@ static unsigned actual_class_def_size(It glyph_and_class) {
   hb_blob_t* blob = serializer.copy_blob();
   unsigned size = hb_blob_get_length(blob);
   hb_blob_destroy(blob);
-  return size;
+  返回 size;
 }
 
 static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
   auto filtered_it =
     + consecutive_map.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+      为 (unsigned klass : classes) {
+        如果 (c == klass) {
+          返回 true;
         }
       }
-      return false;
+      返回 false;
     }, hb_second);
-  return actual_class_def_size(+ filtered_it);
+  返回 actual_class_def_size(+ filtered_it);
 }
 
 template<typename It>
@@ -71,21 +71,21 @@ static unsigned actual_coverage_size(It glyphs) {
   hb_blob_t* blob = serializer.copy_blob();
   unsigned size = hb_blob_get_length(blob);
   hb_blob_destroy(blob);
-  return size;
+  返回 size;
 }
 
 static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
   auto filtered_it =
     + consecutive_map.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+      为 (unsigned klass : classes) {
+        如果 (c == klass) {
+          返回 true;
         }
       }
-      return false;
+      返回 false;
     }, hb_second);
-  return actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
+  返回 actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
 }
 
 static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
@@ -94,11 +94,11 @@ static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
 {
   unsigned result = estimator.coverage_size();
   unsigned expected = actual_coverage_size(map, klasses);
-  if (result != expected) {
+  如果 (result != expected) {
     printf ("FAIL: estimated coverage expected size %u but was %u\n", expected, result);
-    return false;
+    返回 false;
   }
-  return true;
+  返回 true;
 }
 
 static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t& estimator,
@@ -107,12 +107,12 @@ static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t
 {
   unsigned result = estimator.add_class_def_size(klass);
   unsigned expected = actual_class_def_size(map, klasses);
-  if (result != expected) {
+  如果 (result != expected) {
     printf ("FAIL: estimated class def expected size %u but was %u\n", expected, result);
-    return false;
+    返回 false;
   }
 
-  return check_coverage_size(estimator, map, klasses);
+  返回 check_coverage_size(estimator, map, klasses);
 }
 
 static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list, unsigned klass)
@@ -123,26 +123,26 @@ static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list
   auto filtered_it =
     + list.as_sorted_array().iter()
     | hb_filter([&] (unsigned c) {
-      return c == klass;
+      返回 c == klass;
     }, hb_second);
 
   unsigned expected = actual_class_def_size(filtered_it);
-  if (result != expected)
+  如果 (result != expected)
   {
     printf ("FAIL: class def expected size %u but was %u\n", expected, result);
-    return false;
+    返回 false;
   }
 
   auto cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
   result = estimator.coverage_size ();
   expected = actual_coverage_size(cov_it);
-  if (result != expected)
+  如果 (result != expected)
   {
     printf ("FAIL: coverage expected size %u but was %u\n", expected, result);
-    return false;
+    返回 false;
   }
 
-  return true;
+  返回 true;
 }
 
 static void test_class_and_coverage_size_estimates ()
@@ -327,8 +327,8 @@ static void test_running_class_size_estimates_with_locally_consecutive_glyphs ()
   hb_always_assert(check_add_class_def_size(estimator, map, 3, {2, 3}));
 }
 
-int
-main (int argc, char **argv)
+整数
+主要 (整数 argc, char **argv)
 {
   test_class_and_coverage_size_estimates ();
   test_running_class_and_coverage_size_estimates ();

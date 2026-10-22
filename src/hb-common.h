@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#如果 !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -41,13 +41,13 @@
 # ifdef __cplusplus
 #  define HB_BEGIN_DECLS	extern "C" {
 #  define HB_END_DECLS		}
-# else /* !__cplusplus */
+# 否则 /* !__cplusplus */
 #  define HB_BEGIN_DECLS
 #  define HB_END_DECLS
 # endif /* !__cplusplus */
 #endif
 
-#if defined (_AIX)
+#如果 defined (_AIX)
 #  include <sys/inttypes.h>
 #elif defined (_MSC_VER) && _MSC_VER < 1600
 /* VS 2010 (_MSC_VER 1600) has stdint.h   */
@@ -62,24 +62,24 @@ typedef unsigned __int64 uint64_t;
 #elif defined (_MSC_VER) && _MSC_VER < 1800
 /* VS 2013 (_MSC_VER 1800) has inttypes.h */
 #  include <stdint.h>
-#else
+#否则
 #  include <inttypes.h>
 #endif
 #include <stddef.h>
 
-#if defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#如果 defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define HB_DEPRECATED __attribute__((__deprecated__))
 #elif defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define HB_DEPRECATED __declspec(deprecated)
-#else
+#否则
 #define HB_DEPRECATED
 #endif
 
-#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
+#如果 defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
 #define HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
 #elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
 #define HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
-#else
+#否则
 #define HB_DEPRECATED_FOR(f) HB_DEPRECATED
 #endif
 
@@ -92,7 +92,7 @@ HB_BEGIN_DECLS
  * Data type for booleans.
  *
  **/
-typedef int hb_bool_t;
+typedef 整数 hb_bool_t;
 
 /**
  * HB_BUDGET_DEFAULT:
@@ -231,7 +231,7 @@ typedef uint32_t hb_tag_t;
 
 /* len=-1 means str is NUL-terminated. */
 HB_EXTERN hb_tag_t
-hb_tag_from_string (const char *str, int len);
+hb_tag_from_string (const char *str, 整数 len);
 
 /* buf should have 4 bytes. */
 HB_EXTERN void
@@ -263,7 +263,7 @@ typedef enum {
 
 /* len=-1 means str is NUL-terminated */
 HB_EXTERN hb_direction_t
-hb_direction_from_string (const char *str, int len);
+hb_direction_from_string (const char *str, 整数 len);
 
 HB_EXTERN const char *
 hb_direction_to_string (hb_direction_t direction);
@@ -275,7 +275,7 @@ hb_direction_to_string (hb_direction_t direction);
  * Tests whether a text direction is valid.
  *
  **/
-#define HB_DIRECTION_IS_VALID(dir)	((((unsigned int) (dir)) & ~3U) == 4)
+#define HB_DIRECTION_IS_VALID(dir)	((((unsigned 整数) (dir)) & ~3U) == 4)
 /* Direction must be valid for the following */
 /**
  * HB_DIRECTION_IS_HORIZONTAL:
@@ -285,7 +285,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
+#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((unsigned 整数) (dir)) & ~1U) == 4)
 /**
  * HB_DIRECTION_IS_VERTICAL:
  * @dir: #hb_direction_t to test
@@ -294,7 +294,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
+#define HB_DIRECTION_IS_VERTICAL(dir)	((((unsigned 整数) (dir)) & ~1U) == 6)
 /**
  * HB_DIRECTION_IS_FORWARD:
  * @dir: #hb_direction_t to test
@@ -303,7 +303,7 @@ hb_direction_to_string (hb_direction_t direction);
  * top to bottom). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
+#define HB_DIRECTION_IS_FORWARD(dir)	((((unsigned 整数) (dir)) & ~2U) == 4)
 /**
  * HB_DIRECTION_IS_BACKWARD:
  * @dir: #hb_direction_t to test
@@ -312,7 +312,7 @@ hb_direction_to_string (hb_direction_t direction);
  * bottom to top). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
+#define HB_DIRECTION_IS_BACKWARD(dir)	((((unsigned 整数) (dir)) & ~2U) == 5)
 /**
  * HB_DIRECTION_REVERSE:
  * @dir: #hb_direction_t to reverse
@@ -321,7 +321,7 @@ hb_direction_to_string (hb_direction_t direction);
  * be valid.
  *
  **/
-#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((unsigned int) (dir)) ^ 1))
+#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((unsigned 整数) (dir)) ^ 1))
 
 
 /* hb_language_t */
@@ -336,7 +336,7 @@ hb_direction_to_string (hb_direction_t direction);
 typedef const struct hb_language_impl_t *hb_language_t;
 
 HB_EXTERN hb_language_t
-hb_language_from_string (const char *str, int len);
+hb_language_from_string (const char *str, 整数 len);
 
 HB_EXTERN const char *
 hb_language_to_string (hb_language_t language);
@@ -365,7 +365,7 @@ HB_EXTERN hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag);
 
 HB_EXTERN hb_script_t
-hb_script_from_string (const char *str, int len);
+hb_script_from_string (const char *str, 整数 len);
 
 HB_EXTERN hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script);
@@ -417,7 +417,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_END	((unsigned int) -1)
+#define HB_FEATURE_GLOBAL_END	((unsigned 整数) -1)
 
 /**
  * hb_feature_t:
@@ -437,17 +437,17 @@ typedef void (*hb_destroy_func_t) (void *user_data);
 typedef struct hb_feature_t {
   hb_tag_t      tag;
   uint32_t      value;
-  unsigned int  start;
-  unsigned int  end;
+  unsigned 整数  start;
+  unsigned 整数  end;
 } hb_feature_t;
 
 HB_EXTERN hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (const char *str, 整数 len,
 			hb_feature_t *feature);
 
 HB_EXTERN void
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size);
+		      char *buf, unsigned 整数 size);
 
 /**
  * hb_variation_t:
@@ -466,12 +466,12 @@ typedef struct hb_variation_t {
 } hb_variation_t;
 
 HB_EXTERN hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (const char *str, 整数 len,
 			  hb_variation_t *variation);
 
 HB_EXTERN void
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size);
+			char *buf, unsigned 整数 size);
 
 /**
  * hb_color_t:

@@ -36,12 +36,12 @@
 namespace OT {
 
 template <typename in_utf_t, typename out_utf_t>
-inline unsigned int
+inline unsigned 整数
 hb_ot_name_convert_utf (hb_bytes_t                       bytes,
-			unsigned int                    *text_size /* IN/OUT */,
+			unsigned 整数                    *text_size /* IN/OUT */,
 			typename out_utf_t::codepoint_t *text /* OUT */)
 {
-  unsigned int src_len = bytes.length / sizeof (typename in_utf_t::codepoint_t);
+  unsigned 整数 src_len = bytes.length / sizeof (typename in_utf_t::codepoint_t);
   const typename in_utf_t::codepoint_t *src = (const typename in_utf_t::codepoint_t *) bytes.arrayZ;
   const typename in_utf_t::codepoint_t *src_end = src + src_len;
 
@@ -50,16 +50,16 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   hb_codepoint_t unicode;
   const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
 
-  if (text_size && *text_size)
+  如果 (text_size && *text_size)
   {
     (*text_size)--; /* Save room for NUL-termination. */
     const typename out_utf_t::codepoint_t *dst_end = text + *text_size;
 
-    while (src < src_end && dst < dst_end)
+    当 (src < src_end && dst < dst_end)
     {
       const typename in_utf_t::codepoint_t *src_next = in_utf_t::next (src, src_end, &unicode, replacement);
       typename out_utf_t::codepoint_t *dst_next = out_utf_t::encode (dst, dst_end, unicode);
-      if (dst_next == dst)
+      如果 (dst_next == dst)
 	break; /* Out-of-room. */
 
       dst = dst_next;
@@ -71,13 +71,13 @@ hb_ot_name_convert_utf (hb_bytes_t                       bytes,
   }
 
   /* Accumulate length of rest. */
-  unsigned int dst_len = dst - text;
-  while (src < src_end)
+  unsigned 整数 dst_len = dst - text;
+  当 (src < src_end)
   {
     src = in_utf_t::next (src, src_end, &unicode, replacement);
     dst_len += out_utf_t::encode_len (unicode);
   }
-  return dst_len;
+  返回 dst_len;
 }
 
 #define entry_score var.u16[0]
@@ -97,49 +97,49 @@ struct NameRecord
   hb_language_t language (hb_face_t *face) const
   {
 #ifndef HB_NO_OT_NAME_LANGUAGE
-    unsigned int p = platformID;
-    unsigned int l = languageID;
+    unsigned 整数 p = platformID;
+    unsigned 整数 l = languageID;
 
-    if (p == 3)
-      return _hb_ot_name_language_for_ms_code (l);
+    如果 (p == 3)
+      返回 _hb_ot_name_language_for_ms_code (l);
 
-    if (p == 1)
-      return _hb_ot_name_language_for_mac_code (l);
+    如果 (p == 1)
+      返回 _hb_ot_name_language_for_mac_code (l);
 
 #ifndef HB_NO_OT_NAME_LANGUAGE_AAT
-    if (p == 0)
-      return face->table.ltag->get_language (l);
+    如果 (p == 0)
+      返回 face->table.ltag->get_language (l);
 #endif
 
 #endif
-    return HB_LANGUAGE_INVALID;
+    返回 HB_LANGUAGE_INVALID;
   }
 
   uint16_t score () const
   {
     /* Same order as in cmap::find_best_subtable(). */
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned 整数 p = platformID;
+    unsigned 整数 e = encodingID;
 
     /* 32-bit. */
-    if (p == 3 && e == 10) return 0;
-    if (p == 0 && e ==  6) return 1;
-    if (p == 0 && e ==  4) return 2;
+    如果 (p == 3 && e == 10) 返回 0;
+    如果 (p == 0 && e ==  6) 返回 1;
+    如果 (p == 0 && e ==  4) 返回 2;
 
     /* 16-bit. */
-    if (p == 3 && e ==  1) return 3;
-    if (p == 0 && e ==  3) return 4;
-    if (p == 0 && e ==  2) return 5;
-    if (p == 0 && e ==  1) return 6;
-    if (p == 0 && e ==  0) return 7;
+    如果 (p == 3 && e ==  1) 返回 3;
+    如果 (p == 0 && e ==  3) 返回 4;
+    如果 (p == 0 && e ==  2) 返回 5;
+    如果 (p == 0 && e ==  1) 返回 6;
+    如果 (p == 0 && e ==  0) 返回 7;
 
     /* Symbol. */
-    if (p == 3 && e ==  0) return 8;
+    如果 (p == 3 && e ==  0) 返回 8;
 
     /* We treat all Mac Latin names as ASCII only. */
-    if (p == 1 && e ==  0) return 10; /* 10 is magic number :| */
+    如果 (p == 1 && e ==  0) 返回 10; /* 10 is magic number :| */
 
-    return UNSUPPORTED;
+    返回 UNSUPPORTED;
   }
 
   NameRecord* copy (hb_serialize_context_t *c, const void *base
@@ -151,23 +151,23 @@ struct NameRecord
     TRACE_SERIALIZE (this);
     HB_UNUSED auto snap = c->snapshot ();
     auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    如果 (unlikely (!out)) return_trace (nullptr);
 #ifdef HB_EXPERIMENTAL_API
     hb_ot_name_record_ids_t record_ids (platformID, encodingID, languageID, nameID);
     hb_bytes_t* name_bytes;
 
-    if (name_table_overrides->has (record_ids, &name_bytes)) {
+    如果 (name_table_overrides->has (record_ids, &name_bytes)) {
       hb_bytes_t encoded_bytes = *name_bytes;
       char *name_str_utf16_be = nullptr;
 
-      if (platformID != 1)
+      如果 (platformID != 1)
       {
         unsigned text_size = hb_ot_name_convert_utf<hb_utf8_t, hb_utf16_be_t> (*name_bytes, nullptr, nullptr);
 
         text_size++; // needs to consider NULL terminator for use in hb_ot_name_convert_utf()
         unsigned byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
         name_str_utf16_be = (char *) hb_calloc (byte_len, 1);
-        if (!name_str_utf16_be)
+        如果 (!name_str_utf16_be)
         {
           c->revert (snap);
           return_trace (nullptr);
@@ -176,7 +176,7 @@ struct NameRecord
                                                           (hb_utf16_be_t::codepoint_t *) name_str_utf16_be);
 
         unsigned encoded_byte_len = text_size * hb_utf16_be_t::codepoint_t::static_size;
-        if (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        如果 (!encoded_byte_len || !c->check_assign (out->length, encoded_byte_len, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           hb_free (name_str_utf16_be);
           return_trace (nullptr);
@@ -184,10 +184,10 @@ struct NameRecord
 
         encoded_bytes = hb_bytes_t (name_str_utf16_be, encoded_byte_len);
       }
-      else
+      否则
       {
         // mac platform, copy the UTF-8 string(all ascii characters) as is
-        if (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
+        如果 (!c->check_assign (out->length, encoded_bytes.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) {
           c->revert (snap);
           return_trace (nullptr);
         }
@@ -199,7 +199,7 @@ struct NameRecord
       c->add_link (out->offset, c->pop_pack (), hb_serialize_context_t::Tail, 0);
       hb_free (name_str_utf16_be);
     }
-    else
+    否则
 #endif
     {
       out->offset.serialize_copy (c, offset, base, 0, hb_serialize_context_t::Tail, length);
@@ -209,34 +209,34 @@ struct NameRecord
 
   bool isUnicode () const
   {
-    unsigned int p = platformID;
-    unsigned int e = encodingID;
+    unsigned 整数 p = platformID;
+    unsigned 整数 e = encodingID;
 
-    return (p == 0 ||
+    返回 (p == 0 ||
 	    (p == 3 && (e == 0 || e == 1 || e == 10)));
   }
 
-  static int cmp (const void *pa, const void *pb)
+  static 整数 cmp (const void *pa, const void *pb)
   {
     const NameRecord *a = (const NameRecord *)pa;
     const NameRecord *b = (const NameRecord *)pb;
 
-    if (a->platformID != b->platformID)
-      return a->platformID - b->platformID;
+    如果 (a->platformID != b->platformID)
+      返回 a->platformID - b->platformID;
 
-    if (a->encodingID != b->encodingID)
-      return a->encodingID - b->encodingID;
+    如果 (a->encodingID != b->encodingID)
+      返回 a->encodingID - b->encodingID;
 
-    if (a->languageID != b->languageID)
-      return a->languageID - b->languageID;
+    如果 (a->languageID != b->languageID)
+      返回 a->languageID - b->languageID;
 
-    if (a->nameID != b->nameID)
-      return a->nameID - b->nameID;
+    如果 (a->nameID != b->nameID)
+      返回 a->nameID - b->nameID;
 
-    if (a->length != b->length)
-      return a->length - b->length;
+    如果 (a->length != b->length)
+      返回 a->length - b->length;
 
-    return 0;
+    返回 0;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -258,7 +258,7 @@ struct NameRecord
   DEFINE_SIZE_STATIC (12);
 };
 
-static int
+static 整数
 _hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
 {
   const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
@@ -266,12 +266,12 @@ _hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
 
   /* Compare by name_id, then language. */
 
-  if (a->name_id != b->name_id)
-    return a->name_id - b->name_id;
+  如果 (a->name_id != b->name_id)
+    返回 a->name_id - b->name_id;
 
-  if (a->language == b->language) return 0;
-  if (!a->language) return -1;
-  if (!b->language) return +1;
+  如果 (a->language == b->language) 返回 0;
+  如果 (!a->language) 返回 -1;
+  如果 (!b->language) 返回 +1;
 
   const char *astr = hb_language_to_string (a->language);
   const char *bstr = hb_language_to_string (b->language);
@@ -280,32 +280,32 @@ _hb_ot_name_entry_cmp_key (const void *pa, const void *pb, bool exact)
 
   // 'a' is the user request, and 'b' is string in the font.
   // If eg. user asks for "en-us" and font has "en", approve.
-  if (!exact && c &&
+  如果 (!exact && c &&
       hb_language_matches (b->language, a->language))
-    return 0;
+    返回 0;
 
-  return c;
+  返回 c;
 }
 
-static int
+static 整数
 _hb_ot_name_entry_cmp (const void *pa, const void *pb)
 {
   /* Compare by name_id, then language, then score, then index. */
 
-  int v = _hb_ot_name_entry_cmp_key (pa, pb, true);
-  if (v)
-    return v;
+  整数 v = _hb_ot_name_entry_cmp_key (pa, pb, true);
+  如果 (v)
+    返回 v;
 
   const hb_ot_name_entry_t *a = (const hb_ot_name_entry_t *) pa;
   const hb_ot_name_entry_t *b = (const hb_ot_name_entry_t *) pb;
 
-  if (a->entry_score != b->entry_score)
-    return a->entry_score - b->entry_score;
+  如果 (a->entry_score != b->entry_score)
+    返回 a->entry_score - b->entry_score;
 
-  if (a->entry_index != b->entry_index)
-    return a->entry_index - b->entry_index;
+  如果 (a->entry_index != b->entry_index)
+    返回 a->entry_index - b->entry_index;
 
-  return 0;
+  返回 0;
 }
 
 struct name
@@ -313,7 +313,7 @@ struct name
   static constexpr hb_tag_t tableTag = HB_OT_TAG_name;
 
   size_t get_size () const
-  { return min_size + count * nameRecordZ.item_size; }
+  { 返回 min_size + count * nameRecordZ.item_size; }
 
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, const NameRecord &))>
@@ -328,7 +328,7 @@ struct name
   {
     TRACE_SERIALIZE (this);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    如果 (unlikely (!c->extend_min ((*this))))  return_trace (false);
 
     unsigned total_count = it.len ()
 #ifdef HB_EXPERIMENTAL_API
@@ -336,22 +336,22 @@ struct name
 #endif
         ;
     this->format = 0;
-    if (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return false;
+    如果 (!c->check_assign (this->count, total_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      返回 false;
 
     NameRecord *name_records = (NameRecord *) hb_calloc (total_count, NameRecord::static_size);
-    if (unlikely (!name_records)) return_trace (false);
+    如果 (unlikely (!name_records)) return_trace (false);
 
     hb_array_t<NameRecord> records (name_records, total_count);
 
-    for (const NameRecord& record : it)
+    为 (const NameRecord& record : it)
     {
       hb_memcpy (name_records, &record, NameRecord::static_size);
       name_records++;
     }
 
 #ifdef HB_EXPERIMENTAL_API
-    for (unsigned i = 0; i < insert_name_records.length; i++)
+    为 (unsigned i = 0; i < insert_name_records.length; i++)
     {
       const hb_ot_name_record_ids_t& ids = insert_name_records[i];
       NameRecord record;
@@ -377,7 +377,7 @@ struct name
     hb_free (records.arrayZ);
 
 
-    if (unlikely (c->ran_out_of_room ())) return_trace (false);
+    如果 (unlikely (c->ran_out_of_room ())) return_trace (false);
 
     this->stringOffset = c->length ();
 
@@ -398,31 +398,31 @@ struct name
     | hb_filter (c->plan->name_ids, &NameRecord::nameID)
     | hb_filter (c->plan->name_languages, &NameRecord::languageID)
     | hb_filter ([&] (const NameRecord& namerecord) {
-      return
+      返回
           (c->plan->flags & HB_SUBSET_FLAGS_NAME_LEGACY)
           || namerecord.isUnicode ();
     })
 #ifdef HB_EXPERIMENTAL_API
     | hb_filter ([&] (const NameRecord& namerecord) {
-      if (name_table_overrides->is_empty ())
-        return true;
+      如果 (name_table_overrides->is_empty ())
+        返回 true;
       hb_ot_name_record_ids_t rec_ids (namerecord.platformID,
                                        namerecord.encodingID,
                                        namerecord.languageID,
                                        namerecord.nameID);
 
       hb_bytes_t *p;
-      if (name_table_overrides->has (rec_ids, &p) &&
+      如果 (name_table_overrides->has (rec_ids, &p) &&
           (*p).length == 0)
-        return false;
-      return true;
+        返回 false;
+      返回 true;
     })
 #endif
     ;
 
 #ifdef HB_EXPERIMENTAL_API
     hb_hashmap_t<hb_ot_name_record_ids_t, unsigned> retained_name_record_ids;
-    for (const NameRecord& rec : it)
+    为 (const NameRecord& rec : it)
     {
       hb_ot_name_record_ids_t rec_ids (rec.platformID,
                                        rec.encodingID,
@@ -432,22 +432,22 @@ struct name
     }
 
     hb_vector_t<hb_ot_name_record_ids_t> insert_name_records;
-    if (!name_table_overrides->is_empty ())
+    如果 (!name_table_overrides->is_empty ())
     {
-      if (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
-        return false;
-      for (const auto& record_ids : name_table_overrides->keys ())
+      如果 (unlikely (!insert_name_records.alloc (name_table_overrides->get_population (), true)))
+        返回 false;
+      为 (const auto& record_ids : name_table_overrides->keys ())
       {
-        if (name_table_overrides->get (record_ids).length == 0)
+        如果 (name_table_overrides->get (record_ids).length == 0)
           continue;
-        if (retained_name_record_ids.has (record_ids))
+        如果 (retained_name_record_ids.has (record_ids))
           continue;
         insert_name_records.push (record_ids);
       }
     }
 #endif
 
-    return name_prime->serialize (c->serializer, it,
+    返回 name_prime->serialize (c->serializer, it,
 				  std::addressof (this + stringOffset)
 #ifdef HB_EXPERIMENTAL_API
 				  , insert_name_records
@@ -487,7 +487,7 @@ struct name
 
       this->names.alloc_exact (all_names.length);
 
-      for (unsigned int i = 0; i < all_names.length; i++)
+      为 (unsigned 整数 i = 0; i < all_names.length; i++)
       {
 	hb_ot_name_entry_t *entry = this->names.push ();
 
@@ -500,13 +500,13 @@ struct name
       this->names.qsort (_hb_ot_name_entry_cmp);
       /* Walk and pick best only for each name_id,language pair,
        * while dropping unsupported encodings. */
-      unsigned int j = 0;
-      for (unsigned int i = 0; i < this->names.length; i++)
+      unsigned 整数 j = 0;
+      为 (unsigned 整数 i = 0; i < this->names.length; i++)
       {
-	if (this->names[i].entry_score == UNSUPPORTED ||
+	如果 (this->names[i].entry_score == UNSUPPORTED ||
 	    this->names[i].language == HB_LANGUAGE_INVALID)
 	  continue;
-	if (i &&
+	如果 (i &&
 	    this->names[i - 1].name_id  == this->names[i].name_id &&
 	    this->names[i - 1].language == this->names[i].language)
 	  continue;
@@ -519,9 +519,9 @@ struct name
       this->table.destroy ();
     }
 
-    int get_index (hb_ot_name_id_t  name_id,
+    整数 get_index (hb_ot_name_id_t  name_id,
 		   hb_language_t    language,
-		   unsigned int    *width=nullptr) const
+		   unsigned 整数    *width=nullptr) const
     {
       const hb_ot_name_entry_t key = {name_id, {0}, language};
       const hb_ot_name_entry_t *entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
@@ -530,7 +530,7 @@ struct name
 						    _hb_ot_name_entry_cmp_key,
 						    true);
 
-      if (!entry)
+      如果 (!entry)
       {
 	entry = hb_bsearch (key, (const hb_ot_name_entry_t *) this->names,
 			    this->names.length,
@@ -539,26 +539,26 @@ struct name
 			    false);
       }
 
-      if (!entry)
-	return -1;
+      如果 (!entry)
+	返回 -1;
 
-      if (width)
+      如果 (width)
 	*width = entry->entry_score < 10 ? 2 : 1;
 
-      return entry->entry_index;
+      返回 entry->entry_index;
     }
 
-    hb_bytes_t get_name (unsigned int idx) const
+    hb_bytes_t get_name (unsigned 整数 idx) const
     {
       const hb_array_t<const NameRecord> all_names (table->nameRecordZ.arrayZ, table->count);
       const NameRecord &record = all_names[idx];
       const hb_bytes_t string_pool (pool, pool_len);
-      return string_pool.sub_array (record.offset, record.length);
+      返回 string_pool.sub_array (record.offset, record.length);
     }
 
     private:
     const char *pool;
-    unsigned int pool_len;
+    unsigned 整数 pool_len;
     public:
     hb_blob_ptr_t<name> table;
     hb_vector_t<hb_ot_name_entry_t> names;

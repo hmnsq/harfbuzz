@@ -57,16 +57,16 @@ struct hb_priority_queue_t
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    为 (整数 i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
   void reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  bool in_error () const { 返回 heap.in_error (); }
 
   bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  { 返回 heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
@@ -74,7 +74,7 @@ struct hb_priority_queue_t
   void insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    如果 (unlikely (heap.in_error ())) 返回;
     bubble_up (heap.length - 1);
   }
 
@@ -90,40 +90,40 @@ struct hb_priority_queue_t
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    如果 (!is_empty ())
       bubble_down (0);
 
-    return result;
+    返回 result;
   }
 
   const item_t& minimum ()
   {
-    return heap[0];
+    返回 heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  bool is_empty () const { 返回 heap.length == 0; }
+  explicit operator bool () const { 返回 !is_empty (); }
+  unsigned 整数 get_population () const { 返回 heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); 返回 *this; }
 
  private:
 
   static constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    返回 (index - 1) / 2;
   }
 
   static constexpr unsigned left_child (unsigned index)
   {
-    return 2 * index + 1;
+    返回 2 * index + 1;
   }
 
   static constexpr unsigned right_child (unsigned index)
   {
-    return 2 * index + 2;
+    返回 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
@@ -136,19 +136,19 @@ struct hb_priority_queue_t
     unsigned right = right_child (index);
 
     bool has_left = left < heap.length;
-    if (!has_left)
+    如果 (!has_left)
       // If there's no left, then there's also no right.
-      return;
+      返回;
 
     bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
+    如果 (heap.arrayZ[index].first <= heap.arrayZ[left].first
         && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+      返回;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    如果 (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
       child = left;
-    else
+    否则
       child = right;
 
     swap (index, child);
@@ -162,11 +162,11 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    if (index == 0) return;
+    如果 (index == 0) 返回;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    如果 (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      返回;
 
     swap (index, parent_index);
     index = parent_index;

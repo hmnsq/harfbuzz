@@ -46,13 +46,13 @@ struct hb_sparseset_t
 
   hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
+  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); 返回 *this; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); 返回 *this; }
   friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
+    为 (auto&& item : lst)
       add (item);
   }
   template <typename Iterable,
@@ -73,25 +73,25 @@ struct hb_sparseset_t
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator bool () const { 返回 !is_empty (); }
 
   void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  bool in_error () const { 返回 s.in_error (); }
 
   void alloc (unsigned sz) { s.alloc (sz); }
   void reset () { s.reset (); }
   void clear () { s.clear (); }
   void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  bool is_inverted () const { 返回 s.is_inverted (); }
+  bool is_empty () const { 返回 s.is_empty (); }
+  uint32_t hash () const { 返回 s.hash (); }
 
   void add (hb_codepoint_t g) { s.add (g); }
   void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { 返回 s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void add_array (const T *array, unsigned 整数 count, unsigned 整数 stride=sizeof(T))
   { s.add_array (array, count, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
@@ -99,46 +99,46 @@ struct hb_sparseset_t
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned 整数 count, unsigned 整数 stride=sizeof(T))
+  { 返回 s.add_sorted_array (array, count, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { 返回 add_sorted_array (&arr, arr.len ()); }
 
   void del (hb_codepoint_t g) { s.del (g); }
   void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  bool get (hb_codepoint_t g) const { 返回 s.get (g); }
+  bool may_have (hb_codepoint_t g) const { 返回 get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  bool operator [] (hb_codepoint_t k) const { 返回 get (k); }
+  bool has (hb_codepoint_t k) const { 返回 (*this)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  bool operator () (hb_codepoint_t k) const { 返回 has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
+  { add (v); 返回 *this; }
   hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add_range (range.first, range.second); 返回 *this; }
 
   bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  { 返回 s.may_intersect (other.s); }
 
   bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  { 返回 s.intersects (other.s); }
 
   bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  { 返回 s.intersects (first, last); }
 
   void set (const hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  bool is_equal (const hb_sparseset_t &other) const { 返回 s.is_equal (other.s); }
+  bool operator == (const hb_set_t &other) const { 返回 is_equal (other); }
+  bool operator != (const hb_set_t &other) const { 返回 !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  bool is_subset (const hb_sparseset_t &larger_set) const { 返回 s.is_subset (larger_set.s); }
 
   void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
   void intersect (const hb_sparseset_t &other,
@@ -147,21 +147,21 @@ struct hb_sparseset_t
   void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
   void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
+  bool next (hb_codepoint_t *codepoint) const { 返回 s.next (codepoint); }
   bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
+  { 返回 s.next_bits (codepoint, bits); }
+  bool previous (hb_codepoint_t *codepoint) const { 返回 s.previous (codepoint); }
   bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
+  { 返回 s.next_range (first, last); }
   bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  { 返回 s.previous_range (first, last); }
+  unsigned 整数 next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned 整数 size) const
+  { 返回 s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned 整数 get_population () const { 返回 s.get_population (); }
+  bool get_singleton (hb_codepoint_t *codepoint) const { 返回 s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () const { 返回 s.get_min (); }
+  hb_codepoint_t get_max () const { 返回 s.get_max (); }
 
   static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
@@ -169,8 +169,8 @@ struct hb_sparseset_t
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () const { 返回 iter_t (this->s); }
+  operator iter_t () const { 返回 iter (); }
 };
 
 struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
@@ -189,9 +189,9 @@ struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
   hb_set_t (const Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
+  { sparseset::operator<< (v); 返回 *this; }
   hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (range); 返回 *this; }
 };
 
 static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");

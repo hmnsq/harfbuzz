@@ -64,7 +64,7 @@ hb_bool_t
 hb_segment_properties_equal (const hb_segment_properties_t *a,
 			     const hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  返回 a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned 整数
 hb_segment_properties_hash (const hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  返回 ((unsigned 整数) p->direction * 31 +
+	  (unsigned 整数) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -113,22 +113,22 @@ void
 hb_segment_properties_overlay (hb_segment_properties_t *p,
 			       const hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  如果 (unlikely (!p || !src))
+    返回;
 
-  if (!p->direction)
+  如果 (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  如果 (p->direction != src->direction)
+    返回;
 
-  if (!p->script)
+  如果 (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  如果 (p->script != src->script)
+    返回;
 
-  if (!p->language)
+  如果 (!p->language)
     p->language = src->language;
 }
 
@@ -156,30 +156,30 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 /* Internal API */
 
 bool
-hb_buffer_t::enlarge (unsigned int size)
+hb_buffer_t::enlarge (unsigned 整数 size)
 {
-  if (unlikely (size > max_len))
+  如果 (unlikely (size > max_len))
   {
     successful = false;
-    return false;
+    返回 false;
   }
 
-  if (unlikely (!successful))
-    return false;
+  如果 (unlikely (!successful))
+    返回 false;
 
-  unsigned int new_allocated = allocated;
+  unsigned 整数 new_allocated = allocated;
   hb_glyph_position_t *new_pos = nullptr;
   hb_glyph_info_t *new_info = nullptr;
   bool separate_out = out_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
+  如果 (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
     goto done;
 
-  while (size >= new_allocated)
+  当 (size >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
   unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
+  如果 (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
     goto done;
 
   static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
@@ -187,29 +187,29 @@ hb_buffer_t::enlarge (unsigned int size)
   new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
 
 done:
-  if (unlikely (!new_pos || !new_info))
+  如果 (unlikely (!new_pos || !new_info))
     successful = false;
 
-  if (likely (new_pos))
+  如果 (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  如果 (likely (new_info))
     info = new_info;
 
   out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  如果 (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  返回 likely (successful);
 }
 
 bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+hb_buffer_t::make_room_for (unsigned 整数 num_in,
+			    unsigned 整数 num_out)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  如果 (unlikely (!ensure (out_len + num_out))) 返回 false;
 
-  if (out_info == info &&
+  如果 (out_info == info &&
       out_len + num_out > idx + num_in)
   {
     assert (have_output);
@@ -218,24 +218,24 @@ hb_buffer_t::make_room_for (unsigned int num_in,
     hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
   }
 
-  return true;
+  返回 true;
 }
 
 bool
-hb_buffer_t::shift_forward (unsigned int count)
+hb_buffer_t::shift_forward (unsigned 整数 count)
 {
   assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  如果 (unlikely (!ensure (len + count))) 返回 false;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  如果 (unlikely (max_ops < 0))
   {
     successful = false;
-    return false;
+    返回 false;
   }
 
   memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  如果 (idx + count > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -248,11 +248,11 @@ hb_buffer_t::shift_forward (unsigned int count)
   len += count;
   idx += count;
 
-  return true;
+  返回 true;
 }
 
 hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_buffer_t::get_scratch_buffer (unsigned 整数 *size)
 {
   have_output = false;
   have_positions = false;
@@ -262,7 +262,7 @@ hb_buffer_t::get_scratch_buffer (unsigned int *size)
 
   assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
   *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  返回 (scratch_buffer_t *) (void *) pos;
 }
 
 
@@ -329,11 +329,11 @@ hb_buffer_t::enter ()
   serial = 0;
   scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
   unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  如果 (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
   {
     max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  如果 (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
   {
     max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
   }
@@ -350,11 +350,11 @@ hb_buffer_t::leave ()
 
 void
 hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+		  unsigned 整数    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  如果 (unlikely (!ensure (len + 1))) 返回;
 
   glyph = &info[len];
 
@@ -369,7 +369,7 @@ hb_buffer_t::add (hb_codepoint_t  codepoint,
 void
 hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  如果 (unlikely (!ensure (len + 1))) 返回;
 
   info[len] = glyph_info;
 
@@ -379,7 +379,7 @@ void
 hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
 			       const hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  如果 (unlikely (!ensure (len + 1))) 返回;
 
   info[len] = glyph_info;
   assert (have_positions);
@@ -421,10 +421,10 @@ hb_buffer_t::sync ()
 
   assert (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
+  如果 (unlikely (!successful || !next_glyphs (len - idx)))
     goto reset;
 
-  if (out_info != info)
+  如果 (out_info != info)
   {
     pos = (hb_glyph_position_t *) info;
     info = out_info;
@@ -438,10 +438,10 @@ reset:
   out_info = info;
   idx = 0;
 
-  return ret;
+  返回 ret;
 }
 
-int
+整数
 hb_buffer_t::sync_so_far ()
 {
   bool had_output = have_output;
@@ -449,12 +449,12 @@ hb_buffer_t::sync_so_far ()
   unsigned i = idx;
   unsigned old_idx = idx;
 
-  if (sync ())
+  如果 (sync ())
     idx = out_i;
-  else
+  否则
     idx = i;
 
-  if (had_output)
+  如果 (had_output)
   {
     have_output = true;
     out_len = idx;
@@ -462,43 +462,43 @@ hb_buffer_t::sync_so_far ()
 
   assert (idx <= len);
 
-  return idx - old_idx;
+  返回 idx - old_idx;
 }
 
 bool
-hb_buffer_t::move_to (unsigned int i)
+hb_buffer_t::move_to (unsigned 整数 i)
 {
-  if (!have_output)
+  如果 (!have_output)
   {
     assert (i <= len);
     idx = i;
-    return true;
+    返回 true;
   }
-  if (unlikely (!successful))
-    return false;
+  如果 (unlikely (!successful))
+    返回 false;
 
   assert (i <= out_len + (len - idx));
 
-  if (out_len < i)
+  如果 (out_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    unsigned 整数 count = i - out_len;
+    如果 (unlikely (!make_room_for (count, count))) 返回 false;
 
     max_ops -= count;
-    if (unlikely (max_ops < 0))
+    如果 (unlikely (max_ops < 0))
     {
       successful = false;
-      return false;
+      返回 false;
     }
 
     memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
     idx += count;
     out_len += count;
   }
-  else if (out_len > i)
+  否则 如果 (out_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    unsigned 整数 count = out_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,15 +507,15 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    如果 (unlikely (idx < count && !shift_forward (count - idx))) 返回 false;
 
     assert (idx >= count);
 
     max_ops -= count;
-    if (unlikely (max_ops < 0))
+    如果 (unlikely (max_ops < 0))
     {
       successful = false;
-      return false;
+      返回 false;
     }
 
     idx -= count;
@@ -523,98 +523,98 @@ hb_buffer_t::move_to (unsigned int i)
     memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
   }
 
-  return true;
+  返回 true;
 }
 
 
 void
 hb_buffer_t::set_masks (hb_mask_t    value,
 			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+			unsigned 整数 cluster_start,
+			unsigned 整数 cluster_end)
 {
-  if (!mask)
-    return;
+  如果 (!mask)
+    返回;
 
   hb_mask_t not_mask = ~mask;
   value &= mask;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
+  如果 (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int count = len;
+  unsigned 整数 count = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  如果 (cluster_start == 0 && cluster_end == (unsigned 整数) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
+    为 (unsigned 整数 i = 0; i < count; i++)
       info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    返回;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
+  为 (unsigned 整数 i = 0; i < count; i++)
+    如果 (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
       info[i].mask = (info[i].mask & not_mask) | value;
 }
 
 void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+hb_buffer_t::merge_clusters_impl (unsigned 整数 start,
+				  unsigned 整数 end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
+  如果 (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int cluster = info[start].cluster;
+  unsigned 整数 cluster = info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  为 (unsigned 整数 i = start + 1; i < end; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
+  如果 (cluster != info[end - 1].cluster)
+    当 (end < len && info[end - 1].cluster == info[end].cluster)
       end++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
+  如果 (cluster != info[start].cluster)
+    当 (idx < start && info[start - 1].cluster == info[start].cluster)
       start--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
+  如果 (idx == start && info[start].cluster != cluster)
+    为 (unsigned 整数 i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
       set_cluster (out_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  为 (unsigned 整数 i = start; i < end; i++)
     set_cluster (info[i], cluster);
 }
 void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+hb_buffer_t::merge_out_clusters_impl (unsigned 整数 start,
+				      unsigned 整数 end)
 {
   max_ops -= end - start;
-  if (unlikely (max_ops < 0))
+  如果 (unlikely (max_ops < 0))
     successful = false;
 
-  unsigned int cluster = out_info[start].cluster;
+  unsigned 整数 cluster = out_info[start].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  为 (unsigned 整数 i = start + 1; i < end; i++)
     cluster = hb_min (cluster, out_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
+  当 (start && out_info[start - 1].cluster == out_info[start].cluster)
     start--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
+  当 (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
     end++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
+  如果 (end == out_len)
+    为 (unsigned 整数 i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
       set_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
+  为 (unsigned 整数 i = start; i < end; i++)
     set_cluster (out_info[i], cluster);
 }
 void
@@ -622,28 +622,28 @@ hb_buffer_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+  unsigned 整数 cluster = info[idx].cluster;
+  如果 ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
       (out_len && cluster == out_info[out_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
     goto done;
   }
 
-  if (out_len)
+  如果 (out_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    如果 (cluster < out_info[out_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
+      unsigned 整数 mask = info[idx].mask;
+      unsigned 整数 old_cluster = out_info[out_len - 1].cluster;
+      为 (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
 	set_cluster (out_info[i - 1], cluster, mask);
     }
     goto done;
   }
 
-  if (idx + 1 < len)
+  如果 (idx + 1 < len)
   {
     /* Merge cluster forward. */
     merge_clusters (idx, idx + 2);
@@ -659,39 +659,39 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  unsigned 整数 j = 0;
+  unsigned 整数 count = len;
+  为 (unsigned 整数 i = 0; i < count; i++)
   {
-    if (filter (&info[i]))
+    如果 (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
+      unsigned 整数 cluster = info[i].cluster;
+      如果 (i + 1 < count && cluster == info[i + 1].cluster)
 	continue; /* Cluster survives; do nothing. */
 
-      if (j)
+      如果 (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	如果 (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
+	  unsigned 整数 mask = info[i].mask;
+	  unsigned 整数 old_cluster = info[j - 1].cluster;
+	  为 (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
 	    set_cluster (info[k - 1], cluster, mask);
 	}
 	continue;
       }
 
-      if (i + 1 < count)
+      如果 (i + 1 < count)
 	merge_clusters (i, i + 2); /* Merge cluster forward. */
 
       continue;
     }
 
-    if (j != i)
+    如果 (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -707,10 +707,10 @@ hb_buffer_t::guess_segment_properties ()
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  如果 (props.script == HB_SCRIPT_INVALID) {
+    为 (unsigned 整数 i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      如果 (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
@@ -720,14 +720,14 @@ hb_buffer_t::guess_segment_properties ()
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  如果 (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    如果 (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  如果 (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -779,15 +779,15 @@ hb_buffer_create ()
 {
   hb_buffer_t *buffer;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  如果 (!(buffer = hb_object_create<hb_buffer_t> ()))
+    返回 hb_buffer_get_empty ();
 
   buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
   buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
 
   buffer->reset ();
 
-  return buffer;
+  返回 buffer;
 }
 
 /**
@@ -809,7 +809,7 @@ hb_buffer_create_similar (const hb_buffer_t *src)
 
   buffer->similar (*src);
 
-  return buffer;
+  返回 buffer;
 }
 
 /**
@@ -828,8 +828,8 @@ hb_buffer_create_similar (const hb_buffer_t *src)
 void
 hb_buffer_reset (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->reset ();
 }
@@ -846,7 +846,7 @@ hb_buffer_reset (hb_buffer_t *buffer)
 hb_buffer_t *
 hb_buffer_get_empty ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  返回 const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
 }
 
 /**
@@ -864,7 +864,7 @@ hb_buffer_get_empty ()
 hb_buffer_t *
 hb_buffer_reference (hb_buffer_t *buffer)
 {
-  return hb_object_reference (buffer);
+  返回 hb_object_reference (buffer);
 }
 
 /**
@@ -880,14 +880,14 @@ hb_buffer_reference (hb_buffer_t *buffer)
 void
 hb_buffer_destroy (hb_buffer_t *buffer)
 {
-  if (!hb_object_destroy (buffer)) return;
+  如果 (!hb_object_destroy (buffer)) 返回;
 
   hb_unicode_funcs_destroy (buffer->unicode);
 
   hb_free (buffer->info);
   hb_free (buffer->pos);
 #ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
+  如果 (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 #endif
 
@@ -915,7 +915,7 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  返回 hb_object_set_user_data (buffer, key, data, destroy, replace);
 }
 
 /**
@@ -934,7 +934,7 @@ void *
 hb_buffer_get_user_data (const hb_buffer_t  *buffer,
 			 hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  返回 hb_object_get_user_data (buffer, key);
 }
 
 
@@ -978,8 +978,8 @@ void
 hb_buffer_set_content_type (hb_buffer_t              *buffer,
 			    hb_buffer_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->content_type = content_type;
 }
@@ -999,7 +999,7 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
 hb_buffer_content_type_t
 hb_buffer_get_content_type (const hb_buffer_t *buffer)
 {
-  return buffer->content_type;
+  返回 buffer->content_type;
 }
 
 
@@ -1017,10 +1017,10 @@ void
 hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
-  if (!unicode_funcs)
+  如果 (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
@@ -1041,7 +1041,7 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
 hb_unicode_funcs_t *
 hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
 {
-  return buffer->unicode;
+  返回 buffer->unicode;
 }
 
 /**
@@ -1063,8 +1063,8 @@ void
 hb_buffer_set_direction (hb_buffer_t    *buffer,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->props.direction = direction;
 }
@@ -1083,7 +1083,7 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
 hb_direction_t
 hb_buffer_get_direction (const hb_buffer_t *buffer)
 {
-  return buffer->props.direction;
+  返回 buffer->props.direction;
 }
 
 /**
@@ -1107,8 +1107,8 @@ void
 hb_buffer_set_script (hb_buffer_t *buffer,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->props.script = script;
 }
@@ -1127,7 +1127,7 @@ hb_buffer_set_script (hb_buffer_t *buffer,
 hb_script_t
 hb_buffer_get_script (const hb_buffer_t *buffer)
 {
-  return buffer->props.script;
+  返回 buffer->props.script;
 }
 
 /**
@@ -1151,8 +1151,8 @@ void
 hb_buffer_set_language (hb_buffer_t   *buffer,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->props.language = language;
 }
@@ -1171,7 +1171,7 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
 hb_language_t
 hb_buffer_get_language (const hb_buffer_t *buffer)
 {
-  return buffer->props.language;
+  返回 buffer->props.language;
 }
 
 /**
@@ -1189,8 +1189,8 @@ void
 hb_buffer_set_segment_properties (hb_buffer_t *buffer,
 				  const hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->props = *props;
 }
@@ -1225,8 +1225,8 @@ void
 hb_buffer_set_flags (hb_buffer_t       *buffer,
 		     hb_buffer_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->flags = flags;
 }
@@ -1245,7 +1245,7 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
 hb_buffer_flags_t
 hb_buffer_get_flags (const hb_buffer_t *buffer)
 {
-  return buffer->flags;
+  返回 buffer->flags;
 }
 
 /**
@@ -1263,8 +1263,8 @@ void
 hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 			     hb_buffer_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->cluster_level = cluster_level;
 }
@@ -1284,7 +1284,7 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
 hb_buffer_cluster_level_t
 hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
 {
-  return buffer->cluster_level;
+  返回 buffer->cluster_level;
 }
 
 
@@ -1304,8 +1304,8 @@ void
 hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->replacement = replacement;
 }
@@ -1325,7 +1325,7 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
 {
-  return buffer->replacement;
+  返回 buffer->replacement;
 }
 
 
@@ -1345,8 +1345,8 @@ void
 hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->invisible = invisible;
 }
@@ -1365,7 +1365,7 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->invisible;
+  返回 buffer->invisible;
 }
 
 /**
@@ -1385,8 +1385,8 @@ void
 hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 			       hb_codepoint_t  not_found)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->not_found = not_found;
 }
@@ -1405,7 +1405,7 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->not_found;
+  返回 buffer->not_found;
 }
 
 /**
@@ -1445,7 +1445,7 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
 hb_codepoint_t
 hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
 {
-  return buffer->not_found_variation_selector;
+  返回 buffer->not_found_variation_selector;
 }
 
 /**
@@ -1469,8 +1469,8 @@ void
 hb_buffer_set_random_state (hb_buffer_t    *buffer,
 			    unsigned        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->random_state = state;
 }
@@ -1489,7 +1489,7 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
 unsigned
 hb_buffer_get_random_state (const hb_buffer_t *buffer)
 {
-  return buffer->random_state;
+  返回 buffer->random_state;
 }
 
 /**
@@ -1508,8 +1508,8 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
 void
 hb_buffer_clear_contents (hb_buffer_t *buffer)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
   buffer->clear ();
 }
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned 整数 size)
 {
-  return buffer->ensure (size);
+  返回 buffer->ensure (size);
 }
 
 /**
@@ -1546,7 +1546,7 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
 hb_bool_t
 hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 {
-  return buffer->successful;
+  返回 buffer->successful;
 }
 
 /**
@@ -1569,7 +1569,7 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
 void
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       unsigned 整数    cluster)
 {
   buffer->add (codepoint, cluster);
   buffer->clear_context (1);
@@ -1590,31 +1590,31 @@ hb_buffer_add (hb_buffer_t    *buffer,
  **/
 hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+		      unsigned 整数  length)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回 length == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  如果 (unlikely (!buffer->ensure (length)))
+    返回 false;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
+  如果 (length > buffer->len) {
     hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
+    如果 (buffer->have_positions)
       hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
   }
 
   buffer->len = length;
 
-  if (!length)
+  如果 (!length)
   {
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
     buffer->clear_context (0);
   }
   buffer->clear_context (1);
 
-  return true;
+  返回 true;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned 整数
 hb_buffer_get_length (const hb_buffer_t *buffer)
 {
-  return buffer->len;
+  返回 buffer->len;
 }
 
 /**
@@ -1651,12 +1651,12 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  **/
 hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+			   unsigned 整数 *length)
 {
-  if (length)
+  如果 (length)
     *length = buffer->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  返回 (hb_glyph_info_t *) buffer->info;
 }
 
 /**
@@ -1680,20 +1680,20 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  **/
 hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+			       unsigned 整数 *length)
 {
-  if (length)
+  如果 (length)
     *length = buffer->len;
 
-  if (!buffer->have_positions)
+  如果 (!buffer->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    如果 (unlikely (buffer->message_depth))
+      返回 nullptr;
 
     buffer->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  返回 (hb_glyph_position_t *) buffer->pos;
 }
 
 /**
@@ -1712,7 +1712,7 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer)
 {
-  return buffer->have_positions;
+  返回 buffer->have_positions;
 }
 
 /**
@@ -1729,7 +1729,7 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
 hb_glyph_flags_t
 (hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  返回 hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1758,7 +1758,7 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  **/
 void
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+			 unsigned 整数 start, unsigned 整数 end)
 {
   buffer->reverse_range (start, end);
 }
@@ -1817,31 +1817,31 @@ template <typename utf_t>
 static inline void
 hb_buffer_add_utf (hb_buffer_t  *buffer,
 		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+		   整数           text_length,
+		   unsigned 整数  item_offset,
+		   整数           item_length)
 {
   typedef typename utf_t::codepoint_t T;
   const hb_codepoint_t replacement = buffer->replacement;
 
   buffer->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  如果 (unlikely (hb_object_is_immutable (buffer)))
+    返回;
 
-  if (text_length == -1)
+  如果 (text_length == -1)
     text_length = utf_t::strlen (text);
 
-  if (item_length == -1)
+  如果 (item_length == -1)
     item_length = text_length - item_offset;
 
   item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  item_length = hb_clamp (item_length, 0, text_length - (整数) item_offset);
 
-  if (unlikely (item_length < 0 ||
+  如果 (unlikely (item_length < 0 ||
 		item_length > INT_MAX / 8 ||
 		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+    返回;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,13 +1850,13 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  如果 (!buffer->len && item_offset > 0)
   {
     /* Add pre-context */
     buffer->clear_context (0);
     const T *prev = text + item_offset;
     const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    当 (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
     {
       hb_codepoint_t u;
       prev = utf_t::prev (prev, start, &u, replacement);
@@ -1866,7 +1866,7 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
 
   const T *next = text + item_offset;
   const T *end = next + item_length;
-  while (next < end)
+  当 (next < end)
   {
     hb_codepoint_t u;
     const T *old_next = next;
@@ -1877,7 +1877,7 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
   /* Add post-context */
   buffer->clear_context (1);
   end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  当 (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
   {
     hb_codepoint_t u;
     next = utf_t::next (next, end, &u, replacement);
@@ -1907,9 +1907,9 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
 void
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
 		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+		    整数           text_length,
+		    unsigned 整数  item_offset,
+		    整数           item_length)
 {
   hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
 }
@@ -1933,9 +1933,9 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
 void
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     整数             text_length,
+		     unsigned 整数    item_offset,
+		     整数             item_length)
 {
   hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1959,9 +1959,9 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 void
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+		     整数             text_length,
+		     unsigned 整数    item_offset,
+		     整数             item_length)
 {
   hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -1986,9 +1986,9 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 void
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+		      整数            text_length,
+		      unsigned 整数   item_offset,
+		      整数            item_length)
 {
   hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2022,9 +2022,9 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 void
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+			  整数                   text_length,
+			  unsigned 整数          item_offset,
+			  整数                   item_length)
 {
   hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
 }
@@ -2044,8 +2044,8 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 HB_EXTERN void
 hb_buffer_append (hb_buffer_t *buffer,
 		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+		  unsigned 整数 start,
+		  unsigned 整数 end)
 {
   assert (!buffer->have_output && !source->have_output);
   assert (buffer->have_positions == source->have_positions ||
@@ -2053,84 +2053,84 @@ hb_buffer_append (hb_buffer_t *buffer,
   assert (buffer->content_type == source->content_type ||
 	  !buffer->len || !source->len);
 
-  if (end > source->len)
+  如果 (end > source->len)
     end = source->len;
-  if (start > end)
+  如果 (start > end)
     start = end;
-  if (start == end)
-    return;
+  如果 (start == end)
+    返回;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  如果 (buffer->len + (end - start) < buffer->len) /* Overflows. */
   {
     buffer->successful = false;
-    return;
+    返回;
   }
 
-  unsigned int orig_len = buffer->len;
+  unsigned 整数 orig_len = buffer->len;
   hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  如果 (unlikely (!buffer->successful))
+    返回;
 
-  if (!orig_len)
+  如果 (!orig_len)
     buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
+  如果 (!buffer->have_positions && source->have_positions)
     buffer->clear_positions ();
 
   hb_segment_properties_overlay (&buffer->props, &source->props);
 
   hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
+  如果 (buffer->have_positions)
     hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  如果 (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    如果 (!orig_len && start + source->context_len[0] > 0)
     {
       buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+      当 (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
 	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
+      为 (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
 	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
     }
 
     /* post-context */
     buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+    当 (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
       buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
+    为 (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
       buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
   }
 }
 
 
-static int
+static 整数
 compare_info_codepoint (const hb_glyph_info_t *pa,
 			const hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  返回 (整数) pb->codepoint - (整数) pa->codepoint;
 }
 
 static inline void
 normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
+			  unsigned 整数 start,
+			  unsigned 整数 end,
 			  bool backward)
 {
   hb_glyph_position_t *pos = buffer->pos;
 
   /* Total cluster advance */
   hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  为 (unsigned 整数 i = start; i < end; i++)
   {
     total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
     total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  为 (unsigned 整数 i = start; i < end; i++)
   {
     pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
     pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
@@ -2142,18 +2142,18 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  如果 (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
     pos[end - 1].x_advance = total_x_advance;
     pos[end - 1].y_advance = total_y_advance;
 
     hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+  } 否则 {
     /* Transfer all cluster advance to the first glyph. */
     pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
     pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
+    为 (unsigned 整数 i = start + 1; i < end; i++) {
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
     }
@@ -2186,15 +2186,15 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
 }
 
 void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+hb_buffer_t::sort (unsigned 整数 start, unsigned 整数 end, 整数(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
 {
   assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  为 (unsigned 整数 i = start + 1; i < end; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    unsigned 整数 j = i;
+    当 (j > start && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
+    如果 (i == j)
       continue;
     /* Move item i to occupy place for item j, shift what's in between. */
     merge_clusters (j, i + 1);
@@ -2228,69 +2228,69 @@ hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		unsigned 整数 position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  如果 (buffer->content_type != reference->content_type && buffer->len && reference->len)
+    返回 HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
   hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
   bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  unsigned 整数 count = reference->len;
 
-  if (buffer->len != count)
+  如果 (buffer->len != count)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
     const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    unsigned 整数 i;
+    为 (i = 0; i < count; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
+      如果 (contains && info[i].codepoint == dottedcircle_glyph)
 	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
+      如果 (contains && info[i].codepoint == 0)
 	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     }
     result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    返回 hb_buffer_diff_flags_t (result);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  如果 (!count)
+    返回 hb_buffer_diff_flags_t (result);
 
   const hb_glyph_info_t *buf_info = buffer->info;
   const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  为 (unsigned 整数 i = 0; i < count; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
+    如果 (buf_info->codepoint != ref_info->codepoint)
       result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
+    如果 (buf_info->cluster != ref_info->cluster)
       result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
+    如果 ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
       result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
+    如果 (contains && ref_info->codepoint == dottedcircle_glyph)
       result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
+    如果 (contains && ref_info->codepoint == 0)
       result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  如果 (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
   {
     auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      返回 diff < 0 ? -diff : diff;
     };
     assert (buffer->have_positions);
     const hb_glyph_position_t *buf_pos = buffer->pos;
     const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    为 (unsigned 整数 i = 0; i < count; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      如果 (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
 	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
 	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
@@ -2303,7 +2303,7 @@ hb_buffer_diff (hb_buffer_t *buffer,
     }
   }
 
-  return result;
+  返回 result;
 }
 
 
@@ -2315,14 +2315,14 @@ void
 hb_buffer_t::changed ()
 {
 #ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+  返回;
+#否则
+  如果 (!message_depth)
+    返回;
 
-  if (changed_func)
+  如果 (changed_func)
     changed_func (this, changed_data);
-  else
+  否则
     update_digest ();
 #endif
 }
@@ -2347,22 +2347,22 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
 			    hb_buffer_message_func_t func,
 			    void *user_data, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
+  如果 (unlikely (hb_object_is_immutable (buffer)) ||
       unlikely (buffer->message_depth))
   {
-    if (destroy)
+    如果 (destroy)
       destroy (user_data);
-    return;
+    返回;
   }
 
-  if (buffer->message_destroy)
+  如果 (buffer->message_destroy)
     buffer->message_destroy (buffer->message_data);
 
-  if (func) {
+  如果 (func) {
     buffer->message_func = func;
     buffer->message_data = user_data;
     buffer->message_destroy = destroy;
-  } else {
+  } 否则 {
     buffer->message_func = nullptr;
     buffer->message_data = nullptr;
     buffer->message_destroy = nullptr;
@@ -2398,6 +2398,6 @@ hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
 
   message_depth--;
 
-  return ret;
+  返回 ret;
 }
 #endif

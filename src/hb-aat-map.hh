@@ -67,20 +67,20 @@ struct hb_aat_map_builder_t
     bool is_exclusive;
     unsigned  seq; /* For stable sorting only. */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static 整数 cmp (const void *pa, const void *pb)
     {
       const feature_info_t *a = (const feature_info_t *) pa;
       const feature_info_t *b = (const feature_info_t *) pb;
-      if (a->type != b->type) return (a->type < b->type ? -1 : 1);
-      if (!a->is_exclusive &&
-	  (a->setting & ~1) != (b->setting & ~1)) return (a->setting < b->setting ? -1 : 1);
-	    return (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
+      如果 (a->type != b->type) 返回 (a->type < b->type ? -1 : 1);
+      如果 (!a->is_exclusive &&
+	  (a->setting & ~1) != (b->setting & ~1)) 返回 (a->setting < b->setting ? -1 : 1);
+	    返回 (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
 
     /* compares type & setting only */
-    int cmp (const feature_info_t& f) const
+    整数 cmp (const feature_info_t& f) const
     {
-      return (f.type != type) ? (f.type < type ? -1 : 1) :
+      返回 (f.type != type) ? (f.type < type ? -1 : 1) :
 	     (f.setting != setting) ? (f.setting < setting ? -1 : 1) : 0;
     }
   };
@@ -95,14 +95,14 @@ struct hb_aat_map_builder_t
   private:
   struct feature_event_t
   {
-    unsigned int index;
+    unsigned 整数 index;
     bool start;
     feature_info_t feature;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+    HB_INTERNAL static 整数 cmp (const void *pa, const void *pb) {
       const feature_event_t *a = (const feature_event_t *) pa;
       const feature_event_t *b = (const feature_event_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 :
+      返回 a->index < b->index ? -1 : a->index > b->index ? 1 :
 	     a->start < b->start ? -1 : a->start > b->start ? 1 :
 	     feature_info_t::cmp (&a->feature, &b->feature);
     }

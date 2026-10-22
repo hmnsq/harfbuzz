@@ -56,7 +56,7 @@ struct hb_gpu_cu2qu_point_t
 static inline hb_gpu_cu2qu_point_t
 hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, double t)
 {
-  return {a.x + (b.x - a.x) * t,
+  返回 {a.x + (b.x - a.x) * t,
 	  a.y + (b.y - a.y) * t};
 }
 
@@ -71,22 +71,22 @@ hb_gpu_cubic_farthest_fit_inside (hb_gpu_cu2qu_point_t p0,
 				  hb_gpu_cu2qu_point_t p3,
 				  double tolerance, unsigned depth)
 {
-  if (hypot (p1.x, p1.y) <= tolerance &&
+  如果 (hypot (p1.x, p1.y) <= tolerance &&
       hypot (p2.x, p2.y) <= tolerance)
-    return true;
+    返回 true;
 
-  if (depth >= 8)
-    return false;
+  如果 (depth >= 8)
+    返回 false;
 
   hb_gpu_cu2qu_point_t mid = {(p0.x + 3 * (p1.x + p2.x) + p3.x) * 0.125,
 			      (p0.y + 3 * (p1.y + p2.y) + p3.y) * 0.125};
-  if (hypot (mid.x, mid.y) > tolerance)
-    return false;
+  如果 (hypot (mid.x, mid.y) > tolerance)
+    返回 false;
 
   hb_gpu_cu2qu_point_t d3 = {(p3.x + p2.x - p1.x - p0.x) * 0.125,
 			     (p3.y + p2.y - p1.y - p0.y) * 0.125};
 
-  return hb_gpu_cubic_farthest_fit_inside (
+  返回 hb_gpu_cubic_farthest_fit_inside (
     p0,
     hb_gpu_cu2qu_lerp (p0, p1, 0.5),
     {mid.x - d3.x, mid.y - d3.y},
@@ -119,8 +119,8 @@ hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
   double px = -ay, py = ax;
 
   double denom = px * dx + py * dy;
-  if (fabs (denom) < 1e-12)
-    return false;
+  如果 (fabs (denom) < 1e-12)
+    返回 false;
 
   double h = (px * (c0.x - c2.x) + py * (c0.y - c2.y)) / denom;
 
@@ -132,7 +132,7 @@ hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
   hb_gpu_cu2qu_point_t err2 = {c3.x + (q1->x - c3.x) * (2.0 / 3.0) - c2.x,
 			       c3.y + (q1->y - c3.y) * (2.0 / 3.0) - c2.y};
 
-  return hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
+  返回 hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
 }
 
 
@@ -171,16 +171,16 @@ hb_gpu_cubic_to_quadratics (hb_gpu_draw_t *g,
 			    double tolerance, unsigned depth)
 {
   hb_gpu_cu2qu_point_t q1;
-  if (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
+  如果 (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
   {
     g->acc_conic_to (q1.x, q1.y, c3.x, c3.y);
-    return;
+    返回;
   }
 
-  if (depth >= HB_GPU_CU2QU_MAX_DEPTH)
+  如果 (depth >= HB_GPU_CU2QU_MAX_DEPTH)
   {
     g->acc_line_to (c3.x, c3.y);
-    return;
+    返回;
   }
 
   hb_gpu_cu2qu_point_t pts[7];

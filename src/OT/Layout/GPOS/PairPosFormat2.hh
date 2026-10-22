@@ -19,19 +19,19 @@ void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
                                      unsigned class2_count,
                                      const ValueRecord &values)
 {
-  if (!coverage.intersects (c->glyph_set) ||
-      !class_def2.intersects (c->glyph_set)) return;
-  if ((!valueFormat1.has_device ()) && (!valueFormat2.has_device ())) return;
+  如果 (!coverage.intersects (c->glyph_set) ||
+      !class_def2.intersects (c->glyph_set)) 返回;
+  如果 ((!valueFormat1.has_device ()) && (!valueFormat2.has_device ())) 返回;
 
   hb_set_t klass1_glyphs, klass2_glyphs;
-  if (!class_def1.collect_coverage (&klass1_glyphs)) return;
-  if (!class_def2.collect_coverage (&klass2_glyphs)) return;
+  如果 (!class_def1.collect_coverage (&klass1_glyphs)) 返回;
+  如果 (!class_def2.collect_coverage (&klass2_glyphs)) 返回;
 
   hb_set_t class1_set, class2_set;
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
+  为 (const unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
   {
-    if (!klass1_glyphs.has (cp)) class1_set.add (0);
-    else
+    如果 (!klass1_glyphs.has (cp)) class1_set.add (0);
+    否则
     {
       unsigned klass1 = class_def1.get (cp);
       class1_set.add (klass1);
@@ -39,29 +39,29 @@ void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
   }
 
   class2_set.add (0);
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
+  为 (const unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
   {
     unsigned klass2 = class_def2.get (cp);
     class2_set.add (klass2);
   }
 
-  if (class1_set.is_empty ()
+  如果 (class1_set.is_empty ()
       || class2_set.is_empty ()
       || (class2_set.get_population() == 1 && class2_set.has(0)))
-    return;
+    返回;
 
   unsigned len1 = valueFormat1.get_len ();
   unsigned len2 = valueFormat2.get_len ();
   const hb_array_t<const Value> values_array = values.as_array ((unsigned)class1_count * (unsigned) class2_count * (len1 + len2));
-  for (const unsigned class1_idx : class1_set.iter ())
+  为 (const unsigned class1_idx : class1_set.iter ())
   {
-    for (const unsigned class2_idx : class2_set.iter ())
+    为 (const unsigned class2_idx : class2_set.iter ())
     {
       unsigned start_offset = (class1_idx * (unsigned) class2_count + class2_idx) * (len1 + len2);
-      if (valueFormat1.has_device ())
+      如果 (valueFormat1.has_device ())
         valueFormat1.collect_variation_indices (c, base, values_array.sub_array (start_offset, len1));
 
-      if (valueFormat2.has_device ())
+      如果 (valueFormat2.has_device ())
         valueFormat2.collect_variation_indices (c, base, values_array.sub_array (start_offset+len1, len2));
     }
   }
@@ -80,7 +80,7 @@ struct pair_pos_class_values_t
   hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_map_t &klass1_map,
                                                                const hb_map_t &klass2_map,
                                                                bool strip_hints, bool strip_empty,
-                                                               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+                                                               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> *varidx_delta_map = nullptr) const
   {
     unsigned len1 = valueFormat1.get_len ();
     unsigned len2 = valueFormat2.get_len ();
@@ -89,21 +89,21 @@ struct pair_pos_class_values_t
     unsigned format1 = 0;
     unsigned format2 = 0;
 
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    为 (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : + hb_range (class2_count) | hb_filter (klass2_map))
+      为 (unsigned class2_idx : + hb_range (class2_count) | hb_filter (klass2_map))
       {
         unsigned idx = (class1_idx * class2_count + class2_idx) * record_size;
         format1 = format1 | valueFormat1.get_effective_format (&values[idx], strip_hints, strip_empty, base, varidx_delta_map);
         format2 = format2 | valueFormat2.get_effective_format (&values[idx + len1], strip_hints, strip_empty, base, varidx_delta_map);
       }
 
-      if (!varidx_delta_map &&
+      如果 (!varidx_delta_map &&
           format1 == valueFormat1 && format2 == valueFormat2)
         break;
     }
 
-    return hb_pair (format1, format2);
+    返回 hb_pair (format1, format2);
   }
 
   bool serialize (hb_subset_context_t *c,
@@ -116,11 +116,11 @@ struct pair_pos_class_values_t
     unsigned len2 = valueFormat2.get_len ();
     unsigned total_len = len1 + len2;
     hb_vector_t<unsigned> class2_idxs (+ hb_range (class2_count) | hb_filter (klass2_map));
-    if (unlikely (!c->serializer->propagate_error (class2_idxs)))
-      return false;
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    如果 (unlikely (!c->serializer->propagate_error (class2_idxs)))
+      返回 false;
+    为 (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : class2_idxs)
+      为 (unsigned class2_idx : class2_idxs)
       {
         unsigned idx = (class1_idx * class2_count + class2_idx) * total_len;
         valueFormat1.copy_values (c->serializer, newFormat1, base, &values[idx], &c->plan->layout_variation_idx_delta_map);
@@ -128,7 +128,7 @@ struct pair_pos_class_values_t
       }
     }
 
-    return true;
+    返回 true;
   }
 };
 
@@ -167,15 +167,15 @@ struct PairPosFormat2_4 : ValueBase
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!(c->check_struct (this)
+    如果 (!(c->check_struct (this)
        && coverage.sanitize (c, this)
        && classDef1.sanitize (c, this)
        && classDef2.sanitize (c, this))) return_trace (false);
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int stride = HBUINT16::static_size * (len1 + len2);
-    unsigned int count = (unsigned int) class1Count * (unsigned int) class2Count;
+    unsigned 整数 len1 = valueFormat1.get_len ();
+    unsigned 整数 len2 = valueFormat2.get_len ();
+    unsigned 整数 stride = HBUINT16::static_size * (len1 + len2);
+    unsigned 整数 count = (unsigned 整数) class1Count * (unsigned 整数) class2Count;
     return_trace (c->check_range ((const void *) values,
                                   count,
                                   stride) &&
@@ -186,7 +186,7 @@ struct PairPosFormat2_4 : ValueBase
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    return (this+coverage).intersects (glyphs) &&
+    返回 (this+coverage).intersects (glyphs) &&
            (this+classDef2).intersects (glyphs);
   }
 
@@ -201,11 +201,11 @@ struct PairPosFormat2_4 : ValueBase
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+classDef2).collect_coverage (c->input))) return;
+    如果 (unlikely (!(this+coverage).collect_coverage (c->input))) 返回;
+    如果 (unlikely (!(this+classDef2).collect_coverage (c->input))) 返回;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { 返回 this+coverage; }
 
   struct external_cache_t
   {
@@ -216,13 +216,13 @@ struct PairPosFormat2_4 : ValueBase
   void *external_cache_create () const
   {
     external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    如果 (likely (cache))
     {
       cache->coverage.clear ();
       cache->first.clear ();
       cache->second.clear ();
     }
-    return cache;
+    返回 cache;
   }
 
   bool apply (hb_ot_apply_context_t *c, void *external_cache) const
@@ -233,37 +233,37 @@ struct PairPosFormat2_4 : ValueBase
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    unsigned 整数 index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#否则
+    unsigned 整数 index = (this+coverage).get_coverage  (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    如果 (index == NOT_COVERED) return_trace (false);
 
     auto &skippy_iter = c->iter_input;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    如果 (unlikely (!skippy_iter.next (&unsafe_to)))
     {
       buffer->unsafe_to_concat (buffer->idx, unsafe_to);
       return_trace (false);
     }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
-#else
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
+    unsigned 整数 klass1 = (this+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
+    unsigned 整数 klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
+#否则
+    unsigned 整数 klass1 = (this+classDef1).get_class (buffer->cur().codepoint);
+    unsigned 整数 klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
 #endif
-    if (unlikely (klass1 >= class1Count || klass2 >= class2Count))
+    如果 (unlikely (klass1 >= class1Count || klass2 >= class2Count))
     {
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
       return_trace (false);
     }
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int record_len = len1 + len2;
+    unsigned 整数 len1 = valueFormat1.get_len ();
+    unsigned 整数 len2 = valueFormat2.get_len ();
+    unsigned 整数 record_len = len1 + len2;
 
     const Value *v = &values[record_len * (klass1 * class2Count + klass2)];
 
@@ -278,28 +278,28 @@ struct PairPosFormat2_4 : ValueBase
      * https://github.com/harfbuzz/harfbuzz/pull/3235#issuecomment-1029814978
      */
 #ifndef HB_SPLIT_KERN
-    if (false)
+    如果 (false)
 #endif
     {
-      if (!len2)
+      如果 (!len2)
       {
         const hb_direction_t dir = buffer->props.direction;
         const bool horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
         const bool backward = HB_DIRECTION_IS_BACKWARD (dir);
         unsigned mask = horizontal ? ValueFormat::xAdvance : ValueFormat::yAdvance;
-        if (backward)
+        如果 (backward)
           mask |= mask >> 2; /* Add eg. xPlacement in RTL. */
         /* Add Devices. */
         mask |= mask << 4;
 
-        if (valueFormat1 & ~mask)
+        如果 (valueFormat1 & ~mask)
           goto bail;
 
         /* Is simple kern. Apply value on an empty position slot,
          * then split it between sides. */
 
         hb_glyph_position_t pos{};
-        if (valueFormat1.apply_value (c, this, v, pos))
+        如果 (valueFormat1.apply_value (c, this, v, pos))
         {
           hb_position_t *src  = &pos.x_advance;
           hb_position_t *dst1 = &buffer->cur_pos().x_advance;
@@ -310,13 +310,13 @@ struct PairPosFormat2_4 : ValueBase
           hb_position_t kern1 = kern >> 1;
           hb_position_t kern2 = kern - kern1;
 
-          if (!backward)
+          如果 (!backward)
           {
             dst1[i] = hb_saturate_add (dst1[i], kern1);
             dst2[i] = hb_saturate_add (dst2[i], kern2);
             dst2[i + 2] = hb_saturate_add (dst2[i + 2], kern2);
           }
-          else
+          否则
           {
             dst1[i] = hb_saturate_add (dst1[i], kern1);
             dst1[i + 2] = hb_clamp_to<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
@@ -331,7 +331,7 @@ struct PairPosFormat2_4 : ValueBase
     }
     bail:
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    如果 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "try kerning glyphs at %u,%u",
@@ -341,15 +341,15 @@ struct PairPosFormat2_4 : ValueBase
     applied_first = len1 && valueFormat1.apply_value (c, this, v, buffer->cur_pos());
     applied_second = len2 && valueFormat2.apply_value (c, this, v + len1, buffer->pos[skippy_iter.idx]);
 
-    if (applied_first || applied_second)
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    如果 (applied_first || applied_second)
+      如果 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "kerned glyphs at %u,%u",
 			    c->buffer->idx, skippy_iter.idx);
       }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    如果 (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "tried kerning glyphs at %u,%u",
@@ -357,13 +357,13 @@ struct PairPosFormat2_4 : ValueBase
     }
 
     success:
-    if (applied_first || applied_second)
+    如果 (applied_first || applied_second)
       buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
-    else
+    否则
     boring:
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
 
-    if (len2)
+    如果 (len2)
     {
       skippy_iter.idx++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
@@ -380,7 +380,7 @@ struct PairPosFormat2_4 : ValueBase
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    如果 (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_map_t klass1_map;
@@ -396,14 +396,14 @@ struct PairPosFormat2_4 : ValueBase
 
     hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat1, valueFormat2);
 
-    if (c->plan->normalized_coords)
+    如果 (c->plan->normalized_coords)
     {
       /* in case of full instancing, all var device flags will be dropped so no
        * need to strip hints here */
       newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, false, false, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    否则 如果 (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
       bool has_fvar = (blob != hb_blob_get_empty ());
@@ -412,7 +412,7 @@ struct PairPosFormat2_4 : ValueBase
       bool strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
+      如果 (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
       newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, strip, true);
     }
@@ -420,7 +420,7 @@ struct PairPosFormat2_4 : ValueBase
     out->valueFormat1 = newFormats.first;
     out->valueFormat2 = newFormats.second;
 
-    if (!class_values.serialize (c, klass1_map, klass2_map,
+    如果 (!class_values.serialize (c, klass1_map, klass2_map,
                                  out->valueFormat1, out->valueFormat2))
       return_trace (false);
 

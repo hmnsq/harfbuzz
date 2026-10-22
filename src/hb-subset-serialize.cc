@@ -50,8 +50,8 @@ hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
   hb_vector_t<const hb_subset_serialize_object_t *> packed;
   packed.alloc (num_hb_objs + 1);
   packed.push (nullptr);
-  for (unsigned i = 0 ; i < num_hb_objs ; i++)
+  为 (unsigned i = 0 ; i < num_hb_objs ; i++)
     packed.push (&(hb_objects[i]));
 
-  return hb_resolve_overflows (packed, table_tag, 20, true);
+  返回 hb_resolve_overflows (packed, table_tag, 20, true);
 }

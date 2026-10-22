@@ -109,7 +109,7 @@ test_lookup_condition_sharing ()
   };
   put32 (0, 0x00010001);
   put32 (8, feature_count);
-  for (unsigned i = 0; i < feature_count; i++)
+  为 (unsigned i = 0; i < feature_count; i++)
   {
     put16 (12 + 6 * i, i);
     put32 (14 + 6 * i, table_offset);
@@ -119,19 +119,19 @@ test_lookup_condition_sharing ()
   put32 (table_offset + 10, condition_offset - table_offset);
   put32 (table_offset + 14, 18); /* LookupIndexList offset */
   put16 (table_offset + 18, lookup_count);
-  for (unsigned i = 0; i < lookup_count; i++)
+  为 (unsigned i = 0; i < lookup_count; i++)
     put16 (table_offset + 20 + 2 * i, i);
   put16 (condition_offset, 2); /* Constant true ConditionValue */
   put16 (condition_offset + 2, 1);
   put32 (condition_offset + 4, OT::VarIdx::NO_VARIATION);
 
   const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data.arrayZ);
-  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<const int> ());
+  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<const 整数> ());
   hb_vector_t<unsigned> state;
   hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
   hb_always_assert (state.length == 1 && state[0] == condition_offset);
 
-  for (unsigned feature_index : {0u, feature_count - 1})
+  为 (unsigned feature_index : {0u, feature_count - 1})
   {
     hb_set_t lookups;
     hb_always_assert (variations.get_lookup_variations (
@@ -178,15 +178,15 @@ test_lookup_condition_resolution ()
   const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data);
   const auto &feature = *reinterpret_cast<const OT::Feature *> (feature_data);
 
-  for (unsigned mask = 0; mask < 4; mask++)
+  为 (unsigned mask = 0; mask < 4; mask++)
   {
-    int coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
+    整数 coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
     OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array (coords));
     hb_vector_t<unsigned> state;
     hb_always_assert (variations.collect_lookup_conditions (coords, 2, &instancer, &state));
     unsigned condition_count = !!(mask & 1) + !!(mask & 2);
     hb_always_assert (state.length == condition_count);
-    if (mask == 3)
+    如果 (mask == 3)
       hb_always_assert (state[0] == 92 && state[1] == 100);
 
     hb_set_t lookups;
@@ -234,7 +234,7 @@ test_feature_substitution_params_sanitize ()
   hb_always_assert (hb_blob_get_length (blob) == sizeof (data));
   hb_blob_destroy (blob);
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
+#如果 !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
   blob = hb_blob_create (data, sizeof (data) - 1,
 			 HB_MEMORY_MODE_READONLY, nullptr, nullptr);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
@@ -321,13 +321,13 @@ test_device_only_value ()
   };
   const auto *base = reinterpret_cast<const ValueBase *> (data);
   const auto *values = reinterpret_cast<const Value *> (data);
-  for (unsigned device = ValueFormat::xPlaDevice;
+  为 (unsigned device = ValueFormat::xPlaDevice;
        device <= ValueFormat::yAdvDevice; device <<= 1)
-    for (bool partial : {false, true})
+    为 (bool partial : {false, true})
     {
       ValueFormat format;
       format = device;
-      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> mapping;
+      hb_hashmap_t<unsigned, hb_pair_t<unsigned, 整数>> mapping;
       mapping.set (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
       unsigned new_format = format.get_effective_format (values, false, false, base, &mapping);
       hb_always_assert (new_format == (device >> 4 | (partial ? device : 0)));
@@ -363,8 +363,8 @@ test_failed_class_mapping ()
   hb_always_assert (glyph_and_klass[0].second == 1);
 }
 
-int
-main (int argc, char **argv)
+整数
+主要 (整数 argc, char **argv)
 {
   test_null_condition ();
   test_lookup_condition_sharing ();
@@ -391,5 +391,5 @@ main (int argc, char **argv)
   hb_always_assert (bytes.length == 10);
   bytes.fini ();
 
-  return 0;
+  返回 0;
 }

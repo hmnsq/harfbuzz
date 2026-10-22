@@ -570,11 +570,11 @@ static const char _deserialize_json_trans_actions[] = {
 	15
 };
 
-static const int deserialize_json_start = 61;
-static const int deserialize_json_first_final = 61;
-static const int deserialize_json_error = 0;
+static const 整数 deserialize_json_start = 61;
+static const 整数 deserialize_json_first_final = 61;
+static const 整数 deserialize_json_error = 0;
 
-static const int deserialize_json_en_main = 61;
+static const 整数 deserialize_json_en_main = 61;
 
 
 #line 115 "hb-buffer-deserialize-json.rl"
@@ -583,7 +583,7 @@ static const int deserialize_json_en_main = 61;
 static hb_bool_t
 _hb_buffer_deserialize_json (hb_buffer_t *buffer,
 				    const char *buf,
-				    unsigned int buf_len,
+				    unsigned 整数 buf_len,
 				    const char **end_ptr,
 				    hb_font_t *font)
 {
@@ -593,7 +593,7 @@ _hb_buffer_deserialize_json (hb_buffer_t *buffer,
   (void) hb_buffer_get_glyph_positions (buffer, nullptr);
 
   const char *tok = nullptr;
-  int cs;
+  整数 cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -604,13 +604,13 @@ _hb_buffer_deserialize_json (hb_buffer_t *buffer,
 
 #line 597 "hb-buffer-deserialize-json.hh"
 	{
-	int _slen;
-	int _trans;
+	整数 _slen;
+	整数 _trans;
 	const unsigned char *_keys;
 	const char *_inds;
-	if ( p == pe )
+	如果 ( p == pe )
 		goto _test_eof;
-	if ( cs == 0 )
+	如果 ( cs == 0 )
 		goto _out;
 _resume:
 	_keys = _deserialize_json_trans_keys + (cs<<1);
@@ -623,7 +623,7 @@ _resume:
 
 	cs = _deserialize_json_trans_targs[_trans];
 
-	if ( _deserialize_json_trans_actions[_trans] == 0 )
+	如果 ( _deserialize_json_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _deserialize_json_trans_actions[_trans] ) {
@@ -638,8 +638,8 @@ _resume:
 #line 43 "hb-buffer-deserialize-json.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
+	如果 (unlikely (!buffer->successful))
+	  返回 false;
 	buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
@@ -652,49 +652,49 @@ _resume:
 	break;
 	case 10:
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
+	{ 如果 (unlikely (!buffer->ensure_glyphs ())) 返回 false; }
 	break;
 	case 14:
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
+	{ 如果 (unlikely (!buffer->ensure_unicode ())) 返回 false; }
 	break;
 	case 11:
 #line 58 "hb-buffer-deserialize-json.rl"
 	{
 	/* TODO Unescape \" and \\ if found. */
-	if (!hb_font_glyph_from_string (font,
+	如果 (!hb_font_glyph_from_string (font,
 					tok+1, p - tok - 2, /* Skip "" */
 					&info.codepoint))
-	  return false;
+	  返回 false;
 }
 	break;
 	case 12:
 #line 66 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.codepoint)) return false; }
+	{ 如果 (!parse_uint (tok, p, &info.codepoint)) 返回 false; }
 	break;
 	case 5:
 #line 67 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
+	{ 如果 (!parse_uint (tok, p, &info.cluster )) 返回 false; }
 	break;
 	case 6:
 #line 68 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
+	{ 如果 (!parse_int  (tok, p, &pos.x_offset )) 返回 false; }
 	break;
 	case 7:
 #line 69 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
+	{ 如果 (!parse_int  (tok, p, &pos.y_offset )) 返回 false; }
 	break;
 	case 2:
 #line 70 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
+	{ 如果 (!parse_int  (tok, p, &pos.x_advance)) 返回 false; }
 	break;
 	case 4:
 #line 71 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
+	{ 如果 (!parse_int  (tok, p, &pos.y_advance)) 返回 false; }
 	break;
 	case 8:
 #line 72 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
+	{ 如果 (!parse_uint (tok, p, &info.mask    )) 返回 false; }
 	break;
 	case 9:
 #line 51 "hb-buffer-deserialize-json.rl"
@@ -702,7 +702,7 @@ _resume:
 	tok = p;
 }
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
+	{ 如果 (unlikely (!buffer->ensure_glyphs ())) 返回 false; }
 	break;
 	case 13:
 #line 51 "hb-buffer-deserialize-json.rl"
@@ -710,15 +710,15 @@ _resume:
 	tok = p;
 }
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
+	{ 如果 (unlikely (!buffer->ensure_unicode ())) 返回 false; }
 	break;
 #line 689 "hb-buffer-deserialize-json.hh"
 	}
 
 _again:
-	if ( cs == 0 )
+	如果 ( cs == 0 )
 		goto _out;
-	if ( ++p != pe )
+	如果 ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
 	_out: {}
@@ -729,7 +729,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  返回 p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_JSON_HH */
