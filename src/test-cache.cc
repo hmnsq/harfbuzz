@@ -22,54 +22,54 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-cache.hh"
+#अन्तर्भाव "hb-cache.hh"
 
-template <unsigned key_bits, unsigned value_bits, unsigned cache_bits, bool thread_safe>
-static void
+ढाँचा <अचिन्हित किल्ली_bits, अचिन्हित मूल्य_bits, अचिन्हित cache_bits, तार्किक thread_safe>
+स्थिर शून्य
 test_cache ()
 {
-  hb_cache_t<key_bits, value_bits, cache_bits, thread_safe> cache;
-  unsigned key_max = (1u << key_bits) - 1;
-  unsigned value = 42;
-  unsigned keys[] = {0, 1, 255, 256, key_max};
-  unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
+  hb_cache_t<किल्ली_bits, मूल्य_bits, cache_bits, thread_safe> cache;
+  अचिन्हित किल्ली_max = (1u << किल्ली_bits) - 1;
+  अचिन्हित value = 42;
+  अचिन्हित किल्ल्या[] = {0, 1, 255, 256, किल्ली_max};
+  अचिन्हित overflow_किल्ल्या[] = {किल्ली_max + 1, 32512, 32767, 65535, अच_पूर्णांक_उच्च};
 
-  for (unsigned key : keys)
+  साठी (अचिन्हित key : किल्ल्या)
     hb_always_assert (!cache.get (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  साठी (अचिन्हित key : overflow_किल्ल्या)
+    जर (key > किल्ली_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  साठी (अचिन्हित key : किल्ल्या)
   {
     cache.set (key, 0);
     hb_always_assert (cache.get (key, &value) && value == 0);
   }
 
-  cache.set (42, cache.MAX_VALUE);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_मूल्य);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_मूल्य);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  साठी (अचिन्हित key : overflow_किल्ल्या)
+    जर (key > किल्ली_max)
     {
       cache.set (key, 0);
       hb_always_assert (!cache.get (key, &value));
     }
 
-  cache.set (42, cache.MAX_VALUE + 1);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_मूल्य + 1);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_मूल्य);
 
   cache.clear ();
-  for (unsigned key : keys)
+  साठी (अचिन्हित key : किल्ल्या)
     hb_always_assert (!cache.get (key, &value));
 }
 
-template <bool thread_safe>
-static void
+ढाँचा <तार्किक thread_safe>
+स्थिर शून्य
 test_caches ()
 {
   /* Entries with spare bits, and entries that fill the storage type. */
@@ -81,9 +81,9 @@ test_caches ()
   test_cache<24, 16, 8, thread_safe> ();
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+main (पूर्णांक argc, अक्षर **argv)
 {
-  test_caches<true> ();
-  test_caches<false> ();
+  test_caches<सत्य> ();
+  test_caches<असत्य> ();
 }

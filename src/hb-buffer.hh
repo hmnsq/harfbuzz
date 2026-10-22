@@ -30,20 +30,20 @@
 #ifndef HB_BUFFER_HH
 #define HB_BUFFER_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-set-digest.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-unicode.hh"
+#अन्तर्भाव "hb-set-digest.hh"
 
 
-static_assert ((sizeof (hb_glyph_info_t) == 20), "");
-static_assert ((sizeof (hb_glyph_info_t) == sizeof (hb_glyph_position_t)), "");
+static_assert ((आकार (hb_glyph_info_t) == 20), "");
+static_assert ((आकार (hb_glyph_info_t) == आकार (hb_glyph_position_t)), "");
 
 HB_MARK_AS_FLAG_T (hb_glyph_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_serialize_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_diff_flags_t);
 
-enum hb_buffer_scratch_flags_t {
+गणना hb_buffer_scratch_flags_t {
   HB_BUFFER_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
   HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
   HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
@@ -67,7 +67,7 @@ HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
  * hb_buffer_t
  */
 
-struct hb_buffer_t
+संरचना hb_buffer_t
 {
   hb_object_header_t header;
 
@@ -90,15 +90,15 @@ struct hb_buffer_t
   hb_buffer_content_type_t content_type;
   hb_segment_properties_t props; /* Script, language, direction */
 
-  bool successful; /* Allocations successful */
-  bool have_output; /* Whether we have an output buffer going on */
-  bool have_positions; /* Whether we have positions */
+  तार्किक successful; /* Allocations successful */
+  तार्किक have_output; /* Whether we have an output buffer going on */
+  तार्किक have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  अचिन्हित पूर्णांक idx; /* Cursor into ->info and ->pos arrays */
+  अचिन्हित पूर्णांक len; /* Length of ->info and ->pos arrays */
+  अचिन्हित पूर्णांक out_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  अचिन्हित पूर्णांक allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
   hb_glyph_info_t     *out_info;
   hb_glyph_position_t *pos;
@@ -106,9 +106,9 @@ struct hb_buffer_t
   /* Text before / after the main buffer contents.
    * Always in Unicode, and ordered outward.
    * Index 0 is for "pre-context", 1 for "post-context". */
-  static constexpr unsigned CONTEXT_LENGTH = 5u;
+  स्थिर constexpr अचिन्हित CONTEXT_LENGTH = 5u;
   hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  अचिन्हित पूर्णांक context_len[2];
 
   hb_set_digest_t digest; /* Manually updated sometimes */
 
@@ -120,8 +120,8 @@ struct hb_buffer_t
   uint8_t serial;
   uint32_t random_state;
   hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  अचिन्हित पूर्णांक max_len; /* Maximum allowed len. */
+  पूर्णांक max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -130,352 +130,352 @@ struct hb_buffer_t
    */
 
 #ifndef HB_NO_BUFFER_MESSAGE
-  typedef void (*changed_func_t) (hb_buffer_t *buffer, void *user_data);
+  प्रकारव्याख्या शून्य (*changed_func_t) (hb_buffer_t *buffer, शून्य *user_data);
 
   hb_buffer_message_func_t message_func;
-  void *message_data;
+  शून्य *message_data;
   hb_destroy_func_t message_destroy;
   changed_func_t changed_func;
-  void *changed_data;
-  unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
-  static constexpr unsigned message_depth = 0u;
+  शून्य *changed_data;
+  अचिन्हित message_depth; /* How deeply are we inside a message callback? */
+#अन्यथा
+  स्थिर constexpr अचिन्हित message_depth = 0u;
 #endif
 
 
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD तार्किक in_error () स्थिरांक { परत !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  शून्य allocate_var (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक मोजणी)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (0 == (allocated_var_bits & bits));
+    अचिन्हित पूर्णांक end = start + मोजणी;
+    प्रतिज्ञा (end <= 8);
+    अचिन्हित पूर्णांक bits = (1u<<end) - (1u<<start);
+    प्रतिज्ञा (0 == (allocated_var_bits & bits));
     allocated_var_bits |= bits;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  तार्किक try_allocate_var (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक मोजणी)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
+    अचिन्हित पूर्णांक end = start + मोजणी;
+    प्रतिज्ञा (end <= 8);
+    अचिन्हित पूर्णांक bits = (1u<<end) - (1u<<start);
+    जर (allocated_var_bits & bits)
+      परत असत्य;
     allocated_var_bits |= bits;
-    return true;
+    परत सत्य;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  शून्य deallocate_var (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक मोजणी)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    अचिन्हित पूर्णांक end = start + मोजणी;
+    प्रतिज्ञा (end <= 8);
+    अचिन्हित पूर्णांक bits = (1u<<end) - (1u<<start);
+    प्रतिज्ञा (bits == (allocated_var_bits & bits));
     allocated_var_bits &= ~bits;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  शून्य assert_var (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक मोजणी)
   {
-    unsigned int end = start + count;
-    assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
-    assert (bits == (allocated_var_bits & bits));
+    अचिन्हित पूर्णांक end = start + मोजणी;
+    प्रतिज्ञा (end <= 8);
+    HB_UNUSED अचिन्हित पूर्णांक bits = (1u<<end) - (1u<<start);
+    प्रतिज्ञा (bits == (allocated_var_bits & bits));
   }
-  void deallocate_var_all ()
+  शून्य deallocate_var_all ()
   {
     allocated_var_bits = 0;
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (अचिन्हित पूर्णांक i = 0) { परत info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (अचिन्हित पूर्णांक i = 0) स्थिरांक { परत info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (अचिन्हित पूर्णांक i = 0) { परत pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (अचिन्हित पूर्णांक i = 0) स्थिरांक { परत pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { परत out_info[out_len ? out_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () स्थिरांक { परत out_info[out_len ? out_len - 1 : 0]; }
 
-  template <typename set_t>
-  void collect_codepoints (set_t &d) const
-  { d.clear (); d.add_array (&info[0].codepoint, len, sizeof (info[0])); }
+  ढाँचा <typename set_t>
+  शून्य collect_codepoints (set_t &d) स्थिरांक
+  { d.clear (); d.add_array (&info[0].codepoint, len, आकार (info[0])); }
 
-  void update_digest ()
+  शून्य update_digest ()
   {
     digest = hb_set_digest_t ();
     collect_codepoints (digest);
   }
 
-  HB_INTERNAL void similar (const hb_buffer_t &src);
-  HB_INTERNAL void reset ();
-  HB_INTERNAL void clear ();
+  HB_INTERNAL शून्य similar (स्थिरांक hb_buffer_t &src);
+  HB_INTERNAL शून्य reset ();
+  HB_INTERNAL शून्य clear ();
 
   /* Called around shape() */
-  HB_INTERNAL void enter ();
-  HB_INTERNAL void leave ();
+  HB_INTERNAL शून्य enter ();
+  HB_INTERNAL शून्य leave ();
 
 #ifndef HB_NO_BUFFER_VERIFY
   HB_INTERNAL
 #endif
-  bool verify (hb_buffer_t        *text_buffer,
+  तार्किक verify (hb_buffer_t        *text_buffer,
 	       hb_font_t          *font,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shapers)
+	       स्थिरांक hb_feature_t *features,
+	       अचिन्हित पूर्णांक        अंक_features,
+	       स्थिरांक अक्षर * स्थिरांक *shapers)
 #ifndef HB_NO_BUFFER_VERIFY
   ;
-#else
-  { return true; }
+#अन्यथा
+  { परत सत्य; }
 #endif
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  अचिन्हित पूर्णांक backtrack_len () स्थिरांक { परत have_output ? out_len : idx; }
+  अचिन्हित पूर्णांक lookahead_len () स्थिरांक { परत len - idx; }
+  uint8_t next_serial () { परत ++serial ? serial : ++serial; }
 
-  HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
-  HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
-  HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
-				     const hb_glyph_position_t &glyph_pos);
+  HB_INTERNAL शून्य add (hb_codepoint_t  codepoint,
+			अचिन्हित पूर्णांक    cluster);
+  HB_INTERNAL शून्य add_info (स्थिरांक hb_glyph_info_t &glyph_info);
+  HB_INTERNAL शून्य add_info_and_pos (स्थिरांक hb_glyph_info_t &glyph_info,
+				     स्थिरांक hb_glyph_position_t &glyph_pos);
 
-  void reverse_range (unsigned start, unsigned end)
+  शून्य reverse_range (अचिन्हित start, अचिन्हित end)
   {
     hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
+    जर (have_positions)
       hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
   }
-  void reverse () { reverse_range (0, len); }
+  शून्य reverse () { reverse_range (0, len); }
 
-  template <typename FuncType>
-  void reverse_groups (const FuncType& group,
-		       bool merge_clusters = false)
+  ढाँचा <typename FuncType>
+  शून्य reverse_groups (स्थिरांक FuncType& group,
+		       तार्किक merge_clusters = असत्य)
   {
-    if (unlikely (!len))
-      return;
+    जर (unlikely (!len))
+      परत;
 
-    unsigned start = 0;
-    unsigned i;
-    for (i = 1; i < len; i++)
+    अचिन्हित start = 0;
+    अचिन्हित i;
+    साठी (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      जर (!group (info[i - 1], info[i]))
       {
-	if (merge_clusters)
-	  this->merge_clusters (start, i);
+	जर (merge_clusters)
+	  हे->merge_clusters (start, i);
 	reverse_range (start, i);
 	start = i;
       }
     }
-    if (merge_clusters)
-      this->merge_clusters (start, i);
+    जर (merge_clusters)
+      हे->merge_clusters (start, i);
     reverse_range (start, i);
 
     reverse ();
   }
 
-  template <typename FuncType>
-  unsigned group_end (unsigned start, const FuncType& group) const
+  ढाँचा <typename FuncType>
+  अचिन्हित group_end (अचिन्हित start, स्थिरांक FuncType& group) स्थिरांक
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    पर्यंत (++start < len && group (info[start - 1], info[start]))
       ;
 
-    return start;
+    परत start;
   }
 
-  static bool _cluster_group_func (const hb_glyph_info_t& a,
-				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  स्थिर तार्किक _cluster_group_func (स्थिरांक hb_glyph_info_t& a,
+				   स्थिरांक hb_glyph_info_t& b)
+  { परत a.cluster == b.cluster; }
 
-  void reverse_clusters () { reverse_groups (_cluster_group_func); }
+  शून्य reverse_clusters () { reverse_groups (_cluster_group_func); }
 
-  HB_INTERNAL void guess_segment_properties ();
+  HB_INTERNAL शून्य guess_segment_properties ();
 
-  HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
-  HB_INTERNAL void clear_output ();
-  HB_INTERNAL void clear_positions ();
+  HB_INTERNAL तार्किक समकालिक ();
+  HB_INTERNAL पूर्णांक sync_so_far ();
+  HB_INTERNAL शून्य clear_output ();
+  HB_INTERNAL शून्य clear_positions ();
 
-  template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
-				    const T *glyph_data)
+  ढाँचा <typename T>
+  HB_NODISCARD तार्किक replace_glyphs (अचिन्हित पूर्णांक अंक_in,
+				    अचिन्हित पूर्णांक अंक_out,
+				    स्थिरांक T *glyph_data)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    जर (unlikely (!make_room_for (अंक_in, अंक_out))) परत असत्य;
 
-    assert (idx + num_in <= len);
+    प्रतिज्ञा (idx + अंक_in <= len);
 
-    merge_clusters (idx, idx + num_in);
+    merge_clusters (idx, idx + अंक_in);
 
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
     hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < अंक_out; i++)
     {
       *pinfo = orig_info;
       pinfo->codepoint = glyph_data[i];
       pinfo++;
     }
 
-    idx  += num_in;
-    out_len += num_out;
-    return true;
+    idx  += अंक_in;
+    out_len += अंक_out;
+    परत सत्य;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  HB_NODISCARD तार्किक replace_glyph (hb_codepoint_t glyph_index)
+  { परत replace_glyphs (1, 1, &glyph_index); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
-  HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  HB_NODISCARD तार्किक output_glyph (hb_codepoint_t glyph_index)
+  { परत replace_glyphs (0, 1, &glyph_index); }
 
-  HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
+  HB_NODISCARD तार्किक output_info (स्थिरांक hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    जर (unlikely (!make_room_for (0, 1))) परत असत्य;
 
     out_info[out_len] = glyph_info;
 
     out_len++;
-    return true;
+    परत सत्य;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
-  HB_NODISCARD bool copy_glyph ()
+  HB_NODISCARD तार्किक copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    परत output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyph ()
+  HB_NODISCARD तार्किक next_glyph ()
   {
-    if (have_output)
+    जर (have_output)
     {
-      if (out_info != info || out_len != idx)
+      जर (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
+	जर (unlikely (!ensure (out_len + 1))) परत असत्य;
 	out_info[out_len] = info[idx];
       }
       out_len++;
     }
 
     idx++;
-    return true;
+    परत सत्य;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD तार्किक next_glyphs (अचिन्हित पूर्णांक n)
   {
-    if (have_output)
+    जर (have_output)
     {
-      if (out_info != info || out_len != idx)
+      जर (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
-	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
+	जर (unlikely (!ensure (out_len + n))) परत असत्य;
+	स_हटाओ (out_info + out_len, info + idx, n * आकार (out_info[0]));
       }
       out_len += n;
     }
 
     idx += n;
-    return true;
+    परत सत्य;
   }
   /* Advance idx without copying to output. */
-  void skip_glyph () { idx++; }
-  void add_masks (hb_mask_t mask)
+  शून्य skip_glyph () { idx++; }
+  शून्य add_masks (hb_mask_t mask)
   {
-    for (unsigned int j = 0; j < len; j++)
+    साठी (अचिन्हित पूर्णांक j = 0; j < len; j++)
       info[j].mask |= mask;
   }
-  HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+  HB_INTERNAL शून्य set_masks (hb_mask_t value, hb_mask_t mask,
+			      अचिन्हित पूर्णांक cluster_start, अचिन्हित पूर्णांक cluster_end);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  शून्य merge_clusters (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    जर (end - start < 2)
+      परत;
+    जर (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      परत;
     }
     merge_clusters_impl (start, end);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  शून्य merge_grapheme_clusters (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    जर (end - start < 2)
+      परत;
+    जर (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      परत;
     }
     merge_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_INTERNAL शून्य merge_clusters_impl (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end);
+  शून्य merge_out_clusters (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
+    जर (end - start < 2)
+      परत;
+    जर (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      परत;
     merge_out_clusters_impl (start, end);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  शून्य merge_out_grapheme_clusters (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
+    जर (end - start < 2)
+      परत;
+    जर (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      परत;
     merge_out_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_INTERNAL शून्य merge_out_clusters_impl (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end);
   /* Merge clusters for deleting current glyph, and skip it. */
-  HB_INTERNAL void delete_glyph ();
-  HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
+  HB_INTERNAL शून्य delete_glyph ();
+  HB_INTERNAL शून्य delete_glyphs_inplace (तार्किक (*filter) (स्थिरांक hb_glyph_info_t *info));
 
 
 
   /* Adds glyph flags in mask to infos with clusters between start and end.
    * The start index will be from out-buffer if from_out_buffer is true.
    * If interior is true, then the cluster having the minimum value is skipped. */
-  void _set_glyph_flags_impl (hb_mask_t mask,
-			      unsigned start,
-			      unsigned end,
-			      bool interior,
-			      bool from_out_buffer)
+  शून्य _set_glyph_flags_impl (hb_mask_t mask,
+			      अचिन्हित start,
+			      अचिन्हित end,
+			      तार्किक interior,
+			      तार्किक from_out_buffer)
   {
-    if (!from_out_buffer || !have_output)
+    जर (!from_out_buffer || !have_output)
     {
-      if (!interior)
+      जर (!interior)
       {
-	for (unsigned i = start; i < end; i++)
+	साठी (अचिन्हित i = start; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      अन्यथा
       {
-	unsigned cluster = _infos_find_min_cluster (info, start, end);
+	अचिन्हित cluster = _infos_find_min_cluster (info, start, end);
 	_infos_set_glyph_flags (info, start, end, cluster, mask);
       }
     }
-    else
+    अन्यथा
     {
-      assert (start <= out_len);
-      assert (idx <= end);
+      प्रतिज्ञा (start <= out_len);
+      प्रतिज्ञा (idx <= end);
 
-      if (!interior)
+      जर (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
+	साठी (अचिन्हित i = start; i < out_len; i++)
 	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
+	साठी (अचिन्हित i = idx; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      अन्यथा
       {
-	unsigned cluster = _infos_find_min_cluster (info, idx, end);
+	अचिन्हित cluster = _infos_find_min_cluster (info, idx, end);
 	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
 
 	_infos_set_glyph_flags (out_info, start, out_len, cluster, mask);
@@ -485,225 +485,225 @@ struct hb_buffer_t
   }
 
   HB_ALWAYS_INLINE
-  void _set_glyph_flags (hb_mask_t mask,
-			 unsigned start = 0,
-			 unsigned end = (unsigned) -1,
-			 bool interior = false,
-			 bool from_out_buffer = false)
+  शून्य _set_glyph_flags (hb_mask_t mask,
+			 अचिन्हित start = 0,
+			 अचिन्हित end = (अचिन्हित) -1,
+			 तार्किक interior = असत्य,
+			 तार्किक from_out_buffer = असत्य)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    जर (unlikely (end != (अचिन्हित) -1 && end - start > 255))
+      परत;
 
     end = hb_min (end, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    जर (interior && !from_out_buffer && end - start < 2)
+      परत;
 
     _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  शून्य unsafe_to_break (अचिन्हित पूर्णांक start = 0, अचिन्हित पूर्णांक end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      true);
+		      सत्य);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  शून्य safe_to_घाला_tatweel (अचिन्हित पूर्णांक start = 0, अचिन्हित पूर्णांक end = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    जर ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_घाला_TATWEEL) == 0)
     {
       unsafe_to_break (start, end);
-      return;
+      परत;
     }
-    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
+    _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_घाला_TATWEEL,
 		      start, end,
-		      true);
+		      सत्य);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+  शून्य unsafe_to_concat (अचिन्हित पूर्णांक start = 0, अचिन्हित पूर्णांक end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    जर (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      परत;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      false);
+		      असत्य);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  शून्य unsafe_to_break_from_outbuffer (अचिन्हित पूर्णांक start = 0, अचिन्हित पूर्णांक end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      true, true);
+		      सत्य, सत्य);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  शून्य unsafe_to_concat_from_outbuffer (अचिन्हित पूर्णांक start = 0, अचिन्हित पूर्णांक end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    जर (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      परत;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
-		      false, true);
+		      असत्य, सत्य);
   }
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_INTERNAL तार्किक move_to (अचिन्हित पूर्णांक i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_INTERNAL तार्किक enlarge (अचिन्हित पूर्णांक size);
 
-  HB_NODISCARD bool resize (unsigned length)
+  HB_NODISCARD तार्किक resize (अचिन्हित length)
   {
-    assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
+    प्रतिज्ञा (!have_output);
+    जर (unlikely (!ensure (length))) परत असत्य;
     len = length;
-    return true;
+    परत सत्य;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD तार्किक ensure (अचिन्हित पूर्णांक size)
+  { परत likely (!size || size < allocated) ? सत्य : enlarge (size); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD तार्किक ensure_inplace (अचिन्हित पूर्णांक size)
+  { परत likely (!size || size < allocated); }
 
-  void assert_glyphs ()
+  शून्य assert_glyphs ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
+    प्रतिज्ञा ((content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS) ||
 	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
   }
-  void assert_unicode ()
+  शून्य assert_unicode ()
   {
-    assert ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
+    प्रतिज्ञा ((content_type == HB_BUFFER_CONTENT_TYPE_UNICODE) ||
 	    (!len && (content_type == HB_BUFFER_CONTENT_TYPE_INVALID)));
   }
-  HB_NODISCARD bool ensure_glyphs ()
+  HB_NODISCARD तार्किक ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    जर (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
+      जर (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	परत असत्य;
+      प्रतिज्ञा (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    परत सत्य;
   }
-  HB_NODISCARD bool ensure_unicode ()
+  HB_NODISCARD तार्किक ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    जर (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
-      assert (len == 0);
+      जर (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	परत असत्य;
+      प्रतिज्ञा (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    परत सत्य;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_INTERNAL तार्किक make_room_for (अचिन्हित पूर्णांक अंक_in, अचिन्हित पूर्णांक अंक_out);
+  HB_NODISCARD HB_INTERNAL तार्किक shift_forward (अचिन्हित पूर्णांक मोजणी);
 
-  typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  प्रकारव्याख्या दीर्घ scratch_buffer_t;
+  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (अचिन्हित पूर्णांक *size);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  शून्य clear_context (अचिन्हित पूर्णांक side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_INTERNAL शून्य sort (अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end, पूर्णांक(*compar)(स्थिरांक hb_glyph_info_t *, स्थिरांक hb_glyph_info_t *));
 
-  bool messaging ()
+  तार्किक messaging ()
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
+    परत असत्य;
+#अन्यथा
+    परत unlikely (message_func);
 #endif
   }
-  bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
+  तार्किक message (hb_font_t *font, स्थिरांक अक्षर *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+    परत सत्य;
+#अन्यथा
+    जर (likely (!messaging ()))
+      परत सत्य;
 
-    va_list ap;
-    va_start (ap, fmt);
-    bool ret = message_impl (font, fmt, ap);
-    va_end (ap);
+    बहु_सूची ap;
+    बहु_शुरू (ap, fmt);
+    तार्किक ret = message_impl (font, fmt, ap);
+    बहु_पूर्ण (ap);
 
-    return ret;
+    परत ret;
 #endif
   }
-  HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
-  HB_INTERNAL void changed ();
+  HB_INTERNAL तार्किक message_impl (hb_font_t *font, स्थिरांक अक्षर *fmt, बहु_सूची ap) HB_PRINTF_FUNC(3, 0);
+  HB_INTERNAL शून्य changed ();
 
-  static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  स्थिर शून्य
+  set_cluster (hb_glyph_info_t &inf, अचिन्हित पूर्णांक cluster, अचिन्हित पूर्णांक mask = 0)
   {
-    if (inf.cluster != cluster)
+    जर (inf.cluster != cluster)
       inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
-  void
+  शून्य
   _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
+			  अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end,
+			  अचिन्हित पूर्णांक cluster,
 			  hb_mask_t mask)
   {
-    if (unlikely (start == end))
-      return;
+    जर (unlikely (start == end))
+      परत;
 
     max_ops -= end - start;
-    if (unlikely (max_ops < 0))
-      successful = false;
+    जर (unlikely (max_ops < 0))
+      successful = असत्य;
 
-    unsigned cluster_first = infos[start].cluster;
-    unsigned cluster_last = infos[end - 1].cluster;
+    अचिन्हित cluster_first = infos[start].cluster;
+    अचिन्हित cluster_last = infos[end - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
+    जर (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
 	(cluster != cluster_first && cluster != cluster_last))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
+      साठी (अचिन्हित पूर्णांक i = start; i < end; i++)
+	जर (cluster != infos[i].cluster)
 	  infos[i].mask |= mask;
-      return;
+      परत;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    जर (cluster == cluster_first)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
+      साठी (अचिन्हित पूर्णांक i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
 	infos[i - 1].mask |= mask;
     }
-    else /* cluster == cluster_last */
+    अन्यथा /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
+      साठी (अचिन्हित पूर्णांक i = start; i < end && infos[i].cluster != cluster_last; i++)
 	infos[i].mask |= mask;
     }
   }
-  unsigned
-  _infos_find_min_cluster (const hb_glyph_info_t *infos,
-			   unsigned start, unsigned end,
-			   unsigned cluster = UINT_MAX)
+  अचिन्हित
+  _infos_find_min_cluster (स्थिरांक hb_glyph_info_t *infos,
+			   अचिन्हित start, अचिन्हित end,
+			   अचिन्हित cluster = अच_पूर्णांक_उच्च)
   {
-    if (unlikely (start == end))
-      return cluster;
+    जर (unlikely (start == end))
+      परत cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    जर (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      साठी (अचिन्हित पूर्णांक i = start; i < end; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      परत cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    परत hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
   }
 
-  void clear_glyph_flags (hb_mask_t mask = 0)
+  शून्य clear_glyph_flags (hb_mask_t mask = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < len; i++)
       info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
   }
 };
@@ -711,10 +711,10 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 
 #define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
-       _count = buffer->len, \
-       start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
-       start < _count; \
+  साठी (अचिन्हित पूर्णांक \
+       मोजणी_2 = buffer->len, \
+       start = 0, end = मोजणी_2 ? buffer->group_end (0, group_func) : 0; \
+       start < मोजणी_2; \
        start = end, end = buffer->group_end (start, group_func))
 
 #define foreach_cluster(buffer, start, end) \
@@ -722,8 +722,8 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 
 #define HB_BUFFER_XALLOCATE_VAR(b, func, var) \
-  b->func (offsetof (hb_glyph_info_t, var) - offsetof(hb_glyph_info_t, var1), \
-	   sizeof (b->info[0].var))
+  b->func (दुरत्व (hb_glyph_info_t, var) - दुरत्व(hb_glyph_info_t, var1), \
+	   आकार (b->info[0].var))
 #define HB_BUFFER_ALLOCATE_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, allocate_var,     var ())
 #define HB_BUFFER_TRY_ALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, try_allocate_var, var ())
 #define HB_BUFFER_DEALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, deallocate_var,   var ())

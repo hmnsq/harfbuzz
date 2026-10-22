@@ -25,15 +25,15 @@
 #ifndef HB_WASM_API_HH
 #define HB_WASM_API_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include <wasm_export.h>
+#अन्तर्भाव <wasm_export.h>
 
-#define HB_WASM_BEGIN_DECLS namespace hb { namespace wasm {
+#define HB_WASM_BEGIN_DECLS नामाकाश hb { नामाकाश wasm {
 #define HB_WASM_END_DECLS }}
 
 #define HB_WASM_API(ret_t, name) HB_INTERNAL ret_t name
-#define HB_WASM_API_COMPOUND(ret_t, name) HB_INTERNAL void name
+#define HB_WASM_API_COMPOUND(ret_t, name) HB_INTERNAL शून्य name
 
 #define HB_WASM_EXEC_ENV wasm_exec_env_t exec_env,
 #define HB_WASM_EXEC_ENV_COMPOUND wasm_exec_env_t exec_env, ptr_t() retptr,
@@ -41,74 +41,74 @@
 #define ptr_t(type_t) uint32_t
 #define ptr_d(type_t, name) uint32_t name##ptr
 
-#include "hb-wasm-api.h"
+#अन्तर्भाव "hb-wasm-api.h"
 
 #undef HB_WASM_BEGIN_DECLS
 #undef HB_WASM_END_DECLS
 
 
-enum {
+गणना {
   hb_wasm_ref_type_none,
   hb_wasm_ref_type_face,
   hb_wasm_ref_type_font,
   hb_wasm_ref_type_buffer,
 };
 
-HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
+HB_INTERNAL बाह्य hb_user_data_किल्ली_t hb_wasm_ref_type_किल्ली;
 
 #define nullref 0
 
 #define HB_REF2OBJ(obj) \
   hb_##obj##_t *obj = nullptr; \
   HB_STMT_START { \
-    (void) wasm_externref_ref2obj (obj##ptr, (void **) &obj); \
+    (शून्य) wasm_externref_ref2obj (obj##ptr, (शून्य **) &obj); \
     /* Check object type. */ \
     /* This works because all our objects have the same hb_object_t layout. */ \
-    if (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
-		  (void *) hb_wasm_ref_type_##obj)) \
+    जर (unlikely (hb_##obj##_get_user_data (obj, &hb_wasm_ref_type_किल्ली) != \
+		  (शून्य *) hb_wasm_ref_type_##obj)) \
       obj = hb_##obj##_get_empty (); \
   } HB_STMT_END
 
 #define HB_OBJ2REF(obj) \
   uint32_t obj##ref = nullref; \
   HB_STMT_START { \
-    hb_##obj##_set_user_data (obj, &_hb_wasm_ref_type_key, \
-			      (void *) hb_wasm_ref_type_##obj, \
-			      nullptr, false); \
-    (void) wasm_externref_obj2ref (module_inst, obj, &obj##ref); \
+    hb_##obj##_set_user_data (obj, &hb_wasm_ref_type_किल्ली, \
+			      (शून्य *) hb_wasm_ref_type_##obj, \
+			      nullptr, असत्य); \
+    (शून्य) wasm_externref_obj2ref (module_inst, obj, &obj##ref); \
   } HB_STMT_END
 
 #define HB_RETURN_STRUCT(type, name) \
   type *_name_ptr = nullptr; \
   { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						retptr, sizeof (type)))) \
+    जर (likely (wasm_runtime_validate_app_addr (module_inst, \
+						retptr, आकार (type)))) \
       _name_ptr = (type *) wasm_runtime_addr_app_to_native (module_inst, retptr); \
-    if (unlikely (!_name_ptr)) \
-      return; \
+    जर (unlikely (!_name_ptr)) \
+      परत; \
   } \
   type &name = *_name_ptr
 
 #define HB_PTR_PARAM(type, name) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, sizeof (type)))) \
+    जर (likely (wasm_runtime_validate_app_addr (module_inst, \
+						name##ptr, आकार (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
   } HB_STMT_END
 
 #define HB_ARRAY_PARAM(type, name, length) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
+    जर (likely (!hb_unsigned_mul_overflows (length, आकार (type)) && \
 		wasm_runtime_validate_app_addr (module_inst, \
-						name##ptr, length * sizeof (type)))) \
+						name##ptr, length * आकार (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
   } HB_STMT_END
 
 #define HB_ARRAY_APP2NATIVE(type, name, length) \
-    ((type *) (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
-	       validate_app_addr (name, (length) * sizeof (type)) ? \
+    ((type *) (!hb_unsigned_mul_overflows (length, आकार (type)) && \
+	       validate_app_addr (name, (length) * आकार (type)) ? \
 	       addr_app_to_native (name) : nullptr))
 
 

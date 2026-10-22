@@ -2,57 +2,57 @@
 #define OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#अन्तर्भाव "../../../hb.hh"
 
 
-namespace OT {
+नामाकाश OT {
 //namespace Var {
 
 
-struct coord_setter_t
+संरचना coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<स्थिरांक पूर्णांक> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    जर (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * आकार (पूर्णांक));
+    अन्यथा
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  पूर्णांक& चालक [] (अचिन्हित idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    जर (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      परत Crap(पूर्णांक);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    जर (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      जर (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        पर्यंत (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	परत static_coords[idx];
       }
-      else
+      अन्यथा
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    जर (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      जर (unlikely (!dynamic_coords.resize (idx + 1)))
+	परत Crap(पूर्णांक);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    परत dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<पूर्णांक> get_coords ()
+  { परत length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
-  unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  खाजगी:
+  hb_vector_t<पूर्णांक> dynamic_coords;
+  अचिन्हित length;
+  पूर्णांक static_coords[आकार (शून्य *) * 8];
 };
 
 

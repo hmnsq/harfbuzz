@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#जर !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_VAR_H
 #define HB_OT_VAR_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -85,8 +85,8 @@ hb_ot_var_has_data (hb_face_t *face);
  */
 
 
-HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+HB_EXTERN अचिन्हित पूर्णांक
+hb_ot_var_get_axis_मोजणी (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,11 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
+प्रकारव्याख्या गणना { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_मूल्य= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -122,22 +122,22 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
+प्रकारव्याख्या संरचना hb_ot_var_axis_info_t {
+  अचिन्हित पूर्णांक			axis_index;
   hb_tag_t			tag;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  दशांश				min_मूल्य;
+  दशांश				default_मूल्य;
+  दशांश				max_मूल्य;
   /*< private >*/
-  unsigned int			reserved;
+  अचिन्हित पूर्णांक			reserved;
 } hb_ot_var_axis_info_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
+			  अचिन्हित पूर्णांक           start_offset,
+			  अचिन्हित पूर्णांक          *axes_मोजणी /* IN/OUT */,
 			  hb_ot_var_axis_info_t *axes_array /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -150,40 +150,40 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Named instances.
  */
 
-HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+HB_EXTERN अचिन्हित पूर्णांक
+hb_ot_var_get_named_instance_मोजणी (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+						अचिन्हित पूर्णांक instance_index);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+						अचिन्हित पूर्णांक instance_index);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+					    अचिन्हित पूर्णांक  instance_index,
+					    अचिन्हित पूर्णांक *coords_length, /* IN/OUT */
+					    दशांश        *coords         /* OUT */);
 
 
 /*
  * Conversions.
  */
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+				स्थिरांक hb_variation_t *variations, /* IN */
+				अचिन्हित पूर्णांक          variations_length,
+				पूर्णांक                  *coords, /* OUT */
+				अचिन्हित पूर्णांक          coords_length);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+			    अचिन्हित पूर्णांक coords_length,
+			    स्थिरांक दशांश *design_coords, /* IN */
+			    पूर्णांक *normalized_coords /* OUT */);
 
 
 HB_END_DECLS

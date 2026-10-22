@@ -27,11 +27,11 @@
 #ifndef HB_SUBSET_DEPEND_H
 #define HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#जर !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-subset.h> instead."
 #endif
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -62,7 +62,7 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  */
-typedef enum { /*< flags >*/
+प्रकारव्याख्या गणना { /*< flags >*/
   HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
@@ -81,7 +81,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 14.3.0
  */
-typedef struct hb_subset_depend_t hb_subset_depend_t;
+प्रकारव्याख्या संरचना hb_subset_depend_t hb_subset_depend_t;
 
 /**
  * hb_subset_depend_entry_t:
@@ -99,7 +99,7 @@ typedef struct hb_subset_depend_t hb_subset_depend_t;
  *
  * Since: 14.3.0
  */
-typedef struct {
+प्रकारव्याख्या संरचना {
   hb_tag_t table_tag;
   hb_codepoint_t dependent;
   hb_tag_t layout_tag;
@@ -111,11 +111,11 @@ typedef struct {
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
+                                अचिन्हित पूर्णांक start_offset,
+                                अचिन्हित पूर्णांक *entry_मोजणी, /* IN/OUT */
                                 hb_subset_depend_entry_t *entries /* OUT */);
 
 HB_EXTERN hb_bool_t
@@ -123,7 +123,7 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend,
                               hb_codepoint_t index,
                               hb_set_t *out /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_subset_depend_destroy (hb_subset_depend_t *depend);
 
 #endif

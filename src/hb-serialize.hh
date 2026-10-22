@@ -31,18 +31,18 @@
 #ifndef HB_SERIALIZE_HH
 #define HB_SERIALIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-map.hh"
-#include "hb-free-pool.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-blob.hh"
+#अन्तर्भाव "hb-map.hh"
+#अन्तर्भाव "hb-free-pool.hh"
 
-#include "hb-subset-serialize.h"
+#अन्तर्भाव "hb-subset-serialize.h"
 
 /*
  * Serialize
  */
 
-enum hb_serialize_error_t {
+गणना hb_serialize_error_t {
   HB_SERIALIZE_ERROR_NONE =            0x00000000u,
   HB_SERIALIZE_ERROR_OTHER =           0x00000001u,
   HB_SERIALIZE_ERROR_OFFSET_OVERFLOW = 0x00000002u,
@@ -52,11 +52,11 @@ enum hb_serialize_error_t {
 };
 HB_MARK_AS_FLAG_T (hb_serialize_error_t);
 
-struct hb_serialize_context_t
+संरचना hb_serialize_context_t
 {
-  typedef unsigned objidx_t;
+  प्रकारव्याख्या अचिन्हित objidx_t;
 
-  enum whence_t {
+  गणना whence_t {
      Head,	/* Relative to the current object head (default). */
      Tail,	/* Relative to the current object tail after packed. */
      Absolute	/* Absolute: from the start of the serialize buffer. */
@@ -64,42 +64,42 @@ struct hb_serialize_context_t
 
 
 
-  struct object_t
+  संरचना object_t
   {
-    void fini () {
+    शून्य fini () {
       real_links.fini ();
       virtual_links.fini ();
     }
 
-    object_t () = default;
+    object_t () = पूर्वनिर्धारित;
 
-    object_t (const hb_subset_serialize_object_t &o)
+    object_t (स्थिरांक hb_subset_serialize_object_t &o)
     {
       head = o.head;
       tail = o.tail;
       next = nullptr;
-      real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      real_links.alloc_exact (o.अंक_real_links);
+      साठी (अचिन्हित i = 0 ; i < o.अंक_real_links; i++)
         real_links.push (o.real_links[i]);
 
-      virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      virtual_links.alloc_exact (o.अंक_virtual_links);
+      साठी (अचिन्हित i = 0; i < o.अंक_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
-    bool in_error () const
+    तार्किक in_error () स्थिरांक
     {
-      return real_links.in_error() || virtual_links.in_error();
+      परत real_links.in_error() || virtual_links.in_error();
     }
 
-    bool add_virtual_link (objidx_t objidx)
+    तार्किक add_virtual_link (objidx_t objidx)
     {
-      if (!objidx)
-        return false;
+      जर (!objidx)
+        परत असत्य;
 
-      auto& link = *virtual_links.push ();
-      if (virtual_links.in_error ())
-        return false;
+      स्वतः& link = *virtual_links.push ();
+      जर (virtual_links.in_error ())
+        परत असत्य;
 
       link.objidx = objidx;
       // Remaining fields were previously zero'd by push():
@@ -109,10 +109,10 @@ struct hb_serialize_context_t
       // link.position = 0;
       // link.bias = 0;
 
-      return true;
+      परत सत्य;
     }
 
-    friend void swap (object_t& a, object_t& b) noexcept
+    मित्र शून्य swap (object_t& a, object_t& b) noexcept
     {
       hb_swap (a.head, b.head);
       hb_swap (a.tail, b.tail);
@@ -121,35 +121,35 @@ struct hb_serialize_context_t
       hb_swap (a.virtual_links, b.virtual_links);
     }
 
-    bool operator == (const object_t &o) const
+    तार्किक चालक == (स्थिरांक object_t &o) स्थिरांक
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return (tail - head == o.tail - o.head)
+      परत (tail - head == o.tail - o.head)
 	  && (real_links.length == o.real_links.length)
 	  && 0 == hb_memcmp (head, o.head, tail - head)
 	  && real_links.as_bytes () == o.real_links.as_bytes ();
     }
-    uint32_t hash () const
+    uint32_t hash () स्थिरांक
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
+      परत hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
           real_links.as_bytes ().hash ();
     }
 
-    struct link_t
+    संरचना link_t
     {
-      unsigned width: 3;
-      unsigned is_signed: 1;
-      unsigned whence: 2;
-      unsigned bias : 26;
-      unsigned position;
+      अचिन्हित width: 3;
+      अचिन्हित is_signed: 1;
+      अचिन्हित whence: 2;
+      अचिन्हित bias : 26;
+      अचिन्हित position;
       objidx_t objidx;
 
-      link_t () = default;
+      link_t () = पूर्वनिर्धारित;
 
-      link_t (const hb_subset_serialize_link_t &o)
+      link_t (स्थिरांक hb_subset_serialize_link_t &o)
       {
         width = o.width;
         is_signed = 0;
@@ -159,40 +159,40 @@ struct hb_serialize_context_t
         objidx = o.objidx;
       }
 
-      HB_INTERNAL static int cmp (const void* a, const void* b)
+      HB_INTERNAL स्थिर पूर्णांक cmp (स्थिरांक शून्य* a, स्थिरांक शून्य* b)
       {
-        int cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
-        if (cmp) return cmp;
+        पूर्णांक cmp = ((स्थिरांक link_t*)a)->position - ((स्थिरांक link_t*)b)->position;
+        जर (cmp) परत cmp;
 
-        return ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
+        परत ((स्थिरांक link_t*)a)->objidx - ((स्थिरांक link_t*)b)->objidx;
       }
     };
 
-    char *head;
-    char *tail;
+    अक्षर *head;
+    अक्षर *tail;
     hb_vector_t<link_t> real_links;
     hb_vector_t<link_t> virtual_links;
     object_t *next;
 
-    auto all_links () const HB_AUTO_RETURN
+    स्वतः all_links () स्थिरांक HB_AUTO_RETURN
         (( hb_concat (real_links, virtual_links) ));
-    auto all_links_writer () HB_AUTO_RETURN
+    स्वतः all_links_writer () HB_AUTO_RETURN
         (( hb_concat (real_links.writer (), virtual_links.writer ()) ));
   };
 
-  struct snapshot_t
+  संरचना snapshot_t
   {
-    char *head;
-    char *tail;
+    अक्षर *head;
+    अक्षर *tail;
     object_t *current; // Just for sanity check
-    unsigned num_real_links;
-    unsigned num_virtual_links;
+    अचिन्हित अंक_real_links;
+    अचिन्हित अंक_virtual_links;
     hb_serialize_error_t errors;
   };
 
   snapshot_t snapshot ()
   {
-    return snapshot_t {
+    परत snapshot_t {
       head, tail, current,
       current ? current->real_links.length : 0,
       current ? current->virtual_links.length : 0,
@@ -200,159 +200,159 @@ struct hb_serialize_context_t
      };
   }
 
-  hb_serialize_context_t (void *start_, size_t size) :
-    start ((char *) start_),
+  hb_serialize_context_t (शून्य *start_, माप_प्रकार size) :
+    start ((अक्षर *) start_),
     end (start + size),
     current (nullptr)
   { reset (); }
   ~hb_serialize_context_t () { fini (); }
 
-  void fini ()
+  शून्य fini ()
   {
-    for (object_t *_ : ++hb_iter (packed)) _->fini ();
+    साठी (object_t *_ : ++hb_iter (packed)) _->fini ();
     packed.fini ();
-    this->packed_map.fini ();
+    हे->packed_map.fini ();
 
-    while (current)
+    पर्यंत (current)
     {
-      auto *_ = current;
+      स्वतः *_ = current;
       current = current->next;
       _->fini ();
     }
   }
 
-  bool in_error () const { return bool (errors); }
+  तार्किक in_error () स्थिरांक { परत तार्किक (errors); }
 
-  bool successful () const { return !bool (errors); }
+  तार्किक successful () स्थिरांक { परत !तार्किक (errors); }
 
-  HB_NODISCARD bool ran_out_of_room () const { return errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
-  HB_NODISCARD bool offset_overflow () const { return errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_offset_overflow () const { return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_overflow () const
+  HB_NODISCARD तार्किक ran_out_of_room () स्थिरांक { परत errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
+  HB_NODISCARD तार्किक offset_overflow () स्थिरांक { परत errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD तार्किक only_offset_overflow () स्थिरांक { परत errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD तार्किक only_overflow () स्थिरांक
   {
-    return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
+    परत errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_INT_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_ARRAY_OVERFLOW;
   }
 
-  void reset (void *start_, size_t size)
+  शून्य reset (शून्य *start_, माप_प्रकार size)
   {
-    start = (char*) start_;
+    start = (अक्षर*) start_;
     end = start + size;
     reset ();
     current = nullptr;
   }
 
-  void reset ()
+  शून्य reset ()
   {
-    this->errors = HB_SERIALIZE_ERROR_NONE;
-    this->head = this->start;
-    this->tail = this->end;
-    this->zerocopy = nullptr;
-    this->debug_depth = 0;
+    हे->errors = HB_SERIALIZE_ERROR_NONE;
+    हे->head = हे->start;
+    हे->tail = हे->end;
+    हे->zerocopy = nullptr;
+    हे->debug_depth = 0;
 
     fini ();
-    this->packed.push (nullptr);
-    this->packed_map.init ();
+    हे->packed.push (nullptr);
+    हे->packed_map.init ();
   }
 
-  bool check_success (bool success,
+  तार्किक check_success (तार्किक success,
                       hb_serialize_error_t err_type = HB_SERIALIZE_ERROR_OTHER)
   {
-    return successful ()
+    परत successful ()
         && (success || err (err_type));
   }
 
-  template <typename T1, typename T2>
-  bool check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
+  ढाँचा <typename T1, typename T2>
+  तार्किक check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
   {
-    if ((long long) v1 != (long long) v2)
+    जर ((दीर्घ दीर्घ) v1 != (दीर्घ दीर्घ) v2)
     {
-      return err (err_type);
+      परत err (err_type);
     }
-    return true;
+    परत सत्य;
   }
 
-  template <typename T1, typename T2>
-  bool check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
-  { return check_equal (v1 = v2, v2, err_type); }
+  ढाँचा <typename T1, typename T2>
+  तार्किक check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
+  { परत check_equal (v1 = v2, v2, err_type); }
 
-  template <typename T> bool propagate_error (T &&obj)
-  { return check_success (!hb_deref (obj).in_error ()); }
+  ढाँचा <typename T> तार्किक propagate_error (T &&obj)
+  { परत check_success (!hb_deref (obj).in_error ()); }
 
-  template <typename T1, typename... Ts> bool propagate_error (T1 &&o1, Ts&&... os)
-  { return propagate_error (std::forward<T1> (o1)) &&
+  ढाँचा <typename T1, typename... Ts> तार्किक propagate_error (T1 &&o1, Ts&&... os)
+  { परत propagate_error (std::forward<T1> (o1)) &&
 	   propagate_error (std::forward<Ts> (os)...); }
 
   /* To be called around main operation. */
-  template <typename Type=char>
+  ढाँचा <typename Type=अक्षर>
   __attribute__((returns_nonnull))
   Type *start_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, +1,
+    DEBUG_संदेश_LEVEL (SERIALIZE, हे->start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     हे->start, हे->end,
+		     (अचिन्हित दीर्घ) (हे->end - हे->start));
 
-    assert (!current);
-    return push<Type> ();
+    प्रतिज्ञा (!current);
+    परत push<Type> ();
   }
-  void end_serialize ()
+  शून्य end_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, -1,
+    DEBUG_संदेश_LEVEL (SERIALIZE, हे->start, 0, -1,
 		     "end [%p..%p] serialized %u bytes; %s",
-		     this->start, this->end,
-		     (unsigned) (this->head - this->start),
+		     हे->start, हे->end,
+		     (अचिन्हित) (हे->head - हे->start),
 		     successful () ? "successful" : "UNSUCCESSFUL");
 
     propagate_error (packed, packed_map);
 
-    if (unlikely (!current)) return;
-    if (unlikely (in_error()))
+    जर (unlikely (!current)) परत;
+    जर (unlikely (in_error()))
     {
       // Offset overflows that occur before link resolution cannot be handled
       // by repacking, so set a more general error.
-      if (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
-      return;
+      जर (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
+      परत;
     }
 
-    assert (!current->next);
+    प्रतिज्ञा (!current->next);
 
     /* Only "pack" if there exist other objects... Otherwise, don't bother.
      * Saves a move. */
-    if (packed.length <= 1)
-      return;
+    जर (packed.length <= 1)
+      परत;
 
-    pop_pack (false);
+    काढा_pack (असत्य);
 
     resolve_links ();
   }
 
-  template <typename Type = void>
+  ढाँचा <typename Type = शून्य>
   __attribute__((returns_nonnull))
   Type *push ()
   {
-    if (unlikely (in_error ())) return start_embed<Type> ();
+    जर (unlikely (in_error ())) परत start_embed<Type> ();
 
     object_t *obj = object_pool.alloc ();
-    if (unlikely (!obj))
-      check_success (false);
-    else
+    जर (unlikely (!obj))
+      check_success (असत्य);
+    अन्यथा
     {
       obj->head = head;
       obj->tail = tail;
       obj->next = current;
       current = obj;
     }
-    return start_embed<Type> ();
+    परत start_embed<Type> ();
   }
-  void pop_discard ()
+  शून्य काढा_discard ()
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return;
+    जर (unlikely (!obj)) परत;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error() && !only_overflow ())) return;
+    जर (unlikely (in_error() && !only_overflow ())) परत;
 
     current = current->next;
     revert (zerocopy ? zerocopy : obj->head, obj->tail);
@@ -365,113 +365,113 @@ struct hb_serialize_context_t
    * so not worth an attempt, or a contiguous table is serialized as
    * multiple consecutive objects in the reverse order so can't be shared.
    */
-  objidx_t pop_pack (bool share=true)
+  objidx_t काढा_pack (तार्किक share=सत्य)
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return 0;
+    जर (unlikely (!obj)) परत 0;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error()  && !only_overflow ())) return 0;
+    जर (unlikely (in_error()  && !only_overflow ())) परत 0;
 
     current = current->next;
     obj->tail = head;
     obj->next = nullptr;
-    assert (obj->head <= obj->tail);
-    unsigned len = obj->tail - obj->head;
+    प्रतिज्ञा (obj->head <= obj->tail);
+    अचिन्हित len = obj->tail - obj->head;
     head = zerocopy ? zerocopy : obj->head; /* Rewind head. */
-    bool was_zerocopy = zerocopy;
+    तार्किक was_zerocopy = zerocopy;
     zerocopy = nullptr;
 
-    if (!len)
+    जर (!len)
     {
-      assert (!obj->real_links.length);
-      assert (!obj->virtual_links.length);
-      return 0;
+      प्रतिज्ञा (!obj->real_links.length);
+      प्रतिज्ञा (!obj->virtual_links.length);
+      परत 0;
     }
 
     objidx_t objidx;
     uint32_t hash = 0;
-    if (share)
+    जर (share)
     {
       hash = hb_hash (obj);
       objidx = packed_map.get_with_hash (obj, hash);
-      if (objidx)
+      जर (objidx)
       {
         merge_virtual_links (obj, objidx);
 	obj->fini ();
         object_pool.release (obj);
-	return objidx;
+	परत objidx;
       }
     }
 
     tail -= len;
-    if (was_zerocopy)
-      assert (tail == obj->head);
-    else
-      memmove (tail, obj->head, len);
+    जर (was_zerocopy)
+      प्रतिज्ञा (tail == obj->head);
+    अन्यथा
+      स_हटाओ (tail, obj->head, len);
 
     obj->head = tail;
     obj->tail = tail + len;
 
     packed.push (obj);
 
-    if (unlikely (!propagate_error (packed)))
+    जर (unlikely (!propagate_error (packed)))
     {
       /* Obj wasn't successfully added to packed, so clean it up otherwise its
        * links will be leaked. When we use constructor/destructors properly, we
        * can remove these. */
       obj->fini ();
-      return 0;
+      परत 0;
     }
 
     objidx = packed.length - 1;
 
-    if (share) packed_map.set_with_hash (obj, hash, objidx);
+    जर (share) packed_map.set_with_hash (obj, hash, objidx);
     propagate_error (packed_map);
 
-    return objidx;
+    परत objidx;
   }
 
-  void revert (snapshot_t snap)
+  शून्य revert (snapshot_t snap)
   {
     // Overflows that happened after the snapshot will be erased by the revert.
-    if (unlikely (in_error () && !only_overflow ())) return;
-    assert (snap.current == current);
-    if (current)
+    जर (unlikely (in_error () && !only_overflow ())) परत;
+    प्रतिज्ञा (snap.current == current);
+    जर (current)
     {
-      current->real_links.shrink (snap.num_real_links);
-      current->virtual_links.shrink (snap.num_virtual_links);
+      current->real_links.shrink (snap.अंक_real_links);
+      current->virtual_links.shrink (snap.अंक_virtual_links);
     }
     errors = snap.errors;
     revert (snap.head, snap.tail);
   }
 
-  void revert (char *snap_head,
-	       char *snap_tail)
+  शून्य revert (अक्षर *snap_head,
+	       अक्षर *snap_tail)
   {
-    if (unlikely (in_error ())) return;
-    assert (snap_head <= head);
-    assert (tail <= snap_tail);
+    जर (unlikely (in_error ())) परत;
+    प्रतिज्ञा (snap_head <= head);
+    प्रतिज्ञा (tail <= snap_tail);
     head = snap_head;
     tail = snap_tail;
     discard_stale_objects ();
   }
 
-  void discard_stale_objects ()
+  शून्य discard_stale_objects ()
   {
-    if (unlikely (in_error ())) return;
-    while (packed.length > 1 &&
+    जर (unlikely (in_error ())) परत;
+    पर्यंत (packed.length > 1 &&
 	   packed.tail ()->head < tail)
     {
       object_t *obj = packed.tail ();
       packed_map.del (obj);
-      assert (!obj->next);
+      प्रतिज्ञा (!obj->next);
       obj->fini ();
       object_pool.release (obj);
-      packed.pop ();
+      packed.काढा ();
     }
-    if (packed.length > 1)
-      assert (packed.tail ()->head == tail);
+    जर (packed.length > 1)
+      प्रतिज्ञा (packed.tail ()->head == tail);
   }
 
   // Adds a virtual link from the current object to objidx. A virtual link is not associated with
@@ -482,28 +482,28 @@ struct hb_serialize_context_t
   // This is useful in certain situations where there needs to be a specific ordering in the
   // final serialization. Such as when platform bugs require certain orderings, or to provide
   //  guidance to the repacker for better offset overflow resolution.
-  void add_virtual_link (objidx_t objidx)
+  शून्य add_virtual_link (objidx_t objidx)
   {
-    if (unlikely (in_error ())) return;
+    जर (unlikely (in_error ())) परत;
 
-    if (!objidx)
-      return;
+    जर (!objidx)
+      परत;
 
-    assert (current);
+    प्रतिज्ञा (current);
 
-    if (!current->add_virtual_link(objidx))
+    जर (!current->add_virtual_link(objidx))
       err (HB_SERIALIZE_ERROR_OTHER);
   }
 
-  objidx_t last_added_child_index() const {
-    if (unlikely (in_error ())) return (objidx_t) -1;
+  objidx_t last_added_child_index() स्थिरांक {
+    जर (unlikely (in_error ())) परत (objidx_t) -1;
 
-    assert (current);
-    if (!bool(current->real_links)) {
-      return (objidx_t) -1;
+    प्रतिज्ञा (current);
+    जर (!तार्किक(current->real_links)) {
+      परत (objidx_t) -1;
     }
 
-    return current->real_links[current->real_links.length - 1].objidx;
+    परत current->real_links[current->real_links.length - 1].objidx;
   }
 
   // For the current object ensure that the sub-table bytes for child objidx are always placed
@@ -511,42 +511,42 @@ struct hb_serialize_context_t
   // repacker will not move the target subtable before the other children
   // (by adding virtual links). It is up to the caller to ensure the initial serialization
   // order is correct.
-  void repack_last(objidx_t objidx) {
-    if (unlikely (in_error ())) return;
+  शून्य repack_last(objidx_t objidx) {
+    जर (unlikely (in_error ())) परत;
 
-    if (!objidx)
-      return;
+    जर (!objidx)
+      परत;
 
-    assert (current);
-    for (auto& l : current->real_links) {
-      if (l.objidx == objidx) {
-        continue;
+    प्रतिज्ञा (current);
+    साठी (स्वतः& l : current->real_links) {
+      जर (l.objidx == objidx) {
+        सुरूठेवा;
       }
 
       packed[l.objidx]->add_virtual_link(objidx);
     }
   }
 
-  template <typename T>
-  void add_link (T &ofs, objidx_t objidx,
+  ढाँचा <typename T>
+  शून्य add_link (T &ofs, objidx_t objidx,
 		 whence_t whence = Head,
-		 unsigned bias = 0)
+		 अचिन्हित bias = 0)
   {
-    if (unlikely (in_error ())) return;
+    जर (unlikely (in_error ())) परत;
 
-    if (!objidx)
-      return;
+    जर (!objidx)
+      परत;
 
-    assert (current);
-    assert (current->head <= (const char *) &ofs);
+    प्रतिज्ञा (current);
+    प्रतिज्ञा (current->head <= (स्थिरांक अक्षर *) &ofs);
 
-    auto& link = *current->real_links.push ();
-    if (current->real_links.in_error ())
+    स्वतः& link = *current->real_links.push ();
+    जर (current->real_links.in_error ())
       err (HB_SERIALIZE_ERROR_OTHER);
 
-    link.width = sizeof (T);
+    link.width = आकार (T);
     link.objidx = objidx;
-    if (unlikely (!sizeof (T)))
+    जर (unlikely (!आकार (T)))
     {
       // This link is not associated with an actual offset and exists merely to enforce
       // an ordering constraint.
@@ -554,268 +554,268 @@ struct hb_serialize_context_t
       link.whence = 0;
       link.position = 0;
       link.bias = 0;
-      return;
+      परत;
     }
 
     link.is_signed = std::is_signed<hb_unwrap_type (T)>::value;
-    link.whence = (unsigned) whence;
-    link.position = (const char *) &ofs - current->head;
+    link.whence = (अचिन्हित) whence;
+    link.position = (स्थिरांक अक्षर *) &ofs - current->head;
     link.bias = bias;
   }
 
-  unsigned to_bias (const void *base) const
+  अचिन्हित to_bias (स्थिरांक शून्य *base) स्थिरांक
   {
-    if (unlikely (in_error ())) return 0;
-    if (!base) return 0;
-    assert (current);
-    assert (current->head <= (const char *) base);
-    return (const char *) base - current->head;
+    जर (unlikely (in_error ())) परत 0;
+    जर (!base) परत 0;
+    प्रतिज्ञा (current);
+    प्रतिज्ञा (current->head <= (स्थिरांक अक्षर *) base);
+    परत (स्थिरांक अक्षर *) base - current->head;
   }
 
-  void resolve_links ()
+  शून्य resolve_links ()
   {
-    if (unlikely (in_error ())) return;
+    जर (unlikely (in_error ())) परत;
 
-    assert (!current);
-    assert (packed.length > 1);
+    प्रतिज्ञा (!current);
+    प्रतिज्ञा (packed.length > 1);
 
-    for (const object_t* parent : ++hb_iter (packed))
-      for (const object_t::link_t &link : parent->real_links)
+    साठी (स्थिरांक object_t* parent : ++hb_iter (packed))
+      साठी (स्थिरांक object_t::link_t &link : parent->real_links)
       {
-	const object_t* child = packed[link.objidx];
-	if (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); return; }
-	unsigned offset = 0;
-	switch ((whence_t) link.whence) {
-	case Head:     offset = child->head - parent->head; break;
-	case Tail:     offset = child->head - parent->tail; break;
-	case Absolute: offset = (head - start) + (child->head - tail); break;
+	स्थिरांक object_t* child = packed[link.objidx];
+	जर (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); परत; }
+	अचिन्हित offset = 0;
+	निवड ((whence_t) link.whence) {
+	स्थिती Head:     offset = child->head - parent->head; थांबा;
+	स्थिती Tail:     offset = child->head - parent->tail; थांबा;
+	स्थिती Absolute: offset = (head - start) + (child->head - tail); थांबा;
 	}
 
-	assert (offset >= link.bias);
+	प्रतिज्ञा (offset >= link.bias);
 	offset -= link.bias;
-	if (link.is_signed)
+	जर (link.is_signed)
 	{
-	  assert (link.width == 2 || link.width == 4);
-	  if (link.width == 4)
+	  प्रतिज्ञा (link.width == 2 || link.width == 4);
+	  जर (link.width == 4)
 	    assign_offset<int32_t> (parent, link, offset);
-	  else
+	  अन्यथा
 	    assign_offset<int16_t> (parent, link, offset);
 	}
-	else
+	अन्यथा
 	{
-	  assert (link.width == 2 || link.width == 3 || link.width == 4);
-	  if (link.width == 4)
+	  प्रतिज्ञा (link.width == 2 || link.width == 3 || link.width == 4);
+	  जर (link.width == 4)
 	    assign_offset<uint32_t> (parent, link, offset);
-	  else if (link.width == 3)
+	  अन्यथा जर (link.width == 3)
 	    assign_offset<uint32_t, 3> (parent, link, offset);
-	  else
+	  अन्यथा
 	    assign_offset<uint16_t> (parent, link, offset);
 	}
       }
   }
 
-  unsigned int length () const
+  अचिन्हित पूर्णांक length () स्थिरांक
   {
-    if (unlikely (!current)) return 0;
-    return this->head - current->head;
+    जर (unlikely (!current)) परत 0;
+    परत हे->head - current->head;
   }
 
-  void align (unsigned int alignment)
+  शून्य align (अचिन्हित पूर्णांक alignment)
   {
-    unsigned int l = length () % alignment;
-    if (l)
-      (void) allocate_size<void> (alignment - l);
+    अचिन्हित पूर्णांक l = length () % alignment;
+    जर (l)
+      (शून्य) allocate_size<शून्य> (alignment - l);
   }
 
-  template <typename Type = void>
+  ढाँचा <typename Type = शून्य>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type *obj HB_UNUSED = nullptr) const
-  { return reinterpret_cast<Type *> (this->head); }
-  template <typename Type>
+  Type *start_embed (स्थिरांक Type *obj HB_UNUSED = nullptr) स्थिरांक
+  { परत reinterpret_cast<Type *> (हे->head); }
+  ढाँचा <typename Type>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type &obj) const
-  { return start_embed (std::addressof (obj)); }
+  Type *start_embed (स्थिरांक Type &obj) स्थिरांक
+  { परत start_embed (std::addressof (obj)); }
 
-  bool err (hb_serialize_error_t err_type)
+  तार्किक err (hb_serialize_error_t err_type)
   {
-    return !bool ((errors = (errors | err_type)));
+    परत !तार्किक ((errors = (errors | err_type)));
   }
 
-  bool start_zerocopy (size_t size)
+  तार्किक start_zerocopy (माप_प्रकार size)
   {
-    if (unlikely (in_error ())) return false;
+    जर (unlikely (in_error ())) परत असत्य;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    जर (unlikely (size > पूर्णांक_उच्च || हे->tail - हे->head < सूचक_भेद_प्रकार (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return false;
+      परत असत्य;
     }
 
-    assert (!this->zerocopy);
-    this->zerocopy = this->head;
+    प्रतिज्ञा (!हे->zerocopy);
+    हे->zerocopy = हे->head;
 
-    assert (this->current->head == this->head);
-    this->current->head = this->current->tail = this->head = this->tail - size;
-    return true;
+    प्रतिज्ञा (हे->current->head == हे->head);
+    हे->current->head = हे->current->tail = हे->head = हे->tail - size;
+    परत सत्य;
   }
 
-  template <typename Type>
+  ढाँचा <typename Type>
   HB_NODISCARD
-  Type *allocate_size (size_t size, bool clear = true)
+  Type *allocate_size (माप_प्रकार size, तार्किक clear = सत्य)
   {
-    if (unlikely (in_error ())) return nullptr;
+    जर (unlikely (in_error ())) परत nullptr;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    जर (unlikely (size > पूर्णांक_उच्च || हे->tail - हे->head < सूचक_भेद_प्रकार (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return nullptr;
+      परत nullptr;
     }
-    if (clear)
-      hb_memset (this->head, 0, size);
-    char *ret = this->head;
-    this->head += size;
-    return reinterpret_cast<Type *> (ret);
+    जर (clear)
+      hb_memset (हे->head, 0, size);
+    अक्षर *ret = हे->head;
+    हे->head += size;
+    परत reinterpret_cast<Type *> (ret);
   }
 
-  template <typename Type>
+  ढाँचा <typename Type>
   Type *allocate_min ()
-  { return this->allocate_size<Type> (Type::min_size); }
+  { परत हे->allocate_size<Type> (Type::min_size); }
 
-  template <typename Type>
+  ढाँचा <typename Type>
   HB_NODISCARD
-  Type *embed (const Type *obj)
+  Type *embed (स्थिरांक Type *obj)
   {
-    size_t size = obj->get_size ();
-    Type *ret = this->allocate_size<Type> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    माप_प्रकार size = obj->get_size ();
+    Type *ret = हे->allocate_size<Type> (size, असत्य);
+    जर (unlikely (!ret)) परत nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    परत ret;
   }
-  template <typename Type>
+  ढाँचा <typename Type>
   HB_NODISCARD
-  Type *embed (const Type &obj)
-  { return embed (std::addressof (obj)); }
-  char *embed (const char *obj, unsigned size)
+  Type *embed (स्थिरांक Type &obj)
+  { परत embed (std::addressof (obj)); }
+  अक्षर *embed (स्थिरांक अक्षर *obj, अचिन्हित size)
   {
-    char *ret = this->allocate_size<char> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    अक्षर *ret = हे->allocate_size<अक्षर> (size, असत्य);
+    जर (unlikely (!ret)) परत nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    परत ret;
   }
 
-  template <typename Type, typename ...Ts> auto
-  _copy (const Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
-  (Type *, src.copy (this, std::forward<Ts> (ds)...))
+  ढाँचा <typename Type, typename ...Ts> स्वतः
+  _copy (स्थिरांक Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
+  (Type *, src.copy (हे, std::forward<Ts> (ds)...))
 
-  template <typename Type> auto
-  _copy (const Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
+  ढाँचा <typename Type> स्वतः
+  _copy (स्थिरांक Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
   {
-    Type *ret = this->allocate_size<Type> (sizeof (Type));
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = हे->allocate_size<Type> (आकार (Type));
+    जर (unlikely (!ret)) परत nullptr;
     *ret = src;
-    return ret;
+    परत ret;
   }
 
   /* Like embed, but active: calls obj.operator=() or obj.copy() to transfer data
    * instead of hb_memcpy(). */
-  template <typename Type, typename ...Ts>
-  Type *copy (const Type &src, Ts&&... ds)
-  { return _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
-  template <typename Type, typename ...Ts>
-  Type *copy (const Type *src, Ts&&... ds)
-  { return copy (*src, std::forward<Ts> (ds)...); }
+  ढाँचा <typename Type, typename ...Ts>
+  Type *copy (स्थिरांक Type &src, Ts&&... ds)
+  { परत _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
+  ढाँचा <typename Type, typename ...Ts>
+  Type *copy (स्थिरांक Type *src, Ts&&... ds)
+  { परत copy (*src, std::forward<Ts> (ds)...); }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator)),
 	   typename ...Ts>
-  void copy_all (Iterator it, Ts&&... ds)
-  { for (decltype (*it) _ : it) copy (_, ds...); }
+  शून्य copy_all (Iterator it, Ts&&... ds)
+  { साठी (decltype (*it) _ : it) copy (_, ds...); }
 
-  template <typename Type>
-  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); return *this; }
+  ढाँचा <typename Type>
+  hb_serialize_context_t& चालक << (स्थिरांक Type &obj) & { embed (obj); परत *हे; }
 
-  template <typename Type>
-  Type *extend_size (Type *obj, size_t size, bool clear = true)
+  ढाँचा <typename Type>
+  Type *extend_size (Type *obj, माप_प्रकार size, तार्किक clear = सत्य)
   {
-    if (unlikely (in_error ())) return nullptr;
-    if (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); return nullptr; }
+    जर (unlikely (in_error ())) परत nullptr;
+    जर (unlikely (size >= पूर्णांक_उच्च)) { err (HB_SERIALIZE_ERROR_OTHER); परत nullptr; }
 
-    assert (this->start <= (char *) obj);
-    assert ((char *) obj <= this->head);
-    assert ((size_t) (this->head - (char *) obj) <= size);
-    if (unlikely (((char *) obj + size < (char *) obj) ||
-		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) return nullptr;
-    return reinterpret_cast<Type *> (obj);
+    प्रतिज्ञा (हे->start <= (अक्षर *) obj);
+    प्रतिज्ञा ((अक्षर *) obj <= हे->head);
+    प्रतिज्ञा ((माप_प्रकार) (हे->head - (अक्षर *) obj) <= size);
+    जर (unlikely (((अक्षर *) obj + size < (अक्षर *) obj) ||
+		  !हे->allocate_size<Type> (((अक्षर *) obj) + size - हे->head, clear))) परत nullptr;
+    परत reinterpret_cast<Type *> (obj);
   }
-  template <typename Type>
-  Type *extend_size (Type &obj, size_t size, bool clear = true)
-  { return extend_size (std::addressof (obj), size, clear); }
+  ढाँचा <typename Type>
+  Type *extend_size (Type &obj, माप_प्रकार size, तार्किक clear = सत्य)
+  { परत extend_size (std::addressof (obj), size, clear); }
 
-  template <typename Type>
-  Type *extend_min (Type *obj) { return extend_size (obj, obj->min_size); }
-  template <typename Type>
-  Type *extend_min (Type &obj) { return extend_min (std::addressof (obj)); }
+  ढाँचा <typename Type>
+  Type *extend_min (Type *obj) { परत extend_size (obj, obj->min_size); }
+  ढाँचा <typename Type>
+  Type *extend_min (Type &obj) { परत extend_min (std::addressof (obj)); }
 
-  template <typename Type, typename ...Ts>
+  ढाँचा <typename Type, typename ...Ts>
   Type *extend (Type *obj, Ts&&... ds)
-  { return extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
-  template <typename Type, typename ...Ts>
+  { परत extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
+  ढाँचा <typename Type, typename ...Ts>
   Type *extend (Type &obj, Ts&&... ds)
-  { return extend (std::addressof (obj), std::forward<Ts> (ds)...); }
+  { परत extend (std::addressof (obj), std::forward<Ts> (ds)...); }
 
   /* Output routines. */
-  hb_bytes_t copy_bytes () const
+  hb_bytes_t copy_bytes () स्थिरांक
   {
-    assert (successful ());
+    प्रतिज्ञा (successful ());
     /* Copy both items from head side and tail side... */
-    unsigned int len = (this->head - this->start)
-		     + (this->end  - this->tail);
+    अचिन्हित पूर्णांक len = (हे->head - हे->start)
+		     + (हे->end  - हे->tail);
 
     // If len is zero don't hb_malloc as the memory won't get properly
     // cleaned up later.
-    if (!len) return hb_bytes_t ();
+    जर (!len) परत hb_bytes_t ();
 
-    char *p = (char *) hb_malloc (len);
-    if (unlikely (!p)) return hb_bytes_t ();
+    अक्षर *p = (अक्षर *) hb_malloc (len);
+    जर (unlikely (!p)) परत hb_bytes_t ();
 
-    hb_memcpy (p, this->start, this->head - this->start);
-    hb_memcpy (p + (this->head - this->start), this->tail, this->end - this->tail);
-    return hb_bytes_t (p, len);
+    hb_memcpy (p, हे->start, हे->head - हे->start);
+    hb_memcpy (p + (हे->head - हे->start), हे->tail, हे->end - हे->tail);
+    परत hb_bytes_t (p, len);
   }
-  template <typename Type>
-  Type *copy () const
-  { return reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
-  hb_blob_t *copy_blob () const
+  ढाँचा <typename Type>
+  Type *copy () स्थिरांक
+  { परत reinterpret_cast<Type *> ((अक्षर *) copy_bytes ().arrayZ); }
+  hb_blob_t *copy_blob () स्थिरांक
   {
     hb_bytes_t b = copy_bytes ();
-    return hb_blob_create (b.arrayZ, b.length,
+    परत hb_blob_create (b.arrayZ, b.length,
 			   HB_MEMORY_MODE_WRITABLE,
-			   (char *) b.arrayZ, hb_free);
+			   (अक्षर *) b.arrayZ, hb_free);
   }
 
-  const hb_vector_t<object_t *>& object_graph() const
-  { return packed; }
+  स्थिरांक hb_vector_t<object_t *>& object_graph() स्थिरांक
+  { परत packed; }
 
-  private:
-  template <typename T, unsigned Size = sizeof (T)>
-  void assign_offset (const object_t* parent, const object_t::link_t &link, unsigned offset)
+  खाजगी:
+  ढाँचा <typename T, अचिन्हित Size = आकार (T)>
+  शून्य assign_offset (स्थिरांक object_t* parent, स्थिरांक object_t::link_t &link, अचिन्हित offset)
   {
     // XXX We should stop assuming big-endian!
-    auto &off = * ((HBInt<true, T, Size> *) (parent->head + link.position));
-    assert (0 == off);
+    स्वतः &off = * ((HBInt<सत्य, T, Size> *) (parent->head + link.position));
+    प्रतिज्ञा (0 == off);
     check_assign (off, offset, HB_SERIALIZE_ERROR_OFFSET_OVERFLOW);
   }
 
-  public:
-  char *start, *head, *tail, *end, *zerocopy;
-  unsigned int debug_depth;
+  सार्वजनिक:
+  अक्षर *start, *head, *tail, *end, *zerocopy;
+  अचिन्हित पूर्णांक debug_depth;
   hb_serialize_error_t errors;
 
-  private:
+  खाजगी:
 
-  void merge_virtual_links (const object_t* from, objidx_t to_idx) {
+  शून्य merge_virtual_links (स्थिरांक object_t* from, objidx_t to_idx) {
     object_t* to = packed[to_idx];
-    for (const auto& l : from->virtual_links) {
+    साठी (स्थिरांक स्वतः& l : from->virtual_links) {
       to->virtual_links.push (l);
     }
   }
@@ -830,7 +830,7 @@ struct hb_serialize_context_t
   hb_vector_t<object_t *> packed;
 
   /* Map view of packed objects. */
-  hb_hashmap_t<const object_t *, objidx_t> packed_map;
+  hb_hashmap_t<स्थिरांक object_t *, objidx_t> packed_map;
 };
 
 #endif /* HB_SERIALIZE_HH */

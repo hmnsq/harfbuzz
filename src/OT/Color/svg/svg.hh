@@ -25,14 +25,14 @@
 #ifndef OT_COLOR_SVG_SVG_HH
 #define OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#अन्तर्भाव "../../../hb-open-type.hh"
+#अन्तर्भाव "../../../hb-blob.hh"
+#अन्तर्भाव "../../../hb-limits.hh"
+#अन्तर्भाव "../../../hb-map.hh"
+#अन्तर्भाव "../../../hb-paint.hh"
+#अन्तर्भाव "../../../hb-zlib.hh"
+#अन्तर्भाव <ctype.h>
+#अन्तर्भाव <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
@@ -42,80 +42,80 @@
 #define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
 
 
-namespace OT {
+नामाकाश OT {
 
-static inline hb_blob_t *
+स्थिर ओळीत hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
-                                     unsigned *len)
+                                     स्थिरांक अक्षर **svg,
+                                     अचिन्हित *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
-  unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  अचिन्हित data_len = 0;
+  स्थिरांक अक्षर *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
-    goto fail;
+  जर (!data || !data_len)
+    जा fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  जर (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
-        unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+    जर (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+        unlikely ((माप_प्रकार) expected_size > (माप_प्रकार) HB_SVG_MAX_DOCUMENT_SIZE))
+      जा fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+    जर (!uncompressed)
+      जा fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    जर (!data || !data_len)
+      जा fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  जर (unlikely ((माप_प्रकार) data_len > (माप_प्रकार) HB_SVG_MAX_DOCUMENT_SIZE))
+    जा fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  जर (svg) *svg = data;
+  जर (len) *len = data_len;
+  परत blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  जर (svg) *svg = nullptr;
+  जर (len) *len = 0;
+  परत nullptr;
 }
 
-struct SVGDocumentIndexEntry
+संरचना SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  पूर्णांक cmp (hb_codepoint_t g) स्थिरांक
+  { परत g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_start_glyph () स्थिरांक
+  { परत startGlyphID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_end_glyph () स्थिरांक
+  { परत endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, अचिन्हित पूर्णांक index_offset) स्थिरांक
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    परत hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (अचिन्हित पूर्णांक) svgDoc,
 				    svgDocLength);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, स्थिरांक शून्य *base) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (हे);
+    return_trace (c->check_struct (हे) &&
 		  hb_barrier () &&
 		  svgDoc.sanitize (c, base, svgDocLength));
   }
 
-  protected:
+  संरक्षित:
   HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
 				 * this index entry. */
   HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
@@ -125,45 +125,45 @@ struct SVGDocumentIndexEntry
 				 * to an SVG document. Must be non-zero. */
   HBUINT32	svgDocLength;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct SVG
+संरचना SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
 
-  struct svg_id_span_t
+  संरचना svg_id_span_t
   {
-    const char *p;
-    unsigned len;
+    स्थिरांक अक्षर *p;
+    अचिन्हित len;
 
-    bool operator == (const svg_id_span_t &o) const
+    तार्किक चालक == (स्थिरांक svg_id_span_t &o) स्थिरांक
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      परत len == o.len && !स_भेद (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () स्थिरांक
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      साठी (अचिन्हित i = 0; i < len; i++)
+        h = h * 33u + (अचिन्हित अक्षर) p[i];
+      परत h;
     }
   };
 
-  struct svg_defs_entry_t
+  संरचना svg_defs_entry_t
   {
     svg_id_span_t id;
-    unsigned start;
-    unsigned end;
+    अचिन्हित start;
+    अचिन्हित end;
   };
 
-  struct svg_doc_cache_t
+  संरचना svg_doc_cache_t
   {
     hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
-    unsigned len = 0;
+    स्थिरांक अक्षर *svg = nullptr;
+    अचिन्हित len = 0;
     hb_vector_t<svg_defs_entry_t> defs_entries;
     hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
     hb_codepoint_t end_glyph = HB_CODEPOINT_INVALID;
@@ -171,76 +171,76 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  तार्किक has_data () स्थिरांक { परत svgDocEntries; }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) स्थिरांक
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      परत table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    अचिन्हित get_document_मोजणी () स्थिरांक
+    { परत table->get_document_मोजणी (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    तार्किक get_glyph_document_index (hb_codepoint_t glyph_id, अचिन्हित *index) स्थिरांक
+    { परत table->get_glyph_document_index (glyph_id, index); }
 
-    bool get_document_glyph_range (unsigned index,
+    तार्किक get_document_glyph_range (अचिन्हित index,
                                    hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+                                   hb_codepoint_t *end_glyph) स्थिरांक
+    { परत table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    तार्किक has_data () स्थिरांक { परत table->has_data (); }
 
-    const svg_doc_cache_t *
+    स्थिरांक svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
-                             unsigned len,
-                             unsigned doc_index,
+                             स्थिरांक अक्षर *svg,
+                             अचिन्हित len,
+                             अचिन्हित doc_index,
                              hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             hb_codepoint_t end_glyph) स्थिरांक;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    स्थिरांक अक्षर *
+    doc_cache_get_svg (स्थिरांक svg_doc_cache_t *doc,
+                       अचिन्हित *len) स्थिरांक;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    स्थिरांक hb_vector_t<svg_defs_entry_t> *
+    doc_cache_get_defs_entries (स्थिरांक svg_doc_cache_t *doc) स्थिरांक;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    तार्किक
+    doc_cache_get_glyph_span (स्थिरांक svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
-                              unsigned *start,
-                              unsigned *end) const;
+                              अचिन्हित *start,
+                              अचिन्हित *end) स्थिरांक;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
+    तार्किक
+    doc_cache_find_id_span (स्थिरांक svg_doc_cache_t *doc,
                             svg_id_span_t id,
-                            unsigned *start,
-                            unsigned *end) const;
+                            अचिन्हित *start,
+                            अचिन्हित *end) स्थिरांक;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
-                            unsigned *start,
-                            unsigned *end) const;
+    तार्किक
+    doc_cache_find_id_cstr (स्थिरांक svg_doc_cache_t *doc,
+                            स्थिरांक अक्षर *id,
+                            अचिन्हित *start,
+                            अचिन्हित *end) स्थिरांक;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    तार्किक paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, शून्य *data) स्थिरांक
     {
-      if (!has_data ())
-        return false;
+      जर (!has_data ())
+        परत असत्य;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      जर (blob == hb_blob_get_empty ())
+        परत असत्य;
 
-      bool ret = funcs->image (data,
+      तार्किक ret = funcs->image (data,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
@@ -249,309 +249,309 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      परत ret;
     }
 
-    private:
+    खाजगी:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
-                    unsigned len,
+                    स्थिरांक अक्षर *svg,
+                    अचिन्हित len,
                     hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    hb_codepoint_t end_glyph) स्थिरांक;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    स्थिर शून्य destroy_doc_cache (svg_doc_cache_t *doc);
 
     hb_blob_ptr_t<SVG> table;
     mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    सार्वजनिक:
+    DEFINE_SIZE_STATIC (आकार (hb_blob_ptr_t<SVG>) +
+                        आकार (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  स्थिरांक SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) स्थिरांक
+  { परत (हे+svgDocEntries).द्वा_खोज (glyph_id); }
 
-  unsigned get_document_count () const
+  अचिन्हित get_document_मोजणी () स्थिरांक
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    जर (!has_data ())
+      परत 0;
+    परत (हे + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  तार्किक get_glyph_document_index (hb_codepoint_t glyph_id, अचिन्हित *index) स्थिरांक
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    जर (!has_data ())
+      परत असत्य;
+    परत (हे + svgDocEntries).bfind (glyph_id, index);
   }
 
-  bool get_document_glyph_range (unsigned index,
+  तार्किक get_document_glyph_range (अचिन्हित index,
                                  hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+                                 hb_codepoint_t *end_glyph) स्थिरांक
   {
-    if (!has_data ())
-      return false;
+    जर (!has_data ())
+      परत असत्य;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    स्थिरांक स्वतः &entries = हे + svgDocEntries;
+    जर (index >= entries.len)
+      परत असत्य;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    स्थिरांक स्वतः &entry = entries.arrayZ[index];
+    जर (start_glyph) *start_glyph = entry.get_start_glyph ();
+    जर (end_glyph) *end_glyph = entry.get_end_glyph ();
+    परत सत्य;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (हे);
+    return_trace (likely (c->check_struct (हे) &&
+			  (हे+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
+  संरक्षित:
   HBUINT16	version;	/* Table version (starting at 0). */
   Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+नामाकाश _hb_svg_cache_impl {
 
-struct glyph_entry_t
+संरचना glyph_entry_t
 {
   hb_codepoint_t glyph;
   uint32_t start;
   uint32_t end;
 };
 
-struct id_entry_t
+संरचना id_entry_t
 {
   SVG::svg_id_span_t id;
   uint32_t start;
   uint32_t end;
 };
 
-struct open_elem_t
+संरचना open_elem_t
 {
-  unsigned start;
+  अचिन्हित start;
   SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  तार्किक in_defs_content;
+  तार्किक is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+स्थिर स्थिरांक अचिन्हित MAX_DEPTH = 128;
 
-static inline int
-find_substr (const char *s,
-             unsigned n,
-             unsigned from,
-             const char *needle,
-             unsigned needle_len)
+स्थिर ओळीत पूर्णांक
+find_substr (स्थिरांक अक्षर *s,
+             अचिन्हित n,
+             अचिन्हित from,
+             स्थिरांक अक्षर *needle,
+             अचिन्हित needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  जर (!needle_len || from >= n || needle_len > n)
+    परत -1;
+  साठी (अचिन्हित i = from; i + needle_len <= n; i++)
+    जर (s[i] == needle[0] && !स_भेद (s + i, needle, needle_len))
+      परत (पूर्णांक) i;
+  परत -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
-                       unsigned tag_start,
-                       unsigned tag_end,
+स्थिर ओळीत तार्किक
+parse_id_in_start_tag (स्थिरांक अक्षर *svg,
+                       अचिन्हित tag_start,
+                       अचिन्हित tag_end,
                        SVG::svg_id_span_t *id)
 {
-  unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  अचिन्हित p = tag_start;
+  पर्यंत (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    जर (!स_भेद (svg + p, "id=\"", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      अचिन्हित b = p + 4;
+      अचिन्हित e = b;
+      पर्यंत (e < tag_end && svg[e] != '"') e++;
+      जर (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        परत सत्य;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    जर (!स_भेद (svg + p, "id='", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      अचिन्हित b = p + 4;
+      अचिन्हित e = b;
+      पर्यंत (e < tag_end && svg[e] != '\'') e++;
+      जर (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        परत सत्य;
       }
     }
     p++;
   }
-  return false;
+  परत असत्य;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+स्थिर ओळीत तार्किक
+parse_glyph_id_span (स्थिरांक SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  जर (id.len <= 5 || स_भेद (id.p, "glyph", 5))
+    परत असत्य;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  साठी (अचिन्हित i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    अचिन्हित अक्षर c = (अचिन्हित अक्षर) id.p[i];
+    जर (c < '0' || c > '9')
+      परत असत्य;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    जर (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      परत असत्य;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  परत सत्य;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
-                            unsigned len,
+स्थिर ओळीत तार्किक
+parse_cache_entries_linear (स्थिरांक अक्षर *svg,
+                            अचिन्हित len,
                             hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
                             hb_vector_t<id_entry_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
-  unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  open_elem_t चळत[MAX_DEPTH] = {};
+  अचिन्हित depth = 0;
+  जर (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    परत असत्य;
 
-  unsigned defs_depth = 0;
-  unsigned i = 0;
-  while (i < len)
+  अचिन्हित defs_depth = 0;
+  अचिन्हित i = 0;
+  पर्यंत (i < len)
   {
-    if (svg[i] != '<')
+    जर (svg[i] != '<')
     {
       i++;
-      continue;
+      सुरूठेवा;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    जर (i + 4 <= len && !स_भेद (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      पूर्णांक cend = find_substr (svg, len, i + 4, "-->", 3);
+      जर (cend < 0) परत असत्य;
+      i = (अचिन्हित) cend + 3;
+      सुरूठेवा;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    जर (i + 9 <= len && !स_भेद (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      पूर्णांक cend = find_substr (svg, len, i + 9, "]]>", 3);
+      जर (cend < 0) परत असत्य;
+      i = (अचिन्हित) cend + 3;
+      सुरूठेवा;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    तार्किक closing = (i + 1 < len && svg[i + 1] == '/');
+    तार्किक special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
-    unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    अचिन्हित gt = i + 1;
+    अक्षर quote = 0;
+    पर्यंत (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      अक्षर c = svg[gt];
+      जर (quote)
       {
-        if (c == quote) quote = 0;
+        जर (c == quote) quote = 0;
       }
-      else
+      अन्यथा
       {
-        if (c == '"' || c == '\'')
+        जर (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        अन्यथा जर (c == '>')
+          थांबा;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    जर (gt >= len)
+      परत असत्य;
 
-    if (special)
+    जर (special)
     {
       i = gt + 1;
-      continue;
+      सुरूठेवा;
     }
 
-    unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
-    unsigned name_len = 0;
-    while (p + name_len < gt)
+    अचिन्हित p = i + (closing ? 2 : 1);
+    पर्यंत (p < gt && है_खाली ((अचिन्हित अक्षर) svg[p])) p++;
+    स्थिरांक अक्षर *name = svg + p;
+    अचिन्हित name_len = 0;
+    पर्यंत (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      अचिन्हित अक्षर c = (अचिन्हित अक्षर) name[name_len];
+      जर (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        थांबा;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    तार्किक is_defs = (name_len == 4 && !स_भेद (name, "defs", 4));
 
-    if (closing)
+    जर (closing)
     {
-      if (!depth)
+      जर (!depth)
       {
         i = gt + 1;
-        continue;
+        सुरूठेवा;
       }
 
-      open_elem_t e = stack[--depth];
-      unsigned end = gt + 1;
+      open_elem_t e = चळत[--depth];
+      अचिन्हित end = gt + 1;
 
-      if (e.id.len)
+      जर (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        जर (unlikely (!id_entries->ढकला_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          परत असत्य;
 
-        if (e.in_defs_content)
+        जर (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
+          जर (unlikely (!defs_entries->ढकला_or_fail ()))
+            परत असत्य;
+          स्वतः &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
           slot.end = end;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        जर (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          जर (unlikely (!glyph_spans->ढकला_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            परत असत्य;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      जर (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
-      continue;
+      सुरूठेवा;
     }
 
     SVG::svg_id_span_t id = {};
     parse_id_in_start_tag (svg, i, gt, &id);
 
-    unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    अचिन्हित r = gt;
+    पर्यंत (r > i && है_खाली ((अचिन्हित अक्षर) svg[r - 1])) r--;
+    तार्किक self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
     e.start = i;
@@ -559,75 +559,75 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    जर (self_closing)
     {
-      unsigned end = gt + 1;
-      if (e.id.len)
+      अचिन्हित end = gt + 1;
+      जर (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        जर (unlikely (!id_entries->ढकला_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          परत असत्य;
 
-        if (e.in_defs_content)
+        जर (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
+          जर (unlikely (!defs_entries->ढकला_or_fail ()))
+            परत असत्य;
+          स्वतः &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
           slot.end = end;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        जर (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          जर (unlikely (!glyph_spans->ढकला_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            परत असत्य;
         }
       }
     }
-    else
+    अन्यथा
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
+      जर (unlikely (depth >= MAX_DEPTH))
+        परत असत्य;
+      चळत[depth++] = e;
+      जर (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  परत सत्य;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+ओळीत
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  अचिन्हित doc_मोजणी = table->get_document_मोजणी ();
+  जर (doc_मोजणी && unlikely (!doc_caches.resize (doc_मोजणी)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  साठी (अचिन्हित i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
-inline
+ओळीत
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  साठी (अचिन्हित i = 0; i < doc_caches.length; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
   table.destroy ();
 }
 
-inline void
+ओळीत शून्य
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  जर (!doc)
+    परत;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,18 +635,18 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+ओळीत SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
-                                    unsigned len,
+                                    स्थिरांक अक्षर *svg,
+                                    अचिन्हित len,
                                     hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    hb_codepoint_t end_glyph) स्थिरांक
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  स्थिर स्थिरांक uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  स्वतः *doc = (svg_doc_cache_t *) hb_malloc (आकार (svg_doc_cache_t));
+  जर (!doc)
+    परत nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,26 +663,26 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  जर (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    परत nullptr;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  अचिन्हित glyph_मोजणी = end_glyph - start_glyph + 1;
+  जर (!doc->glyph_spans.resize ((पूर्णांक) glyph_मोजणी))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    परत nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  साठी (अचिन्हित i = 0; i < glyph_मोजणी; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  जर (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,136 +690,136 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    परत nullptr;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  साठी (अचिन्हित i = 0; i < glyph_spans.length; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
+    स्थिरांक स्वतः &span = glyph_spans.arrayZ[i];
+    जर (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+      सुरूठेवा;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  साठी (अचिन्हित i = 0; i < id_entries.length; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
+    स्थिरांक स्वतः &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    जर (doc->id_spans.has (e.id, &out))
+      सुरूठेवा;
+    जर (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      परत nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  परत doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+ओळीत स्थिरांक SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
-                                              unsigned len,
-                                              unsigned doc_index,
+                                              स्थिरांक अक्षर *svg,
+                                              अचिन्हित len,
+                                              अचिन्हित doc_index,
                                               hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              hb_codepoint_t end_glyph) स्थिरांक
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  जर (doc_index >= doc_caches.length)
+    परत nullptr;
 
-  auto &slot = doc_caches.arrayZ[doc_index];
-  auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  स्वतः &slot = doc_caches.arrayZ[doc_index];
+  स्वतः *doc = slot.get_acquire ();
+  जर (doc)
+    परत doc;
 
-  auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  स्वतः *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
+  जर (!fresh)
+    परत nullptr;
 
-  auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  स्वतः *expected = (svg_doc_cache_t *) nullptr;
+  जर (slot.cmpexch (expected, fresh))
+    परत fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  परत expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+ओळीत स्थिरांक अक्षर *
+SVG::accelerator_t::doc_cache_get_svg (स्थिरांक svg_doc_cache_t *doc,
+                                       अचिन्हित *len) स्थिरांक
 {
-  if (!doc)
+  जर (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    जर (len) *len = 0;
+    परत nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  जर (len) *len = doc->len;
+  परत doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+ओळीत स्थिरांक hb_vector_t<SVG::svg_defs_entry_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (स्थिरांक svg_doc_cache_t *doc) स्थिरांक
 {
-  return doc ? &doc->defs_entries : nullptr;
+  परत doc ? &doc->defs_entries : nullptr;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+ओळीत तार्किक
+SVG::accelerator_t::doc_cache_get_glyph_span (स्थिरांक svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
-                                              unsigned *start,
-                                              unsigned *end) const
+                                              अचिन्हित *start,
+                                              अचिन्हित *end) स्थिरांक
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  स्थिर स्थिरांक uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  जर (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    परत असत्य;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  स्थिरांक स्वतः &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
+  जर (span.first == INVALID_SPAN)
+    परत असत्य;
+  जर (unlikely (span.first > span.second || span.second > doc->len))
+    परत असत्य;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  जर (start) *start = span.first;
+  जर (end) *end = span.second;
+  परत सत्य;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
+ओळीत तार्किक
+SVG::accelerator_t::doc_cache_find_id_span (स्थिरांक svg_doc_cache_t *doc,
                                             svg_id_span_t id,
-                                            unsigned *start,
-                                            unsigned *end) const
+                                            अचिन्हित *start,
+                                            अचिन्हित *end) स्थिरांक
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  जर (!doc || !id.p || !id.len)
+    परत असत्य;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  जर (!doc->id_spans.has (id, &span))
+    परत असत्य;
+  जर (unlikely (span->first > span->second || span->second > doc->len))
+    परत असत्य;
+  जर (start) *start = span->first;
+  जर (end) *end = span->second;
+  परत सत्य;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
-                                            unsigned *start,
-                                            unsigned *end) const
+ओळीत तार्किक
+SVG::accelerator_t::doc_cache_find_id_cstr (स्थिरांक svg_doc_cache_t *doc,
+                                            स्थिरांक अक्षर *id,
+                                            अचिन्हित *start,
+                                            अचिन्हित *end) स्थिरांक
 {
-  if (!id) return false;
-  svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  जर (!id) परत असत्य;
+  svg_id_span_t key = {id, (अचिन्हित) म_माप (id)};
+  परत doc_cache_find_id_span (doc, key, start, end);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+संरचना SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 

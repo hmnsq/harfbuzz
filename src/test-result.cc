@@ -24,137 +24,137 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb-result.hh"
+#अन्तर्भाव "hb-result.hh"
 
 
 // Track constructor and destructor counts to verify leak-freedom
-static int live_instances = 0;
+स्थिर पूर्णांक live_instances = 0;
 
-enum error_code_t {
+गणना error_code_t {
   ERR_A,
   ERR_B,
   ERR_C,
 };
 
-template <typename T>
+ढाँचा <typename T>
 using result = hb_result_t<T, error_code_t>;
 
-struct resource_t
+संरचना resource_t
 {
-  int id;
+  पूर्णांक id;
 
-  explicit resource_t (int id_) : id (id_) { live_instances++; }
-  resource_t (const resource_t& o) : id (o.id) { live_instances++; }
+  explicit resource_t (पूर्णांक id_) : id (id_) { live_instances++; }
+  resource_t (स्थिरांक resource_t& o) : id (o.id) { live_instances++; }
   resource_t (resource_t&& o) : id (o.id) { o.id = -1; live_instances++; }
   ~resource_t () { live_instances--; }
 
-  resource_t& operator = (const resource_t& o)
+  resource_t& चालक = (स्थिरांक resource_t& o)
   {
     id = o.id;
-    return *this;
+    परत *हे;
   }
-  resource_t& operator = (resource_t&& o)
+  resource_t& चालक = (resource_t&& o)
   {
     id = o.id;
     o.id = -1;
-    return *this;
+    परत *हे;
   }
 
-  bool operator == (const resource_t& o) const { return id == o.id; }
+  तार्किक चालक == (स्थिरांक resource_t& o) स्थिरांक { परत id == o.id; }
 };
 
-static result<int> returns_ok (int v)
+स्थिर result<पूर्णांक> returns_ok (पूर्णांक v)
 {
-  return Ok(v);
+  परत Ok(v);
 }
 
-static result<int> returns_err (error_code_t e)
+स्थिर result<पूर्णांक> returns_err (error_code_t e)
 {
-  return Err(e);
+  परत Err(e);
 }
 
-static result<int> try_callee (bool fail, int v, error_code_t e = ERR_A)
+स्थिर result<पूर्णांक> try_callee (तार्किक fail, पूर्णांक v, error_code_t e = ERR_A)
 {
-  if (fail) return Err(e);
-  return Ok(v);
+  जर (fail) परत Err(e);
+  परत Ok(v);
 }
 
-static result<void> try_callee_void (bool fail,  error_code_t e)
+स्थिर result<शून्य> try_callee_void (तार्किक fail,  error_code_t e)
 {
-  if (fail) return e;
-  return Ok();
+  जर (fail) परत e;
+  परत Ok();
 }
 
-static result<int> try_caller (bool fail1, bool fail2)
+स्थिर result<पूर्णांक> try_caller (तार्किक fail1, तार्किक fail2)
 {
-  TRY_ASSIGN (int index, try_callee (fail1, 10, ERR_A));
-  TRY_ASSIGN (int index2, try_callee (fail2, 20, ERR_B));
-  return Ok(index + index2);
+  TRY_ASSIGN (पूर्णांक index, try_callee (fail1, 10, ERR_A));
+  TRY_ASSIGN (पूर्णांक index2, try_callee (fail2, 20, ERR_B));
+  परत Ok(index + index2);
 }
 
-static result<void> try_caller_void (bool fail)
+स्थिर result<शून्य> try_caller_void (तार्किक fail)
 {
   TRY (try_callee_void (fail, ERR_C));
-  return Ok();
+  परत Ok();
 }
 
-static result<float> try_caller_type_change (bool fail)
+स्थिर result<दशांश> try_caller_type_change (तार्किक fail)
 {
-  TRY_ASSIGN (int index, try_callee (fail, 100, ERR_A));
-  return Ok((float) index * 1.5f);
+  TRY_ASSIGN (पूर्णांक index, try_callee (fail, 100, ERR_A));
+  परत Ok((दशांश) index * 1.5f);
 }
 
-static result<int> try_assign_existing (bool fail)
+स्थिर result<पूर्णांक> try_assign_existing (तार्किक fail)
 {
-  int val = 1;
+  पूर्णांक val = 1;
   TRY_ASSIGN (val, try_callee (fail, 42, ERR_A));
-  return Ok(val);
+  परत Ok(val);
 }
 
-static void test_ok_basic ()
+स्थिर शून्य test_ok_basic ()
 {
-  result<int> r = returns_ok (42);
+  result<पूर्णांक> r = returns_ok (42);
   hb_always_assert (r.is_ok ());
   hb_always_assert (!r.is_err ());
-  hb_always_assert ((bool) r);
+  hb_always_assert ((तार्किक) r);
   hb_always_assert (r.value () == 42);
   hb_always_assert (*r == 42);
-  hb_always_assert (r.value_or (0) == 42);
-  hb_always_assert (r.value_or_default () == 42);
+  hb_always_assert (r.मूल्य_or (0) == 42);
+  hb_always_assert (r.मूल्य_or_default () == 42);
   hb_always_assert (r == Ok(42));
   hb_always_assert (Ok(42) == r);
 }
 
-static void test_err_basic ()
+स्थिर शून्य test_err_basic ()
 {
-  result<int> r = returns_err (ERR_A);
+  result<पूर्णांक> r = returns_err (ERR_A);
   hb_always_assert (!r.is_ok ());
   hb_always_assert (r.is_err ());
   hb_always_assert (!r);
   hb_always_assert (r.error () == ERR_A);
-  hb_always_assert (r.value_or (99) == 99);
-  hb_always_assert (r.value_or_default () == 0);
+  hb_always_assert (r.मूल्य_or (99) == 99);
+  hb_always_assert (r.मूल्य_or_default () == 0);
   hb_always_assert (r == Err(ERR_A));
   hb_always_assert (Err(ERR_A) == r);
   hb_always_assert (r != Err(ERR_B));
   hb_always_assert (Err(ERR_B) != r);
 }
 
-static void test_explicit_ok_err ()
+स्थिर शून्य test_explicit_ok_err ()
 {
-  result<unsigned> r1 = Ok(100u);
+  result<अचिन्हित> r1 = Ok(100u);
   hb_always_assert (r1.is_ok ());
   hb_always_assert (r1.value () == 100u);
 
-  result<unsigned> r2 = Err(ERR_A);
+  result<अचिन्हित> r2 = Err(ERR_A);
   hb_always_assert (r2.is_err ());
   hb_always_assert (r2.error () == ERR_A);
 }
 
-static void test_pointers ()
+स्थिर शून्य test_pointers ()
 {
-  int x = 123;
-  result<int*> r = &x;
+  पूर्णांक x = 123;
+  result<पूर्णांक*> r = &x;
   hb_always_assert (r.is_ok ());
   hb_always_assert (*r == &x);
   hb_always_assert (**r == 123);
@@ -162,18 +162,18 @@ static void test_pointers ()
   hb_always_assert (x == 456);
 }
 
-static void test_void ()
+स्थिर शून्य test_void ()
 {
-  result<void> r1 = Ok();
+  result<शून्य> r1 = Ok();
   hb_always_assert (r1.is_ok ());
   hb_always_assert (!r1.is_err ());
-  hb_always_assert ((bool) r1);
+  hb_always_assert ((तार्किक) r1);
   hb_always_assert (r1 == Ok());
   hb_always_assert (r1 != Err(ERR_A));
   hb_always_assert (Ok() == r1);
   hb_always_assert (Err(ERR_A) != r1);
 
-  result<void> r2 = Err(ERR_A);
+  result<शून्य> r2 = Err(ERR_A);
   hb_always_assert (!r2.is_ok ());
   hb_always_assert (r2.is_err ());
   hb_always_assert (!r2);
@@ -186,7 +186,7 @@ static void test_void ()
   hb_always_assert (Ok() != r2);
 }
 
-static void test_resource_cleanup ()
+स्थिर शून्य test_resource_cleanup ()
 {
   hb_always_assert (live_instances == 0);
 
@@ -217,84 +217,84 @@ static void test_resource_cleanup ()
   hb_always_assert (live_instances == 0);
 }
 
-static void test_try_macro ()
+स्थिर शून्य test_try_macro ()
 {
   // Test success path
-  result<int> r_success = try_caller (false, false);
+  result<पूर्णांक> r_success = try_caller (असत्य, असत्य);
   hb_always_assert (r_success.is_ok ());
   hb_always_assert (r_success.value () == 30);
 
   // Test first failure propagates
-  result<int> r_fail1 = try_caller (true, false);
+  result<पूर्णांक> r_fail1 = try_caller (सत्य, असत्य);
   hb_always_assert (r_fail1.is_err ());
   hb_always_assert (r_fail1.error () == ERR_A);
 
   // Test second failure propagates
-  result<int> r_fail2 = try_caller (false, true);
+  result<पूर्णांक> r_fail2 = try_caller (असत्य, सत्य);
   hb_always_assert (r_fail2.is_err ());
   hb_always_assert (r_fail2.error () == ERR_B);
 
   // Test TRY in void function
-  result<void> v_ok = try_caller_void (false);
+  result<शून्य> v_ok = try_caller_void (असत्य);
   hb_always_assert (v_ok.is_ok ());
 
-  result<void> v_err = try_caller_void (true);
+  result<शून्य> v_err = try_caller_void (सत्य);
   hb_always_assert (v_err.is_err ());
   hb_always_assert (v_err.error () == ERR_C);
 
   // Test TRY with different return type
-  result<float> f_ok = try_caller_type_change (false);
+  result<दशांश> f_ok = try_caller_type_change (असत्य);
   hb_always_assert (f_ok.is_ok ());
   hb_always_assert (f_ok.value () == 150.0f);
 
-  result<float> f_err = try_caller_type_change (true);
+  result<दशांश> f_err = try_caller_type_change (सत्य);
   hb_always_assert (f_err.is_err ());
   hb_always_assert (f_err.error () == ERR_A);
 
   // Test TRY_ASSIGN into existing variable
-  result<int> a_ok = try_assign_existing (false);
+  result<पूर्णांक> a_ok = try_assign_existing (असत्य);
   hb_always_assert (a_ok.is_ok ());
   hb_always_assert (a_ok.value () == 42);
 
-  result<int> a_err = try_assign_existing (true);
+  result<पूर्णांक> a_err = try_assign_existing (सत्य);
   hb_always_assert (a_err.is_err ());
   hb_always_assert (a_err.error () == ERR_A);
 }
 
-template <typename T, typename U, typename = void>
-struct is_equality_comparable : std::false_type {};
+ढाँचा <typename T, typename U, typename = शून्य>
+संरचना is_equality_comparable : std::false_type {};
 
-template <typename T, typename U>
-struct is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
+ढाँचा <typename T, typename U>
+संरचना is_equality_comparable<T, U, hb_void_t<decltype (hb_declval (T) == hb_declval (U))>> : std::true_type {};
 
-static void test_same_or_convertible_types ()
+स्थिर शून्य test_same_or_convertible_types ()
 {
   // Comparisons between result and raw types are disallowed
-  static_assert (!is_equality_comparable<result<int>, int>::value, "");
-  static_assert (!is_equality_comparable<result<int>, int64_t>::value, "");
-  static_assert (!is_equality_comparable<int, result<int>>::value, "");
-  static_assert (!is_equality_comparable<result<int>, error_code_t>::value, "");
-  static_assert (!is_equality_comparable<error_code_t, result<int>>::value, "");
-  static_assert (!is_equality_comparable<result<void>, error_code_t>::value, "");
-  static_assert (is_equality_comparable<result<int>, result<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_ok_t<int>>::value, "");
-  static_assert (is_equality_comparable<result<int>, hb_result_err_t<error_code_t>>::value, "");
+  static_assert (!is_equality_comparable<result<पूर्णांक>, पूर्णांक>::value, "");
+  static_assert (!is_equality_comparable<result<पूर्णांक>, int64_t>::value, "");
+  static_assert (!is_equality_comparable<पूर्णांक, result<पूर्णांक>>::value, "");
+  static_assert (!is_equality_comparable<result<पूर्णांक>, error_code_t>::value, "");
+  static_assert (!is_equality_comparable<error_code_t, result<पूर्णांक>>::value, "");
+  static_assert (!is_equality_comparable<result<शून्य>, error_code_t>::value, "");
+  static_assert (is_equality_comparable<result<पूर्णांक>, result<पूर्णांक>>::value, "");
+  static_assert (is_equality_comparable<result<पूर्णांक>, hb_result_ok_t<पूर्णांक>>::value, "");
+  static_assert (is_equality_comparable<result<पूर्णांक>, hb_result_err_t<error_code_t>>::value, "");
 
   // Types convertible into each other cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, पूर्णांक>::value, "");
   static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int64_t>::value, "");
   static_assert (!std::is_constructible<hb_result_t<int64_t, int32_t>, int32_t>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_err_t<int>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_ok_t<पूर्णांक>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<int64_t, int32_t>, hb_result_err_t<पूर्णांक>>::value, "");
 
   // Same types cannot be directly constructed without Ok/Err
-  static_assert (!std::is_constructible<hb_result_t<int, int>, int>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_ok_t<int>>::value, "");
-  static_assert (std::is_constructible<hb_result_t<int, int>, hb_result_err_t<int>>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<पूर्णांक, पूर्णांक>, पूर्णांक>::value, "");
+  static_assert (std::is_constructible<hb_result_t<पूर्णांक, पूर्णांक>, hb_result_ok_t<पूर्णांक>>::value, "");
+  static_assert (std::is_constructible<hb_result_t<पूर्णांक, पूर्णांक>, hb_result_err_t<पूर्णांक>>::value, "");
 
   // Types convertible into each other cannot be directly constructed
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, int>::value, "");
-  static_assert (!std::is_constructible<hb_result_t<int, error_code_t>, error_code_t>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<पूर्णांक, error_code_t>, पूर्णांक>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<पूर्णांक, error_code_t>, error_code_t>::value, "");
 
   // Types not convertible into each other can be directly constructed
   static_assert (std::is_constructible<hb_result_t<resource_t, error_code_t>, resource_t>::value, "");
@@ -308,65 +308,65 @@ static void test_same_or_convertible_types ()
   hb_always_assert (r_err.is_err ());
   hb_always_assert (r_err.error () == 2);
 
-  hb_result_t<int, int> same_ok = Ok(42);
+  hb_result_t<पूर्णांक, पूर्णांक> same_ok = Ok(42);
   hb_always_assert (same_ok.is_ok ());
   hb_always_assert (same_ok.value () == 42);
 
-  hb_result_t<int, int> same_err = Err(99);
+  hb_result_t<पूर्णांक, पूर्णांक> same_err = Err(99);
   hb_always_assert (same_err.is_err ());
   hb_always_assert (same_err.error () == 99);
 }
 
-struct any_value_t
+संरचना any_मूल्य_t
 {
-  template <typename X>
-  any_value_t (X&&) {}
+  ढाँचा <typename X>
+  any_मूल्य_t (X&&) {}
 };
 
-static void test_error_interception() {
+स्थिर शून्य test_error_interception() {
   // Checks that U&& constructor does not intercept mismatched error tags as a success value.
-  static_assert (!std::is_constructible<hb_result_t<any_value_t, error_code_t>, hb_result_err_t<const char*>>::value, "");
+  static_assert (!std::is_constructible<hb_result_t<any_मूल्य_t, error_code_t>, hb_result_err_t<स्थिरांक अक्षर*>>::value, "");
 
-  hb_result_t<any_value_t, error_code_t> r = Err(ERR_A);
+  hb_result_t<any_मूल्य_t, error_code_t> r = Err(ERR_A);
   hb_always_assert (r.is_err ());
 
-  hb_result_t<any_value_t, error_code_t> r_ok = Ok(123);
+  hb_result_t<any_मूल्य_t, error_code_t> r_ok = Ok(123);
   hb_always_assert (r_ok.is_ok ());
 }
 
-struct move_only_err_t
+संरचना move_only_err_t
 {
-  int code;
+  पूर्णांक code;
 
-  explicit move_only_err_t (int c) : code (c) {}
-  move_only_err_t (const move_only_err_t&) = delete;
+  explicit move_only_err_t (पूर्णांक c) : code (c) {}
+  move_only_err_t (स्थिरांक move_only_err_t&) = delete;
   move_only_err_t (move_only_err_t&& o) : code (o.code) { o.code = -1; }
-  move_only_err_t& operator = (const move_only_err_t&) = delete;
-  move_only_err_t& operator = (move_only_err_t&& o) { code = o.code; o.code = -1; return *this; }
-  ~move_only_err_t () = default;
+  move_only_err_t& चालक = (स्थिरांक move_only_err_t&) = delete;
+  move_only_err_t& चालक = (move_only_err_t&& o) { code = o.code; o.code = -1; परत *हे; }
+  ~move_only_err_t () = पूर्वनिर्धारित;
 
-  bool operator == (const move_only_err_t& o) const { return code == o.code; }
+  तार्किक चालक == (स्थिरांक move_only_err_t& o) स्थिरांक { परत code == o.code; }
 };
 
-struct move_only_val_t
+संरचना move_only_val_t
 {
-  int val;
+  पूर्णांक val;
 
-  explicit move_only_val_t (int v) : val (v) {}
-  move_only_val_t (const move_only_val_t&) = delete;
+  explicit move_only_val_t (पूर्णांक v) : val (v) {}
+  move_only_val_t (स्थिरांक move_only_val_t&) = delete;
   move_only_val_t (move_only_val_t&& o) : val (o.val) { o.val = -1; }
-  move_only_val_t& operator = (const move_only_val_t&) = delete;
-  move_only_val_t& operator = (move_only_val_t&& o) { val = o.val; o.val = -1; return *this; }
-  ~move_only_val_t () = default;
+  move_only_val_t& चालक = (स्थिरांक move_only_val_t&) = delete;
+  move_only_val_t& चालक = (move_only_val_t&& o) { val = o.val; o.val = -1; परत *हे; }
+  ~move_only_val_t () = पूर्वनिर्धारित;
 
-  bool operator == (const move_only_val_t& o) const { return val == o.val; }
+  तार्किक चालक == (स्थिरांक move_only_val_t& o) स्थिरांक { परत val == o.val; }
 };
 
-static void test_move_only_types ()
+स्थिर शून्य test_move_only_types ()
 {
   // Test hb_result_t<T, move_only_err_t> with Err(...)
   {
-    hb_result_t<int, move_only_err_t> r = Err(move_only_err_t (123));
+    hb_result_t<पूर्णांक, move_only_err_t> r = Err(move_only_err_t (123));
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error ().code == 123);
 
@@ -376,18 +376,18 @@ static void test_move_only_types ()
 
   // Test direct construction from move_only_err_t
   {
-    hb_result_t<int, move_only_err_t> r = move_only_err_t (456);
+    hb_result_t<पूर्णांक, move_only_err_t> r = move_only_err_t (456);
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error ().code == 456);
   }
 
   // Test hb_result_t<void, move_only_err_t> with Err(...) and direct construction
   {
-    hb_result_t<void, move_only_err_t> v1 = Err(move_only_err_t (789));
+    hb_result_t<शून्य, move_only_err_t> v1 = Err(move_only_err_t (789));
     hb_always_assert (v1.is_err ());
     hb_always_assert (v1.error ().code == 789);
 
-    hb_result_t<void, move_only_err_t> v2 = move_only_err_t (999);
+    hb_result_t<शून्य, move_only_err_t> v2 = move_only_err_t (999);
     hb_always_assert (v2.is_err ());
     hb_always_assert (v2.error ().code == 999);
   }
@@ -395,72 +395,72 @@ static void test_move_only_types ()
   // Test value_or with move-only value types
   {
     hb_result_t<move_only_val_t, error_code_t> r_ok = Ok(move_only_val_t (42));
-    move_only_val_t v = std::move (r_ok).value_or (move_only_val_t (0));
+    move_only_val_t v = std::move (r_ok).मूल्य_or (move_only_val_t (0));
     hb_always_assert (v.val == 42);
 
     hb_result_t<move_only_val_t, error_code_t> r_err = Err(ERR_A);
-    move_only_val_t v_fallback = std::move (r_err).value_or (move_only_val_t (99));
+    move_only_val_t v_fallback = std::move (r_err).मूल्य_or (move_only_val_t (99));
     hb_always_assert (v_fallback.val == 99);
   }
 }
 
-struct copy_move_counter_t
+संरचना copy_move_counter_t
 {
-  static int copy_count;
-  static int move_count;
+  स्थिर पूर्णांक copy_मोजणी;
+  स्थिर पूर्णांक move_मोजणी;
 
-  static void reset ()
+  स्थिर शून्य reset ()
   {
-    copy_count = 0;
-    move_count = 0;
+    copy_मोजणी = 0;
+    move_मोजणी = 0;
   }
 
-  int val;
+  पूर्णांक val;
 
-  bool in_error() const {
-    return val == -1;
+  तार्किक in_error() स्थिरांक {
+    परत val == -1;
   }
 
-  explicit copy_move_counter_t (int v) : val (v) {}
-  copy_move_counter_t (const copy_move_counter_t& o) : val (o.val) { copy_count++; }
-  copy_move_counter_t (copy_move_counter_t&& o) : val (o.val) { o.val = -1; move_count++; }
-  ~copy_move_counter_t () = default;
+  explicit copy_move_counter_t (पूर्णांक v) : val (v) {}
+  copy_move_counter_t (स्थिरांक copy_move_counter_t& o) : val (o.val) { copy_मोजणी++; }
+  copy_move_counter_t (copy_move_counter_t&& o) : val (o.val) { o.val = -1; move_मोजणी++; }
+  ~copy_move_counter_t () = पूर्वनिर्धारित;
 };
 
-int copy_move_counter_t::copy_count = 0;
-int copy_move_counter_t::move_count = 0;
+पूर्णांक copy_move_counter_t::copy_मोजणी = 0;
+पूर्णांक copy_move_counter_t::move_मोजणी = 0;
 
-static result<copy_move_counter_t> return_tracked_from_local ()
+स्थिर result<copy_move_counter_t> return_tracked_from_local ()
 {
   copy_move_counter_t out (42);
-  return Ok (std::move (out));
+  परत Ok (std::move (out));
 }
 
-static result<copy_move_counter_t> return_tracked_from_local_with_tag ()
+स्थिर result<copy_move_counter_t> return_tracked_from_local_with_tag ()
 {
   copy_move_counter_t out (42);
-  return Ok(out);
+  परत Ok(out);
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local ()
+स्थिर hb_result_t<पूर्णांक, copy_move_counter_t> return_tracked_error_from_local ()
 {
   copy_move_counter_t out (42);
-  return Err (std::move (out));
+  परत Err (std::move (out));
 }
 
-static hb_result_t<int, copy_move_counter_t> return_tracked_error_from_local_with_tag ()
+स्थिर hb_result_t<पूर्णांक, copy_move_counter_t> return_tracked_error_from_local_with_tag ()
 {
   copy_move_counter_t out (42);
-  return Err(out);
+  परत Err(out);
 }
 
-static result<move_only_val_t> return_move_only_from_local ()
+स्थिर result<move_only_val_t> return_move_only_from_local ()
 {
   move_only_val_t out (42);
-  return Ok (std::move (out));
+  परत Ok (std::move (out));
 }
 
-static void test_return_moves_from_local ()
+स्थिर शून्य test_return_moves_from_local ()
 {
   // Verify 0 copies and only moves occur when returning local value directly
   {
@@ -468,8 +468,8 @@ static void test_return_moves_from_local ()
     result<copy_move_counter_t> r = return_tracked_from_local ();
     hb_always_assert (r.is_ok ());
     hb_always_assert (r.value ().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी >= 1);
   }
 
   // Verify 0 copies and only moves occur when returning local value directly
@@ -478,29 +478,29 @@ static void test_return_moves_from_local ()
     result<copy_move_counter_t> r = return_tracked_from_local_with_tag ();
     hb_always_assert (r.is_ok ());
     hb_always_assert (r.value ().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी >= 1);
   }
 
 
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local ();
+    hb_result_t<पूर्णांक, copy_move_counter_t> r = return_tracked_error_from_local ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी >= 1);
   }
 
   // Verify 0 copies and only moves occur when returning local error directly
   {
     copy_move_counter_t::reset ();
-    hb_result_t<int, copy_move_counter_t> r = return_tracked_error_from_local_with_tag ();
+    hb_result_t<पूर्णांक, copy_move_counter_t> r = return_tracked_error_from_local_with_tag ();
     hb_always_assert (r.is_err ());
     hb_always_assert (r.error().val == 42);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count >= 1);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी >= 1);
   }
 
 
@@ -512,99 +512,99 @@ static void test_return_moves_from_local ()
   }
 }
 
-struct in_error_t {
-  bool successful;
+संरचना in_error_t {
+  तार्किक successful;
 
-  in_error_t(bool s) : successful(s) {}
+  in_error_t(तार्किक s) : successful(s) {}
 
-  bool in_error() const {
-    return !successful;
+  तार्किक in_error() स्थिरांक {
+    परत !successful;
   }
 };
 
-static void test_from () {
-  in_error_t has_error(false);
-  in_error_t no_error(true);
-  result<void> r = result<void>::from(has_error, ERR_B);
+स्थिर शून्य test_from () {
+  in_error_t has_error(असत्य);
+  in_error_t no_error(सत्य);
+  result<शून्य> r = result<शून्य>::from(has_error, ERR_B);
   hb_always_assert(r.is_err());
   hb_always_assert(r.error() == ERR_B);
-  r = result<void>::from(no_error, ERR_B);
+  r = result<शून्य>::from(no_error, ERR_B);
   hb_always_assert(!r.is_err());
 }
 
-struct default_constructible_t
+संरचना default_constructible_t
 {
-  int val;
+  पूर्णांक val;
 
   default_constructible_t () : val (123) {}
-  explicit default_constructible_t (int v) : val (v) {}
+  explicit default_constructible_t (पूर्णांक v) : val (v) {}
 };
 
-struct move_only_default_t
+संरचना move_only_default_t
 {
-  int val;
+  पूर्णांक val;
   move_only_default_t () : val (77) {}
-  explicit move_only_default_t (int v) : val (v) {}
-  move_only_default_t (const move_only_default_t&) = delete;
+  explicit move_only_default_t (पूर्णांक v) : val (v) {}
+  move_only_default_t (स्थिरांक move_only_default_t&) = delete;
   move_only_default_t (move_only_default_t&& o) : val (o.val) { o.val = -1; }
-  move_only_default_t& operator = (const move_only_default_t&) = delete;
-  move_only_default_t& operator = (move_only_default_t&& o) { val = o.val; o.val = -1; return *this; }
-  ~move_only_default_t () = default;
+  move_only_default_t& चालक = (स्थिरांक move_only_default_t&) = delete;
+  move_only_default_t& चालक = (move_only_default_t&& o) { val = o.val; o.val = -1; परत *हे; }
+  ~move_only_default_t () = पूर्वनिर्धारित;
 };
 
-static void test_value_or_default ()
+स्थिर शून्य test_मूल्य_or_default ()
 {
   // Test const &
   {
-    const result<int> r_ok = Ok(42);
-    hb_always_assert (r_ok.value_or_default () == 42);
+    स्थिरांक result<पूर्णांक> r_ok = Ok(42);
+    hb_always_assert (r_ok.मूल्य_or_default () == 42);
 
-    const result<int> r_err = Err(ERR_A);
-    hb_always_assert (r_err.value_or_default () == 0);
+    स्थिरांक result<पूर्णांक> r_err = Err(ERR_A);
+    hb_always_assert (r_err.मूल्य_or_default () == 0);
   }
 
   // Test && (rvalues and move)
   {
-    result<int> r_ok = Ok(42);
-    hb_always_assert (std::move (r_ok).value_or_default () == 42);
+    result<पूर्णांक> r_ok = Ok(42);
+    hb_always_assert (std::move (r_ok).मूल्य_or_default () == 42);
 
-    result<int> r_err = Err(ERR_A);
-    hb_always_assert (std::move (r_err).value_or_default () == 0);
+    result<पूर्णांक> r_err = Err(ERR_A);
+    hb_always_assert (std::move (r_err).मूल्य_or_default () == 0);
   }
 
   // Test custom struct with default constructor
   {
     result<default_constructible_t> r_ok = default_constructible_t (456);
-    hb_always_assert (r_ok.value_or_default ().val == 456);
+    hb_always_assert (r_ok.मूल्य_or_default ().val == 456);
 
     result<default_constructible_t> r_err = ERR_A;
-    hb_always_assert (r_err.value_or_default ().val == 123);
+    hb_always_assert (r_err.मूल्य_or_default ().val == 123);
 
-    hb_always_assert (std::move (r_ok).value_or_default ().val == 456);
-    hb_always_assert (std::move (r_err).value_or_default ().val == 123);
+    hb_always_assert (std::move (r_ok).मूल्य_or_default ().val == 456);
+    hb_always_assert (std::move (r_err).मूल्य_or_default ().val == 123);
   }
 
   // Test pointers
   {
-    int x = 10;
-    result<int*> r_ok = &x;
-    hb_always_assert (r_ok.value_or_default () == &x);
+    पूर्णांक x = 10;
+    result<पूर्णांक*> r_ok = &x;
+    hb_always_assert (r_ok.मूल्य_or_default () == &x);
 
-    result<int*> r_err = ERR_A;
-    hb_always_assert (r_err.value_or_default () == nullptr);
+    result<पूर्णांक*> r_err = ERR_A;
+    hb_always_assert (r_err.मूल्य_or_default () == nullptr);
   }
 
   // Test move-only types
   {
     result<move_only_default_t> r_mo_ok = move_only_default_t (88);
-    hb_always_assert (std::move (r_mo_ok).value_or_default ().val == 88);
+    hb_always_assert (std::move (r_mo_ok).मूल्य_or_default ().val == 88);
 
     result<move_only_default_t> r_mo_err = ERR_A;
-    hb_always_assert (std::move (r_mo_err).value_or_default ().val == 77);
+    hb_always_assert (std::move (r_mo_err).मूल्य_or_default ().val == 77);
   }
 }
 
-static void test_from_move()
+स्थिर शून्य test_from_move()
 {
   {
     copy_move_counter_t::reset();
@@ -612,8 +612,8 @@ static void test_from_move()
     result<copy_move_counter_t> r_ok = result<copy_move_counter_t>::from(std::move(ok), ERR_B);
     hb_always_assert (r_ok.is_ok());
     hb_always_assert (r_ok->val == 24);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count == 1);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी == 1);
   }
 
   {
@@ -622,12 +622,12 @@ static void test_from_move()
     result<copy_move_counter_t> r_fail = result<copy_move_counter_t>::from(std::move(fail), ERR_B);
     hb_always_assert (r_fail.is_err());
     hb_always_assert (r_fail.error() == ERR_B);
-    hb_always_assert (copy_move_counter_t::copy_count == 0);
-    hb_always_assert (copy_move_counter_t::move_count == 0);
+    hb_always_assert (copy_move_counter_t::copy_मोजणी == 0);
+    hb_always_assert (copy_move_counter_t::move_मोजणी == 0);
   }
 }
 
-int main ()
+पूर्णांक main ()
 {
   test_ok_basic ();
   test_err_basic ();
@@ -641,8 +641,8 @@ int main ()
   test_move_only_types ();
   test_return_moves_from_local ();
   test_from();
-  test_value_or_default ();
+  test_मूल्य_or_default ();
   test_from_move ();
 
-  return 0;
+  परत 0;
 }

@@ -2,200 +2,200 @@
 #define OT_GLYF_GLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#अन्तर्भाव "../../hb-open-type.hh"
 
-#include "GlyphHeader.hh"
-#include "SimpleGlyph.hh"
-#include "CompositeGlyph.hh"
-
-
-namespace OT {
-
-struct glyf_accelerator_t;
-
-namespace glyf_impl {
+#अन्तर्भाव "GlyphHeader.hh"
+#अन्तर्भाव "SimpleGlyph.hh"
+#अन्तर्भाव "CompositeGlyph.hh"
 
 
-enum phantom_point_index_t
+नामाकाश OT {
+
+संरचना glyf_accelerator_t;
+
+नामाकाश glyf_impl {
+
+
+गणना phantom_point_index_t
 {
-  PHANTOM_LEFT   = 0,
-  PHANTOM_RIGHT  = 1,
-  PHANTOM_TOP    = 2,
+  PHANTOM_डावा   = 0,
+  PHANTOM_उजवा  = 1,
+  PHANTOM_शीर्ष    = 2,
   PHANTOM_BOTTOM = 3,
-  PHANTOM_COUNT  = 4
+  PHANTOM_मोजणी  = 4
 };
 
-struct Glyph
+संरचना Glyph
 {
-  enum glyph_type_t {
+  गणना glyph_type_t {
     EMPTY,
     SIMPLE,
     COMPOSITE,
   };
 
-  public:
-  composite_iter_t get_composite_iterator () const
+  सार्वजनिक:
+  composite_iter_t get_composite_iterator () स्थिरांक
   {
-    if (type != COMPOSITE) return composite_iter_t ();
-    return CompositeGlyph (*header, bytes, extended).iter ();
+    जर (type != COMPOSITE) परत composite_iter_t ();
+    परत CompositeGlyph (*header, bytes, extended).iter ();
   }
 
-  const hb_bytes_t trim_padding () const
+  स्थिरांक hb_bytes_t trim_padding () स्थिरांक
   {
-    switch (type) {
-    case COMPOSITE: return CompositeGlyph (*header, bytes, extended).trim_padding ();
-    case SIMPLE:    return SimpleGlyph (*header, bytes).trim_padding ();
-    case EMPTY:     return bytes;
-    default:        return bytes;
+    निवड (type) {
+    स्थिती COMPOSITE: परत CompositeGlyph (*header, bytes, extended).trim_padding ();
+    स्थिती SIMPLE:    परत SimpleGlyph (*header, bytes).trim_padding ();
+    स्थिती EMPTY:     परत bytes;
+    पूर्वनिर्धारित:        परत bytes;
     }
   }
 
-  void drop_hints ()
+  शून्य drop_hints ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints (); return;
-    case EMPTY:
-      if (bytes.length >= GlyphHeader::static_size)
+    निवड (type) {
+    स्थिती COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints (); परत;
+    स्थिती SIMPLE:    SimpleGlyph (*header, bytes).drop_hints (); परत;
+    स्थिती EMPTY:
+      जर (bytes.length >= GlyphHeader::static_size)
         SimpleGlyph (*header, bytes).drop_hints ();
-      return;
+      परत;
     }
   }
 
-  void set_overlaps_flag ()
+  शून्य set_overlaps_flag ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).set_overlaps_flag (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).set_overlaps_flag (); return;
-    case EMPTY:     return;
+    निवड (type) {
+    स्थिती COMPOSITE: CompositeGlyph (*header, bytes, extended).set_overlaps_flag (); परत;
+    स्थिती SIMPLE:    SimpleGlyph (*header, bytes).set_overlaps_flag (); परत;
+    स्थिती EMPTY:     परत;
     }
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  शून्य drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) स्थिरांक
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints_bytes (dest_start); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end); return;
-    case EMPTY:
+    निवड (type) {
+    स्थिती COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints_bytes (dest_start); परत;
+    स्थिती SIMPLE:    SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end); परत;
+    स्थिती EMPTY:
       dest_start = bytes;
       dest_end = hb_bytes_t ();
-      if (bytes.length >= GlyphHeader::static_size &&
+      जर (bytes.length >= GlyphHeader::static_size &&
           SimpleGlyph (*header, bytes).has_instructions_length ())
         SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end);
-      return;
+      परत;
     }
   }
 
-  bool is_composite () const
-  { return type == COMPOSITE; }
+  तार्किक is_composite () स्थिरांक
+  { परत type == COMPOSITE; }
 
-  bool get_all_points_without_var (const hb_face_t *face,
-                                   contour_point_vector_t &points /* OUT */) const
+  तार्किक get_all_points_without_var (स्थिरांक hb_face_t *face,
+                                   contour_point_vector_t &points /* OUT */) स्थिरांक
   {
-    switch (type) {
-    case SIMPLE:
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (points, extended)))
-        return false;
-      break;
-    case COMPOSITE:
+    निवड (type) {
+    स्थिती SIMPLE:
+      जर (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (points, extended)))
+        परत असत्य;
+      थांबा;
+    स्थिती COMPOSITE:
     {
-      for (auto &item : get_composite_iterator ())
-        if (unlikely (!item.get_points (points, extended))) return false;
-      break;
+      साठी (स्वतः &item : get_composite_iterator ())
+        जर (unlikely (!item.get_points (points, extended))) परत असत्य;
+      थांबा;
     }
-    case EMPTY:
-      break;
+    स्थिती EMPTY:
+      थांबा;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    जर (unlikely (!points.resize (points.length + PHANTOM_मोजणी))) परत असत्य;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_मोजणी, PHANTOM_मोजणी);
     {
       // Duplicated code.
-      int lsb = 0;
+      पूर्णांक lsb = 0;
       face->table.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
+      पूर्णांक h_delta = (पूर्णांक) header->xMin - lsb;
+      HB_UNUSED पूर्णांक tsb = 0;
 #ifndef HB_NO_VERTICAL
       face->table.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
 #endif
-      int v_orig  = (int) header->yMax + tsb;
-      unsigned h_adv = face->table.hmtx->get_advance_without_var_unscaled (gid);
-      unsigned v_adv =
+      पूर्णांक v_orig  = (पूर्णांक) header->yMax + tsb;
+      अचिन्हित h_adv = face->table.hmtx->get_advance_without_var_unscaled (gid);
+      अचिन्हित v_adv =
 #ifndef HB_NO_VERTICAL
                        face->table.vmtx->get_advance_without_var_unscaled (gid)
-#else
+#अन्यथा
                        - face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_डावा].x = h_delta;
+      phantoms[PHANTOM_उजवा].x = (पूर्णांक) h_adv + h_delta;
+      phantoms[PHANTOM_शीर्ष].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (पूर्णांक) v_adv;
     }
-    return true;
+    परत सत्य;
   }
 
-  void update_mtx (const hb_subset_plan_t *plan,
-                   int xMin, int xMax,
-                   int yMin, int yMax,
-                   const contour_point_vector_t &all_points) const
+  शून्य update_mtx (स्थिरांक hb_subset_plan_t *plan,
+                   पूर्णांक xMin, पूर्णांक xMax,
+                   पूर्णांक yMin, पूर्णांक yMax,
+                   स्थिरांक contour_point_vector_t &all_points) स्थिरांक
   {
     hb_codepoint_t new_gid = 0;
-    if (!plan->new_gid_for_old_gid (gid, &new_gid))
-      return;
+    जर (!plan->new_gid_for_old_gid (gid, &new_gid))
+      परत;
 
-    if (type != EMPTY)
+    जर (type != EMPTY)
     {
       plan->bounds_width_vec[new_gid] = xMax - xMin;
       plan->bounds_height_vec[new_gid] = yMax - yMin;
     }
 
-    unsigned len = all_points.length;
-    float leftSideX = all_points[len - 4].x;
-    float rightSideX = all_points[len - 3].x;
-    float topSideY = all_points[len - 2].y;
-    float bottomSideY = all_points[len - 1].y;
+    अचिन्हित len = all_points.length;
+    दशांश डावा_Side_X = all_points[len - 4].x;
+    दशांश उजवा_Side_X = all_points[len - 3].x;
+    दशांश शीर्ष_Side_Y = all_points[len - 2].y;
+    दशांश bottomSideY = all_points[len - 1].y;
 
     uint32_t hash = hb_hash (new_gid);
 
-    signed hori_aw = roundf (rightSideX - leftSideX);
-    if (hori_aw < 0) hori_aw = 0;
-    int lsb = roundf (xMin - leftSideX);
-    plan->hmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) hori_aw, lsb));
+    चिन्हित hori_aw = roundf (उजवा_Side_X - डावा_Side_X);
+    जर (hori_aw < 0) hori_aw = 0;
+    पूर्णांक lsb = roundf (xMin - डावा_Side_X);
+    plan->hmtx_map.set_with_hash (new_gid, hash, hb_pair ((अचिन्हित) hori_aw, lsb));
     //flag value should be computed using non-empty glyphs
-    if (type != EMPTY && lsb != xMin)
-      plan->head_maxp_info.allXMinIsLsb = false;
+    जर (type != EMPTY && lsb != xMin)
+      plan->head_maxp_info.allXMinIsLsb = असत्य;
 
-    signed vert_aw = roundf (topSideY - bottomSideY);
-    if (vert_aw < 0) vert_aw = 0;
-    int tsb = roundf (topSideY - yMax);
-    plan->vmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) vert_aw, tsb));
+    चिन्हित vert_aw = roundf (शीर्ष_Side_Y - bottomSideY);
+    जर (vert_aw < 0) vert_aw = 0;
+    पूर्णांक tsb = roundf (शीर्ष_Side_Y - yMax);
+    plan->vmtx_map.set_with_hash (new_gid, hash, hb_pair ((अचिन्हित) vert_aw, tsb));
   }
 
-  bool compile_header_bytes (const hb_subset_plan_t *plan,
-                             const contour_point_vector_t &all_points,
-                             hb_bytes_t &dest_bytes /* OUT */) const
+  तार्किक compile_header_bytes (स्थिरांक hb_subset_plan_t *plan,
+                             स्थिरांक contour_point_vector_t &all_points,
+                             hb_bytes_t &dest_bytes /* OUT */) स्थिरांक
   {
     GlyphHeader *glyph_header = nullptr;
-    if (!plan->pinned_at_default && type != EMPTY && all_points.length >= 4)
+    जर (!plan->pinned_at_default && type != EMPTY && all_points.length >= 4)
     {
       glyph_header = (GlyphHeader *) hb_calloc (1, GlyphHeader::static_size);
-      if (unlikely (!glyph_header)) return false;
+      जर (unlikely (!glyph_header)) परत असत्य;
     }
 
-    float xMin = 0, xMax = 0;
-    float yMin = 0, yMax = 0;
-    if (all_points.length > 4)
+    दशांश xMin = 0, xMax = 0;
+    दशांश yMin = 0, yMax = 0;
+    जर (all_points.length > 4)
     {
       xMin = xMax = all_points[0].x;
       yMin = yMax = all_points[0].y;
 
-      unsigned count = all_points.length - 4;
-      for (unsigned i = 1; i < count; i++)
+      अचिन्हित मोजणी = all_points.length - 4;
+      साठी (अचिन्हित i = 1; i < मोजणी; i++)
       {
-	float x = all_points[i].x;
-	float y = all_points[i].y;
+	दशांश x = all_points[i].x;
+	दशांश y = all_points[i].y;
 	xMin = hb_min (xMin, x);
 	xMax = hb_max (xMax, x);
 	yMin = hb_min (yMin, y);
@@ -206,14 +206,14 @@ struct Glyph
 
     // These are destined for storage in a 16 bit field to clamp the values to
     // fit into a 16 bit signed integer.
-    int rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
-    int rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
-    int rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
-    int rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
+    पूर्णांक rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
+    पूर्णांक rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
+    पूर्णांक rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
+    पूर्णांक rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
 
     update_mtx (plan, rounded_xMin, rounded_xMax, rounded_yMin, rounded_yMax, all_points);
 
-    if (type != EMPTY)
+    जर (type != EMPTY)
     {
       plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, rounded_xMin);
       plan->head_maxp_info.yMin = hb_min (plan->head_maxp_info.yMin, rounded_yMin);
@@ -224,34 +224,34 @@ struct Glyph
     /* when pinned at default, no need to compile glyph header
      * and for empty glyphs: all_points only include phantom points.
      * just update metrics and then return */
-    if (!glyph_header)
-      return true;
+    जर (!glyph_header)
+      परत सत्य;
 
-    glyph_header->numberOfContours = header->numberOfContours;
+    glyph_header->संख्या_Of_Contours = header->संख्या_Of_Contours;
 
     glyph_header->xMin = rounded_xMin;
     glyph_header->yMin = rounded_yMin;
     glyph_header->xMax = rounded_xMax;
     glyph_header->yMax = rounded_yMax;
 
-    dest_bytes = hb_bytes_t ((const char *)glyph_header, GlyphHeader::static_size);
-    return true;
+    dest_bytes = hb_bytes_t ((स्थिरांक अक्षर *)glyph_header, GlyphHeader::static_size);
+    परत सत्य;
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  तार्किक compile_bytes_with_deltas (स्थिरांक hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf,
+                                  स्थिरांक glyf_accelerator_t &glyf,
                                   hb_bytes_t &dest_start,  /* IN/OUT */
                                   hb_bytes_t &dest_end /* OUT */)
   {
     contour_point_vector_t all_points, points_with_deltas;
-    unsigned composite_contours = 0;
+    अचिन्हित composite_contours = 0;
     head_maxp_info_t *head_maxp_info_p = &plan->head_maxp_info;
-    unsigned *composite_contours_p = &composite_contours;
+    अचिन्हित *composite_contours_p = &composite_contours;
 
     // don't compute head/maxp values when glyph has no contours(type is EMPTY)
     // also ignore .notdef glyph when --notdef-outline is not enabled
-    if (type == EMPTY ||
+    जर (type == EMPTY ||
         (gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)))
     {
       head_maxp_info_p = nullptr;
@@ -259,12 +259,12 @@ struct Glyph
     }
 
     hb_glyf_scratch_t scratch;
-    if (!get_points (font, glyf, all_points, scratch, &points_with_deltas, head_maxp_info_p, composite_contours_p, false, false))
-      return false;
+    जर (!get_points (font, glyf, all_points, scratch, &points_with_deltas, head_maxp_info_p, composite_contours_p, असत्य, असत्य))
+      परत असत्य;
 
     // .notdef, set type to empty so we only update metrics and don't compile bytes for
     // it
-    if (gid == 0 &&
+    जर (gid == 0 &&
         !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
       type = EMPTY;
@@ -273,197 +273,197 @@ struct Glyph
     }
 
     //dont compile bytes when pinned at default, just recalculate bounds
-    if (!plan->pinned_at_default)
+    जर (!plan->pinned_at_default)
     {
-      switch (type)
+      निवड (type)
       {
-      case COMPOSITE:
-        if (!CompositeGlyph (*header, bytes, extended).compile_bytes_with_deltas (dest_start,
+      स्थिती COMPOSITE:
+        जर (!CompositeGlyph (*header, bytes, extended).compile_bytes_with_deltas (dest_start,
 										  points_with_deltas,
 										  dest_end))
-          return false;
-        break;
-      case SIMPLE:
-        if (!SimpleGlyph (*header, bytes).compile_bytes_with_deltas (all_points,
+          परत असत्य;
+        थांबा;
+      स्थिती SIMPLE:
+        जर (!SimpleGlyph (*header, bytes).compile_bytes_with_deltas (all_points,
 								     plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
 								     dest_end))
-          return false;
-        break;
-      case EMPTY:
+          परत असत्य;
+        थांबा;
+      स्थिती EMPTY:
         dest_start = hb_bytes_t ();
         dest_end = hb_bytes_t ();
         /* Zero-contour glyphs may carry instructions for phantom points.
          * Copy them into owned memory like the other compiled glyphs. */
-        if (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+        जर (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
             bytes.length >= GlyphHeader::static_size &&
-            header->numberOfContours == 0)
+            header->संख्या_Of_Contours == 0)
         {
           SimpleGlyph simple (*header, bytes);
-          unsigned length = simple.instructions_length ();
-          if (length)
+          अचिन्हित length = simple.instructions_length ();
+          जर (length)
           {
             length = simple.length (length);
-            char *p = (char *) hb_malloc (length);
-            if (unlikely (!p)) return false;
+            अक्षर *p = (अक्षर *) hb_malloc (length);
+            जर (unlikely (!p)) परत असत्य;
             hb_memcpy (p, bytes.arrayZ, length);
             dest_start = hb_bytes_t (p, length);
           }
         }
-        break;
+        थांबा;
       }
     }
 
-    if (!compile_header_bytes (plan, all_points, dest_start))
+    जर (!compile_header_bytes (plan, all_points, dest_start))
     {
       dest_end.fini ();
-      return false;
+      परत असत्य;
     }
-    return true;
+    परत सत्य;
   }
 
 
   /* Note: Recursively calls itself.
    * all_points includes phantom points
    */
-  template <typename accelerator_t>
-  bool get_points (hb_font_t *font, const accelerator_t &glyf_accelerator,
+  ढाँचा <typename accelerator_t>
+  तार्किक get_points (hb_font_t *font, स्थिरांक accelerator_t &glyf_accelerator,
 		   contour_point_vector_t &all_points /* OUT */,
 		   hb_glyf_scratch_t &scratch,
 		   contour_point_vector_t *points_with_deltas = nullptr, /* OUT */
 		   head_maxp_info_t * head_maxp_info = nullptr, /* OUT */
-		   unsigned *composite_contours = nullptr, /* OUT */
-		   bool shift_points_hori = true,
-		   bool use_my_metrics = true,
-		   bool phantom_only = false,
-		   hb_array_t<const int> coords = hb_array_t<const int> (),
+		   अचिन्हित *composite_contours = nullptr, /* OUT */
+		   तार्किक shift_points_hori = सत्य,
+		   तार्किक use_my_metrics = सत्य,
+		   तार्किक phantom_only = असत्य,
+		   hb_array_t<स्थिरांक पूर्णांक> coords = hb_array_t<स्थिरांक पूर्णांक> (),
 		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   unsigned int depth = 0,
-		   unsigned *edge_count = nullptr,
-		   int64_t *budget = nullptr) const
+		   अचिन्हित पूर्णांक depth = 0,
+		   अचिन्हित *edge_मोजणी = nullptr,
+		   int64_t *budget = nullptr) स्थिरांक
   {
-    if (unlikely (depth > HB_MAX_NESTING_LEVEL)) return false;
-    unsigned stack_edge_count = 0;
-    if (!edge_count) edge_count = &stack_edge_count;
-    if (unlikely (*edge_count > HB_MAX_GRAPH_EDGE_COUNT)) return false;
-    (*edge_count)++;
+    जर (unlikely (depth > HB_MAX_NESTING_LEVEL)) परत असत्य;
+    अचिन्हित चळत_edge_मोजणी = 0;
+    जर (!edge_मोजणी) edge_मोजणी = &चळत_edge_मोजणी;
+    जर (unlikely (*edge_मोजणी > HB_MAX_GRAPH_EDGE_मोजणी)) परत असत्य;
+    (*edge_मोजणी)++;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) return false;
+    int64_t चळत_budget = HB_BUDGET_GLYPH;
+    जर (!budget) budget = &चळत_budget;
+    जर (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) परत असत्य;
 
-    if (head_maxp_info)
+    जर (head_maxp_info)
     {
       head_maxp_info->maxComponentDepth = hb_max (head_maxp_info->maxComponentDepth, depth);
     }
 
-    if (!coords && font->has_nonzero_coords)
-      coords = hb_array (font->coords, font->num_coords);
+    जर (!coords && font->has_nonzero_coords)
+      coords = hb_array (font->coords, font->अंक_coords);
 
     contour_point_vector_t &points = type == SIMPLE ? all_points : scratch.comp_points;
-    unsigned old_length = points.length;
+    अचिन्हित old_length = points.length;
 
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
-        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->numberOfContours);
-      if (depth > 0 && composite_contours)
-        *composite_contours += (unsigned) header->numberOfContours;
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
-	return false;
-      break;
-    case COMPOSITE:
+    निवड (type) {
+    स्थिती SIMPLE:
+      जर (depth == 0 && head_maxp_info)
+        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (अचिन्हित) header->संख्या_Of_Contours);
+      जर (depth > 0 && composite_contours)
+        *composite_contours += (अचिन्हित) header->संख्या_Of_Contours;
+      जर (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
+	परत असत्य;
+      थांबा;
+    स्थिती COMPOSITE:
     {
-      for (auto &item : get_composite_iterator ())
+      साठी (स्वतः &item : get_composite_iterator ())
       {
         /* Preparing a component is a traversal step, even if cycle
          * detection later skips its child glyph. */
-        if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
+        जर (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
                       !item.get_points (points, extended)))
         {
           points.resize (old_length);
-          return false;
+          परत असत्य;
         }
       }
-      break;
+      थांबा;
     }
-    case EMPTY:
-      break;
+    स्थिती EMPTY:
+      थांबा;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    जर (unlikely (!points.resize (points.length + PHANTOM_मोजणी))) परत असत्य;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_मोजणी, PHANTOM_मोजणी);
     {
       // Duplicated code.
-      int lsb = 0;
+      पूर्णांक lsb = 0;
       glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
+      पूर्णांक h_delta = (पूर्णांक) header->xMin - lsb;
+      HB_UNUSED पूर्णांक tsb = 0;
 #ifndef HB_NO_VERTICAL
       glyf_accelerator.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
 #endif
-      int v_orig  = (int) header->yMax + tsb;
-      unsigned h_adv = glyf_accelerator.hmtx->get_advance_without_var_unscaled (gid);
-      unsigned v_adv =
+      पूर्णांक v_orig  = (पूर्णांक) header->yMax + tsb;
+      अचिन्हित h_adv = glyf_accelerator.hmtx->get_advance_without_var_unscaled (gid);
+      अचिन्हित v_adv =
 #ifndef HB_NO_VERTICAL
                        glyf_accelerator.vmtx->get_advance_without_var_unscaled (gid)
-#else
+#अन्यथा
                        - font->face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_डावा].x = h_delta;
+      phantoms[PHANTOM_उजवा].x = (पूर्णांक) h_adv + h_delta;
+      phantoms[PHANTOM_शीर्ष].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (पूर्णांक) v_adv;
     }
 
 #ifndef HB_NO_VAR
-    if (hb_any (coords))
+    जर (hb_any (coords))
     {
-      if (!glyf_accelerator.gvar->apply_deltas_to_points (gid,
+      जर (!glyf_accelerator.gvar->apply_deltas_to_points (gid,
 							  coords,
 							  points.as_array ().sub_array (old_length),
 							  scratch,
 							  gvar_cache,
 							  phantom_only && type == SIMPLE,
 							  budget))
-        return false;
+        परत असत्य;
     }
 #endif
 
     // mainly used by CompositeGlyph calculating new X/Y offset value so no need to extend it
     // with child glyphs' points
-    if (points_with_deltas != nullptr && depth == 0 && type == COMPOSITE)
+    जर (points_with_deltas != nullptr && depth == 0 && type == COMPOSITE)
     {
-      assert (old_length == 0);
+      प्रतिज्ञा (old_length == 0);
       *points_with_deltas = points;
     }
 
-    float shift = 0;
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
+    दशांश shift = 0;
+    निवड (type) {
+    स्थिती SIMPLE:
+      जर (depth == 0 && head_maxp_info)
         head_maxp_info->maxPoints = hb_max (head_maxp_info->maxPoints, all_points.length - old_length - 4);
-      shift = phantoms[PHANTOM_LEFT].x;
-      break;
-    case COMPOSITE:
+      shift = phantoms[PHANTOM_डावा].x;
+      थांबा;
+    स्थिती COMPOSITE:
     {
-      hb_decycler_node_t decycler_node (scratch.decycler);
+      hb_decycler_गाठ_t decycler_गाठ (scratch.decycler);
 
-      unsigned int comp_index = 0;
-      for (auto &item : get_composite_iterator ())
+      अचिन्हित पूर्णांक comp_index = 0;
+      साठी (स्वतः &item : get_composite_iterator ())
       {
 	hb_codepoint_t item_gid = item.get_gid (extended);
 
-        if (unlikely (!decycler_node.visit (item_gid)))
+        जर (unlikely (!decycler_गाठ.visit (item_gid)))
 	{
 	  comp_index++;
-	  continue;
+	  सुरूठेवा;
 	}
 
-	unsigned old_count = all_points.length;
+	अचिन्हित old_मोजणी = all_points.length;
 
-	if (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
+	जर (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
 		      !glyf_accelerator.glyph_for_gid (item_gid)
 				       .get_points (font,
 						    glyf_accelerator,
@@ -478,35 +478,35 @@ struct Glyph
 						    coords,
 						    gvar_cache,
 						    depth + 1,
-						    edge_count,
+						    edge_मोजणी,
 						    budget)))
 	{
 	  points.resize (old_length);
-	  return false;
+	  परत असत्य;
 	}
 
 	// points might have been reallocated. Relocate phantoms.
-	phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+	phantoms = points.as_array ().sub_array (points.length - PHANTOM_मोजणी, PHANTOM_मोजणी);
 
-	auto comp_points = all_points.as_array ().sub_array (old_count);
+	स्वतः comp_points = all_points.as_array ().sub_array (old_मोजणी);
 
 	/* Copy phantom points from component if USE_MY_METRICS flag set */
-	if (use_my_metrics && item.is_use_my_metrics ())
-	  for (unsigned int i = 0; i < PHANTOM_COUNT; i++)
-	    phantoms[i] = comp_points[comp_points.length - PHANTOM_COUNT + i];
+	जर (use_my_metrics && item.is_use_my_metrics ())
+	  साठी (अचिन्हित पूर्णांक i = 0; i < PHANTOM_मोजणी; i++)
+	    phantoms[i] = comp_points[comp_points.length - PHANTOM_मोजणी + i];
 
 	/* Each composite level transforms the whole subtree below it;
 	 * charge that work here so deep nesting is bounded by the budget
 	 * rather than by the per-draw point cap alone. */
-	if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.length)))
+	जर (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.length)))
 	{
 	  points.resize (old_length);
-	  return false;
+	  परत असत्य;
 	}
 
-	if (comp_points) // Empty in case of phantom_only
+	जर (comp_points) // Empty in case of phantom_only
 	{
-	  float matrix[4];
+	  दशांश matrix[4];
 	  contour_point_t default_trans;
 	  item.get_transformation (matrix, default_trans, extended);
 
@@ -514,11 +514,11 @@ struct Glyph
 	  item.transform_points (comp_points, matrix, points[old_length + comp_index]);
 	}
 
-	if (item.is_anchored () && !phantom_only)
+	जर (item.is_anchored () && !phantom_only)
 	{
-	  unsigned int p1, p2;
+	  अचिन्हित पूर्णांक p1, p2;
 	  item.get_anchor_points (p1, p2, extended);
-	  if (likely (p1 < all_points.length && p2 < comp_points.length))
+	  जर (likely (p1 < all_points.length && p2 < comp_points.length))
 	  {
 	    contour_point_t delta;
 	    delta.init (all_points[p1].x - comp_points[p2].x,
@@ -528,91 +528,91 @@ struct Glyph
 	  }
 	}
 
-	all_points.resize (all_points.length - PHANTOM_COUNT);
+	all_points.resize (all_points.length - PHANTOM_मोजणी);
 
-	if (all_points.length > HB_GLYF_MAX_POINTS)
+	जर (all_points.length > HB_GLYF_MAX_POINTS)
 	{
 	  points.resize (old_length);
-	  return false;
+	  परत असत्य;
 	}
 
 	comp_index++;
       }
 
-      if (head_maxp_info && depth == 0)
+      जर (head_maxp_info && depth == 0)
       {
-        if (composite_contours)
+        जर (composite_contours)
           head_maxp_info->maxCompositeContours = hb_max (head_maxp_info->maxCompositeContours, *composite_contours);
         head_maxp_info->maxCompositePoints = hb_max (head_maxp_info->maxCompositePoints, all_points.length);
         head_maxp_info->maxComponentElements = hb_max (head_maxp_info->maxComponentElements, comp_index);
       }
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_डावा].x;
       points.resize (old_length);
-    } break;
-    case EMPTY:
+    } थांबा;
+    स्थिती EMPTY:
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_डावा].x;
       points.resize (old_length);
-      break;
+      थांबा;
     }
 
-    if (depth == 0 && shift_points_hori) /* Apply at top level */
+    जर (depth == 0 && shift_points_hori) /* Apply at top level */
     {
       /* Undocumented rasterizer behavior:
        * Shift points horizontally by the updated left side bearing
        */
-      if (shift)
-        for (auto &point : all_points)
+      जर (shift)
+        साठी (स्वतः &point : all_points)
 	  point.x -= shift;
     }
 
-    return !all_points.in_error ();
+    परत !all_points.in_error ();
   }
 
-  bool get_extents_without_var_scaled (hb_font_t *font, const glyf_accelerator_t &glyf_accelerator,
-				       hb_glyph_extents_t *extents) const
+  तार्किक get_extents_without_var_scaled (hb_font_t *font, स्थिरांक glyf_accelerator_t &glyf_accelerator,
+				       hb_glyph_extents_t *extents) स्थिरांक
   {
-    if (type == EMPTY)
+    जर (type == EMPTY)
     {
       *extents = {0, 0, 0, 0};
-      return true; /* Empty glyph; zero extents. */
+      परत सत्य; /* Empty glyph; zero extents. */
     }
-    return header->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
+    परत header->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
   }
 
-  hb_bytes_t get_bytes () const { return bytes; }
-  glyph_type_t get_type () const { return type; }
-  const GlyphHeader *get_header () const { return header; }
-  bool is_extended () const { return extended; }
+  hb_bytes_t get_bytes () स्थिरांक { परत bytes; }
+  glyph_type_t get_type () स्थिरांक { परत type; }
+  स्थिरांक GlyphHeader *get_header () स्थिरांक { परत header; }
+  तार्किक is_extended () स्थिरांक { परत extended; }
 
   Glyph () : bytes (),
              header (bytes.as<GlyphHeader> ()),
              gid (-1),
              type(EMPTY),
-	     extended (false)
+	     extended (असत्य)
   {}
 
   Glyph (hb_bytes_t bytes_,
 	 hb_codepoint_t gid_,
-	 bool extended_) : bytes (bytes_),
+	 तार्किक extended_) : bytes (bytes_),
 			   header (bytes.as<GlyphHeader> ()),
 			   gid (gid_),
 			   extended (extended_)
   {
-    int num_contours = header->numberOfContours;
-    if (unlikely (num_contours == 0)) type = EMPTY;
-    else if (num_contours > 0) type = SIMPLE;
-    else if (num_contours <= -1) type = COMPOSITE;
-    else type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
+    पूर्णांक अंक_contours = header->संख्या_Of_Contours;
+    जर (unlikely (अंक_contours == 0)) type = EMPTY;
+    अन्यथा जर (अंक_contours > 0) type = SIMPLE;
+    अन्यथा जर (अंक_contours <= -1) type = COMPOSITE;
+    अन्यथा type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
   }
 
-  protected:
+  संरक्षित:
   hb_bytes_t bytes;
-  const GlyphHeader *header;
+  स्थिरांक GlyphHeader *header;
   hb_codepoint_t gid;
   glyph_type_t type;
-  bool extended;
+  तार्किक extended;
 };
 
 

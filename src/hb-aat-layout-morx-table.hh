@@ -27,10 +27,10 @@
 #ifndef HB_AAT_LAYOUT_MORX_TABLE_HH
 #define HB_AAT_LAYOUT_MORX_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-aat-map.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-aat-layout-common.hh"
+#अन्तर्भाव "hb-ot-layout.hh"
+#अन्तर्भाव "hb-aat-map.hh"
 
 /*
  * morx -- Extended Glyph Metamorphosis
@@ -41,18 +41,18 @@
 #define HB_AAT_TAG_mort HB_TAG('m','o','r','t')
 
 
-namespace AAT {
+नामाकाश AAT {
 
-using namespace OT;
+using नामाकाश OT;
 
-template <typename Types>
-struct RearrangementSubtable
+ढाँचा <typename Types>
+संरचना RearrangementSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  typedef void EntryData;
+  प्रकारव्याख्या शून्य EntryData;
 
-  enum Flags
+  गणना Flags
   {
     MarkFirst		= 0x8000,	/* If set, make the current glyph the first
 					 * glyph to be rearranged. */
@@ -66,44 +66,44 @@ struct RearrangementSubtable
     Verb		= 0x000F,	/* The type of rearrangement specified. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  तार्किक is_action_initiable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return (entry.flags & MarkFirst);
+    परत (entry.flags & MarkFirst);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  तार्किक is_actionable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return (entry.flags & Verb);
+    परत (entry.flags & Verb);
   }
 
-  struct driver_context_t
+  संरचना driver_context_t
   {
-    static constexpr bool in_place = true;
+    स्थिर constexpr तार्किक in_place = सत्य;
 
-    driver_context_t (const RearrangementSubtable *table_) :
-	ret (false),
+    driver_context_t (स्थिरांक RearrangementSubtable *table_) :
+	ret (असत्य),
 	table (table_),
 	start (0), end (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    शून्य transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     स्थिरांक Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      अचिन्हित पूर्णांक flags = entry.flags;
 
-      if (flags & MarkFirst)
+      जर (flags & MarkFirst)
 	start = buffer->idx;
 
-      if (flags & MarkLast)
+      जर (flags & MarkLast)
 	end = hb_min (buffer->idx + 1, buffer->len);
 
-      if ((flags & Verb) && start < end)
+      जर ((flags & Verb) && start < end)
       {
 	/* The following map has two nibbles, for start-side
 	 * and end-side. Values of 0,1,2 mean move that many
 	 * to the other side. Value of 3 means move 2 and
 	 * flip them. */
-	const unsigned char map[16] =
+	स्थिरांक अचिन्हित अक्षर map[16] =
 	{
 	  0x00,	/* 0	no change */
 	  0x10,	/* 1	Ax => xA */
@@ -123,13 +123,13 @@ struct RearrangementSubtable
 	  0x33,	/* 15	ABxCD => DCxBA */
 	};
 
-	unsigned int m = map[flags & Verb];
-	unsigned int l = hb_min (2u, m >> 4);
-	unsigned int r = hb_min (2u, m & 0x0F);
-	bool reverse_l = 3 == (m >> 4);
-	bool reverse_r = 3 == (m & 0x0F);
+	अचिन्हित पूर्णांक m = map[flags & Verb];
+	अचिन्हित पूर्णांक l = hb_min (2u, m >> 4);
+	अचिन्हित पूर्णांक r = hb_min (2u, m & 0x0F);
+	तार्किक reverse_l = 3 == (m >> 4);
+	तार्किक reverse_r = 3 == (m & 0x0F);
 
-	if (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
+	जर (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
 	{
 	  buffer->merge_clusters (start, hb_min (buffer->idx + 1, buffer->len));
 	  buffer->merge_clusters (start, end);
@@ -137,21 +137,21 @@ struct RearrangementSubtable
 	  hb_glyph_info_t *info = buffer->info;
 	  hb_glyph_info_t buf[4];
 
-	  hb_memcpy (buf, info + start, l * sizeof (buf[0]));
-	  hb_memcpy (buf + 2, info + end - r, r * sizeof (buf[0]));
+	  hb_memcpy (buf, info + start, l * आकार (buf[0]));
+	  hb_memcpy (buf + 2, info + end - r, r * आकार (buf[0]));
 
-	  if (l != r)
-	    memmove (info + start + r, info + start + l, (end - start - l - r) * sizeof (buf[0]));
+	  जर (l != r)
+	    स_हटाओ (info + start + r, info + start + l, (end - start - l - r) * आकार (buf[0]));
 
-	  hb_memcpy (info + start, buf + 2, r * sizeof (buf[0]));
-	  hb_memcpy (info + end - l, buf, l * sizeof (buf[0]));
-	  if (reverse_l)
+	  hb_memcpy (info + start, buf + 2, r * आकार (buf[0]));
+	  hb_memcpy (info + end - l, buf, l * आकार (buf[0]));
+	  जर (reverse_l)
 	  {
 	    buf[0] = info[end - 1];
 	    info[end - 1] = info[end - 2];
 	    info[end - 2] = buf[0];
 	  }
-	  if (reverse_r)
+	  जर (reverse_r)
 	  {
 	    buf[0] = info[start];
 	    info[start] = info[start + 1];
@@ -161,19 +161,19 @@ struct RearrangementSubtable
       }
     }
 
-    public:
-    bool ret;
-    const RearrangementSubtable *table;
-    private:
-    unsigned int start;
-    unsigned int end;
+    सार्वजनिक:
+    तार्किक ret;
+    स्थिरांक RearrangementSubtable *table;
+    खाजगी:
+    अचिन्हित पूर्णांक start;
+    अचिन्हित पूर्णांक end;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
 
-    driver_context_t dc (this);
+    driver_context_t dc (हे);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -182,36 +182,36 @@ struct RearrangementSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
     return_trace (machine.sanitize (c));
   }
 
-  public:
+  सार्वजनिक:
   StateTable<Types, EntryData>	machine;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size));
 };
 
-template <typename Types>
-struct ContextualSubtable
+ढाँचा <typename Types>
+संरचना ContextualSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  struct EntryData
+  संरचना EntryData
   {
-    typedef typename std::conditional<Types::extended, HBUINT16, HBINT16>::type OffsetType;
+    प्रकारव्याख्या typename std::conditional<Types::extended, HBUINT16, HBINT16>::type OffsetType;
 
     OffsetType	markIndex;	/* Index/offset of the substitution table for the
 				 * marked glyph. */
     OffsetType	currentIndex;	/* Index/offset of the substitution table for the
 				 * current glyph. */
-    public:
+    सार्वजनिक:
     DEFINE_SIZE_STATIC (4);
   };
 
-  enum Flags
+  गणना Flags
   {
     SetMark		= 0x8000,	/* If set, make the current glyph the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -219,123 +219,123 @@ struct ContextualSubtable
     Reserved		= 0x3FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  तार्किक is_action_initiable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return (entry.flags & SetMark);
+    परत (entry.flags & SetMark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  तार्किक is_actionable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    if (Types::extended)
-      return entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
-    else
-      return entry.data.markIndex || entry.data.currentIndex;
+    जर (Types::extended)
+      परत entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
+    अन्यथा
+      परत entry.data.markIndex || entry.data.currentIndex;
   }
 
-  struct driver_context_t
+  संरचना driver_context_t
   {
-    static constexpr bool in_place = true;
+    स्थिर constexpr तार्किक in_place = सत्य;
 
-    driver_context_t (const ContextualSubtable *table_,
+    driver_context_t (स्थिरांक ContextualSubtable *table_,
 			     hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (असत्य),
 	c (c_),
 	table (table_),
-	mark_set (false),
+	mark_set (असत्य),
 	mark (0),
 	subs (table+table->substitutionTables) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    शून्य transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     स्थिरांक Entry<EntryData> &entry)
     {
       /* Looks like CoreText applies neither mark nor current substitution for
        * end-of-text if mark was not explicitly set. */
-      if (buffer->idx == buffer->len && !mark_set)
-	return;
+      जर (buffer->idx == buffer->len && !mark_set)
+	परत;
 
-      const HBGlyphID16 *replacement;
+      स्थिरांक HBGlyphID16 *replacement;
 
       replacement = nullptr;
-      if (Types::extended)
+      जर (Types::extended)
       {
-	if (entry.data.markIndex != 0xFFFF)
+	जर (entry.data.markIndex != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
-	  replacement = lookup.get_value (buffer->info[mark].codepoint, driver->num_glyphs);
+	  स्थिरांक Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
+	  replacement = lookup.get_मूल्य (buffer->info[mark].codepoint, driver->अंक_glyphs);
 	}
       }
-      else
+      अन्यथा
       {
-	if (entry.data.markIndex)
+	जर (entry.data.markIndex)
 	{
-	  int offset = (int) entry.data.markIndex + buffer->info[mark].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
+	  पूर्णांक offset = (पूर्णांक) entry.data.markIndex + buffer->info[mark].codepoint;
+	  स्थिरांक UnsizedArrayOf<HBGlyphID16> &subs_old = (स्थिरांक UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  जर (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      जर (replacement)
       {
 	buffer->unsafe_to_break (mark, hb_min (buffer->idx + 1, buffer->len));
 	c->replace_glyph_inplace (mark, *replacement);
-	ret = true;
+	ret = सत्य;
       }
 
       replacement = nullptr;
-      unsigned int idx = hb_min (buffer->idx, buffer->len - 1);
-      if (Types::extended)
+      अचिन्हित पूर्णांक idx = hb_min (buffer->idx, buffer->len - 1);
+      जर (Types::extended)
       {
-	if (entry.data.currentIndex != 0xFFFF)
+	जर (entry.data.currentIndex != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
-	  replacement = lookup.get_value (buffer->info[idx].codepoint, driver->num_glyphs);
+	  स्थिरांक Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
+	  replacement = lookup.get_मूल्य (buffer->info[idx].codepoint, driver->अंक_glyphs);
 	}
       }
-      else
+      अन्यथा
       {
-	if (entry.data.currentIndex)
+	जर (entry.data.currentIndex)
 	{
-	  int offset = (int) entry.data.currentIndex + buffer->info[idx].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
+	  पूर्णांक offset = (पूर्णांक) entry.data.currentIndex + buffer->info[idx].codepoint;
+	  स्थिरांक UnsizedArrayOf<HBGlyphID16> &subs_old = (स्थिरांक UnsizedArrayOf<HBGlyphID16> &) subs;
 	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  जर (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
 	    replacement = nullptr;
 	}
       }
-      if (replacement)
+      जर (replacement)
       {
 	c->replace_glyph_inplace (idx, *replacement);
-	ret = true;
+	ret = सत्य;
       }
 
-      if (entry.flags & SetMark)
+      जर (entry.flags & SetMark)
       {
-	mark_set = true;
+	mark_set = सत्य;
 	mark = buffer->idx;
       }
     }
 
-    public:
-    bool ret;
+    सार्वजनिक:
+    तार्किक ret;
     hb_aat_apply_context_t *c;
-    const ContextualSubtable *table;
-    private:
-    bool mark_set;
-    unsigned int mark;
-    const UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false> &subs;
+    स्थिरांक ContextualSubtable *table;
+    खाजगी:
+    तार्किक mark_set;
+    अचिन्हित पूर्णांक mark;
+    स्थिरांक UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, शून्य, असत्य> &subs;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (हे, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -344,61 +344,61 @@ struct ContextualSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
 
-    unsigned int num_entries = 0;
-    if (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
+    अचिन्हित पूर्णांक अंक_entries = 0;
+    जर (unlikely (!machine.sanitize (c, &अंक_entries))) return_trace (असत्य);
     hb_barrier ();
 
-    if (!Types::extended)
-      return_trace (substitutionTables.sanitize (c, this, 0));
+    जर (!Types::extended)
+      return_trace (substitutionTables.sanitize (c, हे, 0));
 
-    unsigned int num_lookups = 0;
+    अचिन्हित पूर्णांक अंक_lookups = 0;
 
-    const Entry<EntryData> *entries = machine.get_entries ();
-    for (unsigned int i = 0; i < num_entries; i++)
+    स्थिरांक Entry<EntryData> *entries = machine.get_entries ();
+    साठी (अचिन्हित पूर्णांक i = 0; i < अंक_entries; i++)
     {
-      const EntryData &data = entries[i].data;
+      स्थिरांक EntryData &data = entries[i].data;
 
-      if (data.markIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.markIndex);
-      if (data.currentIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.currentIndex);
+      जर (data.markIndex != 0xFFFF)
+	अंक_lookups = hb_max (अंक_lookups, 1u + data.markIndex);
+      जर (data.currentIndex != 0xFFFF)
+	अंक_lookups = hb_max (अंक_lookups, 1u + data.currentIndex);
     }
 
-    return_trace (substitutionTables.sanitize (c, this, num_lookups));
+    return_trace (substitutionTables.sanitize (c, हे, अंक_lookups));
   }
 
-  public:
+  सार्वजनिक:
   StateTable<Types, EntryData>
 		machine;
-  protected:
-  NNOffsetTo<UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false>, HBUINT>
+  संरक्षित:
+  NNOffsetTo<UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, शून्य, असत्य>, HBUINT>
 		substitutionTables;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 
-template <bool extended>
-struct LigatureEntry;
+ढाँचा <तार्किक extended>
+संरचना LigatureEntry;
 
-template <>
-struct LigatureEntry<true>
+ढाँचा <>
+संरचना LigatureEntry<सत्य>
 {
 
-  struct EntryData
+  संरचना EntryData
   {
     HBUINT16	ligActionIndex;	/* Index to the first ligActionTable entry
 				 * for processing this group, if indicated
 				 * by the flags. */
-    public:
+    सार्वजनिक:
     DEFINE_SIZE_STATIC (2);
   };
 
-  enum Flags
+  गणना Flags
   {
     SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
@@ -409,21 +409,21 @@ struct LigatureEntry<true>
     Reserved		= 0x1FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  स्थिर तार्किक initiateAction (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.flags & SetComponent; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & PerformAction; }
+  स्थिर तार्किक performAction (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.flags & PerformAction; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.ligActionIndex; }
+  स्थिर अचिन्हित पूर्णांक ligActionIndex (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.data.ligActionIndex; }
 };
-template <>
-struct LigatureEntry<false>
+ढाँचा <>
+संरचना LigatureEntry<असत्य>
 {
-  typedef void EntryData;
+  प्रकारव्याख्या शून्य EntryData;
 
-  enum Flags
+  गणना Flags
   {
     SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
@@ -434,43 +434,43 @@ struct LigatureEntry<false>
 					 * multiple of 4. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  स्थिर तार्किक initiateAction (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.flags & SetComponent; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  स्थिर तार्किक performAction (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.flags & Offset; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  स्थिर अचिन्हित पूर्णांक ligActionIndex (स्थिरांक Entry<EntryData> &entry)
+  { परत entry.flags & Offset; }
 };
 
 
-template <typename Types>
-struct LigatureSubtable
+ढाँचा <typename Types>
+संरचना LigatureSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  typedef LigatureEntry<Types::extended> LigatureEntryT;
-  typedef typename LigatureEntryT::EntryData EntryData;
+  प्रकारव्याख्या LigatureEntry<Types::extended> LigatureEntryT;
+  प्रकारव्याख्या typename LigatureEntryT::EntryData EntryData;
 
-  enum Flags
+  गणना Flags
   {
     DontAdvance	= LigatureEntryT::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  तार्किक is_action_initiable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return LigatureEntryT::initiateAction (entry);
+    परत LigatureEntryT::initiateAction (entry);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  तार्किक is_actionable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return LigatureEntryT::performAction (entry);
+    परत LigatureEntryT::performAction (entry);
   }
 
-  struct driver_context_t
+  संरचना driver_context_t
   {
-    static constexpr bool in_place = false;
-    enum LigActionFlags
+    स्थिर constexpr तार्किक in_place = असत्य;
+    गणना LigActionFlags
     {
       LigActionLast	= 0x80000000,	/* This is the last action in the list. This also
 					 * implies storage. */
@@ -482,9 +482,9 @@ struct LigatureSubtable
 					 * into the component table. */
     };
 
-    driver_context_t (const LigatureSubtable *table_,
+    driver_context_t (स्थिरांक LigatureSubtable *table_,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (असत्य),
 	c (c_),
 	table (table_),
 	ligAction (table+table->ligAction),
@@ -493,119 +493,119 @@ struct LigatureSubtable
 	match_length (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    शून्य transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     स्थिरांक Entry<EntryData> &entry)
     {
-      DEBUG_MSG (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
-      if (entry.flags & LigatureEntryT::SetComponent)
+      DEBUG_संदेश (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
+      जर (entry.flags & LigatureEntryT::SetComponent)
       {
 	/* Never mark same index twice, in case DontAdvance was used... */
-	if (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
+	जर (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
 	  match_length--;
 
 	match_positions[match_length++ % ARRAY_LENGTH (match_positions)] = buffer->out_len;
-	DEBUG_MSG (APPLY, nullptr, "Set component at %u", buffer->out_len);
+	DEBUG_संदेश (APPLY, nullptr, "Set component at %u", buffer->out_len);
       }
 
-      if (LigatureEntryT::performAction (entry))
+      जर (LigatureEntryT::performAction (entry))
       {
-	DEBUG_MSG (APPLY, nullptr, "Perform action with %u", match_length);
-	unsigned int end = buffer->out_len;
+	DEBUG_संदेश (APPLY, nullptr, "Perform action with %u", match_length);
+	अचिन्हित पूर्णांक end = buffer->out_len;
 
-	if (unlikely (!match_length))
-	  return;
+	जर (unlikely (!match_length))
+	  परत;
 
-	if (buffer->idx >= buffer->len)
-	  return; /* TODO Work on previous instead? */
+	जर (buffer->idx >= buffer->len)
+	  परत; /* TODO Work on previous instead? */
 
-	unsigned int cursor = match_length;
+	अचिन्हित पूर्णांक cursor = match_length;
 
-	unsigned int action_idx = LigatureEntryT::ligActionIndex (entry);
+	अचिन्हित पूर्णांक action_idx = LigatureEntryT::ligActionIndex (entry);
 	action_idx = Types::offsetToIndex (action_idx, table, ligAction.arrayZ);
-	const HBUINT32 *actionData = &ligAction[action_idx];
+	स्थिरांक HBUINT32 *actionData = &ligAction[action_idx];
 
-	unsigned int ligature_idx = 0;
-	unsigned int action;
-	do
+	अचिन्हित पूर्णांक ligature_idx = 0;
+	अचिन्हित पूर्णांक action;
+	करा
 	{
-	  if (unlikely (!cursor))
+	  जर (unlikely (!cursor))
 	  {
 	    /* Stack underflow.  Clear the stack. */
-	    DEBUG_MSG (APPLY, nullptr, "Stack underflow");
+	    DEBUG_संदेश (APPLY, nullptr, "Stack underflow");
 	    match_length = 0;
-	    break;
+	    थांबा;
 	  }
 
-	  DEBUG_MSG (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
-	  if (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) return;
+	  DEBUG_संदेश (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
+	  जर (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) परत;
 
-	  if (unlikely (!actionData->sanitize (&c->sanitizer))) break;
+	  जर (unlikely (!actionData->sanitize (&c->sanitizer))) थांबा;
 	  hb_barrier ();
 	  action = *actionData;
 
 	  uint32_t uoffset = action & LigActionOffset;
-	  if (uoffset & 0x20000000)
+	  जर (uoffset & 0x20000000)
 	    uoffset |= 0xC0000000; /* Sign-extend. */
 	  int32_t offset = (int32_t) uoffset;
-	  unsigned int component_idx = buffer->cur().codepoint + offset;
+	  अचिन्हित पूर्णांक component_idx = buffer->cur().codepoint + offset;
 	  component_idx = Types::wordOffsetToIndex (component_idx, table, component.arrayZ);
-	  const HBUINT16 &componentData = component[component_idx];
-	  if (unlikely (!componentData.sanitize (&c->sanitizer))) break;
+	  स्थिरांक HBUINT16 &componentData = component[component_idx];
+	  जर (unlikely (!componentData.sanitize (&c->sanitizer))) थांबा;
 	  hb_barrier ();
 	  ligature_idx += componentData;
 
-	  DEBUG_MSG (APPLY, nullptr, "Action store %d last %d",
-		     bool (action & LigActionStore),
-		     bool (action & LigActionLast));
-	  if (action & (LigActionStore | LigActionLast))
+	  DEBUG_संदेश (APPLY, nullptr, "Action store %d last %d",
+		     तार्किक (action & LigActionStore),
+		     तार्किक (action & LigActionLast));
+	  जर (action & (LigActionStore | LigActionLast))
 	  {
 	    ligature_idx = Types::offsetToIndex (ligature_idx, table, ligature.arrayZ);
-	    const HBGlyphID16 &ligatureData = ligature[ligature_idx];
-	    if (unlikely (!ligatureData.sanitize (&c->sanitizer))) break;
+	    स्थिरांक HBGlyphID16 &ligatureData = ligature[ligature_idx];
+	    जर (unlikely (!ligatureData.sanitize (&c->sanitizer))) थांबा;
 	    hb_barrier ();
 	    hb_codepoint_t lig = ligatureData;
 
-	    DEBUG_MSG (APPLY, nullptr, "Produced ligature %u", lig);
-	    if (unlikely (!c->replace_glyph (lig))) return;
+	    DEBUG_संदेश (APPLY, nullptr, "Produced ligature %u", lig);
+	    जर (unlikely (!c->replace_glyph (lig))) परत;
 
-	    unsigned int lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
+	    अचिन्हित पूर्णांक lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
 	    /* Now go and delete all subsequent components. */
-	    while (match_length - 1u > cursor)
+	    पर्यंत (match_length - 1u > cursor)
 	    {
-	      DEBUG_MSG (APPLY, nullptr, "Skipping ligature component");
-	      if (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) return;
-	      if (!c->delete_glyph ()) return;
+	      DEBUG_संदेश (APPLY, nullptr, "Skipping ligature component");
+	      जर (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) परत;
+	      जर (!c->delete_glyph ()) परत;
 	    }
 
-	    if (unlikely (!buffer->move_to (lig_end))) return;
+	    जर (unlikely (!buffer->move_to (lig_end))) परत;
 	    buffer->merge_out_clusters (match_positions[cursor % ARRAY_LENGTH (match_positions)], buffer->out_len);
 	  }
 
 	  actionData++;
 	}
-	while (!(action & LigActionLast));
-	if (unlikely (!buffer->move_to (end))) return;
+	पर्यंत (!(action & LigActionLast));
+	जर (unlikely (!buffer->move_to (end))) परत;
       }
     }
 
-    public:
-    bool ret;
+    सार्वजनिक:
+    तार्किक ret;
     hb_aat_apply_context_t *c;
-    const LigatureSubtable *table;
-    private:
-    const UnsizedArrayOf<HBUINT32> &ligAction;
-    const UnsizedArrayOf<HBUINT16> &component;
-    const UnsizedArrayOf<HBGlyphID16> &ligature;
-    unsigned int match_length;
-    unsigned int match_positions[HB_MAX_CONTEXT_LENGTH];
+    स्थिरांक LigatureSubtable *table;
+    खाजगी:
+    स्थिरांक UnsizedArrayOf<HBUINT32> &ligAction;
+    स्थिरांक UnsizedArrayOf<HBUINT16> &component;
+    स्थिरांक UnsizedArrayOf<HBGlyphID16> &ligature;
+    अचिन्हित पूर्णांक match_length;
+    अचिन्हित पूर्णांक match_positions[HB_MAX_CONTEXT_LENGTH];
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (हे, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -614,113 +614,113 @@ struct LigatureSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (हे) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  ligAction && component && ligature);
   }
 
-  public:
+  सार्वजनिक:
   StateTable<Types, EntryData>
 		machine;
-  protected:
+  संरक्षित:
   NNOffsetTo<UnsizedArrayOf<HBUINT32>, HBUINT>
 		ligAction;	/* Offset to the ligature action table. */
   NNOffsetTo<UnsizedArrayOf<HBUINT16>, HBUINT>
 		component;	/* Offset to the component table. */
   NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
 		ligature;	/* Offset to the actual ligature lists. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + 3 * HBUINT::static_size));
 };
 
-template <typename Types>
-struct NoncontextualSubtable
+ढाँचा <typename Types>
+संरचना NoncontextualSubtable
 {
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
 
-    bool ret = false;
-    unsigned int num_glyphs = c->face->get_num_glyphs ();
+    तार्किक ret = असत्य;
+    अचिन्हित पूर्णांक अंक_glyphs = c->face->get_अंक_glyphs ();
 
     hb_glyph_info_t *info = c->buffer->info;
-    unsigned int count = c->buffer->len;
+    अचिन्हित पूर्णांक मोजणी = c->buffer->len;
     // If there's only one range, we already checked the flag.
-    auto *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
-    for (unsigned int i = 0; i < count; i++)
+    स्वतः *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
       /* This block copied from StateTableDriver::drive. Keep in sync. */
-      if (unlikely (last_range))
+      जर (unlikely (last_range))
       {
-	auto *range = last_range;
+	स्वतः *range = last_range;
 	{
-	  unsigned cluster = info[i].cluster;
-	  while (cluster < range->cluster_first)
+	  अचिन्हित cluster = info[i].cluster;
+	  पर्यंत (cluster < range->cluster_first)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  पर्यंत (cluster > range->cluster_last)
 	    range++;
 
 	  last_range = range;
 	}
-	if (!(range->flags & c->subtable_flags))
-	  continue;
+	जर (!(range->flags & c->subtable_flags))
+	  सुरूठेवा;
       }
 
-      const HBGlyphID16 *replacement = substitute.get_value (info[i].codepoint, num_glyphs);
-      if (replacement)
+      स्थिरांक HBGlyphID16 *replacement = substitute.get_मूल्य (info[i].codepoint, अंक_glyphs);
+      जर (replacement)
       {
 	c->replace_glyph_inplace (i, *replacement);
-	ret = true;
+	ret = सत्य;
       }
     }
 
     return_trace (ret);
   }
 
-  template <typename set_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  ढाँचा <typename set_t>
+  शून्य collect_initial_glyphs (set_t &glyphs, अचिन्हित अंक_glyphs) स्थिरांक
   {
-    substitute.collect_glyphs (glyphs, num_glyphs);
+    substitute.collect_glyphs (glyphs, अंक_glyphs);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
     return_trace (substitute.sanitize (c));
   }
 
-  protected:
+  संरक्षित:
   Lookup<HBGlyphID16>	substitute;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (2);
 };
 
-template <typename Types>
-struct InsertionSubtable
+ढाँचा <typename Types>
+संरचना InsertionSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  struct EntryData
+  संरचना EntryData
   {
-    HBUINT16	currentInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	current_घाला_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the currentInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    HBUINT16	markedInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	marked_घाला_Index;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the markedInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    public:
+    सार्वजनिक:
     DEFINE_SIZE_STATIC (4);
   };
 
-  enum Flags
+  गणना Flags
   {
     SetMark		= 0x8000,     /* If set, mark the current glyph. */
     DontAdvance		= 0x4000,     /* If set, don't advance to the next glyph before
@@ -750,104 +750,104 @@ struct InsertionSubtable
 				       * split-vowel-like insertion, either before or
 				       * after the marked glyph (depending on the state
 				       * of the markedInsertBefore flag). */
-    CurrentInsertBefore= 0x0800,      /* If set, specifies that insertions are to be made
+    Current_घाला_Before= 0x0800,      /* If set, specifies that insertions are to be made
 				       * to the left of the current glyph. If clear,
 				       * they're made to the right of the current glyph. */
-    MarkedInsertBefore= 0x0400,	      /* If set, specifies that insertions are to be
+    Marked_घाला_Before= 0x0400,	      /* If set, specifies that insertions are to be
 				       * made to the left of the marked glyph. If clear,
 				       * they're made to the right of the marked glyph. */
-    CurrentInsertCount= 0x3E0,	      /* This 5-bit field is treated as a count of the
+    Current_घाला_मोजणी= 0x3E0,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the current
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * current location is 31 glyphs. */
-    MarkedInsertCount= 0x001F,	      /* This 5-bit field is treated as a count of the
+    Marked_घाला_मोजणी= 0x001F,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the marked
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * marked location is 31 glyphs. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  तार्किक is_action_initiable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return (entry.flags & SetMark);
+    परत (entry.flags & SetMark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  तार्किक is_actionable (स्थिरांक Entry<EntryData> &entry) स्थिरांक
   {
-    return (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
-	   (entry.data.currentInsertIndex != 0xFFFF ||entry.data.markedInsertIndex != 0xFFFF);
+    परत (entry.flags & (Current_घाला_मोजणी | Marked_घाला_मोजणी)) &&
+	   (entry.data.current_घाला_Index != 0xFFFF ||entry.data.marked_घाला_Index != 0xFFFF);
   }
 
-  struct driver_context_t
+  संरचना driver_context_t
   {
-    static constexpr bool in_place = false;
+    स्थिर constexpr तार्किक in_place = असत्य;
 
-    driver_context_t (const InsertionSubtable *table_,
+    driver_context_t (स्थिरांक InsertionSubtable *table_,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (असत्य),
 	c (c_),
 	table (table_),
 	mark (0),
 	insertionAction (table+table->insertionAction) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    शून्य transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     स्थिरांक Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      अचिन्हित पूर्णांक flags = entry.flags;
 
-      unsigned mark_loc = buffer->out_len;
+      अचिन्हित mark_loc = buffer->out_len;
 
-      if (entry.data.markedInsertIndex != 0xFFFF)
+      जर (entry.data.marked_घाला_Index != 0xFFFF)
       {
-	unsigned int count = (flags & MarkedInsertCount);
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.markedInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	अचिन्हित पूर्णांक मोजणी = (flags & Marked_घाला_मोजणी);
+	जर (unlikely ((buffer->max_ops -= मोजणी) <= 0)) परत;
+	अचिन्हित पूर्णांक start = entry.data.marked_घाला_Index;
+	स्थिरांक HBGlyphID16 *glyphs = &insertionAction[start];
+	जर (unlikely (!c->sanitizer.check_array (glyphs, मोजणी))) मोजणी = 0;
 	hb_barrier ();
 
-	bool before = flags & MarkedInsertBefore;
+	तार्किक before = flags & Marked_घाला_Before;
 
-	unsigned int end = buffer->out_len;
-	if (unlikely (!buffer->move_to (mark))) return;
+	अचिन्हित पूर्णांक end = buffer->out_len;
+	जर (unlikely (!buffer->move_to (mark))) परत;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	जर (buffer->idx < buffer->len && !before)
+	  जर (unlikely (!buffer->copy_glyph ())) परत;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	जर (unlikely (!c->output_glyphs (मोजणी, glyphs))) परत;
+	ret = सत्य;
+	जर (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
-	if (unlikely (!buffer->move_to (end + count))) return;
+	जर (unlikely (!buffer->move_to (end + मोजणी))) परत;
 
 	buffer->unsafe_to_break_from_outbuffer (mark, hb_min (buffer->idx + 1, buffer->len));
       }
 
-      if (flags & SetMark)
+      जर (flags & SetMark)
 	mark = mark_loc;
 
-      if (entry.data.currentInsertIndex != 0xFFFF)
+      जर (entry.data.current_घाला_Index != 0xFFFF)
       {
-	unsigned int count = (flags & CurrentInsertCount) >> 5;
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.currentInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	अचिन्हित पूर्णांक मोजणी = (flags & Current_घाला_मोजणी) >> 5;
+	जर (unlikely ((buffer->max_ops -= मोजणी) <= 0)) परत;
+	अचिन्हित पूर्णांक start = entry.data.current_घाला_Index;
+	स्थिरांक HBGlyphID16 *glyphs = &insertionAction[start];
+	जर (unlikely (!c->sanitizer.check_array (glyphs, मोजणी))) मोजणी = 0;
 	hb_barrier ();
 
-	bool before = flags & CurrentInsertBefore;
+	तार्किक before = flags & Current_घाला_Before;
 
-	unsigned int end = buffer->out_len;
+	अचिन्हित पूर्णांक end = buffer->out_len;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	जर (buffer->idx < buffer->len && !before)
+	  जर (unlikely (!buffer->copy_glyph ())) परत;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
+	जर (unlikely (!c->output_glyphs (मोजणी, glyphs))) परत;
+	ret = सत्य;
+	जर (buffer->idx < buffer->len && !before)
 	  buffer->skip_glyph ();
 
 	/* Humm. Not sure where to move to.  There's this wording under
@@ -865,24 +865,24 @@ struct InsertionSubtable
 	 *
 	 * https://github.com/harfbuzz/harfbuzz/issues/1224#issuecomment-427691417
 	 */
-	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) return;
+	जर (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + मोजणी))) परत;
       }
     }
 
-    public:
-    bool ret;
+    सार्वजनिक:
+    तार्किक ret;
     hb_aat_apply_context_t *c;
-    const InsertionSubtable *table;
-    private:
-    unsigned int mark;
-    const UnsizedArrayOf<HBGlyphID16> &insertionAction;
+    स्थिरांक InsertionSubtable *table;
+    खाजगी:
+    अचिन्हित पूर्णांक mark;
+    स्थिरांक UnsizedArrayOf<HBGlyphID16> &insertionAction;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (हे, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
 
@@ -891,36 +891,36 @@ struct InsertionSubtable
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (हे) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  insertionAction);
   }
 
-  public:
+  सार्वजनिक:
   StateTable<Types, EntryData>
 		machine;
-  protected:
+  संरक्षित:
   NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
 		insertionAction;	/* Byte offset from stateHeader to the start of
 					 * the insertion glyph table. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 
-struct Feature
+संरचना Feature
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (हे);
+    return_trace (c->check_struct (हे));
   }
 
-  public:
+  सार्वजनिक:
   HBUINT16	featureType;	/* The type of feature. */
   HBUINT16	featureSetting;	/* The feature's setting (aka selector). */
   HBUINT32	enableFlags;	/* Flags for the settings that this feature
@@ -928,44 +928,44 @@ struct Feature
   HBUINT32	disableFlags;	/* Complement of flags for the settings that this
 				 * feature and setting disable. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (12);
 };
 
 
-struct hb_accelerate_subtables_context_t :
+संरचना hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
-  struct hb_applicable_t
+  संरचना hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_aat_layout_lookup_accelerator_t;
+    मित्र संरचना hb_accelerate_subtables_context_t;
+    मित्र संरचना hb_aat_layout_lookup_accelerator_t;
 
-    public:
+    सार्वजनिक:
     hb_bit_set_t glyph_set;
     mutable hb_aat_class_cache_t class_cache;
 
-    template <typename T>
-    auto init_ (const T &obj_, unsigned num_glyphs, hb_priority<1>) HB_AUTO_RETURN
+    ढाँचा <typename T>
+    स्वतः init_ (स्थिरांक T &obj_, अचिन्हित अंक_glyphs, hb_priority<1>) HB_AUTO_RETURN
     (
-      obj_.machine.collect_initial_glyphs (glyph_set, num_glyphs, obj_)
+      obj_.machine.collect_initial_glyphs (glyph_set, अंक_glyphs, obj_)
     )
 
-    template <typename T>
-    void init_ (const T &obj_, unsigned num_glyphs, hb_priority<0>)
+    ढाँचा <typename T>
+    शून्य init_ (स्थिरांक T &obj_, अचिन्हित अंक_glyphs, hb_priority<0>)
     {
-      obj_.collect_initial_glyphs (glyph_set, num_glyphs);
+      obj_.collect_initial_glyphs (glyph_set, अंक_glyphs);
     }
 
-    template <typename T>
-    void init (const T &obj_, unsigned num_glyphs)
+    ढाँचा <typename T>
+    शून्य init (स्थिरांक T &obj_, अचिन्हित अंक_glyphs)
     {
       glyph_set.init ();
-      init_ (obj_, num_glyphs, hb_prioritize);
+      init_ (obj_, अंक_glyphs, hb_prioritize);
       class_cache.clear ();
     }
 
-    void
+    शून्य
     fini ()
     {
       glyph_set.fini ();
@@ -973,44 +973,44 @@ struct hb_accelerate_subtables_context_t :
   };
 
   /* Dispatch interface. */
-  template <typename T>
-  return_t dispatch (const T &obj)
+  ढाँचा <typename T>
+  return_t dispatch (स्थिरांक T &obj)
   {
     hb_applicable_t *entry = &array[i++];
 
-    entry->init (obj, num_glyphs);
+    entry->init (obj, अंक_glyphs);
 
-    return hb_empty_t ();
+    परत hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  स्थिर return_t default_return_मूल्य () { परत hb_empty_t (); }
 
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  तार्किक stop_sublookup_iteration (return_t r) स्थिरांक { परत असत्य; }
 
-  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned num_glyphs_) :
+  hb_accelerate_subtables_context_t (hb_applicable_t *array_, अचिन्हित अंक_glyphs_2) :
 				     hb_dispatch_context_t<hb_accelerate_subtables_context_t> (),
-				     array (array_), num_glyphs (num_glyphs_) {}
+				     array (array_), अंक_glyphs (अंक_glyphs_2) {}
 
   hb_applicable_t *array;
-  unsigned num_glyphs;
-  unsigned i = 0;
+  अचिन्हित अंक_glyphs;
+  अचिन्हित i = 0;
 };
 
-struct hb_aat_layout_chain_accelerator_t
+संरचना hb_aat_layout_chain_accelerator_t
 {
-  template <typename TChain>
-  static hb_aat_layout_chain_accelerator_t *create (const TChain &chain, unsigned num_glyphs)
+  ढाँचा <typename TChain>
+  स्थिर hb_aat_layout_chain_accelerator_t *create (स्थिरांक TChain &chain, अचिन्हित अंक_glyphs)
   {
-    unsigned count = chain.get_subtable_count ();
+    अचिन्हित मोजणी = chain.get_subtable_मोजणी ();
 
-    unsigned product;
-    if (unlikely (hb_unsigned_mul_overflows (count,
-        sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
-      return nullptr;
+    अचिन्हित product;
+    जर (unlikely (hb_unsigned_mul_overflows (मोजणी,
+        आकार (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
+      परत nullptr;
 
-    unsigned size;
-    if (unlikely (hb_unsigned_add_overflows (sizeof (hb_aat_layout_chain_accelerator_t) -
-        HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
-      return nullptr;
+    अचिन्हित size;
+    जर (unlikely (hb_unsigned_add_overflows (आकार (hb_aat_layout_chain_accelerator_t) -
+        HB_VAR_ARRAY * आकार (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
+      परत nullptr;
     }
 
     /* The following is a calloc because when we are collecting subtables,
@@ -1018,41 +1018,41 @@ struct hb_aat_layout_chain_accelerator_t
      * we might not fill in all the count entries of the subtables array.
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
-    auto *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    स्वतः *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, size);
+    जर (unlikely (!thiz))
+      परत nullptr;
 
-    thiz->count = count;
+    thiz->मोजणी = मोजणी;
 
-    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, num_glyphs);
+    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, अंक_glyphs);
     chain.dispatch (&c_accelerate_subtables);
 
-    return thiz;
+    परत thiz;
   }
 
-  void destroy ()
+  शून्य destroy ()
   {
-    for (unsigned i = 0; i < count; i++)
+    साठी (अचिन्हित i = 0; i < मोजणी; i++)
       subtables[i].fini ();
   }
 
-  unsigned count;
+  अचिन्हित मोजणी;
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
-template <typename Types>
-struct ChainSubtable
+ढाँचा <typename Types>
+संरचना ChainSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  template <typename T>
-  friend struct Chain;
+  ढाँचा <typename T>
+  मित्र संरचना Chain;
 
-  size_t get_size () const     { return length; }
-  unsigned int get_type () const     { return coverage & 0xFF; }
-  unsigned int get_coverage () const { return coverage >> (sizeof (HBUINT) * 8 - 8); }
+  माप_प्रकार get_size () स्थिरांक     { परत length; }
+  अचिन्हित पूर्णांक get_type () स्थिरांक     { परत coverage & 0xFF; }
+  अचिन्हित पूर्णांक get_coverage () स्थिरांक { परत coverage >> (आकार (HBUINT) * 8 - 8); }
 
-  enum Coverage
+  गणना Coverage
   {
     Vertical		= 0x80,	/* If set, this subtable will only be applied
 				 * to vertical text. If clear, this subtable
@@ -1067,7 +1067,7 @@ struct ChainSubtable
 				 * in logical order (or reverse logical order,
 				 * depending on the value of bit 0x80000000). */
   };
-  enum Type
+  गणना Type
   {
     Rearrangement	= 0,
     Contextual		= 1,
@@ -1076,93 +1076,93 @@ struct ChainSubtable
     Insertion		= 5
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिरांक
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
-    case Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
-    case Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
-    case Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
-    case Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
-    default:			return_trace (c->default_return_value ());
+    अचिन्हित पूर्णांक subtable_type = get_type ();
+    TRACE_DISPATCH (हे, subtable_type);
+    निवड (subtable_type) {
+    स्थिती Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
+    स्थिती Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
+    स्थिती Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
+    स्थिती Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
+    स्थिती Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
+    पूर्वनिर्धारित:			return_trace (c->default_return_मूल्य ());
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  तार्किक apply (hb_aat_apply_context_t *c) स्थिरांक
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (हे);
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (&c->sanitizer, this);
     return_trace (dispatch (c));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (हे);
+    जर (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  c->check_range (हे, length)))
+      return_trace (असत्य);
 
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (c, this);
     return_trace (dispatch (c));
   }
 
-  protected:
+  संरक्षित:
   HBUINT	length;		/* Total subtable length, including this header. */
   HBUINT	coverage;	/* Coverage flags and subtable type. */
   HBUINT32	subFeatureFlags;/* The 32-bit mask identifying which subtable this is. */
-  union {
+  संघ {
   RearrangementSubtable<Types>	rearrangement;
   ContextualSubtable<Types>	contextual;
   LigatureSubtable<Types>	ligature;
   NoncontextualSubtable<Types>	noncontextual;
   InsertionSubtable<Types>	insertion;
   } u;
-  public:
-  DEFINE_SIZE_MIN (2 * sizeof (HBUINT) + 4);
+  सार्वजनिक:
+  DEFINE_SIZE_MIN (2 * आकार (HBUINT) + 4);
 };
 
-template <typename Types>
-struct Chain
+ढाँचा <typename Types>
+संरचना Chain
 {
-  typedef typename Types::HBUINT HBUINT;
+  प्रकारव्याख्या typename Types::HBUINT HBUINT;
 
-  unsigned get_subtable_count () const { return subtableCount; }
+  अचिन्हित get_subtable_मोजणी () स्थिरांक { परत subtable_मोजणी_2; }
 
-  hb_mask_t compile_flags (const hb_aat_map_builder_t *map) const
+  hb_mask_t compile_flags (स्थिरांक hb_aat_map_builder_t *map) स्थिरांक
   {
     hb_mask_t flags = defaultFlags;
     {
-      unsigned int count = featureCount;
-      for (unsigned i = 0; i < count; i++)
+      अचिन्हित पूर्णांक मोजणी = feature_मोजणी;
+      साठी (अचिन्हित i = 0; i < मोजणी; i++)
       {
-	const Feature &feature = featureZ[i];
-	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned int) feature.featureType;
-	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned int) feature.featureSetting;
+	स्थिरांक Feature &feature = featureZ[i];
+	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (अचिन्हित पूर्णांक) feature.featureType;
+	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (अचिन्हित पूर्णांक) feature.featureSetting;
       retry:
 	// Check whether this type/setting pair was requested in the map, and if so, apply its flags.
 	// (The search here only looks at the type and setting fields of feature_info_t.)
-	hb_aat_map_builder_t::feature_info_t info = { type, setting, false, 0 };
-	if (map->current_features.bsearch (info))
+	hb_aat_map_builder_t::feature_info_t info = { type, setting, असत्य, 0 };
+	जर (map->current_features.द्वा_खोज (info))
 	{
 	  flags &= feature.disableFlags;
 	  flags |= feature.enableFlags;
 	}
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
+	अन्यथा जर (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
 	{
 	  /* Deprecated. https://github.com/harfbuzz/harfbuzz/issues/1342 */
 	  type = HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE;
 	  setting = HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS;
-	  goto retry;
+	  जा retry;
 	}
 #ifndef HB_NO_AAT
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
+	अन्यथा जर (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
 		 /* TODO: Rudimentary language matching. */
 		 hb_language_matches (map->face->table.ltag->get_language (setting - 1), map->props.language))
 	{
@@ -1172,38 +1172,38 @@ struct Chain
 #endif
       }
     }
-    return flags;
+    परत flags;
   }
 
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_layout_chain_accelerator_t *accel) const
+  शून्य apply (hb_aat_apply_context_t *c,
+	      स्थिरांक hb_aat_layout_chain_accelerator_t *accel) स्थिरांक
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_मोजणी));
+    अचिन्हित पूर्णांक मोजणी = subtable_मोजणी_2;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
-      bool reverse;
+      तार्किक reverse;
 
-      auto coverage = subtable->get_coverage ();
+      स्वतः coverage = subtable->get_coverage ();
 
       hb_mask_t subtable_flags = subtable->subFeatureFlags;
-      if (hb_none (hb_iter (c->range_flags) |
-		   hb_map ([subtable_flags] (const hb_aat_map_t::range_flags_t _) -> bool { return subtable_flags & (_.flags); })))
-	goto skip;
+      जर (hb_none (hb_iter (c->range_flags) |
+		   hb_map ([subtable_flags] (स्थिरांक hb_aat_map_t::range_flags_t _) -> तार्किक { परत subtable_flags & (_.flags); })))
+	जा skip;
 
-      if (!(coverage & ChainSubtable<Types>::AllDirections) &&
+      जर (!(coverage & ChainSubtable<Types>::AllDirections) &&
 	  HB_DIRECTION_IS_VERTICAL (c->buffer->props.direction) !=
-	  bool (coverage & ChainSubtable<Types>::Vertical))
-	goto skip;
+	  तार्किक (coverage & ChainSubtable<Types>::Vertical))
+	जा skip;
 
       c->subtable_flags = subtable_flags;
       c->first_set = accel ? &accel->subtables[i].glyph_set : &Null(hb_bit_set_t);
       c->machine_class_cache = accel ? &accel->subtables[i].class_cache : nullptr;
 
-      if (!c->buffer_intersects_machine ())
+      जर (!c->buffer_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(शून्य) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
+	जा skip;
       }
 
       /* Buffer contents is always in logical direction.  Determine if
@@ -1234,91 +1234,91 @@ struct Chain
 				may be right-to-left or left-to-right).
        */
       reverse = coverage & ChainSubtable<Types>::Logical ?
-		bool (coverage & ChainSubtable<Types>::Backwards) :
-		bool (coverage & ChainSubtable<Types>::Backwards) !=
+		तार्किक (coverage & ChainSubtable<Types>::Backwards) :
+		तार्किक (coverage & ChainSubtable<Types>::Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
-	goto skip;
+      जर (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
+	जा skip;
 
-      if (reverse != c->buffer_is_reversed)
+      जर (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       subtable->apply (c);
 
-      (void) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
+      (शून्य) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
 
-      if (unlikely (!c->buffer->successful)) break;
+      जर (unlikely (!c->buffer->successful)) थांबा;
 
     skip:
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    जर (c->buffer_is_reversed)
       c->reverse_buffer ();
   }
 
-  size_t get_size () const { return length; }
+  माप_प्रकार get_size () स्थिरांक { परत length; }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिरांक
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_मोजणी));
+    अचिन्हित पूर्णांक मोजणी = subtable_मोजणी_2;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
       typename context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
-      if (c->stop_sublookup_iteration (ret))
-	return ret;
+      जर (c->stop_sublookup_iteration (ret))
+	परत ret;
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
-    return c->default_return_value ();
+    परत c->default_return_मूल्य ();
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int version) const
+  तार्किक sanitize (hb_sanitize_context_t *c, अचिन्हित पूर्णांक version) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (हे);
+    जर (!(length.sanitize (c) &&
 	  hb_barrier () &&
 	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  c->check_range (हे, length)))
+      return_trace (असत्य);
 
-    if (!c->check_array (featureZ.arrayZ, featureCount))
-      return_trace (false);
+    जर (!c->check_array (featureZ.arrayZ, feature_मोजणी))
+      return_trace (असत्य);
 
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_मोजणी));
+    अचिन्हित पूर्णांक मोजणी = subtable_मोजणी_2;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
-      if (!subtable->sanitize (c))
-	return_trace (false);
+      जर (!subtable->sanitize (c))
+	return_trace (असत्य);
       hb_barrier ();
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
 
-    if (version >= 3)
+    जर (version >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) subtable;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      स्थिरांक SubtableGlyphCoverage *coverage = (स्थिरांक SubtableGlyphCoverage *) subtable;
+      जर (!coverage->sanitize (c, मोजणी))
+        return_trace (असत्य);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  protected:
+  संरक्षित:
   HBUINT32	defaultFlags;	/* The default specification for subtables. */
   HBUINT32	length;		/* Total byte count, including this header. */
-  HBUINT	featureCount;	/* Number of feature subtable entries. */
-  HBUINT	subtableCount;	/* The number of subtables in the chain. */
+  HBUINT	feature_मोजणी;	/* Number of feature subtable entries. */
+  HBUINT	subtable_मोजणी_2;	/* The number of subtables in the chain. */
 
   UnsizedArrayOf<Feature>	featureZ;	/* Features. */
 /*ChainSubtable	firstSubtable;*//* Subtables. */
 /*SubtableGlyphCoverage coverages*//* Only if version >= 3. */
 
-  public:
-  DEFINE_SIZE_MIN (8 + 2 * sizeof (HBUINT));
+  सार्वजनिक:
+  DEFINE_SIZE_MIN (8 + 2 * आकार (HBUINT));
 };
 
 
@@ -1326,88 +1326,88 @@ struct Chain
  * The 'mort'/'morx' Table
  */
 
-template <typename T, typename Types, hb_tag_t TAG>
-struct mortmorx
+ढाँचा <typename T, typename Types, hb_tag_t TAG>
+संरचना mortmorx
 {
-  static constexpr hb_tag_t tableTag = TAG;
+  स्थिर constexpr hb_tag_t tableTag = TAG;
 
-  bool has_data () const { return version != 0; }
+  तार्किक has_data () स्थिरांक { परत version != 0; }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
+      हे->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      जर (unlikely (हे->table->is_blocklisted (हे->table.get_blob (), face)))
       {
-        hb_blob_destroy (this->table.get_blob ());
-        this->table = hb_blob_get_empty ();
+        hb_blob_destroy (हे->table.get_blob ());
+        हे->table = hb_blob_get_empty ();
       }
 
-      this->chain_count = table->get_chain_count ();
+      हे->chain_मोजणी = table->get_chain_मोजणी ();
 
-      this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      हे->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (हे->chain_मोजणी, आकार (*accels));
+      जर (unlikely (!हे->accels))
       {
-	this->chain_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	हे->chain_मोजणी = 0;
+	हे->table.destroy ();
+	हे->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->chain_count; i++)
+      साठी (अचिन्हित पूर्णांक i = 0; i < हे->chain_मोजणी; i++)
       {
-	if (this->accels[i])
-	  this->accels[i]->destroy ();
-	hb_free (this->accels[i]);
+	जर (हे->accels[i])
+	  हे->accels[i]->destroy ();
+	hb_free (हे->accels[i]);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (हे->accels);
+      हे->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () स्थिरांक { परत table.get_blob (); }
 
-    template <typename Chain>
-    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned num_glyphs) const
+    ढाँचा <typename Chain>
+    hb_aat_layout_chain_accelerator_t *get_accel (अचिन्हित chain_index, स्थिरांक Chain &chain, अचिन्हित अंक_glyphs) स्थिरांक
     {
-      if (unlikely (chain_index >= chain_count)) return nullptr;
+      जर (unlikely (chain_index >= chain_मोजणी)) परत nullptr;
 
     retry:
-      auto *accel = accels[chain_index].get_acquire ();
-      if (unlikely (!accel))
+      स्वतः *accel = accels[chain_index].get_acquire ();
+      जर (unlikely (!accel))
       {
-	accel = hb_aat_layout_chain_accelerator_t::create (chain, num_glyphs);
-	if (unlikely (!accel))
-	  return nullptr;
+	accel = hb_aat_layout_chain_accelerator_t::create (chain, अंक_glyphs);
+	जर (unlikely (!accel))
+	  परत nullptr;
 
-	if (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
+	जर (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
 	{
 	  hb_free (accel);
-	  goto retry;
+	  जा retry;
 	}
       }
 
-      return accel;
+      परत accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int chain_count;
+    अचिन्हित पूर्णांक chain_मोजणी;
     hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *accels;
     hb_aat_scratch_t scratch;
   };
 
 
-  void compile_flags (const hb_aat_map_builder_t *mapper,
-		      hb_aat_map_t *map) const
+  शून्य compile_flags (स्थिरांक hb_aat_map_builder_t *mapper,
+		      hb_aat_map_t *map) स्थिरांक
   {
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    if (unlikely (!map->chain_flags.resize (count)))
-      return;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक Chain<Types> *chain = &firstChain;
+    अचिन्हित पूर्णांक मोजणी = chain_मोजणी_2;
+    जर (unlikely (!map->chain_flags.resize (मोजणी)))
+      परत;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
       map->chain_flags[i].push (hb_aat_map_t::range_flags_t {chain->compile_flags (mapper),
 							     mapper->range_first,
@@ -1416,83 +1416,83 @@ struct mortmorx
     }
   }
 
-  unsigned get_chain_count () const
+  अचिन्हित get_chain_मोजणी () स्थिरांक
   {
-    return chainCount;
+    परत chain_मोजणी_2;
   }
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_map_t &map,
-	      const accelerator_t &accel) const
+  शून्य apply (hb_aat_apply_context_t *c,
+	      स्थिरांक hb_aat_map_t &map,
+	      स्थिरांक accelerator_t &accel) स्थिरांक
   {
-    if (unlikely (!c->buffer->successful)) return;
+    जर (unlikely (!c->buffer->successful)) परत;
 
     c->buffer->unsafe_to_concat ();
 
     c->setup_buffer_glyph_set ();
 
     c->set_lookup_index (0);
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक Chain<Types> *chain = &firstChain;
+    अचिन्हित पूर्णांक मोजणी = chain_मोजणी_2;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
-      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_num_glyphs ());
+      स्वतः *chain_accel = accel.get_accel (i, *chain, c->face->get_अंक_glyphs ());
       c->range_flags = &map.chain_flags[i];
       chain->apply (c, chain_accel);
-      if (unlikely (!c->buffer->successful)) return;
+      जर (unlikely (!c->buffer->successful)) परत;
       chain = &StructAfter<Chain<Types>> (*chain);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (हे);
+    जर (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  version &&
-	  chainCount.sanitize (c)))
-      return_trace (false);
+	  chain_मोजणी_2.sanitize (c)))
+      return_trace (असत्य);
 
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    स्थिरांक Chain<Types> *chain = &firstChain;
+    अचिन्हित पूर्णांक मोजणी = chain_मोजणी_2;
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
-      if (!chain->sanitize (c, version))
-	return_trace (false);
+      जर (!chain->sanitize (c, version))
+	return_trace (असत्य);
       hb_barrier ();
       chain = &StructAfter<Chain<Types>> (*chain);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  protected:
+  संरक्षित:
   HBUINT16	version;	/* Version number of the glyph metamorphosis table.
 				 * 1, 2, or 3. */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	chainCount;	/* Number of metamorphosis chains contained in this
+  HBUINT32	chain_मोजणी_2;	/* Number of metamorphosis chains contained in this
 				 * table. */
   Chain<Types>	firstChain;	/* Chains. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (8);
 };
 
-struct morx : mortmorx<morx, ExtendedTypes, HB_AAT_TAG_morx>
+संरचना morx : mortmorx<morx, ExtendedTypes, HB_AAT_TAG_morx>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL तार्किक is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) स्थिरांक;
 };
 
-struct mort : mortmorx<mort, ObsoleteTypes, HB_AAT_TAG_mort>
+संरचना mort : mortmorx<mort, ObsoleteTypes, HB_AAT_TAG_mort>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_INTERNAL तार्किक is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) स्थिरांक;
 };
 
-struct morx_accelerator_t : morx::accelerator_t {
+संरचना morx_accelerator_t : morx::accelerator_t {
   morx_accelerator_t (hb_face_t *face) : morx::accelerator_t (face) {}
 };
-struct mort_accelerator_t : mort::accelerator_t {
+संरचना mort_accelerator_t : mort::accelerator_t {
   mort_accelerator_t (hb_face_t *face) : mort::accelerator_t (face) {}
 };
 

@@ -27,26 +27,26 @@
 #ifndef HB_OT_SHAPE_FALLBACK_HH
 #define HB_OT_SHAPE_FALLBACK_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-ot-shape.hh"
+#अन्तर्भाव "hb-ot-shape.hh"
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL शून्य _hb_ot_shape_fallback_mark_position (स्थिरांक hb_ot_shape_plan_t *plan,
 						      hb_font_t *font,
 						      hb_buffer_t  *buffer,
-						      bool adjust_offsets_when_zeroing);
+						      तार्किक adjust_offsets_when_zeroing);
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL शून्य _hb_ot_shape_fallback_mark_position_recategorize_marks (स्थिरांक hb_ot_shape_plan_t *plan,
 									 hb_font_t *font,
 									 hb_buffer_t  *buffer);
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL शून्य _hb_ot_shape_fallback_kern (स्थिरांक hb_ot_shape_plan_t *plan,
 					     hb_font_t *font,
 					     hb_buffer_t  *buffer);
 
-HB_INTERNAL void _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL शून्य _hb_ot_shape_fallback_spaces (स्थिरांक hb_ot_shape_plan_t *plan,
 					       hb_font_t *font,
 					       hb_buffer_t  *buffer);
 

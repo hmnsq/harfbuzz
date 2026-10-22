@@ -24,34 +24,34 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#जर !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_SHAPE_H
 #define HB_OT_SHAPE_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
 			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    स्थिरांक hb_feature_t *features,
+			    अचिन्हित पूर्णांक        अंक_features,
 			    hb_set_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 				  hb_tag_t         table_tag,
 				  hb_set_t        *lookup_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   अचिन्हित पूर्णांक     start_offset,
+				   अचिन्हित पूर्णांक    *tag_मोजणी, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */);
 
 /**
@@ -66,8 +66,8 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  */
 #define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN अचिन्हित पूर्णांक
+hb_ot_shape_get_buffer_format_serial (शून्य);
 
 HB_END_DECLS
 

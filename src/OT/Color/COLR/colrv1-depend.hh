@@ -26,104 +26,104 @@
 #ifndef OT_COLOR_COLR_COLRV1_DEPEND_HH
 #define OT_COLOR_COLR_COLRV1_DEPEND_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#अन्तर्भाव "../../../hb-open-type.hh"
+#अन्तर्भाव "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+नामाकाश OT {
 
 
-HB_INTERNAL void PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintColrLayers::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  स्थिरांक LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  साठी (अचिन्हित i = firstLayerIndex; i < firstLayerIndex + अंक_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    स्थिरांक Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::dependv1 (hb_colrv1_depend_context_t* c) const
+ढाँचा <typename Types>
+HB_INTERNAL शून्य PaintGlyph<Types>::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
   // PaintGlyph (Format 10) references glyph outlines (from glyf/CFF), not paint graphs.
   // Self-reference is valid per OpenType spec: a base glyph can reference its own
   // outline as geometry to fill. This is not a dependency in the traditional sense
   // since the outline is part of the same glyph data, so we skip it.
-  if (gid != c->source_gid)
+  जर (gid != c->source_gid)
     c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
-  (this+paint).dispatch (c);
+  (हे+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintColrGlyph::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
+  स्थिरांक COLR *colr_table = c->get_colr_table ();
+  स्थिरांक BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
+  जर (!baseglyph_paintrecord) परत;
   c->depend_data->add_depend(c->source_gid, HB_OT_TAG_COLR, gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  स्थिरांक BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::dependv1 (hb_colrv1_depend_context_t* c) const
+ढाँचा <ढाँचा<typename> वर्ग Var>
+HB_INTERNAL शून्य PaintTransform<Var>::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintTranslate::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintTranslate::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScale::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintScale::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintScaleAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleUniform::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintScaleUniform::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintScaleUniformAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintRotate::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintRotate::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintRotateAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintSkew::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintSkew::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintSkewAroundCenter::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
+  (हे+src).dispatch (c);
 }
 
-HB_INTERNAL void PaintComposite::dependv1 (hb_colrv1_depend_context_t* c) const
+HB_INTERNAL शून्य PaintComposite::dependv1 (hb_colrv1_depend_context_t* c) स्थिरांक
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (हे+src).dispatch (c);
+  (हे+backdrop).dispatch (c);
 }
 
 

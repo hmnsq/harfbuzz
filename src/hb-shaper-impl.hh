@@ -27,12 +27,12 @@
 #ifndef HB_SHAPER_IMPL_HH
 #define HB_SHAPER_IMPL_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
+#अन्तर्भाव "hb-shaper.hh"
+#अन्तर्भाव "hb-face.hh"
+#अन्तर्भाव "hb-font.hh"
+#अन्तर्भाव "hb-shape-plan.hh"
+#अन्तर्भाव "hb-buffer.hh"
 
 #endif /* HB_SHAPER_IMPL_HH */

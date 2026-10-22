@@ -26,22 +26,22 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-blob.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-cmap-table.hh"
+#अन्तर्भाव "hb-face.hh"
+#अन्तर्भाव "hb-blob.hh"
+#अन्तर्भाव "hb-open-file.hh"
+#अन्तर्भाव "hb-ot-face.hh"
+#अन्तर्भाव "hb-ot-cmap-table.hh"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#अन्तर्भाव "hb-ft.h"
 #endif
 #ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
+#अन्तर्भाव "hb-coretext.h"
 #endif
 #ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
+#अन्तर्भाव "hb-directwrite.h"
 #endif
 
 
@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_face_count (hb_blob_t *blob)
+अचिन्हित पूर्णांक
+hb_face_मोजणी (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  जर (unlikely (!blob))
+    परत 0;
 
   hb_sanitize_context_t c (blob);
 
-  auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  स्वतः *ot = blob->as<OT::OpenTypeFontFile> ();
+  जर (unlikely (!ot->sanitize (&c)))
+    परत 0;
 
-  return ot->get_face_count ();
+  परत ot->get_face_मोजणी ();
 }
 
 /*
@@ -128,52 +128,52 @@ DEFINE_NULL_INSTANCE (hb_face_t) =
  **/
 hb_face_t *
 hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+			   शून्य                      *user_data,
 			   hb_destroy_func_t          destroy)
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
+  जर (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
+    जर (destroy)
       destroy (user_data);
-    return hb_face_get_empty ();
+    परत hb_face_get_empty ();
   }
 
   face->reference_table_func = reference_table_func;
   face->user_data = user_data;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->अंक_glyphs = -1;
 
   face->data.init0 (face);
   face->table.init0 (face);
 
-  return face;
+  परत face;
 }
 
 
-typedef struct hb_face_for_data_closure_t {
+प्रकारव्याख्या संरचना hb_face_for_data_closure_t {
   hb_blob_t *blob;
   uint16_t  index;
 } hb_face_for_data_closure_t;
 
-static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+स्थिर hb_face_for_data_closure_t *
+_hb_face_for_data_closure_create (hb_blob_t *blob, अचिन्हित पूर्णांक index)
 {
   hb_face_for_data_closure_t *closure;
 
-  closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  closure = (hb_face_for_data_closure_t *) hb_calloc (1, आकार (hb_face_for_data_closure_t));
+  जर (unlikely (!closure))
+    परत nullptr;
 
   closure->blob = blob;
   closure->index = (uint16_t) (index & 0xFFFFu);
 
-  return closure;
+  परत closure;
 }
 
-static void
-_hb_face_for_data_closure_destroy (void *data)
+स्थिर शून्य
+_hb_face_for_data_closure_destroy (शून्य *data)
 {
   hb_face_for_data_closure_t *closure = (hb_face_for_data_closure_t *) data;
 
@@ -181,38 +181,38 @@ _hb_face_for_data_closure_destroy (void *data)
   hb_free (closure);
 }
 
-static hb_blob_t *
-_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+स्थिर hb_blob_t *
+_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, शून्य *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  जर (tag == HB_TAG_NONE)
+    परत hb_blob_reference (data->blob);
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
+  स्थिरांक OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  अचिन्हित पूर्णांक base_offset;
+  स्थिरांक OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
 
-  const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
+  स्थिरांक OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
 
   hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
 
-  return blob;
+  परत blob;
 }
 
-static unsigned
-_hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
+स्थिर अचिन्हित
+_hb_face_for_data_get_table_tags (स्थिरांक hb_face_t *face HB_UNUSED,
+				  अचिन्हित पूर्णांक start_offset,
+				  अचिन्हित पूर्णांक *table_मोजणी_2,
 				  hb_tag_t *table_tags,
-				  void *user_data)
+				  शून्य *user_data)
 {
   hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
+  स्थिरांक OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
+  स्थिरांक OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  परत ot_face.get_table_tags (start_offset, table_मोजणी_2, table_tags);
 }
 
 
@@ -242,21 +242,21 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		अचिन्हित पूर्णांक  index)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
+  जर (unlikely (!blob))
     blob = hb_blob_get_empty ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
   hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
 
-  if (unlikely (!closure))
+  जर (unlikely (!closure))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    परत hb_face_get_empty ();
   }
 
   face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
@@ -269,7 +269,7 @@ hb_face_create (hb_blob_t    *blob,
 
   face->index = index;
 
-  return face;
+  परत face;
 }
 
 /**
@@ -287,17 +287,17 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			अचिन्हित पूर्णांक  index)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  अचिन्हित अंक_faces = hb_face_मोजणी (blob);
+  जर (index >= अंक_faces)
+    परत nullptr;
 
   hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  जर (hb_object_is_immutable (face))
+    परत nullptr;
 
-  return face;
+  परत face;
 }
 
 #ifndef HB_NO_OPEN
@@ -315,29 +315,29 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  * Since: 10.1.0
  **/
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+hb_face_create_from_file_or_fail (स्थिरांक अक्षर   *file_name,
+				  अचिन्हित पूर्णांक  index)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  जर (unlikely (!blob))
+    परत nullptr;
 
   hb_face_t *face = hb_face_create_or_fail (blob, index);
   hb_blob_destroy (blob);
 
-  return face;
+  परत face;
 }
 
-static const struct supported_face_loaders_t {
-	char name[16];
-	hb_face_t * (*from_file) (const char *font_file, unsigned face_index);
-	hb_face_t * (*from_blob) (hb_blob_t *blob, unsigned face_index);
+स्थिर स्थिरांक संरचना supported_face_loaders_t {
+	अक्षर name[16];
+	hb_face_t * (*from_file) (स्थिरांक अक्षर *font_file, अचिन्हित face_index);
+	hb_face_t * (*from_blob) (hb_blob_t *blob, अचिन्हित face_index);
 } supported_face_loaders[] =
 {
   {"ot",
 #ifndef HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
+#अन्यथा
    nullptr,
 #endif
    hb_face_create_or_fail
@@ -362,19 +362,19 @@ static const struct supported_face_loaders_t {
 #endif
 };
 
-static const char *get_default_loader_name ()
+स्थिर स्थिरांक अक्षर *get_default_loader_name ()
 {
-  static hb_atomic_t<const char *> static_loader_name;
-  const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  स्थिर hb_atomic_t<स्थिरांक अक्षर *> static_loader_name;
+  स्थिरांक अक्षर *loader_name = static_loader_name.get_acquire ();
+  जर (!loader_name)
   {
-    loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    loader_name = दो_पर्या ("HB_FACE_LOADER");
+    जर (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    जर (!static_loader_name.cmpexch (nullptr, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  परत loader_name;
 }
 
 /**
@@ -397,34 +397,34 @@ static const char *get_default_loader_name ()
  * Since: 11.0.0
  **/
 hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name)
+hb_face_create_from_file_or_fail_using (स्थिरांक अक्षर   *file_name,
+					अचिन्हित पूर्णांक  index,
+					स्थिरांक अक्षर   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  तार्किक retry = असत्य;
+  जर (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = सत्य;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  जर (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  साठी (अचिन्हित i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    जर (!loader_name || (supported_face_loaders[i].from_file && !म_भेद (supported_face_loaders[i].name, loader_name)))
+      परत supported_face_loaders[i].from_file (file_name, index);
   }
 
-  if (retry)
+  जर (retry)
   {
-    retry = false;
+    retry = असत्य;
     loader_name = nullptr;
-    goto retry;
+    जा retry;
   }
 
-  return nullptr;
+  परत nullptr;
 }
 
 /**
@@ -448,65 +448,65 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name)
+			      अचिन्हित पूर्णांक  index,
+			      स्थिरांक अक्षर   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  तार्किक retry = असत्य;
+  जर (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = सत्य;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  जर (loader_name && !*loader_name) loader_name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  साठी (अचिन्हित i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    जर (!loader_name || (supported_face_loaders[i].from_blob && !म_भेद (supported_face_loaders[i].name, loader_name)))
+      परत supported_face_loaders[i].from_blob (blob, index);
   }
 
-  if (retry)
+  जर (retry)
   {
-    retry = false;
+    retry = असत्य;
     loader_name = nullptr;
-    goto retry;
+    जा retry;
   }
 
-  return nullptr;
+  परत nullptr;
 }
 
-static inline void free_static_face_loader_list ();
+स्थिर ओळीत शून्य free_static_face_loader_list ();
 
-static const char * const nil_face_loader_list[] = {nullptr};
+स्थिर स्थिरांक अक्षर * स्थिरांक nil_face_loader_list[] = {nullptr};
 
-static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+स्थिर संरचना hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<स्थिरांक अक्षर *,
 								  hb_face_loader_list_lazy_loader_t>
 {
-  static const char ** create ()
+  स्थिर स्थिरांक अक्षर ** create ()
   {
-    const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    स्थिरांक अक्षर **face_loader_list = (स्थिरांक अक्षर **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), आकार (स्थिरांक अक्षर *));
+    जर (unlikely (!face_loader_list))
+      परत nullptr;
 
-    unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    अचिन्हित i;
+    साठी (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
     face_loader_list[i] = nullptr;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    परत face_loader_list;
   }
-  static void destroy (const char **l)
+  स्थिर शून्य destroy (स्थिरांक अक्षर **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  स्थिर स्थिरांक अक्षर * स्थिरांक * get_null ()
+  { परत nil_face_loader_list; }
 } static_face_loader_list;
 
-static inline
-void free_static_face_loader_list ()
+स्थिर ओळीत
+शून्य free_static_face_loader_list ()
 {
   static_face_loader_list.free_instance ();
 }
@@ -523,10 +523,10 @@ void free_static_face_loader_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+स्थिरांक अक्षर **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  परत static_face_loader_list.get_unconst ();
 }
 #endif
 
@@ -543,7 +543,7 @@ hb_face_list_loaders ()
 hb_face_t *
 hb_face_get_empty ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  परत const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  परत hb_object_reference (face);
 }
 
 /**
@@ -573,15 +573,15 @@ hb_face_reference (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+शून्य
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  जर (!hb_object_destroy (face)) परत;
 
 #ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+  साठी (hb_face_t::plan_गाठ_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_गाठ_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
@@ -591,10 +591,10 @@ hb_face_destroy (hb_face_t *face)
   face->data.fini ();
   face->table.fini ();
 
-  if (face->get_table_tags_destroy)
+  जर (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
-  if (face->destroy)
+  जर (face->destroy)
     face->destroy (face->user_data);
 
   hb_free (face);
@@ -616,12 +616,12 @@ hb_face_destroy (hb_face_t *face)
  **/
 hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_किल्ली_t *key,
+		       शून्य *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  परत hb_object_set_user_data (face, key, data, destroy, replace);
 }
 
 /**
@@ -636,11 +636,11 @@ hb_face_set_user_data (hb_face_t          *face,
  *
  * Since: 0.9.2
  **/
-void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+शून्य *
+hb_face_get_user_data (स्थिरांक hb_face_t    *face,
+		       hb_user_data_किल्ली_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  परत hb_object_get_user_data (face, key);
 }
 
 /**
@@ -651,11 +651,11 @@ hb_face_get_user_data (const hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-void
+शून्य
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  जर (hb_object_is_immutable (face))
+    परत;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  परत hb_object_is_immutable (face);
 }
 
 
@@ -691,13 +691,13 @@ hb_face_is_immutable (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
+hb_face_reference_table (स्थिरांक hb_face_t *face,
 			 hb_tag_t tag)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  जर (unlikely (tag == HB_TAG_NONE))
+    परत hb_blob_get_empty ();
 
-  return face->reference_table (tag);
+  परत face->reference_table (tag);
 }
 
 /**
@@ -718,27 +718,27 @@ hb_face_reference_blob (hb_face_t *face)
 {
   hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  जर (blob == hb_blob_get_empty ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    अचिन्हित total_मोजणी = hb_face_get_table_tags (face, 0, nullptr, nullptr);
+    जर (total_मोजणी)
     {
       hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      अचिन्हित मोजणी = ARRAY_LENGTH (tags);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      साठी (अचिन्हित offset = 0; offset < total_मोजणी; offset += मोजणी)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
-	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        hb_face_get_table_tags (face, offset, &मोजणी, tags);
+	जर (unlikely (!मोजणी))
+	  थांबा; // Allocation error
+        साठी (अचिन्हित i = 0; i < मोजणी; i++)
         {
-	  if (unlikely (!tags[i]))
-	    continue;
+	  जर (unlikely (!tags[i]))
+	    सुरूठेवा;
 	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
 	  hb_face_builder_add_table (builder, tags[i], table);
 	  hb_blob_destroy (table);
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  परत blob;
 }
 
 /**
@@ -766,12 +766,12 @@ hb_face_reference_blob (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+शून्य
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+		   अचिन्हित पूर्णांक  index)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  जर (hb_object_is_immutable (face))
+    परत;
 
   face->index = index;
 }
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_index (const hb_face_t *face)
+अचिन्हित पूर्णांक
+hb_face_get_index (स्थिरांक hb_face_t *face)
 {
-  return face->index;
+  परत face->index;
 }
 
 /**
@@ -805,12 +805,12 @@ hb_face_get_index (const hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+शून्य
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+		  अचिन्हित पूर्णांक  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  जर (hb_object_is_immutable (face))
+    परत;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_upem (const hb_face_t *face)
+अचिन्हित पूर्णांक
+hb_face_get_upem (स्थिरांक hb_face_t *face)
 {
-  return face->get_upem ();
+  परत face->get_upem ();
 }
 
 /**
@@ -845,14 +845,14 @@ hb_face_get_upem (const hb_face_t *face)
  *
  * Since: 0.9.7
  **/
-void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+शून्य
+hb_face_set_glyph_मोजणी (hb_face_t    *face,
+			 अचिन्हित पूर्णांक  glyph_मोजणी)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  जर (hb_object_is_immutable (face))
+    परत;
 
-  face->num_glyphs = glyph_count;
+  face->अंक_glyphs = glyph_मोजणी;
 }
 
 /**
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+अचिन्हित पूर्णांक
+hb_face_get_glyph_मोजणी (स्थिरांक hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  परत face->get_अंक_glyphs ();
 }
 
 /**
@@ -882,20 +882,20 @@ hb_face_get_glyph_count (const hb_face_t *face)
  *
  * Since: 10.0.0
  */
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_face_set_get_table_tags_func (hb_face_t *face,
 				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+				 शून्य                    *user_data,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  जर (hb_object_is_immutable (face))
   {
-    if (destroy)
+    जर (destroy)
       destroy (user_data);
-    return;
+    परत;
   }
 
-  if (face->get_table_tags_destroy)
+  जर (face->get_table_tags_destroy)
     face->get_table_tags_destroy (face->get_table_tags_user_data);
 
   face->get_table_tags_func = func;
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+अचिन्हित पूर्णांक
+hb_face_get_table_tags (स्थिरांक hb_face_t *face,
+			अचिन्हित पूर्णांक  start_offset,
+			अचिन्हित पूर्णांक *table_मोजणी_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */)
 {
-  if (!face->get_table_tags_func)
+  जर (!face->get_table_tags_func)
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    जर (table_मोजणी_2)
+      *table_मोजणी_2 = 0;
+    परत 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  परत face->get_table_tags_func (face, start_offset, table_मोजणी_2, table_tags, face->get_table_tags_user_data);
 }
 
 
@@ -951,11 +951,11 @@ hb_face_get_table_tags (const hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+शून्य
 hb_face_collect_unicodes (hb_face_t *face,
 			  hb_set_t  *out)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->table.cmap->collect_unicodes (out, face->get_अंक_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -968,15 +968,15 @@ hb_face_collect_unicodes (hb_face_t *face,
  *
  * Since: 7.0.0
  */
-void
+शून्य
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
 				       hb_set_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
-  if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+  hb_set_t चळत_unicodes;
+  जर (!unicodes)
+    unicodes = &चळत_unicodes;
+  face->table.cmap->collect_mapping (unicodes, mapping, face->get_अंक_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:
@@ -988,7 +988,7 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+शून्य
 hb_face_collect_variation_selectors (hb_face_t *face,
 				     hb_set_t  *out)
 {
@@ -1005,7 +1005,7 @@ hb_face_collect_variation_selectors (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+शून्य
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
 				    hb_set_t  *out)

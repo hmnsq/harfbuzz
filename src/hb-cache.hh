@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+ढाँचा <अचिन्हित पूर्णांक किल्ली_bits=16,
+	 अचिन्हित पूर्णांक मूल्य_bits=8 + 32 - किल्ली_bits,
+	 अचिन्हित पूर्णांक cache_bits=8,
+	 तार्किक thread_safe=सत्य>
+संरचना hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       unsigned short,
-											       unsigned int>::type>::type
+					   typename std::conditional<किल्ली_bits + मूल्य_bits - cache_bits <= 8,
+								     hb_atomic_t<अचिन्हित अक्षर>,
+								     typename std::conditional<किल्ली_bits + मूल्य_bits - cache_bits <= 16,
+											       hb_atomic_t<अचिन्हित लघु>,
+											       hb_atomic_t<अचिन्हित पूर्णांक>>::type>::type,
+					   typename std::conditional<किल्ली_bits + मूल्य_bits - cache_bits <= 8,
+								     अचिन्हित अक्षर,
+								     typename std::conditional<किल्ली_bits + मूल्य_bits - cache_bits <= 16,
+											       अचिन्हित लघु,
+											       अचिन्हित पूर्णांक>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((किल्ली_bits >= cache_bits), "");
+  static_assert ((किल्ली_bits + मूल्य_bits <= cache_bits + 8 * आकार (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  स्थिर constexpr अचिन्हित MAX_मूल्य = (1u << मूल्य_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  शून्य clear ()
   {
-    for (auto &v : values)
+    साठी (स्वतः &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  तार्किक get (अचिन्हित पूर्णांक key, अचिन्हित पूर्णांक *value) स्थिरांक
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    अचिन्हित पूर्णांक k = key & ((1u<<cache_bits)-1);
+    अचिन्हित पूर्णांक v = values[k];
+    constexpr अचिन्हित पूर्णांक empty = (1ULL << (8 * आकार (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    जर ((key >> किल्ली_bits) |
+	((v >> मूल्य_bits) ^ (key >> cache_bits)) |
+	((किल्ली_bits + मूल्य_bits - cache_bits == 8 * आकार (item_t)) && (v == empty)))
+      परत असत्य;
+    *value = v & ((1u<<मूल्य_bits)-1);
+    परत सत्य;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  शून्य set (अचिन्हित पूर्णांक key, अचिन्हित पूर्णांक value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    जर (unlikely ((key >> किल्ली_bits) || (value >> मूल्य_bits)))
+      परत; /* Overflows */
+    अचिन्हित पूर्णांक k = key & ((1u<<cache_bits)-1);
+    अचिन्हित पूर्णांक v = ((key>>cache_bits)<<मूल्य_bits) | value;
     values[k] = v;
   }
 
-  private:
+  खाजगी:
   item_t values[1u<<cache_bits];
 };
 

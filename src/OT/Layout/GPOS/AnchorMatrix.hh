@@ -1,158 +1,158 @@
 #ifndef OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 #define OT_LAYOUT_GPOS_ANCHORMATRIX_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_anchor_indexes (unsigned rows,
-                                     unsigned class_count,
-                                     const hb_map_t &klass_mapping,
-                                     hb_sorted_vector_t<unsigned> &indexes)
+HB_INTERNAL ओळीत
+शून्य collect_ligature_anchor_indexes (अचिन्हित rows,
+                                     अचिन्हित class_मोजणी,
+                                     स्थिरांक hb_map_t &klass_mapping,
+                                     hb_sorted_vector_t<अचिन्हित> &indexes)
 {
-  for (unsigned row = 0; row < rows; row++)
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+  साठी (अचिन्हित row = 0; row < rows; row++)
+    साठी (अचिन्हित col = 0; col < class_मोजणी; col++)
+      जर (klass_mapping.has (col))
+        indexes.push (row * class_मोजणी + col);
 }
 
-HB_INTERNAL inline
-void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
-                                      const void *base,
+HB_INTERNAL ओळीत
+शून्य collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
+                                      स्थिरांक शून्य *base,
                                       glyph_data_t offsets,
-                                      hb_array_t<const unsigned> indexes)
+                                      hb_array_t<स्थिरांक अचिन्हित> indexes)
 {
-  for (unsigned i : indexes)
+  साठी (अचिन्हित i : indexes)
   {
-    unsigned offset = offsets[i];
-    if (offset)
-      StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
+    अचिन्हित offset = offsets[i];
+    जर (offset)
+      StructAtOffset<स्थिरांक Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
-void collect_anchor_indexes (const Coverage &coverage,
-                             unsigned rows,
-                             unsigned class_count,
-                             const hb_set_t &glyphset,
-                             const hb_map_t &klass_mapping,
-                             hb_sorted_vector_t<unsigned> &indexes)
+HB_INTERNAL ओळीत
+शून्य collect_anchor_indexes (स्थिरांक Coverage &coverage,
+                             अचिन्हित rows,
+                             अचिन्हित class_मोजणी,
+                             स्थिरांक hb_set_t &glyphset,
+                             स्थिरांक hb_map_t &klass_mapping,
+                             hb_sorted_vector_t<अचिन्हित> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
-      for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
-          indexes.push (_.second * class_count + col);
+  साठी (स्थिरांक स्वतः _ : hb_zip (coverage, hb_range (rows)))
+    जर (glyphset.has (_.first))
+      साठी (अचिन्हित col = 0; col < class_मोजणी; col++)
+        जर (klass_mapping.has (col))
+          indexes.push (_.second * class_मोजणी + col);
 }
 
-HB_INTERNAL inline
-void collect_subset_anchor_indexes (const Coverage &coverage,
-                                    unsigned rows,
-                                    unsigned class_count,
+HB_INTERNAL ओळीत
+शून्य collect_subset_anchor_indexes (स्थिरांक Coverage &coverage,
+                                    अचिन्हित rows,
+                                    अचिन्हित class_मोजणी,
                                     glyph_data_t offsets,
-                                    const hb_set_t &glyphset,
-                                    const hb_map_t &glyph_map,
-                                    const hb_map_t &klass_mapping,
+                                    स्थिरांक hb_set_t &glyphset,
+                                    स्थिरांक hb_map_t &glyph_map,
+                                    स्थिरांक hb_map_t &klass_mapping,
                                     hb_sorted_vector_t<hb_codepoint_t> &new_coverage,
-                                    hb_sorted_vector_t<unsigned> &indexes)
+                                    hb_sorted_vector_t<अचिन्हित> &indexes)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (rows)))
+  साठी (स्थिरांक स्वतः _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
-    unsigned row = _.second;
-    bool non_empty = false;
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+    जर (!glyphset.has (_.first)) सुरूठेवा;
+    अचिन्हित row = _.second;
+    तार्किक non_empty = असत्य;
+    साठी (अचिन्हित col = 0; col < class_मोजणी; col++)
+      जर (klass_mapping.has (col) && offsets[row * class_मोजणी + col])
       {
-        non_empty = true;
-        break;
+        non_empty = सत्य;
+        थांबा;
       }
-    if (!non_empty) continue;
+    जर (!non_empty) सुरूठेवा;
 
     new_coverage.push (glyph_map.get (_.first));
-    for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
-        indexes.push (row * class_count + col);
+    साठी (अचिन्हित col = 0; col < class_मोजणी; col++)
+      जर (klass_mapping.has (col))
+        indexes.push (row * class_मोजणी + col);
   }
 }
 
-template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+ढाँचा <typename Types, typename Row_मोजणी=typename Types::HBUINT>
+संरचना AnchorMatrix
 {
-  RowCount      rows;                   /* Number of rows */
-  UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
+  Row_मोजणी      rows;                   /* Number of rows */
+  UnsizedArrayOf<typename Types::ढाँचा OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (आकार (Row_मोजणी), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  तार्किक sanitize (hb_sanitize_context_t *c, अचिन्हित पूर्णांक cols) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    TRACE_SANITIZE (हे);
+    जर (!c->check_struct (हे)) return_trace (असत्य);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    जर (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (असत्य);
+    अचिन्हित पूर्णांक मोजणी = rows * cols;
+    जर (!c->check_array (matrixZ.arrayZ, मोजणी)) return_trace (असत्य);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    जर (c->lazy_some_gpos)
+      return_trace (सत्य);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
+      जर (!matrixZ[i].sanitize (c, हे)) return_trace (असत्य);
+    return_trace (सत्य);
   }
 
-  const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+  स्थिरांक Anchor& get_anchor (hb_ot_apply_context_t *c,
+			    अचिन्हित पूर्णांक row, अचिन्हित पूर्णांक col,
+			    अचिन्हित पूर्णांक cols, तार्किक *found) स्थिरांक
   {
-    *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
-    auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    *found = असत्य;
+    जर (unlikely (row >= rows || col >= cols)) परत Null (Anchor);
+    स्वतः &offset = matrixZ[row * cols + col];
+    जर (unlikely (!offset.sanitize (&c->sanitizer, हे))) परत Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    परत हे+offset;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  hb_array_t<const unsigned> indexes) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  hb_array_t<स्थिरांक अचिन्हित> indexes) स्थिरांक
   {
-    collect_anchor_variation_indices (c, this, matrixZ.arrayZ, indexes);
+    collect_anchor_variation_indices (c, हे, matrixZ.arrayZ, indexes);
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
-               unsigned             num_rows,
-               Iterator             index_iter) const
+  तार्किक subset (hb_subset_context_t *c,
+               अचिन्हित             अंक_rows,
+               Iterator             index_iter) स्थिरांक
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (हे);
 
-    auto *out = c->serializer->start_embed (this);
+    स्वतः *out = c->serializer->start_embed (हे);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    जर (!index_iter) return_trace (असत्य);
+    जर (unlikely (!c->serializer->extend_min (out)))  return_trace (असत्य);
 
-    out->rows = num_rows;
-    for (const unsigned i : index_iter)
+    out->rows = अंक_rows;
+    साठी (स्थिरांक अचिन्हित i : index_iter)
     {
-      auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
-      offset->serialize_subset (c, matrixZ[i], this);
+      स्वतः *offset = c->serializer->embed (matrixZ[i]);
+      जर (!offset) return_trace (असत्य);
+      offset->serialize_subset (c, matrixZ[i], हे);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
+  तार्किक offset_is_null (अचिन्हित row, अचिन्हित col, अचिन्हित अंक_cols) स्थिरांक
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
-    auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    जर (unlikely (row >= rows || col >= अंक_cols)) परत सत्य;
+    स्वतः &offset = matrixZ[row * अंक_cols + col];
+    परत offset.is_null ();
   }
 };
 

@@ -23,38 +23,38 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-serialize.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gsubgpos.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "OT/Layout/GPOS/ValueFormat.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-serialize.hh"
+#अन्तर्भाव "hb-ot-layout-common.hh"
+#अन्तर्भाव "hb-ot-layout-gsubgpos.hh"
+#अन्तर्भाव "hb-ot-layout-gsub-table.hh"
+#अन्तर्भाव "OT/Layout/GPOS/ValueFormat.hh"
 
 using OT::Layout::Common::Coverage;
 
-static void
+स्थिर शून्य
 test_null_condition ()
 {
-  static const char and_condition[sizeof (OT::Condition)] = {
+  स्थिर स्थिरांक अक्षर and_condition[आकार (OT::Condition)] = {
     0, 3, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char or_condition[sizeof (OT::Condition)] = {
+  स्थिर स्थिरांक अक्षर or_condition[आकार (OT::Condition)] = {
     0, 4, 1,                     /* format, conditionCount */
     0, 0, 0,                     /* conditionOffset */
   };
-  static const char negate_condition[sizeof (OT::Condition)] = {
+  स्थिर स्थिरांक अक्षर negate_condition[आकार (OT::Condition)] = {
     0, 5,                        /* format */
     0, 0, 0,                     /* conditionOffset */
   };
 
-  const auto &condition = Null (OT::Condition);
-  const auto &condition_and =
-      *reinterpret_cast<const OT::Condition *> (and_condition);
-  const auto &condition_or =
-      *reinterpret_cast<const OT::Condition *> (or_condition);
-  const auto &condition_negate =
-      *reinterpret_cast<const OT::Condition *> (negate_condition);
+  स्थिरांक स्वतः &condition = Null (OT::Condition);
+  स्थिरांक स्वतः &condition_and =
+      *reinterpret_cast<स्थिरांक OT::Condition *> (and_condition);
+  स्थिरांक स्वतः &condition_or =
+      *reinterpret_cast<स्थिरांक OT::Condition *> (or_condition);
+  स्थिरांक स्वतः &condition_negate =
+      *reinterpret_cast<स्थिरांक OT::Condition *> (negate_condition);
   OT::ItemVarStoreInstancer *instancer = nullptr;
   hb_set_t var_indices;
 
@@ -69,47 +69,47 @@ test_null_condition ()
   hb_always_assert (condition_negate.collect_var_indices (&var_indices));
   hb_always_assert (var_indices.is_empty ());
 
-  char buf[8];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  अक्षर buf[8];
+  hb_serialize_context_t s (buf, आकार (buf));
   hb_map_t varidx_map;
-  static const unsigned char expected[] = {
+  स्थिर स्थिरांक अचिन्हित अक्षर expected[] = {
     0, 2,                        /* format */
     0, 1,                        /* defaultValue */
     0xFF, 0xFF, 0xFF, 0xFF,     /* varIdx */
   };
 
-  auto *copy = s.start_serialize<OT::Condition> ();
+  स्वतः *copy = s.start_serialize<OT::Condition> ();
   hb_always_assert (copy->serialize (&s, &condition, varidx_map));
   s.end_serialize ();
 
   hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
+  hb_always_assert (bytes.length == आकार (expected));
+  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, आकार (expected)));
   bytes.fini ();
 }
 
-static void
+स्थिर शून्य
 test_lookup_condition_sharing ()
 {
-  const unsigned feature_count = 10922, lookup_count = 402;
-  const unsigned table_offset = 12 + 6 * feature_count;
-  const unsigned condition_offset = table_offset + 20 + 2 * lookup_count;
-  hb_vector_t<char> data;
+  स्थिरांक अचिन्हित feature_मोजणी_2 = 10922, lookup_मोजणी = 402;
+  स्थिरांक अचिन्हित table_offset = 12 + 6 * feature_मोजणी_2;
+  स्थिरांक अचिन्हित condition_offset = table_offset + 20 + 2 * lookup_मोजणी;
+  hb_vector_t<अक्षर> data;
   hb_always_assert (data.resize (condition_offset + 8));
   hb_memset (data.arrayZ, 0, data.length);
-  auto put16 = [&data] (unsigned offset, unsigned value)
+  स्वतः put16 = [&data] (अचिन्हित offset, अचिन्हित value)
   {
     data[offset] = value >> 8;
     data[offset + 1] = value;
   };
-  auto put32 = [&put16] (unsigned offset, unsigned value)
+  स्वतः put32 = [&put16] (अचिन्हित offset, अचिन्हित value)
   {
     put16 (offset, value >> 16);
     put16 (offset + 2, value);
   };
   put32 (0, 0x00010001);
-  put32 (8, feature_count);
-  for (unsigned i = 0; i < feature_count; i++)
+  put32 (8, feature_मोजणी_2);
+  साठी (अचिन्हित i = 0; i < feature_मोजणी_2; i++)
   {
     put16 (12 + 6 * i, i);
     put32 (14 + 6 * i, table_offset);
@@ -118,26 +118,26 @@ test_lookup_condition_sharing ()
   put32 (table_offset + 6, 1); /* LookupConditionRecord count */
   put32 (table_offset + 10, condition_offset - table_offset);
   put32 (table_offset + 14, 18); /* LookupIndexList offset */
-  put16 (table_offset + 18, lookup_count);
-  for (unsigned i = 0; i < lookup_count; i++)
+  put16 (table_offset + 18, lookup_मोजणी);
+  साठी (अचिन्हित i = 0; i < lookup_मोजणी; i++)
     put16 (table_offset + 20 + 2 * i, i);
   put16 (condition_offset, 2); /* Constant true ConditionValue */
   put16 (condition_offset + 2, 1);
   put32 (condition_offset + 4, OT::VarIdx::NO_VARIATION);
 
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data.arrayZ);
-  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<const int> ());
-  hb_vector_t<unsigned> state;
+  स्थिरांक स्वतः &variations = *reinterpret_cast<स्थिरांक OT::FeatureVariations *> (data.arrayZ);
+  OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array_t<स्थिरांक पूर्णांक> ());
+  hb_vector_t<अचिन्हित> state;
   hb_always_assert (variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
   hb_always_assert (state.length == 1 && state[0] == condition_offset);
 
-  for (unsigned feature_index : {0u, feature_count - 1})
+  साठी (अचिन्हित feature_index : {0u, feature_मोजणी_2 - 1})
   {
     hb_set_t lookups;
     hb_always_assert (variations.get_lookup_variations (
         feature_index, Null (OT::Feature), state.as_sorted_array (), &lookups));
-    hb_always_assert (lookups.get_population () == lookup_count);
-    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_count - 1);
+    hb_always_assert (lookups.get_population () == lookup_मोजणी);
+    hb_always_assert (lookups.get_min () == 0 && lookups.get_max () == lookup_मोजणी - 1);
   }
 
   /* Null conditions need no state, even when thousands of records use them. */
@@ -148,17 +148,17 @@ test_lookup_condition_sharing ()
   hb_set_t lookups;
   hb_always_assert (variations.get_lookup_variations (
       0, Null (OT::Feature), state.as_sorted_array (), &lookups));
-  hb_always_assert (lookups.get_population () == lookup_count);
+  hb_always_assert (lookups.get_population () == lookup_मोजणी);
 
   put32 (table_offset + 10, condition_offset - table_offset);
   state.set_error (); /* Simulate failure allocating the condition key. */
   hb_always_assert (!variations.collect_lookup_conditions (nullptr, 0, &instancer, &state));
 }
 
-static void
+स्थिर शून्य
 test_lookup_condition_resolution ()
 {
-  static const char data[] = {
+  स्थिर स्थिरांक अक्षर data[] = {
     0, 1, 0, 1, 0, 0, 0, 0,     /* FeatureVariations 1.1, no 1.0 records */
     0, 0, 0, 2,                 /* LookupVariationRecord count */
     0, 0, 0, 0, 0, 24,          /* Feature 0 */
@@ -174,19 +174,19 @@ test_lookup_condition_resolution ()
     0, 1, 0, 1, 0x20, 0, 0x40, 0, /* Axis 1: [0.5, 1] */
     0, 1, 0, 0, 0x20, 0, 0x40, 0, /* Axis 0: [0.5, 1] */
   };
-  static const char feature_data[] = {0, 0, 0, 2, 0, 0, 0, 6};
-  const auto &variations = *reinterpret_cast<const OT::FeatureVariations *> (data);
-  const auto &feature = *reinterpret_cast<const OT::Feature *> (feature_data);
+  स्थिर स्थिरांक अक्षर feature_data[] = {0, 0, 0, 2, 0, 0, 0, 6};
+  स्थिरांक स्वतः &variations = *reinterpret_cast<स्थिरांक OT::FeatureVariations *> (data);
+  स्थिरांक स्वतः &feature = *reinterpret_cast<स्थिरांक OT::Feature *> (feature_data);
 
-  for (unsigned mask = 0; mask < 4; mask++)
+  साठी (अचिन्हित mask = 0; mask < 4; mask++)
   {
-    int coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
+    पूर्णांक coords[] = {mask & 1 ? 16384 : 0, mask & 2 ? 16384 : 0};
     OT::ItemVarStoreInstancer instancer (nullptr, nullptr, hb_array (coords));
-    hb_vector_t<unsigned> state;
+    hb_vector_t<अचिन्हित> state;
     hb_always_assert (variations.collect_lookup_conditions (coords, 2, &instancer, &state));
-    unsigned condition_count = !!(mask & 1) + !!(mask & 2);
-    hb_always_assert (state.length == condition_count);
-    if (mask == 3)
+    अचिन्हित condition_मोजणी = !!(mask & 1) + !!(mask & 2);
+    hb_always_assert (state.length == condition_मोजणी);
+    जर (mask == 3)
       hb_always_assert (state[0] == 92 && state[1] == 100);
 
     hb_set_t lookups;
@@ -208,10 +208,10 @@ test_lookup_condition_resolution ()
   }
 }
 
-static void
+स्थिर शून्य
 test_feature_substitution_params_sanitize ()
 {
-  static const char data[] = {
+  स्थिर स्थिरांक अक्षर data[] = {
     0, 1, 0, 1,                 /* GSUB 1.1 */
     0, 14, 0, 16, 0, 28,        /* ScriptList, FeatureList, LookupList */
     0, 0, 0, 30,                /* FeatureVariations */
@@ -228,14 +228,14 @@ test_feature_substitution_params_sanitize ()
     0, 0, 0, 0, 0, 1, 0, 0, 0x41, /* No named parameters, one character */
   };
 
-  hb_blob_t *blob = hb_blob_create (data, sizeof (data),
+  hb_blob_t *blob = hb_blob_create (data, आकार (data),
 				    HB_MEMORY_MODE_READONLY, nullptr, nullptr);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
-  hb_always_assert (hb_blob_get_length (blob) == sizeof (data));
+  hb_always_assert (hb_blob_get_length (blob) == आकार (data));
   hb_blob_destroy (blob);
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
-  blob = hb_blob_create (data, sizeof (data) - 1,
+#जर !defined(HB_NO_VAR) && !defined(HB_NO_LAYOUT_FEATURE_PARAMS)
+  blob = hb_blob_create (data, आकार (data) - 1,
 			 HB_MEMORY_MODE_READONLY, nullptr, nullptr);
   blob = hb_sanitize_context_t ().sanitize_blob<OT::Layout::GSUB> (blob);
   hb_always_assert (!hb_blob_get_length (blob));
@@ -243,54 +243,54 @@ test_feature_substitution_params_sanitize ()
 #endif
 }
 
-static void
+स्थिर शून्य
 test_medium_rule ()
 {
-  static const char data[] = {
+  स्थिर स्थिरांक अक्षर data[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     0, 0, 5,                    /* input glyph */
     0, 1, 0, 2,                 /* LookupRecord */
   };
-  static const char expected[] = {
+  स्थिर स्थिरांक अक्षर expected[] = {
     0, 2, 0, 1,                 /* inputCount, lookupCount */
     1, 0, 1,                    /* input glyph */
     0, 1, 0, 3,                 /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::Rule<OT::Layout::MediumTypes> *> (data);
+  स्थिरांक स्वतः &rule = *reinterpret_cast<स्थिरांक OT::Rule<OT::Layout::MediumTypes> *> (data);
 
   hb_map_t glyph_map;
   glyph_map.set (5, 0x10001);
   hb_map_t lookup_map;
   lookup_map.set (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  अक्षर buf[32];
+  hb_serialize_context_t s (buf, आकार (buf));
   s.start_serialize ();
   hb_always_assert (rule.serialize (&s, &glyph_map, &lookup_map));
   s.end_serialize ();
 
   hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
+  hb_always_assert (bytes.length == आकार (expected));
+  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, आकार (expected)));
   bytes.fini ();
 }
 
-static void
+स्थिर शून्य
 test_medium_chain_rule ()
 {
-  static const char data[] = {
+  स्थिर स्थिरांक अक्षर data[] = {
     0, 1, 0, 0, 5,             /* backtrack */
-    0, 2, 0, 0, 6,             /* input */
+    0, 2, 0, 0, 6,             /*आदान*/
     0, 1, 0, 0, 7,             /* lookahead */
     0, 1, 0, 0, 0, 2,          /* LookupRecord */
   };
-  static const char expected[] = {
+  स्थिर स्थिरांक अक्षर expected[] = {
     0, 1, 1, 0, 1,             /* backtrack */
-    0, 2, 1, 0, 2,             /* input */
+    0, 2, 1, 0, 2,             /*आदान*/
     0, 1, 1, 0, 3,             /* lookahead */
     0, 1, 0, 0, 0, 3,          /* LookupRecord */
   };
-  const auto &rule = *reinterpret_cast<const OT::ChainRule<OT::Layout::MediumTypes> *> (data);
+  स्थिरांक स्वतः &rule = *reinterpret_cast<स्थिरांक OT::ChainRule<OT::Layout::MediumTypes> *> (data);
 
   hb_map_t glyph_map;
   glyph_map.set (5, 0x10001);
@@ -299,53 +299,53 @@ test_medium_chain_rule ()
   hb_map_t lookup_map;
   lookup_map.set (2, 3);
 
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  अक्षर buf[32];
+  hb_serialize_context_t s (buf, आकार (buf));
   s.start_serialize ();
   hb_always_assert (rule.serialize (&s, &lookup_map, &glyph_map));
   s.end_serialize ();
 
   hb_bytes_t bytes = s.copy_bytes ();
-  hb_always_assert (bytes.length == sizeof (expected));
-  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, sizeof (expected)));
+  hb_always_assert (bytes.length == आकार (expected));
+  hb_always_assert (!hb_memcmp (bytes.arrayZ, expected, आकार (expected)));
   bytes.fini ();
 }
 
-static void
-test_device_only_value ()
+स्थिर शून्य
+test_device_only_मूल्य ()
 {
-  using namespace OT::Layout::GPOS_impl;
-  static const char data[] = {
+  using नामाकाश OT::Layout::GPOS_impl;
+  स्थिर स्थिरांक अक्षर data[] = {
     0, 2,                      /* Device offset */
-    0, 0, 0, 0, (char) 0x80, 0, /* VariationIndex 0 */
+    0, 0, 0, 0, (अक्षर) 0x80, 0, /* VariationIndex 0 */
   };
-  const auto *base = reinterpret_cast<const ValueBase *> (data);
-  const auto *values = reinterpret_cast<const Value *> (data);
-  for (unsigned device = ValueFormat::xPlaDevice;
-       device <= ValueFormat::yAdvDevice; device <<= 1)
-    for (bool partial : {false, true})
+  स्थिरांक स्वतः *base = reinterpret_cast<स्थिरांक मूल्य_Base *> (data);
+  स्थिरांक स्वतः *values = reinterpret_cast<स्थिरांक मूल्य *> (data);
+  साठी (अचिन्हित device = मूल्य_Format::xPlaDevice;
+       device <= मूल्य_Format::yAdvDevice; device <<= 1)
+    साठी (तार्किक partial : {असत्य, सत्य})
     {
-      ValueFormat format;
+      मूल्य_Format format;
       format = device;
-      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> mapping;
+      hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> mapping;
       mapping.set (0, hb_pair (partial ? 1u : OT::VarIdx::NO_VARIATION, 25));
-      unsigned new_format = format.get_effective_format (values, false, false, base, &mapping);
+      अचिन्हित new_format = format.get_effective_format (values, असत्य, असत्य, base, &mapping);
       hb_always_assert (new_format == (device >> 4 | (partial ? device : 0)));
 
-      char buf[32];
-      hb_serialize_context_t s (buf, sizeof (buf));
+      अक्षर buf[32];
+      hb_serialize_context_t s (buf, आकार (buf));
       s.start_serialize ();
-      format.copy_values (&s, new_format, base, values, &mapping);
+      format.copy_मूल्ये (&s, new_format, base, values, &mapping);
       s.end_serialize ();
       hb_bytes_t bytes = s.copy_bytes ();
       hb_always_assert (!s.in_error ());
       hb_always_assert (bytes.length >= OT::HBINT16::static_size);
-      hb_always_assert (*reinterpret_cast<const OT::HBINT16 *> (bytes.arrayZ) == 25);
+      hb_always_assert (*reinterpret_cast<स्थिरांक OT::HBINT16 *> (bytes.arrayZ) == 25);
       bytes.fini ();
     }
 }
 
-static void
+स्थिर शून्य
 test_failed_class_mapping ()
 {
   hb_set_t klasses;
@@ -353,18 +353,18 @@ test_failed_class_mapping ()
   hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
   glyph_and_klass.push (hb_pair (hb_codepoint_t (42), hb_codepoint_t (1)));
   hb_map_t klass_map;
-  klass_map.successful = false; /* Simulate failure allocating the class map. */
-  char buf[32];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  klass_map.successful = असत्य; /* Simulate failure allocating the class map. */
+  अक्षर buf[32];
+  hb_serialize_context_t s (buf, आकार (buf));
   s.start_serialize<OT::ClassDef> ();
   hb_always_assert (!OT::ClassDef_remap_and_serialize (
-      &s, klasses, true, glyph_and_klass, &klass_map));
+      &s, klasses, सत्य, glyph_and_klass, &klass_map));
   hb_always_assert (s.in_error () && !s.only_overflow ());
   hb_always_assert (glyph_and_klass[0].second == 1);
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+main (पूर्णांक argc, अक्षर **argv)
 {
   test_null_condition ();
   test_lookup_condition_sharing ();
@@ -372,16 +372,16 @@ main (int argc, char **argv)
   test_feature_substitution_params_sanitize ();
   test_medium_rule ();
   test_medium_chain_rule ();
-  test_device_only_value ();
+  test_device_only_मूल्य ();
   test_failed_class_mapping ();
 
-  char buf[16384];
+  अक्षर buf[16384];
 
-  hb_serialize_context_t s (buf, sizeof (buf));
+  hb_serialize_context_t s (buf, आकार (buf));
 
   hb_sorted_vector_t<hb_codepoint_t> v{1, 2, 5};
 
-  auto c = s.start_serialize<Coverage> ();
+  स्वतः c = s.start_serialize<Coverage> ();
 
   c->serialize (&s, hb_iter (v));
 
@@ -391,5 +391,5 @@ main (int argc, char **argv)
   hb_always_assert (bytes.length == 10);
   bytes.fini ();
 
-  return 0;
+  परत 0;
 }

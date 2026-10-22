@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#जर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -42,8 +42,8 @@
  */
 
 /* Dummy lines to make our checks happy.  */
-#if 0
-#include "hb-common.h"
+#जर 0
+#अन्तर्भाव "hb-common.h"
 HB_BEGIN_DECLS
 HB_END_DECLS
 #endif
@@ -240,7 +240,7 @@ HB_END_DECLS
  **/
 
 /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-typedef enum
+प्रकारव्याख्या गणना
 {
   HB_SCRIPT_COMMON			= HB_TAG ('Z','y','y','y'), /*1.1*/
   HB_SCRIPT_INHERITED			= HB_TAG ('Z','i','n','h'), /*1.1*/
@@ -497,8 +497,8 @@ typedef enum
    *
    *   https://lists.freedesktop.org/archives/harfbuzz/2014-March/004150.html
    */
-  _HB_SCRIPT_MAX_VALUE				= HB_TAG_MAX_SIGNED, /*< skip >*/
-  _HB_SCRIPT_MAX_VALUE_SIGNED			= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_SCRIPT_MAX_मूल्य				= HB_TAG_MAX_SIGNED, /*< skip >*/
+  HB_SCRIPT_MAX_मूल्य_SIGNED			= HB_TAG_MAX_SIGNED /*< skip >*/
 
 } hb_script_t;
 

@@ -1,18 +1,18 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOS_HH
 #define OT_LAYOUT_GPOS_PAIRPOS_HH
 
-#include "PairPosFormat1.hh"
-#include "PairPosFormat2.hh"
+#अन्तर्भाव "PairPosFormat1.hh"
+#अन्तर्भाव "PairPosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GPOS_impl {
 
-struct PairPos
+संरचना PairPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;         /* Format identifier */
+  संरक्षित:
+  संघ {
+  संरचना { HBUINT16 v; }	format;         /* Format identifier */
   PairPosFormat1_3<SmallTypes>	format1;
   PairPosFormat2_4<SmallTypes>	format2;
 #ifndef HB_NO_BEYOND_64K
@@ -21,20 +21,20 @@ struct PairPos
 #endif
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  सार्वजनिक:
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिरांक
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    जर (unlikely (!c->may_dispatch (हे, &u.format.v))) परत c->no_dispatch_return_मूल्य ();
+    TRACE_DISPATCH (हे, u.format.v);
+    निवड (u.format.v) {
+    स्थिती 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    स्थिती 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    स्थिती 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    स्थिती 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    पूर्वनिर्धारित:return_trace (c->default_return_मूल्य ());
     }
   }
 };

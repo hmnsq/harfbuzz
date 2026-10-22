@@ -1,21 +1,21 @@
 #ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH
 #define OT_LAYOUT_GPOS_VALUEFORMAT_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#अन्तर्भाव "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GPOS_impl {
 
-typedef HBUINT16 Value;
+प्रकारव्याख्या HBUINT16 मूल्य;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+संरचना मूल्य_Base {}; // Dummy base class tag for OffsetTo<Value> bases.
 
-typedef UnsizedArrayOf<Value> ValueRecord;
+प्रकारव्याख्या UnsizedArrayOf<मूल्य> मूल्य_Record;
 
-struct ValueFormat : HBUINT16
+संरचना मूल्य_Format : HBUINT16
 {
-  enum Flags {
+  गणना Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
     yPlacement  = 0x0002u,      /* Includes vertical adjustment for placement */
     xAdvance    = 0x0004u,      /* Includes horizontal adjustment for advance */
@@ -31,7 +31,7 @@ struct ValueFormat : HBUINT16
   };
 
 /* All fields are options.  Only those available advance the value pointer. */
-#if 0
+#जर 0
   HBINT16               xPlacement;     /* Horizontal adjustment for
                                          * placement--in design units */
   HBINT16               yPlacement;     /* Vertical adjustment for
@@ -56,415 +56,415 @@ struct ValueFormat : HBUINT16
                                          * PosTable (may be NULL) */
 #endif
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  अंक_Type& चालक = (uint16_t i) { v = i; परत *हे; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
   // currently defined are counted. We don't expect any new fields to
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
-  unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  अचिन्हित पूर्णांक get_len () स्थिरांक  { परत hb_popcount8 ((uint8_t) *हे); }
+  माप_प्रकार get_size () स्थिरांक { परत get_len () * मूल्य::static_size; }
 
-  hb_vector_t<unsigned> get_device_table_indices () const {
-    unsigned i = 0;
-    hb_vector_t<unsigned> result;
-    unsigned format = *this;
+  hb_vector_t<अचिन्हित> get_device_table_indices () स्थिरांक {
+    अचिन्हित i = 0;
+    hb_vector_t<अचिन्हित> result;
+    अचिन्हित format = *हे;
 
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance)   i++;
-    if (format & yAdvance)   i++;
+    जर (format & xPlacement) i++;
+    जर (format & yPlacement) i++;
+    जर (format & xAdvance)   i++;
+    जर (format & yAdvance)   i++;
 
-    if (format & xPlaDevice) result.push (i++);
-    if (format & yPlaDevice) result.push (i++);
-    if (format & xAdvDevice) result.push (i++);
-    if (format & yAdvDevice) result.push (i++);
+    जर (format & xPlaDevice) result.push (i++);
+    जर (format & yPlaDevice) result.push (i++);
+    जर (format & xAdvDevice) result.push (i++);
+    जर (format & yAdvDevice) result.push (i++);
 
-    return result;
+    परत result;
   }
 
-  bool apply_value (hb_ot_apply_context_t *c,
-                    const ValueBase       *base,
-                    const Value           *values,
-                    hb_glyph_position_t   &glyph_pos) const
+  तार्किक apply_मूल्य (hb_ot_apply_context_t *c,
+                    स्थिरांक मूल्य_Base       *base,
+                    स्थिरांक मूल्य           *values,
+                    hb_glyph_position_t   &glyph_pos) स्थिरांक
   {
-    bool ret = false;
-    unsigned int format = *this;
-    if (!format) return ret;
+    तार्किक ret = असत्य;
+    अचिन्हित पूर्णांक format = *हे;
+    जर (!format) परत ret;
 
     hb_font_t *font = c->font;
-    bool horizontal =
+    तार्किक horizontal =
 #ifndef HB_NO_VERTICAL
       HB_DIRECTION_IS_HORIZONTAL (c->direction)
-#else
-      true
+#अन्यथा
+      सत्य
 #endif
       ;
 
-    if (format & xPlacement)
+    जर (format & xPlacement)
       glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, font->em_scale_x (get_short (values++, &ret)));
-    if (format & yPlacement)
+    जर (format & yPlacement)
       glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, font->em_scale_y (get_short (values++, &ret)));
-    if (format & xAdvance) {
-      if (likely (horizontal))
+    जर (format & xAdvance) {
+      जर (likely (horizontal))
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
       values++;
     }
     /* y_advance values grow downward but font-space grows upward, hence negation */
-    if (format & yAdvance) {
-      if (unlikely (!horizontal))
+    जर (format & yAdvance) {
+      जर (unlikely (!horizontal))
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, font->em_scale_y (get_short (values, &ret)));
       values++;
     }
 
-    if (!has_device ()) return ret;
+    जर (!has_device ()) परत ret;
 
-    bool use_x_device = font->x_ppem || font->has_nonzero_coords;
-    bool use_y_device = font->y_ppem || font->has_nonzero_coords;
+    तार्किक use_x_device = font->x_ppem || font->has_nonzero_coords;
+    तार्किक use_y_device = font->y_ppem || font->has_nonzero_coords;
 
-    if (!use_x_device && !use_y_device) return ret;
+    जर (!use_x_device && !use_y_device) परत ret;
 
-    const ItemVariationStore &store = c->var_store;
-    auto *cache = c->var_store_cache;
+    स्थिरांक ItemVariationStore &store = c->var_store;
+    स्वतः *cache = c->var_store_cache;
 
     /* pixel -> fractional pixel */
-    if (format & xPlaDevice)
+    जर (format & xPlaDevice)
     {
-      if (use_x_device)
+      जर (use_x_device)
 	glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yPlaDevice)
+    जर (format & yPlaDevice)
     {
-      if (use_y_device)
+      जर (use_y_device)
 	glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    if (format & xAdvDevice)
+    जर (format & xAdvDevice)
     {
-      if (horizontal && use_x_device)
+      जर (horizontal && use_x_device)
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yAdvDevice)
+    जर (format & yAdvDevice)
     {
       /* y_advance values grow downward but font-space grows upward, hence negation */
-      if (!horizontal && use_y_device)
+      जर (!horizontal && use_y_device)
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    return ret;
+    परत ret;
   }
 
-  void position_single (hb_font_t *font,
+  शून्य position_single (hb_font_t *font,
                         hb_blob_t *table_blob,
                         hb_direction_t direction,
-                        const ValueBase *base,
-                        const Value *values,
-                        hb_glyph_position_t &pos) const
+                        स्थिरांक मूल्य_Base *base,
+                        स्थिरांक मूल्य *values,
+                        hb_glyph_position_t &pos) स्थिरांक
   {
     /* This is ugly... */
     hb_buffer_t buffer {};
     buffer.props.direction = direction;
     hb_ot_apply_context_t c (1, font, &buffer, table_blob);
 
-    apply_value (&c, base, values, pos);
+    apply_मूल्य (&c, base, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  अचिन्हित पूर्णांक get_effective_format (स्थिरांक मूल्य *values, तार्किक strip_hints, तार्किक strip_empty, स्थिरांक मूल्य_Base *base,
+                                     स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *varidx_delta_map) स्थिरांक
   {
-    unsigned int format = *this;
-    for (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
-      if (format & flag)
+    अचिन्हित पूर्णांक format = *हे;
+    साठी (अचिन्हित flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
+      जर (format & flag)
       {
-        if (strip_hints && flag >= xPlaDevice)
+        जर (strip_hints && flag >= xPlaDevice)
         {
           format = format & ~flag;
           values++;
-          continue;
+          सुरूठेवा;
         }
-        if (varidx_delta_map && flag >= xPlaDevice)
+        जर (varidx_delta_map && flag >= xPlaDevice)
         {
           update_var_flag (values++, (Flags) flag, &format, base, varidx_delta_map);
-          continue;
+          सुरूठेवा;
         }
         /* do not strip empty when instancing, cause we don't know whether the new
          * default value is 0 or not */
-        if (strip_empty) should_drop (*values, (Flags) flag, &format);
+        जर (strip_empty) should_drop (*values, (Flags) flag, &format);
         values++;
       }
     }
 
-    return format;
+    परत format;
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
-    unsigned int new_format = 0;
+  अचिन्हित पूर्णांक get_effective_format (Iterator it, तार्किक strip_hints, तार्किक strip_empty, स्थिरांक मूल्य_Base *base,
+                                     स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *varidx_delta_map) स्थिरांक {
+    अचिन्हित पूर्णांक new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
+    साठी (स्थिरांक hb_array_t<स्थिरांक मूल्य>& values : it)
       new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
 
-    return new_format;
+    परत new_format;
   }
 
-  void copy_values (hb_serialize_context_t *c,
-                    unsigned int new_format,
-                    const ValueBase *base,
-                    const Value *values,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  शून्य copy_मूल्ये (hb_serialize_context_t *c,
+                    अचिन्हित पूर्णांक new_format,
+                    स्थिरांक मूल्य_Base *base,
+                    स्थिरांक मूल्य *values,
+                    स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map) स्थिरांक
   {
-    unsigned int format = *this;
-    if (!format) return;
+    अचिन्हित पूर्णांक format = *हे;
+    जर (!format) परत;
 
     HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
-    if ((format | new_format) & xPlacement)
-      x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & yPlacement)
-      y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & xAdvance)
-      x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
-    if ((format | new_format) & yAdvance)
-      y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
+    जर ((format | new_format) & xPlacement)
+      x_placement = copy_मूल्य (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (मूल्य));
+    जर ((format | new_format) & yPlacement)
+      y_placement = copy_मूल्य (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (मूल्य));
+    जर ((format | new_format) & xAdvance)
+      x_adv = copy_मूल्य (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (मूल्य));
+    जर ((format | new_format) & yAdvance)
+      y_adv = copy_मूल्य (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (मूल्य));
 
-    if (!has_device ())
-      return;
+    जर (!has_device ())
+      परत;
 
-    if (format & xPlaDevice)
+    जर (format & xPlaDevice)
     {
-      add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_मूल्य (x_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
-    if (format & yPlaDevice)
+    जर (format & yPlaDevice)
     {
-      add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_मूल्य (y_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
-    if (format & xAdvDevice)
+    जर (format & xAdvDevice)
     {
-      add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_मूल्य (x_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
-    if (format & yAdvDevice)
+    जर (format & yAdvDevice)
     {
-      add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_मूल्य (y_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
     }
   }
 
-  HBINT16* copy_value (hb_serialize_context_t *c,
-                       unsigned int new_format,
+  HBINT16* copy_मूल्य (hb_serialize_context_t *c,
+                       अचिन्हित पूर्णांक new_format,
                        Flags flag,
-                       Value value) const
+                       मूल्य value) स्थिरांक
   {
     // Filter by new format.
-    if (!(new_format & flag)) return nullptr;
-    return reinterpret_cast<HBINT16 *> (c->copy (value));
+    जर (!(new_format & flag)) परत nullptr;
+    परत reinterpret_cast<HBINT16 *> (c->copy (value));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueBase *base,
-                                  const hb_array_t<const Value>& values) const
+  शून्य collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  स्थिरांक मूल्य_Base *base,
+                                  स्थिरांक hb_array_t<स्थिरांक मूल्य>& values) स्थिरांक
   {
-    unsigned format = *this;
-    unsigned i = 0;
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance) i++;
-    if (format & yAdvance) i++;
-    if (format & xPlaDevice)
+    अचिन्हित format = *हे;
+    अचिन्हित i = 0;
+    जर (format & xPlacement) i++;
+    जर (format & yPlacement) i++;
+    जर (format & xAdvance) i++;
+    जर (format & yAdvance) i++;
+    जर (format & xPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    जर (format & मूल्य_Format::yPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    जर (format & मूल्य_Format::xAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    जर (format & मूल्य_Format::yAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
   }
 
-  private:
-  bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  खाजगी:
+  तार्किक sanitize_मूल्य_devices (hb_sanitize_context_t *c, स्थिरांक मूल्य_Base *base, स्थिरांक मूल्य *values) स्थिरांक
   {
-    unsigned int format = *this;
+    अचिन्हित पूर्णांक format = *हे;
 
-    if (format & xPlacement) values++;
-    if (format & yPlacement) values++;
-    if (format & xAdvance)   values++;
-    if (format & yAdvance)   values++;
+    जर (format & xPlacement) values++;
+    जर (format & yPlacement) values++;
+    जर (format & xAdvance)   values++;
+    जर (format & yAdvance)   values++;
 
-    if ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
+    जर ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) परत असत्य;
+    जर ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) परत असत्य;
+    जर ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) परत असत्य;
+    जर ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) परत असत्य;
 
-    return true;
+    परत सत्य;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  स्थिर ओळीत Offset16To<Device, मूल्य_Base>& get_device (मूल्य* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    परत *static_cast<Offset16To<Device, मूल्य_Base> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  स्थिर ओळीत स्थिरांक Offset16To<Device, मूल्य_Base>& get_device (स्थिरांक मूल्य* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    परत *static_cast<स्थिरांक Offset16To<Device, मूल्य_Base> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
-					  bool *worked,
-					  const ValueBase *base,
+  स्थिर ओळीत स्थिरांक Device& get_device (स्थिरांक मूल्य* value,
+					  तार्किक *worked,
+					  स्थिरांक मूल्य_Base *base,
 					  hb_sanitize_context_t &c)
   {
-    if (worked) *worked |= bool (*value);
-    auto &offset = *static_cast<const Offset16To<Device> *> (value);
+    जर (worked) *worked |= तार्किक (*value);
+    स्वतः &offset = *static_cast<स्थिरांक Offset16To<Device> *> (value);
 
-    if (unlikely (!offset.sanitize (&c, base)))
-      return Null(Device);
+    जर (unlikely (!offset.sanitize (&c, base)))
+      परत Null(Device);
     hb_barrier ();
 
-    return base + offset;
+    परत base + offset;
   }
 
-  void add_delta_to_value (HBINT16 *value,
-                           const ValueBase *base,
-                           const Value *src_value,
-                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  शून्य add_delta_to_मूल्य (HBINT16 *value,
+                           स्थिरांक मूल्य_Base *base,
+                           स्थिरांक मूल्य *src_मूल्य,
+                           स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map) स्थिरांक
   {
-    if (!value) return;
-    unsigned varidx = (base + get_device (src_value)).get_variation_index ();
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
+    जर (!value) परत;
+    अचिन्हित varidx = (base + get_device (src_मूल्य)).get_variation_index ();
+    hb_pair_t<अचिन्हित, पूर्णांक> *varidx_delta;
+    जर (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) परत;
 
     *value += hb_second (*varidx_delta);
   }
 
-  bool copy_device (hb_serialize_context_t *c,
-                    const ValueBase *base,
-                    const Value *src_value,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                    unsigned int new_format, Flags flag) const
+  तार्किक copy_device (hb_serialize_context_t *c,
+                    स्थिरांक मूल्य_Base *base,
+                    स्थिरांक मूल्य *src_मूल्य,
+                    स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map,
+                    अचिन्हित पूर्णांक new_format, Flags flag) स्थिरांक
   {
     // Filter by new format.
-    if (!(new_format & flag)) return true;
+    जर (!(new_format & flag)) परत सत्य;
 
-    Value       *dst_value = c->copy (*src_value);
+    मूल्य       *dst_मूल्य = c->copy (*src_मूल्य);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    जर (!dst_मूल्य) परत असत्य;
+    जर (*dst_मूल्य == 0) परत सत्य;
 
-    *dst_value = 0;
+    *dst_मूल्य = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    जर ((base + get_device (src_मूल्य)).copy (c, layout_variation_idx_delta_map))
     {
-      c->add_link (*dst_value, c->pop_pack ());
-      return true;
+      c->add_link (*dst_मूल्य, c->काढा_pack ());
+      परत सत्य;
     }
-    else
+    अन्यथा
     {
-      c->pop_discard ();
-      return false;
+      c->काढा_discard ();
+      परत असत्य;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  स्थिर ओळीत स्थिरांक HBINT16& get_short (स्थिरांक मूल्य* value, तार्किक *worked=nullptr)
   {
-    if (worked) *worked |= bool (*value);
-    return *reinterpret_cast<const HBINT16 *> (value);
+    जर (worked) *worked |= तार्किक (*value);
+    परत *reinterpret_cast<स्थिरांक HBINT16 *> (value);
   }
 
-  public:
+  सार्वजनिक:
 
-  bool has_device () const
+  तार्किक has_device () स्थिरांक
   {
-    unsigned int format = *this;
-    return (format & devices) != 0;
+    अचिन्हित पूर्णांक format = *हे;
+    परत (format & devices) != 0;
   }
 
-  bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  तार्किक sanitize_मूल्य (hb_sanitize_context_t *c, स्थिरांक मूल्य_Base *base, स्थिरांक मूल्य *values) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
 
-    if (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
+    जर (unlikely (!c->check_range (values, get_size ()))) return_trace (असत्य);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    जर (c->lazy_some_gpos)
+      return_trace (सत्य);
 
-    return_trace (!has_device () || sanitize_value_devices (c, base, values));
+    return_trace (!has_device () || sanitize_मूल्य_devices (c, base, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  तार्किक sanitize_मूल्ये (hb_sanitize_context_t *c, स्थिरांक मूल्य_Base *base, स्थिरांक मूल्य *values, अचिन्हित पूर्णांक मोजणी) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    unsigned size = get_size ();
+    TRACE_SANITIZE (हे);
+    अचिन्हित size = get_size ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    जर (!c->check_range (values, मोजणी, size)) return_trace (असत्य);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    जर (c->lazy_some_gpos)
+      return_trace (सत्य);
 
     hb_barrier ();
-    return_trace (sanitize_values_stride_unsafe (c, base, values, count, size));
+    return_trace (sanitize_मूल्ये_stride_unsafe (c, base, values, मोजणी, size));
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  तार्किक sanitize_मूल्ये_stride_unsafe (hb_sanitize_context_t *c, स्थिरांक मूल्य_Base *base, स्थिरांक मूल्य *values, अचिन्हित पूर्णांक मोजणी, अचिन्हित पूर्णांक stride) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
 
-    if (!has_device ()) return_trace (true);
+    जर (!has_device ()) return_trace (सत्य);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
-        return_trace (false);
-      values = &StructAtOffset<const Value> (values, stride);
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++) {
+      जर (!sanitize_मूल्य_devices (c, base, values))
+        return_trace (असत्य);
+      values = &StructAtOffset<स्थिरांक मूल्य> (values, stride);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
- private:
+ खाजगी:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  शून्य should_drop (मूल्य value, Flags flag, अचिन्हित पूर्णांक* format) स्थिरांक
   {
-    if (value) return;
+    जर (value) परत;
     *format = *format & ~flag;
   }
 
-  void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
-                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  शून्य update_var_flag (स्थिरांक मूल्य* value, Flags flag,
+                        अचिन्हित पूर्णांक* format, स्थिरांक मूल्य_Base *base,
+                        स्थिरांक hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *varidx_delta_map) स्थिरांक
   {
-    if (*value)
+    जर (*value)
     {
-      unsigned varidx = (base + get_device (value)).get_variation_index ();
-      hb_pair_t<unsigned, int> *varidx_delta;
-      if (varidx_delta_map->has (varidx, &varidx_delta))
+      अचिन्हित varidx = (base + get_device (value)).get_variation_index ();
+      hb_pair_t<अचिन्हित, पूर्णांक> *varidx_delta;
+      जर (varidx_delta_map->has (varidx, &varidx_delta))
       {
         /* A device-only value needs a base field for its instanced delta. */
-        if (varidx_delta->second)
+        जर (varidx_delta->second)
           *format |= flag >> 4;
-        if (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          return;
+        जर (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          परत;
       }
     }
     *format = *format & ~flag;

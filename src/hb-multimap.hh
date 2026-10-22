@@ -25,68 +25,68 @@
 #ifndef HB_MULTIMAP_HH
 #define HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-map.hh"
+#अन्तर्भाव "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+संरचना hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  शून्य add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    जर (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      परत;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    जर (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      परत;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<स्थिरांक hb_codepoint_t> get (hb_codepoint_t k) स्थिरांक
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    स्थिरांक hb_codepoint_t *v;
+    जर (singulars.has (k, &v))
+      परत hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    जर (multiples.has (k, &m))
+      परत m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    परत hb_array_t<स्थिरांक hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  तार्किक in_error () स्थिरांक
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    जर (singulars.in_error () || multiples.in_error ())
+      परत सत्य;
+    साठी (स्थिरांक स्वतः &m : multiples.मूल्ये_ref ())
+      जर (m.in_error ())
+        परत सत्य;
+    परत असत्य;
   }
 
-  void alloc (unsigned size)
+  शून्य alloc (अचिन्हित size)
   {
     singulars.alloc (size);
   }
 
-  protected:
+  संरक्षित:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

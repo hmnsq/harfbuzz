@@ -24,18 +24,18 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#अन्तर्भाव <hb.h>
+#अन्तर्भाव <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव <stdio.h>
 
-int
-main (int argc, char **argv)
+पूर्णांक
+main (पूर्णांक argc, अक्षर **argv)
 {
-  if (argc != 3) {
-    fprintf (stderr, "usage: %s font-file text\n", argv[0]);
-    exit (1);
+  जर (argc != 3) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file text\n", argv[0]);
+    निकास (1);
   }
 
   /* Create the face */
@@ -49,32 +49,32 @@ main (int argc, char **argv)
 
   hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
   hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_shape (font, buffer, रिक्त, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				रिक्त, रिक्त,
 				features,
 				lookup_indexes);
-  printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
+  म_लिखो ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  अचिन्हित मोजणी;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &मोजणी);
+  साठी (अचिन्हित i = 0; i < मोजणी; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    अचिन्हित alt_मोजणी = 0;
+    साठी (hb_codepoint_t lookup_index = HB_SET_मूल्य_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      जर ((alt_मोजणी = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 रिक्त,
+								 रिक्त)))
+        थांबा;
+    म_लिखो ("glyph %u alt count %u\n", info[i].codepoint, alt_मोजणी);
   }
 
   hb_set_destroy (lookup_indexes);
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  परत 0;
 }

@@ -24,41 +24,41 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#अन्तर्भाव "graph.hh"
+#अन्तर्भाव "../hb-ot-layout-gsubgpos.hh"
 
 #ifndef GRAPH_GSUBGPOS_CONTEXT_HH
 #define GRAPH_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+नामाकाश graph {
 
-struct Lookup;
+संरचना Lookup;
 
-struct gsubgpos_graph_context_t
+संरचना gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL स्थिर graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
   graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  अचिन्हित lookup_list_index;
+  hb_hashmap_t<अचिन्हित, graph::Lookup*> lookups;
+  hb_hashmap_t<अचिन्हित, अचिन्हित> subtable_to_extension;
+  hb_hashmap_t<अचिन्हित, hb_vector_t<अचिन्हित>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_result_t<अचिन्हित> create_गाठ (अचिन्हित size);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<शून्य> add_buffer (अक्षर* buffer)
   {
-    return graph.add_buffer (buffer);
+    परत graph.add_buffer (buffer);
   }
 
- private:
+ खाजगी:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL अचिन्हित अंक_non_ext_subtables ();
 };
 
 }

@@ -2,86 +2,86 @@
 #define HB_ZLIB_CC
 #ifdef HB_ZLIB_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-zlib.hh"
+#अन्तर्भाव "hb-zlib.hh"
 
 #ifdef HAVE_ZLIB
-#include <zlib.h>
+#अन्तर्भाव <zlib.h>
 #endif
 
 hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len)
+                         अचिन्हित   max_output_len)
 {
 #ifndef HAVE_ZLIB
-  return nullptr;
-#else
-  unsigned compressed_len = 0;
-  const uint8_t *compressed = (const uint8_t *) hb_blob_get_data (blob, &compressed_len);
-  if (!compressed || !compressed_len)
-    return nullptr;
+  परत nullptr;
+#अन्यथा
+  अचिन्हित compressed_len = 0;
+  स्थिरांक uint8_t *compressed = (स्थिरांक uint8_t *) hb_blob_get_data (blob, &compressed_len);
+  जर (!compressed || !compressed_len)
+    परत nullptr;
 
   z_stream stream = {};
   stream.next_in = (Bytef *) compressed;
   stream.avail_in = compressed_len;
 
-  if (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
-    return nullptr;
+  जर (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
+    परत nullptr;
   HB_SCOPE_GUARD (inflateEnd (&stream));
 
   uint32_t expected_size = 0;
-  hb_gzip_get_uncompressed_size ((const char *) compressed,
+  hb_gzip_get_uncompressed_size ((स्थिरांक अक्षर *) compressed,
                                  compressed_len,
                                  &expected_size);
 
-  size_t allocated = hb_min ((size_t) hb_max (expected_size, 4096u),
-                             (size_t) max_output_len);
-  char *output = (char *) hb_malloc (allocated);
-  if (!output)
-    return nullptr;
-  auto output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
+  माप_प्रकार allocated = hb_min ((माप_प्रकार) hb_max (expected_size, 4096u),
+                             (माप_प्रकार) max_output_len);
+  अक्षर *output = (अक्षर *) hb_malloc (allocated);
+  जर (!output)
+    परत nullptr;
+  स्वतः output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
 
-  int status = Z_OK;
-  while (true)
+  पूर्णांक status = Z_OK;
+  पर्यंत (सत्य)
   {
-    size_t produced = (size_t) stream.total_out;
-    if (unlikely (produced >= (size_t) max_output_len))
-      return nullptr;
+    माप_प्रकार produced = (माप_प्रकार) stream.total_out;
+    जर (unlikely (produced >= (माप_प्रकार) max_output_len))
+      परत nullptr;
 
-    if (produced == allocated)
+    जर (produced == allocated)
     {
-      size_t new_allocated = hb_min (allocated * 2, (size_t) max_output_len);
-      if (unlikely (new_allocated <= allocated))
-        return nullptr;
+      माप_प्रकार new_allocated = hb_min (allocated * 2, (माप_प्रकार) max_output_len);
+      जर (unlikely (new_allocated <= allocated))
+        परत nullptr;
 
-      char *new_output = (char *) hb_realloc (output, new_allocated);
-      if (unlikely (!new_output))
-        return nullptr;
+      अक्षर *new_output = (अक्षर *) hb_realloc (output, new_allocated);
+      जर (unlikely (!new_output))
+        परत nullptr;
 
       output = new_output;
       allocated = new_allocated;
     }
 
     stream.next_out = (Bytef *) output + stream.total_out;
-    stream.avail_out = (uInt) (allocated - (size_t) stream.total_out);
+    stream.avail_out = (uInt) (allocated - (माप_प्रकार) stream.total_out);
 
     status = inflate (&stream, Z_FINISH);
-    if (status == Z_STREAM_END)
-      break;
+    जर (status == Z_STREAM_END)
+      थांबा;
 
-    if ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
-      continue;
+    जर ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
+      सुरूठेवा;
 
-    return nullptr;
+    परत nullptr;
   }
 
-  if (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
-    return nullptr;
+  जर (unlikely ((माप_प्रकार) stream.total_out > (माप_प्रकार) max_output_len))
+    परत nullptr;
 
   output_guard.release ();
-  return hb_blob_create_or_fail (output,
-                                 (unsigned) stream.total_out,
+  परत hb_blob_create_or_fail (output,
+                                 (अचिन्हित) stream.total_out,
                                  HB_MEMORY_MODE_WRITABLE,
                                  output,
                                  hb_free);

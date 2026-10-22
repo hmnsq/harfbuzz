@@ -24,19 +24,19 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-depend.hh"
+#अन्तर्भाव "hb-depend.hh"
 
-#include "hb-face.hh"
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-depend.hh"
+#अन्तर्भाव "hb-face.hh"
+#अन्तर्भाव "hb-ot-cmap-table.hh"
+#अन्तर्भाव "hb-ot-glyf-table.hh"
+#अन्तर्भाव "hb-ot-layout-gsub-table.hh"
+#अन्तर्भाव "hb-ot-math-table.hh"
+#अन्तर्भाव "hb-ot-cff1-table.hh"
+#अन्तर्भाव "hb-ot-var-varc-table.hh"
+#अन्तर्भाव "OT/Color/COLR/COLR.hh"
+#अन्तर्भाव "OT/Color/COLR/colrv1-depend.hh"
 
 /**
  * SECTION:hb-subset-depend
@@ -63,14 +63,14 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
-    successful = false;
-    return;
+  जर (unlikely (!data.glyph_dependencies.resize_exact (f->get_अंक_glyphs ()))) {
+    successful = असत्य;
+    परत;
   }
   successful = hb_depend_data_builder_t (data).compile (f);
 }
 
-bool
+तार्किक
 hb_depend_data_builder_t::compile (hb_face_t *face)
 {
   /* Extract dependencies from all relevant OpenType tables.
@@ -82,22 +82,22 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
-    face->table.GSUB.get_relaxed ()->depend (this, face);
+  जर (hb_ot_layout_has_substitution (face))
+    face->table.GSUB.get_relaxed ()->depend (हे, face);
 #ifndef HB_NO_MATH
-  face->table.MATH->depend (this);
+  face->table.MATH->depend (हे);
 #endif
 #ifndef HB_NO_COLOR
-  face->table.COLR->depend (this);
+  face->table.COLR->depend (हे);
 #endif
-  face->table.glyf->depend (this);
+  face->table.glyf->depend (हे);
 #ifndef HB_NO_CFF
-  OT::cff1_subset_accelerator_t (face).depend (this);
+  OT::cff1_subset_accelerator_t (face).depend (हे);
 #endif
 #ifndef HB_NO_VAR_COMPOSITES
-  face->table.VARC->depend (this);
+  face->table.VARC->depend (हे);
 #endif
-  return successful;
+  परत successful;
 }
 
 
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  जर (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    परत nullptr;
 
-  if (unlikely (depend->in_error ()))
+  जर (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    परत nullptr;
   }
 
-  return depend;
+  परत depend;
 }
 
 /**
@@ -173,19 +173,19 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                अचिन्हित पूर्णांक start_offset,
+                                अचिन्हित पूर्णांक *entry_मोजणी,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  अचिन्हित पूर्णांक total = depend->data.get_glyph_entry_मोजणी (gid);
+  जर (entry_मोजणी)
   {
-    unsigned int count = hb_min (*entry_count,
+    अचिन्हित पूर्णांक मोजणी = hb_min (*entry_मोजणी,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < मोजणी; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -195,9 +195,9 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                     &flags_byte);
       entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *entry_मोजणी = मोजणी;
   }
-  return total;
+  परत total;
 }
 
 /**
@@ -227,10 +227,10 @@ hb_bool_t
 hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
                               hb_set_t *out)
 {
-  const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  स्थिरांक hb_set_t *s = depend->get_set_from_index (index);
+  जर (!s) परत असत्य;
   out->set (*s);
-  return true;
+  परत सत्य;
 }
 
 /**
@@ -242,10 +242,10 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
  *
  * Since: 14.3.0
  **/
-void
+शून्य
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  जर (!hb_object_destroy (depend)) परत;
 
   hb_free (depend);
 }

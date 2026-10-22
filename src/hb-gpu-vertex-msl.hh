@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_msl =
+स्थिर स्थिरांक अक्षर *hb_gpu_vertex_msl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

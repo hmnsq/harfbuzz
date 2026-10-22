@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+संरचना hb_intp_lazy_loader_t : hb_lazy_loader_t<पूर्णांक, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  स्थिर पूर्णांक* create () { परत nullptr; }
+  स्थिर शून्य destroy (पूर्णांक* l) {}
+  स्थिर पूर्णांक* get_null () { परत nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+संरचना hb_void_lazy_loader_t : hb_lazy_loader_t<शून्य, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  स्थिर शून्य* create () { परत nullptr; }
+  स्थिर शून्य destroy (शून्य* l) {}
+  स्थिर शून्य* get_null () { परत nullptr; }
 };
 
-int
-main (int argc, char **argv)
+पूर्णांक
+main (पूर्णांक argc, अक्षर **argv)
 {
-  return 0;
+  परत 0;
 }

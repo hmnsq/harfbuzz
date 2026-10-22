@@ -27,29 +27,29 @@
 #ifndef HB_OT_VAR_HVAR_TABLE_HH
 #define HB_OT_VAR_HVAR_TABLE_HH
 
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-var-common.hh"
+#अन्तर्भाव "hb-ot-layout-common.hh"
+#अन्तर्भाव "hb-ot-var-common.hh"
 
-namespace OT {
+नामाकाश OT {
 
 
-struct index_map_subset_plan_t
+संरचना index_map_subset_plan_t
 {
-  enum index_map_index_t {
+  गणना index_map_index_t {
     ADV_INDEX,
     LSB_INDEX,	/* dual as TSB */
     RSB_INDEX,	/* dual as BSB */
     VORG_INDEX
   };
 
-  void init (const DeltaSetIndexMap  *index_map,
+  शून्य init (स्थिरांक DeltaSetIndexMap  *index_map,
 	     hb_inc_bimap_t	     &outer_map,
 	     hb_vector_t<hb_set_t *> &inner_sets,
-	     const hb_subset_plan_t  *plan,
-	     bool bypass_empty = true)
+	     स्थिरांक hb_subset_plan_t  *plan,
+	     तार्किक bypass_empty = सत्य)
   {
-    map_count = 0;
-    full_map_count = plan->new_to_old_gid_list.length ?
+    map_मोजणी = 0;
+    full_map_मोजणी = plan->new_to_old_gid_list.length ?
 		     plan->new_to_old_gid_list.tail ().first + 1 : 0;
     /* Only the advance mapping may be dropped in favor of implicit
      * glyph-id indexing (for the others a null offset means no deltas),
@@ -58,237 +58,237 @@ struct index_map_subset_plan_t
     max_inners.init ();
     output_map.init ();
 
-    if (bypass_empty && (!index_map || !index_map->get_map_count ())) return;
+    जर (bypass_empty && (!index_map || !index_map->get_map_मोजणी ())) परत;
 
-    unsigned int	last_val = (unsigned int)-1;
+    अचिन्हित पूर्णांक	last_val = (अचिन्हित पूर्णांक)-1;
     hb_codepoint_t	last_gid = HB_CODEPOINT_INVALID;
 
     max_inners.resize (inner_sets.length);
-    for (unsigned i = 0; i < inner_sets.length; i++) max_inners[i] = 0;
+    साठी (अचिन्हित i = 0; i < inner_sets.length; i++) max_inners[i] = 0;
 
     /* Search backwards for a map value different from the last map value */
-    auto &new_to_old_gid_list = plan->new_to_old_gid_list;
-    unsigned count = new_to_old_gid_list.length;
-    if (!index_map)
+    स्वतः &new_to_old_gid_list = plan->new_to_old_gid_list;
+    अचिन्हित मोजणी = new_to_old_gid_list.length;
+    जर (!index_map)
     {
-      map_count = new_to_old_gid_list.tail ().first + 1;
+      map_मोजणी = new_to_old_gid_list.tail ().first + 1;
     }
-    else
+    अन्यथा
     {
-      for (unsigned j = count; j; j--)
+      साठी (अचिन्हित j = मोजणी; j; j--)
       {
         hb_codepoint_t gid = new_to_old_gid_list.arrayZ[j - 1].first;
         hb_codepoint_t old_gid = new_to_old_gid_list.arrayZ[j - 1].second;
   
-        unsigned int v = index_map->map (old_gid);
-        if (last_gid == HB_CODEPOINT_INVALID)
+        अचिन्हित पूर्णांक v = index_map->map (old_gid);
+        जर (last_gid == HB_CODEPOINT_INVALID)
         {
   	last_val = v;
   	last_gid = gid;
-  	continue;
+  	सुरूठेवा;
         }
-        if (v != last_val)
-  	break;
+        जर (v != last_val)
+  	थांबा;
   
         last_gid = gid;
       }
   
-      if (unlikely (last_gid == (hb_codepoint_t)-1)) return;
-      map_count = last_gid + 1;
+      जर (unlikely (last_gid == (hb_codepoint_t)-1)) परत;
+      map_मोजणी = last_gid + 1;
     }
 
-    for (auto _ : plan->new_to_old_gid_list)
+    साठी (स्वतः _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
-      if (gid >= map_count) break;
+      जर (gid >= map_मोजणी) थांबा;
 
       hb_codepoint_t old_gid = _.second;
-      unsigned int v = index_map ? index_map->map (old_gid): old_gid;
-      unsigned int outer = v >> 16;
-      unsigned int inner = v & 0xFFFF;
+      अचिन्हित पूर्णांक v = index_map ? index_map->map (old_gid): old_gid;
+      अचिन्हित पूर्णांक outer = v >> 16;
+      अचिन्हित पूर्णांक inner = v & 0xFFFF;
       outer_map.add (outer);
-      if (inner > max_inners[outer]) max_inners[outer] = inner;
-      if (outer >= inner_sets.length) return;
+      जर (inner > max_inners[outer]) max_inners[outer] = inner;
+      जर (outer >= inner_sets.length) परत;
       inner_sets[outer]->add (inner);
     }
   }
 
-  void fini ()
+  शून्य fini ()
   {
     max_inners.fini ();
     output_map.fini ();
   }
 
-  void remap (const DeltaSetIndexMap *input_map,
-	      const hb_inc_bimap_t &outer_map,
-	      const hb_vector_t<hb_inc_bimap_t> &inner_maps,
-	      const hb_subset_plan_t *plan)
+  शून्य remap (स्थिरांक DeltaSetIndexMap *आदान_map,
+	      स्थिरांक hb_inc_bimap_t &outer_map,
+	      स्थिरांक hb_vector_t<hb_inc_bimap_t> &inner_maps,
+	      स्थिरांक hb_subset_plan_t *plan)
   {
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_मोजणी = 1;
+    inner_bit_मोजणी = 1;
 
-    for (unsigned int i = 0; i < max_inners.length; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < max_inners.length; i++)
     {
-      if (inner_maps[i].get_population () == 0) continue;
-      unsigned int bit_count = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
-      if (bit_count > inner_bit_count) inner_bit_count = bit_count;
+      जर (inner_maps[i].get_population () == 0) सुरूठेवा;
+      अचिन्हित पूर्णांक bit_मोजणी = (max_inners[i]==0)? 1: hb_bit_storage (inner_maps[i][max_inners[i]]);
+      जर (bit_मोजणी > inner_bit_मोजणी) inner_bit_मोजणी = bit_मोजणी;
     }
 
-    if (unlikely (!output_map.resize (map_count))) return;
-    for (const auto &_ : plan->new_to_old_gid_list)
+    जर (unlikely (!output_map.resize (map_मोजणी))) परत;
+    साठी (स्थिरांक स्वतः &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
       hb_codepoint_t old_gid = _.second;
 
-      if (unlikely (new_gid >= map_count)) break;
+      जर (unlikely (new_gid >= map_मोजणी)) थांबा;
 
-      uint32_t v = input_map? input_map->map (old_gid) : old_gid;
-      unsigned outer = v >> 16;
-      unsigned new_outer = outer_map[outer];
-      unsigned bit_count = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      uint32_t v = आदान_map? आदान_map->map (old_gid) : old_gid;
+      अचिन्हित outer = v >> 16;
+      अचिन्हित new_outer = outer_map[outer];
+      अचिन्हित bit_मोजणी = (new_outer == 0) ? 1 : hb_bit_storage (new_outer);
+      outer_bit_मोजणी = hb_max (bit_मोजणी, outer_bit_मोजणी);
 
       output_map.arrayZ[new_gid] = (new_outer << 16) | (inner_maps[outer][v & 0xFFFF]);
     }
   }
 
-  bool remap_after_instantiation (const hb_subset_plan_t *plan,
-                                  const hb_map_t& varidx_map)
+  तार्किक remap_after_instantiation (स्थिरांक hb_subset_plan_t *plan,
+                                  स्थिरांक hb_map_t& varidx_map)
   {
     /* recalculate bit_count after remapping */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_मोजणी = 1;
+    inner_bit_मोजणी = 1;
 
-    for (const auto &_ : plan->new_to_old_gid_list)
+    साठी (स्थिरांक स्वतः &_ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_gid = _.first;
-      if (unlikely (new_gid >= map_count)) break;
+      जर (unlikely (new_gid >= map_मोजणी)) थांबा;
 
       uint32_t v = output_map.arrayZ[new_gid];
       uint32_t *new_varidx;
-      if (!varidx_map.has (v, &new_varidx))
-        return false;
+      जर (!varidx_map.has (v, &new_varidx))
+        परत असत्य;
 
       output_map.arrayZ[new_gid] = *new_varidx;
 
-      unsigned outer = (*new_varidx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      अचिन्हित outer = (*new_varidx) >> 16;
+      अचिन्हित bit_मोजणी = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_मोजणी = hb_max (bit_मोजणी, outer_bit_मोजणी);
 
-      unsigned inner = (*new_varidx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      अचिन्हित inner = (*new_varidx) & 0xFFFF;
+      bit_मोजणी = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_मोजणी = hb_max (bit_मोजणी, inner_bit_मोजणी);
     }
-    return true;
+    परत सत्य;
   }
 
-  unsigned int get_inner_bit_count () const { return inner_bit_count; }
-  unsigned int get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  unsigned int get_map_count ()       const { return map_count; }
+  अचिन्हित पूर्णांक get_inner_bit_मोजणी () स्थिरांक { परत inner_bit_मोजणी; }
+  अचिन्हित पूर्णांक get_width ()           स्थिरांक { परत ((outer_bit_मोजणी + inner_bit_मोजणी + 7) / 8); }
+  अचिन्हित पूर्णांक get_map_मोजणी ()       स्थिरांक { परत map_मोजणी; }
 
-  size_t get_size () const
+  माप_प्रकार get_size () स्थिरांक
   {
-    if (!map_count) return 0;
-    return hb_unsigned_mul_add_saturate (get_width (), map_count,
+    जर (!map_मोजणी) परत 0;
+    परत hb_unsigned_mul_add_saturate (get_width (), map_मोजणी,
 					 DeltaSetIndexMap::min_size);
   }
 
-  bool is_identity () const
+  तार्किक is_identity () स्थिरांक
   {
-    if (!output_map) return true;
+    जर (!output_map) परत सत्य;
     /* An advance map whose entries are the identity over every output
      * glyph is equivalent to implicit glyph-id indexing; drop it.  A
      * truncated map doesn't qualify: glyphs past its end share its last
      * value, not their own ids. */
-    if (!can_drop_to_implicit || map_count != full_map_count) return false;
-    for (unsigned i = 0; i < map_count; i++)
-      if (output_map.arrayZ[i] != i) return false;
-    return true;
+    जर (!can_drop_to_implicit || map_मोजणी != full_map_मोजणी) परत असत्य;
+    साठी (अचिन्हित i = 0; i < map_मोजणी; i++)
+      जर (output_map.arrayZ[i] != i) परत असत्य;
+    परत सत्य;
   }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  hb_array_t<स्थिरांक uint32_t> get_output_map () स्थिरांक { परत output_map.as_array (); }
 
-  protected:
-  unsigned int map_count;
-  unsigned int full_map_count;
-  bool can_drop_to_implicit;
-  hb_vector_t<unsigned int> max_inners;
-  unsigned int outer_bit_count;
-  unsigned int inner_bit_count;
+  संरक्षित:
+  अचिन्हित पूर्णांक map_मोजणी;
+  अचिन्हित पूर्णांक full_map_मोजणी;
+  तार्किक can_drop_to_implicit;
+  hb_vector_t<अचिन्हित पूर्णांक> max_inners;
+  अचिन्हित पूर्णांक outer_bit_मोजणी;
+  अचिन्हित पूर्णांक inner_bit_मोजणी;
   hb_vector_t<uint32_t> output_map;
 };
 
-struct hvarvvar_subset_plan_t
+संरचना hvarvvar_subset_plan_t
 {
   hvarvvar_subset_plan_t() : inner_maps (), index_map_plans () {}
   ~hvarvvar_subset_plan_t() { fini (); }
 
-  void init (const hb_array_t<const DeltaSetIndexMap *> &index_maps,
-	     const ItemVariationStore &_var_store,
-	     const hb_subset_plan_t *plan)
+  शून्य init (स्थिरांक hb_array_t<स्थिरांक DeltaSetIndexMap *> &index_maps,
+	     स्थिरांक ItemVariationStore &_var_store,
+	     स्थिरांक hb_subset_plan_t *plan)
   {
     index_map_plans.resize (index_maps.length);
 
     var_store = &_var_store;
-    inner_sets.resize (var_store->get_sub_table_count ());
-    for (unsigned int i = 0; i < inner_sets.length; i++)
+    inner_sets.resize (var_store->get_sub_table_मोजणी ());
+    साठी (अचिन्हित पूर्णांक i = 0; i < inner_sets.length; i++)
       inner_sets[i] = hb_set_create ();
     adv_set = hb_set_create ();
 
-    inner_maps.resize (var_store->get_sub_table_count ());
+    inner_maps.resize (var_store->get_sub_table_मोजणी ());
 
-    if (unlikely (!index_map_plans.length || !inner_sets.length || !inner_maps.length)) return;
+    जर (unlikely (!index_map_plans.length || !inner_sets.length || !inner_maps.length)) परत;
 
-    bool retain_adv_map = false;
-    index_map_plans[0].init (index_maps[0], outer_map, inner_sets, plan, false);
-    if (!index_maps[0])
+    तार्किक retain_adv_map = असत्य;
+    index_map_plans[0].init (index_maps[0], outer_map, inner_sets, plan, असत्य);
+    जर (!index_maps[0])
     {
       retain_adv_map = plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
       outer_map.add (0);
-      for (hb_codepoint_t old_gid : plan->glyphset()->iter())
+      साठी (hb_codepoint_t old_gid : plan->glyphset()->iter())
         inner_sets[0]->add (old_gid);
       hb_set_union (adv_set, inner_sets[0]);
     }
 
-    for (unsigned int i = 1; i < index_maps.length; i++)
+    साठी (अचिन्हित पूर्णांक i = 1; i < index_maps.length; i++)
       index_map_plans[i].init (index_maps[i], outer_map, inner_sets, plan);
 
     outer_map.sort ();
 
-    if (retain_adv_map)
+    जर (retain_adv_map)
     {
-      for (const auto &_ : plan->new_to_old_gid_list)
+      साठी (स्थिरांक स्वतः &_ : plan->new_to_old_gid_list)
       {
         hb_codepoint_t old_gid = _.second;
 	inner_maps[0].add (old_gid);
       }
     }
-    else
+    अन्यथा
     {
       inner_maps[0].add_set (adv_set);
       hb_set_subtract (inner_sets[0], adv_set);
       inner_maps[0].add_set (inner_sets[0]);
     }
 
-    for (unsigned int i = 1; i < inner_maps.length; i++)
+    साठी (अचिन्हित पूर्णांक i = 1; i < inner_maps.length; i++)
       inner_maps[i].add_set (inner_sets[i]);
 
-    for (unsigned int i = 0; i < index_maps.length; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < index_maps.length; i++)
       index_map_plans[i].remap (index_maps[i], outer_map, inner_maps, plan);
   }
 
   /* remap */
-  bool remap_index_map_plans (const hb_subset_plan_t *plan,
-                              const hb_map_t& varidx_map)
+  तार्किक remap_index_map_plans (स्थिरांक hb_subset_plan_t *plan,
+                              स्थिरांक hb_map_t& varidx_map)
   {
-    for (unsigned i = 0; i < index_map_plans.length; i++)
-      if (!index_map_plans[i].remap_after_instantiation (plan, varidx_map))
-        return false;
-    return true;
+    साठी (अचिन्हित i = 0; i < index_map_plans.length; i++)
+      जर (!index_map_plans[i].remap_after_instantiation (plan, varidx_map))
+        परत असत्य;
+    परत सत्य;
   }
 
-  void fini ()
+  शून्य fini ()
   {
-    for (unsigned int i = 0; i < inner_sets.length; i++)
+    साठी (अचिन्हित पूर्णांक i = 0; i < inner_sets.length; i++)
       hb_set_destroy (inner_sets[i]);
     hb_set_destroy (adv_set);
     inner_maps.fini ();
@@ -298,9 +298,9 @@ struct hvarvvar_subset_plan_t
   hb_inc_bimap_t outer_map;
   hb_vector_t<hb_inc_bimap_t> inner_maps;
   hb_vector_t<index_map_subset_plan_t> index_map_plans;
-  const ItemVariationStore *var_store;
+  स्थिरांक ItemVariationStore *var_store;
 
-  protected:
+  संरक्षित:
   hb_vector_t<hb_set_t *> inner_sets;
   hb_set_t *adv_set;
 };
@@ -314,118 +314,118 @@ struct hvarvvar_subset_plan_t
 #define HB_OT_TAG_HVAR HB_TAG('H','V','A','R')
 #define HB_OT_TAG_VVAR HB_TAG('V','V','A','R')
 
-struct HVARVVAR
+संरचना HVARVVAR
 {
-  static constexpr hb_tag_t HVARTag = HB_OT_TAG_HVAR;
-  static constexpr hb_tag_t VVARTag = HB_OT_TAG_VVAR;
+  स्थिर constexpr hb_tag_t HVARTag = HB_OT_TAG_HVAR;
+  स्थिर constexpr hb_tag_t VVARTag = HB_OT_TAG_VVAR;
 
-  bool has_data () const { return version.major != 0; }
+  तार्किक has_data () स्थिरांक { परत version.major != 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (हे);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  varStore.sanitize (c, this) &&
-		  advMap.sanitize (c, this) &&
-		  lsbMap.sanitize (c, this) &&
-		  rsbMap.sanitize (c, this));
+		  varStore.sanitize (c, हे) &&
+		  advMap.sanitize (c, हे) &&
+		  lsbMap.sanitize (c, हे) &&
+		  rsbMap.sanitize (c, हे));
   }
 
-  const ItemVariationStore& get_var_store () const
-  { return this+varStore; }
+  स्थिरांक ItemVariationStore& get_var_store () स्थिरांक
+  { परत हे+varStore; }
 
-  void listup_index_maps (hb_vector_t<const DeltaSetIndexMap *> &index_maps) const
+  शून्य listup_index_maps (hb_vector_t<स्थिरांक DeltaSetIndexMap *> &index_maps) स्थिरांक
   {
-    if (advMap) index_maps.push (&(this+advMap));
-    else index_maps.push (nullptr);
+    जर (advMap) index_maps.push (&(हे+advMap));
+    अन्यथा index_maps.push (nullptr);
 
-    if (lsbMap) index_maps.push (&(this+lsbMap));
-    else index_maps.push (nullptr);
+    जर (lsbMap) index_maps.push (&(हे+lsbMap));
+    अन्यथा index_maps.push (nullptr);
 
-    if (rsbMap) index_maps.push (&(this+rsbMap));
-    else index_maps.push (nullptr);
+    जर (rsbMap) index_maps.push (&(हे+rsbMap));
+    अन्यथा index_maps.push (nullptr);
   }
 
-  bool serialize_index_maps (hb_serialize_context_t *c,
-			     const hb_array_t<index_map_subset_plan_t> &im_plans)
+  तार्किक serialize_index_maps (hb_serialize_context_t *c,
+			     स्थिरांक hb_array_t<index_map_subset_plan_t> &im_plans)
   {
-    TRACE_SERIALIZE (this);
-    if (im_plans[index_map_subset_plan_t::ADV_INDEX].is_identity ())
+    TRACE_SERIALIZE (हे);
+    जर (im_plans[index_map_subset_plan_t::ADV_INDEX].is_identity ())
       advMap = 0;
-    else if (unlikely (!advMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::ADV_INDEX])))
-      return_trace (false);
-    if (im_plans[index_map_subset_plan_t::LSB_INDEX].is_identity ())
+    अन्यथा जर (unlikely (!advMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::ADV_INDEX])))
+      return_trace (असत्य);
+    जर (im_plans[index_map_subset_plan_t::LSB_INDEX].is_identity ())
       lsbMap = 0;
-    else if (unlikely (!lsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::LSB_INDEX])))
-      return_trace (false);
-    if (im_plans[index_map_subset_plan_t::RSB_INDEX].is_identity ())
+    अन्यथा जर (unlikely (!lsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::LSB_INDEX])))
+      return_trace (असत्य);
+    जर (im_plans[index_map_subset_plan_t::RSB_INDEX].is_identity ())
       rsbMap = 0;
-    else if (unlikely (!rsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::RSB_INDEX])))
-      return_trace (false);
+    अन्यथा जर (unlikely (!rsbMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::RSB_INDEX])))
+      return_trace (असत्य);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  template <typename T>
-  bool _subset (hb_subset_context_t *c) const
+  ढाँचा <typename T>
+  तार्किक _subset (hb_subset_context_t *c) स्थिरांक
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (हे);
+    जर (c->plan->all_axes_pinned)
+      return_trace (असत्य);
 
     hvarvvar_subset_plan_t	hvar_plan;
-    hb_vector_t<const DeltaSetIndexMap *>
+    hb_vector_t<स्थिरांक DeltaSetIndexMap *>
 				index_maps;
 
-    ((T*)this)->listup_index_maps (index_maps);
-    hvar_plan.init (index_maps.as_array (), this+varStore, c->plan);
+    ((T*)हे)->listup_index_maps (index_maps);
+    hvar_plan.init (index_maps.as_array (), हे+varStore, c->plan);
 
     T *out = c->serializer->allocate_min<T> ();
-    if (unlikely (!out)) return_trace (false);
+    जर (unlikely (!out)) return_trace (असत्य);
 
     out->version.major = 1;
     out->version.minor = 0;
 
-    if (c->plan->normalized_coords)
+    जर (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
-      if (!item_vars.instantiate (this+varStore, c->plan,
-                                  advMap == 0 ? false : true,
-                                  false, /* use_no_variation_idx = false */
+      जर (!item_vars.instantiate (हे+varStore, c->plan,
+                                  advMap == 0 ? असत्य : सत्य,
+                                  असत्य, /* use_no_variation_idx = false */
                                   hvar_plan.inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (असत्य);
 
-      if (!out->varStore.serialize_serialize (c->serializer,
+      जर (!out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
                                               c->plan->axis_tags,
                                               item_vars.get_region_list (),
                                               item_vars.get_vardata_encodings ()))
-        return_trace (false);
+        return_trace (असत्य);
 
       /* if varstore is optimized, remap output_map */
-      if (advMap)
+      जर (advMap)
       {
-        if (!hvar_plan.remap_index_map_plans (c->plan, item_vars.get_varidx_map ()))
-          return_trace (false);
+        जर (!hvar_plan.remap_index_map_plans (c->plan, item_vars.get_varidx_map ()))
+          return_trace (असत्य);
       }
     }
-    else
+    अन्यथा
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
+      जर (c->plan->has_avar2)
 	hvar_plan.var_store->collect_dead_regions (c->plan->axes_old_index_tag_map,
 						   c->plan->avar2_reachable_ranges,
 						   dead_regions);
 
-      if (unlikely (!out->varStore
+      जर (unlikely (!out->varStore
 		    .serialize_serialize (c->serializer,
 					  hvar_plan.var_store,
 					  hvar_plan.inner_maps.as_array (),
 					  dead_regions.get_population () ? &dead_regions : nullptr)))
-      return_trace (false);
+      return_trace (असत्य);
     }
 
     return_trace (out->T::serialize_index_maps (c->serializer,
@@ -433,20 +433,20 @@ struct HVARVVAR
   }
 
   HB_ALWAYS_INLINE
-  float get_advance_delta_unscaled (hb_codepoint_t  glyph,
-				    const int *coords, unsigned int coord_count,
-				    hb_scalar_cache_t *store_cache = nullptr) const
+  दशांश get_advance_delta_unscaled (hb_codepoint_t  glyph,
+				    स्थिरांक पूर्णांक *coords, अचिन्हित पूर्णांक coord_मोजणी,
+				    hb_scalar_cache_t *store_cache = nullptr) स्थिरांक
   {
     /* Implicit mapping uses outer index zero and the glyph id as the
      * inner index. An oversized glyph id must not select another table. */
-    if (!advMap && glyph > 0xFFFFu) return 0.f;
-    uint32_t varidx = (this+advMap).map (glyph);
-    return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+    जर (!advMap && glyph > 0xFFFFu) परत 0.f;
+    uint32_t varidx = (हे+advMap).map (glyph);
+    परत (हे+varStore).get_delta (varidx,
+				      coords, coord_मोजणी,
 				      store_cache);
   }
 
-  public:
+  सार्वजनिक:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   Offset32To<ItemVariationStore>
@@ -458,64 +458,64 @@ struct HVARVVAR
   Offset32To<DeltaSetIndexMap>
 		rsbMap;		/* Offset to rsb/bsb var-idx mapping. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct HVAR : HVARVVAR {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HVAR;
-  bool subset (hb_subset_context_t *c) const { return HVARVVAR::_subset<HVAR> (c); }
+संरचना HVAR : HVARVVAR {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_HVAR;
+  तार्किक subset (hb_subset_context_t *c) स्थिरांक { परत HVARVVAR::_subset<HVAR> (c); }
 };
-struct VVAR : HVARVVAR {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VVAR;
+संरचना VVAR : HVARVVAR {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_VVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) स्थिरांक
   {
-    TRACE_SANITIZE (this);
-    return_trace (static_cast<const HVARVVAR *> (this)->sanitize (c) &&
-		  vorgMap.sanitize (c, this));
+    TRACE_SANITIZE (हे);
+    return_trace (static_cast<स्थिरांक HVARVVAR *> (हे)->sanitize (c) &&
+		  vorgMap.sanitize (c, हे));
   }
 
-  void listup_index_maps (hb_vector_t<const DeltaSetIndexMap *> &index_maps) const
+  शून्य listup_index_maps (hb_vector_t<स्थिरांक DeltaSetIndexMap *> &index_maps) स्थिरांक
   {
     HVARVVAR::listup_index_maps (index_maps);
-    if (vorgMap) index_maps.push (&(this+vorgMap));
-    else index_maps.push (nullptr);
+    जर (vorgMap) index_maps.push (&(हे+vorgMap));
+    अन्यथा index_maps.push (nullptr);
   }
 
-  bool serialize_index_maps (hb_serialize_context_t *c,
-			     const hb_array_t<index_map_subset_plan_t> &im_plans)
+  तार्किक serialize_index_maps (hb_serialize_context_t *c,
+			     स्थिरांक hb_array_t<index_map_subset_plan_t> &im_plans)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!HVARVVAR::serialize_index_maps (c, im_plans)))
-      return_trace (false);
-    if (!im_plans[index_map_subset_plan_t::VORG_INDEX].get_map_count ())
+    TRACE_SERIALIZE (हे);
+    जर (unlikely (!HVARVVAR::serialize_index_maps (c, im_plans)))
+      return_trace (असत्य);
+    जर (!im_plans[index_map_subset_plan_t::VORG_INDEX].get_map_मोजणी ())
       vorgMap = 0;
-    else if (unlikely (!vorgMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::VORG_INDEX])))
-      return_trace (false);
+    अन्यथा जर (unlikely (!vorgMap.serialize_serialize (c, im_plans[index_map_subset_plan_t::VORG_INDEX])))
+      return_trace (असत्य);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  bool subset (hb_subset_context_t *c) const { return HVARVVAR::_subset<VVAR> (c); }
+  तार्किक subset (hb_subset_context_t *c) स्थिरांक { परत HVARVVAR::_subset<VVAR> (c); }
 
   HB_ALWAYS_INLINE
-  float get_vorg_delta_unscaled (hb_codepoint_t glyph,
-				 const int *coords, unsigned int coord_count,
-				 hb_scalar_cache_t *store_cache = nullptr) const
+  दशांश get_vorg_delta_unscaled (hb_codepoint_t glyph,
+				 स्थिरांक पूर्णांक *coords, अचिन्हित पूर्णांक coord_मोजणी,
+				 hb_scalar_cache_t *store_cache = nullptr) स्थिरांक
   {
-    if (!vorgMap) return 0.f;
-    uint32_t varidx = (this+vorgMap).map (glyph);
-    return (this+varStore).get_delta (varidx,
-				      coords, coord_count,
+    जर (!vorgMap) परत 0.f;
+    uint32_t varidx = (हे+vorgMap).map (glyph);
+    परत (हे+varStore).get_delta (varidx,
+				      coords, coord_मोजणी,
 				      store_cache);
   }
 
-  protected:
+  संरक्षित:
   Offset32To<DeltaSetIndexMap>
 		vorgMap;	/* Offset to vertical-origin var-idx mapping. */
 
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (24);
 };
 

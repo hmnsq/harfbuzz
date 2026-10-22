@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_STYLE
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-face.hh"
+#अन्तर्भाव "hb-ot-var-avar-table.hh"
+#अन्तर्भाव "hb-ot-var-fvar-table.hh"
+#अन्तर्भाव "hb-ot-stat-table.hh"
+#अन्तर्भाव "hb-ot-os2-table.hh"
+#अन्तर्भाव "hb-ot-head-table.hh"
+#अन्तर्भाव "hb-ot-post-table.hh"
+#अन्तर्भाव "hb-ot-face.hh"
 
 /**
  * SECTION:hb-style
@@ -43,16 +43,16 @@
  * Functions for fetching style information from fonts.
  **/
 
-static inline float
-_hb_angle_to_ratio (float a)
+स्थिर ओळीत दशांश
+_hb_angle_to_ratio (दशांश a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  परत tanf (a * -HB_PI / 180.f);
 }
 
-static inline float
-_hb_ratio_to_angle (float r)
+स्थिर ओळीत दशांश
+_hb_ratio_to_angle (दशांश r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  परत atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -68,66 +68,66 @@ _hb_ratio_to_angle (float r)
  *
  * Since: 3.0.0
  **/
-float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+दशांश
+hb_style_get_मूल्य (hb_font_t *font, hb_style_tag_t style_tag)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  जर (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
+    परत _hb_angle_to_ratio (hb_style_get_मूल्य (font, HB_STYLE_TAG_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
 #ifndef HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  जर (hb_ot_var_find_axis_info (face, style_tag, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    जर (axis.axis_index < font->अंक_coords) परत font->design_coords[axis.axis_index];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    परत axis.default_मूल्य;
   }
 #endif
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  जर (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
+    परत font->ptem;
 
   /* STAT */
-  float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  दशांश value;
+  जर (face->table.STAT->get_मूल्य (style_tag, &value))
+    परत value;
 
-  switch ((unsigned) style_tag)
+  निवड ((अचिन्हित) style_tag)
   {
-  case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
-  case HB_STYLE_TAG_OPTICAL_SIZE:
+  स्थिती HB_STYLE_TAG_ITALIC:
+    परत face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
+  स्थिती HB_STYLE_TAG_OPTICAL_SIZE:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
-	   ? (float) (lower + upper) / 2.f
+    अचिन्हित पूर्णांक lower, design, upper;
+    परत face->table.OS2->v5 ().get_optical_size (&lower, &upper)
+	   ? (दशांश) (lower + upper) / 2.f
 	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
 	   ? design / 10.f
 	   : 12.f;
   }
-  case HB_STYLE_TAG_SLANT_ANGLE:
+  स्थिती HB_STYLE_TAG_SLANT_ANGLE:
   {
-    float angle = face->table.post->table->italicAngle.to_float ();
+    दशांश angle = face->table.post->table->italicAngle.to_float ();
 
-    if (font->slant)
+    जर (font->slant)
       angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
 
-    return angle;
+    परत angle;
   }
-  case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
+  स्थिती HB_STYLE_TAG_WIDTH:
+    परत face->table.OS2->has_data ()
 	   ? face->table.OS2->get_width ()
 	   : (face->table.head->is_condensed () ? 75 :
 	      face->table.head->is_expanded () ? 125 :
 	      100);
-  case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
+  स्थिती HB_STYLE_TAG_WEIGHT:
+    परत face->table.OS2->has_data ()
 	   ? face->table.OS2->usWeightClass
 	   : (face->table.head->is_bold () ? 700 : 400);
-  default:
-    return 0;
+  पूर्वनिर्धारित:
+    परत 0;
   }
 }
 

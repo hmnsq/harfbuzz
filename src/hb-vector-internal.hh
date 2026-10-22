@@ -27,179 +27,179 @@
 #ifndef HB_VECTOR_INTERNAL_HH
 #define HB_VECTOR_INTERNAL_HH
 
-#include "hb-vector.h"
+#अन्तर्भाव "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+संरचना hb_vector_blob_meta_t
 {
-  char *data;
-  int allocated;
-  bool transferred;
-  bool in_replace;
+  अक्षर *data;
+  पूर्णांक allocated;
+  तार्किक transferred;
+  तार्किक in_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+स्थिर hb_user_data_किल्ली_t hb_vector_blob_meta_user_data_किल्ली;
 
-static inline void
+स्थिर ओळीत शून्य
 hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+				अक्षर *data,
+				पूर्णांक allocated)
 {
   meta->data = data;
   meta->allocated = allocated;
-  meta->transferred = false;
+  meta->transferred = असत्य;
 }
 
-static inline void
+स्थिर ओळीत शून्य
 hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
+  जर (!meta)
+    परत;
+  जर (!meta->transferred && meta->data)
     hb_free (meta->data);
   meta->data = nullptr;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = सत्य;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+स्थिर ओळीत शून्य
+hb_vector_blob_meta_destroy (शून्य *data)
 {
-  auto *meta = (hb_vector_blob_meta_t *) data;
+  स्वतः *meta = (hb_vector_blob_meta_t *) data;
   hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  जर (meta->in_replace)
   {
-    meta->in_replace = false;
-    return;
+    meta->in_replace = असत्य;
+    परत;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+स्थिर ओळीत hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
 		  hb_vector_buf_t *buf)
 {
-  unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  अचिन्हित len = 0;
+  पूर्णांक allocated = 0;
+  अक्षर *data = buf->steal (&len, &allocated);
+  जर (!data)
+    परत nullptr;
 
   hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  जर (*recycled_blob)
     blob = *recycled_blob;
-  bool reused_blob = blob && blob != hb_blob_get_empty ();
-  bool new_meta = false;
-  auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
+  तार्किक reused_blob = blob && blob != hb_blob_get_empty ();
+  तार्किक new_meta = असत्य;
+  स्वतः *meta = reused_blob
+             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_किल्ली)
              : nullptr;
-  if (!meta)
+  जर (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_vector_blob_meta_t *) hb_malloc (आकार (hb_vector_blob_meta_t));
+    जर (!meta)
     {
       hb_free (data);
-      return nullptr;
+      परत nullptr;
     }
     meta->data = nullptr;
     meta->allocated = 0;
-    meta->transferred = true;
-    meta->in_replace = false;
-    new_meta = true;
+    meta->transferred = सत्य;
+    meta->in_replace = असत्य;
+    new_meta = सत्य;
   }
 
-  if (reused_blob)
+  जर (reused_blob)
   {
-    meta->in_replace = true;
+    meta->in_replace = सत्य;
     blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
   }
-  else
+  अन्यथा
   {
     hb_vector_blob_meta_set_buffer (meta, data, allocated);
     blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    जर (unlikely (!blob))
+      परत nullptr;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  जर (unlikely (blob == hb_blob_get_empty ()))
   {
-    if (new_meta)
+    जर (new_meta)
       hb_free (meta);
     hb_free (data);
-    return nullptr;
+    परत nullptr;
   }
 
-  if (new_meta &&
+  जर (new_meta &&
       !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+                              &hb_vector_blob_meta_user_data_किल्ली,
                               meta,
                               nullptr,
-                              true))
+                              सत्य))
   {
-    if (!reused_blob)
+    जर (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    परत nullptr;
   }
 
-  if (*recycled_blob)
+  जर (*recycled_blob)
     *recycled_blob = nullptr;
 
-  return blob;
+  परत blob;
 }
 
-static inline void
+स्थिर ओळीत शून्य
 hb_buf_recover_recycled (hb_blob_t *blob,
 			 hb_vector_buf_t *buf)
 {
-  if (!blob)
-    return;
+  जर (!blob)
+    परत;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  स्वतः *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_किल्ली);
+  जर (!meta || meta->transferred || !meta->data)
+    परत;
 
   buf->recycle_buffer (meta->data, 0, meta->allocated);
   meta->data = nullptr;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = सत्य;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+स्थिर ओळीत शून्य
+hb_vector_transform_point (स्थिरांक hb_transform_t<> &t,
+			   दशांश x_scale_factor,
+			   दशांश y_scale_factor,
+			   दशांश x, दशांश y,
+			   दशांश *tx, दशांश *ty)
 {
-  float xx = x, yy = y;
+  दशांश xx = x, yy = y;
   t.transform_point (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
   *tx = xx / x_scale_factor;
   *ty = yy / y_scale_factor;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
+स्थिर ओळीत hb_bool_t
+hb_vector_set_glyph_extents_common (स्थिरांक hb_transform_t<> &transform,
+				    दशांश x_scale_factor,
+				    दशांश y_scale_factor,
+				    स्थिरांक hb_glyph_extents_t *glyph_extents,
 				    hb_vector_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  दशांश x0 = (दशांश) glyph_extents->x_bearing;
+  दशांश y0 = (दशांश) glyph_extents->y_bearing;
+  दशांश x1 = x0 + glyph_extents->width;
+  दशांश y1 = y0 + glyph_extents->height;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  दशांश px[4] = {x0, x0, x1, x1};
+  दशांश py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
+  दशांश tx, ty;
   hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  दशांश tx_min = tx, tx_max = tx;
+  दशांश ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  साठी (अचिन्हित i = 1; i < 4; i++)
   {
     hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
@@ -208,57 +208,57 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  जर (tx_max <= tx_min || ty_max <= ty_min)
+    परत असत्य;
 
-  if (*has_extents)
+  जर (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    दशांश x0 = hb_min (extents->x, tx_min);
+    दशांश y0 = hb_min (extents->y, ty_min);
+    दशांश x1 = hb_max (extents->x + extents->width, tx_max);
+    दशांश y1 = hb_max (extents->y + extents->height, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  अन्यथा
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
-    *has_extents = true;
+    *has_extents = सत्य;
   }
-  return true;
+  परत सत्य;
 }
 
-static inline void
+स्थिर ओळीत शून्य
 hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
-					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+					 अचिन्हित precision,
+					 दशांश x_scale_factor,
+					 दशांश y_scale_factor,
+					 दशांश xx, दशांश yx,
+					 दशांश xy, दशांश yy,
+					 दशांश tx, दशांश ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  जर (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
     out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_अंक (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_अंक (-ty / y_scale_factor, precision);
     out->append_str (") scale(1,-1)");
   }
-  else
+  अन्यथा
   {
-    unsigned sprec = out->scale_precision ();
+    अचिन्हित sprec = out->scale_precision ();
     out->append_str ("matrix(");
-    out->append_num (xx, sprec);
+    out->append_अंक (xx, sprec);
     out->append_c (',');
-    out->append_num (yx, sprec);
+    out->append_अंक (yx, sprec);
     out->append_c (',');
-    out->append_num (-xy, sprec);
+    out->append_अंक (-xy, sprec);
     out->append_c (',');
-    out->append_num (-yy, sprec);
+    out->append_अंक (-yy, sprec);
     out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_अंक (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_अंक (-ty / y_scale_factor, precision);
     out->append_c (')');
   }
 }
