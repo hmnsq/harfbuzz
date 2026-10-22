@@ -519,11 +519,11 @@ static const short _myanmar_syllable_machine_eof_trans[] = {
 	48, 23, 23, 48, 61
 };
 
-static const int myanmar_syllable_machine_start = 0;
-static const int myanmar_syllable_machine_first_final = 0;
-static const int myanmar_syllable_machine_error = -1;
+static const цео myanmar_syllable_machine_start = 0;
+static const цео myanmar_syllable_machine_first_final = 0;
+static const цео myanmar_syllable_machine_error = -1;
 
-static const int myanmar_syllable_machine_en_main = 0;
+static const цео myanmar_syllable_machine_en_main = 0;
 
 
 #line 55 "hb-ot-shaper-myanmar-machine.rl"
@@ -535,18 +535,18 @@ static const int myanmar_syllable_machine_en_main = 0;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    ако (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    за (unsigned цео i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    ако (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 inline void
 find_syllables_myanmar (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
+  unsigned цео p, pe, eof, ts, te, act HB_UNUSED;
+  цео cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 542 "hb-ot-shaper-myanmar-machine.hh"
@@ -563,15 +563,15 @@ find_syllables_myanmar (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned цео syllable_serial = 1;
   
 #line 554 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	int _slen;
-	int _trans;
+	цео _slen;
+	цео _trans;
 	const unsigned char *_keys;
 	const char *_inds;
-	if ( p == pe )
+	ако ( p == pe )
 		goto _test_eof;
 _resume:
 	switch ( _myanmar_syllable_machine_from_state_actions[cs] ) {
@@ -593,7 +593,7 @@ _resume:
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];
 
-	if ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
+	ако ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _myanmar_syllable_machine_trans_actions[_trans] ) {
@@ -661,12 +661,12 @@ _again:
 #line 630 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	if ( ++p != pe )
+	ако ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ако ( p == eof )
 	{
-	if ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
+	ако ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _myanmar_syllable_machine_eof_trans[cs] - 1;
 		goto _eof_trans;
 	}

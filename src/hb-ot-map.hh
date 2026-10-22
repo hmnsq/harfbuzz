@@ -47,25 +47,25 @@ struct hb_ot_map_t
 
   struct feature_map_t {
     hb_tag_t tag; /* should be first for our bsearch to work */
-    unsigned int index[2]; /* GSUB/GPOS */
-    unsigned int stage[2]; /* GSUB/GPOS */
-    unsigned int shift;
+    unsigned цео index[2]; /* GSUB/GPOS */
+    unsigned цео stage[2]; /* GSUB/GPOS */
+    unsigned цео shift;
     hb_mask_t mask;
     hb_mask_t _1_mask; /* mask for value=1, for quick access */
-    unsigned int needs_fallback : 1;
-    unsigned int auto_zwnj : 1;
-    unsigned int auto_zwj : 1;
-    unsigned int random : 1;
-    unsigned int per_syllable : 1;
+    unsigned цео needs_fallback : 1;
+    unsigned цео auto_zwnj : 1;
+    unsigned цео auto_zwj : 1;
+    unsigned цео random : 1;
+    unsigned цео per_syllable : 1;
 
-    int cmp (const hb_tag_t tag_) const
-    { return tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
+    цео cmp (const hb_tag_t tag_) const
+    { врати tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static цео cmp (const void *pa, const void *pb)
     {
       const feature_map_t *a = (const feature_map_t *) pa;
       const feature_map_t *b = (const feature_map_t *) pb;
-      return a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
+      врати a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
     }
   };
 
@@ -78,11 +78,11 @@ struct hb_ot_map_t
     hb_mask_t mask;
     hb_tag_t feature_tag;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static цео cmp (const void *pa, const void *pb)
     {
       const lookup_map_t *a = (const lookup_map_t *) pa;
       const lookup_map_t *b = (const lookup_map_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
+      врати a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
     }
   };
 
@@ -91,7 +91,7 @@ struct hb_ot_map_t
   typedef bool (*pause_func_t) (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
 
   struct stage_map_t {
-    unsigned int last_lookup; /* Cumulative */
+    unsigned цео last_lookup; /* Cumulative */
     pause_func_t pause_func;
   };
 
@@ -100,7 +100,7 @@ struct hb_ot_map_t
     hb_memset (this, 0, sizeof (*this));
 
     features.init0 ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    за (unsigned цео table_index = 0; table_index < 2; table_index++)
     {
       lookups[table_index].init0 ();
       stages[table_index].init0 ();
@@ -109,65 +109,65 @@ struct hb_ot_map_t
   void fini ()
   {
     features.fini ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    за (unsigned цео table_index = 0; table_index < 2; table_index++)
     {
       lookups[table_index].fini ();
       stages[table_index].fini ();
     }
   }
 
-  hb_mask_t get_global_mask () const { return global_mask; }
+  hb_mask_t get_global_mask () const { врати global_mask; }
 
-  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned int *shift = nullptr) const
+  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned цео *shift = nullptr) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    if (shift) *shift = map ? map->shift : 0;
-    return map ? map->mask : 0;
+    ако (shift) *shift = map ? map->shift : 0;
+    врати map ? map->mask : 0;
   }
 
   bool needs_fallback (hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->needs_fallback : false;
+    врати map ? map->needs_fallback : false;
   }
 
   hb_mask_t get_1_mask (hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->_1_mask : 0;
+    врати map ? map->_1_mask : 0;
   }
 
-  unsigned int get_feature_index (unsigned int table_index, hb_tag_t feature_tag) const
+  unsigned цео get_feature_index (unsigned цео table_index, hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
+    врати map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
   }
 
-  unsigned int get_feature_stage (unsigned int table_index, hb_tag_t feature_tag) const
+  unsigned цео get_feature_stage (unsigned цео table_index, hb_tag_t feature_tag) const
   {
     const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->stage[table_index] : UINT_MAX;
+    врати map ? map->stage[table_index] : UINT_MAX;
   }
 
   hb_array_t<const hb_ot_map_t::lookup_map_t>
-  get_stage_lookups (unsigned int table_index, unsigned int stage) const
+  get_stage_lookups (unsigned цео table_index, unsigned цео stage) const
   {
-    if (unlikely (stage > stages[table_index].length))
-      return hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
+    ако (unlikely (stage > stages[table_index].length))
+      врати hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
 
-    unsigned int start = stage ? stages[table_index][stage - 1].last_lookup : 0;
-    unsigned int end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
-    return lookups[table_index].as_array ().sub_array (start, end - start);
+    unsigned цео start = stage ? stages[table_index][stage - 1].last_lookup : 0;
+    unsigned цео end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
+    врати lookups[table_index].as_array ().sub_array (start, end - start);
   }
 
-  HB_INTERNAL void collect_lookups (unsigned int table_index, hb_set_t *lookups) const;
+  HB_INTERNAL void collect_lookups (unsigned цео table_index, hb_set_t *lookups) const;
   template <typename Proxy>
   HB_INTERNAL void apply (const Proxy &proxy,
 			  const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
   HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
   HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
+  HB_INTERNAL unsigned цео get_feature_tags (unsigned цео  start_offset,
+					     unsigned цео *tag_count, /* IN/OUT */
 					     hb_tag_t     *tags /* OUT */) const;
 
   public:
@@ -219,7 +219,7 @@ struct hb_ot_map_builder_t
 
   HB_INTERNAL void add_feature (hb_tag_t tag,
 				hb_ot_map_feature_flags_t flags=F_NONE,
-				unsigned int value=1);
+				unsigned цео value=1);
 
   HB_INTERNAL bool has_feature (hb_tag_t tag);
 
@@ -228,7 +228,7 @@ struct hb_ot_map_builder_t
 
   void enable_feature (hb_tag_t tag,
 		       hb_ot_map_feature_flags_t flags=F_NONE,
-		       unsigned int value=1)
+		       unsigned цео value=1)
   { add_feature (tag, F_GLOBAL | flags, value); }
 
   void disable_feature (hb_tag_t tag)
@@ -245,8 +245,8 @@ struct hb_ot_map_builder_t
   private:
 
   HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
-				unsigned int  table_index,
-				unsigned int  feature_index,
+				unsigned цео  table_index,
+				unsigned цео  feature_index,
 				const hb_ot_shape_plan_key_t &key,
 				hb_mask_t     mask,
 				bool          auto_zwnj = true,
@@ -257,27 +257,27 @@ struct hb_ot_map_builder_t
 
   struct feature_info_t {
     hb_tag_t tag;
-    unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+    unsigned цео seq; /* sequence#, used for stable sorting only */
+    unsigned цео max_value;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
-    unsigned int stage[2]; /* GSUB/GPOS */
+    unsigned цео default_value; /* for non-global features, what should the unset glyphs take */
+    unsigned цео stage[2]; /* GSUB/GPOS */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL static цео cmp (const void *pa, const void *pb)
     {
       const feature_info_t *a = (const feature_info_t *) pa;
       const feature_info_t *b = (const feature_info_t *) pb;
-      return (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
+      врати (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
 	     (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
   };
 
   struct stage_info_t {
-    unsigned int index;
+    unsigned цео index;
     hb_ot_map_t::pause_func_t pause_func;
   };
 
-  HB_INTERNAL void add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func);
+  HB_INTERNAL void add_pause (unsigned цео table_index, hb_ot_map_t::pause_func_t pause_func);
 
   public:
 
@@ -287,11 +287,11 @@ struct hb_ot_map_builder_t
 
   hb_tag_t chosen_script[2];
   bool found_script[2];
-  unsigned int script_index[2], language_index[2];
+  unsigned цео script_index[2], language_index[2];
 
   private:
 
-  unsigned int current_stage[2]; /* GSUB/GPOS */
+  unsigned цео current_stage[2]; /* GSUB/GPOS */
   hb_vector_t<feature_info_t> feature_infos;
   hb_vector_t<stage_info_t> stages[2]; /* GSUB/GPOS */
 };

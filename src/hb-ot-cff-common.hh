@@ -43,17 +43,17 @@ using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
 template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+static inline const Type& StructAtOffsetOrNull (const void *P, цео offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  ако (!offset) врати Null (Type);
 
   const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  ако (!sc.check_point (p)) врати Null (Type);
 
   const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ако (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) врати Null (Type);
 
-  return obj;
+  врати obj;
 }
 
 
@@ -78,8 +78,8 @@ struct Dict : UnsizedByteStr
 		  Ts&&... ds)
   {
     TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+    за (unsigned цео i = 0; i < dictval.get_count (); i++)
+      ако (unlikely (!opszr.serialize (c, dictval[i], ds...)))
 	return_trace (false);
 
     return_trace (true);
@@ -88,14 +88,14 @@ struct Dict : UnsizedByteStr
   template <typename T, typename V>
   static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    ако (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      врати false;
 
     TRACE_SERIALIZE (this);
     /* serialize the opcode */
     HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    ако (unlikely (!p)) return_trace (false);
+    ако (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
@@ -107,26 +107,26 @@ struct Dict : UnsizedByteStr
 
   template <typename V>
   static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  { врати serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
   template <typename V>
   static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  { врати serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
+  template <typename T, цео int_op>
   static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
     T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    ако (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) врати false;
     c->add_link (ofs, link, whence);
-    return true;
+    врати true;
   }
 
   static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  { врати serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
   static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  { врати serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
 struct TopDict : Dict {};
@@ -137,8 +137,8 @@ struct table_info_t
 {
   void init () { offset = size = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  unsigned цео    offset;
+  unsigned цео    size;
   objidx_t	  link;
 };
 
@@ -154,7 +154,7 @@ struct FDArray : CFFIndex<COUNT>
 
     /* serialize INDEX data */
     hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    ако (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
@@ -164,14 +164,14 @@ struct FDArray : CFFIndex<COUNT>
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		врати c->head - (const char*)dict;
 	      })
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
     c->pop_pack (false);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    ако (unlikely (sizes.in_error ())) return_trace (false);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
@@ -183,14 +183,14 @@ struct FDArray : CFFIndex<COUNT>
 
 /* FDSelect */
 struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned цео fdcount,
+                 unsigned цео glyph_count = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
+    ако (unlikely (!(c->check_struct (this))))
       return_trace (false);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
+    ако (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
                                      c->get_num_glyphs () : glyph_count)))
       return_trace (false);
 
@@ -198,13 +198,13 @@ struct FDSelect0 {
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  { врати fds[glyph]; }
 
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  { врати {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned цео num_glyphs) const
+  { врати hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -214,7 +214,7 @@ struct FDSelect0 {
 template <typename GID_TYPE, typename FD_TYPE>
 struct FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned цео fdcount) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -232,24 +232,24 @@ template <typename GID_TYPE, typename FD_TYPE>
 struct FDSelect3_4
 {
   size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  { врати hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned цео fdcount,
+                 unsigned цео min_glyphs = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    ако (unlikely (!(c->check_struct (this) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
       return_trace (false);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
+    за (unsigned цео i = 1; i < nRanges (); i++)
+      ако (unlikely (ranges[i - 1].first >= ranges[i].first))
 	return_trace (false);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    ако (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
                    sentinel() <= c->get_num_glyphs () &&
@@ -260,20 +260,20 @@ struct FDSelect3_4
     return_trace (true);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  static цео _cmp_range (const void *_key, const void *_item)
   {
     hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    ако (glyph < range[0].first) врати -1;
+    ако (glyph < range[1].first) врати 0;
+    врати +1;
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
   {
     auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    врати range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
@@ -281,13 +281,13 @@ struct FDSelect3_4
     auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
     unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    врати {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { врати ranges.len; }
+  GID_TYPE         nRanges () const { врати ranges.len; }
+  GID_TYPE       &sentinel ()       { врати StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  const GID_TYPE &sentinel () const { врати StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
@@ -300,54 +300,54 @@ typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
 struct FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned цео num_glyphs)
   {
     TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
+    unsigned цео size = src.get_size (num_glyphs);
     FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
+    ако (unlikely (!dest)) return_trace (false);
     hb_memcpy (dest, &src, size);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned цео num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    case 0: hb_barrier (); врати hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
+    case 3: hb_barrier (); врати hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
+    default:врати 0;
     }
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
   {
-    if (this == &Null (FDSelect)) return 0;
+    ако (this == &Null (FDSelect)) врати 0;
 
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    case 0: hb_barrier (); врати u.format0.get_fd (glyph);
+    case 3: hb_barrier (); врати u.format3.get_fd (glyph);
+    default:врати 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    ако (this == &Null (FDSelect)) врати {0, 1};
 
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    case 0: hb_barrier (); врати u.format0.get_fd_range (glyph);
+    case 3: hb_barrier (); врати u.format3.get_fd_range (glyph);
+    default:врати {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned цео fdcount) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ако (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 

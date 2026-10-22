@@ -57,9 +57,9 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
+template <unsigned цео key_bits=16,
+	 unsigned цео value_bits=8 + 32 - key_bits,
+	 unsigned цео cache_bits=8,
 	 bool thread_safe=true>
 struct hb_cache_t
 {
@@ -68,12 +68,12 @@ struct hb_cache_t
 								     hb_atomic_t<unsigned char>,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
+											       hb_atomic_t<unsigned цео>>::type>::type,
 					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
 								     unsigned char,
 								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned цео>::type>::type
 					  >::type;
 
   static_assert ((key_bits >= cache_bits), "");
@@ -85,32 +85,32 @@ struct hb_cache_t
 
   void clear ()
   {
-    for (auto &v : values)
+    за (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  bool get (unsigned цео key, unsigned цео *value) const
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned цео k = key & ((1u<<cache_bits)-1);
+    unsigned цео v = values[k];
+    constexpr unsigned цео empty = (1ULL << (8 * sizeof (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
+    ако ((key >> key_bits) |
 	((v >> value_bits) ^ (key >> cache_bits)) |
 	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
+      врати false;
     *value = v & ((1u<<value_bits)-1);
-    return true;
+    врати true;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  void set (unsigned цео key, unsigned цео value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    ако (unlikely ((key >> key_bits) || (value >> value_bits)))
+      врати; /* Overflows */
+    unsigned цео k = key & ((1u<<cache_bits)-1);
+    unsigned цео v = ((key>>cache_bits)<<value_bits) | value;
     values[k] = v;
   }
 

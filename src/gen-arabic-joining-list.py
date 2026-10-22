@@ -9,57 +9,57 @@ Input files:
 
 import os.path, sys
 
-if len (sys.argv) != 3:
+ако len (sys.argv) != 3:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') за x in sys.argv[1:]]
 
-headers = [[f.readline (), f.readline ()] for f in files]
-while files[0].readline ().find ('##################') < 0:
+headers = [[f.readline (), f.readline ()] за f in files]
+док files[0].readline ().find ('##################') < 0:
 	pass
 
 def read (f):
 	mapping = {}
-	for line in f:
+	за line in f:
 
 		j = line.find ('#')
-		if j >= 0:
+		ако j >= 0:
 			line = line[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () за x in line.split (';')]
+		ако len (fields) == 1:
 			continue
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = цео (uu[0], 16)
+		ако len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		инако:
+			end = цео (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		за u in range (start, end + 1):
 			mapping[u] = t
 
-	return mapping
+	врати mapping
 
 def read_joining_uu (f):
 	values = set ()
-	for line in f:
+	за line in f:
 
-		if line[0] == '#':
+		ако line[0] == '#':
 			continue
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () за x in line.split (';')]
+		ако len (fields) == 1:
 			continue
-		if fields[2] in {'T', 'U'}:
+		ако fields[2] in {'T', 'U'}:
 			continue
 
-		values.add (int (fields[0], 16))
+		values.add (цео (fields[0], 16))
 
-	return sorted (values)
+	врати sorted (values)
 
 def print_has_arabic_joining (scripts, joining_uu):
 
@@ -70,7 +70,7 @@ def print_has_arabic_joining (scripts, joining_uu):
 	print ("  switch ((int) script)")
 	print ("  {")
 
-	for script in sorted ({scripts[u] for u in joining_uu if scripts[u] not in {'Common', 'Inherited'}}):
+	за script in sorted ({scripts[u] за u in joining_uu ако scripts[u] not in {'Common', 'Inherited'}}):
 		print ("    case HB_SCRIPT_{}:".format (script.upper ()))
 
 	print ("      return true;")
@@ -89,8 +89,8 @@ print (" *   ./gen-arabic-joining-list.py ArabicShaping.txt Scripts.txt")
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+за h in headers:
+	за l in h:
 		print (" * %s" % (l.strip ()))
 print (" */")
 print ()

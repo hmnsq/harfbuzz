@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  bool is_empty () const { врати xmin >= xmax || ymin >= ymax; }
+  bool is_void () const { врати xmin > xmax; }
 
   void union_ (const hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    ако (o.is_empty ()) врати;
+    ако (is_empty ())
     {
       *this = o;
-      return;
+      врати;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -69,10 +69,10 @@ struct hb_extents_t
 
   void intersect (const hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    ако (o.is_empty () || is_empty ())
     {
       *this = hb_extents_t {};
-      return;
+      врати;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -83,12 +83,12 @@ struct hb_extents_t
   void
   add_point (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    ако (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    инако
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -104,13 +104,13 @@ struct hb_extents_t
     double x1 = round ((double) xmax);
     double y1 = round ((double) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    ако (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      врати hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
+    врати hb_glyph_extents_t {
       clamp_to_hb_position (xneg ? x1 : x0),
       clamp_to_hb_position (yneg ? y0 : y1),
       clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
@@ -126,7 +126,7 @@ struct hb_extents_t
   static hb_position_t
   clamp_to_hb_position (double v)
   {
-    return (hb_position_t) hb_clamp (v,
+    врати (hb_position_t) hb_clamp (v,
 				     (double) hb_int_min (hb_position_t),
 				     (double) hb_int_max (hb_position_t));
   }
@@ -143,13 +143,13 @@ struct hb_transform_t
 
   bool is_identity () const
   {
-    return xx == 1 && yx == 0 &&
+    врати xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
   bool is_translation () const
   {
-    return xx == 1 && yx == 0 &&
+    врати xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
@@ -200,7 +200,7 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    за (unsigned i = 0; i < 4; i++)
     {
       transform_point (quad_x[i], quad_y[i]);
       extents.add_point (quad_x[i], quad_y[i]);
@@ -211,19 +211,19 @@ struct hb_transform_t
 
   static hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    врати {1, 0, 0, 1, x, y};
   }
   void translate (Float x, Float y, bool before=false)
   {
-    if (before)
+    ако (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    инако
     {
-      if (x == 0 && y == 0)
-	return;
+      ако (x == 0 && y == 0)
+	врати;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
@@ -232,12 +232,12 @@ struct hb_transform_t
 
   static hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    врати {scaleX, 0, 0, scaleY, 0, 0};
   }
   void scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ако (scaleX == 1 && scaleY == 1)
+      врати;
 
     xx *= scaleX;
     yx *= scaleX;
@@ -246,14 +246,14 @@ struct hb_transform_t
   }
   static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    врати {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
   void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    ако (scaleX == 1 && scaleY == 1)
+      врати;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
@@ -264,12 +264,12 @@ struct hb_transform_t
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    врати {c, s, -s, c, 0, 0};
   }
   void rotate (Float radians, bool before=false)
   {
-    if (radians == 0)
-      return;
+    ако (radians == 0)
+      врати;
 
     transform (rotation (radians), before);
   }
@@ -278,7 +278,7 @@ struct hb_transform_t
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    врати {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
@@ -286,20 +286,20 @@ struct hb_transform_t
   }
   void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
   {
-    if (radians == 0)
-      return;
+    ако (radians == 0)
+      врати;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
   static hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    врати {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
   void skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    ако (skewX == 0 && skewY == 0)
+      врати;
 
     transform (skewing (skewX, skewY));
   }
@@ -307,7 +307,7 @@ struct hb_transform_t
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    врати {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
@@ -315,8 +315,8 @@ struct hb_transform_t
   }
   void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    ако (skewX == 0 && skewY == 0)
+	    врати;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -346,29 +346,29 @@ struct hb_bounds_t
 
   void union_ (const hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
+    ако (o.status == UNBOUNDED)
       status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    инако ако (o.status == BOUNDED)
     {
-      if (status == EMPTY)
+      ако (status == EMPTY)
 	*this = o;
-      else if (status == BOUNDED)
+      инако ако (status == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
   void intersect (const hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
+    ако (o.status == EMPTY)
       status = EMPTY;
-    else if (o.status == BOUNDED)
+    инако ако (o.status == BOUNDED)
     {
-      if (status == UNBOUNDED)
+      ако (status == UNBOUNDED)
 	*this = o;
-      else if (status == BOUNDED)
+      инако ако (status == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
+	ако (extents.is_empty ())
 	  status = EMPTY;
       }
     }
@@ -393,7 +393,7 @@ struct hb_transform_decomposed_t
 
   operator bool () const
   {
-    return translateX || translateY ||
+    врати translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
@@ -408,7 +408,7 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    врати t;
   }
 };
 

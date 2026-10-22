@@ -41,11 +41,11 @@ struct hb_bit_set_invertible_t
   hb_bit_set_invertible_t (const hb_bit_set_invertible_t& o) = default;
   hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*this, other); }
   hb_bit_set_invertible_t& operator= (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); return *this; }
+  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); врати *this; }
   friend void swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
   {
-    if (likely (!a.s.successful || !b.s.successful))
-      return;
+    ако (likely (!a.s.successful || !b.s.successful))
+      врати;
     hb_swap (a.inverted, b.inverted);
     hb_swap (a.s, b.s);
   }
@@ -53,8 +53,8 @@ struct hb_bit_set_invertible_t
   void init () { s.init (); inverted = false; }
   void fini () { s.fini (); }
   void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
-  explicit operator bool () const { return !is_empty (); }
+  bool in_error () const { врати s.in_error (); }
+  explicit operator bool () const { врати !is_empty (); }
 
   void alloc (unsigned sz) { s.alloc (sz); }
   void reset ()
@@ -65,50 +65,50 @@ struct hb_bit_set_invertible_t
   void clear ()
   {
     s.clear ();
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = false;
   }
   void invert ()
   {
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = !inverted;
   }
 
   bool is_inverted () const
   {
-    return inverted;
+    врати inverted;
   }
 
   bool is_empty () const
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v == INVALID;
+    врати v == INVALID;
   }
-  uint32_t hash () const { return s.hash () ^ (uint32_t) inverted; }
+  uint32_t hash () const { врати s.hash () ^ (uint32_t) inverted; }
 
   hb_codepoint_t get_min () const
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v;
+    врати v;
   }
   hb_codepoint_t get_max () const
   {
     hb_codepoint_t v = INVALID;
     previous (&v);
-    return v;
+    врати v;
   }
-  unsigned int get_population () const
-  { return inverted ? INVALID - s.get_population () : s.get_population (); }
+  unsigned цео get_population () const
+  { врати inverted ? INVALID - s.get_population () : s.get_population (); }
   bool get_singleton (hb_codepoint_t *codepoint) const
   {
-    if (likely (!inverted))
-      return s.get_singleton (codepoint);
-    if (s.get_population () != INVALID - 1)
-      return false;
+    ако (likely (!inverted))
+      врати s.get_singleton (codepoint);
+    ако (s.get_population () != INVALID - 1)
+      врати false;
     *codepoint = get_min ();
-    return *codepoint != INVALID;
+    врати *codepoint != INVALID;
   }
 
 
@@ -116,10 +116,10 @@ struct hb_bit_set_invertible_t
   void add_bits (hb_codepoint_t g, uint64_t bits)
   { unlikely (inverted) ? s.del_bits (g, bits) : s.add_bits (g, bits); }
   bool add_range (hb_codepoint_t a, hb_codepoint_t b)
-  { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
+  { врати unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  void add_array (const T *array, unsigned цео count, unsigned цео stride=sizeof(T))
   { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
   template <typename T>
   void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
@@ -127,47 +127,47 @@ struct hb_bit_set_invertible_t
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
+  bool add_sorted_array (const T *array, unsigned цео count, unsigned цео stride=sizeof(T))
+  { врати inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { врати add_sorted_array (&arr, arr.len ()); }
 
   void del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
   void del_range (hb_codepoint_t a, hb_codepoint_t b)
   { unlikely (inverted) ? (void) s.add_range (a, b) : s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g) ^ inverted; }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  bool get (hb_codepoint_t g) const { врати s.get (g) ^ inverted; }
+  bool may_have (hb_codepoint_t g) const { врати get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  bool operator [] (hb_codepoint_t k) const { врати get (k); }
+  bool has (hb_codepoint_t k) const { врати (*this)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  bool operator () (hb_codepoint_t k) const { врати has (k); }
 
   /* Sink interface. */
   hb_bit_set_invertible_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
+  { add (v); врати *this; }
   hb_bit_set_invertible_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add_range (range.first, range.second); врати *this; }
 
   bool may_intersect (const hb_bit_set_invertible_t &other) const
-  { return inverted || other.inverted || s.intersects (other.s); }
+  { врати inverted || other.inverted || s.intersects (other.s); }
 
   bool intersects (const hb_bit_set_invertible_t &other) const
   {
-    if (likely (!inverted))
-      return unlikely (other.inverted) ? !s.is_subset (other.s)
+    ако (likely (!inverted))
+      врати unlikely (other.inverted) ? !s.is_subset (other.s)
 				       : s.intersects (other.s);
-    if (likely (!other.inverted))
-      return !other.s.is_subset (s);
+    ако (likely (!other.inverted))
+      врати !other.s.is_subset (s);
 
     unsigned population = s.get_population ();
     unsigned other_population = other.s.get_population ();
-    if ((uint64_t) population + other_population < INVALID)
-      return true;
+    ако ((uint64_t) population + other_population < INVALID)
+      врати true;
 
-    return population >= other_population
+    врати population >= other_population
 	 ? !hb_all (iter (), other.s)
 	 : !hb_all (other.iter (), s);
   }
@@ -175,46 +175,46 @@ struct hb_bit_set_invertible_t
   bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    врати next (&c) && c <= last;
   }
 
   void set (const hb_bit_set_invertible_t &other)
   {
     s.set (other.s);
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = other.inverted;
   }
 
   bool is_equal (const hb_bit_set_invertible_t &other) const
   {
-    if (likely (inverted == other.inverted))
-      return s.is_equal (other.s);
-    else
+    ако (likely (inverted == other.inverted))
+      врати s.is_equal (other.s);
+    инако
     {
-      if (get_population () != other.get_population ())
-	return false;
+      ако (get_population () != other.get_population ())
+	врати false;
 
       /* TODO Add iter_ranges() and use here. */
       auto it1 = iter ();
       auto it2 = other.iter ();
-      return hb_all (+ hb_zip (it1, it2)
-		     | hb_map ([](hb_codepoint_pair_t _) { return _.first == _.second; }));
+      врати hb_all (+ hb_zip (it1, it2)
+		     | hb_map ([](hb_codepoint_pair_t _) { врати _.first == _.second; }));
     }
   }
 
   bool is_subset (const hb_bit_set_invertible_t &larger_set) const
   {
-    if (unlikely (inverted != larger_set.inverted))
+    ако (unlikely (inverted != larger_set.inverted))
     {
-      if (inverted)
-	return hb_all (iter (), larger_set.s);
-      else
+      ако (inverted)
+	врати hb_all (iter (), larger_set.s);
+      инако
         // larger set is inverted so larger_set.s is the set of things that are not present
         // in larger_set, therefore if s has any of those it can't be a subset.
-	return !s.intersects (larger_set.s);
+	врати !s.intersects (larger_set.s);
     }
-    else
-      return unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
+    инако
+      врати unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
   }
 
   protected:
@@ -226,127 +226,127 @@ struct hb_bit_set_invertible_t
   public:
   void union_ (const hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    ако (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_and, other);
-      else
+      инако
 	process (hb_bitwise_or, other); /* Main branch. */
     }
-    else
+    инако
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_gt, other);
-      else
+      инако
 	process (hb_bitwise_lt, other);
     }
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = inverted || other.inverted;
   }
   void intersect (const hb_bit_set_invertible_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   {
-    if (likely (inverted == other.inverted))
+    ако (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_or, other, workspace);
-      else
+      инако
 	process (hb_bitwise_and, other, workspace); /* Main branch. */
     }
-    else
+    инако
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_lt, other, workspace);
-      else
+      инако
 	process (hb_bitwise_gt, other, workspace);
     }
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = inverted && other.inverted;
   }
   void subtract (const hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    ако (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_lt, other);
-      else
+      инако
 	process (hb_bitwise_gt, other); /* Main branch. */
     }
-    else
+    инако
     {
-      if (unlikely (inverted))
+      ако (unlikely (inverted))
 	process (hb_bitwise_or, other);
-      else
+      инако
 	process (hb_bitwise_and, other);
     }
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = inverted && !other.inverted;
   }
   void symmetric_difference (const hb_bit_set_invertible_t &other)
   {
     process (hb_bitwise_xor, other);
-    if (likely (s.successful))
+    ако (likely (s.successful))
       inverted = inverted ^ other.inverted;
   }
 
   bool next (hb_codepoint_t *codepoint) const
   {
-    if (likely (!inverted))
-      return s.next (codepoint);
+    ако (likely (!inverted))
+      врати s.next (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old + 1 == INVALID))
+    ако (unlikely (old + 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      врати false;
     }
 
     auto v = old;
     s.next (&v);
-    if (old + 1 < v)
+    ако (old + 1 < v)
     {
       *codepoint = old + 1;
-      return true;
+      врати true;
     }
 
     v = old;
     s.next_range (&old, &v);
 
     *codepoint = v + 1;
-    return *codepoint != INVALID;
+    врати *codepoint != INVALID;
   }
   bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
   {
-    if (likely (!inverted))
-      return s.next_bits (codepoint, bits);
+    ако (likely (!inverted))
+      врати s.next_bits (codepoint, bits);
 
     hb_codepoint_t base;
-    if (unlikely (*codepoint == INVALID))
+    ако (unlikely (*codepoint == INVALID))
       base = 0;
-    else
+    инако
     {
       base = *codepoint & ~hb_bit_page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
+      ако (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
 	goto done;
       base += hb_bit_page_t::ELT_BITS;
     }
 
-    while (true)
+    док (true)
     {
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       uint64_t excluded = 0;
-      if (!s.next_bits (&cursor, &excluded) || cursor != base)
+      ако (!s.next_bits (&cursor, &excluded) || cursor != base)
 	excluded = 0;
       *bits = ~excluded;
       bool last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
-      if (last)
+      ако (last)
 	*bits &= UINT64_MAX >> 1;
-      if (*bits)
+      ако (*bits)
       {
 	*codepoint = base;
-	return true;
+	врати true;
       }
-      if (unlikely (last))
+      ако (unlikely (last))
 	break;
       base += hb_bit_page_t::ELT_BITS;
     }
@@ -354,73 +354,73 @@ struct hb_bit_set_invertible_t
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    врати false;
   }
   bool previous (hb_codepoint_t *codepoint) const
   {
-    if (likely (!inverted))
-      return s.previous (codepoint);
+    ако (likely (!inverted))
+      врати s.previous (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old - 1 == INVALID))
+    ако (unlikely (old - 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      врати false;
     }
 
     auto v = old;
     s.previous (&v);
 
-    if (old - 1 > v || v == INVALID)
+    ако (old - 1 > v || v == INVALID)
     {
       *codepoint = old - 1;
-      return true;
+      врати true;
     }
 
     v = old;
     s.previous_range (&v, &old);
 
     *codepoint = v - 1;
-    return *codepoint != INVALID;
+    врати *codepoint != INVALID;
   }
   bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
   {
-    if (likely (!inverted))
-      return s.next_range (first, last);
+    ако (likely (!inverted))
+      врати s.next_range (first, last);
 
-    if (!next (last))
+    ако (!next (last))
     {
       *last = *first = INVALID;
-      return false;
+      врати false;
     }
 
     *first = *last;
     s.next (last);
     --*last;
-    return true;
+    врати true;
   }
   bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
   {
-    if (likely (!inverted))
-      return s.previous_range (first, last);
+    ако (likely (!inverted))
+      врати s.previous_range (first, last);
 
-    if (!previous (first))
+    ако (!previous (first))
     {
       *last = *first = INVALID;
-      return false;
+      врати false;
     }
 
     *last = *first;
     s.previous (first);
     ++*first;
-    return true;
+    врати true;
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  unsigned цео next_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  unsigned цео    size) const
   {
-    return inverted ? s.next_many_inverted (codepoint, out, size)
+    врати inverted ? s.next_many_inverted (codepoint, out, size)
 		    : s.next_many (codepoint, out, size);
   }
 
@@ -438,13 +438,13 @@ struct hb_bit_set_invertible_t
     bool init = true) : s (&s_), v (INVALID), remaining (0),
 				     have_len (!init), base (INVALID), bits (0)
     {
-      if (init)
+      ако (init)
 	advance ();
     }
 
     typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
+    hb_codepoint_t __item__ () const { врати v; }
+    bool __more__ () const { врати v != INVALID; }
     void __next__ ()
     {
       remaining--;
@@ -452,12 +452,12 @@ struct hb_bit_set_invertible_t
     }
     void __prev__ ()
     {
-      if (s->previous (&v))
+      ако (s->previous (&v))
       {
 	sync ();
 	remaining++;
       }
-      else
+      инако
       {
 	base = INVALID;
 	bits = 0;
@@ -465,16 +465,16 @@ struct hb_bit_set_invertible_t
     }
     unsigned __len__ () const
     {
-      if (unlikely (!have_len))
+      ако (unlikely (!have_len))
       {
 	remaining += s->get_population ();
 	have_len = true;
       }
-      return remaining;
+      врати remaining;
     }
-    iter_t end () const { return iter_t (*s, false); }
+    iter_t end () const { врати iter_t (*s, false); }
     bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    { врати v != o.v; }
 
     protected:
     const hb_bit_set_invertible_t *s;
@@ -486,17 +486,17 @@ struct hb_bit_set_invertible_t
 
     void advance ()
     {
-      if (likely (bits))
+      ако (likely (bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else if (s->next_bits (&base, &bits))
+      инако ако (s->next_bits (&base, &bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else
+      инако
 	v = INVALID;
     }
 
@@ -505,12 +505,12 @@ struct hb_bit_set_invertible_t
       base = v & ~hb_bit_page_t::ELT_MASK;
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       s->next_bits (&cursor, &bits);
-      unsigned int bit = v & (hb_bit_page_t::ELT_BITS - 1);
+      unsigned цео bit = v & (hb_bit_page_t::ELT_BITS - 1);
       bits = bit == hb_bit_page_t::ELT_BITS - 1 ? 0 : bits >> (bit + 1) << (bit + 1);
     }
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () const { врати iter_t (*this); }
+  operator iter_t () const { врати iter (); }
 };
 
 

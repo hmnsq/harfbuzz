@@ -38,8 +38,8 @@ typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned цео fd,
+			const цео *coords_=nullptr, unsigned цео num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
     processed_width = false;
@@ -50,9 +50,9 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 
   void set_width (bool has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    ако (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
     {
-      if (has_width_)
+      ако (has_width_)
       {
 	width = SUPER::argStack[0];
 	has_width = true;
@@ -72,7 +72,7 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
 
   bool	  processed_width;
   bool	  has_width;
-  unsigned int  arg_start;
+  unsigned цео  arg_start;
   number_t	width;
   bool	  in_seac;
 
@@ -95,7 +95,7 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
 
       case OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	ако (env.argStack.get_count () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
@@ -110,7 +110,7 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
 
   static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    ако (!env.processed_width)
     {
       bool  has_width = false;
       switch (op)
@@ -132,7 +132,7 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
 	  has_width = (env.argStack.get_count () > 2);
 	  break;
 	default:
-	  return;
+	  врати;
       }
       env.set_width (has_width);
     }

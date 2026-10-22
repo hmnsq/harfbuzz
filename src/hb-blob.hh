@@ -42,7 +42,7 @@ struct hb_blob_t
 
   void destroy_user_data ()
   {
-    if (destroy)
+    ако (destroy)
     {
       destroy (user_data);
       user_data = nullptr;
@@ -56,7 +56,7 @@ struct hb_blob_t
 		       void             *new_user_data,
 		       hb_destroy_func_t new_destroy)
   {
-    if (new_data != data)
+    ако (new_data != data)
       destroy_user_data ();
     data = new_data;
     length = new_length;
@@ -69,15 +69,15 @@ struct hb_blob_t
   HB_INTERNAL bool try_make_writable_inplace ();
   HB_INTERNAL bool try_make_writable_inplace_unix ();
 
-  hb_bytes_t as_bytes () const { return hb_bytes_t (data, length); }
+  hb_bytes_t as_bytes () const { врати hb_bytes_t (data, length); }
   template <typename Type>
-  const Type* as () const { return as_bytes ().as<Type> (); }
+  const Type* as () const { врати as_bytes ().as<Type> (); }
 
   public:
   hb_object_header_t header;
 
   const char *data = nullptr;
-  unsigned int length = 0;
+  unsigned цео length = 0;
   hb_memory_mode_t mode = (hb_memory_mode_t) 0;
 
   void *user_data = nullptr;
@@ -125,26 +125,26 @@ struct hb_blob_t
   {
     *out_replaced_buf = nullptr;
 
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ако (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (bd->capacity >= needed)
+      ако (bd->capacity >= needed)
       {
 	*out_capacity = bd->capacity;
-	return bd->buf;
+	врати bd->buf;
       }
       /* Grow with a 1.5x ramp to amortize repeated growth. */
       unsigned alloc_bytes = needed;
-      if (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
+      ако (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
 					       &alloc_bytes)))
 	alloc_bytes = needed;
       char *new_buf = (char *) hb_realloc (bd->buf, alloc_bytes);
-      if (new_buf)
+      ако (new_buf)
       {
 	bd->buf = new_buf;
 	bd->capacity = alloc_bytes;
 	*out_capacity = alloc_bytes;
-	return new_buf;
+	врати new_buf;
       }
       /* Realloc failed.  Fall through to a fresh hb_malloc and stash
        * the old buf for the caller to free after recycle_finalize. */
@@ -152,10 +152,10 @@ struct hb_blob_t
     }
 
     char *buf = (char *) hb_malloc (needed);
-    if (unlikely (!buf))
-      return nullptr;
+    ако (unlikely (!buf))
+      врати nullptr;
     *out_capacity = needed;
-    return buf;
+    врати buf;
   }
 
   /* Wrap @buf (of @capacity, with @length used) into an hb_blob_t.
@@ -169,30 +169,30 @@ struct hb_blob_t
 		    hb_blob_t *recycled,
 		    char      *replaced_recycled_buf)
   {
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ако (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (replaced_recycled_buf && replaced_recycled_buf != buf)
+      ако (replaced_recycled_buf && replaced_recycled_buf != buf)
 	hb_free (replaced_recycled_buf);
       bd->buf = buf;
       bd->capacity = capacity;
       recycled->data = (const char *) buf;
       recycled->length = length;
-      return recycled;
+      врати recycled;
     }
 
     /* No recycled blob to update -- create a fresh one with our
      * destroy closure so the next recycle round can reuse it. */
     recycle_data_t *bd = (recycle_data_t *) hb_malloc (sizeof (*bd));
-    if (unlikely (!bd))
+    ако (unlikely (!bd))
     {
       hb_free (buf);
-      return nullptr;
+      врати nullptr;
     }
     bd->buf = buf;
     bd->capacity = capacity;
 
-    return hb_blob_create ((const char *) buf, length,
+    врати hb_blob_create ((const char *) buf, length,
 			   HB_MEMORY_MODE_WRITABLE,
 			   bd, recycle_data_destroy);
   }
@@ -203,11 +203,11 @@ struct hb_blob_t
   static inline void
   recycle_abort (char *buf, hb_blob_t *recycled)
   {
-    if (!buf) return;
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ако (!buf) врати;
+    ако (recycled && recycled->destroy == recycle_data_destroy)
     {
       auto *bd = (recycle_data_t *) recycled->user_data;
-      if (buf == bd->buf) return;  /* owned by the recycled blob */
+      ако (buf == bd->buf) врати;  /* owned by the recycled blob */
     }
     hb_free (buf);
   }
@@ -221,8 +221,8 @@ struct hb_blob_t
   {
     hb_blob_destroy (*slot);
     *slot = nullptr;
-    if (!blob || blob == hb_blob_get_empty ())
-      return;
+    ако (!blob || blob == hb_blob_get_empty ())
+      врати;
     *slot = blob;
   }
 };
@@ -238,14 +238,14 @@ struct hb_blob_ptr_t
   typedef hb_remove_pointer<P> T;
 
   hb_blob_ptr_t (hb_blob_t *b_ = nullptr) : b (b_) {}
-  hb_blob_t * operator = (hb_blob_t *b_) { return b = b_; }
-  const T * operator -> () const { return get (); }
-  const T & operator * () const  { return *get (); }
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  const T * get () const { return b->as<T> (); }
-  hb_blob_t * get_blob () const { return b.get_raw (); }
-  unsigned int get_length () const { return b.get ()->length; }
+  hb_blob_t * operator = (hb_blob_t *b_) { врати b = b_; }
+  const T * operator -> () const { врати get (); }
+  const T & operator * () const  { врати *get (); }
+  template <typename C> operator const C * () const { врати get (); }
+  operator const char * () const { врати (const char *) get (); }
+  const T * get () const { врати b->as<T> (); }
+  hb_blob_t * get_blob () const { врати b.get_raw (); }
+  unsigned цео get_length () const { врати b.get ()->length; }
   void destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
 
   private:

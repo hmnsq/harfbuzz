@@ -27,7 +27,7 @@ struct SingleSubst
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) врати c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -47,18 +47,18 @@ struct SingleSubst
                   Iterator glyphs)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    ако (unlikely (!c->extend_min (u.format.v))) return_trace (false);
     unsigned format = 2;
     unsigned delta = 0;
-    if (glyphs)
+    ако (glyphs)
     {
       format = 1;
       hb_codepoint_t mask = 0xFFFFu;
 
 #ifndef HB_NO_BEYOND_64K
-       if (+ glyphs
+       ако (+ glyphs
 	   | hb_map_retains_sorting (hb_second)
-	   | hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+	   | hb_filter ([] (hb_codepoint_t gid) { врати gid > 0xFFFFu; }))
        {
 	 format += 2;
 	 mask = 0xFFFFFFu;
@@ -66,9 +66,9 @@ struct SingleSubst
 #endif
 
       auto get_delta = [=] (hb_codepoint_pair_t _)
-                       { return (unsigned) (_.second - _.first) & mask; };
+                       { врати (unsigned) (_.second - _.first) & mask; };
       delta = get_delta (*glyphs);
-      if (!hb_all (++(+glyphs), delta, get_delta)) format += 1;
+      ако (!hb_all (++(+glyphs), delta, get_delta)) format += 1;
     }
 
     u.format.v = format;

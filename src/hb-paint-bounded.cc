@@ -95,8 +95,8 @@ static hb_bool_t
 hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
 			      void *paint_data,
 			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
+			      unsigned цео width HB_UNUSED,
+			      unsigned цео height HB_UNUSED,
 			      hb_tag_t format HB_UNUSED,
 			      float slant HB_UNUSED,
 			      hb_glyph_extents_t *glyph_extents,
@@ -108,7 +108,7 @@ hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
   c->paint ();
   c->pop_clip ();
 
-  return true;
+  врати true;
 }
 
 static void
@@ -187,7 +187,7 @@ static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_
 
     hb_atexit (free_static_paint_bounded_funcs);
 
-    return funcs;
+    врати funcs;
   }
 } static_paint_bounded_funcs;
 
@@ -200,7 +200,7 @@ void free_static_paint_bounded_funcs ()
 hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ()
 {
-  return static_paint_bounded_funcs.get_unconst ();
+  врати static_paint_bounded_funcs.get_unconst ();
 }
 
 

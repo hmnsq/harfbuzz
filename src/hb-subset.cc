@@ -152,18 +152,18 @@ static bool _table_is_empty (const hb_face_t *face, hb_tag_t tag)
   hb_blob_t* blob = hb_face_reference_table (face, tag);
   bool result = (blob == hb_blob_get_empty ());
   hb_blob_destroy (blob);
-  return result;
+  врати result;
 }
 
-static unsigned int
+static unsigned цео
 _get_table_tags (const hb_subset_plan_t* plan,
-                 unsigned int  start_offset,
-                 unsigned int *table_count, /* IN/OUT */
+                 unsigned цео  start_offset,
+                 unsigned цео *table_count, /* IN/OUT */
                  hb_tag_t     *table_tags /* OUT */)
 {
   unsigned num_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
-  if (num_tables)
-    return hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
+  ако (num_tables)
+    врати hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
 
   // If face has 0 tables associated with it, assume that it was built from
   // hb_face_create_tables and thus is unable to list its tables. Fallback to
@@ -172,23 +172,23 @@ _get_table_tags (const hb_subset_plan_t* plan,
       hb_concat (
           + hb_array (known_tables)
           | hb_filter ([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
+            врати !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
           })
-          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { return tag; }),
+          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { врати tag; }),
 
           plan->no_subset_tables.iter ()
           | hb_filter([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag);
+            врати !_table_is_empty (plan->source, tag);
           }));
 
   it += start_offset;
 
   unsigned num_written = 0;
-  while (bool (it) && num_written < *table_count)
+  док (bool (it) && num_written < *table_count)
     table_tags[num_written++] = *it++;
 
   *table_count = num_written;
-  return num_written;
+  врати num_written;
 }
 
 
@@ -196,42 +196,42 @@ static bool
 _is_table_present (hb_face_t *source, hb_tag_t tag)
 {
 
-  if (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
+  ако (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
     // If face has 0 tables associated with it, assume that it was built from
     // hb_face_create_tables and thus is unable to list its tables. Fallback to
     // checking if the blob associated with tag is empty.
-    return !_table_is_empty (source, tag);
+    врати !_table_is_empty (source, tag);
   }
 
   hb_tag_t table_tags[32];
   unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
-  while (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
+  док (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
-      if (table_tags[i] == tag)
-	return true;
+    за (unsigned i = 0; i < num_tables; ++i)
+      ако (table_tags[i] == tag)
+	врати true;
     offset += num_tables;
   }
-  return false;
+  врати false;
 }
 
 static bool
 _should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
 {
-  if (plan->drop_tables.has (tag))
-    return true;
+  ако (plan->drop_tables.has (tag))
+    врати true;
 
   switch (tag)
   {
   case HB_TAG('c','v','a','r'): /* hint table, fallthrough */
-    return plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    врати plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
   case HB_TAG('c','v','t',' '): /* hint table, fallthrough */
   case HB_TAG('f','p','g','m'): /* hint table, fallthrough */
   case HB_TAG('p','r','e','p'): /* hint table, fallthrough */
   case HB_TAG('h','d','m','x'): /* hint table, fallthrough */
   case HB_TAG('V','D','M','X'): /* hint table, fallthrough */
-    return plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
+    врати plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
 
 #ifdef HB_NO_SUBSET_LAYOUT
     // Drop Layout Tables if requested.
@@ -242,7 +242,7 @@ _should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
   case HB_TAG('m','o','r','t'):
   case HB_TAG('k','e','r','x'):
   case HB_TAG('k','e','r','n'):
-    return true;
+    врати true;
 #endif
 
   case HB_TAG('a','v','a','r'):
@@ -254,10 +254,10 @@ _should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
   case HB_TAG('H','V','A','R'):
   case HB_TAG('V','V','A','R'):
   case HB_TAG('M','V','A','R'):
-    return plan->all_axes_pinned;
+    врати plan->all_axes_pinned;
 
   default:
-    return false;
+    врати false;
   }
 }
 
@@ -282,10 +282,10 @@ _dependencies_satisfied (hb_subset_plan_t *plan, hb_tag_t tag,
   case HB_TAG('M','A','X','P'):
 #endif
   case HB_TAG('O','S','/','2'):
-    return !plan->normalized_coords || !outline_pending;
+    врати !plan->normalized_coords || !outline_pending;
   case HB_TAG('G','P','O','S'):
   case HB_TAG('G','S','U','B'):
-    return plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
+    врати plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
   /* For avar2, variation tables must wait for avar to be subsetted first. */
   case HB_TAG('g','v','a','r'):
 #ifndef HB_NO_BEYOND_64K
@@ -297,9 +297,9 @@ _dependencies_satisfied (hb_subset_plan_t *plan, hb_tag_t tag,
   case HB_TAG('M','V','A','R'):
   case HB_TAG('G','D','E','F'):
   case HB_TAG('C','F','F','2'):
-    return !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
+    врати !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
   default:
-    return true;
+    врати true;
   }
 }
 
@@ -308,19 +308,19 @@ _subset_table (hb_subset_plan_t *plan,
 	       hb_vector_t<char> &buf,
 	       hb_tag_t tag)
 {
-  if (plan->no_subset_tables.has (tag)) {
-    return _hb_subset_table_passthrough (plan, tag);
+  ако (plan->no_subset_tables.has (tag)) {
+    врати _hb_subset_table_passthrough (plan, tag);
   }
 
   DEBUG_MSG (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
 
   bool success;
-  if (_hb_subset_table_layout (plan, buf, tag, &success) ||
+  ако (_hb_subset_table_layout (plan, buf, tag, &success) ||
       _hb_subset_table_var (plan, buf, tag, &success) ||
       _hb_subset_table_cff (plan, buf, tag, &success) ||
       _hb_subset_table_color (plan, buf, tag, &success) ||
       _hb_subset_table_other (plan, buf, tag, &success))
-    return success;
+    врати success;
 
 
   switch (tag)
@@ -335,47 +335,47 @@ _subset_table (hb_subset_plan_t *plan,
 	_is_table_present (plan->source, HB_TAG('G','L','Y','F')) &&
 	!_should_drop_table (plan, HB_TAG('G','L','Y','F'));
 #endif
-    if (outline_table_handles_head)
-      return true; /* skip head, handled by the outline table */
-    return _hb_subset_table<const OT::head> (plan, buf);
+    ако (outline_table_handles_head)
+      врати true; /* skip head, handled by the outline table */
+    врати _hb_subset_table<const OT::head> (plan, buf);
   }
 
   case HB_TAG('S','T','A','T'):
-    if (!plan->user_axes_location.is_empty ()) return _hb_subset_table<const OT::STAT> (plan, buf);
-    else return _hb_subset_table_passthrough (plan, tag);
+    ако (!plan->user_axes_location.is_empty ()) врати _hb_subset_table<const OT::STAT> (plan, buf);
+    инако врати _hb_subset_table_passthrough (plan, tag);
 
   case HB_TAG('c','v','t',' '):
 #ifndef HB_NO_VAR
-    if (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
+    ако (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
         plan->normalized_coords && !plan->pinned_at_default)
     {
       auto &cvar = *plan->source->table.cvar;
-      return OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
+      врати OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
     }
 #endif
-    return _hb_subset_table_passthrough (plan, tag);
+    врати _hb_subset_table_passthrough (plan, tag);
   }
 
-  if (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
-    return _hb_subset_table_passthrough (plan, tag);
+  ако (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
+    врати _hb_subset_table_passthrough (plan, tag);
 
   // Drop table
-  return true;
+  врати true;
 }
 
 static void _attach_accelerator_data (hb_subset_plan_t* plan,
                                       hb_face_t* face /* IN/OUT */)
 {
-  if (!plan->inprogress_accelerator) return;
+  ако (!plan->inprogress_accelerator) врати;
 
   // Transfer the accelerator from the plan to us.
   hb_subset_accelerator_t* accel = plan->inprogress_accelerator;
   plan->inprogress_accelerator = nullptr;
 
-  if (accel->in_error ())
+  ако (accel->in_error ())
   {
     hb_subset_accelerator_t::destroy (accel);
-    return;
+    врати;
   }
 
   // Populate caches that need access to the final tables.
@@ -383,7 +383,7 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
   accel->cmap_cache = OT::cmap::create_filled_cache (cmap_ptr);
   accel->destroy_cmap_cache = OT::SubtableUnicodesCache::destroy;
 
-  if (!hb_face_set_user_data(face,
+  ако (!hb_face_set_user_data(face,
                              hb_subset_accelerator_t::user_data_key(),
                              accel,
                              hb_subset_accelerator_t::destroy,
@@ -404,22 +404,22 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
 hb_face_t *
 hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
 {
-  if (unlikely (!input || !source)) return nullptr;
+  ако (unlikely (!input || !source)) врати nullptr;
 
-  if (unlikely (!source->get_num_glyphs ()))
+  ако (unlikely (!source->get_num_glyphs ()))
   {
     DEBUG_MSG (SUBSET, nullptr, "No glyphs in source font.");
-    return nullptr;
+    врати nullptr;
   }
 
   hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, input);
-  if (unlikely (!plan)) {
-    return nullptr;
+  ако (unlikely (!plan)) {
+    врати nullptr;
   }
 
   hb_face_t * result = hb_subset_plan_execute_or_fail (plan);
   hb_subset_plan_destroy (plan);
-  return result;
+  врати result;
 }
 
 
@@ -438,20 +438,20 @@ hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
 hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 {
-  if (unlikely (!plan || plan->in_error ())) {
-    return nullptr;
+  ако (unlikely (!plan || plan->in_error ())) {
+    врати nullptr;
   }
 
   hb_tag_t table_tags[32];
   unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
 
   hb_set_t subsetted_tags, pending_subset_tags;
-  while (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
+  док (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    за (unsigned i = 0; i < num_tables; ++i)
     {
       hb_tag_t tag = table_tags[i];
-      if (_should_drop_table (plan, tag)) continue;
+      ако (_should_drop_table (plan, tag)) continue;
       pending_subset_tags.add (tag);
     }
 
@@ -466,18 +466,18 @@ hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
     hb_vector_t<char> buf;
     buf.alloc (8192 - 16);
 
-    while (!pending_subset_tags.is_empty ())
+    док (!pending_subset_tags.is_empty ())
     {
-      if (subsetted_tags.in_error ()
+      ако (subsetted_tags.in_error ()
 	  || pending_subset_tags.in_error ()) {
 	success = false;
 	goto end;
       }
 
       bool made_changes = false;
-      for (hb_tag_t tag : pending_subset_tags)
+      за (hb_tag_t tag : pending_subset_tags)
       {
-	if (!_dependencies_satisfied (plan, tag,
+	ако (!_dependencies_satisfied (plan, tag,
 				      subsetted_tags,
 				      pending_subset_tags))
 	{
@@ -492,10 +492,10 @@ hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 	made_changes = true;
 
 	success = _subset_table (plan, buf, tag);
-	if (unlikely (!success)) goto end;
+	ако (unlikely (!success)) goto end;
       }
 
-      if (!made_changes)
+      ако (!made_changes)
       {
 	DEBUG_MSG (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
 	success = false;
@@ -504,10 +504,10 @@ hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
     }
   }
 
-  if (success && plan->attach_accelerator_data) {
+  ако (success && plan->attach_accelerator_data) {
     _attach_accelerator_data (plan, plan->dest);
   }
 
 end:
-  return success ? hb_face_reference (plan->dest) : nullptr;
+  врати success ? hb_face_reference (plan->dest) : nullptr;
 }

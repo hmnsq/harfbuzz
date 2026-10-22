@@ -24,7 +24,7 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ако !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -39,7 +39,7 @@
 HB_BEGIN_DECLS
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цео
 hb_face_count (hb_blob_t *blob);
 
 
@@ -57,24 +57,24 @@ typedef struct hb_face_t hb_face_t;
 
 HB_EXTERN hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index);
+		unsigned цео  index);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index);
+			unsigned цео  index);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
+			      unsigned цео  index,
 			      const char   *loader_name);
 
 HB_EXTERN hb_face_t *
 hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index);
+				  unsigned цео  index);
 
 HB_EXTERN hb_face_t *
 hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
+					unsigned цео  index,
 					const char   *loader_name);
 
 HB_EXTERN const char **
@@ -143,23 +143,23 @@ hb_face_reference_blob (hb_face_t *face);
 
 HB_EXTERN void
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index);
+		   unsigned цео  index);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цео
 hb_face_get_index (const hb_face_t *face);
 
 HB_EXTERN void
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem);
+		  unsigned цео  upem);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цео
 hb_face_get_upem (const hb_face_t *face);
 
 HB_EXTERN void
 hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count);
+			 unsigned цео  glyph_count);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цео
 hb_face_get_glyph_count (const hb_face_t *face);
 
 
@@ -178,9 +178,9 @@ hb_face_get_glyph_count (const hb_face_t *face);
  *
  * Since: 10.0.0
  */
-typedef unsigned int (*hb_get_table_tags_func_t) (const hb_face_t *face,
-						  unsigned int  start_offset,
-						  unsigned int *table_count, /* IN/OUT */
+typedef unsigned цео (*hb_get_table_tags_func_t) (const hb_face_t *face,
+						  unsigned цео  start_offset,
+						  unsigned цео *table_count, /* IN/OUT */
 						  hb_tag_t     *table_tags /* OUT */,
 						  void         *user_data);
 
@@ -190,10 +190,10 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
 				 void                    *user_data,
 				 hb_destroy_func_t        destroy);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цео
 hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+			unsigned цео  start_offset,
+			unsigned цео *table_count, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */);
 
 

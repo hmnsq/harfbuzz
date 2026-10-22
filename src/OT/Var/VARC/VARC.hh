@@ -93,7 +93,7 @@ struct VarComponent
   HB_INTERNAL hb_ubytes_t
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const цео> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache = nullptr) const;
@@ -111,12 +111,12 @@ struct VarCompositeGlyph
   static void
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const цео> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    док (record)
     {
       const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
@@ -139,7 +139,7 @@ struct VARC
   HB_INTERNAL bool
   get_path_at (const hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<const цео> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
 	       hb_scalar_cache_t *parent_cache = nullptr) const;
@@ -164,7 +164,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    врати get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -184,7 +184,7 @@ struct VARC
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
+    врати get_path_at (c, gid,
 			hb_array (font->coords, font->num_coords));
   }
 
@@ -212,7 +212,7 @@ struct VARC
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      ако (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,30 +221,30 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_data () const { врати table->has_data (); }
 
     bool
     get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
     {
-      if (!table->has_data ()) return false;
+      ако (!table->has_data ()) врати false;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ако (unlikely (!scratch)) врати true;
       bool ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      врати ret;
     }
 
     bool closure_glyphs (hb_set_t *glyphset) const
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      ако (table->has_data ())
+	врати table->closure_glyphs (glyphset);
+      врати true;
     }
 
     void depend (hb_depend_data_builder_t *depend_data) const
     {
-      if (table->has_data ())
+      ако (table->has_data ())
 	table->depend (depend_data);
     }
 
@@ -254,21 +254,21 @@ struct VARC
 		 hb_glyph_extents_t *extents) const
     {
 #ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+      ако (!table->has_data ()) врати false;
 
       hb_extents_t<> f_extents;
 
       auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ако (unlikely (!scratch)) врати true;
       bool ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      ако (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
+      врати ret;
+#инако
+      врати false;
 #endif
     }
 
@@ -278,18 +278,18 @@ struct VARC
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      ако (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
 	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	ако (unlikely (!scratch))
+	  врати nullptr;
       }
 
-      return scratch;
+      врати scratch;
     }
     void release_scratch (hb_varc_scratch_t *scratch) const
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      ако (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -301,7 +301,7 @@ struct VARC
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  bool has_data () const { врати version.major != 0; }
 
   protected:
   FixedVersion<> version; /* Version identifier */

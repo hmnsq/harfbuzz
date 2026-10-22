@@ -43,7 +43,7 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    ако (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
       budget_initialized = true;
@@ -62,12 +62,12 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    врати groups.tail().extents;
   }
 
   bool is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    врати groups.tail().status != hb_bounds_t<>::UNBOUNDED;
   }
 
   void push_transform (const hb_transform_t<> &trans)
@@ -110,7 +110,7 @@ struct hb_paint_extents_context_t
     hb_bounds_t<> &backdrop_bounds = groups.tail ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    switch ((цео) mode)
     {
       case HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounds.status = hb_bounds_t<>::EMPTY;

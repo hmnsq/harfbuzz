@@ -28,12 +28,12 @@ struct SinglePos
   {
     hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
 
-    for (const auto iter : glyph_val_iter_pairs)
-      for (const auto _ : hb_zip (iter.second, first_val_iter))
-        if (_.first != _.second)
-          return 2;
+    за (const auto iter : glyph_val_iter_pairs)
+      за (const auto _ : hb_zip (iter.second, first_val_iter))
+        ако (_.first != _.second)
+          врати 2;
 
-    return 1;
+    врати 1;
   }
 
   template<typename Iterator,
@@ -42,21 +42,21 @@ struct SinglePos
                   const ValueBase* src,
                   ValueFormat src_format,
                   Iterator glyph_val_iter_pairs,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
+                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, цео>> *layout_variation_idx_delta_map,
                   unsigned newFormat)
   {
-    if (unlikely (!c->extend_min (u.format.v))) return;
+    ако (unlikely (!c->extend_min (u.format.v))) врати;
     unsigned format = 2;
     ValueFormat new_format;
     new_format = newFormat;
 
-    if (glyph_val_iter_pairs)
+    ако (glyph_val_iter_pairs)
       format = get_format (glyph_val_iter_pairs);
 
 #ifndef HB_NO_BEYOND_64K
-    if (+ glyph_val_iter_pairs
+    ако (+ glyph_val_iter_pairs
 	| hb_map_retains_sorting (hb_first)
-	| hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+	| hb_filter ([] (hb_codepoint_t gid) { врати gid > 0xFFFFu; }))
       format += 2;
 #endif
 
@@ -67,35 +67,35 @@ struct SinglePos
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
+      врати;
     case 2: hb_barrier (); u.format2.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
+      врати;
 #ifndef HB_NO_BEYOND_64K
     case 3: u.format3.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
+      врати;
     case 4: u.format4.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
+      врати;
 #endif
-    default:return;
+    default:врати;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) врати c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -116,7 +116,7 @@ SinglePos_serialize (hb_serialize_context_t *c,
                      const ValueBase *src,
                      ValueFormat src_format,
                      Iterator it,
-                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
+                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, цео>> *layout_variation_idx_delta_map,
                      unsigned new_format)
 { c->start_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
 

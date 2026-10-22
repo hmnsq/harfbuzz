@@ -11,48 +11,48 @@ namespace OT {
 
 struct coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const цео> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    ако (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (цео));
+    инако
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  цео& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    ако (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      врати Crap(цео);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    ако (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      ако (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        док (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	врати static_coords[idx];
       }
-      else
+      инако
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    ако (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      ако (unlikely (!dynamic_coords.resize (idx + 1)))
+	врати Crap(цео);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    врати dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<цео> get_coords ()
+  { врати length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<цео> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  цео static_coords[sizeof (void *) * 8];
 };
 
 

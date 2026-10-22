@@ -23,7 +23,7 @@ struct AlternateSubst
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) врати c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -39,12 +39,12 @@ struct AlternateSubst
   template <typename GlyphID>
   bool serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> glyphs,
-                  hb_array_t<const unsigned int> alternate_len_list,
+                  hb_array_t<const unsigned цео> alternate_len_list,
                   hb_array_t<GlyphID> alternate_glyphs_list)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    ако (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    unsigned цео format = 1;
     u.format.v = format;
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs, alternate_len_list, alternate_glyphs_list));

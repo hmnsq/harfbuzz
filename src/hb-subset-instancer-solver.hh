@@ -51,19 +51,19 @@ struct Triple
 
   bool operator == (const Triple &o) const
   {
-    return minimum == o.minimum &&
+    врати minimum == o.minimum &&
 	   middle  == o.middle  &&
 	   maximum == o.maximum;
   }
 
   bool operator != (const Triple o) const
-  { return !(*this == o); }
+  { врати !(*this == o); }
 
   bool is_point () const
-  { return minimum == middle && middle == maximum; }
+  { врати minimum == middle && middle == maximum; }
 
   bool contains (float point) const
-  { return minimum <= point && point <= maximum; }
+  { врати minimum <= point && point <= maximum; }
 
   /* from hb_array_t hash ()*/
   uint32_t hash () const
@@ -77,7 +77,7 @@ struct Triple
 
     current = current ^ hb_hash (maximum);
     current = current * 16777619;
-    return current;
+    врати current;
   }
 
   float minimum = 0;

@@ -54,22 +54,22 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    ако (item) {
+      ако (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      инако {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
+    } инако {
       item = items.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    врати items.in_error () ? nullptr : item;
   }
 
   template <typename T>
@@ -77,14 +77,14 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    ако (item)
     {
       item_t old = *item;
       *item = std::move (items.tail ());
       items.pop ();
       l.unlock ();
       old.fini ();
-    } else {
+    } инако {
       l.unlock ();
     }
   }
@@ -94,10 +94,10 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.lsearch (v);
-    if (item)
+    ако (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    врати !!item;
   }
 
   template <typename T>
@@ -105,23 +105,23 @@ struct hb_lockable_set_t
   {
     l.lock ();
     item_t *item = items.find (v);
-    if (!item) {
+    ако (!item) {
       item = items.push (v);
     }
     l.unlock ();
-    return item;
+    врати item;
   }
 
   void fini (lock_t &l)
   {
-    if (!items.length)
+    ако (!items.length)
     {
       /* No need to lock. */
       items.fini ();
-      return;
+      врати;
     }
     l.lock ();
-    while (items.length)
+    док (items.length)
     {
       item_t old = items.tail ();
       items.pop ();
@@ -142,16 +142,16 @@ struct hb_lockable_set_t
 
 struct hb_reference_count_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<цео> ref_count;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
+  void init (цео v = 1) { ref_count = v; }
+  цео get_relaxed () const { врати ref_count; }
+  цео inc () const { врати ref_count.inc (); }
+  цео dec () const { врати ref_count.dec (); }
   void fini () { ref_count = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  bool is_inert () const { врати !ref_count; }
+  bool is_valid () const { врати ref_count > 0; }
 };
 
 
@@ -164,10 +164,10 @@ struct hb_user_data_array_t
     void *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    bool operator == (const hb_user_data_key_t *other_key) const { врати key == other_key; }
+    bool operator == (const hb_user_data_item_t &other) const { врати key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    void fini () { ако (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
@@ -182,26 +182,26 @@ struct hb_user_data_array_t
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    ако (!key)
+      врати false;
 
-    if (replace) {
-      if (!data && !destroy) {
+    ако (replace) {
+      ако (!data && !destroy) {
 	items.remove (key, lock);
-	return true;
+	врати true;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
     bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
 
-    return ret;
+    врати ret;
   }
 
   void *get (hb_user_data_key_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    врати items.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -216,7 +216,7 @@ struct hb_object_header_t
   mutable hb_atomic_t<bool> writable = false;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  bool is_inert () const { врати !ref_count.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -239,15 +239,15 @@ static inline Type *hb_object_create (Ts... ds)
 {
   Type *obj = (Type *) hb_calloc (1, sizeof (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  ако (unlikely (!obj))
+    врати obj;
 
   new (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  врати obj;
 }
 template <typename Type>
 static inline void hb_object_init (Type *obj)
@@ -259,12 +259,12 @@ static inline void hb_object_init (Type *obj)
 template <typename Type>
 static inline bool hb_object_is_valid (const Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  врати likely (obj->header.ref_count.is_valid ());
 }
 template <typename Type>
 static inline bool hb_object_is_immutable (const Type *obj)
 {
-  return !obj->header.writable;
+  врати !obj->header.writable;
 }
 template <typename Type>
 static inline void hb_object_make_immutable (const Type *obj)
@@ -277,22 +277,22 @@ template <typename Type>
 static inline Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
+  ако (unlikely (!obj || obj->header.is_inert ()))
+    врати obj;
   assert (hb_object_is_valid (obj));
   obj->header.ref_count.inc ();
-  return obj;
+  врати obj;
 }
 template <typename Type>
 static inline bool hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  ако (unlikely (!obj || obj->header.is_inert ()))
+    врати false;
   assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  ако (obj->header.ref_count.dec () != 1)
+    врати false;
+  врати true;
 }
 
 template <typename Type>
@@ -300,25 +300,25 @@ static inline void hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  ако (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
 static inline bool hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  ако (!hb_object_should_destroy (obj))
+    врати false;
 
   hb_object_actually_destroy (obj);
-  return true;
+  врати true;
 }
 template <typename Type>
 static inline void hb_object_fini (Type *obj)
 {
   obj->header.ref_count.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  ако (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -332,19 +332,19 @@ static inline bool hb_object_set_user_data (Type               *obj,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
+  ако (unlikely (!obj || obj->header.is_inert ()))
+    врати false;
   assert (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  ако (unlikely (!user_data))
   {
     user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    ако (unlikely (!user_data))
+      врати false;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    ако (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
@@ -352,20 +352,20 @@ retry:
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  врати user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
 static inline void *hb_object_get_user_data (Type               *obj,
 					     hb_user_data_key_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
+  ако (unlikely (!obj || obj->header.is_inert ()))
+    врати nullptr;
   assert (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  ако (!user_data)
+    врати nullptr;
+  врати user_data->get (key);
 }
 
 

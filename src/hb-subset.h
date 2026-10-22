@@ -226,7 +226,7 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
 				float               axis_def_value);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
+hb_subset_axis_range_from_string (const char *str, цео len,
 				  float *axis_min_value,
 				  float *axis_max_value,
 				  float *axis_def_value);
@@ -248,7 +248,7 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
 				     unsigned            encoding_id,
 				     unsigned            language_id,
 				     const char         *name_str,
-				     int                 str_len);
+				     цео                 str_len);
 
 
 /*
@@ -312,7 +312,7 @@ hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ако defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (subset_input, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);

@@ -279,9 +279,9 @@ hb_vector_paint_get_background (const hb_vector_paint_t *paint);
 
 HB_EXTERN void
 hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette);
+                             цео palette);
 
-HB_EXTERN int
+HB_EXTERN цео
 hb_vector_paint_get_palette (const hb_vector_paint_t *paint);
 
 HB_EXTERN void
@@ -340,7 +340,7 @@ hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ако defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (vector_draw,  nullptr);
 HB_DEFINE_VTABLE (vector_paint, nullptr);

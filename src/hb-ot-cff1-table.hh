@@ -69,16 +69,16 @@ struct Encoding0 {
   {
     assert (glyph > 0);
     glyph--;
-    if (glyph < nCodes ())
+    ако (glyph < nCodes ())
     {
-      return (hb_codepoint_t)codes[glyph];
+      врати (hb_codepoint_t)codes[glyph];
     }
-    else
-      return CFF_UNDEF_CODE;
+    инако
+      врати CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nCodes () { return codes.len; }
-  HBUINT8 nCodes () const { return codes.len; }
+  HBUINT8 &nCodes () { врати codes.len; }
+  HBUINT8 nCodes () const { врати codes.len; }
 
   ArrayOf<HBUINT8, HBUINT8> codes;
 
@@ -110,20 +110,20 @@ struct Encoding1 {
     /* TODO: Add cache like get_sid. */
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; i < nRanges (); i++)
+    за (unsigned цео i = 0; i < nRanges (); i++)
     {
-      if (glyph <= ranges[i].nLeft)
+      ако (glyph <= ranges[i].nLeft)
       {
 	hb_codepoint_t code = (hb_codepoint_t) ranges[i].first + glyph;
-	return (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
+	врати (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
       }
       glyph -= (ranges[i].nLeft + 1);
     }
-    return CFF_UNDEF_CODE;
+    врати CFF_UNDEF_CODE;
   }
 
-  HBUINT8 &nRanges () { return ranges.len; }
-  HBUINT8 nRanges () const { return ranges.len; }
+  HBUINT8 &nRanges () { врати ranges.len; }
+  HBUINT8 nRanges () const { врати ranges.len; }
 
   ArrayOf<Encoding1_Range, HBUINT8> ranges;
 
@@ -152,13 +152,13 @@ struct CFF1SuppEncData {
 
   void get_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
-    for (unsigned int i = 0; i < nSups (); i++)
-      if (sid == supps[i].glyph)
+    за (unsigned цео i = 0; i < nSups (); i++)
+      ако (sid == supps[i].glyph)
 	codes.push (supps[i].code);
   }
 
-  HBUINT8 &nSups () { return supps.len; }
-  HBUINT8 nSups () const { return supps.len; }
+  HBUINT8 &nSups () { врати supps.len; }
+  HBUINT8 nSups () const { врати supps.len; }
 
   ArrayOf<SuppEncoding, HBUINT8> supps;
 
@@ -177,27 +177,27 @@ struct Encoding
   /* serialize a subset Encoding */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int enc_count,
+		  unsigned цео enc_count,
 		  const hb_vector_t<code_pair_t>& code_ranges,
 		  const hb_vector_t<code_pair_t>& supp_codes)
   {
     TRACE_SERIALIZE (this);
     Encoding *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    ако (unlikely (!dest)) return_trace (false);
     dest->format = format | ((supp_codes.length > 0) ? 0x80 : 0);
     switch (format) {
     case 0:
     {
       Encoding0 *fmt0 = c->allocate_size<Encoding0> (Encoding0::min_size + HBUINT8::static_size * enc_count);
-      if (unlikely (!fmt0)) return_trace (false);
+      ако (unlikely (!fmt0)) return_trace (false);
       fmt0->nCodes () = enc_count;
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      unsigned цео glyph = 0;
+      за (unsigned цео i = 0; i < code_ranges.length; i++)
       {
 	hb_codepoint_t code = code_ranges[i].code;
-	for (int left = (int)code_ranges[i].glyph; left >= 0; left--)
+	за (цео left = (цео)code_ranges[i].glyph; left >= 0; left--)
 	  fmt0->codes[glyph++] = code++;
-	if (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
+	ако (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
 	  return_trace (false);
       }
     }
@@ -206,11 +206,11 @@ struct Encoding
     case 1:
     {
       Encoding1 *fmt1 = c->allocate_size<Encoding1> (Encoding1::min_size + Encoding1_Range::static_size * code_ranges.length);
-      if (unlikely (!fmt1)) return_trace (false);
+      ако (unlikely (!fmt1)) return_trace (false);
       fmt1->nRanges () = code_ranges.length;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      за (unsigned цео i = 0; i < code_ranges.length; i++)
       {
-	if (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
+	ако (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
 	  return_trace (false);
 	fmt1->ranges[i].first = code_ranges[i].code;
 	fmt1->ranges[i].nLeft = code_ranges[i].glyph;
@@ -220,12 +220,12 @@ struct Encoding
 
     }
 
-    if (supp_codes.length)
+    ако (supp_codes.length)
     {
       CFF1SuppEncData *suppData = c->allocate_size<CFF1SuppEncData> (CFF1SuppEncData::min_size + SuppEncoding::static_size * supp_codes.length);
-      if (unlikely (!suppData)) return_trace (false);
+      ако (unlikely (!suppData)) return_trace (false);
       suppData->nSups () = supp_codes.length;
-      for (unsigned int i = 0; i < supp_codes.length; i++)
+      за (unsigned цео i = 0; i < supp_codes.length; i++)
       {
 	suppData->supps[i].code = supp_codes[i].code;
 	suppData->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
@@ -243,42 +243,42 @@ struct Encoding
     case 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); break;
     case 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); break;
     }
-    if (has_supplement ())
+    ако (has_supplement ())
       size = hb_unsigned_add_saturate (size, suppEncData ().get_size ());
-    return size;
+    врати size;
   }
 
   hb_codepoint_t get_code (hb_codepoint_t glyph) const
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return u.format0.get_code (glyph);
-    case 1: hb_barrier (); return u.format1.get_code (glyph);
-    default:return 0;
+    case 0: hb_barrier (); врати u.format0.get_code (glyph);
+    case 1: hb_barrier (); врати u.format1.get_code (glyph);
+    default:врати 0;
     }
   }
 
-  uint8_t table_format () const { return format & 0x7F; }
-  bool  has_supplement () const { return format & 0x80; }
+  uint8_t table_format () const { врати format & 0x7F; }
+  bool  has_supplement () const { врати format & 0x80; }
 
   void get_supplement_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
   {
     codes.clear ();
-    if (has_supplement ())
+    ако (has_supplement ())
       suppEncData().get_codes (sid, codes);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ако (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (table_format ())
     {
-    case 0: hb_barrier (); if (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
-    case 1: hb_barrier (); if (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
+    case 0: hb_barrier (); ако (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
+    case 1: hb_barrier (); ако (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
     default:return_trace (false);
     }
     return_trace (likely (!has_supplement () || suppEncData ().sanitize (c)));
@@ -289,9 +289,9 @@ struct Encoding
   {
     switch (table_format ())
     {
-    case 0: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
-    case 1: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
-    default:return Null (CFF1SuppEncData);
+    case 0: hb_barrier (); врати StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
+    case 1: hb_barrier (); врати StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
+    default:врати Null (CFF1SuppEncData);
     }
   }
 
@@ -309,46 +309,46 @@ struct Encoding
 /* Charset */
 struct Charset0
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned цео num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (num_charset_entries) *num_charset_entries = num_glyphs;
+    ако (num_charset_entries) *num_charset_entries = num_glyphs;
     return_trace (sids.sanitize (c, num_glyphs - 1));
   }
 
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    if (unlikely (glyph == 0))
-      return 0;
-    else
-      return sids[glyph - 1];
+    ако (unlikely (glyph >= num_glyphs)) врати 0;
+    ако (unlikely (glyph == 0))
+      врати 0;
+    инако
+      врати sids[glyph - 1];
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned цео num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
-    for (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
+    ако (!mapping->resize_dirty  (num_glyphs)) врати;
+    за (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
       mapping->arrayZ[gid] = {sids[gid - 1], gid};
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned цео num_glyphs) const
   {
-    if (sid == 0)
-      return 0;
+    ако (sid == 0)
+      врати 0;
 
-    for (unsigned int glyph = 1; glyph < num_glyphs; glyph++)
+    за (unsigned цео glyph = 1; glyph < num_glyphs; glyph++)
     {
-      if (sids[glyph-1] == sid)
-	return glyph;
+      ако (sids[glyph-1] == sid)
+	врати glyph;
     }
-    return 0;
+    врати 0;
   }
 
-  static size_t get_size (unsigned int num_glyphs)
+  static size_t get_size (unsigned цео num_glyphs)
   {
     assert (num_glyphs > 0);
-    return UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
+    врати UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
   }
 
   UnsizedArrayOf<HBUINT16> sids;
@@ -372,20 +372,20 @@ struct Charset_Range {
 
 template <typename TYPE>
 struct Charset1_2 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned цео num_glyphs, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
     num_glyphs--;
     unsigned i;
-    for (i = 0; num_glyphs > 0; i++)
+    за (i = 0; num_glyphs > 0; i++)
     {
-      if (unlikely (!(ranges[i].sanitize (c) &&
+      ако (unlikely (!(ranges[i].sanitize (c) &&
 		      hb_barrier () &&
 		      (num_glyphs >= ranges[i].nLeft + 1))))
 	return_trace (false);
       num_glyphs -= (ranges[i].nLeft + 1);
     }
-    if (num_charset_entries)
+    ако (num_charset_entries)
       *num_charset_entries = i;
     return_trace (true);
   }
@@ -393,94 +393,94 @@ struct Charset1_2 {
   hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
+    ако (unlikely (glyph >= num_glyphs)) врати 0;
     unsigned i;
     hb_codepoint_t start_glyph;
-    if (cache && likely (cache->glyph <= glyph))
+    ако (cache && likely (cache->glyph <= glyph))
     {
       i = cache->code;
       start_glyph = cache->glyph;
     }
-    else
+    инако
     {
-      if (unlikely (glyph == 0)) return 0;
+      ако (unlikely (glyph == 0)) врати 0;
       i = 0;
       start_glyph = 1;
     }
     glyph -= start_glyph;
-    for (;; i++)
+    за (;; i++)
     {
       unsigned count = ranges[i].nLeft;
-      if (glyph <= count)
+      ако (glyph <= count)
       {
-        if (cache)
+        ако (cache)
 	  *cache = {i, start_glyph};
-	return ranges[i].first + glyph;
+	врати ranges[i].first + glyph;
       }
       count++;
       start_glyph += count;
       glyph -= count;
     }
 
-    return 0;
+    врати 0;
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned цео num_glyphs) const
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
+    ако (!mapping->resize_dirty  (num_glyphs)) врати;
 
     hb_codepoint_t gid = 1;
-    if (gid >= num_glyphs)
-      return;
+    ако (gid >= num_glyphs)
+      врати;
 
-    for (unsigned i = 0;; i++)
+    за (unsigned i = 0;; i++)
     {
       hb_codepoint_t sid = ranges[i].first;
       unsigned count = ranges[i].nLeft + 1;
       unsigned last = gid + count;
-      for (unsigned j = 0; j < count; j++)
+      за (unsigned j = 0; j < count; j++)
 	mapping->arrayZ[gid++] = {sid++, last - 1};
 
-      if (gid >= num_glyphs)
+      ако (gid >= num_glyphs)
         break;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned цео num_glyphs) const
   {
-    if (sid == 0) return 0;
+    ако (sid == 0) врати 0;
     hb_codepoint_t  glyph = 1;
-    for (unsigned int i = 0;; i++)
+    за (unsigned цео i = 0;; i++)
     {
-      if (glyph >= num_glyphs)
-	return 0;
-      if ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
-	return glyph + (sid - ranges[i].first);
+      ако (glyph >= num_glyphs)
+	врати 0;
+      ако ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
+	врати glyph + (sid - ranges[i].first);
       glyph += (ranges[i].nLeft + 1);
     }
 
-    return 0;
+    врати 0;
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned цео num_glyphs) const
   {
-    int glyph = (int) num_glyphs;
+    цео glyph = (цео) num_glyphs;
     unsigned num_ranges = 0;
 
     assert (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; glyph > 0; i++)
+    за (unsigned цео i = 0; glyph > 0; i++)
     {
       glyph -= (ranges[i].nLeft + 1);
       num_ranges++;
     }
 
-    return get_size_for_ranges (num_ranges);
+    врати get_size_for_ranges (num_ranges);
   }
 
-  static size_t get_size_for_ranges (unsigned int num_ranges)
+  static size_t get_size_for_ranges (unsigned цео num_ranges)
   {
-    return UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
+    врати UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
   }
 
   UnsizedArrayOf<Charset_Range<TYPE>> ranges;
@@ -496,7 +496,7 @@ typedef Charset_Range<HBUINT16> Charset2_Range;
 struct Charset
 {
   /* serialize a fullset Charset */
-  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned цео num_glyphs)
   {
     TRACE_SERIALIZE (this);
     return_trace (c->embed ((const char *) &src, src.get_size (num_glyphs)));
@@ -505,24 +505,24 @@ struct Charset
   /* serialize a subset Charset */
   bool serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int num_glyphs,
+		  unsigned цео num_glyphs,
 		  const hb_vector_t<code_pair_t>& sid_ranges)
   {
     TRACE_SERIALIZE (this);
     Charset *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    ако (unlikely (!dest)) return_trace (false);
     dest->format = format;
     switch (format)
     {
     case 0:
     {
       Charset0 *fmt0 = c->allocate_size<Charset0> (Charset0::get_size (num_glyphs), false);
-      if (unlikely (!fmt0)) return_trace (false);
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      ако (unlikely (!fmt0)) return_trace (false);
+      unsigned цео glyph = 0;
+      за (unsigned цео i = 0; i < sid_ranges.length; i++)
       {
 	hb_codepoint_t sid = sid_ranges.arrayZ[i].code;
-	for (int left = (int)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
+	за (цео left = (цео)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
 	  fmt0->sids[glyph++] = sid++;
       }
     }
@@ -531,16 +531,16 @@ struct Charset
     case 1:
     {
       Charset1 *fmt1 = c->allocate_size<Charset1> (Charset1::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt1)) return_trace (false);
+      ако (unlikely (!fmt1)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      за (unsigned цео i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt1->ranges[i].first = _.code;
 	fmt1->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFF)))
+      ако (unlikely (!(all_glyphs <= 0xFF)))
 	return_trace (false);
     }
     break;
@@ -548,16 +548,16 @@ struct Charset
     case 2:
     {
       Charset2 *fmt2 = c->allocate_size<Charset2> (Charset2::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt2)) return_trace (false);
+      ако (unlikely (!fmt2)) return_trace (false);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      за (unsigned цео i = 0; i < sid_ranges.length; i++)
       {
         auto &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
 	fmt2->ranges[i].first = _.code;
 	fmt2->ranges[i].nLeft = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFFFF)))
+      ако (unlikely (!(all_glyphs <= 0xFFFF)))
 	return_trace (false);
     }
     break;
@@ -566,55 +566,55 @@ struct Charset
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned цео num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
-    case 1: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
-    case 2: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
-    default:return 0;
+    case 0: hb_barrier (); врати hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
+    case 1: hb_barrier (); врати hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
+    case 2: hb_barrier (); врати hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
+    default:врати 0;
     }
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned int num_glyphs,
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned цео num_glyphs,
 			  code_pair_t *cache = nullptr) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_sid (glyph, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_sid (glyph, num_glyphs, cache);
-    case 2: hb_barrier (); return u.format2.get_sid (glyph, num_glyphs, cache);
-    default:return 0;
+    case 0: hb_barrier (); врати u.format0.get_sid (glyph, num_glyphs);
+    case 1: hb_barrier (); врати u.format1.get_sid (glyph, num_glyphs, cache);
+    case 2: hb_barrier (); врати u.format2.get_sid (glyph, num_glyphs, cache);
+    default:врати 0;
     }
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned цео num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    default:return;
+    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); врати;
+    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); врати;
+    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); врати;
+    default:врати;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned цео num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_glyph (sid, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_glyph (sid, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_glyph (sid, num_glyphs);
-    default:return 0;
+    case 0: hb_barrier (); врати u.format0.get_glyph (sid, num_glyphs);
+    case 1: hb_barrier (); врати u.format1.get_glyph (sid, num_glyphs);
+    case 2: hb_barrier (); врати u.format2.get_glyph (sid, num_glyphs);
+    default:врати 0;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c, unsigned *num_charset_entries) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ако (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
@@ -643,21 +643,21 @@ struct CFF1StringIndex : CFF1Index
 		  const hb_vector_t<unsigned> &sidmap)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely ((strings.count == 0) || (sidmap.length == 0)))
+    ако (unlikely ((strings.count == 0) || (sidmap.length == 0)))
     {
-      if (unlikely (!c->extend_min (this->count)))
+      ако (unlikely (!c->extend_min (this->count)))
 	return_trace (false);
       count = 0;
       return_trace (true);
     }
 
-    if (unlikely (sidmap.in_error ())) return_trace (false);
+    ако (unlikely (sidmap.in_error ())) return_trace (false);
 
     // Save this in a vector since serialize() iterates it twice.
     hb_vector_t<hb_ubytes_t> bytesArray (+ hb_iter (sidmap)
 					 | hb_map (strings));
 
-    if (unlikely (bytesArray.in_error ())) return_trace (false);
+    ако (unlikely (bytesArray.in_error ())) return_trace (false);
 
     bool result = CFF1Index::serialize (c, bytesArray);
     return_trace (result);
@@ -671,8 +671,8 @@ struct cff1_top_dict_interp_env_t : num_interp_env_t
   cff1_top_dict_interp_env_t (const hb_ubytes_t &bytes)
     : num_interp_env_t(bytes), prev_offset(0), last_offset(0) {}
 
-  unsigned int prev_offset;
-  unsigned int last_offset;
+  unsigned цео prev_offset;
+  unsigned цео last_offset;
 };
 
 struct name_dict_values_t
@@ -696,47 +696,47 @@ struct name_dict_values_t
 
   void init ()
   {
-    for (unsigned int i = 0; i < ValCount; i++)
+    за (unsigned цео i = 0; i < ValCount; i++)
       values[i] = CFF_UNDEF_SID;
   }
 
-  unsigned int& operator[] (unsigned int i)
-  { assert (i < ValCount); return values[i]; }
+  unsigned цео& operator[] (unsigned цео i)
+  { assert (i < ValCount); врати values[i]; }
 
-  unsigned int operator[] (unsigned int i) const
-  { assert (i < ValCount); return values[i]; }
+  unsigned цео operator[] (unsigned цео i) const
+  { assert (i < ValCount); врати values[i]; }
 
   static enum name_dict_val_index_t name_op_to_index (op_code_t op)
   {
     switch (op) {
       default: // can't happen - just make some compiler happy
       case OpCode_version:
-	return version;
+	врати version;
       case OpCode_Notice:
-	return notice;
+	врати notice;
       case OpCode_Copyright:
-	return copyright;
+	врати copyright;
       case OpCode_FullName:
-	return fullName;
+	врати fullName;
       case OpCode_FamilyName:
-	return familyName;
+	врати familyName;
       case OpCode_Weight:
-	return weight;
+	врати weight;
       case OpCode_PostScript:
-	return postscript;
+	врати postscript;
       case OpCode_FontName:
-	return fontName;
+	врати fontName;
       case OpCode_BaseFontName:
-	return baseFontName;
+	врати baseFontName;
     }
   }
 
-  unsigned int  values[ValCount];
+  unsigned цео  values[ValCount];
 };
 
 struct cff1_top_dict_val_t : op_str_t
 {
-  unsigned int  last_arg_offset;
+  unsigned цео  last_arg_offset;
 };
 
 struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
@@ -756,16 +756,16 @@ struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
   void fini () { top_dict_values_t<cff1_top_dict_val_t>::fini (); }
 
   bool is_CID () const
-  { return nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
+  { врати nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
 
   name_dict_values_t  nameSIDs;
-  unsigned int    ros_supplement_offset;
-  unsigned int    ros_supplement;
-  unsigned int    cidCount;
+  unsigned цео    ros_supplement_offset;
+  unsigned цео    ros_supplement;
+  unsigned цео    cidCount;
 
-  int             EncodingOffset;
-  int             CharsetOffset;
-  int             FDSelectOffset;
+  цео             EncodingOffset;
+  цео             CharsetOffset;
+  цео             FDSelectOffset;
   table_info_t    privateDictInfo;
 };
 
@@ -817,7 +817,7 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
 	dictval.nameSIDs[name_dict_values_t::ordering] = env.argStack.pop_uint ();
 	dictval.nameSIDs[name_dict_values_t::registry] = env.argStack.pop_uint ();
 	env.clear_args ();
-	if (unlikely (env.in_error ())) return;
+	ако (unlikely (env.in_error ())) врати;
 	assert (env.last_offset > dictval.opStart);
 	val.last_arg_offset = (env.last_offset - 1) - dictval.opStart;  /* offset to the last argument */
 	break;
@@ -825,13 +825,13 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
       case OpCode_Encoding:
 	dictval.EncodingOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.EncodingOffset == 0)) return;
+	ако (unlikely (dictval.EncodingOffset == 0)) врати;
 	break;
 
       case OpCode_charset:
 	dictval.CharsetOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	if (unlikely (dictval.CharsetOffset == 0)) return;
+	ако (unlikely (dictval.CharsetOffset == 0)) врати;
 	break;
 
       case OpCode_FDSelect:
@@ -849,11 +849,11 @@ struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
 	env.last_offset = env.str_ref.get_offset ();
 	top_dict_opset_t<cff1_top_dict_val_t>::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
+	ако (!env.argStack.is_empty ()) врати;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ако (unlikely (env.in_error ())) врати;
 
     dictval.add_op (op, env.str_ref, val);
   }
@@ -870,7 +870,7 @@ struct cff1_font_dict_values_t : dict_values_t<op_str_t>
   void fini () { dict_values_t<op_str_t>::fini (); }
 
   table_info_t       privateDictInfo;
-  unsigned int    fontName;
+  unsigned цео    fontName;
 };
 
 struct cff1_font_dict_opset_t : dict_opset_t
@@ -894,11 +894,11 @@ struct cff1_font_dict_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	ако (!env.argStack.is_empty ()) врати;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ако (unlikely (env.in_error ())) врати;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -915,7 +915,7 @@ struct cff1_private_dict_values_base_t : dict_values_t<VAL>
   }
   void fini () { dict_values_t<VAL>::fini (); }
 
-  int                 subrsOffset;
+  цео                 subrsOffset;
   const CFF1Subrs    *localSubrs;
 };
 
@@ -956,11 +956,11 @@ struct cff1_private_dict_opset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	ако (!env.argStack.is_empty ()) врати;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ако (unlikely (env.in_error ())) врати;
 
     dictval.add_op (op, env.str_ref, val);
   }
@@ -998,11 +998,11 @@ struct cff1_private_dict_opset_subset_t : dict_opset_t
 
       default:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
+	ако (!env.argStack.is_empty ()) врати;
 	break;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ако (unlikely (env.in_error ())) врати;
 
     dictval.add_op (op, env.str_ref);
   }
@@ -1021,20 +1021,20 @@ struct cff1_font_dict_values_mod_t
   void init () { init ( &Null (cff1_font_dict_values_t), CFF_UNDEF_SID ); }
 
   void init (const cff1_font_dict_values_t *base_,
-	     unsigned int fontName_)
+	     unsigned цео fontName_)
   {
     base = base_;
     fontName = fontName_;
     privateDictInfo.init ();
   }
 
-  unsigned get_count () const { return base->get_count (); }
+  unsigned get_count () const { врати base->get_count (); }
 
-  const op_str_t &operator [] (unsigned int i) const { return (*base)[i]; }
+  const op_str_t &operator [] (unsigned цео i) const { врати (*base)[i]; }
 
   const cff1_font_dict_values_t    *base;
   table_info_t		   privateDictInfo;
-  unsigned int		fontName;
+  unsigned цео		fontName;
 };
 
 struct CFF1FDArray : FDArray<HBUINT16>
@@ -1042,7 +1042,7 @@ struct CFF1FDArray : FDArray<HBUINT16>
   /* FDArray::serialize() requires this partial specialization to compile */
   template <typename ITER, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
+  { врати FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
@@ -1070,7 +1070,7 @@ struct cff1
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      ако (!face) врати;
 
       topDict.init ();
       fontDicts.init ();
@@ -1084,131 +1084,131 @@ struct cff1
 
       const OT::cff1 *cff = this->blob->template as<OT::cff1> ();
 
-      if (cff == &Null (OT::cff1))
+      ако (cff == &Null (OT::cff1))
         goto fail;
 
       nameIndex = &cff->nameIndex (cff);
-      if ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
+      ако ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
         goto fail;
       hb_barrier ();
 
       topDictIndex = &StructAtOffsetOrNull<CFF1TopDictIndex> (nameIndex, nameIndex->get_size (), sc);
-      if (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
+      ако (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
         goto fail;
       hb_barrier ();
 
       { /* parse top dict */
 	const hb_ubytes_t topDictStr = (*topDictIndex)[0];
-	if (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
+	ако (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
 	hb_barrier ();
 	cff1_top_dict_interp_env_t env (topDictStr);
 	cff1_top_dict_interpreter_t top_interp (env);
-	if (unlikely (!top_interp.interpret (topDict)))   goto fail;
+	ако (unlikely (!top_interp.interpret (topDict)))   goto fail;
       }
 
-      if (is_predef_charset ())
+      ако (is_predef_charset ())
 	charset = &Null (Charset);
-      else
+      инако
       {
 	charset = &StructAtOffsetOrNull<Charset> (cff, topDict.CharsetOffset, sc, &num_charset_entries);
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	ако (unlikely (charset == &Null (Charset)))   goto fail;
       }
 
       fdCount = 1;
-      if (is_CID ())
+      ако (is_CID ())
       {
 	fdArray = &StructAtOffsetOrNull<CFF1FDArray> (cff, topDict.FDArrayOffset, sc);
 	fdSelect = &StructAtOffsetOrNull<CFF1FDSelect> (cff, topDict.FDSelectOffset, sc, fdArray->count);
-	if (unlikely (fdArray == &Null (CFF1FDArray) ||
+	ако (unlikely (fdArray == &Null (CFF1FDArray) ||
 		      fdSelect == &Null (CFF1FDSelect)))
 	  goto fail;
 
 	fdCount = fdArray->count;
       }
-      else
+      инако
       {
 	fdArray = &Null (CFF1FDArray);
 	fdSelect = &Null (CFF1FDSelect);
       }
 
       encoding = &Null (Encoding);
-      if (is_CID ())
+      ако (is_CID ())
       {
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	ако (unlikely (charset == &Null (Charset)))   goto fail;
       }
-      else
+      инако
       {
-	if (!is_predef_encoding ())
+	ако (!is_predef_encoding ())
 	{
 	  encoding = &StructAtOffsetOrNull<Encoding> (cff, topDict.EncodingOffset, sc);
-	  if (unlikely (encoding == &Null (Encoding)))   goto fail;
+	  ако (unlikely (encoding == &Null (Encoding)))   goto fail;
 	}
       }
 
       stringIndex = &StructAtOffsetOrNull<CFF1StringIndex> (topDictIndex, topDictIndex->get_size (), sc);
-      if (stringIndex == &Null (CFF1StringIndex))
+      ако (stringIndex == &Null (CFF1StringIndex))
         goto fail;
 
       globalSubrs = &StructAtOffsetOrNull<CFF1Subrs> (stringIndex, stringIndex->get_size (), sc);
       charStrings = &StructAtOffsetOrNull<CFF1CharStrings> (cff, topDict.charStringsOffset, sc);
-      if (charStrings == &Null (CFF1CharStrings))
+      ако (charStrings == &Null (CFF1CharStrings))
         goto fail;
 
       num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      ако (num_glyphs != sc.get_num_glyphs ())
         goto fail;
 
-      if (unlikely (!privateDicts.resize (fdCount)))
+      ако (unlikely (!privateDicts.resize (fdCount)))
         goto fail;
-      for (unsigned int i = 0; i < fdCount; i++)
+      за (unsigned цео i = 0; i < fdCount; i++)
 	privateDicts[i].init ();
 
       // parse CID font dicts and gather private dicts
-      if (is_CID ())
+      ако (is_CID ())
       {
-	for (unsigned int i = 0; i < fdCount; i++)
+	за (unsigned цео i = 0; i < fdCount; i++)
 	{
 	  hb_ubytes_t fontDictStr = (*fdArray)[i];
-	  if (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
+	  ако (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
 	  hb_barrier ();
 	  cff1_font_dict_values_t *font;
 	  cff1_top_dict_interp_env_t env (fontDictStr);
 	  cff1_font_dict_interpreter_t font_interp (env);
 	  font = fontDicts.push ();
-	  if (unlikely (fontDicts.in_error ()))   goto fail;
+	  ако (unlikely (fontDicts.in_error ()))   goto fail;
 
 	  font->init ();
-	  if (unlikely (!font_interp.interpret (*font)))   goto fail;
+	  ако (unlikely (!font_interp.interpret (*font)))   goto fail;
 	  PRIVDICTVAL *priv = &privateDicts[i];
 	  const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	  if (unlikely (font->privateDictInfo.size &&
+	  ако (unlikely (font->privateDictInfo.size &&
 			privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
 	  num_interp_env_t env2 (privDictStr);
 	  dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env2);
 	  priv->init ();
-	  if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	  ако (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	  priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	}
       }
-      else  /* non-CID */
+      инако  /* non-CID */
       {
 	cff1_top_dict_values_t *font = &topDict;
 	PRIVDICTVAL *priv = &privateDicts[0];
 
 	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (font->privateDictInfo.size &&
+	ако (font->privateDictInfo.size &&
 	    unlikely (privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
 	num_interp_env_t env (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env);
 	priv->init ();
-	if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	ако (unlikely (!priv_interp.interpret (*priv)))   goto fail;
 
 	priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
 	hb_barrier ();
       }
 
-      return;
+      врати;
 
       fail:
         _fini ();
@@ -1224,37 +1224,37 @@ struct cff1
       blob = nullptr;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () const { врати blob; }
 
-    bool is_valid () const { return blob; }
-    bool   is_CID () const { return topDict.is_CID (); }
+    bool is_valid () const { врати blob; }
+    bool   is_CID () const { врати topDict.is_CID (); }
 
-    bool is_predef_charset () const { return topDict.CharsetOffset <= ExpertSubsetCharset; }
+    bool is_predef_charset () const { врати topDict.CharsetOffset <= ExpertSubsetCharset; }
 
-    unsigned int std_code_to_glyph (hb_codepoint_t code) const
+    unsigned цео std_code_to_glyph (hb_codepoint_t code) const
     {
       hb_codepoint_t sid = lookup_standard_encoding_for_sid (code);
-      if (unlikely (sid == CFF_UNDEF_SID))
-	return 0;
+      ако (unlikely (sid == CFF_UNDEF_SID))
+	врати 0;
 
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else if ((topDict.CharsetOffset == ISOAdobeCharset)
-	      && (code <= 228 /*zcaron*/)) return sid;
-      return 0;
+      ако (charset != &Null (Charset))
+	врати charset->get_glyph (sid, num_glyphs);
+      инако ако ((topDict.CharsetOffset == ISOAdobeCharset)
+	      && (code <= 228 /*zcaron*/)) врати sid;
+      врати 0;
     }
 
-    bool is_predef_encoding () const { return topDict.EncodingOffset <= ExpertEncoding; }
+    bool is_predef_encoding () const { врати topDict.EncodingOffset <= ExpertEncoding; }
 
     hb_codepoint_t glyph_to_code (hb_codepoint_t glyph,
 				  code_pair_t *glyph_to_sid_cache = nullptr) const
     {
-      if (encoding != &Null (Encoding))
-	return encoding->get_code (glyph);
-      else
+      ако (encoding != &Null (Encoding))
+	врати encoding->get_code (glyph);
+      инако
       {
 	hb_codepoint_t sid = glyph_to_sid (glyph, glyph_to_sid_cache);
-	if (sid == 0) return 0;
+	ако (sid == 0) врати 0;
 	hb_codepoint_t code = 0;
 	switch (topDict.EncodingOffset)
 	{
@@ -1267,37 +1267,37 @@ struct cff1
 	default:
 	  break;
 	}
-	return code;
+	врати code;
       }
     }
 
     glyph_to_sid_map_t *create_glyph_to_sid_map () const
     {
-      if (charset != &Null (Charset))
+      ако (charset != &Null (Charset))
       {
 	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (sizeof (glyph_to_sid_map_t));
-	if (unlikely (!mapping)) return nullptr;
+	ако (unlikely (!mapping)) врати nullptr;
 	mapping = new (mapping) glyph_to_sid_map_t ();
 	mapping->push (code_pair_t {0, 1});
 	charset->collect_glyph_to_sid_map (mapping, num_glyphs);
-	return mapping;
+	врати mapping;
       }
-      else
-	return nullptr;
+      инако
+	врати nullptr;
     }
 
     hb_codepoint_t glyph_to_sid (hb_codepoint_t glyph,
 				 code_pair_t *cache = nullptr) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_sid (glyph, num_glyphs, cache);
-      else
+      ако (charset != &Null (Charset))
+	врати charset->get_sid (glyph, num_glyphs, cache);
+      инако
       {
 	hb_codepoint_t sid = 0;
 	switch (topDict.CharsetOffset)
 	{
 	  case ISOAdobeCharset:
-	    if (glyph <= 228 /*zcaron*/) sid = glyph;
+	    ако (glyph <= 228 /*zcaron*/) sid = glyph;
 	    break;
 	  case ExpertCharset:
 	    sid = lookup_expert_charset_for_sid (glyph);
@@ -1308,21 +1308,21 @@ struct cff1
 	  default:
 	    break;
 	}
-	return sid;
+	врати sid;
       }
     }
 
     hb_codepoint_t sid_to_glyph (hb_codepoint_t sid) const
     {
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else
+      ако (charset != &Null (Charset))
+	врати charset->get_glyph (sid, num_glyphs);
+      инако
       {
 	hb_codepoint_t glyph = 0;
 	switch (topDict.CharsetOffset)
 	{
 	  case ISOAdobeCharset:
-	    if (sid <= 228 /*zcaron*/) glyph = sid;
+	    ако (sid <= 228 /*zcaron*/) glyph = sid;
 	    break;
 	  case ExpertCharset:
 	    glyph = lookup_expert_charset_for_glyph (sid);
@@ -1333,7 +1333,7 @@ struct cff1
 	  default:
 	    break;
 	}
-	return glyph;
+	врати glyph;
       }
     }
 
@@ -1351,15 +1351,15 @@ struct cff1
     const CFF1CharStrings   *charStrings = nullptr;
     const CFF1FDArray       *fdArray = nullptr;
     const CFF1FDSelect      *fdSelect = nullptr;
-    unsigned int	     fdCount = 0;
+    unsigned цео	     fdCount = 0;
 
     cff1_top_dict_values_t   topDict;
     hb_vector_t<cff1_font_dict_values_t>
 			     fontDicts;
     hb_vector_t<PRIVDICTVAL> privateDicts;
 
-    unsigned int	     num_glyphs = 0;
-    unsigned int	     num_charset_entries = 0;
+    unsigned цео	     num_glyphs = 0;
+    unsigned цео	     num_charset_entries = 0;
   };
 
   struct accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
@@ -1368,13 +1368,13 @@ struct cff1
     {
       glyph_names.set_relaxed (nullptr);
 
-      if (!is_valid ()) return;
-      if (is_CID ()) return;
+      ако (!is_valid ()) врати;
+      ако (is_CID ()) врати;
     }
     ~accelerator_t ()
     {
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_relaxed ();
-      if (names)
+      ако (names)
       {
 	names->fini ();
 	hb_free (names);
@@ -1382,75 +1382,75 @@ struct cff1
     }
 
     bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+			 char *buf, unsigned цео buf_len) const
     {
-      if (unlikely (glyph >= num_glyphs)) return false;
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (unlikely (!buf_len)) return true;
+      ако (unlikely (glyph >= num_glyphs)) врати false;
+      ако (unlikely (!is_valid ())) врати false;
+      ако (is_CID()) врати false;
+      ако (unlikely (!buf_len)) врати true;
       hb_codepoint_t sid = glyph_to_sid (glyph);
       const char *str;
       size_t str_len;
-      if (sid < cff1_std_strings_length)
+      ако (sid < cff1_std_strings_length)
       {
 	hb_bytes_t byte_str = cff1_std_strings (sid);
 	str = byte_str.arrayZ;
 	str_len = byte_str.length;
       }
-      else
+      инако
       {
 	hb_ubytes_t ubyte_str = (*stringIndex)[sid - cff1_std_strings_length];
 	str = (const char *)ubyte_str.arrayZ;
 	str_len = ubyte_str.length;
       }
-      if (!str_len) return false;
-      unsigned int len = hb_min (buf_len - 1, str_len);
+      ако (!str_len) врати false;
+      unsigned цео len = hb_min (buf_len - 1, str_len);
       strncpy (buf, (const char*)str, len);
       buf[len] = '\0';
-      return true;
+      врати true;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
+    bool get_glyph_from_name (const char *name, цео len,
 			      hb_codepoint_t *glyph) const
     {
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (len < 0) len = strlen (name);
-      if (unlikely (!len)) return false;
+      ако (unlikely (!is_valid ())) врати false;
+      ако (is_CID()) врати false;
+      ако (len < 0) len = strlen (name);
+      ако (unlikely (!len)) врати false;
 
     retry:
       hb_sorted_vector_t<gname_t> *names = glyph_names.get_acquire ();
-      if (unlikely (!names))
+      ако (unlikely (!names))
       {
 	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, sizeof (hb_sorted_vector_t<gname_t>));
-	if (likely (names))
+	ако (likely (names))
 	{
 	  names->init ();
 	  /* TODO */
 
 	  /* fill glyph names */
 	  code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-	  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+	  за (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
 	  {
 	    hb_codepoint_t	sid = glyph_to_sid (gid, &glyph_to_sid_cache);
 	    gname_t	gname;
 	    gname.sid = sid;
-	    if (sid < cff1_std_strings_length)
+	    ако (sid < cff1_std_strings_length)
 	      gname.name = cff1_std_strings (sid);
-	    else
+	    инако
 	    {
 	      hb_ubytes_t	ustr = (*stringIndex)[sid - cff1_std_strings_length];
 	      gname.name = hb_bytes_t ((const char*) ustr.arrayZ, ustr.length);
 	    }
-	    if (unlikely (!gname.name.arrayZ))
+	    ако (unlikely (!gname.name.arrayZ))
 	      gname.name = hb_bytes_t ("", 0); /* To avoid nullptr. */
 	    names->push (gname);
 	  }
 	  names->qsort ();
 	}
-	if (unlikely (!glyph_names.cmpexch (nullptr, names)))
+	ако (unlikely (!glyph_names.cmpexch (nullptr, names)))
 	{
-	  if (names)
+	  ако (names)
 	  {
 	    names->fini ();
 	    hb_free (names);
@@ -1461,11 +1461,11 @@ struct cff1
 
       gname_t key = { hb_bytes_t (name, len), 0 };
       const gname_t *gname = names ? names->bsearch (key) : nullptr;
-      if (!gname) return false;
+      ако (!gname) врати false;
       hb_codepoint_t gid = sid_to_glyph (gname->sid);
-      if (!gid && gname->sid) return false;
+      ако (!gid && gname->sid) врати false;
       *glyph = gid;
-      return true;
+      врати true;
     }
 
     HB_INTERNAL bool get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = nullptr) const;
@@ -1477,17 +1477,17 @@ struct cff1
       hb_bytes_t	name;
       uint16_t		sid;
 
-      static int cmp (const void *a_, const void *b_)
+      static цео cmp (const void *a_, const void *b_)
       {
 	const gname_t *a = (const gname_t *)a_;
 	const gname_t *b = (const gname_t *)b_;
 	unsigned minlen = hb_min (a->name.length, b->name.length);
-	int ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
-	if (ret) return ret;
-	return a->name.length - b->name.length;
+	цео ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
+	ако (ret) врати ret;
+	врати a->name.length - b->name.length;
       }
 
-      int cmp (const gname_t &a) const { return cmp (&a, this); }
+      цео cmp (const gname_t &a) const { врати cmp (&a, this); }
     };
 
     mutable hb_atomic_t<hb_sorted_vector_t<gname_t> *> glyph_names;
@@ -1500,7 +1500,7 @@ struct cff1
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      ако (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
@@ -1541,11 +1541,11 @@ struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
 
   void depend (hb_depend_data_builder_t *builder) const
   {
-    if (!is_valid ()) return;
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+    ако (!is_valid ()) врати;
+    за (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
     {
       hb_codepoint_t base_gid, accent_gid;
-      if (get_seac_components (gid, &base_gid, &accent_gid))
+      ако (get_seac_components (gid, &base_gid, &accent_gid))
       {
         builder->add_depend (gid, HB_TAG('C','F','F',' '), base_gid);
         builder->add_depend (gid, HB_TAG('C','F','F',' '), accent_gid);

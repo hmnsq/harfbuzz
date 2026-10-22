@@ -47,7 +47,7 @@
 #include <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
+#ако U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
 #define HB_ICU_EXTRA_SEMI_IGNORED
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #endif
@@ -78,10 +78,10 @@
 hb_script_t
 hb_icu_script_to_script (UScriptCode script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  ако (unlikely (script == USCRIPT_INVALID_CODE))
+    врати HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  врати hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -99,14 +99,14 @@ hb_icu_script_from_script (hb_script_t script)
 {
   UScriptCode out = USCRIPT_INVALID_CODE;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  ако (unlikely (script == HB_SCRIPT_INVALID))
+    врати out;
 
   UErrorCode icu_err = U_ZERO_ERROR;
   const unsigned char buf[5] = {HB_UNTAG (script), 0};
   uscript_getCode ((const char *) buf, &out, 1, &icu_err);
 
-  return out;
+  врати out;
 }
 
 
@@ -116,7 +116,7 @@ hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				void               *user_data HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  врати (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
 static hb_unicode_general_category_t
@@ -126,48 +126,48 @@ hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 {
   switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  case U_UNASSIGNED:			врати HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  case U_UPPERCASE_LETTER:		врати HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  case U_LOWERCASE_LETTER:		врати HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  case U_TITLECASE_LETTER:		врати HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  case U_MODIFIER_LETTER:		врати HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  case U_OTHER_LETTER:			врати HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  case U_NON_SPACING_MARK:		врати HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  case U_ENCLOSING_MARK:		врати HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  case U_COMBINING_SPACING_MARK:	врати HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  case U_DECIMAL_DIGIT_NUMBER:		врати HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
+  case U_LETTER_NUMBER:			врати HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
+  case U_OTHER_NUMBER:			врати HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  case U_SPACE_SEPARATOR:		врати HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  case U_LINE_SEPARATOR:		врати HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
+  case U_PARAGRAPH_SEPARATOR:		врати HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  case U_CONTROL_CHAR:			врати HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  case U_FORMAT_CHAR:			врати HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  case U_PRIVATE_USE_CHAR:		врати HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
+  case U_SURROGATE:			врати HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  case U_DASH_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  case U_START_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  case U_END_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  case U_CONNECTOR_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  case U_OTHER_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  case U_MATH_SYMBOL:			врати HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
+  case U_CURRENCY_SYMBOL:		врати HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
+  case U_MODIFIER_SYMBOL:		врати HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
+  case U_OTHER_SYMBOL:			врати HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  case U_INITIAL_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  case U_FINAL_PUNCTUATION:		врати HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  врати HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
 static hb_codepoint_t
@@ -175,7 +175,7 @@ hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      unicode,
 			  void               *user_data HB_UNUSED)
 {
-  return u_charMirror(unicode);
+  врати u_charMirror(unicode);
 }
 
 static hb_script_t
@@ -186,10 +186,10 @@ hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   UErrorCode status = U_ZERO_ERROR;
   UScriptCode scriptCode = uscript_getScript(unicode, &status);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  ако (unlikely (U_FAILURE (status)))
+    врати HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  врати hb_icu_script_to_script (scriptCode);
 }
 
 static hb_bool_t
@@ -201,9 +201,9 @@ hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 {
   const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  ако (ret < 0) врати false;
   *ab = ret;
-  return true;
+  врати true;
 }
 
 static hb_bool_t
@@ -215,26 +215,26 @@ hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 {
   const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
   UChar decomposed[4];
-  int len;
+  цео len;
   UErrorCode icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
 				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+  ако (U_FAILURE (icu_err) || len < 0) врати false;
 
   len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  ако (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    врати *a != ab;
   }
-  else if (len == 2)
+  инако ако (len == 2)
   {
     len = 0;
     U16_NEXT_UNSAFE (decomposed, len, *a);
     U16_NEXT_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  врати true;
 }
 
 
@@ -262,7 +262,7 @@ static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    врати funcs;
   }
 } static_icu_funcs;
 
@@ -285,7 +285,7 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  врати static_icu_funcs.get_unconst ();
 }
 
 #pragma GCC diagnostic pop

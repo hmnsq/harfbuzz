@@ -28,26 +28,26 @@ struct SimpleGlyph
   SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned цео instruction_len_offset () const
+  { врати GlyphHeader::static_size + 2 * header.numberOfContours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned цео length (unsigned цео instruction_len) const
+  { врати instruction_len_offset () + 2 + instruction_len; }
 
   bool has_instructions_length () const
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    врати instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned цео instructions_length () const
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned цео instruction_length_offset = instruction_len_offset ();
+    ако (unlikely (instruction_length_offset + 2 > bytes.length)) врати 0;
 
     const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    ако (unlikely (length (instructionLength) > bytes.length)) врати 0;
+    врати instructionLength;
   }
 
   const hb_bytes_t trim_padding () const
@@ -58,66 +58,66 @@ struct SimpleGlyph
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    ако (unlikely (glyph + 2 >= glyph_end)) врати hb_bytes_t ();
+    unsigned цео num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned цео num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
     glyph += 2 + num_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned цео coord_bytes = 0;
+    unsigned цео coords_with_flags = 0;
+    док (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned цео repeat = 1;
+      ако (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	ако (unlikely (glyph >= glyph_end)) врати hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned цео xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      ако (flag & FLAG_X_SHORT) xBytes = 1;
+      инако ако ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      ако (flag & FLAG_Y_SHORT) yBytes = 1;
+      инако ако ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      ако (coords_with_flags >= num_coordinates) break;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    ако (unlikely (coords_with_flags != num_coordinates)) врати hb_bytes_t ();
+    врати bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
   void drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    ако (!has_instructions_length ()) врати;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
   void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned цео instructions_len = instructions_length ();
+    unsigned цео glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
   void set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    ако (unlikely (!header.numberOfContours)) врати;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    ако (unlikely (flags_offset + 1 > bytes.length)) врати;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
@@ -130,23 +130,23 @@ struct SimpleGlyph
   {
     auto *points = points_.arrayZ;
     unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    за (unsigned цео i = 0; i < count;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ако (unlikely (p + 1 > end)) врати false;
       uint8_t flag = *p++;
-      if (!extended)
+      ако (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      ако (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
+	ако (unlikely (p + 1 > end)) врати false;
+	unsigned цео repeat_count = *p++;
 	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	за (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    врати true;
   }
 
   static bool read_points (const HBUINT8 *&p /* IN/OUT */,
@@ -156,28 +156,28 @@ struct SimpleGlyph
 			   const simple_glyph_flag_t short_flag,
 			   const simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    цео v = 0;
 
-    for (auto &point : points_)
+    за (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      ако (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
+	ако (unlikely (p + 1 > end)) врати false;
 	v += (bool(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      инако
       {
-	if (!(flag & same_flag))
+	ако (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
+	  ако (unlikely (p + HBINT16::static_size > end)) врати false;
 	  v += *(const HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    врати true;
   }
 
   bool get_contour_points (contour_point_vector_t &points /* OUT */,
@@ -186,63 +186,63 @@ struct SimpleGlyph
 			   int64_t *budget = nullptr) const
   {
     const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
+    цео num_contours = header.numberOfContours;
     assert (num_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    ако (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) врати false;
+    unsigned цео num_points = endPtsOfContours[num_contours - 1] + 1;
+    ако (unlikely (num_points < (unsigned) num_contours)) врати false;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    ако (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) врати false;
 
     unsigned old_length = points.length;
     points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    ако (unlikely (!points.resize_dirty (points.length + num_points))) врати false;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
+    ако (!phantom_only)
       hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    ако (phantom_only) врати true;
 
-    for (int i = 0; i < num_contours; i++)
+    за (цео i = 0; i < num_contours; i++)
       points_[endPtsOfContours[i]].is_end_point = true;
 
     /* Skip instructions */
     const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
 						 endPtsOfContours[num_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
+    ако (unlikely ((const char *) p < bytes.arrayZ)) врати false; /* Unlikely overflow */
     const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    ако (unlikely (p >= end)) врати false;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    врати read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  static void encode_coord (цео value,
                             unsigned &flag,
                             const simple_glyph_flag_t short_flag,
                             const simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    ако (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    инако ако (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      ако (value > 0) flag |= same_flag;
+      инако value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    инако
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -255,22 +255,22 @@ struct SimpleGlyph
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    ако (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      ако (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      инако
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    инако
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
@@ -281,28 +281,28 @@ struct SimpleGlyph
                                   bool no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    ако (header.numberOfContours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      врати true;
     }
     unsigned num_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    ако (unlikely (!flags.alloc_exact (num_points))) врати false;
+    ако (unlikely (!x_coords.alloc_exact (2*num_points))) врати false;
+    ако (unlikely (!y_coords.alloc_exact (2*num_points))) врати false;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    цео prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    за (unsigned i = 0; i < num_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      цео cur_x = roundf (all_points.arrayZ[i].x);
+      цео cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -316,11 +316,11 @@ struct SimpleGlyph
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    ако (!no_hinting)
       total_len += len_instrs;
 
     char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    ако (unlikely (!p)) врати false;
 
     const char *src = bytes.arrayZ + GlyphHeader::static_size;
     char *cur = p;
@@ -329,7 +329,7 @@ struct SimpleGlyph
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    ако (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    врати true;
   }
 };
 

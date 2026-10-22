@@ -65,13 +65,13 @@ struct Paint;
 struct hb_paint_context_t :
        hb_dispatch_context_t<hb_paint_context_t>
 {
-  const char *get_name () { return "PAINT"; }
+  const char *get_name () { врати "PAINT"; }
   template <typename T>
-  return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (const T &obj) { obj.paint_glyph (this); врати hb_empty_t (); }
+  static return_t default_return_value () { врати hb_empty_t (); }
 
   const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  { врати reinterpret_cast<const COLR *> (base); }
 
 public:
   const void *base;
@@ -83,14 +83,14 @@ public:
   ItemVarStoreInstancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  цео depth_left = HB_MAX_NESTING_LEVEL;
+  цео edge_count = HB_MAX_GRAPH_EDGE_COUNT;
 
   hb_paint_context_t (const void *base_,
 		      hb_paint_funcs_t *funcs_,
 		      void *data_,
                       hb_font_t *font_,
-                      unsigned int palette_,
+                      unsigned цео palette_,
                       hb_color_t foreground_,
 		      ItemVarStoreInstancer &instancer_) :
     base (base_),
@@ -106,13 +106,13 @@ public:
     foreground (foreground_),
     instancer (instancer_)
   {
-    if (font->is_synthetic)
+    ако (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
       hb_font_set_synthetic_bold (font, 0, 0, true);
       hb_font_set_synthetic_slant (font, 0);
     }
-    else
+    инако
       hb_font_reference (font);
   }
 
@@ -126,24 +126,24 @@ public:
   {
     /* Font-supplied alpha is F2DOT14 plus variation deltas, so it can be
      * negative or greater than one; converting that to unsigned is UB. */
-    return roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
+    врати roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
   }
 
-  hb_color_t get_color (unsigned int color_index, float alpha, hb_bool_t *is_foreground)
+  hb_color_t get_color (unsigned цео color_index, float alpha, hb_bool_t *is_foreground)
   {
     hb_color_t color = foreground;
 
     *is_foreground = true;
 
-    if (color_index != 0xffff)
+    ако (color_index != 0xffff)
     {
-      if (!funcs->custom_palette_color (data, color_index, &color))
+      ако (!funcs->custom_palette_color (data, color_index, &color))
         color = palette[color_index];
 
       *is_foreground = false;
     }
 
-    return HB_COLOR (hb_color_get_blue (color),
+    врати HB_COLOR (hb_color_get_blue (color),
                      hb_color_get_green (color),
                      hb_color_get_red (color),
                      color_alpha (color, alpha));
@@ -158,38 +158,38 @@ struct hb_colrv1_closure_context_t :
   template <typename T>
   return_t dispatch (const T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    ако (unlikely (nesting_level_left == 0))
+      врати hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    ако (paint_visited (&obj))
+      врати hb_empty_t ();
 
     nesting_level_left--;
     obj.closurev1 (this);
     nesting_level_left++;
-    return hb_empty_t ();
+    врати hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_value () { врати hb_empty_t (); }
 
   bool paint_visited (const void *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) base);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    ако (visited_paint.in_error() || visited_paint.has (delta))
+      врати true;
 
     visited_paint.add (delta);
-    return false;
+    врати false;
   }
 
   const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  { врати reinterpret_cast<const COLR *> (base); }
 
   void add_glyph (unsigned glyph_id)
   { glyphs->add (glyph_id); }
 
   void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
   {
-    if (num_of_layers == 0) return;
+    ако (num_of_layers == 0) врати;
     layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
   }
 
@@ -198,7 +198,7 @@ struct hb_colrv1_closure_context_t :
 
   void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
+    ако (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) врати;
     variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
   }
 
@@ -236,33 +236,33 @@ struct hb_colrv1_depend_context_t :
   template <typename T>
   return_t dispatch (const T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    ако (unlikely (nesting_level_left == 0))
+      врати hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    ако (paint_visited (&obj))
+      врати hb_empty_t ();
 
     nesting_level_left--;
     obj.dependv1 (this);
     nesting_level_left++;
-    return hb_empty_t ();
+    врати hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  static return_t default_return_value () { врати hb_empty_t (); }
 
   bool paint_visited (const void *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) colr);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    ако (visited_paint.in_error() || visited_paint.has (delta))
+      врати true;
 
     visited_paint.add (delta);
-    if (unlikely (visited_paint.in_error ()))
+    ако (unlikely (visited_paint.in_error ()))
       depend_data->fail ();
-    return false;
+    врати false;
   }
 
   const COLR* get_colr_table () const
-  { return colr; }
+  { врати colr; }
 
   public:
   const COLR *colr;
@@ -283,7 +283,7 @@ struct hb_colrv1_depend_context_t :
 
 struct LayerRecord
 {
-  operator hb_ot_color_layer_t () const { return {glyphId, colorIdx}; }
+  operator hb_ot_color_layer_t () const { врати {glyphId, colorIdx}; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -309,8 +309,8 @@ struct LayerRecord
 
 struct BaseGlyphRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  цео cmp (hb_codepoint_t g) const
+  { врати g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -336,7 +336,7 @@ struct Variable
 {
   static constexpr bool is_variable = true;
 
-  const T& get_value () const { return value; }
+  const T& get_value () const { врати value; }
 
   Variable<T>* copy (hb_serialize_context_t *c) const
   {
@@ -359,16 +359,16 @@ struct Variable
                const ItemVarStoreInstancer &instancer) const
   {
     TRACE_SUBSET (this);
-    if (!value.subset (c, instancer, varIdxBase)) return_trace (false);
-    if (c->plan->all_axes_pinned)
+    ако (!value.subset (c, instancer, varIdxBase)) return_trace (false);
+    ако (c->plan->all_axes_pinned)
       return_trace (true);
 
     VarIdx new_varidx;
     new_varidx = varIdxBase;
-    if (varIdxBase != VarIdx::NO_VARIATION)
+    ако (varIdxBase != VarIdx::NO_VARIATION)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
+      hb_pair_t<unsigned, цео> *new_varidx_delta;
+      ако (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
         return_trace (false);
 
       new_varidx = hb_first (*new_varidx_delta);
@@ -404,7 +404,7 @@ struct Variable
 
   hb_paint_extend_t get_extend () const
   {
-    return value.get_extend ();
+    врати value.get_extend ();
   }
 
   protected:
@@ -420,7 +420,7 @@ struct NoVariable
 {
   static constexpr bool is_variable = false;
 
-  const T& get_value () const { return value; }
+  const T& get_value () const { врати value; }
 
   static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
 
@@ -470,7 +470,7 @@ struct NoVariable
 
   hb_paint_extend_t get_extend () const
   {
-    return value.get_extend ();
+    врати value.get_extend ();
   }
 
   T      value;
@@ -504,9 +504,9 @@ struct ColorStop
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->stopOffset, stopOffset.to_float(instancer (varIdxBase, 0)));
       float a = alpha.to_float (instancer (varIdxBase, 1));
@@ -562,7 +562,7 @@ struct ColorLine
 
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
-    for (const auto &stop : stops.iter ())
+    за (const auto &stop : stops.iter ())
       stop.closurev1 (c);
   }
 
@@ -571,14 +571,14 @@ struct ColorLine
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
-    if (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    if (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
+    ако (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    ако (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
 
-    for (const auto& stop : stops.iter ())
+    за (const auto& stop : stops.iter ())
     {
-      if (!stop.subset (c, instancer)) return_trace (false);
+      ако (!stop.subset (c, instancer)) return_trace (false);
     }
     return_trace (true);
   }
@@ -591,46 +591,46 @@ struct ColorLine
   }
 
   /* get up to count stops from start */
-  unsigned int
+  unsigned цео
   get_color_stops (hb_paint_context_t *c,
-                   unsigned int start,
-		   unsigned int *count,
+                   unsigned цео start,
+		   unsigned цео *count,
 		   hb_color_stop_t *color_stops,
 		   const ItemVarStoreInstancer &instancer) const
   {
-    unsigned int len = stops.len;
+    unsigned цео len = stops.len;
 
-    if (count && color_stops)
+    ако (count && color_stops)
     {
-      unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
+      unsigned цео i;
+      за (i = 0; i < *count && start + i < len; i++)
         stops[start + i].get_color_stop (c, &color_stops[i], instancer);
       *count = i;
     }
 
-    return len;
+    врати len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
+  HB_INTERNAL static unsigned цео static_get_color_stops (hb_color_line_t *color_line,
 							  void *color_line_data,
-							  unsigned int start,
-							  unsigned int *count,
+							  unsigned цео start,
+							  unsigned цео *count,
 							  hb_color_stop_t *color_stops,
 							  void *user_data)
   {
     const ColorLine *thiz = (const ColorLine *) color_line_data;
     hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    врати thiz->get_color_stops (c, start, count, color_stops, c->instancer);
   }
 
   hb_paint_extend_t get_extend () const
   {
-    switch ((unsigned int) extend)
+    switch ((unsigned цео) extend)
     {
-      case Extend::EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-      case Extend::EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
+      case Extend::EXTEND_REPEAT:  врати HB_PAINT_EXTEND_REPEAT;
+      case Extend::EXTEND_REFLECT: врати HB_PAINT_EXTEND_REFLECT;
       case Extend::EXTEND_PAD:
-      default:                     return HB_PAINT_EXTEND_PAD;
+      default:                     врати HB_PAINT_EXTEND_PAD;
     }
   }
 
@@ -639,7 +639,7 @@ struct ColorLine
 							  void *user_data)
   {
     const ColorLine *thiz = (const ColorLine *) color_line_data;
-    return thiz->get_extend ();
+    врати thiz->get_extend ();
   }
 
   Extend	extend;
@@ -678,8 +678,8 @@ struct Affine2x3
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (unlikely (!out)) return_trace (false);
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       auto fold = [&] (F16DOT16 &target, F16DOT16 source, unsigned offset) {
         // Keep the stored integer precise while applying the float delta.
@@ -728,7 +728,7 @@ struct PaintColrLayers
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
     uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
     return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
@@ -765,15 +765,15 @@ struct PaintSolid
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       float a = alpha.to_float (instancer (varIdxBase, 0));
       set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    if (format == 3 && c->plan->all_axes_pinned)
+    ако (format == 3 && c->plan->all_axes_pinned)
         out->format = 2;
 
     return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
@@ -828,9 +828,9 @@ struct PaintLinearGradient
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
       out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
@@ -840,7 +840,7 @@ struct PaintLinearGradient
       out->y2 = hb_clamp_to<int16_t> ((double) y2 + (double) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 5 && c->plan->all_axes_pinned)
+    ако (format == 5 && c->plan->all_axes_pinned)
         out->format = 4;
 
     return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
@@ -889,25 +889,25 @@ struct PaintRadialGradient
   bool constant_after_pinning (hb_subset_context_t *c,
                                const ItemVarStoreInstancer &instancer) const
   {
-    if (c->plan->has_avar2) return false;
+    ако (c->plan->has_avar2) врати false;
     const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    за (unsigned i = 0; i < regions.regionCount; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axes;
-      if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
+      ако (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-        return false;
+        врати false;
       }
-      for (auto axis : axes)
+      за (auto axis : axes)
       {
         Triple *limit;
-        if (!c->plan->user_axes_location.has (axis.first, &limit) ||
+        ако (!c->plan->user_axes_location.has (axis.first, &limit) ||
             limit->minimum != limit->maximum)
-          return false;
+          врати false;
       }
     }
-    return true;
+    врати true;
   }
 
   void dependv1 (hb_colrv1_depend_context_t* c) const {}
@@ -932,55 +932,55 @@ struct PaintRadialGradient
     };
     auto transparent = [&] {
       auto *out = c->serializer->allocate_size<PaintSolid> (5);
-      if (!out) return false;
+      ако (!out) врати false;
       out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
-      return true;
+      врати true;
     };
     const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
+    ако (source[2] == source[5] || !line.stops.len) врати transparent ();
     struct stop_t { double offset, alpha; unsigned palette, order; };
     hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
+    ако (!stops.alloc (line.stops.len)) врати false;
     unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    за (const auto &entry : line.stops.iter ())
     {
       const auto &stop = entry.get_value ();
       stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
                    (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
                    stop.paletteIndex, order++});
     }
-    if (stops.in_error ()) return false;
+    ако (stops.in_error ()) врати false;
     stops.qsort ([] (const stop_t &a, const stop_t &b) {
-      return a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
+      врати a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
              a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
     });
     double dr = source[5] - source[2];
     // Fractional shifts must preserve both integer circles and F2Dot14 stops.
     unsigned lattice = 16384;
-    for (unsigned j = 0; j < 3; j++)
+    за (unsigned j = 0; j < 3; j++)
     {
       double remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
-      if (!(remainder >= 0 && remainder < 16384))
+      ако (!(remainder >= 0 && remainder < 16384))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-        return false;
+        врати false;
       }
       unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      док (right) { unsigned r = lattice % right; lattice = right; right = r; }
     }
-    for (unsigned shift = 0; shift < 16; shift++)
+    за (unsigned shift = 0; shift < 16; shift++)
     {
       double b = 1u << shift;
       double coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
       double fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
                             floor (source[2] / -dr * lattice) / lattice - b;
       double candidates[] = {coarse, fine};
-      for (double a : candidates)
+      за (double a : candidates)
       {
         // omega = a + b*q. Positive b preserves the largest valid root.
         double geometry[6];
         bool fits = true;
-        for (unsigned j = 0; j < 3; j++)
+        за (unsigned j = 0; j < 3; j++)
         {
           double difference = source[j + 3] - source[j];
           geometry[j] = source[j] + a * difference;
@@ -989,62 +989,62 @@ struct PaintRadialGradient
           fits &= geometry[j] >= low && geometry[j] <= high &&
                   geometry[j + 3] >= low && geometry[j + 3] <= high;
         }
-        if (!fits) continue;
+        ако (!fits) continue;
         unsigned first = 0, count = stops.length;
         double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
         double bias = 0;
         bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        ако (line.extend == Extend::EXTEND_PAD)
         {
           double tip = -geometry[2] / (b * dr);
-          if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
+          ако ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
             first = dr > 0 ? stops.length - 1 : 0;
             count = 1; constant = true;
           }
         }
-        else
+        инако
         {
           double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
-          if (period <= 0) return transparent ();
+          ако (line.extend == Extend::EXTEND_REFLECT) period *= 2;
+          ако (period <= 0) врати transparent ();
           double n = ceil ((-2 - min) / period);
-          if (n > floor ((32767. / 16384. - max) / period)) continue;
+          ако (n > floor ((32767. / 16384. - max) / period)) continue;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        за (unsigned j = 0; j < count; j++)
         {
           double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
           fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
         }
-        if (!fits) continue;
+        ако (!fits) continue;
         auto *out = c->serializer->allocate_size<PaintRadialGradient<NoVariable>> (16);
-        if (!out) return false;
+        ако (!out) врати false;
         out->format = 6;
-        out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
-        out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
+        out->x0 = (цео) geometry[0]; out->y0 = (цео) geometry[1]; out->radius0 = (unsigned) geometry[2];
+        out->x1 = (цео) geometry[3]; out->y1 = (цео) geometry[4]; out->radius1 = (unsigned) geometry[5];
         c->serializer->push ();
         auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
+        ако (!out_line) { c->serializer->pop_discard (); врати false; }
         out_line->extend = line.extend;
         out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        за (unsigned j = 0; j < count; j++)
         {
           const auto &stop = stops[first + j];
           auto &out_stop = out_line->stops[j].value;
           out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
           out_stop.alpha.set_float ((float) stop.alpha);
-          if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
+          ако (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          { c->serializer->pop_discard (); врати false; }
         }
         c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
-        return !c->serializer->in_error ();
+        врати !c->serializer->in_error ();
       }
     }
     // Reject an unrepresentable static result instead of changing its colors.
     c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    return false;
+    врати false;
   }
 
   bool subset (hb_subset_context_t *c,
@@ -1052,16 +1052,16 @@ struct PaintRadialGradient
                uint32_t varIdxBase) const
   {
     TRACE_SUBSET (this);
-    if (instancer && !c->plan->pinned_at_default &&
+    ако (instancer && !c->plan->pinned_at_default &&
         (c->plan->all_axes_pinned || constant_after_pinning (c, instancer)) &&
         varIdxBase != VarIdx::NO_VARIATION &&
         (radius0 + (double) roundf (instancer (varIdxBase, 2)) < 0 ||
          radius1 + (double) roundf (instancer (varIdxBase, 5)) < 0))
       return_trace (subset_nonnegative (c, instancer, varIdxBase));
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
       out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
@@ -1071,7 +1071,7 @@ struct PaintRadialGradient
       out->radius1 = hb_clamp_to<uint16_t> ((double) radius1 + (double) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 7 && c->plan->all_axes_pinned)
+    ако (format == 7 && c->plan->all_axes_pinned)
         out->format = 6;
 
     return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
@@ -1131,9 +1131,9 @@ struct PaintSweepGradient
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 0)));
       out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 1)));
@@ -1141,7 +1141,7 @@ struct PaintSweepGradient
       set_fixed_clamped (out->endAngle, endAngle.to_float (instancer (varIdxBase, 3)));
     }
 
-    if (format == 9 && c->plan->all_axes_pinned)
+    ако (format == 9 && c->plan->all_axes_pinned)
         out->format = 8;
 
     return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
@@ -1194,9 +1194,9 @@ struct PaintGlyph
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
+    ако (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
@@ -1228,7 +1228,7 @@ struct PaintColrGlyph
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
     return_trace (c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
@@ -1259,9 +1259,9 @@ struct PaintTransform
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
-    if (format == 13 && c->plan->all_axes_pinned)
+    ако (unlikely (!out)) return_trace (false);
+    ако (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
+    ако (format == 13 && c->plan->all_axes_pinned)
       out->format = 12;
     return_trace (out->src.serialize_subset (c, src, this, instancer));
   }
@@ -1300,15 +1300,15 @@ struct PaintTranslate
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       out->dx = hb_clamp_to<int16_t> ((double) dx + (double) roundf (instancer (varIdxBase, 0)));
       out->dy = hb_clamp_to<int16_t> ((double) dy + (double) roundf (instancer (varIdxBase, 1)));
     }
 
-    if (format == 15 && c->plan->all_axes_pinned)
+    ако (format == 15 && c->plan->all_axes_pinned)
         out->format = 14;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1345,15 +1345,15 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
                                        const Source &source)
 {
   auto *out = c->serializer->allocate_size<PaintTransform<NoVariable>> (7);
-  if (unlikely (!out)) return false;
+  ако (unlikely (!out)) врати false;
   out->format = 12;
 
   c->serializer->push ();
   auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
-  if (unlikely (!transform))
+  ако (unlikely (!transform))
   {
     c->serializer->pop_discard ();
-    return false;
+    врати false;
   }
   set_fixed_clamped (transform->xx, sx);
   transform->yx.set_float (0);
@@ -1365,11 +1365,11 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
 
   c->serializer->push ();
   bool ret = source ();
-  if (ret)
+  ако (ret)
     c->serializer->add_link (out->src, c->serializer->pop_pack ());
-  else
+  инако
     c->serializer->pop_discard ();
-  return ret;
+  врати ret;
 }
 
 template <typename Base>
@@ -1380,27 +1380,27 @@ static bool subset_scale_as_transform (hb_subset_context_t *c,
                                       float sx, float sy,
                                       float cx = 0, float cy = 0)
 {
-  if (src.is_null ()) return false;
-  auto source = [&] { return c->dispatch (base+src, instancer); };
+  ако (src.is_null ()) врати false;
+  auto source = [&] { врати c->dispatch (base+src, instancer); };
   float dx = cx * (1 - sx), dy = cy * (1 - sy);
-  if (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
-    return serialize_scale_transform (c, sx, sy, dx, dy, source);
+  ако (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
+    врати serialize_scale_transform (c, sx, sy, dx, dy, source);
 
   // Preserve the center as separate translations when the combined matrix
   // exceeds Fixed. Splitting also makes the inverse of -32768 representable.
   auto inner = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
+    врати serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
   };
   auto inverse = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
+    врати serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
   };
   auto scale = [&] {
-    return serialize_scale_transform (c, sx, sy, 0, 0, inverse);
+    врати serialize_scale_transform (c, sx, sy, 0, 0, inverse);
   };
   auto outer = [&] {
-    return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
+    врати serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
   };
-  return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
+  врати serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
 }
 
 struct PaintScale
@@ -1413,24 +1413,24 @@ struct PaintScale
                uint32_t varIdxBase) const
   {
     TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    ако (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
       float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      ако (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (c, this, src, instancer, sx, sy));
     }
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 17 && c->plan->all_axes_pinned)
+    ако (format == 17 && c->plan->all_axes_pinned)
         out->format = 16;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1471,21 +1471,21 @@ struct PaintScaleAroundCenter
                uint32_t varIdxBase) const
   {
     TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    ако (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
       float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      ако (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (
             c, this, src, instancer, sx, sy,
             centerX + roundf (instancer (varIdxBase, 2)),
             centerY + roundf (instancer (varIdxBase, 3))));
     }
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
@@ -1493,7 +1493,7 @@ struct PaintScaleAroundCenter
       out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 19 && c->plan->all_axes_pinned)
+    ако (format == 19 && c->plan->all_axes_pinned)
         out->format = 18;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1538,20 +1538,20 @@ struct PaintScaleUniform
                uint32_t varIdxBase) const
   {
     TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    ако (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      ако (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (c, this, src, instancer, s, s));
     }
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 21 && c->plan->all_axes_pinned)
+    ако (format == 21 && c->plan->all_axes_pinned)
         out->format = 20;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1590,27 +1590,27 @@ struct PaintScaleUniformAroundCenter
                uint32_t varIdxBase) const
   {
     TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    ако (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      ако (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (
             c, this, src, instancer, s, s,
             centerX + roundf (instancer (varIdxBase, 1)),
             centerY + roundf (instancer (varIdxBase, 2))));
     }
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
       out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
       out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format == 23 && c->plan->all_axes_pinned)
+    ако (format == 23 && c->plan->all_axes_pinned)
         out->format = 22;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1654,12 +1654,12 @@ struct PaintRotate
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 25 && c->plan->all_axes_pinned)
+    ако (format == 25 && c->plan->all_axes_pinned)
       out->format = 24;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1699,16 +1699,16 @@ struct PaintRotateAroundCenter
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
       out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
       out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format ==27 && c->plan->all_axes_pinned)
+    ако (format ==27 && c->plan->all_axes_pinned)
         out->format = 26;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1752,15 +1752,15 @@ struct PaintSkew
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 29 && c->plan->all_axes_pinned)
+    ако (format == 29 && c->plan->all_axes_pinned)
         out->format = 28;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1802,9 +1802,9 @@ struct PaintSkewAroundCenter
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
@@ -1812,7 +1812,7 @@ struct PaintSkewAroundCenter
       out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 31 && c->plan->all_axes_pinned)
+    ако (format == 31 && c->plan->all_axes_pinned)
         out->format = 30;
 
     return_trace (out->src.serialize_subset (c, src, this, instancer));
@@ -1857,7 +1857,7 @@ struct PaintComposite
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
     bool ret = false;
     ret |= out->src.serialize_subset (c, src, this, instancer);
@@ -1878,7 +1878,7 @@ struct PaintComposite
   {
     TRACE_PAINT (this);
     hb_paint_composite_mode_t composite_mode;
-    switch ((unsigned int) mode)
+    switch ((unsigned цео) mode)
     {
       case HB_PAINT_COMPOSITE_MODE_CLEAR:
       case HB_PAINT_COMPOSITE_MODE_SRC:
@@ -1908,7 +1908,7 @@ struct PaintComposite
       case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
       case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
       case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-	composite_mode = (hb_paint_composite_mode_t) (unsigned int) mode;
+	composite_mode = (hb_paint_composite_mode_t) (unsigned цео) mode;
 	break;
       default:
 	composite_mode = HB_PAINT_COMPOSITE_MODE_CLEAR;
@@ -1933,7 +1933,7 @@ struct PaintComposite
 
 struct ClipBoxData
 {
-  int xMin, yMin, xMax, yMax;
+  цео xMin, yMin, xMax, yMax;
 };
 
 struct ClipBoxFormat1
@@ -1958,9 +1958,9 @@ struct ClipBoxFormat1
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    ако (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       out->xMin = hb_clamp_to<int16_t> ((double) xMin + (double) floorf (instancer (varIdxBase, 0)));
       out->yMin = hb_clamp_to<int16_t> ((double) yMin + (double) floorf (instancer (varIdxBase, 1)));
@@ -1968,7 +1968,7 @@ struct ClipBoxFormat1
       out->yMax = hb_clamp_to<int16_t> ((double) yMax + (double) ceilf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 2 && c->plan->all_axes_pinned)
+    ако (format == 2 && c->plan->all_axes_pinned)
         out->format = 1;
 
     return_trace (true);
@@ -1989,12 +1989,12 @@ struct ClipBoxFormat2 : Variable<ClipBoxFormat1>
   void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer) const
   {
     value.get_clip_box(clip_box, instancer);
-    if (instancer)
+    ако (instancer)
     {
-      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 0))));
-      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 1))));
-      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 2))));
-      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 3))));
+      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<цео> (floorf (instancer (varIdxBase, 0))));
+      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<цео> (floorf (instancer (varIdxBase, 1))));
+      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<цео> (ceilf (instancer (varIdxBase, 2))));
+      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<цео> (ceilf (instancer (varIdxBase, 3))));
     }
   }
 
@@ -2018,15 +2018,15 @@ struct ClipBox
   void closurev1 (hb_colrv1_closure_context_t* c) const
   {
     switch (u.format.v) {
-    case 2: hb_barrier (); u.format2.closurev1 (c); return;
-    default:return;
+    case 2: hb_barrier (); u.format2.closurev1 (c); врати;
+    default:врати;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) врати c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -2049,14 +2049,14 @@ struct ClipBox
       u.format2.get_clip_box (clip_box, instancer);
       break;
     default:
-      return false;
+      врати false;
     }
 
     extents->x_bearing = clip_box.xMin;
     extents->y_bearing = clip_box.yMax;
     extents->width = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
     extents->height = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
-    return true;
+    врати true;
   }
 
   protected:
@@ -2069,12 +2069,12 @@ struct ClipBox
 
 struct ClipRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
+  цео cmp (hb_codepoint_t g) const
+  { врати g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
 
   void closurev1 (hb_colrv1_closure_context_t* c, const void *base) const
   {
-    if (!c->glyphs->intersects (startGlyphID, endGlyphID)) return;
+    ако (!c->glyphs->intersects (startGlyphID, endGlyphID)) врати;
     (base+clipBox).closurev1 (c);
   }
 
@@ -2084,7 +2084,7 @@ struct ClipRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
     return_trace (out->clipBox.serialize_subset (c, clipBox, base, instancer));
   }
@@ -2099,7 +2099,7 @@ struct ClipRecord
 		    const void *base,
 		    const ItemVarStoreInstancer &instancer) const
   {
-    return (base+clipBox).get_extents (extents, instancer);
+    врати (base+clipBox).get_extents (extents, instancer);
   }
 
   public:
@@ -2119,7 +2119,7 @@ struct ClipList
                                    const hb_map_t& gid_offset_map) const
   {
     TRACE_SERIALIZE (this);
-    if (gids.is_empty () ||
+    ако (gids.is_empty () ||
         gid_offset_map.get_population () != gids.get_population ())
       return_trace (0);
 
@@ -2130,12 +2130,12 @@ struct ClipList
 
     unsigned offset = gid_offset_map.get (start_gid);
     unsigned prev_offset = offset;
-    for (const hb_codepoint_t _ : gids.iter ())
+    за (const hb_codepoint_t _ : gids.iter ())
     {
-      if (_ == start_gid) continue;
+      ако (_ == start_gid) continue;
 
       offset = gid_offset_map.get (_);
-      if (_ == prev_gid + 1 &&  offset == prev_offset)
+      ако (_ == prev_gid + 1 &&  offset == prev_offset)
       {
         prev_gid = _;
         continue;
@@ -2146,7 +2146,7 @@ struct ClipList
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
 
-      if (!record.subset (c, this, instancer)) return_trace (0);
+      ако (!record.subset (c, this, instancer)) return_trace (0);
       count++;
 
       start_gid = _;
@@ -2160,7 +2160,7 @@ struct ClipList
       record.startGlyphID = start_gid;
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
-      if (!record.subset (c, this, instancer)) return_trace (0);
+      ако (!record.subset (c, this, instancer)) return_trace (0);
       count++;
     }
     return_trace (count);
@@ -2171,21 +2171,21 @@ struct ClipList
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
 
     const hb_set_t& glyphset = c->plan->_glyphset_colred;
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_map_t new_gid_offset_map;
     hb_set_t new_gids;
-    for (const ClipRecord& record : clips.iter ())
+    за (const ClipRecord& record : clips.iter ())
     {
       unsigned start_gid = record.startGlyphID;
       unsigned end_gid = record.endGlyphID;
-      for (unsigned gid = start_gid; gid <= end_gid; gid++)
+      за (unsigned gid = start_gid; gid <= end_gid; gid++)
       {
-        if (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
+        ако (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
         unsigned new_gid = glyph_map.get (gid);
         new_gid_offset_map.set (new_gid, record.clipBox);
         new_gids.add (new_gid);
@@ -2193,7 +2193,7 @@ struct ClipList
     }
 
     unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
+    ако (!count) return_trace (false);
     return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
@@ -2210,9 +2210,9 @@ struct ClipList
 	       const ItemVarStoreInstancer &instancer) const
   {
     auto *rec = clips.as_array ().bsearch (gid);
-    if (rec)
-      return rec->get_extents (extents, this, instancer);
-    return false;
+    ако (rec)
+      врати rec->get_extents (extents, this, instancer);
+    врати false;
   }
 
   HBUINT8			format;  // Set to 1.
@@ -2229,7 +2229,7 @@ struct Paint
   {
     TRACE_SANITIZE (this);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
+    ако (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
       return_trace (c->no_dispatch_return_value ());
 
     return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
@@ -2238,7 +2238,7 @@ struct Paint
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) врати c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
@@ -2284,9 +2284,9 @@ struct Paint
 			hb_bool_t *is_foreground, hb_color_t *color) const
   {
     switch (u.format.v) {
-    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); return true;
-    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); return true;
-    default: return false;
+    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); врати true;
+    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); врати true;
+    default: врати false;
     }
   }
 
@@ -2335,8 +2335,8 @@ struct Paint
 
 struct BaseGlyphPaintRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  цео cmp (hb_codepoint_t g) const
+  { врати g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
   bool serialize (hb_serialize_context_t *s, const hb_map_t* glyph_map,
                   const void* src_base, hb_subset_context_t *c,
@@ -2344,8 +2344,8 @@ struct BaseGlyphPaintRecord
   {
     TRACE_SERIALIZE (this);
     auto *out = s->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
+    ако (unlikely (!out)) return_trace (false);
+    ако (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (false);
 
@@ -2373,16 +2373,16 @@ struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
     const hb_set_t* glyphset = &c->plan->_glyphset_colred;
 
-    for (const auto& _ : as_array ())
+    за (const auto& _ : as_array ())
     {
       unsigned gid = _.glyphId;
-      if (!glyphset->has (gid)) continue;
+      ако (!glyphset->has (gid)) continue;
 
-      if (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
-      else return_trace (false);
+      ако (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
+      инако return_trace (false);
     }
 
     return_trace (out->len != 0);
@@ -2398,22 +2398,22 @@ struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
 struct LayerList : Array32OfOffset32To<Paint>
 {
   const Paint& get_paint (unsigned i) const
-  { return this+(*this)[i]; }
+  { врати this+(*this)[i]; }
 
   bool subset (hb_subset_context_t *c,
                const ItemVarStoreInstancer &instancer) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     bool ret = false;
-    for (const auto& _ : + hb_enumerate (*this)
+    за (const auto& _ : + hb_enumerate (*this)
                          | hb_filter (c->plan->colrv1_layers, hb_first))
 
     {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
+      ако (unlikely (!o)) return_trace (false);
       ret |= o->serialize_subset (c, _.second, this, instancer);
     }
     return_trace (ret);
@@ -2428,9 +2428,9 @@ struct LayerList : Array32OfOffset32To<Paint>
 
 struct delta_set_index_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  unsigned get_inner_bit_count () const { врати inner_bit_count; }
+  unsigned get_width ()           const { врати ((outer_bit_count + inner_bit_count + 7) / 8); }
+  hb_array_t<const uint32_t> get_output_map () const { врати output_map.as_array (); }
 
   delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
   {
@@ -2441,22 +2441,22 @@ struct delta_set_index_map_subset_plan_t
 
     /* search backwards */
     unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    ако (!count) врати;
 
     unsigned last_idx = (unsigned)-1;
     unsigned last_varidx = (unsigned)-1;
 
-    for (unsigned i = count; i; i--)
+    за (unsigned i = count; i; i--)
     {
       unsigned delta_set_idx = i - 1;
       unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      ако (i == count)
       {
         last_idx = delta_set_idx;
         last_varidx = var_idx;
         continue;
       }
-      if (var_idx != last_varidx)
+      ако (var_idx != last_varidx)
         break;
       last_idx = delta_set_idx;
     }
@@ -2470,12 +2470,12 @@ struct delta_set_index_map_subset_plan_t
     outer_bit_count = 1;
     inner_bit_count = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    ако (unlikely (!output_map.resize_dirty (map_count))) врати false;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    за (unsigned idx = 0; idx < map_count; idx++)
     {
       uint32_t *var_idx;
-      if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
+      ако (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) врати false;
       output_map.arrayZ[idx] = *var_idx;
 
       unsigned outer = (*var_idx) >> 16;
@@ -2486,7 +2486,7 @@ struct delta_set_index_map_subset_plan_t
       bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
       inner_bit_count = hb_max (bit_count, inner_bit_count);
     }
-    return true;
+    врати true;
   }
 
   private:
@@ -2500,21 +2500,21 @@ struct COLR
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
 
-  bool has_data () const { return has_v0_data () || version; }
+  bool has_data () const { врати has_v0_data () || version; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
+  bool has_v0_data () const { врати numBaseGlyphs; }
   bool has_v1_data () const
   {
-    if (version < 1)
-      return false;
+    ако (version < 1)
+      врати false;
     hb_barrier ();
 
-    return (this+baseGlyphList).len > 0;
+    врати (this+baseGlyphList).len > 0;
   }
 
-  unsigned int get_glyph_layers (hb_codepoint_t       glyph,
-				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
+  unsigned цео get_glyph_layers (hb_codepoint_t       glyph,
+				 unsigned цео         start_offset,
+				 unsigned цео        *count, /* IN/OUT.  May be NULL. */
 				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
   {
     const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
@@ -2522,13 +2522,13 @@ struct COLR
     hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
     hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
 								       record.numLayers);
-    if (count && layers)
+    ако (count && layers)
     {
       + glyph_layers.sub_array (start_offset, count)
       | hb_sink (hb_array (layers, *count))
       ;
     }
-    return glyph_layers.length;
+    врати glyph_layers.length;
   }
 
   struct accelerator_t
@@ -2539,7 +2539,7 @@ struct COLR
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      ако (scratch)
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2549,7 +2549,7 @@ struct COLR
     }
 
 
-    bool has_data () const { return colr->has_data (); }
+    bool has_data () const { врати colr->has_data (); }
 
 #ifndef HB_NO_PAINT
     bool
@@ -2557,37 +2557,37 @@ struct COLR
 		 hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents) const
     {
-      if (unlikely (!has_data ())) return false;
+      ако (unlikely (!has_data ())) врати false;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ако (unlikely (!scratch)) врати true;
       bool ret = colr->get_extents (font, glyph, extents, *scratch);
       release_scratch (scratch);
-      return ret;
+      врати ret;
     }
 
     bool paint_glyph (hb_font_t *font,
 		      hb_codepoint_t glyph,
 		      hb_paint_funcs_t *funcs, void *data,
-		      unsigned int palette_index,
+		      unsigned цео palette_index,
 		      hb_color_t foreground,
 		      bool clip = true) const
     {
-      if (unlikely (!has_data ())) return false;
+      ако (unlikely (!has_data ())) врати false;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      ако (unlikely (!scratch)) врати true;
       bool ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
       release_scratch (scratch);
-      return ret;
+      врати ret;
     }
 #endif
 
-    bool is_valid () { return colr.get_blob ()->length; }
+    bool is_valid () { врати colr.get_blob ()->length; }
 
     void depend (hb_depend_data_builder_t *depend_data) const
     {
-      if (!has_data ()) return;
+      ако (!has_data ()) врати;
       colr->depend (depend_data);
     }
 
@@ -2607,20 +2607,20 @@ struct COLR
     { colr->closure_forV1 (glyphset, layer_indices, palette_indices, variation_indices, delta_set_indices); }
 
     bool has_var_store () const
-    { return colr->has_var_store (); }
+    { врати colr->has_var_store (); }
 
     const ItemVariationStore &get_var_store () const
-    { return colr->get_var_store (); }
+    { врати colr->get_var_store (); }
     const ItemVariationStore *get_var_store_ptr () const
-    { return colr->get_var_store_ptr (); }
+    { врати colr->get_var_store_ptr (); }
 
     bool has_delta_set_index_map () const
-    { return colr->has_delta_set_index_map (); }
+    { врати colr->has_delta_set_index_map (); }
 
     const DeltaSetIndexMap &get_delta_set_index_map () const
-    { return colr->get_delta_set_index_map (); }
+    { врати colr->get_delta_set_index_map (); }
     const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-    { return colr->get_delta_set_index_map_ptr (); }
+    { врати colr->get_delta_set_index_map_ptr (); }
 
     private:
 
@@ -2628,18 +2628,18 @@ struct COLR
     {
       hb_colr_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      ако (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
 	scratch = (hb_colr_scratch_t *) hb_calloc (1, sizeof (hb_colr_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	ако (unlikely (!scratch))
+	  врати nullptr;
       }
 
-      return scratch;
+      врати scratch;
     }
     void release_scratch (hb_colr_scratch_t *scratch) const
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      ако (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2656,22 +2656,22 @@ struct COLR
   {
     // v0
     hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    for (const BaseGlyphRecord &record : baseGlyphs)
+    за (const BaseGlyphRecord &record : baseGlyphs)
     {
       auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
                                                                          record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      за (const LayerRecord layer : glyph_layers)
         depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
     }
 
-    if (!has_v1_data())
-      return;
+    ако (!has_v1_data())
+      врати;
 
     // v1
     hb_colrv1_depend_context_t c (this, depend_data);
     const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    за (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       c.source_gid = baseglyph_paintrecord.glyphId;
       c.visited_paint.clear ();
@@ -2685,27 +2685,27 @@ struct COLR
 		       hb_set_t *related_ids /* OUT */) const
   {
     const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (!record) return;
+    ако (!record) врати;
 
     auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
 								       record->numLayers);
-    if (!glyph_layers.length) return;
+    ако (!glyph_layers.length) врати;
     related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
   }
 
   void closure_V0palette_indices (const hb_set_t *glyphs,
 				  hb_set_t *palettes /* OUT */) const
   {
-    if (!numBaseGlyphs || !numLayers) return;
+    ако (!numBaseGlyphs || !numLayers) врати;
     hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
     hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
 
-    for (const BaseGlyphRecord record : baseGlyphs)
+    за (const BaseGlyphRecord record : baseGlyphs)
     {
-      if (!glyphs->has (record.glyphId)) continue;
+      ако (!glyphs->has (record.glyphId)) continue;
       hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
                                                                    record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      за (const LayerRecord layer : glyph_layers)
         palettes->add (layer.colorIdx);
     }
   }
@@ -2716,7 +2716,7 @@ struct COLR
                       hb_set_t *variation_indices,
                       hb_set_t *delta_set_indices) const
   {
-    if (version < 1) return;
+    ако (version < 1) врати;
     hb_barrier ();
 
     hb_set_t visited_glyphs;
@@ -2724,10 +2724,10 @@ struct COLR
     hb_colrv1_closure_context_t c (this, &visited_glyphs, layer_indices, palette_indices, variation_indices);
     const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    за (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       unsigned gid = baseglyph_paintrecord.glyphId;
-      if (!glyphset->has (gid)) continue;
+      ако (!glyphset->has (gid)) continue;
 
       const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
@@ -2736,48 +2736,48 @@ struct COLR
 
     const ClipList &cliplist = this+clipList;
     c.glyphs = glyphset;
-    for (const ClipRecord &clip_record : cliplist.clips.iter())
+    за (const ClipRecord &clip_record : cliplist.clips.iter())
       clip_record.closurev1 (&c, &cliplist);
 
     // if a DeltaSetIndexMap is included, collected variation indices are
     // actually delta set indices, we need to map them into variation indices
-    if (has_delta_set_index_map ())
+    ако (has_delta_set_index_map ())
     {
       const DeltaSetIndexMap &var_idx_map = this+varIdxMap;
       delta_set_indices->set (*variation_indices);
       variation_indices->clear ();
-      for (unsigned delta_set_idx : *delta_set_indices)
+      за (unsigned delta_set_idx : *delta_set_indices)
         variation_indices->add (var_idx_map.map (delta_set_idx));
     }
   }
 
   const LayerList& get_layerList () const
-  { return (this+layerList); }
+  { врати (this+layerList); }
 
   const BaseGlyphList& get_baseglyphList () const
-  { return (this+baseGlyphList); }
+  { врати (this+baseGlyphList); }
 
   bool has_var_store () const
-  { return version >= 1 && hb_barrier () && varStore != 0; }
+  { врати version >= 1 && hb_barrier () && varStore != 0; }
 
   bool has_delta_set_index_map () const
-  { return version >= 1 && hb_barrier () && varIdxMap != 0; }
+  { врати version >= 1 && hb_barrier () && varIdxMap != 0; }
 
   bool has_clip_list () const
-  { return version >= 1 && hb_barrier () && clipList != 0; }
+  { врати version >= 1 && hb_barrier () && clipList != 0; }
 
   const DeltaSetIndexMap &get_delta_set_index_map () const
-  { return has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
+  { врати has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
   const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-  { return has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
+  { врати has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
 
   const ItemVariationStore &get_var_store () const
-  { return has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
+  { врати has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
   const ItemVariationStore *get_var_store_ptr () const
-  { return has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
+  { врати has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
 
   const ClipList &get_clip_list () const
-  { return has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
+  { врати has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -2804,13 +2804,13 @@ struct COLR
 		     LayerIterator layer_it)
   {
     TRACE_SERIALIZE (this);
-    if (unlikely (base_it.len () != layer_it.len ()))
+    ако (unlikely (base_it.len () != layer_it.len ()))
       return_trace (false);
 
     this->version = version;
     numLayers = 0;
     numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    ако (numBaseGlyphs == 0)
     {
       baseGlyphsZ = 0;
       layersZ = 0;
@@ -2818,17 +2818,17 @@ struct COLR
     }
 
     c->push ();
-    for (const hb_item_type<BaseIterator> _ : + base_it.iter ())
+    за (const hb_item_type<BaseIterator> _ : + base_it.iter ())
     {
       auto* record = c->embed (_);
-      if (unlikely (!record)) return_trace (false);
+      ако (unlikely (!record)) return_trace (false);
       record->firstLayerIdx = numLayers;
       numLayers += record->numLayers;
     }
     c->add_link (baseGlyphsZ, c->pop_pack ());
 
     c->push ();
-    for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
+    за (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
     c->add_link (layersZ, c->pop_pack ());
@@ -2838,48 +2838,48 @@ struct COLR
 
   const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
-    if (record == &Null (BaseGlyphRecord) ||
+    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned цео) gid);
+    ако (record == &Null (BaseGlyphRecord) ||
         (record && (hb_codepoint_t) record->glyphId != gid))
       record = nullptr;
-    return record;
+    врати record;
   }
 
   const BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) const
   {
     const BaseGlyphList &list = this+baseGlyphList;
-    unsigned int i;
-    if (!list.bfind ((unsigned) gid, &i))
-      return nullptr;
-    return &list[i];
+    unsigned цео i;
+    ако (!list.bfind ((unsigned) gid, &i))
+      врати nullptr;
+    врати &list[i];
   }
 
   bool downgrade_to_V0 (const hb_set_t &glyphset) const
   {
     //no more COLRv1 glyphs, downgrade to version 0
-    for (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
-      if (glyphset.has (_.glyphId))
-        return false;
+    за (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
+      ако (glyphset.has (_.glyphId))
+        врати false;
 
-    return true;
+    врати true;
   }
 
   bool subset_varstore (hb_subset_context_t *c,
                         COLR* out /* OUT */) const
   {
     TRACE_SUBSET (this);
-    if (!varStore || c->plan->all_axes_pinned ||
+    ако (!varStore || c->plan->all_axes_pinned ||
         !c->plan->colrv1_variation_idx_delta_map)
       return_trace (true);
 
     const ItemVariationStore& var_store = this+varStore;
-    if (c->plan->normalized_coords)
+    ако (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
       /* turn off varstore optimization when varIdxMap is null, so we maintain
        * original var_idx sequence */
       bool optimize = (varIdxMap != 0) ? true : false;
-      if (!item_vars.instantiate (var_store, c->plan,
+      ако (!item_vars.instantiate (var_store, c->plan,
                                   optimize, /* optimization */
                                   optimize, /* use_no_variation_idx = false */
                                   c->plan->colrv1_varstore_inner_maps.as_array ()))
@@ -2887,7 +2887,7 @@ struct COLR
 
       /* do not serialize varStore if there's no variation data after
        * instancing: region_list or var_data is empty */
-      if (item_vars.get_region_list () &&
+      ако (item_vars.get_region_list () &&
           item_vars.get_vardata_encodings () &&
           !out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
@@ -2900,30 +2900,30 @@ struct COLR
        * subset plan.
        * If varstore is empty after instancing, varidx_map would be empty and
        * all var_idxes will be updated to VarIdx::NO_VARIATION */
-      if (optimize)
+      ако (optimize)
       {
         const hb_map_t &varidx_map = item_vars.get_varidx_map ();
-        for (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
+        за (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
         {
           uint32_t varidx = _.second;
           uint32_t *new_varidx;
-          if (varidx_map.has (varidx, &new_varidx))
+          ако (varidx_map.has (varidx, &new_varidx))
             _.second = *new_varidx;
-          else
+          инако
             _.second = VarIdx::NO_VARIATION;
         }
       }
     }
-    else
+    инако
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
+      ако (c->plan->has_avar2)
         var_store.collect_dead_regions (c->plan->axes_old_index_tag_map,
                                         c->plan->avar2_reachable_ranges,
                                         dead_regions);
 
-      if (unlikely (!out->varStore.serialize_serialize (c->serializer,
+      ако (unlikely (!out->varStore.serialize_serialize (c->serializer,
                                                         &var_store,
                                                         c->plan->colrv1_varstore_inner_maps.as_array (),
                                                         dead_regions.get_population () ? &dead_regions : nullptr)))
@@ -2937,14 +2937,14 @@ struct COLR
                                    COLR* out /* OUT */) const
   {
     TRACE_SUBSET (this);
-    if (!varIdxMap || c->plan->all_axes_pinned ||
+    ако (!varIdxMap || c->plan->all_axes_pinned ||
         !c->plan->colrv1_new_deltaset_idx_varidx_map)
       return_trace (true);
 
     const hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
     delta_set_index_map_subset_plan_t index_map_plan (deltaset_idx_varidx_map);
 
-    if (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
+    ако (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
       return_trace (false);
 
     return_trace (out->varIdxMap.serialize_serialize (c->serializer, index_map_plan));
@@ -2961,20 +2961,20 @@ struct COLR
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
 		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
-		    if (glyphset.has (old_gid)) return true;
-		    return false;
+		    ако (glyphset.has (old_gid)) врати true;
+		    врати false;
 		 })
     | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
 			      {
 				hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
 
 				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				if (unlikely (!old_record))
-				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
+				ако (unlikely (!old_record))
+				  врати hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
 				BaseGlyphRecord new_record = {};
 				new_record.glyphId = new_gid;
 				new_record.numLayers = old_record->numLayers;
-				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
+				врати hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
@@ -2989,53 +2989,53 @@ struct COLR
 				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
 				hb_vector_t<LayerRecord> out_layers;
 
-				if (unlikely (!old_record ||
+				ако (unlikely (!old_record ||
 					      old_record->firstLayerIdx >= numLayers ||
 					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
-				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				  врати hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
 
 				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
 											     old_record->numLayers);
 				out_layers.resize (layers.length);
-				for (unsigned int i = 0; i < layers.length; i++) {
+				за (unsigned цео i = 0; i < layers.length; i++) {
 				  out_layers[i] = layers[i];
 				  hb_codepoint_t new_gid = 0;
-				  if (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
-				    return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				  ако (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
+				    врати hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
 				  out_layers[i].glyphId = new_gid;
 				  out_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
 				}
 
-				return hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
+				врати hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
-    if (version == 0 && (!base_it || !layer_it))
+    ако (version == 0 && (!base_it || !layer_it))
       return_trace (false);
 
     auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
 
-    if (version == 0 || downgrade_to_V0 (glyphset))
+    ако (version == 0 || downgrade_to_V0 (glyphset))
       return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
-    if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    ако (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
+    ако (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    ако (!subset_varstore (c, colr_prime)) return_trace (false);
 
     ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
 				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
+    ако (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
       return_trace (false);
 
     colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
@@ -3048,13 +3048,13 @@ struct COLR
   {
     const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
     const BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
-    if (record)
+    ако (record)
     {
       const Paint &paint = &baseglyph_paintrecords+record->paint;
-      return &paint;
+      врати &paint;
     }
-    else
-      return nullptr;
+    инако
+      врати nullptr;
   }
 
 #ifndef HB_NO_PAINT
@@ -3069,10 +3069,10 @@ struct COLR
                                      get_delta_set_index_map_ptr (),
                                      hb_array (font->coords, font->num_coords));
 
-    if (get_clip (glyph, extents, instancer))
+    ако (get_clip (glyph, extents, instancer))
     {
       font->scale_glyph_extents (extents);
-      return true;
+      врати true;
     }
 
     auto *extents_funcs = hb_paint_extents_get_funcs ();
@@ -3080,40 +3080,40 @@ struct COLR
     bool ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), true, scratch);
 
     auto e = scratch.paint_extents.get_extents ();
-    if (e.is_void ())
+    ако (e.is_void ())
     {
       extents->x_bearing = 0;
       extents->y_bearing = 0;
       extents->width = 0;
       extents->height = 0;
     }
-    else
+    инако
       *extents = e.to_glyph_extents ();
 
-    return ret;
+    врати ret;
   }
 #endif
 
   bool
   has_paint_for_glyph (hb_codepoint_t glyph) const
   {
-    if (version >= 1)
+    ако (version >= 1)
     {
       hb_barrier ();
 
       const Paint *paint = get_base_glyph_paint (glyph);
 
-      return paint != nullptr;
+      врати paint != nullptr;
     }
 
-    return false;
+    врати false;
   }
 
   bool get_clip (hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents,
 		 const ItemVarStoreInstancer instancer) const
   {
-    return get_clip_list ().get_extents (glyph,
+    врати get_clip_list ().get_extents (glyph,
 					extents,
 					instancer);
   }
@@ -3123,7 +3123,7 @@ struct COLR
   paint_glyph (hb_font_t *font,
 	       hb_codepoint_t glyph,
 	       hb_paint_funcs_t *funcs, void *data,
-	       unsigned int palette_index, hb_color_t foreground,
+	       unsigned цео palette_index, hb_color_t foreground,
 	       bool clip,
 	       hb_colr_scratch_t &scratch) const
   {
@@ -3136,26 +3136,26 @@ struct COLR
     hb_decycler_node_t node (c.glyphs_decycler);
     node.visit (glyph);
 
-    if (version >= 1)
+    ако (version >= 1)
     {
       hb_barrier ();
 
       const Paint *paint = get_base_glyph_paint (glyph);
-      if (paint)
+      ако (paint)
       {
         // COLRv1 glyph
 
 	bool is_bounded = true;
 	hb_glyph_extents_t extents = {};
-	if (clip)
+	ако (clip)
 	{
-	  if (!get_clip (glyph, &extents, instancer))
+	  ако (!get_clip (glyph, &extents, instancer))
 	  {
 	    clip = false;
 	    is_bounded = false;
 	  }
 
-	  if (!is_bounded)
+	  ако (!is_bounded)
 	  {
 	    auto *bounded_funcs = hb_paint_bounded_get_funcs ();
 	    scratch.paint_bounded.clear ();
@@ -3172,30 +3172,30 @@ struct COLR
 
 	c.funcs->push_font_transform (c.data, font);
 
-	if (clip)
+	ако (clip)
 	  c.funcs->push_clip_rectangle (c.data,
 					(float) extents.x_bearing,
 					(float) extents.y_bearing + extents.height,
 					(float) extents.x_bearing + extents.width,
 					(float) extents.y_bearing);
 
-	if (is_bounded)
+	ако (is_bounded)
 	  c.recurse (*paint);
 
-	if (clip)
+	ако (clip)
 	  c.funcs->pop_clip (c.data);
 
 	c.funcs->pop_transform (c.data);
 
-        return true;
+        врати true;
       }
     }
 
     const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (record && ((hb_codepoint_t) record->glyphId == glyph))
+    ако (record && ((hb_codepoint_t) record->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
+      за (const auto &r : (this+layersZ).as_array (numLayers)
 			   .sub_array (record->firstLayerIdx, record->numLayers))
       {
         hb_bool_t is_foreground;
@@ -3203,10 +3203,10 @@ struct COLR
         c.funcs->fill_glyph (c.data, r.glyphId, c.font, is_foreground, color);
       }
 
-      return true;
+      врати true;
     }
 
-    return false;
+    врати false;
   }
 #endif
 
@@ -3235,7 +3235,7 @@ struct COLR_accelerator_t : COLR::accelerator_t {
 void
 hb_paint_context_t::recurse (const Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
+  ако (unlikely (depth_left <= 0 || edge_count <= 0)) врати;
   depth_left--;
   edge_count--;
   paint.dispatch (this);
@@ -3250,14 +3250,14 @@ void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
+  ако (likely (c->depth_left > 0 && c->edge_count > 0) &&
       (this+paint).get_solid_color (c, &is_foreground, &color))
   {
     c->edge_count--;
     c->funcs->push_inverse_font_transform (c->data, c->font);
     c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
     c->funcs->pop_transform (c->data);
-    return;
+    врати;
   }
 
   c->funcs->push_inverse_font_transform (c->data, c->font);
@@ -3274,10 +3274,10 @@ void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
   TRACE_PAINT (this);
   const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
   hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  за (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
   {
-    if (unlikely (!node.visit (i)))
-      return;
+    ако (unlikely (!node.visit (i)))
+      врати;
 
     const Paint &paint = paint_offset_lists.get_paint (i);
     c->recurse (paint);
@@ -3289,14 +3289,14 @@ void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
   TRACE_PAINT (this);
 
   hb_decycler_node_t node (c->glyphs_decycler);
-  if (unlikely (!node.visit (gid)))
-    return;
+  ако (unlikely (!node.visit (gid)))
+    врати;
 
   c->funcs->push_inverse_font_transform (c->data, c->font);
-  if (c->funcs->color_glyph (c->data, gid, c->font))
+  ако (c->funcs->color_glyph (c->data, gid, c->font))
   {
     c->funcs->pop_transform (c->data);
-    return;
+    врати;
   }
   c->funcs->pop_transform (c->data);
 
@@ -3306,17 +3306,17 @@ void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
   hb_glyph_extents_t extents = {0};
   bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
 
-  if (has_clip_box)
+  ако (has_clip_box)
     c->funcs->push_clip_rectangle (c->data,
 				   (float) extents.x_bearing,
 				   (float) extents.y_bearing + extents.height,
 				   (float) extents.x_bearing + extents.width,
 				   (float) extents.y_bearing);
 
-  if (paint)
+  ако (paint)
     c->recurse (*paint);
 
-  if (has_clip_box)
+  ако (has_clip_box)
     c->funcs->pop_clip (c->data);
 }
 

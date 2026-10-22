@@ -57,16 +57,16 @@ struct hb_priority_queue_t
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    за (цео i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
   void reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  bool in_error () const { врати heap.in_error (); }
 
   bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  { врати heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
@@ -74,7 +74,7 @@ struct hb_priority_queue_t
   void insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    ако (unlikely (heap.in_error ())) врати;
     bubble_up (heap.length - 1);
   }
 
@@ -90,40 +90,40 @@ struct hb_priority_queue_t
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    ако (!is_empty ())
       bubble_down (0);
 
-    return result;
+    врати result;
   }
 
   const item_t& minimum ()
   {
-    return heap[0];
+    врати heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  bool is_empty () const { врати heap.length == 0; }
+  explicit operator bool () const { врати !is_empty (); }
+  unsigned цео get_population () const { врати heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); врати *this; }
 
  private:
 
   static constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    врати (index - 1) / 2;
   }
 
   static constexpr unsigned left_child (unsigned index)
   {
-    return 2 * index + 1;
+    врати 2 * index + 1;
   }
 
   static constexpr unsigned right_child (unsigned index)
   {
-    return 2 * index + 2;
+    врати 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
@@ -136,19 +136,19 @@ struct hb_priority_queue_t
     unsigned right = right_child (index);
 
     bool has_left = left < heap.length;
-    if (!has_left)
+    ако (!has_left)
       // If there's no left, then there's also no right.
-      return;
+      врати;
 
     bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
+    ако (heap.arrayZ[index].first <= heap.arrayZ[left].first
         && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+      врати;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    ако (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
       child = left;
-    else
+    инако
       child = right;
 
     swap (index, child);
@@ -162,11 +162,11 @@ struct hb_priority_queue_t
     repeat:
     assert (index < heap.length);
 
-    if (index == 0) return;
+    ако (index == 0) врати;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    ако (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      врати;
 
     swap (index, parent_index);
     index = parent_index;

@@ -34,7 +34,7 @@ struct EntryExitRecord
   {
     TRACE_SERIALIZE (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
 
     bool ret = false;
     ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
@@ -57,42 +57,42 @@ struct EntryExitRecord
 
 static inline void
 reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned цео len,
+                              unsigned цео i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
+                              unsigned цео new_parent,
                               unsigned nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  ако (nesting_level > HB_MAX_NESTING_LEVEL)
+    врати;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  цео chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  ако (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    врати;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned цео j = (цео) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  ако (unlikely (j >= len))
+    врати;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  ако (j == new_parent)
+    врати;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  ако (unlikely (reversed_chain != -chain))
+    врати;
 
   reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  ако (HB_DIRECTION_IS_HORIZONTAL (direction))
     pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
+  инако
     pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
 
   pos[j].attach_chain() = reversed_chain;
@@ -107,9 +107,9 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
                           unsigned i)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  unsigned цео j = buffer->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  ако (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
@@ -167,13 +167,13 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
+  unsigned цео child  = i;
+  unsigned цео parent = j;
   hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
   hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  ако  (!(c->lookup_props & LookupFlag::RightToLeft))
   {
-    unsigned int k = child;
+    unsigned цео k = child;
     child = parent;
     parent = k;
     x_offset = -x_offset;
@@ -187,32 +187,32 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    */
   reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[child].attach_chain() = (цео) parent - (цео) child;
+  ако (pos[child].attach_chain() != (цео) parent - (цео) child)
   {
     pos[child].attach_chain() = 0;
     goto overflow;
   }
   pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+  ако (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
     pos[child].y_offset = y_offset;
-  else
+  инако
     pos[child].x_offset = x_offset;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  ако (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
   {
     pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    ако (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
 	pos[parent].y_offset = 0;
-    else
+    инако
 	pos[parent].x_offset = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  ако (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
@@ -221,7 +221,7 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  врати true;
 }
 
 template <typename Types>
@@ -241,17 +241,17 @@ struct CursivePosFormat1_2
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
+    ако (unlikely (!coverage.sanitize (c, this)))
       return_trace (false);
 
-    if (c->lazy_some_gpos)
+    ако (c->lazy_some_gpos)
       return_trace (entryExitRecord.sanitize_shallow (c));
-    else
+    инако
       return_trace (entryExitRecord.sanitize (c, this));
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { врати (this+coverage).intersects (glyphs); }
 
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
 
@@ -265,12 +265,12 @@ struct CursivePosFormat1_2
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { ако (unlikely (!(this+coverage).collect_coverage (c->input))) врати; }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   { (this+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { врати this+coverage; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
@@ -278,21 +278,21 @@ struct CursivePosFormat1_2
     hb_buffer_t *buffer = c->buffer;
 
     const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
+    ако (!this_record.entryAnchor ||
 	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
     hb_barrier ();
 
     auto &skippy_iter = c->iter_input;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    ако (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
       return_trace (false);
     }
 
     const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
+    ако (!prev_record.exitAnchor ||
 	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
@@ -312,11 +312,11 @@ struct CursivePosFormat1_2
                   Iterator it,
                   const struct CursivePosFormat1_2<Types> *src_base)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
+    ако (unlikely (!c->serializer->extend_min ((*this)))) врати;
     this->format = src_base->format;
     this->entryExitRecord.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
+    за (const EntryExitRecord<Types>& entry_record : + it
                                                       | hb_map (hb_second))
       entry_record.subset (c, src_base);
 
@@ -341,7 +341,7 @@ struct CursivePosFormat1_2
     | hb_filter (glyphset, hb_first)
     | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
                               -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+                              { врати hb_pair (glyph_map[p.first], p.second);})
     ;
 
     bool ret = bool (it);

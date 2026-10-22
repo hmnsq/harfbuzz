@@ -25,14 +25,14 @@ shape (void *shape_plan,
   blob_free (&blob);
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  ако (!buffer_copy_contents (buffer, &contents))
+    врати false;
 
   debugprint1 ("buffer length", contents.length);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  за (unsigned i = 0; i < contents.length; i++)
   {
     char name[64];
 
@@ -56,5 +56,5 @@ shape (void *shape_plan,
 
   buffer_contents_free (&contents);
 
-  return ret;
+  врати ret;
 }

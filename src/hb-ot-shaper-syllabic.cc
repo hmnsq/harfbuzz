@@ -32,43 +32,43 @@
 bool
 hb_syllabic_insert_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+				   unsigned цео broken_syllable_type,
+				   unsigned цео dottedcircle_category,
+				   цео repha_category,
+				   цео dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  ако (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
+    врати false;
+  ако (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
+    ако (buffer->messaging ())
       (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    врати false;
   }
 
-  if (buffer->messaging () &&
+  ако (buffer->messaging () &&
       !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+    врати false;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  ако (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    врати false;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  ако (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
   buffer->clear_output ();
 
   buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  unsigned цео last_syllable = 0;
+  док (buffer->idx < buffer->len && buffer->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    unsigned цео syllable = buffer->cur().syllable();
+    ако (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
@@ -78,9 +78,9 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
       ginfo.syllable() = buffer->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      ако (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
+	док (buffer->idx < buffer->len && buffer->successful &&
 	       last_syllable == buffer->cur().syllable() &&
 	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
 	  (void) buffer->next_glyph ();
@@ -88,15 +88,15 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
 
       (void) buffer->output_info (ginfo);
     }
-    else
+    инако
       (void) buffer->next_glyph ();
   }
   buffer->sync ();
 
-  if (buffer->messaging ())
+  ако (buffer->messaging ())
     (void) buffer->message (font, "end inserting dotted-circles");
 
-  return true;
+  врати true;
 }
 
 HB_INTERNAL bool
@@ -105,7 +105,7 @@ hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
 		       hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  врати false;
 }
 
 

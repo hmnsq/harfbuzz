@@ -27,8 +27,8 @@
 #include "hb-set.hh"
 #include <string>
 
-int
-main (int argc, char **argv)
+цео
+main (цео argc, char **argv)
 {
 
   /* Test copy constructor. */
@@ -93,7 +93,7 @@ main (int argc, char **argv)
   /* Test call fini() twice. */
   {
     hb_map_t s;
-    for (int i = 0; i < 16; i++)
+    за (цео i = 0; i < 16; i++)
       s.set(i, i+1);
     s.fini();
   }
@@ -122,8 +122,8 @@ main (int argc, char **argv)
 
   /* Test class key / value types. */
   {
-    hb_hashmap_t<hb_bytes_t, int> m1;
-    hb_hashmap_t<int, hb_bytes_t> m2;
+    hb_hashmap_t<hb_bytes_t, цео> m1;
+    hb_hashmap_t<цео, hb_bytes_t> m2;
     hb_hashmap_t<hb_bytes_t, hb_bytes_t> m3;
     hb_always_assert (m1.get_population () == 0);
     hb_always_assert (m2.get_population () == 0);
@@ -131,13 +131,13 @@ main (int argc, char **argv)
   }
 
   {
-    hb_hashmap_t<int, int> m0;
-    hb_hashmap_t<std::string, int> m1;
-    hb_hashmap_t<int, std::string> m2;
+    hb_hashmap_t<цео, цео> m0;
+    hb_hashmap_t<std::string, цео> m1;
+    hb_hashmap_t<цео, std::string> m2;
     hb_hashmap_t<std::string, std::string> m3;
 
     std::string s;
-    for (unsigned i = 1; i < 1000; i++)
+    за (unsigned i = 1; i < 1000; i++)
     {
       s += "x";
       m0.set (i, i);
@@ -257,7 +257,7 @@ main (int argc, char **argv)
   }
   /* Test value type with hb_bytes_t. */
   {
-    hb_hashmap_t<int, hb_bytes_t> m;
+    hb_hashmap_t<цео, hb_bytes_t> m;
     char c_str[] = "Test";
     hb_bytes_t bytes (c_str);
 
@@ -288,7 +288,7 @@ main (int argc, char **argv)
   }
   /* Test reset. */
   {
-    hb_hashmap_t<int, hb_set_t> m;
+    hb_hashmap_t<цео, hb_set_t> m;
     m.set (1, hb_set_t {1, 2, 3});
     m.reset ();
   }
@@ -305,17 +305,17 @@ main (int argc, char **argv)
     hb_codepoint_t k;
     hb_codepoint_t v;
     unsigned pop = 0;
-    for (signed i = -1;
+    за (signed i = -1;
 	 m.next (&i, &k, &v);)
     {
       pop++;
-           if (k == 1) hb_always_assert (v == 1);
-      else if (k == 2) hb_always_assert (v == 1);
-      else if (k == 3) hb_always_assert (v == 2);
-      else if (k == 4) hb_always_assert (v == 3);
-      else if (k == 5) hb_always_assert (v == 5);
-      else if (k == 6) hb_always_assert (v == 8);
-      else hb_always_assert (false);
+           ако (k == 1) hb_always_assert (v == 1);
+      инако ако (k == 2) hb_always_assert (v == 1);
+      инако ако (k == 3) hb_always_assert (v == 2);
+      инако ако (k == 4) hb_always_assert (v == 3);
+      инако ако (k == 5) hb_always_assert (v == 5);
+      инако ако (k == 6) hb_always_assert (v == 8);
+      инако hb_always_assert (false);
     }
     hb_always_assert (pop == m.get_population ());
   }
@@ -358,14 +358,14 @@ main (int argc, char **argv)
   {
     hb_map_t m;
     m.set (1, 2);
-    for (unsigned i = 0; i < 1000; i++)
+    за (unsigned i = 0; i < 1000; i++)
     {
       m.set (1000 + i, m.get (1));
       hb_always_assert (m.get (1000 + i) == 2);
     }
     hb_map_t m2;
     m2.set (1, 5000);
-    for (unsigned i = 0; i < 1000; i++)
+    за (unsigned i = 0; i < 1000; i++)
     {
       m2.set (m2.get (1), i);
       m2.set (1, 5001 + i);
@@ -373,7 +373,7 @@ main (int argc, char **argv)
     }
     hb_hashmap_t<unsigned, hb_vector_t<unsigned>> v;
     v.set (1, hb_vector_t<unsigned> {1, 2, 3});
-    for (unsigned i = 0; i < 1000; i++)
+    за (unsigned i = 0; i < 1000; i++)
     {
       v.set (1000 + i, v.get (1));
       hb_always_assert (v.get (1000 + i).length == 3);
@@ -394,5 +394,5 @@ main (int argc, char **argv)
     hb_always_assert (m3.in_error ());
   }
 
-  return 0;
+  врати 0;
 }

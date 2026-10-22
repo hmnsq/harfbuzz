@@ -59,10 +59,10 @@ struct head_maxp_info_t
       maxComponentDepth (0),
       allXMinIsLsb (true) {}
 
-  int xMin;
-  int xMax;
-  int yMin;
-  int yMax;
+  цео xMin;
+  цео xMax;
+  цео yMin;
+  цео yMax;
   unsigned maxPoints;
   unsigned maxContours;
   unsigned maxCompositePoints;
@@ -107,16 +107,16 @@ struct contour_point_vector_t : hb_vector_t<contour_point_t>
                    hb_array_t<const float> deltas_y,
                    hb_array_t<const bool> indices)
   {
-    if (indices.length != deltas_x.length ||
+    ако (indices.length != deltas_x.length ||
         indices.length != deltas_y.length)
-      return false;
+      врати false;
 
-    for (unsigned i = 0; i < indices.length; i++)
+    за (unsigned i = 0; i < indices.length; i++)
     {
-      if (!indices.arrayZ[i]) continue;
+      ако (!indices.arrayZ[i]) continue;
       arrayZ[i].add_delta (deltas_x.arrayZ[i], deltas_y.arrayZ[i]);
     }
-    return true;
+    врати true;
   }
 };
 
@@ -156,7 +156,7 @@ struct hb_subset_plan_t
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  unsigned цео _num_output_glyphs;
 
   bool all_axes_pinned;
   bool pinned_at_default;
@@ -194,33 +194,33 @@ struct hb_subset_plan_t
       hb_lock_t lock (plan->accelerator ? &plan->accelerator->sanitized_table_cache_lock : nullptr);
 
       auto *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
-      if (cache
+      ако (cache
 	  && !cache->in_error ()
 	  && cache->has (+T::tableTag)) {
-	return hb_blob_reference (cache->get (+T::tableTag).get ());
+	врати hb_blob_reference (cache->get (+T::tableTag).get ());
       }
 
       hb::unique_ptr<hb_blob_t> table_blob {hb_sanitize_context_t ().reference_table<T> (plan->source)};
       hb_blob_t* ret = hb_blob_reference (table_blob.get ());
 
-      if (likely (cache))
+      ако (likely (cache))
 	cache->set (+T::tableTag, std::move (table_blob));
 
-      return ret;
+      врати ret;
     }
   };
 
   template<typename T>
   auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (this))
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { врати !successful; }
 
   HB_INTERNAL double layout_variation_delta (unsigned var_idx);
 
   bool check_success(bool success)
   {
     successful = (successful && success);
-    return successful;
+    врати successful;
   }
 
   /*
@@ -231,7 +231,7 @@ struct hb_subset_plan_t
   inline const hb_set_t *
   glyphset () const
   {
-    return &_glyphset;
+    врати &_glyphset;
   }
 
   /*
@@ -240,7 +240,7 @@ struct hb_subset_plan_t
   inline const hb_set_t *
   glyphset_gsub () const
   {
-    return &_glyphset_gsub;
+    врати &_glyphset_gsub;
   }
 
   /*
@@ -250,7 +250,7 @@ struct hb_subset_plan_t
   inline hb_codepoint_t
   map_gsub_glyph (hb_codepoint_t old_gid) const
   {
-    return old_gid < glyph_map_gsub_flat.length
+    врати old_gid < glyph_map_gsub_flat.length
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
 	 : HB_MAP_VALUE_INVALID;
   }
@@ -258,49 +258,49 @@ struct hb_subset_plan_t
   /*
    * The total number of output glyphs in the final subset.
    */
-  inline unsigned int
+  inline unsigned цео
   num_output_glyphs () const
   {
-    return _num_output_glyphs;
+    врати _num_output_glyphs;
   }
 
   inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
 				     hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ако (old_gid == HB_MAP_VALUE_INVALID)
+      врати false;
 
-    return new_gid_for_old_gid (old_gid, new_gid);
+    врати new_gid_for_old_gid (old_gid, new_gid);
   }
 
   inline bool new_gid_for_old_gid (hb_codepoint_t old_gid,
 				   hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ако (gid == HB_MAP_VALUE_INVALID)
+      врати false;
 
     *new_gid = gid;
-    return true;
+    врати true;
   }
 
   inline bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
 				   hb_codepoint_t *old_gid) const
   {
     hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ако (gid == HB_MAP_VALUE_INVALID)
+      врати false;
 
     *old_gid = gid;
-    return true;
+    врати true;
   }
 
   inline bool
   add_table (hb_tag_t tag,
 	     hb_blob_t *contents)
   {
-    if (HB_DEBUG_SUBSET)
+    ако (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
       DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
@@ -309,7 +309,7 @@ struct hb_subset_plan_t
 		hb_blob_get_length (source_blob));
       hb_blob_destroy (source_blob);
     }
-    return hb_face_builder_add_table (dest, tag, contents);
+    врати hb_face_builder_add_table (dest, tag, contents);
   }
 };
 
@@ -331,17 +331,17 @@ template<typename ItemVarStore>
 HB_INTERNAL void
 remap_variation_indices (const ItemVarStore &var_store,
                          const hb_set_t &variation_indices,
-                         const hb_vector_t<int>& normalized_coords,
+                         const hb_vector_t<цео>& normalized_coords,
                          bool calculate_delta, /* not pinned at default */
                          bool no_variations, /* all axes pinned */
-                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, цео>> &variation_idx_delta_map /* OUT */);
 
 
 template<typename DeltaSetIndexMap>
 HB_INTERNAL void
 remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, цео>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
 
