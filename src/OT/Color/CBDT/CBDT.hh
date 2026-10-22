@@ -27,8 +27,8 @@
 #ifndef OT_COLOR_CBDT_CBDT_HH
 #define OT_COLOR_CBDT_CBDT_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-paint.hh"
+#ضمن "../../../hb-open-type.hh"
+#ضمن "../../../hb-paint.hh"
 
 /*
  * CBLC -- Color Bitmap Location
@@ -42,79 +42,79 @@
 #define HB_OT_TAG_CBDT HB_TAG('C','B','D','T')
 
 
-namespace OT {
+نطاق OT {
 
 /* Tracks image data blocks emitted into the subset CBDT table so that
  * identical subtables (for example the same bitmaps used by several strikes)
  * can share a single copy. */
-struct cbdt_dedup_context_t
+بنية cbdt_dedup_context_t
 {
-  struct entry_t
+  بنية entry_t
   {
-    unsigned int base;		/* Offset of the data in cbdt_prime. */
-    unsigned int lstart;	/* Start index in lengths. */
-    unsigned int lcount;	/* Number of length entries. */
+    unsigned صحيح base;		/* Offset of the data in cbdt_prime. */
+    unsigned صحيح lstart;	/* Start index in lengths. */
+    unsigned صحيح lcount;	/* Number of length entries. */
   };
 
-  static uint64_t hash (unsigned int image_format,
-			const hb_vector_t<char> &data,
-			const hb_vector_t<unsigned int> &lengths)
+  ساكن uint64_t hash (unsigned صحيح image_format,
+			ثابت hb_vector_t<حرف> &data,
+			ثابت hb_vector_t<unsigned صحيح> &lengths)
   {
     uint32_t h = hb_hash (hb_bytes_t (data.arrayZ, data.length));
-    h = h * 31 + hb_hash (hb_bytes_t ((const char *) lengths.arrayZ,
-				      lengths.length * sizeof (unsigned int)));
-    return ((uint64_t) image_format << 32) | h;
+    h = h * 31 + hb_hash (hb_bytes_t ((ثابت حرف *) lengths.arrayZ,
+				      lengths.length * حجم (unsigned صحيح)));
+    أرجع ((uint64_t) image_format << 32) | h;
   }
 
-  bool find (uint64_t key,
-	     const hb_vector_t<char> &data,
-	     const hb_vector_t<unsigned int> &lengths,
-	     const hb_vector_t<char> &cbdt_prime,
-	     unsigned int *base /* OUT */) const
+  منطقي find (uint64_t key,
+	     ثابت hb_vector_t<حرف> &data,
+	     ثابت hb_vector_t<unsigned صحيح> &lengths,
+	     ثابت hb_vector_t<حرف> &cbdt_أولي,
+	     unsigned صحيح *base /* OUT */) ثابت
   {
-    unsigned int *idx_p = nullptr;
-    if (!map.has (key, &idx_p)) return false;
-    const entry_t &e = entries[*idx_p];
+    unsigned صحيح *idx_p = nullptr;
+    إذا (!map.has (key, &idx_p)) أرجع خطأ;
+    ثابت entry_t &e = entries[*idx_p];
     /* The data and the per-glyph lengths must both match, otherwise the
      * glyph extents implied by the offset array would differ. */
-    if (e.lcount != lengths.length) return false;
-    if (unlikely (e.base + data.length > (unsigned int) cbdt_prime.length)) return false;
-    if (hb_memcmp (cbdt_prime.arrayZ + e.base, data.arrayZ, data.length)) return false;
-    if (hb_memcmp (this->lengths.arrayZ + e.lstart,
-		   lengths.arrayZ, lengths.length * sizeof (unsigned int)))
-      return false;
+    إذا (e.lcount != lengths.length) أرجع خطأ;
+    إذا (unlikely (e.base + data.length > (unsigned صحيح) cbdt_أولي.length)) أرجع خطأ;
+    إذا (hb_memcmp (cbdt_أولي.arrayZ + e.base, data.arrayZ, data.length)) أرجع خطأ;
+    إذا (hb_memcmp (هذا->lengths.arrayZ + e.lstart,
+		   lengths.arrayZ, lengths.length * حجم (unsigned صحيح)))
+      أرجع خطأ;
     *base = e.base;
-    return true;
+    أرجع true;
   }
 
-  bool add (uint64_t key,
-	    unsigned int base,
-	    const hb_vector_t<unsigned int> &lengths)
+  منطقي add (uint64_t key,
+	    unsigned صحيح base,
+	    ثابت hb_vector_t<unsigned صحيح> &lengths)
   {
-    if (unlikely (entries.in_error () || this->lengths.in_error () || map.in_error ()))
-      return false;
-    entry_t e = {base, this->lengths.length, lengths.length};
-    if (unlikely (!entries.push_or_fail (e))) return false;
-    for (unsigned int length : lengths)
-      if (unlikely (!this->lengths.push_or_fail (length))) return false;
-    return map.set (key, entries.length - 1);
+    إذا (unlikely (entries.in_error () || هذا->lengths.in_error () || map.in_error ()))
+      أرجع خطأ;
+    entry_t e = {base, هذا->lengths.length, lengths.length};
+    إذا (unlikely (!entries.ادفع_or_fail (e))) أرجع خطأ;
+    لكل (unsigned صحيح length : lengths)
+      إذا (unlikely (!هذا->lengths.ادفع_or_fail (length))) أرجع خطأ;
+    أرجع map.set (key, entries.length - 1);
   }
 
-  hb_hashmap_t<uint64_t, unsigned int> map;
+  hb_hashmap_t<uint64_t, unsigned صحيح> map;
   hb_vector_t<entry_t> entries;
-  hb_vector_t<unsigned int> lengths; /* Concatenated per-entry lengths. */
+  hb_vector_t<unsigned صحيح> lengths; /* Concatenated per-entry lengths. */
 };
 
-struct cblc_bitmap_size_subset_context_t
+بنية cblc_bitmap_size_subset_context_t
 {
-  const char *cbdt;
-  unsigned int cbdt_length;
-  hb_vector_t<char> *cbdt_prime;
-  unsigned int size;		/* INOUT
+  ثابت حرف *cbdt;
+  unsigned صحيح cbdt_length;
+  hb_vector_t<حرف> *cbdt_أولي;
+  unsigned صحيح size;		/* INOUT
 				 *  Input: old size of IndexSubtable
 				 *  Output: new size of IndexSubtable
 				 */
-  unsigned int num_tables;	/* INOUT
+  unsigned صحيح رقم_tables;	/* INOUT
 				 *  Input: old number of subtables.
 				 *  Output: new number of subtables.
 				 */
@@ -123,34 +123,34 @@ struct cblc_bitmap_size_subset_context_t
   cbdt_dedup_context_t *dedup;	/* Shared across strikes; may be null. */
 };
 
-static inline bool
-_copy_data_to_cbdt (hb_vector_t<char> *cbdt_prime,
-		    const void        *data,
+ساكن مضمن منطقي
+_copy_data_to_cbdt (hb_vector_t<حرف> *cbdt_أولي,
+		    ثابت فراغ        *data,
 		    unsigned           length)
 {
-  unsigned int new_len = cbdt_prime->length + length;
-  if (unlikely (!cbdt_prime->alloc (new_len))) return false;
-  hb_memcpy (cbdt_prime->arrayZ + cbdt_prime->length, data, length);
-  cbdt_prime->length = new_len;
-  return true;
+  unsigned صحيح new_len = cbdt_أولي->length + length;
+  إذا (unlikely (!cbdt_أولي->alloc (new_len))) أرجع خطأ;
+  hb_memcpy (cbdt_أولي->arrayZ + cbdt_أولي->length, data, length);
+  cbdt_أولي->length = new_len;
+  أرجع true;
 }
 
-struct SmallGlyphMetrics
+بنية SmallGlyphMetrics
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
-  void get_extents (hb_font_t *font, hb_glyph_extents_t *extents, bool scale) const
+  فراغ get_extents (hb_font_t *font, hb_glyph_extents_t *extents, منطقي scale) ثابت
   {
     extents->x_bearing = bearingX;
     extents->y_bearing = bearingY;
     extents->width = width;
-    extents->height = -static_cast<int> (height);
+    extents->height = -static_cast<صحيح> (height);
 
-    if (scale)
+    إذا (scale)
       font->scale_glyph_extents (extents);
   }
 
@@ -159,25 +159,25 @@ struct SmallGlyphMetrics
   HBINT8	bearingX;
   HBINT8	bearingY;
   HBUINT8	advance;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (5);
 };
 
-struct BigGlyphMetrics : SmallGlyphMetrics
+بنية BigGlyphMetrics : SmallGlyphMetrics
 {
   HBINT8	vertBearingX;
   HBINT8	vertBearingY;
   HBUINT8	vertAdvance;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct SBitLineMetrics
+بنية SBit_سطر_Metrics
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
   HBINT8	ascender;
@@ -192,7 +192,7 @@ struct SBitLineMetrics
   HBINT8	minAfterBL;
   HBINT8	padding1;
   HBINT8	padding2;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (12);
 };
 
@@ -201,285 +201,285 @@ struct SBitLineMetrics
  * Index Subtables.
  */
 
-struct IndexSubtableHeader
+بنية IndexSubtableHeader
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا));
   }
 
   HBUINT16	indexFormat;
   HBUINT16	imageFormat;
   HBUINT32	imageDataOffset;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename OffsetType>
-struct IndexSubtableFormat1Or3
+بنية IndexSubtableFormat1Or3
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح glyph_عدد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  offsetArrayZ.sanitize (c, glyph_count + 1));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  offsetArrayZ.sanitize (c, glyph_عدد + 1));
   }
 
-  bool get_image_data (unsigned int idx,
-		       unsigned int *offset,
-		       unsigned int *length) const
+  منطقي get_image_data (unsigned صحيح idx,
+		       unsigned صحيح *offset,
+		       unsigned صحيح *length) ثابت
   {
-    if (unlikely (offsetArrayZ[idx + 1] <= offsetArrayZ[idx]))
-      return false;
+    إذا (unlikely (offsetArrayZ[idx + 1] <= offsetArrayZ[idx]))
+      أرجع خطأ;
 
     *offset = header.imageDataOffset + offsetArrayZ[idx];
     *length = offsetArrayZ[idx + 1] - offsetArrayZ[idx];
-    return true;
+    أرجع true;
   }
 
-  bool add_offset (hb_serialize_context_t *c,
-		   unsigned int offset,
-		   unsigned int *size /* OUT (accumulated) */)
+  منطقي add_offset (hb_serialize_context_t *c,
+		   unsigned صحيح offset,
+		   unsigned صحيح *size /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     Offset<OffsetType> embedded_offset;
     embedded_offset = offset;
-    *size += sizeof (OffsetType);
+    *size += حجم (OffsetType);
     auto *o = c->embed (embedded_offset);
-    return_trace ((bool) o);
+    return_trace ((منطقي) o);
   }
 
   IndexSubtableHeader	header;
   UnsizedArrayOf<Offset<OffsetType>>
 			offsetArrayZ;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (8, offsetArrayZ);
 };
 
-struct IndexSubtableFormat1 : IndexSubtableFormat1Or3<HBUINT32> {};
-struct IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
+بنية IndexSubtableFormat1 : IndexSubtableFormat1Or3<HBUINT32> {};
+بنية IndexSubtableFormat3 : IndexSubtableFormat1Or3<HBUINT16> {};
 
-struct IndexSubtable
+بنية IndexSubtable
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int glyph_count) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح glyph_عدد) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.header.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (هذا);
+    إذا (!u.header.sanitize (c)) return_trace (خطأ);
     hb_barrier ();
-    switch (u.header.indexFormat)
+    بدل (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_count));
-    default:return_trace (true);
+    حالة 1: hb_barrier (); return_trace (u.format1.sanitize (c, glyph_عدد));
+    حالة 3: hb_barrier (); return_trace (u.format3.sanitize (c, glyph_عدد));
+    افتراضي:return_trace (true);
     }
   }
 
-  bool
+  منطقي
   finish_subtable (hb_serialize_context_t *c,
-		   unsigned int end_offset,
-		   unsigned int num_glyphs,
-		   unsigned int *size /* OUT (accumulated) */)
+		   unsigned صحيح end_offset,
+		   unsigned صحيح رقم_glyphs,
+		   unsigned صحيح *size /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    switch (u.header.indexFormat)
+    بدل (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, end_offset, size));
-    case 3: {
+    حالة 1: hb_barrier (); return_trace (u.format1.add_offset (c, end_offset, size));
+    حالة 3: {
       hb_barrier ();
-      if (!u.format3.add_offset (c, end_offset, size))
-	return_trace (false);
-      if (!(num_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
+      إذا (!u.format3.add_offset (c, end_offset, size))
+	return_trace (خطأ);
+      إذا (!(رقم_glyphs & 0x01))  // Pad to 32-bit alignment if needed.
 	return_trace (u.format3.add_offset (c, 0, size));
       return_trace (true);
     }
     // TODO: implement 2, 4, 5.
-    case 2: case 4:  // No-op.
-    case 5:  // Pad to 32-bit aligned.
-    default: return_trace (false);
+    حالة 2: حالة 4:  // No-op.
+    حالة 5:  // Pad to 32-bit aligned.
+    افتراضي: return_trace (خطأ);
     }
   }
 
-  bool
-  add_offset (hb_serialize_context_t *c, unsigned int local_offset,
-	      unsigned int *size /* OUT (accumulated) */)
+  منطقي
+  add_offset (hb_serialize_context_t *c, unsigned صحيح local_offset,
+	      unsigned صحيح *size /* OUT (accumulated) */)
   {
-    TRACE_SERIALIZE (this);
-    switch (u.header.indexFormat)
+    TRACE_SERIALIZE (هذا);
+    بدل (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return_trace (u.format1.add_offset (c, local_offset, size));
-    case 3: hb_barrier (); return_trace (u.format3.add_offset (c, local_offset, size));
+    حالة 1: hb_barrier (); return_trace (u.format1.add_offset (c, local_offset, size));
+    حالة 3: hb_barrier (); return_trace (u.format3.add_offset (c, local_offset, size));
     // TODO: Implement tables 2, 4, 5
-    case 2:  // Should be a no-op.
-    case 4: case 5:  // Handle sparse cases.
-    default: return_trace (false);
+    حالة 2:  // Should be a no-op.
+    حالة 4: حالة 5:  // Handle sparse cases.
+    افتراضي: return_trace (خطأ);
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents HB_UNUSED, bool scale HB_UNUSED) const
+  منطقي get_extents (hb_glyph_extents_t *extents HB_UNUSED, منطقي scale HB_UNUSED) ثابت
   {
-    switch (u.header.indexFormat)
+    بدل (u.header.indexFormat)
     {
-    case 2: case 5: /* TODO */
-    case 1: case 3: case 4: /* Variable-metrics formats do not have metrics here. */
-    default:return (false);
+    حالة 2: حالة 5: /* TODO */
+    حالة 1: حالة 3: حالة 4: /* Variable-metrics formats do not have metrics here. */
+    افتراضي:أرجع (خطأ);
     }
   }
 
-  bool
-  get_image_data (unsigned int idx, unsigned int *offset,
-		  unsigned int *length, unsigned int *format) const
+  منطقي
+  get_image_data (unsigned صحيح idx, unsigned صحيح *offset,
+		  unsigned صحيح *length, unsigned صحيح *format) ثابت
   {
     *format = u.header.imageFormat;
-    switch (u.header.indexFormat)
+    بدل (u.header.indexFormat)
     {
-    case 1: hb_barrier (); return u.format1.get_image_data (idx, offset, length);
-    case 3: hb_barrier (); return u.format3.get_image_data (idx, offset, length);
-    default: return false;
+    حالة 1: hb_barrier (); أرجع u.format1.get_image_data (idx, offset, length);
+    حالة 3: hb_barrier (); أرجع u.format3.get_image_data (idx, offset, length);
+    افتراضي: أرجع خطأ;
     }
   }
 
-  const IndexSubtableHeader* get_header () const { return &u.header; }
+  ثابت IndexSubtableHeader* get_header () ثابت { أرجع &u.header; }
 
-  void populate_header (unsigned index_format,
+  فراغ populate_header (unsigned index_format,
 			unsigned image_format,
-			unsigned int image_data_offset,
-			unsigned int *size)
+			unsigned صحيح image_data_offset,
+			unsigned صحيح *size)
   {
     u.header.indexFormat = index_format;
     u.header.imageFormat = image_format;
     u.header.imageDataOffset = image_data_offset;
-    switch (u.header.indexFormat)
+    بدل (u.header.indexFormat)
     {
-    case 1: *size += IndexSubtableFormat1::min_size; break;
-    case 3: *size += IndexSubtableFormat3::min_size; break;
+    حالة 1: *size += IndexSubtableFormat1::min_size; اكسر;
+    حالة 3: *size += IndexSubtableFormat3::min_size; اكسر;
     }
   }
 
-  protected:
-  union {
+  محمي:
+  اتحاد {
   IndexSubtableHeader	header;
   IndexSubtableFormat1	format1;
   IndexSubtableFormat3	format3;
   /* TODO: Format 2, 4, 5. */
   } u;
-  public:
+  عام:
   DEFINE_SIZE_UNION (8, header);
 };
 
-struct IndexSubtableRecord
+بنية IndexSubtableRecord
 {
   /* XXX Remove this and fix by not inserting it into vector. */
-  IndexSubtableRecord& operator = (const IndexSubtableRecord &o)
+  IndexSubtableRecord& operator = (ثابت IndexSubtableRecord &o)
   {
     firstGlyphIndex = o.firstGlyphIndex;
     lastGlyphIndex = o.lastGlyphIndex;
     offsetToSubtable = (unsigned) o.offsetToSubtable;
-    assert (offsetToSubtable.is_null ());
-    return *this;
+    أكد (offsetToSubtable.is_null ());
+    أرجع *هذا;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  firstGlyphIndex <= lastGlyphIndex &&
 		  offsetToSubtable.sanitize (c, base, lastGlyphIndex - firstGlyphIndex + 1));
   }
 
-  const IndexSubtable* get_subtable (const void *base) const
+  ثابت IndexSubtable* get_subtable (ثابت فراغ *base) ثابت
   {
-    return &(base+offsetToSubtable);
+    أرجع &(base+offsetToSubtable);
   }
 
-  bool add_new_subtable (hb_subset_context_t* c,
+  منطقي add_new_subtable (hb_subset_context_t* c,
 			 cblc_bitmap_size_subset_context_t *bitmap_size_context,
 			 IndexSubtableRecord *record,
-			 const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
-			 const void *base,
-			 unsigned int *start /* INOUT */) const
+			 ثابت hb_vector_t<hb_pair_t<hb_codepoint_t, ثابت IndexSubtableRecord*>> *lookup, /* IN */
+			 ثابت فراغ *base,
+			 unsigned صحيح *start /* INOUT */) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
     auto *subtable = c->serializer->start_embed<IndexSubtable> ();
-    if (unlikely (!c->serializer->extend_min (subtable))) return_trace (false);
+    إذا (unlikely (!c->serializer->extend_min (subtable))) return_trace (خطأ);
 
     auto *old_subtable = get_subtable (base);
     auto *old_header = old_subtable->get_header ();
-    unsigned int image_format = old_header->imageFormat;
+    unsigned صحيح image_format = old_header->imageFormat;
 
     /* Collect this subtable's image data and the length of each glyph's block
      * (zero for glyphs without data). This allows an earlier identical
      * subtable to share the same data. */
-    hb_vector_t<char> data;
-    hb_vector_t<unsigned int> lengths;
-    unsigned int num_glyphs = 0;
-    bool early_exit = false;
-    for (unsigned int i = *start; i < lookup->length; i++)
+    hb_vector_t<حرف> data;
+    hb_vector_t<unsigned صحيح> lengths;
+    unsigned صحيح رقم_glyphs = 0;
+    منطقي early_exit = خطأ;
+    لكل (unsigned صحيح i = *start; i < lookup->length; i++)
     {
       hb_codepoint_t new_gid = (*lookup)[i].first;
-      const IndexSubtableRecord *next_record = (*lookup)[i].second;
-      const IndexSubtable *next_subtable = next_record->get_subtable (base);
+      ثابت IndexSubtableRecord *next_record = (*lookup)[i].second;
+      ثابت IndexSubtable *next_subtable = next_record->get_subtable (base);
       auto *next_header = next_subtable->get_header ();
-      if (next_header != old_header)
+      إذا (next_header != old_header)
       {
 	*start = i;
 	early_exit = true;
-	break;
+	اكسر;
       }
-      unsigned int num_missing = record->add_glyph_for_subset (new_gid);
-      for (unsigned int j = 0; j < num_missing; j++)
-	if (unlikely (!c->serializer->check_success (lengths.push_or_fail (0))))
-	  return_trace (false);
+      unsigned صحيح رقم_missing = record->add_glyph_for_subset (new_gid);
+      لكل (unsigned صحيح j = 0; j < رقم_missing; j++)
+	إذا (unlikely (!c->serializer->check_success (lengths.ادفع_or_fail (0))))
+	  return_trace (خطأ);
 
       hb_codepoint_t old_gid = 0;
       c->plan->old_gid_for_new_gid (new_gid, &old_gid);
-      if (old_gid < next_record->firstGlyphIndex)
-	return_trace (false);
+      إذا (old_gid < next_record->firstGlyphIndex)
+	return_trace (خطأ);
 
-      unsigned int old_idx = (unsigned int) old_gid - next_record->firstGlyphIndex;
-      unsigned int offset, length, format;
-      if (unlikely (!next_subtable->get_image_data (old_idx, &offset, &length, &format)))
-	return_trace (false);
-      if (unlikely (offset > bitmap_size_context->cbdt_length ||
+      unsigned صحيح old_idx = (unsigned صحيح) old_gid - next_record->firstGlyphIndex;
+      unsigned صحيح offset, length, format;
+      إذا (unlikely (!next_subtable->get_image_data (old_idx, &offset, &length, &format)))
+	return_trace (خطأ);
+      إذا (unlikely (offset > bitmap_size_context->cbdt_length ||
 		    bitmap_size_context->cbdt_length - offset < length))
-	return_trace (false);
-      if (unlikely (!c->serializer->check_success (
+	return_trace (خطأ);
+      إذا (unlikely (!c->serializer->check_success (
 			_copy_data_to_cbdt (&data,
 					    bitmap_size_context->cbdt + offset,
 					    length))))
-	return_trace (false);
-      if (unlikely (!c->serializer->check_success (lengths.push_or_fail (length))))
-	return_trace (false);
-      num_glyphs += 1 + num_missing;
+	return_trace (خطأ);
+      إذا (unlikely (!c->serializer->check_success (lengths.ادفع_or_fail (length))))
+	return_trace (خطأ);
+      رقم_glyphs += 1 + رقم_missing;
     }
-    if (!early_exit)
+    إذا (!early_exit)
       *start = lookup->length;
 
     /* Find or append the data block for this subtable. */
-    unsigned int image_data_offset;
+    unsigned صحيح image_data_offset;
     cbdt_dedup_context_t *dedup = bitmap_size_context->dedup;
-    bool shared = false;
+    منطقي shared = خطأ;
     uint64_t key = 0;
-    if (dedup && data.length)
+    إذا (dedup && data.length)
     {
       key = cbdt_dedup_context_t::hash (image_format, data, lengths);
       shared = dedup->find (key, data, lengths,
-			    *bitmap_size_context->cbdt_prime,
+			    *bitmap_size_context->cbdt_أولي,
 			    &image_data_offset);
     }
-    if (!shared)
+    إذا (!shared)
     {
-      image_data_offset = bitmap_size_context->cbdt_prime->length;
-      if (unlikely (!c->serializer->check_success (
-			_copy_data_to_cbdt (bitmap_size_context->cbdt_prime,
+      image_data_offset = bitmap_size_context->cbdt_أولي->length;
+      إذا (unlikely (!c->serializer->check_success (
+			_copy_data_to_cbdt (bitmap_size_context->cbdt_أولي,
 					    data.arrayZ, data.length))))
-	return_trace (false);
-      if (dedup && data.length)
+	return_trace (خطأ);
+      إذا (dedup && data.length)
 	/* The bitmap data is already copied; caching is best-effort. */
-	(void) dedup->add (key, image_data_offset, lengths);
+	(فراغ) dedup->add (key, image_data_offset, lengths);
     }
 
     subtable->populate_header (old_header->indexFormat,
@@ -489,37 +489,37 @@ struct IndexSubtableRecord
 
     /* Glyphs without data use the offset of the following block's start,
      * which yields a zero length span, matching the old behavior. */
-    unsigned int cumulative = 0;
-    for (unsigned int length : lengths)
+    unsigned صحيح cumulative = 0;
+    لكل (unsigned صحيح length : lengths)
     {
-      if (unlikely (!subtable->add_offset (c->serializer, cumulative,
+      إذا (unlikely (!subtable->add_offset (c->serializer, cumulative,
 					   &bitmap_size_context->size)))
-	return_trace (false);
+	return_trace (خطأ);
       cumulative += length;
     }
-    if (unlikely (!subtable->finish_subtable (c->serializer,
+    إذا (unlikely (!subtable->finish_subtable (c->serializer,
 					      cumulative,
-					      num_glyphs,
+					      رقم_glyphs,
 					      &bitmap_size_context->size)))
-      return_trace (false);
+      return_trace (خطأ);
     return_trace (true);
   }
 
-  bool add_new_record (hb_subset_context_t *c,
+  منطقي add_new_record (hb_subset_context_t *c,
 		       cblc_bitmap_size_subset_context_t *bitmap_size_context,
-		       const hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> *lookup, /* IN */
-		       const void *base,
-		       unsigned int *start, /* INOUT */
-		       hb_vector_t<IndexSubtableRecord>* records /* INOUT */) const
+		       ثابت hb_vector_t<hb_pair_t<hb_codepoint_t, ثابت IndexSubtableRecord*>> *lookup, /* IN */
+		       ثابت فراغ *base,
+		       unsigned صحيح *start, /* INOUT */
+		       hb_vector_t<IndexSubtableRecord>* records /* INOUT */) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
     auto snap = c->serializer->snapshot ();
-    unsigned int old_size = bitmap_size_context->size;
-    unsigned int old_cbdt_prime_length = bitmap_size_context->cbdt_prime->length;
+    unsigned صحيح old_size = bitmap_size_context->size;
+    unsigned صحيح old_cbdt_أولي_length = bitmap_size_context->cbdt_أولي->length;
 
     // Set to invalid state to indicate filling glyphs is not yet started.
-    if (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
-      return_trace (false);
+    إذا (unlikely (!c->serializer->check_success (records->resize (records->length + 1))))
+      return_trace (خطأ);
 
     records->tail ().firstGlyphIndex = 1;
     records->tail ().lastGlyphIndex = 0;
@@ -527,90 +527,90 @@ struct IndexSubtableRecord
 
     c->serializer->push ();
 
-    if (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
+    إذا (unlikely (!add_new_subtable (c, bitmap_size_context, &(records->tail ()), lookup, base, start)))
     {
-      c->serializer->pop_discard ();
+      c->serializer->اسحب_discard ();
       c->serializer->revert (snap);
-      bitmap_size_context->cbdt_prime->shrink (old_cbdt_prime_length);
+      bitmap_size_context->cbdt_أولي->shrink (old_cbdt_أولي_length);
       bitmap_size_context->size = old_size;
       records->resize (records->length - 1);
-      return_trace (false);
+      return_trace (خطأ);
     }
 
-    bitmap_size_context->num_tables += 1;
+    bitmap_size_context->رقم_tables += 1;
     return_trace (true);
   }
 
-  unsigned int add_glyph_for_subset (hb_codepoint_t gid)
+  unsigned صحيح add_glyph_for_subset (hb_codepoint_t gid)
   {
-    if (firstGlyphIndex > lastGlyphIndex)
+    إذا (firstGlyphIndex > lastGlyphIndex)
     {
       firstGlyphIndex = gid;
       lastGlyphIndex = gid;
-      return 0;
+      أرجع 0;
     }
     // TODO maybe assert? this shouldn't occur.
-    if (lastGlyphIndex > gid)
-      return 0;
-    unsigned int num_missing = (unsigned int) (gid - lastGlyphIndex - 1);
+    إذا (lastGlyphIndex > gid)
+      أرجع 0;
+    unsigned صحيح رقم_missing = (unsigned صحيح) (gid - lastGlyphIndex - 1);
     lastGlyphIndex = gid;
-    return num_missing;
+    أرجع رقم_missing;
   }
 
-  bool get_extents (hb_glyph_extents_t *extents, const void *base, bool scale) const
-  { return (base+offsetToSubtable).get_extents (extents, scale); }
+  منطقي get_extents (hb_glyph_extents_t *extents, ثابت فراغ *base, منطقي scale) ثابت
+  { أرجع (base+offsetToSubtable).get_extents (extents, scale); }
 
-  bool get_image_data (unsigned int  gid,
-		       const void   *base,
-		       unsigned int *offset,
-		       unsigned int *length,
-		       unsigned int *format) const
+  منطقي get_image_data (unsigned صحيح  gid,
+		       ثابت فراغ   *base,
+		       unsigned صحيح *offset,
+		       unsigned صحيح *length,
+		       unsigned صحيح *format) ثابت
   {
-    if (gid < firstGlyphIndex || gid > lastGlyphIndex) return false;
-    return (base+offsetToSubtable).get_image_data (gid - firstGlyphIndex,
+    إذا (gid < firstGlyphIndex || gid > lastGlyphIndex) أرجع خطأ;
+    أرجع (base+offsetToSubtable).get_image_data (gid - firstGlyphIndex,
 						   offset, length, format);
   }
 
   HBGlyphID16			firstGlyphIndex;
   HBGlyphID16			lastGlyphIndex;
   Offset32To<IndexSubtable>	offsetToSubtable;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct IndexSubtableArray
+بنية IndexSubtableArray
 {
-  friend struct CBDT;
+  friend بنية CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count) const
+  منطقي sanitize (hb_sanitize_context_t *c, unsigned صحيح عدد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (indexSubtablesZ.sanitize (c, count, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (indexSubtablesZ.sanitize (c, عدد, هذا));
   }
 
-  void
+  فراغ
   build_lookup (hb_subset_context_t *c, cblc_bitmap_size_subset_context_t *bitmap_size_context,
 		hb_vector_t<hb_pair_t<hb_codepoint_t,
-		const IndexSubtableRecord*>> *lookup /* OUT */) const
+		ثابت IndexSubtableRecord*>> *lookup /* OUT */) ثابت
   {
-    bool start_glyph_is_set = false;
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    for (hb_codepoint_t new_gid = 0; new_gid < num_glyphs; new_gid++)
+    منطقي start_glyph_is_set = خطأ;
+    unsigned رقم_glyphs = c->plan->رقم_output_glyphs ();
+    لكل (hb_codepoint_t new_gid = 0; new_gid < رقم_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) continue;
+      إذا (unlikely (!c->plan->old_gid_for_new_gid (new_gid, &old_gid))) استمر;
 
-      const IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->num_tables);
-      if (unlikely (!record)) continue;
+      ثابت IndexSubtableRecord* record = find_table (old_gid, bitmap_size_context->رقم_tables);
+      إذا (unlikely (!record)) استمر;
 
       // Don't add gaps to the lookup. The best way to determine if a glyph is a
       // gap is that it has no image data.
-      unsigned int offset, length, format;
-      if (unlikely (!record->get_image_data (old_gid, this, &offset, &length, &format))) continue;
+      unsigned صحيح offset, length, format;
+      إذا (unlikely (!record->get_image_data (old_gid, هذا, &offset, &length, &format))) استمر;
 
-      lookup->push (hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*> (new_gid, record));
+      lookup->push (hb_pair_t<hb_codepoint_t, ثابت IndexSubtableRecord*> (new_gid, record));
 
-      if (!start_glyph_is_set)
+      إذا (!start_glyph_is_set)
       {
 	bitmap_size_context->start_glyph = new_gid;
 	start_glyph_is_set = true;
@@ -620,136 +620,136 @@ struct IndexSubtableArray
     }
   }
 
-  bool
+  منطقي
   subset (hb_subset_context_t *c,
-	  cblc_bitmap_size_subset_context_t *bitmap_size_context) const
+	  cblc_bitmap_size_subset_context_t *bitmap_size_context) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    hb_vector_t<hb_pair_t<hb_codepoint_t, const IndexSubtableRecord*>> lookup;
+    hb_vector_t<hb_pair_t<hb_codepoint_t, ثابت IndexSubtableRecord*>> lookup;
     build_lookup (c, bitmap_size_context, &lookup);
-    if (unlikely (!c->serializer->propagate_error (lookup)))
-      return false;
+    إذا (unlikely (!c->serializer->propagate_error (lookup)))
+      أرجع خطأ;
 
     bitmap_size_context->size = 0;
-    bitmap_size_context->num_tables = 0;
+    bitmap_size_context->رقم_tables = 0;
     hb_vector_t<IndexSubtableRecord> records;
-    for (unsigned int start = 0; start < lookup.length;)
+    لكل (unsigned صحيح start = 0; start < lookup.length;)
     {
-      if (unlikely (!lookup[start].second->add_new_record (c, bitmap_size_context, &lookup, this, &start, &records)))
+      إذا (unlikely (!lookup[start].second->add_new_record (c, bitmap_size_context, &lookup, هذا, &start, &records)))
       {
 	// Discard any leftover pushes to the serializer from successful records.
-	for (unsigned int i = 0; i < records.length; i++)
-	  c->serializer->pop_discard ();
-	return_trace (false);
+	لكل (unsigned صحيح i = 0; i < records.length; i++)
+	  c->serializer->اسحب_discard ();
+	return_trace (خطأ);
       }
     }
 
     /* Workaround to ensure offset ordering is from least to greatest when
      * resolving links. */
     hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (unsigned int i = 0; i < records.length; i++)
-      objidxs.push (c->serializer->pop_pack ());
-    for (unsigned int i = 0; i < records.length; i++)
+    لكل (unsigned صحيح i = 0; i < records.length; i++)
+      objidxs.push (c->serializer->اسحب_pack ());
+    لكل (unsigned صحيح i = 0; i < records.length; i++)
     {
       IndexSubtableRecord* record = c->serializer->embed (records[i]);
-      if (unlikely (!record)) return_trace (false);
+      إذا (unlikely (!record)) return_trace (خطأ);
       c->serializer->add_link (record->offsetToSubtable, objidxs[records.length - 1 - i]);
     }
     return_trace (true);
   }
 
-  public:
-  const IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned int numTables) const
+  عام:
+  ثابت IndexSubtableRecord* find_table (hb_codepoint_t glyph, unsigned صحيح رقم_Tables) ثابت
   {
-    for (unsigned int i = 0; i < numTables; ++i)
+    لكل (unsigned صحيح i = 0; i < رقم_Tables; ++i)
     {
-      unsigned int firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
-      unsigned int lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
-      if (firstGlyphIndex <= glyph && glyph <= lastGlyphIndex)
-	return &indexSubtablesZ[i];
+      unsigned صحيح firstGlyphIndex = indexSubtablesZ[i].firstGlyphIndex;
+      unsigned صحيح lastGlyphIndex = indexSubtablesZ[i].lastGlyphIndex;
+      إذا (firstGlyphIndex <= glyph && glyph <= lastGlyphIndex)
+	أرجع &indexSubtablesZ[i];
     }
-    return nullptr;
+    أرجع nullptr;
   }
 
-  protected:
+  محمي:
   UnsizedArrayOf<IndexSubtableRecord>	indexSubtablesZ;
 };
 
-struct BitmapSizeTable
+بنية BitmapSizeTable
 {
-  friend struct CBLC;
-  friend struct CBDT;
+  friend بنية CBLC;
+  friend بنية CBDT;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  indexSubtableArrayOffset.sanitize (c, base, numberOfIndexSubtables) &&
+		  indexSubtableArrayOffset.sanitize (c, base, رقم_Of_Index_Subtables) &&
 		  horizontal.sanitize (c) &&
 		  vertical.sanitize (c));
   }
 
-  const IndexSubtableRecord *
-  find_table (hb_codepoint_t glyph, const void *base, const void **out_base) const
+  ثابت IndexSubtableRecord *
+  find_table (hb_codepoint_t glyph, ثابت فراغ *base, ثابت فراغ **out_base) ثابت
   {
     *out_base = &(base+indexSubtableArrayOffset);
-    return (base+indexSubtableArrayOffset).find_table (glyph, numberOfIndexSubtables);
+    أرجع (base+indexSubtableArrayOffset).find_table (glyph, رقم_Of_Index_Subtables);
   }
 
-  bool
-  subset (hb_subset_context_t *c, const void *base,
-	  const char *cbdt, unsigned int cbdt_length,
-	  hb_vector_t<char> *cbdt_prime /* INOUT */,
-	  cbdt_dedup_context_t *dedup /* INOUT */) const
+  منطقي
+  subset (hb_subset_context_t *c, ثابت فراغ *base,
+	  ثابت حرف *cbdt, unsigned صحيح cbdt_length,
+	  hb_vector_t<حرف> *cbdt_أولي /* INOUT */,
+	  cbdt_dedup_context_t *dedup /* INOUT */) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out_table = c->serializer->embed (this);
-    if (unlikely (!out_table)) return_trace (false);
+    TRACE_SUBSET (هذا);
+    auto *out_table = c->serializer->embed (هذا);
+    إذا (unlikely (!out_table)) return_trace (خطأ);
 
     cblc_bitmap_size_subset_context_t bitmap_size_context;
     bitmap_size_context.cbdt = cbdt;
     bitmap_size_context.cbdt_length = cbdt_length;
-    bitmap_size_context.cbdt_prime = cbdt_prime;
+    bitmap_size_context.cbdt_أولي = cbdt_أولي;
     bitmap_size_context.size = indexTablesSize;
-    bitmap_size_context.num_tables = numberOfIndexSubtables;
+    bitmap_size_context.رقم_tables = رقم_Of_Index_Subtables;
     bitmap_size_context.start_glyph = 1;
     bitmap_size_context.end_glyph = 0;
     bitmap_size_context.dedup = dedup;
 
-    if (!out_table->indexSubtableArrayOffset.serialize_subset (c,
+    إذا (!out_table->indexSubtableArrayOffset.serialize_subset (c,
 							       indexSubtableArrayOffset,
 							       base,
 							       &bitmap_size_context))
-      return_trace (false);
-    if (!bitmap_size_context.size ||
-	!bitmap_size_context.num_tables ||
+      return_trace (خطأ);
+    إذا (!bitmap_size_context.size ||
+	!bitmap_size_context.رقم_tables ||
 	bitmap_size_context.start_glyph > bitmap_size_context.end_glyph)
-      return_trace (false);
+      return_trace (خطأ);
 
     out_table->indexTablesSize = bitmap_size_context.size;
-    out_table->numberOfIndexSubtables = bitmap_size_context.num_tables;
+    out_table->رقم_Of_Index_Subtables = bitmap_size_context.رقم_tables;
     out_table->startGlyphIndex = bitmap_size_context.start_glyph;
     out_table->endGlyphIndex = bitmap_size_context.end_glyph;
     return_trace (true);
   }
 
-  protected:
+  محمي:
   NNOffset32To<IndexSubtableArray>
 			indexSubtableArrayOffset;
   HBUINT32		indexTablesSize;
-  HBUINT32		numberOfIndexSubtables;
+  HBUINT32		رقم_Of_Index_Subtables;
   HBUINT32		colorRef;
-  SBitLineMetrics	horizontal;
-  SBitLineMetrics	vertical;
+  SBit_سطر_Metrics	horizontal;
+  SBit_سطر_Metrics	vertical;
   HBGlyphID16		startGlyphIndex;
   HBGlyphID16		endGlyphIndex;
   HBUINT8		ppemX;
   HBUINT8		ppemY;
   HBUINT8		bitDepth;
   HBINT8		flags;
-  public:
+  عام:
   DEFINE_SIZE_STATIC (48);
 };
 
@@ -758,101 +758,101 @@ struct BitmapSizeTable
  * Glyph Bitmap Data Formats.
  */
 
-struct GlyphBitmapDataFormat17
+بنية GlyphBitmapDataFormat17
 {
   SmallGlyphMetrics	glyphMetrics;
   Array32Of<HBUINT8>	data;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (9, data);
 };
 
-struct GlyphBitmapDataFormat18
+بنية GlyphBitmapDataFormat18
 {
   BigGlyphMetrics	glyphMetrics;
   Array32Of<HBUINT8>	data;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (12, data);
 };
 
-struct GlyphBitmapDataFormat19
+بنية GlyphBitmapDataFormat19
 {
   Array32Of<HBUINT8>	data;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (4, data);
 };
 
-struct CBLC
+بنية CBLC
 {
-  friend struct CBDT;
+  friend بنية CBDT;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CBLC;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_CBLC;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  likely (version.major == 2 || version.major == 3) &&
 		  hb_barrier () &&
-		  sizeTables.sanitize (c, this));
+		  sizeTables.sanitize (c, هذا));
   }
 
-  static bool
-  sink_cbdt (hb_subset_context_t *c, hb_vector_t<char>* cbdt_prime)
+  ساكن منطقي
+  sink_cbdt (hb_subset_context_t *c, hb_vector_t<حرف>* cbdt_أولي)
   {
-    hb_blob_t *cbdt_prime_blob = hb_blob_create (cbdt_prime->arrayZ,
-						 cbdt_prime->length,
+    hb_blob_t *cbdt_أولي_blob = hb_blob_create (cbdt_أولي->arrayZ,
+						 cbdt_أولي->length,
 						 HB_MEMORY_MODE_WRITABLE,
-						 cbdt_prime->arrayZ,
+						 cbdt_أولي->arrayZ,
 						 hb_free);
-    cbdt_prime->init ();  // Leak arrayZ to the blob.
-    bool ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_prime_blob);
-    hb_blob_destroy (cbdt_prime_blob);
-    return ret;
+    cbdt_أولي->init ();  // Leak arrayZ to the blob.
+    منطقي ret = c->plan->add_table (HB_OT_TAG_CBDT, cbdt_أولي_blob);
+    hb_blob_destroy (cbdt_أولي_blob);
+    أرجع ret;
   }
 
-  bool
-  subset_size_table (hb_subset_context_t *c, const BitmapSizeTable& table,
-		     const char *cbdt /* IN */, unsigned int cbdt_length,
-		     CBLC *cblc_prime /* INOUT */, hb_vector_t<char> *cbdt_prime /* INOUT */,
-		     cbdt_dedup_context_t *dedup /* INOUT */) const
+  منطقي
+  subset_size_table (hb_subset_context_t *c, ثابت BitmapSizeTable& table,
+		     ثابت حرف *cbdt /* IN */, unsigned صحيح cbdt_length,
+		     CBLC *cblc_أولي /* INOUT */, hb_vector_t<حرف> *cbdt_أولي /* INOUT */,
+		     cbdt_dedup_context_t *dedup /* INOUT */) ثابت
   {
-    TRACE_SUBSET (this);
-    cblc_prime->sizeTables.len++;
+    TRACE_SUBSET (هذا);
+    cblc_أولي->sizeTables.len++;
 
     auto snap = c->serializer->snapshot ();
-    auto cbdt_prime_len = cbdt_prime->length;
+    auto cbdt_أولي_len = cbdt_أولي->length;
 
-    if (!table.subset (c, this, cbdt, cbdt_length, cbdt_prime, dedup))
+    إذا (!table.subset (c, هذا, cbdt, cbdt_length, cbdt_أولي, dedup))
     {
-      cblc_prime->sizeTables.len--;
+      cblc_أولي->sizeTables.len--;
       c->serializer->revert (snap);
-      cbdt_prime->shrink (cbdt_prime_len);
-      return_trace (false);
+      cbdt_أولي->shrink (cbdt_أولي_len);
+      return_trace (خطأ);
     }
     return_trace (true);
   }
 
   // Implemented in cc file as it depends on definition of CBDT.
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_INTERNAL منطقي subset (hb_subset_context_t *c) ثابت;
 
-  protected:
-  const BitmapSizeTable &choose_strike (hb_font_t *font) const
+  محمي:
+  ثابت BitmapSizeTable &choose_strike (hb_font_t *font) ثابت
   {
-    unsigned count = sizeTables.len;
-    if (unlikely (!count))
-      return Null (BitmapSizeTable);
+    unsigned عدد = sizeTables.len;
+    إذا (unlikely (!عدد))
+      أرجع Null (BitmapSizeTable);
 
-    unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-    if (!requested_ppem)
+    unsigned صحيح requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+    إذا (!requested_ppem)
       requested_ppem = 1<<30; /* Choose largest strike. */
-    unsigned int best_i = 0;
-    unsigned int best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
+    unsigned صحيح best_i = 0;
+    unsigned صحيح best_ppem = hb_max (sizeTables[0].ppemX, sizeTables[0].ppemY);
 
-    for (unsigned int i = 1; i < count; i++)
+    لكل (unsigned صحيح i = 1; i < عدد; i++)
     {
-      unsigned int ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
-      if ((requested_ppem <= ppem && ppem < best_ppem) ||
+      unsigned صحيح ppem = hb_max (sizeTables[i].ppemX, sizeTables[i].ppemY);
+      إذا ((requested_ppem <= ppem && ppem < best_ppem) ||
 	  (requested_ppem > best_ppem && ppem > best_ppem))
       {
 	best_i = i;
@@ -860,157 +860,157 @@ struct CBLC
       }
     }
 
-    return sizeTables[best_i];
+    أرجع sizeTables[best_i];
   }
 
-  protected:
+  محمي:
   FixedVersion<>		version;
   Array32Of<BitmapSizeTable>	sizeTables;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (8, sizeTables);
 };
 
-struct CBDT
+بنية CBDT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CBDT;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_CBDT;
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      this->cblc = hb_sanitize_context_t ().reference_table<CBLC> (face);
-      this->cbdt = hb_sanitize_context_t ().reference_table<CBDT> (face);
+      هذا->cblc = hb_sanitize_context_t ().reference_table<CBLC> (face);
+      هذا->cbdt = hb_sanitize_context_t ().reference_table<CBDT> (face);
 
       upem = hb_face_get_upem (face);
     }
     ~accelerator_t ()
     {
-      this->cblc.destroy ();
-      this->cbdt.destroy ();
+      هذا->cblc.destroy ();
+      هذا->cbdt.destroy ();
     }
 
-    bool
-    get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, bool scale = true) const
+    منطقي
+    get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, منطقي scale = true) ثابت
     {
-      const void *base;
-      const BitmapSizeTable &strike = this->cblc->choose_strike (font);
-      const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return false;
+      ثابت فراغ *base;
+      ثابت BitmapSizeTable &strike = هذا->cblc->choose_strike (font);
+      ثابت IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
+      إذا (!subtable_record || !strike.ppemX || !strike.ppemY)
+	أرجع خطأ;
 
-      if (subtable_record->get_extents (extents, base, scale))
-	return true;
+      إذا (subtable_record->get_extents (extents, base, scale))
+	أرجع true;
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return false;
+      unsigned صحيح image_offset = 0, image_length = 0, image_format = 0;
+      إذا (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
+	أرجع خطأ;
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return false;
+      unsigned صحيح cbdt_len = cbdt.get_length ();
+      إذا (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
+	أرجع خطأ;
 
-      switch (image_format)
+      بدل (image_format)
       {
-      case 17: {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return false;
-	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
+      حالة 17: {
+	إذا (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
+	  أرجع خطأ;
+	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (هذا->cbdt, image_offset);
 	glyphFormat17.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	اكسر;
       }
-      case 18: {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return false;
-	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
+      حالة 18: {
+	إذا (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
+	  أرجع خطأ;
+	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (هذا->cbdt, image_offset);
 	glyphFormat18.glyphMetrics.get_extents (font, extents, scale);
-	break;
+	اكسر;
       }
-      default: return false; /* TODO: Support other image formats. */
+      افتراضي: أرجع خطأ; /* TODO: Support other image formats. */
       }
 
       /* Convert to font units. */
-      if (scale)
+      إذا (scale)
       {
-	float x_scale = upem / (float) strike.ppemX;
-	float y_scale = upem / (float) strike.ppemY;
+	عائم x_scale = upem / (عائم) strike.ppemX;
+	عائم y_scale = upem / (عائم) strike.ppemY;
 	extents->x_bearing = hb_clamp_to<hb_position_t> (roundf (extents->x_bearing * x_scale));
 	extents->y_bearing = hb_clamp_to<hb_position_t> (roundf (extents->y_bearing * y_scale));
 	extents->width = hb_clamp_to<hb_position_t> (roundf (extents->width * x_scale));
 	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * y_scale));
       }
 
-      return true;
+      أرجع true;
     }
 
     hb_blob_t*
-    reference_png (hb_font_t *font, hb_codepoint_t glyph) const
+    reference_png (hb_font_t *font, hb_codepoint_t glyph) ثابت
     {
-      const void *base;
-      const BitmapSizeTable &strike = this->cblc->choose_strike (font);
-      const IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
-      if (!subtable_record || !strike.ppemX || !strike.ppemY)
-	return hb_blob_get_empty ();
+      ثابت فراغ *base;
+      ثابت BitmapSizeTable &strike = هذا->cblc->choose_strike (font);
+      ثابت IndexSubtableRecord *subtable_record = strike.find_table (glyph, cblc, &base);
+      إذا (!subtable_record || !strike.ppemX || !strike.ppemY)
+	أرجع hb_blob_get_empty ();
 
-      unsigned int image_offset = 0, image_length = 0, image_format = 0;
-      if (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
-	return hb_blob_get_empty ();
+      unsigned صحيح image_offset = 0, image_length = 0, image_format = 0;
+      إذا (!subtable_record->get_image_data (glyph, base, &image_offset, &image_length, &image_format))
+	أرجع hb_blob_get_empty ();
 
-      unsigned int cbdt_len = cbdt.get_length ();
-      if (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
-	return hb_blob_get_empty ();
+      unsigned صحيح cbdt_len = cbdt.get_length ();
+      إذا (unlikely (image_offset > cbdt_len || cbdt_len - image_offset < image_length))
+	أرجع hb_blob_get_empty ();
 
-      switch (image_format)
+      بدل (image_format)
       {
-      case 17:
+      حالة 17:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	إذا (unlikely (image_length < GlyphBitmapDataFormat17::min_size))
+	  أرجع hb_blob_get_empty ();
+	auto &glyphFormat17 = StructAtOffset<GlyphBitmapDataFormat17> (هذا->cbdt, image_offset);
+	أرجع hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat17::min_size,
 					glyphFormat17.data.len);
       }
-      case 18:
+      حالة 18:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	إذا (unlikely (image_length < GlyphBitmapDataFormat18::min_size))
+	  أرجع hb_blob_get_empty ();
+	auto &glyphFormat18 = StructAtOffset<GlyphBitmapDataFormat18> (هذا->cbdt, image_offset);
+	أرجع hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat18::min_size,
 					glyphFormat18.data.len);
       }
-      case 19:
+      حالة 19:
       {
-	if (unlikely (image_length < GlyphBitmapDataFormat19::min_size))
-	  return hb_blob_get_empty ();
-	auto &glyphFormat19 = StructAtOffset<GlyphBitmapDataFormat19> (this->cbdt, image_offset);
-	return hb_blob_create_sub_blob (cbdt.get_blob (),
+	إذا (unlikely (image_length < GlyphBitmapDataFormat19::min_size))
+	  أرجع hb_blob_get_empty ();
+	auto &glyphFormat19 = StructAtOffset<GlyphBitmapDataFormat19> (هذا->cbdt, image_offset);
+	أرجع hb_blob_create_sub_blob (cbdt.get_blob (),
 					image_offset + GlyphBitmapDataFormat19::min_size,
 					glyphFormat19.data.len);
       }
-      default: return hb_blob_get_empty (); /* TODO: Support other image formats. */
+      افتراضي: أرجع hb_blob_get_empty (); /* TODO: Support other image formats. */
       }
     }
 
-    bool has_data () const { return cbdt->version.major; }
+    منطقي has_data () ثابت { أرجع cbdt->version.major; }
 
-    bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    منطقي paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, فراغ *data) ثابت
     {
-      if (!has_data ()) return false;
+      إذا (!has_data ()) أرجع خطأ;
 
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
-      if (unlikely (!font->get_glyph_extents (glyph, &extents, false)))
-        return false;
+      إذا (unlikely (!font->get_glyph_extents (glyph, &extents, خطأ)))
+        أرجع خطأ;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      إذا (unlikely (!get_extents (font, glyph, &pixel_extents, خطأ)))
+        أرجع خطأ;
 
       hb_blob_t *blob = reference_png (font, glyph);
-      if (unlikely (hb_blob_is_immutable (blob)))
-        return false;
+      إذا (unlikely (hb_blob_is_immutable (blob)))
+        أرجع خطأ;
 
-      bool ret = funcs->image (data,
+      منطقي ret = funcs->image (data,
 			       blob,
 			       pixel_extents.width, -pixel_extents.height,
 			       HB_PAINT_IMAGE_FORMAT_PNG,
@@ -1019,63 +1019,63 @@ struct CBDT
 
       hb_blob_destroy (blob);
 
-      return ret;
+      أرجع ret;
     }
 
-    private:
+    خاص:
     hb_blob_ptr_t<CBLC> cblc;
     hb_blob_ptr_t<CBDT> cbdt;
 
-    unsigned int upem;
+    unsigned صحيح upem;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
 		  likely (version.major == 2 || version.major == 3));
   }
 
-  protected:
+  محمي:
   FixedVersion<>		version;
   UnsizedArrayOf<HBUINT8>	dataZ;
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (4, dataZ);
 };
 
-inline bool
-CBLC::subset (hb_subset_context_t *c) const
+مضمن منطقي
+CBLC::subset (hb_subset_context_t *c) ثابت
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (هذا);
 
   // Use a vector as a secondary buffer as the tables need to be built in parallel.
-  hb_vector_t<char> cbdt_prime;
+  hb_vector_t<حرف> cbdt_أولي;
 
-  auto *cblc_prime = c->serializer->start_embed<CBLC> ();
-  if (unlikely (!c->serializer->extend_min (cblc_prime))) return_trace (false);
-  cblc_prime->version = version;
+  auto *cblc_أولي = c->serializer->start_embed<CBLC> ();
+  إذا (unlikely (!c->serializer->extend_min (cblc_أولي))) return_trace (خطأ);
+  cblc_أولي->version = version;
 
   hb_blob_t* cbdt_blob = hb_sanitize_context_t ().reference_table<CBDT> (c->plan->source);
-  unsigned int cbdt_length;
+  unsigned صحيح cbdt_length;
   CBDT* cbdt = (CBDT *) hb_blob_get_data (cbdt_blob, &cbdt_length);
-  if (unlikely (cbdt_length < CBDT::min_size))
+  إذا (unlikely (cbdt_length < CBDT::min_size))
   {
     hb_blob_destroy (cbdt_blob);
-    return_trace (false);
+    return_trace (خطأ);
   }
-  _copy_data_to_cbdt (&cbdt_prime, cbdt, CBDT::min_size);
+  _copy_data_to_cbdt (&cbdt_أولي, cbdt, CBDT::min_size);
 
   cbdt_dedup_context_t dedup;
-  for (const BitmapSizeTable& table : + sizeTables.iter ())
-    subset_size_table (c, table, (const char *) cbdt, cbdt_length, cblc_prime, &cbdt_prime, &dedup);
+  لكل (ثابت BitmapSizeTable& table : + sizeTables.iter ())
+    subset_size_table (c, table, (ثابت حرف *) cbdt, cbdt_length, cblc_أولي, &cbdt_أولي, &dedup);
 
   hb_blob_destroy (cbdt_blob);
 
-  return_trace (CBLC::sink_cbdt (c, &cbdt_prime));
+  return_trace (CBLC::sink_cbdt (c, &cbdt_أولي));
 }
 
-struct CBDT_accelerator_t : CBDT::accelerator_t {
+بنية CBDT_accelerator_t : CBDT::accelerator_t {
   CBDT_accelerator_t (hb_face_t *face) : CBDT::accelerator_t (face) {}
 };
 

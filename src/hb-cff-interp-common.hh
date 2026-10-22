@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+خارجي HB_INTERNAL ثابت unsigned حرف *endchar_str;
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+using نطاق OT;
 
-typedef unsigned int op_code_t;
+تعريفنوع unsigned صحيح op_code_t;
 
 
 /* === Dict operators === */
@@ -44,7 +44,7 @@ typedef unsigned int op_code_t;
 #define OpCode_FamilyName	  3 /* CFF Top */
 #define OpCode_Weight		  4 /* CFF Top */
 #define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
+#define Op_Code_Blue_قيم	  6 /* CFF Private, CFF2 Private */
 #define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+مضمن op_code_t Unmake_OpCode_ESC (op_code_t op)  { أرجع (op_code_t)(op - OpCode_ESC_Base); }
+مضمن منطقي Is_OpCode_ESC (op_code_t op) { أرجع op >= OpCode_ESC_Base; }
+مضمن unsigned صحيح OpCode_Size (op_code_t op) { أرجع Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -217,80 +217,80 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+بنية رقم_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  فراغ set_int (صحيح v)       { value = v; }
+  منطقي to_int (صحيح *v) ثابت
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    إذا (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      أرجع خطأ;
     }
-    *v = (int) value;
-    return true;
+    *v = (صحيح) value;
+    أرجع true;
   }
-  int to_int () const
+  صحيح to_int () ثابت
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    صحيح v;
+    إذا (likely (to_int (&v))) أرجع v;
+    أرجع value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  فراغ set_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t to_fixed () ثابت
+  { أرجع (int32_t) hb_clamp (value * 65536.0, (مزدوج) INT32_MIN, (مزدوج) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  فراغ set_real (مزدوج v)   { value = v; }
+  مزدوج to_real () ثابت    { أرجع value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  منطقي in_int_range () ثابت
+  { أرجع value >= INT16_MIN && value <= INT16_MAX && (مزدوج) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  منطقي operator >  (ثابت رقم_t &n) ثابت { أرجع value > n.to_real (); }
+  منطقي operator <  (ثابت رقم_t &n) ثابت { أرجع n > *هذا; }
+  منطقي operator >= (ثابت رقم_t &n) ثابت { أرجع !(*هذا < n); }
+  منطقي operator <= (ثابت رقم_t &n) ثابت { أرجع !(*هذا > n); }
 
-  const number_t &operator += (const number_t &n)
+  ثابت رقم_t &operator += (ثابت رقم_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    أرجع *هذا;
   }
 
-  protected:
-  double value = 0.;
+  محمي:
+  مزدوج value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+بنية UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (unsigned l) ثابت
+  { أرجع hb_ubytes_t ((ثابت unsigned حرف *) هذا, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  ساكن منطقي serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    إذا (unlikely (!p)) return_trace (خطأ);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    إذا (unlikely (!ip)) return_trace (خطأ);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  ساكن منطقي serialize_int4 (hb_serialize_context_t *c, V value)
+  { أرجع serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  ساكن منطقي serialize_int2 (hb_serialize_context_t *c, V value)
+  { أرجع serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -300,214 +300,214 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+بنية byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (ثابت hb_ubytes_t &str_, unsigned صحيح offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  فراغ reset (ثابت hb_ubytes_t &str_, unsigned صحيح offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  ثابت unsigned حرف& operator [] (صحيح i) {
+    إذا (unlikely ((unsigned صحيح) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      أرجع Null (unsigned حرف);
     }
-    return str.arrayZ[get_offset () + i];
+    أرجع str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned حرف head_unchecked () ثابت { أرجع str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () ثابت { أرجع str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned صحيح offset_, unsigned صحيح len_) ثابت
+  { أرجع str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  منطقي avail (unsigned صحيح عدد=1) ثابت
+  { أرجع get_offset () + عدد <= str.length; }
+  فراغ inc (unsigned صحيح عدد=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    set_offset (get_offset () + عدد);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  unsigned get_offset () ثابت { أرجع str.backwards_length; }
+  فراغ set_offset (unsigned offset) { str.backwards_length = offset; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  فراغ set_error ()      { str.backwards_length = str.length + 1; }
+  منطقي in_error () ثابت { أرجع str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () ثابت { أرجع str.length; }
 
-  protected:
+  محمي:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*مكدس*/
+template <typename ELEM, صحيح LIMIT>
+بنية cff_مكدس_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned صحيح i)
   {
-    if (unlikely (i >= length))
+    إذا (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      أرجع Crap (ELEM);
     }
-    return arrayZ[i];
+    أرجع arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  فراغ push (ثابت ELEM &v)
   {
-    if (likely (length < LIMIT))
+    إذا (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    وإلا
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    إذا (likely (length < LIMIT))
+      أرجع arrayZ[length++];
+    وإلا
     {
       set_error ();
-      return Crap (ELEM);
+      أرجع Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& اسحب ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    إذا (likely (length > 0))
+      أرجع arrayZ[--length];
+    وإلا
     {
       set_error ();
-      return Crap (ELEM);
+      أرجع Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  فراغ اسحب (unsigned صحيح n)
   {
-    if (likely (length >= n))
+    إذا (likely (length >= n))
       length -= n;
-    else
+    وإلا
       set_error ();
   }
 
-  const ELEM& peek ()
+  ثابت ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    إذا (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      أرجع Null (ELEM);
     }
-    return arrayZ[length - 1];
+    أرجع arrayZ[length - 1];
   }
 
-  void unpop ()
+  فراغ unpop ()
   {
-    if (likely (length < LIMIT))
+    إذا (likely (length < LIMIT))
       length++;
-    else
+    وإلا
       set_error ();
   }
 
-  void clear () { length = 0; }
+  فراغ clear () { length = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  منطقي in_error () ثابت { أرجع (error); }
+  فراغ set_error ()      { error = true; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned صحيح get_عدد () ثابت { أرجع length; }
+  منطقي is_empty () ثابت          { أرجع !length; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<ثابت ELEM> sub_array (unsigned start, unsigned length) ثابت
+  { أرجع hb_array_t<ثابت ELEM> (arrayZ).sub_array (start, length); }
 
-  bool error = false;
-  unsigned int length = 0;
+  منطقي error = خطأ;
+  unsigned صحيح length = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+template <typename ARG=رقم_t>
+بنية arg_مكدس_t : cff_مكدس_t<ARG, 513>
 {
-  void push_int (int v)
+  فراغ ادفع_int (صحيح v)
   {
     ARG &n = S::push ();
     n.set_int (v);
   }
 
-  void push_fixed (int32_t v)
+  فراغ ادفع_fixed (int32_t v)
   {
     ARG &n = S::push ();
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  فراغ ادفع_real (مزدوج v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& اسحب_رقم () { أرجع هذا->اسحب (); }
 
-  int pop_int ()
+  صحيح اسحب_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    صحيح v;
+    إذا (unlikely (!هذا->اسحب ().to_int (&v)))
       S::set_error ();
-    return v;
+    أرجع v;
   }
 
-  unsigned int pop_uint ()
+  unsigned صحيح اسحب_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    صحيح i = اسحب_int ();
+    إذا (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    أرجع (unsigned) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  فراغ ادفع_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    ادفع_int ((صحيح) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  منطقي ادفع_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    إذا (unlikely (!str_ref.avail (4)))
+      أرجع خطأ;
+    ادفع_fixed ((int32_t)*(ثابت HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    أرجع true;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  خاص:
+  تعريفنوع cff_مكدس_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+بنية op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  ثابت unsigned حرف *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
@@ -515,38 +515,38 @@ struct op_str_t
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+بنية op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  محمي:
+  منطقي copy_opstr (hb_serialize_context_t *c, ثابت op_str_t& opstr) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned حرف *d = c->allocate_size<unsigned حرف> (opstr.length);
+    إذا (unlikely (!d)) return_trace (خطأ);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    لكل (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
     return_trace (true);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+بنية parsed_قيم_t
 {
-  void init ()
+  فراغ init ()
   {
     opStart = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  فراغ fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  فراغ alloc (unsigned n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  فراغ add_op (op_code_t op, ثابت byte_str_ref_t& str_ref = byte_str_ref_t (), ثابت VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
@@ -556,103 +556,103 @@ struct parsed_values_t
     opStart = str_ref.get_offset ();
   }
 
-  bool has_op (op_code_t op) const
+  منطقي has_op (op_code_t op) ثابت
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    لكل (ثابت auto& v : values)
+      إذا (v.op == op) أرجع true;
+    أرجع خطأ;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_عدد () ثابت { أرجع values.length; }
+  ثابت VAL &operator [] (unsigned صحيح i) ثابت { أرجع values[i]; }
 
-  unsigned int       opStart;
+  unsigned صحيح       opStart;
   hb_vector_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+template <typename ARG=رقم_t>
+بنية interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (ثابت hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  منطقي in_error () ثابت
+  { أرجع str_ref.in_error () || arg_مكدس.in_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  فراغ set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    إذا (unlikely (!str_ref.avail ()))
+      أرجع OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    إذا (op == OpCode_escape) {
+      إذا (unlikely (!str_ref.avail ()))
+	أرجع OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    أرجع op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  ثابت ARG& eval_arg (unsigned صحيح i) { أرجع arg_مكدس[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& اسحب_arg () { أرجع arg_مكدس.اسحب (); }
+  فراغ اسحب_n_وسائط (unsigned صحيح n) { arg_مكدس.اسحب (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  فراغ clear_وسائط () { اسحب_n_وسائط (arg_مكدس.get_عدد ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_مكدس_t<ARG>
+		arg_مكدس;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+using رقم_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+template <typename ARG=رقم_t>
+بنية opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  ساكن فراغ process_op (op_code_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    بدل (op) {
+      حالة OpCode_shortint:
+	env.arg_مكدس.ادفع_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	اكسر;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      حالة OpCode_TwoBytePosInt0: حالة OpCode_TwoBytePosInt1:
+      حالة OpCode_TwoBytePosInt2: حالة OpCode_TwoBytePosInt3:
+	env.arg_مكدس.ادفع_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	اكسر;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      حالة OpCode_TwoByteNegInt0: حالة OpCode_TwoByteNegInt1:
+      حالة OpCode_TwoByteNegInt2: حالة OpCode_TwoByteNegInt3:
+	env.arg_مكدس.ادفع_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	اكسر;
 
-      default:
+      افتراضي:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	إذا (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_مكدس.ادفع_int ((صحيح)op - 139);
+	} وإلا {
 	  /* invalid unknown operator */
-	  env.clear_args ();
+	  env.clear_وسائط ();
 	}
-	break;
+	اكسر;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+بنية interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;
