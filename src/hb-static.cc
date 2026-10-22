@@ -28,28 +28,28 @@
 #define HB_STATIC_CC
 #ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#अन्तर्भाव "hb-aat-layout-common.hh"
+#अन्तर्भाव "hb-aat-layout-feat-table.hh"
+#अन्तर्भाव "hb-cff-interp-common.hh"
+#अन्तर्भाव "hb-ot-layout-common.hh"
+#अन्तर्भाव "hb-ot-cmap-table.hh"
+#अन्तर्भाव "OT/Color/COLR/COLR.hh"
+#अन्तर्भाव "hb-ot-glyf-table.hh"
+#अन्तर्भाव "hb-ot-head-table.hh"
+#अन्तर्भाव "hb-ot-hmtx-table.hh"
+#अन्तर्भाव "hb-ot-maxp-table.hh"
 
 #ifndef HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#अन्तर्भाव "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ध्रुव _hb_NullPool[(HB_NULL_POOL_SIZE + परिमाण (uint64_t) - 1) / परिमाण (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + परिमाण (uint64_t) - 1) / परिमाण (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
@@ -63,31 +63,31 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ध्रुव hb_codepoint_t minus_1 = -1;
+स्थिर ध्रुव अचिन्हित वर्ण static_endchar_str[] = {OpCode_endchar};
+ध्रुव अचिन्हित वर्ण *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+स्थिर अन्तःस्थ अचिन्हित
+load_अंक_glyphs_from_maxp (ध्रुव hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  प्रत्यागम face->table.maxp->get_अंक_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+अचिन्हित पूर्णाङ्क
+hb_face_t::load_अंक_glyphs () ध्रुव
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  अंक_glyphs = load_अंक_glyphs_from_maxp (एतत्);
+  प्रत्यागम अंक_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+अचिन्हित पूर्णाङ्क
+hb_face_t::load_upem () ध्रुव
 {
-  unsigned int ret = table.head->get_upem ();
+  अचिन्हित पूर्णाङ्क ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  प्रत्यागम ret;
 }
 
 #endif

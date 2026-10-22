@@ -27,99 +27,99 @@
 #ifndef HB_RASTER_PAINT_HH
 #define HB_RASTER_PAINT_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
+#अन्तर्भाव "hb-raster-image.hh"
+#अन्तर्भाव "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+संरचना hb_raster_clip_t
 {
   hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
-  unsigned width  = 0;
-  unsigned height = 0;
-  unsigned stride = 0;
+  अचिन्हित width  = 0;
+  अचिन्हित height = 0;
+  अचिन्हित stride = 0;
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
-  bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  तार्किक is_rect = सत्य;
+  पूर्णाङ्क rect_x0 = 0, rect_y0 = 0;
+  पूर्णाङ्क rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
-  unsigned min_x = 0, min_y = 0;
-  unsigned max_x = 0, max_y = 0;
+  अचिन्हित min_x = 0, min_y = 0;
+  अचिन्हित max_x = 0, max_y = 0;
 
-  void init_full (unsigned w, unsigned h)
+  शून्य init_full (अचिन्हित w, अचिन्हित h)
   {
     width = w;
     height = h;
     stride = (w + 3u) & ~3u;
-    is_rect = true;
+    is_rect = सत्य;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (पूर्णाङ्क) w;
+    rect_y1 = (पूर्णाङ्क) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
     max_y = h;
   }
 
-  void update_bounds_from_rect ()
+  शून्य update_bounds_from_rect ()
   {
-    min_x = (unsigned) hb_max (rect_x0, 0);
-    min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    min_x = (अचिन्हित) hb_max (rect_x0, 0);
+    min_y = (अचिन्हित) hb_max (rect_y0, 0);
+    max_x = (अचिन्हित) hb_max (hb_min (rect_x1, (पूर्णाङ्क) width), 0);
+    max_y = (अचिन्हित) hb_max (hb_min (rect_y1, (पूर्णाङ्क) height), 0);
   }
 
-  uint8_t get_alpha (unsigned x, unsigned y) const
+  uint8_t get_alpha (अचिन्हित x, अचिन्हित y) ध्रुव
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
-    size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    यदि (is_rect)
+      प्रत्यागम ((पूर्णाङ्क) x >= rect_x0 && (पूर्णाङ्क) x < rect_x1 &&
+	      (पूर्णाङ्क) y >= rect_y0 && (पूर्णाङ्क) y < rect_y1) ? 255 : 0;
+    यदि (x >= width || y >= height) प्रत्यागम 0;
+    यदि (stride < width) प्रत्यागम 0;
+    यदि (height && stride > (माप_प्रकार) -1 / height) प्रत्यागम 0;
+    माप_प्रकार idx = (माप_प्रकार) y * stride + x;
+    यदि (!alpha.arrayZ || idx >= alpha.length) प्रत्यागम 0;
+    प्रत्यागम alpha[idx];
   }
 
-  bool has_valid_alpha_mask () const
+  तार्किक has_valid_alpha_mask () ध्रुव
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    यदि (is_rect)
+      प्रत्यागम सत्य;
+    यदि (!alpha.arrayZ || stride < width)
+      प्रत्यागम असत्य;
+    यदि (height && stride > (माप_प्रकार) -1 / height)
+      प्रत्यागम असत्य;
+    प्रत्यागम (माप_प्रकार) stride * height <= alpha.length;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+संरचना hb_raster_paint_t
 {
   hb_object_header_t header;
 
   /* Configuration */
   hb_transform_t<>    base_transform     = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor     = 1.f;
-  float               y_scale_factor     = 1.f;
+  भिन्न               x_scale_factor     = 1.f;
+  भिन्न               y_scale_factor     = 1.f;
   hb_raster_extents_t fixed_extents      = {};
-  bool                has_extents  = false;
+  तार्किक                has_extents  = असत्य;
   hb_color_t          foreground         = HB_COLOR (0, 0, 0, 255);
   hb_color_t          background         = HB_COLOR (0, 0, 0, 0);
-  unsigned            palette            = 0;
+  अचिन्हित            palette            = 0;
   hb_map_t           *custom_palette     = nullptr;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
+  hb_vector_t<hb_transform_t<>>     transform_ढेर;
+  hb_vector_t<hb_raster_clip_t>     clip_ढेर;
   hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_vector_t<hb_raster_image_t *>  surface_ढेर;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
   hb_vector_t<hb_raster_image_t *>  surface_cache;
@@ -148,114 +148,114 @@ struct hb_raster_paint_t
 
   /* Helpers */
 
-  int64_t get_default_pixel_budget () const
+  int64_t get_default_pixel_budget () ध्रुव
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    प्रत्यागम hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
 		   fixed_extents.width * fixed_extents.height);
   }
 
-  void recharge_budget ()
+  शून्य recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
     pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+		      (surface_ढेर.length ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
   /* Returns whether the pixel operation should proceed.  Allows a single
    * overshoot past zero; callers skip work once the budget is spent. */
-  bool charge_work (int64_t work)
+  तार्किक charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
+    यदि (unlikely (pixel_remaining < 0)) प्रत्यागम असत्य;
     pixel_remaining -= work;
-    return true;
+    प्रत्यागम सत्य;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
-  bool precharge_work (int64_t work)
+  तार्किक precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    यदि (unlikely (pixel_remaining < work))
     {
       pixel_remaining = -1;
-      return false;
+      प्रत्यागम असत्य;
     }
     pixel_remaining -= work;
-    return true;
+    प्रत्यागम सत्य;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
-      img = surface_cache.pop ();
-    else
+    यदि (surface_cache.length)
+      img = surface_cache.निकालो ();
+    अन्यथा
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      यदि (unlikely (!img)) प्रत्यागम nullptr;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    यदि (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      प्रत्यागम nullptr;
     }
     img->clear ();
-    return img;
+    प्रत्यागम img;
   }
 
-  void release_surface (hb_raster_image_t *img)
+  शून्य release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    यदि (!surface_cache.धकेलो_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
-  hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
+  hb_raster_clip_t acquire_clip (अचिन्हित w, अचिन्हित h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
-      clip = clip_cache.pop ();
+    यदि (clip_cache.length)
+      clip = clip_cache.निकालो ();
     clip.width = w;
     clip.height = h;
     clip.stride = (w + 3u) & ~3u;
-    clip.is_rect = false;
+    clip.is_rect = असत्य;
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    प्रत्यागम clip;
   }
 
-  void release_clip (hb_raster_clip_t &&clip)
+  शून्य release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    यदि (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
-  void release_all_clips ()
+  शून्य release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    यावत् (clip_ढेर.length)
+      release_clip (clip_ढेर.निकालो ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    प्रत्यागम surface_ढेर.length ? surface_ढेर.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    प्रत्यागम clip_ढेर.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    यदि (unlikely (!transform_ढेर.length))
+      प्रत्यागम {1, 0, 0, 1, 0, 0};
+    प्रत्यागम transform_ढेर.tail ();
   }
 
-  void apply_scale_factor (hb_transform_t<> &t) const
+  शून्य apply_scale_factor (hb_transform_t<> &t) ध्रुव
   {
     t.xx /= x_scale_factor;
     t.xy /= x_scale_factor;
@@ -269,19 +269,19 @@ struct hb_raster_paint_t
   {
     hb_transform_t<> t = current_transform ();
     apply_scale_factor (t);
-    return t;
+    प्रत्यागम t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  तार्किक fetch_color_stops (hb_color_पंक्ति_t *color_पंक्ति)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    अचिन्हित गिनती = hb_color_पंक्ति_get_color_stops (color_पंक्ति, 0, nullptr, nullptr);
+    यदि (unlikely (!गिनती || !scratch_color_stops.resize (गिनती)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      प्रत्यागम असत्य;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    hb_color_पंक्ति_get_color_stops (color_पंक्ति, 0, &गिनती, scratch_color_stops.arrayZ);
+    प्रत्यागम सत्य;
   }
 };
 

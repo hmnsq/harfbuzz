@@ -26,50 +26,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_AAT_SHAPE
 
-#include "hb-aat-map.hh"
+#अन्तर्भाव "hb-aat-map.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-feat-table.hh"
+#अन्तर्भाव "hb-aat-layout.hh"
+#अन्तर्भाव "hb-aat-layout-feat-table.hh"
 
 
-void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
+शून्य hb_aat_map_builder_t::add_feature (ध्रुव hb_feature_t &feature)
 {
-  if (!face->table.feat->has_data ()) return;
+  यदि (!face->table.feat->has_data ()) प्रत्यागम;
 
-  if (feature.tag == HB_TAG ('a','a','l','t'))
+  यदि (feature.tag == HB_TAG ('a','a','l','t'))
   {
-    if (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
-      return;
+    यदि (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
+      प्रत्यागम;
     feature_range_t *range = features.push();
     range->start = feature.start;
     range->end = feature.end;
     range->info.type = HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES;
     range->info.setting = (hb_aat_layout_feature_selector_t) feature.value;
     range->info.seq = features.length;
-    range->info.is_exclusive = true;
-    return;
+    range->info.is_exclusive = सत्य;
+    प्रत्यागम;
   }
 
-  const hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
-  if (!mapping) return;
+  ध्रुव hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
+  यदि (!mapping) प्रत्यागम;
 
-  const AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
-  if (!feature_name->has_data ())
+  ध्रुव AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
+  यदि (!feature_name->has_data ())
   {
     /* Special case: Chain::compile_flags will fall back to the deprecated version of
      * small-caps if necessary, so we need to check for that possibility.
      * https://github.com/harfbuzz/harfbuzz/issues/2307 */
-    if (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
+    यदि (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
 	mapping->selectorToEnable == HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS)
     {
       feature_name = &face->table.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
-      if (!feature_name->has_data ()) return;
+      यदि (!feature_name->has_data ()) प्रत्यागम;
     }
-    else return;
+    अन्यथा प्रत्यागम;
   }
 
   feature_range_t *range = features.push();
@@ -81,39 +81,39 @@ void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
   range->info.is_exclusive = feature_name->is_exclusive ();
 }
 
-void
+शून्य
 hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 {
   /* Compute active features per range, and compile each. */
-  if (!features.length)
+  यदि (!features.length)
   {
-    hb_aat_layout_compile_map (this, &m);
-    return;
+    hb_aat_layout_compile_map (एतत्, &m);
+    प्रत्यागम;
   }
 
   /* Sort features by start/end events. */
   hb_vector_t<feature_event_t> feature_events;
   feature_events.alloc_exact (features.length * 2 + 1);
-  for (unsigned int i = 0; i < features.length; i++)
+  प्रति (अचिन्हित पूर्णाङ्क i = 0; i < features.length; i++)
   {
-    auto &feature = features.arrayZ[i];
+    स्वतः &feature = features.arrayZ[i];
 
-    if (feature.start == feature.end)
-      continue;
+    यदि (feature.start == feature.end)
+      अनुवर्त;
 
     feature_event_t *event;
 
     event = feature_events.push ();
     event->index = feature.start;
-    event->start = true;
+    event->start = सत्य;
     event->feature = feature.info;
 
     event = feature_events.push ();
     event->index = feature.end;
-    event->start = false;
+    event->start = असत्य;
     event->feature = feature.info;
   }
-  feature_events.qsort ();
+  feature_events.क्विक ();
   /* Add a strategic final event. */
   {
     feature_info_t feature;
@@ -121,18 +121,18 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 
     feature_event_t *event = feature_events.push ();
     event->index = -1; /* This value does magic. */
-    event->start = false;
+    event->start = असत्य;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
   hb_sorted_vector_t<feature_info_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  अचिन्हित पूर्णाङ्क last_index = 0;
+  प्रति (अचिन्हित पूर्णाङ्क i = 0; i < feature_events.length; i++)
   {
     feature_event_t *event = &feature_events[i];
 
-    if (event->index != last_index)
+    यदि (event->index != last_index)
     {
       /* Save a snapshot of active features and the range. */
 
@@ -140,12 +140,12 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
       current_features = active_features;
       range_first = last_index;
       range_last = event->index - 1;
-      if (current_features.length)
+      यदि (current_features.length)
       {
-	current_features.qsort ();
-	unsigned int j = 0;
-	for (unsigned int i = 1; i < current_features.length; i++)
-	  if (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
+	current_features.क्विक ();
+	अचिन्हित पूर्णाङ्क j = 0;
+	प्रति (अचिन्हित पूर्णाङ्क i = 1; i < current_features.length; i++)
+	  यदि (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
 	      /* Nonexclusive feature selectors come in even/odd pairs to turn a setting on/off
 	       * respectively, so we mask out the low-order bit when checking for "duplicates"
 	       * (selectors referring to the same feature setting) here. */
@@ -154,22 +154,22 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 	current_features.shrink (j + 1);
       }
 
-      hb_aat_layout_compile_map (this, &m);
+      hb_aat_layout_compile_map (एतत्, &m);
 
       last_index = event->index;
     }
 
-    if (event->start)
+    यदि (event->start)
     {
       active_features.push (event->feature);
-    } else {
+    } अन्यथा {
       feature_info_t *feature = active_features.lsearch (event->feature);
-      if (feature)
+      यदि (feature)
 	active_features.remove_ordered (feature - active_features.arrayZ);
     }
   }
 
-  for (auto &chain_flags : m.chain_flags)
+  प्रति (स्वतः &chain_flags : m.chain_flags)
     // With our above setup this value is one less than desired; adjust it.
     chain_flags.tail().cluster_last = HB_FEATURE_GLOBAL_END;
 }

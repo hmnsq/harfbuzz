@@ -24,18 +24,18 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#अन्तर्भाव "hb-ot-shaper.hh"
 
 
 /* Hangul shaper */
 
 
 /* Same order as the feature array below */
-enum {
+गणना {
   _JMO,
 
   LJMO,
@@ -43,10 +43,10 @@ enum {
   TJMO,
 
   FIRST_HANGUL_FEATURE = LJMO,
-  HANGUL_FEATURE_COUNT = TJMO + 1
+  HANGUL_FEATURE_गिनती = TJMO + 1
 };
 
-static const hb_tag_t hangul_features[HANGUL_FEATURE_COUNT] =
+स्थिर ध्रुव hb_tag_t hangul_features[HANGUL_FEATURE_गिनती] =
 {
   HB_TAG_NONE,
   HB_TAG('l','j','m','o'),
@@ -54,16 +54,16 @@ static const hb_tag_t hangul_features[HANGUL_FEATURE_COUNT] =
   HB_TAG('t','j','m','o')
 };
 
-static void
+स्थिर शून्य
 collect_features_hangul (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
-  for (unsigned int i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_COUNT; i++)
+  प्रति (अचिन्हित पूर्णाङ्क i = FIRST_HANGUL_FEATURE; i < HANGUL_FEATURE_गिनती; i++)
     map->add_feature (hangul_features[i]);
 }
 
-static void
+स्थिर शून्य
 override_features_hangul (hb_ot_shape_planner_t *plan)
 {
   /* Uniscribe does not apply 'calt' for Hangul, and certain fonts
@@ -80,29 +80,29 @@ override_features_hangul (hb_ot_shape_planner_t *plan)
   plan->map.add_feature (HB_TAG('c','a','l','t'));
 }
 
-struct hangul_shape_plan_t
+संरचना hangul_shape_plan_t
 {
-  hb_mask_t mask_array[HANGUL_FEATURE_COUNT];
+  hb_mask_t mask_array[HANGUL_FEATURE_गिनती];
   hb_mask_t calt_mask;
 };
 
-static void *
-data_create_hangul (const hb_ot_shape_plan_t *plan)
+स्थिर शून्य *
+data_create_hangul (ध्रुव hb_ot_shape_plan_t *plan)
 {
-  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, sizeof (hangul_shape_plan_t));
-  if (unlikely (!hangul_plan))
-    return nullptr;
+  hangul_shape_plan_t *hangul_plan = (hangul_shape_plan_t *) hb_calloc (1, परिमाण (hangul_shape_plan_t));
+  यदि (unlikely (!hangul_plan))
+    प्रत्यागम nullptr;
 
-  for (unsigned int i = 0; i < HANGUL_FEATURE_COUNT; i++)
+  प्रति (अचिन्हित पूर्णाङ्क i = 0; i < HANGUL_FEATURE_गिनती; i++)
     hangul_plan->mask_array[i] = plan->map.get_1_mask (hangul_features[i]);
 
   hangul_plan->calt_mask = plan->map.get_1_mask (HB_TAG('c','a','l','t'));
 
-  return hangul_plan;
+  प्रत्यागम hangul_plan;
 }
 
-static void
-data_destroy_hangul (void *data)
+स्थिर शून्य
+data_destroy_hangul (शून्य *data)
 {
   hb_free (data);
 }
@@ -132,16 +132,16 @@ data_destroy_hangul (void *data)
 /* buffer var allocations */
 #define hangul_shaping_feature() ot_shaper_var_u8_auxiliary() /* hangul jamo shaping feature */
 
-static bool
+स्थिर तार्किक
 is_zero_width_char (hb_font_t *font,
 		    hb_codepoint_t unicode)
 {
   hb_codepoint_t glyph;
-  return hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
+  प्रत्यागम hb_font_get_glyph (font, unicode, 0, &glyph) && hb_font_get_glyph_h_advance (font, glyph) == 0;
 }
 
-static void
-preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
+स्थिर शून्य
+preprocess_text_hangul (ध्रुव hb_ot_shape_plan_t *plan HB_UNUSED,
 			hb_buffer_t              *buffer,
 			hb_font_t                *font)
 {
@@ -196,97 +196,97 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
    */
 
   buffer->clear_output ();
-  unsigned int start = 0, end = 0; /* Extent of most recently seen syllable;
+  अचिन्हित पूर्णाङ्क start = 0, end = 0; /* Extent of most recently seen syllable;
 				    * valid only if start < end
 				    */
-  unsigned int count = buffer->len;
+  अचिन्हित पूर्णाङ्क गिनती = buffer->len;
 
-  for (buffer->idx = 0; buffer->idx < count && buffer->successful;)
+  प्रति (buffer->idx = 0; buffer->idx < गिनती && buffer->successful;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
 
-    if (isHangulTone (u))
+    यदि (isHangulTone (u))
     {
       /*
        * We could cache the width of the tone marks and the existence of dotted-circle,
        * but the use of the Hangul tone mark characters seems to be rare enough that
        * I didn't bother for now.
        */
-      if (start < end && end == buffer->out_len)
+      यदि (start < end && end == buffer->out_len)
       {
 	/* Tone mark follows a valid syllable; move it in front, unless it's zero width. */
 	buffer->unsafe_to_break_from_outbuffer (start, buffer->idx);
-	if (unlikely (!buffer->next_glyph ())) break;
-	if (!is_zero_width_char (font, u))
+	यदि (unlikely (!buffer->next_glyph ())) भङ्ग;
+	यदि (!is_zero_width_char (font, u))
 	{
 	  buffer->merge_out_clusters (start, end + 1);
 	  hb_glyph_info_t *info = buffer->out_info;
 	  hb_glyph_info_t tone = info[end];
-	  memmove (&info[start + 1], &info[start], (end - start) * sizeof (hb_glyph_info_t));
+	  स_हटाओ (&info[start + 1], &info[start], (end - start) * परिमाण (hb_glyph_info_t));
 	  info[start] = tone;
 	}
       }
-      else
+      अन्यथा
       {
 	/* No valid syllable as base for tone mark; try to insert dotted circle. */
-	if (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE) &&
+	यदि (!(buffer->flags & HB_BUFFER_FLAG_DO_NOT_जोड़ो_DOTTED_CIRCLE) &&
 	    font->has_glyph (0x25CCu))
 	{
 	  hb_codepoint_t chars[2];
-	  if (!is_zero_width_char (font, u))
+	  यदि (!is_zero_width_char (font, u))
 	  {
 	    chars[0] = u;
 	    chars[1] = 0x25CCu;
-	  } else
+	  } अन्यथा
 	  {
 	    chars[0] = 0x25CCu;
 	    chars[1] = u;
 	  }
-	  (void) buffer->replace_glyphs (1, 2, chars);
+	  (शून्य) buffer->replace_glyphs (1, 2, chars);
 	}
-	else
+	अन्यथा
 	{
 	  /* No dotted circle available in the font; just leave tone mark untouched. */
-	  (void) buffer->next_glyph ();
+	  (शून्य) buffer->next_glyph ();
 	}
       }
       start = end = buffer->out_len;
-      continue;
+      अनुवर्त;
     }
 
     start = buffer->out_len; /* Remember current position as a potential syllable start;
 			      * will only be used if we set end to a later position.
 			      */
 
-    if (isL (u) && buffer->idx + 1 < count)
+    यदि (isL (u) && buffer->idx + 1 < गिनती)
     {
       hb_codepoint_t l = u;
       hb_codepoint_t v = buffer->cur(+1).codepoint;
-      if (isV (v))
+      यदि (isV (v))
       {
 	/* Have <L,V> or <L,V,T>. */
 	hb_codepoint_t t = 0;
-	unsigned int tindex = 0;
-	if (buffer->idx + 2 < count)
+	अचिन्हित पूर्णाङ्क tindex = 0;
+	यदि (buffer->idx + 2 < गिनती)
 	{
 	  t = buffer->cur(+2).codepoint;
-	  if (isT (t))
+	  यदि (isT (t))
 	    tindex = t - TBase; /* Only used if isCombiningT (t); otherwise invalid. */
-	  else
+	  अन्यथा
 	    t = 0; /* The next character was not a trailing jamo. */
 	}
 	buffer->unsafe_to_break (buffer->idx, buffer->idx + (t ? 3 : 2));
 
 	/* We've got a syllable <L,V,T?>; see if it can potentially be composed. */
-	if (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
+	यदि (isCombiningL (l) && isCombiningV (v) && (t == 0 || isCombiningT (t)))
 	{
 	  /* Try to compose; if this succeeds, end is set to start+1. */
 	  hb_codepoint_t s = SBase + (l - LBase) * NCount + (v - VBase) * TCount + tindex;
-	  if (font->has_glyph (s))
+	  यदि (font->has_glyph (s))
 	  {
-	    (void) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
+	    (शून्य) buffer->replace_glyphs (t ? 3 : 2, 1, &s);
 	    end = start + 1;
-	    continue;
+	    अनुवर्त;
 	  }
 	}
 
@@ -296,79 +296,79 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	 * Set jamo features on the individual glyphs, and advance past them.
 	 */
 	buffer->cur().hangul_shaping_feature() = LJMO;
-	(void) buffer->next_glyph ();
+	(शून्य) buffer->next_glyph ();
 	buffer->cur().hangul_shaping_feature() = VJMO;
-	(void) buffer->next_glyph ();
-	if (t)
+	(शून्य) buffer->next_glyph ();
+	यदि (t)
 	{
 	  buffer->cur().hangul_shaping_feature() = TJMO;
-	  (void) buffer->next_glyph ();
+	  (शून्य) buffer->next_glyph ();
 	  end = start + 3;
 	}
-	else
+	अन्यथा
 	  end = start + 2;
-	if (unlikely (!buffer->successful))
-	  break;
+	यदि (unlikely (!buffer->successful))
+	  भङ्ग;
 	buffer->merge_out_grapheme_clusters (start, end);
-	continue;
+	अनुवर्त;
       }
     }
 
-    else if (isCombinedS (u))
+    अन्यथा यदि (isCombinedS (u))
     {
       /* Have <LV>, <LVT>, or <LV,T> */
       hb_codepoint_t s = u;
-      bool has_glyph = font->has_glyph (s);
-      unsigned int lindex = (s - SBase) / NCount;
-      unsigned int nindex = (s - SBase) % NCount;
-      unsigned int vindex = nindex / TCount;
-      unsigned int tindex = nindex % TCount;
+      तार्किक has_glyph = font->has_glyph (s);
+      अचिन्हित पूर्णाङ्क lindex = (s - SBase) / NCount;
+      अचिन्हित पूर्णाङ्क nindex = (s - SBase) % NCount;
+      अचिन्हित पूर्णाङ्क vindex = nindex / TCount;
+      अचिन्हित पूर्णाङ्क tindex = nindex % TCount;
 
-      if (!tindex &&
-	  buffer->idx + 1 < count &&
+      यदि (!tindex &&
+	  buffer->idx + 1 < गिनती &&
 	  isCombiningT (buffer->cur(+1).codepoint))
       {
 	/* <LV,T>, try to combine. */
-	unsigned int new_tindex = buffer->cur(+1).codepoint - TBase;
+	अचिन्हित पूर्णाङ्क new_tindex = buffer->cur(+1).codepoint - TBase;
 	hb_codepoint_t new_s = s + new_tindex;
-	if (font->has_glyph (new_s))
+	यदि (font->has_glyph (new_s))
 	{
-	  (void) buffer->replace_glyphs (2, 1, &new_s);
+	  (शून्य) buffer->replace_glyphs (2, 1, &new_s);
 	  end = start + 1;
-	  continue;
+	  अनुवर्त;
 	}
-	else
+	अन्यथा
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
       /* Otherwise, decompose if font doesn't support <LV> or <LVT>,
        * or if having non-combining <LV,T>.  Note that we already handled
        * combining <LV,T> above. */
-      if (!has_glyph ||
+      यदि (!has_glyph ||
 	  (!tindex &&
-	   buffer->idx + 1 < count &&
+	   buffer->idx + 1 < गिनती &&
 	   isT (buffer->cur(+1).codepoint)))
       {
 	hb_codepoint_t decomposed[3] = {LBase + lindex,
 					VBase + vindex,
 					TBase + tindex};
-	if (font->has_glyph (decomposed[0]) &&
+	यदि (font->has_glyph (decomposed[0]) &&
 	    font->has_glyph (decomposed[1]) &&
 	    (!tindex || font->has_glyph (decomposed[2])))
 	{
-	  unsigned int s_len = tindex ? 3 : 2;
-	  (void) buffer->replace_glyphs (1, s_len, decomposed);
+	  अचिन्हित पूर्णाङ्क s_len = tindex ? 3 : 2;
+	  (शून्य) buffer->replace_glyphs (1, s_len, decomposed);
 
 	  /* If we decomposed an LV because of a non-combining T following,
 	   * we want to include this T in the syllable.
 	   */
-	  if (has_glyph && !tindex)
+	  यदि (has_glyph && !tindex)
 	  {
-	    (void) buffer->next_glyph ();
+	    (शून्य) buffer->next_glyph ();
 	    s_len++;
 	  }
-	  if (unlikely (!buffer->successful))
-	    break;
+	  यदि (unlikely (!buffer->successful))
+	    भङ्ग;
 
 	  /* We decomposed S: apply jamo features to the individual glyphs
 	   * that are now in buffer->out_info.
@@ -376,20 +376,20 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
 	  hb_glyph_info_t *info = buffer->out_info;
 	  end = start + s_len;
 
-	  unsigned int i = start;
+	  अचिन्हित पूर्णाङ्क i = start;
 	  info[i++].hangul_shaping_feature() = LJMO;
 	  info[i++].hangul_shaping_feature() = VJMO;
-	  if (i < end)
+	  यदि (i < end)
 	    info[i++].hangul_shaping_feature() = TJMO;
 
 	  buffer->merge_out_grapheme_clusters (start, end);
-	  continue;
+	  अनुवर्त;
 	}
-	else if ((!tindex && buffer->idx + 1 < count && isT (buffer->cur(+1).codepoint)))
+	अन्यथा यदि ((!tindex && buffer->idx + 1 < गिनती && isT (buffer->cur(+1).codepoint)))
 	  buffer->unsafe_to_break (buffer->idx, buffer->idx + 2); /* Mark unsafe between LV and T. */
       }
 
-      if (has_glyph)
+      यदि (has_glyph)
       {
 	/* We didn't decompose the S, so just advance past it and fall through. */
 	end = start + 1;
@@ -399,29 +399,29 @@ preprocess_text_hangul (const hb_ot_shape_plan_t *plan HB_UNUSED,
     /* Didn't find a recognizable syllable, so we leave end <= start;
      * this will prevent tone-mark reordering happening.
      */
-    (void) buffer->next_glyph ();
+    (शून्य) buffer->next_glyph ();
   }
-  buffer->sync ();
+  buffer->समकाल ();
 }
 
-static void
-setup_masks_hangul (const hb_ot_shape_plan_t *plan,
+स्थिर शून्य
+setup_masks_hangul (ध्रुव hb_ot_shape_plan_t *plan,
 		    hb_buffer_t              *buffer,
 		    hb_font_t                *font HB_UNUSED)
 {
-  const hangul_shape_plan_t *hangul_plan = (const hangul_shape_plan_t *) plan->data;
+  ध्रुव hangul_shape_plan_t *hangul_plan = (ध्रुव hangul_shape_plan_t *) plan->data;
 
-  if (likely (hangul_plan))
+  यदि (likely (hangul_plan))
   {
-    unsigned int count = buffer->len;
+    अचिन्हित पूर्णाङ्क गिनती = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++, info++)
+    प्रति (अचिन्हित पूर्णाङ्क i = 0; i < गिनती; i++, info++)
     {
       info->mask |= hangul_plan->mask_array[info->hangul_shaping_feature()];
 
       /* Keep 'calt' away from jamo; see override_features_hangul(). */
       hb_codepoint_t u = info->codepoint;
-      if (isL (u) || isV (u) || isT (u))
+      यदि (isL (u) || isV (u) || isT (u))
 	info->mask &= ~hangul_plan->calt_mask;
     }
   }
@@ -430,7 +430,7 @@ setup_masks_hangul (const hb_ot_shape_plan_t *plan,
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_hangul =
+ध्रुव hb_ot_shaper_t _hb_ot_shaper_hangul =
 {
   collect_features_hangul,
   override_features_hangul,
@@ -445,7 +445,7 @@ const hb_ot_shaper_t _hb_ot_shaper_hangul =
   HB_TAG_NONE, /* gpos_tag */
   HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  true, /* fallback_position */
+  सत्य, /* fallback_position */
 };
 
 

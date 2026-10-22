@@ -27,8 +27,8 @@
 #ifndef HB_OT_KERN_TABLE_HH
 #define HB_OT_KERN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-kerx-table.hh"
+#अन्तर्भाव "hb-aat-layout-common.hh"
+#अन्तर्भाव "hb-aat-layout-kerx-table.hh"
 
 
 /*
@@ -39,153 +39,153 @@
 #define HB_OT_TAG_kern HB_TAG('k','e','r','n')
 
 
-namespace OT {
+नामाकाश OT {
 
 
-template <typename KernSubTableHeader>
-struct KernSubTableFormat3
+ढाँचा <typename KernSubTableHeader>
+संरचना KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  पूर्णाङ्क get_kerning (hb_codepoint_t left, hb_codepoint_t दायाँ) ध्रुव
   {
-    hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
-    hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
-    hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
-    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
+    hb_array_t<ध्रुव FWORD> kern_मूल्य = kern_मूल्य_Z.as_array (kern_मूल्य_गिनती);
+    hb_array_t<ध्रुव HBUINT8> बायाँ_Class = StructAfter<ध्रुव UnsizedArrayOf<HBUINT8>> (kern_मूल्य).as_array (glyph_गिनती_2);
+    hb_array_t<ध्रुव HBUINT8> दायाँ_Class = StructAfter<ध्रुव UnsizedArrayOf<HBUINT8>> (बायाँ_Class).as_array (glyph_गिनती_2);
+    hb_array_t<ध्रुव HBUINT8> kernIndex = StructAfter<ध्रुव UnsizedArrayOf<HBUINT8>> (दायाँ_Class).as_array (बायाँ_Class_गिनती * दायाँ_Class_गिनती);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    अचिन्हित पूर्णाङ्क बायाँ_C = बायाँ_Class[left];
+    अचिन्हित पूर्णाङ्क दायाँ_C = दायाँ_Class[दायाँ];
+    यदि (unlikely (बायाँ_C >= बायाँ_Class_गिनती || दायाँ_C >= दायाँ_Class_गिनती))
+      प्रत्यागम 0;
+    अचिन्हित पूर्णाङ्क i = बायाँ_C * दायाँ_Class_गिनती + दायाँ_C;
+    प्रत्यागम kern_मूल्य[kernIndex[i]];
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c) const
+  तार्किक apply (AAT::hb_aat_apply_context_t *c) ध्रुव
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (एतत्);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    यदि (!c->plan->requested_kerning)
+      प्रत्यागम असत्य;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    यदि (header.coverage & header.Backwards)
+      प्रत्यागम असत्य;
 
-    hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
+    hb_kern_machine_t<KernSubTableFormat3> machine (*एतत्, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्) &&
 		  hb_barrier () &&
-		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
-				  glyphCount * 2 +
-				  leftClassCount * rightClassCount));
+		  c->check_range (kern_मूल्य_Z,
+				  kern_मूल्य_गिनती * परिमाण (FWORD) +
+				  glyph_गिनती_2 * 2 +
+				  बायाँ_Class_गिनती * दायाँ_Class_गिनती));
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  ढाँचा <typename set_t>
+  शून्य collect_glyphs (set_t &बायाँ_set, set_t &दायाँ_set, अचिन्हित अंक_glyphs) ध्रुव
   {
-    if (likely (glyphCount))
+    यदि (likely (glyph_गिनती_2))
     {
-      left_set.add_range (0, num_glyphs - 1);
-      right_set.add_range (0, num_glyphs - 1);
+      बायाँ_set.add_range (0, अंक_glyphs - 1);
+      दायाँ_set.add_range (0, अंक_glyphs - 1);
     }
   }
 
-  protected:
+  रक्षित:
   KernSubTableHeader
 		header;
-  HBUINT16	glyphCount;	/* The number of glyphs in this font. */
-  HBUINT8	kernValueCount;	/* The number of kerning values. */
-  HBUINT8	leftClassCount;	/* The number of left-hand classes. */
-  HBUINT8	rightClassCount;/* The number of right-hand classes. */
+  HBUINT16	glyph_गिनती_2;	/* The number of glyphs in this font. */
+  HBUINT8	kern_मूल्य_गिनती;	/* The number of kerning values. */
+  HBUINT8	बायाँ_Class_गिनती;	/* The number of left-hand classes. */
+  HBUINT8	दायाँ_Class_गिनती;/* The number of right-hand classes. */
   HBUINT8	flags;		/* Set to zero (reserved for future use). */
   UnsizedArrayOf<FWORD>
-		kernValueZ;	/* The kerning values.
+		kern_मूल्य_Z;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#यदि 0
   UnsizedArrayOf<HBUINT8>
-		leftClass;	/* The left-hand classes.
+		बायाँ_Class;	/* The left-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>
-		rightClass;	/* The right-hand classes.
+		दायाँ_Class;	/* The right-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>kernIndex;
 				/* The indices into the kernValue array.
 				 * Length leftClassCount * rightClassCount */
 #endif
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kernValueZ);
+  सार्वजनिक:
+  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kern_मूल्य_Z);
 };
 
-template <typename KernSubTableHeader>
-struct KernSubTable
+ढाँचा <typename KernSubTableHeader>
+संरचना KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  माप_प्रकार get_size () ध्रुव { प्रत्यागम u.header.length; }
+  अचिन्हित पूर्णाङ्क get_type () ध्रुव { प्रत्यागम u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  पूर्णाङ्क get_kerning (hb_codepoint_t left, hb_codepoint_t दायाँ) ध्रुव
   {
-    switch (get_type ()) {
+    विकल्प (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    पक्ष 0: hb_barrier (); प्रत्यागम u.format0.get_kerning (left, दायाँ);
+    स्वभाव:प्रत्यागम 0;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ध्रुव
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
+    अचिन्हित पूर्णाङ्क subtable_type = get_type ();
+    TRACE_DISPATCH (एतत्, subtable_type);
+    विकल्प (subtable_type) {
+    पक्ष 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    पक्ष 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #endif
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
+    पक्ष 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    पक्ष 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    स्वभाव:	return_trace (c->default_return_मूल्य ());
     }
   }
 
-  template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  ढाँचा <typename set_t>
+  शून्य collect_glyphs (set_t &बायाँ_set, set_t &दायाँ_set, अचिन्हित अंक_glyphs) ध्रुव
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    अचिन्हित पूर्णाङ्क subtable_type = get_type ();
+    विकल्प (subtable_type) {
+    पक्ष 0:	hb_barrier (); u.format0.collect_glyphs (बायाँ_set, दायाँ_set, अंक_glyphs); प्रत्यागम;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    पक्ष 1:	hb_barrier (); u.format1.collect_glyphs (बायाँ_set, दायाँ_set, अंक_glyphs); प्रत्यागम;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    पक्ष 2:	hb_barrier (); u.format2.collect_glyphs (बायाँ_set, दायाँ_set, अंक_glyphs); प्रत्यागम;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    पक्ष 3:	hb_barrier (); u.format3.collect_glyphs (बायाँ_set, दायाँ_set, अंक_glyphs); प्रत्यागम;
 #endif
-    default:	return;
+    स्वभाव:	प्रत्यागम;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (एतत्);
+    यदि (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
-		    c->check_range (this, u.header.length)))) return_trace (false);
+		    c->check_range (एतत्, u.header.length)))) return_trace (असत्य);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  सार्वजनिक:
+  सङ्घ {
   KernSubTableHeader				header;
   AAT::KerxSubTableFormat0<KernSubTableHeader>	format0;
 #ifndef HB_NO_AAT_SHAPE
@@ -196,20 +196,20 @@ struct KernSubTable
   KernSubTableFormat3<KernSubTableHeader>	format3;
 #endif
   } u;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (KernSubTableHeader::static_size);
 };
 
 
-struct KernOTSubTableHeader
+संरचना KernOTSubTableHeader
 {
-  static constexpr bool apple = false;
-  typedef AAT::ObsoleteTypes Types;
+  स्थिर constexpr तार्किक apple = असत्य;
+  प्रकारनिर्देश AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  अचिन्हित   tuple_गिनती_2 () ध्रुव { प्रत्यागम 0; }
+  तार्किक     is_horizontal () ध्रुव { प्रत्यागम (coverage & Horizontal); }
 
-  enum Coverage
+  गणना Coverage
   {
     Horizontal	= 0x01u,
     Minimum	= 0x02u,
@@ -221,50 +221,50 @@ struct KernOTSubTableHeader
     Variation	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  public:
+  सार्वजनिक:
   HBUINT16	versionZ;	/* Unused. */
   HBUINT16	length;		/* Length of the subtable (including this header). */
   HBUINT8	format;		/* Subtable format. */
   HBUINT8	coverage;	/* Coverage bits. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct KernOT : AAT::KerxTable<KernOT>
+संरचना KernOT : AAT::KerxTable<KernOT>
 {
-  friend struct AAT::KerxTable<KernOT>;
+  मित्र संरचना AAT::KerxTable<KernOT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0u;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  स्थिर constexpr अचिन्हित minVersion = 0u;
 
-  typedef KernOTSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  प्रकारनिर्देश KernOTSubTableHeader SubTableHeader;
+  प्रकारनिर्देश SubTableHeader::Types Types;
+  प्रकारनिर्देश KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  रक्षित:
   HBUINT16	version;	/* Version--0x0000u */
-  HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT16	table_गिनती;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (4);
 };
 
 
-struct KernAATSubTableHeader
+संरचना KernAATSubTableHeader
 {
-  static constexpr bool apple = true;
-  typedef AAT::ObsoleteTypes Types;
+  स्थिर constexpr तार्किक apple = सत्य;
+  प्रकारनिर्देश AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  अचिन्हित   tuple_गिनती_2 () ध्रुव { प्रत्यागम 0; }
+  तार्किक     is_horizontal () ध्रुव { प्रत्यागम !(coverage & Vertical); }
 
-  enum Coverage
+  गणना Coverage
   {
     Vertical	= 0x80u,
     CrossStream	= 0x40u,
@@ -274,137 +274,137 @@ struct KernAATSubTableHeader
     Backwards	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  public:
+  सार्वजनिक:
   HBUINT32	length;		/* Length of the subtable (including this header). */
   HBUINT8	coverage;	/* Coverage bits. */
   HBUINT8	format;		/* Subtable format. */
   HBUINT16	tupleIndex;	/* The tuple index (used for variations fonts).
 				 * This value specifies which tuple this subtable covers.
 				 * Note: We don't implement. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct KernAAT : AAT::KerxTable<KernAAT>
+संरचना KernAAT : AAT::KerxTable<KernAAT>
 {
-  friend struct AAT::KerxTable<KernAAT>;
+  मित्र संरचना AAT::KerxTable<KernAAT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0x00010000u;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  स्थिर constexpr अचिन्हित minVersion = 0x00010000u;
 
-  typedef KernAATSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  प्रकारनिर्देश KernAATSubTableHeader SubTableHeader;
+  प्रकारनिर्देश SubTableHeader::Types Types;
+  प्रकारनिर्देश KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  रक्षित:
   HBUINT32	version;	/* Version--0x00010000u */
-  HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT32	table_गिनती;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kern
+संरचना kern
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  तार्किक     has_data () ध्रुव { प्रत्यागम u.version32.v; }
+  अचिन्हित get_type () ध्रुव { प्रत्यागम u.major.v; }
 
-  bool has_state_machine () const
+  तार्किक has_state_machine () ध्रुव
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    विकल्प (get_type ()) {
+    पक्ष 0: hb_barrier (); प्रत्यागम u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    पक्ष 1: hb_barrier (); प्रत्यागम u.aat.has_state_machine ();
 #endif
-    default:return false;
+    स्वभाव:प्रत्यागम असत्य;
     }
   }
 
-  bool has_cross_stream () const
+  तार्किक has_cross_stream () ध्रुव
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    विकल्प (get_type ()) {
+    पक्ष 0: hb_barrier (); प्रत्यागम u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    पक्ष 1: hb_barrier (); प्रत्यागम u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    स्वभाव:प्रत्यागम असत्य;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  पूर्णाङ्क get_h_kerning (hb_codepoint_t left, hb_codepoint_t दायाँ) ध्रुव
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    विकल्प (get_type ()) {
+    पक्ष 0: hb_barrier (); प्रत्यागम u.ot.get_h_kerning (left, दायाँ);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    पक्ष 1: hb_barrier (); प्रत्यागम u.aat.get_h_kerning (left, दायाँ);
 #endif
-    default:return 0;
+    स्वभाव:प्रत्यागम 0;
     }
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  तार्किक apply (AAT::hb_aat_apply_context_t *c,
+	      ध्रुव AAT::kern_accelerator_data_t &accel_data) ध्रुव
+  { प्रत्यागम dispatch (c, accel_data); }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ध्रुव
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
+    अचिन्हित पूर्णाङ्क subtable_type = get_type ();
+    TRACE_DISPATCH (एतत्, subtable_type);
+    विकल्प (subtable_type) {
+    पक्ष 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
+    पक्ष 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    स्वभाव:	return_trace (c->default_return_मूल्य ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (एतत्);
+    यदि (!u.version32.v.sanitize (c)) return_trace (असत्य);
     hb_barrier ();
     return_trace (dispatch (c));
   }
 
-  AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  AAT::kern_accelerator_data_t create_accelerator_data (अचिन्हित अंक_glyphs) ध्रुव
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    विकल्प (get_type ()) {
+    पक्ष 0: hb_barrier (); प्रत्यागम u.ot.create_accelerator_data (अंक_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    पक्ष 1: hb_barrier (); प्रत्यागम u.aat.create_accelerator_data (अंक_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    स्वभाव:प्रत्यागम AAT::kern_accelerator_data_t ();
     }
   }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<kern> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      एतत्->table = sc.reference_table<kern> (face);
+      एतत्->accel_data = एतत्->table->create_accelerator_data (face->get_अंक_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      एतत्->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ध्रुव { प्रत्यागम table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    तार्किक apply (AAT::hb_aat_apply_context_t *c) ध्रुव
     {
-      return table->apply (c, accel_data);
+      प्रत्यागम table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;
@@ -412,20 +412,20 @@ struct kern
     AAT::hb_aat_scratch_t scratch;
   };
 
-  protected:
-  union {
-  struct { HBUINT32 v; }	version32;
-  struct { HBUINT16 v; }	major;
+  रक्षित:
+  सङ्घ {
+  संरचना { HBUINT32 v; }	version32;
+  संरचना { HBUINT16 v; }	major;
   KernOT		ot;
 #ifndef HB_NO_AAT_SHAPE
   KernAAT		aat;
 #endif
   } u;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_UNION (4, version32.v);
 };
 
-struct kern_accelerator_t : kern::accelerator_t {
+संरचना kern_accelerator_t : kern::accelerator_t {
   kern_accelerator_t (hb_face_t *face) : kern::accelerator_t (face) {}
 };
 

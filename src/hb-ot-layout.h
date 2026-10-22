@@ -24,16 +24,16 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_LAYOUT_H
 #define HB_OT_LAYOUT_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
-#include "hb-ot-name.h"
+#अन्तर्भाव "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -106,12 +106,12 @@ HB_BEGIN_DECLS
  **/
 #define HB_OT_MAX_TAGS_PER_LANGUAGE	3u
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     अचिन्हित पूर्णाङ्क *script_गिनती /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     अचिन्हित पूर्णाङ्क *language_गिनती /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_script_t
@@ -120,7 +120,7 @@ hb_ot_tag_to_script (hb_tag_t tag);
 HB_EXTERN hb_language_t
 hb_ot_tag_to_language (hb_tag_t tag);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 				   hb_tag_t       language_tag,
 				   hb_script_t   *script /* OUT */,
@@ -145,7 +145,7 @@ hb_ot_layout_has_glyph_classes (hb_face_t *face);
  * The GDEF classes defined for glyphs.
  *
  **/
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED	= 0,
   HB_OT_LAYOUT_GLYPH_CLASS_BASE_GLYPH	= 1,
   HB_OT_LAYOUT_GLYPH_CLASS_LIGATURE	= 2,
@@ -157,27 +157,27 @@ HB_EXTERN hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
 				  hb_set_t                   *glyphs /* OUT */);
 
 /* Not that useful.  Provides list of attach points for a glyph that a
  * client may want to cache */
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */);
+				अचिन्हित पूर्णाङ्क    start_offset,
+				अचिन्हित पूर्णाङ्क   *point_गिनती /* IN/OUT */,
+				अचिन्हित पूर्णाङ्क   *point_array /* OUT */);
 
 /* Ligature caret positions */
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  अचिन्हित पूर्णाङ्क    start_offset,
+				  अचिन्हित पूर्णाङ्क   *caret_गिनती /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */);
 
 
@@ -210,141 +210,141 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
  */
 #define HB_OT_LAYOUT_NO_VARIATIONS_INDEX	0xFFFFFFFFu
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    अचिन्हित पूर्णाङ्क  start_offset,
+				    अचिन्हित पूर्णाङ्क *script_गिनती /* IN/OUT */,
 				    hb_tag_t     *script_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_find_script (hb_face_t    *face,
 				hb_tag_t      table_tag,
 				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */);
+				अचिन्हित पूर्णाङ्क *script_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index /* OUT */,
+				  अचिन्हित पूर्णाङ्क    script_गिनती,
+				  ध्रुव hb_tag_t *script_tags,
+				  अचिन्हित पूर्णाङ्क   *script_index /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     अचिन्हित पूर्णाङ्क  start_offset,
+				     अचिन्हित पूर्णाङ्क *feature_गिनती_2 /* IN/OUT */,
 				     hb_tag_t     *feature_tags /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       अचिन्हित पूर्णाङ्क  script_index,
+				       अचिन्हित पूर्णाङ्क  start_offset,
+				       अचिन्हित पूर्णाङ्क *language_गिनती /* IN/OUT */,
 				       hb_tag_t     *language_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */);
+				     अचिन्हित पूर्णाङ्क    script_index,
+				     अचिन्हित पूर्णाङ्क    language_गिनती,
+				     ध्रुव hb_tag_t *language_tags,
+				     अचिन्हित पूर्णाङ्क   *language_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
+				     अचिन्हित पूर्णाङ्क    script_index,
+				     अचिन्हित पूर्णाङ्क    language_गिनती,
+				     ध्रुव hb_tag_t *language_tags,
+				     अचिन्हित पूर्णाङ्क   *language_index /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */);
+						  अचिन्हित पूर्णाङ्क  script_index,
+						  अचिन्हित पूर्णाङ्क  language_index,
+						  अचिन्हित पूर्णाङ्क *feature_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
+					    अचिन्हित पूर्णाङ्क  script_index,
+					    अचिन्हित पूर्णाङ्क  language_index,
+					    अचिन्हित पूर्णाङ्क *feature_index /* OUT */,
 					    hb_tag_t     *feature_tag /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */);
+					   अचिन्हित पूर्णाङ्क  script_index,
+					   अचिन्हित पूर्णाङ्क  language_index,
+					   अचिन्हित पूर्णाङ्क  start_offset,
+					   अचिन्हित पूर्णाङ्क *feature_गिनती_2 /* IN/OUT */,
+					   अचिन्हित पूर्णाङ्क *feature_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					अचिन्हित पूर्णाङ्क  script_index,
+					अचिन्हित पूर्णाङ्क  language_index,
+					अचिन्हित पूर्णाङ्क  start_offset,
+					अचिन्हित पूर्णाङ्क *feature_गिनती_2 /* IN/OUT */,
 					hb_tag_t     *feature_tags /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_find_feature (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
+				    अचिन्हित पूर्णाङ्क  script_index,
+				    अचिन्हित पूर्णाङ्क  language_index,
 				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */);
+				    अचिन्हित पूर्णाङ्क *feature_index /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */);
+				  अचिन्हित पूर्णाङ्क  feature_index,
+				  अचिन्हित पूर्णाङ्क  start_offset,
+				  अचिन्हित पूर्णाङ्क *lookup_गिनती /* IN/OUT */,
+				  अचिन्हित पूर्णाङ्क *lookup_indexes /* OUT */);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
+HB_EXTERN अचिन्हित पूर्णाङ्क
+hb_ot_layout_table_get_lookup_गिनती (hb_face_t    *face,
 				     hb_tag_t      table_tag);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_collect_features (hb_face_t      *face,
 			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
+			       ध्रुव hb_tag_t *scripts,
+			       ध्रुव hb_tag_t *languages,
+			       ध्रुव hb_tag_t *features,
 			       hb_set_t       *feature_indexes /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_collect_features_map (hb_face_t      *face,
 				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
+				   अचिन्हित        script_index,
+				   अचिन्हित        language_index,
 				   hb_map_t       *feature_map /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_collect_lookups (hb_face_t      *face,
 			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
+			      ध्रुव hb_tag_t *scripts,
+			      ध्रुव hb_tag_t *languages,
+			      ध्रुव hb_tag_t *features,
 			      hb_set_t       *lookup_indexes /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
+				    अचिन्हित पूर्णाङ्क  lookup_index,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
+				    hb_set_t     *glyphs_निवेश,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */);
 
@@ -354,18 +354,18 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */);
+					    ध्रुव पूर्णाङ्क    *coords,
+					    अचिन्हित पूर्णाङ्क  अंक_coords,
+					    अचिन्हित पूर्णाङ्क *variations_index /* out */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */);
+						  अचिन्हित पूर्णाङ्क  feature_index,
+						  अचिन्हित पूर्णाङ्क  variations_index,
+						  अचिन्हित पूर्णाङ्क  start_offset,
+						  अचिन्हित पूर्णाङ्क *lookup_गिनती /* IN/OUT */,
+						  अचिन्हित पूर्णाङ्क *lookup_indexes /* OUT */);
 
 
 /*
@@ -375,36 +375,36 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face);
 
-HB_EXTERN unsigned
+HB_EXTERN अचिन्हित
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  अचिन्हित        lookup_index,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count /* IN/OUT */,
+					  अचिन्हित        start_offset,
+					  अचिन्हित       *alternate_गिनती /* IN/OUT */,
 					  hb_codepoint_t *alternate_glyphs /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      अचिन्हित   lookup_index,
+					      hb_map_t  *alternate_गिनती /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      अचिन्हित पूर्णाङ्क          lookup_index,
+				      ध्रुव hb_codepoint_t *glyphs,
+				      अचिन्हित पूर्णाङ्क          glyphs_length,
 				      hb_bool_t             zero_context);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
+					अचिन्हित पूर्णाङ्क  lookup_index,
 					hb_set_t     *glyphs
 					/*TODO , hb_bool_t  inclusive */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
+					 ध्रुव hb_set_t *lookups,
 					 hb_set_t       *glyphs);
 
 
@@ -419,15 +419,15 @@ hb_ot_layout_has_positioning (hb_face_t *face);
  * https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+			      अचिन्हित पूर्णाङ्क    *design_size,       /* OUT.  May be NULL */
+			      अचिन्हित पूर्णाङ्क    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */);
+			      अचिन्हित पूर्णाङ्क    *range_start,       /* OUT.  May be NULL */
+			      अचिन्हित पूर्णाङ्क    *range_end          /* OUT.  May be NULL */);
 
 HB_EXTERN hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       अचिन्हित        lookup_index,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph);
 
@@ -439,20 +439,20 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
 HB_EXTERN hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   अचिन्हित पूर्णाङ्क     feature_index,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
+				   अचिन्हित पूर्णाङ्क    *अंक_named_parameters /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णाङ्क
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     अचिन्हित पूर्णाङ्क    feature_index,
+				     अचिन्हित पूर्णाङ्क    start_offset,
+				     अचिन्हित पूर्णाङ्क   *char_गिनती    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -500,19 +500,19 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 2.6.0
  */
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
   HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT	= HB_TAG ('i','c','f','t'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_बायाँ	= HB_TAG ('i','c','f','b'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_शीर्ष_OR_दायाँ	= HB_TAG ('i','c','f','t'),
   HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL		= HB_TAG ('I','c','f','c'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT	= HB_TAG ('i','d','e','o'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT	= HB_TAG ('i','d','t','p'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_बायाँ	= HB_TAG ('i','d','e','o'),
+  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_शीर्ष_OR_दायाँ	= HB_TAG ('i','d','t','p'),
   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL		= HB_TAG ('I','d','c','e'),
   HB_OT_LAYOUT_BASELINE_TAG_MATH			= HB_TAG ('m','a','t','h'),
 
   /*< private >*/
-  _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_LAYOUT_BASELINE_TAG_MAX_मूल्य = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_layout_baseline_tag_t;
 
 HB_EXTERN hb_ot_layout_baseline_tag_t
@@ -534,7 +534,7 @@ hb_ot_layout_get_baseline2 (hb_font_t                   *font,
 			    hb_language_t                language,
 			    hb_position_t               *coord        /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					 hb_ot_layout_baseline_tag_t  baseline_tag,
 					 hb_direction_t               direction,
@@ -542,7 +542,7 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					 hb_tag_t                     language_tag,
 					 hb_position_t               *coord        /* OUT */);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
 					  hb_ot_layout_baseline_tag_t  baseline_tag,
 					  hb_direction_t               direction,

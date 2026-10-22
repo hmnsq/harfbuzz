@@ -24,28 +24,28 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "../hb-set.hh"
-#include "../hb-priority-queue.hh"
-#include "../hb-serialize.hh"
-#include "graph-result.hh"
+#अन्तर्भाव "../hb-set.hh"
+#अन्तर्भाव "../hb-priority-queue.hh"
+#अन्तर्भाव "../hb-serialize.hh"
+#अन्तर्भाव "graph-result.hh"
 
 #ifndef GRAPH_GRAPH_HH
 #define GRAPH_GRAPH_HH
 
-#define HB_GRAPH_INVALID ((unsigned) -1)
+#define HB_GRAPH_INVALID ((अचिन्हित) -1)
 
-namespace graph {
+नामाकाश graph {
 
 /**
  * Represents a serialized table in the form of a graph.
  * Provides methods for modifying and reordering the graph.
  */
-struct graph_t
+संरचना graph_t
 {
   // TODO(garretrieger): experiment with using scratch vector for visited sets instead of allocating
   // a new hb_set_t each time.
 
-  struct vertex_t
+  संरचना vertex_t
   {
     // TODO(garretrieger): have vertex_t gaurantee that head/tail are non null and head < tail
     // so downstream users don't need to constantly check that.
@@ -58,203 +58,203 @@ struct graph_t
     // downstream users.
 
     int64_t distance = 0 ;
-    unsigned space = 0 ;
-    unsigned start = 0;
-    unsigned end = 0;
-    unsigned priority = 0;
+    अचिन्हित space = 0 ;
+    अचिन्हित start = 0;
+    अचिन्हित end = 0;
+    अचिन्हित priority = 0;
 
-    private:
+    गुप्त:
     hb_serialize_context_t::object_t obj_;
-    unsigned incoming_edges_ = 0;
-    unsigned single_parent = HB_GRAPH_INVALID;
-    bool has_incoming_virtual_edges_ = false;
-    hb_hashmap_t<unsigned, unsigned> parents;
+    अचिन्हित incoming_edges_ = 0;
+    अचिन्हित single_parent = HB_GRAPH_INVALID;
+    तार्किक has_incoming_virtual_edges_ = असत्य;
+    hb_hashmap_t<अचिन्हित, अचिन्हित> parents;
     hb_set_t virtual_parents;
-    public:
+    सार्वजनिक:
 
     vertex_t ()
     {}
 
-    explicit vertex_t(const hb_serialize_context_t::object_t& obj) : obj_(obj)
+    explicit vertex_t(ध्रुव hb_serialize_context_t::object_t& obj) : obj_(obj)
     {}
 
-    auto parents_iter () const HB_AUTO_RETURN
+    स्वतः parents_iter () ध्रुव HB_AUTO_RETURN
     (
       hb_concat (
 	hb_iter (&single_parent, single_parent != HB_GRAPH_INVALID),
-	parents.keys_ref ()
+	parents.कुंजियाँ_ref ()
       )
     )
 
-    void set_buffer (char* head, char* tail) {
+    शून्य set_buffer (वर्ण* head, वर्ण* tail) {
       obj_.head = head;
       obj_.tail = tail;
     }
 
-    void shrink_buffer (size_t count)
+    शून्य shrink_buffer (माप_प्रकार गिनती)
     {
-      obj_.tail -= count;
+      obj_.tail -= गिनती;
     }
 
-    auto all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
-    auto real_links_writer () HB_AUTO_RETURN (( obj_.real_links.writer() ));
-    auto virtual_links_writer () HB_AUTO_RETURN (( obj_.virtual_links.writer() ));
+    स्वतः all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
+    स्वतः real_links_writer () HB_AUTO_RETURN (( obj_.real_links.writer() ));
+    स्वतः virtual_links_writer () HB_AUTO_RETURN (( obj_.virtual_links.writer() ));
 
-    void sort_real_links () {
-      obj_.real_links.qsort ();
+    शून्य sort_real_links () {
+      obj_.real_links.क्विक ();
     }
 
-    graph_result_t<void> add_real_link (unsigned width, unsigned obj_idx, unsigned position) {
-      auto* link = obj_.real_links.push ();
-      TRY (graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE));
+    graph_result_t<शून्य> add_real_link (अचिन्हित width, अचिन्हित obj_idx, अचिन्हित position) {
+      स्वतः* link = obj_.real_links.push ();
+      TRY (graph_result_t<शून्य>::from (obj_.real_links, ALLOCATION_FAILURE));
       link->width = width;
       link->objidx = obj_idx;
       link->position = position;
-      return Ok();
+      प्रत्यागम Ok();
     }
 
-    graph_result_t<void> add_virtual_link (unsigned obj_idx) {
-      auto* link = obj_.virtual_links.push ();
-      TRY (graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE));
+    graph_result_t<शून्य> add_virtual_link (अचिन्हित obj_idx) {
+      स्वतः* link = obj_.virtual_links.push ();
+      TRY (graph_result_t<शून्य>::from (obj_.virtual_links, ALLOCATION_FAILURE));
       link->objidx = obj_idx;
-      return Ok();
+      प्रत्यागम Ok();
     }
 
-    graph_result_t<void> add_real_link (const hb_serialize_context_t::object_t::link_t& link)
+    graph_result_t<शून्य> add_real_link (ध्रुव hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.real_links.push (link);
-      return graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE);
+      प्रत्यागम graph_result_t<शून्य>::from (obj_.real_links, ALLOCATION_FAILURE);
     }
 
-    graph_result_t<void> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
+    graph_result_t<शून्य> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
     {
-      TRY(graph_result_t<void>::from (links, ALLOCATION_FAILURE));
+      TRY(graph_result_t<शून्य>::from (links, ALLOCATION_FAILURE));
       obj_.real_links = links;
-      return Ok();
+      प्रत्यागम Ok();
     }
 
-    void clear_real_links ()
+    शून्य clear_real_links ()
     {
       obj_.real_links.reset();
     }
 
-    void clear_virtual_links ()
+    शून्य clear_virtual_links ()
     {
       obj_.virtual_links.reset();
     }
 
-    graph_result_t<void> add_virtual_link (const hb_serialize_context_t::object_t::link_t& link)
+    graph_result_t<शून्य> add_virtual_link (ध्रुव hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.virtual_links.push (link);
-      return graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE);
+      प्रत्यागम graph_result_t<शून्य>::from (obj_.virtual_links, ALLOCATION_FAILURE);
     }
 
-    const hb_serialize_context_t::object_t& obj() const { return obj_; }
+    ध्रुव hb_serialize_context_t::object_t& obj() ध्रुव { प्रत्यागम obj_; }
 
-    template<typename T>
-    T as () const
+    ढाँचा<typename T>
+    T as () ध्रुव
     {
-      return reinterpret_cast<T> (obj_.head);
+      प्रत्यागम reinterpret_cast<T> (obj_.head);
     }
 
-    bool has_incoming_virtual_edges () const
+    तार्किक has_incoming_virtual_edges () ध्रुव
     {
-      return has_incoming_virtual_edges_;
+      प्रत्यागम has_incoming_virtual_edges_;
     }
 
-    graph_result_t<void> link_positions_valid (unsigned num_objects, bool removed_nil)
+    graph_result_t<शून्य> link_positions_valid (अचिन्हित अंक_objects, तार्किक removed_nil)
     {
       hb_set_t assigned_bytes;
-      for (const auto& l : obj_.real_links)
+      प्रति (ध्रुव स्वतः& l : obj_.real_links)
       {
-        if (unlikely (l.objidx >= num_objects
+        यदि (unlikely (l.objidx >= अंक_objects
             || (removed_nil && !l.objidx)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_संदेश (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid object index.");
-          return Err(INVALID_ARGUMENT);
+          प्रत्यागम Err(INVALID_ARGUMENT);
         }
 
-        unsigned start = l.position;
-        unsigned end = start + l.width - 1;
+        अचिन्हित start = l.position;
+        अचिन्हित end = start + l.width - 1;
 
-        if (unlikely (l.width < 2 || l.width > 4))
+        यदि (unlikely (l.width < 2 || l.width > 4))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_संदेश (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid link width.");
-          return Err(INVALID_ARGUMENT);
+          प्रत्यागम Err(INVALID_ARGUMENT);
         }
 
-        if (unlikely (end >= table_size ()))
+        यदि (unlikely (end >= table_size ()))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_संदेश (SUBSET_REPACK, nullptr,
                      "Invalid graph. Link position is out of bounds.");
-          return Err(OUT_OF_BOUNDS);
+          प्रत्यागम Err(OUT_OF_BOUNDS);
         }
 
-        if (unlikely (assigned_bytes.intersects (start, end)))
+        यदि (unlikely (assigned_bytes.intersects (start, end)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_संदेश (SUBSET_REPACK, nullptr,
                      "Invalid graph. Found offsets whose positions overlap.");
-          return Err(INVALID_ARGUMENT);
+          प्रत्यागम Err(INVALID_ARGUMENT);
         }
 
         assigned_bytes.add_range (start, end);
       }
 
-      return graph_result_t<void>::from (assigned_bytes, ALLOCATION_FAILURE);
+      प्रत्यागम graph_result_t<शून्य>::from (assigned_bytes, ALLOCATION_FAILURE);
     }
 
-    void normalize ()
+    शून्य normalize ()
     {
-      obj_.real_links.qsort ();
-      for (const auto& l : obj_.real_links)
+      obj_.real_links.क्विक ();
+      प्रति (ध्रुव स्वतः& l : obj_.real_links)
       {
-        for (unsigned i = 0; i < l.width; i++)
+        प्रति (अचिन्हित i = 0; i < l.width; i++)
         {
           obj_.head[l.position + i] = 0;
         }
       }
     }
 
-    bool equals (unsigned this_index,
-                 unsigned other_index,
-                 const vertex_t& other,
-                 const graph_t& graph,
-                 const graph_t& other_graph,
-                 unsigned depth) const
+    तार्किक equals (अचिन्हित this_index,
+                 अचिन्हित other_index,
+                 ध्रुव vertex_t& other,
+                 ध्रुव graph_t& graph,
+                 ध्रुव graph_t& other_graph,
+                 अचिन्हित depth) ध्रुव
     {
-      if (!(as_bytes () == other.as_bytes ()))
+      यदि (!(as_bytes () == other.as_bytes ()))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_संदेश (SUBSET_REPACK, nullptr,
                    "vertex %u [%lu bytes] != %u [%lu bytes], depth = %u",
                    this_index,
-                   (unsigned long) table_size (),
+                   (अचिन्हित दीर्घ) table_size (),
                    other_index,
-                   (unsigned long) other.table_size (),
+                   (अचिन्हित दीर्घ) other.table_size (),
                    depth);
 
-        auto a = as_bytes ();
-        auto b = other.as_bytes ();
-        while (a || b)
+        स्वतः a = as_bytes ();
+        स्वतः b = other.as_bytes ();
+        यावत् (a || b)
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
-                     "  0x%x %s 0x%x", (unsigned) *a, (*a == *b) ? "==" : "!=", (unsigned) *b);
+          DEBUG_संदेश (SUBSET_REPACK, nullptr,
+                     "  0x%x %s 0x%x", (अचिन्हित) *a, (*a == *b) ? "==" : "!=", (अचिन्हित) *b);
           a++;
           b++;
         }
-        return false;
+        प्रत्यागम असत्य;
       }
 
-      return links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
+      प्रत्यागम links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
     }
 
-    hb_bytes_t as_bytes () const
+    hb_bytes_t as_bytes () ध्रुव
     {
-      return hb_bytes_t (obj_.head, table_size ());
+      प्रत्यागम hb_bytes_t (obj_.head, table_size ());
     }
 
-    friend void swap (vertex_t& a, vertex_t& b)
+    मित्र शून्य swap (vertex_t& a, vertex_t& b)
     {
       hb_swap (a.obj_, b.obj_);
       hb_swap (a.distance, b.distance);
@@ -269,207 +269,207 @@ struct graph_t
       hb_swap (a.priority, b.priority);
     }
 
-    graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-    position_to_index_map () const
+    graph_result_t<hb_hashmap_t<अचिन्हित, अचिन्हित>>
+    position_to_index_map () ध्रुव
     {
-      hb_hashmap_t<unsigned, unsigned> result;
+      hb_hashmap_t<अचिन्हित, अचिन्हित> result;
 
       result.alloc (obj_.real_links.length);
-      for (const auto& l : obj_.real_links) {
+      प्रति (ध्रुव स्वतः& l : obj_.real_links) {
         result.set (l.position, l.objidx);
       }
 
-      return graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
+      प्रत्यागम graph_result_t<hb_hashmap_t<अचिन्हित, अचिन्हित>>::from (std::move(result), ALLOCATION_FAILURE);
     }
 
-    bool is_shared () const
+    तार्किक is_shared () ध्रुव
     {
-      return parents.get_population () > virtual_parents.get_population () + 1;
+      प्रत्यागम parents.get_population () > virtual_parents.get_population () + 1;
     }
 
-    unsigned incoming_edges () const
+    अचिन्हित incoming_edges () ध्रुव
     {
-      if (HB_DEBUG_SUBSET_REPACK)
+      यदि (HB_DEBUG_SUBSET_REPACK)
        {
-	assert (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
-		(parents.values_ref () | hb_reduce (hb_add, 0)));
+	प्रतिज्ञा (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
+		(parents.मूल्यावली_ref () | hb_reduce (hb_add, 0)));
        }
-      return incoming_edges_;
+      प्रत्यागम incoming_edges_;
     }
 
-    unsigned incoming_edges_from_parent (unsigned parent_index) const {
-      if (single_parent != HB_GRAPH_INVALID) {
-        return single_parent == parent_index ? 1 : 0;
+    अचिन्हित incoming_edges_from_parent (अचिन्हित parent_index) ध्रुव {
+      यदि (single_parent != HB_GRAPH_INVALID) {
+        प्रत्यागम single_parent == parent_index ? 1 : 0;
       }
 
-      unsigned* count;
-      return  parents.has(parent_index, &count) ? *count : 0;
+      अचिन्हित* गिनती;
+      प्रत्यागम  parents.has(parent_index, &गिनती) ? *गिनती : 0;
     }
 
-    void reset_parents ()
+    शून्य reset_parents ()
     {
       incoming_edges_ = 0;
-      has_incoming_virtual_edges_ = false;
+      has_incoming_virtual_edges_ = असत्य;
       single_parent = HB_GRAPH_INVALID;
       parents.reset ();
       virtual_parents.reset ();
     }
 
-    graph_result_t<void> add_parent (unsigned parent_index, bool is_virtual)
+    graph_result_t<शून्य> add_parent (अचिन्हित parent_index, तार्किक is_virtual)
     {
-      assert (parent_index != HB_GRAPH_INVALID);
+      प्रतिज्ञा (parent_index != HB_GRAPH_INVALID);
       has_incoming_virtual_edges_ |= is_virtual;
-      if (is_virtual)
+      यदि (is_virtual)
         virtual_parents.add (parent_index);
 
-      if (incoming_edges_ == 0)
+      यदि (incoming_edges_ == 0)
       {
 	single_parent = parent_index;
 	incoming_edges_ = 1;
-	return to_result();
+	प्रत्यागम to_result();
       }
-      else if (single_parent != HB_GRAPH_INVALID)
+      अन्यथा यदि (single_parent != HB_GRAPH_INVALID)
       {
-        assert (incoming_edges_ == 1);
-	if (!parents.set (single_parent, 1))
-	  return to_result ();
+        प्रतिज्ञा (incoming_edges_ == 1);
+	यदि (!parents.set (single_parent, 1))
+	  प्रत्यागम to_result ();
 	single_parent = HB_GRAPH_INVALID;
       }
 
-      unsigned *v;
-      if (parents.has (parent_index, &v))
+      अचिन्हित *v;
+      यदि (parents.has (parent_index, &v))
       {
         (*v)++;
 	incoming_edges_++;
       }
-      else if (parents.set (parent_index, 1))
+      अन्यथा यदि (parents.set (parent_index, 1))
 	incoming_edges_++;
 
-      return to_result();
+      प्रत्यागम to_result();
     }
 
-    void remove_parent (unsigned parent_index)
+    शून्य remove_parent (अचिन्हित parent_index)
     {
-      if (parent_index == single_parent)
+      यदि (parent_index == single_parent)
       {
 	single_parent = HB_GRAPH_INVALID;
 	incoming_edges_--;
 	virtual_parents.reset ();
-	return;
+	प्रत्यागम;
       }
 
-      unsigned *v;
-      if (parents.has (parent_index, &v))
+      अचिन्हित *v;
+      यदि (parents.has (parent_index, &v))
       {
 	incoming_edges_--;
-	if (*v > 1)
+	यदि (*v > 1)
 	  (*v)--;
-	else
+	अन्यथा
         {
 	  parents.del (parent_index);
           virtual_parents.del (parent_index);
         }
 
-	if (incoming_edges_ == 1)
+	यदि (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.कुंजियाँ ();
 	  parents.reset ();
 	}
       }
     }
 
-    void remove_real_link_unordered (unsigned link_array_index) {
+    शून्य remove_real_link_unordered (अचिन्हित link_array_index) {
       obj_.real_links.remove_unordered (link_array_index);
     }
 
-    void remove_real_link_unordered (unsigned child_index, const void* offset)
+    शून्य remove_real_link_unordered (अचिन्हित child_index, ध्रुव शून्य* offset)
     {
-      unsigned count = obj_.real_links.length;
-      for (unsigned i = 0; i < count; i++)
+      अचिन्हित गिनती = obj_.real_links.length;
+      प्रति (अचिन्हित i = 0; i < गिनती; i++)
       {
-        auto& link = obj_.real_links.arrayZ[i];
-        if (link.objidx != child_index)
-          continue;
+        स्वतः& link = obj_.real_links.arrayZ[i];
+        यदि (link.objidx != child_index)
+          अनुवर्त;
 
-        if ((obj_.head + link.position) != offset)
-          continue;
+        यदि ((obj_.head + link.position) != offset)
+          अनुवर्त;
 
         obj_.real_links.remove_unordered (i);
-        return;
+        प्रत्यागम;
       }
     }
 
-    graph_result_t<void> remap_parent (unsigned old_index, unsigned new_index)
+    graph_result_t<शून्य> remap_parent (अचिन्हित old_index, अचिन्हित new_index)
     {
-      if (single_parent != HB_GRAPH_INVALID)
+      यदि (single_parent != HB_GRAPH_INVALID)
       {
-        if (single_parent == old_index)
+        यदि (single_parent == old_index)
         {
 	  single_parent = new_index;
-          if (virtual_parents.has (old_index))
+          यदि (virtual_parents.has (old_index))
           {
             virtual_parents.del (old_index);
             virtual_parents.add (new_index);
           }
         }
-        return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+        प्रत्यागम graph_result_t<शून्य>::from(virtual_parents, ALLOCATION_FAILURE);
       }
 
-      const unsigned *pv;
-      if (parents.has (old_index, &pv))
+      ध्रुव अचिन्हित *pv;
+      यदि (parents.has (old_index, &pv))
       {
-        unsigned v = *pv;
-	if (!parents.set (new_index, v))
+        अचिन्हित v = *pv;
+	यदि (!parents.set (new_index, v))
           incoming_edges_ -= v;
 	parents.del (old_index);
 
-        if (incoming_edges_ == 1)
+        यदि (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.कुंजियाँ ();
 	  parents.reset ();
 	}
       }
 
-      if (virtual_parents.has (old_index))
+      यदि (virtual_parents.has (old_index))
       {
         virtual_parents.del (old_index);
         virtual_parents.add (new_index);
       }
 
-      return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+      प्रत्यागम graph_result_t<शून्य>::from(virtual_parents, ALLOCATION_FAILURE);
     }
 
-    bool is_leaf () const
+    तार्किक is_leaf () ध्रुव
     {
-      return !obj_.real_links.length && !obj_.virtual_links.length;
+      प्रत्यागम !obj_.real_links.length && !obj_.virtual_links.length;
     }
 
-    bool raise_priority ()
+    तार्किक raise_priority ()
     {
-      if (has_max_priority ()) return false;
+      यदि (has_max_priority ()) प्रत्यागम असत्य;
       priority++;
-      return true;
+      प्रत्यागम सत्य;
     }
 
-    bool give_max_priority ()
+    तार्किक give_max_priority ()
     {
-      bool result = false;
-      while (!has_max_priority()) {
-        result = true;
+      तार्किक result = असत्य;
+      यावत् (!has_max_priority()) {
+        result = सत्य;
         priority++;
       }
-      return result;
+      प्रत्यागम result;
     }
 
-    bool has_max_priority () const {
-      return priority >= 3;
+    तार्किक has_max_priority () ध्रुव {
+      प्रत्यागम priority >= 3;
     }
 
-    size_t table_size () const {
-      return obj_.tail - obj_.head;
+    माप_प्रकार table_size () ध्रुव {
+      प्रत्यागम obj_.tail - obj_.head;
     }
 
-    int64_t modified_distance (unsigned order) const
+    int64_t modified_distance (अचिन्हित order) ध्रुव
     {
       // TODO(garretrieger): once priority is high enough, should try
       // setting distance = 0 which will force to sort immediately after
@@ -478,88 +478,88 @@ struct graph_t
       int64_t modified_distance =
           hb_clamp (distance + distance_modifier (), (int64_t) 0,
                     hb_int_max (int64_t) >> 18);
-      if (has_max_priority ()) {
+      यदि (has_max_priority ()) {
         modified_distance = 0;
       }
-      return (modified_distance << 18) | (0x003FFFF & order);
+      प्रत्यागम (modified_distance << 18) | (0x003FFFF & order);
     }
 
-    int64_t distance_modifier () const
+    int64_t distance_modifier () ध्रुव
     {
-      if (!priority) return 0;
+      यदि (!priority) प्रत्यागम 0;
       int64_t table_size = obj_.tail - obj_.head;
 
-      if (priority == 1)
-        return -table_size / 2;
+      यदि (priority == 1)
+        प्रत्यागम -table_size / 2;
 
-      return -table_size;
+      प्रत्यागम -table_size;
     }
 
-   private:
-    graph_result_t<void> to_result() const {
-      if (unlikely (
+   गुप्त:
+    graph_result_t<शून्य> to_result() ध्रुव {
+      यदि (unlikely (
         parents.in_error() || virtual_parents.in_error() ||
         obj_.real_links.in_error() || obj_.virtual_links.in_error()))
-        return Err(ALLOCATION_FAILURE);
-      return Ok();
+        प्रत्यागम Err(ALLOCATION_FAILURE);
+      प्रत्यागम Ok();
     }
 
-    bool links_equal (const hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
-                      const hb_vector_t<hb_serialize_context_t::object_t::link_t>& other_links,
-                      const graph_t& graph,
-                      const graph_t& other_graph,
-                      unsigned depth) const
+    तार्किक links_equal (ध्रुव hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
+                      ध्रुव hb_vector_t<hb_serialize_context_t::object_t::link_t>& other_links,
+                      ध्रुव graph_t& graph,
+                      ध्रुव graph_t& other_graph,
+                      अचिन्हित depth) ध्रुव
     {
-      auto a = this_links.iter ();
-      auto b = other_links.iter ();
+      स्वतः a = this_links.iter ();
+      स्वतः b = other_links.iter ();
 
-      while (a && b)
+      यावत् (a && b)
       {
-        const auto& link_a = *a;
-        const auto& link_b = *b;
+        ध्रुव स्वतः& link_a = *a;
+        ध्रुव स्वतः& link_b = *b;
 
-        if (link_a.width != link_b.width ||
+        यदि (link_a.width != link_b.width ||
             link_a.is_signed != link_b.is_signed ||
             link_a.whence != link_b.whence ||
             link_a.position != link_b.position ||
             link_a.bias != link_b.bias)
-          return false;
+          प्रत्यागम असत्य;
 
-        if (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
+        यदि (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
                 other_graph.vertices_[link_b.objidx], graph, other_graph, depth + 1))
-          return false;
+          प्रत्यागम असत्य;
 
         a++;
         b++;
       }
 
-      if (bool (a) != bool (b))
-        return false;
+      यदि (तार्किक (a) != तार्किक (b))
+        प्रत्यागम असत्य;
 
-      return true;
+      प्रत्यागम सत्य;
     }
   };
 
-  enum vertex_mutability_t
+  गणना vertex_mutability_t
   {
     Immutable,
     Mutable
   };
 
-  template <typename T, vertex_mutability_t mutability = Mutable>
-  struct vertex_and_table_t
+  ढाँचा <typename T, vertex_mutability_t mutability = Mutable>
+  संरचना vertex_and_table_t
   {
     vertex_and_table_t () : index (0), vertex (nullptr), table (nullptr)
     {}
 
-    template <vertex_mutability_t other_mutability>
-    vertex_and_table_t (const vertex_and_table_t<T, other_mutability>& o)
+    ढाँचा <vertex_mutability_t other_mutability>
+    vertex_and_table_t (ध्रुव vertex_and_table_t<T, other_mutability>& o)
       : index (o.index), vertex (o.vertex), table (o.table)
     {}
 
-    unsigned index;
-    typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type vertex;
-    typename std::conditional<mutability == Immutable, const T*, T*>::type table;
+    अचिन्हित index;
+    typename std::conditional<mutability == Immutable, ध्रुव vertex_t*, vertex_t*>::type vertex;
+    typename std::conditional<mutability == Immutable, ध्रुव T*, T*>::type table;
 
   };
 
@@ -570,165 +570,165 @@ struct graph_t
    * the 'packed' object stack used internally in the
    * serializer
    */
-  template<typename T>
-  static graph_result_t<graph_t> create (const T& objects)
+  ढाँचा<typename T>
+  स्थिर graph_result_t<graph_t> create (ध्रुव T& objects)
   {
-    if (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
+    यदि (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "constructing graph: num of objects %u exceeds HB_REPACKER_MAX_VERTICES.",
                  objects.length);
-      return Err(LIMIT_EXCEEDED);
+      प्रत्यागम Err(LIMIT_EXCEEDED);
     }
 
     graph_t g;
-    g.num_roots_for_space_.push (1);
-    TRY (graph_result_t<void>::from (g.num_roots_for_space_, ALLOCATION_FAILURE));
+    g.अंक_roots_for_space.push (1);
+    TRY (graph_result_t<शून्य>::from (g.अंक_roots_for_space, ALLOCATION_FAILURE));
 
-    bool removed_nil = false;
-    const unsigned count = objects.length;
-    g.vertices_.alloc (count);
-    g.ordering_.resize (count);
-    g.ordering_scratch_.alloc (count);
-    TRY (graph_result_t<void>::from (g.vertices_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
+    तार्किक removed_nil = असत्य;
+    ध्रुव अचिन्हित गिनती = objects.length;
+    g.vertices_.alloc (गिनती);
+    g.ordering_.resize (गिनती);
+    g.ordering_scratch_.alloc (गिनती);
+    TRY (graph_result_t<शून्य>::from (g.vertices_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (g.ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
 
-    unsigned order = objects.length;
-    unsigned skip = 0;
-    for (unsigned i = 0; i < count; i++)
+    अचिन्हित order = objects.length;
+    अचिन्हित skip = 0;
+    प्रति (अचिन्हित i = 0; i < गिनती; i++)
     {
       // If this graph came from a serialization buffer object 0 is the
       // nil object. We don't need it for our purposes here so drop it.
-      if (i == 0 && !objects.arrayZ[i])
+      यदि (i == 0 && !objects.arrayZ[i])
       {
-        removed_nil = true;
+        removed_nil = सत्य;
         order--;
-        g.ordering_.resize (count - 1);
+        g.ordering_.resize (गिनती - 1);
         skip++;
-        continue;
+        अनुवर्त;
       }
 
       hb_serialize_context_t::object_t obj (*objects.arrayZ[i]);
-      if (unlikely (obj.in_error ())) {
-        return Err(ALLOCATION_FAILURE);
+      यदि (unlikely (obj.in_error ())) {
+        प्रत्यागम Err(ALLOCATION_FAILURE);
       }
       vertex_t* v = g.vertices_.push (std::move (obj));
 
-      TRY (v->link_positions_valid (count, removed_nil));
+      TRY (v->link_positions_valid (गिनती, removed_nil));
 
       // To start we set the ordering to match the provided objects
       // list. Note: objects are provided to us in reverse order (ie.
       // the last object is the root).
-      unsigned obj_idx = i - skip;
+      अचिन्हित obj_idx = i - skip;
       g.ordering_[--order] = obj_idx;
 
-      if (!removed_nil) continue;
+      यदि (!removed_nil) अनुवर्त;
       // Fix indices to account for removed nil object.
-      for (auto& l : v->all_links_writer ()) {
+      प्रति (स्वतः& l : v->all_links_writer ()) {
         l.objidx--;
       }
     }
 
-    auto r = g.is_fully_connected();
-    if (r.is_err() && r.error() == ORPHANED_NODES) {
+    स्वतः r = g.is_fully_connected();
+    यदि (r.is_err() && r.error() == ORPHANED_NODES) {
       g.print_orphaned_nodes ();
     }
     TRY(r);
 
-    return Ok (std::move (g));
+    प्रत्यागम Ok (std::move (g));
   }
 
-  graph_t (const graph_t&) = delete;
-  graph_t& operator = (const graph_t&) = delete;
-  graph_t (graph_t&&) = default;
-  graph_t& operator = (graph_t&&) = default;
+  graph_t (ध्रुव graph_t&) = delete;
+  graph_t& चालक = (ध्रुव graph_t&) = delete;
+  graph_t (graph_t&&) = स्वभाव;
+  graph_t& चालक = (graph_t&&) = स्वभाव;
 
   ~graph_t ()
   {
-    for (char* b : buffers)
+    प्रति (वर्ण* b : buffers)
       hb_free (b);
   }
 
-private:
-  graph_t () = default;
+गुप्त:
+  graph_t () = स्वभाव;
 
-public:
+सार्वजनिक:
 
-  bool operator== (const graph_t& other) const
+  तार्किक चालक== (ध्रुव graph_t& other) ध्रुव
   {
-    return root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
+    प्रत्यागम मूल ().equals (मूल_idx(), other.मूल_idx(), other.मूल (), *एतत्, other, 0);
   }
 
-  void print () const {
-    for (unsigned id : ordering_)
+  शून्य print () ध्रुव {
+    प्रति (अचिन्हित id : ordering_)
     {
-      const auto& v = vertices_[id];
-      printf("%u: %u [", id, (unsigned int)v.table_size());
-      for (const auto &l : v.obj().real_links) {
-        printf("%u, ", l.objidx);
+      ध्रुव स्वतः& v = vertices_[id];
+      म_लिखो("%u: %u [", id, (अचिन्हित पूर्णाङ्क)v.table_size());
+      प्रति (ध्रुव स्वतः &l : v.obj().real_links) {
+        म_लिखो("%u, ", l.objidx);
       }
-      for (const auto &l : v.obj().virtual_links) {
-        printf("v%u, ", l.objidx);
+      प्रति (ध्रुव स्वतः &l : v.obj().virtual_links) {
+        म_लिखो("v%u, ", l.objidx);
       }
-      printf("]\n");
+      म_लिखो("]\n");
     }
   }
 
   // Sorts links of all objects in a consistent manner and zeroes all offsets.
-  void normalize ()
+  शून्य normalize ()
   {
-    for (auto& v : vertices_.writer ())
+    प्रति (स्वतः& v : vertices_.writer ())
       v.normalize ();
   }
 
-  const vertex_t& root () const
+  ध्रुव vertex_t& मूल () ध्रुव
   {
-    return vertices_[root_idx ()];
+    प्रत्यागम vertices_[मूल_idx ()];
   }
 
-  unsigned root_idx () const
+  अचिन्हित मूल_idx () ध्रुव
   {
     // First element of ordering_ is the root.
     // Since the graph is topologically sorted it's safe to
     // assume the first object has no incoming edges.
-    return ordering_[0];
+    प्रत्यागम ordering_[0];
   }
 
-  const hb_serialize_context_t::object_t& object (unsigned i) const
+  ध्रुव hb_serialize_context_t::object_t& object (अचिन्हित i) ध्रुव
   {
-    return vertices_[i].obj();
+    प्रत्यागम vertices_[i].obj();
   }
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<शून्य> add_buffer (वर्ण* buffer)
   {
     buffers.push (buffer);
-    return graph_result_t<void>::from (buffers, ALLOCATION_FAILURE);
+    प्रत्यागम graph_result_t<शून्य>::from (buffers, ALLOCATION_FAILURE);
   }
 
   /*
    * Adds a 16 bit link from parent_id to child_id
    */
-  template<typename T>
-  graph_result_t<void> add_link (T* offset,
-                                 unsigned parent_id,
-                                 unsigned child_id)
+  ढाँचा<typename T>
+  graph_result_t<शून्य> add_link (T* offset,
+                                 अचिन्हित parent_id,
+                                 अचिन्हित child_id)
   {
-    if (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
-    auto& v = vertices_[parent_id];
-    TRY(v.add_real_link(2, child_id, (char*) offset - (char*) v.obj().head));
-    return vertices_[child_id].add_parent (parent_id, false);
+    यदि (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
+    स्वतः& v = vertices_[parent_id];
+    TRY(v.add_real_link(2, child_id, (वर्ण*) offset - (वर्ण*) v.obj().head));
+    प्रत्यागम vertices_[child_id].add_parent (parent_id, असत्य);
   }
 
   /*
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node if positions are marked as invalid.
    */
-  graph_result_t<void> sort_shortest_distance_if_needed ()
+  graph_result_t<शून्य> sort_shortest_distance_if_needed ()
   {
-    if (!positions_invalid) return Ok();
-    return sort_shortest_distance ();
+    यदि (!positions_invalid) प्रत्यागम Ok();
+    प्रत्यागम sort_shortest_distance ();
   }
 
 
@@ -736,53 +736,53 @@ public:
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node.
    */
-  graph_result_t<void> sort_shortest_distance ()
+  graph_result_t<शून्य> sort_shortest_distance ()
   {
-    positions_invalid = true;
+    positions_invalid = सत्य;
 
-    if (vertices_.length <= 1) {
+    यदि (vertices_.length <= 1) {
       // Graph of 1 or less doesn't need sorting.
-      return Ok();
+      प्रत्यागम Ok();
     }
 
     TRY (update_distances ());
 
     hb_priority_queue_t<int64_t> queue;
     queue.alloc (vertices_.length);
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (queue, ALLOCATION_FAILURE));
 
-    hb_vector_t<unsigned> &new_ordering = ordering_scratch_;
+    hb_vector_t<अचिन्हित> &new_ordering = ordering_scratch_;
     new_ordering.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (new_ordering, ALLOCATION_FAILURE));
 
-    hb_vector_t<unsigned> removed_edges;
+    hb_vector_t<अचिन्हित> removed_edges;
     removed_edges.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (removed_edges, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (removed_edges, ALLOCATION_FAILURE));
 
     TRY (update_parents ());
 
-    queue.insert (root ().modified_distance (0), root_idx ());
-    unsigned order = 1;
-    unsigned pos = 0;
-    while (!queue.in_error () && !queue.is_empty ())
+    queue.insert (मूल ().modified_distance (0), मूल_idx ());
+    अचिन्हित order = 1;
+    अचिन्हित pos = 0;
+    यावत् (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_id = queue.pop_minimum().second;
+      अचिन्हित next_id = queue.निकालो_minimum().second;
 
-      if (unlikely (pos >= new_ordering.length)) {
+      यदि (unlikely (pos >= new_ordering.length)) {
         // We are out of ids. Which means we've visited a node more than once.
         // This graph contains a cycle which is not allowed.
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
-        return Err(CYCLE_DETECTED);
+        DEBUG_संदेश (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
+        प्रत्यागम Err(CYCLE_DETECTED);
       }
       new_ordering[pos++] = next_id;
-      const vertex_t& next = vertices_[next_id];
+      ध्रुव vertex_t& next = vertices_[next_id];
 
-      for (const auto& link : next.obj().all_links ()) {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+      प्रति (ध्रुव स्वतः& link : next.obj().all_links ()) {
+        यदि (unlikely (link.objidx >= vertices_.length))
+          प्रत्यागम Err(OUT_OF_BOUNDS);
         removed_edges[link.objidx]++;
-        const auto& v = vertices_[link.objidx];
-        if (!(v.incoming_edges () - removed_edges[link.objidx]))
+        ध्रुव स्वतः& v = vertices_[link.objidx];
+        यदि (!(v.incoming_edges () - removed_edges[link.objidx]))
           // Add the order that the links were encountered to the priority.
           // This ensures that ties between priorities objects are broken in a consistent
           // way. More specifically this is set up so that if a set of objects have the same
@@ -793,17 +793,17 @@ public:
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (queue, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (new_ordering, ALLOCATION_FAILURE));
 
     hb_swap (ordering_, new_ordering);
 
-    if (unlikely (pos != vertices_.length)) {
+    यदि (unlikely (pos != vertices_.length)) {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      प्रत्यागम Err(ORPHANED_NODES);
     }
 
-    return Ok();
+    प्रत्यागम Ok();
   }
 
   /*
@@ -811,25 +811,25 @@ public:
    * More specifically this looks for the top most 24 bit or 32 bit links in the graph.
    * Some special casing is done that is specific to the layout of GSUB/GPOS tables.
    */
-  graph_result_t<void> find_space_roots (hb_set_t& visited, hb_set_t& roots)
+  graph_result_t<शून्य> find_space_roots (hb_set_t& visited, hb_set_t& roots)
   {
-    unsigned root_index = root_idx ();
-    for (unsigned i : ordering_)
+    अचिन्हित मूल_index = मूल_idx ();
+    प्रति (अचिन्हित i : ordering_)
     {
-      if (visited.has (i)) continue;
+      यदि (visited.has (i)) अनुवर्त;
 
       // Only real links can form 32 bit spaces
-      for (const auto& l : vertices_[i].obj().real_links)
+      प्रति (ध्रुव स्वतः& l : vertices_[i].obj().real_links)
       {
-        if (l.is_signed || l.width < 3)
-          continue;
+        यदि (l.is_signed || l.width < 3)
+          अनुवर्त;
 
-        if (i == root_index && l.width == 3)
+        यदि (i == मूल_index && l.width == 3)
           // Ignore 24bit links from the root node, this skips past the single 24bit
           // pointer to the lookup list.
-          continue;
+          अनुवर्त;
 
-        if (l.width >= 3)
+        यदि (l.width >= 3)
         {
           // A wide offset forms a root, unless there are 32-bit offsets somewhere
           // in its subgraph, then those become the roots instead. This is to make sure
@@ -837,12 +837,12 @@ public:
           // 32-bit lookup list become the spaces instead of their enclosing lists.
           hb_set_t sub_roots;
           TRY (find_32bit_roots (l.objidx, sub_roots));
-          if (sub_roots) {
-            for (unsigned sub_root_idx : sub_roots) {
-              roots.add (sub_root_idx);
-              TRY (find_subgraph (sub_root_idx, visited));
+          यदि (sub_roots) {
+            प्रति (अचिन्हित sub_मूल_idx : sub_roots) {
+              roots.add (sub_मूल_idx);
+              TRY (find_subgraph (sub_मूल_idx, visited));
             }
-            continue;
+            अनुवर्त;
           }
         }
 
@@ -851,82 +851,82 @@ public:
       }
     }
 
-    TRY(graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY(graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-    return Ok();
+    TRY(graph_result_t<शून्य>::from (visited, ALLOCATION_FAILURE));
+    TRY(graph_result_t<शून्य>::from (roots, ALLOCATION_FAILURE));
+    प्रत्यागम Ok();
   }
 
-  template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Immutable>> as_table (unsigned parent, const void* offset, Ts... ds)
+  ढाँचा <typename T, typename ...Ts>
+  graph_result_t<vertex_and_table_t<T, Immutable>> as_table (अचिन्हित parent, ध्रुव शून्य* offset, Ts... ds)
   {
-    TRY_ASSIGN (unsigned idx, index_for_offset (parent, offset));
-    return as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
+    TRY_ASSIGN (अचिन्हित idx, index_for_offset (parent, offset));
+    प्रत्यागम as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
   }
 
-  template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (unsigned parent, const void* offset, Ts... ds)
+  ढाँचा <typename T, typename ...Ts>
+  graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (अचिन्हित parent, ध्रुव शून्य* offset, Ts... ds)
   {
-    TRY_ASSIGN (auto idx, mutable_index_for_offset (parent, offset));
-    return as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
+    TRY_ASSIGN (स्वतः idx, mutable_index_for_offset (parent, offset));
+    प्रत्यागम as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
   }
 
-  template <typename T, vertex_mutability_t mutability = Mutable, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, mutability>> as_table_from_index (unsigned index, Ts... ds)
+  ढाँचा <typename T, vertex_mutability_t mutability = Mutable, typename ...Ts>
+  graph_result_t<vertex_and_table_t<T, mutability>> as_table_from_index (अचिन्हित index, Ts... ds)
   {
-    if (unlikely (index >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (index >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
     vertex_and_table_t<T, mutability> r;
-    r.vertex = (typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type) &vertices_[index];
-    r.table = r.vertex->template as<typename std::conditional<mutability == Immutable, const T*, T*>::type> ();
+    r.vertex = (typename std::conditional<mutability == Immutable, ध्रुव vertex_t*, vertex_t*>::type) &vertices_[index];
+    r.table = r.vertex->ढाँचा as<typename std::conditional<mutability == Immutable, ध्रुव T*, T*>::type> ();
     r.index = index;
-    if (unlikely (!r.table))
-      return Err(INVALID_ARGUMENT);
+    यदि (unlikely (!r.table))
+      प्रत्यागम Err(INVALID_ARGUMENT);
 
     TRY(r.table->sanitize (*(r.vertex), std::forward<Ts>(ds)...));
-    return r;
+    प्रत्यागम r;
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx].
-  graph_result_t<unsigned> index_for_offset (unsigned node_idx, const void* offset) const
+  graph_result_t<अचिन्हित> index_for_offset (अचिन्हित गाँठ_idx, ध्रुव शून्य* offset) ध्रुव
   {
-    if (unlikely (node_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    const auto& node = object (node_idx);
-    if (unlikely (offset < node.head || offset >= node.tail)) return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (गाँठ_idx >= vertices_.length)) प्रत्यागम Err(OUT_OF_BOUNDS);
+    ध्रुव स्वतः& node = object (गाँठ_idx);
+    यदि (unlikely (offset < node.head || offset >= node.tail)) प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    unsigned count = node.real_links.length;
-    for (unsigned i = 0; i < count; i++)
+    अचिन्हित गिनती = node.real_links.length;
+    प्रति (अचिन्हित i = 0; i < गिनती; i++)
     {
       // Use direct access for increased performance, this is a hot method.
-      const auto& link = node.real_links.arrayZ[i];
-      if (offset != node.head + link.position)
-        continue;
-      return Ok(link.objidx);
+      ध्रुव स्वतः& link = node.real_links.arrayZ[i];
+      यदि (offset != node.head + link.position)
+        अनुवर्त;
+      प्रत्यागम Ok(link.objidx);
     }
 
-    return Err(INVALID_ARGUMENT);
+    प्रत्यागम Err(INVALID_ARGUMENT);
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx]. Ensures that the returned object is safe to mutate.
   // That is, if the original child object is shared by parents other than node_idx
   // it will be duplicated and the duplicate will be returned instead.
-  graph_result_t<unsigned> mutable_index_for_offset (unsigned node_idx, const void* offset)
+  graph_result_t<अचिन्हित> mutable_index_for_offset (अचिन्हित गाँठ_idx, ध्रुव शून्य* offset)
   {
-    TRY_ASSIGN (unsigned child_idx, index_for_offset (node_idx, offset));
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    TRY_ASSIGN (अचिन्हित child_idx, index_for_offset (गाँठ_idx, offset));
+    यदि (unlikely (child_idx >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    auto& child = vertices_[child_idx];
-    for (unsigned p : child.parents_iter ())
+    स्वतः& child = vertices_[child_idx];
+    प्रति (अचिन्हित p : child.parents_iter ())
     {
-      if (p != node_idx) {
-        return duplicate (node_idx, child_idx, true);
+      यदि (p != गाँठ_idx) {
+        प्रत्यागम duplicate (गाँठ_idx, child_idx, सत्य);
       }
     }
 
-    return Ok(child_idx);
+    प्रत्यागम Ok(child_idx);
   }
 
 
@@ -935,20 +935,20 @@ public:
    * Currently, this is implemented specifically tailored to the structure of a GPOS/GSUB
    * (including with 24bit offsets) table.
    */
-  graph_result_t<bool> assign_spaces ()
+  graph_result_t<तार्किक> assign_spaces ()
   {
     TRY (update_parents ());
 
-    for (auto& vertex : vertices_.writer ())
+    प्रति (स्वतः& vertex : vertices_.writer ())
     {
       vertex.space = 0;
       vertex.priority = 0;
     }
-    num_roots_for_space_.resize (1);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    num_roots_for_space_[0] = 1;
-    distance_invalid = true;
-    positions_invalid = true;
+    अंक_roots_for_space.resize (1);
+    TRY (graph_result_t<शून्य>::from (अंक_roots_for_space, ALLOCATION_FAILURE));
+    अंक_roots_for_space[0] = 1;
+    distance_invalid = सत्य;
+    positions_invalid = सत्य;
 
     hb_set_t visited;
     hb_set_t roots;
@@ -958,46 +958,46 @@ public:
     // subgraphs from being connected via nodes not in those subgraphs.
     visited.invert ();
 
-    if (!roots) return Ok(false);
+    यदि (!roots) प्रत्यागम Ok(असत्य);
 
-    while (roots)
+    यावत् (roots)
     {
-      uint32_t next = HB_SET_VALUE_INVALID;
-      TRY (graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-      if (!roots.next (&next)) break;
+      uint32_t next = HB_SET_मूल्य_INVALID;
+      TRY (graph_result_t<शून्य>::from (roots, ALLOCATION_FAILURE));
+      यदि (!roots.next (&next)) भङ्ग;
 
       hb_set_t connected_roots;
       TRY (find_connected_nodes (next, roots, visited, connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      TRY (graph_result_t<शून्य>::from (connected_roots, ALLOCATION_FAILURE));
 
       TRY (isolate_subgraph (connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      TRY (graph_result_t<शून्य>::from (connected_roots, ALLOCATION_FAILURE));
 
-      unsigned next_space = this->next_space ();
-      if (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
+      अचिन्हित next_space = एतत्->next_space ();
+      यदि (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
                  next_space);
-        return Err(LIMIT_EXCEEDED);
+        प्रत्यागम Err(LIMIT_EXCEEDED);
       }
-      num_roots_for_space_.push (0);
-      TRY(graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
+      अंक_roots_for_space.push (0);
+      TRY(graph_result_t<शून्य>::from (अंक_roots_for_space, ALLOCATION_FAILURE));
 
-      for (unsigned root : connected_roots)
+      प्रति (अचिन्हित मूल : connected_roots)
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", root, next_space);
-        vertices_[root].space = next_space;
-        num_roots_for_space_[next_space] = num_roots_for_space_[next_space] + 1;
-        distance_invalid = true;
-        positions_invalid = true;
+        DEBUG_संदेश (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", मूल, next_space);
+        vertices_[मूल].space = next_space;
+        अंक_roots_for_space[next_space] = अंक_roots_for_space[next_space] + 1;
+        distance_invalid = सत्य;
+        positions_invalid = सत्य;
       }
 
       // TODO(grieger): special case for GSUB/GPOS use extension promotions to move 16 bit space
       //                into the 32 bit space as needed, instead of using isolation.
     }
 
-    return Ok(true);
+    प्रत्यागम Ok(सत्य);
   }
 
   /*
@@ -1007,7 +1007,7 @@ public:
    *
    * Indices stored in roots will be updated if any of the roots are duplicated to new indices.
    */
-  graph_result_t<bool> isolate_subgraph (hb_set_t& roots)
+  graph_result_t<तार्किक> isolate_subgraph (hb_set_t& roots)
   {
     TRY(update_parents ());
     hb_map_t subgraph;
@@ -1015,63 +1015,63 @@ public:
     // incoming edges to root_idx should be all 32 bit in length so we don't need to de-dup these
     // set the subgraph incoming edge count to match all of root_idx's incoming edges
     hb_set_t parents;
-    for (unsigned root_idx : roots)
+    प्रति (अचिन्हित मूल_idx : roots)
     {
-      if (unlikely (root_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      subgraph.set (root_idx, wide_parents (root_idx, parents));
+      यदि (unlikely (मूल_idx >= vertices_.length))
+        प्रत्यागम Err(OUT_OF_BOUNDS);
+      subgraph.set (मूल_idx, wide_parents (मूल_idx, parents));
     }
-    for (unsigned root_idx : roots)
+    प्रति (अचिन्हित मूल_idx : roots)
     {
-      TRY (find_subgraph (root_idx, subgraph));
+      TRY (find_subgraph (मूल_idx, subgraph));
     }
-    TRY (graph_result_t<void>::from (subgraph, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (subgraph, ALLOCATION_FAILURE));
 
     hb_map_t index_map;
-    bool made_changes = false;
-    for (auto entry : subgraph.iter ())
+    तार्किक made_changes = असत्य;
+    प्रति (स्वतः entry : subgraph.iter ())
     {
-      assert (entry.first < vertices_.length);
-      const auto& node = vertices_[entry.first];
-      unsigned subgraph_incoming_edges = entry.second;
+      प्रतिज्ञा (entry.first < vertices_.length);
+      ध्रुव स्वतः& node = vertices_[entry.first];
+      अचिन्हित subgraph_incoming_edges = entry.second;
 
-      if (subgraph_incoming_edges < node.incoming_edges ())
+      यदि (subgraph_incoming_edges < node.incoming_edges ())
       {
         // Only  de-dup objects with incoming links from outside the subgraph.
-        made_changes = true;
+        made_changes = सत्य;
         TRY (duplicate_subgraph (entry.first, index_map));
       }
     }
 
-    TRY (graph_result_t<void>::from (index_map, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (index_map, ALLOCATION_FAILURE));
 
-    if (!made_changes)
-      return Ok(false);
+    यदि (!made_changes)
+      प्रत्यागम Ok(असत्य);
 
-    auto new_subgraph =
-        + subgraph.keys ()
-        | hb_map([&] (uint32_t node_idx) {
-          const uint32_t *v;
-          if (index_map.has (node_idx, &v)) return *v;
-          return node_idx;
+    स्वतः new_subgraph =
+        + subgraph.कुंजियाँ ()
+        | hb_map([&] (uint32_t गाँठ_idx) {
+          ध्रुव uint32_t *v;
+          यदि (index_map.has (गाँठ_idx, &v)) प्रत्यागम *v;
+          प्रत्यागम गाँठ_idx;
         })
         ;
 
     TRY(remap_obj_indices (index_map, new_subgraph));
-    TRY(remap_obj_indices (index_map, parents.iter (), true));
+    TRY(remap_obj_indices (index_map, parents.iter (), सत्य));
 
     // Update roots set with new indices as needed.
-    for (auto next : roots)
+    प्रति (स्वतः next : roots)
     {
-      const uint32_t *v;
-      if (index_map.has (next, &v))
+      ध्रुव uint32_t *v;
+      यदि (index_map.has (next, &v))
       {
         roots.del (next);
         roots.add (*v);
       }
     }
 
-    return Ok(true);
+    प्रत्यागम Ok(सत्य);
   }
 
   // BFS graph traversal starting at start_idx.
@@ -1087,143 +1087,143 @@ public:
   //
   // This traversal does not use a visited set internally, it is the responsibility of visit_edge
   // to track and filter visited nodes if required for the particular traversal.
-  template <typename VisitEdgeFunc>
-  graph_result_t<void> traverse_directed_bfs (unsigned start_idx, VisitEdgeFunc&& visit_edge)
+  ढाँचा <typename VisitEdgeFunc>
+  graph_result_t<शून्य> traverse_directed_bfs (अचिन्हित start_idx, VisitEdgeFunc&& visit_edge)
   {
-    if (unlikely (start_idx >= vertices_.length))
+    यदि (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "traverse_directed_bfs: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      प्रत्यागम Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a queue for BFS.
     ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    if (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
-      return Ok();
+    यदि (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
+      प्रत्यागम Ok();
 
-    unsigned head = 0;
-    unsigned tail = 0;
-    auto& queue = ordering_scratch_;
+    अचिन्हित head = 0;
+    अचिन्हित tail = 0;
+    स्वतः& queue = ordering_scratch_;
     queue[tail++] = start_idx;
 
-    unsigned depth = 0;
-    while (head < tail)
+    अचिन्हित depth = 0;
+    यावत् (head < tail)
     {
-      unsigned level_end = tail;
-      while (head < level_end)
+      अचिन्हित level_end = tail;
+      यावत् (head < level_end)
       {
-        unsigned node_idx = queue[head++];
-        const auto& v = vertices_[node_idx];
+        अचिन्हित गाँठ_idx = queue[head++];
+        ध्रुव स्वतः& v = vertices_[गाँठ_idx];
 
-        unsigned num_real = v.obj().real_links.length;
-        unsigned total_links = num_real + v.obj().virtual_links.length;
+        अचिन्हित अंक_real = v.obj().real_links.length;
+        अचिन्हित total_links = अंक_real + v.obj().virtual_links.length;
 
-        for (unsigned i = 0; i < total_links; i++)
+        प्रति (अचिन्हित i = 0; i < total_links; i++)
         {
           // vertices_ may have re-alloc'd inside an op() call, so reassign the v ref.
-          const auto& v = vertices_[node_idx];
-          const auto& link = (i < num_real)
+          ध्रुव स्वतः& v = vertices_[गाँठ_idx];
+          ध्रुव स्वतः& link = (i < अंक_real)
                              ? v.obj().real_links[i]
-                             : v.obj().virtual_links[i - num_real];
-          unsigned child_idx = link.objidx;
+                             : v.obj().virtual_links[i - अंक_real];
+          अचिन्हित child_idx = link.objidx;
 
-          if (!visit_edge (node_idx, &link, child_idx, depth + 1))
-            continue;
+          यदि (!visit_edge (गाँठ_idx, &link, child_idx, depth + 1))
+            अनुवर्त;
 
-          if (unlikely (tail >= queue.length))
-            return Err(CYCLE_DETECTED);
+          यदि (unlikely (tail >= queue.length))
+            प्रत्यागम Err(CYCLE_DETECTED);
 
           queue[tail++] = child_idx;
         }
       }
       depth++;
     }
-    return Ok();
+    प्रत्यागम Ok();
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_map_t& subgraph)
+  graph_result_t<शून्य> find_subgraph (अचिन्हित गाँठ_idx, hb_map_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (depth == 0) return true;
-      hb_codepoint_t *count;
-      if (subgraph.has (child, &count))
+    प्रत्यागम traverse_directed_bfs (गाँठ_idx, [&] (
+      अचिन्हित parent,
+      ध्रुव hb_serialize_context_t::object_t::link_t* link,
+      अचिन्हित child,
+      अचिन्हित depth) {
+      यदि (depth == 0) प्रत्यागम सत्य;
+      hb_codepoint_t *गिनती;
+      यदि (subgraph.has (child, &गिनती))
       {
-        (*count)++;
-        return false;
+        (*गिनती)++;
+        प्रत्यागम असत्य;
       }
       subgraph.set (child, 1);
-      return true;
+      प्रत्यागम सत्य;
     });
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_set_t& subgraph)
+  graph_result_t<शून्य> find_subgraph (अचिन्हित गाँठ_idx, hb_set_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (subgraph.has (child)) return false;
+    प्रत्यागम traverse_directed_bfs (गाँठ_idx, [&] (
+      अचिन्हित parent,
+      ध्रुव hb_serialize_context_t::object_t::link_t* link,
+      अचिन्हित child,
+      अचिन्हित depth) {
+      यदि (subgraph.has (child)) प्रत्यागम असत्य;
       subgraph.add (child);
-      return true;
+      प्रत्यागम सत्य;
     });
   }
 
-  graph_result_t<size_t> find_subgraph_size (unsigned node_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
+  graph_result_t<माप_प्रकार> find_subgraph_size (अचिन्हित गाँठ_idx, hb_set_t& subgraph, अचिन्हित max_depth = HB_GRAPH_INVALID)
   {
-    size_t size = 0;
-    TRY (traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned depth) {
-      if (subgraph.has (child)) return false;
+    माप_प्रकार size = 0;
+    TRY (traverse_directed_bfs (गाँठ_idx, [&] (
+      अचिन्हित parent,
+      ध्रुव hb_serialize_context_t::object_t::link_t* link,
+      अचिन्हित child,
+      अचिन्हित depth) {
+      यदि (subgraph.has (child)) प्रत्यागम असत्य;
       subgraph.add (child);
 
-      const auto& o = vertices_[child].obj();
+      ध्रुव स्वतः& o = vertices_[child].obj();
       size += o.tail - o.head;
-      return depth < max_depth;
+      प्रत्यागम depth < max_depth;
     }));
-    return Ok(size);
+    प्रत्यागम Ok(size);
   }
 
   /*
    * Finds the topmost children of 32bit offsets in the subgraph starting
    * at node_idx. Found indices are placed into 'found'.
    */
-  graph_result_t<void> find_32bit_roots (unsigned node_idx, hb_set_t& found)
+  graph_result_t<शून्य> find_32bit_roots (अचिन्हित गाँठ_idx, hb_set_t& found)
   {
     // Note: this specifically requires a BFS based traversal to ensure we don't recurse through
     // a node that is accessible via both 32bit and non-32 bit links.
     hb_set_t visited;
-    return traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned _) {
+    प्रत्यागम traverse_directed_bfs (गाँठ_idx, [&] (
+      अचिन्हित parent,
+      ध्रुव hb_serialize_context_t::object_t::link_t* link,
+      अचिन्हित child,
+      अचिन्हित _) {
 
-      if (link && found.has(parent))
+      यदि (link && found.has(parent))
         // Don't traverse from something that's already marked as a root.
-        return false;
+        प्रत्यागम असत्य;
 
-      if (link && !link->is_signed && link->width == 4)
+      यदि (link && !link->is_signed && link->width == 4)
       {
         found.add (link->objidx);
         visited.add (link->objidx);
-        return false;
+        प्रत्यागम असत्य;
       }
 
-      if (visited.has (child)) return false;
+      यदि (visited.has (child)) प्रत्यागम असत्य;
       visited.add (child);
-      return true;
+      प्रत्यागम सत्य;
     });
   }
 
@@ -1233,36 +1233,36 @@ public:
    *
    * Returns the id of the child node that was moved.
    */
-  template<typename O>
-  graph_result_t<unsigned> move_child (unsigned old_parent_idx,
-                                       const O* old_offset,
-                                       unsigned new_parent_idx,
-                                       const O* new_offset)
+  ढाँचा<typename O>
+  graph_result_t<अचिन्हित> move_child (अचिन्हित old_parent_idx,
+                                       ध्रुव O* old_offset,
+                                       अचिन्हित new_parent_idx,
+                                       ध्रुव O* new_offset)
   {
-    distance_invalid = true;
-    positions_invalid = true;
+    distance_invalid = सत्य;
+    positions_invalid = सत्य;
 
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    यदि (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    auto& old_v = vertices_[old_parent_idx];
-    auto& new_v = vertices_[new_parent_idx];
+    स्वतः& old_v = vertices_[old_parent_idx];
+    स्वतः& new_v = vertices_[new_parent_idx];
 
-    TRY_ASSIGN (unsigned child_id, index_for_offset (old_parent_idx,
+    TRY_ASSIGN (अचिन्हित child_id, index_for_offset (old_parent_idx,
                                                      old_offset));
-    if (unlikely (child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (child_id >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    TRY(new_v.add_real_link(O::static_size, child_id, (const char*) new_offset - (const char*) new_v.obj().head));
+    TRY(new_v.add_real_link(O::static_size, child_id, (ध्रुव वर्ण*) new_offset - (ध्रुव वर्ण*) new_v.obj().head));
 
-    auto& child = vertices_[child_id];
-    TRY(child.add_parent (new_parent_idx, false));
+    स्वतः& child = vertices_[child_id];
+    TRY(child.add_parent (new_parent_idx, असत्य));
 
     old_v.remove_real_link_unordered (child_id, old_offset);
     child.remove_parent (old_parent_idx);
 
-    return Ok(child_id);
+    प्रत्यागम Ok(child_id);
   }
 
   /*
@@ -1271,47 +1271,47 @@ public:
    * to the new parent. Links are placed serially in the new
    * parent starting at new_pos_start.
    */
-  template<typename O>
-  graph_result_t<void> move_children (unsigned old_parent_idx,
-                                      unsigned old_pos_start,
-                                      unsigned old_pos_end,
-                                      unsigned new_parent_idx,
-                                      unsigned new_pos_start)
+  ढाँचा<typename O>
+  graph_result_t<शून्य> move_children (अचिन्हित old_parent_idx,
+                                      अचिन्हित old_pos_start,
+                                      अचिन्हित old_pos_end,
+                                      अचिन्हित new_parent_idx,
+                                      अचिन्हित new_pos_start)
   {
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    यदि (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    distance_invalid = true;
-    positions_invalid = true;
+    distance_invalid = सत्य;
+    positions_invalid = सत्य;
 
-    auto& old_v = vertices_[old_parent_idx];
-    auto& new_v = vertices_[new_parent_idx];
+    स्वतः& old_v = vertices_[old_parent_idx];
+    स्वतः& new_v = vertices_[new_parent_idx];
 
     hb_vector_t<hb_serialize_context_t::object_t::link_t> old_links;
-    for (const auto& l : old_v.obj().real_links)
+    प्रति (ध्रुव स्वतः& l : old_v.obj().real_links)
     {
-      if (l.position < old_pos_start || l.position >= old_pos_end)
+      यदि (l.position < old_pos_start || l.position >= old_pos_end)
       {
         old_links.push (l);
-        continue;
+        अनुवर्त;
       }
 
-      unsigned array_pos = l.position - old_pos_start;
+      अचिन्हित array_pos = l.position - old_pos_start;
 
-      unsigned child_id = l.objidx;
-      if (unlikely (child_id >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      अचिन्हित child_id = l.objidx;
+      यदि (unlikely (child_id >= vertices_.length))
+        प्रत्यागम Err(OUT_OF_BOUNDS);
 
       TRY(new_v.add_real_link(O::static_size, child_id, new_pos_start + array_pos));
 
-      auto& child = vertices_[child_id];
-      TRY(child.add_parent (new_parent_idx, false));
+      स्वतः& child = vertices_[child_id];
+      TRY(child.add_parent (new_parent_idx, असत्य));
       child.remove_parent (old_parent_idx);
     }
 
-    TRY (graph_result_t<void>::from (old_links, ALLOCATION_FAILURE));
-    return old_v.set_real_links(std::move (old_links));
+    TRY (graph_result_t<शून्य>::from (old_links, ALLOCATION_FAILURE));
+    प्रत्यागम old_v.set_real_links(std::move (old_links));
   }
 
   /*
@@ -1319,72 +1319,72 @@ public:
    * links. index_map is updated with mappings from old id to new id. If a duplication has already
    * been performed for a given index, then it will be skipped.
    */
-  graph_result_t<void> duplicate_subgraph (unsigned node_idx, hb_map_t& index_map)
+  graph_result_t<शून्य> duplicate_subgraph (अचिन्हित गाँठ_idx, hb_map_t& index_map)
   {
-    graph_result_t<void> result = Ok();
-    TRY (traverse_directed_bfs (node_idx, [&] (
-      unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
-      unsigned child,
-      unsigned _) {
-      if (result.is_err () || index_map.has (child)) return false;
-      auto r = duplicate (child);
-      if (unlikely (r.is_err ()))
+    graph_result_t<शून्य> result = Ok();
+    TRY (traverse_directed_bfs (गाँठ_idx, [&] (
+      अचिन्हित parent,
+      ध्रुव hb_serialize_context_t::object_t::link_t* link,
+      अचिन्हित child,
+      अचिन्हित _) {
+      यदि (result.is_err () || index_map.has (child)) प्रत्यागम असत्य;
+      स्वतः r = duplicate (child);
+      यदि (unlikely (r.is_err ()))
       {
         result = Err(r.error ());
-        return false;
+        प्रत्यागम असत्य;
       }
       index_map.set (child, *r);
-      return true;
+      प्रत्यागम सत्य;
     }));
 
-    return graph_result_t<void>::from(index_map, ALLOCATION_FAILURE);
+    प्रत्यागम graph_result_t<शून्य>::from(index_map, ALLOCATION_FAILURE);
   }
 
   /*
    * Creates a copy of node_idx and returns it's new index.
    */
-  graph_result_t<unsigned> duplicate (unsigned node_idx, bool copy_table = false)
+  graph_result_t<अचिन्हित> duplicate (अचिन्हित गाँठ_idx, तार्किक copy_table = असत्य)
   {
-    if (unlikely (node_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (गाँठ_idx >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    यदि (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "duplicating node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      प्रत्यागम Err(LIMIT_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = सत्य;
+    distance_invalid = सत्य;
 
-    auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    स्वतः* clone = vertices_.push ();
+    TRY (graph_result_t<शून्य>::from (vertices_, ALLOCATION_FAILURE));
 
-    unsigned clone_idx = vertices_.length - 1;
+    अचिन्हित clone_idx = vertices_.length - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (ordering_, ALLOCATION_FAILURE));
 
-    auto& child = vertices_[node_idx];
+    स्वतः& child = vertices_[गाँठ_idx];
 
-    unsigned table_size = child.obj().tail - child.obj().head;
-    if (copy_table && table_size)
+    अचिन्हित table_size = child.obj().tail - child.obj().head;
+    यदि (copy_table && table_size)
     {
-      char* buffer = (char*) hb_malloc (table_size);
-      if (unlikely (!buffer))
-        return Err(ALLOCATION_FAILURE);
-      auto res = add_buffer (buffer);
-      if (unlikely (res.is_err ()))
+      वर्ण* buffer = (वर्ण*) hb_malloc (table_size);
+      यदि (unlikely (!buffer))
+        प्रत्यागम Err(ALLOCATION_FAILURE);
+      स्वतः res = add_buffer (buffer);
+      यदि (unlikely (res.is_err ()))
       {
         hb_free (buffer);
-        return Err(res.error ());
+        प्रत्यागम Err(res.error ());
       }
       hb_memcpy (buffer, child.obj().head, table_size);
       clone->set_buffer(buffer, buffer + table_size);
     }
-    else
+    अन्यथा
     {
       clone->set_buffer(child.obj().head, child.obj().tail);
     }
@@ -1392,19 +1392,19 @@ public:
     clone->space = child.space;
     clone->reset_parents ();
 
-    for (const auto& l : child.obj().real_links)
+    प्रति (ध्रुव स्वतः& l : child.obj().real_links)
     {
       TRY(clone->add_real_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, false));
+      TRY(vertices_[l.objidx].add_parent (clone_idx, असत्य));
     }
 
-    for (const auto& l : child.obj().virtual_links)
+    प्रति (ध्रुव स्वतः& l : child.obj().virtual_links)
     {
       TRY(clone->add_virtual_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, true));
+      TRY(vertices_[l.objidx].add_parent (clone_idx, सत्य));
     }
 
-    return Ok(clone_idx);
+    प्रत्यागम Ok(clone_idx);
   }
 
   /*
@@ -1417,17 +1417,17 @@ public:
    * If the child_idx only has incoming edges from parent_idx,
    * duplication isn't possible and this will return an error.
    */
-  graph_result_t<unsigned> duplicate (unsigned parent_idx, unsigned child_idx, bool copy_table = false)
+  graph_result_t<अचिन्हित> duplicate (अचिन्हित parent_idx, अचिन्हित child_idx, तार्किक copy_table = असत्य)
   {
-    if (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
-    unsigned links_to_child = child.incoming_edges_from_parent (parent_idx);
+    ध्रुव स्वतः& child = vertices_[child_idx];
+    अचिन्हित links_to_child = child.incoming_edges_from_parent (parent_idx);
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    यदि (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1436,31 +1436,31 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
+      DEBUG_संदेश (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
                  parent_idx, child_idx);
-      return Err(INVALID_ARGUMENT);
+      प्रत्यागम Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
+    DEBUG_संदेश (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
                parent_idx, child_idx);
 
-    TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx, copy_table));
+    TRY_ASSIGN (अचिन्हित clone_idx, duplicate (child_idx, copy_table));
     // duplicate shifts the root node idx, so if parent_idx was root update it.
-    if (parent_idx == clone_idx) parent_idx++;
+    यदि (parent_idx == clone_idx) parent_idx++;
 
-    auto& parent = vertices_[parent_idx];
-    unsigned count = 0;
-    unsigned num_real = parent.obj().real_links.length;
-    for (auto& l : parent.all_links_writer ())
+    स्वतः& parent = vertices_[parent_idx];
+    अचिन्हित गिनती = 0;
+    अचिन्हित अंक_real = parent.obj().real_links.length;
+    प्रति (स्वतः& l : parent.all_links_writer ())
     {
-      count++;
-      if (l.objidx != child_idx)
-        continue;
+      गिनती++;
+      यदि (l.objidx != child_idx)
+        अनुवर्त;
 
-      TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+      TRY(reassign_link (l, parent_idx, clone_idx, गिनती > अंक_real));
     }
 
-    return Ok(clone_idx);
+    प्रत्यागम Ok(clone_idx);
   }
 
   /*
@@ -1474,27 +1474,27 @@ public:
    * duplication isn't possible or duplication fails and this will
    * return an error.
    */
-  graph_result_t<unsigned> duplicate (const hb_set_t* parents, unsigned child_idx)
+  graph_result_t<अचिन्हित> duplicate (ध्रुव hb_set_t* parents, अचिन्हित child_idx)
   {
-    if (unlikely (!parents || parents->is_empty ()))
-      return Err(INVALID_ARGUMENT);
+    यदि (unlikely (!parents || parents->is_empty ()))
+      प्रत्यागम Err(INVALID_ARGUMENT);
 
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (child_idx >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
-    unsigned links_to_child = 0;
-    unsigned last_parent = parents->get_max ();
-    unsigned first_parent = parents->get_min ();
-    for (unsigned parent_idx : *parents) {
-      if (unlikely (parent_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+    ध्रुव स्वतः& child = vertices_[child_idx];
+    अचिन्हित links_to_child = 0;
+    अचिन्हित last_parent = parents->get_max ();
+    अचिन्हित first_parent = parents->get_min ();
+    प्रति (अचिन्हित parent_idx : *parents) {
+      यदि (unlikely (parent_idx >= vertices_.length))
+        प्रत्यागम Err(OUT_OF_BOUNDS);
       links_to_child += child.incoming_edges_from_parent (parent_idx);
     }
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    यदि (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1503,62 +1503,62 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
-      return Err(INVALID_ARGUMENT);
+      DEBUG_संदेश (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+      प्रत्यागम Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+    DEBUG_संदेश (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
 
-    TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx));
+    TRY_ASSIGN (अचिन्हित clone_idx, duplicate (child_idx));
 
-    for (unsigned parent_idx : *parents) {
+    प्रति (अचिन्हित parent_idx : *parents) {
       // duplicate shifts the root node idx, so if parent_idx was root update it.
-      if (parent_idx == clone_idx) parent_idx++;
-      auto& parent = vertices_[parent_idx];
-      unsigned count = 0;
-      unsigned num_real = parent.obj().real_links.length;
-      for (auto& l : parent.all_links_writer ())
+      यदि (parent_idx == clone_idx) parent_idx++;
+      स्वतः& parent = vertices_[parent_idx];
+      अचिन्हित गिनती = 0;
+      अचिन्हित अंक_real = parent.obj().real_links.length;
+      प्रति (स्वतः& l : parent.all_links_writer ())
       {
-        count++;
-        if (l.objidx != child_idx)
-          continue;
+        गिनती++;
+        यदि (l.objidx != child_idx)
+          अनुवर्त;
 
-        TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+        TRY(reassign_link (l, parent_idx, clone_idx, गिनती > अंक_real));
       }
     }
 
-    return Ok(clone_idx);
+    प्रत्यागम Ok(clone_idx);
   }
 
 
   /*
    * Adds a new node to the graph, not connected to anything.
    */
-  graph_result_t<unsigned> new_node (char* head, char* tail)
+  graph_result_t<अचिन्हित> new_गाँठ (वर्ण* head, वर्ण* tail)
   {
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    यदि (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "creating new node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      प्रत्यागम Err(LIMIT_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = सत्य;
+    distance_invalid = सत्य;
 
-    auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    स्वतः* clone = vertices_.push ();
+    TRY (graph_result_t<शून्य>::from (vertices_, ALLOCATION_FAILURE));
 
-    unsigned clone_idx = vertices_.length - 1;
+    अचिन्हित clone_idx = vertices_.length - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (ordering_, ALLOCATION_FAILURE));
 
     clone->set_buffer (head, tail);
     clone->distance = 0;
     clone->space = 0;
 
-    return Ok(clone_idx);
+    प्रत्यागम Ok(clone_idx);
   }
 
   /*
@@ -1567,90 +1567,90 @@ public:
    * Returns the index of the newly created child.
    *
    */
-  graph_result_t<unsigned> remap_child (unsigned parent_idx, unsigned old_child_idx)
+  graph_result_t<अचिन्हित> remap_child (अचिन्हित parent_idx, अचिन्हित old_child_idx)
   {
-    if (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    यदि (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
+      प्रत्यागम Err(OUT_OF_BOUNDS);
 
-    TRY_ASSIGN (unsigned new_child_idx, duplicate (old_child_idx));
+    TRY_ASSIGN (अचिन्हित new_child_idx, duplicate (old_child_idx));
 
-    auto& parent = vertices_[parent_idx];
-    for (auto& l : parent.real_links_writer ())
+    स्वतः& parent = vertices_[parent_idx];
+    प्रति (स्वतः& l : parent.real_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, false));
+      यदि (l.objidx != old_child_idx)
+        अनुवर्त;
+      TRY(reassign_link (l, parent_idx, new_child_idx, असत्य));
     }
 
-    for (auto& l : parent.virtual_links_writer ())
+    प्रति (स्वतः& l : parent.virtual_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, true));
+      यदि (l.objidx != old_child_idx)
+        अनुवर्त;
+      TRY(reassign_link (l, parent_idx, new_child_idx, सत्य));
     }
-    return Ok(new_child_idx);
+    प्रत्यागम Ok(new_child_idx);
   }
 
   /*
    * Raises the sorting priority of all children.
    */
-  graph_result_t<bool> raise_childrens_priority (unsigned parent_idx)
+  graph_result_t<तार्किक> raise_childrens_priority (अचिन्हित parent_idx)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
+    DEBUG_संदेश (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
                parent_idx);
     // This operation doesn't change ordering until a sort is run, so no need
     // to invalidate positions. It does not change graph structure so no need
     // to update distances or edge counts.
-    if (unlikely (parent_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    bool made_change = false;
-    for (auto& l : vertices_[parent_idx].all_links_writer ())
+    यदि (unlikely (parent_idx >= vertices_.length)) प्रत्यागम Err(OUT_OF_BOUNDS);
+    तार्किक made_change = असत्य;
+    प्रति (स्वतः& l : vertices_[parent_idx].all_links_writer ())
       made_change |= vertices_[l.objidx].raise_priority ();
-    return Ok(made_change);
+    प्रत्यागम Ok(made_change);
   }
 
-  graph_result_t<void> is_fully_connected ()
+  graph_result_t<शून्य> is_fully_connected ()
   {
     TRY(update_parents());
 
-    if (unlikely (root().incoming_edges ()))
+    यदि (unlikely (मूल().incoming_edges ()))
       // Root cannot have parents.
-      return Err(ORPHANED_NODES);
+      प्रत्यागम Err(ORPHANED_NODES);
 
-    for (unsigned i = 0; i < root_idx (); i++)
+    प्रति (अचिन्हित i = 0; i < मूल_idx (); i++)
     {
-      if (unlikely (!vertices_[i].incoming_edges ()))
-        return Err(ORPHANED_NODES);
+      यदि (unlikely (!vertices_[i].incoming_edges ()))
+        प्रत्यागम Err(ORPHANED_NODES);
     }
-    return Ok();
+    प्रत्यागम Ok();
   }
 
-#if 0
+#यदि 0
   /*
    * Saves the current graph to a packed binary format which the repacker fuzzer takes
    * as a seed.
    */
-  void save_fuzzer_seed (hb_tag_t tag) const
+  शून्य save_fuzzer_seed (hb_tag_t tag) ध्रुव
   {
-    FILE* f = fopen ("./repacker_fuzzer_seed", "w");
-    fwrite ((void*) &tag, sizeof (tag), 1, f);
+    खाता* f = ख_खोलो ("./repacker_fuzzer_seed", "w");
+    ख_डालो ((शून्य*) &tag, परिमाण (tag), 1, f);
 
-    uint16_t num_objects = vertices_.length;
-    fwrite ((void*) &num_objects, sizeof (num_objects), 1, f);
+    uint16_t अंक_objects = vertices_.length;
+    ख_डालो ((शून्य*) &अंक_objects, परिमाण (अंक_objects), 1, f);
 
-    for (const auto& v : vertices_)
+    प्रति (ध्रुव स्वतः& v : vertices_)
     {
       uint16_t blob_size = v.table_size ();
-      fwrite ((void*) &blob_size, sizeof (blob_size), 1, f);
-      fwrite ((const void*) v.obj.head, blob_size, 1, f);
+      ख_डालो ((शून्य*) &blob_size, परिमाण (blob_size), 1, f);
+      ख_डालो ((ध्रुव शून्य*) v.obj.head, blob_size, 1, f);
     }
 
-    uint16_t link_count = 0;
-    for (const auto& v : vertices_)
-      link_count += v.obj.real_links.length;
+    uint16_t link_गिनती = 0;
+    प्रति (ध्रुव स्वतः& v : vertices_)
+      link_गिनती += v.obj.real_links.length;
 
-    fwrite ((void*) &link_count, sizeof (link_count), 1, f);
+    ख_डालो ((शून्य*) &link_गिनती, परिमाण (link_गिनती), 1, f);
 
-    typedef struct
+    प्रकारनिर्देश संरचना
     {
       uint16_t parent;
       uint16_t child;
@@ -1658,197 +1658,197 @@ public:
       uint8_t width;
     } link_t;
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    प्रति (अचिन्हित i = 0; i < vertices_.length; i++)
     {
-      for (const auto& l : vertices_[i].obj.real_links)
+      प्रति (ध्रुव स्वतः& l : vertices_[i].obj.real_links)
       {
         link_t link {
           (uint16_t) i, (uint16_t) l.objidx,
           (uint16_t) l.position, (uint8_t) l.width
         };
-        fwrite ((void*) &link, sizeof (link), 1, f);
+        ख_डालो ((शून्य*) &link, परिमाण (link), 1, f);
       }
     }
 
-    fclose (f);
+    ख_बंद (f);
   }
 #endif
 
-  unsigned num_roots_for_space (unsigned space) const
+  अचिन्हित अंक_roots_for_space_2 (अचिन्हित space) ध्रुव
   {
-    return num_roots_for_space_[space];
+    प्रत्यागम अंक_roots_for_space[space];
   }
 
-  unsigned next_space () const
+  अचिन्हित next_space () ध्रुव
   {
-    return num_roots_for_space_.length;
+    प्रत्यागम अंक_roots_for_space.length;
   }
 
-  graph_result_t<void> move_to_new_space (const hb_set_t& indices)
+  graph_result_t<शून्य> move_to_new_space (ध्रुव hb_set_t& indices)
   {
-    if (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
+    यदि (unlikely (अंक_roots_for_space.length >= HB_REPACKER_MAX_SPACES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "move_to_new_space: num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
-                 num_roots_for_space_.length);
-      return Err(LIMIT_EXCEEDED);
+                 अंक_roots_for_space.length);
+      प्रत्यागम Err(LIMIT_EXCEEDED);
     }
-    num_roots_for_space_.push (0);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    unsigned new_space = num_roots_for_space_.length - 1;
+    अंक_roots_for_space.push (0);
+    TRY (graph_result_t<शून्य>::from (अंक_roots_for_space, ALLOCATION_FAILURE));
+    अचिन्हित new_space = अंक_roots_for_space.length - 1;
 
-    for (unsigned index : indices) {
-      if (unlikely (index >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      auto& node = vertices_[index];
-      num_roots_for_space_[node.space] = num_roots_for_space_[node.space] - 1;
-      num_roots_for_space_[new_space] = num_roots_for_space_[new_space] + 1;
+    प्रति (अचिन्हित index : indices) {
+      यदि (unlikely (index >= vertices_.length))
+        प्रत्यागम Err(OUT_OF_BOUNDS);
+      स्वतः& node = vertices_[index];
+      अंक_roots_for_space[node.space] = अंक_roots_for_space[node.space] - 1;
+      अंक_roots_for_space[new_space] = अंक_roots_for_space[new_space] + 1;
       node.space = new_space;
-      distance_invalid = true;
-      positions_invalid = true;
+      distance_invalid = सत्य;
+      positions_invalid = सत्य;
     }
-    return Ok();
+    प्रत्यागम Ok();
   }
 
-  unsigned space_for (unsigned index, unsigned* root = nullptr) const
+  अचिन्हित space_for (अचिन्हित index, अचिन्हित* मूल = nullptr) ध्रुव
   {
-    while (true)
+    यावत् (सत्य)
     {
-      assert (index < vertices_.length);
-      const auto& node = vertices_[index];
-      if (node.space)
+      प्रतिज्ञा (index < vertices_.length);
+      ध्रुव स्वतः& node = vertices_[index];
+      यदि (node.space)
       {
-        if (root != nullptr)
-          *root = index;
-        return node.space;
+        यदि (मूल != nullptr)
+          *मूल = index;
+        प्रत्यागम node.space;
       }
 
-      if (!node.incoming_edges ())
+      यदि (!node.incoming_edges ())
       {
-        if (root)
-          *root = index;
-        return 0;
+        यदि (मूल)
+          *मूल = index;
+        प्रत्यागम 0;
       }
 
       index = *node.parents_iter ();
     }
   }
 
-  size_t total_size_in_bytes () const {
-    size_t total_size = 0;
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++) {
-      size_t size = vertices_.arrayZ[i].table_size ();
+  माप_प्रकार total_size_in_bytes () ध्रुव {
+    माप_प्रकार total_size = 0;
+    अचिन्हित गिनती = vertices_.length;
+    प्रति (अचिन्हित i = 0; i < गिनती; i++) {
+      माप_प्रकार size = vertices_.arrayZ[i].table_size ();
       total_size += size;
     }
-    return total_size;
+    प्रत्यागम total_size;
   }
 
 
- private:
+ गुप्त:
 
-  void print_orphaned_nodes ()
+  शून्य print_orphaned_nodes ()
   {
-    if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+    यदि (!DEBUG_ENABLED(SUBSET_REPACK)) प्रत्यागम;
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
+    DEBUG_संदेश (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
 
-    parents_invalid = true;
-    (void) update_parents();
+    parents_invalid = सत्य;
+    (शून्य) update_parents();
 
-    if (root().incoming_edges ()) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
+    यदि (मूल().incoming_edges ()) {
+      DEBUG_संदेश (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
     }
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    प्रति (अचिन्हित i = 0; i < vertices_.length; i++)
     {
-      const auto& v = vertices_[i];
-      if (!v.incoming_edges ())
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
+      ध्रुव स्वतः& v = vertices_[i];
+      यदि (!v.incoming_edges ())
+        DEBUG_संदेश (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
     }
   }
 
   /*
    * Returns the numbers of incoming edges that are 24 or 32 bits wide.
    */
-  unsigned wide_parents (unsigned node_idx, hb_set_t& parents) const
+  अचिन्हित wide_parents (अचिन्हित गाँठ_idx, hb_set_t& parents) ध्रुव
   {
-    unsigned count = 0;
-    for (unsigned p : vertices_[node_idx].parents_iter ())
+    अचिन्हित गिनती = 0;
+    प्रति (अचिन्हित p : vertices_[गाँठ_idx].parents_iter ())
     {
       // Only real links can be wide
-      for (const auto& l : vertices_[p].obj().real_links)
+      प्रति (ध्रुव स्वतः& l : vertices_[p].obj().real_links)
       {
-        if (l.objidx == node_idx
+        यदि (l.objidx == गाँठ_idx
             && (l.width == 3 || l.width == 4)
             && !l.is_signed)
         {
-          count++;
+          गिनती++;
           parents.add (p);
         }
       }
     }
-    return count;
+    प्रत्यागम गिनती;
   }
 
- public:
+ सार्वजनिक:
   /*
    * Creates a map from objid to # of incoming edges.
    */
-  graph_result_t<void> update_parents ()
+  graph_result_t<शून्य> update_parents ()
   {
-    if (!parents_invalid) return Ok();
+    यदि (!parents_invalid) प्रत्यागम Ok();
 
-    unsigned count = vertices_.length;
+    अचिन्हित गिनती = vertices_.length;
 
-    for (unsigned i = 0; i < count; i++)
+    प्रति (अचिन्हित i = 0; i < गिनती; i++)
       vertices_.arrayZ[i].reset_parents ();
 
-    for (unsigned p = 0; p < count; p++)
+    प्रति (अचिन्हित p = 0; p < गिनती; p++)
     {
-      for (const auto& l : vertices_.arrayZ[p].obj().real_links)
+      प्रति (ध्रुव स्वतः& l : vertices_.arrayZ[p].obj().real_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, false));
+        यदि (unlikely (l.objidx >= गिनती)) प्रत्यागम Err(INVALID_ARGUMENT);
+        TRY(vertices_[l.objidx].add_parent (p, असत्य));
       }
 
-      for (const auto& l : vertices_.arrayZ[p].obj().virtual_links)
+      प्रति (ध्रुव स्वतः& l : vertices_.arrayZ[p].obj().virtual_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, true));
+        यदि (unlikely (l.objidx >= गिनती)) प्रत्यागम Err(INVALID_ARGUMENT);
+        TRY(vertices_[l.objidx].add_parent (p, सत्य));
       }
     }
 
-    parents_invalid = false;
-    return Ok();
+    parents_invalid = असत्य;
+    प्रत्यागम Ok();
   }
 
   /*
    * compute the serialized start and end positions for each vertex.
    */
-  void update_positions ()
+  शून्य update_positions ()
   {
-    if (!positions_invalid) return;
+    यदि (!positions_invalid) प्रत्यागम;
 
-    unsigned current_pos = 0;
-    for (unsigned i : ordering_)
+    अचिन्हित current_pos = 0;
+    प्रति (अचिन्हित i : ordering_)
     {
-      auto& v = vertices_[i];
+      स्वतः& v = vertices_[i];
       v.start = current_pos;
       current_pos += v.obj().tail - v.obj().head;
       v.end = current_pos;
     }
 
-    positions_invalid = false;
+    positions_invalid = असत्य;
   }
 
   /*
    * Finds the distance to each object in the graph
    * from the initial node.
    */
-  graph_result_t<void> update_distances ()
+  graph_result_t<शून्य> update_distances ()
   {
-    if (!distance_invalid) return Ok();
+    यदि (!distance_invalid) प्रत्यागम Ok();
 
     // Uses Dijkstra's algorithm to find all of the shortest distances.
     // https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
@@ -1860,43 +1860,43 @@ public:
     // According to https://www3.cs.stonybrook.edu/~rezaul/papers/TR-07-54.pdf
     // for practical performance this is faster then using a more advanced queue
     // (such as a fibonacci queue) with a fast decrease priority.
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++)
+    अचिन्हित गिनती = vertices_.length;
+    प्रति (अचिन्हित i = 0; i < गिनती; i++)
       vertices_.arrayZ[i].distance = hb_int_max (int64_t);
-    vertices_[root_idx ()].distance = 0;
+    vertices_[मूल_idx ()].distance = 0;
 
     hb_priority_queue_t<int64_t> queue;
-    queue.alloc (count);
-    queue.insert (0, root_idx ());
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    queue.alloc (गिनती);
+    queue.insert (0, मूल_idx ());
+    TRY (graph_result_t<शून्य>::from (queue, ALLOCATION_FAILURE));
 
-    hb_vector_t<bool> visited;
+    hb_vector_t<तार्किक> visited;
     visited.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (visited, ALLOCATION_FAILURE));
 
-    while (!queue.in_error () && !queue.is_empty ())
+    यावत् (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_idx = queue.pop_minimum ().second;
-      if (visited[next_idx]) continue;
-      const auto& next = vertices_[next_idx];
+      अचिन्हित next_idx = queue.निकालो_minimum ().second;
+      यदि (visited[next_idx]) अनुवर्त;
+      ध्रुव स्वतः& next = vertices_[next_idx];
       int64_t next_distance = next.distance;
-      visited[next_idx] = true;
+      visited[next_idx] = सत्य;
 
-      for (const auto& link : next.obj().all_links ())
+      प्रति (ध्रुव स्वतः& link : next.obj().all_links ())
       {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+        यदि (unlikely (link.objidx >= vertices_.length))
+          प्रत्यागम Err(OUT_OF_BOUNDS);
 
-        if (visited[link.objidx]) continue;
+        यदि (visited[link.objidx]) अनुवर्त;
 
-        auto& child_v = vertices_.arrayZ[link.objidx];
-        const auto& child = child_v.obj ();
-        unsigned link_width = link.width ? link.width : 4; // treat virtual offsets as 32 bits wide
+        स्वतः& child_v = vertices_.arrayZ[link.objidx];
+        ध्रुव स्वतः& child = child_v.obj ();
+        अचिन्हित link_width = link.width ? link.width : 4; // treat virtual offsets as 32 bits wide
         int64_t child_weight = (child.tail - child.head) +
                                ((int64_t) 1 << (link_width * 8)) * (child_v.space + 1);
         int64_t child_distance = next_distance + child_weight;
 
-        if (child_distance < child_v.distance)
+        यदि (child_distance < child_v.distance)
         {
           child_v.distance = child_distance;
           queue.insert (child_distance, link.objidx);
@@ -1904,58 +1904,58 @@ public:
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    if (unlikely (!queue.is_empty ()))
+    TRY (graph_result_t<शून्य>::from (queue, ALLOCATION_FAILURE));
+    यदि (unlikely (!queue.is_empty ()))
     {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      प्रत्यागम Err(ORPHANED_NODES);
     }
 
-    distance_invalid = false;
-    return Ok();
+    distance_invalid = असत्य;
+    प्रत्यागम Ok();
   }
 
- private:
+ गुप्त:
   /*
    * Updates a link in the graph to point to a different object. Corrects the
    * parents vector on the previous and new child nodes.
    */
-  graph_result_t<void> reassign_link (hb_serialize_context_t::object_t::link_t& link,
-                      unsigned parent_idx,
-                      unsigned new_idx,
-                      bool is_virtual)
+  graph_result_t<शून्य> reassign_link (hb_serialize_context_t::object_t::link_t& link,
+                      अचिन्हित parent_idx,
+                      अचिन्हित new_idx,
+                      तार्किक is_virtual)
   {
-    unsigned old_idx = link.objidx;
+    अचिन्हित old_idx = link.objidx;
     link.objidx = new_idx;
     vertices_[old_idx].remove_parent (parent_idx);
-    return vertices_[new_idx].add_parent (parent_idx, is_virtual);
+    प्रत्यागम vertices_[new_idx].add_parent (parent_idx, is_virtual);
   }
 
   /*
    * Updates all objidx's in all links using the provided mapping. Corrects incoming edge counts.
    */
-  template<typename Iterator, hb_requires (hb_is_iterator (Iterator))>
-  graph_result_t<void> remap_obj_indices (const hb_map_t& id_map,
+  ढाँचा<typename Iterator, hb_requires (hb_is_iterator (Iterator))>
+  graph_result_t<शून्य> remap_obj_indices (ध्रुव hb_map_t& id_map,
                                           Iterator subgraph,
-                                          bool only_wide = false)
+                                          तार्किक only_wide = असत्य)
   {
-    if (!id_map) return Ok();
-    for (unsigned i : subgraph)
+    यदि (!id_map) प्रत्यागम Ok();
+    प्रति (अचिन्हित i : subgraph)
     {
-      auto& vertex = vertices_[i];
-      unsigned num_real = vertex.obj().real_links.length;
-      unsigned count = 0;
-      for (auto& link : vertex.all_links_writer ())
+      स्वतः& vertex = vertices_[i];
+      अचिन्हित अंक_real = vertex.obj().real_links.length;
+      अचिन्हित गिनती = 0;
+      प्रति (स्वतः& link : vertex.all_links_writer ())
       {
-        count++;
-        const uint32_t *v;
-        if (!id_map.has (link.objidx, &v)) continue;
-        if (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
+        गिनती++;
+        ध्रुव uint32_t *v;
+        यदि (!id_map.has (link.objidx, &v)) अनुवर्त;
+        यदि (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) अनुवर्त;
 
-        TRY(reassign_link (link, i, *v, count > num_real));
+        TRY(reassign_link (link, i, *v, गिनती > अंक_real));
       }
     }
-    return Ok();
+    प्रत्यागम Ok();
   }
 
   /*
@@ -1965,74 +1965,74 @@ public:
    * Connected targets will be added to connected and removed from targets. All visited nodes
    * will be added to visited.
    */
-  graph_result_t<void> find_connected_nodes (unsigned start_idx,
+  graph_result_t<शून्य> find_connected_nodes (अचिन्हित start_idx,
                                              hb_set_t& targets,
                                              hb_set_t& visited,
                                              hb_set_t& connected)
   {
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    if (visited.has (start_idx)) return Ok();
-    if (unlikely (start_idx >= vertices_.length))
+    TRY (graph_result_t<शून्य>::from (visited, ALLOCATION_FAILURE));
+    यदि (visited.has (start_idx)) प्रत्यागम Ok();
+    यदि (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_संदेश (SUBSET_REPACK, nullptr,
                  "find_connected_nodes: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      प्रत्यागम Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a stack for DFS.
     ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    auto& stack = ordering_scratch_;
-    unsigned stack_len = 0;
+    स्वतः& ढेर = ordering_scratch_;
+    अचिन्हित ढेर_len = 0;
 
-    graph_result_t<void> res = Ok();
-    auto handle_node = [&] (unsigned node_idx) {
-      visited.add (node_idx);
-      if (targets.has (node_idx)) {
-        targets.del (node_idx);
-        connected.add (node_idx);
+    graph_result_t<शून्य> res = Ok();
+    स्वतः handle_गाँठ = [&] (अचिन्हित गाँठ_idx) {
+      visited.add (गाँठ_idx);
+      यदि (targets.has (गाँठ_idx)) {
+        targets.del (गाँठ_idx);
+        connected.add (गाँठ_idx);
       }
 
-      if (unlikely (stack_len >= stack.length))
+      यदि (unlikely (ढेर_len >= ढेर.length))
       {
         res = Err(CYCLE_DETECTED);
-        return false;
+        प्रत्यागम असत्य;
       }
-      stack[stack_len++] = node_idx;
-      return true;
+      ढेर[ढेर_len++] = गाँठ_idx;
+      प्रत्यागम सत्य;
     };
 
-    if (!handle_node (start_idx)) return res;
+    यदि (!handle_गाँठ (start_idx)) प्रत्यागम res;
 
-    while (stack_len > 0)
+    यावत् (ढेर_len > 0)
     {
-      unsigned node_idx = stack[--stack_len];
-      const auto& v = vertices_[node_idx];
+      अचिन्हित गाँठ_idx = ढेर[--ढेर_len];
+      ध्रुव स्वतः& v = vertices_[गाँठ_idx];
 
       // Graph is treated as undirected so search children and parents of node_idx
-      for (const auto& l : v.obj().all_links ())
+      प्रति (ध्रुव स्वतः& l : v.obj().all_links ())
       {
-        unsigned child_idx = l.objidx;
-        if (visited.has (child_idx)) continue;
-        if (!handle_node (child_idx)) return res;
+        अचिन्हित child_idx = l.objidx;
+        यदि (visited.has (child_idx)) अनुवर्त;
+        यदि (!handle_गाँठ (child_idx)) प्रत्यागम res;
       }
 
-      for (unsigned parent_idx : v.parents_iter ())
+      प्रति (अचिन्हित parent_idx : v.parents_iter ())
       {
-        if (visited.has (parent_idx)) continue;
-        if (!handle_node (parent_idx)) return res;
+        यदि (visited.has (parent_idx)) अनुवर्त;
+        यदि (!handle_गाँठ (parent_idx)) प्रत्यागम res;
       }
     }
 
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (connected, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (visited, ALLOCATION_FAILURE));
+    TRY (graph_result_t<शून्य>::from (connected, ALLOCATION_FAILURE));
 
-    return Ok();
+    प्रत्यागम Ok();
   }
 
- public:
+ सार्वजनिक:
   // TODO(garretrieger): make private, will need to move most of offset overflow code into graph.
   hb_vector_t<vertex_t> vertices_;
 
@@ -2042,15 +2042,15 @@ public:
   //
   // specifies that the 'pos'th spot is filled by the object
   // given by obj index.
-  hb_vector_t<unsigned> ordering_;
-  hb_vector_t<unsigned> ordering_scratch_;
+  hb_vector_t<अचिन्हित> ordering_;
+  hb_vector_t<अचिन्हित> ordering_scratch_;
 
- private:
-  bool parents_invalid = true;
-  bool distance_invalid = true;
-  bool positions_invalid = true;
-  hb_vector_t<unsigned> num_roots_for_space_;
-  hb_vector_t<char*> buffers;
+ गुप्त:
+  तार्किक parents_invalid = सत्य;
+  तार्किक distance_invalid = सत्य;
+  तार्किक positions_invalid = सत्य;
+  hb_vector_t<अचिन्हित> अंक_roots_for_space;
+  hb_vector_t<वर्ण*> buffers;
 };
 
 }
